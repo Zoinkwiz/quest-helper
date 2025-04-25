@@ -24,39 +24,32 @@
  */
 package com.questhelper.helpers.miniquests.lairoftarnrazorlor;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class LairOfTarnRazorlor extends BasicQuestHelper
 {
@@ -98,7 +91,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		diary = new ItemRequirement("Tarn's diary", ItemID.TARNS_DIARY);
+		diary = new ItemRequirement("Tarn's diary", ItemID.LOTR_DIARY);
 		diary.setHighlightInInventory(true);
 	}
 
@@ -114,16 +107,16 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 		inBossRoom = new ZoneRequirement(bossRoom);
 		inFinalRoom = new ZoneRequirement(finalRoom);
 
-		killedTarn = new VarbitRequirement(3290, 2, Operation.GREATER_EQUAL);
+		killedTarn = new VarbitRequirement(VarbitID.LOTR_INSTANCE_ENTERED, 2, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
 	{
 		tarnRoute = new TarnRoute(this);
-		killTarn = new NpcStep(this, NpcID.MUTANT_TARN, new WorldPoint(3186, 4619, 0), "Kill Mutant and Ghost Tarn.");
-		killTarn.addAlternateNpcs(NpcID.TARN, NpcID.TARN_6476);
+		killTarn = new NpcStep(this, NpcID.LOTR_TRAN_RAZORLOR_MUTANT, new WorldPoint(3186, 4619, 0), "Kill Mutant and Ghost Tarn.");
+		killTarn.addAlternateNpcs(NpcID.LOTR_TRAN_RAZORLOR, NpcID.LOTR_TRAN_RAZORLOR_GHOST);
 
-		enterFinalRoom = new ObjectStep(this, ObjectID.PASSAGEWAY_15774, new WorldPoint(3186, 4627, 0), "Go into the north passageway. If you would like to complete a task for the Morytania Diary, you should kill a Terror Dog now.");
+		enterFinalRoom = new ObjectStep(this, ObjectID.LOTR_RUINS_TRAN_DOOR_OPEN, new WorldPoint(3186, 4627, 0), "Go into the north passageway. If you would like to complete a task for the Morytania Diary, you should kill a Terror Dog now.");
 		pickUpDiary = new ItemStep(this, "Pick up Tarn's diary. Quest complete!", diary);
 	}
 
@@ -157,7 +150,7 @@ public class LairOfTarnRazorlor extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Tarn's Diary", ItemID.TARNS_DIARY, 1));
+		return Collections.singletonList(new ItemReward("Tarn's Diary", ItemID.LOTR_DIARY, 1));
 	}
 
 	@Override

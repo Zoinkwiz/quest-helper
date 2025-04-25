@@ -24,38 +24,40 @@
  */
 package com.questhelper.helpers.achievementdiaries.wilderness;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WildernessMedium extends ComplexStateQuestHelper
 {
@@ -144,17 +146,17 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notMineMith = new VarplayerRequirement(1192, false, 13);
-		notEntYew = new VarplayerRequirement(1192, false, 14);
-		notWildyGodWars = new VarplayerRequirement(1192, false, 15);
-		notWildyAgi = new VarplayerRequirement(1192, false, 16);
-		notKillGreenDrag = new VarplayerRequirement(1192, false, 18);
-		notKillAnkou = new VarplayerRequirement(1192, false, 19);
-		notEarthOrb = new VarplayerRequirement(1192, false, 20);
-		notWildyGWBloodveld = new VarplayerRequirement(1192, false, 21);
-		notEmblemTrader = new VarplayerRequirement(1192, false, 22);
-		notGoldHelm = new VarplayerRequirement(1192, false, 23);
-		notMuddyChest = new VarplayerRequirement(1192, false, 24);
+		notMineMith = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 13);
+		notEntYew = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 14);
+		notWildyGodWars = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 15);
+		notWildyAgi = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 16);
+		notKillGreenDrag = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 18);
+		notKillAnkou = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 19);
+		notEarthOrb = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 20);
+		notWildyGWBloodveld = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 21);
+		notEmblemTrader = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 22);
+		notGoldHelm = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 23);
+		notMuddyChest = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 24);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -167,13 +169,13 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			.showConditioned(notWildyGWBloodveld).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
 			.showConditioned(notMineMith).isNotConsumed();
-		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.UNPOWERED_ORB).showConditioned(notEarthOrb);
-		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMIC_RUNE).showConditioned(notEarthOrb);
-		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notEarthOrb);
+		unpoweredOrb = new ItemRequirement("Unpowered orb", ItemID.STAFFORB).showConditioned(notEarthOrb);
+		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMICRUNE).showConditioned(notEarthOrb);
+		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE).showConditioned(notEarthOrb);
 		knife = new ItemRequirement("Knife or slashing weapon", -1, -1).isNotConsumed();
 		muddyKey = new ItemRequirement("Muddy key", ItemID.MUDDY_KEY).showConditioned(notMuddyChest);
 		goldHelmet = new ItemRequirement("Golden helmet not in inventory or bank (make sure this is red)",
-			ItemID.GOLD_HELMET).showConditioned(notGoldHelm).isNotConsumed();
+			ItemID.DWARF_GOLDROCK_HELMET).showConditioned(notGoldHelm).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notGoldHelm);
 		goldBar = new ItemRequirement("Gold bar", ItemID.GOLD_BAR).showConditioned(notGoldHelm);
 		goldOre = new ItemRequirement("Gold ore", ItemID.GOLD_ORE);
@@ -209,60 +211,60 @@ public class WildernessMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		entYew = new NpcStep(this, NpcID.ENT, new WorldPoint(3227, 3666, 0),
+		entYew = new NpcStep(this, NpcID.WILDERNESS_ENT, new WorldPoint(3227, 3666, 0),
 			"Kill an Ent in the wilderness and cut yew logs from its trunk after killing it.", combatGear, runeAxe);
 		entYew.addAlternateNpcs(NpcID.ENT_TRUNK);
 
-		moveToSlayer1 = new ObjectStep(this, ObjectID.STAIRS_40388, new WorldPoint(3260, 3665, 0),
+		moveToSlayer1 = new ObjectStep(this, ObjectID.WILD_SLAYER_CAVE_SOUTH_ENTRANCE , new WorldPoint(3260, 3665, 0),
 			"Enter the Wilderness Slayer Cave.", combatGear, food);
-		killAnkou = new NpcStep(this, NpcID.ANKOU_7864, new WorldPoint(3373, 10073, 0),
+		killAnkou = new NpcStep(this, NpcID.WILD_CAVE_ANKOU, new WorldPoint(3373, 10073, 0),
 			"Kill an Ankou in the Wilderness Slayer Cave.", true, combatGear, food);
 
-		moveToSlayer2 = new ObjectStep(this, ObjectID.STAIRS_40388, new WorldPoint(3260, 3665, 0),
+		moveToSlayer2 = new ObjectStep(this, ObjectID.WILD_SLAYER_CAVE_SOUTH_ENTRANCE , new WorldPoint(3260, 3665, 0),
 			"Enter the Wilderness Slayer Cave.", combatGear, food, antiDragonShield);
-		killGreenDrag = new NpcStep(this, NpcID.GREEN_DRAGON_7868, new WorldPoint(3412, 10066, 0),
+		killGreenDrag = new NpcStep(this, NpcID.WILD_CAVE_GREEN_DRAGON, new WorldPoint(3412, 10066, 0),
 			"Kill a Green dragon in the Wilderness Slayer Cave.", true, combatGear, food, antiDragonShield);
-		killGreenDrag.addAlternateNpcs(NpcID.GREEN_DRAGON_7869, NpcID.GREEN_DRAGON_7870);
+		killGreenDrag.addAlternateNpcs(NpcID.WILD_CAVE_GREEN_DRAGON2, NpcID.WILD_CAVE_GREEN_DRAGON3);
 
-		moveToGodWars1 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3017, 3738, 0),
+		moveToGodWars1 = new ObjectStep(this, ObjectID.WILDERNESS_GWD_ENTRANCE, new WorldPoint(3017, 3738, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		moveToGodWars2 = new ObjectStep(this, ObjectID.CAVE_26766, new WorldPoint(3017, 3738, 0),
+		moveToGodWars2 = new ObjectStep(this, ObjectID.WILDERNESS_GWD_ENTRANCE, new WorldPoint(3017, 3738, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
-		wildyGodwars = new ObjectStep(this, ObjectID.CREVICE_26767, new WorldPoint(3066, 10142, 3),
+		wildyGodwars = new ObjectStep(this, ObjectID.WILDERNESS_GWD_CREVICE, new WorldPoint(3066, 10142, 3),
 			"Use the crevice to enter the Wilderness God Wars Dungeon. The Strength entrance is to the West.",
 			combatGear, food, godEquip);
-		wildyGWBloodveld = new NpcStep(this, NpcID.BLOODVELD_3138, new WorldPoint(3050, 10131, 0),
+		wildyGWBloodveld = new NpcStep(this, NpcID.GODWARS_BLOODVELD, new WorldPoint(3050, 10131, 0),
 			"Kill a Bloodveld in the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
 
-		mineMith = new ObjectStep(this, ObjectID.MITHRIL_ROCKS_11373, new WorldPoint(3057, 3944, 0),
+		mineMith = new ObjectStep(this, ObjectID.MITHRILROCK2, new WorldPoint(3057, 3944, 0),
 			"Mine mithril in the Wilderness.", pickaxe);
 
-		wildyAgi = new ObjectStep(this, ObjectID.DOOR_23555, new WorldPoint(2998, 3917, 0),
+		wildyAgi = new ObjectStep(this, ObjectID.BALANCEGATE52A, new WorldPoint(2998, 3917, 0),
 			"Complete a lap of the Wilderness Agility Course.");
 
-		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_1581, new WorldPoint(3097, 3468, 0),
+		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_OPEN, new WorldPoint(3097, 3468, 0),
 			"Enter to the Edgeville Dungeon.");
-		earthOrb = new ObjectStep(this, ObjectID.OBELISK_OF_EARTH, new WorldPoint(3087, 9933, 0),
+		earthOrb = new ObjectStep(this, ObjectID.OBELISK_EARTH, new WorldPoint(3087, 9933, 0),
 			"Cast charge earth orb on the Obelisk of Earth.", unpoweredOrb, earthRune.quantity(30),
 			cosmicRune.quantity(3));
 
 		emblemTrader = new NpcStep(this, NpcID.EMBLEM_TRADER, new WorldPoint(3097, 3504, 0),
 			"Speak with the Emblem Trader.");
 
-		goldHelm = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3190, 3938, 0),
+		goldHelm = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3190, 3938, 0),
 			"Smith the gold helmet in the Resource Area. ", hammer, goldBar.quantity(3));
-		moveToResource = new ObjectStep(this, ObjectID.GATE_26760, new WorldPoint(3184, 3944, 0),
+		moveToResource = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
 			"Enter the Wilderness Resource Area. Check your bank to make sure you DO NOT have a gold helmet.",
 			coins.quantity(7500), hammer, barsOrPick, goldHelmet);
-		smeltGoldOre = new ObjectStep(this, ObjectID.FURNACE_26300, new WorldPoint(3191, 3936, 0),
+		smeltGoldOre = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_FURNACE, new WorldPoint(3191, 3936, 0),
 			"Smelt the gold ore into gold bars.", hammer, goldOre.quantity(3));
-		mineGoldOre = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(3184, 3941, 0),
+		mineGoldOre = new ObjectStep(this, ObjectID.GOLDROCK1, new WorldPoint(3184, 3941, 0),
 			"Mine gold ore.", true, hammer, pickaxe);
 
-		muddyChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_170, new WorldPoint(3089, 3859, 0),
+		muddyChest = new ObjectStep(this, ObjectID.MUDDY_CHESTCLOSED, new WorldPoint(3089, 3859, 0),
 			"Use a Muddy key on the chest in the Lava Maze.", muddyKey, knife);
 
-		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC, new WorldPoint(3121, 3518, 0),
+		claimReward = new NpcStep(this, NpcID.LESSER_FANATIC_DIARY, new WorldPoint(3121, 3518, 0),
 			"Talk to Lesser Fanatic in Edgeville to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -309,8 +311,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Wilderness Sword 2", ItemID.WILDERNESS_SWORD_2),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Wilderness Sword 2", ItemID.WILDERNESS_SWORD_MEDIUM),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

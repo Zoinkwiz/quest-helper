@@ -24,13 +24,13 @@
  */
 package com.questhelper.helpers.quests.druidicritual;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -38,14 +38,13 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class DruidicRitual extends BasicQuestHelper
 {
@@ -93,9 +92,9 @@ public class DruidicRitual extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		rawRat = new ItemRequirement("Raw rat meat", ItemID.RAW_RAT_MEAT);
-		rawRat.addAlternates(ItemID.ENCHANTED_RAT);
+		rawRat.addAlternates(ItemID.ENCHANTED_RAT_MEAT);
 		rawBear = new ItemRequirement("Raw bear meat", ItemID.RAW_BEAR_MEAT);
-		rawBear.addAlternates(ItemID.ENCHANTED_BEAR);
+		rawBear.addAlternates(ItemID.ENCHANTED_BEAR_MEAT);
 		rawBeef = new ItemRequirement("Raw beef", ItemID.RAW_BEEF);
 		rawBeef.addAlternates(ItemID.ENCHANTED_BEEF);
 		rawChicken = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
@@ -110,10 +109,10 @@ public class DruidicRitual extends BasicQuestHelper
 		rawChickenHighlighted = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
 		rawChickenHighlighted.setHighlightInInventory(true);
 
-		enchantedBear = new ItemRequirement("Enchanted bear", ItemID.ENCHANTED_BEAR);
+		enchantedBear = new ItemRequirement("Enchanted bear", ItemID.ENCHANTED_BEAR_MEAT);
 		enchantedBeef = new ItemRequirement("Enchanted beef", ItemID.ENCHANTED_BEEF);
 		enchantedChicken = new ItemRequirement("Enchanted chicken", ItemID.ENCHANTED_CHICKEN);
-		enchantedRat = new ItemRequirement("Enchanted rat", ItemID.ENCHANTED_RAT);
+		enchantedRat = new ItemRequirement("Enchanted rat", ItemID.ENCHANTED_RAT_MEAT);
 	}
 
 	@Override
@@ -133,12 +132,12 @@ public class DruidicRitual extends BasicQuestHelper
 	{
 		talkToKaqemeex = new NpcStep(this, NpcID.KAQEMEEX, new WorldPoint(2925, 3486, 0), "Talk to Kaqemeex in the Druid Circle in Taverley.");
 		talkToKaqemeex.addDialogSteps("I'm in search of a quest.", "Okay, I will try and help.");
-		goUpToSanfew = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
+		goUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew.addDialogStep("I've been sent to help purify the Varrock stone circle.");
 		talkToSanfew.addSubSteps(goUpToSanfew);
 
-		enterDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+		enterDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
 			"Enter Taverley Dungeon south of Taverley.", rawBear, rawBeef, rawChicken, rawRat);
 		enterDungeon.addDialogStep("Ok, I'll do that then.");
 		useRatOnCauldron = new ObjectStep(this, ObjectID.CAULDRON_OF_THUNDER, new WorldPoint(2893, 9831, 0),
@@ -157,7 +156,7 @@ public class DruidicRitual extends BasicQuestHelper
 			"Use the four meats on the cauldron. To enter the room, spam-click the gate to get in.");
 		enchantMeats.addSubSteps(useRatOnCauldron, useChickenOnCauldron, useBeefOnCauldron, useBearOnCauldron);
 
-		goUpToSanfewWithMeat = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2899, 3429, 0),
+		goUpToSanfewWithMeat = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0),
 			"Bring the enchanted meats to Sanfew upstairs in the Taverley herblore store.", enchantedBear, enchantedBeef, enchantedChicken, enchantedRat);
 		talkToSanfewWithMeat = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1),
 			"Bring the enchanted meats to Sanfew upstairs in the Taverley herblore store.", enchantedBear, enchantedBeef, enchantedChicken, enchantedRat);

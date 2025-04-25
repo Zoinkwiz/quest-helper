@@ -24,10 +24,11 @@
  */
 package com.questhelper.helpers.miniquests.themagearenaii;
 
-import java.awt.Rectangle;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+
+import java.awt.*;
 
 @AllArgsConstructor
 @Getter

@@ -26,16 +26,17 @@
  */
 package com.questhelper.requirements.npc;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.AbstractRequirement;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.questhelper.requirements.zone.Zone;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NpcRequirement extends AbstractRequirement
 {
@@ -130,7 +131,7 @@ public class NpcRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		List<NPC> found = client.getNpcs().stream()
+		List<NPC> found = client.getTopLevelWorldView().npcs().stream()
 			.filter(npc -> npc.getId() == npcID)
 			.filter(npc -> npcName == null || (npc.getName() != null && npc.getName().equals(npcName)))
 			.collect(Collectors.toList());

@@ -25,7 +25,8 @@
 package com.questhelper.steps.overlay;
 
 import com.questhelper.tools.Icon;
-import java.awt.Graphics;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class IconOverlay

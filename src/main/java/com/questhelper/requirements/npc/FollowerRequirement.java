@@ -27,13 +27,14 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.AbstractRequirement;
+import com.questhelper.util.Utils;
+import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import com.questhelper.util.Utils;
-import net.runelite.api.Client;
-import javax.annotation.Nonnull;
 
 public class FollowerRequirement extends AbstractRequirement
 {
@@ -58,7 +59,7 @@ public class FollowerRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return client.getNpcs()
+		return client.getTopLevelWorldView().npcs()
 			.stream()
 			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
 			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())

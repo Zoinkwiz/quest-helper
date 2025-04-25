@@ -24,36 +24,30 @@
  */
 package com.questhelper.helpers.quests.asoulsbane;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class ASoulsBane extends BasicQuestHelper
 {
@@ -138,14 +132,14 @@ public class ASoulsBane extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear + food", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		angerBattleaxe = new ItemRequirement("Anger battleaxe", ItemID.ANGER_BATTLEAXE);
-		angerMace = new ItemRequirement("Anger mace", ItemID.ANGER_MACE);
-		angerSpear = new ItemRequirement("Anger spear", ItemID.ANGER_SPEAR);
-		angerSword = new ItemRequirement("Anger sword", ItemID.ANGER_SWORD);
+		angerBattleaxe = new ItemRequirement("Anger battleaxe", ItemID.SOULBANE_ANGER_AXEQ);
+		angerMace = new ItemRequirement("Anger mace", ItemID.SOULBANE_ANGER_MACEQ);
+		angerSpear = new ItemRequirement("Anger spear", ItemID.SOULBANE_ANGER_SPEARQ);
+		angerSword = new ItemRequirement("Anger sword", ItemID.SOULBANE_ANGER_SWORDQ);
 
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
-		digsiteTeleport = new ItemRequirement("Digsite Teleport", ItemID.DIGSITE_TELEPORT);
+		digsiteTeleport = new ItemRequirement("Digsite Teleport", ItemID.TELEPORTSCROLL_DIGSITE);
 		digsiteTeleport.addAlternates(ItemCollections.DIGSITE_PENDANTS);
 		antipoison = new ItemRequirement("Antipoison (or equivalent)", ItemCollections.ANTIPOISONS);
 	}
@@ -191,16 +185,16 @@ public class ASoulsBane extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToLauna = new NpcStep(this, NpcID.LAUNA, new WorldPoint(3307, 3454, 0), "Talk to Launa east of Varrock.");
+		talkToLauna = new NpcStep(this, NpcID.SOULBANE_LAUNA, new WorldPoint(3307, 3454, 0), "Talk to Launa east of Varrock.");
 		talkToLauna.addDialogStep("Yes.");
 		talkToLauna.addDialogStep("Would you like me to go down to look for your husband and son?");
 
-		useRopeOnRift = new ObjectStep(this, NullObjectID.NULL_13968, new WorldPoint(3310, 3452, 0), "Use a rope on the rift.", rope);
+		useRopeOnRift = new ObjectStep(this, ObjectID.SOULBANE_FALLOFF2_ROPE_MULTI, new WorldPoint(3310, 3452, 0), "Use a rope on the rift.", rope);
 		useRopeOnRift.addIcon(ItemID.ROPE);
 
-		enterRift = new ObjectStep(this, NullObjectID.NULL_13968, new WorldPoint(3310, 3452, 0), "Enter the rift.", combatGear);
+		enterRift = new ObjectStep(this, ObjectID.SOULBANE_FALLOFF2_ROPE_MULTI, new WorldPoint(3310, 3452, 0), "Enter the rift.", combatGear);
 
-		takeWeapon = new ObjectStep(this, NullObjectID.NULL_13993, new WorldPoint(3012, 5244, 0), "Take a weapon from the weapon rack. Kill the angry monsters with the appropriate weapon:");
+		takeWeapon = new ObjectStep(this, ObjectID.SOULBANE_RACK_MULTI, new WorldPoint(3012, 5244, 0), "Take a weapon from the weapon rack. Kill the angry monsters with the appropriate weapon:");
 		takeWeapon.setText(Arrays.asList("Take a weapon from the weapon rack. Kill the angry monsters with the appropriate weapon:",
 			"Sword - Unicorn",
 			"Spear - Bear",
@@ -217,51 +211,51 @@ public class ASoulsBane extends BasicQuestHelper
 		killAnimals = new DetailedQuestStep(this, "");
 		killAnimals.setText(killText);
 
-		killBears = new NpcStep(this, NpcID.ANGRY_BEAR, new WorldPoint(3027, 5232, 0), "", true);
+		killBears = new NpcStep(this, NpcID.SOULBANE_ANGER_BEAR, new WorldPoint(3027, 5232, 0), "", true);
 		killBears.setText(killText);
 
-		killGoblins = new NpcStep(this, NpcID.ANGRY_GOBLIN, new WorldPoint(3027, 5232, 0), "", true);
+		killGoblins = new NpcStep(this, NpcID.SOULBANE_ANGER_GOBLIN, new WorldPoint(3027, 5232, 0), "", true);
 		killGoblins.setText(killText);
 
-		killRats = new NpcStep(this, NpcID.ANGRY_GIANT_RAT, new WorldPoint(3027, 5232, 0), "", true);
+		killRats = new NpcStep(this, NpcID.SOULBANE_ANGER_RAT, new WorldPoint(3027, 5232, 0), "", true);
 		killRats.setText(killText);
 
-		killUnicorn = new NpcStep(this, NpcID.ANGRY_UNICORN, new WorldPoint(3027, 5232, 0), "", true);
+		killUnicorn = new NpcStep(this, NpcID.SOULBANE_ANGER_UNICORN, new WorldPoint(3027, 5232, 0), "", true);
 		killUnicorn.setText(killText);
 
 		killAnimals.addSubSteps(killBears, killGoblins, killRats, killUnicorn);
 
-		leaveAngerRoom = new ObjectStep(this, ObjectID.EXIT_13882, new WorldPoint(3038, 5229, 0), "Go to the next room.");
+		leaveAngerRoom = new ObjectStep(this, ObjectID.SOUL_BANE_AWALL_VOID_EXIT, new WorldPoint(3038, 5229, 0), "Go to the next room.");
 
-		lookInsideHoles = new ObjectStep(this, ObjectID.DARK_HOLE_13896, new WorldPoint(3046, 5240, 0),
+		lookInsideHoles = new ObjectStep(this, ObjectID.SOUL_BANE_FWALL_VOID6, new WorldPoint(3046, 5240, 0),
 			"Look inside the Dark Holes to cause fear reapers to appear. Kill 5 of them. You cannot search the same hole over and over again.", true);
-		((ObjectStep) lookInsideHoles).addAlternateObjects(ObjectID.DARK_HOLE_13891, ObjectID.DARK_HOLE_13892,
-			ObjectID.DARK_HOLE_13893, ObjectID.DARK_HOLE_13894, ObjectID.DARK_HOLE_13895);
+		((ObjectStep) lookInsideHoles).addAlternateObjects(ObjectID.SOUL_BANE_FWALL_VOID, ObjectID.SOUL_BANE_FWALL_VOID2,
+			ObjectID.SOUL_BANE_FWALL_VOID3, ObjectID.SOUL_BANE_FWALL_VOID4, ObjectID.SOUL_BANE_FWALL_VOID5);
 
-		killReaper = new NpcStep(this, NpcID.FEAR_REAPER, new WorldPoint(3058, 5230, 0), "Kill the Fear Reaper.");
+		killReaper = new NpcStep(this, NpcID.SOULBANE_FEAR_REAPER, new WorldPoint(3058, 5230, 0), "Kill the Fear Reaper.");
 		lookInsideHoles.addSubSteps(killReaper);
 
-		leaveFearRoom = new ObjectStep(this, NullObjectID.NULL_13898, new WorldPoint(3046, 5236, 0), "Continue to the next room.");
+		leaveFearRoom = new ObjectStep(this, ObjectID.SOULBANE_FWALL_EXIT_MULTI, new WorldPoint(3046, 5236, 0), "Continue to the next room.");
 
-		killRealConfusionBeast = new NpcStep(this, NpcID.CONFUSION_BEAST, new WorldPoint(3055, 5199, 0),
+		killRealConfusionBeast = new NpcStep(this, NpcID.SOULBANE_CONFU_CREEPER, new WorldPoint(3055, 5199, 0),
 			"Attack the confusion beasts until you find one which takes damage, and kill it. The others will take 8 " +
 				"hits to die.",	true);
-		((NpcStep) killRealConfusionBeast).addAlternateNpcs(NpcID.CONFUSION_BEAST_1068, NpcID.CONFUSION_BEAST_1069,
-			NpcID.CONFUSION_BEAST_1070, NpcID.CONFUSION_BEAST_1071);
+		((NpcStep) killRealConfusionBeast).addAlternateNpcs(NpcID.SOULBANE_CONFU_CREEPER_FAKE1, NpcID.SOULBANE_CONFU_CREEPER_FAKE2,
+			NpcID.SOULBANE_CONFU_CREEPER_FAKE3, NpcID.SOULBANE_CONFU_CREEPER_FAKE4);
 
-		leaveConfusionRoom = new ObjectStep(this, NullObjectID.NULL_13912, new WorldPoint(3051, 5200, 0), "Leave the room through the confusing door.");
+		leaveConfusionRoom = new ObjectStep(this, ObjectID.SOULBANE_DOOR_MULTI6, new WorldPoint(3051, 5200, 0), "Leave the room through the confusing door.");
 
-		killHopelessCreatures = new NpcStep(this, NpcID.HOPELESS_CREATURE, new WorldPoint(3087, 5198, 0), "Kill each hopeless creature 3 times.", true);
-		killHopelessCreatures.addAlternateNpcs(NpcID.HOPELESS_CREATURE_1073, NpcID.HOPELESS_CREATURE_1074, NpcID.HOPELESS_CREATURE_4695);
+		killHopelessCreatures = new NpcStep(this, NpcID.SOULBANE_HOPE_MONST3, new WorldPoint(3087, 5198, 0), "Kill each hopeless creature 3 times.", true);
+		killHopelessCreatures.addAlternateNpcs(NpcID.SOULBANE_HOPE_MONST2, NpcID.SOULBANE_HOPE_MONST1, NpcID.SOULBANE_LESS_BEAST3);
 
-		leaveHopelessRoom = new ObjectStep(this, ObjectID.EXIT_13933, new WorldPoint(3021, 5188, 0), "Continue through the exit of the room.");
+		leaveHopelessRoom = new ObjectStep(this, ObjectID.SOUL_BANE_HWALL_VOID_EXIT, new WorldPoint(3021, 5188, 0), "Continue through the exit of the room.");
 
-		killHeads = new NpcStep(this, NpcID.TOLNA_1075, new WorldPoint(2984, 5212, 1), "Kill all three of Tolna's heads.", true);
-		killHeads.addAlternateNpcs(NpcID.TOLNA_1076, NpcID.TOLNA_1077);
+		killHeads = new NpcStep(this, NpcID.SOULBANE_FINAL_TOLNA1, new WorldPoint(2984, 5212, 1), "Kill all three of Tolna's heads.", true);
+		killHeads.addAlternateNpcs(NpcID.SOULBANE_FINAL_TOLNA2, NpcID.SOULBANE_FINAL_TOLNA3);
 
-		talkToTolna = new NpcStep(this, NpcID.TOLNA, new WorldPoint(2984, 5212, 1), "Talk to Tolna.");
+		talkToTolna = new NpcStep(this, NpcID.SOULBANE_TOLNA, new WorldPoint(2984, 5212, 1), "Talk to Tolna.");
 
-		talkToTolnaAgain = new NpcStep(this, NpcID.TOLNA_1058, new WorldPoint(3307, 3454, 0), "Talk to Tolna outside the rift.");
+		talkToTolnaAgain = new NpcStep(this, NpcID.SOULBANE_TOLNA_TOP, new WorldPoint(3307, 3454, 0), "Talk to Tolna outside the rift.");
 	}
 
 	@Override
@@ -299,7 +293,7 @@ public class ASoulsBane extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 500));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 500));
 	}
 
 	@Override

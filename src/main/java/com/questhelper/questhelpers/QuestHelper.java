@@ -28,40 +28,35 @@ import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.questhelper.questinfo.ExternalQuestResources;
-import com.questhelper.questinfo.HelperConfig;
-import com.questhelper.bank.QuestBank;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.bank.QuestBank;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.questinfo.ExternalQuestResources;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.rewards.Reward;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.rewards.*;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import javax.inject.Inject;
-
-import com.questhelper.rewards.ExperienceReward;
-import com.questhelper.rewards.ItemReward;
-import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.rewards.UnlockReward;
+import com.questhelper.steps.OwnerStep;
+import com.questhelper.steps.QuestStep;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
-import com.questhelper.steps.OwnerStep;
-import com.questhelper.steps.QuestStep;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 public abstract class QuestHelper implements Module, QuestDebugRenderer
 {

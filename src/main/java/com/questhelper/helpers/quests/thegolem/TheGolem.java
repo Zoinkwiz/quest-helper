@@ -25,35 +25,30 @@
 package com.questhelper.helpers.quests.thegolem;
 
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class TheGolem extends BasicQuestHelper
 {
@@ -162,11 +157,11 @@ public class TheGolem extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		letter = new ItemRequirement("Letter", ItemID.LETTER_4615);
+		letter = new ItemRequirement("Letter", ItemID.GOLEM_LETTER);
 		letter.setHighlightInInventory(true);
 
-		strangeImplement = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
-		strangeImplementHighlight = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
+		strangeImplement = new ItemRequirement("Strange implement", ItemID.GOLEM_GOLEMKEY);
+		strangeImplementHighlight = new ItemRequirement("Strange implement", ItemID.GOLEM_GOLEMKEY);
 		strangeImplementHighlight.setHighlightInInventory(true);
 
 		programHighlight = new ItemRequirement("Golem program", ItemID.GOLEM_PROGRAM);
@@ -175,50 +170,50 @@ public class TheGolem extends BasicQuestHelper
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortarHighlight = pestleAndMortar.highlighted();
 
-		mushroomHighlight = new ItemRequirement("Black mushroom", ItemID.BLACK_MUSHROOM);
+		mushroomHighlight = new ItemRequirement("Black mushroom", ItemID.GOLEM_MUSHROOM);
 		mushroomHighlight.setHighlightInInventory(true);
 
-		vial = new ItemRequirement("Vial", ItemID.VIAL);
+		vial = new ItemRequirement("Vial", ItemID.VIAL_EMPTY);
 
-		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
+		inkHighlight = new ItemRequirement("Black mushroom ink", ItemID.GOLEM_INK);
 		inkHighlight.setHighlightInInventory(true);
 
 		papyrus = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
 		papyrusHighlight = new ItemRequirement("Papyrus", ItemID.PAPYRUS);
 		papyrusHighlight.setHighlightInInventory(true);
 
-		clay4Highlight = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY, 4);
+		clay4Highlight = new ItemRequirement("Soft clay", ItemID.SOFTCLAY, 4);
 		clay4Highlight.setHighlightInInventory(true);
-		clay3Highlight = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY, 3);
+		clay3Highlight = new ItemRequirement("Soft clay", ItemID.SOFTCLAY, 3);
 		clay3Highlight.setHighlightInInventory(true);
-		clay2Highlight = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY, 2);
+		clay2Highlight = new ItemRequirement("Soft clay", ItemID.SOFTCLAY, 2);
 		clay2Highlight.setHighlightInInventory(true);
-		clay1Highlight = new ItemRequirement("Soft clay", ItemID.SOFT_CLAY, 1);
+		clay1Highlight = new ItemRequirement("Soft clay", ItemID.SOFTCLAY, 1);
 		clay1Highlight.setHighlightInInventory(true);
 
-		notesHighlight = new ItemRequirement("Varmen's notes", ItemID.VARMENS_NOTES);
+		notesHighlight = new ItemRequirement("Varmen's notes", ItemID.GOLEM_NOTES);
 		notesHighlight.setHighlightInInventory(true);
 
-		phoenixFeather = new ItemRequirement("Phoenix feather", ItemID.PHOENIX_FEATHER);
+		phoenixFeather = new ItemRequirement("Phoenix feather", ItemID.GOLEM_PHOENIXFEATHER);
 		phoenixFeather.setHighlightInInventory(true);
-		quill = new ItemRequirement("Phoenix quill pen", ItemID.PHOENIX_QUILL_PEN);
+		quill = new ItemRequirement("Phoenix quill pen", ItemID.GOLEM_PEN);
 		quill.setHighlightInInventory(true);
 
-		key = new ItemRequirement("Display cabinet key", ItemID.DISPLAY_CABINET_KEY);
+		key = new ItemRequirement("Display cabinet key", ItemID.GOLEM_STATUETTEKEY);
 
-		statuette = new ItemRequirement("Statuette", ItemID.STATUETTE);
+		statuette = new ItemRequirement("Statuette", ItemID.GOLEM_STATUETTE);
 		statuette.setTooltip("If you've lost it, talk to the Curator in the Varrock museum again");
 
-		statuetteHighlight = new ItemRequirement("Statuette", ItemID.STATUETTE);
+		statuetteHighlight = new ItemRequirement("Statuette", ItemID.GOLEM_STATUETTE);
 		statuetteHighlight.setHighlightInInventory(true);
 		statuetteHighlight.setTooltip("If you've lost it, talk to the Curator in the Varrock museum again");
 
 		// Recommended items
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemCollections.DIGSITE_PENDANTS);
-		digsiteTeleport.addAlternates(ItemID.DIGSITE_TELEPORT);
+		digsiteTeleport.addAlternates(ItemID.TELEPORTSCROLL_DIGSITE);
 		necklaceOfPassage = new ItemRequirement("Necklace of passage to Eagle's Eyrie", ItemCollections.NECKLACE_OF_PASSAGES);
-		waterskins = new ItemRequirement("Waterskins", ItemID.WATERSKIN4, -1);
+		waterskins = new ItemRequirement("Waterskins", ItemID.WATER_SKIN4, -1);
 	}
 
 	private void setupConditions()
@@ -227,10 +222,10 @@ public class TheGolem extends BasicQuestHelper
 		inUpstairsMuseum = new ZoneRequirement(upstairsMuseum);
 		inThroneRoom = new ZoneRequirement(throneRoom);
 
-		hasReadLetter = new VarbitRequirement(347, 1, Operation.GREATER_EQUAL);
-		talkedToElissa = new VarbitRequirement(347, 2, Operation.GREATER_EQUAL);
-		hasReadNotes = new VarbitRequirement(347, 3, Operation.GREATER_EQUAL);
-		talkedToCurator = new VarbitRequirement(347, 4, Operation.GREATER_EQUAL);
+		hasReadLetter = new VarbitRequirement(VarbitID.GOLEM_B, 1, Operation.GREATER_EQUAL);
+		talkedToElissa = new VarbitRequirement(VarbitID.GOLEM_B, 2, Operation.GREATER_EQUAL);
+		hasReadNotes = new VarbitRequirement(VarbitID.GOLEM_B, 3, Operation.GREATER_EQUAL);
+		talkedToCurator = new VarbitRequirement(VarbitID.GOLEM_B, 4, Operation.GREATER_EQUAL);
 
 		added1Clay = new VarbitRequirement(348, 1);
 		added2Clay = new VarbitRequirement(348, 2);
@@ -257,60 +252,60 @@ public class TheGolem extends BasicQuestHelper
 		readLetter = new DetailedQuestStep(this, "Read the letter.", letter);
 		pickUpLetter.addSubSteps(readLetter);
 
-		talkToGolem = new NpcStep(this, NpcID.BROKEN_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
+		talkToGolem = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
 		talkToGolem.addDialogStep("Shall I try to repair you?");
-		useClay = new NpcStep(this, NpcID.BROKEN_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 4 soft clay on the Golem in Uzer.", clay4Highlight);
-		useClay.addIcon(ItemID.SOFT_CLAY);
-		useClay2 = new NpcStep(this, NpcID.BROKEN_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 3 soft clay on the Golem in Uzer.", clay3Highlight);
-		useClay2.addIcon(ItemID.SOFT_CLAY);
-		useClay3 = new NpcStep(this, NpcID.DAMAGED_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 2 soft clay on the Golem in Uzer.", clay2Highlight);
-		useClay3.addIcon(ItemID.SOFT_CLAY);
-		useClay4 = new NpcStep(this, NpcID.DAMAGED_CLAY_GOLEM, new WorldPoint(3485, 3088, 0), "Use 1 soft clay on the Golem in Uzer.", clay1Highlight);
-		useClay4.addIcon(ItemID.SOFT_CLAY);
+		useClay = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 4 soft clay on the Golem in Uzer.", clay4Highlight);
+		useClay.addIcon(ItemID.SOFTCLAY);
+		useClay2 = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 3 soft clay on the Golem in Uzer.", clay3Highlight);
+		useClay2.addIcon(ItemID.SOFTCLAY);
+		useClay3 = new NpcStep(this, NpcID.GOLEM_PARTIALLY_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 2 soft clay on the Golem in Uzer.", clay2Highlight);
+		useClay3.addIcon(ItemID.SOFTCLAY);
+		useClay4 = new NpcStep(this, NpcID.GOLEM_PARTIALLY_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 1 soft clay on the Golem in Uzer.", clay1Highlight);
+		useClay4.addIcon(ItemID.SOFTCLAY);
 
-		enterRuinForFirstTime = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		enterRuinForFirstTime = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
 
-		talkToElissa = new NpcStep(this, NpcID.ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north east of the Digsite.");
+		talkToElissa = new NpcStep(this, NpcID.GOLEM_ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north east of the Digsite.");
 		talkToElissa.addDialogStep("I found a letter in the desert with your name on.");
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_6292, new WorldPoint(3367, 3332, 0), "Search the bookcase in the south east corner of the Digsite Exam Centre.");
+		searchBookcase = new ObjectStep(this, ObjectID.GOLEM_BOOKCASE, new WorldPoint(3367, 3332, 0), "Search the bookcase in the south east corner of the Digsite Exam Centre.");
 		readBook = new DetailedQuestStep(this, "Read the notes.", notesHighlight);
-		talkToCurator = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum.");
+		talkToCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum.");
 		talkToCurator.addDialogStep("I'm looking for a statuette recovered from the city of Uzer.");
-		pickpocketCurator = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig.");
-		goUpInMuseum = new ObjectStep(this, ObjectID.STAIRCASE_11798, new WorldPoint(3267, 3453, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", key);
-		openCabinet = new ObjectStep(this, NullObjectID.NULL_24626, new WorldPoint(3257, 3453, 1), "Right-click open the golem statue's display case.", key);
+		pickpocketCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig.");
+		goUpInMuseum = new ObjectStep(this, ObjectID.FAI_VARROCK_WOODENSTAIRS_CASTLE, new WorldPoint(3267, 3453, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", key);
+		openCabinet = new ObjectStep(this, ObjectID.VM_TIMELINE_TERRACOTTA_STATUE, new WorldPoint(3257, 3453, 1), "Right-click open the golem statue's display case.", key);
 
-		stealFeather = new NpcStep(this, NpcID.DESERT_PHOENIX, new WorldPoint(3414, 3154, 0), "Steal a feather from the desert phoenix north of Uzer.");
+		stealFeather = new NpcStep(this, NpcID.GOLEM_PHOENIX, new WorldPoint(3414, 3154, 0), "Steal a feather from the desert phoenix north of Uzer.");
 		((NpcStep) stealFeather).addTeleport(necklaceOfPassage);
 		stealFeather.addDialogSteps("Eagle's Eyrie");
-		enterRuin = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", statuette, pestleAndMortar, vial, papyrus);
-		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		enterRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", statuette, pestleAndMortar, vial, papyrus);
+		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
 		enterRuin.addSubSteps(enterRuinWithoutStatuette);
 
-		useImplementOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlight);
-		useImplementOnGolem.addIcon(ItemID.STRANGE_IMPLEMENT);
-		useProgramOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the golem program on the Golem in Uzer.", programHighlight);
+		useImplementOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlight);
+		useImplementOnGolem.addIcon(ItemID.GOLEM_GOLEMKEY);
+		useProgramOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the golem program on the Golem in Uzer.", programHighlight);
 		useProgramOnGolem.addIcon(ItemID.GOLEM_PROGRAM);
 
-		useStatuette = new ObjectStep(this, NullObjectID.NULL_6306, new WorldPoint(2725, 4896, 0), "Use the statue on the empty alcove.", statuetteHighlight);
-		useStatuette.addIcon(ItemID.STATUETTE);
-		turnStatue1 = new ObjectStep(this, NullObjectID.NULL_6303, new WorldPoint(2718, 4899, 0), "Turn each of the statuettes to face the door.");
-		turnStatue2 = new ObjectStep(this, NullObjectID.NULL_6304, new WorldPoint(2718, 4896, 0), "Turn each of the statuettes to face the door.");
-		turnStatue3 = new ObjectStep(this, NullObjectID.NULL_6305, new WorldPoint(2725, 4899, 0), "Turn each of the statuettes to face the door.");
-		turnStatue4 = new ObjectStep(this, NullObjectID.NULL_6306, new WorldPoint(2725, 4896, 0), "Turn each of the statuettes to face the door.");
+		useStatuette = new ObjectStep(this, ObjectID.GOLEM_STATUETTED, new WorldPoint(2725, 4896, 0), "Use the statue on the empty alcove.", statuetteHighlight);
+		useStatuette.addIcon(ItemID.GOLEM_STATUETTE);
+		turnStatue1 = new ObjectStep(this, ObjectID.GOLEM_STATUETTEA, new WorldPoint(2718, 4899, 0), "Turn each of the statuettes to face the door.");
+		turnStatue2 = new ObjectStep(this, ObjectID.GOLEM_STATUETTEB, new WorldPoint(2718, 4896, 0), "Turn each of the statuettes to face the door.");
+		turnStatue3 = new ObjectStep(this, ObjectID.GOLEM_STATUETTEC, new WorldPoint(2725, 4899, 0), "Turn each of the statuettes to face the door.");
+		turnStatue4 = new ObjectStep(this, ObjectID.GOLEM_STATUETTED, new WorldPoint(2725, 4896, 0), "Turn each of the statuettes to face the door.");
 		turnStatue1.addSubSteps(turnStatue2, turnStatue3, turnStatue4);
 
-		enterThroneRoom = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal.");
-		leaveThroneRoom = new ObjectStep(this, ObjectID.PORTAL_6282, new WorldPoint(2720, 4883, 2), "Leave the throne room and return to the Golem.");
+		enterThroneRoom = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.");
+		leaveThroneRoom = new ObjectStep(this, ObjectID.GOLEM_DEMON_PORTAL, new WorldPoint(2720, 4883, 2), "Leave the throne room and return to the Golem.");
 		pickUpImplement = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
 
-		leaveRuin = new ObjectStep(this, ObjectID.STAIRCASE_6372, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
+		leaveRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_BASE, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
 
-		pickBlackMushroom = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
+		pickBlackMushroom = new ObjectStep(this, ObjectID.GOLEM_BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
 		grindMushroom = new DetailedQuestStep(this, "Grind the mushrooms into a vial.", pestleAndMortarHighlight, mushroomHighlight, vial);
 		useFeatherOnInk = new DetailedQuestStep(this, "Use the phoenix feather on the ink.", phoenixFeather, inkHighlight);
 		useQuillOnPapyrus = new DetailedQuestStep(this, "Use the phoenix quill on the papyrus.", quill, papyrusHighlight);
-		talkToGolemAfterPortal = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
+		talkToGolemAfterPortal = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
 	}
 
 	@Override

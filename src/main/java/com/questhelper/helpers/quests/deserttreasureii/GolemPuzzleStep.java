@@ -27,30 +27,23 @@ package com.questhelper.helpers.quests.deserttreasureii;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.FontManager;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 
 public class GolemPuzzleStep extends QuestStep
 {
-	// Min is 15166, max is 15172
-
 	int firstTileForSwapping;
 	int secondTileForSwapping;
 	boolean completed = false;
 
-	int[] goalPositions =
-		{
+	int[] goalPositions = {
 			47, 62, 5, 52, 33, 27, 10, 16
 		};
 
@@ -73,10 +66,10 @@ public class GolemPuzzleStep extends QuestStep
 
 	private void updateSolvedPositionState()
 	{
-		for (int i=15165; i < 15173; i++)
+		for (int i = VarbitID.DT2_WARMIND_CELL_POS_0; i <= VarbitID.DT2_WARMIND_CELL_POS_7; i++)
 		{
 			int currentPos = client.getVarbitValue(i);
-			int goalPos = goalPositions[15172 - i];
+			int goalPos = goalPositions[VarbitID.DT2_WARMIND_CELL_POS_7 - i];
 			if (currentPos != goalPos)
 			{
 				completed = false;
@@ -94,10 +87,10 @@ public class GolemPuzzleStep extends QuestStep
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
-		Widget widgetWrapper = client.getWidget(838, 32);
+		Widget widgetWrapper = client.getWidget(InterfaceID.Dt2WarmindPuzzle.SQUARES);
 		if (completed)
 		{
-			Widget powerOnButton = client.getWidget(838, 4);
+			Widget powerOnButton = client.getWidget(InterfaceID.Dt2WarmindPuzzle.BUTTON);
 			if (powerOnButton == null) return;
 			graphics.setColor(new Color(0, 255, 255, 65));
 			graphics.fill(powerOnButton.getBounds());

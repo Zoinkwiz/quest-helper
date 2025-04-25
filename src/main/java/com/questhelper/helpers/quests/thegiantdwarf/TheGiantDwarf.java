@@ -25,45 +25,34 @@
 package com.questhelper.helpers.quests.thegiantdwarf;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestVarPlayer;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.player.WeightRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.*;
+
+import java.util.*;
 
 @SuppressWarnings("CheckStyle")
 public class TheGiantDwarf extends BasicQuestHelper
@@ -116,9 +105,9 @@ public class TheGiantDwarf extends BasicQuestHelper
 		coal.setHighlightInInventory(true);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);
 		ironBar.setTooltip("Purchasable during the quest.");
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAWRUNE);
 		lawRune.setTooltip("For Telekinetic Grab.");
-		airRune = new ItemRequirement("Air rune", ItemID.AIR_RUNE);
+		airRune = new ItemRequirement("Air rune", ItemID.AIRRUNE);
 		airRune.setTooltip("For Telekinetic Grab.");
 		sapphires3 = new ItemRequirement("Cut sapphires", ItemID.SAPPHIRE, 3);
 		sapphires3.setTooltip("Purchasable during the quest.");
@@ -131,14 +120,14 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		// Recommended
 		houseTeleport = new ItemRequirement("A house teleport if your house is in Rimmington and if you have no faster way to Mudskipper Point", -1, -1);
-		rellekkaTeleport = new ItemRequirement("A Camelot/Rellekka teleport (for starting the quest)", ItemID.ENCHANTED_LYRE5);
-		rellekkaTeleport.addAlternates(ItemID.ENCHANTED_LYRE4, ItemID.ENCHANTED_LYRE3, ItemID.ENCHANTED_LYRE2,
-			ItemID.ENCHANTED_LYRE1, ItemID.RELLEKKA_TELEPORT, ItemID.CAMELOT_TELEPORT);
+		rellekkaTeleport = new ItemRequirement("A Camelot/Rellekka teleport (for starting the quest)", ItemID.MAGIC_STRUNG_LYRE_5);
+		rellekkaTeleport.addAlternates(ItemID.MAGIC_STRUNG_LYRE_4, ItemID.MAGIC_STRUNG_LYRE_3, ItemID.MAGIC_STRUNG_LYRE_2,
+			ItemID.MAGIC_STRUNG_LYRE, ItemID.NZONE_TELETAB_RELLEKKA, ItemID.POH_TABLET_CAMELOTTELEPORT);
 		rellekkaTeleport.addAlternates(ItemCollections.SLAYER_RINGS);
 		fairyRings = new ItemRequirement("Access to fairy rings", -1, -1).isNotConsumed();
-		fairyRings.setDisplayItemId(ItemID.FAIRY_RING);
+		fairyRings.setDisplayItemId(ItemID.POH_SUPERIOR_GARDEN_TELEPORT_RING);
 		staminaPotions = new ItemRequirement("Some stamina potions (when collecting the ores)", ItemCollections.STAMINA_POTIONS);
-		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", ItemID.VARROCK_TELEPORT);
+		varrockTeleport = new ItemRequirement("A ring of wealth/amulet of glory/Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		varrockTeleport.addAlternates(ItemCollections.RING_OF_WEALTHS);
 		varrockTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		clay10 = new ItemRequirement("Clay", ItemID.CLAY, 10);
@@ -164,18 +153,18 @@ public class TheGiantDwarf extends BasicQuestHelper
 		inventorySpaceCheck = new FreeInventorySlotRequirement(1);
 
 		// Quest
-		bookOnCostumes = new ItemRequirement("Book on costumes", ItemID.BOOK_ON_COSTUMES);
-		exquisiteClothes = new ItemRequirement("Exquisite clothes", ItemID.EXQUISITE_CLOTHES);
-		exquisiteBoots = new ItemRequirement("Exquisite boots", ItemID.EXQUISITE_BOOTS);
-		dwarvenBattleaxe = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE_5059);
+		bookOnCostumes = new ItemRequirement("Book on costumes", ItemID.DWARF_LIBRARY_BOOK);
+		exquisiteClothes = new ItemRequirement("Exquisite clothes", ItemID.DWARF_CLOTHES);
+		exquisiteBoots = new ItemRequirement("Exquisite boots", ItemID.DWARF_PERFECT_PAIR_OF_BOOTS);
+		dwarvenBattleaxe = new ItemRequirement("Dwarven battleaxe", ItemID.DWARF_BATTLEAXE_NEW);
 
-		leftBoot = new ItemRequirement("Left boot", ItemID.LEFT_BOOT);
+		leftBoot = new ItemRequirement("Left boot", ItemID.DWARF_PERFECT_LEFT_BOOT);
 
-		dwarvenBattleaxeBroken = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE);
-		dwarvenBattleaxeBroken.addAlternates(ItemID.DWARVEN_BATTLEAXE_5057);
+		dwarvenBattleaxeBroken = new ItemRequirement("Dwarven battleaxe", ItemID.DWARF_BATTLEAXE_OLD);
+		dwarvenBattleaxeBroken.addAlternates(ItemID.DWARF_BATTLEAXE_SHARPENED);
 		dwarvenBattleaxeBroken.setHighlightInInventory(true);
 
-		dwarvenBattleaxeSapphires = new ItemRequirement("Dwarven battleaxe", ItemID.DWARVEN_BATTLEAXE_5058);
+		dwarvenBattleaxeSapphires = new ItemRequirement("Dwarven battleaxe", ItemID.DWARF_BATTLEAXE_SAPPHIRES);
 	}
 
 	@Override
@@ -207,21 +196,21 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		talkedToVermundi = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Great, thanks a lot, I'll check out the library!"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I should speak to the " +
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I should speak to the " +
 				"<col=800000>librarian<col=000080> in Keldagrim-West. He"),
 			new WidgetTextRequirement(219, 1, 2, "Yes, about those special clothes again..."));
 
 		talkedToLibrarian = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIALOG_NPC_TEXT,
+			new WidgetTextRequirement(InterfaceID.ChatLeft.TEXT,
 				"Let me think... I believe it is on the top shelf of one of<br>the bookcases in the library, because it is such an old<br>book.",
 				"Well, thanks, I'll have a look."
 			),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>library of Keldagrim-West. I should ")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>library of Keldagrim-West. I should ")
 		);
 
 		hasBookOnCostumes = new Conditions(true, LogicType.OR,
 			bookOnCostumes,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>with the <col=800000>book on dwarven costumes<col=000080> that I got from the")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>with the <col=800000>book on dwarven costumes<col=000080> that I got from the")
 		);
 
 		talkedToVermundiWithBook = new VarbitRequirement(584, 1);
@@ -230,48 +219,48 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new DialogRequirement(questHelperPlugin.getPlayerStateManager().getPlayerName(),
 				"Don't worry, I'll get them for you. Let's see... some coal and some logs. Shouldn't be too hard.", false),
 			new DialogRequirement("Well, like I said, I can't do anything really without my spinning machine."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I must get <col=800000>coal<col=000080> and <col=800000>logs<col=000080>.")
 		);
 
 		usedCoalOnMachine = new Conditions(true, LogicType.OR,
 			new DialogRequirement("it needs to be powered up."),
 			new ChatMessageRequirement("You load the spinning machine with coal and logs."),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I have to start up the dwarven <col=800000>spinning machine<col=000080> in the"));
 
 		startedMachine = new Conditions(true, LogicType.OR,
 			new ChatMessageRequirement("...and successfully start the engine!"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I should ask <col=800000>Vermundi<col=000080>, the owner of the <col=800000>clothes stall<col=000080> in the"));
 
-		givenExquisiteClothes = new Conditions(true, new VarbitRequirement(576, true, 0));
+		givenExquisiteClothes = new Conditions(true, new VarbitRequirement(VarbitID.GIANTDWARF_MODEL_STATE, true, 0));
 		hasExquisiteClothes = new Conditions(true, LogicType.OR,
 			givenExquisiteClothes,
 			exquisiteClothes,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I have the <col=800000>exquisite clothes<col=000080> that the <col=800000>sculptor<col=000080> needs. Now I"));
 
 		talkedToSaro = new Conditions(true, LogicType.OR,
 			// TODO: You need to click 'click to continue' here for the step to actually progress
 			new DialogRequirement("Thanks!"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I should seek out the <col=800000>eccentric old dwarf<col=000080> in <col=800000>Keldagrim-"),
 			new DialogRequirement("I thought I already told you where to get them?")
 		);
 
 		talkedToDromund = new Conditions(true, LogicType.OR,
 			// TODO: You need to click 'click to continue' here for the step to actually progress
 			new DialogRequirement("Get out you pesky human! The boots are mine and"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I must find some way to get the <col=800000>pair of boots<col=000080> from the"),
 			new DialogRequirement("Are you sure you don't want to give me those boots?"));
 
 		hasLeftBoot = new Conditions(true, LogicType.OR,
 			leftBoot,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true,
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true,
 				"<str>I have sneakily stolen one boots from the old dwarf.")
 		);
 
-		givenExquisiteBoots = new VarbitRequirement(576, true, 1);
+		givenExquisiteBoots = new VarbitRequirement(VarbitID.GIANTDWARF_MODEL_STATE, true, 1);
 		hasExquisiteBoots = new Conditions(true, LogicType.OR,
 			givenExquisiteBoots,
 			exquisiteBoots,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs.")
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I have the <col=800000>exquisite pair of boots<col=000080> that the <col=800000>sculptor<col=000080> needs.")
 		);
 
 		talkedToSantiri = new Conditions(true, dwarvenBattleaxeBroken);
@@ -290,11 +279,11 @@ public class TheGiantDwarf extends BasicQuestHelper
 
 		givenThurgoPie = new VarbitRequirement(580, 1);
 		// Thurgo makes axe, 2781 = 1
-		givenDwarvenBattleaxe = new VarbitRequirement(576, true, 2);
+		givenDwarvenBattleaxe = new VarbitRequirement(VarbitID.GIANTDWARF_MODEL_STATE, true, 2);
 		hasDwarvenBattleaxe = new Conditions(true, LogicType.OR,
 			givenDwarvenBattleaxe,
 			dwarvenBattleaxe,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I must give the <col=800000>restored battleaxe<col=000080> to <col=800000>Riki<col=000080>, the <col=800000>sculptor's"));
 
 		inConsortium = new ZoneRequirement(consortium);
 
@@ -316,62 +305,62 @@ public class TheGiantDwarf extends BasicQuestHelper
 	public void setupSteps()
 	{
 		// Starting off
-		enterDwarfCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		enterDwarfCave = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0),
 			"Speak to the Dwarven Boatman.");
-		enterDwarfCave2 = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		enterDwarfCave2 = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0),
 			"Speak to the Dwarven Boatman.");
-		talkToBoatman = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7725, new WorldPoint(2829, 10129, 0), "Speak to the Dwarven Boatman.");
+		talkToBoatman = new NpcStep(this, NpcID.DWARF_CITY_BOATMAN_MINES_PREQUEST, new WorldPoint(2829, 10129, 0), "Speak to the Dwarven Boatman.");
 		talkToBoatman.addDialogStep("That's a deal!");
 		talkToBoatman.addDialogStep("Yes, I'm ready and don't mind it taking a few minutes.");
 		talkToBoatman.addDialogStep("Yes.");
 		talkToBoatman.addSubSteps(enterDwarfCave, enterDwarfCave2);
 
-		talkToVeldaban = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0),
+		talkToVeldaban = new NpcStep(this, NpcID.DWARF_CITY_BLACK_GUARD_LEADER, new WorldPoint(2827, 10214, 0),
 			"Finish speaking to Commander Veldaban.");
 		talkToVeldaban.addDialogStep("Yes, I will do this.");
 
-		talkToBlasidar = new NpcStep(this, NpcID.BLASIDAR_THE_SCULPTOR, new WorldPoint(2907, 10205, 0),
+		talkToBlasidar = new NpcStep(this, NpcID.DWARF_CITY_SHOP_SCULPTURE, new WorldPoint(2907, 10205, 0),
 			"Talk to Blasidar the sculptor in the east of Keldagrim.");
 		talkToBlasidar.addDialogStep("Yes, I will do this.");
 
 		// Clothes fit for a king
-		talkToVermundi = new NpcStep(this, NpcID.VERMUNDI, new WorldPoint(2887, 10188, 0), "Talk to Vermundi west of " +
+		talkToVermundi = new NpcStep(this, NpcID.DWARF_CITY_SHOP_CLOTH_POOR, new WorldPoint(2887, 10188, 0), "Talk to Vermundi west of " +
 			"Blasidar. If you already have, open the Quest Journal to re-sync.");
 		talkToVermundi.addDialogStep("Yes, I'm looking for some special clothes.");
 
-		talkToLibrarian = new NpcStep(this, NpcID.LIBRARIAN, new WorldPoint(2861, 10226, 0), "Talk to the Librarian.");
+		talkToLibrarian = new NpcStep(this, NpcID.DWARF_CITY_LIBRARIAN, new WorldPoint(2861, 10226, 0), "Talk to the Librarian.");
 		talkToLibrarian.addDialogStep("Do you know anything about King Alvis' clothes?");
 
-		climbBookcase = new ObjectStep(this, ObjectID.BOOKCASE_6092, new WorldPoint(2859, 10228, 0),
+		climbBookcase = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_BOOKCASE_LADDER, new WorldPoint(2859, 10228, 0),
 			"Climb any bookcase to find a book on costumes.", weightBelow30Check);
 
-		talkToVermundiWithBook = new NpcStep(this, NpcID.VERMUNDI, new WorldPoint(2887, 10188, 0),
+		talkToVermundiWithBook = new NpcStep(this, NpcID.DWARF_CITY_SHOP_CLOTH_POOR, new WorldPoint(2887, 10188, 0),
 			"Talk to Vermundi with the book on costumes.", bookOnCostumes);
 		talkToVermundiWithBook.addDialogStep("Yes, about those special clothes again...");
 
-		talkToVermundiAfterBook = new NpcStep(this, NpcID.VERMUNDI, new WorldPoint(2887, 10188, 0),
+		talkToVermundiAfterBook = new NpcStep(this, NpcID.DWARF_CITY_SHOP_CLOTH_POOR, new WorldPoint(2887, 10188, 0),
 			"Talk to Vermundi again.");
 		talkToVermundiAfterBook.addDialogStep("Yes, about those special clothes again...");
 		talkToVermundiWithBook.addSubSteps(talkToVermundiAfterBook);
 
-		useCoalOnMachine = new ObjectStep(this, ObjectID.SPINNING_MACHINE, new WorldPoint(2885, 10189, 0),
+		useCoalOnMachine = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_SPINNING_MACHINE, new WorldPoint(2885, 10189, 0),
 			"Use your coal on the spinning machine light it with a tinderbox.", coal, logs);
 		useCoalOnMachine.addIcon(ItemID.COAL);
 
-		startMachine = new ObjectStep(this, ObjectID.SPINNING_MACHINE, new WorldPoint(2885, 10189, 0),
+		startMachine = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_SPINNING_MACHINE, new WorldPoint(2885, 10189, 0),
 			"Start the spinning machine with a tinderbox.", tinderbox);
 		startMachine.addIcon(ItemID.TINDERBOX);
 
-		talkToVermundiWithMachine = new NpcStep(this, NpcID.VERMUNDI, new WorldPoint(2887, 10188, 0),
+		talkToVermundiWithMachine = new NpcStep(this, NpcID.DWARF_CITY_SHOP_CLOTH_POOR, new WorldPoint(2887, 10188, 0),
 			"Talk to Vermundi again and pay 200gp.", coins200);
 		talkToVermundiWithMachine.addDialogStep("Yes, about those special clothes again...");
 		talkToVermundiWithMachine.addDialogStep("I'll pay.");
 
 		// Boots fit for a king
-		talkToSaro = new NpcStep(this, NpcID.SARO, new WorldPoint(2827, 10198, 0), "Talk to Saro in West Keldagrim.");
+		talkToSaro = new NpcStep(this, NpcID.DWARF_CITY_SHOP_ARMOUR, new WorldPoint(2827, 10198, 0), "Talk to Saro in West Keldagrim.");
 		talkToSaro.addDialogStep("Yes, I'm looking for a pair of special boots.");
 
-		talkToDromund = new NpcStep(this, NpcID.DROMUND, new WorldPoint(2838, 10224, 0), "Talk to Dromund.");
+		talkToDromund = new NpcStep(this, NpcID.DWARF_CITY_EXCENTRIC_DWARF, new WorldPoint(2838, 10224, 0), "Talk to Dromund.");
 
 		takeLeftBoot = new DetailedQuestStep(this, new WorldPoint(2838, 10220, 0), "Take the Left boot when Dromund isn't looking.");
 
@@ -379,20 +368,20 @@ public class TheGiantDwarf extends BasicQuestHelper
 			" his window when he isn't looking using Telekinetic Grab.", lawRune, airRune, inventorySpaceCheck);
 
 		// An axe fit for a king
-		talkToSantiri = new NpcStep(this, NpcID.SANTIRI, new WorldPoint(2828, 10231, 0), "Talk to Santiri.");
+		talkToSantiri = new NpcStep(this, NpcID.DWARF_CITY_SHOP_WEAPONS, new WorldPoint(2828, 10231, 0), "Talk to Santiri.");
 		talkToSantiri.addDialogStep("Yes, I'm looking for a particular battleaxe.");
 		talkToSantiri.addDialogStep("Blasidar the sculptor needs it for his statue.");
 		talkToSantiri.addDialogStep("Perhaps I can repair the axe?");
 
 		useSapphires = new DetailedQuestStep(this, "Use the 3 sapphires on the axe.", dwarvenBattleaxeBroken, sapphires3);
 
-		talkToLibrarianAboutImcando = new NpcStep(this, NpcID.LIBRARIAN, new WorldPoint(2861, 10226, 0), "Talk to the" +
+		talkToLibrarianAboutImcando = new NpcStep(this, NpcID.DWARF_CITY_LIBRARIAN, new WorldPoint(2861, 10226, 0), "Talk to the" +
 			" Librarian about Imcando Dwarves. If you already have and no option appears for this, go talk to Reldo " +
 			"in Varrock Castle.");
 		talkToLibrarianAboutImcando.addDialogSteps("Can you help me find an Imcando dwarf?");
 		talkToLibrarianAboutImcando.conditionToHideInSidebar(previouslyGivenPieToThurgo);
 
-		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0),
+		talkToReldo = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3211, 3494, 0),
 			"Talk to Reldo in Varrock Castle's library.");
 		talkToReldo.addDialogSteps("Ask about Imcando dwarves.");
 		talkToReldo.conditionToHideInSidebar(previouslyGivenPieToThurgo);
@@ -412,55 +401,55 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkToThurgoAfterPie.addDialogStep("Return to Keldagrim immediately.");
 
 		// Halfway there
-		giveItemsToRiki = new NpcStep(this, NpcID.RIKI_THE_SCULPTORS_MODEL, new WorldPoint(2904, 10207, 0),
+		giveItemsToRiki = new NpcStep(this, NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL, new WorldPoint(2904, 10207, 0),
 			"Talk to Riki the sculptor's model to give him the clothes, axe and boots.",
 			exquisiteClothes.hideConditioned(givenExquisiteClothes), exquisiteBoots.hideConditioned(givenExquisiteBoots),
 			dwarvenBattleaxe.hideConditioned(givenDwarvenBattleaxe));
 		giveItemsToRiki.addDialogStep("Return to Keldagrim immediately.");
-		((NpcStep) giveItemsToRiki).addAlternateNpcs(NpcID.RIKI_THE_SCULPTORS_MODEL_2349, NpcID.RIKI_THE_SCULPTORS_MODEL_2350,
-			NpcID.RIKI_THE_SCULPTORS_MODEL_2351, NpcID.RIKI_THE_SCULPTORS_MODEL_2352, NpcID.RIKI_THE_SCULPTORS_MODEL_2353,
-			NpcID.RIKI_THE_SCULPTORS_MODEL_2354, NpcID.RIKI_THE_SCULPTORS_MODEL_2355);
-		talkToBlasidarAfterItems = new NpcStep(this, NpcID.BLASIDAR_THE_SCULPTOR, new WorldPoint(2907, 10205, 0),
+		((NpcStep) giveItemsToRiki).addAlternateNpcs(NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL_BOOTS, NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL_TORSO,
+			NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL_AXE, NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL_BOOTS_AND_TORSO, NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL_BOOTS_AND_AXE,
+			NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL_TORSO_AND_AXE, NpcID.DWARF_CITY_SHOP_SCULPTURE_MODEL_FINISHED);
+		talkToBlasidarAfterItems = new NpcStep(this, NpcID.DWARF_CITY_SHOP_SCULPTURE, new WorldPoint(2907, 10205, 0),
 			"Talk to Blasidar the sculptor.");
 
 		// Joining the consortium
-		enterConsortium = new ObjectStep(this, ObjectID.STAIRS_6087, new WorldPoint(2895, 10210, 0),
+		enterConsortium = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_WIDE_STAIRS_LOWER, new WorldPoint(2895, 10210, 0),
 			"Go to the upper floor of the market.");
 
-		talkToSecretary = new NpcStep(this, NpcID.BLUE_OPAL_SECRETARY, new WorldPoint(2869, 10205, 1),
+		talkToSecretary = new NpcStep(this, NpcID.DWARF_CITY_SECRETARY_BLUE_OPAL, new WorldPoint(2869, 10205, 1),
 			"Keep talking to the same secretary and complete the tasks given. If you don't want to do one of the tasks, " +
 				"just talk to them again for a different one.");
 		//TODO: Add a way to check which company is chosen
-		//((NpcStep) talkToSecretary).addAlternateNpcs(NpcID.PURPLE_PEWTER_SECRETARY, NpcID.GREEN_GEMSTONE_SECRETARY,
-		// NpcID.SILVER_COG_SECRETARY, NpcID.WHITE_CHISEL_SECRETARY);
+		//((NpcStep) talkToSecretary).addAlternateNpcs(NpcID.DWARF_CITY_SECRETARY_PURPLE_PEWTER, NpcID.DWARF_CITY_SECRETARY_GREEN_GEMSTONE,
+		// NpcID.DWARF_CITY_SECRETARY_SILVER_COG, NpcID.DWARF_CITY_SECRETARY_WHITE_CHISEL);
 		talkToSecretary.addDialogStep("Is there anything I can help you with?");
 		talkToSecretary.addDialogStep("I'll take it.");
 		talkToSecretary.addDialogStep("Do you have another task for me?");
 
-		talkToDirector = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1),
+		talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_BLUE_OPAL, new WorldPoint(2879, 10199, 1),
 			"Keep talking to the director of the same secretary and complete the tasks given. If you don't want to do one of the task, " +
 				"just talk to them again for a different one.");
-		((NpcStep) talkToDirector).addAlternateNpcs(NpcID.BLUE_OPAL_DIRECTOR);
+		((NpcStep) talkToDirector).addAlternateNpcs(NpcID.DWARF_CITY_DIRECTOR_BLUE_OPAL_CUTSCENE);
 		talkToDirector.addDialogStep("Do you have any more tasks for me?");
 		talkToDirector.addDialogStep("I'll take it.");
 
-		joinCompany = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1),
+		joinCompany = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_BLUE_OPAL, new WorldPoint(2879, 10199, 1),
 			"Talk to the director to join the company.");
-		((NpcStep) joinCompany).addAlternateNpcs(NpcID.BLUE_OPAL_DIRECTOR);
+		((NpcStep) joinCompany).addAlternateNpcs(NpcID.DWARF_CITY_DIRECTOR_BLUE_OPAL_CUTSCENE);
 		joinCompany.addDialogStep("I'd like to officially join your company.");
 
-		talkToDirectorAfterJoining = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2879, 10199, 1),
+		talkToDirectorAfterJoining = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_BLUE_OPAL, new WorldPoint(2879, 10199, 1),
 			"Talk to the director after joining the company.");
-		((NpcStep) talkToDirectorAfterJoining).addAlternateNpcs(NpcID.BLUE_OPAL_DIRECTOR);
+		((NpcStep) talkToDirectorAfterJoining).addAlternateNpcs(NpcID.DWARF_CITY_DIRECTOR_BLUE_OPAL_CUTSCENE);
 		talkToDirectorAfterJoining.addDialogStep("Blasidar the sculptor has sent me.");
 		talkToDirectorAfterJoining.addDialogStep("I would support you.");
 		//TODO: Make this conditional for the company chosen
 		talkToDirectorAfterJoining.addDialogStep("Yes! Long live the Blue Opal!");
 
-		leaveConsortium = new ObjectStep(this, ObjectID.STAIRS_6088, new WorldPoint(2863, 10210, 1),
+		leaveConsortium = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_WIDE_STAIRS_UPPER, new WorldPoint(2863, 10210, 1),
 			"Go down the stairs.");
 
-		talkToVeldabanAfterJoining = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0),
+		talkToVeldabanAfterJoining = new NpcStep(this, NpcID.DWARF_CITY_BLACK_GUARD_LEADER, new WorldPoint(2827, 10214, 0),
 			"Talk to Commander Veldaban.");
 		talkToVeldabanAfterJoining.addSubSteps(leaveConsortium);
 		talkToVeldabanAfterJoining.addDialogStep("I'm ready.");

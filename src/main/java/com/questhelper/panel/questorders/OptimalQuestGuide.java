@@ -28,6 +28,7 @@ package com.questhelper.panel.questorders;
 import com.google.common.collect.ImmutableList;
 import com.questhelper.questinfo.QuestHelperQuest;
 import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -121,6 +122,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.ERNEST_THE_CHICKEN,
 		QuestHelperQuest.DEMON_SLAYER,
 		QuestHelperQuest.SHADOW_OF_THE_STORM,
+		QuestHelperQuest.HORROR_FROM_THE_DEEP,
 		QuestHelperQuest.ANIMAL_MAGNETISM,
 		QuestHelperQuest.CREATURE_OF_FENKENSTRAIN,
 		QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING,
@@ -129,7 +131,6 @@ public class OptimalQuestGuide
 		QuestHelperQuest.KARAMJA_EASY,
 		QuestHelperQuest.ZOGRE_FLESH_EATERS,
 		QuestHelperQuest.OBSERVATORY_QUEST,
-		QuestHelperQuest.HORROR_FROM_THE_DEEP,
 		QuestHelperQuest.SPIRITS_OF_THE_ELID,
 		QuestHelperQuest.GARDEN_OF_TRANQUILLITY,
 		QuestHelperQuest.ENLIGHTENED_JOURNEY,

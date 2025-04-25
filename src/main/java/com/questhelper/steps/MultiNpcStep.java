@@ -26,8 +26,6 @@ package com.questhelper.steps;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -35,6 +33,9 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -114,7 +115,7 @@ public class MultiNpcStep extends NpcStep
 	public void scanForNpcs()
 	{
 		super.scanForNpcs();
-		for (NPC npc : client.getNpcs())
+		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
 			addNpcToListGivenMatchingID(npc, this::npcIsCompositionMatch, baseNPCs);
 		}

@@ -24,48 +24,39 @@
  */
 package com.questhelper.helpers.quests.anothersliceofham;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.npc.NpcInteractingWithNpcRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class AnotherSliceOfHam extends BasicQuestHelper
 {
@@ -154,10 +145,10 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	{
 		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
-		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT, 3);
+		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.POH_TABLET_LUMBRIDGETELEPORT, 3);
 
 		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from the " +
-			"Dorgesh-Kaan railway", NpcID.ZANIK_5147);
+			"Dorgesh-Kaan railway", NpcID.SLICE_ZANIK_FOLLOWER);
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
@@ -169,22 +160,22 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH).isNotConsumed();
 		specimenBrush.setTooltip("You can get another from Tegdak");
 
-		artefact1 = new ItemRequirement("Artefact", ItemID.ARTEFACT);
-		artefact2 = new ItemRequirement("Artefact", ItemID.ARTEFACT_11051);
-		artefact3 = new ItemRequirement("Artefact", ItemID.ARTEFACT_11053);
-		artefact4 = new ItemRequirement("Artefact", ItemID.ARTEFACT_11055);
-		artefact5 = new ItemRequirement("Artefact", ItemID.ARTEFACT_11057);
-		artefact6 = new ItemRequirement("Artefact", ItemID.ARTEFACT_11059);
-		armourShard = new ItemRequirement("Armour shard", ItemID.ARMOUR_SHARD);
-		axeHead = new ItemRequirement("Axe head", ItemID.AXE_HEAD);
-		helmetFragment = new ItemRequirement("Helmet fragment", ItemID.HELMET_FRAGMENT);
-		shieldFragment = new ItemRequirement("Shield fragment", ItemID.SHIELD_FRAGMENT);
-		swordFragment = new ItemRequirement("Sword fragment", ItemID.SWORD_FRAGMENT);
-		mace = new ItemRequirement("Mace", ItemID.MACE);
+		artefact1 = new ItemRequirement("Artefact", ItemID.SLICE_ARTIFACT_1_DIRTY);
+		artefact2 = new ItemRequirement("Artefact", ItemID.SLICE_ARTIFACT_5_DIRTY);
+		artefact3 = new ItemRequirement("Artefact", ItemID.SLICE_ARTIFACT_3_DIRTY);
+		artefact4 = new ItemRequirement("Artefact", ItemID.SLICE_ARTIFACT_2_DIRTY);
+		artefact5 = new ItemRequirement("Artefact", ItemID.SLICE_ARTIFACT_4_DIRTY);
+		artefact6 = new ItemRequirement("Artefact", ItemID.SLICE_ARTIFACT_6_DIRTY);
+		armourShard = new ItemRequirement("Armour shard", ItemID.SLICE_ARTIFACT_1_CLEAN);
+		axeHead = new ItemRequirement("Axe head", ItemID.SLICE_ARTIFACT_5_CLEAN);
+		helmetFragment = new ItemRequirement("Helmet fragment", ItemID.SLICE_ARTIFACT_3_CLEAN);
+		shieldFragment = new ItemRequirement("Shield fragment", ItemID.SLICE_ARTIFACT_2_CLEAN);
+		swordFragment = new ItemRequirement("Sword fragment", ItemID.SLICE_ARTIFACT_4_CLEAN);
+		mace = new ItemRequirement("Mace", ItemID.SLICE_ARTIFACT_6_CLEAN);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		ancientMace = new ItemRequirement("Ancient mace", ItemID.ANCIENT_MACE);
+		ancientMace = new ItemRequirement("Ancient mace", ItemID.ANCIENT_GOBLIN_MACE);
 		ancientMace.setTooltip("You can get this back from the Goblin Village Generals");
 	}
 
@@ -222,12 +213,12 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		// Started, 3550 = 1
 		// 3557 = 1
 
-		dug1 = new VarbitRequirement(3551, 1, Operation.GREATER_EQUAL);
-		dug2 = new VarbitRequirement(3552, 1, Operation.GREATER_EQUAL);
-		dug3 = new VarbitRequirement(3553, 1, Operation.GREATER_EQUAL);
-		dug4 = new VarbitRequirement(3554, 1, Operation.GREATER_EQUAL);
-		dug5 = new VarbitRequirement(3555, 1, Operation.GREATER_EQUAL);
-		dug6 = new VarbitRequirement(3556, 1, Operation.GREATER_EQUAL);
+		dug1 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_1, 1, Operation.GREATER_EQUAL);
+		dug2 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_2, 1, Operation.GREATER_EQUAL);
+		dug3 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_3, 1, Operation.GREATER_EQUAL);
+		dug4 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_4, 1, Operation.GREATER_EQUAL);
+		dug5 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_5, 1, Operation.GREATER_EQUAL);
+		dug6 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_6, 1, Operation.GREATER_EQUAL);
 
 		handedIn1 = new VarbitRequirement(3551, 2);
 		handedIn2 = new VarbitRequirement(3552, 2);
@@ -246,123 +237,123 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		cleanedAll = new Conditions(cleaned1, cleaned2, cleaned3, cleaned4, cleaned5, cleaned6);
 
 		zanikFollowing = new Conditions(LogicType.OR, new VarbitRequirement(3557, 0),
-			new NpcInteractingRequirement(NpcID.ZANIK_5147));
+			new NpcInteractingRequirement(NpcID.SLICE_ZANIK_FOLLOWER));
 
 		// 3564 = 1, searjents etc
 
 		atCrate = new VarbitRequirement(3558, 1);
-		guardsPassed = new NpcCondition(NpcID.GUARD_5141, new WorldPoint(2397, 5551, 0));
+		guardsPassed = new NpcCondition(NpcID.SLICE_HAM_GUARD, new WorldPoint(2397, 5551, 0));
 		guardEngaged = new Conditions(LogicType.OR,
-			new NpcInteractingWithNpcRequirement(NpcID.SERGEANT_MOSSFISTS, "Guard"),
-			new NpcInteractingWithNpcRequirement(NpcID.SERGEANT_SLIMETOES, "Guard")
+			new NpcInteractingWithNpcRequirement(NpcID.SLICE_SERGEANT_MOSSFISTS, "Guard"),
+			new NpcInteractingWithNpcRequirement(NpcID.SLICE_SERGEANT_SLIMETOES, "Guard")
 		);
 
-		weakSigmundNearby = new NpcCondition(NpcID.SIGMUND_5146);
+		weakSigmundNearby = new NpcCondition(NpcID.SLICE_SIGMUND_NOPRAYER);
 	}
 
 	public void setupSteps()
 	{
-		goDownIntoBasement = new ObjectStep(this, ObjectID.TRAPDOOR_14880, new WorldPoint(3209, 3216, 0), "Enter the Lumbridge Castle basement.");
-		climbThroughHole = new ObjectStep(this, NullObjectID.NULL_6898, new WorldPoint(3219, 9618, 0), "");
-		talkToKazgar = new NpcStep(this, NpcID.KAZGAR, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
-		talkToMistagToTravel = new NpcStep(this, NpcID.MISTAG_7298, new WorldPoint(3319, 9615, 0), "Travel with Mistag back to Lumbridge.");
-		enterCity = new ObjectStep(this, ObjectID.DOOR_6919, new WorldPoint(3317, 9601, 0),
+		goDownIntoBasement = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0), "Enter the Lumbridge Castle basement.");
+		climbThroughHole = new ObjectStep(this, ObjectID.LOST_TRIBE_CELLAR_WALL, new WorldPoint(3219, 9618, 0), "");
+		talkToKazgar = new NpcStep(this, NpcID.LOST_TRIBE_GUIDE_2OPS, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
+		talkToMistagToTravel = new NpcStep(this, NpcID.LOST_TRIBE_MISTAG_2OPS, new WorldPoint(3319, 9615, 0), "Travel with Mistag back to Lumbridge.");
+		enterCity = new ObjectStep(this, ObjectID.CAVE_GOBLIN_CITY_DOORR, new WorldPoint(3317, 9601, 0),
 			"Enter Dorgesh-Kaan.");
-		climbToF1City = new ObjectStep(this, ObjectID.STAIRS_22939, new WorldPoint(2721, 5360, 0),
+		climbToF1City = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH, new WorldPoint(2721, 5360, 0),
 			"Climb up to the next floor.");
-		talkToUrtag = new NpcStep(this, NpcID.URTAG, new WorldPoint(2733, 5366, 1),
+		talkToUrtag = new NpcStep(this, NpcID.DORGESH_URTAQ, new WorldPoint(2733, 5366, 1),
 			"Talk to Ur-tag in the north east building.");
-		enterRailway = new ObjectStep(this, ObjectID.DOORWAY_23052, new WorldPoint(2695, 5277, 1),
+		enterRailway = new ObjectStep(this, ObjectID.SLICE_GOBLIN_STATION_ENTRANCE, new WorldPoint(2695, 5277, 1),
 			"Enter the railway entrance in the south west of Dorgesh-Kaan.");
 
-		talkToTegdak = new NpcStep(this, NpcID.TEGDAK, new WorldPoint(2512, 5564, 0), "");
+		talkToTegdak = new NpcStep(this, NpcID.SLICE_GOBLIN_ARCHAEOLOGIST, new WorldPoint(2512, 5564, 0), "");
 
-		dig1 = new ObjectStep(this, NullObjectID.NULL_23290, new WorldPoint(2513, 5563, 0),
+		dig1 = new ObjectStep(this, ObjectID.SLICE_ARTIFACT_HOTSPOT_01, new WorldPoint(2513, 5563, 0),
 			"", trowel.highlighted());
 		dig1.addIcon(ItemID.TROWEL);
-		dig2 = new ObjectStep(this, NullObjectID.NULL_23293, new WorldPoint(2511, 5561, 0),
+		dig2 = new ObjectStep(this, ObjectID.SLICE_ARTIFACT_HOTSPOT_02, new WorldPoint(2511, 5561, 0),
 			"", trowel.highlighted());
 		dig2.addIcon(ItemID.TROWEL);
-		dig3 = new ObjectStep(this, NullObjectID.NULL_23296, new WorldPoint(2513, 5550, 0),
+		dig3 = new ObjectStep(this, ObjectID.SLICE_ARTIFACT_HOTSPOT_03, new WorldPoint(2513, 5550, 0),
 			"", trowel.highlighted());
 		dig3.addIcon(ItemID.TROWEL);
-		dig4 = new ObjectStep(this, NullObjectID.NULL_23534, new WorldPoint(2511, 5547, 0),
+		dig4 = new ObjectStep(this, ObjectID.SLICE_ARTIFACT_HOTSPOT_04, new WorldPoint(2511, 5547, 0),
 			"", trowel.highlighted());
 		dig4.addIcon(ItemID.TROWEL);
-		dig5 = new ObjectStep(this, NullObjectID.NULL_23301, new WorldPoint(2512, 5544, 0),
+		dig5 = new ObjectStep(this, ObjectID.SLICE_ARTIFACT_HOTSPOT_05, new WorldPoint(2512, 5544, 0),
 			"", trowel.highlighted());
 		dig5.addIcon(ItemID.TROWEL);
-		dig6 = new ObjectStep(this, NullObjectID.NULL_23304, new WorldPoint(2513, 5539, 0),
+		dig6 = new ObjectStep(this, ObjectID.SLICE_ARTIFACT_HOTSPOT_06, new WorldPoint(2513, 5539, 0),
 			"", trowel.highlighted());
 		dig6.addIcon(ItemID.TROWEL);
 
-		cleanArtefacts = new ObjectStep(this, ObjectID.SPECIMEN_TABLE, new WorldPoint(2513, 5559, 0),
+		cleanArtefacts = new ObjectStep(this, ObjectID.SLICE_TABLE_01, new WorldPoint(2513, 5559, 0),
 			"Clean the artefacts on the specimen table.", artefact1.highlighted().hideConditioned(cleaned1),
 			artefact2.highlighted().hideConditioned(cleaned2), artefact3.highlighted().hideConditioned(cleaned3),
 			artefact4.highlighted().hideConditioned(cleaned4), artefact5.highlighted().hideConditioned(cleaned5),
 			artefact6.highlighted().hideConditioned(cleaned6));
-		cleanArtefacts.addIcon(ItemID.ARTEFACT);
-		showTegdakArtefacts = new NpcStep(this, NpcID.TEGDAK, new WorldPoint(2512, 5564, 0), "Show Tegdak the " +
+		cleanArtefacts.addIcon(ItemID.SLICE_ARTIFACT_1_DIRTY);
+		showTegdakArtefacts = new NpcStep(this, NpcID.SLICE_GOBLIN_ARCHAEOLOGIST, new WorldPoint(2512, 5564, 0), "Show Tegdak the " +
 			"artefacts.", armourShard.hideConditioned(handedIn1), shieldFragment.hideConditioned(handedIn2),
 			helmetFragment.hideConditioned(handedIn3), swordFragment.hideConditioned(handedIn4),
 			axeHead.hideConditioned(handedIn5), mace.hideConditioned(handedIn6));
 
-		talkToZanikRailway = new NpcStep(this, NpcID.ZANIK_5184, new WorldPoint(2512, 5564, 0),
+		talkToZanikRailway = new NpcStep(this, NpcID.SLICE_ZANIK_MULTI_THERE, new WorldPoint(2512, 5564, 0),
 			"Talk to Zanik.");
 
-		leaveRailway = new ObjectStep(this, ObjectID.DOORWAY_23285, new WorldPoint(2521, 5607, 0),
+		leaveRailway = new ObjectStep(this, ObjectID.SLICE_UNDERGROUND_WALL_EXIT_GOBLIN, new WorldPoint(2521, 5607, 0),
 			"Leave the railway.");
-		talkToScribe = new NpcStep(this, NpcID.GOBLIN_SCRIBE, new WorldPoint(2716, 5369, 1),
+		talkToScribe = new NpcStep(this, NpcID.DORGESH_MALE_SCRIBE, new WorldPoint(2716, 5369, 1),
 			"");
-		goDownToF0City = new ObjectStep(this, ObjectID.STAIRS_22940, new WorldPoint(2721, 5360, 1),
+		goDownToF0City = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH_TOP, new WorldPoint(2721, 5360, 1),
 			"Go downstairs.");
-		talkToOldak = new NpcStep(this, NpcID.OLDAK, new WorldPoint(2704, 5365, 0), "");
+		talkToOldak = new NpcStep(this, NpcID.LOTG_OLDAK_CUTSCENE, new WorldPoint(2704, 5365, 0), "");
 
-		talkToGenerals = new NpcStep(this, NpcID.GENERAL_WARTFACE, new WorldPoint(2957, 3512, 0),
+		talkToGenerals = new NpcStep(this, NpcID.GENERAL_WARTFACE_GREEN, new WorldPoint(2957, 3512, 0),
 			"Talk to General Wartface and General Bentnoze in Goblin Village.", zanikFollower, combatGearRangedMagic);
 
 		goToGoblinVillage = new DetailedQuestStep(this, new WorldPoint(2955, 3501, 0), "Go to Goblin Village, ready " +
 			"to fight.", combatGearRangedMagic);
 
-		goUpLadder = new ObjectStep(this, ObjectID.LADDER_23531, new WorldPoint(2442, 5417, 0),
+		goUpLadder = new ObjectStep(this, ObjectID.SLICE_GOBLIN_LADDER_BOTTOM, new WorldPoint(2442, 5417, 0),
 			"Make your way to the tower to the south, using the buildings as cover, and climb up the ladder.");
 		goUpLadder.setLinePoints(Arrays.asList(new WorldPoint(2438, 5429, 0), new WorldPoint(2438, 5423, 0),
 			new WorldPoint(2436, 5423, 0), new WorldPoint(2436, 5419, 0), new WorldPoint(2440, 5417, 0)));
-		killHamMageAndArcher = new NpcStep(this, NpcID.HAM_MAGE, new WorldPoint(2447, 5417, 2), "Kill the H.A.M. Mage" +
+		killHamMageAndArcher = new NpcStep(this, NpcID.SLICE_HAM_MAGE, new WorldPoint(2447, 5417, 2), "Kill the H.A.M. Mage" +
 			" and H.A.M. Archer with a ranged/magic weapon.", true, combatGearRangedMagic);
-		((NpcStep) killHamMageAndArcher).addAlternateNpcs(NpcID.HAM_ARCHER);
+		((NpcStep) killHamMageAndArcher).addAlternateNpcs(NpcID.SLICE_HAM_ARCHER);
 
-		talkToGeneralsAgain = new NpcStep(this, NpcID.GENERAL_WARTFACE, new WorldPoint(2957, 3512, 0),
+		talkToGeneralsAgain = new NpcStep(this, NpcID.GENERAL_WARTFACE_GREEN, new WorldPoint(2957, 3512, 0),
 			"Talk to General Wartface and General Bentnoze in Goblin Village again.");
 
-		talkToSergeant = new NpcStep(this, NpcID.SERGEANT_SLIMETOES, new WorldPoint(3170, 3170, 0),
+		talkToSergeant = new NpcStep(this, NpcID.SLICE_SERGEANT_SLIMETOES, new WorldPoint(3170, 3170, 0),
 			"Talk to the Sergeants in Lumbridge Swamp.", combatGear, ancientMace, lightSource);
 
-		enterSwamp = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+		enterSwamp = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
 			"Enter the Lumbridge Swamp Caves.", combatGear, ancientMace, lightSource);
 
-		climbEnterHamBase = new ObjectStep(this, NullObjectID.NULL_23282, new WorldPoint(3171, 9568, 0),
+		climbEnterHamBase = new ObjectStep(this, ObjectID.SLICE_LADDER_SWAMP, new WorldPoint(3171, 9568, 0),
 			"Climb down the ladder to the secret H.A.M. base.");
 
-		goToCrate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.CRATE_23283, new WorldPoint(2408, 5538, 0), "Hide behind the marked" +
+		goToCrate = new PuzzleWrapperStep(this, new ObjectStep(this, ObjectID.SLICE_STEALTH_CRATE_STACKED, new WorldPoint(2408, 5538, 0), "Hide behind the marked" +
 			" crate, and wait for the guards to walk past and around the corner."), "Work out how to avoid all the H.A.M guards.");
 		waitAtCrate = new PuzzleWrapperStep(this, new DetailedQuestStep(this, "Wait for the guards to go around the corner."), "Work out how to avoid all the H.A.M guards.");
 		goToCrate.addSubSteps(waitAtCrate);
 		lureHamMember = new PuzzleWrapperStep(this, new DetailedQuestStep(this, new WorldPoint(2412, 5537, 0), "Run out in front of the final " +
 			"guard, and wait for one of the sergeants to attack them."), "Work out how to avoid all the H.A.M guards.");
-		enterFinalFight = new ObjectStep(this, ObjectID.LADDER_23376, new WorldPoint(2413, 5526, 0), "Climb down the " +
+		enterFinalFight = new ObjectStep(this, ObjectID.SLICE_LADDERTOP, new WorldPoint(2413, 5526, 0), "Climb down the " +
 			"ladder.");
 
-		useSpecial = new NpcStep(this, NpcID.SIGMUND_5142, new WorldPoint(2543, 5511, 0), "When Sigmund starts " +
+		useSpecial = new NpcStep(this, NpcID.SLICE_SIGMUND_SHOWDOWN, new WorldPoint(2543, 5511, 0), "When Sigmund starts " +
 			"using protection prayers, use the ancient mace's special attack on Sigmund to remove them and then " +
 			"defeat him.",	ancientMace.equipped().highlighted());
-		((NpcStep) useSpecial).addAlternateNpcs(NpcID.SIGMUND_5143, NpcID.SIGMUND_5144, NpcID.SIGMUND_5145);
+		((NpcStep) useSpecial).addAlternateNpcs(NpcID.SLICE_SIGMUND_MELEE, NpcID.SLICE_SIGMUND_RANGED, NpcID.SLICE_SIGMUND_MAGIC);
 
-		defeatSigmund = new NpcStep(this, NpcID.SIGMUND_5146, new WorldPoint(2543, 5511, 0),
+		defeatSigmund = new NpcStep(this, NpcID.SLICE_SIGMUND_NOPRAYER, new WorldPoint(2543, 5511, 0),
 			"Defeat Sigmund.");
 		useSpecial.addSubSteps(defeatSigmund);
 
-		untieZanik = new ObjectStep(this, ObjectID.ZANIK_23284, new WorldPoint(2542, 5513, 0), "Untie Zanik.");
+		untieZanik = new ObjectStep(this, ObjectID.SLICE_ZANIK_TIED_UP, new WorldPoint(2542, 5513, 0), "Untie Zanik.");
 	}
 
 	private void setupConditionalSteps()
@@ -450,7 +441,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("An Ancient Mace", ItemID.ANCIENT_MACE, 1));
+		return Collections.singletonList(new ItemReward("An Ancient Mace", ItemID.ANCIENT_GOBLIN_MACE, 1));
 	}
 
 	@Override

@@ -26,9 +26,9 @@ package com.questhelper.helpers.quests.deserttreasureii;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
-import net.runelite.api.ObjectID;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 // 15203->208 dictate order, with 203 being first, etc.
 // Value contained dictacts which of the runes it is, so:
@@ -41,15 +41,13 @@ import net.runelite.client.eventbus.Subscribe;
 // So 15203 = 2 means Cosmic first
 public class GrowthPuzzleStep extends ObjectStep
 {
-	int BASE_VARBIT_FOR_RUNES = 15203;
-	
 	int[] runeIDs = new int[] {
-		ObjectID.EARTH_ENERGY_49189,
-		ObjectID.COSMIC_ENERGY_49190,
-		ObjectID.DEATH_ENERGY_49191,
-		ObjectID.NATURE_ENERGY_49192,
-		ObjectID.LAW_ENERGY_49193,
-		ObjectID.FIRE_ENERGY_49194
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_EARTH_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_COSMIC_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_DEATH_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_NATURE_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_LAW_VIS,
+		ObjectID.DT2_SCAR_MAZE_1_RIFT_FIRE_VIS
 	};
 
 	int highestPointReached = 0;
@@ -57,10 +55,9 @@ public class GrowthPuzzleStep extends ObjectStep
 	{
 		super(questHelper, -1,
 			"Work out the correct order to activate the runes through trial and error.");
-		addAlternateObjects(ObjectID.EARTH_ENERGY_49189, ObjectID.COSMIC_ENERGY_49190,
-			ObjectID.DEATH_ENERGY_49191,
-			ObjectID.NATURE_ENERGY_49192, ObjectID.LAW_ENERGY_49193,
-			ObjectID.FIRE_ENERGY_49194);
+		addAlternateObjects(ObjectID.DT2_SCAR_MAZE_1_RIFT_EARTH_VIS, ObjectID.DT2_SCAR_MAZE_1_RIFT_COSMIC_VIS,
+				ObjectID.DT2_SCAR_MAZE_1_RIFT_DEATH_VIS, ObjectID.DT2_SCAR_MAZE_1_RIFT_NATURE_VIS,
+				ObjectID.DT2_SCAR_MAZE_1_RIFT_LAW_VIS, ObjectID.DT2_SCAR_MAZE_1_RIFT_FIRE_VIS);
 	}
 
 	@Override
@@ -77,22 +74,21 @@ public class GrowthPuzzleStep extends ObjectStep
 		setupHighlights();
 	}
 
-
 	private void setupHighlights()
 	{
-		int currentRunesActive = client.getVarbitValue(15209);
+		int currentRunesActive = client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_STEP);
 		if (highestPointReached < currentRunesActive) highestPointReached = currentRunesActive;
 
 		alternateObjectIDs.clear();
 		if (currentRunesActive < highestPointReached)
 		{
-			int runeToHighlight = client.getVarbitValue(BASE_VARBIT_FOR_RUNES + currentRunesActive) - 1;
+			int runeToHighlight = client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_1 + currentRunesActive) - 1;
 			addAlternateObjects(runeIDs[runeToHighlight]);
 			loadObjects();
 			return;
 		}
 
-		for (int i=BASE_VARBIT_FOR_RUNES + currentRunesActive; i < BASE_VARBIT_FOR_RUNES + 6; i++)
+		for (int i=VarbitID.DT2_SCAR_MAZE_1_RIFT_1 + currentRunesActive; i < VarbitID.DT2_SCAR_MAZE_1_RIFT_1 + 6; i++)
 		{
 			int runeToHighlight = client.getVarbitValue(i) - 1;
 			alternateObjectIDs.add(runeIDs[runeToHighlight]);

@@ -28,15 +28,15 @@ package com.questhelper.helpers.quests.recruitmentdrive;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DoorPuzzle extends QuestStep
 {
@@ -123,7 +123,7 @@ public class DoorPuzzle extends QuestStep
 
 	private int matchStateToSolution(int slot, Character target, int arrowRightId, int arrowLeftId)
 	{
-		Widget widget = client.getWidget(285, slot);
+		Widget widget = client.getWidget(InterfaceID.RD_COMBOLOCK, slot);
 		if (widget == null) return 0;
 		char current = widget.getText().charAt(0);
 		int currentPos = (int) current - (int) 'A';
@@ -134,7 +134,7 @@ public class DoorPuzzle extends QuestStep
 
 	private int matchStateToDistance(int slot, Character target)
 	{
-		Widget widget = client.getWidget(285, slot);
+		Widget widget = client.getWidget(InterfaceID.RD_COMBOLOCK, slot);
 		if (widget == null) return 0;
 		char current = widget.getText().charAt(0);
 		return Math.min(Math.floorMod(current - target, 26), Math.floorMod(target - current, 26));
@@ -151,7 +151,7 @@ public class DoorPuzzle extends QuestStep
 				continue;
 			}
 
-			Widget widget = client.getWidget(285, entry.getValue());
+			Widget widget = client.getWidget(InterfaceID.RD_COMBOLOCK, entry.getValue());
 			if (widget != null)
 			{
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

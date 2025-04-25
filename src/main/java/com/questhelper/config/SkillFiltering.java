@@ -27,14 +27,15 @@ package com.questhelper.config;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.questinfo.QuestHelperQuest;
+import net.runelite.api.Skill;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import net.runelite.api.Skill;
 
 public class SkillFiltering
 {

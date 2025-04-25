@@ -4,15 +4,16 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import com.questhelper.requirements.location.TileIsLoadedRequirement;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ItemOnTileConsideringSceneLoadRequirement implements InitializableRequirement
 {
@@ -104,24 +105,25 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 	{
 		if (worldPoint != null)
 		{
-			LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-			if (localPoint == null) return false;
-
-			Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-			if (tile != null)
+			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			for (LocalPoint localPoint : localPoints)
 			{
-				List<TileItem> items = tile.getGroundItems();
-				if (items == null) return false;
-				for (TileItem item : items)
+				Tile tile = client.getTopLevelWorldView().getScene().getTiles()[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+				if (tile != null)
 				{
-					if (itemID.contains(item.getId()))
+					List<TileItem> items = tile.getGroundItems();
+					if (items == null) return false;
+					for (TileItem item : items)
 					{
-						return true;
+						if (itemID.contains(item.getId()))
+						{
+							return true;
+						}
 					}
 				}
-
-				return false;
 			}
+
+			return false;
 		}
 
 		Tile[][] squareOfTiles = client.getScene().getTiles()[client.getPlane()];

@@ -25,16 +25,16 @@
 package com.questhelper.steps.choice;
 
 import com.questhelper.QuestHelperConfig;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.api.widgets.Widget;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.*;
-import net.runelite.api.widgets.JavaScriptCallback;
-import net.runelite.api.widgets.Widget;
 
 public class WidgetChoiceStep
 {

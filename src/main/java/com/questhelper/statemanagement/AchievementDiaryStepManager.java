@@ -24,19 +24,20 @@
  */
 package com.questhelper.statemanagement;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
-import javax.inject.Singleton;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
+
+import javax.inject.Singleton;
 
 @Singleton
 public class AchievementDiaryStepManager
@@ -82,9 +83,9 @@ public class AchievementDiaryStepManager
 		final NPC npc = npcLootReceived.getNpc();
 
 		final int id = npc.getId();
-		if (id == NpcID.FIRE_ELEMENTAL) killedFire.setConfigValue("true");
-		if (id == NpcID.EARTH_ELEMENTAL) killedEarth.setConfigValue("true");
-		if (id == NpcID.WATER_ELEMENTAL) killedWater.setConfigValue("true");
-		if (id == NpcID.AIR_ELEMENTAL) killedAir.setConfigValue("true");
+		if (id == NpcID.ELEMENTAL_FIRE) killedFire.setConfigValue("true");
+		if (id == NpcID.ELEMENTAL_EARTH) killedEarth.setConfigValue("true");
+		if (id == NpcID.ELEMENTAL_WATER) killedWater.setConfigValue("true");
+		if (id == NpcID.ELEMENTAL_AIR) killedAir.setConfigValue("true");
 	}
 }

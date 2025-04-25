@@ -24,28 +24,24 @@
  */
 package com.questhelper.helpers.quests.rumdeal;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.FishingSpot;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.FishingSpot;
 
 public class SlugSteps extends DetailedOwnerStep
 {
@@ -74,7 +70,7 @@ public class SlugSteps extends DetailedOwnerStep
 
 	protected void updateSteps()
 	{
-		int numHandedIn = client.getVarbitValue(1354);
+		int numHandedIn = client.getVarbitValue(VarbitID.DEAL_BARREL);
 
 		sluglings.setQuantity(5 - numHandedIn);
 
@@ -95,13 +91,13 @@ public class SlugSteps extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		sluglings = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
-		sluglingsHighlight = new ItemRequirement("Sluglings or Karamthulu", ItemID.SLUGLINGS, 5);
-		netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_AND_NET);
+		sluglings = new ItemRequirement("Sluglings or Karamthulu", ItemID.DEAL_SLUGLING, 5);
+		sluglingsHighlight = new ItemRequirement("Sluglings or Karamthulu", ItemID.DEAL_SLUGLING, 5);
+		netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_NET);
 		netBowl.setTooltip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
 		sluglingsHighlight.setHighlightInInventory(true);
-		sluglingsHighlight.addAlternates(ItemID.KARAMTHULHU, ItemID.KARAMTHULHU_6717);
-		sluglings.addAlternates(ItemID.KARAMTHULHU, ItemID.KARAMTHULHU_6717);
+		sluglingsHighlight.addAlternates(ItemID.DEAL_KARAMTHULHU, ItemID.INACTIVEPET_SQUID);
+		sluglings.addAlternates(ItemID.DEAL_KARAMTHULHU, ItemID.INACTIVEPET_SQUID);
 
 		islandF0 = new Zone(new WorldPoint(2110, 5054, 0), new WorldPoint(2178, 5185, 0));
 		islandF1 = new Zone(new WorldPoint(2110, 5054, 1), new WorldPoint(2178, 5185, 1));
@@ -110,31 +106,32 @@ public class SlugSteps extends DetailedOwnerStep
 		onIslandF1 = new ZoneRequirement(islandF1);
 		onIslandF2 = new ZoneRequirement(islandF2);
 
-		talkToPete = new NpcStep(getQuestHelper(), NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.");
+		talkToPete = new NpcStep(getQuestHelper(), NpcID.DEAL_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.");
 		talkToPete.addDialogSteps("Okay!");
-		addSluglings = new ObjectStep(getQuestHelper(), ObjectID.PRESSURE_BARREL, new WorldPoint(2142, 5102, 2),
+		addSluglings = new ObjectStep(getQuestHelper(), ObjectID.DEAL_PRESSURE, new WorldPoint(2142, 5102, 2),
 			"Add the sea creatures to the pressure barrel on the top floor.", sluglings.highlighted());
-		addSluglings.addIcon(ItemID.SLUGLINGS);
-		goDownFromTop = new ObjectStep(getQuestHelper(), ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Go down the ladder and fish for sea creatures.");
+		addSluglings.addIcon(ItemID.DEAL_SLUGLING);
+		goDownFromTop = new ObjectStep(getQuestHelper(), ObjectID.DEAL_LADDERTOP, new WorldPoint(2163, 5092, 2), "Go down the ladder and fish for sea creatures.");
 
-		fish5Slugs = new NpcStep(getQuestHelper(), FishingSpot.QUEST_RUM_DEAL.getIds(), "Fish 5 sluglings or karamthulu from around the coast of the island.", netBowl);
-		goDownToSluglings = new ObjectStep(getQuestHelper(), ObjectID.WOODEN_STAIR_10137, new WorldPoint(2150, 5088, 1), "Go fish 5 sluglings.", netBowl);
-		goUpFromSluglings = new ObjectStep(getQuestHelper(), ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0),
+		fish5Slugs = new NpcStep(getQuestHelper(), FishingSpot.QUEST_RUM_DEAL.getIds(), new WorldPoint(2173, 5073, 0), "Fish 5 sluglings or karamthulu from " +
+				"around the coast of the island.", netBowl);
+		goDownToSluglings = new ObjectStep(getQuestHelper(), ObjectID.DEAL_STAIRS_TOP, new WorldPoint(2150, 5088, 1), "Go fish 5 sluglings.", netBowl);
+		goUpFromSluglings = new ObjectStep(getQuestHelper(), ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0),
 			"Add the sea creatures to the pressure barrel on the top floor.", sluglings);
 
 		fish5Slugs.addSubSteps(goDownFromTop, goDownToSluglings, talkToPete);
 
-		goUpToDropSluglings = new ObjectStep(getQuestHelper(), ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1),
+		goUpToDropSluglings = new ObjectStep(getQuestHelper(), ObjectID.DEAL_LADDER_UP, new WorldPoint(2163, 5092, 1),
 			"Add the sea creatures to the pressure barrel on the top floor.", sluglings);
 
-		goUpFromSluglings = new ObjectStep(getQuestHelper(), ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0),
+		goUpFromSluglings = new ObjectStep(getQuestHelper(), ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0),
 			"Go to the top floor to pull the pressure lever.", sluglings);
-		goUpF1ToPressure = new ObjectStep(getQuestHelper(), ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0),
+		goUpF1ToPressure = new ObjectStep(getQuestHelper(), ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0),
 			"Go to the top floor to pull the pressure lever.");
-		goUpToF2ToPressure = new ObjectStep(getQuestHelper(), ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1),
+		goUpToF2ToPressure = new ObjectStep(getQuestHelper(), ObjectID.DEAL_LADDER_UP, new WorldPoint(2163, 5092, 1),
 			"Go to the top floor to pull the pressure lever.");
 
-		pressure = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10164, new WorldPoint(2141, 5103, 2), "Pull the pressure lever.");
+		pressure = new ObjectStep(getQuestHelper(), ObjectID.DEAL_MULTI_LEVER, new WorldPoint(2141, 5103, 2), "Pull the pressure lever.");
 		pressure.addSubSteps(goUpToF2ToPressure, goUpF1ToPressure);
 
 		getSluglings = new ConditionalStep(getQuestHelper(), talkToPete);

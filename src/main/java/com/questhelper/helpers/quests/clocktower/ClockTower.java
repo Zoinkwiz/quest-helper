@@ -26,37 +26,29 @@
 package com.questhelper.helpers.quests.clocktower;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestVarPlayer;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ObjectStep;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class ClockTower extends BasicQuestHelper
 {
@@ -145,18 +137,18 @@ public class ClockTower extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		bucketOfWater = new ItemRequirement("Bucket of Water or a pair of ice gloves or smiths gloves(i)", ItemID.BUCKET_OF_WATER);
-		bucketOfWater.addAlternates(ItemID.ICE_GLOVES, ItemID.SMITHS_GLOVES_I);
+		bucketOfWater = new ItemRequirement("Bucket of Water or a pair of ice gloves or smiths gloves(i)", ItemID.BUCKET_WATER);
+		bucketOfWater.addAlternates(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE);
 		bucketOfWater.setTooltip("There is a bucket spawn next to the well east of the Clocktower. You can fill it on" +
 			" the well");
 		noteAboutWater = new ItemRequirement("There's a bucket and a well and just next to brother cedric for the black cog", -1, -1);
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
-		ardougneCloak = new ItemRequirement("Ardougne Cloak to teleport to monastery", ItemID.ARDOUGNE_CLOAK_1);
-		ardougneCloak.addAlternates(ItemID.ARDOUGNE_CLOAK_2, ItemID.ARDOUGNE_CLOAK_3, ItemID.ARDOUGNE_CLOAK_4);
-		redCog = new ItemRequirement("Red Cog", ItemID.RED_COG);
-		blueCog = new ItemRequirement("Blue Cog", ItemID.BLUE_COG);
-		whiteCog = new ItemRequirement("White Cog", ItemID.WHITE_COG);
-		blackCog = new ItemRequirement("Black Cog", ItemID.BLACK_COG);
+		ardougneCloak = new ItemRequirement("Ardougne Cloak to teleport to monastery", ItemID.ARDY_CAPE_EASY);
+		ardougneCloak.addAlternates(ItemID.ARDY_CAPE_MEDIUM, ItemID.ARDY_CAPE_HARD, ItemID.ARDY_CAPE_ELITE);
+		redCog = new ItemRequirement("Red Cog", ItemID.REDCOG);
+		blueCog = new ItemRequirement("Blue Cog", ItemID.BLUECOG);
+		whiteCog = new ItemRequirement("White Cog", ItemID.WHITECOG);
+		blackCog = new ItemRequirement("Black Cog", ItemID.BLACKCOG);
 		ratPoison = new ItemRequirement("Rat Poison", ItemID.RAT_POISON);
 	}
 
@@ -188,29 +180,29 @@ public class ClockTower extends BasicQuestHelper
 		startedQuestDuringSession = new Conditions(true, new VarplayerRequirement(QuestVarPlayer.QUEST_CLOCK_TOWER.getId(), 0));
 
 		synced = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "Clock Tower"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "Clock Tower"),
 			startedQuestDuringSession
 		);
 
-		firstLeverDown = new ObjectCondition(ObjectID.LEVER, new WorldPoint(2591, 9661, 0));
-		pulledFirstLeverUp = new ObjectCondition(ObjectID.LEVER_35, new WorldPoint(2591, 9661, 0));
-		secondLeverUp = new ObjectCondition(ObjectID.LEVER_34, new WorldPoint(2593, 9661, 0));
+		firstLeverDown = new ObjectCondition(ObjectID.CTLEVERA, new WorldPoint(2591, 9661, 0));
+		pulledFirstLeverUp = new ObjectCondition(ObjectID.CTLEVERA2, new WorldPoint(2591, 9661, 0));
+		secondLeverUp = new ObjectCondition(ObjectID.CTLEVERB, new WorldPoint(2593, 9661, 0));
 		poisonedRats = new ChatMessageRequirement("The rats swarm towards the poisoned food...");
 
 		placedRedCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Red Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the Red Cog on its spindle"),
 			new ChatMessageRequirement(inGroundFloor, "The cog fits perfectly.")
 		);
 		placedBlueCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Blue Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the Blue Cog on its spindle"),
 			new ChatMessageRequirement(inFirstFloor, "The cog fits perfectly.")
 		);
 		placedBlackCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the Black Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the Black Cog on its spindle"),
 			new ChatMessageRequirement(inBasement, "The cog fits perfectly.")
 		);
 		placedWhiteCog = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I have successfully placed the White Cog on its spindle"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have successfully placed the White Cog on its spindle"),
 			new ChatMessageRequirement(inSecondFloor, "The cog fits perfectly.")
 		);
 	}
@@ -225,49 +217,49 @@ public class ClockTower extends BasicQuestHelper
 
 		pickUpRedCog = new DetailedQuestStep(this, new WorldPoint(2583, 9613, 0),
 			"Go through the south east door and pick up the red cog.", redCog);
-		redCogOnRedSpindle = new ObjectStep(this, ObjectID.CLOCK_SPINDLE_29, new WorldPoint(2568, 3243, 0),
+		redCogOnRedSpindle = new ObjectStep(this, ObjectID.BROKECLOCKPOLE_RED, new WorldPoint(2568, 3243, 0),
 			"Use the red cog on the red spindle.", redCog.highlighted());
-		redCogOnRedSpindle.addIcon(ItemID.RED_COG);
+		redCogOnRedSpindle.addIcon(ItemID.REDCOG);
 
-		goToLadderCedric = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2621, 3261, 0), "");
-		pushWall = new ObjectStep(this, ObjectID.WALL_1597, new WorldPoint(2575, 9631, 0), "Follow the tunnel and " +
+		goToLadderCedric = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2621, 3261, 0), "");
+		pushWall = new ObjectStep(this, ObjectID.SECRETDOOR2, new WorldPoint(2575, 9631, 0), "Follow the tunnel and " +
 			"push the wall at the end.");
 		pickUpBlueCog = new DetailedQuestStep(this, new WorldPoint(2574, 9633, 0), "Pick up the blue cog.", blueCog);
-		climbCellLadder = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2572, 9631, 0), "");
-		blueCogOnBlueSpindle = new ObjectStep(this, ObjectID.CLOCK_SPINDLE_32, new WorldPoint(2569, 3240, 1),
+		climbCellLadder = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2572, 9631, 0), "");
+		blueCogOnBlueSpindle = new ObjectStep(this, ObjectID.BROKECLOCKPOLE_BLUE, new WorldPoint(2569, 3240, 1),
 			"Use the blue cog on the blue spindle.", blueCog.highlighted());
-		blueCogOnBlueSpindle.addIcon(ItemID.BLUE_COG);
+		blueCogOnBlueSpindle.addIcon(ItemID.BLUECOG);
 
 		pickupBlackCog = new DetailedQuestStep(this, new WorldPoint(2613, 9639, 0), "Enter the north east door, and " +
 			"pick up the black cog with a bucket of water, alternatively you can equip ice gloves or smith gloves(i).", bucketOfWater, blackCog);
-		blackCogOnBlackSpindle = new ObjectStep(this, ObjectID.CLOCK_SPINDLE_30, new WorldPoint(2570, 9642, 0),
+		blackCogOnBlackSpindle = new ObjectStep(this, ObjectID.BROKECLOCKPOLE_BLACK, new WorldPoint(2570, 9642, 0),
 			"", blackCog.highlighted());
-		blackCogOnBlackSpindle.addIcon(ItemID.BLACK_COG);
+		blackCogOnBlackSpindle.addIcon(ItemID.BLACKCOG);
 
-		northWesternDoor = new ObjectStep(this, ObjectID.DOOR_1535, new WorldPoint(2575, 9651, 0), "Go through the north-western door.");
+		northWesternDoor = new ObjectStep(this, ObjectID.POORDOOR, new WorldPoint(2575, 9651, 0), "Go through the north-western door.");
 		pickUpRatPoison = new DetailedQuestStep(this, new WorldPoint(2564, 9662, 0), "Pick up the rat poison in the " +
 			"north west of the dungeon.", ratPoison);
-		pullFirstLever = new ObjectStep(this, ObjectID.LEVER, new WorldPoint(2591, 9661, 0),
+		pullFirstLever = new ObjectStep(this, ObjectID.CTLEVERA, new WorldPoint(2591, 9661, 0),
 			"Pull the marked lever up.");
-		ratPoisonFood = new ObjectStep(this, ObjectID.FOOD_TROUGH, new WorldPoint(2587, 9654, 0),
+		ratPoisonFood = new ObjectStep(this, ObjectID.CTFOODTROUGH, new WorldPoint(2587, 9654, 0),
 			"Use the rat poison on the food trough. Wait till the rats have died.", ratPoison.highlighted());
 		ratPoisonFood.addIcon(ItemID.RAT_POISON);
-		westernGate = new ObjectStep(this, ObjectID.GATE_39, new WorldPoint(2579, 9656, 0), "Go through the gate.");
+		westernGate = new ObjectStep(this, ObjectID.CTRATGATEC, new WorldPoint(2579, 9656, 0), "Go through the gate.");
 		pickUpWhiteCog = new DetailedQuestStep(this, new WorldPoint(2577, 9655, 0), "Pick up the white cog.", whiteCog);
-		climbWhiteLadder = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2575, 9655, 0), "Head up the ladder.");
-		whiteCogOnWhiteSpindle = new ObjectStep(this, ObjectID.CLOCK_SPINDLE_31, new WorldPoint(2567, 3241, 2),
+		climbWhiteLadder = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2575, 9655, 0), "Head up the ladder.");
+		whiteCogOnWhiteSpindle = new ObjectStep(this, ObjectID.BROKECLOCKPOLE_WHITE, new WorldPoint(2567, 3241, 2),
 			"", whiteCog.highlighted());
-		whiteCogOnWhiteSpindle.addIcon(ItemID.WHITE_COG);
+		whiteCogOnWhiteSpindle.addIcon(ItemID.WHITECOG);
 		kojoReward = new NpcStep(this, NpcID.BROTHER_KOJO, new WorldPoint(2570, 3245, 0), "Talk to Brother Kojo for your reward.");
 
-		enterBasement = new ObjectStep(this, ObjectID.LADDER_17384, new WorldPoint(2566, 3242, 0), "");
-		climbFromFirstFloorToGround = new ObjectStep(this, ObjectID.STAIRCASE_16672, new WorldPoint(2573, 3241, 1), "");
+		enterBasement = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2566, 3242, 0), "");
+		climbFromFirstFloorToGround = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(2573, 3241, 1), "");
 		climbFromFirstFloorToGround.addDialogStep("Climb down the stairs.");
-		climbFromSecondFloorToFirst = new ObjectStep(this, ObjectID.STAIRCASE_16673, new WorldPoint(2572, 3241, 2), "");
+		climbFromSecondFloorToFirst = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(2572, 3241, 2), "");
 
-		climbToGroundFloorFromBasement = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2566, 9642, 0), "");
-		climbToFirstFloor = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(2573, 3241, 0), "");
-		climbToSecondFloor = new ObjectStep(this, ObjectID.STAIRCASE_16672, new WorldPoint(2573, 3241, 1), "");
+		climbToGroundFloorFromBasement = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2566, 9642, 0), "");
+		climbToFirstFloor = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2573, 3241, 0), "");
+		climbToSecondFloor = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(2573, 3241, 1), "");
 		climbToSecondFloor.addDialogStep("Climb up the stairs.");
 
 		ConditionalStep goToBasementSteps = new ConditionalStep(this, enterBasement);
@@ -355,7 +347,7 @@ public class ClockTower extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 500));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 500));
 	}
 
 	@Override

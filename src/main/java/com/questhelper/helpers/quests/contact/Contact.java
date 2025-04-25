@@ -24,35 +24,34 @@
  */
 package com.questhelper.helpers.quests.contact;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
-
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 
 public class Contact extends BasicQuestHelper
 {
@@ -128,7 +127,7 @@ public class Contact extends BasicQuestHelper
 	{
 		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
-		parchment = new ItemRequirement("Parchment", ItemID.PARCHMENT);
+		parchment = new ItemRequirement("Parchment", ItemID.CONTACT_KALEEF_SCROLL);
 		parchment.setHighlightInInventory(true);
 
 		combatGear = new ItemRequirement("Combat gear, preferably magic/ranged", -1, -1).isNotConsumed();
@@ -140,7 +139,7 @@ public class Contact extends BasicQuestHelper
 		antipoison = new ItemRequirement("Antipoisons", ItemCollections.ANTIPOISONS);
 		waterskin = new ItemRequirement("Waterskins for desert travel", ItemCollections.WATERSKIN);
 
-		keris = new ItemRequirement("Keris", ItemID.KERIS);
+		keris = new ItemRequirement("Keris", ItemID.CONTACT_KERIS);
 
 		coins = new ItemRequirement("Coins for carpet rides", ItemCollections.COINS);
 		glory = new ItemRequirement("Amulet of glory for getting to Osman", ItemCollections.AMULET_OF_GLORIES);
@@ -159,21 +158,21 @@ public class Contact extends BasicQuestHelper
 		inBank = new ZoneRequirement(bank);
 		inDungeon = new ZoneRequirement(dungeon);
 		inChasm = new ZoneRequirement(chasm, new Zone(9027));
-		hasReadParchment = new VarbitRequirement(3274, 50, Operation.GREATER_EQUAL);
+		hasReadParchment = new VarbitRequirement(VarbitID.CONTACT, 50, Operation.GREATER_EQUAL);
 		kerisNearby = new ItemOnTileRequirement(keris);
 	}
 
 	public void setupSteps()
 	{
-		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in Sophanem.");
+		talkToHighPriest = new NpcStep(this, NpcID.ICS_LITTLE_HIPRIEST_VIS, new WorldPoint(3281, 2772, 0), "Talk to the High Priest in Sophanem.");
 		talkToHighPriest.addDialogStep("Yes.");
 		talkToHighPriest.addDialogStep("Sounds like a quest for me; I can't turn that down!");
 		talkToHighPriest.addDialogStep("Is there any way into Menaphos from below?");
-		talkToJex = new NpcStep(this, NpcID.JEX, new WorldPoint(3312, 2799, 0), "Talk to Jex in the building in north east Sophanem.");
+		talkToJex = new NpcStep(this, NpcID.CONTACT_JEX, new WorldPoint(3312, 2799, 0), "Talk to Jex in the building in north east Sophanem.");
 
-		goDownToBank = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0), "Go down the ladder east of Jex.", lightSource);
-		goDownToDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_20340, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
-		goDownToChasm = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(2116, 4365, 2),
+		goDownToBank = new ObjectStep(this, ObjectID.CONTACT_TEMPLE_TRAPDOOR_OPEN, new WorldPoint(3315, 2797, 0), "Go down the ladder east of Jex.", lightSource);
+		goDownToDungeon = new ObjectStep(this, ObjectID.CONTACT_LADDER_BARRICADED, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
+		goDownToChasm = new ObjectStep(this, ObjectID.CONTACT_UG_BOSS_LADDER, new WorldPoint(2116, 4365, 2),
 			"Be careful of traps, and follow the path to the south west ladder. Disarm traps where the path breaks, " +
 				"and use protection prayers against the monsters.");
 
@@ -238,34 +237,34 @@ public class Contact extends BasicQuestHelper
 
 		((DetailedQuestStep) goDownToChasm).setLinePoints(path);
 
-		searchKaleef = new ObjectStep(this, NullObjectID.NULL_44597, new WorldPoint(2284, 4315, 0),
+		searchKaleef = new ObjectStep(this, ObjectID.CONTACT_DEAD_BODY_KALEEF, new WorldPoint(2284, 4315, 0),
 			"Follow the path along, and search Kaleef's corpse there.");
 
 		readParchment = new DetailedQuestStep(this, "Read the parchment", parchment);
-		talkToMaisa = new NpcStep(this, NpcID.MAISA, new WorldPoint(2258, 4317, 0), "Talk to Maisa on the west side of the chasm.");
+		talkToMaisa = new NpcStep(this, NpcID.CONTACT_MAISA, new WorldPoint(2258, 4317, 0), "Talk to Maisa on the west side of the chasm.");
 		talkToMaisa.addDialogStep("Draynor Village.");
 		talkToMaisa.addDialogStep("Leela.");
 
-		talkToOsman = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3287, 3179, 0), "Talk to Osman in Al Kharid.");
+		talkToOsman = new NpcStep(this, NpcID.CONTACT_OSMAN_MULTI, new WorldPoint(3287, 3179, 0), "Talk to Osman in Al Kharid.");
 		talkToOsman.addDialogStep("I want to talk to you about Sophanem.");
 		talkToOsman.addDialogStep("It could drive a wedge between the Menaphite cities.");
-		talkToOsmanOutsideSoph = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(3285, 2812, 0), "Talk to Osman north of Sophanem.");
+		talkToOsmanOutsideSoph = new NpcStep(this, NpcID.CONTACT_OSMAN_DESERT_MULTI, new WorldPoint(3285, 2812, 0), "Talk to Osman north of Sophanem.");
 		talkToOsmanOutsideSoph.addDialogStep("I know of a secret entrance to the north.");
 
-		goDownToBankAgain = new ObjectStep(this, ObjectID.LADDER_20275, new WorldPoint(3315, 2797, 0), "Prepare to fight a level 191 Giant Scarab. Go down the ladder east of Jex.", lightSource, combatGear);
-		goDownToDungeonAgain = new ObjectStep(this, ObjectID.TRAPDOOR_20340, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
-		goDownToChasmAgain = new ObjectStep(this, ObjectID.LADDER_20287, new WorldPoint(2116, 4365, 2), "Be careful of traps, and follow the path to the south west ladder. Disarm traps where the path breaks, " +
+		goDownToBankAgain = new ObjectStep(this, ObjectID.CONTACT_TEMPLE_TRAPDOOR_OPEN, new WorldPoint(3315, 2797, 0), "Prepare to fight a level 191 Giant Scarab. Go down the ladder east of Jex.", lightSource, combatGear);
+		goDownToDungeonAgain = new ObjectStep(this, ObjectID.CONTACT_LADDER_BARRICADED, new WorldPoint(2766, 5130, 0), "Go down the trapdoor.", lightSource);
+		goDownToChasmAgain = new ObjectStep(this, ObjectID.CONTACT_UG_BOSS_LADDER, new WorldPoint(2116, 4365, 2), "Be careful of traps, and follow the path to the south west ladder. Disarm traps where the path breaks, " +
 				"and use protection prayers against the monsters.");
 		((DetailedQuestStep) goDownToChasmAgain).setLinePoints(path);
 
-		killGiantScarab = new NpcStep(this, NpcID.GIANT_SCARAB, new WorldPoint(2272, 4323, 0),
+		killGiantScarab = new NpcStep(this, NpcID.CONTACT_SCARAB_BOSS, new WorldPoint(2272, 4323, 0),
 			"Kill the Giant Scarab near the chasm. It can extinguish your light source and poison you, so be careful. Pray melee if you are meleeing it, range if you are attacking it from a distance.");
 
 		pickUpKeris = new ItemStep(this, "Pick up the Keris.", keris);
 
-		talkToOsmanChasm = new NpcStep(this, NpcID.OSMAN_4286, new WorldPoint(2272, 4323, 0), "Talk to Osman in the chasm.");
+		talkToOsmanChasm = new NpcStep(this, NpcID.CONTACT_OSMAN_CAVE_INSTANCE, new WorldPoint(2272, 4323, 0), "Talk to Osman in the chasm.");
 
-		returnToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_4206, new WorldPoint(3281, 2772, 0), "Report back to the High Priest in Sophanem.");
+		returnToHighPriest = new NpcStep(this, NpcID.ICS_LITTLE_HIPRIEST_VIS, new WorldPoint(3281, 2772, 0), "Report back to the High Priest in Sophanem.");
 	}
 
 	@Override
@@ -315,8 +314,8 @@ public class Contact extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("7,000 Experience Lamps (Combat Skills)", ItemID.ANTIQUE_LAMP, 2),
-				new ItemReward("Keris", ItemID.KERIS, 1)
+				new ItemReward("7,000 Experience Lamps (Combat Skills)", ItemID.THOSF_REWARD_LAMP, 2),
+				new ItemReward("Keris", ItemID.CONTACT_KERIS, 1)
 		);
 	}
 

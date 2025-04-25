@@ -28,14 +28,14 @@ package com.questhelper.overlays;
  */
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+
+import javax.inject.Inject;
+import java.awt.*;
 
 public class QuestHelperWidgetOverlay extends Overlay
 {
@@ -55,11 +55,11 @@ public class QuestHelperWidgetOverlay extends Overlay
 	{
 		QuestHelper quest = plugin.getSelectedQuest();
 
-		if (quest != null && quest.getCurrentStep() != null && quest.getCurrentStep().getActiveStep() != null)
+		if (quest != null && quest.getCurrentStep() != null)
 		{
 			if (plugin.getConfig().showWidgetHints())
 			{
-				quest.getCurrentStep().getActiveStep().makeWidgetOverlayHint(graphics, plugin);
+				quest.getCurrentStep().makeWidgetOverlayHint(graphics, plugin);
 			}
 		}
 		plugin.getRuneliteObjectManager().makeWidgetOverlayHint(graphics);

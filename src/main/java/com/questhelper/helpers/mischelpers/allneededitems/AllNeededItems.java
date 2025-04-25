@@ -30,12 +30,9 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.SpriteID;
+
+import java.util.*;
 
 public class AllNeededItems extends ComplexStateQuestHelper
 {

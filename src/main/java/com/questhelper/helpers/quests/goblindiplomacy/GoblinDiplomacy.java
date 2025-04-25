@@ -24,31 +24,26 @@
  */
 package com.questhelper.helpers.quests.goblindiplomacy;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class GoblinDiplomacy extends BasicQuestHelper
 {
@@ -109,24 +104,24 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE);
+		blueDye = new ItemRequirement("Blue dye", ItemID.BLUEDYE);
 		blueDye.setTooltip("You can have Aggie in Draynor Village make you some for 2 woad leaves (bought from Wyson in Falador Park for 20 coins) and 5 coins.");
 		blueDye.setHighlightInInventory(true);
-		orangeDye = new ItemRequirement("Orange dye", ItemID.ORANGE_DYE);
+		orangeDye = new ItemRequirement("Orange dye", ItemID.ORANGEDYE);
 		orangeDye.setTooltip("This is made from red dye and yellow dye. Bring Aggie in Draynor Village 3 redberries and 5 coins for red dye, then 2 onions and 5 coins for yellow dye.");
 		orangeDye.setHighlightInInventory(true);
-		goblinMailThree = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 3);
-		mailReq = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 3);
+		goblinMailThree = new ItemRequirement("Goblin mail", ItemID.GOBLIN_ARMOUR, 3);
+		mailReq = new ItemRequirement("Goblin mail", ItemID.GOBLIN_ARMOUR, 3);
 		mailReq.canBeObtainedDuringQuest();
-		goblinMailTwo = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL, 2);
+		goblinMailTwo = new ItemRequirement("Goblin mail", ItemID.GOBLIN_ARMOUR, 2);
 
-		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_MAIL);
+		goblinMail = new ItemRequirement("Goblin mail", ItemID.GOBLIN_ARMOUR);
 		goblinMail.canBeObtainedDuringQuest();
 		goblinMail.setTooltip("You can get goblin mail by killing goblins around goblin village.");
 		goblinMail.setHighlightInInventory(true);
 
-		blueArmour = new ItemRequirement("Blue goblin mail", ItemID.BLUE_GOBLIN_MAIL);
-		orangeArmour = new ItemRequirement("Orange goblin mail", ItemID.ORANGE_GOBLIN_MAIL);
+		blueArmour = new ItemRequirement("Blue goblin mail", ItemID.GOBLIN_ARMOUR_DARKBLUE);
+		orangeArmour = new ItemRequirement("Orange goblin mail", ItemID.GOBLIN_ARMOUR_ORANGE);
 	}
 
 	public void setupConditions()
@@ -145,34 +140,34 @@ public class GoblinDiplomacy extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		goUpLadder = new ObjectStep(this, ObjectID.LADDER_16450, new WorldPoint(2954, 3497, 0), "You need three goblin mails, which you can find around the Goblin " +
+		goUpLadder = new ObjectStep(this, ObjectID.GOBLIN_LADDER_BOTTOM, new WorldPoint(2954, 3497, 0), "You need three goblin mails, which you can find around the Goblin " +
 			"Village. The first is up the ladder in a crate in the south of the village.");
-		searchUpLadder = new ObjectStep(this, ObjectID.CRATE_16561, new WorldPoint(2955, 3498, 2), "Search the crate up the ladder.");
+		searchUpLadder = new ObjectStep(this, ObjectID.GOBLIN_OUTPOST_LARGE_CRATE_ARMOUR3, new WorldPoint(2955, 3498, 2), "Search the crate up the ladder.");
 		goUpLadder.addSubSteps(searchUpLadder);
-		goDownLadder = new ObjectStep(this, ObjectID.LADDER_16556, new WorldPoint(2954, 3497, 2), "Go back down the ladder.");
-		searchWestHut = new ObjectStep(this, ObjectID.CRATE_16560, new WorldPoint(2951, 3508, 0), "Search the crate in the west of Goblin Village for Goblin Mail.");
+		goDownLadder = new ObjectStep(this, ObjectID.GOBLIN_LADDER_TOP, new WorldPoint(2954, 3497, 2), "Go back down the ladder.");
+		searchWestHut = new ObjectStep(this, ObjectID.GOBLIN_OUTPOST_LARGE_CRATE_ARMOUR2, new WorldPoint(2951, 3508, 0), "Search the crate in the west of Goblin Village for Goblin Mail.");
 		getCrate2 = new DetailedQuestStep(this, "The second goblin mail can be found in the west hut in a crate.");
 		getCrate2.addSubSteps(goDownLadder, searchWestHut);
 
-		searchBehindGenerals = new ObjectStep(this, ObjectID.CRATE_16559, new WorldPoint(2959, 3514, 0), "Search the crate north of the General's hut in Goblin Village.");
+		searchBehindGenerals = new ObjectStep(this, ObjectID.GOBLIN_OUTPOST_LARGE_CRATE_ARMOUR1, new WorldPoint(2959, 3514, 0), "Search the crate north of the General's hut in Goblin Village.");
 		getCrate3 = new DetailedQuestStep(this, "The last goblin mail is north of the generals' hut in a crate.");
 		getCrate3.addSubSteps(searchBehindGenerals);
 
 		dyeBlue = new DetailedQuestStep(this, "Use the blue dye on one of the goblin mail.", blueDye, goblinMail);
 		dyeOrange = new DetailedQuestStep(this, "Use the orange dye on one of the goblin mail.", orangeDye, goblinMail);
 
-		talkToGeneral1 = new NpcStep(this, NpcID.GENERAL_BENTNOZE, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village.", orangeArmour);
+		talkToGeneral1 = new NpcStep(this, NpcID.GENERAL_BENTNOZE_RED, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village.", orangeArmour);
 		talkToGeneral1.addDialogStep("So how is life for the goblins?");
 		talkToGeneral1.addDialogStep("Yes, Wartface looks fat");
 		talkToGeneral1.addDialogStep("Do you want me to pick an armour colour for you?");
 		talkToGeneral1.addDialogStep("What about a different colour?");
 		talkToGeneral1.addDialogStep("I have some orange armour here.");
 
-		talkToGeneral2 = new NpcStep(this, NpcID.GENERAL_BENTNOZE, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village again.", blueArmour);
+		talkToGeneral2 = new NpcStep(this, NpcID.GENERAL_BENTNOZE_RED, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village again.", blueArmour);
 		talkToGeneral2.addDialogStep("So how is life for the goblins?");
 		talkToGeneral2.addDialogStep("I have some blue armour here.");
 
-		talkToGeneral3 = new NpcStep(this, NpcID.GENERAL_BENTNOZE, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village once more.", goblinMail);
+		talkToGeneral3 = new NpcStep(this, NpcID.GENERAL_BENTNOZE_RED, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village once more.", goblinMail);
 		talkToGeneral3.addDialogStep("So how is life for the goblins?");
 		talkToGeneral3.addDialogStep("Yes, Wartface looks fat");
 		talkToGeneral3.addDialogStep("I have some brown armour here.");

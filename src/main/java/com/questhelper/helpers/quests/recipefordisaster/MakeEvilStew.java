@@ -26,28 +26,25 @@ package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.NpcCollections;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.requirements.item.FollowerItemRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.FollowerItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Varbits;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.Subscribe;
 
 public class MakeEvilStew extends DetailedOwnerStep
 {
@@ -121,34 +118,34 @@ public class MakeEvilStew extends DetailedOwnerStep
 		restart = new DetailedQuestStep(getQuestHelper(), "You've added too much of a spice. Eat your spicy stew and " +
 			"start again.", evilStewHighlighted);
 
-		enterBasement = new ObjectStep(getQuestHelper(), ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
+		enterBasement = new ObjectStep(getQuestHelper(), ObjectID._100_DAVE_CELLER_TRAPDOOR_CLOSED, new WorldPoint(3077, 3493, 0),
 			"Go back down to Evil Dave.");
-		((ObjectStep) enterBasement).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
+		((ObjectStep) enterBasement).addAlternateObjects(ObjectID._100_DAVE_CELLER_TRAPDOOR_OPEN);
 
-		useStewOnEvilDave = new NpcStep(getQuestHelper(), NpcID.EVIL_DAVE_4806, new WorldPoint(3080, 9889, 0),
+		useStewOnEvilDave = new NpcStep(getQuestHelper(), NpcID.HUNDRED_EVIL_DAVE, new WorldPoint(3080, 9889, 0),
 			"Use the spicy stew on Evil Dave.", evilStewHighlighted);
 	}
 
 	protected void setupRequirements()
 	{
-		redSpice = new ItemRequirement("Red spice", ItemID.RED_SPICE_1);
-		redSpice.addAlternates(ItemID.RED_SPICE_2, ItemID.RED_SPICE_3, ItemID.RED_SPICE_4);
+		redSpice = new ItemRequirement("Red spice", ItemID.HUNDRED_DAVE_SPICE_RED_1);
+		redSpice.addAlternates(ItemID.HUNDRED_DAVE_SPICE_RED_2, ItemID.HUNDRED_DAVE_SPICE_RED_3, ItemID.HUNDRED_DAVE_SPICE_RED_4);
 		redSpice.setHighlightInInventory(true);
 
-		orangeSpice = new ItemRequirement("Orange spice", ItemID.ORANGE_SPICE_1);
-		orangeSpice.addAlternates(ItemID.ORANGE_SPICE_2, ItemID.ORANGE_SPICE_3, ItemID.ORANGE_SPICE_4);
+		orangeSpice = new ItemRequirement("Orange spice", ItemID.HUNDRED_DAVE_SPICE_ORANGE_1);
+		orangeSpice.addAlternates(ItemID.HUNDRED_DAVE_SPICE_ORANGE_2, ItemID.HUNDRED_DAVE_SPICE_ORANGE_3, ItemID.HUNDRED_DAVE_SPICE_ORANGE_4);
 		orangeSpice.setHighlightInInventory(true);
 
-		yellowSpice = new ItemRequirement("Yellow spice", ItemID.YELLOW_SPICE_1);
-		yellowSpice.addAlternates(ItemID.YELLOW_SPICE_2, ItemID.YELLOW_SPICE_3, ItemID.YELLOW_SPICE_4);
+		yellowSpice = new ItemRequirement("Yellow spice", ItemID.HUNDRED_DAVE_SPICE_YELLOW_1);
+		yellowSpice.addAlternates(ItemID.HUNDRED_DAVE_SPICE_YELLOW_2, ItemID.HUNDRED_DAVE_SPICE_YELLOW_3, ItemID.HUNDRED_DAVE_SPICE_YELLOW_4);
 		yellowSpice.setHighlightInInventory(true);
 
-		brownSpice = new ItemRequirement("Brown spice", ItemID.BROWN_SPICE_1);
-		brownSpice.addAlternates(ItemID.BROWN_SPICE_2, ItemID.BROWN_SPICE_3, ItemID.BROWN_SPICE_4);
+		brownSpice = new ItemRequirement("Brown spice", ItemID.HUNDRED_DAVE_SPICE_BROWN_1);
+		brownSpice.addAlternates(ItemID.HUNDRED_DAVE_SPICE_BROWN_2, ItemID.HUNDRED_DAVE_SPICE_BROWN_3, ItemID.HUNDRED_DAVE_SPICE_BROWN_4);
 		brownSpice.setHighlightInInventory(true);
 
-		evilStew = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
-		evilStewHighlighted = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
+		evilStew = new ItemRequirement("Spicy stew", ItemID.HUNDRED_DAVE_STEW);
+		evilStewHighlighted = new ItemRequirement("Spicy stew", ItemID.HUNDRED_DAVE_STEW);
 		evilStewHighlighted.setHighlightInInventory(true);
 
 		stew = new ItemRequirement("Stew", ItemID.STEW);

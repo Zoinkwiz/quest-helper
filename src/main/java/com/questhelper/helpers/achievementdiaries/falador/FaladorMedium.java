@@ -25,37 +25,40 @@
 package com.questhelper.helpers.achievementdiaries.falador;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.item.TeleportItemRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 import com.questhelper.steps.widget.NormalSpells;
-import net.runelite.api.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FaladorMedium extends ComplexStateQuestHelper
@@ -167,71 +170,71 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notLitLantern = new VarplayerRequirement(1186, false, 11);
-		notTelegrabbedWine = new VarplayerRequirement(1186, false, 12);
-		notUnlockedCrystalChest = new VarplayerRequirement(1186, false, 13);
-		notPlacedScarecrow = new VarplayerRequirement(1186, false, 14);
-		notKilledMogre = new VarplayerRequirement(1186, false, 15);
-		notVisitRatPits = new VarplayerRequirement(1186, false, 16);
-		notGrappleNorthWall = new VarplayerRequirement(1186, false, 17);
-		notPickpocketGuard = new VarplayerRequirement(1186, false, 18);
-		notPrayAtAltar = new VarplayerRequirement(1186, false, 20);
-		notMineGold = new VarplayerRequirement(1186, false, 21);
-		notDwarfShortcut = new VarplayerRequirement(1186, false, 22);
-		notChopBurnWillowTav = new VarplayerRequirement(1186, false, 23);
-		notBasketFalLoom = new VarplayerRequirement(1186, false, 24);
-		notTeleportFalador = new VarplayerRequirement(1186, false, 25);
+		notLitLantern = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 11);
+		notTelegrabbedWine = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 12);
+		notUnlockedCrystalChest = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 13);
+		notPlacedScarecrow = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 14);
+		notKilledMogre = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 15);
+		notVisitRatPits = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 16);
+		notGrappleNorthWall = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 17);
+		notPickpocketGuard = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 18);
+		notPrayAtAltar = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 20);
+		notMineGold = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 21);
+		notDwarfShortcut = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 22);
+		notChopBurnWillowTav = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 23);
+		notBasketFalLoom = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 24);
+		notTeleportFalador = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 25);
 		bothRunes = new ComplexRequirement(LogicType.AND, "Earth runes", notTeleportFalador, notTelegrabbedWine);
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN).showConditioned(notLitLantern);
+		bullseyeLantern = new ItemRequirement("Bullseye Lantern", ItemID.BULLSEYE_LANTERN_UNLIT).showConditioned(notLitLantern);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX)
 			.showConditioned(new Conditions(LogicType.OR, notLitLantern, notChopBurnWillowTav)).isNotConsumed();
-		airRune1 = new ItemRequirement("Air rune", ItemID.AIR_RUNE, 1)
+		airRune1 = new ItemRequirement("Air rune", ItemID.AIRRUNE, 1)
 			.showConditioned(new Conditions(notTelegrabbedWine, new Conditions(LogicType.NOR, bothRunes)));
-		airRune3 = new ItemRequirement("Air runes", ItemID.AIR_RUNE, 3)
+		airRune3 = new ItemRequirement("Air runes", ItemID.AIRRUNE, 3)
 			.showConditioned(new Conditions(notTeleportFalador, new Conditions(LogicType.NOR, bothRunes)));
-		airRune4 = new ItemRequirement("Air runes", ItemID.AIR_RUNE, 4).showConditioned(bothRunes);
-		lawRune2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2).showConditioned(bothRunes);
-		lawRune1 = new ItemRequirement("Law rune", ItemID.LAW_RUNE, 1)
+		airRune4 = new ItemRequirement("Air runes", ItemID.AIRRUNE, 4).showConditioned(bothRunes);
+		lawRune2 = new ItemRequirement("Law runes", ItemID.LAWRUNE, 2).showConditioned(bothRunes);
+		lawRune1 = new ItemRequirement("Law rune", ItemID.LAWRUNE, 1)
 			.showConditioned(new Conditions(new Conditions(LogicType.OR, notTelegrabbedWine, notTeleportFalador),
 				new Conditions(LogicType.NOR, bothRunes)));
-		lawRune = new ItemRequirement("Law runes", ItemID.LAW_RUNE);
-		airRune = new ItemRequirement("Air runes", ItemID.AIR_RUNE);
-		waterRune1 = new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1).showConditioned(notTeleportFalador);
+		lawRune = new ItemRequirement("Law runes", ItemID.LAWRUNE);
+		airRune = new ItemRequirement("Air runes", ItemID.AIRRUNE);
+		waterRune1 = new ItemRequirement("Water rune", ItemID.WATERRUNE, 1).showConditioned(notTeleportFalador);
 		crystalKey = new ItemRequirement("Crystal Key", ItemID.CRYSTAL_KEY).showConditioned(notUnlockedCrystalChest);
 		crystalKey.setHighlightInInventory(true);
-		haySack = new ItemRequirement("Hay Sack", ItemID.HAY_SACK);
+		haySack = new ItemRequirement("Hay Sack", ItemID.SCARECROW_TORSO);
 		bronzeSpear = new ItemRequirement("Bronze Spear", ItemID.BRONZE_SPEAR).showConditioned(notPlacedScarecrow);
 		watermelon = new ItemRequirement("Watermelon", ItemID.WATERMELON).showConditioned(notPlacedScarecrow);
-		emptySack = new ItemRequirement("Empty Sack", ItemID.EMPTY_SACK).showConditioned(notPlacedScarecrow);
+		emptySack = new ItemRequirement("Empty Sack", ItemID.SACK_EMPTY).showConditioned(notPlacedScarecrow);
 		emptySack.canBeObtainedDuringQuest();
 		emptySack.setHighlightInInventory(true);
 		sack = new ItemRequirements(LogicType.OR, emptySack, haySack);
-		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW).showConditioned(notPlacedScarecrow);
+		scarecrow = new ItemRequirement("Scarecrow", ItemID.SCARECROW_COMPLETE).showConditioned(notPlacedScarecrow);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlacedScarecrow).isNotConsumed();
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE).showConditioned(notKilledMogre);
-		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
+		fishingExplosive.addAlternates(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).showConditioned(notKilledMogre).isNotConsumed();
-		mithGrapple = new ItemRequirement("Mith grapple", ItemID.MITH_GRAPPLE_9419, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
+		mithGrapple = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
 		anyCrossbow = new ItemRequirement("Any usable crossbow", ItemCollections.CROSSBOWS, 1, true).showConditioned(notGrappleNorthWall).isNotConsumed();
-		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.INITIATE_SALLET).showConditioned(notPrayAtAltar).isNotConsumed();
-		initiateChest = new ItemRequirement("Initiate Chest", ItemID.INITIATE_HAUBERK).showConditioned(notPrayAtAltar).isNotConsumed();
-		initiateLegs = new ItemRequirement("Initiate Legs", ItemID.INITIATE_CUISSE).showConditioned(notPrayAtAltar).isNotConsumed();
+		initiateHelm = new ItemRequirement("Initiate Helm", ItemID.BASIC_TK_HELM).showConditioned(notPrayAtAltar).isNotConsumed();
+		initiateChest = new ItemRequirement("Initiate Chest", ItemID.BASIC_TK_BODY).showConditioned(notPrayAtAltar).isNotConsumed();
+		initiateLegs = new ItemRequirement("Initiate Legs", ItemID.BASIC_TK_LEGS).showConditioned(notPrayAtAltar).isNotConsumed();
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES).showConditioned(notMineGold).isNotConsumed();
 		axe = new ItemRequirement("Any Axe", ItemCollections.AXES).showConditioned(notChopBurnWillowTav).isNotConsumed();
 		brownApron = new ItemRequirement("Brown Apron", ItemID.BROWN_APRON).showConditioned(notMineGold).isNotConsumed();
 		willowBranch6 = new ItemRequirement("Willow Branches", ItemID.WILLOW_BRANCH, 6).showConditioned(notBasketFalLoom);
 
 		willowLog = new ItemRequirement("Willow Log", ItemID.WILLOW_LOGS);
-		scarecrowStep2 = new ItemRequirement("Hay Sack", ItemID.HAY_SACK_6058);
+		scarecrowStep2 = new ItemRequirement("Hay Sack", ItemID.SCARECROW_TORSO_SPEAR);
 
 		initiateSet = new ItemRequirements(initiateChest, initiateLegs, initiateHelm);
 
-		faladorTeleport = new TeleportItemRequirement("Falador Teleports", ItemID.FALADOR_TELEPORT);
-		explorersRing = new TeleportItemRequirement("Explorer's Ring (2)", ItemID.EXPLORERS_RING_2).isNotConsumed();
-		explorersRing.addAlternates(ItemID.EXPLORERS_RING_4, ItemID.EXPLORERS_RING_3);
+		faladorTeleport = new TeleportItemRequirement("Falador Teleports", ItemID.POH_TABLET_FALADORTELEPORT);
+		explorersRing = new TeleportItemRequirement("Explorer's Ring (2)", ItemID.LUMBRIDGE_RING_MEDIUM).isNotConsumed();
+		explorersRing.addAlternates(ItemID.LUMBRIDGE_RING_ELITE, ItemID.LUMBRIDGE_RING_HARD);
 		combatBracelet = new TeleportItemRequirement("Combat Bracelet", ItemCollections.COMBAT_BRACELETS).isNotConsumed();
 		combatBracelet.addAlternates(ItemCollections.GAMES_NECKLACES);
 
@@ -243,7 +246,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		inFalNorthWall = new ZoneRequirement(falNorthWall);
 
 		var atMudskipperPoint = new ZoneRequirement(new Zone(new WorldPoint(2977, 3141, 0), new WorldPoint(3012, 3103, 0)));
-		var mogreNearby = new NpcCondition(NpcID.MOGRE);
+		var mogreNearby = new NpcCondition(NpcID.MUDSKIPPER_OGRE);
 		atMudskipperPointWithMogre = new Conditions(LogicType.AND, atMudskipperPoint, mogreNearby);
 
 		// varbit 15347 0 -> 1?
@@ -287,81 +290,81 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Go to the Chaos Temple near the Goblin Village north of Falador.");
 		telegrabWine = new DetailedQuestStep(this,
 			"Use the Telekinetic Grab Spell on the Wine of Zamorak.");
-		telegrabWine.addIcon(ItemID.TELEKINETIC_GRAB);
+		telegrabWine.addIcon(ItemID.POH_TABLET_TELEGRAB);
 		telegrabWine.addSpellHighlight(NormalSpells.TELEKINETIC_GRAB);
 
 		//Crystal Chest
-		unlockCrystalChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_172, new WorldPoint(2914, 3452, 0),
+		unlockCrystalChest = new ObjectStep(this, ObjectID.CRYSTAL_CHESTCLOSED, new WorldPoint(2914, 3452, 0),
 			"Use the crystal key to unlock the chest in Taverley", crystalKey);
 		unlockCrystalChest.addIcon(ItemID.CRYSTAL_KEY);
 
 		//Scarecrow
-		fillSack = new ObjectStep(this, ObjectID.HAY_BALE_8713, new WorldPoint(3019, 3297, 0),
+		fillSack = new ObjectStep(this, ObjectID.HAY_BALE, new WorldPoint(3019, 3297, 0),
 			"Use the empty sack on the hay bale to fill it. You can buy an empty sack from Sarah for 5gp.", emptySack);
-		fillSack.addIcon(ItemID.EMPTY_SACK);
+		fillSack.addIcon(ItemID.SACK_EMPTY);
 		useSackOnSpear = new DetailedQuestStep(this,
 			"Use the Hay sack on the Bronze Spear.", haySack.highlighted(), bronzeSpear.highlighted());
 		useWatermelonOnSack = new DetailedQuestStep(this,
 			"Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2.highlighted(), watermelon.highlighted());
-		placeScarecrow = new ObjectStep(this, NullObjectID.NULL_7847, new WorldPoint(3054, 3307, 0),
+		placeScarecrow = new ObjectStep(this, ObjectID.FARMING_FLOWER_PATCH_1, new WorldPoint(3054, 3307, 0),
 			"Rake any weeds in the flower patch, then plant your scarecrow.", rake, scarecrow.highlighted());
-		placeScarecrow.addIcon(ItemID.SCARECROW);
+		placeScarecrow.addIcon(ItemID.SCARECROW_COMPLETE);
 
 		//Mogre
-		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT, new WorldPoint(3005, 3117, 0),
+		spawnMogre = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT_A, new WorldPoint(3005, 3117, 0),
 			"Go to Mudskipper Point south of Port Sarim and use your fishing explosive to spawn a Mogre.", true, fishingExplosive.highlighted());
-		spawnMogre.addAlternateObjects(ObjectID.OMINOUS_FISHING_SPOT_10088, ObjectID.OMINOUS_FISHING_SPOT_10089);
-		spawnMogre.addIcon(ItemID.FISHING_EXPLOSIVE);
-		killMogre = new NpcStep(this, NpcID.MOGRE,
+		spawnMogre.addAlternateObjects(ObjectID.OMINOUS_FISHING_SPOT_B, ObjectID.OMINOUS_FISHING_SPOT_C);
+		spawnMogre.addIcon(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
+		killMogre = new NpcStep(this, NpcID.MUDSKIPPER_OGRE,
 			"Kill the Mogre", combatGear);
 
 		//Ratpits
-		visitRatPits = new ObjectStep(this, ObjectID.MANHOLE_10321, new WorldPoint(3018, 3232, 0),
+		visitRatPits = new ObjectStep(this, ObjectID.VC_MANHOLE_OPEN, new WorldPoint(3018, 3232, 0),
 			"Climb down the manhole in Port Sarim to visit the Rat Pits.");
 
 		//Grapple wall
-		grappleNorthWallStart = new ObjectStep(this, ObjectID.WALL_17050, new WorldPoint(3032, 3389, 0),
+		grappleNorthWallStart = new ObjectStep(this, ObjectID.XBOWS_FAI_FALADOR_CASTLE_ARCHES_HILLSKEW, new WorldPoint(3032, 3389, 0),
 			"Equip your crossbow and grapple then climb the agility shortcut near the Falador Party Room.",
 			anyCrossbow.highlighted(), mithGrapple.highlighted());
-		grappleNorthWallEnd = new ObjectStep(this, ObjectID.WALL_17051, new WorldPoint(3033, 3390, 1),
+		grappleNorthWallEnd = new ObjectStep(this, ObjectID.XBOWS_FAI_FALADOR_CASTLE_WALLS_BATTLEMENT, new WorldPoint(3033, 3390, 1),
 			"Climb down the wall to finish the task.");
 
 		//PickPocket
-		pickpocketGuard = new NpcStep(this, NpcID.GUARD_3269, new WorldPoint(2961, 3381, 0),
+		pickpocketGuard = new NpcStep(this, NpcID.FAI_FALADOR_GUARD1, new WorldPoint(2961, 3381, 0),
 			"Pickpocket a guard inside of Falador. If this doesn't complete, pickpocket a guard closer to the plinth.", true);
 		pickpocketGuard.setHideWorldArrow(true);
-		pickpocketGuard.addAlternateNpcs(NpcID.GUARD_3271, NpcID.GUARD_3272, NpcID.GUARD_3274, NpcID.GUARD_11946, NpcID.GUARD_11943, NpcID.GUARD_11944);
+		pickpocketGuard.addAlternateNpcs(NpcID.FAI_FALADOR_GUARD3, NpcID.FAI_FALADOR_GUARD4, NpcID.FAI_FALADOR_GUARD6, NpcID.FAI_FALADOR_GUARD3_F, NpcID.FAI_FALADOR_GUARD1_F, NpcID.FAI_FALADOR_GUARD1_VARIANT02);
 
 		//Pray with Initiate Set
-		getInitiateSet = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN, new WorldPoint(2997, 3373, 0),
+		getInitiateSet = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, new WorldPoint(2997, 3373, 0),
 			"Speak to Sir Tiffy Cashien to purchase a set of Initiate Armor for 20,000 Coins for a full set.");
 		getInitiateSet.addDialogStep("Can I buy some armour?");
-		prayAtAltar = new ObjectStep(this, ObjectID.ALTAR_OF_GUTHIX, new WorldPoint(2925, 3483, 0),
+		prayAtAltar = new ObjectStep(this, ObjectID.GUTHIX_ALTAR, new WorldPoint(2925, 3483, 0),
 			"Equip your Initiate armor and pray at the Altar of Guthix in Taverley", initiateHelm.equipped(),
 			initiateChest.equipped(), initiateLegs.equipped());
 
 		//Mine Gold in Crafting Guild
-		goToCraftingGuild = new ObjectStep(this, ObjectID.GUILD_DOOR_14910, new WorldPoint(2933, 3289, 0),
+		goToCraftingGuild = new ObjectStep(this, ObjectID.CRAFTINGGUILDDOOR, new WorldPoint(2933, 3289, 0),
 			"Go to the Crafting Guild west of Falador. You will need to equip a brown apron to enter.", brownApron.equipped(), pickaxe);
-		mineGold = new ObjectStep(this, ObjectID.GOLD_ROCKS, new WorldPoint(2938, 3280, 0),
+		mineGold = new ObjectStep(this, ObjectID.GOLDROCK1, new WorldPoint(2938, 3280, 0),
 			"Mine a gold ore.", pickaxe);
 
 		//Dwarven Mines Shortcut
-		enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(3059, 3376, 0),
+		enterDwarvenMines = new ObjectStep(this, ObjectID.STAIRS_CELLAR, new WorldPoint(3059, 3376, 0),
 			"Go to the Dwarven Mines.");
-		dwarfShortcut = new ObjectStep(this, ObjectID.CREVICE_16543, new WorldPoint(3034, 9806, 0),
+		dwarfShortcut = new ObjectStep(this, ObjectID.DWARF_MINES_SC_WALL_CRACK, new WorldPoint(3034, 9806, 0),
 			"Squeeze through the crevice in the Dwarven Mines");
 
 		//Chop and burn Willow in Tav
 		goToTav = new DetailedQuestStep(this, new WorldPoint(2921, 3431, 0),
 			"Go to Taverley, north west of Falador.", axe, tinderbox);
-		chopWillowLog = new ObjectStep(this, ObjectID.WILLOW_TREE_10819, new WorldPoint(2925, 3412, 0),
+		chopWillowLog = new ObjectStep(this, ObjectID.WILLOWTREE, new WorldPoint(2925, 3412, 0),
 			"Chop a Willow Tree while within Taverley.", axe, tinderbox);
 		burnWillowLog = new DetailedQuestStep(this,
 			"Use your tinderbox on the Willow Logs.", willowLog.highlighted(), tinderbox.highlighted());
 
 		//Make Basket on Loom
-		makeBasketFalLoom = new ObjectStep(this, ObjectID.LOOM_8717, new WorldPoint(3039, 3287, 0),
+		makeBasketFalLoom = new ObjectStep(this, ObjectID.LOOM, new WorldPoint(3039, 3287, 0),
 			"Use Sarah's Loom in the Falador Farm to make a basket.", willowBranch6);
 		makeBasketFalLoom.addIcon(ItemID.WILLOW_BRANCH);
 
@@ -370,7 +373,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 			"Use the Teleport to Falador spell to teleport to Falador");
 
 		//Claim Reward
-		claimReward = new NpcStep(this, NpcID.SIR_REBRAL, new WorldPoint(2977, 3346, 0),
+		claimReward = new NpcStep(this, NpcID.WHITE_KNIGHT_DIARY, new WorldPoint(2977, 3346, 0),
 			"Congratulations! Talk to Sir Rebral in the courtyard of The White Knight Castle to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 
@@ -444,8 +447,8 @@ public class FaladorMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Falador Shield (2)", ItemID.FALADOR_SHIELD_2, 1),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Falador Shield (2)", ItemID.FALADOR_SHIELD_MEDIUM, 1),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

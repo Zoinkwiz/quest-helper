@@ -24,19 +24,20 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collections;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class Ardougne extends AgilityCourse
 
@@ -95,20 +96,20 @@ public class Ardougne extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Ardougne obstacles
-		climbWoodenBeam = new ObjectStep(this.questHelper, ObjectID.WOODEN_BEAMS, new WorldPoint(2729, 3489, 0),
+		climbWoodenBeam = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_ARDY_WALLCLIMB, new WorldPoint(2729, 3489, 0),
 			"Climb up the wooden beams on the outside of the house south east of the East Ardougne Marketplace.",
 			Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
-		jumpFirstGap = new ObjectStep(this.questHelper, ObjectID.GAP_15609, new WorldPoint(2729, 3489, 0),
+		jumpFirstGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_ARDY_JUMP, new WorldPoint(2729, 3489, 0),
 			"Jump across the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
-		walkOnPlank = new ObjectStep(this.questHelper, ObjectID.PLANK_26635, new WorldPoint(2729, 3489, 0),
+		walkOnPlank = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_ARDY_PLANK, new WorldPoint(2729, 3489, 0),
 			"Walk across the plank.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
-		jumpSecondGap = new ObjectStep(this.questHelper, ObjectID.GAP_15610, new WorldPoint(2729, 3489, 0),
+		jumpSecondGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_ARDY_JUMP_2, new WorldPoint(2729, 3489, 0),
 			"Jump across the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
-		jumpThirdGap = new ObjectStep(this.questHelper, ObjectID.GAP_15611, new WorldPoint(2729, 3489, 0),
+		jumpThirdGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_ARDY_JUMP_3, new WorldPoint(2729, 3489, 0),
 			"Jump across another gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
-		balanceRoof = new ObjectStep(this.questHelper, ObjectID.STEEP_ROOF, new WorldPoint(2729, 3489, 0),
+		balanceRoof = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_ARDY_WALLCROSSING, new WorldPoint(2729, 3489, 0),
 			"Balance across the steep roof.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
-		jumpForthGap = new ObjectStep(this.questHelper, ObjectID.GAP_15612, new WorldPoint(2729, 3489, 0),
+		jumpForthGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_ARDY_JUMP_4, new WorldPoint(2729, 3489, 0),
 			"Balance across the final steep roof.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
 

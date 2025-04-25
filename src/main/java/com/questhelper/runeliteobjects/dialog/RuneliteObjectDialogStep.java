@@ -24,11 +24,12 @@
  */
 package com.questhelper.runeliteobjects.dialog;
 
-import com.questhelper.runeliteobjects.extendedruneliteobjects.FaceAnimationIDs;
-import java.util.ArrayList;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.FaceAnimationIDs;
 import lombok.Getter;
 import net.runelite.api.Client;
+
+import java.util.ArrayList;
 
 public class RuneliteObjectDialogStep extends RuneliteDialogStep
 {

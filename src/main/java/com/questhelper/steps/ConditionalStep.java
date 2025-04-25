@@ -25,30 +25,31 @@
 package com.questhelper.steps;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.MultiChatMessageRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.npc.DialogRequirement;
-import com.questhelper.requirements.runelite.RuneliteRequirement;
-import com.questhelper.requirements.conditional.InitializableRequirement;
-import java.awt.Graphics2D;
-import java.util.*;
-import java.util.function.Consumer;
-import lombok.NonNull;
-import lombok.Setter;
-import net.runelite.api.GameState;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.MultiChatMessageRequirement;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.InitializableRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.DialogRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
+import com.questhelper.steps.widget.AbstractWidgetHighlight;
+import lombok.NonNull;
+import lombok.Setter;
+import net.runelite.api.GameState;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.*;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /* Conditions are checked in the order they were added */
 public class ConditionalStep extends QuestStep implements OwnerStep
@@ -392,6 +393,25 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	}
 
 	@Override
+	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		if (currentStep != null)
+		{
+			currentStep.makeWidgetOverlayHint(graphics, plugin);
+		}
+		WorldPoint activeWp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).getWorldPoint() : null;
+		List<ItemRequirement> itemRequirements = requirements.stream()
+				.filter(ItemRequirement.class::isInstance)
+				.map(ItemRequirement.class::cast)
+				.collect(Collectors.toList());
+		renderInventory(graphics, activeWp, itemRequirements, false);
+		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
+		{
+			widgetHighlights.highlightChoices(graphics, client, plugin);
+		}
+	}
+
+	@Override
 	public void renderQuestStepTooltip(PanelComponent panelComponent, boolean isMenuOpen, boolean isBackgroundHelper)
 	{
 		if (currentStep != null)
@@ -403,18 +423,19 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Override
 	public QuestStep getActiveStep()
 	{
-		if (currentStep != null)
+		if (currentStep == null || !started)
 		{
-			return currentStep.getActiveStep();
+			return this;
 		}
 
-		return this;
+		return currentStep.getActiveStep();
 	}
 
 	@Override
 	public boolean containsSteps(QuestStep questStep, Set<QuestStep> checkedSteps)
 	{
 		if (super.containsSteps(questStep, checkedSteps)) return true;
+		if (!started) return false;
 
 		Set<QuestStep> stepSet = new HashSet<>(steps.values());
 		stepSet.removeAll(checkedSteps);

@@ -24,11 +24,12 @@
  */
 package com.questhelper.requirements;
 
+import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import net.runelite.api.Client;
-import net.runelite.api.events.ChatMessage;
 
 // This is used where you need multiple chatMessageRequirements to checked together, where one alone isn't enough context
 public class MultiChatMessageRequirement extends ChatMessageRequirement

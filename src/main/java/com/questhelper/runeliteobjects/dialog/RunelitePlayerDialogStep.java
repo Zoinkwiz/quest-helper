@@ -24,8 +24,8 @@
  */
 package com.questhelper.runeliteobjects.dialog;
 
-import com.questhelper.runeliteobjects.extendedruneliteobjects.FaceAnimationIDs;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
+import com.questhelper.runeliteobjects.extendedruneliteobjects.FaceAnimationIDs;
 import net.runelite.api.Client;
 
 public class RunelitePlayerDialogStep extends RuneliteDialogStep

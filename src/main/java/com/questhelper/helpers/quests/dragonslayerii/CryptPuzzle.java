@@ -25,7 +25,6 @@
 package com.questhelper.helpers.quests.dragonslayerii;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
@@ -34,21 +33,19 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
 
 public class CryptPuzzle extends DetailedOwnerStep
 {
@@ -81,8 +78,6 @@ public class CryptPuzzle extends DetailedOwnerStep
 	Requirement hasAivasBust, hasRobertBust, hasCamorraBust, hasTristanBust;
 
 	DetailedQuestStep takeCamorraBust, takeAivasBust, takeRobertBust, takeTristanBust, placeBustNorth, placeBustSouth, placeBustEast, placeBustWest, inspectTomb;
-
-	Zone firstFloor, basement, secondFloor;
 
 	// Find match, set bust to take to correct step, set bust to use to correct ItemRequirement
 	public CryptPuzzle(QuestHelper questHelper)
@@ -146,10 +141,10 @@ public class CryptPuzzle extends DetailedOwnerStep
 			startUpStep(inspectTomb);
 			return;
 		}
-		int currentNorthBust = client.getVarbitValue(6152);
-		int currentEastBust = client.getVarbitValue(6154);
-		int currentSouthBust = client.getVarbitValue(6153);
-		int currentWestBust = client.getVarbitValue(6155);
+		int currentNorthBust = client.getVarbitValue(VarbitID.DS2_PLINTH_NORTH);
+		int currentEastBust = client.getVarbitValue(VarbitID.DS2_PLINTH_EAST);
+		int currentSouthBust = client.getVarbitValue(VarbitID.DS2_PLINTH_SOUTH);
+		int currentWestBust = client.getVarbitValue(VarbitID.DS2_PLINTH_WEST);
 
 		if (currentNorthBust != northBust)
 		{
@@ -203,13 +198,13 @@ public class CryptPuzzle extends DetailedOwnerStep
 
 	private void setupItemRequirements()
 	{
-		aivasBust = new ItemRequirement("Aivas bust", ItemID.AIVAS_BUST);
+		aivasBust = new ItemRequirement("Aivas bust", ItemID.DS2_BUST_AIVAS);
 		aivasBust.setHighlightInInventory(true);
-		robertBust = new ItemRequirement("Robert bust", ItemID.ROBERT_BUST);
+		robertBust = new ItemRequirement("Robert bust", ItemID.DS2_BUST_ROBERT);
 		robertBust.setHighlightInInventory(true);
-		tristanBust = new ItemRequirement("Trisan bust", ItemID.TRISTAN_BUST);
+		tristanBust = new ItemRequirement("Trisan bust", ItemID.DS2_BUST_TRISTAN);
 		tristanBust.setHighlightInInventory(true);
-		camorraBust = new ItemRequirement("Camorra bust", ItemID.CAMORRA_BUST);
+		camorraBust = new ItemRequirement("Camorra bust", ItemID.DS2_BUST_CAMORRA);
 		camorraBust.setHighlightInInventory(true);
 	}
 
@@ -224,17 +219,17 @@ public class CryptPuzzle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		inspectTomb = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29901, new WorldPoint(1504, 9939, 1), "Inspect the tomb in the south room.");
+		inspectTomb = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMBSTONE_CAMORRA, new WorldPoint(1504, 9939, 1), "Inspect the tomb in the south room.");
 
 
-		takeTristanBust = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29904, new WorldPoint(1507, 9941, 1), "Take Tristan's Bust.");
-		takeAivasBust = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29905, new WorldPoint(1500, 9941, 1), "Take Aivas' Bust.");
-		takeRobertBust = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29902, new WorldPoint(1500, 9936, 1), "Take Robert's Bust.");
-		takeCamorraBust = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29903, new WorldPoint(1507, 9936, 1), "Take Camorra's Bust.");
-		placeBustNorth = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29906, new WorldPoint(1504, 9941, 1), "Place the bust on the north plinth.");
-		placeBustEast = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29908, new WorldPoint(1506, 9939, 1), "Place the bust on the east plinth.");
-		placeBustSouth = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29907, new WorldPoint(1504, 9936, 1), "Place the bust on the south plinth.");
-		placeBustWest = new ObjectStep(getQuestHelper(), NullObjectID.NULL_29909, new WorldPoint(1501, 9939, 1), "Place the bust on the west plinth.");
+		takeTristanBust = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_BUST_TRISTAN, new WorldPoint(1507, 9941, 1), "Take Tristan's Bust.");
+		takeAivasBust = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_BUST_AIVAS, new WorldPoint(1500, 9941, 1), "Take Aivas' Bust.");
+		takeRobertBust = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_BUST_ROBERT, new WorldPoint(1500, 9936, 1), "Take Robert's Bust.");
+		takeCamorraBust = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_BUST_CAMORRA, new WorldPoint(1507, 9936, 1), "Take Camorra's Bust.");
+		placeBustNorth = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_PLINTH_NORTH, new WorldPoint(1504, 9941, 1), "Place the bust on the north plinth.");
+		placeBustEast = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_PLINTH_EAST, new WorldPoint(1506, 9939, 1), "Place the bust on the east plinth.");
+		placeBustSouth = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_PLINTH_SOUTH, new WorldPoint(1504, 9936, 1), "Place the bust on the south plinth.");
+		placeBustWest = new ObjectStep(getQuestHelper(), ObjectID.DS2_TOMB_PLINTH_WEST, new WorldPoint(1501, 9939, 1), "Place the bust on the west plinth.");
 
 		setupItemRequirements();
 		setupConditions();
@@ -249,10 +244,10 @@ public class CryptPuzzle extends DetailedOwnerStep
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (!solutionFound && widgetLoaded.getGroupId() == 748)
+		if (!solutionFound && widgetLoaded.getGroupId() == InterfaceID.STONEPLAQUE)
 		{
 			List<Integer> potentialBusts = QuestUtil.toArrayList(AIVAS, CAMORRA, ROBERT, TRISTAN);
-			Widget parentWidget = client.getWidget(748, 2);
+			Widget parentWidget = client.getWidget(InterfaceID.Stoneplaque.CONTENT);
 			if (parentWidget == null || parentWidget.getStaticChildren() == null) return;
 
 			StringBuilder storyString = new StringBuilder();

@@ -25,14 +25,14 @@
 package com.questhelper.helpers.achievementdiaries.varrock;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -40,26 +40,23 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class VarrockElite extends ComplexStateQuestHelper
 {
@@ -116,26 +113,26 @@ public class VarrockElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notSuperCombat = new VarplayerRequirement(1177, false, 7);
-		notPlankMake = new VarplayerRequirement(1177, false, 8);
-		notSummerPie = new VarplayerRequirement(1177, false, 9);
-		notRuneDart = new VarplayerRequirement(1177, false, 10);
-		not100Earth = new VarplayerRequirement(1177, false, 11);
+		notSuperCombat = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 7);
+		notPlankMake = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 8);
+		notSummerPie = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 9);
+		notRuneDart = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 10);
+		not100Earth = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY2, false, 11);
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		sAtk4 = new ItemRequirement("Super attack(4)", ItemID.SUPER_ATTACK4).showConditioned(notSuperCombat);
-		sStr4 = new ItemRequirement("Super strength(4)", ItemID.SUPER_STRENGTH4).showConditioned(notSuperCombat);
-		sDef4 = new ItemRequirement("Super defense(4)", ItemID.SUPER_DEFENCE4).showConditioned(notSuperCombat);
+		sAtk4 = new ItemRequirement("Super attack(4)", ItemID._4DOSE2ATTACK).showConditioned(notSuperCombat);
+		sStr4 = new ItemRequirement("Super strength(4)", ItemID._4DOSE2STRENGTH).showConditioned(notSuperCombat);
+		sDef4 = new ItemRequirement("Super defense(4)", ItemID._4DOSE2DEFENSE).showConditioned(notSuperCombat);
 		torstol = new ItemRequirement("Torstol", ItemID.TORSTOL).showConditioned(notSuperCombat);
-		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE).showConditioned(notPlankMake);
-		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notPlankMake);
-		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notPlankMake);
+		natureRune = new ItemRequirement("Nature rune", ItemID.NATURERUNE).showConditioned(notPlankMake);
+		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRALRUNE).showConditioned(notPlankMake);
+		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE).showConditioned(notPlankMake);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notPlankMake);
 		mahoganyLog = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS).showConditioned(notPlankMake);
 		cookingGuild = new ItemRequirement("Access to cooking guild", ItemCollections.COOKING_GUILD).showConditioned(notSummerPie).isNotConsumed();
 		cookingGuild.setTooltip("A chef's hat, Varrock Armour 3, or Cooking Cape");
-		rawPie = new ItemRequirement("Raw summer pie", ItemID.RAW_SUMMER_PIE).showConditioned(notSummerPie);
+		rawPie = new ItemRequirement("Raw summer pie", ItemID.UNCOOKED_SUMMER_PIE).showConditioned(notSummerPie);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER, 10).showConditioned(notRuneDart);
 		runeBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR).showConditioned(notRuneDart);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneDart).isNotConsumed();
@@ -188,9 +185,9 @@ public class VarrockElite extends ComplexStateQuestHelper
 			earthRune.quantity(300), coins.quantity(21000), mahoganyLog.quantity(20));
 		plankMake = new DetailedQuestStep(this, "Cast plank make until you've made 20 mahogany planks.",
 			natureRune.quantity(20), astralRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoganyLog.quantity(20));
-		moveToCookingGuild = new ObjectStep(this, ObjectID.DOOR_24958, new WorldPoint(3143, 3443, 0),
+		moveToCookingGuild = new ObjectStep(this, ObjectID.CHEFDOOR, new WorldPoint(3143, 3443, 0),
 			"Enter the cooking guild.", cookingGuild.equipped());
-		summerPie = new ObjectStep(this, ObjectID.RANGE_7183, new WorldPoint(3146, 3453, 0),
+		summerPie = new ObjectStep(this, ObjectID.FAI_VARROCK_RANGE, new WorldPoint(3146, 3453, 0),
 			"Cook the summer pie.", rawPie);
 		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
 			"Travel to the earth altar or go through the abyss.", earthTali, essence.quantity(25));
@@ -198,12 +195,12 @@ public class VarrockElite extends ComplexStateQuestHelper
 			"Craft the earth runes.", essence.quantity(25));
 		moveToAnvil = new DetailedQuestStep(this, new WorldPoint(3188, 3426, 0),
 			"Go to the anvil beside the west Varrock bank.", runeBar, feather, hammer);
-		dartTip = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(3188, 3426, 0),
+		dartTip = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3188, 3426, 0),
 			"Make rune dart tips on the anvil in west Varrock.", runeBar);
 		runeDart = new ItemStep(this, "Use feathers on the rune dart tips.", runeDartTip.highlighted(),
 			feather.highlighted());
 
-		claimReward = new NpcStep(this, NpcID.TOBY, new WorldPoint(3225, 3415, 0),
+		claimReward = new NpcStep(this, NpcID.TOBY_VARROCK_DIARY, new WorldPoint(3225, 3415, 0),
 			"Talk to Toby in Varrock to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -245,8 +242,8 @@ public class VarrockElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Varrock Armor (4)", ItemID.VARROCK_ARMOUR_4, 1),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Varrock Armor (4)", ItemID.VARROCK_ARMOUR_ELITE, 1),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

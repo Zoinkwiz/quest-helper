@@ -24,32 +24,26 @@
  */
 package com.questhelper.helpers.quests.thecorsaircurse;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class TheCorsairCurse extends BasicQuestHelper
 {
@@ -181,7 +175,7 @@ public class TheCorsairCurse extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
-		ogreArtfact = new ItemRequirement("Ogre artefact", ItemID.OGRE_ARTEFACT_21837);
+		ogreArtfact = new ItemRequirement("Ogre artefact", ItemID.CORSCURS_RELIC);
 	}
 
 	@Override
@@ -205,11 +199,11 @@ public class TheCorsairCurse extends BasicQuestHelper
 		inCavern = new ZoneRequirement(cavern);
 		talkedToIthoi = new VarbitRequirement(6075, 1);
 
-		talkedToArsen = new VarbitRequirement(6074, 2, Operation.GREATER_EQUAL);
+		talkedToArsen = new VarbitRequirement(VarbitID.CORSCURS_THIEF, 2, Operation.GREATER_EQUAL);
 		returnedToothPick = new VarbitRequirement(6074, 4);
-		finishedArsen = new VarbitRequirement(6074, 6, Operation.GREATER_EQUAL);
+		finishedArsen = new VarbitRequirement(VarbitID.CORSCURS_THIEF, 6, Operation.GREATER_EQUAL);
 
-		talkedToColin = new VarbitRequirement(6072, 1, Operation.GREATER_EQUAL);
+		talkedToColin = new VarbitRequirement(VarbitID.CORSCURS_CABINBOY, 1, Operation.GREATER_EQUAL);
 		lookedThroughTelescope = new VarbitRequirement(6072, 2);
 		finishedColin = new VarbitRequirement(6072, 3);
 
@@ -220,122 +214,122 @@ public class TheCorsairCurse extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToTockFarm = new NpcStep(this, NpcID.CAPTAIN_TOCK, new WorldPoint(3030, 3273, 0), "Talk to Captain Tock north of Port Sarim.");
+		talkToTockFarm = new NpcStep(this, NpcID.CORSAIR_CAPTAIN_1OP, new WorldPoint(3030, 3273, 0), "Talk to Captain Tock north of Port Sarim.");
 		talkToTockFarm.addDialogStep("What kind of help do you need?");
 		talkToTockFarm.addDialogStep("Sure, I'll try to help with your curse.");
 
-		talkToTockRimmington = new NpcStep(this, NpcID.CAPTAIN_TOCK, new WorldPoint(2910, 3226, 0), "Talk to Captain Tock west of Rimmington.");
+		talkToTockRimmington = new NpcStep(this, NpcID.CORSAIR_CAPTAIN_1OP, new WorldPoint(2910, 3226, 0), "Talk to Captain Tock west of Rimmington.");
 		talkToTockRimmington.addDialogStep("Okay, I'm ready go to Corsair Cove.");
 
-		returnToCove = new NpcStep(this, NpcID.CAPTAIN_TOCK_7958, new WorldPoint(2910, 3226, 0), "Return to Corsair Cove.");
+		returnToCove = new NpcStep(this, NpcID.CORSAIR_CAPTAIN_2OPS, new WorldPoint(2910, 3226, 0), "Return to Corsair Cove.");
 		returnToCove.addDialogStep("Let's go.");
 
-		goUpToIthoi = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Talk to Ithoi in the south western hut.");
-		talkToIthoi = new NpcStep(this, NpcID.ITHOI_THE_NAVIGATOR, new WorldPoint(2529, 2840, 1), "Talk to Ithoi in the south western hut.");
+		goUpToIthoi = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_RAMP, new WorldPoint(2531, 2833, 0), "Talk to Ithoi in the south western hut.");
+		talkToIthoi = new NpcStep(this, NpcID.CORSCURS_NAVIGATOR, new WorldPoint(2529, 2840, 1), "Talk to Ithoi in the south western hut.");
 		talkToIthoi.addDialogStep("I hear you've been cursed.");
 		talkToIthoi.addSubSteps(goUpToIthoi);
 
-		goDownFromIthoi = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2529, 2834, 1), "Talk to Arsen in the central hut.");
-		goUpToGnocci = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2549, 2862, 0), "Talk to Gnocci in the north west hut.");
-		talkToGnocci = new NpcStep(this, NpcID.GNOCCI_THE_COOK, new WorldPoint(2545, 2863, 1), "Talk to Gnocci in the north west hut.");
+		goDownFromIthoi = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_RAMP, new WorldPoint(2529, 2834, 1), "Talk to Arsen in the central hut.");
+		goUpToGnocci = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2549, 2862, 0), "Talk to Gnocci in the north west hut.");
+		talkToGnocci = new NpcStep(this, NpcID.CORSCURS_COOK, new WorldPoint(2545, 2863, 1), "Talk to Gnocci in the north west hut.");
 		talkToGnocci.addDialogStep("I hear you've been cursed.");
 		talkToGnocci.addSubSteps(goUpToGnocci, goDownFromIthoi);
 
-		goDownFromGnocci = new ObjectStep(this, ObjectID.STAIRS_31734, new WorldPoint(2548, 2862, 1), "Talk to Chief Tess down the hole west of the Cove.");
+		goDownFromGnocci = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_DOWN, new WorldPoint(2548, 2862, 1), "Talk to Chief Tess down the hole west of the Cove.");
 
-		goUpToArsen = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2555, 2856, 0), "Talk to Arsen in the central hut.");
-		talkToArsen = new NpcStep(this, NpcID.ARSEN_THE_THIEF, new WorldPoint(2554, 2859, 1), "Talk to Arsen in the central hut.");
+		goUpToArsen = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2555, 2856, 0), "Talk to Arsen in the central hut.");
+		talkToArsen = new NpcStep(this, NpcID.CORSCURS_THIEF, new WorldPoint(2554, 2859, 1), "Talk to Arsen in the central hut.");
 		talkToArsen.addDialogStep("I hear you've been cursed.");
 		talkToArsen.addSubSteps(goDownFromIthoi, goUpToArsen);
 
-		goUpToColin = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2555, 2856, 0), "Talk to Colin in the central hut.");
-		talkToColin = new NpcStep(this, NpcID.CABIN_BOY_COLIN, new WorldPoint(2558, 2858, 1), "Talk to Colin in the central hut.");
+		goUpToColin = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2555, 2856, 0), "Talk to Colin in the central hut.");
+		talkToColin = new NpcStep(this, NpcID.CORSCURS_CABINBOY, new WorldPoint(2558, 2858, 1), "Talk to Colin in the central hut.");
 		talkToColin.addDialogStep("I hear you've been cursed.");
 		talkToColin.addSubSteps(goUpToColin);
 
-		goDownFromArsen = new ObjectStep(this, ObjectID.STAIRS_31734, new WorldPoint(2555, 2855, 1), "Talk to Gnocci in the north west hut.");
-		grabTinderbox = new ObjectStep(this, ObjectID.TINDERBOX, new WorldPoint(2543, 2862, 1), "Pick up the tinderbox next to Gnocci.", tinderbox);
-		pickUpSpade = new ObjectStep(this, ObjectID.SPADE_31585, new WorldPoint(2552, 2846, 0), "Take the spade in the south of the Corsair Cove.");
+		goDownFromArsen = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_DOWN, new WorldPoint(2555, 2855, 1), "Talk to Gnocci in the north west hut.");
+		grabTinderbox = new ObjectStep(this, ObjectID.RAIDS_ICEDEMON_TINDERBOX, new WorldPoint(2543, 2862, 1), "Pick up the tinderbox next to Gnocci.", tinderbox);
+		pickUpSpade = new ObjectStep(this, ObjectID.SAND_WITHSPADE, new WorldPoint(2552, 2846, 0), "Take the spade in the south of the Corsair Cove.");
 
-		talkToTockShip = new NpcStep(this, NpcID.CAPTAIN_TOCK_7958, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship.");
+		talkToTockShip = new NpcStep(this, NpcID.CORSAIR_CAPTAIN_2OPS, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship.");
 		talkToTockShip.addDialogStep("Arsen says he gave you a sacred ogre relic.");
 		talkToTockShip.addDialogStep("About that sacred ogre relic...");
-		goOntoShip = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2839, 0),
+		goOntoShip = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_SHIPPLANK, new WorldPoint(2578, 2839, 0),
 			"Talk to Captain Tock on the ship.");
 
-		leaveShip = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2838, 1), "Enter the hole west of the Corsair Cove and talk to Chief Tess.");
-		goDownToTess = new ObjectStep(this, ObjectID.HOLE_31791, new WorldPoint(2523, 2861, 0), "Enter the hole west of the Corsair Cove and talk to Chief Tess.");
-		talkToTess = new NpcStep(this, NpcID.CHIEF_TESS, new WorldPoint(2012, 9006, 1), "Talk to Chief Tess.");
+		leaveShip = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_SHIPPLANK, new WorldPoint(2578, 2838, 1), "Enter the hole west of the Corsair Cove and talk to Chief Tess.");
+		goDownToTess = new ObjectStep(this, ObjectID.DS2_OGRE_CORSAIR_VINE_LADDER_ENTRANCE, new WorldPoint(2523, 2861, 0), "Enter the hole west of the Corsair Cove and talk to Chief Tess.");
+		talkToTess = new NpcStep(this, NpcID.OGRESS_TESS, new WorldPoint(2012, 9006, 1), "Talk to Chief Tess.");
 		talkToTess.addSubSteps(goDownToTess, leaveShip);
 		talkToTess.addDialogStep("I've come to return what Arsen stole.");
 
-		goUpFromTess = new ObjectStep(this, ObjectID.VINE_LADDER_31790, new WorldPoint(2012, 9005, 1), "Leave the cavern.");
+		goUpFromTess = new ObjectStep(this, ObjectID.DS2_OGRE_CORSAIR_VINE_LADDER, new WorldPoint(2012, 9005, 1), "Leave the cavern.");
 		digSand = new DigStep(this, new WorldPoint(2504, 2840, 0), "Dig next to the tree south west of the Cove.");
 		digSand.addDialogStep("Search for the possessed doll and face the consequences.");
 		digSand.addSubSteps(goUpFromTess);
 
-		goUpToIthoi2 = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Go look through Ithoi's telescope.");
-		lookThroughTelescope = new ObjectStep(this, ObjectID.TELESCOPE_31632, new WorldPoint(2528, 2835, 1), "Go look through Ithoi's telescope.");
+		goUpToIthoi2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_RAMP, new WorldPoint(2531, 2833, 0), "Go look through Ithoi's telescope.");
+		lookThroughTelescope = new ObjectStep(this, ObjectID.CORSCURS_TELESCOPE, new WorldPoint(2528, 2835, 1), "Go look through Ithoi's telescope.");
 		lookThroughTelescope.addSubSteps(goUpToIthoi2);
 
-		goDownFromIthoi2 = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2529, 2834, 1), "Leave Ithoi's hut.");
-		goUpToGnocci2 = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2549, 2862, 0), "Talk to Gnocci in the north west hut.");
-		talkToGnocci2 = new NpcStep(this, NpcID.GNOCCI_THE_COOK, new WorldPoint(2545, 2863, 1), "Talk to Gnocci in the north west hut.");
+		goDownFromIthoi2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_RAMP, new WorldPoint(2529, 2834, 1), "Leave Ithoi's hut.");
+		goUpToGnocci2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2549, 2862, 0), "Talk to Gnocci in the north west hut.");
+		talkToGnocci2 = new NpcStep(this, NpcID.CORSCURS_COOK, new WorldPoint(2545, 2863, 1), "Talk to Gnocci in the north west hut.");
 		talkToGnocci2.addSubSteps(goUpToGnocci2, goDownFromIthoi2);
 
-		goDownFromGnocci2 = new ObjectStep(this, ObjectID.STAIRS_31734, new WorldPoint(2548, 2862, 1), "Talk to Arsen.");
-		goUpToArsen2 = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2555, 2856, 0), "Talk to Arsen in the central hut.");
-		talkToArsen2 = new NpcStep(this, NpcID.ARSEN_THE_THIEF, new WorldPoint(2554, 2859, 1), "Talk to Arsen in the central hut.");
+		goDownFromGnocci2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_DOWN, new WorldPoint(2548, 2862, 1), "Talk to Arsen.");
+		goUpToArsen2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2555, 2856, 0), "Talk to Arsen in the central hut.");
+		talkToArsen2 = new NpcStep(this, NpcID.CORSCURS_THIEF, new WorldPoint(2554, 2859, 1), "Talk to Arsen in the central hut.");
 		talkToArsen2.addSubSteps(goUpToArsen2, goDownFromGnocci2);
 
-		goUpToColin2 = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2555, 2856, 0), "Talk to Colin in the central hut.");
-		talkToColin2 = new NpcStep(this, NpcID.CABIN_BOY_COLIN, new WorldPoint(2558, 2858, 1), "Talk to Colin in the central hut.");
+		goUpToColin2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2555, 2856, 0), "Talk to Colin in the central hut.");
+		talkToColin2 = new NpcStep(this, NpcID.CORSCURS_CABINBOY, new WorldPoint(2558, 2858, 1), "Talk to Colin in the central hut.");
 		talkToColin2.addSubSteps(goUpToColin);
 
-		goOntoShip2 = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2839, 0), "Talk to Captain Tock on the ship.");
-		talkToTockShip2 = new NpcStep(this, NpcID.CAPTAIN_TOCK_7958, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship.");
+		goOntoShip2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_SHIPPLANK, new WorldPoint(2578, 2839, 0), "Talk to Captain Tock on the ship.");
+		talkToTockShip2 = new NpcStep(this, NpcID.CORSAIR_CAPTAIN_2OPS, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship.");
 		talkToTockShip2.addDialogStep("I've ruled out all the Corsairs' theories...");
 		talkToTockShip2.addDialogStep("So what do I do now?");
 		talkToTockShip2.addSubSteps(goOntoShip2);
 
-		leaveShip2 = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2838, 1), "Talk to Gnocci in the north west hut.");
-		goUpToGnocci3 = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2549, 2862, 0), "Talk to Gnocci in the north west hut.");
-		talkToGnocci3 = new NpcStep(this, NpcID.GNOCCI_THE_COOK, new WorldPoint(2545, 2863, 1), "Talk to Gnocci in the north west hut.");
+		leaveShip2 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_SHIPPLANK, new WorldPoint(2578, 2838, 1), "Talk to Gnocci in the north west hut.");
+		goUpToGnocci3 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2549, 2862, 0), "Talk to Gnocci in the north west hut.");
+		talkToGnocci3 = new NpcStep(this, NpcID.CORSCURS_COOK, new WorldPoint(2545, 2863, 1), "Talk to Gnocci in the north west hut.");
 		talkToGnocci3.addDialogStep("I hear it happened straight after dinner.");
 		talkToGnocci3.addSubSteps(goUpToGnocci3, leaveShip2);
 
-		goDownFromGnocci3 = new ObjectStep(this, ObjectID.STAIRS_31734, new WorldPoint(2548, 2862, 1), "Talk to Arsen.");
-		goUpToArsen3 = new ObjectStep(this, ObjectID.STAIRS_31733, new WorldPoint(2555, 2856, 0), "Talk to Arsen in the central hut.");
-		talkToArsen3 = new NpcStep(this, NpcID.ARSEN_THE_THIEF, new WorldPoint(2554, 2859, 1), "Talk to Arsen in the central hut.");
+		goDownFromGnocci3 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_DOWN, new WorldPoint(2548, 2862, 1), "Talk to Arsen.");
+		goUpToArsen3 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS, new WorldPoint(2555, 2856, 0), "Talk to Arsen in the central hut.");
+		talkToArsen3 = new NpcStep(this, NpcID.CORSCURS_THIEF, new WorldPoint(2554, 2859, 1), "Talk to Arsen in the central hut.");
 		talkToArsen3.addDialogStep("I hear Ithoi cooked the meal you ate that night.");
 		talkToArsen3.addSubSteps(goUpToArsen3, goDownFromGnocci3);
 
-		goDownFromArsen3 = new ObjectStep(this, ObjectID.STAIRS_31734, new WorldPoint(2555, 2855, 1), "Talk to Ithoi in the south western hut.");
-		goUpToIthoi3 = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Talk to Ithoi in the south western hut.");
-		talkToIthoi2 = new NpcStep(this, NpcID.ITHOI_THE_NAVIGATOR, new WorldPoint(2529, 2840, 1), "Talk to Ithoi.");
+		goDownFromArsen3 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_DOWN, new WorldPoint(2555, 2855, 1), "Talk to Ithoi in the south western hut.");
+		goUpToIthoi3 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_RAMP, new WorldPoint(2531, 2833, 0), "Talk to Ithoi in the south western hut.");
+		talkToIthoi2 = new NpcStep(this, NpcID.CORSCURS_NAVIGATOR, new WorldPoint(2529, 2840, 1), "Talk to Ithoi.");
 		talkToIthoi2.addSubSteps(goUpToIthoi3, goDownFromArsen3);
 		talkToIthoi2.addDialogStep("I bet I can prove you're well enough to get up.");
 		talkToIthoi2.addDialogStep("I know you've faked the curse.");
 		talkToIthoi2.addDialogStep("I hear you cooked the meal they ate before getting sick.");
 		talkToIthoi2.addDialogStep("Maybe because the Captain's thinking of firing you.");
 
-		goDownFromIthoi3 = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2529, 2834, 1), "Use your tinderbox on the driftwood under Ithoi's hut.");
-		useTinderboxOnWood = new ObjectStep(this, NullObjectID.NULL_31724, new WorldPoint(2531, 2838, 0), "Use your tinderbox on the driftwood under Ithoi's hut.", tinderbox);
+		goDownFromIthoi3 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_RAMP, new WorldPoint(2529, 2834, 1), "Use your tinderbox on the driftwood under Ithoi's hut.");
+		useTinderboxOnWood = new ObjectStep(this, ObjectID.CORSCURS_DRIFTWOOD_MULTI, new WorldPoint(2531, 2838, 0), "Use your tinderbox on the driftwood under Ithoi's hut.", tinderbox);
 		useTinderboxOnWood.addIcon(ItemID.TINDERBOX);
 		useTinderboxOnWood.addSubSteps(goDownFromIthoi3);
 
-		goOntoShip3 = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2839, 0), "Talk to Captain Tock on the ship.");
-		talkToTockShip3 = new NpcStep(this, NpcID.CAPTAIN_TOCK_7958, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship.");
+		goOntoShip3 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_SHIPPLANK, new WorldPoint(2578, 2839, 0), "Talk to Captain Tock on the ship.");
+		talkToTockShip3 = new NpcStep(this, NpcID.CORSAIR_CAPTAIN_2OPS, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship.");
 		talkToTockShip3.addDialogStep("I've seen Ithoi running around. He's not sick at all.");
 		talkToTockShip3.addSubSteps(goOntoShip3);
 
-		goUpToIthoiToKill = new ObjectStep(this, ObjectID.STAIRS_31735, new WorldPoint(2531, 2833, 0), "Go kill Ithoi (level 35) in his hut.");
+		goUpToIthoiToKill = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_STAIRS_RAMP, new WorldPoint(2531, 2833, 0), "Go kill Ithoi (level 35) in his hut.");
 		goUpToIthoiToKill.addDialogStep("I'll be back.");
-		killIthoi = new NpcStep(this, NpcID.ITHOI_THE_NAVIGATOR_7964, new WorldPoint(2529, 2840, 1), "Kill Ithoi (level 35).");
+		killIthoi = new NpcStep(this, NpcID.CORSCURS_NAVIGATOR_COMBAT, new WorldPoint(2529, 2840, 1), "Kill Ithoi (level 35).");
 		killIthoi.addSubSteps(goUpToIthoiToKill);
 
-		goOntoShip4 = new ObjectStep(this, ObjectID.GANGPLANK_31756, new WorldPoint(2578, 2839, 0), "Talk to Captain Tock on the ship to finish the quest.");
-		talkToTockShip4 = new NpcStep(this, NpcID.CAPTAIN_TOCK_7958, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship to finish the quest.");
+		goOntoShip4 = new ObjectStep(this, ObjectID.DS2_CORSAIR_COVE_SHIPPLANK, new WorldPoint(2578, 2839, 0), "Talk to Captain Tock on the ship to finish the quest.");
+		talkToTockShip4 = new NpcStep(this, NpcID.CORSAIR_CAPTAIN_2OPS, new WorldPoint(2574, 2835, 1), "Talk to Captain Tock on the ship to finish the quest.");
 		talkToTockShip4.addDialogStep("I've killed Ithoi for poisoning your crew.");
 		talkToTockShip4.addSubSteps(goOntoShip4);
 	}

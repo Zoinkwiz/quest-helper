@@ -25,35 +25,26 @@
 package com.questhelper.helpers.quests.sheepherder;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.tools.QuestTile;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
+import com.questhelper.tools.QuestTile;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class SheepHerder extends BasicQuestHelper
 {
@@ -114,12 +105,12 @@ public class SheepHerder extends BasicQuestHelper
 		plagueTrousers = new ItemRequirement("Plague trousers", ItemID.PLAGUE_TROUSERS);
 		plagueTrousers.setTooltip("You can buy another from Doctor Orbon for 100 coins");
 		cattleprod = new ItemRequirement("Cattle prod", ItemID.CATTLEPROD);
-		sheepFeed = new ItemRequirement("Sheep feed", ItemID.SHEEP_FEED);
+		sheepFeed = new ItemRequirement("Sheep feed", ItemID.POISONED_FEED);
 		sheepFeed.setTooltip("You can get more from Halgrive");
-		bones1 = new ItemRequirement("Sheep bones 1", ItemID.SHEEP_BONES_1);
-		bones2 = new ItemRequirement("Sheep bones 2", ItemID.SHEEP_BONES_2);
-		bones3 = new ItemRequirement("Sheep bones 3", ItemID.SHEEP_BONES_3);
-		bones4 = new ItemRequirement("Sheep bones 4", ItemID.SHEEP_BONES_4);
+		bones1 = new ItemRequirement("Sheep bones 1", ItemID.SHEEPBONESA);
+		bones2 = new ItemRequirement("Sheep bones 2", ItemID.SHEEPBONESB);
+		bones3 = new ItemRequirement("Sheep bones 3", ItemID.SHEEPBONESC);
+		bones4 = new ItemRequirement("Sheep bones 4", ItemID.SHEEPBONESD);
 	}
 
 	@Override
@@ -185,29 +176,29 @@ public class SheepHerder extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToHalgrive = new NpcStep(this, NpcID.COUNCILLOR_HALGRIVE_8765, new WorldPoint(2615, 3298, 0),
+		talkToHalgrive = new NpcStep(this, NpcID.COUNCILLOR_HALGRIVE_VIS, new WorldPoint(2615, 3298, 0),
 			"Talk to Councillor Halgrive outside the East Ardougne church.");
 		talkToHalgrive.addDialogSteps("What's wrong?", "I can do that for you.");
 		talkToOrbon = new NpcStep(this, NpcID.DOCTOR_ORBON, new WorldPoint(2616, 3306, 0),
 			"Talk to Doctor Orbon in the East Ardougne Church.", coins.quantity(100));
 		talkToOrbon.addDialogStep("Okay, I'll take it.");
-		enterEnclosure = new ObjectStep(this, ObjectID.GATE_166, new WorldPoint(2594, 3362, 0),
+		enterEnclosure = new ObjectStep(this, ObjectID.PLAGUESHEEP_GATEL, new WorldPoint(2594, 3362, 0),
 			"Enter the enclosure north of Ardougne.", plagueJacket.equipped(), plagueTrousers.equipped());
 		pickupCattleprod = new DetailedQuestStep(this, new WorldPoint(2604, 3357, 0), "Pickup the nearby cattleprod.",
 			cattleprod);
-		prodSheep1 = new NpcStep(this, NpcID.BLUE_SHEEP, new WorldPoint(2562, 3389, 0),
+		prodSheep1 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_3, new WorldPoint(2562, 3389, 0),
 			"Prod one of the blue sheep north west of the enclosure to the enclosure gate.",
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep1.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
-		prodSheep2 = new NpcStep(this, NpcID.YELLOW_SHEEP, new WorldPoint(2610, 3389, 0),
+		prodSheep2 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_4, new WorldPoint(2610, 3389, 0),
 			"Prod one of the yellow sheep north of the enclosure to the enclosure gate.",
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep2.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
-		prodSheep3 = new NpcStep(this, NpcID.GREEN_SHEEP, new WorldPoint(2621, 3367, 0),
+		prodSheep3 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_2, new WorldPoint(2621, 3367, 0),
 		"Prod one of the green sheep east of the enclosure to the enclosure gate.",
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep3.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
-		prodSheep4 = new NpcStep(this, NpcID.RED_SHEEP, new WorldPoint(2609, 3347, 0),
+		prodSheep4 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_1, new WorldPoint(2609, 3347, 0),
 		"Prod one of the red sheep south east of the enclosure to the enclosure gate.",
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep4.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
@@ -215,18 +206,18 @@ public class SheepHerder extends BasicQuestHelper
 		pickupBones = new ItemStep(this, "Pickup the bones.", bones1.hideConditioned(sheep4HasBones),
 			bones2.hideConditioned(sheep3HasBones), bones3.hideConditioned(sheep1HasBones),
 			bones4.hideConditioned(sheep2HasBones));
-		feedSheep = new NpcStep(this, NpcID.BLUE_SHEEP, new WorldPoint(2597, 3361, 0),
+		feedSheep = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_3, new WorldPoint(2597, 3361, 0),
 			"Feed the sheep the sheep feed.", true, sheepFeed.highlighted());
-		feedSheep.addIcon(ItemID.SHEEP_FEED);
+		feedSheep.addIcon(ItemID.POISONED_FEED);
 		((NpcStep) feedSheep).setMaxRoamRange(3);
-		((NpcStep) feedSheep).addAlternateNpcs(NpcID.GREEN_SHEEP, NpcID.RED_SHEEP, NpcID.YELLOW_SHEEP);
+		((NpcStep) feedSheep).addAlternateNpcs(NpcID.HERDER_PLAGUESHEEP_2, NpcID.HERDER_PLAGUESHEEP_1, NpcID.HERDER_PLAGUESHEEP_4);
 
-		useBonesOnIncinerator = new ObjectStep(this, ObjectID.INCINERATOR, new WorldPoint(2607, 3361, 0),
+		useBonesOnIncinerator = new ObjectStep(this, ObjectID.PLAGUESHEEP_FURNACE, new WorldPoint(2607, 3361, 0),
 			"Pickup the bones and incinerate them.", bones1.highlighted().hideConditioned(sheep4Burned),
 			bones2.highlighted().hideConditioned(sheep3Burned), bones3.highlighted().hideConditioned(sheep1Burned),
 			bones4.highlighted().hideConditioned(sheep2Burned));
-		useBonesOnIncinerator.addIcon(ItemID.SHEEP_BONES_1);
-		talkToHalgriveToFinish = new NpcStep(this, NpcID.COUNCILLOR_HALGRIVE_8765, new WorldPoint(2615, 3298, 0),
+		useBonesOnIncinerator.addIcon(ItemID.SHEEPBONESA);
+		talkToHalgriveToFinish = new NpcStep(this, NpcID.COUNCILLOR_HALGRIVE_VIS, new WorldPoint(2615, 3298, 0),
 			"Return to Councillor Halgrive.");
 	}
 
@@ -251,7 +242,7 @@ public class SheepHerder extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 3100));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 3100));
 	}
 
 	@Override

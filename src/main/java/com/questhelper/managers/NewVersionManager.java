@@ -29,6 +29,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

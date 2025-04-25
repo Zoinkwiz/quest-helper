@@ -24,25 +24,21 @@
  */
 package com.questhelper.helpers.quests.songoftheelves;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
 
 public class HefinLightPuzzle extends ConditionalStep
 {
@@ -112,22 +108,22 @@ public class HefinLightPuzzle extends ConditionalStep
 
 	protected void setupItemRequirements()
 	{
-		handMirrorHighlighted = new ItemRequirement("Hand mirror", ItemID.HAND_MIRROR_23775);
+		handMirrorHighlighted = new ItemRequirement("Hand mirror", ItemID.SOTE_MIRROR);
 		handMirrorHighlighted.setHighlightInInventory(true);
 
-		redCrystalHighlighted = new ItemRequirement("Red crystal", ItemID.RED_CRYSTAL_23776);
+		redCrystalHighlighted = new ItemRequirement("Red crystal", ItemID.SOTE_CRYSTAL_RED);
 		redCrystalHighlighted.setHighlightInInventory(true);
 
-		fracturedCrystalHighlighted = new ItemRequirement("Fractured crystal", ItemID.FRACTURED_CRYSTAL_23784);
+		fracturedCrystalHighlighted = new ItemRequirement("Fractured crystal", ItemID.SOTE_CRYSTAL_FRACTURED);
 		fracturedCrystalHighlighted.setHighlightInInventory(true);
 
-		greenCrystalHighlighted = new ItemRequirement("Green crystal", ItemID.GREEN_CRYSTAL_23778);
+		greenCrystalHighlighted = new ItemRequirement("Green crystal", ItemID.SOTE_CRYSTAL_GREEN);
 		greenCrystalHighlighted.setHighlightInInventory(true);
 
-		cyanCrystalHighlighted = new ItemRequirement("Cyan crystal", ItemID.CYAN_CRYSTAL_23779);
+		cyanCrystalHighlighted = new ItemRequirement("Cyan crystal", ItemID.SOTE_CRYSTAL_CYAN);
 		cyanCrystalHighlighted.setHighlightInInventory(true);
 
-		yellowCrystalHighlighted = new ItemRequirement("Yellow crystal", ItemID.YELLOW_CRYSTAL_23777);
+		yellowCrystalHighlighted = new ItemRequirement("Yellow crystal", ItemID.SOTE_CRYSTAL_YELLOW);
 		yellowCrystalHighlighted.setHighlightInInventory(true);
 	}
 
@@ -191,123 +187,123 @@ public class HefinLightPuzzle extends ConditionalStep
 
 	protected void setupSteps()
 	{
-		talkToAmlodd = new NpcStep(getQuestHelper(), NpcID.LORD_IEUAN_AMLODD, new WorldPoint(2353, 3179, 0), "Talk to Lord Amlodd in Lletya.");
+		talkToAmlodd = new NpcStep(getQuestHelper(), NpcID.SOTE_LORD_AMLODD_VIS, new WorldPoint(2353, 3179, 0), "Talk to Lord Amlodd in Lletya.");
 		talkToAmlodd.addDialogStep("Yes.");
 
-		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Collect all the items from the dispenser in the central room.");
+		collectMirrors = new ObjectStep(getQuestHelper(), ObjectID.SOTE_LIBRARY_DISPENSER, new WorldPoint(2623, 6118, 1), "Collect all the items from the dispenser in the central room.");
 		collectMirrors.addDialogStep("Take everything.");
 
-		resetPuzzle = new ObjectStep(getQuestHelper(), ObjectID.CRYSTAL_DISPENSER_35076, new WorldPoint(2623, 6118, 1), "Pull the lever in the dispenser in the central room.");
+		resetPuzzle = new ObjectStep(getQuestHelper(), ObjectID.SOTE_LIBRARY_DISPENSER, new WorldPoint(2623, 6118, 1), "Pull the lever in the dispenser in the central room.");
 		resetPuzzle.addDialogSteps("Pull the lever.", "Pull it.");
 
-		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35287, new WorldPoint(2609, 6158, 1),
+		p1Pillar1 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_D_5, new WorldPoint(2609, 6158, 1),
 			"Add a mirror to a pillar to the north. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar1.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar1.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35293, new WorldPoint(2623, 6158, 1),
+		p1Pillar2 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_E_5, new WorldPoint(2623, 6158, 1),
 			"Add a mirror to a pillar to the east. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar2.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar2.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_36705, new WorldPoint(2623, 6158, 0),
+		p1Pillar3 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_5, new WorldPoint(2623, 6158, 0),
 			"Add a mirror to the pillar near the stairs. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar3.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar3.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35151, new WorldPoint(2623, 6130, 0),
+		p1Pillar4 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_E_3, new WorldPoint(2623, 6130, 0),
 			"Add a mirror to the pillar to the south. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar4.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar4.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar5 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35145, new WorldPoint(2609, 6130, 0),
+		p1Pillar5 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_D_3, new WorldPoint(2609, 6130, 0),
 			"Add a mirror to the pillar to the west. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar5.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar5.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar6 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35144, new WorldPoint(2609, 6116, 0),
+		p1Pillar6 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_D_2, new WorldPoint(2609, 6116, 0),
 			"Add a mirror to the pillar to the south. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar6.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar6.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar7 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35138, new WorldPoint(2595, 6116, 0),
+		p1Pillar7 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_C_2, new WorldPoint(2595, 6116, 0),
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar7.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar7.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar8 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35139, new WorldPoint(2595, 6130, 0),
+		p1Pillar8 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_C_3, new WorldPoint(2595, 6130, 0),
 			"Add a mirror to the pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar8.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar8.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar9 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35273, new WorldPoint(2595, 6102, 1),
+		p1Pillar9 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_C_1, new WorldPoint(2595, 6102, 1),
 			"Add a mirror to a pillar to the south west. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar9.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar9.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar10 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35272, new WorldPoint(2595, 6088, 1),
+		p1Pillar10 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_C_0, new WorldPoint(2595, 6088, 1),
 			"Add a mirror to the pillar to the south. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar10.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar10.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar11 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35251, new WorldPoint(2567, 6088, 1),
+		p1Pillar11 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_A_0, new WorldPoint(2567, 6088, 1),
 			"Add a mirror to the pillar to the west. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar11.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar11.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar12 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_35253, new WorldPoint(2567, 6116, 1),
+		p1Pillar12 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_1_A_2, new WorldPoint(2567, 6116, 1),
 			"Run around to the north pillar and add a mirror. Rotate it to point the light down.", handMirrorHighlighted);
-		p1Pillar12.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar12.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar13 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_2067, new WorldPoint(2567, 6116, 0),
+		p1Pillar13 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_A_2, new WorldPoint(2567, 6116, 0),
 			"Add a mirror to the pillar to the south west. Rotate it to point the light east.", handMirrorHighlighted);
-		p1Pillar13.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar13.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar14 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_8799, new WorldPoint(2581, 6116, 0),
+		p1Pillar14 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_B_2, new WorldPoint(2581, 6116, 0),
 			"Add a mirror to the pillar to the east. Rotate it to point the light up.", handMirrorHighlighted);
-		p1Pillar14.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar14.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar15 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35137, new WorldPoint(2581, 6130,0),
+		p1Pillar15 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_B_3, new WorldPoint(2581, 6130,0),
 			"Add a mirror to the marked pillar. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar15.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar15.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar16 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_8802, new WorldPoint(2581, 6144,0),
+		p1Pillar16 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_B_4, new WorldPoint(2581, 6144,0),
 			"Add a mirror to the pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar16.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar16.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar17 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_2535, new WorldPoint(2567, 6144,0),
+		p1Pillar17 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_0_A_4, new WorldPoint(2567, 6144,0),
 			"Add a mirror to the pillar to the west. Rotate it to point the light up.", handMirrorHighlighted);
-		p1Pillar17.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar17.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar18 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35087, new WorldPoint(2581, 6116,2),
+		p1Pillar18 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_2_B_2, new WorldPoint(2581, 6116,2),
 			"Add a mirror to the pillar to the south. Rotate it to point the light north.", handMirrorHighlighted);
-		p1Pillar18.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar18.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar19 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35088, new WorldPoint(2581, 6130,2),
+		p1Pillar19 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_2_B_3, new WorldPoint(2581, 6130,2),
 			"Add a mirror to the pillar to the north. Rotate it to point the light west.", handMirrorHighlighted);
-		p1Pillar19.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar19.addIcon(ItemID.SOTE_MIRROR);
 
-		p1Pillar20 = new ObjectStep(getQuestHelper(), ObjectID.PILLAR_OF_LIGHT_35084, new WorldPoint(2567, 6144,2),
+		p1Pillar20 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_PILLAR_2_A_4, new WorldPoint(2567, 6144,2),
 			"Add a mirror to the pillar to the north west. Rotate it to point the light south.", handMirrorHighlighted);
-		p1Pillar20.addIcon(ItemID.HAND_MIRROR_23775);
+		p1Pillar20.addIcon(ItemID.SOTE_MIRROR);
 
-		f0ToF1NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2581, 6203, 0), "");
+		f0ToF1NW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_UP, new WorldPoint(2581, 6203, 0), "");
 
-		f1ToF0NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
+		f1ToF0NW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_BOTH, new WorldPoint(2581, 6203, 1), "");
 		f1ToF0NW.addDialogStep("Climb down.");
 
-		f2ToF1NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2581, 6203, 2), "");
+		f2ToF1NW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_DOWN, new WorldPoint(2581, 6203, 2), "");
 
-		f1ToF2NW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2581, 6203, 1), "");
+		f1ToF2NW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_BOTH, new WorldPoint(2581, 6203, 1), "");
 		f1ToF2NW.addDialogStep("Climb up.");
 
-		f0ToF1Middle = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2626, 6153, 0), "");
+		f0ToF1Middle = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_UP, new WorldPoint(2626, 6153, 0), "");
 
-		f1ToF0SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2584, 6123, 1), "");
+		f1ToF0SW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_BOTH, new WorldPoint(2584, 6123, 1), "");
 		f1ToF0SW.addDialogStep("Climb down.");
 
-		f0ToF1SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2584, 6137, 0), "");
+		f0ToF1SW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_UP, new WorldPoint(2584, 6137, 0), "");
 
-		f1ToF2SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35389, new WorldPoint(2584, 6137, 1), "");
+		f1ToF2SW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_BOTH, new WorldPoint(2584, 6137, 1), "");
 		f1ToF2SW.addDialogStep("Climb up.");
 
-		f2ToF1SW = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2584, 6137, 2), "");
+		f2ToF1SW = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_DOWN, new WorldPoint(2584, 6137, 2), "");
 		f2ToF1SW.addDialogStep("Climb up.");
 
-		f2ToF1 = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2634, 6166, 2), "");
+		f2ToF1 = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_DOWN, new WorldPoint(2634, 6166, 2), "");
 
-		f1ToF2E = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35387, new WorldPoint(2682, 6144, 1), "");
+		f1ToF2E = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_UP, new WorldPoint(2682, 6144, 1), "");
 
-		f2ToF1E = new ObjectStep(getQuestHelper(), ObjectID.STAIRS_35388, new WorldPoint(2682, 6144, 2), "");
+		f2ToF1E = new ObjectStep(getQuestHelper(), ObjectID.SOTE_WARPED_LIBRARY_TELEPORTER_DOWN, new WorldPoint(2682, 6144, 2), "");
 	}
 
 	protected void setupConditions()

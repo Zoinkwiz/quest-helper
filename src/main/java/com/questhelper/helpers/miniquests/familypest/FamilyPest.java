@@ -26,31 +26,27 @@
 package com.questhelper.helpers.miniquests.familypest;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class FamilyPest extends BasicQuestHelper
 {
@@ -108,15 +104,15 @@ public class FamilyPest extends BasicQuestHelper
 		talkToDimintheis = new NpcStep(this, NpcID.DIMINTHEIS, new WorldPoint(3280, 3404, 0), "Talk to Dimintheis (south-east of Varrock).");
 		talkToDimintheis.addDialogSteps("Have you got any quests for me?", "Oh come on, however menial, I want to help!");
 
-		talkToAvan = new NpcStep(this, NpcID.AVAN_387, new WorldPoint(3294, 3282, 0), "Talk to Avan (Entrance to the Al Kharid Mine).");
+		talkToAvan = new NpcStep(this, NpcID.AVAN_FITZHARMON_AVAN_2OPS, new WorldPoint(3294, 3282, 0), "Talk to Avan (Entrance to the Al Kharid Mine).");
 		talkToAvan.addDialogStep("Family Pest");
 
-		talkToCaleb = new NpcStep(this, NpcID.CALEB_5433, new WorldPoint(2819, 3453, 0), "Talk to Caleb (Northeast of Catherby bank).");
+		talkToCaleb = new NpcStep(this, NpcID.CALEB_FITZHARMON_2OPS, new WorldPoint(2819, 3453, 0), "Talk to Caleb (Northeast of Catherby bank).");
 		talkToCaleb.addDialogStep("Family Pest");
 
-		talkToJohnathon = new NpcStep(this, NpcID.JOHNATHON_5445, new WorldPoint(3281, 3505, 1), "Talk to Johnathon.");
+		talkToJohnathon = new NpcStep(this, NpcID.JOHNATHON_FITZHARMON_2OPS, new WorldPoint(3281, 3505, 1), "Talk to Johnathon.");
 		talkToJohnathon.addDialogStep("Family Pest");
-		goUpstairs = new ObjectStep(this, ObjectID.STAIRCASE_11797, new WorldPoint(3286, 3494, 0), "Go upstairs in the Jolly Boar Inn (Northeast of Varrock) and talk to Johnathon.");
+		goUpstairs = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER, new WorldPoint(3286, 3494, 0), "Go upstairs in the Jolly Boar Inn (Northeast of Varrock) and talk to Johnathon.");
 		goUpstairs.addSubSteps(talkToJohnathon);
 
 		talkToDimintheis2 = new NpcStep(this, NpcID.DIMINTHEIS, new WorldPoint(3280, 3404, 0), "Return to Dimintheis and pay him 500k.");

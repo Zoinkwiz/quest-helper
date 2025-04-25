@@ -25,11 +25,12 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.steps.QuestStep;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public abstract class BasicQuestHelper extends QuestHelper
 {

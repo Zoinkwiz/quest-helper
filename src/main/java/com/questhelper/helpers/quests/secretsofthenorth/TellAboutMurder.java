@@ -27,9 +27,9 @@ package com.questhelper.helpers.quests.secretsofthenorth;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.choice.DialogChoiceSteps;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class TellAboutMurder extends NpcStep
@@ -37,7 +37,7 @@ public class TellAboutMurder extends NpcStep
 
 	public TellAboutMurder(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.GUARD_12045, new WorldPoint(2571, 3267, 1),
+		super(questHelper, NpcID.SOTN_GUARD_CARNILLEAN_UPSTAIRS, new WorldPoint(2571, 3267, 1),
 			"Tell the guard about what you found.");
 	}
 

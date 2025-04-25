@@ -27,29 +27,19 @@ package com.questhelper.steps;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.steps.choice.*;
+import com.questhelper.steps.overlay.IconOverlay;
+import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.steps.widget.Spell;
 import com.questhelper.steps.widget.SpellWidgetHighlight;
 import com.questhelper.steps.widget.WidgetHighlight;
 import com.questhelper.tools.VisibilityHelper;
-import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.steps.choice.DialogChoiceChange;
-import com.questhelper.steps.choice.DialogChoiceStep;
-import com.questhelper.steps.choice.DialogChoiceSteps;
-import com.questhelper.steps.choice.WidgetTextChange;
-import com.questhelper.steps.choice.WidgetChoiceStep;
-import com.questhelper.steps.choice.WidgetChoiceSteps;
-import com.questhelper.steps.overlay.IconOverlay;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.regex.Pattern;
-
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -57,10 +47,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -69,6 +62,16 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
+
+import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 
 @Slf4j
 public abstract class QuestStep implements Module
@@ -161,6 +164,10 @@ public abstract class QuestStep implements Module
 	@Getter
 	protected String backgroundWorldTooltipText;
 
+	@Getter
+	@Setter
+	protected boolean shouldOverlayWidget;
+
 	public QuestStep(QuestHelper questHelper)
 	{
 		this.questHelper = questHelper;
@@ -221,7 +228,7 @@ public abstract class QuestStep implements Module
 	{
 		if (!allowInCutscene)
 		{
-			int newCutsceneStatus = client.getVarbitValue(QuestVarbits.CUTSCENE.getId());
+			int newCutsceneStatus = client.getVarbitValue(VarbitID.CUTSCENE_STATUS);
 			if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
 			{
 				enteredCutscene();
@@ -237,7 +244,7 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.DIALOG_OPTION)
+		if (event.getGroupId() == InterfaceID.CHATMENU)
 		{
 			clientThread.invokeLater(this::highlightChoice);
 		}
@@ -413,6 +420,12 @@ public abstract class QuestStep implements Module
 		return this;
 	}
 
+	public QuestStep addWidgetHighlight(int interfaceID)
+	{
+		widgetsToHighlight.add(new WidgetHighlight(interfaceID));
+		return this;
+	}
+
 	public QuestStep addWidgetHighlight(int groupID, int childID, int childChildID)
 	{
 		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, childChildID));
@@ -425,11 +438,10 @@ public abstract class QuestStep implements Module
 		return this;
 	}
 
-	// TODO: Add generic requirement for highlighting
-//	public void addWidgetHighlightWithRequirementRequirement(int groupID, int childID, Requirement requirement, boolean checkChildren)
-//	{
-//		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, requirement, checkChildren));
-//	}
+	public void addWidgetHighlightWithTextRequirement(int groupID, int childID, String requiredText, boolean checkChildren)
+	{
+		widgetsToHighlight.add(new WidgetHighlight(groupID, childID, requiredText, checkChildren));
+	}
 
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
@@ -571,6 +583,79 @@ public abstract class QuestStep implements Module
 		{
 			renderHoveredMenuEntryPanel(panelComponent, tooltipText);
 		}
+	}
+
+	protected Widget getInventoryWidget()
+	{
+		return client.getWidget(InterfaceID.Inventory.ITEMS);
+	}
+
+	protected void renderInventory(Graphics2D graphics, WorldPoint worldPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)
+	{
+		Widget inventoryWidget = getInventoryWidget();
+		if (inventoryWidget == null || inventoryWidget.isHidden())
+		{
+			return;
+		}
+
+		Color baseColor = questHelper.getConfig().targetOverlayColor();
+
+		if (passedRequirements.isEmpty()) return;
+		if (inventoryWidget.getDynamicChildren() == null) return;
+
+
+		for (Widget item : inventoryWidget.getDynamicChildren())
+		{
+			for (Requirement requirement : passedRequirements)
+			{
+				if (distanceLimit)
+				{
+					WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+					WorldPoint goalWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
+					if (goalWp != null && playerLocation.distanceTo(goalWp) <= 100) continue;
+				}
+
+				if (isValidRequirementForRenderInInventory(requirement, item))
+				{
+					highlightInventoryItem(item, baseColor, graphics);
+				}
+			}
+		}
+	}
+
+	private void highlightInventoryItem(Widget item, Color color, Graphics2D graphics)
+	{
+		Rectangle slotBounds = item.getBounds();
+		switch (questHelper.getConfig().highlightStyleInventoryItems())
+		{
+			case SQUARE:
+				graphics.setColor(ColorUtil.colorWithAlpha(color, 65));
+				graphics.fill(slotBounds);
+				graphics.setColor(color);
+				graphics.draw(slotBounds);
+				break;
+			case OUTLINE:
+				BufferedImage outlined = itemManager.getItemOutline(item.getItemId(), item.getItemQuantity(), color);
+				graphics.drawImage(outlined, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
+				break;
+			case FILLED_OUTLINE:
+				BufferedImage outline = itemManager.getItemOutline(item.getItemId(), item.getItemQuantity(), color);
+				graphics.drawImage(outline, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
+				Image image = ImageUtil.fillImage(itemManager.getImage(item.getItemId(), item.getItemQuantity(), false), ColorUtil.colorWithAlpha(color, 65));
+				graphics.drawImage(image, (int) slotBounds.getX(), (int) slotBounds.getY(), null);
+				break;
+			default:
+		}
+	}
+
+	private boolean isValidRequirementForRenderInInventory(Requirement requirement, Widget item)
+	{
+		return requirement instanceof ItemRequirement && isValidRenderRequirementInInventory((ItemRequirement) requirement, item);
+	}
+
+	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
+	{
+		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	protected void renderHoveredItemTooltip(String tooltipText)

@@ -25,16 +25,12 @@
 package com.questhelper.helpers.quests.thepathofglouphrie.sections;
 
 import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.List;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
 
 public class TheWarpedDepths
 {
@@ -54,22 +50,22 @@ public class TheWarpedDepths
 
 	public void setup(ThePathOfGlouphrie quest)
 	{
-		enterSewer = new ObjectStep(quest, ObjectID.SEWER_ENTRANCE, new WorldPoint(2322, 3101, 0),
+		enterSewer = new ObjectStep(quest, ObjectID.POG_CANYON_SEWER_ENTRANCE_LOWER_02, new WorldPoint(2322, 3101, 0),
 			"Enter the sewer to the west of the Spirit tree.");
 		enterSewer.addRequirement(quest.combatGear, quest.prayerPotions, quest.food, quest.crystalChime);
 		enterSewer.addRecommended(quest.earmuffsOrSlayerHelmet);
 
-		sewer1Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, "Climb up the ladder.");
+		sewer1Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_PIPE_SIDE_LADDER, "Climb up the ladder.");
 		sewer1Ladder.addRecommended(quest.earmuffsOrSlayerHelmet);
-		sewer2Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1529, 4236, 1),
+		sewer2Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_LADDER_TOP, new WorldPoint(1529, 4236, 1),
 			"Climb down the ladder to the east.");
 		sewer2Ladder.addRecommended(quest.protectMissiles);
 		sewer2Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
-		sewer3Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, new WorldPoint(1529, 4253, 0),
+		sewer3Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_PIPE_SIDE_LADDER, new WorldPoint(1529, 4253, 0),
 			"Climb up the ladder.");
 		sewer3Ladder.addRecommended(quest.protectMissiles);
 		sewer3Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
-		sewer4Ladder = new ObjectStep(quest, ObjectID.LADDER_49701, new WorldPoint(1486, 4282, 1),
+		sewer4Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_LADDER_TOP, new WorldPoint(1486, 4282, 1),
 			"Climb down the ladder to the north-west. Re-activate your run if you step in any puddles.");
 		sewer4Ladder.addRecommended(quest.protectMissiles);
 		sewer4Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
@@ -92,11 +88,11 @@ public class TheWarpedDepths
 			new WorldPoint(1482, 4284, 1),
 			new WorldPoint(1486, 4284, 1)
 		));
-		sewer5Ladder = new ObjectStep(quest, ObjectID.LADDER_49700, new WorldPoint(1499, 4282, 0),
+		sewer5Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_PIPE_SIDE_LADDER, new WorldPoint(1499, 4282, 0),
 			"Climb up the ladder.");
 		sewer5Ladder.addRecommended(quest.protectMissiles);
 		sewer5Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
-		bossDoor = new ObjectStep(quest, ObjectID.METAL_GATE_49889, new WorldPoint(1506, 4319, 1),
+		bossDoor = new ObjectStep(quest, ObjectID.POG_SEWER_GRATE_DOOR_INSTANCE_CLOSED, new WorldPoint(1506, 4319, 1),
 			"Go to the boss room to the north. Re-activate your run if you step in any puddles.");
 		bossDoor.addRecommended(quest.protectMissiles);
 		bossDoor.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
@@ -120,16 +116,16 @@ public class TheWarpedDepths
 		));
 
 		// NOTE: If the user logs out, they will be in a non-instanced area of the boss are with the wrong terrorbirds
-		bossStep = new NpcStep(quest, new int[]{NpcID.WARPED_TERRORBIRD_12499, NpcID.WARPED_TERRORBIRD_12500, NpcID.WARPED_TERRORBIRD_12501},
+		bossStep = new NpcStep(quest, new int[]{NpcID.POG_MUTATED_TERRORBIRD_BOSS_1, NpcID.POG_MUTATED_TERRORBIRD_BOSS_2, NpcID.POG_MUTATED_TERRORBIRD_BOSS_3},
 			"Kill the Terrorbirds. You can use the pillars around the room to only fight one at a time. They fight with both Melee and Ranged.");
 		bossStep.setAllowMultipleHighlights(true);
 		bossStep.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 
-		peekHeavyDoor = new ObjectStep(quest, NullObjectID.NULL_49909, WorldPoint.fromRegion(5955, 49, 31, 1),
+		peekHeavyDoor = new ObjectStep(quest, ObjectID.POG_HATCH_DOOR_MULTI, WorldPoint.fromRegion(5955, 49, 31, 1),
 			"Peek through the heavy door.");
 		watchFinalCutscene = new DetailedQuestStep(quest, "Watch the final cutscene.");
 
-		talkToHazelmere = new NpcStep(quest, NpcID.HAZELMERE, new WorldPoint(2678, 3086, 1),
+		talkToHazelmere = new NpcStep(quest, NpcID.GRANDTREE_HAZELMERE, new WorldPoint(2678, 3086, 1),
 			"Talk to Hazelmere. If you didn't have room for all 4 lamps, you can speak to Hazelmere after the quest to recover any lost lamps.");
 
 		enterSewerStep = new ConditionalStep(quest, enterSewer);

@@ -26,14 +26,15 @@ package com.questhelper.helpers.quests.thepathofglouphrie;
 
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
 
 public class Solution
 {

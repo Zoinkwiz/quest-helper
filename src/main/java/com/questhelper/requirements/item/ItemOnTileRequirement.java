@@ -29,15 +29,14 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import com.questhelper.util.Utils;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ItemOnTileRequirement extends ConditionForStep
 {
@@ -81,28 +80,28 @@ public class ItemOnTileRequirement extends ConditionForStep
 
 	private boolean checkAllTiles(Client client)
 	{
-		if (client.getScene() == null) return false;
+		if (client.getTopLevelWorldView().getScene() == null) return false;
 
 		if (worldPoint != null)
 		{
-			LocalPoint localPoint = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-			if (localPoint == null) return false;
-
-			Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-			if (tile != null)
+			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			for (LocalPoint localPoint : localPoints)
 			{
-				List<TileItem> items = tile.getGroundItems();
-				if (items == null) return false;
-				for (TileItem item : items)
+				Tile tile = client.getTopLevelWorldView().getScene().getTiles()[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+				if (tile != null)
 				{
-					if (itemID.contains(item.getId()))
+					List<TileItem> items = tile.getGroundItems();
+					if (items == null) return false;
+					for (TileItem item : items)
 					{
-						return true;
+						if (itemID.contains(item.getId()))
+						{
+							return true;
+						}
 					}
 				}
-
-				return false;
 			}
+			return false;
 		}
 
 		Tile[][] squareOfTiles = client.getScene().getTiles()[client.getPlane()];

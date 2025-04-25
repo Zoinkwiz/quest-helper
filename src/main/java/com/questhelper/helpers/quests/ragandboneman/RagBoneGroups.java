@@ -30,6 +30,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -4,12 +4,12 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.widget.WidgetDetails;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.util.HashSet;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.awt.*;
+import java.util.HashSet;
 public class PuzzleStep extends DetailedQuestStep
 {
 

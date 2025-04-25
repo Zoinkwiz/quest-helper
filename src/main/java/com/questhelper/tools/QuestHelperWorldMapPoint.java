@@ -28,13 +28,14 @@ package com.questhelper.tools;
 import com.questhelper.util.worldmap.WorldMapArea;
 import com.questhelper.util.worldmap.WorldMapAreaChanged;
 import com.questhelper.util.worldmap.WorldPointMapper;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class QuestHelperWorldMapPoint extends WorldMapPoint
 {

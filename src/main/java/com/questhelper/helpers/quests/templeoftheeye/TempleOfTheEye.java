@@ -28,40 +28,32 @@
 package com.questhelper.helpers.quests.templeoftheeye;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 /*
 VARBITS
@@ -217,21 +209,21 @@ public class TempleOfTheEye extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER);
+		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
 		chisel.canBeObtainedDuringQuest();
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES);
 		pickaxe.canBeObtainedDuringQuest();
 
-		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.VARROCK_TELEPORT);
+		varrockTeleport = new ItemRequirement("Teleport to Varrock", ItemID.POH_TABLET_VARROCKTELEPORT);
 		alKharidTeleport = new ItemRequirement("Teleport to Al Kharid", ItemCollections.RING_OF_DUELINGS);
 		alKharidTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
-		alKharidTeleport.addAlternates(ItemID.LUMBRIDGE_TELEPORT);
+		alKharidTeleport.addAlternates(ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 
-		strongTea = new ItemRequirement("Strong Cup of Tea", ItemID.STRONG_CUP_OF_TEA);
-		eyeAmulet = new ItemRequirement("Eye Amulet", ItemID.EYE_AMULET);
+		strongTea = new ItemRequirement("Strong Cup of Tea", ItemID.TOTE_CUP_OF_TEA_STRONG);
+		eyeAmulet = new ItemRequirement("Eye Amulet", ItemID.TOTE_AMULET);
 		eyeAmulet.setTooltip("You can get another from Wizard Persten if you lost it");
-		abyssalIncantation = new ItemRequirement("Abyssal Incantation", ItemID.ABYSSAL_INCANTATION);
+		abyssalIncantation = new ItemRequirement("Abyssal Incantation", ItemID.TOTE_INCANTATION);
 		abyssalIncantation.setTooltip("You can get another from the Dark Mage in the Abyss if you lost it. If already" +
 			" shown to Wizard Persten, you can get another from her instead");
 
@@ -275,19 +267,19 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToPersten1 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+		talkToPersten1 = new NpcStep(this, NpcID.TOTE_PERSTEN_ALKHARID_CHILD, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.");
 		talkToPersten1.addDialogStep("What's a wizard doing in Al Kharid?");
 		talkToPersten1.addDialogStep("Yes.");
 		talkToPersten1.addTeleport(alKharidTeleport);
 
-		finishTalkToPersten1 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+		finishTalkToPersten1 = new NpcStep(this, NpcID.TOTE_PERSTEN_ALKHARID_CHILD, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.");
 
 		talkToPersten1.addSubSteps(finishTalkToPersten1);
 
 		// Note: You also can't be wearing any other god's equipment when talking to him
-		talkToMage1 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
+		talkToMage1 = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3258, 3383, 0),
 			"Talk to Mage of Zamorak in the Varrock chaos temple.",
 			eyeAmulet);
 		talkToMage1.addDialogStep("I need your help with an amulet.");
@@ -297,37 +289,37 @@ public class TempleOfTheEye extends BasicQuestHelper
 			"Talk to Tea Seller near the Varrock east gate.");
 		getTeaForMage.addDialogStep("Could I have a strong cup of tea?");
 
-		talkToMage2 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
+		talkToMage2 = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3258, 3383, 0),
 			"Give the strong tea to the Mage of Zamorak in the Varrock chaos temple.",
 			strongTea, bucketOfWater, eyeAmulet);
 		talkToMage2.addDialogStep("Could you help me with that amulet now?");
 		talkToMage2.addDialogStep("Yes.");
 
-		finishTalkToMage2 = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
+		finishTalkToMage2 = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3258, 3383, 0),
 			"Talk to Mage of Zamorak in the Varrock chaos temple.",
 			bucketOfWater.hideConditioned(thrownBucket), eyeAmulet);
 		talkToMage2.addDialogStep("Could you help me with that amulet now?");
 
 		talkToMage2.addSubSteps(finishTalkToMage2);
 
-		teleportViaHerbert = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3258, 3383, 0),
+		teleportViaHerbert = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3258, 3383, 0),
 			"Ask the Mage of Zamorak in Varrock to teleport you to the Abyss (this can only be used once).",
 			bucketOfWater.hideConditioned(thrownBucket), eyeAmulet);
 		teleportViaHerbert.addDialogStep("Could you help me with that amulet now?");
 		teleportViaHerbert.addDialogStep("Yes.");
 
-		talkToMageInWildy = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2581, new WorldPoint(3102, 3557, 0),
+		talkToMageInWildy = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1B, new WorldPoint(3102, 3557, 0),
 			"Return to the Abyss by talking to the Mage of Zamorak in the Wilderness north of Edgeville. " +
 				"BRING NOTHING BUT QUEST ITEMS AS YOU CAN BE KILLED BY OTHER PLAYERS HERE.",
 			bucketOfWater.hideConditioned(thrownBucket), eyeAmulet);
 		talkToMageInWildy.addDialogStep("Could you teleport me to the Abyss?");
 
-		talkToDarkMage1 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
+		talkToDarkMage1 = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE2, new WorldPoint(3039, 4834, 0),
 			"Talk to Dark Mage in the Abyss.",
 			bucketOfWater.hideConditioned(thrownBucket), eyeAmulet);
 		talkToDarkMage1.addDialogStep("I need your help with an amulet.");
 
-		finishTalkToDarkMage1 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
+		finishTalkToDarkMage1 = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE2, new WorldPoint(3039, 4834, 0),
 			"Talk to Dark Mage in the Abyss.",
 			bucketOfWater.hideConditioned(thrownBucket), eyeAmulet);
 
@@ -335,96 +327,96 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		touchRunes = new RuneEnergyStep(this);
 
-		talkToDarkMage2 = new NpcStep(this, NpcID.DARK_MAGE, new WorldPoint(3039, 4834, 0),
+		talkToDarkMage2 = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE2, new WorldPoint(3039, 4834, 0),
 			"Talk to Dark Mage in the Abyss.", eyeAmulet);
 
-		talkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+		talkToPersten2 = new NpcStep(this, NpcID.TOTE_PERSTEN_ALKHARID_CHILD, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.",
 			eyeAmulet.hideConditioned(givenAmuletBack), abyssalIncantation);
 		talkToPersten2.addDialogStep("About that incantation...");
 		talkToPersten2.addTeleport(alKharidTeleport);
 
-		finishTalkToPersten2 = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+		finishTalkToPersten2 = new NpcStep(this, NpcID.TOTE_PERSTEN_ALKHARID_CHILD, new WorldPoint(3285, 3232, 0),
 			"Talk to Wizard Persten east of the Al Kharid gate.",
 			eyeAmulet.hideConditioned(givenAmuletBack), abyssalIncantation);
 
 		talkToPersten2.addSubSteps(finishTalkToPersten2);
 
-		teleportToArchmage = new NpcStep(this, NpcID.WIZARD_PERSTEN, new WorldPoint(3285, 3232, 0),
+		teleportToArchmage = new NpcStep(this, NpcID.TOTE_PERSTEN_ALKHARID_CHILD, new WorldPoint(3285, 3232, 0),
 			"Ask Wizard Persten to teleport you to the Wizards' Tower.");
 		teleportToArchmage.addDialogStep("Yes.");
 
-		goDownToArchmage = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+		goDownToArchmage = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0),
 			"Bring the Abyssal Incantation to Sedridor in the Wizard Tower's basement.", abyssalIncantation);
 
-		talktoArchmage1 = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+		talktoArchmage1 = new NpcStep(this, NpcID.HEAD_WIZARD_2OP, new WorldPoint(3104, 9571, 0),
 			"Bring the Abyssal Incantation to Sedridor in the Wizard Tower's basement.", abyssalIncantation);
 		talktoArchmage1.addDialogStep("I need your help with an incantation.");
 
-		finishTalkingToArchmage1 = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+		finishTalkingToArchmage1 = new NpcStep(this, NpcID.HEAD_WIZARD_2OP, new WorldPoint(3104, 9571, 0),
 			"Finish listening to Sedridor.");
 		finishTalkingToArchmage1.addDialogSteps("I need your help with an incantation.",
 			"Can you help me with that incantation?");
 
 		talktoArchmage1.addSubSteps(teleportToArchmage, goDownToArchmage, finishTalkingToArchmage1);
 
-		goUpToTraibornBasement = new ObjectStep(this, ObjectID.LADDER_2148, new WorldPoint(3103, 9576, 0),
+		goUpToTraibornBasement = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDER, new WorldPoint(3103, 9576, 0),
 			"Speak to Wizard Traiborn on the Wizards' Tower 1st floor.");
 
-		goUpToTraiborn = new ObjectStep(this, ObjectID.STAIRCASE_12536, new WorldPoint(3103, 3159, 0),
+		goUpToTraiborn = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS, new WorldPoint(3103, 3159, 0),
 			"Speak to Wizard Traiborn on the Wizards' Tower 1st floor.");
 
-		talktoTrailborn1 = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 1),
+		talktoTrailborn1 = new NpcStep(this, NpcID.TRAIBORN, new WorldPoint(3112, 3162, 1),
 			"Speak to Wizard Traiborn on the Wizards' Tower 1st floor.");
 		talktoTrailborn1.addDialogStep("I need your apprentices to help with an incantation.");
 
 		talktoTrailborn1.addSubSteps(goUpToTraibornBasement, goUpToTraiborn);
 
-		talkToFelix = new NpcStep(this, NpcID.APPRENTICE_FELIX_11446, new WorldPoint(3112, 3162, 1),
+		talkToFelix = new NpcStep(this, NpcID.TOTE_FELIX_WIZARD_TOWER_CHILD, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Felix.");
-		talkToTamara = new NpcStep(this, NpcID.APPRENTICE_TAMARA, new WorldPoint(3112, 3162, 1),
+		talkToTamara = new NpcStep(this, NpcID.TOTE_TAMARA_WIZARD_TOWER_CHILD, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Tamara.");
-		talkToCordelia = new NpcStep(this, NpcID.APPRENTICE_CORDELIA, new WorldPoint(3112, 3162, 1),
+		talkToCordelia = new NpcStep(this, NpcID.TOTE_CORDELIA_WIZARD_TOWER_CHILD, new WorldPoint(3112, 3162, 1),
 			"Get puzzle from Apprentice Cordelia.");
 
-		talktoTrailborn2 = new NpcStep(this, NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 1),
+		talktoTrailborn2 = new NpcStep(this, NpcID.TRAIBORN, new WorldPoint(3112, 3162, 1),
 			"Tell Wizard Traiborn the solution to his puzzle is: 11");
 		talktoTrailborn2.addDialogStep("I think I know what a thingummywut is!");
 
-		goDownToArchmageFloorOne = new ObjectStep(this, ObjectID.STAIRCASE_12537, new WorldPoint(3103, 3159, 1),
+		goDownToArchmageFloorOne = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(3103, 3159, 1),
 			"Speak to Archmage Sedridor in the Wizard's Tower basement.");
 		goDownToArchmageFloorOne.addDialogStep("Down");
 
-		goDownToArchmage2 = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+		goDownToArchmage2 = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0),
 			"Speak to Archmage Sedridor in the Wizard's Tower basement.");
 
-		talktoArchmage2 = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+		talktoArchmage2 = new NpcStep(this, NpcID.HEAD_WIZARD_2OP, new WorldPoint(3104, 9571, 0),
 			"Speak to Archmage Sedridor in the Wizard's Tower basement.");
 
 		talktoArchmage2.addSubSteps(goDownToArchmageFloorOne, goDownToArchmage2);
 
-		performIncantation = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+		performIncantation = new NpcStep(this, NpcID.HEAD_WIZARD_2OP, new WorldPoint(3104, 9571, 0),
 			"Speak to Archmage Sedridor to begin the incantation.");
 		performIncantation.addDialogStep("Let's do it.");
 		performIncantation.addDialogStep("So we're ready to perform the incantation?");
 
-		enterWizardBasement = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+		enterWizardBasement = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0),
 			"Go to the Wizard's Tower basement.");
 
-		enterPortal = new ObjectStep(this, ObjectID.PORTAL_43765, new WorldPoint(3104, 9574, 0),
+		enterPortal = new ObjectStep(this, ObjectID.TOTE_PORTAL_TO_GOTR_CHILD, new WorldPoint(3104, 9574, 0),
 			"Enter the portal to the Temple of the Eye.");
 
 		templeCutscene1 = new DetailedQuestStep(this, "Enter the Temple of the Eye.");
 		templeCutscene1.addSubSteps(enterPortal);
 
-		talkToFelix2 = new NpcStep(this, NpcID.APPRENTICE_FELIX_11448, new WorldPoint(2401, 5643, 0),
+		talkToFelix2 = new NpcStep(this, NpcID.TOTE_FELIX_TEMPLE, new WorldPoint(2401, 5643, 0),
 			"Talk to Apprentice Felix.");
-		talkToTamara2 = new NpcStep(this, NpcID.APPRENTICE_TAMARA_11442, new WorldPoint(2385, 5659, 0),
+		talkToTamara2 = new NpcStep(this, NpcID.TOTE_TAMARA_TEMPLE, new WorldPoint(2385, 5659, 0),
 			"Talk to Apprentice Tamara.");
-		talkToCordelia2 = new NpcStep(this, NpcID.APPRENTICE_CORDELIA_11445, new WorldPoint(2397, 5677, 0),
+		talkToCordelia2 = new NpcStep(this, NpcID.TOTE_CORDELIA_TEMPLE, new WorldPoint(2397, 5677, 0),
 			"Talk to Apprentice Cordelia.");
 
-		talkToPersten3 = new NpcStep(this, NpcID.WIZARD_PERSTEN_11439, new WorldPoint(2400, 5667, 0),
+		talkToPersten3 = new NpcStep(this, NpcID.TOTE_PERSTEN_TEMPLE, new WorldPoint(2400, 5667, 0),
 			"Speak with Wizard Persten.");
 
 		templeCutscene2 = new DetailedQuestStep(this, "Experience the vision.");
@@ -435,7 +427,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 
 		guardiansTutorial.addSubSteps(templeCutscene3);
 
-		finishQuest = new NpcStep(this, NpcID.ARCHMAGE_SEDRIDOR_11433, new WorldPoint(3104, 9571, 0),
+		finishQuest = new NpcStep(this, NpcID.HEAD_WIZARD_2OP, new WorldPoint(3104, 9571, 0),
 			"Speak to Archmage Sedridor in the Wizard's Tower basement to finish the quest.");
 	}
 
@@ -467,7 +459,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Medium pouch", ItemID.MEDIUM_POUCH));
+		return Collections.singletonList(new ItemReward("Medium pouch", ItemID.RCU_POUCH_MEDIUM));
 	}
 
 	@Override

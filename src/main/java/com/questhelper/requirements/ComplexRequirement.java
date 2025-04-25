@@ -25,11 +25,12 @@
 package com.questhelper.requirements;
 
 import com.questhelper.requirements.util.LogicType;
-import java.util.stream.Stream;
 import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
+
 import javax.annotation.Nonnull;
+import java.util.stream.Stream;
 
 /**
  * Requirement that combines multiple other {@link Requirement}s using

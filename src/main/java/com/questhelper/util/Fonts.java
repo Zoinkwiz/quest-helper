@@ -26,8 +26,8 @@ package com.questhelper.util;
 
 import com.questhelper.panel.JGenerator;
 import lombok.Getter;
-import javax.swing.JTextArea;
-import java.awt.Font;
+
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 

@@ -24,44 +24,34 @@
  */
 package com.questhelper.helpers.quests.grimtales;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetModelRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class GrimTales extends BasicQuestHelper
 {
@@ -172,12 +162,12 @@ public class GrimTales extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF, 2);
-		tarrominUnf = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
-		tarrominUnfHighlight = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
+		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMINVIAL, 2);
+		tarrominUnf = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMINVIAL);
+		tarrominUnfHighlight = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMINVIAL);
 		tarrominUnfHighlight.setHighlightInInventory(true);
 
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).isNotConsumed();
 		can = new ItemRequirement("Watering can with at least 1 use", ItemCollections.WATERING_CANS).isNotConsumed();
 		can.setTooltip("Gricollers' can is also valid. ");
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
@@ -185,23 +175,23 @@ public class GrimTales extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
-		griffinFeather = new ItemRequirement("Griffin feather", ItemID.GRIFFIN_FEATHER);
-		rupertsHelmet = new ItemRequirement("Rupert's helmet", ItemID.RUPERTS_HELMET);
-		miazrqasPendant = new ItemRequirement("Miazrqa's pendant", ItemID.MIAZRQAS_PENDANT);
-		goldenGoblin = new ItemRequirement("Golden goblin", ItemID.GOLDEN_GOBLIN);
-		houseKey = new ItemRequirement("Door key", ItemID.DOOR_KEY);
+		griffinFeather = new ItemRequirement("Griffin feather", ItemID.GRIM_GRIFFIN_FEATHER);
+		rupertsHelmet = new ItemRequirement("Rupert's helmet", ItemID.GRIM_HELMET);
+		miazrqasPendant = new ItemRequirement("Miazrqa's pendant", ItemID.GRIM_PENDANT);
+		goldenGoblin = new ItemRequirement("Golden goblin", ItemID.GRIM_GOLDEN_GOBLIN);
+		houseKey = new ItemRequirement("Door key", ItemID.WITCHES_DOORKEY);
 		houseKey.setTooltip("You can get another from the pot outside the Witch's House");
-		ogleroot = new ItemRequirement("Shrunk ogleroot", ItemID.SHRUNK_OGLEROOT);
+		ogleroot = new ItemRequirement("Shrunk ogleroot", ItemID.GRIM_TURNIP);
 		ogleroot.setTooltip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
 
-		oglerootHighlight = new ItemRequirement("Shrunk ogleroot", ItemID.SHRUNK_OGLEROOT);
+		oglerootHighlight = new ItemRequirement("Shrunk ogleroot", ItemID.GRIM_TURNIP);
 		oglerootHighlight.setTooltip("You will need to get more by fighting Experiment No.2 in the sewer outside the Witch's House");
 		oglerootHighlight.setHighlightInInventory(true);
-		shrinkPotion = new ItemRequirement("Shrink-me-quick", ItemID.SHRINKMEQUICK);
-		shrinkPotionHighlight = new ItemRequirement("Shrink-me-quick", ItemID.SHRINKMEQUICK);
+		shrinkPotion = new ItemRequirement("Shrink-me-quick", ItemID.GRIM_SHRINKING_POTION);
+		shrinkPotionHighlight = new ItemRequirement("Shrink-me-quick", ItemID.GRIM_SHRINKING_POTION);
 		shrinkPotionHighlight.setHighlightInInventory(true);
 
-		magicBeans = new ItemRequirement("Magic beans", ItemID.MAGIC_BEANS);
+		magicBeans = new ItemRequirement("Magic beans", ItemID.GRIM_BEANS);
 		magicBeans.setTooltip("You can get more from Sylas in Taverley");
 		magicBeans.setHighlightInInventory(true);
 		canHighlight = new ItemRequirement("Watering can with at least 1 use", ItemCollections.WATERING_CANS);
@@ -239,10 +229,10 @@ public class GrimTales extends BasicQuestHelper
 		grimgnashAsleep = new VarbitRequirement(3717, 1);
 		givenFeather = new VarbitRequirement(3719, 1);
 
-		talkedToDrainOnce = new VarbitRequirement(3694, 5, Operation.GREATER_EQUAL);
-		beardDropped = new VarbitRequirement(3694, 10, Operation.GREATER_EQUAL);
-		talkedToRupert = new VarbitRequirement(3694, 15, Operation.GREATER_EQUAL);
-		talkedToMiazrqa = new VarbitRequirement(3694, 20, Operation.GREATER_EQUAL);
+		talkedToDrainOnce = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 5, Operation.GREATER_EQUAL);
+		beardDropped = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 10, Operation.GREATER_EQUAL);
+		talkedToRupert = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 15, Operation.GREATER_EQUAL);
+		talkedToMiazrqa = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 20, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetModelRequirement(535, 1, 25890);
 
 		pressed1 = new VarbitRequirement(3697, 1);
@@ -284,27 +274,27 @@ public class GrimTales extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToSylas = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
+		talkToSylas = new NpcStep(this, NpcID.GRIM_SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
 		talkToSylas.addDialogStep("Yes.");
-		talkToGrimgnash = new NpcStep(this, NpcID.GRIMGNASH, new WorldPoint(2862, 3511, 0), "Talk to Grimgnash in the north east of White Wolf Mountain.");
+		talkToGrimgnash = new NpcStep(this, NpcID.GRIM_GRIMGNASH_AWAKE, new WorldPoint(2862, 3511, 0), "Talk to Grimgnash in the north east of White Wolf Mountain.");
 		talkToGrimgnash.addDialogSteps("I heard you were a great and mighty Griffin!", "There once was a graveyard filled with undead.", "There lived a skeleton named Skullrot.",
 			"Skullrot was insane!", "Skullrot hungrily grabbed the gnome's hair.", "Started to strangle the poor gnome.", "He saw some bones lying in the corner.");
-		stealFeather = new ObjectStep(this, ObjectID.FEATHERS, new WorldPoint(2864, 3510, 0), "Steal a feather from Grimgnash.");
-		returnFeatherToSylas = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Bring Sylas in Taverley a griffin feather.", griffinFeather);
-		climbWall = new ObjectStep(this, ObjectID.CRUMBLING_WALL_24749, new WorldPoint(2971, 3462, 0), "Climb over the crumbling wall of the tower south east of Goblin Village.");
-		climbBeard = new ObjectStep(this, NullObjectID.NULL_24776, new WorldPoint(2968, 3464, 0), "Climb the beard.");
-		talkToDrainPipe = new ObjectStep(this, ObjectID.DRAIN_PIPE, new WorldPoint(2966, 3465, 0), "Talk to the drain pipe.");
-		talkToDrainPipeAgain = new ObjectStep(this, ObjectID.DRAIN_PIPE, new WorldPoint(2966, 3465, 0), "Talk to the drain pipe again.");
+		stealFeather = new ObjectStep(this, ObjectID.GRIM_FEATHER_PILE, new WorldPoint(2864, 3510, 0), "Steal a feather from Grimgnash.");
+		returnFeatherToSylas = new NpcStep(this, NpcID.GRIM_SYLAS, new WorldPoint(2892, 3454, 0), "Bring Sylas in Taverley a griffin feather.", griffinFeather);
+		climbWall = new ObjectStep(this, ObjectID.GRIM_WATCHTOWER_COURTYARD_WALL_JUMP, new WorldPoint(2971, 3462, 0), "Climb over the crumbling wall of the tower south east of Goblin Village.");
+		climbBeard = new ObjectStep(this, ObjectID.GRIM_WATCHTOWER_BEARD_BOTTOM_MULTI, new WorldPoint(2968, 3464, 0), "Climb the beard.");
+		talkToDrainPipe = new ObjectStep(this, ObjectID.GRIM_WATCHTOWER_03_PIPE, new WorldPoint(2966, 3465, 0), "Talk to the drain pipe.");
+		talkToDrainPipeAgain = new ObjectStep(this, ObjectID.GRIM_WATCHTOWER_03_PIPE, new WorldPoint(2966, 3465, 0), "Talk to the drain pipe again.");
 		talkToDrainPipeAgain.addDialogSteps("I could try and climb up.", "Is there anything up there that can help?");
-		talkToRupert = new ObjectStep(this, NullObjectID.NULL_24774, new WorldPoint(2968, 3467, 2), "Talk to Rupert the beard.");
-		climbDownBeard = new ObjectStep(this, NullObjectID.NULL_24774, new WorldPoint(2968, 3467, 2), "Climb down the beard.");
-		talkToMiazrqa = new NpcStep(this, NpcID.MIAZRQA, new WorldPoint(2968, 3473, 0), "Talk to Miazrqa.");
+		talkToRupert = new ObjectStep(this, ObjectID.GRIM_WATCHTOWER_SOUTH_WINDOW_MULTI, new WorldPoint(2968, 3467, 2), "Talk to Rupert the beard.");
+		climbDownBeard = new ObjectStep(this, ObjectID.GRIM_WATCHTOWER_SOUTH_WINDOW_MULTI, new WorldPoint(2968, 3467, 2), "Climb down the beard.");
+		talkToMiazrqa = new NpcStep(this, NpcID.GRIM_MIAZRQA, new WorldPoint(2968, 3473, 0), "Talk to Miazrqa.");
 		talkToMiazrqa.addDialogSteps("I see there is an embarrassed-looking dwarf...", "Your second-cousin, twice removed?", "I need a key for the house.", "I should be off, I think.");
 
-		enterWitchsHouse = new ObjectStep(this, ObjectID.DOOR_2861, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
-		enterWitchBasement = new ObjectStep(this, ObjectID.LADDER_24718, new WorldPoint(2907, 3476, 0), "Go down the ladder to the basement.");
+		enterWitchsHouse = new ObjectStep(this, ObjectID.WITCHHOUSEDOOR, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
+		enterWitchBasement = new ObjectStep(this, ObjectID.GRIM_WITCH_LADDER_DOWN, new WorldPoint(2907, 3476, 0), "Go down the ladder to the basement.");
 
-		playPiano = new ObjectStep(this, NullObjectID.NULL_24881, new WorldPoint(2908, 9870, 0), "Play the piano. Press upper E-F-E-D-C, then lower A-E-G-A.");
+		playPiano = new ObjectStep(this, ObjectID.GRIM_GRANDPIANO, new WorldPoint(2908, 9870, 0), "Play the piano. Press upper E-F-E-D-C, then lower A-E-G-A.");
 
 		upperE = new WidgetStep(this, "Press upper E.", 535, 77);
 		upperF = new WidgetStep(this, "Press upper F.", 535, 78);
@@ -318,49 +308,49 @@ public class GrimTales extends BasicQuestHelper
 
 		playPiano.addSubSteps(upperE, upperF, upperEAgain, upperD, upperC, lowerA, lowerE, lowerG, lowerAAgain);
 
-		searchPiano = new ObjectStep(this, NullObjectID.NULL_24881, new WorldPoint(2908, 9870, 0), "Right-click search the piano.");
+		searchPiano = new ObjectStep(this, ObjectID.GRIM_GRANDPIANO, new WorldPoint(2908, 9870, 0), "Right-click search the piano.");
 
 		makePotions = new DetailedQuestStep(this, "Add the shrunk ogleroot to both your tarromin potion (unf). You'll need the second potion for later in the quest.", tarrominUnfHighlight, oglerootHighlight);
 
-		leaveBasement = new ObjectStep(this, ObjectID.LADDER_24717, new WorldPoint(2907, 9876, 0), "Climb back up the ladder.");
-		enterWitchsHouseWithPotion = new ObjectStep(this, ObjectID.DOOR_2861, new WorldPoint(2900, 3473, 0), "Return to the witch's house with your shrinking potion.", houseKey, shrinkPotion);
+		leaveBasement = new ObjectStep(this, ObjectID.GRIM_WITCH_LADDER_UP, new WorldPoint(2907, 9876, 0), "Climb back up the ladder.");
+		enterWitchsHouseWithPotion = new ObjectStep(this, ObjectID.WITCHHOUSEDOOR, new WorldPoint(2900, 3473, 0), "Return to the witch's house with your shrinking potion.", houseKey, shrinkPotion);
 		drinkPotion = new DetailedQuestStep(this, new WorldPoint(2903, 3466, 0), "Stand in the south room and drink the shrink-me-quick potion.", shrinkPotionHighlight);
-		climb1 = new ObjectStep(this, ObjectID.NAILS, new WorldPoint(2282, 5543, 0), "Climb the nails in the north east of the room");
-		climb2 = new ObjectStep(this, ObjectID.NAILS, new WorldPoint(2268, 5520, 1), "Climb up the nails in the south west of the room.");
-		climb3 = new ObjectStep(this, ObjectID.NAILS, new WorldPoint(2270, 5515, 2), "Climb the nails in the south of the room.");
-		climb4 = new ObjectStep(this, ObjectID.NAILS_24796, new WorldPoint(2283, 5530, 3), "Climb down the nails in the north east of the room.");
-		climb5 = new ObjectStep(this, ObjectID.NAILS, new WorldPoint(2284, 5542, 2), "Climb down the nails in the north east of the room.");
-		takePendant = new ObjectStep(this, NullObjectID.NULL_24886, new WorldPoint(2279, 5555, 3), "Take the pendant and return to Miazrqa.");
-		leaveWrong1 = new ObjectStep(this, ObjectID.NAILS_24796, new WorldPoint(2277, 5551, 2), "Go back down the nails.");
-		leaveWrong2 = new ObjectStep(this, ObjectID.NAILS, new WorldPoint(2268, 5515, 0), "Go back up the nails.");
+		climb1 = new ObjectStep(this, ObjectID.GRIM_MOUSE_HOLE_WALL_CLIMB_UP, new WorldPoint(2282, 5543, 0), "Climb the nails in the north east of the room");
+		climb2 = new ObjectStep(this, ObjectID.GRIM_MOUSE_HOLE_WALL_CLIMB_UP, new WorldPoint(2268, 5520, 1), "Climb up the nails in the south west of the room.");
+		climb3 = new ObjectStep(this, ObjectID.GRIM_MOUSE_HOLE_WALL_CLIMB_UP, new WorldPoint(2270, 5515, 2), "Climb the nails in the south of the room.");
+		climb4 = new ObjectStep(this, ObjectID.GRIM_MOUSE_HOLE_WALL_CLIMB_DOWN, new WorldPoint(2283, 5530, 3), "Climb down the nails in the north east of the room.");
+		climb5 = new ObjectStep(this, ObjectID.GRIM_MOUSE_HOLE_WALL_CLIMB_UP, new WorldPoint(2284, 5542, 2), "Climb down the nails in the north east of the room.");
+		takePendant = new ObjectStep(this, ObjectID.GRIM_PENDANT_MULTI, new WorldPoint(2279, 5555, 3), "Take the pendant and return to Miazrqa.");
+		leaveWrong1 = new ObjectStep(this, ObjectID.GRIM_MOUSE_HOLE_WALL_CLIMB_DOWN, new WorldPoint(2277, 5551, 2), "Go back down the nails.");
+		leaveWrong2 = new ObjectStep(this, ObjectID.GRIM_MOUSE_HOLE_WALL_CLIMB_UP, new WorldPoint(2268, 5515, 0), "Go back up the nails.");
 
-		givePendant = new NpcStep(this, NpcID.MIAZRQA, new WorldPoint(2968, 3473, 0), "Return the pendant to Miazrqa.", miazrqasPendant);
-		talkMizAfterPendant = new NpcStep(this, NpcID.MIAZRQA, new WorldPoint(2968, 3473, 0), "Talk to Miazrqa.");
+		givePendant = new NpcStep(this, NpcID.GRIM_MIAZRQA, new WorldPoint(2968, 3473, 0), "Return the pendant to Miazrqa.", miazrqasPendant);
+		talkMizAfterPendant = new NpcStep(this, NpcID.GRIM_MIAZRQA, new WorldPoint(2968, 3473, 0), "Talk to Miazrqa.");
 
-		talkToRupertAfterAmulet = new NpcStep(this, NpcID.RUPERT_THE_BEARD, new WorldPoint(2968, 3475, 0), "Talk to Rupert the beard to get his helmet.");
+		talkToRupertAfterAmulet = new NpcStep(this, NpcID.GRIM_RUPERT_VISIBLE, new WorldPoint(2968, 3475, 0), "Talk to Rupert the beard to get his helmet.");
 
-		giveHelmetToSylas = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Bring Sylas in Taverley Rupert's helmet.", rupertsHelmet);
-		talkToSylasAfterGivingItems = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
+		giveHelmetToSylas = new NpcStep(this, NpcID.GRIM_SYLAS, new WorldPoint(2892, 3454, 0), "Bring Sylas in Taverley Rupert's helmet.", rupertsHelmet);
+		talkToSylasAfterGivingItems = new NpcStep(this, NpcID.GRIM_SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
 
-		plantBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", magicBeans, dibber, can);
-		plantBean.addIcon(ItemID.MAGIC_BEANS);
+		plantBean = new ObjectStep(this, ObjectID.GRIM_BEANSTALK_MULTI, new WorldPoint(2922, 3425, 0), "Plant the magic beans in the earth mound in south east Taverley", magicBeans, dibber, can);
+		plantBean.addIcon(ItemID.GRIM_BEANS);
 
-		waterBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Use your watering can on the magic beans you just planted in the earth mound", canHighlight);
-		waterBean.addIcon(ItemID.WATERING_CAN);
+		waterBean = new ObjectStep(this, ObjectID.GRIM_BEANSTALK_MULTI, new WorldPoint(2922, 3425, 0), "Use your watering can on the magic beans you just planted in the earth mound", canHighlight);
+		waterBean.addIcon(ItemID.WATERING_CAN_0);
 
-		climbBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Climb the bean stalk, ready to fight Glod.", combatGear);
-		climbBeanForStatue = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Climb the bean stalk for another golden goblin.");
+		climbBean = new ObjectStep(this, ObjectID.GRIM_BEANSTALK_MULTI, new WorldPoint(2922, 3425, 0), "Climb the bean stalk, ready to fight Glod.", combatGear);
+		climbBeanForStatue = new ObjectStep(this, ObjectID.GRIM_BEANSTALK_MULTI, new WorldPoint(2922, 3425, 0), "Climb the bean stalk for another golden goblin.");
 
-		killGlod = new NpcStep(this, NpcID.GLOD, "Kill Glod.");
+		killGlod = new NpcStep(this, NpcID.GRIM_GLOD, "Kill Glod.");
 
 		pickUpGoldenGoblin = new ItemStep(this, "Pick up the golden goblin.", goldenGoblin);
 
-		giveGoldenGoblinToSylas = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Bring the golden goblin to Sylas in Taverley.", goldenGoblin);
+		giveGoldenGoblinToSylas = new NpcStep(this, NpcID.GRIM_SYLAS, new WorldPoint(2892, 3454, 0), "Bring the golden goblin to Sylas in Taverley.", goldenGoblin);
 
-		usePotionOnBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Use a shrink potion on the bean stalk.", shrinkPotionHighlight, axe);
-		usePotionOnBean.addIcon(ItemID.SHRINKMEQUICK);
-		chopBean = new ObjectStep(this, NullObjectID.NULL_24884, new WorldPoint(2922, 3425, 0), "Chop down the bean stalk.", axe);
-		talkToSylasFinish = new NpcStep(this, NpcID.SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
+		usePotionOnBean = new ObjectStep(this, ObjectID.GRIM_BEANSTALK_MULTI, new WorldPoint(2922, 3425, 0), "Use a shrink potion on the bean stalk.", shrinkPotionHighlight, axe);
+		usePotionOnBean.addIcon(ItemID.GRIM_SHRINKING_POTION);
+		chopBean = new ObjectStep(this, ObjectID.GRIM_BEANSTALK_MULTI, new WorldPoint(2922, 3425, 0), "Chop down the bean stalk.", axe);
+		talkToSylasFinish = new NpcStep(this, NpcID.GRIM_SYLAS, new WorldPoint(2892, 3454, 0), "Talk to Sylas in Taverley.");
 	}
 
 	@Override
@@ -399,7 +389,7 @@ public class GrimTales extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("A Dwarven Helmet", ItemID.DWARVEN_HELMET, 1));
+		return Collections.singletonList(new ItemReward("A Dwarven Helmet", ItemID.GRIM_WEAR_HELMET, 1));
 	}
 
 	@Override

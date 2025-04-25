@@ -31,15 +31,16 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import net.runelite.api.NpcID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
 
 public class BalloonFlightStep extends DetailedOwnerStep
 {
@@ -62,7 +63,7 @@ public class BalloonFlightStep extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		startFlight = new NpcStep(getQuestHelper(), NpcID.AUGUSTE, new WorldPoint(2809, 3354, 0), "");
+		startFlight = new NpcStep(getQuestHelper(), NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0), "");
 		dropSand = new WidgetStep(getQuestHelper(),  "Drop a sandbag.", 471, 2);
 		burnLog = new WidgetStep(getQuestHelper(),  "Burn a log.", 471, 3);
 		pullRope = new WidgetStep(getQuestHelper(),  "Pull the brown rope.", 471, 6);

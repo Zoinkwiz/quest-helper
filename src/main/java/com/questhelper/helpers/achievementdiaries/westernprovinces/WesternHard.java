@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.achievementdiaries.westernprovinces;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -40,27 +40,23 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class WesternHard extends ComplexStateQuestHelper
 {
@@ -153,43 +149,43 @@ public class WesternHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notElfCystalBow = new VarplayerRequirement(1182, false, 25);
-		notMonkfishPisc = new VarplayerRequirement(1182, false, 26);
-		notVetPest = new VarplayerRequirement(1182, false, 27);
-		notDashingKebbit = new VarplayerRequirement(1182, false, 28);
-		notApeAtollAgi = new VarplayerRequirement(1182, false, 29);
-		notMahoganyBurned = new VarplayerRequirement(1182, false, 30);
-		notMineAddyOre = new VarplayerRequirement(1182, false, 31);
-		notLletyaPalm = new VarplayerRequirement(1183, false, 0);
-		notChompyHat = new VarplayerRequirement(1183, false, 1);
-		notIsafdarPainting = new VarplayerRequirement(1183, false, 2);
-		notKillZulrah = new VarplayerRequirement(1183, false, 3);
-		notTPApe = new VarplayerRequirement(1183, false, 4);
-		notPickpocketGnome = new VarplayerRequirement(1183, false, 5);
+		notElfCystalBow = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 25);
+		notMonkfishPisc = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 26);
+		notVetPest = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 27);
+		notDashingKebbit = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 28);
+		notApeAtollAgi = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 29);
+		notMahoganyBurned = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 30);
+		notMineAddyOre = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY, false, 31);
+		notLletyaPalm = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 0);
+		notChompyHat = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 1);
+		notIsafdarPainting = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 2);
+		notKillZulrah = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 3);
+		notTPApe = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 4);
+		notPickpocketGnome = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 5);
 
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		crystalBow = new ItemRequirement("Crystal bow", ItemCollections.CRYSTAL_BOW).showConditioned(notElfCystalBow).isNotConsumed();
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET).showConditioned(notMonkfishPisc).isNotConsumed();
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.NET).showConditioned(notMonkfishPisc).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 500).showConditioned(notDashingKebbit);
 		ninjaGreegree = new ItemRequirement("Ninja greegree", ItemCollections.NINJA_GREEGREE).showConditioned(notApeAtollAgi).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notMahoganyBurned).isNotConsumed();
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notMahoganyBurned).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddyOre).isNotConsumed();
-		mahoganyPlank = new ItemRequirement("Mahogany planks", ItemID.MAHOGANY_PLANK, 3)
+		mahoganyPlank = new ItemRequirement("Mahogany planks", ItemID.PLANK_MAHOGANY, 3)
 			.showConditioned(notIsafdarPainting);
-		painting = new ItemRequirement("Isafdar (painting)", ItemID.ISAFDAR_PAINTING).showConditioned(notIsafdarPainting);
+		painting = new ItemRequirement("Isafdar (painting)", ItemID.POH_UNFRAMED_PAINTING_ISTAFAR).showConditioned(notIsafdarPainting);
 		painting.setTooltip("Can be bought from Sir Renitee in White Knights' Castle for 2,000 gold ");
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).showConditioned(notIsafdarPainting).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notIsafdarPainting).isNotConsumed();
-		lawRunes2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2).showConditioned(notTPApe);
-		fireRunes2 = new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, 2).showConditioned(notTPApe);
-		waterRunes2 = new ItemRequirement("Water runes", ItemID.WATER_RUNE, 2).showConditioned(notTPApe);
+		lawRunes2 = new ItemRequirement("Law runes", ItemID.LAWRUNE, 2).showConditioned(notTPApe);
+		fireRunes2 = new ItemRequirement("Fire runes", ItemID.FIRERUNE, 2).showConditioned(notTPApe);
+		waterRunes2 = new ItemRequirement("Water runes", ItemID.WATERRUNE, 2).showConditioned(notTPApe);
 		banana = new ItemRequirement("Banana", ItemID.BANANA).showConditioned(notTPApe);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notLletyaPalm).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notLletyaPalm).isNotConsumed();
-		palmSapling = new ItemRequirement("Palm sapling", ItemID.PALM_SAPLING).showConditioned(notLletyaPalm);
+		palmSapling = new ItemRequirement("Palm sapling", ItemID.PLANTPOT_PALM_SAPLING).showConditioned(notLletyaPalm);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddyOre).isNotConsumed();
 		ogreBellows = new ItemRequirement("Ogre bellows", ItemCollections.OGRE_BELLOWS).showConditioned(notChompyHat).isNotConsumed();
@@ -197,14 +193,14 @@ public class WesternHard extends ComplexStateQuestHelper
 		ogreArrows = new ItemRequirement("Ogre / brutal arrows", ItemCollections.OGRE_BRUTAL_ARROWS).showConditioned(notChompyHat);
 		mahoganyLogs = new ItemRequirement("Mahogany logs", ItemID.MAHOGANY_LOGS);
 		rawMonkfish = new ItemRequirement("Raw monkfish", ItemID.RAW_MONKFISH);
-		birdReady = new ItemRequirement("Falconer's glove", ItemID.FALCONERS_GLOVE).isNotConsumed();
+		birdReady = new ItemRequirement("Falconer's glove", ItemID.FALCON_GLOVES).isNotConsumed();
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		papayas = new ItemRequirement("Papayas", ItemID.PAPAYA_FRUIT, 15);
-		zulrahTP = new ItemRequirement("Zul-andra teleport", ItemID.ZULANDRA_TELEPORT);
+		papayas = new ItemRequirement("Papayas", ItemID.PAPAYA, 15);
+		zulrahTP = new ItemRequirement("Zul-andra teleport", ItemID.TELEPORTSCROLL_ZULANDRA);
 		tpCrystal = new ItemRequirement("Teleport Crystal", ItemCollections.TELEPORT_CRYSTAL).isNotConsumed();
 
 		inApeAtoll = new ZoneRequirement(apeAtoll);
@@ -253,56 +249,56 @@ public class WesternHard extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		fishMonkfish = new NpcStep(this, NpcID.FISHING_SPOT_4316, new WorldPoint(2340, 3702, 0),
+		fishMonkfish = new NpcStep(this, NpcID.SWAN_FISHINGSPOT, new WorldPoint(2340, 3702, 0),
 			"Catch a monkfish in the Piscatoris Fishing Colony.", smallFishingNet);
-		monkfishPisc = new ObjectStep(this, ObjectID.RANGE_12611, new WorldPoint(2316, 3668, 0),
+		monkfishPisc = new ObjectStep(this, ObjectID.SWAN_STOVE, new WorldPoint(2316, 3668, 0),
 			"Cook your monkfish in the Piscatoris Fishing Colony.", rawMonkfish);
 
-		getBird = new NpcStep(this, NpcID.MATTHIAS, new WorldPoint(2375, 3607, 0),
+		getBird = new NpcStep(this, NpcID.HUNTING_NPC_FALCONER, new WorldPoint(2375, 3607, 0),
 			"Talk to Matthias to get a bird. Make sure to unequip any gloves and weapons.", coins);
-		getBird.addAlternateNpcs(NpcID.MATTHIAS_1341);
+		getBird.addAlternateNpcs(NpcID.HUNTING_NPC_FALCONER_NOBIRD);
 		getBird.addDialogSteps("Could I have a go with your bird?", "Ok, that seems reasonable.");
-		dashingKebbit = new NpcStep(this, NpcID.DASHING_KEBBIT, new WorldPoint(2372, 3581, 0),
+		dashingKebbit = new NpcStep(this, NpcID.HUNTINGBEAST_SPEEDY2, new WorldPoint(2372, 3581, 0),
 			"Catch a dashing kebbit with your falcon!");
 
-		pickpocketGnome = new NpcStep(this, NpcID.GNOME_6094, new WorldPoint(2466, 3460, 0), "Pickpocket a gnome.",
+		pickpocketGnome = new NpcStep(this, NpcID.TWOCATS_GNOME_WOMAN, new WorldPoint(2466, 3460, 0), "Pickpocket a gnome.",
 			true);
 		((NpcStep) pickpocketGnome).setMaxRoamRange(2000);
-		((NpcStep) pickpocketGnome).addAlternateNpcs(NpcID.GNOME_6095, NpcID.GNOME_6096, NpcID.GNOME_WOMAN,
-			NpcID.GNOME_WOMAN_6087);
+		((NpcStep) pickpocketGnome).addAlternateNpcs(NpcID.BROWCLOTHEDGNOME, NpcID.DARKSKINNED_GNOME, NpcID.GNOMEFEMALE,
+			NpcID.GNOMEFEMALE_DSKINNED);
 
 		tpApe = new DetailedQuestStep(this, "Cast teleport to Ape Atoll.", normalBook, lawRunes2, fireRunes2,
 			waterRunes2, banana);
 
 		moveToApeMahogany = new DetailedQuestStep(this, "Travel to Ape Atoll.", axe, tinderbox);
-		mahoganyChopped = new ObjectStep(this, ObjectID.MAHOGANY_TREE, new WorldPoint(2718, 2710, 0),
+		mahoganyChopped = new ObjectStep(this, ObjectID.MAHOGANYTREE, new WorldPoint(2718, 2710, 0),
 			"Chop some mahogany logs on Ape Atoll.", axe, tinderbox);
 		mahoganyBurned = new ItemStep(this, "Burn some mahogany logs on Ape Atoll.",
 			mahoganyLogs.highlighted(), tinderbox.highlighted());
 
 		moveToApeAgi = new DetailedQuestStep(this, "Travel to Ape Atoll.", ninjaGreegree);
-		apeAtollAgi = new ObjectStep(this, ObjectID.STEPPING_STONE_15412, new WorldPoint(2754, 2742, 0),
+		apeAtollAgi = new ObjectStep(this, ObjectID._100_ILM_STEPPING_STONE, new WorldPoint(2754, 2742, 0),
 			" Complete a lap of the Ape Atoll Agility Course.", ninjaGreegree.equipped());
 
-		killZulrah = new ObjectStep(this, ObjectID.SACRIFICIAL_BOAT, new WorldPoint(2215, 3057, 0),
+		killZulrah = new ObjectStep(this, ObjectID.SNAKEBOSS_BOAT_1OP, new WorldPoint(2215, 3057, 0),
 			"Kill Zulrah.", combatGear, food);
 
-		mineAddyOre = new ObjectStep(this, ObjectID.ADAMANTITE_ROCKS, new WorldPoint(2277, 3160, 0),
+		mineAddyOre = new ObjectStep(this, ObjectID.ADAMANTITEROCK1, new WorldPoint(2277, 3160, 0),
 			"Mine some adamantite ore in Tirannwn.", true, pickaxe);
-		mineAddyOre.addAlternateObjects(ObjectID.ADAMANTITE_ROCKS_11375);
+		mineAddyOre.addAlternateObjects(ObjectID.ADAMANTITEROCK2);
 
-		elfCrystalBow = new NpcStep(this, NpcID.ELF_ARCHER, new WorldPoint(2333, 3171, 0), "Kill an elf with a crystal" +
+		elfCrystalBow = new NpcStep(this, NpcID.MOURNING_GUARD_RANGE, new WorldPoint(2333, 3171, 0), "Kill an elf with a crystal" +
 			" bow.", true, crystalBow.equipped());
-		((NpcStep) elfCrystalBow).addAlternateNpcs(NpcID.ELF_ARCHER_5296, NpcID.ELF_WARRIOR, NpcID.ELF_WARRIOR_5294);
+		((NpcStep) elfCrystalBow).addAlternateNpcs(NpcID.MOURNING_GUARD_RANGE2, NpcID.MOURNING_GUARD_MELEE, NpcID.MOURNING_GUARD_MELEE2);
 		((NpcStep) elfCrystalBow).setMaxRoamRange(2000);
 
 		isafdarPainting = new DetailedQuestStep(this, "Build an Isafdar painting in your POH Quest Hall.",
 			mahoganyPlank, painting, saw, hammer);
 
-		moveToPest = new NpcStep(this, NpcID.SQUIRE_1770, new WorldPoint(3041, 3202, 0),
+		moveToPest = new NpcStep(this, NpcID.PEST_SQUIRE_SHIP_PORTSARIM, new WorldPoint(3041, 3202, 0),
 			"Talk to the squire to travel to the Void Knights' Outpost. Alternatively, use the pest control minigame teleport.");
 		moveToPest.addDialogStep("I'd like to go to your outpost.");
-		vetPest = new ObjectStep(this, ObjectID.GANGPLANK_25632, new WorldPoint(2637, 2653, 0),
+		vetPest = new ObjectStep(this, ObjectID.PEST_LANDER_GANGPLANK_3, new WorldPoint(2637, 2653, 0),
 			"Complete a veteran game of Pest Control.");
 
 		chompyHat = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2628, 2979, 0),
@@ -311,12 +307,12 @@ public class WesternHard extends ComplexStateQuestHelper
 			ogreBow, ogreArrows, ogreBellows);
 		chompyHat.addDialogStep("Can I have a hat please?");
 
-		lletyaPalm = new ObjectStep(this, NullObjectID.NULL_26579, new WorldPoint(2346, 3161, 0),
+		lletyaPalm = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2346, 3161, 0),
 			"Check the health of your palm tree in Lletya. It will take about 16 hours to grow fully. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.", rake, spade,
 			palmSapling);
 
-		claimReward = new NpcStep(this, NpcID.ELDER_GNOME_CHILD, new WorldPoint(2466, 3460, 0),
+		claimReward = new NpcStep(this, NpcID.WESTERN_GNOME_CHILD_DIARY, new WorldPoint(2466, 3460, 0),
 			"Talk to the Elder gnome child in Gnome Stronghold to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -370,8 +366,8 @@ public class WesternHard extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Western banner 3", ItemID.WESTERN_BANNER_3),
-			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Western banner 3", ItemID.WESTERN_BANNER_HARD),
+			new ItemReward("15,000 Exp. Lamp (Any skill over 50)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

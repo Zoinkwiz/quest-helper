@@ -24,43 +24,33 @@
  */
 package com.questhelper.helpers.quests.shadowofthestorm;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedOwnerStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class ShadowOfTheStorm extends BasicQuestHelper
 {
@@ -185,41 +175,41 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		darkItems = new ItemRequirement("pieces of black clothing", ItemID.BLACK_DESERT_SHIRT, 3, true).isNotConsumed().doNotAggregate();
-		darkItems.addAlternates(ItemID.BLACK_DESERT_ROBE, ItemID.BLACK_CHAINBODY, ItemID.BLACK_PLATEBODY, ItemID.BLACK_PLATELEGS, ItemID.BLACK_FULL_HELM, ItemID.BLACK_MED_HELM, ItemID.BLACK_GLOVES, ItemID.PRIEST_GOWN, ItemID.PRIEST_GOWN_428, ItemID.MYSTIC_HAT_DARK,
-			ItemID.MYSTIC_ROBE_BOTTOM_DARK, ItemID.MYSTIC_ROBE_TOP_DARK, ItemID.GHOSTLY_BOOTS, ItemID.GHOSTLY_CLOAK, ItemID.GHOSTLY_GLOVES, ItemID.GHOSTLY_HOOD, ItemID.GHOSTLY_ROBE, ItemID.GHOSTLY_ROBE_6108, ItemID.SHADE_ROBE, ItemID.SHADE_ROBE_TOP, ItemID.ANTISANTA_BOOTS,
-			ItemID.ANTISANTA_GLOVES, ItemID.ANTISANTA_JACKET, ItemID.ANTISANTA_MASK, ItemID.ANTISANTA_PANTALOONS, ItemID.WIZARD_HAT, ItemID.BLACK_CAPE, ItemID.BLACK_PARTYHAT, ItemID.BLACK_HWEEN_MASK, ItemID.BLACK_DRAGON_MASK, ItemID.BLACK_UNICORN_MASK, ItemID.BLACK_DEMON_MASK,
-			ItemID.BLACK_DHIDE_BODY, ItemID.BLACK_DHIDE_CHAPS, ItemID.BLACK_DHIDE_VAMBRACES, ItemID.BLACK_ROBE, ItemID.GRACEFUL_BOOTS_24758, ItemID.GRACEFUL_CAPE_24746, ItemID.GRACEFUL_GLOVES_24755, ItemID.GRACEFUL_HOOD_24743, ItemID.GRACEFUL_LEGS_24752, ItemID.GRACEFUL_TOP_24749);
+		darkItems = new ItemRequirement("pieces of black clothing", ItemID.AGRITH_DESERT_SHIRT_DYED, 3, true).isNotConsumed().doNotAggregate();
+		darkItems.addAlternates(ItemID.AGRITH_DESERT_ROBE_DYED, ItemID.BLACK_CHAINBODY, ItemID.BLACK_PLATEBODY, ItemID.BLACK_PLATELEGS, ItemID.BLACK_FULL_HELM, ItemID.BLACK_MED_HELM, ItemID.HUNDRED_GAUNTLETS_LEVEL_5, ItemID.PRIEST_GOWN, ItemID.PRIEST_ROBE, ItemID.MYSTIC_HAT_DARK,
+			ItemID.MYSTIC_ROBE_BOTTOM_DARK, ItemID.MYSTIC_ROBE_TOP_DARK, ItemID.SECRET_GHOST_BOOTS, ItemID.SECRET_GHOST_CLOAK, ItemID.SECRET_GHOST_GLOVES, ItemID.SECRET_GHOST_HAT, ItemID.SECRET_GHOST_TOP, ItemID.SECRET_GHOST_BOTTOM, ItemID.BLACKROBEBOTTOM, ItemID.BLACKROBETOP, ItemID.ANTISANTA_BOOTS,
+			ItemID.ANTISANTA_GLOVES, ItemID.ANTISANTA_JACKET, ItemID.ANTISANTA_MASK, ItemID.ANTISANTA_PANTS, ItemID.BLACKWIZHAT, ItemID.BLACK_CAPE, ItemID.BLACK_PARTYHAT, ItemID.HALLOWEENMASK_BLACK, ItemID.DRAGONMASK_BLACK, ItemID.BLACK_UNICORN_MASK, ItemID.BLACK_DEMON_MASK,
+			ItemID.BLACK_DRAGONHIDE_BODY, ItemID.BLACK_DRAGONHIDE_CHAPS, ItemID.BLACK_DRAGON_VAMBRACES, ItemID.BLACK_ROBE, ItemID.GRACEFUL_BOOTS_HALLOWED, ItemID.GRACEFUL_CAPE_HALLOWED, ItemID.GRACEFUL_GLOVES_HALLOWED, ItemID.GRACEFUL_HOOD_HALLOWED, ItemID.GRACEFUL_LEGS_HALLOWED, ItemID.GRACEFUL_TOP_HALLOWED);
 		silverlight = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT).isNotConsumed();
 		silverlight.setTooltip("You can get another from Father Reen in Al Kharid if you've lost it");
-		silverlight.addAlternates(ItemID.SILVERLIGHT_6745); // silverlight dyed black
-		strangeImplement = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
+		silverlight.addAlternates(ItemID.AGRITH_SILVERLIGHT_DYED); // silverlight dyed black
+		strangeImplement = new ItemRequirement("Strange implement", ItemID.GOLEM_GOLEMKEY);
 		strangeImplement.setTooltip("You can find another in the underground of Uzer");
-		strangeImplementHighlighted = new ItemRequirement("Strange implement", ItemID.STRANGE_IMPLEMENT);
+		strangeImplementHighlighted = new ItemRequirement("Strange implement", ItemID.GOLEM_GOLEMKEY);
 		strangeImplementHighlighted.setHighlightInInventory(true);
 		strangeImplementHighlighted.setTooltip("You can find another in the underground of Uzer");
-		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.BLACK_DYE);
+		blackMushroomInk = new ItemRequirement("Black mushroom ink", ItemID.GOLEM_INK);
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
-		vial = new ItemRequirement("Vial", ItemID.VIAL);
+		vial = new ItemRequirement("Vial", ItemID.VIAL_EMPTY);
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
-		blackMushroomHighlighted = new ItemRequirement("Black mushroom", ItemID.BLACK_MUSHROOM);
+		blackMushroomHighlighted = new ItemRequirement("Black mushroom", ItemID.GOLEM_MUSHROOM);
 		blackMushroomHighlighted.setHighlightInInventory(true);
 		silverlightHighlighted = new ItemRequirement("Silverlight", ItemID.SILVERLIGHT);
 		silverlightHighlighted.setHighlightInInventory(true);
-		silverlightDyed = new ItemRequirement("Silverlight (dyed)", ItemID.SILVERLIGHT_6745);
-		silverlightDyedEquipped = new ItemRequirement("Silverlight (dyed)", ItemID.SILVERLIGHT_6745, 1, true);
-		sigilMould = new ItemRequirement("Demonic sigil mould", ItemID.DEMONIC_SIGIL_MOULD);
+		silverlightDyed = new ItemRequirement("Silverlight (dyed)", ItemID.AGRITH_SILVERLIGHT_DYED);
+		silverlightDyedEquipped = new ItemRequirement("Silverlight (dyed)", ItemID.AGRITH_SILVERLIGHT_DYED, 1, true);
+		sigilMould = new ItemRequirement("Demonic sigil mould", ItemID.AGRITH_SIGIL_MOULD);
 		combatGear = new ItemRequirement("Combat gear + potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		coinsForCarpet = new ItemRequirement("Coins or more for carpet rides", ItemCollections.COINS, 400);
-		sigil = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
+		sigil = new ItemRequirement("Demonic sigil", ItemID.AGRITH_SIGIL);
 		sigil.setTooltip("You can make another if needed with the demonic sigil mould");
-		sigil2 = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL, 2);
+		sigil2 = new ItemRequirement("Demonic sigil", ItemID.AGRITH_SIGIL, 2);
 		sigil2.setTooltip("You can make another if needed with the demonic sigil mould (which you can get from Jennifer)");
-		sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
+		sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.AGRITH_SIGIL);
 		sigilHighlighted.setHighlightInInventory(true);
-		book = new ItemRequirement("Demonic tome", ItemID.DEMONIC_TOME);
-		bookHighlighted = new ItemRequirement("Demonic tome", ItemID.DEMONIC_TOME);
+		book = new ItemRequirement("Demonic tome", ItemID.AGRITH_BOOK);
+		bookHighlighted = new ItemRequirement("Demonic tome", ItemID.AGRITH_BOOK);
 		bookHighlighted.setHighlightInInventory(true);
 
 		// Recommended
@@ -234,89 +224,89 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		inCircleSpot = new ZoneRequirement(circleSpot);
 		inSecondCircleSpot = new ZoneRequirement(secondCircleSpot);
 
-		talkedToMatthew = new VarbitRequirement(1372, 50, Operation.GREATER_EQUAL);
-		talkedToGolem = new VarbitRequirement(1372, 60, Operation.GREATER_EQUAL);
+		talkedToMatthew = new VarbitRequirement(VarbitID.AGRITH_QUEST, 50, Operation.GREATER_EQUAL);
+		talkedToGolem = new VarbitRequirement(VarbitID.AGRITH_QUEST, 60, Operation.GREATER_EQUAL);
 		sigilNearby = new ItemOnTileRequirement(sigil);
-		evilDaveMoved = new VarbitRequirement(1380, 2, Operation.GREATER_EQUAL);
-		baddenMoved = new VarbitRequirement(1381, 2, Operation.GREATER_EQUAL);
-		reenMoved = new VarbitRequirement(1382, 2, Operation.GREATER_EQUAL);
-		golemRejected = new VarbitRequirement(1379, 1, Operation.GREATER_EQUAL);
-		golemReprogrammed = new VarbitRequirement(1379, 2, Operation.GREATER_EQUAL);
-		golemMoved = new VarbitRequirement(1379, 3, Operation.GREATER_EQUAL);
+		evilDaveMoved = new VarbitRequirement(VarbitID.AGRITH_CONVINCED_DAVE, 2, Operation.GREATER_EQUAL);
+		baddenMoved = new VarbitRequirement(VarbitID.AGRITH_BADDEN_UZER, 2, Operation.GREATER_EQUAL);
+		reenMoved = new VarbitRequirement(VarbitID.AGRITH_REEN_UZER, 2, Operation.GREATER_EQUAL);
+		golemRejected = new VarbitRequirement(VarbitID.AGRITH_CONVINCED_GOLEM, 1, Operation.GREATER_EQUAL);
+		golemReprogrammed = new VarbitRequirement(VarbitID.AGRITH_CONVINCED_GOLEM, 2, Operation.GREATER_EQUAL);
+		golemMoved = new VarbitRequirement(VarbitID.AGRITH_CONVINCED_GOLEM, 3, Operation.GREATER_EQUAL);
 	}
 
 	private void setupSteps()
 	{
-		talkToReen = new NpcStep(this, NpcID.FATHER_REEN, new WorldPoint(3270, 3159, 0), "Talk to Father Reen outside Al Kharid bank.");
+		talkToReen = new NpcStep(this, NpcID.AGRITH_REEN, new WorldPoint(3270, 3159, 0), "Talk to Father Reen outside Al Kharid bank.");
 		talkToReen.addDialogStep("That's me!");
 		talkToReen.addDialogStep("Yes.");
-		talkToBadden = new NpcStep(this, NpcID.FATHER_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", silverlight, darkItems);
+		talkToBadden = new NpcStep(this, NpcID.AGRITH_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", silverlight, darkItems);
 		talkToBadden.addDialogSteps("Uzer", "Reen sent me.", "So what do you want me to do?", "How can I do that?");
-		pickMushroom = new ObjectStep(this, ObjectID.BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
+		pickMushroom = new ObjectStep(this, ObjectID.GOLEM_BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
 		dyeSilverlight = new DetailedQuestStep(this, "Use the black mushrooms on Silverlight.", silverlightHighlighted, blackMushroomHighlighted);
-		goIntoRuin = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyedEquipped, darkItems);
+		goIntoRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyedEquipped, darkItems);
 
 		pickUpStrangeImplement = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
-		talkToEvilDave = new NpcStep(this, NpcID.EVIL_DAVE_902, new WorldPoint(2721, 4911, 0), "Talk to Evil Dave with the dyed Silverlight and 3 dark clothing items equipped.", silverlightDyedEquipped, darkItems);
+		talkToEvilDave = new NpcStep(this, NpcID.AGRITH_DAVE, new WorldPoint(2721, 4911, 0), "Talk to Evil Dave with the dyed Silverlight and 3 dark clothing items equipped.", silverlightDyedEquipped, darkItems);
 		talkToEvilDave.addDialogSteps("I want to join your group.", "I'm evil!");
-		enterPortal = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal.");
-		enterRuinNoDark = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
-		talkToDenath = new NpcStep(this, NpcID.DENATH, new WorldPoint(2720, 4912, 2), "Talk to Denath next to the throne.");
+		enterPortal = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.");
+		enterRuinNoDark = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		talkToDenath = new NpcStep(this, NpcID.AGRITH_DENATH, new WorldPoint(2720, 4912, 2), "Talk to Denath next to the throne.");
 		talkToDenath.addDialogStep("What do I have to do?");
 		talkToDenath.addSubSteps(enterRuinNoDark, enterPortal);
-		talkToJennifer = new NpcStep(this, NpcID.JENNIFER_905, new WorldPoint(2723, 4901, 2), "Talk to Jennifer.");
+		talkToJennifer = new NpcStep(this, NpcID.AGRITH_JENNIFER, new WorldPoint(2723, 4901, 2), "Talk to Jennifer.");
 		talkToJennifer.addDialogStep("Do you have the demonic sigil mould?");
-		talkToMatthew = new NpcStep(this, NpcID.MATTHEW, new WorldPoint(2727, 4897, 2), "Talk to Matthew.");
+		talkToMatthew = new NpcStep(this, NpcID.AGRITH_MATTHEW, new WorldPoint(2727, 4897, 2), "Talk to Matthew.");
 		talkToMatthew.addDialogStep("Do you know what happened to Josef?");
 		smeltSigil = new DetailedQuestStep(this, "Travel to any furnace with the sigil mould and silver bar and smelt a sigil.", silverBar, sigilMould);
 		smeltSigil.addTeleport(alKharidTeleport);
-		talkToGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", silverlightDyed, sigil, combatGear);
+		talkToGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", silverlightDyed, sigil, combatGear);
 		talkToGolem.addDialogStep("Uzer");
 		talkToGolem.addDialogStep("Did you see anything happen last night?");
 		searchKiln = new SearchKilns(this);
 		readBook = new DetailedQuestStep(this, "Read the book.", bookHighlighted);
-		enterRuinAfterBook = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyed, book, sigil);
-		enterPortalAfterBook = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal.", book, sigil);
+		enterRuinAfterBook = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyed, book, sigil);
+		enterPortalAfterBook = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.", book, sigil);
 
-		talkToMatthewAfterBook = new NpcStep(this, NpcID.MATTHEW, new WorldPoint(2727, 4897, 2), "Bring the book to Matthew in the Demon Throne Room. Afterwards Denath should start the ritual. If he doesn't, leave and re-enter the throne room and talk to Matthew again.", book);
+		talkToMatthewAfterBook = new NpcStep(this, NpcID.AGRITH_MATTHEW, new WorldPoint(2727, 4897, 2), "Bring the book to Matthew in the Demon Throne Room. Afterwards Denath should start the ritual. If he doesn't, leave and re-enter the throne room and talk to Matthew again.", book);
 		talkToMatthewAfterBook.addSubSteps(enterRuinAfterBook, enterPortalAfterBook);
 
-		enterRuinForRitual = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", sigil, silverlightDyed, combatGear);
-		enterPortalForRitual = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal.");
+		enterRuinForRitual = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", sigil, silverlightDyed, combatGear);
+		enterPortalForRitual = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.");
 
 		standInCircle = new DetailedQuestStep(this, new WorldPoint(2718, 4902, 2), "Stand in the correct spot in the circle.", sigil);
 		readIncantation = new IncantationStep(this, true);
 		pickUpSigil = new ItemStep(this, "Pick up the sigil.", sigil);
-		leavePortal = new ObjectStep(this, ObjectID.PORTAL_10251, new WorldPoint(2720, 4883, 2), "Leave the throne room.");
-		enterRuinForDave = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Talk to Evil Dave in the Uzer ruins.");
-		tellDaveToReturn = new NpcStep(this, NpcID.EVIL_DAVE_902, new WorldPoint(2721, 4900, 0), "Talk to Evil Dave.");
+		leavePortal = new ObjectStep(this, ObjectID.AGRITH_PORTAL_CLOSING, new WorldPoint(2720, 4883, 2), "Leave the throne room.");
+		enterRuinForDave = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Talk to Evil Dave in the Uzer ruins.");
+		tellDaveToReturn = new NpcStep(this, NpcID.AGRITH_DAVE, new WorldPoint(2721, 4900, 0), "Talk to Evil Dave.");
 		tellDaveToReturn.addDialogStep("You've got to get back to the throne room!");
 		tellDaveToReturn.addSubSteps(enterRuinForDave);
 
 		pickUpImplementAfterRitual = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
 		pickUpSigil2 = new ItemStep(this, "Pick up the sigil Tanya dropped.", sigil);
 
-		goUpToBadden = new ObjectStep(this, ObjectID.STAIRCASE_6372, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
-		talkToBaddenAfterRitual = new NpcStep(this, NpcID.FATHER_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", sigil2);
+		goUpToBadden = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_BASE, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
+		talkToBaddenAfterRitual = new NpcStep(this, NpcID.AGRITH_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", sigil2);
 		talkToBaddenAfterRitual.addSubSteps(goUpToBadden);
 
-		talkToReenAfterRitual = new NpcStep(this, NpcID.FATHER_REEN, new WorldPoint(3490, 3090, 0), "Talk to Father Reen in Uzer.", sigil2);
+		talkToReenAfterRitual = new NpcStep(this, NpcID.AGRITH_REEN, new WorldPoint(3490, 3090, 0), "Talk to Father Reen in Uzer.", sigil2);
 		talkToReenAfterRitual.addDialogStep("Oh, don't be so simple-minded!");
-		talkToTheGolemAfterRitual = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", strangeImplement);
-		useImplementOnGolem = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlighted);
-		useImplementOnGolem.addIcon(ItemID.STRANGE_IMPLEMENT);
+		talkToTheGolemAfterRitual = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", strangeImplement);
+		useImplementOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlighted);
+		useImplementOnGolem.addIcon(ItemID.GOLEM_GOLEMKEY);
 
-		talkToGolemAfterReprogramming = new NpcStep(this, NpcID.CLAY_GOLEM_5136, new WorldPoint(3485, 3088, 0), "Talk to the Golem again.", sigil2);
-		enterRuinAfterRecruiting = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyed, sigil, combatGear);
-		enterPortalAfterRecruiting = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal.", silverlightDyed, sigil, combatGear);
+		talkToGolemAfterReprogramming = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem again.", sigil2);
+		enterRuinAfterRecruiting = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyed, sigil, combatGear);
+		enterPortalAfterRecruiting = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.", silverlightDyed, sigil, combatGear);
 
-		talkToMatthewToStartFight = new NpcStep(this, NpcID.MATTHEW, new WorldPoint(2727, 4897, 2), "Talk to Matthew in the throne room.", silverlightDyed, sigil, combatGear);
+		talkToMatthewToStartFight = new NpcStep(this, NpcID.AGRITH_MATTHEW, new WorldPoint(2727, 4897, 2), "Talk to Matthew in the throne room.", silverlightDyed, sigil, combatGear);
 		talkToMatthewToStartFight.addSubSteps(enterRuinAfterRecruiting, enterPortalAfterRecruiting);
 		talkToMatthewToStartFight.addDialogStep("Yes.");
 		standInCircleAgain = new DetailedQuestStep(this, new WorldPoint(2720, 4903, 2), "Stand in the correct spot in the circle.", sigil);
 		incantRitual = new IncantationStep(this, false);
-		enterRuinForFight = new ObjectStep(this, ObjectID.STAIRCASE_6373, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins to finish fighting Agrith-Naar.", silverlightDyed, combatGear);
-		enterPortalForFight = new ObjectStep(this, NullObjectID.NULL_6310, new WorldPoint(2722, 4913, 0), "Enter the portal to finish fighting Agrith-Naar.", silverlightDyed, combatGear);
+		enterRuinForFight = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins to finish fighting Agrith-Naar.", silverlightDyed, combatGear);
+		enterPortalForFight = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal to finish fighting Agrith-Naar.", silverlightDyed, combatGear);
 		killDemon = new NpcStep(this, NpcID.AGRITH_NAAR, "Kill Agrith-Naar. You can hurt him with any weapon, BUT YOU MUST DEAL THE FINAL BLOW WITH SILVERLIGHT.", silverlightDyedEquipped, combatGear);
 		killDemon.addSubSteps(enterRuinForFight, enterPortalForFight);
 
@@ -369,7 +359,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("10,000 Experience Lamp (Any combat skill except Prayer)", ItemID.ANTIQUE_LAMP, 1), //4447 is placeholder for filter
+				new ItemReward("10,000 Experience Lamp (Any combat skill except Prayer)", ItemID.THOSF_REWARD_LAMP, 1), //4447 is placeholder for filter
 				new ItemReward("Darklight", ItemID.DARKLIGHT, 1));
 	}
 

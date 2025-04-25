@@ -31,11 +31,11 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -119,7 +119,7 @@ public class LockedChestPuzzle extends DetailedOwnerStep
 
     private void setupItemRequirements()
     {
-        book = new ItemRequirement("Book", ItemID.BOOK_29878);
+        book = new ItemRequirement("Book", ItemID.VMQ3_TOWER_TRIAL_1_BOOK);
     }
 
     private void setupConditions()
@@ -136,7 +136,7 @@ public class LockedChestPuzzle extends DetailedOwnerStep
         readBook = new DetailedQuestStep(getQuestHelper(), "Read the book.", book.highlighted())
                 .puzzleWrapStep()
                 .withNoHelpHiddenInSidebar(true);
-        openChest = new ObjectStep(getQuestHelper(), ObjectID.CHEST_54376, new WorldPoint(1638, 3217, 1), "Search the south-west chest.")
+        openChest = new ObjectStep(getQuestHelper(), ObjectID.VMQ3_TOWER_CHEST_LETTERS_CLOSED, new WorldPoint(1638, 3217, 1), "Search the south-west chest.")
                 .puzzleWrapStep()
                 .withNoHelpHiddenInSidebar(true);
         solveChest = new ChestCodeStep(getQuestHelper(), 10);

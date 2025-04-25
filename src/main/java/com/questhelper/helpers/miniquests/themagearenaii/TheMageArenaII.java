@@ -24,38 +24,30 @@
  */
 package com.questhelper.helpers.miniquests.themagearenaii;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheMageArenaII extends BasicQuestHelper
 {
@@ -117,9 +109,9 @@ public class TheMageArenaII extends BasicQuestHelper
 		saradominStaff = new ItemRequirement("Saradomin staff", ItemID.SARADOMIN_STAFF).isNotConsumed();
 		saradominStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
 		runesForCasts = new ItemRequirements("Runes for 50+ casts of god spells",
-			new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE, -1),
-			new ItemRequirement("Air runes", ItemID.AIR_RUNE, -1),
-			new ItemRequirement("Fire runes", ItemID.FIRE_RUNE, -1));
+			new ItemRequirement("Blood runes", ItemID.BLOODRUNE, -1),
+			new ItemRequirement("Air runes", ItemID.AIRRUNE, -1),
+			new ItemRequirement("Fire runes", ItemID.FIRERUNE, -1));
 		magicCombatGear = new ItemRequirement("Magic combat gear", -1, 1).isNotConsumed();
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
@@ -128,11 +120,11 @@ public class TheMageArenaII extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		recoils = new ItemRequirement("Rings of recoil", ItemID.RING_OF_RECOIL);
 
-		enchantedSymbol = new ItemRequirement("Enchanted symbol", ItemID.ENCHANTED_SYMBOL);
+		enchantedSymbol = new ItemRequirement("Enchanted symbol", ItemID.MA2_SYMBOL);
 		enchantedSymbol.setTooltip("You can get another from Kolodion in the Mage Arena Cavern.");
-		justicarsHand = new ItemRequirement("Justicar's hand", ItemID.JUSTICIARS_HAND);
-		demonsHeart = new ItemRequirement("Demon's heart", ItemID.DEMONS_HEART);
-		entRoots = new ItemRequirement("Ent's roots", ItemID.ENTS_ROOTS);
+		justicarsHand = new ItemRequirement("Justicar's hand", ItemID.MA2_SARADOMIN_HEART);
+		demonsHeart = new ItemRequirement("Demon's heart", ItemID.MA2_ZAMORAK_HEART);
+		entRoots = new ItemRequirement("Ent's roots", ItemID.MA2_GUTHIX_HEART);
 
 		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE).isNotConsumed();
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
@@ -159,10 +151,10 @@ public class TheMageArenaII extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterCavern = new ObjectStep(this, ObjectID.LEVER_5959, new WorldPoint(3090, 3956, 0), "Pull the lever in the" +
+		enterCavern = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Pull the lever in the" +
 			" building north of the Mage Arena. This is IN THE WILDERNESS, so don't bring anything you don't want to " +
 			"lose.", knife);
-		talkToKolodion = new NpcStep(this, NpcID.KOLODION, new WorldPoint(2539, 4716, 0), "Talk to Kolodion.");
+		talkToKolodion = new NpcStep(this, NpcID.ARENAMAGE1, new WorldPoint(2539, 4716, 0), "Talk to Kolodion.");
 		talkToKolodion.addDialogSteps("Are there any more challenges available?", "Great, I've been waiting for an " +
 			"improvement!");
 
@@ -178,23 +170,23 @@ public class TheMageArenaII extends BasicQuestHelper
 			enchantedSymbol, food);
 		locateFollowerZammy.addDialogStep("Zamorak");
 
-		enterCavernWithHand = new ObjectStep(this, ObjectID.LEVER_5959, new WorldPoint(3090, 3956, 0), "Return with" +
+		enterCavernWithHand = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Return with" +
 			" the hand to Kolodion.", justicarsHand, knife);
-		enterCavernWithRoots = new ObjectStep(this, ObjectID.LEVER_5959, new WorldPoint(3090, 3956, 0), "Return with" +
+		enterCavernWithRoots = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Return with" +
 			" the roots to Kolodion.", entRoots, knife);
-		enterCavernWithHeart = new ObjectStep(this, ObjectID.LEVER_5959, new WorldPoint(3090, 3956, 0), "Return with" +
+		enterCavernWithHeart = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Return with" +
 			" the heart to Kolodion.", demonsHeart, knife);
 
-		giveKolodionHand = new NpcStep(this, NpcID.KOLODION, new WorldPoint(2539, 4716, 0), "Return with" +
+		giveKolodionHand = new NpcStep(this, NpcID.ARENAMAGE1, new WorldPoint(2539, 4716, 0), "Return with" +
 			" the hand to Kolodion.", justicarsHand);
-		giveKolodionRoots = new NpcStep(this, NpcID.KOLODION, new WorldPoint(2539, 4716, 0), "Return with" +
+		giveKolodionRoots = new NpcStep(this, NpcID.ARENAMAGE1, new WorldPoint(2539, 4716, 0), "Return with" +
 			" the roots to Kolodion.", entRoots);
-		giveKolodionHeart = new NpcStep(this, NpcID.KOLODION, new WorldPoint(2539, 4716, 0), "Return with" +
+		giveKolodionHeart = new NpcStep(this, NpcID.ARENAMAGE1, new WorldPoint(2539, 4716, 0), "Return with" +
 			" the heart to Kolodion.", demonsHeart);
 
-		enterCavernAfterMinions = new ObjectStep(this, ObjectID.LEVER_5959, new WorldPoint(3090, 3956, 0), "Pull the " +
+		enterCavernAfterMinions = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Pull the " +
 			"lever in the building north of the Mage Arena. This is IN THE WILDERNESS, so don't bring anything you don't want to lose.", knife);
-		talkToKolodionAfterMinions = new NpcStep(this, NpcID.KOLODION, new WorldPoint(2539, 4716, 0), "Talk to Kolodion.");
+		talkToKolodionAfterMinions = new NpcStep(this, NpcID.ARENAMAGE1, new WorldPoint(2539, 4716, 0), "Talk to Kolodion.");
 
 		locateAndKillMinions = new DetailedQuestStep(this, "Use the Enchanted Symbol to locate the 3 bosses. It's " +
 			"recommended to find where a boss is with just food and the symbol, then once you have the location gear " +
@@ -204,7 +196,7 @@ public class TheMageArenaII extends BasicQuestHelper
 			enterCavernWithRoots, enterCavernWithHeart, enterCavernWithHand, giveKolodionHand, giveKolodionRoots,
 			giveKolodionHeart, enterCavernAfterMinions, talkToKolodionAfterMinions);
 
-		useGodCapeOnKolidion = new NpcStep(this, NpcID.KOLODION, new WorldPoint(2539, 4716, 0), "Use a god cape of " +
+		useGodCapeOnKolidion = new NpcStep(this, NpcID.ARENAMAGE1, new WorldPoint(2539, 4716, 0), "Use a god cape of " +
 			"your choice on Kolodion to have it imbued.", godCape);
 		useGodCapeOnKolidion.addIcon(ItemID.GUTHIX_CAPE);
 		useGodCapeOnKolidion.addDialogStep("Yes.");

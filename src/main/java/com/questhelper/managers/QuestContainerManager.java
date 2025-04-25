@@ -27,6 +27,8 @@ package com.questhelper.managers;
 import com.questhelper.requirements.item.TrackedContainers;
 import lombok.Getter;
 
+import java.util.List;
+
 public class QuestContainerManager
 {
     @Getter
@@ -43,4 +45,7 @@ public class QuestContainerManager
 
     @Getter
     private final static ItemAndLastUpdated groupStorageData = new ItemAndLastUpdated(TrackedContainers.GROUP_STORAGE);
+
+    @Getter
+    private final static List<ItemAndLastUpdated> orderedListOfContainers = List.of(equippedData, inventoryData, bankData, potionData, groupStorageData);
 }

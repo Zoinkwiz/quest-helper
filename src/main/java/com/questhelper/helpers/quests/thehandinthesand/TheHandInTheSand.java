@@ -215,19 +215,19 @@ public class TheHandInTheSand extends BasicQuestHelper
 		talkToRarveAgain = new ObjectStep(this, ObjectID.ZOGRE_OUTDOOR_BELL, new WorldPoint(2598, 3085, 0), "Talk to Zavistic Rarve again to get teleported to Port Sarim.", vial);
 		talkToRarveAgain.addDialogSteps("Can you help me more?", "Yes, that would be great!", "I have a rather sandy problem that I'd like to palm off on you.");
 
-		talkToBetty = new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3014, 3258, 0), "Travel to Port Sarim, and talk to Betty in the magic shop.", vial);
+		talkToBetty = new NpcStep(this, NpcID.BETTY, new WorldPoint(3014, 3258, 0), "Travel to Port Sarim, and talk to Betty in the magic shop.", vial);
 		talkToBetty.addDialogStep("Talk to Betty about the Hand in the Sand.");
 		addRedberries = new DetailedQuestStep(this, "Use redberries on the bottled water.", bottledWater, redberries);
 		addWhiteberries = new DetailedQuestStep(this, "Use whiteberries on the red bottled water", redberryJuice, whiteberries);
 		useDyeOnLanternLens = new DetailedQuestStep(this, "Use the pink dye on a lantern lens.", pinkDye, lanternLens);
-		talkToBettyAgain = new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty with the pink lens.");
+		talkToBettyAgain = new NpcStep(this, NpcID.BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty with the pink lens.");
 		talkToBettyAgain.addDialogStep("Talk to Betty about the Hand in the Sand.");
 
 		standInDoorway = new DetailedQuestStep(this, new WorldPoint(3016, 3259, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.");
 		useLensOnCounter = new ObjectStep(this, ObjectID.HANDSAND_COUNTER_MULTILOC, new WorldPoint(3013, 3258, 0), "Stand in Betty's doorway and use the rose-tinted lens on the counter.", roseLens);
 		useLensOnCounter.addIcon(ItemID.HANDSAND_ROSE_LENS);
 		useLensOnCounter.addSubSteps(standInDoorway);
-		talkToBettyOnceMore =  new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty again.", truthSerum, sand);
+		talkToBettyOnceMore =  new NpcStep(this, NpcID.BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty again.", truthSerum, sand);
 		talkToBettyOnceMore.addDialogStep("Talk to Betty about the Hand in the Sand.");
 		talkToSandyWithPotion =  new NpcStep(this, NpcID.HANDSAND_SANDY0, new WorldPoint(2790, 3175, 0), "Talk to Sandy in Brimhaven again with the truth serum. Select distractions until one works.", truthSerum);
 		useSerumOnCoffee = new ObjectStep(this, ObjectID.HANDSAND_COFFEE_MULTILOC, new WorldPoint(2789, 3176, 0), "Use the truth serum on Sandy's coffee mug.",

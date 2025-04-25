@@ -27,6 +27,7 @@
 package com.questhelper.requirements.widget;
 
 import com.questhelper.requirements.SimpleRequirement;
+import com.questhelper.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -58,6 +59,13 @@ public class WidgetPresenceRequirement extends SimpleRequirement
 	{
 		this.groupId = groupId;
 		this.childId = childId;
+	}
+
+	public WidgetPresenceRequirement(int interfaceID)
+	{
+		var pair = Utils.unpackWidget(interfaceID);
+		this.groupId = pair.getLeft();
+		this.childId = pair.getRight();
 	}
 
 	@Override

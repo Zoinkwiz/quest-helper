@@ -47,7 +47,7 @@ import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import static com.questhelper.requirements.util.LogicHelper.nand;
 
 public class CrackTheClueII extends BasicQuestHelper
@@ -115,6 +115,7 @@ public class CrackTheClueII extends BasicQuestHelper
 
 	@Override
 	public void setupRequirements()
+	
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		pieDish = new ItemRequirement("Pie dish", ItemID.PIE_DISH).isNotConsumed();
@@ -138,11 +139,11 @@ public class CrackTheClueII extends BasicQuestHelper
 	{
 		week1Dig = new DigStep(this, new WorldPoint(2978, 3194, 0),
 			"Dig south-east of Rimmington and north-west of the chapel.", pieDish);
-		week1Message = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, true, "You find some beautifully ornate gloves and boots.");
+		week1Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, true, "You find some beautifully ornate gloves and boots.");
 
 		week2Dig = new DigStep(this, new WorldPoint(2991, 3295, 0),
 			"Dig by the entrance to the Air Altar south of Falador.", rawHerring);
-		week2Message = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, true, "You find some beautifully ornate leg armour.");
+		week2Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, true, "You find some beautifully ornate leg armour.");
 
 		List<QuestEmote> week3Steps = Arrays.asList(QuestEmote.SHRUG, QuestEmote.CHEER);
 		week3Emotes = new EmoteStep(this, week3Steps, new WorldPoint(3035, 3518, 0),
@@ -152,7 +153,7 @@ public class CrackTheClueII extends BasicQuestHelper
 
 		week4Dig = new DigStep(this, new WorldPoint(3235, 3631, 0),
 			"Dig outside the Chaos Temple in the Wilderness.", goblinMail);
-		week4Message = new WidgetTextRequirement(ComponentID.DIALOG_SPRITE_TEXT, true, "You find a beautifully ornate cape.");
+		week4Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, true, "You find a beautifully ornate cape.");
 
 		List<QuestEmote> finalSteps = Arrays.asList(QuestEmote.BOW, QuestEmote.YES, QuestEmote.CLAP);
 		finalEmotes = new EmoteStep(this, finalSteps, new WorldPoint(3246, 3362, 0),
@@ -160,7 +161,7 @@ public class CrackTheClueII extends BasicQuestHelper
 				"Have only the required items in your inventory/equipped.",
 			plainPizza, woodenShield, cheese);
 		finalEmotes.addTileMarker(new WorldPoint(3246, 3362, 0), SpriteID.TAB_EMOTES);
-		finalMessage = new WidgetTextRequirement(ComponentID.DIALOG_NPC_TEXT, true, "Here, take this. But tell no one I was here.");
+		finalMessage = new WidgetTextRequirement(InterfaceID.ChatLeft.TEXT, true, "Here, take this. But tell no one I was here.");
 	}
 
 	@Override

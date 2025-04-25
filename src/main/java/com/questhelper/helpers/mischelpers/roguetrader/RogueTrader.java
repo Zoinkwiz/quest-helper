@@ -59,7 +59,7 @@ public class RogueTrader extends ComplexStateQuestHelper
     ItemRequirement dyes3, hides3, coins, dye3OrHide3;
 
     Requirement canDoClothes, canDoBlackjack, canDoRunes, talkedToAubury, inRunedoku, solvedSmallRunedoku, solvedBothRundoku,
-            talkedToBlackjackGuyOnce, newBlackjacksAvailable, reportedOnBlackjacks, givenSiamunItems, completedAllThree;
+            talkedToBlackjackGuyOnce, newBlackjacksAvailable, reportedOnBlackjacks, givenSiamunItems;
 
     QuestStep talkToAli, talkToAubury, talkToAliAfterAubury, solveRunedoku, talkToAliForLargeRunedoku;
 
@@ -67,8 +67,6 @@ public class RogueTrader extends ComplexStateQuestHelper
     QuestStep talkToBlackjackSellerDefensive, talkToStreetUrchin, talkToAliAfterUrchin;
 
     QuestStep talkToSiamun, talkToAliAfterSiamun;
-
-    QuestStep talkToZeke;
 
     ConditionalStep runeSteps, blackjackStepsOffensive, blackjackDefensiveSteps;
 
@@ -96,10 +94,7 @@ public class RogueTrader extends ComplexStateQuestHelper
         ConditionalStep clothingSteps = new ConditionalStep(this, talkToSiamun);
         clothingSteps.addStep(givenSiamunItems, talkToAliAfterSiamun);
 
-        ConditionalStep talkToAlisStep = new ConditionalStep(this, talkToZeke);
-
         ConditionalStep steps = new ConditionalStep(this, talkToAli);
-        steps.addStep(and(completedAllThree), talkToAlisStep);
         steps.addStep(and(solvedBothRundoku, reportedOnBlackjacks), clothingSteps);
         steps.addStep(solvedBothRundoku, blackjackStepsOffensive);
         // This will only be reached if the offensive route is manually locked
@@ -134,37 +129,20 @@ public class RogueTrader extends ComplexStateQuestHelper
         canDoBlackjack = new VarbitRequirement(VarbitID.ROGUETRADER_BLACKJACKS, 1, Operation.GREATER_EQUAL);
         canDoClothes = new VarbitRequirement(VarbitID.ROGUETRADER_CLOTHES, 1, Operation.GREATER_EQUAL);
         canDoRunes = new VarbitRequirement(VarbitID.ROGUETRADER_RUNES, 1, Operation.GREATER_EQUAL);
-        // Talking to Aubury also sets ROGUETRADER_JUSTOBT_RUNES to 1
         talkedToAubury = new VarbitRequirement(VarbitID.ROGUETRADER_RUNES, 2, Operation.GREATER_EQUAL);
 
         solvedSmallRunedoku = or(new VarbitRequirement(VarbitID.ROGUETRADER_RUNES, 3), new VarbitRequirement(VarbitID.ROGUETRADER_RUNES, 5));
         solvedBothRundoku = new VarbitRequirement(VarbitID.ROGUETRADER_RUNES, 5, Operation.GREATER_EQUAL);
         inRunedoku = new WidgetPresenceRequirement(InterfaceID.RoguetraderSudoku.GAME_RUNES);
 
-        // In choice state for blackjacks
-        // ROGUETRADER_BLACKJACKS 1->2
-        // Success being hit, ROGUETRADER_JUSTCHANGED_WEAPONS 0->1
-        // Guy agreed to ship offensive, ROGUETRADER_JUSTCHANGED_WEAPONS 1->0, ROGUETRADER_BLACKJACKS 2->3
         talkedToBlackjackGuyOnce = new VarbitRequirement(VarbitID.ROGUETRADER_BLACKJACKS, 2, Operation.GREATER_EQUAL);
         newBlackjacksAvailable = new VarbitRequirement(VarbitID.ROGUETRADER_BLACKJACKS, 3, Operation.GREATER_EQUAL);
 
         reportedOnBlackjacks = new VarbitRequirement(VarbitID.ROGUETRADER_BJTOLD_ALI, 1);
 
-        // Urchin stole, JUSTCHANGED 0->2, BJ_URCHINGLOAT = 1
-
-        // Asked to report back, BJ_TOLD_ALI 1->0, BLACKJACKS 3->4
         var givenSiamunDye = new VarbitRequirement(VarbitID.ROGUETRADER_CLOTHES, 2);
         var givenSiamunFur = new VarbitRequirement(VarbitID.ROGUETRADER_CLOTHES, 3);
         givenSiamunItems = or(givenSiamunDye, givenSiamunFur);
-
-        // Talked to ali after all 3, DESERT_ALKHARID_ALIS_VISIBLE 0->1
-        // Finished talking about new clothing, ROGUETRADER_JUSTCHANGED_GARMENTS 0->1
-        completedAllThree = new VarbitRequirement(VarbitID.DESERT_ALKHARID_ALIS_VISIBLE, 1);
-
-        // ALI_KNOWLEDGHE 0->1
-        // SMITH_THREATEN 0->1
-
-        // TAILOR_THREATEN 0->1
     }
 
     public void setupSteps()
@@ -211,33 +189,6 @@ public class RogueTrader extends ComplexStateQuestHelper
         talkToSiamun.addDialogStep("Ok, I'll get you the materials.");
 
         talkToAliAfterSiamun = new NpcStep(this, NpcID.FEUD_ALI_M, new WorldPoint(3304, 3211, 0), "Return to Ali to report on the clothing.");
-
-        talkToZeke = new NpcStep(this, NpcID.ZEKE, new WorldPoint(3298, 3196, 0), "Talk to Zeke south west of Ali Morrisane.");
-        talkToZeke.addDialogStep("What do you think of Ali Morrisane?");
-
-        // Tailor
-        // What can you tell me about Ali Morrisane?
-
-        // Kebab
-        // What do you think of Ali Morrisane?
-
-        // I hear you work for Ali Morrisane...
-
-        // I hear you're planning to expand your business here...
-        // Aren't you going to do anything about your men?
-        // But they're threatening to hurt shopkeepers if they don't cooperate!
-
-        // Dominik (nothing)
-        // What do you know about Ali Morrisane?
-
-        // Ali the Farmer (nothing)
-        // I hear you work for Ali Morrisane...
-
-        // Gnome (ALI_GNOME_RIVALRY)
-        // What do you think of Ali Morrisane?
-
-        // General Store Owner (FARMER_THREATEN)
-        // What do you think of Ali Morrisane?
     }
 
     @Override
@@ -285,8 +236,6 @@ public class RogueTrader extends ComplexStateQuestHelper
         allSteps.add(blackjackDefensivePanel);
 
         allSteps.add(new PanelDetails("Clothes shop", List.of(talkToSiamun, talkToAliAfterSiamun), dye3OrHide3));
-
-//        allSteps.add(new PanelDetails("Taking over", List.of(talkToZeke)));
 
         return allSteps;
     }

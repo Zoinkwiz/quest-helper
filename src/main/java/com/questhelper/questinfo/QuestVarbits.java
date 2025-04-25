@@ -149,7 +149,7 @@ public enum QuestVarbits
   /**
 	 * fake mini-quest varbits, these don't hold the completion value.
 	 */
-	CRACK_THE_CLUE(CRACK_THE_CLUE_PROGRESS),
+	CRACK_THE_CLUE(VarbitID.CRACK_THE_CLUE_PROGRESS),
 
 	// Achievement Diaries
 

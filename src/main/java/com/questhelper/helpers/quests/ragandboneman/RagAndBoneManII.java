@@ -27,54 +27,45 @@ package com.questhelper.helpers.quests.ragandboneman;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.KeyringCollection;
 import com.questhelper.managers.QuestContainerManager;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.tools.QuestTile;
-import com.questhelper.questinfo.QuestVarPlayer;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarPlayer;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
+import com.questhelper.tools.QuestTile;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.questhelper.requirements.util.LogicHelper.nor;
 
 public class RagAndBoneManII extends BasicQuestHelper
 {
@@ -219,29 +210,29 @@ public class RagAndBoneManII extends BasicQuestHelper
 	{
 		// Required items
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
-		pots = new ItemRequirement("Pot", ItemID.POT).isNotConsumed();
-		potNeeded = new ItemRequirement("Pot", ItemID.POT, 8).alsoCheckBank(questBank).highlighted().isNotConsumed();
+		pots = new ItemRequirement("Pot", ItemID.POT_EMPTY).isNotConsumed();
+		potNeeded = new ItemRequirement("Pot", ItemID.POT_EMPTY, 8).alsoCheckBank(questBank).highlighted().isNotConsumed();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.canBeObtainedDuringQuest();
-		mirrorShield = new ItemRequirement("Mirror shield", ItemID.MIRROR_SHIELD).isNotConsumed();
-		mirrorShield.addAlternates(ItemID.VS_SHIELD, ItemID.VS_SHIELD_24266);
-		iceCooler = new ItemRequirement("Ice coolers", ItemID.ICE_COOLER, 10);
+		mirrorShield = new ItemRequirement("Mirror shield", ItemID.SLAYER_MIRROR_SHIELD).isNotConsumed();
+		mirrorShield.addAlternates(ItemID.VIKINGEXILE_V_SHIELD, ItemID.V_SHIELD);
+		iceCooler = new ItemRequirement("Ice coolers", ItemID.SLAYER_ICY_WATER, 10);
 		fishingExplosive = new ItemRequirement("Fishing explosive", ItemID.FISHING_EXPLOSIVE, 10);
-		fishingExplosive.addAlternates(ItemID.FISHING_EXPLOSIVE_6664);
+		fishingExplosive.addAlternates(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 
 		// Optional items
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
+		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		digsitePendant = new ItemRequirement("Digsite pendant", ItemCollections.DIGSITE_PENDANTS);
 		draynorTeleport = new ItemRequirement("Draynor teleport", ItemCollections.AMULET_OF_GLORIES);
-		draynorTeleport.addAlternates(ItemID.DRAYNOR_MANOR_TELEPORT);
+		draynorTeleport.addAlternates(ItemID.TELETAB_DRAYNOR);
 		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemCollections.AMULET_OF_GLORIES);
-		karamjaTeleport.addAlternates(ItemID.BRIMHAVEN_TELEPORT, ItemID.TAI_BWO_WANNAI_TELEPORT);
+		karamjaTeleport.addAlternates(ItemID.NZONE_TELETAB_BRIMHAVEN, ItemID.TELEPORTSCROLL_TAIBWO);
 
 		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.ANTIFIRE_SHIELDS).isNotConsumed();
 		inoculationBracelet = new ItemRequirement("Inoculation bracelet or a potion for Disease",
@@ -249,17 +240,17 @@ public class RagAndBoneManII extends BasicQuestHelper
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).isNotConsumed();
 		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
-		nardahTeleport = new ItemRequirement("Nardah teleport", ItemID.NARDAH_TELEPORT);
+		nardahTeleport = new ItemRequirement("Nardah teleport", ItemID.TELEPORTSCROLL_NARDAH);
 		nardahTeleport.addAlternates(ItemCollections.PHAROAH_SCEPTRE);
-		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.TAVERLEY_TELEPORT);
-		taverleyTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
+		taverleyTeleport = new ItemRequirement("Taverley teleport", ItemID.NZONE_TELETAB_TAVERLEY);
+		taverleyTeleport.addAlternates(ItemID.POH_TABLET_FALADORTELEPORT);
 		rellekkaTeleport = new ItemRequirement("Rellekka teleport", ItemCollections.ENCHANTED_LYRE);
-		rellekkaTeleport.addAlternates(ItemID.RELLEKKA_TELEPORT);
+		rellekkaTeleport.addAlternates(ItemID.NZONE_TELETAB_RELLEKKA);
 		gnomeTeleport = new ItemRequirement("Teleport to Gnome Stronghold (Spirit tree/Gnome Glider", -1, 1);
-		feldipTeleport = new ItemRequirement("Teleport to Feldip Hills (Gnome Glider or Fairy Ring (AKS))", ItemID.FELDIP_HILLS_TELEPORT);
+		feldipTeleport = new ItemRequirement("Teleport to Feldip Hills (Gnome Glider or Fairy Ring (AKS))", ItemID.TELEPORTSCROLL_FELDIP);
 
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
-		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
+		dramenStaff.addAlternates(ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF);
 		rellekkaNETeleport = new ItemRequirement("Fairy Ring (DKS)", ItemCollections.FAIRY_STAFF).isNotConsumed();
 
 		rangedWeapon = new ItemRequirement("Ranged weapon for killing vultures", ItemCollections.CROSSBOWS);
@@ -267,21 +258,21 @@ public class RagAndBoneManII extends BasicQuestHelper
 		rangedWeapon.addAlternates(ItemCollections.BOWS);
 
 		// Quest items
-		jugOfVinegar = new ItemRequirement("Jar of vinegar", ItemID.JUG_OF_VINEGAR);
-		potOfVinegar = new ItemRequirement("Pot of vinegar", ItemID.POT_OF_VINEGAR);
+		jugOfVinegar = new ItemRequirement("Jar of vinegar", ItemID.RAG_VINEGAR);
+		potOfVinegar = new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR);
 		potOfVinegarNeeded =
-			new ItemRequirement("Pot of vinegar", ItemID.POT_OF_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
+			new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
 		jugOfVinegarNeeded =
-			new ItemRequirement("Jug of vinegar", ItemID.JUG_OF_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
-		coinsOrVinegar = new ItemRequirement("Pots/Jugs of vinegar, or coins to buy", ItemID.POT_OF_VINEGAR);
-		coinsOrVinegar.addAlternates(ItemID.JUG_OF_VINEGAR, ItemID.COINS_995);
+			new ItemRequirement("Jug of vinegar", ItemID.RAG_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
+		coinsOrVinegar = new ItemRequirement("Pots/Jugs of vinegar, or coins to buy", ItemID.RAG_POT_VINEGAR);
+		coinsOrVinegar.addAlternates(ItemID.RAG_VINEGAR, ItemID.COINS);
 
 		List<Integer> bonesInVinegar = new ArrayList<>();
-		for (int i = ItemID.BONE_IN_VINEGAR; i <= ItemID.BONE_IN_VINEGAR_7915; i+=3)
+		for (int i = ItemID.RAG_POT_GOBLIN_BONE; i <= ItemID.RAG_POT_JACKAL_BONE; i+=3)
 		{
 			bonesInVinegar.add(i);
 		}
-		boneInVinegar = new ItemRequirement("Bone in vinegar", ItemID.BONE_IN_VINEGAR);
+		boneInVinegar = new ItemRequirement("Bone in vinegar", ItemID.RAG_POT_GOBLIN_BONE);
 		boneInVinegar.addAlternates(bonesInVinegar);
 
 		jailKey = new ItemRequirement("Jail key", ItemID.JAIL_KEY);
@@ -302,7 +293,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
 
 		int jugsNeeded = winesNeededQuantity.get();
-		jugsNeeded -= potOfVinegar.checkTotalMatchesInContainers(client, QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
+		jugsNeeded -= potOfVinegar.checkTotalMatchesInContainers(QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
 		potNeeded.setQuantity(jugsNeeded);
 		jugOfVinegarNeeded.setQuantity(jugsNeeded);
 
@@ -356,13 +347,13 @@ public class RagAndBoneManII extends BasicQuestHelper
 		boneNearby = new Conditions(LogicType.OR,
 			RagBoneGroups.getBonesOnFloor(RagBoneGroups.getBones(RagBoneGroups.getRagBoneIIStates())));
 
-		logAdded = new VarbitRequirement(2046, 1, Operation.GREATER_EQUAL);
-		boneAddedToBoiler = new VarbitRequirement(2046, 2, Operation.GREATER_EQUAL);
-		logLit = new VarbitRequirement(2046, 3, Operation.GREATER_EQUAL);
+		logAdded = new VarbitRequirement(VarbitID.RAG_BOILER, 1, Operation.GREATER_EQUAL);
+		boneAddedToBoiler = new VarbitRequirement(VarbitID.RAG_BOILER, 2, Operation.GREATER_EQUAL);
+		logLit = new VarbitRequirement(VarbitID.RAG_BOILER, 3, Operation.GREATER_EQUAL);
 		boneReady = new VarbitRequirement(2046, 4);
 
 		jailKeyOnFloor = new ItemOnTileRequirement(jailKey);
-		mogreNearby = new NpcInteractingRequirement(NpcID.MOGRE);
+		mogreNearby = new NpcInteractingRequirement(NpcID.MUDSKIPPER_OGRE);
 
 
 		allBonesPolished = new Conditions(RagBoneGroups.allBonesPolished(RagBoneGroups.getRagBoneIIStates(),
@@ -382,31 +373,31 @@ public class RagAndBoneManII extends BasicQuestHelper
 	public void setupSteps()
 	{
 		finishP1 = new DetailedQuestStep(this, "Finish Rag and Bone Man I.");
-		addRope = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+		addRope = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
 			"Enter the hole to the Lumbridge Swamp caves.", rope.highlighted(), lightSource, tinderbox);
 		addRope.addIcon(ItemID.ROPE);
-		leaveJunaRoom = new ObjectStep(this, ObjectID.TUNNEL_6658, new WorldPoint(3219, 9534, 2),
+		leaveJunaRoom = new ObjectStep(this, ObjectID.TOG_CAVE_UP, new WorldPoint(3219, 9534, 2),
 			"Enter the Lumbridge Swamp caves.");
-		enterSwamp = new ObjectStep(this, ObjectID.DARK_HOLE, new WorldPoint(3169, 3172, 0),
+		enterSwamp = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
 			"Enter the hole to the Lumbridge Swamp caves.", lightSource, tinderbox);
 		enterSwamp.addSubSteps(addRope, leaveJunaRoom);
 
-		killBat = new NpcStep(this, NpcID.BAT, new WorldPoint(3367, 3486, 0),
+		killBat = new NpcStep(this, NpcID.SMALL_BAT, new WorldPoint(3367, 3486, 0),
 			"Kill bats south of the Odd Old Man.");
 
-		killUndeadCow = new NpcStep(this, NpcID.UNDEAD_COW, new WorldPoint(3617, 3526, 0),
+		killUndeadCow = new NpcStep(this, NpcID.AHOY_UNDEAD_COW, new WorldPoint(3617, 3526, 0),
 			"Kill undead cows west of the Ectofuntus.", true);
 		killUndeadCow.addTeleport(ectophial);
 
-		enterExperimentCave = new ObjectStep(this, ObjectID.MEMORIAL, new WorldPoint(3578, 3528, 0),
+		enterExperimentCave = new ObjectStep(this, ObjectID.FENK_COFFIN, new WorldPoint(3578, 3528, 0),
 			"Enter the Experiment Cave near Castle Fenkenstrain.");
-		killExperiment = new NpcStep(this, NpcID.EXPERIMENT_1274, new WorldPoint(3557, 9946, 0),
+		killExperiment = new NpcStep(this, NpcID.FENK_EXPERIMENT_2, new WorldPoint(3557, 9946, 0),
 			"Kill Experiments.", true);
-		((NpcStep) killExperiment).addAlternateNpcs(NpcID.EXPERIMENT_1275);
-		killWerewolf = new NpcStep(this, NpcID.WEREWOLF_2611, new WorldPoint(3491, 3487, 0),
+		((NpcStep) killExperiment).addAlternateNpcs(NpcID.FENK_EXPERIMENT_3);
+		killWerewolf = new NpcStep(this, NpcID.CANAFIS_WEREWOLF_WOMAN11, new WorldPoint(3491, 3487, 0),
 			"Kill the citizens/werewolves in Canifis. (Do not use Wolfbane)", true);
 		List<Integer> werewolves = new ArrayList<>();
-		for (int i = NpcID.WEREWOLF_2594; i <= NpcID.LILIYA; i++)
+		for (int i = NpcID.CANAFIS_WEREWOLF_MAN2; i <= NpcID.CANAFIS_WOMAN12; i++)
 		{
 			werewolves.add(i);
 		}
@@ -414,23 +405,23 @@ public class RagAndBoneManII extends BasicQuestHelper
 
 		killGhoul = new NpcStep(this, NpcID.GHOUL, new WorldPoint(3434, 3461, 0),
 			"Kill Ghouls west of Canifis.", true);
-		enterSewer = new ObjectStep(this, ObjectID.MANHOLE_882, new WorldPoint(3237, 3458, 0),
+		enterSewer = new ObjectStep(this, ObjectID.MANHOLEOPEN, new WorldPoint(3237, 3458, 0),
 			"Go down into Varrock Sewer via the Manhole south east of Varrock Castle.");
-		((ObjectStep) enterSewer).addAlternateObjects(ObjectID.MANHOLE);
-		killZombie = new NpcStep(this, NpcID.ZOMBIE_41, new WorldPoint(3244, 9892, 0),
+		((ObjectStep) enterSewer).addAlternateObjects(ObjectID.MANHOLECLOSED);
+		killZombie = new NpcStep(this, NpcID.ZOMBIE_UNARMED_SEWER4, new WorldPoint(3244, 9892, 0),
 			"Kill zombies in the sewer.", true);
-		((NpcStep) killZombie).addAlternateNpcs(NpcID.ZOMBIE_39);
-		killRat = new NpcStep(this, NpcID.RAT_2854, new WorldPoint(3244, 9892, 0),
+		((NpcStep) killZombie).addAlternateNpcs(NpcID.ZOMBIE_UNARMED_SEWER2);
+		killRat = new NpcStep(this, NpcID.PITRAT_SARIM_DEF, new WorldPoint(3244, 9892, 0),
 			"Kill rats.", true);
-		killMossGiant = new NpcStep(this, NpcID.MOSS_GIANT, new WorldPoint(2654, 9565, 0),
+		killMossGiant = new NpcStep(this, NpcID.MOSSGIANT, new WorldPoint(2654, 9565, 0),
 			"Kill Moss Giants near the entrance.", true);
-		((NpcStep) killMossGiant).addAlternateNpcs(NpcID.MOSS_GIANT_2091, NpcID.MOSS_GIANT_2092,
-			NpcID.MOSS_GIANT_2093);
-		killCaveGoblin = new NpcStep(this, NpcID.CAVE_GOBLIN_6434, new WorldPoint(3248, 9574, 0),
+		((NpcStep) killMossGiant).addAlternateNpcs(NpcID.MOSSGIANT2, NpcID.MOSSGIANT3,
+			NpcID.MOSSGIANT4);
+		killCaveGoblin = new NpcStep(this, NpcID.DORGESH_MALE_1, new WorldPoint(3248, 9574, 0),
 			"Kill Cave Goblins in the east of the Lumbridge Caves. Run between the marked tiles to avoid the Wall " +
 				"Beasts.", true);
-		((NpcStep) killCaveGoblin).addAlternateNpcs(NpcID.CAVE_GOBLIN_6435, NpcID.CAVE_GOBLIN_6436,
-			NpcID.CAVE_GOBLIN_6437);
+		((NpcStep) killCaveGoblin).addAlternateNpcs(NpcID.CAVE_GOBLIN2, NpcID.CAVE_GOBLIN3,
+			NpcID.CAVE_GOBLIN4);
 		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3161, 9573, 0), SpriteID.OPTIONS_RUNNING));
 		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3163, 9573, 0), SpriteID.OPTIONS_RUNNING));
 
@@ -443,55 +434,55 @@ public class RagAndBoneManII extends BasicQuestHelper
 		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3214, 9559, 0), SpriteID.OPTIONS_RUNNING));
 		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3216, 9559, 0), SpriteID.OPTIONS_RUNNING));
 
-		killJackal = new NpcStep(this, NpcID.JACKAL, new WorldPoint(3400, 2997, 0),
+		killJackal = new NpcStep(this, NpcID.ICS_LITTLE_JACKAL, new WorldPoint(3400, 2997, 0),
 			"Kill Jackals north of Nardah.", true);
-		killSnake = new NpcStep(this, NpcID.SNAKE_3544, new WorldPoint(3400, 3035, 0),
+		killSnake = new NpcStep(this, NpcID.FEUD_DESERT_SNAKE, new WorldPoint(3400, 3035, 0),
 			"Kill desert snakes north of Nardah.", true);
-		killLizard = new NpcStep(this, NpcID.LIZARD, new WorldPoint(3439, 3036, 0),
+		killLizard = new NpcStep(this, NpcID.SLAYER_LIZARD_MASSIVE, new WorldPoint(3439, 3036, 0),
 			"Kill the giant lizards north of Nardah.", true, iceCooler);
-		killVulture = new NpcStep(this, NpcID.VULTURE, new WorldPoint(3348, 2875, 0),
+		killVulture = new NpcStep(this, NpcID.RAG_VULTURE, new WorldPoint(3348, 2875, 0),
 			"Kill vultures south west of Nardah.", true, rangedWeapon);
-		((NpcStep) killVulture).addAlternateNpcs(NpcID.VULTURE_1268);
-		killSeagull = new NpcStep(this, NpcID.SEAGULL, new WorldPoint(3033, 3235, 0),
+		((NpcStep) killVulture).addAlternateNpcs(NpcID.RAG_VULTURE_FLYING);
+		killSeagull = new NpcStep(this, NpcID.SARIM_SEAGULL_PIER, new WorldPoint(3033, 3235, 0),
 			"Kill seagulls on the Port Sarim docks.", true);
-		((NpcStep) killSeagull).addAlternateNpcs(NpcID.SEAGULL_1339);
-		enterAsgarniaDungeon = new ObjectStep(this, ObjectID.TRAPDOOR_1738, new WorldPoint(3008, 3150, 0), "Enter the " +
+		((NpcStep) killSeagull).addAlternateNpcs(NpcID.SARIM_SEAGULL_PIER_BIG);
+		enterAsgarniaDungeon = new ObjectStep(this, ObjectID.FAI_TRAPDOOR, new WorldPoint(3008, 3150, 0), "Enter the " +
 			"Asgarnia Dungeon by Mudskipper Point.");
-		killIceGiant = new NpcStep(this, NpcID.ICE_GIANT_2086, new WorldPoint(3059, 9576, 0),
+		killIceGiant = new NpcStep(this, NpcID.ICEGIANT2, new WorldPoint(3059, 9576, 0),
 			"Kill Ice Giants at the end of the dungeon.", true);
-		((NpcStep) killIceGiant).addAlternateNpcs(NpcID.ICE_GIANT_2087, NpcID.ICE_GIANT_2088,
-			NpcID.ICE_GIANT_2089);
+		((NpcStep) killIceGiant).addAlternateNpcs(NpcID.ICEGIANT3, NpcID.ICEGIANT_LOW_WANDERRANGE,
+			NpcID.ICEGIANT_LOW_WANDERRANGE2);
 
-		throwExplosive = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT, new WorldPoint(2982, 3113, 0),
+		throwExplosive = new ObjectStep(this, ObjectID.OMINOUS_FISHING_SPOT_A, new WorldPoint(2982, 3113, 0),
 			"Throw a fishing explosive to attract a Mogre on Mudskipper Point.", fishingExplosive.highlighted());
-		throwExplosive.addIcon(ItemID.FISHING_EXPLOSIVE_6664);
-		killMogre = new NpcStep(this, NpcID.MOGRE, new WorldPoint(2988, 3111, 0),
+		throwExplosive.addIcon(ItemID.SLAYERGUIDE_FISHING_EXPLOSIVE);
+		killMogre = new NpcStep(this, NpcID.MUDSKIPPER_OGRE, new WorldPoint(2988, 3111, 0),
 			"Kill the Mogre.");
 		killJogre = new NpcStep(this, NpcID.JOGRE, new WorldPoint(2921, 3051, 0),
 			"Kill Jogres on Karamja.", true);
-		enterBrimhavenDungeon = new ObjectStep(this, ObjectID.DUNGEON_ENTRANCE_20876, new WorldPoint(2745, 3155, 0),
+		enterBrimhavenDungeon = new ObjectStep(this, ObjectID.DUNGEON_TREE_OPEN, new WorldPoint(2745, 3155, 0),
 			"Enter Brimhaven Dungeon.", axe, coins.quantity(875));
 		enterBrimhavenDungeon.addDialogStep("Yes");
-		killFireGiant = new NpcStep(this, NpcID.FIRE_GIANT, new WorldPoint(2662, 9494, 0),
+		killFireGiant = new NpcStep(this, NpcID.FIREGIANT_BIG, new WorldPoint(2662, 9494, 0),
 			"Kill fire giants deep in the dungeon.", true);
-		((NpcStep) killFireGiant).addAlternateNpcs(NpcID.FIRE_GIANT_2076, NpcID.FIRE_GIANT_2077,
-			NpcID.FIRE_GIANT_2078, NpcID.FIRE_GIANT_2079, NpcID.FIRE_GIANT_2080, NpcID.FIRE_GIANT_2081,
-			NpcID.FIRE_GIANT_2082, NpcID.FIRE_GIANT_2083, NpcID.FIRE_GIANT_2084);
+		((NpcStep) killFireGiant).addAlternateNpcs(NpcID.FIREGIANT_BIG2, NpcID.FIREGIANT_BIG3,
+			NpcID.FIREGIANT, NpcID.FIREGIANT2, NpcID.FIREGIANT3, NpcID.FIREGIANT_STRONGHOLDCAVE_1,
+			NpcID.FIREGIANT_STRONGHOLDCAVE_2, NpcID.FIREGIANT_STRONGHOLDCAVE_3, NpcID.FIREGIANT_STRONGHOLDCAVE_4);
 
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)
 		{
-			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
 				"Go to Taverley Dungeon. Bring an antifire shield if you can.");
 		}
 		else
 		{
-			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0),
+			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
 				"Go to Taverley Dungeon. Bring a dusty key if you have one, otherwise you can get one in the dungeon." +
 					" Bring an antifire shield if you can.", dustyKey);
 		}
 		enterTaverleyDungeon.addTeleport(taverleyTeleport);
 
-		goThroughPipe = new ObjectStep(this, ObjectID.OBSTACLE_PIPE_16509, new WorldPoint(2888, 9799, 0),
+		goThroughPipe = new ObjectStep(this, ObjectID.TAVERLY_DUNGEON_PIPE_SC, new WorldPoint(2888, 9799, 0),
 			"Squeeze through the obstacle pipe.");
 		killJailerForKey = new NpcStep(this, NpcID.JAILER, new WorldPoint(2930, 9692, 0),
 			"Travel through Taverley Dungeon until you reach the Black Knights' Base. Kill the Jailer in the east side of the base for a jail key.");
@@ -500,50 +491,50 @@ public class RagAndBoneManII extends BasicQuestHelper
 			"Use the jail key on the south door and talk to Velrak for a dusty key.", jailKey);
 		getDustyFromAdventurer.addDialogStep("So... do you know anywhere good to explore?");
 		getDustyFromAdventurer.addDialogStep("Yes please!");
-		enterDeeperTaverley = new ObjectStep(this, ObjectID.GATE_2623, new WorldPoint(2924, 9803, 0),
+		enterDeeperTaverley = new ObjectStep(this, ObjectID.DEEPDUNGEONDOOR, new WorldPoint(2924, 9803, 0),
 			"Enter the gate to the deeper Taverley dungeon.", dustyKey);
 		enterTaverleyDungeon.addSubSteps(goThroughPipe, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
 
-		killBabyBlueDragon = new NpcStep(this, NpcID.BABY_BLUE_DRAGON, new WorldPoint(2906, 9802, 0),
+		killBabyBlueDragon = new NpcStep(this, NpcID.BABYBLUEDRAGON, new WorldPoint(2906, 9802, 0),
 			"Kill baby blue dragons. South east near the lava is a good spot without any adult dragons.", true);
-		((NpcStep) killBabyBlueDragon).addAlternateNpcs(NpcID.BABY_BLUE_DRAGON_242, NpcID.BABY_BLUE_DRAGON_243);
+		((NpcStep) killBabyBlueDragon).addAlternateNpcs(NpcID.BABYBLUEDRAGON2, NpcID.BABYBLUEDRAGON3);
 
-		enterKeldagrimCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732,
+		enterKeldagrimCave = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732,
 			3713, 0), "Enter the cave north east of Rellekka.");
 		enterKeldagrimCave.addTeleport(rellekkaNETeleport);
-		killTroll = new NpcStep(this, NpcID.MOUNTAIN_TROLL, new WorldPoint(2830, 10107, 0), "Kill trolls.", true);
-		((NpcStep) killTroll).addAlternateNpcs(NpcID.MOUNTAIN_TROLL_937, NpcID.MOUNTAIN_TROLL_938,
-			NpcID.MOUNTAIN_TROLL_939, NpcID.MOUNTAIN_TROLL_940, NpcID.MOUNTAIN_TROLL_941, NpcID.MOUNTAIN_TROLL_942);
-		killRabbit = new NpcStep(this, NpcID.BUNNY, new WorldPoint(2738, 3637, 0),
+		killTroll = new NpcStep(this, NpcID.DEATH_TROLL_MELEE1, new WorldPoint(2830, 10107, 0), "Kill trolls.", true);
+		((NpcStep) killTroll).addAlternateNpcs(NpcID.DEATH_TROLL_MELEE2, NpcID.DEATH_TROLL_MELEE3,
+			NpcID.DEATH_TROLL_MELEE4, NpcID.DEATH_TROLL_MELEE5, NpcID.DEATH_TROLL_MELEE6, NpcID.DEATH_TROLL_MELEE7);
+		killRabbit = new NpcStep(this, NpcID.VIKING_BUNNY_1, new WorldPoint(2738, 3637, 0),
 			"Kill bunnies south east of Rellekka.", true);
-		((NpcStep) killRabbit).addAlternateNpcs(NpcID.BUNNY_3903);
-		enterFremmyDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_2123, new WorldPoint(2798, 3615, 0),
+		((NpcStep) killRabbit).addAlternateNpcs(NpcID.VIKING_BUNNY_2);
+		enterFremmyDungeon = new ObjectStep(this, ObjectID.SLAYER_DUNGEON_ENTRANCE, new WorldPoint(2798, 3615, 0),
 			"Enter the Fremennik Slayer Dungeon.", mirrorShield.equipped());
-		killBasilisk = new NpcStep(this, NpcID.BASILISK_417, new WorldPoint(2743, 10010, 0),
+		killBasilisk = new NpcStep(this, NpcID.SLAYER_BASILISK, new WorldPoint(2743, 10010, 0),
 			"Kill basilisks in the middle of the dungeon.", true, mirrorShield.equipped(),
 			new SkillRequirement(Skill.SLAYER,
 			40,	true));
-		travelToWaterbirth = new NpcStep(this, NpcID.JARVALD, new WorldPoint(2620, 3685, 0), "Travel to Waterbirth " +
+		travelToWaterbirth = new NpcStep(this, NpcID.VIKING_DAGGANOTH_CAVE_FERRYMAN_ISLAND, new WorldPoint(2620, 3685, 0), "Travel to Waterbirth " +
 			"Island.");
-		((NpcStep) travelToWaterbirth).addAlternateNpcs(NpcID.JARVALD_7205, NpcID.JARVALD_10407);
-		enterWaterbirthDungeon = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_8929, new WorldPoint(2521, 3740, 0),
+		((NpcStep) travelToWaterbirth).addAlternateNpcs(NpcID.VIKING_DAGGANOTH_CAVE_FERRYMAN_1OP, NpcID.VIKING_DAGGANOTH_CAVE_WATERBIRTH_ISLAND);
+		enterWaterbirthDungeon = new ObjectStep(this, ObjectID.DAGANNOTH_CAVEENTRANCE_ROCK, new WorldPoint(2521, 3740, 0),
 			"Enter waterbirth dungeon.");
-		killDagannoth = new NpcStep(this, NpcID.DAGANNOTH_3185, new WorldPoint(2452, 10146, 0),
+		killDagannoth = new NpcStep(this, NpcID.DUNGEON_DAGGANOTH_MAINROOM, new WorldPoint(2452, 10146, 0),
 			"Kill dagannoths.", true);
 		killTerrorbird = new NpcStep(this, NpcID.TERRORBIRD, new WorldPoint(2379, 3433, 0),
 			"Kill Terrorbirds in the Tree Gnome Stronghold.", true);
 
-		((NpcStep) killTerrorbird).addAlternateNpcs(NpcID.TERRORBIRD_2065, NpcID.TERRORBIRD_2066);
+		((NpcStep) killTerrorbird).addAlternateNpcs(NpcID.TERRORBIRD2, NpcID.TERRORBIRD3);
 		killWolf = new NpcStep(this, NpcID.WOLF, new WorldPoint(2591, 2966, 0),
 			"Kill wolves in Feldip Hills.", true);
 		killWolf.addTeleport(feldipTeleport);
-		killOgre = new NpcStep(this, NpcID.OGRE_2095, new WorldPoint(2570, 2975, 0),
+		killOgre = new NpcStep(this, NpcID.OGRE, new WorldPoint(2570, 2975, 0),
 			"Kill ogres in Feldip Hills.", true);
 		killOgre.addTeleport(feldipTeleport);
-		killZogre = new NpcStep(this, NpcID.ZOGRE, new WorldPoint(2460, 3048, 0),
+		killZogre = new NpcStep(this, NpcID.ZOGRE_1, new WorldPoint(2460, 3048, 0),
 			"Kill Zogres in Jiggig.", true, inoculationBracelet);
-		((NpcStep) killZogre).addAlternateNpcs(NpcID.ZOGRE_867, NpcID.ZOGRE_868, NpcID.ZOGRE_869, NpcID.ZOGRE_870,
-			NpcID.ZOGRE_871, NpcID.ZOGRE_873, NpcID.ZOGRE_874, NpcID.ZOGRE_875, NpcID.ZOGRE_876);
+		((NpcStep) killZogre).addAlternateNpcs(NpcID.ZOGRE_2, NpcID.ZOGRE_3, NpcID.ZOGRE_4, NpcID.ZOGRE_5,
+			NpcID.ZOGRE_6, NpcID.ZOGRE_DANCE_1, NpcID.ZOGRE_DANCE_2, NpcID.ZOGRE_DANCE_3, NpcID.ZOGRE_DANCE_4);
 		killZogre.addTeleport(feldipTeleport);
 
 		pickupBone = new ItemStep(this, "Pickup the bone.");
@@ -557,28 +548,28 @@ public class RagAndBoneManII extends BasicQuestHelper
 		useBonesOnVinegar = new DetailedQuestStep(this, "Use the bones on the pots of vinegar.", potOfVinegar.highlighted());
 		useBonesOnVinegar.addItemRequirements(RagBoneGroups.bonesToAddToVinegar(RagBoneGroups.getRagBoneIIStates(), questBank));
 
-		placeLogs = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
+		placeLogs = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Place logs under the pot-boiler near the Odd Old Man. If you've already polished all the bones, hand " +
 				"them in to the Odd Old Man.", logs.highlighted());
 		placeLogs.addIcon(ItemID.LOGS);
 
-		useBoneOnBoiler = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
+		useBoneOnBoiler = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Add a bone to the pot boiler.", boneInVinegar.highlighted());
-		useBoneOnBoiler.addIcon(ItemID.BONE_IN_VINEGAR);
-		lightLogs = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
+		useBoneOnBoiler.addIcon(ItemID.RAG_POT_GOBLIN_BONE);
+		lightLogs = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Light the logs under the pot-boiler.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
 
 		waitForCooking = new DetailedQuestStep(this, "Wait for the bones to be cleaned. You can hop worlds to make this happen instantly.");
 
-		removePot = new ObjectStep(this, NullObjectID.NULL_14004, new WorldPoint(3360, 3505, 0),
+		removePot = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Take the pot from the pot-boiler.");
 
-		giveBones = new NpcStep(this, NpcID.ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
+		giveBones = new NpcStep(this, NpcID.RAG_ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
 			"Give the Odd Old Man the bones.");
 		giveBones.addItemRequirements(RagBoneGroups.cleanBonesNotHandedIn(RagBoneGroups.getRagBoneIIStates()));
 
-		talkToFinish = new NpcStep(this, NpcID.ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
+		talkToFinish = new NpcStep(this, NpcID.RAG_ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
 			"Talk to the Odd Old Man to finish.");
 		giveBones.addSubSteps(talkToFinish);
 
@@ -915,8 +906,8 @@ public class RagAndBoneManII extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("A Bonesack", ItemID.BONESACK, 1),
-				new ItemReward("A Ram Skull Helm", ItemID.RAM_SKULL_HELM, 1));
+				new ItemReward("A Bonesack", ItemID.RAG_BONESACK, 1),
+				new ItemReward("A Ram Skull Helm", ItemID.RAG_RAM_HELM, 1));
 	}
 
 	@Override

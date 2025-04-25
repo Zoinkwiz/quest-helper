@@ -1,32 +1,28 @@
 package com.questhelper.helpers.quests.blackknightfortress;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class BlackKnightFortress extends BasicQuestHelper
 {
@@ -162,7 +158,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		bronzeMed = new ItemRequirement("Bronze med helm", ItemID.BRONZE_MED_HELM, 1, true).isNotConsumed();
 		bronzeMed.setTooltip("You can get one from the helmet shop in Barbarian Village.");
 
-		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.FALADOR_TELEPORT);
+		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT);
 		armour = new ItemRequirement("Armour", -1, -1).isNotConsumed();
 		armour.setDisplayItemId(BankSlotIcons.getArmour());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -191,12 +187,12 @@ public class BlackKnightFortress extends BasicQuestHelper
 
 	private void setupSteps()
 	{
-		climbToWhiteKnightsCastleF1 = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2955, 3339, 0),
+		climbToWhiteKnightsCastleF1 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339, 0),
 			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
-		climbToWhiteKnightsCastleF2 = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2961, 3339, 1),
+		climbToWhiteKnightsCastleF2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1),
 			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
 
-		speakToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2),
+		speakToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2959, 3339, 2),
 			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
 		speakToAmik.addDialogStep("I seek a quest!");
 		speakToAmik.addDialogStep("I laugh in the face of danger!");
@@ -204,61 +200,61 @@ public class BlackKnightFortress extends BasicQuestHelper
 		speakToAmik.addSubSteps(climbToWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2);
 
 		/* Path to grill */
-		enterFortress = new ObjectStep(this, ObjectID.STURDY_DOOR, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Be prepared for multiple level 33 Black Knights to attack you.",
+		enterFortress = new ObjectStep(this, ObjectID.BKFORTRESSDOOR1, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Be prepared for multiple level 33 Black Knights to attack you.",
 			ironChainbody, bronzeMed, cabbage);
-		pushWall = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
-		climbUpLadder1 = new ObjectStep(this, ObjectID.LADDER_17148, new WorldPoint(3015, 3519, 0),
+		pushWall = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
+		climbUpLadder1 = new ObjectStep(this, ObjectID.DK_LADDER, new WorldPoint(3015, 3519, 0),
 			"Climb up the ladder.");
-		climbUpLadder2 = new ObjectStep(this, ObjectID.LADDER_17148, new WorldPoint(3016, 3519, 1),
+		climbUpLadder2 = new ObjectStep(this, ObjectID.DK_LADDER, new WorldPoint(3016, 3519, 1),
 			"Climb up the next ladder.");
-		climbDownLadder3 = new ObjectStep(this, ObjectID.LADDER_17149, new WorldPoint(3017, 3516, 2),
+		climbDownLadder3 = new ObjectStep(this, ObjectID.DK_LADDERTOP, new WorldPoint(3017, 3516, 2),
 			"Climb down the ladder south of you.");
-		climbUpLadder4 = new ObjectStep(this, ObjectID.LADDER_17148, new WorldPoint(3023, 3513, 1),
+		climbUpLadder4 = new ObjectStep(this, ObjectID.DK_LADDER, new WorldPoint(3023, 3513, 1),
 			"Climb up the ladder east of you.");
-		climbDownLadder5 = new ObjectStep(this, ObjectID.LADDER_17149, new WorldPoint(3025, 3513, 2),
+		climbDownLadder5 = new ObjectStep(this, ObjectID.DK_LADDERTOP, new WorldPoint(3025, 3513, 2),
 			"Climb down the next ladder east of you.");
-		climbDownLadder6 = new ObjectStep(this, ObjectID.LADDER_17149, new WorldPoint(3021, 3510, 1),
+		climbDownLadder6 = new ObjectStep(this, ObjectID.DK_LADDERTOP, new WorldPoint(3021, 3510, 1),
 			"Climb down the ladder west of you.");
-		listenAtGrill = new ObjectStep(this, ObjectID.GRILL, new WorldPoint(3026, 3507, 0),
+		listenAtGrill = new ObjectStep(this, ObjectID.WITCHGRILL, new WorldPoint(3026, 3507, 0),
 			"Listen at the grill.");
 
 		/* Path to cabbage hole */
-		climbUpLadder6 = new ObjectStep(this, ObjectID.LADDER_17148, new WorldPoint(3021, 3510, 0),
+		climbUpLadder6 = new ObjectStep(this, ObjectID.DK_LADDER, new WorldPoint(3021, 3510, 0),
 			"Climb back up the ladder from the listening room.", cabbage);
-		climbUpLadder5 = new ObjectStep(this, ObjectID.LADDER_17148, new WorldPoint(3025, 3513, 1),
+		climbUpLadder5 = new ObjectStep(this, ObjectID.DK_LADDER, new WorldPoint(3025, 3513, 1),
 			"Climb up the ladder in the chapel room east of you.", cabbage);
-		climbDownLadder4 = new ObjectStep(this, ObjectID.LADDER_17149, new WorldPoint(3023, 3513, 2),
+		climbDownLadder4 = new ObjectStep(this, ObjectID.DK_LADDERTOP, new WorldPoint(3023, 3513, 2),
 			"Climb down the ladder west of you.", cabbage);
-		climbUpLadder3 = new ObjectStep(this, ObjectID.LADDER_17148, new WorldPoint(3017, 3516, 1),
+		climbUpLadder3 = new ObjectStep(this, ObjectID.DK_LADDER, new WorldPoint(3017, 3516, 1),
 			"Climb up the ladder west of you.", cabbage);
-		climbDownLadder2 = new ObjectStep(this, ObjectID.LADDER_17149, new WorldPoint(3016, 3519, 2),
+		climbDownLadder2 = new ObjectStep(this, ObjectID.DK_LADDERTOP, new WorldPoint(3016, 3519, 2),
 			"Climb down the ladder north of you.", cabbage);
-		climbDownLadder1 = new ObjectStep(this, ObjectID.LADDER_17149, new WorldPoint(3015, 3519, 1),
+		climbDownLadder1 = new ObjectStep(this, ObjectID.DK_LADDERTOP, new WorldPoint(3015, 3519, 1),
 			"Climb down the next ladder.", cabbage);
-		goUpLadderToCabbageZone = new ObjectStep(this, ObjectID.LADDER_17159, new WorldPoint(3022, 3518, 0),
+		goUpLadderToCabbageZone = new ObjectStep(this, ObjectID.DK_MEETING_LADDER, new WorldPoint(3022, 3518, 0),
 			"Go into the east room and climb the ladder there. When trying to go through the door to the room, you'll have to go through some dialog. Select option 2.", cabbage);
 		goUpLadderToCabbageZone.addDialogStep("I don't care. I'm going in anyway.");
-		pushWall2 = new ObjectStep(this, ObjectID.WALL_2341, new WorldPoint(3030, 3510, 1),
+		pushWall2 = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3030, 3510, 1),
 			"Push the wall to enter the storage room", cabbage);
-		useCabbageOnHole = new ObjectStep(this, ObjectID.HOLE_2336, new WorldPoint(3031, 3507, 1),
+		useCabbageOnHole = new ObjectStep(this, ObjectID.BLACKKNIGHTHOLE, new WorldPoint(3031, 3507, 1),
 			"USE the cabbage on the hole here. Be careful not to eat it.", cabbage.highlighted());
 		useCabbageOnHole.addIcon(ItemID.CABBAGE);
 
-		goBackDownFromCabbageZone = new ObjectStep(this, ObjectID.LADDER_17160, new WorldPoint(3022, 3518, 1),
+		goBackDownFromCabbageZone = new ObjectStep(this, ObjectID.DK_MEETING_LADDERTOP, new WorldPoint(3022, 3518, 1),
 			"Climb back down the ladder to continue.");
-		exitEastTurret = new ObjectStep(this, ObjectID.STAIRCASE_17155, new WorldPoint(3029, 3507, 3), "Go back downstairs to continue.");
-		exitBasement = new ObjectStep(this, ObjectID.LADDER_25844, new WorldPoint(1867, 4244, 0), "Leave the basement to continue.");
-		exitTopOfFortress = new ObjectStep(this, ObjectID.STAIRCASE_17155, new WorldPoint(3010, 3516, 3), "Leave the basement to continue.");
-		exitWestRoomFirstFloor = new ObjectStep(this, ObjectID.STAIRCASE_17155, new WorldPoint(3011, 3515, 1), "Go back downstairs to continue");
+		exitEastTurret = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3029, 3507, 3), "Go back downstairs to continue.");
+		exitBasement = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDER, new WorldPoint(1867, 4244, 0), "Leave the basement to continue.");
+		exitTopOfFortress = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3010, 3516, 3), "Leave the basement to continue.");
+		exitWestRoomFirstFloor = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3011, 3515, 1), "Go back downstairs to continue");
 
-		climbToWhiteKnightsCastleF1ToFinish = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2955, 3339,
+		climbToWhiteKnightsCastleF1ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339,
 			0),
 			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
-		climbToWhiteKnightsCastleF2ToFinish = new ObjectStep(this, ObjectID.STAIRCASE_24072, new WorldPoint(2961, 3339,
+		climbToWhiteKnightsCastleF2ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339,
 			1),
 			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
 
-		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, new WorldPoint(2959, 3339, 2),
+		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2959, 3339, 2),
 			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
 		returnToAmik.addSubSteps(climbToWhiteKnightsCastleF1ToFinish, climbToWhiteKnightsCastleF2ToFinish);
 	}
@@ -300,7 +296,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2500));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 2500));
 	}
 
 	@Override

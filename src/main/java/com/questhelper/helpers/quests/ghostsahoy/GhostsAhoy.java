@@ -25,47 +25,38 @@
 package com.questhelper.helpers.quests.ghostsahoy;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.DigStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.conditional.NpcCondition;
-import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class GhostsAhoy extends BasicQuestHelper
 {
@@ -185,49 +176,49 @@ public class GhostsAhoy extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		ectoToken2 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 2);
-		charos = new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA).isNotConsumed();
+		charos = new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROS_UNLOCKED).isNotConsumed();
 		ectoTokensCharos = new ItemRequirement("Ecto-token, OR 10 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, 20);
 		ectoTokensNoCharos = new ItemRequirement("Ecto-token, OR 25 Ecto-Tokens and coins to travel by Charter Ship", ItemID.ECTOTOKEN, 31);ectoToken4 = new ItemRequirement("Ecto-token, or travel by Charter Ship", ItemID.ECTOTOKEN, 4);
 		ectoToken12 = new ItemRequirement("Ecto-token, or travel by Charter Ship and 10 ecto-tokens", ItemID.ECTOTOKEN, 12);
 		ectoToken27 = new ItemRequirement("Ecto-token, or travel by Charter Ship and 25 ecto-tokens", ItemID.ECTOTOKEN, 27);
 		ectoToken10 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 10);
 		ectoToken25 = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN, 25);
-		chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY_4273);
+		chestKey = new ItemRequirement("Chest key", ItemID.AHOY_CHEST_KEY);
 		chestKey.setTooltip("You can get another from the Old man on the abandoned ship");
 		chestKey.setHighlightInInventory(true);
 
-		nettleTea = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
+		nettleTea = new ItemRequirement("Nettle tea", ItemID.BOWL_NETTLETEA);
 		nettleTea.setTooltip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
 			"then using them on a bowl of water. Cook this to have nettle tea");
-		nettleTeaHighlighted = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA);
+		nettleTeaHighlighted = new ItemRequirement("Nettle tea", ItemID.BOWL_NETTLETEA);
 		nettleTeaHighlighted.setTooltip("You can make this by picking nettles whilst wearing gloves (Edgeville yews for example), " +
 			"then using them on a bowl of water. Cook this to have nettle tea");
 		nettleTeaHighlighted.setHighlightInInventory(true);
 
-		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
-		milkHighlighted = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK);
+		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
+		milkHighlighted = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
 		milkHighlighted.setHighlightInInventory(true);
 
-		milkyTea = new ItemRequirement("Nettle tea", ItemID.NETTLE_TEA_4240);
+		milkyTea = new ItemRequirement("Nettle tea", ItemID.BOWL_NETTLETEA_MILKY);
 		milkyTea.setHighlightInInventory(true);
 
-		cup = new ItemRequirement("Porcelain cup", ItemID.PORCELAIN_CUP);
+		cup = new ItemRequirement("Porcelain cup", ItemID.CHINACUP_EMPTY);
 		cup.setHighlightInInventory(true);
 
-		cupWithTea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_4245);
+		cupWithTea = new ItemRequirement("Cup of tea", ItemID.CHINACUP_OF_NETTLETEA);
 		cupWithTea.setHighlightInInventory(true);
 
-		cupWithMilkyTea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_4246);
+		cupWithMilkyTea = new ItemRequirement("Cup of tea", ItemID.CHINACUP_OF_NETTLETEA_MILKY);
 
-		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET, 1, true).isNotConsumed();
-		enchantedGhostspeakEquipped = new ItemRequirement("Ghostspeak amulet", ItemID.GHOSTSPEAK_AMULET_4250, 1, true).isNotConsumed();
+		ghostspeak = new ItemRequirement("Ghostspeak amulet", ItemID.AMULET_OF_GHOSTSPEAK, 1, true).isNotConsumed();
+		enchantedGhostspeakEquipped = new ItemRequirement("Ghostspeak amulet", ItemID.AMULET_OF_GHOSTSPEAK_ENCHANTED, 1, true).isNotConsumed();
 		coins400 = new ItemRequirement("400+ coins", ItemCollections.COINS, -1);
 		silk = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted = new ItemRequirement("Silk", ItemID.SILK);
 		silkHighlighted.setHighlightInInventory(true);
-		ItemRequirement redDye = new ItemRequirement("Red dye", ItemID.RED_DYE, 3);
-		ItemRequirement blueDye = new ItemRequirement("Blue dye", ItemID.BLUE_DYE, 3);
-		ItemRequirement yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOW_DYE, 3);
+		ItemRequirement redDye = new ItemRequirement("Red dye", ItemID.REDDYE, 3);
+		ItemRequirement blueDye = new ItemRequirement("Blue dye", ItemID.BLUEDYE, 3);
+		ItemRequirement yellowDye = new ItemRequirement("Yellow dye", ItemID.YELLOWDYE, 3);
 		dyes = new ItemRequirements("3 colours of dyes. Which you'll need is random. To be prepared, bring 3 red/blue/yellow dyes",
 			redDye, blueDye, yellowDye);
 
@@ -237,32 +228,32 @@ public class GhostsAhoy extends BasicQuestHelper
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
-		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_OF_SLIME);
+		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_ECTOPLASM);
 		bucketOfSlime.setTooltip("You can buy one from the Charter Ship crew");
 		bucketOfSlime.setHighlightInInventory(true);
 
-		modelShip = new ItemRequirement("Model ship", ItemID.MODEL_SHIP);
+		modelShip = new ItemRequirement("Model ship", ItemID.AHOY_TOY_BOAT);
 		modelShip.setHighlightInInventory(true);
-		repairedShip = new ItemRequirement("Model ship", ItemID.MODEL_SHIP_4254);
+		repairedShip = new ItemRequirement("Model ship", ItemID.AHOY_TOY_BOAT_REPAIRED);
 		// Lobster piece
-		mapPiece1 = new ItemRequirement("Map scrap", ItemID.MAP_SCRAP_4275);
-		mapPiece2 = new ItemRequirement("Map scrap", ItemID.MAP_SCRAP);
-		mapPiece3 = new ItemRequirement("Map scrap", ItemID.MAP_SCRAP_4276);
-		map = new ItemRequirement("Treasure map", ItemID.TREASURE_MAP);
-		bedsheet = new ItemRequirement("Bedsheet", ItemID.BEDSHEET);
+		mapPiece1 = new ItemRequirement("Map scrap", ItemID.AHOY_MAP_SCRAP_2);
+		mapPiece2 = new ItemRequirement("Map scrap", ItemID.AHOY_MAP_SCRAP_1);
+		mapPiece3 = new ItemRequirement("Map scrap", ItemID.AHOY_MAP_SCRAP_3);
+		map = new ItemRequirement("Treasure map", ItemID.AHOY_MAP_COMPLETE);
+		bedsheet = new ItemRequirement("Bedsheet", ItemID.AHOY_BEDSHEET);
 		bedsheet.setHighlightInInventory(true);
-		ectoSheets = new ItemRequirement("Bedsheet", ItemID.BEDSHEET_4285);
-		ectoSheetsEquipped = new ItemRequirement("Bedsheet", ItemID.BEDSHEET_4285, 1, true);
-		petition = new ItemRequirement("Petition form", ItemID.PETITION_FORM);
-		boneKey = new ItemRequirement("Bone key", ItemID.BONE_KEY_4272);
-		boneKeyHighlighted = new ItemRequirement("Bone key", ItemID.BONE_KEY_4272);
+		ectoSheets = new ItemRequirement("Bedsheet", ItemID.AHOY_BEDSHEETGREEN);
+		ectoSheetsEquipped = new ItemRequirement("Bedsheet", ItemID.AHOY_BEDSHEETGREEN, 1, true);
+		petition = new ItemRequirement("Petition form", ItemID.AHOY_PETITION);
+		boneKey = new ItemRequirement("Bone key", ItemID.AHOY_BONE_KEY);
+		boneKeyHighlighted = new ItemRequirement("Bone key", ItemID.AHOY_BONE_KEY);
 		boneKeyHighlighted.setHighlightInInventory(true);
 
-		robes = new ItemRequirement("Mystical robes", ItemID.MYSTICAL_ROBES);
-		book = new ItemRequirement("Book of haricanto", ItemID.BOOK_OF_HARICANTO);
-		manual = new ItemRequirement("Translation manual", ItemID.TRANSLATION_MANUAL);
+		robes = new ItemRequirement("Mystical robes", ItemID.AHOY_ROBES_OF_NECROVARUS);
+		book = new ItemRequirement("Book of haricanto", ItemID.AHOY_BOOK_OF_HARICANTO);
+		manual = new ItemRequirement("Translation manual", ItemID.AHOY_TRANSLATION_MANUAL);
 		manual.setTooltip("You can get another from Ak-Haranu");
-		signedOakBow = new ItemRequirement("Signed oak bow", ItemID.SIGNED_OAK_BOW);
+		signedOakBow = new ItemRequirement("Signed oak bow", ItemID.OAK_LONGBOW_SIGNED);
 	}
 
 	@Override
@@ -310,10 +301,10 @@ public class GhostsAhoy extends BasicQuestHelper
 		hasMysticalRobes = new Conditions(LogicType.OR, new VarbitRequirement(207, 1), robes.alsoCheckBank(questBank));
 		hasSignedOakBow = signedOakBow.alsoCheckBank(questBank);
 		hasPetition = petition.alsoCheckBank(questBank);
-		hasSignatures = new VarbitRequirement(209, 11, Operation.GREATER_EQUAL);
-		givenPetitionToNecro = new VarbitRequirement(209, 31, Operation.GREATER_EQUAL);
-		hadChestKey = new Conditions(LogicType.OR, chestKey, new VarbitRequirement(214, 2, Operation.GREATER_EQUAL));
-		unlockedChest2 = new VarbitRequirement(214, 3, Operation.GREATER_EQUAL);
+		hasSignatures = new VarbitRequirement(VarbitID.AHOY_SIGNATURECOUNTER, 11, Operation.GREATER_EQUAL);
+		givenPetitionToNecro = new VarbitRequirement(VarbitID.AHOY_SIGNATURECOUNTER, 31, Operation.GREATER_EQUAL);
+		hadChestKey = new Conditions(LogicType.OR, chestKey, new VarbitRequirement(VarbitID.AHOY_SUBQUEST_TOYBOAT, 2, Operation.GREATER_EQUAL));
+		unlockedChest2 = new VarbitRequirement(VarbitID.AHOY_SUBQUEST_TOYBOAT, 3, Operation.GREATER_EQUAL);
 		doorUnlocked = new VarbitRequirement(213, 1);
 
 		lobsterNearby = new NpcCondition(NpcID.GIANT_LOBSTER);
@@ -322,48 +313,48 @@ public class GhostsAhoy extends BasicQuestHelper
 		boneKeyNearby = new ItemOnTileRequirement(boneKey);
 		hasBoneKey = new Conditions(LogicType.OR, boneKey, doorUnlocked);
 
-		talkedToAkHaranu = new VarbitRequirement(212, 1, Operation.GREATER_EQUAL);
+		talkedToAkHaranu = new VarbitRequirement(VarbitID.AHOY_SUBQUEST_BOW, 1, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
 	{
-		enterPhas = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
-		talkToVelorina = new NpcStep(this, NpcID.VELORINA, new WorldPoint(3677, 3508, 0), "Talk to Velorina in east Port Phasmatys.", ghostspeak);
+		enterPhas = new ObjectStep(this, ObjectID.AHOY_TOWN_BARRIER, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
+		talkToVelorina = new NpcStep(this, NpcID.AHOY_VELORINA, new WorldPoint(3677, 3508, 0), "Talk to Velorina in east Port Phasmatys.", ghostspeak);
 		talkToVelorina.addDialogSteps("Why, what is the matter?", "Yes, I do. It is a very sad story.", "Yes.");
-		talkToNecrovarus = new NpcStep(this, NpcID.NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus.", ghostspeak);
-		enterPhasAfterNecro = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
-		talkToVelorinaAfterNecro = new NpcStep(this, NpcID.VELORINA, new WorldPoint(3677, 3508, 0), "Return to Velorina in east Port Phasmatys.", ghostspeak);
+		talkToNecrovarus = new NpcStep(this, NpcID.AHOY_NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus.", ghostspeak);
+		enterPhasAfterNecro = new ObjectStep(this, ObjectID.AHOY_TOWN_BARRIER, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
+		talkToVelorinaAfterNecro = new NpcStep(this, NpcID.AHOY_VELORINA, new WorldPoint(3677, 3508, 0), "Return to Velorina in east Port Phasmatys.", ghostspeak);
 		talkToVelorinaAfterNecro.addSubSteps(enterPhasAfterNecro);
-		talkToCrone = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone east of the Slayer Tower.", nettleTea, milk);
+		talkToCrone = new NpcStep(this, NpcID.AHOY_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone east of the Slayer Tower.", nettleTea, milk);
 		talkToCrone.addDialogSteps("I'm here about Necrovarus.");
 		useTeaOnCup = new DetailedQuestStep(this, "Use the nettle tea on the porcelain cup.", nettleTeaHighlighted, cup);
 		useMilkOnTea = new DetailedQuestStep(this, "Use the bucket of milk on the porcelain cup.", milkHighlighted, cupWithTea);
-		talkToCroneAgain = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone east of the Slayer Tower.", cupWithMilkyTea);
+		talkToCroneAgain = new NpcStep(this, NpcID.AHOY_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone east of the Slayer Tower.", cupWithMilkyTea);
 		talkToCroneAgain.addDialogSteps("I'm here about Necrovarus.");
-		talkToCroneAgainForShip = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone and offer to help.");
+		talkToCroneAgainForShip = new NpcStep(this, NpcID.AHOY_CRONE, new WorldPoint(3462, 3558, 0), "Talk to the Old Crone and offer to help.");
 		talkToCroneAgainForShip.addDialogSteps("I'm here about Necrovarus.");
 		talkToCroneAgainForShip.addDialogSteps("You are doing so much for me - is there anything I can do for you?", "I am afraid I have lost the boat you gave to me.");
 		repairShip = new DetailedQuestStep(this, "Use the silk on the model ship.", silkHighlighted, needle, thread, knife, modelShip);
 
-		searchChestForLobster = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3618, 3542, 0), "Attempt to search the chest in the east of the hull of the ship west of Port Phasmatys. A giant lobster will spawn you need to kill.");
-		((ObjectStep) (searchChestForLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
+		searchChestForLobster = new ObjectStep(this, ObjectID.AHOY_CHEST_CLOSED, new WorldPoint(3618, 3542, 0), "Attempt to search the chest in the east of the hull of the ship west of Port Phasmatys. A giant lobster will spawn you need to kill.");
+		((ObjectStep) (searchChestForLobster)).addAlternateObjects(ObjectID.AHOY_CHEST_OPEN);
 		killLobster = new NpcStep(this, NpcID.GIANT_LOBSTER, "Kill the Giant Lobster.");
-		searchChestAfterLobster = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3618, 3542, 0), "Search the chest in the east of the hull again.");
-		((ObjectStep) (searchChestAfterLobster)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
+		searchChestAfterLobster = new ObjectStep(this, ObjectID.AHOY_CHEST_CLOSED, new WorldPoint(3618, 3542, 0), "Search the chest in the east of the hull again.");
+		((ObjectStep) (searchChestAfterLobster)).addAlternateObjects(ObjectID.AHOY_CHEST_OPEN);
 
 		dyeFlags = new DyeShipSteps(this);
-		useKeyOnChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_16116, new WorldPoint(3619, 3545, 1), "Use the key on the chest in the Captain's Room, then search it.", chestKey);
+		useKeyOnChest = new ObjectStep(this, ObjectID.AHOY_CHEST_LOCKED, new WorldPoint(3619, 3545, 1), "Use the key on the chest in the Captain's Room, then search it.", chestKey);
 		useKeyOnChest.addIcon(ItemID.CHEST_KEY);
-		openSecondChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_16116, new WorldPoint(3619, 3545, 1), "Search the chest in the Captain's Room.");
+		openSecondChest = new ObjectStep(this, ObjectID.AHOY_CHEST_LOCKED, new WorldPoint(3619, 3545, 1), "Search the chest in the Captain's Room.");
 		useKeyOnChest.addSubSteps(openSecondChest);
 
-		goDownFromMast = new ObjectStep(this, ObjectID.SHIPS_LADDER_16112, new WorldPoint(3615, 3541, 2), "Go to the main deck of the ship.");
-		goUpToDeck = new ObjectStep(this, ObjectID.SHIPS_LADDER_16111, new WorldPoint(3613, 3543, 0), "Go up the ladder in the ship west of Port Phasmatys.");
-		goAcrossPlank = new ObjectStep(this, ObjectID.GANGPLANK_16651, new WorldPoint(3605, 3546, 1), "Go across the gangplank to the north.");
+		goDownFromMast = new ObjectStep(this, ObjectID.AHOY_GHOSTSHIP_LADDERTOP, new WorldPoint(3615, 3541, 2), "Go to the main deck of the ship.");
+		goUpToDeck = new ObjectStep(this, ObjectID.AHOY_GHOSTSHIP_LADDER, new WorldPoint(3613, 3543, 0), "Go up the ladder in the ship west of Port Phasmatys.");
+		goAcrossPlank = new ObjectStep(this, ObjectID.AHOY_GANGPLANK_SHIPWRECK_ON, new WorldPoint(3605, 3546, 1), "Go across the gangplank to the north.");
 		goAcrossPlank.addSubSteps(goDownFromMast, goUpToDeck);
 
-		openThirdChest = new ObjectStep(this, ObjectID.CLOSED_CHEST_16118, new WorldPoint(3606, 3564, 0), "Jump across the rocks to the chest and search it for a map piece.");
-		((ObjectStep) (openThirdChest)).addAlternateObjects(ObjectID.OPEN_CHEST_16119);
+		openThirdChest = new ObjectStep(this, ObjectID.AHOY_CHEST_CLOSED, new WorldPoint(3606, 3564, 0), "Jump across the rocks to the chest and search it for a map piece.");
+		((ObjectStep) (openThirdChest)).addAlternateObjects(ObjectID.AHOY_CHEST_OPEN);
 		((ObjectStep) (openThirdChest)).setLinePoints(Arrays.asList(
 			new WorldPoint(3604, 3550, 0),
 			new WorldPoint(3601, 3550, 0),
@@ -379,52 +370,52 @@ public class GhostsAhoy extends BasicQuestHelper
 
 		if (canUseCharos)
 		{
-			enterPhasForDigging = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", charos, ectoToken12, spade, map, ghostspeak);
-			takeRowingBoat = new NpcStep(this, NpcID.GHOST_CAPTAIN, new WorldPoint(3703, 3487, 0), "Talk to the Ghost captain at the rowing boat on the docks with your Ring of Charos (a) equipped.", charos, ectoToken10, spade, map);
+			enterPhasForDigging = new ObjectStep(this, ObjectID.AHOY_TOWN_BARRIER, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", charos, ectoToken12, spade, map, ghostspeak);
+			takeRowingBoat = new NpcStep(this, NpcID.AHOY_GHOST_CAPTAIN_1, new WorldPoint(3703, 3487, 0), "Talk to the Ghost captain at the rowing boat on the docks with your Ring of Charos (a) equipped.", charos, ectoToken10, spade, map);
 		}
 		else
 		{
-			enterPhasForDigging = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken27, spade, map, ghostspeak);
-			takeRowingBoat = new NpcStep(this, NpcID.GHOST_CAPTAIN, new WorldPoint(3703, 3487, 0), "Travel on the rowing boat on the docks.", ectoToken25, spade, map, ghostspeak);
+			enterPhasForDigging = new ObjectStep(this, ObjectID.AHOY_TOWN_BARRIER, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken27, spade, map, ghostspeak);
+			takeRowingBoat = new NpcStep(this, NpcID.AHOY_GHOST_CAPTAIN_1, new WorldPoint(3703, 3487, 0), "Travel on the rowing boat on the docks.", ectoToken25, spade, map, ghostspeak);
 		}
 
 		digForBook = new DigStep(this, new WorldPoint(3803, 3530, 0), "Dig on the south of the island for a book.", map);
-		returnToPhas = new NpcStep(this, NpcID.GHOST_CAPTAIN, new WorldPoint(3791, 3559, 0), "Return to Port Phasmatys with the Ghost Captain.", ghostspeak);
+		returnToPhas = new NpcStep(this, NpcID.AHOY_GHOST_CAPTAIN_1, new WorldPoint(3791, 3559, 0), "Return to Port Phasmatys with the Ghost Captain.", ghostspeak);
 
-		enterPhasForManual = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
-		talkToAkHaranu = new NpcStep(this, NpcID.AKHARANU, new WorldPoint(3689, 3499, 0), "Talk to Ak-Haranu.");
+		enterPhasForManual = new ObjectStep(this, ObjectID.AHOY_TOWN_BARRIER, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
+		talkToAkHaranu = new NpcStep(this, NpcID.AHOY_AKHARANU, new WorldPoint(3689, 3499, 0), "Talk to Ak-Haranu.");
 		talkToAkHaranu.addDialogStep("Okay, wait here - I'll get you your bow.");
 		talkToAkHaranu.addSubSteps(enterPhasForManual);
-		talkToRobin = new NpcStep(this, NpcID.ROBIN, new WorldPoint(3675, 3495, 0), "Talk to Robin in the Port Phasmatys pub. Keep playing runedraw until he agrees to sign your bow.", oakLongbow, coins400);
+		talkToRobin = new NpcStep(this, NpcID.AHOY_ROBIN, new WorldPoint(3675, 3495, 0), "Talk to Robin in the Port Phasmatys pub. Keep playing runedraw until he agrees to sign your bow.", oakLongbow, coins400);
 		talkToRobin.addDialogStep("Yes, I'll give you a game.");
-		bringBowToAkHaranu = new NpcStep(this, NpcID.AKHARANU, new WorldPoint(3689, 3499, 0), "Bring the signed bow to Ak-Haranu.", signedOakBow);
+		bringBowToAkHaranu = new NpcStep(this, NpcID.AHOY_AKHARANU, new WorldPoint(3689, 3499, 0), "Bring the signed bow to Ak-Haranu.", signedOakBow);
 
-		enterPhasForRobe = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
-		talkToInnkeeper = new NpcStep(this, NpcID.GHOST_INNKEEPER, new WorldPoint(3681, 3495, 0), "Talk to the Ghost Innkeeper.", ghostspeak);
+		enterPhasForRobe = new ObjectStep(this, ObjectID.AHOY_TOWN_BARRIER, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys.", ectoToken2, ghostspeak);
+		talkToInnkeeper = new NpcStep(this, NpcID.AHOY_GHOST_INNKEEPER, new WorldPoint(3681, 3495, 0), "Talk to the Ghost Innkeeper.", ghostspeak);
 		talkToInnkeeper.addDialogSteps("Do you have any jobs I can do?", "Yes, I'd be delighted.");
 		talkToInnkeeper.addSubSteps(enterPhasForRobe);
 		useSlimeOnSheet = new DetailedQuestStep(this, "Use a bucket of slime on the bedsheets.", bucketOfSlime, bedsheet);
-		talkToGravingas = new NpcStep(this, NpcID.GRAVINGAS, new WorldPoint(3660, 3499, 0), "Talk to Gravingas wearing the bedsheet.", ectoSheetsEquipped, ghostspeak);
+		talkToGravingas = new NpcStep(this, NpcID.AHOY_GHOST_PROTESTOR, new WorldPoint(3660, 3499, 0), "Talk to Gravingas wearing the bedsheet.", ectoSheetsEquipped, ghostspeak);
 		talkToGravingas.addDialogStep("After hearing Velorina's story I will be happy to help out.");
-		talkToVillagers = new NpcStep(this, NpcID.GHOST_VILLAGER, new WorldPoint(3662, 3497, 0), "Alternate talking with the ghost villagers until you have 10 signatures.", true, ghostspeak);
-		showPetitionToNecro = new NpcStep(this, NpcID.NECROVARUS, new WorldPoint(3660, 3516, 0), "Bring the petition to Necrovarus at the Ectofuntus to cause him to drop a bone key.", petition, ghostspeak);
-		talkToNecroForKey = new NpcStep(this, NpcID.NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus until he drops a bone key.", ghostspeak);
+		talkToVillagers = new NpcStep(this, NpcID.AHOY_GHOST_VILLAGER, new WorldPoint(3662, 3497, 0), "Alternate talking with the ghost villagers until you have 10 signatures.", true, ghostspeak);
+		showPetitionToNecro = new NpcStep(this, NpcID.AHOY_NECROVARUS, new WorldPoint(3660, 3516, 0), "Bring the petition to Necrovarus at the Ectofuntus to cause him to drop a bone key.", petition, ghostspeak);
+		talkToNecroForKey = new NpcStep(this, NpcID.AHOY_NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus until he drops a bone key.", ghostspeak);
 		showPetitionToNecro.addSubSteps(talkToNecroForKey);
 		takeKey = new ItemStep(this, "Pick up the bone key.", boneKey);
-		goUpFromNecro = new ObjectStep(this, ObjectID.STAIRCASE_16646, new WorldPoint(3667, 3520, 0), "Go upstairs at the Ectofuntus.");
-		useKeyOnDoor = new ObjectStep(this, ObjectID.DOOR_5244, new WorldPoint(3656, 3514, 1), "Use the key on the south room's door.", boneKeyHighlighted);
-		useKeyOnDoor.addIcon(ItemID.BONE_KEY_4272);
-		takeRobes = new ObjectStep(this, ObjectID.COFFIN_16644, new WorldPoint(3660, 3514, 1), "Search the coffin.");
-		((ObjectStep) (takeRobes)).addAlternateObjects(ObjectID.COFFIN_16645);
-		returnToCrone = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Bring the items to the Old Crone east of the Slayer Tower.", robes, book, manual, ghostspeak);
+		goUpFromNecro = new ObjectStep(this, ObjectID.AHOY_TOWER_STAIRS_LV1, new WorldPoint(3667, 3520, 0), "Go upstairs at the Ectofuntus.");
+		useKeyOnDoor = new ObjectStep(this, ObjectID.AHOY_HARBOUR_DOOR, new WorldPoint(3656, 3514, 1), "Use the key on the south room's door.", boneKeyHighlighted);
+		useKeyOnDoor.addIcon(ItemID.AHOY_BONE_KEY);
+		takeRobes = new ObjectStep(this, ObjectID.AHOY_COFFIN, new WorldPoint(3660, 3514, 1), "Search the coffin.");
+		((ObjectStep) (takeRobes)).addAlternateObjects(ObjectID.AHOY_COFFIN_OPEN);
+		returnToCrone = new NpcStep(this, NpcID.AHOY_CRONE, new WorldPoint(3462, 3558, 0), "Bring the items to the Old Crone east of the Slayer Tower.", robes, book, manual, ghostspeak);
 		returnToCrone.addDialogSteps("I'm here about Necrovarus.");
-		bringCroneAmulet = new NpcStep(this, NpcID.OLD_CRONE, new WorldPoint(3462, 3558, 0), "Bring a ghostspeak amulet to the Old Crone east of the Slayer Tower.", ghostspeak);
+		bringCroneAmulet = new NpcStep(this, NpcID.AHOY_CRONE, new WorldPoint(3462, 3558, 0), "Bring a ghostspeak amulet to the Old Crone east of the Slayer Tower.", ghostspeak);
 		bringCroneAmulet.addDialogSteps("I'm here about Necrovarus.");
 		returnToCrone.addSubSteps(bringCroneAmulet);
-		talkToNecroAfterCurse = new NpcStep(this, NpcID.NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus.", enchantedGhostspeakEquipped);
+		talkToNecroAfterCurse = new NpcStep(this, NpcID.AHOY_NECROVARUS, new WorldPoint(3660, 3516, 0), "Talk to Necrovarus at the Ectofuntus.", enchantedGhostspeakEquipped);
 		talkToNecroAfterCurse.addDialogStep("Let any ghost who so wishes pass on into the next world.");
-		enterPhasFinal = new ObjectStep(this, ObjectID.ENERGY_BARRIER_16105, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys. You don't need ecto-tokens for this any more.", ghostspeak);
-		talkToVelorinaFinal = new NpcStep(this, NpcID.VELORINA, new WorldPoint(3677, 3508, 0), "Talk to Velorina in east Port Phasmatys to finish!", ghostspeak);
+		enterPhasFinal = new ObjectStep(this, ObjectID.AHOY_TOWN_BARRIER, new WorldPoint(3660, 3508, 0), "Enter Port Phasmatys. You don't need ecto-tokens for this any more.", ghostspeak);
+		talkToVelorinaFinal = new NpcStep(this, NpcID.AHOY_VELORINA, new WorldPoint(3677, 3508, 0), "Talk to Velorina in east Port Phasmatys to finish!", ghostspeak);
 	}
 
 	@Override

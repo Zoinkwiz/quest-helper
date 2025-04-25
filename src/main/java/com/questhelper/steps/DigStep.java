@@ -26,20 +26,21 @@ package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.InventorySlots;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.function.Predicate;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.function.Predicate;
 
 public class DigStep extends DetailedQuestStep
 {

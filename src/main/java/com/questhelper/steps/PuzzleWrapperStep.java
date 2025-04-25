@@ -31,15 +31,16 @@ import com.questhelper.requirements.ConfigRequirement;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
+import lombok.NonNull;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
-import lombok.NonNull;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class PuzzleWrapperStep extends ConditionalStep
 {
@@ -47,9 +48,10 @@ public class PuzzleWrapperStep extends ConditionalStep
 	final DetailedQuestStep noSolvingStep;
 	ManualRequirement shouldHideHiddenPuzzleHintInSidebar = new ManualRequirement();
 
-	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, String text, Requirement... requirements)
+	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, Requirement... requirements)
 	{
-		super(questHelper, step, text, requirements);
+		super(questHelper, step, "", requirements);
+		this.text = hiddenStep.getText();
 		this.noSolvingStep = hiddenStep;
 		this.questHelperConfig = questHelper.getConfig();
 		addStep(not(new ConfigRequirement(questHelper.getConfig()::solvePuzzles)), noSolvingStep);
@@ -64,12 +66,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)
 	{
-		this(questHelper, step, new DetailedQuestStep(questHelper, "If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings."), text, requirements);
-	}
-
-	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, Requirement... requirements)
-	{
-		this(questHelper, step, hiddenStep, "", requirements);
+		this(questHelper, step, new DetailedQuestStep(questHelper, text), requirements);
 	}
 
 	@Override
@@ -107,7 +104,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
-		if (questHelperConfig.solvePuzzles())
+		if (currentStep != null && questHelperConfig.solvePuzzles())
 		{
 			currentStep.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
 		}

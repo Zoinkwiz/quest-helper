@@ -24,41 +24,39 @@
  */
 package com.questhelper.helpers.achievementdiaries.morytania;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
-import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.miniquests.lairoftarnrazorlor.TarnRoute;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MorytaniaMedium extends ComplexStateQuestHelper
 {
@@ -150,32 +148,32 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notSwampLizard = new VarplayerRequirement(1180, false, 12);
-		notCanifisAgi = new VarplayerRequirement(1180, false, 13);
-		notHollowTree = new VarplayerRequirement(1180, false, 14);
-		notDragontoothIsland = new VarplayerRequirement(1180, false, 15);
-		notTerrorDog = new VarplayerRequirement(1180, false, 16);
-		notTroubleBrewing = new VarplayerRequirement(1180, false, 17);
-		notSwampBoaty = new VarplayerRequirement(1180, false, 18);
-		notCannonBall = new VarplayerRequirement(1180, false, 19);
-		notFeverSpider = new VarplayerRequirement(1180, false, 20);
-		notEctophialTP = new VarplayerRequirement(1180, false, 21);
-		notGuthBalance = new VarplayerRequirement(1180, false, 22);
+		notSwampLizard = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 12);
+		notCanifisAgi = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 13);
+		notHollowTree = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 14);
+		notDragontoothIsland = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 15);
+		notTerrorDog = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 16);
+		notTroubleBrewing = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 17);
+		notSwampBoaty = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 18);
+		notCannonBall = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 19);
+		notFeverSpider = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 20);
+		notEctophialTP = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 21);
+		notGuthBalance = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 22);
 
 		protectFromMagic = new PrayerRequirement("Activate Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notSwampLizard).isNotConsumed();
-		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.SMALL_FISHING_NET)
+		smallFishingNet = new ItemRequirement("Small fishing net", ItemID.NET)
 			.showConditioned(notSwampLizard).isNotConsumed();
 		axe = new ItemRequirement("Axe", ItemCollections.AXES).showConditioned(notHollowTree).isNotConsumed();
 		ectoToken = new ItemRequirement("Ecto-token", ItemID.ECTOTOKEN).showConditioned(notDragontoothIsland);
-		ghostspeakAmulet = new ItemRequirement("Ghostspeak Amulet", ItemID.GHOSTSPEAK_AMULET)
+		ghostspeakAmulet = new ItemRequirement("Ghostspeak Amulet", ItemID.AMULET_OF_GHOSTSPEAK)
 			.showConditioned(notDragontoothIsland).isNotConsumed();
 		steelBar = new ItemRequirement("Steel bar", ItemID.STEEL_BAR).showConditioned(notCannonBall);
 		ammoMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD).showConditioned(notCannonBall).isNotConsumed();
-		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES).showConditioned(notFeverSpider).isNotConsumed();
+		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYERGUIDE_SLAYER_GLOVES).showConditioned(notFeverSpider).isNotConsumed();
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(notEctophialTP).isNotConsumed();
-		restorePot = new ItemRequirement("Restore potion (4)", ItemID.RESTORE_POTION4).showConditioned(notGuthBalance);
+		restorePot = new ItemRequirement("Restore potion (4)", ItemID._4DOSESTATRESTORE).showConditioned(notGuthBalance);
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC).showConditioned(notGuthBalance);
 		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST).showConditioned(notGuthBalance);
 		silverDust.setTooltip("Created by grinding a silver bar in the ectofuntus bone grinder.");
@@ -208,7 +206,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		onPillar5 = new ZoneRequirement(pillar5);
 		onPillar6 = new ZoneRequirement(pillar6);
 		atSwitch1 = new ZoneRequirement(switch1);
-		switchPressed = new ObjectCondition(ObjectID.FLOOR_20635, new WorldPoint(3138, 4595, 1));
+		switchPressed = new ObjectCondition(ObjectID.LOTR_TRAP_BUTTON_PRESSED_LVL1, new WorldPoint(3138, 4595, 1));
 		inRoom6PastTrap1 = new ZoneRequirement(room6PastTrap1);
 		inRoom6PastTrap2 = new ZoneRequirement(room6PastTrap2P1, room6PastTrap2P2);
 		inExtraRoom1 = new ZoneRequirement(extraRoom1);
@@ -271,19 +269,19 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		getToTerrorDogs = new TarnRoute(this);
-		moveToMine = new ObjectStep(this, ObjectID.CART_TUNNEL, new WorldPoint(3440, 3232, 0),
+		moveToMine = new ObjectStep(this, ObjectID.HAUNTEDMINE_SECONDARY_ENTRANCE, new WorldPoint(3440, 3232, 0),
 			"Enter the Haunted Mine or use slayer ring to teleport directly to Tarn's Lair.");
-		terrorDog = new NpcStep(this, NpcID.TERROR_DOG, new WorldPoint(3149, 4652, 0),
+		terrorDog = new NpcStep(this, NpcID.LOTR_TERROR_DOG_LARGE, new WorldPoint(3149, 4652, 0),
 			"Kill a terror dog. You can enter the room with the diary if you need a safe zone.", true);
-		terrorDog.addAlternateNpcs(NpcID.TERROR_DOG_6474);
+		terrorDog.addAlternateNpcs(NpcID.LOTR_TERROR_DOG_SMALL);
 
-		canifisAgi = new ObjectStep(this, ObjectID.TALL_TREE_14843, new WorldPoint(3507, 3489, 0),
+		canifisAgi = new ObjectStep(this, ObjectID.ROOFTOPS_CANIFIS_START_TREE, new WorldPoint(3507, 3489, 0),
 			"Complete a lap of the Canifis Rooftop Course.");
 
-		swampLizard = new ObjectStep(this, ObjectID.YOUNG_TREE_9341, new WorldPoint(3532, 3447, 0),
+		swampLizard = new ObjectStep(this, ObjectID.HUNTING_SAPLING_UP_SWAMP, new WorldPoint(3532, 3447, 0),
 			"Catch a swamp lizard.");
 
-		swampBoaty = new ObjectStep(this, ObjectID.SWAMP_BOATY_6970, new WorldPoint(3499, 3378, 0),
+		swampBoaty = new ObjectStep(this, ObjectID.ROUTE_ROWBOAT_HOLLOWS, new WorldPoint(3499, 3378, 0),
 			"Board the Swamp boaty at the Hollows.");
 
 		ectophialTP = new ItemStep(this, "Use your Ectophial to teleport to Port Phasmatys.", ectophial.highlighted());
@@ -293,33 +291,33 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		guthBalance2 = new ItemStep(this, "Mix a Guthix balance potion while in Morytania.", guthixBalanceUnf.highlighted(),
 			silverDust.highlighted());
 
-		hollowTree = new ObjectStep(this, ObjectID.HOLLOW_TREE_10830, new WorldPoint(3663, 3451, 0),
+		hollowTree = new ObjectStep(this, ObjectID.HOLLOW_TREE_BIG, new WorldPoint(3663, 3451, 0),
 			"Chop some bark off the hollow tree south of Port phasmatys.", axe);
 
-		cannonBall = new ObjectStep(this, ObjectID.FURNACE_24009, new WorldPoint(3689, 3479, 0),
+		cannonBall = new ObjectStep(this, ObjectID.FAI_FALADOR_FURNACE, new WorldPoint(3689, 3479, 0),
 			"Make a batch of cannonballs at Port Phasmatys.", ammoMould, steelBar);
 
-		dragontoothIsland = new NpcStep(this, NpcID.GHOST_CAPTAIN, new WorldPoint(3703, 3487, 0),
+		dragontoothIsland = new NpcStep(this, NpcID.AHOY_GHOST_CAPTAIN_1, new WorldPoint(3703, 3487, 0),
 			"Talk to the Ghost captain at Port Phasmatys to travel to Dragontooth Island.", ectoToken.quantity(25),
 			ghostspeakAmulet);
 
-		moveToBrainDeath = new NpcStep(this, NpcID.PIRATE_PETE, new WorldPoint(3681, 3536, 0),
+		moveToBrainDeath = new NpcStep(this, NpcID.DEAL_PETE, new WorldPoint(3681, 3536, 0),
 			"Talk to Pirate Pete to travel to Braindeath Island.");
 		moveToBrainDeath.addDialogStep("Okay!");
-		moveToDownstairs = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1),
+		moveToDownstairs = new ObjectStep(this, ObjectID.DEAL_LADDERTOP, new WorldPoint(2139, 5105, 1),
 			"Climb down the ladder.");
-		feverSpider = new NpcStep(this, NpcID.FEVER_SPIDER, new WorldPoint(2141, 5103, 0),
+		feverSpider = new NpcStep(this, NpcID.DEAL_FEVER_SPIDERS1, new WorldPoint(2141, 5103, 0),
 			"Kill a Fever spider.", slayerGloves, combatGear, food);
 
-		moveToCapt = new ObjectStep(this, ObjectID.GANGPLANK_11209, new WorldPoint(3710, 3496, 0),
+		moveToCapt = new ObjectStep(this, ObjectID.FEVER_GANGPLANK, new WorldPoint(3710, 3496, 0),
 			"Cross the gangplank to Bill Teach's ship. Alternatively use the Group finder to teleport directly there.");
-		moveToMos = new NpcStep(this, NpcID.BILL_TEACH_4016, new WorldPoint(3714, 3497, 1),
+		moveToMos = new NpcStep(this, NpcID.FEVER_HARMLESS_PORT_SHIP_TEACH, new WorldPoint(3714, 3497, 1),
 			"Talk to Bill Teach to travel to Mos Le'Harmless.");
 		troubleBrewing = new NpcStep(this, NpcID.HONEST_JIMMY, new WorldPoint(3811, 3021, 0),
 			"Start playing Trouble brewing. You don't need to win. You will need to empty your inventory and unequip " +
 				"any helmets.");
 
-		claimReward = new NpcStep(this, NpcID.LESABR, new WorldPoint(3464, 3480, 0),
+		claimReward = new NpcStep(this, NpcID.LESABRE_MORT_DIARY, new WorldPoint(3464, 3480, 0),
 			"Talk to Le-Sabre near Canifis to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -368,8 +366,8 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Morytania legs 2", ItemID.MORYTANIA_LEGS_2),
-			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Morytania legs 2", ItemID.MORYTANIA_LEGS_MEDIUM),
+			new ItemReward("7,500 Exp. Lamp (Any skill over 40)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

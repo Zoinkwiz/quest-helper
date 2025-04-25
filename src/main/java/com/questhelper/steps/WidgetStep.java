@@ -24,17 +24,17 @@
  */
 package com.questhelper.steps;
 
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.widget.WidgetDetails;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import lombok.Setter;
+import net.runelite.api.widgets.Widget;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import lombok.Setter;
-import net.runelite.api.widgets.Widget;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questhelpers.QuestHelper;
 
 public class WidgetStep extends DetailedQuestStep
 {
@@ -42,6 +42,12 @@ public class WidgetStep extends DetailedQuestStep
 	protected List<WidgetDetails> widgetDetails = new ArrayList<>();
 
 	protected List<BiConsumer<Graphics2D, QuestHelperPlugin>> extraWidgetOverlayHintFunctions = new ArrayList<>();
+
+	public WidgetStep(QuestHelper questHelper, String text, int interfaceID)
+	{
+		super(questHelper, text);
+		widgetDetails.add(new WidgetDetails(interfaceID));
+	}
 
 	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID)
 	{

@@ -24,8 +24,8 @@
  */
 package com.questhelper.helpers.quests.belowicemountain;
 
-import com.questhelper.collections.ItemCollections;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -41,13 +41,12 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import com.questhelper.steps.emote.QuestEmote;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.*;
-import java.util.List;
 
 public class BelowIceMountain extends BasicQuestHelper
 {
@@ -135,15 +134,15 @@ public class BelowIceMountain extends BasicQuestHelper
 		knifeHighlight = knife.highlighted();
 		breadHighlight = bread.highlighted();
 
-		steakSandwich = new ItemRequirement("Steak Sandwich", ItemID.STEAK_SANDWICH);
+		steakSandwich = new ItemRequirement("Steak Sandwich", ItemID.BIM_STEAK_SANDWICH);
 
 		beerHighlight = new ItemRequirement(true, "Asgarnian Ale", ItemID.ASGARNIAN_ALE);
 
 		iceMountainTeleport = new ItemRequirement("A teleport to near Ice Mountain", ItemCollections.AMULET_OF_GLORIES);
 		iceMountainTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
-		iceMountainTeleport.addAlternates(ItemID.FALADOR_TELEPORT, ItemID.LASSAR_TELEPORT);
-		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.FALADOR_TELEPORT);
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+		iceMountainTeleport.addAlternates(ItemID.POH_TABLET_FALADORTELEPORT, ItemID.TABLET_LASSAR);
+		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.POH_TABLET_FALADORTELEPORT);
+		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		combatGearOrPickaxe = new ItemRequirement("Combat gear or a pickaxe if you don't want to fight", -1, -1).isNotConsumed();
 		combatGearOrPickaxe.setDisplayItemId(BankSlotIcons.getCombatGear());
 	}
@@ -171,23 +170,23 @@ public class BelowIceMountain extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToWillowToStart = new NpcStep(this, NpcID.WILLOW, new WorldPoint(3003, 3435, 0),
+		talkToWillowToStart = new NpcStep(this, NpcID.BIM_WILLOW, new WorldPoint(3003, 3435, 0),
 			"Talk to Willow outside Falador, south of the Ice Mountain dwarves.");
 		talkToWillowToStart.addDialogStep("Yes.");
 
-		recruitCheckal = new NpcStep(this, NpcID.CHECKAL, new WorldPoint(3087, 3415, 0),
+		recruitCheckal = new NpcStep(this, NpcID.BIM_CHECKAL, new WorldPoint(3087, 3415, 0),
 			"Attempt to recruit Checkal to your team in Barbarian Village.");
 
-		talkToAtlas = new NpcStep(this, NpcID.ATLAS, new WorldPoint(3076, 3440, 0), "Speak to Atlas in the Barbarian" +
+		talkToAtlas = new NpcStep(this, NpcID.BIM_ATLAS, new WorldPoint(3076, 3440, 0), "Speak to Atlas in the Barbarian" +
 			" Village Inn to learn how to Flex.");
 		talkToAtlas.addDialogStep("Yes.");
 
-		flexCheckal = new NpcEmoteStep(this, NpcID.CHECKAL, QuestEmote.FLEX, new WorldPoint(3087, 3415, 0), "Flex your muscles at Checkal to prove your worth.");
+		flexCheckal = new NpcEmoteStep(this, NpcID.BIM_CHECKAL, QuestEmote.FLEX, new WorldPoint(3087, 3415, 0), "Flex your muscles at Checkal to prove your worth.");
 
-		talkToMarley = new NpcStep(this, NpcID.MARLEY, new WorldPoint(3088, 3470, 0), "Speak to Marley in the Edgeville" +
+		talkToMarley = new NpcStep(this, NpcID.BIM_MARLEY, new WorldPoint(3088, 3470, 0), "Speak to Marley in the Edgeville" +
 			" Ruins.");
 
-		talkToCook = new NpcStep(this, NpcID.COOK_2895, new WorldPoint(3230, 3401, 0), "Ask the Cook at the Blue Moon Inn " +
+		talkToCook = new NpcStep(this, NpcID.FAI_VARROCK_BLUEMOON_CHEF, new WorldPoint(3230, 3401, 0), "Ask the Cook at the Blue Moon Inn " +
 			"for a steak sandwich.");
 		talkToCook.addDialogStep("I was wondering if you'd be able to make me a Steak sandwich?");
 
@@ -195,37 +194,37 @@ public class BelowIceMountain extends BasicQuestHelper
 
 		makeSandwich = new DetailedQuestStep(this, "Use the knife on the bread to make a steak sandwich. Be careful not to eat it!", knifeHighlight, breadHighlight);
 
-		feedMarley = new NpcStep(this, NpcID.MARLEY, new WorldPoint(3088, 3470, 0), "Return to Marley and give him the steak sandwich. Be careful not to eat it!", steakSandwich);
+		feedMarley = new NpcStep(this, NpcID.BIM_MARLEY, new WorldPoint(3088, 3470, 0), "Return to Marley and give him the steak sandwich. Be careful not to eat it!", steakSandwich);
 
-		talkToMarleyAfterFeeding = new NpcStep(this,  NpcID.MARLEY, new WorldPoint(3088, 3470, 0), "Talk to Marley to send him off to the excavation site.");
+		talkToMarleyAfterFeeding = new NpcStep(this,  NpcID.BIM_MARLEY, new WorldPoint(3088, 3470, 0), "Talk to Marley to send him off to the excavation site.");
 		feedMarley.addSubSteps(talkToMarleyAfterFeeding);
 
-		talkToBurntof = new NpcStep(this, NpcID.BURNTOF, new WorldPoint(2956, 3367, 0), "Talk to Burntof in the " +
+		talkToBurntof = new NpcStep(this, NpcID.BIM_BURNTOF, new WorldPoint(2956, 3367, 0), "Talk to Burntof in the " +
 			"Falador Inn.");
 
-		buyBeer = new NpcStep(this, NpcID.KAYLEE, new WorldPoint(2954, 3368, 0), "Buy an Asgarnian Ale for Burntof.",
+		buyBeer = new NpcStep(this, NpcID.RISINGSUN_BARMAID2, new WorldPoint(2954, 3368, 0), "Buy an Asgarnian Ale for Burntof.",
 			coins);
 		buyBeer.addDialogSteps("What ales are you serving?", "One Asgarnian Ale, please.");
 
-		giveBeer = new NpcStep(this, NpcID.BURNTOF, new WorldPoint(2956, 3367, 0), "Give Burntof the Asgarnian Ale.", beerHighlight);
+		giveBeer = new NpcStep(this, NpcID.BIM_BURNTOF, new WorldPoint(2956, 3367, 0), "Give Burntof the Asgarnian Ale.", beerHighlight);
 
-		playRPS = new NpcStep(this, NpcID.BURNTOF, new WorldPoint(2956, 3367, 0),
+		playRPS = new NpcStep(this, NpcID.BIM_BURNTOF, new WorldPoint(2956, 3367, 0),
 			"Beat Burntof in a match of Rock-Paper-Scissors. Your choices of Rock, Paper and Scissors do not matter.");
 		playRPS.addDialogStep("Rock.");
 
-		goToDungeon = new NpcStep(this, NpcID.WILLOW, new WorldPoint(2996, 3494, 0), "Talk with Willow at the " +
+		goToDungeon = new NpcStep(this, NpcID.BIM_WILLOW, new WorldPoint(2996, 3494, 0), "Talk with Willow at the " +
 			"dungeon entrance on the west side of Ice Mountain.");
 		goToDungeon.addDialogStep("Yes.");
 
-		reenterDungeon = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0), "Re-enter the " +
+		reenterDungeon = new ObjectStep(this, ObjectID.BIM_ENTRANCE, new WorldPoint(3000, 3494, 0), "Re-enter the " +
 			"dungeon to finish the quest.");
 		reenterDungeon.addDialogStep("Yes.");
 
-		defeatGuardian = new NpcStep(this, NpcID.ANCIENT_GUARDIAN, "Defeat the Lvl-25 Ancient Guardian. " +
+		defeatGuardian = new NpcStep(this, NpcID.BIM_GOLEM_BOSS, "Defeat the Lvl-25 Ancient Guardian. " +
 			"Alternatively, with Level 10 Mining, mine the 4 pillars in the corners.");
 		defeatGuardian.addSubSteps(reenterDungeon);
 
-		watchCutscene = new ObjectStep(this, NullObjectID.NULL_41357, new WorldPoint(3000, 3494, 0), "Watch the cutscene to " +
+		watchCutscene = new ObjectStep(this, ObjectID.BIM_ENTRANCE, new WorldPoint(3000, 3494, 0), "Watch the cutscene to " +
 			"finish the quest.");
 		watchCutscene.addDialogStep("Yes.");
 	}
@@ -268,7 +267,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS_995, 2000));
+		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 2000));
 	}
 
 	@Override

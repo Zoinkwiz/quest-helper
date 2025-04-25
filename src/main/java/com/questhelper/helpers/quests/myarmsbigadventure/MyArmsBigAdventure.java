@@ -24,40 +24,35 @@
  */
 package com.questhelper.helpers.quests.myarmsbigadventure;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class MyArmsBigAdventure extends BasicQuestHelper
 {
@@ -220,21 +215,21 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		goutLump = new ItemRequirement("Goutweedy lump", ItemID.GOUTWEEDY_LUMP);
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
-		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET).isNotConsumed();
+		goutLump = new ItemRequirement("Goutweedy lump", ItemID.MYARM_LUMP);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).isNotConsumed();
+		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).isNotConsumed();
 		bucketHighlight.setHighlightInInventory(true);
-		farmingManual = new ItemRequirement("Farming manual", ItemID.FARMING_MANUAL);
+		farmingManual = new ItemRequirement("Farming manual", ItemID.MYARM_BOOK);
 		farmingManual.setTooltip("You can get another from My Arm on the Troll Stronghold roof");
 		farmingManual.setHighlightInInventory(true);
-		ugthanki3 = new ItemRequirement("Ugthanki dung", ItemID.UGTHANKI_DUNG, 3);
+		ugthanki3 = new ItemRequirement("Ugthanki dung", ItemID.FEUD_CAMEL_POOH_BUCKET, 3);
 		ugthanki3.setHighlightInInventory(true);
 
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
-		superCompost = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
-		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
+		superCompost = new ItemRequirement("Supercompost", ItemID.BUCKET_SUPERCOMPOST);
+		hardyGout = new ItemRequirement("Hardy gout tubers", ItemID.MYARM_HARDYTUBERS);
 		hardyGout.setTooltip("You can get more from Murcaily");
 		combatGear = new ItemRequirement("Combat gear, preferably magic", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -244,20 +239,20 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		rakeHighlight = rake.highlighted();
 		dibberHighlight = dibber.highlighted();
 		spadeHighlight = spade.highlighted();
-		superCompostHighlight = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST);
+		superCompostHighlight = new ItemRequirement("Supercompost", ItemID.BUCKET_SUPERCOMPOST);
 		superCompostHighlight.setHighlightInInventory(true);
-		hardyGoutHighlight = new ItemRequirement("Hardy gout tubers", ItemID.HARDY_GOUT_TUBERS);
+		hardyGoutHighlight = new ItemRequirement("Hardy gout tubers", ItemID.MYARM_HARDYTUBERS);
 		hardyGoutHighlight.setTooltip("You can get more from Murcaily");
 		hardyGoutHighlight.setHighlightInInventory(true);
 		plantCureHighlight = new ItemRequirement("Plant cure", ItemID.PLANT_CURE);
 		plantCureHighlight.setHighlightInInventory(true);
 
-		supercompost7 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 7);
-		superCompost8 = new ItemRequirement("Supercompost", ItemID.SUPERCOMPOST, 8);
+		supercompost7 = new ItemRequirement("Supercompost", ItemID.BUCKET_SUPERCOMPOST, 7);
+		superCompost8 = new ItemRequirement("Supercompost", ItemID.BUCKET_SUPERCOMPOST, 8);
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS).isNotConsumed();
 
 		cureOrCompost = new ItemRequirement("Either super/ultra compost, or a plant cure", ItemID.PLANT_CURE);
-		cureOrCompost.addAlternates(ItemID.SUPERCOMPOST, ItemID.ULTRACOMPOST);
+		cureOrCompost.addAlternates(ItemID.BUCKET_SUPERCOMPOST, ItemID.BUCKET_ULTRACOMPOST);
 
 		rakeHead = new ItemRequirement("Rake head", ItemID.RAKE_HEAD);
 		rakeHead.setHighlightInInventory(true);
@@ -291,123 +286,123 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		usedRake = new VarbitRequirement(2799, 6);
 		givenCompost = new VarbitRequirement(2799, 7);
 
-		givenDibber = new VarbitRequirement(2799, 9, Operation.GREATER_EQUAL);
+		givenDibber = new VarbitRequirement(VarbitID.MYARM_FAKEPATCH, 9, Operation.GREATER_EQUAL);
 		givenCure = new VarbitRequirement(2798, 1);
 
 		hasRakeHeadAndHandle = new Conditions(rakeHead, rakeHandle);
 		rakeHeadNearby = new ItemOnTileRequirement(rakeHead);
 
-		babyNearby = new NpcCondition(NpcID.BABY_ROC);
-		giantNearby = new NpcCondition(NpcID.GIANT_ROC);
+		babyNearby = new NpcCondition(NpcID.MYARM_BABY_ROC);
+		giantNearby = new NpcCondition(NpcID.MYARM_GIANT_ROC);
 	}
 
 	public void setupSteps()
 	{
-		enterStronghold = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
+		enterStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Enter the Troll Stronghold.");
 
-		goDownToChef = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Go down the south staircase.");
+		goDownToChef = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10052, 2), "Go down the south staircase.");
 
-		goUpToChef = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
+		goUpToChef = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Go up the stairs from the prison.");
 
-		talkToBurntmeat = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat in the Troll Stronghold.");
+		talkToBurntmeat = new NpcStep(this, NpcID.EADGAR_TROLL_CHIEF_COOK, new WorldPoint(2845, 10057, 1), "Talk to Burntmeat in the Troll Stronghold.");
 		talkToBurntmeat.addSubSteps(enterStronghold, goDownToChef, goUpToChef);
 		talkToBurntmeat.addDialogStep("What do you want now?");
-		talkToMyArm = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2855, 10053, 1), "Talk to My Arm near Burntmeat.");
+		talkToMyArm = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2855, 10053, 1), "Talk to My Arm near Burntmeat.");
 		talkToMyArm.addDialogStep("Alright, I'll lend him a hand.");
 
-		useBucketOnPot = new ObjectStep(this, ObjectID.COOKING_POT, new WorldPoint(2864, 3591, 0),
+		useBucketOnPot = new ObjectStep(this, ObjectID.DEATH_TROLL_CAULDRON, new WorldPoint(2864, 3591, 0),
 			"Use a bucket on the cooking pot on the Death Plateau. You can find a bucket next to the pot.", bucketHighlight);
-		useBucketOnPot.addIcon(ItemID.BUCKET);
+		useBucketOnPot.addIcon(ItemID.BUCKET_EMPTY);
 		useBucketOnPot.addTeleport(gamesNecklace);
 
-		enterStrongholdWithLump = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to My Arm with the goutweedy lump.", goutLump);
+		enterStrongholdWithLump = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Return to My Arm with the goutweedy lump.", goutLump);
 
-		goDownToArmWithLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Return to My Arm with the goutweedy lump.", goutLump);
+		goDownToArmWithLump = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10052, 2), "Return to My Arm with the goutweedy lump.", goutLump);
 
-		goUpToArmWithLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to My Arm with the goutweedy lump.", goutLump);
+		goUpToArmWithLump = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Return to My Arm with the goutweedy lump.", goutLump);
 
-		talkToArmWithLump = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2855, 10053, 1), "Return to My Arm with the goutweedy lump.", goutLump);
+		talkToArmWithLump = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2855, 10053, 1), "Return to My Arm with the goutweedy lump.", goutLump);
 		talkToArmWithLump.addSubSteps(goUpToArmWithLump, goDownToArmWithLump, enterStrongholdWithLump);
 
-		enterStrongholdAfterLump = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0), "Return to My Arm.");
+		enterStrongholdAfterLump = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0), "Return to My Arm.");
 
-		goDownAfterLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Return to My Arm.");
+		goDownAfterLump = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10052, 2), "Return to My Arm.");
 
-		goUpAfterLump = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to My Arm.");
+		goUpAfterLump = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Return to My Arm.");
 
-		talkToArmAfterLump = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2855, 10053, 1), "Return to My Arm.");
+		talkToArmAfterLump = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2855, 10053, 1), "Return to My Arm.");
 
 		talkToArmWithLump.addSubSteps(goUpToArmWithLump, goDownToArmWithLump, enterStrongholdWithLump, goUpAfterLump, goDownAfterLump, enterStrongholdAfterLump, talkToArmAfterLump);
 
-		goUpFromF1ToMyArm = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
-		goUpToMyArm = new ObjectStep(this, ObjectID.TROLL_LADDER_18834, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
-		talkToMyArmUpstairs = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2835, 3694, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
+		goUpFromF1ToMyArm = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
+		goUpToMyArm = new ObjectStep(this, ObjectID.MYARM_LADDER, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
+		talkToMyArmUpstairs = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2835, 3694, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 		talkToMyArmUpstairs.addSubSteps(goUpFromF1ToMyArm, goUpToMyArm);
 
 		readBook = new DetailedQuestStep(this, "Read the farming manual.", farmingManual);
-		talkToMyArmAfterReading = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2835, 3694, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
+		talkToMyArmAfterReading = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2835, 3694, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 		useUgthankiDung = new AddDung(this);
 		useCompost = new AddCompost(this);
 
-		talkToMyArmAfterFertilising = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2835, 3694, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
+		talkToMyArmAfterFertilising = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2835, 3694, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 
-		talkToBarnaby = new NpcStep(this, NpcID.CAPTAIN_BARNABY, new WorldPoint(2683, 3275, 0), "Talk to Captain Barnaby on Ardougne dock.");
+		talkToBarnaby = new NpcStep(this, NpcID.MYARM_BARNABY_SHIP, new WorldPoint(2683, 3275, 0), "Talk to Captain Barnaby on Ardougne dock.");
 		talkToBarnaby.addDialogStep("This is My Arm. We'd like to go to Karamja.");
 
-		talkAfterBoat = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2772, 3223, 0), "Talk to My Arm on Brimhaven dock.");
+		talkAfterBoat = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2772, 3223, 0), "Talk to My Arm on Brimhaven dock.");
 
-		talkToMyArmAtTai = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2781, 3123, 0), "Talk to My Arm east of the Tai Bwo Wannai general store.");
+		talkToMyArmAtTai = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2781, 3123, 0), "Talk to My Arm east of the Tai Bwo Wannai general store.");
 
-		talkToMurcaily = new NpcStep(this, NpcID.MURCAILY_6430, new WorldPoint(2815, 3083, 0), "Talk to Murcaily in east Tai Bwo Wannai.");
+		talkToMurcaily = new NpcStep(this, NpcID.TBWCU_MURCAILY, new WorldPoint(2815, 3083, 0), "Talk to Murcaily in east Tai Bwo Wannai.");
 		talkToMurcaily.addDialogSteps("A troll called My Arm wants a favour...", "I was asking you about goutweed...", "I was asking you about hardy goutweed...");
-		talkToMyArmAfterMurcaily = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2781, 3123, 0), "Talk to My Arm again east of the Tai Bwo Wannai general store.");
+		talkToMyArmAfterMurcaily = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2781, 3123, 0), "Talk to My Arm again east of the Tai Bwo Wannai general store.");
 
-		enterStrongholdForFight = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0),
+		enterStrongholdForFight = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0),
 			"Return to My Arm on the roof. Be prepared to fight a baby and giant Roc.", combatGear, rake, superCompost, hardyGout, dibber, spade);
-		goUpToRoofForFight = new ObjectStep(this, ObjectID.TROLL_LADDER_18834, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
-		goUpFromF1ForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
-		goUpFromPrisonForFight = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2853, 10107, 0), "Return to My Arm, ready to fight.");
-		talkToMyArmForFight = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
+		goUpToRoofForFight = new ObjectStep(this, ObjectID.MYARM_LADDER, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
+		goUpFromF1ForFight = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
+		goUpFromPrisonForFight = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2853, 10107, 0), "Return to My Arm, ready to fight.");
+		talkToMyArmForFight = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Talk to My Arm on the roof of the Troll Stronghold.");
 		talkToMyArmForFight.addSubSteps(enterStrongholdForFight, goUpToRoofForFight, goUpFromF1ForFight, goUpFromPrisonForFight);
 
-		giveRake = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm a rake.", rakeHighlight);
+		giveRake = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Give My Arm a rake.", rakeHighlight);
 		giveRake.addIcon(ItemID.RAKE);
 		pickUpRakeHead = new ItemStep(this, "Pick up the rake head and repair the rake.", rakeHead);
 		repairRake = new DetailedQuestStep(this, "Repair the rake.", rakeHead, rakeHandle);
 		giveRake.addSubSteps(pickUpRakeHead, repairRake);
-		giveSupercompost = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm some supercompost.", superCompostHighlight);
-		giveSupercompost.addIcon(ItemID.SUPERCOMPOST);
-		giveHardyGout = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm some hardy gout tubers.", hardyGoutHighlight);
-		giveHardyGout.addIcon(ItemID.HARDY_GOUT_TUBERS);
-		giveDibber = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm a seed dibber.", dibberHighlight);
-		giveDibber.addIcon(ItemID.SEED_DIBBER);
-		giveCure = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm some plant cure.", plantCureHighlight);
+		giveSupercompost = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Give My Arm some supercompost.", superCompostHighlight);
+		giveSupercompost.addIcon(ItemID.BUCKET_SUPERCOMPOST);
+		giveHardyGout = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Give My Arm some hardy gout tubers.", hardyGoutHighlight);
+		giveHardyGout.addIcon(ItemID.MYARM_HARDYTUBERS);
+		giveDibber = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Give My Arm a seed dibber.", dibberHighlight);
+		giveDibber.addIcon(ItemID.DIBBER);
+		giveCure = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Give My Arm some plant cure.", plantCureHighlight);
 		giveCure.addIcon(ItemID.PLANT_CURE);
 
-		talkToMyArmAfterGrow = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0),
+		talkToMyArmAfterGrow = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0),
 			"Talk to My Arm. Be prepared to fight a baby and giant Roc.");
-		killBabyRoc = new NpcStep(this, NpcID.BABY_ROC, "Kill the Baby Roc.");
-		talkToMyArmAfterBaby = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0),
+		killBabyRoc = new NpcStep(this, NpcID.MYARM_BABY_ROC, "Kill the Baby Roc.");
+		talkToMyArmAfterBaby = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0),
 			"Talk to My Arm. Be prepared to fight the Giant Roc.", combatGear, spade);
 
-		killGiantRoc = new NpcStep(this, NpcID.GIANT_ROC, "Kill the Giant Roc. Use protected from ranged, and keep your distance. You can dodge the boulders it throws.");
-		talkToMyArmAfterHarvest = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Talk to My Arm.");
-		giveSpade = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Give My Arm a spade.", spadeHighlight);
+		killGiantRoc = new NpcStep(this, NpcID.MYARM_GIANT_ROC, "Kill the Giant Roc. Use protected from ranged, and keep your distance. You can dodge the boulders it throws.");
+		talkToMyArmAfterHarvest = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Talk to My Arm.");
+		giveSpade = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Give My Arm a spade.", spadeHighlight);
 		giveSpade.addIcon(ItemID.SPADE);
-		goDownFromMyArmToBurntmeat = new ObjectStep(this, ObjectID.TROLL_LADDER, new WorldPoint(2831, 3677, 0), "Go talk to Burntmeat.");
+		goDownFromMyArmToBurntmeat = new ObjectStep(this, ObjectID.MYARM_EXIT, new WorldPoint(2831, 3677, 0), "Go talk to Burntmeat.");
 
-		goDownToBurntmeat = new ObjectStep(this, ObjectID.STONE_STAIRCASE_3789, new WorldPoint(2844, 10052, 2), "Go talk to Burntmeat.");
+		goDownToBurntmeat = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRSTOP, new WorldPoint(2844, 10052, 2), "Go talk to Burntmeat.");
 
-		talkToBurntmeatAgain = new NpcStep(this, NpcID.BURNTMEAT, new WorldPoint(2845, 10057, 1),
+		talkToBurntmeatAgain = new NpcStep(this, NpcID.EADGAR_TROLL_CHIEF_COOK, new WorldPoint(2845, 10057, 1),
 			"Talk to Burntmeat in the Troll Stronghold.");
 		talkToBurntmeatAgain.addSubSteps(goDownFromMyArmToBurntmeat, goDownToBurntmeat);
 
-		enterStrongholdFinish = new ObjectStep(this, ObjectID.STRONGHOLD, new WorldPoint(2839, 3690, 0),
+		enterStrongholdFinish = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_DOOR, new WorldPoint(2839, 3690, 0),
 			"Talk to My Arm to finish the quest.");
-		goUpToMyArmFinish = new ObjectStep(this, ObjectID.TROLL_LADDER_18834, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
-		goUpFromBurntmeatFinish = new ObjectStep(this, ObjectID.STONE_STAIRCASE, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
+		goUpToMyArmFinish = new ObjectStep(this, ObjectID.MYARM_LADDER, new WorldPoint(2831, 10077, 2), "Climb back up to My Arm.");
+		goUpFromBurntmeatFinish = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_STAIRS, new WorldPoint(2843, 10052, 1), "Go up to the roof of the Stronghold and talk to My Arm.");
 
-		talkToMyArmFinish = new NpcStep(this, NpcID.MY_ARM_742, new WorldPoint(2829, 3695, 0), "Talk to My Arm to finish the quest.");
+		talkToMyArmFinish = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Talk to My Arm to finish the quest.");
 		talkToMyArmFinish.addSubSteps(goUpToMyArmFinish, goUpFromBurntmeatFinish, enterStrongholdFinish);
 
 	}
@@ -443,7 +438,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 10));
 		req.add(new SkillRequirement(Skill.FARMING, 29, true));
 		// 907 is the Varbit for tai bwo wannai cleanup favour
-		req.add(new VarbitRequirement(907, Operation.GREATER_EQUAL, 60, "At least 60% favor in the Tai Bwo Wannai Cleanup minigame", false));
+		req.add(new VarbitRequirement(VarbitID.FAVOUR_PERCENTAGE, Operation.GREATER_EQUAL, 60, "At least 60% favor in the Tai Bwo Wannai Cleanup minigame", false));
 		return req;
 	}
 

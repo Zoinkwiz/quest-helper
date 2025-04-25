@@ -28,12 +28,14 @@ import com.questhelper.requirements.zone.Zone;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+
 import java.util.Objects;
 import java.util.Set;
+
+import static net.runelite.api.Perspective.SCENE_SIZE;
 
 public class ObjectCondition extends ConditionForStep
 {

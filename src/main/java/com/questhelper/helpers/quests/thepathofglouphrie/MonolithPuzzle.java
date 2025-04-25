@@ -32,26 +32,26 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.HashMap;
-import java.util.List;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 public class MonolithPuzzle extends DetailedOwnerStep
 {
 	private static final int STOREROOM_REGION = 11074;
-	private static final int BIG_MONOLITH = NullObjectID.NULL_49584;
-	private static final int SMALL_MONOLITH = NullObjectID.NULL_49586;
+	private static final int BIG_MONOLITH = ObjectID.POG_2X2_BLOCKING;
+	private static final int SMALL_MONOLITH = ObjectID.POG_1X1_BLOCKING;
 	private ObjectStep getFirstShapes;
 	private HashMap<Integer, ItemRequirement> shapes;
 	private NpcStep pushSouthernMonolithUp;
@@ -89,84 +89,84 @@ public class MonolithPuzzle extends DetailedOwnerStep
 	protected void setupSteps()
 	{
 		shapes = new HashMap<>();
-		shapes.put(ItemID.RED_CIRCLE, new ItemRequirement("Red circle", ItemID.RED_CIRCLE));
-		shapes.put(ItemID.ORANGE_CIRCLE, new ItemRequirement("Orange circle", ItemID.ORANGE_CIRCLE));
-		shapes.put(ItemID.YELLOW_CIRCLE, new ItemRequirement("Yellow circle", ItemID.YELLOW_CIRCLE));
-		shapes.put(ItemID.GREEN_CIRCLE, new ItemRequirement("Green circle", ItemID.GREEN_CIRCLE));
-		shapes.put(ItemID.BLUE_CIRCLE, new ItemRequirement("Blue circle", ItemID.BLUE_CIRCLE));
-		shapes.put(ItemID.INDIGO_CIRCLE, new ItemRequirement("Indigo circle", ItemID.INDIGO_CIRCLE));
-		shapes.put(ItemID.VIOLET_CIRCLE, new ItemRequirement("Violet circle", ItemID.VIOLET_CIRCLE));
+		shapes.put(ItemID.EYEGLO_RED_CIRCLE, new ItemRequirement("Red circle", ItemID.EYEGLO_RED_CIRCLE));
+		shapes.put(ItemID.EYEGLO_ORANGE_CIRCLE, new ItemRequirement("Orange circle", ItemID.EYEGLO_ORANGE_CIRCLE));
+		shapes.put(ItemID.EYEGLO_YELLOW_CIRCLE, new ItemRequirement("Yellow circle", ItemID.EYEGLO_YELLOW_CIRCLE));
+		shapes.put(ItemID.EYEGLO_GREEN_CIRCLE, new ItemRequirement("Green circle", ItemID.EYEGLO_GREEN_CIRCLE));
+		shapes.put(ItemID.EYEGLO_BLUE_CIRCLE, new ItemRequirement("Blue circle", ItemID.EYEGLO_BLUE_CIRCLE));
+		shapes.put(ItemID.EYEGLO_INDIGO_CIRCLE, new ItemRequirement("Indigo circle", ItemID.EYEGLO_INDIGO_CIRCLE));
+		shapes.put(ItemID.EYEGLO_VIOLET_CIRCLE, new ItemRequirement("Violet circle", ItemID.EYEGLO_VIOLET_CIRCLE));
 
-		shapes.put(ItemID.RED_TRIANGLE, new ItemRequirement("Red triangle", ItemID.RED_TRIANGLE));
-		shapes.put(ItemID.ORANGE_TRIANGLE, new ItemRequirement("Orange triangle", ItemID.ORANGE_TRIANGLE));
-		shapes.put(ItemID.YELLOW_TRIANGLE, new ItemRequirement("Yellow triangle", ItemID.YELLOW_TRIANGLE));
-		shapes.put(ItemID.GREEN_TRIANGLE, new ItemRequirement("Green triangle", ItemID.GREEN_TRIANGLE));
-		shapes.put(ItemID.BLUE_TRIANGLE, new ItemRequirement("Blue triangle", ItemID.BLUE_TRIANGLE));
-		shapes.put(ItemID.INDIGO_TRIANGLE, new ItemRequirement("Indigo triangle", ItemID.INDIGO_TRIANGLE));
-		shapes.put(ItemID.VIOLET_TRIANGLE, new ItemRequirement("Violet triangle", ItemID.VIOLET_TRIANGLE));
+		shapes.put(ItemID.EYEGLO_RED_TRIANGLE, new ItemRequirement("Red triangle", ItemID.EYEGLO_RED_TRIANGLE));
+		shapes.put(ItemID.EYEGLO_ORANGE_TRIANGLE, new ItemRequirement("Orange triangle", ItemID.EYEGLO_ORANGE_TRIANGLE));
+		shapes.put(ItemID.EYEGLO_YELLOW_TRIANGLE, new ItemRequirement("Yellow triangle", ItemID.EYEGLO_YELLOW_TRIANGLE));
+		shapes.put(ItemID.EYEGLO_GREEN_TRIANGLE, new ItemRequirement("Green triangle", ItemID.EYEGLO_GREEN_TRIANGLE));
+		shapes.put(ItemID.EYEGLO_BLUE_TRIANGLE, new ItemRequirement("Blue triangle", ItemID.EYEGLO_BLUE_TRIANGLE));
+		shapes.put(ItemID.EYEGLO_INDIGO_TRIANGLE, new ItemRequirement("Indigo triangle", ItemID.EYEGLO_INDIGO_TRIANGLE));
+		shapes.put(ItemID.EYEGLO_VIOLET_TRIANGLE, new ItemRequirement("Violet triangle", ItemID.EYEGLO_VIOLET_TRIANGLE));
 
-		shapes.put(ItemID.RED_SQUARE, new ItemRequirement("Red square", ItemID.RED_SQUARE));
-		shapes.put(ItemID.ORANGE_SQUARE, new ItemRequirement("Orange square", ItemID.ORANGE_SQUARE));
-		shapes.put(ItemID.YELLOW_SQUARE, new ItemRequirement("Yellow square", ItemID.YELLOW_SQUARE));
-		shapes.put(ItemID.GREEN_SQUARE, new ItemRequirement("Green square", ItemID.GREEN_SQUARE));
-		shapes.put(ItemID.BLUE_SQUARE, new ItemRequirement("Blue square", ItemID.BLUE_SQUARE));
-		shapes.put(ItemID.INDIGO_SQUARE, new ItemRequirement("Indigo square", ItemID.INDIGO_SQUARE));
-		shapes.put(ItemID.VIOLET_SQUARE, new ItemRequirement("Violet square", ItemID.VIOLET_SQUARE));
+		shapes.put(ItemID.EYEGLO_RED_SQUARE, new ItemRequirement("Red square", ItemID.EYEGLO_RED_SQUARE));
+		shapes.put(ItemID.EYEGLO_ORANGE_SQUARE, new ItemRequirement("Orange square", ItemID.EYEGLO_ORANGE_SQUARE));
+		shapes.put(ItemID.EYEGLO_YELLOW_SQUARE, new ItemRequirement("Yellow square", ItemID.EYEGLO_YELLOW_SQUARE));
+		shapes.put(ItemID.EYEGLO_GREEN_SQUARE, new ItemRequirement("Green square", ItemID.EYEGLO_GREEN_SQUARE));
+		shapes.put(ItemID.EYEGLO_BLUE_SQUARE, new ItemRequirement("Blue square", ItemID.EYEGLO_BLUE_SQUARE));
+		shapes.put(ItemID.EYEGLO_INDIGO_SQUARE, new ItemRequirement("Indigo square", ItemID.EYEGLO_INDIGO_SQUARE));
+		shapes.put(ItemID.EYEGLO_VIOLET_SQUARE, new ItemRequirement("Violet square", ItemID.EYEGLO_VIOLET_SQUARE));
 
-		shapes.put(ItemID.RED_PENTAGON, new ItemRequirement("Red pentagon", ItemID.RED_PENTAGON));
-		shapes.put(ItemID.ORANGE_PENTAGON, new ItemRequirement("Orange pentagon", ItemID.ORANGE_PENTAGON));
-		shapes.put(ItemID.YELLOW_PENTAGON, new ItemRequirement("Yellow pentagon", ItemID.YELLOW_PENTAGON));
-		shapes.put(ItemID.GREEN_PENTAGON, new ItemRequirement("Green pentagon", ItemID.GREEN_PENTAGON));
-		shapes.put(ItemID.BLUE_PENTAGON, new ItemRequirement("Blue pentagon", ItemID.BLUE_PENTAGON));
-		shapes.put(ItemID.INDIGO_PENTAGON, new ItemRequirement("Indigo pentagon", ItemID.INDIGO_PENTAGON));
-		shapes.put(ItemID.VIOLET_PENTAGON, new ItemRequirement("Violet pentagon", ItemID.VIOLET_PENTAGON));
+		shapes.put(ItemID.EYEGLO_RED_PENTAGON, new ItemRequirement("Red pentagon", ItemID.EYEGLO_RED_PENTAGON));
+		shapes.put(ItemID.EYEGLO_ORANGE_PENTAGON, new ItemRequirement("Orange pentagon", ItemID.EYEGLO_ORANGE_PENTAGON));
+		shapes.put(ItemID.EYEGLO_YELLOW_PENTAGON, new ItemRequirement("Yellow pentagon", ItemID.EYEGLO_YELLOW_PENTAGON));
+		shapes.put(ItemID.EYEGLO_GREEN_PENTAGON, new ItemRequirement("Green pentagon", ItemID.EYEGLO_GREEN_PENTAGON));
+		shapes.put(ItemID.EYEGLO_BLUE_PENTAGON, new ItemRequirement("Blue pentagon", ItemID.EYEGLO_BLUE_PENTAGON));
+		shapes.put(ItemID.EYEGLO_INDIGO_PENTAGON, new ItemRequirement("Indigo pentagon", ItemID.EYEGLO_INDIGO_PENTAGON));
+		shapes.put(ItemID.EYEGLO_VIOLET_PENTAGON, new ItemRequirement("Violet pentagon", ItemID.EYEGLO_VIOLET_PENTAGON));
 
 		inStartZone = new ZoneRequirement(new Zone(
 			regionPoint(34, 17),
 			regionPoint(39, 25)
 		));
 
-		pushSouthernMonolithUp = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(37, 21),
+		pushSouthernMonolithUp = new NpcStep(getQuestHelper(), NpcID.POG_GOLRIE_CRATE_2X2, regionPoint(37, 21),
 			"Push the monolith north once.");
 		pushSouthernMonolithUp.setMaxRoamRange(3);
 
-		getFirstShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(39, 25),
+		getFirstShapes = new ObjectStep(getQuestHelper(), ObjectID.POG_CHEST_CLOSED, regionPoint(39, 25),
 			"Open the chest for some shapes.");
 		getFirstShapes.addSubSteps(pushSouthernMonolithUp);
 
-		pushSWMonolithNorth = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 29),
+		pushSWMonolithNorth = new NpcStep(getQuestHelper(), NpcID.POG_GOLRIE_CRATE_2X2, regionPoint(35, 29),
 			"Push the south-west monolith north once.");
 		pushSWMonolithNorth.setMaxRoamRange(2);
 
-		pushNWMonolithEast = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(35, 33),
+		pushNWMonolithEast = new NpcStep(getQuestHelper(), NpcID.POG_GOLRIE_CRATE_2X2, regionPoint(35, 33),
 			"Push the north-west monolith east once.");
 		pushNWMonolithEast.setMaxRoamRange(2);
 
-		getSecondShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(36, 38),
+		getSecondShapes = new ObjectStep(getQuestHelper(), ObjectID.POG_CHEST_CLOSED, regionPoint(36, 38),
 			"Open the chest for some more shapes. If the chest doesn't give you any shapes, drop the shapes in your inventory first, then click the chest, then pick up the shapes from the ground.");
 		getSecondShapes.addSubSteps(pushSWMonolithNorth, pushNWMonolithEast);
 
-		picklockChestForFirstKey = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49614, regionPoint(33, 37),
+		picklockChestForFirstKey = new ObjectStep(getQuestHelper(), ObjectID.POG_GOLRIE_SMALL_CHEST_PICKLOCK, regionPoint(33, 37),
 			"Picklock the chest for a key.");
-		picklockChestForFirstKey.addAlternateObjects(ObjectID.CHEST_49615);
+		picklockChestForFirstKey.addAlternateObjects(ObjectID.POG_GOLRIE_SMALL_CHEST_NORMAL);
 		picklockChestForFirstKey.addSubSteps(pushSWMonolithNorth, pushNWMonolithEast);
 
-		pushSmallMonolithSouth = new NpcStep(getQuestHelper(), NpcID.SMALL_MONOLITH, regionPoint(39, 33),
+		pushSmallMonolithSouth = new NpcStep(getQuestHelper(), NpcID.POG_GOLRIE_CRATE_1X1, regionPoint(39, 33),
 			"Push the small monolith south once.");
 		pushSmallMonolithSouth.setMaxRoamRange(2);
 
 		// TODO: For this step, make sure it's actually possible to push the monolith west.
 		// If the user has messed up, they might need to push the SW monolith south first.
 		// The user might also need to push the monolith west twice in case they've pushed it too far - we don't handle that case.
-		pushNWMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(36, 33),
+		pushNWMonolithWest = new NpcStep(getQuestHelper(), NpcID.POG_GOLRIE_CRATE_2X2, regionPoint(36, 33),
 			"Push the north-west monolith west once.");
 		pushNWMonolithWest.setMaxRoamRange(2);
 
-		openChestForCrystalChimeSeed = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49612, regionPoint(37, 34),
+		openChestForCrystalChimeSeed = new ObjectStep(getQuestHelper(), ObjectID.POG_GOLRIE_BIG_CHEST, regionPoint(37, 34),
 			"Search the chest for the strongroom key and crystal chime seed.");
 		openChestForCrystalChimeSeed.addSubSteps(pushSmallMonolithSouth, pushNWMonolithWest);
 
-		getThirdShapes = new ObjectStep(getQuestHelper(), ObjectID.CHEST_49617, regionPoint(41, 29),
+		getThirdShapes = new ObjectStep(getQuestHelper(), ObjectID.POG_CHEST_CLOSED, regionPoint(41, 29),
 			"Open the chest for some more shapes. If the chest doesn't give you any shapes, drop the shapes in your inventory first, then click the chest, then pick up the shapes from the ground.");
 		// getThirdShapes.addSubSteps(pushSmallMonolithSouth);
 
@@ -175,18 +175,18 @@ public class MonolithPuzzle extends DetailedOwnerStep
 
 		crystalChime = new ItemRequirement("Crystal chime", ItemID.CRYSTAL_CHIME, 1);
 
-		var machineRoomKey = new ItemRequirement("Strongroom key", ItemID.STRONGROOM_KEY, 1);
+		var machineRoomKey = new ItemRequirement("Strongroom key", ItemID.POG_STRONGROOM_KEY, 1);
 
-		inspectSingingBowl = new ObjectStep(getQuestHelper(), ObjectID.SINGING_BOWL_49610, regionPoint(41, 32),
+		inspectSingingBowl = new ObjectStep(getQuestHelper(), ObjectID.POG_SINGING_BOWL_INSPECT, regionPoint(41, 32),
 			"Inspect the Singing bowl, then click it again to create the Crystal chime.", crystalChimeSeed);
-		inspectSingingBowl.addAlternateObjects(ObjectID.SINGING_BOWL_49611);
+		inspectSingingBowl.addAlternateObjects(ObjectID.POG_SINGING_BOWL_SING);
 		inspectSingingBowl.addDialogStep("Yes.");
 
-		pushSEMonolithWest = new NpcStep(getQuestHelper(), NpcID.BIG_MONOLITH, regionPoint(39, 29),
+		pushSEMonolithWest = new NpcStep(getQuestHelper(), NpcID.POG_GOLRIE_CRATE_2X2, regionPoint(39, 29),
 			"Push the south-east monolith west once.");
 		pushSEMonolithWest.setMaxRoamRange(2);
 
-		unlockTheGate = new ObjectStep(getQuestHelper(), ObjectID.GATE_49657, regionPoint(30, 31),
+		unlockTheGate = new ObjectStep(getQuestHelper(), ObjectID.POG_GATE_DOOR, regionPoint(30, 31),
 			"Unlock the gate to Yewnock's machine room.", crystalChime, machineRoomKey);
 	}
 
@@ -233,7 +233,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 			return false;
 		}
 
-		return itemContainer.contains(ItemID.CHEST_KEY_28573);
+		return itemContainer.contains(ItemID.POG_BIG_CHEST_KEY);
 	}
 
 	private boolean hasMachineRoomKey()
@@ -244,7 +244,7 @@ public class MonolithPuzzle extends DetailedOwnerStep
 			return false;
 		}
 
-		return itemContainer.contains(ItemID.STRONGROOM_KEY);
+		return itemContainer.contains(ItemID.POG_STRONGROOM_KEY);
 	}
 
 	private boolean tileHasBigMonolith(Tile[][] tiles, int sceneX, int sceneY)

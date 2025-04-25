@@ -26,8 +26,9 @@
  */
 package com.questhelper.requirements.util;
 
-import java.util.function.BiFunction;
 import lombok.Getter;
+
+import java.util.function.BiFunction;
 
 public enum Operation
 {

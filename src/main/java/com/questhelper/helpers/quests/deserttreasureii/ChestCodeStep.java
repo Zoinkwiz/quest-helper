@@ -28,11 +28,12 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarClientIntChanged;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.FontManager;
 
 import java.awt.*;
-import net.runelite.client.ui.FontManager;
 
 public class ChestCodeStep extends QuestStep
 {
@@ -114,7 +115,7 @@ public class ChestCodeStep extends QuestStep
 		super.makeWidgetOverlayHint(graphics, plugin);
 		if (SHOULD_PRESS_CONFIRM)
 		{
-			Widget widget = client.getWidget(809, 5);
+			Widget widget = client.getWidget(InterfaceID.CombinationLock.CONFIRM_BUTTON);
 			if (widget != null)
 			{
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
@@ -129,7 +130,7 @@ public class ChestCodeStep extends QuestStep
 		{
 			int button = buttonToPress[i];
 			if (button == 0) continue;
-			Widget widget = client.getWidget(809, 4);
+			Widget widget = client.getWidget(InterfaceID.CombinationLock.LOCK);
 			if (widget != null)
 			{
 				Widget arrow = widget.getChild(button);

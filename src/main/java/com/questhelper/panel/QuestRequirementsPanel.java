@@ -37,9 +37,12 @@ import com.questhelper.util.Fonts;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 import org.apache.commons.lang3.tuple.Pair;
+
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -48,8 +51,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class QuestRequirementsPanel extends JPanel
 {
@@ -141,10 +146,7 @@ public class QuestRequirementsPanel extends JPanel
 
 				panel.add(label, BorderLayout.CENTER);
 
-				if (requirement.getTooltip() != null)
-				{
-					tooltipButton = addButtonToPanel(panel, requirement.getTooltip());
-				}
+				tooltipButton = addButtonToPanel(panel, requirement.getTooltip());
 
 				var wikiUrl = requirement.getWikiUrl();
 				if (wikiUrl != null)
@@ -159,6 +161,25 @@ public class QuestRequirementsPanel extends JPanel
 					});
 
 					menu.add(wikiLink);
+				}
+
+				if (requirement instanceof ItemRequirement)
+				{
+					boolean nerInstalled = questManager.getPluginManager().getPlugins().stream().anyMatch(plugin -> plugin.getName().equals("Not Enough Runes"));
+					if (nerInstalled && !"false".equals(questManager.getConfigManager().getConfiguration(RuneLiteConfig.GROUP_NAME, "notenoughrunesplugin")))
+					{
+						var nerLink = new JMenuItem(new AbstractAction("Go to NER...")
+						{
+							@Override
+							public void actionPerformed(ActionEvent e)
+							{
+								Map<String, Object> data = new HashMap<>();
+								data.put("itemId", ((ItemRequirement) requirement).getId());
+								questManager.getEventBus().post(new PluginMessage("notenoughrunes", "displayItemById", data));
+							}
+						});
+						menu.add(nerLink);
+					}
 				}
 
 				if (requirement instanceof QuestRequirement)
@@ -255,10 +276,6 @@ public class QuestRequirementsPanel extends JPanel
 			}
 
 			label.setVisible(true);
-			if (tooltipButton != null)
-			{
-				tooltipButton.setVisible(true);
-			}
 			numActive += 1;
 
 			var newText = req.getDisplayText();
@@ -271,38 +288,30 @@ public class QuestRequirementsPanel extends JPanel
 
 			if (req instanceof ItemRequirement)
 			{
-				var itemRequirement = (ItemRequirement) req;
-
-				if (itemRequirement instanceof NoItemRequirement)
+				if (req instanceof NoItemRequirement)
 				{
-					newColor = itemRequirement.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
+					newColor = req.getColor(client, questHelperPlugin.getConfig()); // explicitly call this because
 					// NoItemRequirement overrides it
 				}
 				else
 				{
-					newColor = itemRequirement.getColorConsideringBank(client, questHelperPlugin.getConfig());
+					newColor = req.getColor(client, questHelperPlugin.getConfig());
+					String tooltip = req.getTooltip();
+					if (tooltip != null && !tooltip.isEmpty())
+					{
+						label.setToolTipText(req.getTooltip());
+						if (tooltipButton != null) tooltipButton.setVisible(true);
+					}
+					else
+					{
+						label.setToolTipText("");
+						if (tooltipButton != null) tooltipButton.setVisible(false);
+					}
 				}
 			}
 			else
 			{
 				newColor = req.getColor(client, questHelperPlugin.getConfig());
-			}
-
-			if (newColor == Color.WHITE)
-			{
-				label.setToolTipText("In bank");
-			}
-			else if (newColor == Color.ORANGE)
-			{
-				label.setToolTipText("On steel key ring");
-			}
-			else if (newColor == Color.LIGHT_GRAY)
-			{
-				label.setToolTipText("Possibly in Group Storage");
-			}
-			else
-			{
-				label.setToolTipText("");
 			}
 
 			label.setForeground(newColor);
@@ -315,7 +324,12 @@ public class QuestRequirementsPanel extends JPanel
 	{
 		JButton b = new JButton(INFO_ICON);
 		b.setPreferredSize(new Dimension(10, 10));
-		b.setToolTipText(tooltipText);
+		b.setVisible(false);
+		if (tooltipText != null && !tooltipText.isEmpty())
+		{
+			b.setVisible(true);
+			b.setToolTipText(tooltipText);
+		}
 		b.setBorderPainted(false);
 		b.setFocusPainted(false);
 		b.setBorderPainted(false);

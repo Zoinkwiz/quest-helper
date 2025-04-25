@@ -22,16 +22,16 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.mischelpers.herbrun;
+package com.questhelper.helpers.mischelpers.farmruns;
 
-import java.time.Instant;
-import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
-import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.plugins.timetracking.farming.Produce;
+
+import javax.annotation.Nullable;
+import java.time.Instant;
 
 public class FarmingHandler
 {
@@ -83,7 +83,12 @@ public class FarmingHandler
 		if (state == null) return null;
 		if (state.getCropState() == CropState.EMPTY) return CropState.EMPTY;
 		if (state.getProduce() == Produce.WEEDS) return CropState.EMPTY;
-		if (state.getCropState() == CropState.DEAD) return CropState.DEAD;
+		if (state.getCropState() == CropState.UNCHECKED) return CropState.UNCHECKED;
+		if (state.getCropState() == CropState.STUMP) return CropState.STUMP;
+		if (state.getCropState() == CropState.HARVESTABLE)
+		{
+			return CropState.HARVESTABLE;
+		}
 
 		if (unixTime <= 0)
 		{
@@ -108,7 +113,10 @@ public class FarmingHandler
 			doneEstimate = getTickTime(tickrate, stages - 1 - stage, tickTime, profile);
 		}
 
-		if (unixNow >= doneEstimate) return CropState.HARVESTABLE;
+		if (unixNow >= doneEstimate)
+		{
+			return CropState.UNCHECKED;
+		}
 
 		return CropState.GROWING;
 	}

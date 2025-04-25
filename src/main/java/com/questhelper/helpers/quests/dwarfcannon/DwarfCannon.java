@@ -1,31 +1,25 @@
 package com.questhelper.helpers.quests.dwarfcannon;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class DwarfCannon extends BasicQuestHelper
 {
@@ -101,20 +95,20 @@ public class DwarfCannon extends BasicQuestHelper
 	{
 		staminas = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
 		teleToAsg = new ItemRequirement("Teleport to Falador, Amulet of Glory, or Combat Bracelet",
-			ItemID.FALADOR_TELEPORT);
+			ItemID.POH_TABLET_FALADORTELEPORT);
 		teleToAsg.addAlternates(ItemCollections.AMULET_OF_GLORIES);
 		teleToAsg.addAlternates(ItemCollections.COMBAT_BRACELETS);
 		teleToKand = new ItemRequirement("Teleport to Ardougne, Skills Necklace, or Games Necklace",
 			ItemCollections.GAMES_NECKLACES);
 		teleToKand.addAlternates(ItemCollections.SKILLS_NECKLACES);
-		teleToKand.addAlternates(ItemID.ARDOUGNE_TELEPORT);
+		teleToKand.addAlternates(ItemID.POH_TABLET_ARDOUGNETELEPORT);
 
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
-		railing = new ItemRequirement("Railing", ItemID.RAILING);
+		railing = new ItemRequirement("Railing", ItemID.MCANNONRAILING1_OBJ);
 		railing.setTooltip("You can get more from Captain Lawgof");
-		toolkit = new ItemRequirement("Toolkit", ItemID.TOOLKIT);
+		toolkit = new ItemRequirement("Toolkit", ItemID.MCANNONTOOLKIT);
 		toolkit.setHighlightInInventory(true);
-		dwarfRemains = new ItemRequirement("Dwarf Remains", ItemID.DWARF_REMAINS);
+		dwarfRemains = new ItemRequirement("Dwarf Remains", ItemID.MCANNONREMAINS);
 		cannonballMould = new ItemRequirement("Cannonball Mould", ItemID.AMMO_MOULD);
 		nulodionsNotes = new ItemRequirement("Nulodion's Notes", ItemID.NULODIONS_NOTES);
 	}
@@ -153,50 +147,50 @@ public class DwarfCannon extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToCaptainLawgof = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof near the Coal Truck Mining Site (north of Fishing Guild, West of McGrubor's Wood).");
+		talkToCaptainLawgof = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof near the Coal Truck Mining Site (north of Fishing Guild, West of McGrubor's Wood).");
 		talkToCaptainLawgof.addDialogStep("Sure, I'd be honoured to join.");
 
 		//Fix the 6 bent railings, these railings don't have different IDs from the normal railings
-		inspectRailings1 = new ObjectStep(this, NullObjectID.NULL_15590, new WorldPoint(2555, 3479, 0), "Inspect the 6 damaged railings around the  camp to fix them.", hammer, railing);
-		inspectRailings2 = new ObjectStep(this, NullObjectID.NULL_15591, new WorldPoint(2557, 3468, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings3 = new ObjectStep(this, NullObjectID.NULL_15592, new WorldPoint(2559, 3458, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings4 = new ObjectStep(this, NullObjectID.NULL_15593, new WorldPoint(2563, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings5 = new ObjectStep(this, NullObjectID.NULL_15594, new WorldPoint(2573, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings6 = new ObjectStep(this, NullObjectID.NULL_15595, new WorldPoint(2577, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
+		inspectRailings1 = new ObjectStep(this, ObjectID.MCANNON_RAILING1_MULTILOC, new WorldPoint(2555, 3479, 0), "Inspect the 6 damaged railings around the  camp to fix them.", hammer, railing);
+		inspectRailings2 = new ObjectStep(this, ObjectID.MCANNON_RAILING2_MULTILOC, new WorldPoint(2557, 3468, 0), "Inspect the railings to fix them.", hammer, railing);
+		inspectRailings3 = new ObjectStep(this, ObjectID.MCANNON_RAILING3_MULTILOC, new WorldPoint(2559, 3458, 0), "Inspect the railings to fix them.", hammer, railing);
+		inspectRailings4 = new ObjectStep(this, ObjectID.MCANNON_RAILING4_MULTILOC, new WorldPoint(2563, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
+		inspectRailings5 = new ObjectStep(this, ObjectID.MCANNON_RAILING5_MULTILOC, new WorldPoint(2573, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
+		inspectRailings6 = new ObjectStep(this, ObjectID.MCANNON_RAILING6_MULTILOC, new WorldPoint(2577, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
 		inspectRailings1.addSubSteps(inspectRailings2, inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6);
 
 		//Get dwarf remains
-		talkToCaptainLawgof2 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof again.  Make sure to complete the entire dialogue.");
-		gotoTower = new ObjectStep(this, ObjectID.LADDER_16683, new WorldPoint(2570, 3441, 0), "Go to the top floor of the tower south of Captain Lawgof and get the remains there.");
-		goToTower2 = new ObjectStep(this, ObjectID.LADDER_11, new WorldPoint(2570, 3443, 1), "Go up the second ladder.");
+		talkToCaptainLawgof2 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof again.  Make sure to complete the entire dialogue.");
+		gotoTower = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2570, 3441, 0), "Go to the top floor of the tower south of Captain Lawgof and get the remains there.");
+		goToTower2 = new ObjectStep(this, ObjectID.MCANNONLADDER, new WorldPoint(2570, 3443, 1), "Go up the second ladder.");
 
-		getRemainsStep = new ObjectStep(this, NullObjectID.NULL, new WorldPoint(2567, 3444, 2), "Get the dwarf remains at the top of the tower.");
+		getRemainsStep = new ObjectStep(this, ObjectID.MCANNONREMAINS_MULTILOC, new WorldPoint(2567, 3444, 2), "Get the dwarf remains at the top of the tower.");
 		gotoTower.addSubSteps(goToTower2, getRemainsStep);
 
-		downTower = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2570, 3443, 2), "Go down the first ladder.");
-		downTower2 = new ObjectStep(this, ObjectID.LADDER_16679, new WorldPoint(2570, 3441, 1), "Go down the second ladder.");
-		talkToCaptainLawgof3 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Return the remains to Captain Lawgof.");
+		downTower = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2570, 3443, 2), "Go down the first ladder.");
+		downTower2 = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2570, 3441, 1), "Go down the second ladder.");
+		talkToCaptainLawgof3 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Return the remains to Captain Lawgof.");
 		talkToCaptainLawgof3.addSubSteps(downTower, downTower2);
 
 		//Cave
-		gotoCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE, new WorldPoint(2624, 3393, 0), "Go to the cave entrance east of the Fishing Guild door.");
-		searchCrates = new ObjectStep(this, ObjectID.CRATE, new WorldPoint(2571, 9850, 0), "Search the crates in the north west corner to find Lollk.");
-		talkToCaptainLawgof4 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Return to Captain Lawgof.");
+		gotoCave = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2624, 3393, 0), "Go to the cave entrance east of the Fishing Guild door.");
+		searchCrates = new ObjectStep(this, ObjectID.MCANNONCRATEBOY, new WorldPoint(2571, 9850, 0), "Search the crates in the north west corner to find Lollk.");
+		talkToCaptainLawgof4 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Return to Captain Lawgof.");
 		talkToCaptainLawgof4.addDialogStep("Okay, I'll see what I can do.");
 
 		//Fix cannon
 		// TODO: Update this to highlight widgets as you progress, indicating what tool to use on what
 		useToolkit = new PuzzleWrapperStep(this,
-			new ObjectStep(this, NullObjectID.NULL_15597, new WorldPoint(2563, 3462, 0),
+			new ObjectStep(this, ObjectID.MCANNON_CANNON_MULTILOC, new WorldPoint(2563, 3462, 0),
 				"Use the toolkit on the broken multicannon.  Use the right tool on the spring, the middle tool on the Safety switch, and the left tool on the gear."),
-			new ObjectStep(this, NullObjectID.NULL_15597, new WorldPoint(2563, 3462, 0), "Use the toolkit on the broken multicannon."));
-		useToolkit.addIcon(ItemID.TOOLKIT);
-		talkToCaptainLawgof5 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof (There will be a short pause in dialogue.  Both need to be completed.).");
+			new ObjectStep(this, ObjectID.MCANNON_CANNON_MULTILOC, new WorldPoint(2563, 3462, 0), "Use the toolkit on the broken multicannon."));
+		useToolkit.addIcon(ItemID.MCANNONTOOLKIT);
+		talkToCaptainLawgof5 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof (There will be a short pause in dialogue.  Both need to be completed.).");
 		talkToCaptainLawgof5.addDialogStep("Okay then, just for you!");
 
 		//Cannonball mould
 		talkToNulodion = new NpcStep(this, NpcID.NULODION, new WorldPoint(3012, 3453, 0), "Go talk to Nulodion at the Dwarven Black Guard camp (north-east of Falador, South of Ice Mountain).");
-		talkToCaptainLawgof6 = new NpcStep(this, NpcID.CAPTAIN_LAWGOF, new WorldPoint(2567, 3460, 0), "Finally, return to Captain Lawgof with the ammo mould and Nulodion's Notes.", nulodionsNotes, cannonballMould);
+		talkToCaptainLawgof6 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Finally, return to Captain Lawgof with the ammo mould and Nulodion's Notes.", nulodionsNotes, cannonballMould);
 	}
 
 	@Override

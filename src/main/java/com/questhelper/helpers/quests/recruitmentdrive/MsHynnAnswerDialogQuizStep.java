@@ -28,15 +28,13 @@ package com.questhelper.helpers.quests.recruitmentdrive;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.util.RequirementBuilder;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.events.VarbitChanged;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.Subscribe;
 
 public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 {

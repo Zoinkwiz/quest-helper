@@ -25,26 +25,25 @@
 package com.questhelper.helpers.quests.theforsakentower;
 
 import com.google.inject.Inject;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
+import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 
 public class AltarPuzzle extends DetailedOwnerStep
 {
@@ -259,10 +258,10 @@ public class AltarPuzzle extends DetailedOwnerStep
 
 	private void setupItemRequirements()
 	{
-		ring1 = new ItemRequirement("Energy disk (level 1)", ItemID.ENERGY_DISK_LEVEL_1);
-		ring2 = new ItemRequirement("Energy disk (level 2)", ItemID.ENERGY_DISK_LEVEL_2);
-		ring3 = new ItemRequirement("Energy disk (level 3)", ItemID.ENERGY_DISK_LEVEL_3);
-		ring4 = new ItemRequirement("Energy disk (level 4)", ItemID.ENERGY_DISK_LEVEL_4);
+		ring1 = new ItemRequirement("Energy disk (level 1)", ItemID.LOVAQUEST_DISK_1);
+		ring2 = new ItemRequirement("Energy disk (level 2)", ItemID.LOVAQUEST_DISK_2);
+		ring3 = new ItemRequirement("Energy disk (level 3)", ItemID.LOVAQUEST_DISK_3);
+		ring4 = new ItemRequirement("Energy disk (level 4)", ItemID.LOVAQUEST_DISK_4);
 	}
 
 	private void setupConditions()
@@ -290,14 +289,14 @@ public class AltarPuzzle extends DetailedOwnerStep
 		rebalanceC = new ArrayList<>();
 		rebalanceE = new ArrayList<>();
 
-		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33484, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
-		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_33550, new WorldPoint(1378, 3825, 0), "Climb up the staircase to the tower's 1st floor.");
-		goUpToSecondFloor = new ObjectStep(getQuestHelper(), ObjectID.LADDER_33486, new WorldPoint(1382, 3827, 1), "Climb up the ladder to the top floor.");
+		goUpLadder = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_DUNGEON_EXIT, new WorldPoint(1382, 10229, 0), "Leave the tower's basement.");
+		goUpStairs = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_SPIRAL_STAIRS_M, new WorldPoint(1378, 3825, 0), "Climb up the staircase to the tower's 1st floor.");
+		goUpToSecondFloor = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_LADDER_UP, new WorldPoint(1382, 3827, 1), "Climb up the ladder to the top floor.");
 		for (int i = 0; i < 10; i++)
 		{
-			rebalanceW.add(new ObjectStep(getQuestHelper(), NullObjectID.NULL_34598, new WorldPoint(1380, 3824, 2), "Rebalance the west pylon."));
-			rebalanceC.add(new ObjectStep(getQuestHelper(), NullObjectID.NULL_34599, new WorldPoint(1382, 3824, 2), "Rebalance the central pylon."));
-			rebalanceE.add(new ObjectStep(getQuestHelper(), NullObjectID.NULL_34600, new WorldPoint(1384, 3824, 2), "Rebalance the east pylon."));
+			rebalanceW.add(new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_PYLON_1, new WorldPoint(1380, 3824, 2), "Rebalance the west pylon."));
+			rebalanceC.add(new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_PYLON_2, new WorldPoint(1382, 3824, 2), "Rebalance the central pylon."));
+			rebalanceE.add(new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_PYLON_3, new WorldPoint(1384, 3824, 2), "Rebalance the east pylon."));
 		}
 		m1 = new DetailedQuestStep(getQuestHelper(), "Move a disc from the west pylon to the east pylon.");
 		m1.addSubSteps(rebalanceW.get(0), rebalanceE.get(0));

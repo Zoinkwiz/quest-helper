@@ -24,30 +24,27 @@
  */
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.player.SpecialAttackRequirement;
-import com.questhelper.requirements.util.SpecialAttack;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.PrayerRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.requirements.player.SpecialAttackRequirement;
+import com.questhelper.requirements.util.SpecialAttack;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
 
 public class DagRoute extends ConditionalStep
 {
@@ -71,7 +68,7 @@ public class DagRoute extends ConditionalStep
 
 	public DagRoute(QuestHelper questHelper)
 	{
-		super(questHelper, new NpcStep(questHelper, NpcID.JARVALD, new WorldPoint(2620, 3686, 0),
+		super(questHelper, new NpcStep(questHelper, NpcID.VIKING_DAGGANOTH_CAVE_FERRYMAN_ISLAND, new WorldPoint(2620, 3686, 0),
 			"Speak with Jarvald to travel to Waterbirth Island."));
 		super.addDialogSteps("What Jarvald is doing.", "Can I come?", "YES");
 		setupItemRequirements();
@@ -102,7 +99,7 @@ public class DagRoute extends ConditionalStep
 	public void setupItemRequirements()
 	{
 		thrownaxe = new ItemRequirement("Rune thrownaxe", ItemID.RUNE_THROWNAXE);
-		petRock = new ItemRequirement("Pet rock", ItemID.PET_ROCK);
+		petRock = new ItemRequirement("Pet rock", ItemID.VT_USELESS_ROCK);
 		petRock.setTooltip("Obtained from Askeladden in Rellekka");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
@@ -169,7 +166,7 @@ public class DagRoute extends ConditionalStep
 			thrownaxe, petRock, food, stamPot, prayerPot);
 		dropPetRock = new ObjectStep(questHelper, 8965, new WorldPoint(2490, 10162, 0),
 			"Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// item on tile req?
-		dropPetRock.addIcon(ItemID.PET_ROCK);
+		dropPetRock.addIcon(ItemID.VT_USELESS_ROCK);
 		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
 		moveToAxeSpot = new ObjectStep(questHelper, 8945, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
@@ -181,27 +178,27 @@ public class DagRoute extends ConditionalStep
 		moveToDagCave1 = new ObjectStep(questHelper, 10177, new WorldPoint(2546, 10143, 0),
 			"Enable magic protection then climb down the ladder.", protectMagic);
 		moveToDagCave1.addDialogSteps("Climb Down.");
-		moveToDagCave2 = new ObjectStep(questHelper, ObjectID.LADDER_10195, new WorldPoint(1808, 4405, 3),
+		moveToDagCave2 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER1, new WorldPoint(1808, 4405, 3),
 			"Enable melee protection then continue through the cave.", protectMelee);
-		moveToDagCave3 = new ObjectStep(questHelper, ObjectID.LADDER_10198, new WorldPoint(1823, 4404, 2),
+		moveToDagCave3 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER4, new WorldPoint(1823, 4404, 2),
 			"Keep current protection and continue through the cave.", protectMelee);
-		moveToDagCave4 = new ObjectStep(questHelper, ObjectID.LADDER_10199, new WorldPoint(1834, 4389, 3),
+		moveToDagCave4 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER5, new WorldPoint(1834, 4389, 3),
 			"Enable missile protection then continue through the cave.", protectMissiles);
-		moveToDagCave5 = new ObjectStep(questHelper, ObjectID.LADDER_10201, new WorldPoint(1811, 4394, 2),
+		moveToDagCave5 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER7, new WorldPoint(1811, 4394, 2),
 			"Enable magic protection and continue through the cave.", protectMagic);
-		moveToDagCave6 = new ObjectStep(questHelper, ObjectID.LADDER_10203, new WorldPoint(1799, 4388, 1),
+		moveToDagCave6 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER9, new WorldPoint(1799, 4388, 1),
 			"Keep current protection and continue through the cave.", protectMagic);
-		moveToDagCave7 = new ObjectStep(questHelper, ObjectID.LADDER_10205, new WorldPoint(1797, 4382, 2),
+		moveToDagCave7 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER11, new WorldPoint(1797, 4382, 2),
 			"Keep current protection and continue through the cave.", protectMagic);
-		moveToDagCave8 = new ObjectStep(questHelper, ObjectID.LADDER_10207, new WorldPoint(1802, 4369, 1),
+		moveToDagCave8 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER13, new WorldPoint(1802, 4369, 1),
 			"Enable melee protection and continue through the cave.", protectMelee);
-		moveToDagCave9 = new ObjectStep(questHelper, ObjectID.LADDER_10209, new WorldPoint(1826, 4362, 2),
+		moveToDagCave9 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER15, new WorldPoint(1826, 4362, 2),
 			"Keep current protection and continue through the cave.", protectMelee);
-		moveToDagCave10 = new ObjectStep(questHelper, ObjectID.LADDER_10211, new WorldPoint(1863, 4371, 1),
+		moveToDagCave10 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER17, new WorldPoint(1863, 4371, 1),
 			"Keep current protection and continue through the cave.", protectMelee);
-		moveToDagCave11 = new ObjectStep(questHelper, ObjectID.LADDER_10213, new WorldPoint(1864, 4388, 2),
+		moveToDagCave11 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER19, new WorldPoint(1864, 4388, 2),
 			"Keep current protection and continue through the cave.", protectMelee);
-		moveToDagCave12 = new ObjectStep(questHelper, ObjectID.LADDER_10215, new WorldPoint(1890, 4407, 1),
+		moveToDagCave12 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER21, new WorldPoint(1890, 4407, 1),
 			"Keep current protection and continue through the cave.", protectMelee);
 		moveToDagKings = new ObjectStep(questHelper, 3831, new WorldPoint(1911, 4367, 0),
 			"Enter the Kings' lair.", protectMelee);

@@ -24,44 +24,31 @@
  */
 package com.questhelper.helpers.quests.thedigsite;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.npc.DialogRequirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.DialogRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.*;
+
+import java.util.*;
 
 public class TheDigSite extends BasicQuestHelper
 {
@@ -202,11 +189,11 @@ public class TheDigSite extends BasicQuestHelper
 	{
 		pestleAndMortar = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestleAndMortar.setHighlightInInventory(true);
-		vialHighlighted = new ItemRequirement("Vial", ItemID.VIAL);
+		vialHighlighted = new ItemRequirement("Vial", ItemID.VIAL_EMPTY);
 		vialHighlighted.setHighlightInInventory(true);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderboxHighlighted = tinderbox.highlighted();
-		tea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA_1978);
+		tea = new ItemRequirement("Cup of tea", ItemID.DISPLAY_TEA);
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);
@@ -218,51 +205,51 @@ public class TheDigSite extends BasicQuestHelper
 		charcoal.setHighlightInInventory(true);
 		specimenBrush = new ItemRequirement("Specimen brush", ItemID.SPECIMEN_BRUSH).isNotConsumed();
 		specimenJar = new ItemRequirement("Specimen jar", ItemID.SPECIMEN_JAR).isNotConsumed();
-		panningTray = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY).isNotConsumed();
-		panningTray.addAlternates(ItemID.PANNING_TRAY_678, ItemID.PANNING_TRAY_679);
-		panningTrayFull = new ItemRequirement("Panning tray", ItemID.PANNING_TRAY_679).isNotConsumed();
+		panningTray = new ItemRequirement("Panning tray", ItemID.TRAY_EMPTY).isNotConsumed();
+		panningTray.addAlternates(ItemID.TRAY_GOLD, ItemID.TRAY_MUD);
+		panningTrayFull = new ItemRequirement("Panning tray", ItemID.TRAY_MUD).isNotConsumed();
 		trowel = new ItemRequirement("Trowel", ItemID.TROWEL).isNotConsumed();
 		trowel.setTooltip("You can get another from one of the Examiners");
 		trowelHighlighted = new ItemRequirement("Trowel", ItemID.TROWEL).isNotConsumed();
 		trowelHighlighted.setHighlightInInventory(true);
 		trowelHighlighted.setTooltip("You can get another from one of the Examiners");
-		varrock2 = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT, 2);
-		digsiteTeleports = new ItemRequirement("Digsite teleports", ItemID.DIGSITE_TELEPORT, 2);
-		sealedLetter = new ItemRequirement("Sealed letter", ItemID.SEALED_LETTER);
+		varrock2 = new ItemRequirement("Varrock teleports", ItemID.POH_TABLET_VARROCKTELEPORT, 2);
+		digsiteTeleports = new ItemRequirement("Digsite teleports", ItemID.TELEPORTSCROLL_DIGSITE, 2);
+		sealedLetter = new ItemRequirement("Sealed letter", ItemID.RECOMMENDEDLETTER);
 		sealedLetter.setTooltip("You can get another from Curator Haig in the Varrock Museum");
-		specialCup = new ItemRequirement("Special cup", ItemID.SPECIAL_CUP);
-		teddybear = new ItemRequirement("Teddy", ItemID.TEDDY);
-		skull = new ItemRequirement("Animal skull", ItemID.ANIMAL_SKULL);
+		specialCup = new ItemRequirement("Special cup", ItemID.ROCK_SAMPLE2);
+		teddybear = new ItemRequirement("Teddy", ItemID.ROCK_SAMPLE3);
+		skull = new ItemRequirement("Animal skull", ItemID.ROCK_SAMPLE1);
 		nitro = new ItemRequirement("Nitroglycerin", ItemID.NITROGLYCERIN);
 		nitro.setHighlightInInventory(true);
 		nitrate = new ItemRequirement("Ammonium nitrate", ItemID.AMMONIUM_NITRATE);
 		nitrate.setHighlightInInventory(true);
-		chemicalCompound = new ItemRequirement("Chemical compound", ItemID.CHEMICAL_COMPOUND);
-		chemicalCompoundHighlighted = new ItemRequirement("Chemical compound", ItemID.CHEMICAL_COMPOUND);
+		chemicalCompound = new ItemRequirement("Chemical compound", ItemID.DIGCOMPOUND);
+		chemicalCompoundHighlighted = new ItemRequirement("Chemical compound", ItemID.DIGCOMPOUND);
 		chemicalCompoundHighlighted.setHighlightInInventory(true);
 		groundCharcoal = new ItemRequirement("Ground charcoal", ItemID.GROUND_CHARCOAL);
 		groundCharcoal.setTooltip("You can make this by use a pestle and mortar on some charcoal. You can get charcoal from one of the specimen trays in the Digsite");
 		groundCharcoal.setHighlightInInventory(true);
-		invitation = new ItemRequirement("Invitation letter", ItemID.INVITATION_LETTER);
+		invitation = new ItemRequirement("Invitation letter", ItemID.DIGEXPERTSCROLL);
 		invitation.setTooltip("You can get another from the Archaeological expert");
 		invitation.setHighlightInInventory(true);
-		talisman = new ItemRequirement("Ancient talisman", ItemID.ANCIENT_TALISMAN);
-		mixedChemicals = new ItemRequirement("Mixed chemicals", ItemID.MIXED_CHEMICALS);
+		talisman = new ItemRequirement("Ancient talisman", ItemID.DIGTALISMAN);
+		mixedChemicals = new ItemRequirement("Mixed chemicals", ItemID.PRECHARCOALMIXTURE);
 		mixedChemicals.setHighlightInInventory(true);
-		mixedChemicals2 = new ItemRequirement("Mixed chemicals", ItemID.MIXED_CHEMICALS_706);
+		mixedChemicals2 = new ItemRequirement("Mixed chemicals", ItemID.POSTCHARCOALMIXTURE);
 		mixedChemicals2.setHighlightInInventory(true);
 		arcenia = new ItemRequirement("Arcenia root", ItemID.ARCENIA_ROOT);
 		arcenia.setHighlightInInventory(true);
 
-		powder = new ItemRequirement("Chemical powder", ItemID.CHEMICAL_POWDER);
+		powder = new ItemRequirement("Chemical powder", ItemID.UNIDENTIFIED_POWDER);
 		powder.setHighlightInInventory(true);
 		liquid = new ItemRequirement("Unidentified liquid", ItemID.UNIDENTIFIED_LIQUID);
 		liquid.setHighlightInInventory(true);
-		tablet = new ItemRequirement("Stone tablet", ItemID.STONE_TABLET);
+		tablet = new ItemRequirement("Stone tablet", ItemID.ZAROSSTONETABLET);
 		tablet.setHighlightInInventory(true);
-		key = new ItemRequirement("Chest key", ItemID.CHEST_KEY_709);
+		key = new ItemRequirement("Chest key", ItemID.DIGCHESTKEY);
 		key.setHighlightInInventory(true);
-		unstampedLetter = new ItemRequirement("Unstamped letter", ItemID.UNSTAMPED_LETTER);
+		unstampedLetter = new ItemRequirement("Unstamped letter", ItemID.DIGPLAINLETTER);
 		unstampedLetter.setTooltip("You can get another from the Exam Centre's examiners");
 	}
 
@@ -281,16 +268,16 @@ public class TheDigSite extends BasicQuestHelper
 		inDougRoom = new ZoneRequirement(dougRoom);
 
 
-		knowStateAsJustStartedQuest = new Conditions(true, new VarplayerRequirement(131, 1, Operation.LESS_EQUAL));
-		knowStateAsJustCompletedFirstExam = new Conditions(true, new VarplayerRequirement(131, 2, Operation.LESS_EQUAL));
-		knowStateAsJustCompletedSecondExam = new Conditions(true, new VarplayerRequirement(131, 3, Operation.LESS_EQUAL));
+		knowStateAsJustStartedQuest = new Conditions(true, new VarplayerRequirement(VarPlayerID.ITEXAMLEVEL, 1, Operation.LESS_EQUAL));
+		knowStateAsJustCompletedFirstExam = new Conditions(true, new VarplayerRequirement(VarPlayerID.ITEXAMLEVEL, 2, Operation.LESS_EQUAL));
+		knowStateAsJustCompletedSecondExam = new Conditions(true, new VarplayerRequirement(VarPlayerID.ITEXAMLEVEL, 3, Operation.LESS_EQUAL));
 
 
 		syncedUp = new Conditions(true, LogicType.OR, knowStateAsJustStartedQuest,
-			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Dig Site"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "The Dig Site"));
 
 		syncedUp2 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedFirstExam,
-			new WidgetTextRequirement(ComponentID.DIARY_TITLE, "The Dig Site"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "The Dig Site"),
 			new DialogRequirement("You got all the questions correct. Well done!"),
 			new DialogRequirement("Hey! Excellent!"));
 
@@ -306,44 +293,44 @@ public class TheDigSite extends BasicQuestHelper
 		// Exam questions 1
 		talkedToFemaleStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Hey! My lucky mascot!"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I should talk to her to see if she can help"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I should talk to her to see if she can help"));
 		femaleStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The proper health and safety points are"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "She gave me an answer"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "She gave me an answer"));
 
-		WidgetTextRequirement orangeGivenAnswer1Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "He gave me an answer to one of the questions");
+		WidgetTextRequirement orangeGivenAnswer1Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "He gave me an answer to one of the questions");
 		orangeGivenAnswer1Diary.addRange(20, 35);
 		talkedToOrangeStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Look what I found!"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>to find it and return it to him."));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>to find it and return it to him."));
 		orangeStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The people eligible to use the digsite are:"),
 			orangeGivenAnswer1Diary);
 
-		WidgetTextRequirement greenGivenAnswer1Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "He gave me an answer to one of the questions");
+		WidgetTextRequirement greenGivenAnswer1Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "He gave me an answer to one of the questions");
 		greenGivenAnswer1Diary.addRange(0, 19);
 
 		talkedToGreenStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Oh wow! You've found it!"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>to him; maybe someone has picked it up?"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>to him; maybe someone has picked it up?"));
 		greenStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The study of Earth Sciences is:"),
 			greenGivenAnswer1Diary);
 
 		// Exam questions 2
-		WidgetTextRequirement femaleGivenAnswer2Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the purple skirt about");
+		WidgetTextRequirement femaleGivenAnswer2Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer2Diary.addRange(43, 52);
 		femaleStudentQ2Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Finds handling: Finds must"),
 			femaleGivenAnswer2Diary);
 
-		WidgetTextRequirement orangeGivenAnswer2Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the orange top about the");
+		WidgetTextRequirement orangeGivenAnswer2Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer2Diary.addRange(43, 52);
 		orangeStudentQ2Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Correct sample transportation: "),
 			orangeGivenAnswer2Diary);
 
-		WidgetTextRequirement greenGivenAnswer2Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the green top about the");
+		WidgetTextRequirement greenGivenAnswer2Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer2Diary.addRange(43, 52);
 		greenStudentQ2Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Correct rock pick usage: Always handle"),
@@ -353,20 +340,20 @@ public class TheDigSite extends BasicQuestHelper
 		femaleExtorting = new Conditions(true, LogicType.OR,
 			new DialogRequirement("OK, I'll see what I can turn up for you."),
 			new DialogRequirement("Well, I have seen people get them from panning"),
-			new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "I need to bring her an opal"));
-		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the purple skirt about");
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I need to bring her an opal"));
+		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the purple skirt about");
 		femaleGivenAnswer3Diary.addRange(56, 63);
 		femaleStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Sample preparation: Samples cleaned"),
 			femaleGivenAnswer3Diary);
 
-		WidgetTextRequirement orangeGivenAnswer3Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the orange top about the");
+		WidgetTextRequirement orangeGivenAnswer3Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the orange top about the");
 		orangeGivenAnswer3Diary.addRange(56, 63);
 		orangeStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The proper technique for handling bones is: Handle"),
 			orangeGivenAnswer3Diary);
 
-		WidgetTextRequirement greenGivenAnswer3Diary = new WidgetTextRequirement(ComponentID.DIARY_TEXT, true, "<str>I need to speak to the student in the green top about the");
+		WidgetTextRequirement greenGivenAnswer3Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the green top about the");
 		greenGivenAnswer3Diary.addRange(56, 63);
 		greenStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Specimen brush use: Brush carefully"),
@@ -386,7 +373,7 @@ public class TheDigSite extends BasicQuestHelper
 
 
 		searchedBricks = new VarbitRequirement(2549, 1);
-		openPowderChestNearby = new ObjectCondition(ObjectID.CHEST_2360);
+		openPowderChestNearby = new ObjectCondition(ObjectID.DIGCHESTOPEN);
 		openedBarrel = new VarbitRequirement(2547, 1);
 
 		hasKeyOrPowderOrMixtures = new Conditions(LogicType.OR,
@@ -397,27 +384,27 @@ public class TheDigSite extends BasicQuestHelper
 	{
 		talkToExaminer = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Talk to an Examiner in the Exam Centre south east of Varrock.");
 		talkToExaminer.addDialogStep("Can I take an exam?");
-		((NpcStep) (talkToExaminer)).addAlternateNpcs(NpcID.EXAMINER_3636, NpcID.EXAMINER_3637);
-		talkToHaig = new NpcStep(this, NpcID.CURATOR_HAIG_HALEN, new WorldPoint(3257, 3448, 0),
+		((NpcStep) (talkToExaminer)).addAlternateNpcs(NpcID.QIP_DIGSITE_EXAMINER_02, NpcID.QIP_DIGSITE_EXAMINER_03);
+		talkToHaig = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3257, 3448, 0),
 			"Talk to Curator Haig in the Varrock Museum.", unstampedLetter);
 		talkToExaminer2 = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Return to an Examiner in the Exam Centre south east of Varrock.", sealedLetter);
 
-		searchBush = new ObjectStep(this, ObjectID.BUSH_2358, new WorldPoint(3357, 3372, 0), "Search the bushes north of the Exam Centre for a teddy.");
+		searchBush = new ObjectStep(this, ObjectID.DIGSITEBUSHSAMPLE, new WorldPoint(3357, 3372, 0), "Search the bushes north of the Exam Centre for a teddy.");
 		takeTray = new DetailedQuestStep(this, new WorldPoint(3369, 3378, 0), "Pick up the tray in the south east of the dig site.", panningTray);
 		talkToGuide = new NpcStep(this, NpcID.PANNING_GUIDE, new WorldPoint(3385, 3386, 0), "Talk to the Panning Guide nearby.", tea);
 		panWater = new ObjectStep(this, ObjectID.PANNING_POINT, new WorldPoint(3384, 3381, 0), "Pan in the river for a special cup.", panningTray);
 		searchPanningTray = new DetailedQuestStep(this, "Search the panning tray.", panningTrayFull.highlighted());
 		panWater.addSubSteps(searchPanningTray);
 
-		pickpocketWorkmen = new NpcStep(this, NpcID.DIGSITE_WORKMAN, new WorldPoint(3372, 3390, 0), "Pickpocket workmen until you get an animal skull and a specimen brush.", true);
-		((NpcStep) (pickpocketWorkmen)).addAlternateNpcs(NpcID.DIGSITE_WORKMAN_3630, NpcID.DIGSITE_WORKMAN_3631);
+		pickpocketWorkmen = new NpcStep(this, NpcID.DIGWORKMAN1, new WorldPoint(3372, 3390, 0), "Pickpocket workmen until you get an animal skull and a specimen brush.", true);
+		((NpcStep) (pickpocketWorkmen)).addAlternateNpcs(NpcID.QIP_DIGSITE_DIGWORKMAN_03, NpcID.QIP_DIGSITE_DIGWORKMAN_04);
 		((NpcStep) (pickpocketWorkmen)).setMaxRoamRange(100);
-		talkToFemaleStudent = new NpcStep(this, NpcID.STUDENT_3634, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite twice.", teddybear);
-		talkToOrangeStudent = new NpcStep(this, NpcID.STUDENT_3633, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite twice.", specialCup);
-		talkToGreenStudent = new NpcStep(this, NpcID.STUDENT, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite twice.", skull);
-		talkToFemaleStudent2 = new NpcStep(this, NpcID.STUDENT_3634, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite.");
-		talkToOrangeStudent2 = new NpcStep(this, NpcID.STUDENT_3633, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite.");
-		talkToGreenStudent2 = new NpcStep(this, NpcID.STUDENT, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite.");
+		talkToFemaleStudent = new NpcStep(this, NpcID.STUDENT2, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite twice.", teddybear);
+		talkToOrangeStudent = new NpcStep(this, NpcID.STUDENT3, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite twice.", specialCup);
+		talkToGreenStudent = new NpcStep(this, NpcID.STUDENT1, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite twice.", skull);
+		talkToFemaleStudent2 = new NpcStep(this, NpcID.STUDENT2, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite.");
+		talkToOrangeStudent2 = new NpcStep(this, NpcID.STUDENT3, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite.");
+		talkToGreenStudent2 = new NpcStep(this, NpcID.STUDENT1, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite.");
 		talkToFemaleStudent.addSubSteps(talkToFemaleStudent2);
 		talkToOrangeStudent.addSubSteps(talkToOrangeStudent2);
 		talkToGreenStudent.addSubSteps(talkToGreenStudent2);
@@ -426,81 +413,81 @@ public class TheDigSite extends BasicQuestHelper
 			"All that have passed the appropriate Earth Sciences exam.",
 			"Gloves and boots to be worn at all times; proper tools must be used.");
 
-		talkToFemaleStudent3 = new NpcStep(this, NpcID.STUDENT_3634, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite.");
-		talkToOrangeStudent3 = new NpcStep(this, NpcID.STUDENT_3633, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite.");
-		talkToGreenStudent3 = new NpcStep(this, NpcID.STUDENT, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite.");
+		talkToFemaleStudent3 = new NpcStep(this, NpcID.STUDENT2, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite.");
+		talkToOrangeStudent3 = new NpcStep(this, NpcID.STUDENT3, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite.");
+		talkToGreenStudent3 = new NpcStep(this, NpcID.STUDENT1, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite.");
 		takeTest2 = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Talk to an Examiner in the Exam Centre to take the second test.");
 		takeTest2.addDialogSteps("I am ready for the next exam.", "Samples taken in rough form; kept only in sealed containers.",
 			"Finds must be carefully handled, and gloves worn.", "Always handle with care; strike cleanly on its cleaving point.");
 
-		talkToFemaleStudent4 = new NpcStep(this, NpcID.STUDENT_3634, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite.", opal);
-		talkToFemaleStudent5 = new NpcStep(this, NpcID.STUDENT_3634, new WorldPoint(3345, 3425, 0), "Talk to the female student again.", opal);
-		talkToOrangeStudent4 = new NpcStep(this, NpcID.STUDENT_3633, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite.");
-		talkToGreenStudent4 = new NpcStep(this, NpcID.STUDENT, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite.");
+		talkToFemaleStudent4 = new NpcStep(this, NpcID.STUDENT2, new WorldPoint(3345, 3425, 0), "Talk to the female student in the north west of the Digsite.", opal);
+		talkToFemaleStudent5 = new NpcStep(this, NpcID.STUDENT2, new WorldPoint(3345, 3425, 0), "Talk to the female student again.", opal);
+		talkToOrangeStudent4 = new NpcStep(this, NpcID.STUDENT3, new WorldPoint(3369, 3419, 0), "Talk to the student in an orange shirt in the north east of the Digsite.");
+		talkToGreenStudent4 = new NpcStep(this, NpcID.STUDENT1, new WorldPoint(3362, 3398, 0), "Talk to the student in a green shirt in the south of the Digsite.");
 		takeTest3 = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Talk to an Examiner in the Exam Centre to take the third test.");
 		takeTest3.addDialogSteps("I am ready for the last exam...", "Samples cleaned, and carried only in specimen jars.",
 			"Brush carefully and slowly using short strokes.", "Handle bones very carefully and keep them away from other samples.");
 
-		getJar = new ObjectStep(this, ObjectID.CUPBOARD_17302, new WorldPoint(3355, 3332, 0), "Search the cupboard on the south wall of the west room of the Exam Centre for a specimen jar.");
-		((ObjectStep) (getJar)).addAlternateObjects(ObjectID.CUPBOARD_17303);
-		getBrush = new NpcStep(this, NpcID.DIGSITE_WORKMAN, new WorldPoint(3372, 3390, 0), "Pickpocket workmen until you get a specimen brush.", true);
-		((NpcStep) (getBrush)).addAlternateNpcs(NpcID.DIGSITE_WORKMAN_3630, NpcID.DIGSITE_WORKMAN_3631);
+		getJar = new ObjectStep(this, ObjectID.QIP_DIGSITE_CUPBOARDSHUT, new WorldPoint(3355, 3332, 0), "Search the cupboard on the south wall of the west room of the Exam Centre for a specimen jar.");
+		((ObjectStep) (getJar)).addAlternateObjects(ObjectID.QIP_DIGSITE_CUPBOARDOPEN);
+		getBrush = new NpcStep(this, NpcID.DIGWORKMAN1, new WorldPoint(3372, 3390, 0), "Pickpocket workmen until you get a specimen brush.", true);
+		((NpcStep) (getBrush)).addAlternateNpcs(NpcID.QIP_DIGSITE_DIGWORKMAN_03, NpcID.QIP_DIGSITE_DIGWORKMAN_04);
 		((NpcStep) (getBrush)).setMaxRoamRange(100);
 		// NOTE: May not need pick
-		digForTalisman = new ObjectStep(this, ObjectID.SOIL_2377, new WorldPoint(3374, 3438, 0), "Dig in the north east dig spot in the Digsite until you get a talisman.",
+		digForTalisman = new ObjectStep(this, ObjectID.DIGDUGUPSOIL2, new WorldPoint(3374, 3438, 0), "Dig in the north east dig spot in the Digsite until you get a talisman.",
 			trowelHighlighted, specimenJar, specimenBrush);
 		digForTalisman.addIcon(ItemID.TROWEL);
-		talkToExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "Talk Archaeological expert in the Exam Centre.", talisman);
+		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Talk Archaeological expert in the Exam Centre.", talisman);
 
-		useInvitationOnWorkman = new NpcStep(this, NpcID.DIGSITE_WORKMAN, new WorldPoint(3360, 3415, 0), "Use the invitation on any workman.", true, invitation);
-		useInvitationOnWorkman.addIcon(ItemID.INVITATION_LETTER);
+		useInvitationOnWorkman = new NpcStep(this, NpcID.DIGWORKMAN1, new WorldPoint(3360, 3415, 0), "Use the invitation on any workman.", true, invitation);
+		useInvitationOnWorkman.addIcon(ItemID.DIGEXPERTSCROLL);
 		useInvitationOnWorkman.addDialogStep("I lost the letter you gave me.");
-		((NpcStep) (useInvitationOnWorkman)).addAlternateNpcs(NpcID.DIGSITE_WORKMAN_3630, NpcID.DIGSITE_WORKMAN_3631);
+		((NpcStep) (useInvitationOnWorkman)).addAlternateNpcs(NpcID.QIP_DIGSITE_DIGWORKMAN_03, NpcID.QIP_DIGSITE_DIGWORKMAN_04);
 		((NpcStep) (useInvitationOnWorkman)).setMaxRoamRange(100);
-		useRopeOnWinch = new ObjectStep(this, ObjectID.WINCH_2350, new WorldPoint(3353, 3417, 0), "Use a rope on the west winch.", rope);
+		useRopeOnWinch = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Use a rope on the west winch.", rope);
 		useRopeOnWinch.addIcon(ItemID.ROPE);
-		goDownWinch = new ObjectStep(this, ObjectID.WINCH_2350, new WorldPoint(3353, 3417, 0), "Climb down the west winch.");
+		goDownWinch = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Climb down the west winch.");
 		pickUpRoot = new ItemStep(this, "Pick up some arcenia root.", arcenia);
-		searchBricks = new ObjectStep(this, ObjectID.BRICK_2362, new WorldPoint(3378, 9824, 0), "Search the bricks to the south.");
+		searchBricks = new ObjectStep(this, ObjectID.DIGBLASTBRICK, new WorldPoint(3378, 9824, 0), "Search the bricks to the south.");
 
-		goUpRope = new ObjectStep(this, ObjectID.ROPE_2353, new WorldPoint(3369, 9826, 0), "Climb back to the surface.");
-		useRopeOnWinch2 = new ObjectStep(this, ObjectID.WINCH_2351, new WorldPoint(3370, 3429, 0), "Use a rope on the north east winch.", rope);
+		goUpRope = new ObjectStep(this, ObjectID.WINCHLADDER2, new WorldPoint(3369, 9826, 0), "Climb back to the surface.");
+		useRopeOnWinch2 = new ObjectStep(this, ObjectID.DIGWINCH2, new WorldPoint(3370, 3429, 0), "Use a rope on the north east winch.", rope);
 		useRopeOnWinch2.addIcon(ItemID.ROPE);
-		goDownToDoug = new ObjectStep(this, ObjectID.WINCH_2351, new WorldPoint(3370, 3429, 0), "Climb down the north east winch.");
-		talkToDoug = new NpcStep(this, NpcID.DOUG_DEEPING, new WorldPoint(3351, 9819, 0), "Talk to Doug Deeping.");
+		goDownToDoug = new ObjectStep(this, ObjectID.DIGWINCH2, new WorldPoint(3370, 3429, 0), "Climb down the north east winch.");
+		talkToDoug = new NpcStep(this, NpcID.DIGWORKMAN2, new WorldPoint(3351, 9819, 0), "Talk to Doug Deeping.");
 		talkToDoug.addDialogStep("How could I move a large pile of rocks?");
-		goUpFromDoug = new ObjectStep(this, ObjectID.ROPE_2352, new WorldPoint(3352, 9816, 0), "Leave Doug's cave.");
-		unlockChest = new ObjectStep(this, ObjectID.CHEST_2361, new WorldPoint(3374, 3378, 0), "Use the key on the chest in the tent in the south of the Digsite.", key);
-		unlockChest.addIcon(ItemID.CHEST_KEY_709);
-		searchChest = new ObjectStep(this, ObjectID.CHEST_2360, new WorldPoint(3374, 3378, 0), "Search the chest.");
-		useTrowelOnBarrel = new ObjectStep(this, NullObjectID.NULL_2359, new WorldPoint(3364, 3378, 0),
+		goUpFromDoug = new ObjectStep(this, ObjectID.WINCHLADDER1, new WorldPoint(3352, 9816, 0), "Leave Doug's cave.");
+		unlockChest = new ObjectStep(this, ObjectID.DIGCHESTCLOSED, new WorldPoint(3374, 3378, 0), "Use the key on the chest in the tent in the south of the Digsite.", key);
+		unlockChest.addIcon(ItemID.DIGCHESTKEY);
+		searchChest = new ObjectStep(this, ObjectID.DIGCHESTOPEN, new WorldPoint(3374, 3378, 0), "Search the chest.");
+		useTrowelOnBarrel = new ObjectStep(this, ObjectID.DIGBARRELCLOSED, new WorldPoint(3364, 3378, 0),
 			"Use a trowel on the barrel west of the chest's tent.", trowelHighlighted);
 		useTrowelOnBarrel.addIcon(ItemID.TROWEL);
-		useVialOnBarrel = new ObjectStep(this, NullObjectID.NULL_2359, new WorldPoint(3364, 3378, 0), "Use a vial on the barrel west of the chest's tent.", vialHighlighted);
-		useVialOnBarrel.addIcon(ItemID.VIAL);
-		usePowderOnExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "Use the powder on the Archaeological expert in the Exam Centre.", powder);
-		usePowderOnExpert.addIcon(ItemID.CHEMICAL_POWDER);
-		useLiquidOnExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "(DO NOT LEFT CLICK) Right-click use the liquid on the Archaeological expert in the Exam Centre.", liquid);
+		useVialOnBarrel = new ObjectStep(this, ObjectID.DIGBARRELCLOSED, new WorldPoint(3364, 3378, 0), "Use a vial on the barrel west of the chest's tent.", vialHighlighted);
+		useVialOnBarrel.addIcon(ItemID.VIAL_EMPTY);
+		usePowderOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the powder on the Archaeological expert in the Exam Centre.", powder);
+		usePowderOnExpert.addIcon(ItemID.UNIDENTIFIED_POWDER);
+		useLiquidOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "(DO NOT LEFT CLICK) Right-click use the liquid on the Archaeological expert in the Exam Centre.", liquid);
 		useLiquidOnExpert.addIcon(ItemID.UNIDENTIFIED_LIQUID);
 		mixNitroWithNitrate = new DetailedQuestStep(this, "Mix the nitroglycerin and ammonium nitrate together.", nitro, nitrate);
 		grindCharcoal = new DetailedQuestStep(this, "Grind charcoal with a pestle and mortar.", pestleAndMortar, charcoal);
 		addCharcoal = new DetailedQuestStep(this, "Add charcoal to the vial.", groundCharcoal, mixedChemicals);
 		addRoot = new DetailedQuestStep(this, "Add arcenia root to the vial.", arcenia, mixedChemicals2);
-		goDownToExplode = new ObjectStep(this, ObjectID.WINCH_2350, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.", chemicalCompound, tinderbox);
-		goDownToExplode2 = new ObjectStep(this, ObjectID.WINCH_2350, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.", tinderbox);
+		goDownToExplode = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.", chemicalCompound, tinderbox);
+		goDownToExplode2 = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.", tinderbox);
 		goDownToExplode.addSubSteps(goDownToExplode2);
-		useCompound = new ObjectStep(this, ObjectID.BRICK_2362, new WorldPoint(3378, 9824, 0), "Use the compound on the bricks to the south.", chemicalCompoundHighlighted);
-		useCompound.addIcon(ItemID.CHEMICAL_COMPOUND);
+		useCompound = new ObjectStep(this, ObjectID.DIGBLASTBRICK, new WorldPoint(3378, 9824, 0), "Use the compound on the bricks to the south.", chemicalCompoundHighlighted);
+		useCompound.addIcon(ItemID.DIGCOMPOUND);
 
-		useTinderbox = new ObjectStep(this, ObjectID.BRICK_2362, new WorldPoint(3378, 9824, 0), "Use a tinderbox on the bricks to the south.", tinderboxHighlighted);
+		useTinderbox = new ObjectStep(this, ObjectID.DIGBLASTBRICK, new WorldPoint(3378, 9824, 0), "Use a tinderbox on the bricks to the south.", tinderboxHighlighted);
 		useTinderbox.addIcon(ItemID.TINDERBOX);
-		takeTablet = new ObjectStep(this, NullObjectID.NULL_17369, new WorldPoint(3373, 9746, 0), "Take the stone tablet in the south room.");
-		goDownForTablet = new ObjectStep(this, ObjectID.WINCH_2350, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.");
+		takeTablet = new ObjectStep(this, ObjectID.QIP_DIGSITE_ZAROS_STONE_TABLET_MULTILOC, new WorldPoint(3373, 9746, 0), "Take the stone tablet in the south room.");
+		goDownForTablet = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.");
 		takeTablet.addSubSteps(goDownForTablet);
 
-		goUpWithTablet = new ObjectStep(this, ObjectID.ROPE_2353, new WorldPoint(3369, 9762, 0), "Use the tablet on the Archaeological expert in the Exam Centre to complete the quest.", tablet);
-		useTabletOnExpert = new NpcStep(this, NpcID.TERRY_BALANDO, new WorldPoint(3357, 3334, 0), "Use the tablet on the Archaeological expert in the Exam Centre to complete the quest.", tablet);
-		useTabletOnExpert.addIcon(ItemID.STONE_TABLET);
+		goUpWithTablet = new ObjectStep(this, ObjectID.WINCHLADDER2, new WorldPoint(3369, 9762, 0), "Use the tablet on the Archaeological expert in the Exam Centre to complete the quest.", tablet);
+		useTabletOnExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3357, 3334, 0), "Use the tablet on the Archaeological expert in the Exam Centre to complete the quest.", tablet);
+		useTabletOnExpert.addIcon(ItemID.ZAROSSTONETABLET);
 		useTabletOnExpert.addSubSteps(goUpWithTablet);
 
 		syncStep = new DetailedQuestStep(this, "Open the quest's journal to sync your current quest state.");

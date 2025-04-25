@@ -1,10 +1,10 @@
 package com.questhelper.steps.choice;
 
 import com.questhelper.QuestHelperConfig;
-
-import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.regex.Pattern;
 
 public class DialogChoiceStep extends WidgetChoiceStep
 {

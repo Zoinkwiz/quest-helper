@@ -26,8 +26,9 @@ package com.questhelper.steps.widget;
 
 import com.questhelper.QuestHelperPlugin;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.util.Text;
+
 import java.awt.*;
 
 /**
@@ -66,7 +67,7 @@ public class SpellWidgetHighlight extends AbstractWidgetHighlight
 	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{
-		var spellbookWidget = client.getWidget(InterfaceID.SPELLBOOK, SpellWidgetHighlight.SPELLBOOK_SPELL_LIST_CHILD_ID);
+		var spellbookWidget = client.getWidget(InterfaceID.MAGIC_SPELLBOOK, SpellWidgetHighlight.SPELLBOOK_SPELL_LIST_CHILD_ID);
 		if (spellbookWidget == null || spellbookWidget.isHidden())
 		{
 			redoSearch = true;

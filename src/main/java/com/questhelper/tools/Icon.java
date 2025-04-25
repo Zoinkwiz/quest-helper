@@ -27,12 +27,13 @@
 
 package com.questhelper.tools;
 
-import java.awt.image.BufferedImage;
-import java.util.function.UnaryOperator;
-import javax.annotation.Nonnull;
-import javax.swing.ImageIcon;
 import com.questhelper.QuestHelperPlugin;
 import net.runelite.client.util.ImageUtil;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.util.function.UnaryOperator;
 
 public enum Icon
 {

@@ -24,18 +24,18 @@
  */
 package com.questhelper.helpers.quests.akingdomdivided;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
 
 public class XericsLookoutStepper extends ConditionalStep
 {
@@ -121,17 +121,17 @@ public class XericsLookoutStepper extends ConditionalStep
 
 	public void setupSteps()
 	{
-		goDownLookoutF3toF2 = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_11890, new WorldPoint(1592, 3530, 3), this.getStepText(), getStepRequirements());
-		goDownLookoutF2toF1 = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 2), this.getStepText(), getStepRequirements());
+		goDownLookoutF3toF2 = new ObjectStep(getQuestHelper(), ObjectID.FAI_DARKWIZTOWER_SPIRALSTAIRSTOP, new WorldPoint(1592, 3530, 3), this.getStepText(), getStepRequirements());
+		goDownLookoutF2toF1 = new ObjectStep(getQuestHelper(), ObjectID.FAI_DARKWIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(1592, 3529, 2), this.getStepText(), getStepRequirements());
 		goDownLookoutF2toF1.addDialogSteps("Climb down");
-		goDownLookoutF1toF0 = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 1), this.getStepText(), getStepRequirements());
+		goDownLookoutF1toF0 = new ObjectStep(getQuestHelper(), ObjectID.FAI_DARKWIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(1592, 3529, 1), this.getStepText(), getStepRequirements());
 		goDownLookoutF1toF0.addDialogSteps("Climb down");
-		goDownLookoutF0toBasement = new ObjectStep(getQuestHelper(), ObjectID.LADDER_41916, new WorldPoint(1590, 3526, 0), this.getStepText(), getStepRequirements());
-		goUpLookoutBasementtoF0 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_41917, new WorldPoint(1564, 9949, 0), this.getStepText(), getStepRequirements());
-		goUpLookoutF0toF1 = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_11888, new WorldPoint(1592, 3529, 0), this.getStepText(), getStepRequirements());
-		goUpLookoutF1toF2 = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 1), this.getStepText(), getStepRequirements());
+		goDownLookoutF0toBasement = new ObjectStep(getQuestHelper(), ObjectID.AKD_LOOKOUT_TRAPDOOR_OPEN, new WorldPoint(1590, 3526, 0), this.getStepText(), getStepRequirements());
+		goUpLookoutBasementtoF0 = new ObjectStep(getQuestHelper(), ObjectID.AKD_LOOKOUT_LADDER, new WorldPoint(1564, 9949, 0), this.getStepText(), getStepRequirements());
+		goUpLookoutF0toF1 = new ObjectStep(getQuestHelper(), ObjectID.FAI_DARKWIZTOWER_SPIRALSTAIRS, new WorldPoint(1592, 3529, 0), this.getStepText(), getStepRequirements());
+		goUpLookoutF1toF2 = new ObjectStep(getQuestHelper(), ObjectID.FAI_DARKWIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(1592, 3529, 1), this.getStepText(), getStepRequirements());
 		goUpLookoutF1toF2.addDialogSteps("Climb up");
-		goUpLookoutF2toF3 = new ObjectStep(getQuestHelper(), ObjectID.STAIRCASE_11889, new WorldPoint(1592, 3529, 2), this.getStepText(), getStepRequirements());
+		goUpLookoutF2toF3 = new ObjectStep(getQuestHelper(), ObjectID.FAI_DARKWIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(1592, 3529, 2), this.getStepText(), getStepRequirements());
 		goUpLookoutF2toF3.addDialogSteps("Climb up");
 	}
 

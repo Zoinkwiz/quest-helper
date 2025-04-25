@@ -27,24 +27,20 @@ package com.questhelper.panel;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.HashMap;
 import com.questhelper.steps.QuestStep;
-
-import java.util.HashSet;
-import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.SwingUtil;
+
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.util.SwingUtil;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 public class QuestStepPanel extends JPanel
 {

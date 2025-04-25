@@ -27,12 +27,13 @@ package com.questhelper.helpers.quests.lunardiplomacy;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemoryChallenge extends DetailedQuestStep
 {

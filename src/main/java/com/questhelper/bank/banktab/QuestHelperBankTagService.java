@@ -28,16 +28,18 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.util.LogicType;
+import net.runelite.api.Client;
+import net.runelite.api.gameval.ItemID;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import net.runelite.api.Client;
 
 @Singleton
 public class QuestHelperBankTagService
@@ -53,6 +55,8 @@ public class QuestHelperBankTagService
 	ArrayList<Integer> taggedItemsForBank;
 
 	int lastTickUpdated = 0;
+
+	private final String RECOMMENDED_TAB_NAME = "Recommended items";
 
 	public ArrayList<Integer> itemsToTag()
 	{
@@ -104,14 +108,14 @@ public class QuestHelperBankTagService
 		{
 			recommendedItems = recommendedItems.stream()
 				.filter(Objects::nonNull)
-				.filter(i -> (!onlyGetMissingItems || !i.checkWithAllContainers(plugin.getClient())) && i.shouldDisplayText(plugin.getClient()))
+				.filter(i -> (!onlyGetMissingItems || !i.checkWithAllContainers()) && i.shouldDisplayText(plugin.getClient()))
 				.collect(Collectors.toList());
 		}
 
 		if (recommendedItems != null && !recommendedItems.isEmpty())
 		{
-			BankTabItems pluginItems = new BankTabItems("Recommended items");
-			// Here we specify getItems so as to avoid a double 'Recommended' title
+			BankTabItems pluginItems = new BankTabItems(RECOMMENDED_TAB_NAME);
+			// Here we specify getItems to avoid a double 'Recommended' title
 			recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item, item));
 			newList.add(pluginItems);
 		}
@@ -131,7 +135,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.checkWithAllContainers(plugin.getClient()))
+						|| !i.checkWithAllContainers())
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -143,7 +147,7 @@ public class QuestHelperBankTagService
 					.filter(ItemRequirement.class::isInstance)
 					.map(ItemRequirement.class::cast)
 					.filter(i -> (!onlyGetMissingItems
-						|| !i.checkWithAllContainers(plugin.getClient()))
+						|| !i.checkWithAllContainers())
 						&& i.shouldDisplayText(plugin.getClient()))
 					.collect(Collectors.toList());
 			}
@@ -152,7 +156,31 @@ public class QuestHelperBankTagService
 			items.forEach(item -> getItemsFromRequirement(pluginItems.getItems(), item, item));
 			recommendedItemsForSection.forEach(item -> getItemsFromRequirement(pluginItems.getRecommendedItems(), item, item));
 			// We don't add the recommended items as they're already used
-			newList.add(pluginItems);
+			if (items.size() > 0)
+			{
+				newList.add(pluginItems);
+			}
+		}
+
+		// If none of the sections have anything in it, create a generic require items section
+		if (newList.size() == 0 || (newList.size() == 1 && newList.get(0).getName().equals(RECOMMENDED_TAB_NAME)))
+		{
+			BankTabItems allRequiredItems = new BankTabItems("Required items");
+			List<ItemRequirement> allRequired = plugin.getSelectedQuest().getItemRequirements();
+			List<ItemRequirement> items;
+			if (allRequired != null && allRequired.size() > 0)
+			{
+				items = allRequired.stream()
+					.filter(Objects::nonNull)
+					.map(ItemRequirement.class::cast)
+					.filter(i -> (!onlyGetMissingItems
+				   || !i.check(plugin.getClient()))
+				   && i.shouldDisplayText(plugin.getClient()))
+					.collect(Collectors.toList());
+
+				items.forEach(item -> getItemsFromRequirement(allRequiredItems.getItems(), item, item));
+			}
+			newList.add(allRequiredItems);
 		}
 
 		return newList;
@@ -182,13 +210,25 @@ public class QuestHelperBankTagService
 				else
 				{
 					ItemRequirement match = itemsWhichPassReq.stream()
-						.filter(r -> r.checkWithAllContainers(plugin.getClient()))
+						.filter(ItemRequirement::checkWithAllContainers)
 						.findFirst()
 						.orElse(itemsWhichPassReq.get(0).named(itemRequirements.getName()));
 
 					getItemsFromRequirement(pluginItems, match, match);
 				}
 			}
+		}
+		else if (itemRequirement instanceof KeyringRequirement)
+		{
+			KeyringRequirement keyringRequirement = (KeyringRequirement) itemRequirement;
+			KeyringRequirement fakeRequirement = new KeyringRequirement(keyringRequirement.getName(), plugin.getConfigManager(),
+					keyringRequirement.getKeyringCollection());
+			if (keyringRequirement.hasKeyOnKeyRing())
+			{
+				fakeRequirement.addAlternates(ItemID.FAVOUR_KEY_RING);
+			}
+			pluginItems.add(makeBankTabItem(fakeRequirement));
+
 		}
 		else
 		{
@@ -210,6 +250,10 @@ public class QuestHelperBankTagService
 						.findFirst()
 						.orElse(item.getAllIds().get(0))
 				);
+		if (displayId == -1 && item.getDisplayItemId() != -1)
+		{
+			displayId = item.getDisplayItemId();
+		}
 
 		return new BankTabItem(item, displayId);
 	}
@@ -217,6 +261,6 @@ public class QuestHelperBankTagService
 	public boolean hasItemInBankOrPotionStorage(int itemID)
 	{
 		ItemRequirement tmpReq = new ItemRequirement("tmp", itemID);
-		return tmpReq.checkWithAllContainers(client);
+		return tmpReq.checkWithAllContainers();
 	}
 }

@@ -28,17 +28,17 @@ package com.questhelper.requirements.var;
 
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
+import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import net.runelite.api.Client;
-import javax.annotation.Nonnull;
 
 public class VarplayerRequirement extends AbstractRequirement
 {
 
-	private final int varplayerId;
+	private final int varPlayerID;
 	private final List<Integer> values;
 	private final Operation operation;
 	private final String displayText;
@@ -48,9 +48,9 @@ public class VarplayerRequirement extends AbstractRequirement
 
 	private final int bitShiftRight;
 
-	public VarplayerRequirement(int varplayerId, int value)
+	public VarplayerRequirement(int varPlayerID, int value)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = List.of(value);
 		this.operation = Operation.EQUAL;
 		this.displayText = null;
@@ -61,9 +61,9 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public VarplayerRequirement(int varplayerId, int value, String displayText)
+	public VarplayerRequirement(int varPlayerID, int value, String displayText)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = List.of(value);
 		this.operation = Operation.EQUAL;
 		this.displayText = displayText;
@@ -74,9 +74,9 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public VarplayerRequirement(int varplayerId, int value, Operation operation)
+	public VarplayerRequirement(int varPlayerID, int value, Operation operation)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = List.of(value);
 		this.operation = operation;
 		this.displayText = null;
@@ -87,9 +87,9 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public VarplayerRequirement(int varplayerId, int value, Operation operation, String displayText)
+	public VarplayerRequirement(int varPlayerID, int value, Operation operation, String displayText)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = List.of(value);
 		this.operation = operation;
 		this.displayText = displayText;
@@ -100,9 +100,9 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public VarplayerRequirement(int varplayerId, boolean bitIsSet, int bitPosition)
+	public VarplayerRequirement(int varPlayerID, boolean bitIsSet, int bitPosition)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = List.of(-1);
 		this.operation = Operation.EQUAL;
 		this.displayText = null;
@@ -113,9 +113,9 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public VarplayerRequirement(int varplayerId, boolean bitIsSet, int bitPosition, String displayText)
+	public VarplayerRequirement(int varPlayerID, boolean bitIsSet, int bitPosition, String displayText)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = List.of(-1);
 		this.operation = Operation.EQUAL;
 		this.displayText = displayText;
@@ -126,9 +126,9 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public VarplayerRequirement(int varplayerId, int value, int bitShiftRight)
+	public VarplayerRequirement(int varPlayerID, int value, int bitShiftRight)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = List.of(value);
 		this.operation = Operation.EQUAL;
 		this.displayText = null;
@@ -139,9 +139,9 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public VarplayerRequirement(int varplayerId, List<Integer> values, int bitShiftRight)
+	public VarplayerRequirement(int varPlayerID, List<Integer> values, int bitShiftRight)
 	{
-		this.varplayerId = varplayerId;
+		this.varPlayerID = varPlayerID;
 		this.values = values;
 		this.operation = Operation.EQUAL;
 		this.displayText = null;
@@ -155,7 +155,7 @@ public class VarplayerRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		int varpValue = client.getVarpValue(varplayerId);
+		int varpValue = client.getVarpValue(varPlayerID);
 		if (bitPosition >= 0)
 		{
 			return bitIsSet == BigInteger.valueOf(varpValue).testBit(bitPosition);
@@ -177,8 +177,8 @@ public class VarplayerRequirement extends AbstractRequirement
 		}
 		if (bitPosition >= 0)
 		{
-			return varplayerId + " must have the " + bitPosition + " bit set.";
+			return varPlayerID + " must have the " + bitPosition + " bit set.";
 		}
-		return varplayerId + " must be + " + operation.name().toLowerCase(Locale.ROOT) + " " + values;
+		return varPlayerID + " must be + " + operation.name().toLowerCase(Locale.ROOT) + " " + values;
 	}
 }

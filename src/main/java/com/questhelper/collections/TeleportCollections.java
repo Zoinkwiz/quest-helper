@@ -4,7 +4,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.util.LogicType;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 public enum TeleportCollections
 {
@@ -22,14 +22,14 @@ public enum TeleportCollections
 			public ItemRequirement getItemRequirement()
 			{
 				TeleportItemRequirement varrockTele = new TeleportItemRequirement("Teleport to Varrock. Varrock teleport tablet/spell, Chronicle, Ring of Wealth (Grand Exchange [2])",
-					ItemID.VARROCK_TELEPORT);
+					ItemID.POH_TABLET_VARROCKTELEPORT);
 				varrockTele.addAlternates(ItemID.CHRONICLE);
 				varrockTele.addAlternates(ItemCollections.RING_OF_WEALTHS);
 
 				ItemRequirement varrockRunes = new ItemRequirements("Varrock teleport runes",
-					new ItemRequirement("Law rune", ItemID.LAW_RUNE, 1),
-					new ItemRequirement("Air rune", ItemID.AIR_RUNE, 3),
-					new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1)
+					new ItemRequirement("Law rune", ItemID.LAWRUNE, 1),
+					new ItemRequirement("Air rune", ItemID.AIRRUNE, 3),
+					new ItemRequirement("Water rune", ItemID.WATERRUNE, 1)
 				);
 				return new ItemRequirements(LogicType.OR, "Teleport to Varrock. Varrock teleport tablet/spell, Chronicle, Ring of Wealth (Grand Exchange [2])",
 					varrockTele, varrockRunes);
@@ -51,11 +51,11 @@ public enum TeleportCollections
 			{
 				TeleportItemRequirement ardougneTele = new TeleportItemRequirement("Teleport to Ardougne. Ardougne cloak, Ardougne teleport tablet/spell",
 					ItemCollections.ARDY_CLOAKS);
-				ardougneTele.addAlternates(ItemID.ARDOUGNE_TELEPORT);
+				ardougneTele.addAlternates(ItemID.POH_TABLET_ARDOUGNETELEPORT);
 
 				ItemRequirement ardougneRunes = new ItemRequirements("Ardougne teleport runes",
-					new ItemRequirement("Law rune", ItemID.LAW_RUNE, 2),
-					new ItemRequirement("Water rune", ItemID.WATER_RUNE, 2)
+					new ItemRequirement("Law rune", ItemID.LAWRUNE, 2),
+					new ItemRequirement("Water rune", ItemID.WATERRUNE, 2)
 				);
 				return new ItemRequirements(LogicType.OR, "Teleport to Ardougne. Ardougne cloak, Ardougne teleport tablet/spell", ardougneTele, ardougneRunes);
 			}
@@ -66,12 +66,12 @@ public enum TeleportCollections
 			public ItemRequirement getItemRequirement()
 			{
 				TeleportItemRequirement faladorTele = new TeleportItemRequirement("Teleport to Falador. Falador teleport tablet/spell",
-					ItemID.FALADOR_TELEPORT);
+					ItemID.POH_TABLET_FALADORTELEPORT);
 
 				ItemRequirement faladorRunes = new ItemRequirements("Falador teleport runes",
-					new ItemRequirement("Law rune", ItemID.LAW_RUNE, 1),
-					new ItemRequirement("Air rune", ItemID.AIR_RUNE, 3),
-					new ItemRequirement("Water rune", ItemID.WATER_RUNE, 1)
+					new ItemRequirement("Law rune", ItemID.LAWRUNE, 1),
+					new ItemRequirement("Air rune", ItemID.AIRRUNE, 3),
+					new ItemRequirement("Water rune", ItemID.WATERRUNE, 1)
 				);
 
 				return new ItemRequirements(LogicType.OR, "Teleport to Falador. Falador teleport tablet/spell", faladorTele, faladorRunes);

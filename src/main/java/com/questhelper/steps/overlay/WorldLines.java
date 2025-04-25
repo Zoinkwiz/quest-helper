@@ -25,21 +25,20 @@
 package com.questhelper.steps.overlay;
 
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Line2D;
-import java.util.List;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.List;
 
 public class WorldLines
 {
@@ -75,12 +74,11 @@ public class WorldLines
 				continue;
 			}
 
-			LocalPoint startPoint = QuestPerspective.getInstanceLocalPointFromReal(client, currentPoint);
-			LocalPoint destinationPoint = QuestPerspective.getInstanceLocalPointFromReal(client, nextPoint);
-			if (startPoint == null || destinationPoint == null)
-			{
-				continue;
-			}
+			List<LocalPoint> startPoints = QuestPerspective.getInstanceLocalPointFromReal(client, currentPoint);
+			List<LocalPoint> destinationPoints = QuestPerspective.getInstanceLocalPointFromReal(client, nextPoint);
+			if (startPoints.isEmpty() || destinationPoints.isEmpty()) continue;
+			LocalPoint startPoint = startPoints.get(0);
+			LocalPoint destinationPoint = destinationPoints.get(0);
 
 			Point startPosOnMinimap = Perspective.localToMinimap(client, startPoint, 10000000);
 			Point destinationPosOnMinimap = Perspective.localToMinimap(client, destinationPoint, 10000000);
@@ -93,15 +91,15 @@ public class WorldLines
 			Line2D.Double line = new Line2D.Double(startPosOnMinimap.getX(), startPosOnMinimap.getY(), destinationPosOnMinimap.getX(), destinationPosOnMinimap.getY());
 
 			Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
-			Widget minimapWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_MINIMAP_DRAW_AREA);
+			Widget minimapWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MINIMAP);
 
 			if (minimapWidget == null)
 			{
-				minimapWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_DRAW_AREA);
+				minimapWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MINIMAP);
 			}
 			if (minimapWidget == null)
 			{
-				minimapWidget = client.getWidget(ComponentID.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+				minimapWidget = client.getWidget(InterfaceID.Toplevel.MINIMAP);
 			}
 
 			if (minimapWidget != null)
@@ -172,16 +170,15 @@ public class WorldLines
 			if (startWp.equals(new WorldPoint(0, 0, 0))) continue;
 			if (endWp.equals(new WorldPoint(0, 0, 0))) continue;
 			if (startWp.getPlane() != endWp.getPlane()) continue;
-			LocalPoint startLp = QuestPerspective.getInstanceLocalPointFromReal(client, startWp);
-			LocalPoint endLp = QuestPerspective.getInstanceLocalPointFromReal(client, endWp);
-			if (startLp == null && endLp == null)
-			{
-				continue;
-			}
+			List<LocalPoint> startPoints = QuestPerspective.getInstanceLocalPointFromReal(client, startWp);
+			List<LocalPoint> destinationPoints = QuestPerspective.getInstanceLocalPointFromReal(client, endWp);
+			if (startPoints.isEmpty() || destinationPoints.isEmpty()) continue;
+			LocalPoint startPoint = startPoints.get(0);
+			LocalPoint destinationPoint = destinationPoints.get(0);
 
 			int MAX_LP = 13056;
 
-			if (endLp == null)
+			if (destinationPoint == null)
 			{
 				// Work out point of intersection of loaded area
 				int xDiff = endWp.getX() - startWp.getX();
@@ -192,7 +189,7 @@ public class WorldLines
 				{
 					int goalLine = 0;
 					if (xDiff > 0) goalLine = MAX_LP;
-					changeToGetXToBorder = (goalLine - startLp.getX()) / xDiff;
+					changeToGetXToBorder = (goalLine - startPoint.getX()) / xDiff;
 				}
 				else
 				{
@@ -203,7 +200,7 @@ public class WorldLines
 				{
 					int goalLine = 0;
 					if (yDiff > 0) goalLine = MAX_LP;
-					changeToGetYToBorder =(goalLine - startLp.getY()) / yDiff;
+					changeToGetYToBorder =(goalLine - startPoint.getY()) / yDiff;
 				}
 				else
 				{
@@ -211,15 +208,15 @@ public class WorldLines
 				}
 				if (Math.abs(changeToGetXToBorder) < Math.abs(changeToGetYToBorder))
 				{
-					endLp = new LocalPoint(startLp.getX() + (xDiff * changeToGetXToBorder), startLp.getY() + (yDiff * changeToGetXToBorder));
+					destinationPoint = new LocalPoint(startPoint.getX() + (xDiff * changeToGetXToBorder), startPoint.getY() + (yDiff * changeToGetXToBorder));
 				}
 				else
 				{
-					endLp = new LocalPoint(startLp.getX() + (xDiff * changeToGetYToBorder), startLp.getY() + (yDiff * changeToGetYToBorder));
+					destinationPoint = new LocalPoint(startPoint.getX() + (xDiff * changeToGetYToBorder), startPoint.getY() + (yDiff * changeToGetYToBorder));
 				}
 			}
 
-			if (startLp == null)
+			if (startPoint == null)
 			{
 				// Work out point of intersection of loaded area
 				int xDiff = startWp.getX() - endWp.getX();
@@ -231,7 +228,7 @@ public class WorldLines
 				{
 					int goalLine = 0;
 					if (xDiff > 0) goalLine = MAX_LP;
-					changeToGetXToBorder = (goalLine - endLp.getX()) / xDiff;
+					changeToGetXToBorder = (goalLine - destinationPoint.getX()) / xDiff;
 				}
 				else
 				{
@@ -242,7 +239,7 @@ public class WorldLines
 				{
 					int goalLine = 0;
 					if (yDiff > 0) goalLine = MAX_LP;
-					changeToGetYToBorder = (goalLine - endLp.getY()) / yDiff;
+					changeToGetYToBorder = (goalLine - destinationPoint.getY()) / yDiff;
 				}
 				else
 				{
@@ -251,17 +248,17 @@ public class WorldLines
 
 				if (Math.abs(changeToGetXToBorder) < Math.abs(changeToGetYToBorder))
 				{
-					startLp = new LocalPoint(endLp.getX() + (xDiff * changeToGetXToBorder), endLp.getY() + (yDiff * changeToGetXToBorder));
+					startPoint = new LocalPoint(destinationPoint.getX() + (xDiff * changeToGetXToBorder), destinationPoint.getY() + (yDiff * changeToGetXToBorder));
 				}
 				else
 				{
-					startLp = new LocalPoint(endLp.getX() + (xDiff * changeToGetYToBorder), endLp.getY() + (yDiff * changeToGetYToBorder));
+					startPoint = new LocalPoint(destinationPoint.getX() + (xDiff * changeToGetYToBorder), destinationPoint.getY() + (yDiff * changeToGetYToBorder));
 				}
 			}
 
 			// If one is in scene, find local point we intersect with
 
-			Line2D.Double newLine = getWorldLines(client, startLp, endLp);
+			Line2D.Double newLine = getWorldLines(client, startPoint, destinationPoint);
 			if (newLine != null)
 			{
 				OverlayUtil.renderPolygon(graphics, newLine, color);

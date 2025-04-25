@@ -27,6 +27,7 @@ package com.questhelper;
 
 import com.google.inject.Binder;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
@@ -37,28 +38,16 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
-import com.questhelper.statemanagement.PlayerStateManager;
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
-import com.google.inject.Module;
-import com.questhelper.util.worldmap.WorldMapAreaManager;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.*;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.swing.SwingUtilities;
+import com.questhelper.statemanagement.PlayerStateManager;
 import com.questhelper.tools.Icon;
+import com.questhelper.util.worldmap.WorldMapAreaManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.*;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -77,6 +66,13 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.util.Text;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.*;
 
 @PluginDescriptor(
 	name = "Quest Helper",
@@ -125,6 +121,7 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	RuneliteObjectManager runeliteObjectManager;
 
+	@Getter
 	@Inject
 	private QuestOverlayManager questOverlayManager;
 
@@ -250,14 +247,14 @@ public class QuestHelperPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		Item[] items = event.getItemContainer().getItems();
-		if (event.getContainerId() == InventoryID.BANK.getId())
+		if (event.getContainerId() == InventoryID.BANK)
 		{
 			ItemAndLastUpdated bankData = QuestContainerManager.getBankData();
 			bankData.update(client.getTickCount(), items);
 			questBankManager.updateLocalBank(event.getItemContainer());
 		}
 
-		if (event.getContainerId() == InventoryID.INVENTORY.getId())
+		if (event.getContainerId() == InventoryID.INV)
 		{
 			ItemAndLastUpdated inventoryData = QuestContainerManager.getInventoryData();
 			inventoryData.update(client.getTickCount(), items);
@@ -271,18 +268,18 @@ public class QuestHelperPlugin extends Plugin
 			}
 		}
 
-		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
+		if (event.getContainerId() == InventoryID.WORN)
 		{
 			ItemAndLastUpdated equippedData = QuestContainerManager.getEquippedData();
 			equippedData.update(client.getTickCount(), items);
 		}
-		if (event.getContainerId() == InventoryID.GROUP_STORAGE.getId())
+		if (event.getContainerId() == InventoryID.INV_GROUP_TEMP)
 		{
 			ItemAndLastUpdated groupBankData = QuestContainerManager.getGroupStorageData();
 			groupBankData.update(client.getTickCount(), items);
 			questBankManager.updateLocalGroupBank(client, event.getItemContainer());
 		}
-		if (event.getContainerId() == InventoryID.GROUP_STORAGE_INV.getId())
+		if (event.getContainerId() == InventoryID.INV_PLAYER_TEMP)
 		{
 			questBankManager.updateLocalGroupInventory(items);
 		}
@@ -422,7 +419,7 @@ public class QuestHelperPlugin extends Plugin
 		}
 		else if (developerMode && commandExecuted.getCommand().equals("qh-inv"))
 		{
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			ItemContainer inventory = client.getItemContainer(InventoryID.INV);
 			StringBuilder inv = new StringBuilder();
 			if (inventory != null)
 			{

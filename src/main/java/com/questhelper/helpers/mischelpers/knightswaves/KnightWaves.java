@@ -24,32 +24,32 @@
  */
 package com.questhelper.helpers.mischelpers.knightswaves;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class KnightWaves extends BasicQuestHelper
 {
@@ -99,7 +99,7 @@ public class KnightWaves extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
-		poisonedWeapon = new ItemRequirement("Poisoned weapon such as Dragon dagger (p++)", ItemID.DRAGON_DAGGERP_5698);
+		poisonedWeapon = new ItemRequirement("Poisoned weapon such as Dragon dagger (p++)", ItemID.DRAGON_DAGGER_P__);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, 25);
 		potions = new ItemRequirement("Attack and strength potions for boost", -1, -1);
 
@@ -109,11 +109,11 @@ public class KnightWaves extends BasicQuestHelper
 	public void setupSteps()
 	{
 
-		goToFloor1 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2747, 3493, 0),
+		goToFloor1 = new ObjectStep(this, ObjectID.KR_CAM_LADDER, new WorldPoint(2747, 3493, 0),
 			"Climb the south west ladder of Camelot.");
-		goToFloor2 = new ObjectStep(this, ObjectID.LADDER_26107, new WorldPoint(2749, 3491, 1),
+		goToFloor2 = new ObjectStep(this, ObjectID.KR_CAM_LADDER, new WorldPoint(2749, 3491, 1),
 			"Climb up to the roof.");
-		talkToSquire = new NpcStep(this, NpcID.SQUIRE_4353, new WorldPoint(2750, 3507, 2),
+		talkToSquire = new NpcStep(this, NpcID.KR_SQUIRE, new WorldPoint(2750, 3507, 2),
 			"");
 
 		talkToSquireSteps = new ConditionalStep(this, goToFloor1, "Talk to the Squire on the roof of Camelot.",
@@ -121,19 +121,19 @@ public class KnightWaves extends BasicQuestHelper
 		talkToSquireSteps.addStep(onFloor2, talkToSquire);
 		talkToSquireSteps.addStep(onFloor1, goToFloor2);
 
-		enterGrounds = new ObjectStep(this, ObjectID.LARGE_DOOR_25595, new WorldPoint(2751, 3508, 2),
+		enterGrounds = new ObjectStep(this, ObjectID.KR_CAM_WAVE_DOUBLEDOORL, new WorldPoint(2751, 3508, 2),
 			"Enter the room to fight.");
 
-		killKnights = new NpcStep(this, NpcID.SIR_GAWAIN_4356, new WorldPoint(2757, 3507, 2),
+		killKnights = new NpcStep(this, NpcID.KR_KNIGHT6, new WorldPoint(2757, 3507, 2),
 			"", true);
-		((NpcStep) killKnights).addAlternateNpcs(NpcID.SIR_GAWAIN_4348,
-			NpcID.SIR_BEDIVERE_4345, NpcID.SIR_BEDIVERE_4361,
-			NpcID.SIR_PELLEAS_4347, NpcID.SIR_PELLEAS_4350, NpcID.SIR_PELLEAS_4360,
-			NpcID.SIR_TRISTRAM_4346, NpcID.SIR_TRISTRAM_4359,
-			NpcID.SIR_PALOMEDES_4343, NpcID.SIR_PALOMEDES_4358,
-			NpcID.SIR_LUCAN_4342, NpcID.SIR_LUCAN_4357,
-			NpcID.SIR_KAY_4349, NpcID.SIR_KAY_4352, NpcID.SIR_KAY_4355,
-			NpcID.SIR_LANCELOT_4344, NpcID.SIR_LANCELOT_4354);
+		((NpcStep) killKnights).addAlternateNpcs(NpcID.KR_CAM_GAWAIN,
+			NpcID.KR_CAM_BEDIVERE, NpcID.KR_KNIGHT1,
+			NpcID.KR_CAM_PELLEAS, NpcID.KR_CAM_PELLEAS_JAIL, NpcID.KR_KNIGHT2,
+			NpcID.KR_CAM_TRISTRAM, NpcID.KR_KNIGHT3,
+			NpcID.KR_CAM_PALOMEDES, NpcID.KR_KNIGHT4,
+			NpcID.KR_CAM_LUCAN, NpcID.KR_KNIGHT5,
+			NpcID.KR_CAM_KAY, NpcID.KR_CAM_KAY_JAIL, NpcID.KR_KNIGHT7,
+			NpcID.KR_CAM_LANCELOT, NpcID.KR_KNIGHT8);
 		((NpcStep) killKnights).addSafeSpots(new WorldPoint(2752, 3511, 2));
 		((NpcStep) killKnights).addTileMarker(new WorldPoint(2753, 3510, 2), SpriteID.MAP_ICON_HELMET_SHOP);
 

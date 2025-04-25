@@ -24,13 +24,12 @@
  */
 package com.questhelper.panel;
 
-import java.awt.Color;
-import java.awt.Component;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
-import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.Text;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 
 public final class DropdownRenderer extends DefaultListCellRenderer
 {

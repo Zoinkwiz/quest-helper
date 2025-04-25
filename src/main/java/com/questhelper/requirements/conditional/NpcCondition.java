@@ -25,13 +25,13 @@
 package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.zone.Zone;
-import java.util.ArrayList;
-
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcChanged;
+
+import java.util.ArrayList;
 
 public class NpcCondition extends ConditionForStep
 {
@@ -68,7 +68,7 @@ public class NpcCondition extends ConditionForStep
 	@Override
 	public void initialize(Client client)
 	{
-		for (NPC npc : client.getNpcs())
+		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
 			if (npcID == npc.getId())
 			{

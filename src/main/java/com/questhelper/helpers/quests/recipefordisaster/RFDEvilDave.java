@@ -26,19 +26,19 @@ package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.NpcCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.FollowerItemRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -46,11 +46,16 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.Client;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
-
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 
 public class RFDEvilDave extends BasicQuestHelper
 {
@@ -96,7 +101,7 @@ public class RFDEvilDave extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.LUMBRIDGE_TELEPORT);
+		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		teleportEdgeville = new ItemRequirement("Teleport to Edgeville", ItemCollections.AMULET_OF_GLORIES);
 
 		stew = new ItemRequirement("Stew", ItemID.STEW);
@@ -104,8 +109,8 @@ public class RFDEvilDave extends BasicQuestHelper
 		cat = new FollowerItemRequirement("A non-overgrown cat for catching rats", ItemCollections.HUNTING_CATS,
 			NpcCollections.getHuntingCats());
 
-		evilStew = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
-		evilStewHighlighted = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
+		evilStew = new ItemRequirement("Spicy stew", ItemID.HUNDRED_DAVE_STEW);
+		evilStewHighlighted = new ItemRequirement("Spicy stew", ItemID.HUNDRED_DAVE_STEW);
 		evilStewHighlighted.setHighlightInInventory(true);
 	}
 
@@ -124,37 +129,37 @@ public class RFDEvilDave extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterDiningRoom = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
+		enterDiningRoom = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOUBLEDOORL, new WorldPoint(3213, 3221, 0),
 			"Go inspect Evil Dave in the Lumbridge Banquet room.");
-		inspectEvilDave = new ObjectStep(this, ObjectID.EVIL_DAVE_12341, new WorldPoint(1865, 5323, 0),
+		inspectEvilDave = new ObjectStep(this, ObjectID.HUNDRED_DAVE_BASE, new WorldPoint(1865, 5323, 0),
 			"Inspect Evil Dave.");
 		inspectEvilDave.addSubSteps(enterDiningRoom);
 
-		talkToDoris = new NpcStep(this, NpcID.DORIS, new WorldPoint(3079, 3494, 0), "Talk to Doris.");
+		talkToDoris = new NpcStep(this, NpcID.HUNDRED_DAVE_MUM, new WorldPoint(3079, 3494, 0), "Talk to Doris.");
 
-		enterBasement = new ObjectStep(this, ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
+		enterBasement = new ObjectStep(this, ObjectID._100_DAVE_CELLER_TRAPDOOR_CLOSED, new WorldPoint(3077, 3493, 0),
 			"Enter Doris's basement in Edgeville.");
-		((ObjectStep) enterBasement).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
+		((ObjectStep) enterBasement).addAlternateObjects(ObjectID._100_DAVE_CELLER_TRAPDOOR_OPEN);
 
-		talkToEvilDave = new NpcStep(this, NpcID.EVIL_DAVE_4806, new WorldPoint(3080, 9889, 0), "Talk to Evil Dave.");
+		talkToEvilDave = new NpcStep(this, NpcID.HUNDRED_EVIL_DAVE, new WorldPoint(3080, 9889, 0), "Talk to Evil Dave.");
 		talkToEvilDave.addDialogSteps("What did you eat at the secret council meeting?",
 			"You've got to tell me because the magic requires it!");
 
-		goUpToDoris = new ObjectStep(this, ObjectID.CELLAR_STAIRS, new WorldPoint(3076, 9893, 0),
+		goUpToDoris = new ObjectStep(this, ObjectID._100_DAVE_CELLER_STAIRS, new WorldPoint(3076, 9893, 0),
 			"Go up to Doris.");
 
-		enterBasementAgain = new ObjectStep(this, ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
+		enterBasementAgain = new ObjectStep(this, ObjectID._100_DAVE_CELLER_TRAPDOOR_CLOSED, new WorldPoint(3077, 3493, 0),
 			"Go back down to Evil Dave.");
-		((ObjectStep) enterBasementAgain).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
+		((ObjectStep) enterBasementAgain).addAlternateObjects(ObjectID._100_DAVE_CELLER_TRAPDOOR_OPEN);
 
 		makeStew = new MakeEvilStew(this);
 
-		enterDiningRoomAgain = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0),
+		enterDiningRoomAgain = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOUBLEDOORL, new WorldPoint(3213, 3221, 0),
 			"Go use the stew on Evil Dave in the Lumbridge Banquet room.", evilStew);
-		useStewOnEvilDave = new ObjectStep(this, ObjectID.EVIL_DAVE_12341, new WorldPoint(1865, 5323, 0),
+		useStewOnEvilDave = new ObjectStep(this, ObjectID.HUNDRED_DAVE_BASE, new WorldPoint(1865, 5323, 0),
 			"Use the stew on Evil Dave.", evilStewHighlighted);
 		useStewOnEvilDave.addSubSteps(enterDiningRoomAgain);
-		useStewOnEvilDave.addIcon(ItemID.SPICY_STEW);
+		useStewOnEvilDave.addIcon(ItemID.HUNDRED_DAVE_STEW);
 	}
 
 	@Override
@@ -237,6 +242,6 @@ public class RFDEvilDave extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (getQuest().getVar(client) >= 5 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
+		return (getQuest().getVar(client) >= 5 || client.getVarbitValue(VarbitID.HUNDRED_MAIN_QUEST_VAR) < 3);
 	}
 }

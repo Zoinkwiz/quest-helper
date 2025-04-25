@@ -25,13 +25,10 @@
 package com.questhelper.helpers.quests.forgettabletale;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -41,29 +38,22 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.WidgetStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class ForgettableTale extends BasicQuestHelper
 {
@@ -299,7 +289,6 @@ public class ForgettableTale extends BasicQuestHelper
 
 		ConditionalStep goDoPuzzle8 = new ConditionalStep(this, startPuzzle8);
 		goDoPuzzle8.addStep(inPuzzle7Room, returnFromPuzzle7);
-
 		goDoPuzzle8.addStep(inPuzzle8Room, searchPuzzle8Box);
 		goDoPuzzle8.addStep(new Conditions(inRoom3PuzzleWidget, donePuzzle8P1, donePuzzle8P2, donePuzzle8P3,
 				donePuzzle8P4, donePuzzle8P5, donePuzzle8P6), puzzle8Ok);
@@ -357,8 +346,8 @@ public class ForgettableTale extends BasicQuestHelper
 		coins500 = new ItemRequirement("Coins", ItemCollections.COINS, 500);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		barleyMalt2 = new ItemRequirement("Barley malt", ItemID.BARLEY_MALT, 2);
-		bucketOfWater2 = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER, 2);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		bucketOfWater2 = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER, 2);
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		yeast = new ItemRequirement("Ale yeast", ItemID.ALE_YEAST);
 		kebab = new ItemRequirement("Kebab", ItemID.KEBAB);
@@ -369,20 +358,20 @@ public class ForgettableTale extends BasicQuestHelper
 		dwarvenStout.setTooltip("You can pick up one of these next to the NPC you need to give it to.");
 		beerGlass = new ItemRequirement("Beer glass", ItemID.BEER_GLASS);
 		randomItem = new ItemRequirement("A random item per player", -1, -1);
-		pot = new ItemRequirement("Pot", ItemID.POT);
+		pot = new ItemRequirement("Pot", ItemID.POT_EMPTY);
 		pot.setTooltip("You can pick up the pot next to the vat");
 
 		grandExchangeTeleport = new ItemRequirement("Grand exchange teleport to access the Mine Cart from there",
-			ItemID.VARROCK_TELEPORT);
+			ItemID.POH_TABLET_VARROCKTELEPORT);
 
-		keldaSeed = new ItemRequirement("Kelda seed", ItemID.KELDA_SEED);
+		keldaSeed = new ItemRequirement("Kelda seed", ItemID.KELDA_HOP_SEED);
 		keldaSeed.setTooltip("You can get any missing seeds from the Drunken Dwarf in north east Keldagrim");
 		keldaHop = new ItemRequirement("Kelda hops", ItemID.KELDA_HOPS);
 		keldaHop.setTooltip("You can get another from Rind in Keldagrim");
 		keldaStout = new ItemRequirement("Kelda stout", ItemID.KELDA_STOUT);
 		keldaStout.setTooltip("You can get another from the barmaid in Keldagrim's east pub");
-		ticketToKelda = new ItemRequirement("Minecart ticket", ItemID.MINECART_TICKET_5023);
-		ticketToWWM = new ItemRequirement("Minecart ticket", ItemID.MINECART_TICKET_5022);
+		ticketToKelda = new ItemRequirement("Minecart ticket", ItemID.DWARF_MINECART_TICKET_WHITEWOLF_KELDA);
+		ticketToWWM = new ItemRequirement("Minecart ticket", ItemID.DWARF_MINECART_TICKET_KELDA_WHITEWOLF);
 	}
 
 	@Override
@@ -410,32 +399,22 @@ public class ForgettableTale extends BasicQuestHelper
 		inPuzzleRoom = new ZoneRequirement(puzzleRoom);
 		inListeningRoom1 = new ZoneRequirement(listeningRoom1);
 
-		ObjectCondition box1Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1898, 4985, 3));
+		ObjectCondition box1Nearby = new ObjectCondition(ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new Zone(new WorldPoint(1898, 4985, 1), new WorldPoint(1898, 4985, 3)));
 		box1Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle1Room = new Conditions(
-			new ZoneRequirement(puzzleSmallPlatform),
-			box1Nearby
+			new ZoneRequirement(puzzleSmallPlatform)
 		);
 
-		ObjectCondition box2Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1897, 4986, 3));
-		box2Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle2Room = new Conditions(
-			new ZoneRequirement(puzzleSmallPlatform),
-			box2Nearby
+			new ZoneRequirement(puzzleSmallPlatform)
 		);
 
-		ObjectCondition box7Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1906, 4987, 3));
-		box7Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle7Room = new Conditions(
-			new ZoneRequirement(puzzleMediumPlatform),
-			box7Nearby
+			new ZoneRequirement(puzzleMediumPlatform)
 		);
 
-		ObjectCondition box8Nearby = new ObjectCondition(ObjectID.BOX, new WorldPoint(1898, 4986, 3));
-		box8Nearby.setMaxDistanceFromPlayer(5);
 		inPuzzle8Room = new Conditions(
-			new ZoneRequirement(puzzleSmallPlatform),
-			box8Nearby
+			new ZoneRequirement(puzzleSmallPlatform)
 		);
 
 		// Part way through veldeban dialog, told about drunken dwarf:
@@ -449,17 +428,17 @@ public class ForgettableTale extends BasicQuestHelper
 		// 830 = 1, talked a bit to gauss
 		// 831 = 1, asked about seed from khorvak
 
-		plotRaked = new VarbitRequirement(823, 3, Operation.GREATER_EQUAL);
-		keldaGrowing = new VarbitRequirement(823, 4, Operation.GREATER_EQUAL);
-		keldaGrown = new VarbitRequirement(823, 8, Operation.GREATER_EQUAL);
+		plotRaked = new VarbitRequirement(VarbitID.FORGET_FARMING, 3, Operation.GREATER_EQUAL);
+		keldaGrowing = new VarbitRequirement(VarbitID.FORGET_FARMING, 4, Operation.GREATER_EQUAL);
+		keldaGrown = new VarbitRequirement(VarbitID.FORGET_FARMING, 8, Operation.GREATER_EQUAL);
 		// 832 = 1, agreed to deliver letter for farmer
 
-		addedWater = new VarbitRequirement(736, 1, Operation.GREATER_EQUAL);
-		addedMalt = new VarbitRequirement(736, 2, Operation.GREATER_EQUAL);
-		addedHop = new VarbitRequirement(736, 68, Operation.GREATER_EQUAL);
-		addedYeast = new VarbitRequirement(736, 69, Operation.GREATER_EQUAL);
-		keldaBrewed = new VarbitRequirement(736, 71, Operation.GREATER_EQUAL);
-		keldaInBarrel = new VarbitRequirement(738, 3, Operation.GREATER_EQUAL);
+		addedWater = new VarbitRequirement(VarbitID.BREWING_VAT_VARBIT_1, 1, Operation.GREATER_EQUAL);
+		addedMalt = new VarbitRequirement(VarbitID.BREWING_VAT_VARBIT_1, 2, Operation.GREATER_EQUAL);
+		addedHop = new VarbitRequirement(VarbitID.BREWING_VAT_VARBIT_1, 68, Operation.GREATER_EQUAL);
+		addedYeast = new VarbitRequirement(VarbitID.BREWING_VAT_VARBIT_1, 69, Operation.GREATER_EQUAL);
+		keldaBrewed = new VarbitRequirement(VarbitID.BREWING_VAT_VARBIT_1, 71, Operation.GREATER_EQUAL);
+		keldaInBarrel = new VarbitRequirement(VarbitID.BREWING_BARREL_VARBIT_1, 3, Operation.GREATER_EQUAL);
 
 		inPurple = new VarbitRequirement(578, 1); // Purple Pewter
 		inYellow = new VarbitRequirement(578, 2); // Yellow Fortune
@@ -551,50 +530,50 @@ public class ForgettableTale extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		travelToKeldagrim = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+		travelToKeldagrim = new ObjectStep(this, ObjectID.GE_KELDAGRIM_TRAPDOOR, new WorldPoint(3140, 3504, 0),
 			"Travel to Keldagrim.");
 		travelToKeldagrim.addDialogStep("Yes please.");
-		talkToVeldaban = new NpcStep(this, NpcID.COMMANDER_VELDABAN_6045, new WorldPoint(2827, 10214, 0),
+		talkToVeldaban = new NpcStep(this, NpcID.DWARF_CITY_BLACK_GUARD_LEADER, new WorldPoint(2827, 10214, 0),
 			"");
 		talkToVeldaban.addDialogSteps("Very interested!", "Yes.", "Sounds like just the job for me!");
-		talkToDrunkDwarf = new NpcStep(this, NpcID.DRUNKEN_DWARF_2408, new WorldPoint(2913, 10221, 0),
+		talkToDrunkDwarf = new NpcStep(this, NpcID.DWARF_CITY_DRUNKEN_DWARF, new WorldPoint(2913, 10221, 0),
 			"");
 		talkToDrunkDwarf.addDialogStep("I need to know about the Red Axe...");
 
-		talkToRowdyDwarf = new NpcStep(this, NpcID.ROWDY_DWARF, new WorldPoint(2914, 10198, 0),
+		talkToRowdyDwarf = new NpcStep(this, NpcID.DWARF_CITY_ROWDY_DWARF, new WorldPoint(2914, 10198, 0),
 			"");
-		giveRowdyDwarfItems = new NpcStep(this, NpcID.ROWDY_DWARF, new WorldPoint(2914, 10198, 0),
+		giveRowdyDwarfItems = new NpcStep(this, NpcID.DWARF_CITY_ROWDY_DWARF, new WorldPoint(2914, 10198, 0),
 			"");
-		getWWMTicket = new NpcStep(this, NpcID.CART_CONDUCTOR_2388, new WorldPoint(2906, 10172, 0),
+		getWWMTicket = new NpcStep(this, NpcID.DWARF_CITY_TRAIN_CONDUCTOR4, new WorldPoint(2906, 10172, 0),
 			"Get a ticket to White Wolf Mountain from a cart conductor.");
 		getWWMTicket.addDialogSteps("I'd like to buy a ticket.", "To White Wolf Mountain.", "Buy.");
-		travelToWWM = new ObjectStep(this, ObjectID.TRAIN_CART_7028, new WorldPoint(2919, 10169, 0),
+		travelToWWM = new ObjectStep(this, ObjectID.KELDAGRIM_TRAIN_CART, new WorldPoint(2919, 10169, 0),
 			"Travel to White Wolf Mountain.");
-		talkToKhorvak = new NpcStep(this, NpcID.KHORVAK_A_DWARVEN_ENGINEER, new WorldPoint(2864, 9878, 0),
+		talkToKhorvak = new NpcStep(this, NpcID.DWARFROCK_ENGINEER2, new WorldPoint(2864, 9878, 0),
 			"");
 		talkToKhorvak.addDialogStep("What if I offer you a drink?");
-		useStoutOnKhorvak = new NpcStep(this, NpcID.KHORVAK_A_DWARVEN_ENGINEER, new WorldPoint(2864, 9878, 0),
+		useStoutOnKhorvak = new NpcStep(this, NpcID.DWARFROCK_ENGINEER2, new WorldPoint(2864, 9878, 0),
 			"", dwarvenStout.highlighted());
 		useStoutOnKhorvak.addIcon(ItemID.DWARVEN_STOUT);
-		getKeldaTicket = new NpcStep(this, NpcID.CART_CONDUCTOR_2390, new WorldPoint(2875, 9871, 0),
+		getKeldaTicket = new NpcStep(this, NpcID.DWARF_CITY_TRAIN_CONDUCTOR6, new WorldPoint(2875, 9871, 0),
 			"Get a ticket and travel back to Keldagrim.");
 		getKeldaTicket.addDialogSteps("I'd like to buy a ticket.", "Buy.");
-		takeCartFromWWMToKelda = new ObjectStep(this, ObjectID.TRAIN_CART_7030, new WorldPoint(2875, 9868, 0),
+		takeCartFromWWMToKelda = new ObjectStep(this, ObjectID.WHITEWOLFMOUNTAIN_TRAIN_CART, new WorldPoint(2875, 9868, 0),
 			"Take the cart back to White Wolf Mountain.");
-		talkToGauss = new NpcStep(this, NpcID.GAUSS, new WorldPoint(2839, 10196, 0),
+		talkToGauss = new NpcStep(this, NpcID.DWARF_CITY_DWARF_MAN6, new WorldPoint(2839, 10196, 0),
 			"");
-		talkToRind = new NpcStep(this, NpcID.RIND_THE_GARDENER, new WorldPoint(2854, 10196, 0),
+		talkToRind = new NpcStep(this, NpcID.DWARF_CITY_GARDENER_DWARF, new WorldPoint(2854, 10196, 0),
 			"");
-		plantKelda = new ObjectStep(this, NullObjectID.NULL_8877, new WorldPoint(2854, 10203, 0),
+		plantKelda = new ObjectStep(this, ObjectID.FARMING_HOPS_PATCH_KELDAGRIM, new WorldPoint(2854, 10203, 0),
 			"");
-		plantKelda.addIcon(ItemID.KELDA_SEED);
-		rakeKelda = new ObjectStep(this, NullObjectID.NULL_8877, new WorldPoint(2854, 10203, 0),
+		plantKelda.addIcon(ItemID.KELDA_HOP_SEED);
+		rakeKelda = new ObjectStep(this, ObjectID.FARMING_HOPS_PATCH_KELDAGRIM, new WorldPoint(2854, 10203, 0),
 			"");
 		rakeKelda.addIcon(ItemID.RAKE);
 		waitForKelda = new DetailedQuestStep(this, "Wait for the kelda hops to grow. This'll take 15-20 minutes.");
-		harvestHops = new ObjectStep(this, NullObjectID.NULL_8877, new WorldPoint(2854, 10203, 0),
+		harvestHops = new ObjectStep(this, ObjectID.FARMING_HOPS_PATCH_KELDAGRIM, new WorldPoint(2854, 10203, 0),
 			"");
-		goUpstairsPub = new ObjectStep(this, ObjectID.STAIRS_6085, new WorldPoint(2916, 10196, 0),
+		goUpstairsPub = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_STAIRS_LOWER, new WorldPoint(2916, 10196, 0),
 			"Go upstairs in Keldagrim's east pub.");
 
 		pickupPot = new ItemStep(this, "Pick up the pot in the brewing room.", pot);
@@ -603,67 +582,67 @@ public class ForgettableTale extends BasicQuestHelper
 			"Buy yeast from Blandebir. You can get a pot from the table in the brewing room.", coins.quantity(25), pot);
 		buyYeast.addDialogSteps("Do you have any spare ale yeast?", "That's a good deal - please fill my pot with ale" +
 			" yeast for 25GP.");
-		addWater = new ObjectStep(this, NullObjectID.NULL_11670, new WorldPoint(2918, 10195, 1),
+		addWater = new ObjectStep(this, ObjectID.BREWING_VAT_1, new WorldPoint(2918, 10195, 1),
 			"Add 2 buckets of water to the vat.", bucketOfWater2.highlighted());
-		addWater.addIcon(ItemID.BUCKET_OF_WATER);
-		addMalts = new ObjectStep(this, NullObjectID.NULL_11670, new WorldPoint(2918, 10195, 1),
+		addWater.addIcon(ItemID.BUCKET_WATER);
+		addMalts = new ObjectStep(this, ObjectID.BREWING_VAT_1, new WorldPoint(2918, 10195, 1),
 			"Add 2 barley malts to the vat.", barleyMalt2.highlighted());
 		addMalts.addIcon(ItemID.BARLEY_MALT);
-		addKelda = new ObjectStep(this, NullObjectID.NULL_11670, new WorldPoint(2918, 10195, 1),
+		addKelda = new ObjectStep(this, ObjectID.BREWING_VAT_1, new WorldPoint(2918, 10195, 1),
 			"Add the kelda hops to the vat.", keldaHop.highlighted());
 		addKelda.addIcon(ItemID.KELDA_HOPS);
-		addYeast = new ObjectStep(this, NullObjectID.NULL_11670, new WorldPoint(2918, 10195, 1),
+		addYeast = new ObjectStep(this, ObjectID.BREWING_VAT_1, new WorldPoint(2918, 10195, 1),
 			"Add the yeast to the vat.", yeast.highlighted());
 		addYeast.addIcon(ItemID.ALE_YEAST);
 		waitBrewing = new DetailedQuestStep(this, "Wait for the kelda to brew. This'll take 15-20 minutes.");
 
-		turnValve = new ObjectStep(this, ObjectID.VALVE_23936, new WorldPoint(2918, 10193, 1),
+		turnValve = new ObjectStep(this, ObjectID.VAT_VALVE_1, new WorldPoint(2918, 10193, 1),
 			"");
-		useGlassOnBarrel = new ObjectStep(this, NullObjectID.NULL_24957, new WorldPoint(2917, 10193, 1),
+		useGlassOnBarrel = new ObjectStep(this, ObjectID.BREWING_BARREL_1, new WorldPoint(2917, 10193, 1),
 			"", beerGlass.highlighted());
 		useGlassOnBarrel.addIcon(ItemID.BEER_GLASS);
-		goDownFromPub = new ObjectStep(this, ObjectID.STAIRS_6086, new WorldPoint(2915, 10196, 1),
+		goDownFromPub = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_STAIRS_UPPER, new WorldPoint(2915, 10196, 1),
 			"Go downstairs.");
 
-		talkToCartConductor = new NpcStep(this, NpcID.CART_CONDUCTOR_2392, new WorldPoint(2922, 10166, 0),
+		talkToCartConductor = new NpcStep(this, NpcID.DWARF_CITY_TRAIN_CONDUCTOR8, new WorldPoint(2922, 10166, 0),
 			"");
 		talkToCartConductor.addDialogStep("Ask about closed off tunnel.");
-		goUpToDirector = new ObjectStep(this, ObjectID.STAIRS_6087, new WorldPoint(2895, 10210, 0),
+		goUpToDirector = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_WIDE_STAIRS_LOWER, new WorldPoint(2895, 10210, 0),
 			"Go up to the Consortium.");
 
 		if (inPurple.check(client))
 		{
-			talkToDirector = new NpcStep(this, NpcID.PURPLE_PEWTER_DIRECTOR_5998, new WorldPoint(2869, 10195, 1),
+			talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_PURPLE_PEWTER, new WorldPoint(2869, 10195, 1),
 				"Talk to the Purple Pewter Director.");
 		}
 		else if (inYellow.check(client))
 		{
-			talkToDirector = new NpcStep(this, NpcID.YELLOW_FORTUNE_DIRECTOR_6000, new WorldPoint(2869, 10208, 1),
+			talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_YELLOW_FORTUNE, new WorldPoint(2869, 10208, 1),
 				"Talk to the Yellow Fortune Director.");
 		}
 		else if (inBlue.check(client))
 		{
-			talkToDirector = new NpcStep(this, NpcID.BLUE_OPAL_DIRECTOR_5999, new WorldPoint(2869, 10203, 1),
+			talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_BLUE_OPAL, new WorldPoint(2869, 10203, 1),
 				"Talk to the Blue Opal Director.");
 		}
 		else if (inGreen.check(client))
 		{
-			talkToDirector = new NpcStep(this, NpcID.GREEN_GEMSTONE_DIRECTOR_6021, new WorldPoint(2890, 10209, 1),
+			talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_GREEN_GEMSTONE, new WorldPoint(2890, 10209, 1),
 				"Talk to the Green Gemstone Director.");
 		}
 		else if (inWhite.check(client))
 		{
-			talkToDirector = new NpcStep(this, NpcID.WHITE_CHISEL_DIRECTOR_6022, new WorldPoint(2890, 10204, 1),
+			talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_WHITE_CHISEL, new WorldPoint(2890, 10204, 1),
 				"Talk to the White Chisel Director.");
 		}
 		else if (inSilver.check(client))
 		{
-			talkToDirector = new NpcStep(this, NpcID.SILVER_COG_DIRECTOR_6023, new WorldPoint(2890, 10194, 1),
+			talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_SILVER_COG, new WorldPoint(2890, 10194, 1),
 				"Talk to the Silver Cog Director.");
 		}
 		else if (inBrown.check(client))
 		{
-			talkToDirector = new NpcStep(this, NpcID.BROWN_ENGINE_DIRECTOR_6024, new WorldPoint(2890, 10189, 1),
+			talkToDirector = new NpcStep(this, NpcID.DWARF_CITY_DIRECTOR_BROWN_ENGINE, new WorldPoint(2890, 10189, 1),
 				"Talk to the Brown Engine Director.");
 		}
 		else
@@ -672,44 +651,44 @@ public class ForgettableTale extends BasicQuestHelper
 				" Dwarf.");
 		}
 		talkToDirector.addDialogStep("Can you help me with a boarded up tunnel?");
-		goDownFromDirector = new ObjectStep(this, ObjectID.STAIRS_6088, new WorldPoint(2895, 10210, 1),
+		goDownFromDirector = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_WIDE_STAIRS_UPPER, new WorldPoint(2895, 10210, 1),
 			"Go downstairs.");
-		takeSecretCart = new ObjectStep(this, ObjectID.TRAIN_CART_7028, new WorldPoint(2919, 10164, 0),
+		takeSecretCart = new ObjectStep(this, ObjectID.KELDAGRIM_TRAIN_CART, new WorldPoint(2919, 10164, 0),
 			"", handsFree, shieldFree);
 
-		searchBox1 = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1862, 4954, 1),
+		searchBox1 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1862, 4954, 1),
 			"Search the box.");
 
-		startPuzzle1 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
+		startPuzzle1 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
 		puzzle1P1 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 248, 35);
 		puzzle1P2 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 248, 37);
 		puzzle1Ok = new WidgetStep(this, "Click the Ok button.", 248, 53);
 
-		takePuzzle1Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle1Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
 
-		searchPuzzle1Box = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1898, 4985, 3),
+		searchPuzzle1Box = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1898, 4985, 3),
 			"Search the box.");
 
-		returnFromPuzzle1 = new ObjectStep(this, ObjectID.TRAIN_CART_8925, new WorldPoint(1897, 4987, 3),
+		returnFromPuzzle1 = new ObjectStep(this, ObjectID.FORGET_TRAIN_RETURN_CART, new WorldPoint(1897, 4987, 3),
 			"Take the cart back.");
 
-		startPuzzle2 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
+		startPuzzle2 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
 		puzzle2P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 248, 35);
 		puzzle2P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 248, 36);
 		puzzle2P3 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 248, 39);
 		puzzle2Ok = new WidgetStep(this, "Click the Ok button.", 248, 53);
-		takePuzzle2Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle2Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
-		searchPuzzle2Box = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1897, 4986, 3),
+		searchPuzzle2Box = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1897, 4986, 3),
 			"Search the box.");
-		returnFromPuzzle2 = new ObjectStep(this, ObjectID.TRAIN_CART_8925, new WorldPoint(1897, 4984, 3),
+		returnFromPuzzle2 = new ObjectStep(this, ObjectID.FORGET_TRAIN_RETURN_CART, new WorldPoint(1897, 4984, 3),
 			"Take the cart back.");
 
 		// Puzzle 3
-		startPuzzle3 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
+		startPuzzle3 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
 		puzzle3P1 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 248, 35);
 		puzzle3P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 248, 37);
@@ -718,46 +697,46 @@ public class ForgettableTale extends BasicQuestHelper
 		puzzle3P4 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 248, 41);
 		puzzle3Ok = new WidgetStep(this, "Click the Ok button.", 248, 53);
 
-		takePuzzle3Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle3Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
 
-		leaveListeningRoom1 = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_8884, new WorldPoint(1889, 4982, 2),
+		leaveListeningRoom1 = new ObjectStep(this, ObjectID.FORGET_STORY_EXIT_NEXT, new WorldPoint(1889, 4982, 2),
 			"Leave the east exit once you finish listening to the conversation.");
 
 		// Puzzle 4
-		searchBox2 = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1860, 4955, 1),
+		searchBox2 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1860, 4955, 1),
 			"Search the box.");
 
-		startPuzzle4 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1862, 4954, 1),
+		startPuzzle4 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1862, 4954, 1),
 			"Use the dwarven machinery.");
 		puzzle4P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 244, 47);
 		puzzle4P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 244, 48);
 		puzzle4P3 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 244, 51);
 		puzzle4Ok = new WidgetStep(this, "Click the Ok button.", 244, 73);
-		takePuzzle4Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle4Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
-		searchPuzzle4Box = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1898, 4985, 3),
+		searchPuzzle4Box = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1898, 4985, 3),
 			"Search the box.");
-		returnFromPuzzle4 = new ObjectStep(this, ObjectID.TRAIN_CART_8925, new WorldPoint(1898, 4987, 3),
+		returnFromPuzzle4 = new ObjectStep(this, ObjectID.FORGET_TRAIN_RETURN_CART, new WorldPoint(1898, 4987, 3),
 			"Take the cart back.");
 
 		// Puzzle 5
-		startPuzzle5 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1862, 4954, 1),
+		startPuzzle5 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1862, 4954, 1),
 			"Use the dwarven machinery.");
 		puzzle5P1 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 244, 47);
 		puzzle5P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 244, 49);
 		puzzle5P3 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 244, 52);
 		puzzle5P4 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 244, 57);
 		puzzle5Ok = new WidgetStep(this, "Click the Ok button.", 244, 73);
-		takePuzzle5Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle5Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
-		searchPuzzle5Box = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1906, 4985, 3),
+		searchPuzzle5Box = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1906, 4985, 3),
 			"Search the box.");
-		returnFromPuzzle5 = new ObjectStep(this, ObjectID.TRAIN_CART_8925, new WorldPoint(1906, 4987, 3),
+		returnFromPuzzle5 = new ObjectStep(this, ObjectID.FORGET_TRAIN_RETURN_CART, new WorldPoint(1906, 4987, 3),
 			"Take the cart back.");
 
 		// Puzzle 6
-		startPuzzle6 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1862, 4954, 1),
+		startPuzzle6 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1862, 4954, 1),
 			"Use the dwarven machinery.");
 		puzzle6P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 244, 47);
 		puzzle6P2 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 244, 48);
@@ -765,40 +744,40 @@ public class ForgettableTale extends BasicQuestHelper
 		puzzle6P4 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 244, 56);
 		puzzle6P5 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 244, 58);
 		puzzle6Ok = new WidgetStep(this, "Click the Ok button.", 244, 73);
-		takePuzzle6Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle6Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
 
-		searchBookcase = new ObjectStep(this, ObjectID.BOOKCASE_8910, new WorldPoint(1904, 4967, 2),
+		searchBookcase = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_METAL_BOOKCASE, new WorldPoint(1904, 4967, 2),
 			"Search the nearby bookcase.");
-		searchCrate1 = new ObjectStep(this, ObjectID.CRATE_8914, new WorldPoint(1906, 4965, 2),
+		searchCrate1 = new ObjectStep(this, ObjectID.FORGET_METAL_CRATE_WITHPAPERS1, new WorldPoint(1906, 4965, 2),
 			"Search the crates with paper on them.");
-		searchCrate2 = new ObjectStep(this, ObjectID.CRATE_8915, new WorldPoint(1910, 4966, 2),
+		searchCrate2 = new ObjectStep(this, ObjectID.FORGET_METAL_CRATE_WITHPAPERS2, new WorldPoint(1910, 4966, 2),
 			"Search the crates with paper on them.");
 		searchCrate1.addSubSteps(searchCrate2);
-		leaveLibrary = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_8884, new WorldPoint(1914, 4967, 2),
+		leaveLibrary = new ObjectStep(this, ObjectID.FORGET_STORY_EXIT_NEXT, new WorldPoint(1914, 4965, 2),
 			"Leave the library.");
 		leaveLibrary.addDialogStep("Yes.");
 
 		// Puzzle 7
-		searchBox3 = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1862, 4954, 1),
+		searchBox3 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1862, 4954, 1),
 			"Search the box.");
 
-		startPuzzle7 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
+		startPuzzle7 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
 		puzzle7P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 68);
 		puzzle7P2 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 69);
 		puzzle7P3 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 71);
 		puzzle7P4 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 73);
 		puzzle7Ok = new WidgetStep(this, "Click the Ok button.", 247, 108);
-		takePuzzle7Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle7Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
-		searchPuzzle7Box = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1906, 4987, 3),
+		searchPuzzle7Box = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1906, 4987, 3),
 			"Search the box.");
-		returnFromPuzzle7 = new ObjectStep(this, ObjectID.TRAIN_CART_8925, new WorldPoint(1906, 4984, 3),
+		returnFromPuzzle7 = new ObjectStep(this, ObjectID.FORGET_TRAIN_RETURN_CART, new WorldPoint(1906, 4984, 3),
 			"Take the cart back.");
 
 		// Puzzle 8
-		startPuzzle8 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
+		startPuzzle8 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
 		puzzle8P1 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 68);
 		puzzle8P2 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 70);
@@ -807,15 +786,15 @@ public class ForgettableTale extends BasicQuestHelper
 		puzzle8P5 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 76);
 		puzzle8P6 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 79);
 		puzzle8Ok = new WidgetStep(this, "Click the Ok button.", 247, 108);
-		takePuzzle8Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle8Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
-		searchPuzzle8Box = new ObjectStep(this, ObjectID.BOX, new WorldPoint(1898, 4986, 3),
+		searchPuzzle8Box = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1898, 4986, 3),
 			"Search the box.");
-		returnFromPuzzle8 = new ObjectStep(this, ObjectID.TRAIN_CART_8925, new WorldPoint(1897, 4984, 3),
+		returnFromPuzzle8 = new ObjectStep(this, ObjectID.FORGET_TRAIN_RETURN_CART, new WorldPoint(1897, 4984, 3),
 			"Take the cart back.");
 
 		// Puzzle 9
-		startPuzzle9 = new ObjectStep(this, ObjectID.DWARVEN_MACHINERY, new WorldPoint(1860, 4955, 1),
+		startPuzzle9 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CONTROL_BOX, new WorldPoint(1860, 4955, 1),
 			"Use the dwarven machinery.");
 
 		puzzle9P1 = new WidgetStep(this, "Click the marked junction until it's got the green piece in.", 247, 68);
@@ -827,7 +806,7 @@ public class ForgettableTale extends BasicQuestHelper
 		puzzle9P7 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 81);
 		puzzle9P8 = new WidgetStep(this, "Click the marked junction until it's got the yellow piece in.", 247, 84);
 		puzzle9Ok = new WidgetStep(this, "Click the Ok button.", 247, 108);
-		takePuzzle9Cart = new ObjectStep(this, ObjectID.TRAIN_CART_8924, new WorldPoint(1864, 4957, 1),
+		takePuzzle9Cart = new ObjectStep(this, ObjectID.FORGET_TRAIN_CART, new WorldPoint(1864, 4957, 1),
 			"Take the cart.");
 
 		watchCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
@@ -978,7 +957,7 @@ public class ForgettableTale extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Dwarven Stout (m)", ItemID.DWARVEN_STOUTM, 2));
+		return Collections.singletonList(new ItemReward("Dwarven Stout (m)", ItemID.MATURE_DWARVEN_STOUT, 2));
 	}
 
 	@Override

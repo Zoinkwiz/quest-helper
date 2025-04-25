@@ -24,40 +24,31 @@
  */
 package com.questhelper.helpers.quests.thedepthsofdespair;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.player.InInstanceRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class TheDepthsOfDespair extends BasicQuestHelper
 {
@@ -123,12 +114,12 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERICS_TALISMAN).isNotConsumed();
+		xericsTalisman = new ItemRequirement("Xeric's Talisman", ItemID.XERIC_TALISMAN).isNotConsumed();
 		skillsNecklace = new ItemRequirement("Skills necklace", ItemCollections.SKILLS_NECKLACES).isNotConsumed();
 		superEnergyOrStamina = new ItemRequirement("Super Energy or Stamina potions", -1, -1);
 
 		dramenStaff = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
-		dramenStaff.addAlternates(ItemID.LUNAR_STAFF);
+		dramenStaff.addAlternates(ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF);
 
 		foodIfLowLevel = new ItemRequirement("Food (if low level)", -1, -1);
 		foodIfLowLevel.setDisplayItemId(BankSlotIcons.getFood());
@@ -136,10 +127,10 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		weapon = new ItemRequirement("A Weapon", -1, -1).isNotConsumed();
 		weapon.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		varlamoreEnvoy = new ItemRequirement("Varlamore Envoy", ItemID.VARLAMORE_ENVOY);
+		varlamoreEnvoy = new ItemRequirement("Varlamore Envoy", ItemID.HOSIDIUSQUEST_BOOK);
 		varlamoreEnvoy.setHighlightInInventory(true);
 
-		royalAccordOfTwill = new ItemRequirement("Royal Accord of Twill", ItemID.ROYAL_ACCORD_OF_TWILL);
+		royalAccordOfTwill = new ItemRequirement("Royal Accord of Twill", ItemID.HOSIDIUSQUEST_ACCORD);
 	}
 
 	@Override
@@ -172,14 +163,14 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToLordKandur = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0),
+		talkToLordKandur = new NpcStep(this, NpcID.HOSIDIUSQUEST_LORD_VIS, new WorldPoint(1782, 3572, 0),
 			"Talk to Lord Kandur Hosidius in the house west of the vinery.");
 		talkToLordKandur.addDialogSteps("Anything I can help you with?", "Yes.");
 
-		talkToChefOlivia = new NpcStep(this, NpcID.CHEF_OLIVIA, new WorldPoint(1776, 3567, 0),
+		talkToChefOlivia = new NpcStep(this, NpcID.HOSIDIUSQUEST_CHEF, new WorldPoint(1776, 3567, 0),
 			"Speak to Chef Olivia in Lord Kandur's kitchen.");
 
-		talkToGalana = new NpcStep(this, NpcID.GALANA, new WorldPoint(1649, 3824, 0),
+		talkToGalana = new NpcStep(this, NpcID.HOSIDIUSQUEST_LIBRARIAN, new WorldPoint(1649, 3824, 0),
 			"Speak to Galana in the Arceuus Library.");
 
 		findTheVarlamoreEnvoy = new ItemStep(this,
@@ -188,25 +179,25 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 
 		readTheVarlamoreEnvoy = new DetailedQuestStep(this, "Read the Varlamore Envoy.", varlamoreEnvoy);
 
-		enterCrabclawCaves = new ObjectStep(this, ObjectID.CAVE_31690, new WorldPoint(1645, 3450, 0),
+		enterCrabclawCaves = new ObjectStep(this, ObjectID.HOSIDIUSQUEST_CAVE_ENTRANCE, new WorldPoint(1645, 3450, 0),
 			"Enter the Crabclaw Caves.");
 
-		goThroughCrevice = new ObjectStep(this, ObjectID.CREVICE_31695, new WorldPoint(1711, 9823, 0),
+		goThroughCrevice = new ObjectStep(this, ObjectID.HOSIDIUSQUEST_CRACKIN, new WorldPoint(1711, 9823, 0),
 			"Enter the crevice. Kill a sandcrab for the easy diary while you're here.");
-		stepOverSteppingStones = new ObjectStep(this, ObjectID.STEPPING_STONE_31699, new WorldPoint(1706, 9800, 0),
+		stepOverSteppingStones = new ObjectStep(this, ObjectID.HOSIDIUSQUEST_STONE, new WorldPoint(1706, 9800, 0),
 			"Cross the stepping stones.");
-		climbPastRocks = new ObjectStep(this, ObjectID.ROCKS_31697, new WorldPoint(1688, 9801, 0),
+		climbPastRocks = new ObjectStep(this, ObjectID.HOSIDIUSQUEST_ROCK, new WorldPoint(1688, 9801, 0),
 			"Climb the rocks.");
-		enterTunnelEntrance = new ObjectStep(this, ObjectID.TUNNEL_ENTRANCE_31692, new WorldPoint(1672, 9800, 0),
+		enterTunnelEntrance = new ObjectStep(this, ObjectID.HOSIDIUSQUEST_ROPE_TOP, new WorldPoint(1672, 9800, 0),
 			"Climb down the tunnel at the end.");
 
-		talkToArturHosidius = new NpcStep(this, NpcID.ARTUR_HOSIDIUS_7899, "Speak to Artur Hosidius.");
+		talkToArturHosidius = new NpcStep(this, NpcID.HOSIDIUSQUEST_SON_CAVES, "Speak to Artur Hosidius.");
 
-		killSandSnake = new NpcStep(this, NpcID.SAND_SNAKE_7903, "Kill the Sand Snake.");
+		killSandSnake = new NpcStep(this, NpcID.HOSIDIUSQUEST_SNAKE, "Kill the Sand Snake.");
 
-		searchChest = new ObjectStep(this, ObjectID.CHEST_31703, "Search the chest.");
+		searchChest = new ObjectStep(this, ObjectID.HOSIDIUSQUEST_CHEST, "Search the chest.");
 
-		talkToLordKandurAgain = new NpcStep(this, NpcID.LORD_KANDUR_HOSIDIUS_11033, new WorldPoint(1782, 3572, 0),
+		talkToLordKandurAgain = new NpcStep(this, NpcID.HOSIDIUSQUEST_LORD_VIS, new WorldPoint(1782, 3572, 0),
 			"Return to Lord Kandur Hosidius and talk to him.");
 	}
 
@@ -248,8 +239,8 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Coins", ItemID.COINS_995, 4000),
-				new ItemReward("A Kharedst's Memoirs page", ItemID.KHAREDSTS_MEMOIRS, 1));
+				new ItemReward("Coins", ItemID.COINS, 4000),
+				new ItemReward("A Kharedst's Memoirs page", ItemID.VEOS_KHAREDSTS_MEMOIRS, 1));
 	}
 
 	@Override

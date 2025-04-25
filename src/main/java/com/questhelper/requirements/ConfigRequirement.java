@@ -24,9 +24,10 @@
  */
 package com.questhelper.requirements;
 
-import java.util.function.BooleanSupplier;
 import lombok.Setter;
 import net.runelite.api.Client;
+
+import java.util.function.BooleanSupplier;
 
 public class ConfigRequirement extends SimpleRequirement
 {

@@ -27,13 +27,14 @@ package com.questhelper.requirements.runelite;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.Requirement;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
+
 import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RuneliteRequirement extends AbstractRequirement
 {
@@ -108,6 +109,11 @@ public class RuneliteRequirement extends AbstractRequirement
 
 	@Override
 	public boolean check(Client client)
+	{
+		return check();
+	}
+
+	public boolean check()
 	{
 		String value = getConfigValue();
 		return expectedValue.equals(value);

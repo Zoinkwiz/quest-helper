@@ -24,12 +24,14 @@
  */
 package com.questhelper.helpers.quests.dreammentor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 enum CyrisusArmourSet
 {
@@ -82,11 +84,11 @@ enum CyrisusArmourSet
 	public static boolean isReady(Client client)
 	{
 		CyrisusArmourSet armourSet = getCorrectSet(client);
-		int currentHelmet = client.getVarbitValue(3627);
-		int currentBody = client.getVarbitValue(3628);
-		int currentLegs = client.getVarbitValue(3629);
-		int currentBoots = client.getVarbitValue(3630);
-		int currentWeapon = client.getVarbitValue(3631);
+		int currentHelmet = client.getVarbitValue(VarbitID.DREAM_ARMA_ITEM1);
+		int currentBody = client.getVarbitValue(VarbitID.DREAM_ARMA_ITEM2);
+		int currentLegs = client.getVarbitValue(VarbitID.DREAM_ARMA_ITEM3);
+		int currentBoots = client.getVarbitValue(VarbitID.DREAM_ARMA_ITEM4);
+		int currentWeapon = client.getVarbitValue(VarbitID.DREAM_ARMA_ITEM5);
 		List<Integer> currentEquipment = Arrays.asList(currentHelmet, currentBody, currentLegs, currentBoots, currentWeapon);
 		List<Integer> neededEquipment = new ArrayList<>();
 		for (CyrisusBankItem item : armourSet.getItems())

@@ -24,32 +24,24 @@
  */
 package com.questhelper.helpers.quests.monksfriend;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class MonksFriend extends BasicQuestHelper
 {
@@ -98,9 +90,9 @@ public class MonksFriend extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		log = new ItemRequirement("Logs", ItemID.LOGS);
-		jugOfWater = new ItemRequirement("Jug of Water", ItemID.JUG_OF_WATER);
+		jugOfWater = new ItemRequirement("Jug of Water", ItemID.JUG_WATER);
 		blanket = new ItemRequirement("Child's blanket", ItemID.CHILDS_BLANKET);
-		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemID.ARDOUGNE_CLOAK).isNotConsumed();
+		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemID.CERT_ARRAVCERTIFICATE).isNotConsumed();
 	}
 
 	@Override
@@ -119,9 +111,9 @@ public class MonksFriend extends BasicQuestHelper
 		talkToOmad = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Talk to Brother Omad in the monastery south of West Ardougne.");
 		talkToOmad.addDialogStep("Why can't you sleep, what's wrong?");
 		talkToOmad.addDialogStep("Can I help at all?");
-		goDownLadder = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2561, 3222, 0), "Go down the ladder in a circle of stones west of the monastery.");
+		goDownLadder = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2561, 3222, 0), "Go down the ladder in a circle of stones west of the monastery.");
 		grabBlanket = new DetailedQuestStep(this, new WorldPoint(2570, 9604, 0), "Pick up the Child's blanket in the room to the south.", blanket);
-		goUpLadder = new ObjectStep(this, ObjectID.LADDER_17385, new WorldPoint(2561, 9622, 0), "Go back up the ladder.");
+		goUpLadder = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2561, 9622, 0), "Go back up the ladder.");
 		returnToOmadWithBlanket = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Bring the blanket back to Brother Omad.", blanket);
 		talkToOmadAgain = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Talk to Brother Omad again.");
 		talkToOmadAgain.addDialogStep("Is there anything else I can help with?");
@@ -169,7 +161,7 @@ public class MonksFriend extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Law Runes", ItemID.LAW_RUNE, 8));
+		return Collections.singletonList(new ItemReward("Law Runes", ItemID.LAWRUNE, 8));
 	}
 
 	@Override

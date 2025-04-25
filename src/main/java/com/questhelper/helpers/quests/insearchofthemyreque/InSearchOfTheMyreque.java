@@ -24,43 +24,35 @@
  */
 package com.questhelper.helpers.quests.insearchofthemyreque;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class InSearchOfTheMyreque extends BasicQuestHelper
 {
@@ -188,25 +180,25 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		steelMace = new ItemRequirement("Steel mace", ItemID.STEEL_MACE);
 		steelWarhammer = new ItemRequirement("Steel warhammer", ItemID.STEEL_WARHAMMER);
 		steeldagger = new ItemRequirement("Steel dagger", ItemID.STEEL_DAGGER);
-		steelNails225 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 225);
-		druidPouch5 = new ItemRequirement("Charges in a druid pouch", ItemID.DRUID_POUCH_2958, 5);
+		steelNails225 = new ItemRequirement("Steel nails", ItemID.NAILS, 225);
+		druidPouch5 = new ItemRequirement("Charges in a druid pouch", ItemID.DRUID_POUCH, 5);
 		druidPouch5.setTooltip("Additional charges will be needed if a ghast hits you in the swamp");
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
-		plank6 = new ItemRequirement("Plank", ItemID.PLANK, 6);
-		plank3 = new ItemRequirement("Plank", ItemID.PLANK, 3);
-		plank2 = new ItemRequirement("Plank", ItemID.PLANK, 2);
-		plank1 = new ItemRequirement("Plank", ItemID.PLANK);
-		steelNails150 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 150);
-		steelNails75 = new ItemRequirement("Steel nails", ItemID.STEEL_NAILS, 75);
+		plank6 = new ItemRequirement("Plank", ItemID.WOODPLANK, 6);
+		plank3 = new ItemRequirement("Plank", ItemID.WOODPLANK, 3);
+		plank2 = new ItemRequirement("Plank", ItemID.WOODPLANK, 2);
+		plank1 = new ItemRequirement("Plank", ItemID.WOODPLANK);
+		steelNails150 = new ItemRequirement("Steel nails", ItemID.NAILS, 150);
+		steelNails75 = new ItemRequirement("Steel nails", ItemID.NAILS, 75);
 		coins10OrCharos = new ItemRequirements(LogicType.OR, "10 coins or a Ring of Charos (a)",
-			new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROSA),
+			new ItemRequirement("Ring of Charos (a)", ItemID.RING_OF_CHAROS_UNLOCKED),
 			new ItemRequirement("Coins", ItemCollections.COINS, 10));
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		morttonTeleport = new ItemRequirement("Teleport to Mort'ton, such as minigame teleport or Barrows Teleport", ItemID.MORTTON_TELEPORT);
-		morttonTeleport.addAlternates(ItemID.BARROWS_TELEPORT);
-		silverSickle = new ItemRequirement("Silver sickle (b) to collect Mort Myre fungi (requires prayer points)", ItemID.SILVER_SICKLE_B);
+		morttonTeleport = new ItemRequirement("Teleport to Mort'ton, such as minigame teleport or Barrows Teleport", ItemID.TELEPORTSCROLL_MORTTON);
+		morttonTeleport.addAlternates(ItemID.TELETAB_BARROWS);
+		silverSickle = new ItemRequirement("Silver sickle (b) to collect Mort Myre fungi (requires prayer points)", ItemID.SILVER_SICKLE_BLESSED);
 		silverSickle.setTooltip("Although Mort Myre fungus may be bought on the Grand Exchange, a sickle helps with ghast encounters in the swamp");
 	}
 
@@ -238,93 +230,93 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 		onQuestion5 = new WidgetTextRequirement(219, 1, 0, "vampyre");
 		onQuestion6 = new WidgetTextRequirement(219, 1, 0, "scholar");
 
-		talkedToSani = new VarbitRequirement(2496, true, 0);
-		talkedToHarold = new VarbitRequirement(2496, true, 1);
-		talkedToRadigad = new VarbitRequirement(2496, true, 2);
-		talkedToPolmafi = new VarbitRequirement(2496, true, 3);
-		talkedToIvan = new VarbitRequirement(2496, true, 4);
+		talkedToSani = new VarbitRequirement(VarbitID.THSFM_SPOKEN_ALLMYREQUE, true, 0);
+		talkedToHarold = new VarbitRequirement(VarbitID.THSFM_SPOKEN_ALLMYREQUE, true, 1);
+		talkedToRadigad = new VarbitRequirement(VarbitID.THSFM_SPOKEN_ALLMYREQUE, true, 2);
+		talkedToPolmafi = new VarbitRequirement(VarbitID.THSFM_SPOKEN_ALLMYREQUE, true, 3);
+		talkedToIvan = new VarbitRequirement(VarbitID.THSFM_SPOKEN_ALLMYREQUE, true, 4);
 	}
 
 	public void setupSteps()
 	{
-		talkToVanstrom = new NpcStep(this, NpcID.VANSTROM_KLAUSE_5056, new WorldPoint(3503, 3477, 0),
+		talkToVanstrom = new NpcStep(this, NpcID.ROUTE_VANSTROM_KLAUSE_SITTING, new WorldPoint(3503, 3477, 0),
 			"Talk to Vanstrom Klause in the Canifis pub.");
 		talkToVanstrom.addDialogStep("Yes.");
 		fillDruidPouch = new DetailedQuestStep(this, "Fill a druid pouch with at least 5 Mort Myre items. Try to have more in case a ghast hits you.", druidPouch5);
 		fillDruidPouch.addDialogStep("I'd better be off.");
-		talkToCyreg = new NpcStep(this, NpcID.CYREG_PADDLEHORN, new WorldPoint(3522, 3284, 0), "Talk to Cyreg in Mort'ton.",
+		talkToCyreg = new NpcStep(this, NpcID.ROUTE_CYREG_PADDLEHORN, new WorldPoint(3522, 3284, 0), "Talk to Cyreg in Mort'ton.",
 			druidPouch5, steelLong, steelSword2, steeldagger, steelMace, steelNails225, steelWarhammer, plank6, hammer, coins10OrCharos);
 		talkToCyreg.addDialogSteps("I'd better be off.",
 			"Well, I guess they'll just die without weapons.", "Resourceful enough to get their own steel weapons?",
 			"If you don't tell me, their deaths are on your head!", "What kind of a man are you to say that you don't care?",
 			"Here are some planks for you.");
-		boardBoat = new ObjectStep(this, ObjectID.SWAMP_BOATY_6969, new WorldPoint(3524, 3285, 0), "Board the swamp boaty in Mort'ton. If you forgot coins, you can obtain some by killing afflicted.",
+		boardBoat = new ObjectStep(this, ObjectID.ROUTE_ROWBOAT_MORTTON, new WorldPoint(3524, 3285, 0), "Board the swamp boaty in Mort'ton. If you forgot coins, you can obtain some by killing afflicted.",
 			steelLong, steelSword2, steeldagger, steelMace, steelNails225, steelWarhammer, plank3, hammer, coins10OrCharos);
 		boardBoat.addDialogStep("Yes. I'll pay the ten gold.");
-		climbTree = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
+		climbTree = new ObjectStep(this, ObjectID.SPOOKY_TREE_BASE_FORBRIDGE, new WorldPoint(3502, 3426, 0),
 			"Climb the tree to the north of the boat.", steelLong, steelSword2, steeldagger, steelMace, steelNails225, steelWarhammer, plank3, hammer);
-		climbTree2 = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
+		climbTree2 = new ObjectStep(this, ObjectID.SPOOKY_TREE_BASE_FORBRIDGE, new WorldPoint(3502, 3426, 0),
 			"Climb the tree to the north of the boat.", steelLong, steelSword2, steeldagger, steelMace, steelNails150, steelWarhammer, plank2, hammer);
-		climbTree3 = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
+		climbTree3 = new ObjectStep(this, ObjectID.SPOOKY_TREE_BASE_FORBRIDGE, new WorldPoint(3502, 3426, 0),
 			"Climb the tree to the north of the boat.", steelLong, steelSword2, steeldagger, steelMace, steelNails75, steelWarhammer, plank1, hammer);
-		climbTree4 = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
+		climbTree4 = new ObjectStep(this, ObjectID.SPOOKY_TREE_BASE_FORBRIDGE, new WorldPoint(3502, 3426, 0),
 			"Climb the tree to the north of the boat.", steelLong, steelSword2, steeldagger, steelMace, steelWarhammer);
 		climbTree.addSubSteps(climbTree2, climbTree3, climbTree4);
 
-		repairBridge1 = new ObjectStep(this, NullObjectID.NULL_26245, new WorldPoint(3502, 3428, 0), "Repair the bridge.", steelNails225, plank3, hammer);
-		repairBridge2 = new ObjectStep(this, NullObjectID.NULL_26246, new WorldPoint(3502, 3429, 0), "Repair the bridge.", steelNails150, plank2, hammer);
-		repairBridge3 = new ObjectStep(this, NullObjectID.NULL_26247, new WorldPoint(3502, 3430, 0), "Repair the bridge.", steelNails75, plank1, hammer);
+		repairBridge1 = new ObjectStep(this, ObjectID.ROUTE_SWAMPBRIDGE_1, new WorldPoint(3502, 3428, 0), "Repair the bridge.", steelNails225, plank3, hammer);
+		repairBridge2 = new ObjectStep(this, ObjectID.ROUTE_SWAMPBRIDGE_2, new WorldPoint(3502, 3429, 0), "Repair the bridge.", steelNails150, plank2, hammer);
+		repairBridge3 = new ObjectStep(this, ObjectID.ROUTE_SWAMPBRIDGE_3, new WorldPoint(3502, 3430, 0), "Repair the bridge.", steelNails75, plank1, hammer);
 		repairBridge1.addSubSteps(repairBridge2, repairBridge3);
-		talkToCurpile = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
+		talkToCurpile = new NpcStep(this, NpcID.ROUTE_CURPILE_FYOD_CHILD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile.addDialogStep("I've come to help the Myreque. I've brought weapons.");
-		talkToCurpile1 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
+		talkToCurpile1 = new NpcStep(this, NpcID.ROUTE_CURPILE_FYOD_CHILD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile1.addDialogStep("Sani Piliu.");
-		talkToCurpile2 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
+		talkToCurpile2 = new NpcStep(this, NpcID.ROUTE_CURPILE_FYOD_CHILD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile2.addDialogStep("Ivan Strom.");
-		talkToCurpile3 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
+		talkToCurpile3 = new NpcStep(this, NpcID.ROUTE_CURPILE_FYOD_CHILD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile3.addDialogStep("Veliaf Hurtz.");
-		talkToCurpile4 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
+		talkToCurpile4 = new NpcStep(this, NpcID.ROUTE_CURPILE_FYOD_CHILD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile4.addDialogStep("Cyreg Paddlehorn.");
-		talkToCurpile5 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
+		talkToCurpile5 = new NpcStep(this, NpcID.ROUTE_CURPILE_FYOD_CHILD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile5.addDialogStep("Drakan.");
-		talkToCurpile6 = new NpcStep(this, NpcID.CURPILE_FYOD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
+		talkToCurpile6 = new NpcStep(this, NpcID.ROUTE_CURPILE_FYOD_CHILD, new WorldPoint(3508, 3440, 0), "Talk to Curpile Fyod.");
 		talkToCurpile6.addDialogStep("Polmafi Ferdygris.");
 		talkToCurpile.addSubSteps(talkToCurpile1, talkToCurpile3, talkToCurpile4, talkToCurpile5, talkToCurpile6);
-		enterDoors = new ObjectStep(this, ObjectID.WOODEN_DOORS_5061, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.",
+		enterDoors = new ObjectStep(this, ObjectID.FREEDOMFIGHTERENTRANCER, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.",
 			steelLong, steelSword2, steeldagger, steelMace, steelWarhammer);
-		enterCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
-		talkToHarold = new NpcStep(this, NpcID.HAROLD_EVANS, new WorldPoint(3504, 9833, 0), "Talk to Harold Evans.");
-		talkToRadigad = new NpcStep(this, NpcID.RADIGAD_PONFIT, new WorldPoint(3510, 9833, 0), "Talk to Radigad Ponfit.");
-		talkToSani = new NpcStep(this, NpcID.SANI_PILIU, new WorldPoint(3511, 9838, 0), "Talk to Sani Piliu.");
-		talkToPolmafi = new NpcStep(this, NpcID.POLMAFI_FERDYGRIS, new WorldPoint(3512, 9839, 0), "Talk to Polmafi Ferdygris.");
-		talkToIvan = new NpcStep(this, NpcID.IVAN_STROM_5053, new WorldPoint(3512, 9843, 0), "Talk to Ivan Strom.");
+		enterCave = new ObjectStep(this, ObjectID.ROUTE_CAVEWALLTUNNEL, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
+		talkToHarold = new NpcStep(this, NpcID.ROUTE_HAROLD_EVANS_VIS, new WorldPoint(3504, 9833, 0), "Talk to Harold Evans.");
+		talkToRadigad = new NpcStep(this, NpcID.ROUTE_RADIGAD_PONFIT, new WorldPoint(3510, 9833, 0), "Talk to Radigad Ponfit.");
+		talkToSani = new NpcStep(this, NpcID.ROUTE_SANI_PILIU_VIS, new WorldPoint(3511, 9838, 0), "Talk to Sani Piliu.");
+		talkToPolmafi = new NpcStep(this, NpcID.ROUTE_POLMAFI_FERDYGRIS, new WorldPoint(3512, 9839, 0), "Talk to Polmafi Ferdygris.");
+		talkToIvan = new NpcStep(this, NpcID.ROUTE_IVAN_STROM, new WorldPoint(3512, 9843, 0), "Talk to Ivan Strom.");
 		talkToMembers = new DetailedQuestStep(this, "Talk to each of the members of the Myreque.");
 		talkToMembers.addSubSteps(talkToHarold, talkToRadigad, talkToSani, talkToPolmafi, talkToIvan);
 
-		talkToVeliaf = new NpcStep(this, NpcID.VELIAF_HURTZ_5048, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
-		talkToVeliafForCutscene = new NpcStep(this, NpcID.VELIAF_HURTZ_5048, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
-		talkToVeliafAgain = new NpcStep(this, NpcID.VELIAF_HURTZ_5048, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz again and give him the steel weapons. Be ready to fight the Skeleton Hellhound", steelLong, steelSword2, steelWarhammer, steelMace, steeldagger);
+		talkToVeliaf = new NpcStep(this, NpcID.ROUTE_VELIAF_HURTZ, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
+		talkToVeliafForCutscene = new NpcStep(this, NpcID.ROUTE_VELIAF_HURTZ, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz.");
+		talkToVeliafAgain = new NpcStep(this, NpcID.ROUTE_VELIAF_HURTZ, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz again and give him the steel weapons. Be ready to fight the Skeleton Hellhound", steelLong, steelSword2, steelWarhammer, steelMace, steeldagger);
 		talkToVeliafAgain.addDialogStep("Let's talk about the weapons.");
 		talkToVeliafAgain.addSubSteps(talkToVeliafForCutscene);
 
-		climbTreeHellhound = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
+		climbTreeHellhound = new ObjectStep(this, ObjectID.SPOOKY_TREE_BASE_FORBRIDGE, new WorldPoint(3502, 3426, 0),
 			"Climb the tree to the north of the boat.", combatGear);
-		enterDoorsHellhound = new ObjectStep(this, ObjectID.WOODEN_DOORS_5061, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.", combatGear);
-		enterCaveHellhound = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
+		enterDoorsHellhound = new ObjectStep(this, ObjectID.FREEDOMFIGHTERENTRANCER, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.", combatGear);
+		enterCaveHellhound = new ObjectStep(this, ObjectID.ROUTE_CAVEWALLTUNNEL, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
 		killHellhound = new NpcStep(this, NpcID.SKELETON_HELLHOUND, new WorldPoint(3506, 9837, 0), "Kill the Skeleton Hellhound. To safespot the hellhound using Magic, position it on the south side of the chair in the eastern part of the room.");
 		killHellhound.addSubSteps(climbTreeHellhound, enterCaveHellhound, enterDoorsHellhound);
 
-		climbTreeLeave = new ObjectStep(this, NullObjectID.NULL_5003, new WorldPoint(3502, 3426, 0),
+		climbTreeLeave = new ObjectStep(this, ObjectID.SPOOKY_TREE_BASE_FORBRIDGE, new WorldPoint(3502, 3426, 0),
 			"Climb the tree to the north of the boat.", steelLong, steelSword2, steeldagger, steelMace, steelWarhammer);
-		enterDoorsLeave = new ObjectStep(this, ObjectID.WOODEN_DOORS_5061, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.");
-		enterCaveLeave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
-		talkToVeliafToLeave = new NpcStep(this, NpcID.VELIAF_HURTZ_5048, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz to learn the way out.");
+		enterDoorsLeave = new ObjectStep(this, ObjectID.FREEDOMFIGHTERENTRANCER, new WorldPoint(3509, 3448, 0), "Enter the wooden doors north of Curpile.");
+		enterCaveLeave = new ObjectStep(this, ObjectID.ROUTE_CAVEWALLTUNNEL, new WorldPoint(3492, 9823, 0), "Enter the cave to the north on the east side.");
+		talkToVeliafToLeave = new NpcStep(this, NpcID.ROUTE_VELIAF_HURTZ, new WorldPoint(3506, 9837, 0), "Talk to Veliaf Hurtz to learn the way out.");
 		talkToVeliafToLeave.addSubSteps(climbTreeLeave, enterDoorsLeave, enterCaveLeave);
 
-		leaveCave = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5046, new WorldPoint(3505, 9831, 0), "Leave the cave.");
+		leaveCave = new ObjectStep(this, ObjectID.ROUTE_CAVEWALLTUNNEL, new WorldPoint(3505, 9831, 0), "Leave the cave.");
 		leaveCave.addDialogStep("Okay, thanks.");
-		goUpToCanifis = new ObjectStep(this, ObjectID.LADDER_5054, new WorldPoint(3477, 9846, 0), "Leave up the ladder in the north of the cave.");
-		talkToStranger = new NpcStep(this, NpcID.STRANGER_5055, new WorldPoint(3503, 3477, 0),
+		goUpToCanifis = new ObjectStep(this, ObjectID.THRTTAVERNBASEMENTLADDER, new WorldPoint(3477, 9846, 0), "Leave up the ladder in the north of the cave.");
+		talkToStranger = new NpcStep(this, NpcID.CANAFIS_STRANGER, new WorldPoint(3503, 3477, 0),
 			"Talk to the Stranger in the Canifis pub to finish the quest!");
 	}
 
@@ -375,7 +367,7 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("A quick route to Mor'ton"));
+		return Collections.singletonList(new UnlockReward("A quick route to Mort'ton"));
 	}
 
 	@Override

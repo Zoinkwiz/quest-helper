@@ -27,11 +27,9 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.SimpleRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import java.util.Arrays;
-import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
+
+import java.util.List;
 
 public class NpcInteractingWithNpcRequirement extends SimpleRequirement
 {
@@ -48,7 +46,7 @@ public class NpcInteractingWithNpcRequirement extends SimpleRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return client.getNpcs().stream()
+		return client.getTopLevelWorldView().npcs().stream()
 			.filter(npc -> npc.getInteracting() != null)
 			.filter(npc -> npcNames.contains(npc.getInteracting().getName()))
 			.anyMatch(npc -> npc.getInteracting().getInteracting() == npc);

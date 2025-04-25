@@ -31,10 +31,12 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.List;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.List;
+
 import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class StartingOff
@@ -60,20 +62,20 @@ public class StartingOff
 		{
 			var enterTreeGnomeVillageMazeFromMiddle = quest.enterTreeGnomeVillageMazeFromMiddle.copy();
 			var climbDownIntoTreeGnomeVillageDungeon = quest.climbDownIntoTreeGnomeVillageDungeon.copy();
-			var talk = new NpcStep(quest, NpcID.GOLRIE, new WorldPoint(2580, 4450, 0), "");
-			talk.addAlternateNpcs(NpcID.GOLRIE_4183);
+			var talk = new NpcStep(quest, NpcID.ROVING_GOLRIE, new WorldPoint(2580, 4450, 0), "");
+			talk.addAlternateNpcs(NpcID.GOLRIE_WATERFALL_QUEST);
 			talk.addDialogSteps("I need your help with a device.");
 			talk.addSubSteps(enterTreeGnomeVillageMazeFromMiddle, climbDownIntoTreeGnomeVillageDungeon);
 			golrie = new ConditionalStep(quest, climbDownIntoTreeGnomeVillageDungeon, "Talk to Golrie in the Tree Gnome Village dungeon.");
 
-			var talkPreRovingElves = new NpcStep(quest, NpcID.GOLRIE, new WorldPoint(2514, 9580, 0), "You'll need to talk to Golrie again after giving him the key.");
-			talkPreRovingElves.addAlternateNpcs(NpcID.GOLRIE_4183);
+			var talkPreRovingElves = new NpcStep(quest, NpcID.ROVING_GOLRIE, new WorldPoint(2514, 9580, 0), "You'll need to talk to Golrie again after giving him the key.");
+			talkPreRovingElves.addAlternateNpcs(NpcID.GOLRIE_WATERFALL_QUEST);
 			talkPreRovingElves.addDialogSteps("I need your help with a device.");
 
 			var withGolrie = new ZoneRequirement(new Zone(new WorldPoint(2505, 9576, 0), new WorldPoint(2526, 9587, 0)));
 
-			var getKey = new ObjectStep(quest, ObjectID.CRATE_1990, new WorldPoint(2548, 9565, 0), "Get the Tree Gnome Village dungeon key from the crate to the north-east.");
-			var unlockDoor = new ObjectStep(quest, ObjectID.DOOR_1991, new WorldPoint(2515, 9575, 0), "");
+			var getKey = new ObjectStep(quest, ObjectID.GOLRIE_CRATE_WATERFALL_QUEST, new WorldPoint(2548, 9565, 0), "Get the Tree Gnome Village dungeon key from the crate to the north-east.");
+			var unlockDoor = new ObjectStep(quest, ObjectID.GOLRIE_GATE_WATERFALL_QUEST, new WorldPoint(2515, 9575, 0), "");
 
 			golrie.addStep(and(withGolrie), talkPreRovingElves);
 			golrie.addStep(and(quest.inTreeGnomeVillageDungeonPreRovingElves, quest.treeGnomeVillageDungeonKey), unlockDoor);

@@ -28,10 +28,11 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.util.ItemSlots;
-import java.awt.Color;
-import java.util.Objects;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.Objects;
 
 /**
  * Requirement that checks if a player has no item in a specified {@link ItemSlots}.

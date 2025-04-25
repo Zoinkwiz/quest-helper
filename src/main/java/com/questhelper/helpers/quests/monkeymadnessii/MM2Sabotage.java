@@ -24,25 +24,26 @@
  */
 package com.questhelper.helpers.quests.monkeymadnessii;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import java.util.Arrays;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MM2Sabotage extends ConditionalStep
 {
@@ -104,15 +105,15 @@ public class MM2Sabotage extends ConditionalStep
 
 	public void setupRequirements()
 	{
-		satchelCurrentQuantity = new ItemRequirement("Satchel", ItemID.SATCHEL, 6);
-		satchelCurrentQuantity.addAlternates(ItemID.SATCHEL_19528);
+		satchelCurrentQuantity = new ItemRequirement("Satchel", ItemID.MM2_EXPLOSIVES_SATCHEL, 6);
+		satchelCurrentQuantity.addAlternates(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 
-		filledSatchel1 = new ItemRequirement("Satchel (filled)", ItemID.SATCHEL_19528);
+		filledSatchel1 = new ItemRequirement("Satchel (filled)", ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		filledSatchel1.setTooltip("You can fill another satchel from the gunpowder barrels in the north east of the platform");
-		filledSatchel1Highlighted = new ItemRequirement("Satchel (filled)", ItemID.SATCHEL_19528);
+		filledSatchel1Highlighted = new ItemRequirement("Satchel (filled)", ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		filledSatchel1Highlighted.setTooltip("You can fill another satchel from the gunpowder barrels in the north east of the platform");
 		filledSatchel1Highlighted.setHighlightInInventory(true);
-		filledSatchelCurrentQuantity = new ItemRequirement("Satchel (filled)", ItemID.SATCHEL_19528, 6);
+		filledSatchelCurrentQuantity = new ItemRequirement("Satchel (filled)", ItemID.MM2_EXPLOSIVES_SATCHEL_FULL, 6);
 	}
 
 	public void setupZones()
@@ -155,7 +156,7 @@ public class MM2Sabotage extends ConditionalStep
 
 	public void setupSteps()
 	{
-		climbF0ToF1ForSatchels = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28618, new WorldPoint(2098, 5408, 1), "Navigate through the platform, avoiding the monkey guards, to the east side and climb the ladder there.");
+		climbF0ToF1ForSatchels = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2098, 5408, 1), "Navigate through the platform, avoiding the monkey guards, to the east side and climb the ladder there.");
 		climbF0ToF1ForSatchels.setLinePoints(boatToEastLadder);
 		climbF0ToF1ForSatchels.addTileMarkers(
 			new WorldPoint(2068, 5395, 1),
@@ -169,7 +170,7 @@ public class MM2Sabotage extends ConditionalStep
 		);
 		climbF0ToF1ForSatchels.setHideMinimapLines(true);
 
-		climbF1ToF0ForSatchels = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28619, new WorldPoint(2086, 5387, 2), "Make your way south then west, and go down the ladder there.");
+		climbF1ToF0ForSatchels = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2086, 5387, 2), "Make your way south then west, and go down the ladder there.");
 		climbF1ToF0ForSatchels.setLinePoints(ladderToSatchelLadder);
 		climbF1ToF0ForSatchels.addTileMarkers(
 			new WorldPoint(2097, 5404, 2),
@@ -178,11 +179,11 @@ public class MM2Sabotage extends ConditionalStep
 		);
 		climbF1ToF0ForSatchels.setHideMinimapLines(true);
 
-		pickUp6Satchels = new ObjectStep(getQuestHelper(), ObjectID.CRATE_28652, new WorldPoint(2097, 5405, 1), "Follow the path around and search the crates there for 6 satchels. There are no monkeys here to avoid.", satchelCurrentQuantity);
+		pickUp6Satchels = new ObjectStep(getQuestHelper(), ObjectID.MM2_EXPLOSIVES_SATCHEL_CRATES, new WorldPoint(2097, 5405, 1), "Follow the path around and search the crates there for 6 satchels. There are no monkeys here to avoid.", satchelCurrentQuantity);
 
-		goUpFromSatchelsToF1 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28618, new WorldPoint(2086, 5387, 1), "Climb back up the ladder.");
+		goUpFromSatchelsToF1 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2086, 5387, 1), "Climb back up the ladder.");
 
-		goFromF1WithSatchelToF0 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28619, new WorldPoint(2098, 5408, 2), "Make your way east then north, and go down the ladder there.");
+		goFromF1WithSatchelToF0 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5408, 2), "Make your way east then north, and go down the ladder there.");
 		goFromF1WithSatchelToF0.setLinePoints(satchelLadderToF0Ladder);
 		goFromF1WithSatchelToF0.setHideMinimapLines(true);
 		goFromF1WithSatchelToF0.addTileMarkers(
@@ -191,10 +192,10 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2099, 5386, 2)
 		);
 
-		goFromF2WithSatchelToF1 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28619, new WorldPoint(2098, 5407, 3),
+		goFromF2WithSatchelToF1 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5407, 3),
 			"Go down a floor.");
 
-		goFromF0WithSatchelToF1 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28618, new WorldPoint(2085, 5431, 1), "Navigate through the platform, avoiding the monkey guards, to the north east side and climb the ladder there.");
+		goFromF0WithSatchelToF1 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2085, 5431, 1), "Navigate through the platform, avoiding the monkey guards, to the north east side and climb the ladder there.");
 		goFromF0WithSatchelToF1.setLinePoints(f0ToF1ForGunpowderRoute);
 		goFromF0WithSatchelToF1.addTileMarkers(
 			new WorldPoint(2096, 5408, 1),
@@ -204,41 +205,41 @@ public class MM2Sabotage extends ConditionalStep
 		);
 		goFromF0WithSatchelToF1.setHideMinimapLines(true);
 
-		goF0Reset = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28618, new WorldPoint(2085, 5431, 1),
+		goF0Reset = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2085, 5431, 1),
 			"Go back and fill up your satchels with gunpowder.");
 		goF0Reset.setHideMinimapLines(true);
 		goF0Reset.setLinePoints(pathToReset);
 
-		goDownToGunpowder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28619, new WorldPoint(2098, 5421, 2), "Make your way east then south and go down the ladder there. Avoid the monkey on the way.");
+		goDownToGunpowder = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5421, 2), "Make your way east then south and go down the ladder there. Avoid the monkey on the way.");
 		goDownToGunpowder.addTileMarkers(new WorldPoint(2089, 5431, 2), new WorldPoint(2098, 5432, 2));
 		goDownToGunpowder.setHideMinimapLines(true);
 		goDownToGunpowder.setLinePoints(pathAboveGunpowder);
 
-		fillSatchels = new ObjectStep(getQuestHelper(), ObjectID.BARREL_28653, new WorldPoint(2089, 5431, 1), "Fill your satchels with gunpowder from the barrel to the north.", filledSatchelCurrentQuantity);
+		fillSatchels = new ObjectStep(getQuestHelper(), ObjectID.MM2_EXPLOSIVES_BARREL_OPEN, new WorldPoint(2089, 5431, 1), "Fill your satchels with gunpowder from the barrel to the north.", filledSatchelCurrentQuantity);
 		fillSatchels.addTileMarkers(new WorldPoint(2096, 5426, 1), new WorldPoint(2097, 5423, 1));
 		fillSatchels.setLinePoints(pathToGunpowder);
 
 		fillSatchels.setHideMinimapLines(true);
 
-		goUpFromGunpowder = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28618, new WorldPoint(2098, 5421, 1), "Go back up the ladder to the first floor.", filledSatchel1);
+		goUpFromGunpowder = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2098, 5421, 1), "Go back up the ladder to the first floor.", filledSatchel1);
 		goUpFromGunpowder.addTileMarkers(new WorldPoint(2097, 5423, 1));
 		goUpFromGunpowder.setLinePoints(pathToGunpowder);
 
-		placeSatchel1 = new ObjectStep(getQuestHelper(), ObjectID.COMPROMISED_FLOORBOARDS_28624, new WorldPoint(2098, 5413, 2), "Place a satchel to the south.", filledSatchel1Highlighted);
-		placeSatchel1.addIcon(ItemID.SATCHEL_19528);
+		placeSatchel1 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_D, new WorldPoint(2098, 5413, 2), "Place a satchel to the south.", filledSatchel1Highlighted);
+		placeSatchel1.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 
-		goDownFromSatchel1 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28619, new WorldPoint(2085, 5431, 2), "Go down the ladder to the north west.", filledSatchel1);
+		goDownFromSatchel1 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2085, 5431, 2), "Go down the ladder to the north west.", filledSatchel1);
 		goDownFromSatchel1.addTileMarkers(new WorldPoint(2098, 5423, 2), new WorldPoint(2098, 5432, 2));
 		goDownFromSatchel1.setHideMinimapLines(true);
 		goDownFromSatchel1.setLinePoints(pathAboveGunpowder);
 
-		placeSatchel2 = new ObjectStep(getQuestHelper(), ObjectID.COMPROMISED_SUPPORT_28622, new WorldPoint(2090, 5418, 1), "Place a satchel on the support to the south.", filledSatchel1Highlighted);
+		placeSatchel2 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_B, new WorldPoint(2090, 5418, 1), "Place a satchel on the support to the south.", filledSatchel1Highlighted);
 		placeSatchel2.addTileMarkers(new WorldPoint(2085, 5430, 1));
 		placeSatchel2.setHideMinimapLines(true);
-		placeSatchel2.addIcon(ItemID.SATCHEL_19528);
+		placeSatchel2.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		placeSatchel2.setLinePoints(pathToSatchel2);
 
-		goUpToSatchel3 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28618, new WorldPoint(2098, 5408, 1), "Go to the east side and climb the ladder there.", filledSatchel1);
+		goUpToSatchel3 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2098, 5408, 1), "Go to the east side and climb the ladder there.", filledSatchel1);
 		goUpToSatchel3.addTileMarkers(
 			new WorldPoint(2082, 5412, 1),
 			new WorldPoint(2090, 5410, 1)
@@ -246,8 +247,8 @@ public class MM2Sabotage extends ConditionalStep
 		goUpToSatchel3.setHideMinimapLines(true);
 		goUpToSatchel3.setLinePoints(pathToSatchel3F0);
 
-		placeSatchel3 = new ObjectStep(getQuestHelper(), ObjectID.COMPROMISED_FLOORBOARDS, new WorldPoint(2082, 5431, 2), "Make your way to the west across the vine, then north then east. Place a satchel here.", filledSatchel1Highlighted);
-		placeSatchel3.addIcon(ItemID.SATCHEL_19528);
+		placeSatchel3 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_C, new WorldPoint(2082, 5431, 2), "Make your way to the west across the vine, then north then east. Place a satchel here.", filledSatchel1Highlighted);
+		placeSatchel3.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		placeSatchel3.addTileMarkers(
 			new WorldPoint(2096, 5408, 2),
 			new WorldPoint(2093, 5408, 2),
@@ -264,7 +265,7 @@ public class MM2Sabotage extends ConditionalStep
 		placeSatchel3.setHideMinimapLines(true);
 		placeSatchel3.setLinePoints(pathToSatchel3);
 
-		goUpToSatchel4 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28618, new WorldPoint(2098, 5407, 2), "Return to the east side where you came from and go up to the 2nd floor.", filledSatchel1);
+		goUpToSatchel4 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2098, 5407, 2), "Return to the east side where you came from and go up to the 2nd floor.", filledSatchel1);
 		goUpToSatchel4.setLinePoints(pathFrom3To4Ladder);
 		goUpToSatchel4.addTileMarkers(
 			new WorldPoint(2096, 5408, 2),
@@ -279,8 +280,8 @@ public class MM2Sabotage extends ConditionalStep
 		goUpToSatchel4.addTileMarker(new WorldPoint(2066, 5413, 2), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 		goUpToSatchel4.setHideMinimapLines(true);
 
-		placeSatchel4 = new ObjectStep(getQuestHelper(), ObjectID.GAS_CYLINDER_28626, new WorldPoint(2096, 5393, 3), "Place a satchel on the gas cylinder to the south.", filledSatchel1Highlighted);
-		placeSatchel4.addIcon(ItemID.SATCHEL_19528);
+		placeSatchel4 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_F, new WorldPoint(2096, 5393, 3), "Place a satchel on the gas cylinder to the south.", filledSatchel1Highlighted);
+		placeSatchel4.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		placeSatchel4.setHideMinimapLines(true);
 		placeSatchel4.addTileMarkers(
 			new WorldPoint(2097, 5404, 3),
@@ -288,7 +289,7 @@ public class MM2Sabotage extends ConditionalStep
 		);
 		placeSatchel4.setLinePoints(pathToSatchel4);
 
-		placeSatchel5 = new ObjectStep(getQuestHelper(), ObjectID.GAS_CYLINDER, new WorldPoint(2069, 5421, 3), "Make your way to the west then north and place a satchel on the gas cylinder there.", filledSatchel1Highlighted);
+		placeSatchel5 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_E, new WorldPoint(2069, 5421, 3), "Make your way to the west then north and place a satchel on the gas cylinder there.", filledSatchel1Highlighted);
 		placeSatchel5.setLinePoints(pathToSatchel5);
 		placeSatchel5.addTileMarkers(
 			new WorldPoint(2097, 5404, 3),
@@ -301,8 +302,8 @@ public class MM2Sabotage extends ConditionalStep
 		);
 		placeSatchel5.addTileMarker(new WorldPoint(2069, 5413, 3), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 		placeSatchel5.setHideMinimapLines(true);
-		placeSatchel5.addIcon(ItemID.SATCHEL_19528);
-		goF2ToF1ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28619, new WorldPoint(2098, 5407, 3), "Go back to the bottom floor.", filledSatchel1);
+		placeSatchel5.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
+		goF2ToF1ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5407, 3), "Go back to the bottom floor.", filledSatchel1);
 		goF2ToF1ForSatchel6.setLinePoints(pathBackFromSatchel5);
 		goF2ToF1ForSatchel6.setHideMinimapLines(true);
 		goF2ToF1ForSatchel6.addTileMarkers(
@@ -314,10 +315,10 @@ public class MM2Sabotage extends ConditionalStep
 		);
 		goF2ToF1ForSatchel6.addTileMarker(new WorldPoint(2066, 5413, 3), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 
-		goF1ToF0ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28619, new WorldPoint(2098, 5408, 2), "Go back to the bottom floor.", filledSatchel1);
+		goF1ToF0ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5408, 2), "Go back to the bottom floor.", filledSatchel1);
 
-		placeSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.COMPROMISED_SUPPORT, new WorldPoint(2075, 5396, 1), "Place the final satchel in the centre of the platform.", filledSatchel1Highlighted);
-		placeSatchel6.addIcon(ItemID.SATCHEL_19528);
+		placeSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_A, new WorldPoint(2075, 5396, 1), "Place the final satchel in the centre of the platform.", filledSatchel1Highlighted);
+		placeSatchel6.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		placeSatchel6.addTileMarkers(
 			new WorldPoint(2096, 5408, 1),
 			new WorldPoint(2090, 5410, 1),
@@ -332,7 +333,7 @@ public class MM2Sabotage extends ConditionalStep
 		placeSatchel6.setHideMinimapLines(true);
 		placeSatchel6.setLinePoints(ladderToSatchel6);
 
-		leavePlatform = new ObjectStep(getQuestHelper(), ObjectID.LADDER_28620, new WorldPoint(2065, 5404, 1), "Leave the platform via the boat. DON'T teleport away. You can shortcut here by getting caught.");
+		leavePlatform = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_LEAVE, new WorldPoint(2065, 5404, 1), "Leave the platform via the boat. DON'T teleport away. You can shortcut here by getting caught.");
 	}
 
 	@Override

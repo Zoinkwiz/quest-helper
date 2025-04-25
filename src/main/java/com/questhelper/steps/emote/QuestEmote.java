@@ -25,6 +25,7 @@
 package com.questhelper.steps.emote;
 
 import lombok.Getter;
+
 import static net.runelite.api.SpriteID.*;
 
 @Getter

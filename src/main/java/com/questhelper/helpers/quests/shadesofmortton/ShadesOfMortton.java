@@ -24,40 +24,33 @@
  */
 package com.questhelper.helpers.quests.shadesofmortton;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
-import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
+import java.util.*;
 
 public class ShadesOfMortton extends BasicQuestHelper
 {
@@ -142,8 +135,8 @@ public class ShadesOfMortton extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF, 2);
-		tarrominUnfHighlighted = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMIN_POTION_UNF);
+		tarrominUnf2 = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMINVIAL, 2);
+		tarrominUnfHighlighted = new ItemRequirement("Tarromin potion (unf)", ItemID.TARROMINVIAL);
 		tarrominUnfHighlighted.setHighlightInInventory(true);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		ashes2 = new ItemRequirement("Ashes", ItemID.ASHES, 2);
@@ -154,8 +147,8 @@ public class ShadesOfMortton extends BasicQuestHelper
 		hammerOrFlam.addAlternates(ItemID.FLAMTAER_HAMMER);
 		flamHammer = new ItemRequirement("Flamtaer hammer", ItemID.FLAMTAER_HAMMER).isNotConsumed();
 		flamHammer.setTooltip("This speeds up the repair section of the quest considerably");
-		morttonTele = new ItemRequirement("A Mort'ton teleport or Barrows teleport tablet", ItemID.MORTTON_TELEPORT);
-		morttonTele.addAlternates(ItemID.BARROWS_TELEPORT);
+		morttonTele = new ItemRequirement("A Mort'ton teleport or Barrows teleport tablet", ItemID.TELEPORTSCROLL_MORTTON);
+		morttonTele.addAlternates(ItemID.TELETAB_BARROWS);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
 		flamtaerBracelet = new ItemRequirement("Flamtaer bracelet", ItemID.FLAMTAER_BRACELET);
@@ -166,42 +159,42 @@ public class ShadesOfMortton extends BasicQuestHelper
 		logHighlighted.addAlternates(ItemID.OAK_LOGS, ItemID.MAPLE_LOGS, ItemID.WILLOW_LOGS, ItemID.YEW_LOGS, ItemID.MAGIC_LOGS, ItemID.REDWOOD_LOGS);
 		logHighlighted.setHighlightInInventory(true);
 
-		pyreLog = new ItemRequirement("A pyre log you can burn", ItemID.PYRE_LOGS);
-		pyreLog.addAlternates(ItemID.OAK_PYRE_LOGS, ItemID.MAPLE_PYRE_LOGS, ItemID.WILLOW_PYRE_LOGS, ItemID.YEW_PYRE_LOGS, ItemID.MAGIC_PYRE_LOGS,
-			ItemID.REDWOOD_PYRE_LOGS);
+		pyreLog = new ItemRequirement("A pyre log you can burn", ItemID.LOGS_PYRE);
+		pyreLog.addAlternates(ItemID.OAK_LOGS_PYRE, ItemID.MAPLE_LOGS_PYRE, ItemID.WILLOW_LOGS_PYRE, ItemID.YEW_LOGS_PYRE, ItemID.MAGIC_LOGS_PYRE,
+			ItemID.REDWOOD_LOGS_PYRE);
 		pyreLog.setHighlightInInventory(true);
-		serum207Highlighted = new ItemRequirement("Serum 207", ItemID.SERUM_207_1);
+		serum207Highlighted = new ItemRequirement("Serum 207", ItemID.MORT_SERUM1);
 		serum207Highlighted.setTooltip("You can make more with a tarromin potion (unf) and some ashes");
 		serum207Highlighted.setHighlightInInventory(true);
-		serum207Highlighted.addAlternates(ItemID.SERUM_207_2, ItemID.SERUM_207_3, ItemID.SERUM_207_4);
+		serum207Highlighted.addAlternates(ItemID.MORT_SERUM2, ItemID.MORT_SERUM3, ItemID.MORT_SERUM4);
 
-		serum207 = new ItemRequirement("Serum 207", ItemID.SERUM_207_1);
+		serum207 = new ItemRequirement("Serum 207", ItemID.MORT_SERUM1);
 		serum207.setTooltip("You can make more with a tarromin potion (unf) and some ashes");
-		serum207.addAlternates(ItemID.SERUM_207_2, ItemID.SERUM_207_3, ItemID.SERUM_207_4);
+		serum207.addAlternates(ItemID.MORT_SERUM2, ItemID.MORT_SERUM3, ItemID.MORT_SERUM4);
 
-		serum208 = new ItemRequirement("Serum 208", ItemID.SERUM_208_1);
+		serum208 = new ItemRequirement("Serum 208", ItemID.MORT_SERUM_PERM1);
 		serum208.setHighlightInInventory(true);
-		serum208.addAlternates(ItemID.SERUM_208_2, ItemID.SERUM_208_3, ItemID.SERUM_208_4);
+		serum208.addAlternates(ItemID.MORT_SERUM_PERM2, ItemID.MORT_SERUM_PERM3, ItemID.MORT_SERUM_PERM4);
 		sacredOilHighlighted = new ItemRequirement("Sacred oil", ItemID.SACRED_OIL1);
 		sacredOilHighlighted.setHighlightInInventory(true);
 		sacredOilHighlighted.addAlternates(ItemID.SACRED_OIL2, ItemID.SACRED_OIL3, ItemID.SACRED_OIL4);
 
-		oliveOil = new ItemRequirement("Olive oil", ItemID.OLIVE_OIL4);
-		oliveOil.addAlternates(ItemID.OLIVE_OIL2, ItemID.OLIVE_OIL3, ItemID.OLIVE_OIL4);
+		oliveOil = new ItemRequirement("Olive oil", ItemID.OLIVEOIL4);
+		oliveOil.addAlternates(ItemID.OLIVEOIL2, ItemID.OLIVEOIL3, ItemID.OLIVEOIL4);
 
-		oliveOilHighlighted = new ItemRequirement("Olive oil", ItemID.OLIVE_OIL4);
-		oliveOilHighlighted.addAlternates(ItemID.OLIVE_OIL2, ItemID.OLIVE_OIL3, ItemID.OLIVE_OIL4);
+		oliveOilHighlighted = new ItemRequirement("Olive oil", ItemID.OLIVEOIL4);
+		oliveOilHighlighted.addAlternates(ItemID.OLIVEOIL2, ItemID.OLIVEOIL3, ItemID.OLIVEOIL4);
 		oliveOilHighlighted.setHighlightInInventory(true);
 
-		swampPaste25 = new ItemRequirement("Swamp paste", ItemID.SWAMP_PASTE, 25);
-		timber5 = new ItemRequirement("Timber beam", ItemID.TIMBER_BEAM, 5);
-		lime5 = new ItemRequirement("Limestone brick", ItemID.LIMESTONE_BRICK, 5);
+		swampPaste25 = new ItemRequirement("Swamp paste", ItemID.SWAMPPASTE, 25);
+		timber5 = new ItemRequirement("Timber beam", ItemID.TIMBERBEAM, 5);
+		lime5 = new ItemRequirement("Limestone brick", ItemID.LIMESTONEBRICK, 5);
 
-		diary = new ItemRequirement("Diary", ItemID.DIARY_3395);
+		diary = new ItemRequirement("Diary", ItemID.SERUM_BOOK);
 		diary.setHighlightInInventory(true);
-		loar = new ItemRequirement("Loar remains", ItemID.LOAR_REMAINS);
+		loar = new ItemRequirement("Loar remains", ItemID.SHADE_BONES1);
 		loar.setHighlightInInventory(true);
-		loar5 = new ItemRequirement("Loar remains", ItemID.LOAR_REMAINS, 5);
+		loar5 = new ItemRequirement("Loar remains", ItemID.SHADE_BONES1, 5);
 		inventorySpace11 = new FreeInventorySlotRequirement(11);
 	}
 
@@ -209,80 +202,80 @@ public class ShadesOfMortton extends BasicQuestHelper
 	{
 		has20Sanctity = new VarplayerRequirement(341, 20);
 
-		razmirePartlyCured = new VarplayerRequirement(340, true, 3);
-		curedRazmire = new VarplayerRequirement(340, true, 6); //64
-		ulsquirePartlyCured = new VarplayerRequirement(340, true, 1);
-		curedUlsquire = new VarplayerRequirement(340, true, 5);
+		razmirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 3);
+		curedRazmire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 6); //64
+		ulsquirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 1);
+		curedUlsquire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 5);
 
 		repairedTemple = new VarplayerRequirement(343, 100);
-		has20Sanctity = new VarplayerRequirement(345, 20, Operation.GREATER_EQUAL);
-		litFire = new ObjectCondition(ObjectID.FLAMING_FIRE_ALTAR, new WorldPoint(3506, 3316, 0));
+		has20Sanctity = new VarplayerRequirement(VarPlayerID.TEMPLE_SANCTITY_P, 20, Operation.GREATER_EQUAL);
+		litFire = new ObjectCondition(ObjectID.TEMPLEFIRE_ALTAR, new WorldPoint(3506, 3316, 0));
 	}
 
 	public void setupSteps()
 	{
-		searchShelf = new ObjectStep(this, ObjectID.SHELF_4062, new WorldPoint(3481, 3279, 0), "Search the shelf in the south building of Mort'ton.");
+		searchShelf = new ObjectStep(this, ObjectID.SHADES_EXPERIMENTSHELF, new WorldPoint(3481, 3279, 0), "Search the shelf in the south building of Mort'ton.");
 		readDiary = new DetailedQuestStep(this, "Read the diary.", diary);
 		addAshes = new DetailedQuestStep(this, "Add ashes to a tarromin potion (unf).", tarrominUnfHighlighted, ashesHighlighted);
-		use207OnRazmire = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Use the serum 207 on Razmire in the north of Mort'ton.", serum207Highlighted);
+		use207OnRazmire = new NpcStep(this, NpcID.RAZMIRE_KEELGAN_AFFLICTED, new WorldPoint(3488, 3296, 0), "Use the serum 207 on Razmire in the north of Mort'ton.", serum207Highlighted);
 		((NpcStep) (use207OnRazmire)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
-		use207OnRazmire.addIcon(ItemID.SERUM_207_4);
-		talkToRazmire = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Talk to Razmire in the north of Mort'ton.", serum207Highlighted);
+		use207OnRazmire.addIcon(ItemID.MORT_SERUM4);
+		talkToRazmire = new NpcStep(this, NpcID.RAZMIRE_KEELGAN_AFFLICTED, new WorldPoint(3488, 3296, 0), "Talk to Razmire in the north of Mort'ton.", serum207Highlighted);
 		talkToRazmire.addDialogSteps("What are all these shadowy creatures?", "Yes, I'll dispatch those dark and evil creatures.");
 		((NpcStep) (talkToRazmire)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
 
-		kill5Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 5 Loar Shades and pick up their remains.", true, loar5);
-		((NpcStep) (kill5Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill4Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 4 Loar Shades and pick up their remains.", true, loar5);
-		((NpcStep) (kill4Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill3Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 3 Loar Shades and pick up their remains.", true, loar5);
-		((NpcStep) (kill3Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill2Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 2 Loar Shades and pick up their remains.", true, loar5);
-		((NpcStep) (kill2Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
-		kill1Shades = new NpcStep(this, NpcID.LOAR_SHADOW, new WorldPoint(3488, 3287, 0), "Kill 1 Loar Shades and pick up their remains.", true, loar5);
-		((NpcStep) (kill1Shades)).addAlternateNpcs(NpcID.LOAR_SHADE);
+		kill5Shades = new NpcStep(this, NpcID.SHADESHADOW_LEVEL1, new WorldPoint(3488, 3287, 0), "Kill 5 Loar Shades and pick up their remains.", true, loar5);
+		((NpcStep) (kill5Shades)).addAlternateNpcs(NpcID.SHADE_LEVEL1);
+		kill4Shades = new NpcStep(this, NpcID.SHADESHADOW_LEVEL1, new WorldPoint(3488, 3287, 0), "Kill 4 Loar Shades and pick up their remains.", true, loar5);
+		((NpcStep) (kill4Shades)).addAlternateNpcs(NpcID.SHADE_LEVEL1);
+		kill3Shades = new NpcStep(this, NpcID.SHADESHADOW_LEVEL1, new WorldPoint(3488, 3287, 0), "Kill 3 Loar Shades and pick up their remains.", true, loar5);
+		((NpcStep) (kill3Shades)).addAlternateNpcs(NpcID.SHADE_LEVEL1);
+		kill2Shades = new NpcStep(this, NpcID.SHADESHADOW_LEVEL1, new WorldPoint(3488, 3287, 0), "Kill 2 Loar Shades and pick up their remains.", true, loar5);
+		((NpcStep) (kill2Shades)).addAlternateNpcs(NpcID.SHADE_LEVEL1);
+		kill1Shades = new NpcStep(this, NpcID.SHADESHADOW_LEVEL1, new WorldPoint(3488, 3287, 0), "Kill 1 Loar Shades and pick up their remains.", true, loar5);
+		((NpcStep) (kill1Shades)).addAlternateNpcs(NpcID.SHADE_LEVEL1);
 		kill5Shades.addSubSteps(kill1Shades, kill2Shades, kill3Shades, kill4Shades);
 
-		use207OnRazmireAgain = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Use the serum 207 on Razmire in the north of Mort'ton.", serum207Highlighted, loar5);
+		use207OnRazmireAgain = new NpcStep(this, NpcID.RAZMIRE_KEELGAN_AFFLICTED, new WorldPoint(3488, 3296, 0), "Use the serum 207 on Razmire in the north of Mort'ton.", serum207Highlighted, loar5);
 		((NpcStep) (use207OnRazmireAgain)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
-		use207OnRazmireAgain.addIcon(ItemID.SERUM_207_4);
-		talkToRazmireAgain = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Talk to Razmire in the north of Mort'ton.", serum207Highlighted, loar5);
+		use207OnRazmireAgain.addIcon(ItemID.MORT_SERUM4);
+		talkToRazmireAgain = new NpcStep(this, NpcID.RAZMIRE_KEELGAN_AFFLICTED, new WorldPoint(3488, 3296, 0), "Talk to Razmire in the north of Mort'ton.", serum207Highlighted, loar5);
 		((NpcStep) (talkToRazmireAgain)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
-		buyTimberLimeAndSwamp = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Buy 5 timber beams, 5 limestone bricks, and 25 swamp paste from Razmire's builders' store.", timber5, lime5, swampPaste25);
+		buyTimberLimeAndSwamp = new NpcStep(this, NpcID.RAZMIRE_KEELGAN_AFFLICTED, new WorldPoint(3488, 3296, 0), "Buy 5 timber beams, 5 limestone bricks, and 25 swamp paste from Razmire's builders' store.", timber5, lime5, swampPaste25);
 		buyTimberLimeAndSwamp.addDialogSteps("Can you open a store for me?", "Can I see the building store please?");
 		((NpcStep) (buyTimberLimeAndSwamp)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
 
-		use207OnUlsquire = new NpcStep(this, NpcID.AFFLICTEDULSQUIRE, new WorldPoint(3496, 3289, 0),
+		use207OnUlsquire = new NpcStep(this, NpcID.ULSQUIRE_SHAUNCY_AFFLICTED, new WorldPoint(3496, 3289, 0),
 			"Buy some olive oil from Razmire's general store, and 5 timber beams, 5 limestone bricks, and 25 swamp paste from their builders' store. Afterwards, use some serum 207 on Ulsquire.", serum207Highlighted);
-		use207OnUlsquire.addIcon(ItemID.SERUM_207_4);
+		use207OnUlsquire.addIcon(ItemID.MORT_SERUM4);
 		((NpcStep) (use207OnUlsquire)).addAlternateNpcs(NpcID.ULSQUIRE_SHAUNCY);
 		use207OnUlsquire.addDialogSteps("Can you open a store for me?", "Can I see the general store please?");
 
-		talkToUlsquire = new NpcStep(this, NpcID.AFFLICTEDULSQUIRE, new WorldPoint(3496, 3289, 0), "Talk to Ulsquire in the east of Mort'ton.");
+		talkToUlsquire = new NpcStep(this, NpcID.ULSQUIRE_SHAUNCY_AFFLICTED, new WorldPoint(3496, 3289, 0), "Talk to Ulsquire in the east of Mort'ton.");
 		((NpcStep) (talkToUlsquire)).addAlternateNpcs(NpcID.ULSQUIRE_SHAUNCY);
-		talkToUlsquireAgain = new NpcStep(this, NpcID.AFFLICTEDULSQUIRE, new WorldPoint(3496, 3289, 0), "Talk to Ulsquire again.");
+		talkToUlsquireAgain = new NpcStep(this, NpcID.ULSQUIRE_SHAUNCY_AFFLICTED, new WorldPoint(3496, 3289, 0), "Talk to Ulsquire again.");
 		talkToUlsquireAgain.addDialogSteps("What can you tell me about that temple?");
 		((NpcStep) (talkToUlsquireAgain)).addAlternateNpcs(NpcID.ULSQUIRE_SHAUNCY);
 
 		repairTemple = new DetailedQuestStep(this, new WorldPoint(3506, 3316, 0), "Repair the temple north east of Mort'ton. Do this on World 377 to make it faster and easier.", oliveOil, serum207, hammerOrFlam, lime5, timber5, swampPaste25);
 		repairTo20Sanctity = new DetailedQuestStep(this, new WorldPoint(3506, 3316, 0), "Keep repairing the temple until 20 sanctity.", oliveOil, serum207, hammerOrFlam, lime5, timber5, swampPaste25);
 
-		lightAltar = new ObjectStep(this, ObjectID.FIRE_ALTAR, new WorldPoint(3506, 3316, 0), "Light the fire altar", tinderbox);
-		useOilOnFlame = new ObjectStep(this, ObjectID.FLAMING_FIRE_ALTAR, new WorldPoint(3506, 3316, 0), "Use the olive oil on the temple's fire.", oliveOilHighlighted);
-		useOilOnFlame.addIcon(ItemID.OLIVE_OIL4);
-		use207OnFlame = new ObjectStep(this, ObjectID.FLAMING_FIRE_ALTAR, new WorldPoint(3506, 3316, 0), "Use a serum 207 (with 2 or more doses) on the temple's fire.", serum207Highlighted);
-		use207OnFlame.addIcon(ItemID.SERUM_207_4);
+		lightAltar = new ObjectStep(this, ObjectID.TEMPLEFIRE_ALTAR_NOFIRE, new WorldPoint(3506, 3316, 0), "Light the fire altar", tinderbox);
+		useOilOnFlame = new ObjectStep(this, ObjectID.TEMPLEFIRE_ALTAR, new WorldPoint(3506, 3316, 0), "Use the olive oil on the temple's fire.", oliveOilHighlighted);
+		useOilOnFlame.addIcon(ItemID.OLIVEOIL4);
+		use207OnFlame = new ObjectStep(this, ObjectID.TEMPLEFIRE_ALTAR, new WorldPoint(3506, 3316, 0), "Use a serum 207 (with 2 or more doses) on the temple's fire.", serum207Highlighted);
+		use207OnFlame.addIcon(ItemID.MORT_SERUM4);
 		useOilOnLog = new DetailedQuestStep(this, "Use the sacred oil on a log.", logHighlighted, sacredOilHighlighted);
-		burnCorpse = new ObjectStep(this, ObjectID.FUNERAL_PYRE, new WorldPoint(3507, 3277, 0), "Use the pyre log in a funeral pyre, then a loar remain. Finally, burn it.", pyreLog, loar);
-		use208OnRazmire = new NpcStep(this, NpcID.AFFLICTEDRAZMIRE, new WorldPoint(3488, 3296, 0), "Use the serum 208 on Razmire in the north of Mort'ton.", serum208);
-		use208OnRazmire.addIcon(ItemID.SERUM_208_4);
+		burnCorpse = new ObjectStep(this, ObjectID.TEMPLE_PYRE, new WorldPoint(3507, 3277, 0), "Use the pyre log in a funeral pyre, then a loar remain. Finally, burn it.", pyreLog, loar);
+		use208OnRazmire = new NpcStep(this, NpcID.RAZMIRE_KEELGAN_AFFLICTED, new WorldPoint(3488, 3296, 0), "Use the serum 208 on Razmire in the north of Mort'ton.", serum208);
+		use208OnRazmire.addIcon(ItemID.MORT_SERUM_PERM4);
 		((NpcStep) (use207OnRazmire)).addAlternateNpcs(NpcID.RAZMIRE_KEELGAN);
-		use208OnUlsquire = new NpcStep(this, NpcID.AFFLICTEDULSQUIRE, new WorldPoint(3496, 3289, 0),
+		use208OnUlsquire = new NpcStep(this, NpcID.ULSQUIRE_SHAUNCY_AFFLICTED, new WorldPoint(3496, 3289, 0),
 			"Use some serum 208 on Ulsquire in the east of Mort'ton.", serum208);
-		use208OnUlsquire.addIcon(ItemID.SERUM_208_4);
+		use208OnUlsquire.addIcon(ItemID.MORT_SERUM_PERM4);
 		((NpcStep) (talkToUlsquire)).addAlternateNpcs(NpcID.ULSQUIRE_SHAUNCY);
 
-		talkToUlsquireToFinish = new NpcStep(this, NpcID.AFFLICTEDULSQUIRE, new WorldPoint(3496, 3289, 0), "Talk to Ulsquire to finish the quest.");
+		talkToUlsquireToFinish = new NpcStep(this, NpcID.ULSQUIRE_SHAUNCY_AFFLICTED, new WorldPoint(3496, 3289, 0), "Talk to Ulsquire to finish the quest.");
 		((NpcStep) (talkToUlsquireToFinish)).addAlternateNpcs(NpcID.ULSQUIRE_SHAUNCY);
 
 	}

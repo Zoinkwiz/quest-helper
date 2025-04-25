@@ -24,18 +24,25 @@
  */
 package com.questhelper.requirements.item;
 
-import com.questhelper.collections.KeyringCollection;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.collections.KeyringCollection;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
-import java.awt.Color;
+import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.util.Text;
 
+import java.awt.*;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+// TODO: Convert this to be a TrackedContainer instead?
 public class KeyringRequirement extends ItemRequirement
 {
 	RuneliteRequirement runeliteRequirement;
 
+	@Getter
 	KeyringCollection keyringCollection;
 
 	ConfigManager configManager;
@@ -45,7 +52,7 @@ public class KeyringRequirement extends ItemRequirement
 	public KeyringRequirement(String name, ConfigManager configManager, KeyringCollection key)
 	{
 		super(name, key.getItemID());
-		keyring = new ItemRequirement("Steel key ring", ItemID.STEEL_KEY_RING);
+		keyring = new ItemRequirement("Steel key ring", ItemID.FAVOUR_KEY_RING);
 		runeliteRequirement = new RuneliteRequirement(configManager, key.runeliteName(),
 			"true", key.toChatText());
 		this.keyringCollection = key;
@@ -55,7 +62,7 @@ public class KeyringRequirement extends ItemRequirement
 	public KeyringRequirement(ConfigManager configManager, KeyringCollection key)
 	{
 		super(key.toChatText(), key.getItemID());
-		keyring = new ItemRequirement("Steel key ring", ItemID.STEEL_KEY_RING);
+		keyring = new ItemRequirement("Steel key ring", ItemID.FAVOUR_KEY_RING);
 		runeliteRequirement = new RuneliteRequirement(configManager, key.runeliteName(),
 			"true", key.toChatText());
 		this.keyringCollection = key;
@@ -78,7 +85,6 @@ public class KeyringRequirement extends ItemRequirement
 		KeyringRequirement newItem = new KeyringRequirement(getName(), configManager, keyringCollection);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(getDisplayItemId());
-		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
 		newItem.setConditionToHide(getConditionToHide());
@@ -92,10 +98,8 @@ public class KeyringRequirement extends ItemRequirement
 
 	@Override
 	public boolean check(Client client)
-	{
-		boolean match = runeliteRequirement.check(client);
-
-		if (match && keyring.check(client))
+	{;
+		if (hasKeyOnKeyRing() && keyring.check(client))
 		{
 			return true;
 		}
@@ -103,30 +107,30 @@ public class KeyringRequirement extends ItemRequirement
 		return super.check(client);
 	}
 
-	@Override
-	public Color getColorConsideringBank(Client client, QuestHelperConfig config)
+	public boolean hasKeyOnKeyRing()
 	{
-		Color color;
-		if (!this.isActualItem())
-		{
-			color = Color.GRAY;
-		}
-		else
-		{
-			color = super.getColorConsideringBank(client, config);
-		}
+		return runeliteRequirement.check();
+	}
 
-		if (color == config.failColour())
+	@Override
+	public Color getColor(Client client, QuestHelperConfig config)
+	{
+		if (hasKeyOnKeyRing())
 		{
-			boolean match = runeliteRequirement.check(client);
-
-			if (match)
-			{
-				color = Color.ORANGE;
-			}
+			return keyring.getColor(client, config);
 		}
 
-		return color;
+		return this.check(client) ? config.passColour() : config.failColour();
+	}
+
+	protected String getTooltipFromEnumSet(Set<TrackedContainers> containers)
+	{
+		String basicTooltip = super.getTooltipFromEnumSet(containers);
+		if (hasKeyOnKeyRing())
+		{
+			return basicTooltip + " on your key ring.";
+		}
+		return basicTooltip;
 	}
 
 	@Override

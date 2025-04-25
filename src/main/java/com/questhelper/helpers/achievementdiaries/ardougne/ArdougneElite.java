@@ -24,15 +24,15 @@
  */
 package com.questhelper.helpers.achievementdiaries.ardougne;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
@@ -41,27 +41,23 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
 
 public class ArdougneElite extends ComplexStateQuestHelper
 {
@@ -136,30 +132,29 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notTrawlerRay = new VarplayerRequirement(1197, false, 6);
-		notYanAgi = new VarplayerRequirement(1197, false, 7);
-		notPickHero = new VarplayerRequirement(1197, false, 9);
-		notRuneCrossbow = new VarplayerRequirement(1197, false, 8);
-		notImbueSalve = new VarplayerRequirement(1197, false, 10);
-		notPickTorstol = new VarplayerRequirement(1197, false, 11);
-		notArdyRooftops = new VarplayerRequirement(1197, false, 12);
-		notIceBarrage = new VarplayerRequirement(1197, false, 13);
+		notTrawlerRay = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 6);
+		notYanAgi = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 7);
+		notPickHero = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 9);
+		notRuneCrossbow = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 8);
+		notImbueSalve = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 10);
+		notPickTorstol = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 11);
+		notArdyRooftops = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 12);
+		notIceBarrage = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 13);
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
-		enoughNMZPoints = new VarplayerRequirement(1060, 800000, Operation.GREATER_EQUAL,
-			"800,000 Nightmare Zone reward points");
+		enoughNMZPoints = new VarplayerRequirement(VarPlayerID.NZONE_REWARDPOINTS, 800000, Operation.GREATER_EQUAL, 			"800,000 Nightmare Zone reward points");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOOD_RUNE).showConditioned(notIceBarrage);
-		waterRune = new ItemRequirement("Water runes", ItemID.WATER_RUNE).showConditioned(notIceBarrage);
-		deathRune = new ItemRequirement("Death runes", ItemID.DEATH_RUNE).showConditioned(notIceBarrage);
+		bloodRune = new ItemRequirement("Blood runes", ItemID.BLOODRUNE).showConditioned(notIceBarrage);
+		waterRune = new ItemRequirement("Water runes", ItemID.WATERRUNE).showConditioned(notIceBarrage);
+		deathRune = new ItemRequirement("Death runes", ItemID.DEATHRUNE).showConditioned(notIceBarrage);
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notYanAgi).isNotConsumed();
 		salveAmmy = new ItemRequirement("Salve amulet", ItemCollections.IMBUABLE_SALVE_AMULET)
 			.showConditioned(notImbueSalve).isNotConsumed();
 		imbuedSalve = new ItemRequirement("Salve amulet", ItemCollections.IMBUED_SALVE_AMULET)
 			.showConditioned(notImbueSalve).isNotConsumed();
-		seedDib = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPickTorstol).isNotConsumed();
+		seedDib = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(notPickTorstol).isNotConsumed();
 		torstolSeed = new ItemRequirement("Torstol seed", ItemID.TORSTOL_SEED).showConditioned(notPickTorstol);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickTorstol).isNotConsumed();
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(notPickTorstol);
@@ -167,17 +162,17 @@ public class ArdougneElite extends ComplexStateQuestHelper
 
 		yewLog = new ItemRequirement("Yew logs", ItemID.YEW_LOGS).showConditioned(notRuneCrossbow);
 		runeBar = new ItemRequirement("Runite bar", ItemID.RUNITE_BAR).showConditioned(notRuneCrossbow);
-		sinew = new ItemRequirement("Sinew", ItemID.SINEW).showConditioned(notRuneCrossbow);
+		sinew = new ItemRequirement("Sinew", ItemID.XBOWS_SINEW).showConditioned(notRuneCrossbow);
 		root = new ItemRequirement("Root", ItemCollections.NON_MAGIC_TREE_ROOT).showConditioned(notRuneCrossbow);
 		sinewOrRoot = new ItemRequirements(LogicType.OR, "Sinew or non-magic tree root", root, sinew)
 			.showConditioned(notRuneCrossbow);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneCrossbow).isNotConsumed();
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(notRuneCrossbow).isNotConsumed();
-		runeCrossbowU = new ItemRequirement("Rune crossbow (u)", ItemID.RUNITE_CROSSBOW_U).showConditioned(notRuneCrossbow);
-		crossbowString = new ItemRequirement("Crossbow string", ItemID.CROSSBOW_STRING)
+		runeCrossbowU = new ItemRequirement("Rune crossbow (u)", ItemID.XBOWS_CROSSBOW_UNSTRUNG_RUNITE).showConditioned(notRuneCrossbow);
+		crossbowString = new ItemRequirement("Crossbow string", ItemID.XBOWS_CROSSBOW_STRING)
 			.showConditioned(notRuneCrossbow);
-		yewStock = new ItemRequirement("Yew stock", ItemID.YEW_STOCK).showConditioned(notRuneCrossbow);
-		runeLimbs = new ItemRequirement("Runite limbs", ItemID.RUNITE_LIMBS).showConditioned(notRuneCrossbow);
+		yewStock = new ItemRequirement("Yew stock", ItemID.XBOWS_CROSSBOW_STOCK_YEW).showConditioned(notRuneCrossbow);
+		runeLimbs = new ItemRequirement("Runite limbs", ItemID.XBOWS_CROSSBOW_LIMBS_RUNITE).showConditioned(notRuneCrossbow);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
@@ -247,32 +242,32 @@ public class ArdougneElite extends ComplexStateQuestHelper
 			"Cast Ice Barrage on a Player within Castle Wars.", ancientBook, waterRune.quantity(6),
 			bloodRune.quantity(2), deathRune.quantity(4));
 
-		moveToYanAgi = new ObjectStep(this, ObjectID.STAIRCASE_16664, new WorldPoint(2604, 3079, 0),
+		moveToYanAgi = new ObjectStep(this, ObjectID.STAIRS_CELLAR, new WorldPoint(2604, 3079, 0),
 			"Climb down the stairs to enter the Yanille Agility Dungeon.", lockpick);
-		yanAgi = new ObjectStep(this, ObjectID.DOOR_11728, new WorldPoint(2601, 9482, 0),
+		yanAgi = new ObjectStep(this, ObjectID.TOOLLOCK5, new WorldPoint(2601, 9482, 0),
 			"Lockpick the door to the Yanille Agility Dungeon.", lockpick);
 		yanAgi.addIcon(ItemID.LOCKPICK);
 
-		farmMorePoints = new NpcStep(this, NpcID.DOMINIC_ONION, new WorldPoint(2608, 3116, 0),
+		farmMorePoints = new NpcStep(this, NpcID.NZONE_HOST, new WorldPoint(2608, 3116, 0),
 			"Farm more Nightmare Zone points. Speak with Dominic Onion and buy a dream.", combatGear, food);
-		imbueSalve = new ObjectStep(this, ObjectID.REWARDS_CHEST, new WorldPoint(2609, 3119, 0),
+		imbueSalve = new ObjectStep(this, ObjectID.NZONE_LOBBY_CHEST, new WorldPoint(2609, 3119, 0),
 			"Imbue a salve amulet at Nightmare Zone.", enoughNMZPoints, salveAmmy);
 		equipSalve = new ItemStep(this, "Equip your salve amulet.", imbuedSalve);
 
 		trawlerRay = new DetailedQuestStep(this, new WorldPoint(2659, 3160, 0),
 			"Catch a manta ray in the Fishing Trawler and cook it in Port Khazard.");
 
-		ardyRooftops = new ObjectStep(this, ObjectID.WOODEN_BEAMS, new WorldPoint(2673, 3298, 0),
+		ardyRooftops = new ObjectStep(this, ObjectID.ROOFTOPS_ARDY_WALLCLIMB, new WorldPoint(2673, 3298, 0),
 			"Complete a lap of Ardougne's rooftop agility course.");
 
 		pickHero = new NpcStep(this, NpcID.HERO, new WorldPoint(2630, 3292, 0),
 			"Pickpocket a Hero in East Ardougne.");
 
-		spinString = new ObjectStep(this, ObjectID.SPINNING_WHEEL_8748, new WorldPoint(2731, 3278, 0),
+		spinString = new ObjectStep(this, ObjectID.ELF_VILLAGE_SPINNING_WHEEL, new WorldPoint(2731, 3278, 0),
 			"Spin a crossbow string in Witchaven. Do not complete any other diary tasks while completing this.", sinewOrRoot);
 		moveToYan = new DetailedQuestStep(this, new WorldPoint(2603, 3088, 0),
 			"Enter Yanille to continue the task.");
-		smithLimbs = new ObjectStep(this, ObjectID.ANVIL_2097, new WorldPoint(2613, 3081, 0),
+		smithLimbs = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(2613, 3081, 0),
 			"Smith some rune limbs in Yanille.", runeBar, hammer);
 		fletchStock = new ItemStep(this, "Use your knife on the  yew logs to make a yew stock.", knife.highlighted(),
 			yewLog.highlighted());
@@ -281,12 +276,12 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		runeCrossbow = new ItemStep(this, "String the rune crossbow (u).", runeCrossbowU.highlighted(),
 			crossbowString.highlighted());
 
-		pickTorstol = new ObjectStep(this, NullObjectID.NULL_8152, new WorldPoint(2670, 3374, 0),
+		pickTorstol = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_3, new WorldPoint(2670, 3374, 0),
 			"Plant and harvest the Torstol from the north Ardougne herb patch. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			rake, spade, seedDib, torstolSeed);
 
-		claimReward = new NpcStep(this, NpcID.TWOPINTS, new WorldPoint(2574, 3323, 0),
+		claimReward = new NpcStep(this, NpcID.ARDY_TWOPINTS_DIARY, new WorldPoint(2574, 3323, 0),
 			"Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -335,8 +330,8 @@ public class ArdougneElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Ardougne Cloak 4", ItemID.ARDOUGNE_CLOAK_4),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Ardougne Cloak 4", ItemID.ARDY_CAPE_ELITE),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 70)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

@@ -30,9 +30,11 @@ import com.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+
 import static com.questhelper.config.AssistanceLevel.ASSISTANCE_LEVEL_KEY;
 
 public class AssistLevelPanel extends JPanel

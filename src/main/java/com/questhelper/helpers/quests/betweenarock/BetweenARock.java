@@ -24,43 +24,34 @@
  */
 package com.questhelper.helpers.quests.betweenarock;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.PuzzleWrapperStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class BetweenARock extends BasicQuestHelper
 {
@@ -181,14 +172,14 @@ public class BetweenARock extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		coins5 = new ItemRequirement("Coins", ItemCollections.COINS, 5);
-		page1 = new ItemRequirement("Book page 1", ItemID.BOOK_PAGE_1);
-		page2 = new ItemRequirement("Book page 2", ItemID.BOOK_PAGE_2);
-		page3 = new ItemRequirement("Book page 3", ItemID.BOOK_PAGE_3);
-		pages = new ItemRequirement("Pages", ItemID.PAGES_4573);
-		dwarvenLore = new ItemRequirement("Dwarven lore", ItemID.DWARVEN_LORE);
+		page1 = new ItemRequirement("Book page 1", ItemID.DWARF_ROCK_PAGE1);
+		page2 = new ItemRequirement("Book page 2", ItemID.DWARF_ROCK_PAGE2);
+		page3 = new ItemRequirement("Book page 3", ItemID.DWARF_ROCK_PAGE3);
+		pages = new ItemRequirement("Pages", ItemID.DWARF_ROCK_PAGEX3);
+		dwarvenLore = new ItemRequirement("Dwarven lore", ItemID.DWARF_ROCK_BOOK);
 		dwarvenLore.setTooltip("You can get another from Rolad south of Ice Mountain");
 
-		dwarvenLoreHighlight = new ItemRequirement("Dwarven lore", ItemID.DWARVEN_LORE);
+		dwarvenLoreHighlight = new ItemRequirement("Dwarven lore", ItemID.DWARF_ROCK_BOOK);
 		dwarvenLoreHighlight.setTooltip("You can get another from Rolad south of Ice Mountain");
 		dwarvenLoreHighlight.setHighlightInInventory(true);
 
@@ -197,28 +188,28 @@ public class BetweenARock extends BasicQuestHelper
 		goldBarHighlight = new ItemRequirement("Gold bar", ItemID.GOLD_BAR);
 		goldBarHighlight.setHighlightInInventory(true);
 
-		goldCannonball = new ItemRequirement("Cannon ball", ItemID.CANNON_BALL);
-		goldCannonballHighlight = new ItemRequirement("Cannon ball", ItemID.CANNON_BALL);
+		goldCannonball = new ItemRequirement("Cannon ball", ItemID.DWARF_ROCK_CANNONBALL_GOLD);
+		goldCannonballHighlight = new ItemRequirement("Cannon ball", ItemID.DWARF_ROCK_CANNONBALL_GOLD);
 		goldCannonballHighlight.setHighlightInInventory(true);
 
 		cannonMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD, 1);
 		cannonMould.addAlternates(ItemID.DOUBLE_AMMO_MOULD);
 		cannonMould.setTooltip("You can buy one from Nulodion above the Dwarven Mine for 5 coins");
 
-		schematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC);
+		schematic = new ItemRequirement("Schematic", ItemID.DWARF_ROCK_SCHEMATIC1);
 
-		schematicHighlight = new ItemRequirement("Schematic", ItemID.SCHEMATIC);
+		schematicHighlight = new ItemRequirement("Schematic", ItemID.DWARF_ROCK_SCHEMATIC1);
 		schematicHighlight.setHighlightInInventory(true);
 
-		baseSchematic = new ItemRequirement("Base schematics", ItemID.BASE_SCHEMATICS);
+		baseSchematic = new ItemRequirement("Base schematics", ItemID.DWARF_ROCK_BASE_SCHEMATIC);
 
-		schematicEngineer = new ItemRequirement("Schematics", ItemID.SCHEMATICS);
+		schematicEngineer = new ItemRequirement("Schematics", ItemID.DWARF_ROCK_SCHEMATIC2);
 
-		goldHelmet = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET);
-		goldHelmetEquipped = new ItemRequirement("Gold helmet", ItemID.GOLD_HELMET, 1, true);
-		khorvakSchematic = new ItemRequirement("Khorvak schematic", ItemID.SCHEMATICS_4577);
+		goldHelmet = new ItemRequirement("Gold helmet", ItemID.DWARF_GOLDROCK_HELMET);
+		goldHelmetEquipped = new ItemRequirement("Gold helmet", ItemID.DWARF_GOLDROCK_HELMET, 1, true);
+		khorvakSchematic = new ItemRequirement("Khorvak schematic", ItemID.DWARF_ROCK_SCHEMATIC3);
 
-		solvedSchematic = new ItemRequirement("Schematic", ItemID.SCHEMATIC_4578);
+		solvedSchematic = new ItemRequirement("Schematic", ItemID.DWARF_ROCK_SCHEMATIC_ASSEMBLED);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -232,9 +223,9 @@ public class BetweenARock extends BasicQuestHelper
 
 		// Recommended
 		faladorTeleport = new ItemRequirement("Teleport to Ice Mountain", ItemCollections.COMBAT_BRACELETS);
-		faladorTeleport.addAlternates(ItemID.LASSAR_TELEPORT, ItemID.MIND_ALTAR_TELEPORT);
+		faladorTeleport.addAlternates(ItemID.TABLET_LASSAR, ItemID.TELETAB_MIND_ALTAR);
 		faladorTeleport.addAlternates(ItemCollections.AMULET_OF_GLORIES);
-		faladorTeleport.addAlternates(ItemID.FALADOR_TELEPORT);
+		faladorTeleport.addAlternates(ItemID.POH_TABLET_FALADORTELEPORT);
 	}
 
 	@Override
@@ -265,123 +256,123 @@ public class BetweenARock extends BasicQuestHelper
 		hasSolvedSchematic = new VarbitRequirement(305, 1);
 		inRealm = new ZoneRequirement(realm);
 
-		avatarNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1234),
-			new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1235), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_RANGING), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_RANGING_1231),
-			new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_RANGING_1232), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_STRENGTH), new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1228),
-			new NpcCondition(NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1229));
+		avatarNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.DWARF_ROCK_AVATAR_MAGE), new NpcCondition(NpcID.DWARF_ROCK_AVATAR_MAGE_GREEN),
+			new NpcCondition(NpcID.DWARF_ROCK_AVATAR_MAGE_YELLOW), new NpcCondition(NpcID.DWARF_ROCK_AVATAR_ARCHER), new NpcCondition(NpcID.DWARF_ROCK_AVATAR_ARCHER_GREEN),
+			new NpcCondition(NpcID.DWARF_ROCK_AVATAR_ARCHER_YELLOW), new NpcCondition(NpcID.DWARF_ROCK_AVATAR_WARRIOR), new NpcCondition(NpcID.DWARF_ROCK_AVATAR_WARRIOR_GREEN),
+			new NpcCondition(NpcID.DWARF_ROCK_AVATAR_WARRIOR_YELLOW));
 	}
 
 	public void setupSteps()
 	{
-		enterDwarfCave = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Travel to the Keldagrim south mines and talk to Dondakan there.", coins5);
-		enterDwarfCave2 = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0), "Travel to the Keldagrim south mines and talk to Dondakan there.", coins5);
-		talkToFerryman = new NpcStep(this, NpcID.DWARVEN_FERRYMAN, new WorldPoint(2829, 10129, 0), "Pay the Dwarven Ferryman 5 coins to travel across the water.", coins5);
+		enterDwarfCave = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0), "Travel to the Keldagrim south mines and talk to Dondakan there.", coins5);
+		enterDwarfCave2 = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0), "Travel to the Keldagrim south mines and talk to Dondakan there.", coins5);
+		talkToFerryman = new NpcStep(this, NpcID.DWARFROCK_FERRYMAN1, new WorldPoint(2829, 10129, 0), "Pay the Dwarven Ferryman 5 coins to travel across the water.", coins5);
 		talkToFerryman.addDialogStep("Yes please.");
-		talkToDondakan = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Talk to Dondakan in the north of the mine.");
+		talkToDondakan = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0), "Talk to Dondakan in the north of the mine.");
 		talkToDondakan.addDialogStep("Why are you firing a cannon at a wall?");
 		talkToDondakan.addDialogStep("So why were you trying to get through the rock again?");
 		talkToDondakan.addDialogStep("Sounds interesting!");
 		talkToDondakan.addSubSteps(enterDwarfCave, enterDwarfCave2, talkToFerryman);
 
-		travelBackWithFerryman = new NpcStep(this, NpcID.DWARVEN_FERRYMAN_4897, new WorldPoint(2854, 10142, 0), "Talk to the Dwarven Engineer in west Keldagrim.");
-		talkToBoatman = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0), "Talk to the Dwarven Engineer in west Keldagrim.");
+		travelBackWithFerryman = new NpcStep(this, NpcID.DWARFROCK_FERRYMAN2, new WorldPoint(2854, 10142, 0), "Talk to the Dwarven Engineer in west Keldagrim.");
+		talkToBoatman = new NpcStep(this, NpcID.DWARF_CITY_BOATMAN_MINES_POSTQUEST, new WorldPoint(2842, 10129, 0), "Talk to the Dwarven Engineer in west Keldagrim.");
 		travelToKeldagrim = new DetailedQuestStep(this, "Talk to the Dwarven Engineer in west Keldagrim.");
-		talkToEngineer = new NpcStep(this, NpcID.DWARVEN_ENGINEER, new WorldPoint(2870, 10199, 0), "Talk to the Dwarven Engineer in west Keldagrim.");
+		talkToEngineer = new NpcStep(this, NpcID.DWARFROCK_ENGINEER1, new WorldPoint(2870, 10199, 0), "Talk to the Dwarven Engineer in west Keldagrim.");
 		talkToEngineer.addSubSteps(travelBackWithFerryman, talkToBoatman, travelToKeldagrim);
 
-		talkToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0),
+		talkToRolad = new NpcStep(this, NpcID.DWARFROCK_ROLAD, new WorldPoint(3022, 3453, 0),
 			"Talk to Rolad at the Ice Mountain entrance to the Dwarven Mine. If you don't have an ammo mould, buy one from Nulodion whilst you're here.", pickaxe);
 		talkToRolad.addTeleport(faladorTeleport);
 		talkToRolad.addDialogStep("I'll be back later.");
 
-		enterDwarvenMine = new ObjectStep(this, ObjectID.TRAPDOOR_11867, new WorldPoint(3019, 3450, 0), "Enter the Dwarven Mine.", pickaxe);
+		enterDwarvenMine = new ObjectStep(this, ObjectID.FAI_DWARF_TRAPDOOR_DOWN, new WorldPoint(3019, 3450, 0), "Enter the Dwarven Mine.", pickaxe);
 
-		searchCart = new ObjectStep(this, ObjectID.MINE_CART_6045, "Search the mine carts for a page.");
+		searchCart = new ObjectStep(this, ObjectID.DWARFROCK_BOOK_CART, "Search the mine carts for a page.");
 
-		killScorpion = new NpcStep(this, NpcID.SCORPION_3024, new WorldPoint(3043, 9796, 0), "Kill scorpions for a page.", true);
+		killScorpion = new NpcStep(this, NpcID.SOS_PEST_SCORPION, new WorldPoint(3043, 9796, 0), "Kill scorpions for a page.", true);
 
-		mineRock = new ObjectStep(this, ObjectID.TIN_ROCKS_11361, "Mine low level rocks for a page.", true, pickaxe);
+		mineRock = new ObjectStep(this, ObjectID.TINROCK2, "Mine low level rocks for a page.", true, pickaxe);
 		mineRock.setOverlayText("Mine low level rocks for a page.\n\nYou can continue mining the same rocks.");
 		mineRock.addAlternateObjects(
-			ObjectID.TIN_ROCKS_11360,
-			ObjectID.CLAY_ROCKS,
-			ObjectID.CLAY_ROCKS_11363,
-			ObjectID.IRON_ROCKS,
-			ObjectID.IRON_ROCKS_11365,
-			ObjectID.COPPER_ROCKS_11161,
-			ObjectID.COPPER_ROCKS_10943
+			ObjectID.TINROCK1,
+			ObjectID.CLAYROCK1,
+			ObjectID.CLAYROCK2,
+			ObjectID.IRONROCK1,
+			ObjectID.IRONROCK2,
+			ObjectID.COPPERROCK2,
+			ObjectID.COPPERROCK1
 			);
 
-		goBackUpToRolad = new ObjectStep(this, ObjectID.LADDER_17387, new WorldPoint(3019, 9850, 0), "Go back up to Rolad.", pages);
+		goBackUpToRolad = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR_DIRECTIONAL, new WorldPoint(3019, 9850, 0), "Go back up to Rolad.", pages);
 
-		returnToRolad = new NpcStep(this, NpcID.ROLAD, new WorldPoint(3022, 3453, 0), "Talk to Rolad again.", pages);
+		returnToRolad = new NpcStep(this, NpcID.DWARFROCK_ROLAD, new WorldPoint(3022, 3453, 0), "Talk to Rolad again.", pages);
 		returnToRolad.addSubSteps(goBackUpToRolad);
 
 		readEntireBook = new DetailedQuestStep(this, "Read the entire dwarven lore book.", dwarvenLoreHighlight);
 
-		enterDwarfCaveWithBook = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Return to Dondakan with the book and a gold bar.", coins5, goldBar, dwarvenLore);
-		enterDwarfCave2WithBook = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0), "Return to Dondakan with the book and a gold bar.", coins5, goldBar, dwarvenLore);
-		talkToFerrymanWithBook = new NpcStep(this, NpcID.DWARVEN_FERRYMAN, new WorldPoint(2829, 10129, 0), "Return to Dondakan with the book and a gold bar.", coins5, goldBar, dwarvenLore);
+		enterDwarfCaveWithBook = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0), "Return to Dondakan with the book and a gold bar.", coins5, goldBar, dwarvenLore);
+		enterDwarfCave2WithBook = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0), "Return to Dondakan with the book and a gold bar.", coins5, goldBar, dwarvenLore);
+		talkToFerrymanWithBook = new NpcStep(this, NpcID.DWARFROCK_FERRYMAN1, new WorldPoint(2829, 10129, 0), "Return to Dondakan with the book and a gold bar.", coins5, goldBar, dwarvenLore);
 		talkToFerrymanWithBook.addDialogStep("Yes please.");
-		talkToDondakanWithBook = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Return to Dondakan with the book and a gold bar.", goldBar, dwarvenLore);
+		talkToDondakanWithBook = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0), "Return to Dondakan with the book and a gold bar.", goldBar, dwarvenLore);
 		talkToDondakanWithBook.addSubSteps(enterDwarfCaveWithBook, enterDwarfCave2WithBook, talkToFerrymanWithBook);
 
 
-		useGoldBarOnDondakan = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Use a gold bar on Dondakan.", goldBarHighlight);
+		useGoldBarOnDondakan = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0), "Use a gold bar on Dondakan.", goldBarHighlight);
 		useGoldBarOnDondakan.addIcon(ItemID.GOLD_BAR);
 
 		makeGoldCannonball = new DetailedQuestStep(this, "Use a gold bar on a furnace to make a gold cannonball.", goldBar, cannonMould);
 
-		enterDwarfCaveWithCannonball = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0), "Return to Dondakan with the book and the gold cannonball.", coins5, goldCannonball, dwarvenLore);
-		enterDwarfCave2WithCannonball = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0), "Return to Dondakan with the book and the gold cannonball.", coins5, goldCannonball, dwarvenLore);
-		talkToFerrymanWithCannonball = new NpcStep(this, NpcID.DWARVEN_FERRYMAN, new WorldPoint(2829, 10129, 0), "Return to Dondakan with the book and the gold cannonball.", coins5, goldCannonball, dwarvenLore);
+		enterDwarfCaveWithCannonball = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0), "Return to Dondakan with the book and the gold cannonball.", coins5, goldCannonball, dwarvenLore);
+		enterDwarfCave2WithCannonball = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0), "Return to Dondakan with the book and the gold cannonball.", coins5, goldCannonball, dwarvenLore);
+		talkToFerrymanWithCannonball = new NpcStep(this, NpcID.DWARFROCK_FERRYMAN1, new WorldPoint(2829, 10129, 0), "Return to Dondakan with the book and the gold cannonball.", coins5, goldCannonball, dwarvenLore);
 		talkToFerrymanWithCannonball.addDialogStep("Yes please.");
 
-		useGoldCannonballOnDondakan = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Use a gold cannon ball on Dondakan.", goldCannonballHighlight);
-		useGoldCannonballOnDondakan.addIcon(ItemID.CANNON_BALL);
+		useGoldCannonballOnDondakan = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0), "Use a gold cannon ball on Dondakan.", goldCannonballHighlight);
+		useGoldCannonballOnDondakan.addIcon(ItemID.DWARF_ROCK_CANNONBALL_GOLD);
 		useGoldCannonballOnDondakan.addDialogStep("Yes, I'm sure this will crack open the rock.");
 		useGoldCannonballOnDondakan.addSubSteps(enterDwarfCaveWithCannonball, enterDwarfCave2WithCannonball, talkToFerrymanWithCannonball);
 
-		talkToDondakanAfterShot = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Talk to Dondakan.");
+		talkToDondakanAfterShot = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0), "Talk to Dondakan.");
 		talkToDondakanAfterShot.addDialogStep("So you want to... fire me into the rock?");
 		talkToDondakanAfterShot.addDialogStep("I can't argue with that, shoot me in!");
 
 		readBookAgain = new DetailedQuestStep(this, "Read the last page of the dwarven lore book again for a base schematic.", dwarvenLoreHighlight);
 		readBookAgain.addDialogStep("Yes.");
 
-		travelBackWithFerrymanAgain = new NpcStep(this, NpcID.DWARVEN_FERRYMAN_4897, new WorldPoint(2854, 10142, 0), "Talk to the Dwarven Engineer in west Keldagrim.", schematic, baseSchematic);
-		talkToBoatmanAgain = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0), "Talk to the Dwarven Engineer in west Keldagrim.", schematic, baseSchematic);
+		travelBackWithFerrymanAgain = new NpcStep(this, NpcID.DWARFROCK_FERRYMAN2, new WorldPoint(2854, 10142, 0), "Talk to the Dwarven Engineer in west Keldagrim.", schematic, baseSchematic);
+		talkToBoatmanAgain = new NpcStep(this, NpcID.DWARF_CITY_BOATMAN_MINES_POSTQUEST, new WorldPoint(2842, 10129, 0), "Talk to the Dwarven Engineer in west Keldagrim.", schematic, baseSchematic);
 		travelToKeldagrimAgain = new DetailedQuestStep(this, "Talk to the Dwarven Engineer in west Keldagrim.", schematic, baseSchematic);
-		talkToEngineerAgain = new NpcStep(this, NpcID.DWARVEN_ENGINEER, new WorldPoint(2870, 10199, 0), "Talk to the Dwarven Engineer in west Keldagrim.", schematic, baseSchematic);
+		talkToEngineerAgain = new NpcStep(this, NpcID.DWARFROCK_ENGINEER1, new WorldPoint(2870, 10199, 0), "Talk to the Dwarven Engineer in west Keldagrim.", schematic, baseSchematic);
 		talkToEngineerAgain.addSubSteps(travelBackWithFerrymanAgain, talkToBoatmanAgain, travelToKeldagrimAgain);
 
-		useGoldBarOnAnvil = new ObjectStep(this, ObjectID.ANVIL_6150, new WorldPoint(2869, 10202, 0), "Use 3 gold bars on an anvil to make a gold helmet.", goldBars3, hammer);
+		useGoldBarOnAnvil = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_ANVIL, new WorldPoint(2869, 10202, 0), "Use 3 gold bars on an anvil to make a gold helmet.", goldBars3, hammer);
 		useGoldBarOnAnvil.addDialogStep("Golden helmet."); // For accounts which have already completed the Legend's Quest.
 		useGoldBarOnAnvil.addDialogStep("Yes."); // For accounts which haven't completed the Legend's Quest yet.
 
-		enterKhorvakRoom = new ObjectStep(this, ObjectID.STAIRS_55, new WorldPoint(2821, 3485, 0), "Talk to Khorvak under White Wolf Mountain.");
+		enterKhorvakRoom = new ObjectStep(this, ObjectID.TUNNELSTAIRSTOP, new WorldPoint(2821, 3485, 0), "Talk to Khorvak under White Wolf Mountain.");
 
-		talkToKhorvak = new NpcStep(this, NpcID.KHORVAK_A_DWARVEN_ENGINEER, new WorldPoint(2867, 9876, 0), "Talk to Khorvak under White Wolf Mountain.");
+		talkToKhorvak = new NpcStep(this, NpcID.DWARFROCK_ENGINEER2, new WorldPoint(2867, 9876, 0), "Talk to Khorvak under White Wolf Mountain.");
 		talkToKhorvak.addDialogStep("No, I've had enough of buying drinks for people!");
 		talkToKhorvak.addSubSteps(enterKhorvakRoom);
 
 		assembleSchematic = new PuzzleWrapperStep(this, new PuzzleStep(this, schematicHighlight), "Assemble the schematics.");
 
-		enterDwarfCaveWithHelmet = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		enterDwarfCaveWithHelmet = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0),
 			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
-		enterDwarfCave2WithHelmet = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		enterDwarfCave2WithHelmet = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0),
 			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
-		talkToFerrymanWithHelmet = new NpcStep(this, NpcID.DWARVEN_FERRYMAN, new WorldPoint(2829, 10129, 0),
+		talkToFerrymanWithHelmet = new NpcStep(this, NpcID.DWARFROCK_FERRYMAN1, new WorldPoint(2829, 10129, 0),
 			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
 		talkToFerrymanWithHelmet.addDialogStep("Yes please.");
-		talkToDondakanWithHelmet = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0),
+		talkToDondakanWithHelmet = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0),
 			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, solvedSchematic, pickaxe,
 			combatGear, food);
 		talkToDondakanWithHelmet.addDialogStep("You may fire when ready!");
-		talkToDondakanForEnd = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0),
+		talkToDondakanForEnd = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0),
 			"Prepare for a fight, then return to Dondakan.", coins5, goldHelmetEquipped, pickaxe, combatGear, food);
 		talkToDondakanForEnd.addDialogStep("Ready as I'll ever be.");
 		talkToDondakanWithHelmet.addSubSteps(enterDwarfCaveWithHelmet, enterDwarfCave2WithHelmet, talkToFerrymanWithHelmet, talkToDondakanForEnd);
@@ -389,15 +380,15 @@ public class BetweenARock extends BasicQuestHelper
 		mine6GoldOre = new DetailedQuestStep(this, "Mine 6 gold ores. If you want the Avatar to be level 75 vs 125, get 15. " +
 				"Keep these in your inventory for the boss fight. Do not remove your gold helmet.", pickaxe, goldHelmetEquipped);
 
-		talkToSecondFlame = new ObjectStep(this, ObjectID.WALL_OF_FLAME_5979, new WorldPoint(2373, 4956, 0),
+		talkToSecondFlame = new ObjectStep(this, ObjectID.DWARF_FIREWALL_CENTRE_STRAIGHT, new WorldPoint(2373, 4956, 0),
 			"TALK to the central wall of flame.", goldHelmetEquipped);
-		killAvatar = new NpcStep(this, NpcID.ARZINIAN_AVATAR_OF_MAGIC, new WorldPoint(2375, 4953, 0), "Kill the " +
+		killAvatar = new NpcStep(this, NpcID.DWARF_ROCK_AVATAR_MAGE, new WorldPoint(2375, 4953, 0), "Kill the " +
 			"avatar. Make sure to keep the gold ores in your inventory.", goldHelmetEquipped);
-		killAvatar.addAlternateNpcs(NpcID.ARZINIAN_AVATAR_OF_MAGIC_1234, NpcID.ARZINIAN_AVATAR_OF_MAGIC_1235,
-			NpcID.ARZINIAN_AVATAR_OF_RANGING, NpcID.ARZINIAN_AVATAR_OF_RANGING_1231, NpcID.ARZINIAN_AVATAR_OF_RANGING_1232,
-			NpcID.ARZINIAN_AVATAR_OF_STRENGTH, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1228, NpcID.ARZINIAN_AVATAR_OF_STRENGTH_1229);
+		killAvatar.addAlternateNpcs(NpcID.DWARF_ROCK_AVATAR_MAGE_GREEN, NpcID.DWARF_ROCK_AVATAR_MAGE_YELLOW,
+			NpcID.DWARF_ROCK_AVATAR_ARCHER, NpcID.DWARF_ROCK_AVATAR_ARCHER_GREEN, NpcID.DWARF_ROCK_AVATAR_ARCHER_YELLOW,
+			NpcID.DWARF_ROCK_AVATAR_WARRIOR, NpcID.DWARF_ROCK_AVATAR_WARRIOR_GREEN, NpcID.DWARF_ROCK_AVATAR_WARRIOR_YELLOW);
 
-		finishQuest = new NpcStep(this, NpcID.DONDAKAN_THE_DWARF, new WorldPoint(2822, 10167, 0), "Talk to Dondakan to finish the quest.");
+		finishQuest = new NpcStep(this, NpcID.DWARFROCK_DONDAKAN, new WorldPoint(2822, 10167, 0), "Talk to Dondakan to finish the quest.");
 	}
 
 	@Override

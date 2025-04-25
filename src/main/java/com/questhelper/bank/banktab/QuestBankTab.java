@@ -31,22 +31,17 @@ package com.questhelper.bank.banktab;
 import com.google.common.primitives.Shorts;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.item.ItemRequirement;
-import java.awt.Color;
-import java.awt.Point;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.events.GrandExchangeSearched;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.*;
+import net.runelite.api.events.*;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.ItemQuantityMode;
+import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -57,6 +52,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.awt.Point;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.questhelper.bank.banktab.PotionStorage.COMPONENTS_PER_POTION;
 import static com.questhelper.bank.banktab.PotionStorage.VIAL_IDX;
@@ -198,7 +201,7 @@ public class QuestBankTab
 			resetWidgets();
 			if (questBankTabInterface.isQuestTabActive())
 			{
-				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
+				Widget bankTitle = client.getWidget(InterfaceID.Bankmain.TITLE);
 				if (bankTitle != null)
 				{
 					if (questHelper.getSelectedQuest() != null)
@@ -235,7 +238,7 @@ public class QuestBankTab
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.BANK && questHelper.getSelectedQuest() != null)
+		if (event.getGroupId() == InterfaceID.BANKMAIN && questHelper.getSelectedQuest() != null)
 		{
 			questBankTabInterface.init();
 		}
@@ -247,7 +250,7 @@ public class QuestBankTab
 		questBankTabInterface.handleClick(event);
 
 		// Update widget index of the menu so withdraws work in laid out tabs.
-		if (event.getParam1() == ComponentID.BANK_ITEM_CONTAINER && questBankTabInterface.isQuestTabActive())
+		if (event.getParam1() == InterfaceID.Bankmain.ITEMS && questBankTabInterface.isQuestTabActive())
 		{
 			MenuEntry menu = event.getMenuEntry();
 			if ("Details".equals(menu.getOption()))
@@ -277,13 +280,13 @@ public class QuestBankTab
 				if (idx == VIAL_IDX)
 				{
 					potionStorage.prepareWidgets();
-					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
+					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
 					menu.setParam0(VIAL_IDX);
 				}
 				else if (idx > -1)
 				{
 					potionStorage.prepareWidgets();
-					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
+					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
 					menu.setParam0(idx * COMPONENTS_PER_POTION);
 				}
 			}
@@ -295,7 +298,7 @@ public class QuestBankTab
 		// We adjust the bank item container children's sizes in layouts,
 		// however they are only initially set when the bank is opened,
 		// so we have to reset them each time the bank is built.
-		Widget w = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget w = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		if (w == null || w.getChildren() == null) return;
 
 		for (Widget c : w.getChildren())
@@ -361,7 +364,7 @@ public class QuestBankTab
 			return;
 		}
 
-		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget itemContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		if (itemContainer == null)
 		{
 			return;
@@ -443,7 +446,7 @@ public class QuestBankTab
 			currentWidgetToUse = 0;
 		}
 
-		final Widget bankItemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		final Widget bankItemContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		if (bankItemContainer == null) return;
 		int itemContainerHeight = bankItemContainer.getHeight();
 
@@ -452,8 +455,8 @@ public class QuestBankTab
 		final int itemContainerScroll = bankItemContainer.getScrollY();
 		clientThread.invokeLater(() ->
 			client.runScript(ScriptID.UPDATE_SCROLLBAR,
-				ComponentID.BANK_SCROLLBAR,
-				ComponentID.BANK_ITEM_CONTAINER,
+				InterfaceID.Bankmain.SCROLLBAR,
+				InterfaceID.Bankmain.ITEMS,
 				itemContainerScroll));
 	}
 
@@ -466,7 +469,7 @@ public class QuestBankTab
 
 			// ~bankmain_drawitem uses 6512 for empty item slots
 			if (!widget.isSelfHidden() &&
-					(widget.getItemId() > -1 && widget.getItemId() != NullItemID.NULL_6512) ||
+					(widget.getItemId() > -1 && widget.getItemId() != ItemID.BLANKOBJECT) ||
 					(widget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND || widget.getText().contains("Tab"))
 			)
 			{
@@ -475,15 +478,19 @@ public class QuestBankTab
 		}
 	}
 
-	private void drawItem(Widget c, int item, int qty, BankTabItem bankTabItem)
+	private void drawItem(Widget c, int item, ItemContainer bank, BankTabItem bankTabItem)
 	{
 		if (item > -1 && item != ItemID.BANK_FILLER)
 		{
+			int qty = count(bank, item);
 			ItemComposition def = client.getItemDefinition(item);
+
+			int bankCount = bank.count(item);
+			boolean isPotStorage = bankCount <= 0 && qty > 0;
 
 			c.setItemId(item);
 			c.setItemQuantity(qty);
-			c.setItemQuantityMode(1);
+			c.setItemQuantityMode(ItemQuantityMode.ALWAYS);
 
 			// Effectively avoid dragging
 			c.setDragDeadTime(1000);
@@ -510,8 +517,8 @@ public class QuestBankTab
 			}
 			else
 			{
-				int quantityType = client.getVarbitValue(Varbits.BANK_QUANTITY_TYPE);
-				int requestQty = client.getVarbitValue(Varbits.BANK_REQUESTEDQUANTITY);
+				int quantityType = client.getVarbitValue(VarbitID.BANK_QUANTITY_TYPE);
+				int requestQty = client.getVarbitValue(VarbitID.BANK_REQUESTEDQUANTITY);
 				// ~script2759
 				String suffix;
 				switch (quantityType)
@@ -532,30 +539,48 @@ public class QuestBankTab
 						suffix = "All";
 						break;
 				}
-				c.setAction(0, "Withdraw-" + suffix);
+				// ~script669
+				int opIdx = 0;
+				c.setAction(opIdx++, "Withdraw-" + suffix);
 				if (quantityType != 0)
 				{
-					c.setAction(1, "Withdraw-1");
+					c.setAction(opIdx++, "Withdraw-1");
 				}
-				c.setAction(2, "Withdraw-5");
-				c.setAction(3, "Withdraw-10");
-				if (requestQty > 0)
+				if (quantityType != 1)
 				{
-					c.setAction(4, "Withdraw-" + requestQty);
+					c.setAction(opIdx++, "Withdraw-5");
 				}
-				c.setAction(5, "Withdraw-X");
-				c.setAction(6, "Withdraw-All");
-				c.setAction(7, "Withdraw-All-but-1");
-				if (client.getVarbitValue(Varbits.BANK_LEAVEPLACEHOLDERS) == 0)
+				if (quantityType != 2)
 				{
-					c.setAction(8, "Placeholder");
+					c.setAction(opIdx++, "Withdraw-10");
 				}
-				c.setAction(9, "Examine");
-
+				if (quantityType != 3 && requestQty > 0)
+				{
+					c.setAction(opIdx++, "Withdraw-" + requestQty);
+				}
+				c.setAction(opIdx++, "Withdraw-X");
+				if (quantityType != 4)
+				{
+					c.setAction(opIdx++, "Withdraw-All");
+				}
+				c.setAction(opIdx++, "Withdraw-All-but-1");
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1 && def.getIntValue(ParamID.BANK_AUTOCHARGE) != -1)
+				{
+					c.setAction(opIdx++, "Configure-Charges");
+				}
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
+				{
+					c.setAction(opIdx++, "Placeholder");
+				}
+				if (!isPotStorage)
+				{
+					c.setAction(9, "Examine");
+				}
 				c.setOpacity(0);
 			}
 
-			c.setOnDragListener(ScriptID.BANKMAIN_DRAGSCROLL, ScriptEvent.WIDGET_ID, ScriptEvent.WIDGET_INDEX, ScriptEvent.MOUSE_X, ScriptEvent.MOUSE_Y, ComponentID.BANK_SCROLLBAR, 0);
+			c.setOnDragListener(ScriptID.BANKMAIN_DRAGSCROLL, ScriptEvent.WIDGET_ID, ScriptEvent.WIDGET_INDEX, ScriptEvent.MOUSE_X, ScriptEvent.MOUSE_Y,
+					InterfaceID.Bankmain.SCROLLBAR, 0);
 			c.setOnDragCompleteListener((JavaScriptCallback) ev -> {});
 		}
 		else
@@ -616,7 +641,7 @@ public class QuestBankTab
 
 		ItemContainer bank = client.getItemContainer(InventoryID.BANK);
 		if (bank == null) return totalSectionsHeight;
-		Widget bankItemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget bankItemContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		if (bankItemContainer == null) return totalSectionsHeight;
 
 		for (BankTabItem item : items)
@@ -632,7 +657,7 @@ public class QuestBankTab
 			{
 				return totalSectionsHeight;
 			}
-			drawItem(c, itemId, count(bank, itemId), item);
+			drawItem(c, itemId, bank, item);
 			placeItem(c, totalItemsAdded, totalSectionsHeight);
 			// move item
 			if (item.getQuantity() > 0)

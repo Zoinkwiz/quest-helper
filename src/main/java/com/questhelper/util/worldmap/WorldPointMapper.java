@@ -24,12 +24,9 @@
  */
 package com.questhelper.util.worldmap;
 
-import java.util.Arrays;
 import net.runelite.api.coords.WorldPoint;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 public class WorldPointMapper
 {

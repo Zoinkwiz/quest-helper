@@ -28,19 +28,20 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
-import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
-
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.List;
+import java.util.Queue;
 import java.util.*;
 
 @Slf4j
@@ -103,8 +104,8 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		{
 			for (int i = 0; i < SIZE; i++)
 			{
-				colSums[i] = Integer.parseInt(client.getWidget(665, 19 + i).getText());
-				rowSums[i] = Integer.parseInt(client.getWidget(665, 26 + i).getText());
+				colSums[i] = Integer.parseInt(client.getWidget(InterfaceID.MYQ5_TOMB_PUZZLE, 19 + i).getText());
+				rowSums[i] = Integer.parseInt(client.getWidget(InterfaceID.MYQ5_TOMB_PUZZLE, 26 + i).getText());
 			}
 		}
 		catch (NumberFormatException nfe)
@@ -329,8 +330,8 @@ public class DoorPuzzleStep extends DetailedQuestStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget xAxis = client.getWidget(665, 25);
-		Widget yAxis = client.getWidget(665, 18);
+		Widget xAxis = client.getWidget(InterfaceID.Myq5TombPuzzle.RESULT_SIDE);
+		Widget yAxis = client.getWidget(InterfaceID.Myq5TombPuzzle.RESULT_BOTTOM);
 		if (xAxis != null && yAxis != null && !solving)
 		{
 			solving = true;
@@ -342,7 +343,7 @@ public class DoorPuzzleStep extends DetailedQuestStep
 	@Override
 	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
-		Widget panels = client.getWidget(665, 32);
+		Widget panels = client.getWidget(InterfaceID.Myq5TombPuzzle.GRID_BUTTONS);
 		if (result != null && panels != null)
 		{
 			for (int i = 0; i < result.length; i++)
@@ -378,7 +379,7 @@ public class DoorPuzzleStep extends DetailedQuestStep
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> requirement)
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText, requirement);
-		Widget panels = client.getWidget(665, 32);
+		Widget panels = client.getWidget(InterfaceID.Myq5TombPuzzle.GRID_BUTTONS);
 		if (result == null && panels != null)
 		{
 			String text = "Unable to calculate an answer for this puzzle. Good luck!";

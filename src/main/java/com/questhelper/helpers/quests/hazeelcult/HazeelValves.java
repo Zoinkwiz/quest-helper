@@ -24,23 +24,25 @@
  */
 package com.questhelper.helpers.quests.hazeelcult;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ManualRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.Subscribe;
 
 public class HazeelValves extends DetailedOwnerStep
 {
@@ -129,7 +131,7 @@ public class HazeelValves extends DetailedOwnerStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget currentStateWidget = client.getWidget(219, 1);
+		Widget currentStateWidget = client.getWidget(InterfaceID.Chatmenu.OPTIONS);
 		String currentStateText = null;
 		if (currentStateWidget != null)
 		{
@@ -141,7 +143,7 @@ public class HazeelValves extends DetailedOwnerStep
 		}
 		// Could also use MESBOX here
 		// Chat message type MESBOX: You turn the valve to the right. Beneath your feet you hear the sudden sound of rushing water.
-		Widget wheelTurnedWidget = client.getWidget(229, 1);
+		Widget wheelTurnedWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 		String wheelTurnedText = null;
 		if (wheelTurnedWidget != null)
 		{
@@ -236,43 +238,43 @@ public class HazeelValves extends DetailedOwnerStep
 
 		catchState = new DetailedQuestStep(getQuestHelper(), "You've entered an unknown state.");
 
-		turnValve1 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE, new WorldPoint(2562, 3247, 0),
+		turnValve1 = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE1, new WorldPoint(2562, 3247, 0),
 			"Turn the valve west of the Clocktower to the right.");
 		turnValve1.addDialogStep("Turn it to the right.");
 
-		turnValve2 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2845, new WorldPoint(2572, 3263, 0),
+		turnValve2 = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE2, new WorldPoint(2572, 3263, 0),
 			"Turn the valve next to the Carnillean home to the right.");
 		turnValve2.addDialogStep("Turn it to the right.");
 
-		turnValve3 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2846, new WorldPoint(2585, 3245, 0),
+		turnValve3 = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE3, new WorldPoint(2585, 3245, 0),
 			"Turn the valve east of the Clocktower to the left.");
 		turnValve3.addDialogStep("Turn it to the left.");
 
-		turnValve4 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2847, new WorldPoint(2597, 3263, 0),
+		turnValve4 = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE4, new WorldPoint(2597, 3263, 0),
 			"Turn the valve next to the zoo to the right.");
 		turnValve4.addDialogStep("Turn it to the right.");
 
-		turnValve5 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2848, new WorldPoint(2611, 3242, 0),
+		turnValve5 = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE5, new WorldPoint(2611, 3242, 0),
 			"Turn the valve north of the monastery to the right.");
 		turnValve5.addDialogStep("Turn it to the right.");
 
-		turnValve1NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE, new WorldPoint(2562, 3247, 0),
+		turnValve1NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE1, new WorldPoint(2562, 3247, 0),
 			"Turn the valve west of the Clocktower to the right.");
 		turnValve1.addSubSteps(turnValve1NoDialog);
 
-		turnValve2NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2845, new WorldPoint(2572, 3263, 0),
+		turnValve2NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE2, new WorldPoint(2572, 3263, 0),
 			"Turn the valve next to the Carnillean home to the right.");
 		turnValve2.addSubSteps(turnValve2NoDialog);
 
-		turnValve3NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2846, new WorldPoint(2585, 3245, 0),
+		turnValve3NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE3, new WorldPoint(2585, 3245, 0),
 			"Turn the valve east of the Clocktower to the left.");
 		turnValve3.addSubSteps(turnValve3NoDialog);
 
-		turnValve4NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2847, new WorldPoint(2597, 3263, 0),
+		turnValve4NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE4, new WorldPoint(2597, 3263, 0),
 			"Turn the valve next to the zoo to the right.");
 		turnValve4.addSubSteps(turnValve4NoDialog);
 
-		turnValve5NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2848, new WorldPoint(2611, 3242, 0),
+		turnValve5NoDialog = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE5, new WorldPoint(2611, 3242, 0),
 			"Turn the valve north of the monastery to the right.");
 		turnValve5.addSubSteps(turnValve5NoDialog);
 	}

@@ -22,40 +22,19 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.mischelpers.herbrun;
+package com.questhelper.helpers.mischelpers.farmruns;
 
-import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
 
-@Getter
-public class FarmingRegion
+import lombok.Value;
+import net.runelite.client.plugins.timetracking.farming.Produce;
+
+@Value
+class PatchPrediction
 {
-	private final String name;
-	private final int regionID;
-	private final boolean definite;
-	private final FarmingPatch[] patches;
-
-	FarmingRegion(String name, int regionID, boolean definite, FarmingPatch... patches)
-	{
-		this.name = name;
-		this.regionID = regionID;
-		this.definite = definite;
-		this.patches = patches;
-		for (FarmingPatch p : patches)
-		{
-			p.setRegion(this);
-		}
-	}
-
-	public boolean isInBounds(WorldPoint loc)
-	{
-		return true;
-	}
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	private final Produce produce;
+	private final CropState cropState;
+	private final long doneEstimate;
+	private final int stage;
+	private final int stages;
 }
 

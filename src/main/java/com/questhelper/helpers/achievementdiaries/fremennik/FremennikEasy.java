@@ -24,30 +24,36 @@
  */
 package com.questhelper.helpers.achievementdiaries.fremennik;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
 
 public class FremennikEasy extends ComplexStateQuestHelper
 {
@@ -136,24 +142,24 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notCatchCerulean = new VarplayerRequirement(1184, false, 1);
-		notChangeBoots = new VarplayerRequirement(1184, false, 2);
-		notKilledCrabs = new VarplayerRequirement(1184, false, 3);
-		notCraftTiara = new VarplayerRequirement(1184, false, 4);
-		notBrowseStonemason = new VarplayerRequirement(1184, false, 5);
-		notCollectSnapeGrass = new VarplayerRequirement(1184, false, 6);
-		notStealStall = new VarplayerRequirement(1184, false, 7);
-		notFillBucket = new VarplayerRequirement(1184, false, 8);
-		notEnterTrollStronghold = new VarplayerRequirement(1184, false, 9);
-		notChopAndBurnOak = new VarplayerRequirement(1184, false, 10);
+		notCatchCerulean = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 1);
+		notChangeBoots = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 2);
+		notKilledCrabs = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 3);
+		notCraftTiara = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 4);
+		notBrowseStonemason = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 5);
+		notCollectSnapeGrass = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 6);
+		notStealStall = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 7);
+		notFillBucket = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 8);
+		notEnterTrollStronghold = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 9);
+		notChopAndBurnOak = new VarplayerRequirement(VarPlayerID.FREMENNIK_ACHIEVEMENT_DIARY, false, 10);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notCraftTiara).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notChangeBoots);
-		birdSnare = new ItemRequirement("Bird snare", ItemID.BIRD_SNARE).showConditioned(notCatchCerulean).isNotConsumed();
+		birdSnare = new ItemRequirement("Bird snare", ItemID.HUNTING_OJIBWAY_BIRD_SNARE).showConditioned(notCatchCerulean).isNotConsumed();
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notChopAndBurnOak).isNotConsumed();
 		tiaraMould = new ItemRequirement("Tiara mould", ItemID.TIARA_MOULD).showConditioned(notCraftTiara).isNotConsumed();
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET).showConditioned(notFillBucket).isNotConsumed();
-		climbingBoots = new ItemRequirement("Climbing boots", ItemID.BUCKET).showConditioned(notEnterTrollStronghold).isNotConsumed();
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).showConditioned(notFillBucket).isNotConsumed();
+		climbingBoots = new ItemRequirement("Climbing boots", ItemID.BUCKET_EMPTY).showConditioned(notEnterTrollStronghold).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopAndBurnOak).isNotConsumed();
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		silverOre = new ItemRequirement("Silver ore", ItemID.SILVER_ORE);
@@ -206,66 +212,66 @@ public class FremennikEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		catchCerulean = new ObjectStep(this, ObjectID.BIRD_SNARE_9375, new WorldPoint(2724, 3773, 0),
+		catchCerulean = new ObjectStep(this, ObjectID.HUNTING_OJIBWAY_TRAP_FULL_POLAR, new WorldPoint(2724, 3773, 0),
 			"Catch a Cerulean Twitch in the Rellekka Hunter area.", birdSnare.highlighted());
-		killedCrabs = new NpcStep(this, NpcID.ROCK_CRAB, new WorldPoint(2707, 3723, 0),
+		killedCrabs = new NpcStep(this, NpcID.HORROR_ROCKCRAB, new WorldPoint(2707, 3723, 0),
 			"Kill 5 Rock crabs.", true, combatGear);
-		killedCrabs.addAlternateNpcs(NpcID.ROCK_CRAB_102);
+		killedCrabs.addAlternateNpcs(NpcID.HORROR_ROCKCRAB_SMALL);
 
-		chopOak = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(2714, 3664, 0),
+		chopOak = new ObjectStep(this, ObjectID.OAKTREE, new WorldPoint(2714, 3664, 0),
 			"Chop some oak logs in Rellekka.", axe, tinderbox);
 		chopOak.addIcon(6739);
 		burnOak = new ItemStep(this, "Burn the oak logs you've chopped.", tinderbox.highlighted(),
 			oakLogs.highlighted());
 
-		fillBucket = new ObjectStep(this, ObjectID.WELL_8927, new WorldPoint(2669, 3661, 0),
+		fillBucket = new ObjectStep(this, ObjectID.RELLEKKA_WELL, new WorldPoint(2669, 3661, 0),
 			"Fill a bucket at the Rellekka well.", bucket);
-		fillBucket.addIcon(ItemID.BUCKET);
+		fillBucket.addIcon(ItemID.BUCKET_EMPTY);
 
-		mineSilver = new ObjectStep(this, ObjectID.SILVER_ROCKS, new WorldPoint(2685, 3702, 0),
+		mineSilver = new ObjectStep(this, ObjectID.SILVERROCK1, new WorldPoint(2685, 3702, 0),
 			"Mine a silver ore in Rellekka.", pickaxe, fremennikTrials);
 		mineSilver.addIcon(ItemID.RUNE_PICKAXE);
-		smeltSilver = new ObjectStep(this, ObjectID.FURNACE_4304, new WorldPoint(2617, 3667, 0),
+		smeltSilver = new ObjectStep(this, ObjectID.VIKING_FURNACE, new WorldPoint(2617, 3667, 0),
 			"Smelt a silver bar in Rellekka.", silverOre.highlighted(), fremennikTrials);
 		smeltSilver.addIcon(ItemID.SILVER_ORE);
-		craftTiara = new ObjectStep(this, ObjectID.FURNACE_4304, new WorldPoint(2617, 3667, 0),
+		craftTiara = new ObjectStep(this, ObjectID.VIKING_FURNACE, new WorldPoint(2617, 3667, 0),
 			"Craft a tiara in Rellekka.", silverBar.highlighted(), fremennikTrials);
 		craftTiara.addIcon(ItemID.SILVER_BAR);
-		changeBoots = new NpcStep(this, NpcID.YRSA_3933, new WorldPoint(2625, 3674, 0),
+		changeBoots = new NpcStep(this, NpcID.VIKING_CLOTHING_SHOPKEEPER, new WorldPoint(2625, 3674, 0),
 			"Change your boots at Yrsa's Shoe Store.", coins.quantity(500));
-		goneToWaterbirth = new NpcStep(this, new int[]{NpcID.JARVALD, NpcID.JARVALD_7205}, new WorldPoint(2620, 3686, 0),
+		goneToWaterbirth = new NpcStep(this, new int[]{NpcID.VIKING_DAGGANOTH_CAVE_FERRYMAN_ISLAND, NpcID.VIKING_DAGGANOTH_CAVE_FERRYMAN_1OP}, new WorldPoint(2620, 3686, 0),
 			"Speak with Jarvald to travel to Waterbirth Island.");
 		goneToWaterbirth.addDialogStep("What Jarvald is doing.");
 		goneToWaterbirth.addDialogStep("Can I come?");
 		goneToWaterbirth.addDialogStep("YES");
 		collectSnapeGrass = new NpcStep(this, ItemID.SNAPE_GRASS, new WorldPoint(2551, 3754, 0),
 			"Collect 5 snape grass on Waterbirth Island. Speak with Jarvald to return to Rellekka when complete.", snapeGrass.highlighted().quantity(5));
-		enterTrollStronghold = new ObjectStep(this, ObjectID.SECRET_DOOR, new WorldPoint(2828, 3647, 0),
+		enterTrollStronghold = new ObjectStep(this, ObjectID.TROLL_STRONGHOLD_ENTRANCE, new WorldPoint(2828, 3647, 0),
 			"Enter the Troll Stronghold.");
-		goneToKeldagrimStone = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		goneToKeldagrimStone = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively Teleport to Varrock and take a minecart near the Grand Exchange.");
-		goneToCaveStone = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		goneToCaveStone = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
-		goneToRiverStone = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+		goneToRiverStone = new NpcStep(this, NpcID.DWARF_CITY_BOATMAN_MINES_POSTQUEST, new WorldPoint(2842, 10129, 0),
 			"Speak with the Dwarven Boatman to go to Keldagrim.");
 		goneToRiverStone.addDialogStep("Yes, please take me.");
-		goneToVarrockStone = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+		goneToVarrockStone = new ObjectStep(this, ObjectID.GE_KELDAGRIM_TRAPDOOR, new WorldPoint(3140, 3504, 0),
 			"Enter the trapdoor near the Grand Exchange.");
-		goneToKeldagrimStall = new ObjectStep(this, ObjectID.TUNNEL_5008, new WorldPoint(2732, 3713, 0),
+		goneToKeldagrimStall = new ObjectStep(this, ObjectID.TROLLROMANCE_STRONGHOLD_EXIT_TUNNEL, new WorldPoint(2732, 3713, 0),
 			"Enter the tunnel that leads to Keldagrim. Alternatively Teleport to Varrock and take a minecart near the Grand Exchange.");
-		goneToCaveStall = new ObjectStep(this, ObjectID.CAVE_ENTRANCE_5973, new WorldPoint(2781, 10161, 0),
+		goneToCaveStall = new ObjectStep(this, ObjectID.DWARF_CAVEWALL_TUNNEL, new WorldPoint(2781, 10161, 0),
 			"Go through the cave entrance.");
-		goneToRiverStall = new NpcStep(this, NpcID.DWARVEN_BOATMAN_7726, new WorldPoint(2842, 10129, 0),
+		goneToRiverStall = new NpcStep(this, NpcID.DWARF_CITY_BOATMAN_MINES_POSTQUEST, new WorldPoint(2842, 10129, 0),
 			"Speak with the Dwarven Boatman to go to Keldagrim.");
 		goneToRiverStall.addDialogStep("Yes, please take me.");
-		goneToVarrockStall = new ObjectStep(this, ObjectID.TRAPDOOR_16168, new WorldPoint(3140, 3504, 0),
+		goneToVarrockStall = new ObjectStep(this, ObjectID.GE_KELDAGRIM_TRAPDOOR, new WorldPoint(3140, 3504, 0),
 			"Enter the trapdoor near the Grand Exchange.");
-		stealStall = new ObjectStep(this, ObjectID.BAKERY_STALL_6163, new WorldPoint(2892, 10211, 0),
+		stealStall = new ObjectStep(this, ObjectID.DWARF_MARKET_BAKERY, new WorldPoint(2892, 10211, 0),
 			"Steal from the bakery stall.");
-		browseStonemason = new NpcStep(this, NpcID.STONEMASON, new WorldPoint(2848, 10185, 0),
+		browseStonemason = new NpcStep(this, NpcID.POH_STONEMASON, new WorldPoint(2848, 10185, 0),
 			"Browse the Stonemason's Shop.");
 
-		claimReward = new NpcStep(this, NpcID.THORODIN_5526, new WorldPoint(2658, 3627, 0),
+		claimReward = new NpcStep(this, NpcID.VIKING_FREM_DIARY, new WorldPoint(2658, 3627, 0),
 			"Talk to Thorodin south of Rellekka to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -312,8 +318,8 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Fremennik Sea Boots (1)", ItemID.FREMENNIK_SEA_BOOTS_1, 1),
-			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+			new ItemReward("Fremennik Sea Boots (1)", ItemID.FREMENNIK_BOOTS_EASY, 1),
+			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP, 1));
 	}
 
 	@Override

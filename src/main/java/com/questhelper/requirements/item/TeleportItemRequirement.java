@@ -26,6 +26,7 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.collections.ItemCollections;
+
 import java.util.List;
 
 public class TeleportItemRequirement extends ItemRequirement

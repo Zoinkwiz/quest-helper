@@ -24,20 +24,20 @@
  */
 package com.questhelper.helpers.quests.recipefordisaster;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
@@ -45,15 +45,14 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class RFDFinal extends BasicQuestHelper
 {
@@ -102,7 +101,7 @@ public class RFDFinal extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES).isNotConsumed();
-		iceGloves.addAlternates(ItemID.SMITHS_GLOVES_I);
+		iceGloves.addAlternates(ItemID.SMITHING_UNIFORM_GLOVES_ICE);
 		restorePotions = new ItemRequirement("Restore potions for Karamel", ItemCollections.RESTORE_POTIONS);
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -127,28 +126,28 @@ public class RFDFinal extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterPortal = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight. You can leave between fights to re-gear.", combatGear);
-		killAgrith = new NpcStep(this, NpcID.AGRITHNANA, new WorldPoint(1900, 5355, 2),"Kill Agrith-Na-Na. He uses magic at ranged, and melee up close.");
+		enterPortal = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight. You can leave between fights to re-gear.", combatGear);
+		killAgrith = new NpcStep(this, NpcID.HUNDRED_MINION1, new WorldPoint(1900, 5355, 2),"Kill Agrith-Na-Na. He uses magic at ranged, and melee up close.");
 
-		enterPortalFlambeed = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight kill Flambeed. Water spells are especially effective.", combatGear, iceGloves);
-		killFlambeed = new NpcStep(this, NpcID.FLAMBEED, new WorldPoint(1900, 5355, 2),"Equip ice gloves and kill Flambeed. Water spells are especially effective.", iceGloves);
+		enterPortalFlambeed = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight kill Flambeed. Water spells are especially effective.", combatGear, iceGloves);
+		killFlambeed = new NpcStep(this, NpcID.HUNDRED_MINION2, new WorldPoint(1900, 5355, 2),"Equip ice gloves and kill Flambeed. Water spells are especially effective.", iceGloves);
 		killFlambeed.addSubSteps(enterPortalFlambeed);
 
-		enterPortalKaramel = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal to fight Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
-		killKaramel = new NpcStep(this, NpcID.KARAMEL, new WorldPoint(1900, 5355, 2), "Kill Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
+		enterPortalKaramel = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal to fight Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
+		killKaramel = new NpcStep(this, NpcID.HUNDRED_MINION3, new WorldPoint(1900, 5355, 2), "Kill Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
 		killKaramel.addSubSteps(enterPortalKaramel);
 
-		enterPortalDessourt = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight Dessourt.", combatGear);
-		killDessourt = new NpcStep(this, NpcID.DESSOURT, new WorldPoint(1900, 5355, 2), "Kill Dessourt.");
+		enterPortalDessourt = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight Dessourt.", combatGear);
+		killDessourt = new NpcStep(this, NpcID.HUNDRED_MINION4, new WorldPoint(1900, 5355, 2), "Kill Dessourt.");
 		killDessourt.addSubSteps(enterPortalDessourt);
 
-		enterPortalMother = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue.", combatGear);
-		killMother = new NpcStep(this, NpcID.GELATINNOTH_MOTHER, new WorldPoint(1900, 5355, 2), "Kill the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue, melee when orange and ranged when green.");
-		((NpcStep)(killMother)).addAlternateNpcs(NpcID.GELATINNOTH_MOTHER_4885, NpcID.GELATINNOTH_MOTHER_4886, NpcID.GELATINNOTH_MOTHER_4887, NpcID.GELATINNOTH_MOTHER_4888, NpcID.GELATINNOTH_MOTHER_4889);
+		enterPortalMother = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue.", combatGear);
+		killMother = new NpcStep(this, NpcID.HUNDRED_MINION5_AIR, new WorldPoint(1900, 5355, 2), "Kill the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue, melee when orange and ranged when green.");
+		((NpcStep)(killMother)).addAlternateNpcs(NpcID.HUNDRED_MINION5_MELEE, NpcID.HUNDRED_MINION5_WATER, NpcID.HUNDRED_MINION5_FIRE, NpcID.HUNDRED_MINION5_RANGED, NpcID.HUNDRED_MINION5_EARTH);
 		killMother.addSubSteps(enterPortalMother);
 
-		enterPortalCulinaromancer = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Culinaromancer. Try to keep your distance.", combatGear);
-		killCulinaromancer = new NpcStep(this, NpcID.CULINAROMANCER_4878,  new WorldPoint(1900, 5355, 2), "Kill the Culinaromancer. Try to keep your distance.");
+		enterPortalCulinaromancer = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Culinaromancer. Try to keep your distance.", combatGear);
+		killCulinaromancer = new NpcStep(this, NpcID.HUNDRED_CULINAROMANCER_FINAL,  new WorldPoint(1900, 5355, 2), "Kill the Culinaromancer. Try to keep your distance.");
 		killCulinaromancer.addSubSteps(enterPortalCulinaromancer);
 	}
 
@@ -183,7 +182,7 @@ public class RFDFinal extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("20,000 Experience Lamp (Any skill over level 50)", ItemID.ANTIQUE_LAMP, 1)); //4447 is placeholder for filter
+		return Collections.singletonList(new ItemReward("20,000 Experience Lamp (Any skill over level 50)", ItemID.THOSF_REWARD_LAMP, 1)); //4447 is placeholder for filter
 	}
 
 	@Override

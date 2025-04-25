@@ -25,45 +25,36 @@
 package com.questhelper.helpers.quests.recipefordisaster;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questinfo.QuestVarbits;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questinfo.QuestVarbits;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.NpcCondition;
-import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.questhelper.steps.*;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
+
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class RFDSkrachUglogwee extends BasicQuestHelper
 {
@@ -138,42 +129,42 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		rawJubbly = new ItemRequirement("Raw jubbly", ItemID.RAW_JUBBLY).highlighted();
-		cookedJubbly = new ItemRequirement("Cooked jubbly", ItemID.COOKED_JUBBLY);
-		cookedJubblyHighlighted = new ItemRequirement("Cooked jubbly", ItemID.COOKED_JUBBLY).highlighted();
+		rawJubbly = new ItemRequirement("Raw jubbly", ItemID._100_JUBBLY_MEAT_RAW).highlighted();
+		cookedJubbly = new ItemRequirement("Cooked jubbly", ItemID._100_JUBBLY_MEAT_COOKED);
+		cookedJubblyHighlighted = new ItemRequirement("Cooked jubbly", ItemID._100_JUBBLY_MEAT_COOKED).highlighted();
 		axeHighlighted = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed().highlighted();
-		ironSpit = new ItemRequirement("Iron spit", ItemID.IRON_SPIT).highlighted().isNotConsumed();
+		ironSpit = new ItemRequirement("Iron spit", ItemID.SPIT_IRON).highlighted().isNotConsumed();
 		log = new ItemRequirement("Any log to burn", ItemCollections.LOGS_FOR_FIRE);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
-		ogreBellows = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS).isNotConsumed();
-		ogreBellows.addAlternates(ItemID.OGRE_BELLOWS_1, ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
-		ogreBellowsFilled = new ItemRequirement("Ogre bellows", ItemID.OGRE_BELLOWS_1).isNotConsumed();
-		ogreBellowsFilled.addAlternates(ItemID.OGRE_BELLOWS_2, ItemID.OGRE_BELLOWS_3);
+		ogreBellows = new ItemRequirement("Ogre bellows", ItemID.EMPTY_OGRE_BELLOWS).isNotConsumed();
+		ogreBellows.addAlternates(ItemID.FILLED_OGRE_BELLOW1, ItemID.FILLED_OGRE_BELLOW2, ItemID.FILLED_OGRE_BELLOW3);
+		ogreBellowsFilled = new ItemRequirement("Ogre bellows", ItemID.FILLED_OGRE_BELLOW1).isNotConsumed();
+		ogreBellowsFilled.addAlternates(ItemID.FILLED_OGRE_BELLOW2, ItemID.FILLED_OGRE_BELLOW3);
 		ogreBellowsFilled.setHighlightInInventory(true);
 		ballOfWool = new ItemRequirement("Balls of wool", ItemID.BALL_OF_WOOL);
 		ogreBow = new ItemRequirement("Ogre bow", ItemID.OGRE_BOW).isNotConsumed();
-		ogreBow.addAlternates(ItemID.COMP_OGRE_BOW);
+		ogreBow.addAlternates(ItemID.ZOGRE_BOW);
 		ogreArrows = new ItemRequirement("Ogre arrow", ItemID.OGRE_ARROW);
-		ogreArrows.addAlternates(ItemID.BRONZE_BRUTAL, ItemID.IRON_BRUTAL, ItemID.STEEL_BRUTAL, ItemID.BLACK_BRUTAL,
-			ItemID.MITHRIL_BRUTAL, ItemID.ADAMANT_BRUTAL, ItemID.RUNE_BRUTAL);
+		ogreArrows.addAlternates(ItemID.ZOGRE_BRUTAL_BRONZE, ItemID.ZOGRE_BRUTAL_IRON, ItemID.ZOGRE_BRUTAL_STEEL, ItemID.ZOGRE_BRUTAL_BLACK,
+			ItemID.ZOGRE_BRUTAL_MITHRIL, ItemID.ZOGRE_BRUTAL_ADAMANT, ItemID.ZOGRE_BRUTAL_RUNE);
 		ogreBowAndArrows = new ItemRequirements("Ogre bow + ogre arrows", ogreBow, ogreArrows);
 
 		chompy = new ItemRequirement("Raw chompy", ItemID.RAW_CHOMPY);
-		chompySpitted = new ItemRequirement("Skewered chompy", ItemID.SKEWERED_CHOMPY);
+		chompySpitted = new ItemRequirement("Skewered chompy", ItemID.SPIT_SKEWERED_CHOMPY);
 		toad = new ItemRequirement("Bloated toad", ItemID.BLOATED_TOAD);
 		toad.setHighlightInInventory(true);
-		toadReady = new ItemRequirement("Balloon toad", ItemID.BALLOON_TOAD);
+		toadReady = new ItemRequirement("Balloon toad", ItemID._100_JUBBLY_BALLOON_TOAD_BROWN);
 
-		rock = new ItemRequirement("Rock", ItemID.ROCK_1480);
+		rock = new ItemRequirement("Rock", ItemID.SWAMPROCKS1);
 		rock.setHighlightInInventory(true);
 
 
-		feldipTeleport = new ItemRequirement("Feldip teleport. Fairy Ring (AKS), Gnome Glider", ItemID.FELDIP_HILLS_TELEPORT);
+		feldipTeleport = new ItemRequirement("Feldip teleport. Fairy Ring (AKS), Gnome Glider", ItemID.TELEPORTSCROLL_FELDIP);
 		feldipTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
-		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.LUMBRIDGE_TELEPORT);
-		karamjaTeleport = new ItemRequirement("Karamja teleport. Brimhaven Teleport tablet, Fairy Ring (CKR)", ItemID.BRIMHAVEN_TELEPORT);
+		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
+		karamjaTeleport = new ItemRequirement("Karamja teleport. Brimhaven Teleport tablet, Fairy Ring (CKR)", ItemID.NZONE_TELETAB_BRIMHAVEN);
 		karamjaTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 	}
 
@@ -187,59 +178,59 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 	{
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		hadBalloonToad = new Conditions(true, toadReady);
-		jubblyNearby = new NpcCondition(NpcID.JUBBLY_BIRD);
-		jubblyCarcassNearby = new NpcCondition(NpcID.JUBBLY_BIRD_4864);
+		jubblyNearby = new NpcCondition(NpcID._100_JUBBLY_BIRD);
+		jubblyCarcassNearby = new NpcCondition(NpcID._100_JUBBLY_BIRD_DEAD);
 		rawJubblyOnFloor = new ItemOnTileRequirement(rawJubbly);
-		fireLit = new ObjectCondition(ObjectID.FIRE_26185,
+		fireLit = new ObjectCondition(ObjectID.FIRE,
 			new Zone(new WorldPoint(2755, 3076, 0),
 				new WorldPoint(2768, 3087, 0)));
 	}
 
 	public void setupSteps()
 	{
-		enterDiningRoom = new ObjectStep(this, ObjectID.LARGE_DOOR_12349, new WorldPoint(3213, 3221, 0), "Go inspect Skrach Uglogwee in Lumbridge Castle.");
+		enterDiningRoom = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOUBLEDOORL, new WorldPoint(3213, 3221, 0), "Go inspect Skrach Uglogwee in Lumbridge Castle.");
 		enterDiningRoom.addTeleport(lumbridgeTeleport);
-		inspectSkrach = new ObjectStep(this, ObjectID.SKRACH_UGLOGWEE_12343, new WorldPoint(1864, 5329, 0), "Inspect Skrach Uglogwee.");
+		inspectSkrach = new ObjectStep(this, ObjectID.HUNDRED_OGRE_BASE, new WorldPoint(1864, 5329, 0), "Inspect Skrach Uglogwee.");
 		inspectSkrach.addDialogSteps("Yes, I'm sure I can get some Jubbly Chompy.", "Oh Ok then, I guess I'll talk to Rantz.");
 		inspectSkrach.addSubSteps(enterDiningRoom);
 
 		talkToRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2630, 2984, 0), "Talk to Rantz in Feldip Hills.");
 		talkToRantz.addDialogSteps("I'm trying to free Skrach, can you help?", "Ok, I'll do it.");
 		talkToRantz.addTeleport(feldipTeleport);
-		talkToRantzOnCoast = new NpcStep(this, NpcID.RANTZ_4855, new WorldPoint(2649, 2964, 0), "Talk to Rantz on the east coast of Feldip Hills.");
+		talkToRantzOnCoast = new NpcStep(this, NpcID._100_RANTZ, new WorldPoint(2649, 2964, 0), "Talk to Rantz on the east coast of Feldip Hills.");
 		talkToRantzOnCoast.addDialogStep("Ok, here I am...I guess this is the watery place? What now?");
-		useAxeOnTree = new ObjectStep(this, NullObjectID.NULL_12549, new WorldPoint(2655, 2963, 0), "Use an axe on the old tree near Rantz.", axeHighlighted);
+		useAxeOnTree = new ObjectStep(this, ObjectID._100_JUBBLY_MULTI_PUSH_TREE, new WorldPoint(2655, 2963, 0), "Use an axe on the old tree near Rantz.", axeHighlighted);
 		useAxeOnTree.addIcon(ItemID.RUNE_AXE);
-		useAxeOnTreeAgain = new ObjectStep(this, NullObjectID.NULL_12549, new WorldPoint(2655, 2963, 0), "Use an axe on the old tree near Rantz again.", axeHighlighted);
+		useAxeOnTreeAgain = new ObjectStep(this, ObjectID._100_JUBBLY_MULTI_PUSH_TREE, new WorldPoint(2655, 2963, 0), "Use an axe on the old tree near Rantz again.", axeHighlighted);
 		useAxeOnTreeAgain.addIcon(ItemID.RUNE_AXE);
-		talkToRantzOnCoastAgain = new NpcStep(this, NpcID.RANTZ_4855, new WorldPoint(2649, 2964, 0), "Talk to Rantz again on the east coast of Feldip Hills.");
+		talkToRantzOnCoastAgain = new NpcStep(this, NpcID._100_RANTZ, new WorldPoint(2649, 2964, 0), "Talk to Rantz again on the east coast of Feldip Hills.");
 		talkToRantzOnCoastAgain.addDialogStep("Ok, the boat's ready, now tell me how to get a Jubbly?");
 		useSpitOnChompy = new DetailedQuestStep(this, "Use an iron spit on a chompy.", ironSpit.highlighted(), chompy.highlighted());
 		lightFire = new DetailedQuestStep(this, new WorldPoint(2760, 3080, 0), "Light a fire on karamja's west coast. Afterwards, use your skewered chompy on it.",
 			log.highlighted(), tinderbox.highlighted(), chompySpitted);
 		lightFire.addIcon(ItemID.LOGS);
 		lightFire.addTeleport(karamjaTeleport);
-		cookChompy = new ObjectStep(this, ObjectID.FIRE_26185, "Cook the skewered chompy on the fire.", chompySpitted.highlighted());
-		cookChompy.addIcon(ItemID.SKEWERED_CHOMPY);
+		cookChompy = new ObjectStep(this, ObjectID.FIRE, "Cook the skewered chompy on the fire.", chompySpitted.highlighted());
+		cookChompy.addIcon(ItemID.SPIT_SKEWERED_CHOMPY);
 		lightFire.addSubSteps(cookChompy);
-		talkToRantzAfterReturn = new NpcStep(this, NpcID.RANTZ_4855, new WorldPoint(2649, 2964, 0), "Travel back with Rantz's kids and talk to Rantz again.");
+		talkToRantzAfterReturn = new NpcStep(this, NpcID._100_RANTZ, new WorldPoint(2649, 2964, 0), "Travel back with Rantz's kids and talk to Rantz again.");
 		talkToRantzAfterReturn.addDialogSteps("Yes please, I'll get a lift back with you.", "Ok, now tell me how to get Jubbly!");
-		fillUpBellows = new ObjectStep(this, ObjectID.SWAMP_BUBBLES, new WorldPoint(2601, 2967, 0), "Fill some ogre bellows on some swamp bubbles.", ogreBellows);
-		getToad = new NpcStep(this, NpcID.SWAMP_TOAD, new WorldPoint(2601, 2967, 0), "Blow up a toad with the bellows.", ogreBellowsFilled);
+		fillUpBellows = new ObjectStep(this, ObjectID.SWAMPBUBBLES, new WorldPoint(2601, 2967, 0), "Fill some ogre bellows on some swamp bubbles.", ogreBellows);
+		getToad = new NpcStep(this, NpcID.TOAD, new WorldPoint(2601, 2967, 0), "Blow up a toad with the bellows.", ogreBellowsFilled);
 		getToad.addSubSteps(fillUpBellows);
-		getRock = new ObjectStep(this, ObjectID.PILE_OF_ROCK_12564, new WorldPoint(2567, 2960, 0), "Mine a pile of rocks near the Feldip Hills Fairy Ring for a rock.", pickaxe);
+		getRock = new ObjectStep(this, ObjectID.SWAMP_ROCK1, new WorldPoint(2567, 2960, 0), "Mine a pile of rocks near the Feldip Hills Fairy Ring for a rock.", pickaxe);
 		useBellowOnToadInInv = new DetailedQuestStep(this, "Use the bellows on your toad with a ball of wool in your inventory.", ogreBellowsFilled, toad, ballOfWool);
 		dropBalloonToad = new DetailedQuestStep(this, new WorldPoint(2593, 2964, 0), "Drop the balloon toad near a swamp and wait for a Jubbly to arrive.", toadReady, ogreBowAndArrows);
-		killJubbly = new NpcStep(this, NpcID.JUBBLY_BIRD, "Kill then pluck jubbly.", ogreBowAndArrows);
+		killJubbly = new NpcStep(this, NpcID._100_JUBBLY_BIRD, "Kill then pluck jubbly.", ogreBowAndArrows);
 		pickUpRawJubbly = new ItemStep(this, "Pick up the raw jubbly.", rawJubbly);
-		lootJubbly = new NpcStep(this, NpcID.JUBBLY_BIRD_4864, "Pluck the jubbly's carcass.");
-		cookJubbly = new ObjectStep(this, NullObjectID.NULL_6895, new WorldPoint(2631, 2990, 0), "Cook the raw jubbly on Rantz's spit.", rawJubbly);
-		cookJubbly.addIcon(ItemID.RAW_JUBBLY);
+		lootJubbly = new NpcStep(this, NpcID._100_JUBBLY_BIRD_DEAD, "Pluck the jubbly's carcass.");
+		cookJubbly = new ObjectStep(this, ObjectID.MULTI_CHOMPYBIRD_SPITROAST_ENTITY, new WorldPoint(2631, 2990, 0), "Cook the raw jubbly on Rantz's spit.", rawJubbly);
+		cookJubbly.addIcon(ItemID._100_JUBBLY_MEAT_RAW);
 
-		enterDiningRoomAgain = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Go give the jubbly to Skrach Uglogwee to finish the quest.", cookedJubbly);
+		enterDiningRoomAgain = new ObjectStep(this, ObjectID.HUNDRED_LUMBRIDGE_DOOR, new WorldPoint(3207, 3217, 0), "Go give the jubbly to Skrach Uglogwee to finish the quest.", cookedJubbly);
 		enterDiningRoomAgain.addTeleport(lumbridgeTeleport);
-		useJubblyOnSkrach = new ObjectStep(this, ObjectID.SKRACH_UGLOGWEE_12343, new WorldPoint(1864, 5329, 0), "Give the jubbly to Skrach Uglogwee to finish the quest.", cookedJubblyHighlighted);
-		useJubblyOnSkrach.addIcon(ItemID.COOKED_JUBBLY);
+		useJubblyOnSkrach = new ObjectStep(this, ObjectID.HUNDRED_OGRE_BASE, new WorldPoint(1864, 5329, 0), "Give the jubbly to Skrach Uglogwee to finish the quest.", cookedJubblyHighlighted);
+		useJubblyOnSkrach.addIcon(ItemID._100_JUBBLY_MEAT_COOKED);
 		useJubblyOnSkrach.addSubSteps(enterDiningRoomAgain);
 	}
 

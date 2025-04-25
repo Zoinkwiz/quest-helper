@@ -26,24 +26,24 @@ package com.questhelper.helpers.quests.whileguthixsleeps;
 
 import com.questhelper.requirements.item.ItemRequirement;
 import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 
 public enum DolmenType
 {
-	AGILITY(ObjectID.STATUE_53640, new ItemRequirement("Toadflax", ItemID.TOADFLAX).highlighted(), new ItemRequirement("Toad's legs", ItemID.TOADS_LEGS).highlighted()),
-	ENERGY(ObjectID.STATUE_53644, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST).highlighted()),
-	RESTORATION(ObjectID.STATUE_53646, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted()),
-	ATTACK(ObjectID.STATUE_53648, new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF).highlighted(), new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT).highlighted()),
-	STRENGTH(ObjectID.STATUE_53650, new ItemRequirement("Tarromin", ItemID.TARROMIN).highlighted(), new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).highlighted()),
-	DEFENCE(ObjectID.STATUE_53652, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("White berries", ItemID.WHITE_BERRIES).highlighted()),
-	COMBAT(ObjectID.STATUE_53654, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Goat horn dust", ItemID.GOAT_HORN_DUST).highlighted()),
-	RANGED(ObjectID.STATUE_53656, new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED).highlighted(), new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK).highlighted()),
-	PRAYER(ObjectID.STATUE_53658, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),
-	HUNTER(ObjectID.STATUE_53660, 3, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Kebbit teeth dust", ItemID.KEBBIT_TEETH_DUST).highlighted()),
-	FISHING(ObjectID.STATUE_53662, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),
-	MAGIC(ObjectID.STATUE_53664, new ItemRequirement("Lantadyme", ItemID.LANTADYME).highlighted(), new ItemRequirement("Potato cactus", ItemID.POTATO_CACTUS).highlighted()),
-	BALANCE(ObjectID.STATUE_53642, 15, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted(),
+	AGILITY(ObjectID.LUC2_HERB_STATUE_AGILITY, new ItemRequirement("Toadflax", ItemID.TOADFLAX).highlighted(), new ItemRequirement("Toad's legs", ItemID.TOADS_LEGS).highlighted()),
+	ENERGY(ObjectID.LUC2_HERB_STATUE_ENERGY, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST).highlighted()),
+	RESTORATION(ObjectID.LUC2_HERB_STATUE_RESTORE, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted()),
+	ATTACK(ObjectID.LUC2_HERB_STATUE_ATTACK, new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF).highlighted(), new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT).highlighted()),
+	STRENGTH(ObjectID.LUC2_HERB_STATUE_STRENGTH, new ItemRequirement("Tarromin", ItemID.TARROMIN).highlighted(), new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).highlighted()),
+	DEFENCE(ObjectID.LUC2_HERB_STATUE_DEFENCE, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("White berries", ItemID.WHITE_BERRIES).highlighted()),
+	COMBAT(ObjectID.LUC2_HERB_STATUE_COMBAT, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Goat horn dust", ItemID.GROUND_DESERT_GOAT_HORN).highlighted()),
+	RANGED(ObjectID.LUC2_HERB_STATUE_RANGED, new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED).highlighted(), new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK).highlighted()),
+	PRAYER(ObjectID.LUC2_HERB_STATUE_PRAYER, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),
+	HUNTER(ObjectID.LUC2_HERB_STATUE_HUNTING, 3, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Kebbit teeth dust", ItemID.HUNTINGBEAST_SABRETEETH_DUST).highlighted()),
+	FISHING(ObjectID.LUC2_HERB_STATUE_FISHING, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),
+	MAGIC(ObjectID.LUC2_HERB_STATUE_MAGIC, new ItemRequirement("Lantadyme", ItemID.LANTADYME).highlighted(), new ItemRequirement("Potato cactus", ItemID.CACTUS_POTATO).highlighted()),
+	BALANCE(ObjectID.LUC2_HERB_STATUE_BALANCE, 15, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS).highlighted(),
 		new ItemRequirement("Garlic", ItemID.GARLIC).highlighted(), new ItemRequirement("Silver dust", ItemID.SILVER_DUST).highlighted());
 
 	@Getter

@@ -24,18 +24,19 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collections;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class DraynorVillage extends AgilityCourse
 {
@@ -89,26 +90,26 @@ public class DraynorVillage extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Draynor Village obstacles
-		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROUGH_WALL, new WorldPoint(3103, 3279, 0),
+		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_DRAYNOR_WALLCLIMB, new WorldPoint(3103, 3279, 0),
 			"Climb the rough wall just north-west of the gate of the big wheat-field in Draynor Village.",
 			Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		walkFirstRope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE, new WorldPoint(3098, 3277, 3),
+		walkFirstRope = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_DRAYNOR_TIGHTROPE_1, new WorldPoint(3098, 3277, 3),
 			"Cross the tightrope.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		walkSecondRope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE_11406, new WorldPoint(3092, 3276, 3),
+		walkSecondRope = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_DRAYNOR_TIGHTROPE_2, new WorldPoint(3092, 3276, 3),
 			"Cross the next tightrope.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		balanceWall = new ObjectStep(this.questHelper, ObjectID.NARROW_WALL, new WorldPoint(3089, 3264, 3),
+		balanceWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_DRAYNOR_WALLCROSSING, new WorldPoint(3089, 3264, 3),
 			"Balance across thr narrow wall.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpUpWall = new ObjectStep(this.questHelper, ObjectID.WALL_11630, new WorldPoint(3088, 3256, 3),
+		jumpUpWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_DRAYNOR_WALLSCRAMBLE, new WorldPoint(3088, 3256, 3),
 			"Jump up the wall.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpGap = new ObjectStep(this.questHelper, ObjectID.GAP_11631, new WorldPoint(3095, 3255, 3),
+		jumpGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_DRAYNOR_LEAPDOWN, new WorldPoint(3095, 3255, 3),
 			"Climb over the gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		climbDownCrate = new ObjectStep(this.questHelper, ObjectID.CRATE_11632, new WorldPoint(3102, 3261, 3),
+		climbDownCrate = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_DRAYNOR_CRATE, new WorldPoint(3102, 3261, 3),
 			"Climb down onto the crate.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 	}
 

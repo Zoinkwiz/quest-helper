@@ -34,14 +34,15 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
 
 public class WoodcuttingMember extends ComplexStateQuestHelper
 {
@@ -106,16 +107,16 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 		).isNotConsumed();
 
 
-		lumberjackBody = new ItemRequirement("Lumberjack top", ItemID.LUMBERJACK_TOP);
+		lumberjackBody = new ItemRequirement("Lumberjack top", ItemID.RAMBLE_LUMBERJACK_TOP);
 		lumberjackBody = lumberjackBody.showConditioned(lumberjackBody.alsoCheckBank(questBank));
 
-		lumberjackHat = new ItemRequirement("Lumberjack hat", ItemID.LUMBERJACK_HAT);
+		lumberjackHat = new ItemRequirement("Lumberjack hat", ItemID.RAMBLE_LUMBERJACK_HAT);
 		lumberjackHat = lumberjackHat.showConditioned(lumberjackHat.alsoCheckBank(questBank));
 
-		lumberjackLegs = new ItemRequirement("Lumberjack legs", ItemID.LUMBERJACK_LEGS);
+		lumberjackLegs = new ItemRequirement("Lumberjack legs", ItemID.RAMBLE_LUMBERJACK_LEGS);
 		lumberjackLegs = lumberjackLegs.showConditioned(lumberjackLegs.alsoCheckBank(questBank));
 
-		lumberjackBoots = new ItemRequirement("Lumberjack boots", ItemID.LUMBERJACK_BOOTS);
+		lumberjackBoots = new ItemRequirement("Lumberjack boots", ItemID.RAMBLE_LUMBERJACK_BOOTS);
 		lumberjackBoots = lumberjackBoots.showConditioned(lumberjackBoots.alsoCheckBank(questBank));
 	}
 
@@ -126,12 +127,12 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 				" them, or bank them.", true, ironAxe, steelAxe, blackAxe, lumberjackHat, lumberjackBody, lumberjackLegs,
 			lumberjackBoots);
 
-		chopOakTrees = new ObjectStep(this, ObjectID.OAK_TREE_10820, new WorldPoint(3190, 3247, 0),
+		chopOakTrees = new ObjectStep(this, ObjectID.OAKTREE, new WorldPoint(3190, 3247, 0),
 			"Chop oak trees around Lumbridge until 35 Woodcutting. You can choose to burn the logs as you go, drop" +
 				" them, or bank them.", true, blackAxe, mithrilAxe, adamantAxe,
 			lumberjackHat, lumberjackBody, lumberjackLegs, lumberjackBoots);
 
-		chopTeakTrees = new ObjectStep(this, ObjectID.TEAK_TREE, new WorldPoint(2335, 3048, 0),
+		chopTeakTrees = new ObjectStep(this, ObjectID.TEAKTREE, new WorldPoint(2335, 3048, 0),
 			"Chop teak trees south of Castle Wars until 99 Woodcutting. You can choose to burn the logs as you go, " +
 				"drop them, or bank them.", true, adamantAxe, runeAxe, dragonAxe, lumberjackHat, lumberjackBody, lumberjackLegs,
 			lumberjackBoots);

@@ -24,38 +24,34 @@
  */
 package com.questhelper.helpers.quests.recruitmentdrive;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.runelite.api.*;
+import com.questhelper.steps.*;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class RecruitmentDrive extends BasicQuestHelper
 {
@@ -151,12 +147,12 @@ public class RecruitmentDrive extends BasicQuestHelper
 		WorldPoint firstFloorStairsPosition = new WorldPoint(2955, 3338, 1);
 		WorldPoint secondFloorStairsPosition = new WorldPoint(2960, 3339, 2);
 
-		ObjectStep climbDownSecondFloorStaircase = new ObjectStep(this, ObjectID.STAIRCASE_24074,
+		ObjectStep climbDownSecondFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP,
 			secondFloorStairsPosition, "Climb down the stairs from the second floor.");
-		ObjectStep climbDownfirstFloorStaircase = new ObjectStep(this, ObjectID.STAIRCASE_24074,
+		ObjectStep climbDownfirstFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP,
 			firstFloorStairsPosition, "Climb down the stairs from the first floor.");
 
-		talkToSirTiffy = new NpcStep(this, NpcID.SIR_TIFFY_CASHIEN,
+		talkToSirTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY,
 			"Talk to Sir Tiffy Cashien in Falador Park.", noItemRequirement);
 
 		ConditionalStep conditionalTalkToSirTiffy = new ConditionalStep(this, talkToSirTiffy);
@@ -189,12 +185,12 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		VarbitRequirement finishedRoom = new VarbitRequirement(661, 1);
 
-		talkToSirKuam = new NpcStep(this, NpcID.SIR_KUAM_FERENTSE, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye.");
-		killSirLeye = new NpcStep(this, NpcID.SIR_LEYE,
+		talkToSirKuam = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_3, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye.");
+		killSirLeye = new NpcStep(this, NpcID.RD_COMBAT_NPC_ROOM_3,
 			"Defeat Sir Leye to win this challenge. You must use the steel warhammer or your barehands to deal the final hit on him.", true);
 
 		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
-		NpcCondition npcCondition = new NpcCondition(NpcID.SIR_LEYE);
+		NpcCondition npcCondition = new NpcCondition(NpcID.RD_COMBAT_NPC_ROOM_3);
 
 		ConditionalStep sirKuamConditional = new ConditionalStep(this, talkToSirKuam);
 
@@ -299,7 +295,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private QuestStep getSirRenItchood()
 	{
-		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.SIR_REN_ITCHOOD, "Talk to Sir Ren Itchood to recieve the clue.");
+		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_5, "Talk to Sir Ren Itchood to recieve the clue.");
 		talkToSirRenItchood.addDialogSteps("Can I have the clue for the door?");
 
 		sirRenStep = new SirRenItchoodStep(this, talkToSirRenItchood);
@@ -308,13 +304,13 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private QuestStep getSirTinley()
 	{
-		talkToSirTinley = new NpcStep(this, NpcID.SIR_TINLEY,
+		talkToSirTinley = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_4,
 			"Talk to Sir Tinley. \n Once you have pressed continue do not do anything or you will fail.");
 		doNothingStep = new DetailedQuestStep(this,
 			"Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.");
 		leaveSirTinleyRoom = new ObjectStep(this, 7320, "Leave through the portal to continue.");
 
-		VarbitRequirement waitForCondition = new VarbitRequirement(667, 1, Operation.GREATER_EQUAL);
+		VarbitRequirement waitForCondition = new VarbitRequirement(VarbitID.RD_TEMPLOCK_2, 1, Operation.GREATER_EQUAL);
 		VarbitRequirement finishedRoom = new VarbitRequirement(662, 1);
 
 		ConditionalStep sirTinleyStep = new ConditionalStep(this, talkToSirTinley);
@@ -326,7 +322,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private QuestStep getMsHynnTerprett()
 	{
-		talkToMsHynnTerprett = new NpcStep(this, NpcID.MS_HYNN_TERPRETT,
+		talkToMsHynnTerprett = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_7,
 			"Talk to Ms Hynn Terprett and answer the riddle.");
 
 		msHynnDialogQuiz = new MsHynnAnswerDialogQuizStep(this, talkToMsHynnTerprett);
@@ -337,12 +333,12 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		WorldPoint bottomStairsPosition = new WorldPoint(2955, 3339, 0);
 		WorldPoint secondStairsPosition = new WorldPoint(2961, 3339, 1);
-		ObjectStep climbBottomSteps = new ObjectStep(this, ObjectID.STAIRCASE_24072, bottomStairsPosition,
+		ObjectStep climbBottomSteps = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, bottomStairsPosition,
 			"Climb up the stairs to the first floor on the Falador Castle.");
 
-		ObjectStep climbSecondSteps = new ObjectStep(this, ObjectID.STAIRCASE_24072, secondStairsPosition,
+		ObjectStep climbSecondSteps = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, secondStairsPosition,
 			"Climb up the stairs to talk to Sir Amik Vaze.");
-		NpcStep talkToSirAmikVarze = new NpcStep(this, NpcID.SIR_AMIK_VARZE_4771, "");
+		NpcStep talkToSirAmikVarze = new NpcStep(this, NpcID.HUNDRED_VARZE, "");
 		talkToSirAmikVarze.addDialogStep("Yes please");
 
 		conditionalTalkToSirAmikVarze = new ConditionalStep(this, climbBottomSteps,
@@ -387,8 +383,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("Initiate Helm", ItemID.INITIATE_SALLET, 1),
-				new ItemReward("Coins", ItemID.COINS_995, 3000));
+				new ItemReward("Initiate Helm", ItemID.BASIC_TK_HELM, 1),
+				new ItemReward("Coins", ItemID.COINS, 3000));
 	}
 
 	@Override

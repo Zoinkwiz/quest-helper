@@ -24,18 +24,19 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collections;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class Varrock extends AgilityCourse
 {
@@ -93,32 +94,32 @@ public class Varrock extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Varrock obstacles
-		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROUGH_WALL_14412, new WorldPoint(3221, 3414, 0),
+		climbRoughWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_WALLCLIMB, new WorldPoint(3221, 3414, 0),
 			"Climb the rough wall on the east side of the General Store.",
 			Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		crossClothesLine = new ObjectStep(this.questHelper, ObjectID.CLOTHES_LINE, new WorldPoint(3213, 3414, 3),
+		crossClothesLine = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_CLOTHESLINE, new WorldPoint(3213, 3414, 3),
 			"Cross the clothes line.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		leapFirstGap = new ObjectStep(this.questHelper, ObjectID.GAP_14414, new WorldPoint(3200, 3416, 3),
+		leapFirstGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_LEAPTORUINS, new WorldPoint(3200, 3416, 3),
 			"Leap off the first gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		balanceWall = new ObjectStep(this.questHelper, ObjectID.WALL_14832, new WorldPoint(3192, 3416, 1),
+		balanceWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_WALLSWING, new WorldPoint(3192, 3416, 1),
 			"Balance across the wall.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		leapSecondGap = new ObjectStep(this.questHelper, ObjectID.GAP_14833, new WorldPoint(3195, 3401, 3),
+		leapSecondGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_WALLSCRAMBLE, new WorldPoint(3195, 3401, 3),
 			"Leap across second gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		leapThirdGap = new ObjectStep(this.questHelper, ObjectID.GAP_14834, new WorldPoint(3209, 3399, 3),
+		leapThirdGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_LEAPTOBALCONY, new WorldPoint(3209, 3399, 3),
 			"Leap across third gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		leapFourthGap = new ObjectStep(this.questHelper, ObjectID.GAP_14835, new WorldPoint(3233, 3402, 3),
+		leapFourthGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_LEAPDOWN, new WorldPoint(3233, 3402, 3),
 			"Leap across fourth gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		hurdleLedge = new ObjectStep(this.questHelper, ObjectID.LEDGE_14836, new WorldPoint(3238, 3409, 3),
+		hurdleLedge = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_STEPUPROOF, new WorldPoint(3238, 3409, 3),
 			"Hurdle across the ledge.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpEdge = new ObjectStep(this.questHelper, ObjectID.EDGE, new WorldPoint(3238, 3416, 3),
+		jumpEdge = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_VARROCK_FINISH, new WorldPoint(3238, 3416, 3),
 			"Jump off the edge.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 	}
 

@@ -26,17 +26,19 @@
  */
 package com.questhelper.bank.banktab;
 
-import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.bank.BankSearch;
+
+import javax.inject.Inject;
 
 public class QuestBankTabInterface
 {
@@ -76,7 +78,7 @@ public class QuestBankTabInterface
 			return;
 		}
 
-		parent = client.getWidget(ComponentID.BANK_CONTAINER);
+		parent = client.getWidget(InterfaceID.Bankmain.UNIVERSE);
 
 		int QUEST_BUTTON_SIZE = 25;
 		int QUEST_BUTTON_X = 408;
@@ -93,7 +95,7 @@ public class QuestBankTabInterface
 
 		if (questTabActive)
 		{
-			boolean wasInPotionStorage = client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == BANKTAB_POTIONSTORE;
+			boolean wasInPotionStorage = client.getVarbitValue(VarbitID.BANK_CURRENTTAB) == BANKTAB_POTIONSTORE;
 			questTabActive = false;
 			clientThread.invokeLater(() -> activateTab(wasInPotionStorage));
 		}
@@ -153,7 +155,7 @@ public class QuestBankTabInterface
 
 	public boolean isHidden()
 	{
-		Widget widget = client.getWidget(ComponentID.BANK_CONTAINER);
+		Widget widget = client.getWidget(InterfaceID.Bankmain.UNIVERSE);
 		return widget == null || widget.isHidden();
 	}
 
@@ -161,8 +163,8 @@ public class QuestBankTabInterface
 	{
 		if (event.getOp() == 2)
 		{
-			boolean wasInPotionStorage = client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == BANKTAB_POTIONSTORE;
-			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+			boolean wasInPotionStorage = client.getVarbitValue(VarbitID.BANK_CURRENTTAB) == BANKTAB_POTIONSTORE;
+			client.setVarbit(VarbitID.BANK_CURRENTTAB, 0);
 
 			if (questTabActive)
 			{
@@ -196,7 +198,7 @@ public class QuestBankTabInterface
 			return;
 		}
 
-		client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+		client.setVarbit(VarbitID.BANK_CURRENTTAB, 0);
 
 		bankSearch.reset(true); // clear search dialog & relayout bank for new tab.
 
@@ -204,7 +206,7 @@ public class QuestBankTabInterface
 		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
 		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
 		// same as bankmain_search_setbutton.
-		Widget searchButtonBackground = client.getWidget(ComponentID.BANK_SEARCH_BUTTON_BACKGROUND);
+		Widget searchButtonBackground = client.getWidget(InterfaceID.Bankmain.SEARCH);
 		if (searchButtonBackground != null)
 		{
 			searchButtonBackground.setOnTimerListener((Object[]) null);
@@ -223,7 +225,7 @@ public class QuestBankTabInterface
 		{
 			// Opening a tag tab with the potion store open would leave the store open in the bankground,
 			// making deposits not work. Force close the potion store.
-			client.menuAction(-1, ComponentID.BANK_POTION_STORE, MenuAction.CC_OP, 1, -1, "Potion store", "");
+			client.menuAction(-1, InterfaceID.Bankmain.POTIONSTORE_BUTTON, MenuAction.CC_OP, 1, -1, "Potion store", "");
 		}
 
 		questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
@@ -236,7 +238,7 @@ public class QuestBankTabInterface
 		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
 		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
 		// same as bankmain_search_setbutton.
-		Widget searchButtonBackground = client.getWidget(ComponentID.BANK_SEARCH_BUTTON_BACKGROUND);
+		Widget searchButtonBackground = client.getWidget(InterfaceID.Bankmain.SEARCH);
 		if (searchButtonBackground != null)
 		{
 			searchButtonBackground.setOnTimerListener((Object[]) null);

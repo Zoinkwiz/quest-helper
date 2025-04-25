@@ -24,19 +24,20 @@
  */
 package com.questhelper.helpers.skills.agility;
 
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+
 import java.util.Arrays;
 import java.util.Collections;
-import net.runelite.api.ObjectID;
-import net.runelite.api.coords.WorldPoint;
 
 public class SeersVillage extends AgilityCourse
 {
@@ -88,22 +89,22 @@ public class SeersVillage extends AgilityCourse
 	protected void setupSteps()
 	{
 		//Seer's village obstacles
-		climbWall = new ObjectStep(this.questHelper, ObjectID.WALL_14927, new WorldPoint(2729, 3489, 0),
+		climbWall = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_SEERS_WALLCLIMB, new WorldPoint(2729, 3489, 0),
 			"Climb up the wall outside the Seers' Bank.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpFirstGap = new ObjectStep(this.questHelper, ObjectID.GAP_14928, new WorldPoint(2720, 3494, 3),
+		jumpFirstGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_SEERS_JUMP, new WorldPoint(2720, 3494, 3),
 			"Jump across first gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		crossTightrope = new ObjectStep(this.questHelper, ObjectID.TIGHTROPE_14932, new WorldPoint(2710, 3489, 2),
+		crossTightrope = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_SEERS_TIGHTROPE, new WorldPoint(2710, 3489, 2),
 			"Cross the tightrope.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpSecondGap = new ObjectStep(this.questHelper, ObjectID.GAP_14929, new WorldPoint(2712, 3476, 2),
+		jumpSecondGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_SEERS_JUMP_1, new WorldPoint(2712, 3476, 2),
 			"Jump across second gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpThirdGap = new ObjectStep(this.questHelper, ObjectID.GAP_14930, new WorldPoint(2702, 3469, 3),
+		jumpThirdGap = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_SEERS_JUMP_2, new WorldPoint(2702, 3469, 3),
 			"Jump across third gap.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 
-		jumpEdgeZone = new ObjectStep(this.questHelper, ObjectID.EDGE_14931, new WorldPoint(2703, 3463, 2),
+		jumpEdgeZone = new ObjectStep(this.questHelper, ObjectID.ROOFTOPS_SEERS_LEAPDOWN, new WorldPoint(2703, 3463, 2),
 			"Jump off the edge.", Collections.EMPTY_LIST, Arrays.asList(recommendedItems));
 	}
 

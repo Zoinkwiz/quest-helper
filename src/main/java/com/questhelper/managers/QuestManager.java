@@ -40,17 +40,15 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.QuestState;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.plugins.PluginManager;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -68,11 +66,20 @@ public class QuestManager
 	@Inject
 	ClientThread clientThread;
 
+	@Getter
 	@Inject
 	EventBus eventBus;
 
 	@Inject
 	QuestBankManager questBankManager;
+
+	@Getter
+	@Inject
+	PluginManager pluginManager;
+
+	@Getter
+	@Inject
+	ConfigManager configManager;
 
 	@Inject
 	QuestHelperConfig config;

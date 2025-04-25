@@ -25,34 +25,26 @@
 package com.questhelper.helpers.quests.lostcity;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class LostCity extends BasicQuestHelper
 {
@@ -119,8 +111,8 @@ public class LostCity extends BasicQuestHelper
 		axe.addAlternates(ItemCollections.AXES);
 		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(ItemID.SKULL);
-		teleport = new ItemRequirement("Teleport, preferably to Lumbridge. Home teleport will work if off cooldown", ItemID.RING_OF_THE_ELEMENTS_26818);
-		teleport.addAlternates(ItemID.LUMBRIDGE_TELEPORT);
+		teleport = new ItemRequirement("Teleport, preferably to Lumbridge. Home teleport will work if off cooldown", ItemID.RING_OF_ELEMENTS_CHARGED);
+		teleport.addAlternates(ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		dramenBranch = new ItemRequirement("Dramen branch", ItemID.DRAMEN_BRANCH);
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF);
 		dramenStaffEquipped = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF, 1, true);
@@ -137,35 +129,35 @@ public class LostCity extends BasicQuestHelper
 	{
 		onEntrana = new ZoneRequirement(entrana);
 		inDungeon = new ZoneRequirement(entranaDungeon);
-		shamusNearby = new NpcCondition(NpcID.SHAMUS);
+		shamusNearby = new NpcCondition(NpcID.ZANARISLEPRECHAUN);
 		bronzeAxeNearby = new ItemOnTileRequirement(ItemID.BRONZE_AXE);
 		dramenSpiritNearby = new NpcCondition(NpcID.TREE_SPIRIT);
 	}
 
 	public void setupSteps()
 	{
-		talkToWarrior = new NpcStep(this, NpcID.WARRIOR, new WorldPoint(3151, 3207, 0), "Talk to the Warrior south east of Draynor Village.");
+		talkToWarrior = new NpcStep(this, NpcID.WARRIORADVENTURERPG, new WorldPoint(3151, 3207, 0), "Talk to the Warrior south east of Draynor Village.");
 		talkToWarrior.addDialogStep("What are you camped out here for?");
 		talkToWarrior.addDialogStep("What makes you think it's out here?");
 		talkToWarrior.addDialogStep("If it's hidden how are you planning to find it?");
 		talkToWarrior.addDialogStep("Looks like you don't know either.");
-		chopTree = new ObjectStep(this, ObjectID.TREE_2409, new WorldPoint(3139, 3213, 0), "Try cutting the tree just to the west.", axe);
+		chopTree = new ObjectStep(this, ObjectID.LEPRECHAUNTREE, new WorldPoint(3139, 3213, 0), "Try cutting the tree just to the west.", axe);
 		chopTree.addDialogStep("I've been in that shed, I didn't see a city.");
-		talkToShamus = new NpcStep(this, NpcID.SHAMUS, new WorldPoint(3138, 3212, 0), "Talk to Shamus.");
+		talkToShamus = new NpcStep(this, NpcID.ZANARISLEPRECHAUN, new WorldPoint(3138, 3212, 0), "Talk to Shamus.");
 		talkToShamus.addDialogStep("I've been in that shed, I didn't see a city.");
-		goToEntrana = new NpcStep(this, NpcID.MONK_OF_ENTRANA_1167, new WorldPoint(3047, 3236, 0), "Bank all weapons and armour you have (including the axe), and go to Port Sarim to get a boat to Entrana.", combatGear);
-		goDownHole = new ObjectStep(this, ObjectID.LADDER_2408, new WorldPoint(2820, 3374, 0), "Climb down the ladder on the north side of the island. Once you go down, you can only escape via teleport.");
+		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3047, 3236, 0), "Bank all weapons and armour you have (including the axe), and go to Port Sarim to get a boat to Entrana.", combatGear);
+		goDownHole = new ObjectStep(this, ObjectID.ENTRANALADDERTOP, new WorldPoint(2820, 3374, 0), "Climb down the ladder on the north side of the island. Once you go down, you can only escape via teleport.");
 		goDownHole.addDialogStep("Well that is a risk I will have to take.");
 		getAxe = new DetailedQuestStep(this, new WorldPoint(2843, 9760, 0), "Kill zombies until one drops a bronze axe.");
 		pickupAxe = new DetailedQuestStep(this, "Pick up the bronze axe", bronzeAxe);
-		attemptToCutDramen = new ObjectStep(this, ObjectID.DRAMEN_TREE, new WorldPoint(2861, 9735, 0), "Attempt to cut a branch from the Dramen tree. Be prepared for a Tree Spirit (level 101) to appear, which you can safespot behind nearby fungus.", bronzeAxe);
+		attemptToCutDramen = new ObjectStep(this, ObjectID.DRAMENTREE, new WorldPoint(2861, 9735, 0), "Attempt to cut a branch from the Dramen tree. Be prepared for a Tree Spirit (level 101) to appear, which you can safespot behind nearby fungus.", bronzeAxe);
 		killDramenSpirit = new NpcStep(this, NpcID.TREE_SPIRIT, new WorldPoint(2859, 9734, 0), "Kill the Tree Spirit. They can be safespotted behind nearby fungi to the east.");
-		cutDramenBranch = new ObjectStep(this, ObjectID.DRAMEN_TREE, new WorldPoint(2861, 9735, 0), "Cut at least one branch from the Dramen tree. It's recommended you cut at least 4 branches so you don't have to return in future quests.");
+		cutDramenBranch = new ObjectStep(this, ObjectID.DRAMENTREE, new WorldPoint(2861, 9735, 0), "Cut at least one branch from the Dramen tree. It's recommended you cut at least 4 branches so you don't have to return in future quests.");
 		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches, preferably to Lumbridge.", dramenBranch);
 		teleportAway.addTeleport(teleport);
 		getAnotherBranch = new DetailedQuestStep(this, "If you've lost your Dramen branch/staff, you will need to return to Entrana and cut another. You will not need to defeat the Tree Spirit again.");
 		craftBranch = new DetailedQuestStep(this, "Use a knife on the dramen branch to craft a dramen staff.", knife, dramenBranch);
-		enterZanaris = new ObjectStep(this, ObjectID.DOOR_2406, new WorldPoint(3202, 3169, 0), "Enter the shed south of Lumbridge with your Dramen Staff equipped.", dramenStaffEquipped);
+		enterZanaris = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0), "Enter the shed south of Lumbridge with your Dramen Staff equipped.", dramenStaffEquipped);
 	}
 
 	@Override

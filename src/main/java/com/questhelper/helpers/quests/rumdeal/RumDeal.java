@@ -24,42 +24,35 @@
  */
 package com.questhelper.helpers.quests.rumdeal;
 
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
-import com.questhelper.requirements.player.FreeInventorySlotRequirement;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.player.PrayerPointRequirement;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.player.PrayerPointRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-
-import java.util.*;
-
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+
+import java.util.*;
 
 public class RumDeal extends BasicQuestHelper
 {
@@ -241,50 +234,50 @@ public class RumDeal extends BasicQuestHelper
 	{
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYER_GLOVES).isNotConsumed();
-		slayerGloves.addAlternates(ItemID.SLAYER_GLOVES_6720);
-		blindweedSeed = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);
-		blindweedSeedHighlight = new ItemRequirement("Blindweed seed", ItemID.BLINDWEED_SEED);
+		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYERGUIDE_SLAYER_GLOVES).isNotConsumed();
+		slayerGloves.addAlternates(ItemID.DEAL_SLAYER_GLOVES);
+		blindweedSeed = new ItemRequirement("Blindweed seed", ItemID.DEAL_BLINDWEED_SEED);
+		blindweedSeedHighlight = new ItemRequirement("Blindweed seed", ItemID.DEAL_BLINDWEED_SEED);
 		blindweedSeedHighlight.setHighlightInInventory(true);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		rakeHighlight = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		rakeHighlight.setHighlightInInventory(true);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
-		blindweed = new ItemRequirement("Blindweed", ItemID.BLINDWEED);
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).isNotConsumed();
+		blindweed = new ItemRequirement("Blindweed", ItemID.DEAL_BLINDWEED);
 		blindweed.setTooltip("You can get another from Captain Braindeath");
 
-		blindweedHighlight = new ItemRequirement(true, "Blindweed", ItemID.BLINDWEED);
+		blindweedHighlight = new ItemRequirement(true, "Blindweed", ItemID.DEAL_BLINDWEED);
 		blindweedHighlight.setTooltip("You can get another from Captain Braindeath");
 
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 
-		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET);
+		bucketHighlight = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 		bucketHighlight.setHighlightInInventory(true);
 
-		stagnantWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER_6712);
+		stagnantWater = new ItemRequirement("Bucket of water", ItemID.DEAL_STAGNANT_BUCKET);
 		stagnantWater.setTooltip("You can get more from Captain Braindeath");
 
-		stagnantWaterHighlight = new ItemRequirement("Bucket of water", ItemID.BUCKET_OF_WATER_6712);
+		stagnantWaterHighlight = new ItemRequirement("Bucket of water", ItemID.DEAL_STAGNANT_BUCKET);
 		stagnantWaterHighlight.setTooltip("You can get more from Captain Braindeath");
 		stagnantWaterHighlight.setHighlightInInventory(true);
 
-		netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_AND_NET);
+		netBowl = new ItemRequirement("Fishbowl and net", ItemID.FISHBOWL_NET);
 		netBowl.setTooltip("You can get another from Captain Braindeath, or make it with a fishbowl and large net");
 
-		sluglings5 = new ItemRequirement("Sluglings", ItemID.SLUGLINGS, 5);
+		sluglings5 = new ItemRequirement("Sluglings", ItemID.DEAL_SLUGLING, 5);
 
-		holyWrench = new ItemRequirement("Holy wrench", ItemID.HOLY_WRENCH);
+		holyWrench = new ItemRequirement("Holy wrench", ItemID.DEAL_WRENCH_BLESSED);
 		holyWrench.setHighlightInInventory(true);
 
-		wrench = new ItemRequirement("Wrench", ItemID.WRENCH);
+		wrench = new ItemRequirement("Wrench", ItemID.DEAL_WRENCH);
 		wrench.setTooltip("You can get another from Captain Braindeath");
 
-		spiderCarcass = new ItemRequirement("Fever spider body", ItemID.FEVER_SPIDER_BODY);
+		spiderCarcass = new ItemRequirement("Fever spider body", ItemID.DEAL_SPIDER_BODY);
 
-		spiderCarcassHighlight = new ItemRequirement("Fever spider body", ItemID.FEVER_SPIDER_BODY);
+		spiderCarcassHighlight = new ItemRequirement("Fever spider body", ItemID.DEAL_SPIDER_BODY);
 		spiderCarcassHighlight.setHighlightInInventory(true);
 
-		swill = new ItemRequirement("Unsanitary swill", ItemID.UNSANITARY_SWILL);
+		swill = new ItemRequirement("Unsanitary swill", ItemID.DEAL_BUCKET_SWILL);
 
 		prayerPoints47 = new PrayerPointRequirement(47);
 	}
@@ -315,7 +308,7 @@ public class RumDeal extends BasicQuestHelper
 
 		added5Sluglings = new VarbitRequirement(1354, 5);
 
-		evilSpiritNearby = new NpcCondition(NpcID.EVIL_SPIRIT);
+		evilSpiritNearby = new NpcCondition(NpcID.DEAL_EVIL_SPIRIT);
 
 		carcassNearby = new ItemOnTileRequirement(spiderCarcass);
 		// 1359-64 0->1 given swill
@@ -323,104 +316,104 @@ public class RumDeal extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToPete = new NpcStep(this, NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.");
+		talkToPete = new NpcStep(this, NpcID.DEAL_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.");
 		talkToPete.addDialogSteps("Yes.", "Yes!", "Of course, I fear no demon!", "Nonsense! Keep the money!", "I've decided to help you for free.", "Okay!");
-		talkToBraindeath = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
+		talkToBraindeath = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 
-		goDownFromTop = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Go down the ladder.");
-		goUpFromBottom = new ObjectStep(this, ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0), "Go up to the first floor.");
+		goDownFromTop = new ObjectStep(this, ObjectID.DEAL_LADDERTOP, new WorldPoint(2163, 5092, 2), "Go down the ladder.");
+		goUpFromBottom = new ObjectStep(this, ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0), "Go up to the first floor.");
 
-		goDownstairs = new ObjectStep(this, ObjectID.WOODEN_STAIR_10137, new WorldPoint(2150, 5088, 1), "Go down to the island's farming patch to plant the blindweed seed.", blindweedSeed, rake, dibber);
-		rakePatch = new ObjectStep(this, NullObjectID.NULL_10096, new WorldPoint(2163, 5070, 0), "Rake the blindweed patch.", rakeHighlight);
+		goDownstairs = new ObjectStep(this, ObjectID.DEAL_STAIRS_TOP, new WorldPoint(2150, 5088, 1), "Go down to the island's farming patch to plant the blindweed seed.", blindweedSeed, rake, dibber);
+		rakePatch = new ObjectStep(this, ObjectID.DEAL_BLINDWEED, new WorldPoint(2163, 5070, 0), "Rake the blindweed patch.", rakeHighlight);
 		rakePatch.addIcon(ItemID.RAKE);
 
-		plantSeed = new ObjectStep(this, NullObjectID.NULL_10096, new WorldPoint(2163, 5070, 0), "Plant the seed in the blindweed patch.", blindweedSeedHighlight, dibber);
-		plantSeed.addIcon(ItemID.BLINDWEED_SEED);
+		plantSeed = new ObjectStep(this, ObjectID.DEAL_BLINDWEED, new WorldPoint(2163, 5070, 0), "Plant the seed in the blindweed patch.", blindweedSeedHighlight, dibber);
+		plantSeed.addIcon(ItemID.DEAL_BLINDWEED_SEED);
 
 		waitForGrowth = new DetailedQuestStep(this, "Wait 5 minutes for the blindweed to grow.");
 
-		pickPlant = new ObjectStep(this, NullObjectID.NULL_10096, new WorldPoint(2163, 5070, 0), "Pick the blindweed on Braindeath Island.");
+		pickPlant = new ObjectStep(this, ObjectID.DEAL_BLINDWEED, new WorldPoint(2163, 5070, 0), "Pick the blindweed on Braindeath Island.");
 
-		goUpStairsWithPlant = new ObjectStep(this, ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0), "Take the blindweed back to Captain Braindeath.", blindweed);
+		goUpStairsWithPlant = new ObjectStep(this, ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0), "Take the blindweed back to Captain Braindeath.", blindweed);
 
-		talkToBraindeathWithPlant = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.", blindweed);
-		talkToPeteWithPlant = new NpcStep(this, NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.", blindweed);
+		talkToBraindeathWithPlant = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.", blindweed);
+		talkToPeteWithPlant = new NpcStep(this, NpcID.DEAL_PETE, new WorldPoint(3680, 3537, 0), "Talk to Pirate Pete north east of the Ectofuntus.", blindweed);
 		goUpStairsWithPlant.addSubSteps(talkToPeteWithPlant, talkToBraindeathWithPlant);
 
-		climbUpToDropPlant = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1),
+		climbUpToDropPlant = new ObjectStep(this, ObjectID.DEAL_LADDER_UP, new WorldPoint(2163, 5092, 1),
 			"Go to the top floor and put the blindweed into the hopper.", blindweed);
 
-		dropPlant = new ObjectStep(this, ObjectID.HOPPER_10170, new WorldPoint(2142, 5102, 2),
+		dropPlant = new ObjectStep(this, ObjectID.DEAL_HOPPER, new WorldPoint(2142, 5102, 2),
 			"Go to the top floor and put the blindweed into the hopper.", blindweedHighlight);
 		dropPlant.addSubSteps(climbUpToDropPlant);
-		dropPlant.addIcon(ItemID.BLINDWEED);
+		dropPlant.addIcon(ItemID.DEAL_BLINDWEED);
 
-		goDownFromDropPlant = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
+		goDownFromDropPlant = new ObjectStep(this, ObjectID.DEAL_LADDERTOP, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
 
-		talkToBraindeathAfterPlant = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
+		talkToBraindeathAfterPlant = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		talkToBraindeathAfterPlant.addSubSteps(goDownFromDropPlant);
 
-		goDownForWater = new ObjectStep(this, ObjectID.WOODEN_STAIR_10137, new WorldPoint(2138, 5088, 1), "Go to the north part of the island and get some stagnant water.", bucket);
-		openGate = new ObjectStep(this, ObjectID.GATE_10172, new WorldPoint(2120, 5098, 0), "Go to the north part of the island and get some stagnant water.", bucket);
+		goDownForWater = new ObjectStep(this, ObjectID.DEAL_STAIRS_TOP, new WorldPoint(2138, 5088, 1), "Go to the north part of the island and get some stagnant water.", bucket);
+		openGate = new ObjectStep(this, ObjectID.DEAL_GATE_CLOSED, new WorldPoint(2120, 5098, 0), "Go to the north part of the island and get some stagnant water.", bucket);
 
-		useBucketOnWater = new ObjectStep(this, ObjectID.STAGNANT_LAKE, new WorldPoint(2135, 5161, 0), "Go to the north part of the island and get some stagnant water.", bucketHighlight);
+		useBucketOnWater = new ObjectStep(this, ObjectID.DEAL_STAGNANT, new WorldPoint(2135, 5161, 0), "Go to the north part of the island and get some stagnant water.", bucketHighlight);
 		useBucketOnWater.addSubSteps(goDownForWater, openGate);
-		useBucketOnWater.addIcon(ItemID.BUCKET);
+		useBucketOnWater.addIcon(ItemID.BUCKET_EMPTY);
 
-		goUpWithWater = new ObjectStep(this, ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0), "Take the water back to the hopper on the top floor.", stagnantWater);
+		goUpWithWater = new ObjectStep(this, ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0), "Take the water back to the hopper on the top floor.", stagnantWater);
 
-		goUpToDropWater = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1),
+		goUpToDropWater = new ObjectStep(this, ObjectID.DEAL_LADDER_UP, new WorldPoint(2163, 5092, 1),
 			"Take the water back to the hopper on the top floor.", stagnantWater);
 		goUpToDropWater.addDialogStep("What exactly do you want me to do?");
 
-		dropWater = new ObjectStep(this, ObjectID.HOPPER_10170, new WorldPoint(2142, 5102, 2),
+		dropWater = new ObjectStep(this, ObjectID.DEAL_HOPPER, new WorldPoint(2142, 5102, 2),
 			"Take the water back to the hopper on the top floor.", stagnantWaterHighlight);
 		dropWater.addSubSteps(goUpWithWater, goUpToDropWater);
-		dropWater.addIcon(ItemID.BUCKET_OF_WATER_6712);
+		dropWater.addIcon(ItemID.DEAL_STAGNANT_BUCKET);
 
-		goDownFromTopAfterDropWater = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
+		goDownFromTopAfterDropWater = new ObjectStep(this, ObjectID.DEAL_LADDERTOP, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
 
-		talkToBraindeathAfterWater = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
+		talkToBraindeathAfterWater = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		talkToBraindeathAfterWater.addSubSteps(goDownFromTopAfterDropWater);
 
 		getSlugs = new SlugSteps(this);
 
-		goDownAfterSlugs = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
-		talkToBraindeathAfterSlugs = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
+		goDownAfterSlugs = new ObjectStep(this, ObjectID.DEAL_LADDERTOP, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
+		talkToBraindeathAfterSlugs = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		talkToBraindeathAfterSlugs.addSubSteps(goDownAfterSlugs);
-		talkToDavey = new NpcStep(this, NpcID.DAVEY, new WorldPoint(2132, 5100, 1), "Talk to Davey south west of Captain Braindeath.", wrench, prayerPoints47);
-		useWrenchOnControl = new ObjectStep(this, NullObjectID.NULL_10104, new WorldPoint(2144, 5101, 1), "Use the holy wrench on the brewing control. Be prepared to fight an evil spirit.", holyWrench);
-		useWrenchOnControl.addIcon(ItemID.HOLY_WRENCH);
-		killSpirit = new NpcStep(this, NpcID.EVIL_SPIRIT, "Kill the Evil Spirit.", prayerPoints47);
+		talkToDavey = new NpcStep(this, NpcID.DEAL_DAVEY, new WorldPoint(2132, 5100, 1), "Talk to Davey south west of Captain Braindeath.", wrench, prayerPoints47);
+		useWrenchOnControl = new ObjectStep(this, ObjectID.DEAL_MULTICONTROL, new WorldPoint(2144, 5101, 1), "Use the holy wrench on the brewing control. Be prepared to fight an evil spirit.", holyWrench);
+		useWrenchOnControl.addIcon(ItemID.DEAL_WRENCH_BLESSED);
+		killSpirit = new NpcStep(this, NpcID.DEAL_EVIL_SPIRIT, "Kill the Evil Spirit.", prayerPoints47);
 
-		goUpFromSpiders = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Go up the ladder.");
+		goUpFromSpiders = new ObjectStep(this, ObjectID.DEAL_LADDER_UP, new WorldPoint(2139, 5105, 0), "Go up the ladder.");
 
-		talkToBraindeathAfterSpirit = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
-		goDownToSpiders = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2139, 5105, 1), "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
+		talkToBraindeathAfterSpirit = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
+		goDownToSpiders = new ObjectStep(this, ObjectID.DEAL_LADDERTOP, new WorldPoint(2139, 5105, 1), "Go into the brewery's basement and kill a fever spider. If you're not wearing slayer gloves they'll afflict you with disease.", slayerGloves);
 
-		killSpider = new NpcStep(this, NpcID.FEVER_SPIDER,
+		killSpider = new NpcStep(this, NpcID.DEAL_FEVER_SPIDERS1,
 			"Go into the brewery's basement and kill a fever spider. " +
 				"If you're not wearing slayer gloves they'll afflict you with disease.", true, slayerGloves.equipped());
 		killSpider.addSubSteps(goDownToSpiders);
 		pickUpCarcass = new ItemStep(this, "Pick up the fever spider body.", spiderCarcass);
-		goUpFromSpidersWithCorpse = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2139, 5105, 0), "Add the spider body to the hopper on the top floor.", spiderCarcass);
-		goUpToDropSpider = new ObjectStep(this, ObjectID.LADDER_10167, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);
-		dropSpider = new ObjectStep(this, ObjectID.HOPPER_10170, new WorldPoint(2142, 5102, 2), "Add the spider body to the hopper on the top floor.", spiderCarcassHighlight);
-		dropSpider.addIcon(ItemID.FEVER_SPIDER_BODY);
+		goUpFromSpidersWithCorpse = new ObjectStep(this, ObjectID.DEAL_LADDER_UP, new WorldPoint(2139, 5105, 0), "Add the spider body to the hopper on the top floor.", spiderCarcass);
+		goUpToDropSpider = new ObjectStep(this, ObjectID.DEAL_LADDER_UP, new WorldPoint(2163, 5092, 1), "Add the spider body to the hopper on the top floor.", spiderCarcass);
+		dropSpider = new ObjectStep(this, ObjectID.DEAL_HOPPER, new WorldPoint(2142, 5102, 2), "Add the spider body to the hopper on the top floor.", spiderCarcassHighlight);
+		dropSpider.addIcon(ItemID.DEAL_SPIDER_BODY);
 		dropSpider.addSubSteps(goUpFromSpidersWithCorpse, goUpToDropSpider);
 
-		goDownAfterSpider = new ObjectStep(this, ObjectID.LADDER_10168, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
-		talkToBraindeathAfterSpider = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
+		goDownAfterSpider = new ObjectStep(this, ObjectID.DEAL_LADDERTOP, new WorldPoint(2163, 5092, 2), "Return to Captain Braindeath.");
+		talkToBraindeathAfterSpider = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath.");
 		talkToBraindeathAfterSpider.addSubSteps(goDownAfterSpider);
 
-		useBucketOnTap = new ObjectStep(this, ObjectID.OUTPUT_TAP, new WorldPoint(2142, 5093, 1), "Fill a bucket from the output tap in the south west of the brewery.", bucket);
+		useBucketOnTap = new ObjectStep(this, ObjectID.DEAL_BREWVAT_TAP, new WorldPoint(2142, 5093, 1), "Fill a bucket from the output tap in the south west of the brewery.", bucket);
 
-		goDownToDonnie = new ObjectStep(this, ObjectID.WOODEN_STAIR_10137, new WorldPoint(2150, 5088, 1), "Bring the unsanitary swill to Captain Donnie south of the Brewery.", swill);
-		talkToDonnie = new NpcStep(this, NpcID.CAPTAIN_DONNIE, new WorldPoint(2152, 5078, 0), "Bring the unsanitary swill to Captain Donnie south of the Brewery.", swill);
+		goDownToDonnie = new ObjectStep(this, ObjectID.DEAL_STAIRS_TOP, new WorldPoint(2150, 5088, 1), "Bring the unsanitary swill to Captain Donnie south of the Brewery.", swill);
+		talkToDonnie = new NpcStep(this, NpcID.DEAL_CAPTIAN_DONNIE, new WorldPoint(2152, 5078, 0), "Bring the unsanitary swill to Captain Donnie south of the Brewery.", swill);
 		talkToDonnie.addSubSteps(goDownToDonnie);
 
-		goUpToBraindeathToFinish = new ObjectStep(this, ObjectID.WOODEN_STAIR, new WorldPoint(2150, 5088, 0), "Return to Captain Braindeath to finish.");
-		talkToBraindeathToFinish = new NpcStep(this, NpcID.CAPTAIN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath to finish.");
+		goUpToBraindeathToFinish = new ObjectStep(this, ObjectID.DEAL_STAIRS_BOTTOM, new WorldPoint(2150, 5088, 0), "Return to Captain Braindeath to finish.");
+		talkToBraindeathToFinish = new NpcStep(this, NpcID.DEAL_CAPTIAN_BRAINDEATH, new WorldPoint(2145, 5108, 1), "Talk to Captain Braindeath to finish.");
 		talkToBraindeathToFinish.addSubSteps(goUpToBraindeathToFinish);
 
 	}
@@ -456,7 +449,7 @@ public class RumDeal extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("A Holy Wrench", ItemID.HOLY_WRENCH, 1));
+		return Collections.singletonList(new ItemReward("A Holy Wrench", ItemID.DEAL_WRENCH_BLESSED, 1));
 	}
 
 	@Override

@@ -26,36 +26,29 @@ package com.questhelper.helpers.quests.atailoftwocats;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.NpcCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.collections.TeleportCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.FollowerItemRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.*;
 
 public class ATailOfTwoCats extends BasicQuestHelper
 {
@@ -130,12 +123,12 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		catspeak = new ItemRequirement("Catspeak amulet", ItemID.CATSPEAK_AMULET, 1, true).isNotConsumed();
+		catspeak = new ItemRequirement("Catspeak amulet", ItemID.ICS_LITTLE_AMULET_OF_CATSPEAK, 1, true).isNotConsumed();
 		catspeak.setTooltip("You can get another from the Sphinx in Sophanem");
-		catspeakE = new ItemRequirement("Catspeak amulet (e)", ItemID.CATSPEAK_AMULETE).isNotConsumed();
+		catspeakE = new ItemRequirement("Catspeak amulet (e)", ItemID.TWOCATS_AMULETOFCATSPEAK).isNotConsumed();
 		catspeakEWorn = catspeakE.equipped();
 		catspeakE.setHighlightInInventory(true);
-		deathRune5 = new ItemRequirement("Death runes", ItemID.DEATH_RUNE, 5);
+		deathRune5 = new ItemRequirement("Death runes", ItemID.DEATHRUNE, 5);
 		cat = new FollowerItemRequirement("A cat",
 			ItemCollections.CATS,
 			NpcCollections.getCats()).isNotConsumed();
@@ -147,7 +140,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		logs.setHighlightInInventory(true);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderbox.setHighlightInInventory(true);
-		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_OF_MILK).isNotConsumed();
+		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK).isNotConsumed();
 		milk.setHighlightInInventory(true);
 		shears = new ItemRequirement("Shears", ItemID.SHEARS).isNotConsumed();
 		shears.setHighlightInInventory(true);
@@ -155,13 +148,13 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		potatoSeed4.setHighlightInInventory(true);
 		rake = new ItemRequirement("Rake", ItemID.RAKE).isNotConsumed();
 		rake.setHighlightInInventory(true);
-		dibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).isNotConsumed();
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).isNotConsumed();
 
-		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_OF_WATER);
+		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_WATER);
 		desertBottom = new ItemRequirement("Desert robe", ItemID.DESERT_ROBE, 1, true).isNotConsumed();
 		desertTop = new ItemRequirement("Desert shirt", ItemID.DESERT_SHIRT, 1, true).isNotConsumed();
-		hat = new ItemRequirement("Doctor's or Nurse hat", ItemID.DOCTORS_HAT, 1, true).isNotConsumed();
-		hat.addAlternates(ItemID.NURSE_HAT);
+		hat = new ItemRequirement("Doctor's or Nurse hat", ItemID.TWOCATS_DOCTORS_HAT, 1, true).isNotConsumed();
+		hat.addAlternates(ItemID.TWOCATS_NURSES_HAT);
 		hat.setDisplayMatchedItemName(true);
 
 		burthorpeTeleport = TeleportCollections.BURTHORPE_TELEPORT.getItemRequirement();
@@ -172,10 +165,10 @@ public class ATailOfTwoCats extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		bobNearby = new NpcRequirement("Bob nearby", NpcID.BOB_8034);
+		bobNearby = new NpcRequirement("Bob nearby", NpcID.DEATH_GROWNCAT_BLACK_VIS);
 
 		rakedPatch = new VarbitRequirement(1033, 3);
-		plantedSeed = new VarbitRequirement(1033, 4, Operation.GREATER_EQUAL);
+		plantedSeed = new VarbitRequirement(VarbitID.TWOCATS_CHORES_TIDYGARDEN, 4, Operation.GREATER_EQUAL);
 		grownPotatoes = new VarbitRequirement(1033, 8);
 		madeBed = new VarbitRequirement(1029, 1);
 		placedLogs = new VarbitRequirement(1030, 1);
@@ -187,56 +180,57 @@ public class ATailOfTwoCats extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToUnferth = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0), "Talk to Unferth in north east Burthorpe.", cat, catspeak);
+		talkToUnferth = new NpcStep(this, NpcID.TWOCATS_UNFERTH_BALD, new WorldPoint(2919, 3559, 0), "Talk to Unferth in north east Burthorpe.", cat, catspeak);
 		talkToUnferth.addDialogSteps("I'll help you.", "Yes.");
 		talkToUnferth.addTeleport(burthorpeTeleport);
-		talkToHild = new NpcStep(this, NpcID.HILD_4112, new WorldPoint(2930, 3568, 0), "Talk to Hild in the house north east of Unferth.", deathRune5, catspeak);
+		talkToHild = new NpcStep(this, NpcID.DEATH_WOMAN_INDOORS1, new WorldPoint(2930, 3568, 0), "Talk to Hild in the house north east of Unferth.", deathRune5, catspeak);
 		findBob = new DetailedQuestStep(this, "Operate the catspeak amulet (e) to locate Bob the Cat. He's often in Catherby Archery Shop or at the Varrock Anvil.", catspeakE);
 		findBob.addTeleport(varrockTeleport);
-		talkToBob = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat.", cat, catspeakEWorn);
-		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_7723, new WorldPoint(3151, 3413, 0), "Talk to Gertrude west of Varrock.", cat, catspeakEWorn);
+		talkToBob = new NpcStep(this, NpcID.DEATH_GROWNCAT_BLACK_VIS, "Talk to Bob the Cat.", cat, catspeakEWorn);
+		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_POST, new WorldPoint(3151, 3413, 0), "Talk to Gertrude west of Varrock.", cat, catspeakEWorn);
 		talkToGertrude.addDialogStep("Ask about Bob's parents.");
 		talkToGertrude.addTeleport(varrockTeleport);
 
-		talkToReldo = new NpcStep(this, NpcID.RELDO_4243, new WorldPoint(3211, 3494, 0), "Talk to Reldo in the Varrock Castle's library.", cat, catspeakEWorn);
-		talkToReldo.addDialogStep("Ask about Robert the Strong.");
+		talkToReldo = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3211, 3494, 0), "Talk to Reldo in the Varrock Castle's library.", cat, catspeakEWorn);
+		((NpcStep) talkToReldo).addAlternateNpcs(NpcID.RELDO);
+		talkToReldo.addDialogSteps("I have a cat related question.", "Ask about Robert the Strong.");
 		findBobAgain = new DetailedQuestStep(this, "Use the catspeak amulet (e) again to locate Bob the Cat.", catspeakE);
-		talkToBobAgain = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat again.", cat, catspeakEWorn);
-		talkToSphinx = new NpcStep(this, NpcID.SPHINX_4209, new WorldPoint(3302, 2784, 0), "Talk to the Sphinx in Sophanem.", cat, catspeakEWorn);
+		talkToBobAgain = new NpcStep(this, NpcID.DEATH_GROWNCAT_BLACK_VIS, "Talk to Bob the Cat again.", cat, catspeakEWorn);
+		talkToSphinx = new NpcStep(this, NpcID.ICS_LITTLE_SPHINX, new WorldPoint(3302, 2784, 0), "Talk to the Sphinx in Sophanem.", cat, catspeakEWorn);
 		talkToSphinx.addDialogStep("Ask the Sphinx for help for Bob.");
 		talkToSphinx.addTeleport(sophanemTeleport);
-		useRake = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Rake Unferth's patch", rake);
+		useRake = new ObjectStep(this, ObjectID.TWOCATS_PATCH, new WorldPoint(2919, 3562, 0), "Rake Unferth's patch", rake);
 		useRake.addIcon(ItemID.RAKE);
 		useRake.addTeleport(burthorpeTeleport);
-		plantSeeds = new ObjectStep(this, NullObjectID.NULL_9399, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch. These can take 15-35 minutes to grow.", dibber, potatoSeed4);
+		plantSeeds = new ObjectStep(this, ObjectID.TWOCATS_PATCH, new WorldPoint(2919, 3562, 0), "Plant 4 potato seeds in Unferth's patch. These can take 15-35 minutes to grow.", dibber, potatoSeed4);
 		plantSeeds.addIcon(ItemID.POTATO_SEED);
-		makeBed = new ObjectStep(this, NullObjectID.NULL_9438, new WorldPoint(2917, 3557, 0), "Make Unferth's bed.");
-		useLogsOnFireplace = new ObjectStep(this, NullObjectID.NULL_9442, new WorldPoint(2919, 3557, 0), "Use logs on Unferth's fireplace", logs);
+		makeBed = new ObjectStep(this, ObjectID.TWOCATS_BED, new WorldPoint(2917, 3557, 0), "Make Unferth's bed.");
+		useLogsOnFireplace = new ObjectStep(this, ObjectID.TWOCATS_FIREPLACE, new WorldPoint(2919, 3557, 0), "Use logs on Unferth's fireplace", logs);
 		useLogsOnFireplace.addIcon(ItemID.LOGS);
-		lightLogs = new ObjectStep(this, NullObjectID.NULL_9442, new WorldPoint(2919, 3557, 0), "Use a tinderbox on Unferth's fireplace.", tinderbox.highlighted());
+		lightLogs = new ObjectStep(this, ObjectID.TWOCATS_FIREPLACE, new WorldPoint(2919, 3557, 0), "Use a tinderbox on Unferth's fireplace.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
-		useChocolateCakeOnTable = new ObjectStep(this, NullObjectID.NULL_9435, new WorldPoint(2921, 3556, 0), "Use a chocolate cake on Unferth's table.", chocolateCake);
+		useChocolateCakeOnTable = new ObjectStep(this, ObjectID.TWOCATS_TABLE, new WorldPoint(2921, 3556, 0), "Use a chocolate cake on Unferth's table.", chocolateCake);
 		useChocolateCakeOnTable.addIcon(ItemID.CHOCOLATE_CAKE);
-		useMilkOnTable = new ObjectStep(this, NullObjectID.NULL_9435, new WorldPoint(2921, 3556, 0), "Use a bucket of milk on Unferth's table.", milk);
-		useMilkOnTable.addIcon(ItemID.BUCKET_OF_MILK);
-		useShearsOnUnferth = new NpcStep(this, NpcID.UNFERTH_4241, new WorldPoint(2919, 3559, 0), "Use some shears on Unferth in north east Burthorpe.", shears);
-		((NpcStep) (useShearsOnUnferth)).addAlternateNpcs(NpcID.UNFERTH, NpcID.UNFERTH_4238, NpcID.UNFERTH_4239, NpcID.UNFERTH_4240);
+		useMilkOnTable = new ObjectStep(this, ObjectID.TWOCATS_TABLE, new WorldPoint(2921, 3556, 0), "Use a bucket of milk on Unferth's table.", milk);
+		useMilkOnTable.addIcon(ItemID.BUCKET_MILK);
+		useShearsOnUnferth = new NpcStep(this, NpcID.TWOCATS_UNFERTH_LONGHAIR, new WorldPoint(2919, 3559, 0), "Use some shears on Unferth in north east Burthorpe.", shears);
+		((NpcStep) (useShearsOnUnferth)).addAlternateNpcs(NpcID.TWOCATS_UNFERTH_BALD, NpcID.TWOCATS_UNFERTH_SHORTHAIR, NpcID.TWOCATS_UNFERTH_MEDIUMHAIR, NpcID.TWOCATS_UNFERTH_SPIKEYHAIR);
 		useShearsOnUnferth.addIcon(ItemID.SHEARS);
 
 		waitForPotatoesToGrow = new DetailedQuestStep(this, "You now need to wait 15-35 minutes for the potatoes to grow.");
 
-		reportToUnferth = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0), "Talk to Unferth in north east Burthorpe again.", cat, catspeakEWorn);
+		reportToUnferth = new NpcStep(this, NpcID.TWOCATS_UNFERTH_BALD, new WorldPoint(2919, 3559, 0), "Talk to Unferth in north east Burthorpe again.", cat, catspeakEWorn);
 		talkToApoth = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0), "Talk to the Apothecary in south west Varrock.", cat, catspeakEWorn);
 		talkToApoth.addDialogStep("Talk about A Tail of Two Cats.");
 		talkToApoth.addTeleport(varrockTeleport);
 
-		talkToUnferthAsDoctor = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0),
+		talkToUnferthAsDoctor = new NpcStep(this, NpcID.TWOCATS_UNFERTH_BALD, new WorldPoint(2919, 3559, 0),
 			"Talk to Unferth whilst wearing the doctor/nurse hat, a desert shirt and a desert robe, and no weapon/shield.", cat, catspeakEWorn, hat, desertTop, desertBottom, vialOfWater);
 		talkToUnferthAsDoctor.addTeleport(burthorpeTeleport);
 		findBobToFinish = new DetailedQuestStep(this, "Use the catspeak amulet (e) to locate Bob once more.", catspeakE);
 		findBobToFinish.addTeleport(varrockTeleport);
-		talkToBobToFinish = new NpcStep(this, NpcID.BOB_8034, "Talk to Bob the Cat again.", cat, catspeakEWorn);
-		talkToUnferthToFinish = new NpcStep(this, NpcID.UNFERTH, new WorldPoint(2919, 3559, 0), "Talk to Unferth to complete the quest.");
+		talkToBobToFinish = new NpcStep(this, NpcID.DEATH_GROWNCAT_BLACK_VIS, "Talk to Bob the Cat again.", cat, catspeakEWorn);
+		talkToUnferthToFinish = new NpcStep(this, NpcID.TWOCATS_UNFERTH_BALD, new WorldPoint(2919, 3559, 0), "Talk to Unferth to complete the quest.");
 		talkToUnferthToFinish.addTeleport(burthorpeTeleport);
 	}
 
@@ -262,10 +256,10 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-				new ItemReward("2,500 Experience Lamps (Any skill over level 30).", ItemID.ANTIQUE_LAMP, 2),
-				new ItemReward("A Doctors hat", ItemID.DOCTORS_HAT, 1),
-				new ItemReward("A Nurse hat", ItemID.NURSE_HAT, 1),
-				new ItemReward("A Mouse Toy", ItemID.MOUSE_TOY, 1)); //4447 Is Placeholder.
+				new ItemReward("2,500 Experience Lamps (Any skill over level 30).", ItemID.THOSF_REWARD_LAMP, 2),
+				new ItemReward("A Doctors hat", ItemID.TWOCATS_DOCTORS_HAT, 1),
+				new ItemReward("A Nurse hat", ItemID.TWOCATS_NURSES_HAT, 1),
+				new ItemReward("A Mouse Toy", ItemID.TWOCATS_MOUSE_TOY, 1)); //4447 Is Placeholder.
 	}
 
 	@Override

@@ -27,14 +27,15 @@
 package com.questhelper.requirements;
 
 import com.questhelper.QuestHelperConfig;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.components.LineComponent;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A requirement that must be passed.

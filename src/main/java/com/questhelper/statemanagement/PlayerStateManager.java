@@ -28,9 +28,6 @@ import com.questhelper.collections.KeyringCollection;
 import com.questhelper.domain.AccountType;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.QuestCompletedWidget;
-import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
@@ -44,6 +41,10 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.List;
 
 @Singleton
 public class PlayerStateManager

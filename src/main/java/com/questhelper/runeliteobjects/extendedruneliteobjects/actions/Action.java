@@ -24,9 +24,10 @@
  */
 package com.questhelper.runeliteobjects.extendedruneliteobjects.actions;
 
-import java.util.function.Consumer;
 import lombok.Getter;
 import net.runelite.api.MenuEntry;
+
+import java.util.function.Consumer;
 
 public class Action
 {

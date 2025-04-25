@@ -24,41 +24,39 @@
  */
 package com.questhelper.helpers.achievementdiaries.morytania;
 
-import com.questhelper.collections.ItemCollections;
-import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.runelite.RuneliteRequirement;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
+import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.steps.QuestStep;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MorytaniaElite extends ComplexStateQuestHelper
 {
@@ -123,22 +121,22 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notBareHandShark = new VarplayerRequirement(1181, false, 3);
-		notCremateShade = new VarplayerRequirement(1181, false, 4);
-		notFertilizeHerb = new VarplayerRequirement(1181, false, 5);
-		notCraftBlackDhideBody = new VarplayerRequirement(1181, false, 6);
-		notAbyssalDemon = new VarplayerRequirement(1181, false, 7);
-		notBarrowsChest = new VarplayerRequirement(1181, false, 8);
+		notBareHandShark = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 3);
+		notCremateShade = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 4);
+		notFertilizeHerb = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 5);
+		notCraftBlackDhideBody = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 6);
+		notAbyssalDemon = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 7);
+		notBarrowsChest = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY2, false, 8);
 
 		magicRedwoodPyreLogs = new ItemRequirement("Magic / Redwood pyrelogs", ItemCollections.ELITE_PYRE_LOGS)
 			.showConditioned(notCremateShade);
 		magicRedwoodPyreLogs.setTooltip("Can be created by using sacred oil on magic / redwood logs");
 		shadeRemains = new ItemRequirement("Shade remains", ItemCollections.SHADE_REMAINS).showConditioned(notCremateShade);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).showConditioned(notCremateShade);
-		earthRune = new ItemRequirement("Earth rune", ItemID.EARTH_RUNE).showConditioned(notFertilizeHerb);
-		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notFertilizeHerb);
-		natureRune = new ItemRequirement("Nature rune", ItemID.NATURE_RUNE).showConditioned(notFertilizeHerb);
-		blackLeather = new ItemRequirement("Black dragon leather", ItemID.BLACK_DRAGON_LEATHER).showConditioned(notCraftBlackDhideBody);
+		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE).showConditioned(notFertilizeHerb);
+		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRALRUNE).showConditioned(notFertilizeHerb);
+		natureRune = new ItemRequirement("Nature rune", ItemID.NATURERUNE).showConditioned(notFertilizeHerb);
+		blackLeather = new ItemRequirement("Black dragon leather", ItemID.DRAGON_LEATHER_BLACK).showConditioned(notCraftBlackDhideBody);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).showConditioned(notCraftBlackDhideBody);
 		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftBlackDhideBody);
 
@@ -175,10 +173,10 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		barrowsTab = new ItemRequirement("Barrows teleport", ItemID.BARROWS_TELEPORT);
+		barrowsTab = new ItemRequirement("Barrows teleport", ItemID.TELETAB_BARROWS);
 		slayerRing = new ItemRequirement("Slayer ring", ItemCollections.SLAYER_RINGS);
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).isNotConsumed();
-		mortTP = new ItemRequirement("Mort'ton Teleport", ItemID.MORTTON_TELEPORT);
+		mortTP = new ItemRequirement("Mort'ton Teleport", ItemID.TELEPORTSCROLL_MORTTON);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notBarrowsChest).isNotConsumed();
 
 		lunarBook = new SpellbookRequirement(Spellbook.LUNAR);
@@ -212,21 +210,21 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		barrowsChest = new ObjectStep(this, 20973, new WorldPoint(3552, 9696, 0),
 			"Loot the chest wearing a complete set of barrows gear.", barrowsSet.equipped());
 
-		cremateShade = new ObjectStep(this, ObjectID.FUNERAL_PYRE, new WorldPoint(3500, 3266, 0),
+		cremateShade = new ObjectStep(this, ObjectID.TEMPLE_PYRE, new WorldPoint(3500, 3266, 0),
 			"Place the pyre logs and shade remains on the funeral pyre and light them with a tinderbox", tinderbox,
 			shadeRemains, magicRedwoodPyreLogs);
-		cremateShade.addAlternateObjects(ObjectID.MAGIC_PYRE, ObjectID.MAGIC_PYRE_4105, ObjectID.REDWOOD_PYRE, ObjectID.REDWOOD_PYRE_28866);
+		cremateShade.addAlternateObjects(ObjectID.TEMPLE_PYRE_MAGIC, ObjectID.TEMPLE_PYRE_BONES_MAGIC, ObjectID.TEMPLE_PYRE_REDWOOD, ObjectID.TEMPLE_PYRE_BONES_REDWOOD);
 
-		bareHandShark = new NpcStep(this, NpcID.FISHING_SPOT_4476, new WorldPoint(3479, 3189, 0),
+		bareHandShark = new NpcStep(this, NpcID._0_54_49_MEMBERFISH, new WorldPoint(3479, 3189, 0),
 			"Bare hand fish a shark in Burgh de Rott.");
 
 		moveToSlayer2 = new ObjectStep(this, 2114, new WorldPoint(3436, 3538, 0),
 			"Climb the stairs or the Spikey chains in the Slayer tower to ascend to the higher level.", combatGear,
 			food);
-		moveToSlayer3 = new ObjectStep(this, ObjectID.STAIRCASE_2119, new WorldPoint(3415, 3541, 1),
+		moveToSlayer3 = new ObjectStep(this, ObjectID.SLAYER_STAIRS_LV2, new WorldPoint(3415, 3541, 1),
 			"Climb the stairs or the Spikey chains in the Slayer tower to ascend to the higher level.", combatGear,
 			food);
-		abyssalDemon = new NpcStep(this, NpcID.ABYSSAL_DEMON_415, new WorldPoint(3420, 3569, 2),
+		abyssalDemon = new NpcStep(this, NpcID.SLAYER_ABYSSAL, new WorldPoint(3420, 3569, 2),
 			"Kill an Abyssal demon.", combatGear, food);
 
 		moveToCanifisBank = new DetailedQuestStep(this, new WorldPoint(3511, 3480, 0),
@@ -239,7 +237,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 			astralRune.quantity(3), natureRune.quantity(2));
 		fertilizeHerb.addIcon(SpriteID.SPELL_FERTILE_SOIL);
 
-		claimReward = new NpcStep(this, NpcID.LESABR, new WorldPoint(3464, 3480, 0),
+		claimReward = new NpcStep(this, NpcID.LESABRE_MORT_DIARY, new WorldPoint(3464, 3480, 0),
 			"Talk to Le-Sabre near Canifis to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}
@@ -290,8 +288,8 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("Morytania legs 4", ItemID.MORYTANIA_LEGS_4),
-			new ItemReward("50,000 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP)
+			new ItemReward("Morytania legs 4", ItemID.MORYTANIA_LEGS_ELITE),
+			new ItemReward("50,000 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
 	}
 

@@ -29,11 +29,13 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
-import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class MemoryPuzzle extends DetailedOwnerStep
 {
@@ -67,13 +69,13 @@ public class MemoryPuzzle extends DetailedOwnerStep
 	@Override
 	protected void setupSteps()
 	{
-		swStep = new ObjectStep(getQuestHelper(), ObjectID.ABYSSAL_GROWTH,
+		swStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_2_SEQUENCE_GROWTH,
 			new WorldPoint(1903, 6431, 0), "Touch the south-western growth.");
-		nwStep = new ObjectStep(getQuestHelper(), ObjectID.ABYSSAL_GROWTH,
+		nwStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_2_SEQUENCE_GROWTH,
 			new WorldPoint(1900, 6442, 0), "Touch the north-western growth.");
-		neStep = new ObjectStep(getQuestHelper(), ObjectID.ABYSSAL_GROWTH,
+		neStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_2_SEQUENCE_GROWTH,
 		new WorldPoint(1909, 6441, 0), "Touch the north-eastern growth.");
-		seStep = new ObjectStep(getQuestHelper(), ObjectID.ABYSSAL_GROWTH,
+		seStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_2_SEQUENCE_GROWTH,
 			new WorldPoint(1914, 6434, 0), "Touch the south-eastern growth.");
 
 		steps = new QuestStep[4];
@@ -103,8 +105,8 @@ public class MemoryPuzzle extends DetailedOwnerStep
 	protected void updateSteps()
 	{
 		// 0-1-2-3-4
-		int currentStep = client.getVarbitValue(15217);
-		int thingToPress = client.getVarbitValue(15212 + currentStep);
+		int currentStep = client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_2_SEQUENCE_STEP);
+		int thingToPress = client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_2_SEQUENCE_1 + currentStep);
 		startUpStep(steps[thingToPress]);
 	}
 

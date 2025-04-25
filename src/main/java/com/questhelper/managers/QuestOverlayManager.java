@@ -24,15 +24,9 @@
  */
 package com.questhelper.managers;
 
-import com.questhelper.overlays.QuestHelperDebugOverlay;
-import com.questhelper.overlays.QuestHelperMinimapOverlay;
-import com.questhelper.overlays.QuestHelperOverlay;
-import com.questhelper.overlays.QuestHelperTooltipOverlay;
-import com.questhelper.overlays.QuestHelperWidgetOverlay;
-import com.questhelper.overlays.QuestHelperWorldArrowOverlay;
-import com.questhelper.overlays.QuestHelperWorldLineOverlay;
-import com.questhelper.overlays.QuestHelperWorldOverlay;
+import com.questhelper.overlays.*;
 import net.runelite.client.ui.overlay.OverlayManager;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -75,6 +69,11 @@ public class QuestOverlayManager
 		overlayManager.add(questHelperWidgetOverlay);
 		overlayManager.add(questHelperMinimapOverlay);
 		overlayManager.add(questHelperTooltipOverlay);
+	}
+
+	public void updateOverlay()
+	{
+		overlayManager.saveOverlay(questHelperOverlay);
 	}
 
 	public void shutDown()

@@ -32,27 +32,9 @@ import com.questhelper.runeliteobjects.dialog.RuneliteObjectDialogStep;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.actions.Action;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.actions.LoopedAction;
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Shape;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Model;
-import net.runelite.api.ModelData;
-import net.runelite.api.Perspective;
-import net.runelite.api.RuneLiteObject;
-import net.runelite.api.Scene;
-import net.runelite.api.Tile;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
@@ -61,6 +43,13 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+
+import java.awt.*;
+import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class ExtendedRuneliteObject
 {
@@ -168,9 +157,11 @@ public class ExtendedRuneliteObject
 
 		this.worldPoint = worldPoint;
 
-		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (lp == null) return;
-		runeliteObject.setLocation(lp, client.getPlane());
+		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		if (localPoints.isEmpty()) return;
+
+		// Set it to first found local point
+		runeliteObject.setLocation(localPoints.get(0), client.getTopLevelWorldView().getPlane());
 		activate();
 	}
 
@@ -197,14 +188,14 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
-		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint) == null) return null;
+		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).isEmpty()) return null;
 
 		return Perspective.getClickbox(client,
 			getRuneliteObject().getModel(),
 			getRuneliteObject().getOrientation(),
 			getRuneliteObject().getLocation().getX(),
 			getRuneliteObject().getLocation().getY(),
-			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), client.getPlane()));
+			Perspective.getTileHeight(client, getRuneliteObject().getLocation(), client.getTopLevelWorldView().getPlane()));
 	}
 
 	public void setAnimation(int animation)
@@ -228,9 +219,11 @@ public class ExtendedRuneliteObject
 	public void setWorldPoint(WorldPoint worldPoint)
 	{
 		this.worldPoint = worldPoint;
-		LocalPoint lp = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (lp == null) return;
-		this.runeliteObject.setLocation(lp, client.getPlane());
+		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		if (localPoints.isEmpty()) return;
+
+		// Set it to first found local point
+		this.runeliteObject.setLocation(localPoints.get(0), client.getTopLevelWorldView().getPlane());
 	}
 
 	public void setScaledModel(int[] model, int xScale, int yScale, int zScale)

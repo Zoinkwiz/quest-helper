@@ -238,7 +238,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		inspectAmik.addSubSteps(enterDiningRoom);
 
 		enterKitchen = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_DOOR1, new WorldPoint(1861, 5316, 0), "Talk to the Lumbridge Cook.");
-		talkToCook = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0),
+		talkToCook = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook and ask him all the options about Sir Amik Varze.");
 		talkToCook.addDialogSteps("More...", "Protecting Sir Amik Varze");
 		talkToCook.addSubSteps(enterKitchen);

@@ -155,7 +155,7 @@ public class TheForsakenTower extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToVulcana = new NpcStep(this, NpcID.VULCANA_LOVAKENGJ_VIS, new WorldPoint(1483, 3747, 0), "Talk to Lady Vulcana Lovakengj in the south of Lovakengj.");
-		talkToVulcana.addDialogStep("I'm looking for a quest.");
+		talkToVulcana.addDialogSteps("Yes.", "I'm looking for a quest.");
 		talkToVulcana.addDialogStep("I'll get going.");
 		talkToUndor = new NpcStep(this, NpcID.WINT_MASTER_SMITH_NORMAL, new WorldPoint(1624, 3942, 0),
 			"Talk to Undor at the entrance to Wintertodt. If you've never talked to Ignisia before, you'll need " +

@@ -65,7 +65,7 @@ public class AltarPuzzle extends DetailedOwnerStep
 	ArrayList<QuestStep> rebalanceE;
 	ArrayList<QuestStep> rebalanceC;
 
-	List<QuestStep> moves = new ArrayList<>();
+	List<QuestStep> moves;
 
 	public AltarPuzzle(QuestHelper questHelper)
 	{
@@ -341,11 +341,11 @@ public class AltarPuzzle extends DetailedOwnerStep
 	public List<PanelDetails> panelDetails()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		PanelDetails potionPanel = new PanelDetails("Altar puzzle",
+		PanelDetails altarPuzzle = new PanelDetails("Altar puzzle",
 			new ArrayList<>(List.of(goUpToSecondFloor)));
-		moves.forEach((potionPanel::addSteps));
-		potionPanel.setLockingStep(this);
-		allSteps.add(potionPanel);
+		moves.forEach((altarPuzzle::addSteps));
+		altarPuzzle.setLockingStep(this);
+		allSteps.add(altarPuzzle);
 		return allSteps;
 	}
 

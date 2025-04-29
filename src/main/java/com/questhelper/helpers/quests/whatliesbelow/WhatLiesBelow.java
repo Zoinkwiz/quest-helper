@@ -144,6 +144,8 @@ public class WhatLiesBelow extends BasicQuestHelper
 		infusedWand = new ItemRequirement("Infused wand", ItemID.SUROK_GLOWINGWAND);
 		infusedWand.setTooltip("You can make another by getting a wand from Surok, and using it on the chaos altar with 15 chaos runes");
 		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN).isNotConsumed();
+		chaosTalismanOrAbyss.addAlternates(ItemID.TIARA_CHAOS, ItemID.CATALYTIC_TALISMAN, ItemID.TIARA_CATALYTIC);
+		chaosTalismanOrAbyss.setTooltip("If using the Dagon'hai shortcut, catalytic talisman/tiara won't work");
 
 		beaconRing = new ItemRequirement("Beacon ring", ItemID.SUROK_RING);
 		beaconRing.setTooltip("You can get another from Zaff");
@@ -172,8 +174,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToRat = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Talk to Rat Burgiss south of Varrock.");
-		talkToRat.addDialogStep("Shall I get them back for you?");
-		talkToRat.addDialogStep("Of course! Tell me what you need me to do.");
+		talkToRat.addDialogSteps("Yes.", "Shall I get them back for you?", "Of course! Tell me what you need me to do.");
 		killOutlaws = new NpcStep(this, NpcID.SUROK_OUTLAW1, new WorldPoint(3118, 3472, 0),
 			"Go to the Bandits west of the Grand Exchange and kill 5 for intel. Put the intel into the folder Rat gave you.", true, folder, intel5);
 		killOutlaws.addAlternateNpcs(NpcID.SUROK_OUTLAW2, NpcID.SUROK_OUTLAW3, NpcID.SUROK_OUTLAW4, NpcID.SUROK_OUTLAW5, NpcID.SUROK_OUTLAW6, NpcID.SUROK_OUTLAW7, NpcID.SUROK_OUTLAW8, NpcID.SUROK_OUTLAW9, NpcID.SUROK_OUTLAW10);
@@ -181,7 +182,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 		talkToRatAfterFolder = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.");
 		bringFolderToRat.addSubSteps(talkToRatAfterFolder);
 
-		talkToSurok = new NpcStep(this, NpcID.WGS_SUROK_TRANSITION, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.", letterToSurok);
+		talkToSurok = new NpcStep(this, NpcID.SUROK_SUROK, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.", letterToSurok);
 		talkToSurokNoLetter = new NpcStep(this, NpcID.WGS_SUROK_TRANSITION, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.");
 		talkToSurokNoLetter.addDialogSteps("Go on, then!", "Go on then!");
 
@@ -191,7 +192,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 			"Travel to the chaos altar with the wand and 15 chaos runes. You can either enter with a chaos talisman, or use the abyss.", wand, chaosRunes15, chaosTalismanOrAbyss);
 		useWandOnAltar = new ObjectStep(this, ObjectID.CHAOS_ALTAR, new WorldPoint(2271, 4842, 0), "Use the wand on the chaos altar.", wandHighlight, chaosRunes15);
 		useWandOnAltar.addIcon(ItemID.SUROK_METALWAND);
-		bringWandToSurok = new NpcStep(this, NpcID.WGS_SUROK_TRANSITION, new WorldPoint(3211, 3493, 0), "Return to Surok Magis in the Varrock Library with the wand and a bowl.", infusedWand, bowl);
+		bringWandToSurok = new NpcStep(this, NpcID.SUROK_SUROK, new WorldPoint(3211, 3493, 0), "Return to Surok Magis in the Varrock Library with the wand and a bowl.", infusedWand, bowl);
 		bringWandToSurok.addDialogStep("I have the things you wanted!");
 		talkToRatAfterSurok = new NpcStep(this, NpcID.SUROK_RAT, new WorldPoint(3266, 3333, 0), "Return to Rat Burgiss south of Varrock.", suroksLetter);
 		talkToRatAfterSurok.addDialogStep("Yes! I have a letter for you.");

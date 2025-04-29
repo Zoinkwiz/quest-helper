@@ -335,8 +335,9 @@ public class TwilightsPromise extends BasicQuestHelper
 		feedRenu.addDialogStep("I was told to ask you about getting to the Teomat.");
 		feedRenu.addIcon(ItemID.VMQ2_QUETZAL_FEED);
 
-		travelToTeomat = new NpcStep(this, NpcID.QUETZAL_CHILD_GREEN, new WorldPoint(1703, 3142, 0), "Travel with Renu to Teomat.");
-		travelToTeomat.addWidgetHighlight(874, 17, 1);
+		travelToTeomat = new NpcStep(this, NpcID.QUETZAL_CHILD_GREEN, new WorldPoint(1697, 3142, 0), "Travel with Renu to Teomat.");
+		((NpcStep) travelToTeomat).addAlternateNpcs(NpcID.QUETZAL_CHILD_BLUE, NpcID.QUETZAL_CHILD_CYAN, NpcID.QUETZAL_CHILD_GREEN_ORANGE);
+		travelToTeomat.addWidgetHighlight(874, 15, 1);
 
 		talkToPrinceInTemple = new NpcStep(this, NpcID.VMQ2_ITZLA_VIS, new WorldPoint(1454, 3173, 0), "" +
 			"Talk to Prince Itzla Arkan in the temple, near the altar.");

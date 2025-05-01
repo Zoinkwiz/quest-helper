@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -49,13 +49,13 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
 import static com.questhelper.requirements.util.LogicHelper.nand;
+import com.questhelper.questinfo.QuestVarbits; // Added import for QuestVarbits
 
 public class CrackTheClueII extends BasicQuestHelper
 {
 	ItemRequirement spade, pieDish, rawHerring, goblinMail, plainPizza, woodenShield, cheese;
 
 	DetailedQuestStep week1Dig, week2Dig, week3Emotes, week4Dig, finalEmotes;
-
 	ConditionalStep week1Steps, week2Steps, week3Steps, week4Steps, finalSteps;
 
 	WidgetTextRequirement week1Message, week2Message, week4Message, finalMessage;
@@ -63,7 +63,6 @@ public class CrackTheClueII extends BasicQuestHelper
 	ChatMessageRequirement week3Message;
 
 	Zone week1Zone, week2Zone, week3Zone, week4Zone, finalZone;
-
 	ZoneRequirement inWeek1Zone, inWeek2Zone, inWeek3Zone, inWeek4Zone, inFinalZone;
 
 	@Override
@@ -75,7 +74,6 @@ public class CrackTheClueII extends BasicQuestHelper
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
-
 		week1Steps = new ConditionalStep(this, week1Dig);
 		week1Steps.addStep(week1Message, week1Dig);
 		week1Steps.setLockingCondition(week1Message);
@@ -99,7 +97,8 @@ public class CrackTheClueII extends BasicQuestHelper
 		allSteps.addStep(nand(inWeek4Zone, week4Message), week4Steps);
 		allSteps.addStep(nand(inFinalZone, finalMessage), finalSteps);
 
-		steps.put(0, allSteps);
+		// Updated to use the correct varbit ID for Crack the Clue II
+		steps.put(QuestVarbits.CRACK_THE_CLUE_II.getId(), allSteps);
 
 		return steps;
 	}
@@ -115,7 +114,7 @@ public class CrackTheClueII extends BasicQuestHelper
 
 	@Override
 	public void setupRequirements()
-	
+
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		pieDish = new ItemRequirement("Pie dish", ItemID.PIE_DISH).isNotConsumed();
@@ -140,7 +139,6 @@ public class CrackTheClueII extends BasicQuestHelper
 		week1Dig = new DigStep(this, new WorldPoint(2978, 3194, 0),
 			"Dig south-east of Rimmington and north-west of the chapel.", pieDish);
 		week1Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, true, "You find some beautifully ornate gloves and boots.");
-
 		week2Dig = new DigStep(this, new WorldPoint(2991, 3295, 0),
 			"Dig by the entrance to the Air Altar south of Falador.", rawHerring);
 		week2Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, true, "You find some beautifully ornate leg armour.");
@@ -150,7 +148,6 @@ public class CrackTheClueII extends BasicQuestHelper
 			"Perform the shrug emote followed by cheer emote east of the Black Knights' Fortress.");
 		week3Emotes.addTileMarker(new WorldPoint(3035, 3518, 0), SpriteID.TAB_EMOTES);
 		week3Message = new ChatMessageRequirement("Some beautifully ornate armour mysteriously appears.");
-
 		week4Dig = new DigStep(this, new WorldPoint(3235, 3631, 0),
 			"Dig outside the Chaos Temple in the Wilderness.", goblinMail);
 		week4Message = new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, true, "You find a beautifully ornate cape.");
@@ -192,7 +189,6 @@ public class CrackTheClueII extends BasicQuestHelper
 			Arrays.asList(spade, pieDish));
 		week1Panel.setLockingStep(week1Steps);
 		allSteps.add(week1Panel);
-
 		PanelDetails week2Panel = new PanelDetails("Week 2", Collections.singletonList(week2Dig),
 			Arrays.asList(spade, rawHerring));
 		week2Panel.setLockingStep(week2Steps);
@@ -201,7 +197,6 @@ public class CrackTheClueII extends BasicQuestHelper
 		PanelDetails week3Panel = new PanelDetails("Week 3", Collections.singletonList(week3Emotes));
 		week3Panel.setLockingStep(week3Steps);
 		allSteps.add(week3Panel);
-
 		PanelDetails week4Panel = new PanelDetails("Week 4", Collections.singletonList(week4Dig),
 			Arrays.asList(spade, goblinMail));
 		week4Panel.setLockingStep(week4Steps);
@@ -212,7 +207,6 @@ public class CrackTheClueII extends BasicQuestHelper
 			Arrays.asList(plainPizza, woodenShield, cheese));
 		finalPanel.setLockingStep(finalSteps);
 		allSteps.add(finalPanel);
-
 		return allSteps;
 	}
 }

@@ -132,9 +132,9 @@ public class WildernessMedium extends ComplexStateQuestHelper
 
 		// TODO: IF in bank, step to drop
 		goldHelmTask = new ConditionalStep(this, moveToResource);
-		goldHelmTask.addStep(inResource, mineGoldOre);
-		goldHelmTask.addStep(new Conditions(inResource, goldOre.quantity(3)), smeltGoldOre);
 		goldHelmTask.addStep(new Conditions(inResource, goldBar.quantity(3).alsoCheckBank(questBank)), goldHelm);
+		goldHelmTask.addStep(new Conditions(inResource, goldOre.quantity(3)), smeltGoldOre);
+		goldHelmTask.addStep(inResource, mineGoldOre);
 		doMedium.addStep(notGoldHelm, goldHelmTask);
 
 		muddyChestTask = new ConditionalStep(this, muddyChest);

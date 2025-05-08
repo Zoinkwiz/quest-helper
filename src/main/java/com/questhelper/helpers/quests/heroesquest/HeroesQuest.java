@@ -334,7 +334,7 @@ public class HeroesQuest extends BasicQuestHelper
 		talkToAchietties.addDialogStep("I'll start looking for all those things then.");
 		talkToAchietties.addTeleport(burthorpeTeleport);
 
-		talkToGerrant = new NpcStep(this, NpcID.SARIM_GERRANT, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
+		talkToGerrant = new NpcStep(this, NpcID.GERRANT, new WorldPoint(3013, 3224, 0), "You need to get an oily rod. Talk to Gerrant in Port Sarim to get some slime.");
 		talkToGerrant.addDialogStep("I want to find out how to catch a lava eel.");
 		talkToGerrant.addTeleport(portSarimTeleport);
 		makeBlamishOil = new ItemStep(this, "Combine the harralander potion (unf) with the blamish snail slime.", harralanderUnf.highlighted(), blamishSlime.highlighted());

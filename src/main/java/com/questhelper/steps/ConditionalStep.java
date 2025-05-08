@@ -59,6 +59,14 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected boolean started = false;
 
+	/** 
+	 * Controls whether the sidebar highlight should consider child steps when determining what to highlight.
+	 * When true, the sidebar will highlight the most specific active step in the step hierarchy.
+	 * When false, the sidebar will only highlight this ConditionalStep itself, ignoring any active child steps.
+	 */
+	@Setter
+	protected boolean shouldConsiderSubStepsForSidebarHighlight = true;
+
 	@Setter
 	protected boolean checkAllChildStepsOnListenerCall = false;
 
@@ -423,7 +431,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Override
 	public QuestStep getActiveStep()
 	{
-		if (currentStep == null || !started)
+		if (currentStep == null || !started || !shouldConsiderSubStepsForSidebarHighlight)
 		{
 			return this;
 		}

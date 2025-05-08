@@ -250,7 +250,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		pickupBones = new ItemStep(this, "Pickup the jogre bones.", jogreBones);
 		getJogreBones.addSubSteps(pickupBones);
 
-		getMonkeyCorpse = new NpcStep(this, NpcID.MAGIC_CARPET_MONKEY,
+		getMonkeyCorpse = new NpcStep(this, NpcID.MONKEY,
 			"Kill a monkey to get its corpse, there are plenty of monkeys around Karamja and you will need either " +
 				"magic or range to kill one.", true, rangedOrMagic);
 		pickupCorpse = new ItemStep(this, "Pickup the monkey corpse.", monkeyCorpse);

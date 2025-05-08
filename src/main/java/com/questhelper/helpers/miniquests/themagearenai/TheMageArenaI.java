@@ -28,7 +28,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -48,7 +47,7 @@ public class TheMageArenaI extends BasicQuestHelper
 {
 	ItemRequirement runesForCasts, knife, godCape;
 
-	Requirement inCavern, inStatuesRoom, hasCape;
+	Requirement inCavern, inStatuesRoom;
 
 	QuestStep enterCavern, talkToKolodion, fightKolodion, enterCavernForPool, enterPool, prayStatue, talkToGuardian;
 
@@ -73,7 +72,7 @@ public class TheMageArenaI extends BasicQuestHelper
 		steps.put(5, fightKolodion);
 
 		ConditionalStep goGetStaff = new ConditionalStep(this, enterCavernForPool);
-		goGetStaff.addStep(new Conditions(inStatuesRoom, hasCape), talkToGuardian);
+		goGetStaff.addStep(new Conditions(inStatuesRoom, godCape), talkToGuardian);
 		goGetStaff.addStep(new Conditions(inStatuesRoom), prayStatue);
 		goGetStaff.addStep(inCavern, enterPool);
 		steps.put(6, goGetStaff);
@@ -103,8 +102,6 @@ public class TheMageArenaI extends BasicQuestHelper
 	{
 		inCavern = new ZoneRequirement(cavern);
 		inStatuesRoom = new ZoneRequirement(statuesRoom);
-
-		hasCape = new ItemOnTileRequirement(godCape);
 	}
 
 	public void setupSteps()

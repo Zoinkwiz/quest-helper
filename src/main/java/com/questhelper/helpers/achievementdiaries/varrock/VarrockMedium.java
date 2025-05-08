@@ -109,14 +109,14 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notGESpirit, geSpiritTask);
 
 		stongholdEmoteTask = new ConditionalStep(this, moveToStronghold);
-		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold1), peace);
-		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notFlap, inStronghold1), moveToStronghold2);
-		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold2), grain);
-		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notSlap, notFlap, inStronghold2), moveToStronghold3);
-		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold3), health);
-		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notIdea, notSlap, notFlap, inStronghold3), moveToStronghold4);
-		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold4), cradle);
 		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notIdea, notSlap, notFlap, notStamp), emote);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notIdea, notSlap, notFlap, inStronghold3), moveToStronghold4);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notSlap, notFlap, inStronghold2), moveToStronghold3);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, notFlap, inStronghold1), moveToStronghold2);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold4), cradle);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold3), health);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold2), grain);
+		stongholdEmoteTask.addStep(new Conditions(notStrongholdEmote, inStronghold1), peace);
 		doMedium.addStep(notStrongholdEmote, stongholdEmoteTask);
 
 		vannakaTask = new ConditionalStep(this, moveToEdge);

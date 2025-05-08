@@ -133,9 +133,9 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		maho20Task.addStep(new Conditions(notBalloon, notVarrBalloon2), balloon);
 		doMedium.addStep(notMaho20, maho20Task);
 
-		balloonTask = new ConditionalStep(this, moveToEntrana);
+		balloonTask = new ConditionalStep(this, balloon);
 		balloonTask.addStep(new Conditions(notBalloon, inEntrana), talkToAug);
-		balloonTask.addStep(new Conditions(notBalloon, notVarrBalloon), balloon);
+		balloonTask.addStep(new Conditions(notBalloon, notVarrBalloon), moveToEntrana);
 		doMedium.addStep(notBalloon, balloonTask);
 
 		tpVarrockTask = new ConditionalStep(this, tpVarrock);

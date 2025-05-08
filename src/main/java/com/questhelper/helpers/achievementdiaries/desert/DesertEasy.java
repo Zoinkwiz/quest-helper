@@ -40,6 +40,7 @@ import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import net.runelite.api.Skill;
@@ -284,6 +285,13 @@ public class DesertEasy extends ComplexStateQuestHelper
 			new ItemReward("Desert amulet 1", ItemID.DESERT_AMULET_EASY),
 			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return Arrays.asList(
+				new ExperienceReward(Skill.STRENGTH, 20));
 	}
 
 	@Override

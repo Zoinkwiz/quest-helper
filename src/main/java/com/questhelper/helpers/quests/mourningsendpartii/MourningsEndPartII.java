@@ -528,19 +528,19 @@ public class MourningsEndPartII extends BasicQuestHelper
 		final int WHITE = 7;
 
 		// Floor 0
-		f0r3c4W = new VarbitRequirement(1169, WHITE);
-		f0r3c3F = new Conditions(new VarbitRequirement(1170, WHITE), new VarbitRequirement(1167, WHITE));
-		f0r4c3U = new VarbitRequirement(1183, WHITE);
-		f0r1c3F = new Conditions(new VarbitRequirement(1173, WHITE), new VarbitRequirement(1171, WHITE));
-		f0r1c2U = new VarbitRequirement(1221, GREEN);
-		f0r1c4U = new VarbitRequirement(1189, WHITE);
-		f0r4c0SB = new VarbitRequirement(1164, BLUE);
-		f0r1c2SG = new VarbitRequirement(1172, GREEN);
-		f0r0c2EG = new VarbitRequirement(1177, GREEN);
-		f0r0c4NB = new VarbitRequirement(1179, BLUE);
+		f0r3c4W = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_6_7, WHITE);
+		f0r3c3F = new Conditions(new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_6_11, WHITE), new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_3_6 , WHITE));
+		f0r4c3U = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_3_UP, WHITE);
+		f0r1c3F = new Conditions(new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_11_12, WHITE), new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_10_11, WHITE));
+		f0r1c2U = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_10_UP, GREEN);
+		f0r1c4U = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_12_UP, WHITE);
+		f0r4c0SB = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_1_SOUTH, BLUE);
+		f0r1c2SG = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_10_14, GREEN);
+		f0r0c2EG = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_14_EAST, GREEN);
+		f0r0c4NB = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_16_NORTH, BLUE);
 
 		// Floor 1
-		f1r0c3EY = new VarbitRequirement(1209, YELLOW);
+		f1r0c3EY = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_15_EAST, YELLOW);
 
 		// TODO: Add other directions from this pillar
 		// 1226 = up?
@@ -555,45 +555,46 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		// 1269 0->16???
 
-		f1r1c3SY = new VarbitRequirement(1207, YELLOW);
-		f1r3c2NC = new VarbitRequirement(1196, CYAN);
-		f1r3c2NY = new VarbitRequirement(1196, YELLOW);
-		f1r3c3WC = new VarbitRequirement(1199, CYAN);
-		f1r3c3WY = new VarbitRequirement(1199, YELLOW);
-		f1r3c3S = new VarbitRequirement(1202, WHITE);
-		f1r3c3U = new VarbitRequirement(1217, WHITE);
-		f1r3c4W = new VarbitRequirement(1201, WHITE);
-		f1r3c4D = new VarbitRequirement(1186, WHITE);
-		f1r4c2EC = new VarbitRequirement(1195, CYAN);
-		f1r4c2EY = new VarbitRequirement(1195, YELLOW);
-		f1r4c3EG = new VarbitRequirement(1197, GREEN);
-		f1r4c3UC = new VarbitRequirement(1215, CYAN);
-		f1r4c3UY = new VarbitRequirement(1215, YELLOW);
-		startColumnN = new VarbitRequirement(1203, WHITE);
-		redAtDoor = new VarbitRequirement(1249, RED);
-		redAtAltar = new VarbitRequirement(1250, RED);
+		f1r1c3SY = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_11_15, YELLOW);
+		f1r3c2NC = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_2_5, CYAN);
+		f1r3c2NY = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_2_5, YELLOW);
+		f1r3c3WC = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_5_6, CYAN);
+		f1r3c3WY = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_5_6, YELLOW);
+		f1r3c3S = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_6_11, WHITE);
+		f1r3c3U = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_6_UP, WHITE);
+		f1r3c4W = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_6_7, WHITE);
+		f1r3c4D = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_7_UP, WHITE);
+		f1r4c2EC = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_2_3, CYAN);
+		f1r4c2EY = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_2_3, YELLOW);
+		f1r4c3EG = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_3_EAST, GREEN);
+		f1r4c3UC = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_3_UP, CYAN);
+		f1r4c3UY = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_3_UP, YELLOW);
+		startColumnN = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_7_9, WHITE);
+		redAtDoor = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_B_EAST, RED);
+		redAtAltar = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_B_WEST, RED);
 
 		// Floor 2
-		f2r0c0DR = new VarbitRequirement(1190, RED);
+		f2r0c0DR = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_13_UP, RED);
 		f2r2c0SNotRed = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_8_13, RED, Operation.NOT_EQUAL);
-		f2r3c3S = new VarbitRequirement(1238, WHITE);
-		f2r4c3WC = new VarbitRequirement(1230, CYAN);
-		f2r4c3WY = new VarbitRequirement(1230, YELLOW);
-		f2r4c0DB = new VarbitRequirement(1181, BLUE);
-		f2r4c0SR = new VarbitRequirement(1229, RED);
-		f2r1c3F = new Conditions(new VarbitRequirement(1244, WHITE), new VarbitRequirement(1241, 7), new VarbitRequirement(1245, WHITE));
-		f2r1c2D = new VarbitRequirement(1221, WHITE);
-		f2r0c3E = new VarbitRequirement(1247, WHITE);
-		f2r1c2LG = new VarbitRequirement(1243, GREEN);
-		f2r1c4L = new VarbitRequirement(1244, WHITE);
-		f2r1c3N = new VarbitRequirement(1238, WHITE);
-		f2r3c3W = new VarbitRequirement(1234, WHITE);
-		f2r3c2WB = new VarbitRequirement(1235, BLUE);
-		f2r2c0ER = new VarbitRequirement(1239, RED);
-		f2r0c4D = new VarbitRequirement(1193, BLUE);
-		blueCrystalNotPlaced = new VarbitRequirement(1193, WHITE);
+		f2r3c3S = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_6_11, WHITE);
+		f2r4c3WC = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_2_3, CYAN);
+		f2r4c3WY = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_2_3, YELLOW);
+		f2r4c0DB = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_1_UP, BLUE);
+		f2r4c0SR = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_1_8, RED);
+		f2r1c3F = new Conditions(new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_11_12, WHITE), new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_10_11, 7),
+				new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_11_15, WHITE));
+		f2r1c2D = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_2_10_UP, WHITE);
+		f2r0c3E = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_15_16, WHITE);
+		f2r1c2LG = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_10_WEST, GREEN);
+		f2r1c4L = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_11_12, WHITE);
+		f2r1c3N = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_6_11, WHITE);
+		f2r3c3W = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_5_6, WHITE);
+		f2r3c2WB = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_5_WEST, BLUE);
+		f2r2c0ER = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_3_8_EAST, RED);
+		f2r0c4D = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_16_UP, BLUE);
+		blueCrystalNotPlaced = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_16_UP, WHITE);
 		placedBlueCrystalInJumpRoom = new Conditions(true, LogicType.OR, f2r0c4D, new Conditions(LogicType.AND, inBlueRoom, new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You place the blue crystal in the pillar.")));
-		cyanDoorOpen = new VarbitRequirement(1176, RED);
+		cyanDoorOpen = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_13_EAST, RED);
 	}
 
 	@Override

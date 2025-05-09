@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -275,14 +276,14 @@ public class EnakhrasLament extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasPlacedBase = new VarbitRequirement(1593, 1);
-		hasPlacedBody = new VarbitRequirement(1593, 2);
-		chiseledStatue = new VarbitRequirement(1593, 3);
-		canChooseHead = new VarbitRequirement(1563, 1);
-		hasTalkedToLazimAfterBase = new VarbitRequirement(1562, 1);
+		hasPlacedBase = new VarbitRequirement(VarbitID.ENAKH_STATUE_MULTIVAR, 1);
+		hasPlacedBody = new VarbitRequirement(VarbitID.ENAKH_STATUE_MULTIVAR, 2);
+		chiseledStatue = new VarbitRequirement(VarbitID.ENAKH_STATUE_MULTIVAR, 3);
+		canChooseHead = new VarbitRequirement(VarbitID.ENAKH_LAZIM_STATUE_HEAD_BLURB, 1);
+		hasTalkedToLazimAfterBase = new VarbitRequirement(VarbitID.ENAKH_LAZIM_STATUE_BODY_BLURB, 1);
 
-		hasGottenRightArm = new VarbitRequirement(1590, 1);
-		hasGottenRightLeg = new VarbitRequirement(1592, 1);
+		hasGottenRightArm = new VarbitRequirement(VarbitID.ENAKH_RIGHT_ARM_TAKEN, 1);
+		hasGottenRightLeg = new VarbitRequirement(VarbitID.ENAKH_RIGHT_LEG_TAKEN, 1);
 
 		inTempleEntranceRoom = new ZoneRequirement(templeEntranceRoom);
 		inTempleGroundFloor = new ZoneRequirement(templeGroundFloor);
@@ -292,36 +293,36 @@ public class EnakhrasLament extends BasicQuestHelper
 		inTopRoom = new ZoneRequirement(topRoom);
 		inLastRoom = new ZoneRequirement(lastRoom);
 
-		startedTemple = new VarbitRequirement(1566, 1);
+		startedTemple = new VarbitRequirement(VarbitID.ENAKH_LAZIM_REALLYAMAGE, 1);
 
-		gottenLimbs = new VarbitRequirement(1587, 63);
+		gottenLimbs = new VarbitRequirement(VarbitID.ENAKH_FALLEN_STATUE_MULTIVAR, 63);
 
-		openedDoor1 = new VarbitRequirement(1608, 1);
-		openedDoor2 = new VarbitRequirement(1609, 1);
-		openedDoor3 = new VarbitRequirement(1607, 1);
-		openedDoor4 = new VarbitRequirement(1610, 1);
+		openedDoor1 = new VarbitRequirement(VarbitID.ENAKH_RIGHT_ARMLOCK, 1);
+		openedDoor2 = new VarbitRequirement(VarbitID.ENAKH_LEFT_LEGLOCK, 1);
+		openedDoor3 = new VarbitRequirement(VarbitID.ENAKH_LEFT_ARMLOCK, 1);
+		openedDoor4 = new VarbitRequirement(VarbitID.ENAKH_RIGHT_LEGLOCK, 1);
 
-		zPlaced = new VarbitRequirement(1611, 1);
-		mPlaced = new VarbitRequirement(1612, 1);
-		rPlaced = new VarbitRequirement(1613, 1);
-		kPlaced = new VarbitRequirement(1614, 1);
+		zPlaced = new VarbitRequirement(VarbitID.ENAKH_Z_DOOR, 1);
+		mPlaced = new VarbitRequirement(VarbitID.ENAKH_M_DOOR, 1);
+		rPlaced = new VarbitRequirement(VarbitID.ENAKH_R_DOOR, 1);
+		kPlaced = new VarbitRequirement(VarbitID.ENAKH_K_DOOR, 1);
 
-		goneUpstairs = new VarbitRequirement(1618, 1);
+		goneUpstairs = new VarbitRequirement(VarbitID.ENAKH_SEEN_PEDESTAL, 1);
 
-		fedBread = new VarbitRequirement(1576, 1);
-		meltedFountain = new VarbitRequirement(1577, 1);
-		cleanedFurnace = new VarbitRequirement(1578, 1);
-		litBraziers = new VarbitRequirement(1579, 1);
+		fedBread = new VarbitRequirement(VarbitID.ENAKH_BLOOD_ROOM, 1);
+		meltedFountain = new VarbitRequirement(VarbitID.ENAKH_ICE_ROOM, 1);
+		cleanedFurnace = new VarbitRequirement(VarbitID.ENAKH_SMOKE_ROOM, 1);
+		litBraziers = new VarbitRequirement(VarbitID.ENAKH_SHADOW_ROOM, 1);
 
-		litLog = new VarbitRequirement(1581, 1);
-		litOak = new VarbitRequirement(1582, 1);
-		litWillow = new VarbitRequirement(1583, 1);
-		litMaple = new VarbitRequirement(1584, 1);
-		litCandle = new VarbitRequirement(1585, 1);
-		litCoal = new VarbitRequirement(1586, 1);
+		litLog = new VarbitRequirement(VarbitID.ENAKH_BRAZIER_1_MULTIVAR, 1);
+		litOak = new VarbitRequirement(VarbitID.ENAKH_BRAZIER_2_MULTIVAR, 1);
+		litWillow = new VarbitRequirement(VarbitID.ENAKH_BRAZIER_3_MULTIVAR, 1);
+		litMaple = new VarbitRequirement(VarbitID.ENAKH_BRAZIER_4_MULTIVAR, 1);
+		litCandle = new VarbitRequirement(VarbitID.ENAKH_BRAZIER_5_MULTIVAR, 1);
+		litCoal = new VarbitRequirement(VarbitID.ENAKH_BRAZIER_6_MULTIVAR, 1);
 
-		wallNeedsChisel = new VarbitRequirement(1620, 1);
-		finishedWall = new VarbitRequirement(1602, 3);
+		wallNeedsChisel = new VarbitRequirement(VarbitID.ENAKH_LARGEWALL_NEEDS_TRIMMING, 1);
+		finishedWall = new VarbitRequirement(VarbitID.ENAKH_LARGEWALL_MULTIVAR, 3);
 
 		protectFromMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 	}
@@ -329,7 +330,7 @@ public class EnakhrasLament extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToLazim = new NpcStep(this, NpcID.ENAKH_LAZIM, new WorldPoint(3190, 2925, 0), "Before you begin, ensure that you have enough prayer points to use Protect from Melee for around five seconds (you will need this later in the temple). Talk to Lazim in the quarry south of the Bandit Camp.", pickaxe, onNormals);
-		talkToLazim.addDialogStep("Of course!");
+		talkToLazim.addDialogSteps("Yes.", "Of course!");
 		bringLazim32Sandstone = new NpcStep(this, NpcID.ENAKH_LAZIM, new WorldPoint(3190, 2925, 0), "Get 32kg of sandstone and give it to Lazim. This can be done in batches, and you can mine some nearby.");
 		bringLazim32Sandstone.addDialogStep("Okay, I'll get on with it.");
 		bringLazim32Sandstone.addDialogStep("Yes, I have more stone.");

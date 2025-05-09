@@ -161,7 +161,7 @@ public class PotionPuzzle extends DetailedOwnerStep
 	@Override
 	public QuestStep getActiveStep()
 	{
-		if (currentStep != this)
+		if (currentStep != null && currentStep != this)
 		{
 			return currentStep.getActiveStep();
 		}

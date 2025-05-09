@@ -33,6 +33,7 @@ import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.npc.NpcInteractingRequirement;
@@ -58,6 +59,7 @@ import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class DesertTreasure extends BasicQuestHelper
 {
@@ -82,7 +84,7 @@ public class DesertTreasure extends BasicQuestHelper
 		buyDrink, talkToBartender, talkToEblis, bringItemsToEblis, talkToEblisAtMirrors, enterSmokeDungeon, lightTorch1, lightTorch2, lightTorch3,
 		lightTorch4, openChest, useWarmKey, enterFareedRoom, killFareed, talkToRasolo, giveCakeToTroll, talkToMalak, askAboutKillingDessous,
 		talkToRuantun, blessPot, talkToMalakWithPot, addSpice, addPowder, addPowderToFinish, usePotOnGrave, killDessous, talkToMalakForDiamond,
-		getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1, killDamis2, talkToChildTroll, enterIceGate, enterTrollCave,
+		getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1, killDamis2, pickUpShadowDiamond, talkToChildTroll, enterIceGate, enterTrollCave,
 		killKamil, climbOnToLedge, goThroughPathGate, breakIce1, breakIce2, talkToTrolls, talkToChildTrollAfterFreeing, placeBlood, placeShadow,
 		placeSmoke, placeIce, enterPyramid, goDownFromFirstFloor, goDownFromSecondFloor, goDownFromThirdFloor, enterMiddleOfPyramid, talkToAzz;
 
@@ -164,7 +166,11 @@ public class DesertTreasure extends BasicQuestHelper
 		getIceDiamond.addStep(gaveCake, talkToChildTroll);
 		getIceDiamond.setLockingCondition(gotIceDiamond);
 
+		ConditionalStep pickUpDiamonds = new ConditionalStep(this, pickUpShadowDiamond);
+		Conditions diamondNearby = or(new ItemOnTileRequirement(shadowDiamond));
+
 		getDiamonds = new ConditionalStep(this, getSmokeDiamond);
+		getDiamonds.addStep(diamondNearby, pickUpDiamonds);
 		getDiamonds.addStep(new Conditions(hadSmokeDiamond, killedDamis, gotBloodDiamond), getIceDiamond);
 		getDiamonds.addStep(new Conditions(hadSmokeDiamond, killedDamis), getBloodDiamond);
 		getDiamonds.addStep(killedFareed, getShadowDiamond);
@@ -494,11 +500,13 @@ public class DesertTreasure extends BasicQuestHelper
 		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
 		killDamis1.addSubSteps(killDamis2);
 
+		pickUpShadowDiamond = new DetailedQuestStep(this, "Pick up the shadow diamond.", shadowDiamond);
+
 		enterSewer = new ObjectStep(this, ObjectID.VAMPIRE_TRAP1, new WorldPoint(3084, 3272, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
 		enterSewer.addAlternateObjects(ObjectID.VAMPIRE_TRAP2);
 		enterSewer.addDialogStep("Actually, I don't need to know anything.");
 		enterSewer.addTeleport(draynorTeleport);
-		talkToRuantun = new NpcStep(this, NpcID.FOURDIAMONDS_VAMPIRE_LORD, new WorldPoint(3112, 9690, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
+		talkToRuantun = new NpcStep(this, NpcID.MALAK, new WorldPoint(3112, 9690, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
 		talkToRuantun.addSubSteps(enterSewer);
 
 		blessPot = new NpcStep(this, NpcID.HIGH_PRIEST_OF_ENTRANA, new WorldPoint(2851, 3350, 0), "Travel to Entrana with the silver pot and have the High Priest enchant it.", silverPot);
@@ -659,7 +667,7 @@ public class DesertTreasure extends BasicQuestHelper
 		smokeDiamondPanel.setLockingStep(getSmokeDiamond);
 
 		PanelDetails shadowDiamondPanel = new PanelDetails("Shadow diamond",
-			Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1),
+			Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1, pickUpShadowDiamond),
 			Arrays.asList(manyLockpicks, antipoison, combatGear, food),
 			Arrays.asList(waterfallTeleport.quantity(2), banditCampTeleport));
 		shadowDiamondPanel.setLockingStep(getShadowDiamond);

@@ -193,7 +193,7 @@ public class TheDigSite extends BasicQuestHelper
 		vialHighlighted.setHighlightInInventory(true);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		tinderboxHighlighted = tinderbox.highlighted();
-		tea = new ItemRequirement("Cup of tea", ItemID.DISPLAY_TEA);
+		tea = new ItemRequirement("Cup of tea", ItemID.CUP_OF_TEA);
 		ropes2 = new ItemRequirement("Rope", ItemID.ROPE, 2);
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		rope.setHighlightInInventory(true);

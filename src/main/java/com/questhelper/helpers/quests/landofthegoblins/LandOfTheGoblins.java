@@ -55,10 +55,7 @@ import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -85,7 +82,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inDorgeshKaanCaveLower, learnedAboutMachine, firstGreater, firstLess, secondGreater, secondLess, thirdGreater, thirdLess, fairyRingMachineWidgetPresent,
 		fairyRingMachineFixed, inYubiusk, unlockedDoor;
 	Requirement grubfootFollowing;
-	ConditionalStep goTalkToGrubfoot, goTalkToZanik, goReturnToDorg;
+	ConditionalStep goTalkToGrubfoot, goTalkToZanik, goReturnToDorg, returnToTempleWithDyes;
 	QuestStep goDownIntoBasement, climbThroughHole, talkToKazgar;
 	QuestStep talkToGrubfoot, enterDorgeshKaan, talkToZanik, enterGoblinCave, talkToZanikGoblinCave, talkToGuard,
 		talkToMakeoverMage, pickPharmakosBerry, mixGoblinPotion, goBackToGoblinCave, goToGuards, drinkGoblinPotion,
@@ -140,7 +137,6 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		becomeGoblin.addStep(goblinPotion.alsoCheckBank(questBank), goBackToGoblinCave);
 		becomeGoblin.addStep(pharmakosBerryHighlight, mixGoblinPotion);
 
-
 		steps.put(16, becomeGoblin);
 
 		ConditionalStep enterTemple = new ConditionalStep(this, goBackToGoblinCave);
@@ -176,13 +172,12 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		steps.put(30, talkToPriest);
 		steps.put(32, talkToPriest);
 
-		ConditionalStep returnToTempleWithDyes = new ConditionalStep(this, goToTempleWithDyes, "Return to the goblin temple with all the dyes and some combat gear.");
+		returnToTempleWithDyes = new ConditionalStep(this, goToTempleWithDyes, "Return to the goblin temple with all the dyes and some combat gear.");
 		returnToTempleWithDyes.addStep(isAGoblin, enterTempleDoorForThieving);
 		returnToTempleWithDyes.addStep(goblinSelectionActive, confirmGoblin);
 		returnToTempleWithDyes.addStep(inFrontOfGuardsWithGoblinPotion, drinkGoblinPotion);
 		returnToTempleWithDyes.addStep(inGoblinCaveWithGoblinPotion, goToGuards);
-		returnToTempleWithDyes.addStep(goblinPotion.alsoCheckBank(questBank), goBackToGoblinCave);
-		goToTempleWithDyes.addSubSteps(returnToTempleWithDyes);
+		returnToTempleWithDyes.setShouldConsiderSubStepsForSidebarHighlight(false);
 
 		ConditionalStep dyeing = new ConditionalStep(this, goToHemenster);
 		dyeing.addStep(hasAllGoblinKeys, unlockCrypt);
@@ -204,7 +199,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		dyeing.addStep(hemensterWhitefish, talkToAggieWithFish);
 		dyeing.addStep(inHemenster, catchWhitefish);
 
-		ConditionalStep getKeys = new ConditionalStep(this, enterTemple);
+		ConditionalStep getKeys = new ConditionalStep(this, enterTemple.copy());
 		getKeys.addStep(knowsAboutWhitefish, dyeing);
 		getKeys.addStep(huzamogaarbKey, talkToAggie);
 		getKeys.addStep(inNorthEastRoom, pickpocketPriest);
@@ -212,12 +207,13 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 		steps.put(34, getKeys);
 
-		ConditionalStep goEnterCrypt = new ConditionalStep(this, enterGoblinCaveForKilling, "Return to the goblin temple with all the dyes and some combat gear.");
+		ConditionalStep goEnterCrypt = new ConditionalStep(this, enterGoblinCaveForKilling, "Return to the goblin temple with some combat gear.");
 		goEnterCrypt.addStep(inGoblinTemple, enterCrypt);
 		goEnterCrypt.addStep(isAGoblin, enterTempleDoorForThieving);
 		goEnterCrypt.addStep(goblinSelectionActive, confirmGoblin);
 		goEnterCrypt.addStep(new ZoneRequirement(guardArea), drinkGoblinPotion);
 		goEnterCrypt.addStep(new Conditions(new Conditions(LogicType.NOR, isAGoblin), inGoblinCave), goToGuards);
+		goEnterCrypt.setShouldConsiderSubStepsForSidebarHighlight(false);
 		enterCrypt.addSubSteps(goEnterCrypt);
 
 		ConditionalStep snothead = new ConditionalStep(this, goEnterCrypt);
@@ -330,7 +326,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inMines = new ZoneRequirement(mines);
 		inDorgeshKaanF0 = new ZoneRequirement(cityF0);
 		grubfootFollowing = new Conditions(LogicType.OR, new FollowerRequirement("Grubfoot", NpcID.LOTG_GRUBFOOT_FOLLOWER),
-			new VarbitRequirement(QuestHelperQuest.LAND_OF_THE_GOBLINS.getId(), 8, Operation.GREATER_EQUAL));
+			new VarbitRequirement(VarbitID.LOTG, 8, Operation.GREATER_EQUAL));
 		inDorgeshKaanWithGrubfoot = new Conditions(LogicType.AND, inDorgeshKaanF0, grubfootFollowing);
 		inGoblinCave = new ZoneRequirement(goblinCave);
 		FollowerRequirement zanikFollowing = new FollowerRequirement("Zanik", NpcID.LOTG_ZANIK_FOLLOWER);
@@ -394,9 +390,9 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inFrontOfGuardsWithGoblinPotion = new Conditions(LogicType.AND, new ZoneRequirement(guardArea), goblinPotion);
 		goblinPotionHighlight = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.LOTG_1DOSEGOBLIN, ItemID.LOTG_2DOSEGOBLIN, ItemID.LOTG_3DOSEGOBLIN));
 		goblinPotionHighlight.setHighlightInInventory(true);
-		goblinSelectionActive = new WidgetPresenceRequirement(739, 31);
+		goblinSelectionActive = new WidgetPresenceRequirement(InterfaceID.LotgMakeover.CONFIRM);
 		hasBlackMushroomsOrDye = new Conditions(LogicType.OR, blackMushroom, blackDye);
-		isAGoblin = new VarbitRequirement(13612, 1);
+		isAGoblin = new VarbitRequirement(VarbitID.LOTG_PLAYER_IS_A_GOBLIN, 1);
 
 		inGoblinTemple = new ZoneRequirement(goblinTemple);
 		blackGoblinMail = new ItemRequirement("Black goblin mail", ItemID.GOBLIN_ARMOUR_BLACK);
@@ -405,7 +401,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		dorgeshKaanSphere = new ItemRequirement("Dorgesh-Kaan sphere", ItemID.DORGESH_TELEPORT_ARTIFACT);
 		blackDyeOrBlackGoblinMail = new Conditions(LogicType.OR, blackDye, blackGoblinMail);
 
-		knowsAboutWhitefish = new VarbitRequirement(13602, 1);
+		knowsAboutWhitefish = new VarbitRequirement(VarbitID.LOTG_KNOW_ABOUT_FISH, 1);
 		inHemenster = new ZoneRequirement(hemenster);
 		hemensterWhitefish = new ItemRequirement("Whitefish", ItemID.LOTG_WHITEFISH);
 
@@ -444,7 +440,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inDorgeshKaanF1 = new ZoneRequirement(dorgeshKaanF1);
 		inDorgeshKaanCaveUpper = new ZoneRequirement(dorgeshKaanCaveUpper);
 		inDorgeshKaanCaveLower = new ZoneRequirement(dorgeshKaanCaveLower);
-		learnedAboutMachine = new VarbitRequirement(13618, 1);
+		learnedAboutMachine = new VarbitRequirement(VarbitID.LOTG_MACHINE_EXPLAINED, 1);
 
 		firstGreater = new VarbitRequirement(VarbitID.LOTG_CONNECTORS_1, 9, Operation.GREATER);
 		firstLess = new VarbitRequirement(VarbitID.LOTG_CONNECTORS_1, 9, Operation.LESS);
@@ -540,18 +536,20 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToGuardAsGoblin.addDialogStep("Yes.");
 
 		pickpocketPriest = new NpcStep(this, NpcID.LOTG_GOBLIN_PRIEST_BLACK_2OP, new WorldPoint(3754, 4340, 0), "Pickpocket a key from the priest.");
-		talkToAggie = new NpcStep(this, NpcID.AGGIE_1OP, new WorldPoint(3086, 3258, 0), "Talk to Aggie in Draynor Village.");
+		talkToAggie = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Talk to Aggie in Draynor Village.");
+		((NpcStep) talkToAggie).addAlternateNpcs(NpcID.AGGIE_1OP);
 		((NpcStep) talkToAggie).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));
-		talkToAggie.addDialogSteps("Draynor Village", "Can you make dyes for me please?", "Can you make black or white dye?", "Thanks.");
+		talkToAggie.addDialogSteps("Draynor Village", "Can you make dyes for me, please?", "Can you make black or white dye?", "Thanks.");
 		goToHemenster = new ObjectStep(this, ObjectID.FISHINGGATECLOSEDR, new WorldPoint(2642, 3441, 0), "Go to Hemenster to catch a whitefish.", fishingRod, rawSlimyEel);
 		((ObjectStep) goToHemenster).addTeleport(combatBracelet.named("Combat bracelet (Ranging Guild [4])"));
 		goToHemenster.addDialogSteps("Ranging Guild", "I need to catch a Hemenster Whitefish.");
 		catchWhitefish = new NpcStep(this, NpcID._0_41_53_SINISTERFISHSPOT, new WorldPoint(2637, 3444, 0), "Catch a Hemenster whitefish.", fishingRod, rawSlimyEel);
-		talkToAggieWithFish = new NpcStep(this, NpcID.AGGIE_1OP, new WorldPoint(3086, 3258, 0), "Bring the whitefish and black goblin mail to Aggie.", coins, hemensterWhitefish, blackGoblinMail);
+		talkToAggieWithFish = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Bring the whitefish and black goblin mail to Aggie.", coins, hemensterWhitefish, blackGoblinMail);
+		((NpcStep) talkToAggieWithFish).addAlternateNpcs(NpcID.AGGIE_1OP);
 		((NpcStep) talkToAggieWithFish).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));
 		talkToAggieWithFish.addDialogSteps("Draynor Village", "Can you make dyes for me please?", "Could you remove the dye from this goblin mail?");
 		goToTempleWithDyes = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2624, 3393, 0),
-			"Return to the goblin temple with all the dyes and some combat gear.", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
+			"", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
 		((ObjectStep) goToTempleWithDyes).addTeleport(skillsNecklace.quantity(1).named("Skills necklace (Fishing Guild [1])"));
 
 		enterTempleDoorForThieving = new ObjectStep(this, ObjectID.LOTG_GOBLIN_STAIRCASE, new WorldPoint(2581, 9853, 0), "Enter the temple.");
@@ -579,6 +577,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 
 		unlockCrypt = new ObjectStep(this, ObjectID.LOTG_TEMPLE_HUGE_DOOR, new WorldPoint(3744, 4332, 0), "Unlock the door using the 6 keys. You may leave to gear up after unlocking it.", huzamogaarbKey, saragorgakKey, yurkolgokhKey, ekeleshuunKey, nargoshuunKey, horogothgarKey);
 		enterCrypt = new ObjectStep(this, ObjectID.LOTG_TEMPLE_HUGE_DOOR, new WorldPoint(3744, 4332, 0), "Enter the crypt.", combatGear);
+		enterCrypt.addDialogStep("Yes.");
 
 		sayNameSnothead = new ObjectStep(this, ObjectID.LOTG_CRYPT_PRIEST_GRAVE1, new WorldPoint(3738, 4385, 0), "Say Snothead's name at the south-west grave.");
 		sayNameSnailfeet = new ObjectStep(this, ObjectID.LOTG_CRYPT_PRIEST_GRAVE2, new WorldPoint(3746, 4385, 0), "Say Snailfeet's name at the south-east grave.");
@@ -741,7 +740,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 			Arrays.asList(noPet, goblinPotion, vial, pestleAndMortar, goblinMail),
 			Arrays.asList(skillsNecklace.quantity(1), invSpaceToUnequip, dorgeshKaanSphereRec)));
 		panels.add(new PanelDetails("Keys to the Crypt",
-			Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, goToTempleWithDyes, pickpocketWhitePriest, dyeGoblinMailYellow,
+			Arrays.asList(talkToAggie, goToHemenster, catchWhitefish, talkToAggieWithFish, returnToTempleWithDyes, pickpocketWhitePriest, dyeGoblinMailYellow,
 				pickpocketYellowPriest, dyeGoblinMailBlue, pickpocketBluePriest, dyeGoblinMailOrange, pickpocketOrangePriest,
 				dyeGoblinMailPurple, pickpocketPurplePriest, unlockCrypt),
 			Arrays.asList(fishingRod, rawSlimyEel, coins, yellowDye, blueDye, orangeDye, purpleDye, blackGoblinMail, goblinPotion, huzamogaarbKey, combatGear),

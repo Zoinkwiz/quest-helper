@@ -162,6 +162,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	@Override
 	public QuestStep loadStep()
 	{
+		initializeRequirements();
 		setupSteps();
 		farmingHandler = new FarmingHandler(client, configManager);
 

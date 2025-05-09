@@ -372,8 +372,15 @@ public class ItemRequirements extends ItemRequirement
 		ItemRequirements newItem = (ItemRequirements) copy();
 
 		// Set the equip flag on all aggregated requirements.
-		newItem.itemRequirements.forEach(itemRequirement -> itemRequirement.setEquip(true));
-		equip = true;
+		List<ItemRequirement> reqs = newItem.itemRequirements;
+		ArrayList<ItemRequirement> newReqs = new ArrayList<>();
+		for (ItemRequirement req : reqs)
+		{
+			newReqs.add(req.equipped());
+		}
+		newItem.itemRequirements.clear();
+		newItem.itemRequirements.addAll(newReqs);
+		newItem.equip = true;
 		return newItem;
 	}
 

@@ -37,6 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -65,7 +66,7 @@ public class AltarPuzzle extends DetailedOwnerStep
 	ArrayList<QuestStep> rebalanceE;
 	ArrayList<QuestStep> rebalanceC;
 
-	List<QuestStep> moves;
+	List<QuestStep> moves = new ArrayList<>();
 
 	public AltarPuzzle(QuestHelper questHelper)
 	{
@@ -91,9 +92,9 @@ public class AltarPuzzle extends DetailedOwnerStep
 		}
 		else if (inSecondFloor.check(client))
 		{
-			int currentW = client.getVarbitValue(7847);
-			int currentC = client.getVarbitValue(7848);
-			int currentE = client.getVarbitValue(7849);
+			int currentW = client.getVarbitValue(VarbitID.LOVAQUEST_PYLON_1);
+			int currentC = client.getVarbitValue(VarbitID.LOVAQUEST_PYLON_2);
+			int currentE = client.getVarbitValue(VarbitID.LOVAQUEST_PYLON_3);
 
 			if (currentW == 15)
 			{
@@ -348,7 +349,6 @@ public class AltarPuzzle extends DetailedOwnerStep
 		allSteps.add(altarPuzzle);
 		return allSteps;
 	}
-
 
 	@Override
 	public Collection<QuestStep> getSteps()

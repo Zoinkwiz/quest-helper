@@ -286,6 +286,7 @@ public enum ExternalQuestResources
 	MA2_LOCATOR("https://oldschool.runescape.wiki/w/The_Mage_Arena_II"),
 	DAG_ROUTE("https://oldschool.runescape.wiki/w/Waterbirth_Island"),
 	STRONGHOLD_OF_SECURITY("https://oldschool.runescape.wiki/w/Stronghold_of_Security"),
+	ROGUE_TRADER("https://oldschool.runescape.wiki/w/Rogue_Trader"),
 
 	// Balloon Transport
 	BALLOON_TRANSPORT_CRAFTING_GUILD("https://oldschool.runescape.wiki/w/Balloon_transport_system#Crafting_Guild"),

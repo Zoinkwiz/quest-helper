@@ -860,11 +860,7 @@ public class ItemRequirement extends AbstractRequirement
 	 */
 	public boolean checkWithAllContainers()
 	{
-		return checkContainers(QuestContainerManager.getEquippedData(),
-				QuestContainerManager.getInventoryData(),
-				QuestContainerManager.getBankData(),
-				QuestContainerManager.getPotionData(),
-				QuestContainerManager.getGroupStorageData());
+		return checkContainers(QuestContainerManager.getOrderedListOfContainers().toArray(new ItemAndLastUpdated[0]));
 	}
 
 	/**

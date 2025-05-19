@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2017, Tyler <http://github.com/tylerthardy>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * Copyright (c) 2024, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
@@ -26,8 +28,14 @@ package com.questhelper.managers;
 
 import com.questhelper.requirements.item.TrackedContainers;
 import lombok.Getter;
+import net.runelite.api.*;
+import net.runelite.api.annotations.Varbit;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
+import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.List;
+import java.util.*;
 
 public class QuestContainerManager
 {
@@ -47,5 +55,72 @@ public class QuestContainerManager
     private final static ItemAndLastUpdated groupStorageData = new ItemAndLastUpdated(TrackedContainers.GROUP_STORAGE);
 
     @Getter
-    private final static List<ItemAndLastUpdated> orderedListOfContainers = List.of(equippedData, inventoryData, bankData, potionData, groupStorageData);
+    private final static ItemAndLastUpdated runePouchData = new ItemAndLastUpdated(TrackedContainers.RUNE_POUCH);
+
+    @Getter
+    private final static List<ItemAndLastUpdated> orderedListOfContainers = List.of(equippedData, inventoryData, bankData, runePouchData, potionData, groupStorageData);
+
+    static Set<Integer> RUNE_POUCHES = Set.of(ItemID.BH_RUNE_POUCH, ItemID.BH_RUNE_POUCH_TROUVER, ItemID.DIVINE_RUNE_POUCH, ItemID.DIVINE_RUNE_POUCH_TROUVER);
+    private static final int NUM_SLOTS = 6;
+    private static final int[] AMOUNT_VARBITS = {
+            VarbitID.RUNE_POUCH_QUANTITY_1, VarbitID.RUNE_POUCH_QUANTITY_2, VarbitID.RUNE_POUCH_QUANTITY_3, VarbitID.RUNE_POUCH_QUANTITY_4,
+            VarbitID.RUNE_POUCH_QUANTITY_5, VarbitID.RUNE_POUCH_QUANTITY_6
+    };
+    private static final int[] RUNE_VARBITS = {
+            VarbitID.RUNE_POUCH_TYPE_1, VarbitID.RUNE_POUCH_TYPE_2, VarbitID.RUNE_POUCH_TYPE_3, VarbitID.RUNE_POUCH_TYPE_4,
+            VarbitID.RUNE_POUCH_TYPE_5, VarbitID.RUNE_POUCH_TYPE_6
+    };
+
+    private static final int[] ALL_RUNE_POUCH_VARBITS = ArrayUtils.addAll(AMOUNT_VARBITS, RUNE_VARBITS);
+
+    public static void updateInventory(Client client)
+    {
+        ItemContainer invContainer = client.getItemContainer(InventoryID.INV);
+        if (invContainer == null) return;
+        Item[] allInventoryItems = invContainer.getItems();
+        Map<Integer, Item> inventoryMap = new HashMap<>();
+
+        for (Item item : allInventoryItems)
+        {
+            inventoryMap.computeIfPresent(item.getId(), (currentVal, existingItem) -> new Item(currentVal, existingItem.getQuantity() + item.getQuantity()));
+            inventoryMap.putIfAbsent(item.getId(), item);
+        }
+        boolean result = Arrays.stream(allInventoryItems).map(Item::getId).anyMatch(RUNE_POUCHES::contains);
+        if (result)
+        {
+            Item[] runesInPouch = QuestContainerManager.getRunePouchData().getItems();
+            assert runesInPouch != null;
+            for (Item runePouchItem : runesInPouch)
+            {
+                inventoryMap.computeIfPresent(runePouchItem.getId(), (currentVal, existingItem) -> new Item(currentVal, existingItem.getQuantity() + runePouchItem.getQuantity()));
+                inventoryMap.putIfAbsent(runePouchItem.getId(), runePouchItem);
+            }
+        }
+        QuestContainerManager.getInventoryData().update(client.getTickCount(), inventoryMap.values().toArray(new Item[0]));
+    }
+
+    static public void updateRunePouch(Client client, int varbitIdChanged)
+    {
+        if (Arrays.stream(ALL_RUNE_POUCH_VARBITS).noneMatch((varbit) -> varbit == varbitIdChanged)) return;
+
+        List<Item> runes = new ArrayList<>();
+        final EnumComposition runepouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);
+        int num = 0;
+
+        for (int i = 0; i < NUM_SLOTS; i++)
+        {
+            @Varbit int amountVarbit = AMOUNT_VARBITS[i];
+            int amount = client.getVarbitValue(amountVarbit);
+
+            @Varbit int runeVarbit = RUNE_VARBITS[i];
+            int runeId = client.getVarbitValue(runeVarbit);
+
+            runes.add(new Item(runepouchEnum.getIntValue(runeId), amount));
+        }
+
+        ItemAndLastUpdated runePouchData = QuestContainerManager.getRunePouchData();
+        runePouchData.update(client.getTickCount(), runes.toArray(new Item[0]));
+
+        updateInventory(client);
+    }
 }

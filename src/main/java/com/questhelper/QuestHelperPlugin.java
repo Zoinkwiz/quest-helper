@@ -46,8 +46,11 @@ import com.questhelper.util.worldmap.WorldMapAreaManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -66,6 +69,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -256,8 +260,7 @@ public class QuestHelperPlugin extends Plugin
 
 		if (event.getContainerId() == InventoryID.INV)
 		{
-			ItemAndLastUpdated inventoryData = QuestContainerManager.getInventoryData();
-			inventoryData.update(client.getTickCount(), items);
+			QuestContainerManager.updateInventory(client);
 
 			// Check if it matches last known group inventory state to know if we should update group storage
 			boolean bankChanged = questBankManager.updateGroupBankOnInventoryChange(items);
@@ -336,8 +339,10 @@ public class QuestHelperPlugin extends Plugin
 			questBankManager.updateBankForQuestSpeedrunningWorld();
 		}
 
+		QuestContainerManager.updateRunePouch(client, event.getVarbitId());
 		questManager.handleVarbitChanged();
 	}
+
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)

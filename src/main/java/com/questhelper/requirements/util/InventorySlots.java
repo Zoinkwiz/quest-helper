@@ -27,7 +27,7 @@
 package com.questhelper.requirements.util;
 
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 
@@ -43,16 +43,17 @@ import java.util.stream.Stream;
 public enum InventorySlots
 {
 	/** Represents the equipment slots of a player */
-	EQUIPMENT_SLOTS(InventoryID.EQUIPMENT),
+	EQUIPMENT_SLOTS(InventoryID.WORN),
 	/** Represents the inventory slots of a player */
-	INVENTORY_SLOTS(InventoryID.INVENTORY),
+	INVENTORY_SLOTS(InventoryID.INV),
 	/** Represents both equipment and inventory slots of a player */
-	EQUIPMENT_AND_INVENTORY_SLOTS(InventoryID.INVENTORY, InventoryID.EQUIPMENT),
+	EQUIPMENT_AND_INVENTORY_SLOTS(InventoryID.INV, InventoryID.WORN),
 	BANK(InventoryID.BANK),
 	;
 
-	private final InventoryID[] inventoryID;
-	InventorySlots(InventoryID... inventoryID)
+	private final int[] inventoryID;
+
+	InventorySlots(int... inventoryID)
 	{
 		this.inventoryID = inventoryID;
 	}
@@ -67,7 +68,7 @@ public enum InventorySlots
 	public boolean checkInventory(Client client, Predicate<Item> predicate)
 	{
 		return Arrays.stream(inventoryID)
-			.map(client::getItemContainer)
+			.mapToObj(client::getItemContainer)
 			.filter(Objects::nonNull)
 			.map(ItemContainer::getItems)
 			.flatMap(Arrays::stream)
@@ -86,7 +87,7 @@ public enum InventorySlots
 	public boolean contains(Client client, Predicate<Item> predicate)
 	{
 		return Arrays.stream(inventoryID)
-			.map(client::getItemContainer)
+			.mapToObj(client::getItemContainer)
 			.filter(Objects::nonNull)
 			.map(ItemContainer::getItems)
 			.flatMap(Arrays::stream)

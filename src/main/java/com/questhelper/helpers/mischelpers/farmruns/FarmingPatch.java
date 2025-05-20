@@ -39,7 +39,7 @@ class FarmingPatch
 	private FarmingRegion region;
 	@ToString.Include
 	private final String name;
-	@Getter(onMethod_ = {@Varbit})
+	@Getter
 	private final int varbit;
 	@ToString.Include
 	private final PatchImplementation implementation;

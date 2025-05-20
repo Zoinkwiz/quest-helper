@@ -29,8 +29,7 @@ dependencies {
 	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-params", version: junitVersion
 	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-engine", version: junitVersion
 
-	testImplementation group: 'org.mockito', name:'mockito-core', version: "4.11.0" // runelite uses 3.1.0
-	testImplementation group: 'org.mockito', name:'mockito-inline', version: "4.11.0"
+	testImplementation "org.mockito:mockito-core:5.17.0"
 	testImplementation(group: 'com.google.inject.extensions', name:'guice-testlib', version: "4.1.0") {
 		exclude group: 'com.google.inject', module: 'guice' // already provided by runelite
 	}
@@ -42,6 +41,16 @@ sourceCompatibility = "11"
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test).configureEach {
+	maxHeapSize = "1g" 
+	minHeapSize = "256m"
+	jvmArgs = [
+			"-XX:ReservedCodeCacheSize=256m",
+			"-XX:MaxMetaspaceSize=512m"
+	]
+	testLogging.showStandardStreams = true
 }
 
 tasks.test {

@@ -235,19 +235,6 @@ public class JugPuzzle extends DetailedOwnerStep
 		}
 	}
 
-	@Override
-	public QuestStep getActiveStep()
-	{
-		if (currentStep != null)
-		{
-			return currentStep.getActiveStep();
-		}
-		else
-		{
-			return this;
-		}
-	}
-
 	private void setupItemRequirements()
 	{
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);

@@ -34,13 +34,14 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -78,12 +79,12 @@ public class WeightStep extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		int goal = client.getVarbitValue(10936);
-		int weightOnStatue = client.getVarbitValue(10937);
+		int goal = client.getVarbitValue(VarbitID.WGS_WEIGHT_VAR);
+		int weightOnStatue = client.getVarbitValue(VarbitID.WGS_WEIGHT_STATUE_VAR);
 		int totalWeightGoal = goal + weightOnStatue;
 		int playerWeight = client.getWeight();
 
-		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
 
 		int weightInInventoryFromWeights = 0;
 		for (Item item : inventory.getItems())
@@ -187,19 +188,6 @@ public class WeightStep extends DetailedOwnerStep
 		// 10937 = total weight on statue
 	}
 
-	@Override
-	public QuestStep getActiveStep()
-	{
-		if (currentStep != this)
-		{
-			return currentStep.getActiveStep();
-		}
-		else
-		{
-			return this;
-		}
-	}
-
 	private void setupItemRequirements()
 	{
 		weight1Kg = new ItemRequirement("Weight (1kg)", ItemID.WGS_WEIGHT_1KG);
@@ -249,6 +237,7 @@ public class WeightStep extends DetailedOwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return Arrays.asList(crossOverBrokenWall, take1Kg, take2Kg, take5Kg, crossOverBrokenWallNorth, useWeights, openDoor, takeWeightFromStatue, dropWeights);
+		return Arrays.asList(crossOverBrokenWall, take1Kg, take2Kg, take5Kg, crossOverBrokenWallNorth, useWeights, openDoor, takeWeightFromStatue,
+				dropWeights, takeWeights);
 	}
 }

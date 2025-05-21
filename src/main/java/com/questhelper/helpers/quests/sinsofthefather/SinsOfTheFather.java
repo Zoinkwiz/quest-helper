@@ -511,7 +511,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		goDownToKroy.addDialogStep("Continue the Sins of the Father quest.");
 
 		killKroy = new NpcStep(this, NpcID.MYQ5_KROY_COMBAT, new WorldPoint(3734, 9763, 1),
-			"Kill Kroy.");
+			"Kill Kroy. Dodge the potion he sometimes throws to avoid damage and your attack rate being reduced.");
 		killKroy.addSubSteps(goDownToKroy);
 
 		destroyLab = new ObjectStep(this, ObjectID.MYQ5_KROY_TABLE_1, new WorldPoint(3730, 9760, 1),
@@ -676,7 +676,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 			unscentedTop, unscentedLegs, unscentedShoes, ivandisFlailEquipped);
 		killDamien.addDialogSteps("Slepe.", "Let's do this.");
 
-		talkToVeliafAfterDamien = new NpcStep(this, NpcID.MYQ5_VELIAF_CHILD_FLAIL, new WorldPoint(3720, 3357, 1),
+		talkToVeliafAfterDamien = new NpcStep(this, NpcID.MYQ5_VELIAF_FLAIL_BATTLE_DONE, new WorldPoint(3720, 3357, 1),
 			"Talk to Veliaf in Slepe.");
 
 		talkToVanesculaAfterDamien = new NpcStep(this, NpcID.MYQ5_VANESCULA_HUMAN_CHILD, new WorldPoint(3708, 3187, 0),

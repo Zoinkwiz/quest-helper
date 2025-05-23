@@ -33,7 +33,6 @@ import net.runelite.api.annotations.Varbit;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 
@@ -71,7 +70,20 @@ public class QuestContainerManager
             VarbitID.RUNE_POUCH_TYPE_5, VarbitID.RUNE_POUCH_TYPE_6
     };
 
-    private static final int[] ALL_RUNE_POUCH_VARBITS = ArrayUtils.addAll(AMOUNT_VARBITS, RUNE_VARBITS);
+    private static final Set<Integer> ALL_RUNE_POUCH_VARBITS = new HashSet<>();
+
+    static
+    {
+        for (var varbit : AMOUNT_VARBITS)
+        {
+            ALL_RUNE_POUCH_VARBITS.add(varbit);
+        }
+
+        for (var varbit : RUNE_VARBITS)
+        {
+            ALL_RUNE_POUCH_VARBITS.add(varbit);
+        }
+    }
 
     public static void updateInventory(Client client)
     {
@@ -101,7 +113,10 @@ public class QuestContainerManager
 
     static public void updateRunePouch(Client client, int varbitIdChanged)
     {
-        if (Arrays.stream(ALL_RUNE_POUCH_VARBITS).noneMatch((varbit) -> varbit == varbitIdChanged)) return;
+        if (!ALL_RUNE_POUCH_VARBITS.contains(varbitIdChanged))
+        {
+            return;
+        }
 
         List<Item> runes = new ArrayList<>();
         final EnumComposition runepouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);

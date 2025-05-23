@@ -31,5 +31,6 @@ public enum TrackedContainers
     BANK,
     POTION_STORAGE,
     GROUP_STORAGE,
+    RUNE_POUCH,
     UNDEFINED
 }

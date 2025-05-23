@@ -92,11 +92,9 @@ public class KeysAndLeversTest extends MockedTest
 				.thenReturn(playerLocation);
 
 		var mockedItemContainer = Mockito.mock(ItemContainer.class);
-		if (mockedItems != null)
-		{
-			when(mockedItemContainer.getItems()).thenReturn(mockedItems);
-			when(client.getItemContainer(InventoryID.INV)).thenReturn(mockedItemContainer);
-		}
+		if (mockedItems == null) mockedItems = new Item[0];
+		when(mockedItemContainer.getItems()).thenReturn(mockedItems);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(mockedItemContainer);
 
 		when(client.getPlane()).thenReturn(0);
 

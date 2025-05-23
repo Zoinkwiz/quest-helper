@@ -634,7 +634,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.FIREMAKING, 66));
 		req.add(new SkillRequirement(Skill.MINING, 72, true));
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 35, true));
-		req.add(new SkillRequirement(Skill.AGILITY, 68, true, " 68 Agility (but higher is better)"));
+		req.add(new SkillRequirement(Skill.AGILITY, 68, true, "68 Agility (but higher is better)"));
 		return req;
 	}
 }

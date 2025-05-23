@@ -343,7 +343,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		talkToAllLeadersLookoutFinish.addStep(helpingLova14, new XericsLookoutStepper(this, talkToLovaLookoutTaskFinish, 2, talkToAllMembersInXericsLookoutSidebarTaskFinish));
 		talkToAllLeadersLookoutFinish.addStep(helpingPisc10, new XericsLookoutStepper(this, talkToPiscLookoutTaskFinish, 3, talkToAllMembersInXericsLookoutSidebarTaskFinish));
 
-		megaStep.addStep(new Conditions(helpingLova14, helpingPisc10, helpingShayzien6, helpingHosidius8, helpingArceuus10), talkToAllLeadersLookoutFinish);
+		megaStep.addStep(new Conditions(LogicType.OR, helpingLova14, helpingPisc10, helpingShayzien6, helpingHosidius8, helpingArceuus10), talkToAllLeadersLookoutFinish);
 
 		// 124 is a giant mega step
 		steps.put(124, megaStep);
@@ -746,8 +746,9 @@ public class AKingdomDivided extends BasicQuestHelper
 		((NpcStep) talkToFulloreXericsLookout).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3] and run east"));
 		((NpcStep) talkToFulloreXericsLookout).addTeleport(xericsTalisman.named("Xeric's talisman [1]"));
 
-		talkToAllMembersInXericsLookoutSidebar = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout. Lord Hosidius can be found in the basement and Lord Arceeus just outside the door of the Lookout.");
-		talkToArceuusLookout = new NpcStep(this, NpcID.AKD_TROBIN_ARCEUUS_VIS, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceeus in Xeric's Lookout.");
+		talkToAllMembersInXericsLookoutSidebar = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout. Lord " +
+				"Hosidius can be found in the basement and Lord Arceuus just outside the door of the Lookout.");
+		talkToArceuusLookout = new NpcStep(this, NpcID.AKD_TROBIN_ARCEUUS_VIS, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceuus in Xeric's Lookout.");
 		talkToHosidiusLookout = new NpcStep(this, NpcID.AKD_KANDUR_HOSIDIUS_VIS, new WorldPoint(1568, 9955, 0), "Talk to Lord Hosidius in Xeric's Lookout.");
 		talkToShayzienLookout = new NpcStep(this, NpcID.AKD_SHIRO_SHAYZIEN_VIS, new WorldPoint(1591, 3530, 1), "Talk to Lord Shayzien in Xeric's Lookout.");
 		talkToLovaLookout = new NpcStep(this, NpcID.AKD_VULCANA_LOVAKENGJ_VIS, new WorldPoint(1592, 3531, 2), "Talk to Lady Lovakengj in Xeric's Lookout.");
@@ -812,7 +813,7 @@ public class AKingdomDivided extends BasicQuestHelper
 		inspectWineBarrel.addSubSteps(picklockChestInWineBarrel);
 
 		talkToAllMembersInXericsLookoutSidebarTaskFinish = new DetailedQuestStep(this, "Speak with all the leaders again on each floor of Xeric's Lookout.");
-		talkToArceuusLookoutTaskFinish = new NpcStep(this, NpcID.AKD_TROBIN_ARCEUUS_VIS, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceeus in Xeric's Lookout.");
+		talkToArceuusLookoutTaskFinish = new NpcStep(this, NpcID.AKD_TROBIN_ARCEUUS_VIS, new WorldPoint(1579, 3528, 0), "Talk to Lord Arceuus in Xeric's Lookout.");
 		talkToArceuusLookoutTaskFinish.addDialogStep("'History and Hearsay' - Shayzien");
 		((NpcStep) talkToArceuusLookoutTaskFinish).addTeleport(kharedstsMemoirs.named("Kharedst's memoirs [3] and run east"));
 		((NpcStep) talkToArceuusLookoutTaskFinish).addTeleport(xericsTalisman.named("Xeric's talisman [1]"));

@@ -219,7 +219,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.SLAYER_MIRROR_SHIELD).isNotConsumed();
-		kegsOfBeer = new ItemRequirement("Kegs of beer", ItemID.VIKING_BEERKEG);
+		kegsOfBeer = new ItemRequirement("Kegs of beer", ItemID.KEG_OF_BEER);
 		kegsOfBeer.setTooltip("You can buy some from Rasolo south east of Baxtorian Falls");
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 		astralRunes = new ItemRequirement("Astral runes", ItemID.ASTRALRUNE);

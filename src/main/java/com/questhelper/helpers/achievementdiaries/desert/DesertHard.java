@@ -194,7 +194,7 @@ public class DesertHard extends ComplexStateQuestHelper
 		kalph = new Zone(new WorldPoint(3454, 9531, 0), new WorldPoint(3520, 9473, 2));
 		smoke = new Zone(new WorldPoint(3166, 9408, 0), new WorldPoint(3332, 9344, 0));
 		soph1 = new Zone(new WorldPoint(2792, 5174, 0), new WorldPoint(2807, 5158, 0));
-		soph2 = new Zone(new WorldPoint(3264, 9281, 2), new WorldPoint(3327, 9216, 2));
+		soph2 = new Zone(new WorldPoint(2110, 4340, 2), new WorldPoint(2180, 4415, 2));
 		pyramid = new Zone(new WorldPoint(3199, 9340, 0), new WorldPoint(3265, 9282, 0));
 		mayor = new Zone(new WorldPoint(3436, 2924, 1), new WorldPoint(3452, 2907, 1));
 	}

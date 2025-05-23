@@ -35,6 +35,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import static com.questhelper.requirements.util.LogicHelper.*;
 
@@ -45,8 +46,8 @@ public class HerblorePuzzle extends ConditionalStep
 
 	private ObjectStep placeDolmens;
 
-	private static final int BASE_VARBIT = 10860;
-	private static final int BASE_USED_ITEM_VARBIT = 10921;
+	private static final int BASE_VARBIT = VarbitID.WGS_TEMPLE_STATUE_1;
+	private static final int BASE_USED_ITEM_VARBIT = VarbitID.LEAGUE_DAG_SUPREME_NO_LEAVE_CHECK;
 	// Used attack potion guam, 10868 0->1
 	// hunter, 10924 0->1->3
 

@@ -800,6 +800,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		limpwurt = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT);
 		kwuarm = new ItemRequirement("Kwuarm", ItemID.KWUARM);
 
+		// None used!
 		hadToadflax = or(toadflax, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
 		hadToadsLegs = or(toadsLegs, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
 		hadGuamLeaf = or(guamLeaf, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
@@ -837,9 +838,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		assassinsNearby = or(new NpcRequirement(NpcID.WGS_TAVERLEY_ASSASSIN_1), new NpcRequirement(NpcID.WGS_TAVERLEY_ASSASSIN_2));
 		paidLaunderer = new VarbitRequirement(VarbitID.WGS_WASHERMAN, 2, Operation.GREATER_EQUAL);
 		talkedToLaunderer = new VarbitRequirement(VarbitID.WGS_WASHERMAN, 4, Operation.GREATER_EQUAL);
-		trapSetUp = new VarbitRequirement(10929, 1);
+		trapSetUp = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 1);
 		trapBaited = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 2, Operation.GREATER_EQUAL);
-		broavTrapped = new VarbitRequirement(10929, 4);
+		broavTrapped = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 4);
 		broavNearby = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.WGS_BROAV, 13516), 16);
 		hasBroav = or(broavNearby, broav.alsoCheckBank(questBank));
 
@@ -849,7 +850,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		movarioFirstRoom = new Zone(new WorldPoint(4097, 4931, 0), new WorldPoint(4156, 4988, 0));
 		inMovarioFirstRoom = new ZoneRequirement(movarioFirstRoom);
 
-		claimedRunes = new VarbitRequirement(10961, 1);
+		claimedRunes = new VarbitRequirement(VarbitID.WGS_MOVARIO_RUNE_CHEST, 1);
 
 		doorNeedsFireRune = new Conditions(true, new WidgetTextRequirement(877, 6, "0"));
 		doorNeedsAirRune = new Conditions(true, new WidgetTextRequirement(877, 6, "1"));
@@ -890,7 +891,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		weightRoom = new Zone(new WorldPoint(4177, 4944, 1), new WorldPoint(4181, 4947, 1));
 		inWeightRoom = new ZoneRequirement(weightRoom);
 
-		teleportedToDraynor = new VarbitRequirement(10841, 1);
+		teleportedToDraynor = new VarbitRequirement(VarbitID.WGS_DRAYNOR_TELEPORT_USED, 1);
 
 		portSarim = new Zone(new WorldPoint(2911, 3188, 0), new WorldPoint(3137, 3308, 3));
 		inPortSarim = new ZoneRequirement(portSarim);
@@ -898,10 +899,10 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		doorway = new Zone(new WorldPoint(3016, 3259, 0), new WorldPoint(3016, 3259, 0));
 		inDoorway = new ZoneRequirement(doorway);
 
-		purchasedSnapdragon = new VarbitRequirement(10853, 1);
-		teleportedToPortSarim = new VarbitRequirement(10842, 1);
+		purchasedSnapdragon = new VarbitRequirement(VarbitID.WGS_SNAPDRAGON_SEED_GIVEN, 1);
+		teleportedToPortSarim = new VarbitRequirement(VarbitID.WGS_SARIM_TELEPORT_USED, 1);
 
-		talkedToThaeriskWithSeed = new VarbitRequirement(10847, 1);
+		talkedToThaeriskWithSeed = new VarbitRequirement(VarbitID.WGS_THAERISK_FARM_CHAT, 1);
 
 		whiteKnightsCastleF1 = new Zone(new WorldPoint(2954, 3353, 1), new WorldPoint(2998, 3327, 1));
 		whiteKnightsCastleF2 = new Zone(new WorldPoint(2954, 3353, 2), new WorldPoint(2998, 3327, 2));
@@ -944,7 +945,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		catacombNorth2 = new Zone(new WorldPoint(4118, 4712, 1), new WorldPoint(4140, 4727, 1));
 		inCatacombNorth = new ZoneRequirement(catacombNorth1, catacombNorth2);
 
-		openedCatacombShortcut = new VarbitRequirement(10857, 1);
+		openedCatacombShortcut = new VarbitRequirement(VarbitID.DWT_SHORTCUT_UNLOCKED, 1);
 
 		catacombF2 = new Zone(new WorldPoint(4090, 4730, 2), new WorldPoint(4160, 4810, 2));
 		inCatacombF2 = new ZoneRequirement(catacombF2);
@@ -952,24 +953,24 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		catacombHQ = new Zone(new WorldPoint(4108, 4839, 1), new WorldPoint(4148, 4859, 1));
 		inCatacombHQ = new ZoneRequirement(catacombHQ);
 
-		notSearchedWardrobeForEliteArmour = new VarbitRequirement(10806, 0);
-		notSearchedWardrobeForSquallOutfit = new VarbitRequirement(10779, 0);
+		notSearchedWardrobeForEliteArmour = new VarbitRequirement(VarbitID.WGS_DARKSQUALL_ELITE_ARMOUR_TAKEN, 0);
+		notSearchedWardrobeForSquallOutfit = new VarbitRequirement(VarbitID.WGS_DARKSQUALL_WARDROBE_VIS, 0);
 
-		notSearchedTableForTeleorb = new VarbitRequirement(10855, 0);
-		notSearchedTableForRunes = new VarbitRequirement(10854, 0);
-		notSearchedTableForLobsterAndRestore = new VarbitRequirement(10805, 0);
-		notSearchedKeyRack = new VarbitRequirement(10804, 0);
+		notSearchedTableForTeleorb = new VarbitRequirement(VarbitID.WGS_LUCIEN_ORB_OWNED, 0);
+		notSearchedTableForRunes = new VarbitRequirement(VarbitID.WGS_DARKSQUALL_RUNES_VIS, 0);
+		notSearchedTableForLobsterAndRestore = new VarbitRequirement(VarbitID.WGS_DARKSQUALL_SUPPLIES_VIS, 0);
+		notSearchedKeyRack = new VarbitRequirement(VarbitID.WGS_DARKSQUALL_KEY_RACK_VIS, 0);
 		openedSilifCell = new VarbitRequirement(VarbitID.WGS, 520, Operation.GREATER_EQUAL);
 
-		isSafeInCatacombs = new VarbitRequirement(10802, 1);
+		isSafeInCatacombs = new VarbitRequirement(VarbitID.WGS_PLAYER_DISGUISED, 1);
 		// TODO: Check if these are needed to actually feed and restore Silif
-		talkedToSilif = new VarbitRequirement(10848, 1);
+		talkedToSilif = new VarbitRequirement(VarbitID.WGS_SILIF_CELL_CHAT, 1);
 		// 10849 been told Silif needs food and restore potion
 
 		// TODO: Try using restore potion first
 		// Fed him, 9653 -> 530
-		usedFoodOnSilif = new VarbitRequirement(10850, 1);
-		usedRestoreOnSilif = new VarbitRequirement(10851, 1);
+		usedFoodOnSilif = new VarbitRequirement(VarbitID.WGS_SILIF_GIVEN_FOOD, 1);
+		usedRestoreOnSilif = new VarbitRequirement(VarbitID.WGS_SILIF_GIVEN_POTION, 1);
 		// 10852 0->1 represents ready to recieve armour
 
 		// Equipped armour:
@@ -999,20 +1000,20 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		abyssEntry = new Zone(new WorldPoint(4040, 4550, 0), new WorldPoint(4078, 4613, 0));
 		inAbyssEntry = new ZoneRequirement(abyssEntry);
 
-		notUsedSpadeOnFireRocks = new VarbitRequirement(10811, 0);
-		notUsedChiselOnFireBrazier = new VarbitRequirement(10811, 1);
+		notUsedSpadeOnFireRocks = new VarbitRequirement(VarbitID.WGS_FIRE_BRAZIER, 0);
+		notUsedChiselOnFireBrazier = new VarbitRequirement(VarbitID.WGS_FIRE_BRAZIER, 1);
 
-		notUsedSpadeOnEarthRocks = new VarbitRequirement(10812, 0);
-		notUsedChiselOnEarthBrazier = new VarbitRequirement(10812, 1);
+		notUsedSpadeOnEarthRocks = new VarbitRequirement(VarbitID.WGS_EARTH_BRAZIER, 0);
+		notUsedChiselOnEarthBrazier = new VarbitRequirement(VarbitID.WGS_EARTH_BRAZIER, 1);
 
-		notUsedChiselOnAirBrazier = new VarbitRequirement(10813, 0);
-		notUsedChiselOnWaterBrazier = new VarbitRequirement(10814, 0);
+		notUsedChiselOnAirBrazier = new VarbitRequirement(VarbitID.WGS_AIR_BRAZIER, 0);
+		notUsedChiselOnWaterBrazier = new VarbitRequirement(VarbitID.WGS_WATER_BRAZIER, 0);
 
 		usedChiselOnAllBraziers = and(
-			new VarbitRequirement(10811, 2),
-			new VarbitRequirement(10812, 2),
-			new VarbitRequirement(10813, 1),
-			new VarbitRequirement(10814, 1)
+			new VarbitRequirement(VarbitID.WGS_FIRE_BRAZIER, 2),
+			new VarbitRequirement(VarbitID.WGS_EARTH_BRAZIER, 2),
+			new VarbitRequirement(VarbitID.WGS_AIR_BRAZIER, 1),
+			new VarbitRequirement(VarbitID.WGS_WATER_BRAZIER, 1)
 		);
 
 		abyssEntryF1 = new Zone(new WorldPoint(4058, 4552, 1), new WorldPoint(4070, 4558, 1));
@@ -1021,26 +1022,26 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		abyssEntryF2 = new Zone(new WorldPoint(4055, 4546, 2), new WorldPoint(4072, 4556, 2));
 		inAbyssEntryF2 = new ZoneRequirement(abyssEntryF2);
 
-		notPlacedAirOrb = new VarbitRequirement(10816, 0);
-		notPlacedWaterOrb = new VarbitRequirement(10817, 0);
-		notPlacedEarthOrb = new VarbitRequirement(10818, 0);
-		notPlacedFireOrb = new VarbitRequirement(10819, 0);
+		notPlacedAirOrb = new VarbitRequirement(VarbitID.WGS_AIR_ORB_USED, 0);
+		notPlacedWaterOrb = new VarbitRequirement(VarbitID.WGS_WATER_ORB_USED, 0);
+		notPlacedEarthOrb = new VarbitRequirement(VarbitID.WGS_EARTH_ORB_USED, 0);
+		notPlacedFireOrb = new VarbitRequirement(VarbitID.WGS_FIRE_ORB_USED, 0);
 
 		placedAllOrbs = and(
-			new VarbitRequirement(10816, 1),
-			new VarbitRequirement(10817, 1),
-			new VarbitRequirement(10818, 1),
-			new VarbitRequirement(10819, 1)
+			new VarbitRequirement(VarbitID.WGS_AIR_ORB_USED, 1),
+			new VarbitRequirement(VarbitID.WGS_WATER_ORB_USED, 1),
+			new VarbitRequirement(VarbitID.WGS_EARTH_ORB_USED, 1),
+			new VarbitRequirement(VarbitID.WGS_FIRE_ORB_USED, 1)
 		);
 
 		// TODO: Make sure this is the right thing to check
 		// 10824 0->1
 		// 10825 0->8
 		// 10820 4->3
-		placedAirBlock = new VarbitRequirement(10821, 1);
-		placedWaterBlock = new VarbitRequirement(10822, 1);
-		placedEarthBlock = new VarbitRequirement(10823, 1);
-		notPlacedFireBlock = new VarbitRequirement(10824, 0);
+		placedAirBlock = new VarbitRequirement(VarbitID.WGS_AIR_KEY_USED, 1);
+		placedWaterBlock = new VarbitRequirement(VarbitID.WGS_WATER_KEY_USED, 1);
+		placedEarthBlock = new VarbitRequirement(VarbitID.WGS_EARTH_KEY_USED, 1);
+		notPlacedFireBlock = new VarbitRequirement(VarbitID.WGS_FIRE_KEY_USED, 0);
 
 		noWeaponOrShieldEquipped = new ComplexRequirement("No weapon or shield equipped", new NoItemRequirement("", ItemSlots.WEAPON), new NoItemRequirement("", ItemSlots.SHIELD));
 
@@ -1051,7 +1052,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		waterCavity = new Zone(new WorldPoint(4119, 5065, 0), new WorldPoint(4145, 5080, 0));
 		inWaterCavity = new ZoneRequirement(waterCavity);
 
-		placedAllBlocks = new VarbitRequirement(10825, 15);
+		placedAllBlocks = new VarbitRequirement(VarbitID.WGS_ELEMENTAL_KEYS_PLACED_CHECK, 15);
 
 		guthixianTemple = new Zone(new WorldPoint(4025, 4350, 0), new WorldPoint(4160, 4480, 0));
 		inGuthixianTemple = new ZoneRequirement(guthixianTemple);
@@ -1201,6 +1202,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		pickupWasteBasket = new ObjectStep(this, ObjectID.LUC2_MOV_WASTEPAPERBASKET, new WorldPoint(4177, 4955, 1), "Pick-up the waste-paper basket west of the desk.");
 		searchWasteBasket = new DetailedQuestStep(this, "Search the waste-paper basket.", wastePaperBasket.highlighted());
 		useKeyOnBookcase = new ObjectStep(this, ObjectID.LUC2_MOV_BOOKCASE_RUBY_STAIRS_LOCK, new WorldPoint(4172, 4954, 1), "Use the ruby key on the most north-west bookcase.", rubyKey.highlighted());
+		useKeyOnBookcase.addDialogStep("Yes.");
 		useKeyOnBookcase.addIcon(ItemID.WGS_KEY_RUBY);
 		climbUpHiddenStaircase = new ObjectStep(this, ObjectID.LUC2_MOVARIO_MECHANICAL_STAIRS_COMPLETE, new WorldPoint(4173, 4956, 1), "Go up the stairs that appeared.");
 		searchBed = new ObjectStep(this, ObjectID.LUC2_MOVARIO_BED_CHEST_BED, new WorldPoint(4179, 4954, 2), "Search the bed.");
@@ -1210,6 +1212,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10771 3/2/1 for chances before failing weight door
 		useKeyOnChest = new ObjectStep(this, ObjectID.LUC2_MOVARIO_BED_CHEST_CLOSED, new WorldPoint(4179, 4954, 2), "Use the ruby key on the bed chest.", rubyKey.highlighted());
 		useKeyOnChest.addIcon(ItemID.WGS_KEY_RUBY);
+		useKeyOnChest.addDialogStep("Yes.");
 		searchChestForTraps = new ObjectStep(this, ObjectID.LUC2_MOVARIO_BED_CHEST_CLOSED_SEARCH, new WorldPoint(4179, 4954, 2), "RIGHT-CLICK search the bed chest for traps.");
 		getNotesFromChest = new ObjectStep(this, ObjectID.LUC2_MOVARIO_BED_CHEST_OPEN, new WorldPoint(4179, 4954, 2), "Take the second pair of notes from the bed chest.");
 		((ObjectStep) getNotesFromChest).addAlternateObjects(ObjectID.LUC2_MOVARIO_BED_CHEST_CLOSED_SEARCH);
@@ -1251,7 +1254,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		buySnapdragonSeed.addDialogSteps("Could I have that seed?", "Sounds good to me.");
 		getSarimTeleport = new NpcStep(this, NpcID.WGS_THAERISK_CEMPHIER, new WorldPoint(2989, 3342, 0), "Talk to Thaerisk to teleport to Port Sarim.", snapdragonSeed, lanternLens, coins.quantity(20));
 		getSarimTeleport.addDialogSteps("Could you teleport me to Port Sarim?", "Yes.");
-		talkToBetty = new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3014, 3258, 0), "Talk to Betty in Port Sarim's magic shop with a snapdragon seed and lantern lens.",
+		talkToBetty = new NpcStep(this, NpcID.BETTY, new WorldPoint(3014, 3258, 0),
+				"Talk to Betty in Port Sarim's magic shop with a snapdragon seed and lantern lens.",
 			snapdragonSeed, lanternLens, coins.quantity(20));
 		talkToBetty.addDialogStep("Could you help me make some enriched snapdragon?");
 		// Given snapdragon seed
@@ -1322,7 +1326,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		harvestSnapdragon = new ObjectStep(this, ObjectID.WGS_RICH_SNAPDRAGON_HERB_FULLYGROWN, new WorldPoint(2962, 3338, 3),
 			"");
-		goHarvestSnapdragon = new ConditionalStep(this, goToF3WhiteKnight, "Harvest the enriched snapdragon in the herb patch on the top floor of the west side of the White Knights' Castle.");
+		goHarvestSnapdragon = new ConditionalStep(this, goToF3WhiteKnight, "Go back onto the normal spellbook, then go harvest the enriched snapdragon in the" +
+				" herb patch on the top floor of the west side of the White Knights' Castle.");
 		goHarvestSnapdragon.addStep(inWhiteKnightsCastleF3, harvestSnapdragon);
 
 		// quest 41->42
@@ -1346,6 +1351,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		enterJailCell = new ObjectStep(this, ObjectID.WGS_PRISON_DOOR_LOCKED, new WorldPoint(2988, 3343, 0), "Enter the cell just north of Thaerisk.");
 		useSerumOnSpy = new NpcStep(this, NpcID.WGS_LUCIEN_SPY_CELL, new WorldPoint(2989, 3344, 0), "Use the super truth serum on the shady stranger in the cell near Thaerisk.",
 			superTruthSerum.highlighted(), charcoal, papyrus);
+		useSerumOnSpy.addDialogStep("Yes.");
 		talkToSpy = new NpcStep(this, NpcID.WGS_LUCIEN_SPY_CELL, new WorldPoint(2989, 3344, 0), "Talk to the shady stranger.", charcoal, papyrus);
 		giveSketchToIdria = new NpcStep(this, NpcID.WGS_IDRIA, new WorldPoint(2989, 3342, 0), "Use the sketch on Idria.", sketch.highlighted());
 		talkToIdriaAfterSketch = new NpcStep(this, NpcID.WGS_IDRIA, new WorldPoint(2989, 3342, 0), "Use the sketch on Idria.");

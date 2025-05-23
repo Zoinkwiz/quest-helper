@@ -120,7 +120,6 @@ public class QuestContainerManager
 
         List<Item> runes = new ArrayList<>();
         final EnumComposition runepouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);
-        int num = 0;
 
         for (int i = 0; i < NUM_SLOTS; i++)
         {

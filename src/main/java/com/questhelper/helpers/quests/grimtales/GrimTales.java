@@ -87,7 +87,7 @@ public class GrimTales extends BasicQuestHelper
 		steps.put(4, talkToSylas);
 
 		ConditionalStep getHelmet = new ConditionalStep(this, climbWall);
-		getHelmet.addStep(rupertsHelmet, giveHelmetToSylas);
+		getHelmet.addStep(rupertsHelmet.alsoCheckBank(questBank), giveHelmetToSylas);
 		getHelmet.addStep(releasedRupert, talkToRupertAfterAmulet);
 		getHelmet.addStep(new Conditions(givenPendant), talkMizAfterPendant);
 		getHelmet.addStep(new Conditions(hasMiazrqasPendant), givePendant);
@@ -356,7 +356,7 @@ public class GrimTales extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(tarrominUnf2, dibber, can, axe, combatGear);
+		return Arrays.asList(houseKey, tarrominUnf2, dibber, can, axe, combatGear);
 	}
 
 

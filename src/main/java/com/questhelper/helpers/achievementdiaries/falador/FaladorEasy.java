@@ -60,12 +60,10 @@ public class FaladorEasy extends ComplexStateQuestHelper
 {
 
 	//Items Required
-	ItemRequirement bucket, tiara, mindTalisman, hammer, pickaxe, combatGear;
+	ItemRequirement bucket, tiara, mindTalisman, hammer, pickaxe, combatGear, bluriteBar, bluriteOre;
 
 	//Items Recommended
 	ItemRequirement teleportFalador, teleportMindAltar, explorersRing;
-
-	ItemRequirement bluriteBar, bluriteOre;
 
 	Requirement doricsQuest, knightSword;
 
@@ -166,15 +164,16 @@ public class FaladorEasy extends ComplexStateQuestHelper
 			.showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
 		combatGear = new ItemRequirement("A range or mage attack to kill a Duck (Level 1)", -1, -1).showConditioned(notKilledDuck).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
+		bluriteOre = new ItemRequirement("Blurite Ore", ItemID.BLURITE_ORE);
+		bluriteBar = new ItemRequirement("Blurite Bar", ItemID.BLURITE_BAR);
+		bluriteOre.canBeObtainedDuringQuest();
+		bluriteBar.canBeObtainedDuringQuest();
 
 		//Recommended
 		teleportFalador = new TeleportItemRequirement("Multiple teleports to Falador", ItemID.POH_TABLET_FALADORTELEPORT, -1);
 		teleportMindAltar = new TeleportItemRequirement("A Teleport to the Mind Altar", ItemID.TELETAB_MIND_ALTAR);
 		explorersRing = new TeleportItemRequirement("Explorers Ring (2) or above.", ItemID.LUMBRIDGE_RING_MEDIUM).isNotConsumed();
 		explorersRing.addAlternates(ItemID.LUMBRIDGE_RING_HARD, ItemID.LUMBRIDGE_RING_ELITE);
-
-		bluriteOre = new ItemRequirement("Blurite Ore", ItemID.BLURITE_ORE);
-		bluriteBar = new ItemRequirement("Blurite Bar", ItemID.BLURITE_BAR);
 
 		hasBluriteOre = bluriteOre.alsoCheckBank(questBank);
 		hasBluriteBar = bluriteBar.alsoCheckBank(questBank);
@@ -291,7 +290,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(pickaxe, hammer, bucket, tiara, mindTalisman, combatGear);
+		return Arrays.asList(pickaxe, hammer, bucket, tiara, mindTalisman, combatGear, bluriteBar, bluriteOre);
 	}
 
 	@Override

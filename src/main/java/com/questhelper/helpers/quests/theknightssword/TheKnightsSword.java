@@ -230,4 +230,10 @@ public class TheKnightsSword extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Return the sword", Collections.singletonList(finishQuest)));
 		return allSteps;
 	}
+
+	@Override
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("You can make progress towards the Falador Easy Diary task by mining an additional Blurite ore and smelting another Blurite bar, it will be required for smithing Blurite limbs.");
+	}
 }

@@ -273,7 +273,7 @@ public class JugPuzzle extends DetailedOwnerStep
 
 		syncStep = new DetailedQuestStep(getQuestHelper(), "Please check both the jugs to continue.");
 		searchCupboardTinderbox = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_SHELVES_TINDERBOX, new WorldPoint(1381, 3829, 0), "Search the cupboard on the north wall for a tinderbox.");
-		searchCupboardJug = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_SHELVES_JUGS, new WorldPoint(1378, 3826, 0), "Search the cupboard in the south east corner of the north room for a 5 and an 8 gallon jug.");
+		searchCupboardJug = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_SHELVES_JUGS, new WorldPoint(1378, 3826, 0), "Search the cupboard in the south west corner of the north room for a 5 and an 8 gallon jug.");
 		searchCupboardJug.addDialogStep("Take both.");
 		fill5Gallon = new ObjectStep(getQuestHelper(), ObjectID.LOVAQUEST_TOWER_COOLANT, new WorldPoint(1377, 3828, 0), "Fill the 5-gallon jug on the Coolant Dispenser.", fiveGallon);
 		fill5Gallon.addDialogStep("5-gallon jug.");

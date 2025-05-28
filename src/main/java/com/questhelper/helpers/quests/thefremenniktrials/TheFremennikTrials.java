@@ -743,7 +743,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		talkToYsra.addDialogStep("Ask about the Merchant's trial");
 		talkToBrundtForSigmund = new NpcStep(this, NpcID.VIKING_BRUNDT_CHILD, new WorldPoint(2658, 3669, 0), "Talk to Brundt in the longhall.");
 		talkToBrundtForSigmund.addDialogStep("Ask about the Merchant's trial");
-		talkToBrundtForSigmund.addDialogStep("Talk about anything else.");
+		talkToBrundtForSigmund.addDialogStep("Ask about anything else.");
 		talkToSigliForSigmund = new NpcStep(this, NpcID.VIKING_SIGLI, new WorldPoint(2658, 3650, 0), "Talk to Sigli south of the longhall.");
 		talkToSigliForSigmund.addDialogStep("Ask about the Merchant's trial");
 		talkToSkulgrimenForSigmund = new NpcStep(this, NpcID.VIKING_WEAPONS_SALESMAN, new WorldPoint(2663, 3692, 0), "Talk to Skulgrimen north of the longhall.");

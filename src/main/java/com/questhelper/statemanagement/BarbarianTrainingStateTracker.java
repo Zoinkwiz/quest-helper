@@ -279,7 +279,7 @@ public class BarbarianTrainingStateTracker
 			configManager, ConfigKeys.BARBARIAN_TRAINING_HARPOONED_FISH.getKey(),
 			new Conditions(true, LogicType.OR,
 				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You catch a tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
+					new ChatMessageRequirement("You catch a raw tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")

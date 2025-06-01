@@ -223,7 +223,7 @@ public class QuestStepPanel extends JPanel
 				if (step.containsSteps(newStep, new HashSet<>()))
 				{
 					highlighted = true;
-					updateHighlight(step);
+					makePanelHighlighted(step);
 					break;
 				}
 			}
@@ -231,6 +231,7 @@ public class QuestStepPanel extends JPanel
 			if (!highlighted)
 			{
 				removeHighlight();
+				lastHighlightedStep = null;
 			}
 		}
 		else
@@ -240,7 +241,7 @@ public class QuestStepPanel extends JPanel
 	}
 
 
-	public void updateHighlight(QuestStep currentStep)
+	public void makePanelHighlighted(QuestStep currentStep)
 	{
 		expand();
 
@@ -248,7 +249,8 @@ public class QuestStepPanel extends JPanel
 		{
 			steps.get(lastHighlightedStep).setForeground(Color.LIGHT_GRAY);
 		}
-		else
+
+		if (lastHighlightedStep != currentStep)
 		{
 			headerLabel.setForeground(Color.BLACK);
 			headerPanel.setBackground(ColorScheme.BRAND_ORANGE);

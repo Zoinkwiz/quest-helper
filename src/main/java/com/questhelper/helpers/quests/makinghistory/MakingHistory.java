@@ -125,6 +125,7 @@ public class MakingHistory extends BasicQuestHelper
 		ghostSpeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemCollections.GHOSTSPEAK).equipped().isNotConsumed();
 		ghostSpeakAmulet.setTooltip("You can also wear the Morytania Legs 2 or higher.");
 		ardougneTeleport = new ItemRequirement("Teleports to Ardougne", ItemID.POH_TABLET_ARDOUGNETELEPORT, 3);
+		ardougneTeleport.addAlternates(ItemID.ARDY_CAPE_EASY, ItemID.ARDY_CAPE_MEDIUM, ItemID.ARDY_CAPE_HARD, ItemID.ARDY_CAPE_ELITE);
 
 		ectophial = new ItemRequirement("Ectophial, or method of getting to Port Phasmatys", ItemID.ECTOPHIAL).isNotConsumed();
 		ectophial.addAlternates(ItemID.TELETAB_FENK, ItemID.TABLET_KHARYLL);

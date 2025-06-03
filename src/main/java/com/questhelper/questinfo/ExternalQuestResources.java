@@ -207,6 +207,7 @@ public enum ExternalQuestResources
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS("https://oldschool.runescape.wiki/w/Camelot_training_room"),
+	CRACK_THE_CLUE_II("https://oldschool.runescape.wiki/w/Crack_the_Clue_II")
 
 	// Achievement diaries
 

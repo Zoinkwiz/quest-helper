@@ -142,7 +142,7 @@ public class SeaSlug extends BasicQuestHelper
 		drySticks.setHighlightInInventory(true);
 		torch = new ItemRequirement("Unlit torch", ItemID.TORCH_UNLIT);
 		litTorch = new ItemRequirement("Lit torch", ItemID.TORCH_LIT);
-		glass = new ItemRequirement("Broken glass", ItemID.DIGSITEGLASS);
+		glass = new ItemRequirement("Broken glass", ItemID.BROKEN_GLASS);
 		glass.setHighlightInInventory(true);
 
 	}

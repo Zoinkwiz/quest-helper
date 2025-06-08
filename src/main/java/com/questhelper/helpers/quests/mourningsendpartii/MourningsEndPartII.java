@@ -937,7 +937,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 			{
 				getDeathTalisman = new DetailedQuestStep(this, "You need to get a Death Talisman. Talk to the dwarf at the Death Altar to help him collect 50 items for one.");
 				getDeathTalismanInCentre = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_1_B, new WorldPoint(1881, 4639, 0),
-					"Bring the Thorgel the items he needs for a Death Talisman. TURN THE MIDDLE PILLAR TO POINT BACK " +
+					"Bring Thorgel the items he needs for a Death Talisman. TURN THE MIDDLE PILLAR TO POINT BACK " +
 						"EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.");
 				getDeathTalismanInCentreDoorCorrect = new NpcStep(this, NpcID.MOURNING_DEATHALTER_DWARF_VIS, new WorldPoint(1860, 4641, 0),
 					"Bring the dwarf the items he needs for a Death Talisman.");

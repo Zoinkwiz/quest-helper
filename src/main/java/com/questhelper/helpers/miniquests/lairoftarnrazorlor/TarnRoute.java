@@ -199,7 +199,7 @@ public class TarnRoute extends ConditionalStep
 		enterHauntedMine = steps.get(null);
 		enterLair = new ObjectStep(questHelper, ObjectID.LOTR_ENTRANCE_DOOR_UNBLOCKED, new WorldPoint(3424, 9661, 0), "Enter the entrance to the north.");
 
-		searchWallRoom1 = new ObjectStep(questHelper, ObjectID.LOTR_TRAP_SPEAR_WALL, new WorldPoint(3196, 4557, 0), "Follow the path west then north, and go through the door you reach.");
+		searchWallRoom1 = new ObjectStep(questHelper, ObjectID.LOTR_TRAP_SPEAR_WALL, new WorldPoint(3196, 4557, 0), "Follow the path east then north, and go through the door you reach.");
 		searchWallRoom1.setLinePoints(Arrays.asList(
 			new WorldPoint(3166, 4547, 0),
 			new WorldPoint(3166, 4550, 0),

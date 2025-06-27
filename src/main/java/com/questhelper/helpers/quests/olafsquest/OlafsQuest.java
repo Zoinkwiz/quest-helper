@@ -213,8 +213,8 @@ public class OlafsQuest extends BasicQuestHelper
 		talkToOlaf.addDialogStep("Yes.");
 		chopTree = new ObjectStep(this, ObjectID.OLAF_WINDSWEPT_TREE, new WorldPoint(2749, 3735, 0), "Chop a log from the Windswept Tree east of Olaf.", axe);
 		giveLogToOlaf = new NpcStep(this, NpcID.OLAF, new WorldPoint(2722, 3727, 0), "Bring the logs to Olaf Hradson north east of Rellekka.", windsweptLogs);
-		talkToIngrid = new NpcStep(this, NpcID.OLAF_INGRID, new WorldPoint(2670, 3670, 0), "Talk to Ingrid Hradson in Rellekka.", crudeCarving);
-		talkToVolf = new NpcStep(this, NpcID.OLAF_VOLF, new WorldPoint(2662, 3700, 0), "Talk to Volf Hradson in Rellekka.", cruderCarving);
+		talkToIngrid = new NpcStep(this, NpcID.OLAF_INGRID, new WorldPoint(2670, 3670, 0), "Talk to Ingrid Hradson near the well in southeast Rellekka.", crudeCarving);
+		talkToVolf = new NpcStep(this, NpcID.OLAF_VOLF, new WorldPoint(2662, 3700, 0), "Talk to Volf Olafson north of the longhall in Rellekka.", cruderCarving);
 
 		returnToOlaf = new NpcStep(this, NpcID.OLAF, new WorldPoint(2722, 3727, 0), "Return to Olaf Hradson north east of Rellekka.");
 		useDampPlanks = new ObjectStep(this, ObjectID.OLAF_MULTI_FIRE, new WorldPoint(2724, 3728, 0), "Use the damp planks on Olaf's embers.", dampPlanks);

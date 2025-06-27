@@ -556,7 +556,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		/// 36
 		var climbSecondLooseRocksToTheatre = new ObjectStep(this, ObjectID.DOTI_AGILITY_CHALLENGE_C, new WorldPoint(1474, 2923, 0), "Climb down the loose rocks in your way to the guards outside the theatre.");
 
-		talkToGuardsAtTheatre = new NpcStep(this, NpcID.DOTI_STRADIUS, new WorldPoint(1472, 2925, 0), "Talk to Stradius at the theatre backstage of the theatre.");
+		talkToGuardsAtTheatre = new NpcStep(this, NpcID.DOTI_STRADIUS, new WorldPoint(1472, 2925, 0), "Talk to Stradius at the backstage of the theatre.");
 		talkToGuardsAtTheatre.addSubSteps(headDownFromTopFloor, headDownFromMiddleFloor, climbFirstLooseRocksToTheatre, climbSecondLooseRocksToTheatre);
 		talkToGuardsAtTheatre.addSubSteps(headDownFromTopFloor);
 

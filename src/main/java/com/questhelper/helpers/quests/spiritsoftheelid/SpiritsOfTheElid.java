@@ -254,7 +254,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		clearChannel2 = new ObjectStep(this, ObjectID.ELID_WATER_CHANNEL_BLOCKED_ROCKS, new WorldPoint(3378, 9547, 0), "Clear the Water Channel then leave the room.", pickaxe);
 
 		openCrushDoor = new ObjectStep(this, ObjectID.ELID_BLACKGOLEM_DOOR, new WorldPoint(3372, 9556, 0),
-			"Open the door to the north-eastern and fight the Black Golem (level-75).  You can only damage the Golem " +
+			"Open the door to the north-east and fight the Black Golem (level-75).  You can only damage the Golem " +
 				"with the crush attack style.", crushWep);
 		openCrushDoorAfterGolem = new ObjectStep(this, ObjectID.ELID_BLACKGOLEM_DOOR, new WorldPoint(3372, 9556, 0), "Open the north-eastern door again.");
 		openCrushDoor.addSubSteps(openCrushDoorAfterGolem);

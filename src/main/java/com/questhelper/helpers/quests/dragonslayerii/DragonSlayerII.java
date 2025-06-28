@@ -653,7 +653,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		hadMap21 = new Conditions(LogicType.OR, map21, new VarbitRequirement(6136, 1));
 		hadMap22 = new Conditions(LogicType.OR, map22, new VarbitRequirement(6137, 1));
 		hadMap23 = new Conditions(LogicType.OR, map23, new VarbitRequirement(6138, 1));
-		hadMap24 = new Conditions(LogicType.OR, map23, new VarbitRequirement(6138, 1));
+		hadMap24 = new Conditions(LogicType.OR, map24, new VarbitRequirement(6138, 1));
 		hadMushtreeMapPieces = new Conditions(hadMap20, hadMap21, hadMap22, hadMap23, hadMap24);
 
 		inMapPuzzle = new WidgetModelRequirement(305, 1, 35060);

@@ -407,9 +407,9 @@ public class EnakhrasLament extends BasicQuestHelper
 		useMapleLog.addIcon(ItemID.MAPLE_LOGS);
 		useOakLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_2_MULTILOC, new WorldPoint(3116, 9306, 1), "Use an oak log on the south brazier.", oakLog);
 		useOakLog.addIcon(ItemID.OAK_LOGS);
-		useLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_1_MULTILOC, new WorldPoint(3114, 9306, 1), "Use a normal log on the south east brazier.", log);
+		useLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_1_MULTILOC, new WorldPoint(3114, 9306, 1), "Use a normal log on the south west brazier.", log);
 		useLog.addIcon(ItemID.LOGS);
-		useWillowLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_3_MULTILOC, new WorldPoint(3118, 9306, 1), "Use a willow log on the south west brazier.", willowLog);
+		useWillowLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_3_MULTILOC, new WorldPoint(3118, 9306, 1), "Use a willow log on the south east brazier.", willowLog);
 		useWillowLog.addIcon(ItemID.WILLOW_LOGS);
 		useCoal = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_6_MULTILOC, new WorldPoint(3118, 9309, 1), "Use coal on the north east brazier.", coal);
 		useCoal.addIcon(ItemID.COAL);

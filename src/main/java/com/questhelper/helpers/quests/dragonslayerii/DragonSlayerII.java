@@ -749,7 +749,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkToDallasAfterSolvingMap = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3762, 3868, 0), "Talk to Dallas after solving the map.");
 
 		// Phase 3
-		talkToJardricInMuseumCamp = new NpcStep(this, NpcID.DS2_BATTLE_JARDRIC_FINAL, new WorldPoint(3719, 3812, 0), "Talk to Jardric in the museum camp.");
+		talkToJardricInMuseumCamp = new NpcStep(this, NpcID.JARDRIC_CAMP, new WorldPoint(3719, 3812, 0), "Talk to Jardric in the museum camp.");
 		buildRowBoat = new ObjectStep(this, ObjectID.FOSSIL_ROWBOAT_LITHKREN, new WorldPoint(3659, 3849, 0), "Build a rowing boat on the west coast of Fossil Island.", hammer, saw, oakPlank8, swampPaste10, nails12OrMore);
 		talkToDallasAfterBoatRepair = new NpcStep(this, NpcID.DALLAS_JONES, new WorldPoint(3663, 3849, 0), "Talk to Dallas near the boat.");
 		talkToDallasAfterBoatRepair.addDialogStep("I'm ready.");

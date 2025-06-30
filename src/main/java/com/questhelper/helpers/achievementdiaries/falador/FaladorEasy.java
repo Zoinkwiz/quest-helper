@@ -304,7 +304,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.AGILITY, 5, true));
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 16));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 16, true));
 		req.add(new SkillRequirement(Skill.MINING, 10, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 13, true));
 
@@ -394,7 +394,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		allSteps.add(mindTiaraSteps);
 
 		PanelDetails familyCrestSteps = new PanelDetails("Family Crest", Arrays.asList(climbLadderWhiteKnightCastle,
-			discoverFamilyCrest), new SkillRequirement(Skill.CONSTRUCTION, 16));
+			discoverFamilyCrest), new SkillRequirement(Skill.CONSTRUCTION, 16, true));
 		familyCrestSteps.setDisplayCondition(notFamilyCrest);
 		familyCrestSteps.setLockingStep(familyCrestTask);
 		allSteps.add(familyCrestSteps);

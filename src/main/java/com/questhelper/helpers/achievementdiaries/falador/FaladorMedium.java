@@ -399,7 +399,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 
 		generalRequirements.add(new SkillRequirement(Skill.AGILITY, 42, true));
 		generalRequirements.add(new SkillRequirement(Skill.CRAFTING, 40, true));
-		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20));
+		generalRequirements.add(new SkillRequirement(Skill.DEFENCE, 20, false));
 		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			// 47 Farming is required to get a Watermelon for the "Brain not included" step
@@ -416,10 +416,10 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		generalRequirements.add(new SkillRequirement(Skill.FIREMAKING, 49, true));
 		generalRequirements.add(new SkillRequirement(Skill.MAGIC, 37, true));
 		generalRequirements.add(new SkillRequirement(Skill.MINING, 40, true));
-		generalRequirements.add(new SkillRequirement(Skill.PRAYER, 10));
-		generalRequirements.add(new SkillRequirement(Skill.RANGED, 19));
-		generalRequirements.add(new SkillRequirement(Skill.SLAYER, 32));
-		generalRequirements.add(new SkillRequirement(Skill.STRENGTH, 37));
+		generalRequirements.add(new SkillRequirement(Skill.PRAYER, 10, false));
+		generalRequirements.add(new SkillRequirement(Skill.RANGED, 19, true));
+		generalRequirements.add(new SkillRequirement(Skill.SLAYER, 32, true));
+		generalRequirements.add(new SkillRequirement(Skill.STRENGTH, 37, true));
 		generalRequirements.add(new SkillRequirement(Skill.THIEVING, 40, true));
 		generalRequirements.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
 
@@ -498,7 +498,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		allSteps.add(lanternSteps);
 
 		PanelDetails mogreSteps = new PanelDetails("Mogres have layers", Arrays.asList(spawnMogre, killMogre),
-			skippyAndMogres, new SkillRequirement(Skill.SLAYER, 32), combatGear, fishingExplosive);
+			skippyAndMogres, new SkillRequirement(Skill.SLAYER, 32, true), combatGear, fishingExplosive);
 		mogreSteps.setDisplayCondition(notKilledMogre);
 		mogreSteps.setLockingStep(killedMogreTask);
 		allSteps.add(mogreSteps);
@@ -524,15 +524,15 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		allSteps.add(scarecrowSteps);
 
 		PanelDetails grappleSteps = new PanelDetails("To the window.. To the wall!",
-			Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), new SkillRequirement(Skill.AGILITY, 11),
-			new SkillRequirement(Skill.STRENGTH, 37), new SkillRequirement(Skill.RANGED, 19),
+			Arrays.asList(grappleNorthWallStart, grappleNorthWallEnd), new SkillRequirement(Skill.AGILITY, 11, true),
+			new SkillRequirement(Skill.STRENGTH, 37, true), new SkillRequirement(Skill.RANGED, 19, true),
 			mithGrapple, anyCrossbow);
 		grappleSteps.setDisplayCondition(notGrappleNorthWall);
 		grappleSteps.setLockingStep(grappleNorthWallTask);
 		allSteps.add(grappleSteps);
 
 		PanelDetails dwarfShortcutSteps = new PanelDetails("To Middle Earth", Arrays.asList(enterDwarvenMines,
-			dwarfShortcut), new SkillRequirement(Skill.AGILITY, 42));
+			dwarfShortcut), new SkillRequirement(Skill.AGILITY, 42, true));
 		dwarfShortcutSteps.setDisplayCondition(notDwarfShortcut);
 		dwarfShortcutSteps.setLockingStep(dwarfShortcutTask);
 		allSteps.add(dwarfShortcutSteps);
@@ -545,7 +545,7 @@ public class FaladorMedium extends ComplexStateQuestHelper
 		allSteps.add(teleFallySteps);
 
 		PanelDetails pickGuardSteps = new PanelDetails("Cor blimey mate!", Collections.singletonList(pickpocketGuard),
-			new SkillRequirement(Skill.THIEVING, 40));
+			new SkillRequirement(Skill.THIEVING, 40, true));
 		pickGuardSteps.setDisplayCondition(notPickpocketGuard);
 		pickGuardSteps.setLockingStep(pickpocketGuardTask);
 		allSteps.add(pickGuardSteps);

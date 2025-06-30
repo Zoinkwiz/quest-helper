@@ -258,14 +258,14 @@ public class KandarinElite extends ComplexStateQuestHelper
 
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
-		req.add(new SkillRequirement(Skill.COOKING, 80));
-		req.add(new SkillRequirement(Skill.CRAFTING, 85));
-		req.add(new SkillRequirement(Skill.FARMING, 79));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 85));
-		req.add(new SkillRequirement(Skill.FISHING, 76));
-		req.add(new SkillRequirement(Skill.HERBLORE, 86));
-		req.add(new SkillRequirement(Skill.MAGIC, 87));
-		req.add(new SkillRequirement(Skill.SMITHING, 90));
+		req.add(new SkillRequirement(Skill.COOKING, 80, true));
+		req.add(new SkillRequirement(Skill.CRAFTING, 85, true));
+		req.add(new SkillRequirement(Skill.FARMING, 79, true));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 85, true));
+		req.add(new SkillRequirement(Skill.FISHING, 76, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 86, true));
+		req.add(new SkillRequirement(Skill.MAGIC, 87, true));
+		req.add(new SkillRequirement(Skill.SMITHING, 90, true));
 
 		req.add(barbHerb);
 		req.add(barbFire);

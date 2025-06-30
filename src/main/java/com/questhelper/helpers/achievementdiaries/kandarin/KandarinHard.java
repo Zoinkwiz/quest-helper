@@ -322,16 +322,16 @@ public class KandarinHard extends ComplexStateQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 
 		req.add(new SkillRequirement(Skill.AGILITY, 60, true));
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
-		req.add(new SkillRequirement(Skill.DEFENCE, 70));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 50, false));
+		req.add(new SkillRequirement(Skill.DEFENCE, 70, false));
 		req.add(new SkillRequirement(Skill.FIREMAKING, 65, true));
 		req.add(new SkillRequirement(Skill.FISHING, 70, true));
 		req.add(new SkillRequirement(Skill.FLETCHING, 70, true));
-		req.add(new SkillRequirement(Skill.PRAYER, 70));
-		req.add(new SkillRequirement(Skill.MAGIC, 56));
+		req.add(new SkillRequirement(Skill.PRAYER, 70, false));
+		req.add(new SkillRequirement(Skill.MAGIC, 56, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 75, true));
-		req.add(new SkillRequirement(Skill.STRENGTH, 50));
-		req.add(new SkillRequirement(Skill.THIEVING, 53));
+		req.add(new SkillRequirement(Skill.STRENGTH, 50, false));
+		req.add(new SkillRequirement(Skill.THIEVING, 53, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 60, true));
 
 		req.add(taiBwoWannai);
@@ -398,7 +398,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		PanelDetails pietySteps = new PanelDetails("Piety in the Courthouse", Collections.singletonList(pietyCourt),
 			new QuestRequirement(QuestHelperQuest.KINGS_RANSOM, QuestState.FINISHED),
-			knightWaves, new SkillRequirement(Skill.PRAYER, 70), new SkillRequirement(Skill.DEFENCE, 70));
+			knightWaves, new SkillRequirement(Skill.PRAYER, 70, false), new SkillRequirement(Skill.DEFENCE, 70, false));
 		pietySteps.setDisplayCondition(notPietyCourt);
 		pietySteps.setLockingStep(pietyCourtTask);
 		allSteps.add(pietySteps);
@@ -410,7 +410,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		allSteps.add(burnMapleSteps);
 
 		PanelDetails fancyStoneSteps = new PanelDetails("Fancy Stone Decoration", Collections.singletonList(fancyStone),
-			new SkillRequirement(Skill.CONSTRUCTION, 50), coins.quantity(25000));
+			new SkillRequirement(Skill.CONSTRUCTION, 50, false), coins.quantity(25000));
 		fancyStoneSteps.setDisplayCondition(notFancyStone);
 		fancyStoneSteps.setLockingStep(fancyStoneTask);
 		allSteps.add(fancyStoneSteps);
@@ -422,8 +422,8 @@ public class KandarinHard extends ComplexStateQuestHelper
 		allSteps.add(killHoundSteps);
 
 		PanelDetails fishSturgeonSteps = new PanelDetails("Fish a Leaping Sturgeon", Collections.singletonList(catchSturgeon),
-			new SkillRequirement(Skill.FISHING, 70, true), new SkillRequirement(Skill.AGILITY, 45),
-			new SkillRequirement(Skill.STRENGTH, 45), barbFishing, barbRod, feather.quantity(20));
+			new SkillRequirement(Skill.FISHING, 70, true), new SkillRequirement(Skill.AGILITY, 45, true),
+			new SkillRequirement(Skill.STRENGTH, 45, true), barbFishing, barbRod, feather.quantity(20));
 		fishSturgeonSteps.setDisplayCondition(notCatchSturgeon);
 		fishSturgeonSteps.setLockingStep(catchSturgeonTask);
 		allSteps.add(fishSturgeonSteps);

@@ -284,13 +284,13 @@ public class DesertMedium extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 30));
-		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 20));
-		reqs.add(new SkillRequirement(Skill.HERBLORE, 36));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 47));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 22));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 25));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 35));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 30, true));
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 20, false));
+		reqs.add(new SkillRequirement(Skill.HERBLORE, 36, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 47, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 22, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 25, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 35, true));
 
 		reqs.add(theGolem);
 		reqs.add(eaglesPeak);
@@ -330,19 +330,19 @@ public class DesertMedium extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails combatPotionSteps = new PanelDetails("Combat Potion", Arrays.asList(moveToDesert, combatPot),
-			new SkillRequirement(Skill.HERBLORE, 36), harraPot, goatHornDust);
+			new SkillRequirement(Skill.HERBLORE, 36, true), harraPot, goatHornDust);
 		combatPotionSteps.setDisplayCondition(notCombatPot);
 		combatPotionSteps.setLockingStep(combatPotTask);
 		allSteps.add(combatPotionSteps);
 
 		PanelDetails phoenixFeatherSteps = new PanelDetails("Phoenix Feather",
-			Collections.singletonList(phoenixFeather), new SkillRequirement(Skill.THIEVING, 25));
+			Collections.singletonList(phoenixFeather), new SkillRequirement(Skill.THIEVING, 25, true));
 		phoenixFeatherSteps.setDisplayCondition(notPhoenixFeather);
 		phoenixFeatherSteps.setLockingStep(phoenixFeatherTask);
 		allSteps.add(phoenixFeatherSteps);
 
 		PanelDetails orangeSalamanderSteps = new PanelDetails("Orange Salamander",
-			Collections.singletonList(orangeSally), new SkillRequirement(Skill.HUNTER, 47), rope, smallFishingNet);
+			Collections.singletonList(orangeSally), new SkillRequirement(Skill.HUNTER, 47, true), rope, smallFishingNet);
 		orangeSalamanderSteps.setDisplayCondition(notOrangeSally);
 		orangeSalamanderSteps.setLockingStep(orangeSallyTask);
 		allSteps.add(orangeSalamanderSteps);
@@ -354,7 +354,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		allSteps.add(magicCarpetSteps);
 
 		PanelDetails chopTeakAtUzerSteps = new PanelDetails("Chop Teak at Uzer", Collections.singletonList(chopTeak),
-			new SkillRequirement(Skill.WOODCUTTING, 35), axe);
+			new SkillRequirement(Skill.WOODCUTTING, 35, true), axe);
 		chopTeakAtUzerSteps.setDisplayCondition(notChopTeak);
 		chopTeakAtUzerSteps.setLockingStep(chopTeakTask);
 		allSteps.add(chopTeakAtUzerSteps);
@@ -378,7 +378,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		allSteps.add(visitTheGenieSteps);
 
 		PanelDetails agilityPyramidSteps = new PanelDetails("Agility Pyramid", Arrays.asList(moveToPyramid,
-			talkToSimon, agiPyramid), new SkillRequirement(Skill.AGILITY, 30));
+			talkToSimon, agiPyramid), new SkillRequirement(Skill.AGILITY, 30, true));
 		agilityPyramidSteps.setDisplayCondition(notAgiPyramid);
 		agilityPyramidSteps.setLockingStep(agiPyramidTask);
 		allSteps.add(agilityPyramidSteps);
@@ -396,7 +396,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 		allSteps.add(eagleSteps);
 
 		PanelDetails teleportToPollnivneachSteps = new PanelDetails("Pollnivneach House",
-			Collections.singletonList(tpPollnivneach), new SkillRequirement(Skill.CONSTRUCTION, 20), teleToHouse,
+			Collections.singletonList(tpPollnivneach), new SkillRequirement(Skill.CONSTRUCTION, 20, false), teleToHouse,
 			scrollOfRedir);
 		teleportToPollnivneachSteps.setDisplayCondition(notTPPollnivneach);
 		teleportToPollnivneachSteps.setLockingStep(tpPollnivneachTask);

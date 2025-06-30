@@ -289,15 +289,15 @@ public class WildernessElite extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(enterGodwars);
-		reqs.add(new SkillRequirement(Skill.COOKING, 90));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 75));
-		reqs.add(new SkillRequirement(Skill.FISHING, 85));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 96));
-		reqs.add(new SkillRequirement(Skill.MINING, 85));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 83));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 90));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 84));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 75));
+		reqs.add(new SkillRequirement(Skill.COOKING, 90, true));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 75, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 85, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 96, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 85, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 83, true));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 90, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 84, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 
 		reqs.add(desertTreasure);
 
@@ -339,29 +339,29 @@ public class WildernessElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails tpSteps = new PanelDetails("Teleport to Ghorrock", Collections.singletonList(tPGhorrock),
-			new SkillRequirement(Skill.MAGIC, 96), desertTreasure, ancientBook, lawRune.quantity(2),
+			new SkillRequirement(Skill.MAGIC, 96, true), desertTreasure, ancientBook, lawRune.quantity(2),
 			waterRune.quantity(8));
 		tpSteps.setDisplayCondition(notTPGhorrock);
 		tpSteps.setLockingStep(tpGhorrockTask);
 		allSteps.add(tpSteps);
 
 		PanelDetails magicSteps = new PanelDetails("Chop and Burn Magic Logs", Arrays.asList(moveToResource1, magicLogs,
-			burnLogs), new SkillRequirement(Skill.FIREMAKING, 75), new SkillRequirement(Skill.WOODCUTTING, 75),
+			burnLogs), new SkillRequirement(Skill.FIREMAKING, 75, true), new SkillRequirement(Skill.WOODCUTTING, 75, true),
 			coins.quantity(6000), axe, tinderbox);
 		magicSteps.setDisplayCondition(notMagicLogs);
 		magicSteps.setLockingStep(magicLogsTask);
 		allSteps.add(magicSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Rune Scimitar in Resource Area",
-			Arrays.asList(moveToResource2, runiteGolem, smeltBar, runeScim), new SkillRequirement(Skill.MINING, 85),
-			new SkillRequirement(Skill.SMITHING, 90), coins.quantity(6000), combatGear, food, pickaxe,
+			Arrays.asList(moveToResource2, runiteGolem, smeltBar, runeScim), new SkillRequirement(Skill.MINING, 85, true),
+			new SkillRequirement(Skill.SMITHING, 90, true), coins.quantity(6000), combatGear, food, pickaxe,
 			coal.quantity(16), hammer);
 		scimSteps.setDisplayCondition(notRuneScim);
 		scimSteps.setLockingStep(runeScimTask);
 		allSteps.add(scimSteps);
 
 		PanelDetails crabSteps = new PanelDetails("Dark Crab in Resource Area", Arrays.asList(moveToResource3, darkCrab,
-			cookDarkCrab), new SkillRequirement(Skill.COOKING, 90), new SkillRequirement(Skill.FISHING, 85),
+			cookDarkCrab), new SkillRequirement(Skill.COOKING, 90, true), new SkillRequirement(Skill.FISHING, 85, true),
 			coins.quantity(6000), lobsterPot, darkFishingBait);
 		crabSteps.setDisplayCondition(notDarkCrab);
 		crabSteps.setLockingStep(darkCrabTask);

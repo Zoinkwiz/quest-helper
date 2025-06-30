@@ -262,7 +262,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 15));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 15, true));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 21, true));
 		reqs.add(new SkillRequirement(Skill.MINING, 15, true));
 
@@ -312,7 +312,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		allSteps.add(eggsSteps);
 
 		PanelDetails earthWarriorSteps = new PanelDetails("Earth Warrior", Arrays.asList(moveToEdgeEarth, earthWarrior),
-			new SkillRequirement(Skill.AGILITY, 15), combatGear, food);
+			new SkillRequirement(Skill.AGILITY, 15, true), combatGear, food);
 		earthWarriorSteps.setDisplayCondition(notEarthWarrior);
 		earthWarriorSteps.setLockingStep(earthWarriorTask);
 		allSteps.add(earthWarriorSteps);
@@ -324,7 +324,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 
 		/* Starting to go up from Edgeville */
 		PanelDetails ironOreSteps = new PanelDetails("Iron Ore", Collections.singletonList(ironOre),
-			new SkillRequirement(Skill.MINING, 15), pickaxe);
+			new SkillRequirement(Skill.MINING, 15, true), pickaxe);
 		ironOreSteps.setDisplayCondition(notIronOre);
 		ironOreSteps.setLockingStep(ironOreTask);
 		allSteps.add(ironOreSteps);
@@ -342,7 +342,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		allSteps.add(chaosSteps);
 
 		PanelDetails alchSteps = new PanelDetails("Free Low Alchemy", Arrays.asList(moveToFount, lowAlch),
-			new SkillRequirement(Skill.MAGIC, 21), normalBook, alchable);
+			new SkillRequirement(Skill.MAGIC, 21, true), normalBook, alchable);
 		alchSteps.setDisplayCondition(notLowAlch);
 		alchSteps.setLockingStep(lowAlchTask);
 		allSteps.add(alchSteps);

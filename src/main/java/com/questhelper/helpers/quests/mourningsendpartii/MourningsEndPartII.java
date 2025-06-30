@@ -708,13 +708,13 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle2Pillar1.addIcon(ItemID.MOURNING_MIRROR);
 		puzzle2Pillar2 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_7, new WorldPoint(1909, 4650, 1), "Put a mirror in the pillar to the north and point it west.", mirror);
 		puzzle2Pillar2.addIcon(ItemID.MOURNING_MIRROR);
-		puzzle2Pillar3 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_6, new WorldPoint(1898, 4650, 1), "Put a cyan in the pillar to the west.", cyanCrystal);
+		puzzle2Pillar3 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_6, new WorldPoint(1898, 4650, 1), "Put a cyan crystal in the pillar to the west.", cyanCrystal);
 		puzzle2Pillar3.addIcon(ItemID.MOURNING_CRYSTAL_CYAN);
 		puzzle2Pillar4 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_5, new WorldPoint(1887, 4650, 1), "Put a mirror in the pillar to the west and point it north.", mirror);
 		puzzle2Pillar4.addIcon(ItemID.MOURNING_MIRROR);
 		puzzle2Pillar5 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_2, new WorldPoint(1887, 4665, 1), "Put a mirror in the pillar to the north and point it east.", mirror);
 		puzzle2Pillar5.addIcon(ItemID.MOURNING_MIRROR);
-		puzzle2Pillar6 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_3, new WorldPoint(1898, 4665, 1), "Put a yellow in the pillar to the east.", yellowCrystal);
+		puzzle2Pillar6 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_3, new WorldPoint(1898, 4665, 1), "Put a yellow crystal in the pillar to the east.", yellowCrystal);
 		puzzle2Pillar6.addIcon(ItemID.MOURNING_CRYSTAL_YELLOW);
 
 		searchMagentaChest = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_LIGHT_PARTS_3_CLOSED, new WorldPoint(1917, 4665, 1), "Search the chest in the magenta room in the north east corner.");
@@ -728,7 +728,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		puzzle3Pillar1.addIcon(ItemID.MOURNING_MIRROR);
 		puzzle3Pillar2 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_7, new WorldPoint(1909, 4650, 1), "Put a mirror in the pillar to the north and point it west.", mirror);
 		puzzle3Pillar2.addIcon(ItemID.MOURNING_MIRROR);
-		puzzle3Pillar3 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_6, new WorldPoint(1898, 4650, 1), "Put a cyan in the pillar to the west.", cyanCrystal);
+		puzzle3Pillar3 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_6, new WorldPoint(1898, 4650, 1), "Put a cyan crystal in the pillar to the west.", cyanCrystal);
 		puzzle3Pillar3.addIcon(ItemID.MOURNING_CRYSTAL_CYAN);
 		puzzle3Pillar4 = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_2_5, new WorldPoint(1887, 4650, 1), "Put a mirror in the pillar to the west and point it north.", mirror);
 		puzzle3Pillar4.addIcon(ItemID.MOURNING_MIRROR);

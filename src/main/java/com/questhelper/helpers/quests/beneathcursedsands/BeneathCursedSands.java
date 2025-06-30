@@ -523,7 +523,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		takeLilyToZahur = new NpcStep(this, NpcID.ELID_HERBALIST, new WorldPoint(3425, 2909, 0), "Go back to Zahur in Nardah.", lilyOfTheElid);
 		talkToZahur = new NpcStep(this, NpcID.ELID_HERBALIST, new WorldPoint(3425, 2909, 0), "Talk to Zahur in Nardah.");
 
-		warmUpChemistryEquipment = new ObjectStep(this, ObjectID.BCS_CHEMISTY_TABLE, new WorldPoint(3424, 2905, 0), "");
+		warmUpChemistryEquipment = new ObjectStep(this, ObjectID.BCS_CHEMISTY_TABLE, new WorldPoint(3424, 2905, 0), "Warm up the Chemistry Equipment.");
 		chemistryValveDecreaseLeft = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the first valve.", 751, 24);
 		chemistryValveIncreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Increase the temperature of the second valve.", 751, 25);
 		chemistryValveDecreaseMiddle = new WidgetStep(this, "Warm up the Chemistry Equipment. Decrease the temperature of the second valve.", 751, 26);

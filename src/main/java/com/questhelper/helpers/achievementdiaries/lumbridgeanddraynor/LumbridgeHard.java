@@ -338,14 +338,14 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 46));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 46, true));
 		reqs.add(new SkillRequirement(Skill.CRAFTING, 70, true));
-		reqs.add(new SkillRequirement(Skill.FARMING, 63));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 65));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 60));
-		reqs.add(new SkillRequirement(Skill.PRAYER, 52));
+		reqs.add(new SkillRequirement(Skill.FARMING, 63, true));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 65, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 60, true));
+		reqs.add(new SkillRequirement(Skill.PRAYER, 52, false));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 59, true));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 57));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 57, true));
 
 		reqs.add(tearOfGuth);
 		reqs.add(anotherSliceOfHAM);
@@ -387,35 +387,35 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		allSteps.add(belladonnaSteps);
 
 		PanelDetails smiteAltarSteps = new PanelDetails("Smite Altar", Collections.singletonList(smiteAltar),
-			new SkillRequirement(Skill.PRAYER, 52));
+			new SkillRequirement(Skill.PRAYER, 52, false));
 		smiteAltarSteps.setDisplayCondition(notSmiteAltar);
 		smiteAltarSteps.setLockingStep(smiteAltarTask);
 		allSteps.add(smiteAltarSteps);
 
 		PanelDetails peachesPalaceSteps = new PanelDetails("Bones to Peaches Palace",
 			Arrays.asList(unlockBonesToPeaches, moveToPalace, bonesToPeachesPalace),
-			new SkillRequirement(Skill.MAGIC, 60), bonesToPeaches, bones, earthRune.quantity(4),
+			new SkillRequirement(Skill.MAGIC, 60, true), bonesToPeaches, bones, earthRune.quantity(4),
 			waterRune, natureRune);
 		peachesPalaceSteps.setDisplayCondition(notBonesToPeachesPalace);
 		peachesPalaceSteps.setLockingStep(bonesToPeachesPalaceTask);
 		allSteps.add(peachesPalaceSteps);
 
 		PanelDetails wakaToEdgevilleSteps = new PanelDetails("Waka to Edgeville",
-			Collections.singletonList(wakaToEdge), new SkillRequirement(Skill.WOODCUTTING, 57), axe);
+			Collections.singletonList(wakaToEdge), new SkillRequirement(Skill.WOODCUTTING, 57, true), axe);
 		wakaToEdgevilleSteps.setDisplayCondition(notWakaToEdge);
 		wakaToEdgevilleSteps.setLockingStep(wakaToEdgeTask);
 		allSteps.add(wakaToEdgevilleSteps);
 
 		PanelDetails powerAmuletSteps = new PanelDetails("Power Amulet", Arrays.asList(moveToLumby, smeltAmmy,
 			stringAmmy, powerAmmy), new SkillRequirement(Skill.CRAFTING, 70, true),
-			new SkillRequirement(Skill.MAGIC, 57), goldBar, cutDiamond, amuletMould, ballOfWool,
+			new SkillRequirement(Skill.MAGIC, 57, true), goldBar, cutDiamond, amuletMould, ballOfWool,
 			cosmicRune.quantity(1), earthRune.quantity(10));
 		powerAmuletSteps.setDisplayCondition(notPowerAmmy);
 		powerAmuletSteps.setLockingStep(powerAmmyTask);
 		allSteps.add(powerAmuletSteps);
 
 		PanelDetails miningHelmetSteps = new PanelDetails("Mining Helmet", Arrays.asList(moveToBasementForHelm,
-			lightMiningHelm), new SkillRequirement(Skill.FIREMAKING, 65), miningHelm, tinderbox);
+			lightMiningHelm), new SkillRequirement(Skill.FIREMAKING, 65, true), miningHelm, tinderbox);
 		miningHelmetSteps.setDisplayCondition(notLightMiningHelm);
 		miningHelmetSteps.setLockingStep(lightMiningHelmTask);
 		allSteps.add(miningHelmetSteps);
@@ -439,7 +439,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		allSteps.add(dorgeshTrainSteps);
 
 		PanelDetails juttingWallSteps = new PanelDetails("Jutting Wall", Arrays.asList(moveToZanarisForWall, juttingWall),
-			new SkillRequirement(Skill.AGILITY, 46), lostCity, fairyAccess);
+			new SkillRequirement(Skill.AGILITY, 46, true), lostCity, fairyAccess);
 		juttingWallSteps.setDisplayCondition(notJuttingWall);
 		juttingWallSteps.setLockingStep(juttingWallTask);
 		allSteps.add(juttingWallSteps);

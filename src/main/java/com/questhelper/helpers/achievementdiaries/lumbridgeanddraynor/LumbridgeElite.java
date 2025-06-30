@@ -242,8 +242,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
-		reqs.add(new SkillRequirement(Skill.RANGED, 70));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 70, true));
+		reqs.add(new SkillRequirement(Skill.RANGED, 70, true));
 		reqs.add(new ComplexRequirement(LogicType.OR, "76 Runecraft or 57 with Raiments of the Eye set",
 			new SkillRequirement(Skill.RUNECRAFT, 76, true, "76 Runecraft"),
 			new ItemRequirements("57 with Raiments of the Eye set",
@@ -253,9 +253,9 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE)).alsoCheckBank(questBank)
 		));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 88, true));
-		reqs.add(new SkillRequirement(Skill.STRENGTH, 70));
+		reqs.add(new SkillRequirement(Skill.STRENGTH, 70, true));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 78, true));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 75));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 75, true));
 
 		reqs.add(allQuests);
 
@@ -309,21 +309,21 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allSteps.add(richChestSteps);
 
 		PanelDetails movarioSteps = new PanelDetails("Movario", Arrays.asList(moveToUndergroundMovario, moveToDorgMovario,
-			dorgStairsMovario, moveToDorgAgi, movario), new SkillRequirement(Skill.THIEVING, 42),
-			new SkillRequirement(Skill.AGILITY, 70), new SkillRequirement(Skill.RANGED, 70),
-			new SkillRequirement(Skill.STRENGTH, 70), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource);
+			dorgStairsMovario, moveToDorgAgi, movario), new SkillRequirement(Skill.THIEVING, 42, true),
+			new SkillRequirement(Skill.AGILITY, 70, true), new SkillRequirement(Skill.RANGED, 70, true),
+			new SkillRequirement(Skill.STRENGTH, 70, true), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource);
 		movarioSteps.setDisplayCondition(notMovario);
 		movarioSteps.setLockingStep(movarioTask);
 		allSteps.add(movarioSteps);
 
 		PanelDetails waterRunesSteps = new PanelDetails("140 Water Runes", Arrays.asList(moveToWater, waterRunes),
-			new SkillRequirement(Skill.RUNECRAFT, 76), essence.quantity(28), waterAccessOrAbyss);
+			new SkillRequirement(Skill.RUNECRAFT, 76, true), essence.quantity(28), waterAccessOrAbyss);
 		waterRunesSteps.setDisplayCondition(notWaterRunes);
 		waterRunesSteps.setLockingStep(waterRunesTask);
 		allSteps.add(waterRunesSteps);
 
 		PanelDetails chopMagicsSteps = new PanelDetails("Chop Magics", Collections.singletonList(chopMagic),
-			new SkillRequirement(Skill.WOODCUTTING, 75), axe);
+			new SkillRequirement(Skill.WOODCUTTING, 75, true), axe);
 		chopMagicsSteps.setDisplayCondition(notChopMagic);
 		chopMagicsSteps.setLockingStep(chopMagicTask);
 		allSteps.add(chopMagicsSteps);

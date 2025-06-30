@@ -293,11 +293,11 @@ public class KourendEasy extends ComplexStateQuestHelper
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
 
-		req.add(new SkillRequirement(Skill.CONSTRUCTION, 25));
-		req.add(new SkillRequirement(Skill.FISHING, 20));
-		req.add(new SkillRequirement(Skill.HERBLORE, 12));
-		req.add(new SkillRequirement(Skill.MINING, 15));
-		req.add(new SkillRequirement(Skill.THIEVING, 25));
+		req.add(new SkillRequirement(Skill.CONSTRUCTION, 25, false));
+		req.add(new SkillRequirement(Skill.FISHING, 20, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 12, true));
+		req.add(new SkillRequirement(Skill.MINING, 15, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 25, true));
 
 		req.add(druidicRitual);
 
@@ -335,13 +335,13 @@ public class KourendEasy extends ComplexStateQuestHelper
 		allSteps.add(mineIronStep);
 
 		PanelDetails fishTroutStep = new PanelDetails("Fish A Trout", Collections.singletonList(fishTrout),
-			new SkillRequirement(Skill.FISHING, 20), flyFishingRod, feathers);
+			new SkillRequirement(Skill.FISHING, 20, true), flyFishingRod, feathers);
 		fishTroutStep.setDisplayCondition(notFishTrout);
 		fishTroutStep.setLockingStep(fishTroutTask);
 		allSteps.add(fishTroutStep);
 
 		PanelDetails makePotionStep = new PanelDetails("Make A Strength Potion", Arrays.asList(enterPub,
-			strengthPotion), new SkillRequirement(Skill.HERBLORE, 12), druidicRitual, tarrominPotU, limpwurtRoot);
+			strengthPotion), new SkillRequirement(Skill.HERBLORE, 12, true), druidicRitual, tarrominPotU, limpwurtRoot);
 		makePotionStep.setDisplayCondition(notStrengthPotion);
 		makePotionStep.setLockingStep(strengthPotionTask);
 		allSteps.add(makePotionStep);
@@ -382,7 +382,7 @@ public class KourendEasy extends ComplexStateQuestHelper
 		allSteps.add(killCrabStep);
 
 		PanelDetails enterPohStep = new PanelDetails("Hosidius House", Arrays.asList(relocateHouse,
-			enterPoh), new SkillRequirement(Skill.CONSTRUCTION, 25), coins.quantity(8750));
+			enterPoh), new SkillRequirement(Skill.CONSTRUCTION, 25, false), coins.quantity(8750));
 		enterPohStep.setDisplayCondition(notEnterPoh);
 		enterPohStep.setLockingStep(enterPohTask);
 		allSteps.add(enterPohStep);

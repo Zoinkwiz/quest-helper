@@ -356,12 +356,12 @@ public class KourendMedium extends ComplexStateQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 
 		req.add(new SkillRequirement(Skill.AGILITY, 49, true));
-		req.add(new SkillRequirement(Skill.CRAFTING, 30));
-		req.add(new SkillRequirement(Skill.FARMING, 45));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 50));
-		req.add(new SkillRequirement(Skill.FISHING, 43));
+		req.add(new SkillRequirement(Skill.CRAFTING, 30, true));
+		req.add(new SkillRequirement(Skill.FARMING, 45, true));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 50, false));
+		req.add(new SkillRequirement(Skill.FISHING, 43, false));
 		req.add(new SkillRequirement(Skill.HUNTER, 53, true));
-		req.add(new SkillRequirement(Skill.MINING, 42));
+		req.add(new SkillRequirement(Skill.MINING, 42, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
 
 		req.add(fairytaleII);
@@ -405,26 +405,26 @@ public class KourendMedium extends ComplexStateQuestHelper
 		allSteps.add(fairyRingStep);
 
 		PanelDetails chopMahoganyStep = new PanelDetails("Chop Mahogany Tree",
-			Collections.singletonList(chopMahoganyTree), new SkillRequirement(Skill.WOODCUTTING, 50), axe);
+			Collections.singletonList(chopMahoganyTree), new SkillRequirement(Skill.WOODCUTTING, 50, true), axe);
 		chopMahoganyStep.setDisplayCondition(notChopMahoganyTree);
 		chopMahoganyStep.setLockingStep(chopMahoganyTreeTask);
 		allSteps.add(chopMahoganyStep);
 
 		PanelDetails enterFarmingGuildStep = new PanelDetails("Enter The Farming Guild",
-			Collections.singletonList(enterFarmingGuild), new SkillRequirement(Skill.FARMING, 45));
+			Collections.singletonList(enterFarmingGuild), new SkillRequirement(Skill.FARMING, 45, true));
 		enterFarmingGuildStep.setDisplayCondition(notEnterFarmingGuild);
 		enterFarmingGuildStep.setLockingStep(enterFarmingGuildTask);
 		allSteps.add(enterFarmingGuildStep);
 
 		PanelDetails catchBluegillStep = new PanelDetails("Catch A Bluegill", Arrays.asList(travelToMolchIsland,
-			pickupWorms, talkToAlry, catchBluegill), new SkillRequirement(Skill.FISHING, 43),
-			new SkillRequirement(Skill.HUNTER, 35), kingWorm);
+			pickupWorms, talkToAlry, catchBluegill), new SkillRequirement(Skill.FISHING, 43, false),
+			new SkillRequirement(Skill.HUNTER, 35, false), kingWorm);
 		catchBluegillStep.setDisplayCondition(notCatchBluegill);
 		catchBluegillStep.setLockingStep(catchBluegillTask);
 		allSteps.add(catchBluegillStep);
 
 		PanelDetails mineSulphurStep = new PanelDetails("Mine volcanic sulphur", Collections.singletonList(mineSulphur),
-			new SkillRequirement(Skill.MINING, 42), pickaxe, faceMask);
+			new SkillRequirement(Skill.MINING, 42, true), pickaxe, faceMask);
 		mineSulphurStep.setDisplayCondition(notMineSulphur);
 		mineSulphurStep.setLockingStep(mineSulphurTask);
 		allSteps.add(mineSulphurStep);
@@ -436,13 +436,13 @@ public class KourendMedium extends ComplexStateQuestHelper
 		allSteps.add(killLizardmanStep);
 
 		PanelDetails catchChinStep = new PanelDetails("Catch A Chinchompa", Collections.singletonList(catchChinchompa),
-			new SkillRequirement(Skill.HUNTER, 53), boxTrap, eaglesPeak);
+			new SkillRequirement(Skill.HUNTER, 53, true), boxTrap, eaglesPeak);
 		catchChinStep.setDisplayCondition(notCatchChinchompa);
 		catchChinStep.setLockingStep(catchChinchompaTask);
 		allSteps.add(catchChinStep);
 
 		PanelDetails repairCraneStep = new PanelDetails("Repair Crane", Collections.singletonList(repairCrane),
-			new SkillRequirement(Skill.CRAFTING, 30), hammer, nails, planks);
+			new SkillRequirement(Skill.CRAFTING, 30, true), hammer, nails, planks);
 		repairCraneStep.setDisplayCondition(notRepairCrane);
 		repairCraneStep.setLockingStep(repairCraneTask);
 		allSteps.add(repairCraneStep);
@@ -453,13 +453,13 @@ public class KourendMedium extends ComplexStateQuestHelper
 		allSteps.add(switchSpellbookStep);
 
 		PanelDetails leapBoulderStep = new PanelDetails("Leap the boulder", Collections.singletonList(useBoulderShortcut),
-			new SkillRequirement(Skill.AGILITY, 49));
+			new SkillRequirement(Skill.AGILITY, 49, true));
 		leapBoulderStep.setDisplayCondition(notUseBoulderShortcut);
 		leapBoulderStep.setLockingStep(useBoulderShortcutTask);
 		allSteps.add(leapBoulderStep);
 
 		PanelDetails subdueWintertodtStep = new PanelDetails("Subdue the Wintertodt",
-			Collections.singletonList(subdueWintertodt), new SkillRequirement(Skill.FIREMAKING, 50), axe,
+			Collections.singletonList(subdueWintertodt), new SkillRequirement(Skill.FIREMAKING, 50, false), axe,
 			tinderbox, food, warmClothing, knife, hammer);
 		subdueWintertodtStep.setDisplayCondition(notSubdueWintertodt);
 		subdueWintertodtStep.setLockingStep(subdueWintertodtTask);

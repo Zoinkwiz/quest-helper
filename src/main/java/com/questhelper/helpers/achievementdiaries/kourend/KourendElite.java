@@ -347,12 +347,12 @@ public class KourendElite extends ComplexStateQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 
 		req.add(new SkillRequirement(Skill.COOKING, 84, true));
-		req.add(new SkillRequirement(Skill.CRAFTING, 38));
-		req.add(new SkillRequirement(Skill.FARMING, 85));
+		req.add(new SkillRequirement(Skill.CRAFTING, 38, true));
+		req.add(new SkillRequirement(Skill.FARMING, 85, true));
 		req.add(new SkillRequirement(Skill.FISHING, 82, true));
-		req.add(new SkillRequirement(Skill.FLETCHING, 40));
+		req.add(new SkillRequirement(Skill.FLETCHING, 40, true));
 		req.add(new SkillRequirement(Skill.MAGIC, 90, true));
-		req.add(new SkillRequirement(Skill.MINING, 38));
+		req.add(new SkillRequirement(Skill.MINING, 38, true));
 		req.add(new SkillRequirement(Skill.RUNECRAFT, 77, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 95, true));
 		req.add(new SkillRequirement(Skill.WOODCUTTING, 90, true));
@@ -389,16 +389,16 @@ public class KourendElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails battlestaffStep = new PanelDetails("Battlestaff From Scratch", Arrays.asList(plantCelastrusTree,
-			fletchBattlestaff), new SkillRequirement(Skill.FARMING, 85),
-			new SkillRequirement(Skill.FLETCHING, 40), spade, celastrusSapling, knife, axe);
+			fletchBattlestaff), new SkillRequirement(Skill.FARMING, 85, true),
+			new SkillRequirement(Skill.FLETCHING, 40, true), spade, celastrusSapling, knife, axe);
 		battlestaffStep.setDisplayCondition(notFletchBattlestaff);
 		battlestaffStep.setLockingStep(fletchBattlestaffTask);
 		allSteps.add(battlestaffStep);
 
 		PanelDetails craftBloodRuneStep = new PanelDetails("Craft Blood Rune",
 			Arrays.asList(bloodMineDenseEssence, bloodVenerateEssenceBlock, chiselEssenceBlock, craftBloodRune),
-			new SkillRequirement(Skill.RUNECRAFT, 77, true), new SkillRequirement(Skill.MINING, 38),
-			new SkillRequirement(Skill.CRAFTING, 38), chisel, pickaxe);
+			new SkillRequirement(Skill.RUNECRAFT, 77, true), new SkillRequirement(Skill.MINING, 38, true),
+			new SkillRequirement(Skill.CRAFTING, 38, true), chisel, pickaxe);
 		craftBloodRuneStep.setDisplayCondition(notCraftBloodRune);
 		craftBloodRuneStep.setLockingStep(craftBloodRuneTask);
 		allSteps.add(craftBloodRuneStep);

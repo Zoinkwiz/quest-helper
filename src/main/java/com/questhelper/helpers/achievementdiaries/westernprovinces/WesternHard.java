@@ -336,18 +336,18 @@ public class WesternHard extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(100));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 48));
-		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 65));
-		reqs.add(new SkillRequirement(Skill.COOKING, 62));
-		reqs.add(new SkillRequirement(Skill.FARMING, 68));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50));
-		reqs.add(new SkillRequirement(Skill.FISHING, 62));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 69));
-		reqs.add(new SkillRequirement(Skill.RANGED, 70));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 64));
-		reqs.add(new SkillRequirement(Skill.MINING, 70));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 75));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 48, true));
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 65, true));
+		reqs.add(new SkillRequirement(Skill.COOKING, 62, true));
+		reqs.add(new SkillRequirement(Skill.FARMING, 68, true));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 62, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 69, true));
+		reqs.add(new SkillRequirement(Skill.RANGED, 70, false));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 64, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 70, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 75, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
 
 		reqs.add(mourningsEndPartI);
 		reqs.add(awowogeiRFD);
@@ -391,45 +391,45 @@ public class WesternHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails palmSteps = new PanelDetails("Lletya Palm tree", Collections.singletonList(lletyaPalm),
-			new SkillRequirement(Skill.FARMING, 68), mourningsEndPartI, palmSapling, rake, spade);
+			new SkillRequirement(Skill.FARMING, 68, true), mourningsEndPartI, palmSapling, rake, spade);
 		palmSteps.setDisplayCondition(notLletyaPalm);
 		palmSteps.setLockingStep(lletyaPalmTask);
 		allSteps.add(palmSteps);
 
 		PanelDetails fishSteps = new PanelDetails("Catch And Cook Monkfish", Arrays.asList(fishMonkfish, monkfishPisc),
-			new SkillRequirement(Skill.COOKING, 62), new SkillRequirement(Skill.FISHING, 62),
+			new SkillRequirement(Skill.COOKING, 62, true), new SkillRequirement(Skill.FISHING, 62, true),
 			swanSong, smallFishingNet);
 		fishSteps.setDisplayCondition(notMonkfishPisc);
 		fishSteps.setLockingStep(monkfishPiscTask);
 		allSteps.add(fishSteps);
 
 		PanelDetails kebbitSteps = new PanelDetails("Dashing Kebbit", Arrays.asList(getBird, dashingKebbit),
-			new SkillRequirement(Skill.HUNTER, 69), coins);
+			new SkillRequirement(Skill.HUNTER, 69, true), coins);
 		kebbitSteps.setDisplayCondition(notDashingKebbit);
 		kebbitSteps.setLockingStep(dashingKebbitTask);
 		allSteps.add(kebbitSteps);
 
 		PanelDetails gnomeSteps = new PanelDetails("Pickpocket A Gnome", Collections.singletonList(pickpocketGnome),
-			new SkillRequirement(Skill.THIEVING, 75), treeGnomeVillage);
+			new SkillRequirement(Skill.THIEVING, 75, true), treeGnomeVillage);
 		gnomeSteps.setDisplayCondition(notPickpocketGnome);
 		gnomeSteps.setLockingStep(pickpocketGnomeTask);
 		allSteps.add(gnomeSteps);
 
 		PanelDetails tpSteps = new PanelDetails("Teleport To Ape Atoll", Collections.singletonList(tpApe),
-			new SkillRequirement(Skill.MAGIC, 64), awowogeiRFD, normalBook, lawRunes2, fireRunes2, waterRunes2, banana);
+			new SkillRequirement(Skill.MAGIC, 64, true), awowogeiRFD, normalBook, lawRunes2, fireRunes2, waterRunes2, banana);
 		tpSteps.setDisplayCondition(notTPApe);
 		tpSteps.setLockingStep(tpApeTask);
 		allSteps.add(tpSteps);
 
 		PanelDetails mahoSteps = new PanelDetails("Mahogany On Ape Atoll", Arrays.asList(moveToApeMahogany,
-			mahoganyChopped, mahoganyBurned), new SkillRequirement(Skill.FIREMAKING, 50),
-			new SkillRequirement(Skill.WOODCUTTING, 50), monkeyMadnessI, axe, tinderbox);
+			mahoganyChopped, mahoganyBurned), new SkillRequirement(Skill.FIREMAKING, 50, true),
+			new SkillRequirement(Skill.WOODCUTTING, 50, true), monkeyMadnessI, axe, tinderbox);
 		mahoSteps.setDisplayCondition(notMahoganyBurned);
 		mahoSteps.setLockingStep(mahoganyBurnedTask);
 		allSteps.add(mahoSteps);
 
 		PanelDetails agiSteps = new PanelDetails("Ape Atoll Agility Course", Arrays.asList(moveToApeAgi, apeAtollAgi),
-			new SkillRequirement(Skill.AGILITY, 48), monkeyMadnessI, ninjaGreegree);
+			new SkillRequirement(Skill.AGILITY, 48, true), monkeyMadnessI, ninjaGreegree);
 		agiSteps.setDisplayCondition(notApeAtollAgi);
 		agiSteps.setLockingStep(apeAtollAgiTask);
 		allSteps.add(agiSteps);
@@ -441,7 +441,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		allSteps.add(zulSteps);
 
 		PanelDetails addySteps = new PanelDetails("Mine Adamantite in Tirannwn", Collections.singletonList(mineAddyOre),
-			new SkillRequirement(Skill.MINING, 70), regicide, pickaxe);
+			new SkillRequirement(Skill.MINING, 70, true), regicide, pickaxe);
 		addySteps.setDisplayCondition(notMineAddyOre);
 		addySteps.setLockingStep(mineAddyOreTask);
 		allSteps.add(addySteps);
@@ -458,13 +458,13 @@ public class WesternHard extends ComplexStateQuestHelper
 		allSteps.add(pestSteps);
 
 		PanelDetails isaSteps = new PanelDetails("Isafdar Painting In POH", Collections.singletonList(isafdarPainting),
-			new SkillRequirement(Skill.CONSTRUCTION, 65), rovingElves, mahoganyPlank, painting, saw, hammer);
+			new SkillRequirement(Skill.CONSTRUCTION, 65, true), rovingElves, mahoganyPlank, painting, saw, hammer);
 		isaSteps.setDisplayCondition(notIsafdarPainting);
 		isaSteps.setLockingStep(isafdarPaintingTask);
 		allSteps.add(isaSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
-			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
+			new SkillRequirement(Skill.RANGED, 30, false), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
 		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);

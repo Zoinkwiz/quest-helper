@@ -247,9 +247,9 @@ public class WesternEasy extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(40));
-		reqs.add(new SkillRequirement(Skill.FLETCHING, 20));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 9));
-		reqs.add(new SkillRequirement(Skill.MINING, 15));
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 20, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 9, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 15, true));
 
 		reqs.add(bigChompy);
 		reqs.add(runeMysteries);
@@ -292,7 +292,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 		allSteps.add(agiSteps);
 
 		PanelDetails shortbowSteps = new PanelDetails("Fletch Oak Shortbow in Gnome Stronghold",
-			Arrays.asList(moveToStronghold, oakShortbow), new SkillRequirement(Skill.FLETCHING, 20),
+			Arrays.asList(moveToStronghold, oakShortbow), new SkillRequirement(Skill.FLETCHING, 20, true),
 			oakShortU, bowString);
 		shortbowSteps.setDisplayCondition(notOakShortbow);
 		shortbowSteps.setLockingStep(oakShortbowTask);
@@ -321,13 +321,13 @@ public class WesternEasy extends ComplexStateQuestHelper
 		allSteps.add(toadSteps);
 
 		PanelDetails copperSteps = new PanelDetails("Copper Longtail", Collections.singletonList(copperLongtail),
-			new SkillRequirement(Skill.HUNTER, 9), birdSnare);
+			new SkillRequirement(Skill.HUNTER, 9, true), birdSnare);
 		copperSteps.setDisplayCondition(notCopperLongtail);
 		copperSteps.setLockingStep(copperLongtailTask);
 		allSteps.add(copperSteps);
 
 		PanelDetails ironSteps = new PanelDetails("Mine Iron", Collections.singletonList(mineIron),
-			new SkillRequirement(Skill.MINING, 15), pickaxe);
+			new SkillRequirement(Skill.MINING, 15, true), pickaxe);
 		ironSteps.setDisplayCondition(notMineIron);
 		ironSteps.setLockingStep(mineIronTask);
 		allSteps.add(ironSteps);
@@ -345,7 +345,7 @@ public class WesternEasy extends ComplexStateQuestHelper
 		allSteps.add(pestSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
-			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
+			new SkillRequirement(Skill.RANGED, 30, false), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
 		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);

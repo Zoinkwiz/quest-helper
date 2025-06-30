@@ -338,13 +338,13 @@ public class WesternMedium extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(70));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 37));
-		reqs.add(new SkillRequirement(Skill.COOKING, 42));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 35));
-		reqs.add(new SkillRequirement(Skill.FISHING, 46));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 31));
-		reqs.add(new SkillRequirement(Skill.MINING, 40));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 35));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 37, true));
+		reqs.add(new SkillRequirement(Skill.COOKING, 42, true));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 35, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 46, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 31, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 40, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 35, true));
 
 		reqs.add(bigChompy);
 		reqs.add(eaglesPeak);
@@ -386,20 +386,20 @@ public class WesternMedium extends ComplexStateQuestHelper
 		allSteps.add(spiritSteps);
 
 		PanelDetails chocoSteps = new PanelDetails("Chocolate Bomb", Arrays.asList(moveToStrongFirstChoco,
-			chocolateBomb), new SkillRequirement(Skill.COOKING, 42), gnomebowl, gianneDough, chocolateBar, equaLeaf,
+			chocolateBomb), new SkillRequirement(Skill.COOKING, 42, true), gnomebowl, gianneDough, chocolateBar, equaLeaf,
 			potOfCream, chocolateDust);
 		chocoSteps.setDisplayCondition(notChocolateBomb);
 		chocoSteps.setLockingStep(chocolateBombTask);
 		allSteps.add(chocoSteps);
 
 		PanelDetails restSteps = new PanelDetails("Gnome Restaurant Delivery",
-			Arrays.asList(moveToStrongFirstDelivery, gnomeDelivery), new SkillRequirement(Skill.COOKING, 42));
+			Arrays.asList(moveToStrongFirstDelivery, gnomeDelivery), new SkillRequirement(Skill.COOKING, 42, true));
 		restSteps.setDisplayCondition(notGnomeDelivery);
 		restSteps.setLockingStep(gnomeDeliveryTask);
 		allSteps.add(restSteps);
 
 		PanelDetails goldSteps = new PanelDetails("Gold Under The Grand Tree",
-			Arrays.asList(moveToStrongBase, mineGold), new SkillRequirement(Skill.MINING, 40), pickaxe);
+			Arrays.asList(moveToStrongBase, mineGold), new SkillRequirement(Skill.MINING, 40, true), pickaxe);
 		goldSteps.setDisplayCondition(notMineGold);
 		goldSteps.setLockingStep(mineGoldTask);
 		allSteps.add(goldSteps);
@@ -411,7 +411,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		allSteps.add(sawSteps);
 
 		PanelDetails agiSteps = new PanelDetails("Agility Shortcut To Otto", Collections.singletonList(agiShortcut),
-			new SkillRequirement(Skill.AGILITY, 37), treeGnomeVillage, grandTree);
+			new SkillRequirement(Skill.AGILITY, 37, true), treeGnomeVillage, grandTree);
 		agiSteps.setDisplayCondition(notAgiShortcut);
 		agiSteps.setLockingStep(agiShortcutTask);
 		allSteps.add(agiSteps);
@@ -422,7 +422,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		allSteps.add(eagleSteps);
 
 		PanelDetails laruSteps = new PanelDetails("Spined Larupia", Collections.singletonList(spinedLarupia),
-			new SkillRequirement(Skill.HUNTER, 31), teasingStick, knife, logs);
+			new SkillRequirement(Skill.HUNTER, 31, true), teasingStick, knife, logs);
 		laruSteps.setDisplayCondition(notSpinedLarupia);
 		laruSteps.setLockingStep(spinedLarupiaTask);
 		allSteps.add(laruSteps);
@@ -434,13 +434,13 @@ public class WesternMedium extends ComplexStateQuestHelper
 		allSteps.add(gliderSteps);
 
 		PanelDetails bassSteps = new PanelDetails("Bass On Ape Atoll", Arrays.asList(moveToApeBass, apeBass),
-			new SkillRequirement(Skill.FISHING, 46), monkeyMadnessI, bigFishingNet);
+			new SkillRequirement(Skill.FISHING, 46, true), monkeyMadnessI, bigFishingNet);
 		bassSteps.setDisplayCondition(notApeBass);
 		bassSteps.setLockingStep(apeBassTask);
 		allSteps.add(bassSteps);
 
 		PanelDetails teakSteps = new PanelDetails("Teaks On Ape Atoll", Arrays.asList(moveToApeTeak, apeTeakChop,
-			apeTeakBurn), new SkillRequirement(Skill.FIREMAKING, 35), new SkillRequirement(Skill.WOODCUTTING, 35),
+			apeTeakBurn), new SkillRequirement(Skill.FIREMAKING, 35, true), new SkillRequirement(Skill.WOODCUTTING, 35, true),
 			monkeyMadnessI, axe, tinderbox);
 		teakSteps.setDisplayCondition(notApeTeak);
 		teakSteps.setLockingStep(apeTeakTask);
@@ -453,7 +453,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		allSteps.add(pestSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
-			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
+			new SkillRequirement(Skill.RANGED, 30, false), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
 		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);

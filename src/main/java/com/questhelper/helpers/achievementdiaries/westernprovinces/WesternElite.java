@@ -127,10 +127,10 @@ public class WesternElite extends ComplexStateQuestHelper
 		notPickpocketElf = new VarplayerRequirement(VarPlayerID.WESTERN_ACHIEVEMENT_DIARY2, false, 14);
 
 		base42CombatSkills = new ComplexRequirement(LogicType.AND, "Base 42s in all combat skills and 22 prayer",
-			new SkillRequirement(Skill.ATTACK, 42), new SkillRequirement(Skill.STRENGTH, 42),
-			new SkillRequirement(Skill.DEFENCE, 42), new SkillRequirement(Skill.HITPOINTS, 42),
-			new SkillRequirement(Skill.RANGED, 42), new SkillRequirement(Skill.MAGIC, 42),
-			new SkillRequirement(Skill.PRAYER, 22));
+			new SkillRequirement(Skill.ATTACK, 42, false), new SkillRequirement(Skill.STRENGTH, 42, false),
+			new SkillRequirement(Skill.DEFENCE, 42, false), new SkillRequirement(Skill.HITPOINTS, 42, false),
+			new SkillRequirement(Skill.RANGED, 42, false), new SkillRequirement(Skill.MAGIC, 42, false),
+			new SkillRequirement(Skill.PRAYER, 22, false));
 
 		magicLongU = new ItemRequirement("Magic longbow (u)", ItemID.UNSTRUNG_MAGIC_LONGBOW).showConditioned(notMagicLong);
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notMagicLong);
@@ -275,20 +275,20 @@ public class WesternElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails prissySteps = new PanelDetails("Prissy Scilla's Protection",
-			Collections.singletonList(prissyScilla), new SkillRequirement(Skill.FARMING, 75), magicSapling,
+			Collections.singletonList(prissyScilla), new SkillRequirement(Skill.FARMING, 75, true), magicSapling,
 			coconuts25, rake, spade);
 		prissySteps.setDisplayCondition(notPrissyScilla);
 		prissySteps.setLockingStep(prissyScillaTask);
 		allSteps.add(prissySteps);
 
 		PanelDetails agiSteps = new PanelDetails("Advanced Elven Shortcut", Collections.singletonList(advancedAgi),
-			undergroundPass, new SkillRequirement(Skill.AGILITY, 85));
+			undergroundPass, new SkillRequirement(Skill.AGILITY, 85, true));
 		agiSteps.setDisplayCondition(notAdvancedAgi);
 		agiSteps.setLockingStep(advancedAgiTask);
 		allSteps.add(agiSteps);
 
 		PanelDetails magicSteps = new PanelDetails("Magic Longbow In Tirannwn", Arrays.asList(moveToTirannwn,
-			magicLong), new SkillRequirement(Skill.FLETCHING, 85), regicide, magicLongU, bowString);
+			magicLong), new SkillRequirement(Skill.FLETCHING, 85, true), regicide, magicLongU, bowString);
 		magicSteps.setDisplayCondition(notMagicLong);
 		magicSteps.setLockingStep(magicLongTask);
 		allSteps.add(magicSteps);
@@ -301,7 +301,7 @@ public class WesternElite extends ComplexStateQuestHelper
 		allSteps.add(thermySteps);
 
 		PanelDetails elfSteps = new PanelDetails("Pickpocket An Elf", Collections.singletonList(pickpocketElf),
-			new SkillRequirement(Skill.THIEVING, 85), mourningsEndPartI);
+			new SkillRequirement(Skill.THIEVING, 85, true), mourningsEndPartI);
 		elfSteps.setDisplayCondition(notPickpocketElf);
 		elfSteps.setLockingStep(pickpocketElfTask);
 		allSteps.add(elfSteps);
@@ -313,7 +313,7 @@ public class WesternElite extends ComplexStateQuestHelper
 		allSteps.add(voidSteps);
 
 		PanelDetails hatSteps = new PanelDetails("Chompy Bird Hat", Collections.singletonList(chompyHat),
-			new SkillRequirement(Skill.RANGED, 30), bigChompy, ogreBellows, ogreBow, ogreArrows);
+			new SkillRequirement(Skill.RANGED, 30, false), bigChompy, ogreBellows, ogreBow, ogreArrows);
 		hatSteps.setDisplayCondition(notChompyHat);
 		hatSteps.setLockingStep(chompyHatTask);
 		allSteps.add(hatSteps);

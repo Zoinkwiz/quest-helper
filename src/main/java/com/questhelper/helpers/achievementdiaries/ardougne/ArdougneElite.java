@@ -305,11 +305,11 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.AGILITY, 90, true));
 		reqs.add(new SkillRequirement(Skill.COOKING, 91, true));
-		reqs.add(new SkillRequirement(Skill.CRAFTING, 10));
-		reqs.add(new SkillRequirement(Skill.FARMING, 85));
-		reqs.add(new SkillRequirement(Skill.FISHING, 81));
-		reqs.add(new SkillRequirement(Skill.FLETCHING, 69));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 94));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 10, true));
+		reqs.add(new SkillRequirement(Skill.FARMING, 85, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 81, false));
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 69, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 94, true));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 91, true));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 82, true));
 
@@ -355,13 +355,13 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails torstolSteps = new PanelDetails("Ardougne Torstol", Collections.singletonList(pickTorstol),
-			new SkillRequirement(Skill.FARMING, 85), torstolSeed, compost, rake, seedDib, spade);
+			new SkillRequirement(Skill.FARMING, 85, true), torstolSeed, compost, rake, seedDib, spade);
 		torstolSteps.setDisplayCondition(notPickTorstol);
 		torstolSteps.setLockingStep(pickTorstolTask);
 		allSteps.add(torstolSteps);
 
 		PanelDetails iceSteps = new PanelDetails("Ice Barrage in Castle Wars", Collections.singletonList(iceBarrage),
-			new SkillRequirement(Skill.MAGIC, 94), desertTreasure, ancientBook, waterRune.quantity(6),
+			new SkillRequirement(Skill.MAGIC, 94, true), desertTreasure, ancientBook, waterRune.quantity(6),
 			bloodRune.quantity(2), deathRune.quantity(4));
 		iceSteps.setDisplayCondition(notIceBarrage);
 		iceSteps.setLockingStep(iceBarrageTask);
@@ -380,7 +380,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		allSteps.add(salveSteps);
 
 		PanelDetails raySteps = new PanelDetails("Fishing Trawler Manta Ray", Collections.singletonList(trawlerRay),
-			new SkillRequirement(Skill.COOKING, 91, true), new SkillRequirement(Skill.FISHING, 81));
+			new SkillRequirement(Skill.COOKING, 91, true), new SkillRequirement(Skill.FISHING, 81, false));
 		raySteps.setDisplayCondition(notTrawlerRay);
 		raySteps.setLockingStep(trawlerRayTask);
 		allSteps.add(raySteps);
@@ -392,14 +392,14 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		allSteps.add(roofSteps);
 
 		PanelDetails heroSteps = new PanelDetails("Pickpocket Hero", Collections.singletonList(pickHero),
-			new SkillRequirement(Skill.THIEVING, 80));
+			new SkillRequirement(Skill.THIEVING, 80, true));
 		heroSteps.setDisplayCondition(notPickHero);
 		heroSteps.setLockingStep(pickHeroTask);
 		allSteps.add(heroSteps);
 
 		PanelDetails crossSteps = new PanelDetails("Rune Crossbow in Yanille / Witchaven", Arrays.asList(spinString,
-			smithLimbs, fletchStock, makeUnstrungCross, runeCrossbow), new SkillRequirement(Skill.CRAFTING, 10),
-			new SkillRequirement(Skill.SMITHING, 91, true), new SkillRequirement(Skill.FLETCHING, 69),
+			smithLimbs, fletchStock, makeUnstrungCross, runeCrossbow), new SkillRequirement(Skill.CRAFTING, 10, true),
+			new SkillRequirement(Skill.SMITHING, 91, true), new SkillRequirement(Skill.FLETCHING, 69, true),
 			yewLog, runeBar, hammer, knife, sinewOrRoot);
 		crossSteps.setDisplayCondition(notRuneCrossbow);
 		crossSteps.setLockingStep(runeCrossbowTask);

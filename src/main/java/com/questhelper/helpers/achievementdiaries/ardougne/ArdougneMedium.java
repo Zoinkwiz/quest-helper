@@ -326,13 +326,13 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 39));
-		reqs.add(new SkillRequirement(Skill.FARMING, 31));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 51));
-		reqs.add(new SkillRequirement(Skill.STRENGTH, 38));
-		reqs.add(new SkillRequirement(Skill.RANGED, 21));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 38));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 39, true));
+		reqs.add(new SkillRequirement(Skill.FARMING, 31, true));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 51, true));
+		reqs.add(new SkillRequirement(Skill.STRENGTH, 38, true));
+		reqs.add(new SkillRequirement(Skill.RANGED, 21, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 38, true));
 
 		reqs.add(fairyTaleII);
 		reqs.add(enlightenedJourney);
@@ -379,19 +379,19 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails strawSteps = new PanelDetails("Ardougne Strawberries", Collections.singletonList(ardyStraw),
-			new SkillRequirement(Skill.FARMING, 31), rake, strawSeeds.quantity(3), seedDib, spade);
+			new SkillRequirement(Skill.FARMING, 31, true), rake, strawSeeds.quantity(3), seedDib, spade);
 		strawSteps.setDisplayCondition(notArdyStraw);
 		strawSteps.setLockingStep(ardyStrawTask);
 		allSteps.add(strawSteps);
 
 		PanelDetails cwSteps = new PanelDetails("Castle Wars Balloon", Arrays.asList(moveToEntrana, talkToAug,
-			balloonCW), new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog11);
+			balloonCW), new SkillRequirement(Skill.FIREMAKING, 50, true), enlightenedJourney, yewLog11);
 		cwSteps.setDisplayCondition(new Conditions(notBalloonCW, notCWBallon2));
 		cwSteps.setLockingStep(balloonCWTask);
 		allSteps.add(cwSteps);
 
 		PanelDetails cw2Steps = new PanelDetails("Castle Wars Balloon", Collections.singletonList(balloonCW),
-			new SkillRequirement(Skill.FIREMAKING, 50), enlightenedJourney, yewLog1);
+			new SkillRequirement(Skill.FIREMAKING, 50, true), enlightenedJourney, yewLog1);
 		cw2Steps.setDisplayCondition(new Conditions(notBalloonCW, notCWBallon));
 		cw2Steps.setLockingStep(balloonCWTask);
 		allSteps.add(cw2Steps);
@@ -403,8 +403,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		allSteps.add(nightSteps);
 
 		PanelDetails grapSteps = new PanelDetails("Yanille Wall Grapple", Arrays.asList(grapYan, grapYan2),
-			new SkillRequirement(Skill.AGILITY, 39), new SkillRequirement(Skill.STRENGTH, 38),
-			new SkillRequirement(Skill.RANGED, 21), mithGrap, crossbow);
+			new SkillRequirement(Skill.AGILITY, 39, true), new SkillRequirement(Skill.STRENGTH, 38, true),
+			new SkillRequirement(Skill.RANGED, 21, true), mithGrap, crossbow);
 		grapSteps.setDisplayCondition(notGrapYan);
 		grapSteps.setLockingStep(grapYanTask);
 		allSteps.add(grapSteps);
@@ -415,7 +415,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		allSteps.add(sandSteps);
 
 		PanelDetails tpSteps = new PanelDetails("Teleport to Ardougne", Collections.singletonList(tPArdy),
-			new SkillRequirement(Skill.MAGIC, 51), plagueCity, normalBook, lawRune.quantity(2), waterRune.quantity(2));
+			new SkillRequirement(Skill.MAGIC, 51, true), plagueCity, normalBook, lawRune.quantity(2), waterRune.quantity(2));
 		tpSteps.setDisplayCondition(notTPArdy);
 		tpSteps.setLockingStep(tpArdyTask);
 		allSteps.add(tpSteps);
@@ -433,7 +433,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		allSteps.add(fishSteps);
 
 		PanelDetails farmerSteps = new PanelDetails("Pickpocket Master Farmer",
-			Collections.singletonList(pickMasterFarmer), new SkillRequirement(Skill.THIEVING, 38));
+			Collections.singletonList(pickMasterFarmer), new SkillRequirement(Skill.THIEVING, 38, true));
 		farmerSteps.setDisplayCondition(notPickMasterFarmer);
 		farmerSteps.setLockingStep(pickMasterFarmerTask);
 		allSteps.add(farmerSteps);

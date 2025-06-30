@@ -29,6 +29,7 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -260,15 +261,16 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.ATTACK, 70));
+		reqs.add(new ComplexRequirement(LogicType.OR, "70 Attack or Ranged",
+			new SkillRequirement(Skill.ATTACK, 70, false),
+			new SkillRequirement(Skill.RANGED, 70, false)));
 		reqs.add(new SkillRequirement(Skill.CRAFTING, 84, true));
-		reqs.add(new SkillRequirement(Skill.DEFENCE, 70));
+		reqs.add(new SkillRequirement(Skill.DEFENCE, 70, false));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 80, true));
 		reqs.add(new SkillRequirement(Skill.FISHING, 96, true));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 83, true));
-		reqs.add(new SkillRequirement(Skill.RANGED, 70));
 		reqs.add(new SkillRequirement(Skill.SLAYER, 85, true));
-		reqs.add(new SkillRequirement(Skill.STRENGTH, 76));
+		reqs.add(new SkillRequirement(Skill.STRENGTH, 76, true));
 
 		reqs.add(inAidOfTheMyreque);
 		reqs.add(shadesOfMorton);
@@ -312,22 +314,22 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails grabSharkSteps = new PanelDetails("Grab Shark", Collections.singletonList(bareHandShark),
-			new SkillRequirement(Skill.FISHING, 96, true), new SkillRequirement(Skill.STRENGTH, 76),
+			new SkillRequirement(Skill.FISHING, 96, true), new SkillRequirement(Skill.STRENGTH, 76, true),
 			inAidOfTheMyreque, bareHandBarb);
 		grabSharkSteps.setDisplayCondition(notBareHandShark);
 		grabSharkSteps.setLockingStep(bareHandSharkTask);
 		allSteps.add(grabSharkSteps);
 
 		PanelDetails cremateSteps = new PanelDetails("Cremate Shade Remains", Collections.singletonList(cremateShade),
-			new SkillRequirement(Skill.FIREMAKING, 80), shadesOfMorton, magicRedwoodPyreLogs, shadeRemains, tinderbox);
+			new SkillRequirement(Skill.FIREMAKING, 80, true), shadesOfMorton, magicRedwoodPyreLogs, shadeRemains, tinderbox);
 		cremateSteps.setDisplayCondition(notCremateShade);
 		cremateSteps.setLockingStep(cremateShadeTask);
 		allSteps.add(cremateSteps);
 
 		PanelDetails barrowsSteps = new PanelDetails("Barrows Looting", Arrays.asList(moveToBarrows,
 			barrowsChest), new SkillRequirement(Skill.DEFENCE, 70, false, "70 Defense and one of the following:"),
-			new SkillRequirement(Skill.ATTACK, 70), new SkillRequirement(Skill.MAGIC, 70),
-			new SkillRequirement(Skill.RANGED, 70), new SkillRequirement(Skill.STRENGTH, 70), barrowsSet);
+			new SkillRequirement(Skill.ATTACK, 70, false), new SkillRequirement(Skill.MAGIC, 70, false),
+			new SkillRequirement(Skill.RANGED, 70, false), new SkillRequirement(Skill.STRENGTH, 70, false), barrowsSet);
 		barrowsSteps.setDisplayCondition(notBarrowsChest);
 		barrowsSteps.setLockingStep(barrowsChestTask);
 		allSteps.add(barrowsSteps);

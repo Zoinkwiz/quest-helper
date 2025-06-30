@@ -339,13 +339,13 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 40));
-		reqs.add(new SkillRequirement(Skill.COOKING, 40));
-		reqs.add(new SkillRequirement(Skill.HERBLORE, 22));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 29));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 42));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 35));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 45));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 40, true));
+		reqs.add(new SkillRequirement(Skill.COOKING, 40, false));
+		reqs.add(new SkillRequirement(Skill.HERBLORE, 22, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 29, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 42, true));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 35, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 45, true));
 
 		reqs.add(dwarfCannon);
 		reqs.add(ghostsAhoy);
@@ -400,13 +400,13 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		allSteps.add(terrorDogSteps);
 
 		PanelDetails canifisSteps = new PanelDetails("Canifis Rooftop Course", Collections.singletonList(canifisAgi),
-			new SkillRequirement(Skill.AGILITY, 40));
+			new SkillRequirement(Skill.AGILITY, 40, true));
 		canifisSteps.setDisplayCondition(notCanifisAgi);
 		canifisSteps.setLockingStep(canifisAgiTask);
 		allSteps.add(canifisSteps);
 
 		PanelDetails swampLizardSteps = new PanelDetails("Swamp Lizard", Collections.singletonList(swampLizard),
-			new SkillRequirement(Skill.HUNTER, 29), rope, smallFishingNet);
+			new SkillRequirement(Skill.HUNTER, 29, true), rope, smallFishingNet);
 		swampLizardSteps.setDisplayCondition(notSwampLizard);
 		swampLizardSteps.setLockingStep(swampLizardTask);
 		allSteps.add(swampLizardSteps);
@@ -418,19 +418,19 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 		allSteps.add(ectophialSteps);
 
 		PanelDetails cannonballsSteps = new PanelDetails("Cannonballs", Collections.singletonList(cannonBall),
-			new SkillRequirement(Skill.SMITHING, 35), dwarfCannon, ammoMould, steelBar);
+			new SkillRequirement(Skill.SMITHING, 35, true), dwarfCannon, ammoMould, steelBar);
 		cannonballsSteps.setDisplayCondition(notCannonBall);
 		cannonballsSteps.setLockingStep(cannonBallTask);
 		allSteps.add(cannonballsSteps);
 
 		PanelDetails guthSteps = new PanelDetails("Guthix Balance", Collections.singletonList(guthBalance),
-			new SkillRequirement(Skill.HERBLORE, 22), inAidOfMyreque, restorePot, garlic, silverDust);
+			new SkillRequirement(Skill.HERBLORE, 22, true), inAidOfMyreque, restorePot, garlic, silverDust);
 		guthSteps.setDisplayCondition(notGuthBalance);
 		guthSteps.setLockingStep(guthBalanceTask);
 		allSteps.add(guthSteps);
 
 		PanelDetails hollowSteps = new PanelDetails("Hollow Tree", Collections.singletonList(hollowTree),
-			new SkillRequirement(Skill.WOODCUTTING, 45), axe);
+			new SkillRequirement(Skill.WOODCUTTING, 45, true), axe);
 		hollowSteps.setDisplayCondition(notHollowTree);
 		hollowSteps.setLockingStep(hollowTreeTask);
 		allSteps.add(hollowSteps);
@@ -443,13 +443,13 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 
 		PanelDetails feverSteps = new PanelDetails("Fever Spider", Arrays.asList(moveToBrainDeath,
 			moveToDownstairs, feverSpider),
-			new SkillRequirement(Skill.SLAYER, 42), rumDeal, slayerGloves);
+			new SkillRequirement(Skill.SLAYER, 42, true), rumDeal, slayerGloves);
 		feverSteps.setDisplayCondition(notFeverSpider);
 		feverSteps.setLockingStep(feverSpiderTask);
 		allSteps.add(feverSteps);
 
 		PanelDetails troubleSteps = new PanelDetails("Trouble Brewing", Arrays.asList(moveToCapt, moveToMos, troubleBrewing),
-			new SkillRequirement(Skill.COOKING, 40), cabinFever);
+			new SkillRequirement(Skill.COOKING, 40, false), cabinFever);
 		troubleSteps.setDisplayCondition(notTroubleBrewing);
 		troubleSteps.setLockingStep(troubleBrewingTask);
 		allSteps.add(troubleSteps);

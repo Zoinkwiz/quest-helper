@@ -306,10 +306,10 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(40));
 		reqs.add(qp);
-		reqs.add(new SkillRequirement(Skill.AGILITY, 30));
-		reqs.add(new SkillRequirement(Skill.FARMING, 30));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 40));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 25));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 30, true));
+		reqs.add(new SkillRequirement(Skill.FARMING, 30, true));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 40, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 25, true));
 		reqs.add(normalBook);
 
 		reqs.add(gardenOfTranq);
@@ -399,32 +399,32 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		allSteps.add(maho20Steps);
 
 		PanelDetails balloonSteps = new PanelDetails("Leave Varrock in a Balloon", Arrays.asList(moveToEntrana, talkToAug,
-			balloon), new SkillRequirement(Skill.FIREMAKING, 40), enlightenedJourney, willowLog1, log);
+			balloon), new SkillRequirement(Skill.FIREMAKING, 40, true), enlightenedJourney, willowLog1, log);
 		balloonSteps.setDisplayCondition(new Conditions(notBalloon, notVarrBalloon2));
 		balloonSteps.setLockingStep(balloonTask);
 		allSteps.add(balloonSteps);
 
 		PanelDetails balloon2Steps = new PanelDetails("Leave Varrock in a Balloon", Arrays.asList(moveToEntrana, talkToAug,
-			balloon), new SkillRequirement(Skill.FIREMAKING, 40), enlightenedJourney, willowLog11, log);
+			balloon), new SkillRequirement(Skill.FIREMAKING, 40, true), enlightenedJourney, willowLog11, log);
 		balloon2Steps.setDisplayCondition(new Conditions(notBalloon, notVarrBalloon));
 		balloon2Steps.setLockingStep(balloonTask);
 		allSteps.add(balloon2Steps);
 
 		PanelDetails tpVarrSteps = new PanelDetails("Teleport to Varrock", Collections.singletonList(tpVarrock),
-			new SkillRequirement(Skill.MAGIC, 25), airRune.quantity(3), lawRune.quantity(1), fireRune.quantity(1),
+			new SkillRequirement(Skill.MAGIC, 25, true), airRune.quantity(3), lawRune.quantity(1), fireRune.quantity(1),
 			normalBook);
 		tpVarrSteps.setDisplayCondition(notTPVarrock);
 		tpVarrSteps.setLockingStep(tpVarrockTask);
 		allSteps.add(tpVarrSteps);
 
 		PanelDetails whiteFruitSteps = new PanelDetails("Pick a White Fruit", Collections.singletonList(whiteFruit),
-			new SkillRequirement(Skill.FARMING, 25), gardenOfTranq);
+			new SkillRequirement(Skill.FARMING, 25, false), gardenOfTranq);
 		whiteFruitSteps.setDisplayCondition(notWhiteFruit);
 		whiteFruitSteps.setLockingStep(whiteFruitTask);
 		allSteps.add(whiteFruitSteps);
 
 		PanelDetails varrAgiSteps = new PanelDetails("Rooftop Course Lap", Collections.singletonList(varrAgi),
-			new SkillRequirement(Skill.AGILITY, 30));
+			new SkillRequirement(Skill.AGILITY, 30, true));
 		varrAgiSteps.setDisplayCondition(notVarrAgi);
 		varrAgiSteps.setLockingStep(varrAgiTask);
 		allSteps.add(varrAgiSteps);

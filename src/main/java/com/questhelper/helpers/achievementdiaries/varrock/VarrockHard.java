@@ -392,21 +392,18 @@ public class VarrockHard extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 51));
-		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 51, true));
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 50, false));
 		reqs.add(new SkillRequirement(Skill.FARMING, 68, true));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 66, false));
 		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
 			reqs.add(new SkillRequirement(Skill.HUNTER, 69, true));
 		}
-		else
-		{
-			reqs.add(new SkillRequirement(Skill.HUNTER, 66));
-		}
-		reqs.add(new SkillRequirement(Skill.MAGIC, 54));
-		reqs.add(new SkillRequirement(Skill.PRAYER, 52));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 60));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 54, true));
+		reqs.add(new SkillRequirement(Skill.PRAYER, 52, false));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 60, true));
 		reqs.add(atleast153Kudos);
 		reqs.add(ancientBook);
 		reqs.add(desertTreasure);
@@ -445,14 +442,14 @@ public class VarrockHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails yewRootsSteps = new PanelDetails("Yew Roots", Arrays.asList(growYew, chopYew, digUpYewRoots),
-			new SkillRequirement(Skill.FARMING, 68, true), new SkillRequirement(Skill.WOODCUTTING, 60), axe, spade,
+			new SkillRequirement(Skill.FARMING, 68, true), new SkillRequirement(Skill.WOODCUTTING, 60, true), axe, spade,
 			rake, yewSap);
 		yewRootsSteps.setDisplayCondition(notYewRoots);
 		yewRootsSteps.setLockingStep(yewRootsTask);
 		allSteps.add(yewRootsSteps);
 
 		PanelDetails spottierCapeSteps = new PanelDetails("Trade for A Spottier Cape", Arrays.asList(getCape, spottyCape),
-			new SkillRequirement(Skill.HUNTER, 66), dashingKeb.quantity(2), coins.quantity(800));
+			new SkillRequirement(Skill.HUNTER, 66, false), dashingKeb.quantity(2), coins.quantity(800));
 		spottierCapeSteps.setDisplayCondition(notSpottyCape);
 		spottierCapeSteps.setLockingStep(spottyCapeTask);
 		allSteps.add(spottierCapeSteps);
@@ -464,39 +461,39 @@ public class VarrockHard extends ComplexStateQuestHelper
 		allSteps.add(kudosSteps);
 
 		PanelDetails yewChurchSteps = new PanelDetails("Cut and Burn Yew Logs Atop the Church", Arrays.asList(cutYew,
-			goUp1, burnLogs), new SkillRequirement(Skill.FIREMAKING, 60),
-			new SkillRequirement(Skill.WOODCUTTING, 60), axe, tinderBox);
+			goUp1, burnLogs), new SkillRequirement(Skill.FIREMAKING, 60, true),
+			new SkillRequirement(Skill.WOODCUTTING, 60, true), axe, tinderBox);
 		yewChurchSteps.setDisplayCondition(notYewChurch);
 		yewChurchSteps.setLockingStep(yewChurchTask);
 		allSteps.add(yewChurchSteps);
 
 		PanelDetails fancyStoneSteps = new PanelDetails("Fancy Stone", Collections.singletonList(fancyStone),
-			new SkillRequirement(Skill.CONSTRUCTION, 50), coins.quantity(25000));
+			new SkillRequirement(Skill.CONSTRUCTION, 50, false), coins.quantity(25000));
 		fancyStoneSteps.setDisplayCondition(notFancyStone);
 		fancyStoneSteps.setLockingStep(fancyStoneTask);
 		allSteps.add(fancyStoneSteps);
 
 		PanelDetails smitedSteps = new PanelDetails("Altar Smited", Arrays.asList(moveToUpstairs,
-			prayAtAltar), new SkillRequirement(Skill.PRAYER, 52));
+			prayAtAltar), new SkillRequirement(Skill.PRAYER, 52, false));
 		smitedSteps.setDisplayCondition(notSmiteAltar);
 		smitedSteps.setLockingStep(smiteAltarTask);
 		allSteps.add(smitedSteps);
 
 		PanelDetails edgevilleWakkaSteps = new PanelDetails("Edgeville Wakka", Collections.singletonList(wakkaEdge),
-			new SkillRequirement(Skill.WOODCUTTING, 57), axe);
+			new SkillRequirement(Skill.WOODCUTTING, 57, true), axe);
 		edgevilleWakkaSteps.setDisplayCondition(notWakkaEdge);
 		edgevilleWakkaSteps.setLockingStep(wakkaEdgeTask);
 		allSteps.add(edgevilleWakkaSteps);
 
 		PanelDetails paddewwaSteps = new PanelDetails("Teleport to Paddewwa", Collections.singletonList(paddewwaTP),
-			new SkillRequirement(Skill.MAGIC, 54), desertTreasure, ancientBook, lawRune.quantity(2),
+			new SkillRequirement(Skill.MAGIC, 54, true), desertTreasure, ancientBook, lawRune.quantity(2),
 			airRune.quantity(1), fireRune.quantity(1));
 		paddewwaSteps.setDisplayCondition(notPaddewwaTP);
 		paddewwaSteps.setLockingStep(paddewwaTPTask);
 		allSteps.add(paddewwaSteps);
 
 		PanelDetails obstaclePipeSteps = new PanelDetails("Obstacle Pipe", Arrays.asList(moveToEdge, obsPipe),
-			new SkillRequirement(Skill.AGILITY, 51));
+			new SkillRequirement(Skill.AGILITY, 51, true));
 		obstaclePipeSteps.setDisplayCondition(notPipe);
 		obstaclePipeSteps.setLockingStep(pipeTask);
 		allSteps.add(obstaclePipeSteps);

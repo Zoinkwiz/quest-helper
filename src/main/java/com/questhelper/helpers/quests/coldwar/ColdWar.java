@@ -445,8 +445,7 @@ public class ColdWar extends BasicQuestHelper
 		return Arrays.asList(
 				new ExperienceReward(Skill.CRAFTING, 2000),
 				new ExperienceReward(Skill.AGILITY, 5000),
-				new ExperienceReward(Skill.CONSTRUCTION, 1500),
-				new ExperienceReward(Skill.ATTACK, 40));
+				new ExperienceReward(Skill.CONSTRUCTION, 1500));
 	}
 
 	@Override

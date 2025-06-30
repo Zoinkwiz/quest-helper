@@ -67,8 +67,8 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	ItemRequirement food, antipoison;
 
 	// Other reqs
-	Requirement combat100, agility53, cooking30, magic59, mining52, ranged42, runecrafting44,
-		slayer50, smithing40, strength50, thieving50, woodcutting34;
+	Requirement combat100, agility53, cooking30, cooking50, mining52, ranged42, runecrafting44,
+		slayer50, strength50, thieving50, woodcutting34;
 
 	Requirement taiBwoWannaiTrio, legendsQuest, shiloVillage;
 
@@ -208,17 +208,16 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		inDeathwingArea3 = new ZoneRequirement(deathwingArea3);
 
 		combat100 = new CombatLevelRequirement(100);
-		agility53 = new SkillRequirement(Skill.AGILITY, 53);
-		cooking30 = new SkillRequirement(Skill.COOKING, 30);
-		magic59 = new SkillRequirement(Skill.MAGIC, 59);
-		mining52 = new SkillRequirement(Skill.MINING, 52);
-		ranged42 = new SkillRequirement(Skill.RANGED, 42);
-		runecrafting44 = new SkillRequirement(Skill.RUNECRAFT, 44);
-		slayer50 = new SkillRequirement(Skill.SLAYER, 50);
-		smithing40 = new SkillRequirement(Skill.SMITHING, 40);
-		strength50 = new SkillRequirement(Skill.STRENGTH, 50);
-		thieving50 = new SkillRequirement(Skill.THIEVING, 50);
-		woodcutting34 = new SkillRequirement(Skill.WOODCUTTING, 34);
+		agility53 = new SkillRequirement(Skill.AGILITY, 53, true);
+		cooking30 = new SkillRequirement(Skill.COOKING, 30, true);
+		cooking50 = new SkillRequirement(Skill.COOKING, 50, false);
+		mining52 = new SkillRequirement(Skill.MINING, 52, true);
+		ranged42 = new SkillRequirement(Skill.RANGED, 42, true);
+		runecrafting44 = new SkillRequirement(Skill.RUNECRAFT, 44, true);
+		slayer50 = new SkillRequirement(Skill.SLAYER, 50, false);
+		strength50 = new SkillRequirement(Skill.STRENGTH, 50, true);
+		thieving50 = new SkillRequirement(Skill.THIEVING, 50, true);
+		woodcutting34 = new SkillRequirement(Skill.WOODCUTTING, 34, true);
 
 		taiBwoWannaiTrio = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
 		legendsQuest = new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1,
@@ -318,15 +317,24 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(100));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 53));
-		reqs.add(new SkillRequirement(Skill.COOKING, 30));
-		reqs.add(new SkillRequirement(Skill.MINING, 52));
-		reqs.add(new SkillRequirement(Skill.RANGED, 42));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 44));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 50));
-		reqs.add(new SkillRequirement(Skill.STRENGTH, 50));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 50));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 15));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 53, true));
+		reqs.add(new SkillRequirement(Skill.COOKING, 30, true));
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
+		{
+			// 50 Cooking is required to cook an oomlie wrap
+			reqs.add(new SkillRequirement(Skill.COOKING, 50, false));
+		}
+		else
+		{
+			reqs.add(new SkillRequirement(Skill.COOKING, 30, true));
+		}
+		reqs.add(new SkillRequirement(Skill.MINING, 52, true));
+		reqs.add(new SkillRequirement(Skill.RANGED, 42, true));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 44, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 50, false));
+		reqs.add(new SkillRequirement(Skill.STRENGTH, 50, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 50, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 15, true));
 
 		reqs.add(new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED));
 		reqs.add(new VarplayerRequirement(QuestVarPlayer.QUEST_LEGENDS_QUEST.getId(), 1,
@@ -416,7 +424,10 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		shortcutSteps.setLockingStep(usedShortcutTask);
 		allSteps.add(shortcutSteps);
 
-		PanelDetails eatOomlieWrapSteps = new PanelDetails("Eat Oomlie Wrap", Collections.singletonList(eatOomlie),
+		PanelDetails eatOomlieWrapSteps = questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman()
+			? new PanelDetails("Eat Oomlie Wrap", Collections.singletonList(eatOomlie),
+			cooking50, oomlieWrap)
+			: new PanelDetails("Eat Oomlie Wrap", Collections.singletonList(eatOomlie),
 			oomlieWrap);
 		eatOomlieWrapSteps.setDisplayCondition(notEatenWrap);
 		eatOomlieWrapSteps.setLockingStep(eatenWrapTask);

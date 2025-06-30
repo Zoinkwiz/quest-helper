@@ -418,7 +418,7 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.CONSTRUCTION, 37, true));
 		req.add(new SkillRequirement(Skill.HUNTER, 35, true));
-		req.add(new SkillRequirement(Skill.MINING, 40));
+		req.add(new SkillRequirement(Skill.MINING, 40, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 47, true));
 		req.add(new SkillRequirement(Skill.THIEVING, 42, true));
 		req.add(new SkillRequirement(Skill.PRAYER, 43, false,
@@ -480,14 +480,14 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		allSteps.add(snowyKnightSteps);
 
 		PanelDetails mineGoldSteps = new PanelDetails("Mine Gold", Arrays.asList(moveToCave, moveToRiver, moveToCannon,
-			moveToArzinian, mineGold), betweenARock, new SkillRequirement(Skill.MINING, 40), pickaxe, goldHelm,
+			moveToArzinian, mineGold), betweenARock, new SkillRequirement(Skill.MINING, 40, true), pickaxe, goldHelm,
 			coins.quantity(2));
 		mineGoldSteps.setDisplayCondition(notMineGold);
 		mineGoldSteps.setLockingStep(mineGoldTask);
 		allSteps.add(mineGoldSteps);
 
 		PanelDetails mineCoalSteps = new PanelDetails("Mine Coal", Collections.singletonList(mineCoal),
-			fremennikTrials, new SkillRequirement(Skill.MINING, 30), pickaxe);
+			fremennikTrials, new SkillRequirement(Skill.MINING, 30, true), pickaxe);
 		mineCoalSteps.setDisplayCondition(notMineCoal);
 		mineCoalSteps.setLockingStep(mineCoalTask);
 		allSteps.add(mineCoalSteps);

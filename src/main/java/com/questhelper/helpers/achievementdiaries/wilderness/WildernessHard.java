@@ -163,7 +163,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
 			.showConditioned(notSprirtualWarrior).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notAddyScim).isNotConsumed();
-		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notAddyScim);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 6000).showConditioned(notAddyScim);
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR, 2).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim).isNotConsumed();
@@ -227,7 +227,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		addyScim = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3190, 3938, 0),
 			"Smith an Adamant scimitar in the Resource Area.", hammer, addyBar);
 		moveToResource = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
-			"Enter the Wilderness Resource Area.", coins.quantity(6000), hammer, addyBar);
+			"Enter the Wilderness Resource Area.", coins, hammer, addyBar);
 
 		moveToGodWars1 = new ObjectStep(this, ObjectID.WILDERNESS_GWD_ENTRANCE, new WorldPoint(3017, 3738, 0),
 			"Enter the Wilderness God Wars Dungeon.", combatGear, food, godEquip);
@@ -256,7 +256,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(combatGear, godStaff, godRunes, airRune.quantity(30), cosmicRune.quantity(3),
-			unpoweredOrb, knife, oilyRod, fishingBait, coins.quantity(6000), hammer, barsOrPick, godEquip);
+			unpoweredOrb, knife, oilyRod, fishingBait, coins, hammer, barsOrPick, godEquip);
 	}
 
 	@Override
@@ -361,7 +361,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		allSteps.add(trollSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Adamant Scimitar in Resource Area", Arrays.asList(moveToResource,
-			addyScim), new SkillRequirement(Skill.SMITHING, 75), barsOrPick, hammer);
+			addyScim), new SkillRequirement(Skill.SMITHING, 75), coins, barsOrPick, hammer);
 		scimSteps.setDisplayCondition(notAddyScim);
 		scimSteps.setLockingStep(addyScimTask);
 		allSteps.add(scimSteps);

@@ -49,6 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class VardorvisSteps extends ConditionalStep
 {
@@ -405,10 +406,9 @@ public class VardorvisSteps extends ConditionalStep
 			"");
 		returnToKasondeWithTempleKey = new ConditionalStep(getQuestHelper(), boardBoat,
 			"Return to Kasonde with the temple key, who is inside the main pyramid of the area to the north. " +
-				"Be ready for another fight.", combatGear, templeKey);
-		returnToKasondeWithTempleKey.addStep(new Conditions(inStranglewoodPyramidRoom, templeKey.alsoCheckBank(questBank)
-			.hideConditioned(givenKasondeKey)), giveKasondeKey);
-		returnToKasondeWithTempleKey.addStep(new Conditions(inAnyStranglewood, templeKey.alsoCheckBank(questBank)), enterKasondeWithKey);
+				"Be ready for another fight.", combatGear, templeKey.hideConditioned(givenKasondeKey));
+		returnToKasondeWithTempleKey.addStep(new Conditions(inStranglewoodPyramidRoom, templeKey.alsoCheckBank(questBank)), giveKasondeKey);
+		returnToKasondeWithTempleKey.addStep(new Conditions(inAnyStranglewood, or(templeKey.alsoCheckBank(questBank), givenKasondeKey)), enterKasondeWithKey);
 		returnToKasondeWithTempleKey.addStep(templeKeyNearby, pickUpTempleKey);
 		returnToKasondeWithTempleKey.addStep(inAnyStranglewood, getTempleKeyFromRocks);
 

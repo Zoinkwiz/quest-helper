@@ -78,9 +78,10 @@ public class DragonSlayerII extends BasicQuestHelper
 	ItemRequirement map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12, map13, map14, map15, map16, map17,
 		map18, map19, map20, map21, map22, map23, map24;
 
-	Requirement inCrandorUnderground, inElvargArea, inKaramjaVolcano, inMuralRoom, inHouseGroundFloor, inHouseFirstFloor, inLithkrenGroundFloor, inLithkrenFirstFloor, inLithkrenUnderground,
-		inLithkrenGroundFloorRoom, inDream, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
-		hasTheKaramjaKeyPiece, inDeepLithkren, recruitedBrundt, recruitedLathas, recruitedAmik, inArdougneCastle, inFaladorF1, inFaladorF2, onBoat, inBattle;
+	Requirement inCrandorUnderground, inElvargArea, inKaramjaVolcano, inMuralRoom, inHouseGroundFloor, inHouseFirstFloor, emptyInv24,
+			inLithkrenGroundFloor, inLithkrenFirstFloor, inLithkrenUnderground,
+			inLithkrenGroundFloorRoom, inDream, litBrazier, hasTheKourendKeyPiece, hasTheVarrockKeyPiece, hasTheFremennikKeyPiece,
+			hasTheKaramjaKeyPiece, inDeepLithkren, recruitedBrundt, recruitedLathas, recruitedAmik, inArdougneCastle, inFaladorF1, inFaladorF2, onBoat, inBattle;
 
 	Requirement hadChest1MapPieces, hadChest2MapPieces, hadFungiMapPieces, hadBriarMapPieces, hadMushtreeMapPieces, hadMap1, hadMap2, hadMap3, hadMap4, hadMap5, hadMap6, hadMap7, hadMap8, hadMap9, hadMap10, hadMap11, hadMap12, hadMap13, hadMap14,
 		hadMap15, hadMap16, hadMap17, hadMap18, hadMap19, hadMap20, hadMap21, hadMap22, hadMap23, hadMap24, inMapPuzzle, onUngael, inUngaelUnderground, inUngaelKeyRoom,
@@ -622,6 +623,9 @@ public class DragonSlayerII extends BasicQuestHelper
 		onBoat = new ZoneRequirement(boat);
 		inBattle = new ZoneRequirement(battle);
 
+
+		emptyInv24 = new FreeInventorySlotRequirement(24);
+
 		hadMap1 = new Conditions(LogicType.OR, map1, new VarbitRequirement(6116, 1));
 		hadMap2 = new Conditions(LogicType.OR, map2, new VarbitRequirement(6117, 1));
 		hadMap3 = new Conditions(LogicType.OR, map3, new VarbitRequirement(6118, 1));
@@ -682,6 +686,8 @@ public class DragonSlayerII extends BasicQuestHelper
 		talkedToAvaAgain = new VarbitRequirement(VarbitID.DS2_MORY, 50, Operation.GREATER_EQUAL);
 
 		// 6141, presumbly represents location of treasure
+		// VarbitID.DS2_MORY_COORD;
+		// 0:  3493, 3390, 0 (MOST RECENT!)
 		// 0:  3565, 3445, 0
 		// 10: 3487, 3409, 0
 		// 11: 3442, 3421, 0
@@ -814,10 +820,10 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		// Varrock key piece
 		talkToReldo = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3209, 3492, 0), "Talk to Reldo in the Varrock Castle Library.");
-		talkToReldo.addDialogStep("Ask about Tristan.");
+		talkToReldo.addDialogSteps("I'm looking for information on a Fourth Age hero.", "Ask about Tristan.");
 		searchBookcase = new ObjectStep(this, ObjectID.DS2_VARROCK_BOOKCASE, new WorldPoint(3211, 3495, 0), "Search the bookcases for the census");
 		talkToReldoAgain = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3209, 3492, 0), "Talk to Reldo again.", varrockCensusRecords);
-		talkToReldoAgain.addDialogStep("Ask about Tristan.");
+		talkToReldoAgain.addDialogSteps("About Tristan Corvo...", "Ask about Tristan.");
 		talkToReldoAgainNoBook = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3209, 3492, 0), "Talk to Reldo again.");
 		talkToReldoAgainNoBook.addDialogStep("Ask about Tristan.");
 		talkToReldoAgain.addSubSteps(talkToReldoAgainNoBook);
@@ -935,15 +941,15 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		talkToBobAfterRelease = new NpcStep(this, NpcID.DEATH_GROWNCAT_BLACK_CHILD, new WorldPoint(3548, 10480, 0), "");
 
-		talkToRoald = new NpcStep(this, NpcID.KING_ROALD_CUTSCENE, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle.");
-		talkToRoald.addDialogStep("Talk about the dragon threat.");
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle.");
+		talkToRoald.addDialogSteps("I'm here to talk about dragons.", "About the dragon threat...", "Talk about the dragon threat");
 
 		talkToBrundtAboutThreat = new NpcStep(this, NpcID.VIKING_BRUNDT_CHILD, new WorldPoint(2658, 3666, 0), "Talk to Brundt in Rellekka.");
 		talkToBrundtAboutThreat.addDialogStep("Ask about the dragon threat.");
 
 		goUpToAmik1 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339, 0), "Go talk to Sir Amik Varze upstairs in Falador Castle.");
 		goUpToAmik2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1), "Go talk to Sir Amik Varze upstairs in Falador Castle.");
-		talkToAmik = new NpcStep(this, NpcID.HUNDRED_VARZE, new WorldPoint(2962, 3338, 2), "Talk to Sir Amik Varze upstairs in Falador Castle.");
+		talkToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2962, 3338, 2), "Talk to Sir Amik Varze upstairs in Falador Castle.");
 		talkToAmik.addDialogStep("Talk about the dragon threat.");
 		talkToAmik.addSubSteps(goUpToAmik1, goUpToAmik2);
 
@@ -1193,7 +1199,7 @@ public class DragonSlayerII extends BasicQuestHelper
 			investigateMuralAgain, talkToDallasAfterMural), pickaxe, combatGear));
 		allSteps.add(new PanelDetails("Investigating Fossil Island", Arrays.asList(enterHouseOnTheHill, talkToDallasInHouse, searchNorthChest,
 			goUpstairsForMap, searchStoneChestNorth, leaveHouseForMap, searchFungi, searchBriar, searchMushtree, enterHouseWithMapPieces, startMapPuzzle,
-			talkToDallasAfterSolvingMap)));
+			talkToDallasAfterSolvingMap), List.of(), List.of(emptyInv24)));
 		allSteps.add(new PanelDetails("Investigating Lithkren", Arrays.asList(talkToJardricInMuseumCamp, buildRowBoat, talkToDallasAfterBoatRepair,
 			climbCourtyardStairs, climbDownLithkrenTrapdoor, climbDownLithkrenNorthStairs, talkToDallasInLithkren, searchSkeleton, readDiary, talkToDallasAfterDiary), oakPlank8, swampPaste10, nails12OrMore, hammer, saw));
 

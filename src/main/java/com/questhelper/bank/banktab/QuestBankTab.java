@@ -60,6 +60,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.questhelper.bank.banktab.PotionStorage.COMPONENTS_PER_POTION;
 import static com.questhelper.bank.banktab.PotionStorage.VIAL_IDX;
@@ -415,6 +416,8 @@ public class QuestBankTab
 
 		List<BankText> bankItemTexts = new ArrayList<>();
 
+		addRemainingBankTab(client, newLayout);
+
 		for (BankTabItems bankTabItems : newLayout)
 		{
 			totalSectionsHeight = addPluginTabSection(itemContainer, bankTabItems, totalSectionsHeight, bankItemTexts);
@@ -458,6 +461,42 @@ public class QuestBankTab
 				InterfaceID.Bankmain.SCROLLBAR,
 				InterfaceID.Bankmain.ITEMS,
 				itemContainerScroll));
+	}
+
+	/*
+	** Creates a tab in the quest bank for all items not used in the active quest
+	 */
+	private void addRemainingBankTab(Client client, List<BankTabItems> newLayout)
+	{
+		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+		if (bankContainer == null)
+		{
+			newLayout.add(new BankTabItems("Non-quest items"));
+			return;
+		}
+
+		Set<Integer> allIds = Arrays.stream(bankContainer.getItems())
+				.map(Item::getId)
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+
+		Set<Integer> usedIds = newLayout.stream()
+				.flatMap(tab -> Stream.concat(
+						tab.getItems().stream().flatMap(item -> item.getItemIDs().stream()),
+						tab.getRecommendedItems().stream().flatMap(item -> item.getItemIDs().stream())
+				))
+				.collect(Collectors.toSet());
+
+		allIds.removeAll(usedIds);
+
+		BankTabItems leftoverTab = new BankTabItems("Non-quest items");
+		for (Integer id : allIds)
+		{
+			String name = client.getItemDefinition(id).getName();
+			ItemRequirement req = new ItemRequirement(name, id, -1);
+			leftoverTab.addItems(new BankTabItem(req));
+		}
+
+		newLayout.add(leftoverTab);
 	}
 
 	private void hideBankWidgets(Widget itemContainer, Widget[] containerChildren)

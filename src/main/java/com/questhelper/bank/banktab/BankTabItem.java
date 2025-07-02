@@ -68,7 +68,7 @@ public class BankTabItem
 		this.text = item.getName();
 		this.itemIDs = Collections.singletonList(item.getId());
 		this.details = item.getTooltip();
-		this.displayID = -1;
+		this.displayID = item.getId();
 		this.itemRequirement = item;
 	}
 }

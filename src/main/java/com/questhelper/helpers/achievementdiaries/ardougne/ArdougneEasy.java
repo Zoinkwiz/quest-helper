@@ -184,7 +184,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.THIEVING, 5));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 5, true));
 
 		reqs.add(runeMysteries);
 		reqs.add(biohazard);
@@ -240,7 +240,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		allSteps.add(essSteps);
 
 		PanelDetails cakeSteps = new PanelDetails("Steal Cake", Collections.singletonList(stealCake),
-			new SkillRequirement(Skill.THIEVING, 5));
+			new SkillRequirement(Skill.THIEVING, 5, true));
 		cakeSteps.setDisplayCondition(notStealCake);
 		cakeSteps.setLockingStep(stealCakeTask);
 		allSteps.add(cakeSteps);

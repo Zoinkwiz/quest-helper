@@ -281,7 +281,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		ArrayList<Requirement> req = new ArrayList<>();
 		req.add(new SkillRequirement(Skill.HERBLORE, 66, true));
 		req.add(new SkillRequirement(Skill.HUNTER, 55, true));
-		req.add(new SkillRequirement(Skill.MAGIC, 72));
+		req.add(new SkillRequirement(Skill.MAGIC, 72, true));
 		req.add(new SkillRequirement(Skill.MINING, 70, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 60, false));
 		req.add(new SkillRequirement(Skill.THIEVING, 75, true));
@@ -369,13 +369,13 @@ public class FremennikHard extends ComplexStateQuestHelper
 		allSteps.add(freeBlastFurnaceSteps);
 
 		PanelDetails teleportToTrollheimSteps = new PanelDetails("Teleport to Trollheim", Collections.singletonList(tpTroll),
-			eadgarsRuse, new SkillRequirement(Skill.MAGIC, 61), normalBook, fireRune.quantity(2), lawRune.quantity(2));
+			eadgarsRuse, new SkillRequirement(Skill.MAGIC, 61, true), normalBook, fireRune.quantity(2), lawRune.quantity(2));
 		teleportToTrollheimSteps.setDisplayCondition(notTPTroll);
 		teleportToTrollheimSteps.setLockingStep(tpTrollTask);
 		allSteps.add(teleportToTrollheimSteps);
 
 		PanelDetails teleportToWaterbirthSteps = new PanelDetails("Teleport to Waterbirth", Collections.singletonList(tpWaterbirth),
-			lunarDiplomacy, new SkillRequirement(Skill.MAGIC, 72), lunarBook, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1));
+			lunarDiplomacy, new SkillRequirement(Skill.MAGIC, 72, true), lunarBook, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1));
 		teleportToWaterbirthSteps.setDisplayCondition(notTPWaterbirth);
 		teleportToWaterbirthSteps.setLockingStep(tpWaterbirthTask);
 		allSteps.add(teleportToWaterbirthSteps);

@@ -298,13 +298,13 @@ public class FremennikEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.CRAFTING, 23));
-		req.add(new SkillRequirement(Skill.FIREMAKING, 15));
-		req.add(new SkillRequirement(Skill.HUNTER, 11));
-		req.add(new SkillRequirement(Skill.MINING, 20));
-		req.add(new SkillRequirement(Skill.SMITHING, 20));
-		req.add(new SkillRequirement(Skill.THIEVING, 5));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 15));
+		req.add(new SkillRequirement(Skill.CRAFTING, 23, true));
+		req.add(new SkillRequirement(Skill.FIREMAKING, 15, true));
+		req.add(new SkillRequirement(Skill.HUNTER, 11, true));
+		req.add(new SkillRequirement(Skill.MINING, 20, true));
+		req.add(new SkillRequirement(Skill.SMITHING, 20, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 5, true));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 15, true));
 
 		req.add(fremennikTrials);
 		req.add(giantDwarf);
@@ -348,7 +348,7 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		allSteps.add(rockCrabSteps);
 
 		PanelDetails oakSteps = new PanelDetails("Chop and burn", Arrays.asList(chopOak, burnOak),
-			new SkillRequirement(Skill.FIREMAKING, 15), new SkillRequirement(Skill.WOODCUTTING, 15),
+			new SkillRequirement(Skill.FIREMAKING, 15, true), new SkillRequirement(Skill.WOODCUTTING, 15, true),
 			axe, tinderbox);
 		oakSteps.setDisplayCondition(notChopAndBurnOak);
 		oakSteps.setLockingStep(chopAndBurnOakTask);
@@ -366,8 +366,8 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		allSteps.add(changeBootsSteps);
 
 		PanelDetails tiaraSteps = new PanelDetails("Craft Tiara", Arrays.asList(mineSilver, smeltSilver, craftTiara),
-			new SkillRequirement(Skill.CRAFTING, 23), new SkillRequirement(Skill.MINING, 20),
-			new SkillRequirement(Skill.SMITHING, 20), fremennikTrials, pickaxe, tiaraMould);
+			new SkillRequirement(Skill.CRAFTING, 23, true), new SkillRequirement(Skill.MINING, 20, true),
+			new SkillRequirement(Skill.SMITHING, 20, true), fremennikTrials, pickaxe, tiaraMould);
 		tiaraSteps.setDisplayCondition(notCraftTiara);
 		tiaraSteps.setLockingStep(craftTiaraTask);
 		allSteps.add(tiaraSteps);

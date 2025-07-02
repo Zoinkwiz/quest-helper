@@ -475,10 +475,6 @@ public class QuestBankTab
 			return;
 		}
 
-		Set<Integer> allIds = Arrays.stream(bankContainer.getItems())
-				.map(Item::getId)
-				.collect(Collectors.toCollection(LinkedHashSet::new));
-
 		Set<Integer> usedIds = newLayout.stream()
 				.flatMap(tab -> Stream.concat(
 						tab.getItems().stream().flatMap(item -> item.getItemIDs().stream()),
@@ -486,7 +482,10 @@ public class QuestBankTab
 				))
 				.collect(Collectors.toSet());
 
-		allIds.removeAll(usedIds);
+		Set<Integer> allIds = Arrays.stream(bankContainer.getItems())
+				.map(Item::getId)
+				.filter(id -> !usedIds.contains(id))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 
 		BankTabItems leftoverTab = new BankTabItems("Non-quest items");
 		for (Integer id : allIds)

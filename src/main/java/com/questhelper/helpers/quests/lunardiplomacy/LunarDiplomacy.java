@@ -69,7 +69,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		sleepPotionHighlighted, soakedKindlingHighlighted, sealOfPassageEquipped;
 
 	//Items Recommended
-	ItemRequirement combatRunes, combatGear;
+	ItemRequirement combatRunes, combatGear, moonClanTeleport;
 
 	Requirement atBaseOfStairs, onCoveF1, onBoatF0, onBoatF1, onBoatF2, onBoatF3, revealedCannon, revealedChart, revealedChest,
 		revealedPillar, revealedCrate, onBoatLunar, onLunarDock, onLunarIsle, inYagaHouse, toothNearby,
@@ -402,6 +402,10 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		combatRunes = new ItemRequirement("Combat runes", -1, -1);
 		combatRunes.setDisplayItemId(ItemID.DEATHRUNE);
+
+		moonClanTeleport = new ItemRequirement("Moonclan Teleport", -1, -1);
+		moonClanTeleport.setDisplayItemId(ItemID.LUNAR_TABLET_MOONCLAN_TELEPORT);
+		moonClanTeleport.setTooltip("Can be used after first visiting Lunar Isle during the quest");
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 
@@ -792,7 +796,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		leaveLecturn = new ObjectStep(this, ObjectID.LUNAR_DREAM_DREAM_PLINTH, new WorldPoint(1760, 5088, 2), "Read My life to return to Lunar Isle.");
 		leaveLecturn.addDialogStep("Yes");
 		finishQuest = new NpcStep(this, NpcID.LUNAR_ONEIROMANCER, new WorldPoint(2151, 3867, 0),
-			"Talk to the Oneiromancer in the south east of Lunar Isle to finish the quest!", sealOfPassage);
+			"Talk to the Oneiromancer in the south east of Lunar Isle to finish the quest!\n(Remember to equip the seal of passage)", sealOfPassage);
 	}
 
 	private void setupConditionalSteps()
@@ -857,7 +861,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, combatRunes);
+		return Arrays.asList(combatGear, combatRunes, moonClanTeleport);
 	}
 
 	@Override

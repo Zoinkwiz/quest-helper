@@ -264,8 +264,8 @@ public class DesertEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.HUNTER, 5));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 21));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 5, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 21, false));
 
 		reqs.add(icthlarinsLittleHelper);
 
@@ -335,7 +335,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		allSteps.add(kalphiteCactiSteps);
 
 		PanelDetails goldenWarblerSteps = new PanelDetails("Golden Warbler", Collections.singletonList(goldWarbler),
-			new SkillRequirement(Skill.HUNTER, 5), birdSnare);
+			new SkillRequirement(Skill.HUNTER, 5, true), birdSnare);
 		goldenWarblerSteps.setDisplayCondition(notGoldWarbler);
 		goldenWarblerSteps.setLockingStep(goldWarblerTask);
 		allSteps.add(goldenWarblerSteps);
@@ -364,7 +364,7 @@ public class DesertEasy extends ComplexStateQuestHelper
 		allSteps.add(vultureSteps);
 
 		PanelDetails openSarcSteps = new PanelDetails("First Sarcophagus", Arrays.asList(moveToPyramidPlunder,
-			startPyramidPlunder, openSarc), new SkillRequirement(Skill.THIEVING, 21), icthlarinsLittleHelper);
+			startPyramidPlunder, openSarc), new SkillRequirement(Skill.THIEVING, 21, false), icthlarinsLittleHelper);
 		openSarcSteps.setDisplayCondition(notOpenSarc);
 		openSarcSteps.setLockingStep(openSarcTask);
 		allSteps.add(openSarcSteps);

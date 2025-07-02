@@ -265,12 +265,12 @@ public class DesertElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 78));
-		reqs.add(new SkillRequirement(Skill.COOKING, 85));
-		reqs.add(new SkillRequirement(Skill.FLETCHING, 95));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 94));
-		reqs.add(new SkillRequirement(Skill.PRAYER, 85));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 91));
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 78, true));
+		reqs.add(new SkillRequirement(Skill.COOKING, 85, true));
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 95, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 94, true));
+		reqs.add(new SkillRequirement(Skill.PRAYER, 85, false));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 91, false));
 
 
 		reqs.add(desertTreasure);
@@ -287,38 +287,38 @@ public class DesertElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails wildPieSteps = new PanelDetails("Bake Wild Pie", Collections.singletonList(wildPie),
-			new SkillRequirement(Skill.COOKING, 85), rawPie);
+			new SkillRequirement(Skill.COOKING, 85, true), rawPie);
 		wildPieSteps.setDisplayCondition(notWildPie);
 		wildPieSteps.setLockingStep(wildPieTask);
 		allSteps.add(wildPieSteps);
 
 		PanelDetails iceBarrageSteps = new PanelDetails("Ice Barrage", Collections.singletonList(iceBarrage),
-			new SkillRequirement(Skill.MAGIC, 94), desertTreasure, ancientBook, waterRune.quantity(6),
+			new SkillRequirement(Skill.MAGIC, 94, true), desertTreasure, ancientBook, waterRune.quantity(6),
 			bloodRune.quantity(2), deathRune.quantity(4));
 		iceBarrageSteps.setDisplayCondition(notIceBarrage);
 		iceBarrageSteps.setLockingStep(iceBarrageTask);
 		allSteps.add(iceBarrageSteps);
 
 		PanelDetails grandGoldChestSteps = new PanelDetails("Grand Gold Chest", Arrays.asList(moveToPyramidPlunder,
-			startPyramidPlunder, grandGoldChest), new SkillRequirement(Skill.THIEVING, 91), icthlarinsLittleHelper);
+			startPyramidPlunder, grandGoldChest), new SkillRequirement(Skill.THIEVING, 91, false), icthlarinsLittleHelper);
 		grandGoldChestSteps.setDisplayCondition(notGrandGoldChest);
 		grandGoldChestSteps.setLockingStep(grandGoldChestTask);
 		allSteps.add(grandGoldChestSteps);
 
 		PanelDetails restorePrayerSteps = new PanelDetails("Restore 85 Prayer",
-			Collections.singletonList(restorePrayer), new SkillRequirement(Skill.PRAYER, 85), icthlarinsLittleHelper);
+			Collections.singletonList(restorePrayer), new SkillRequirement(Skill.PRAYER, 85, false), icthlarinsLittleHelper);
 		restorePrayerSteps.setDisplayCondition(notRestorePrayer);
 		restorePrayerSteps.setLockingStep(restorePrayerTask);
 		allSteps.add(restorePrayerSteps);
 
 		PanelDetails dragonDartsSteps = new PanelDetails("Dragon Darts", Arrays.asList(moveToBed, dragonDarts),
-			new SkillRequirement(Skill.FLETCHING, 95), touristTrap, dragonDartTip, feather);
+			new SkillRequirement(Skill.FLETCHING, 95, true), touristTrap, dragonDartTip, feather);
 		dragonDartsSteps.setDisplayCondition(notDragonDarts);
 		dragonDartsSteps.setLockingStep(dragonDartsTask);
 		allSteps.add(dragonDartsSteps);
 
 		PanelDetails kqHeadSteps = new PanelDetails("Kalphite Queen Head", Collections.singletonList(talkKQHead),
-			new SkillRequirement(Skill.CONSTRUCTION, 78), priestInPeril, kqHead, coins.quantity(50000),
+			new SkillRequirement(Skill.CONSTRUCTION, 78, true), priestInPeril, kqHead, coins.quantity(50000),
 			mahoganyPlank.quantity(2), goldLeaves.quantity(2), saw, hammer);
 		kqHeadSteps.setDisplayCondition(notTalkKQHead);
 		kqHeadSteps.setLockingStep(talkKQHeadTask);

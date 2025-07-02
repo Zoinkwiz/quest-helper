@@ -272,15 +272,15 @@ public class DesertHard extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 70));
-		reqs.add(new SkillRequirement(Skill.ATTACK, 50));
-		reqs.add(new SkillRequirement(Skill.DEFENCE, 10));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 68));
-		reqs.add(new SkillRequirement(Skill.MINING, 45));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 68));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 65));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 65));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 70, true));
+		reqs.add(new SkillRequirement(Skill.ATTACK, 50, false));
+		reqs.add(new SkillRequirement(Skill.DEFENCE, 10, false));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 60, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 68, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 45, true));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 68, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 65, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 65, true));
 
 		reqs.add(contact);
 		reqs.add(dreamMentor);
@@ -331,27 +331,27 @@ public class DesertHard extends ComplexStateQuestHelper
 		allSteps.add(kalphiteQueenSteps);
 
 		PanelDetails pollRooftopSteps = new PanelDetails("Pollnivneach Rooftops",
-			Collections.singletonList(pollRooftop), new SkillRequirement(Skill.AGILITY, 70));
+			Collections.singletonList(pollRooftop), new SkillRequirement(Skill.AGILITY, 70, true));
 		pollRooftopSteps.setDisplayCondition(notPollRooftop);
 		pollRooftopSteps.setLockingStep(pollRooftopTask);
 		allSteps.add(pollRooftopSteps);
 
 		PanelDetails menaphiteThugSteps = new PanelDetails("Menaphite Thug", Collections.singletonList(menaThug),
-			new SkillRequirement(Skill.THIEVING, 65), theFeud, blackjack);
+			new SkillRequirement(Skill.THIEVING, 65, true), theFeud, blackjack);
 		menaphiteThugSteps.setDisplayCondition(notMenaThug);
 		menaphiteThugSteps.setLockingStep(menaThugTask);
 		allSteps.add(menaphiteThugSteps);
 
 		PanelDetails refillWaterskinsSteps = new PanelDetails("Refill Waterskins",
-			Collections.singletonList(refillWaterskin), new SkillRequirement(Skill.MAGIC, 68), dreamMentor,
+			Collections.singletonList(refillWaterskin), new SkillRequirement(Skill.MAGIC, 68, true), dreamMentor,
 			lunarBook, fireRune.quantity(1), waterRune.quantity(3), astralRune.quantity(1), emptyWaterskin);
 		refillWaterskinsSteps.setDisplayCondition(notRefillWaterskin);
 		refillWaterskinsSteps.setLockingStep(refillWaterskinTask);
 		allSteps.add(refillWaterskinsSteps);
 
 		PanelDetails dustDevilSteps = new PanelDetails("Dust Devil", Arrays.asList(moveToSmoke, killDust),
-			new SkillRequirement(Skill.CRAFTING, 55), new SkillRequirement(Skill.DEFENCE, 10),
-			new SkillRequirement(Skill.SLAYER, 65), desertTreasure, combatGear, food, slayerHelm);
+			new SkillRequirement(Skill.CRAFTING, 55, true), new SkillRequirement(Skill.DEFENCE, 10, false),
+			new SkillRequirement(Skill.SLAYER, 65, true), desertTreasure, combatGear, food, slayerHelm);
 		dustDevilSteps.setDisplayCondition(notKillDust);
 		dustDevilSteps.setLockingStep(killDustTask);
 		allSteps.add(dustDevilSteps);
@@ -363,26 +363,26 @@ public class DesertHard extends ComplexStateQuestHelper
 		allSteps.add(ancientMagicksSteps);
 
 		PanelDetails mineGraniteSteps = new PanelDetails("Mine Granite", Collections.singletonList(granite),
-			new SkillRequirement(Skill.MINING, 45), pickaxe);
+			new SkillRequirement(Skill.MINING, 45, true), pickaxe);
 		mineGraniteSteps.setDisplayCondition(notGranite);
 		mineGraniteSteps.setLockingStep(graniteTask);
 		allSteps.add(mineGraniteSteps);
 
 		PanelDetails burnYewSteps = new PanelDetails("Burn Yew on Nardah Mayor's Balcony", Arrays.asList(moveToMayor,
-			burnYew), new SkillRequirement(Skill.FIREMAKING, 60), yewLog, tinderbox);
+			burnYew), new SkillRequirement(Skill.FIREMAKING, 60, true), yewLog, tinderbox);
 		burnYewSteps.setDisplayCondition(notBurnYew);
 		burnYewSteps.setLockingStep(burnYewTask);
 		allSteps.add(burnYewSteps);
 
 		PanelDetails mithrilPlatebodySteps = new PanelDetails("Mithril Platebody",
-			Collections.singletonList(mithPlatebody), new SkillRequirement(Skill.SMITHING, 68), mithBar.quantity(5),
+			Collections.singletonList(mithPlatebody), new SkillRequirement(Skill.SMITHING, 68, true), mithBar.quantity(5),
 			hammer);
 		mithrilPlatebodySteps.setDisplayCondition(notMithPlatebody);
 		mithrilPlatebodySteps.setLockingStep(mithPlatebodyTask);
 		allSteps.add(mithrilPlatebodySteps);
 
 		PanelDetails locusRiderSteps = new PanelDetails("Kill Locust Rider with Keris", Arrays.asList(moveToSoph,
-			killLocustRider), new SkillRequirement(Skill.ATTACK, 50), contact, keris, combatGear, lightsource, food);
+			killLocustRider), new SkillRequirement(Skill.ATTACK, 50, false), contact, keris, combatGear, lightsource, food);
 		locusRiderSteps.setDisplayCondition(notKillLocustRider);
 		locusRiderSteps.setLockingStep(killLocustRiderTask);
 		allSteps.add(locusRiderSteps);

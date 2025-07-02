@@ -328,10 +328,10 @@ public class FaladorHard extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.AGILITY, 50));
-		req.add(new SkillRequirement(Skill.DEFENCE, 50));
+		req.add(new SkillRequirement(Skill.AGILITY, 50, true));
+		req.add(new SkillRequirement(Skill.DEFENCE, 50, false));
 		req.add(new SkillRequirement(Skill.MINING, 60, true));
-		req.add(new SkillRequirement(Skill.PRAYER, 70));
+		req.add(new SkillRequirement(Skill.PRAYER, 70, false));
 		req.add(new ComplexRequirement(LogicType.OR, "56 Runecraft or 42 with Raiments of the Eye set",
 			new SkillRequirement(Skill.RUNECRAFT, 56, true, "56 Runecraft"),
 			new ItemRequirements("42 with Raiments of the Eye set",
@@ -375,7 +375,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails changeCrestSteps = new PanelDetails("To Saradomin!", Arrays.asList(climbLadderWhiteKnightCastle,
-			changeFamilyCrest), new SkillRequirement(Skill.PRAYER, 70), coins10000);
+			changeFamilyCrest), new SkillRequirement(Skill.PRAYER, 70, false), coins10000);
 		changeCrestSteps.setDisplayCondition(notChangedFamilyCrest);
 		changeCrestSteps.setLockingStep(changedFamilyCrestTask);
 		allSteps.add(changeCrestSteps);
@@ -387,13 +387,13 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(moleSteps);
 
 		PanelDetails fallyRoofSteps = new PanelDetails("Make sure to stretch!",
-			Collections.singletonList(completeAgiCourse), new SkillRequirement(Skill.AGILITY, 50));
+			Collections.singletonList(completeAgiCourse), new SkillRequirement(Skill.AGILITY, 50, true));
 		fallyRoofSteps.setDisplayCondition(notCompleteAgiCourse);
 		fallyRoofSteps.setLockingStep(completeAgiCourseTask);
 		allSteps.add(fallyRoofSteps);
 
 		PanelDetails dwarvenHelmSteps = new PanelDetails("A snug fit", Arrays.asList(enterDwarvenMinesHelmet,
-			equipDwarvenHelmet), new SkillRequirement(Skill.DEFENCE, 50), dwarvenHelmet, grimTales);
+			equipDwarvenHelmet), new SkillRequirement(Skill.DEFENCE, 50, false), dwarvenHelmet, grimTales);
 		dwarvenHelmSteps.setDisplayCondition(notDwarvenHelmetDwarvenMines);
 		dwarvenHelmSteps.setLockingStep(dwarvenHelmetDwarvenMinesTask);
 		allSteps.add(dwarvenHelmSteps);
@@ -429,7 +429,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 		allSteps.add(mindRunesSteps);
 
 		PanelDetails praySteps = new PanelDetails("Praise the Lord!", Arrays.asList(getProsySet, prayAtAltarSarim),
-			new SkillRequirement(Skill.DEFENCE, 30), slugMenace, prosyHelm, prosyChest, prosyLegs);
+			new SkillRequirement(Skill.DEFENCE, 30, false), slugMenace, prosyHelm, prosyChest, prosyLegs);
 		praySteps.setDisplayCondition(notPraySarimAltarProsy);
 		praySteps.setLockingStep(praySarimAltarProsyTask);
 		allSteps.add(praySteps);

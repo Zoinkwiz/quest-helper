@@ -330,8 +330,8 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 50, false));
 		reqs.add(new SkillRequirement(Skill.FARMING, 70, true));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 59));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 66));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 59, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 66, true));
 		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 65, true));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 68, true));
 		reqs.add(new SkillRequirement(Skill.THIEVING, 72, true));
@@ -382,7 +382,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		allSteps.add(ivySteps);
 
 		PanelDetails watchtowerSteps = new PanelDetails("Teleport to Watchtower",
-			Collections.singletonList(tPWatchtower), new SkillRequirement(Skill.MAGIC, 58), watchtower,
+			Collections.singletonList(tPWatchtower), new SkillRequirement(Skill.MAGIC, 58, true), watchtower,
 			earthRune.quantity(2), lawRune.quantity(2));
 		watchtowerSteps.setDisplayCondition(notTPWatchtower);
 		watchtowerSteps.setLockingStep(tpWatchtowerTask);
@@ -400,7 +400,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		allSteps.add(yanSteps);
 
 		PanelDetails mgSteps = new PanelDetails("Magic Guild", Collections.singletonList(magicGuild),
-			new SkillRequirement(Skill.MAGIC, 66));
+			new SkillRequirement(Skill.MAGIC, 66, true));
 		mgSteps.setDisplayCondition(notMagicGuild);
 		mgSteps.setLockingStep(magicGuildTask);
 		allSteps.add(mgSteps);
@@ -412,7 +412,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		allSteps.add(plateSteps);
 
 		PanelDetails sallySteps = new PanelDetails("Red Salamander", Collections.singletonList(redSally),
-			new SkillRequirement(Skill.HUNTER, 59), rope, smallFishingNet);
+			new SkillRequirement(Skill.HUNTER, 59, true), rope, smallFishingNet);
 		sallySteps.setDisplayCondition(notRedSally);
 		sallySteps.setLockingStep(redSallyTask);
 		allSteps.add(sallySteps);
@@ -430,13 +430,13 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		allSteps.add(monkeySteps);
 
 		PanelDetails chestSteps = new PanelDetails("Stealing from Ardougne Royalty", Arrays.asList(moveToCastle,
-			stealChest), new SkillRequirement(Skill.THIEVING, 72), lockpick);
+			stealChest), new SkillRequirement(Skill.THIEVING, 72, true), lockpick);
 		chestSteps.setDisplayCondition(notStealChest);
 		chestSteps.setLockingStep(stealChestTask);
 		allSteps.add(chestSteps);
 
 		PanelDetails dragSteps = new PanelDetails("Smith Dragon Square in West Ardougne",
-			Collections.singletonList(dragSquare), new SkillRequirement(Skill.SMITHING, 60), shieldLeft, shieldRight,
+			Collections.singletonList(dragSquare), new SkillRequirement(Skill.SMITHING, 60, true), shieldLeft, shieldRight,
 			hammer);
 		dragSteps.setDisplayCondition(notDragSquare);
 		dragSteps.setLockingStep(dragSquareTask);

@@ -354,7 +354,7 @@ public class EnakhrasLament extends BasicQuestHelper
 		useChiselOn20Sandstone = new DetailedQuestStep(this, "Use a chisel on the sandstone 20kg.", chiselHighlighted, sandstone20);
 		placeBody = new ObjectStep(this, ObjectID.ENAKH_STATUE_EAST_MULTILOC, new WorldPoint(3190, 2926, 0), "Place the body on the sandstone base.", body);
 		talkToLazimToChooseHead = new NpcStep(this, NpcID.ENAKH_LAZIM, new WorldPoint(3190, 2925, 0), "Talk to Lazim and choose the head you'd like the statue to have.");
-		getGranite = new NpcStep(this, NpcID.ENAKH_LAZIM, new WorldPoint(3190, 2925, 0), "Get 2 x granite 5kg, and then craft one into the head you chose. You can mine some nearby.", granite2);
+		getGranite = new NpcStep(this, NpcID.ENAKH_LAZIM, new WorldPoint(3190, 2925, 0), "Get 2 x granite (5kg). You can mine some nearby.", granite2);
 
 		// TODO: Change head highlight text based on choice
 		craftHead = new DetailedQuestStep(this, "Use a chisel on a piece of granite 5kg, and choose the head you decided on to craft.", chiselHighlighted, granite);

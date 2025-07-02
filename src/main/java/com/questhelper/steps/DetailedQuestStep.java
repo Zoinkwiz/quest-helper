@@ -696,12 +696,9 @@ public class DetailedQuestStep extends QuestStep
 					if (iconToUseForNeededItems != -1)
 					{
 						BufferedImage icon = spriteManager.getSprite(iconToUseForNeededItems, 0);
-						List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
 
-						for (LocalPoint localPoint : localPoints)
-						{
-							OverlayUtil.renderTileOverlay(client, graphics, localPoint, icon, questHelper.getConfig().targetOverlayColor());
-						}
+						OverlayUtil.renderTileOverlay(client, graphics, location, icon, questHelper.getConfig().targetOverlayColor());
+
 					}
 					else
 					{

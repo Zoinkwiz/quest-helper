@@ -288,12 +288,12 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(enterGodwars);
-		reqs.add(new SkillRequirement(Skill.AGILITY, 52));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 60));
-		reqs.add(new SkillRequirement(Skill.MINING, 55));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 50));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 50));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 61));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 52, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 60, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 55, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 50, true));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 50, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 61, true));
 
 		reqs.add(betweenARock);
 
@@ -337,7 +337,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails entSteps = new PanelDetails("Ent Yew", Collections.singletonList(entYew),
-			new SkillRequirement(Skill.WOODCUTTING, 61), combatGear, food, runeAxe);
+			new SkillRequirement(Skill.WOODCUTTING, 61, true), combatGear, food, runeAxe);
 		entSteps.setDisplayCondition(notEntYew);
 		entSteps.setLockingStep(entYewTask);
 		allSteps.add(entSteps);
@@ -361,7 +361,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		allSteps.add(godWarsSteps);
 
 		PanelDetails bloodveldSteps = new PanelDetails("Kill Bloodveld in God Wars Dungeon",
-			Arrays.asList(moveToGodWars2, wildyGodwars, wildyGWBloodveld), new SkillRequirement(Skill.SLAYER, 50),
+			Arrays.asList(moveToGodWars2, wildyGodwars, wildyGWBloodveld), new SkillRequirement(Skill.SLAYER, 50, true),
 			enterGodwars, combatGear, food, godEquip);
 		bloodveldSteps.setDisplayCondition(notWildyGWBloodveld);
 		bloodveldSteps.setLockingStep(wildyGWBloodveldTask);
@@ -373,25 +373,25 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		allSteps.add(emblemSteps);
 
 		PanelDetails earthOrbSteps = new PanelDetails("Earth Orb", Arrays.asList(moveToEdge, earthOrb),
-			new SkillRequirement(Skill.MAGIC, 60), unpoweredOrb, earthRune.quantity(30), cosmicRune.quantity(3));
+			new SkillRequirement(Skill.MAGIC, 60, true), unpoweredOrb, earthRune.quantity(30), cosmicRune.quantity(3));
 		earthOrbSteps.setDisplayCondition(notEarthOrb);
 		earthOrbSteps.setLockingStep(earthOrbTask);
 		allSteps.add(earthOrbSteps);
 
 		PanelDetails mithSteps = new PanelDetails("Mine Mithril", Collections.singletonList(mineMith),
-			new SkillRequirement(Skill.MINING, 55), pickaxe, knife);
+			new SkillRequirement(Skill.MINING, 55, true), pickaxe, knife);
 		mithSteps.setDisplayCondition(notMineMith);
 		mithSteps.setLockingStep(mineMithTask);
 		allSteps.add(mithSteps);
 
 		PanelDetails wildyAgiSteps = new PanelDetails("Wilderness Agility Course",
-			Collections.singletonList(wildyAgi), new SkillRequirement(Skill.AGILITY, 52), knife);
+			Collections.singletonList(wildyAgi), new SkillRequirement(Skill.AGILITY, 52, true), knife);
 		wildyAgiSteps.setDisplayCondition(notWildyAgi);
 		wildyAgiSteps.setLockingStep(wildyAgiTask);
 		allSteps.add(wildyAgiSteps);
 
 		PanelDetails goldHelmSteps = new PanelDetails("Gold Helmet in Resource Area", Arrays.asList(moveToResource,
-			mineGoldOre, smeltGoldOre, goldHelm), new SkillRequirement(Skill.SMITHING, 50), betweenARock,
+			mineGoldOre, smeltGoldOre, goldHelm), new SkillRequirement(Skill.SMITHING, 50, true), betweenARock,
 			coins.quantity(7500), barsOrPick, hammer, knife);
 		goldHelmSteps.setDisplayCondition(notGoldHelm);
 		goldHelmSteps.setLockingStep(goldHelmTask);

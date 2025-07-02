@@ -174,7 +174,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		burningAmulet = new ItemRequirement("Burning amulet", ItemCollections.BURNING_AMULETS);
 
 		enterGodwars = new ComplexRequirement(LogicType.OR, "60 Agility or Strength",
-			new SkillRequirement(Skill.AGILITY, 60), new SkillRequirement(Skill.STRENGTH, 60));
+			new SkillRequirement(Skill.AGILITY, 60, true), new SkillRequirement(Skill.STRENGTH, 60, true));
 
 		inEdge = new ZoneRequirement(edge);
 		inAir = new ZoneRequirement(air);
@@ -270,12 +270,12 @@ public class WildernessHard extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(enterGodwars);
-		reqs.add(new SkillRequirement(Skill.AGILITY, 64));
-		reqs.add(new SkillRequirement(Skill.FISHING, 53));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 67));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 66));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 68));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 75));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 64, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 53, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 67, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 66, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 68, true));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 75, true));
 
 		reqs.add(deathPlateau);
 		reqs.add(mageArena);
@@ -324,13 +324,13 @@ public class WildernessHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails airSteps = new PanelDetails("Air Orb", Arrays.asList(moveToEdge, moveToAir, airOrb),
-			new SkillRequirement(Skill.MAGIC, 60), airRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
+			new SkillRequirement(Skill.MAGIC, 60, true), airRune.quantity(30), cosmicRune.quantity(3), unpoweredOrb);
 		airSteps.setDisplayCondition(notAirOrb);
 		airSteps.setLockingStep(airOrbTask);
 		allSteps.add(airSteps);
 
 		PanelDetails sallySteps = new PanelDetails("Black Salamander", Collections.singletonList(blackSally),
-			new SkillRequirement(Skill.HUNTER, 67), smallFishingNet, rope);
+			new SkillRequirement(Skill.HUNTER, 67, true), smallFishingNet, rope);
 		sallySteps.setDisplayCondition(notBlackSally);
 		sallySteps.setLockingStep(blackSallyTask);
 		allSteps.add(sallySteps);
@@ -342,26 +342,26 @@ public class WildernessHard extends ComplexStateQuestHelper
 		allSteps.add(lavaSteps);
 
 		PanelDetails rawLavaEelSteps = new PanelDetails("Fishing a Raw Lava Eel", Collections.singletonList(rawLavaEel),
-			new SkillRequirement(Skill.FISHING, 53), oilyRod, fishingBait, knife);
+			new SkillRequirement(Skill.FISHING, 53, true), oilyRod, fishingBait, knife);
 		rawLavaEelSteps.setDisplayCondition(notRawLavaEel);
 		rawLavaEelSteps.setLockingStep(rawLavaEelTask);
 		allSteps.add(rawLavaEelSteps);
 
 		PanelDetails warrSteps = new PanelDetails("Spiritual Warrior", Arrays.asList(moveToGodWars1, moveToGodWars2,
 			sprirtualWarrior),
-			enterGodwars, new SkillRequirement(Skill.SLAYER, 68), combatGear, food, godEquip);
+			enterGodwars, new SkillRequirement(Skill.SLAYER, 68, true), combatGear, food, godEquip);
 		warrSteps.setDisplayCondition(notSprirtualWarrior);
 		warrSteps.setLockingStep(sprirtualWarriorTask);
 		allSteps.add(warrSteps);
 
 		PanelDetails trollSteps = new PanelDetails("Agility Shortcut", Collections.singletonList(trollWildy),
-			new SkillRequirement(Skill.AGILITY, 64), deathPlateau);
+			new SkillRequirement(Skill.AGILITY, 64, true), deathPlateau);
 		trollSteps.setDisplayCondition(notTrollWildy);
 		trollSteps.setLockingStep(trollWildyTask);
 		allSteps.add(trollSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Adamant Scimitar in Resource Area", Arrays.asList(moveToResource,
-			addyScim), new SkillRequirement(Skill.SMITHING, 75), barsOrPick, hammer);
+			addyScim), new SkillRequirement(Skill.SMITHING, 75, true), barsOrPick, hammer);
 		scimSteps.setDisplayCondition(notAddyScim);
 		scimSteps.setLockingStep(addyScimTask);
 		allSteps.add(scimSteps);
@@ -378,7 +378,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		allSteps.add(bossesSteps);
 
 		PanelDetails godSpellSteps = new PanelDetails("God Spell on Player", Collections.singletonList(godSpells),
-			new SkillRequirement(Skill.MAGIC, 60), godStaff, godRunes);
+			new SkillRequirement(Skill.MAGIC, 60, false), godStaff, godRunes);
 		godSpellSteps.setDisplayCondition(notGodSpells);
 		godSpellSteps.setLockingStep(godSpellsTask);
 		allSteps.add(godSpellSteps);

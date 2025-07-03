@@ -343,17 +343,17 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		setupGeneralRequirements();
 
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.AGILITY, 36));
-		req.add(new SkillRequirement(Skill.COOKING, 43));
-		req.add(new SkillRequirement(Skill.FARMING, 26));
-		req.add(new SkillRequirement(Skill.FISHING, 46));
-		req.add(new SkillRequirement(Skill.FLETCHING, 50));
-		req.add(new SkillRequirement(Skill.HERBLORE, 48));
-		req.add(new SkillRequirement(Skill.MAGIC, 45));
-		req.add(new SkillRequirement(Skill.MINING, 30));
-		req.add(new SkillRequirement(Skill.RANGED, 40));
-		req.add(new SkillRequirement(Skill.STRENGTH, 22));
-		req.add(new SkillRequirement(Skill.THIEVING, 47));
+		req.add(new SkillRequirement(Skill.AGILITY, 36, true));
+		req.add(new SkillRequirement(Skill.COOKING, 43, true));
+		req.add(new SkillRequirement(Skill.FARMING, 26, true));
+		req.add(new SkillRequirement(Skill.FISHING, 46, true));
+		req.add(new SkillRequirement(Skill.FLETCHING, 50, true));
+		req.add(new SkillRequirement(Skill.HERBLORE, 48, true));
+		req.add(new SkillRequirement(Skill.MAGIC, 45, true));
+		req.add(new SkillRequirement(Skill.MINING, 30, true));
+		req.add(new SkillRequirement(Skill.RANGED, 40, true));
+		req.add(new SkillRequirement(Skill.STRENGTH, 22, true));
+		req.add(new SkillRequirement(Skill.THIEVING, 47, true));
 
 		req.add(alfredBar);
 		req.add(eleWorkII);
@@ -399,8 +399,8 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		allSteps.add(pickLimpSteps);
 
 		PanelDetails grappleStep = new PanelDetails("Grapple from Water Obelisk", Arrays.asList(moveToTavDungeon, moveToOb, grapOb),
-			new SkillRequirement(Skill.AGILITY, 36), new SkillRequirement(Skill.STRENGTH, 22),
-			new SkillRequirement(Skill.RANGED, 39), mithGrap, crossbow, dustyKey);
+			new SkillRequirement(Skill.AGILITY, 36, true), new SkillRequirement(Skill.STRENGTH, 22, true),
+			new SkillRequirement(Skill.RANGED, 39, true), mithGrap, crossbow, dustyKey);
 		grappleStep.setDisplayCondition(notGrapOb);
 		grappleStep.setLockingStep(grapObTask);
 		allSteps.add(grappleStep);
@@ -432,14 +432,14 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		allSteps.add(makeMindHelmStep);
 
 		PanelDetails enterRangeSteps = new PanelDetails("Enter the Ranging Guild", Collections.singletonList(enterRange),
-			new SkillRequirement(Skill.RANGED, 40));
+			new SkillRequirement(Skill.RANGED, 40, true));
 		enterRangeSteps.setDisplayCondition(notEnterRange);
 		enterRangeSteps.setLockingStep(enterRangeTask);
 		allSteps.add(enterRangeSteps);
 
 		PanelDetails stealHemSteps = new PanelDetails("Steal from Hemenster Chest",
 			Collections.singletonList(stealHemen),
-			new SkillRequirement(Skill.THIEVING, 47),
+			new SkillRequirement(Skill.THIEVING, 47, true),
 			lockpick);
 		stealHemSteps.setDisplayCondition(notStealHemen);
 		stealHemSteps.setLockingStep(stealHemenTask);
@@ -459,7 +459,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 
 		PanelDetails barbAgiSteps = new PanelDetails("Barbarian Agility Course Lap", Collections.singletonList(barbAgi),
 			alfredBar,
-			new SkillRequirement(Skill.AGILITY, 35));
+			new SkillRequirement(Skill.AGILITY, 35, true));
 		barbAgiSteps.setDisplayCondition(notBarbAgi);
 		barbAgiSteps.setLockingStep(barbAgiTask);
 		allSteps.add(barbAgiSteps);

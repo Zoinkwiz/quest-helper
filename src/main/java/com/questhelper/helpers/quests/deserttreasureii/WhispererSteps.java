@@ -85,8 +85,8 @@ public class WhispererSteps extends ConditionalStep
 		destroyTentacles6, activateBlackstoneFragment9, getRedShadowKey, placeBlockerInRedRoom, enterPuddleNearPub3, openRedChest, activateBlackstoneFragment10,
 		openRedChestRealWorld, openGreenChest, openGreenChestRealWorld, enterSciencePuddle3, destroyTentacles7, activateBlackstoneFragment11, makeIcon,
 		enterDrain, useIconInDrain, goDownDrainLadder, inspectPillar, talkToMe, talkToKetlaAfterVision, claimPerfectShadowTorch, enterPuddleNearPub4,
-		destroyCathedralTentacles, activateBlackstoneFragment12, enterTheCathedral, fightWhispererSidebar, searchEntrails, returnToDesertWithWhisperersMedallion,
-		useWhisperersMedallionOnStatue, restoreSanity;
+		destroyCathedralTentacles, activateBlackstoneFragment12, enterRuinsOfCamdozaalFight, descendDownRopeFight, enterTheCathedral, fightWhispererSidebar, searchEntrails,
+			returnToDesertWithWhisperersMedallion, useWhisperersMedallionOnStatue, restoreSanity;
 
 	ItemRequirement magicCombatGear, food, prayerPotions, staminaPotions, nardahTeleport, ringOfVisibility, lassarTeleport;
 
@@ -222,6 +222,10 @@ public class WhispererSteps extends ConditionalStep
 		addStep(and(inLassarShadowRealm, unlockedPerfectShadowTorch, perfectShadowTorch), destroyCathedralTentacles);
 		addStep(and(inLassar, unlockedPerfectShadowTorch, perfectShadowTorch), enterPuddleNearPub4);
 		addStep(and(inLassar, unlockedPerfectShadowTorch), claimPerfectShadowTorch); // NOTE: I was not told to do this
+
+		addStep(and(inCamdozaal, unlockedPerfectShadowTorch), descendDownRopeFight);
+		addStep(and(unlockedPerfectShadowTorch), enterRuinsOfCamdozaalFight);
+
 		addStep(and(inLassar, escapedVision), talkToKetlaAfterVision);
 		addStep(inVision, talkToMe);
 		addStep(and(or(inLassar, inLassarShadowRealm, inDrainF0, inDrainF1), learntAboutSilentChoir), silentChoirSteps);
@@ -302,7 +306,8 @@ public class WhispererSteps extends ConditionalStep
 		shadowBlocker.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
 		basicShadowTorchSchematic = new ItemRequirement("Basic shadow torch schematic",
 			ItemID.DT2_LASSAR_SHADOW_TORCH_T1_SCHEMATIC);
-		blackstoneFragment = new ItemRequirement("Blackstone fragment", ItemID.BLACKSTONE_FRAGMENT_ACTIVE);
+		blackstoneFragment = new ItemRequirement("Blackstone fragment", ItemID.BLACKSTONE_FRAGMENT);
+		blackstoneFragment.addAlternates(ItemID.BLACKSTONE_FRAGMENT_ACTIVE, ItemID.BLACKSTONE_FRAGMENT_INITIAL);
 		blackstoneFragment.setTooltip("You can get another from Ketla");
 		basicShadowTorch = new ItemRequirement("Basic shadow torch", ItemID.DT2_SHADOW_TORCH_T1);
 		basicShadowTorch.setTooltip("You can claim another from the table next to Ketla, or by using 'recall' on the blackstone fragment if you've already done so");
@@ -1357,6 +1362,14 @@ public class WhispererSteps extends ConditionalStep
 		((NpcStep) enterTheCathedral).addAlternateNpcs(NpcID.WHISPERER_CUTSCENE, NpcID.WHISPERER, NpcID.WHISPERER_MELEE,
 			NpcID.WHISPERER_QUEST, NpcID.WHISPERER_MELEE_QUEST);
 
+
+		enterRuinsOfCamdozaalFight = new ObjectStep(getQuestHelper(), ObjectID.BIM_ENTRANCE, new WorldPoint(3000, 3494, 0),
+				"Enter Camdozaal, west of Ice Mountain, ready to fight The Whisperer.", magicCombatGear, prayerPotions, blackstoneFragment);
+		((ObjectStep) enterRuinsOfCamdozaalFight).addTeleport(lassarTeleport);
+
+		descendDownRopeFight = new ObjectStep(getQuestHelper(), ObjectID.DT2_LASSAR_ENTRY_ROCK, new WorldPoint(2922, 5827, 0),
+				"Descend into the sinkhole.");
+		descendDownRopeFight.addDialogStep("Yes.");
 		fightWhispererSidebar = new DetailedQuestStep(getQuestHelper(),
 			"Gear up, then disturb the Odd Figure in the Cathedral. The Whisperer will attack with magic and ranged attacks, and use a homing tentacle attack after each one. Protect appropriately, and move to avoid the tentacle splashes.");
 		fightWhispererSidebar.addText("At 1/3rd health, she will cast a special attack:");
@@ -1365,7 +1378,7 @@ public class WhispererSteps extends ConditionalStep
 		fightWhispererSidebar.addText("Screech: Pillars appear, which you must hide behind to avoid damage.");
 		fightWhispererSidebar.addText("After each special attack, the Whisperer fire out a binding spell if you are within 10 tiles of her, dealing Melee damage.");
 		fightWhispererSidebar.addText("When she hits 0 health, she will heal back to 100, and start attacking rapidly with random ranged and magic attacks. Finish her off.");
-		fightWhispererSidebar.addSubSteps(enterTheCathedral);
+		fightWhispererSidebar.addSubSteps(enterTheCathedral, enterRuinsOfCamdozaalFight, descendDownRopeFight);
 
 		searchEntrails = new ObjectStep(getQuestHelper(), ObjectID.WHISPERER_MEDALLION_LOC, new WorldPoint(2656, 6370, 0),
 			"Search the entrails dropped by the Whisperer.", true);

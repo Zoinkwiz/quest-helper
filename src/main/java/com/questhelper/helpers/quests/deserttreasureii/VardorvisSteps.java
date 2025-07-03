@@ -48,20 +48,23 @@ import net.runelite.api.gameval.VarbitID;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
+
 public class VardorvisSteps extends ConditionalStep
 {
 	ItemRequirement xericTalisman, combatGear, nardahTeleport;
 	DetailedQuestStep talkToElissa, talkToBarus, searchDesk, readPotionNote, drinkPotion, boardBoat, runIntoStanglewood,
 		talkToKasonde, enterEntry, defendKasonde, defendKasondeSidebar, leaveTowerDefenseRoom, talkToKasondeAfterTowerDefense,
 		getBerry, getHerb, getHerbSidebar, goDownToKasonde, defendKasondeHerb, talkToKasondeWithHerbAndBerry, addHerb, addBerry,
-		drinkStranglewoodPotion, goToRitualSite, fightVardorvis, fightVardorvisSidebar, pickUpTempleKey, getTempleKeyFromRocks,
+		drinkStranglewoodPotion, goToRitualSite, goToRitualSiteShortcut, fightVardorvis, fightVardorvisSidebar, pickUpTempleKey, getTempleKeyFromRocks,
 		returnToDesertWithVardorvisMedallion, useVardorvisMedallionOnStatue;
 
 	ConditionalStep returnToKasondeWithTempleKey, defeatKasonde, goTalkToKasondeAfterFight, goGetVardorvisMedallion;
 	Requirement talkedToElissa, talkedToBarus, haveReadPotionNote, haveDrunkPotion, inStrangewood, finishedStranglewoodCutscene,
 		talkedToKasonde, inTowerDefenseRoom, defendedKasonde, toldAboutHerbAndBerry, herbTaken, berryTaken,
 		inStranglewoodPyramidRoom, defendedKasondeWithHerb, receivedSerum, addedHerb, addedBerry, drankPotion,
-		inAnyStranglewood, inVardorvisArea, defeatedVardorvis, templeKeyNearby, kasondeAggressive, givenKasondeKey, defeatedKasonde,
+		inAnyStranglewood, inVardorvisArea, unlockedShortcut, defeatedVardorvis, templeKeyNearby, kasondeAggressive, givenKasondeKey, defeatedKasonde,
 		kasondeRevealedMedallion, gotVardorvisMedallion, inVault;
 	ItemRequirement potionNote, strangePotion, freezes, berry, herb, unfinishedSerum, serumWithHerb, stranglerSerum, templeKey,
 		vardorvisMedallion;
@@ -88,6 +91,7 @@ public class VardorvisSteps extends ConditionalStep
 		addStep(defeatedVardorvis, returnToKasondeWithTempleKey);
 		addStep(new Conditions(inVardorvisArea, defeatedVardorvis), pickUpTempleKey);
 		addStep(new Conditions(inVardorvisArea, drankPotion), fightVardorvis);
+		addStep(and(inAnyStranglewood, drankPotion, unlockedShortcut), goToRitualSiteShortcut);
 		addStep(new Conditions(inAnyStranglewood, drankPotion), goToRitualSite);
 		addStep(new Conditions(inAnyStranglewood, addedBerry), drinkStranglewoodPotion);
 		addStep(new Conditions(inAnyStranglewood, addedHerb), addBerry);
@@ -206,7 +210,7 @@ public class VardorvisSteps extends ConditionalStep
 		// Vardorvis arena entered
 		// 15125 38->40
 		// 14862 44->46
-
+		unlockedShortcut = new VarbitRequirement(VarbitID.DT2_STRANGLEWOOD, 40, Operation.GREATER_EQUAL);
 		defeatedVardorvis = new VarbitRequirement(VarbitID.DT2_STRANGLEWOOD, 42, Operation.GREATER_EQUAL);
 		inVardorvisArea = new ZoneRequirement(vardorvisArea);
 		templeKeyNearby = new ItemOnTileRequirement(templeKey);
@@ -375,16 +379,36 @@ public class VardorvisSteps extends ConditionalStep
 		// TODO: Add shortcut as well
 		// 48746, 1147, 3433, 0
 
+		goToRitualSiteShortcut = new ObjectStep(getQuestHelper(), ObjectID.DT2_STRANGLEWOOD_BOSS_ENTRY, new WorldPoint(1118, 3428, 0),
+				"Go to the ritual site to the west via the shortcut hole north-east of main pyramid, ready to fight the boss of the area.", combatGear);
+		goToRitualSiteShortcut.setLinePoints(Arrays.asList(
+				new WorldPoint(1196, 3450, 0),
+				new WorldPoint(1189, 3451, 0),
+				new WorldPoint(1186, 3453, 0),
+				new WorldPoint(1178, 3451, 0),
+				new WorldPoint(1178, 3448, 0),
+				new WorldPoint(1184, 3448, 0),
+				new WorldPoint(1184, 3442, 0),
+				new WorldPoint(1159, 3442, 0),
+				new WorldPoint(1151, 3445, 0),
+				null,
+				new WorldPoint(1144, 3434, 0),
+				new WorldPoint(1129, 3437, 0),
+				new WorldPoint(1120, 3438,0),
+				new WorldPoint(1115, 3438,0),
+				new WorldPoint(1117, 3428, 0)
+		));
+		goToRitualSite.addSubSteps(goToRitualSiteShortcut);
+
 		DetailedQuestStep enterKasondeWithKey = new ObjectStep(getQuestHelper(), ObjectID.DT2_STRANGLEWOOD_TEMPLE_ENTRY, new WorldPoint(1174, 3428, 0),
 			"");
 		DetailedQuestStep giveKasondeKey =  new NpcStep(getQuestHelper(), NpcID.DT2_KASONDE_TEMPLE, new WorldPoint(1183, 9824, 0),
 			"");
 		returnToKasondeWithTempleKey = new ConditionalStep(getQuestHelper(), boardBoat,
 			"Return to Kasonde with the temple key, who is inside the main pyramid of the area to the north. " +
-				"Be ready for another fight.", combatGear, templeKey);
-		returnToKasondeWithTempleKey.addStep(new Conditions(inStranglewoodPyramidRoom, templeKey.alsoCheckBank(questBank)
-			.hideConditioned(givenKasondeKey)), giveKasondeKey);
-		returnToKasondeWithTempleKey.addStep(new Conditions(inAnyStranglewood, templeKey.alsoCheckBank(questBank)), enterKasondeWithKey);
+				"Be ready for another fight.", combatGear, templeKey.hideConditioned(givenKasondeKey));
+		returnToKasondeWithTempleKey.addStep(new Conditions(inStranglewoodPyramidRoom, templeKey.alsoCheckBank(questBank)), giveKasondeKey);
+		returnToKasondeWithTempleKey.addStep(new Conditions(inAnyStranglewood, or(templeKey.alsoCheckBank(questBank), givenKasondeKey)), enterKasondeWithKey);
 		returnToKasondeWithTempleKey.addStep(templeKeyNearby, pickUpTempleKey);
 		returnToKasondeWithTempleKey.addStep(inAnyStranglewood, getTempleKeyFromRocks);
 

@@ -217,10 +217,10 @@ public class VarrockElite extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.COOKING, 95));
-		reqs.add(new SkillRequirement(Skill.FLETCHING, 81));
-		reqs.add(new SkillRequirement(Skill.HERBLORE, 90));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 86));
+		reqs.add(new SkillRequirement(Skill.COOKING, 95, true));
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 81, true));
+		reqs.add(new SkillRequirement(Skill.HERBLORE, 90, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 86, true));
 		reqs.add(new ComplexRequirement(LogicType.OR, "78 Runecraft or 52 with Raiments of the Eye set",
 			new SkillRequirement(Skill.RUNECRAFT, 78, true, "78 Runecraft"),
 			new ItemRequirements("52 with Raiments of the Eye set",
@@ -229,7 +229,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 				new ItemRequirement("Bottom", ItemCollections.EYE_BOTTOM),
 				new ItemRequirement("Boot", ItemID.BOOTS_OF_THE_EYE))
 		));
-		reqs.add(new SkillRequirement(Skill.SMITHING, 89));
+		reqs.add(new SkillRequirement(Skill.SMITHING, 89, true));
 
 		reqs.add(dreamMentor);
 		reqs.add(touristTrap);
@@ -263,33 +263,33 @@ public class VarrockElite extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails superCombatSteps = new PanelDetails("Make Super Combat", Arrays.asList(moveToBank, superCombat),
-			new SkillRequirement(Skill.HERBLORE, 90), sAtk4, sStr4, sDef4, torstol);
+			new SkillRequirement(Skill.HERBLORE, 90, true), sAtk4, sStr4, sDef4, torstol);
 		superCombatSteps.setDisplayCondition(notSuperCombat);
 		superCombatSteps.setLockingStep(superCombatTask);
 		allSteps.add(superCombatSteps);
 
 		PanelDetails summerPieSteps = new PanelDetails("Summer Pie", Arrays.asList(moveToCookingGuild, summerPie),
-			new SkillRequirement(Skill.COOKING, 95), cookingGuild, rawPie);
+			new SkillRequirement(Skill.COOKING, 95, true), cookingGuild, rawPie);
 		summerPieSteps.setDisplayCondition(notSummerPie);
 		summerPieSteps.setLockingStep(summerPieTask);
 		allSteps.add(summerPieSteps);
 
 		PanelDetails runeDartsSteps = new PanelDetails("Smith and Fletch 10 Rune Darts", Arrays.asList(moveToAnvil,
-			dartTip, runeDart), new SkillRequirement(Skill.FLETCHING, 81), new SkillRequirement(Skill.SMITHING, 89),
+			dartTip, runeDart), new SkillRequirement(Skill.FLETCHING, 81, true), new SkillRequirement(Skill.SMITHING, 89, true),
 			touristTrap, runeBar, feather, hammer);
 		runeDartsSteps.setDisplayCondition(notRuneDart);
 		runeDartsSteps.setLockingStep(runeDartTask);
 		allSteps.add(runeDartsSteps);
 
 		PanelDetails plankMakeSteps = new PanelDetails("Plank Make", Arrays.asList(moveToLumb, plankMake),
-			new SkillRequirement(Skill.MAGIC, 86), lunarBook, dreamMentor, natureRune.quantity(20),
+			new SkillRequirement(Skill.MAGIC, 86, true), lunarBook, dreamMentor, natureRune.quantity(20),
 			astralRune.quantity(40), earthRune.quantity(300), coins.quantity(21000), mahoganyLog.quantity(20));
 		plankMakeSteps.setDisplayCondition(notPlankMake);
 		plankMakeSteps.setLockingStep(plankMakeTask);
 		allSteps.add(plankMakeSteps);
 
 		PanelDetails earth100Steps = new PanelDetails("Craft 100 Earth runes", Arrays.asList(moveToEarthRune,
-			earthRune100), new SkillRequirement(Skill.RUNECRAFT, 78), essence.quantity(25), earthTali);
+			earthRune100), new SkillRequirement(Skill.RUNECRAFT, 78, true), essence.quantity(25), earthTali);
 		earth100Steps.setDisplayCondition(not100Earth);
 		earth100Steps.setLockingStep(earthRuneTask);
 		allSteps.add(earth100Steps);

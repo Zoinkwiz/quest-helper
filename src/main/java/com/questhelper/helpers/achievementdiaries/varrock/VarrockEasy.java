@@ -267,12 +267,12 @@ public class VarrockEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 13));
-		reqs.add(new SkillRequirement(Skill.CRAFTING, 8));
-		reqs.add(new SkillRequirement(Skill.FISHING, 20));
-		reqs.add(new SkillRequirement(Skill.MINING, 15));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 9));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 5));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 13, true));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 8, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 20, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 15, true));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 9, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 5, true));
 
 		reqs.add(runeMysteries);
 
@@ -330,7 +330,7 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		allSteps.add(auburySteps);
 
 		PanelDetails teaStallSteps = new PanelDetails("Steal from the Tea Stall", Collections.singletonList(teaStall),
-			new SkillRequirement(Skill.THIEVING, 5));
+			new SkillRequirement(Skill.THIEVING, 5, true));
 		teaStallSteps.setDisplayCondition(notTeaStall);
 		teaStallSteps.setLockingStep(teaStallTask);
 		allSteps.add(teaStallSteps);
@@ -346,30 +346,30 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		allSteps.add(dyingTreeSteps);
 
 		PanelDetails earthRuneSteps = new PanelDetails("Craft an Earth Rune", Arrays.asList(moveToEarthRune,
-			earthRune), new SkillRequirement(Skill.RUNECRAFT, 9), essence, earthTali);
+			earthRune), new SkillRequirement(Skill.RUNECRAFT, 9, true), essence, earthTali);
 		earthRuneSteps.setDisplayCondition(notEarthRune);
 		earthRuneSteps.setLockingStep(earthRuneTask);
 		allSteps.add(earthRuneSteps);
 
 		PanelDetails ironSteps = new PanelDetails("Mine Iron South East", Collections.singletonList(iron),
-			new SkillRequirement(Skill.MINING, 15), pickaxe);
+			new SkillRequirement(Skill.MINING, 15, true), pickaxe);
 		ironSteps.setDisplayCondition(notIron);
 		ironSteps.setLockingStep(ironTask);
 		allSteps.add(ironSteps);
 
-		PanelDetails fenceSteps = new PanelDetails("Jump the Fence", Collections.singletonList(fence), new SkillRequirement(Skill.AGILITY, 13));
+		PanelDetails fenceSteps = new PanelDetails("Jump the Fence", Collections.singletonList(fence), new SkillRequirement(Skill.AGILITY, 13, true));
 		fenceSteps.setDisplayCondition(notFence);
 		fenceSteps.setLockingStep(fenceTask);
 		allSteps.add(fenceSteps);
 
 		PanelDetails troutSteps = new PanelDetails("Fish a Trout", Collections.singletonList(trout),
-			new SkillRequirement(Skill.FISHING, 20), flyRod, feathers);
+			new SkillRequirement(Skill.FISHING, 20, true), flyRod, feathers);
 		troutSteps.setDisplayCondition(notTrout);
 		troutSteps.setLockingStep(troutTask);
 		allSteps.add(troutSteps);
 
 		PanelDetails bowlSteps = new PanelDetails("Spin a Bowl in Barbarian Village", Arrays.asList(potteryWheel, bowl),
-			new SkillRequirement(Skill.CRAFTING, 8), softClay);
+			new SkillRequirement(Skill.CRAFTING, 8, true), softClay);
 		bowlSteps.setDisplayCondition(notBowl);
 		bowlSteps.setLockingStep(bowlTask);
 		allSteps.add(bowlSteps);

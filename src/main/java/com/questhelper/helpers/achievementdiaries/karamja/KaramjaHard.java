@@ -211,6 +211,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		agility53 = new SkillRequirement(Skill.AGILITY, 53, true);
 		cooking30 = new SkillRequirement(Skill.COOKING, 30, true);
 		cooking50 = new SkillRequirement(Skill.COOKING, 50, false);
+		cooking50.setTooltip("To cook a wrapped oomlie");
 		mining52 = new SkillRequirement(Skill.MINING, 52, true);
 		ranged42 = new SkillRequirement(Skill.RANGED, 42, true);
 		runecrafting44 = new SkillRequirement(Skill.RUNECRAFT, 44, true);

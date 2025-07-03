@@ -334,8 +334,8 @@ public class KourendHard extends ComplexStateQuestHelper
 		req.add(new SkillRequirement(Skill.MINING, 65, true));
 		req.add(new SkillRequirement(Skill.SLAYER, 62, true));
 		req.add(new SkillRequirement(Skill.SMITHING, 70, true));
-		req.add(new SkillRequirement(Skill.THIEVING, 49));
-		req.add(new SkillRequirement(Skill.WOODCUTTING, 60));
+		req.add(new SkillRequirement(Skill.THIEVING, 49, false));
+		req.add(new SkillRequirement(Skill.WOODCUTTING, 60, true));
 
 		req.add(dreamMentor);
 		req.add(theForsakenTower);
@@ -368,20 +368,20 @@ public class KourendHard extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails deliverArtifactStep = new PanelDetails("Deliver an artifact", Arrays.asList(talkToCaptainKhaled,
-			deliverArtifact), new SkillRequirement(Skill.THIEVING, 49), lockpick);
+			deliverArtifact), new SkillRequirement(Skill.THIEVING, 49, false), lockpick);
 		deliverArtifactStep.setDisplayCondition(notDeliverArtifact);
 		deliverArtifactStep.setLockingStep(deliverArtifactTask);
 		allSteps.add(deliverArtifactStep);
 
 		PanelDetails plantLogavanoStep = new PanelDetails("Plant some logavano seeds", Arrays.asList(searchSeedTable,
-			enterTitheFarm, plantLogavanoSeed), new SkillRequirement(Skill.FARMING, 74), seedDibber, spade,
+			enterTitheFarm, plantLogavanoSeed), new SkillRequirement(Skill.FARMING, 74, true), seedDibber, spade,
 			wateringCan, logavanoSeeds);
 		plantLogavanoStep.setDisplayCondition(notPlantLogavano);
 		plantLogavanoStep.setLockingStep(plantLogavanoTask);
 		allSteps.add(plantLogavanoStep);
 
 		PanelDetails woodcuttingGuildStep = new PanelDetails("Enter the woodcutting guild",
-			Collections.singletonList(enterWoodcuttingGuild), new SkillRequirement(Skill.WOODCUTTING, 60));
+			Collections.singletonList(enterWoodcuttingGuild), new SkillRequirement(Skill.WOODCUTTING, 60, true));
 		woodcuttingGuildStep.setDisplayCondition(notWoodcuttingGuild);
 		woodcuttingGuildStep.setLockingStep(woodcuttingGuildTask);
 		allSteps.add(woodcuttingGuildStep);
@@ -399,13 +399,13 @@ public class KourendHard extends ComplexStateQuestHelper
 		allSteps.add(mineLovakiteStep);
 
 		PanelDetails smeltBarStep = new PanelDetails("Smelt some adamantite", Arrays.asList(enterForsakenTower,
-			smeltAddyBar), new SkillRequirement(Skill.SMITHING, 70), theForsakenTower, adamantiteOre, coal.quantity(6));
+			smeltAddyBar), new SkillRequirement(Skill.SMITHING, 70, true), theForsakenTower, adamantiteOre, coal.quantity(6));
 		smeltBarStep.setDisplayCondition(notSmeltAddyBar);
 		smeltBarStep.setLockingStep(smeltAddyBarTask);
 		allSteps.add(smeltBarStep);
 
 		PanelDetails killWyrmStep = new PanelDetails("Slay a wyrm", Arrays.asList(enterMountKaruulmDungeon,
-			enterWyrmArea, killWyrm), new SkillRequirement(Skill.SLAYER, 62), combatGear, food, bootsOfStone);
+			enterWyrmArea, killWyrm), new SkillRequirement(Skill.SLAYER, 62, true), combatGear, food, bootsOfStone);
 		killWyrmStep.setDisplayCondition(notKillWyrm);
 		killWyrmStep.setLockingStep(killWyrmTask);
 		allSteps.add(killWyrmStep);
@@ -418,7 +418,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		allSteps.add(killShamanStep);
 
 		PanelDetails examineMonsterStep = new PanelDetails("Cast Monster Examine",
-			Collections.singletonList(castMonsterExamine), new SkillRequirement(Skill.MAGIC, 66), dreamMentor,
+			Collections.singletonList(castMonsterExamine), new SkillRequirement(Skill.MAGIC, 66, true), dreamMentor,
 			lunarBook, mindRune, astralRune, cosmicRune);
 		examineMonsterStep.setDisplayCondition(notExamineMonster);
 		examineMonsterStep.setLockingStep(examineMonsterTask);

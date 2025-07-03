@@ -332,15 +332,15 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.AGILITY, 71, true));
-		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 50));
+		reqs.add(new SkillRequirement(Skill.CONSTRUCTION, 50, true));
 		reqs.add(new SkillRequirement(Skill.DEFENCE, 70, false));
 		reqs.add(new SkillRequirement(Skill.FARMING, 53, true));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 50, true));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 66, true));
 		reqs.add(new SkillRequirement(Skill.MINING, 55, true));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 70, false));
 		reqs.add(new SkillRequirement(Skill.SLAYER, 58, true));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
 
 		reqs.add(cabinFever);
 		reqs.add(desertTreasure);
@@ -408,8 +408,8 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		allSteps.add(mithSteps);
 
 		PanelDetails pietySteps = new PanelDetails("Nature Grotto Piety", Arrays.asList(moveToGrotto, pietyAltar),
-			natureSpirit, kingsRansom, knightWaves, new SkillRequirement(Skill.PRAYER, 70),
-			new SkillRequirement(Skill.DEFENCE, 70));
+			natureSpirit, kingsRansom, knightWaves, new SkillRequirement(Skill.PRAYER, 70, false),
+			new SkillRequirement(Skill.DEFENCE, 70, false));
 		pietySteps.setDisplayCondition(notPietyAltar);
 		pietySteps.setLockingStep(pietyAltarTask);
 		allSteps.add(pietySteps);
@@ -420,7 +420,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		allSteps.add(hardSteps);
 
 		PanelDetails salveSteps = new PanelDetails("Shortcut Over the Salve", Collections.singletonList(bridgeSalve),
-			new SkillRequirement(Skill.AGILITY, 65));
+			new SkillRequirement(Skill.AGILITY, 65, true));
 		salveSteps.setDisplayCondition(notBridgeSalve);
 		salveSteps.setLockingStep(bridgeSalveTask);
 		allSteps.add(salveSteps);
@@ -439,15 +439,15 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		allSteps.add(caveHorrorSteps);
 
 		PanelDetails mahoSteps = new PanelDetails("Chop and Burn Mahogany", Arrays.asList(moveToCaptMaho, moveToMosMaho,
-			moveToCaveMaho, moveToIsland, chopMaho, burnMaho), new SkillRequirement(Skill.FIREMAKING, 50),
-			new SkillRequirement(Skill.WOODCUTTING, 50),
+			moveToCaveMaho, moveToIsland, chopMaho, burnMaho), new SkillRequirement(Skill.FIREMAKING, 50, true),
+			new SkillRequirement(Skill.WOODCUTTING, 50, true),
 			axe, tinderbox, witchwoodIcon.equipped(), lightSource);
 		mahoSteps.setDisplayCondition(notBurnMaho);
 		mahoSteps.setLockingStep(burnMahoTask);
 		allSteps.add(mahoSteps);
 
 		PanelDetails kharyllSteps = new PanelDetails("Kharyrll Portal", Collections.singletonList(kharyrll),
-			new SkillRequirement(Skill.MAGIC, 66), new SkillRequirement(Skill.CONSTRUCTION, 50),
+			new SkillRequirement(Skill.MAGIC, 66, true), new SkillRequirement(Skill.CONSTRUCTION, 50, true),
 			desertTreasure, coins.quantity(100000), limestoneBrick.quantity(2), hammer, saw, teakPlank.quantity(3),
 			lawRune.quantity(200), bloodRune.quantity(100));
 		kharyllSteps.setDisplayCondition(notKharyrll);

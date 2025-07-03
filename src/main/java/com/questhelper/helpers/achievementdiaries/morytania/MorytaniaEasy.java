@@ -284,10 +284,20 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(20));
-		reqs.add(new SkillRequirement(Skill.COOKING, 12));
-		reqs.add(new SkillRequirement(Skill.CRAFTING, 15));
-		reqs.add(new SkillRequirement(Skill.FARMING, 23));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 15));
+		reqs.add(new SkillRequirement(Skill.COOKING, 12, true));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 15, true));
+		reqs.add(new SkillRequirement(Skill.FARMING, 23, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 15, true));
+
+		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
+		{
+			// 47 Farming is required to get a Watermelon for the scarecrow step
+			reqs.add(new SkillRequirement(Skill.FARMING, 47, true));
+		}
+		else
+		{
+			reqs.add(new SkillRequirement(Skill.FARMING, 23, true));
+		}
 
 		reqs.add(ghostsAhoy);
 		reqs.add(natureSpirit);
@@ -337,7 +347,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		allSteps.add(enterSwampSteps);
 
 		PanelDetails craftSnelmSteps = new PanelDetails("Craft Snelm", Collections.singletonList(craftSnelm),
-			new SkillRequirement(Skill.CRAFTING, 15), snailShell, chisel);
+			new SkillRequirement(Skill.CRAFTING, 15, true), snailShell, chisel);
 		craftSnelmSteps.setDisplayCondition(notCraftSnelm);
 		craftSnelmSteps.setLockingStep(craftSnelmTask);
 		allSteps.add(craftSnelmSteps);
@@ -349,7 +359,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		allSteps.add(restorePrayerSteps);
 
 		PanelDetails killBansheeSteps = new PanelDetails("Kill Banshee", Collections.singletonList(killBanshee),
-			new SkillRequirement(Skill.SLAYER, 15), combatGear, food, earProtection);
+			new SkillRequirement(Skill.SLAYER, 15, true), combatGear, food, earProtection);
 		killBansheeSteps.setDisplayCondition(notKillBanshee);
 		killBansheeSteps.setLockingStep(killBansheeTask);
 		allSteps.add(killBansheeSteps);
@@ -373,7 +383,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		allSteps.add(mazchnaSteps);
 
 		PanelDetails placeScarecrowSteps = new PanelDetails("Place Scarecrow", Arrays.asList(fillSack, useSackOnSpear,
-			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23), scarecrowItems, rake);
+			useWatermelonOnSack, placeScarecrow), new SkillRequirement(Skill.FARMING, 23, true), scarecrowItems, rake);
 		placeScarecrowSteps.setDisplayCondition(notPlaceScarecrow);
 		placeScarecrowSteps.setLockingStep(placeScarecrowTask);
 		allSteps.add(placeScarecrowSteps);
@@ -385,7 +395,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		allSteps.add(offerBonemealSteps);
 
 		PanelDetails cookSnailSteps = new PanelDetails("Cook Thin Snail", Collections.singletonList(cookSnail),
-			new SkillRequirement(Skill.COOKING, 12), thinSnail);
+			new SkillRequirement(Skill.COOKING, 12, true), thinSnail);
 		cookSnailSteps.setDisplayCondition(notCookSnail);
 		cookSnailSteps.setLockingStep(cookSnailTask);
 		allSteps.add(cookSnailSteps);

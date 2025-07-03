@@ -292,13 +292,13 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 10));
-		reqs.add(new SkillRequirement(Skill.FIREMAKING, 15));
-		reqs.add(new SkillRequirement(Skill.FISHING, 15));
-		reqs.add(new SkillRequirement(Skill.MINING, 15));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 5));
-		reqs.add(new SkillRequirement(Skill.SLAYER, 7));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 15));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 10, true));
+		reqs.add(new SkillRequirement(Skill.FIREMAKING, 15, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 15, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 15, true));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 5, true));
+		reqs.add(new SkillRequirement(Skill.SLAYER, 7, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 15, true));
 
 		reqs.add(runeMysteries);
 		reqs.add(cooksAssistant);
@@ -336,7 +336,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails draynorRooftopsSteps = new PanelDetails("Draynor Rooftops", Collections.singletonList(drayAgi),
-			new SkillRequirement(Skill.AGILITY, 10));
+			new SkillRequirement(Skill.AGILITY, 10, true));
 		draynorRooftopsSteps.setDisplayCondition(notDrayAgi);
 		draynorRooftopsSteps.setLockingStep(drayAgiTask);
 		allSteps.add(draynorRooftopsSteps);
@@ -359,13 +359,13 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		allSteps.add(enterTheHamHideoutSteps);
 
 		PanelDetails killCaveBugSteps = new PanelDetails("Kill Cave Bug", Arrays.asList(addRopeToHole, killCaveBug),
-			new SkillRequirement(Skill.SLAYER, 7), lightSource, rope, spinyHelm);
+			new SkillRequirement(Skill.SLAYER, 7, true), lightSource, rope, spinyHelm);
 		killCaveBugSteps.setDisplayCondition(notKillCaveBug);
 		killCaveBugSteps.setLockingStep(killCaveBugTask);
 		allSteps.add(killCaveBugSteps);
 
 		PanelDetails waterRunesSteps = new PanelDetails("Craft Water Runes", Arrays.asList(moveToWaterAltar, waterRune),
-			new SkillRequirement(Skill.RUNECRAFT, 5), waterAccessOrAbyss, runeEss);
+			new SkillRequirement(Skill.RUNECRAFT, 5, true), waterAccessOrAbyss, runeEss);
 		waterRunesSteps.setDisplayCondition(notWaterRune);
 		waterRunesSteps.setLockingStep(waterRuneTask);
 		allSteps.add(waterRunesSteps);
@@ -387,19 +387,19 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		allSteps.add(pickpocketSteps);
 
 		PanelDetails oakSteps = new PanelDetails("Chop and Burn Oak Logs", Arrays.asList(chopOak, burnOak),
-			new SkillRequirement(Skill.WOODCUTTING, 15), new SkillRequirement(Skill.FIREMAKING, 15), tinderbox, axe);
+			new SkillRequirement(Skill.WOODCUTTING, 15, true), new SkillRequirement(Skill.FIREMAKING, 15, true), tinderbox, axe);
 		oakSteps.setDisplayCondition(notOak);
 		oakSteps.setLockingStep(oakTask);
 		allSteps.add(oakSteps);
 
 		PanelDetails mineIronSteps = new PanelDetails("Mine Iron in Al-Kharid", Collections.singletonList(mineIron),
-			new SkillRequirement(Skill.MINING, 15), pickaxe);
+			new SkillRequirement(Skill.MINING, 15, true), pickaxe);
 		mineIronSteps.setDisplayCondition(notIron);
 		mineIronSteps.setLockingStep(ironTask);
 		allSteps.add(mineIronSteps);
 
 		PanelDetails anchoviesSteps = new PanelDetails("Fish Anchovies in Al-Kharid",
-			Collections.singletonList(fishAnchovies), new SkillRequirement(Skill.FISHING, 15), smallFishingNet);
+			Collections.singletonList(fishAnchovies), new SkillRequirement(Skill.FISHING, 15, true), smallFishingNet);
 		anchoviesSteps.setDisplayCondition(notFishAnchovies);
 		anchoviesSteps.setLockingStep(fishAnchoviesTask);
 		allSteps.add(anchoviesSteps);

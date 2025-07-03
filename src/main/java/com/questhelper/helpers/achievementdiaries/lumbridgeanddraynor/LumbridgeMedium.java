@@ -277,16 +277,16 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new CombatLevelRequirement(70));
-		reqs.add(new SkillRequirement(Skill.AGILITY, 20));
-		reqs.add(new SkillRequirement(Skill.CRAFTING, 38));
-		reqs.add(new SkillRequirement(Skill.FISHING, 30));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 42));
-		reqs.add(new SkillRequirement(Skill.MAGIC, 31));
-		reqs.add(new SkillRequirement(Skill.RANGED, 50));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 23));
-		reqs.add(new SkillRequirement(Skill.STRENGTH, 19));
-		reqs.add(new SkillRequirement(Skill.THIEVING, 38));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 30));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 20, true));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 38, true));
+		reqs.add(new SkillRequirement(Skill.FISHING, 30, true));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 42, true));
+		reqs.add(new SkillRequirement(Skill.MAGIC, 31, true));
+		reqs.add(new SkillRequirement(Skill.RANGED, 50, false));
+		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 23, true));
+		reqs.add(new SkillRequirement(Skill.STRENGTH, 19, true));
+		reqs.add(new SkillRequirement(Skill.THIEVING, 38, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 30, true));
 
 		reqs.add(fairyTaleII);
 		reqs.add(animalMagnetism);
@@ -324,7 +324,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		allSteps.add(chaeldarSteps);
 
 		PanelDetails puroImpSteps = new PanelDetails("Catch Essence or Eclectic Imp", Arrays.asList(moveToZanarisPuro,
-			moveToPuro, puroImp), new SkillRequirement(Skill.HUNTER, 42), lostCity, fairyAccess, butterflyNet, implingJar);
+			moveToPuro, puroImp), new SkillRequirement(Skill.HUNTER, 42, true), lostCity, fairyAccess, butterflyNet, implingJar);
 		puroImpSteps.setDisplayCondition(notPuroImp);
 		puroImpSteps.setLockingStep(puroImpTask);
 		allSteps.add(puroImpSteps);
@@ -336,19 +336,19 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		allSteps.add(wizardsTowerSteps);
 
 		PanelDetails chopWillowSteps = new PanelDetails("Chop Willow", Collections.singletonList(chopWillow),
-			new SkillRequirement(Skill.WOODCUTTING, 30), axe);
+			new SkillRequirement(Skill.WOODCUTTING, 30, true), axe);
 		chopWillowSteps.setDisplayCondition(notChopWillow);
 		chopWillowSteps.setLockingStep(chopWillowTask);
 		allSteps.add(chopWillowSteps);
 
 		PanelDetails pickpocketMasterGardenerSteps = new PanelDetails("Pickpocket Master Gardener",
-			Collections.singletonList(pickGardener), new SkillRequirement(Skill.THIEVING, 38));
+			Collections.singletonList(pickGardener), new SkillRequirement(Skill.THIEVING, 38, true));
 		pickpocketMasterGardenerSteps.setDisplayCondition(notPickGardener);
 		pickpocketMasterGardenerSteps.setLockingStep(pickGardenerTask);
 		allSteps.add(pickpocketMasterGardenerSteps);
 
 		PanelDetails upgradeSteps = new PanelDetails("Ava's Accumulator", Collections.singletonList(upgradeDevice),
-			new SkillRequirement(Skill.RANGED, 50), animalMagnetism, avasAccumulator, steelArrows.quantity(75));
+			new SkillRequirement(Skill.RANGED, 50, false), animalMagnetism, avasAccumulator, steelArrows.quantity(75));
 		upgradeSteps.setDisplayCondition(notUpgradeDevice);
 		upgradeSteps.setLockingStep(upgradeDeviceTask);
 		allSteps.add(upgradeSteps);
@@ -360,33 +360,33 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		allSteps.add(tpLumbSteps);
 
 		PanelDetails catchSalmonSteps = new PanelDetails("Catch Salmon", Collections.singletonList(catchSalmon),
-			new SkillRequirement(Skill.FISHING, 30), feathers, flyFishingRod);
+			new SkillRequirement(Skill.FISHING, 30, true), feathers, flyFishingRod);
 		catchSalmonSteps.setDisplayCondition(notCatchSalmon);
 		catchSalmonSteps.setLockingStep(catchSalmonTask);
 		allSteps.add(catchSalmonSteps);
 
 		PanelDetails craftACoifSteps = new PanelDetails("Craft a coif in the cow pen", Arrays.asList(moveToCowPen, craftCoif),
-			new SkillRequirement(Skill.CRAFTING, 38), leather, needle, thread);
+			new SkillRequirement(Skill.CRAFTING, 38, true), leather, needle, thread);
 		craftACoifSteps.setDisplayCondition(notCraftCoif);
 		craftACoifSteps.setLockingStep(craftCoifTask);
 		allSteps.add(craftACoifSteps);
 
 		PanelDetails alKharidRooftopCourseSteps = new PanelDetails("Al Kharid Rooftop Course",
-			Collections.singletonList(alKharidRooftop), new SkillRequirement(Skill.AGILITY, 20));
+			Collections.singletonList(alKharidRooftop), new SkillRequirement(Skill.AGILITY, 20, true));
 		alKharidRooftopCourseSteps.setDisplayCondition(notAlKharidRooftop);
 		alKharidRooftopCourseSteps.setLockingStep(alKharidRooftopTask);
 		allSteps.add(alKharidRooftopCourseSteps);
 
 		PanelDetails grappleRiverLumSteps = new PanelDetails("Grapple River Lum",
-			Collections.singletonList(grappleLum), new SkillRequirement(Skill.AGILITY, 8),
-			new SkillRequirement(Skill.STRENGTH, 19), new SkillRequirement(Skill.RANGED, 37),
+			Collections.singletonList(grappleLum), new SkillRequirement(Skill.AGILITY, 8, true),
+			new SkillRequirement(Skill.STRENGTH, 19, true), new SkillRequirement(Skill.RANGED, 37, true),
 			crossbow, mithGrap);
 		grappleRiverLumSteps.setDisplayCondition(notGrappleLum);
 		grappleRiverLumSteps.setLockingStep(grappleLumTask);
 		allSteps.add(grappleRiverLumSteps);
 
 		PanelDetails lavaRunesSteps = new PanelDetails("Craft Lava Runes", Arrays.asList(moveToLavaAltar, craftLava),
-			new SkillRequirement(Skill.RUNECRAFT, 23), fireAccess, earthTali, earthRune, essence);
+			new SkillRequirement(Skill.RUNECRAFT, 23, true), fireAccess, earthTali, earthRune, essence);
 		lavaRunesSteps.setDisplayCondition(notCraftLava);
 		lavaRunesSteps.setLockingStep(craftLavaTask);
 		allSteps.add(lavaRunesSteps);

@@ -175,9 +175,9 @@ public class TheLostTribe extends BasicQuestHelper
 		goDownIntoBasement = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0), "Enter the Lumbridge Castle basement.");
 		goDownFromF1 = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(3205, 3208, 1), "Go down the staircase.");
 		goDownFromF1.addDialogStep("Climb down the stairs.");
-		goUpToF1 = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(3205, 3208, 0), "Go up to the first floor of Lumbridge Castle.");
+		goUpToF1 = new ObjectStep(this, ObjectID.SPIRALSTAIRSBOTTOM_3, new WorldPoint(3205, 3208, 0), "Go up to the first floor of Lumbridge Castle.");
 		goUpFromBasement = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3209, 9616, 0), "Go up to the surface.");
-		goDownFromF2 = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(3205, 3208, 2), "Go downstairs.");
+		goDownFromF2 = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP_3, new WorldPoint(3205, 3208, 2), "Go downstairs.");
 		talkToSigmund = new NpcStep(this, NpcID.LOST_TRIBE_SIGMUND_THERE, new WorldPoint(3210, 3222, 1), "");
 		talkToSigmund.addDialogSteps("Do you have any quests for me?", "Yes.");
 

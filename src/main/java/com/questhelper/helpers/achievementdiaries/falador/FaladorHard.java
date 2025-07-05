@@ -164,7 +164,8 @@ public class FaladorHard extends ComplexStateQuestHelper
 		notDwarvenHelmetDwarvenMines = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 4);
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.BLANKRUNE_HIGH, 28).showConditioned(notCraftedMindRunes);
-		mindTiara = new ItemRequirement("Mind Tiara", ItemID.TIARA_MIND, 1, true).showConditioned(notCraftedMindRunes);
+		mindTiara = new ItemRequirement("Access to the Mind Altar", ItemCollections.MIND_ALTAR_WEARABLE, 1, true).showConditioned(notCraftedMindRunes);
+		mindTiara.setTooltip("Mind Tiara, Catalytic Tiara, RC-skill cape or via Abyss");
 		coins10000 = new ItemRequirement("Coins", ItemCollections.COINS, 10000).showConditioned(notChangedFamilyCrest);
 		combatGear = new ItemRequirement("Combat Gear", -1, -1).isNotConsumed();
 		food = new ItemRequirement("Good healing food.", ItemCollections.GOOD_EATING_FOOD, -1);

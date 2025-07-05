@@ -360,17 +360,17 @@ public class LunarDiplomacy extends BasicQuestHelper
 		pestle = new ItemRequirement("Pestle and mortar", ItemID.PESTLE_AND_MORTAR).isNotConsumed();
 		pestle.setHighlightInInventory(true);
 
-		airTalisman = new ItemRequirement("Air talisman/tiara, or access via the Abyss", ItemID.AIR_TALISMAN).isNotConsumed();
-		airTalisman.addAlternates(ItemID.TIARA_AIR, ItemID.ELEMENTAL_TALISMAN);
+		airTalisman = new ItemRequirement("Access to the Air Altar", ItemCollections.AIR_ALTAR).isNotConsumed();
+		airTalisman.setTooltip("Air Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
-		fireTalisman = new ItemRequirement("Fire talisman/tiara, or access via the Abyss", ItemID.FIRE_TALISMAN).isNotConsumed();
-		fireTalisman.addAlternates(ItemID.TIARA_FIRE, ItemID.ELEMENTAL_TALISMAN);
+		fireTalisman = new ItemRequirement("Access to the Fire Altar", ItemCollections.FIRE_ALTAR).isNotConsumed();
+		fireTalisman.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
-		earthTalisman = new ItemRequirement("Earth talisman/tiara, or access via the Abyss", ItemID.EARTH_TALISMAN).isNotConsumed();
-		earthTalisman.addAlternates(ItemID.TIARA_EARTH, ItemID.ELEMENTAL_TALISMAN);
+		earthTalisman = new ItemRequirement("Access to the Earth Altar", ItemCollections.EARTH_ALTAR).isNotConsumed();
+		earthTalisman.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
-		waterTalisman = new ItemRequirement("Water talisman/tiara, or access via the Abyss", ItemID.WATER_TALISMAN).isNotConsumed();
-		waterTalisman.addAlternates(ItemID.TIARA_WATER, ItemID.ELEMENTAL_TALISMAN);
+		waterTalisman = new ItemRequirement("Access to the Water Altar", ItemCollections.WATER_ALTAR).isNotConsumed();
+		waterTalisman.setTooltip("Water Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.setTooltip("You can get another from under Entrana");

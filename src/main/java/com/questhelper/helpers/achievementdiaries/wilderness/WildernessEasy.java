@@ -154,8 +154,9 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		firstTimeAbyss = new VarbitRequirement(626, 1);
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		chaosAccess = new ItemRequirement("Access to Chaos altar, or travel through abyss",
+		chaosAccess = new ItemRequirement("Access to the Chaos altar",
 			ItemCollections.CHAOS_ALTAR).showConditioned(notChaosTemple).isNotConsumed();
+		chaosAccess.setTooltip("Chaos Talisman/Tiara, Catalytic Talisman/Tiara, RC-skill cape or travel through Abyss");
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notIronOre).isNotConsumed();
 		teamCape = new ItemRequirement("Any team cape", ItemCollections.TEAM_CAPE).showConditioned(notEquipTeamCape).isNotConsumed();
 		redSpiderEggs = new ItemRequirement("Red spider eggs", ItemID.RED_SPIDERS_EGGS).showConditioned(notSpiderEggs);

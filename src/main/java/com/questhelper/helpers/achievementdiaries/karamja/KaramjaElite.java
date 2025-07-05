@@ -108,7 +108,7 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		notCheckedCalquat = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 5);
 
 		natureTiaraOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemCollections.NATURE_ALTAR_WEARABLE).showConditioned(notCraftedRunes).isNotConsumed();
-		natureTiaraOrAbyss.setTooltip("Nature Tiara, Catalytic Tiara or via Abyss");
+		natureTiaraOrAbyss.setTooltip("Nature Tiara, Catalytic Tiara, RC-skill cape or via Abyss");
 		pureEssence = new ItemRequirement("Pure essence", ItemID.BLANKRUNE_HIGH).showConditioned(notCraftedRunes);
 		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.TZHAAR_CAPE_FIRE)
 			.showConditioned(notEquippedCape).isNotConsumed();

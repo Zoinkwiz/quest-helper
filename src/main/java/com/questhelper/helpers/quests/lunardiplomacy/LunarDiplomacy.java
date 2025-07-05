@@ -361,16 +361,16 @@ public class LunarDiplomacy extends BasicQuestHelper
 		pestle.setHighlightInInventory(true);
 
 		airTalisman = new ItemRequirement("Access to the Air Altar", ItemCollections.AIR_ALTAR).isNotConsumed();
-		airTalisman.setTooltip("Air Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		airTalisman.setTooltip("Air Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		fireTalisman = new ItemRequirement("Access to the Fire Altar", ItemCollections.FIRE_ALTAR).isNotConsumed();
-		fireTalisman.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		fireTalisman.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		earthTalisman = new ItemRequirement("Access to the Earth Altar", ItemCollections.EARTH_ALTAR).isNotConsumed();
-		earthTalisman.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		earthTalisman.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		waterTalisman = new ItemRequirement("Access to the Water Altar", ItemCollections.WATER_ALTAR).isNotConsumed();
-		waterTalisman.setTooltip("Water Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		waterTalisman.setTooltip("Water Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		dramenStaff = new ItemRequirement("Dramen staff", ItemID.DRAMEN_STAFF).isNotConsumed();
 		dramenStaff.setTooltip("You can get another from under Entrana");

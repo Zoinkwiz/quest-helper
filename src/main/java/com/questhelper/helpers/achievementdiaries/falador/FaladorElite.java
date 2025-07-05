@@ -137,7 +137,7 @@ public class FaladorElite extends ComplexStateQuestHelper
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.BLANKRUNE_HIGH, 28).showConditioned(notCraftedAirRunes);
 		airTiara = new ItemRequirement("Access to the Air Altar", ItemCollections.AIR_ALTAR_WEARABLE, 1, true).showConditioned(notCraftedAirRunes).isNotConsumed();
-		airTiara.setTooltip("Air tiara, Elemental Tiara, or via Abyss");
+		airTiara.setTooltip("Air tiara, Elemental Tiara, RC-skill cape or via Abyss");
 		coins1920 = new ItemRequirement("Coins", ItemCollections.COINS, 1920).showConditioned(notPurchasedWhite2hSword);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots).isNotConsumed();
 		axe = new ItemRequirement("Any Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots).isNotConsumed();

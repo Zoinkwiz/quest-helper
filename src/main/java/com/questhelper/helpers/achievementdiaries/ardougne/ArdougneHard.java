@@ -180,7 +180,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		shieldRight = new ItemRequirement("Shield right half", ItemID.DRAGONSHIELD_B).showConditioned(notDragSquare);
 		deathAccess = new ItemRequirement("Access to the Death Altar",
 			ItemCollections.DEATH_ALTAR).showConditioned(notDeathRune).isNotConsumed();
-		deathAccess.setTooltip("Death Talisman/Tiara, Catalytic Talisman/Tiara or via Abyss");
+		deathAccess.setTooltip("Death Talisman/Tiara, Catalytic Talisman/Tiara, RC-skill cape or via Abyss");
 		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.MOURNING_CRYSTAL_TRINKET).showConditioned(notDeathRune).isNotConsumed();
 		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH)
 			.showConditioned(notDeathRune);

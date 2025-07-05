@@ -201,19 +201,19 @@ public class TheSlugMenace extends BasicQuestHelper
 		essence5.addAlternates(ItemID.BLANKRUNE);
 
 		ItemRequirement airTalisman = new ItemRequirement("Access to the Air Altar", ItemCollections.AIR_ALTAR).isNotConsumed();
-		airTalisman.setTooltip("Air Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		airTalisman.setTooltip("Air Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		ItemRequirement waterTalisman = new ItemRequirement("Access to the Water Altar", ItemCollections.WATER_ALTAR).isNotConsumed();
-		waterTalisman.setTooltip("Water Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		waterTalisman.setTooltip("Water Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		ItemRequirement earthTalisman = new ItemRequirement("Access to the Earth Altar", ItemCollections.EARTH_ALTAR).isNotConsumed();
-		earthTalisman.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		earthTalisman.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		ItemRequirement fireTalisman = new ItemRequirement("Access to the Fire Altar", ItemCollections.FIRE_ALTAR).isNotConsumed();
-		fireTalisman.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
+		fireTalisman.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		ItemRequirement mindTalisman = new ItemRequirement("Access to the Mind Altar", ItemCollections.MIND_ALTAR).isNotConsumed();
-		mindTalisman.setTooltip("Mind Talisman/Tiara, Catalytic Talisman/Tiara or via Abyss.");
+		mindTalisman.setTooltip("Mind Talisman/Tiara, Catalytic Talisman/Tiara, RC-skill cape or via Abyss.");
 
 		accessToAltars = new ItemRequirements("Access to air, water, earth, fire, and mind runecrafting altars",
 			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman).isNotConsumed();

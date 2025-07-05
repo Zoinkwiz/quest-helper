@@ -1429,7 +1429,9 @@ public enum ItemCollections
 
 	DEATH_ALTAR(ImmutableList.of(
 		ItemID.TIARA_DEATH,
-		ItemID.DEATH_TALISMAN
+		ItemID.DEATH_TALISMAN,
+		ItemID.CATALYTIC_TALISMAN,
+		ItemID.TIARA_CATALYTIC
 	)),
 
 	PLUNDER_ARTEFACTS(ImmutableList.of(

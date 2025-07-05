@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.whatliesbelow;
 
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -143,9 +144,8 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 		infusedWand = new ItemRequirement("Infused wand", ItemID.SUROK_GLOWINGWAND);
 		infusedWand.setTooltip("You can make another by getting a wand from Surok, and using it on the chaos altar with 15 chaos runes");
-		chaosTalismanOrAbyss = new ItemRequirement("Chaos Talisman or access to the Abyss", ItemID.CHAOS_TALISMAN).isNotConsumed();
-		chaosTalismanOrAbyss.addAlternates(ItemID.TIARA_CHAOS, ItemID.CATALYTIC_TALISMAN, ItemID.TIARA_CATALYTIC);
-		chaosTalismanOrAbyss.setTooltip("If using the Dagon'hai shortcut, catalytic talisman/tiara won't work");
+		chaosTalismanOrAbyss = new ItemRequirement("Access to the Chaos Altar", ItemCollections.CHAOS_ALTAR).isNotConsumed();
+		chaosTalismanOrAbyss.setTooltip("Chaos Talisman/Tiara, Catalytic Talisman/Tiara or via Abyss. If using the Dagon'hai shortcut, Catalytic Talisman/Tiara won't work");
 
 		beaconRing = new ItemRequirement("Beacon ring", ItemID.SUROK_RING);
 		beaconRing.setTooltip("You can get another from Zaff");

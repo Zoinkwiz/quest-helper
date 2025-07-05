@@ -1365,88 +1365,103 @@ public enum ItemCollections
 		.add(ItemID.WALLBEAST_SPIKE_HELMET)
 		.build()),
 
-	AIR_ALTAR_WEARABLE(ImmutableList.of(
-		ItemID.TIARA_ELEMENTAL,
-		ItemID.TIARA_AIR
+	ALTAR_WEARABLE_COMMON(ImmutableList.of(
+		ItemID.SKILLCAPE_RUNECRAFTING,
+		ItemID.SKILLCAPE_RUNECRAFTING_TRIMMED
+		//Max Cape (+Variants) do not allow access to Altars
 	)),
+
+	AIR_ALTAR_WEARABLE(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_ELEMENTAL,
+			ItemID.TIARA_AIR
+		).build()),
 	AIR_ALTAR(new ImmutableList.Builder<Integer>()
 		.addAll(AIR_ALTAR_WEARABLE.getItems()).add(
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.AIR_TALISMAN
-	).build()),
+			ItemID.ELEMENTAL_TALISMAN,
+			ItemID.AIR_TALISMAN
+		).build()),
 
-	WATER_ALTAR_WEARABLE(ImmutableList.of(
-		ItemID.TIARA_ELEMENTAL,
-		ItemID.TIARA_WATER
-	)),
+	WATER_ALTAR_WEARABLE(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_ELEMENTAL,
+			ItemID.TIARA_WATER
+		).build()),
 	WATER_ALTAR(new ImmutableList.Builder<Integer>()
 		.addAll(WATER_ALTAR_WEARABLE.getItems()).add(
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.WATER_TALISMAN
-	).build()),
+			ItemID.ELEMENTAL_TALISMAN,
+			ItemID.WATER_TALISMAN
+		).build()),
 
-	EARTH_ALTAR_WEARABLE(ImmutableList.of(
-		ItemID.TIARA_EARTH,
-		ItemID.TIARA_ELEMENTAL
-	)),
+	EARTH_ALTAR_WEARABLE(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_EARTH,
+			ItemID.TIARA_ELEMENTAL
+		).build()),
 	EARTH_ALTAR(new ImmutableList.Builder<Integer>()
 		.addAll(EARTH_ALTAR_WEARABLE.getItems()).add(
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.EARTH_TALISMAN
-	).build()),
+			ItemID.ELEMENTAL_TALISMAN,
+			ItemID.EARTH_TALISMAN
+		).build()),
 
-	FIRE_ALTAR_WEARABLE(ImmutableList.of(
-		ItemID.TIARA_FIRE,
-		ItemID.TIARA_ELEMENTAL
-	)),
+	FIRE_ALTAR_WEARABLE(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_FIRE,
+			ItemID.TIARA_ELEMENTAL
+		).build()),
 	FIRE_ALTAR(new ImmutableList.Builder<Integer>()
 		.addAll(AIR_ALTAR_WEARABLE.getItems()).add(
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.FIRE_TALISMAN
-	).build()),
+			ItemID.ELEMENTAL_TALISMAN,
+			ItemID.FIRE_TALISMAN
+		).build()),
 
-	MIND_ALTAR_WEARABLE(ImmutableList.of(
-		ItemID.TIARA_CATALYTIC,
-		ItemID.TIARA_MIND
-	)),
+	MIND_ALTAR_WEARABLE(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_CATALYTIC,
+			ItemID.TIARA_MIND
+		).build()),
 	MIND_ALTAR(new ImmutableList.Builder<Integer>()
 		.addAll(MIND_ALTAR_WEARABLE.getItems()).add(
 			ItemID.CATALYTIC_TALISMAN,
 			ItemID.MIND_TALISMAN
-	).build()),
+		).build()),
 
-	COSMIC_ALTAR_WEARABLE(ImmutableList.of(
-		ItemID.TIARA_CATALYTIC,
-		ItemID.TIARA_COSMIC
-	)),
+	COSMIC_ALTAR_WEARABLE(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_CATALYTIC,
+			ItemID.TIARA_COSMIC
+		).build()),
 	COSMIC_ALTAR(new ImmutableList.Builder<Integer>()
 		.addAll(COSMIC_ALTAR_WEARABLE.getItems()).add(
-		ItemID.CATALYTIC_TALISMAN,
-		ItemID.COSMIC_TALISMAN
-	).build()),
+			ItemID.CATALYTIC_TALISMAN,
+			ItemID.COSMIC_TALISMAN
+		).build()),
 
-	CHAOS_ALTAR(ImmutableList.of(
-		ItemID.TIARA_CATALYTIC,
-		ItemID.CATALYTIC_TALISMAN,
-		ItemID.TIARA_CHAOS,
-		ItemID.CHAOS_TALISMAN
-	)),
-	NATURE_ALTAR_WEARABLE(ImmutableList.of(
-		ItemID.TIARA_CATALYTIC,
-		ItemID.TIARA_NATURE
-	)),
+	CHAOS_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_CATALYTIC,
+			ItemID.CATALYTIC_TALISMAN,
+			ItemID.TIARA_CHAOS,
+			ItemID.CHAOS_TALISMAN
+		).build()),
+	NATURE_ALTAR_WEARABLE(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_CATALYTIC,
+			ItemID.TIARA_NATURE
+		).build()),
 	NATURE_ALTAR(new ImmutableList.Builder<Integer>()
 		.addAll(NATURE_ALTAR_WEARABLE.getItems()).add(
 			ItemID.CATALYTIC_TALISMAN,
 			ItemID.NATURE_TALISMAN
 		).build()),
 
-	DEATH_ALTAR(ImmutableList.of(
-		ItemID.TIARA_DEATH,
-		ItemID.DEATH_TALISMAN,
-		ItemID.CATALYTIC_TALISMAN,
-		ItemID.TIARA_CATALYTIC
-	)),
+	DEATH_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(ALTAR_WEARABLE_COMMON.getItems()).add(
+			ItemID.TIARA_DEATH,
+			ItemID.DEATH_TALISMAN,
+			ItemID.CATALYTIC_TALISMAN,
+			ItemID.TIARA_CATALYTIC
+		).build()),
 
 	PLUNDER_ARTEFACTS(ImmutableList.of(
 		ItemID.NTK_IVORY_COMB,
@@ -2229,7 +2244,7 @@ public enum ItemCollections
 		ItemID.CA_OFFHAND_MEDIUM,
 		ItemID.CA_OFFHAND_EASY
 	)),
-	
+
 	PROSPECTOR_HELMET(ImmutableList.of(
 		ItemID.MOTHERLODE_REWARD_HAT,
 		ItemID.FOSSIL_MOTHERLODE_REWARD_HAT,

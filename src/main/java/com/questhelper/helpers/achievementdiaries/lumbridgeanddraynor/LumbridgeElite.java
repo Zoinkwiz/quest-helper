@@ -142,9 +142,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyPlatebody);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody).isNotConsumed();
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRunes);
-		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss",
-			ItemID.TIARA_WATER).showConditioned(notWaterRunes).isNotConsumed();
-		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
+		waterAccessOrAbyss = new ItemRequirement("Access to the Water Altar", ItemCollections.WATER_ALTAR_WEARABLE).showConditioned(notWaterRunes).isNotConsumed();
+		waterAccessOrAbyss.setTooltip("Water Tiara, Elemental Tiara, or via Abyss");
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote).isNotConsumed();
 		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESH_TELEPORT_ARTIFACT)
 			.showConditioned(new Conditions(notMovario, notRichChest));

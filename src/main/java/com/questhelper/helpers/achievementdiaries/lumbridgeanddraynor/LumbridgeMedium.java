@@ -157,12 +157,14 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		crossbow = new ItemRequirement("A crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrappleLum).isNotConsumed();
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrappleLum).isNotConsumed();
 		earthTali = new ItemRequirement("Earth talisman", ItemID.EARTH_TALISMAN).showConditioned(notCraftLava);
+		earthTali.setTooltip("Alternatively, Level 82 Magic and access to Lunar Spellbook for Magic Imbue");
 		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.FIRE_ALTAR).showConditioned(notCraftLava).isNotConsumed();
-		fireAccess.setTooltip("Fire talisman or tiara");
+		fireAccess.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara or via Abyss");
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE)
 			.showConditioned(new Conditions(LogicType.OR, notCraftLava, notTPlumb));
 		essence = new ItemRequirement("Pure essence", ItemCollections.ESSENCE_HIGH).showConditioned(notCraftLava);
 		bindingNeck = new ItemRequirement("Binding necklace", ItemID.MAGIC_EMERALD_NECKLACE).showConditioned(notCraftLava);
+		bindingNeck.setTooltip("Optional but advisable.");
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSalmon);
 		flyFishingRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notCatchSalmon).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).showConditioned(notCraftCoif).isNotConsumed();

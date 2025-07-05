@@ -1365,50 +1365,60 @@ public enum ItemCollections
 		.add(ItemID.WALLBEAST_SPIKE_HELMET)
 		.build()),
 
-	AIR_ALTAR(ImmutableList.of(
-		ItemID.TIARA_ELEMENTAL,
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.TIARA_AIR,
-		ItemID.AIR_TALISMAN
-	)),
-
 	AIR_ALTAR_WEARABLE(ImmutableList.of(
 		ItemID.TIARA_ELEMENTAL,
 		ItemID.TIARA_AIR
 	)),
-
-	WATER_ALTAR(ImmutableList.of(
-		ItemID.TIARA_ELEMENTAL,
+	AIR_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(AIR_ALTAR_WEARABLE.getItems()).add(
 		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.TIARA_WATER,
+		ItemID.AIR_TALISMAN
+	).build()),
+
+	WATER_ALTAR_WEARABLE(ImmutableList.of(
+		ItemID.TIARA_ELEMENTAL,
+		ItemID.TIARA_WATER
+	)),
+	WATER_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(WATER_ALTAR_WEARABLE.getItems()).add(
+		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.WATER_TALISMAN
-	)),
+	).build()),
 
-	EARTH_ALTAR(ImmutableList.of(
-		ItemID.TIARA_ELEMENTAL,
-		ItemID.ELEMENTAL_TALISMAN,
+	EARTH_ALTAR_WEARABLE(ImmutableList.of(
 		ItemID.TIARA_EARTH,
-		ItemID.EARTH_TALISMAN
+		ItemID.TIARA_ELEMENTAL
 	)),
-
-	FIRE_ALTAR(ImmutableList.of(
-		ItemID.TIARA_ELEMENTAL,
+	EARTH_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(EARTH_ALTAR_WEARABLE.getItems()).add(
 		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.EARTH_TALISMAN
+	).build()),
+
+	FIRE_ALTAR_WEARABLE(ImmutableList.of(
 		ItemID.TIARA_FIRE,
-		ItemID.FIRE_TALISMAN
+		ItemID.TIARA_ELEMENTAL
 	)),
+	FIRE_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(AIR_ALTAR_WEARABLE.getItems()).add(
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.FIRE_TALISMAN
+	).build()),
 
 	MIND_ALTAR_WEARABLE(ImmutableList.of(
 		ItemID.TIARA_CATALYTIC,
-		ItemID.TIARA_COSMIC
+		ItemID.TIARA_MIND
 	)),
 
-	COSMIC_ALTAR(ImmutableList.of(
+	COSMIC_ALTAR_WEARABLE(ImmutableList.of(
 		ItemID.TIARA_CATALYTIC,
-		ItemID.CATALYTIC_TALISMAN,
-		ItemID.TIARA_COSMIC,
-		ItemID.COSMIC_TALISMAN
+		ItemID.TIARA_COSMIC
 	)),
+	COSMIC_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(COSMIC_ALTAR_WEARABLE.getItems()).add(
+		ItemID.CATALYTIC_TALISMAN,
+		ItemID.COSMIC_TALISMAN
+	).build()),
 
 	CHAOS_ALTAR(ImmutableList.of(
 		ItemID.TIARA_CATALYTIC,

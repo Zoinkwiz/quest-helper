@@ -162,9 +162,9 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notKillCaveBug);
 		spinyHelm = new ItemRequirement("Spiny helmet or slayer helmet (Recommended for low combat levels / Ironmen)",
 			ItemCollections.WALL_BEAST).showConditioned(notKillCaveBug).isNotConsumed();
-		waterAccessOrAbyss = new ItemRequirement("Access to water altar, or travel through abyss.",
+		waterAccessOrAbyss = new ItemRequirement("Access to Water Altar",
 			ItemCollections.WATER_ALTAR).showConditioned(notWaterRune).isNotConsumed();
-		waterAccessOrAbyss.setTooltip("Water talisman or tiara");
+		waterAccessOrAbyss.setTooltip("Water Talisman/Tiara, Elemental Talisman/Tiara or via Abyss");
 		runeEss = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notWaterRune);
 		dough = new ItemRequirement("Bread dough", ItemID.BREAD_DOUGH).showConditioned(notBread);
 		oakLogs = new ItemRequirement("Oak logs", ItemID.OAK_LOGS).showConditioned(notOak);

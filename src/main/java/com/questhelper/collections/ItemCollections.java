@@ -1409,6 +1409,11 @@ public enum ItemCollections
 		ItemID.TIARA_CATALYTIC,
 		ItemID.TIARA_MIND
 	)),
+	MIND_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(MIND_ALTAR_WEARABLE.getItems()).add(
+			ItemID.CATALYTIC_TALISMAN,
+			ItemID.MIND_TALISMAN
+	).build()),
 
 	COSMIC_ALTAR_WEARABLE(ImmutableList.of(
 		ItemID.TIARA_CATALYTIC,

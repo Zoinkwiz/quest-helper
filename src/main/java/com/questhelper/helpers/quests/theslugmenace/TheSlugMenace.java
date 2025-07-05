@@ -200,20 +200,20 @@ public class TheSlugMenace extends BasicQuestHelper
 		essence5 = new ItemRequirement("Rune/pure essence, 15 to be safe", ItemID.BLANKRUNE_HIGH, 5);
 		essence5.addAlternates(ItemID.BLANKRUNE);
 
-		ItemRequirement airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN);
-		airTalisman.addAlternates(ItemID.TIARA_AIR);
+		ItemRequirement airTalisman = new ItemRequirement("Access to the Air Altar", ItemCollections.AIR_ALTAR).isNotConsumed();
+		airTalisman.setTooltip("Air Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
 
-		ItemRequirement waterTalisman = new ItemRequirement("Water talisman", ItemID.WATER_TALISMAN);
-		waterTalisman.addAlternates(ItemID.TIARA_WATER);
+		ItemRequirement waterTalisman = new ItemRequirement("Access to the Water Altar", ItemCollections.WATER_ALTAR).isNotConsumed();
+		waterTalisman.setTooltip("Water Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
 
-		ItemRequirement earthTalisman = new ItemRequirement("Air talisman", ItemID.EARTH_TALISMAN);
-		earthTalisman.addAlternates(ItemID.TIARA_EARTH);
+		ItemRequirement earthTalisman = new ItemRequirement("Access to the Earth Altar", ItemCollections.EARTH_ALTAR).isNotConsumed();
+		earthTalisman.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
 
-		ItemRequirement fireTalisman = new ItemRequirement("Fire talisman", ItemID.FIRE_TALISMAN);
-		fireTalisman.addAlternates(ItemID.TIARA_FIRE);
+		ItemRequirement fireTalisman = new ItemRequirement("Access to the Fire Altar", ItemCollections.FIRE_ALTAR).isNotConsumed();
+		fireTalisman.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara or via Abyss.");
 
-		ItemRequirement mindTalisman = new ItemRequirement("Mind talisman", ItemID.MIND_TALISMAN);
-		mindTalisman.addAlternates(ItemID.TIARA_MIND);
+		ItemRequirement mindTalisman = new ItemRequirement("Access to the Mind Altar", ItemCollections.MIND_ALTAR).isNotConsumed();
+		mindTalisman.setTooltip("Mind Talisman/Tiara, Catalytic Talisman/Tiara or via Abyss.");
 
 		accessToAltars = new ItemRequirements("Access to air, water, earth, fire, and mind runecrafting altars",
 			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman).isNotConsumed();

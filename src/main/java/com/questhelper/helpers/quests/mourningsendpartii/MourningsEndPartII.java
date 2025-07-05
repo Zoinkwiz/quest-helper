@@ -399,7 +399,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		deathTalisman = new ItemRequirement("Access to the Death Altar", ItemCollections.DEATH_ALTAR).isNotConsumed();
 		deathTalisman.setTooltip("Death Talisman/Tiara, Catalytic Talisman/Tiara or RC-skill cape");
 		deathTalisman.appendToTooltip("or bring the dwarf the 50 items asked later");
-		deathTalismanHeader = new ItemRequirement("Access to Death Altar or 50 items asked of you by a dwarf", ItemCollections.DEATH_ALTAR).isNotConsumed();
+		deathTalismanHeader = new ItemRequirement("Access to the Death Altar or 50 items asked of you by a dwarf", ItemCollections.DEATH_ALTAR).isNotConsumed();
 		deathTalisman.setTooltip("Death Talisman/Tiara, Catalytic Talisman/Tiara or RC-skill cape");
 
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS, 1, true).isNotConsumed().highlighted();

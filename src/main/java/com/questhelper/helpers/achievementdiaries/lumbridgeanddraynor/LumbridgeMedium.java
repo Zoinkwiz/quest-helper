@@ -158,8 +158,8 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		mithGrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrappleLum).isNotConsumed();
 		earthTali = new ItemRequirement("Earth talisman", ItemID.EARTH_TALISMAN).showConditioned(notCraftLava);
 		earthTali.setTooltip("Alternatively, Level 82 Magic and access to Lunar Spellbook for Magic Imbue");
-		fireAccess = new ItemRequirement("Access to fire altar", ItemCollections.FIRE_ALTAR).showConditioned(notCraftLava).isNotConsumed();
-		fireAccess.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara or via Abyss");
+		fireAccess = new ItemRequirement("Access to the Fire Altar", ItemCollections.FIRE_ALTAR).showConditioned(notCraftLava).isNotConsumed();
+		fireAccess.setTooltip("Fire Talisman/Tiara, Elemental Talisman/Tiara, RC-skill cape or via Abyss");
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE)
 			.showConditioned(new Conditions(LogicType.OR, notCraftLava, notTPlumb));
 		essence = new ItemRequirement("Pure essence", ItemCollections.ESSENCE_HIGH).showConditioned(notCraftLava);

@@ -215,7 +215,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		ItemRequirement mindTalisman = new ItemRequirement("Access to the Mind Altar", ItemCollections.MIND_ALTAR).isNotConsumed();
 		mindTalisman.setTooltip("Mind Talisman/Tiara, Catalytic Talisman/Tiara, RC-skill cape or via Abyss.");
 
-		accessToAltars = new ItemRequirements("Access to air, water, earth, fire, and mind runecrafting altars",
+		accessToAltars = new ItemRequirements("Access to the Air, Water, Earth, Fire, and Mind runecrafting altars",
 			airTalisman, waterTalisman, earthTalisman, fireTalisman, mindTalisman).isNotConsumed();
 
 		necklaceOfPassage = new ItemRequirement("Necklace of Passage", ItemCollections.NECKLACE_OF_PASSAGES);

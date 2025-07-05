@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.achievementdiaries.karamja;
 
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -106,8 +107,8 @@ public class KaramjaElite extends ComplexStateQuestHelper
 		notMadePotion = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 4);
 		notCheckedCalquat = new VarplayerRequirement(VarPlayerID.ATJUN_TASKS_4, false, 5);
 
-		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
-			ItemID.TIARA_NATURE).showConditioned(notCraftedRunes).isNotConsumed();
+		natureTiaraOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemCollections.NATURE_ALTAR_WEARABLE).showConditioned(notCraftedRunes).isNotConsumed();
+		natureTiaraOrAbyss.setTooltip("Nature Tiara, Catalytic Tiara or via Abyss");
 		pureEssence = new ItemRequirement("Pure essence", ItemID.BLANKRUNE_HIGH).showConditioned(notCraftedRunes);
 		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.TZHAAR_CAPE_FIRE)
 			.showConditioned(notEquippedCape).isNotConsumed();

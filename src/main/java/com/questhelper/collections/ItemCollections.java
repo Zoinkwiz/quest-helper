@@ -1426,6 +1426,15 @@ public enum ItemCollections
 		ItemID.TIARA_CHAOS,
 		ItemID.CHAOS_TALISMAN
 	)),
+	NATURE_ALTAR_WEARABLE(ImmutableList.of(
+		ItemID.TIARA_CATALYTIC,
+		ItemID.TIARA_NATURE
+	)),
+	NATURE_ALTAR(new ImmutableList.Builder<Integer>()
+		.addAll(NATURE_ALTAR_WEARABLE.getItems()).add(
+			ItemID.CATALYTIC_TALISMAN,
+			ItemID.NATURE_TALISMAN
+		).build()),
 
 	DEATH_ALTAR(ImmutableList.of(
 		ItemID.TIARA_DEATH,

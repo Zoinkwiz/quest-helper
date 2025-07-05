@@ -166,10 +166,9 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		oomlieWrap.setTooltip("You can make one by using a palm leaf on a raw oomlie and cooking it. Both are " +
 			"obtained from the Kharazi Jungle");
 		pureEssence = new ItemRequirement("Pure essence", ItemID.BLANKRUNE_HIGH).showConditioned(notCraftedNature);
-		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemID.NATURE_TALISMAN)
+		natureTalismanOrAbyss = new ItemRequirement("Access to the Nature Altar", ItemCollections.NATURE_ALTAR)
 			.showConditioned(notCraftedNature).isNotConsumed();
-		natureTalismanOrAbyss.addAlternates(ItemID.TIARA_NATURE);
-		natureTalismanOrAbyss.setTooltip("Nature talisman or tiara");
+		natureTalismanOrAbyss.setTooltip("Nature Talisman/Tiara, Catalytic Talisman/Tiara or via Abyss");
 		rawKarambwan = new ItemRequirement("Raw karambwan", ItemID.TBWT_RAW_KARAMBWAN).showConditioned(notCookedKarambwan);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(new Conditions(LogicType.OR,
 			notCollectedLeaves, notKilledDeathwing, notKilledDragon)).isNotConsumed();

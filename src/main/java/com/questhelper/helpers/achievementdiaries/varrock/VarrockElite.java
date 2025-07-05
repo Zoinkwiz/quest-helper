@@ -138,9 +138,9 @@ public class VarrockElite extends ComplexStateQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notRuneDart).isNotConsumed();
 		runeDartTip = new ItemRequirement("Rune dart tip", ItemID.RUNE_DART_TIP);
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(not100Earth);
-		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss",
+		earthTali = new ItemRequirement("Access to the Earth Altar",
 			ItemCollections.EARTH_ALTAR).showConditioned(not100Earth).isNotConsumed();
-		earthTali.setTooltip("Earth talisman or tiara");
+		earthTali.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara or via Abyss");
 
 		inBank = new ZoneRequirement(bank);
 		inLumb = new ZoneRequirement(lumb);

@@ -163,9 +163,9 @@ public class VarrockEasy extends ComplexStateQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notDyingTree).isNotConsumed();
 		bone = new ItemRequirement("Bones", ItemCollections.BONES).showConditioned(notDogBone);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFTCLAY).showConditioned(notBowl);
-		earthTali = new ItemRequirement("Access to Earth altar, or travel through abyss", ItemCollections.EARTH_ALTAR)
+		earthTali = new ItemRequirement("Access to the Earth Altar", ItemCollections.EARTH_ALTAR)
 			.showConditioned(notEarthRune).isNotConsumed();
-		earthTali.setTooltip("Earth talisman or tiara");
+		earthTali.setTooltip("Earth Talisman/Tiara, Elemental Talisman/Tiara or via Abyss");
 		essence = new ItemRequirement("Essence", ItemCollections.ESSENCE_LOW).showConditioned(notEarthRune);
 		flyRod = new ItemRequirement("Fly fishing rod", ItemID.FLY_FISHING_ROD).showConditioned(notTrout).isNotConsumed();
 		feathers = new ItemRequirement("Feather", ItemID.FEATHER, 10).showConditioned(notTrout);

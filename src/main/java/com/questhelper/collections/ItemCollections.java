@@ -1218,13 +1218,6 @@ public enum ItemCollections
 		ItemID.DRAMEN_STAFF
 	)),
 
-	EARTH_ALTAR(ImmutableList.of(
-		ItemID.TIARA_ELEMENTAL,
-		ItemID.ELEMENTAL_TALISMAN,
-		ItemID.TIARA_EARTH,
-		ItemID.EARTH_TALISMAN
-	)),
-
 	ESSENCE_LOW(ImmutableList.of(
 		ItemID.BLANKRUNE_DAEYALT,
 		ItemID.BLANKRUNE_HIGH,
@@ -1367,17 +1360,22 @@ public enum ItemCollections
 		ItemID.SKILLCAPE_QP
 	)),
 
-	COSMIC_ALTAR(ImmutableList.of(
-		ItemID.TIARA_CATALYTIC,
-		ItemID.CATALYTIC_TALISMAN,
-		ItemID.TIARA_COSMIC,
-		ItemID.COSMIC_TALISMAN
-	)),
-
 	WALL_BEAST(new ImmutableList.Builder<Integer>()
 		.addAll(SharedCollections.slayer_helmets)
 		.add(ItemID.WALLBEAST_SPIKE_HELMET)
 		.build()),
+
+	AIR_ALTAR(ImmutableList.of(
+		ItemID.TIARA_ELEMENTAL,
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.TIARA_AIR,
+		ItemID.AIR_TALISMAN
+	)),
+
+	AIR_ALTAR_WEARABLE(ImmutableList.of(
+		ItemID.TIARA_ELEMENTAL,
+		ItemID.TIARA_AIR
+	)),
 
 	WATER_ALTAR(ImmutableList.of(
 		ItemID.TIARA_ELEMENTAL,
@@ -1386,11 +1384,42 @@ public enum ItemCollections
 		ItemID.WATER_TALISMAN
 	)),
 
+	EARTH_ALTAR(ImmutableList.of(
+		ItemID.TIARA_ELEMENTAL,
+		ItemID.ELEMENTAL_TALISMAN,
+		ItemID.TIARA_EARTH,
+		ItemID.EARTH_TALISMAN
+	)),
+
 	FIRE_ALTAR(ImmutableList.of(
 		ItemID.TIARA_ELEMENTAL,
 		ItemID.ELEMENTAL_TALISMAN,
 		ItemID.TIARA_FIRE,
 		ItemID.FIRE_TALISMAN
+	)),
+
+	MIND_ALTAR_WEARABLE(ImmutableList.of(
+		ItemID.TIARA_CATALYTIC,
+		ItemID.TIARA_COSMIC
+	)),
+
+	COSMIC_ALTAR(ImmutableList.of(
+		ItemID.TIARA_CATALYTIC,
+		ItemID.CATALYTIC_TALISMAN,
+		ItemID.TIARA_COSMIC,
+		ItemID.COSMIC_TALISMAN
+	)),
+
+	CHAOS_ALTAR(ImmutableList.of(
+		ItemID.TIARA_CATALYTIC,
+		ItemID.CATALYTIC_TALISMAN,
+		ItemID.TIARA_CHAOS,
+		ItemID.CHAOS_TALISMAN
+	)),
+
+	DEATH_ALTAR(ImmutableList.of(
+		ItemID.TIARA_DEATH,
+		ItemID.DEATH_TALISMAN
 	)),
 
 	PLUNDER_ARTEFACTS(ImmutableList.of(
@@ -1462,11 +1491,6 @@ public enum ItemCollections
 		ItemID.JEWL_BRACELET_OF_COMBAT_1,
 		ItemID.JEWL_NECKLACE_OF_SKILLS,
 		ItemID.JEWL_BRACELET_OF_COMBAT
-	)),
-
-	DEATH_ALTAR(ImmutableList.of(
-		ItemID.TIARA_DEATH,
-		ItemID.DEATH_TALISMAN
 	)),
 
 	IMBUABLE_SALVE_AMULET(ImmutableList.of(
@@ -1546,13 +1570,6 @@ public enum ItemCollections
 		ItemID.WILDERNESS_CAPE_48,
 		ItemID.WILDERNESS_CAPE_49,
 		ItemID.WILDERNESS_CAPE_50
-	)),
-
-	CHAOS_ALTAR(ImmutableList.of(
-		ItemID.TIARA_CATALYTIC,
-		ItemID.CATALYTIC_TALISMAN,
-		ItemID.TIARA_CHAOS,
-		ItemID.CHAOS_TALISMAN
 	)),
 
 	RUNE_AXE_BETTER(ImmutableList.of(

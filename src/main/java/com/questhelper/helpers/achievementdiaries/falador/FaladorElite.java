@@ -136,7 +136,8 @@ public class FaladorElite extends ComplexStateQuestHelper
 		notMadeSaraBrew = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY2, false, 10);
 
 		pureEss28 = new ItemRequirement("Pure Essence", ItemID.BLANKRUNE_HIGH, 28).showConditioned(notCraftedAirRunes);
-		airTiara = new ItemRequirement("Air Tiara", ItemID.TIARA_AIR, 1, true).showConditioned(notCraftedAirRunes).isNotConsumed();
+		airTiara = new ItemRequirement("Access to the Air Altar", ItemCollections.AIR_ALTAR_WEARABLE, 1, true).showConditioned(notCraftedAirRunes).isNotConsumed();
+		airTiara.setTooltip("Air tiara, Elemental Tiara, or via Abyss");
 		coins1920 = new ItemRequirement("Coins", ItemCollections.COINS, 1920).showConditioned(notPurchasedWhite2hSword);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notGotMagicRoots).isNotConsumed();
 		axe = new ItemRequirement("Any Axe", ItemCollections.AXES).showConditioned(notGotMagicRoots).isNotConsumed();
@@ -304,8 +305,10 @@ public class FaladorElite extends ComplexStateQuestHelper
 		magicRootsSteps.setLockingStep(gotMagicRootsTask);
 		allSteps.add(magicRootsSteps);
 
+		SkillRequirement rcRequirement = new SkillRequirement(Skill.RUNECRAFT, 88, true);
+		rcRequirement.setTooltip("55 with Raiments of the Eye set");
 		PanelDetails airRunesSteps = new PanelDetails("One with the wind..", Arrays.asList(enterAirAltar,
-			craftAirRunes), new SkillRequirement(Skill.RUNECRAFT, 88, true), airTiara, pureEss28);
+			craftAirRunes), rcRequirement, airTiara, pureEss28);
 		airRunesSteps.setDisplayCondition(notCraftedAirRunes);
 		airRunesSteps.setLockingStep(craftedAirRunesTask);
 		allSteps.add(airRunesSteps);

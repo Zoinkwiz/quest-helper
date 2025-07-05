@@ -1464,7 +1464,7 @@ public enum ItemCollections
 		ItemID.JEWL_BRACELET_OF_COMBAT
 	)),
 
-	DEATHALTAR(ImmutableList.of(
+	DEATH_ALTAR(ImmutableList.of(
 		ItemID.TIARA_DEATH,
 		ItemID.DEATH_TALISMAN
 	)),

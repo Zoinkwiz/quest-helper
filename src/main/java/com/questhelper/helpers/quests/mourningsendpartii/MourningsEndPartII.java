@@ -396,13 +396,11 @@ public class MourningsEndPartII extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		deathTalisman = new ItemRequirement("Death talisman", ItemID.DEATH_TALISMAN).isNotConsumed();
-		deathTalisman.addAlternates(ItemID.TIARA_DEATH, ItemID.SKILLCAPE_RUNECRAFTING, ItemID.CATALYTIC_TALISMAN, ItemID.TIARA_CATALYTIC);
-		deathTalisman.setTooltip("Catalytic talisman/tiara may be used instead");
+		deathTalisman = new ItemRequirement("Access to the Death Altar", ItemCollections.DEATH_ALTAR).isNotConsumed();
+		deathTalisman.setTooltip("Death Talisman/Tiara, Catalytic Talisman/Tiara or RC-skill cape");
 		deathTalisman.appendToTooltip("or bring the dwarf the 50 items asked later");
-		deathTalismanHeader = new ItemRequirement("Death talisman or 50 items asked of you by a dwarf", ItemID.DEATH_TALISMAN).isNotConsumed();
-		deathTalismanHeader.addAlternates(ItemID.TIARA_DEATH, ItemID.SKILLCAPE_RUNECRAFTING, ItemID.CATALYTIC_TALISMAN, ItemID.TIARA_CATALYTIC);
-		deathTalismanHeader.setTooltip("Catalytic talisman/tiara may be used instead");
+		deathTalismanHeader = new ItemRequirement("Access to the Death Altar or 50 items asked of you by a dwarf", ItemCollections.DEATH_ALTAR).isNotConsumed();
+		deathTalisman.setTooltip("Death Talisman/Tiara, Catalytic Talisman/Tiara or RC-skill cape");
 
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS, 1, true).isNotConsumed().highlighted();
 		gasMask = new ItemRequirement("Gas mask", ItemID.GASMASK, 1, true).isNotConsumed().highlighted();

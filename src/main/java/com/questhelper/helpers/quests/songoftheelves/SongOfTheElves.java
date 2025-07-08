@@ -811,14 +811,14 @@ public class SongOfTheElves extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEdmond = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0), "Talk to Edmond in East Ardougne.");
+		talkToEdmond = new NpcStep(this, NpcID.EDMOND_TOP, new WorldPoint(2566, 3337, 0), "Talk to Edmond in East Ardougne.");
 		talkToEdmond.addDialogStep("Yes.");
 		goUpToLathas = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(2572, 3296, 0),
 			"Talk to King Lathas in East Ardougne castle.");
 		talkToLathas = new NpcStep(this, NpcID.KINGLATHAS_VIS, new WorldPoint(2578, 3293, 1), "Talk to King Lathas in East Ardougne castle.");
 		talkToLathas.addSubSteps(goUpToLathas);
 		goDownFromLathas = new ObjectStep(this, ObjectID.STAIRSTOP, new WorldPoint(2572, 3296, 1), "Return to Edmond.");
-		talkToEdmondAgain = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0), "Return to Edmond in East Ardougne.");
+		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND_TOP, new WorldPoint(2566, 3337, 0), "Return to Edmond in East Ardougne.");
 		talkToEdmondAgain.addDialogStep("How do I get this disguise?");
 		talkToEdmondAgain.addSubSteps(goDownFromLathas);
 		useRedDyeOnSteelFullHelm = new DetailedQuestStep(this, "Use red dye on a steel full helm.", redDye, steelFullHelm);
@@ -831,7 +831,7 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		useTabardOnPlatebody = new DetailedQuestStep(this, "Add the tabard to a steel platebody.", ardyTabard, steelPlatebody);
 
-		talkToEdmondWithOutfit = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0),
+		talkToEdmondWithOutfit = new NpcStep(this, NpcID.EDMOND_TOP, new WorldPoint(2566, 3337, 0),
 			"Return to Edmond in East Ardougne.", ardyFullHelm, ardyPlatebody);
 
 		goDownstairsCastle = new ObjectStep(this, ObjectID.ARDOUGNE_PRISON_ENTRY, new WorldPoint(2570, 3296, 0),
@@ -850,14 +850,14 @@ public class SongOfTheElves extends BasicQuestHelper
 
 		goUpFromCastleBasementAgain = new ObjectStep(this, ObjectID.ARDOUGNE_PRISON_EXIT, new WorldPoint(2565, 9711, 0),
 			"Return to Edmond in East Ardougne.");
-		talkToEdmondAfterFreeingElena = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2566, 3337, 0),
+		talkToEdmondAfterFreeingElena = new NpcStep(this, NpcID.EDMOND_TOP, new WorldPoint(2566, 3337, 0),
 			"Return to Edmond in East Ardougne.");
 		talkToEdmondAfterFreeingElena.addSubSteps(goUpFromCastleBasementAgain);
 
 		searchBed = new ObjectStep(this, ObjectID.REHNISON_BED_TRAPDOOR, new WorldPoint(2533, 3333, 0),
 			"Search the bed in the house west of the Mourner base.");
 		searchBed.addDialogStep("Climb through it.");
-		talkToElenaInHideout = new NpcStep(this, NpcID.SOTE_ELENA_HURT, new WorldPoint(2545, 9746, 0), "Talk to Elena in the hideout.");
+		talkToElenaInHideout = new NpcStep(this, NpcID.ELENA_BASEMENT, new WorldPoint(2545, 9746, 0), "Talk to Elena in the hideout.");
 		talkToElenaInHideout.addDialogSteps("It's not good, but it might be our only option.", "It's all in a day's work.", "I am.");
 		leaveHideout = new ObjectStep(this, ObjectID.REHNISON_LADDER_UP, new WorldPoint(2546, 9744, 0), "Leave the hideout.");
 
@@ -907,7 +907,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToTownCrier = new NpcStep(this, NpcID.PMOD_TOWN_CRIER_EAST_ARDOYNE, new WorldPoint(2666, 3312, 0),
 			"Talk to the town crier in the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
 		talkToTownCrier.addDialogStep("Could you help me tell people about some new taxes?");
-		talkToZenesha = new NpcStep(this, NpcID.VC_PARTYGUESTS_ZENESHA, new WorldPoint(2652, 3295, 0),
+		talkToZenesha = new NpcStep(this, NpcID.ZENESHA, new WorldPoint(2652, 3295, 0),
 			"Talk to Zenesha south of the East Ardougne Market.", ardyFullHelmEquipped, ardyPlatebodyEquipped, steelPlatelegsEquipped);
 		talkToZenesha.addDialogStep("I'm here to tell you about some new taxes.");
 		talkToEstateAgent = new NpcStep(this, NpcID.POH_ESTATE_AGENT, new WorldPoint(2638, 3293, 0),

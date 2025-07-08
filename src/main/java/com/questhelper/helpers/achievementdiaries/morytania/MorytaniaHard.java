@@ -131,11 +131,11 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		doHard.addStep(notCaveHorror, caveHorrorTask);
 
 		burnMahoTask = new ConditionalStep(this, moveToCaptMaho);
+		burnMahoTask.addStep(new Conditions(inIsland, choppedLogs, mahoLogs), burnMaho);
 		burnMahoTask.addStep(inBoat, moveToMosMaho);
 		burnMahoTask.addStep(inMos, moveToCaveMaho);
 		burnMahoTask.addStep(inCave, moveToIsland);
 		burnMahoTask.addStep(inIsland, chopMaho);
-		burnMahoTask.addStep(new Conditions(inIsland, choppedLogs, mahoLogs), burnMaho);
 		doHard.addStep(notBurnMaho, burnMahoTask);
 
 		kharyrllTask = new ConditionalStep(this, kharyrll);
@@ -228,7 +228,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 	protected void setupZones()
 	{
 		hauntedMine1 = new Zone(new WorldPoint(3400, 9662, 0), new WorldPoint(3439, 9614, 0));
-		hauntedMine2 = new Zone(new WorldPoint(2767, 4605, 0), new WorldPoint(2817, 4556, 0));
+		hauntedMine2 = new Zone(new WorldPoint(2767, 4405, 0), new WorldPoint(2817, 4556, 0));
 		grotto = new Zone(new WorldPoint(3430, 9750, 1), new WorldPoint(3453, 9728, 1));
 		slayerTower2 = new Zone(new WorldPoint(3401, 3581, 1), new WorldPoint(3456, 3529, 1));
 		boat = new Zone(new WorldPoint(3709, 3508, 1), new WorldPoint(3721, 3489, 1));

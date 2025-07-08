@@ -234,13 +234,13 @@ public class KaramjaMedium extends BasicQuestHelper
 		spiderOnAStick = new ItemRequirement("Spider on stick", List.of(ItemID.TBW_SPIDER_ON_STICK_RAW, ItemID.TBW_SPIDER_ON_SHAFT_RAW));
 		spiderOnAStick.setTooltip("You can get one by using a spider carcass on an arrow shaft");
 
-		agility12 = new SkillRequirement(Skill.AGILITY, 12);
-		cooking16 = new SkillRequirement(Skill.COOKING, 16);
-		farming27 = new SkillRequirement(Skill.FARMING, 27);
+		agility12 = new SkillRequirement(Skill.AGILITY, 12, true);
+		cooking16 = new SkillRequirement(Skill.COOKING, 16, true);
+		farming27 = new SkillRequirement(Skill.FARMING, 27, true);
 		fishing65 = new SkillRequirement(Skill.FISHING, 65, true);
-		hunter41 = new SkillRequirement(Skill.HUNTER, 41);
-		mining40 = new SkillRequirement(Skill.MINING, 40);
-		woodcutting50 = new SkillRequirement(Skill.WOODCUTTING, 50);
+		hunter41 = new SkillRequirement(Skill.HUNTER, 41, true);
+		mining40 = new SkillRequirement(Skill.MINING, 40, true);
+		woodcutting50 = new SkillRequirement(Skill.WOODCUTTING, 50, true);
 
 		grandTree = new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED);
 		taiBwoWannaiTrio = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED, "Partial " +
@@ -354,13 +354,13 @@ public class KaramjaMedium extends BasicQuestHelper
 	{
 		List<Requirement> reqs = new ArrayList<>();
 
-		reqs.add(new SkillRequirement(Skill.AGILITY, 12));
-		reqs.add(new SkillRequirement(Skill.COOKING, 16));
-		reqs.add(new SkillRequirement(Skill.FARMING, 27));
+		reqs.add(new SkillRequirement(Skill.AGILITY, 12, true));
+		reqs.add(new SkillRequirement(Skill.COOKING, 16, true));
+		reqs.add(new SkillRequirement(Skill.FARMING, 27, true));
 		reqs.add(new SkillRequirement(Skill.FISHING, 65, true));
-		reqs.add(new SkillRequirement(Skill.HUNTER, 41));
-		reqs.add(new SkillRequirement(Skill.MINING, 40));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50));
+		reqs.add(new SkillRequirement(Skill.HUNTER, 41, true));
+		reqs.add(new SkillRequirement(Skill.MINING, 40, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 50, true));
 
 		reqs.add(new QuestRequirement(QuestHelperQuest.THE_GRAND_TREE, QuestState.FINISHED));
 		reqs.add(new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED, "Partial " +
@@ -472,7 +472,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		allSteps.add(spiderOnStickSteps);
 
 		PanelDetails cutATeakTreeSteps = new PanelDetails("Cut a Teak Tree", Collections.singletonList(cutTeak),
-			new SkillRequirement(Skill.WOODCUTTING, 35),
+			new SkillRequirement(Skill.WOODCUTTING, 35, true),
 			junglePotion, axe, tradingSticks.quantity(100));
 		cutATeakTreeSteps.setDisplayCondition(notCutTeak);
 		cutATeakTreeSteps.setLockingStep(cutTeakTask);
@@ -491,7 +491,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		allSteps.add(exchangeGemsWithSaftaDocSteps);
 
 		PanelDetails chopVinesSteps = new PanelDetails("Chop Vines in Brimhaven Dungeon",
-			Arrays.asList(enterBrimDungeonVine, chopVines), new SkillRequirement(Skill.WOODCUTTING, 10), axe,
+			Arrays.asList(enterBrimDungeonVine, chopVines), new SkillRequirement(Skill.WOODCUTTING, 10, true), axe,
 			coins.quantity(875));
 		chopVinesSteps.setDisplayCondition(notCutVine);
 		chopVinesSteps.setLockingStep(cutVineTask);
@@ -504,7 +504,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		allSteps.add(crossLavaSteps);
 
 		PanelDetails climbStairsSteps = new PanelDetails("Climb The Stairs in Brimhaven Dungeon",
-			Arrays.asList(enterBrimDungeonStairs, climbBrimhavenStaircase), new SkillRequirement(Skill.WOODCUTTING, 10),
+			Arrays.asList(enterBrimDungeonStairs, climbBrimhavenStaircase), new SkillRequirement(Skill.WOODCUTTING, 10, true),
 			axe, coins.quantity(875));
 		climbStairsSteps.setDisplayCondition(notClimbedStairs);
 		climbStairsSteps.setLockingStep(climbedStairsTask);

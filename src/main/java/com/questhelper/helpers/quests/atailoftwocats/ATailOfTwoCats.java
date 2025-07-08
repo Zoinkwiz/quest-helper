@@ -209,7 +209,7 @@ public class ATailOfTwoCats extends BasicQuestHelper
 		useLogsOnFireplace.addIcon(ItemID.LOGS);
 		lightLogs = new ObjectStep(this, ObjectID.TWOCATS_FIREPLACE, new WorldPoint(2919, 3557, 0), "Use a tinderbox on Unferth's fireplace.", tinderbox.highlighted());
 		lightLogs.addIcon(ItemID.TINDERBOX);
-		useChocolateCakeOnTable = new ObjectStep(this, ObjectID.TWOCATS_TABLE, new WorldPoint(2921, 3556, 0), "Use a chocolate cake on Unferth's table.", chocolateCake);
+		useChocolateCakeOnTable = new ObjectStep(this, ObjectID.TWOCATS_TABLE, new WorldPoint(2921, 3556, 0), "USE a chocolate cake on Unferth's table.", chocolateCake);
 		useChocolateCakeOnTable.addIcon(ItemID.CHOCOLATE_CAKE);
 		useMilkOnTable = new ObjectStep(this, ObjectID.TWOCATS_TABLE, new WorldPoint(2921, 3556, 0), "Use a bucket of milk on Unferth's table.", milk);
 		useMilkOnTable.addIcon(ItemID.BUCKET_MILK);

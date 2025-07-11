@@ -37,6 +37,10 @@ import java.util.*;
 public class PanelDetails
 {
 	@Getter
+	@Setter
+	int id;
+
+	@Getter
 	String header;
 
 	@Getter
@@ -87,6 +91,12 @@ public class PanelDetails
 	{
 		this(header, steps, requirements);
 		this.recommended = recommended;
+	}
+
+	public PanelDetails addId(int id)
+	{
+		this.id = id;
+		return this;
 	}
 
 	public void setDisplayCondition(Requirement req)

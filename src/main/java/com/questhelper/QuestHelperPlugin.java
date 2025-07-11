@@ -77,6 +77,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @PluginDescriptor(
 	name = "Quest Helper",
@@ -400,6 +401,11 @@ public class QuestHelperPlugin extends Plugin
 				questManager.disableShortestPath();
 			}
 		}
+
+		if (event.getKey().contains("quest-sidebar-order-"))
+		{
+			questManager.getSelectedQuest().setSidebarOrder(loadSidebarOrder(questManager.getSelectedQuest()));
+		}
 	}
 
 	@Subscribe
@@ -552,5 +558,25 @@ public class QuestHelperPlugin extends Plugin
 		questHelper.setQuestHelperPlugin(this);
 
 		log.debug("Loaded quest helper {}", quest.name());
+	}
+
+    public void saveSidebarOrder(QuestHelper currentQuest, List<Integer> newOrderIds)
+    {
+		configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "quest-sidebar-order-" + currentQuest.getQuest().getName(), newOrderIds);
+    }
+
+	public List<Integer> loadSidebarOrder(QuestHelper currentQuest)
+	{
+		if (currentQuest == null) return null;
+		String order = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP,
+				"quest-sidebar-order-" + currentQuest.getQuest().getName());
+		if (order == null) return null;
+		order = order.trim();
+		order = order.substring(1, order.length() - 1);
+		return Arrays.stream(order.split(","))
+				.map(String::trim)
+				.filter(s -> !s.isEmpty())
+				.map(Integer::parseInt)
+				.collect(Collectors.toList());
 	}
 }

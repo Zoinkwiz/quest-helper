@@ -98,6 +98,9 @@ public abstract class QuestStep implements Module
 	TooltipManager tooltipManager;
 
 	@Getter
+	protected Integer id = null;
+
+	@Getter
 	protected List<String> text;
 
 	@Getter
@@ -211,6 +214,12 @@ public abstract class QuestStep implements Module
 
 	public void shutDown()
 	{
+	}
+
+	public QuestStep setId(Integer id)
+	{
+		this.id = id;
+		return this;
 	}
 
 	public void addSubSteps(QuestStep... substep)

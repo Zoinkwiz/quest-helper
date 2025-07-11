@@ -281,9 +281,9 @@ public class QuestOverviewPanel extends JPanel
 			setupQuestRequirements(quest);
 			introPanel.setVisible(true);
 			boolean draggable = steps.stream().anyMatch((panelDetails -> panelDetails.id != 0));
-			if (draggable)
+			List<Integer> order = questHelperPlugin.loadSidebarOrder(currentQuest);
+			if (draggable && order != null)
 			{
-				List<Integer> order = questHelperPlugin.loadSidebarOrder(currentQuest);
 				Map<Integer, Integer> idx = new HashMap<>();
 				for (int i = 0; i < order.size(); i++)
 					idx.put(order.get(i), i);

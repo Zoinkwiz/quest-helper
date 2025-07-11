@@ -47,7 +47,7 @@ public class ReorderableConditionalStep extends ConditionalStep
         if (sidebarOrder != this.sideOrder)
         {
             this.sideOrder = sidebarOrder;
-            organiseSteps();
+            if (sideOrder != null) organiseSteps();
         }
 
         super.updateSteps();

@@ -565,14 +565,14 @@ public class QuestHelperPlugin extends Plugin
 
     public void saveSidebarOrder(QuestHelper currentQuest, List<Integer> newOrderIds)
     {
-		configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, QuestHelperConfig.QUEST_HELPER_SIDEBAR_ORDER_KEY_START + currentQuest.getQuest().getName(), newOrderIds);
+		configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, QuestHelperConfig.QUEST_HELPER_SIDEBAR_ORDER_KEY_START + currentQuest.getQuest().name(), newOrderIds);
     }
 
 	public List<Integer> loadSidebarOrder(QuestHelper currentQuest)
 	{
 		if (currentQuest == null) return null;
 		String order = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP,
-				QuestHelperConfig.QUEST_HELPER_SIDEBAR_ORDER_KEY_START + currentQuest.getQuest().getName());
+				QuestHelperConfig.QUEST_HELPER_SIDEBAR_ORDER_KEY_START + currentQuest.getQuest().name());
 		if (order == null) return null;
 		order = order.trim();
 		order = order.substring(1, order.length() - 1);

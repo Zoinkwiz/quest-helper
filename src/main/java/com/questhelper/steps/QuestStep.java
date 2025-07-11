@@ -216,7 +216,7 @@ public abstract class QuestStep implements Module
 	{
 	}
 
-	public QuestStep setId(Integer id)
+	public QuestStep withId(Integer id)
 	{
 		this.id = id;
 		return this;

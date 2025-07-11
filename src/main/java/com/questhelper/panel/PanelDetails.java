@@ -37,7 +37,6 @@ import java.util.*;
 public class PanelDetails
 {
 	@Getter
-	@Setter
 	int id;
 
 	@Getter
@@ -93,7 +92,7 @@ public class PanelDetails
 		this.recommended = recommended;
 	}
 
-	public PanelDetails addId(int id)
+	public PanelDetails withId(int id)
 	{
 		this.id = id;
 		return this;

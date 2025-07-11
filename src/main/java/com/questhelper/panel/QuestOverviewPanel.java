@@ -764,7 +764,7 @@ public class QuestOverviewPanel extends JPanel
 			     .collect(Collectors.toList());
 			 questHelperPlugin.saveSidebarOrder(currentQuest, newOrderIds);
 		}
-		
+
 		@Override public void mouseMoved(MouseEvent e) { }
 	}
 }

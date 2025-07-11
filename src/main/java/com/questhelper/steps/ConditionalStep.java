@@ -70,7 +70,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Setter
 	protected boolean checkAllChildStepsOnListenerCall = false;
 
-	protected final LinkedHashMap<Requirement, QuestStep> steps;
+	protected LinkedHashMap<Requirement, QuestStep> steps;
 	protected final HashMap<Integer, QuestStep> orderedSteps;
 	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
 	protected final List<NpcCondition> npcConditions = new ArrayList<>();
@@ -323,55 +323,26 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		Requirement lastPossibleCondition = null;
 
-		List<Integer> sidebarOrder = questHelper.getSidebarOrder();
-		boolean sidebarOrderDefined = sidebarOrder != null;
-		int bestFoundPos = Integer.MAX_VALUE;
-
 		for (Requirement conditions : steps.keySet())
 		{
-			QuestStep step = steps.get(conditions);
-			boolean stepIsLocked = step.isLocked();
+			boolean stepIsLocked = steps.get(conditions).isLocked();
 			if (conditions != null && conditions.check(client) && !stepIsLocked)
 			{
-				if (sidebarOrderDefined && step.id != null)
-				{
-					int pos = sidebarOrder.indexOf(step.id);
-					if (pos < bestFoundPos)
-					{
-						bestFoundPos = pos;
-						lastPossibleCondition = conditions;
-					}
-					continue;
-				}
-				startUpStep(step);
+				startUpStep(steps.get(conditions));
 				return;
 			}
-			else if (step.isBlocker() && stepIsLocked)
+			else if (steps.get(conditions).isBlocker() && stepIsLocked)
 			{
 				startUpStep(steps.get(lastPossibleCondition));
 				return;
 			}
 			else if (conditions != null && !stepIsLocked)
 			{
-				if (sidebarOrderDefined && step.id != null)
-				{
-					int pos = sidebarOrder.indexOf(step.id);
-					if (pos < bestFoundPos)
-					{
-						bestFoundPos = pos;
-						lastPossibleCondition = conditions;
-						continue;
-					}
-				}
 				lastPossibleCondition = conditions;
 			}
 		}
 
-		if (sidebarOrderDefined)
-		{
-			startUpStep(steps.get(lastPossibleCondition));
-		}
-		else if (!steps.get(null).isLocked())
+		if (!steps.get(null).isLocked())
 		{
 			startUpStep(steps.get(null));
 		}

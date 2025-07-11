@@ -677,7 +677,7 @@ public class QuestOverviewPanel extends JPanel
 	private void makeDraggable(QuestStepPanel newStep)
 	{
 		JLabel grip = new JLabel("\u2630");
-		grip.setBorder(new EmptyBorder(5, 5, 5, 10));
+		grip.setBorder(new EmptyBorder(0, 0, 3, 0));
 		grip.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 
 		GripDragListener listener = new GripDragListener(newStep);

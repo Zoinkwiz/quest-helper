@@ -53,11 +53,13 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
 
@@ -92,6 +94,9 @@ public class QuestOverviewPanel extends JPanel
 	private final JButton collapseBtn = new JButton();
 
 	private final List<QuestStepPanel> questStepPanelList = new CopyOnWriteArrayList<>();
+
+	private QuestStepPanel draggingPanel = null;
+
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
@@ -199,7 +204,6 @@ public class QuestOverviewPanel extends JPanel
 
 		/* Container for quest steps */
 		questStepsContainer.setLayout(new BoxLayout(questStepsContainer, BoxLayout.Y_AXIS));
-
 		add(actionsContainer);
 		add(configContainer);
 		add(introPanel);
@@ -276,10 +280,24 @@ public class QuestOverviewPanel extends JPanel
 
 			setupQuestRequirements(quest);
 			introPanel.setVisible(true);
+			boolean draggable = steps.stream().anyMatch((panelDetails -> panelDetails.id != 0));
+			if (draggable)
+			{
+				List<Integer> order = questHelperPlugin.loadSidebarOrder(currentQuest);
+				Map<Integer, Integer> idx = new HashMap<>();
+				for (int i = 0; i < order.size(); i++)
+					idx.put(order.get(i), i);
+
+				steps.sort(Comparator.comparingInt(
+						pd -> idx.getOrDefault(pd.id, Integer.MAX_VALUE)
+				));
+			}
 
 			for (PanelDetails panelDetail : steps)
 			{
 				var newStep = new QuestStepPanel(panelDetail, currentStep, questManager, questHelperPlugin);
+				if (draggable) makeDraggable(newStep);
+
 				if (panelDetail.getLockingQuestSteps() != null &&
 					(panelDetail.getVars() == null
 						|| panelDetail.getVars().contains(currentQuest.getVar())))
@@ -654,5 +672,99 @@ public class QuestOverviewPanel extends JPanel
 			questStepPanel.updateRequirements(client);
 		});
 		revalidate();
+	}
+
+	private void makeDraggable(QuestStepPanel newStep)
+	{
+		JLabel grip = new JLabel("\u2630");
+		grip.setBorder(new EmptyBorder(5, 5, 5, 10));
+		grip.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+
+		GripDragListener listener = new GripDragListener(newStep);
+		grip.addMouseListener(listener);
+		grip.addMouseMotionListener(listener);
+
+		newStep.getLeftTitleContainer().add(grip, java.awt.BorderLayout.WEST);
+	}
+
+	private void swapPanels(QuestStepPanel a, QuestStepPanel b)
+	{
+		List<QuestStepPanel> list = questStepPanelList;
+		int ia = list.indexOf(a);
+		int ib = list.indexOf(b);
+		if (ia < 0 || ib < 0) return;
+
+		Collections.swap(list, ia, ib);
+
+		// Create again in new order
+		questStepsContainer.removeAll();
+		for (QuestStepPanel p : list)
+		{
+			questStepsContainer.add(p);
+		}
+		questStepsContainer.revalidate();
+		questStepsContainer.repaint();
+	}
+
+	private class GripDragListener extends MouseAdapter implements MouseMotionListener
+	{
+		private final QuestStepPanel panel;
+		private int startY;
+
+		GripDragListener(QuestStepPanel panel)
+		{
+			this.panel = panel;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e)
+		{
+			draggingPanel = panel;
+			startY = e.getYOnScreen();
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e)
+		{
+			if (draggingPanel == null) return;
+
+			int currentY = e.getYOnScreen();
+			// We only need the absolute screen‐Y to compare midpoints:
+			for (QuestStepPanel other : questStepPanelList)
+			{
+				if (other == draggingPanel) continue;
+
+				Rectangle r = other.getBounds();
+				int midY = other.getLocationOnScreen().y + r.height / 2;
+
+				int fromIndex = questStepPanelList.indexOf(draggingPanel);
+				int toIndex   = questStepPanelList.indexOf(other);
+
+				// dragged down
+				if (fromIndex < toIndex && currentY > midY)
+				{
+					swapPanels(draggingPanel, other);
+					break;
+				}
+				// dragged up
+				else if (fromIndex > toIndex && currentY < midY)
+				{
+					swapPanels(draggingPanel, other);
+					break;
+				}
+			}
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e)
+		{
+			draggingPanel = null;
+			 List<Integer> newOrderIds = questStepPanelList.stream()
+			     .map(p -> p.getPanelDetails().getId())
+			     .collect(Collectors.toList());
+			 questHelperPlugin.saveSidebarOrder(currentQuest, newOrderIds);
+		}
+		
+		@Override public void mouseMoved(MouseEvent e) { }
 	}
 }

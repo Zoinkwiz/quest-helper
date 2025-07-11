@@ -53,6 +53,7 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 		this.config = config;
 		instantiateSteps(Collections.singletonList(step));
 		var = getVar();
+		sidebarOrder = questHelperPlugin.loadSidebarOrder(this);
 		startUpStep(step);
 	}
 

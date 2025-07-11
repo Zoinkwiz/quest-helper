@@ -44,6 +44,7 @@ public interface QuestHelperConfig extends Config
 {
 	String QUEST_HELPER_GROUP = "questhelper";
 	String QUEST_BACKGROUND_GROUP = "questhelpervars";
+	String QUEST_HELPER_SIDEBAR_ORDER_KEY_START = "quest-sidebar-order-";
 
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{

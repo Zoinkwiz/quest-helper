@@ -68,6 +68,7 @@ public abstract class BasicQuestHelper extends QuestHelper
 		this.config = config;
 		instantiateSteps(steps.values());
 		var = getVar();
+		sidebarOrder = questHelperPlugin.loadSidebarOrder(this);
 		startUpStep(steps.get(var));
 	}
 

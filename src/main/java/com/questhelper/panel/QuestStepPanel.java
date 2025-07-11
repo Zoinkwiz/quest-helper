@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -46,6 +47,7 @@ public class QuestStepPanel extends JPanel
 {
 	private static final int TITLE_PADDING = 5;
 
+	@Getter
 	private final PanelDetails panelDetails;
 	private final QuestHelperPlugin questHelperPlugin;
 
@@ -53,6 +55,7 @@ public class QuestStepPanel extends JPanel
 	private final JLabel headerLabel = JGenerator.makeJLabel();
 	private final JPanel bodyPanel = new JPanel();
 	private final JCheckBox lockStep = new JCheckBox();
+	@Getter
 	private final JPanel leftTitleContainer;
 	private final JPanel viewControls;
 	private final HashMap<QuestStep, JTextPane> steps = new HashMap<>();
@@ -129,7 +132,8 @@ public class QuestStepPanel extends JPanel
 
 		if (panelDetails.getRecommended() != null)
 		{
-			recommendedItemsPanel = new QuestRequirementsPanel("Bring the following items:", panelDetails.getRecommended(), questManager, false);
+			recommendedItemsPanel = new QuestRequirementsPanel("Optionally bring the following items:", panelDetails.getRecommended(), questManager,
+					false);
 			bodyPanel.add(recommendedItemsPanel, BorderLayout.CENTER);
 		}
 		else
@@ -217,13 +221,13 @@ public class QuestStepPanel extends JPanel
 			setLockable(panelDetails.getLockingQuestSteps() != null &&
 				(panelDetails.getVars() == null || panelDetails.getVars().contains(currentQuest.getVar())));
 
-			for (QuestStep step : getSteps())
+			for (QuestStep sidebarStep : getSteps())
 			{
-				if (step.getConditionToHide() != null && step.getConditionToHide().check(client)) continue;
-				if (step.containsSteps(newStep, new HashSet<>()))
+				if (sidebarStep.getConditionToHide() != null && sidebarStep.getConditionToHide().check(client)) continue;
+				if (sidebarStep.containsSteps(newStep, new HashSet<>()))
 				{
 					highlighted = true;
-					updateHighlight(step);
+					updateHighlight(sidebarStep);
 					break;
 				}
 			}

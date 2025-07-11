@@ -70,7 +70,8 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	@Setter
 	protected boolean checkAllChildStepsOnListenerCall = false;
 
-	protected final LinkedHashMap<Requirement, QuestStep> steps;
+	protected LinkedHashMap<Requirement, QuestStep> steps;
+	protected final HashMap<Integer, QuestStep> orderedSteps;
 	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
 	protected final List<NpcCondition> npcConditions = new ArrayList<>();
 	protected final List<DialogRequirement> dialogConditions = new ArrayList<>();
@@ -82,24 +83,41 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	public ConditionalStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
-		super(questHelper);
-		this.requirements.addAll(Arrays.asList(requirements));
-		this.steps = new LinkedHashMap<>();
-		this.steps.put(null, step);
+		this(questHelper, step, "", requirements);
+	}
+
+	public ConditionalStep(QuestHelper questHelper, Integer id, QuestStep step, Requirement... requirements)
+	{
+		this(questHelper, step, "", requirements);
 	}
 
 	public ConditionalStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)
+	{
+		this(questHelper, null, step, text, requirements);
+	}
+
+	public ConditionalStep(QuestHelper questHelper, Integer id, QuestStep step, String text, Requirement... requirements)
 	{
 		super(questHelper, text);
 		this.requirements.addAll(Arrays.asList(requirements));
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
+		this.orderedSteps = new LinkedHashMap<>();
+		if (id != null)
+		{
+			this.orderedSteps.put(id, step);
+		}
+		this.id = id;
 	}
 
 	public void addStep(Requirement requirement, QuestStep step)
 	{
 		addStep(requirement, step, false);
 	}
+
+	// Each addStep can have an ID. When you add an ID, it keeps a separate ID to Steps OrderedHashSet.
+	// When we come to deciding active step, if we come across a success step with an ID attached, then we don't activate
+	// It right away, rather we iterate until we find a better match without an ID, or a better ID and continue iterating
 
 	public void addStep(Requirement requirement, QuestStep step, boolean isLockable)
 	{

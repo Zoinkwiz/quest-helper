@@ -27,9 +27,8 @@ package com.questhelper.panel.questorders;
 
 import com.google.common.collect.ImmutableList;
 import com.questhelper.questinfo.QuestHelperQuest;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 /**
  * The order of these quests are parsed using data from the <a href="https://oldschool.runescape.wiki/w/Optimal_quest_guide">OSRS Wiki</a>

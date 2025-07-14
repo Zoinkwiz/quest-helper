@@ -27,9 +27,8 @@ package com.questhelper.panel.questorders;
 
 import com.google.common.collect.ImmutableList;
 import com.questhelper.questinfo.QuestHelperQuest;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 /**
  * The order of these quests are parsed using data from the <a href="https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman">OSRS Wiki</a>
@@ -49,6 +48,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.ROMEO__JULIET,
 		QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 		QuestHelperQuest.GERTRUDES_CAT,
+		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.DADDYS_HOME,
 		QuestHelperQuest.RUNE_MYSTERIES,
 		QuestHelperQuest.TREE_GNOME_VILLAGE,
@@ -95,7 +95,6 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.DEMON_SLAYER,
 		QuestHelperQuest.SHADOW_OF_THE_STORM,
 		QuestHelperQuest.ELEMENTAL_WORKSHOP_II,
-		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
 		QuestHelperQuest.LOST_CITY,
 		QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS,

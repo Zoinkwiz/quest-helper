@@ -252,17 +252,14 @@ public class QuestStepPanel extends JPanel
 		{
 			steps.get(lastHighlightedStep).setForeground(Color.LIGHT_GRAY);
 		}
-		else
-		{
-			headerLabel.setForeground(Color.BLACK);
-			headerPanel.setBackground(ColorScheme.BRAND_ORANGE);
-			viewControls.setBackground(ColorScheme.BRAND_ORANGE);
-			leftTitleContainer.setBackground(ColorScheme.BRAND_ORANGE);
-		}
 
 		if (steps.get(currentStep) != null)
 		{
 			steps.get(currentStep).setForeground(ColorScheme.BRAND_ORANGE);
+			headerLabel.setForeground(Color.BLACK);
+			headerPanel.setBackground(ColorScheme.BRAND_ORANGE);
+			viewControls.setBackground(ColorScheme.BRAND_ORANGE);
+			leftTitleContainer.setBackground(ColorScheme.BRAND_ORANGE);
 		}
 
 		lastHighlightedStep = currentStep;

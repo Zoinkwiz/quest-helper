@@ -93,8 +93,6 @@ public class QuestHelperPanel extends PluginPanel
 	public static final int DROPDOWN_HEIGHT = 26;
 	public boolean questActive = false;
 
-	private final JButton createQuestButton;
-
 	private final ArrayList<QuestSelectPanel> questSelectPanels = new ArrayList<>();
 
 	QuestHelperPlugin questHelperPlugin;
@@ -119,7 +117,7 @@ public class QuestHelperPanel extends PluginPanel
 		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		GITHUB_ICON = Icon.GITHUB.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		PATREON_ICON = Icon.PATREON.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
-		QUEST_MAKER_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		QUEST_MAKER_ICON = Icon.QUEST_ICON.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		COLLAPSED_ICON = Icon.COLLAPSED.getIcon();
 		EXPANDED_ICON = Icon.EXPANDED.getIcon();
@@ -144,15 +142,14 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel titlePanel = new JPanel();
 		titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		titlePanel.setLayout(new BorderLayout());
+		titlePanel.setOpaque(false);
 
 		JTextArea title = JGenerator.makeJTextArea();
 		title.setText("QH");
 		title.setForeground(Color.WHITE);
+		title.setOpaque(false);
 		titlePanel.add(title, BorderLayout.WEST);
 
-		createQuestButton = new JButton("Create New Quest");
-		createQuestButton.addActionListener(e -> toggleQuestCreator());
-		titlePanel.add(createQuestButton, BorderLayout.EAST);
 
 		// Options
 		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
@@ -190,45 +187,45 @@ public class QuestHelperPanel extends PluginPanel
 		viewControls.add(makeHelperButton);
 
 		// Settings
-		JButton settingsBtn = new JButton();
-		SwingUtil.removeButtonDecorations(settingsBtn);
-		settingsBtn.setIcon(SETTINGS_ICON);
-		settingsBtn.setToolTipText("Change your settings");
-		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		settingsBtn.setUI(new BasicButtonUI());
-		settingsBtn.addActionListener((ev) -> {
-			assistLevelPanel.rebuild(null, configManager, this);
-			if (settingsPanelActive())
-			{
-				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-				deactivateSettings();
-			}
-			else
-			{
-				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-				activateSettings();
-			}
-		});
-		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			public void mouseEntered(java.awt.event.MouseEvent evt)
-			{
-				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
-			}
-
-			public void mouseExited(java.awt.event.MouseEvent evt)
-			{
-				if (settingsPanelActive())
-				{
-					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-				}
-				else
-				{
-					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-				}
-			}
-		});
-		viewControls.add(settingsBtn);
+//		JButton settingsBtn = new JButton();
+//		SwingUtil.removeButtonDecorations(settingsBtn);
+//		settingsBtn.setIcon(SETTINGS_ICON);
+//		settingsBtn.setToolTipText("Change your settings");
+//		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//		settingsBtn.setUI(new BasicButtonUI());
+//		settingsBtn.addActionListener((ev) -> {
+//			assistLevelPanel.rebuild(null, configManager, this);
+//			if (settingsPanelActive())
+//			{
+//				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+//				deactivateSettings();
+//			}
+//			else
+//			{
+//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//				activateSettings();
+//			}
+//		});
+//		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
+//		{
+//			public void mouseEntered(java.awt.event.MouseEvent evt)
+//			{
+//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+//			}
+//
+//			public void mouseExited(java.awt.event.MouseEvent evt)
+//			{
+//				if (settingsPanelActive())
+//				{
+//					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+//				}
+//				else
+//				{
+//					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//				}
+//			}
+//		});
+//		viewControls.add(settingsBtn);
 
 		// Discord button
 		JButton discordBtn = new JButton();

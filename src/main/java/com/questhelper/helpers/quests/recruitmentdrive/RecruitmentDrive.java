@@ -295,7 +295,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	private QuestStep getSirRenItchood()
 	{
-		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_5, "Talk to Sir Ren Itchood to recieve the clue.");
+		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_5, "Talk to Sir Ren Itchood to receive the clue.");
 		talkToSirRenItchood.addDialogSteps("Can I have the clue for the door?");
 
 		sirRenStep = new SirRenItchoodStep(this, talkToSirRenItchood);

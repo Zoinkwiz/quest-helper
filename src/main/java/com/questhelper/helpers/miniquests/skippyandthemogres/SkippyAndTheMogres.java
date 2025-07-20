@@ -123,7 +123,7 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	{
 		return Arrays.asList(
 				new UnlockReward("Ability to kill Mogres"),
-				new UnlockReward("Ability to recieve Mogres as a Slayer task"));
+				new UnlockReward("Ability to receive Mogres as a Slayer task"));
 	}
 
 	@Override

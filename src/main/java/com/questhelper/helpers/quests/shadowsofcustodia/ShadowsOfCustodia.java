@@ -178,7 +178,8 @@ public class ShadowsOfCustodia extends BasicQuestHelper
 		// TODO: It would be nice to make this be not-red if you have lumby elite done, but that should probably be a teleport item feature
 		startTeleport = new TeleportItemRequirement("Teleport to Auburnvale (Fairy ring AIS)", ItemCollections.FAIRY_STAFF);
 
-		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).showConditioned(needToFishClothFromLog);
+		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).showConditioned(needToFishClothFromLog).highlighted();
+		fishingRod.appendToTooltip("Can be obtained during the quest, south-west of the area where you need it.");
 
 		// NOTE: I have _not_ confirmed you can use any other hammer, this is an educated guess.
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).showConditioned(needToReinforceWall);

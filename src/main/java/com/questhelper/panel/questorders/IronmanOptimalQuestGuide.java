@@ -251,6 +251,13 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
+		// Unsorted
+		QuestHelperQuest.THE_FINAL_DAWN,
+		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
+		QuestHelperQuest.SCRAMBLED,
+		QuestHelperQuest.AN_EXISTENTIAL_CRISIS,
+		QuestHelperQuest.IMPENDING_CHAOS,
+		QuestHelperQuest.VALE_TOTEMS,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Ironman Quest Guide
 		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,
 		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,

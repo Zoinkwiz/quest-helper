@@ -258,6 +258,13 @@ public class OptimalQuestGuide
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
+		// Unsorted
+		QuestHelperQuest.THE_FINAL_DAWN,
+		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
+		QuestHelperQuest.SCRAMBLED,
+		QuestHelperQuest.AN_EXISTENTIAL_CRISIS,
+		QuestHelperQuest.IMPENDING_CHAOS,
+		QuestHelperQuest.VALE_TOTEMS,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Quest Guide
 		QuestHelperQuest.BARBARIAN_TRAINING,
 		QuestHelperQuest.BEAR_YOUR_SOUL,

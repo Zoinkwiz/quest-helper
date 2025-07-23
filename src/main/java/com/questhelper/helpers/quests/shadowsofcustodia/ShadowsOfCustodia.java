@@ -74,6 +74,7 @@ public class ShadowsOfCustodia extends BasicQuestHelper
 
 	// Item recommendations
 	ItemRequirement combatGear;
+	ItemRequirement energyOrStaminas;
 	TeleportItemRequirement startTeleport;
 
 	// Miscellaneous requirements
@@ -187,6 +188,8 @@ public class ShadowsOfCustodia extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS);
 	}
 
 	public void setupSteps()
@@ -288,7 +291,8 @@ public class ShadowsOfCustodia extends BasicQuestHelper
 	{
 		return List.of(
 			startTeleport,
-			combatGear
+			combatGear,
+			energyOrStaminas
 		);
 	}
 

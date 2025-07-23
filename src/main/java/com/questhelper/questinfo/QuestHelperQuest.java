@@ -91,6 +91,7 @@ import com.questhelper.helpers.mischelpers.strongholdofsecurity.StrongholdOfSecu
 import com.questhelper.helpers.mischelpers.farmruns.HerbRun;
 import com.questhelper.helpers.mischelpers.farmruns.TreeRun;
 import com.questhelper.helpers.quests.akingdomdivided.AKingdomDivided;
+import com.questhelper.helpers.quests.anexistentialcrisis.AnExistentialCrisis;
 import com.questhelper.helpers.quests.anightatthetheatre.ANightAtTheTheatre;
 import com.questhelper.helpers.quests.animalmagnetism.AnimalMagnetism;
 import com.questhelper.helpers.quests.anothersliceofham.AnotherSliceOfHam;
@@ -158,6 +159,7 @@ import com.questhelper.helpers.quests.holygrail.HolyGrail;
 import com.questhelper.helpers.quests.horrorfromthedeep.HorrorFromTheDeep;
 import com.questhelper.helpers.quests.icthlarinslittlehelper.IcthlarinsLittleHelper;
 import com.questhelper.helpers.quests.impcatcher.ImpCatcher;
+import com.questhelper.helpers.quests.impendingchaos.ImpendingChaos;
 import com.questhelper.helpers.quests.inaidofthemyreque.InAidOfTheMyreque;
 import com.questhelper.helpers.quests.insearchofknowledge.InSearchOfKnowledge;
 import com.questhelper.helpers.quests.insearchofthemyreque.InSearchOfTheMyreque;
@@ -201,10 +203,12 @@ import com.questhelper.helpers.quests.royaltrouble.RoyalTrouble;
 import com.questhelper.helpers.quests.rumdeal.RumDeal;
 import com.questhelper.helpers.quests.runemysteries.RuneMysteries;
 import com.questhelper.helpers.quests.scorpioncatcher.ScorpionCatcher;
+import com.questhelper.helpers.quests.scrambled.Scrambled;
 import com.questhelper.helpers.quests.seaslug.SeaSlug;
 import com.questhelper.helpers.quests.secretsofthenorth.SecretsOfTheNorth;
 import com.questhelper.helpers.quests.shadesofmortton.ShadesOfMortton;
 import com.questhelper.helpers.quests.shadowofthestorm.ShadowOfTheStorm;
+import com.questhelper.helpers.quests.shadowsofcustodia.ShadowsOfCustodia;
 import com.questhelper.helpers.quests.sheepherder.SheepHerder;
 import com.questhelper.helpers.quests.sheepshearer.SheepShearer;
 import com.questhelper.helpers.quests.shieldofarrav.ShieldOfArravBlackArmGang;
@@ -227,6 +231,7 @@ import com.questhelper.helpers.quests.thedepthsofdespair.TheDepthsOfDespair;
 import com.questhelper.helpers.quests.thedigsite.TheDigSite;
 import com.questhelper.helpers.quests.theeyesofglouphrie.TheEyesOfGlouphrie;
 import com.questhelper.helpers.quests.thefeud.TheFeud;
+import com.questhelper.helpers.quests.thefinaldawn.TheFinalDawn;
 import com.questhelper.helpers.quests.theforsakentower.TheForsakenTower;
 import com.questhelper.helpers.quests.thefremennikexiles.TheFremennikExiles;
 import com.questhelper.helpers.quests.thefremennikisles.TheFremennikIsles;
@@ -254,6 +259,7 @@ import com.questhelper.helpers.quests.trollromance.TrollRomance;
 import com.questhelper.helpers.quests.trollstronghold.TrollStronghold;
 import com.questhelper.helpers.quests.twilightspromise.TwilightsPromise;
 import com.questhelper.helpers.quests.undergroundpass.UndergroundPass;
+import com.questhelper.helpers.quests.valetotems.ValeTotems;
 import com.questhelper.helpers.quests.vampyreslayer.VampyreSlayer;
 import com.questhelper.helpers.quests.wanted.Wanted;
 import com.questhelper.helpers.quests.watchtower.Watchtower;
@@ -467,6 +473,12 @@ public enum QuestHelperQuest
 	MEAT_AND_GREET(new MeatAndGreet(), Quest.MEAT_AND_GREET, QuestVarbits.QUEST_MEAT_AND_GREET, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_HEART_OF_DARKNESS(new TheHeartOfDarkness(), Quest.THE_HEART_OF_DARKNESS, QuestVarbits.QUEST_THE_HEART_OF_DARKNESS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_CURSE_OF_ARRAV(new TheCurseOfArrav(), Quest.THE_CURSE_OF_ARRAV, QuestVarbits.QUEST_THE_CURSE_OF_ARRAV, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	THE_FINAL_DAWN(new TheFinalDawn(), Quest.THE_FINAL_DAWN, QuestVarbits.QUEST_THE_FINAL_DAWN, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	SHADOWS_OF_CUSTODIA(new ShadowsOfCustodia(), Quest.SHADOWS_OF_CUSTODIA, QuestVarbits.QUEST_SHADOWS_OF_CUSTODIA, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
+	SCRAMBLED(new Scrambled(), Quest.SCRAMBLED, QuestVarbits.QUEST_SCRAMBLED, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
+	AN_EXISTENTIAL_CRISIS(new AnExistentialCrisis(), Quest.AN_EXISTENTIAL_CRISIS, QuestVarbits.QUEST_AN_EXISTENTIAL_CRISIS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
+	IMPENDING_CHAOS(new ImpendingChaos(), Quest.IMPENDING_CHAOS, QuestVarbits.QUEST_IMPENDING_CHAOS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
+	VALE_TOTEMS(new ValeTotems(), Quest.VALE_TOTEMS, QuestVarbits.QUEST_VALE_TOTEMS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

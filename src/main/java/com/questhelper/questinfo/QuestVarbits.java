@@ -121,6 +121,12 @@ public enum QuestVarbits
 	QUEST_MEAT_AND_GREET(VarbitID.MAG),
 	QUEST_THE_HEART_OF_DARKNESS(VarbitID.VMQ3),
 	QUEST_THE_CURSE_OF_ARRAV(VarbitID.COA),
+	QUEST_THE_FINAL_DAWN(VarbitID.VMQ4 /* TODO: Verify */),
+	QUEST_SHADOWS_OF_CUSTODIA(VarbitID.SOC),
+	QUEST_SCRAMBLED(VarbitID.SCRAMBLED /* TODO: Verify */),
+	QUEST_AN_EXISTENTIAL_CRISIS(VarbitID.AEC),
+	QUEST_IMPENDING_CHAOS(VarbitID.IC),
+	QUEST_VALE_TOTEMS(0),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

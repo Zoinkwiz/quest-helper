@@ -236,6 +236,12 @@ public class ReleaseDate
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
 		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
-		QuestHelperQuest.HIS_FAITHFUL_SERVANTS
+		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
+		QuestHelperQuest.THE_FINAL_DAWN,
+		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
+		QuestHelperQuest.SCRAMBLED,
+		QuestHelperQuest.AN_EXISTENTIAL_CRISIS,
+		QuestHelperQuest.IMPENDING_CHAOS,
+		QuestHelperQuest.VALE_TOTEMS
 	);
 }

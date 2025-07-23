@@ -30,17 +30,21 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
 
 import java.util.*;
 
@@ -49,7 +53,10 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
+
+import static com.questhelper.requirements.util.LogicHelper.*;
 
 /**
  * The quest guide for the "The Final Dawn" OSRS quest
@@ -58,27 +65,82 @@ public class TheFinalDawn extends BasicQuestHelper
 {
 	ItemRequirement emissaryRobesEquipped, emissaryRobes, bone, rangedGear;
 
-	ItemRequirement combatGear, food, prayerPotions;
+	ItemRequirement combatGear, combatWeapon, food, prayerPotions, whistle, pendant;
+	FreeInventorySlotRequirement freeInvSlots4;
 
-	QuestStep startQuest;
+	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, branch, coinPurseWithSand, emptySack, makeshiftBlackjack, trapdoorKey;
+	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment;
+
+	DetailedQuestStep startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2;
+	DetailedQuestStep useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll, talkToQueen;
+	DetailedQuestStep talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, petDog, enterDoorCode, takePotato, takeKnife, takeCoinPurse;
+	DetailedQuestStep climbUpStairsInHouse, useKnifeOnPottedFan, fillCoinPurse, takeSackOfPotatoes, useBranchOnCoinPurse, showSackToVibia, searchBodyForKey;
+	DetailedQuestStep useKeyOnTrapdoor, talkToQueenToGoCamTorum, enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, useBeerOnGalna;
+	DetailedQuestStep searchCabinetForDrinks, placeSteamforgedBrew, placeDwarvenStout, placeBeer, placeEmptyGlass, placeMindBomb, inspectFireplace, useHold;
+	DetailedQuestStep returnToServius, enterNeypotzli, talkToEyatalli, defeatCultists, talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists;
+
+	Zone templeBasement, eastTempleBasement, hiddenRoom;
+
+	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom;
+
+	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		initializeRequirements();
+		// TODO: Swap back
+//		initializeRequirements();
+		setupZones();
+		setupRequirements();
 		setupSteps();
 
 		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, startQuest);
+		steps.put(1, startQuest);
 
+		ConditionalStep goEnterTemple = new ConditionalStep(this, searchChestForEmissaryRobes);
+		goEnterTemple.addStep(emissaryRobes, enterTwilightTemple);
+		steps.put(3, goEnterTemple);
+
+		ConditionalStep goEnterTempleBasement = new ConditionalStep(this, searchChestForEmissaryRobes);
+		goEnterTempleBasement.addStep(inHiddenRoom, pickBlueChest);
+		goEnterTempleBasement.addStep(and(inEastTempleBasement, usedSigilOnCanvas), enterPassage);
+		goEnterTempleBasement.addStep(and(inEastTempleBasement, canvasPiece), useCanvasPieceOnPicture);
+		goEnterTempleBasement.addStep(and(inEastTempleBasement, hasDrawerKeyOrOpened, isSouthDrawer), openDrawers2);
+		goEnterTempleBasement.addStep(and(inEastTempleBasement, hasDrawerKeyOrOpened), openDrawers);
+		goEnterTempleBasement.addStep(inEastTempleBasement, searchBed);
+		goEnterTempleBasement.addStep(inTempleBasement, enterBackroom);
+		goEnterTempleBasement.addStep(emissaryRobes, goDownStairsTemple);
+
+		steps.put(4, goEnterTempleBasement);
+		steps.put(5, goEnterTempleBasement);
+		steps.put(6, goEnterTempleBasement);
+		steps.put(7, goEnterTempleBasement);
+
+		ConditionalStep goFightInBasement = new ConditionalStep(this, searchChestForEmissaryRobes);
+		goFightInBasement.addStep(inEastTempleBasement, fightEnforcer);
+		goFightInBasement.addStep(inTempleBasement, enterBackroom);
+		goFightInBasement.addStep(emissaryRobes, goDownStairsTemple);
+		steps.put(8, goFightInBasement);
+
+		ConditionalStep goReadScroll = new ConditionalStep(this, searchChestForEmissaryRobes);
+		goReadScroll.addStep(emissaryScroll, readEmissaryScroll);
+		goReadScroll.addStep(and(or(inEastTempleBasement, inHiddenRoom), emissaryScrollNearby), pickUpEmissaryScroll);
+		goReadScroll.addStep(inEastTempleBasement, enterPassage);
+		goReadScroll.addStep(inHiddenRoom, pickBlueChest);
+		goReadScroll.addStep(inTempleBasement, enterBackroom);
+		goReadScroll.addStep(emissaryRobes, goDownStairsTemple);
+		steps.put(9, goReadScroll);
 		return steps;
 	}
 
 	@Override
 	protected void setupZones()
 	{
-		// TODO
+		templeBasement = new Zone(new WorldPoint(1660, 9680, 0), new WorldPoint(1725, 9720, 0));
+		eastTempleBasement = new Zone(new WorldPoint(1707, 9696, 0), new WorldPoint(1718, 9715, 0));
+		hiddenRoom = new Zone(new WorldPoint(1721, 9702, 0), new WorldPoint(1725, 9709, 0));
 	}
 
 	@Override
@@ -101,6 +163,9 @@ public class TheFinalDawn extends BasicQuestHelper
 
 
 		// Item Recommended
+		combatWeapon = new ItemRequirement("Combat weapon", -1, -1).isNotConsumed();
+		combatWeapon.setDisplayItemId(BankSlotIcons.getCombatGear());
+
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
@@ -109,13 +174,65 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 
+		whistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_BASIC);
+		whistle.addAlternates(ItemID.HG_QUETZALWHISTLE_ENHANCED, ItemID.HG_QUETZALWHISTLE_PERFECTED);
+		pendant = new ItemRequirement("Pendant of ates", ItemID.PENDANT_OF_ATES);
+
+		// Quest items
+		drawerKey = new ItemRequirement("Key", ItemID.VMQ4_DRAWER_KEY);
+		canvasPiece = new ItemRequirement("Canvas piece", ItemID.VMQ4_PAINTING_SIGIL);
+		emissaryScroll = new ItemRequirement("Emissary scroll", ItemID.VMQ4_CULT_MANIFEST);
+
+		// Quest requirements
+		inTempleBasement = new ZoneRequirement(templeBasement);
+		inEastTempleBasement = new ZoneRequirement(eastTempleBasement);
+		inHiddenRoom = new ZoneRequirement(hiddenRoom);
+
+		isSouthDrawer = new VarbitRequirement(VarbitID.VMQ4_CANVAS_DRAWER, 2);
+		hasDrawerKeyOrOpened = or(drawerKey, new VarbitRequirement(VarbitID.VMQ4_TEMPLE_DRAW_UNLOCKED, 1, Operation.GREATER_EQUAL));
+		usedSigilOnCanvas = new VarbitRequirement(VarbitID.VMQ4, 7, Operation.GREATER_EQUAL);
+		emissaryScrollNearby = new ItemOnTileRequirement(emissaryScroll);
 	}
 
 	public void setupSteps()
 	{
-		// TODO: Implement
-		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer to start the quest.");
+		startQuest = new NpcStep(this, NpcID.VMQ3_SERVIUS_PALACE, new WorldPoint(1681, 3168, 0), "Talk to Servius in the Sunrise Palace in Vicitas illa " +
+				"Fortis to start the quest.");
 		startQuest.addDialogStep("Yes.");
+
+		freeInvSlots4 = new FreeInventorySlotRequirement(4);
+		searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.VMQ3_CULTIST_OUTFIT_CHEST, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
+				"for some emissary robes.", freeInvSlots4);
+		searchChestForEmissaryRobes.addTeleport(pendant);
+		enterTwilightTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple south-east of Salvager Overlook.",
+				emissaryRobesEquipped);
+
+		goDownStairsTemple = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_STAIRS, new WorldPoint(1677, 3248, 0), "Go down the stairs in the temple. The " +
+				"passphrase is 'Final' and 'Dawn'.", List.of(emissaryRobesEquipped), List.of(combatWeapon, food));
+		goDownStairsTemple.addDialogSteps("Final.", "Dawn.");
+
+		enterBackroom = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_CHAMBER_ENTRY, new WorldPoint(1706, 9706, 0), "Enter the far eastern room. Avoid" +
+				" the patrolling guard.");
+
+		searchBed = new ObjectStep(this, ObjectID.VMQ4_TEMPLE_BED_WITH_KEY, new WorldPoint(1713, 9698, 0), "Search the bed in he south room.");
+		openDrawers = new ObjectStep(this, ObjectID.VMQ4_TEMPLE_CANVAS_DRAW_1_CLOSED, new WorldPoint(1713, 9714, 0), "Open the drawers in the north room.");
+		((ObjectStep) openDrawers).addAlternateObjects(ObjectID.VMQ4_TEMPLE_CANVAS_DRAW_1_OPEN);
+		openDrawers.conditionToHideInSidebar(isSouthDrawer);
+
+		openDrawers2 = new ObjectStep(this, ObjectID.VMQ4_TEMPLE_CANVAS_DRAW_2_CLOSED, new WorldPoint(1709, 9700, 0), "Open the drawers in the same room.");
+		((ObjectStep) openDrawers2).addAlternateObjects(ObjectID.VMQ4_TEMPLE_CANVAS_DRAW_2_OPEN);
+		openDrawers2.conditionToHideInSidebar(not(isSouthDrawer));
+		useCanvasPieceOnPicture = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_PAINTING, new WorldPoint(1719, 9706, 0), "Use canvas piece on the " +
+				"painting in the east of the middle room of the eastern rooms.", canvasPiece.highlighted());
+		useCanvasPieceOnPicture.addIcon(ItemID.VMQ4_PAINTING_SIGIL);
+		enterPassage = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_PAINTING, new WorldPoint(1719, 9706, 0), "Enter the passage behind the painting.");
+		enterPassage.addDialogSteps("Enter the passage.");
+		pickBlueChest = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_CHAMBER_CHEST_CLOSED, new WorldPoint(1723, 9709, 0), "Picklock the chest in the " +
+				"hidden room. Be ready for a fight afterwards.");
+		fightEnforcer = new NpcStep(this, NpcID.VMQ4_TEMPLE_GUARD_BOSS_FIGHT, new WorldPoint(1712, 9706, 0), "Defeat the enforcer. You cannot use prayers" +
+				". Step away each time he goes to attack, and step behind him if he says 'Traitor!' or 'Thief!'.");
+		pickUpEmissaryScroll = new ItemStep(this, "Pick up the emissary scroll.", emissaryScroll);
+		readEmissaryScroll = new DetailedQuestStep(this, "Read the emissary scroll.", emissaryScroll.highlighted());
 	}
 
 	@Override
@@ -130,7 +247,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
-			rangedGear, food, prayerPotions
+			rangedGear, food, prayerPotions, pendant, whistle
 		);
 	}
 
@@ -194,10 +311,11 @@ public class TheFinalDawn extends BasicQuestHelper
 	{
 		var panels = new ArrayList<PanelDetails>();
 
-		panels.add(new PanelDetails("TODO", List.of(
-			startQuest
+		panels.add(new PanelDetails("Starting off", List.of(
+			startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2,
+				useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll
 		), List.of(
-			// Requirements
+			combatWeapon, food
 		), List.of(
 			// Recommended
 		)));

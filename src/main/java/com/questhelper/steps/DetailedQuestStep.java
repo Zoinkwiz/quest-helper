@@ -124,6 +124,9 @@ public class DetailedQuestStep extends QuestStep
 	public boolean considerBankForItemHighlight;
 	public int iconToUseForNeededItems = -1;
 
+	@Setter
+	private boolean onlyHighlightItemsOnTile;
+
 
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
 	{
@@ -561,6 +564,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		TileItem item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
+		if (onlyHighlightItemsOnTile && !QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).contains(tile.getLocalLocation())) return;
 		for (Requirement requirement : requirements)
 		{
 			if (isItemRequirement(requirement) && requirementContainsID((ItemRequirement) requirement, item.getId()))
@@ -610,6 +614,7 @@ public class DetailedQuestStep extends QuestStep
 					{
 						continue;
 					}
+					if (onlyHighlightItemsOnTile && !QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).contains(tile.getLocalLocation())) continue;
 					for (Requirement requirement : requirements)
 					{
 						if (isValidRequirementForTileItem(requirement, item))

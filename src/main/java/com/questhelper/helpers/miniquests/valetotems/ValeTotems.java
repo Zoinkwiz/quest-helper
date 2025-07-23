@@ -69,6 +69,7 @@ public class ValeTotems extends BasicQuestHelper
 	ItemRequirement oneOakShields;
 
 	// Miscellaneous requirements
+	VarbitRequirement needToBuildTotem;
 	VarbitRequirement isTotemBaseBuilt;
 
 	VarbitRequirement needToCarveAnimals;
@@ -155,6 +156,7 @@ public class ValeTotems extends BasicQuestHelper
 		oneOakShields = new ItemRequirement("Oak shield", ItemID.OAK_SHIELD, 1);
 		oneOakShields.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood shields, but it needs to match the logs you used to build the totem.");
 
+		needToBuildTotem = new VarbitRequirement(VarbitID.ENT_TOTEMS_BROKEN_CHAT, 1);
 		isTotemBaseBuilt = new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_BASE, 1);
 
 		isBuffaloNearby = or(
@@ -273,12 +275,13 @@ public class ValeTotems extends BasicQuestHelper
 		decorateTotem.addStep(twoShieldsAdded, decorateTotemTwoShields);
 		decorateTotem.addStep(threeShieldsAdded, decorateTotemOneShield);
 
-		carveAndDecorateTotem = new ConditionalStep(this, buildTotemBase);
+		carveAndDecorateTotem = new ConditionalStep(this, startQuest);
 		carveAndDecorateTotem.addStep(isDoneDecorating, talkToIsadoraAfterDecoratingTotem);
 		carveAndDecorateTotem.addStep(needToDecorate, decorateTotem);
 		carveAndDecorateTotem.addStep(isDoneCarving, talkToIsadoraAfterCarvingTotem);
 		carveAndDecorateTotem.addStep(needToCarveAnimals, carveTotem);
 		carveAndDecorateTotem.addStep(isTotemBaseBuilt, talkToIsadoraToLearnAboutCarving);
+		carveAndDecorateTotem.addStep(needToBuildTotem, buildTotemBase);
 
 		claimOffering = new ObjectStep(this, ObjectID.ENT_TOTEMS_OFFERINGS_B, new WorldPoint(1370, 3374, 0), "Claim the offering the Ent left next to your totem.");
 		finishQuest = new NpcStep(this, NpcID.ENT_TOTEMS_INTRO_CHILD_VIS, new WorldPoint(1366, 3369, 0), "Return to Isadora to finish the quest.");

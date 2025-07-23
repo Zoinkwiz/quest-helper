@@ -81,16 +81,19 @@ public class TheFinalDawn extends BasicQuestHelper
 	DetailedQuestStep talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, enterDoorCode, takePotato, removePotatoesFromSack, takeKnife, takeCoinPurse,
 			emptyCoinPurse, goToF1Hideout, goDownFromF2Hideout, goToF0Hideout, goToF0HideoutEnd, goF2ToF1HideoutEnd;
 	DetailedQuestStep goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia, searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum;
-	DetailedQuestStep enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, useBeerOnGalna;
-	DetailedQuestStep searchCabinetForDrinks, placeSteamforgedBrew, placeDwarvenStout, placeBeer, placeEmptyGlass, placeMindBomb, inspectFireplace, useHold;
+	DetailedQuestStep enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, goDownstairsPub, useBeerOnGalna, enterCamTorumHouseBasement;
+	DetailedQuestStep takeBeerCabinet, drinkBeer, takeSteamforgeBrew, takeDwarvenStout, takeWizardsMindBomb, placeSteamforgedBrew, placeDwarvenStout, placeBeer,
+			takeBeerFromBarrel, placeEmptyGlass, placeMindBomb,	inspectFireplace,	useHole;
 	DetailedQuestStep returnToServius, enterNeypotzli, talkToEyatalli, defeatCultists, talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists;
 
-	Zone templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor, hideoutBasement, camTorum;
+	Zone templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor, hideoutBasement,
+	camTorum, camTorumF2, camTorumBasement;
 
-	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom, inPalaceF1, inPalaceF2, inHideout, inHideoutF1, inHideoutF2, inHideoutBasement, inCamTorum;
+	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom, inPalaceF1, inPalaceF2, inHideout, inHideoutF1, inHideoutF2, inHideoutBasement,
+	inCamTorum, inCamTorumF2, inCamTorumBasement;
 
 	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby, inChestInterface;
-	Requirement hasSackOfGivenSack;
+	Requirement hasSackOfGivenSack, isGalnaDrunk, notPlacedMindBomb, notPlacedBeer, notPlacedSteamforgeBrew, notPlacedDwarvenStout, beerTakenFromBarrel;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -191,11 +194,57 @@ public class TheFinalDawn extends BasicQuestHelper
 		goEnterTrapdoor.addStep(inHideout, enterTrapdoor);
 		steps.put(24, goEnterTrapdoor);
 		steps.put(25, goEnterTrapdoor);
+		steps.put(26, goEnterTrapdoor);
 
 		ConditionalStep goTalkToAttala = new ConditionalStep(this, enterCamTorum);
 		goTalkToAttala.addStep(inCamTorum, talkToAttala);
-		steps.put(26, goTalkToAttala);
+		// TODO: See if cut cutscene at 27, if you restart it by entering Cam Torum again or not
+		steps.put(27, goTalkToAttala);
+		steps.put(28, goTalkToAttala);
 
+		ConditionalStep goTalkToServiusCamTorum = new ConditionalStep(this, enterCamTorum);
+		goTalkToServiusCamTorum.addStep(inCamTorum, talkToServiusInCamTorum);
+		steps.put(29, goTalkToServiusCamTorum);
+
+		ConditionalStep doBasementPuzzle = new ConditionalStep(this, enterCamTorumHouseBasement);
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedMindBomb, wizardsMindBomb), placeMindBomb);
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedMindBomb), takeWizardsMindBomb);
+
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedBeer, beer), placeBeer);
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedBeer), takeBeerCabinet);
+
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedSteamforgeBrew, steamforgedBrew), placeSteamforgedBrew);
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedSteamforgeBrew), takeSteamforgeBrew);
+
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedDwarvenStout, dwarvenStout), placeDwarvenStout);
+		doBasementPuzzle.addStep(and(inCamTorumBasement, notPlacedDwarvenStout), takeDwarvenStout);
+
+		doBasementPuzzle.addStep(and(inCamTorumBasement, beerTakenFromBarrel, emptyGlass), placeEmptyGlass);
+		doBasementPuzzle.addStep(and(inCamTorumBasement, beer), drinkBeer);
+		doBasementPuzzle.addStep(inCamTorumBasement, takeBeerFromBarrel);
+
+		ConditionalStep goGetGalnaDrunk = new ConditionalStep(this, enterCamTorum);
+		goGetGalnaDrunk.addStep(and(inCamTorumF2, beer), goDownstairsPub);
+		goGetGalnaDrunk.addStep(and(inCamTorum, beer), useBeerOnGalna);
+		goGetGalnaDrunk.addStep(inCamTorumF2, takeBeer);
+		goGetGalnaDrunk.addStep(inCamTorum, goUpstairsPub);
+
+		ConditionalStep goDoCamTorum = new ConditionalStep(this, enterCamTorum);
+		goDoCamTorum.addStep(and(inCamTorum, isGalnaDrunk), doBasementPuzzle);
+		goDoCamTorum.addStep(inCamTorum, goGetGalnaDrunk);
+		steps.put(30, goDoCamTorum);
+		steps.put(31, goDoCamTorum);
+
+		ConditionalStep goEnterFireplace = new ConditionalStep(this, enterCamTorum);
+		goEnterFireplace.addStep(inCamTorumBasement, inspectFireplace);
+		goEnterFireplace.addStep(inCamTorum, enterCamTorumHouseBasement);
+		steps.put(32, goEnterFireplace);
+
+		ConditionalStep goEnterHole = new ConditionalStep(this, enterCamTorum);
+		goEnterHole.addStep(inCamTorumBasement, useHole);
+		goEnterHole.addStep(inCamTorum, enterCamTorumHouseBasement);
+		steps.put(33, goEnterHole);
+		steps.put(34, goEnterHole);
 		return steps;
 	}
 
@@ -211,7 +260,9 @@ public class TheFinalDawn extends BasicQuestHelper
 		hideoutMiddleFloor = new Zone(new WorldPoint(1643, 3091, 1), new WorldPoint(1652, 3096, 1));
 		hideoutTopFloor = new Zone(new WorldPoint(1643, 3091, 2), new WorldPoint(1652, 3102, 2));
 		hideoutBasement = new Zone(new WorldPoint(1643, 9486, 0), new WorldPoint(1657, 9500, 0));
-		camTorum = new Zone(new WorldPoint(1378, 9502, 1), new WorldPoint(1524, 9600, 3));
+		camTorum = new Zone(new WorldPoint(1378, 9502, 0), new WorldPoint(1524, 9600, 3));
+		camTorumF2 = new Zone(new WorldPoint(1465, 9567, 2), new WorldPoint(1470, 9572, 2));
+		camTorumBasement = new Zone(new WorldPoint(1464, 9564, 0), new WorldPoint(1472, 9574, 0));
 	}
 
 	@Override
@@ -271,6 +322,12 @@ public class TheFinalDawn extends BasicQuestHelper
 		branch = new ItemRequirement("Branch", ItemID.VMQ4_JANUS_REED);
 		makeshiftBlackjack = new ItemRequirement("Makeshift blackjack", ItemID.VMQ4_JANUS_SLAP);
 
+		beer = new ItemRequirement("Beer", ItemID.BEER);
+		steamforgedBrew = new ItemRequirement("Steamforge brew", ItemID.STEAMFORGE_BREW);
+		dwarvenStout = new ItemRequirement("Dwarven stout", ItemID.DWARVEN_STOUT);
+		emptyGlass = new ItemRequirement("Empty glass", ItemID.BEER_GLASS);
+		wizardsMindBomb = new ItemRequirement("Wizard's mind bomb", ItemID.WIZARDS_MIND_BOMB);
+
 		// Quest requirements
 		inTempleBasement = new ZoneRequirement(templeBasement);
 		inEastTempleBasement = new ZoneRequirement(eastTempleBasement);
@@ -282,6 +339,8 @@ public class TheFinalDawn extends BasicQuestHelper
 		inHideoutF2 = new ZoneRequirement(hideoutTopFloor);
 		inHideoutBasement = new ZoneRequirement(hideoutBasement);
 		inCamTorum = new ZoneRequirement(camTorum);
+		inCamTorumF2 = new ZoneRequirement(camTorumF2);
+		inCamTorumBasement = new ZoneRequirement(camTorumBasement);
 
 		isSouthDrawer = new VarbitRequirement(VarbitID.VMQ4_CANVAS_DRAWER, 2);
 		hasDrawerKeyOrOpened = or(drawerKey, new VarbitRequirement(VarbitID.VMQ4_TEMPLE_DRAW_UNLOCKED, 1, Operation.GREATER_EQUAL));
@@ -290,6 +349,13 @@ public class TheFinalDawn extends BasicQuestHelper
 		inChestInterface = new WidgetTextRequirement(809, 5, 9, "Confirm");
 
 		hasSackOfGivenSack = or(emptySack, givenSack);
+		isGalnaDrunk = new VarbitRequirement(VarbitID.VMQ4_TEUMO_WIFE_BEER_GIVEN, 1);
+
+		notPlacedMindBomb = not(new ItemOnTileRequirement(ItemID.WIZARDS_MIND_BOMB, new WorldPoint(1471, 9567, 0)));
+		notPlacedBeer = not(new ItemOnTileRequirement(ItemID.BEER, new WorldPoint(1466, 9573, 0)));
+		notPlacedSteamforgeBrew = not(new ItemOnTileRequirement(ItemID.STEAMFORGE_BREW, new WorldPoint(1464, 9568, 0)));
+		notPlacedDwarvenStout = not(new ItemOnTileRequirement(ItemID.DWARVEN_STOUT, new WorldPoint(1466, 9568, 0)));
+		beerTakenFromBarrel = not(new ItemOnTileRequirement(ItemID.BEER, new WorldPoint(1469, 9571, 0)));
 	}
 
 	public void setupSteps()
@@ -380,14 +446,55 @@ public class TheFinalDawn extends BasicQuestHelper
 		enterTrapdoor = new ObjectStep(this, ObjectID.VMQ4_JANUS_BASEMENT_ENTRY, new WorldPoint(1643, 3092, 0), "Enter the basement in the hideout.");
 
 		talkToQueenToGoCamTorum = new NpcStep(this, NpcID.VMQ4_QUEEN_BASEMENT, new WorldPoint(1653, 9493, 0), "Talk to the queen in the hideout basement.");
+		talkToQueenToGoCamTorum.addDialogStep("Yes, let's go.");
 		enterCamTorum = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1436, 3129, 0), "Enter Cam Torum.");
-		enterCamTorum.addDialogStep("Yes, let's go.");
 
-		talkToAttala = new NpcStep(this, NpcID.CAM_TORUM_ATTALA, new WorldPoint(1439, 9563, 0), "Talk to Attala in Cam Torum.");
-//		talkToServiusInCamTorum = ;
-//		goUpstairsPub = ;
-//		takeBeer = ;
-//		useBeerOnGalna = ;
+		talkToAttala = new NpcStep(this, NpcID.CAM_TORUM_ATTALA, new WorldPoint(1442, 9550, 1), "Talk to Attala in Cam Torum's marketplace.");
+		talkToServiusInCamTorum = new NpcStep(this, NpcID.VMQ4_SERVIUS_TEUMO_HOUSE, new WorldPoint(1466, 9570, 1), "Talk to Servius in the house east of the " +
+				"bank in Cam Torum.");
+		goUpstairsPub = new ObjectStep(this, ObjectID.STAIRS_IMCANDO01_LOWER01, new WorldPoint(1467, 9572, 1), "Go upstairs in the house.");
+		takeBeer = new ItemStep(this, "Take the beer. Hop worlds if it's missing.", beer);
+		goDownstairsPub = new ObjectStep(this, ObjectID.STAIRS_IMCANDO01_UPPER01, new WorldPoint(1468, 9572, 2), "Go downstairs in the house.");
+		useBeerOnGalna = new NpcStep(this, NpcID.VMQ4_TEUMO_WIFE, new WorldPoint(1466, 9570, 1), "Use the beer on Galna.", beer.highlighted());
+		useBeerOnGalna.addIcon(ItemID.BEER);
+		enterCamTorumHouseBasement = new ObjectStep(this, ObjectID.VMQ4_TEUMO_HOUSE_STAIRS_DOWN, new WorldPoint(1470, 9571, 1), "Enter the house's basement.");
+		takeBeerCabinet = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SHELF, new WorldPoint(1464, 9569, 0), "Search the south-west cabinet for a beer.");
+		takeBeerCabinet.addDialogStep("Beer.");
+		drinkBeer = new DetailedQuestStep(this, "Drink a beer.", beer.highlighted());
+		takeSteamforgeBrew = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SHELF, new WorldPoint(1464, 9569, 0), "Search the south-west cabinet for " +
+				"steamforge brew.");
+		takeSteamforgeBrew.addDialogSteps("More options...", "Steamforge brew.");
+		takeDwarvenStout = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SHELF, new WorldPoint(1464, 9569, 0), "Search the south-west cabinet for dwarven" +
+				" stout.");
+		takeDwarvenStout.addDialogSteps("Previous options...", "Dwarven stout.");
+		takeWizardsMindBomb = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SHELF, new WorldPoint(1464, 9569, 0), "Search the south-west cabinet for " +
+				"wizard's mind bomb.");
+		takeWizardsMindBomb.addDialogSteps("More options...", "Wizard's mind bomb.");
+		placeSteamforgedBrew = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_BARREL_3, new WorldPoint(1464, 9568, 0), "Place steamforge brew on the " +
+				"south-west barrel.", steamforgedBrew.highlighted());
+		placeSteamforgedBrew.addIcon(ItemID.STEAMFORGE_BREW);
+		placeDwarvenStout = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_BARREL_4, new WorldPoint(1466, 9568, 0), "Place dwarven stout on the " +
+				"south barrel.", dwarvenStout.highlighted());
+		placeDwarvenStout.addIcon(ItemID.DWARVEN_STOUT);
+
+		takeBeerFromBarrel = new ItemStep(this, new WorldPoint(1469, 9571, 0), "Take the beer from on top of the barrel near the staircase.", beer);
+		takeBeerFromBarrel.setOnlyHighlightItemsOnTile(true);
+		placeBeer = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_BARREL_2, new WorldPoint(1466, 9573, 0), "Place beer on the " +
+				"north barrel.", beer.highlighted());
+		placeBeer.addIcon(ItemID.BEER);
+
+		placeEmptyGlass = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_BARREL_1, new WorldPoint(1469, 9571, 0), "Place empty glass on the " +
+				"east barrel.", emptyGlass.highlighted());
+		placeEmptyGlass.addIcon(ItemID.BEER_GLASS);
+		placeMindBomb = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_BARREL_5, new WorldPoint(1471, 9567, 0), "Place wizard's mind bomb on the " +
+				"south-east barrel.", wizardsMindBomb.highlighted());
+		placeMindBomb.addIcon(ItemID.WIZARDS_MIND_BOMB);
+		inspectFireplace = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_FIRE_OUT, new WorldPoint(1463, 9571, 0), "Inspect the fireplace.");
+		inspectFireplace.addDialogStep("Pull it.");
+		useHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_ENTRY, new WorldPoint(1470, 9565, 0), "Enter the hole in the south-west " +
+				"corner of the room.");
+
+		returnToServius = new NpcStep(this, NpcID.VMQ4_SERVIUS_TEUMO_HOUSE_DOWNSTAIRS, new WorldPoint(1468, 9569, 0), "Talk to Servius in the house basement.");
 	}
 
 	@Override
@@ -479,8 +586,11 @@ public class TheFinalDawn extends BasicQuestHelper
 				searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum),
 				List.of(bone),
 				List.of()));
-		panels.add(new PanelDetails("The dwarves", List.of(enterCamTorum, talkToAttala),
-				List.of(bone),
+		panels.add(new PanelDetails("The dwarves", List.of(enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, goDownstairsPub,
+				useBeerOnGalna, enterCamTorumHouseBasement, takeWizardsMindBomb, placeMindBomb, takeBeerCabinet,
+				placeBeer, takeSteamforgeBrew, placeSteamforgedBrew, takeDwarvenStout, placeDwarvenStout,takeBeerFromBarrel, drinkBeer, placeEmptyGlass,
+				inspectFireplace, useHole, returnToServius),
+				List.of(),
 				List.of()));
 		return panels;
 	}

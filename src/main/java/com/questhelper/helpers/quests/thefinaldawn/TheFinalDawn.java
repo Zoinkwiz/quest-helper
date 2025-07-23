@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, <insert quest helper creator here>
+ * Copyright (c) 2025, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,28 +24,42 @@
  */
 package com.questhelper.helpers.quests.thefinaldawn;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 
 /**
  * The quest guide for the "The Final Dawn" OSRS quest
  */
 public class TheFinalDawn extends BasicQuestHelper
 {
+	ItemRequirement emissaryRobesEquipped, emissaryRobes, bone, rangedGear;
+
+	ItemRequirement combatGear, food, prayerPotions;
+
 	QuestStep startQuest;
 
 	@Override
@@ -70,13 +84,35 @@ public class TheFinalDawn extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		// TODO
+		var emissaryHood = new ItemRequirement("Emissary hood", ItemID.VMQ3_CULTIST_HOOD);
+		var emissaryTop = new ItemRequirement("Emissary top", ItemID.VMQ3_CULTIST_ROBE_TOP);
+		var emissaryBottom = new ItemRequirement("Emissary bottom", ItemID.VMQ3_CULTIST_ROBE_BOTTOM);
+		var emissaryBoots = new ItemRequirement("Emissary sandals", ItemID.VMQ3_CULTIST_SANDALS);
+		emissaryRobesEquipped = new ItemRequirements("Emissary robes", emissaryHood, emissaryTop, emissaryBottom,
+				emissaryBoots).equipped();
+		emissaryRobes = new ItemRequirements("Emissary robes", emissaryHood, emissaryTop, emissaryBottom, emissaryBoots);
+
+		// TODO: Add remaining bones
+		bone = new ItemRequirement("Any type of bone", ItemID.BONES);
+		bone.addAlternates(ItemID.BIG_BONES, ItemID.BONES_BURNT, ItemID.WOLF_BONES, ItemID.BAT_BONES, ItemID.DAGANNOTH_KING_BONES);
+
+		rangedGear = new ItemRequirement("Ranged/Magic Combat gear", -1, -1).isNotConsumed();
+		rangedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
+
+
+		// Item Recommended
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		food.setUrlSuffix("Food");
+
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
+
 	}
 
 	public void setupSteps()
 	{
-		var unreachableState = new DetailedQuestStep(this, "This state should not be reachable, please make a report with a screenshot in the Quest Helper discord.");
-
 		// TODO: Implement
 		startQuest = new NpcStep(this, NpcID.ELIAS_WHITE_VIS, new WorldPoint(3505, 3037, 0), "Talk to Elias south of Ruins of Uzer to start the quest.");
 		startQuest.addDialogStep("Yes.");
@@ -86,7 +122,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
-			// TODO
+			emissaryRobes, bone, combatGear
 		);
 	}
 
@@ -94,15 +130,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
-			// TODO
-		);
-	}
-
-	@Override
-	public List<Requirement> getGeneralRecommended()
-	{
-		return List.of(
-			// TODO
+			rangedGear, food, prayerPotions
 		);
 	}
 
@@ -110,30 +138,36 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return List.of(
-			// TODO
+				new QuestRequirement(QuestHelperQuest.THE_HEART_OF_DARKNESS, QuestState.FINISHED),
+				new QuestRequirement(QuestHelperQuest.PERILOUS_MOON, QuestState.FINISHED),
+				new SkillRequirement(Skill.THIEVING, 66),
+				new SkillRequirement(Skill.FLETCHING, 52),
+				new SkillRequirement(Skill.RUNECRAFT, 52)
 		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
+		// TODO: Add in rest
 		return List.of(
-			// TODO
+			"Emissary Enforcer (lvl-196)"
 		);
 	}
 
 	@Override
 	public QuestPointReward getQuestPointReward()
 	{
-		// TODO: Verify
-		return new QuestPointReward(2);
+		return new QuestPointReward(3);
 	}
 
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return List.of(
-			// TODO
+			new ExperienceReward(Skill.THIEVING, 55000),
+			new ExperienceReward(Skill.FLETCHING, 25000),
+			new ExperienceReward(Skill.RUNECRAFT, 25000)
 		);
 	}
 
@@ -141,7 +175,17 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
-			// TODO
+			new UnlockReward("The Arkan Blade"),
+			new UnlockReward("Access to Mokhaiotl"),
+			new UnlockReward("Access to Crypt of Tonali")
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return Arrays.asList(
+			new ItemReward("55,000 Experience Lamps (Combat Skills)", ItemID.THOSF_REWARD_LAMP, 1)
 		);
 	}
 

@@ -126,7 +126,7 @@ public enum QuestVarbits
 	QUEST_SCRAMBLED(VarbitID.SCRAMBLED /* TODO: Verify */),
 	QUEST_AN_EXISTENTIAL_CRISIS(VarbitID.AEC),
 	QUEST_IMPENDING_CHAOS(VarbitID.IC),
-	QUEST_VALE_TOTEMS(0),
+	QUEST_VALE_TOTEMS(VarbitID.ENT_TOTEMS_INTRO),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

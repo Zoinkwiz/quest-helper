@@ -85,6 +85,7 @@ import com.questhelper.helpers.miniquests.thegeneralsshadow.TheGeneralsShadow;
 import com.questhelper.helpers.miniquests.themagearenai.TheMageArenaI;
 import com.questhelper.helpers.miniquests.themagearenaii.MA2Locator;
 import com.questhelper.helpers.miniquests.themagearenaii.TheMageArenaII;
+import com.questhelper.helpers.miniquests.valetotems.ValeTotems;
 import com.questhelper.helpers.mischelpers.allneededitems.AllNeededItems;
 import com.questhelper.helpers.mischelpers.knightswaves.KnightWaves;
 import com.questhelper.helpers.mischelpers.strongholdofsecurity.StrongholdOfSecurity;
@@ -259,7 +260,6 @@ import com.questhelper.helpers.quests.trollromance.TrollRomance;
 import com.questhelper.helpers.quests.trollstronghold.TrollStronghold;
 import com.questhelper.helpers.quests.twilightspromise.TwilightsPromise;
 import com.questhelper.helpers.quests.undergroundpass.UndergroundPass;
-import com.questhelper.helpers.quests.valetotems.ValeTotems;
 import com.questhelper.helpers.quests.vampyreslayer.VampyreSlayer;
 import com.questhelper.helpers.quests.wanted.Wanted;
 import com.questhelper.helpers.quests.watchtower.Watchtower;
@@ -478,7 +478,6 @@ public enum QuestHelperQuest
 	SCRAMBLED(new Scrambled(), Quest.SCRAMBLED, QuestVarbits.QUEST_SCRAMBLED, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
 	AN_EXISTENTIAL_CRISIS(new AnExistentialCrisis(), Quest.AN_EXISTENTIAL_CRISIS, QuestVarbits.QUEST_AN_EXISTENTIAL_CRISIS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
 	IMPENDING_CHAOS(new ImpendingChaos(), Quest.IMPENDING_CHAOS, QuestVarbits.QUEST_IMPENDING_CHAOS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
-	VALE_TOTEMS(new ValeTotems(), Quest.VALE_TOTEMS, QuestVarbits.QUEST_VALE_TOTEMS, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER /* TODO: CONFIRM DIFFICULTY */),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
@@ -497,6 +496,7 @@ public enum QuestHelperQuest
 	HOPESPEARS_WILL(new HopespearsWill(), Quest.HOPESPEARS_WILL, QuestVarbits.QUEST_HOPESPEARS_WILL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	HIS_FAITHFUL_SERVANTS(new HisFaithfulServants(), Quest.HIS_FAITHFUL_SERVANTS, QuestVarbits.HIS_FAITHFUL_SERVANTS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BARBARIAN_TRAINING(new BarbarianTraining(), Quest.BARBARIAN_TRAINING, QuestVarbits.BARBARIAN_TRAINING, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	VALE_TOTEMS(new ValeTotems(), Quest.VALE_TOTEMS, QuestVarbits.QUEST_VALE_TOTEMS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS(new KnightWaves(), "Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,

@@ -31,6 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public class WidgetHighlight extends AbstractWidgetHighlight
@@ -50,6 +51,9 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 
 	@Getter
 	protected String requiredText;
+
+	@Nullable
+	private String nameToCheckFor = null;
 
 
 	protected final boolean checkChildren;
@@ -98,6 +102,13 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		this.checkChildren = checkChildren;
 	}
 
+	public static WidgetHighlight createMultiskillByName(String roughName)
+	{
+		var w = new WidgetHighlight(270, 13, true);
+		w.nameToCheckFor = roughName;
+		return w;
+	}
+
 	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{
@@ -139,9 +150,11 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 	@Override
 	protected void highlightWidget(Graphics2D graphics, QuestHelperPlugin questHelper, Widget widgetToHighlight)
 	{
-		if (widgetToHighlight == null || !itemCheckPasses(widgetToHighlight) || !modelCheckPasses(widgetToHighlight) ||
-			(requiredText != null && (widgetToHighlight.getText() == null || !widgetToHighlight.getText().contains(requiredText)))
-		) return;
+		if (widgetToHighlight == null) return;
+		if (!itemCheckPasses(widgetToHighlight)) return;
+		if (!modelCheckPasses(widgetToHighlight)) return;
+		if (!requiredTextCheckPasses(widgetToHighlight)) return;
+		if (!roughNameCheckPasses(widgetToHighlight)) return;
 
 		super.highlightWidget(graphics, questHelper, widgetToHighlight);
 	}
@@ -155,5 +168,20 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 	private boolean modelCheckPasses(Widget widget)
 	{
 		return (modelIdRequirement == null || widget.getModelId() == modelIdRequirement);
+	}
+
+	private boolean requiredTextCheckPasses(Widget widget)
+	{
+		if (requiredText == null) return true;
+		if (widget.getText() == null) return false;
+		return widget.getText().contains(requiredText);
+	}
+
+	private boolean roughNameCheckPasses(Widget widget)
+	{
+		if (nameToCheckFor == null) return true;
+		var widgetName = widget.getName();
+		if (widgetName == null || widgetName.isEmpty()) return false;
+		return widgetName.contains(nameToCheckFor);
 	}
 }

@@ -26,6 +26,7 @@ package com.questhelper.helpers.quests.thefinaldawn;
 
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.helpers.quests.deserttreasureii.ChestCodeStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -38,6 +39,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -68,22 +70,27 @@ public class TheFinalDawn extends BasicQuestHelper
 	ItemRequirement combatGear, combatWeapon, food, prayerPotions, whistle, pendant;
 	FreeInventorySlotRequirement freeInvSlots4;
 
-	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, branch, coinPurseWithSand, emptySack, makeshiftBlackjack, trapdoorKey;
+	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, coinPurseFullOrEmpty, branch, coinPurseWithSand, coinPurseEmpty,
+			emptySack, makeshiftBlackjack,	trapdoorKey;
 	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment;
 
 	DetailedQuestStep startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2;
-	DetailedQuestStep useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll, talkToQueen;
-	DetailedQuestStep talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, petDog, enterDoorCode, takePotato, takeKnife, takeCoinPurse;
-	DetailedQuestStep climbUpStairsInHouse, useKnifeOnPottedFan, fillCoinPurse, takeSackOfPotatoes, useBranchOnCoinPurse, showSackToVibia, searchBodyForKey;
-	DetailedQuestStep useKeyOnTrapdoor, talkToQueenToGoCamTorum, enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, useBeerOnGalna;
+	DetailedQuestStep useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll, talkToQueen,
+	climbStairsF0ToF1Palace, climbStairsF1ToF2Palace;
+	ChestCodeStep openDoorWithGusCode;
+	DetailedQuestStep talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, enterDoorCode, takePotato, removePotatoesFromSack, takeKnife, takeCoinPurse,
+			emptyCoinPurse, goToF1Hideout, goDownFromF2Hideout, goToF0Hideout, goToF0HideoutEnd, goF2ToF1HideoutEnd;
+	DetailedQuestStep goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia, searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum;
+	DetailedQuestStep enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, useBeerOnGalna;
 	DetailedQuestStep searchCabinetForDrinks, placeSteamforgedBrew, placeDwarvenStout, placeBeer, placeEmptyGlass, placeMindBomb, inspectFireplace, useHold;
 	DetailedQuestStep returnToServius, enterNeypotzli, talkToEyatalli, defeatCultists, talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists;
 
-	Zone templeBasement, eastTempleBasement, hiddenRoom;
+	Zone templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor, hideoutBasement, camTorum;
 
-	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom;
+	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom, inPalaceF1, inPalaceF2, inHideout, inHideoutF1, inHideoutF2, inHideoutBasement, inCamTorum;
 
-	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby;
+	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby, inChestInterface;
+	Requirement hasSackOfGivenSack;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -132,6 +139,63 @@ public class TheFinalDawn extends BasicQuestHelper
 		goReadScroll.addStep(inTempleBasement, enterBackroom);
 		goReadScroll.addStep(emissaryRobes, goDownStairsTemple);
 		steps.put(9, goReadScroll);
+
+		ConditionalStep goTalkToQueen = new ConditionalStep(this, climbStairsF0ToF1Palace);
+		goTalkToQueen.addStep(inPalaceF2, talkToQueen);
+		goTalkToQueen.addStep(inPalaceF1, climbStairsF1ToF2Palace);
+		steps.put(10, goTalkToQueen);
+
+		steps.put(11, talkToCaptainVibia);
+		ConditionalStep goIntoHouse = new ConditionalStep(this, inspectWindow);
+		goIntoHouse.addStep(inHideout, giveBonesOrMeatToDog);
+		steps.put(12, goIntoHouse);
+		steps.put(13, goIntoHouse);
+		steps.put(14, goIntoHouse);
+		steps.put(15, goIntoHouse);
+		steps.put(16, goIntoHouse);
+
+		ConditionalStep goPetDog = new ConditionalStep(this, inspectWindow);
+		goPetDog.addStep(inChestInterface, openDoorWithGusCode);
+		goPetDog.addStep(inHideout, enterDoorCode);
+		steps.put(17, goPetDog);
+
+		ConditionalStep goDoHideoutStuff = new ConditionalStep(this, inspectWindow);
+		goDoHideoutStuff.addStep(and(inHideoutF1, hasSackOfGivenSack, makeshiftBlackjack), goToF0HideoutEnd);
+		goDoHideoutStuff.addStep(and(inHideoutF2, hasSackOfGivenSack, makeshiftBlackjack), goF2ToF1HideoutEnd);
+		goDoHideoutStuff.addStep(and(inHideout, hasSackOfGivenSack, makeshiftBlackjack), showSackToVibia);
+		goDoHideoutStuff.addStep(and(inHideoutF2, hasSackOfGivenSack, coinPurseWithSand, branch), useBranchOnCoinPurse);
+		goDoHideoutStuff.addStep(and(inHideoutF2, hasSackOfGivenSack, knife, coinPurseWithSand), useKnifeOnPottedFan);
+		goDoHideoutStuff.addStep(and(inHideoutF2, hasSackOfGivenSack, knife, coinPurseEmpty), fillCoinPurse);
+		goDoHideoutStuff.addStep(inHideoutF2, goDownFromF2Hideout);
+		goDoHideoutStuff.addStep(and(inHideoutF1, hasSackOfGivenSack, knife, coinPurseEmpty), goF1ToF2Hideout);
+		goDoHideoutStuff.addStep(and(coinPurse), emptyCoinPurse);
+		goDoHideoutStuff.addStep(and(inHideoutF1, hasSackOfGivenSack, knife), takeCoinPurse);
+		goDoHideoutStuff.addStep(and(inHideoutF1), goToF0Hideout);
+		goDoHideoutStuff.addStep(and(inHideout, hasSackOfGivenSack, knife), goToF1Hideout);
+		goDoHideoutStuff.addStep(and(inHideout, hasSackOfGivenSack), takeKnife);
+		goDoHideoutStuff.addStep(and(inHideout, potatoes), removePotatoesFromSack);
+		goDoHideoutStuff.addStep(inHideout, takePotato);
+		steps.put(18, goDoHideoutStuff);
+		// 19 was took coin purse, 20 was emptied it first time
+		steps.put(19, goDoHideoutStuff);
+		steps.put(20, goDoHideoutStuff);
+		steps.put(21, goDoHideoutStuff);
+		steps.put(22, goDoHideoutStuff);
+
+		ConditionalStep goSearchJanus = new ConditionalStep(this, inspectWindow);
+		goSearchJanus.addStep(inHideout, searchBodyForKey);
+		steps.put(23, goSearchJanus);
+
+		ConditionalStep goEnterTrapdoor = new ConditionalStep(this, inspectWindow);
+		goEnterTrapdoor.addStep(inHideoutBasement, talkToQueenToGoCamTorum);
+		goEnterTrapdoor.addStep(inHideout, enterTrapdoor);
+		steps.put(24, goEnterTrapdoor);
+		steps.put(25, goEnterTrapdoor);
+
+		ConditionalStep goTalkToAttala = new ConditionalStep(this, enterCamTorum);
+		goTalkToAttala.addStep(inCamTorum, talkToAttala);
+		steps.put(26, goTalkToAttala);
+
 		return steps;
 	}
 
@@ -141,6 +205,13 @@ public class TheFinalDawn extends BasicQuestHelper
 		templeBasement = new Zone(new WorldPoint(1660, 9680, 0), new WorldPoint(1725, 9720, 0));
 		eastTempleBasement = new Zone(new WorldPoint(1707, 9696, 0), new WorldPoint(1718, 9715, 0));
 		hiddenRoom = new Zone(new WorldPoint(1721, 9702, 0), new WorldPoint(1725, 9709, 0));
+		palaceF1 = new Zone(new WorldPoint(1669, 3150, 1), new WorldPoint(1692, 3175, 1));
+		palaceF2 = new Zone(new WorldPoint(1669, 3150, 2), new WorldPoint(1692, 3175, 2));
+		hideoutGroundFloor = new Zone(new WorldPoint(1643, 3091, 0), new WorldPoint(1652, 3096, 0));
+		hideoutMiddleFloor = new Zone(new WorldPoint(1643, 3091, 1), new WorldPoint(1652, 3096, 1));
+		hideoutTopFloor = new Zone(new WorldPoint(1643, 3091, 2), new WorldPoint(1652, 3102, 2));
+		hideoutBasement = new Zone(new WorldPoint(1643, 9486, 0), new WorldPoint(1657, 9500, 0));
+		camTorum = new Zone(new WorldPoint(1378, 9502, 1), new WorldPoint(1524, 9600, 3));
 	}
 
 	@Override
@@ -155,7 +226,9 @@ public class TheFinalDawn extends BasicQuestHelper
 		emissaryRobes = new ItemRequirements("Emissary robes", emissaryHood, emissaryTop, emissaryBottom, emissaryBoots);
 
 		// TODO: Add remaining bones
+		var givenBoneToDog = new VarbitRequirement(VarbitID.VMQ4, 17, Operation.GREATER_EQUAL);
 		bone = new ItemRequirement("Any type of bone", ItemID.BONES);
+		bone.setConditionToHide(givenBoneToDog);
 		bone.addAlternates(ItemID.BIG_BONES, ItemID.BONES_BURNT, ItemID.WOLF_BONES, ItemID.BAT_BONES, ItemID.DAGANNOTH_KING_BONES);
 
 		rangedGear = new ItemRequirement("Ranged/Magic Combat gear", -1, -1).isNotConsumed();
@@ -182,16 +255,41 @@ public class TheFinalDawn extends BasicQuestHelper
 		drawerKey = new ItemRequirement("Key", ItemID.VMQ4_DRAWER_KEY);
 		canvasPiece = new ItemRequirement("Canvas piece", ItemID.VMQ4_PAINTING_SIGIL);
 		emissaryScroll = new ItemRequirement("Emissary scroll", ItemID.VMQ4_CULT_MANIFEST);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		potatoes = new ItemRequirement("Potatoes (?)", ItemID.SACK_POTATO_3);
+		potatoes.addAlternates(ItemID.SACK_POTATO_2, ItemID.SACK_POTATO_1);
+
+		var givenSack = new VarbitRequirement(VarbitID.VMQ4_JANUS_SACK_GIVEN, 1, Operation.GREATER_EQUAL);
+		emptySack = new ItemRequirement("Empty sack", ItemID.SACK_EMPTY);
+		emptySack.setConditionToHide(givenSack);
+		coinPurse = new ItemRequirement("Coin purse", ItemID.VMQ4_JANUS_PURSE);
+
+		coinPurseFullOrEmpty = new ItemRequirement("Coin purse", ItemID.VMQ4_JANUS_PURSE);
+		coinPurseFullOrEmpty.addAlternates(ItemID.VMQ4_JANUS_PURSE_EMPTY);
+		coinPurseEmpty = new ItemRequirement("Empty coin purse", ItemID.VMQ4_JANUS_PURSE_EMPTY);
+		coinPurseWithSand = new ItemRequirement("Sandy coin purse", ItemID.VMQ4_JANUS_PURSE_SAND);
+		branch = new ItemRequirement("Branch", ItemID.VMQ4_JANUS_REED);
+		makeshiftBlackjack = new ItemRequirement("Makeshift blackjack", ItemID.VMQ4_JANUS_SLAP);
 
 		// Quest requirements
 		inTempleBasement = new ZoneRequirement(templeBasement);
 		inEastTempleBasement = new ZoneRequirement(eastTempleBasement);
 		inHiddenRoom = new ZoneRequirement(hiddenRoom);
+		inPalaceF1 = new ZoneRequirement(palaceF1);
+		inPalaceF2 = new ZoneRequirement(palaceF2);
+		inHideout = new ZoneRequirement(hideoutGroundFloor);
+		inHideoutF1 = new ZoneRequirement(hideoutMiddleFloor);
+		inHideoutF2 = new ZoneRequirement(hideoutTopFloor);
+		inHideoutBasement = new ZoneRequirement(hideoutBasement);
+		inCamTorum = new ZoneRequirement(camTorum);
 
 		isSouthDrawer = new VarbitRequirement(VarbitID.VMQ4_CANVAS_DRAWER, 2);
 		hasDrawerKeyOrOpened = or(drawerKey, new VarbitRequirement(VarbitID.VMQ4_TEMPLE_DRAW_UNLOCKED, 1, Operation.GREATER_EQUAL));
 		usedSigilOnCanvas = new VarbitRequirement(VarbitID.VMQ4, 7, Operation.GREATER_EQUAL);
 		emissaryScrollNearby = new ItemOnTileRequirement(emissaryScroll);
+		inChestInterface = new WidgetTextRequirement(809, 5, 9, "Confirm");
+
+		hasSackOfGivenSack = or(emptySack, givenSack);
 	}
 
 	public void setupSteps()
@@ -233,6 +331,63 @@ public class TheFinalDawn extends BasicQuestHelper
 				". Step away each time he goes to attack, and step behind him if he says 'Traitor!' or 'Thief!'.");
 		pickUpEmissaryScroll = new ItemStep(this, "Pick up the emissary scroll.", emissaryScroll);
 		readEmissaryScroll = new DetailedQuestStep(this, "Read the emissary scroll.", emissaryScroll.highlighted());
+
+		// Part 2
+		climbStairsF0ToF1Palace = new ObjectStep(this, ObjectID.CIVITAS_PALACE_STAIRS_UP, new WorldPoint(1672, 3164, 0), "Climb up the stairs to the top of " +
+				"the Sunrise Palace to talk to the queen.");
+		climbStairsF1ToF2Palace = new ObjectStep(this, ObjectID.CIVITAS_PALACE_STAIRS_UP, new WorldPoint(1671, 3169, 1), "Climb up the stairs to the top of " +
+				"the Sunrise Palace to talk to the queen.");
+		talkToQueen = new NpcStep(this, NpcID.VMQ4_QUEEN_PALACE, new WorldPoint(1673, 3156, 2), "Talk to the queen on the top floor of the Sunrise Palace.");
+		talkToQueen.addSubSteps(climbStairsF0ToF1Palace, climbStairsF1ToF2Palace);
+		talkToCaptainVibia = new NpcStep(this, NpcID.VMQ4_CAPTAIN_VIBIA_OUTSIDE_HOUSE, new WorldPoint(1652, 3088, 0), "Talk to Captain Vibia south of Civitas" +
+				" illa Fortis' west bank.");
+		inspectWindow = new ObjectStep(this, ObjectID.VMQ4_CIVITAS_JANUS_WINDOW, new WorldPoint(1652, 3093, 0), "Inspect the window on the east side of the " +
+				"house north of Captain Vibia, and then enter it.", bone);
+		inspectWindow.addDialogSteps("Force open the window.");
+		giveBonesOrMeatToDog = new NpcStep(this, NpcID.VMQ4_JANUS_DOG, new WorldPoint(1650, 3094, 0),  "Use bones or some raw meat on the dog to calm it down.");
+		enterDoorCode = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_PUZZLE_DOOR, new WorldPoint(1649, 3093, 0), "Pet the dog to see the code for the door." +
+				" Open the door using the code 'GUS'.");
+		openDoorWithGusCode = new ChestCodeStep(this, "GUS", 10, 0, 4, 0);
+		enterDoorCode.addSubSteps(openDoorWithGusCode);
+		takePotato = new ItemStep(this, "Pick up the sack of potatoes (3).", potatoes);
+		removePotatoesFromSack = new DetailedQuestStep(this, "Empty the sack of potatoes.", potatoes.highlighted());
+		takeKnife = new ItemStep(this, "Pick up the knife.", knife);
+		takeCoinPurse = new ItemStep(this, "Pick up the coin purse.", coinPurseFullOrEmpty);
+
+		goToF1Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_BOTTOM, new WorldPoint(1647, 3091, 0), "Go upstairs.");
+		goDownFromF2Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_TOP, new WorldPoint(1647, 3091, 2), "Go downstairs.");
+		goF1ToF2Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the top floor.");
+		goF1ToF2Hideout.addDialogStep("Climb up.");
+		useKnifeOnPottedFan = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_PLANT, new WorldPoint(1650, 3095, 2), "Use the knife on the inspectable potted " +
+				"fan.", knife.highlighted());
+		useKnifeOnPottedFan.addIcon(ItemID.KNIFE);
+		fillCoinPurse = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_EMPTY_POT, new WorldPoint(1645, 3098, 2), "Use the empty coin purse on the plant pot " +
+				"in the north-west of the roof with sand in it.", coinPurseEmpty.highlighted());
+		fillCoinPurse.addIcon(ItemID.VMQ4_JANUS_PURSE_EMPTY);
+		emptyCoinPurse = new DetailedQuestStep(this, "Empty the coin purse.", coinPurse.highlighted());
+		useBranchOnCoinPurse = new DetailedQuestStep(this, "Use the branch on the coin purse.", branch.highlighted(), coinPurseWithSand.highlighted());
+
+		goToF0Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the ground floor.");
+		goToF0Hideout.addDialogStep("Climb down.");
+		goToF0HideoutEnd = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the ground floor.");
+		goToF0HideoutEnd.addDialogStep("Climb down.");
+
+		goF2ToF1HideoutEnd = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_TOP, new WorldPoint(1647, 3091, 2), "Go downstairs back to Vibia.");
+		showSackToVibia = new NpcStep(this, NpcID.VMQ4_CAPTAIN_VIBIA_INSIDE_HOUSE, new WorldPoint(1651, 3094, 0), "Show Captain Vibia the empty sack and " +
+				"makeshift blackjack.", emptySack, makeshiftBlackjack);
+		showSackToVibia.addSubSteps(goF2ToF1HideoutEnd, goToF0HideoutEnd);
+		searchBodyForKey = new NpcStep(this, NpcID.VMQ4_JANUS_HOUSE_JANUS_UNCONSCIOUS, new WorldPoint(1647, 3093, 0), "Search Janus.");
+		enterTrapdoor = new ObjectStep(this, ObjectID.VMQ4_JANUS_BASEMENT_ENTRY, new WorldPoint(1643, 3092, 0), "Enter the basement in the hideout.");
+
+		talkToQueenToGoCamTorum = new NpcStep(this, NpcID.VMQ4_QUEEN_BASEMENT, new WorldPoint(1653, 9493, 0), "Talk to the queen in the hideout basement.");
+		enterCamTorum = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1436, 3129, 0), "Enter Cam Torum.");
+		enterCamTorum.addDialogStep("Yes, let's go.");
+
+		talkToAttala = new NpcStep(this, NpcID.CAM_TORUM_ATTALA, new WorldPoint(1439, 9563, 0), "Talk to Attala in Cam Torum.");
+//		talkToServiusInCamTorum = ;
+//		goUpstairsPub = ;
+//		takeBeer = ;
+//		useBeerOnGalna = ;
 	}
 
 	@Override
@@ -319,7 +474,14 @@ public class TheFinalDawn extends BasicQuestHelper
 		), List.of(
 			// Recommended
 		)));
-
+		panels.add(new PanelDetails("The hideout", List.of(talkToQueen, talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, enterDoorCode, takePotato,
+				takeKnife, goToF1Hideout, takeCoinPurse, goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia,
+				searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum),
+				List.of(bone),
+				List.of()));
+		panels.add(new PanelDetails("The dwarves", List.of(enterCamTorum, talkToAttala),
+				List.of(bone),
+				List.of()));
 		return panels;
 	}
 }

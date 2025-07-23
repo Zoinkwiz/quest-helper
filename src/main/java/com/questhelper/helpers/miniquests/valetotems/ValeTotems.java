@@ -63,10 +63,10 @@ public class ValeTotems extends BasicQuestHelper
 	// Item requirements
 	ItemRequirement knife;
 	ItemRequirement oneOakLog;
-	ItemRequirement fourOakShields;
-	ItemRequirement threeOakShields;
-	ItemRequirement twoOakShields;
-	ItemRequirement oneOakShields;
+	ItemRequirement fourDecorativeItems;
+	ItemRequirement threeDecorativeItems;
+	ItemRequirement twoDecorativeItems;
+	ItemRequirement oneDecorativeItem;
 
 	// Miscellaneous requirements
 	VarbitRequirement needToBuildTotem;
@@ -146,15 +146,18 @@ public class ValeTotems extends BasicQuestHelper
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		oneOakLog = new ItemRequirement("Oak log", ItemID.OAK_LOGS, 1);
-		oneOakLog.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood logs, but it needs to match the shields you're bringing.");
-		fourOakShields = new ItemRequirement("Oak shield", ItemID.OAK_SHIELD, 4);
-		fourOakShields.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood shields, but it needs to match the logs you used to build the totem.");
-		threeOakShields = new ItemRequirement("Oak shield", ItemID.OAK_SHIELD, 3);
-		threeOakShields.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood shields, but it needs to match the logs you used to build the totem.");
-		twoOakShields = new ItemRequirement("Oak shield", ItemID.OAK_SHIELD, 2);
-		twoOakShields.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood shields, but it needs to match the logs you used to build the totem.");
-		oneOakShields = new ItemRequirement("Oak shield", ItemID.OAK_SHIELD, 1);
-		oneOakShields.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood shields, but it needs to match the logs you used to build the totem.");
+		oneOakLog.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood logs, but it needs to match the decorative items you're bringing.");
+
+		var possibleDecorativeItems = List.of(ItemID.OAK_SHIELD, ItemID.UNSTRUNG_OAK_LONGBOW, ItemID.OAK_LONGBOW, ItemID.UNSTRUNG_OAK_SHORTBOW, ItemID.OAK_SHORTBOW);
+
+		fourDecorativeItems = new ItemRequirement("Oak shield/longbow/shortbow", possibleDecorativeItems, 4);
+		fourDecorativeItems.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood decorative items, but it needs to match the logs you used to build the totem.");
+		threeDecorativeItems = new ItemRequirement("Oak shield/longbow/shortbow", possibleDecorativeItems, 3);
+		threeDecorativeItems.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood decorative items, but it needs to match the logs you used to build the totem.");
+		twoDecorativeItems = new ItemRequirement("Oak shield/longbow/shortbow", possibleDecorativeItems, 2);
+		twoDecorativeItems.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood decorative items, but it needs to match the logs you used to build the totem.");
+		oneDecorativeItem = new ItemRequirement("Oak shield/longbow/shortbow", possibleDecorativeItems, 1);
+		oneDecorativeItem.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood decorative items, but it needs to match the logs you used to build the totem.");
 
 		needToBuildTotem = new VarbitRequirement(VarbitID.ENT_TOTEMS_BROKEN_CHAT, 1);
 		isTotemBaseBuilt = new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_BASE, 1);
@@ -264,10 +267,10 @@ public class ValeTotems extends BasicQuestHelper
 		carveTotem.addStep(and(isSnakeNearby, missingSnakeCarve), carveSnake);
 		carveTotem.addStep(and(isScorpionNearby, missingScorpionCarve), carveScorpion);
 
-		var decorateTotemOneShield = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with one shield of the same wood type you used to build/carve the totem.", oneOakShields);
-		var decorateTotemTwoShields = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with two shields of the same wood type you used to build/carve the totem.", twoOakShields);
-		var decorateTotemThreeShields = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with three shields of the same wood type you used to build/carve the totem.", threeOakShields);
-		decorateTotemFourShields = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with four shields of the same wood type you used to build/carve the totem.", fourOakShields);
+		var decorateTotemOneShield = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with one decorative item (shield, longbow, or shortbow) of the same wood type you used to build/carve the totem.", oneDecorativeItem);
+		var decorateTotemTwoShields = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with two decorative items (shield, longbow, or shortbow) of the same wood type you used to build/carve the totem.", twoDecorativeItems);
+		var decorateTotemThreeShields = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with three decorative items (shield, longbow, or shortbow) of the same wood type you used to build/carve the totem.", threeDecorativeItems);
+		decorateTotemFourShields = new ObjectStep(this, ObjectID.ENT_TOTEMS_SITE_1_BASE, new WorldPoint(1370, 3375, 0), "Decorate the totem with four decorative items (shield, longbow, or shortbow) of the same wood type you used to build/carve the totem.", fourDecorativeItems);
 		decorateTotemFourShields.addSubSteps(decorateTotemOneShield, decorateTotemTwoShields, decorateTotemThreeShields);
 		talkToIsadoraAfterDecoratingTotem = new NpcStep(this, NpcID.ENT_TOTEMS_INTRO_CHILD_VIS, new WorldPoint(1366, 3369, 0), "Return to Isadora to talk after decorating the totem.");
 		decorateTotem = new ConditionalStep(this, decorateTotemFourShields);
@@ -293,7 +296,7 @@ public class ValeTotems extends BasicQuestHelper
 		return List.of(
 			knife,
 			oneOakLog,
-			fourOakShields
+			fourDecorativeItems
 		);
 	}
 
@@ -332,7 +335,7 @@ public class ValeTotems extends BasicQuestHelper
 		), List.of(
 			knife,
 			oneOakLog,
-			fourOakShields
+			fourDecorativeItems
 		)));
 
 		return panels;

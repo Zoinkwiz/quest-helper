@@ -34,6 +34,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -71,8 +72,8 @@ public class TheFinalDawn extends BasicQuestHelper
 	FreeInventorySlotRequirement freeInvSlots4;
 
 	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, coinPurseFullOrEmpty, branch, coinPurseWithSand, coinPurseEmpty,
-			emptySack, makeshiftBlackjack,	trapdoorKey;
-	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment;
+			emptySack, makeshiftBlackjack;
+	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment, essence;
 
 	DetailedQuestStep startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2;
 	DetailedQuestStep useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll, talkToQueen,
@@ -83,17 +84,39 @@ public class TheFinalDawn extends BasicQuestHelper
 	DetailedQuestStep goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia, searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum;
 	DetailedQuestStep enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, goDownstairsPub, useBeerOnGalna, enterCamTorumHouseBasement;
 	DetailedQuestStep takeBeerCabinet, drinkBeer, takeSteamforgeBrew, takeDwarvenStout, takeWizardsMindBomb, placeSteamforgedBrew, placeDwarvenStout, placeBeer,
-			takeBeerFromBarrel, placeEmptyGlass, placeMindBomb,	inspectFireplace,	useHole;
-	DetailedQuestStep returnToServius, enterNeypotzli, talkToEyatalli, defeatCultists, talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists;
+			takeBeerFromBarrel, placeEmptyGlass, placeMindBomb,	inspectFireplace, useHole, returnThroughHole, returnToServius;
+	DetailedQuestStep climbUpFromTeumoBasement, enterNeypotzli, talkToEyatalli, locateKeystone;
+	DetailedQuestStep enterStreamboundCavern, locateInStreambound, enterEarthboundCavernFromStreambound, enterEarthboundCavern, locateInEarthbound,
+			enterAncientPrison, enterAncientPrisonFromEarthbound, locateInAncientPrison, touchGlowingSymbol, defeatCultists, talkToAttalaAfterCultistFight;
+
+	DetailedQuestStep talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists, fightEnnius, tonaliGoDownStairsF2ToF1, tonaliGoDownStairsF1ToF0,
+			useRedTeleporter, useBlueTeleporter, crossLog, useBlueTeleporter2;
+	DetailedQuestStep useRedTeleporter2, useBlueTeleporterLizards, useRedTeleporter3, climbRope;
+
+	DetailedQuestStep activateStrangePlatform, enterTonaliWithLift, descendIntoSunPuzzle, getEssenceFromUrns, solveSunPuzzle, solveSunPuzzle2Step1MoveItzla,
+			solveSunPuzzle2Step1Craft, solveSunPuzzle2Step2MoveItzla,
+			solveSunPuzzle2Step2Craft, solveSunPuzzle2Step3MoveItzla,
+			solveSunPuzzle2Step3Craft;
 
 	Zone templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor, hideoutBasement,
-	camTorum, camTorumF2, camTorumBasement;
+	camTorum, camTorumF2, camTorumBasement, hiddenTunnel, hiddenTunnel2, sunPuzzleRoom;
+
+	Zone antechamber, prison, streambound, earthbound, ancientShrine, neypotzliFightRoom, tonaliCavernF2, tonaliCavernF0P2South, tonaliCavernF0P2North,
+	tonaliCavernF1Stairs, tonaliCavernF0Start, tonaliCavernF1Rockslugs, tonaliCavernF0P3V1, tonaliCavernF1GrimyLizards, tonaliCavernF1Nagua,
+			tonaliCavernF2North, tonaliCavernF0P3V2;
 
 	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom, inPalaceF1, inPalaceF2, inHideout, inHideoutF1, inHideoutF2, inHideoutBasement,
-	inCamTorum, inCamTorumF2, inCamTorumBasement;
+	inCamTorum, inCamTorumF2, inCamTorumBasement, inCamTorumHiddenTunnel;
+
+	Requirement inAntechamber, inPrison, inStreambound, inEarthbound, inAncientShrine, inNeypotzli, inNeypotzliFightRoom;
+	Requirement inTonaliCavern, inTonaliCavernF0P2South, inTonaliCavernF0P2North, inTonaliCavernF0Start, inTonaliCavernF0P3, inTonaliCavernF1Stairs,
+			inTonaliCavernF1Rockslugs, inTonaliCavernF1GrimyLizards, inTonaliCavernF1Nagua, inTonaliCavernF2North, inSunPuzzleRoom;
 
 	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby, inChestInterface;
 	Requirement hasSackOfGivenSack, isGalnaDrunk, notPlacedMindBomb, notPlacedBeer, notPlacedSteamforgeBrew, notPlacedDwarvenStout, beerTakenFromBarrel;
+	Requirement locatedKeystone1, locatedKeystone2, liftActivated, inspectedSunStatue, itzlaInPosSunPuzzle2Step1, completedSunPuzzleP1;
+	Requirement itzlaInPosSunPuzzle2Step2, completedSunPuzzleP2, itzlaInPosSunPuzzle2Step3, completedSunPuzzleP3;
+	Requirement isPuzzleOrder2;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -245,6 +268,98 @@ public class TheFinalDawn extends BasicQuestHelper
 		goEnterHole.addStep(inCamTorum, enterCamTorumHouseBasement);
 		steps.put(33, goEnterHole);
 		steps.put(34, goEnterHole);
+
+		ConditionalStep goTalkToServiusBasement = new ConditionalStep(this, enterCamTorum);
+		goTalkToServiusBasement.addStep(inCamTorumHiddenTunnel, returnThroughHole);
+		goTalkToServiusBasement.addStep(inCamTorumBasement, returnToServius);
+		goTalkToServiusBasement.addStep(inCamTorum, enterCamTorumHouseBasement);
+		steps.put(35, goTalkToServiusBasement);
+
+		ConditionalStep goTalkToEyat = new ConditionalStep(this, enterCamTorum);
+		goTalkToEyat.addStep(inCamTorumBasement, climbUpFromTeumoBasement);
+		goTalkToEyat.addStep(inNeypotzli, talkToEyatalli);
+		goTalkToEyat.addStep(inCamTorum, enterNeypotzli);
+		steps.put(36, goTalkToEyat);
+		steps.put(37, goTalkToEyat);
+		steps.put(38, goTalkToEyat);
+
+		// Received keystone fragment, varbit VarbitID.VMQ4_MONOLITH_FRAGMENT_ATTEMPTED_GIVE went 0->1
+		ConditionalStep goLocateKeystone = new ConditionalStep(this, enterCamTorum);
+		goLocateKeystone.addStep(and(inPrison, locatedKeystone2), locateInAncientPrison);
+		goLocateKeystone.addStep(and(inEarthbound, locatedKeystone2), enterAncientPrisonFromEarthbound);
+		goLocateKeystone.addStep(and(inNeypotzli, locatedKeystone2), enterAncientPrison);
+
+		goLocateKeystone.addStep(and(inEarthbound, locatedKeystone1), locateInEarthbound);
+		goLocateKeystone.addStep(and(inStreambound, locatedKeystone1), enterEarthboundCavernFromStreambound);
+		goLocateKeystone.addStep(and(inNeypotzli, locatedKeystone1), enterEarthboundCavern);
+
+		goLocateKeystone.addStep(inStreambound, locateInStreambound);
+		goLocateKeystone.addStep(inNeypotzli, enterStreamboundCavern);
+		goLocateKeystone.addStep(inCamTorum, enterNeypotzli);
+		steps.put(39, goLocateKeystone);
+		steps.put(40, goLocateKeystone);
+
+		ConditionalStep goTouchSymbol = new ConditionalStep(this, enterCamTorum);
+		goTouchSymbol.addStep(and(inNeypotzliFightRoom), defeatCultists);
+		goTouchSymbol.addStep(and(inPrison), touchGlowingSymbol);
+		goTouchSymbol.addStep(and(inEarthbound), enterAncientPrisonFromEarthbound);
+		goTouchSymbol.addStep(and(inNeypotzli), enterAncientPrison);
+		goTouchSymbol.addStep(inCamTorum, enterNeypotzli);
+		steps.put(41, goTouchSymbol);
+		// Skipped 42?
+		steps.put(43, goTouchSymbol);
+
+		ConditionalStep goTalkToAttalaAfterFight = new ConditionalStep(this, enterCamTorum);
+		goTalkToAttalaAfterFight.addStep(and(inNeypotzliFightRoom), talkToAttalaAfterCultistFight);
+		goTalkToAttalaAfterFight.addStep(and(inPrison), touchGlowingSymbol);
+		goTalkToAttalaAfterFight.addStep(and(inEarthbound), enterAncientPrisonFromEarthbound);
+		goTalkToAttalaAfterFight.addStep(and(inNeypotzli), enterAncientPrison);
+		goTalkToAttalaAfterFight.addStep(inCamTorum, enterNeypotzli);
+		steps.put(44, goTalkToAttalaAfterFight);
+
+		steps.put(45, talkToServiusAtTalTeklan);
+		steps.put(46, enterTonaliCavern);
+
+		ConditionalStep goDefeatFinalCultists = new ConditionalStep(this, enterTonaliCavern);
+		goDefeatFinalCultists.addStep(inTonaliCavern, defeatFinalCultists);
+		steps.put(47, goDefeatFinalCultists);
+
+		ConditionalStep goDefeatEnnius = new ConditionalStep(this, enterTonaliCavern);
+		goDefeatEnnius.addStep(inTonaliCavern, fightEnnius);
+		steps.put(48, goDefeatEnnius);
+		steps.put(49, goDefeatEnnius);
+		steps.put(50, goDefeatEnnius);
+		steps.put(51, goDefeatEnnius);
+
+		ConditionalStep goDeeperIntoTonali = new ConditionalStep(this, enterTonaliCavern);
+		goDeeperIntoTonali.addStep(and(inTonaliCavernF2North, liftActivated), descendIntoSunPuzzle);
+		goDeeperIntoTonali.addStep(inTonaliCavernF2North, activateStrangePlatform);
+		goDeeperIntoTonali.addStep(inTonaliCavernF1Nagua, climbRope);
+		goDeeperIntoTonali.addStep(inTonaliCavernF0P3, useRedTeleporter3);
+		goDeeperIntoTonali.addStep(inTonaliCavernF0P2North, useRedTeleporter3);
+		goDeeperIntoTonali.addStep(inTonaliCavernF1GrimyLizards, useBlueTeleporterLizards);
+		goDeeperIntoTonali.addStep(inTonaliCavernF0P2South, useRedTeleporter2);
+		goDeeperIntoTonali.addStep(inTonaliCavernF1Rockslugs, useBlueTeleporter);
+		goDeeperIntoTonali.addStep(inTonaliCavernF0Start, useRedTeleporter);
+		goDeeperIntoTonali.addStep(inTonaliCavernF1Stairs, tonaliGoDownStairsF1ToF0);
+		goDeeperIntoTonali.addStep(inTonaliCavern, tonaliGoDownStairsF2ToF1);
+		goDeeperIntoTonali.addStep(liftActivated, enterTonaliWithLift);
+		steps.put(52, goDeeperIntoTonali);
+		steps.put(53, goDeeperIntoTonali);
+		steps.put(54, goDeeperIntoTonali);
+
+		ConditionalStep goDoSunPuzzle = new ConditionalStep(this, goDeeperIntoTonali);
+		goDoSunPuzzle.addStep(and(inSunPuzzleRoom, completedSunPuzzleP2, essence, isPuzzleOrder2, itzlaInPosSunPuzzle2Step3), solveSunPuzzle2Step3Craft);
+		goDoSunPuzzle.addStep(and(inSunPuzzleRoom, completedSunPuzzleP2, essence, isPuzzleOrder2), solveSunPuzzle2Step3MoveItzla);
+
+		goDoSunPuzzle.addStep(and(inSunPuzzleRoom, completedSunPuzzleP1, essence, isPuzzleOrder2, itzlaInPosSunPuzzle2Step2), solveSunPuzzle2Step2Craft);
+		goDoSunPuzzle.addStep(and(inSunPuzzleRoom, completedSunPuzzleP1, essence, isPuzzleOrder2), solveSunPuzzle2Step2MoveItzla);
+
+		goDoSunPuzzle.addStep(and(inSunPuzzleRoom, essence, isPuzzleOrder2, itzlaInPosSunPuzzle2Step1), solveSunPuzzle2Step1Craft);
+		goDoSunPuzzle.addStep(and(inSunPuzzleRoom, essence, isPuzzleOrder2), solveSunPuzzle2Step1MoveItzla);
+		goDoSunPuzzle.addStep(and(inSunPuzzleRoom, essence), solveSunPuzzle);
+		goDoSunPuzzle.addStep(inSunPuzzleRoom, getEssenceFromUrns);
+		steps.put(55, goDoSunPuzzle);
 		return steps;
 	}
 
@@ -263,6 +378,30 @@ public class TheFinalDawn extends BasicQuestHelper
 		camTorum = new Zone(new WorldPoint(1378, 9502, 0), new WorldPoint(1524, 9600, 3));
 		camTorumF2 = new Zone(new WorldPoint(1465, 9567, 2), new WorldPoint(1470, 9572, 2));
 		camTorumBasement = new Zone(new WorldPoint(1464, 9564, 0), new WorldPoint(1472, 9574, 0));
+		hiddenTunnel = new Zone(new WorldPoint(1468, 9561, 0), new WorldPoint(1476, 9563, 0));
+		hiddenTunnel2 = new Zone(new WorldPoint(1477, 9536, 0), new WorldPoint(1500, 9570, 0));
+
+		antechamber = new Zone(5782, 1);
+		prison = new Zone(5525, 0);
+		earthbound = new Zone(5527, 0);
+		streambound = new Zone(6039, 0);
+		ancientShrine = new Zone(6037, 0);
+
+		neypotzliFightRoom = new Zone(new WorldPoint(1352, 9501, 0), new WorldPoint(1372, 9524, 0));
+		tonaliCavernF1Stairs = new Zone(new WorldPoint(1329, 9360, 1), new WorldPoint(1343, 9369, 1));
+		tonaliCavernF1Rockslugs = new Zone(new WorldPoint(1319, 9374, 1), new WorldPoint(1329, 9386, 1));
+		tonaliCavernF0Start = new Zone(new WorldPoint(1317, 9366, 0), new WorldPoint(1341, 9385, 0));
+		tonaliCavernF0P2South = new Zone(new WorldPoint(1282, 9365, 0), new WorldPoint(1315, 9391, 0));
+		tonaliCavernF0P2North = new Zone(new WorldPoint(1282, 9392, 0), new WorldPoint(1305, 9403, 0));
+		tonaliCavernF2 = new Zone(new WorldPoint(1298, 9344, 2), new WorldPoint(1343, 9380, 2));
+
+		tonaliCavernF0P3V1 = new Zone(new WorldPoint(1306, 9392, 0), new WorldPoint(1340, 9420, 0));
+		tonaliCavernF0P3V2 = new Zone(new WorldPoint(1320, 9387, 0), new WorldPoint(1340, 9391, 0));
+
+		tonaliCavernF1GrimyLizards = new Zone(new WorldPoint(1291, 9381, 1), new WorldPoint(1298, 9395, 1));
+		tonaliCavernF1Nagua = new Zone(new WorldPoint(1283, 9399, 1), new WorldPoint(1310, 9425, 1));
+		tonaliCavernF2North = new Zone(new WorldPoint(1303, 9399, 2), new WorldPoint(1317, 9466, 2));
+		sunPuzzleRoom = new Zone(new WorldPoint(1318, 9433, 1), new WorldPoint(1345, 9458, 1));
 	}
 
 	@Override
@@ -328,6 +467,9 @@ public class TheFinalDawn extends BasicQuestHelper
 		emptyGlass = new ItemRequirement("Empty glass", ItemID.BEER_GLASS);
 		wizardsMindBomb = new ItemRequirement("Wizard's mind bomb", ItemID.WIZARDS_MIND_BOMB);
 
+		keystoneFragment = new ItemRequirement("Keystone fragment", ItemID.VMQ4_MONOLITH_FRAGMENT);
+		essence = new ItemRequirement("Kuhu essence", ItemID.VMQ4_ESSENCE);
+
 		// Quest requirements
 		inTempleBasement = new ZoneRequirement(templeBasement);
 		inEastTempleBasement = new ZoneRequirement(eastTempleBasement);
@@ -341,6 +483,27 @@ public class TheFinalDawn extends BasicQuestHelper
 		inCamTorum = new ZoneRequirement(camTorum);
 		inCamTorumF2 = new ZoneRequirement(camTorumF2);
 		inCamTorumBasement = new ZoneRequirement(camTorumBasement);
+		inCamTorumHiddenTunnel = new ZoneRequirement(hiddenTunnel, hiddenTunnel2);
+
+		inAntechamber = new ZoneRequirement(antechamber);
+		inPrison = new ZoneRequirement(prison);
+		inStreambound = new ZoneRequirement(streambound);
+		inEarthbound = new ZoneRequirement(earthbound);
+		inAncientShrine = new ZoneRequirement(ancientShrine);
+		inNeypotzli = new ZoneRequirement(antechamber, prison, streambound, earthbound, ancientShrine);
+		inNeypotzliFightRoom = new ZoneRequirement(neypotzliFightRoom);
+
+		inTonaliCavern = new ZoneRequirement(tonaliCavernF2);
+		inTonaliCavernF1Stairs = new ZoneRequirement(tonaliCavernF1Stairs);
+		inTonaliCavernF1Rockslugs = new ZoneRequirement(tonaliCavernF1Rockslugs);
+		inTonaliCavernF0Start = new ZoneRequirement(tonaliCavernF0Start);
+		inTonaliCavernF0P2South = new ZoneRequirement(tonaliCavernF0P2South);
+		inTonaliCavernF0P2North = new ZoneRequirement(tonaliCavernF0P2North);
+		inTonaliCavernF0P3 = new ZoneRequirement(tonaliCavernF0P3V1, tonaliCavernF0P3V2);
+		inTonaliCavernF1GrimyLizards = new ZoneRequirement(tonaliCavernF1GrimyLizards);
+		inTonaliCavernF1Nagua = new ZoneRequirement(tonaliCavernF1Nagua);
+		inTonaliCavernF2North = new ZoneRequirement(tonaliCavernF2North);
+		inSunPuzzleRoom = new ZoneRequirement(sunPuzzleRoom);
 
 		isSouthDrawer = new VarbitRequirement(VarbitID.VMQ4_CANVAS_DRAWER, 2);
 		hasDrawerKeyOrOpened = or(drawerKey, new VarbitRequirement(VarbitID.VMQ4_TEMPLE_DRAW_UNLOCKED, 1, Operation.GREATER_EQUAL));
@@ -356,6 +519,30 @@ public class TheFinalDawn extends BasicQuestHelper
 		notPlacedSteamforgeBrew = not(new ItemOnTileRequirement(ItemID.STEAMFORGE_BREW, new WorldPoint(1464, 9568, 0)));
 		notPlacedDwarvenStout = not(new ItemOnTileRequirement(ItemID.DWARVEN_STOUT, new WorldPoint(1466, 9568, 0)));
 		beerTakenFromBarrel = not(new ItemOnTileRequirement(ItemID.BEER, new WorldPoint(1469, 9571, 0)));
+
+		locatedKeystone1 = new VarbitRequirement(VarbitID.VMQ4_NEYPOTZLI_CHECKPOINT, 1, Operation.GREATER_EQUAL);
+		locatedKeystone2 = new VarbitRequirement(VarbitID.VMQ4_NEYPOTZLI_CHECKPOINT, 2, Operation.GREATER_EQUAL);
+
+		liftActivated = new VarbitRequirement(VarbitID.VMQ4_LIFT_ACTIVATED, 1);
+
+		// Sun puzzle
+		inspectedSunStatue = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_ITZLA_STATE, 1, Operation.GREATER_EQUAL);
+		// Ueai : Naui-makti (Eight : Four-Ten)
+		// Ueai = Eight
+		// Naui = Four
+		// Makti = 10
+//		VarbitID.VMQ4_SUN_PUZZLE_ORDER;
+		// First puzzle when ORDER is 2:
+		// 8 (him), 4 (you)
+		// Second puzzle:
+		// 2 (him), 6 (you)
+		itzlaInPosSunPuzzle2Step1 = new NpcRequirement("Itzla at north altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1330, 9454, 1));
+		itzlaInPosSunPuzzle2Step2 = new NpcRequirement("Itzla at north altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1338, 9446, 1));
+		itzlaInPosSunPuzzle2Step3 = new NpcRequirement("Itzla at north altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1324, 9452, 1));
+		completedSunPuzzleP1 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_PROGRESS, 1, Operation.GREATER_EQUAL);
+		completedSunPuzzleP2 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_PROGRESS, 2, Operation.GREATER_EQUAL);
+		completedSunPuzzleP3 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_PROGRESS, 3, Operation.GREATER_EQUAL);
+		isPuzzleOrder2 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_ORDER, 2);
 	}
 
 	public void setupSteps()
@@ -493,8 +680,113 @@ public class TheFinalDawn extends BasicQuestHelper
 		inspectFireplace.addDialogStep("Pull it.");
 		useHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_ENTRY, new WorldPoint(1470, 9565, 0), "Enter the hole in the south-west " +
 				"corner of the room.");
-
+		returnThroughHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_EXIT, new WorldPoint(1470, 9563, 0), "Go back through the hole " +
+				"into the Teumo's basement.");
 		returnToServius = new NpcStep(this, NpcID.VMQ4_SERVIUS_TEUMO_HOUSE_DOWNSTAIRS, new WorldPoint(1468, 9569, 0), "Talk to Servius in the house basement.");
+
+		// Neypotzli section
+		climbUpFromTeumoBasement = new ObjectStep(this, ObjectID.VMQ4_TEUMO_HOUSE_STAIRS_UP, new WorldPoint(1468, 9573, 0), "Go to Neypotzli.");
+		enterNeypotzli = new ObjectStep(this, ObjectID.PMOON_TELEBOX, new WorldPoint(1439, 9600, 1),
+			"Enter the Neypotzli entrance in the far north of the cavern.");
+		enterNeypotzli.addSubSteps(climbUpFromTeumoBasement);
+		talkToEyatalli = new NpcStep(this, NpcID.VMQ4_EYATLALLI, new WorldPoint(1440, 9628, 1),
+				"Talk to Eyatlalli.");
+
+		locateKeystone = new DetailedQuestStep(this, "Use the keystone fragment to locate the keystone.", keystoneFragment.highlighted());
+
+		enterStreamboundCavern = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1458, 9650, 1),
+				"Enter the north-east entrance to the streambound cavern.");
+		locateInStreambound = new DetailedQuestStep(this, new WorldPoint(1511, 9702, 0), "Locate with the keystone fragment on the marked tile south of the " +
+				"cooking stove.", keystoneFragment.highlighted());
+		enterEarthboundCavernFromStreambound = new ObjectStep(this, ObjectID.PMOON_TELEBOX_CAVE, new WorldPoint(1522, 9720, 0), "Enter the earthbound cavern " +
+				"via the north cave entrance.", keystoneFragment);
+		enterEarthboundCavern = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9650, 1),
+				"Enter the north-west entrance.");
+		enterEarthboundCavernFromStreambound.addSubSteps(enterEarthboundCavern);
+		locateInEarthbound = new DetailedQuestStep(this, new WorldPoint(1375, 9684, 0), "Locate with the keystone fragment on the marked tile near where you " +
+				"trap lizards.",
+				keystoneFragment.highlighted());
+		enterAncientPrison = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9613, 1),
+				"Enter the south-west entrance.", keystoneFragment);
+		enterAncientPrisonFromEarthbound = new ObjectStep(this, ObjectID.PMOON_TELEBOX_3X3, new WorldPoint(1374, 9665, 0), "Enter the ancient prison via the " +
+				"large entrance in the south-west of the area.", keystoneFragment);
+		enterAncientPrisonFromEarthbound.addSubSteps(enterAncientPrison);
+		locateInAncientPrison = new DetailedQuestStep(this, new WorldPoint(1373, 9539, 0), "Locate with the keystone fragment on the marked tile in the " +
+				"south-east room with a statue.", keystoneFragment.highlighted());
+		touchGlowingSymbol = new ObjectStep(this, ObjectID.VMQ4_KEYSTONE_CHAMBER_ENTRANCE, new WorldPoint(1375, 9537, 0), "Touch the glowing symbol that " +
+				"appeared. Be ready for a fight.", combatGear);
+		defeatCultists = new NpcStep(this, NpcID.VMQ4_KEYSTONE_CHAMBER_BOSS_MAGIC, new WorldPoint(1364, 9514, 0), "Defeat the cultists. Step into golden " +
+				"circle to avoid the mage's special. Avoid the arrow barrage from the ranger. When you defeat one of the cultists, the other will become " +
+				"enraged.",	true);
+		((NpcStep) defeatCultists).addAlternateNpcs(NpcID.VMQ4_KEYSTONE_CHAMBER_BOSS_MAGIC_CS, NpcID.VMQ4_KEYSTONE_CHAMBER_BOSS_RANGED,
+				NpcID.VMQ4_KEYSTONE_CHAMBER_BOSS_RANGED_CS);
+		talkToAttalaAfterCultistFight = new NpcStep(this, NpcID.VMQ4_ATTALA_KEYSTONE_CHAMBER, new WorldPoint(1363, 9516, 0), "Talk to Attala.");
+
+		talkToServiusAtTalTeklan = new NpcStep(this, NpcID.VMQ4_SERVIUS_VIS, new WorldPoint(1236, 3105, 0), "Talk to Servius in Tal Teklan in the " +
+				"Tlati Rainforest, in the north-west of Varlamore.", List.of(combatGear, food, prayerPotions), List.of(rangedGear));
+		enterTonaliCavern = new ObjectStep(this, ObjectID.VMQ4_CRYPT_OF_TONALI_ENTRY, new WorldPoint(1305, 3034, 0), "Enter the passageway in the" +
+				" tree south-east of Tal Teklan, into the Crypt of Tonali.");
+		defeatFinalCultists = new NpcStep(this, NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_1A, new WorldPoint(1312, 9355, 2), "Defeat the attacking cultists.",
+				true);
+		((NpcStep) defeatFinalCultists).addAlternateNpcs(NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_1B, NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_2A,
+				NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_2B, NpcID.VMQ4_CRYPT_ATTACKER_MAGIC_VARIANT_1, NpcID.VMQ4_CRYPT_ATTACKER_MAGIC_VARIANT_2,
+				NpcID.VMQ4_CRYPT_ATTACKER_RANGED_VARIANT_1, NpcID.VMQ4_CRYPT_ATTACKER_RANGED_VARIANT_2);
+		fightEnnius = new NpcStep(this, NpcID.VMQ4_CRYPT_ENNIUS_BOSS, new WorldPoint(1336, 9355, 2), "Defeat Ennius. Protect from Melee. Stand on the green " +
+				"circles to avoid damage when they appear. Avoid the lines of yellow star icons on the floor when they appear. When they reach 0 health, " +
+				"they'll gain some back and do more damage.");
+		tonaliGoDownStairsF2ToF1 = new ObjectStep(this, ObjectID.VMQ4_CRYPT_STAIRS_TOP_ENNIUS, new WorldPoint(1335, 9360, 2), "Climb down the stairs.");
+		tonaliGoDownStairsF1ToF0 = new ObjectStep(this, ObjectID.VMQ4_CRYPT_STAIRS_TOP_ENNIUS, new WorldPoint(1332, 9367, 1), "Climb down the stairs.");
+		tonaliGoDownStairsF2ToF1.addSubSteps(tonaliGoDownStairsF1ToF0);
+		useRedTeleporter = new ObjectStep(this, ObjectID.VMQ4_SUN_TELEPORT, new WorldPoint(1332, 9382, 0), "Step onto the red teleporter to the north-east.");
+		useBlueTeleporter = new ObjectStep(this, ObjectID.VMQ4_MOON_TELEPORT, new WorldPoint(1319, 9384, 1), "Step onto the blue teleporter to the west.");
+
+		useRedTeleporter2 = new ObjectStep(this, ObjectID.VMQ4_SUN_TELEPORT, new WorldPoint(1303, 9389, 0), "Step on the red teleporter to the west.");
+		useBlueTeleporterLizards = new ObjectStep(this, ObjectID.VMQ4_MOON_TELEPORT, new WorldPoint(1293, 9394, 1), "Step onto the blue teleporter to the " +
+				"north-west.");
+		useRedTeleporter3 = new ObjectStep(this, ObjectID.VMQ4_SUN_TELEPORT, new WorldPoint(1296, 9402, 0), "Step on the red teleporter to the north.");
+
+
+		// Unused for now
+		crossLog = new ObjectStep(this, ObjectID.VMQ4_CRYPT_LOG_BALANCE_1, new WorldPoint(1302, 9398, 0), "Walk across the log balance to the north.");
+		useBlueTeleporter2 = new ObjectStep(this, ObjectID.VMQ4_MOON_TELEPORT, new WorldPoint(1315, 9409, 0), "Step onto the blue teleporter to the north.");
+		climbRope = new ObjectStep(this, ObjectID.VMQ4_CRYPT_SHORTCUT_2_BOTTOM, new WorldPoint(1308, 9420, 1), "Climb the rope up to the north-east.");
+		activateStrangePlatform = new ObjectStep(this, ObjectID.VMQ4_CRYPT_LIFT, new WorldPoint(1311, 9428, 2), "Inspect the strange platform nearby to " +
+				"activate a shortcut lift from the surface.");
+		enterTonaliWithLift = new ObjectStep(this, ObjectID.VMQ4_CRYPT_LIFT_SURFACE, new WorldPoint(1310, 3103, 0), "Go down the lift north of the Crypt of " +
+				"Tonali in the Tlati rainforest.");
+		enterTonaliCavern.addSubSteps(enterTonaliWithLift);
+		descendIntoSunPuzzle = new ObjectStep(this, ObjectID.VMQ4_SUN_TELEPORT, new WorldPoint(1316, 9446, 2), "Step on the red teleporter to the north-east " +
+				"of the lift.");
+		getEssenceFromUrns = new ObjectStep(this, ObjectID.VMQ4_SUN_PUZZLE_URN, new WorldPoint(1323, 9449, 1), "Search the urns in the area for some essence" +
+				".", true);
+		solveSunPuzzle = new DetailedQuestStep(this, "Look at the pillar in the middle of the room. The first word indicates where to tell Itzla to stand, " +
+				"and the second word where you craft the essence." +
+				"1 is the north-east altar, and incrementing numbers rotate clockwise. The words mean the following numbers: \n    Oma = 2\n" +
+				"    Naui = 4\n" +
+				"    Kuli = 5\n" +
+				"    Chaki = 6\n" +
+				"    Koma = 7\n" +
+				"    Ueai = 8\n" +
+				"    Makti = 10");
+		solveSunPuzzle2Step1MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the north" +
+				" of the room.");
+		solveSunPuzzle2Step1MoveItzla.addDialogSteps("Can you go to an altar for me?", "North.", "Previous options...");
+		solveSunPuzzle2Step1Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1330, 9436, 1), "Imbue the essence on the south altar.",
+				essence);
+
+		solveSunPuzzle2Step2MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the east" +
+				" of the room.");
+		solveSunPuzzle2Step2MoveItzla.addDialogSteps("Can you go to an altar for me?", "East.", "Previous options...");
+		solveSunPuzzle2Step2Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1320, 9446, 1), "Imbue the essence on the west altar.",
+				essence);
+		solveSunPuzzle2Step3MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the " +
+				"north-west of the room.");
+		solveSunPuzzle2Step3MoveItzla.addDialogSteps("Can you go to an altar for me?", "North west.", "More options...");
+		solveSunPuzzle2Step3Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1322, 9438, 1), "Imbue the essence on the south-west altar.",
+				essence);
+
+		solveSunPuzzle.addSubSteps(solveSunPuzzle2Step1Craft, solveSunPuzzle2Step1MoveItzla, solveSunPuzzle2Step2MoveItzla, solveSunPuzzle2Step2Craft,
+				solveSunPuzzle2Step3MoveItzla, solveSunPuzzle2Step3Craft);
 	}
 
 	@Override
@@ -589,9 +881,18 @@ public class TheFinalDawn extends BasicQuestHelper
 		panels.add(new PanelDetails("The dwarves", List.of(enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, goDownstairsPub,
 				useBeerOnGalna, enterCamTorumHouseBasement, takeWizardsMindBomb, placeMindBomb, takeBeerCabinet,
 				placeBeer, takeSteamforgeBrew, placeSteamforgedBrew, takeDwarvenStout, placeDwarvenStout,takeBeerFromBarrel, drinkBeer, placeEmptyGlass,
-				inspectFireplace, useHole, returnToServius),
+				inspectFireplace, useHole, returnThroughHole, returnToServius),
 				List.of(),
 				List.of()));
+		panels.add(new PanelDetails("Ancient keys", List.of(enterNeypotzli, talkToEyatalli, enterStreamboundCavern, locateInStreambound,
+				enterEarthboundCavernFromStreambound, locateInEarthbound, enterAncientPrisonFromEarthbound, locateInEarthbound, touchGlowingSymbol,
+				defeatCultists, talkToAttalaAfterCultistFight),
+				List.of(combatGear, food, prayerPotions)));
+
+		panels.add(new PanelDetails("Crypt of Tonali", List.of(talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists, fightEnnius,
+				tonaliGoDownStairsF2ToF1, useRedTeleporter, useBlueTeleporter, useRedTeleporter2, useBlueTeleporterLizards, useRedTeleporter3,
+				activateStrangePlatform, descendIntoSunPuzzle, getEssenceFromUrns, solveSunPuzzle),
+				List.of(combatGear, food, prayerPotions)));
 		return panels;
 	}
 }

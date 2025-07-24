@@ -66,7 +66,6 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import static com.questhelper.requirements.util.LogicHelper.*;
-import static net.runelite.api.Perspective.SCENE_SIZE;
 
 /**
  * The quest guide for the "The Final Dawn" OSRS quest
@@ -80,7 +79,7 @@ public class TheFinalDawn extends BasicQuestHelper
 
 	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, coinPurseFullOrEmpty, branch, coinPurseWithSand, coinPurseEmpty,
 			emptySack, makeshiftBlackjack;
-	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment, essence, roots, kindling, knifeBlade;
+	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment, essence, roots, kindling, knifeBlade, stoneTablet;
 
 	DetailedQuestStep startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2;
 	DetailedQuestStep useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll, talkToQueen,
@@ -105,19 +104,23 @@ public class TheFinalDawn extends BasicQuestHelper
 
 	QuestStep goUpFromSunPuzzle, enterMoonPuzzle, pullTreeRoots, getKnifeBlade, placeRoots, fletchRoots, repeatMoonPuzzleThreeTimes, leaveMoonPuzzleRoom;
 
+	QuestStep enterFinalBossArea, approachMetzli, defeatFinalBoss, defeatFinalBossSidebar, watchFinalBossAfterCutscene, goToNorthOfFinalArea,
+	goToNorthOfFinalAreaAgilityShortcut, inspectRanulPillar, inspectRalosPillar, inspectDoor, inspectSkeleton, readStoneTablet, finishQuest;
+
 	Zone templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor, hideoutBasement,
 	camTorum, camTorumF2, camTorumBasement, hiddenTunnel, hiddenTunnel2;
 
 	Zone antechamber, prison, streambound, earthbound, ancientShrine, neypotzliFightRoom, tonaliCavernF2, tonaliCavernF0P2South, tonaliCavernF0P2North,
 	tonaliCavernF1Stairs, tonaliCavernF0Start, tonaliCavernF1Rockslugs, tonaliCavernF0P3V1, tonaliCavernF1GrimyLizards, tonaliCavernF1Nagua,
-			tonaliCavernF2North, tonaliCavernF0P3V2, sunPuzzleRoom, moonPuzzleRoom;
+			tonaliCavernF2North, tonaliCavernF0P3V2, sunPuzzleRoom, moonPuzzleRoom, finalBossArea;
 
 	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom, inPalaceF1, inPalaceF2, inHideout, inHideoutF1, inHideoutF2, inHideoutBasement,
 	inCamTorum, inCamTorumF2, inCamTorumBasement, inCamTorumHiddenTunnel;
 
 	Requirement inAntechamber, inPrison, inStreambound, inEarthbound, inAncientShrine, inNeypotzli, inNeypotzliFightRoom;
 	Requirement inTonaliCavern, inTonaliCavernF0P2South, inTonaliCavernF0P2North, inTonaliCavernF0Start, inTonaliCavernF0P3, inTonaliCavernF1Stairs,
-			inTonaliCavernF1Rockslugs, inTonaliCavernF1GrimyLizards, inTonaliCavernF1Nagua, inTonaliCavernF2North, inSunPuzzleRoom, inMoonPuzzleRoom;
+			inTonaliCavernF1Rockslugs, inTonaliCavernF1GrimyLizards, inTonaliCavernF1Nagua, inTonaliCavernF2North, inSunPuzzleRoom, inMoonPuzzleRoom,
+			inFinalBossArea;
 
 	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby, inChestInterface;
 	Requirement hasSackOfGivenSack, isGalnaDrunk, notPlacedMindBomb, notPlacedBeer, notPlacedSteamforgeBrew, notPlacedDwarvenStout, beerTakenFromBarrel;
@@ -126,16 +129,15 @@ public class TheFinalDawn extends BasicQuestHelper
 	Requirement inMoonPuzzleP1, inMoonPuzzleP2, inMoonPuzzleP3, completedMoonPuzzle;
 	Requirement isPuzzleOrder2;
 
+	Requirement is72Agility, notInspectedRalosPillar, notInspectedRanulPillar, notInspectedSkeleton, notInspectedDoor;
+
 	int lastKnownStateStep = 0;
 	int lastKnownStateDarkFlame, lastKnownStateLightFlame = -1;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
-		// TODO: Swap back
-//		initializeRequirements();
-		setupZones();
-		setupRequirements();
+		initializeRequirements();
 		setupSteps();
 
 		lastKnownStateStep = -1;
@@ -387,8 +389,43 @@ public class TheFinalDawn extends BasicQuestHelper
 		steps.put(55, goDeeperIntoTonali);
 
 		ConditionalStep goFinalFight = new ConditionalStep(this, goDeeperIntoTonali);
+		goFinalFight.addStep(and(inFinalBossArea), approachMetzli);
+		goFinalFight.addStep(and(inTonaliCavernF2North, liftActivated), enterFinalBossArea);
 		steps.put(60, goFinalFight);
+		steps.put(61, goFinalFight);
 
+		ConditionalStep fightFinalBoss = new ConditionalStep(this, goDeeperIntoTonali);
+		fightFinalBoss.addStep(and(inFinalBossArea), defeatFinalBoss);
+		fightFinalBoss.addStep(and(inTonaliCavernF2North, liftActivated), enterFinalBossArea);
+		steps.put(62, fightFinalBoss);
+		// Defeated boss
+
+		ConditionalStep doFinalBossPostCutscene = new ConditionalStep(this, goDeeperIntoTonali);
+		doFinalBossPostCutscene.addStep(and(inFinalBossArea), watchFinalBossAfterCutscene);
+		doFinalBossPostCutscene.addStep(and(inTonaliCavernF2North, liftActivated), enterFinalBossArea);
+		steps.put(63, doFinalBossPostCutscene);
+
+		ConditionalStep goNorthAfterFinalBoss = new ConditionalStep(this, goDeeperIntoTonali);
+		goNorthAfterFinalBoss.addStep(and(inFinalBossArea, is72Agility), goToNorthOfFinalAreaAgilityShortcut);
+		goNorthAfterFinalBoss.addStep(inFinalBossArea, goToNorthOfFinalArea);
+		steps.put(64, goNorthAfterFinalBoss);
+
+		// Inspected
+
+		// Look at tablet, statues
+		ConditionalStep goInspectFinalChamberItems = new ConditionalStep(this, goDeeperIntoTonali);
+		goInspectFinalChamberItems.addStep(and(inFinalBossArea, notInspectedRalosPillar), inspectRalosPillar);
+		goInspectFinalChamberItems.addStep(and(inFinalBossArea, notInspectedRanulPillar), inspectRanulPillar);
+		goInspectFinalChamberItems.addStep(and(inFinalBossArea, notInspectedDoor), inspectDoor);
+		goInspectFinalChamberItems.addStep(and(inFinalBossArea, notInspectedSkeleton, stoneTablet), readStoneTablet);
+		goInspectFinalChamberItems.addStep(and(inFinalBossArea, notInspectedSkeleton), inspectSkeleton);
+		goInspectFinalChamberItems.addStep(and(inTonaliCavernF2North, liftActivated), enterFinalBossArea);
+		steps.put(65, goInspectFinalChamberItems);
+
+		ConditionalStep goFinishQuest = new ConditionalStep(this, enterTonaliCavern);
+		goFinishQuest.addStep(inTonaliCavern, finishQuest);
+		steps.put(66, goFinishQuest);
+		steps.put(67, goFinishQuest);
 		return steps;
 	}
 
@@ -454,7 +491,7 @@ public class TheFinalDawn extends BasicQuestHelper
 
 			if (localPoints.isEmpty()) return -1;
 
-			tiles = client.getTopLevelWorldView().getScene().getTiles()[client.getPlane()];
+			tiles = client.getTopLevelWorldView().getScene().getTiles()[client.getTopLevelWorldView().getPlane()];
 
 			for (LocalPoint localPoint : localPoints)
 			{
@@ -507,6 +544,8 @@ public class TheFinalDawn extends BasicQuestHelper
 		tonaliCavernF2North = new Zone(new WorldPoint(1303, 9399, 2), new WorldPoint(1317, 9466, 2));
 		sunPuzzleRoom = new Zone(new WorldPoint(1318, 9433, 1), new WorldPoint(1345, 9458, 1));
 		moonPuzzleRoom = new Zone(new WorldPoint(1279, 9433, 1), new WorldPoint(1305, 9460, 1));
+
+		finalBossArea = new Zone(new WorldPoint(1275, 9470, 1), new WorldPoint(1350, 9550, 1));
 	}
 
 	@Override
@@ -520,15 +559,20 @@ public class TheFinalDawn extends BasicQuestHelper
 				emissaryBoots).equipped();
 		emissaryRobes = new ItemRequirements("Emissary robes", emissaryHood, emissaryTop, emissaryBottom, emissaryBoots);
 
-		// TODO: Add remaining bones
 		var givenBoneToDog = new VarbitRequirement(VarbitID.VMQ4, 17, Operation.GREATER_EQUAL);
-		bone = new ItemRequirement("Any type of bone", ItemID.BONES);
+		bone = new ItemRequirement("Any type of bone or raw meat", ItemID.BONES);
 		bone.setConditionToHide(givenBoneToDog);
-		bone.addAlternates(ItemID.BIG_BONES, ItemID.BONES_BURNT, ItemID.WOLF_BONES, ItemID.BAT_BONES, ItemID.DAGANNOTH_KING_BONES);
+		bone.addAlternates(ItemID.BIG_BONES, ItemID.BONES_BURNT, ItemID.WOLF_BONES, ItemID.BAT_BONES, ItemID.DAGANNOTH_KING_BONES, ItemID.TBWT_BEAST_BONES,
+				ItemID.WYRM_BONES, ItemID.BABYWYRM_BONES, ItemID.BABYDRAGON_BONES, ItemID.WYVERN_BONES, ItemID.DRAGON_BONES, ItemID.DRAKE_BONES,
+				ItemID.HYDRA_BONES, ItemID.LAVA_DRAGON_BONES, ItemID.DRAGON_BONES_SUPERIOR, ItemID.MM_NORMAL_MONKEY_BONES,
+				ItemID.MM_BEARDED_GORILLA_MONKEY_BONES, ItemID.MM_NORMAL_GORILLA_MONKEY_BONES, ItemID.MM_LARGE_ZOMBIE_MONKEY_BONES,
+				ItemID.MM_SMALL_ZOMBIE_MONKEY_BONES, ItemID.MM_SMALL_NINJA_MONKEY_BONES, ItemID.MM_MEDIUM_NINJA_MONKEY_BONES, ItemID.TBWT_JOGRE_BONES,
+				ItemID.TBWT_BURNT_JOGRE_BONES, ItemID.ZOGRE_BONES, ItemID.ZOGRE_ANCESTRAL_BONES_FAYG, ItemID.ZOGRE_ANCESTRAL_BONES_RAURG,
+				ItemID.ZOGRE_ANCESTRAL_BONES_OURG, ItemID.ALAN_BONES, ItemID.RAW_BEAR_MEAT, ItemID.RAW_BOAR_MEAT, ItemID.RAW_RAT_MEAT,
+				ItemID.RAW_UGTHANKI_MEAT, ItemID.YAK_MEAT_RAW);
 
 		rangedGear = new ItemRequirement("Ranged/Magic Combat gear", -1, -1).isNotConsumed();
 		rangedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
-
 
 		// Item Recommended
 		combatWeapon = new ItemRequirement("Combat weapon", -1, -1).isNotConsumed();
@@ -578,6 +622,8 @@ public class TheFinalDawn extends BasicQuestHelper
 		kindling = new ItemRequirement("Root kindling", ItemID.VMQ4_ROOT_KINDLING);
 		knifeBlade = new ItemRequirement("Knife blade", ItemID.VMQ4_KNIFE);
 
+		stoneTablet = new ItemRequirement("Stone tablet", ItemID.VMQ4_MOKI_TABLET);
+
 		// Quest requirements
 		inTempleBasement = new ZoneRequirement(templeBasement);
 		inEastTempleBasement = new ZoneRequirement(eastTempleBasement);
@@ -613,6 +659,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		inTonaliCavernF2North = new ZoneRequirement(tonaliCavernF2North);
 		inSunPuzzleRoom = new ZoneRequirement(sunPuzzleRoom);
 		inMoonPuzzleRoom = new ZoneRequirement(moonPuzzleRoom);
+		inFinalBossArea = new ZoneRequirement(finalBossArea);
 
 		isSouthDrawer = new VarbitRequirement(VarbitID.VMQ4_CANVAS_DRAWER, 2);
 		hasDrawerKeyOrOpened = or(drawerKey, new VarbitRequirement(VarbitID.VMQ4_TEMPLE_DRAW_UNLOCKED, 1, Operation.GREATER_EQUAL));
@@ -658,6 +705,13 @@ public class TheFinalDawn extends BasicQuestHelper
 		inMoonPuzzleP3 = new VarbitRequirement(VarbitID.VMQ4_MOON_PUZZLE_PROGRESS, 2);
 		completedMoonPuzzle = new VarbitRequirement(VarbitID.VMQ4_MOON_PUZZLE_PROGRESS, 3);
 		//VarbitID.VMQ4_MOON_PUZZLE_ORDER = 2
+
+		is72Agility = new SkillRequirement(Skill.AGILITY, 72, true);
+
+		notInspectedRalosPillar = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_RALOS_INSPECT, 1));
+		notInspectedRanulPillar = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_RANUL_INSPECT, 1));
+		notInspectedSkeleton = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_TABLET_INSPECT, 1));
+		notInspectedDoor = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_DOOR_INSPECT, 1));
 	}
 
 	public void setupSteps()
@@ -923,6 +977,56 @@ public class TheFinalDawn extends BasicQuestHelper
 		repeatMoonPuzzleThreeTimes = new DetailedQuestStep(this, "Repeat the kindling burning matching the total braziers lit two more times.").puzzleWrapStep(true);
 
 		leaveMoonPuzzleRoom = new ObjectStep(this, ObjectID.VMQ4_MOON_TELEPORT, new WorldPoint(1299, 9455, 1), "Leave the moon puzzle room.");
+
+		enterFinalBossArea = new ObjectStep(this, ObjectID.VMQ4_CRYPT_DOOR_TO_MOKI, new WorldPoint(1311, 9468, 2), "Try to open the door to the " +
+				"north. Be ready for the final boss!", rangedGear);
+		approachMetzli = new NpcStep(this, NpcID.VMQ4_CRYPT_METZLI_NOOPS, new WorldPoint(1311, 9497, 1), "Approach Augur Metzli, ready for a fight.");
+		defeatFinalBoss = new NpcStep(this, NpcID.VMQ4_METZLI_BOSS, new WorldPoint(1311, 9497, 1), "Defeat Metzli. Read the sidebar for more details.");
+		defeatFinalBossSidebar = new NpcStep(this, NpcID.VMQ4_METZLI_BOSS, new WorldPoint(1311, 9497, 1), "Defeat Metzli." +
+				"\n\nStart with Protect from Missiles." +
+				"\n\nUse the gaps in the wave attacks to dodge the walls as they approach. " +
+				"\n\nIf green circles appear, stand where they appeared." +
+				"\n\nEvery time a teleporter appears to jump over a wave, the boss will switch attack styles alternating between mage and ranged. " +
+				"\n\nThe boss will enter an enrage phase, it is much easier to range but melee is still possible. " +
+				"\n\nAttack the boss and then immediately click on the next teleporter to avoid taking damage.");
+		defeatFinalBossSidebar.addSubSteps(defeatFinalBoss);
+
+		watchFinalBossAfterCutscene = new NpcStep(this, NpcID.VMQ4_MOKI_METZLI_FIGHT_DEFEATED_NOOPS, new WorldPoint(1311, 9497, 1), "Watch Metzli's cutscene.");
+
+		goToNorthOfFinalAreaAgilityShortcut = new ObjectStep(this, ObjectID.MOKI_ENTRANCE_TO_DOM_BOSS, new WorldPoint(1311, 9533, 1), "Enter the entrance in the north of " +
+			"the area.");
+		((ObjectStep) goToNorthOfFinalAreaAgilityShortcut).setLinePoints(List.of(
+				new WorldPoint(1310, 9497, 1),
+				new WorldPoint(1310, 9510, 1),
+				new WorldPoint(1310, 9520, 1),
+				new WorldPoint(1311, 9531, 1)
+		));
+
+		goToNorthOfFinalArea = new ObjectStep(this, ObjectID.MOKI_ENTRANCE_TO_DOM_BOSS, new WorldPoint(1311, 9533, 1), "Enter the entrance in the north of " +
+				"the area.");
+		((ObjectStep) goToNorthOfFinalArea).setLinePoints(List.of(
+				new WorldPoint(1310, 9497, 1),
+				new WorldPoint(1304, 9497, 1),
+				new WorldPoint(1300, 9497, 0),
+				new WorldPoint(1287, 9497, 0),
+				new WorldPoint(1283, 9497, 1),
+				new WorldPoint(1283, 9513, 1),
+				new WorldPoint(1311, 9513, 1),
+				new WorldPoint(1311, 9531, 1)
+		));
+		goToNorthOfFinalArea.addSubSteps(goToNorthOfFinalAreaAgilityShortcut);
+
+		inspectRanulPillar = new ObjectStep(this, ObjectID.VMQ4_MOKI_MEMORIAL_RANUL, new WorldPoint(1304, 9527, 1), "Inspect the ranul pillar south-east " +
+				"of the north door.");
+		inspectRalosPillar = new ObjectStep(this, ObjectID.VMQ4_MOKI_MEMORIAL_RALOS, new WorldPoint(1317, 9527, 1), "Inspect the ralos pillar south-west " +
+				"of the north door.");
+		inspectDoor = new ObjectStep(this, ObjectID.MOKI_ENTRANCE_TO_DOM_BOSS, new WorldPoint(1311, 9533, 1), "Inspect the entrance in the north of " +
+				"the area again.");
+		inspectSkeleton = new ObjectStep(this, ObjectID.VMQ4_MOKI_SKELETON_TABLET, new WorldPoint(1307, 9532, 1), "Inspect the skeleton west of the north " +
+				"door.");
+		readStoneTablet = new DetailedQuestStep(this, "Read the stone tablet.", stoneTablet.highlighted());
+
+		finishQuest = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_DONE, new WorldPoint(1315, 9355, 2), "Talk to Prince Itzla Arkan to complete the quest!");
 	}
 
 	@Override
@@ -956,9 +1060,12 @@ public class TheFinalDawn extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		// TODO: Add in rest
 		return List.of(
-			"Emissary Enforcer (lvl-196)"
+			"Emissary Enforcer (lvl-196)",
+			"Chimalli (lvl-160) and Lucius (lvl-160)",
+			"Multiple waves of Twilight Emissaries (lvl-70 to lvl-90)",
+			"Ennius Tullus (lvl-306)",
+			"Augur Metzli (lvl-396)"
 		);
 	}
 
@@ -992,7 +1099,8 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(
-			new ItemReward("55,000 Experience Lamps (Combat Skills)", ItemID.THOSF_REWARD_LAMP, 1)
+			new ItemReward("55,000 Experience Lamps (Combat Skills)", ItemID.VMQ4_REWARD_LAMP, 1),
+			new ItemReward("Arkan blade", ItemID.ARKAN_BLADE)
 		);
 	}
 
@@ -1030,6 +1138,10 @@ public class TheFinalDawn extends BasicQuestHelper
 				activateStrangePlatform, descendIntoSunPuzzle, getEssenceFromUrns, solveSunPuzzle, goUpFromSunPuzzle, enterMoonPuzzle, pullTreeRoots,
 				getKnifeBlade, fletchRoots, placeRoots, repeatMoonPuzzleThreeTimes, leaveMoonPuzzleRoom),
 				List.of(combatGear, food, prayerPotions)));
+
+		panels.add(new PanelDetails("Doom", List.of(enterFinalBossArea, approachMetzli, defeatFinalBossSidebar, watchFinalBossAfterCutscene,
+				goToNorthOfFinalArea, inspectRalosPillar, inspectRanulPillar, inspectDoor, inspectSkeleton, readStoneTablet, finishQuest),
+				List.of(rangedGear, food, prayerPotions)));
 		return panels;
 	}
 }

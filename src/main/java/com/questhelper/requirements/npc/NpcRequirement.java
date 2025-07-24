@@ -132,7 +132,7 @@ public class NpcRequirement extends AbstractRequirement
 	public boolean check(Client client)
 	{
 		List<NPC> found = client.getTopLevelWorldView().npcs().stream()
-			.filter(npc -> npc.getId() == npcID)
+			.filter(npc -> npc.getId() == npcID || npc.getComposition().getId() == npcID)
 			.filter(npc -> npcName == null || (npc.getName() != null && npc.getName().equals(npcName)))
 			.collect(Collectors.toList());
 
@@ -142,7 +142,7 @@ public class NpcRequirement extends AbstractRequirement
 			{
 				for (NPC npc : found)
 				{
-					WorldPoint npcLocation = WorldPoint.fromLocalInstance(client,  npc.getLocalLocation(), 2);
+					WorldPoint npcLocation = WorldPoint.fromLocalInstance(client,  npc.getLocalLocation(), npc.getWorldLocation().getPlane());
 					if (npcLocation != null)
 					{
 						boolean inZone = zone.contains(npcLocation);

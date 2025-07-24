@@ -176,7 +176,7 @@ public class NpcStep extends DetailedQuestStep
 	protected boolean npcPassesChecks(NPC npc)
 	{
 		if (npcName != null && (npc.getName() == null || !npc.getName().equals(npcName))) return false;
-		return npcID == npc.getId()  || npcID == npc.getComposition().getId() || alternateNpcIDs.contains(npc.getId());
+		return npcID == npc.getId() ||  npcID == npc.getComposition().getId() || alternateNpcIDs.contains(npc.getId()) || alternateNpcIDs.contains(npc.getComposition().getId());
 	}
 
 	@Override

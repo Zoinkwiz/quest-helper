@@ -39,6 +39,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
@@ -175,7 +176,7 @@ public class NpcStep extends DetailedQuestStep
 	protected boolean npcPassesChecks(NPC npc)
 	{
 		if (npcName != null && (npc.getName() == null || !npc.getName().equals(npcName))) return false;
-		return npcID == npc.getId() || alternateNpcIDs.contains(npc.getId());
+		return npcID == npc.getId()  || npcID == npc.getComposition().getId() || alternateNpcIDs.contains(npc.getId());
 	}
 
 	@Override

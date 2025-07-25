@@ -304,24 +304,6 @@ public class QuestOverviewPanel extends JPanel
 				}
 				questStepPanelList.add(newStep);
 				questStepsContainer.add(newStep);
-				newStep.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mouseClicked(MouseEvent e)
-					{
-						if (e.getButton() == MouseEvent.BUTTON1)
-						{
-							if (newStep.isCollapsed())
-							{
-								newStep.expand();
-							}
-							else
-							{
-								newStep.collapse();
-							}
-						}
-					}
-				});
 				repaint();
 				revalidate();
 			}

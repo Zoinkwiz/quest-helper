@@ -65,6 +65,14 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		this.checkChildren = false;
 	}
 
+	public WidgetHighlight(int interfaceID, boolean checkChildren)
+	{
+		this.interfaceID = interfaceID;
+		this.childChildId = -1;
+		this.checkChildren = checkChildren;
+	}
+
+
 	public WidgetHighlight(int groupId, int childId)
 	{
 		this.interfaceID = groupId << 16 | childId;
@@ -104,7 +112,7 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 
 	public static WidgetHighlight createMultiskillByName(String roughName)
 	{
-		var w = new WidgetHighlight(270, 13, true);
+		var w = new WidgetHighlight(InterfaceID.Skillmulti.BOTTOM, true);
 		w.nameToCheckFor = roughName;
 		return w;
 	}

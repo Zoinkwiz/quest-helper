@@ -460,7 +460,7 @@ public abstract class QuestStep implements Module
 			.filter(s -> !s.isEmpty())
 			.forEach(line -> addTextToPanel(panelComponent, line));
 
-		if (text != null && (text.size() > 0 && !text.get(0).isEmpty()))
+		if (text != null && (!text.isEmpty() && !text.get(0).isEmpty()))
 		{
 			addTextToPanel(panelComponent, "");
 		}
@@ -482,7 +482,7 @@ public abstract class QuestStep implements Module
 	private void addTitleToPanel(PanelComponent panelComponent)
 	{
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(questHelper.getQuest().getName())
+			.left(questHelper.getName())
 			.build());
 	}
 

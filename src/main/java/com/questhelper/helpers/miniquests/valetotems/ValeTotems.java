@@ -136,6 +136,7 @@ public class ValeTotems extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		knife.setTooltip("There's a knife upstairs in the General Store south of the miniquest start point");
 		oneOakLog = new ItemRequirement("Oak log", ItemID.OAK_LOGS, 1);
 		oneOakLog.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood logs, but it needs to match the decorative items you're bringing.");
 
@@ -180,7 +181,6 @@ public class ValeTotems extends BasicQuestHelper
 		);
 
 		missingBuffaloCarve = and(
-			// TODO: CONFIrm it's 10
 			new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_LOW, 10, Operation.NOT_EQUAL),
 			new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_MID, 10, Operation.NOT_EQUAL),
 			new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_TOP, 10, Operation.NOT_EQUAL)
@@ -205,7 +205,6 @@ public class ValeTotems extends BasicQuestHelper
 		);
 
 		missingScorpionCarve = and(
-			// TODO: Confirm that 14 is the correct number
 			new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_LOW, 14, Operation.NOT_EQUAL),
 			new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_MID, 14, Operation.NOT_EQUAL),
 			new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_TOP, 14, Operation.NOT_EQUAL)

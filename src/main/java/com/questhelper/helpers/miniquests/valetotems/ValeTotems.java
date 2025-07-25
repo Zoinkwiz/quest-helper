@@ -95,9 +95,6 @@ public class ValeTotems extends BasicQuestHelper
 	VarbitRequirement threeShieldsAdded;
 	VarbitRequirement isDoneDecorating;
 
-	// Zones
-	Zone firstTotemZone;
-
 	// Steps
 	NpcStep startQuest;
 
@@ -133,12 +130,6 @@ public class ValeTotems extends BasicQuestHelper
 		steps.put(60, finishQuest);
 
 		return steps;
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		firstTotemZone = new Zone(new WorldPoint(1380, 3384, 0), new WorldPoint(1362, 3365, 0));
 	}
 
 	@Override

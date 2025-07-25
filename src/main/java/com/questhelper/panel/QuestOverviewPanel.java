@@ -91,8 +91,6 @@ public class QuestOverviewPanel extends JPanel
 
 	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
 
-	private final JButton collapseBtn = new JButton();
-
 	private final List<QuestStepPanel> questStepPanelList = new CopyOnWriteArrayList<>();
 
 	private QuestStepPanel draggingPanel = null;
@@ -321,7 +319,6 @@ public class QuestOverviewPanel extends JPanel
 							{
 								newStep.collapse();
 							}
-							updateCollapseText();
 						}
 					}
 				});
@@ -394,11 +391,6 @@ public class QuestOverviewPanel extends JPanel
 	private void closeHelper()
 	{
 		questManager.shutDownQuest(false);
-	}
-
-	void updateCollapseText()
-	{
-		collapseBtn.setSelected(isAllCollapsed());
 	}
 
 	public boolean isAllCollapsed()

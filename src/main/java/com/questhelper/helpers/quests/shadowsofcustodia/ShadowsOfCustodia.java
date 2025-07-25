@@ -174,9 +174,9 @@ public class ShadowsOfCustodia extends BasicQuestHelper
 		isUpstairsOfParentsHouse = new ZoneRequirement(upstairsOfParentsHouse);
 
 		oneFreeInventorySlot = new FreeInventorySlotRequirement(1);
-
-		// TODO: It would be nice to make this be not-red if you have lumby elite done, but that should probably be a teleport item feature
+		
 		startTeleport = new TeleportItemRequirement("Teleport to Auburnvale (Fairy ring AIS)", ItemCollections.FAIRY_STAFF);
+		startTeleport.setAdditionalOptions(new QuestRequirement(QuestHelperQuest.LUMBRIDGE_ELITE, QuestState.FINISHED));
 
 		fishingRod = new ItemRequirement("Fishing rod", ItemID.FISHING_ROD).showConditioned(needToFishClothFromLog).highlighted();
 		fishingRod.appendToTooltip("Can be obtained during the quest, south-west of the area where you need it.");
@@ -308,8 +308,6 @@ public class ShadowsOfCustodia extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		// NOTE: Ironment need 4 strung willow longbows. They can get it from elsewhere, maybe add as a note on the item requirement?
-		// I don't think it should be a general requirement.
 		return List.of(
 			new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED),
 			new SkillRequirement(Skill.SLAYER, 54),

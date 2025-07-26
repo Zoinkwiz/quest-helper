@@ -1,3 +1,5 @@
+root = true
+
 [*]
 charset = utf-8
 end_of_line = lf
@@ -15,6 +17,8 @@ ij_visual_guides = none
 ij_wrap_on_typing = false
 
 [*.java]
+indent_size = 4
+indent_style = tab
 ij_continuation_indent_size = 4
 ij_java_align_consecutive_assignments = false
 ij_java_align_consecutive_variable_declarations = false

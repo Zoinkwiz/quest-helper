@@ -185,6 +185,7 @@ public enum ExternalQuestResources
 	DEATH_ON_THE_ISLE("https://oldschool.runescape.wiki/w/Death_on_the_Isle"),
 	MEAT_AND_GREET("https://oldschool.runescape.wiki/w/Meat_and_Greet"),
 	THE_HEART_OF_DARKNESS("https://oldschool.runescape.wiki/w/The_Heart_of_Darkness"),
+	SHADOWS_OF_CUSTODIA("https://oldschool.runescape.wiki/w/Shadows_of_Custodia"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

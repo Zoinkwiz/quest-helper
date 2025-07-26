@@ -276,9 +276,9 @@ public class Scrambled extends BasicQuestHelper
 		var acatzinGetNails = new ObjectStep(this, ObjectID.SCRAMBLED_WORKBENCH, new WorldPoint(1210, 3112, 0), "Get some nails from the blacksmith's workbench, we'll need them later.");
 		acatzinGetNails.addDialogStep("Take the nails.");
 
-		acatzinGetSaw = new ItemStep(this, new WorldPoint(1212, 3093, 0), "Get the Saw from the house to the south, we'll need it later", saw);
+		acatzinGetSaw = new ItemStep(this, new WorldPoint(1212, 3093, 0), "Get the Saw from the house to the south, we'll need it later.", saw);
 
-		acatzinFixWhetstone = new ObjectStep(this, ObjectID.SCRAMBLED_WHETSTONE_BROKEN_OP, new WorldPoint(1211, 3108, 0), "Fix the whetstone");
+		acatzinFixWhetstone = new ObjectStep(this, ObjectID.SCRAMBLED_WHETSTONE_BROKEN_OP, new WorldPoint(1211, 3108, 0), "Fix the whetstone.");
 		acatzinFixWhetstone.addDialogStep("Yes.");
 
 		acatzinFixWhetstone.addSubSteps(acatzinGetHammer);
@@ -290,7 +290,7 @@ public class Scrambled extends BasicQuestHelper
 
 		var acatzinTalkToBlacksmithAgain = new NpcStep(this, NpcID.SCRAMBLED_BLACKSMITH, new WorldPoint(1209, 3109, 0), "Talk to the Blacksmith again after fixing the whetstone to receive a damaged axe.");
 
-		acatzinRepairAxe = new ObjectStep(this, ObjectID.SCRAMBLED_WHETSTONE_FIXED_OP, new WorldPoint(1211, 3108, 0), "Repair the axe on the whetstone", acatzinsDamagedAxe);
+		acatzinRepairAxe = new ObjectStep(this, ObjectID.SCRAMBLED_WHETSTONE_FIXED_OP, new WorldPoint(1211, 3108, 0), "Repair the axe on the whetstone.", acatzinsDamagedAxe);
 		acatzinRepairAxe.addDialogStep("Yes.");
 		acatzinRepairAxe.addSubSteps(acatzinTalkToBlacksmithAgain);
 
@@ -341,7 +341,7 @@ public class Scrambled extends BasicQuestHelper
 		boilDamianaWater = new ObjectStep(this, ObjectID.STOVE_CLAY01_TALKASTI01_NOOP, "Use your bowl of damiana water on the stove in the east part of Tal Teklan to boil it.", damianaWater.highlighted());
 		boilDamianaWater.addIcon(ItemID.BOWL_DAMIANA_WATER);
 
-		pourTeaIntoCup = new ItemStep(this, "Pour the damiana tea from your bowl into the empty cup",  damianaTea.highlighted(), emptyCup.highlighted());
+		pourTeaIntoCup = new ItemStep(this, "Pour the damiana tea from your bowl into the empty cup.",  damianaTea.highlighted(), emptyCup.highlighted());
 
 		var cMakeTea = new ConditionalStep(this, pourTeaIntoCup);
 		cMakeTea.addStep(damianaWater, boilDamianaWater);
@@ -398,7 +398,7 @@ public class Scrambled extends BasicQuestHelper
 		cCollectDragonEgg.addStep(and(inDragonCave, needToSpawnRedDragon), spawnDragonFromEgg);
 		cCollectDragonEgg.addStep(and(has40Agi, not(nearCaveEntrance)), useDragonShortcut);
 
-		var exitDragonCave = new ObjectStep(this, ObjectID.TLATI_DRAGON_NEST_CAVE_EXIT, new WorldPoint(1244, 9528, 0), "Exit the dragon's cave");
+		var exitDragonCave = new ObjectStep(this, ObjectID.TLATI_DRAGON_NEST_CAVE_EXIT, new WorldPoint(1244, 9528, 0), "Exit the dragon's cave.");
 
 		var spawnJaguarFromEgg = new ObjectStep(this, ObjectID.SCRAMBLED_JAGUAR_EGGS_OP, new WorldPoint(1332, 3122, 0), "Run east from the dragon's cave to the camp, and search the Eggs to spawn a Jaguar.");
 
@@ -434,7 +434,7 @@ public class Scrambled extends BasicQuestHelper
 
 		panicWithKingsMen = new NpcStep(this, anyOfTheKingsMen, new WorldPoint(1247, 3166, 0), "Talk to one of King's men to figure out how to solve the broken-egg conundrum.", true);
 
-		var putEggBackTogether = new NpcStep(this, NpcID.SCRAMBLED_EGG_FIX, new WorldPoint(1244,3168, 0), "put the egg back together");
+		var putEggBackTogether = new NpcStep(this, NpcID.SCRAMBLED_EGG_FIX, new WorldPoint(1244,3168, 0), "Inspect the egg.");
 
 		var puzzleSolver = new EggSolver(this);
 

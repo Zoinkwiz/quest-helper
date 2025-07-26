@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.annotations.Interface;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
@@ -119,16 +120,6 @@ public class MetalDoorSolver extends DetailedOwnerStep
 	private static final int PUZZLE_PASSWORD_2_CHILD_ID = 27;
 	private static final int PUZZLE_PASSWORD_3_CHILD_ID = 28;
 	private static final int PUZZLE_PASSWORD_4_CHILD_ID = 29;
-
-	/**
-	 * Group ID of the "MESBOX" widget containing our code
-	 */
-	private static final @Interface int MESBOX_GROUP_ID = 229;
-
-	/**
-	 * Child ID of the "MESBOX" widget containing our code
-	 */
-	private static final int MESBOX_CHILD_ID = 1;
 
 	private static final Pattern CODE_PATTERN = Pattern.compile("It reads ([A-I]{4}).");
 
@@ -344,7 +335,7 @@ public class MetalDoorSolver extends DetailedOwnerStep
 			return;
 		}
 
-		var textWidget = client.getWidget(MESBOX_GROUP_ID, MESBOX_CHILD_ID);
+		var textWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
 		if (textWidget == null)
 		{
 			return;

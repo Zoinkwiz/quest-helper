@@ -102,7 +102,8 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	{
 		initializeRequirements();
 		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		var steps = new HashMap<Integer, QuestStep>();
 
 		ConditionalStep goEnterStronghold = new ConditionalStep(this, enterStronghold);
 		goEnterStronghold.addStep(new Conditions(nearCountCheck, notUsedCountCheck), talkToCountCheck);
@@ -176,7 +177,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		List<WorldPoint> pathFromStartToChest1 = Arrays.asList(
+		var pathFromStartToChest1 = List.of(
 			new WorldPoint(1859, 5243, 0),
 			new WorldPoint(1859, 5232, 0),
 			new WorldPoint(1864, 5227, 0),
@@ -190,7 +191,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(1905, 5228, 0)
 		);
 
-		List<WorldPoint> pathFromStartToChest2 = Arrays.asList(
+		var pathFromStartToChest2 = List.of(
 			new WorldPoint(2042, 5245, 0),
 			new WorldPoint(2034, 5244, 0),
 			new WorldPoint(2033, 5239, 0),
@@ -211,7 +212,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(2020, 5227, 0)
 		);
 
-		List<WorldPoint> pathFromStartToChest3 = Arrays.asList(
+		var pathFromStartToChest3 = List.of(
 			new WorldPoint(2123, 5252, 0),
 			new WorldPoint(2132, 5256, 0),
 			new WorldPoint(2132, 5261, 0),
@@ -225,7 +226,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(2147, 5291, 0)
 		);
 
-		List<WorldPoint> pathFromStartToChest4 = Arrays.asList(
+		var pathFromStartToChest4 = List.of(
 			new WorldPoint(2358, 5215, 0),
 			new WorldPoint(2356, 5216, 0),
 			new WorldPoint(2355, 5224, 0),
@@ -299,31 +300,46 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(food);
+		return List.of(
+			food
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Flap, Slap Head, Idea and Stamp emotes."));
+		return List.of(
+			new UnlockReward("Flap, Slap Head, Idea and Stamp emotes.")
+		);
 	}
 
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
+		return List.of(
 			new ItemReward("Coins", ItemID.COINS, 10000),
-			new ItemReward("Fancy or Fighting boots", ItemID.SOS_BOOTS, 1));
+			new ItemReward("Fancy or Fighting boots", ItemID.SOS_BOOTS, 1)
+		);
 	}
 
 	// Maybe a little unnecessary...
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var steps = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Entering the stronghold", Arrays.asList(talkToCountCheck, enterStronghold)));
-		allSteps.add(new PanelDetails("Claiming coins", Arrays.asList(openChestWar, openChestFamine, openChestPestilence)));
-		allSteps.add(new PanelDetails("Claiming boots", Collections.singletonList(openChestDeath)));
-		return allSteps;
+		steps.add(new PanelDetails("Entering the stronghold", List.of(
+			talkToCountCheck,
+			enterStronghold
+		)));
+		steps.add(new PanelDetails("Claiming coins", List.of(
+			openChestWar,
+			openChestFamine,
+			openChestPestilence
+		)));
+		steps.add(new PanelDetails("Claiming boots", List.of(
+			openChestDeath
+		)));
+
+		return steps;
 	}
 }

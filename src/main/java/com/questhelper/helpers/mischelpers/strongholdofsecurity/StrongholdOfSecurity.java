@@ -149,7 +149,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 
 		var steps = new HashMap<Integer, QuestStep>();
 
-		ConditionalStep goEnterStronghold = new ConditionalStep(this, enterStronghold);
+		var goEnterStronghold = new ConditionalStep(this, enterStronghold);
 		goEnterStronghold.addStep(and(nearCountCheck, notUsedCountCheck), talkToCountCheck);
 		goEnterStronghold.addStep(and(or(canSkipWar, hasFlap),
 			inFloorWar, inStartRoomWar), usePortalWar);

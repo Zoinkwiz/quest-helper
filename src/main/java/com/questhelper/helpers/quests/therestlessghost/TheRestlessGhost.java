@@ -72,7 +72,6 @@ public class TheRestlessGhost extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -104,17 +103,14 @@ public class TheRestlessGhost extends BasicQuestHelper
 		basement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
 	}
 
-	public void setupConditions()
+	@Override
+	protected void setupRequirements()
 	{
 		ghostSpawned = new NpcCondition(NpcID.GHOSTX);
 		coffinOpened = new ObjectCondition(ObjectID.OPENGHOSTCOFFIN);
 		inBasement = new ZoneRequirement(basement);
 		hasSkull = new VarbitRequirement(VarbitID.RESTLESS_GHOST_ALTAR_VAR, 1);
-	}
 
-	@Override
-	protected void setupRequirements()
-	{
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.POH_TABLET_LUMBRIDGETELEPORT, 2);
 		ghostspeakAmulet = new ItemRequirement("Ghostspeak amulet", ItemID.AMULET_OF_GHOSTSPEAK, 1, true).isNotConsumed();
 		ghostspeakAmulet.setTooltip("If you've lost it you can get another from Father Urhney in his hut in the south east of Lumbridge Swamp");

@@ -30,6 +30,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -50,58 +51,42 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
-import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class TheRestlessGhost extends BasicQuestHelper
 {
-	//Items Required
-	private ItemRequirement ghostspeakAmulet, skull;
+	// Recommended items
+	ItemRequirement lumbridgeTeleports;
+	ItemRequirement passage;
 
-	//Items Recommended
-	private ItemRequirement lumbridgeTeleports, passage;
+	// Mid-quest required items
+	ItemRequirement ghostspeakAmulet;
+	ItemRequirement skull;
 
-	private Requirement ghostSpawned, coffinOpened, inBasement, hasSkull;
+	// Miscellaneous requirements
+	Requirement ghostSpawned;
+	Requirement coffinOpened;
+	Requirement inBasement;
+	Requirement hasSkull;
 
-	private QuestStep talkToAereck, talkToUrhney, speakToGhost, openCoffin, searchCoffin, enterWizardsTowerBasement, searchAltarAndRun, exitWizardsTowerBasement,
-		openCoffinToPutSkullIn, putSkullInCoffin;
+	// Zones
+	Zone wizardsTowerBasement;
 
-	//Zones
-	private Zone basement;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupSteps();
-
-		var steps = new HashMap<Integer, QuestStep>();
-
-		steps.put(0, talkToAereck);
-		steps.put(1, talkToUrhney);
-
-		var talkToGhost = new ConditionalStep(this, openCoffin);
-		talkToGhost.addStep(ghostSpawned, speakToGhost);
-		talkToGhost.addStep(coffinOpened, searchCoffin);
-		steps.put(2, talkToGhost);
-
-		var getSkullForGhost = new ConditionalStep(this, enterWizardsTowerBasement);
-		getSkullForGhost.addStep(inBasement, searchAltarAndRun);
-		steps.put(3, getSkullForGhost);
-
-		var returnSkullToGhost = new ConditionalStep(this, enterWizardsTowerBasement);
-		returnSkullToGhost.addStep(and(inBasement, hasSkull), exitWizardsTowerBasement);
-		returnSkullToGhost.addStep(and(hasSkull, coffinOpened), putSkullInCoffin);
-		returnSkullToGhost.addStep(hasSkull, openCoffinToPutSkullIn);
-		returnSkullToGhost.addStep(inBasement, searchAltarAndRun);
-		steps.put(4, returnSkullToGhost);
-
-		return steps;
-	}
+	// Steps
+	NpcStep talkToAereck;
+	NpcStep talkToUrhney;
+	ObjectStep openCoffin;
+	ObjectStep searchCoffin;
+	NpcStep speakToGhost;
+	ObjectStep enterWizardsTowerBasement;
+	ObjectStep searchAltarAndRun;
+	ObjectStep exitWizardsTowerBasement;
+	ObjectStep openCoffinToPutSkullIn;
+	ObjectStep putSkullInCoffin;
 
 	@Override
 	protected void setupZones()
 	{
-		basement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
+		wizardsTowerBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
 	}
 
 	@Override
@@ -109,7 +94,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 	{
 		ghostSpawned = new NpcCondition(NpcID.GHOSTX);
 		coffinOpened = new ObjectCondition(ObjectID.OPENGHOSTCOFFIN);
-		inBasement = new ZoneRequirement(basement);
+		inBasement = new ZoneRequirement(wizardsTowerBasement);
 		hasSkull = new VarbitRequirement(VarbitID.RESTLESS_GHOST_ALTAR_VAR, 1);
 
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.POH_TABLET_LUMBRIDGETELEPORT, 2);
@@ -149,6 +134,37 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToAereck);
+		steps.put(1, talkToUrhney);
+
+		var talkToGhost = new ConditionalStep(this, openCoffin);
+		talkToGhost.addStep(ghostSpawned, speakToGhost);
+		talkToGhost.addStep(coffinOpened, searchCoffin);
+		steps.put(2, talkToGhost);
+
+		var getSkullForGhost = new ConditionalStep(this, enterWizardsTowerBasement);
+		getSkullForGhost.addStep(inBasement, searchAltarAndRun);
+		steps.put(3, getSkullForGhost);
+
+		var returnSkullToGhost = new ConditionalStep(this, enterWizardsTowerBasement);
+		returnSkullToGhost.addStep(and(inBasement, hasSkull), exitWizardsTowerBasement);
+		returnSkullToGhost.addStep(and(hasSkull, coffinOpened), putSkullInCoffin);
+		returnSkullToGhost.addStep(hasSkull, openCoffinToPutSkullIn);
+		returnSkullToGhost.addStep(inBasement, searchAltarAndRun);
+		steps.put(4, returnSkullToGhost);
+
+		return steps;
+	}
+
+
+	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
@@ -180,6 +196,14 @@ public class TheRestlessGhost extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		return List.of(
+			"A skeleton (level 13) you can run away from"
+		);
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		var panels = new ArrayList<PanelDetails>();
@@ -204,13 +228,5 @@ public class TheRestlessGhost extends BasicQuestHelper
 		)));
 
 		return panels;
-	}
-
-	@Override
-	public List<String> getCombatRequirements()
-	{
-		return List.of(
-			"A skeleton (level 13) you can run away from"
-		);
 	}
 }

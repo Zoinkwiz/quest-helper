@@ -130,7 +130,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 		talkToAereck.addDialogStep("I'm looking for a quest!");
 		talkToAereck.addDialogStep("Yes.");
 
-		talkToUrhney = new NpcStep(this, NpcID.FATHER_URHNEY, new WorldPoint(3147, 3175, 0), "Talk to Father Urhney in the south west of Lumbridge Swamp.");
+		talkToUrhney = new NpcStep(this, NpcID.FATHER_URHNEY, new WorldPoint(3147, 3175, 0), "Talk to Father Urhney, west of the Lumbridge Swamp.");
 		talkToUrhney.addDialogStep("Father Aereck sent me to talk to you.");
 		talkToUrhney.addDialogStep("He's got a ghost haunting his graveyard.");
 

@@ -17,6 +17,30 @@ Once the quest is started, the sidebar will change to show the requirements for 
 
 At this stage, simply follow the steps until you've completed the quest!
 
+## Other plugins
+
+Quest Helper works together with other plugins to give a nice unified experience while questing.
+
+### Not Enough Runes
+
+If you have the [Not Enough Runes](https://runelite.net/plugin-hub/show/not-enough-runes) plugin installed, you can
+right-click item requirements and click `Go to NER...` to look that item up in Not Enough Runes.
+
+![](./images/not-enough-runes-01.png)
+
+### Shortest Path
+
+If you have the [Shortest Path](https://runelite.net/plugin-hub/show/shortest-path) plugin installed, you can enable the
+the "Use 'Shortest Path' plugin" in the Quest Helper config.
+
+![](./images/shortest-path-01.png)
+
+Next time you start a quest, the Shortest Path plugin will help you take the shortest path to the destination.
+
+![](./images/shortest-path-02.png)
+
+You can configure what teleportation methods or the look of the path in the Shortest Path config.
+
 ## Help and discussion
 
 If you've experienced an issue with a quest helper, or have a recommendation on how to improve it, please [create an issue](https://github.com/Zoinkwiz/quest-helper/issues/new) with the relevant details.

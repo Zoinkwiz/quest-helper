@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.therestlessghost;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -51,6 +50,7 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class TheRestlessGhost extends BasicQuestHelper
 {
@@ -73,23 +73,24 @@ public class TheRestlessGhost extends BasicQuestHelper
 	{
 		initializeRequirements();
 		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToAereck);
 		steps.put(1, talkToUrhney);
 
-		ConditionalStep talkToGhost = new ConditionalStep(this, openCoffin);
+		var talkToGhost = new ConditionalStep(this, openCoffin);
 		talkToGhost.addStep(ghostSpawned, speakToGhost);
 		talkToGhost.addStep(coffinOpened, searchCoffin);
 		steps.put(2, talkToGhost);
 
-		ConditionalStep getSkullForGhost = new ConditionalStep(this, enterWizardsTowerBasement);
+		var getSkullForGhost = new ConditionalStep(this, enterWizardsTowerBasement);
 		getSkullForGhost.addStep(inBasement, searchAltarAndRun);
 		steps.put(3, getSkullForGhost);
 
-		ConditionalStep returnSkullToGhost = new ConditionalStep(this, enterWizardsTowerBasement);
-		returnSkullToGhost.addStep(new Conditions(inBasement, hasSkull), exitWizardsTowerBasement);
-		returnSkullToGhost.addStep(new Conditions(hasSkull, coffinOpened), putSkullInCoffin);
+		var returnSkullToGhost = new ConditionalStep(this, enterWizardsTowerBasement);
+		returnSkullToGhost.addStep(and(inBasement, hasSkull), exitWizardsTowerBasement);
+		returnSkullToGhost.addStep(and(hasSkull, coffinOpened), putSkullInCoffin);
 		returnSkullToGhost.addStep(hasSkull, openCoffinToPutSkullIn);
 		returnSkullToGhost.addStep(inBasement, searchAltarAndRun);
 		steps.put(4, returnSkullToGhost);

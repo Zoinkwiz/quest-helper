@@ -130,7 +130,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 		searchAltarAndRun = new ObjectStep(this, ObjectID.RESTLESS_GHOST_ALTAR, new WorldPoint(3120, 9567, 0), "Search the Altar. A skeleton (level 13) will appear and attack you, but you can just run away.");
 		exitWizardsTowerBasement = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDER, new WorldPoint(3103, 9576, 0), "Leave the basement.", skull);
 		openCoffinToPutSkullIn = new ObjectStep(this, ObjectID.SHUTGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Open the ghost's coffin in the Lumbridge graveyard.", skull);
-		putSkullInCoffin = new ObjectStep(this, ObjectID.OPENGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Search the coffin.", skull);
+		putSkullInCoffin = new ObjectStep(this, ObjectID.OPENGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Search the coffin to put the skull back and finish the quest.", skull);
 	}
 
 	@Override

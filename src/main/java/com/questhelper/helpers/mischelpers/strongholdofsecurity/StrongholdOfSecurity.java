@@ -101,7 +101,6 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupConditions();
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
@@ -135,11 +134,6 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-	}
-
-	public void setupConditions()
-	{
 		canSkipWar = new CombatLevelRequirement(cbLevels[0]);
 		canSkipFamine = new CombatLevelRequirement(cbLevels[1]);
 		canSkipPestilence = new CombatLevelRequirement(cbLevels[2]);
@@ -162,6 +156,8 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		hasSlap = new VarbitRequirement(2310, 1);
 		hasIdea = new VarbitRequirement(2311, 1);
 		hasStamp = new VarbitRequirement(2312, 1);
+
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}
 
 	@Override

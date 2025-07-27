@@ -88,6 +88,8 @@ public class BikeShedder extends BasicQuestHelper
 	private ItemRequirement lightbearer;
 	private ItemRequirement elemental30Unique;
 	private ItemRequirement elemental30;
+	private ItemRequirement anyCoins;
+	private ItemStep getCoins;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -103,6 +105,7 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3218, 0)), useLogOnBush);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3217, 0)), useCoinOnBush);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3216, 0)), useManyCoinsOnBush);
+		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3216, 0)), getCoins);
 		steps.addStep(conditionalRequirementZoneRequirement, conditionalRequirementLookAtCoins);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3221, 0)), lookAtCooksAssistant);
 		return new ImmutableMap.Builder<Integer, QuestStep>()
@@ -184,6 +187,9 @@ public class BikeShedder extends BasicQuestHelper
 				ItemID.FIRERUNE),	30);
 		elemental30.setTooltip("You have potato");
 		haveRunes = new DetailedQuestStep(this, "Compare rune checks for ItemRequirement and ItemRequirements with OR.", elemental30, elemental30Unique);
+
+		anyCoins = new ItemRequirement("Coins", ItemCollections.COINS);
+		getCoins = new ItemStep(this, new WorldPoint(3224, 3215, 0), "Get coins", anyCoins);
 	}
 
 	@Override
@@ -202,6 +208,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Use log on mysterious bush", List.of(useLogOnBush), List.of(anyLog)));
 		panels.add(new PanelDetails("Use coins on mysterious bush", List.of(useCoinOnBush, useManyCoinsOnBush), List.of(oneCoin, manyCoins)));
 		panels.add(new PanelDetails("Conditional requirement", List.of(conditionalRequirementLookAtCoins), List.of(conditionalRequirementCoins, conditionalRequirementGoldBar)));
+		panels.add(new PanelDetails("Item step", List.of(getCoins), List.of(anyCoins)));
 		panels.add(new PanelDetails("Quest state", List.of(lookAtCooksAssistant), List.of(lookAtCooksAssistantRequirement, lookAtCooksAssistantTextRequirement)));
 		panels.add(new PanelDetails("Ensure staircase upstairs in Sunrise Palace is highlighted", List.of(goDownstairsInSunrisePalace), List.of()));
 

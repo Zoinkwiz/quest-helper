@@ -135,16 +135,8 @@ public class TheRestlessGhost extends BasicQuestHelper
 		talkToUrhney.addDialogStep("He's got a ghost haunting his graveyard.");
 
 		openCoffin = new ObjectStep(this, ObjectID.SHUTGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Open the coffin in the Lumbridge Graveyard to spawn the ghost.", ghostspeakAmulet);
-		openCoffin.addDialogStep("Yep, now tell me what the problem is.");
-		openCoffin.addDialogStep("Yep, clever aren't I?.");
-		openCoffin.addDialogStep("Yes, ok. Do you know WHY you're a ghost?");
-		openCoffin.addDialogStep("Yes, ok. Do you know why you're a ghost?");
 
 		searchCoffin = new ObjectStep(this, ObjectID.OPENGHOSTCOFFIN, new WorldPoint(3250, 3193, 0), "Search the coffin in the Lumbridge Graveyard to spawn the ghost.", ghostspeakAmulet);
-		searchCoffin.addDialogStep("Yep, now tell me what the problem is.");
-		searchCoffin.addDialogStep("Yep, clever aren't I?.");
-		searchCoffin.addDialogStep("Yes, ok. Do you know WHY you're a ghost?");
-		searchCoffin.addDialogStep("Yes, ok. Do you know why you're a ghost?");
 
 		speakToGhost = new NpcStep(this, NpcID.GHOSTX, new WorldPoint(3250, 3195, 0), "Speak to the Ghost that appears whilst wearing your Ghostspeak Amulet.", ghostspeakAmulet);
 		speakToGhost.addDialogStep("Yep, now tell me what the problem is.");

@@ -53,53 +53,7 @@ import net.runelite.api.gameval.ObjectID;
 
 public class StrongholdOfSecurity extends BasicQuestHelper
 {
-	Requirement canSkipWar;
-	Requirement canSkipFamine;
-	Requirement canSkipPestilence;
-	Requirement notUsedCountCheck;
-	Requirement nearCountCheck;
-	Requirement inFloorWar;
-	Requirement inFloorFamine;
-	Requirement inFloorPestilence;
-	Requirement inFloorDeath;
-	Requirement inStartRoomWar;
-	Requirement inStartRoomFamine;
-	Requirement inStartRoomPestilence;
-	Requirement notFlap;
-	Requirement notSlap;
-	Requirement notIdea;
-	Requirement notStamp;
-	Requirement hasFlap;
-	Requirement hasSlap;
-	Requirement hasIdea;
-	Requirement hasStamp;
-
-	ItemRequirement food;
-
-	Zone countCheck;
-	Zone floorWar;
-	Zone floorFamine;
-	Zone floorPestilence;
-	Zone floorDeath;
-	Zone startRoomWar;
-	Zone startRoomFamine;
-	Zone startRoomPestilence;
-
-	QuestStep talkToCountCheck;
-	QuestStep enterStronghold;
-	QuestStep usePortalWar;
-	QuestStep usePortalFamine;
-	QuestStep usePortalPestilence;
-
-	DetailedQuestStep openChestWar;
-	DetailedQuestStep openChestFamine;
-	DetailedQuestStep openChestPestilence;
-	DetailedQuestStep openChestDeath;
-	DetailedQuestStep enterFloorFamine;
-	DetailedQuestStep enterFloorPestilence;
-	DetailedQuestStep enterFloorDeath;
-
-	String[] answers = {
+	static final String[] CORRECT_ANSWERS = {
 		"No.",
 		"Me.",
 		"Nobody.",
@@ -131,10 +85,61 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		"Do not visit the website and report the player who messaged you.",
 		"Report the stream as a scam. Real Jagex streams have a 'verified' mark.",
 		"Two-factor authentication on yuor account and your registered email.",
-		"Nope, you're tricking me into going somewhere dangerous."
+		"Nope, you're tricking me into going somewhere dangerous.",
 	};
 
-	int[] cbLevels = {26, 51, 76};
+	static final int CB_LEVEL_SKIP_WAR = 26;
+	static final int CB_LEVEL_SKIP_FAMINE = 51;
+	static final int CB_LEVEL_SKIP_PESTILENCE = 76;
+
+	// Recommended items
+	ItemRequirement food;
+
+	// Miscellaneous requirements
+	Requirement canSkipWar;
+	Requirement canSkipFamine;
+	Requirement canSkipPestilence;
+	Requirement notUsedCountCheck;
+	Requirement nearCountCheck;
+	Requirement inFloorWar;
+	Requirement inFloorFamine;
+	Requirement inFloorPestilence;
+	Requirement inFloorDeath;
+	Requirement inStartRoomWar;
+	Requirement inStartRoomFamine;
+	Requirement inStartRoomPestilence;
+	Requirement notFlap;
+	Requirement notSlap;
+	Requirement notIdea;
+	Requirement notStamp;
+	Requirement hasFlap;
+	Requirement hasSlap;
+	Requirement hasIdea;
+	Requirement hasStamp;
+
+	// Zones
+	Zone countCheck;
+	Zone floorWar;
+	Zone floorFamine;
+	Zone floorPestilence;
+	Zone floorDeath;
+	Zone startRoomWar;
+	Zone startRoomFamine;
+	Zone startRoomPestilence;
+
+	// Steps
+	QuestStep talkToCountCheck;
+	QuestStep enterStronghold;
+	QuestStep usePortalWar;
+	QuestStep usePortalFamine;
+	QuestStep usePortalPestilence;
+	DetailedQuestStep openChestWar;
+	DetailedQuestStep openChestFamine;
+	DetailedQuestStep openChestPestilence;
+	DetailedQuestStep openChestDeath;
+	DetailedQuestStep enterFloorFamine;
+	DetailedQuestStep enterFloorPestilence;
+	DetailedQuestStep enterFloorDeath;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -174,9 +179,9 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		canSkipWar = new CombatLevelRequirement(cbLevels[0]);
-		canSkipFamine = new CombatLevelRequirement(cbLevels[1]);
-		canSkipPestilence = new CombatLevelRequirement(cbLevels[2]);
+		canSkipWar = new CombatLevelRequirement(CB_LEVEL_SKIP_WAR);
+		canSkipFamine = new CombatLevelRequirement(CB_LEVEL_SKIP_FAMINE);
+		canSkipPestilence = new CombatLevelRequirement(CB_LEVEL_SKIP_PESTILENCE);
 
 		nearCountCheck = new ZoneRequirement(countCheck);
 		inFloorWar = new ZoneRequirement(floorWar);
@@ -292,17 +297,17 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			"Go to the 2nd floor of the stronghold.");
 		enterFloorFamine.setLinePoints(pathFromStartToChest1);
 		enterFloorFamine.setHideMinimapLines(true);
-		enterFloorFamine.addDialogSteps(answers);
+		enterFloorFamine.addDialogSteps(CORRECT_ANSWERS);
 		enterFloorPestilence = new ObjectStep(this, ObjectID.SOS_FAM_LADD_DOWN, new WorldPoint(2026, 5218, 0),
 			"Go to the 3rd floor of the stronghold.");
 		enterFloorPestilence.setLinePoints(pathFromStartToChest2);
 		enterFloorPestilence.setHideMinimapLines(true);
-		enterFloorPestilence.addDialogSteps(answers);
+		enterFloorPestilence.addDialogSteps(CORRECT_ANSWERS);
 		enterFloorDeath = new ObjectStep(this, ObjectID.SOS_PEST_LADD_DOWN, new WorldPoint(2148, 5284, 0),
 			"Go to the 4th floor of the stronghold.");
 		enterFloorDeath.setLinePoints(pathFromStartToChest3);
 		enterFloorDeath.setHideMinimapLines(true);
-		enterFloorDeath.addDialogSteps(answers);
+		enterFloorDeath.addDialogSteps(CORRECT_ANSWERS);
 
 		usePortalWar = new ObjectStep(this, ObjectID.SOS_WAR_PORTAL,
 			new WorldPoint(1863, 5238, 0), "Enter the portal.");
@@ -315,25 +320,25 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 			new WorldPoint(1907, 5222, 0), "Claim 2k coins and the Flap emote.");
 		openChestWar.setLinePoints(pathFromStartToChest1);
 		openChestWar.setHideMinimapLines(true);
-		openChestWar.addDialogSteps(answers);
+		openChestWar.addDialogSteps(CORRECT_ANSWERS);
 
 		openChestFamine = new ObjectStep(this, ObjectID.SOS_FAM_SACK,
 			new WorldPoint(2021, 5216, 0), "Claim 3k coins and the Slap Head emote.");
 		openChestFamine.setLinePoints(pathFromStartToChest2);
 		openChestFamine.setHideMinimapLines(true);
-		openChestFamine.addDialogSteps(answers);
+		openChestFamine.addDialogSteps(CORRECT_ANSWERS);
 
 		openChestPestilence = new ObjectStep(this, ObjectID.SOS_PEST_CHEST,
 			new WorldPoint(2144, 5280, 0), "Claim 5k coins and the Idea emote.");
 		openChestPestilence.setLinePoints(pathFromStartToChest3);
 		openChestPestilence.setHideMinimapLines(true);
-		openChestPestilence.addDialogSteps(answers);
+		openChestPestilence.addDialogSteps(CORRECT_ANSWERS);
 
 		openChestDeath = new ObjectStep(this, ObjectID.SOS_DEATH_PRAM,
 			new WorldPoint(2344, 5214, 0), "Claim Fancy boots or Fighting boots, and the Stamp emote.");
 		openChestDeath.setLinePoints(pathFromStartToChest4);
 		openChestDeath.setHideMinimapLines(true);
-		openChestDeath.addDialogSteps(answers);
+		openChestDeath.addDialogSteps(CORRECT_ANSWERS);
 	}
 
 	@Override
@@ -360,7 +365,6 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		);
 	}
 
-	// Maybe a little unnecessary...
 	@Override
 	public List<PanelDetails> getPanels()
 	{

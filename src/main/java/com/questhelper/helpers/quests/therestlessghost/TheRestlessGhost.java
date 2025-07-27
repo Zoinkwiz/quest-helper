@@ -42,8 +42,6 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,30 +176,51 @@ public class TheRestlessGhost extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.PRAYER, 1125));
+		return List.of(
+			new ExperienceReward(Skill.PRAYER, 1125)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Ghostspeak Amulet", ItemID.AMULET_OF_GHOSTSPEAK, 1));
+		return List.of(
+			new ItemReward("Ghostspeak amulet", ItemID.AMULET_OF_GHOSTSPEAK)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var panels = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Talk to Father Aereck", Collections.singletonList(talkToAereck)));
-		allSteps.add(new PanelDetails("Get a ghostspeak amulet", Collections.singletonList(talkToUrhney)));
-		allSteps.add(new PanelDetails("Talk to the ghost", Arrays.asList(openCoffin, searchCoffin, speakToGhost)));
-		allSteps.add(new PanelDetails("Return the ghost's skull", Arrays.asList(enterWizardsTowerBasement, searchAltarAndRun, exitWizardsTowerBasement, openCoffinToPutSkullIn, putSkullInCoffin)));
-		return allSteps;
+		panels.add(new PanelDetails("Talk to Father Aereck", List.of(
+			talkToAereck
+		)));
+		panels.add(new PanelDetails("Get a ghostspeak amulet", List.of(
+			talkToUrhney
+		)));
+		panels.add(new PanelDetails("Talk to the ghost", List.of(
+			openCoffin,
+			searchCoffin,
+			speakToGhost
+		)));
+		panels.add(new PanelDetails("Return the ghost's skull", List.of(
+			enterWizardsTowerBasement,
+			searchAltarAndRun,
+			exitWizardsTowerBasement,
+			openCoffinToPutSkullIn,
+			putSkullInCoffin
+		)));
+
+		return panels;
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("A skeleton (level 13) you can run away from");
+		return List.of(
+			"A skeleton (level 13) you can run away from"
+		);
 	}
 }

@@ -53,18 +53,51 @@ import net.runelite.api.gameval.ObjectID;
 
 public class StrongholdOfSecurity extends BasicQuestHelper
 {
-	Requirement canSkipWar, canSkipFamine, canSkipPestilence,
-		notUsedCountCheck, nearCountCheck, inFloorWar, inFloorFamine, inFloorPestilence, inFloorDeath,
-		inStartRoomWar, inStartRoomFamine, inStartRoomPestilence,
-		notFlap, notSlap, notIdea, notStamp, hasFlap, hasSlap, hasIdea, hasStamp;
+	Requirement canSkipWar;
+	Requirement canSkipFamine;
+	Requirement canSkipPestilence;
+	Requirement notUsedCountCheck;
+	Requirement nearCountCheck;
+	Requirement inFloorWar;
+	Requirement inFloorFamine;
+	Requirement inFloorPestilence;
+	Requirement inFloorDeath;
+	Requirement inStartRoomWar;
+	Requirement inStartRoomFamine;
+	Requirement inStartRoomPestilence;
+	Requirement notFlap;
+	Requirement notSlap;
+	Requirement notIdea;
+	Requirement notStamp;
+	Requirement hasFlap;
+	Requirement hasSlap;
+	Requirement hasIdea;
+	Requirement hasStamp;
 
 	ItemRequirement food;
-	Zone countCheck, floorWar, floorFamine, floorPestilence, floorDeath, startRoomWar, startRoomFamine, startRoomPestilence;
 
-	QuestStep talkToCountCheck, enterStronghold, usePortalWar, usePortalFamine, usePortalPestilence;
+	Zone countCheck;
+	Zone floorWar;
+	Zone floorFamine;
+	Zone floorPestilence;
+	Zone floorDeath;
+	Zone startRoomWar;
+	Zone startRoomFamine;
+	Zone startRoomPestilence;
 
-	DetailedQuestStep openChestWar, openChestFamine, openChestPestilence, openChestDeath,
-		enterFloorFamine, enterFloorPestilence, enterFloorDeath;
+	QuestStep talkToCountCheck;
+	QuestStep enterStronghold;
+	QuestStep usePortalWar;
+	QuestStep usePortalFamine;
+	QuestStep usePortalPestilence;
+
+	DetailedQuestStep openChestWar;
+	DetailedQuestStep openChestFamine;
+	DetailedQuestStep openChestPestilence;
+	DetailedQuestStep openChestDeath;
+	DetailedQuestStep enterFloorFamine;
+	DetailedQuestStep enterFloorPestilence;
+	DetailedQuestStep enterFloorDeath;
 
 	String[] answers = {
 		"No.",

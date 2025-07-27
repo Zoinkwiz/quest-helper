@@ -163,10 +163,10 @@ public class TheRestlessGhost extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		ArrayList<ItemRequirement> recommended = new ArrayList<>();
-		recommended.add(lumbridgeTeleports);
-		recommended.add(passage);
-		return recommended;
+		return List.of(
+			lumbridgeTeleports,
+			passage
+		);
 	}
 
 	@Override

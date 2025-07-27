@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class TheRestlessGhost extends BasicQuestHelper
 {
@@ -108,7 +109,7 @@ public class TheRestlessGhost extends BasicQuestHelper
 		ghostSpawned = new NpcCondition(NpcID.GHOSTX);
 		coffinOpened = new ObjectCondition(ObjectID.OPENGHOSTCOFFIN);
 		inBasement = new ZoneRequirement(basement);
-		hasSkull = new VarbitRequirement(2130, 1);
+		hasSkull = new VarbitRequirement(VarbitID.RESTLESS_GHOST_ALTAR_VAR, 1);
 	}
 
 	@Override

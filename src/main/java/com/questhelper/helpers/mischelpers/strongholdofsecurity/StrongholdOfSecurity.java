@@ -28,10 +28,10 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -145,23 +145,23 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		var steps = new HashMap<Integer, QuestStep>();
 
 		ConditionalStep goEnterStronghold = new ConditionalStep(this, enterStronghold);
-		goEnterStronghold.addStep(new Conditions(nearCountCheck, notUsedCountCheck), talkToCountCheck);
-		goEnterStronghold.addStep(new Conditions(new Conditions(LogicType.OR, canSkipWar, hasFlap),
+		goEnterStronghold.addStep(and(nearCountCheck, notUsedCountCheck), talkToCountCheck);
+		goEnterStronghold.addStep(and(or(canSkipWar, hasFlap),
 			inFloorWar, inStartRoomWar), usePortalWar);
-		goEnterStronghold.addStep(new Conditions(notFlap, inFloorWar), openChestWar);
-		goEnterStronghold.addStep(new Conditions(notStamp, inFloorWar), enterFloorFamine);
+		goEnterStronghold.addStep(and(notFlap, inFloorWar), openChestWar);
+		goEnterStronghold.addStep(and(notStamp, inFloorWar), enterFloorFamine);
 
-		goEnterStronghold.addStep(new Conditions(new Conditions(LogicType.OR, canSkipFamine, hasSlap),
+		goEnterStronghold.addStep(and(or(canSkipFamine, hasSlap),
 			inFloorFamine, inStartRoomFamine), usePortalFamine);
-		goEnterStronghold.addStep(new Conditions(notSlap, inFloorFamine), openChestFamine);
-		goEnterStronghold.addStep(new Conditions(notStamp, inFloorFamine), enterFloorPestilence);
+		goEnterStronghold.addStep(and(notSlap, inFloorFamine), openChestFamine);
+		goEnterStronghold.addStep(and(notStamp, inFloorFamine), enterFloorPestilence);
 
-		goEnterStronghold.addStep(new Conditions(new Conditions(LogicType.OR, canSkipPestilence, hasIdea),
+		goEnterStronghold.addStep(and(or(canSkipPestilence, hasIdea),
 			inFloorPestilence, inStartRoomPestilence), usePortalPestilence);
-		goEnterStronghold.addStep(new Conditions(notIdea, inFloorPestilence), openChestPestilence);
-		goEnterStronghold.addStep(new Conditions(notStamp, inFloorPestilence), enterFloorDeath);
+		goEnterStronghold.addStep(and(notIdea, inFloorPestilence), openChestPestilence);
+		goEnterStronghold.addStep(and(notStamp, inFloorPestilence), enterFloorDeath);
 
-		goEnterStronghold.addStep(new Conditions(notStamp, inFloorDeath), openChestDeath);
+		goEnterStronghold.addStep(and(notStamp, inFloorDeath), openChestDeath);
 
 		//TODO: Highlight warning confirmation when climbing down ladder
 		//TODO: Auto start when entering or when teleporting with Count Check?

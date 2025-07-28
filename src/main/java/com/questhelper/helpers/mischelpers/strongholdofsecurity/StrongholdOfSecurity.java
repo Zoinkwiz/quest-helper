@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class StrongholdOfSecurity extends BasicQuestHelper
 {
@@ -171,15 +172,15 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		inStartRoomFamine = new ZoneRequirement(startRoomFamine);
 		inStartRoomPestilence = new ZoneRequirement(startRoomPestilence);
 
-		notUsedCountCheck = new VarbitRequirement(5371, 0);
-		notFlap = new VarbitRequirement(2309, 0);
-		notSlap = new VarbitRequirement(2310, 0);
-		notIdea = new VarbitRequirement(2311, 0);
-		notStamp = new VarbitRequirement(2312, 0);
-		hasFlap = new VarbitRequirement(2309, 1);
-		hasSlap = new VarbitRequirement(2310, 1);
-		hasIdea = new VarbitRequirement(2311, 1);
-		hasStamp = new VarbitRequirement(2312, 1);
+		notUsedCountCheck = new VarbitRequirement(VarbitID.SOS_TELEPORTED_BY_COUNT, 0);
+		notFlap = new VarbitRequirement(VarbitID.SOS_EMOTE_FLAP, 0);
+		notSlap = new VarbitRequirement(VarbitID.SOS_EMOTE_DOH, 0);
+		notIdea = new VarbitRequirement(VarbitID.SOS_EMOTE_IDEA, 0);
+		notStamp = new VarbitRequirement(VarbitID.SOS_EMOTE_STAMP, 0);
+		hasFlap = new VarbitRequirement(VarbitID.SOS_EMOTE_FLAP, 1);
+		hasSlap = new VarbitRequirement(VarbitID.SOS_EMOTE_DOH, 1);
+		hasIdea = new VarbitRequirement(VarbitID.SOS_EMOTE_IDEA, 1);
+		hasStamp = new VarbitRequirement(VarbitID.SOS_EMOTE_STAMP, 1);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 	}

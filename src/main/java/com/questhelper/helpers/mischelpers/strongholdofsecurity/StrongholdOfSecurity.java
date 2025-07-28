@@ -261,7 +261,7 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		talkToCountCheck.addDialogStep("Yes");
 
 		enterStronghold = new ObjectStep(this, ObjectID.SOS_DUNG_ENT_OPEN, new WorldPoint(3081, 3420, 0),
-			"Climb down the entrance to the Stronghold of Security.");
+			"Climb down the entrance to the Stronghold of Security in Barbarian Village, west of Varrock.");
 		enterFloorFamine = new ObjectStep(this, ObjectID.SOS_WAR_LADD_DOWN, new WorldPoint(1902, 5222, 0),
 			"Go to the 2nd floor of the stronghold.");
 		enterFloorFamine.setLinePoints(pathFromStartToChest1);

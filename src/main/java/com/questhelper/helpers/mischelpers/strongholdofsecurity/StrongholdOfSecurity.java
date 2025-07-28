@@ -296,18 +296,21 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		openChestFamine.setLinePoints(pathFromStartToChest2);
 		openChestFamine.setHideMinimapLines(true);
 		openChestFamine.addDialogSteps(CORRECT_ANSWERS);
+		openChestFamine.addSubSteps(enterFloorFamine, usePortalWar);
 
 		openChestPestilence = new ObjectStep(this, ObjectID.SOS_PEST_CHEST,
 			new WorldPoint(2144, 5280, 0), "Claim 5k coins and the Idea emote.");
 		openChestPestilence.setLinePoints(pathFromStartToChest3);
 		openChestPestilence.setHideMinimapLines(true);
 		openChestPestilence.addDialogSteps(CORRECT_ANSWERS);
+		openChestPestilence.addSubSteps(enterFloorPestilence, usePortalFamine);
 
 		openChestDeath = new ObjectStep(this, ObjectID.SOS_DEATH_PRAM,
 			new WorldPoint(2344, 5214, 0), "Claim Fancy boots or Fighting boots, and the Stamp emote.");
 		openChestDeath.setLinePoints(pathFromStartToChest4);
 		openChestDeath.setHideMinimapLines(true);
 		openChestDeath.addDialogSteps(CORRECT_ANSWERS);
+		openChestDeath.addSubSteps(enterFloorDeath, usePortalPestilence);
 	}
 
 	@Override

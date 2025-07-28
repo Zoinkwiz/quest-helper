@@ -76,17 +76,20 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		"Don't share your information and report the player.",
 		"Set up two-factor authentication with my email provider.",
 		"No, you should never allow anyone to level your account.",
+		"No, you should never allow anyone to use your account.",
 		"Authenticator and two-step login on my registered email.",
 		"No way! You'll just take my gold for your own! Reported!",
 		"Don't type in my password backwards and report the player.",
 		"Don't give them the information and send an 'Abuse report'.",
 		"Don't tell them anything and click the 'Report Abuse' button.",
 		"Politely tell them no and then use the 'Report Abuse' button.",
+		"Politely tell them no, then use the 'Report Abuse' button.",
 		"Don't give out your password to anyone. Not even close friends.",
 		"Do not visit the website and report the player who messaged you.",
 		"Report the stream as a scam. Real Jagex streams have a 'verified' mark.",
-		"Two-factor authentication on yuor account and your registered email.",
+		"Two-factor authentication on your account and your registered email.",
 		"Nope, you're tricking me into going somewhere dangerous.",
+		"It's never used on other websites or accounts.",
 	};
 
 	static final int CB_LEVEL_SKIP_WAR = 26;

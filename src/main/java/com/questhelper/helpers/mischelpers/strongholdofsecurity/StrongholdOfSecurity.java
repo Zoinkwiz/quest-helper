@@ -142,38 +142,17 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	DetailedQuestStep enterFloorDeath;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupSteps();
+		countCheck = new Zone(new WorldPoint(3120, 3275, 0), new WorldPoint(3267, 3135, 0));
+		floorWar = new Zone(new WorldPoint(1855, 5248, 0), new WorldPoint(1920, 5184, 0));
+		floorFamine = new Zone(new WorldPoint(1983, 5248, 0), new WorldPoint(2048, 5184, 0));
+		floorPestilence = new Zone(new WorldPoint(2111, 5310, 0), new WorldPoint(2176, 5248, 0));
+		floorDeath = new Zone(new WorldPoint(2304, 5248, 0), new WorldPoint(2367, 5184, 0));
+		startRoomWar = new Zone(new WorldPoint(1855, 5246, 0), new WorldPoint(1866, 5239, 0));
+		startRoomFamine = new Zone(new WorldPoint(2040, 5245, 0), new WorldPoint(2046, 5240, 0));
+		startRoomPestilence = new Zone(new WorldPoint(2117, 5258, 0), new WorldPoint(2133, 5251, 0));
 
-		var steps = new HashMap<Integer, QuestStep>();
-
-		var goEnterStronghold = new ConditionalStep(this, enterStronghold);
-		goEnterStronghold.addStep(and(nearCountCheck, notUsedCountCheck), talkToCountCheck);
-		goEnterStronghold.addStep(and(or(canSkipWar, hasFlap),
-			inFloorWar, inStartRoomWar), usePortalWar);
-		goEnterStronghold.addStep(and(notFlap, inFloorWar), openChestWar);
-		goEnterStronghold.addStep(and(notStamp, inFloorWar), enterFloorFamine);
-
-		goEnterStronghold.addStep(and(or(canSkipFamine, hasSlap),
-			inFloorFamine, inStartRoomFamine), usePortalFamine);
-		goEnterStronghold.addStep(and(notSlap, inFloorFamine), openChestFamine);
-		goEnterStronghold.addStep(and(notStamp, inFloorFamine), enterFloorPestilence);
-
-		goEnterStronghold.addStep(and(or(canSkipPestilence, hasIdea),
-			inFloorPestilence, inStartRoomPestilence), usePortalPestilence);
-		goEnterStronghold.addStep(and(notIdea, inFloorPestilence), openChestPestilence);
-		goEnterStronghold.addStep(and(notStamp, inFloorPestilence), enterFloorDeath);
-
-		goEnterStronghold.addStep(and(notStamp, inFloorDeath), openChestDeath);
-
-		//TODO: Highlight warning confirmation when climbing down ladder
-		//TODO: Auto start when entering or when teleporting with Count Check?
-
-		steps.put(0, goEnterStronghold);
-
-		return steps;
 	}
 
 	@Override
@@ -203,20 +182,6 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		hasStamp = new VarbitRequirement(2312, 1);
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		countCheck = new Zone(new WorldPoint(3120, 3275, 0), new WorldPoint(3267, 3135, 0));
-		floorWar = new Zone(new WorldPoint(1855, 5248, 0), new WorldPoint(1920, 5184, 0));
-		floorFamine = new Zone(new WorldPoint(1983, 5248, 0), new WorldPoint(2048, 5184, 0));
-		floorPestilence = new Zone(new WorldPoint(2111, 5310, 0), new WorldPoint(2176, 5248, 0));
-		floorDeath = new Zone(new WorldPoint(2304, 5248, 0), new WorldPoint(2367, 5184, 0));
-		startRoomWar = new Zone(new WorldPoint(1855, 5246, 0), new WorldPoint(1866, 5239, 0));
-		startRoomFamine = new Zone(new WorldPoint(2040, 5245, 0), new WorldPoint(2046, 5240, 0));
-		startRoomPestilence = new Zone(new WorldPoint(2117, 5258, 0), new WorldPoint(2133, 5251, 0));
-
 	}
 
 	public void setupSteps()
@@ -342,18 +307,45 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		var goEnterStronghold = new ConditionalStep(this, enterStronghold);
+		goEnterStronghold.addStep(and(nearCountCheck, notUsedCountCheck), talkToCountCheck);
+		goEnterStronghold.addStep(and(or(canSkipWar, hasFlap),
+			inFloorWar, inStartRoomWar), usePortalWar);
+		goEnterStronghold.addStep(and(notFlap, inFloorWar), openChestWar);
+		goEnterStronghold.addStep(and(notStamp, inFloorWar), enterFloorFamine);
+
+		goEnterStronghold.addStep(and(or(canSkipFamine, hasSlap),
+			inFloorFamine, inStartRoomFamine), usePortalFamine);
+		goEnterStronghold.addStep(and(notSlap, inFloorFamine), openChestFamine);
+		goEnterStronghold.addStep(and(notStamp, inFloorFamine), enterFloorPestilence);
+
+		goEnterStronghold.addStep(and(or(canSkipPestilence, hasIdea),
+			inFloorPestilence, inStartRoomPestilence), usePortalPestilence);
+		goEnterStronghold.addStep(and(notIdea, inFloorPestilence), openChestPestilence);
+		goEnterStronghold.addStep(and(notStamp, inFloorPestilence), enterFloorDeath);
+
+		goEnterStronghold.addStep(and(notStamp, inFloorDeath), openChestDeath);
+
+		//TODO: Highlight warning confirmation when climbing down ladder
+		//TODO: Auto start when entering or when teleporting with Count Check?
+
+		steps.put(0, goEnterStronghold);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
 			food
-		);
-	}
-
-	@Override
-	public List<UnlockReward> getUnlockRewards()
-	{
-		return List.of(
-			new UnlockReward("Flap, Slap Head, Idea and Stamp emotes.")
 		);
 	}
 
@@ -362,6 +354,14 @@ public class StrongholdOfSecurity extends BasicQuestHelper
 		return List.of(
 			new ItemReward("Coins", ItemID.COINS, 10000),
 			new ItemReward("Fancy or Fighting boots", ItemID.SOS_BOOTS, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return List.of(
+			new UnlockReward("Flap, Slap Head, Idea and Stamp emotes.")
 		);
 	}
 

@@ -60,10 +60,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.*;
 import net.runelite.client.eventbus.Subscribe;
 
 import static com.questhelper.requirements.util.LogicHelper.*;
@@ -725,7 +722,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		freeInvSlots4 = new FreeInventorySlotRequirement(4);
 		searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.VMQ3_CULTIST_OUTFIT_CHEST, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
 				"for some emissary robes.", freeInvSlots4);
-		searchChestForEmissaryRobes.addWidgetHighlight(new WidgetHighlight(874, 10, true));
+		searchChestForEmissaryRobes.addWidgetHighlight(new WidgetHighlight(InterfaceID.QuetzalMenu.ICONS, true).withModelRequirement(54546));
 		((ObjectStep) searchChestForEmissaryRobes).addTeleport(pendant);
 		enterTwilightTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple south-east of Salvager Overlook.",
 				emissaryRobesEquipped);

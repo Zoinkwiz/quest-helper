@@ -555,7 +555,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		var emissaryBottom = new ItemRequirement("Emissary bottom", ItemID.VMQ3_CULTIST_ROBE_BOTTOM);
 		var emissaryBoots = new ItemRequirement("Emissary sandals", ItemID.VMQ3_CULTIST_SANDALS);
 		emissaryRobesEquipped = new ItemRequirements("Emissary robes", emissaryHood, emissaryTop, emissaryBottom,
-				emissaryBoots).equipped();
+				emissaryBoots).equipped().highlighted();
 		emissaryRobes = new ItemRequirements("Emissary robes", emissaryHood, emissaryTop, emissaryBottom, emissaryBoots);
 
 		var givenBoneToDog = new VarbitRequirement(VarbitID.VMQ4, 17, Operation.GREATER_EQUAL);

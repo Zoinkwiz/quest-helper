@@ -53,6 +53,7 @@ import com.questhelper.steps.*;
 import java.util.*;
 
 import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.steps.widget.WidgetHighlight;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Tile;
@@ -724,6 +725,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		freeInvSlots4 = new FreeInventorySlotRequirement(4);
 		searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.VMQ3_CULTIST_OUTFIT_CHEST, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
 				"for some emissary robes.", freeInvSlots4);
+		searchChestForEmissaryRobes.addWidgetHighlight(new WidgetHighlight(874, 10, true));
 		((ObjectStep) searchChestForEmissaryRobes).addTeleport(pendant);
 		enterTwilightTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple south-east of Salvager Overlook.",
 				emissaryRobesEquipped);

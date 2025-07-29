@@ -992,7 +992,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		defeatFinalBossSidebar = new NpcStep(this, NpcID.VMQ4_METZLI_BOSS, new WorldPoint(1311, 9497, 1), "Defeat Metzli." +
 				"\n\nStart with Protect from Missiles." +
 				"\n\nUse the gaps in the wave attacks to dodge the walls as they approach. " +
-				"\n\nIf green circles appear, stand where they appeared." +
+				"\n\nIf circles appear, stand where they appeared." +
 				"\n\nEvery time a teleporter appears to jump over a wave, the boss will switch attack styles alternating between mage and ranged. " +
 				"\n\nThe boss will enter an enrage phase, it is much easier to range but melee is still possible. " +
 				"\n\nAttack the boss and then immediately click on the next teleporter to avoid taking damage.");

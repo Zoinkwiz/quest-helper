@@ -759,7 +759,8 @@ public class TheFinalDawn extends BasicQuestHelper
 		readEmissaryScroll = new DetailedQuestStep(this, "Read the emissary scroll.", emissaryScroll.highlighted());
 
 		// Part 2
-		climbStairsF0ToF1Palace = new ObjectStep(this, ObjectID.CIVITAS_PALACE_STAIRS_UP, new WorldPoint(1672, 3164, 0), "Climb up the stairs to the top of " +
+		climbStairsF0ToF1Palace = new ObjectStep(this, ObjectID.CIVITAS_PALACE_STAIRS_UP, new WorldPoint(1672, 3164, 0), "Go back to Civitas illa Fortis." + 
+		"Climb up the stairs to the top of " +
 				"the Sunrise Palace to talk to the queen.");
 		climbStairsF1ToF2Palace = new ObjectStep(this, ObjectID.CIVITAS_PALACE_STAIRS_UP, new WorldPoint(1671, 3169, 1), "Climb up the stairs to the top of " +
 				"the Sunrise Palace to talk to the queen.");

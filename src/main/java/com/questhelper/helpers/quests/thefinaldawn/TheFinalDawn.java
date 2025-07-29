@@ -1022,10 +1022,10 @@ public class TheFinalDawn extends BasicQuestHelper
 		));
 		goToNorthOfFinalArea.addSubSteps(goToNorthOfFinalAreaAgilityShortcut);
 
-		inspectRanulPillar = new ObjectStep(this, ObjectID.VMQ4_MOKI_MEMORIAL_RANUL, new WorldPoint(1304, 9527, 1), "Inspect the ranul pillar south-east " +
+		inspectRanulPillar = new ObjectStep(this, ObjectID.VMQ4_MOKI_MEMORIAL_RANUL, new WorldPoint(1317, 9527, 1), "Inspect the ranul pillar south-east " +
 				"of the north door.");
-		inspectRalosPillar = new ObjectStep(this, ObjectID.VMQ4_MOKI_MEMORIAL_RALOS, new WorldPoint(1317, 9527, 1), "Inspect the ralos pillar south-west " +
-				"of the north door.");
+		inspectRalosPillar = new ObjectStep(this, ObjectID.VMQ4_MOKI_MEMORIAL_RALOS, new WorldPoint(1304, 9527, 1), "Inspect the ralos pillar " +
+				"south-west of the north door.");
 		inspectDoor = new ObjectStep(this, ObjectID.MOKI_ENTRANCE_TO_DOM_BOSS, new WorldPoint(1311, 9533, 1), "Inspect the entrance in the north of " +
 				"the area again.");
 		inspectSkeleton = new ObjectStep(this, ObjectID.VMQ4_MOKI_SKELETON_TABLET, new WorldPoint(1307, 9532, 1), "Inspect the skeleton west of the north " +
@@ -1039,7 +1039,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
-			emissaryRobes, bone, combatGear
+			bone, combatGear
 		);
 	}
 

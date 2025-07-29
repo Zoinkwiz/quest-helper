@@ -754,7 +754,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		pickBlueChest = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_CHAMBER_CHEST_CLOSED, new WorldPoint(1723, 9709, 0), "Picklock the chest in the " +
 				"hidden room. Be ready for a fight afterwards.");
 		fightEnforcer = new NpcStep(this, NpcID.VMQ4_TEMPLE_GUARD_BOSS_FIGHT, new WorldPoint(1712, 9706, 0), "Defeat the enforcer. You cannot use prayers" +
-				". Step away each time he goes to attack, and step behind him if he says 'Traitor!' or 'Thief!'.");
+				". Step away each time he goes to attack, and step behind him or sideways if he says 'Traitor!' or 'Thief!'.");
 		pickUpEmissaryScroll = new ItemStep(this, "Pick up the emissary scroll.", emissaryScroll);
 		readEmissaryScroll = new DetailedQuestStep(this, "Read the emissary scroll.", emissaryScroll.highlighted());
 

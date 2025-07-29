@@ -798,6 +798,7 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		goToF0Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the ground floor.").puzzleWrapStep(true);
 		goToF0Hideout.addDialogStep("Climb down.");
+		takeKnife.addSubSteps(goToF0Hideout);
 		goToF0HideoutEnd = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the ground floor.").puzzleWrapStep(true);
 		goToF0HideoutEnd.addDialogStep("Climb down.");
 
@@ -857,7 +858,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		placeMindBomb.addIcon(ItemID.WIZARDS_MIND_BOMB);
 		inspectFireplace = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_FIRE_OUT, new WorldPoint(1463, 9571, 0), "Inspect the fireplace.");
 		inspectFireplace.addDialogStep("Pull it.");
-		useHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_ENTRY, new WorldPoint(1470, 9565, 0), "Enter the hole in the south-west " +
+		useHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_ENTRY, new WorldPoint(1470, 9565, 0), "Enter the hole in the south-east " +
 				"corner of the room.");
 		returnThroughHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_EXIT, new WorldPoint(1470, 9563, 0), "Go back through the hole " +
 				"into the Teumo's basement.");

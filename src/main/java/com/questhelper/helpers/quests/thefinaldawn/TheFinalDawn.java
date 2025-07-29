@@ -81,7 +81,7 @@ public class TheFinalDawn extends BasicQuestHelper
 			emptySack, makeshiftBlackjack;
 	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment, essence, roots, kindling, knifeBlade, stoneTablet;
 
-	DetailedQuestStep startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2;
+	QuestStep startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2;
 	DetailedQuestStep useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll, talkToQueen,
 	climbStairsF0ToF1Palace, climbStairsF1ToF2Palace;
 	QuestStep openDoorWithGusCode;
@@ -723,13 +723,16 @@ public class TheFinalDawn extends BasicQuestHelper
 		freeInvSlots4 = new FreeInventorySlotRequirement(4);
 		searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.VMQ3_CULTIST_OUTFIT_CHEST, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
 				"for some emissary robes.", freeInvSlots4);
-		searchChestForEmissaryRobes.addTeleport(pendant);
+		((ObjectStep) searchChestForEmissaryRobes).addTeleport(pendant);
 		enterTwilightTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple south-east of Salvager Overlook.",
 				emissaryRobesEquipped);
 
-		goDownStairsTemple = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_STAIRS, new WorldPoint(1677, 3248, 0), "Go down the stairs in the temple. The " +
-				"passphrase is 'Final' and 'Dawn'.", List.of(emissaryRobesEquipped), List.of(combatWeapon, food));
-		goDownStairsTemple.addDialogSteps("Final.", "Dawn.");
+		var goDownStairsTempleBaseStep = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_STAIRS, new WorldPoint(1677, 3248, 0), "Go down the " +
+				"stairs in the temple. The passphrase is 'Final' and 'Dawn'.", List.of(emissaryRobesEquipped), List.of(combatWeapon, food));
+		goDownStairsTempleBaseStep.addDialogSteps("Final.", "Dawn.");
+		goDownStairsTemple = new PuzzleWrapperStep(this, goDownStairsTempleBaseStep,
+				new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_STAIRS, new WorldPoint(1677, 3248, 0), "Go down the " +
+				"stairs in the temple. You'll need to guess the password.", List.of(emissaryRobesEquipped), List.of(combatWeapon, food));
 
 		enterBackroom = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_CHAMBER_ENTRY, new WorldPoint(1706, 9706, 0), "Enter the far eastern room. Avoid" +
 				" the patrolling guard.");

@@ -447,7 +447,7 @@ public class Scrambled extends BasicQuestHelper
 
 		var putEggBackTogether = new NpcStep(this, NpcID.SCRAMBLED_EGG_FIX, new WorldPoint(1244,3168, 0), "Inspect the egg.");
 
-		var puzzleSolver = new EggSolver(this);
+		var puzzleSolver = new PuzzleWrapperStep(this, new EggSolver(this));
 
 		cPutEggBackTogether = new ConditionalStep(this, putEggBackTogether, "Put Lumpty Mumpty back together again.");
 		cPutEggBackTogether.addStep(isPuzzleOpen, puzzleSolver);

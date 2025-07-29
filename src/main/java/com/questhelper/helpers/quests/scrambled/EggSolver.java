@@ -71,32 +71,32 @@ public class EggSolver extends DetailedOwnerStep
 
 		solvePuzzle = new ConditionalStep(getQuestHelper(), unreachable);
 
-		addEggPair(solvePuzzle, 57101, 165, 141);
-		addEggPair(solvePuzzle, 57102, 297, 217);
-		addEggPair(solvePuzzle, 57103, 243, 149);
-		addEggPair(solvePuzzle, 57104, 231, 71);
-		addEggPair(solvePuzzle, 57105, 149, 179);
 		addEggPair(solvePuzzle, 57106, 194, 121);
-		addEggPair(solvePuzzle, 57107, 250, 41);
-		addEggPair(solvePuzzle, 57108, 209, 160);
 		addEggPair(solvePuzzle, 57109, 217, 27);
-		addEggPair(solvePuzzle, 57110, 157, 103);
 		addEggPair(solvePuzzle, 57111, 260, 22);
-		addEggPair(solvePuzzle, 57112, 199, 248);
-		addEggPair(solvePuzzle, 57114, 269, 177);
-		addEggPair(solvePuzzle, 57115, 257, 113);
-		addEggPair(solvePuzzle, 57116, 306, 119);
-		addEggPair(solvePuzzle, 57117, 196, 105);
-		addEggPair(solvePuzzle, 57118, 288, 71);
-		addEggPair(solvePuzzle, 57119, 187, 210);
-		addEggPair(solvePuzzle, 57120, 309, 160);
-		addEggPair(solvePuzzle, 57121, 222, 199);
-		addEggPair(solvePuzzle, 57122, 273, 115);
+		addEggPair(solvePuzzle, 57107, 250, 41);
 		addEggPair(solvePuzzle, 57123, 175, 58);
-		addEggPair(solvePuzzle, 57124, 252, 213);
 		addEggPair(solvePuzzle, 57125, 198, 60);
-		addEggPair(solvePuzzle, 57126, 244, 255);
+		addEggPair(solvePuzzle, 57118, 288, 71);
+		addEggPair(solvePuzzle, 57104, 231, 71);
 		addEggPair(solvePuzzle, 57127, 231, 99);
+		addEggPair(solvePuzzle, 57115, 257, 113);
+		addEggPair(solvePuzzle, 57122, 273, 115);
+		addEggPair(solvePuzzle, 57116, 306, 119);
+		addEggPair(solvePuzzle, 57103, 243, 149);
+		addEggPair(solvePuzzle, 57120, 309, 160);
+		addEggPair(solvePuzzle, 57114, 269, 177);
+		addEggPair(solvePuzzle, 57102, 297, 217);
+		addEggPair(solvePuzzle, 57124, 252, 213);
+		addEggPair(solvePuzzle, 57126, 244, 255);
+		addEggPair(solvePuzzle, 57112, 199, 248);
+		addEggPair(solvePuzzle, 57121, 222, 199);
+		addEggPair(solvePuzzle, 57119, 187, 210);
+		addEggPair(solvePuzzle, 57105, 149, 179);
+		addEggPair(solvePuzzle, 57108, 209, 160);
+		addEggPair(solvePuzzle, 57101, 165, 141);
+		addEggPair(solvePuzzle, 57110, 157, 103);
+		addEggPair(solvePuzzle, 57117, 196, 105);
 	}
 
 	protected void updateSteps()
@@ -171,6 +171,8 @@ public class EggSolver extends DetailedOwnerStep
 
 			graphics.drawRect(w.getBounds().x, w.getBounds().y, w.getBounds().width, w.getBounds().height);
 
+			// 256 per rotation, goal is
+			int rotationsLeft = (2048 - w.getRotationY()) / 256;
 			if (w.getRotationY() == REQUIRED_ROTATION)
 			{
 				graphics.drawString("move here", rootBounds.x + this.positionX, rootBounds.y + this.positionY);
@@ -179,7 +181,7 @@ public class EggSolver extends DetailedOwnerStep
 			else
 			{
 				// TODO: We could technically prompt the user with exactly how many times to click the egg piece, but that's overkill imo
-				graphics.drawString("rotate", w.getBounds().x, w.getBounds().y);
+				graphics.drawString("click to rotate " + rotationsLeft + " times", w.getBounds().x, w.getBounds().y);
 			}
 
 		}

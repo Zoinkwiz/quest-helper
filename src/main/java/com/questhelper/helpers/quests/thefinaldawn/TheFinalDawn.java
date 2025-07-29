@@ -1141,7 +1141,7 @@ public class TheFinalDawn extends BasicQuestHelper
 				List.of(combatGear, food, prayerPotions)));
 
 		panels.add(new PanelDetails("Crypt of Tonali", List.of(talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists, fightEnnius,
-				tonaliGoDownStairsF2ToF1, useRedTeleporter, useBlueTeleporter, useRedTeleporter2, useBlueTeleporterLizards, useRedTeleporter3,
+				tonaliGoDownStairsF2ToF1, useRedTeleporter, useBlueTeleporter, useRedTeleporter2, useBlueTeleporterLizards, useRedTeleporter3, climbRope,
 				activateStrangePlatform, descendIntoSunPuzzle, getEssenceFromUrns, solveSunPuzzle, goUpFromSunPuzzle, enterMoonPuzzle, pullTreeRoots,
 				getKnifeBlade, fletchRoots, placeRoots, repeatMoonPuzzleThreeTimes, leaveMoonPuzzleRoom),
 				List.of(combatGear, food, prayerPotions)));

@@ -45,10 +45,10 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 public class PuzzleWrapperStep extends ConditionalStep
 {
 	final QuestHelperConfig questHelperConfig;
-	final DetailedQuestStep noSolvingStep;
+	final QuestStep noSolvingStep;
 	ManualRequirement shouldHideHiddenPuzzleHintInSidebar = new ManualRequirement();
 
-	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, DetailedQuestStep hiddenStep, Requirement... requirements)
+	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, QuestStep hiddenStep, Requirement... requirements)
 	{
 		super(questHelper, step, "", requirements);
 		this.text = hiddenStep.getText();

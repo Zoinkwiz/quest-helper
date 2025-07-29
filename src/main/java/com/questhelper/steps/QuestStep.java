@@ -692,6 +692,16 @@ public abstract class QuestStep implements Module
 		return new PuzzleWrapperStep(getQuestHelper(), this);
 	}
 
+	public PuzzleWrapperStep puzzleWrapStep(QuestStep questStep)
+	{
+		return new PuzzleWrapperStep(getQuestHelper(), this, questStep);
+	}
+
+	public PuzzleWrapperStep puzzleWrapStep(QuestStep questStep, boolean hiddenInSidebar)
+	{
+		return new PuzzleWrapperStep(getQuestHelper(), this, questStep).withNoHelpHiddenInSidebar(hiddenInSidebar);
+	}
+
 	public PuzzleWrapperStep puzzleWrapStep(String alternateText)
 	{
 		return new PuzzleWrapperStep(getQuestHelper(), this, alternateText);

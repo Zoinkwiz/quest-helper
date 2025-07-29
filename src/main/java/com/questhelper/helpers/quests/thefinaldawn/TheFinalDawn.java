@@ -92,7 +92,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	QuestStep takeBeerCabinet, drinkBeer, takeSteamforgeBrew, takeDwarvenStout, takeWizardsMindBomb, placeSteamforgedBrew, placeDwarvenStout, placeBeer,
 			takeBeerFromBarrel, placeEmptyGlass, placeMindBomb,	inspectFireplace, useHole, returnThroughHole, returnToServius;
 	DetailedQuestStep climbUpFromTeumoBasement, enterNeypotzli, talkToEyatalli, locateKeystone;
-	DetailedQuestStep enterStreamboundCavern, locateInStreambound, enterEarthboundCavernFromStreambound, enterEarthboundCavern, locateInEarthbound,
+	QuestStep enterStreamboundCavern, locateInStreambound, enterEarthboundCavernFromStreambound, enterEarthboundCavern, locateInEarthbound,
 			enterAncientPrison, enterAncientPrisonFromEarthbound, locateInAncientPrison, touchGlowingSymbol, defeatCultists, talkToAttalaAfterCultistFight;
 
 	DetailedQuestStep talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists, fightEnnius, tonaliGoDownStairsF2ToF1, tonaliGoDownStairsF1ToF0,
@@ -732,7 +732,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		goDownStairsTempleBaseStep.addDialogSteps("Final.", "Dawn.");
 		goDownStairsTemple = new PuzzleWrapperStep(this, goDownStairsTempleBaseStep,
 				new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_STAIRS, new WorldPoint(1677, 3248, 0), "Go down the " +
-				"stairs in the temple. You'll need to guess the password.", List.of(emissaryRobesEquipped), List.of(combatWeapon, food));
+				"stairs in the temple. You'll need to guess the password.", List.of(emissaryRobesEquipped), List.of(combatWeapon, food)));
 
 		enterBackroom = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_CHAMBER_ENTRY, new WorldPoint(1706, 9706, 0), "Enter the far eastern room. Avoid" +
 				" the patrolling guard.");
@@ -872,24 +872,24 @@ public class TheFinalDawn extends BasicQuestHelper
 		locateKeystone = new DetailedQuestStep(this, "Use the keystone fragment to locate the keystone.", keystoneFragment.highlighted());
 
 		enterStreamboundCavern = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1458, 9650, 1),
-				"Enter the north-east entrance to the streambound cavern.");
+				"Enter the north-east entrance to the streambound cavern.").puzzleWrapStep(locateKeystone);
 		locateInStreambound = new DetailedQuestStep(this, new WorldPoint(1511, 9702, 0), "Locate with the keystone fragment on the marked tile south of the " +
-				"cooking stove.", keystoneFragment.highlighted());
+				"cooking stove.", keystoneFragment.highlighted()).puzzleWrapStep(locateKeystone, true);
 		enterEarthboundCavernFromStreambound = new ObjectStep(this, ObjectID.PMOON_TELEBOX_CAVE, new WorldPoint(1522, 9720, 0), "Enter the earthbound cavern " +
-				"via the north cave entrance.", keystoneFragment);
+				"via the north cave entrance.", keystoneFragment).puzzleWrapStep(locateKeystone, true);
 		enterEarthboundCavern = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9650, 1),
-				"Enter the north-west entrance.");
+				"Enter the north-west entrance.").puzzleWrapStep(locateKeystone, true);
 		enterEarthboundCavernFromStreambound.addSubSteps(enterEarthboundCavern);
 		locateInEarthbound = new DetailedQuestStep(this, new WorldPoint(1375, 9684, 0), "Locate with the keystone fragment on the marked tile near where you " +
 				"trap lizards.",
-				keystoneFragment.highlighted());
+				keystoneFragment.highlighted()).puzzleWrapStep(locateKeystone, true);
 		enterAncientPrison = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1421, 9613, 1),
-				"Enter the south-west entrance.", keystoneFragment);
+				"Enter the south-west entrance.", keystoneFragment).puzzleWrapStep(locateKeystone, true);
 		enterAncientPrisonFromEarthbound = new ObjectStep(this, ObjectID.PMOON_TELEBOX_3X3, new WorldPoint(1374, 9665, 0), "Enter the ancient prison via the " +
-				"large entrance in the south-west of the area.", keystoneFragment);
+				"large entrance in the south-west of the area.", keystoneFragment).puzzleWrapStep(locateKeystone, true);
 		enterAncientPrisonFromEarthbound.addSubSteps(enterAncientPrison);
 		locateInAncientPrison = new DetailedQuestStep(this, new WorldPoint(1373, 9539, 0), "Locate with the keystone fragment on the marked tile in the " +
-				"south-east room with a statue.", keystoneFragment.highlighted());
+				"south-east room with a statue.", keystoneFragment.highlighted()).puzzleWrapStep(locateKeystone, true);
 		touchGlowingSymbol = new ObjectStep(this, ObjectID.VMQ4_KEYSTONE_CHAMBER_ENTRANCE, new WorldPoint(1375, 9537, 0), "Touch the glowing symbol that " +
 				"appeared. Be ready for a fight.", combatGear);
 		defeatCultists = new NpcStep(this, NpcID.VMQ4_KEYSTONE_CHAMBER_BOSS_MAGIC, new WorldPoint(1364, 9514, 0), "Defeat the cultists. Step into golden " +

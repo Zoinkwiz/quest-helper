@@ -255,9 +255,6 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.THE_FINAL_DAWN,
 		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
 		QuestHelperQuest.SCRAMBLED,
-		QuestHelperQuest.AN_EXISTENTIAL_CRISIS,
-		QuestHelperQuest.IMPENDING_CHAOS,
-		QuestHelperQuest.VALE_TOTEMS,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Ironman Quest Guide
 		QuestHelperQuest.BALLOON_TRANSPORT_CRAFTING_GUILD,
 		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,
@@ -269,6 +266,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
+		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.DESERT_MEDIUM,
 		QuestHelperQuest.WESTERN_MEDIUM,
 		QuestHelperQuest.ARDOUGNE_HARD,

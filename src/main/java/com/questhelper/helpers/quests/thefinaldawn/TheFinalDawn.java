@@ -73,7 +73,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	ItemRequirement emissaryRobesEquipped, emissaryRobes, bone, rangedGear;
 
 	ItemRequirement combatGear, combatWeapon, food, prayerPotions, whistle, pendant;
-	FreeInventorySlotRequirement freeInvSlots4;
+	FreeInventorySlotRequirement freeInvSlots4, freeInvSlot1;
 
 	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, coinPurseFullOrEmpty, branch, coinPurseWithSand, coinPurseEmpty,
 			emptySack, makeshiftBlackjack;
@@ -720,6 +720,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		startQuest.addDialogStep("Yes.");
 
 		freeInvSlots4 = new FreeInventorySlotRequirement(4);
+		freeInvSlot1 = new FreeInventorySlotRequirement(1);
 		searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.VMQ3_CULTIST_OUTFIT_CHEST, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
 				"for some emissary robes.", freeInvSlots4);
 		searchChestForEmissaryRobes.addWidgetHighlight(new WidgetHighlight(InterfaceID.QuetzalMenu.ICONS, true).withModelRequirement(54546));
@@ -787,7 +788,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		goF1ToF2Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the top floor.").puzzleWrapStep(true);
 		goF1ToF2Hideout.addDialogStep("Climb up.");
 		useKnifeOnPottedFan = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_PLANT, new WorldPoint(1650, 3095, 2), "Use the knife on the inspectable potted " +
-				"fan.", knife.highlighted()).puzzleWrapStep(true);
+				"fan.", knife.highlighted(), freeInvSlot1).puzzleWrapStep(true);
 		useKnifeOnPottedFan.addIcon(ItemID.KNIFE);
 		fillCoinPurse = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_EMPTY_POT, new WorldPoint(1645, 3098, 2), "Use the empty coin purse on the plant pot " +
 				"in the north-west of the roof with sand in it.", coinPurseEmpty.highlighted()).puzzleWrapStep(true);

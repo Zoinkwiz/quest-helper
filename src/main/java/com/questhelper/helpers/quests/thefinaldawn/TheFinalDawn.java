@@ -1136,7 +1136,7 @@ public class TheFinalDawn extends BasicQuestHelper
 				List.of(),
 				List.of()));
 		panels.add(new PanelDetails("Ancient keys", List.of(enterNeypotzli, talkToEyatalli, enterStreamboundCavern, locateInStreambound,
-				enterEarthboundCavernFromStreambound, locateInEarthbound, enterAncientPrisonFromEarthbound, locateInEarthbound, touchGlowingSymbol,
+				enterEarthboundCavernFromStreambound, locateInEarthbound, enterAncientPrisonFromEarthbound, locateInAncientPrison, touchGlowingSymbol,
 				defeatCultists, talkToAttalaAfterCultistFight),
 				List.of(combatGear, food, prayerPotions)));
 

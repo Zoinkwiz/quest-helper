@@ -99,7 +99,7 @@ public class TheFinalDawn extends BasicQuestHelper
 			useRedTeleporter, useBlueTeleporter, crossLog, useBlueTeleporter2;
 	DetailedQuestStep useRedTeleporter2, useBlueTeleporterLizards, useRedTeleporter3, climbRope;
 
-	QuestStep activateStrangePlatform, enterTonaliWithLift, descendIntoSunPuzzle, getEssenceFromUrns, solveSunPuzzle, solveSunPuzzle2Step1MoveItzla,
+	QuestStep activateStrangePlatform, enterTonaliWithLift, descendIntoSunPuzzle, inspectSunStatue, getEssenceFromUrns, solveSunPuzzle, solveSunPuzzle2Step1MoveItzla,
 			solveSunPuzzle2Step1Craft, solveSunPuzzle2Step2MoveItzla, solveSunPuzzle2Step2Craft, solveSunPuzzle2Step3MoveItzla, solveSunPuzzle2Step3Craft;
 
 	QuestStep goUpFromSunPuzzle, enterMoonPuzzle, pullTreeRoots, getKnifeBlade, placeRoots, fletchRoots, repeatMoonPuzzleThreeTimes, leaveMoonPuzzleRoom;
@@ -125,7 +125,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby, inChestInterface;
 	Requirement hasSackOfGivenSack, isGalnaDrunk, notPlacedMindBomb, notPlacedBeer, notPlacedSteamforgeBrew, notPlacedDwarvenStout, beerTakenFromBarrel;
 	Requirement locatedKeystone1, locatedKeystone2, liftActivated, inspectedSunStatue, itzlaInPosSunPuzzle2Step1, completedSunPuzzleP1;
-	Requirement itzlaInPosSunPuzzle2Step2, completedSunPuzzleP2, itzlaInPosSunPuzzle2Step3, completedSunPuzzleP3;
+	Requirement  itzlaInPosSunPuzzle2Step2, completedSunPuzzleP2, itzlaInPosSunPuzzle2Step3, completedSunPuzzleP3;
 	Requirement inMoonPuzzleP1, inMoonPuzzleP2, inMoonPuzzleP3, completedMoonPuzzle;
 	Requirement isPuzzleOrder2;
 
@@ -349,6 +349,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		steps.put(51, goDefeatEnnius);
 
 		ConditionalStep goDoSunPuzzle = new ConditionalStep(this, getEssenceFromUrns);
+		goDoSunPuzzle.addStep(not(inspectedSunStatue), inspectSunStatue);
 		goDoSunPuzzle.addStep(completedSunPuzzleP3, goUpFromSunPuzzle);
 		goDoSunPuzzle.addStep(and(completedSunPuzzleP2, essence, isPuzzleOrder2, itzlaInPosSunPuzzle2Step3), solveSunPuzzle2Step3Craft);
 		goDoSunPuzzle.addStep(and(completedSunPuzzleP2, essence, isPuzzleOrder2), solveSunPuzzle2Step3MoveItzla);
@@ -617,7 +618,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		wizardsMindBomb = new ItemRequirement("Wizard's mind bomb", ItemID.WIZARDS_MIND_BOMB);
 
 		keystoneFragment = new ItemRequirement("Keystone fragment", ItemID.VMQ4_MONOLITH_FRAGMENT);
-		essence = new ItemRequirement("Kuhu essence", ItemID.VMQ4_ESSENCE);
+		essence = new ItemRequirement("Kuhu essence", ItemID.VMQ4_ESSENCE, 2);
 		roots = new ItemRequirement("Ancient roots", ItemID.VMQ4_ROOTS);
 		kindling = new ItemRequirement("Root kindling", ItemID.VMQ4_ROOT_KINDLING);
 		knifeBlade = new ItemRequirement("Knife blade", ItemID.VMQ4_KNIFE);
@@ -873,7 +874,7 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		enterStreamboundCavern = new ObjectStep(this, ObjectID.PMOON_TELEBOX_DIAGONAL, new WorldPoint(1458, 9650, 1),
 				"Enter the north-east entrance to the streambound cavern.").puzzleWrapStep(locateKeystone);
-		locateInStreambound = new DetailedQuestStep(this, new WorldPoint(1511, 9702, 0), "Locate with the keystone fragment on the marked tile south of the " +
+		locateInStreambound = new TileStep(this, new WorldPoint(1511, 9702, 0), "Locate with the keystone fragment on the marked tile north of the " +
 				"cooking stove.", keystoneFragment.highlighted()).puzzleWrapStep(locateKeystone, true);
 		enterEarthboundCavernFromStreambound = new ObjectStep(this, ObjectID.PMOON_TELEBOX_CAVE, new WorldPoint(1522, 9720, 0), "Enter the earthbound cavern " +
 				"via the north cave entrance.", keystoneFragment).puzzleWrapStep(locateKeystone, true);
@@ -936,6 +937,7 @@ public class TheFinalDawn extends BasicQuestHelper
 				"of the lift.");
 		getEssenceFromUrns = new ObjectStep(this, ObjectID.VMQ4_SUN_PUZZLE_URN, new WorldPoint(1323, 9449, 1), "Search the urns in the area for some essence" +
 				".", true).puzzleWrapStep(true);
+		inspectSunStatue = new ObjectStep(this, ObjectID.VMQ4_SUN_PUZZLE_STATUE, new WorldPoint(1330, 9446, 1), "Inspect the statue in the middle of the room.").puzzleWrapStep(true);
 		solveSunPuzzle = new DetailedQuestStep(this, "Look at the pillar in the middle of the room. The first word " +
 				"indicates where to tell Itzla to stand, " +
 				"and the second word where you craft the essence." +

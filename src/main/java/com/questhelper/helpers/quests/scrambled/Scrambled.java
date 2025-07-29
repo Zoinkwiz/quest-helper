@@ -30,7 +30,9 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
@@ -41,16 +43,14 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.QuestState;
@@ -80,6 +80,7 @@ public class Scrambled extends BasicQuestHelper
 	QuestStep finishQuest;
 
 	ItemRequirement combatGear;
+	ItemRequirement antifireShield;
 	ItemRequirement bowlOfWater;
 	ItemRequirement twoPlanks;
 	ItemRequirement sixNails;
@@ -105,14 +106,10 @@ public class Scrambled extends BasicQuestHelper
 	private ItemRequirement emptyCup;
 	private ItemRequirement cupOfDamianaTea;
 	private VarbitRequirement needToClickLargeEggToSpawnChicken;
-	private VarbitRequirement needToFightLargeChicken;
 	private VarbitRequirement needToSpawnRedDragon;
-	private VarbitRequirement needToFightRedDragon;
 	private VarbitRequirement hasKilledRedDragon;
 	private VarbitRequirement hasTurnedInDragonEgg;
 	private VarbitRequirement needToSpawnJaguar;
-	private VarbitRequirement needToFightJaguar;
-	private VarbitRequirement hasKilledJaguar;
 	private VarbitRequirement hasTurnedInJaguarEgg;
 	private VarbitRequirement hasTurnedInChickenEgg;
 	private ItemRequirement largeEgg;
@@ -133,12 +130,12 @@ public class Scrambled extends BasicQuestHelper
 	private ObjectStep kauayotlRepairCart;
 	private ItemStep getPlanks;
 	private ObjectStep getDamianaLeaves;
-	private NpcStep giveTeaToNezteki;
-	private NpcStep talkToNezteki;
+	private NpcStep giveTeaToNezketi;
+	private NpcStep talkToNezketi;
 	private ObjectStep fillEmptyBowlWithWater;
-	private ItemStep mixWaterAndDamianaLeaves;
+	private DetailedQuestStep mixWaterAndDamianaLeaves;
 	private ObjectStep boilDamianaWater;
-	private ItemStep pourTeaIntoCup;
+	private DetailedQuestStep pourTeaIntoCup;
 	private ConditionalStep cReturnToTempleWithEggs;
 	private ConditionalStep cCollectLargeEgg;
 	private ConditionalStep cCollectDragonEgg;
@@ -150,6 +147,7 @@ public class Scrambled extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
+		setupRequirements();
 		setupSteps();
 
 		var steps = new HashMap<Integer, QuestStep>();
@@ -188,8 +186,6 @@ public class Scrambled extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-
-
 		acatzinAgreedToHelp = new VarbitRequirement(VarbitID.SCRAMBLED_KINGS_MAN_3, 2);
 		acatzinAgreedToFixWhetstone = new VarbitRequirement(VarbitID.SCRAMBLED_KINGS_MAN_3, 3);
 		acatzinhasFixedWhetstone = new VarbitRequirement(VarbitID.SCRAMBLED_KINGS_MAN_3, 4);
@@ -202,17 +198,13 @@ public class Scrambled extends BasicQuestHelper
 		nezketiAgreedToHelp = new VarbitRequirement(VarbitID.SCRAMBLED_KINGS_MAN_1, 2);
 		// probably no longer needed, we use it as the "conditional fallback step"
 		stillNeedToHelpNezketi = new VarbitRequirement(VarbitID.SCRAMBLED_KINGS_MAN_1, 7, Operation.LESS);
-		needToClickLargeEggToSpawnChicken = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_3, 1);
-		needToFightLargeChicken = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_3, 2);
+		needToClickLargeEggToSpawnChicken = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_3, 1, Operation.GREATER_EQUAL);
 		
-		needToSpawnRedDragon = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_2, 1);
-		needToFightRedDragon = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_2, 2);
+		needToSpawnRedDragon = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_2, 1, Operation.GREATER_EQUAL);
 		hasKilledRedDragon = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_2, 3);
 		hasTurnedInDragonEgg = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_2, 4);
 
-		needToSpawnJaguar = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_1, 1);
-		needToFightJaguar = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_1, 2);
-		hasKilledJaguar = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_1, 3);
+		needToSpawnJaguar = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_1, 1, Operation.GREATER_EQUAL);
 		hasTurnedInJaguarEgg = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_1, 4);
 
 		hasTurnedInChickenEgg = new VarbitRequirement(VarbitID.SCRAMBLED_REPLACEMENT_EGG_3, 4);
@@ -239,6 +231,8 @@ public class Scrambled extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
+		antifireShield = new ItemRequirement("Antifire shield", ItemCollections.ANTIFIRE_SHIELDS);
+
 		damianaLeaves = new ItemRequirement("Damiana leaves", ItemID.DAMIANA_LEAVES);
 
 		damianaWater = new ItemRequirement("Damiana water", ItemID.BOWL_DAMIANA_WATER);
@@ -262,21 +256,25 @@ public class Scrambled extends BasicQuestHelper
 		inspectEggAfterItFell = new NpcStep(this, NpcID.SCRAMBLED_EGG_DEAD, new WorldPoint(1247, 3170, 0), "Inspect the egg in front of you.");
 
 		talkToKing = new NpcStep(this, NpcID.SCRAMBLED_KING, new WorldPoint(1224, 3119, 0), "Head south into Tal Teklan and talk to King in the pub.");
-		talkToKing.addDialogStep("Scrumpty Rumpty fell off a wall!");
+		talkToKing.addDialogSteps("Are you the king?");
+		talkToKing.addDialogStep(Pattern.compile(".* fell off a wall!"));
 
-		getEmptyBowl = new ItemStep(this, new WorldPoint(1229, 3119, 0), "Get an empty bowl from the pub, will need it later.", emptyBowl);
+		getEmptyBowl = new ItemStep(this, new WorldPoint(1229, 3119, 0), "Get an empty bowl from the pub, will need it later. If it's not there, hop worlds or" +
+				" wait for it to spawn again.", emptyBowl);
 
 		talkToAcatzin = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_3, new WorldPoint(1228, 3117, 0), "Talk to Acatzin inside the Tal Teklan pub.");
 		talkToAcatzin.addDialogStep("I can talk to the blacksmith.");
 
 		acatzinTalkToBlacksmith = new NpcStep(this, NpcID.SCRAMBLED_BLACKSMITH, new WorldPoint(1209, 3109, 0), "Talk to the Blacksmith west of the Tal Teklan pub.");
 
-		var acatzinGetHammer = new ItemStep(this, new WorldPoint(1207, 3108, 0), "Get the hammer from the table.", hammer);
+		var acatzinGetHammer = new ItemStep(this, new WorldPoint(1207, 3108, 0), "Get the hammer from the table. If it's not there, hop worlds or wait for it" +
+				" to spawn again.",	hammer);
 
 		var acatzinGetNails = new ObjectStep(this, ObjectID.SCRAMBLED_WORKBENCH, new WorldPoint(1210, 3112, 0), "Get some nails from the blacksmith's workbench, we'll need them later.");
 		acatzinGetNails.addDialogStep("Take the nails.");
 
-		acatzinGetSaw = new ItemStep(this, new WorldPoint(1212, 3093, 0), "Get the Saw from the house to the south, we'll need it later.", saw);
+		acatzinGetSaw = new ItemStep(this, new WorldPoint(1212, 3093, 0), "Get the Saw from the house to the south, we'll need it later. If it's not there, " +
+				"hop worlds or wait for it to spawn again.", saw);
 
 		acatzinFixWhetstone = new ObjectStep(this, ObjectID.SCRAMBLED_WHETSTONE_BROKEN_OP, new WorldPoint(1211, 3108, 0), "Fix the whetstone.");
 		acatzinFixWhetstone.addDialogStep("Yes.");
@@ -309,7 +307,8 @@ public class Scrambled extends BasicQuestHelper
 		helpAcatzin.addStep(acatzinhasFixedWhetstone, cAcatzinRepairAxe);
 
 
-		talkToKauayotl = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_2, new WorldPoint(1251, 3104, 0), "Talk to Kauayotl at the east entrance of Tal Teklan.", hammer, saw, sixNails);
+		talkToKauayotl = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_2, new WorldPoint(1251, 3104, 0), "Talk to Kauayotl at the east entrance of Tal Teklan."
+				, hammer, saw, sixNails, twoPlanks);
 		talkToKauayotl.addDialogStep("I see. Well, maybe I can help out with that?");
 
 		talkToKauayotlAgain = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_2, new WorldPoint(1251, 3104, 0), "Talk to Kauayotl again after repairing his cart.");
@@ -317,12 +316,15 @@ public class Scrambled extends BasicQuestHelper
 		kauayotlRepairCart = new ObjectStep(this, ObjectID.SCRAMBLED_CART_BROKEN_OP, new WorldPoint(1250, 3107, 0), "Repair Kauayotl's cart.", hammer, saw, sixNails, twoPlanks);
 		kauayotlRepairCart.addDialogStep("Yes.");
 
-		getPlanks = new ItemStep(this, new WorldPoint(1238, 3076, 0), "Go south-west of Kauayotl and pick up two planks from besides the lake.", twoPlanks);
+		getPlanks = new ItemStep(this, new WorldPoint(1238, 3076, 0), "Go south-west of Kauayotl and pick up two planks from besides the lake. If it's not " +
+				"there, hop worlds or wait for it to spawn again.", twoPlanks);
 
-		getDamianaLeaves = new ObjectStep(this, ObjectID.DAMIANA_SHRUB, new WorldPoint(1250, 3110, 0), "Pick the damiana bush for some damiana leaves, we'll need these later.");
+		getDamianaLeaves = new ObjectStep(this, ObjectID.DAMIANA_SHRUB, new WorldPoint(1250, 3110, 0), "Pick the damiana bush at the east entrance of Tal " +
+				"Teklan for some damiana leaves, we'll need these later.");
 
 		var helpKauayotl = new ConditionalStep(this, talkToKauayotl);
 		helpKauayotl.addStep(kauayotlhasRepairedCart, talkToKauayotlAgain);
+		helpKauayotl.addStep(not(hammer), acatzinGetHammer);
 		helpKauayotl.addStep(not(saw), acatzinGetSaw);
 		helpKauayotl.addStep(not(damianaLeaves), getDamianaLeaves);
 		helpKauayotl.addStep(not(twoPlanks), getPlanks);
@@ -330,8 +332,8 @@ public class Scrambled extends BasicQuestHelper
 		helpKauayotl.addStep(kauayotlNeedToRepairCart, kauayotlRepairCart);
 
 
-		talkToNezteki = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_1, new WorldPoint(1224, 3105, 0), "Talk to Nezteki in the Tal Teklan temple.");
-		talkToNezteki.addDialogStep("I can get you some tea.");
+		talkToNezketi = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_1, new WorldPoint(1224, 3105, 0), "Talk to Nezketi in the Tal Teklan temple.");
+		talkToNezketi.addDialogStep("I can get you some tea.");
 
 		fillEmptyBowlWithWater = new ObjectStep(this, ObjectID.FORTIS_WATER_PUMP, new WorldPoint(1242, 3097, 0), "Fill your empty bowl with water at the water pump near the eastern entrance of Tal Teklan.", emptyBowl.highlighted());
 		fillEmptyBowlWithWater.addIcon(ItemID.BOWL_EMPTY);
@@ -341,22 +343,23 @@ public class Scrambled extends BasicQuestHelper
 		boilDamianaWater = new ObjectStep(this, ObjectID.STOVE_CLAY01_TALKASTI01_NOOP, "Use your bowl of damiana water on the stove in the east part of Tal Teklan to boil it.", damianaWater.highlighted());
 		boilDamianaWater.addIcon(ItemID.BOWL_DAMIANA_WATER);
 
-		pourTeaIntoCup = new ItemStep(this, "Pour the damiana tea from your bowl into the empty cup.",  damianaTea.highlighted(), emptyCup.highlighted());
+		pourTeaIntoCup = new DetailedQuestStep(this, "Pour the damiana tea from your bowl into the empty cup",  damianaTea.highlighted(), emptyCup.highlighted());
 
-		var cMakeTea = new ConditionalStep(this, pourTeaIntoCup);
+		var cMakeTea = new ConditionalStep(this, getDamianaLeaves);
+		cMakeTea.addStep(and(damianaTea, emptyCup), pourTeaIntoCup);
 		cMakeTea.addStep(damianaWater, boilDamianaWater);
+		cMakeTea.addStep(not(emptyCup), talkToNezketi);
 		cMakeTea.addStep(and(damianaLeaves, bowlOfWater), mixWaterAndDamianaLeaves);
-		cMakeTea.addStep(and(not(emptyBowl), not(bowlOfWater)), getEmptyBowl);
-		cMakeTea.addStep(and(emptyBowl, not(bowlOfWater)), fillEmptyBowlWithWater);
-		cMakeTea.addStep(not(damianaLeaves), getDamianaLeaves);
+		cMakeTea.addStep(not(bowlOfWater), fillEmptyBowlWithWater);
+		cMakeTea.addStep(not(emptyBowl), getEmptyBowl);
 
-		giveTeaToNezteki = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_1, new WorldPoint(1224, 3105, 0), "Return to Nezteki in the Tal Teklan temple and give him the cup of damiana tea.", cupOfDamianaTea);
+		giveTeaToNezketi = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_1, new WorldPoint(1224, 3105, 0), "Return to Nezketi in the Tal Teklan temple and give him the cup of damiana tea.", cupOfDamianaTea);
 
-		var helpNezteki = new ConditionalStep(this, talkToNezteki);
-		helpNezteki.addStep(cupOfDamianaTea, giveTeaToNezteki);
-		helpNezteki.addStep(nezketiAgreedToHelp, cMakeTea);
+		var helpNezketi = new ConditionalStep(this, talkToNezketi);
+		helpNezketi.addStep(cupOfDamianaTea, giveTeaToNezketi);
+		helpNezketi.addStep(nezketiAgreedToHelp, cMakeTea);
 
-		gatherTheMen = new ConditionalStep(this, helpNezteki);
+		gatherTheMen = new ConditionalStep(this, helpNezketi);
 		gatherTheMen.addStep(stillNeedToHelpAcatzin, helpAcatzin);
 		gatherTheMen.addStep(stillNeedToHelpKauayotl, helpKauayotl);
 
@@ -368,55 +371,64 @@ public class Scrambled extends BasicQuestHelper
 
 		talkToGatheredMen = new NpcStep(this, anyOfTheKingsMen, new WorldPoint(1247, 3166, 0), "Return to the temple north of Tal Teklan and speak with one of King's men.", true);
 
-
 		var collectLargeEgg = new ObjectStep(this, ObjectID.SCRAMBLED_CHICKEN_EGGS_OP, new WorldPoint(1238, 3137, 0), "Search the Eggs to get a Large egg.");
-		var collectLargeEggSpawnChicken = new ObjectStep(this, ObjectID.SCRAMBLED_CHICKEN_EGGS_OP, new WorldPoint(1238, 3137, 0), "Search the Eggs, ready to fight a level 17 chicken.");
+		var collectLargeEggSpawnChicken = new ObjectStep(this, ObjectID.SCRAMBLED_CHICKEN_EGGS_OP, new WorldPoint(1238, 3137, 0), "");
 
-		var fightLargeChicken = new NpcStep(this, NpcID.SCRAMBLED_CHICKEN, new WorldPoint(1239, 3137, 0), "Kill the large chicken. If the chicken isn't there, search the Eggs to spawn her.");
+		var fightLargeChicken = new NpcStep(this, NpcID.SCRAMBLED_CHICKEN, new WorldPoint(1239, 3137, 0), "Kill the large chicken.");
+		var largeChickenNearby = new NpcHintArrowRequirement(NpcID.SCRAMBLED_CHICKEN);
 
-
-		cCollectLargeEgg = new ConditionalStep(this, collectLargeEgg, "Fetch the Large egg from the chicken coop south of the large temple.");
-		cCollectLargeEgg.addStep(needToFightLargeChicken, fightLargeChicken);
+		cCollectLargeEgg = new ConditionalStep(this, collectLargeEgg, "Fetch the Large egg from the chicken coop south of the large temple. Be ready to fight" +
+				" a level 17 chicken.");
+		cCollectLargeEgg.addStep(largeChickenNearby, fightLargeChicken);
 		cCollectLargeEgg.addStep(needToClickLargeEggToSpawnChicken, collectLargeEggSpawnChicken);
 
 		var useDragonShortcut = new ObjectStep(this, ObjectID.TLATI_NORTH_RIVER_LOG_BALANCE_1, new WorldPoint(1283, 3146, 0), "Step across the log balance towards the dragon cave.", has40Agi);
 
-		var enterDragonCave = new ObjectStep(this, ObjectID.TLATI_DRAGON_NEST_CAVE_ENTRY, new WorldPoint(1288, 3133, 0), "Enter the dragon's cave, ready to fight a red dragon.");
+		var enterDragonCave = new ObjectStep(this, ObjectID.TLATI_DRAGON_NEST_CAVE_ENTRY, new WorldPoint(1288, 3133, 0), "", List.of(), List.of(antifireShield));
 
 		// does protect from melee avoid all damage?
 
-		var spawnDragonFromEgg = new ObjectStep(this, ObjectID.SCRAMBLED_DRAGON_EGGS_OP, new WorldPoint(1259, 9482, 0), "Search the Eggs in the dragon cave, ready to fight a Red dragon.");
+		var spawnDragonFromEgg = new ObjectStep(this, ObjectID.SCRAMBLED_DRAGON_EGGS_OP, new WorldPoint(1259, 9482, 0), "Search the Eggs in the dragon cave.");
 
-		var fightRedDragon = new NpcStep(this, NpcID.SCRAMBLED_DRAGON, new WorldPoint(1257, 9482, 0), "Fight the red dragon. If it's not there, search the Eggs again to spawn it.");
+		var fightRedDragon = new NpcStep(this, NpcID.SCRAMBLED_DRAGON, new WorldPoint(1257, 9482, 0), "Fight the red dragon. You can safespot it by standing " +
+				"south-east of the Eggs.");
+		fightRedDragon.addSafeSpots(new WorldPoint(1260, 9481, 0));
+		var redDragonNearby = new NpcHintArrowRequirement(NpcID.SCRAMBLED_DRAGON);
+		var collectDragonEgg = new ObjectStep(this, ObjectID.SCRAMBLED_DRAGON_EGGS_OP, new WorldPoint(1259, 9482, 0), "Search the Eggs in the " +
+				"south-east of the dragon cave to collect your Dragon egg.", List.of(), List.of(antifireShield));
 
-		var collectDragonEgg = new ObjectStep(this, ObjectID.SCRAMBLED_DRAGON_EGGS_OP, new WorldPoint(1259, 9482, 0), "Search the Eggs in the dragon cave to collect your Dragon egg.");
-
-
-		cCollectDragonEgg = new ConditionalStep(this, enterDragonCave, "Fetch the Dragon egg from the dragon cave south-east of the large temple.");
+		cCollectDragonEgg = new ConditionalStep(this, enterDragonCave, "Fetch the Dragon egg from the dragon cave south-east of the large temple, across " +
+				"the river. Be ready to fight a Red dragon.");
 		cCollectDragonEgg.addStep(and(inDragonCave, hasKilledRedDragon), collectDragonEgg);
-		cCollectDragonEgg.addStep(and(inDragonCave, needToFightRedDragon), fightRedDragon);
+		cCollectDragonEgg.addStep(and(inDragonCave, redDragonNearby), fightRedDragon);
 		cCollectDragonEgg.addStep(and(inDragonCave, needToSpawnRedDragon), spawnDragonFromEgg);
 		cCollectDragonEgg.addStep(and(has40Agi, not(nearCaveEntrance)), useDragonShortcut);
 
 		var exitDragonCave = new ObjectStep(this, ObjectID.TLATI_DRAGON_NEST_CAVE_EXIT, new WorldPoint(1244, 9528, 0), "Exit the dragon's cave.");
 
-		var spawnJaguarFromEgg = new ObjectStep(this, ObjectID.SCRAMBLED_JAGUAR_EGGS_OP, new WorldPoint(1332, 3122, 0), "Run east from the dragon's cave to the camp, and search the Eggs to spawn a Jaguar.");
+		var spawnJaguarFromEgg = new ObjectStep(this, ObjectID.SCRAMBLED_JAGUAR_EGGS_OP, new WorldPoint(1332, 3122, 0), "");
 
-		var fightJaguar = new NpcStep(this, NpcID.SCRAMBLED_JAGUAR, new WorldPoint(1329, 3122, 0), "Fight the Jaguar. If it's not there, search the Eggs again to spawn it.");
+		var fightJaguar = new NpcStep(this, NpcID.SCRAMBLED_JAGUAR, new WorldPoint(1329, 3122, 0), "Fight the Jaguar. You can safespot it by standing just " +
+				"north east of the camp.");
+		fightJaguar.addSafeSpots(new WorldPoint(1337, 3128, 0));
+		var jaguarNearby = new NpcHintArrowRequirement(NpcID.SCRAMBLED_JAGUAR);
 
 		var collectJaguarEgg = new ObjectStep(this, ObjectID.SCRAMBLED_JAGUAR_EGGS_OP, new WorldPoint(1332, 3122, 0), "Search the Eggs at the camp, east of the dragon age, and collect your Jaguar egg.");
 
-		cCollectJaguarEgg = new ConditionalStep(this, collectJaguarEgg, "Fetch the Jaguar egg from the tent, east of the dragon cave.");
-		cCollectJaguarEgg.addStep(needToFightJaguar, fightJaguar);
+		cCollectJaguarEgg = new ConditionalStep(this, collectJaguarEgg, "Fetch the Jaguar egg from the tent, east of the dragon cave. Be ready to fight a " +
+				"level 88 jaguar.");
+		cCollectJaguarEgg.addStep(inDragonCave, exitDragonCave);
+		cCollectJaguarEgg.addStep(jaguarNearby, fightJaguar);
 		cCollectJaguarEgg.addStep(needToSpawnJaguar, spawnJaguarFromEgg);
 
 		var returnToTempleWithEggs = new NpcStep(this, anyOfTheKingsMen, new WorldPoint(1247, 3166, 0), "Return to the temple north of Tal Teklan with the egg replacements and speak with one of \"King\"'s men.", true, largeEgg, dragonEgg, jaguarEgg);
 
 		var returnToTempleWithDragonEgg = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_2, new WorldPoint(1247, 3166, 0), "Give Kauayotl the Dragon egg.",  largeEgg, dragonEgg, jaguarEgg);
-		var returnToTempleWithJaguarEgg = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_1, new WorldPoint(1247, 3166, 0), "Give Nezteki the Jaguar egg.",  largeEgg, dragonEgg, jaguarEgg);
+		var returnToTempleWithJaguarEgg = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_1, new WorldPoint(1247, 3166, 0), "Give Nezketi the Jaguar egg.",  largeEgg, dragonEgg, jaguarEgg);
 		var returnToTempleWithChickenEgg = new NpcStep(this, NpcID.SCRAMBLED_KINGS_MAN_3, new WorldPoint(1247, 3166, 0), "Give Acatzin the Large egg.",  largeEgg, dragonEgg, jaguarEgg);
 
 		cReturnToTempleWithEggs = new ConditionalStep(this, returnToTempleWithEggs, "Give the eggs to King's men at the Tal Teok Temple, north of Tal Teklan.");
+		cReturnToTempleWithEggs.addStep(inDragonCave, exitDragonCave);
 		cReturnToTempleWithEggs.addStep(not(hasTurnedInDragonEgg), returnToTempleWithDragonEgg);
 		cReturnToTempleWithEggs.addStep(not(hasTurnedInJaguarEgg), returnToTempleWithJaguarEgg);
 		cReturnToTempleWithEggs.addStep(not(hasTurnedInChickenEgg), returnToTempleWithChickenEgg);
@@ -424,7 +436,6 @@ public class Scrambled extends BasicQuestHelper
 		collectAllEggs = new ConditionalStep(this, cReturnToTempleWithEggs);
 		collectAllEggs.addStep(and(not(largeEgg), not(hasTurnedInChickenEgg)), cCollectLargeEgg);
 		collectAllEggs.addStep(and(not(dragonEgg), not(hasTurnedInDragonEgg)), cCollectDragonEgg);
-		collectAllEggs.addStep(inDragonCave, exitDragonCave);
 		collectAllEggs.addStep(and(not(jaguarEgg), not(hasTurnedInJaguarEgg)), cCollectJaguarEgg);
 
 		judgeEggs = new NpcStep(this, anyOfTheKingsMen, new WorldPoint(1247, 3166, 0), "Return to the large temple north of Tal Teklan and talk with one of King's men to evaluate the Humphrey Dumphrey alternatives.", true);
@@ -452,7 +463,8 @@ public class Scrambled extends BasicQuestHelper
 			twoPlanks,
 			sixNails,
 			saw,
-			hammer
+			hammer,
+			combatGear
 		);
 	}
 
@@ -460,7 +472,7 @@ public class Scrambled extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
-			// TODO
+			antifireShield
 		);
 	}
 
@@ -551,19 +563,19 @@ public class Scrambled extends BasicQuestHelper
 			acatzinReturnRepairedAxe,
 
 			// Help Kauayotl
-			talkToKauayotl,
 			getDamianaLeaves,
 			getPlanks,
+			talkToKauayotl,
 			kauayotlRepairCart,
 			talkToKauayotlAgain,
 
-			// Help Nezteki
-			talkToNezteki,
+			// Help Nezketi
+				talkToNezketi,
 			fillEmptyBowlWithWater,
 			mixWaterAndDamianaLeaves,
 			boilDamianaWater,
 			pourTeaIntoCup,
-			giveTeaToNezteki,
+			giveTeaToNezketi,
 
 			talkToGatheredMen
 		), List.of(
@@ -588,9 +600,9 @@ public class Scrambled extends BasicQuestHelper
 			cPutEggBackTogether,
 			finishQuest
 		), List.of(
-			// Requirements
+			combatGear
 		), List.of(
-			// Recommended
+			antifireShield
 		)));
 
 		return panels;

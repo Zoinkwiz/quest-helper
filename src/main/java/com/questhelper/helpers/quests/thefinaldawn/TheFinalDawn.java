@@ -717,7 +717,7 @@ public class TheFinalDawn extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.VMQ3_SERVIUS_PALACE, new WorldPoint(1681, 3168, 0), "Talk to Servius in the Sunrise Palace in Vicitas illa " +
+		startQuest = new NpcStep(this, NpcID.VMQ3_SERVIUS_PALACE, new WorldPoint(1681, 3168, 0), "Talk to Servius in the Sunrise Palace in Civitas illa " +
 				"Fortis to start the quest.");
 		startQuest.addDialogStep("Yes.");
 

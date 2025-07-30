@@ -87,7 +87,7 @@ public class QuestStepPanel extends JPanel implements MouseListener
 		headerLabel.setMinimumSize(new Dimension(1, headerLabel.getPreferredSize().height));
 
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.X_AXIS));
-		headerPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+		headerPanel.setBorder(new EmptyBorder(7, 7, 3, 7));
 
 		headerPanel.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
 		leftTitleContainer.add(headerLabel, BorderLayout.CENTER);

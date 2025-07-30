@@ -117,6 +117,18 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		return w;
 	}
 
+	/**
+	 * Create a widget highlight that highlights an item inside the shop interface (e.g. general store)
+	 * @param itemIdRequirement The ID of the item to highlight
+	 * @return a fully built WidgetHighlight
+	 */
+	public static WidgetHighlight createShopItemHighlight(int itemIdRequirement)
+	{
+		var w = new WidgetHighlight(InterfaceID.Shopmain.ITEMS, true);
+		w.itemIdRequirement = itemIdRequirement;
+		return w;
+	}
+
 	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{

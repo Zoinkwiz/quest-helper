@@ -393,7 +393,6 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public void setEquip(boolean shouldEquip)
 	{
-		itemRequirements.forEach(itemRequirement -> itemRequirement.setEquip(true));
 		equip = shouldEquip;
 	}
 

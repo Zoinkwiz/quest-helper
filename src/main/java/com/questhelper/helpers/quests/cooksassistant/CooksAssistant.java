@@ -126,6 +126,7 @@ public class CooksAssistant extends BasicQuestHelper
 		getBucket.addAlternateNpcs(NpcID.GENERALASSISTANT1);
 		getPot = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3212, 3246, 0),
 			"Purchase a pot from the Lumbridge General Store.", coins.quantity(3));
+		// TODO: highlight a pot to purchase
 		getPot.addAlternateNpcs(NpcID.GENERALASSISTANT1);
 		milkCow = new ObjectStep(this, ObjectID.FAT_COW, new WorldPoint(3254, 3272, 0),
 			"Milk the cow north-east of Lumbridge.", bucket);

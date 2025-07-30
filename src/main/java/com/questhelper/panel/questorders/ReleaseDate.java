@@ -218,6 +218,9 @@ public class ReleaseDate
 		QuestHelperQuest.MEAT_AND_GREET,
 		QuestHelperQuest.ETHICALLY_ACQUIRED_ANTIQUITIES,
 		QuestHelperQuest.THE_CURSE_OF_ARRAV,
+		QuestHelperQuest.THE_FINAL_DAWN,
+		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
+		QuestHelperQuest.SCRAMBLED,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,
@@ -237,9 +240,6 @@ public class ReleaseDate
 		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
-		QuestHelperQuest.THE_FINAL_DAWN,
-		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
-		QuestHelperQuest.SCRAMBLED,
 		QuestHelperQuest.VALE_TOTEMS
 	);
 }

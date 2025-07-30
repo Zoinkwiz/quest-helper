@@ -117,7 +117,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		giveLetterToRomeo = new NpcStep(this, NpcID.ROMEO, new WorldPoint(3211, 3422, 0), "Bring the letter to Romeo in Varrock Square.", letter);
 		talkToLawrence = new NpcStep(this, NpcID.FATHER_LAWRENCE, new WorldPoint(3254, 3483, 0), "Talk to Father Lawrence in north east Varrock.");
 		talkToLawrence.addDialogStep("Ok, thanks.");
-		talkToApothecary = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0), "Bring the cadava berries to the Apothecary in south east Varrock.", cadavaBerry);
+		talkToApothecary = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0), "Bring the cadava berries to the Apothecary in south west Varrock.", cadavaBerry);
 		talkToApothecary.addDialogStep("Talk about something else.");
 		talkToApothecary.addDialogStep("Talk about Romeo & Juliet.");
 		goUpToJuliet2 = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER, new WorldPoint(3157, 3436, 0), "Bring the potion to Juliet in the house west of Varrock.", potion);

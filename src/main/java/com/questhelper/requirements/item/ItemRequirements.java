@@ -380,20 +380,20 @@ public class ItemRequirements extends ItemRequirement
 		}
 		newItem.itemRequirements.clear();
 		newItem.itemRequirements.addAll(newReqs);
-		newItem.equip = true;
+		newItem.mustBeEquipped = true;
 		return newItem;
 	}
 
 	/**
 	 * Sets the equip flag for all aggregated item requirements.
 	 *
-	 * @param shouldEquip {@code true} to mark the items as equipped; {@code false} otherwise.
+	 * @param mustBeEquipped {@code true} to mark the items as equipped; {@code false} otherwise.
 	 */
 	@Override
-	public void setEquip(boolean shouldEquip)
+	public void setMustBeEquipped(boolean mustBeEquipped)
 	{
-		itemRequirements.forEach(itemRequirement -> itemRequirement.setEquip(true));
-		equip = shouldEquip;
+		itemRequirements.forEach(itemRequirement -> itemRequirement.setMustBeEquipped(true));
+		mustBeEquipped = mustBeEquipped;
 	}
 
 	/**

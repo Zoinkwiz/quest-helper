@@ -52,6 +52,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginMessage;
@@ -123,6 +124,9 @@ public class DetailedQuestStep extends QuestStep
 	public boolean hideRequirements;
 	public boolean considerBankForItemHighlight;
 	public int iconToUseForNeededItems = -1;
+
+	@Setter
+	private boolean onlyHighlightItemsOnTile;
 
 
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
@@ -561,6 +565,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		TileItem item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
+		if (onlyHighlightItemsOnTile && !QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).contains(tile.getLocalLocation())) return;
 		for (Requirement requirement : requirements)
 		{
 			if (isItemRequirement(requirement) && requirementContainsID((ItemRequirement) requirement, item.getId()))
@@ -610,6 +615,7 @@ public class DetailedQuestStep extends QuestStep
 					{
 						continue;
 					}
+					if (onlyHighlightItemsOnTile && !QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).contains(tile.getLocalLocation())) continue;
 					for (Requirement requirement : requirements)
 					{
 						if (isValidRequirementForTileItem(requirement, item))
@@ -821,6 +827,12 @@ public class DetailedQuestStep extends QuestStep
 			((ItemRequirement) item).getAllIds().contains(itemID) &&
 			!((ItemRequirement) item).checkWithAllContainers() &&
 			option.equals("Take"));
+	}
+
+	@Override
+	protected boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
+	{
+		return (teleport.contains(requirement) || requirement.shouldHighlightInInventory(client)) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	@Override

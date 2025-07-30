@@ -548,9 +548,11 @@ public class ItemRequirement extends AbstractRequirement
 	/**
 	 * Appends a tooltip indicating that the item can be obtained during the quest.
 	 */
-	public void canBeObtainedDuringQuest()
+	public ItemRequirement canBeObtainedDuringQuest()
 	{
 		appendToTooltip("Can be obtained during the quest.");
+
+		return this;
 	}
 
 	/**
@@ -696,6 +698,10 @@ public class ItemRequirement extends AbstractRequirement
 		if (!this.isActualItem())
 		{
 			color = Color.GRAY;
+		}
+		else if (additionalOptions != null && additionalOptions.check(client))
+		{
+			color = config.passColour();
 		}
 		else if (this.checkContainersOnPlayer(client))
 		{

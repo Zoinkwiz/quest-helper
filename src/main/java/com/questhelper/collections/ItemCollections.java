@@ -170,6 +170,7 @@ public enum ItemCollections
 	SAW("Saw", ImmutableList.of(
 		ItemID.POH_SAW,
 		ItemID.WEARABLE_SAW,
+		ItemID.WEARABLE_SAW_OFFHAND,
 		ItemID.EYEGLO_CRYSTAL_SAW
 	)),
 

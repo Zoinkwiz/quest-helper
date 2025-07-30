@@ -52,6 +52,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginMessage;
@@ -826,6 +827,12 @@ public class DetailedQuestStep extends QuestStep
 			((ItemRequirement) item).getAllIds().contains(itemID) &&
 			!((ItemRequirement) item).checkWithAllContainers() &&
 			option.equals("Take"));
+	}
+
+	@Override
+	protected boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
+	{
+		return (teleport.contains(requirement) || requirement.shouldHighlightInInventory(client)) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	@Override

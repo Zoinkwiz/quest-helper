@@ -662,9 +662,9 @@ public abstract class QuestStep implements Module
 		return requirement instanceof ItemRequirement && isValidRenderRequirementInInventory((ItemRequirement) requirement, item);
 	}
 
-	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
+	protected boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
 	{
-		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getItemId());
+		return (requirement.shouldHighlightInInventory(client)) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	protected void renderHoveredItemTooltip(String tooltipText)

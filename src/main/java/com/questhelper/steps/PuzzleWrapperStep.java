@@ -35,6 +35,7 @@ import com.questhelper.requirements.util.LogicType;
 import lombok.NonNull;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -110,7 +111,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 		}
 		else
 		{
-			super.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
+			noSolvingStep.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
 		}
 	}
 

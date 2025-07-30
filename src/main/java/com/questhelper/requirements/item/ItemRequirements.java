@@ -380,7 +380,7 @@ public class ItemRequirements extends ItemRequirement
 		}
 		newItem.itemRequirements.clear();
 		newItem.itemRequirements.addAll(newReqs);
-		newItem.equip = true;
+		newItem.requiredToBeEquipped = true;
 		return newItem;
 	}
 
@@ -390,10 +390,10 @@ public class ItemRequirements extends ItemRequirement
 	 * @param shouldEquip {@code true} to mark the items as equipped; {@code false} otherwise.
 	 */
 	@Override
-	public void setEquip(boolean shouldEquip)
+	public void setRequiredToBeEquipped(boolean shouldEquip)
 	{
-		itemRequirements.forEach(itemRequirement -> itemRequirement.setEquip(true));
-		equip = shouldEquip;
+		itemRequirements.forEach(itemRequirement -> itemRequirement.setRequiredToBeEquipped(true));
+		requiredToBeEquipped = shouldEquip;
 	}
 
 	/**

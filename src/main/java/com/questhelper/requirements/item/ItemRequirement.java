@@ -94,7 +94,7 @@ public class ItemRequirement extends AbstractRequirement
 	 */
 	@Getter
 	@Setter
-	protected boolean equip;
+	protected boolean requiredToBeEquipped;
 
 	/**
 	 * Whether the item should be highlighted in the inventory.
@@ -195,7 +195,7 @@ public class ItemRequirement extends AbstractRequirement
 		this.id = id;
 		this.quantity = quantity;
 		this.name = name;
-		equip = false;
+		requiredToBeEquipped = false;
 	}
 
 	/**
@@ -204,12 +204,12 @@ public class ItemRequirement extends AbstractRequirement
 	 * @param name     the display name of the item requirement
 	 * @param id       the primary item id for the requirement
 	 * @param quantity the required quantity of the item
-	 * @param equip    {@code true} if the item must be equipped, {@code false} otherwise
+	 * @param requiredToBeEquipped    {@code true} if the item must be equipped, {@code false} otherwise
 	 */
-	public ItemRequirement(String name, int id, int quantity, boolean equip)
+	public ItemRequirement(String name, int id, int quantity, boolean requiredToBeEquipped)
 	{
 		this(name, id, quantity);
-		this.equip = equip;
+		this.requiredToBeEquipped = requiredToBeEquipped;
 	}
 
 	/**
@@ -263,14 +263,14 @@ public class ItemRequirement extends AbstractRequirement
 	 * @param name     the display name of the item requirement
 	 * @param items    the list of item ids, where the first element is the primary id
 	 * @param quantity the required quantity of the item
-	 * @param equip    {@code true} if the item must be equipped, {@code false} otherwise
+	 * @param requiredToBeEquipped    {@code true} if the item must be equipped, {@code false} otherwise
 	 * @throws AssertionError if any item in the list is {@code null}
 	 */
-	public ItemRequirement(String name, List<Integer> items, int quantity, boolean equip)
+	public ItemRequirement(String name, List<Integer> items, int quantity, boolean requiredToBeEquipped)
 	{
 		this(name, items.get(0), quantity);
 		assert (items.stream().noneMatch(Objects::isNull));
-		this.equip = equip;
+		this.requiredToBeEquipped = requiredToBeEquipped;
 		this.addAlternates(items.subList(1, items.size()));
 	}
 
@@ -313,13 +313,13 @@ public class ItemRequirement extends AbstractRequirement
 	 * @param name           the display name of the item requirement
 	 * @param itemCollection the {@link ItemCollections} containing item ids and wiki term information
 	 * @param quantity       the required quantity of the item
-	 * @param equip          {@code true} if the item must be equipped, {@code false} otherwise
+	 * @param requiredToBeEquipped          {@code true} if the item must be equipped, {@code false} otherwise
 	 */
-	public ItemRequirement(String name, ItemCollections itemCollection, int quantity, boolean equip)
+	public ItemRequirement(String name, ItemCollections itemCollection, int quantity, boolean requiredToBeEquipped)
 	{
 		this(name, itemCollection.getItems().get(0), quantity);
 		this.setUrlSuffix(itemCollection.getWikiTerm());
-		this.equip = equip;
+		this.requiredToBeEquipped = requiredToBeEquipped;
 		this.addAlternates(itemCollection.getItems().subList(1, itemCollection.getItems().size()));
 	}
 
@@ -420,7 +420,7 @@ public class ItemRequirement extends AbstractRequirement
 	public ItemRequirement equipped()
 	{
 		ItemRequirement newItem = copy();
-		newItem.setEquip(true);
+		newItem.setRequiredToBeEquipped(true);
 		return newItem;
 	}
 
@@ -502,7 +502,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			throw new UnsupportedOperationException("Subclasses must override copy()");
 		}
-		return new ItemRequirement(name, id, quantity, equip);
+		return new ItemRequirement(name, id, quantity, requiredToBeEquipped);
 	}
 
 	/**
@@ -515,7 +515,7 @@ public class ItemRequirement extends AbstractRequirement
 		ItemRequirement newItem = copyOfClass();
 		newItem.setName(name);
 		newItem.setId(id);
-		newItem.setEquip(equip);
+		newItem.setRequiredToBeEquipped(requiredToBeEquipped);
 		newItem.setQuantity(quantity);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(displayItemId);
@@ -913,7 +913,7 @@ public class ItemRequirement extends AbstractRequirement
 		Color equipColor = config.passColour();
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
-		if (this.isEquip())
+		if (this.isRequiredToBeEquipped())
 		{
 			String equipText = "(equipped)";
 			if (!checkContainers(QuestContainerManager.getEquippedData()))
@@ -956,7 +956,7 @@ public class ItemRequirement extends AbstractRequirement
 		List<ItemAndLastUpdated> containers = new ArrayList<>();
 		containers.add(QuestContainerManager.getEquippedData());
 
-		if (!equip)
+		if (!requiredToBeEquipped)
 		{
 			containers.add(QuestContainerManager.getInventoryData());
 		}

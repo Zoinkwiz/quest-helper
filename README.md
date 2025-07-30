@@ -39,7 +39,7 @@ Next time you start a quest, the Shortest Path plugin will help you take the sho
 
 ![](./images/shortest-path-02.png)
 
-You can configure what teleportation methods or the look of the path in the Shortest Path config.
+You can configure what teleportation methods, or the aesthetic of the path in the Shortest Path config.
 
 ## Help and discussion
 

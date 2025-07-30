@@ -235,6 +235,7 @@ public class QuestHelperTest extends MockedTest
 	void ensureAllStepsHaveSidebarLink()
 	{
 		var optedInQuests = Set.of(
+			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.PRINCE_ALI_RESCUE

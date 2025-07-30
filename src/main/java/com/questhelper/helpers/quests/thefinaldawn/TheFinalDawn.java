@@ -30,6 +30,7 @@ import com.questhelper.helpers.quests.deserttreasureii.ChestCodeStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
@@ -72,7 +73,7 @@ public class TheFinalDawn extends BasicQuestHelper
 {
 	ItemRequirement emissaryRobesEquipped, emissaryRobes, bone, rangedGear;
 
-	ItemRequirement combatGear, combatWeapon, food, prayerPotions, whistle, pendant, pendantToTwilight;
+	ItemRequirement combatGear, combatWeapon, food, prayerPotions, whistle, pendant, pendantToTwilight, civitasTeleport;
 	FreeInventorySlotRequirement freeInvSlots4, freeInvSlot1;
 
 	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, coinPurseFullOrEmpty, branch, coinPurseWithSand, coinPurseEmpty,
@@ -89,7 +90,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	QuestStep goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia, searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum;
 	DetailedQuestStep enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, goDownstairsPub, useBeerOnGalna, enterCamTorumHouseBasement;
 	QuestStep takeBeerCabinet, drinkBeer, takeSteamforgeBrew, takeDwarvenStout, takeWizardsMindBomb, placeSteamforgedBrew, placeDwarvenStout, placeBeer,
-			takeBeerFromBarrel, placeEmptyGlass, placeMindBomb,	inspectFireplace, useHole, returnThroughHole, returnToServius;
+			takeBeerFromBarrel, placeEmptyGlass, placeMindBomb,	inspectFireplace, useHole, watchCutsceneCamTorum, returnThroughHole, returnToServius;
 	DetailedQuestStep climbUpFromTeumoBasement, enterNeypotzli, talkToEyatalli, locateKeystone;
 	QuestStep enterStreamboundCavern, locateInStreambound, enterEarthboundCavernFromStreambound, enterEarthboundCavern, locateInEarthbound,
 			enterAncientPrison, enterAncientPrisonFromEarthbound, locateInAncientPrison, touchGlowingSymbol, defeatCultists, talkToAttalaAfterCultistFight;
@@ -100,15 +101,17 @@ public class TheFinalDawn extends BasicQuestHelper
 
 	QuestStep activateStrangePlatform, enterTonaliWithLift, descendIntoSunPuzzle, inspectSunStatue, getEssenceFromUrns, solveSunPuzzle, solveSunPuzzle2Step1MoveItzla,
 			solveSunPuzzle2Step1Craft, solveSunPuzzle2Step2MoveItzla, solveSunPuzzle2Step2Craft, solveSunPuzzle2Step3MoveItzla, solveSunPuzzle2Step3Craft;
+	QuestStep solveSunPuzzle1Step1MoveItzla, solveSunPuzzle1Step1Craft, solveSunPuzzle1Step2MoveItzla, solveSunPuzzle1Step2Craft,
+			solveSunPuzzle1Step3MoveItzla, solveSunPuzzle1Step3Craft;
 
-	QuestStep goUpFromSunPuzzle, enterMoonPuzzle, pullTreeRoots, getKnifeBlade, placeRoots, fletchRoots, repeatMoonPuzzleThreeTimes, leaveMoonPuzzleRoom;
+	QuestStep goUpFromSunPuzzle, enterMoonPuzzle, moveItzlaNorth, moveItzlaSouth, pullTreeRoots, getKnifeBlade, placeRoots, fletchRoots,
+			repeatMoonPuzzleThreeTimes,	leaveMoonPuzzleRoom;
 
 	QuestStep enterFinalBossArea, approachMetzli, defeatFinalBoss, defeatFinalBossSidebar, watchFinalBossAfterCutscene, goToNorthOfFinalArea,
 	goToNorthOfFinalAreaAgilityShortcut, inspectRanulPillar, inspectRalosPillar, inspectDoor, inspectSkeleton, readStoneTablet, finishQuest;
 
 	Zone templeArea, templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor,
-			hideoutBasement,
-	camTorum, camTorumF2, camTorumBasement, hiddenTunnel, hiddenTunnel2;
+			hideoutBasement, camTorum, camTorumF2, camTorumBasement, hiddenTunnel, hiddenTunnel2;
 
 	Zone antechamber, prison, streambound, earthbound, ancientShrine, neypotzliFightRoom, tonaliCavernF2, tonaliCavernF0P2South, tonaliCavernF0P2North,
 	tonaliCavernF1Stairs, tonaliCavernF0Start, tonaliCavernF1Rockslugs, tonaliCavernF0P3V1, tonaliCavernF1GrimyLizards, tonaliCavernF1Nagua,
@@ -127,9 +130,11 @@ public class TheFinalDawn extends BasicQuestHelper
 	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby, inChestInterface;
 	Requirement hasSackOfGivenSack, isGalnaDrunk, notPlacedMindBomb, notPlacedBeer, notPlacedSteamforgeBrew, notPlacedDwarvenStout, beerTakenFromBarrel;
 	Requirement locatedKeystone1, locatedKeystone2, liftActivated, inspectedSunStatue, itzlaInPosSunPuzzle2Step1, completedSunPuzzleP1;
+	Requirement  itzlaInPosSunPuzzle1Step1, itzlaInPosSunPuzzle1Step2, itzlaInPosSunPuzzle1Step3;
 	Requirement  itzlaInPosSunPuzzle2Step2, completedSunPuzzleP2, itzlaInPosSunPuzzle2Step3, completedSunPuzzleP3;
 	Requirement inMoonPuzzleP1, inMoonPuzzleP2, inMoonPuzzleP3, completedMoonPuzzle;
-	Requirement isPuzzleOrder2;
+	ManualRequirement northPlatformSolutionKnown, southPlatformSolutionKnown;
+	Requirement isPuzzleOrder1, isPuzzleOrder2;
 
 	Requirement is72Agility, notInspectedRalosPillar, notInspectedRanulPillar, notInspectedSkeleton, notInspectedDoor;
 
@@ -140,6 +145,8 @@ public class TheFinalDawn extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
+		setupZones();
+		setupRequirements();
 		setupSteps();
 
 		lastKnownStateStep = -1;
@@ -286,6 +293,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		steps.put(32, goEnterFireplace);
 
 		ConditionalStep goEnterHole = new ConditionalStep(this, enterCamTorum);
+		goEnterHole.addStep(inCamTorumHiddenTunnel, watchCutsceneCamTorum);
 		goEnterHole.addStep(inCamTorumBasement, useHole);
 		goEnterHole.addStep(inCamTorum, enterCamTorumHouseBasement);
 		steps.put(33, goEnterHole);
@@ -364,10 +372,22 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		goDoSunPuzzle.addStep(and(essence, isPuzzleOrder2, itzlaInPosSunPuzzle2Step1), solveSunPuzzle2Step1Craft);
 		goDoSunPuzzle.addStep(and(essence, isPuzzleOrder2), solveSunPuzzle2Step1MoveItzla);
+
+		goDoSunPuzzle.addStep(and(completedSunPuzzleP2, essence, isPuzzleOrder1, itzlaInPosSunPuzzle1Step3), solveSunPuzzle1Step3Craft);
+		goDoSunPuzzle.addStep(and(completedSunPuzzleP2, essence, isPuzzleOrder1), solveSunPuzzle1Step3MoveItzla);
+
+		goDoSunPuzzle.addStep(and(completedSunPuzzleP1, essence, isPuzzleOrder1, itzlaInPosSunPuzzle1Step2), solveSunPuzzle1Step2Craft);
+		goDoSunPuzzle.addStep(and(completedSunPuzzleP1, essence, isPuzzleOrder1), solveSunPuzzle1Step2MoveItzla);
+
+		goDoSunPuzzle.addStep(and(essence, isPuzzleOrder1, itzlaInPosSunPuzzle1Step1), solveSunPuzzle1Step1Craft);
+		goDoSunPuzzle.addStep(and(essence, isPuzzleOrder1), solveSunPuzzle1Step1MoveItzla);
+
 		goDoSunPuzzle.addStep(and(essence), solveSunPuzzle);
 
 		ConditionalStep goDoMoonPuzzle = new ConditionalStep(this, getKnifeBlade);
 		goDoMoonPuzzle.addStep(completedMoonPuzzle, leaveMoonPuzzleRoom);
+		goDoMoonPuzzle.addStep(not(southPlatformSolutionKnown), moveItzlaSouth);
+		goDoMoonPuzzle.addStep(not(northPlatformSolutionKnown), moveItzlaNorth);
 		goDoMoonPuzzle.addStep(and(kindling), placeRoots);
 		goDoMoonPuzzle.addStep(and(roots, knifeBlade), fletchRoots);
 		goDoMoonPuzzle.addStep(knifeBlade, pullTreeRoots);
@@ -447,6 +467,8 @@ public class TheFinalDawn extends BasicQuestHelper
 		{
 			lastKnownStateDarkFlame = -1;
 			lastKnownStateLightFlame = -1;
+			northPlatformSolutionKnown.setShouldPass(false);
+			southPlatformSolutionKnown.setShouldPass(false);
 			lastKnownStateStep = currentStep;
 			placeRoots.setText("Have Itzla move between both the north and south " +
 					"platforms to see how many braziers are lit around the room total. Put that many into the statue.");
@@ -458,10 +480,12 @@ public class TheFinalDawn extends BasicQuestHelper
 		if (darkBlueFlameMissing.check(client))
 		{
 			lastKnownStateDarkFlame = getSumOfLitBraziers();
+			northPlatformSolutionKnown.setShouldPass(true);
 		}
 		else if (lightBlueFlameMissing.check(client))
 		{
 			lastKnownStateLightFlame = getSumOfLitBraziers();
+			southPlatformSolutionKnown.setShouldPass(true);
 		}
 
 		if (lastKnownStateDarkFlame >= 0 && lastKnownStateLightFlame >= 0)
@@ -548,11 +572,11 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		tonaliCavernF1GrimyLizards = new Zone(new WorldPoint(1291, 9381, 1), new WorldPoint(1298, 9395, 1));
 		tonaliCavernF1Nagua = new Zone(new WorldPoint(1283, 9399, 1), new WorldPoint(1310, 9425, 1));
-		tonaliCavernF2North = new Zone(new WorldPoint(1303, 9399, 2), new WorldPoint(1317, 9466, 2));
+		tonaliCavernF2North = new Zone(new WorldPoint(1303, 9399, 2), new WorldPoint(1317, 9468, 2));
 		sunPuzzleRoom = new Zone(new WorldPoint(1318, 9433, 1), new WorldPoint(1345, 9458, 1));
 		moonPuzzleRoom = new Zone(new WorldPoint(1279, 9433, 1), new WorldPoint(1305, 9460, 1));
 
-		finalBossArea = new Zone(new WorldPoint(1275, 9470, 1), new WorldPoint(1350, 9550, 1));
+		finalBossArea = new Zone(new WorldPoint(1275, 9470, 0), new WorldPoint(1350, 9550, 1));
 	}
 
 	@Override
@@ -591,12 +615,13 @@ public class TheFinalDawn extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		food.setUrlSuffix("Food");
 
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, 3);
 
 		whistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_BASIC);
 		whistle.addAlternates(ItemID.HG_QUETZALWHISTLE_ENHANCED, ItemID.HG_QUETZALWHISTLE_PERFECTED);
 		pendant = new ItemRequirement("Pendant of ates", ItemID.PENDANT_OF_ATES);
 		pendantToTwilight = new ItemRequirement("Pendant of ates ([2] Twilight Temple)", ItemID.PENDANT_OF_ATES);
+		civitasTeleport = new ItemRequirement("Civitas illa fortis teleport", ItemID.POH_TABLET_FORTISTELEPORT);
 		// Quest items
 		drawerKey = new ItemRequirement("Key", ItemID.VMQ4_DRAWER_KEY);
 		canvasPiece = new ItemRequirement("Canvas piece", ItemID.VMQ4_PAINTING_SIGIL);
@@ -690,29 +715,26 @@ public class TheFinalDawn extends BasicQuestHelper
 		liftActivated = new VarbitRequirement(VarbitID.VMQ4_LIFT_ACTIVATED, 1);
 
 		// Sun puzzle
-		inspectedSunStatue = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_ITZLA_STATE, 1, Operation.GREATER_EQUAL);
-		// Ueai : Naui-makti (Eight : Four-Ten)
-		// Ueai = Eight
-		// Naui = Four
-		// Makti = 10
-//		VarbitID.VMQ4_SUN_PUZZLE_ORDER;
-		// First puzzle when ORDER is 2:
-		// 8 (him), 4 (you)
-		// Second puzzle:
-		// 2 (him), 6 (you)
+		inspectedSunStatue = or(new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_PROGRESS, 1, Operation.GREATER_EQUAL), new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_ITZLA_STATE, 1, Operation.GREATER_EQUAL));
+		itzlaInPosSunPuzzle1Step1 = new NpcRequirement("Itzla at east altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1338, 9446, 1));
+		itzlaInPosSunPuzzle1Step2 = new NpcRequirement("Itzla at north altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1330, 9454, 1));
+		itzlaInPosSunPuzzle1Step3 = new NpcRequirement("Itzla at north-west altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1324, 9452, 1));
+
 		itzlaInPosSunPuzzle2Step1 = new NpcRequirement("Itzla at north altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1330, 9454, 1));
 		itzlaInPosSunPuzzle2Step2 = new NpcRequirement("Itzla at north altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1338, 9446, 1));
 		itzlaInPosSunPuzzle2Step3 = new NpcRequirement("Itzla at north altar", NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1324, 9452, 1));
 		completedSunPuzzleP1 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_PROGRESS, 1, Operation.GREATER_EQUAL);
 		completedSunPuzzleP2 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_PROGRESS, 2, Operation.GREATER_EQUAL);
 		completedSunPuzzleP3 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_PROGRESS, 3, Operation.GREATER_EQUAL);
+		isPuzzleOrder1 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_ORDER, 1);
 		isPuzzleOrder2 = new VarbitRequirement(VarbitID.VMQ4_SUN_PUZZLE_ORDER, 2);
 
 		inMoonPuzzleP1 = new VarbitRequirement(VarbitID.VMQ4_MOON_PUZZLE_PROGRESS, 0);
 		inMoonPuzzleP2 = new VarbitRequirement(VarbitID.VMQ4_MOON_PUZZLE_PROGRESS, 1);
 		inMoonPuzzleP3 = new VarbitRequirement(VarbitID.VMQ4_MOON_PUZZLE_PROGRESS, 2);
 		completedMoonPuzzle = new VarbitRequirement(VarbitID.VMQ4_MOON_PUZZLE_PROGRESS, 3);
-		//VarbitID.VMQ4_MOON_PUZZLE_ORDER = 2
+		northPlatformSolutionKnown = new ManualRequirement();
+		southPlatformSolutionKnown = new ManualRequirement();
 
 		is72Agility = new SkillRequirement(Skill.AGILITY, 72, true);
 
@@ -811,8 +833,8 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		// Part 2
 		climbStairsF0ToF1Palace = new ObjectStep(this, ObjectID.CIVITAS_PALACE_STAIRS_UP, new WorldPoint(1672, 3164, 0), "Go back to Civitas illa Fortis." + 
-		"Climb up the stairs to the top of " +
-				"the Sunrise Palace to talk to the queen.");
+		"Climb up the stairs to the top of the Sunrise Palace to talk to the queen.");
+		climbStairsF0ToF1Palace.addTeleport(civitasTeleport);
 		climbStairsF1ToF2Palace = new ObjectStep(this, ObjectID.CIVITAS_PALACE_STAIRS_UP, new WorldPoint(1671, 3169, 1), "Climb up the stairs to the top of " +
 				"the Sunrise Palace to talk to the queen.");
 		talkToQueen = new NpcStep(this, NpcID.VMQ4_QUEEN_PALACE, new WorldPoint(1673, 3156, 2), "Talk to the queen on the top floor of the Sunrise Palace.");
@@ -822,8 +844,10 @@ public class TheFinalDawn extends BasicQuestHelper
 		inspectWindow = new ObjectStep(this, ObjectID.VMQ4_CIVITAS_JANUS_WINDOW, new WorldPoint(1652, 3093, 0), "Inspect the window on the east side of the " +
 				"house north of Captain Vibia, and then enter it.", bone);
 		inspectWindow.addDialogSteps("Force open the window.");
-		giveBonesOrMeatToDog = new NpcStep(this, NpcID.VMQ4_JANUS_DOG, new WorldPoint(1650, 3094, 0),  "Use bones or some raw meat on the dog to calm it down" +
-				".").puzzleWrapStep("Work out how to calm down the dog.");
+		var giveBonesOrMeatToDogNoPuzzleWrap = new NpcStep(this, NpcID.VMQ4_JANUS_DOG, new WorldPoint(1650, 3094, 0),  "Use bones or some raw meat on the dog to calm it down" +
+				".", bone.highlighted());
+		giveBonesOrMeatToDogNoPuzzleWrap.addIcon(ItemID.BONES);
+		giveBonesOrMeatToDog = giveBonesOrMeatToDogNoPuzzleWrap.puzzleWrapStep("Work out how to calm down the dog.");
 		enterDoorCode = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_PUZZLE_DOOR, new WorldPoint(1649, 3093, 0), "Pet the dog to see the code for the door." +
 				" Open the door using the code 'GUS'.").puzzleWrapStep("Work out the door code.");
 		openDoorWithGusCode = new ChestCodeStep(this, "GUS", 10, 0, 4, 0).puzzleWrapStep(true);
@@ -831,7 +855,8 @@ public class TheFinalDawn extends BasicQuestHelper
 		takePotato = new ItemStep(this, "Pick up the sack of potatoes (3).", potatoes).puzzleWrapStep("Work out how to make a way to trap Janus and how to " +
 				"knock him out.");
 		removePotatoesFromSack = new DetailedQuestStep(this, "Empty the sack of potatoes.", potatoes.highlighted()).puzzleWrapStep(true);
-		takeKnife = new ItemStep(this, "Pick up the knife.", knife).puzzleWrapStep(true);
+		var takeKnifeNoPuzzleWrapped = new ItemStep(this, "Pick up the knife.", knife);
+		takeKnife = takeKnifeNoPuzzleWrapped.puzzleWrapStep(true);
 		takeCoinPurse = new ItemStep(this, "Pick up the coin purse.", coinPurseFullOrEmpty).puzzleWrapStep(true);
 
 		goToF1Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_BOTTOM, new WorldPoint(1647, 3091, 0), "Go upstairs.").puzzleWrapStep(true);
@@ -849,14 +874,20 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		goToF0Hideout = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the ground floor.").puzzleWrapStep(true);
 		goToF0Hideout.addDialogStep("Climb down.");
-		takeKnife.addSubSteps(goToF0Hideout);
+		takeKnifeNoPuzzleWrapped.addSubSteps(goToF0Hideout);
 		goToF0HideoutEnd = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_MIDDLE, new WorldPoint(1647, 3091, 1), "Go to the ground floor.").puzzleWrapStep(true);
 		goToF0HideoutEnd.addDialogStep("Climb down.");
 
 		goF2ToF1HideoutEnd = new ObjectStep(this, ObjectID.FORTIS_WOODEN_SPIRALSTAIRS_TOP, new WorldPoint(1647, 3091, 2), "Go downstairs back to Vibia.").puzzleWrapStep(true);
-		showSackToVibia = new NpcStep(this, NpcID.VMQ4_CAPTAIN_VIBIA_INSIDE_HOUSE, new WorldPoint(1651, 3094, 0), "Show Captain Vibia the empty sack and " +
-				"makeshift blackjack.", emptySack, makeshiftBlackjack).puzzleWrapStep(true);
-		showSackToVibia.addSubSteps(goF2ToF1HideoutEnd, goToF0HideoutEnd);
+		var showSackToVibiaNotPuzzleWrapped = new NpcStep(this, NpcID.VMQ4_CAPTAIN_VIBIA_INSIDE_HOUSE, new WorldPoint(1651, 3094, 0), "Show Captain Vibia the empty sack and " +
+				"makeshift blackjack.", emptySack, makeshiftBlackjack);
+		showSackToVibiaNotPuzzleWrapped.addDialogStep("I'll get searching.");
+		showSackToVibia = showSackToVibiaNotPuzzleWrapped.puzzleWrapStep(true);
+		showSackToVibiaNotPuzzleWrapped.addSubSteps(goF2ToF1HideoutEnd, goToF0HideoutEnd);
+
+		takePotato.addSubSteps(removePotatoesFromSack, takeKnife, takeCoinPurse, goToF1Hideout, goDownFromF2Hideout, goF1ToF2Hideout, useKnifeOnPottedFan,
+				fillCoinPurse, emptyCoinPurse, useBranchOnCoinPurse, goToF0Hideout, goToF0HideoutEnd, goF2ToF1HideoutEnd, showSackToVibia);
+
 		searchBodyForKey = new NpcStep(this, NpcID.VMQ4_JANUS_HOUSE_JANUS_UNCONSCIOUS, new WorldPoint(1647, 3093, 0), "Search Janus.");
 		enterTrapdoor = new ObjectStep(this, ObjectID.VMQ4_JANUS_BASEMENT_ENTRY, new WorldPoint(1643, 3092, 0), "Enter the basement in the hideout.");
 
@@ -907,10 +938,15 @@ public class TheFinalDawn extends BasicQuestHelper
 		placeMindBomb = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_BARREL_5, new WorldPoint(1471, 9567, 0), "Place wizard's mind bomb on the " +
 				"south-east barrel.", wizardsMindBomb.highlighted()).puzzleWrapStep(true);
 		placeMindBomb.addIcon(ItemID.WIZARDS_MIND_BOMB);
+
+		takeBeerCabinet.addSubSteps(drinkBeer, takeSteamforgeBrew, takeDwarvenStout, takeWizardsMindBomb, placeSteamforgedBrew, placeDwarvenStout,
+				takeBeerFromBarrel, placeBeer, placeEmptyGlass, placeMindBomb);
+
 		inspectFireplace = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_FIRE_OUT, new WorldPoint(1463, 9571, 0), "Inspect the fireplace.");
 		inspectFireplace.addDialogStep("Pull it.");
 		useHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_ENTRY, new WorldPoint(1470, 9565, 0), "Enter the hole in the south-east " +
 				"corner of the room.");
+		watchCutsceneCamTorum = new DetailedQuestStep(this, "Watch the cutscene with Ennius.");
 		returnThroughHole = new ObjectStep(this, ObjectID.VMQ4_TEUMO_BASEMENT_SECRET_PASSAGE_EXIT, new WorldPoint(1470, 9563, 0), "Go back through the hole " +
 				"into the Teumo's basement.");
 		returnToServius = new NpcStep(this, NpcID.VMQ4_SERVIUS_TEUMO_HOUSE_DOWNSTAIRS, new WorldPoint(1468, 9569, 0), "Talk to Servius in the house basement.");
@@ -954,7 +990,9 @@ public class TheFinalDawn extends BasicQuestHelper
 		talkToAttalaAfterCultistFight = new NpcStep(this, NpcID.VMQ4_ATTALA_KEYSTONE_CHAMBER, new WorldPoint(1363, 9516, 0), "Talk to Attala.");
 
 		talkToServiusAtTalTeklan = new NpcStep(this, NpcID.VMQ4_SERVIUS_VIS, new WorldPoint(1236, 3105, 0), "Talk to Servius in Tal Teklan in the " +
-				"Tlati Rainforest, in the north-west of Varlamore.", List.of(combatGear, food, prayerPotions), List.of(rangedGear));
+				"Tlati Rainforest, in the north-west of Varlamore. The easiest way here is via quetzal.", List.of(combatGear, food, prayerPotions), List.of(rangedGear));
+		talkToServiusAtTalTeklan.addWidgetHighlight(new WidgetHighlight(InterfaceID.QuetzalMenu.ICONS, true).withModelRequirement(56665));
+
 		enterTonaliCavern = new ObjectStep(this, ObjectID.VMQ4_CRYPT_OF_TONALI_ENTRY, new WorldPoint(1305, 3034, 0), "Enter the passageway in the" +
 				" tree south-east of Tal Teklan, into the Crypt of Tonali.");
 		defeatFinalCultists = new NpcStep(this, NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_1A, new WorldPoint(1312, 9355, 2), "Defeat the attacking cultists.",
@@ -962,7 +1000,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		((NpcStep) defeatFinalCultists).addAlternateNpcs(NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_1B, NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_2A,
 				NpcID.VMQ4_CRYPT_ATTACKER_MELEE_VARIANT_2B, NpcID.VMQ4_CRYPT_ATTACKER_MAGIC_VARIANT_1, NpcID.VMQ4_CRYPT_ATTACKER_MAGIC_VARIANT_2,
 				NpcID.VMQ4_CRYPT_ATTACKER_RANGED_VARIANT_1, NpcID.VMQ4_CRYPT_ATTACKER_RANGED_VARIANT_2);
-		fightEnnius = new NpcStep(this, NpcID.VMQ4_CRYPT_ENNIUS_BOSS, new WorldPoint(1336, 9355, 2), "Defeat Ennius. Protect from Melee. Stand on the green " +
+		fightEnnius = new NpcStep(this, NpcID.VMQ4_CRYPT_ENNIUS_BOSS, new WorldPoint(1336, 9355, 2), "Defeat Ennius. Protect from Melee. Stand on the " +
 				"circles to avoid damage when they appear. Avoid the lines of yellow star icons on the floor when they appear. When they reach 0 health, " +
 				"they'll gain some back and do more damage.");
 		tonaliGoDownStairsF2ToF1 = new ObjectStep(this, ObjectID.VMQ4_CRYPT_STAIRS_TOP_ENNIUS, new WorldPoint(1335, 9360, 2), "Climb down the stairs.");
@@ -991,7 +1029,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		getEssenceFromUrns = new ObjectStep(this, ObjectID.VMQ4_SUN_PUZZLE_URN, new WorldPoint(1323, 9449, 1), "Search the urns in the area for some essence" +
 				".", true).puzzleWrapStep(true);
 		inspectSunStatue = new ObjectStep(this, ObjectID.VMQ4_SUN_PUZZLE_STATUE, new WorldPoint(1330, 9446, 1), "Inspect the statue in the middle of the room.").puzzleWrapStep(true);
-		solveSunPuzzle = new DetailedQuestStep(this, "Look at the pillar in the middle of the room. The first word " +
+		var solveSunPuzzleNoPuzzleWrap = new DetailedQuestStep(this, "Look at the pillar in the middle of the room. The first word " +
 				"indicates where to tell Itzla to stand, " +
 				"and the second word where you craft the essence." +
 				"1 is the north-east altar, and incrementing numbers rotate clockwise. The words mean the following numbers: \n    Oma = 2\n" +
@@ -1000,7 +1038,28 @@ public class TheFinalDawn extends BasicQuestHelper
 				"    Chaki = 6\n" +
 				"    Koma = 7\n" +
 				"    Ueai = 8\n" +
-				"    Makti = 10").puzzleWrapStep("Solve the sun puzzle.");
+				"    Makti = 10");
+		solveSunPuzzle = solveSunPuzzleNoPuzzleWrap.puzzleWrapStep("Solve the sun puzzle.");
+
+		// Can get the text from statue with `Messagebox.TEXT`
+		solveSunPuzzle1Step1MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the east" +
+				" of the room.").puzzleWrapStep(true);
+		solveSunPuzzle1Step1MoveItzla.addDialogSteps("Can you go to an altar for me?", "East.", "Previous options...");
+		solveSunPuzzle1Step1Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1320, 9446, 1), "Imbue the essence on the west altar.",
+			essence).puzzleWrapStep(true);
+
+		solveSunPuzzle1Step2MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the north" +
+				" of the room.").puzzleWrapStep(true);
+		solveSunPuzzle1Step2MoveItzla.addDialogSteps("Can you go to an altar for me?", "North.", "Previous options...");
+		solveSunPuzzle1Step2Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1330, 9436, 1), "Imbue the essence on the south altar.",
+				essence).puzzleWrapStep(true);
+
+		solveSunPuzzle1Step3MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the " +
+				"north-west of the room.").puzzleWrapStep(true);
+		solveSunPuzzle1Step3MoveItzla.addDialogSteps("Can you go to an altar for me?", "North west.", "More options...");
+		solveSunPuzzle1Step3Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1322, 9438, 1), "Imbue the essence on the south-west altar.",
+				essence).puzzleWrapStep(true);
+
 		solveSunPuzzle2Step1MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the north" +
 				" of the room.").puzzleWrapStep(true);
 		solveSunPuzzle2Step1MoveItzla.addDialogSteps("Can you go to an altar for me?", "North.", "Previous options...");
@@ -1012,28 +1071,36 @@ public class TheFinalDawn extends BasicQuestHelper
 		solveSunPuzzle2Step2MoveItzla.addDialogSteps("Can you go to an altar for me?", "East.", "Previous options...");
 		solveSunPuzzle2Step2Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1320, 9446, 1), "Imbue the essence on the west altar.",
 				essence).puzzleWrapStep(true);
+
 		solveSunPuzzle2Step3MoveItzla = new NpcStep(this, NpcID.VMQ4_ITZLA_CRYPT_PUZZLE_SUN, new WorldPoint(1327, 9446, 1), "Tell Itzla to stand in the " +
 				"north-west of the room.").puzzleWrapStep(true);
 		solveSunPuzzle2Step3MoveItzla.addDialogSteps("Can you go to an altar for me?", "North west.", "More options...");
 		solveSunPuzzle2Step3Craft = new ObjectStep(this, ObjectID.VMQ4_SUN_ALTAR, new WorldPoint(1322, 9438, 1), "Imbue the essence on the south-west altar.",
 				essence).puzzleWrapStep(true);
-
-		solveSunPuzzle.addSubSteps(solveSunPuzzle2Step1Craft, solveSunPuzzle2Step1MoveItzla, solveSunPuzzle2Step2MoveItzla, solveSunPuzzle2Step2Craft,
-				solveSunPuzzle2Step3MoveItzla, solveSunPuzzle2Step3Craft);
+		solveSunPuzzleNoPuzzleWrap.addSubSteps(inspectSunStatue, solveSunPuzzle1Step1MoveItzla, solveSunPuzzle1Step1Craft, solveSunPuzzle1Step2MoveItzla, solveSunPuzzle1Step2Craft,
+				solveSunPuzzle1Step3MoveItzla, solveSunPuzzle1Step3Craft, solveSunPuzzle2Step1Craft, solveSunPuzzle2Step1MoveItzla,
+				solveSunPuzzle2Step2MoveItzla, solveSunPuzzle2Step2Craft, solveSunPuzzle2Step3MoveItzla, solveSunPuzzle2Step3Craft);
+		solveSunPuzzle.addSubSteps(inspectSunStatue, solveSunPuzzle1Step1MoveItzla, solveSunPuzzle1Step1Craft, solveSunPuzzle1Step2MoveItzla, solveSunPuzzle1Step2Craft,
+				solveSunPuzzle1Step3MoveItzla, solveSunPuzzle1Step3Craft, solveSunPuzzle2Step1Craft, solveSunPuzzle2Step1MoveItzla,
+				solveSunPuzzle2Step2MoveItzla, solveSunPuzzle2Step2Craft, solveSunPuzzle2Step3MoveItzla, solveSunPuzzle2Step3Craft);
 
 		goUpFromSunPuzzle = new ObjectStep(this, ObjectID.VMQ4_SUN_TELEPORT, new WorldPoint(1323, 9443, 1), "Go back up to the main area.");
 		enterMoonPuzzle = new ObjectStep(this, ObjectID.VMQ4_MOON_TELEPORT, new WorldPoint(1304, 9446, 2), "Go through the blue teleport to the west.");
 
+		moveItzlaNorth = new ObjectStep(this, ObjectID.VMQ4_MOON_PUZZLE_PLATFORM_1, new WorldPoint(1298, 9448, 1), "Move-Itzla to the platform north of him " +
+				"by clicking on it to see which torches around the room light up.");
+		moveItzlaSouth = new ObjectStep(this, ObjectID.VMQ4_MOON_PUZZLE_PLATFORM_2, new WorldPoint(1298, 9444, 1), "Move-Itzla to the platform south of him " +
+				"by clicking on it to see which torches around the room light up.");
 		pullTreeRoots = new ObjectStep(this, ObjectID.VMQ4_MOON_PUZZLE_ROOT, new WorldPoint(1285, 9452, 1), "Pull some tree roots.",	true)
 				.puzzleWrapStep("Solve the moon puzzle.");
-		getKnifeBlade = new ObjectStep(this, ObjectID.VMQ4_MOON_PUZZLE_OLD_TOOLS, new WorldPoint(1285, 9439, 1),
+		getKnifeBlade = new ObjectStep(this, ObjectID.VMQ4_MOON_PUZZLE_OLD_TOOLS, new WorldPoint(1292, 9457, 1),
 				"Search the old tools for a knife blade. Avoid the lines of fire by having Itzla go on the north platform to remove dark flames, and the " +
 						"south one for light flames.").puzzleWrapStep(true);
 		fletchRoots = new DetailedQuestStep(this, "Fletch the roots into kindling.", roots.highlighted()).puzzleWrapStep(true);
 		placeRoots = new ObjectStep(this, ObjectID.VMQ4_MOON_PUZZLE_STATUE, new WorldPoint(1283, 9446, 1), "Have Itzla move between both the north and south " +
 				"platforms to see how many braziers are lit around the room total. Put that many into the statue.",	kindling).puzzleWrapStep(true);
 		repeatMoonPuzzleThreeTimes = new DetailedQuestStep(this, "Repeat the kindling burning matching the total braziers lit two more times.").puzzleWrapStep(true);
-
+		pullTreeRoots.addSubSteps(moveItzlaNorth, moveItzlaSouth, pullTreeRoots, getKnifeBlade, fletchRoots, placeRoots, repeatMoonPuzzleThreeTimes);
 		leaveMoonPuzzleRoom = new ObjectStep(this, ObjectID.VMQ4_MOON_TELEPORT, new WorldPoint(1299, 9455, 1), "Leave the moon puzzle room.");
 
 		enterFinalBossArea = new ObjectStep(this, ObjectID.VMQ4_CRYPT_DOOR_TO_MOKI, new WorldPoint(1311, 9468, 2), "Try to open the door to the " +
@@ -1099,7 +1166,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
-			rangedGear, food, prayerPotions, pendant, whistle
+			rangedGear, food, prayerPotions, pendant, whistle, civitasTeleport
 		);
 	}
 
@@ -1173,7 +1240,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		), List.of(
 			combatWeapon, food
 		), List.of(
-			// Recommended
+			civitasTeleport
 		)));
 		panels.add(new PanelDetails("The hideout", List.of(talkToQueen, talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, enterDoorCode, takePotato,
 				takeKnife, goToF1Hideout, takeCoinPurse, goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia,
@@ -1183,7 +1250,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		panels.add(new PanelDetails("The dwarves", List.of(enterCamTorum, talkToAttala, talkToServiusInCamTorum, goUpstairsPub, takeBeer, goDownstairsPub,
 				useBeerOnGalna, enterCamTorumHouseBasement, takeWizardsMindBomb, placeMindBomb, takeBeerCabinet,
 				placeBeer, takeSteamforgeBrew, placeSteamforgedBrew, takeDwarvenStout, placeDwarvenStout,takeBeerFromBarrel, drinkBeer, placeEmptyGlass,
-				inspectFireplace, useHole, returnThroughHole, returnToServius),
+				inspectFireplace, useHole, watchCutsceneCamTorum, returnThroughHole, returnToServius),
 				List.of(),
 				List.of()));
 		panels.add(new PanelDetails("Ancient keys", List.of(enterNeypotzli, talkToEyatalli, enterStreamboundCavern, locateInStreambound,
@@ -1193,8 +1260,8 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		panels.add(new PanelDetails("Crypt of Tonali", List.of(talkToServiusAtTalTeklan, enterTonaliCavern, defeatFinalCultists, fightEnnius,
 				tonaliGoDownStairsF2ToF1, useRedTeleporter, useBlueTeleporter, useRedTeleporter2, useBlueTeleporterLizards, useRedTeleporter3, climbRope,
-				activateStrangePlatform, descendIntoSunPuzzle, getEssenceFromUrns, solveSunPuzzle, goUpFromSunPuzzle, enterMoonPuzzle, pullTreeRoots,
-				getKnifeBlade, fletchRoots, placeRoots, repeatMoonPuzzleThreeTimes, leaveMoonPuzzleRoom),
+				activateStrangePlatform, descendIntoSunPuzzle, inspectSunStatue, getEssenceFromUrns, solveSunPuzzle, goUpFromSunPuzzle, enterMoonPuzzle,
+				moveItzlaNorth, moveItzlaSouth, pullTreeRoots, getKnifeBlade, fletchRoots, placeRoots, repeatMoonPuzzleThreeTimes, leaveMoonPuzzleRoom),
 				List.of(combatGear, food, prayerPotions)));
 
 		panels.add(new PanelDetails("Doom", List.of(enterFinalBossArea, approachMetzli, defeatFinalBossSidebar, watchFinalBossAfterCutscene,

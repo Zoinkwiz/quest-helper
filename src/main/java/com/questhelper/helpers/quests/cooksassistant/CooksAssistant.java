@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class CooksAssistant extends BasicQuestHelper
 {
@@ -108,7 +109,7 @@ public class CooksAssistant extends BasicQuestHelper
 		coins.setTooltip("Necessary if you do not have a pot / bucket");
 		grain = new ItemRequirement("Grain", ItemID.GRAIN);
 
-		controlsUsed = new VarbitRequirement(4920, 1);
+		controlsUsed = new VarbitRequirement(VarbitID.MILL_FLOUR, 1);
 
 		inMillSecond = new ZoneRequirement(millSecond);
 		inMillThird = new ZoneRequirement(millThird);

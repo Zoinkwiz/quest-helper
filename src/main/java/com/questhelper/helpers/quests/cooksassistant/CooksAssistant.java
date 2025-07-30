@@ -163,7 +163,7 @@ public class CooksAssistant extends BasicQuestHelper
 		setupSteps();
 
 		var steps = new HashMap<Integer, QuestStep>();
-		ConditionalStep doQuest = new ConditionalStep(this, getBucket);
+		var doQuest = new ConditionalStep(this, getBucket);
 		doQuest.addStep(and(milk, flour, egg), finishQuest);
 		doQuest.addStep(and(milk, pot, egg, controlsUsed, inMillThird), climbLadderThree);
 		doQuest.addStep(and(milk, pot, egg, controlsUsed, inMillSecond), climbLadderTwoDown);

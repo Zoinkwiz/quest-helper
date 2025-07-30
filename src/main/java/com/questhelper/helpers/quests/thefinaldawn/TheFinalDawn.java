@@ -72,14 +72,15 @@ public class TheFinalDawn extends BasicQuestHelper
 {
 	ItemRequirement emissaryRobesEquipped, emissaryRobes, bone, rangedGear;
 
-	ItemRequirement combatGear, combatWeapon, food, prayerPotions, whistle, pendant;
+	ItemRequirement combatGear, combatWeapon, food, prayerPotions, whistle, pendant, pendantToTwilight;
 	FreeInventorySlotRequirement freeInvSlots4, freeInvSlot1;
 
 	ItemRequirement drawerKey, canvasPiece, emissaryScroll, potatoes, knife, coinPurse, coinPurseFullOrEmpty, branch, coinPurseWithSand, coinPurseEmpty,
 			emptySack, makeshiftBlackjack;
 	ItemRequirement steamforgedBrew, dwarvenStout, beer, emptyGlass, wizardsMindBomb, keystoneFragment, essence, roots, kindling, knifeBlade, stoneTablet;
 
-	QuestStep startQuest, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom, searchBed, openDrawers, openDrawers2;
+	QuestStep startQuest, goToTempleWithAtes, goToTempleFromSalvager, goToTempleFromGorge, searchChestForEmissaryRobes, enterTwilightTemple, goDownStairsTemple, enterBackroom,
+			searchBed,	openDrawers, openDrawers2;
 	DetailedQuestStep useCanvasPieceOnPicture, enterPassage, pickBlueChest, fightEnforcer, pickUpEmissaryScroll, readEmissaryScroll, talkToQueen,
 	climbStairsF0ToF1Palace, climbStairsF1ToF2Palace;
 	QuestStep openDoorWithGusCode;
@@ -105,20 +106,23 @@ public class TheFinalDawn extends BasicQuestHelper
 	QuestStep enterFinalBossArea, approachMetzli, defeatFinalBoss, defeatFinalBossSidebar, watchFinalBossAfterCutscene, goToNorthOfFinalArea,
 	goToNorthOfFinalAreaAgilityShortcut, inspectRanulPillar, inspectRalosPillar, inspectDoor, inspectSkeleton, readStoneTablet, finishQuest;
 
-	Zone templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor, hideoutBasement,
+	Zone templeArea, templeBasement, eastTempleBasement, hiddenRoom, palaceF1, palaceF2, hideoutGroundFloor, hideoutMiddleFloor, hideoutTopFloor,
+			hideoutBasement,
 	camTorum, camTorumF2, camTorumBasement, hiddenTunnel, hiddenTunnel2;
 
 	Zone antechamber, prison, streambound, earthbound, ancientShrine, neypotzliFightRoom, tonaliCavernF2, tonaliCavernF0P2South, tonaliCavernF0P2North,
 	tonaliCavernF1Stairs, tonaliCavernF0Start, tonaliCavernF1Rockslugs, tonaliCavernF0P3V1, tonaliCavernF1GrimyLizards, tonaliCavernF1Nagua,
 			tonaliCavernF2North, tonaliCavernF0P3V2, sunPuzzleRoom, moonPuzzleRoom, finalBossArea;
 
-	Requirement inTempleBasement, inEastTempleBasement, inHiddenRoom, inPalaceF1, inPalaceF2, inHideout, inHideoutF1, inHideoutF2, inHideoutBasement,
-	inCamTorum, inCamTorumF2, inCamTorumBasement, inCamTorumHiddenTunnel;
+	Requirement inTempleArea, inTempleBasement, inEastTempleBasement, inHiddenRoom, inPalaceF1, inPalaceF2, inHideout, inHideoutF1, inHideoutF2,
+			inHideoutBasement, inCamTorum, inCamTorumF2, inCamTorumBasement, inCamTorumHiddenTunnel;
 
 	Requirement inAntechamber, inPrison, inStreambound, inEarthbound, inAncientShrine, inNeypotzli, inNeypotzliFightRoom;
 	Requirement inTonaliCavern, inTonaliCavernF0P2South, inTonaliCavernF0P2North, inTonaliCavernF0Start, inTonaliCavernF0P3, inTonaliCavernF1Stairs,
 			inTonaliCavernF1Rockslugs, inTonaliCavernF1GrimyLizards, inTonaliCavernF1Nagua, inTonaliCavernF2North, inSunPuzzleRoom, inMoonPuzzleRoom,
 			inFinalBossArea;
+
+	Requirement quetzalMadeSalvagerOverlook, hasAtesAndActivatedTeleport;
 
 	Requirement isSouthDrawer, hasDrawerKeyOrOpened, usedSigilOnCanvas, emissaryScrollNearby, inChestInterface;
 	Requirement hasSackOfGivenSack, isGalnaDrunk, notPlacedMindBomb, notPlacedBeer, notPlacedSteamforgeBrew, notPlacedDwarvenStout, beerTakenFromBarrel;
@@ -147,11 +151,14 @@ public class TheFinalDawn extends BasicQuestHelper
 		steps.put(0, startQuest);
 		steps.put(1, startQuest);
 
-		ConditionalStep goEnterTemple = new ConditionalStep(this, searchChestForEmissaryRobes);
-		goEnterTemple.addStep(emissaryRobes, enterTwilightTemple);
+		ConditionalStep goEnterTemple = new ConditionalStep(this, goToTempleFromGorge);
+		goEnterTemple.addStep(and(inTempleArea, emissaryRobes), enterTwilightTemple);
+		goEnterTemple.addStep(inTempleArea, searchChestForEmissaryRobes);
+		goEnterTemple.addStep(hasAtesAndActivatedTeleport, goToTempleWithAtes);
+		goEnterTemple.addStep(quetzalMadeSalvagerOverlook, goToTempleFromSalvager);
 		steps.put(3, goEnterTemple);
 
-		ConditionalStep goEnterTempleBasement = new ConditionalStep(this, searchChestForEmissaryRobes);
+		ConditionalStep goEnterTempleBasement = new ConditionalStep(this, goEnterTemple);
 		goEnterTempleBasement.addStep(inHiddenRoom, pickBlueChest);
 		goEnterTempleBasement.addStep(and(inEastTempleBasement, usedSigilOnCanvas), enterPassage);
 		goEnterTempleBasement.addStep(and(inEastTempleBasement, canvasPiece), useCanvasPieceOnPicture);
@@ -159,26 +166,26 @@ public class TheFinalDawn extends BasicQuestHelper
 		goEnterTempleBasement.addStep(and(inEastTempleBasement, hasDrawerKeyOrOpened), openDrawers);
 		goEnterTempleBasement.addStep(inEastTempleBasement, searchBed);
 		goEnterTempleBasement.addStep(inTempleBasement, enterBackroom);
-		goEnterTempleBasement.addStep(emissaryRobes, goDownStairsTemple);
+		goEnterTempleBasement.addStep(and(inTempleArea, emissaryRobes), goDownStairsTemple);
 
 		steps.put(4, goEnterTempleBasement);
 		steps.put(5, goEnterTempleBasement);
 		steps.put(6, goEnterTempleBasement);
 		steps.put(7, goEnterTempleBasement);
 
-		ConditionalStep goFightInBasement = new ConditionalStep(this, searchChestForEmissaryRobes);
+		ConditionalStep goFightInBasement = new ConditionalStep(this, goEnterTemple);
 		goFightInBasement.addStep(inEastTempleBasement, fightEnforcer);
 		goFightInBasement.addStep(inTempleBasement, enterBackroom);
-		goFightInBasement.addStep(emissaryRobes, goDownStairsTemple);
+		goFightInBasement.addStep(and(inTempleArea, emissaryRobes), goDownStairsTemple);
 		steps.put(8, goFightInBasement);
 
-		ConditionalStep goReadScroll = new ConditionalStep(this, searchChestForEmissaryRobes);
+		ConditionalStep goReadScroll = new ConditionalStep(this, goEnterTemple);
 		goReadScroll.addStep(emissaryScroll, readEmissaryScroll);
 		goReadScroll.addStep(and(or(inEastTempleBasement, inHiddenRoom), emissaryScrollNearby), pickUpEmissaryScroll);
 		goReadScroll.addStep(inEastTempleBasement, enterPassage);
 		goReadScroll.addStep(inHiddenRoom, pickBlueChest);
 		goReadScroll.addStep(inTempleBasement, enterBackroom);
-		goReadScroll.addStep(emissaryRobes, goDownStairsTemple);
+		goReadScroll.addStep(and(inTempleArea, emissaryRobes), goDownStairsTemple);
 		steps.put(9, goReadScroll);
 
 		ConditionalStep goTalkToQueen = new ConditionalStep(this, climbStairsF0ToF1Palace);
@@ -506,6 +513,7 @@ public class TheFinalDawn extends BasicQuestHelper
 	@Override
 	protected void setupZones()
 	{
+		templeArea = new Zone(new WorldPoint(1613, 3205, 0), new WorldPoint(1729, 3293, 0));
 		templeBasement = new Zone(new WorldPoint(1660, 9680, 0), new WorldPoint(1725, 9720, 0));
 		eastTempleBasement = new Zone(new WorldPoint(1707, 9696, 0), new WorldPoint(1718, 9715, 0));
 		hiddenRoom = new Zone(new WorldPoint(1721, 9702, 0), new WorldPoint(1725, 9709, 0));
@@ -588,7 +596,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		whistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_BASIC);
 		whistle.addAlternates(ItemID.HG_QUETZALWHISTLE_ENHANCED, ItemID.HG_QUETZALWHISTLE_PERFECTED);
 		pendant = new ItemRequirement("Pendant of ates", ItemID.PENDANT_OF_ATES);
-
+		pendantToTwilight = new ItemRequirement("Pendant of ates ([2] Twilight Temple)", ItemID.PENDANT_OF_ATES);
 		// Quest items
 		drawerKey = new ItemRequirement("Key", ItemID.VMQ4_DRAWER_KEY);
 		canvasPiece = new ItemRequirement("Canvas piece", ItemID.VMQ4_PAINTING_SIGIL);
@@ -624,6 +632,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		stoneTablet = new ItemRequirement("Stone tablet", ItemID.VMQ4_MOKI_TABLET);
 
 		// Quest requirements
+		inTempleArea = new ZoneRequirement(templeArea);
 		inTempleBasement = new ZoneRequirement(templeBasement);
 		inEastTempleBasement = new ZoneRequirement(eastTempleBasement);
 		inHiddenRoom = new ZoneRequirement(hiddenRoom);
@@ -711,6 +720,8 @@ public class TheFinalDawn extends BasicQuestHelper
 		notInspectedRanulPillar = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_RANUL_INSPECT, 1));
 		notInspectedSkeleton = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_TABLET_INSPECT, 1));
 		notInspectedDoor = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_DOOR_INSPECT, 1));
+		quetzalMadeSalvagerOverlook = new VarbitRequirement(VarbitID.QUETZAL_SALVAGEROVERLOOK, 1);
+		hasAtesAndActivatedTeleport = and(pendant.alsoCheckBank(questBank), new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TWILIGHT_FOUND, 1, Operation.GREATER_EQUAL));
 	}
 
 	public void setupSteps()
@@ -719,10 +730,50 @@ public class TheFinalDawn extends BasicQuestHelper
 				"Fortis to start the quest.");
 		startQuest.addDialogStep("Yes.");
 
+		goToTempleWithAtes = new DetailedQuestStep(this, new WorldPoint(1657, 3231, 0), "Use the pendant of ates  to the Twilight Temple, or go there via" +
+				" Quetzal.", pendantToTwilight.highlighted());
+		goToTempleWithAtes.addWidgetHighlight(new WidgetHighlight(InterfaceID.PendantOfAtes.TELEPORT_TWILIGHT, true).withModelRequirement(54541));
+
+		goToTempleFromSalvager = new DetailedQuestStep(this, new WorldPoint(1657, 3231, 0), "Take a quetzal to the Salvager Overlook and run south to the " +
+				"Twilight Temple.");
+		goToTempleFromSalvager.addWidgetHighlight(new WidgetHighlight(InterfaceID.QuetzalMenu.ICONS, true).withModelRequirement(54546));
+		((DetailedQuestStep) goToTempleFromSalvager).setLinePoints(List.of(
+				new WorldPoint(1613, 3299, 0),
+				new WorldPoint(1630, 3293, 0),
+				new WorldPoint(1644, 3279, 0),
+				new WorldPoint(1644, 3263, 0),
+				new WorldPoint(1639, 3254, 0),
+				new WorldPoint(1638, 3244, 0),
+				new WorldPoint(1644, 3240, 0),
+				new WorldPoint(1649, 3240, 0),
+				new WorldPoint(1657, 3231, 0)
+		));
+		goToTempleFromGorge = new DetailedQuestStep(this, new WorldPoint(1657, 3231, 0), "Take a quetzal to the Salvager Overlook and run south to the " +
+				"Twilight Temple.");
+		goToTempleFromGorge.addWidgetHighlight(new WidgetHighlight(InterfaceID.QuetzalMenu.ICONS, true).withModelRequirement(54539));
+		((DetailedQuestStep) goToTempleFromGorge).setLinePoints(List.of(
+				new WorldPoint(1510, 3226, 0),
+				new WorldPoint(1522, 3252, 0),
+				new WorldPoint(1529, 3254, 0),
+				new WorldPoint(1538, 3267, 0),
+				new WorldPoint(1542, 3277, 0),
+				new WorldPoint(1551, 3274, 0),
+				new WorldPoint(1561, 3279, 0),
+				new WorldPoint(1581, 3279, 0),
+				new WorldPoint(1593, 3269, 0),
+				new WorldPoint(1600, 3268, 0),
+				new WorldPoint(1610, 3260, 0),
+				new WorldPoint(1618, 3254, 0),
+				new WorldPoint(1621, 3254, 0),
+				new WorldPoint(1644, 3240, 0),
+				new WorldPoint(1649, 3240, 0),
+				new WorldPoint(1657, 3231, 0)
+		));
 		freeInvSlots4 = new FreeInventorySlotRequirement(4);
 		freeInvSlot1 = new FreeInventorySlotRequirement(1);
-		searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.VMQ3_CULTIST_OUTFIT_CHEST, new WorldPoint(1638, 3217, 0), "Search the chest in the south of the tower " +
-				"for some emissary robes.", freeInvSlots4);
+		searchChestForEmissaryRobes = new ObjectStep(this, ObjectID.VMQ3_CULTIST_OUTFIT_CHEST, new WorldPoint(1638, 3217, 0), "Search the chest in the south " +
+				"of the Tower of Ascension south of Salvager Overlook for some emissary robes.", freeInvSlots4);
+		searchChestForEmissaryRobes.addSubSteps(goToTempleWithAtes, goToTempleFromGorge, goToTempleFromSalvager);
 		searchChestForEmissaryRobes.addWidgetHighlight(new WidgetHighlight(InterfaceID.QuetzalMenu.ICONS, true).withModelRequirement(54546));
 		((ObjectStep) searchChestForEmissaryRobes).addTeleport(pendant);
 		enterTwilightTemple = new DetailedQuestStep(this, new WorldPoint(1687, 3247, 0), "Enter the temple south-east of Salvager Overlook.",

@@ -697,6 +697,10 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			color = Color.GRAY;
 		}
+		else if (additionalOptions != null && additionalOptions.check(client))
+		{
+			color = config.passColour();
+		}
 		else if (this.checkContainersOnPlayer(client))
 		{
 			color = config.passColour();

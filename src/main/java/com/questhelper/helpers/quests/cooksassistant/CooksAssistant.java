@@ -40,6 +40,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.widget.WidgetHighlight;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,7 +122,7 @@ public class CooksAssistant extends BasicQuestHelper
 			"Grab an egg from the farm north of Lumbridge.", egg);
 		getBucket = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3212, 3246, 0),
 			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(3));
-		getBucket.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BUCKET_EMPTY, true);
+		getBucket.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.BUCKET_EMPTY));
 		getBucket.addAlternateNpcs(NpcID.GENERALASSISTANT1);
 		getPot = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3212, 3246, 0),
 			"Purchase a pot from the Lumbridge General Store.", coins.quantity(3));

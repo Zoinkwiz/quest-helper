@@ -112,9 +112,9 @@ public class DeviousMinds extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		//Recommended
-		fallyTele = new ItemRequirement("Falador Teleports", ItemID.POH_TABLET_FALADORTELEPORT);
-		lumberTele = new ItemRequirement("Lumberyard Teleports", ItemID.TELEPORTSCROLL_LUMBERYARD);
-		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
+		fallyTele = new ItemRequirement("Falador Teleports", ItemID.POH_TABLET_FALADORTELEPORT, 2);
+		lumberTele = new ItemRequirement("Lumberyard Teleports", ItemID.TELEPORTSCROLL_LUMBERYARD, 3);
+		glory = new ItemRequirement("Amulet of Glory (Teleports to Port Sarim and Edgeville)", ItemCollections.AMULET_OF_GLORIES);
 
 		//Required
 		mith2h = new ItemRequirement("Mithril 2h Sword", ItemID.MITHRIL_2H_SWORD);

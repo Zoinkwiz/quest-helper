@@ -24,15 +24,38 @@
  */
 package com.questhelper.panel;
 
+import com.google.gson.Gson;
+import com.questhelper.managers.QuestManager;
+import com.questhelper.panel.questmaking.QuestCreatorFrame;
+import com.questhelper.panel.skillfiltering.SkillFilterPanel;
+import com.questhelper.tools.Icon;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.managers.QuestManager;
-import com.questhelper.panel.skillfiltering.SkillFilterPanel;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.tools.Icon;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicButtonUI;
+
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -47,18 +70,6 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class QuestHelperPanel extends PluginPanel
@@ -88,9 +99,15 @@ public class QuestHelperPanel extends PluginPanel
 
 	QuestManager questManager;
 
+	Gson gson;
+
+	@Getter
+	QuestCreatorFrame creatorFrame;
+
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon GITHUB_ICON;
 	private static final ImageIcon PATREON_ICON;
+	private static final ImageIcon QUEST_MAKER_ICON;
 	private static final ImageIcon SETTINGS_ICON;
 	private static final ImageIcon COLLAPSED_ICON;
 	private static final ImageIcon EXPANDED_ICON;
@@ -100,18 +117,23 @@ public class QuestHelperPanel extends PluginPanel
 		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		GITHUB_ICON = Icon.GITHUB.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		PATREON_ICON = Icon.PATREON.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
+		QUEST_MAKER_ICON = Icon.QUEST_ICON.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		COLLAPSED_ICON = Icon.COLLAPSED.getIcon();
 		EXPANDED_ICON = Icon.EXPANDED.getIcon();
 	}
 
-	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager, ConfigManager configManager)
+	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager, ConfigManager configManager, Gson gson)
 	{
 		super(false);
 
 		this.questHelperPlugin = questHelperPlugin;
 		this.questManager = questManager;
 		this.configManager = configManager;
+		this.gson = gson;
+
+		this.creatorFrame = new QuestCreatorFrame(gson);
+		this.creatorFrame.setVisible(false);
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -120,60 +142,90 @@ public class QuestHelperPanel extends PluginPanel
 		JPanel titlePanel = new JPanel();
 		titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		titlePanel.setLayout(new BorderLayout());
+		titlePanel.setOpaque(false);
 
 		JTextArea title = JGenerator.makeJTextArea();
-		title.setText("Quest Helper");
+		title.setText("QH");
 		title.setForeground(Color.WHITE);
+		title.setOpaque(false);
 		titlePanel.add(title, BorderLayout.WEST);
+
 
 		// Options
 		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 		viewControls.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		// Settings
-		// TODO: Removed until the Runelite API allows for a link to the actual config panel
-		JButton settingsBtn = new JButton();
-		SwingUtil.removeButtonDecorations(settingsBtn);
-		settingsBtn.setIcon(SETTINGS_ICON);
-		settingsBtn.setToolTipText("Change your settings");
-		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		settingsBtn.setUI(new BasicButtonUI());
-		settingsBtn.addActionListener((ev) -> {
-			assistLevelPanel.rebuild(null, configManager, this);
-
-			if (settingsPanelActive())
-			{
-				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-				deactivateSettings();
-			}
-			else
-			{
-				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
-				activateSettings();
-			}
-
-			onSearchBarChanged();
+		// Make Helper Button
+		JButton makeHelperButton = new JButton();
+		SwingUtil.removeButtonDecorations(makeHelperButton);
+		makeHelperButton.setIcon(QUEST_MAKER_ICON);
+		makeHelperButton.setToolTipText("Make a new helper");
+		makeHelperButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		makeHelperButton.setUI(new BasicButtonUI());
+		makeHelperButton.addActionListener((ev) -> {
+			toggleQuestCreator();
 		});
-		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
+		makeHelperButton.addMouseListener(new java.awt.event.MouseAdapter()
 		{
 			public void mouseEntered(java.awt.event.MouseEvent evt)
 			{
-				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+				makeHelperButton.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt)
 			{
-				if (settingsPanelActive())
+				if (isQuestMakerActive())
 				{
-					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+					makeHelperButton.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
 				else
 				{
-					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+					makeHelperButton.setBackground(ColorScheme.DARK_GRAY_COLOR);
 				}
 			}
 		});
-		viewControls.add(settingsBtn);
+		viewControls.add(makeHelperButton);
+
+		// Settings
+//		JButton settingsBtn = new JButton();
+//		SwingUtil.removeButtonDecorations(settingsBtn);
+//		settingsBtn.setIcon(SETTINGS_ICON);
+//		settingsBtn.setToolTipText("Change your settings");
+//		settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//		settingsBtn.setUI(new BasicButtonUI());
+//		settingsBtn.addActionListener((ev) -> {
+//			assistLevelPanel.rebuild(null, configManager, this);
+//			if (settingsPanelActive())
+//			{
+//				settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+//				deactivateSettings();
+//			}
+//			else
+//			{
+//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//				activateSettings();
+//			}
+//		});
+//		settingsBtn.addMouseListener(new java.awt.event.MouseAdapter()
+//		{
+//			public void mouseEntered(java.awt.event.MouseEvent evt)
+//			{
+//				settingsBtn.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
+//			}
+//
+//			public void mouseExited(java.awt.event.MouseEvent evt)
+//			{
+//				if (settingsPanelActive())
+//				{
+//					settingsBtn.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+//				}
+//				else
+//				{
+//					settingsBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+//				}
+//			}
+//		});
+//		viewControls.add(settingsBtn);
 
 		// Discord button
 		JButton discordBtn = new JButton();
@@ -414,6 +466,11 @@ public class QuestHelperPanel extends PluginPanel
 		revalidate();
 	}
 
+	public void toggleQuestCreator()
+	{
+		creatorFrame.setVisible(!creatorFrame.isVisible());
+	}
+
 	private JComboBox<Enum> makeNewDropdown(Enum[] values, String key)
 	{
 		JComboBox<Enum> dropdown = new JComboBox<>(values);
@@ -568,6 +625,11 @@ public class QuestHelperPanel extends PluginPanel
 		revalidate();
 	}
 
+	private boolean isQuestMakerActive()
+	{
+		return creatorFrame.isVisible();
+	}
+
 	private boolean settingsPanelActive()
 	{
 		return scrollableContainer.getViewport().getView() == assistLevelPanel;
@@ -662,5 +724,10 @@ public class QuestHelperPanel extends PluginPanel
 		{
 			skillExpandButton.setText(String.format("%d active", numFilteredSkills));
 		}
+	}
+
+	public boolean isMakerActive()
+	{
+		return creatorFrame.isActive();
 	}
 }

@@ -268,7 +268,7 @@ public class QuestOverviewPanel extends JPanel
 
 		if (quest.getCurrentStep() != null)
 		{
-			questNameLabel.setText(quest.getQuest().getName());
+			questNameLabel.setText(quest.getName());
 			actionsContainer.setVisible(true);
 
 			if (quest.getConfigs() != null)
@@ -561,7 +561,7 @@ public class QuestOverviewPanel extends JPanel
 			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()).getWikiURL());
 		} catch (Exception e)
 		{
-			externalResourcesList = Collections.singletonList("https://oldschool.runescape.wiki/w/" + StringUtils.lowerCase(URLEncoder.encode(quest.getQuest().name(), StandardCharsets.UTF_8)));
+			externalResourcesList = Collections.singletonList("https://oldschool.runescape.wiki/w/" + StringUtils.lowerCase(URLEncoder.encode(quest.getName(), StandardCharsets.UTF_8)));
 		}
 		JButton wikiBtn = new JButton();
 

@@ -25,6 +25,7 @@
  */
 package com.questhelper;
 
+import com.google.gson.Gson;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -164,6 +165,12 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	public SkillIconManager skillIconManager;
 
+	@Inject
+	public QuestHelperSharingManager questHelperSharingManager;
+
+	@Inject
+	public Gson gson;
+
 	private QuestHelperPanel panel;
 
 	private NavigationButton navButton;
@@ -200,7 +207,7 @@ public class QuestHelperPlugin extends Plugin
 
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
-		panel = new QuestHelperPanel(this, questManager, configManager);
+		panel = new QuestHelperPanel(this, questManager, configManager, gson);
 		questManager.startUp(panel);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
@@ -444,6 +451,14 @@ public class QuestHelperPlugin extends Plugin
 			}
 			log.debug(String.valueOf(inv));
 		}
+		else if (commandExecuted.getCommand().equals("import-helper"))
+		{
+			questHelperSharingManager.promptForImport();
+		}
+		else if (commandExecuted.getCommand().equals("helper-editor"))
+		{
+			panel.toggleQuestCreator();
+		}
 	}
 
 	@Subscribe(priority = 100)
@@ -505,6 +520,24 @@ public class QuestHelperPlugin extends Plugin
 		String target = Text.removeTags(event.getTarget());
 
 		questMenuHandler.setupQuestMenuOptions(menuEntries, widgetIndex, widgetID, target, option);
+
+		if (event.getMenuEntry().getNpc() != null)
+		{
+			menu.createMenuEntry(menuEntries.length - 1)
+					.setOption("Add NpcStep")
+					.setTarget("<col=ff9040>" + target + "</col>")
+					.onClick((menuEntry -> handleAddNpcStep(event.getMenuEntry().getNpc())))
+					.setType(MenuAction.RUNELITE)
+					.setParam0(widgetIndex)
+					.setParam1(widgetID);
+		}
+	}
+
+	private void handleAddNpcStep(NPC npc)
+	{
+		String name = npc.getName();
+		int id = npc.getId();
+		panel.getCreatorFrame().getStepMakingPanel().createNpcStep(id, name, npc.getWorldLocation());
 	}
 
 	@Subscribe
@@ -544,10 +577,8 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	private void instantiate(QuestHelperQuest quest)
+	void instantiate(QuestHelper questHelper, String name)
 	{
-		QuestHelper questHelper = quest.getQuestHelper();
-
 		Module questModule = (Binder binder) ->
 		{
 			binder.bind(QuestHelper.class).toInstance(questHelper);
@@ -556,11 +587,18 @@ public class QuestHelperPlugin extends Plugin
 		Injector questInjector = RuneLite.getInjector().createChildInjector(questModule);
 		injector.injectMembers(questHelper);
 		questHelper.setInjector(questInjector);
-		questHelper.setQuest(quest);
 		questHelper.setConfig(config);
 		questHelper.setQuestHelperPlugin(this);
+		questHelper.setName(name);
 
-		log.debug("Loaded quest helper {}", quest.name());
+		log.debug("Loaded quest helper {}", name);
+	}
+
+	private void instantiate(QuestHelperQuest quest)
+	{
+		QuestHelper questHelper = quest.getQuestHelper();
+		instantiate(questHelper, quest.name());
+		questHelper.setQuest(quest);
 	}
 
     public void saveSidebarOrder(QuestHelper currentQuest, List<Integer> newOrderIds)

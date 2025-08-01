@@ -173,8 +173,11 @@ public class DetailedQuestStep extends QuestStep
 		super.startUp();
 		if (worldPoint != null)
 		{
-			mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
-			worldMapPointManager.add(mapPoint);
+			if (questHelper.getConfig().showWorldMapPoint())
+			{
+				mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
+				worldMapPointManager.add(mapPoint);
+			}
 
 			setShortestPath();
 		}
@@ -255,8 +258,11 @@ public class DetailedQuestStep extends QuestStep
 			}
 			if (worldPoint != null)
 			{
-				mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
-				worldMapPointManager.add(mapPoint);
+				if (questHelper.getConfig().showWorldMapPoint())
+				{
+					mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
+					worldMapPointManager.add(mapPoint);
+				}
 			}
 			else
 			{

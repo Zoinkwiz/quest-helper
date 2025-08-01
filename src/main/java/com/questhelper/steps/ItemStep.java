@@ -26,6 +26,10 @@ public class ItemStep extends DetailedQuestStep
 	@Override
 	public void renderArrow(Graphics2D graphics)
 	{
+		if (!questHelper.getConfig().showMiniMapArrow()) {
+			return;
+		}
+
 		tileHighlights.forEach((tile, ids) -> {
 			LocalPoint lp = tile.getLocalLocation();
 

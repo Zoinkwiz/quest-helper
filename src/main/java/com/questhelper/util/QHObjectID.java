@@ -45,4 +45,8 @@ public class QHObjectID
 	 * Ladder used at the top floor of the Grand Tree in the Tree Gnome Stronghold
 	 */
 	public static final int GRAND_TREE_F3_LADDER = ObjectID.GRANDTREE_LADDERTOP;
+	/**
+	 * Southern staircase at the bottom floor of Lumbridge Castle
+	 */
+	public static final int LUMBRIDGE_CASTLE_F0_SOUTH_STAIRCASE = ObjectID.SPIRALSTAIRSBOTTOM_3;
 }

@@ -31,6 +31,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
+import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -70,6 +71,10 @@ public class CooksAssistant extends BasicQuestHelper
 	Zone millThird;
 
 	// Miscellaneous requirements
+	DialogRequirement hasTurnedInMilk;
+	DialogRequirement hasTurnedInFlour;
+	DialogRequirement hasTurnedInEgg;
+
 	VarbitRequirement controlsUsed;
 
 	ZoneRequirement inMillSecond;
@@ -100,11 +105,18 @@ public class CooksAssistant extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		hasTurnedInMilk = new DialogRequirement("Here's a bucket of milk.");
+		hasTurnedInFlour = new DialogRequirement("Here's a pot of flour.");
+		hasTurnedInEgg = new DialogRequirement("Here's a fresh egg.");
+
 		egg = new ItemRequirement("Egg", ItemID.EGG);
+		egg.setConditionToHide(hasTurnedInEgg);
 		egg.canBeObtainedDuringQuest();
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
+		milk.setConditionToHide(hasTurnedInMilk);
 		milk.canBeObtainedDuringQuest();
 		flour = new ItemRequirement("Pot of flour", ItemID.POT_FLOUR);
+		flour.setConditionToHide(hasTurnedInFlour);
 		flour.canBeObtainedDuringQuest();
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 		pot = new ItemRequirement("Pot", ItemID.POT_EMPTY);
@@ -176,6 +188,7 @@ public class CooksAssistant extends BasicQuestHelper
 
 		var steps = new HashMap<Integer, QuestStep>();
 
+
 		var getFlour = new ConditionalStep(this, getPot);
 		getFlour.addStep(and(pot, controlsUsed, inMillThird), climbLadderThree);
 		getFlour.addStep(and(pot, controlsUsed, inMillSecond), climbLadderTwoDown);
@@ -187,11 +200,11 @@ public class CooksAssistant extends BasicQuestHelper
 		getFlour.addStep(and(pot), getWheat);
 
 		var doQuest = new ConditionalStep(this, finishQuest);
-		doQuest.addStep(and(not(milk), not(bucket)), getBucket);
-		doQuest.addStep(and(not(flour), not(pot)), getPot);
-		doQuest.addStep(not(egg), getEgg);
-		doQuest.addStep(not(flour), getFlour);
-		doQuest.addStep(not(milk), milkCow);
+		doQuest.addStep(and(not(milk), not(bucket), not(hasTurnedInMilk)), getBucket);
+		doQuest.addStep(and(not(flour), not(pot), not(hasTurnedInFlour)), getPot);
+		doQuest.addStep(and(not(egg), not(hasTurnedInEgg)), getEgg);
+		doQuest.addStep(and(not(flour), not(hasTurnedInFlour)), getFlour);
+		doQuest.addStep(and(not(milk), not(hasTurnedInMilk)), milkCow);
 
 		steps.put(0, doQuest);
 		steps.put(1, doQuest);

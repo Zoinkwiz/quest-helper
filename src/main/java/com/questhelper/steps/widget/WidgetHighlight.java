@@ -117,6 +117,13 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		return w;
 	}
 
+	public static WidgetHighlight createMultiskillByItemId(int itemId)
+	{
+		var w = new WidgetHighlight(InterfaceID.Skillmulti.BOTTOM, true);
+		w.itemIdRequirement = itemId;
+		return w;
+	}
+
 	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{

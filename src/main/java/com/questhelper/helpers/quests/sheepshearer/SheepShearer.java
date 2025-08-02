@@ -29,12 +29,24 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
@@ -44,11 +56,6 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
-
-import java.util.*;
-import java.util.stream.IntStream;
-
-import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class SheepShearer extends BasicQuestHelper
 {
@@ -105,7 +112,10 @@ public class SheepShearer extends BasicQuestHelper
 		skipIfFullInventory = new ManualRequirement();
 
 		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		if (inventory == null) return;
+		if (inventory == null)
+		{
+			return;
+		}
 
 		int itemsInInventory = inventory.count();
 		skipIfFullInventory.setShouldPass(itemsInInventory == 28);

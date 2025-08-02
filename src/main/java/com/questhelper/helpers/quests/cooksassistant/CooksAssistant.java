@@ -107,7 +107,7 @@ public class CooksAssistant extends BasicQuestHelper
 		flour.canBeObtainedDuringQuest();
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 		pot = new ItemRequirement("Pot", ItemID.POT_EMPTY);
-		coins = new ItemRequirement("Coins", ItemCollections.COINS);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 3);
 		coins.setTooltip("Necessary if you do not have a pot / bucket");
 		grain = new ItemRequirement("Grain", ItemID.GRAIN);
 
@@ -125,11 +125,11 @@ public class CooksAssistant extends BasicQuestHelper
 		};
 
 		getBucket = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
-			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(3));
+			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(2));
 		getBucket.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.BUCKET_EMPTY));
 
 		getPot = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
-			"Purchase a pot from the Lumbridge General Store.", coins.quantity(3));
+			"Purchase a pot from the Lumbridge General Store.", coins.quantity(1));
 
 		getEgg = new ItemStep(this, new WorldPoint(3177, 3296, 0),
 			"Grab an egg from the farm north of Lumbridge.", egg);
@@ -247,7 +247,7 @@ public class CooksAssistant extends BasicQuestHelper
 			getBucket,
 			getPot
 		), List.of(
-			coins.quantity(3)
+			coins
 		)));
 
 		steps.add(new PanelDetails("Getting the Egg", List.of(

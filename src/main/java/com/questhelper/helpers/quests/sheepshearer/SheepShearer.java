@@ -52,45 +52,36 @@ import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class SheepShearer extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement ballOfWool, shears, woolOrBalls, onlyWool, totalWoolNeeded, totalBallsNeeded;
+	// Required items
+	ItemRequirement ballOfWool;
+	ItemRequirement shears;
+	ItemRequirement woolOrBalls;
+	ItemRequirement onlyWool;
+	ItemRequirement totalWoolNeeded;
+	ItemRequirement totalBallsNeeded;
 
-	QuestStep startStep, getSheers, climbStairsUp, climbStairsDown, spinBalls, turnInBalls;
-
-	NpcStep shearSheep;
-
+	// Zones
 	Zone castleSecond;
 
+	// Miscellaneous requirements
 	Requirement inCastleSecond;
-
 	ManualRequirement skipIfFullInventory;
+
+	QuestStep startStep;
+	QuestStep getSheers;
+	QuestStep climbStairsUp;
+	QuestStep climbStairsDown;
+	QuestStep spinBalls;
+	QuestStep turnInBalls;
+
+	NpcStep shearSheep;
 
 	int woolNeeded;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		// If you have all the wool you need, OR you have filled your inventory with wool
-		Requirement hasAllWoolOrFullInv = or(totalWoolNeeded, and(woolOrBalls, skipIfFullInventory));
-		// If you have all the balls needed, OR you've made all the wool you had in your inventory into balls of wool
-		Requirement hasAllBallsOrFullInv = or(totalBallsNeeded, and(nor(onlyWool), ballOfWool));
-		ConditionalStep craftingBalls = new ConditionalStep(this, getSheers);
-		craftingBalls.addStep(and(hasAllBallsOrFullInv, inCastleSecond), climbStairsDown);
-		craftingBalls.addStep(hasAllBallsOrFullInv, turnInBalls);
-		craftingBalls.addStep(and(hasAllWoolOrFullInv, inCastleSecond), spinBalls);
-		craftingBalls.addStep(hasAllWoolOrFullInv, climbStairsUp);
-		craftingBalls.addStep(shears, shearSheep);
-
-		steps.put(0, startStep);
-		IntStream.range(1, 20).forEach(i -> steps.put(i, craftingBalls));
-
-		return steps;
+		castleSecond = new Zone(new WorldPoint(3200, 3232, 1), new WorldPoint(3220, 3205, 1));
 	}
 
 	@Override
@@ -106,12 +97,6 @@ public class SheepShearer extends BasicQuestHelper
 		woolNeeded = client.getVarpValue(179) > 1 ? 21 - client.getVarpValue(179) : 20;
 		totalWoolNeeded = woolOrBalls.quantity(woolNeeded);
 		totalBallsNeeded = ballOfWool.quantity(woolNeeded);
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		castleSecond = new Zone(new WorldPoint(3200, 3232, 1), new WorldPoint(3220, 3205, 1));
 	}
 
 	public void setupConditions()
@@ -150,6 +135,32 @@ public class SheepShearer extends BasicQuestHelper
 		turnInBalls.addDialogSteps("I need to talk to you about shearing these sheep!");
 	}
 
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupConditions();
+		setupSteps();
+
+		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		// If you have all the wool you need, OR you have filled your inventory with wool
+		Requirement hasAllWoolOrFullInv = or(totalWoolNeeded, and(woolOrBalls, skipIfFullInventory));
+		// If you have all the balls needed, OR you've made all the wool you had in your inventory into balls of wool
+		Requirement hasAllBallsOrFullInv = or(totalBallsNeeded, and(nor(onlyWool), ballOfWool));
+		ConditionalStep craftingBalls = new ConditionalStep(this, getSheers);
+		craftingBalls.addStep(and(hasAllBallsOrFullInv, inCastleSecond), climbStairsDown);
+		craftingBalls.addStep(hasAllBallsOrFullInv, turnInBalls);
+		craftingBalls.addStep(and(hasAllWoolOrFullInv, inCastleSecond), spinBalls);
+		craftingBalls.addStep(hasAllWoolOrFullInv, climbStairsUp);
+		craftingBalls.addStep(shears, shearSheep);
+
+		steps.put(0, startStep);
+		IntStream.range(1, 20).forEach(i -> steps.put(i, craftingBalls));
+
+		return steps;
+	}
+
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
@@ -172,10 +183,10 @@ public class SheepShearer extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(ballOfWool.quantity(20));
-		reqs.add(shears);
-		return reqs;
+		return List.of(
+			ballOfWool.quantity(20),
+			shears
+		);
 	}
 
 	@Override
@@ -187,22 +198,36 @@ public class SheepShearer extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.CRAFTING, 150));
+		return List.of(
+			new ExperienceReward(Skill.CRAFTING, 150)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 60));
+		return List.of(
+			new ItemReward("Coins", ItemID.COINS, 60)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var steps = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Bring Fred Some Wool", Arrays.asList(startStep, getSheers, shearSheep,
-			climbStairsUp, spinBalls, climbStairsDown, turnInBalls), ballOfWool.quantity(20)));
-		return allSteps;
+		steps.add(new PanelDetails("Bring Fred Some Wool", List.of(
+			startStep,
+			getSheers,
+			shearSheep,
+			climbStairsUp,
+			spinBalls,
+			climbStairsDown,
+			turnInBalls
+		), List.of(
+			ballOfWool.quantity(20)
+		)));
+
+		return steps;
 	}
 }

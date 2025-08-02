@@ -130,6 +130,7 @@ public class CooksAssistant extends BasicQuestHelper
 
 		getPot = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
 			"Purchase a pot from the Lumbridge General Store.", coins.quantity(1));
+		getPot.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.POT_EMPTY));
 
 		getEgg = new ItemStep(this, new WorldPoint(3177, 3296, 0),
 			"Grab an egg from the farm north of Lumbridge.", egg);

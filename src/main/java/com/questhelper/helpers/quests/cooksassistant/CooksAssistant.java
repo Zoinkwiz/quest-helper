@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -165,19 +166,23 @@ public class CooksAssistant extends BasicQuestHelper
 		setupSteps();
 
 		var steps = new HashMap<Integer, QuestStep>();
-		var doQuest = new ConditionalStep(this, getBucket);
-		doQuest.addStep(and(milk, flour, egg), finishQuest);
-		doQuest.addStep(and(milk, pot, egg, controlsUsed, inMillThird), climbLadderThree);
-		doQuest.addStep(and(milk, pot, egg, controlsUsed, inMillSecond), climbLadderTwoDown);
-		doQuest.addStep(and(milk, pot, egg, controlsUsed), collectFlour);
-		doQuest.addStep(and(milk, pot, egg, grain, inMillThird), fillHopper);
-		doQuest.addStep(and(milk, pot, egg, inMillThird), operateControls);
-		doQuest.addStep(and(milk, pot, egg, grain, inMillSecond), climbLadderTwoUp);
-		doQuest.addStep(and(milk, pot, egg, grain), climbLadderOne);
-		doQuest.addStep(and(milk, pot, egg), getWheat);
-		doQuest.addStep(and(milk, pot), getEgg);
-		doQuest.addStep(and(bucket, pot), milkCow);
-		doQuest.addStep(bucket, getPot);
+
+		var getFlour = new ConditionalStep(this, getPot);
+		getFlour.addStep(and(pot, controlsUsed, inMillThird), climbLadderThree);
+		getFlour.addStep(and(pot, controlsUsed, inMillSecond), climbLadderTwoDown);
+		getFlour.addStep(and(pot, controlsUsed), collectFlour);
+		getFlour.addStep(and(pot, grain, inMillThird), fillHopper);
+		getFlour.addStep(and(pot, inMillThird), operateControls);
+		getFlour.addStep(and(pot, grain, inMillSecond), climbLadderTwoUp);
+		getFlour.addStep(and(pot, grain), climbLadderOne);
+		getFlour.addStep(and(pot), getWheat);
+
+		var doQuest = new ConditionalStep(this, finishQuest);
+		doQuest.addStep(and(not(milk), not(bucket)), getBucket);
+		doQuest.addStep(and(not(flour), not(pot)), getPot);
+		doQuest.addStep(not(egg), getEgg);
+		doQuest.addStep(not(flour), getFlour);
+		doQuest.addStep(not(milk), milkCow);
 
 		steps.put(0, doQuest);
 		steps.put(1, doQuest);
@@ -238,12 +243,6 @@ public class CooksAssistant extends BasicQuestHelper
 			coins.quantity(3)
 		)));
 
-		steps.add(new PanelDetails("Getting the Milk", List.of(
-			milkCow
-		), List.of(
-			bucket
-		)));
-
 		steps.add(new PanelDetails("Getting the Egg", List.of(
 			getEgg
 		)));
@@ -257,6 +256,12 @@ public class CooksAssistant extends BasicQuestHelper
 			collectFlour
 		), List.of(
 			pot
+		)));
+
+		steps.add(new PanelDetails("Getting the Milk", List.of(
+			milkCow
+		), List.of(
+			bucket
 		)));
 
 		steps.add(new PanelDetails("Finishing up", List.of(

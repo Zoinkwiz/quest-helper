@@ -119,18 +119,20 @@ public class CooksAssistant extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		getEgg = new ItemStep(this, new WorldPoint(3177, 3296, 0),
-			"Grab an egg from the farm north of Lumbridge.", egg);
-		getBucket = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3212, 3246, 0),
+		var lumbridgeShopkeepers = new int[]{
+			NpcID.GENERALSHOPKEEPER1,
+			NpcID.GENERALASSISTANT1,
+		};
+
+		getBucket = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
 			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(3));
 		getBucket.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.BUCKET_EMPTY));
-		getBucket.addAlternateNpcs(NpcID.GENERALASSISTANT1);
-		getPot = new NpcStep(this, NpcID.GENERALSHOPKEEPER1, new WorldPoint(3212, 3246, 0),
+
+		getPot = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
 			"Purchase a pot from the Lumbridge General Store.", coins.quantity(3));
-		// TODO: highlight a pot to purchase
-		getPot.addAlternateNpcs(NpcID.GENERALASSISTANT1);
-		milkCow = new ObjectStep(this, ObjectID.FAT_COW, new WorldPoint(3254, 3272, 0),
-			"Milk the cow north-east of Lumbridge.", bucket);
+
+		getEgg = new ItemStep(this, new WorldPoint(3177, 3296, 0),
+			"Grab an egg from the farm north of Lumbridge.", egg);
 		getWheat = new ObjectStep(this, ObjectID.FAI_VARROCK_WHEAT_CORNER, new WorldPoint(3161, 3292, 0),
 			"Pick some wheat north of Lumbridge.");
 		climbLadderOne = new ObjectStep(this, ObjectID.QIP_COOK_LADDER, new WorldPoint(3164, 3307, 0),
@@ -153,9 +155,14 @@ public class CooksAssistant extends BasicQuestHelper
 		collectFlour = new ObjectStep(this, ObjectID.MILLBASE_FLOUR, new WorldPoint(3166, 3306, 0),
 			"Collect the flour in the bin.", pot.highlighted());
 		collectFlour.addIcon(ItemID.POT_EMPTY);
-		finishQuest = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3206, 3214, 0),
+
+		milkCow = new ObjectStep(this, ObjectID.FAT_COW, new WorldPoint(3172, 3317, 0),
+			"Milk the dairy cow north of Lumbridge.", bucket);
+
+		finishQuest = new NpcStep(this, NpcID.COOK, new WorldPoint(3206, 3214, 0),
 			"Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest.",
 			egg, milk, flour);
+		finishQuest.addAlternateNpcs(NpcID.POH_SERVANT_COOK_WOMAN);
 		finishQuest.addDialogSteps("What's wrong?", "Can I help?", "Yes.");
 	}
 

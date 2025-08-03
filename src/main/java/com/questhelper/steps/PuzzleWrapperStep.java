@@ -45,6 +45,7 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class PuzzleWrapperStep extends ConditionalStep
 {
+	public static String DEFAULT_TEXT = "If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.";
 	final QuestHelperConfig questHelperConfig;
 	final QuestStep noSolvingStep;
 	ManualRequirement shouldHideHiddenPuzzleHintInSidebar = new ManualRequirement();
@@ -62,7 +63,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
-		this(questHelper, step, new DetailedQuestStep(questHelper, "If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings."), requirements);
+		this(questHelper, step, new DetailedQuestStep(questHelper, DEFAULT_TEXT), requirements);
 	}
 
 	public PuzzleWrapperStep(QuestHelper questHelper, QuestStep step, String text, Requirement... requirements)

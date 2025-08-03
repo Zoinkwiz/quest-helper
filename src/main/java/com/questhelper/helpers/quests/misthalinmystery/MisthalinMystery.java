@@ -41,6 +41,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -121,18 +123,25 @@ public class MisthalinMystery extends BasicQuestHelper
 	ObjectStep observeThroughTree;
 	ObjectStep takeNote2;
 	DetailedQuestStep readNotes2;
+
+	PuzzleWrapperStep pwPlayPiano;
+	ConditionalStep cPlayPiano;
 	ObjectStep playPiano;
 	WidgetStep playD;
 	WidgetStep playE;
 	WidgetStep playA;
 	WidgetStep playDAgain;
 	DetailedQuestStep restartPiano;
-	ObjectStep searchThePiano;
+	PuzzleWrapperStep searchThePiano;
+
 	ObjectStep returnOverBrokenWall;
 	ObjectStep openEmeraldDoor;
 	ObjectStep enterBandosGodswordRoomStep;
 	ObjectStep takeNote3;
 	DetailedQuestStep readNotes3;
+
+	PuzzleWrapperStep pwSolveFireplacePuzzle;
+	ConditionalStep solveFireplacePuzzle;
 	ObjectStep useKnifeOnFireplace;
 	ObjectStep searchFireplace;
 	WidgetStep clickSapphire;
@@ -142,7 +151,8 @@ public class MisthalinMystery extends BasicQuestHelper
 	WidgetStep clickOnyx;
 	WidgetStep clickRuby;
 	DetailedQuestStep restartGems;
-	ObjectStep searchFireplaceForSapphireKey;
+	PuzzleWrapperStep searchFireplaceForSapphireKey;
+
 	ObjectStep goThroughSapphireDoor;
 	DetailedQuestStep reflectKnives;
 	ObjectStep continueThroughSapphireDoor;
@@ -169,13 +179,13 @@ public class MisthalinMystery extends BasicQuestHelper
 		inOutsideArea = new ZoneRequirement(outside1, outside2, outside3);
 		inBossRoom = new ZoneRequirement(bossRoom);
 
-		litCandle1 = new VarbitRequirement(4042, 1);
-		litCandle2 = new VarbitRequirement(4041, 1);
-		litCandle3 = new VarbitRequirement(4039, 1);
+		litCandle1 = new VarbitRequirement(VarbitID.MISTMYST_CANDLE4, 1);
+		litCandle2 = new VarbitRequirement(VarbitID.MISTMYST_CANDLE3, 1);
+		litCandle3 = new VarbitRequirement(VarbitID.MISTMYST_CANDLE1, 1);
 
-		playedD = and(new VarbitRequirement(4044, 1), new VarbitRequirement(4049, 1));
-		playedE = and(new VarbitRequirement(4045, 1), new VarbitRequirement(4049, 2));
-		playedA = and(new VarbitRequirement(4046, 1), new VarbitRequirement(4049, 3));
+		playedD = and(new VarbitRequirement(VarbitID.MISTMYST_PIANO_D1, 1), new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 1));
+		playedE = and(new VarbitRequirement(VarbitID.MISTMYST_PIANO_E, 1), new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 2));
+		playedA = and(new VarbitRequirement(VarbitID.MISTMYST_PIANO_A, 1), new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 3));
 		playedAnyKey = new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 1, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetTextRequirement(554, 20, "C");
 		inGemWidget = new WidgetTextRequirement(555, 1, 1, "Gemstone switch panel");
@@ -217,7 +227,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		tryToOpenPinkKnobDoor = new ObjectStep(this, ObjectID.MISTMYST_DOOR_REDTOPAZ, new WorldPoint(1635, 4838, 0), "Try to open the door with the pink handle.");
 		takeNote1 = new ObjectStep(this, ObjectID.MISTMYST_CLUE_LIBRARY, new WorldPoint(1635, 4839, 0), "Pick up the note that appeared.");
 		readNotes1 = new DetailedQuestStep(this, "Read the notes.", notes1.highlighted());
-		useKnifeOnPainting = new ObjectStep(this, ObjectID.MISTMYST_PAINTING, new WorldPoint(1632, 4833, 0), "Use a knife on the marked painting.", knife);
+		useKnifeOnPainting = new ObjectStep(this, ObjectID.MISTMYST_PAINTING, new WorldPoint(1632, 4833, 0), "Use a knife on the marked painting.", knife.highlighted());
 		useKnifeOnPainting.addIcon(ItemID.KNIFE);
 		searchPainting = new ObjectStep(this, ObjectID.MISTMYST_PAINTING, new WorldPoint(1632, 4833, 0), "Search the painting for a ruby key.");
 		goThroughRubyDoor = new ObjectStep(this, ObjectID.MISTMYST_DOOR_RUBY, new WorldPoint(1640, 4828, 0), "Go through the door with the ruby handle.", rubyKey);
@@ -243,15 +253,24 @@ public class MisthalinMystery extends BasicQuestHelper
 		takeNote2 = new ObjectStep(this, ObjectID.MISTMYST_CLUE_OUTSIDE, new WorldPoint(1632, 4850, 0), "Pick up the note that appeared by the fence.");
 		readNotes2 = new DetailedQuestStep(this, "Read the notes.", notes2.highlighted());
 
-		playPiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4842, 0), "Play the piano in the room to the south.");
-		playD = new WidgetStep(this, "Play the D key.", 554, 21);
-		playE = new WidgetStep(this, "Play the E key.", 554, 22);
-		playA = new WidgetStep(this, "Play the A key.", 554, 25);
-		playDAgain = new WidgetStep(this, "Play the D key again.", 554, 21);
+		playPiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4841, 0), "");
+		playD = new WidgetStep(this, "Play the D key.", InterfaceID.MistmystPiano.LABEL_D1);
+		playE = new WidgetStep(this, "Play the E key.", InterfaceID.MistmystPiano.LABEL_E1);
+		playA = new WidgetStep(this, "Play the A key.", InterfaceID.MistmystPiano.LABEL_A2);
+		playDAgain = new WidgetStep(this, "Play the D key again.", InterfaceID.MistmystPiano.LABEL_D1);
 		restartPiano = new DetailedQuestStep(this, "Unfortunately you've played an incorrect key. Restart.");
 		playPiano.addSubSteps(restartPiano);
 
-		searchThePiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4842, 0), "Right-click search the piano for the emerald key.");
+		cPlayPiano = new ConditionalStep(this, playPiano, "Play the piano in the room to the south for the emerald key.");
+		cPlayPiano.addStep(playedA, playDAgain);
+		cPlayPiano.addStep(playedE, playA);
+		cPlayPiano.addStep(playedD, playE);
+		cPlayPiano.addStep(and(playedAnyKey, inPianoWidget), restartPiano);
+		cPlayPiano.addStep(inPianoWidget, playD);
+
+		pwPlayPiano = cPlayPiano.puzzleWrapStepWithDefaultText("Find the emerald key in the room to the south.");
+
+		searchThePiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4842, 0), "Right-click search the piano for the emerald key.").puzzleWrapStep(true);
 
 		returnOverBrokenWall = new ObjectStep(this, ObjectID.MISTMYST_DESTRUCTABLE_WALL_CLIMBABLE, new WorldPoint(1648, 4829, 0),
 			"Climb back over the damaged wall into the manor.", emeraldKey);
@@ -262,13 +281,12 @@ public class MisthalinMystery extends BasicQuestHelper
 
 		takeNote3 = new ObjectStep(this, ObjectID.MISTMYST_CLUE_KITCHEN, new WorldPoint(1630, 4842, 0), "Pick up the note that appeared by the door.");
 		readNotes3 = new DetailedQuestStep(this, "Read the notes.", notes3.highlighted());
-		useKnifeOnFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Use a knife on the unlit fireplace in the eastern room.", knife);
+		useKnifeOnFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Use a knife on the unlit fireplace in the eastern room.", knife.highlighted());
 		useKnifeOnFireplace.addIcon(ItemID.KNIFE);
 
-		searchFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Search the fireplace.");
+		searchFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "");
 
 		restartGems = new DetailedQuestStep(this, "You've clicked a gem in the wrong order. Try restarting.");
-		searchFireplace.addSubSteps(restartGems);
 
 		clickSapphire = new WidgetStep(this, "Click the sapphire.", 555, 19);
 		clickDiamond = new WidgetStep(this, "Click the diamond.", 555, 4);
@@ -277,7 +295,21 @@ public class MisthalinMystery extends BasicQuestHelper
 		clickOnyx = new WidgetStep(this, "Click the onyx.", 555, 7);
 		clickRuby = new WidgetStep(this, "Click the ruby.", 555, 15);
 
-		searchFireplaceForSapphireKey = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Search the fireplace again for the sapphire key.");
+		searchFireplaceForSapphireKey = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Search the fireplace again for the sapphire key.").puzzleWrapStep(true);
+
+		solveFireplacePuzzle = new ConditionalStep(this, takeTheBoat, "Search the fireplace and solve the puzzle for the sapphire key.");
+		solveFireplacePuzzle.addStep(selectedOnyx, clickRuby);
+		solveFireplacePuzzle.addStep(selectedEmerald, clickOnyx);
+		solveFireplacePuzzle.addStep(selectedZenyte, clickEmerald);
+		solveFireplacePuzzle.addStep(selectedDiamond, clickZenyte);
+		solveFireplacePuzzle.addStep(selectedSaphire, clickDiamond);
+		solveFireplacePuzzle.addStep(selectAnyGem, restartGems);
+		solveFireplacePuzzle.addStep(inGemWidget, clickSapphire);
+		solveFireplacePuzzle.addStep(onIsland, searchFireplace);
+
+		pwSolveFireplacePuzzle = solveFireplacePuzzle.puzzleWrapStepWithDefaultText("Find the sapphire key in the room to the east.");
+		pwSolveFireplacePuzzle.addSubSteps(searchFireplaceForSapphireKey);
+
 		goThroughSapphireDoor = new ObjectStep(this, ObjectID.MISTMYST_DOOR_SAPPHIRE, new WorldPoint(1628, 4829, 0),
 			"Go through the sapphire door.");
 		reflectKnives = new DetailedQuestStep(this, "This puzzle requires you to move the mirror to reflect the knives the murderer throws. You can tell which wardrobe the murderer will throw from by a black swirl that'll surround it.");
@@ -374,12 +406,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		steps.put(70, pickUpAndReadNotes2);
 
 		var playMusic = new ConditionalStep(this, takeTheBoat);
-		playMusic.addStep(playedA, playDAgain);
-		playMusic.addStep(playedE, playA);
-		playMusic.addStep(playedD, playE);
-		playMusic.addStep(and(playedAnyKey, inPianoWidget), restartPiano);
-		playMusic.addStep(inPianoWidget, playD);
-		playMusic.addStep(inOutsideArea, playPiano);
+		playMusic.addStep(inOutsideArea, pwPlayPiano);
 		playMusic.addStep(onIsland, climbWall);
 		steps.put(75, playMusic);
 
@@ -404,16 +431,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		openFireplace.addStep(onIsland, takeKnife);
 		steps.put(95, openFireplace);
 
-		var solveFireplacePuzzle = new ConditionalStep(this, takeTheBoat);
-		solveFireplacePuzzle.addStep(selectedOnyx, clickRuby);
-		solveFireplacePuzzle.addStep(selectedEmerald, clickOnyx);
-		solveFireplacePuzzle.addStep(selectedZenyte, clickEmerald);
-		solveFireplacePuzzle.addStep(selectedDiamond, clickZenyte);
-		solveFireplacePuzzle.addStep(selectedSaphire, clickDiamond);
-		solveFireplacePuzzle.addStep(selectAnyGem, restartGems);
-		solveFireplacePuzzle.addStep(inGemWidget, clickSapphire);
-		solveFireplacePuzzle.addStep(onIsland, searchFireplace);
-		steps.put(100, solveFireplacePuzzle);
+		steps.put(100, pwSolveFireplacePuzzle);
 
 		var openSapphireDoor = new ConditionalStep(this, takeTheBoat);
 		openSapphireDoor.addStep(and(onIsland, sapphireKey), goThroughSapphireDoor);
@@ -512,11 +530,7 @@ public class MisthalinMystery extends BasicQuestHelper
 			observeThroughTree,
 			takeNote2,
 			readNotes2,
-			playPiano,
-			playD,
-			playE,
-			playA,
-			playDAgain,
+			pwPlayPiano,
 			searchThePiano
 		)));
 
@@ -530,13 +544,7 @@ public class MisthalinMystery extends BasicQuestHelper
 			takeNote3,
 			readNotes3,
 			useKnifeOnFireplace,
-			searchFireplace,
-			clickSapphire,
-			clickDiamond,
-			clickZenyte,
-			clickEmerald,
-			clickOnyx,
-			clickRuby,
+			pwSolveFireplacePuzzle,
 			searchFireplaceForSapphireKey
 		)));
 

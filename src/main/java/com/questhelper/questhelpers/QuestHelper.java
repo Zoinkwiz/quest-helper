@@ -256,6 +256,14 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		hasInitialized = true;
 	}
 
+	/// Uninitialize requirements, meaning next time the quest is started it'll recreate all zones & requirements.
+	///
+	/// Intended for developer mode
+	public void uninitializeRequirements()
+	{
+		hasInitialized = false;
+	}
+
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return null;

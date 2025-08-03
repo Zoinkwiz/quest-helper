@@ -71,6 +71,7 @@ import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.*;
@@ -462,7 +463,7 @@ public class QuestHelperPlugin extends Plugin
 		return questBankManager.getBankTagService().getPluginBankTagItemsForSections(false);
 	}
 
-	public QuestHelper getSelectedQuest()
+	public @Nullable QuestHelper getSelectedQuest()
 	{
 		return questManager.getSelectedQuest();
 	}

@@ -30,3 +30,12 @@ jobs:
 
       - name: Execute Gradle build
         run: gradle build
+
+      - name: Build shadowJar
+        run: ./gradlew shadowJar
+
+      - name: Upload shadowJar
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-helper-shadow
+          path: build/libs/quest-helper-*-all.jar

@@ -32,6 +32,8 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectMan
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
@@ -43,12 +45,14 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.AsyncBufferedImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.IntStream;
 
 import static org.mockito.Mockito.*;
 
@@ -128,19 +132,45 @@ public abstract class MockedTest extends MockedTestBase
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 		when(spriteManager.getSprite(SpriteID.TAB_QUESTS, 0)).thenReturn(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 
+
 		AchievementDiaryStepManager.setup(configManager);
 
+		var mockedScene = mock(Scene.class);
+		when(mockedScene.getTiles()).thenReturn(new Tile[1][Constants.SCENE_SIZE][Constants.SCENE_SIZE]);
+
 		WorldView mockedWorldView = mock(WorldView.class);
+		when(mockedWorldView.getScene()).thenReturn(mockedScene);
 
 		@SuppressWarnings("unchecked")
 		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) mock(IndexedObjectSet.class);
 		when(npcSetMock.iterator()).thenReturn(Collections.emptyIterator());
 		doReturn(npcSetMock).when(mockedWorldView).npcs();
 		when(client.getTopLevelWorldView()).thenReturn(mockedWorldView);
+		when(client.getScene()).thenReturn(mockedScene); // TODO: We should not have to mock this
+		var mockedItemContainer = Mockito.mock(ItemContainer.class);
+		when(mockedItemContainer.getItems()).thenReturn(new Item[0]);
+		when(client.getItemContainer(anyInt())).thenReturn(mockedItemContainer);
+
+		var mockedPlayer = Mockito.mock(Player.class);
+		when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(1, 1, 1));
+		when(client.getLocalPlayer()).thenReturn(mockedPlayer);
+		when(client.getWorldView(anyInt())).thenReturn(mockedWorldView);
 
 		ItemComposition itemComposition = mock(ItemComposition.class);
 		when(itemComposition.getName()).thenReturn("Test item");
 		when(itemManager.getItemComposition(anyInt())).thenReturn(itemComposition);
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(clientThread, 10, 10, BufferedImage.TYPE_INT_ARGB));
+
+		// Varbit mocking
+		// DT2
+		when(client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_1)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_2)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_3)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_4)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_5)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.DT2_SCAR_MAZE_1_RIFT_6)).thenReturn(1);
+		// Balloon flight
+		when(client.getVarbitValue(VarbitID.ZEP_IF_CURRENT_MAP)).thenReturn(1);
 	}
 
 }

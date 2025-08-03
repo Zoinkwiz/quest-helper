@@ -250,6 +250,10 @@ public class MonolithPuzzle extends DetailedOwnerStep
 	private boolean tileHasBigMonolith(Tile[][] tiles, int sceneX, int sceneY)
 	{
 		var tile = tiles[sceneX][sceneY];
+		if (tile == null) {
+			// Tiles normally aren't null, but in tests they can be.
+			return false;
+		}
 		for (var gameObject : tile.getGameObjects())
 		{
 			if (gameObject != null && gameObject.getId() == BIG_MONOLITH)

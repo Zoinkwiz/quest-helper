@@ -24,9 +24,7 @@ jobs:
           java-version: 11
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: 8.10 # https://github.com/runelite/plugin-hub/blob/master/package/gradle/wrapper/gradle-wrapper.properties
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Execute Gradle build
         run: gradle build

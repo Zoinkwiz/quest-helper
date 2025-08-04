@@ -179,6 +179,8 @@ public class XMarksTheSpot extends BasicQuestHelper
 			digCastle,
 			digDraynor,
 			digMartin
+		), List.of(
+			spade
 		)));
 
 		steps.add(new PanelDetails("Bring the casket to Veos", List.of(

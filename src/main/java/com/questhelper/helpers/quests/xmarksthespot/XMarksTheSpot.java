@@ -99,7 +99,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 		digDraynor.setWhenToHighlight(DigStep.WhenToHighlight.OnTile);
 
 		digMartin = DigStep.withCustomSpadeRequirement(this, new WorldPoint(3078, 3259, 0),
-			"Dig in the pig pen just west where Martin the Master Gardener is.", spade,
+			"Dig just inside the pig pen in the Draynor Market.", spade,
 			treasureScroll);
 		digMartin.setWhenToHighlight(DigStep.WhenToHighlight.OnTile);
 

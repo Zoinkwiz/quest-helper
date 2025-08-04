@@ -93,6 +93,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 
 		digDraynor = new DigStep(this, new WorldPoint(3109, 3264, 0),
 			"Dig north-west of the Draynor Village jail, just by the wheat farm.");
+		digDraynor.addTeleport(glory);
 
 		digMartin = new DigStep(this, new WorldPoint(3078, 3259, 0),
 			"Dig in the pig pen just west where Martin the Master Gardener is.",

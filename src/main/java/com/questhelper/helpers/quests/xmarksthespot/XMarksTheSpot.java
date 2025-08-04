@@ -28,8 +28,10 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
@@ -59,6 +61,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 	DigStep digDraynor;
 	DigStep digMartin;
 	NpcStep speakVeosSarim;
+	DigStep digMartinAgain;
 	NpcStep speakVeosSarimWithoutCasket;
 
 	@Override
@@ -69,7 +72,6 @@ public class XMarksTheSpot extends BasicQuestHelper
 		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
 
 		ancientCasket = new ItemRequirement("Ancient casket", ItemID.CLUEQUEST_CASKET);
-		ancientCasket.setTooltip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
 	}
 
 	private void setupSteps()
@@ -104,6 +106,12 @@ public class XMarksTheSpot extends BasicQuestHelper
 			ancientCasket);
 		speakVeosSarim.addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
 
+		digMartinAgain = DigStep.withCustomSpadeRequirement(this, new WorldPoint(3078, 3259, 0),
+			"Dig just inside the pig pen in the Draynor Market to get the Ancient casket back.", spade, ancientCasket);
+		digMartinAgain.setWhenToHighlight(DigStep.WhenToHighlight.OnTile);
+
+		speakVeosSarim.addSubSteps(digMartinAgain);
+
 		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.");
 		speakVeosSarimWithoutCasket.addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
@@ -125,7 +133,10 @@ public class XMarksTheSpot extends BasicQuestHelper
 		steps.put(3, digCastle);
 		steps.put(4, digDraynor);
 		steps.put(5, digMartin);
-		steps.put(6, speakVeosSarim);
+
+		var bringVeosAncientCasket = new ConditionalStep(this, speakVeosSarim);
+		bringVeosAncientCasket.addStep(not(ancientCasket), digMartinAgain);
+		steps.put(6, bringVeosAncientCasket);
 		steps.put(7, speakVeosSarimWithoutCasket);
 
 		return steps;

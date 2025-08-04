@@ -51,7 +51,6 @@ public class XMarksTheSpot extends BasicQuestHelper
 
 	// Miscellaneous requirements
 	ItemRequirement ancientCasket;
-	ItemRequirement treasureScroll;
 
 	// Steps
 	NpcStep startQuest;
@@ -71,8 +70,6 @@ public class XMarksTheSpot extends BasicQuestHelper
 
 		ancientCasket = new ItemRequirement("Ancient casket", ItemID.CLUEQUEST_CASKET);
 		ancientCasket.setTooltip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
-
-		treasureScroll = new ItemRequirement("Treasure scroll", ItemID.CLUEQUEST_CLUE4);
 	}
 
 	private void setupSteps()
@@ -99,8 +96,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 		digDraynor.setWhenToHighlight(DigStep.WhenToHighlight.OnTile);
 
 		digMartin = DigStep.withCustomSpadeRequirement(this, new WorldPoint(3078, 3259, 0),
-			"Dig just inside the pig pen in the Draynor Market.", spade,
-			treasureScroll);
+			"Dig just inside the pig pen in the Draynor Market.", spade);
 		digMartin.setWhenToHighlight(DigStep.WhenToHighlight.OnTile);
 
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),

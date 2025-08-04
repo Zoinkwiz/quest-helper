@@ -41,11 +41,25 @@ import java.awt.image.BufferedImage;
 
 public class DigStep extends DetailedQuestStep
 {
-	private final ItemRequirement SPADE = new ItemRequirement("Spade", ItemID.SPADE);
-	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
+	private final ItemRequirement spade;
+
+	/// Private ctor requiring a spade requirement, to be used by public ctors & builders
+	private DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, ItemRequirement spade, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
-		this.getRequirements().add(SPADE);
+		this.spade = spade;
+		this.getRequirements().add(this.spade);
+	}
+
+	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
+	{
+		this(questHelper, worldPoint, text, new ItemRequirement("Spade", ItemID.SPADE), requirements);
+	}
+
+	/// Creates a DigStep with a custom spade requirement, allowing you to pass through custom tooltips / tips to the player
+	public static DigStep withCustomSpadeRequirement(QuestHelper questHelper, WorldPoint worldPoint, String text, ItemRequirement spade, Requirement... requirements)
+	{
+		return new DigStep(questHelper, worldPoint, text, spade, requirements);
 	}
 
 	@Subscribe
@@ -59,7 +73,7 @@ public class DigStep extends DetailedQuestStep
 		}
 		WorldPoint targetLocation = worldPoint;
 		boolean shouldHighlightSpade = targetLocation.isInScene(client);
-		SPADE.setHighlightInInventory(shouldHighlightSpade);
+		spade.setHighlightInInventory(shouldHighlightSpade);
 	}
 
 	@Override

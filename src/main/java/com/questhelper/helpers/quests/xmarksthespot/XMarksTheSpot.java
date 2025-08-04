@@ -49,6 +49,10 @@ public class XMarksTheSpot extends BasicQuestHelper
 	// Recommended items
 	ItemRequirement glory;
 
+	// Miscellaneous requirements
+	ItemRequirement ancientCasket;
+	ItemRequirement treasureScroll;
+
 	// Steps
 	NpcStep startQuest;
 	DigStep digOutsideBob;
@@ -63,6 +67,11 @@ public class XMarksTheSpot extends BasicQuestHelper
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		glory = new ItemRequirement("Amulet of Glory for faster teleport to Draynor Village.", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
+
+		ancientCasket = new ItemRequirement("Ancient casket", ItemID.CLUEQUEST_CASKET);
+		ancientCasket.setTooltip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
+
+		treasureScroll = new ItemRequirement("Treasure scroll", ItemID.CLUEQUEST_CLUE4);
 	}
 
 	private void setupSteps()
@@ -86,10 +95,7 @@ public class XMarksTheSpot extends BasicQuestHelper
 
 		digMartin = new DigStep(this, new WorldPoint(3078, 3259, 0),
 			"Dig in the pig pen just west where Martin the Master Gardener is.",
-			new ItemRequirement("Treasure scroll", ItemID.CLUEQUEST_CLUE4));
-
-		var ancientCasket = new ItemRequirement("Ancient casket", ItemID.CLUEQUEST_CASKET);
-		ancientCasket.setTooltip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
+			treasureScroll);
 
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",

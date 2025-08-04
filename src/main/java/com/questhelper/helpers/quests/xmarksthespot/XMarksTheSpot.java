@@ -33,41 +33,30 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 
-import java.util.*;
-
 public class XMarksTheSpot extends BasicQuestHelper
 {
-	//Items Required
+	// Required items
 	ItemRequirement spade;
 
-	// Items recommended
+	// Recommended items
 	ItemRequirement glory;
 
-	QuestStep speakVeosLumbridge, digOutsideBob, digCastle, digDraynor, digMartin, speakVeosSarim, speakVeosSarimWithoutCasket;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupSteps();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, speakVeosLumbridge);
-		steps.put(1, steps.get(0));
-		steps.put(2, digOutsideBob);
-		steps.put(3, digCastle);
-		steps.put(4, digDraynor);
-		steps.put(5, digMartin);
-		steps.put(6, speakVeosSarim);
-		steps.put(7, speakVeosSarimWithoutCasket);
-
-		return steps;
-	}
+	// Steps
+	NpcStep startQuest;
+	DigStep digOutsideBob;
+	DigStep digCastle;
+	DigStep digDraynor;
+	DigStep digMartin;
+	NpcStep speakVeosSarim;
+	NpcStep speakVeosSarimWithoutCasket;
 
 	@Override
 	protected void setupRequirements()
@@ -79,11 +68,11 @@ public class XMarksTheSpot extends BasicQuestHelper
 	private void setupSteps()
 	{
 		// TODO: Worth adding PuzzleWrapperStep at all given the Clue Plugin also does this?
-		speakVeosLumbridge = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3228, 3242, 0),
+		startQuest = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3228, 3242, 0),
 			"Talk to Veos in The Sheared Ram pub in Lumbridge to start the quest.");
-		speakVeosLumbridge.addDialogStep("I'm looking for a quest.");
-		speakVeosLumbridge.addDialogStep("Sounds good, what should I do?");
-		speakVeosLumbridge.addDialogSteps("Can I help?", "Yes.");
+		startQuest.addDialogStep("I'm looking for a quest.");
+		startQuest.addDialogStep("Sounds good, what should I do?");
+		startQuest.addDialogSteps("Can I help?", "Yes.");
 
 		digOutsideBob = new DigStep(this, new WorldPoint(3230, 3209, 0),
 			"Dig north of Bob's Brilliant Axes, on the west side of the plant against the wall of his house.");
@@ -99,35 +88,55 @@ public class XMarksTheSpot extends BasicQuestHelper
 			"Dig in the pig pen just west where Martin the Master Gardener is.",
 			new ItemRequirement("Treasure scroll", ItemID.CLUEQUEST_CLUE4));
 
-		ItemRequirement ancientCasket = new ItemRequirement("Ancient casket", ItemID.CLUEQUEST_CASKET);
+		var ancientCasket = new ItemRequirement("Ancient casket", ItemID.CLUEQUEST_CASKET);
 		ancientCasket.setTooltip("If you've lost this you can get another by digging in the pig pen in Draynor Village.");
 
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.",
 			ancientCasket);
-		((NpcStep) speakVeosSarim).addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
+		speakVeosSarim.addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
 
 		speakVeosSarimWithoutCasket = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),
 			"Talk to Veos directly south of the Rusty Anchor Inn in Port Sarim to finish the quest.");
-		((NpcStep) speakVeosSarimWithoutCasket).addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
+		speakVeosSarimWithoutCasket.addAlternateNpcs(NpcID.VEOS_VISIBLE_TRAVEL);
 
 		speakVeosSarim.addSubSteps(speakVeosSarimWithoutCasket);
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, startQuest);
+		steps.put(1, startQuest);
+		steps.put(2, digOutsideBob);
+		steps.put(3, digCastle);
+		steps.put(4, digDraynor);
+		steps.put(5, digMartin);
+		steps.put(6, speakVeosSarim);
+		steps.put(7, speakVeosSarimWithoutCasket);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(spade);
-		return reqs;
+		return List.of(
+			spade
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(glory);
-		return reqs;
+		return List.of(
+			glory
+		);
 	}
 
 	@Override
@@ -139,19 +148,35 @@ public class XMarksTheSpot extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
+		return List.of(
 			new ItemReward("300 Exp. Lamp (Any Skill)", ItemID.THOSF_REWARD_LAMP, 1),
 			new ItemReward("Coins", ItemID.COINS, 200),
-			new ItemReward("A Beginner Clue Scroll", ItemID.TRAIL_CLUE_BEGINNER, 1));
+			new ItemReward("A Beginner Clue Scroll", ItemID.TRAIL_CLUE_BEGINNER, 1)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Speak to Veos", Collections.singletonList(speakVeosLumbridge), spade));
-		allSteps.add(new PanelDetails("Solve the clue scroll", Arrays.asList(digOutsideBob, digCastle, digDraynor, digMartin)));
-		allSteps.add(new PanelDetails("Bring the casket to Veos", Collections.singletonList(speakVeosSarim)));
-		return allSteps;
+		var steps = new ArrayList<PanelDetails>();
+
+		steps.add(new PanelDetails("Speak to Veos", List.of(
+			startQuest
+		), List.of(
+			spade
+		)));
+
+		steps.add(new PanelDetails("Solve the clue scroll", List.of(
+			digOutsideBob,
+			digCastle,
+			digDraynor,
+			digMartin
+		)));
+
+		steps.add(new PanelDetails("Bring the casket to Veos", List.of(
+			speakVeosSarim
+		)));
+
+		return steps;
 	}
 }

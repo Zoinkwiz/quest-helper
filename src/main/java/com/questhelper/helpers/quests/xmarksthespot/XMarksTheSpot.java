@@ -84,19 +84,19 @@ public class XMarksTheSpot extends BasicQuestHelper
 		startQuest.addDialogStep("Sounds good, what should I do?");
 		startQuest.addDialogSteps("Can I help?", "Yes.");
 
-		digOutsideBob = new DigStep(this, new WorldPoint(3230, 3209, 0),
-			"Dig north of Bob's Brilliant Axes, on the west side of the plant against the wall of his house.");
+		digOutsideBob = DigStep.withCustomSpadeRequirement(this, new WorldPoint(3230, 3209, 0),
+			"Dig north of Bob's Brilliant Axes, on the west side of the plant against the wall of his house.", spade);
 		digOutsideBob.addDialogStep("Okay, thanks Veos.");
 
-		digCastle = new DigStep(this, new WorldPoint(3203, 3212, 0),
-			"Dig behind Lumbridge Castle, just outside the kitchen door.");
+		digCastle = DigStep.withCustomSpadeRequirement(this, new WorldPoint(3203, 3212, 0),
+			"Dig behind Lumbridge Castle, just outside the kitchen door.", spade);
 
-		digDraynor = new DigStep(this, new WorldPoint(3109, 3264, 0),
-			"Dig north-west of the Draynor Village jail, just by the wheat farm.");
+		digDraynor = DigStep.withCustomSpadeRequirement(this, new WorldPoint(3109, 3264, 0),
+			"Dig north-west of the Draynor Village jail, just by the wheat farm.", spade);
 		digDraynor.addTeleport(glory);
 
-		digMartin = new DigStep(this, new WorldPoint(3078, 3259, 0),
-			"Dig in the pig pen just west where Martin the Master Gardener is.",
+		digMartin = DigStep.withCustomSpadeRequirement(this, new WorldPoint(3078, 3259, 0),
+			"Dig in the pig pen just west where Martin the Master Gardener is.", spade,
 			treasureScroll);
 
 		speakVeosSarim = new NpcStep(this, NpcID.VEOS_VISIBLE, new WorldPoint(3054, 3245, 0),

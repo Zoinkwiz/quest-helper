@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import lombok.Setter;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -42,6 +43,9 @@ import java.awt.image.BufferedImage;
 public class DigStep extends DetailedQuestStep
 {
 	private final ItemRequirement spade;
+
+	@Setter
+	private WhenToHighlight whenToHighlight = WhenToHighlight.InScene;
 
 	/// Private ctor requiring a spade requirement, to be used by public ctors & builders
 	private DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, ItemRequirement spade, Requirement... requirements)
@@ -72,7 +76,17 @@ public class DigStep extends DetailedQuestStep
 			return;
 		}
 		WorldPoint targetLocation = worldPoint;
-		boolean shouldHighlightSpade = targetLocation.isInScene(client);
+		boolean shouldHighlightSpade = false;
+		switch (this.whenToHighlight)
+		{
+			case InScene:
+				shouldHighlightSpade = targetLocation.isInScene(client);
+				break;
+
+			case OnTile:
+				shouldHighlightSpade = targetLocation.distanceTo(player.getWorldLocation()) == 0;
+				break;
+		}
 		spade.setHighlightInInventory(shouldHighlightSpade);
 	}
 
@@ -99,5 +113,13 @@ public class DigStep extends DetailedQuestStep
 	private BufferedImage getSpadeImage()
 	{
 		return itemManager.getImage(ItemID.SPADE);
+	}
+
+	public enum WhenToHighlight
+	{
+		/// Highlight the spade whenever the target tile is in the same scene as the player
+		InScene,
+		/// Highlight the spade whenever the player is standing on the target tile
+		OnTile,
 	}
 }

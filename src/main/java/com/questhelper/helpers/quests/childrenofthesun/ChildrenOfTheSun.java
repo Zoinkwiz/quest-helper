@@ -239,6 +239,10 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 		finishQuest = new NpcStep(this, NpcID.VMQ1_GUARD_SERGEANT_VIS, new WorldPoint(3202, 3473, 2),
 			"Talk to Tobyn on the Varrock Castle's roof to finish the quest.");
 		finishQuest.addSubSteps(goUpVarrockF1toF2, goUpVarrockF0ToF1);
+
+		// Upon finishing the quest:
+		// [2025-08-05T22:15:32Z 385] varbit VMQ1_QUESTCOMPLETE_TYPE (9645) 0 -> 2
+		// [2025-08-05T22:15:32Z 385] varbit VMQ2_FIRST_TRAVEL (9652) 0 -> 1
 	}
 
 	@Override

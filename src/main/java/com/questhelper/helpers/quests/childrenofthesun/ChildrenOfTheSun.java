@@ -49,20 +49,21 @@ import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class ChildrenOfTheSun extends BasicQuestHelper
 {
 
-	final int GUARD_1_CHANGE_VARBIT = 9633;
-	final int GUARD_2_CHANGE_VARBIT = 9634;
-	final int GUARD_3_CHANGE_VARBIT = 9635;
-	final int GUARD_4_CHANGE_VARBIT = 9636;
-	final int WRONG_GUARD_1_CHANGE_VARBIT = 9637;
-	final int WRONG_GUARD_2_CHANGE_VARBIT = 9640;
-	final int WRONG_GUARD_3_CHANGE_VARBIT = 9641;
-	final int WRONG_GUARD_4_CHANGE_VARBIT = 9642;
-	final int WRONG_GUARD_5_CHANGE_VARBIT = 9643;
-	final int WRONG_GUARD_6_CHANGE_VARBIT = 9644;
+	final int GUARD_1_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_1;
+	final int GUARD_2_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_2;
+	final int GUARD_3_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_3;
+	final int GUARD_4_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_4;
+	final int WRONG_GUARD_1_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_5;
+	final int WRONG_GUARD_2_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_6;
+	final int WRONG_GUARD_3_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_7;
+	final int WRONG_GUARD_4_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_8;
+	final int WRONG_GUARD_5_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_9;
+	final int WRONG_GUARD_6_CHANGE_VARBIT = VarbitID.VMQ1_GUARD_10;
 
 	// Zones
 	Zone castleF1;
@@ -169,7 +170,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 		);
 		followGuardPuzzleWrapper = new PuzzleWrapperStep(this, followGuard, "Follow the guard, keeping out of sight whilst also not letting them get too far away.");
 
-		final int BASE_GUARD_ID = 6923;
+		final int BASE_GUARD_ID = NpcID.VMQ1_GUARD_1;
 		attemptToEnterHouse = new ObjectStep(this, ObjectID.VMQ1_BANDIT_DOOR, new WorldPoint(3259, 3400, 0),
 			"Attempt to enter the house in the south-east of Varrock, north of the Zamorak Temple, and watch the cutscene.");
 		talkToTobyn = new NpcStep(this, NpcID.VMQ1_GUARD_SERGEANT_VIS, new WorldPoint(3211, 3437, 0), "Talk to Sergeant Tobyn in Varrock Square.");
@@ -192,7 +193,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 
 		unmarkWrongGuard1 = new PuzzleWrapperStep(this,
 			new MultiNpcStep(this, NpcID.VMQ1_GUARD_5_MARKED, new WorldPoint(3227, 3424, 0),
-				"Unmark the guard east of ELiza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
+				"Unmark the guard east of Eliza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
 		unmarkWrongGuard2 = new PuzzleWrapperStep(this,
 			new MultiNpcStep(this, NpcID.VMQ1_GUARD_6_MARKED, new WorldPoint(3218, 3424, 0),

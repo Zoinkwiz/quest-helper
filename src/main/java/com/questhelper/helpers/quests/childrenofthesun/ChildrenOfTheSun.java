@@ -98,6 +98,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 	PuzzleWrapperStep markGuard2;
 	PuzzleWrapperStep markGuard3;
 	PuzzleWrapperStep markGuard4;
+	PuzzleWrapperStep unmarkOneOfTheGuards;
 	PuzzleWrapperStep unmarkWrongGuard1;
 	PuzzleWrapperStep unmarkWrongGuard2;
 	PuzzleWrapperStep unmarkWrongGuard3;
@@ -191,6 +192,8 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 				"Mark the guard leaning on the north wall of Lowe's Archery Emporium, east of the square.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.").withNoHelpHiddenInSidebar(true);
 
+		var realUnmarkOneOfTheGuards = new DetailedQuestStep(this, "One of the guards is incorrectly marked, unmark the one as indicated by the overlay.");
+
 		unmarkWrongGuard1 = new PuzzleWrapperStep(this,
 			new MultiNpcStep(this, NpcID.VMQ1_GUARD_5_MARKED, new WorldPoint(3227, 3424, 0),
 				"Unmark the guard east of Eliza.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
@@ -215,6 +218,17 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 			new MultiNpcStep(this, NpcID.VMQ1_GUARD_10_MARKED, new WorldPoint(3218, 3433, 0),
 				"Unmark the guard next to Baraek.", GUARD_1_CHANGE_VARBIT, BASE_GUARD_ID),
 			"Mark the suspect guards.");
+
+		realUnmarkOneOfTheGuards.addSubSteps(
+			unmarkWrongGuard1,
+			unmarkWrongGuard2,
+			unmarkWrongGuard3,
+			unmarkWrongGuard4,
+			unmarkWrongGuard5,
+			unmarkWrongGuard6
+		);
+
+		unmarkOneOfTheGuards = realUnmarkOneOfTheGuards.puzzleWrapStep(true);
 
 		reportBackToTobyn = new NpcStep(this, NpcID.VMQ1_GUARD_SERGEANT_VIS, new WorldPoint(3211, 3437, 0),
 			"Report back to Sergeant Tobyn.");
@@ -296,6 +310,7 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 			markGuard2,
 			markGuard4,
 			markGuard3,
+			unmarkOneOfTheGuards,
 			reportBackToTobyn,
 			finishQuest
 		)));

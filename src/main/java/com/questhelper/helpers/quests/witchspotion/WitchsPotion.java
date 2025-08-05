@@ -74,7 +74,7 @@ public class WitchsPotion extends BasicQuestHelper
 		talkToWitch = new NpcStep(this, NpcID.HETTY, new WorldPoint(2968, 3205, 0),
 			"Talk to Hetty in Rimmington.", onion, eyeOfNewt, burntMeat);
 		talkToWitch.addDialogStep("I am in search of a quest.");
-		talkToWitch.addDialogStep("Yes, help me become one with my darker side.");
+		talkToWitch.addDialogStep("Yes.");
 
 		killRat = new NpcStep(this, NpcID.RAT_INDOORS, new WorldPoint(2956, 3203, 0), "Kill a rat in the house to the west for a rat tail.", ratTail);
 		returnToWitch = new NpcStep(this, NpcID.HETTY, new WorldPoint(2968, 3205, 0),

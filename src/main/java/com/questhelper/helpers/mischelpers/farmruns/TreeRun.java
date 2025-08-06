@@ -306,6 +306,15 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		steps.addStep(and(accessToSavannah, nor(savannahStates.getIsGrowing())), savannahStep.withId(11));
 
+		nemusRetreatStep = new ConditionalStep(this, nemusRetreatTreePatchCheckHealth);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsUnchecked(), nemusRetreatTreePatchCheckHealth);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsEmpty(), nemusRetreatTreePatchPlant);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsHarvestable(), nemusRetreatTreePatchClear);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsStump(), nemusRetreatTreePatchDig);
+		nemusRetreatStep.addStep(nor(usingCompostorNothing, nemusRetreatStates.getIsProtected()), nemusRetreatTreeProtect);
+
+		steps.addStep(and(accessToVarlamore, nor(nemusRetreatStates.getIsGrowing())), nemusRetreatStep.withId(12));
+
 		return steps;
 	}
 
@@ -537,7 +546,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the tree planted in the Farming Guild.");
 		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
-		// TODO World Point
+
 		nemusRetreatTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1365, 3320, 0),
 			"Check the health of the tree planted at the Nemus Retreat");
 		nemusRetreatTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
@@ -808,7 +817,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		allProtectionItemFruitTree.setQuantity(protectionItemFruitTree.getQuantity());
 		allProtectionItemHardwood.setQuantity(protectionItemHardwood.getQuantity());
 		handleTreePatches(PatchImplementation.TREE,
-			List.of(farmingGuildTreeStates, varrockStates, faladorStates, taverleyStates, lumbridgeStates, gnomeStrongholdTreeStates),
+			List.of(farmingGuildTreeStates, varrockStates, faladorStates, taverleyStates, lumbridgeStates, gnomeStrongholdTreeStates, nemusRetreatStates),
 			farmingWorld.getTabs().get(Tab.TREE), allTreeSaplings, allProtectionItemTree);
 		handleTreePatches(PatchImplementation.FRUIT_TREE,
 			List.of(farmingGuildFruitStates, brimhavenStates, catherbyStates, gnomeStrongholdFruitStates, gnomeVillageStates, lletyaStates),

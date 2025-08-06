@@ -243,6 +243,19 @@ public class ChildrenOfTheSun extends BasicQuestHelper
 		// Upon finishing the quest:
 		// [2025-08-05T22:15:32Z 385] varbit VMQ1_QUESTCOMPLETE_TYPE (9645) 0 -> 2
 		// [2025-08-05T22:15:32Z 385] varbit VMQ2_FIRST_TRAVEL (9652) 0 -> 1
+		//
+		// When talking to Regulus Cento after finishing the quest:
+		// [2025-08-06T09:20:25Z 306] varbit VMQ2_FIRST_TRAVEL (9652) 1 -> 2
+		// Dialogue option is: "Let's do it!"
+		//
+		// After traveling:
+		// [2025-08-06T09:21:47Z 442] varbit VARLAMORE_VISITED (9650) 0 -> 1
+		// [2025-08-06T09:21:47Z 442] varbit VMQ2_FIRST_TRAVEL (9652) 2 -> 3
+		//
+		// When landing, you're put in a conversation with Regulus.
+		// When finishing that conversation:
+		// [2025-08-06T09:22:54Z 554] varbit VMQ2_FIRST_TRAVEL (9652) 3 -> 4
+
 	}
 
 	@Override

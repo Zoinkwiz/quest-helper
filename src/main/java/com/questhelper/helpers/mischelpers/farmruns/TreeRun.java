@@ -496,6 +496,10 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Speak to Rosie to clear the patch.");
 		farmingGuildTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
+		nemusRetreatTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
+			"Speak to Aub to clear the patch.");
+		nemusRetreatTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+
 		lumbridgeTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to protect the patch.");
 		lumbridgeTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
@@ -520,7 +524,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Speak to Rosie to protect the patch.");
 		farmingGuildTreePayForProtection.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		nemusRetreatTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1366, 3321, 0),
+		nemusRetreatTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
 			"Speak to Aub to protect the patch.");
 		nemusRetreatTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
@@ -547,7 +551,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
 
-		nemusRetreatTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1365, 3320, 0),
+		nemusRetreatTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
 			"Check the health of the tree planted at the Nemus Retreat");
 		nemusRetreatTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
 		nemusRetreatTreePatchCheckHealth.addTeleport(nemusRetreatTeleport);
@@ -584,7 +588,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
 		farmingGuildTreePatchCheckHealth.addSubSteps(farmingGuildTreePatchPlant);
 
-		nemusRetreatTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1365, 3320, 0),
+		nemusRetreatTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
 			"Plant your sapling in the Nemus Retreat tree patch.", treeSapling);
 		nemusRetreatTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
 		nemusRetreatTreePatchPlant.addIcon(treeSapling.getId());
@@ -603,7 +607,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Dig up the tree stump in the Tree Gnome Stronghold.");
 		farmingGuildTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Dig up the tree stump in the Farming Guild tree patch.");
-		nemusRetreatTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1365, 3320, 0),
+		nemusRetreatTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
 			"Dig up the tree stump in the Nemus Retreat tree patch.");
 
 		faladorTreePatchClear.addSubSteps(faladorTreePatchDig, faladorTreeProtect);

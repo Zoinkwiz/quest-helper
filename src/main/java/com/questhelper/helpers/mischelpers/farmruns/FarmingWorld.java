@@ -250,6 +250,10 @@ class FarmingWorld
 				new FarmingPatch("", VarbitID.FARMING_TRANSMIT_E, PatchImplementation.COMPOST)
 		), 14390);
 
+		add(new FarmingRegion("Nemus Retreat", 5427, false,
+			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.TREE, NpcID.FARMING_GARDENER_TREE_7)
+		));
+
 		add(new FarmingRegion("Port Sarim", 12082, false,
 				new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.SPIRIT_TREE, NpcID.FARMING_GARDENER_SPIRIT_TREE_1)
 		)

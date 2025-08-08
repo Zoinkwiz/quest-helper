@@ -66,7 +66,7 @@ public class ImpCatcher extends BasicQuestHelper
 
 	// Steps
 	QuestStep moveToTower;
-	QuestStep climbTower;
+	QuestStep climbUpF1;
 	QuestStep turnInQuest;
 	QuestStep collectBeads;
 
@@ -95,8 +95,10 @@ public class ImpCatcher extends BasicQuestHelper
 			blackBead, whiteBead, redBead, yellowBead);
 		moveToTower = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS, new WorldPoint(3103, 3159, 0),
 			"Head to the Wizards' Tower and climb up the staircase with the required beads.", blackBead, whiteBead, redBead, yellowBead);
-		climbTower = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(3103, 3159, 1),
-			"Climb the staircase again.", blackBead, whiteBead, redBead, yellowBead);
+		climbUpF1 = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(3103, 3159, 1),
+			"Head to the Wizards' Tower and climb up the staircase with the required beads.", blackBead, whiteBead, redBead, yellowBead);
+		climbUpF1.addDialogStep("Up");
+		moveToTower.addSubSteps(climbUpF1);
 		turnInQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG_QUEST, new WorldPoint(3103, 3163, 2),
 			"Talk to Wizard Mizgog with the required beads to finish the quest.",
 			blackBead, whiteBead, redBead, yellowBead);
@@ -113,7 +115,7 @@ public class ImpCatcher extends BasicQuestHelper
 
 		var doQuest = new ConditionalStep(this, collectBeads);
 		doQuest.addStep(new Conditions(blackBead, whiteBead, redBead, yellowBead, inTowerThird), turnInQuest);
-		doQuest.addStep(new Conditions(blackBead, whiteBead, redBead, yellowBead, inTowerSecond), climbTower);
+		doQuest.addStep(new Conditions(blackBead, whiteBead, redBead, yellowBead, inTowerSecond), climbUpF1);
 		doQuest.addStep(new Conditions(blackBead, whiteBead, redBead, yellowBead), moveToTower);
 
 		steps.put(0, doQuest);
@@ -172,7 +174,6 @@ public class ImpCatcher extends BasicQuestHelper
 		steps.add(new PanelDetails("Bring Mizgog his beads", List.of(
 			collectBeads,
 			moveToTower,
-			climbTower,
 			turnInQuest
 		), List.of(
 			blackBead,

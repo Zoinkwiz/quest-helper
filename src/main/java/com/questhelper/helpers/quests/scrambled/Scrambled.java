@@ -283,7 +283,7 @@ public class Scrambled extends BasicQuestHelper
 		acatzinFixWhetstone.addSubSteps(acatzinGetNails);
 
 		var cAcatzinFixWhetstone = new ConditionalStep(this, acatzinFixWhetstone);
-		cAcatzinFixWhetstone.addStep(and(not(sixNails), canStillTakeNails), acatzinGetNails);
+		cAcatzinFixWhetstone.addStep(canStillTakeNails, acatzinGetNails);
 		cAcatzinFixWhetstone.addStep(not(hammer), acatzinGetHammer);
 
 		var acatzinTalkToBlacksmithAgain = new NpcStep(this, NpcID.SCRAMBLED_BLACKSMITH, new WorldPoint(1209, 3109, 0), "Talk to the Blacksmith again after fixing the whetstone to receive a damaged axe.");

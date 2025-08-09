@@ -44,6 +44,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.PluginManager;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -93,6 +94,7 @@ public class QuestManager
 	private boolean developerMode;
 
 	@Getter
+	@Nullable
 	private QuestHelper selectedQuest;
 	private boolean loadQuestList = false;
 	private QuestHelperPanel panel;

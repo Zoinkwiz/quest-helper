@@ -95,6 +95,8 @@ public class QuestHelperPanel extends PluginPanel
 	private static final ImageIcon COLLAPSED_ICON;
 	private static final ImageIcon EXPANDED_ICON;
 
+	private int nextDesiredScrollValue = 0;
+
 	static
 	{
 		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
@@ -389,6 +391,23 @@ public class QuestHelperPanel extends PluginPanel
 		questOverviewWrapper.setLayout(new BorderLayout());
 		questOverviewWrapper.add(questOverviewPanel, BorderLayout.NORTH);
 
+		if (questHelperPlugin.isDeveloperMode())
+		{
+			// If in developer mode, add this "reload quest" button.
+			// It's always visible under the search bar, and reloads the currently
+			// active quest, and ensures you're scrolled back to where you were.
+			var reloadQuest = new JButton("reload quest");
+			reloadQuest.addActionListener((ev) -> {
+				nextDesiredScrollValue = scrollableContainer.getVerticalScrollBar().getValue();
+				var currentQuest = questHelperPlugin.getSelectedQuest();
+				if (currentQuest != null) {
+					currentQuest.uninitializeRequirements();
+				}
+				setSelectedQuest(questHelperPlugin.getSelectedQuest());
+			});
+			searchQuestsPanel.add(reloadQuest, BorderLayout.SOUTH);
+		}
+
 		refreshSkillFiltering();
 	}
 
@@ -534,7 +553,10 @@ public class QuestHelperPanel extends PluginPanel
 		questOverviewPanel.addQuest(quest, isActive);
 		questActive = true;
 
-		SwingUtilities.invokeLater(() -> scrollableContainer.getVerticalScrollBar().setValue(0));
+		SwingUtilities.invokeLater(() -> {
+			scrollableContainer.getVerticalScrollBar().setValue(nextDesiredScrollValue);
+			nextDesiredScrollValue = 0;
+		});
 
 		repaint();
 		revalidate();

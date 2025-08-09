@@ -26,8 +26,8 @@ package com.questhelper.helpers.quests.romeoandjuliet;
 
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.QuestPointReward;
@@ -139,7 +139,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		steps.put(40, talkToApothecary);
 
 		var bringPotionToJuliet = new ConditionalStep(this, talkToApothecary);
-		bringPotionToJuliet.addStep(new Conditions(cadavaPotion, inJulietRoom), givePotionToJuliet);
+		bringPotionToJuliet.addStep(and(cadavaPotion, inJulietRoom), givePotionToJuliet);
 		bringPotionToJuliet.addStep(cadavaPotion, goUpToJuliet2);
 
 		steps.put(50, bringPotionToJuliet);

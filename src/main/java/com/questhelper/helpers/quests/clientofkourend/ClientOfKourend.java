@@ -120,13 +120,13 @@ public class ClientOfKourend extends BasicQuestHelper
 		talkToLeenz = new NpcStep(this, NpcID.PISCARILIUS_GENERALSTORE_KEEPER, new WorldPoint(1807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedScroll, enchantedQuill);
 		talkToLeenz.addDialogStep("Can I ask you about Port Piscarilius?");
 		talkToLeenz.addDialogStep("What is there to do in Port Piscarilius?");
-		talkToHorace = new NpcStep(this, NpcID.HOSIDIUS_GENERALSTORE, new WorldPoint(1774, 3589, 0), "Talk to Horace in the Hosidius general store.", enchantedScroll, enchantedQuill);
+		talkToHorace = new NpcStep(this, NpcID.HOSIDIUS_GENERALSTORE, new WorldPoint(1774, 3589, 0), "Talk to Horace in the Hosidius general store. You can take the Lovakengj Minecart Network to Hosidius South.", enchantedScroll, enchantedQuill);
 		talkToHorace.addDialogStep("Can I ask you about Hosidius?");
 		talkToHorace.addDialogStep("What is there to do in Hosidius?");
-		talkToJennifer = new NpcStep(this, NpcID.SHAYZIEN_GENERALSTORE, new WorldPoint(1518, 3586, 0), "Talk to Jennifer in Shayzien general store.", enchantedScroll, enchantedQuill);
+		talkToJennifer = new NpcStep(this, NpcID.SHAYZIEN_GENERALSTORE, new WorldPoint(1518, 3586, 0), "Talk to Jennifer in Shayzien general store. You can run west towards the bank and use the Lovakengj Minecart Network to Shayzien East.", enchantedScroll, enchantedQuill);
 		talkToJennifer.addDialogStep("Can I ask you about Shayzien?");
 		talkToJennifer.addDialogStep("What is there to do in Shayzien?");
-		talkToMunty = new NpcStep(this, NpcID.LOVAKENGJ_GENERALSTORE, new WorldPoint(1551, 3752, 0), "Talk to Munty in Lovakengj general store.", enchantedScroll, enchantedQuill);
+		talkToMunty = new NpcStep(this, NpcID.LOVAKENGJ_GENERALSTORE, new WorldPoint(1551, 3752, 0), "Talk to Munty in Lovakengj general store. You can run south towards Kingstown and use the Lovakengj Minecart Network to Lovakengj.", enchantedScroll, enchantedQuill);
 		talkToMunty.addDialogStep("Can I ask you about Lovakengj?");
 		talkToMunty.addDialogStep("What is there to do in Lovakengj?");
 		talkToRegath = new NpcStep(this, NpcID.ARCEUUS_GENERALSTORE, new WorldPoint(1720, 3724, 0), "Talk to Regath in Arceuus general store.", enchantedScroll, enchantedQuill);

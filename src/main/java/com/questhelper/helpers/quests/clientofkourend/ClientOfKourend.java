@@ -29,9 +29,9 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -39,18 +39,20 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 
-import java.util.*;
-
 public class ClientOfKourend extends BasicQuestHelper
 {
 	// Required items
 	ItemRequirement feather;
-	
+
 	// Recommended items
 	ItemRequirement gamesNecklace;
 
@@ -142,22 +144,23 @@ public class ClientOfKourend extends BasicQuestHelper
 	{
 		initializeRequirements();
 		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToVeos);
 
-		ConditionalStep makeEnchantedQuill = new ConditionalStep(this, talkToVeos);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz), talkToRegath);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill), talkToLeenz);
+		var makeEnchantedQuill = new ConditionalStep(this, talkToVeos);
+		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
+		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
+		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
+		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz), talkToRegath);
+		makeEnchantedQuill.addStep(and(enchantedQuill), talkToLeenz);
 		makeEnchantedQuill.addStep(enchantedScroll, useFeatherOnScroll);
 		steps.put(1, makeEnchantedQuill);
 
 		steps.put(2, returnToVeos);
 
-		ConditionalStep takeOrbToAltar = new ConditionalStep(this, returnToVeos);
+		var takeOrbToAltar = new ConditionalStep(this, returnToVeos);
 		takeOrbToAltar.addStep(mysteriousOrb, goToAltar);
 
 		steps.put(3, returnToVeos);
@@ -173,23 +176,25 @@ public class ClientOfKourend extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
-		return reqs;
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED)
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(feather);
-		return reqs;
+		return List.of(
+			feather
+		);
 	}
-	
+
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(gamesNecklace);
+		return List.of(
+			gamesNecklace
+		);
 	}
 
 	@Override
@@ -201,19 +206,38 @@ public class ClientOfKourend extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
-				new ItemReward("500 Experience Lamps (Any Skill)", ItemID.THOSF_REWARD_LAMP, 2), //4447 Placeholder until confirmed.
-				new ItemReward("Kharedst's Memoirs", ItemID.VEOS_KHAREDSTS_MEMOIRS, 1));
+		return List.of(
+			new ItemReward("500 Experience Lamps (Any Skill)", ItemID.THOSF_REWARD_LAMP, 2), //4447 Placeholder until confirmed.
+			new ItemReward("Kharedst's Memoirs", ItemID.VEOS_KHAREDSTS_MEMOIRS, 1)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToVeos, useFeatherOnScroll), feather));
-		allSteps.add(new PanelDetails("Learn about Kourend", Arrays.asList(talkToLeenz, talkToRegath, talkToMunty, talkToJennifer, talkToHorace, returnToVeos)));
-		allSteps.add(new PanelDetails("The Dark Altar", Arrays.asList(goToAltar, finishQuest)));
-		return allSteps;
+		sections.add(new PanelDetails("Starting off", List.of(
+			talkToVeos,
+			useFeatherOnScroll
+		), List.of(
+			feather
+		)));
+
+		sections.add(new PanelDetails("Learn about Kourend", List.of(
+			talkToLeenz,
+			talkToRegath,
+			talkToMunty,
+			talkToJennifer,
+			talkToHorace,
+			returnToVeos
+		)));
+
+		sections.add(new PanelDetails("The Dark Altar", List.of(
+			goToAltar,
+			finishQuest
+		)));
+
+		return sections;
 	}
 }

@@ -26,7 +26,6 @@ package com.questhelper.helpers.quests.romeoandjuliet;
 
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -45,63 +44,44 @@ import java.util.*;
 
 public class RomeoAndJuliet extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement cadavaBerry, letter, potion;
+	// Required items
+	ItemRequirement cadavaBerry;
 
-	Requirement inJulietRoom;
-
-	QuestStep talkToRomeo, goUpToJuliet, talkToJuliet, giveLetterToRomeo, talkToLawrence, talkToApothecary, goUpToJuliet2, givePotionToJuliet, finishQuest;
-
-	//Zones
+	// Zones
 	Zone julietRoom;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+	// Miscellaneous requirements
+	ItemRequirement letter;
+	ItemRequirement potion;
+	ZoneRequirement inJulietRoom;
 
-		steps.put(0, talkToRomeo);
-
-		ConditionalStep tellJulietAboutRomeo = new ConditionalStep(this, goUpToJuliet);
-		tellJulietAboutRomeo.addStep(inJulietRoom, talkToJuliet);
-
-		steps.put(10, tellJulietAboutRomeo);
-		steps.put(20, giveLetterToRomeo);
-		steps.put(30, talkToLawrence);
-		steps.put(40, talkToApothecary);
-
-		ConditionalStep bringPotionToJuliet = new ConditionalStep(this, talkToApothecary);
-		bringPotionToJuliet.addStep(new Conditions(potion, inJulietRoom), givePotionToJuliet);
-		bringPotionToJuliet.addStep(potion, goUpToJuliet2);
-
-		steps.put(50, bringPotionToJuliet);
-		steps.put(60, finishQuest);
-
-		return steps;
-	}
-
-	@Override
-	protected void setupRequirements()
-	{
-		cadavaBerry = new ItemRequirement("Cadava berries", ItemID.CADAVABERRIES);
-		cadavaBerry.setTooltip("You can pick some from bushes south east of Varrock");
-		letter = new ItemRequirement("Message", ItemID.JULIETMESSAGE);
-		letter.setTooltip("You can get another from Juliet");
-		potion = new ItemRequirement("Cadava potion", ItemID.CADAVA);
-	}
-
-	public void setupConditions()
-	{
-		inJulietRoom = new ZoneRequirement(julietRoom);
-	}
+	// Steps
+	QuestStep talkToRomeo;
+	QuestStep goUpToJuliet;
+	QuestStep talkToJuliet;
+	QuestStep giveLetterToRomeo;
+	QuestStep talkToLawrence;
+	QuestStep talkToApothecary;
+	QuestStep goUpToJuliet2;
+	QuestStep givePotionToJuliet;
+	QuestStep finishQuest;
 
 	@Override
 	protected void setupZones()
 	{
 		julietRoom = new Zone(new WorldPoint(3147, 3425, 1), new WorldPoint(3166, 3443, 1));
+	}
+
+	@Override
+	protected void setupRequirements()
+	{
+		inJulietRoom = new ZoneRequirement(julietRoom);
+
+		cadavaBerry = new ItemRequirement("Cadava berries", ItemID.CADAVABERRIES);
+		cadavaBerry.setTooltip("You can pick some from bushes south east of Varrock");
+		letter = new ItemRequirement("Message", ItemID.JULIETMESSAGE);
+		letter.setTooltip("You can get another from Juliet");
+		potion = new ItemRequirement("Cadava potion", ItemID.CADAVA);
 	}
 
 	public void setupSteps()
@@ -125,7 +105,33 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		givePotionToJuliet.addSubSteps(goUpToJuliet2);
 
 		finishQuest = new NpcStep(this, NpcID.ROMEO, new WorldPoint(3211, 3422, 0), "Talk to Romeo in Varrock Square to finish the quest.");
+	}
 
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		steps.put(0, talkToRomeo);
+
+		ConditionalStep tellJulietAboutRomeo = new ConditionalStep(this, goUpToJuliet);
+		tellJulietAboutRomeo.addStep(inJulietRoom, talkToJuliet);
+
+		steps.put(10, tellJulietAboutRomeo);
+		steps.put(20, giveLetterToRomeo);
+		steps.put(30, talkToLawrence);
+		steps.put(40, talkToApothecary);
+
+		ConditionalStep bringPotionToJuliet = new ConditionalStep(this, talkToApothecary);
+		bringPotionToJuliet.addStep(new Conditions(potion, inJulietRoom), givePotionToJuliet);
+		bringPotionToJuliet.addStep(potion, goUpToJuliet2);
+
+		steps.put(50, bringPotionToJuliet);
+		steps.put(60, finishQuest);
+
+		return steps;
 	}
 
 	@Override

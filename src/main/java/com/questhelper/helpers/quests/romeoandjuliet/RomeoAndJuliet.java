@@ -59,9 +59,13 @@ public class RomeoAndJuliet extends BasicQuestHelper
 
 	// Steps
 	QuestStep talkToRomeo;
+
 	QuestStep goUpToJuliet;
 	QuestStep talkToJuliet;
-	QuestStep giveLetterToRomeo;
+
+	ObjectStep goDownstairsToGiveLetterToRomeo;
+	NpcStep giveLetterToRomeo;
+
 	QuestStep talkToLawrence;
 	QuestStep talkToApothecary;
 	QuestStep goUpToJuliet2;
@@ -97,7 +101,10 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		talkToJuliet = new NpcStep(this, NpcID.JULIET, new WorldPoint(3158, 3427, 1), "Talk to Juliet in the house west of Varrock.");
 		talkToJuliet.addSubSteps(goUpToJuliet);
 
+		goDownstairsToGiveLetterToRomeo = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TOP, new WorldPoint(3156, 3435, 1), "Bring the letter to Romeo in Varrock Square.", letter);
 		giveLetterToRomeo = new NpcStep(this, NpcID.ROMEO, new WorldPoint(3211, 3422, 0), "Bring the letter to Romeo in Varrock Square.", letter);
+		giveLetterToRomeo.addSubSteps(goDownstairsToGiveLetterToRomeo);
+
 		talkToLawrence = new NpcStep(this, NpcID.FATHER_LAWRENCE, new WorldPoint(3254, 3483, 0), "Talk to Father Lawrence in north east Varrock.");
 		talkToLawrence.addDialogStep("Ok, thanks.");
 		talkToApothecary = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3195, 3405, 0), "Bring the cadava berries to the Apothecary in south west Varrock.", cadavaBerry);
@@ -124,6 +131,9 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		tellJulietAboutRomeo.addStep(inJulietRoom, talkToJuliet);
 
 		steps.put(10, tellJulietAboutRomeo);
+
+		var giveLetterToRomeo = new ConditionalStep(this, this.giveLetterToRomeo);
+		giveLetterToRomeo.addStep(inJulietRoom, goDownstairsToGiveLetterToRomeo);
 		steps.put(20, giveLetterToRomeo);
 		steps.put(30, talkToLawrence);
 		steps.put(40, talkToApothecary);

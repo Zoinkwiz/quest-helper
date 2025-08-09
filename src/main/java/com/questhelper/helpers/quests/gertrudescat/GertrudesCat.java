@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, Patyfatycake <https://github.com/Patyfatycake/>
+ * Copyright (c) 2025, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

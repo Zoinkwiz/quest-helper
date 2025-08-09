@@ -115,19 +115,19 @@ public class ClientOfKourend extends BasicQuestHelper
 
 		useFeatherOnScroll = new DetailedQuestStep(this, "Use a feather on the Enchanted Scroll.", feather, enchantedScroll);
 
-		talkToLeenz = new NpcStep(this, NpcID.PISCARILIUS_GENERALSTORE_KEEPER, new WorldPoint(1807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedQuill);
+		talkToLeenz = new NpcStep(this, NpcID.PISCARILIUS_GENERALSTORE_KEEPER, new WorldPoint(1807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedScroll, enchantedQuill);
 		talkToLeenz.addDialogStep("Can I ask you about Port Piscarilius?");
 		talkToLeenz.addDialogStep("What is there to do in Port Piscarilius?");
-		talkToHorace = new NpcStep(this, NpcID.HOSIDIUS_GENERALSTORE, new WorldPoint(1774, 3589, 0), "Talk to Horace in the Hosidius general store.", enchantedQuill);
+		talkToHorace = new NpcStep(this, NpcID.HOSIDIUS_GENERALSTORE, new WorldPoint(1774, 3589, 0), "Talk to Horace in the Hosidius general store.", enchantedScroll, enchantedQuill);
 		talkToHorace.addDialogStep("Can I ask you about Hosidius?");
 		talkToHorace.addDialogStep("What is there to do in Hosidius?");
-		talkToJennifer = new NpcStep(this, NpcID.SHAYZIEN_GENERALSTORE, new WorldPoint(1518, 3586, 0), "Talk to Jennifer in Shayzien general store.", enchantedQuill);
+		talkToJennifer = new NpcStep(this, NpcID.SHAYZIEN_GENERALSTORE, new WorldPoint(1518, 3586, 0), "Talk to Jennifer in Shayzien general store.", enchantedScroll, enchantedQuill);
 		talkToJennifer.addDialogStep("Can I ask you about Shayzien?");
 		talkToJennifer.addDialogStep("What is there to do in Shayzien?");
-		talkToMunty = new NpcStep(this, NpcID.LOVAKENGJ_GENERALSTORE, new WorldPoint(1551, 3752, 0), "Talk to Munty in Lovakengj general store.", enchantedQuill);
+		talkToMunty = new NpcStep(this, NpcID.LOVAKENGJ_GENERALSTORE, new WorldPoint(1551, 3752, 0), "Talk to Munty in Lovakengj general store.", enchantedScroll, enchantedQuill);
 		talkToMunty.addDialogStep("Can I ask you about Lovakengj?");
 		talkToMunty.addDialogStep("What is there to do in Lovakengj?");
-		talkToRegath = new NpcStep(this, NpcID.ARCEUUS_GENERALSTORE, new WorldPoint(1720, 3724, 0), "Talk to Regath in Arceuus general store.", enchantedQuill);
+		talkToRegath = new NpcStep(this, NpcID.ARCEUUS_GENERALSTORE, new WorldPoint(1720, 3724, 0), "Talk to Regath in Arceuus general store.", enchantedScroll, enchantedQuill);
 		talkToRegath.addDialogStep("Can I ask you about Arceuus?");
 		talkToRegath.addDialogStep("What is there to do in Arceuus?");
 
@@ -151,11 +151,11 @@ public class ClientOfKourend extends BasicQuestHelper
 		steps.put(0, talkToVeos);
 
 		var makeEnchantedQuill = new ConditionalStep(this, talkToVeos);
-		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
-		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
-		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
-		makeEnchantedQuill.addStep(and(enchantedQuill, talkedToLeenz), talkToRegath);
-		makeEnchantedQuill.addStep(and(enchantedQuill), talkToLeenz);
+		makeEnchantedQuill.addStep(and(enchantedScroll, enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
+		makeEnchantedQuill.addStep(and(enchantedScroll, enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
+		makeEnchantedQuill.addStep(and(enchantedScroll, enchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
+		makeEnchantedQuill.addStep(and(enchantedScroll, enchantedQuill, talkedToLeenz), talkToRegath);
+		makeEnchantedQuill.addStep(and(enchantedScroll, enchantedQuill), talkToLeenz);
 		makeEnchantedQuill.addStep(enchantedScroll, useFeatherOnScroll);
 		steps.put(1, makeEnchantedQuill);
 

@@ -70,6 +70,8 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	QuestStep talkToApothecary;
 	QuestStep goUpToJuliet2;
 	QuestStep givePotionToJuliet;
+
+	ObjectStep goDownstairsToFinishQuest;
 	QuestStep finishQuest;
 
 	@Override
@@ -114,7 +116,9 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		givePotionToJuliet = new NpcStep(this, NpcID.JULIET, new WorldPoint(3158, 3427, 1), "Bring the potion to Juliet in the house west of Varrock.", cadavaPotion);
 		givePotionToJuliet.addSubSteps(goUpToJuliet2);
 
+		goDownstairsToFinishQuest = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TOP, new WorldPoint(3156, 3435, 1), "Talk to Romeo in Varrock Square to finish the quest.");
 		finishQuest = new NpcStep(this, NpcID.ROMEO, new WorldPoint(3211, 3422, 0), "Talk to Romeo in Varrock Square to finish the quest.");
+		finishQuest.addSubSteps(goDownstairsToFinishQuest);
 	}
 
 	@Override
@@ -143,7 +147,10 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		bringPotionToJuliet.addStep(cadavaPotion, goUpToJuliet2);
 
 		steps.put(50, bringPotionToJuliet);
-		steps.put(60, finishQuest);
+
+		var cFinishQuest = new ConditionalStep(this, finishQuest);
+		giveLetterToRomeo.addStep(inJulietRoom, goDownstairsToFinishQuest);
+		steps.put(60, cFinishQuest);
 
 		return steps;
 	}

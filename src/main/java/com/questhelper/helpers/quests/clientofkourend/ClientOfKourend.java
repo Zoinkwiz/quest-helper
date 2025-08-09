@@ -47,6 +47,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 
 public class ClientOfKourend extends BasicQuestHelper
 {
@@ -83,11 +84,11 @@ public class ClientOfKourend extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		talkedToLeenz = new VarbitRequirement(5620, 1);
-		talkedToRegath = new VarbitRequirement(5621, 1);
-		talkedToMunty = new VarbitRequirement(5622, 1);
-		talkedToJennifer = new VarbitRequirement(5623, 1);
-		talkedToHorace = new VarbitRequirement(5624, 1);
+		talkedToLeenz = new VarbitRequirement(VarbitID.VEOS_PISCARILIUS, 1);
+		talkedToRegath = new VarbitRequirement(VarbitID.VEOS_ARCEUUS, 1);
+		talkedToMunty = new VarbitRequirement(VarbitID.VEOS_LOVAKENGJ, 1);
+		talkedToJennifer = new VarbitRequirement(VarbitID.VEOS_SHAYZIEN, 1);
+		talkedToHorace = new VarbitRequirement(VarbitID.VEOS_HOSIDIUS, 1);
 
 		feather = new ItemRequirement("Feather", ItemID.FEATHER);
 		feather.setTooltip("Can be purchased from Gerrant's Fishy Business in Port Sarim.");

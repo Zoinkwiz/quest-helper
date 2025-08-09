@@ -139,7 +139,7 @@ public class ClientOfKourend extends BasicQuestHelper
 		returnToVeos.addDialogStep("I've lost something you've given me.");
 		goToAltar = new DetailedQuestStep(this, new WorldPoint(1712, 3883, 0), "Activate the mysterious orb at the Dark Altar. You can either run there through Arceuus, teleport to Wintertodt with the Games Necklace and run south, teleport straight there on the Arceuus spellbook, or use the Lovakengj Minecart Network to travel to Arceuus.", mysteriousOrb);
 
-		finishQuest = new NpcStep(this, NpcID.VEOS_VIS_AMULET, new WorldPoint(1824, 3690, 0), "Return to Veos on Piscarilius docks.");
+		finishQuest = new NpcStep(this, NpcID.VEOS_VIS_AMULET, new WorldPoint(1824, 3690, 0), "Return to Veos on Piscarilius docks. You can take the Lovakengj Minecart Network from Arceuus to Port Piscarilius and run south-east.");
 		finishQuest.addDialogStep("Let's talk about your client...");
 	}
 

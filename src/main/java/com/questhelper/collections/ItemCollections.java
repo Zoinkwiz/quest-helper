@@ -1225,8 +1225,6 @@ public enum ItemCollections
 
 	ESSENCE_LOW(new ImmutableList.Builder<Integer>()
 			.addAll(ESSENCE_HIGH.items).add(
-			ItemID.BLANKRUNE_DAEYALT,
-			ItemID.BLANKRUNE_HIGH,
 			ItemID.BLANKRUNE).build()
 	),
 

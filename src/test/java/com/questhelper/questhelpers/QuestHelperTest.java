@@ -306,21 +306,21 @@ public class QuestHelperTest extends MockedTest
 				continue;
 			}
 
-			this.injector.injectMembers(helper);
-			helper.setInjector(this.injector);
-			helper.setQuestHelperPlugin(questHelperPlugin);
-			helper.setConfig(questHelperConfig);
-			helper.init();
-			helper.startUp(questHelperConfig);
-
 			var shouldError = optedInQuests.contains(quest);
 
 			when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
 
-			var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
-
 			if (helper instanceof BasicQuestHelper)
 			{
+				this.injector.injectMembers(helper);
+				helper.setInjector(this.injector);
+				helper.setQuestHelperPlugin(questHelperPlugin);
+				helper.setConfig(questHelperConfig);
+				helper.init();
+				helper.startUp(questHelperConfig);
+
+				var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
 				questOverviewPanel.addQuest(helper, false);
 				var basicHelper = (BasicQuestHelper) helper;
 				var steps = basicHelper.getStepList();

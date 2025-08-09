@@ -117,6 +117,14 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		return w;
 	}
 
+
+	public static WidgetHighlight createMultiskillByItemId(int itemId)
+	{
+		var w = new WidgetHighlight(InterfaceID.Skillmulti.BOTTOM, true);
+		w.itemIdRequirement = itemId;
+		return w;
+  }
+
 	/**
 	 * Create a widget highlight that highlights an item inside the shop interface (e.g. general store)
 	 * @param itemIdRequirement The ID of the item to highlight

@@ -96,7 +96,7 @@ public class ClientOfKourend extends BasicQuestHelper
 			ItemID.HUNTING_EAGLE_FEATHER, ItemID.HUNTING_STRIPY_BIRD_FEATHER);
 		feather.setHighlightInInventory(true);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
-		coinsForMinecart = new ItemRequirement("Coins", ItemCollections.COINS, 60);
+		coinsForMinecart = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 		coinsForMinecart.setTooltip("For travel with the Lovakengj Minecart Network.");
 		enchantedScroll = new ItemRequirement("Enchanted scroll", ItemID.VEOS_SCROLL);
 		mysteriousOrb = new ItemRequirement("Mysterious orb", ItemID.VEOS_ORB);
@@ -137,7 +137,7 @@ public class ClientOfKourend extends BasicQuestHelper
 		returnToVeos = new NpcStep(this, NpcID.VEOS_VIS_AMULET, new WorldPoint(1824, 3690, 0), "Return to Veos on Piscarilius docks.");
 		returnToVeos.addDialogStep("Let's talk about your client...");
 		returnToVeos.addDialogStep("I've lost something you've given me.");
-		goToAltar = new DetailedQuestStep(this, new WorldPoint(1712, 3883, 0), "Activate the mysterious orb at the Dark Altar. You can either run there through Arceuus, teleport to Wintertodt with the Games Necklace and run south, or teleport straight there on the Arceuus spellbook.", mysteriousOrb);
+		goToAltar = new DetailedQuestStep(this, new WorldPoint(1712, 3883, 0), "Activate the mysterious orb at the Dark Altar. You can either run there through Arceuus, teleport to Wintertodt with the Games Necklace and run south, teleport straight there on the Arceuus spellbook, or use the Lovakengj Minecart Network to travel to Arceuus.", mysteriousOrb);
 
 		finishQuest = new NpcStep(this, NpcID.VEOS_VIS_AMULET, new WorldPoint(1824, 3690, 0), "Return to Veos on Piscarilius docks.");
 		finishQuest.addDialogStep("Let's talk about your client...");

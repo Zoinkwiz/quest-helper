@@ -35,6 +35,7 @@ import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
@@ -214,6 +215,14 @@ public class ClientOfKourend extends BasicQuestHelper
 		return List.of(
 			new ItemReward("500 Experience Lamps (Any Skill)", ItemID.THOSF_REWARD_LAMP, 2), //4447 Placeholder until confirmed.
 			new ItemReward("Kharedst's Memoirs", ItemID.VEOS_KHAREDSTS_MEMOIRS, 1)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return List.of(
+			new UnlockReward("Ability to use the Kourend Castle Teleport spell")
 		);
 	}
 

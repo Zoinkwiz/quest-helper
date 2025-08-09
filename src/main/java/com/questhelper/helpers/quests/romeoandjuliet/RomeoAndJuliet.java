@@ -35,12 +35,14 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-
-import java.util.*;
 
 public class RomeoAndJuliet extends BasicQuestHelper
 {
@@ -112,11 +114,12 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	{
 		initializeRequirements();
 		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToRomeo);
 
-		ConditionalStep tellJulietAboutRomeo = new ConditionalStep(this, goUpToJuliet);
+		var tellJulietAboutRomeo = new ConditionalStep(this, goUpToJuliet);
 		tellJulietAboutRomeo.addStep(inJulietRoom, talkToJuliet);
 
 		steps.put(10, tellJulietAboutRomeo);
@@ -124,7 +127,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		steps.put(30, talkToLawrence);
 		steps.put(40, talkToApothecary);
 
-		ConditionalStep bringPotionToJuliet = new ConditionalStep(this, talkToApothecary);
+		var bringPotionToJuliet = new ConditionalStep(this, talkToApothecary);
 		bringPotionToJuliet.addStep(new Conditions(potion, inJulietRoom), givePotionToJuliet);
 		bringPotionToJuliet.addStep(potion, goUpToJuliet2);
 
@@ -137,9 +140,9 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(cadavaBerry);
-		return reqs;
+		return List.of(
+			cadavaBerry
+		);
 	}
 
 	@Override
@@ -151,11 +154,26 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Helping Romeo", Arrays.asList(talkToRomeo, talkToJuliet, giveLetterToRomeo)));
-		allSteps.add(new PanelDetails("Hatching a plan", Arrays.asList(talkToLawrence, talkToApothecary), cadavaBerry));
-		allSteps.add(new PanelDetails("Enact the plan", Arrays.asList(givePotionToJuliet, finishQuest)));
-		return allSteps;
+		sections.add(new PanelDetails("Helping Romeo", List.of(
+			talkToRomeo,
+			talkToJuliet,
+			giveLetterToRomeo
+		)));
+
+		sections.add(new PanelDetails("Hatching a plan", List.of(
+			talkToLawrence,
+			talkToApothecary
+		), List.of(
+			cadavaBerry
+		)));
+
+		sections.add(new PanelDetails("Enact the plan", List.of(
+			givePotionToJuliet,
+			finishQuest
+		)));
+
+		return sections;
 	}
 }

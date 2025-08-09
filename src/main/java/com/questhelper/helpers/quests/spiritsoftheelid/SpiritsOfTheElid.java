@@ -135,7 +135,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		needle.setHighlightInInventory(true);
 		needle.setTooltip("Costume needle cannot be used as a substitute.");
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 2);
-		thread.setTooltip("Costume needle cannot be used as a substitute.")
+		thread.setTooltip("Costume needle cannot be used as a substitute.");
 		crushWep = new ItemRequirement("Crush Weapon Style", -1, 1).isNotConsumed();
 		crushWep.setDisplayItemId(ItemID.RUNE_MACE);
 		stabWep = new ItemRequirement("Stab Weapon Style", -1, 1).isNotConsumed();

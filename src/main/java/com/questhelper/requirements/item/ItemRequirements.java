@@ -335,7 +335,7 @@ public class ItemRequirements extends ItemRequirement
 	public ItemRequirement copy()
 	{
 		ItemRequirements newItem = new ItemRequirements(getLogicType(), getName(), getItemRequirements());
-		newItem.setEquip(equip);
+		newItem.setMustBeEquipped(equip);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(getDisplayItemId());
 		newItem.setHighlightInInventory(highlightInInventory);

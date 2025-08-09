@@ -55,6 +55,7 @@ public class ClientOfKourend extends BasicQuestHelper
 
 	// Recommended items
 	ItemRequirement gamesNecklace;
+	ItemRequirement coinsForMinecart;
 
 	// Miscellaneus requirements
 	ItemRequirement enchantedScroll;
@@ -94,6 +95,8 @@ public class ClientOfKourend extends BasicQuestHelper
 			ItemID.HUNTING_EAGLE_FEATHER, ItemID.HUNTING_STRIPY_BIRD_FEATHER);
 		feather.setHighlightInInventory(true);
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
+		coinsForMinecart = new ItemRequirement("Coins", ItemCollections.COINS, 60);
+		coinsForMinecart.setTooltip("For travel with the Lovakengj Minecart Network.");
 		enchantedScroll = new ItemRequirement("Enchanted scroll", ItemID.VEOS_SCROLL);
 		enchantedScroll.setHighlightInInventory(true);
 		mysteriousOrb = new ItemRequirement("Mysterious orb", ItemID.VEOS_ORB);
@@ -194,7 +197,8 @@ public class ClientOfKourend extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
-			gamesNecklace
+			gamesNecklace,
+			coinsForMinecart
 		);
 	}
 

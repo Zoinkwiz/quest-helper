@@ -240,8 +240,6 @@ public class ReleaseDate
 		QuestHelperQuest.THE_FINAL_DAWN,
 		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
 		QuestHelperQuest.SCRAMBLED,
-		QuestHelperQuest.AN_EXISTENTIAL_CRISIS,
-		QuestHelperQuest.IMPENDING_CHAOS,
 		QuestHelperQuest.VALE_TOTEMS
 	);
 }

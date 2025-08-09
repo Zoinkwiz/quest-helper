@@ -485,7 +485,14 @@ public enum ItemCollections
 		ItemID._4DOSEPRAYERRESTORE,
 		ItemID._3DOSEPRAYERRESTORE,
 		ItemID._2DOSEPRAYERRESTORE,
-		ItemID._1DOSEPRAYERRESTORE
+		ItemID._1DOSEPRAYERRESTORE,
+		ItemID._4DOSE2RESTORE,
+		ItemID._3DOSE2RESTORE,
+		ItemID._2DOSE2RESTORE,
+		ItemID._1DOSE2RESTORE,
+		ItemID.HUNTER_MIX_MOONMOTH_2DOSE,
+		ItemID.HUNTER_MIX_MOONMOTH_1DOSE,
+		ItemID.BUTTERFLY_JAR_MOONMOTH
 	)),
 
 	RESTORE_POTIONS(ImmutableList.of(
@@ -1218,16 +1225,15 @@ public enum ItemCollections
 		ItemID.DRAMEN_STAFF
 	)),
 
-	ESSENCE_LOW(ImmutableList.of(
-		ItemID.BLANKRUNE_DAEYALT,
-		ItemID.BLANKRUNE_HIGH,
-		ItemID.BLANKRUNE
-	)),
-
 	ESSENCE_HIGH(ImmutableList.of(
 		ItemID.BLANKRUNE_DAEYALT,
 		ItemID.BLANKRUNE_HIGH
 	)),
+
+	ESSENCE_LOW(new ImmutableList.Builder<Integer>()
+			.addAll(ESSENCE_HIGH.items).add(
+			ItemID.BLANKRUNE).build()
+	),
 
 	COINS(ImmutableList.of(
 		ItemID.COINS,

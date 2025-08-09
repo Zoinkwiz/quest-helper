@@ -662,9 +662,9 @@ public abstract class QuestStep implements Module
 		return requirement instanceof ItemRequirement && isValidRenderRequirementInInventory((ItemRequirement) requirement, item);
 	}
 
-	private boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
+	protected boolean isValidRenderRequirementInInventory(ItemRequirement requirement, Widget item)
 	{
-		return requirement.shouldHighlightInInventory(client) && requirement.getAllIds().contains(item.getItemId());
+		return (requirement.shouldHighlightInInventory(client)) && requirement.getAllIds().contains(item.getItemId());
 	}
 
 	protected void renderHoveredItemTooltip(String tooltipText)
@@ -692,8 +692,22 @@ public abstract class QuestStep implements Module
 		return new PuzzleWrapperStep(getQuestHelper(), this);
 	}
 
+	public PuzzleWrapperStep puzzleWrapStep(QuestStep questStep)
+	{
+		return new PuzzleWrapperStep(getQuestHelper(), this, questStep);
+	}
+
+	public PuzzleWrapperStep puzzleWrapStep(QuestStep questStep, boolean hiddenInSidebar)
+	{
+		return new PuzzleWrapperStep(getQuestHelper(), this, questStep).withNoHelpHiddenInSidebar(hiddenInSidebar);
+	}
+
 	public PuzzleWrapperStep puzzleWrapStep(String alternateText)
 	{
 		return new PuzzleWrapperStep(getQuestHelper(), this, alternateText);
+	}
+	public PuzzleWrapperStep puzzleWrapStep(boolean hiddenInSidebar)
+	{
+		return new PuzzleWrapperStep(getQuestHelper(), this).withNoHelpHiddenInSidebar(hiddenInSidebar);
 	}
 }

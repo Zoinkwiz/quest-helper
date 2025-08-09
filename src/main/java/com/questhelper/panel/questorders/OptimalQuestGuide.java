@@ -262,9 +262,6 @@ public class OptimalQuestGuide
 		QuestHelperQuest.THE_FINAL_DAWN,
 		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
 		QuestHelperQuest.SCRAMBLED,
-		QuestHelperQuest.AN_EXISTENTIAL_CRISIS,
-		QuestHelperQuest.IMPENDING_CHAOS,
-		QuestHelperQuest.VALE_TOTEMS,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Quest Guide
 		QuestHelperQuest.BARBARIAN_TRAINING,
 		QuestHelperQuest.BEAR_YOUR_SOUL,
@@ -272,6 +269,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
+		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.ARDOUGNE_HARD,
 		QuestHelperQuest.DESERT_HARD,
 		QuestHelperQuest.FALADOR_HARD,

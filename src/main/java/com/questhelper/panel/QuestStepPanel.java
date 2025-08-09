@@ -38,12 +38,14 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-public class QuestStepPanel extends JPanel
+public class QuestStepPanel extends JPanel implements MouseListener
 {
 	private static final int TITLE_PADDING = 5;
 
@@ -52,7 +54,7 @@ public class QuestStepPanel extends JPanel
 	private final QuestHelperPlugin questHelperPlugin;
 
 	private final JPanel headerPanel = new JPanel();
-	private final JLabel headerLabel = JGenerator.makeJLabel();
+	private final JTextPane headerLabel = JGenerator.makeJTextPane();
 	private final JPanel bodyPanel = new JPanel();
 	private final JCheckBox lockStep = new JCheckBox();
 	@Getter
@@ -76,13 +78,16 @@ public class QuestStepPanel extends JPanel
 
 		leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 
+		headerLabel.addMouseListener(this);
+		addMouseListener(this);
+
 		headerLabel.setText(panelDetails.getHeader());
 		headerLabel.setFont(FontManager.getRunescapeBoldFont());
 
 		headerLabel.setMinimumSize(new Dimension(1, headerLabel.getPreferredSize().height));
 
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.X_AXIS));
-		headerPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+		headerPanel.setBorder(new EmptyBorder(7, 7, 3, 7));
 
 		headerPanel.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
 		leftTitleContainer.add(headerLabel, BorderLayout.CENTER);
@@ -331,7 +336,7 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	void collapse()
+	private void collapse()
 	{
 		if (!isCollapsed())
 		{
@@ -340,7 +345,7 @@ public class QuestStepPanel extends JPanel
 		}
 	}
 
-	void expand()
+	private void expand()
 	{
 		if (isCollapsed())
 		{
@@ -400,5 +405,41 @@ public class QuestStepPanel extends JPanel
 	private QuestStep currentlyActiveQuestSidebarStep()
 	{
 		return questHelperPlugin.getSelectedQuest().getCurrentStep().getActiveStep();
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e)
+	{
+		if (e.getButton() == MouseEvent.BUTTON1)
+		{
+			if (isCollapsed())
+			{
+				expand();
+			}
+			else
+			{
+				collapse();
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent mouseEvent)
+	{
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent mouseEvent)
+	{
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent mouseEvent)
+	{
+	}
+
+	@Override
+	public void mouseExited(MouseEvent mouseEvent)
+	{
 	}
 }

@@ -844,15 +844,25 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void setShortestPath()
 	{
-		if (worldPoint != null && !isLineDrawn())
+		if (worldPoint == null)
 		{
-			WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
-			if (getQuestHelper().getConfig().useShortestPath() && playerWp != null) {
-				Map<String, Object> data = new HashMap<>();
-				data.put("start", playerWp);
-				data.put("target", worldPoint);
-				eventBus.post(new PluginMessage("shortestpath", "path", data));
-			}
+			return;
+		}
+		if (isLineDrawn())
+		{
+			return;
+		}
+		var playerWp = client.getLocalPlayer().getWorldLocation();
+		if (playerWp == null)
+		{
+			return;
+		}
+		if (getQuestHelper().getConfig().useShortestPath())
+		{
+			Map<String, Object> data = new HashMap<>();
+			data.put("start", playerWp);
+			data.put("target", worldPoint);
+			eventBus.post(new PluginMessage("shortestpath", "path", data));
 		}
 	}
 

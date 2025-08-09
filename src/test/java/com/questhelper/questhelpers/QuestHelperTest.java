@@ -180,47 +180,86 @@ public class QuestHelperTest extends MockedTest
 		}
 	}
 
-	void checkSteps(QuestHelper helper, boolean shouldError, Set<QuestStep> checkedSteps, QuestStep step)
+	void checkStep(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, QuestStep step) {
+		when(helper.getCurrentStep()).thenReturn(step);
+
+		var rawText = step.getText();
+		var text = rawText == null ? "" : String.join("\n", rawText);
+
+		questOverviewPanel.updateHighlight(this.client, step); // getactivestep?
+
+		// All steps must have at least one category/step that's erected
+		// If all panels are collapsed, it means the step this fails on needs to be either:
+		// 1. Added as a substep to another step
+		// 2. Added as a panel step
+		if (shouldError)
+		{
+			assertFalse(questOverviewPanel.isAllCollapsed(), String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
+		}
+		else
+		{
+			if (questOverviewPanel.isAllCollapsed())
+			{
+				System.out.format("For quest %s, step '%s' is missing sub steps or should be added to panel\n", helper.getQuest(), text);
+			}
+		}
+	}
+
+	void checkSteps(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, Set<QuestStep> checkedSteps, QuestStep step)
 	{
 		assertNotNull(step);
 
 		if (step instanceof OwnerStep)
 		{
+			helper.startUpStep(step);
 			for (var innerStep : ((OwnerStep) step).getSteps())
 			{
 				if (checkedSteps.contains(innerStep)) continue;
 				checkedSteps.add(innerStep);
-				checkSteps(helper, shouldError, checkedSteps, innerStep);
+				checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, innerStep);
 			}
+			helper.shutDownStep();
 		}
 		else
 		{
-			when(helper.getCurrentStep()).thenReturn(step);
-
-			var rawText = step.getText();
-			var text = rawText == null ? "" : String.join("\n", rawText);
-
-			var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
-			questOverviewPanel.addQuest(helper, true);
-			questOverviewPanel.updateHighlight(this.client, helper.getCurrentStep().getActiveStep());
-
-			// All steps must have at least one category/step that's erected
-			// If all panels are collapsed, it means the step this fails on needs to be either:
-			// 1. Added as a substep to another step
-			// 2. Added as a panel step
-			if (shouldError)
-			{
-				assertFalse(questOverviewPanel.isAllCollapsed(), String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
-			}
-			else
-			{
-				if (questOverviewPanel.isAllCollapsed())
-				{
-					System.out.format("For quest %s, step '%s' is missing sub steps or should be added to panel\n", helper.getQuest(), text);
-				}
-			}
+			checkStep(helper, questOverviewPanel, shouldError, step);
 		}
 	}
+
+	/*
+	@Test
+	void testSingleStep()
+	{
+		var quest = QuestHelperQuest.MISTHALIN_MYSTERY;
+		var shouldError = false;
+
+		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+
+		AchievementDiaryStepManager.setup(configManager);
+
+		var helper = Mockito.spy(quest.getQuestHelper());
+		helper.setQuest(quest);
+
+		this.injector.injectMembers(helper);
+		helper.setInjector(this.injector);
+		helper.setQuestHelperPlugin(questHelperPlugin);
+		helper.setConfig(questHelperConfig);
+		helper.init();
+		helper.startUp(questHelperConfig);
+
+		when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
+
+		var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
+		var realHelper = (MisthalinMystery) helper;
+
+		var step = realHelper.playD;
+		helper.startUpStep(realHelper.puzzlePlayPiano);
+		helper.startUpStep(step);
+
+		checkStep(helper, questOverviewPanel, shouldError, step);
+	}
+	 */
 
 	/// The intent of this test is to ensure that each potentially reachable step in a quest helper has a sidebar
 	/// step associated with it.
@@ -267,16 +306,21 @@ public class QuestHelperTest extends MockedTest
 			}
 
 			this.injector.injectMembers(helper);
+			helper.setInjector(this.injector);
 			helper.setQuestHelperPlugin(questHelperPlugin);
 			helper.setConfig(questHelperConfig);
 			helper.init();
+			helper.startUp(questHelperConfig);
 
 			var shouldError = optedInQuests.contains(quest);
 
 			when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
 
+			var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
 			if (helper instanceof BasicQuestHelper)
 			{
+				questOverviewPanel.addQuest(helper, false);
 				var basicHelper = (BasicQuestHelper) helper;
 				var steps = basicHelper.getStepList();
 				var sortedSteps = steps.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
@@ -285,10 +329,11 @@ public class QuestHelperTest extends MockedTest
 					var step = e.getValue();
 					if (checkedSteps.contains(step)) continue;
 					checkedSteps.add(step);
+					helper.startUpStep(step);
 
 					assertNotNull(step);
 
-					checkSteps(helper, shouldError, checkedSteps, step);
+					checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, step);
 				}
 			}
 			else if (helper instanceof ComplexStateQuestHelper)

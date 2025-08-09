@@ -91,6 +91,7 @@ public class RomeoAndJuliet extends BasicQuestHelper
 		talkToRomeo = new NpcStep(this, NpcID.ROMEO, new WorldPoint(3211, 3422, 0), "Talk to Romeo in Varrock Square.");
 		talkToRomeo.addDialogStep("Yes, I have seen her actually!");
 		talkToRomeo.addDialogStep("Yes, ok, I'll let her know.");
+		talkToRomeo.addDialogStep("Yes.");
 		goUpToJuliet = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS_TALLER, new WorldPoint(3157, 3436, 0), "Talk to Juliet in the house west of Varrock.");
 		goUpToJuliet.addDialogStep("Ok, thanks.");
 		talkToJuliet = new NpcStep(this, NpcID.JULIET, new WorldPoint(3158, 3427, 1), "Talk to Juliet in the house west of Varrock.");

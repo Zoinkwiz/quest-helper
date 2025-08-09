@@ -98,7 +98,6 @@ public class ClientOfKourend extends BasicQuestHelper
 		coinsForMinecart = new ItemRequirement("Coins", ItemCollections.COINS, 60);
 		coinsForMinecart.setTooltip("For travel with the Lovakengj Minecart Network.");
 		enchantedScroll = new ItemRequirement("Enchanted scroll", ItemID.VEOS_SCROLL);
-		enchantedScroll.setHighlightInInventory(true);
 		mysteriousOrb = new ItemRequirement("Mysterious orb", ItemID.VEOS_ORB);
 		mysteriousOrb.setHighlightInInventory(true);
 
@@ -116,7 +115,7 @@ public class ClientOfKourend extends BasicQuestHelper
 		talkToVeos.addDialogStep("I've lost something you've given me.");
 		talkToVeos.addDialogStep("Yes.");
 
-		useFeatherOnScroll = new DetailedQuestStep(this, "Use a feather on the Enchanted Scroll.", feather, enchantedScroll);
+		useFeatherOnScroll = new DetailedQuestStep(this, "Use a feather on the Enchanted Scroll.", feather, enchantedScroll.highlighted());
 
 		talkToLeenz = new NpcStep(this, NpcID.PISCARILIUS_GENERALSTORE_KEEPER, new WorldPoint(1807, 3726, 0), "Talk to Leenz in Port Piscarilius general store.", enchantedScroll, enchantedQuill);
 		talkToLeenz.addDialogStep("Can I ask you about Port Piscarilius?");

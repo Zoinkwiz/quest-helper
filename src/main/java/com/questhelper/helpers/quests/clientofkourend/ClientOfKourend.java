@@ -48,56 +48,44 @@ import java.util.*;
 
 public class ClientOfKourend extends BasicQuestHelper
 {
-	//Items Required
+	// Required items
 	ItemRequirement feather;
 	
-	//Items Recommended
+	// Recommended items
 	ItemRequirement gamesNecklace;
 
-	//Other items used
-	ItemRequirement enchantedScroll, enchantedQuill, mysteriousOrb;
+	// Miscellaneus requirements
+	ItemRequirement enchantedScroll;
+	ItemRequirement enchantedQuill;
+	ItemRequirement mysteriousOrb;
+	VarbitRequirement talkedToLeenz;
+	VarbitRequirement talkedToHorace;
+	VarbitRequirement talkedToJennifer;
+	VarbitRequirement talkedToMunty;
+	VarbitRequirement talkedToRegath;
 
-	Requirement talkedToLeenz, talkedToHorace, talkedToJennifer, talkedToMunty, talkedToRegath;
+	// Steps
+	QuestStep talkToVeos;
+	QuestStep useFeatherOnScroll;
+	QuestStep talkToLeenz;
+	QuestStep talkToHorace;
+	QuestStep talkToJennifer;
+	QuestStep talkToMunty;
+	QuestStep talkToRegath;
+	QuestStep returnToVeos;
+	QuestStep goToAltar;
+	QuestStep finishQuest;
 
-	QuestStep talkToVeos, useFeatherOnScroll, talkToLeenz, talkToHorace, talkToJennifer, talkToMunty, talkToRegath, returnToVeos, goToAltar, finishQuest;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToVeos);
-
-		ConditionalStep makeEnchantedQuill = new ConditionalStep(this, talkToVeos);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz), talkToRegath);
-		makeEnchantedQuill.addStep(new Conditions(enchantedQuill), talkToLeenz);
-		makeEnchantedQuill.addStep(enchantedScroll, useFeatherOnScroll);
-		steps.put(1, makeEnchantedQuill);
-
-		steps.put(2, returnToVeos);
-
-		ConditionalStep takeOrbToAltar = new ConditionalStep(this, returnToVeos);
-		takeOrbToAltar.addStep(mysteriousOrb, goToAltar);
-
-		steps.put(3, returnToVeos);
-
-		steps.put(4, takeOrbToAltar);
-
-		steps.put(5, finishQuest);
-		steps.put(6, finishQuest);
-
-		return steps;
-	}
 
 	@Override
 	protected void setupRequirements()
 	{
+		talkedToLeenz = new VarbitRequirement(5620, 1);
+		talkedToRegath = new VarbitRequirement(5621, 1);
+		talkedToMunty = new VarbitRequirement(5622, 1);
+		talkedToJennifer = new VarbitRequirement(5623, 1);
+		talkedToHorace = new VarbitRequirement(5624, 1);
+
 		feather = new ItemRequirement("Feather", ItemID.FEATHER);
 		feather.setTooltip("Can be purchased from Gerrant's Fishy Business in Port Sarim.");
 		feather.addAlternates(ItemID.HUNTING_POLAR_FEATHER, ItemID.HUNTING_WOODLAND_FEATHER, ItemID.HUNTING_JUNGLE_FEATHER, ItemID.HUNTING_DESERT_FEATHER,
@@ -110,15 +98,6 @@ public class ClientOfKourend extends BasicQuestHelper
 		mysteriousOrb.setHighlightInInventory(true);
 
 		enchantedQuill = new ItemRequirement("Enchanted quill", ItemID.VEOS_QUILL);
-	}
-
-	public void setupConditions()
-	{
-		talkedToLeenz = new VarbitRequirement(5620, 1);
-		talkedToRegath = new VarbitRequirement(5621, 1);
-		talkedToMunty = new VarbitRequirement(5622, 1);
-		talkedToJennifer = new VarbitRequirement(5623, 1);
-		talkedToHorace = new VarbitRequirement(5624, 1);
 	}
 
 	public void setupSteps()
@@ -159,6 +138,47 @@ public class ClientOfKourend extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		steps.put(0, talkToVeos);
+
+		ConditionalStep makeEnchantedQuill = new ConditionalStep(this, talkToVeos);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty, talkedToJennifer), talkToHorace);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath, talkedToMunty), talkToJennifer);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz, talkedToRegath), talkToMunty);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill, talkedToLeenz), talkToRegath);
+		makeEnchantedQuill.addStep(new Conditions(enchantedQuill), talkToLeenz);
+		makeEnchantedQuill.addStep(enchantedScroll, useFeatherOnScroll);
+		steps.put(1, makeEnchantedQuill);
+
+		steps.put(2, returnToVeos);
+
+		ConditionalStep takeOrbToAltar = new ConditionalStep(this, returnToVeos);
+		takeOrbToAltar.addStep(mysteriousOrb, goToAltar);
+
+		steps.put(3, returnToVeos);
+
+		steps.put(4, takeOrbToAltar);
+
+		steps.put(5, finishQuest);
+		steps.put(6, finishQuest);
+
+		return steps;
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		List<Requirement> reqs = new ArrayList<>();
+		reqs.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
+		return reqs;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
@@ -170,14 +190,6 @@ public class ClientOfKourend extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(gamesNecklace);
-	}
-	
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED));
-		return reqs;
 	}
 
 	@Override

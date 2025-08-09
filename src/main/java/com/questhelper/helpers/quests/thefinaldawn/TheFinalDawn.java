@@ -811,7 +811,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		enterBackroom = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_CHAMBER_ENTRY, new WorldPoint(1706, 9706, 0), "Enter the far eastern room. Avoid" +
 				" the patrolling guard.");
 
-		searchBed = new ObjectStep(this, ObjectID.VMQ4_TEMPLE_BED_WITH_KEY, new WorldPoint(1713, 9698, 0), "Search the bed in he south room.");
+		searchBed = new ObjectStep(this, ObjectID.VMQ4_TEMPLE_BED_WITH_KEY, new WorldPoint(1713, 9698, 0), "Search the bed in the south room.");
 		openDrawers = new ObjectStep(this, ObjectID.VMQ4_TEMPLE_CANVAS_DRAW_1_CLOSED, new WorldPoint(1713, 9714, 0), "Open the drawers in the north room.");
 		((ObjectStep) openDrawers).addAlternateObjects(ObjectID.VMQ4_TEMPLE_CANVAS_DRAW_1_OPEN);
 		openDrawers.conditionToHideInSidebar(isSouthDrawer);

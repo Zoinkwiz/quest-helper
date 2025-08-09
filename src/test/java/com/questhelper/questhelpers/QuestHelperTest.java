@@ -276,6 +276,7 @@ public class QuestHelperTest extends MockedTest
 		var optedInQuests = Set.of(
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 			QuestHelperQuest.COOKS_ASSISTANT,
+			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.PRINCE_ALI_RESCUE

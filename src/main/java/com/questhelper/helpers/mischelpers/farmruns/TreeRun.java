@@ -89,16 +89,17 @@ public class TreeRun extends ComplexStateQuestHelper
 
 	// Trees
 	DetailedQuestStep farmingGuildTreePatchCheckHealth, lumbridgeTreePatchCheckHealth, faladorTreePatchCheckHealth, taverleyTreePatchCheckHealth, varrockTreePatchCheckHealth,
-		gnomeStrongholdTreePatchCheckHealth;
+		gnomeStrongholdTreePatchCheckHealth, nemusRetreatTreePatchCheckHealth;
 	DetailedQuestStep farmingGuildTreePatchPlant, lumbridgeTreePatchPlant, faladorTreePatchPlant, taverleyTreePatchPlant,
-		varrockTreePatchPlant, gnomeStrongholdTreePatchPlant;
+		varrockTreePatchPlant, gnomeStrongholdTreePatchPlant, nemusRetreatTreePatchPlant;
 
 	DetailedQuestStep lumbridgeTreePatchClear, faladorTreePatchClear, taverleyTreePatchClear, varrockTreePatchClear,
-		gnomeStrongholdTreePatchClear, farmingGuildTreePatchClear;
+		gnomeStrongholdTreePatchClear, farmingGuildTreePatchClear, nemusRetreatTreePatchClear;
 	DetailedQuestStep lumbridgeTreePatchDig, faladorTreePatchDig, taverleyTreePatchDig, varrockTreePatchDig,
-		gnomeStrongholdTreePatchDig, farmingGuildTreePatchDig;
+		gnomeStrongholdTreePatchDig, farmingGuildTreePatchDig, nemusRetreatTreePatchDig;
 
-	DetailedQuestStep farmingGuildTreePayForProtection, lumbridgeTreeProtect, faladorTreeProtect, taverleyTreeProtect, varrockTreeProtect, strongholdTreeProtect;
+	DetailedQuestStep farmingGuildTreePayForProtection, lumbridgeTreeProtect, faladorTreeProtect, taverleyTreeProtect,
+		varrockTreeProtect, strongholdTreeProtect, nemusRetreatTreeProtect;
 
 	// Fruit Trees
 	DetailedQuestStep farmingGuildFruitTreePatchCheckHealth, gnomeStrongholdFruitTreePatchCheckHealth, gnomeVillageFruitTreePatchCheckHealth,
@@ -129,7 +130,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 	// Teleport Items
 	// TODO: Add these...
-	ItemRequirement farmingGuildTeleport, crystalTeleport, catherbyTeleport, varrockTeleport, lumbridgeTeleport, faladorTeleport, fossilIslandTeleport;
+	ItemRequirement farmingGuildTeleport, crystalTeleport, catherbyTeleport, varrockTeleport, lumbridgeTeleport, faladorTeleport, fossilIslandTeleport, nemusRetreatTeleport;
 
 	// Graceful Set
 	ItemRequirement gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape, gracefulOutfit;
@@ -138,18 +139,18 @@ public class TreeRun extends ComplexStateQuestHelper
 	ItemRequirement farmingHat, farmingTop, farmingLegs, farmingBoots, farmersOutfit;
 
 	// Access Requirements
-	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland, accessToSavannah;
+	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland, accessToSavannah, accessToVarlamore;
 
 	Requirement payingForRemoval, payingForProtection, usingCompostorNothing;
 
-	PatchStates faladorStates, lumbridgeStates, farmingGuildTreeStates, taverleyStates, varrockStates, gnomeStrongholdTreeStates;
+	PatchStates faladorStates, lumbridgeStates, farmingGuildTreeStates, taverleyStates, varrockStates, gnomeStrongholdTreeStates, nemusRetreatStates;
 
 	PatchStates gnomeStrongholdFruitStates, gnomeVillageStates, brimhavenStates, catherbyStates, lletyaStates, farmingGuildFruitStates;
 
 	PatchStates eastHardwoodStates, middleHardwoodStates, westHardwoodStates, savannahStates;
 
 	ConditionalStep farmingGuildStep, lumbridgeStep, varrockStep, faladorStep, taverleyStep, strongholdStep, villageStep, lletyaStep,
-		catherbyStep, brimhavenStep, fossilIslandStep, savannahStep;
+		catherbyStep, brimhavenStep, fossilIslandStep, savannahStep, nemusRetreatStep;
 
 	private final String PAY_OR_CUT = "payOrCutTree";
 	private final String PAY_OR_COMPOST = "payOrCompostTree";
@@ -305,6 +306,15 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		steps.addStep(and(accessToSavannah, nor(savannahStates.getIsGrowing())), savannahStep.withId(11));
 
+		nemusRetreatStep = new ConditionalStep(this, nemusRetreatTreePatchCheckHealth);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsUnchecked(), nemusRetreatTreePatchCheckHealth);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsEmpty(), nemusRetreatTreePatchPlant);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsHarvestable(), nemusRetreatTreePatchClear);
+		nemusRetreatStep.addStep(nemusRetreatStates.getIsStump(), nemusRetreatTreePatchDig);
+		nemusRetreatStep.addStep(nor(usingCompostorNothing, nemusRetreatStates.getIsProtected()), nemusRetreatTreeProtect);
+
+		steps.addStep(and(accessToVarlamore, nor(nemusRetreatStates.getIsGrowing())), nemusRetreatStep.withId(12));
+
 		return steps;
 	}
 
@@ -323,6 +333,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			new SkillRequirement(Skill.FARMING, 85)
 		);
 		accessToSavannah = new QuestRequirement(QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestState.FINISHED);
+		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
 
 		// Trees
 		lumbridgeStates = new PatchStates("Lumbridge");
@@ -331,6 +342,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		varrockStates = new PatchStates("Varrock");
 		gnomeStrongholdTreeStates = new PatchStates("Gnome Stronghold");
 		farmingGuildTreeStates = new PatchStates("Farming Guild", accessToFarmingGuildTreePatch);
+		nemusRetreatStates = new PatchStates("Nemus Retreat", accessToVarlamore);
 
 		// Fruit trees
 		catherbyStates = new PatchStates("Catherby");
@@ -403,7 +415,8 @@ public class TreeRun extends ComplexStateQuestHelper
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemCollections.RING_OF_WEALTHS);
 		faladorTeleport.addAlternates(ItemID.POH_TABLET_FALADORTELEPORT);
 		fossilIslandTeleport = new ItemRequirement("Teleport to Fossil Island", ItemCollections.DIGSITE_PENDANTS);
-
+		nemusRetreatTeleport = new ItemRequirement("Nemus Retreat Teleport", ItemID.PENDANT_OF_ATES);
+		nemusRetreatTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
 		// Graceful and Farming Outfit
 		gracefulHood = new ItemRequirement(
@@ -483,6 +496,10 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Speak to Rosie to clear the patch.");
 		farmingGuildTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
+		nemusRetreatTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
+			"Speak to Aub to clear the patch.");
+		nemusRetreatTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+
 		lumbridgeTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to protect the patch.");
 		lumbridgeTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
@@ -507,6 +524,10 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Speak to Rosie to protect the patch.");
 		farmingGuildTreePayForProtection.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
+		nemusRetreatTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
+			"Speak to Aub to protect the patch.");
+		nemusRetreatTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+
 		// Tree Patch Steps
 		lumbridgeTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
 			"Check the health of the tree planted in Lumbridge.");
@@ -529,6 +550,11 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the tree planted in the Farming Guild.");
 		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
+
+		nemusRetreatTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
+			"Check the health of the tree planted at the Nemus Retreat");
+		nemusRetreatTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		nemusRetreatTreePatchCheckHealth.addTeleport(nemusRetreatTeleport);
 
 		// Tree Plant Steps
 		lumbridgeTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
@@ -562,6 +588,12 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
 		farmingGuildTreePatchCheckHealth.addSubSteps(farmingGuildTreePatchPlant);
 
+		nemusRetreatTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
+			"Plant your sapling in the Nemus Retreat tree patch.", treeSapling);
+		nemusRetreatTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		nemusRetreatTreePatchPlant.addIcon(treeSapling.getId());
+		nemusRetreatTreePatchCheckHealth.addSubSteps(nemusRetreatTreePatchPlant);
+
 		// Dig
 		lumbridgeTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
 			"Dig up the tree stump in Lumbridge.");
@@ -575,13 +607,16 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Dig up the tree stump in the Tree Gnome Stronghold.");
 		farmingGuildTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Dig up the tree stump in the Farming Guild tree patch.");
+		nemusRetreatTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
+			"Dig up the tree stump in the Nemus Retreat tree patch.");
 
 		faladorTreePatchClear.addSubSteps(faladorTreePatchDig, faladorTreeProtect);
 		taverleyTreePatchClear.addSubSteps(taverleyTreePatchDig, taverleyTreeProtect);
 		varrockTreePatchClear.addSubSteps(varrockTreePatchDig, varrockTreeProtect);
 		gnomeStrongholdTreePatchClear.addSubSteps(gnomeStrongholdTreePatchDig, strongholdTreeProtect);
 		lumbridgeTreePatchClear.addSubSteps(lumbridgeTreePatchDig, lumbridgeTreeProtect);
-		farmingGuildTreePatchClear.addSubSteps(farmingGuildTreePatchDig, farmingGuildTreePatchDig);
+		farmingGuildTreePatchClear.addSubSteps(farmingGuildTreePatchDig, farmingGuildTreePayForProtection);
+		nemusRetreatTreePatchClear.addSubSteps(nemusRetreatTreePatchDig, nemusRetreatTreeProtect);
 
 		// Fruit Tree Steps
 		gnomeStrongholdFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
@@ -786,7 +821,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		allProtectionItemFruitTree.setQuantity(protectionItemFruitTree.getQuantity());
 		allProtectionItemHardwood.setQuantity(protectionItemHardwood.getQuantity());
 		handleTreePatches(PatchImplementation.TREE,
-			List.of(farmingGuildTreeStates, varrockStates, faladorStates, taverleyStates, lumbridgeStates, gnomeStrongholdTreeStates),
+			List.of(farmingGuildTreeStates, varrockStates, faladorStates, taverleyStates, lumbridgeStates, gnomeStrongholdTreeStates, nemusRetreatStates),
 			farmingWorld.getTabs().get(Tab.TREE), allTreeSaplings, allProtectionItemTree);
 		handleTreePatches(PatchImplementation.FRUIT_TREE,
 			List.of(farmingGuildFruitStates, brimhavenStates, catherbyStates, gnomeStrongholdFruitStates, gnomeVillageStates, lletyaStates),
@@ -949,6 +984,11 @@ public class TreeRun extends ComplexStateQuestHelper
 		PanelDetails savannahPanel = new PanelDetails("Avium Savannah", Arrays.asList(savannahCheckHealth, savannahClear, savannahPlant)).withId(11);
 		savannahPanel.setLockingStep(savannahStep);
 		allSteps.add(savannahPanel);
+
+		PanelDetails nemusRetreatPanel = new PanelDetails("Nemus Retreat", Arrays.asList(nemusRetreatTreePatchCheckHealth, nemusRetreatTreePatchClear, nemusRetreatTreePatchPlant)).withId(12);
+		nemusRetreatPanel.setLockingStep(nemusRetreatStep);
+		allSteps.add(nemusRetreatPanel);
+
 		return allSteps;
 	}
 

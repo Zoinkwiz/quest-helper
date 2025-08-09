@@ -111,6 +111,7 @@ public class ClientOfKourend extends BasicQuestHelper
 		talkToVeos.addDialogStep("Have you got any quests for me?");
 		talkToVeos.addDialogStep("Let's talk about your client...");
 		talkToVeos.addDialogStep("I've lost something you've given me.");
+		talkToVeos.addDialogStep("Yes.");
 
 		useFeatherOnScroll = new DetailedQuestStep(this, "Use a feather on the Enchanted Scroll.", feather, enchantedScroll);
 

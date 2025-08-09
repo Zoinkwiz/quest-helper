@@ -170,6 +170,7 @@ public enum ItemCollections
 	SAW("Saw", ImmutableList.of(
 		ItemID.POH_SAW,
 		ItemID.WEARABLE_SAW,
+		ItemID.WEARABLE_SAW_OFFHAND,
 		ItemID.EYEGLO_CRYSTAL_SAW
 	)),
 
@@ -1225,16 +1226,15 @@ public enum ItemCollections
 		ItemID.DRAMEN_STAFF
 	)),
 
-	ESSENCE_LOW(ImmutableList.of(
-		ItemID.BLANKRUNE_DAEYALT,
-		ItemID.BLANKRUNE_HIGH,
-		ItemID.BLANKRUNE
-	)),
-
 	ESSENCE_HIGH(ImmutableList.of(
 		ItemID.BLANKRUNE_DAEYALT,
 		ItemID.BLANKRUNE_HIGH
 	)),
+
+	ESSENCE_LOW(new ImmutableList.Builder<Integer>()
+			.addAll(ESSENCE_HIGH.items).add(
+			ItemID.BLANKRUNE).build()
+	),
 
 	COINS(ImmutableList.of(
 		ItemID.COINS,

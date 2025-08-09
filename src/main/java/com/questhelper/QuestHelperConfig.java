@@ -535,6 +535,17 @@ public interface QuestHelperConfig extends Config
 	default boolean solvePuzzles() { return true; }
 
 	@ConfigItem(
+		keyName = "showWorldMapPoint",
+		name = "Display world map point",
+		description = "Choose whether the arrow & icon of your current step should be visible on the world map.<br>Changing this will take effect next time your quest step updates.",
+		section = hintsSection
+	)
+	default boolean showWorldMapPoint()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 			keyName = "useShortestPath",
 			name = "Use 'Shortest Path' plugin",
 			description = "If you have the 'Shortest Path' plugin downloaded, it will be used to show routes to locations",

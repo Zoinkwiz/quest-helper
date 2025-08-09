@@ -101,7 +101,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		rope.setHighlightInInventory(true);
 
 		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE).isNotConsumed();
-		slashItem.setTooltip("Except abyssal whip, abyssal tentacle, or dragon claws.");
+		slashItem.setTooltip("Except abyssal whip, abyssal tentacle, noxious halberd, or dragon claws.");
 
 		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.SLAYER_REINFORCED_GOGGLES, 1, true).isNotConsumed();
 		reinforcedGoggles.setTooltip("You can get another pair from Spria");

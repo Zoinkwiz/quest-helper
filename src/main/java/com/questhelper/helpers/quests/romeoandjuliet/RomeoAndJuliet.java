@@ -58,21 +58,21 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	ZoneRequirement inJulietRoom;
 
 	// Steps
-	QuestStep talkToRomeo;
+	NpcStep talkToRomeo;
 
-	QuestStep goUpToJuliet;
-	QuestStep talkToJuliet;
+	ObjectStep goUpToJuliet;
+	NpcStep talkToJuliet;
 
 	ObjectStep goDownstairsToGiveLetterToRomeo;
 	NpcStep giveLetterToRomeo;
 
-	QuestStep talkToLawrence;
-	QuestStep talkToApothecary;
-	QuestStep goUpToJuliet2;
-	QuestStep givePotionToJuliet;
+	NpcStep talkToLawrence;
+	NpcStep talkToApothecary;
+	ObjectStep goUpToJuliet2;
+	NpcStep givePotionToJuliet;
 
 	ObjectStep goDownstairsToFinishQuest;
-	QuestStep finishQuest;
+	NpcStep finishQuest;
 
 	@Override
 	protected void setupZones()

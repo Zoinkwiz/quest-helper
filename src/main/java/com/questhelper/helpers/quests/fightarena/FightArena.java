@@ -133,9 +133,8 @@ public class FightArena extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.LADY_SERVIL_VIS, new WorldPoint(2565, 3199, 0),
-			"Talk to Lady Servil, west-southwest of the Monastery south of Ardougne.");
-		startQuest.addDialogStep(2, "Can I help you?");
+		startQuest = new NpcStep(this, NpcID.LADY_SERVIL_VIS, new WorldPoint(2565, 3199, 0), "Talk to Lady Servil, west-southwest of the Monastery south of Ardougne.");
+		startQuest.addDialogStep("Yes.");
 		searchChest = new ObjectStep(this, ObjectID.ARENA_GUARD_CHEST_SHUT, new WorldPoint(2613, 3189, 0), "Search the chest to the east for some Khazard armour.");
 		searchChest.addAlternateObjects(ObjectID.ARENA_GUARD_CHEST_OPEN);
 		talkToGuard = new NpcStep(this, NpcID.ARENA_GUARD2, new WorldPoint(2615, 3143, 0),

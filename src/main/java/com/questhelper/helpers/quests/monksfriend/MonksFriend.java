@@ -101,7 +101,7 @@ public class MonksFriend extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToOmad = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Talk to Brother Omad in the monastery south of West Ardougne.");
+		talkToOmad = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Talk to Brother Omad in the monastery south of East Ardougne.");
 		talkToOmad.addDialogStep("Why can't you sleep, what's wrong?");
 		talkToOmad.addDialogStep("Can I help at all?");
 

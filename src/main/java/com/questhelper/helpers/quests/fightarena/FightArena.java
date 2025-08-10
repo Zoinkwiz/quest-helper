@@ -152,17 +152,23 @@ public class FightArena extends BasicQuestHelper
 			"Get ready to fight the monsters (all safespottable), starting with Khazard Ogre (level 63). Use the keys on Sammy's cell door to free him.", combatGear, cellKeys);
 		openCell.addIcon(ItemID.KHAZARD_CELLKEYS);
 		talkToSammy = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the ogre.");
-		killOgre = new NpcStep(this, NpcID.ARENA_OGRE, new WorldPoint(2601, 3163, 0),
-			"Kill the Ogre. You can lure it behind a skeleton to safespot it.", combatGear);
+
+		killOgre = new NpcStep(this, NpcID.ARENA_OGRE, new WorldPoint(2601, 3163, 0), "Kill the Ogre. You can lure it behind a skeleton to safespot it.", combatGear);
 		killOgre.addSubSteps(talkToSammy);
+		killOgre.addSafeSpots(new WorldPoint(2598, 3162, 0));
+
 		talkToKhazard = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.");
 		talkToHengrad = new NpcStep(this, NpcID.HENGRAD, new WorldPoint(2599, 3143, 0),
 			"Talk to Hengrad.");
 		talkToHengrad.addSubSteps(talkToKhazard);
+
 		talkToSammyForScorpion = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the scorpion.");
+
 		killScorpion = new NpcStep(this, NpcID.ARENA_SCORPION, new WorldPoint(2601, 3163, 0),
 			"Kill the Scorpion. You can lure it behind a skeleton to safespot it.", combatGear);
+		killScorpion.addSafeSpots(new WorldPoint(2598, 3162, 0));
 		killScorpion.addSubSteps(talkToSammyForScorpion);
+
 		talkToSammyForBouncer = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight Bouncer.");
 		killBouncer = new NpcStep(this, NpcID.ARENA_BOUNCER, new WorldPoint(2601, 3163, 0),
 			"Kill Bouncer. You can lure it behind a skeleton to safespot it. Warning: After Bouncer is killed, you will be unable to re-enter the arena.", combatGear);

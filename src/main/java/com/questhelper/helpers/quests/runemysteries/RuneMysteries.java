@@ -78,7 +78,7 @@ public class RuneMysteries extends BasicQuestHelper
 	NpcStep bringTalismanToSedridor;
 	ObjectStep goDownToSedridorAfterHandingInAirTalisman;
 	NpcStep getResearchPackageFromSedridor;
-	NpcStep talkToAubury;
+	NpcStep deliverPackageToAubury;
 	NpcStep talkToAudburyAgain;
 	ObjectStep goDownToSedridor2;
 	NpcStep talkToSedridor2;
@@ -140,8 +140,9 @@ public class RuneMysteries extends BasicQuestHelper
 		getResearchPackageFromSedridor.addSubSteps(goDownToSedridorAfterHandingInAirTalisman);
 
 
-		talkToAubury = new NpcStep(this, NpcID.AUBURY_2OP, new WorldPoint(3253, 3401, 0), "Bring the Research Package to Aubury in south east Varrock.", researchPackage);
-		talkToAubury.addDialogStep("I've been sent here with a package for you.");
+		deliverPackageToAubury = new NpcStep(this, NpcID.AUBURY_2OP, new WorldPoint(3253, 3401, 0), "Bring the Research Package to Aubury in south east Varrock.", researchPackage);
+		deliverPackageToAubury.addDialogStep("I've been sent here with a package for you.");
+		deliverPackageToAubury.addTeleport(varrockTeleport);
 		talkToAudburyAgain = new NpcStep(this, NpcID.AUBURY_2OP, new WorldPoint(3253, 3401, 0), "Talk to Aubury again in south east Varrock.");
 
 		goDownToSedridor2 = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", notes);
@@ -173,7 +174,7 @@ public class RuneMysteries extends BasicQuestHelper
 		steps.put(2, getPackageFromSedridor);
 
 
-		var cDeliverPackageToAbury = new ConditionalStep(this, talkToAubury);
+		var cDeliverPackageToAbury = new ConditionalStep(this, deliverPackageToAubury);
 		cDeliverPackageToAbury.addStep(and(inWizardBasement, needsToGrabPackage), getResearchPackageFromSedridor);
 		cDeliverPackageToAbury.addStep(needsToGrabPackage, goDownToSedridorAfterHandingInAirTalisman);
 		steps.put(3, cDeliverPackageToAbury);
@@ -228,7 +229,7 @@ public class RuneMysteries extends BasicQuestHelper
 			talkToHoracio,
 			bringTalismanToSedridor,
 			getResearchPackageFromSedridor,
-			talkToAubury,
+			deliverPackageToAubury,
 			talkToAudburyAgain,
 			talkToSedridor2
 		)));

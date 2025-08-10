@@ -219,7 +219,6 @@ public class RuneMysteries extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
-			new UnlockReward("Ability to use the Runecrafting Skill."),
 			new UnlockReward("Ability to mine Rune and Pure Essence.")
 		);
 	}

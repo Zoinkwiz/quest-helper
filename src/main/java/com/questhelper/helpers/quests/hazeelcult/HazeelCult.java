@@ -213,7 +213,7 @@ public class HazeelCult extends BasicQuestHelper
 			"Enter the cave south east of the Clock Tower entrance.");
 		talkToClivet = new NpcStep(this, NpcID.CLIVET_HAZEEL_CULTIST_VIS, new WorldPoint(2569, 9682, 0),
 			"Talk to Clivet. You can choose to either side with him or with the Carnilleans.");
-		talkToClivet.addDialogSteps("Alright, I've made my decision.", "I have no more questions.", "What do you mean?");
+		talkToClivet.addDialogSteps("Alright, I've made my decision.", "Actually, I have no questions.", "I have no more questions.", "What do you mean?");
 		talkToClivet.addDialogChange("I won't help you.", "I won't help you. (side with Ceril)");
 		talkToClivet.addDialogChange("Alright, how do I do it?", "Alright, how do I do it? (side with Hazeel)");
 		talkToClivet.addDialogChange("I'll help you.", "I'll help you. (side with Hazeel)");

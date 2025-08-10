@@ -277,6 +277,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.SHEEP_SHEARER,
+			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.PRINCE_ALI_RESCUE
 		);

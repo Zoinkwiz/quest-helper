@@ -43,7 +43,16 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -51,134 +60,66 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class TreeGnomeVillage extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement logRequirement, orbsOfProtection;
+	// Required items
+	ItemRequirement logRequirement;
+	ItemRequirement combatGear;
 
-	private QuestStep talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
-		firstTracker, secondTracker, thirdTracker, fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4, climbTheLadder,
-		talkToKingBolrenFirstOrb, talkToTheWarlord, fightTheWarlord, returnOrbs, finishQuestDialog, elkoySkip;
+	// Recommended items
+	ItemRequirement food;
 
-	Requirement completeFirstTracker, completeSecondTracker, completeThirdTracker, handedInOrbs,
-		notCompleteFirstTracker, notCompleteSecondTracker, notCompleteThirdTracker, orbsOfProtectionNearby, givenWood;
+	// Miscellaneous requirement
+	ItemRequirement orbsOfProtection;
+	Requirement completeFirstTracker;
+	Requirement completeSecondTracker;
+	Requirement completeThirdTracker;
+	Requirement handedInOrbs;
+	Requirement notCompleteFirstTracker;
+	Requirement notCompleteSecondTracker;
+	Requirement notCompleteThirdTracker;
+	Requirement orbsOfProtectionNearby;
+	Requirement givenWood;
+	Conditions talkToSecondTracker;
+	Conditions talkToThirdTracker;
+	Conditions completedTrackers;
+	Conditions shouldFireBallista1;
+	Conditions shouldFireBallista2;
+	Conditions shouldFireBallista3;
+	Conditions shouldFireBallista4;
+	NpcHintArrowRequirement fightingWarlord;
 
-	private Conditions talkToSecondTracker, talkToThirdTracker, completedTrackers,
-		shouldFireBallista1, shouldFireBallista2, shouldFireBallista3, shouldFireBallista4;
-
-	private ConditionalStep retrieveOrb, talkToBolrenAtCentreOfMaze, fireBalistaConditional, returnFirstOrb;
+	ZoneRequirement isUpstairsTower;
+	ZoneRequirement insideGnomeVillage;
 
 	//Zones
-	Zone upstairsTower, zoneVillage;
-	ZoneRequirement isUpstairsTower, insideGnomeVillage;
+	Zone upstairsTower;
+	Zone zoneVillage;
 
-	private final int TRACKER_1_VARBITID = 599;
-	private final int TRACKER_2_VARBITID = 600;
-	private final int TRACKER_3_VARBITID = 601;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		return CreateSteps();
-	}
-
-	private Map<Integer, QuestStep> CreateSteps()
-	{
-		Map<Integer, QuestStep> steps = new HashMap<>();
-		steps.put(0, talkToBolrenAtCentreOfMaze);
-		steps.put(1, talkToCommanderMontai);
-		steps.put(2, bringWoodToCommanderMontai);
-		steps.put(3, talkToCommanderMontaiAgain);
-		steps.put(4, talkToTrackersStep());
-		steps.put(5, retrieveOrbStep());
-		steps.put(6, returnFirstOrb);
-		steps.put(7, defeatWarlordStep());
-		steps.put(8, returnOrbsStep());
-		return steps;
-	}
-
-	private QuestStep talkToTrackersStep()
-	{
-		fireBalistaConditional = new ConditionalStep(this, fireBallista, "Fire the ballista at the tower.");
-		fireBalistaConditional.addStep(shouldFireBallista1, fireBallista1);
-		fireBalistaConditional.addStep(shouldFireBallista2, fireBallista2);
-		fireBalistaConditional.addStep(shouldFireBallista3, fireBallista3);
-		fireBalistaConditional.addStep(shouldFireBallista4, fireBallista4);
-		fireBalistaConditional.addSubSteps(fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4);
-
-		ConditionalStep talkToTrackers = new ConditionalStep(this, firstTracker);
-		talkToTrackers.addStep(talkToSecondTracker, secondTracker);
-		talkToTrackers.addStep(talkToThirdTracker, thirdTracker);
-		talkToTrackers.addStep(completedTrackers, fireBalistaConditional);
-
-		return talkToTrackers;
-	}
-
-	private QuestStep retrieveOrbStep()
-	{
-		retrieveOrb = new ConditionalStep(this, climbTheLadder, "Enter the tower by the Crumbled wall and climb the ladder to retrieve the first orb from chest.");
-		ObjectStep getOrbFromChest = new ObjectStep(this, ObjectID.CHESTCLOSED_KHAZARD, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
-		getOrbFromChest.addAlternateObjects(ObjectID.CHESTOPEN_KHAZARD);
-		retrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
-		retrieveOrb.addSubSteps(getOrbFromChest, climbTheLadder);
-		return retrieveOrb;
-	}
-
-	private QuestStep defeatWarlordStep()
-	{
-		NpcHintArrowRequirement fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_COMBAT);
-
-		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_COMBAT, new WorldPoint(2456, 3301, 0),
-			"Defeat the warlord and retrieve orbs.");
-		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_CHAT, new WorldPoint(2456, 3301, 0),
-			"Talk to the Warlord south west of West Ardougne, ready to fight him.");
-
-		ItemRequirement food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-
-		ItemRequirement combatGear = new ItemRequirement("A Weapon & Armour (magic is best)", -1);
-		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
-
-		ConditionalStep defeatTheWarlord = new ConditionalStep(this, talkToTheWarlord,
-			food,
-			combatGear);
-
-		defeatTheWarlord.addStep(fightingWarlord, fightTheWarlord);
-
-
-		return defeatTheWarlord;
-	}
-
-	private QuestStep returnOrbsStep()
-	{
-		handedInOrbs = new VarbitRequirement(VarbitID.BOLREN_GOT_ORBS, 1, Operation.GREATER_EQUAL);
-
-		orbsOfProtectionNearby = new ItemOnTileRequirement(ItemID.ORBS_OF_PROTECTION);
-
-		ItemStep pickupOrb = new ItemStep(this,
-			"Pick up the nearby Orbs of Protection.", orbsOfProtection);
-		returnOrbs.addSubSteps(pickupOrb);
-
-		ConditionalStep returnOrbsSteps = new ConditionalStep(this, returnOrbs);
-		returnOrbsSteps.addStep(orbsOfProtectionNearby, pickupOrb);
-		returnOrbsSteps.addStep(handedInOrbs, finishQuestDialog);
-
-		return returnOrbsSteps;
-	}
-
-	@Override
-	protected void setupRequirements()
-	{
-		givenWood = new VarplayerRequirement(QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE.getId(), 3, Operation.GREATER_EQUAL);
-		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6).hideConditioned(givenWood);
-		orbsOfProtection = new ItemRequirement("Orbs of protection", ItemID.ORBS_OF_PROTECTION);
-		orbsOfProtection.setTooltip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
-	}
+	// Steps
+	QuestStep talkToCommanderMontai;
+	QuestStep bringWoodToCommanderMontai;
+	QuestStep talkToCommanderMontaiAgain;
+	QuestStep firstTracker;
+	QuestStep secondTracker;
+	QuestStep thirdTracker;
+	QuestStep fireBallista;
+	QuestStep fireBallista1;
+	QuestStep fireBallista2;
+	QuestStep fireBallista3;
+	QuestStep fireBallista4;
+	QuestStep climbTheLadder;
+	QuestStep talkToKingBolrenFirstOrb;
+	QuestStep talkToTheWarlord;
+	QuestStep fightTheWarlord;
+	ItemStep pickupOrb;
+	QuestStep returnOrbs;
+	QuestStep finishQuestDialog;
+	QuestStep elkoySkip;
+	ConditionalStep cRetrieveOrb;
+	ConditionalStep talkToBolrenAtCentreOfMaze;
+	ConditionalStep fireBalistaConditional;
+	ConditionalStep returnFirstOrb;
 
 	@Override
 	protected void setupZones()
@@ -187,8 +128,13 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		zoneVillage = new Zone(new WorldPoint(2514, 3158, 0), new WorldPoint(2542, 3175, 0));
 	}
 
-	public void setupConditions()
+	@Override
+	protected void setupRequirements()
 	{
+		final int TRACKER_1_VARBITID = 599;
+		final int TRACKER_2_VARBITID = 600;
+		final int TRACKER_3_VARBITID = 601;
+
 		notCompleteFirstTracker = new VarbitRequirement(TRACKER_1_VARBITID, 0);
 		notCompleteSecondTracker = new VarbitRequirement(TRACKER_2_VARBITID, 0);
 		notCompleteThirdTracker = new VarbitRequirement(TRACKER_3_VARBITID, 0);
@@ -209,16 +155,31 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		shouldFireBallista2 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 1));
 		shouldFireBallista3 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 2));
 		shouldFireBallista4 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 3));
+
+		fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_COMBAT);
+
+		orbsOfProtectionNearby = new ItemOnTileRequirement(ItemID.ORBS_OF_PROTECTION);
+		handedInOrbs = new VarbitRequirement(VarbitID.BOLREN_GOT_ORBS, 1, Operation.GREATER_EQUAL);
+
+		givenWood = new VarplayerRequirement(QuestVarPlayer.QUEST_TREE_GNOME_VILLAGE.getId(), 3, Operation.GREATER_EQUAL);
+
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		combatGear = new ItemRequirement("Combat gear (magic is best)", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
+
+		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6).hideConditioned(givenWood);
+		orbsOfProtection = new ItemRequirement("Orbs of protection", ItemID.ORBS_OF_PROTECTION);
+		orbsOfProtection.setTooltip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
 	}
 
 	private void setupSteps()
 	{
-		QuestStep talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
+		var talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
 		talkToKingBolren.addDialogStep("Can I help at all?");
 		talkToKingBolren.addDialogStep("I would be glad to help.");
 
-		DetailedQuestStep goThroughMaze = new DetailedQuestStep(this, new WorldPoint(2541, 3170, 0), "Follow the marked path to walk through the maze.");
-		List<WorldPoint> pathThroughMaze = Arrays.asList(
+		var goThroughMaze = new DetailedQuestStep(this, new WorldPoint(2541, 3170, 0), "Follow the marked path to walk through the maze.");
+		var pathThroughMaze = List.of(
 			new WorldPoint(2505, 3190, 0),
 			new WorldPoint(2512, 3190, 0),
 			new WorldPoint(2512, 3188, 0),
@@ -258,7 +219,8 @@ public class TreeGnomeVillage extends BasicQuestHelper
 			new WorldPoint(2545, 3156, 0),
 			new WorldPoint(2520, 3156, 0),
 			new WorldPoint(2520, 3159, 0),
-			new WorldPoint(2515, 3159, 0));
+			new WorldPoint(2515, 3159, 0)
+		);
 		goThroughMaze.setLinePoints(pathThroughMaze);
 
 		talkToBolrenAtCentreOfMaze = new ConditionalStep(this, goThroughMaze,
@@ -302,24 +264,90 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		returnFirstOrb.addStep(insideGnomeVillage, talkToKingBolrenFirstOrb);
 		returnFirstOrb.addSubSteps(talkToKingBolrenFirstOrb, elkoySkip);
 
-		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
-			"Talk to King Bolren in the centre of the Tree Gnome Maze.", orbsOfProtection);
+		fireBalistaConditional = new ConditionalStep(this, fireBallista, "Fire the ballista at the tower.");
+		fireBalistaConditional.addStep(shouldFireBallista1, fireBallista1);
+		fireBalistaConditional.addStep(shouldFireBallista2, fireBallista2);
+		fireBalistaConditional.addStep(shouldFireBallista3, fireBallista3);
+		fireBalistaConditional.addStep(shouldFireBallista4, fireBallista4);
+		fireBalistaConditional.addSubSteps(fireBallista, fireBallista1, fireBallista2, fireBallista3, fireBallista4);
 
-		finishQuestDialog = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
-			"Speak to King Bolren in the centre of the Tree Gnome Maze.");
-		returnOrbs.addSubSteps(finishQuestDialog);
+		cRetrieveOrb = new ConditionalStep(this, climbTheLadder, "Enter the tower by the Crumbled wall and climb the ladder to retrieve the first orb from chest.");
+		ObjectStep getOrbFromChest = new ObjectStep(this, ObjectID.CHESTCLOSED_KHAZARD, new WorldPoint(2506, 3259, 1), "Retrieve the first orb from chest.");
+		getOrbFromChest.addAlternateObjects(ObjectID.CHESTOPEN_KHAZARD);
+		cRetrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
+		cRetrieveOrb.addSubSteps(getOrbFromChest, climbTheLadder);
+
+		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_COMBAT, new WorldPoint(2456, 3301, 0),
+			"Defeat the warlord and retrieve orbs.");
+		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_CHAT, new WorldPoint(2456, 3301, 0),
+			"Talk to the Warlord south west of West Ardougne, ready to fight him.");
+
+		pickupOrb = new ItemStep(this, "Pick up the nearby Orbs of Protection.", orbsOfProtection);
+
+		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Talk to King Bolren in the centre of the Tree Gnome Maze.", orbsOfProtection);
+
+		finishQuestDialog = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.");
+
+		returnOrbs.addSubSteps(pickupOrb, finishQuestDialog);
+	}
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToBolrenAtCentreOfMaze);
+		steps.put(1, talkToCommanderMontai);
+		steps.put(2, bringWoodToCommanderMontai);
+		steps.put(3, talkToCommanderMontaiAgain);
+
+		var cTalkToTrackers = new ConditionalStep(this, firstTracker);
+		cTalkToTrackers.addStep(talkToSecondTracker, secondTracker);
+		cTalkToTrackers.addStep(talkToThirdTracker, thirdTracker);
+		cTalkToTrackers.addStep(completedTrackers, fireBalistaConditional);
+		steps.put(4, cTalkToTrackers);
+
+		steps.put(5, cRetrieveOrb);
+		steps.put(6, returnFirstOrb);
+
+		var cDefeatTheWarlord = new ConditionalStep(this, talkToTheWarlord, food, combatGear);
+		cDefeatTheWarlord.addStep(fightingWarlord, fightTheWarlord);
+		steps.put(7, cDefeatTheWarlord);
+
+		var cReturnOrbs = new ConditionalStep(this, returnOrbs);
+		cReturnOrbs.addStep(orbsOfProtectionNearby, pickupOrb);
+		cReturnOrbs.addStep(handedInOrbs, finishQuestDialog);
+		steps.put(8, cReturnOrbs);
+
+		return steps;
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Collections.singletonList(logRequirement);
+		return List.of(
+			logRequirement,
+			combatGear
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of(
+			food
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Khazard Warlord (level 112)");
+		return List.of(
+			"Khazard Warlord (level 112)"
+		);
 	}
 
 	@Override
@@ -331,31 +359,52 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.ATTACK, 11450));
+		return List.of(
+			new ExperienceReward(Skill.ATTACK, 11450)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Use of the Spirit Tree transportation method."));
+		return List.of(
+			new UnlockReward("Use of the Spirit Tree transportation method.")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> steps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		steps.add(new PanelDetails("Getting started", Collections.singletonList(talkToBolrenAtCentreOfMaze)));
-		steps.add(new PanelDetails("The three trackers", Arrays.asList(
-			talkToCommanderMontai, bringWoodToCommanderMontai, talkToCommanderMontaiAgain,
-			firstTracker, secondTracker, thirdTracker, fireBalistaConditional), logRequirement));
+		sections.add(new PanelDetails("Getting started", List.of(
+			talkToBolrenAtCentreOfMaze
+		)));
 
-		ItemRequirement food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-		ItemRequirement combatGear = new ItemRequirement("Weapon & Armour (magic is best)", -1);
-		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
+		sections.add(new PanelDetails("The three trackers", List.of(
+			talkToCommanderMontai,
+			bringWoodToCommanderMontai,
+			talkToCommanderMontaiAgain,
+			firstTracker,
+			secondTracker,
+			thirdTracker,
+			fireBalistaConditional
+		), List.of(
+			logRequirement
+		)));
 
-		steps.add(new PanelDetails("Retrieving the orbs", Arrays.asList(retrieveOrb, elkoySkip, talkToKingBolrenFirstOrb,
-			talkToTheWarlord, fightTheWarlord, returnOrbs), combatGear, food));
-		return steps;
+		sections.add(new PanelDetails("Retrieving the orbs", List.of(
+			cRetrieveOrb,
+			elkoySkip,
+			talkToKingBolrenFirstOrb,
+			talkToTheWarlord,
+			fightTheWarlord,
+			returnOrbs
+		), List.of(
+			combatGear,
+			food
+		)));
+
+		return sections;
 	}
 }

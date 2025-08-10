@@ -70,6 +70,7 @@ public class RuneMysteries extends BasicQuestHelper
 
 	VarbitRequirement needsToGrabPackage;
 	VarbitRequirement needsToGrabResearchNotes;
+	VarbitRequirement hasGivenSedridorTheNotes;
 
 	// Steps
 	ObjectStep goUpToHoracio;
@@ -82,7 +83,8 @@ public class RuneMysteries extends BasicQuestHelper
 	NpcStep deliverPackageToAubury;
 	NpcStep talkToAudburyAgain;
 	ObjectStep goDownToSedridor2;
-	NpcStep talkToSedridor2;
+	NpcStep deliverResearchNotesToSedridor;
+	NpcStep talkToSedridorAfterGivingHimTheNotes;
 
 	@Override
 	protected void setupZones()
@@ -99,6 +101,7 @@ public class RuneMysteries extends BasicQuestHelper
 
 		needsToGrabPackage = new VarbitRequirement(VarbitID.RUNEMYSTERIES_PACKAGE, 0);
 		needsToGrabResearchNotes = new VarbitRequirement(VarbitID.RUNEMYSTERIES_NOTES, 0);
+		hasGivenSedridorTheNotes = new VarbitRequirement(VarbitID.RUNEMYSTERIES_NOTES_GIVEN, 1);
 
 		airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN).isNotConsumed();
 		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
@@ -145,8 +148,9 @@ public class RuneMysteries extends BasicQuestHelper
 		talkToAudburyAgain = new NpcStep(this, NpcID.AUBURY_2OP, new WorldPoint(3253, 3401, 0), "Talk to Aubury again in south east Varrock.");
 
 		goDownToSedridor2 = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", notes);
-		talkToSedridor2 = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", notes);
-		talkToSedridor2.addSubSteps(goDownToSedridor2);
+		deliverResearchNotesToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", notes);
+		talkToSedridorAfterGivingHimTheNotes = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Talk to Sedridor in the Wizard Tower's basement to finish the quest.");
+		deliverResearchNotesToSedridor.addSubSteps(goDownToSedridor2, talkToSedridorAfterGivingHimTheNotes);
 	}
 
 	@Override
@@ -179,10 +183,11 @@ public class RuneMysteries extends BasicQuestHelper
 
 		steps.put(4, talkToAudburyAgain);
 
-		var goTalkToSedridor2 = new ConditionalStep(this, goDownToSedridor2);
-		goTalkToSedridor2.addStep(needsToGrabResearchNotes, talkToAudburyAgain);
-		goTalkToSedridor2.addStep(inWizardBasement, talkToSedridor2);
-		steps.put(5, goTalkToSedridor2);
+		var cDeliverResearchNotesToSedridor = new ConditionalStep(this, goDownToSedridor2);
+		cDeliverResearchNotesToSedridor.addStep(needsToGrabResearchNotes, talkToAudburyAgain);
+		cDeliverResearchNotesToSedridor.addStep(and(inWizardBasement, hasGivenSedridorTheNotes), talkToSedridorAfterGivingHimTheNotes);
+		cDeliverResearchNotesToSedridor.addStep(inWizardBasement, deliverResearchNotesToSedridor);
+		steps.put(5, cDeliverResearchNotesToSedridor);
 
 		return steps;
 	}
@@ -230,7 +235,7 @@ public class RuneMysteries extends BasicQuestHelper
 			getResearchPackageFromSedridor,
 			deliverPackageToAubury,
 			talkToAudburyAgain,
-			talkToSedridor2
+			deliverResearchNotesToSedridor
 		)));
 
 		return sections;

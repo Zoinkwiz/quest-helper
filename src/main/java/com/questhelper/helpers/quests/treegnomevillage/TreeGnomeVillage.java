@@ -279,10 +279,11 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		cRetrieveOrb.addStep(isUpstairsTower, getOrbFromChest);
 		cRetrieveOrb.addSubSteps(getOrbFromChest, climbTheLadder);
 
-		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_COMBAT, new WorldPoint(2456, 3301, 0),
-			"Defeat the warlord and retrieve orbs.");
 		talkToTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_CHAT, new WorldPoint(2456, 3301, 0),
-			"Talk to the Warlord south west of West Ardougne, ready to fight him.");
+			"Talk to the Khazard warlord, south west of West Ardougne, ready to fight him.");
+
+		fightTheWarlord = new NpcStep(this, NpcID.KHAZARD_WARLORD_COMBAT, new WorldPoint(2456, 3301, 0),
+			"Defeat the Khazard warlord and retrieve orbs.");
 
 		pickupOrb = new ItemStep(this, "Pick up the nearby Orbs of Protection.", orbsOfProtection);
 

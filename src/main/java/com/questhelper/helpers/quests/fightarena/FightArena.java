@@ -122,8 +122,8 @@ public class FightArena extends BasicQuestHelper
 
 		khazardHelmet = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET);
 		khazardPlatebody = new ItemRequirement("Khazard armour", ItemID.KHAZARD_PLATEMAIL);
-		khazardHelmetEquipped = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET, 1, true);
-		khazardPlatebodyEquipped = new ItemRequirement("Khazard armour", ItemID.KHAZARD_PLATEMAIL, 1, true);
+		khazardHelmetEquipped = khazardHelmet.equipped();
+		khazardPlatebodyEquipped = khazardPlatebody.equipped();
 		khaliBrew = new ItemRequirement("Khali brew", ItemID.KHALI_BREW);
 		cellKeys = new ItemRequirement("Khazard cell keys", ItemID.KHAZARD_CELLKEYS);
 		cellKeys.setHighlightInInventory(true);

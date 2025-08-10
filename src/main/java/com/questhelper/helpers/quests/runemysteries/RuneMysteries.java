@@ -39,11 +39,11 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.QHObjectID;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.util.QHObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -69,6 +69,7 @@ public class RuneMysteries extends BasicQuestHelper
 	ZoneRequirement inWizardBasement;
 
 	VarbitRequirement needsToGrabPackage;
+	VarbitRequirement needsToGrabResearchNotes;
 
 	// Steps
 	ObjectStep goUpToHoracio;
@@ -82,7 +83,6 @@ public class RuneMysteries extends BasicQuestHelper
 	NpcStep talkToAudburyAgain;
 	ObjectStep goDownToSedridor2;
 	NpcStep talkToSedridor2;
-
 
 	@Override
 	protected void setupZones()
@@ -98,6 +98,7 @@ public class RuneMysteries extends BasicQuestHelper
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 
 		needsToGrabPackage = new VarbitRequirement(VarbitID.RUNEMYSTERIES_PACKAGE, 0);
+		needsToGrabResearchNotes = new VarbitRequirement(VarbitID.RUNEMYSTERIES_NOTES, 0);
 
 		airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN).isNotConsumed();
 		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
@@ -125,7 +126,6 @@ public class RuneMysteries extends BasicQuestHelper
 		goDownToSedridor = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
 		goDownToSedridor.addDialogStep("Have you any quests for me?");
 
-
 		bringTalismanToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
 		bringTalismanToSedridor.addDialogStep("I'm looking for the head wizard.");
 		bringTalismanToSedridor.addDialogStep("Okay, here you are.");
@@ -138,7 +138,6 @@ public class RuneMysteries extends BasicQuestHelper
 		getResearchPackageFromSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Talk to Sedridor in the Wizard Tower's basement and accept the Research Package.");
 		getResearchPackageFromSedridor.addDialogSteps("Go ahead.", "Actually, I'm not interested.", "Yes, certainly.");
 		getResearchPackageFromSedridor.addSubSteps(goDownToSedridorAfterHandingInAirTalisman);
-
 
 		deliverPackageToAubury = new NpcStep(this, NpcID.AUBURY_2OP, new WorldPoint(3253, 3401, 0), "Bring the Research Package to Aubury in south east Varrock.", researchPackage);
 		deliverPackageToAubury.addDialogStep("I've been sent here with a package for you.");
@@ -173,7 +172,6 @@ public class RuneMysteries extends BasicQuestHelper
 		getPackageFromSedridor.addStep(inWizardBasement, getResearchPackageFromSedridor);
 		steps.put(2, getPackageFromSedridor);
 
-
 		var cDeliverPackageToAbury = new ConditionalStep(this, deliverPackageToAubury);
 		cDeliverPackageToAbury.addStep(and(inWizardBasement, needsToGrabPackage), getResearchPackageFromSedridor);
 		cDeliverPackageToAbury.addStep(needsToGrabPackage, goDownToSedridorAfterHandingInAirTalisman);
@@ -182,6 +180,7 @@ public class RuneMysteries extends BasicQuestHelper
 		steps.put(4, talkToAudburyAgain);
 
 		var goTalkToSedridor2 = new ConditionalStep(this, goDownToSedridor2);
+		goTalkToSedridor2.addStep(needsToGrabResearchNotes, talkToAudburyAgain);
 		goTalkToSedridor2.addStep(inWizardBasement, talkToSedridor2);
 		steps.put(5, goTalkToSedridor2);
 

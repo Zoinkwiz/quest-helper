@@ -262,7 +262,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 			"Talk to Elkoy outside the maze to travel to the centre.", firstOrb);
 		elkoySkip.addDialogStep("Yes please.");
 		returnFirstOrb = new ConditionalStep(this, elkoySkip,
-			"Speak to King Bolren in the centre of the Tree Gnome Maze.");
+			"Return the Orb of protection to King Bolren in the centre of the Tree Gnome Maze.");
 		returnFirstOrb.addStep(insideGnomeVillage, talkToKingBolrenFirstOrb);
 		returnFirstOrb.addSubSteps(talkToKingBolrenFirstOrb, elkoySkip);
 

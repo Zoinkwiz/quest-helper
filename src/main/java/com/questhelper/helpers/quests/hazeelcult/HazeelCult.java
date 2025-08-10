@@ -208,8 +208,9 @@ public class HazeelCult extends BasicQuestHelper
 		talkToCeril = new NpcStep(this, NpcID.SIR_CERIL_CARNILLEAN_VIS, new WorldPoint(2569, 3275, 0),
 			"Talk to Ceril Carnillean in the south west of East Ardougne.");
 		talkToCeril.addDialogSteps("What's wrong?", "Yes.");
+
 		enterCave = new ObjectStep(this, ObjectID.HAZEELCULTCAVE, new WorldPoint(2587, 3235, 0),
-			"Enter the cave south east of the Clock Tower.");
+			"Enter the cave south east of the Clock Tower entrance.");
 		talkToClivet = new NpcStep(this, NpcID.CLIVET_HAZEEL_CULTIST_VIS, new WorldPoint(2569, 9682, 0),
 			"Talk to Clivet. You can choose to either side with him or with the Carnilleans.");
 		talkToClivet.addDialogSteps("Alright, I've made my decision.", "I have no more questions.", "What do you mean?");

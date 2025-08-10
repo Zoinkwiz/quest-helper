@@ -131,17 +131,13 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		final int TRACKER_1_VARBITID = 599;
-		final int TRACKER_2_VARBITID = 600;
-		final int TRACKER_3_VARBITID = 601;
+		notCompleteFirstTracker = new VarbitRequirement(VarbitID.GNOMETRACKER_H, 0);
+		notCompleteSecondTracker = new VarbitRequirement(VarbitID.GNOMETRACKER_Y, 0);
+		notCompleteThirdTracker = new VarbitRequirement(VarbitID.GNOMETRACKER_X, 0);
 
-		notCompleteFirstTracker = new VarbitRequirement(TRACKER_1_VARBITID, 0);
-		notCompleteSecondTracker = new VarbitRequirement(TRACKER_2_VARBITID, 0);
-		notCompleteThirdTracker = new VarbitRequirement(TRACKER_3_VARBITID, 0);
-
-		completeFirstTracker = new VarbitRequirement(TRACKER_1_VARBITID, 1);
-		completeSecondTracker = new VarbitRequirement(TRACKER_2_VARBITID, 1);
-		completeThirdTracker = new VarbitRequirement(TRACKER_3_VARBITID, 1);
+		completeFirstTracker = new VarbitRequirement(VarbitID.GNOMETRACKER_H, 1);
+		completeSecondTracker = new VarbitRequirement(VarbitID.GNOMETRACKER_Y, 1);
+		completeThirdTracker = new VarbitRequirement(VarbitID.GNOMETRACKER_X, 1);
 
 		insideGnomeVillage = new ZoneRequirement(zoneVillage);
 		isUpstairsTower = new ZoneRequirement(upstairsTower);
@@ -151,10 +147,10 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		completedTrackers = and(completeFirstTracker, completeSecondTracker, completeThirdTracker);
 
-		shouldFireBallista1 = and(completedTrackers, new VarbitRequirement(602, 0));
-		shouldFireBallista2 = and(completedTrackers, new VarbitRequirement(602, 1));
-		shouldFireBallista3 = and(completedTrackers, new VarbitRequirement(602, 2));
-		shouldFireBallista4 = and(completedTrackers, new VarbitRequirement(602, 3));
+		shouldFireBallista1 = and(completedTrackers, new VarbitRequirement(VarbitID.BALLISTA, 0));
+		shouldFireBallista2 = and(completedTrackers, new VarbitRequirement(VarbitID.BALLISTA, 1));
+		shouldFireBallista3 = and(completedTrackers, new VarbitRequirement(VarbitID.BALLISTA, 2));
+		shouldFireBallista4 = and(completedTrackers, new VarbitRequirement(VarbitID.BALLISTA, 3));
 
 		fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_COMBAT);
 

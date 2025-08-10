@@ -111,17 +111,19 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	QuestStep fireBallista3;
 	QuestStep fireBallista4;
 	QuestStep climbTheLadder;
-	QuestStep talkToKingBolrenFirstOrb;
-	QuestStep talkToTheWarlord;
-	QuestStep fightTheWarlord;
+	NpcStep elkoySkip;
+	NpcStep talkToKingBolrenFirstOrb;
+	NpcStep talkToTheWarlord;
+	NpcStep fightTheWarlord;
 	ItemStep pickupOrb;
-	QuestStep returnOrbs;
-	QuestStep finishQuestDialog;
-	QuestStep elkoySkip;
+	NpcStep returnOrbs;
+	NpcStep finishQuestDialog;
 	ConditionalStep cRetrieveOrb;
 	ConditionalStep talkToBolrenAtCentreOfMaze;
 	ConditionalStep fireBalistaConditional;
 	ConditionalStep returnFirstOrb;
+	NpcStep elkoySkip2;
+	ConditionalStep cReturnOrbs;
 
 	@Override
 	protected void setupZones()
@@ -287,11 +289,20 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		pickupOrb = new ItemStep(this, "Pick up the nearby Orbs of Protection.", orbsOfProtection);
 
-		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Talk to King Bolren in the centre of the Tree Gnome Maze.", orbsOfProtection);
+		returnOrbs = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "", orbsOfProtection);
 
-		finishQuestDialog = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "Speak to King Bolren in the centre of the Tree Gnome Maze.");
+		finishQuestDialog = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
+
+		elkoySkip2 = new NpcStep(this, NpcID.ELKOY_2OPS, new WorldPoint(2505, 3191, 0),
+			"Talk to Elkoy outside the maze to travel to the centre.", orbsOfProtection);
+		elkoySkip2.addDialogStep("Yes please.");
 
 		returnOrbs.addSubSteps(pickupOrb, finishQuestDialog);
+
+		cReturnOrbs = new ConditionalStep(this, elkoySkip2, "Return the Orbs of protection to King Bolren in the centre of the Tree Gnome Maze.");
+		cReturnOrbs.addStep(orbsOfProtectionNearby, pickupOrb);
+		cReturnOrbs.addStep(and(insideGnomeVillage, handedInOrbs), finishQuestDialog);
+		cReturnOrbs.addStep(insideGnomeVillage, returnOrbs);
 	}
 
 	@Override
@@ -321,9 +332,6 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		cDefeatTheWarlord.addStep(fightingWarlord, fightTheWarlord);
 		steps.put(7, cDefeatTheWarlord);
 
-		var cReturnOrbs = new ConditionalStep(this, returnOrbs);
-		cReturnOrbs.addStep(orbsOfProtectionNearby, pickupOrb);
-		cReturnOrbs.addStep(handedInOrbs, finishQuestDialog);
 		steps.put(8, cReturnOrbs);
 
 		return steps;
@@ -402,7 +410,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 			returnFirstOrb,
 			talkToTheWarlord,
 			fightTheWarlord,
-			returnOrbs
+			cReturnOrbs
 		), List.of(
 			combatGear,
 			food

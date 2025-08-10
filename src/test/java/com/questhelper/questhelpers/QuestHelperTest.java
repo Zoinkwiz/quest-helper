@@ -288,6 +288,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.TREE_GNOME_VILLAGE,
 			QuestHelperQuest.GERTRUDES_CAT,
 			QuestHelperQuest.MONKS_FRIEND,
+			QuestHelperQuest.DADDYS_HOME,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,

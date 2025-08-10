@@ -476,6 +476,7 @@ public class HazeelCult extends BasicQuestHelper
 		cerilStepsSidebar.addAll(Arrays.asList(enterCaveAfterValvesForCeril, boardRaftToKill, talkToAlomoneToKill, killAlomone,
 			retrieveArmourFromChest, talkToCerilAfterKilling, talkToJonesAfterKilling, searchCupboardForEvidence, talkToCerilToFinish));
 		PanelDetails cerilPanel = new PanelDetails("Siding with Ceril", cerilStepsSidebar);
+		// TODO: add locking step to make it lockable?
 		sections.add(cerilPanel);
 
 		var hazeelSteps = new ArrayList<>(Arrays.asList(getPoison, leaveCaveWithPoison, enterKitchen,
@@ -484,6 +485,7 @@ public class HazeelCult extends BasicQuestHelper
 		hazeelSteps.addAll(Arrays.asList(talkToClivetAfterPoison, boardRaftAfterPoison, talkToAlomone,
 			searchCrateForKey, leaveKitchenWithKey, goToF1WithKey, climbLadderWithKey, searchChestForScroll,
 			giveAlomoneScroll));
+		// TODO: add locking step to make it lockable?
 		sections.add(new PanelDetails("Siding with Hazeel", hazeelSteps));
 
 		return sections;

@@ -256,7 +256,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		climbTheLadder = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2503, 3252, 0), "Climb the ladder");
 
 		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
-			"Speak to King Bolren in the centre of the Tree Gnome Maze.", firstOrb);
+			"", firstOrb);
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
 		elkoySkip = new NpcStep(this, NpcID.ELKOY_2OPS, new WorldPoint(2505, 3191, 0),
 			"Talk to Elkoy outside the maze to travel to the centre.", firstOrb);
@@ -398,8 +398,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Retrieving the orbs", List.of(
 			cRetrieveOrb,
-			elkoySkip,
-			talkToKingBolrenFirstOrb,
+			returnFirstOrb,
 			talkToTheWarlord,
 			fightTheWarlord,
 			returnOrbs

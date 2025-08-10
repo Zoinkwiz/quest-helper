@@ -108,7 +108,7 @@ public class MonksFriend extends BasicQuestHelper
 		goDownLadder = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2561, 3222, 0), "Go down the ladder in a circle of stones west of the monastery.");
 		grabBlanket = new DetailedQuestStep(this, new WorldPoint(2570, 9604, 0), "Pick up the Child's blanket in the room to the south.", blanket);
 		goUpLadder = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2561, 9622, 0), "Go back up the ladder.", blanket);
-		returnToOmadWithBlanket = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Bring the blanket back to Brother Omad.", blanket);
+		returnToOmadWithBlanket = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Bring the blanket back to Brother Omad in the monastery.", blanket);
 
 		talkToOmadAgain = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Talk to Brother Omad again.");
 		talkToOmadAgain.addDialogStep("Is there anything else I can help with?");

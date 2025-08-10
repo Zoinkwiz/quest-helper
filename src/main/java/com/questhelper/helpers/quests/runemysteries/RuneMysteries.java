@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -47,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class RuneMysteries extends BasicQuestHelper
 {
@@ -65,6 +67,8 @@ public class RuneMysteries extends BasicQuestHelper
 
 	ZoneRequirement inUpstairsLumbridge;
 	ZoneRequirement inWizardBasement;
+
+	VarbitRequirement needsToGrabPackage;
 
 	// Steps
 	ObjectStep goUpToHoracio;
@@ -92,6 +96,8 @@ public class RuneMysteries extends BasicQuestHelper
 	{
 		inUpstairsLumbridge = new ZoneRequirement(upstairsLumbridge);
 		inWizardBasement = new ZoneRequirement(wizardBasement);
+
+		needsToGrabPackage = new VarbitRequirement(VarbitID.RUNEMYSTERIES_PACKAGE, 0);
 
 		airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN).isNotConsumed();
 		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
@@ -166,7 +172,11 @@ public class RuneMysteries extends BasicQuestHelper
 		getPackageFromSedridor.addStep(inWizardBasement, getResearchPackageFromSedridor);
 		steps.put(2, getPackageFromSedridor);
 
-		steps.put(3, talkToAubury);
+
+		var cDeliverPackageToAbury = new ConditionalStep(this, talkToAubury);
+		cDeliverPackageToAbury.addStep(and(inWizardBasement, needsToGrabPackage), getResearchPackageFromSedridor);
+		cDeliverPackageToAbury.addStep(needsToGrabPackage, goDownToSedridorAfterHandingInAirTalisman);
+		steps.put(3, cDeliverPackageToAbury);
 
 		steps.put(4, talkToAudburyAgain);
 

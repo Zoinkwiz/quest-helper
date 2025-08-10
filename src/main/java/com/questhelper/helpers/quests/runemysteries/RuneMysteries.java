@@ -71,6 +71,7 @@ public class RuneMysteries extends BasicQuestHelper
 	NpcStep talkToHoracio;
 	ObjectStep goF1ToF0LumbridgeCastle;
 	ObjectStep goDownToSedridor;
+	ObjectStep goDownToSedridorAfterHandingInAirTalisman;
 	NpcStep talkToSedridor;
 	NpcStep finishTalkingToSedridor;
 	NpcStep talkToAubury;
@@ -118,6 +119,9 @@ public class RuneMysteries extends BasicQuestHelper
 		goDownToSedridor = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
 		goDownToSedridor.addDialogStep("Have you any quests for me?");
 
+		goDownToSedridorAfterHandingInAirTalisman = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Talk to Sedridor in the Wizard Tower's basement.");
+		goDownToSedridorAfterHandingInAirTalisman.addDialogStep("Have you any quests for me?");
+
 		talkToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
 		talkToSedridor.addDialogStep("I'm looking for the head wizard.");
 		talkToSedridor.addDialogStep("Okay, here you are.");
@@ -125,7 +129,7 @@ public class RuneMysteries extends BasicQuestHelper
 		finishTalkingToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Accept taking the package for Sedridor.");
 		finishTalkingToSedridor.addDialogStep("Yes, certainly.");
 
-		talkToSedridor.addSubSteps(goDownToSedridor, finishTalkingToSedridor, goF1ToF0LumbridgeCastle);
+		talkToSedridor.addSubSteps(goDownToSedridor, finishTalkingToSedridor, goF1ToF0LumbridgeCastle, goDownToSedridorAfterHandingInAirTalisman);
 
 		talkToAubury = new NpcStep(this, NpcID.AUBURY_2OP, new WorldPoint(3253, 3401, 0), "Bring the Research Package to Aubury in south east Varrock.", researchPackage);
 		talkToAubury.addDialogStep("I've been sent here with a package for you.");
@@ -155,7 +159,9 @@ public class RuneMysteries extends BasicQuestHelper
 
 		steps.put(1, goTalkToSedridor);
 
-		steps.put(2, finishTalkingToSedridor);
+		var getPackageFromSedridor = new ConditionalStep(this, goDownToSedridorAfterHandingInAirTalisman);
+		getPackageFromSedridor.addStep(inWizardBasement, finishTalkingToSedridor);
+		steps.put(2, getPackageFromSedridor);
 
 		steps.put(3, talkToAubury);
 

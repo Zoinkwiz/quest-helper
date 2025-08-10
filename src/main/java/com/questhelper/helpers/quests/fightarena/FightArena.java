@@ -170,8 +170,9 @@ public class FightArena extends BasicQuestHelper
 		killScorpion.addSubSteps(talkToSammyForScorpion);
 
 		talkToSammyForBouncer = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight Bouncer.");
-		killBouncer = new NpcStep(this, NpcID.ARENA_BOUNCER, new WorldPoint(2601, 3163, 0),
-			"Kill Bouncer. You can lure it behind a skeleton to safespot it. Warning: After Bouncer is killed, you will be unable to re-enter the arena.", combatGear);
+
+		killBouncer = new NpcStep(this, NpcID.ARENA_BOUNCER, new WorldPoint(2601, 3163, 0), "Kill Bouncer. You can lure it behind a skeleton to safespot it. Warning: After Bouncer is killed, you will be unable to re-enter the arena.", combatGear);
+		killBouncer.addSafeSpots(new WorldPoint(2598, 3162, 0));
 		killBouncer.addSubSteps(talkToSammyForBouncer);
 		leaveArena = new ObjectStep(this, ObjectID.FIGHTARENA_DOOR2, new WorldPoint(2606, 3152, 0),
 			"Exit the arena (can ignore General Khazard). Warning: You will be unable to re-enter the arena.");

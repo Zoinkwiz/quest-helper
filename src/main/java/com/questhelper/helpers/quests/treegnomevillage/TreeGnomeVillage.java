@@ -229,7 +229,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		talkToBolrenAtCentreOfMaze.addStep(insideGnomeVillage, talkToKingBolren);
 		talkToBolrenAtCentreOfMaze.addSubSteps(talkToKingBolren, goThroughMaze);
 
-		talkToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai.");
+		talkToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai, north-east of the maze entrance.");
 		talkToCommanderMontai.addDialogStep("Ok, I'll gather some wood.");
 
 		bringWoodToCommanderMontai = new NpcStep(this, NpcID.COMMANDER_MONTAI, new WorldPoint(2523, 3208, 0), "Speak with Commander Montai again to give him the wood.", logRequirement);
@@ -301,6 +301,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToBolrenAtCentreOfMaze);
+
 		steps.put(1, talkToCommanderMontai);
 		steps.put(2, bringWoodToCommanderMontai);
 		steps.put(3, talkToCommanderMontaiAgain);

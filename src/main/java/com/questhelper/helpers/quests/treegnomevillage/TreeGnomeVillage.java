@@ -70,10 +70,12 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	ItemRequirement food;
 
 	// Miscellaneous requirement
+	ItemRequirement firstOrb;
 	ItemRequirement orbsOfProtection;
-	Requirement completeFirstTracker;
-	Requirement completeSecondTracker;
-	Requirement completeThirdTracker;
+
+	VarbitRequirement completeFirstTracker;
+	VarbitRequirement completeSecondTracker;
+	VarbitRequirement completeThirdTracker;
 	Requirement handedInOrbs;
 	Requirement notCompleteFirstTracker;
 	Requirement notCompleteSecondTracker;
@@ -92,7 +94,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 	ZoneRequirement isUpstairsTower;
 	ZoneRequirement insideGnomeVillage;
 
-	//Zones
+	// Zones
 	Zone upstairsTower;
 	Zone zoneVillage;
 
@@ -164,6 +166,10 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 
 		logRequirement = new ItemRequirement("Logs", ItemID.LOGS, 6).hideConditioned(givenWood);
+
+		firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
+		firstOrb.setTooltip("If you have lost the orb you can get another from the chest");
+
 		orbsOfProtection = new ItemRequirement("Orbs of protection", ItemID.ORBS_OF_PROTECTION);
 		orbsOfProtection.setTooltip("You can retrieve the orbs of protection again by killing the Khazard Warlord again.");
 	}
@@ -249,13 +255,11 @@ public class TreeGnomeVillage extends BasicQuestHelper
 
 		climbTheLadder = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2503, 3252, 0), "Climb the ladder");
 
-		ItemRequirement firstOrb = new ItemRequirement("Orb of protection", ItemID.ORB_OF_PROTECTION, 1);
-		firstOrb.setTooltip("If you have lost the orb you can get another from the chest");
 		talkToKingBolrenFirstOrb = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0),
 			"Speak to King Bolren in the centre of the Tree Gnome Maze.", firstOrb);
 		talkToKingBolrenFirstOrb.addDialogStep("I will find the warlord and bring back the orbs.");
 		elkoySkip = new NpcStep(this, NpcID.ELKOY_2OPS, new WorldPoint(2505, 3191, 0),
-			"Talk to Elkoy outside the maze to travel to the centre.");
+			"Talk to Elkoy outside the maze to travel to the centre.", firstOrb);
 		returnFirstOrb = new ConditionalStep(this, elkoySkip,
 			"Speak to King Bolren in the centre of the Tree Gnome Maze.");
 		returnFirstOrb.addStep(insideGnomeVillage, talkToKingBolrenFirstOrb);

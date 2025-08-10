@@ -113,6 +113,7 @@ public class RuneMysteries extends BasicQuestHelper
 
 		goF1ToF0LumbridgeCastle = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(3204, 3207, 1),
 			"Bring the Air Talisman to Sedridor in the Wizard Tower's basement.");
+		goF1ToF0LumbridgeCastle.addDialogStep("Climb down the stairs.");
 
 		goDownToSedridor = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
 		goDownToSedridor.addDialogStep("Have you any quests for me?");

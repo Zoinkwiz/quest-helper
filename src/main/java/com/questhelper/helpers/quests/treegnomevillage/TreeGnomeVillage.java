@@ -177,6 +177,7 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		var talkToKingBolren = new NpcStep(this, NpcID.KING_BOLREN, new WorldPoint(2541, 3170, 0), "");
 		talkToKingBolren.addDialogStep("Can I help at all?");
 		talkToKingBolren.addDialogStep("I would be glad to help.");
+		talkToKingBolren.addDialogStep("Yes.");
 
 		var goThroughMaze = new DetailedQuestStep(this, new WorldPoint(2541, 3170, 0), "Follow the marked path to walk through the maze.");
 		var pathThroughMaze = List.of(

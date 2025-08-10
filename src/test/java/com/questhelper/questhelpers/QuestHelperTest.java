@@ -277,12 +277,15 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.SHEEP_SHEARER,
+			QuestHelperQuest.DADDYS_HOME,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.PRINCE_ALI_RESCUE
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest
-		Set<QuestHelperQuest> exclusiveQuests = Set.of();
+		Set<QuestHelperQuest> exclusiveQuests = Set.of(
+			QuestHelperQuest.DADDYS_HOME
+		);
 
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 

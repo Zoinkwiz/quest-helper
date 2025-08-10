@@ -103,7 +103,7 @@ public class MonksFriend extends BasicQuestHelper
 	{
 		talkToOmad = new NpcStep(this, NpcID.BROTHER_OMAD, new WorldPoint(2607, 3211, 0), "Talk to Brother Omad in the monastery south of East Ardougne.");
 		talkToOmad.addDialogStep("Why can't you sleep, what's wrong?");
-		talkToOmad.addDialogStep("Can I help at all?");
+		talkToOmad.addDialogStep("Yes.");
 
 		goDownLadder = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2561, 3222, 0), "Go down the ladder in a circle of stones west of the monastery.");
 		grabBlanket = new DetailedQuestStep(this, new WorldPoint(2570, 9604, 0), "Pick up the Child's blanket in the room to the south.", blanket);

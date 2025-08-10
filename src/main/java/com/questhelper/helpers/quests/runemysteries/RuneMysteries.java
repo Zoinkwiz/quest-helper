@@ -228,9 +228,12 @@ public class RuneMysteries extends BasicQuestHelper
 	{
 		var sections = new ArrayList<PanelDetails>();
 
-		sections.add(new PanelDetails("Discover Runecrafting", List.of(
+		sections.add(new PanelDetails("Starting off", List.of(
 			talkToHoracio,
-			bringTalismanToSedridor,
+			bringTalismanToSedridor
+		)));
+
+		sections.add(new PanelDetails("Discovering the list incantation", List.of(
 			getResearchPackageFromSedridor,
 			deliverPackageToAubury,
 			talkToAudburyAgain,

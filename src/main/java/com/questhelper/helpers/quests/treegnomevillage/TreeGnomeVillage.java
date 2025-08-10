@@ -34,7 +34,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcHintArrowRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -146,15 +146,15 @@ public class TreeGnomeVillage extends BasicQuestHelper
 		insideGnomeVillage = new ZoneRequirement(zoneVillage);
 		isUpstairsTower = new ZoneRequirement(upstairsTower);
 
-		talkToSecondTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteSecondTracker);
-		talkToThirdTracker = new Conditions(LogicType.AND, completeFirstTracker, notCompleteThirdTracker);
+		talkToSecondTracker = and(completeFirstTracker, notCompleteSecondTracker);
+		talkToThirdTracker = and(completeFirstTracker, notCompleteThirdTracker);
 
-		completedTrackers = new Conditions(LogicType.AND, completeFirstTracker, completeSecondTracker, completeThirdTracker);
+		completedTrackers = and(completeFirstTracker, completeSecondTracker, completeThirdTracker);
 
-		shouldFireBallista1 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 0));
-		shouldFireBallista2 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 1));
-		shouldFireBallista3 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 2));
-		shouldFireBallista4 = new Conditions(LogicType.AND, completedTrackers, new VarbitRequirement(602, 3));
+		shouldFireBallista1 = and(completedTrackers, new VarbitRequirement(602, 0));
+		shouldFireBallista2 = and(completedTrackers, new VarbitRequirement(602, 1));
+		shouldFireBallista3 = and(completedTrackers, new VarbitRequirement(602, 2));
+		shouldFireBallista4 = and(completedTrackers, new VarbitRequirement(602, 3));
 
 		fightingWarlord = new NpcHintArrowRequirement(NpcID.KHAZARD_WARLORD_COMBAT);
 

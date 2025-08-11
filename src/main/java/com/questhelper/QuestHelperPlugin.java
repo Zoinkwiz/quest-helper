@@ -46,11 +46,8 @@ import com.questhelper.util.worldmap.WorldMapAreaManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -69,7 +66,6 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -79,6 +75,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import com.questhelper.chat.QuestHelperChatCommands;
 
 @PluginDescriptor(
 	name = "Quest Helper",
@@ -180,9 +177,13 @@ public class QuestHelperPlugin extends Plugin
 		return configManager.getConfig(QuestHelperConfig.class);
 	}
 
+	@Inject
+	QuestHelperChatCommands questHelperChatCommands;
+
 	@Override
 	protected void startUp() throws IOException
 	{
+		questHelperChatCommands.startUp();
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
 		QuestContainerManager.getGroupStorageData().setSpecialMethodToObtainItems(() -> questBankManager.getGroupBankItems().toArray(new Item[0]));
@@ -225,6 +226,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		questHelperChatCommands.shutDown();
 		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(playerStateManager);
@@ -245,6 +247,7 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe(priority=-1.0f)
 	public void onGameTick(GameTick event)
 	{
+		questHelperChatCommands.updateMessageClickbox();
 		questBankManager.loadInitialStateFromConfig(client);
 		questManager.updateQuestState();
 	}
@@ -511,6 +514,7 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
+		questHelperChatCommands.hasReceivedChatMessageThisTick();
 		if (config.showFan() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			if (chatMessage.getMessage().contains("Congratulations! Quest complete!") ||

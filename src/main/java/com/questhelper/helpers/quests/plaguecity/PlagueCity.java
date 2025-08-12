@@ -195,11 +195,11 @@ public class PlagueCity extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToEdmond = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
+		talkToEdmond = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
 		talkToEdmond.addDialogStep("What's happened to her?");
 		talkToEdmond.addDialogStep("Yes.");
 		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena nearby.", dwellberries);
-		talkToEdmondAgain = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
+		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
 		useWaterOnMudPatch1 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use four buckets of water on the mud patch in Edmond's garden patch.", fourBucketsOfWater);
 		useWaterOnMudPatch1.addIcon(ItemID.BUCKET_WATER);
@@ -232,7 +232,7 @@ public class PlagueCity extends BasicQuestHelper
 		useRopeOnGrill = new ObjectStep(this, ObjectID.PLAGUE_GRILL, new WorldPoint(2514, 9739, 0), "Use a rope on the grill.", rope);
 		useRopeOnGrill.addIcon(ItemID.ROPE);
 
-		talkToEdmondUnderground = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
+		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
 
 		climbThroughPipe = new ObjectStep(this, ObjectID.PLAGUESEWERPIPE_OPEN, new WorldPoint(2514, 9738, 0), "Equip the gas mask and climb through the pipe.", gasMask.highlighted());
 
@@ -287,7 +287,7 @@ public class PlagueCity extends BasicQuestHelper
 
 		climbMudPileToFinish = new ObjectStep(this, ObjectID.PLAGUEMUDPILE, new WorldPoint(2519, 9760, 0), "Climb the mud pile to return to Edmond.");
 
-		talkToEdmondToFinish = new NpcStep(this, NpcID.WILDERNESS_CAPESELLER_8, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
+		talkToEdmondToFinish = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3333, 0), "Return to Edmond to finish the quest.");
 		talkToEdmondToFinish.addSubSteps(goUpstairsInPlagueHouseToFinish, goDownManhole, goDownManhole2, climbMudPileToFinish);
 	}
 

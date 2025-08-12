@@ -263,7 +263,6 @@ public class ClockTower extends BasicQuestHelper
 		whiteCogOnWhiteSpindle = new ObjectStep(this, ObjectID.BROKECLOCKPOLE_WHITE, new WorldPoint(2567, 3241, 2),
 			"", whiteCog.highlighted());
 		whiteCogOnWhiteSpindle.addIcon(ItemID.WHITECOG);
-		finishQuest = new NpcStep(this, NpcID.BROTHER_KOJO, new WorldPoint(2570, 3245, 0), "Talk to Brother Kojo for your reward.");
 
 		enterBasement = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2566, 3242, 0), "");
 		climbFromFirstFloorToGround = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(2573, 3241, 1), "");
@@ -321,8 +320,10 @@ public class ClockTower extends BasicQuestHelper
 		goToSecondFloorWithWhiteCog.addStep(inSecondFloor, whiteCogOnWhiteSpindle);
 		goToSecondFloorWithWhiteCog.addSubSteps(climbWhiteLadder);
 
+		finishQuest = new NpcStep(this, NpcID.BROTHER_KOJO, new WorldPoint(2570, 3245, 0), "");
+
 		goFinishQuest = goToGroundFloor.copy();
-		goFinishQuest.setText("Talk to Kojo for your reward.");
+		goFinishQuest.setText("Talk to Brother Kojo in the Clock Tower for your reward.");
 		goFinishQuest.addStep(null, finishQuest);
 	}
 

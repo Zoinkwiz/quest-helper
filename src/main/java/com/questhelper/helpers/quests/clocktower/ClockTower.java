@@ -36,6 +36,7 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -46,6 +47,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -82,6 +84,7 @@ public class ClockTower extends BasicQuestHelper
 	Zone cell;
 
 	// Miscellaneous requirements
+	ItemRequirement emptyBucket;
 	ItemRequirement noteAboutWater;
 	ItemRequirement redCog;
 	ItemRequirement blueCog;
@@ -115,6 +118,8 @@ public class ClockTower extends BasicQuestHelper
 	ObjectStep climbToGroundFloorFromBasement;
 	ObjectStep redCogOnRedSpindle;
 
+	ItemStep getBucket;
+	ObjectStep fillBucket;
 	ObjectStep goToLadderCedric;
 	ObjectStep pushWall;
 	ObjectStep climbCellLadder;
@@ -212,6 +217,9 @@ public class ClockTower extends BasicQuestHelper
 		bucketOfWater = new ItemRequirement("Bucket of Water or a pair of ice gloves or smiths gloves(i)", ItemID.BUCKET_WATER);
 		bucketOfWater.addAlternates(ItemID.ICE_GLOVES, ItemID.SMITHING_UNIFORM_GLOVES_ICE);
 		bucketOfWater.setTooltip("There is a bucket spawn next to the well east of the Clock Tower. You can fill it on the well");
+
+		emptyBucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
+
 		noteAboutWater = new ItemRequirement("There's a bucket and a well and just next to brother cedric for the black cog", -1, -1);
 		staminaPotions = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
 		ardougneCloak = new ItemRequirement("Ardougne Cloak to teleport to monastery", ItemID.ARDY_CAPE_EASY);
@@ -236,6 +244,11 @@ public class ClockTower extends BasicQuestHelper
 		redCogOnRedSpindle = new ObjectStep(this, ObjectID.BROKECLOCKPOLE_RED, new WorldPoint(2568, 3243, 0),
 			"Use the red cog on the red spindle.", redCog.highlighted());
 		redCogOnRedSpindle.addIcon(ItemID.REDCOG);
+
+		getBucket = new ItemStep(this, new WorldPoint(2616, 3255, 0), "Get the bucket next to Brother Cedric, north of the monastery, and fill it up on the well next to it for the Black cog step. If you have other plans for the black cog, you can ignore this step by going down the nearby ladder.", emptyBucket);
+		fillBucket = new ObjectStep(this, ObjectID.WELL, new WorldPoint(2612, 3254, 0), "Get the bucket next to Brother Cedric, north of the monastery, and fill it up on the well next to it for the Black cog step. If you have other plans for the black cog, you can ignore this step by going down the nearby ladder.", emptyBucket);
+
+		getBucket.addSubSteps(fillBucket);
 
 		goToLadderCedric = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2621, 3261, 0), "");
 		pushWall = new ObjectStep(this, ObjectID.SECRETDOOR2, new WorldPoint(2575, 9631, 0), "Follow the tunnel and push the wall at the end.");
@@ -349,6 +362,8 @@ public class ClockTower extends BasicQuestHelper
 		getBlueCog.addStep(blueCog, goToFirstFloorWithBlueCog);
 		getBlueCog.addStep(inCell, pickUpBlueCog);
 		getBlueCog.addStep(inSecretPath, pushWall);
+		getBlueCog.addStep(and(not(bucketOfWater), emptyBucket, not(placedBlackCog)), fillBucket);
+		getBlueCog.addStep(and(not(bucketOfWater), not(placedBlackCog)), getBucket);
 
 		getBlackCog = new ConditionalStep(this, goToBasementForBlack);
 		getBlackCog.addStep(blackCog, goToBasementWithBlackCog);
@@ -435,6 +450,7 @@ public class ClockTower extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Obtaining the blue cog", List.of(
+			getBucket,
 			goToBasementForBlue,
 			pushWall,
 			pickUpBlueCog,

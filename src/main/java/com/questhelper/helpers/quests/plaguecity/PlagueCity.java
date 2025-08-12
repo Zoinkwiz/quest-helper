@@ -276,7 +276,7 @@ public class PlagueCity extends BasicQuestHelper
 
 		searchBarrel = new ObjectStep(this, ObjectID.PLAGUEKEYBARREL, new WorldPoint(2534, 3268, 0), "Search the barrel in the room for a small key.");
 
-		goDownstairsInPlagueHouse = new ObjectStep(this, ObjectID.PLAGUEHOUSESTAIRSDOWN, new WorldPoint(2537, 3269, 0), "Go downstairs.", key);
+		goDownstairsInPlagueHouse = new ObjectStep(this, ObjectID.PLAGUEHOUSESTAIRSDOWN, new WorldPoint(2537, 3269, 0), "Go downstairs in the plague house.", key);
 		goUpstairsInPlagueHouse = new ObjectStep(this, ObjectID.PLAGUEHOUSESTAIRSUP, new WorldPoint(2537, 9672, 0), "Go back upstairs to get the key for Elena's cell.");
 		searchBarrel.addSubSteps(goUpstairsInPlagueHouse);
 

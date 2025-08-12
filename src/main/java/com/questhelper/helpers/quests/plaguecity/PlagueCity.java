@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class PlagueCity extends BasicQuestHelper
 {
@@ -97,13 +98,13 @@ public class PlagueCity extends BasicQuestHelper
 	// Steps
 	NpcStep talkToEdmond;
 	NpcStep talkToAlrena;
+	DetailedQuestStep grabPictureOfElena;
 	NpcStep talkToEdmondAgain;
 	DetailedQuestStep useWaterOnMudPatch1;
 	DetailedQuestStep useWaterOnMudPatch2;
 	DetailedQuestStep useWaterOnMudPatch3;
 	DetailedQuestStep useWaterOnMudPatch4;
 	ObjectStep digHole;
-	DetailedQuestStep grabPictureOfElena;
 	ObjectStep goDownHole;
 	ObjectStep attemptToPullGrill;
 	ObjectStep climbMudPile;
@@ -150,7 +151,7 @@ public class PlagueCity extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		inUnderground = new ZoneRequirement(underground);
-		hasTriedToPullGrill = new VarbitRequirement(1786, 1);
+		hasTriedToPullGrill = new VarbitRequirement(VarbitID.PLAGUECITY_CHECKED_GRILL, 1);
 		inWestArdougne = new ZoneRequirement(westArdougne1, westArdougne2, westArdougne3);
 		inUpstairsMathasHouse = new ZoneRequirement(upstairsMathasHouse);
 		manholeClosed = new ObjectCondition(ObjectID.PLAGUEMANHOLECLOSED);
@@ -201,6 +202,9 @@ public class PlagueCity extends BasicQuestHelper
 
 		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena and give her the dwellberries.", dwellberries);
 
+		grabPictureOfElena = new DetailedQuestStep(this, new WorldPoint(2576, 3334, 0),
+			"Grab the Picture from Edmond's house.", pictureOfElena);
+
 		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
 
 		useWaterOnMudPatch1 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
@@ -222,8 +226,6 @@ public class PlagueCity extends BasicQuestHelper
 			"Use a spade on the mud patch.", spade);
 		digHole.addIcon(ItemID.SPADE);
 
-		grabPictureOfElena = new DetailedQuestStep(this, new WorldPoint(2576, 3334, 0),
-			"Grab the Picture from Edmond's house.", pictureOfElena);
 		goDownHole = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Go down the hole.");
 
@@ -471,9 +473,9 @@ public class PlagueCity extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Infiltrate West Ardougne", List.of(
 			talkToAlrena,
+			grabPictureOfElena,
 			talkToEdmondAgain,
 			useWaterOnMudPatch1,
-			grabPictureOfElena,
 			digHole,
 			goDownHole,
 			attemptToPullGrill,

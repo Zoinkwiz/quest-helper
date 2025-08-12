@@ -677,6 +677,12 @@ public class BarbarianTraining extends BasicQuestHelper
 	}
 
 	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Collections.singletonList("Mithril Dragon (level 304)");
+	}
+
+	@Override
 	public List<String> getNotes()
 	{
 		return Collections.singletonList("If the helper is out of sync, open up the Quest Journal to re-sync it.");

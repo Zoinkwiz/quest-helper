@@ -199,7 +199,7 @@ public class PlagueCity extends BasicQuestHelper
 		talkToEdmond.addDialogStep("What's happened to her?");
 		talkToEdmond.addDialogStep("Yes.");
 
-		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena nearby.", dwellberries);
+		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena and give her the dwellberries.", dwellberries);
 
 		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
 

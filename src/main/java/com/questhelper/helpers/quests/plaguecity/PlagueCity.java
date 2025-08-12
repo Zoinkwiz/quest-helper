@@ -259,7 +259,7 @@ public class PlagueCity extends BasicQuestHelper
 		talkToClerk.addDialogStep("I need permission to enter a plague house.");
 		talkToClerk.addDialogStep("This is urgent though! Someone's been kidnapped!");
 
-		talkToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek in the room to the east.");
+		talkToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to Bravek in the room to the east.");
 
 		talkToBravek.addDialogStep("This is really important though!");
 		talkToBravek.addDialogStep("Do you know what's in the cure?");
@@ -267,9 +267,9 @@ public class PlagueCity extends BasicQuestHelper
 		useDustOnMilk = new DetailedQuestStep(this, "Use your chocolate dust on the bucket of milk.", bucketOfMilk, chocolateDust);
 		useSnapeGrassOnChocolateMilk = new DetailedQuestStep(this, "Use the snape grass on the chocolatey milk", bucketOfChocolateMilk, snapeGrass);
 
-		giveHangoverCureToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.", hangoverCure);
+		giveHangoverCureToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to Bravek again.", hangoverCure);
 
-		talkToBravekAgain = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.");
+		talkToBravekAgain = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to Bravek again.");
 		talkToBravekAgain.addDialogStep("They won't listen to me!");
 
 		giveHangoverCureToBravek.addSubSteps(talkToBravekAgain);

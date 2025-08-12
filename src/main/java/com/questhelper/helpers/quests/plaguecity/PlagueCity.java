@@ -438,7 +438,7 @@ public class PlagueCity extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return List.of(
-			new ExperienceReward(Skill.MINING, 2426)
+			new ExperienceReward(Skill.MINING, 2425)
 		);
 	}
 

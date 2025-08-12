@@ -424,7 +424,8 @@ public class ClockTower extends BasicQuestHelper
 		var sections = new ArrayList<PanelDetails>();
 
 		sections.add(new PanelDetails("Getting Started", List.of(
-			talkToKojo
+			talkToKojo,
+			syncStep
 		)));
 
 		sections.add(new PanelDetails("Obtaining the red cog", List.of(

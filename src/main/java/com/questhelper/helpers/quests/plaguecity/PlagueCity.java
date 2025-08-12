@@ -269,7 +269,7 @@ public class PlagueCity extends BasicQuestHelper
 
 		giveHangoverCureToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.", hangoverCure);
 
-		talkToBravekAgain = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.", warrant);
+		talkToBravekAgain = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to the Bravek again.");
 		talkToBravekAgain.addDialogStep("They won't listen to me!");
 
 		giveHangoverCureToBravek.addSubSteps(talkToBravekAgain);

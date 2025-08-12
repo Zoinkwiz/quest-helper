@@ -405,6 +405,9 @@ public class PlagueCity extends BasicQuestHelper
 
 		steps.put(28, finishQuest);
 
+		// 29: quest finished
+		// 30: has read ardougne scroll, so can use ardougne teleport / teleport tablet
+
 		return steps;
 	}
 

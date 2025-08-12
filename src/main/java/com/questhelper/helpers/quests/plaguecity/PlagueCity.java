@@ -244,7 +244,8 @@ public class PlagueCity extends BasicQuestHelper
 
 		enterMarthasHouse = new ObjectStep(this, ObjectID.REHNISONDOORSHUT, new WorldPoint(2531, 3328, 0), "Enter the tall house in north West Ardougne.");
 
-		talkToMartha = new NpcStep(this, NpcID.MARTHA_REHNISON, new WorldPoint(2531, 3331, 0), "Talk to Martha or Ted Rehnison");
+		talkToMartha = new NpcStep(this, NpcID.MARTHA_REHNISON, new WorldPoint(2531, 3331, 0), "Talk to Martha or Ted Rehnison", true);
+		talkToMartha.addAlternateNpcs(NpcID.TED_REHNISON);
 
 		goUpstairsInMarthasHouse = new ObjectStep(this, ObjectID.REHNISONSTAIRS, new WorldPoint(2528, 3333, 0), "Talk to Milli upstairs.");
 		talkToMilli = new NpcStep(this, NpcID.MILLI, new WorldPoint(2531, 3331, 1), "Talk to Milli.");

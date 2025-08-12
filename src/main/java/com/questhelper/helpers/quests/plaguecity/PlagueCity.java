@@ -267,12 +267,10 @@ public class PlagueCity extends BasicQuestHelper
 		useDustOnMilk = new DetailedQuestStep(this, "Use your chocolate dust on the bucket of milk.", bucketOfMilk, chocolateDust);
 		useSnapeGrassOnChocolateMilk = new DetailedQuestStep(this, "Use the snape grass on the chocolatey milk", bucketOfChocolateMilk, snapeGrass);
 
-		giveHangoverCureToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to Bravek again.", hangoverCure);
+		giveHangoverCureToBravek = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Give the hangover cure to Bravek.", hangoverCure);
 
-		talkToBravekAgain = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to Bravek again.");
+		talkToBravekAgain = new NpcStep(this, NpcID.BRAVEK, new WorldPoint(2534, 3314, 0), "Talk to Bravek to receive the warrant you need to enter the plague house.");
 		talkToBravekAgain.addDialogStep("They won't listen to me!");
-
-		giveHangoverCureToBravek.addSubSteps(talkToBravekAgain);
 
 		tryToEnterPlagueHouseAgain = new ObjectStep(this, ObjectID.PLAGUEELENADOORSHUT, new WorldPoint(2540, 3273, 0), "Try to enter the plague house again.", warrant);
 
@@ -497,6 +495,7 @@ public class PlagueCity extends BasicQuestHelper
 			useDustOnMilk,
 			useSnapeGrassOnChocolateMilk,
 			giveHangoverCureToBravek,
+			talkToBravekAgain,
 			tryToEnterPlagueHouseAgain,
 			searchBarrel,
 			goDownstairsInPlagueHouse,

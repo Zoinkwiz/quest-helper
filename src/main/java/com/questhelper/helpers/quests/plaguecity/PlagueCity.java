@@ -235,7 +235,7 @@ public class PlagueCity extends BasicQuestHelper
 		useRopeOnGrill = new ObjectStep(this, ObjectID.PLAGUE_GRILL, new WorldPoint(2514, 9739, 0), "Use a rope on the grill.", rope);
 		useRopeOnGrill.addIcon(ItemID.ROPE);
 
-		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2517, 9753, 0), "Talk to Edmond.");
+		talkToEdmondUnderground = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2517, 9753, 0), "Talk to Edmond and ask him to help you pull off the grill.");
 
 		climbThroughPipe = new ObjectStep(this, ObjectID.PLAGUESEWERPIPE_OPEN, new WorldPoint(2514, 9738, 0), "Equip the gas mask and climb through the pipe.", gasMask.highlighted());
 

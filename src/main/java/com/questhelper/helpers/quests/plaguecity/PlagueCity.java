@@ -164,17 +164,15 @@ public class PlagueCity extends BasicQuestHelper
 		spade.canBeObtainedDuringQuest();
 		spade.setTooltip("A spawn is found in Edmond's garden at the start of the quest");
 		spade.setHighlightInInventory(true);
-		fourBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_WATER, 4);
+
+		fourBucketsOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER, 4);
+		fourBucketsOfWater.canBeObtainedDuringQuest();
 		fourBucketsOfWater.setHighlightInInventory(true);
-		fourBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
-		threeBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_WATER, 3);
-		threeBucketsOfWater.setHighlightInInventory(true);
-		threeBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
-		twoBucketsOfWater = new ItemRequirement("Buckets of water", ItemID.BUCKET_WATER, 2);
-		twoBucketsOfWater.setHighlightInInventory(true);
-		twoBucketsOfWater.setTooltip("You can use the bucket near the start of the quest on the sink nearby");
-		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
-		bucketOfWater.setHighlightInInventory(true);
+		fourBucketsOfWater.setTooltip("An empty bucket can be found next to Edmond's garden patch, which can be filled in the sink inside Edmond's house.");
+		threeBucketsOfWater = fourBucketsOfWater.quantity(3);
+		twoBucketsOfWater = fourBucketsOfWater.quantity(2);
+		bucketOfWater = fourBucketsOfWater.quantity(1);
+
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
 		bucketOfMilk.setHighlightInInventory(true);
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);

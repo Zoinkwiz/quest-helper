@@ -303,7 +303,7 @@ public class ClockTower extends BasicQuestHelper
 		goToBasementForRed = new ConditionalStep(this, goToBasementSteps, "Enter the Clock Tower basement for the red cog.");
 		goToBasementForBlue = new ConditionalStep(this, goToCellSteps, "Climb down the ladder to the east of the Clock Tower, next to Brother Cedric.");
 		goToBasementForWhite = new ConditionalStep(this, goToBasementSteps, "Enter the Clock Tower basement for the white cog.");
-		goToBasementForBlack = new ConditionalStep(this, goToBasementSteps, "Enter the Clock Tower basement for the black cog.");
+		goToBasementForBlack = new ConditionalStep(this, goToBasementSteps, "Enter the Clock Tower basement for the black cog.", bucketOfWater);
 
 		goToFirstFloorWithBlueCog = new ConditionalStep(this, goToFirstFloor, "Place the blue cog on the peg on the first floor.");
 		goToFirstFloorWithBlueCog.addStep(inFirstFloor, blueCogOnBlueSpindle);

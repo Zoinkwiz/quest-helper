@@ -198,8 +198,11 @@ public class PlagueCity extends BasicQuestHelper
 		talkToEdmond = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3333, 0), "Talk to Edmond in the north-west corner of East Ardougne.");
 		talkToEdmond.addDialogStep("What's happened to her?");
 		talkToEdmond.addDialogStep("Yes.");
+
 		talkToAlrena = new NpcStep(this, NpcID.ALRENA, new WorldPoint(2573, 3333, 0), "Talk to Alrena nearby.", dwellberries);
+
 		talkToEdmondAgain = new NpcStep(this, NpcID.EDMOND, new WorldPoint(2568, 3332, 0), "Talk to Edmond again.");
+
 		useWaterOnMudPatch1 = new ObjectStep(this, ObjectID.PLAGUEMUDPATCH2, new WorldPoint(2566, 3332, 0),
 			"Use four buckets of water on the mud patch in Edmond's garden patch.", fourBucketsOfWater);
 		useWaterOnMudPatch1.addIcon(ItemID.BUCKET_WATER);

@@ -42,6 +42,7 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
@@ -423,6 +424,15 @@ public class Biohazard extends BasicQuestHelper
 	{
 		return List.of(
 			new ExperienceReward(Skill.THIEVING, 1250)
+		);
+	}
+
+	@Override
+	public List<UnlockReward> getUnlockRewards()
+	{
+		return List.of(
+			new UnlockReward("Full West Ardougne Access"),
+			new UnlockReward("Combat Training Camp Access")
 		);
 	}
 

@@ -36,6 +36,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -43,6 +44,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -116,8 +118,7 @@ public class Biohazard extends BasicQuestHelper
 	NpcStep talkToElena;
 	NpcStep talkToJerico;
 	ObjectStep getBirdFeed;
-	ObjectStep getBirdFeed2;
-	DetailedQuestStep getPigeonCage;
+	ItemStep getPigeonCage;
 	ObjectStep investigateWatchtower;
 	DetailedQuestStep clickPigeonCage;
 	NpcStep talkToOmartAgain;
@@ -181,10 +182,10 @@ public class Biohazard extends BasicQuestHelper
 		teleportRimmington = new ItemRequirement("Teleport to Rimmington", ItemID.NZONE_TELETAB_RIMMINGTON);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
 
-		birdCage = new ItemRequirement("Pigeon cage", ItemID.PIGEONS);
-		birdCageHighlighted = new ItemRequirement("Pigeon cage", ItemID.PIGEONS);
-		birdCageHighlighted.setHighlightInInventory(true);
 		birdFeed = new ItemRequirement("Bird feed", ItemID.BIRDFEED);
+		birdCage = new ItemRequirement("Pigeon cage", ItemID.PIGEONS);
+		birdCageHighlighted = birdCage.highlighted();
+
 		rottenApple = new ItemRequirement("Rotten apple", ItemID.ROTTENAPPLES);
 		rottenApple.setHighlightInInventory(true);
 		medicalGown = new ItemRequirement("Medical gown", ItemID.DOCTOR_GOWN).isNotConsumed();
@@ -219,12 +220,10 @@ public class Biohazard extends BasicQuestHelper
 
 		talkToJerico = new NpcStep(this, NpcID.JERICO, new WorldPoint(2612, 3324, 0), "Talk to Jerico in his house south of the northern Ardougne bank");
 
-		getBirdFeed = new ObjectStep(this, ObjectID.JERICOSCUPBOARDSHUT, new WorldPoint(2612, 3326, 0), "Get birdfeed from the cupboard in Jerico's house.");
-		getBirdFeed2 = new ObjectStep(this, ObjectID.JERICOSCUPBOARDOPEN, new WorldPoint(2612, 3326, 0), "Get birdfeed from the cupboard in Jerico's house.");
+		getBirdFeed = new ObjectStep(this, ObjectID.JERICOSCUPBOARDSHUT, new WorldPoint(2612, 3326, 0), "Get bird feed from the cupboard in Jerico's house.");
+		getBirdFeed.addAlternateObjects(ObjectID.JERICOSCUPBOARDOPEN);
 
-		getBirdFeed.addSubSteps(getBirdFeed2);
-
-		getPigeonCage = new DetailedQuestStep(this, new WorldPoint(2618, 3325, 0), "Get a pigeon cage from behind Jerico's house.", birdCage, birdFeed);
+		getPigeonCage = new ItemStep(this, new WorldPoint(2618, 3325, 0), "Get a pigeon cage from behind Jerico's house.", birdCage);
 
 		investigateWatchtower = new ObjectStep(this, ObjectID.BIOWATCHTOWER_OP, new WorldPoint(2562, 3301, 0), "Investigate the watchtower near the entrance to West Ardougne.", birdFeed, birdCage);
 
@@ -299,10 +298,9 @@ public class Biohazard extends BasicQuestHelper
 
 		steps.put(1, talkToJerico);
 
-		var prepareADistraction = new ConditionalStep(this, getBirdFeed);
-		prepareADistraction.addStep(and(birdCage, birdFeed), investigateWatchtower);
-		prepareADistraction.addStep(birdFeed, getPigeonCage);
-		prepareADistraction.addStep(new ObjectCondition(ObjectID.JERICOSCUPBOARDOPEN), getBirdFeed2);
+		var prepareADistraction = new ConditionalStep(this, investigateWatchtower);
+		prepareADistraction.addStep(not(birdFeed), getBirdFeed);
+		prepareADistraction.addStep(not(birdCage), getPigeonCage);
 		steps.put(2, prepareADistraction);
 
 		var causeADistraction = new ConditionalStep(this, getPigeonCage);

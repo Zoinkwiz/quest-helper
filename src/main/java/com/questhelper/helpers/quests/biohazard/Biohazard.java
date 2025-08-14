@@ -242,8 +242,8 @@ public class Biohazard extends BasicQuestHelper
 		useRottenAppleOnCauldron = new ObjectStep(this, ObjectID.MOURNERCAULDRON, new WorldPoint(2543, 3332, 0), "Use the rotten apple on the cauldron.", rottenApple);
 		useRottenAppleOnCauldron.addIcon(ItemID.ROTTENAPPLES);
 
-		exitBackyardOfHeadquarters = new ObjectStep(this, ObjectID.MOURNERSTEWFENCE, new WorldPoint(2541, 3331, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church.");
-		searchSarahsCupboard = new ObjectStep(this, ObjectID.BIONURSESCUPBOARDSHUT, new WorldPoint(2518, 3276, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church.");
+		exitBackyardOfHeadquarters = new ObjectStep(this, ObjectID.MOURNERSTEWFENCE, new WorldPoint(2541, 3331, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church for a disguise.");
+		searchSarahsCupboard = new ObjectStep(this, ObjectID.BIONURSESCUPBOARDSHUT, new WorldPoint(2518, 3276, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church for a disguise.");
 		searchSarahsCupboard.addAlternateObjects(ObjectID.BIONURSESCUPBOARDOPEN);
 		searchSarahsCupboard.addSubSteps(exitBackyardOfHeadquarters);
 		enterMournerHeadquarters = new ObjectStep(this, ObjectID.MOURNERSTEWDOOR, new WorldPoint(2551, 3320, 0), "Enter the Mourners' Headquarters whilst wearing the medical gown.", medicalGownEquipped);

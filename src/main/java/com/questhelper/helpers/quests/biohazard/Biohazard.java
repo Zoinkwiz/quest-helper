@@ -254,12 +254,12 @@ public class Biohazard extends BasicQuestHelper
 
 		searchCrateForDistillator = new ObjectStep(this, ObjectID.MOURNERCRATEUP, new WorldPoint(2554, 3327, 1), "Search the crate in the caged area for Elena's Distillator.");
 
-		goBackDownstairsInMournersHeadquarters = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(2543, 3325, 1), "Return to Elena. Go back downstairs or teleport out.");
+		goBackDownstairsInMournersHeadquarters = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(2543, 3325, 1), "Return to Elena. Go back downstairs or teleport out.", distillator);
 
-		talkToKilron = new NpcStep(this, NpcID.KILRON_VIS, new WorldPoint(2556, 3266, 0), "Return to Elena. Talk to Kilron south-east of the West Ardougne church to return back to East Ardougne.");
+		talkToKilron = new NpcStep(this, NpcID.KILRON_VIS, new WorldPoint(2556, 3266, 0), "Return to Elena. Talk to Kilron south-east of the West Ardougne church to return back to East Ardougne.", distillator);
 		talkToKilron.addDialogStep("Yes I do.");
 
-		talkToElenaWithDistillator = new NpcStep(this, NpcID.ELENA2_VIS, new WorldPoint(2592, 3336, 0), "Return to Elena.");
+		talkToElenaWithDistillator = new NpcStep(this, NpcID.ELENA2_VIS, new WorldPoint(2592, 3336, 0), "Return to Elena.", distillator);
 		talkToElenaWithDistillator.addSubSteps(goBackDownstairsInMournersHeadquarters, talkToKilron);
 
 		talkToTheChemist = new NpcStep(this, NpcID.CHEMIST, new WorldPoint(2933, 3210, 0),

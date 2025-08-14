@@ -185,6 +185,7 @@ public class Biohazard extends BasicQuestHelper
 		teleportArdougne = new ItemRequirement("Teleport to Ardougne", ItemID.POH_TABLET_ARDOUGNETELEPORT, 3);
 		teleportRimmington = new ItemRequirement("Teleport to Rimmington", ItemID.NZONE_TELETAB_RIMMINGTON);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
+		coins.setTooltip("For travelling from Ardougne to Rimmington.");
 
 		birdFeed = new ItemRequirement("Bird feed", ItemID.BIRDFEED);
 		birdCage = new ItemRequirement("Pigeon cage", ItemID.PIGEONS);

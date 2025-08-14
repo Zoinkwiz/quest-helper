@@ -381,7 +381,7 @@ public class Biohazard extends BasicQuestHelper
 		talkToTheKing.addStep(isUpstairsArdougneCastle, informTheKing);
 
 		steps.put(15, talkToTheKing);
-		// Finishing gives: 72: 0->17, 71: 0->4117, 70: 0->1
+
 		return steps;
 	}
 

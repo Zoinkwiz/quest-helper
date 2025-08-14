@@ -31,7 +31,6 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -133,7 +132,6 @@ public class Biohazard extends BasicQuestHelper
 	DetailedQuestStep useRottenAppleOnCauldron;
 
 	ObjectStep searchSarahsCupboard;
-	ObjectStep searchSarahsCupboard2;
 	ObjectStep enterMournerHeadquarters;
 	ObjectStep goUpstairsInMournerBuilding;
 	NpcStep killMourner;
@@ -244,8 +242,7 @@ public class Biohazard extends BasicQuestHelper
 		useRottenAppleOnCauldron.addIcon(ItemID.ROTTENAPPLES);
 
 		searchSarahsCupboard = new ObjectStep(this, ObjectID.BIONURSESCUPBOARDSHUT, new WorldPoint(2518, 3276, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church.");
-		searchSarahsCupboard2 = new ObjectStep(this, ObjectID.BIONURSESCUPBOARDOPEN, new WorldPoint(2518, 3276, 0), "Search the cupboard in Sarah's house south-west of the West Ardougne church.");
-		searchSarahsCupboard.addSubSteps(searchSarahsCupboard2);
+		searchSarahsCupboard.addAlternateObjects(ObjectID.BIONURSESCUPBOARDOPEN);
 		enterMournerHeadquarters = new ObjectStep(this, ObjectID.MOURNERSTEWDOOR, new WorldPoint(2551, 3320, 0), "Enter the Mourners' Headquarters whilst wearing the medical gown.", medicalGownEquipped);
 
 		goUpstairsInMournerBuilding = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2543, 3325, 0), "Go upstairs and kill the mourner there.");
@@ -324,7 +321,6 @@ public class Biohazard extends BasicQuestHelper
 		infiltrateMourners.addStep(upstairsInMournerBuilding, killMourner);
 		infiltrateMourners.addStep(inMournerBuilding, goUpstairsInMournerBuilding);
 		infiltrateMourners.addStep(and(inWestArdougne, medicalGown), enterMournerHeadquarters);
-		infiltrateMourners.addStep(and(inWestArdougne, new ObjectCondition(ObjectID.BIONURSESCUPBOARDOPEN)), searchSarahsCupboard2);
 		infiltrateMourners.addStep(inWestArdougne, searchSarahsCupboard);
 
 		steps.put(6, infiltrateMourners);
@@ -338,7 +334,6 @@ public class Biohazard extends BasicQuestHelper
 		returnToElenaWithDistillator.addStep(upstairsInMournerBuilding, killMourner);
 		returnToElenaWithDistillator.addStep(inMournerBuilding, goUpstairsInMournerBuilding);
 		returnToElenaWithDistillator.addStep(and(inWestArdougne, medicalGown), enterMournerHeadquarters);
-		returnToElenaWithDistillator.addStep(and(inWestArdougne, new ObjectCondition(ObjectID.BIONURSESCUPBOARDOPEN)), searchSarahsCupboard2);
 		returnToElenaWithDistillator.addStep(inWestArdougne, searchSarahsCupboard);
 
 		steps.put(7, returnToElenaWithDistillator);

@@ -149,6 +149,7 @@ public class Biohazard extends BasicQuestHelper
 	NpcStep talkToTheChemist;
 
 	DetailedQuestStep goToVarrock;
+	GiveIngredientsToHelpersStep giveChemicals;
 	NpcStep vinciVarrock;
 	NpcStep chancyVarrock;
 	NpcStep hopsVarrock;
@@ -160,8 +161,6 @@ public class Biohazard extends BasicQuestHelper
 
 	NpcStep informTheKing;
 	ObjectStep informTheKingGoUpstairs;
-
-	GiveIngredientsToHelpersStep giveChemicals;
 
 	@Override
 	protected void setupZones()

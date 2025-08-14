@@ -116,10 +116,13 @@ public class Biohazard extends BasicQuestHelper
 
 	// Steps
 	NpcStep talkToElena;
+
 	NpcStep talkToJerico;
+
 	ObjectStep getBirdFeed;
 	ItemStep getPigeonCage;
 	ObjectStep investigateWatchtower;
+
 	DetailedQuestStep clickPigeonCage;
 	NpcStep talkToOmartAgain;
 	NpcStep talkToOmartToReturnToWest;

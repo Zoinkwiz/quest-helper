@@ -256,7 +256,7 @@ public class Biohazard extends BasicQuestHelper
 
 		goBackDownstairsInMournersHeadquarters = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(2543, 3325, 1), "Return to Elena. Go back downstairs or teleport out.");
 
-		talkToKilron = new NpcStep(this, NpcID.KILRON_VIS, new WorldPoint(2556, 3266, 0), "Return to Elena. Talk to Kilron to return back to East Ardougne.");
+		talkToKilron = new NpcStep(this, NpcID.KILRON_VIS, new WorldPoint(2556, 3266, 0), "Return to Elena. Talk to Kilron south-east of the West Ardougne church to return back to East Ardougne.");
 		talkToKilron.addDialogStep("Yes I do.");
 
 		talkToElenaWithDistillator = new NpcStep(this, NpcID.ELENA2_VIS, new WorldPoint(2592, 3336, 0), "Return to Elena.");

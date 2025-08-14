@@ -129,7 +129,7 @@ public class Biohazard extends BasicQuestHelper
 
 	NpcStep talkToKilron;
 	ObjectStep enterBackyardOfHeadquarters;
-	DetailedQuestStep pickupRottenApple;
+	ItemStep pickupRottenApple;
 	DetailedQuestStep useRottenAppleOnCauldron;
 	ObjectStep searchSarahsCupboard;
 	ObjectStep searchSarahsCupboard2;
@@ -238,7 +238,7 @@ public class Biohazard extends BasicQuestHelper
 		talkToOmartToEnterWestArdougne.addDialogStep("Okay, let's do it.");
 
 		enterBackyardOfHeadquarters = new ObjectStep(this, ObjectID.MOURNERSTEWFENCE, new WorldPoint(2541, 3331, 0), "Squeeze through the fence to enter the Mourner's Headquarters yard in the north east of West Ardougne.");
-		pickupRottenApple = new DetailedQuestStep(this, new WorldPoint(2549, 3332, 0), "Pick up the rotten apple in the yard.", rottenApple);
+		pickupRottenApple = new ItemStep(this, new WorldPoint(2549, 3332, 0), "Pick up the rotten apple in the yard.", rottenApple);
 		useRottenAppleOnCauldron = new ObjectStep(this, ObjectID.MOURNERCAULDRON, new WorldPoint(2543, 3332, 0), "Use the rotten apple on the cauldron.", rottenApple);
 		useRottenAppleOnCauldron.addIcon(ItemID.ROTTENAPPLES);
 

@@ -37,6 +37,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -47,6 +48,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.widget.WidgetHighlight;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -58,6 +60,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class Biohazard extends BasicQuestHelper
 {
@@ -82,6 +85,7 @@ public class Biohazard extends BasicQuestHelper
 	ItemRequirement liquidHoney;
 	ItemRequirement sulphuricBroline;
 	ItemRequirement touchPaper;
+	ItemRequirement coinsForPriestSet;
 	ItemRequirement priestGownTop;
 	ItemRequirement priestGownBottom;
 	ItemRequirement priestGownBottomEquipped;
@@ -110,6 +114,7 @@ public class Biohazard extends BasicQuestHelper
 	ZoneRequirement inVarrockSouthEast;
 	ZoneRequirement isUpstairsArdougneCastle;
 
+	VarbitRequirement hasNotReceivedFreePriestGownSet;
 	ItemRequirements hasPriestSet;
 	Conditions hasChemicals;
 
@@ -137,16 +142,22 @@ public class Biohazard extends BasicQuestHelper
 	ObjectStep goUpstairsInMournerBuilding;
 	NpcStep killMourner;
 	ObjectStep searchCrateForDistillator;
+
 	ObjectStep goBackDownstairsInMournersHeadquarters;
 	NpcStep talkToElenaWithDistillator;
+
 	NpcStep talkToTheChemist;
+
 	DetailedQuestStep goToVarrock;
 	NpcStep vinciVarrock;
 	NpcStep chancyVarrock;
 	NpcStep hopsVarrock;
 	NpcStep talkToAsyff;
+	NpcStep talkToAsyffBuy;
 	NpcStep talkToGuidor;
+
 	NpcStep returnToElenaAfterSampling;
+
 	NpcStep informTheKing;
 	ObjectStep informTheKingGoUpstairs;
 
@@ -187,6 +198,9 @@ public class Biohazard extends BasicQuestHelper
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
 		coins.setTooltip("For travelling from Ardougne to Rimmington.");
 
+		coinsForPriestSet = new ItemRequirement("Coins", ItemCollections.COINS, 12);
+		coinsForPriestSet.setTooltip("For buying the Priest Gown set");
+
 		birdFeed = new ItemRequirement("Bird feed", ItemID.BIRDFEED);
 		birdCage = new ItemRequirement("Pigeon cage", ItemID.PIGEONS);
 		birdCageHighlighted = birdCage.highlighted();
@@ -214,6 +228,8 @@ public class Biohazard extends BasicQuestHelper
 		priestGownTopEquipped = priestGownTop.equipped();
 
 		hasChemicals = or(ethenea, liquidHoney, sulphuricBroline);
+
+		hasNotReceivedFreePriestGownSet = new VarbitRequirement(VarbitID.BIOHAZARD_FREE_CLOTHES, 0);
 
 		hasPriestSet = new ItemRequirements(priestGownBottom, priestGownTop);
 	}
@@ -276,6 +292,11 @@ public class Biohazard extends BasicQuestHelper
 
 		talkToAsyff = new NpcStep(this, NpcID.TAILORP, new WorldPoint(3277, 3397, 0), "Talk to Asyff to get a free priest gown. You can only get the free set once.");
 		talkToAsyff.addDialogStep("Do you have a spare Priest Gown?");
+		talkToAsyffBuy = new NpcStep(this, NpcID.TAILORP, new WorldPoint(3277, 3397, 0), "Talk to Asyff and buy a priest gown set.", coinsForPriestSet);
+		talkToAsyffBuy.addDialogStep("Okay, let's see what you've got then.");
+		talkToAsyffBuy.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.PRIEST_GOWN));
+		talkToAsyffBuy.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.PRIEST_ROBE));
+		talkToAsyff.addSubSteps(talkToAsyffBuy);
 
 		talkToGuidor = new NpcStep(this, NpcID.GUIDOR, new WorldPoint(3284, 3382, 0),
 			"Talk to Guidor in his house to the south.",
@@ -347,12 +368,12 @@ public class Biohazard extends BasicQuestHelper
 
 		var smuggleInChemicals = new ConditionalStep(this, goToVarrock);
 		smuggleInChemicals.addStep(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasPriestSet), talkToGuidor);
-		smuggleInChemicals.addStep(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyff);
+		smuggleInChemicals.addStep(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasNotReceivedFreePriestGownSet), talkToAsyff);
+		smuggleInChemicals.addStep(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyffBuy);
 		smuggleInChemicals.addStep(and(inVarrockSouthEast, liquidHoney, ethenea), hopsVarrock);
 		smuggleInChemicals.addStep(and(inVarrockSouthEast, liquidHoney), vinciVarrock);
 		smuggleInChemicals.addStep(inVarrockSouthEast, chancyVarrock);
 		smuggleInChemicals.addStep(hasChemicals, giveChemicals);
-
 		steps.put(12, smuggleInChemicals);
 
 		steps.put(14, returnToElenaAfterSampling);

@@ -131,6 +131,7 @@ public class Biohazard extends BasicQuestHelper
 	ObjectStep enterBackyardOfHeadquarters;
 	ItemStep pickupRottenApple;
 	DetailedQuestStep useRottenAppleOnCauldron;
+
 	ObjectStep searchSarahsCupboard;
 	ObjectStep searchSarahsCupboard2;
 	ObjectStep enterMournerHeadquarters;

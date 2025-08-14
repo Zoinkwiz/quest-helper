@@ -124,8 +124,9 @@ public class Biohazard extends BasicQuestHelper
 	ObjectStep investigateWatchtower;
 
 	DetailedQuestStep clickPigeonCage;
-	NpcStep talkToOmartAgain;
-	NpcStep talkToOmartToReturnToWest;
+
+	NpcStep talkToOmartToEnterWestArdougne;
+
 	NpcStep talkToKilron;
 	ObjectStep enterBackyardOfHeadquarters;
 	DetailedQuestStep pickupRottenApple;
@@ -232,11 +233,9 @@ public class Biohazard extends BasicQuestHelper
 
 		clickPigeonCage = new DetailedQuestStep(this, new WorldPoint(2562, 3300, 0), "Open the Pigeon cage next to the watchtower.", birdCageHighlighted);
 
-		talkToOmartAgain = new NpcStep(this, NpcID.OMART_VIS, new WorldPoint(2559, 3266, 0), "Talk to Omart to enter West Ardougne.", gasMask);
-		talkToOmartAgain.addDialogStep("Okay, lets do it.");
-		talkToOmartToReturnToWest = new NpcStep(this, NpcID.OMART_VIS, new WorldPoint(2559, 3266, 0), "Talk to Omart to return to West Ardougne");
-		talkToOmartToReturnToWest.addDialogStep("Okay, lets do it.");
-		talkToOmartAgain.addSubSteps(talkToOmartToReturnToWest);
+		talkToOmartToEnterWestArdougne = new NpcStep(this, NpcID.OMART_VIS, new WorldPoint(2559, 3266, 0), "Talk to Omart, south of the watchtower, to enter West Ardougne.", gasMask);
+		talkToOmartToEnterWestArdougne.addDialogStep("Okay, lets do it.");
+		talkToOmartToEnterWestArdougne.addDialogStep("Okay, let's do it.");
 
 		enterBackyardOfHeadquarters = new ObjectStep(this, ObjectID.MOURNERSTEWFENCE, new WorldPoint(2541, 3331, 0), "Squeeze through the fence to enter the Mourner's Headquarters yard in the north east of West Ardougne.");
 		pickupRottenApple = new DetailedQuestStep(this, new WorldPoint(2549, 3332, 0), "Pick up the rotten apple in the yard.", rottenApple);
@@ -310,16 +309,16 @@ public class Biohazard extends BasicQuestHelper
 		causeADistraction.addStep(birdCage, clickPigeonCage);
 		steps.put(3, causeADistraction);
 
-		steps.put(4, talkToOmartAgain);
+		steps.put(4, talkToOmartToEnterWestArdougne);
 
-		var poisonFood = new ConditionalStep(this, talkToOmartToReturnToWest);
+		var poisonFood = new ConditionalStep(this, talkToOmartToEnterWestArdougne);
 		poisonFood.addStep(and(inMournerBackyard, rottenApple), useRottenAppleOnCauldron);
 		poisonFood.addStep(inMournerBackyard, pickupRottenApple);
 		poisonFood.addStep(inWestArdougne, enterBackyardOfHeadquarters);
 
 		steps.put(5, poisonFood);
 
-		var infiltrateMourners = new ConditionalStep(this, talkToOmartToReturnToWest);
+		var infiltrateMourners = new ConditionalStep(this, talkToOmartToEnterWestArdougne);
 		infiltrateMourners.addStep(and(key, upstairsInMournerBuilding), searchCrateForDistillator);
 		infiltrateMourners.addStep(upstairsInMournerBuilding, killMourner);
 		infiltrateMourners.addStep(inMournerBuilding, goUpstairsInMournerBuilding);
@@ -329,7 +328,7 @@ public class Biohazard extends BasicQuestHelper
 
 		steps.put(6, infiltrateMourners);
 
-		var returnToElenaWithDistillator = new ConditionalStep(this, talkToOmartToReturnToWest);
+		var returnToElenaWithDistillator = new ConditionalStep(this, talkToOmartToEnterWestArdougne);
 		returnToElenaWithDistillator.addStep(and(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters);
 		returnToElenaWithDistillator.addStep(and(distillator, inWestArdougne), talkToKilron);
 		returnToElenaWithDistillator.addStep(distillator, talkToElenaWithDistillator);
@@ -423,7 +422,7 @@ public class Biohazard extends BasicQuestHelper
 			getPigeonCage,
 			investigateWatchtower,
 			clickPigeonCage,
-			talkToOmartAgain
+			talkToOmartToEnterWestArdougne
 		)));
 
 		sections.add(new PanelDetails("Getting the Distillator", List.of(

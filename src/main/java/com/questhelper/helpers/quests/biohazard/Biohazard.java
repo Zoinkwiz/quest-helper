@@ -194,7 +194,7 @@ public class Biohazard extends BasicQuestHelper
 		rottenApple = new ItemRequirement("Rotten apple", ItemID.ROTTENAPPLES);
 		rottenApple.setHighlightInInventory(true);
 		medicalGown = new ItemRequirement("Medical gown", ItemID.DOCTOR_GOWN).isNotConsumed();
-		medicalGownEquipped = new ItemRequirement("Medical gown", ItemID.DOCTOR_GOWN, 1, true);
+		medicalGownEquipped = medicalGown.equipped();
 		key = new ItemRequirement("Key", ItemID.MOURNERKEYTW);
 		distillator = new ItemRequirement("Distillator", ItemID.DISTILLATOR);
 		plagueSample = new ItemRequirement("Plague sample", ItemID.PLAGUESAMPLE);

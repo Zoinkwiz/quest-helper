@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2025, pajlada <https://github.com/pajlada>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
@@ -36,21 +38,35 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
-import static com.questhelper.requirements.util.LogicHelper.and;
-
 public class MisthalinMystery extends BasicQuestHelper
 {
-	// Requirements
+	// Zones
+	Zone island;
+	Zone outside1;
+	Zone outside2;
+	Zone outside3;
+	Zone bossRoom;
+
+	// Miscellaneous requirements
 	ItemRequirement bucket;
 	ItemRequirement manorKey;
 	ItemRequirement knife;
@@ -108,18 +124,25 @@ public class MisthalinMystery extends BasicQuestHelper
 	ObjectStep observeThroughTree;
 	ObjectStep takeNote2;
 	DetailedQuestStep readNotes2;
+
+	PuzzleWrapperStep pwPlayPiano;
+	ConditionalStep cPlayPiano;
 	ObjectStep playPiano;
 	WidgetStep playD;
 	WidgetStep playE;
 	WidgetStep playA;
 	WidgetStep playDAgain;
 	DetailedQuestStep restartPiano;
-	ObjectStep searchThePiano;
+	PuzzleWrapperStep searchThePiano;
+
 	ObjectStep returnOverBrokenWall;
 	ObjectStep openEmeraldDoor;
 	ObjectStep enterBandosGodswordRoomStep;
 	ObjectStep takeNote3;
 	DetailedQuestStep readNotes3;
+
+	PuzzleWrapperStep pwSolveFireplacePuzzle;
+	ConditionalStep solveFireplacePuzzle;
 	ObjectStep useKnifeOnFireplace;
 	ObjectStep searchFireplace;
 	WidgetStep clickSapphire;
@@ -129,7 +152,8 @@ public class MisthalinMystery extends BasicQuestHelper
 	WidgetStep clickOnyx;
 	WidgetStep clickRuby;
 	DetailedQuestStep restartGems;
-	ObjectStep searchFireplaceForSapphireKey;
+	PuzzleWrapperStep searchFireplaceForSapphireKey;
+
 	ObjectStep goThroughSapphireDoor;
 	DetailedQuestStep reflectKnives;
 	ObjectStep continueThroughSapphireDoor;
@@ -138,162 +162,6 @@ public class MisthalinMystery extends BasicQuestHelper
 	NpcStep fightAbigale;
 	ObjectStep leaveSapphireRoom;
 	NpcStep talkToMandy;
-
-	// Zones
-	Zone island;
-	Zone outside1;
-	Zone outside2;
-	Zone outside3;
-	Zone bossRoom;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		var steps = new HashMap<Integer, QuestStep>();
-
-		steps.put(0, talkToAbigale);
-
-		steps.put(5, talkToAbigale);
-
-		var investigatingTheBarrel = new ConditionalStep(this, takeTheBoat);
-		investigatingTheBarrel.addStep(new Conditions(onIsland, bucket), searchTheBarrel);
-		investigatingTheBarrel.addStep(onIsland, takeTheBucket);
-		steps.put(10, investigatingTheBarrel);
-		steps.put(15, investigatingTheBarrel);
-
-		var emptyTheBarrel = new ConditionalStep(this, takeTheBoat);
-		emptyTheBarrel.addStep(new Conditions(onIsland, bucket), useBucketOnBarrel);
-		emptyTheBarrel.addStep(onIsland, takeTheBucket);
-		steps.put(20, emptyTheBarrel);
-
-		var enterTheHouse = new ConditionalStep(this, takeTheBoat);
-		enterTheHouse.addStep(new Conditions(onIsland, manorKey), openManorDoor);
-		enterTheHouse.addStep(onIsland, searchTheBarrelForKey);
-		steps.put(25, enterTheHouse);
-
-		var pinkDoor = new ConditionalStep(this, takeTheBoat);
-		pinkDoor.addStep(knife, tryToOpenPinkKnobDoor);
-		pinkDoor.addStep(onIsland, takeKnife);
-		steps.put(30, pinkDoor);
-
-		var pickUpAndReadNotes1 = new ConditionalStep(this, takeTheBoat);
-		pickUpAndReadNotes1.addStep(new Conditions(onIsland, notes1), readNotes1);
-		pickUpAndReadNotes1.addStep(onIsland, takeNote1);
-		steps.put(35, pickUpAndReadNotes1);
-
-		var cutPainting = new ConditionalStep(this, takeTheBoat);
-		cutPainting.addStep(new Conditions(onIsland, knife), useKnifeOnPainting);
-		cutPainting.addStep(onIsland, takeKnife);
-		steps.put(40, cutPainting);
-
-		var enterRubyRoom = new ConditionalStep(this, takeTheBoat);
-		enterRubyRoom.addStep(new Conditions(onIsland, rubyKey), goThroughRubyDoor);
-		enterRubyRoom.addStep(onIsland, searchPainting);
-		steps.put(45, enterRubyRoom);
-
-		var lightCandles = new ConditionalStep(this, takeTheBoat);
-		lightCandles.addStep(new Conditions(onIsland, tinderbox, litCandle1, litCandle2, litCandle3), lightCandle4);
-		lightCandles.addStep(new Conditions(onIsland, tinderbox, litCandle1, litCandle2), lightCandle3);
-		lightCandles.addStep(new Conditions(onIsland, tinderbox, litCandle1), lightCandle2);
-		lightCandles.addStep(new Conditions(onIsland, tinderbox), lightCandle1);
-		lightCandles.addStep(onIsland, takeTinderbox);
-		steps.put(50, lightCandles);
-
-		var lightFuseOnBarrel = new ConditionalStep(this, takeTheBoat);
-		lightFuseOnBarrel.addStep(new Conditions(onIsland, tinderbox), lightBarrel);
-		lightFuseOnBarrel.addStep(onIsland, takeTinderbox);
-		steps.put(55, lightFuseOnBarrel);
-		steps.put(60, leaveExplosionRoom);
-
-		var goToLacey = new ConditionalStep(this, takeTheBoat);
-		goToLacey.addStep(inOutsideArea, observeThroughTree);
-		goToLacey.addStep(onIsland, climbWall);
-		steps.put(65, goToLacey);
-
-		var pickUpAndReadNotes2 = new ConditionalStep(this, takeTheBoat);
-		pickUpAndReadNotes2.addStep(notes2, readNotes2);
-		pickUpAndReadNotes2.addStep(inOutsideArea, takeNote2);
-		pickUpAndReadNotes2.addStep(onIsland, climbWall);
-		steps.put(70, pickUpAndReadNotes2);
-
-		var playMusic = new ConditionalStep(this, takeTheBoat);
-		playMusic.addStep(playedA, playDAgain);
-		playMusic.addStep(playedE, playA);
-		playMusic.addStep(playedD, playE);
-		playMusic.addStep(new Conditions(playedAnyKey, inPianoWidget), restartPiano);
-		playMusic.addStep(inPianoWidget, playD);
-		playMusic.addStep(inOutsideArea, playPiano);
-		playMusic.addStep(onIsland, climbWall);
-		steps.put(75, playMusic);
-
-		var openingTheEmeraldDoor = new ConditionalStep(this, takeTheBoat);
-		openingTheEmeraldDoor.addStep(new Conditions(inOutsideArea, emeraldKey), returnOverBrokenWall);
-		openingTheEmeraldDoor.addStep(inOutsideArea, searchThePiano);
-		openingTheEmeraldDoor.addStep(new Conditions(onIsland, emeraldKey), openEmeraldDoor);
-		openingTheEmeraldDoor.addStep(onIsland, climbWall);
-		steps.put(80, openingTheEmeraldDoor);
-
-		var enterBandosGodswordRoom = new ConditionalStep(this, takeTheBoat);
-		enterBandosGodswordRoom.addStep(onIsland, enterBandosGodswordRoomStep);
-		steps.put(85, enterBandosGodswordRoom);
-
-		var startPuzzle3 = new ConditionalStep(this, takeTheBoat);
-		startPuzzle3.addStep(new Conditions(onIsland, notes3), readNotes3);
-		startPuzzle3.addStep(onIsland, takeNote3);
-		steps.put(90, startPuzzle3);
-
-		var openFireplace = new ConditionalStep(this, takeTheBoat);
-		openFireplace.addStep(new Conditions(onIsland, knife), useKnifeOnFireplace);
-		openFireplace.addStep(onIsland, takeKnife);
-		steps.put(95, openFireplace);
-
-		var solveFireplacePuzzle = new ConditionalStep(this, takeTheBoat);
-		solveFireplacePuzzle.addStep(selectedOnyx, clickRuby);
-		solveFireplacePuzzle.addStep(selectedEmerald, clickOnyx);
-		solveFireplacePuzzle.addStep(selectedZenyte, clickEmerald);
-		solveFireplacePuzzle.addStep(selectedDiamond, clickZenyte);
-		solveFireplacePuzzle.addStep(selectedSaphire, clickDiamond);
-		solveFireplacePuzzle.addStep(selectAnyGem, restartGems);
-		solveFireplacePuzzle.addStep(inGemWidget, clickSapphire);
-		solveFireplacePuzzle.addStep(onIsland, searchFireplace);
-		steps.put(100, solveFireplacePuzzle);
-
-		var openSapphireDoor = new ConditionalStep(this, takeTheBoat);
-		openSapphireDoor.addStep(new Conditions(onIsland, sapphireKey), goThroughSapphireDoor);
-		openSapphireDoor.addStep(onIsland, searchFireplaceForSapphireKey);
-		steps.put(105, openSapphireDoor);
-
-		var goDoBoss = new ConditionalStep(this, takeTheBoat);
-		goDoBoss.addStep(inBossRoom, reflectKnives);
-		goDoBoss.addStep(onIsland, goThroughSapphireDoor);
-		steps.put(110, goDoBoss);
-		steps.put(111, goDoBoss);
-
-		var watchRevealCutscene = new ConditionalStep(this, takeTheBoat);
-		watchRevealCutscene.addStep(inBossRoom, watchTheKillersReveal);
-		watchRevealCutscene.addStep(onIsland, continueThroughSapphireDoor);
-		steps.put(115, watchRevealCutscene);
-
-		var goFightAbigale = new ConditionalStep(this, takeTheBoat);
-		goFightAbigale.addStep(new Conditions(inBossRoom, killersKnife), fightAbigale);
-		goFightAbigale.addStep(inBossRoom, pickUpKillersKnife);
-		goFightAbigale.addStep(onIsland, continueThroughSapphireDoor);
-		steps.put(120, goFightAbigale);
-
-		var attemptToLeaveSapphireRoom = new ConditionalStep(this, takeTheBoat);
-		attemptToLeaveSapphireRoom.addStep(onIsland, leaveSapphireRoom);
-		steps.put(125, attemptToLeaveSapphireRoom);
-
-		var finishTheQuest = new ConditionalStep(this, takeTheBoat);
-		finishTheQuest.addStep(onIsland, talkToMandy);
-		steps.put(130, finishTheQuest);
-
-		return steps;
-	}
 
 	@Override
 	protected void setupZones()
@@ -305,19 +173,20 @@ public class MisthalinMystery extends BasicQuestHelper
 		bossRoom = new Zone(new WorldPoint(1619, 4825, 0), new WorldPoint(1627, 4834, 0));
 	}
 
-	public void setupConditions()
+	@Override
+	protected void setupRequirements()
 	{
 		onIsland = new ZoneRequirement(island);
 		inOutsideArea = new ZoneRequirement(outside1, outside2, outside3);
 		inBossRoom = new ZoneRequirement(bossRoom);
 
-		litCandle1 = new VarbitRequirement(4042, 1);
-		litCandle2 = new VarbitRequirement(4041, 1);
-		litCandle3 = new VarbitRequirement(4039, 1);
+		litCandle1 = new VarbitRequirement(VarbitID.MISTMYST_CANDLE4, 1);
+		litCandle2 = new VarbitRequirement(VarbitID.MISTMYST_CANDLE3, 1);
+		litCandle3 = new VarbitRequirement(VarbitID.MISTMYST_CANDLE1, 1);
 
-		playedD = and(new VarbitRequirement(4044, 1), new VarbitRequirement(4049, 1));
-		playedE = and(new VarbitRequirement(4045, 1), new VarbitRequirement(4049, 2));
-		playedA = and(new VarbitRequirement(4046, 1), new VarbitRequirement(4049, 3));
+		playedD = and(new VarbitRequirement(VarbitID.MISTMYST_PIANO_D1, 1), new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 1));
+		playedE = and(new VarbitRequirement(VarbitID.MISTMYST_PIANO_E, 1), new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 2));
+		playedA = and(new VarbitRequirement(VarbitID.MISTMYST_PIANO_A, 1), new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 3));
 		playedAnyKey = new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 1, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetTextRequirement(554, 20, "C");
 		inGemWidget = new WidgetTextRequirement(555, 1, 1, "Gemstone switch panel");
@@ -327,11 +196,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		selectedEmerald = and(new VarbitRequirement(4054, 1), new VarbitRequirement(4050, 4));
 		selectedOnyx = and(new VarbitRequirement(4055, 1), new VarbitRequirement(4050, 5));
 		selectAnyGem = new VarbitRequirement(VarbitID.MISTMYST_SWITCH_ATTEMPTS, 1, Operation.GREATER_EQUAL);
-	}
 
-	@Override
-	protected void setupRequirements()
-	{
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 		manorKey = new ItemRequirement("Manor key", ItemID.MISTMYST_FRONTDOOR_KEY);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
@@ -363,7 +228,7 @@ public class MisthalinMystery extends BasicQuestHelper
 		tryToOpenPinkKnobDoor = new ObjectStep(this, ObjectID.MISTMYST_DOOR_REDTOPAZ, new WorldPoint(1635, 4838, 0), "Try to open the door with the pink handle.");
 		takeNote1 = new ObjectStep(this, ObjectID.MISTMYST_CLUE_LIBRARY, new WorldPoint(1635, 4839, 0), "Pick up the note that appeared.");
 		readNotes1 = new DetailedQuestStep(this, "Read the notes.", notes1.highlighted());
-		useKnifeOnPainting = new ObjectStep(this, ObjectID.MISTMYST_PAINTING, new WorldPoint(1632, 4833, 0), "Use a knife on the marked painting.", knife);
+		useKnifeOnPainting = new ObjectStep(this, ObjectID.MISTMYST_PAINTING, new WorldPoint(1632, 4833, 0), "Use a knife on the marked painting.", knife.highlighted());
 		useKnifeOnPainting.addIcon(ItemID.KNIFE);
 		searchPainting = new ObjectStep(this, ObjectID.MISTMYST_PAINTING, new WorldPoint(1632, 4833, 0), "Search the painting for a ruby key.");
 		goThroughRubyDoor = new ObjectStep(this, ObjectID.MISTMYST_DOOR_RUBY, new WorldPoint(1640, 4828, 0), "Go through the door with the ruby handle.", rubyKey);
@@ -389,15 +254,24 @@ public class MisthalinMystery extends BasicQuestHelper
 		takeNote2 = new ObjectStep(this, ObjectID.MISTMYST_CLUE_OUTSIDE, new WorldPoint(1632, 4850, 0), "Pick up the note that appeared by the fence.");
 		readNotes2 = new DetailedQuestStep(this, "Read the notes.", notes2.highlighted());
 
-		playPiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4842, 0), "Play the piano in the room to the south.");
-		playD = new WidgetStep(this, "Play the D key.", 554, 21);
-		playE = new WidgetStep(this, "Play the E key.", 554, 22);
-		playA = new WidgetStep(this, "Play the A key.", 554, 25);
-		playDAgain = new WidgetStep(this, "Play the D key again.", 554, 21);
+		playPiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4841, 0), "");
+		playD = new WidgetStep(this, "Play the D key.", InterfaceID.MistmystPiano.LABEL_D1);
+		playE = new WidgetStep(this, "Play the E key.", InterfaceID.MistmystPiano.LABEL_E1);
+		playA = new WidgetStep(this, "Play the A key.", InterfaceID.MistmystPiano.LABEL_A2);
+		playDAgain = new WidgetStep(this, "Play the D key again.", InterfaceID.MistmystPiano.LABEL_D1);
 		restartPiano = new DetailedQuestStep(this, "Unfortunately you've played an incorrect key. Restart.");
 		playPiano.addSubSteps(restartPiano);
 
-		searchThePiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4842, 0), "Right-click search the piano for the emerald key.");
+		cPlayPiano = new ConditionalStep(this, playPiano, "Play the piano in the room to the south for the emerald key.");
+		cPlayPiano.addStep(playedA, playDAgain);
+		cPlayPiano.addStep(playedE, playA);
+		cPlayPiano.addStep(playedD, playE);
+		cPlayPiano.addStep(and(playedAnyKey, inPianoWidget), restartPiano);
+		cPlayPiano.addStep(inPianoWidget, playD);
+
+		pwPlayPiano = cPlayPiano.puzzleWrapStepWithDefaultText("Find the emerald key in the room to the south.");
+
+		searchThePiano = new ObjectStep(this, ObjectID.MISTMYST_PIANO, new WorldPoint(1647, 4842, 0), "Right-click search the piano for the emerald key.").puzzleWrapStep(true);
 
 		returnOverBrokenWall = new ObjectStep(this, ObjectID.MISTMYST_DESTRUCTABLE_WALL_CLIMBABLE, new WorldPoint(1648, 4829, 0),
 			"Climb back over the damaged wall into the manor.", emeraldKey);
@@ -408,13 +282,12 @@ public class MisthalinMystery extends BasicQuestHelper
 
 		takeNote3 = new ObjectStep(this, ObjectID.MISTMYST_CLUE_KITCHEN, new WorldPoint(1630, 4842, 0), "Pick up the note that appeared by the door.");
 		readNotes3 = new DetailedQuestStep(this, "Read the notes.", notes3.highlighted());
-		useKnifeOnFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Use a knife on the unlit fireplace in the eastern room.", knife);
+		useKnifeOnFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Use a knife on the unlit fireplace in the eastern room.", knife.highlighted());
 		useKnifeOnFireplace.addIcon(ItemID.KNIFE);
 
-		searchFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Search the fireplace.");
+		searchFireplace = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "");
 
 		restartGems = new DetailedQuestStep(this, "You've clicked a gem in the wrong order. Try restarting.");
-		searchFireplace.addSubSteps(restartGems);
 
 		clickSapphire = new WidgetStep(this, "Click the sapphire.", 555, 19);
 		clickDiamond = new WidgetStep(this, "Click the diamond.", 555, 4);
@@ -423,7 +296,21 @@ public class MisthalinMystery extends BasicQuestHelper
 		clickOnyx = new WidgetStep(this, "Click the onyx.", 555, 7);
 		clickRuby = new WidgetStep(this, "Click the ruby.", 555, 15);
 
-		searchFireplaceForSapphireKey = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Search the fireplace again for the sapphire key.");
+		searchFireplaceForSapphireKey = new ObjectStep(this, ObjectID.MISTMYST_FIREPLACE, new WorldPoint(1647, 4836, 0), "Search the fireplace again for the sapphire key.").puzzleWrapStep(true);
+
+		solveFireplacePuzzle = new ConditionalStep(this, takeTheBoat, "Search the fireplace and solve the puzzle for the sapphire key.");
+		solveFireplacePuzzle.addStep(selectedOnyx, clickRuby);
+		solveFireplacePuzzle.addStep(selectedEmerald, clickOnyx);
+		solveFireplacePuzzle.addStep(selectedZenyte, clickEmerald);
+		solveFireplacePuzzle.addStep(selectedDiamond, clickZenyte);
+		solveFireplacePuzzle.addStep(selectedSaphire, clickDiamond);
+		solveFireplacePuzzle.addStep(selectAnyGem, restartGems);
+		solveFireplacePuzzle.addStep(inGemWidget, clickSapphire);
+		solveFireplacePuzzle.addStep(onIsland, searchFireplace);
+
+		pwSolveFireplacePuzzle = solveFireplacePuzzle.puzzleWrapStepWithDefaultText("Find the sapphire key in the room to the east.");
+		pwSolveFireplacePuzzle.addSubSteps(searchFireplaceForSapphireKey);
+
 		goThroughSapphireDoor = new ObjectStep(this, ObjectID.MISTMYST_DOOR_SAPPHIRE, new WorldPoint(1628, 4829, 0),
 			"Go through the sapphire door.");
 		reflectKnives = new DetailedQuestStep(this, "This puzzle requires you to move the mirror to reflect the knives the murderer throws. You can tell which wardrobe the murderer will throw from by a black swirl that'll surround it.");
@@ -444,6 +331,140 @@ public class MisthalinMystery extends BasicQuestHelper
 
 		talkToMandy = new NpcStep(this, NpcID.MISTMYST_MANDY_POST_VIS, new WorldPoint(1636, 4817, 0),
 			"Talk to Mandy just outside the manor to complete the quest.");
+	}
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToAbigale);
+
+		steps.put(5, talkToAbigale);
+
+		var investigatingTheBarrel = new ConditionalStep(this, takeTheBoat);
+		investigatingTheBarrel.addStep(and(onIsland, bucket), searchTheBarrel);
+		investigatingTheBarrel.addStep(onIsland, takeTheBucket);
+		steps.put(10, investigatingTheBarrel);
+		steps.put(15, investigatingTheBarrel);
+
+		var emptyTheBarrel = new ConditionalStep(this, takeTheBoat);
+		emptyTheBarrel.addStep(and(onIsland, bucket), useBucketOnBarrel);
+		emptyTheBarrel.addStep(onIsland, takeTheBucket);
+		steps.put(20, emptyTheBarrel);
+
+		var enterTheHouse = new ConditionalStep(this, takeTheBoat);
+		enterTheHouse.addStep(and(onIsland, manorKey), openManorDoor);
+		enterTheHouse.addStep(onIsland, searchTheBarrelForKey);
+		steps.put(25, enterTheHouse);
+
+		var pinkDoor = new ConditionalStep(this, takeTheBoat);
+		pinkDoor.addStep(knife, tryToOpenPinkKnobDoor);
+		pinkDoor.addStep(onIsland, takeKnife);
+		steps.put(30, pinkDoor);
+
+		var pickUpAndReadNotes1 = new ConditionalStep(this, takeTheBoat);
+		pickUpAndReadNotes1.addStep(and(onIsland, notes1), readNotes1);
+		pickUpAndReadNotes1.addStep(onIsland, takeNote1);
+		steps.put(35, pickUpAndReadNotes1);
+
+		var cutPainting = new ConditionalStep(this, takeTheBoat);
+		cutPainting.addStep(and(onIsland, knife), useKnifeOnPainting);
+		cutPainting.addStep(onIsland, takeKnife);
+		steps.put(40, cutPainting);
+
+		var enterRubyRoom = new ConditionalStep(this, takeTheBoat);
+		enterRubyRoom.addStep(and(onIsland, rubyKey), goThroughRubyDoor);
+		enterRubyRoom.addStep(onIsland, searchPainting);
+		steps.put(45, enterRubyRoom);
+
+		var lightCandles = new ConditionalStep(this, takeTheBoat);
+		lightCandles.addStep(and(onIsland, tinderbox, litCandle1, litCandle2, litCandle3), lightCandle4);
+		lightCandles.addStep(and(onIsland, tinderbox, litCandle1, litCandle2), lightCandle3);
+		lightCandles.addStep(and(onIsland, tinderbox, litCandle1), lightCandle2);
+		lightCandles.addStep(and(onIsland, tinderbox), lightCandle1);
+		lightCandles.addStep(onIsland, takeTinderbox);
+		steps.put(50, lightCandles);
+
+		var lightFuseOnBarrel = new ConditionalStep(this, takeTheBoat);
+		lightFuseOnBarrel.addStep(and(onIsland, tinderbox), lightBarrel);
+		lightFuseOnBarrel.addStep(onIsland, takeTinderbox);
+		steps.put(55, lightFuseOnBarrel);
+		steps.put(60, leaveExplosionRoom);
+
+		var goToLacey = new ConditionalStep(this, takeTheBoat);
+		goToLacey.addStep(inOutsideArea, observeThroughTree);
+		goToLacey.addStep(onIsland, climbWall);
+		steps.put(65, goToLacey);
+
+		var pickUpAndReadNotes2 = new ConditionalStep(this, takeTheBoat);
+		pickUpAndReadNotes2.addStep(notes2, readNotes2);
+		pickUpAndReadNotes2.addStep(inOutsideArea, takeNote2);
+		pickUpAndReadNotes2.addStep(onIsland, climbWall);
+		steps.put(70, pickUpAndReadNotes2);
+
+		var playMusic = new ConditionalStep(this, takeTheBoat);
+		playMusic.addStep(inOutsideArea, pwPlayPiano);
+		playMusic.addStep(onIsland, climbWall);
+		steps.put(75, playMusic);
+
+		var openingTheEmeraldDoor = new ConditionalStep(this, takeTheBoat);
+		openingTheEmeraldDoor.addStep(and(inOutsideArea, emeraldKey), returnOverBrokenWall);
+		openingTheEmeraldDoor.addStep(inOutsideArea, searchThePiano);
+		openingTheEmeraldDoor.addStep(and(onIsland, emeraldKey), openEmeraldDoor);
+		openingTheEmeraldDoor.addStep(onIsland, climbWall);
+		steps.put(80, openingTheEmeraldDoor);
+
+		var enterBandosGodswordRoom = new ConditionalStep(this, takeTheBoat);
+		enterBandosGodswordRoom.addStep(onIsland, enterBandosGodswordRoomStep);
+		steps.put(85, enterBandosGodswordRoom);
+
+		var startPuzzle3 = new ConditionalStep(this, takeTheBoat);
+		startPuzzle3.addStep(and(onIsland, notes3), readNotes3);
+		startPuzzle3.addStep(onIsland, takeNote3);
+		steps.put(90, startPuzzle3);
+
+		var openFireplace = new ConditionalStep(this, takeTheBoat);
+		openFireplace.addStep(and(onIsland, knife), useKnifeOnFireplace);
+		openFireplace.addStep(onIsland, takeKnife);
+		steps.put(95, openFireplace);
+
+		steps.put(100, pwSolveFireplacePuzzle);
+
+		var openSapphireDoor = new ConditionalStep(this, takeTheBoat);
+		openSapphireDoor.addStep(and(onIsland, sapphireKey), goThroughSapphireDoor);
+		openSapphireDoor.addStep(onIsland, searchFireplaceForSapphireKey);
+		steps.put(105, openSapphireDoor);
+
+		var goDoBoss = new ConditionalStep(this, takeTheBoat);
+		goDoBoss.addStep(inBossRoom, reflectKnives);
+		goDoBoss.addStep(onIsland, goThroughSapphireDoor);
+		steps.put(110, goDoBoss);
+		steps.put(111, goDoBoss);
+
+		var watchRevealCutscene = new ConditionalStep(this, takeTheBoat);
+		watchRevealCutscene.addStep(inBossRoom, watchTheKillersReveal);
+		watchRevealCutscene.addStep(onIsland, continueThroughSapphireDoor);
+		steps.put(115, watchRevealCutscene);
+
+		var goFightAbigale = new ConditionalStep(this, takeTheBoat);
+		goFightAbigale.addStep(and(inBossRoom, killersKnife), fightAbigale);
+		goFightAbigale.addStep(inBossRoom, pickUpKillersKnife);
+		goFightAbigale.addStep(onIsland, continueThroughSapphireDoor);
+		steps.put(120, goFightAbigale);
+
+		var attemptToLeaveSapphireRoom = new ConditionalStep(this, takeTheBoat);
+		attemptToLeaveSapphireRoom.addStep(onIsland, leaveSapphireRoom);
+		steps.put(125, attemptToLeaveSapphireRoom);
+
+		var finishTheQuest = new ConditionalStep(this, takeTheBoat);
+		finishTheQuest.addStep(onIsland, talkToMandy);
+		steps.put(130, finishTheQuest);
+
+		return steps;
 	}
 
 	@Override
@@ -473,17 +494,71 @@ public class MisthalinMystery extends BasicQuestHelper
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		var allSteps = new ArrayList<PanelDetails>();
+		var steps = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Talk to Abigale", Collections.singletonList(talkToAbigale)));
-		allSteps.add(new PanelDetails("Enter the manor", Arrays.asList(takeTheBoat, takeTheBucket, searchTheBarrel, useBucketOnBarrel, searchTheBarrelForKey, openManorDoor)));
-		allSteps.add(new PanelDetails("Solve the first puzzle", Arrays.asList(takeKnife, tryToOpenPinkKnobDoor, takeNote1, readNotes1, useKnifeOnPainting, searchPainting, goThroughRubyDoor)));
-		allSteps.add(new PanelDetails("Solve the second puzzle", Arrays.asList(takeTinderbox, lightCandle1, lightBarrel, leaveExplosionRoom, climbWall)));
-		allSteps.add(new PanelDetails("Solve the third puzzle", Arrays.asList(observeThroughTree, takeNote2, readNotes2, playPiano, playD, playE, playA, playDAgain, searchThePiano)));
-		allSteps.add(new PanelDetails("Witness another murder", Arrays.asList(returnOverBrokenWall, openEmeraldDoor, enterBandosGodswordRoomStep)));
-		allSteps.add(new PanelDetails("Solve the fourth puzzle", Arrays.asList(takeNote3, readNotes3, useKnifeOnFireplace, searchFireplace, clickSapphire, clickDiamond, clickZenyte, clickEmerald, clickOnyx, clickRuby, searchFireplaceForSapphireKey)));
-		allSteps.add(new PanelDetails("Confront the killer", Arrays.asList(goThroughSapphireDoor, reflectKnives, watchTheKillersReveal, pickUpKillersKnife, fightAbigale, leaveSapphireRoom, talkToMandy)));
+		steps.add(new PanelDetails("Talk to Abigale", List.of(
+			talkToAbigale
+		)));
 
-		return allSteps;
+		steps.add(new PanelDetails("Enter the manor", List.of(
+			takeTheBoat,
+			takeTheBucket,
+			searchTheBarrel,
+			useBucketOnBarrel,
+			searchTheBarrelForKey,
+			openManorDoor
+		)));
+
+		steps.add(new PanelDetails("Solve the first puzzle", List.of(
+			takeKnife,
+			tryToOpenPinkKnobDoor,
+			takeNote1,
+			readNotes1,
+			useKnifeOnPainting,
+			searchPainting,
+			goThroughRubyDoor
+		)));
+
+		steps.add(new PanelDetails("Solve the second puzzle", List.of(
+			takeTinderbox,
+			lightCandle1,
+			lightBarrel,
+			leaveExplosionRoom,
+			climbWall
+		)));
+
+		steps.add(new PanelDetails("Solve the third puzzle", List.of(
+			observeThroughTree,
+			takeNote2,
+			readNotes2,
+			pwPlayPiano,
+			searchThePiano
+		)));
+
+		steps.add(new PanelDetails("Witness another murder", List.of(
+			returnOverBrokenWall,
+			openEmeraldDoor,
+			enterBandosGodswordRoomStep
+		)));
+
+		steps.add(new PanelDetails("Solve the fourth puzzle", List.of(
+			takeNote3,
+			readNotes3,
+			useKnifeOnFireplace,
+			pwSolveFireplacePuzzle,
+			searchFireplaceForSapphireKey
+		)));
+
+		steps.add(new PanelDetails("Confront the killer", List.of(
+			goThroughSapphireDoor,
+			reflectKnives,
+			watchTheKillersReveal,
+			pickUpKillersKnife,
+			fightAbigale,
+			leaveSapphireRoom,
+			talkToMandy
+		)));
+
+		return steps;
 	}
 }

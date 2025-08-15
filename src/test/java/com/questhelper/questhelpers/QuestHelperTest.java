@@ -279,6 +279,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.SHEEP_SHEARER,
+			QuestHelperQuest.BIOHAZARD,
 			QuestHelperQuest.PLAGUE_CITY,
 			QuestHelperQuest.CLOCK_TOWER,
 			QuestHelperQuest.RUNE_MYSTERIES,

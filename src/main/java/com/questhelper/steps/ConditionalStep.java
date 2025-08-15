@@ -71,7 +71,6 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected boolean checkAllChildStepsOnListenerCall = false;
 
 	protected LinkedHashMap<Requirement, QuestStep> steps;
-	protected final HashMap<Integer, QuestStep> orderedSteps;
 	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
 	protected final List<NpcCondition> npcConditions = new ArrayList<>();
 	protected final List<DialogRequirement> dialogConditions = new ArrayList<>();
@@ -102,11 +101,6 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		this.requirements.addAll(Arrays.asList(requirements));
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
-		this.orderedSteps = new LinkedHashMap<>();
-		if (id != null)
-		{
-			this.orderedSteps.put(id, step);
-		}
 		this.id = id;
 	}
 

@@ -29,10 +29,10 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -42,75 +42,190 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class FightArena extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement coins, khazardHelmet, khazardPlatebody, khazardHelmetEquipped, khazardPlatebodyEquipped, khaliBrew, cellKeys;
+	// Required items
+	ItemRequirement coins;
 
-	//Items Recommended
+	// Recommended items
 	ItemRequirement combatGear;
 
-	Requirement hasKhazardArmour, inArena, inArenaWithOgre, inArenaWithScorpion, inArenaWithBouncer, inCell;
+	// Zones
+	Zone arena1;
+	Zone cell;
 
-	QuestStep startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew, getCellKeys, openCell, talkToSammy, killOgre,
-		talkToKhazard, talkToHengrad, talkToSammyForScorpion, killScorpion, talkToSammyForBouncer, killBouncer, leaveArena, endQuest;
+	// Miscellaneous requirements
+	ItemRequirement khazardHelmet;
+	ItemRequirement khazardPlatebody;
+	ItemRequirement khazardHelmetEquipped;
+	ItemRequirement khazardPlatebodyEquipped;
+	ItemRequirement khaliBrew;
+	ItemRequirement cellKeys;
 
-	//Zones
-	Zone arena1, cell;
+	Requirement hasKhazardArmour;
+	Requirement inArena;
+	Requirement inArenaWithOgre;
+	Requirement inArenaWithScorpion;
+	Requirement inArenaWithBouncer;
+	Requirement inCell;
+
+	// Steps
+	NpcStep startQuest;
+	ObjectStep searchChest;
+	NpcStep talkToGuard;
+	NpcStep buyKhaliBrew;
+	NpcStep giveKhaliBrew;
+	NpcStep getCellKeys;
+	ObjectStep openCell;
+	NpcStep talkToSammy;
+	NpcStep killOgre;
+	NpcStep talkToKhazard;
+	NpcStep talkToHengrad;
+	NpcStep talkToSammyForScorpion;
+	NpcStep killScorpion;
+	NpcStep talkToSammyForBouncer;
+	NpcStep killBouncer;
+	ObjectStep leaveArena;
+	NpcStep endQuest;
+
+
+	@Override
+	protected void setupZones()
+	{
+		arena1 = new Zone(new WorldPoint(2583, 3152, 0), new WorldPoint(2606, 3170, 0));
+		cell = new Zone(new WorldPoint(2597, 3142, 0), new WorldPoint(2601, 3144, 0));
+	}
+
+	@Override
+	protected void setupRequirements()
+	{
+		inCell = new ZoneRequirement(cell);
+		inArena = new ZoneRequirement(arena1);
+		inArenaWithOgre = and(inArena, new NpcCondition(NpcID.ARENA_OGRE, arena1));
+		inArenaWithScorpion = and(inArena, new NpcCondition(NpcID.ARENA_SCORPION, arena1));
+		inArenaWithBouncer = and(inArena, new NpcCondition(NpcID.ARENA_BOUNCER, arena1));
+
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
+
+		combatGear = new ItemRequirement("Combat equipment and food (magic/ranged if you want to safe spot)", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		khazardHelmet = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET);
+		khazardPlatebody = new ItemRequirement("Khazard armour", ItemID.KHAZARD_PLATEMAIL);
+		khazardHelmetEquipped = khazardHelmet.equipped();
+		khazardPlatebodyEquipped = khazardPlatebody.equipped();
+		khaliBrew = new ItemRequirement("Khali brew", ItemID.KHALI_BREW);
+		cellKeys = new ItemRequirement("Khazard cell keys", ItemID.KHAZARD_CELLKEYS);
+		cellKeys.setHighlightInInventory(true);
+
+		hasKhazardArmour = new ItemRequirements(khazardHelmet, khazardPlatebody);
+	}
+
+	public void setupSteps()
+	{
+		startQuest = new NpcStep(this, NpcID.LADY_SERVIL_VIS, new WorldPoint(2565, 3199, 0), "Talk to Lady Servil, west-southwest of the Monastery south of Ardougne.");
+		startQuest.addDialogStep("Yes.");
+
+		searchChest = new ObjectStep(this, ObjectID.ARENA_GUARD_CHEST_SHUT, new WorldPoint(2613, 3189, 0), "Search the chest to the east for some Khazard armour.");
+		searchChest.addAlternateObjects(ObjectID.ARENA_GUARD_CHEST_OPEN);
+
+		talkToGuard = new NpcStep(this, NpcID.ARENA_GUARD2, new WorldPoint(2615, 3143, 0), "Equip Khazard armour, talk to the Khazard Guard in the southeast of the prison.", khazardHelmetEquipped, khazardPlatebodyEquipped);
+
+		buyKhaliBrew = new NpcStep(this, NpcID.KHAZARD_BARMAN, new WorldPoint(2567, 3140, 0), "Buy Khali brew from the nearby bar to the west for 5 coins.", coins);
+		buyKhaliBrew.addDialogStep("I'd like a Khali Brew please.");
+
+		giveKhaliBrew = new NpcStep(this, NpcID.ARENA_GUARD2, new WorldPoint(2615, 3143, 0), "Take the brew back to the Khazard Guard.", khazardHelmetEquipped, khazardPlatebodyEquipped, khaliBrew);
+
+		getCellKeys = new NpcStep(this, NpcID.ARENA_GUARD2, new WorldPoint(2615, 3143, 0),
+			"Get another set of keys from the Khazard Guard", khazardHelmetEquipped, khazardPlatebodyEquipped);
+		openCell = new ObjectStep(this, ObjectID.ARENA_JEREMYDOOR, new WorldPoint(2617, 3167, 0),
+			"Get ready to fight the monsters (all safespottable), starting with Khazard Ogre (level 63). Use the keys on Sammy's cell door to free him.", combatGear, cellKeys);
+		openCell.addIcon(ItemID.KHAZARD_CELLKEYS);
+		talkToSammy = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the ogre.");
+
+		killOgre = new NpcStep(this, NpcID.ARENA_OGRE, new WorldPoint(2601, 3163, 0), "Kill the Ogre. You can lure it behind a skeleton to safespot it.", combatGear);
+		killOgre.addSubSteps(talkToSammy);
+		killOgre.addSafeSpots(new WorldPoint(2598, 3162, 0));
+
+		talkToKhazard = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.");
+		talkToHengrad = new NpcStep(this, NpcID.HENGRAD, new WorldPoint(2599, 3143, 0),
+			"Talk to Hengrad.");
+		talkToHengrad.addSubSteps(talkToKhazard);
+
+		talkToSammyForScorpion = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the scorpion.");
+
+		killScorpion = new NpcStep(this, NpcID.ARENA_SCORPION, new WorldPoint(2601, 3163, 0),
+			"Kill the Scorpion. You can lure it behind a skeleton to safespot it.", combatGear);
+		killScorpion.addSafeSpots(new WorldPoint(2598, 3162, 0));
+		killScorpion.addSubSteps(talkToSammyForScorpion);
+
+		talkToSammyForBouncer = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight Bouncer.");
+
+		killBouncer = new NpcStep(this, NpcID.ARENA_BOUNCER, new WorldPoint(2601, 3163, 0), "Kill Bouncer. You can lure it behind a skeleton to safespot it. Warning: After Bouncer is killed, you will be unable to re-enter the arena.", combatGear);
+		killBouncer.addSafeSpots(new WorldPoint(2598, 3162, 0));
+		killBouncer.addSubSteps(talkToSammyForBouncer);
+
+		leaveArena = new ObjectStep(this, ObjectID.FIGHTARENA_DOOR2, new WorldPoint(2606, 3152, 0), "Exit the arena (can ignore General Khazard). Warning: You will be unable to re-enter the arena.");
+		leaveArena.addDialogStep("Yes.");
+
+		endQuest = new NpcStep(this, NpcID.LADY_SERVIL_VIS, new WorldPoint(2565, 3199, 0),
+			"Go back to Lady Servil to end the quest.");
+	}
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupConditions();
 		setupSteps();
 
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		steps.put(0, startQuest);
 		steps.put(1, searchChest);
 
-		ConditionalStep talkToGuardSteps = new ConditionalStep(this, searchChest);
+		var talkToGuardSteps = new ConditionalStep(this, searchChest);
 		talkToGuardSteps.addStep(hasKhazardArmour, talkToGuard);
 		steps.put(2, talkToGuardSteps);
 
-		ConditionalStep giveKhaliBrewSteps = new ConditionalStep(this, searchChest);
-		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour, khaliBrew), giveKhaliBrew);
-		giveKhaliBrewSteps.addStep(new Conditions(hasKhazardArmour), buyKhaliBrew);
+		var giveKhaliBrewSteps = new ConditionalStep(this, searchChest);
+		giveKhaliBrewSteps.addStep(and(hasKhazardArmour, khaliBrew), giveKhaliBrew);
+		giveKhaliBrewSteps.addStep(hasKhazardArmour, buyKhaliBrew);
 		steps.put(3, giveKhaliBrewSteps);
 
-		ConditionalStep openCellSteps = new ConditionalStep(this, searchChest);
+		var openCellSteps = new ConditionalStep(this, searchChest);
 		// You don't need Khazard armour to open the cell, but unless zones are added for the prison, keep the armour
 		// requirement in case you leave the prison and lose the armour
-		openCellSteps.addStep(new Conditions(hasKhazardArmour, cellKeys), openCell);
-		openCellSteps.addStep(new Conditions(hasKhazardArmour), getCellKeys);
+		openCellSteps.addStep(and(hasKhazardArmour, cellKeys), openCell);
+		openCellSteps.addStep(hasKhazardArmour, getCellKeys);
 		steps.put(4, openCellSteps);
 		steps.put(5, openCellSteps);
 
-		ConditionalStep killOgreSteps = new ConditionalStep(this, talkToSammy);
-		killOgreSteps.addStep(new Conditions(inArenaWithOgre), killOgre);
+		var killOgreSteps = new ConditionalStep(this, talkToSammy);
+		killOgreSteps.addStep(inArenaWithOgre, killOgre);
 		steps.put(6, killOgreSteps);
 
 		steps.put(7, talkToKhazard); // Step not actually seen, 6->8 when kill Ogre
 		steps.put(8, talkToKhazard);
 
-		ConditionalStep inPrisonAndKillScorpionSteps = new ConditionalStep(this, talkToSammyForScorpion);
+		var inPrisonAndKillScorpionSteps = new ConditionalStep(this, talkToSammyForScorpion);
 		inPrisonAndKillScorpionSteps.addStep(inCell, talkToHengrad);
-		inPrisonAndKillScorpionSteps.addStep(new Conditions(inArenaWithScorpion), killScorpion);
+		inPrisonAndKillScorpionSteps.addStep(inArenaWithScorpion, killScorpion);
 		steps.put(9, inPrisonAndKillScorpionSteps);
 
-		ConditionalStep killBouncerSteps = new ConditionalStep(this, talkToSammyForBouncer);
-		killBouncerSteps.addStep(new Conditions(inArenaWithBouncer), killBouncer);
+		var killBouncerSteps = new ConditionalStep(this, talkToSammyForBouncer);
+		killBouncerSteps.addStep(inArenaWithBouncer, killBouncer);
 		steps.put(10, killBouncerSteps);
 
-		ConditionalStep endQuestSteps = new ConditionalStep(this, endQuest);
+		var endQuestSteps = new ConditionalStep(this, endQuest);
 		endQuestSteps.addStep(inArena, leaveArena);
 		steps.put(11, endQuestSteps);
 		steps.put(12, endQuestSteps);
@@ -121,99 +236,30 @@ public class FightArena extends BasicQuestHelper
 	}
 
 	@Override
-	protected void setupRequirements()
-	{
-		coins = new ItemRequirement("Coins", ItemCollections.COINS, 5);
-		khazardHelmet = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET);
-		khazardPlatebody = new ItemRequirement("Khazard armour", ItemID.KHAZARD_PLATEMAIL);
-		khazardHelmetEquipped = new ItemRequirement("Khazard helmet", ItemID.KHAZARD_HELMET, 1, true);
-		khazardPlatebodyEquipped = new ItemRequirement("Khazard armour", ItemID.KHAZARD_PLATEMAIL, 1, true);
-		khaliBrew = new ItemRequirement("Khali brew", ItemID.KHALI_BREW);
-		cellKeys = new ItemRequirement("Khazard cell keys", ItemID.KHAZARD_CELLKEYS);
-		cellKeys.setHighlightInInventory(true);
-		combatGear = new ItemRequirement("Combat equipment and food (magic/ranged if you want to safe spot)", -1, -1).isNotConsumed();
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		arena1 = new Zone(new WorldPoint(2583, 3152, 0), new WorldPoint(2606, 3170, 0));
-		cell = new Zone(new WorldPoint(2597, 3142, 0), new WorldPoint(2601, 3144, 0));
-	}
-
-	public void setupConditions()
-	{
-		hasKhazardArmour = new ItemRequirements(khazardHelmet, khazardPlatebody);
-		inCell = new ZoneRequirement(cell);
-		inArena = new ZoneRequirement(arena1);
-		inArenaWithOgre = new Conditions(inArena, new NpcCondition(NpcID.ARENA_OGRE, arena1));
-		inArenaWithScorpion = new Conditions(inArena, new NpcCondition(NpcID.ARENA_SCORPION, arena1));
-		inArenaWithBouncer = new Conditions(inArena, new NpcCondition(NpcID.ARENA_BOUNCER, arena1));
-	}
-
-	public void setupSteps()
-	{
-		startQuest = new NpcStep(this, NpcID.LADY_SERVIL_VIS, new WorldPoint(2565, 3199, 0),
-			"Talk to Lady Servil, west-southwest of the Monastery south of Ardougne.");
-		startQuest.addDialogStep(2, "Can I help you?");
-		searchChest = new ObjectStep(this, ObjectID.ARENA_GUARD_CHEST_SHUT, new WorldPoint(2613, 3189, 0), "Search the chest to the east for some Khazard armour.");
-		((ObjectStep) searchChest).addAlternateObjects(ObjectID.ARENA_GUARD_CHEST_OPEN);
-		talkToGuard = new NpcStep(this, NpcID.ARENA_GUARD2, new WorldPoint(2615, 3143, 0),
-			"Equip Khazard armour, talk to the Khazard Guard in the southeast of the prison.", khazardHelmetEquipped, khazardPlatebodyEquipped);
-		buyKhaliBrew = new NpcStep(this, NpcID.KHAZARD_BARMAN, new WorldPoint(2567, 3140, 0),
-			"Buy Khali brew for 5 coins from the nearby bar to the west.", coins);
-		buyKhaliBrew.addDialogStep(2, "I'd like a Khali brew please.");
-		giveKhaliBrew = new NpcStep(this, NpcID.ARENA_GUARD2, new WorldPoint(2615, 3143, 0),
-			"Take the brew back to the Khazard Guard.", khazardHelmetEquipped, khazardPlatebodyEquipped, khaliBrew);
-		getCellKeys = new NpcStep(this, NpcID.ARENA_GUARD2, new WorldPoint(2615, 3143, 0),
-			"Get another set of keys from the Khazard Guard", khazardHelmetEquipped, khazardPlatebodyEquipped);
-		openCell = new ObjectStep(this, ObjectID.ARENA_JEREMYDOOR, new WorldPoint(2617, 3167, 0),
-			"Get ready to fight the monsters (all safespottable), starting with Khazard Ogre (level 63). Use the keys on Sammy's cell door to free him.", combatGear, cellKeys);
-		openCell.addIcon(ItemID.KHAZARD_CELLKEYS);
-		talkToSammy = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the ogre.");
-		killOgre = new NpcStep(this, NpcID.ARENA_OGRE, new WorldPoint(2601, 3163, 0),
-			"Kill the Ogre. You can lure it behind a skeleton to safespot it.", combatGear);
-		killOgre.addSubSteps(talkToSammy);
-		talkToKhazard = new NpcStep(this, NpcID.SHADOW_MAJ_KHAZARD, new WorldPoint(2605, 3153, 0), "Talk to General Khazard.");
-		talkToHengrad = new NpcStep(this, NpcID.HENGRAD, new WorldPoint(2599, 3143, 0),
-			"Talk to Hengrad.");
-		talkToHengrad.addSubSteps(talkToKhazard);
-		talkToSammyForScorpion = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight the scorpion.");
-		killScorpion = new NpcStep(this, NpcID.ARENA_SCORPION, new WorldPoint(2601, 3163, 0),
-			"Kill the Scorpion. You can lure it behind a skeleton to safespot it.", combatGear);
-		killScorpion.addSubSteps(talkToSammyForScorpion);
-		talkToSammyForBouncer = new NpcStep(this, NpcID.SAMMY_SERVIL_VIS_NOOP, new WorldPoint(2602, 3153, 0), "Talk to Sammy, then fight Bouncer.");
-		killBouncer = new NpcStep(this, NpcID.ARENA_BOUNCER, new WorldPoint(2601, 3163, 0),
-			"Kill Bouncer. You can lure it behind a skeleton to safespot it. Warning: After Bouncer is killed, you will be unable to re-enter the arena.", combatGear);
-		killBouncer.addSubSteps(talkToSammyForBouncer);
-		leaveArena = new ObjectStep(this, ObjectID.FIGHTARENA_DOOR2, new WorldPoint(2606, 3152, 0),
-			"Exit the arena (can ignore General Khazard). Warning: You will be unable to re-enter the arena.");
-		endQuest = new NpcStep(this, NpcID.LADY_SERVIL_VIS, new WorldPoint(2565, 3199, 0),
-			"Go back to Lady Servil to end the quest.");
-	}
-
-	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Collections.singletonList(coins);
+		return List.of(
+			coins
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(combatGear);
+		return List.of(
+			combatGear
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Khazard Scorpion (level 44) (safespottable)");
-		reqs.add("Khazard Ogre (level 63) (safespottable)");
-		reqs.add("Bouncer (level 137) (safespottable)");
-		reqs.add("General Khazard (level 142) (safespottable) (optional)");
-		return reqs;
+		return List.of(
+			"Khazard Scorpion (level 44) (safespottable)",
+			"Khazard Ogre (level 63) (safespottable)",
+			"Bouncer (level 137) (safespottable)",
+			"General Khazard (level 142) (safespottable) (optional)"
+		);
 	}
 
 	@Override
@@ -225,26 +271,52 @@ public class FightArena extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(
-				new ExperienceReward(Skill.ATTACK, 12175),
-				new ExperienceReward(Skill.THIEVING, 2175));
+		return List.of(
+			new ExperienceReward(Skill.ATTACK, 12175),
+			new ExperienceReward(Skill.THIEVING, 2175)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
-				new ItemReward("Coins", ItemID.COINS, 1000),
-				new ItemReward("Khazard Armor", ItemID.KHAZARD_PLATEMAIL, 1));
+		return List.of(
+			new ItemReward("Coins", ItemID.COINS, 1000),
+			new ItemReward("Khazard Armor", ItemID.KHAZARD_PLATEMAIL, 1)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start quest", Arrays.asList(startQuest, searchChest, talkToGuard, buyKhaliBrew, giveKhaliBrew), coins));
-		allSteps.add(new PanelDetails("Fight!", Arrays.asList(getCellKeys, openCell, killOgre, talkToHengrad, killScorpion, killBouncer), combatGear));
-		allSteps.add(new PanelDetails("Finish quest", Arrays.asList(leaveArena, endQuest)));
-		return allSteps;
+		var sections = new ArrayList<PanelDetails>();
+
+		sections.add(new PanelDetails("Start quest", List.of(
+			startQuest,
+			searchChest,
+			talkToGuard,
+			buyKhaliBrew,
+			giveKhaliBrew
+		), List.of(
+			coins
+		)));
+
+		sections.add(new PanelDetails("Fight!", List.of(
+			getCellKeys,
+			openCell,
+			killOgre,
+			talkToHengrad,
+			killScorpion,
+			killBouncer
+		), List.of(
+			combatGear
+		)));
+
+		sections.add(new PanelDetails("Finish quest", List.of(
+			leaveArena,
+			endQuest
+		)));
+
+		return sections;
 	}
 }

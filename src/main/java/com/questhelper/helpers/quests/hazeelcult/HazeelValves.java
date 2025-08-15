@@ -241,6 +241,7 @@ public class HazeelValves extends DetailedOwnerStep
 		turnValve1 = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE1, new WorldPoint(2562, 3247, 0),
 			"Turn the valve west of the Clocktower to the right.");
 		turnValve1.addDialogStep("Turn it to the right.");
+		turnValve1.addSubSteps(catchState);
 
 		turnValve2 = new ObjectStep(getQuestHelper(), ObjectID.SEWERVALVE2, new WorldPoint(2572, 3263, 0),
 			"Turn the valve next to the Carnillean home to the right.");

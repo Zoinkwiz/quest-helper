@@ -335,7 +335,7 @@ public class ItemRequirements extends ItemRequirement
 	public ItemRequirement copy()
 	{
 		ItemRequirements newItem = new ItemRequirements(getLogicType(), getName(), getItemRequirements());
-		newItem.setMustBeEquipped(equip);
+		newItem.setMustBeEquipped(mustBeEquipped);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(getDisplayItemId());
 		newItem.setHighlightInInventory(highlightInInventory);
@@ -393,7 +393,7 @@ public class ItemRequirements extends ItemRequirement
 	@Override
 	public void setMustBeEquipped(boolean mustBeEquipped)
 	{
-		mustBeEquipped = mustBeEquipped;
+		this.mustBeEquipped = mustBeEquipped;
 	}
 
 	/**

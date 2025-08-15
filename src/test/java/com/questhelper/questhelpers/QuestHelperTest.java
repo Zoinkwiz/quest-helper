@@ -279,6 +279,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.SHEEP_SHEARER,
+			QuestHelperQuest.HAZEEL_CULT,
 			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.GERTRUDES_CAT,
 			QuestHelperQuest.IMP_CATCHER,

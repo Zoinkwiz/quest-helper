@@ -275,6 +275,7 @@ public class QuestHelperTest extends MockedTest
 	{
 		var optedInQuests = Set.of(
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
+			QuestHelperQuest.X_MARKS_THE_SPOT,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.IMP_CATCHER,
@@ -283,7 +284,9 @@ public class QuestHelperTest extends MockedTest
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest
-		Set<QuestHelperQuest> exclusiveQuests = Set.of();
+		Set<QuestHelperQuest> exclusiveQuests = Set.of(
+			QuestHelperQuest.X_MARKS_THE_SPOT
+		);
 
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 

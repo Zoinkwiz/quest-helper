@@ -32,6 +32,7 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.MesBoxRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -242,6 +243,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		strongholdBalloon = new VarbitRequirement(VarbitID.ZEP_MULTI_GNO, Operation.EQUAL, 1, "Unlocked the Tree Gnome Stronghold balloon route");
+		var givenAniteHandkerchief = new VarbitRequirement(VarbitID.MM2_FOUND_HANDKERCHIEF, 2, Operation.GREATER_EQUAL);
 
 		lemon = new ItemRequirement("Lemon", ItemID.LEMON);
 		grape = new ItemRequirement("Grapes", ItemID.GRAPES);
@@ -283,7 +285,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 
-		handkerchief = new ItemRequirement("Handkerchief", ItemID.MM2_ANITAS_HANDKERCHIEF);
+		handkerchief = new ItemRequirement("Handkerchief", ItemID.MM2_ANITAS_HANDKERCHIEF).hideConditioned(givenAniteHandkerchief);
 		mysteriousNote = new ItemRequirement("Mysterious note", ItemID.MM2_MYSTERIOUS_NOTE);
 		mysteriousNote.setHighlightInInventory(true);
 		mysteriousNoteLemon = new ItemRequirement("Mysterious note", ItemID.MM2_MYSTERIOUS_NOTE_LEMON);
@@ -360,9 +362,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		// Read note:
 		// 5027 5->6
 		// 5031 0->1
-
 		triedTranslating = new Conditions(true,
-			new WidgetTextRequirement(229, 1, "Some of the ancient Gnome phrases found on the note are missing<br>from the translation book. I should tell the King."));
+			new MesBoxRequirement( "Some of the ancient Gnome phrases found on the note are missing from the translation book. I should tell the King."));
 
 		greegreeNearby = new ItemOnTileRequirement(greegree);
 		krukCorpseNearby = new ObjectCondition(ObjectID.MM2_KRUKS_REMAINS_MULTI);
@@ -427,7 +428,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToNarnode = new NpcStep(this, NpcID.GRANDTREE_NARNODE_1OP, new WorldPoint(2465, 3496, 0), "Talk to King Narnode Shareen in the Tree Gnome Stronghold.");
-		talkToNarnode.addDialogStep("I'll help you look for Glough.");
+		talkToNarnode.addDialogSteps("Yes.", "I'll help you look for Glough.");
 
 		goUpToGloughHouse = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2476, 3463, 0), "Climb up into Glough's house south of the Grand Tree.");
 		goUpGloughTree = new ObjectStep(this, ObjectID.GRANDTREE_CLIMBTREE, new WorldPoint(2484, 3464, 1), "Climb up to the next floor in Glough's house.");

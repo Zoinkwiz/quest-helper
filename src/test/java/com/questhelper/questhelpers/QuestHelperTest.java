@@ -275,15 +275,19 @@ public class QuestHelperTest extends MockedTest
 	{
 		var optedInQuests = Set.of(
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
+			QuestHelperQuest.X_MARKS_THE_SPOT,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.IMP_CATCHER,
+			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.PRINCE_ALI_RESCUE
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest
-		Set<QuestHelperQuest> exclusiveQuests = Set.of();
+		Set<QuestHelperQuest> exclusiveQuests = Set.of(
+			QuestHelperQuest.X_MARKS_THE_SPOT
+		);
 
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 
@@ -307,21 +311,21 @@ public class QuestHelperTest extends MockedTest
 				continue;
 			}
 
-			this.injector.injectMembers(helper);
-			helper.setInjector(this.injector);
-			helper.setQuestHelperPlugin(questHelperPlugin);
-			helper.setConfig(questHelperConfig);
-			helper.init();
-			helper.startUp(questHelperConfig);
-
 			var shouldError = optedInQuests.contains(quest);
 
 			when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
 
-			var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
-
 			if (helper instanceof BasicQuestHelper)
 			{
+				this.injector.injectMembers(helper);
+				helper.setInjector(this.injector);
+				helper.setQuestHelperPlugin(questHelperPlugin);
+				helper.setConfig(questHelperConfig);
+				helper.init();
+				helper.startUp(questHelperConfig);
+
+				var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
 				questOverviewPanel.addQuest(helper, false);
 				var basicHelper = (BasicQuestHelper) helper;
 				var steps = basicHelper.getStepList();

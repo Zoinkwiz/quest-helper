@@ -37,7 +37,7 @@ dependencies {
 
 group = 'com.questhelper'
 version = '4.9.4'
-sourceCompatibility = "11"
+sourceCompatibility = JavaVersion.VERSION_11
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'

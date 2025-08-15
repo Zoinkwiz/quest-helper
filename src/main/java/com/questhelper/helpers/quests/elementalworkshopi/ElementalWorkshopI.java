@@ -137,8 +137,9 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		knife.setHighlightInInventory(true);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
-		needle.setTooltip("You can obtain this during the quest");
+		needle.setTooltip("Costume needle cannot be used as a substitute. You can obtain this during the quest");
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
+		thread.setTooltip("Costume needle cannot be used as a substitute.");
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
 		leather.setTooltip("You can obtain this during the quest");
 

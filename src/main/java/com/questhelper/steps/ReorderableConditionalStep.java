@@ -28,7 +28,6 @@ public class ReorderableConditionalStep extends ConditionalStep
                 if (step.getId().equals(sidebarId))
                 {
                     newSteps.put(req, step);
-                    break;
                 }
             }
         }

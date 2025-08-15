@@ -280,6 +280,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
+			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.PRINCE_ALI_RESCUE
 		);

@@ -283,6 +283,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.HAZEEL_CULT,
 			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.GERTRUDES_CAT,
+			QuestHelperQuest.MONKS_FRIEND,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,

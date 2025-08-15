@@ -29,10 +29,10 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestVarPlayer;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -40,147 +40,134 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.MultiNpcStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-
-import java.util.*;
-
-import static com.questhelper.requirements.util.LogicHelper.or;
+import net.runelite.api.gameval.VarbitID;
 
 public class HazeelCult extends BasicQuestHelper
 {
-	//Items Recommended
+	// Recommended items
 	ItemRequirement ardougneCloak;
 
-	ItemRequirement hazeelScroll, poison, carnilleanArmour, key, hazeelMark;
+	// Zones
+	Zone cultEntrance;
+	Zone cultRoom;
+	Zone manorBasement;
+	Zone manorF1;
+	Zone manorF2;
+	Zone manorF2LadderRoom;
 
-	Requirement inCultEntrance, inCultRoom, inManorBasement, inManorF1, inManorF2, canSearchChest,
-		talkedToCerilAfterPoison, armourNearby, sidedWithCeril, receivedMark, onStep7, givenAlomoneScroll,
-		givenArmour, hadArmour, butlerArrested;
+	// Miscellaneous requirements
+	ItemRequirement hazeelScroll;
+	ItemRequirement poison;
+	ItemRequirement carnilleanArmour;
+	ItemRequirement key;
+	ItemRequirement hazeelMark;
 
-	QuestStep talkToCeril, enterCave, talkToClivet, leaveCaveForValves;
-
-	// Hazeel side
-	QuestStep getPoison, leaveCaveWithPoison, enterKitchen, usePoisonOnRange, leaveKitchen, talkToCerilAfterPoison,
-		enterCaveAfterPoison, talkToClivetAfterPoison, boardRaftAfterPoison, talkToAlomone, returnOnRaftAfterAlomone, leaveCaveAfterAlomone,
-		enterKitchenAfterButler, searchCrateForKey, leaveKitchenWithKey, goToF1WithKey,
-		climbLadderWithKey, searchChestForScroll, goF2ToF1WithScroll, goF1ToF0WithScroll, enterCaveWithScroll,
-		boardRaftWithScroll, giveAlomoneScroll;
-
-	// Ceril side
-	QuestStep enterCaveAfterValvesForCeril, boardRaftToKill, talkToAlomoneToKill, killAlomone, retrieveArmourFromChest, returnOnRaftAfterKilling,
-		leaveCaveAfterKilling, talkToJonesAfterKilling, talkToCerilAfterKilling, goUpToCupboard,
-		searchCupboardForEvidence, talkToCerilToFinish;
-
-	HazeelValves valveStepsCeril, valveStepsHazeel;
-
-	//Zones
-	Zone cultEntrance, cultRoom, manorBasement, manorF1, manorF2;
-
-	ConditionalStep cerilSteps, hazeel4GoPoisonSteps;
+	ZoneRequirement inCultEntrance;
+	ZoneRequirement inCultRoom;
+	ZoneRequirement inManorBasement;
+	ZoneRequirement inManorF1;
+	ZoneRequirement inManorF2;
+	ZoneRequirement inManorF2LadderRoom;
 
 	VarbitRequirement alomoneAttackable;
+	VarbitRequirement givenAlomoneScroll;
+	VarbitRequirement givenArmour;
+	VarbitRequirement canSearchChest;
+	VarbitRequirement sidedWithCeril;
+	VarbitRequirement receivedMark;
+	VarbitRequirement talkedToCerilAfterPoison;
+	VarbitRequirement butlerArrested;
+	ItemOnTileRequirement armourNearby;
+	VarplayerRequirement onStep7;
+	Requirement hadArmour;
+
+	// Steps
+	NpcStep talkToCeril;
+	ObjectStep enterCave;
+	NpcStep talkToClivet;
+
+	// Ceril side steps
+	ObjectStep leaveCaveForValves;
+	HazeelValves valveStepsCeril;
+	ObjectStep enterCaveAfterValvesForCeril;
+	ObjectStep boardRaftToKill;
+	NpcStep talkToAlomoneToKill;
+	NpcStep killAlomone;
+	ObjectStep retrieveArmourFromChest;
+	ObjectStep returnOnRaftAfterKilling;
+	ObjectStep leaveCaveAfterKilling;
+	NpcStep talkToJonesAfterKilling;
+	NpcStep talkToCerilAfterKilling;
+	ObjectStep goUpToCupboard;
+	ObjectStep searchCupboardForEvidence;
+	NpcStep talkToCerilToFinish;
+
+	// Hazeel side steps
+	NpcStep getPoison;
+	ObjectStep leaveCaveWithPoison;
+	ObjectStep enterKitchen;
+	ObjectStep usePoisonOnRange;
+	ObjectStep leaveKitchen;
+	NpcStep talkToCerilAfterPoison;
+	HazeelValves valveStepsHazeel;
+	ObjectStep enterCaveAfterPoison;
+	NpcStep talkToClivetAfterPoison;
+	ObjectStep boardRaftAfterPoison;
+	NpcStep talkToAlomone;
+	ObjectStep returnOnRaftAfterAlomone;
+	ObjectStep leaveCaveAfterAlomone;
+	ObjectStep enterKitchenAfterButler;
+	ObjectStep searchCrateForKey;
+	ObjectStep leaveKitchenWithKey;
+	ObjectStep goToF1WithKey;
+	ObjectStep knockOnWall;
+	ObjectStep climbLadderWithKey;
+	ObjectStep searchChestForScroll;
+	ObjectStep goF2ToF1WithScroll;
+	ObjectStep knockOnWallToExit;
+	ObjectStep goF1ToF0WithScroll;
+	ObjectStep enterCaveWithScroll;
+	ObjectStep boardRaftWithScroll;
+	NpcStep giveAlomoneScroll;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		// TODO: Should the valves section implement the PuzzleWrapper?
-		initializeRequirements();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToCeril);
-
-		// Got poison first time, 14782  0->1
-		// Have poison currently (10670 0->1, back to 0 if you talk to Clivet without poison)
-		// Is also for recieved the mark?
-
-		ConditionalStep goTalkToClivet = new ConditionalStep(this, enterCave);
-		goTalkToClivet.addStep(inCultEntrance, talkToClivet);
-		steps.put(2, goTalkToClivet);
-		steps.put(3, goTalkToClivet);
-
-		// Help Hazeel
-		hazeel4GoPoisonSteps = new ConditionalStep(this, enterKitchen);
-		// 14779 0->1 when used poison on range
-		hazeel4GoPoisonSteps.addStep(inManorBasement, usePoisonOnRange);
-		hazeel4GoPoisonSteps.addStep(inCultEntrance, leaveCaveWithPoison);
-
-		// TODO: Verify if this is needed
-		ConditionalStep goTalkAfterPoison = new ConditionalStep(this, talkToCerilAfterPoison);
-		goTalkAfterPoison.addStep(inManorBasement, leaveKitchen);
-
-		ConditionalStep goTalkToClivetAfterPoison = new ConditionalStep(this, goTalkAfterPoison);
-		// Probably don't actually need the mark but nice to ensure the player gets it
-		goTalkToClivetAfterPoison.addStep(new Conditions(inCultRoom, hazeelMark.alsoCheckBank(questBank)), talkToAlomone);
-		goTalkToClivetAfterPoison.addStep(new Conditions(inCultEntrance, valveStepsHazeel.solved,
-			hazeelMark.alsoCheckBank(questBank)), boardRaftAfterPoison);
-		goTalkToClivetAfterPoison.addStep(new Conditions(inCultEntrance, valveStepsHazeel.solved), talkToClivetAfterPoison);
-		goTalkToClivetAfterPoison.addStep(valveStepsHazeel.solved, enterCaveAfterPoison);
-		goTalkToClivetAfterPoison.addStep(talkedToCerilAfterPoison, valveStepsHazeel);
-
-		Conditions hadScroll = new Conditions(LogicType.OR, hazeelScroll.alsoCheckBank(questBank), givenAlomoneScroll);
-		ConditionalStep goGetScroll = new ConditionalStep(this, enterKitchenAfterButler);
-		goGetScroll.addStep(new Conditions(inCultRoom, hadScroll), giveAlomoneScroll);
-		goGetScroll.addStep(new Conditions(inCultEntrance, hadScroll), boardRaftWithScroll);
-		goGetScroll.addStep(new Conditions(inManorF1, hadScroll), goF1ToF0WithScroll);
-		goGetScroll.addStep(new Conditions(inManorF2, hadScroll), goF2ToF1WithScroll);
-		goGetScroll.addStep(new Conditions(hadScroll), enterCaveWithScroll);
-		goGetScroll.addStep(new Conditions(inManorF2, key), searchChestForScroll);
-		goGetScroll.addStep(new Conditions(inManorF1, key), climbLadderWithKey);
-		goGetScroll.addStep(new Conditions(inManorBasement, key), leaveKitchenWithKey);
-		goGetScroll.addStep(new Conditions(key), goToF1WithKey);
-		goGetScroll.addStep(inManorBasement, searchCrateForKey);
-		goGetScroll.addStep(inCultEntrance, leaveCaveAfterAlomone);
-		goGetScroll.addStep(inCultRoom, returnOnRaftAfterAlomone);
-
-		// Ceril side
-		cerilSteps = new ConditionalStep(this, valveStepsCeril);
-		cerilSteps.addStep(new Conditions(onStep7, butlerArrested), talkToCerilToFinish);
-		cerilSteps.addStep(new Conditions(onStep7, inManorF1), searchCupboardForEvidence);
-		cerilSteps.addStep(onStep7, goUpToCupboard);
-		cerilSteps.addStep(new Conditions(inCultEntrance, hadArmour), leaveCaveAfterKilling);
-		cerilSteps.addStep(new Conditions(inCultRoom, hadArmour), returnOnRaftAfterKilling);
-		cerilSteps.addStep(hadArmour, talkToCerilAfterKilling);
-		cerilSteps.addStep(new Conditions(inCultRoom, canSearchChest), retrieveArmourFromChest);
-		cerilSteps.addStep(new Conditions(inCultRoom, alomoneAttackable), killAlomone);
-		cerilSteps.addStep(new Conditions(inCultRoom), talkToAlomoneToKill);
-		cerilSteps.addStep(new Conditions(inCultEntrance, valveStepsCeril.solved), boardRaftToKill);
-		cerilSteps.addStep(valveStepsCeril.solved, enterCaveAfterValvesForCeril);
-		cerilSteps.addStep(inCultEntrance, leaveCaveForValves);
-
-		// TODO: 14782 0->1 may occur to represent Hazeel
-
-		// Told to make poison, 223 3->4
-		// Sided with Ceril:
-		// 10670 1->0 occurs,
-		// 14769 0->1 and 223 3->4
-		ConditionalStep step4 = new ConditionalStep(this, enterCave);
-		step4.addStep(sidedWithCeril, cerilSteps);
-		step4.addStep(poison, hazeel4GoPoisonSteps);
-		step4.addStep(inCultEntrance, getPoison);
-		steps.put(4, step4);
-
-		// Assuming this can only be reached in Hazeel side, but may be wrong
-		steps.put(5, goTalkToClivetAfterPoison);
-
-		ConditionalStep step6And7 = new ConditionalStep(this, goGetScroll);
-		step6And7.addStep(sidedWithCeril, cerilSteps);
-		steps.put(6, step6And7);
-		steps.put(7, step6And7);
-
-		return steps;
+		cultEntrance = new Zone(new WorldPoint(2565, 9679, 0), new WorldPoint(2571, 9685, 0));
+		cultRoom = new Zone(new WorldPoint(2600, 9666, 0), new WorldPoint(2615, 9693, 0));
+		manorBasement = new Zone(new WorldPoint(2535, 9692, 0), new WorldPoint(2550, 9703, 0));
+		manorF1 = new Zone(new WorldPoint(2564, 3267, 1), new WorldPoint(2576, 3275, 1));
+		manorF2 = new Zone(new WorldPoint(2564, 3267, 2), new WorldPoint(2576, 3275, 2));
+		manorF2LadderRoom = new Zone(new WorldPoint(2573, 3271, 1), new WorldPoint(2571, 3271, 1));
 	}
 
 	@Override
 	protected void setupRequirements()
 	{
-		givenAlomoneScroll = new VarbitRequirement(14780, 1);
-		givenArmour = new VarbitRequirement(14772, 1);
+		givenAlomoneScroll = new VarbitRequirement(VarbitID.HAZEELCULT_GIVEN_SCROLL, 1);
+		givenArmour = new VarbitRequirement(VarbitID.HAZEELCULT_GIVEN_ARMOUR, 1);
+		alomoneAttackable = new VarbitRequirement(VarbitID.HAZEELCULT_ALOMONE_VIS, 1);
+		canSearchChest = new VarbitRequirement(VarbitID.HAZEELCULT_ALOMONE_VIS, 2);
+		sidedWithCeril = new VarbitRequirement(VarbitID.HAZEELCULT_CLIVET_LOCATION, 1);
+		receivedMark = new VarbitRequirement(VarbitID.HAZEELCULT_GIVEN_AMULET, 1);
+		talkedToCerilAfterPoison = new VarbitRequirement(VarbitID.HAZEELCULT_POISON_SUCCESS, 1);
+		butlerArrested = new VarbitRequirement(VarbitID.HAZEELCULT_JONES_CUTSCENE, 1);
 
 		ardougneCloak = new ItemRequirement("Ardougne cloak for Monastery teleport", ItemID.ARDY_CAPE_EASY).isNotConsumed();
 		ardougneCloak.addAlternates(ItemID.ARDY_CAPE_MEDIUM, ItemID.ARDY_CAPE_HARD, ItemID.ARDY_CAPE_ELITE);
@@ -197,28 +184,21 @@ public class HazeelCult extends BasicQuestHelper
 		inManorBasement = new ZoneRequirement(manorBasement);
 		inManorF1 = new ZoneRequirement(manorF1);
 		inManorF2 = new ZoneRequirement(manorF2);
-
-		alomoneAttackable = new VarbitRequirement(14770, 1);
-		canSearchChest = new VarbitRequirement(14770, 2);
+		inManorF2LadderRoom = new ZoneRequirement(manorF2LadderRoom);
 
 		// Got armour, 14778 0->1
 		hadArmour = or(givenArmour, carnilleanArmour.alsoCheckBank(questBank));
 
-		talkedToCerilAfterPoison = new VarbitRequirement(14775, 1);
 		// Talking to Ceril
 		// 3679 -1 -> 71
 		armourNearby = new ItemOnTileRequirement(carnilleanArmour);
 
-		sidedWithCeril = new VarbitRequirement(14769, 1);
-		// Mark also could be 14776
-		receivedMark = new VarbitRequirement(14777, 1);
 		// 14779 1->2, asked to go talk to the butler
 		onStep7 = new VarplayerRequirement(QuestVarPlayer.QUEST_HAZEEL_CULT.getId(), 7);
 
 		// Butler found out
 		// 14773 1
 		// 14774 1
-		butlerArrested = new VarbitRequirement(14773, 1);
 
 		/* Ceril var changes */
 		// Sided with Ceril
@@ -235,33 +215,22 @@ public class HazeelCult extends BasicQuestHelper
 		// 14770 1->2
 	}
 
-	@Override
-	protected void setupZones()
-	{
-		cultEntrance = new Zone(new WorldPoint(2565, 9679, 0), new WorldPoint(2571, 9685, 0));
-		cultRoom = new Zone(new WorldPoint(2600, 9666, 0), new WorldPoint(2615, 9693, 0));
-		manorF1 = new Zone(new WorldPoint(2564, 3267, 1), new WorldPoint(2576, 3275, 1));
-		manorF2 = new Zone(new WorldPoint(2564, 3267, 2), new WorldPoint(2576, 3275, 2));
-		manorBasement = new Zone(new WorldPoint(2535, 9692, 0), new WorldPoint(2550, 9703, 0));
-	}
-
 	public void setupSteps()
 	{
 		talkToCeril = new NpcStep(this, NpcID.SIR_CERIL_CARNILLEAN_VIS, new WorldPoint(2569, 3275, 0),
 			"Talk to Ceril Carnillean in the south west of East Ardougne.");
 		talkToCeril.addDialogSteps("What's wrong?", "Yes.");
+
 		enterCave = new ObjectStep(this, ObjectID.HAZEELCULTCAVE, new WorldPoint(2587, 3235, 0),
-			"Enter the cave south east of the Clock Tower.");
+			"Enter the cave south east of the Clock Tower entrance.");
 		talkToClivet = new NpcStep(this, NpcID.CLIVET_HAZEEL_CULTIST_VIS, new WorldPoint(2569, 9682, 0),
 			"Talk to Clivet. You can choose to either side with him or with the Carnilleans.");
-		talkToClivet.addDialogSteps("Alright, I've made my decision.", "I have no more questions.", "What do you mean?");
+		talkToClivet.addDialogSteps("Alright, I've made my decision.", "Actually, I have no questions.", "I have no more questions.", "What do you mean?");
 		talkToClivet.addDialogChange("I won't help you.", "I won't help you. (side with Ceril)");
 		talkToClivet.addDialogChange("Alright, how do I do it?", "Alright, how do I do it? (side with Hazeel)");
 		talkToClivet.addDialogChange("I'll help you.", "I'll help you. (side with Hazeel)");
 		leaveCaveForValves = new ObjectStep(this, ObjectID.HAZEELCULTSTAIRS, new WorldPoint(2571, 9684, 0),
 			"Go back to the surface.");
-
-		valveStepsHazeel = new HazeelValves(this);
 
 		valveStepsCeril = new HazeelValves(this);
 		valveStepsCeril.addSubSteps(leaveCaveForValves);
@@ -280,6 +249,8 @@ public class HazeelCult extends BasicQuestHelper
 			"Leave the kitchen.");
 		talkToCerilAfterPoison = new NpcStep(this, NpcID.SIR_CERIL_CARNILLEAN_VIS, new WorldPoint(2569, 3275, 0),
 			"Talk to Ceril Carnillean to confirm the results of the poison.");
+
+		valveStepsHazeel = new HazeelValves(this);
 
 		enterCaveAfterPoison = new ObjectStep(this, ObjectID.HAZEELCULTCAVE, new WorldPoint(2587, 3235, 0),
 			"Return to Clivet in the cave south of East Ardougne.");
@@ -305,14 +276,23 @@ public class HazeelCult extends BasicQuestHelper
 			"Go back upstairs from the kitchen.", key);
 		goToF1WithKey = new ObjectStep(this, ObjectID.CARNILLEAN_STAIRS, new WorldPoint(2569, 3269, 0),
 			"Go upstairs in the house.", key);
+
+		knockOnWall = new ObjectStep(this, ObjectID.CARNILLEANBOOKCASE_KNOCK, new WorldPoint(2572, 3270, 1), "Knock the wall to enter the hidden room.");
+		knockOnWall.addDialogStep("Yes.");
+
 		climbLadderWithKey = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2573, 3271, 1),
 			"Knock the wall to enter the hidden room, then climb up the ladder.", key);
 		climbLadderWithKey.addDialogStep("Yes.");
+		climbLadderWithKey.addSubSteps(knockOnWall);
+
 		searchChestForScroll = new ObjectStep(this, ObjectID.CARNILLEANSHUTCHEST, new WorldPoint(2571, 3269, 2),
 			"Open the chest.", key.highlighted());
 		searchChestForScroll.addIcon(ItemID.CARNILLEANCHESTKEY);
 		goF2ToF1WithScroll = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2573, 3271, 2),
 			"Return to Alomone with the scroll.", hazeelScroll);
+
+		knockOnWallToExit = new ObjectStep(this, ObjectID.CARNILLEANBOOKCASE_KNOCK, new WorldPoint(2572, 3270, 1), "Return to Alomone with the scroll.", hazeelScroll);
+
 		goF1ToF0WithScroll = new ObjectStep(this, ObjectID.CARNILLEAN_STAIRSTOP, new WorldPoint(2569, 3269, 1),
 			"Return to Alomone with the scroll.", hazeelScroll);
 		enterCaveWithScroll = new ObjectStep(this, ObjectID.HAZEELCULTCAVE, new WorldPoint(2587, 3235, 0),
@@ -320,9 +300,10 @@ public class HazeelCult extends BasicQuestHelper
 		boardRaftWithScroll = new ObjectStep(this, ObjectID.HAZEELSEWERRAFT, new WorldPoint(2568, 9679, 0),
 			"Return to Alomone with the scroll. If the raft doesn't go to Alomone, repeat the prior valve steps first.",
 			hazeelScroll);
+
 		giveAlomoneScroll = new NpcStep(this, NpcID.ALOMONE_HAZEEL_CULTIST_1OP, new WorldPoint(2607, 9673, 0),
 			"Return to Alomone with the scroll.", hazeelScroll);
-		giveAlomoneScroll.addSubSteps(goF2ToF1WithScroll, goF1ToF0WithScroll, enterCaveWithScroll, boardRaftWithScroll);
+		giveAlomoneScroll.addSubSteps(goF2ToF1WithScroll, knockOnWallToExit, goF1ToF0WithScroll, enterCaveWithScroll, boardRaftWithScroll);
 
 		// Ceril side
 		enterCaveAfterValvesForCeril = new ObjectStep(this, ObjectID.HAZEELCULTCAVE, new WorldPoint(2587, 3235, 0),
@@ -357,7 +338,7 @@ public class HazeelCult extends BasicQuestHelper
 			"Go upstairs in the house.");
 		searchCupboardForEvidence = new ObjectStep(this, ObjectID.HAZEELCBSHUT, new WorldPoint(2574, 3267, 1),
 			"Search the cupboard in the east room.");
-		((ObjectStep) searchCupboardForEvidence).addAlternateObjects(ObjectID.HAZEELCBOPEN);
+		searchCupboardForEvidence.addAlternateObjects(ObjectID.HAZEELCBOPEN);
 		searchCupboardForEvidence.addSubSteps(goUpToCupboard);
 
 		talkToCerilToFinish = new NpcStep(this, NpcID.SIR_CERIL_CARNILLEAN_VIS, new WorldPoint(2569, 3275, 0),
@@ -365,15 +346,114 @@ public class HazeelCult extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		// TODO: Should the valves section implement the PuzzleWrapper?
+		initializeRequirements();
+		setupSteps();
+		Map<Integer, QuestStep> steps = new HashMap<>();
+
+		steps.put(0, talkToCeril);
+
+		// Got poison first time, 14782  0->1
+		// Have poison currently (10670 0->1, back to 0 if you talk to Clivet without poison)
+		// Is also for recieved the mark?
+
+		var goTalkToClivet = new ConditionalStep(this, enterCave);
+		goTalkToClivet.addStep(inCultEntrance, talkToClivet);
+		steps.put(2, goTalkToClivet);
+		steps.put(3, goTalkToClivet);
+
+		// Help Hazeel
+		var hazeel4GoPoisonSteps = new ConditionalStep(this, enterKitchen);
+		// 14779 0->1 when used poison on range
+		hazeel4GoPoisonSteps.addStep(inManorBasement, usePoisonOnRange);
+		hazeel4GoPoisonSteps.addStep(inCultEntrance, leaveCaveWithPoison);
+
+		// TODO: Verify if this is needed
+		var goTalkAfterPoison = new ConditionalStep(this, talkToCerilAfterPoison);
+		goTalkAfterPoison.addStep(inManorBasement, leaveKitchen);
+
+		var goTalkToClivetAfterPoison = new ConditionalStep(this, goTalkAfterPoison);
+		// Probably don't actually need the mark but nice to ensure the player gets it
+		goTalkToClivetAfterPoison.addStep(and(inCultRoom, hazeelMark.alsoCheckBank(questBank)), talkToAlomone);
+		goTalkToClivetAfterPoison.addStep(and(inCultEntrance, valveStepsHazeel.solved, hazeelMark.alsoCheckBank(questBank)), boardRaftAfterPoison);
+		goTalkToClivetAfterPoison.addStep(and(inCultEntrance, valveStepsHazeel.solved), talkToClivetAfterPoison);
+		goTalkToClivetAfterPoison.addStep(valveStepsHazeel.solved, enterCaveAfterPoison);
+		goTalkToClivetAfterPoison.addStep(talkedToCerilAfterPoison, valveStepsHazeel);
+
+		var hadScroll = or(hazeelScroll.alsoCheckBank(questBank), givenAlomoneScroll);
+		var hazeelSteps = new ConditionalStep(this, enterKitchenAfterButler);
+		hazeelSteps.addStep(and(inCultRoom, hadScroll), giveAlomoneScroll);
+		hazeelSteps.addStep(and(inCultEntrance, hadScroll), boardRaftWithScroll);
+		hazeelSteps.addStep(and(inManorF1, hadScroll, inManorF2LadderRoom), knockOnWallToExit);
+		hazeelSteps.addStep(and(inManorF1, hadScroll), goF1ToF0WithScroll);
+		hazeelSteps.addStep(and(inManorF2, hadScroll), goF2ToF1WithScroll);
+		hazeelSteps.addStep(hadScroll, enterCaveWithScroll);
+		hazeelSteps.addStep(and(inManorF2, key), searchChestForScroll);
+		hazeelSteps.addStep(and(inManorF1, key, inManorF2LadderRoom), climbLadderWithKey);
+		hazeelSteps.addStep(and(inManorF1, key), knockOnWall);
+		hazeelSteps.addStep(and(inManorBasement, key), leaveKitchenWithKey);
+		hazeelSteps.addStep(key, goToF1WithKey);
+		hazeelSteps.addStep(inManorBasement, searchCrateForKey);
+		hazeelSteps.addStep(inCultEntrance, leaveCaveAfterAlomone);
+		hazeelSteps.addStep(inCultRoom, returnOnRaftAfterAlomone);
+
+		// Ceril side
+		var cerilSteps = new ConditionalStep(this, valveStepsCeril);
+		cerilSteps.addStep(and(onStep7, butlerArrested), talkToCerilToFinish);
+		cerilSteps.addStep(and(onStep7, inManorF1), searchCupboardForEvidence);
+		cerilSteps.addStep(onStep7, goUpToCupboard);
+		cerilSteps.addStep(and(inCultEntrance, hadArmour), leaveCaveAfterKilling);
+		cerilSteps.addStep(and(inCultRoom, hadArmour), returnOnRaftAfterKilling);
+		cerilSteps.addStep(hadArmour, talkToCerilAfterKilling);
+		cerilSteps.addStep(and(inCultRoom, canSearchChest), retrieveArmourFromChest);
+		cerilSteps.addStep(and(inCultRoom, alomoneAttackable), killAlomone);
+		cerilSteps.addStep(and(inCultRoom), talkToAlomoneToKill);
+		cerilSteps.addStep(and(inCultEntrance, valveStepsCeril.solved), boardRaftToKill);
+		cerilSteps.addStep(valveStepsCeril.solved, enterCaveAfterValvesForCeril);
+		cerilSteps.addStep(inCultEntrance, leaveCaveForValves);
+
+		// TODO: 14782 0->1 may occur to represent Hazeel
+
+		// Told to make poison, 223 3->4
+		// Sided with Ceril:
+		// 10670 1->0 occurs,
+		// 14769 0->1 and 223 3->4
+		var step4 = new ConditionalStep(this, enterCave);
+		step4.addStep(sidedWithCeril, cerilSteps);
+		step4.addStep(poison, hazeel4GoPoisonSteps);
+		step4.addStep(inCultEntrance, getPoison);
+		steps.put(4, step4);
+
+		// Assuming this can only be reached in Hazeel side, but may be wrong
+		steps.put(5, goTalkToClivetAfterPoison);
+
+		var step6 = new ConditionalStep(this, hazeelSteps);
+		step6.addStep(sidedWithCeril, cerilSteps);
+		steps.put(6, step6);
+
+		var step7 = new ConditionalStep(this, hazeelSteps);
+		step7.addStep(sidedWithCeril, cerilSteps);
+		steps.put(7, step7);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(ardougneCloak);
+		return List.of(
+			ardougneCloak
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Alomone (level 13) if taking Ceril's side");
+		return List.of(
+			"Alomone (level 13) if taking Ceril's side"
+		);
 	}
 
 	@Override
@@ -385,13 +465,15 @@ public class HazeelCult extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.THIEVING, 1500));
+		return List.of(
+			new ExperienceReward(Skill.THIEVING, 1500)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
+		return List.of(
 			new ItemReward("(2,005 if siding with Ceril) Coins", ItemID.COINS, 2000),
 			new ItemReward("Hazeel's mark (if you sided with Hazeel)", ItemID.MARK_OF_HAZEEL),
 			new ItemReward("Carnillean armour (if you sided with Ceril)", ItemID.CARNILLEAN_ARMOUR)
@@ -401,31 +483,39 @@ public class HazeelCult extends BasicQuestHelper
 	@Override
 	public List<String> getNotes()
 	{
-		return Collections.singletonList("If you sided with Hazeel and are being guided to help Ceril, just click the" +
-			" box in the Ceril sidebar header to switch to Hazeel");
+		return List.of(
+			"If you sided with Hazeel and are being guided to help Ceril, just click the box in the Ceril sidebar header to switch to Hazeel"
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToCeril, enterCave, talkToClivet)));
+		var sections = new ArrayList<PanelDetails>();
 
-		List<QuestStep> cerilStepsSidebar = new ArrayList<>(Collections.singletonList(leaveCaveForValves));
+		sections.add(new PanelDetails("Starting off", List.of(
+			talkToCeril,
+			enterCave,
+			talkToClivet
+		)));
+
+		var cerilStepsSidebar = new ArrayList<QuestStep>(Collections.singletonList(leaveCaveForValves));
 		cerilStepsSidebar.addAll(valveStepsCeril.getDisplaySteps());
 		cerilStepsSidebar.addAll(Arrays.asList(enterCaveAfterValvesForCeril, boardRaftToKill, talkToAlomoneToKill, killAlomone,
 			retrieveArmourFromChest, talkToCerilAfterKilling, talkToJonesAfterKilling, searchCupboardForEvidence, talkToCerilToFinish));
 		PanelDetails cerilPanel = new PanelDetails("Siding with Ceril", cerilStepsSidebar);
-		allSteps.add(cerilPanel);
+		// TODO: add locking step to make it lockable?
+		sections.add(cerilPanel);
 
-		List<QuestStep> hazeelSteps = new ArrayList<>(Arrays.asList(getPoison, leaveCaveWithPoison, enterKitchen,
+		var hazeelSteps = new ArrayList<QuestStep>(Arrays.asList(getPoison, leaveCaveWithPoison, enterKitchen,
 			usePoisonOnRange, leaveKitchen, talkToCerilAfterPoison));
 		hazeelSteps.addAll(valveStepsHazeel.getDisplaySteps());
 		hazeelSteps.addAll(Arrays.asList(talkToClivetAfterPoison, boardRaftAfterPoison, talkToAlomone,
 			searchCrateForKey, leaveKitchenWithKey, goToF1WithKey, climbLadderWithKey, searchChestForScroll,
 			giveAlomoneScroll));
-		allSteps.add(new PanelDetails("Siding with Hazeel", hazeelSteps));
+		// TODO: add locking step to make it lockable?
+		sections.add(new PanelDetails("Siding with Hazeel", hazeelSteps));
 
-		return allSteps;
+		return sections;
 	}
 }

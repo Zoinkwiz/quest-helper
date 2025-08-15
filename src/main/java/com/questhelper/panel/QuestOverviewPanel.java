@@ -713,7 +713,9 @@ public class QuestOverviewPanel extends JPanel
 				if (other == draggingPanel) continue;
 
 				Rectangle r = other.getBounds();
-				int midY = other.getLocationOnScreen().y + r.height / 2;
+				int otherYPos = 0;
+				if (other.isVisible()) otherYPos = other.getLocationOnScreen().y;
+				int midY = otherYPos + r.height / 2;
 
 				int fromIndex = questStepPanelList.indexOf(draggingPanel);
 				int toIndex   = questStepPanelList.indexOf(other);

@@ -219,6 +219,10 @@ public abstract class QuestStep implements Module
 	public QuestStep withId(Integer id)
 	{
 		this.id = id;
+		for (QuestStep substep : substeps)
+		{
+			substep.withId(id);
+		}
 		return this;
 	}
 

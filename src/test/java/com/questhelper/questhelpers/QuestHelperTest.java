@@ -292,7 +292,8 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
-			QuestHelperQuest.PRINCE_ALI_RESCUE
+			QuestHelperQuest.PRINCE_ALI_RESCUE,
+			QuestHelperQuest.HERB_RUN
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest

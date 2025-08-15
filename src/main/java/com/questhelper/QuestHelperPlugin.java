@@ -199,6 +199,14 @@ public class QuestHelperPlugin extends Plugin
 
 		questOverlayManager.startUp();
 
+		if (developerMode)
+		{
+			if (config.devShowOverlayOnLaunch())
+			{
+				questOverlayManager.addDebugOverlay();
+			}
+		}
+
 		final BufferedImage icon = Icon.QUEST_ICON.getImage();
 
 		panel = new QuestHelperPanel(this, questManager, configManager);
@@ -230,6 +238,11 @@ public class QuestHelperPlugin extends Plugin
 		eventBus.unregister(playerStateManager);
 		eventBus.unregister(runeliteObjectManager);
 		eventBus.unregister(worldMapAreaManager);
+		if (developerMode)
+		{
+			// We don't check if it was added, since removing an unadded overlay is a no-op
+			questOverlayManager.removeDebugOverlay();
+		}
 		questOverlayManager.shutDown();
 		playerStateManager.shutDown();
 
@@ -408,6 +421,18 @@ public class QuestHelperPlugin extends Plugin
 			if (questManager.getSelectedQuest() != null)
 			{
 				questManager.getSelectedQuest().setSidebarOrder(loadSidebarOrder(questManager.getSelectedQuest()));
+			}
+		}
+
+		if (developerMode && "devShowOverlayOnLaunch".equals(event.getKey()))
+		{
+			if (config.devShowOverlayOnLaunch())
+			{
+				questOverlayManager.addDebugOverlay();
+			}
+			else
+			{
+				questOverlayManager.removeDebugOverlay();
 			}
 		}
 	}

@@ -692,4 +692,24 @@ public interface QuestHelperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigSection(
+		position = 5,
+		name = "Development",
+		description = "Options that configure the quest helper development experience",
+		closedByDefault = true
+	)
+	String developmentSection = "developmentSection";
+
+	@ConfigItem(
+		keyName = "devShowOverlayOnLaunch",
+		name = "Show overlay on launch",
+		description = "Show the dev overlay (::questhelperdebug) on launch",
+		position = 4,
+		section = developmentSection
+	)
+	default boolean devShowOverlayOnLaunch()
+	{
+		return false;
+	}
 }

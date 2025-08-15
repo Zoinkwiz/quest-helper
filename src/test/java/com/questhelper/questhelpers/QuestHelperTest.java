@@ -277,9 +277,14 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 			QuestHelperQuest.X_MARKS_THE_SPOT,
 			QuestHelperQuest.COOKS_ASSISTANT,
+			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.HAZEEL_CULT,
+			QuestHelperQuest.FIGHT_ARENA,
+			QuestHelperQuest.GERTRUDES_CAT,
 			QuestHelperQuest.IMP_CATCHER,
+			QuestHelperQuest.CLIENT_OF_KOUREND,
+			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.PRINCE_ALI_RESCUE
 		);

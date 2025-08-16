@@ -79,6 +79,7 @@ public class RumSmugglingStep extends ConditionalStep
 	private ChatMessageRequirement fillCrateWithBananasChat;
 
 	// Steps
+	private QuestStep syncStep;
 	private QuestStep talkToCustomsOfficer;
 	private QuestStep getRumFromCrate;
 	private QuestStep getWhiteApron;
@@ -94,6 +95,8 @@ public class RumSmugglingStep extends ConditionalStep
 	{
 		super(questHelper, new DetailedQuestStep(questHelper, "Please open Pirate Treasure's Quest Journal to sync the current quest state."));
 		pt = questHelper;
+
+		syncStep = this.steps.get(null);
 
 		setupZones();
 		setupRequirements();
@@ -252,12 +255,13 @@ public class RumSmugglingStep extends ConditionalStep
 		List<PanelDetails> sections = new ArrayList<>();
 
 		sections.add(new PanelDetails("Rum smuggling", List.of(
+			syncStep,
 			goToKaramja,
 			talkToZambo,
 			talkToLuthas,
 			addRumToCrate,
 			addBananasToCrate,
-			talkToLuthas
+			talkToLuthasAgain
 		)));
 
 		sections.add(new PanelDetails("Back to Port Sarim", List.of(

@@ -171,6 +171,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		essMineTask = new ConditionalStep(this, essMine);
 
 		wildyLever = new ObjectStep(this, ObjectID.WILDINLEVER, new WorldPoint(2561, 3311, 0), "Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return). This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
+		// We don't add a dialog highlight on purpose here to make sure people don't mindlessly click blue and lose items
 		wildyLeverTask = new ConditionalStep(this, wildyLever);
 
 		enterCombatCamp = new ObjectStep(this, ObjectID.LATHASTRAINING_GATER, new WorldPoint(2518, 3356, 0), "Enter the Combat Training Camp north of West Ardougne.");

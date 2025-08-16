@@ -152,6 +152,8 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		fishingTrawlerTask = new ConditionalStep(this, fishingTrawler);
 
 		probitaPet = new NpcStep(this, NpcID.PET_INSURANCE_BROKER, new WorldPoint(2621, 3294, 0), "Check what pets you have insured with Probita in East Ardougne (right-click her to Check).");
+		probitaPet.addDialogStep("What pets have I insured?");
+		probitaPet.addDialogStepWithExclusion("More options...", "What pets have I insured?");
 		probitaPetTask = new ConditionalStep(this, probitaPet);
 
 		eastArdyAltar = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(2618, 3309, 0), "Use the altar in East Ardougne's church (requires less than full Prayer points).");

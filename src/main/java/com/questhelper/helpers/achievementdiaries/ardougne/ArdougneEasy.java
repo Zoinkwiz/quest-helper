@@ -33,6 +33,8 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -100,6 +102,8 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	ObjectStep wildyLever;
 	ConditionalStep wildyLeverTask;
 
+	ZoneRequirement nearWildyLever;
+	ObjectStep useWildyLever;
 	VarplayerRequirement notEnterCombatCamp;
 	ObjectStep enterCombatCamp;
 	ConditionalStep enterCombatCampTask;
@@ -125,6 +129,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 
 		notEssMine = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 0);
 
+		nearWildyLever = new ZoneRequirement(new Zone(12605));
 		notEnterCombatCamp = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 6);
 
 		notWildyLever = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 9);
@@ -174,8 +179,12 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		// We don't add a dialog highlight on purpose here to make sure people don't mindlessly click blue and lose items
 		wildyLeverTask = new ConditionalStep(this, wildyLever);
 
+		useWildyLever = new ObjectStep(this, ObjectID.WILDOUTLEVER, new WorldPoint(3153, 3923, 0), "Click the lever to return to Ardougne.");
 		enterCombatCamp = new ObjectStep(this, ObjectID.LATHASTRAINING_GATER, new WorldPoint(2518, 3356, 0), "Enter the Combat Training Camp north of West Ardougne.");
 		enterCombatCampTask = new ConditionalStep(this, enterCombatCamp);
+		enterCombatCampTask.addStep(nearWildyLever, useWildyLever);
+
+		enterCombatCamp.addSubSteps(useWildyLever);
 
 		claimReward = new NpcStep(this, NpcID.ARDY_TWOPINTS_DIARY, new WorldPoint(2574, 3323, 0), "Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");

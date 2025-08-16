@@ -167,7 +167,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		stealCakeTask = new ConditionalStep(this, stealCake);
 
 		essMine = new NpcStep(this, NpcID.CROMPERTY_PRE_DIARY, new WorldPoint(2683, 3326, 0), "Have Wizard Cromperty teleport you to the Rune essence mine.");
-		essMine.addDialogStep("Can you teleport me to the Rune Essence?");
+		essMine.addDialogStep("Can you teleport me to the Rune Essence Mine?");
 		essMineTask = new ConditionalStep(this, essMine);
 
 		wildyLever = new ObjectStep(this, ObjectID.WILDINLEVER, new WorldPoint(2561, 3311, 0), "Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return). This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");

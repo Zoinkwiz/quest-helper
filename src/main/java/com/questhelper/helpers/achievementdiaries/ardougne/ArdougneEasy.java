@@ -39,6 +39,8 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -47,27 +49,135 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarPlayerID;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class ArdougneEasy extends ComplexStateQuestHelper
 {
-	// Items required
-	ItemRequirement rustySword, silk, coins;
+	// Required items
+	ItemRequirement rustySword;
+	ItemRequirement silk;
+	ItemRequirement coins;
 
-	// Quests required
-	Requirement runeMysteries, biohazard;
+	// Required quests
+	QuestRequirement runeMysteries;
+	QuestRequirement biohazard;
 
-	Requirement notEssMine, notStealCake, notSellSilk, notEastArdyAltar, notFishingTrawler, notEnterCombatCamp,
-		notIdentifySword, notWildyLever, notAlecksEmporium, notProbitaPet;
+	// Required skills
+	SkillRequirement thieving;
 
-	QuestStep claimReward, essMine, stealCake, sellSilk, eastArdyAltar, fishingTrawler, enterCombatCamp,
-		identifySword, wildyLever, alecksEmporium, probitaPet;
+	// Tasks
+	VarplayerRequirement notAlecksEmporium;
+	NpcStep alecksEmporium;
+	ConditionalStep alecksEmporiumTask;
 
-	ConditionalStep essMineTask, stealCakeTask, sellSilkTask, eastArdyAltarTask, fishingTrawlerTask, enterCombatCampTask,
-		identifySwordTask, wildyLeverTask, alecksEmporiumTask, probitaPetTask;
+	VarplayerRequirement notFishingTrawler;
+	QuestStep fishingTrawler;
+	ConditionalStep fishingTrawlerTask;
+
+	VarplayerRequirement notIdentifySword;
+	NpcStep identifySword;
+	ConditionalStep identifySwordTask;
+
+	VarplayerRequirement notEssMine;
+	NpcStep essMine;
+	ConditionalStep essMineTask;
+
+	VarplayerRequirement notStealCake;
+	ObjectStep stealCake;
+	ConditionalStep stealCakeTask;
+
+	VarplayerRequirement notSellSilk;
+	NpcStep sellSilk;
+	ConditionalStep sellSilkTask;
+
+	VarplayerRequirement notProbitaPet;
+	NpcStep probitaPet;
+	ConditionalStep probitaPetTask;
+
+	VarplayerRequirement notEastArdyAltar;
+	ObjectStep eastArdyAltar;
+	ConditionalStep eastArdyAltarTask;
+
+	VarplayerRequirement notWildyLever;
+	ObjectStep wildyLever;
+	ConditionalStep wildyLeverTask;
+
+	VarplayerRequirement notEnterCombatCamp;
+	ObjectStep enterCombatCamp;
+	ConditionalStep enterCombatCampTask;
+
+	NpcStep claimReward;
+
+	@Override
+	protected void setupRequirements()
+	{
+		notAlecksEmporium = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 11);
+
+		notFishingTrawler = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 5);
+
+		notIdentifySword = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 7);
+
+		notEssMine = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 0);
+
+		notStealCake = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 1);
+
+		notSellSilk = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 2);
+
+		notProbitaPet = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 12);
+
+		notEastArdyAltar = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 4);
+
+		notWildyLever = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 9);
+
+		notEnterCombatCamp = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 6);
+
+		rustySword = new ItemRequirement("Rusty sword", ItemID.DIGSITESWORD).showConditioned(notIdentifySword);
+		silk = new ItemRequirement("Silk", ItemID.SILK).showConditioned(notSellSilk);
+		coins = new ItemRequirement("Coins", ItemCollections.COINS, 100).showConditioned(notIdentifySword);
+
+		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
+		biohazard = new QuestRequirement(QuestHelperQuest.BIOHAZARD, QuestState.FINISHED);
+		thieving = new SkillRequirement(Skill.THIEVING, 5, true);
+	}
+
+	public void setupSteps()
+	{
+		alecksEmporium = new NpcStep(this, NpcID.HUNTING_SHOP_OWNER_YANILLE, new WorldPoint(2566, 3083, 0), "View Aleck's Hunter Emporium in Yanille.");
+		alecksEmporium.addDialogStep("Ok, let's see what you've got!");
+		alecksEmporiumTask = new ConditionalStep(this, alecksEmporium);
+
+		fishingTrawler = new ObjectStep(this, ObjectID.TRAWLER_GANGPLANK, new WorldPoint(2675, 3170, 0), "Go out fishing on the Fishing Trawler.");
+		fishingTrawlerTask = new ConditionalStep(this, fishingTrawler);
+
+		identifySword = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2676, 3152, 0), "Have Tindel Marchant identify a rusty sword for you. Note: there is about a 1% chance this fails and you'll need another sword and more coins.", rustySword, coins);
+		identifySword.addDialogStep("Ok, I'll give it a go!");
+		identifySwordTask = new ConditionalStep(this, identifySword);
+
+		essMine = new NpcStep(this, NpcID.CROMPERTY_PRE_DIARY, new WorldPoint(2683, 3326, 0), "Have Wizard Cromperty teleport you to the Rune essence mine.");
+		essMine.addDialogStep("Can you teleport me to the Rune Essence?");
+		essMineTask = new ConditionalStep(this, essMine);
+
+		stealCake = new ObjectStep(this, ObjectID.CAKETHIEFSTALL, new WorldPoint(2668, 3311, 0), "Steal a cake from the East Ardougne market stalls.");
+		stealCakeTask = new ConditionalStep(this, stealCake);
+
+		sellSilk = new NpcStep(this, NpcID.SILK_MERCHANT_ARDOUGNE, new WorldPoint(2655, 3300, 0), "Sell silk to the Silk trader in East Ardougne for 60 coins each.");
+		sellSilk.addDialogSteps("120 coins.", "I'll give it do you for 60.");
+		sellSilkTask = new ConditionalStep(this, sellSilk);
+
+		probitaPet = new NpcStep(this, NpcID.PET_INSURANCE_BROKER, new WorldPoint(2621, 3294, 0), "Check what pets you have insured with Probita in East Ardougne (right-click her to Check).");
+		probitaPetTask = new ConditionalStep(this, probitaPet);
+
+		eastArdyAltar = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(2618, 3309, 0), "Use the altar in East Ardougne's church (requires less than full Prayer points).");
+		eastArdyAltarTask = new ConditionalStep(this, eastArdyAltar);
+
+		wildyLever = new ObjectStep(this, ObjectID.WILDINLEVER, new WorldPoint(2561, 3311, 0), "Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return). This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
+		wildyLeverTask = new ConditionalStep(this, wildyLever);
+
+		enterCombatCamp = new ObjectStep(this, ObjectID.LATHASTRAINING_GATER, new WorldPoint(2518, 3356, 0), "Enter the Combat Training Camp north of West Ardougne.");
+		enterCombatCampTask = new ConditionalStep(this, enterCombatCamp);
+
+
+		claimReward = new NpcStep(this, NpcID.ARDY_TWOPINTS_DIARY, new WorldPoint(2574, 3323, 0), "Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");
+		claimReward.addDialogStep("I have a question about my Achievement Diary.");
+	}
 
 	@Override
 	public QuestStep loadStep()
@@ -75,127 +185,55 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		initializeRequirements();
 		setupSteps();
 
-		ConditionalStep doEasy = new ConditionalStep(this, claimReward);
+		var diary = new ConditionalStep(this, claimReward);
 
-		alecksEmporiumTask = new ConditionalStep(this, alecksEmporium);
-		doEasy.addStep(notAlecksEmporium, alecksEmporiumTask);
+		diary.addStep(notAlecksEmporium, alecksEmporiumTask);
 
-		fishingTrawlerTask = new ConditionalStep(this, fishingTrawler);
-		doEasy.addStep(notFishingTrawler, fishingTrawlerTask);
+		diary.addStep(notFishingTrawler, fishingTrawlerTask);
 
-		identifySwordTask = new ConditionalStep(this, identifySword);
-		doEasy.addStep(notIdentifySword, identifySwordTask);
+		diary.addStep(notIdentifySword, identifySwordTask);
 
-		essMineTask = new ConditionalStep(this, essMine);
-		doEasy.addStep(notEssMine, essMineTask);
+		diary.addStep(notEssMine, essMineTask);
 
-		stealCakeTask = new ConditionalStep(this, stealCake);
-		doEasy.addStep(notStealCake, stealCakeTask);
+		diary.addStep(notStealCake, stealCakeTask);
 
-		sellSilkTask = new ConditionalStep(this, sellSilk);
-		doEasy.addStep(notSellSilk, sellSilkTask);
+		diary.addStep(notSellSilk, sellSilkTask);
 
-		probitaPetTask = new ConditionalStep(this, probitaPet);
-		doEasy.addStep(notProbitaPet, probitaPetTask);
+		diary.addStep(notProbitaPet, probitaPetTask);
 
-		eastArdyAltarTask = new ConditionalStep(this, eastArdyAltar);
-		doEasy.addStep(notEastArdyAltar, eastArdyAltarTask);
+		diary.addStep(notEastArdyAltar, eastArdyAltarTask);
 
-		wildyLeverTask = new ConditionalStep(this, wildyLever);
-		doEasy.addStep(notWildyLever, wildyLeverTask);
+		diary.addStep(notWildyLever, wildyLeverTask);
 
-		enterCombatCampTask = new ConditionalStep(this, enterCombatCamp);
-		doEasy.addStep(notEnterCombatCamp, enterCombatCampTask);
+		diary.addStep(notEnterCombatCamp, enterCombatCampTask);
 
-		return doEasy;
-	}
-
-	@Override
-	protected void setupRequirements()
-	{
-		notEssMine = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 0);
-		notStealCake = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 1);
-		notSellSilk = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 2);
-		notEastArdyAltar = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 4);
-		notFishingTrawler = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 5);
-		notEnterCombatCamp = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 6);
-		notIdentifySword = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 7);
-		notWildyLever = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 9);
-		notAlecksEmporium = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 11);
-		notProbitaPet = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 12);
-
-		silk = new ItemRequirement("Silk", ItemID.SILK).showConditioned(notSellSilk);
-		rustySword = new ItemRequirement("Rusty sword", ItemID.DIGSITESWORD).showConditioned(notIdentifySword);
-		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notIdentifySword);
-
-		runeMysteries = new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED);
-		biohazard = new QuestRequirement(QuestHelperQuest.BIOHAZARD, QuestState.FINISHED);
-	}
-
-	public void setupSteps()
-	{
-		essMine = new NpcStep(this, NpcID.CROMPERTY_PRE_DIARY, new WorldPoint(2683, 3326, 0),
-			"Have Wizard Cromperty teleport you to the Rune essence mine.");
-		essMine.addDialogStep("Can you teleport me to the Rune Essence?");
-
-		stealCake = new ObjectStep(this, ObjectID.CAKETHIEFSTALL, new WorldPoint(2668, 3311, 0),
-			"Steal a cake from the East Ardougne market stalls.");
-
-		sellSilk = new NpcStep(this, NpcID.SILK_MERCHANT_ARDOUGNE, new WorldPoint(2655, 3300, 0),
-			"Sell silk to the Silk trader in East Ardougne for 60 coins each.");// finish dialog
-		sellSilk.addDialogSteps("120 coins.", "I'll give it do you for 60.");
-
-		eastArdyAltar = new ObjectStep(this, ObjectID.ALTAR, new WorldPoint(2618, 3309, 0),
-			"Use the altar in East Ardougne's church (requires less than full Prayer points).");
-
-		probitaPet = new NpcStep(this, NpcID.PET_INSURANCE_BROKER, new WorldPoint(2621, 3294, 0),
-			"Check what pets you have insured with Probita in East Ardougne (right-click her to Check).");
-
-		wildyLever = new ObjectStep(this, ObjectID.WILDINLEVER, new WorldPoint(2561, 3311, 0),
-			"Use the Ardougne lever to teleport to the Wilderness (you may pull the lever there to return). This will take you to DEEP Wilderness, bank anything you aren't willing to lose.");
-
-		enterCombatCamp = new ObjectStep(this, ObjectID.LATHASTRAINING_GATER, new WorldPoint(2518, 3356, 0),
-			"Enter the Combat Training Camp north of West Ardougne.");
-
-		fishingTrawler = new ObjectStep(this, ObjectID.TRAWLER_GANGPLANK, new WorldPoint(2675, 3170, 0),
-			"Go out fishing on the Fishing Trawler.");
-
-		identifySword = new NpcStep(this, NpcID.TINDEL_MARCHANT, new WorldPoint(2676, 3152, 0),
-			"Have Tindel Marchant identify a rusty sword for you. Note: there is about a 1% chance this fails and " +
-				"you'll need another sword and more coins.", rustySword, coins.quantity(100));
-		identifySword.addDialogStep("Ok, I'll give it a go!");
-
-		alecksEmporium = new NpcStep(this, NpcID.HUNTING_SHOP_OWNER_YANILLE, new WorldPoint(2566, 3083, 0),
-			"View Aleck's Hunter Emporium in Yanille.");
-		alecksEmporium.addDialogStep("Ok, let's see what you've got!");
-
-		claimReward = new NpcStep(this, NpcID.ARDY_TWOPINTS_DIARY, new WorldPoint(2574, 3323, 0),
-			"Talk to Two-pints in the Flying Horse Inn at East Ardougne to claim your reward!");
-		claimReward.addDialogStep("I have a question about my Achievement Diary.");
+		return diary;
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(rustySword, silk, coins.quantity(100));
+		return List.of(
+			rustySword,
+			silk,
+			coins
+		);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.THIEVING, 5, true));
-
-		reqs.add(runeMysteries);
-		reqs.add(biohazard);
-
-		return reqs;
+		return List.of(
+			thieving,
+			runeMysteries,
+			biohazard
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
+		return List.of(
 			new ItemReward("Ardougne Cloak 1", ItemID.ARDY_CAPE_EASY),
 			new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.THOSF_REWARD_LAMP)
 		);
@@ -204,7 +242,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
+		return List.of(
 			new UnlockReward("Unlimited teleports to the Ardougne Monastery with the Ardougne cloak 1"),
 			new UnlockReward("Double death runes (200) when trading in cats to civilians"),
 			new UnlockReward("10% increased chance to successfully steal from stalls in Ardougne"),
@@ -215,64 +253,107 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		PanelDetails aleckSteps = new PanelDetails("Aleck's Hunter Emporium",
-			Collections.singletonList(alecksEmporium));
-		aleckSteps.setDisplayCondition(notAlecksEmporium);
-		aleckSteps.setLockingStep(alecksEmporiumTask);
-		allSteps.add(aleckSteps);
+		sections.add(PanelDetails.diary(
+			"Aleck's Hunter Emporium",
+			notAlecksEmporium,
+			alecksEmporiumTask,
+			List.of(
+				alecksEmporium
+			)
+		));
 
-		PanelDetails trawlerSteps = new PanelDetails("Fishing Trawler", Collections.singletonList(fishingTrawler));
-		trawlerSteps.setDisplayCondition(notFishingTrawler);
-		trawlerSteps.setLockingStep(fishingTrawlerTask);
-		allSteps.add(trawlerSteps);
+		sections.add(PanelDetails.diary(
+			"Fishing Trawler",
+			notFishingTrawler,
+			fishingTrawlerTask,
+			List.of(
+				fishingTrawler
+			)
+		));
 
-		PanelDetails swordSteps = new PanelDetails("Identify Sword", Collections.singletonList(identifySword),
-			rustySword, coins.quantity(100));
-		swordSteps.setDisplayCondition(notIdentifySword);
-		swordSteps.setLockingStep(identifySwordTask);
-		allSteps.add(swordSteps);
+		sections.add(PanelDetails.diary(
+			"Identify Sword",
+			notIdentifySword,
+			identifySword,
+			List.of(
+				identifySword
+			),
+			rustySword,
+			coins
+		));
 
-		PanelDetails essSteps = new PanelDetails("Essence Mine", Collections.singletonList(essMine), runeMysteries);
-		essSteps.setDisplayCondition(notEssMine);
-		essSteps.setLockingStep(essMineTask);
-		allSteps.add(essSteps);
+		sections.add(PanelDetails.diary(
+			"Essence Mine",
+			notEssMine,
+			essMineTask,
+			List.of(
+				essMine
+			),
+			runeMysteries
+		));
 
-		PanelDetails cakeSteps = new PanelDetails("Steal Cake", Collections.singletonList(stealCake),
-			new SkillRequirement(Skill.THIEVING, 5, true));
-		cakeSteps.setDisplayCondition(notStealCake);
-		cakeSteps.setLockingStep(stealCakeTask);
-		allSteps.add(cakeSteps);
+		sections.add(PanelDetails.diary(
+			"Steal Cake",
+			notStealCake,
+			stealCakeTask,
+			List.of(
+				stealCake
+			),
+			thieving
+		));
 
-		PanelDetails silkSteps = new PanelDetails("Sell Silk", Collections.singletonList(sellSilk), silk);
-		silkSteps.setDisplayCondition(notSellSilk);
-		silkSteps.setLockingStep(sellSilkTask);
-		allSteps.add(silkSteps);
+		sections.add(PanelDetails.diary(
+			"Sell Silk",
+			notSellSilk,
+			sellSilkTask,
+			List.of(
+				sellSilk
+			),
+			silk
+		));
 
-		PanelDetails petSteps = new PanelDetails("Pet Insurance", Collections.singletonList(probitaPet));
-		petSteps.setDisplayCondition(notProbitaPet);
-		petSteps.setLockingStep(probitaPetTask);
-		allSteps.add(petSteps);
+		sections.add(PanelDetails.diary(
+			"Pet Insurance",
+			notProbitaPet,
+			probitaPetTask,
+			List.of(
+				probitaPet
+			)
+		));
 
-		PanelDetails altarSteps = new PanelDetails("Restore Prayer", Collections.singletonList(eastArdyAltar));
-		altarSteps.setDisplayCondition(notEastArdyAltar);
-		altarSteps.setLockingStep(eastArdyAltarTask);
-		allSteps.add(altarSteps);
+		sections.add(PanelDetails.diary(
+			"Restore Prayer",
+			notEastArdyAltar,
+			eastArdyAltarTask,
+			List.of(
+				eastArdyAltar
+			)
+		));
 
-		PanelDetails leverSteps = new PanelDetails("Wilderness Lever", Collections.singletonList(wildyLever));
-		leverSteps.setDisplayCondition(notWildyLever);
-		leverSteps.setLockingStep(wildyLeverTask);
-		allSteps.add(leverSteps);
+		sections.add(PanelDetails.diary(
+			"Wilderness Lever",
+			notWildyLever,
+			wildyLeverTask,
+			List.of(
+				wildyLever
+			)
+		));
 
-		PanelDetails campSteps = new PanelDetails("Combat Camp", Collections.singletonList(enterCombatCamp),
-			biohazard);
-		campSteps.setDisplayCondition(notEnterCombatCamp);
-		campSteps.setLockingStep(enterCombatCampTask);
-		allSteps.add(campSteps);
+		sections.add(PanelDetails.diary(
+			"Combat Camp",
+			notEnterCombatCamp,
+			enterCombatCampTask,
+			List.of(
+				enterCombatCamp
+			)
+		));
 
-		allSteps.add(new PanelDetails("Finishing off", Collections.singletonList(claimReward)));
+		sections.add(new PanelDetails("Finishing off", List.of(
+			claimReward
+		)));
 
-		return allSteps;
+		return sections;
 	}
 }

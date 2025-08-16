@@ -114,7 +114,8 @@ public class PiratesTreasure extends BasicQuestHelper
 		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage.highlighted());
 
 
-		climbStairs = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS, new WorldPoint(3228, 3393, 0), "Climb up the stairs in The Blue Moon Inn in Varrock.");
+		climbStairs = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS, new WorldPoint(3228, 3393, 0), "Climb up the stairs in The Blue Moon Inn in Varrock.", chestKey);
+		climbStairs.addTeleport(teleportVarrock);
 		openChest = new ObjectStep(this, ObjectID.PIRATECHEST, new WorldPoint(3219, 3396, 1), "Open the chest by using the key on it.", chestKey.highlighted());
 		openChest.addDialogStep("Ok thanks, I'll go and get it.");
 		openChest.addIcon(ItemID.CHEST_KEY);
@@ -137,8 +138,8 @@ public class PiratesTreasure extends BasicQuestHelper
 		steps.put(1, smuggleRum);
 
 		var getTreasureMap = new ConditionalStep(this, climbStairs);
-		getTreasureMap.addStep(and(chestKey, inBlueMoonFirst), openChest);
 		getTreasureMap.addStep(pirateMessage, readPirateMessage);
+		getTreasureMap.addStep(inBlueMoonFirst, openChest);
 
 		steps.put(2, getTreasureMap);
 

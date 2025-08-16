@@ -160,7 +160,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		eastArdyAltarTask = new ConditionalStep(this, eastArdyAltar);
 
 		sellSilk = new NpcStep(this, NpcID.SILK_MERCHANT_ARDOUGNE, new WorldPoint(2655, 3300, 0), "Sell silk to the Silk trader in East Ardougne for 60 coins each.");
-		sellSilk.addDialogSteps("120 coins.", "I'll give it do you for 60.");
+		sellSilk.addDialogSteps("120 coins.", "I'll give it to you for 60.");
 		sellSilkTask = new ConditionalStep(this, sellSilk);
 
 		stealCake = new ObjectStep(this, ObjectID.CAKETHIEFSTALL, new WorldPoint(2668, 3311, 0), "Steal a cake from the East Ardougne market stalls.");

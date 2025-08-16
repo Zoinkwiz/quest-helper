@@ -98,6 +98,16 @@ public class PanelDetails
 		return this;
 	}
 
+	public static PanelDetails lockedPanel(String header, Requirement displayCondition, QuestStep lockingStep, List<QuestStep> steps, Requirement... requirements)
+	{
+		var section = new PanelDetails(header, steps, requirements);
+
+		section.setDisplayCondition(displayCondition);
+		section.setLockingStep(lockingStep);
+
+		return section;
+	}
+
 	public void setDisplayCondition(Requirement req)
 	{
 		setHideCondition(new Conditions(LogicType.NOR, req));

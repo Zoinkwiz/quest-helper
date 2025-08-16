@@ -98,7 +98,7 @@ public class PanelDetails
 		return this;
 	}
 
-	public static PanelDetails diary(String header, Requirement displayCondition, QuestStep lockingStep, List<QuestStep> steps, Requirement... requirements)
+	public static PanelDetails lockedPanel(String header, Requirement displayCondition, QuestStep lockingStep, List<QuestStep> steps, Requirement... requirements)
 	{
 		var section = new PanelDetails(header, steps, requirements);
 

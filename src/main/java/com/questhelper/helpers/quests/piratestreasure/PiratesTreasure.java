@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -80,6 +81,7 @@ public class PiratesTreasure extends BasicQuestHelper
 	ObjectStep climbStairs;
 
 	QuestStep digUpTreasure;
+	NpcStep killGardener;
 
 	@Override
 	protected void setupZones()
@@ -123,6 +125,10 @@ public class PiratesTreasure extends BasicQuestHelper
 		smuggleRum = new RumSmugglingStep(this);
 
 		digUpTreasure = new DigStep(this, new WorldPoint(2999, 3383, 0), "Dig in the middle of the cross in Falador Park, and kill the Gardener (level 4) who appears. Once killed, dig again.");
+		// TODO: Add a teleport to DigStep
+
+		killGardener = new NpcStep(this, NpcID.PIRATE_IRATE_GARDENER, new WorldPoint(2999, 3383, 0), "Kill the Gardener (level 4).");
+		digUpTreasure.addSubSteps(killGardener);
 	}
 
 	@Override
@@ -143,11 +149,12 @@ public class PiratesTreasure extends BasicQuestHelper
 
 		steps.put(2, getTreasureMap);
 
-		steps.put(3, digUpTreasure);
+		var cDigUpTreasure = new ConditionalStep(this, digUpTreasure);
+		cDigUpTreasure.addStep(new NpcHintArrowRequirement(NpcID.PIRATE_IRATE_GARDENER), killGardener);
+		steps.put(3, cDigUpTreasure);
 
 		return steps;
 	}
-
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()

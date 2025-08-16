@@ -26,35 +26,46 @@ package com.questhelper.helpers.quests.piratestreasure;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.MesBoxRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class RumSmugglingStep extends ConditionalStep
 {
-	private Zone karamjaZone1, karamjaZone2, karamjaBoat;
+	private final PiratesTreasure pt;
 
-	private ItemRequirement karamjanRum, tenBananas, whiteApron, whiteApronEquipped, whiteApronHanging;
+	// Zones
+	private Zone karamjaZone1;
+	private Zone karamjaZone2;
+	private Zone karamjaBoat;
 
-	private Requirement onKaramja;
+	// Miscellaneous requirements
+	private ZoneRequirement onKaramja;
+
+	private ItemRequirement karamjanRum;
+	private ItemRequirement whiteApron;
+	private ItemRequirement whiteApronEquipped;
+	private ItemRequirement whiteApronHanging;
 	private Conditions atStart;
 	private Conditions employed;
 	private Conditions stashedRum;
@@ -67,56 +78,28 @@ public class RumSmugglingStep extends ConditionalStep
 	private ChatMessageRequirement crateSent;
 	private ChatMessageRequirement fillCrateWithBananasChat;
 
-	private QuestStep talkToCustomsOfficer, getRumFromCrate, getWhiteApron, addBananasToCrate, addRumToCrate, talkToZambo, talkToLuthas, talkToLuthasAgain, goToKaramja, bringRumToRedbeard;
+	// Steps
+	private QuestStep talkToCustomsOfficer;
+	private QuestStep getRumFromCrate;
+	private QuestStep getWhiteApron;
+	private QuestStep addBananasToCrate;
+	private QuestStep addRumToCrate;
+	private QuestStep talkToZambo;
+	private QuestStep talkToLuthas;
+	private QuestStep talkToLuthasAgain;
+	private QuestStep goToKaramja;
+	private QuestStep bringRumToRedbeard;
 
-	public RumSmugglingStep(QuestHelper questHelper)
+	public RumSmugglingStep(PiratesTreasure questHelper)
 	{
 		super(questHelper, new DetailedQuestStep(questHelper, "Please open Pirate Treasure's Quest Journal to sync the current quest state."));
-		setupItemRequirements();
+		pt = questHelper;
+
 		setupZones();
-		setupConditions();
+		setupRequirements();
+
 		setupSteps();
 		addSteps();
-	}
-
-	private void addSteps()
-	{
-		this.addStep(new Conditions(hasRumOffKaramja), bringRumToRedbeard);
-		this.addStep(new Conditions(verifiedAState, haveShippedRum, onKaramja), talkToCustomsOfficer);
-		this.addStep(new Conditions(verifiedAState, haveShippedRum, whiteApron), getRumFromCrate);
-		this.addStep(new Conditions(verifiedAState, haveShippedRum), getWhiteApron);
-		this.addStep(new Conditions(verifiedAState, filledCrateWithBananasAndRum, onKaramja), talkToLuthasAgain);
-		this.addStep(new Conditions(verifiedAState, stashedRum, onKaramja), addBananasToCrate);
-		this.addStep(new Conditions(verifiedAState, employed, karamjanRum, onKaramja), addRumToCrate);
-		this.addStep(new Conditions(verifiedAState, employed, onKaramja), talkToZambo);
-		this.addStep(new Conditions(verifiedAState, atStart, karamjanRum, onKaramja), talkToLuthas);
-		this.addStep(new Conditions(verifiedAState, atStart, onKaramja), talkToZambo);
-		this.addStep(verifiedAState, goToKaramja);
-	}
-
-	@Override
-	protected void updateSteps()
-	{
-		if ((hadRumOffKaramja.check(client) && !hasRumOffKaramja.check(client))
-			|| lostRum.check(client))
-		{
-			haveShippedRum.setHasPassed(false);
-			stashedRum.setHasPassed(false);
-			atStart.setHasPassed(true);
-			hadRumOffKaramja.setHasPassed(false);
-			lostRum.setHasPassed(false);
-		}
-
-		if (crateSent.check(client))
-		{
-			haveShippedRum.check(client);
-			employed.setHasPassed(false);
-			fillCrateWithBananasChat.setHasReceivedChatMessage(false);
-			filledCrateWithBananasAndRum.setHasPassed(false);
-			crateSent.setHasReceivedChatMessage(false);
-		}
-
-		super.updateSteps();
 	}
 
 	private void setupZones()
@@ -126,18 +109,14 @@ public class RumSmugglingStep extends ConditionalStep
 		karamjaBoat = new Zone(new WorldPoint(2964, 3138, 0), new WorldPoint(2951, 3144, 1));
 	}
 
-	private void setupItemRequirements()
+	private void setupRequirements()
 	{
 		karamjanRum = new ItemRequirement("Karamjan rum", ItemID.KARAMJA_RUM);
-		tenBananas = new ItemRequirement("Banana", ItemID.BANANA, 10);
 		whiteApron = new ItemRequirement("White apron", ItemID.WHITE_APRON);
-		whiteApronEquipped = new ItemRequirement("White apron", ItemID.WHITE_APRON, 1, true);
+		whiteApronEquipped = whiteApron.equipped();
 		whiteApronHanging = new ItemRequirement("White apron", ItemID.PIRATETREASURE_APRON);
 		whiteApronHanging.addAlternates(ItemID.WHITE_APRON);
-	}
 
-	private void setupConditions()
-	{
 		onKaramja = new ZoneRequirement(karamjaZone1, karamjaZone2, karamjaBoat);
 		Requirement offKaramja = new ZoneRequirement(false, karamjaZone1, karamjaZone2, karamjaBoat);
 		Requirement inPirateTreasureMenu = new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, getQuestHelper().getQuest().getName());
@@ -200,11 +179,11 @@ public class RumSmugglingStep extends ConditionalStep
 		talkToLuthas.addDialogStep("Will you pay me for another crate full?");
 
 		addRumToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2943, 3151, 0),
-			"Put the Karamjan rum into the crate.", karamjanRum.highlighted(), tenBananas);
+			"Put the Karamjan rum into the crate.", karamjanRum.highlighted(), pt.tenBananas);
 		addRumToCrate.addIcon(ItemID.KARAMJA_RUM);
 
 		addBananasToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2943, 3151, 0),
-			"Right-click fill the rest of the crate with bananas, then talk to Luthas.", tenBananas);
+			"Right-click fill the rest of the crate with bananas, then talk to Luthas.", pt.tenBananas);
 
 		talkToLuthasAgain = new NpcStep(getQuestHelper(), NpcID.LUTHAS, new WorldPoint(2938, 3154, 0),
 			"Talk to Luthas and tell him you finished filling the crate.");
@@ -228,12 +207,66 @@ public class RumSmugglingStep extends ConditionalStep
 			karamjanRum);
 	}
 
+	private void addSteps()
+	{
+		this.addStep(hasRumOffKaramja, bringRumToRedbeard);
+		this.addStep(and(verifiedAState, haveShippedRum, onKaramja), talkToCustomsOfficer);
+		this.addStep(and(verifiedAState, haveShippedRum, whiteApron), getRumFromCrate);
+		this.addStep(and(verifiedAState, haveShippedRum), getWhiteApron);
+		this.addStep(and(verifiedAState, filledCrateWithBananasAndRum, onKaramja), talkToLuthasAgain);
+		this.addStep(and(verifiedAState, stashedRum, onKaramja), addBananasToCrate);
+		this.addStep(and(verifiedAState, employed, karamjanRum, onKaramja), addRumToCrate);
+		this.addStep(and(verifiedAState, employed, onKaramja), talkToZambo);
+		this.addStep(and(verifiedAState, atStart, karamjanRum, onKaramja), talkToLuthas);
+		this.addStep(and(verifiedAState, atStart, onKaramja), talkToZambo);
+		this.addStep(verifiedAState, goToKaramja);
+	}
+
+	@Override
+	protected void updateSteps()
+	{
+		if ((hadRumOffKaramja.check(client) && !hasRumOffKaramja.check(client))
+			|| lostRum.check(client))
+		{
+			haveShippedRum.setHasPassed(false);
+			stashedRum.setHasPassed(false);
+			atStart.setHasPassed(true);
+			hadRumOffKaramja.setHasPassed(false);
+			lostRum.setHasPassed(false);
+		}
+
+		if (crateSent.check(client))
+		{
+			haveShippedRum.check(client);
+			employed.setHasPassed(false);
+			fillCrateWithBananasChat.setHasReceivedChatMessage(false);
+			filledCrateWithBananasAndRum.setHasPassed(false);
+			crateSent.setHasReceivedChatMessage(false);
+		}
+
+		super.updateSteps();
+	}
+
 	public List<PanelDetails> panelDetails()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		List<PanelDetails> sections = new ArrayList<>();
 
-		allSteps.add(new PanelDetails("Rum smuggling", Arrays.asList(goToKaramja, talkToZambo, talkToLuthas, addRumToCrate, addBananasToCrate, talkToLuthas)));
-		allSteps.add(new PanelDetails("Back to Port Sarim", Arrays.asList(talkToCustomsOfficer, getWhiteApron, getRumFromCrate, bringRumToRedbeard)));
-		return allSteps;
+		sections.add(new PanelDetails("Rum smuggling", List.of(
+			goToKaramja,
+			talkToZambo,
+			talkToLuthas,
+			addRumToCrate,
+			addBananasToCrate,
+			talkToLuthas
+		)));
+
+		sections.add(new PanelDetails("Back to Port Sarim", List.of(
+			talkToCustomsOfficer,
+			getWhiteApron,
+			getRumFromCrate,
+			bringRumToRedbeard
+		)));
+
+		return sections;
 	}
 }

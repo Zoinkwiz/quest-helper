@@ -404,7 +404,9 @@ public class QuestStepPanel extends JPanel implements MouseListener
 
 	private QuestStep currentlyActiveQuestSidebarStep()
 	{
-		return questHelperPlugin.getSelectedQuest().getCurrentStep().getActiveStep();
+		var selectedQuest = questHelperPlugin.getSelectedQuest();
+		var currentStep = selectedQuest.getCurrentStep();
+		return currentStep.getActiveStep();
 	}
 
 	@Override

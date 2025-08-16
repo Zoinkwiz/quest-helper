@@ -181,8 +181,6 @@ public class QuestHelperTest extends MockedTest
 	}
 
 	void checkStep(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, QuestStep step) {
-		when(helper.getCurrentStep()).thenReturn(step);
-
 		var rawText = step.getText();
 		var text = rawText == null ? "" : String.join("\n", rawText);
 
@@ -216,7 +214,9 @@ public class QuestHelperTest extends MockedTest
 			{
 				if (checkedSteps.contains(innerStep)) continue;
 				checkedSteps.add(innerStep);
+				helper.startUpStep(innerStep);
 				checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, innerStep);
+				helper.shutDownStep();
 			}
 			helper.shutDownStep();
 		}
@@ -315,7 +315,7 @@ public class QuestHelperTest extends MockedTest
 				}
 			}
 
-			var helper = Mockito.spy(quest.getQuestHelper());
+			var helper = quest.getQuestHelper();
 			helper.setQuest(quest);
 			if (quest.getPlayerQuests() != null)
 			{
@@ -355,7 +355,18 @@ public class QuestHelperTest extends MockedTest
 			}
 			else if (helper instanceof ComplexStateQuestHelper)
 			{
-				// currently unsupported helper type
+				this.injector.injectMembers(helper);
+				helper.setInjector(this.injector);
+				helper.setQuestHelperPlugin(questHelperPlugin);
+				helper.setConfig(questHelperConfig);
+				helper.init();
+				helper.startUp(questHelperConfig);
+
+				var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
+				questOverviewPanel.addQuest(helper, false);
+				var complexHelper = (ComplexStateQuestHelper) helper;
+				checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, complexHelper.getCurrentStep());
 			}
 			else
 			{

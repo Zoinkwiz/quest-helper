@@ -27,78 +27,65 @@ package com.questhelper.helpers.quests.piratestreasure;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.NpcHintArrowRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.DigStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class PiratesTreasure extends BasicQuestHelper
 {
-	//ItemRequirements
-	ItemRequirement sixtyCoins, spade, pirateMessage, chestKey;
+	// Required items
+	ItemRequirement sixtyCoins;
+	ItemRequirement spade;
+	ItemRequirement tenBananas;
 
-	private NpcStep speakToRedbeard;
+	// Recommended items
+	ItemRequirement teleportVarrock;
+	ItemRequirement teleportFalador;
 
-	private RumSmugglingStep smuggleRum;
+	// Mid-quest requirements
+	ItemRequirement pirateMessage;
+	ItemRequirement chestKey;
 
-	private QuestStep readPirateMessage;
-
-	private ObjectStep openChest, climbStairs;
-
-	private QuestStep digUpTreasure;
-
+	// Zones
 	Zone blueMoonFirst;
 
+	// Miscellaneous requirements
 	ZoneRequirement inBlueMoonFirst;
 
+	// Steps
+	NpcStep speakToRedbeard;
+
+	QuestStep readPirateMessage;
+
+	RumSmugglingStep smuggleRum;
+
+	ObjectStep openChest;
+	ObjectStep climbStairs;
+
+	QuestStep digUpTreasure;
+	NpcStep killGardener;
+
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		speakToRedbeard = new NpcStep(this, NpcID.REDBEARD_FRANK, new WorldPoint(3053, 3251, 0),
-			"Talk to Redbeard Frank in Port Sarim.");
-		speakToRedbeard.addDialogSteps("I'm in search of treasure.", "Yes.");
-
-		steps.put(0, speakToRedbeard);
-
-		smuggleRum = new RumSmugglingStep(this);
-
-		steps.put(1, smuggleRum);
-
-		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage.highlighted());
-		climbStairs = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS, new WorldPoint(3228, 3393, 0),
-			"Climb up the stairs in The Blue Moon Inn in Varrock.");
-		openChest = new ObjectStep(this, ObjectID.PIRATECHEST, new WorldPoint(3219, 3396, 1),
-			"Open the chest by using the key on it.", chestKey.highlighted());
-		openChest.addDialogStep("Ok thanks, I'll go and get it.");
-		openChest.addIcon(ItemID.CHEST_KEY);
-
 		blueMoonFirst = new Zone(new WorldPoint(3213, 3405, 1), new WorldPoint(3234, 3391, 1));
-		inBlueMoonFirst = new ZoneRequirement(blueMoonFirst);
-
-		ConditionalStep getTreasureMap = new ConditionalStep(this, climbStairs);
-		getTreasureMap.addStep(new Conditions(chestKey, inBlueMoonFirst), openChest);
-		getTreasureMap.addStep(pirateMessage, readPirateMessage);
-
-		steps.put(2, getTreasureMap);
-
-		digUpTreasure = new DigStep(this, new WorldPoint(2999, 3383, 0),
-			"Dig in the middle of the cross in Falador Park, and kill the Gardener (level 4) who appears. Once killed, dig again.");
-
-		steps.put(3, digUpTreasure);
-		return steps;
 	}
 
 	@Override
@@ -106,36 +93,93 @@ public class PiratesTreasure extends BasicQuestHelper
 	{
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
+
+		teleportVarrock = new ItemRequirement("A teleport to Varrock", ItemID.POH_TABLET_VARROCKTELEPORT);
+		teleportFalador = new ItemRequirement("A teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT);
+		tenBananas = new ItemRequirement("Bananas", ItemID.BANANA, 10).canBeObtainedDuringQuest();
+
 		pirateMessage = new ItemRequirement("Pirate message", ItemID.PIRATEMESSAGE);
 		chestKey = new ItemRequirement("Chest key", ItemID.CHEST_KEY);
 		chestKey.setTooltip("You can get another one from Redbeard Frank");
+
+		inBlueMoonFirst = new ZoneRequirement(blueMoonFirst);
+	}
+
+	private void setupSteps()
+	{
+		speakToRedbeard = new NpcStep(this, NpcID.REDBEARD_FRANK, new WorldPoint(3053, 3251, 0),
+			"Talk to Redbeard Frank in Port Sarim.");
+		speakToRedbeard.addDialogSteps("I'm in search of treasure.", "Yes.");
+
+
+		readPirateMessage = new DetailedQuestStep(this, "Read the Pirate message.", pirateMessage.highlighted());
+
+
+		climbStairs = new ObjectStep(this, ObjectID.FAI_VARROCK_STAIRS, new WorldPoint(3228, 3393, 0), "Climb up the stairs in The Blue Moon Inn in Varrock.", chestKey);
+		climbStairs.addTeleport(teleportVarrock);
+		openChest = new ObjectStep(this, ObjectID.PIRATECHEST, new WorldPoint(3219, 3396, 1), "Open the chest by using the key on it.", chestKey.highlighted());
+		openChest.addDialogStep("Ok thanks, I'll go and get it.");
+		openChest.addIcon(ItemID.CHEST_KEY);
+
+		smuggleRum = new RumSmugglingStep(this);
+
+		digUpTreasure = new DigStep(this, new WorldPoint(2999, 3383, 0), "Dig in the middle of the cross in Falador Park, and kill the Gardener (level 4) who appears. Once killed, dig again.");
+		// TODO: Add a teleport to DigStep
+
+		killGardener = new NpcStep(this, NpcID.PIRATE_IRATE_GARDENER, new WorldPoint(2999, 3383, 0), "Kill the Gardener (level 4).");
+		digUpTreasure.addSubSteps(killGardener);
+	}
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, speakToRedbeard);
+
+		steps.put(1, smuggleRum);
+
+		var getTreasureMap = new ConditionalStep(this, climbStairs);
+		getTreasureMap.addStep(pirateMessage, readPirateMessage);
+		getTreasureMap.addStep(inBlueMoonFirst, openChest);
+
+		steps.put(2, getTreasureMap);
+
+		var cDigUpTreasure = new ConditionalStep(this, digUpTreasure);
+		cDigUpTreasure.addStep(new NpcHintArrowRequirement(NpcID.PIRATE_IRATE_GARDENER), killGardener);
+		steps.put(3, cDigUpTreasure);
+
+		return steps;
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(sixtyCoins);
-		reqs.add(spade);
-
-		return reqs;
+		return List.of(
+			sixtyCoins,
+			spade,
+			tenBananas
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(new ItemRequirement("A teleport to Varrock", ItemID.POH_TABLET_VARROCKTELEPORT));
-		reqs.add(new ItemRequirement("A teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT));
-		reqs.add(new ItemRequirement("Bananas (obtainable in quest)", ItemID.BANANA, 10));
-
-		return reqs;
+		return List.of(
+			teleportVarrock,
+			teleportFalador
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Gardener (level 4)");
+		return List.of(
+			"Gardener (level 4)"
+		);
 	}
 
 	@Override
@@ -147,22 +191,35 @@ public class PiratesTreasure extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
-				new ItemReward("A Gold Ring", ItemID.GOLD_RING, 1),
-				new ItemReward("An Emerald", ItemID.EMERALD, 1),
-				new ItemReward("Coins", ItemID.COINS, 450));
+		return List.of(
+			new ItemReward("A Gold Ring", ItemID.GOLD_RING, 1),
+			new ItemReward("An Emerald", ItemID.EMERALD, 1),
+			new ItemReward("Coins", ItemID.COINS, 450)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Talk to Redbeard Frank", Collections.singletonList(speakToRedbeard), sixtyCoins));
-		allSteps.addAll(smuggleRum.panelDetails());
-		allSteps.add(new PanelDetails("Discover the treasure", Arrays.asList(climbStairs, openChest, readPirateMessage,
-			digUpTreasure), spade));
+		sections.add(new PanelDetails("Talk to Redbeard Frank", List.of(
+			speakToRedbeard
+		), List.of(
+			sixtyCoins
+		)));
 
-		return allSteps;
+		sections.addAll(smuggleRum.panelDetails());
+
+		sections.add(new PanelDetails("Discover the treasure", List.of(
+			climbStairs,
+			openChest,
+			readPirateMessage,
+			digUpTreasure
+		), List.of(
+			spade
+		)));
+
+		return sections;
 	}
 }

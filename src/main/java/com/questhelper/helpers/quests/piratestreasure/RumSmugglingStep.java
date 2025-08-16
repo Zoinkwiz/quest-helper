@@ -77,6 +77,7 @@ public class RumSmugglingStep extends ConditionalStep
 	private Conditions filledCrateWithBananasAndRum;
 	private ChatMessageRequirement crateSent;
 	private ChatMessageRequirement fillCrateWithBananasChat;
+	private Requirement haveYouCompletedyourTaskYet;
 
 	// Steps
 	private QuestStep syncStep;
@@ -90,6 +91,7 @@ public class RumSmugglingStep extends ConditionalStep
 	private QuestStep talkToLuthasAgain;
 	private QuestStep goToKaramja;
 	private QuestStep bringRumToRedbeard;
+	private MesBoxRequirement fillCrateBananas;
 
 	public RumSmugglingStep(PiratesTreasure questHelper)
 	{
@@ -144,16 +146,20 @@ public class RumSmugglingStep extends ConditionalStep
 		Requirement employedFromDialog = new Conditions(new DialogRequirement("If you could fill it up with bananas, I'll pay you 30 gold.", "Have you completed your task yet?", "you should see the old crate"));
 		employed = new Conditions(true, LogicType.OR, employedFromDialog, employedFromWidget, employedByWydinFromWidget);
 
+		// This can't be a dialog requirement because the check function doesn't do the actual checking
+		haveYouCompletedyourTaskYet = new WidgetTextRequirement(InterfaceID.ChatLeft.TEXT, "Have you completed your task yet?");
+
 		Requirement stashedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I have hidden my"));
 		Requirement stashedRumFromDialog = new MesBoxRequirement("You stash the rum in the crate.");
 		Requirement stashedRumFromChat = new Conditions(new ChatMessageRequirement("There is also some rum stashed in here too.", "There's already some rum in here...",
 			"There is some rum in here, although with no bananas to cover it. It is a little obvious."));
 		stashedRum = new Conditions(true, LogicType.OR, stashedRumFromDialog, stashedRumFromWidget, stashedRumFromChat, employedByWydinFromWidget);
 
-		MesBoxRequirement fillCrateBananas = new MesBoxRequirement("You fill the crate with bananas.", "You pack all your bananas into the crate.");
-		fillCrateBananas.setInvalidateRequirement(new ChatMessageRequirement("Have you completed your task yet?"));
+		var filledCrateWidget = and(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "in the crate and filled it with"));
+
+		fillCrateBananas = new MesBoxRequirement("You fill the crate with bananas.", "You pack all your bananas into the crate.");
 		fillCrateWithBananasChat = new ChatMessageRequirement("The crate is full of bananas.", "The crate is already full.");
-		Requirement filledCrateWithBananas = new Conditions(false, LogicType.OR, fillCrateWithBananasChat, fillCrateBananas);
+		Requirement filledCrateWithBananas = new Conditions(false, LogicType.OR, fillCrateWithBananasChat, fillCrateBananas, filledCrateWidget);
 		filledCrateWithBananasAndRum = new Conditions(true, LogicType.AND, filledCrateWithBananas, stashedRum);
 
 		Requirement shippedRumFromWidget = new Conditions(inPirateTreasureMenu, new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "the crate has been shipped"));
@@ -228,6 +234,17 @@ public class RumSmugglingStep extends ConditionalStep
 	@Override
 	protected void updateSteps()
 	{
+		if (haveYouCompletedyourTaskYet.check(client))
+		{
+			// When talking to Luthas, we've confirmed you have actually not filled up the crate
+			// with bananas. Reset the checks that mdae us think it was filled up.
+			//
+			// This can happen if the user fills the crate up with less than 10 bananas in one go.
+			fillCrateWithBananasChat.setHasReceivedChatMessage(false);
+			fillCrateBananas.setHasPassed(false);
+			filledCrateWithBananasAndRum.setHasPassed(false);
+		}
+
 		if ((hadRumOffKaramja.check(client) && !hasRumOffKaramja.check(client))
 			|| lostRum.check(client))
 		{

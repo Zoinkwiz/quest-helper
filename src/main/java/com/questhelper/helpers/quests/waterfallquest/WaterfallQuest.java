@@ -200,8 +200,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		talkToAlmera = new NpcStep(this, NpcID.ALMERA_WATERFALL_QUEST, new WorldPoint(2521, 3495, 0), "Talk to Almera on top of Baxtorian Falls, south of Barbarian Outpost.");
 		talkToAlmera.addDialogStep("Yes.");
 
-		boardRaft = new ObjectStep(this, ObjectID.LOGRAFT_WATERFALL_QUEST, new WorldPoint(2509, 3494, 0), "Board the log raft west of Almera.");
-		talkToHudon = new NpcStep(this, NpcID.HUDON_WATERFALL_QUEST, new WorldPoint(2511, 3484, 0), "Talk to Hudon.");
+		boardRaft = new ObjectStep(this, ObjectID.LOGRAFT_WATERFALL_QUEST, new WorldPoint(2509, 3494, 0), "Board the log raft west of Almera.", rope);
+		talkToHudon = new NpcStep(this, NpcID.HUDON_WATERFALL_QUEST, new WorldPoint(2511, 3484, 0), "Talk to Hudon.", rope);
 		useRopeOnRock = new ObjectStep(this, ObjectID.CROSSING_ROCK_WATERFALL_QUEST, new WorldPoint(2512, 3468, 0), "Use a rope on the rock to" +
 			" the south.", highlightRope);
 		useRopeOnRock.addIcon(ItemID.ROPE);

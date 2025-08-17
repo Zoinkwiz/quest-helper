@@ -136,7 +136,7 @@ public class DwarfCannon extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToCaptainLawgof = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof near the Coal Truck Mining Site (north of Fishing Guild, West of McGrubor's Wood).");
-		talkToCaptainLawgof.addDialogStep("Sure, I'd be honoured to join.");
+		talkToCaptainLawgof.addDialogStep("Yes.");
 
 		//Fix the 6 bent railings, these railings don't have different IDs from the normal railings
 		inspectRailings1 = new ObjectStep(this, ObjectID.MCANNON_RAILING1_MULTILOC, new WorldPoint(2555, 3479, 0), "Inspect the 6 damaged railings around the  camp to fix them.", hammer, railing);

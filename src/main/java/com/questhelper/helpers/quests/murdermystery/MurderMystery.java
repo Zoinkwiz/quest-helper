@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -361,27 +362,27 @@ public class MurderMystery extends BasicQuestHelper
 
 		checkedAnna = new Conditions(
 			true,
-			new WidgetTextRequirement(229, 1, "The compost is teeming with maggots.")
+			new WidgetTextRequirement(InterfaceID.Messagebox.TEXT, "The compost is teeming with maggots.")
 		);
 		checkedBob = new Conditions(
 			true,
-			new WidgetTextRequirement(229, 1, "The beehive buzzes with activity.")
+			new WidgetTextRequirement(InterfaceID.Messagebox.TEXT, "The beehive buzzes with activity.")
 		);
 		checkedCarol = new Conditions(
 			true,
-			new WidgetTextRequirement(229, 1, "The drain is totally blocked.")
+			new WidgetTextRequirement(InterfaceID.Messagebox.TEXT, "The drain is totally blocked.")
 		);
 		checkedDavid = new Conditions(
 			true,
-			new WidgetTextRequirement(229, 1, "few hundred spiders ready to hatch.")
+			new WidgetTextRequirement(InterfaceID.Messagebox.TEXT, "few hundred spiders ready to hatch.")
 		);
 		checkedElizabeth = new Conditions(
 			true,
-			new WidgetTextRequirement(229, 1, "The fountain is swarming")
+			new WidgetTextRequirement(InterfaceID.Messagebox.TEXT, "The fountain is swarming")
 		);
 		checkedFrank = new Conditions(
 			true,
-			new WidgetTextRequirement(229, 1, "crest but it is very dirty")
+			new WidgetTextRequirement(InterfaceID.Messagebox.TEXT, "crest but it is very dirty")
 		);
 		checkedSuspect = new RuneliteRequirement(configManager, "murdermysterydisprovedsuspect",
 			new Conditions(

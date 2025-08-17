@@ -180,7 +180,7 @@ public class DwarfCannon extends BasicQuestHelper
 		talkToCaptainLawgof3.addSubSteps(downTower, downTower2);
 
 		// Cave
-		gotoCave = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2624, 3393, 0), "Enter the goblin cave, east of the Fishing Guild entrance.");
+		gotoCave = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2622, 3392, 0), "Enter the goblin cave, east of the Fishing Guild entrance.");
 		searchCrates = new ObjectStep(this, ObjectID.MCANNONCRATEBOY, new WorldPoint(2571, 9850, 0), "Search the crates in the north west corner to find Lollk.");
 		talkToCaptainLawgof4 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Return to Captain Lawgof.");
 		talkToCaptainLawgof4.addDialogStep("Okay, I'll see what I can do.");

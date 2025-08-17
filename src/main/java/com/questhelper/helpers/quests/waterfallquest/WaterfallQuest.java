@@ -116,6 +116,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	DetailedQuestStep readBook;
 
 	ConditionalStep goGetPebble;
+	ObjectStep leaveHouse;
 	ObjectStep enterGnomeDungeon;
 	ObjectStep searchGnomeCrate;
 	ObjectStep enterGnomeDoor;
@@ -136,7 +137,6 @@ public class WaterfallQuest extends BasicQuestHelper
 	DetailedQuestStep useRunes;
 	ObjectStep useAmuletOnStatue;
 	ObjectStep useUrnOnChalice;
-
 
 	@Override
 	protected void setupZones()
@@ -255,6 +255,8 @@ public class WaterfallQuest extends BasicQuestHelper
 			new WorldPoint(2545, 3155, 0),
 			new WorldPoint(2533, 3155, 0)
 		));
+		leaveHouse = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(2518, 3430, 1), "Go to the centre of the Tree Gnome Village and go down the ladder at the entrance.");
+		enterGnomeDungeon.addSubSteps(leaveHouse);
 		searchGnomeCrate = new ObjectStep(this, ObjectID.GOLRIE_CRATE_WATERFALL_QUEST, new WorldPoint(2548, 9565, 0), "Search the off-coloured crate in the east room.");
 		enterGnomeDoor = new ObjectStep(this, ObjectID.GOLRIE_GATE_WATERFALL_QUEST, new WorldPoint(2515, 9575, 0), "Go through the gate in the west room.", key);
 		talkToGolrie = new NpcStep(this, NpcID.GOLRIE_WATERFALL_QUEST, new WorldPoint(2514, 9580, 0), "Talk to Golrie.");
@@ -314,6 +316,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		goGetPebble.addStep(inGolrieRoom, talkToGolrie);
 		goGetPebble.addStep(and(inGnomeBasement, key), enterGnomeDoor);
 		goGetPebble.addStep(inGnomeBasement, searchGnomeCrate);
+		goGetPebble.addStep(inUpstairsInHouse, leaveHouse);
 		goGetPebble.setLockingCondition(gotPebble);
 
 		getGlarialStuff = new ConditionalStep(this, usePebble);

@@ -67,6 +67,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	// Mid-quest requirements
 	ItemRequirement highlightRope;
 	ItemRequirement glarialsPebble;
+	ItemRequirement glarialsPebbleWithBank;
 	ItemRequirement glarialsUrn;
 	ItemRequirement glarialsAmulet;
 	ItemRequirement unequippedAmulet;
@@ -164,6 +165,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		glarialsPebble = new ItemRequirement("Glarial's pebble", ItemID.GLARIALS_PEBBLE_WATERFALL_QUEST);
 		glarialsPebble.setHighlightInInventory(true);
 		glarialsPebble.setTooltip("You can get another from Golrie under the Tree Gnome Village");
+		glarialsPebbleWithBank = glarialsPebble.alsoCheckBank(questBank);
 		glarialsUrn = new ItemRequirement("Glarial's urn", ItemID.GLARIALS_URN_FULL_WATERFALL_QUEST);
 		glarialsUrn.setTooltip("You can get another from the chest in Glarial's tomb");
 		glarialsAmulet = new ItemRequirement("Glarial's amulet", ItemID.GLARIALS_AMULET_WATERFALL_QUEST, 1, true);
@@ -317,7 +319,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		goGetPebble.addStep(and(inGnomeBasement, key), enterGnomeDoor);
 		goGetPebble.addStep(inGnomeBasement, searchGnomeCrate);
 		goGetPebble.addStep(inUpstairsInHouse, leaveHouse);
-		goGetPebble.setLockingCondition(gotPebble);
+		goGetPebble.setLockingCondition(glarialsPebbleWithBank);
 
 		getGlarialStuff = new ConditionalStep(this, usePebble);
 		getGlarialStuff.addStep(and(glarialsAmulet.alsoCheckBank(questBank), inGlarialTomb), searchGlarialCoffin);

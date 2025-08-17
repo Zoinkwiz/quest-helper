@@ -310,7 +310,6 @@ public class WaterfallQuest extends BasicQuestHelper
 
 		steps.put(2, goReadBook);
 
-		// TODO: Add lines to guide through maze
 		goGetPebble = new ConditionalStep(this, enterGnomeDungeon);
 		goGetPebble.addStep(inGolrieRoom, talkToGolrie);
 		goGetPebble.addStep(and(inGnomeBasement, key), enterGnomeDoor);

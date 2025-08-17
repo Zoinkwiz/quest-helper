@@ -503,7 +503,7 @@ public class MurderMystery extends BasicQuestHelper
 		compareFrank = new DetailedQuestStep(this, "Use Frank's prints on the killer's print to compare them.", unknownPrint.highlighted(), frankPrint.highlighted());
 
 		talkToGossip = new NpcStep(this, NpcID.GOSSIPY_MAN, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
-		talkToGossip.addDialogStep(2, "Who do you think was responsible?");
+		talkToGossip.addDialogStep("Who do you think was responsible?");
 
 		talkToPoisonSalesman = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the " +
 			"Poison Salesman in the Seers' Village pub.");

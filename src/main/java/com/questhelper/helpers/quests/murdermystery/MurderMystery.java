@@ -56,6 +56,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class MurderMystery extends BasicQuestHelper
@@ -287,12 +288,12 @@ public class MurderMystery extends BasicQuestHelper
 					"In fact they bought the last of my supplies!")
 			));
 
-		annaGuilty = new VarplayerRequirement(195, 1);
-		bobGuilty = new VarplayerRequirement(195, 2);
-		carolGuilty = new VarplayerRequirement(195, 3);
-		davidGuilty = new VarplayerRequirement(195, 4);
-		elizabethGuilty = new VarplayerRequirement(195, 5);
-		frankGuilty = new VarplayerRequirement(195, 6);
+		annaGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 1);
+		bobGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 2);
+		carolGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 3);
+		davidGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 4);
+		elizabethGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 5);
+		frankGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 6);
 
 		hasCriminalSilverItem = or(
 			new Conditions(annaGuilty, silverNecklace),
@@ -442,7 +443,7 @@ public class MurderMystery extends BasicQuestHelper
 
 		steps.put(1, investigating);
 
-		if (client.getVarpValue(195) > 0)
+		if (client.getVarpValue(VarPlayerID.MURDERSUS) > 0)
 		{
 			updateSuspect();
 		}
@@ -453,7 +454,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarpId() != 195)
+		if (varbitChanged.getVarpId() != VarPlayerID.MURDERSUS)
 		{
 			return;
 		}
@@ -464,7 +465,7 @@ public class MurderMystery extends BasicQuestHelper
 	private void updateSuspect()
 	{
 		// 5 for me
-		int suspect = client.getVarpValue(195);
+		int suspect = client.getVarpValue(VarPlayerID.MURDERSUS);
 		if (suspect == 1)
 		{
 			useFlourSidebar.getText().set(0, useFlourOnNecklace.getText().get(0));

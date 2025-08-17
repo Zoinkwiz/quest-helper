@@ -131,8 +131,8 @@ public class DwarfCannon extends BasicQuestHelper
 		toolkit = new ItemRequirement("Toolkit", ItemID.MCANNONTOOLKIT);
 		toolkit.setHighlightInInventory(true);
 		dwarfRemains = new ItemRequirement("Dwarf Remains", ItemID.MCANNONREMAINS);
-		cannonballMould = new ItemRequirement("Cannonball Mould", ItemID.AMMO_MOULD);
-		nulodionsNotes = new ItemRequirement("Nulodion's Notes", ItemID.NULODIONS_NOTES);
+		cannonballMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD);
+		nulodionsNotes = new ItemRequirement("Nulodion's notes", ItemID.NULODIONS_NOTES);
 
 		bar1 = new VarbitRequirement(VarbitID.MCANNON_RAILING1_FIXED, 1);
 		bar2 = new VarbitRequirement(VarbitID.MCANNON_RAILING2_FIXED, 1);

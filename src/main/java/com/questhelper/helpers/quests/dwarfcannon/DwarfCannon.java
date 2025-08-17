@@ -73,34 +73,35 @@ public class DwarfCannon extends BasicQuestHelper
 	VarbitRequirement safetyFixed;
 
 	// Steps
-	QuestStep talkToCaptainLawgof;
+	NpcStep talkToCaptainLawgof;
 
 	NpcStep getRailings;
-	QuestStep inspectRailings1;
-	QuestStep inspectRailings2;
-	QuestStep inspectRailings3;
-	QuestStep inspectRailings4;
-	QuestStep inspectRailings5;
-	QuestStep inspectRailings6;
+	ObjectStep inspectRailings1;
+	ObjectStep inspectRailings2;
+	ObjectStep inspectRailings3;
+	ObjectStep inspectRailings4;
+	ObjectStep inspectRailings5;
+	ObjectStep inspectRailings6;
 	ConditionalStep cInspectRailings;
-	QuestStep talkToCaptainLawgof2;
+	NpcStep talkToCaptainLawgof2;
 
-	QuestStep gotoTower;
-	QuestStep goToTower2;
-	QuestStep talkToCaptainLawgof3;
-	QuestStep getRemainsStep;
-	QuestStep downTower;
-	QuestStep downTower2;
+	ObjectStep gotoTower;
+	ObjectStep goToTower2;
+	NpcStep talkToCaptainLawgof3;
+	ObjectStep getRemainsStep;
+	ObjectStep downTower;
+	ObjectStep downTower2;
 
-	QuestStep gotoCave;
-	QuestStep searchCrates;
+	ObjectStep gotoCave;
+	ObjectStep searchCrates;
 	ObjectStep exitCave;
-	QuestStep talkToCaptainLawgof4;
+	NpcStep talkToCaptainLawgof4;
 
 	PuzzleWrapperStep pwFixMulticannon;
-	QuestStep talkToCaptainLawgof5;
-	QuestStep talkToNulodion;
-	QuestStep talkToCaptainLawgof6;
+	NpcStep talkToCaptainLawgof5;
+
+	NpcStep talkToNulodion;
+	NpcStep talkToCaptainLawgof6;
 
 	@Override
 	protected void setupZones()

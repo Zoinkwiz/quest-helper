@@ -8,6 +8,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -18,12 +19,14 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetStep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -61,9 +64,13 @@ public class DwarfCannon extends BasicQuestHelper
 	VarbitRequirement bar5;
 	VarbitRequirement bar6;
 	Conditions allBarsFixed;
+
+	WidgetPresenceRequirement isPuzzleOpen;
+	VarbitRequirement toothedToolSelected;
+	VarbitRequirement pliersSelected;
+	VarbitRequirement hookSelected;
 	VarbitRequirement springFixed;
 	VarbitRequirement safetyFixed;
-	VarbitRequirement cannonFixed;
 
 	// Steps
 	QuestStep talkToCaptainLawgof;
@@ -90,7 +97,7 @@ public class DwarfCannon extends BasicQuestHelper
 	ObjectStep exitCave;
 	QuestStep talkToCaptainLawgof4;
 
-	QuestStep useToolkit;
+	PuzzleWrapperStep pwFixMulticannon;
 	QuestStep talkToCaptainLawgof5;
 	QuestStep talkToNulodion;
 	QuestStep talkToCaptainLawgof6;
@@ -136,9 +143,14 @@ public class DwarfCannon extends BasicQuestHelper
 
 		allBarsFixed = and(bar1, bar2, bar3, bar4, bar5, bar6);
 
+		isPuzzleOpen = new WidgetPresenceRequirement(InterfaceID.McannonInterface.ROOT_RECT0);
+
+		toothedToolSelected = new VarbitRequirement(VarbitID.MCANNONMULTI_TOOL1, 1);
+		pliersSelected = new VarbitRequirement(VarbitID.MCANNONMULTI_TOOL2, 1);
+		hookSelected = new VarbitRequirement(VarbitID.MCANNONMULTI_TOOL3, 1);
+
 		springFixed = new VarbitRequirement(VarbitID.MCANNON_SPRING_SET, 1);
 		safetyFixed = new VarbitRequirement(VarbitID.MCANNON_SAFETY_ON, 1);
-		cannonFixed = new VarbitRequirement(VarbitID.MCANNONMULTI_TOOL1, 1);
 
 		upTower1 = new ZoneRequirement(tower1);
 		upTower2 = new ZoneRequirement(tower2);
@@ -190,13 +202,29 @@ public class DwarfCannon extends BasicQuestHelper
 		talkToCaptainLawgof4.addDialogStep("Okay, I'll see what I can do.");
 		talkToCaptainLawgof4.addSubSteps(exitCave);
 
-		//Fix cannon
-		// TODO: Update this to highlight widgets as you progress, indicating what tool to use on what
-		useToolkit = new PuzzleWrapperStep(this,
-			new ObjectStep(this, ObjectID.MCANNON_CANNON_MULTILOC, new WorldPoint(2563, 3462, 0),
-				"Use the toolkit on the broken multicannon.  Use the right tool on the spring, the middle tool on the Safety switch, and the left tool on the gear."),
-			new ObjectStep(this, ObjectID.MCANNON_CANNON_MULTILOC, new WorldPoint(2563, 3462, 0), "Use the toolkit on the broken multicannon."));
-		useToolkit.addIcon(ItemID.MCANNONTOOLKIT);
+		// Fix cannon
+		var actuallyUseToolkit = new ObjectStep(this, ObjectID.MCANNON_CANNON_MULTILOC, new WorldPoint(2563, 3462, 0), "", toolkit.highlighted());
+		actuallyUseToolkit.addIcon(ItemID.MCANNONTOOLKIT);
+
+		var clickHook = new WidgetStep(this, "Click the hook and use it on the spring.", InterfaceID.McannonInterface.MCANNON_TOOL3);
+		var clickSpring = new WidgetStep(this, "Click the hook and use it on the spring.", InterfaceID.McannonInterface.MCANNON_SPRING);
+
+		var clickPliers = new WidgetStep(this, "Click the pliers and use it on the safety switch at the bottom.", InterfaceID.McannonInterface.MCANNON_TOOL2);
+		var clickSafety = new WidgetStep(this, "Click the pliers and use it on the safety switch at the bottom.", InterfaceID.McannonInterface.MCANNON_SAFETY);
+
+		var clickToothedTool = new WidgetStep(this, "Click the toothed tool and use it on the gear at the bottom.", InterfaceID.McannonInterface.MCANNON_TOOL1);
+		var clickGear = new WidgetStep(this, "Click the toothed tool and use it on the gear at the bottom.", InterfaceID.McannonInterface.MCANNON_GEAR);
+
+		var fixCannon = new ConditionalStep(this, actuallyUseToolkit, "Use the toolkit on the broken multicannon, then use the highlighted tool on the highlighted part to fix it.");
+		fixCannon.addStep(and(isPuzzleOpen, safetyFixed, springFixed, toothedToolSelected), clickGear);
+		fixCannon.addStep(and(isPuzzleOpen, safetyFixed, springFixed), clickToothedTool);
+		fixCannon.addStep(and(isPuzzleOpen, not(safetyFixed), pliersSelected), clickSafety);
+		fixCannon.addStep(and(isPuzzleOpen, not(springFixed), hookSelected), clickSpring);
+		fixCannon.addStep(and(isPuzzleOpen, not(safetyFixed)), clickPliers);
+		fixCannon.addStep(and(isPuzzleOpen, not(springFixed)), clickHook);
+
+		pwFixMulticannon = fixCannon.puzzleWrapStepWithDefaultText("Use the toolkit on the broken multicannon.");
+		pwFixMulticannon.addIcon(ItemID.MCANNONTOOLKIT);
 		talkToCaptainLawgof5 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof (There will be a short pause in dialogue.  Both need to be completed.).");
 		talkToCaptainLawgof5.addDialogStep("Okay then, just for you!");
 
@@ -242,7 +270,7 @@ public class DwarfCannon extends BasicQuestHelper
 		step6.addStep(inCave, exitCave);
 		steps.put(6, step6);
 
-		steps.put(7, useToolkit);
+		steps.put(7, pwFixMulticannon);
 		steps.put(8, talkToCaptainLawgof5);
 
 		//Ammo mould and back
@@ -318,7 +346,7 @@ public class DwarfCannon extends BasicQuestHelper
 			gotoCave,
 			searchCrates,
 			talkToCaptainLawgof4,
-			useToolkit,
+			pwFixMulticannon,
 			talkToCaptainLawgof5
 		)));
 

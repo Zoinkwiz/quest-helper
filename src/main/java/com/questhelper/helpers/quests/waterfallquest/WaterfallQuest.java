@@ -281,7 +281,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		enterFalls = new ObjectStep(this, ObjectID.WATERFALL_LEDGE_DOOR, new WorldPoint(2511, 3464, 0), "Enter the falls with Glarial's amulet equipped.", glarialsAmulet);
 
 		searchFallsCrate = new ObjectStep(this, ObjectID.BAXTORIAN_CRATE_WATERFALL_QUEST, new WorldPoint(2589, 9888, 0), "Search the crate in the east room for a key.");
-		useKeyOnFallsDoor = new ObjectStep(this, ObjectID.BAXTORIAN_DOOR_2_WATERFALL_QUEST, new WorldPoint(2566, 9901, 0), "Go through the doors from the west room.", baxKey);
+		useKeyOnFallsDoor = new ObjectStep(this, ObjectID.BAXTORIAN_DOOR_2_WATERFALL_QUEST, new WorldPoint(2566, 9901, 0), "Enter the west room with the key.", baxKey);
 
 		useRunes = new DetailedQuestStep(this, "Use 1 earth, water and air rune on each of the 6 pillars in the room. Afterwards, use Glarial's amulet on the statue of Glarial.", airRune, waterRune, earthRune);
 

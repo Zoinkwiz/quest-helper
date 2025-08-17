@@ -43,7 +43,6 @@ public class DwarfCannon extends BasicQuestHelper
 	Zone cave;
 	Zone tower1;
 	Zone tower2;
-	Zone lawgofArea;
 
 	// Miscellaneous requirements
 	ItemRequirement railing;
@@ -62,7 +61,6 @@ public class DwarfCannon extends BasicQuestHelper
 	VarbitRequirement bar5;
 	VarbitRequirement bar6;
 	Conditions allBarsFixed;
-	ZoneRequirement nearLawgof;
 	VarbitRequirement springFixed;
 	VarbitRequirement safetyFixed;
 	VarbitRequirement cannonFixed;
@@ -100,7 +98,6 @@ public class DwarfCannon extends BasicQuestHelper
 		cave = new Zone(new WorldPoint(2557, 9790, 0), new WorldPoint(2624, 9859, 0));
 		tower1 = new Zone(new WorldPoint(2568, 3439, 1), new WorldPoint(2572, 3445, 1));
 		tower2 = new Zone(new WorldPoint(2566, 3445, 2), new WorldPoint(2572, 3441, 2));
-		lawgofArea = new Zone(new WorldPoint(2551, 3477, 0), new WorldPoint(2595, 3434, 0));
 	}
 
 	@Override
@@ -143,7 +140,6 @@ public class DwarfCannon extends BasicQuestHelper
 		upTower1 = new ZoneRequirement(tower1);
 		upTower2 = new ZoneRequirement(tower2);
 		inCave = new ZoneRequirement(cave);
-		nearLawgof = new ZoneRequirement(lawgofArea);
 	}
 
 	public void setupSteps()
@@ -221,11 +217,11 @@ public class DwarfCannon extends BasicQuestHelper
 		fixRailings.addStep(not(railing), getRailings);
 		steps.put(1, fixRailings);
 
-		//Go to tower, get remains, come back
+		// Go to tower, get remains, come back
 		var getRemains = new ConditionalStep(this, gotoTower);
-		getRemains.addStep(and(dwarfRemains, nearLawgof), talkToCaptainLawgof3);
 		getRemains.addStep(and(dwarfRemains, upTower1), downTower2);
 		getRemains.addStep(and(dwarfRemains, upTower2), downTower);
+		getRemains.addStep(dwarfRemains, talkToCaptainLawgof3);
 		getRemains.addStep(upTower2, getRemainsStep);
 		getRemains.addStep(upTower1, goToTower2);
 		steps.put(2, getRemains);

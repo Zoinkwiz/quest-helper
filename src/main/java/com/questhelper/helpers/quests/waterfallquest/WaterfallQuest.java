@@ -132,6 +132,7 @@ public class WaterfallQuest extends BasicQuestHelper
 	ObjectStep boardRaftFinal;
 	ObjectStep useRopeOnRockFinal;
 	ObjectStep useRopeOnTreeFinal;
+	DetailedQuestStep equipAmulet;
 	ObjectStep enterFalls;
 	ObjectStep searchFallsCrate;
 	ObjectStep useKeyOnFallsDoor;
@@ -276,7 +277,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		useRopeOnRockFinal.addIcon(ItemID.ROPE);
 		useRopeOnTreeFinal = new ObjectStep(this, ObjectID.OVERHANGING_TREE1_WATERFALL_QUEST, new WorldPoint(2512, 3465, 0), "Use a rope on the dead tree.", highlightRope);
 		useRopeOnTreeFinal.addIcon(ItemID.ROPE);
-		enterFalls = new ObjectStep(this, ObjectID.WATERFALL_LEDGE_DOOR, new WorldPoint(2511, 3464, 0), "EQUIP Glarial's amulet, then enter the falls.", glarialsAmulet);
+		equipAmulet = new DetailedQuestStep(this, "Equip Glarial's amulet.", glarialsAmulet.highlighted());
+		enterFalls = new ObjectStep(this, ObjectID.WATERFALL_LEDGE_DOOR, new WorldPoint(2511, 3464, 0), "Enter the falls with Glarial's amulet equipped.", glarialsAmulet);
 
 		searchFallsCrate = new ObjectStep(this, ObjectID.BAXTORIAN_CRATE_WATERFALL_QUEST, new WorldPoint(2589, 9888, 0), "Search the crate in the east room for a key.");
 		useKeyOnFallsDoor = new ObjectStep(this, ObjectID.BAXTORIAN_DOOR_2_WATERFALL_QUEST, new WorldPoint(2566, 9901, 0), "Go through the doors from the west room.", baxKey);
@@ -331,7 +333,8 @@ public class WaterfallQuest extends BasicQuestHelper
 		puttingToRest.addStep(inEndRoom, useRunes);
 		puttingToRest.addStep(and(inFalls, baxKey), useKeyOnFallsDoor);
 		puttingToRest.addStep(inFalls, searchFallsCrate);
-		puttingToRest.addStep(onLedge, enterFalls);
+		puttingToRest.addStep(and(onLedge, glarialsAmulet), enterFalls);
+		puttingToRest.addStep(onLedge, equipAmulet);
 		puttingToRest.addStep(onDeadTreeIsland, useRopeOnTreeFinal);
 		puttingToRest.addStep(onHudonIsland, useRopeOnRockFinal);
 		puttingToRest.addStep(and(glarialsUrn, glarialsAmulet, airRunes, earthRunes, waterRunes, rope), boardRaftFinal);
@@ -449,6 +452,7 @@ public class WaterfallQuest extends BasicQuestHelper
 			boardRaftFinal,
 			useRopeOnRockFinal,
 			useRopeOnTreeFinal,
+			equipAmulet,
 			enterFalls,
 			searchFallsCrate,
 			useKeyOnFallsDoor,

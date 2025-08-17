@@ -3,8 +3,10 @@ package com.questhelper.helpers.quests.dwarfcannon;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -59,6 +61,7 @@ public class DwarfCannon extends BasicQuestHelper
 	VarbitRequirement bar4;
 	VarbitRequirement bar5;
 	VarbitRequirement bar6;
+	Conditions allBarsFixed;
 	ZoneRequirement nearLawgof;
 	VarbitRequirement springFixed;
 	VarbitRequirement safetyFixed;
@@ -66,17 +69,21 @@ public class DwarfCannon extends BasicQuestHelper
 
 	// Steps
 	QuestStep talkToCaptainLawgof;
-	QuestStep talkToCaptainLawgof2;
-	QuestStep gotoTower;
-	QuestStep goToTower2;
-	QuestStep talkToCaptainLawgof3;
-	QuestStep gotoCave;
+
+	NpcStep getRailings;
 	QuestStep inspectRailings1;
 	QuestStep inspectRailings2;
 	QuestStep inspectRailings3;
 	QuestStep inspectRailings4;
 	QuestStep inspectRailings5;
 	QuestStep inspectRailings6;
+	ConditionalStep cInspectRailings;
+	QuestStep talkToCaptainLawgof2;
+
+	QuestStep gotoTower;
+	QuestStep goToTower2;
+	QuestStep talkToCaptainLawgof3;
+	QuestStep gotoCave;
 	QuestStep getRemainsStep;
 	QuestStep downTower;
 	QuestStep downTower2;
@@ -127,6 +134,8 @@ public class DwarfCannon extends BasicQuestHelper
 		bar5 = new VarbitRequirement(VarbitID.MCANNON_RAILING5_FIXED, 1);
 		bar6 = new VarbitRequirement(VarbitID.MCANNON_RAILING6_FIXED, 1);
 
+		allBarsFixed = and(bar1, bar2, bar3, bar4, bar5, bar6);
+
 		springFixed = new VarbitRequirement(VarbitID.MCANNON_SPRING_SET, 1);
 		safetyFixed = new VarbitRequirement(VarbitID.MCANNON_SAFETY_ON, 1);
 		cannonFixed = new VarbitRequirement(VarbitID.MCANNONMULTI_TOOL1, 1);
@@ -142,14 +151,23 @@ public class DwarfCannon extends BasicQuestHelper
 		talkToCaptainLawgof = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof near the Coal Truck Mining Site (north of Fishing Guild, West of McGrubor's Wood).");
 		talkToCaptainLawgof.addDialogStep("Yes.");
 
-		//Fix the 6 bent railings, these railings don't have different IDs from the normal railings
-		inspectRailings1 = new ObjectStep(this, ObjectID.MCANNON_RAILING1_MULTILOC, new WorldPoint(2555, 3479, 0), "Inspect the 6 damaged railings around the  camp to fix them.", hammer, railing);
-		inspectRailings2 = new ObjectStep(this, ObjectID.MCANNON_RAILING2_MULTILOC, new WorldPoint(2557, 3468, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings3 = new ObjectStep(this, ObjectID.MCANNON_RAILING3_MULTILOC, new WorldPoint(2559, 3458, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings4 = new ObjectStep(this, ObjectID.MCANNON_RAILING4_MULTILOC, new WorldPoint(2563, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings5 = new ObjectStep(this, ObjectID.MCANNON_RAILING5_MULTILOC, new WorldPoint(2573, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings6 = new ObjectStep(this, ObjectID.MCANNON_RAILING6_MULTILOC, new WorldPoint(2577, 3457, 0), "Inspect the railings to fix them.", hammer, railing);
-		inspectRailings1.addSubSteps(inspectRailings2, inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6);
+		// Fix the 6 bent railings, these railings don't have different IDs from the normal railings
+		getRailings = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof to get more railings.", hammer, railing);
+
+		inspectRailings1 = new ObjectStep(this, ObjectID.MCANNON_RAILING1_MULTILOC, new WorldPoint(2555, 3479, 0), "", hammer, railing);
+		inspectRailings2 = new ObjectStep(this, ObjectID.MCANNON_RAILING2_MULTILOC, new WorldPoint(2557, 3468, 0), "", hammer, railing);
+		inspectRailings3 = new ObjectStep(this, ObjectID.MCANNON_RAILING3_MULTILOC, new WorldPoint(2559, 3458, 0), "", hammer, railing);
+		inspectRailings4 = new ObjectStep(this, ObjectID.MCANNON_RAILING4_MULTILOC, new WorldPoint(2563, 3457, 0), "", hammer, railing);
+		inspectRailings5 = new ObjectStep(this, ObjectID.MCANNON_RAILING5_MULTILOC, new WorldPoint(2573, 3457, 0), "", hammer, railing);
+		inspectRailings6 = new ObjectStep(this, ObjectID.MCANNON_RAILING6_MULTILOC, new WorldPoint(2577, 3457, 0), "", hammer, railing);
+
+		cInspectRailings = new ConditionalStep(this, getRailings, "Inspect the six damaged railings around the camp to fix them.");
+		cInspectRailings.addStep(and(railing, not(bar1)), inspectRailings1);
+		cInspectRailings.addStep(and(railing, not(bar2)), inspectRailings2);
+		cInspectRailings.addStep(and(railing, not(bar3)), inspectRailings3);
+		cInspectRailings.addStep(and(railing, not(bar4)), inspectRailings4);
+		cInspectRailings.addStep(and(railing, not(bar5)), inspectRailings5);
+		cInspectRailings.addStep(and(railing, not(bar6)), inspectRailings6);
 
 		//Get dwarf remains
 		talkToCaptainLawgof2 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof again.  Make sure to complete the entire dialogue.");
@@ -196,16 +214,11 @@ public class DwarfCannon extends BasicQuestHelper
 		// Start
 		steps.put(0, talkToCaptainLawgof);
 
-		//Repair Bars
-		var fixedRailings = new ConditionalStep(this, inspectRailings1);
-		fixedRailings.addStep(bar6, talkToCaptainLawgof2);
-		fixedRailings.addStep(and(hammer, railing, bar5), inspectRailings6);
-		fixedRailings.addStep(and(hammer, railing, bar4), inspectRailings5);
-		fixedRailings.addStep(and(hammer, railing, bar3), inspectRailings4);
-		fixedRailings.addStep(and(hammer, railing, bar2), inspectRailings3);
-		fixedRailings.addStep(and(hammer, railing, bar1), inspectRailings2);
-
-		steps.put(1, fixedRailings);
+		// Repair damaged railings
+		var fixRailings = new ConditionalStep(this, cInspectRailings);
+		fixRailings.addStep(allBarsFixed, talkToCaptainLawgof2);
+		fixRailings.addStep(not(railing), getRailings);
+		steps.put(1, fixRailings);
 
 		//Go to tower, get remains, come back
 		var getRemains = new ConditionalStep(this, gotoTower);
@@ -288,7 +301,8 @@ public class DwarfCannon extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Repair and Retrieval", List.of(
-			inspectRailings1,
+			getRailings,
+			cInspectRailings,
 			talkToCaptainLawgof2,
 			gotoTower,
 			talkToCaptainLawgof3

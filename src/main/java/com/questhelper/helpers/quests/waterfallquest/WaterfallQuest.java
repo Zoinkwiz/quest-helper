@@ -156,9 +156,8 @@ public class WaterfallQuest extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		highlightRope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
-		highlightRope.setHighlightInInventory(true);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).isNotConsumed();
+		highlightRope = rope.highlighted();
 
 		book = new ItemRequirement("Book on baxtorian", ItemID.BAXTORIAN_BOOK_WATERFALL_QUEST);
 		book.setHighlightInInventory(true);

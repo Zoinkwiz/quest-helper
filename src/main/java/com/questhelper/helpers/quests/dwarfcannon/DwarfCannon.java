@@ -228,9 +228,9 @@ public class DwarfCannon extends BasicQuestHelper
 		talkToCaptainLawgof5 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof after repairing the multicannon.");
 		talkToCaptainLawgof5.addDialogStep("Okay then, just for you!");
 
-		//Cannonball mould
+		// Get notes & mould from Nulodion
 		talkToNulodion = new NpcStep(this, NpcID.NULODION, new WorldPoint(3012, 3453, 0), "Talk to Nulodion at the Dwarven Black Guard camp, south of Ice Mountain.");
-		talkToCaptainLawgof6 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Finally, return to Captain Lawgof with the ammo mould and Nulodion's Notes.", nulodionsNotes, cannonballMould);
+		talkToCaptainLawgof6 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Return to Captain Lawgof with the ammo mould and Nulodion's Notes.", nulodionsNotes, cannonballMould);
 	}
 
 	@Override

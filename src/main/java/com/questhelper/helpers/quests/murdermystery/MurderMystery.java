@@ -637,9 +637,9 @@ public class MurderMystery extends BasicQuestHelper
 		)));
 
 		allSteps.add(new PanelDetails("Collect evidence", List.of(
+			searchWindowForThread,
 			pickUpPungentPot,
-			pickUpDagger,
-			searchWindowForThread
+			pickUpDagger
 		)));
 
 		allSteps.add(new PanelDetails("Collect fingerprints", List.of(

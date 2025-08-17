@@ -447,7 +447,10 @@ public class MurderMystery extends BasicQuestHelper
 		pickUpPungentPot = new ItemStep(this, new WorldPoint(2747, 3579, 0), "Enter the mansion and pick up the pungent pot inside the east room.", pungentPot);
 		pickUpDagger = new ItemStep(this, new WorldPoint(2746, 3578, 0), "Pick up the criminal's dagger.", criminalsDaggerAny);
 		searchWindowForThread = new ObjectStep(this, ObjectID.MURDERWINDOW, new WorldPoint(2748, 3577, 0), "Search the window for a clothing thread. The colour of the thread will match the killer's trousers.", criminalsThread);
-		fillPotWithFlour = new ObjectStep(this, ObjectID.FLOURBARREL, new WorldPoint(2733, 3582, 0), "Fill your pot with flour from the barrel in the mansion's kitchen.", pot);
+		var actuallyFillPotWithFlour = new ObjectStep(this, ObjectID.FLOURBARREL, new WorldPoint(2733, 3582, 0), "", pot);
+		var goDownstairs = new ObjectStep(this, ObjectID.MURDER_QIP_SPIRALSTAIRSTOP, new WorldPoint(2736, 3581, 1), "Head downstairs to the ground floor.");
+		fillPotWithFlour = new ConditionalStep(this, actuallyFillPotWithFlour, "Fill your pot with flour from the barrel in the mansion's kitchen.");
+		((ConditionalStep) fillPotWithFlour).addStep(isUpstairs, goDownstairs);
 		useFlourOnDagger = new DetailedQuestStep(this, "Use the pot of flour on the Criminal's dagger.", potOfFlourHighlighted, criminalsDaggerHighlighted);
 		collectTwoFlypaper = new ObjectStep(this, ObjectID.MURDERSACKS, new WorldPoint(2731, 3582, 0), "Investigate the sacks in the shed for flypaper. Get 2 pieces.", twoFlypaper);
 		collectTwoFlypaper.addDialogStep("Yes, it might be useful.");

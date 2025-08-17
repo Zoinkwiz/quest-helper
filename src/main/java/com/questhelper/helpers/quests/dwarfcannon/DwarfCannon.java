@@ -3,91 +3,95 @@ package com.questhelper.helpers.quests.dwarfcannon;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-
-import java.util.*;
+import net.runelite.api.gameval.VarbitID;
 
 public class DwarfCannon extends BasicQuestHelper
 {
-	//Items Recommended
-	ItemRequirement staminas, teleToAsg, teleToKand;
+	// Recommended items
+	ItemRequirement staminas;
+	ItemRequirement teleToAsg;
+	ItemRequirement teleToKand;
 
-	//Items Required
-	ItemRequirement hammer, railing, dwarfRemains, toolkit, cannonballMould, nulodionsNotes;
+	// Zones
+	Zone cave;
+	Zone tower1;
+	Zone tower2;
+	Zone lawgofArea;
 
-	Requirement upTower1, upTower2, inCave, bar1, bar2, bar3, bar4, bar5, bar6, nearLawgof, springFixed, safetyFixed, cannonFixed;
+	// Miscellaneous requirements
+	ItemRequirement hammer;
+	ItemRequirement railing;
+	ItemRequirement dwarfRemains;
+	ItemRequirement toolkit;
+	ItemRequirement cannonballMould;
+	ItemRequirement nulodionsNotes;
 
-	QuestStep talkToCaptainLawgof, talkToCaptainLawgof2, gotoTower, goToTower2, talkToCaptainLawgof3, gotoCave, inspectRailings1, inspectRailings2,
-		inspectRailings3, inspectRailings4, inspectRailings5, inspectRailings6, getRemainsStep, downTower, downTower2, searchCrates,
-		talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5, talkToNulodion, talkToCaptainLawgof6;
+	ZoneRequirement upTower1;
+	ZoneRequirement upTower2;
+	ZoneRequirement inCave;
+	VarbitRequirement bar1;
+	VarbitRequirement bar2;
+	VarbitRequirement bar3;
+	VarbitRequirement bar4;
+	VarbitRequirement bar5;
+	VarbitRequirement bar6;
+	ZoneRequirement nearLawgof;
+	VarbitRequirement springFixed;
+	VarbitRequirement safetyFixed;
+	VarbitRequirement cannonFixed;
 
-	//Zones
-	Zone cave, tower1, tower2, lawgofArea;
+	// Steps
+	QuestStep talkToCaptainLawgof;
+	QuestStep talkToCaptainLawgof2;
+	QuestStep gotoTower;
+	QuestStep goToTower2;
+	QuestStep talkToCaptainLawgof3;
+	QuestStep gotoCave;
+	QuestStep inspectRailings1;
+	QuestStep inspectRailings2;
+	QuestStep inspectRailings3;
+	QuestStep inspectRailings4;
+	QuestStep inspectRailings5;
+	QuestStep inspectRailings6;
+	QuestStep getRemainsStep;
+	QuestStep downTower;
+	QuestStep downTower2;
+	QuestStep searchCrates;
+	QuestStep talkToCaptainLawgof4;
+	QuestStep useToolkit;
+	QuestStep talkToCaptainLawgof5;
+	QuestStep talkToNulodion;
+	QuestStep talkToCaptainLawgof6;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		//Start
-		steps.put(0, talkToCaptainLawgof);
-
-		//Repair Bars
-		ConditionalStep fixedRailings = new ConditionalStep(this, inspectRailings1);
-		fixedRailings.addStep(new Conditions(bar6), talkToCaptainLawgof2);
-		fixedRailings.addStep(new Conditions(hammer, railing, bar5), inspectRailings6);
-		fixedRailings.addStep(new Conditions(hammer, railing, bar4), inspectRailings5);
-		fixedRailings.addStep(new Conditions(hammer, railing, bar3), inspectRailings4);
-		fixedRailings.addStep(new Conditions(hammer, railing, bar2), inspectRailings3);
-		fixedRailings.addStep(new Conditions(hammer, railing, bar1), inspectRailings2);
-
-		steps.put(1, fixedRailings);
-
-		//Go to tower, get remains, come back
-		ConditionalStep getRemains = new ConditionalStep(this, gotoTower);
-		getRemains.addStep(new Conditions(dwarfRemains, nearLawgof), talkToCaptainLawgof3);
-		getRemains.addStep(new Conditions(dwarfRemains, upTower1), downTower2);
-		getRemains.addStep(new Conditions(dwarfRemains, upTower2), downTower);
-		getRemains.addStep(upTower2, getRemainsStep);
-		getRemains.addStep(upTower1, goToTower2);
-		steps.put(2, getRemains);
-		steps.put(3, getRemains);
-
-		//Go to the cave, find Lollk, return and fix cannon
-		ConditionalStep findLollk = new ConditionalStep(this, gotoCave);
-		findLollk.addStep(inCave, searchCrates);
-		steps.put(4, findLollk);
-		steps.put(5, findLollk);
-
-		steps.put(6, talkToCaptainLawgof4);
-
-		steps.put(7, useToolkit);
-		steps.put(8, talkToCaptainLawgof5);
-
-		//Ammo mould and back
-		ConditionalStep captainLawgofFinal = new ConditionalStep(this, talkToNulodion);
-		captainLawgofFinal.addStep(new Conditions(nulodionsNotes, cannonballMould), talkToCaptainLawgof6);
-		steps.put(9, captainLawgofFinal);
-		steps.put(10, captainLawgofFinal);
-
-		return steps;
+		cave = new Zone(new WorldPoint(2557, 9790, 0), new WorldPoint(2624, 9859, 0));
+		tower1 = new Zone(new WorldPoint(2568, 3439, 1), new WorldPoint(2572, 3445, 1));
+		tower2 = new Zone(new WorldPoint(2566, 3445, 2), new WorldPoint(2572, 3441, 2));
+		lawgofArea = new Zone(new WorldPoint(2551, 3477, 0), new WorldPoint(2595, 3434, 0));
 	}
 
 	@Override
@@ -111,38 +115,22 @@ public class DwarfCannon extends BasicQuestHelper
 		dwarfRemains = new ItemRequirement("Dwarf Remains", ItemID.MCANNONREMAINS);
 		cannonballMould = new ItemRequirement("Cannonball Mould", ItemID.AMMO_MOULD);
 		nulodionsNotes = new ItemRequirement("Nulodion's Notes", ItemID.NULODIONS_NOTES);
-	}
 
-	public void setupConditions()
-	{
-		//Varbits
-		bar1 = new VarbitRequirement(2240, 1);
-		bar2 = new VarbitRequirement(2241, 1);
-		bar3 = new VarbitRequirement(2242, 1);
-		bar4 = new VarbitRequirement(2243, 1);
-		bar5 = new VarbitRequirement(2244, 1);
-		bar6 = new VarbitRequirement(2245, 1);
-		//All Complete varbit 2246
+		bar1 = new VarbitRequirement(VarbitID.MCANNON_RAILING1_FIXED, 1);
+		bar2 = new VarbitRequirement(VarbitID.MCANNON_RAILING2_FIXED, 1);
+		bar3 = new VarbitRequirement(VarbitID.MCANNON_RAILING3_FIXED, 1);
+		bar4 = new VarbitRequirement(VarbitID.MCANNON_RAILING4_FIXED, 1);
+		bar5 = new VarbitRequirement(VarbitID.MCANNON_RAILING5_FIXED, 1);
+		bar6 = new VarbitRequirement(VarbitID.MCANNON_RAILING6_FIXED, 1);
 
-		springFixed = new VarbitRequirement(2239, 1);
-		safetyFixed = new VarbitRequirement(2238, 1);
-		cannonFixed = new VarbitRequirement(2235, 1);
+		springFixed = new VarbitRequirement(VarbitID.MCANNON_SPRING_SET, 1);
+		safetyFixed = new VarbitRequirement(VarbitID.MCANNON_SAFETY_ON, 1);
+		cannonFixed = new VarbitRequirement(VarbitID.MCANNONMULTI_TOOL1, 1);
 
-		//Zones
 		upTower1 = new ZoneRequirement(tower1);
 		upTower2 = new ZoneRequirement(tower2);
 		inCave = new ZoneRequirement(cave);
 		nearLawgof = new ZoneRequirement(lawgofArea);
-
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		cave = new Zone(new WorldPoint(2557, 9790, 0), new WorldPoint(2624, 9859, 0));
-		tower1 = new Zone(new WorldPoint(2568, 3439, 1), new WorldPoint(2572, 3445, 1));
-		tower2 = new Zone(new WorldPoint(2566, 3445, 2), new WorldPoint(2572, 3441, 2));
-		lawgofArea = new Zone(new WorldPoint(2551, 3477, 0), new WorldPoint(2595, 3434, 0));
 	}
 
 	public void setupSteps()
@@ -194,13 +182,65 @@ public class DwarfCannon extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		// Start
+		steps.put(0, talkToCaptainLawgof);
+
+		//Repair Bars
+		var fixedRailings = new ConditionalStep(this, inspectRailings1);
+		fixedRailings.addStep(bar6, talkToCaptainLawgof2);
+		fixedRailings.addStep(and(hammer, railing, bar5), inspectRailings6);
+		fixedRailings.addStep(and(hammer, railing, bar4), inspectRailings5);
+		fixedRailings.addStep(and(hammer, railing, bar3), inspectRailings4);
+		fixedRailings.addStep(and(hammer, railing, bar2), inspectRailings3);
+		fixedRailings.addStep(and(hammer, railing, bar1), inspectRailings2);
+
+		steps.put(1, fixedRailings);
+
+		//Go to tower, get remains, come back
+		var getRemains = new ConditionalStep(this, gotoTower);
+		getRemains.addStep(and(dwarfRemains, nearLawgof), talkToCaptainLawgof3);
+		getRemains.addStep(and(dwarfRemains, upTower1), downTower2);
+		getRemains.addStep(and(dwarfRemains, upTower2), downTower);
+		getRemains.addStep(upTower2, getRemainsStep);
+		getRemains.addStep(upTower1, goToTower2);
+		steps.put(2, getRemains);
+		steps.put(3, getRemains);
+
+		//Go to the cave, find Lollk, return and fix cannon
+		var findLollk = new ConditionalStep(this, gotoCave);
+		findLollk.addStep(inCave, searchCrates);
+		steps.put(4, findLollk);
+		steps.put(5, findLollk);
+
+		steps.put(6, talkToCaptainLawgof4);
+
+		steps.put(7, useToolkit);
+		steps.put(8, talkToCaptainLawgof5);
+
+		//Ammo mould and back
+		var captainLawgofFinal = new ConditionalStep(this, talkToNulodion);
+		captainLawgofFinal.addStep(and(nulodionsNotes, cannonballMould), talkToCaptainLawgof6);
+		steps.put(9, captainLawgofFinal);
+		steps.put(10, captainLawgofFinal);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(staminas);
-		reqs.add(teleToAsg);
-		reqs.add(teleToKand);
-		return reqs;
+		return List.of(
+			staminas,
+			teleToAsg,
+			teleToKand
+		);
 	}
 
 	@Override
@@ -212,25 +252,49 @@ public class DwarfCannon extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.CRAFTING, 750));
+		return List.of(
+			new ExperienceReward(Skill.CRAFTING, 750)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-				new UnlockReward("Ability to purchase and use the Dwarf Multicannon."),
-				new UnlockReward("Ability to make cannonballs."));
+		return List.of(
+			new UnlockReward("Ability to purchase and use the Dwarf Multicannon."),
+			new UnlockReward("Ability to make cannonballs.")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToCaptainLawgof)));
-		allSteps.add(new PanelDetails("Repair and Retrieval", Arrays.asList(inspectRailings1, talkToCaptainLawgof2, gotoTower, talkToCaptainLawgof3)));
-		allSteps.add(new PanelDetails("Find Lollk and Fix Cannon", Arrays.asList(gotoCave, searchCrates, talkToCaptainLawgof4, useToolkit, talkToCaptainLawgof5)));
-		allSteps.add(new PanelDetails("Get Ammo Mould", Arrays.asList(talkToNulodion, talkToCaptainLawgof6)));
-		return allSteps;
+		var sections = new ArrayList<PanelDetails>();
+
+		sections.add(new PanelDetails("Starting off", List.of(
+			talkToCaptainLawgof
+		)));
+
+		sections.add(new PanelDetails("Repair and Retrieval", List.of(
+			inspectRailings1,
+			talkToCaptainLawgof2,
+			gotoTower,
+			talkToCaptainLawgof3
+		)));
+
+		sections.add(new PanelDetails("Find Lollk and Fix Cannon", List.of(
+			gotoCave,
+			searchCrates,
+			talkToCaptainLawgof4,
+			useToolkit,
+			talkToCaptainLawgof5
+		)));
+
+		sections.add(new PanelDetails("Get Ammo Mould", List.of(
+			talkToNulodion,
+			talkToCaptainLawgof6
+		)));
+
+		return sections;
 	}
 }

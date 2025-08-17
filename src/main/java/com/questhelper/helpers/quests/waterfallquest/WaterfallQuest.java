@@ -262,7 +262,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		searchGnomeCrate = new ObjectStep(this, ObjectID.GOLRIE_CRATE_WATERFALL_QUEST, new WorldPoint(2548, 9565, 0), "Search the off-coloured crate in the east room.");
 		enterGnomeDoor = new ObjectStep(this, ObjectID.GOLRIE_GATE_WATERFALL_QUEST, new WorldPoint(2515, 9575, 0), "Go through the gate in the west room.", key);
 		talkToGolrie = new NpcStep(this, NpcID.GOLRIE_WATERFALL_QUEST, new WorldPoint(2514, 9580, 0), "Talk to Golrie.");
-		usePebble = new ObjectStep(this, ObjectID.GLARIALS_TOMBSTONE_WATERFALL_QUEST, new WorldPoint(2559, 3445, 0), "Bank everything besides the pebble and some food. After, go use Glarial's pebble to Glarial's Tombstone east of Baxtorian Falls.", glarialsPebble);
+		usePebble = new ObjectStep(this, ObjectID.GLARIALS_TOMBSTONE_WATERFALL_QUEST, new WorldPoint(2559, 3445, 0), "Bank everything besides the pebble and some food. Then use Glarial's pebble on Glarial's Tombstone east of Baxtorian Falls.", glarialsPebble);
 		usePebble.addIcon(ItemID.GLARIALS_PEBBLE_WATERFALL_QUEST);
 
 		searchGlarialChest = new ObjectStep(this, ObjectID.GLARIALS_CHEST_CLOSED_WATERFALL_QUEST, new WorldPoint(2530, 9844, 0), "Search the chest in the western room.");

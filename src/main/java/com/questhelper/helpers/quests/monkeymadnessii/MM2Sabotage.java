@@ -247,7 +247,9 @@ public class MM2Sabotage extends ConditionalStep
 		goUpToSatchel3.setHideMinimapLines(true);
 		goUpToSatchel3.setLinePoints(pathToSatchel3F0);
 
-		placeSatchel3 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_C, new WorldPoint(2082, 5431, 2), "Make your way to the west across the vine, then north then east. Place a satchel here.", filledSatchel1Highlighted);
+		placeSatchel3 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_C, new WorldPoint(2082, 5431, 2),
+				"Make your way to the west across the vine, then north then east. Place a satchel here. " +
+						"The skull tile markings indicate it's only safe there when a monkey guard is approaching from one direction, not both.", filledSatchel1Highlighted);
 		placeSatchel3.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		placeSatchel3.addTileMarkers(
 			new WorldPoint(2096, 5408, 2),
@@ -265,7 +267,8 @@ public class MM2Sabotage extends ConditionalStep
 		placeSatchel3.setHideMinimapLines(true);
 		placeSatchel3.setLinePoints(pathToSatchel3);
 
-		goUpToSatchel4 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2098, 5407, 2), "Return to the east side where you came from and go up to the 2nd floor.", filledSatchel1);
+		goUpToSatchel4 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_BOTTOM, new WorldPoint(2098, 5407, 2), "Return to the east side where you came from and go up to the 2nd floor. " +
+				"The skull tile markings indicate it's only safe there when a monkey guard is approaching from one direction, not both.", filledSatchel1);
 		goUpToSatchel4.setLinePoints(pathFrom3To4Ladder);
 		goUpToSatchel4.addTileMarkers(
 			new WorldPoint(2096, 5408, 2),
@@ -289,7 +292,9 @@ public class MM2Sabotage extends ConditionalStep
 		);
 		placeSatchel4.setLinePoints(pathToSatchel4);
 
-		placeSatchel5 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_E, new WorldPoint(2069, 5421, 3), "Make your way to the west then north and place a satchel on the gas cylinder there.", filledSatchel1Highlighted);
+		placeSatchel5 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_E, new WorldPoint(2069, 5421, 3),
+				"Make your way to the west then north and place a satchel on the gas cylinder there. The skull tile markings indicate it's only safe there when a monkey guard is approaching from one direction, not both.",
+				filledSatchel1Highlighted);
 		placeSatchel5.setLinePoints(pathToSatchel5);
 		placeSatchel5.addTileMarkers(
 			new WorldPoint(2097, 5404, 3),
@@ -303,7 +308,8 @@ public class MM2Sabotage extends ConditionalStep
 		placeSatchel5.addTileMarker(new WorldPoint(2069, 5413, 3), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 		placeSatchel5.setHideMinimapLines(true);
 		placeSatchel5.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
-		goF2ToF1ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5407, 3), "Go back to the bottom floor.", filledSatchel1);
+		goF2ToF1ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5407, 3), "Go back to the bottom floor." +
+				" The skull tile markings indicate it's only safe there when a monkey guard is approaching from one direction, not both.", filledSatchel1);
 		goF2ToF1ForSatchel6.setLinePoints(pathBackFromSatchel5);
 		goF2ToF1ForSatchel6.setHideMinimapLines(true);
 		goF2ToF1ForSatchel6.addTileMarkers(

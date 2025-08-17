@@ -65,6 +65,8 @@ import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
+import static com.questhelper.requirements.util.LogicHelper.or;
+
 public class MonkeyMadnessII extends BasicQuestHelper
 {
 	//Items Required
@@ -89,8 +91,12 @@ public class MonkeyMadnessII extends BasicQuestHelper
 	QuestStep talkToGarkor, talkToAwowogei, talkToGarkorAfterAwow, talkToArcher, enterTrapdoor, pickUpGreegree, doAgilitySection, pickUpKrukCorpse, leaveKrukDungeon, goDownToZooknock, talkToZooknock, talkToAwowAsKruk,
 		talkToGarkorAfterKruk;
 
-	DetailedQuestStep enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef, talkToGarkorAfterKeef, findSmith, talkToSmith, talkToGarkorAfterSmith,
+	DetailedQuestStep enterTrollStronghold, talkToKob, fightKob, talkToKeef, fightKeef, talkToGarkorAfterKeef, findSmith, talkToGarkorAfterSmith,
 		talkToMonkeyGuard;
+	NpcStep talkToSmith;
+	NpcStep talkToSmithPos4;
+	ObjectStep goUpToSmithPos4P1;
+	ObjectStep goUpToSmithPos4P2;
 
 	MM2Sabotage sabotageShips;
 
@@ -99,6 +105,10 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 	QuestStep talkToNarnodeAfterLab, talkToNieve, killGorillasInStronghold, enterNorthOfTree, enterStrongholdCave, killTorturedAndDemonic, enterNorthOfTreeNoNieve, fightGlough, talkToZooknockToFinish,
 		talkToNarnodeToFinish;
+
+
+	ZoneRequirement inRooftopsF2;
+	Requirement inTempleF1;
 
 	Requirement inGloughHouse, inGloughHouseF1, inGloughHouseF2, inGloughHouseF3, inAnitaHouse, inCaves, inZooknockDungeon, inStrongholdFloor2, inLab,
 		isPastMonkeyBars, isNorthOfTree, inCrashSiteCavern, gorillaNotOnHoldingArea, hasChiselAndHammer;
@@ -111,6 +121,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		bringTranslationToNarnode;
 
 	//Zones
+	Zone templeF1;
+	Zone rooftopsF2;
 	Zone gloughHouseF1, gloughHouseF2, gloughHouseF3, anitaHouse, caves, subCaves, zooknockDungeon, strongholdFloor2, lab, pastMonkeyBars, northOfTree, crashSiteCavern;
 
 	@Override
@@ -177,7 +189,9 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		ConditionalStep goTalkToSmith = new ConditionalStep(this, findSmith);
 		goTalkToSmith.addStep(smithNearby, talkToSmith);
-		//	goTalkToSmith.addStep(smithInLocation4, goUpTo4);
+		goTalkToSmith.addStep(inRooftopsF2, talkToSmithPos4);
+		goTalkToSmith.addStep(inTempleF1, goUpToSmithPos4P2);
+		goTalkToSmith.addStep(smithInLocation4, goUpToSmithPos4P1);
 		steps.put(66, goTalkToSmith);
 
 		steps.put(70, talkToGarkorAfterSmith);
@@ -347,6 +361,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		inCaves = new ZoneRequirement(caves, subCaves);
 		inZooknockDungeon = new ZoneRequirement(zooknockDungeon);
 		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);
+		inTempleF1 = new ZoneRequirement(templeF1);
+		inRooftopsF2 = new ZoneRequirement(rooftopsF2);
 		inLab = new ZoneRequirement(lab);
 		isPastMonkeyBars = new ZoneRequirement(pastMonkeyBars);
 		isNorthOfTree = new ZoneRequirement(northOfTree);
@@ -378,9 +394,15 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		smithInLocation1 = new VarbitRequirement(5040, 1); // TODO: Get location
 		smithInLocation2 = new VarbitRequirement(5040, 2); // TODO: Get location
 		smithInLocation3 = new VarbitRequirement(5040, 3); // TODO: Get location
-		smithInLocation4 = new VarbitRequirement(5040, 4); // Smith near rune store
+		smithInLocation4 = new VarbitRequirement(VarbitID.MM2_LE_SMITH_POS, 4); // Smith near rune store
 
-		smithNearby = new NpcCondition(NpcID.MM2_LE_SMITH);
+		smithNearby = or(
+				new NpcCondition(NpcID.MM2_LE_SMITH),
+				new NpcCondition(NpcID.MM2_LE_SMITH_POS1_MULTI),
+				new NpcCondition(NpcID.MM2_LE_SMITH_POS2_MULTI),
+				new NpcCondition(NpcID.MM2_LE_SMITH_POS3_MULTI),
+				new NpcCondition(NpcID.MM2_LE_SMITH_POS4_MULTI)
+		);
 
 		gorillaNotOnHoldingArea = new Conditions(LogicType.NOR, new NpcCondition(NpcID.MM2_TORTURED_GORILLA_SMALL));
 
@@ -416,6 +438,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		strongholdFloor2 = new Zone(new WorldPoint(2820, 10048, 2), new WorldPoint(2862, 10110, 2));
 
+		templeF1 = new Zone(new WorldPoint(2784, 2770, 1), new WorldPoint(2812, 2804, 1));
+		rooftopsF2 = new Zone(new WorldPoint(2722, 2758, 2), new WorldPoint(2792, 2806, 2));
 		lab = new Zone(new WorldPoint(2199, 5446, 0), new WorldPoint(2220, 5493, 0));
 
 		pastMonkeyBars = new Zone(new WorldPoint(2500, 9203, 1), new WorldPoint(2515, 9213, 1));
@@ -518,7 +542,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		talkToZooknock.addDialogStep("Talk about your mission.");
 		((NpcStep) (talkToZooknock)).setLinePoints(zooknockDungeonPath);
 
-		talkToAwowAsKruk = new ObjectStep(this, ObjectID.MM_THRONE, new WorldPoint(2803, 2765, 0), "Talk to Awowogei as Kruk.", krukGreegree, mspeakAmuletEquipped);
+		talkToAwowAsKruk = new ObjectStep(this, ObjectID.MM_THRONE, new WorldPoint(2803, 2765, 0), "Talk to Awowogei as Kruk.", krukGreegree.highlighted(), mspeakAmuletEquipped);
 		talkToAwowAsKruk.addDialogSteps();
 
 		talkToGarkorAfterKruk = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.");
@@ -544,8 +568,18 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		fightKeef = new NpcStep(this, NpcID.MM2_CHIEFTAN_KEEF_COMBAT, new WorldPoint(2542, 3031, 0), "Fight Keef. He can be safespotted.");
 		talkToGarkorAfterKeef = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor on Ape Atoll.", krukGreegree);
 		findSmith = new DetailedQuestStep(this, "Search around the various rooftops in Ape Atoll for Assistant Le Smith.", krukGreegree);
+
+		goUpToSmithPos4P1 = new ObjectStep(this, ObjectID.MM_BAMBOO_LADDER, new WorldPoint(2805, 2785, 0), "Climb up the eastern ladder in the temple.");
+		goUpToSmithPos4P2 = new ObjectStep(this, ObjectID.MM_BAMBOO_LADDER_REVERSE, new WorldPoint(2787, 2795, 1), "Climb up the north-western ladder in the temple.");
+		findSmith.addSubSteps(goUpToSmithPos4P1, goUpToSmithPos4P2);
+
 		talkToSmith = new NpcStep(this, NpcID.MM2_LE_SMITH, "Talk to Assistant Le Smith.", krukGreegree);
+		talkToSmith.addAlternateNpcs(NpcID.MM2_LE_SMITH_POS4_MULTI);
 		talkToSmith.addDialogSteps("I was going to ask you the same question.", "Why is that?", "Awowogei has already informed me about the battleships.", "Where is the fleet, currently?");
+		talkToSmithPos4 = new NpcStep(this, NpcID.MM2_LE_SMITH, new WorldPoint(2755, 2768, 2), "Talk to Assistant Le Smith on the top of the most " +
+				"south-western building.");
+		talkToSmithPos4.addDialogSteps("I was going to ask you the same question.", "Why is that?", "Awowogei has already informed me about the battleships.", "Where is the fleet, currently?");
+		talkToSmith.addSubSteps(talkToSmithPos4);
 		talkToGarkorAfterSmith = new NpcStep(this, NpcID.MM_GARKOR_AA, new WorldPoint(2807, 2762, 0), "Talk to Garkor.", krukGreegree);
 		talkToMonkeyGuard = new NpcStep(this, NpcID.MM2_MONKEY_BOAT_GUARD, new WorldPoint(2694, 2784, 0), "Talk to the monkey guard on the north west of Ape Atoll.", krukGreegree, mspeakAmuletEquipped);
 		talkToMonkeyGuard.addDialogSteps("What's going on here?", "Construction platform?", "Can I visit the platform?", "I would like to go back to the construction platform.");
@@ -722,12 +756,12 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Glough's experiments",
 			Arrays.asList(talkToGarkorAfterSabotage, enterKrukDungeonAgain, climbMonkeyBarsAsKruk, enterLabratory, climbOnGorilla,
-				fightGorillas, tamperWithDevice, useChiselOnOnyx, useOnyxOnDevice, investigateIncubationChamber, talkToGarkorAfterLab, talkToAwowAfterLab,
+				fightGorillas, getChiselAndHammer, tamperWithDevice, useChiselOnOnyx, useOnyxOnDevice, investigateIncubationChamber, talkToGarkorAfterLab, talkToAwowAfterLab,
 				talkToGarkorAfterLabAgain), krukGreegree, mspeakAmulet));
 
 		allSteps.add(new PanelDetails("Defending the tree",
 			Arrays.asList(talkToNarnodeAfterLab, talkToNieve, killGorillasInStronghold, enterNorthOfTree, enterStrongholdCave, killTorturedAndDemonic,
-				fightGlough, talkToZooknockToFinish, talkToNarnodeToFinish), combatGear2));
+				fightGlough, talkToZooknockToFinish, talkToNarnodeToFinish), List.of(combatGear2), List.of(food, prayerPotions)));
 		return allSteps;
 	}
 

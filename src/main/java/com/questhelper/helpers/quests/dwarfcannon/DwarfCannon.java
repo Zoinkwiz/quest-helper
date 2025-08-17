@@ -81,12 +81,15 @@ public class DwarfCannon extends BasicQuestHelper
 	QuestStep gotoTower;
 	QuestStep goToTower2;
 	QuestStep talkToCaptainLawgof3;
-	QuestStep gotoCave;
 	QuestStep getRemainsStep;
 	QuestStep downTower;
 	QuestStep downTower2;
+
+	QuestStep gotoCave;
 	QuestStep searchCrates;
+	ObjectStep exitCave;
 	QuestStep talkToCaptainLawgof4;
+
 	QuestStep useToolkit;
 	QuestStep talkToCaptainLawgof5;
 	QuestStep talkToNulodion;
@@ -179,11 +182,13 @@ public class DwarfCannon extends BasicQuestHelper
 		talkToCaptainLawgof3 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Return the remains to Captain Lawgof.");
 		talkToCaptainLawgof3.addSubSteps(downTower, downTower2);
 
-		// Cave
+		// Find Lollk in the goblin cave
 		gotoCave = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2622, 3392, 0), "Enter the goblin cave, east of the Fishing Guild entrance.");
 		searchCrates = new ObjectStep(this, ObjectID.MCANNONCRATEBOY, new WorldPoint(2571, 9850, 0), "Search the crates in the north west corner to find Lollk.");
+		exitCave = new ObjectStep(this, ObjectID.MCANMUDPILE, new WorldPoint(2621, 9796, 0), "Exit the goblin cave and return to Captain Lawgof.");
 		talkToCaptainLawgof4 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Return to Captain Lawgof.");
 		talkToCaptainLawgof4.addDialogStep("Okay, I'll see what I can do.");
+		talkToCaptainLawgof4.addSubSteps(exitCave);
 
 		//Fix cannon
 		// TODO: Update this to highlight widgets as you progress, indicating what tool to use on what
@@ -233,7 +238,9 @@ public class DwarfCannon extends BasicQuestHelper
 		steps.put(4, findLollk);
 		steps.put(5, findLollk);
 
-		steps.put(6, talkToCaptainLawgof4);
+		var step6 = new ConditionalStep(this, talkToCaptainLawgof4);
+		step6.addStep(inCave, exitCave);
+		steps.put(6, step6);
 
 		steps.put(7, useToolkit);
 		steps.put(8, talkToCaptainLawgof5);

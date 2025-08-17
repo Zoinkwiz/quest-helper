@@ -29,6 +29,9 @@ import net.runelite.api.gameval.VarbitID;
 
 public class DwarfCannon extends BasicQuestHelper
 {
+	// Required items
+	ItemRequirement hammer;
+
 	// Recommended items
 	ItemRequirement staminas;
 	ItemRequirement teleToAsg;
@@ -41,7 +44,6 @@ public class DwarfCannon extends BasicQuestHelper
 	Zone lawgofArea;
 
 	// Miscellaneous requirements
-	ItemRequirement hammer;
 	ItemRequirement railing;
 	ItemRequirement dwarfRemains;
 	ItemRequirement toolkit;
@@ -97,6 +99,9 @@ public class DwarfCannon extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed().canBeObtainedDuringQuest();
+		hammer.setTooltip("Can be found in the small building east of Captain Lawgof.");
+
 		staminas = new ItemRequirement("Stamina Potions", ItemCollections.STAMINA_POTIONS);
 		teleToAsg = new ItemRequirement("Teleport to Falador, Amulet of Glory, or Combat Bracelet",
 			ItemID.POH_TABLET_FALADORTELEPORT);
@@ -107,7 +112,6 @@ public class DwarfCannon extends BasicQuestHelper
 		teleToKand.addAlternates(ItemCollections.SKILLS_NECKLACES);
 		teleToKand.addAlternates(ItemID.POH_TABLET_ARDOUGNETELEPORT);
 
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		railing = new ItemRequirement("Railing", ItemID.MCANNONRAILING1_OBJ);
 		railing.setTooltip("You can get more from Captain Lawgof");
 		toolkit = new ItemRequirement("Toolkit", ItemID.MCANNONTOOLKIT);
@@ -234,6 +238,14 @@ public class DwarfCannon extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return List.of(
+			hammer
+		);
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
@@ -280,6 +292,8 @@ public class DwarfCannon extends BasicQuestHelper
 			talkToCaptainLawgof2,
 			gotoTower,
 			talkToCaptainLawgof3
+		), List.of(
+			hammer
 		)));
 
 		sections.add(new PanelDetails("Find Lollk and Fix Cannon", List.of(

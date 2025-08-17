@@ -32,6 +32,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
@@ -105,6 +106,7 @@ public class MurderMystery extends BasicQuestHelper
 	// Miscellaneous requirements
 	RuneliteRequirement heardAboutPoisonSalesman;
 	RuneliteRequirement talkedToPoisonSalesman;
+	RuneliteRequirement talkedToPoisonSalesman2;
 	RuneliteRequirement hadThread;
 	RuneliteRequirement hadPot;
 	RuneliteRequirement hadKillerPrint;
@@ -141,6 +143,7 @@ public class MurderMystery extends BasicQuestHelper
 	QuestStep talkToGuard;
 	QuestStep talkToGossip;
 	QuestStep talkToPoisonSalesman;
+	QuestStep talkToPoisonSalesman2;
 	QuestStep pickUpDagger;
 	QuestStep pickUpPungentPot;
 	QuestStep searchWindowForThread;
@@ -281,6 +284,9 @@ public class MurderMystery extends BasicQuestHelper
 				new DialogRequirement("Anna, Bob, Carol, David, Elizabeth and Frank all bought a bottle! " +
 					"In fact they bought the last of my supplies!")
 			));
+		talkedToPoisonSalesman2 = new RuneliteRequirement(configManager, "murdermysterytalkedtopoisonsalesmanpot",
+			new Conditions(true, new DialogRequirement("Yes... I suppose that could have happened..."))
+		);
 
 		annaGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 1);
 		bobGuilty = new VarplayerRequirement(VarPlayerID.MURDERSUS, 2);
@@ -429,7 +435,11 @@ public class MurderMystery extends BasicQuestHelper
 		var investigating = new ConditionalStep(this, searchWindowForThread);
 		investigating.addStep(and(hadPotAndThread, hadKillerPrint, checkedSuspect), finishQuest);
 		investigating.addStep(and(hadPotAndThread, hadKillerPrint, talkedToSuspect), searchSuspectItem);
-		investigating.addStep(and(hadPotAndThread, hadKillerPrint, talkedToPoisonSalesman), talkToSuspect);
+		// If we've talked to the Poison Salesman through the "find customers" option, _AND_ through the "i found this pot....." option (but only if we have the pot still),
+		// then prompt the player to talk to the suspect
+		investigating.addStep(and(hadPotAndThread, hadKillerPrint, talkedToPoisonSalesman, or(talkedToPoisonSalesman2, not(pungentPot))), talkToSuspect);
+		investigating.addStep(and(hadPotAndThread, hadKillerPrint, talkedToPoisonSalesman2, not(talkedToPoisonSalesman)), talkToPoisonSalesman);
+		investigating.addStep(and(hadPotAndThread, hadKillerPrint, talkedToPoisonSalesman, not(talkedToPoisonSalesman2), pungentPot), talkToPoisonSalesman2);
 		investigating.addStep(and(hadPotAndThread, hadKillerPrint, heardAboutPoisonSalesman), talkToPoisonSalesman);
 		investigating.addStep(and(hadPotAndThread, hadKillerPrint), talkToGossip);
 		investigating.addStep(hadPotAndThread, checkingPrintSteps); /* Get dagger print */
@@ -506,10 +516,13 @@ public class MurderMystery extends BasicQuestHelper
 		talkToGossip = new NpcStep(this, NpcID.GOSSIPY_MAN, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
 		talkToGossip.addDialogStep("Who do you think was responsible?");
 
-		talkToPoisonSalesman = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the " +
-			"Poison Salesman in the Seers' Village pub.");
+		talkToPoisonSalesman = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the Poison Salesman in the Seers' Village pub about his customers.");
 		talkToPoisonSalesman.addDialogStep("Who did you sell Poison to at the house?");
 		talkToPoisonSalesman.addDialogStep("Talk about the Murder Mystery Quest");
+
+		talkToPoisonSalesman2 = new NpcStep(this, NpcID.POISON_SALESMAN, new WorldPoint(2694, 3493, 0), "Talk to the Poison Salesman in the Seers' Village pub about the pungent pot.", pungentPot);
+		talkToPoisonSalesman2.addDialogStep("I have this pot I found at the murder scene...");
+		talkToPoisonSalesman2.addDialogStep("Talk about the Murder Mystery Quest");
 
 		talkToAnna = new NpcStep(this, NpcID.ANNA_SINCLAIR, new WorldPoint(2734, 3575, 0), "Talk to Anna in the mansion about what she used the poison for. Make sure to finish the dialog.");
 		talkToBob = new NpcStep(this, NpcID.BOB_SINCLAIR, new WorldPoint(2748, 3559, 0), "Talk to Bob south of the mansion about what he used the poison for. Make sure to finish the dialog.");
@@ -662,6 +675,7 @@ public class MurderMystery extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Finishing off", List.of(
 			talkToGossip,
 			talkToPoisonSalesman,
+			talkToPoisonSalesman2,
 			talkToSuspect,
 			searchSuspectItem,
 			finishQuest

@@ -225,7 +225,7 @@ public class DwarfCannon extends BasicQuestHelper
 
 		pwFixMulticannon = fixCannon.puzzleWrapStepWithDefaultText("Use the toolkit on the broken multicannon.");
 		pwFixMulticannon.addIcon(ItemID.MCANNONTOOLKIT);
-		talkToCaptainLawgof5 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof (There will be a short pause in dialogue.  Both need to be completed.).");
+		talkToCaptainLawgof5 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Talk to Captain Lawgof after repairing the multicannon.");
 		talkToCaptainLawgof5.addDialogStep("Okay then, just for you!");
 
 		//Cannonball mould

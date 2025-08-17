@@ -52,12 +52,10 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarPlayerID;
-import net.runelite.client.eventbus.Subscribe;
 
 public class MurderMystery extends BasicQuestHelper
 {
@@ -201,12 +199,6 @@ public class MurderMystery extends BasicQuestHelper
 	ConditionalStep comparePrints;
 	ConditionalStep talkToSuspect;
 	ConditionalStep searchSuspectItem;
-	DetailedQuestStep useFlourSidebar;
-	DetailedQuestStep searchBarrelSidebar;
-	DetailedQuestStep useFlypaperSidebar;
-	DetailedQuestStep comparePrintsSidebar;
-	DetailedQuestStep talkToSuspectSidebar;
-	DetailedQuestStep searchSuspectItemSidebar;
 
 	@Override
 	protected void setupZones()
@@ -443,83 +435,7 @@ public class MurderMystery extends BasicQuestHelper
 
 		steps.put(1, investigating);
 
-		if (client.getVarpValue(VarPlayerID.MURDERSUS) > 0)
-		{
-			updateSuspect();
-		}
-
 		return steps;
-	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
-	{
-		if (varbitChanged.getVarpId() != VarPlayerID.MURDERSUS)
-		{
-			return;
-		}
-
-		updateSuspect();
-	}
-
-	private void updateSuspect()
-	{
-		// 5 for me
-		int suspect = client.getVarpValue(VarPlayerID.MURDERSUS);
-		if (suspect == 1)
-		{
-			useFlourSidebar.getText().set(0, useFlourOnNecklace.getText().get(0));
-			searchBarrelSidebar.getText().set(0, searchAnnasBarrel.getText().get(0));
-			useFlypaperSidebar.getText().set(0, useFlypaperOnNecklace.getText().get(0));
-			comparePrintsSidebar.getText().set(0, compareAnna.getText().get(0));
-			talkToSuspectSidebar.getText().set(0, talkToAnna.getText().get(0));
-			searchSuspectItemSidebar.getText().set(0, searchAnna.getText().get(0));
-		}
-		else if (suspect == 2)
-		{
-			useFlourSidebar.getText().set(0, useFlourOnCup.getText().get(0));
-			searchBarrelSidebar.getText().set(0, searchBobsBarrel.getText().get(0));
-			useFlypaperSidebar.getText().set(0, useFlypaperOnCup.getText().get(0));
-			comparePrintsSidebar.getText().set(0, compareBob.getText().get(0));
-			talkToSuspectSidebar.getText().set(0, talkToBob.getText().get(0));
-			searchSuspectItemSidebar.getText().set(0, searchBob.getText().get(0));
-		}
-		else if (suspect == 3)
-		{
-			useFlourSidebar.getText().set(0, useFlourOnBottle.getText().get(0));
-			searchBarrelSidebar.getText().set(0, searchCarolsBarrel.getText().get(0));
-			useFlypaperSidebar.getText().set(0, useFlypaperOnBottle.getText().get(0));
-			comparePrintsSidebar.getText().set(0, compareCarol.getText().get(0));
-			talkToSuspectSidebar.getText().set(0, talkToCarol.getText().get(0));
-			searchSuspectItemSidebar.getText().set(0, searchCarol.getText().get(0));
-		}
-		else if (suspect == 4)
-		{
-			useFlourSidebar.getText().set(0, useFlourOnBook.getText().get(0));
-			searchBarrelSidebar.getText().set(0, searchDavidsBarrel.getText().get(0));
-			useFlypaperSidebar.getText().set(0, useFlypaperOnBook.getText().get(0));
-			comparePrintsSidebar.getText().set(0, compareDavid.getText().get(0));
-			talkToSuspectSidebar.getText().set(0, talkToDavid.getText().get(0));
-			searchSuspectItemSidebar.getText().set(0, searchDavid.getText().get(0));
-		}
-		else if (suspect == 5)
-		{
-			useFlourSidebar.getText().set(0, useFlourOnNeedle.getText().get(0));
-			searchBarrelSidebar.getText().set(0, searchElizabethsBarrel.getText().get(0));
-			useFlypaperSidebar.getText().set(0, useFlypaperOnNeedle.getText().get(0));
-			comparePrintsSidebar.getText().set(0, compareElizabeth.getText().get(0));
-			talkToSuspectSidebar.getText().set(0, talkToElizabeth.getText().get(0));
-			searchSuspectItemSidebar.getText().set(0, searchElizabeth.getText().get(0));
-		}
-		else if (suspect == 6)
-		{
-			useFlourSidebar.getText().set(0, useFlourOnPot.getText().get(0));
-			searchBarrelSidebar.getText().set(0, searchFranksBarrel.getText().get(0));
-			useFlypaperSidebar.getText().set(0, useFlypaperOnPot.getText().get(0));
-			comparePrintsSidebar.getText().set(0, compareFrank.getText().get(0));
-			talkToSuspectSidebar.getText().set(0, talkToFrank.getText().get(0));
-			searchSuspectItemSidebar.getText().set(0, searchFrank.getText().get(0));
-		}
 	}
 
 	public void setupSteps()
@@ -617,47 +533,49 @@ public class MurderMystery extends BasicQuestHelper
 		remainingSteps.addDialogStep("I know who did it!");
 		remainingSteps.setShowInSidebar(false);
 
-		useFlour = new ConditionalStep(this, new DetailedQuestStep(this, ""));
+		var useFlourFallback = new DetailedQuestStep(this, "Use flour on the suspect's item.");
+		useFlour = new ConditionalStep(this, useFlourFallback);
+		useFlour.setShouldPassthroughText(true);
 		useFlour.addStep(elizabethGuilty, useFlourOnNeedle);
 		useFlour.addStep(annaGuilty, useFlourOnNecklace);
 		useFlour.addStep(carolGuilty, useFlourOnBottle);
 		useFlour.addStep(davidGuilty, useFlourOnBook);
 		useFlour.addStep(frankGuilty, useFlourOnPot);
 		useFlour.addStep(bobGuilty, useFlourOnCup);
-		useFlourSidebar = new DetailedQuestStep(this, "Use flour on the suspect's item.");
-		useFlourSidebar.addSubSteps(useFlourOnNeedle, useFlourOnNecklace, useFlourOnBottle, useFlourOnBook, useFlourOnPot, useFlourOnCup);
 
-		searchBarrel = new ConditionalStep(this, new DetailedQuestStep(this, ""));
+		var searchBarrelFallback = new DetailedQuestStep(this, "Search the suspect's barrel.");
+		searchBarrel = new ConditionalStep(this, searchBarrelFallback);
+		searchBarrel.setShouldPassthroughText(true);
 		searchBarrel.addStep(elizabethGuilty, searchElizabethsBarrel);
 		searchBarrel.addStep(annaGuilty, searchAnnasBarrel);
 		searchBarrel.addStep(carolGuilty, searchCarolsBarrel);
 		searchBarrel.addStep(davidGuilty, searchDavidsBarrel);
 		searchBarrel.addStep(frankGuilty, searchFranksBarrel);
 		searchBarrel.addStep(bobGuilty, searchBobsBarrel);
-		searchBarrelSidebar = new DetailedQuestStep(this, "Search the suspect's barrel.");
-		searchBarrelSidebar.addSubSteps(searchElizabethsBarrel, searchAnnasBarrel, searchCarolsBarrel, searchDavidsBarrel, searchFranksBarrel, searchBobsBarrel);
 
-		useFlypaper = new ConditionalStep(this, new DetailedQuestStep(this, ""));
+		var useFlypaperFallback = new DetailedQuestStep(this, "Use flypaper on the suspect's item.");
+		useFlypaper = new ConditionalStep(this, useFlypaperFallback);
+		useFlypaper.setShouldPassthroughText(true);
 		useFlypaper.addStep(elizabethGuilty, useFlypaperOnNeedle);
 		useFlypaper.addStep(annaGuilty, useFlypaperOnNecklace);
 		useFlypaper.addStep(carolGuilty, useFlypaperOnBottle);
 		useFlypaper.addStep(davidGuilty, useFlypaperOnBook);
 		useFlypaper.addStep(frankGuilty, useFlypaperOnPot);
 		useFlypaper.addStep(bobGuilty, useFlypaperOnCup);
-		useFlypaperSidebar = new DetailedQuestStep(this, "Use flypaper on the floured item.");
-		useFlypaperSidebar.addSubSteps(useFlypaperOnNeedle, useFlypaperOnNecklace, useFlypaperOnBottle, useFlypaperOnBook, useFlypaperOnPot, useFlypaperOnCup);
 
-		comparePrints = new ConditionalStep(this, new DetailedQuestStep(this, ""));
+		var comparePrintsFallback = new DetailedQuestStep(this, "Compare prints with the suspect.");
+		comparePrints = new ConditionalStep(this, comparePrintsFallback);
+		comparePrints.setShouldPassthroughText(true);
 		comparePrints.addStep(annaGuilty, compareAnna);
 		comparePrints.addStep(bobGuilty, compareBob);
 		comparePrints.addStep(carolGuilty, compareCarol);
 		comparePrints.addStep(davidGuilty, compareDavid);
 		comparePrints.addStep(elizabethGuilty, compareElizabeth);
 		comparePrints.addStep(frankGuilty, compareFrank);
-		comparePrintsSidebar = new DetailedQuestStep(this, "Compare the suspect's prints to the unknown prints.");
-		comparePrintsSidebar.addSubSteps(compareAnna, compareBob, compareCarol, compareDavid, compareElizabeth, compareFrank);
 
-		talkToSuspect = new ConditionalStep(this, new DetailedQuestStep(this, ""));
+		var talkToSuspectFallback = new DetailedQuestStep(this, "Talk to the suspect.");
+		talkToSuspect = new ConditionalStep(this, talkToSuspectFallback);
+		talkToSuspect.setShouldPassthroughText(true);
 		talkToSuspect.addStep(elizabethGuilty, talkToElizabeth);
 		talkToSuspect.addStep(carolGuilty, talkToCarol);
 		talkToSuspect.addStep(davidGuilty, talkToDavid);
@@ -665,18 +583,16 @@ public class MurderMystery extends BasicQuestHelper
 		talkToSuspect.addStep(bobGuilty, talkToBob);
 		talkToSuspect.addStep(annaGuilty, talkToAnna);
 		talkToSuspect.addDialogStep("Why'd you buy poison the other day?");
-		talkToSuspectSidebar = new DetailedQuestStep(this, "Talk to the suspect.");
-		talkToSuspectSidebar.addSubSteps(talkToElizabeth, talkToCarol, talkToDavid, talkToFrank, talkToBob, talkToAnna);
 
-		searchSuspectItem = new ConditionalStep(this, new DetailedQuestStep(this, ""));
+		var searchSuspectItemFallback = new DetailedQuestStep(this, "Disprove the suspect's alibi by checking the thing they claimed to clean.");
+		searchSuspectItem = new ConditionalStep(this, searchSuspectItemFallback);
+		searchSuspectItem.setShouldPassthroughText(true);
 		searchSuspectItem.addStep(elizabethGuilty, searchElizabeth);
 		searchSuspectItem.addStep(carolGuilty, searchCarol);
 		searchSuspectItem.addStep(davidGuilty, searchDavid);
 		searchSuspectItem.addStep(frankGuilty, searchFrank);
 		searchSuspectItem.addStep(bobGuilty, searchBob);
 		searchSuspectItem.addStep(annaGuilty, searchAnna);
-		searchSuspectItemSidebar = new DetailedQuestStep(this, "Disprove the suspect's alibi by checking the thing they claimed to clean.");
-		searchSuspectItemSidebar.addSubSteps(searchElizabeth, searchCarol, searchDavid, searchFrank, searchBob, searchAnna);
 	}
 
 	@Override
@@ -728,21 +644,21 @@ public class MurderMystery extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Collect fingerprints", List.of(
 			collectTwoFlypaper,
-			searchBarrelSidebar,
+			searchBarrel,
 			fillPotWithFlour,
 			useFlourOnDagger,
 			useFlypaperOnDagger,
 			fillPotWithFlourForSilver,
-			useFlourSidebar,
-			useFlypaperSidebar,
-			comparePrintsSidebar
+			useFlour,
+			useFlypaper,
+			comparePrints
 		)));
 
 		allSteps.add(new PanelDetails("Finishing off", List.of(
 			talkToGossip,
 			talkToPoisonSalesman,
-			talkToSuspectSidebar,
-			searchSuspectItemSidebar,
+			talkToSuspect,
+			searchSuspectItem,
 			finishQuest
 		)));
 

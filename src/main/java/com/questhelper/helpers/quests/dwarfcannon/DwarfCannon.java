@@ -229,7 +229,7 @@ public class DwarfCannon extends BasicQuestHelper
 		talkToCaptainLawgof5.addDialogStep("Okay then, just for you!");
 
 		//Cannonball mould
-		talkToNulodion = new NpcStep(this, NpcID.NULODION, new WorldPoint(3012, 3453, 0), "Go talk to Nulodion at the Dwarven Black Guard camp (north-east of Falador, South of Ice Mountain).");
+		talkToNulodion = new NpcStep(this, NpcID.NULODION, new WorldPoint(3012, 3453, 0), "Talk to Nulodion at the Dwarven Black Guard camp, south of Ice Mountain.");
 		talkToCaptainLawgof6 = new NpcStep(this, NpcID.LAWGOF2, new WorldPoint(2567, 3460, 0), "Finally, return to Captain Lawgof with the ammo mould and Nulodion's Notes.", nulodionsNotes, cannonballMould);
 	}
 
@@ -273,7 +273,7 @@ public class DwarfCannon extends BasicQuestHelper
 		steps.put(7, pwFixMulticannon);
 		steps.put(8, talkToCaptainLawgof5);
 
-		//Ammo mould and back
+		// Ammo mould and back
 		var captainLawgofFinal = new ConditionalStep(this, talkToNulodion);
 		captainLawgofFinal.addStep(and(nulodionsNotes, cannonballMould), talkToCaptainLawgof6);
 		steps.put(9, captainLawgofFinal);

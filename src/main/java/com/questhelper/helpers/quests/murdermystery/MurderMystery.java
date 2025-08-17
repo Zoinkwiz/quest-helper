@@ -524,7 +524,7 @@ public class MurderMystery extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToGuard = new NpcStep(this, NpcID.MURDERGUARD, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor north of Camelot.");
-		talkToGuard.addDialogSteps("Yes.", "Sure, I'll help.");
+		talkToGuard.addDialogSteps("Yes.");
 
 		pickUpPungentPot = new DetailedQuestStep(this, new WorldPoint(2747, 3579, 0), "Enter the mansion and pick up the pungent pot inside the east room.", pungentPot);
 		pickUpDagger = new DetailedQuestStep(this, new WorldPoint(2746, 3578, 0), "Pick up the criminal's dagger.", criminalsDaggerAny);

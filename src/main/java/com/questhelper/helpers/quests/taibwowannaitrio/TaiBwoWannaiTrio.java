@@ -546,7 +546,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		req.add(new SkillRequirement(Skill.AGILITY, 15, false));
 		req.add(new SkillRequirement(Skill.COOKING, 30, false));
 		req.add(new SkillRequirement(Skill.FISHING, 5, false));
-		req.add(new ItemRequirement("65 Fishing for Raw Karambwan if any type of Ironman account.", -1, -1));
+		req.add(new ItemRequirement("65 Fishing for Raw Karambwan if any type of Ironman account, if you burn the one given to you.", -1, -1));
 		return req;
 	}
 

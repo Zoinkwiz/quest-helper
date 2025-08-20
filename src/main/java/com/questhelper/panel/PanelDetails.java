@@ -95,12 +95,22 @@ public class PanelDetails
 	public PanelDetails withId(int id)
 	{
 		this.id = id;
+		for (QuestStep step : steps)
+		{
+			step.withId(id);
+		}
 		return this;
 	}
 
 	public void setDisplayCondition(Requirement req)
 	{
 		setHideCondition(new Conditions(LogicType.NOR, req));
+	}
+
+	public PanelDetails withHideCondition(Requirement requirement)
+	{
+		setHideCondition(requirement);
+		return this;
 	}
 
 	/* Set the states of the quest the steps in the sidebar should be active */

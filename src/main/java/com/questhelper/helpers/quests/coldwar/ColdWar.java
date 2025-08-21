@@ -240,13 +240,13 @@ public class ColdWar extends BasicQuestHelper
 	public void setupConditions()
 	{
 		isOnIceberg = new ZoneRequirement(onIceberg);
-		birdHideBuilt = new VarbitRequirement(3294, 1);
+		birdHideBuilt = new VarbitRequirement(VarbitID.PENG_MULTI_HIDE, 1);
 		tableNearby = new Conditions(LogicType.OR,
 			new ObjectCondition(ObjectID.POH_CLOCKMAKING_3),
 			new ObjectCondition(ObjectID.POH_CLOCKMAKING_4));
-		isPenguin = new VarbitRequirement(3306, 1);
+		isPenguin = new VarbitRequirement(VarbitID.PENG_TRANSMOG, 1);
 		isInPenguinPen = new ZoneRequirement(inPenguinPen, inPenguinPen2);
-		isEmoting = new VarbitRequirement(3308, 1);
+		isEmoting = new VarbitRequirement(VarbitID.PENG_DOING_GREETING, 1);
 		isAtZoo = new ZoneRequirement(atZoo);
 		isAtLumbridgeSheepFarm = new ZoneRequirement(atLumbridgeSheepFarm);
 		isInAgilityStart = new ZoneRequirement(inAgilityStart);

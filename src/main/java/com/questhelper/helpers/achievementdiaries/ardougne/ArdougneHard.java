@@ -158,9 +158,9 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		notDeathRune = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 5);
 
 		notYanHouse = new VarbitRequirement(VarbitID.POH_HOUSE_LOCATION, 6, Operation.NOT_EQUAL);
-		notYanHouse2 = new VarbitRequirement(2187, 6);
-		redAtDoor = new VarbitRequirement(1249, 1);
-		redAtAltar = new VarbitRequirement(1250, 1);
+		notYanHouse2 = new VarbitRequirement(VarbitID.POH_HOUSE_LOCATION, 6);
+		redAtDoor = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_B_EAST, 1);
+		redAtAltar = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_B_WEST, 1);
 
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE).showConditioned(notTPWatchtower);
 		lawRune = new ItemRequirement("Law runes", ItemID.LAWRUNE).showConditioned(notTPWatchtower);

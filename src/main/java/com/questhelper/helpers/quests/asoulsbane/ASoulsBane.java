@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -146,12 +147,12 @@ public class ASoulsBane extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		ropeUsed = new VarbitRequirement(2032, 1);
+		ropeUsed = new VarbitRequirement(VarbitID.SOULBANE_RIFTROPE_PRES, 1);
 		hasWeapon = new ItemRequirements(LogicType.OR, "", angerBattleaxe, angerMace, angerSpear, angerSword);
-		hasSword = new VarbitRequirement(2029, 1);
-		hasSpear = new VarbitRequirement(2029, 2);
-		hasMace = new VarbitRequirement(2029, 3);
-		hasBattleaxe = new VarbitRequirement(2029, 4);
+		hasSword = new VarbitRequirement(VarbitID.SOULBANE_ANGER_WEAPONMULTI, 1);
+		hasSpear = new VarbitRequirement(VarbitID.SOULBANE_ANGER_WEAPONMULTI, 2);
+		hasMace = new VarbitRequirement(VarbitID.SOULBANE_ANGER_WEAPONMULTI, 3);
+		hasBattleaxe = new VarbitRequirement(VarbitID.SOULBANE_ANGER_WEAPONMULTI, 4);
 
 		inAngerRoom = new ZoneRequirement(rageRoom);
 		inFearRoom = new ZoneRequirement(fearRoom);
@@ -160,16 +161,16 @@ public class ASoulsBane extends BasicQuestHelper
 		inHopeRoom = new ZoneRequirement(hopeRoom);
 		inTolnaRoom = new ZoneRequirement(tolnaRoom);
 
-		watchedTolnaLeavingCutscene = new VarbitRequirement(2560, 1);
+		watchedTolnaLeavingCutscene = new VarbitRequirement(VarbitID.SOULBANE_WATCHEDCUTSCENE, 1);
 
-		inHole0 = new VarbitRequirement(2012, 0);
-		inHole1 = new VarbitRequirement(2012, 1);
-		inHole2 = new VarbitRequirement(2012, 2);
-		inHole3 = new VarbitRequirement(2012, 3);
-		inHole4 = new VarbitRequirement(2012, 4);
-		inHole5 = new VarbitRequirement(2012, 5);
+		inHole0 = new VarbitRequirement(VarbitID.SOULBANE_FEAR_ENEMYDOOR, 0);
+		inHole1 = new VarbitRequirement(VarbitID.SOULBANE_FEAR_ENEMYDOOR, 1);
+		inHole2 = new VarbitRequirement(VarbitID.SOULBANE_FEAR_ENEMYDOOR, 2);
+		inHole3 = new VarbitRequirement(VarbitID.SOULBANE_FEAR_ENEMYDOOR, 3);
+		inHole4 = new VarbitRequirement(VarbitID.SOULBANE_FEAR_ENEMYDOOR, 4);
+		inHole5 = new VarbitRequirement(VarbitID.SOULBANE_FEAR_ENEMYDOOR, 5);
 
-		reaperNearby = new VarbitRequirement(2035, 1);
+		reaperNearby = new VarbitRequirement(VarbitID.SOULBANE_FEAR_MONSPRES, 1);
 	}
 
 	@Override

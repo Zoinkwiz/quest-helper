@@ -37,6 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.List;
 
@@ -232,26 +233,26 @@ public class CrwysLightPuzzle extends ConditionalStep
 		int CYAN = 2;
 		int MAGENTA = 4;
 
-		notResetCadarn = new VarbitRequirement(8971, MAGENTA);
-		r1 = new VarbitRequirement(8947, MAGENTA);
-		r2 = new VarbitRequirement(8948, MAGENTA);
-		r3 = new VarbitRequirement(8957, MAGENTA);
+		notResetCadarn = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_D_5_TO_1_E_5, MAGENTA);
+		r1 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_C_4_TO_1_D_4, MAGENTA);
+		r2 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_C_4_TO_1_C_5, MAGENTA);
+		r3 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_C_5_TO_1_B_5, MAGENTA);
 
 		r4 = new Conditions(
-			new VarbitRequirement(8958, MAGENTA),
-			new VarbitRequirement(8959, MAGENTA)
+			new VarbitRequirement(VarbitID.SOTE_LIGHT_1_B_5_TO_1_A_5, MAGENTA),
+			new VarbitRequirement(VarbitID.SOTE_LIGHT_1_B_5_TO_1_B_6, MAGENTA)
 		);
-		r5 = new Conditions(new VarbitRequirement(8961, MAGENTA), r4);
-		r6 = new Conditions(new VarbitRequirement(9011, WHITE), r4);
-		r7 = new Conditions(new VarbitRequirement(8579, WHITE), r4);
+		r5 = new Conditions(new VarbitRequirement(VarbitID.SOTE_LIGHT_1_A_5_TO_1_A_6, MAGENTA), r4);
+		r6 = new Conditions(new VarbitRequirement(VarbitID.SOTE_LIGHT_1_A_6_TO_1_A_8, WHITE), r4);
+		r7 = new Conditions(new VarbitRequirement(VarbitID.SOTE_PILLAR_0_A_8_TO_1_A_8, WHITE), r4);
 
-		r8 = new Conditions(new VarbitRequirement(8873, WHITE), r4);
-		r9 = new Conditions(new VarbitRequirement(8583, WHITE), r4);
+		r8 = new Conditions(new VarbitRequirement(VarbitID.SOTE_LIGHT_0_A_8_TO_0_B_8, WHITE), r4);
+		r9 = new Conditions(new VarbitRequirement(VarbitID.SOTE_PILLAR_0_B_8_TO_1_B_8, WHITE), r4);
 
-		r10 = new Conditions(new VarbitRequirement(8605, CYAN), r4);
+		r10 = new Conditions(new VarbitRequirement(VarbitID.SOTE_PILLAR_1_B_8_TO_2_B_8, CYAN), r4);
 
-		r11 = new Conditions(new VarbitRequirement(8787, CYAN), r4);
-		r12 = new Conditions(new VarbitRequirement(8604, CYAN), r4);
+		r11 = new Conditions(new VarbitRequirement(VarbitID.SOTE_LIGHT_2_B_7_TO_2_B_8, CYAN), r4);
+		r12 = new Conditions(new VarbitRequirement(VarbitID.SOTE_PILLAR_1_B_7_TO_2_B_7, CYAN), r4);
 	}
 
 	public List<QuestStep> getDisplaySteps()

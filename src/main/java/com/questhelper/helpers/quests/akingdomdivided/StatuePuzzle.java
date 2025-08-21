@@ -39,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -197,10 +198,10 @@ public class StatuePuzzle extends DetailedOwnerStep
 	{
 		inLeglessFaunF1 = new ZoneRequirement(leglessFaunF1);
 		statueStates = new Requirement[]{
-			new VarbitRequirement(12306, 0),
-			new VarbitRequirement(12307, 0),
-			new VarbitRequirement(12308, 0),
-			new VarbitRequirement(12309, 0)
+			new VarbitRequirement(VarbitID.AKD_PISCARILIUS_STATUE_1, 0),
+			new VarbitRequirement(VarbitID.AKD_PISCARILIUS_STATUE_2, 0),
+			new VarbitRequirement(VarbitID.AKD_PISCARILIUS_STATUE_3, 0),
+			new VarbitRequirement(VarbitID.AKD_PISCARILIUS_STATUE_4, 0)
 		};
 	}
 

@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -253,9 +254,9 @@ public class KingsRansom extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		hasForm = new Conditions(LogicType.OR, addressForm, new VarbitRequirement(3890, 1));
-		hasScrapPaper = new Conditions(LogicType.OR, scrapPaper, new VarbitRequirement(3891, 1));
-		hasBlackHelm = new Conditions(LogicType.OR, blackHelm, new VarbitRequirement(3892, 1));
+		hasForm = new Conditions(LogicType.OR, addressForm, new VarbitRequirement(VarbitID.KR_CLUE_FORM, 1));
+		hasScrapPaper = new Conditions(LogicType.OR, scrapPaper, new VarbitRequirement(VarbitID.KR_CLUE_NOTE, 1));
+		hasBlackHelm = new Conditions(LogicType.OR, blackHelm, new VarbitRequirement(VarbitID.KR_CLUE_ARMOUR, 1));
 		inUpstairsManor = new ZoneRequirement(upstairsManor);
 		inDownstairsManor = new ZoneRequirement(downstairsManor, downstairsManor2);
 		inTrialRoom = new ZoneRequirement(trialRoom);
@@ -267,14 +268,14 @@ public class KingsRansom extends BasicQuestHelper
 		inSecretRoom = new ZoneRequirement(secretRoomFloor0);
 		inFortressEntrance = new ZoneRequirement(mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4);
 
-		handlerInRoom = new VarbitRequirement(3907, 2);
-		butlerInRoom = new VarbitRequirement(3907, 3);
-		maidInRoom = new VarbitRequirement(3907, 5);
+		handlerInRoom = new VarbitRequirement(VarbitID.KR_COURT_WITNESS, 2);
+		butlerInRoom = new VarbitRequirement(VarbitID.KR_COURT_WITNESS, 3);
+		maidInRoom = new VarbitRequirement(VarbitID.KR_COURT_WITNESS, 5);
 
-		askedAboutThread = new VarbitRequirement(3900, 1);
-		askedAboutPoison = new VarbitRequirement(3912, 1);
-		askedAboutDagger = new VarbitRequirement(3913, 1);
-		askedAboutNight = new VarbitRequirement(3915, 1);
+		askedAboutThread = new VarbitRequirement(VarbitID.KR_COURT_THREAD, 1);
+		askedAboutPoison = new VarbitRequirement(VarbitID.KR_COURT_DOG_PROOF, 1);
+		askedAboutDagger = new VarbitRequirement(VarbitID.KR_COURT_BUTL_PROOF, 1);
+		askedAboutNight = new VarbitRequirement(VarbitID.KR_COURT_MAID_PROOF, 1);
 
 		inPuzzle = new WidgetModelRequirement(588, 1, 27214);
 		

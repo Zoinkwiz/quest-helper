@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -103,7 +104,7 @@ public class KnightWaves extends BasicQuestHelper
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, 25);
 		potions = new ItemRequirement("Attack and strength potions for boost", -1, -1);
 
-		talkedToSquire = new VarbitRequirement(3908, 1);
+		talkedToSquire = new VarbitRequirement(VarbitID.KR_WAVE_INSTR, 1);
 	}
 
 	public void setupSteps()

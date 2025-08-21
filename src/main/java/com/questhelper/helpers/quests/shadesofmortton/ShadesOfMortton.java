@@ -200,14 +200,12 @@ public class ShadesOfMortton extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		has20Sanctity = new VarplayerRequirement(341, 20);
-
 		razmirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 3);
 		curedRazmire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 6); //64
 		ulsquirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 1);
 		curedUlsquire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 5);
 
-		repairedTemple = new VarplayerRequirement(343, 100);
+		repairedTemple = new VarplayerRequirement(VarPlayerID.TEMPLE_REPAIRED_P, 100);
 		has20Sanctity = new VarplayerRequirement(VarPlayerID.TEMPLE_SANCTITY_P, 20, Operation.GREATER_EQUAL);
 		litFire = new ObjectCondition(ObjectID.TEMPLEFIRE_ALTAR, new WorldPoint(3506, 3316, 0));
 	}

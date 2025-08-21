@@ -393,12 +393,12 @@ public class PerseriyaSteps extends ConditionalStep
 		onPath5 = new ZoneRequirement(path5);
 		onPath6 = new ZoneRequirement(path6);
 
-		destroyedTether = new VarbitRequirement(15258, 1);
+		destroyedTether = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_1_DONE, 1);
 
 		isNearCatalystRoom = new ZoneRequirement(nearCatalystRoom1, nearCatalystRoom2);
 		inCatalystRoom = new ZoneRequirement(catalystRoom);
 
-		completedCatalystRoom = new VarbitRequirement(15259, 1);
+		completedCatalystRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_2_DONE, 1);
 		isNearGrowthRoom = new ZoneRequirement(nearGrowth1, nearGrowth2);
 		// On login to main area, 12164 0->1
 		// 13989 0->1
@@ -427,8 +427,8 @@ public class PerseriyaSteps extends ConditionalStep
 		// 202
 		inGrowthRoom = new ZoneRequirement(growthRoom);
 
-		repairedGrowths = new VarbitRequirement(15210, 4);
-		solvedGrowthRoom = new VarbitRequirement(15260, 1);
+		repairedGrowths = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_LIGHTS, 4);
+		solvedGrowthRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_3_DONE, 1);
 
 		// Entered boat room, 15261 0->1
 		inBoatRoom1 = new ZoneRequirement(boatRoom1);
@@ -455,7 +455,7 @@ public class PerseriyaSteps extends ConditionalStep
 		waterAxonPresent = new NpcRequirement(NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Water)");
 		fireAxonPresent = new NpcRequirement(NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Fire)");
 		natureAxonPresent = new NpcRequirement(NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Nature)");
-		completedAxonRoom = new VarbitRequirement(15258, 1);
+		completedAxonRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_1_DONE, 1);
 
 		nothingInHands = and(new NoItemRequirement("Weapon", ItemSlots.WEAPON),
 			new NoItemRequirement("Shield", ItemSlots.SHIELD));
@@ -471,10 +471,10 @@ public class PerseriyaSteps extends ConditionalStep
 		dustNerveBroken = new ObjectCondition(ObjectID.DT2_SCAR_MAZE_3_COMBINATION_ENDING_DUST, new WorldPoint(1784, 6433, 0));
 		steamNerveBroken = new ObjectCondition(ObjectID.DT2_SCAR_MAZE_3_COMBINATION_ENDING_STEAM, new WorldPoint(1783, 6430, 0));
 
-		completedNerveRoom = new VarbitRequirement(15259, 1);
+		completedNerveRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_2_DONE, 1);
 		inNervePassage = new ZoneRequirement(nervePassage);
 		impsNearby = new NpcRequirement("Scarred imp", NpcID.DT2_SCAR_MAZE_3_LINK_NPC);
-		completedSummoningRoom = new VarbitRequirement(15260, 1);
+		completedSummoningRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_3_DONE, 1);
 		// Entered boat room, 15261 0->1. Seems to indicate 'teleport to boat room if they leave'
 		shouldReadTablet1 = new VarbitRequirement(PERSERIYA_VARBIT, 16);
 		shouldReadTablet2 = new VarbitRequirement(PERSERIYA_VARBIT, 24);
@@ -512,14 +512,14 @@ public class PerseriyaSteps extends ConditionalStep
 		inLeechRoom = new ZoneRequirement(leechRoom);
 		inBoatRoom3 = new ZoneRequirement(boatRoom3);
 
-		solvedMemoryRoom = new VarbitRequirement(15258, 1);
-		solvedTreeRoom = new VarbitRequirement(15260, 1);
-		solvedLeechRoom = new VarbitRequirement(15259, 1);
+		solvedMemoryRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_1_DONE, 1);
+		solvedTreeRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_3_DONE, 1);
+		solvedLeechRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_2_DONE, 1);
 		protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 		inSwRoom3 = new ZoneRequirement(swRoom3P1, swRoom3P2, swRoom3P3, swRoom3P4, swRoom3P5);
 
-		repairedGrowthRoom3 = new VarbitRequirement(15210, 4);
-		repairedCrimsonVeins = new VarbitRequirement(15219, 3);
+		repairedGrowthRoom3 = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_LIGHTS, 4);
+		repairedCrimsonVeins = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_2_RED_BLOOD_COUNT, 3);
 
 		completedRoom3 = new VarbitRequirement(PERSERIYA_VARBIT, 36, Operation.GREATER_EQUAL);
 

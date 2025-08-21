@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -337,7 +338,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		onMountainPath = new ZoneRequirement(mountainPath1, mountainPath2, mountainPath3, mountainPath4, mountainPath5);
 		inTrollArea1 = new ZoneRequirement(trollArea1);
 		inPrison = new ZoneRequirement(prison);
-		freedEadgar = new VarbitRequirement(0, 1);
+		freedEadgar = new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1);
 		hasCellKey2 = cellKey2;
 		inStrongholdFloor1 = new ZoneRequirement(strongholdFloor1);
 		inStrongholdFloor2 = new ZoneRequirement(strongholdFloor2);

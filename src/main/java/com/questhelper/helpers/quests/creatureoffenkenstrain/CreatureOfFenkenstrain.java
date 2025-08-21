@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -198,15 +199,15 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		inCanifisBar = new ZoneRequirement(barZone);
 		inCastleFloor0 = new ZoneRequirement(castleZoneFloor0);
 		inCastleFloor1 = new ZoneRequirement(castleZoneFloor1);
-		putStarOnGrave = new VarbitRequirement(192, 1);
+		putStarOnGrave = new VarbitRequirement(VarbitID.FENK_COFFIN, 1);
 		hasMarbleAmulet = new Conditions(LogicType.OR, marbleAmulet, putStarOnGrave);
 		hasObsidianAmulet = new Conditions(LogicType.OR, obsidianAmulet, putStarOnGrave);
 		hasStarAmulet = new Conditions(LogicType.OR, starAmulet, putStarOnGrave);
-		followingGardenerForHead = new VarbitRequirement(185, 1);
+		followingGardenerForHead = new VarbitRequirement(VarbitID.FENK_GARDENER_DIRECTIONS, 1);
 
 		hasDecapitatedHeadWithBrain = new Conditions(LogicType.OR,
 			decapitatedHeadWithBrain,
-			new VarbitRequirement(189, 1)
+			new VarbitRequirement(VarbitID.FENK_HEAD, 1)
 		);
 
 		inExperiementCave = new ZoneRequirement(experimentCave);
@@ -214,29 +215,29 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 		hasCavernKey = new Conditions(LogicType.OR,
 			cavernKey,
-			new VarbitRequirement(199, 1)
+			new VarbitRequirement(VarbitID.FENK_UNLOCKED_CAVERN, 1)
 		);
 		keyNearby = new ItemOnTileRequirement(cavernKey);
 		hasTorso = new Conditions(LogicType.OR,
 			torso,
-			new VarbitRequirement(188, 1)
+			new VarbitRequirement(VarbitID.FENK_TORSO, 1)
 		);
 		hasLegs = new Conditions(LogicType.OR,
 			legs,
-			new VarbitRequirement(187, 1)
+			new VarbitRequirement(VarbitID.FENK_LEGS, 1)
 		);
 		hasArm = new Conditions(LogicType.OR,
 			arms,
-			new VarbitRequirement(186, 1)
+			new VarbitRequirement(VarbitID.FENK_ARMS, 1)
 		);
 
 		// Needle given, 190 = 1
 		// Thread given, 191 0->5
 
-		usedShedKey = new VarbitRequirement(200, 1);
+		usedShedKey = new VarbitRequirement(VarbitID.FENK_UNLOCKED_SHED, 1);
 		inCastleTower = new ZoneRequirement(castleTower);
 
-		usedTowerKey = new VarbitRequirement(198, 1);
+		usedTowerKey = new VarbitRequirement(VarbitID.FENK_UNLOCKED_TOWER, 1);
 		inMonsterTower = new ZoneRequirement(monsterTower);
 	}
 

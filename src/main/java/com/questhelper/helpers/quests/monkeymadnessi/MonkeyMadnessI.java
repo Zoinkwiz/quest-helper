@@ -420,9 +420,9 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		inThroneRoom = new ZoneRequirement(throne1, throne2, throne3, throne4);
 		inJungleDemonRoom = new ZoneRequirement(jungleDemonRoom);
 
-		talkedToCaranock = new VarbitRequirement(122, 3);
+		talkedToCaranock = new VarbitRequirement(VarbitID.MM_CARANOCK, 3);
 
-		reportedBackToNarnode = new VarbitRequirement(121, 7);
+		reportedBackToNarnode = new VarbitRequirement(VarbitID.MM_NARNODE, 7);
 
 		talkedToDaero = new VarbitRequirement(VarbitID.MM_DAERO, 1, Operation.GREATER_EQUAL);
 

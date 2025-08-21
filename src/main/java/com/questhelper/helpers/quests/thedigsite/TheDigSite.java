@@ -286,7 +286,7 @@ public class TheDigSite extends BasicQuestHelper
 			new DialogRequirement("You got all the questions correct, well done!"),
 			new DialogRequirement("Great, I'm getting good at this."));
 
-		talkedToGuide = new VarbitRequirement(2544, 1);
+		talkedToGuide = new VarbitRequirement(VarbitID.ITDIGSITETEA, 1);
 		tea = tea.hideConditioned(talkedToGuide);
 
 
@@ -361,20 +361,20 @@ public class TheDigSite extends BasicQuestHelper
 
 		// 2550 = 1, gotten invite
 		// 3644 = 1, gotten invite
-		givenTalismanIn = new VarbitRequirement(2550, 1);
-		rope1Added = new VarbitRequirement(2545, 1);
-		rope2Added = new VarbitRequirement(2546, 1);
+		givenTalismanIn = new VarbitRequirement(VarbitID.ITEXPERTLETTER, 1);
+		rope1Added = new VarbitRequirement(VarbitID.ITDIGSITEWINCH1, 1);
+		rope2Added = new VarbitRequirement(VarbitID.ITDIGSITEWINCH2, 1);
 
 		// 45 - 54
 		hasTeddy = new Conditions(LogicType.OR, teddybear, talkedToFemaleStudent);
 		hasSkull = new Conditions(LogicType.OR, skull, talkedToGreenStudent);
 		hasSpecialCup = new Conditions(LogicType.OR, specialCup, talkedToOrangeStudent);
-		letterStamped = new VarbitRequirement(2552, 1);
+		letterStamped = new VarbitRequirement(VarbitID.ITCURATORLETTER, 1);
 
 
-		searchedBricks = new VarbitRequirement(2549, 1);
+		searchedBricks = new VarbitRequirement(VarbitID.ITDIGSITEHINT, 1);
 		openPowderChestNearby = new ObjectCondition(ObjectID.DIGCHESTOPEN);
-		openedBarrel = new VarbitRequirement(2547, 1);
+		openedBarrel = new VarbitRequirement(VarbitID.ITDIGSITEBARREL, 1);
 
 		hasKeyOrPowderOrMixtures = new Conditions(LogicType.OR,
 			key, powder, nitrate, mixedChemicals, mixedChemicals2, chemicalCompound, openPowderChestNearby);

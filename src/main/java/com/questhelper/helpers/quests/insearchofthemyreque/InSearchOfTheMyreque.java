@@ -214,9 +214,9 @@ public class InSearchOfTheMyreque extends BasicQuestHelper
 	public void setupConditions()
 	{
 		hasEnoughPouch = druidPouch5;
-		repairedBridge1 = new VarbitRequirement(176, 1);
-		repairedBridge2 = new VarbitRequirement(177, 1);
-		repairedBridge3 = new VarbitRequirement(178, 1);
+		repairedBridge1 = new VarbitRequirement(VarbitID.BRIDGERUNG1, 1);
+		repairedBridge2 = new VarbitRequirement(VarbitID.BRIDGERUNG2, 1);
+		repairedBridge3 = new VarbitRequirement(VarbitID.BRIDGERUNG3, 1);
 
 		onBridge = new ZoneRequirement(bridge);
 		onEntranceIsland = new ZoneRequirement(entranceIsland);

@@ -33,6 +33,7 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -101,66 +102,66 @@ public class RatCharming extends DetailedOwnerStep
 		noteRequirements = new Requirement[8];
 		noteRequirements[0] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 63),
-				new VarbitRequirement(1420, 0)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 63),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 0)
 			),
-			new VarbitRequirement(1395, 63)
+			new VarbitRequirement(VarbitID.VC_NOTE1, 63)
 		);
 
 		noteRequirements[1] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 56),
-				new VarbitRequirement(1420, 1)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 56),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 1)
 			),
-			new VarbitRequirement(1396, 56)
+			new VarbitRequirement(VarbitID.VC_NOTE2, 56)
 		);
 
 		noteRequirements[2] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 62),
-				new VarbitRequirement(1420, 2)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 62),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 2)
 			),
-			new VarbitRequirement(1397, 62)
+			new VarbitRequirement(VarbitID.VC_NOTE3, 62)
 		);
 
 		noteRequirements[3] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 60),
-				new VarbitRequirement(1420, 3)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 60),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 3)
 			),
-			new VarbitRequirement(1398, 60)
+			new VarbitRequirement(VarbitID.VC_NOTE4, 60)
 		);
 
 		noteRequirements[4] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 127),
-				new VarbitRequirement(1420, 4)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 127),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 4)
 			),
-			new VarbitRequirement(1399, 127)
+			new VarbitRequirement(VarbitID.VC_NOTE5, 127)
 		);
 
 		noteRequirements[5] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 32),
-				new VarbitRequirement(1420, 5)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 32),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 5)
 			),
-			new VarbitRequirement(1400, 32)
+			new VarbitRequirement(VarbitID.VC_NOTE6, 32)
 		);
 
 		noteRequirements[6] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 1),
-				new VarbitRequirement(1420, 6)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 1),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 6)
 			),
-			new VarbitRequirement(1401, 1)
+			new VarbitRequirement(VarbitID.VC_NOTE7, 1)
 		);
 
 		noteRequirements[7] = new Conditions(LogicType.OR,
 			new Conditions(
-				new VarbitRequirement(1411, 48),
-				new VarbitRequirement(1420, 7)
+				new VarbitRequirement(VarbitID.VC_NOTE_CURRENT, 48),
+				new VarbitRequirement(VarbitID.VC_NOTE_NUMBER, 7)
 			),
-			new VarbitRequirement(1402, 48)
+			new VarbitRequirement(VarbitID.VC_NOTE8, 48)
 		);
 	}
 

@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
@@ -252,33 +253,33 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		inMill = new ZoneRequirement(mill1, mill2);
 
 
-		talkedToDuke = new VarbitRequirement(2259, 1);
-		talkedToAereck = new VarbitRequirement(2260, 1);
-		talkedToGoblins = new VarbitRequirement(2261, 1);
-		talkedToWoman = new VarbitRequirement(2262, 1);
-		goneOutside = new VarbitRequirement(2263, 1);
+		talkedToDuke = new VarbitRequirement(VarbitID.DTTD_TOUR_DUKE, 1);
+		talkedToAereck = new VarbitRequirement(VarbitID.DTTD_TOUR_PRIEST, 1);
+		talkedToGoblins = new VarbitRequirement(VarbitID.DTTD_TOUR_GOBLINS, 1);
+		talkedToWoman = new VarbitRequirement(VarbitID.DTTD_TOUR_CITIZENS, 1);
+		goneOutside = new VarbitRequirement(VarbitID.DTTD_TOUR_SUN, 1);
 		zanikIsFollowing =  new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.DTTD_ZANIK_FOLLOWER, NpcID.DTTD_ZANIK_FOLLOWER_HAM), 16);
-		talkedToShopkeeper = new VarbitRequirement(2265, 1);
-		heardSpeaker = new VarbitRequirement(2268, 1);
-		talkedToJohn = new VarbitRequirement(2269, 1);
+		talkedToShopkeeper = new VarbitRequirement(VarbitID.DTTD_TOUR_SHOP, 1);
+		heardSpeaker = new VarbitRequirement(VarbitID.DTTD_TOUR_HAM_DEACON, 1);
+		talkedToJohn = new VarbitRequirement(VarbitID.DTTD_TOUR_HAM_JOHANHUS, 1);
 
-		killedGuard1 = new VarbitRequirement(2275, 1);
-		killedGuard2 = new VarbitRequirement(2277, 1);
-		killedGuard3 = new VarbitRequirement(2278, 1);
-		killedGuard4 = new VarbitRequirement(2280, 1);
-		killedGuard5 = new VarbitRequirement(2282, 1);
+		killedGuard1 = new VarbitRequirement(VarbitID.DTTD_GUARD_1_DEAD, 1);
+		killedGuard2 = new VarbitRequirement(VarbitID.DTTD_GUARD_2_DEAD, 1);
+		killedGuard3 = new VarbitRequirement(VarbitID.DTTD_GUARD_3_DEAD, 1);
+		killedGuard4 = new VarbitRequirement(VarbitID.DTTD_GUARD_4_DEAD, 1);
+		killedGuard5 = new VarbitRequirement(VarbitID.DTTD_GUARD_5_DEAD, 1);
 
 		isDisguisedZanikFollowing = new NpcInteractingRequirement(NpcID.DTTD_ZANIK_FOLLOWER_HAM);
 
 		zanikWaitingFor4 = new Conditions(new Conditions(LogicType.NOR, isDisguisedZanikFollowing), new NpcCondition(NpcID.DTTD_ZANIK_FOLLOWER_HAM, new Zone(new WorldPoint(2575, 5195, 0), new WorldPoint(2576, 5195, 0))));
 		zanikWaitingFor5 = new Conditions(new Conditions(LogicType.NOR, isDisguisedZanikFollowing), new NpcCondition(NpcID.DTTD_ZANIK_FOLLOWER_HAM, new Zone(new WorldPoint(2577, 5199, 0), new WorldPoint(2577, 5200, 0))));
 
-		zanikPickedUp = new VarbitRequirement(2271, 0);
+		zanikPickedUp = new VarbitRequirement(VarbitID.DTTD_ZANIK_CORPSE, 0);
 
-		ropeAddedToHole = new VarbitRequirement(279, 1);
-		minedRocks = new VarbitRequirement(538, 1);
+		ropeAddedToHole = new VarbitRequirement(VarbitID.SWAMP_CAVES_ROPED_ENTRANCE, 1);
+		minedRocks = new VarbitRequirement(VarbitID.LOST_TRIBE_HOLE_2_DUG, 1);
 
-		killedGuards = new VarbitRequirement(2283, 3);
+		killedGuards = new VarbitRequirement(VarbitID.DTTD_MILL_GUARDS_DEAD, 3);
 	}
 
 	public void setupSteps()

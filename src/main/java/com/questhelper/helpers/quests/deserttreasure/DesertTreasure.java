@@ -344,22 +344,22 @@ public class DesertTreasure extends BasicQuestHelper
 	public void setupConditions()
 	{
 		// Given all items, 392 = 1;
-		killedDamis = new VarbitRequirement(383, 5);
+		killedDamis = new VarbitRequirement(VarbitID.FD_SHADOWWARRIOR_QUEST, 5);
 		hadSmokeDiamond = new Conditions(true, smokeDiamond);
 		gotIceDiamond = new Conditions(true, iceDiamond);
-		gotBloodDiamond = new VarbitRequirement(373, 4);
+		gotBloodDiamond = new VarbitRequirement(VarbitID.FDVW_SUBQUEST, 4);
 		inSmokeDungeon = new ZoneRequirement(smokeDungeon);
 		inFareedRoom = new ZoneRequirement(fareedRoom);
-		litTorch1 = new VarbitRequirement(360, 1);
-		litTorch2 = new VarbitRequirement(361, 1);
-		litTorch3 = new VarbitRequirement(363, 1);
-		litTorch4 = new VarbitRequirement(362, 1);
-		unlockedFareedDoor = new VarbitRequirement(386, 1);
-		killedFareed = new VarbitRequirement(376, 1);
-		talkedToRasolo = new VarbitRequirement(383, 2);
+		litTorch1 = new VarbitRequirement(VarbitID.FD_TORCH_COUNT1, 1);
+		litTorch2 = new VarbitRequirement(VarbitID.FD_TORCH_COUNT2, 1);
+		litTorch3 = new VarbitRequirement(VarbitID.FD_TORCH_COUNT4, 1);
+		litTorch4 = new VarbitRequirement(VarbitID.FD_TORCH_COUNT3, 1);
+		unlockedFareedDoor = new VarbitRequirement(VarbitID.FD_FIREWARGATE, 1);
+		killedFareed = new VarbitRequirement(VarbitID.FD_KILLED_FIREWARRIOR, 1);
+		talkedToRasolo = new VarbitRequirement(VarbitID.FD_SHADOWWARRIOR_QUEST, 2);
 		gotRing = new VarbitRequirement(VarbitID.FD_SHADOWWARRIOR_QUEST, 3, Operation.GREATER_EQUAL);
 
-		unlockedCrossChest = new VarbitRequirement(384, 1);
+		unlockedCrossChest = new VarbitRequirement(VarbitID.FD_BANDITCHEST_DISARMED, 1);
 
 		inShadowDungeon = new ZoneRequirement(shadowDungeon);
 
@@ -367,35 +367,35 @@ public class DesertTreasure extends BasicQuestHelper
 		damis2Nearby = new NpcInteractingRequirement(NpcID.FD_DAMIS_TOUGHER);
 		// 385 0->1, in Damis spawn area?
 
-		talkedToMalak = new VarbitRequirement(373, 1);
-		askedAboutKillingDessous = new VarbitRequirement(373, 2);
+		talkedToMalak = new VarbitRequirement(VarbitID.FDVW_SUBQUEST, 1);
+		askedAboutKillingDessous = new VarbitRequirement(VarbitID.FDVW_SUBQUEST, 2);
 
 		inDraynorSewer = new ZoneRequirement(draynorSewer);
 
 		dessousNearby = new NpcCondition(NpcID.BLOODDIAMOND_VAMPIREWARRIOR);
 
-		killedDessous = new VarbitRequirement(373, 3);
+		killedDessous = new VarbitRequirement(VarbitID.FDVW_SUBQUEST, 3);
 
-		gaveCake = new VarbitRequirement(382, 1);
+		gaveCake = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 1);
 		talkedToTrollChild = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 2, Operation.GREATER_EQUAL);
 		// Killed kamil also results in 377 0->1
 		killedKamil = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 3, Operation.GREATER_EQUAL);
-		freedTrolls = new VarbitRequirement(382, 4);
-		gotIceDiamond = new VarbitRequirement(382, 5);
+		freedTrolls = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 4);
+		gotIceDiamond = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 5);
 
-		killedTrolls = new VarbitRequirement(378, 5);
+		killedTrolls = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_TROLLSKILLED, 5);
 
 		inTrollArea = new ZoneRequirement(trollArea);
 		inPath = new ZoneRequirement(path1, path2);
 		onIcePath = new ZoneRequirement(icePath);
 		onIceBridge = new ZoneRequirement(iceBridge);
 
-		smashedIce1 = new VarbitRequirement(380, 1);
+		smashedIce1 = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_DADFREE, 1);
 
-		placedSmoke = new VarbitRequirement(387, 1);
-		placedShadow = new VarbitRequirement(388, 1);
-		placedIce = new VarbitRequirement(389, 1);
-		placedBlood = new VarbitRequirement(390, 1);
+		placedSmoke = new VarbitRequirement(VarbitID.FD_COLUMN_FIRE, 1);
+		placedShadow = new VarbitRequirement(VarbitID.FD_COLUMN_SHADOW, 1);
+		placedIce = new VarbitRequirement(VarbitID.FD_COLUMN_ICE, 1);
+		placedBlood = new VarbitRequirement(VarbitID.FD_COLUMN_BLOOD, 1);
 
 		inFloor1 = new ZoneRequirement(floor1);
 		inFloor2 = new ZoneRequirement(floor2);

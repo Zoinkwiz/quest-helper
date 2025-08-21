@@ -220,12 +220,12 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		dug5 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_5, 1, Operation.GREATER_EQUAL);
 		dug6 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_6, 1, Operation.GREATER_EQUAL);
 
-		handedIn1 = new VarbitRequirement(3551, 2);
-		handedIn2 = new VarbitRequirement(3552, 2);
-		handedIn3 = new VarbitRequirement(3553, 2);
-		handedIn4 = new VarbitRequirement(3554, 2);
-		handedIn5 = new VarbitRequirement(3555, 2);
-		handedIn6 = new VarbitRequirement(3556, 2);
+		handedIn1 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_1, 2);
+		handedIn2 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_2, 2);
+		handedIn3 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_3, 2);
+		handedIn4 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_4, 2);
+		handedIn5 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_5, 2);
+		handedIn6 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_6, 2);
 
 		cleaned1 = new Conditions(LogicType.OR, handedIn1, armourShard);
 		cleaned2 = new Conditions(LogicType.OR, handedIn2, shieldFragment);
@@ -236,12 +236,12 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 
 		cleanedAll = new Conditions(cleaned1, cleaned2, cleaned3, cleaned4, cleaned5, cleaned6);
 
-		zanikFollowing = new Conditions(LogicType.OR, new VarbitRequirement(3557, 0),
+		zanikFollowing = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.SLICE_ZANIK_AT_DIG, 0),
 			new NpcInteractingRequirement(NpcID.SLICE_ZANIK_FOLLOWER));
 
 		// 3564 = 1, searjents etc
 
-		atCrate = new VarbitRequirement(3558, 1);
+		atCrate = new VarbitRequirement(VarbitID.SLICE_HIDING, 1);
 		guardsPassed = new NpcCondition(NpcID.SLICE_HAM_GUARD, new WorldPoint(2397, 5551, 0));
 		guardEngaged = new Conditions(LogicType.OR,
 			new NpcInteractingWithNpcRequirement(NpcID.SLICE_SERGEANT_MOSSFISTS, "Guard"),

@@ -273,13 +273,13 @@ public class TheTouristTrap extends BasicQuestHelper
 		searchedBookcase = new Conditions(true, new WidgetTextRequirement(InterfaceID.Objectbox.TEXT, "You notice several books on the subject of sailing."));
 		distractedSiad = new Conditions(true, new WidgetTextRequirement(229, 1, "The captain starts rambling on about his days as a salty sea dog. He<br>looks quite distracted..."));
 
-		anaPlacedOnCartOfLift = new VarbitRequirement(2805, 1);
+		anaPlacedOnCartOfLift = new VarbitRequirement(VarbitID.TOURTRAP_QIP_ANA_STATE, 1);
 		// TODO: Better detection of if Ana is on the surface or in the underground barrel
 		anaOnSurface = new VarplayerRequirement(VarPlayerID.DESERTRESCUE, 22, Operation.GREATER_EQUAL);
 		// TODO: This only gets set the first time. If you somehow lose Ana between here and the cart it remains set. Need to add more logic around this
-		anaOnSurfaceInBarrel = new VarbitRequirement(2808, 1);
-		anaOnCart = new VarbitRequirement(2809, 1);
-		anaFree = new VarbitRequirement(3733, 1);
+		anaOnSurfaceInBarrel = new VarbitRequirement(VarbitID.TOURTRAP_QIP_ANA_WINCHSIDE_BARREL, 1);
+		anaOnCart = new VarbitRequirement(VarbitID.TOURTRAP_QIP_FLATBACK_CART_ANA, 1);
+		anaFree = new VarbitRequirement(VarbitID.TOURTRAP_ANA_VISIBLE_SHANTY_PASS, 1);
 	}
 
 	public void setupSteps()

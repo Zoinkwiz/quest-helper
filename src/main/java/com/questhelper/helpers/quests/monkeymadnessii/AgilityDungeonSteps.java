@@ -46,6 +46,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.*;
@@ -129,7 +130,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		inKrukRoom = new ZoneRequirement(krukRoom);
 
 		hasBronzeKey = bronzeKey;
-		openedShortcut = new VarbitRequirement(5029, 1);
+		openedShortcut = new VarbitRequirement(VarbitID.MM2_MAZE_RETURN, 1);
 
 		path1SouthIsWrongChat = new ChatMessageRequirement(
 			new ZoneRequirement(new Zone(new WorldPoint(2512, 9141, 1), new WorldPoint(2515, 9135, 1))),

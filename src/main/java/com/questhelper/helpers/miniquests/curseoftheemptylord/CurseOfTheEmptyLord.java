@@ -43,6 +43,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.*;
@@ -127,12 +128,12 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		talkedToValdez = new VarbitRequirement(816, 1);
-		talkedToRennard = new VarbitRequirement(817, 1);
-		talkedToKharrim = new VarbitRequirement(818, 1);
-		talkedToLennissa = new VarbitRequirement(819, 1);
-		talkedToDhalak = new VarbitRequirement(820, 1);
-		talkedToViggora = new VarbitRequirement(821, 1);
+		talkedToValdez = new VarbitRequirement(VarbitID.SECRET_GHOST1_BACKSTORY, 1);
+		talkedToRennard = new VarbitRequirement(VarbitID.SECRET_GHOST2_BACKSTORY, 1);
+		talkedToKharrim = new VarbitRequirement(VarbitID.SECRET_GHOST3_BACKSTORY, 1);
+		talkedToLennissa = new VarbitRequirement(VarbitID.SECRET_GHOST4_BACKSTORY, 1);
+		talkedToDhalak = new VarbitRequirement(VarbitID.SECRET_GHOST5_BACKSTORY, 1);
+		talkedToViggora = new VarbitRequirement(VarbitID.SECRET_GHOST6_BACKSTORY, 1);
 		inEdgevilleDungeon = new ZoneRequirement(edgevilleDungeon);
 		inRoguesCastle = new ZoneRequirement(roguesCastleFirstFloor);
 		inSlayerTower = new ZoneRequirement(slayerTowerFirstFloor);

@@ -53,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -287,18 +288,18 @@ public class RatCatchers extends BasicQuestHelper
 		// 1423 = 1,
 		// 1424 = 1
 
-		caughtRat1 = new VarbitRequirement(1424, 1);
+		caughtRat1 = new VarbitRequirement(VarbitID.VC_RATON_OFF1, 1);
 		caughtRat2And3 = new Conditions(
-			new VarbitRequirement(1425, 1),
-			new VarbitRequirement(1426, 1)
+			new VarbitRequirement(VarbitID.VC_RATON_OFF2, 1),
+			new VarbitRequirement(VarbitID.VC_RATON_OFF3, 1)
 		);
 
-		poisonedHole1 = new VarbitRequirement(1406, 1);
-		poisonedHole2 = new VarbitRequirement(1407, 1);
-		poisonedHole3 = new VarbitRequirement(1408, 1);
-		poisonedHole4 = new VarbitRequirement(1409, 1);
+		poisonedHole1 = new VarbitRequirement(VarbitID.RATCATCH_RATHOLE_1, 1);
+		poisonedHole2 = new VarbitRequirement(VarbitID.RATCATCH_RATHOLE_2, 1);
+		poisonedHole3 = new VarbitRequirement(VarbitID.RATCATCH_RATHOLE_3, 1);
+		poisonedHole4 = new VarbitRequirement(VarbitID.RATCATCH_RATHOLE_4, 1);
 
-		catSeenFailure = new VarbitRequirement(1410, 1);
+		catSeenFailure = new VarbitRequirement(VarbitID.RATCATCH_CATKNOWSDRILL, 1);
 		// 1422, cat's told you how to get kelda rats
 
 		inPlayWidget = new WidgetTextRequirement(282, 20, "PLAY");

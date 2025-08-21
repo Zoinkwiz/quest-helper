@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -168,7 +169,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inChaosAltar = new ZoneRequirement(chaosAltar);
-		inBattle = new VarbitRequirement(6719, 2);
+		inBattle = new VarbitRequirement(VarbitID.MINIMAP_STATE, 2);
 	}
 
 	public void setupSteps()

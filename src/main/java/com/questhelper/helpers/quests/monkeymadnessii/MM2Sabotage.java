@@ -41,6 +41,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.Arrays;
 import java.util.List;
@@ -144,14 +145,14 @@ public class MM2Sabotage extends ConditionalStep
 		// 10->14
 		// 14->46
 		// 46->62
-		placedSatchel1 = new VarbitRequirement(5044, 1);
-		placedSatchel2 = new VarbitRequirement(5042, 1);
-		placedSatchel3 = new VarbitRequirement(5043, 1);
-		placedSatchel4 = new VarbitRequirement(5046, 1);
-		placedSatchel5 = new VarbitRequirement(5045, 1);
-		placedSatchel6 = new VarbitRequirement(5041, 1);
+		placedSatchel1 = new VarbitRequirement(VarbitID.MM2_PLATFORM_TARGET_4, 1);
+		placedSatchel2 = new VarbitRequirement(VarbitID.MM2_PLATFORM_TARGET_2, 1);
+		placedSatchel3 = new VarbitRequirement(VarbitID.MM2_PLATFORM_TARGET_3, 1);
+		placedSatchel4 = new VarbitRequirement(VarbitID.MM2_PLATFORM_TARGET_6, 1);
+		placedSatchel5 = new VarbitRequirement(VarbitID.MM2_PLATFORM_TARGET_5, 1);
+		placedSatchel6 = new VarbitRequirement(VarbitID.MM2_PLATFORM_TARGET_1, 1);
 
-		placedAllSatchels = new VarbitRequirement(5047, 63);
+		placedAllSatchels = new VarbitRequirement(VarbitID.MM2_PLATFORM_TARGETS, 63);
 	}
 
 	public void setupSteps()

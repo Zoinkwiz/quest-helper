@@ -281,17 +281,17 @@ public class TheFremennikExiles extends BasicQuestHelper
 		// Quest events
 		younglingNearby = new NpcCondition(NpcID.VIKINGEXILE_YOUNGLING);
 		letterNearby = new ItemOnTileRequirement(letter);
-		killedYoungling = new VarbitRequirement(9460, 1);
-		hasReadLetter = new VarbitRequirement(9461, 1);
+		killedYoungling = new VarbitRequirement(VarbitID.VIKINGEXILE_YOUNGLING_KILLED, 1);
+		hasReadLetter = new VarbitRequirement(VarbitID.VIKINGEXILE_LETTER_READ, 1);
 		// 9468 = 1, youngling popped out first time
 		askedAboutShield = new VarbitRequirement(VarbitID.VIKINGEXILE_SHIELD_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutGlass = new VarbitRequirement(VarbitID.VIKINGEXILE_GLASS_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutRock = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutSigil = new VarbitRequirement(VarbitID.VIKINGEXILE_SIGIL_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutAllShieldParts = new Conditions(askedAboutShield, askedAboutGlass, askedAboutRock, askedAboutSigil);
-		triedToThrowRockIntoGeyser = new VarbitRequirement(9464, 2);
-		talkedToPeer = new VarbitRequirement(9464, 3);
-		rockInGeyser = new VarbitRequirement(9470, 1);
+		triedToThrowRockIntoGeyser = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_INFO, 2);
+		talkedToPeer = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_INFO, 3);
+		rockInGeyser = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_GONE, 1);
 		// been given shield, 9471 = 1
 		// Fighting basilisks, 9466 0-30 for 0-100%
 		// Zone checks

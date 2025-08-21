@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		notEnterAbyss = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 11);
 		notEquipTeamCape = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 12);
 
-		firstTimeAbyss = new VarbitRequirement(626, 1);
+		firstTimeAbyss = new VarbitRequirement(VarbitID.RCU_ABYSSAL_WARNING, 1);
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		chaosAccess = new ItemRequirement("Access to the Chaos altar",

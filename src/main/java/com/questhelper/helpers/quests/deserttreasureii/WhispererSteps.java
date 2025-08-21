@@ -385,13 +385,13 @@ public class WhispererSteps extends ConditionalStep
 		// 14862 78->80
 		// varplayer 3575 36691712 -> 36699904
 
-		activatedTeleporter1 = new VarbitRequirement(15088, 1);
-		activatedTeleporter2 = new VarbitRequirement(15089, 1);
-		activatedTeleporter3 = new VarbitRequirement(15091, 1);
-		activatedTeleporter4 = new VarbitRequirement(15092, 1);
-		activatedTeleporter5 = new VarbitRequirement(15093, 1);
-		activatedTeleporter6 = new VarbitRequirement(15090, 1);
-		activatedTeleporter7 = new VarbitRequirement(15094, 1);
+		activatedTeleporter1 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_PALACE, 1);
+		activatedTeleporter2 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_PLAZA, 1);
+		activatedTeleporter3 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_SCIENCE_NORTH, 1);
+		activatedTeleporter4 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_SCIENCE_SOUTH, 1);
+		activatedTeleporter5 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_RESIDENTIAL_WEST, 1);
+		activatedTeleporter6 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_CATHEDRAL, 1);
+		activatedTeleporter7 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_RESIDENTIAL_EAST, 1);
 
 		passedOutAtCathedral = new VarbitRequirement(WHISPERER_VARBIT, 10, Operation.GREATER_EQUAL);
 		// 10->12, ketla wants to see the ring
@@ -399,7 +399,7 @@ public class WhispererSteps extends ConditionalStep
 		// 14->16, tried to give me fragment
 
 		finishedTalkingToKetla = new VarbitRequirement(WHISPERER_VARBIT, 16, Operation.GREATER_EQUAL);
-		givenShadowBlockerSchematic = new VarbitRequirement(15082, 1);
+		givenShadowBlockerSchematic = new VarbitRequirement(VarbitID.DT2_LASSAR_SHADOW_BLOCKER_SCHEMATIC, 1);
 		// Entered science puddle
 		// 15162 0->1 (probably just 'is in shadow realm'?)
 		// 15163 0->3->13->14->15->16->17...100, ticks up to 100
@@ -459,7 +459,7 @@ public class WhispererSteps extends ConditionalStep
 		// 15126 18->20
 		// Unsure when 16->18 happened
 
-		givenTorchSchematic = new VarbitRequirement(15085, 1);
+		givenTorchSchematic = new VarbitRequirement(VarbitID.DT2_LASSAR_SHADOW_TORCH_T1_SCHEMATIC, 1);
 
 		ObjectCondition realWorldTentacleExists = new ObjectCondition(ObjectID.DT2_LASSAR_BARRIER_NORMAL_T1,
 			new Zone(new WorldPoint(2673, 6413, 0),
@@ -483,7 +483,7 @@ public class WhispererSteps extends ConditionalStep
 				realWorldTentacleExists)
 		);
 
-		givenIdolSchematic = new VarbitRequirement(15083, 1);
+		givenIdolSchematic = new VarbitRequirement(VarbitID.DT2_LASSAR_REVITALISING_IDOL_SCHEMATIC, 1);
 
 		idolPlaced = new ObjectCondition(ObjectID.DT2_LASSAR_REVITALISING_IDOL_NORMAL,
 			new Zone(new WorldPoint(2685, 6414, 0), new WorldPoint(2700, 6427, 0)));
@@ -536,7 +536,7 @@ public class WhispererSteps extends ConditionalStep
 		// Picked up superior schematics
 		// 15126 20->22
 
-		givenSuperiorTorchSchematic = new VarbitRequirement(15086, 1);
+		givenSuperiorTorchSchematic = new VarbitRequirement(VarbitID.DT2_LASSAR_SHADOW_TORCH_T2_SCHEMATIC, 1);
 		// 22->24
 
 		destroyedTentacles3 = new Conditions(
@@ -546,7 +546,7 @@ public class WhispererSteps extends ConditionalStep
 		// Anima portal real world block:
 		// 48207, new W(2578, y=6398, 0) Shadow Realm: ObjectID.DT2_LASSAR_BARRIER_SHADOW_T2
 
-		givenAnimaPortalSchematic = new VarbitRequirement(15084, 1);
+		givenAnimaPortalSchematic = new VarbitRequirement(VarbitID.DT2_LASSAR_ANIMA_PORTAL_SCHEMATIC, 1);
 
 		/* Tentacle 4 */
 		Conditions withinRangeOfTentacle4 = new Conditions(
@@ -699,7 +699,7 @@ public class WhispererSteps extends ConditionalStep
 		escapedVision = new VarbitRequirement(WHISPERER_VARBIT, 38, Operation.GREATER_EQUAL);
 
 		// 38->40, unlocked shadow torch
-		unlockedPerfectShadowTorch = new VarbitRequirement(15087, 1);
+		unlockedPerfectShadowTorch = new VarbitRequirement(VarbitID.DT2_LASSAR_SHADOW_TORCH_T3_SCHEMATIC, 1);
 
 		Conditions withinRangeOfCathedralTentacle = new Conditions(
 			or(

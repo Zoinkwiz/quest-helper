@@ -282,25 +282,25 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		notGoneUpstairs = new VarbitRequirement(VarbitID.SOTN, 4, Operation.GREATER_EQUAL);
 		notInspectedCrimeScene = new VarbitRequirement(VarbitID.SOTN, 6, Operation.GREATER_EQUAL);
 
-		notInspectWall = new VarbitRequirement(14726, 0);
-		notInspectCeril = new VarbitRequirement(14727, 0);
-		notInspectWindow = new VarbitRequirement(14728, 0);
-		notInspectChest = new VarbitRequirement(14729, 0);
+		notInspectWall = new VarbitRequirement(VarbitID.SOTN_INSPECTED_WALL, 0);
+		notInspectCeril = new VarbitRequirement(VarbitID.SOTN_INSPECTED_BODY, 0);
+		notInspectWindow = new VarbitRequirement(VarbitID.SOTN_INSPECTED_WINDOW, 0);
+		notInspectChest = new VarbitRequirement(VarbitID.SOTN_INSPECTED_CHEST, 0);
 
 		inspectedCrimeScene = new VarbitRequirement(VarbitID.SOTN, 8, Operation.GREATER_EQUAL);
 
-		toldWindow = new VarbitRequirement(14731, 1);
-		toldCeril = new VarbitRequirement(14730, 1);
-		toldWall = new VarbitRequirement(14732, 1);
+		toldWindow = new VarbitRequirement(VarbitID.SOTN_EXPLAINED_WINDOW, 1);
+		toldCeril = new VarbitRequirement(VarbitID.SOTN_EXPLAINED_BODY, 1);
+		toldWall = new VarbitRequirement(VarbitID.SOTN_EXPLAINED_CHEST, 1);
 
 		onTheTrail = new VarbitRequirement(VarbitID.SOTN, 20, Operation.GREATER_EQUAL);
 
-		checkedBarrel = new VarbitRequirement(14733, 1);
-		checkedBoulder = new VarbitRequirement(14734, 1);
-		checkedBush = new VarbitRequirement(14735, 1);
-		checkedStump = new VarbitRequirement(14736, 1);
-		checkedBoulder2 = new VarbitRequirement(14737, 1);
-		checkedBush2 = new VarbitRequirement(14738, 1);
+		checkedBarrel = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_1, 1);
+		checkedBoulder = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_2, 1);
+		checkedBush = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_3, 1);
+		checkedStump = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_4, 1);
+		checkedBoulder2 = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_5, 1);
+		checkedBush2 = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_6, 1);
 
 		evelotDefeated = new VarbitRequirement(VarbitID.SOTN, 28, Operation.GREATER_EQUAL);
 		talkedToAlomoneOrClivet = new VarbitRequirement(VarbitID.SOTN, 32, Operation.GREATER_EQUAL);

@@ -18,6 +18,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -116,17 +117,17 @@ public class DwarfCannon extends BasicQuestHelper
 	public void setupConditions()
 	{
 		//Varbits
-		bar1 = new VarbitRequirement(2240, 1);
-		bar2 = new VarbitRequirement(2241, 1);
-		bar3 = new VarbitRequirement(2242, 1);
-		bar4 = new VarbitRequirement(2243, 1);
-		bar5 = new VarbitRequirement(2244, 1);
-		bar6 = new VarbitRequirement(2245, 1);
+		bar1 = new VarbitRequirement(VarbitID.MCANNON_RAILING1_FIXED, 1);
+		bar2 = new VarbitRequirement(VarbitID.MCANNON_RAILING2_FIXED, 1);
+		bar3 = new VarbitRequirement(VarbitID.MCANNON_RAILING3_FIXED, 1);
+		bar4 = new VarbitRequirement(VarbitID.MCANNON_RAILING4_FIXED, 1);
+		bar5 = new VarbitRequirement(VarbitID.MCANNON_RAILING5_FIXED, 1);
+		bar6 = new VarbitRequirement(VarbitID.MCANNON_RAILING6_FIXED, 1);
 		//All Complete varbit 2246
 
-		springFixed = new VarbitRequirement(2239, 1);
-		safetyFixed = new VarbitRequirement(2238, 1);
-		cannonFixed = new VarbitRequirement(2235, 1);
+		springFixed = new VarbitRequirement(VarbitID.MCANNON_SPRING_SET, 1);
+		safetyFixed = new VarbitRequirement(VarbitID.MCANNON_SAFETY_ON, 1);
+		cannonFixed = new VarbitRequirement(VarbitID.MCANNONMULTI_TOOL1, 1);
 
 		//Zones
 		upTower1 = new ZoneRequirement(tower1);

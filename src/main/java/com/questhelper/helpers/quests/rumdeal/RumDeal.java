@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -302,11 +303,11 @@ public class RumDeal extends BasicQuestHelper
 		onNorthIsland = new ZoneRequirement(northIsland);
 		inSpiderRoom = new ZoneRequirement(spiderRoom);
 
-		rakedPatch = new VarbitRequirement(1366, 3);
-		plantedPatch = new VarbitRequirement(1366, 4);
-		grownPatch = new VarbitRequirement(1366, 5);
+		rakedPatch = new VarbitRequirement(VarbitID.DEAL_FARMING, 3);
+		plantedPatch = new VarbitRequirement(VarbitID.DEAL_FARMING, 4);
+		grownPatch = new VarbitRequirement(VarbitID.DEAL_FARMING, 5);
 
-		added5Sluglings = new VarbitRequirement(1354, 5);
+		added5Sluglings = new VarbitRequirement(VarbitID.DEAL_BARREL, 5);
 
 		evilSpiritNearby = new NpcCondition(NpcID.DEAL_EVIL_SPIRIT);
 

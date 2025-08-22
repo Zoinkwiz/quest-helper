@@ -30,6 +30,7 @@ import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class AskAboutRitual extends NpcStep
@@ -49,8 +50,8 @@ public class AskAboutRitual extends NpcStep
 
 	private void updateCorrectChoice()
 	{
-		boolean askedAboutKiller = client.getVarbitValue(14743) == 1;
-		boolean askedAboutRitual = client.getVarbitValue(14744) == 1;
+		boolean askedAboutKiller = client.getVarbitValue(VarbitID.SOTN_GHORROCK_QUESTION) == 1;
+		boolean askedAboutRitual = client.getVarbitValue(VarbitID.SOTN_RITUAL_QUESTION) == 1;
 
 		choices = new DialogChoiceSteps();
 		if (!askedAboutKiller)

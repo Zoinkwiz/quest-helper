@@ -56,7 +56,7 @@ public class RatCharming extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		int currentPage = client.getVarbitValue(1420);
+		int currentPage = client.getVarbitValue(VarbitID.VC_NOTE_NUMBER);
 
 		for (int i = 0; i < noteSteps.length; i++)
 		{
@@ -76,7 +76,7 @@ public class RatCharming extends DetailedOwnerStep
 				// If need to raise octave
 				if (i == 4)
 				{
-					int octaveRaised = client.getVarbitValue(1413);
+					int octaveRaised = client.getVarbitValue(VarbitID.VC_NOTE_CURRENT_HI);
 					if (octaveRaised == 0)
 					{
 						startUpStep(clickOctave);

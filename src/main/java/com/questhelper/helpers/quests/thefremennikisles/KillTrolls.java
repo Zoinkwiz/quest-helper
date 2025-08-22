@@ -5,6 +5,7 @@ import com.questhelper.steps.NpcStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class KillTrolls extends NpcStep
@@ -23,7 +24,7 @@ public class KillTrolls extends NpcStep
 
 	protected void updateSteps()
 	{
-		int numToKill =  client.getVarbitValue(3312);
+		int numToKill =  client.getVarbitValue(VarbitID.FRIS_TASK);
 		this.setText("Kill " + numToKill + " trolls to continue.");
 	}
 }

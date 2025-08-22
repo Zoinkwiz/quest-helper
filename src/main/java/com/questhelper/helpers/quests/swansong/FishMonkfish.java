@@ -35,6 +35,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.Arrays;
@@ -65,7 +66,7 @@ public class FishMonkfish extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		int numHandedIn = client.getVarbitValue(2105) - 1;
+		int numHandedIn = client.getVarbitValue(VarbitID.SWANSONG_ARNOLD) - 1;
 		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 		int numRaw = 0;
 		int numCooked = 0;

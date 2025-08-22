@@ -30,6 +30,7 @@ import com.questhelper.steps.emote.QuestEmote;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,13 +66,13 @@ public class MimicChallenge extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		if (client.getVarbitValue(2419) == 0)
+		if (client.getVarbitValue(VarbitID.LUNAR_EMOTE_CANMIMIC) == 0)
 		{
 			startUpStep(talk);
 			return;
 		}
 
-		switch (client.getVarbitValue(2420))
+		switch (client.getVarbitValue(VarbitID.LUNAR_EMOTE_LOC))
 		{
 			case 1:
 				startUpStep(cry);
@@ -96,7 +97,7 @@ public class MimicChallenge extends DetailedOwnerStep
 
 	public void chooseStepBasedOnIfTalked(QuestStep emoteStep)
 	{
-		if (client.getVarbitValue(2419) == 1)
+		if (client.getVarbitValue(VarbitID.LUNAR_EMOTE_CANMIMIC) == 1)
 		{
 			startUpStep(emoteStep);
 		}

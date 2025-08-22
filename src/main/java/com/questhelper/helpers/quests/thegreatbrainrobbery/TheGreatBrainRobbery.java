@@ -349,8 +349,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	{
 		int staplesNeeded = 30;
 		int bellsNeeded = 3;
-		neededStaples.quantity(staplesNeeded - client.getVarbitValue(3400));
-		neededJars.quantity(bellsNeeded - client.getVarbitValue(3399));
+		neededStaples.quantity(staplesNeeded - client.getVarbitValue(VarbitID.BRAIN_STAPLES_GIVEN));
+		neededJars.quantity(bellsNeeded - client.getVarbitValue(VarbitID.BRAIN_JARS_GIVEN));
 	}
 
 	public void setupSteps()

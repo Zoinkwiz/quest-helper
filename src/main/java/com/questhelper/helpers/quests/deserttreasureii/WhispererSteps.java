@@ -372,13 +372,11 @@ public class WhispererSteps extends ConditionalStep
 		inResidentialDistrict = new ZoneRequirement(residentialDistrict);
 		inEastShadowRealm = new ZoneRequirement(eastShadowRealm);
 
-		int WHISPERER_VARBIT = 15126;
-
 		// Varbit is for learning about the area from the previous quest
 		talkedToRamarno = new VarbitRequirement(VarbitID.CAMDOZAAL_RAMARNO_INTRO, 2, Operation.GREATER_EQUAL);
 
-		talkedToPrescott = new VarbitRequirement(WHISPERER_VARBIT, 4, Operation.GREATER_EQUAL);
-		ropeAttached = new VarbitRequirement(WHISPERER_VARBIT, 6, Operation.GREATER_EQUAL);
+		talkedToPrescott = new VarbitRequirement(VarbitID.DT2_LASSAR, 4, Operation.GREATER_EQUAL);
+		ropeAttached = new VarbitRequirement(VarbitID.DT2_LASSAR, 6, Operation.GREATER_EQUAL);
 		// Entered undercity:
 		// 15064 0->100
 		// 15126 6->8
@@ -393,12 +391,12 @@ public class WhispererSteps extends ConditionalStep
 		activatedTeleporter6 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_CATHEDRAL, 1);
 		activatedTeleporter7 = new VarbitRequirement(VarbitID.DT2_LASSAR_TELEPORTER_RESIDENTIAL_EAST, 1);
 
-		passedOutAtCathedral = new VarbitRequirement(WHISPERER_VARBIT, 10, Operation.GREATER_EQUAL);
+		passedOutAtCathedral = new VarbitRequirement(VarbitID.DT2_LASSAR, 10, Operation.GREATER_EQUAL);
 		// 10->12, ketla wants to see the ring
 		// 12->14, fragment is now safe
 		// 14->16, tried to give me fragment
 
-		finishedTalkingToKetla = new VarbitRequirement(WHISPERER_VARBIT, 16, Operation.GREATER_EQUAL);
+		finishedTalkingToKetla = new VarbitRequirement(VarbitID.DT2_LASSAR, 16, Operation.GREATER_EQUAL);
 		givenShadowBlockerSchematic = new VarbitRequirement(VarbitID.DT2_LASSAR_SHADOW_BLOCKER_SCHEMATIC, 1);
 		// Entered science puddle
 		// 15162 0->1 (probably just 'is in shadow realm'?)
@@ -601,13 +599,13 @@ public class WhispererSteps extends ConditionalStep
 			));
 
 		// Schematic got
-		obtainedPerfectedSchematic = new VarbitRequirement(WHISPERER_VARBIT, 26, Operation.GREATER_EQUAL);
+		obtainedPerfectedSchematic = new VarbitRequirement(VarbitID.DT2_LASSAR, 26, Operation.GREATER_EQUAL);
 		// 15126 24->26
-		perfectSchematicGiven = new VarbitRequirement(WHISPERER_VARBIT, 28, Operation.GREATER_EQUAL);
+		perfectSchematicGiven = new VarbitRequirement(VarbitID.DT2_LASSAR, 28, Operation.GREATER_EQUAL);
 
-		learntAboutSilentChoir = new VarbitRequirement(WHISPERER_VARBIT, 30, Operation.GREATER_EQUAL);
+		learntAboutSilentChoir = new VarbitRequirement(VarbitID.DT2_LASSAR, 30, Operation.GREATER_EQUAL);
 
-		touchedPubRemnant = new VarbitRequirement(WHISPERER_VARBIT, 32, Operation.GREATER_EQUAL);
+		touchedPubRemnant = new VarbitRequirement(VarbitID.DT2_LASSAR, 32, Operation.GREATER_EQUAL);
 
 		/* Tentacle 5 */
 		Conditions withinRangeOfTentacle5 = new Conditions(
@@ -693,10 +691,10 @@ public class WhispererSteps extends ConditionalStep
 
 		// 32->34, maybe when made idol?
 
-		iconUsed = new VarbitRequirement(WHISPERER_VARBIT, 36, Operation.GREATER_EQUAL);
+		iconUsed = new VarbitRequirement(VarbitID.DT2_LASSAR, 36, Operation.GREATER_EQUAL);
 
 		// animation 2757, fade-in
-		escapedVision = new VarbitRequirement(WHISPERER_VARBIT, 38, Operation.GREATER_EQUAL);
+		escapedVision = new VarbitRequirement(VarbitID.DT2_LASSAR, 38, Operation.GREATER_EQUAL);
 
 		// 38->40, unlocked shadow torch
 		unlockedPerfectShadowTorch = new VarbitRequirement(VarbitID.DT2_LASSAR_SHADOW_TORCH_T3_SCHEMATIC, 1);
@@ -723,7 +721,7 @@ public class WhispererSteps extends ConditionalStep
 		);
 
 		// 14862 80->82
-		enteredCathedral = new VarbitRequirement(WHISPERER_VARBIT, 42, Operation.GREATER_EQUAL);
+		enteredCathedral = new VarbitRequirement(VarbitID.DT2_LASSAR, 42, Operation.GREATER_EQUAL);
 
 		// Killed Whisperer:
 		// 15064 0->100 (insanity?)
@@ -731,7 +729,7 @@ public class WhispererSteps extends ConditionalStep
 		// 15126 42->44
 		// 14862 82->84
 		//
-		killedWhisperer = new VarbitRequirement(WHISPERER_VARBIT, 44, Operation.GREATER_EQUAL);
+		killedWhisperer = new VarbitRequirement(VarbitID.DT2_LASSAR, 44, Operation.GREATER_EQUAL);
 		// Obtained medallion
 		// 15126 44->46
 		// 14862 84->86

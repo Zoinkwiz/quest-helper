@@ -131,7 +131,7 @@ public class MurderMystery extends BasicQuestHelper
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarpId() != 195) return;
+		if (varbitChanged.getVarpId() != VarPlayerID.MURDERSUS) return;
 
 		updateSuspect();
 	}

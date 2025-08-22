@@ -30,6 +30,7 @@ import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -122,10 +123,10 @@ public class MemoryChallenge extends DetailedQuestStep
 
 	private void setupPaths()
 	{
-		int current1 = client.getVarbitValue(2412);
-		int current2 = client.getVarbitValue(2413);
-		int current3 = client.getVarbitValue(2414);
-		int current4 = client.getVarbitValue(2415);
+		int current1 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_A);
+		int current2 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_B);
+		int current3 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_C);
+		int current4 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_D);
 
 		if (current1 == column1 &&
 			current2 == column2 &&

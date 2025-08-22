@@ -233,7 +233,7 @@ public class KourendHard extends ComplexStateQuestHelper
 		// Smelt an adamantite bar
 		enterForsakenTower = new DetailedQuestStep(this, new WorldPoint(1382, 3818, 0),
 			"Enter the Forsaken Tower.", adamantiteOre, coal.quantity(6));
-		smeltAddyBar = new ObjectStep(this, 34591, "Smelt an adamantite bar.", adamantiteOre,
+		smeltAddyBar = new ObjectStep(this, ObjectID.LOVAQUEST_TOWER_FURNACE, "Smelt an adamantite bar.", adamantiteOre,
 			coal.quantity(6));
 		smeltAddyBar.addSubSteps(enterForsakenTower);
 

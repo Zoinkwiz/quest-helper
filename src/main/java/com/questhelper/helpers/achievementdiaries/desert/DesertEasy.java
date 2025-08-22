@@ -217,24 +217,24 @@ public class DesertEasy extends ComplexStateQuestHelper
 			"Kill a vulture.", true);
 		killVulture.addAlternateNpcs(NpcID.RAG_VULTURE_FLYING);
 
-		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
+		moveToPyramidPlunder = new ObjectStep(this, ObjectID.NTK_PYRAMID_DOOR_NORTH_MULTI, new WorldPoint(3289, 2800, 0),
 			"Enter the Pyramid plunder minigame. If you don't see a Guardian mummy exit and try a different entrance.");
 		startPyramidPlunder = new NpcStep(this, NpcID.NTK_MUMMY_GUARDIAN, new WorldPoint(1934, 4427, 3),
 			"Talk to the guardian mummy to start the minigame. If you don't see a Guardian mummy exit and try a different entrance.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
-		openSarc = new ObjectStep(this, 26626, new WorldPoint(1928, 4465, 0),
+		openSarc = new ObjectStep(this, ObjectID.NTK_SARCOPHAGUS_MULTI, new WorldPoint(1928, 4465, 0),
 			"Open the sarcophagus in the first room.");
 
 		sellArtefact = new NpcStep(this, NpcID.AGILITY_PYRAMID_SIMON, new WorldPoint(3346, 2827, 0),
 			"Talk to Simon Templeton and sell your artefact.", pyramidPlunderArtefact);
 		sellArtefact.addDialogStep("Yes, show me the money.");
 
-		enterKalph = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
+		enterKalph = new ObjectStep(this, ObjectID.KALPHITE_BURROW_ENTRANCE, new WorldPoint(3228, 3109, 0),
 			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted());
 		enterKalph.addAlternateObjects(ObjectID.KALPHITE_BURROW_ENTRANCE_WITHROPE);
 		enterKalph.addIcon(ItemID.ROPE);
 
-		enterKalphForCacti = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
+		enterKalphForCacti = new ObjectStep(this, ObjectID.KALPHITE_BURROW_ENTRANCE, new WorldPoint(3228, 3109, 0),
 			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted());
 		enterKalphForCacti.addAlternateObjects(ObjectID.KALPHITE_BURROW_ENTRANCE_WITHROPE);
 		enterKalphForCacti.addIcon(ItemID.ROPE);

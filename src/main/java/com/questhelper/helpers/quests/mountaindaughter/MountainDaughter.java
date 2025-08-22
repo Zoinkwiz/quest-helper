@@ -43,11 +43,11 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
@@ -343,8 +343,8 @@ public class MountainDaughter extends BasicQuestHelper
 		enterCave = new ObjectStep(this, ObjectID.MDAUGHTER_CAVEENTRANCE, new WorldPoint(2809, 3703, 0),
 			"Cut through the trees north east of the lake and enter the cave there. Bring combat gear.",
 			axe);
-		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2802, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
-		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2807, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
+		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2802, 3703, 0), SpriteID.Combaticons.AXE_CHOP);
+		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2807, 3703, 0), SpriteID.Combaticons.AXE_CHOP);
 
 		talkToKendal = new NpcStep(this, NpcID.MDAUGHTER_BEARMAN, new WorldPoint(2788, 10081, 0),
 			"Speak to the Kendal, then kill him.");

@@ -99,7 +99,7 @@ public class LadyTableStep extends DetailedOwnerStep
 			new Statue("Gold axe", new WorldPoint(2454, 4972, 0))
 		};
 
-		leaveRoom = new ObjectStep(questHelper, 7302, "Leave through the door to enter the portal and continue.");
+		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM2_EXITDOOR, "Leave through the door to enter the portal and continue.");
 		clickMissingStatue = new ObjectStep(questHelper, 0, statues[0].point, "CLick the missing statue.");
 		clickMissingStatue.addAlternateObjects(ObjectID.RD_1G, ObjectID.RD_1S, ObjectID.RD_1B,
 			ObjectID.RD_2G, ObjectID.RD_2S, ObjectID.RD_2B, ObjectID.RD_3G,

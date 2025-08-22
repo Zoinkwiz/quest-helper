@@ -55,7 +55,6 @@ import com.questhelper.steps.widget.WidgetHighlight;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -789,7 +788,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         int LEVER_ID = 55367; // Decorative object
         pullFirstLever = new ObjectStep(this, LEVER_ID, new WorldPoint(1695, 9604, 2), "Pull the lever in the south-east of the area. Make sure to avoid the " +
                 "wall spikes.");
-        pullFirstLever.addTileMarkers(SpriteID.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
+        pullFirstLever.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
                 new WorldPoint(1682, 9603, 2), new WorldPoint(1682, 9604, 2), new WorldPoint(1682, 9605, 2),
                 new WorldPoint(1682, 9606, 2), new WorldPoint(1684, 9603, 2), new WorldPoint(1684, 9604, 2),
                 new WorldPoint(1684, 9605, 2), new WorldPoint(1684, 9606, 2), new WorldPoint(1686, 9603, 2),

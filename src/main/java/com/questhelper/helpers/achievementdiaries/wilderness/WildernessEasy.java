@@ -204,7 +204,7 @@ public class WildernessEasy extends ComplexStateQuestHelper
 		equipTeamCape = new DetailedQuestStep(this, "Equip a team cape. If you already have one on, re-equip it.",
 			teamCape.equipped());
 
-		chaosTemple = new ObjectStep(this, 34822, new WorldPoint(3060, 3591, 0),
+		chaosTemple = new ObjectStep(this, ObjectID.CHAOSTEMPLE_RUINED, new WorldPoint(3060, 3591, 0),
 			"Enter the chaos altar north of Edgeville with a chaos talisman/tiara, or enter it through the Abyss.");
 		chaosTemple.addIcon(ItemID.CHAOS_TALISMAN);
 

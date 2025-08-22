@@ -38,11 +38,11 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 
 import java.util.List;
 
@@ -161,21 +161,21 @@ public class DagRoute extends ConditionalStep
 	public void setupSteps()
 	{
 		moveToWaterbirth = steps.get(null);
-		moveToDagCave = new ObjectStep(questHelper, 8929, new WorldPoint(2521, 3740, 0),
+		moveToDagCave = new ObjectStep(questHelper, ObjectID.DAGANNOTH_CAVEENTRANCE_ROCK, new WorldPoint(2521, 3740, 0),
 			"Enter the cave and pray melee. Make sure you are full stamina and prayer before entering.", protectMelee,
 			thrownaxe, petRock, food, stamPot, prayerPot);
-		dropPetRock = new ObjectStep(questHelper, 8965, new WorldPoint(2490, 10162, 0),
+		dropPetRock = new ObjectStep(questHelper, ObjectID.DAGANNOTH_PRESSURE_PAD_2, new WorldPoint(2490, 10162, 0),
 			"Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// item on tile req?
 		dropPetRock.addIcon(ItemID.VT_USELESS_ROCK);
-		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
-		moveToAxeSpot = new ObjectStep(questHelper, 8945, new WorldPoint(2545, 10146, 0),
+		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.Staticons.AGILITY);
+		moveToAxeSpot = new ObjectStep(questHelper, ObjectID.DAGANNOTH_DUGUPSOIL_2, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
 		activateSpecial = new DetailedQuestStep(questHelper, "Activate special attack with the rune thrownaxes equipped.",
 			thrownaxe.equipped(), specialAttackEnabled);
 		throwAxe = new NpcStep(questHelper, 2253, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet" +
 				" and lower all 3 barriers.", thrownaxe.equipped(), specialAttackEnabled);
-		moveToDagCave1 = new ObjectStep(questHelper, 10177, new WorldPoint(2546, 10143, 0),
+		moveToDagCave1 = new ObjectStep(questHelper, ObjectID.DAGANNOTH_LADDER_BASE_EXT2, new WorldPoint(2546, 10143, 0),
 			"Enable magic protection then climb down the ladder.", protectMagic);
 		moveToDagCave1.addDialogSteps("Climb Down.");
 		moveToDagCave2 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER1, new WorldPoint(1808, 4405, 3),
@@ -200,7 +200,7 @@ public class DagRoute extends ConditionalStep
 			"Keep current protection and continue through the cave.", protectMelee);
 		moveToDagCave12 = new ObjectStep(questHelper, ObjectID.DAGEXP_LADDER21, new WorldPoint(1890, 4407, 1),
 			"Keep current protection and continue through the cave.", protectMelee);
-		moveToDagKings = new ObjectStep(questHelper, 3831, new WorldPoint(1911, 4367, 0),
+		moveToDagKings = new ObjectStep(questHelper, ObjectID.DAGEXP_BOSSROOMLADDER_DOWN, new WorldPoint(1911, 4367, 0),
 			"Enter the Kings' lair.", protectMelee);
 	}
 

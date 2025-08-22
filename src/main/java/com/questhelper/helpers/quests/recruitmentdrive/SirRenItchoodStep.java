@@ -34,6 +34,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,10 +92,10 @@ public class SirRenItchoodStep extends ConditionalStep
 	private void addRenSteps()
 	{
 		finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
-		openAnswerWidget = new ObjectStep(questHelper, 7323, "Open the door to be prompted to enter a code.");
+		openAnswerWidget = new ObjectStep(questHelper, ObjectID.RD_ROOM5_EXITDOOR, "Open the door to be prompted to enter a code.");
 		answerWidgetOpen = new WidgetTextRequirement(285, 55, "Combination Lock Door");
 		enterDoorcode = new DoorPuzzle(questHelper, "NONE");
-		leaveRoom = new ObjectStep(questHelper, 7323, "Leave through the door to enter the portal and continue.");
+		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM5_EXITDOOR, "Leave through the door to enter the portal and continue.");
 
 		addStep(finishedRoomCondition, leaveRoom);
 		addStep(new Conditions(answerWidgetOpen), enterDoorcode);

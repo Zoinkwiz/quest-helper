@@ -256,7 +256,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 			waterRune, natureRune);
 		unlockBonesToPeaches = new DetailedQuestStep(this, "Unlock bones to peaches from the Mage Training Arena.");
 
-		wakaToEdge = new ObjectStep(this, 12163, new WorldPoint(3242, 3237, 0),
+		wakaToEdge = new ObjectStep(this, ObjectID.CANOEING_CANOESTATION_LUMBRIDGE, new WorldPoint(3242, 3237, 0),
 			"Use the canoe station in lumbridge to make a Waka and travel to Edgeville.", axe);
 
 		smeltAmmy = new ObjectStep(this, ObjectID.FAI_FALADOR_FURNACE, new WorldPoint(3227, 3257, 0),
@@ -274,7 +274,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 
 		moveToBasementForGloves = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
 			"Climb down the trapdoor in the Lumbridge Castle.", coins);
-		barrowsGloves = new ObjectStep(this, 12308, new WorldPoint(3219, 9623, 0),
+		barrowsGloves = new ObjectStep(this, ObjectID.HUNDRED_GOODCHEST, new WorldPoint(3219, 9623, 0),
 			"Purchase the barrows gloves from the bank chest. Right click and select 'Buy-items'.",
 			coins);
 		// 12308 is mine and I only have FULL access, and the ELITE version wouldn't make sense here
@@ -310,7 +310,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		moveToCosmic.addIcon(ItemID.COSMIC_TALISMAN);
 		cosmics = new ObjectStep(this, ObjectID.COSMIC_ALTAR, new WorldPoint(2142, 4833, 0),
 			"Craft 56 cosmic runes.", essence);
-		belladonna = new ObjectStep(this, 7572, new WorldPoint(3087, 3355, 0),
+		belladonna = new ObjectStep(this, ObjectID.FARMING_BELLADONNA_PATCH, new WorldPoint(3087, 3355, 0),
 			"Grow and pick some belladonna from the Draynor Manor farming patch. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			bellaSeed, rake, spade, gloves, seedDib);

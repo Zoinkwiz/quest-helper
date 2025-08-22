@@ -46,12 +46,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -579,7 +579,7 @@ public abstract class QuestStep implements Module
 
 	public BufferedImage getQuestImage()
 	{
-		return spriteManager.getSprite(SpriteID.TAB_QUESTS, 0);
+		return spriteManager.getSprite(SpriteID.SideiconsInterface.QUESTS, 0);
 	}
 
 

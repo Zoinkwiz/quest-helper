@@ -43,11 +43,11 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 
 import java.util.*;
 
@@ -135,7 +135,7 @@ public class KnightWaves extends BasicQuestHelper
 			NpcID.KR_CAM_KAY, NpcID.KR_CAM_KAY_JAIL, NpcID.KR_KNIGHT7,
 			NpcID.KR_CAM_LANCELOT, NpcID.KR_KNIGHT8);
 		((NpcStep) killKnights).addSafeSpots(new WorldPoint(2752, 3511, 2));
-		((NpcStep) killKnights).addTileMarker(new WorldPoint(2753, 3510, 2), SpriteID.MAP_ICON_HELMET_SHOP);
+		((NpcStep) killKnights).addTileMarker(new WorldPoint(2753, 3510, 2), SpriteID.Mapfunction.HELMET_SHOP);
 
 		killKnightsSteps = new ConditionalStep(this, goToFloor1, "Defeat the 8 Knights of the Round Table in the room" +
 			" on top of Camelot. It's recommended to flinch the knights on one of the dummies around the room, and " +

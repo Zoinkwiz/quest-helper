@@ -30,12 +30,12 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.steps.*;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
@@ -517,7 +517,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 * @return a list of discs as Items, or an empty list if inventory wasn't found
 	 */
 	@Nonnull
-	private List<Item> getDiscs(InventoryID inventoryId)
+	private List<Item> getDiscs(int inventoryId)
 	{
 		var itemContainer = client.getItemContainer(inventoryId);
 		if (itemContainer == null)
@@ -557,7 +557,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			return;
 		}
 
-		var items = getDiscs(InventoryID.INVENTORY);
+		var items = getDiscs(InventoryID.INV);
 
 		var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
 		// Try to figure out a solution
@@ -568,7 +568,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 	protected void updateSteps()
 	{
-		var numDiscs = getDiscs(InventoryID.INVENTORY).stream().mapToInt(Item::getQuantity).sum();
+		var numDiscs = getDiscs(InventoryID.INV).stream().mapToInt(Item::getQuantity).sum();
 		if (numDiscs < 3)
 		{
 			// Player has fewer than 3 discs, no solution is possible

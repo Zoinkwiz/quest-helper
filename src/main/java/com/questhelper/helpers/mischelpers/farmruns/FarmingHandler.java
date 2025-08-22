@@ -25,7 +25,7 @@
 package com.questhelper.helpers.mischelpers.farmruns;
 
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 import net.runelite.client.plugins.timetracking.farming.Produce;
@@ -99,7 +99,7 @@ public class FarmingHandler
 		int stages = state.getStages();
 		int tickrate = state.getTickRate();
 
-		boolean botanist = client.getVarbitValue(Varbits.LEAGUE_RELIC_5) == 1;
+		boolean botanist = client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_4) == 1;
 
 		if (botanist)
 		{

@@ -53,7 +53,6 @@ import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -244,7 +243,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.LUNAR_SEAL_OF_PASSAGE).isNotConsumed();
 		sealOfPassageOrEliteDiary = ComplexRequirementBuilder.or("Seal of Passage")
-			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE, 1))
+			.with(new VarbitRequirement(VarbitID.FREMENNIK_DIARY_ELITE_COMPLETE, 1))
 			.with(sealOfPassage)
 			.build();
 

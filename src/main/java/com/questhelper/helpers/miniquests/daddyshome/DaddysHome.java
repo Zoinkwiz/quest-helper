@@ -39,7 +39,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -137,23 +136,23 @@ public class DaddysHome extends BasicQuestHelper
 	public void setupConditions()
 	{
 
-		removedCampbed = new VarbitRequirement(VarbitID.DADDYSHOME_BED, 2);
-		removedCarpet = new VarbitRequirement(VarbitID.DADDYSHOME_CARPET, 2);
-		removedStool = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_2, 2);
+		removedCampbed = new VarbitRequirement(10568, 2);
+		removedCarpet = new VarbitRequirement(10569, 2);
+		removedStool = new VarbitRequirement(10564, 2);
 
-		removedTable = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_2, 2);
-		removedChair = new VarbitRequirement(VarbitID.DADDYSHOME_CHAIR, 2);
-		removedStool2 = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_1, 2);
-		removedTable2 = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_1, 2);
+		removedTable = new VarbitRequirement(10567, 2);
+		removedChair = new VarbitRequirement(10565, 2);
+		removedStool2 = new VarbitRequirement(10563, 2);
+		removedTable2 = new VarbitRequirement(10566, 2);
 
-		repairedCampbed = new VarbitRequirement(VarbitID.DADDYSHOME_BED, 3);
-		repairedCarpet = new VarbitRequirement(VarbitID.DADDYSHOME_CARPET, 3);
-		repairedStool = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_2, 3);
+		repairedCampbed = new VarbitRequirement(10568, 3);
+		repairedCarpet = new VarbitRequirement(10569, 3);
+		repairedStool = new VarbitRequirement(10564, 3);
 
-		repairedTable = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_2, 3);
-		repairedChair = new VarbitRequirement(VarbitID.DADDYSHOME_CHAIR, 3);
-		repairedStool2 = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_1, 3);
-		repairedTable2 = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_1, 3);
+		repairedTable = new VarbitRequirement(10567, 3);
+		repairedChair = new VarbitRequirement(10565, 3);
+		repairedStool2 = new VarbitRequirement(10563, 3);
+		repairedTable2 = new VarbitRequirement(10566, 3);
 	}
 
 	public void setupSteps()

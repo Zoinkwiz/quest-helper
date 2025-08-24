@@ -31,6 +31,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
@@ -83,14 +85,14 @@ public class QuestGrandExchangeInterface
 		int QUEST_BUTTON_SIZE = 20;
 		int QUEST_BUTTON_X = 480;
 		int QUEST_BUTTON_Y = 0;
-		questBackgroundWidget = createGraphic("quest helper", SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL,
+		questBackgroundWidget = createGraphic("quest helper", SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL,
 			QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_X, QUEST_BUTTON_Y);
 		questBackgroundWidget.setAction(1, VIEW_TAB);
 		questBackgroundWidget.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 
-		questIconWidget = createGraphic("", SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
+		questIconWidget = createGraphic("", SpriteID.AchievementDiaryIcons.BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
 			QUEST_BUTTON_SIZE - 6,
 			QUEST_BUTTON_X + 3, QUEST_BUTTON_Y + 3);
 
@@ -154,14 +156,14 @@ public class QuestGrandExchangeInterface
 		active = false;
 		if (questBackgroundWidget != null)
 		{
-			questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL);
+			questBackgroundWidget.setSpriteId(SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL);
 			questBackgroundWidget.revalidate();
 		}
 
 		grandExchangeTitle.setHidden(true);
 
-		client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
-		client.setVarcIntValue(VarClientInt.INPUT_TYPE, 14);
+		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "");
+		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
 
 		clientThread.invokeLater(() -> updateSearchInterface(false));
 	}
@@ -173,12 +175,12 @@ public class QuestGrandExchangeInterface
 			return;
 		}
 
-		questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
+		questBackgroundWidget.setSpriteId(SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
 		questBackgroundWidget.revalidate();
 		grandExchangeTitle.setHidden(false);
 		active = true;
-		client.setVarcStrValue(VarClientStr.INPUT_TEXT, "quest-helper");
-		client.setVarcIntValue(VarClientInt.INPUT_TYPE, 14);
+		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "quest-helper");
+		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
 
 		clientThread.invokeLater(() -> updateSearchInterface(true));
 	}

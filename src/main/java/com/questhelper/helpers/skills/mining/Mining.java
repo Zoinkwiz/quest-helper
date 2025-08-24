@@ -39,10 +39,10 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,13 +149,13 @@ public class Mining extends ComplexStateQuestHelper
 			"Mine Copper- and Tin ore at South-east Varrock mine until 15 Mining. You can choose to drop " +
 				"the ores as you go or bank them in the eastern Varrock bank.",
 			ironPickaxe, steelPickaxe, blackPickaxe);
-		copperStep.addTileMarker(COPPER_POINT, SpriteID.SKILL_MINING);
+		copperStep.addTileMarker(COPPER_POINT, SpriteID.Staticons.MINING);
 
 		ironStep = new DetailedQuestStep(this, IRON_POINT,
 			"Mine Iron ore at Al Kharid Mine until 99 Mining. You can choose to drop the ores as you go," +
 				" smelt them on the way to the Al Kharid bank or bank the ores as they are.",
 			steelPickaxe, blackPickaxe, mithrilPickaxe, adamantPickaxe, runePickaxe);
-		ironStep.addTileMarker(IRON_POINT, SpriteID.SKILL_MINING);
+		ironStep.addTileMarker(IRON_POINT, SpriteID.Staticons.MINING);
 
 
 		mineCopper = new ObjectStep(this, ObjectID.TINROCK1, COPPER_POINT,

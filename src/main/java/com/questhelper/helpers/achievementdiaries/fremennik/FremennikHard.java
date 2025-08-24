@@ -246,12 +246,12 @@ public class FremennikHard extends ComplexStateQuestHelper
 		moveToJatizso.addDialogStep("Can you ferry me to Jatizso?");
 		moveToMine = new ObjectStep(this, ObjectID.FRISD_IZSO_MINE_ENTRANCE, new WorldPoint(2398, 3813, 0),
 			"Go down the staircase.");
-		mineAddy = new ObjectStep(this, 11374, new WorldPoint(2402, 10189, 0),
+		mineAddy = new ObjectStep(this, ObjectID.ADAMANTITEROCK1, new WorldPoint(2402, 10189, 0),
 			"Mine 5 Adamantite ores.", pickaxe);
 		mineAddy.addIcon(ItemID.RUNE_PICKAXE);
 		moveToMisc = new NpcStep(this, NpcID.VIKING_SAILOR, new WorldPoint(2630, 3692, 0),
 			"Speak to the sailor to go to Miscellania.");
-		miscSupport = new ObjectStep(this, 15084, new WorldPoint(2527, 3849, 0),
+		miscSupport = new ObjectStep(this, ObjectID.MISC_HERB_MULTILOC, new WorldPoint(2527, 3849, 0),
 			"Rake the herb and flax patch until 100% support.", true, rake);
 		miscSupport.addAlternateObjects(15079);
 		tpWaterbirth = new DetailedQuestStep(this,

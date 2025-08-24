@@ -30,7 +30,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.Text;
@@ -170,9 +170,11 @@ public class FarmingUtils
 
 	public enum TreeSapling implements PlantableItem
 	{
-		OAK(ItemID.OAK_SAPLING, ItemID.TOMATOES5, 1), WILLOW(ItemID.WILLOW_SAPLING, ItemID.APPLES5, 1),
-		MAPLE(ItemID.MAPLE_SAPLING, ItemID.ORANGES5, 1), YEW(ItemID.YEW_SAPLING, ItemID.CACTUS_SPINE, 10),
-		MAGIC(ItemID.MAGIC_SAPLING, ItemID.COCONUT, 25);
+		OAK(ItemID.PLANTPOT_OAK_SAPLING, ItemID.BASKET_TOMATO_5, 1),
+		WILLOW(ItemID.PLANTPOT_WILLOW_SAPLING, ItemID.BASKET_APPLE_5, 1),
+		MAPLE(ItemID.PLANTPOT_MAPLE_SAPLING, ItemID.BASKET_ORANGE_5, 1),
+		YEW(ItemID.PLANTPOT_YEW_SAPLING, ItemID.CACTUS_SPINE, 10),
+		MAGIC(ItemID.PLANTPOT_MAGIC_TREE_SAPLING, ItemID.COCONUT, 25);
 
 		final int treeSaplingID;
 		final int protectionItemId;
@@ -218,10 +220,14 @@ public class FarmingUtils
 
 	public enum FruitTreeSapling implements PlantableItem
 	{
-		APPLE(ItemID.APPLE_SAPLING, ItemID.SWEETCORN, 9), BANANA(ItemID.BANANA_SAPLING, ItemID.APPLES5, 4),
-		ORANGE(ItemID.ORANGE_SAPLING, ItemID.STRAWBERRIES5, 3), CURRY(ItemID.CURRY_SAPLING, ItemID.BANANAS5, 5),
-		PINEAPPLE(ItemID.PINEAPPLE_SAPLING, ItemID.WATERMELON, 10), PAPAYA(ItemID.PAPAYA_SAPLING, ItemID.PINEAPPLE, 10),
-		PALM(ItemID.PALM_SAPLING, ItemID.PAPAYA_FRUIT, 15), DRAGONFRUIT(ItemID.DRAGONFRUIT_SAPLING, ItemID.COCONUT, 15);
+		APPLE(ItemID.PLANTPOT_APPLE_SAPLING, ItemID.SWEETCORN, 9),
+		BANANA(ItemID.PLANTPOT_BANANA_SAPLING, ItemID.BASKET_APPLE_5, 4),
+		ORANGE(ItemID.PLANTPOT_ORANGE_SAPLING, ItemID.BASKET_STRAWBERRY_5, 3),
+		CURRY(ItemID.PLANTPOT_CURRY_SAPLING, ItemID.BASKET_BANANA_5, 5),
+		PINEAPPLE(ItemID.PLANTPOT_PINEAPPLE_SAPLING, ItemID.WATERMELON, 10),
+		PAPAYA(ItemID.PLANTPOT_PAPAYA_SAPLING, ItemID.PINEAPPLE, 10),
+		PALM(ItemID.PLANTPOT_PALM_SAPLING, ItemID.PAPAYA, 15),
+		DRAGONFRUIT(ItemID.PLANTPOT_DRAGONFRUIT_SAPLING, ItemID.COCONUT, 15);
 
 		final int fruitTreeSaplingId;
 		final int protectionItemId;
@@ -267,8 +273,8 @@ public class FarmingUtils
 
 	public enum HardwoodTreeSapling implements PlantableItem
 	{
-		TEAK(ItemID.TEAK_SAPLING, ItemID.LIMPWURT_ROOT, 15),
-		MAHOGANY(ItemID.MAHOGANY_SAPLING, ItemID.YANILLIAN_HOPS, 25);
+		TEAK(ItemID.PLANTPOT_TEAK_SAPLING, ItemID.LIMPWURT_ROOT, 15),
+		MAHOGANY(ItemID.PLANTPOT_MAHOGANY_SAPLING, ItemID.YANILLIAN_HOPS, 25);
 
 		final int hardwoodTreeSaplingId;
 		final int protectionItemId;

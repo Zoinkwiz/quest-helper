@@ -36,11 +36,11 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 
 import java.util.Arrays;
 import java.util.List;
@@ -260,8 +260,8 @@ public class MM2Sabotage extends ConditionalStep
 		);
 
 		// Exclamation mark
-		placeSatchel3.addTileMarker(new WorldPoint(2069, 5413, 2), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
-		placeSatchel3.addTileMarker(new WorldPoint(2069, 5421, 2), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
+		placeSatchel3.addTileMarker(new WorldPoint(2069, 5413, 2), SpriteID.HeadiconsPkInterface.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
+		placeSatchel3.addTileMarker(new WorldPoint(2069, 5421, 2), SpriteID.HeadiconsPkInterface.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 		placeSatchel3.setHideMinimapLines(true);
 		placeSatchel3.setLinePoints(pathToSatchel3);
 
@@ -276,8 +276,8 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2066, 5431, 2),
 			new WorldPoint(2072, 5431, 2)
 		);
-		goUpToSatchel4.addTileMarker(new WorldPoint(2069, 5421, 2), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
-		goUpToSatchel4.addTileMarker(new WorldPoint(2066, 5413, 2), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
+		goUpToSatchel4.addTileMarker(new WorldPoint(2069, 5421, 2), SpriteID.HeadiconsPkInterface.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
+		goUpToSatchel4.addTileMarker(new WorldPoint(2066, 5413, 2), SpriteID.HeadiconsPkInterface.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 		goUpToSatchel4.setHideMinimapLines(true);
 
 		placeSatchel4 = new ObjectStep(getQuestHelper(), ObjectID.MM2_TARGET_F, new WorldPoint(2096, 5393, 3), "Place a satchel on the gas cylinder to the south.", filledSatchel1Highlighted);
@@ -300,7 +300,7 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2085, 5409, 3),
 			new WorldPoint(2067, 5407, 3)
 		);
-		placeSatchel5.addTileMarker(new WorldPoint(2069, 5413, 3), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
+		placeSatchel5.addTileMarker(new WorldPoint(2069, 5413, 3), SpriteID.HeadiconsPkInterface.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 		placeSatchel5.setHideMinimapLines(true);
 		placeSatchel5.addIcon(ItemID.MM2_EXPLOSIVES_SATCHEL_FULL);
 		goF2ToF1ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5407, 3), "Go back to the bottom floor.", filledSatchel1);
@@ -313,7 +313,7 @@ public class MM2Sabotage extends ConditionalStep
 			new WorldPoint(2085, 5409, 3),
 			new WorldPoint(2067, 5407, 3)
 		);
-		goF2ToF1ForSatchel6.addTileMarker(new WorldPoint(2066, 5413, 3), SpriteID.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
+		goF2ToF1ForSatchel6.addTileMarker(new WorldPoint(2066, 5413, 3), SpriteID.HeadiconsPkInterface.BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW);
 
 		goF1ToF0ForSatchel6 = new ObjectStep(getQuestHelper(), ObjectID.MM2_SHIPYARD_LADDER_TOP, new WorldPoint(2098, 5408, 2), "Go back to the bottom floor.", filledSatchel1);
 

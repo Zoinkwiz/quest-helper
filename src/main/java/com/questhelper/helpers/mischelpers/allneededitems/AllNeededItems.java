@@ -30,7 +30,7 @@ import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import net.runelite.api.SpriteID;
+import net.runelite.api.gameval.SpriteID;
 
 import java.util.*;
 
@@ -49,7 +49,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 			" need without running this helper if you activate it in the Quest Helper settings.", new ArrayList<>(reqs.values()));
 		step1.hideRequirements = true;
 		step1.considerBankForItemHighlight = true;
-		step1.iconToUseForNeededItems = SpriteID.TAB_QUESTS;
+		step1.iconToUseForNeededItems = SpriteID.SideiconsInterface.QUESTS;
 		step1.setBackgroundWorldTooltipText("Highlighted due to the config setting 'Highlight missing items' in Quest Helper.");
 
 		return step1;

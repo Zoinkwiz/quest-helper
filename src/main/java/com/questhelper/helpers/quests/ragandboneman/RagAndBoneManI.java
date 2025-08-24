@@ -41,12 +41,12 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
 import com.questhelper.tools.QuestTile;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -261,8 +261,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 		killFrog = new NpcStep(this, NpcID.MEDIUM_FROG, new WorldPoint(3153, 9558, 0),
 			"Kill a big frog in the south west of the caves. Make sure to RUN between the two marked run tiles to " +
 				"avoid the Wall Beast.",	true);
-		killFrog.addTileMarker(new QuestTile(new WorldPoint(3161, 9574, 0), SpriteID.OPTIONS_RUNNING));
-		killFrog.addTileMarker(new QuestTile(new WorldPoint(3163, 9574, 0), SpriteID.OPTIONS_RUNNING));
+		killFrog.addTileMarker(new QuestTile(new WorldPoint(3161, 9574, 0), SpriteID.OptionsIcons.RUNNING));
+		killFrog.addTileMarker(new QuestTile(new WorldPoint(3163, 9574, 0), SpriteID.OptionsIcons.RUNNING));
 
 		ConditionalStep killFrogSteps = new ConditionalStep(this, addRope);
 		killFrogSteps.addStep(inSwamp, killFrog);

@@ -33,6 +33,7 @@ import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
@@ -130,7 +131,7 @@ public abstract class MockedTest extends MockedTestBase
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
 		when(client.getIntStack()).thenReturn(new int[] {1, 1, 1, 1});
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
-		when(spriteManager.getSprite(SpriteID.TAB_QUESTS, 0)).thenReturn(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
+		when(spriteManager.getSprite(SpriteID.SideiconsInterface.QUESTS, 0)).thenReturn(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 
 
 		AchievementDiaryStepManager.setup(configManager);

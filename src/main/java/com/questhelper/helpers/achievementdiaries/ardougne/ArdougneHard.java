@@ -244,7 +244,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		moveHouse = new NpcStep(this, NpcID.POH_ESTATE_AGENT, new WorldPoint(2638, 3293, 0),
 			"Talk to an Estate agent and relocate your house to Yanille.", coins.quantity(25000));
 		moveHouse.addDialogStep("Can you move my house please?");
-		yanPOH = new ObjectStep(this, 15482, new WorldPoint(2544, 3098, 0),
+		yanPOH = new ObjectStep(this, ObjectID.POH_YANILLE_PORTAL, new WorldPoint(2544, 3098, 0),
 			"Enter your house from the portal in Yanille.");
 
 		magicGuild = new ObjectStep(this, ObjectID.MAGICGUILD_DOOR_L, new WorldPoint(2584, 3088, 0),
@@ -257,7 +257,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		redSally = new ObjectStep(this, ObjectID.HUNTING_SAPLING_UP_RED, new WorldPoint(2474, 3239, 0),
 			"Catch a Red Salamander.", true, rope, smallFishingNet);
 
-		recharge = new ObjectStep(this, 2638, new WorldPoint(2729, 3378, 0),
+		recharge = new ObjectStep(this, ObjectID.LG_TOTEM_POLE_LEGENDS, new WorldPoint(2729, 3378, 0),
 			"Recharge some jewellery at the Totem pole in the Legends' Guild.", rechargableJewelry);
 
 		monkeyCage = new NpcStep(this, NpcID.MM_MONKEY_MINDER, new WorldPoint(2607, 3277, 0),
@@ -287,19 +287,19 @@ public class ArdougneHard extends ComplexStateQuestHelper
 			"Go down to the ground floor.", deathAccess, highEss, crystalTrink);
 		turnKeyMirror = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_1_B, new WorldPoint(1881, 4639, 0),
 			"Enter the central area, and turn the pillar's mirror west.");
-		deathAltar = new ObjectStep(this, 34823, new WorldPoint(1860, 4639, 0),
+		deathAltar = new ObjectStep(this, ObjectID.DEATHTEMPLE_RUINED, new WorldPoint(1860, 4639, 0),
 			"Enter the Death altar.", deathAccess, highEss, crystalTrink);
 		deathAltar.addIcon(ItemID.DEATH_TALISMAN);
 		deathRune = new ObjectStep(this, ObjectID.DEATH_ALTAR, new WorldPoint(2205, 4836, 0),
 			"Craft some death runes from essence."
 				+ "TURN THE MIDDLE PILLAR TO POINT BACK EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.", highEss);
 
-		poisonIvy = new ObjectStep(this, 7580, new WorldPoint(2618, 3226, 0),
+		poisonIvy = new ObjectStep(this, ObjectID.FARMING_BUSH_PATCH_4, new WorldPoint(2618, 3226, 0),
 			"Plant and harvest poison ivy in the Ardougne Monastery bush patch. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			rake, seedDib, poisonIvySeed);
 
-		palmTree = new ObjectStep(this, 7963, new WorldPoint(2490, 3180, 0),
+		palmTree = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Check the health of a palm tree near Tree Gnome Village. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			spade, rake, palmSap);

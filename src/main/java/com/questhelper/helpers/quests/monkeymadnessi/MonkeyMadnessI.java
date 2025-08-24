@@ -52,7 +52,6 @@ import com.questhelper.steps.*;
 import com.questhelper.util.QHObjectID;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.*;
 
@@ -581,11 +580,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		searchForDentures = new ObjectStep(this, ObjectID.MM_DENTURE_CRATE, new WorldPoint(2767, 2769, 0),
 			"DO NOT WALK ON THE LIGHT FLOOR. Search the stacked crates for monkey dentures.");
-		searchForDentures.addTileMarker(new WorldPoint(2767, 2768, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2766, 2768, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2767, 2767, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2766, 2767, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2766, 2769, 0), SpriteID.PLAYER_KILLER_SKULL);
+		searchForDentures.addTileMarker(new WorldPoint(2767, 2768, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2766, 2768, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2767, 2767, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2766, 2767, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2766, 2769, 0), SpriteID.HEADICONS_PK);
 		searchForDentures.addTileMarkers(new WorldPoint(2768, 2769, 0));
 		searchForDentures.addDialogStep("Yes");
 

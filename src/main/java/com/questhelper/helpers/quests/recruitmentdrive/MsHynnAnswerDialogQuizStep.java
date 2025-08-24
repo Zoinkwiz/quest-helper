@@ -32,6 +32,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,7 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 	private void addSteps()
 	{
 		VarbitRequirement finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
-		leaveRoom = new ObjectStep(questHelper, 7354, "Leave through the door to enter the portal and continue.");
+		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM7_EXITDOOR, "Leave through the door to enter the portal and continue.");
 
 		addStep(finishedRoomCondition, leaveRoom);
 	}

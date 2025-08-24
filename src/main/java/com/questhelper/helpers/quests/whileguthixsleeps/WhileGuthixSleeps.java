@@ -1123,7 +1123,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		enterMovarioBase = new ObjectStep(this, ObjectID.WGS_BF_TABLE_BROKEN2_OPEN, new WorldPoint(2519, 3249, 0), "Enter Movario's base under the broken table in the Khazard Battlefield.");
 
 		// TODO: Update hardcoded 54117 to CHEST_54117
-		claimRunes = new ObjectStep(this, 54117, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
+		claimRunes = new ObjectStep(this, ObjectID.WGS_MOVARIO_RUNE_CHEST, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
 
 		// 4066 122878 -> 385022
 		// 15064 0->100

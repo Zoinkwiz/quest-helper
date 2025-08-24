@@ -37,6 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatColorType;
@@ -81,7 +82,12 @@ public class RuneliteObjectManager
 	Point clickPos;
 	int redClickAnimationFrame = 0;
 	int bufferRedClickAnimation = 0;
-	int[] redClick = new int[]{SpriteID.RED_CLICK_ANIMATION_1, SpriteID.RED_CLICK_ANIMATION_2, SpriteID.RED_CLICK_ANIMATION_3, SpriteID.RED_CLICK_ANIMATION_4};
+	int[] redClick = new int[]{
+		SpriteID.CrossInterface.RED_CLICK_ANIMATION_1,
+		SpriteID.CrossInterface.RED_CLICK_ANIMATION_2,
+		SpriteID.CrossInterface.RED_CLICK_ANIMATION_3,
+		SpriteID.CrossInterface.RED_CLICK_ANIMATION_4
+	};
 	final int ANIMATION_PERIOD = 5;
 
 	ExtendedRuneliteObject lastInteractedWithRuneliteObject;

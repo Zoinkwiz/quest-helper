@@ -189,7 +189,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		killSirLeye = new NpcStep(this, NpcID.RD_COMBAT_NPC_ROOM_3,
 			"Defeat Sir Leye to win this challenge. You must use the steel warhammer or your barehands to deal the final hit on him.", true);
 
-		leaveSirKuamRoom = new ObjectStep(this, 7317, "Leave through the portal to continue.");
+		leaveSirKuamRoom = new ObjectStep(this, ObjectID.RD_ROOM3_EXITDOOR, "Leave through the portal to continue.");
 		NpcCondition npcCondition = new NpcCondition(NpcID.RD_COMBAT_NPC_ROOM_3);
 
 		ConditionalStep sirKuamConditional = new ConditionalStep(this, talkToSirKuam);
@@ -232,7 +232,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		int chickenOnRightId = 7279;
 		moveChickenOnRightToLeft = new ObjectStep(this, chickenOnRightId, chickenOnRightPoint,
 			getSpishyusPickupText("Chicken", true));
-		finishedSpishyusRoom = new ObjectStep(this, 7274, "Leave through the portal to continue.");
+		finishedSpishyusRoom = new ObjectStep(this, ObjectID.RD_ROOM1_EXITDOOR, "Leave through the portal to continue.");
 
 		int foxOnRightId = 7275;
 		moveFoxOnRightToLeft = new ObjectStep(this, foxOnRightId, foxOnRightPoint,
@@ -308,7 +308,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 			"Talk to Sir Tinley. \n Once you have pressed continue do not do anything or you will fail.");
 		doNothingStep = new DetailedQuestStep(this,
 			"Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.");
-		leaveSirTinleyRoom = new ObjectStep(this, 7320, "Leave through the portal to continue.");
+		leaveSirTinleyRoom = new ObjectStep(this, ObjectID.RD_ROOM4_EXITDOOR, "Leave through the portal to continue.");
 
 		VarbitRequirement waitForCondition = new VarbitRequirement(VarbitID.RD_TEMPLOCK_2, 1, Operation.GREATER_EQUAL);
 		VarbitRequirement finishedRoom = new VarbitRequirement(662, 1);

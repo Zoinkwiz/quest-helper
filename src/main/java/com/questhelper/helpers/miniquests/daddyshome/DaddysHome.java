@@ -151,17 +151,17 @@ public class DaddysHome extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToMarlo = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock.");
+		talkToMarlo = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north-east Varrock.");
 		talkToMarlo.addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
 		talkToMarlo.addDialogSteps("What kind of favour do you want me to do?", "Tell me more about the job.", "Tell me where he lives, and I'll do the job.");
 
 		talkToYarlo = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock, west of Aubury's Rune Shop.");
 
-		talkToYarloAgain = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock again.");
+		talkToYarloAgain = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock again.");
 		talkToYarloAgain.addDialogStep("Skip Yarlo's lecture. He'll offer it later if you like.");
-		talkToYarloOnceMore = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south Varrock.");
+		talkToYarloOnceMore = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock.");
 
-		talkToMarloToFinish = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north east Varrock to complete the quest.");
+		talkToMarloToFinish = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north-east Varrock to complete the quest.");
 		talkToMarloToFinish.addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
 		talkToMarloToFinish.addDialogStep("Yeah, what have you got for me?");
 

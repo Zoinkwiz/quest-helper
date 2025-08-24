@@ -83,13 +83,15 @@ public class DaddysHome extends BasicQuestHelper
 	VarbitRequirement needToRemoveTable2;
 	Conditions needToRemoveAnyFurniture;
 
-	VarbitRequirement repairedCampbed;
-	VarbitRequirement repairedCarpet;
-	VarbitRequirement repairedStool;
-	VarbitRequirement repairedTable;
-	VarbitRequirement repairedChair;
-	VarbitRequirement repairedStool2;
-	VarbitRequirement repairedTable2;
+	VarbitRequirement needToBuildCarpet;
+	VarbitRequirement needToBuildStool;
+	VarbitRequirement needToBuildTable;
+	VarbitRequirement needToBuildChair;
+	VarbitRequirement needToBuildStool2;
+	VarbitRequirement needToBuildTable2;
+	Conditions needToBuildSimpleFurniture;
+
+	VarbitRequirement needToBuildCampbed;
 
 	// Steps
 	NpcStep talkToMarlo;
@@ -106,17 +108,21 @@ public class DaddysHome extends BasicQuestHelper
 	NpcStep talkToYarloAfterRemovingFurniture;
 	ConditionalStep removeFurniture;
 
-	NpcStep talkToOperator;
-	NpcStep talkToYarloOnceMore;
-	NpcStep talkToMarloToFinish;
-	ObjectStep searchCrate;
-	ObjectStep buildChair;
 	ObjectStep buildCarpet;
 	ObjectStep buildStool;
-	ObjectStep buildStool2;
 	ObjectStep buildTable;
+	ObjectStep buildChair;
+	ObjectStep buildStool2;
 	ObjectStep buildTable2;
+	ConditionalStep buildSimpleFurniture;
+
+	ObjectStep searchCrate;
+	NpcStep talkToOperator;
 	ObjectStep buildCampbed;
+
+	NpcStep talkToYarloAfterBuildingFurniture;
+
+	NpcStep talkToMarloToFinish;
 
 	@Override
 	protected void setupRequirements()
@@ -130,14 +136,15 @@ public class DaddysHome extends BasicQuestHelper
 		needToRemoveTable2 = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_1, 2, Operation.LESS);
 		needToRemoveAnyFurniture = or(needToRemoveCampbed, needToRemoveCarpet, needToRemoveStool, needToRemoveTable, needToRemoveChair, needToRemoveStool2);
 
-		repairedCampbed = new VarbitRequirement(VarbitID.DADDYSHOME_BED, 3);
-		repairedCarpet = new VarbitRequirement(VarbitID.DADDYSHOME_CARPET, 3);
-		repairedStool = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_2, 3);
+		needToBuildCarpet = new VarbitRequirement(VarbitID.DADDYSHOME_CARPET, 3, Operation.LESS);
+		needToBuildStool = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_2, 3, Operation.LESS);
+		needToBuildTable = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_2, 3, Operation.LESS);
+		needToBuildChair = new VarbitRequirement(VarbitID.DADDYSHOME_CHAIR, 3, Operation.LESS);
+		needToBuildStool2 = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_1, 3, Operation.LESS);
+		needToBuildTable2 = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_1, 3, Operation.LESS);
+		needToBuildSimpleFurniture = or(needToBuildCarpet, needToBuildStool, needToBuildTable, needToBuildChair, needToBuildStool2, needToBuildTable2);
 
-		repairedTable = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_2, 3);
-		repairedChair = new VarbitRequirement(VarbitID.DADDYSHOME_CHAIR, 3);
-		repairedStool2 = new VarbitRequirement(VarbitID.DADDYSHOME_STOOL_1, 3);
-		repairedTable2 = new VarbitRequirement(VarbitID.DADDYSHOME_TABLE_1, 3);
+		needToBuildCampbed = new VarbitRequirement(VarbitID.DADDYSHOME_BED, 3, Operation.LESS);
 
 		plank10 = new ItemRequirement("Plank", ItemID.WOODPLANK, 10);
 		bolt5 = new ItemRequirement("Bolt of cloth", ItemID.CLOTH, 5);
@@ -185,7 +192,21 @@ public class DaddysHome extends BasicQuestHelper
 		removeFurniture.addStep(needToRemoveChair, removeChair);
 		removeFurniture.addStep(needToRemoveStool2, removeStool2);
 
-		talkToYarloOnceMore = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock.");
+		buildCarpet = new ObjectStep(this, ObjectID.DADDYSHOME_CARPET_MIDDLE, new WorldPoint(3239, 3395, 0), "Right-click build the carpet.", bolt3, saw, hammer);
+		buildStool = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_2, new WorldPoint(3239, 3394, 0), "Build the stool.", plank, nails2, saw, hammer);
+		buildTable = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_2, new WorldPoint(3240, 3394, 0), "Build the table.", plank3, nails4, saw, hammer);
+		buildChair = new ObjectStep(this, ObjectID.DADDYSHOME_CHAIR, new WorldPoint(3241, 3393, 0), "Build the chair.", plank2, nails2, saw, hammer);
+		buildStool2 = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_1, new WorldPoint(3244, 3394, 0), "Build the other stool.", plank, nails2, saw, hammer);
+		buildTable2 = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_1, new WorldPoint(3245, 3394, 0), "Build the other table.", plank3, nails4, saw, hammer);
+
+		buildSimpleFurniture = new ConditionalStep(this, buildTable2, "Rebuild the furniture in Old Man Yarlo's house.");
+		buildSimpleFurniture.addStep(needToBuildCarpet, buildCarpet);
+		buildSimpleFurniture.addStep(needToBuildStool, buildStool);
+		buildSimpleFurniture.addStep(needToBuildTable, buildTable);
+		buildSimpleFurniture.addStep(needToBuildChair, buildChair);
+		buildSimpleFurniture.addStep(needToBuildStool2, buildStool2);
+
+		talkToYarloAfterBuildingFurniture = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock.");
 
 		talkToMarloToFinish = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north-east Varrock to complete the quest.");
 		talkToMarloToFinish.addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
@@ -196,14 +217,6 @@ public class DaddysHome extends BasicQuestHelper
 		talkToOperator = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill Operator north east of Varrock to make waxwood planks.", waxwoodLog3);
 		talkToOperator.addDialogStep("I need some waxwood planks for Old Man Yarlo.");
 		buildCampbed = new ObjectStep(this, ObjectID.DADDYSHOME_BED, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in the house.", waxwoodPlank3, bolt2, hammer, saw);
-
-		buildCarpet = new ObjectStep(this, ObjectID.DADDYSHOME_CARPET_MIDDLE, new WorldPoint(3239, 3395, 0), "Build the items in the house.", bolt3, saw, hammer);
-		buildStool = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_2, new WorldPoint(3239, 3394, 0), "Build the items in the house.", plank, nails2, saw, hammer);
-		buildTable = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_2, new WorldPoint(3240, 3394, 0), "Build the items in the house.", plank3, nails4, saw, hammer);
-		buildChair = new ObjectStep(this, ObjectID.DADDYSHOME_CHAIR, new WorldPoint(3241, 3393, 0), "Build the items in the house.", plank2, nails2, saw, hammer);
-		buildTable2 = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_1, new WorldPoint(3245, 3394, 0), "Build the items in the house.", plank3, nails4, saw, hammer);
-		buildStool2 = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_1, new WorldPoint(3244, 3394, 0), "Build the items in the house.", plank, nails2, saw, hammer);
-		buildCarpet.addSubSteps(buildStool, buildTable, buildChair, buildTable2, buildStool2);
 	}
 
 	@Override
@@ -224,22 +237,17 @@ public class DaddysHome extends BasicQuestHelper
 		steps.put(3, talkToYarloAfterRemovingFurniture);
 		steps.put(4, talkToYarloAfterRemovingFurniture);
 
-		var repairFurniture = new ConditionalStep(this, buildCarpet);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, repairedCampbed), talkToYarloOnceMore);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, waxwoodPlank3), buildCampbed);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2, waxwoodLog3), talkToOperator);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2, repairedTable2), searchCrate);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool, repairedTable, repairedChair, repairedStool2), buildTable2);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool, repairedTable, repairedChair), buildStool2);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool, repairedTable), buildChair);
-		repairFurniture.addStep(and(repairedCarpet, repairedStool), buildTable);
-		repairFurniture.addStep(repairedCarpet, buildStool);
+		var cRepairFurniture = new ConditionalStep(this, talkToYarloAfterBuildingFurniture);
+		cRepairFurniture.addStep(needToBuildSimpleFurniture, buildSimpleFurniture);
+		cRepairFurniture.addStep(and(needToBuildCampbed, waxwoodPlank3), buildCampbed);
+		cRepairFurniture.addStep(and(needToBuildCampbed, waxwoodLog3), talkToOperator);
+		cRepairFurniture.addStep(needToBuildCampbed, searchCrate);
 
-		steps.put(5, repairFurniture);
-		steps.put(6, repairFurniture);
-		steps.put(7, repairFurniture);
-		steps.put(8, repairFurniture);
-		steps.put(9, repairFurniture);
+		steps.put(5, cRepairFurniture);
+		steps.put(6, cRepairFurniture);
+		steps.put(7, cRepairFurniture);
+		steps.put(8, cRepairFurniture);
+		steps.put(9, cRepairFurniture);
 
 		steps.put(10, talkToMarloToFinish);
 		steps.put(11, talkToMarloToFinish);
@@ -302,11 +310,11 @@ public class DaddysHome extends BasicQuestHelper
 			talkToYarlo,
 			removeFurniture,
 			talkToYarloAfterRemovingFurniture,
-			buildCarpet,
+			buildSimpleFurniture,
 			searchCrate,
 			talkToOperator,
 			buildCampbed,
-			talkToYarloOnceMore,
+			talkToYarloAfterBuildingFurniture,
 			talkToMarloToFinish
 		), List.of(
 			plank10,

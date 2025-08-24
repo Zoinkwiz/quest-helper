@@ -224,7 +224,7 @@ public class DaddysHome extends BasicQuestHelper
 		buildCampbed.addWidgetHighlight(highlightFirstOption);
 		buildCampbed.addTeleport(varrockTeleport3.quantity(1));
 
-		talkToYarloAfterBuildingFurniture = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock.");
+		talkToYarloAfterBuildingFurniture = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo again after rebuilding the furniture.");
 
 		talkToMarloToFinish = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north-east Varrock to complete the quest.");
 		talkToMarloToFinish.addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);

@@ -226,7 +226,7 @@ public class DaddysHome extends BasicQuestHelper
 		talkToOperator = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill operator north-east of Varrock to make waxwood planks.", waxwoodLog3);
 		talkToOperator.addDialogStep("I need some waxwood planks for Old Man Yarlo.");
 		talkToOperator.addTeleport(lumberyardTeleport);
-		buildCampbed = new ObjectStep(this, ObjectID.DADDYSHOME_BED, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in the house.", waxwoodPlank3, bolt2, hammer, saw);
+		buildCampbed = new ObjectStep(this, ObjectID.DADDYSHOME_BED, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in Old Man Yarlo's house.", waxwoodPlank3, bolt2, hammer, saw);
 	}
 
 	@Override

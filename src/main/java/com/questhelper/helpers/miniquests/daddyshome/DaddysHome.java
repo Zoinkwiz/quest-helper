@@ -39,12 +39,14 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.widget.WidgetHighlight;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -192,12 +194,19 @@ public class DaddysHome extends BasicQuestHelper
 		removeFurniture.addStep(needToRemoveChair, removeChair);
 		removeFurniture.addStep(needToRemoveStool2, removeStool2);
 
+		var highlightFirstOption = new WidgetHighlight(InterfaceID.PohFurnitureCreation._01);
 		buildCarpet = new ObjectStep(this, ObjectID.DADDYSHOME_CARPET_MIDDLE, new WorldPoint(3239, 3395, 0), "Right-click build the carpet.", bolt3, saw, hammer);
+		buildCarpet.addWidgetHighlight(highlightFirstOption);
 		buildStool = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_2, new WorldPoint(3239, 3394, 0), "Build the stool.", plank, nails2, saw, hammer);
+		buildStool.addWidgetHighlight(highlightFirstOption);
 		buildTable = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_2, new WorldPoint(3240, 3394, 0), "Build the table.", plank3, nails4, saw, hammer);
+		buildTable.addWidgetHighlight(highlightFirstOption);
 		buildChair = new ObjectStep(this, ObjectID.DADDYSHOME_CHAIR, new WorldPoint(3241, 3393, 0), "Build the chair.", plank2, nails2, saw, hammer);
+		buildChair.addWidgetHighlight(highlightFirstOption);
 		buildStool2 = new ObjectStep(this, ObjectID.DADDYSHOME_STOOL_1, new WorldPoint(3244, 3394, 0), "Build the other stool.", plank, nails2, saw, hammer);
+		buildStool2.addWidgetHighlight(highlightFirstOption);
 		buildTable2 = new ObjectStep(this, ObjectID.DADDYSHOME_TABLE_1, new WorldPoint(3245, 3394, 0), "Build the other table.", plank3, nails4, saw, hammer);
+		buildTable2.addWidgetHighlight(highlightFirstOption);
 
 		buildSimpleFurniture = new ConditionalStep(this, buildTable2, "Rebuild the furniture in Old Man Yarlo's house.");
 		buildSimpleFurniture.addStep(needToBuildCarpet, buildCarpet);

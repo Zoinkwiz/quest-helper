@@ -221,6 +221,7 @@ public class DaddysHome extends BasicQuestHelper
 		talkToOperator.addDialogStep("I need some waxwood planks for Old Man Yarlo.");
 		talkToOperator.addTeleport(lumberyardTeleport);
 		buildCampbed = new ObjectStep(this, ObjectID.DADDYSHOME_BED, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in Old Man Yarlo's house.", waxwoodPlank3, bolt2, hammer, saw);
+		buildCampbed.addWidgetHighlight(highlightFirstOption);
 		buildCampbed.addTeleport(varrockTeleport3.quantity(1));
 
 		talkToYarloAfterBuildingFurniture = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock.");

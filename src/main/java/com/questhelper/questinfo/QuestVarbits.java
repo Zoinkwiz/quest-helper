@@ -150,6 +150,10 @@ public enum QuestVarbits
 	BALLOON_TRANSPORT_CASTLE_WARS(VarbitID.ZEP_MULTI_CAST),
 	BALLOON_TRANSPORT_GRAND_TREE(VarbitID.ZEP_MULTI_GNO),
 	STRONGHOLD_OF_SECURITY(VarbitID.SOS_EMOTE_STAMP),
+  /**
+	 * fake mini-quest varbits, these don't hold the completion value.
+	 */
+	CRACK_THE_CLUE_II(VarbitID.CRACK_THE_CLUE_II),
 
 	// Achievement Diaries
 

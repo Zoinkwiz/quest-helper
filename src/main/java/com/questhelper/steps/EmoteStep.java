@@ -30,10 +30,18 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
 import com.questhelper.steps.overlay.IconOverlay;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.Subscribe;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -42,17 +50,97 @@ public class EmoteStep extends DetailedQuestStep
 {
 	private boolean hasScrolled;
 	private final QuestEmote emote;
-
-	public EmoteStep(QuestHelper questHelper, QuestEmote emote, WorldPoint worldPoint, String text, Requirement... requirements)
-	{
-		super(questHelper, worldPoint, text, requirements);
-		this.emote = emote;
-	}
+	private List<QuestEmote> emoteSequence;
+	private int currentEmoteIndex;
+	private final WorldPoint requiredLocation;
+	private static final int LOCATION_TOLERANCE = 1;
 
 	public EmoteStep(QuestHelper questHelper, QuestEmote emote, String text, Requirement... requirements)
 	{
 		super(questHelper, text, requirements);
 		this.emote = emote;
+		this.emoteSequence = new ArrayList<>();
+		this.emoteSequence.add(emote);
+		this.currentEmoteIndex = 0;
+		this.requiredLocation = null;
+	}
+
+	public EmoteStep(QuestHelper questHelper, QuestEmote emote, WorldPoint worldPoint, String text, Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, requirements);
+		this.emote = emote;
+		this.emoteSequence = new ArrayList<>();
+		this.emoteSequence.add(emote);
+		this.currentEmoteIndex = 0;
+		this.requiredLocation = worldPoint;
+	}
+
+	public EmoteStep(QuestHelper questHelper, List<QuestEmote> emoteSequence, WorldPoint worldPoint, String text, Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, requirements);
+		this.emote = emoteSequence.get(0);
+		this.emoteSequence = emoteSequence;
+		this.currentEmoteIndex = 0;
+		this.requiredLocation = worldPoint;
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		if (!(event.getActor() instanceof Player))
+		{
+			return;
+		}
+
+		Player player = (Player) event.getActor();
+		if (player != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		QuestEmote currentEmote = getCurrentEmote();
+		if (currentEmote != null && player.getAnimation() == currentEmote.getAnimationId())
+		{
+			if (isPlayerInCorrectLocation(player))
+			{
+				nextEmote();
+			}
+		}
+	}
+
+	private boolean isPlayerInCorrectLocation(Player player)
+	{
+		if (requiredLocation == null)
+		{
+			return true;
+		}
+
+		WorldPoint playerLocation = player.getWorldLocation();
+		return playerLocation.distanceTo(requiredLocation) <= LOCATION_TOLERANCE;
+	}
+
+	public QuestEmote getCurrentEmote()
+	{
+		if (currentEmoteIndex >= emoteSequence.size())
+		{
+			return null;
+		}
+		return emoteSequence.get(currentEmoteIndex);
+	}
+
+	public void nextEmote()
+	{
+		if (currentEmoteIndex < emoteSequence.size() - 1)
+		{
+			currentEmoteIndex++;
+			hasScrolled = false;
+		}
+	}
+
+	public void resetEmotes() 
+	{
+		currentEmoteIndex = 0;
+		hasScrolled = false;
 	}
 
 	@Override
@@ -60,9 +148,14 @@ public class EmoteStep extends DetailedQuestStep
 	{
 		super.makeWidgetOverlayHint(graphics, plugin);
 
-		Widget emoteContainer = client.getWidget(InterfaceID.Emote.CONTENTS);
+		QuestEmote currentEmote = getCurrentEmote();
+		if (currentEmote == null) 
+		{
+			return;
+		}
 
-		if (emoteContainer == null || emoteContainer.isHidden())
+		Widget emoteContainer = client.getWidget(InterfaceID.Emote.CONTENTS);
+		if (emoteContainer == null || emoteContainer.isHidden()) 
 		{
 			return;
 		}
@@ -78,7 +171,7 @@ public class EmoteStep extends DetailedQuestStep
 
 		for (Widget emoteWidget : emoteContainer.getDynamicChildren())
 		{
-			if (emoteWidget.getSpriteId() == emote.getSpriteId())
+			if (emoteWidget.getSpriteId() == currentEmote.getSpriteId())
 			{
 				finalEmoteWidget = emoteWidget;
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
@@ -119,9 +212,10 @@ public class EmoteStep extends DetailedQuestStep
 	@Override
 	protected void setupIcon()
 	{
-		if (emote.getSpriteId() != -1 && icon == null)
+		QuestEmote currentEmote = getCurrentEmote();
+		if (currentEmote != null && currentEmote.getSpriteId() != -1 && icon == null)
 		{
-			BufferedImage emoteImage = spriteManager.getSprite(emote.getSpriteId(), 0);
+			BufferedImage emoteImage = spriteManager.getSprite(currentEmote.getSpriteId(), 0);
 			if (emoteImage != null)
 			{
 				icon = IconOverlay.createIconImage(emoteImage);

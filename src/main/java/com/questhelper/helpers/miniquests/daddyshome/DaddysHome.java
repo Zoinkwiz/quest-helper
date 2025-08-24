@@ -221,7 +221,7 @@ public class DaddysHome extends BasicQuestHelper
 		talkToMarloToFinish.addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
 		talkToMarloToFinish.addDialogStep("Yeah, what have you got for me?");
 
-		searchCrate = new ObjectStep(this, ObjectID.DADDYSHOME_CRATES, new WorldPoint(3243, 3398, 0), "Search the crates in Yarlo's house for waxwood logs.");
+		searchCrate = new ObjectStep(this, ObjectID.DADDYSHOME_CRATES, new WorldPoint(3243, 3398, 0), "Search the crates in Old Man Yarlo's house for waxwood logs.");
 
 		talkToOperator = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill Operator north east of Varrock to make waxwood planks.", waxwoodLog3);
 		talkToOperator.addDialogStep("I need some waxwood planks for Old Man Yarlo.");

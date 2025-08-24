@@ -257,12 +257,12 @@ public class DaddysHome extends BasicQuestHelper
 
 		steps.put(5, cRepairFurniture);
 		steps.put(6, cRepairFurniture);
-		steps.put(7, cRepairFurniture);
-		steps.put(8, cRepairFurniture);
-		steps.put(9, cRepairFurniture);
+		steps.put(7, cRepairFurniture); // unreachable?
+		steps.put(8, cRepairFurniture); // unreachable?
+		steps.put(9, cRepairFurniture); // unreachable?
 
 		steps.put(10, talkToMarloToFinish);
-		steps.put(11, talkToMarloToFinish);
+		steps.put(11, talkToMarloToFinish); // unreachable?
 		steps.put(12, talkToMarloToFinish);
 
 		return steps;

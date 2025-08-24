@@ -215,12 +215,6 @@ public class DaddysHome extends BasicQuestHelper
 		buildSimpleFurniture.addStep(needToBuildChair, buildChair);
 		buildSimpleFurniture.addStep(needToBuildStool2, buildStool2);
 
-		talkToYarloAfterBuildingFurniture = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock.");
-
-		talkToMarloToFinish = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north-east Varrock to complete the quest.");
-		talkToMarloToFinish.addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
-		talkToMarloToFinish.addDialogStep("Yeah, what have you got for me?");
-
 		searchCrate = new ObjectStep(this, ObjectID.DADDYSHOME_CRATES, new WorldPoint(3243, 3398, 0), "Search the crates in Old Man Yarlo's house for waxwood logs.");
 
 		talkToOperator = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0), "Talk to the Sawmill operator north-east of Varrock to make waxwood planks.", waxwoodLog3);
@@ -228,6 +222,12 @@ public class DaddysHome extends BasicQuestHelper
 		talkToOperator.addTeleport(lumberyardTeleport);
 		buildCampbed = new ObjectStep(this, ObjectID.DADDYSHOME_BED, new WorldPoint(3242, 3398, 0), "Build the waxwood bed in Old Man Yarlo's house.", waxwoodPlank3, bolt2, hammer, saw);
 		buildCampbed.addTeleport(varrockTeleport3.quantity(1));
+
+		talkToYarloAfterBuildingFurniture = new NpcStep(this, NpcID.DADDYSHOME_DADDY, new WorldPoint(3240, 3395, 0), "Talk to Old Man Yarlo in south-east Varrock.");
+
+		talkToMarloToFinish = new NpcStep(this, NpcID.CON_CONTRACTOR_VARROCK_1OP, new WorldPoint(3241, 3471, 0), "Talk to Marlo in north-east Varrock to complete the quest.");
+		talkToMarloToFinish.addAlternateNpcs(NpcID.CON_CONTRACTOR_VARROCK_2OP);
+		talkToMarloToFinish.addDialogStep("Yeah, what have you got for me?");
 	}
 
 	@Override

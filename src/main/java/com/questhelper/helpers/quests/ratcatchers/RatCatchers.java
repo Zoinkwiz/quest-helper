@@ -48,10 +48,10 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -356,12 +356,12 @@ public class RatCatchers extends BasicQuestHelper
 		climbTrellis.addSubSteps(climbTrellisNoPath);
 		catchRat1 = new NpcStep(this, NpcID.VC_PARTY_RAT, new WorldPoint(2835, 5098, 1),
 			"Catch the rat in the north west room with your cat.", catFollower);
-		catchRat1.addTileMarker(new WorldPoint(2841, 5104, 1), SpriteID.EQUIPMENT_SLOT_SHIELD);
+		catchRat1.addTileMarker(new WorldPoint(2841, 5104, 1), SpriteID.Wornicons.SHIELD);
 		catchRat1.setMaxRoamRange(7);
 		catchRat2And3 = new NpcStep(this, NpcID.VC_PARTY_RAT, new WorldPoint(2859, 5091, 1),
 			"Hide in the north east room until it's safe to go to the south east room, then catch the rats there.",
 			true);
-		catchRat2And3.addTileMarker(new WorldPoint(2857, 5098, 1), SpriteID.EQUIPMENT_SLOT_SHIELD);
+		catchRat2And3.addTileMarker(new WorldPoint(2857, 5098, 1), SpriteID.Wornicons.SHIELD);
 		climbDownLadderInMansion = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(2862, 5092, 1),
 			"Climb down the ladder.");
 		catchRemainingRats = new NpcStep(this, NpcID.VC_PARTY_RAT, new WorldPoint(2860, 5093, 0),

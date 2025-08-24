@@ -381,13 +381,13 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 14
 		//Open the Door
-		openTheDoor = new ObjectStep(this, 6238, "Open the door.", doorKeys);
+		openTheDoor = new ObjectStep(this, ObjectID.FEUD_CLOSED_DOOR_LEFT, "Open the door.", doorKeys);
 		openTheDoor.addAlternateObjects(6240);
 		openTheDoor.addIcon(ItemID.FEUD_MAYORS_HOUSE_KEYS);
 
 		goUpStairs = new ObjectStep(this, ObjectID.FEUD_INSIDESTAIRS_BASE, "Go up the stairs.");
 
-		crackTheSafe = new ObjectStep(this, 6276, "Search the painting to reveal the safe. Enter the code 1, 1, 2, 3, 5, 8.");
+		crackTheSafe = new ObjectStep(this, ObjectID.FEUD_MAYORS_PICTURE, "Search the painting to reveal the safe. Enter the code 1, 1, 2, 3, 5, 8.");
 
 		//Step 15
 		//Return the Jewels

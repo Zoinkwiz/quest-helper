@@ -53,6 +53,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginMessage;
@@ -427,7 +428,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		for (WorldPoint worldPoint : worldPoints)
 		{
-			markedTiles.add(new QuestTile(worldPoint, SpriteID.TAB_COMBAT));
+			markedTiles.add(new QuestTile(worldPoint, SpriteID.SideIcons.COMBAT));
 		}
 	}
 

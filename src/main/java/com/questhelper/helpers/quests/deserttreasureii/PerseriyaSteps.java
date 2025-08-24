@@ -46,11 +46,11 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 
 import java.util.Arrays;
@@ -618,7 +618,7 @@ public class PerseriyaSteps extends ConditionalStep
 
 		DetailedQuestStep doPath1RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2197, 6444, 0),
 			"Move the nearest pathfinder from the north, and follow it within a 3x3 area until the next pathfinder.");
-		doPath1RealStep.addTileMarker(new WorldPoint(2195, 6451, 0), SpriteID.RS2_SWORD_POINTED_LEFT);
+		doPath1RealStep.addTileMarker(new WorldPoint(2195, 6451, 0), SpriteID.Sworddecor.LEFT);
 		doPath1RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2195, 6450, 0),
 			new WorldPoint(2195, 6444, 0),
@@ -629,7 +629,7 @@ public class PerseriyaSteps extends ConditionalStep
 
 		DetailedQuestStep doPath2RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2202, 6442, 0),
 			"Move the next pathfinder from the west, and step off when safe to the south pathfinder.");
-		doPath2RealStep.addTileMarker(new WorldPoint(2197, 6444, 0), SpriteID.RS2_SWORD_POINTED_LEFT);
+		doPath2RealStep.addTileMarker(new WorldPoint(2197, 6444, 0), SpriteID.Sworddecor.LEFT);
 		doPath2RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2199, 6444, 0),
 			new WorldPoint(2202, 6444, 0),
@@ -640,7 +640,7 @@ public class PerseriyaSteps extends ConditionalStep
 
 		DetailedQuestStep doPath3RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2198, 6438, 0),
 			"Move the next pathbreaker from the north, and step off when safe to the west pathbreaker.");
-		doPath3RealStep.addTileMarker(new WorldPoint(2202, 6442, 0), SpriteID.RS2_SWORD_POINTED_LEFT);
+		doPath3RealStep.addTileMarker(new WorldPoint(2202, 6442, 0), SpriteID.Sworddecor.LEFT);
 		doPath3RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2202, 6440, 0),
 			new WorldPoint(2201, 6439, 0),
@@ -651,7 +651,7 @@ public class PerseriyaSteps extends ConditionalStep
 
 		DetailedQuestStep doPath4RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2196, 6435, 0),
 			"Move the next pathbreaker from the west, and step off when safe to the south-west pathbreaker.");
-		doPath4RealStep.addTileMarker(new WorldPoint(2198, 6438, 0), SpriteID.RS2_SWORD_POINTED_LEFT);
+		doPath4RealStep.addTileMarker(new WorldPoint(2198, 6438, 0), SpriteID.Sworddecor.LEFT);
 		doPath4RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2197, 6438, 0),
 			new WorldPoint(2196, 6435, 0)
@@ -660,7 +660,7 @@ public class PerseriyaSteps extends ConditionalStep
 
 		DetailedQuestStep doPath5RealStep = new DetailedQuestStep(getQuestHelper(), new WorldPoint(2207, 6436, 0),
 			"Move the next pathbreaker from the east, and step off when safe to the east pathbreaker.");
-		doPath5RealStep.addTileMarker(new WorldPoint(2196, 6435, 0), SpriteID.RS2_SWORD_POINTED_LEFT);
+		doPath5RealStep.addTileMarker(new WorldPoint(2196, 6435, 0), SpriteID.Sworddecor.LEFT);
 		doPath5RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2196, 6435, 0),
 			new WorldPoint(2207, 6436, 0)
@@ -669,7 +669,7 @@ public class PerseriyaSteps extends ConditionalStep
 
 		DetailedQuestStep doPath6RealStep = new ObjectStep(getQuestHelper(), ObjectID.DT2_SCAR_MAZE_ELECTRIC_FINISH, new WorldPoint(2210, 6433, 0),
 			"Move the next pathbreaker from the south, and step off to destroy the abyssal tether.");
-		doPath6RealStep.addTileMarker(new WorldPoint(2207, 6436, 0), SpriteID.RS2_SWORD_POINTED_LEFT);
+		doPath6RealStep.addTileMarker(new WorldPoint(2207, 6436, 0), SpriteID.Sworddecor.LEFT);
 		doPath6RealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(2207, 6436, 0),
 			new WorldPoint(2207, 6433, 0),
@@ -733,7 +733,7 @@ public class PerseriyaSteps extends ConditionalStep
 		// [9816, 9672, 9777]
 		NpcStep hitCosmicAxonRealStep = new NpcStep(getQuestHelper(), NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Cosmic)", new WorldPoint(1743, 6421, 0),
 			"Hit the Cosmic Axon towards the Cosmic terminal. Avoid the lightning strikes.");
-		hitCosmicAxonRealStep.addTileMarker(new WorldPoint(1746, 6414, 0), SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS);
+		hitCosmicAxonRealStep.addTileMarker(new WorldPoint(1746, 6414, 0), SpriteID.AchievementDiaryIcons.BLUE_QUESTS);
 		hitCosmicAxonRealStep.setLinePoints(Arrays.asList(
 			// Cosmic Axon
 			new WorldPoint(1749, 6419, 0),
@@ -745,7 +745,7 @@ public class PerseriyaSteps extends ConditionalStep
 		// [553, 573, 542]
 		NpcStep hitFireAxonRealStep = new NpcStep(getQuestHelper(), NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Fire)", new WorldPoint(1743, 6421, 0),
 			"Hit the Fire Axon towards the Fire terminal. Avoid the lightning strikes.");
-		hitFireAxonRealStep.addTileMarker(new WorldPoint(1748, 6426, 0), SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS);
+		hitFireAxonRealStep.addTileMarker(new WorldPoint(1748, 6426, 0), SpriteID.AchievementDiaryIcons.BLUE_QUESTS);
 		hitFireAxonRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(1744, 6413, 0),
 			new WorldPoint(1744, 6421, 0),
@@ -760,7 +760,7 @@ public class PerseriyaSteps extends ConditionalStep
 		// [20013, 19904, 20126]
 		NpcStep hitNatureAxonRealStep = new NpcStep(getQuestHelper(), NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Nature)", new WorldPoint(1743, 6421, 0),
 			"Hit the Nature Axon towards the Nature terminal. Avoid the lightning strikes.");
-		hitNatureAxonRealStep.addTileMarker(new WorldPoint(1733, 6426, 0), SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS);
+		hitNatureAxonRealStep.addTileMarker(new WorldPoint(1733, 6426, 0), SpriteID.AchievementDiaryIcons.BLUE_QUESTS);
 		hitNatureAxonRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(1743, 6424, 0),
 			new WorldPoint(1740, 6424, 0),
@@ -773,7 +773,7 @@ public class PerseriyaSteps extends ConditionalStep
 		// [-25047, -25024, -25058]
 		NpcStep hitWaterAxonRealStep = new NpcStep(getQuestHelper(), NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Water)", new WorldPoint(1743, 6421, 0),
 			"Hit the Water Axon towards the Water terminal. Avoid the lightning strikes.");
-		hitWaterAxonRealStep.addTileMarker(new WorldPoint(1736, 6414, 0), SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS);
+		hitWaterAxonRealStep.addTileMarker(new WorldPoint(1736, 6414, 0), SpriteID.AchievementDiaryIcons.BLUE_QUESTS);
 		hitWaterAxonRealStep.setLinePoints(Arrays.asList(
 			new WorldPoint(1735, 6422, 0),
 			new WorldPoint(1743, 6422, 0),

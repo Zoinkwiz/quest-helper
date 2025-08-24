@@ -171,7 +171,7 @@ public class DesertElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
+		moveToPyramidPlunder = new ObjectStep(this, ObjectID.NTK_PYRAMID_DOOR_NORTH_MULTI, new WorldPoint(3289, 2800, 0),
 			"Enter the Pyramid plunder minigame. If you don't see a Guardian mummy exit and try a different " +
 				"entrance.", true);
 		((ObjectStep) moveToPyramidPlunder).addAlternateObjects(ObjectID.NTK_PYRAMID_DOOR_EAST_MULTI, ObjectID.NTK_PYRAMID_DOOR_SOUTH_MULTI,
@@ -180,7 +180,7 @@ public class DesertElite extends ComplexStateQuestHelper
 			"Talk to the guardian mummy to start the minigame.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
 
-		traversePyramid = new ObjectStep(this, 26618, new WorldPoint(1951, 4452, 0),
+		traversePyramid = new ObjectStep(this, ObjectID.NTK_TOMB_DOOR1, new WorldPoint(1951, 4452, 0),
 			"Go through each of the pyramid rooms until the final room.", true);
 		((ObjectStep) traversePyramid).setMaxObjectDistance(40);
 		((ObjectStep) traversePyramid).setMaxRenderDistance(10);

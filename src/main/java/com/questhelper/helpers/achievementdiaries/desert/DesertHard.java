@@ -201,11 +201,11 @@ public class DesertHard extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToKalph = new ObjectStep(this, 3827, new WorldPoint(3228, 3109, 0),
+		moveToKalph = new ObjectStep(this, ObjectID.KALPHITE_BURROW_ENTRANCE, new WorldPoint(3228, 3109, 0),
 			"Use the rope on the entrance and enter the Kalphite Hive.", rope.highlighted().quantity(2));
 		moveToKalph.addAlternateObjects(ObjectID.KALPHITE_BURROW_ENTRANCE_WITHROPE);
 		moveToKalph.addIcon(ItemID.ROPE);
-		kalphQueen = new ObjectStep(this, 23609, new WorldPoint(3510, 9498, 2),
+		kalphQueen = new ObjectStep(this, ObjectID.KALPHITE_CHAMBER_ENTRANCE_UPDATE, new WorldPoint(3510, 9498, 2),
 			"Climb down the tunnel entrance that leads to the Kalphite Queen and kill her.", rope);
 		kalphQueen.addAlternateObjects(10230);
 		kalphQueen.addIcon(ItemID.ROPE);

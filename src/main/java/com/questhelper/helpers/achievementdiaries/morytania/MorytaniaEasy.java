@@ -240,7 +240,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 			"Use the Hay sack on the Bronze Spear.", haySack.highlighted(), bronzeSpear.highlighted());
 		useWatermelonOnSack = new DetailedQuestStep(this,
 			"Use the watermelon on the Hay Sack to make the Scarecrow.", scarecrowStep2.highlighted(), watermelon.highlighted());
-		placeScarecrow = new ObjectStep(this, 7850, new WorldPoint(3602, 3526, 0),
+		placeScarecrow = new ObjectStep(this, ObjectID.FARMING_FLOWER_PATCH_4, new WorldPoint(3602, 3526, 0),
 			"Place a scarecrow at the Morytania flower patch, West of Port Phasmatys.", scarecrow.highlighted());
 		placeScarecrow.addIcon(ItemID.SCARECROW_COMPLETE);
 

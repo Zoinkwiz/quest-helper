@@ -31,6 +31,8 @@ import lombok.Setter;
 import net.runelite.api.*;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -83,13 +85,13 @@ public class QuestBankTabInterface
 		int QUEST_BUTTON_SIZE = 25;
 		int QUEST_BUTTON_X = 408;
 		int QUEST_BUTTON_Y = 5;
-		questBackgroundWidget = createGraphic("quest-helper", SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL, QUEST_BUTTON_SIZE,
+		questBackgroundWidget = createGraphic("quest-helper", SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL, QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_X, QUEST_BUTTON_Y);
 		questBackgroundWidget.setAction(1, VIEW_TAB);
 		questBackgroundWidget.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 
-		questIconWidget = createGraphic("", SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
+		questIconWidget = createGraphic("", SpriteID.AchievementDiaryIcons.BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
 			QUEST_BUTTON_SIZE - 6,
 			QUEST_BUTTON_X + 3, QUEST_BUTTON_Y + 3);
 
@@ -148,8 +150,8 @@ public class QuestBankTabInterface
 			closeTab();
 			// This ensures that when clicking Search when tab is selected, the search input is opened rather
 			// than client trying to close it first
-			client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
-			client.setVarcIntValue(VarClientInt.INPUT_TYPE, 0);
+			client.setVarcStrValue(VarClientID.MESLAYERINPUT, "");
+			client.setVarcIntValue(VarClientID.MESLAYERMODE, 0);
 		}
 	}
 
@@ -186,7 +188,7 @@ public class QuestBankTabInterface
 		questTabActive = false;
 		if (questBackgroundWidget != null)
 		{
-			questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL);
+			questBackgroundWidget.setSpriteId(SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL);
 			questBackgroundWidget.revalidate();
 		}
 	}
@@ -210,7 +212,7 @@ public class QuestBankTabInterface
 		if (searchButtonBackground != null)
 		{
 			searchButtonBackground.setOnTimerListener((Object[]) null);
-			searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+			searchButtonBackground.setSpriteId(SpriteID.Miscgraphics.EQUIPMENT_SLOT_TILE);
 		}
 	}
 
@@ -228,7 +230,7 @@ public class QuestBankTabInterface
 			client.menuAction(-1, InterfaceID.Bankmain.POTIONSTORE_BUTTON, MenuAction.CC_OP, 1, -1, "Potion store", "");
 		}
 
-		questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
+		questBackgroundWidget.setSpriteId(SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
 		questBackgroundWidget.revalidate();
 		questTabActive = true;
 
@@ -242,7 +244,7 @@ public class QuestBankTabInterface
 		if (searchButtonBackground != null)
 		{
 			searchButtonBackground.setOnTimerListener((Object[]) null);
-			searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+			searchButtonBackground.setSpriteId(SpriteID.Miscgraphics.EQUIPMENT_SLOT_TILE);
 		}
 	}
 

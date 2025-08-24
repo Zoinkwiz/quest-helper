@@ -331,10 +331,10 @@ public class VarrockHard extends ComplexStateQuestHelper
 			"Speak with Orlando.");
 		getKudos = new DetailedQuestStep(this, "Complete more quests and tasks for kudos. " +
 			"Check out the kudos wiki page for more details.");
-		wakkaEdge = new ObjectStep(this, 12166, new WorldPoint(3131, 3510, 0),
+		wakkaEdge = new ObjectStep(this, ObjectID.CANOEING_CANOESTATION_EDGEVILLE, new WorldPoint(3131, 3510, 0),
 			"Make a Waka at the canoe station in Edgeville.", axe);
 		paddewwaTP = new DetailedQuestStep(this, "Cast teleport to Paddewwa.", ancientBook, lawRune.quantity(2), airRune.quantity(1), fireRune.quantity(1));
-		cutYew = new ObjectStep(this, 10823, new WorldPoint(3249, 3473, 0),
+		cutYew = new ObjectStep(this, ObjectID.DEADMAN_YEWTREE, new WorldPoint(3249, 3473, 0),
 			"Cut a yew tree until you get a log.", axe);
 		goUp1 = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_TALLER, new WorldPoint(3259, 3488, 0),
 			"Climb to the top of the Varrock Church.", yewLog, tinderBox);
@@ -351,15 +351,15 @@ public class VarrockHard extends ComplexStateQuestHelper
 		fancyStone = new NpcStep(this, NpcID.POH_ESTATE_AGENT, new WorldPoint(3240, 3475, 0),
 			"Talk to the estate agent to redecorate your house to fancy stone.", coins.quantity(25000));
 		fancyStone.addDialogStep("Can you redecorate my house please?");
-		growYew = new ObjectStep(this, 8513, new WorldPoint(3229, 3459, 0),
+		growYew = new ObjectStep(this, ObjectID.YEW_TREE_FULLYGROWN_2, new WorldPoint(3229, 3459, 0),
 			"Grow and check the health of a yew tree in front of Varrock palace. " +
 				"Afterwards, dig up the stump to get the yew roots. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			yewSap, rake, spade);
-		chopYew = new ObjectStep(this, 8513, new WorldPoint(3229, 3459, 0),
+		chopYew = new ObjectStep(this, ObjectID.YEW_TREE_FULLYGROWN_2, new WorldPoint(3229, 3459, 0),
 			"Chop the yew tree that you grew in front of Varrock palace. Afterwards, dig up the stump to get the Yew " +
 				"roots.", axe, spade);
-		digUpYewRoots = new ObjectStep(this, 8514, new WorldPoint(3229, 3459, 0),
+		digUpYewRoots = new ObjectStep(this, ObjectID.YEW_TREE_STUMP, new WorldPoint(3229, 3459, 0),
 			"Dig up the stump to get the Yew roots.", spade);
 		moveToUpstairs = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS, new WorldPoint(3219, 3497, 0),
 			"Climb the stairs in the back of the Varrock palace.");
@@ -367,7 +367,7 @@ public class VarrockHard extends ComplexStateQuestHelper
 			"Pray at altar with Smite active.", smiteActive);
 		moveToEdge = new ObjectStep(this, ObjectID.TRAPDOOR_OPEN, new WorldPoint(3097, 3468, 0),
 			"Enter the Edgeville dungeon.");
-		obsPipe = new ObjectStep(this, 16511, new WorldPoint(3150, 9906, 0),
+		obsPipe = new ObjectStep(this, ObjectID.VARROCK_DUNGEON_PIPE_SC, new WorldPoint(3150, 9906, 0),
 			"Climb through the pipe shortcut near Vannaka.");
 
 		claimReward = new NpcStep(this, NpcID.TOBY_VARROCK_DIARY, new WorldPoint(3225, 3415, 0),

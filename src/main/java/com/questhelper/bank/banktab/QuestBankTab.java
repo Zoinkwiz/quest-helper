@@ -37,6 +37,8 @@ import net.runelite.api.events.*;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -154,7 +156,7 @@ public class QuestBankTab
 	@Subscribe
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
-		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 		String QUEST_BANK_TAG = "quest-helper";
 
 		if (!input.equals(QUEST_BANK_TAG) || questHelper.getSelectedQuest() == null)
@@ -400,7 +402,7 @@ public class QuestBankTab
 		List<Integer> itemList = new ArrayList<>();
 		for (Widget itemWidget : containerChildren)
 		{
-			if (itemWidget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
+			if (itemWidget.getSpriteId() == SpriteID.TRADEBACKING_DARK
 				|| itemWidget.getText().contains("Tab"))
 			{
 				itemWidget.setHidden(true);
@@ -508,7 +510,7 @@ public class QuestBankTab
 			// ~bankmain_drawitem uses 6512 for empty item slots
 			if (!widget.isSelfHidden() &&
 					(widget.getItemId() > -1 && widget.getItemId() != ItemID.BLANKOBJECT) ||
-					(widget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND || widget.getText().contains("Tab"))
+					(widget.getSpriteId() == SpriteID.TRADEBACKING_DARK || widget.getText().contains("Tab"))
 			)
 			{
 				widget.setHidden(true);
@@ -757,7 +759,7 @@ public class QuestBankTab
 
 	private int addSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)
 	{
-		addedWidgets.add(createGraphic(itemContainer, SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND, ITEM_ROW_START, totalSectionsHeight));
+		addedWidgets.add(createGraphic(itemContainer, SpriteID.TRADEBACKING_DARK, ITEM_ROW_START, totalSectionsHeight));
 		addedWidgets.add(createText(itemContainer, title, new Color(228, 216, 162).getRGB(), (ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING) + ITEM_ROW_START
 			, TEXT_HEIGHT, ITEM_ROW_START, totalSectionsHeight + LINE_VERTICAL_SPACING));
 

@@ -51,11 +51,11 @@ import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -308,14 +308,14 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		enterBrineCave.addIcon(ItemID.SPADE);
 		slayBrineRat = new NpcStep(this, NpcID.OLAF2_BRINE_RATS, new WorldPoint(2706, 10133, 0),
 			"Kill a brine rat then roll the boulder and exit the cave..", true);
-		travelMisc = new ObjectStep(this, 29495, new WorldPoint(2744, 3719, 0),
+		travelMisc = new ObjectStep(this, ObjectID.FAIRYRING_MINORHUB, new WorldPoint(2744, 3719, 0),
 			"Use a fairy ring and travel to (CIP).", fairyTaleII);
-		enterEaglesPeak = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
+		enterEaglesPeak = new ObjectStep(this, ObjectID.EAGLEPEAK_ENTRANCE_CAVE_MULTI, new WorldPoint(2329, 3495, 0),
 			"Enter the cave at the top of Eagles' Peak. Use fairy ring and travel to (AKQ), then head south.", rope);
 		snowyHunter = new NpcStep(this, NpcID.EAGLEPEAK_EAGLE_TOPOLAR, new WorldPoint(2027, 4964, 3),
 			"Use rope on the Polar Eagle to travel to the Snowy Hunter area.", rope.highlighted());
 		snowyHunter.addIcon(ItemID.ROPE);
-		exitIceCave = new ObjectStep(this, 19764, new WorldPoint(2706, 10205, 0), "Exit the cave.");
+		exitIceCave = new ObjectStep(this, ObjectID.EAGLEPEAK_ICE_CAVE_ENTRANCE, new WorldPoint(2706, 10205, 0), "Exit the cave.");
 		snowyKnight0 = new NpcStep(this, NpcID.BUTTERFLY_SNOWY, new WorldPoint(2725, 3770, 0),
 			"Catch a Snowy Knight at the Fremennik Hunter Area.", butterFlyNet.equipped());
 		snowyKnight1 = new NpcStep(this, NpcID.BUTTERFLY_SNOWY, new WorldPoint(2712, 3822, 1),
@@ -341,21 +341,21 @@ public class FremennikMedium extends ComplexStateQuestHelper
 		moveToWaterbirth = new NpcStep(this, NpcID.VIKING_DAGGANOTH_CAVE_FERRYMAN_ISLAND, new WorldPoint(2620, 3686, 0),
 			"Speak with Jarvald to travel to Waterbirth Island.", petRock, thrownaxe);
 		moveToWaterbirth.addDialogSteps("What Jarvald is doing.", "Can I come?", "YES");
-		moveToDagCave = new ObjectStep(this, 8929, new WorldPoint(2521, 3740, 0),
+		moveToDagCave = new ObjectStep(this, ObjectID.DAGANNOTH_CAVEENTRANCE_ROCK, new WorldPoint(2521, 3740, 0),
 			"Enter the cave and pray melee. Make sure you are full stamina and prayer before entering.", protectMelee,
 			thrownaxe, petRock, food, stamPot, prayerPot);
-		dropPetRock = new ObjectStep(this, 8965, new WorldPoint(2490, 10162, 0),
+		dropPetRock = new ObjectStep(this, ObjectID.DAGANNOTH_PRESSURE_PAD_2, new WorldPoint(2490, 10162, 0),
 			"Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// item on tile req?
 		dropPetRock.addIcon(ItemID.VT_USELESS_ROCK);
-		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
-		moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
+		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.Staticons.AGILITY);
+		moveToAxeSpot = new ObjectStep(this, ObjectID.DAGANNOTH_DUGUPSOIL_2, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.", thrownaxe);
 		activateSpecial = new DetailedQuestStep(this, "Activate special attack with the rune thrownaxes equipped.",
 			thrownaxe.equipped(), specialAttackEnabled);
-		throwAxe = new NpcStep(this, 2253, new WorldPoint(2543, 10143, 0),
+		throwAxe = new NpcStep(this, NpcID.DAGANNOTH_WEAK_DOOR_WEST, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet" +
 				" and lower all 3 barriers.", thrownaxe.equipped(), specialAttackEnabled);
-		moveToDagCave1 = new ObjectStep(this, 10177, new WorldPoint(2546, 10143, 0),
+		moveToDagCave1 = new ObjectStep(this, ObjectID.DAGANNOTH_LADDER_BASE_EXT2, new WorldPoint(2546, 10143, 0),
 			"Enable magic protection then climb down the ladder.", protectMagic);
 		moveToDagCave1.addDialogSteps("Climb Down.");
 		moveToDagCave2 = new ObjectStep(this, ObjectID.DAGEXP_LADDER1, new WorldPoint(1808, 4405, 3),

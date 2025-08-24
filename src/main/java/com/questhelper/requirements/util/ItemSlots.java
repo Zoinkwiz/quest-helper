@@ -28,9 +28,9 @@ package com.questhelper.requirements.util;
 
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.gameval.InventoryID;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -90,7 +90,7 @@ public enum ItemSlots
 		{
 			return false;
 		}
-		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 		if (equipment == null || getSlotIdx() < 0) // unknown slot
 		{
 			return false;
@@ -120,7 +120,7 @@ public enum ItemSlots
 		{
 			return false;
 		}
-		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 		if (equipment == null || getSlotIdx() < 0) // unknown slot
 		{
 			return false;

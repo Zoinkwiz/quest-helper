@@ -211,7 +211,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		grappleLum = new ObjectStep(this, ObjectID.XBOWS_RAFT_BR, new WorldPoint(3252, 3179, 0),
 			"Grapple across the River Lum.", mithGrap.equipped(), crossbow.equipped());
 
-		moveToLavaAltar = new ObjectStep(this, 34817, new WorldPoint(3313, 3255, 0),
+		moveToLavaAltar = new ObjectStep(this, ObjectID.FIRETEMPLE_RUINED, new WorldPoint(3313, 3255, 0),
 			"Enter the fire altar north of Al Kharid.", fireAccess);
 		craftLava = new ObjectStep(this, ObjectID.FIRE_ALTAR, new WorldPoint(2585, 4838, 0),
 			"Use an earth talisman on the fire altar.", earthTali.highlighted(), essence, earthRune);
@@ -252,7 +252,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 			"Catch an essence or eclectic impling in Puro-Puro.", true, butterflyNet, implingJar);
 		puroImp.addAlternateNpcs(NpcID.II_IMPLING_TYPE_5_MAZE, NpcID.II_IMPLING_TYPE_6, NpcID.II_IMPLING_TYPE_6_MAZE);
 
-		wizardFairy = new ObjectStep(this, 29560, new WorldPoint(2412, 4434, 0),
+		wizardFairy = new ObjectStep(this, ObjectID.FAIRYRING_HOMEHUB, new WorldPoint(2412, 4434, 0),
 			"Take the nearest fairy ring and travel to the Wizards' Tower (DIS).", fairyAccess.equipped());
 
 		claimReward = new NpcStep(this, NpcID.HATIUS_LUMBRIDGE_DIARY, new WorldPoint(3235, 3213, 0),

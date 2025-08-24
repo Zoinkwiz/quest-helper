@@ -25,27 +25,26 @@
 package com.questhelper.steps.emote;
 
 import lombok.Getter;
-
-import static net.runelite.api.SpriteID.*;
+import net.runelite.api.gameval.SpriteID;
 
 @Getter
 public enum QuestEmote
 {
-	SKILL_CAPE("Skill Cape", EMOTE_SKILLCAPE),
-	FLEX("Flex", 2426),
-	CLAP("Clap", EMOTE_CLAP),
-	CRY("Cry", EMOTE_CRY),
-	BOW("Bow", EMOTE_BOW),
-	DANCE("Dance", EMOTE_DANCE),
-	WAVE("Wave", EMOTE_WAVE),
-	THINK("Think", EMOTE_THINK),
-	GOBLIN_BOW("Goblin bow", EMOTE_GOBLIN_BOW),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	IDEA("Idea", 732),
-	STAMP("Stamp", 730),
-	FLAP("Flap", 731),
-	SLAP_HEAD("Slap Head", 729),
-	SPIN("Spin", EMOTE_SPIN);
+	SKILL_CAPE("Skill Cape", SpriteID.Emotes.SKILLCAPE),
+	FLEX("Flex", SpriteID.Emotes._51),
+	CLAP("Clap", SpriteID.Emotes.CLAP),
+	CRY("Cry", SpriteID.Emotes.CRY),
+	BOW("Bow", SpriteID.Emotes.BOW),
+	DANCE("Dance", SpriteID.Emotes.DANCE),
+	WAVE("Wave", SpriteID.Emotes.WAVE),
+	THINK("Think", SpriteID.Emotes.THINK),
+	GOBLIN_BOW("Goblin bow", SpriteID.Emotes.GOBLIN_BOW),
+	BLOW_KISS("Blow Kiss", SpriteID.Emotes.BLOW_KISS),
+	IDEA("Idea", SpriteID.Emotes.IDEA),
+	STAMP("Stamp", SpriteID.Emotes.STAMP),
+	FLAP("Flap", SpriteID.Emotes.FLAP),
+	SLAP_HEAD("Slap Head", SpriteID.Emotes.SLAP_HEAD),
+	SPIN("Spin", SpriteID.Emotes.SPIN);
 
 	private String name;
 	private int spriteId;

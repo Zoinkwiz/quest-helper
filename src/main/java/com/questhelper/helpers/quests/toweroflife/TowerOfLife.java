@@ -331,7 +331,7 @@ public class TowerOfLife extends BasicQuestHelper
 			"Rivets.");
 		Conditions hasAllPipeItems = new Conditions(pipeMachinePipes, pipeMachineRings, pipeMachineRivets);
 
-		buildPipeMachine = new ObjectStep(this, 21943, new WorldPoint(2650, 3214, 2), "Build the Pipe Machine.");
+		buildPipeMachine = new ObjectStep(this, ObjectID.TOL_PIPE_MACHINE_MULTI, new WorldPoint(2650, 3214, 2), "Build the Pipe Machine.");
 		buildPipeMachine.addDialogStep("Yes");
 		buildPipeMachine.addSubSteps(fixPipeMachineGetPipes, fixPipeMachineGetRings, fixPipeMachineGetRivets,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);
@@ -358,7 +358,7 @@ public class TowerOfLife extends BasicQuestHelper
 			"fluid.");
 		Conditions hasAllCageItems = new Conditions(cageMetalBar, cageBindingFluid);
 
-		buildCage = new ObjectStep(this, 21941, new WorldPoint(2649, 3218, 3), "Build the cage.");
+		buildCage = new ObjectStep(this, ObjectID.TOL_CAGE_MULTI, new WorldPoint(2649, 3218, 3), "Build the cage.");
 		buildCage.addDialogStep("Yes");
 		buildCage.addSubSteps(fixCageGetBars, fixCageGetFluid,
 			climbUpToFloor1, climbUpToFloor2, climbUpToFloor3, climbDownToGround, climbDownToFloor1, climbDownToFloor2);

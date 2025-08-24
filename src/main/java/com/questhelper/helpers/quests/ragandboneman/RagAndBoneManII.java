@@ -53,12 +53,12 @@ import com.questhelper.steps.*;
 import com.questhelper.tools.QuestTile;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -422,17 +422,17 @@ public class RagAndBoneManII extends BasicQuestHelper
 				"Beasts.", true);
 		((NpcStep) killCaveGoblin).addAlternateNpcs(NpcID.CAVE_GOBLIN2, NpcID.CAVE_GOBLIN3,
 			NpcID.CAVE_GOBLIN4);
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3161, 9573, 0), SpriteID.OPTIONS_RUNNING));
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3163, 9573, 0), SpriteID.OPTIONS_RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3161, 9573, 0), SpriteID.OptionsIcons.RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3163, 9573, 0), SpriteID.OptionsIcons.RUNNING));
 
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3163, 9555, 0), SpriteID.OPTIONS_RUNNING));
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3165, 9555, 0), SpriteID.OPTIONS_RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3163, 9555, 0), SpriteID.OptionsIcons.RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3165, 9555, 0), SpriteID.OptionsIcons.RUNNING));
 
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3197, 9553, 0), SpriteID.OPTIONS_RUNNING));
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3199, 9553, 0), SpriteID.OPTIONS_RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3197, 9553, 0), SpriteID.OptionsIcons.RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3199, 9553, 0), SpriteID.OptionsIcons.RUNNING));
 
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3214, 9559, 0), SpriteID.OPTIONS_RUNNING));
-		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3216, 9559, 0), SpriteID.OPTIONS_RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3214, 9559, 0), SpriteID.OptionsIcons.RUNNING));
+		killCaveGoblin.addTileMarker(new QuestTile(new WorldPoint(3216, 9559, 0), SpriteID.OptionsIcons.RUNNING));
 
 		killJackal = new NpcStep(this, NpcID.ICS_LITTLE_JACKAL, new WorldPoint(3400, 2997, 0),
 			"Kill Jackals north of Nardah.", true);

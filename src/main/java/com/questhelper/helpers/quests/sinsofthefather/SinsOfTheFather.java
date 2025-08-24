@@ -656,7 +656,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkToPolmafi = new NpcStep(this, NpcID.MYQ5_POLMAFI_CHILD, new WorldPoint(3599, 9612, 0),
 			"Bring a Vyrewatch disguise to Polmafi in the Meiyerditch hideout in Old Man Ral's basement.", vyreTop, vyreLegs, vyreShoes);
 		talkToPolmafi.addDialogStep("Here you go.");
-		talkToPolmafiMore = new NpcStep(this, 9554, new WorldPoint(3599, 9612, 0),
+		talkToPolmafiMore = new NpcStep(this, NpcID.MYQ5_POLMAFI_CHILD, new WorldPoint(3599, 9612, 0),
 			"Finish speaking to Polmafi in the Meiyerditch hideout.");
 		talkToPolmafiMore.addDialogStep("Here you go.");
 		talkToPolmafi.addSubSteps(talkToPolmafiMore, goDownToPolmafi, goDownToPolmafiNoItems);

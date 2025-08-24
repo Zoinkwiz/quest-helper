@@ -211,7 +211,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		drayAgi = new ObjectStep(this, 11404, new WorldPoint(3103, 3279, 0),
+		drayAgi = new ObjectStep(this, ObjectID.ROOFTOPS_DRAYNOR_WALLCLIMB, new WorldPoint(3103, 3279, 0),
 			"Complete a lap of the Draynor Rooftop Course.");
 
 		moveToDraySewer = new ObjectStep(this, ObjectID.VAMPIRE_TRAP2, new WorldPoint(3118, 3244, 0),
@@ -243,7 +243,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		killCaveBug = new NpcStep(this, NpcID.SWAMP_CAVE_BUG, new WorldPoint(3151, 9574, 0),
 			"Kill a Cave Bug.", true, combatGear, lightSource);
 
-		moveToWaterAltar = new ObjectStep(this, 34815, new WorldPoint(3185, 3165, 0),
+		moveToWaterAltar = new ObjectStep(this, ObjectID.WATERTEMPLE_RUINED, new WorldPoint(3185, 3165, 0),
 			"Enter the water altar in Lumbridge Swamp.", waterAccessOrAbyss.highlighted(), runeEss);
 		moveToWaterAltar.addIcon(ItemID.WATER_TALISMAN);
 		waterRune = new ObjectStep(this, ObjectID.WATER_ALTAR, new WorldPoint(2716, 4836, 0),

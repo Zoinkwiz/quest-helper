@@ -30,6 +30,7 @@ import com.questhelper.steps.NpcStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.HashMap;
 
@@ -79,7 +80,7 @@ public class StarSignAnswer extends NpcStep
 			return;
 		}
 
-		int newValue = client.getVarbitValue(3828);
+		int newValue = client.getVarbitValue(VarbitID.OBSERVATORY_STARSIGN);
 		if (currentValue != newValue)
 		{
 			currentValue = newValue;

@@ -197,19 +197,19 @@ public class TheCorsairCurse extends BasicQuestHelper
 		inArsenHut = new ZoneRequirement(arsenHut);
 		inShip = new ZoneRequirement(ship);
 		inCavern = new ZoneRequirement(cavern);
-		talkedToIthoi = new VarbitRequirement(6075, 1);
+		talkedToIthoi = new VarbitRequirement(VarbitID.CORSCURS_NAVIGATOR, 1);
 
 		talkedToArsen = new VarbitRequirement(VarbitID.CORSCURS_THIEF, 2, Operation.GREATER_EQUAL);
-		returnedToothPick = new VarbitRequirement(6074, 4);
+		returnedToothPick = new VarbitRequirement(VarbitID.CORSCURS_THIEF, 4);
 		finishedArsen = new VarbitRequirement(VarbitID.CORSCURS_THIEF, 6, Operation.GREATER_EQUAL);
 
 		talkedToColin = new VarbitRequirement(VarbitID.CORSCURS_CABINBOY, 1, Operation.GREATER_EQUAL);
-		lookedThroughTelescope = new VarbitRequirement(6072, 2);
-		finishedColin = new VarbitRequirement(6072, 3);
+		lookedThroughTelescope = new VarbitRequirement(VarbitID.CORSCURS_CABINBOY, 2);
+		finishedColin = new VarbitRequirement(VarbitID.CORSCURS_CABINBOY, 3);
 
-		talkedToGnocci = new VarbitRequirement(6073, 1);
-		foundDoll = new VarbitRequirement(6073, 2);
-		finishedGnocci = new VarbitRequirement(6073, 3);
+		talkedToGnocci = new VarbitRequirement(VarbitID.CORSCURS_COOK, 1);
+		foundDoll = new VarbitRequirement(VarbitID.CORSCURS_COOK, 2);
+		finishedGnocci = new VarbitRequirement(VarbitID.CORSCURS_COOK, 3);
 	}
 
 	public void setupSteps()

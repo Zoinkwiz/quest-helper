@@ -149,16 +149,16 @@ public class KaramjaHard extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notBecomeChampion = new VarbitRequirement(3600, 0);
-		notKilledZek = new VarbitRequirement(3601, 0);
-		notEatenWrap = new VarbitRequirement(3602, 0);
-		notCraftedNature = new VarbitRequirement(3603, 0);
-		notCookedKarambwan = new VarbitRequirement(3604, 0);
-		notKilledDeathwing = new VarbitRequirement(3605, 0);
-		notUsedShortcut = new VarbitRequirement(3606, 0);
+		notBecomeChampion = new VarbitRequirement(VarbitID.ATJUN_HARD_FIGHTPITS, 0);
+		notKilledZek = new VarbitRequirement(VarbitID.ATJUN_HARD_FIGHTCAVE, 0);
+		notEatenWrap = new VarbitRequirement(VarbitID.ATJUN_HARD_OOMLIE, 0);
+		notCraftedNature = new VarbitRequirement(VarbitID.ATJUN_HARD_NATURE, 0);
+		notCookedKarambwan = new VarbitRequirement(VarbitID.ATJUN_HARD_KARAMBWAN, 0);
+		notKilledDeathwing = new VarbitRequirement(VarbitID.ATJUN_HARD_DEATHWING, 0);
+		notUsedShortcut = new VarbitRequirement(VarbitID.ATJUN_HARD_XBOW, 0);
 		notCollectedLeaves = new VarbitRequirement(VarbitID.ATJUN_HARD_PALM, 4, Operation.LESS_EQUAL);
-		notAssignedTask = new VarbitRequirement(3608, 0);
-		notKilledDragon = new VarbitRequirement(3609, 0);
+		notAssignedTask = new VarbitRequirement(VarbitID.ATJUN_HARD_DURADEL, 0);
+		notKilledDragon = new VarbitRequirement(VarbitID.ATJUN_HARD_DRAGON, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notKilledDeathwing).isNotConsumed();
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(notKilledDragon);

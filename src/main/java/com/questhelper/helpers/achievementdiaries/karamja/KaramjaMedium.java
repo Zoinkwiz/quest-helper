@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -168,25 +169,25 @@ public class KaramjaMedium extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notClaimedTicket = new VarbitRequirement(3579, 0);
-		notEnteredWall = new VarbitRequirement(3580, 0);
-		notEnteredCrandor = new VarbitRequirement(3581, 0);
-		notUsedCart = new VarbitRequirement(3582, 0);
-		notEarned100 = new VarbitRequirement(3583, 0);
-		notCookedSpider = new VarbitRequirement(3584, 0);
-		notMinedRedRopaz = new VarbitRequirement(3585, 0);
-		notCutTeak = new VarbitRequirement(3586, 0);
-		notCutMahog = new VarbitRequirement(3587, 0);
-		notCaughtKarambwan = new VarbitRequirement(3588, 0);
-		notExchangedGems = new VarbitRequirement(3589, 0);
-		notUsedGlider = new VarbitRequirement(3590, 0);
-		notGrownFruitTree = new VarbitRequirement(3591, 0);
-		notTrappedGraahk = new VarbitRequirement(3592, 0);
-		notCutVine = new VarbitRequirement(3593, 0);
-		notCrossedLava = new VarbitRequirement(3594, 0);
-		notClimbedStairs = new VarbitRequirement(3595, 0);
-		notTraveledToKhazard = new VarbitRequirement(3596, 0);
-		notCharteredFromShipyard = new VarbitRequirement(3597, 0);
+		notClaimedTicket = new VarbitRequirement(VarbitID.ATJUN_MED_AGILITY, 0);
+		notEnteredWall = new VarbitRequirement(VarbitID.ATJUN_MED_VOLCANO, 0);
+		notEnteredCrandor = new VarbitRequirement(VarbitID.ATJUN_MED_CRANDOR, 0);
+		notUsedCart = new VarbitRequirement(VarbitID.ATJUN_MED_CART, 0);
+		notEarned100 = new VarbitRequirement(VarbitID.ATJUN_MED_CLEANUP, 0);
+		notCookedSpider = new VarbitRequirement(VarbitID.ATJUN_MED_SPIDER, 0);
+		notMinedRedRopaz = new VarbitRequirement(VarbitID.ATJUN_MED_TOPAZ, 0);
+		notCutTeak = new VarbitRequirement(VarbitID.ATJUN_MED_TEAK, 0);
+		notCutMahog = new VarbitRequirement(VarbitID.ATJUN_MED_MAHOGANY, 0);
+		notCaughtKarambwan = new VarbitRequirement(VarbitID.ATJUN_MED_KARAMBWAN, 0);
+		notExchangedGems = new VarbitRequirement(VarbitID.ATJUN_MED_MACHETTE, 0);
+		notUsedGlider = new VarbitRequirement(VarbitID.ATJUN_MED_GLIDER, 0);
+		notGrownFruitTree = new VarbitRequirement(VarbitID.ATJUN_MED_FARMING, 0);
+		notTrappedGraahk = new VarbitRequirement(VarbitID.ATJUN_MED_GRAAHK, 0);
+		notCutVine = new VarbitRequirement(VarbitID.ATJUN_MED_SHILO_VINES, 0);
+		notCrossedLava = new VarbitRequirement(VarbitID.ATJUN_MED_SHILO_LAVA, 0);
+		notClimbedStairs = new VarbitRequirement(VarbitID.ATJUN_MED_SHILO_STAIRS, 0);
+		notTraveledToKhazard = new VarbitRequirement(VarbitID.ATJUN_MED_KHAZARD, 0);
+		notCharteredFromShipyard = new VarbitRequirement(VarbitID.ATJUN_MED_CHARTER, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
 			.showConditioned(new Conditions(LogicType.OR, notMinedRedRopaz, notEarned100)).isNotConsumed();

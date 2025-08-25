@@ -36,6 +36,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -70,9 +71,9 @@ public class QuizSteps extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		boolean eggEnchanted = client.getVarbitValue(1894) == 1;
-		boolean flourEnchanted = client.getVarbitValue(1897) == 1;
-		boolean milkEnchanted = client.getVarbitValue(1898) == 1;
+		boolean eggEnchanted = client.getVarbitValue(VarbitID._100GUIDE_EGGDONE) == 1;
+		boolean flourEnchanted = client.getVarbitValue(VarbitID._100GUIDE_FLOURDONE) == 1;
+		boolean milkEnchanted = client.getVarbitValue(VarbitID._100GUIDE_MILKDONE) == 1;
 
 		ArrayList<Requirement> items = new ArrayList<>();
 		if (!eggEnchanted)

@@ -324,41 +324,41 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		inPipePuzzle = new WidgetModelRequirement(262, 37, 18794);
 		sortedPipes = new Conditions(
 			new Conditions(LogicType.OR,
-				new VarbitRequirement(2646, 5),
-				new VarbitRequirement(2647, 5),
-				new VarbitRequirement(2648, 5)
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_1_STATE, 5),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_2_STATE, 5),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_3_STATE, 5)
 			),
 			new Conditions(LogicType.OR,
-				new VarbitRequirement(2646, 6),
-				new VarbitRequirement(2647, 6),
-				new VarbitRequirement(2648, 6)
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_1_STATE, 6),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_2_STATE, 6),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_3_STATE, 6)
 			),
 			new Conditions(LogicType.OR,
-				new VarbitRequirement(2646, 13),
-				new VarbitRequirement(2647, 13),
-				new VarbitRequirement(2648, 13)
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_1_STATE, 13),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_2_STATE, 13),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_3_STATE, 13)
 			)
 		);
 
-		repairedPipe = new VarbitRequirement(2650, 1);
+		repairedPipe = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_STATE, 1);
 
 		hasSmallCog = new Conditions(LogicType.OR,
 			smallCog,
-			new VarbitRequirement(2655, 1),
-			new VarbitRequirement(2656, 1),
-			new VarbitRequirement(2657, 1)
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 1),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 1),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 1)
 		);
 		hasMediumCog = new Conditions(LogicType.OR,
 			mediumCog,
-			new VarbitRequirement(2655, 2),
-			new VarbitRequirement(2656, 2),
-			new VarbitRequirement(2657, 2)
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 2),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 2),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 2)
 		);
 		hasLargeCog = new Conditions(LogicType.OR,
 			largeCog,
-			new VarbitRequirement(2655, 3),
-			new VarbitRequirement(2656, 3),
-			new VarbitRequirement(2657, 3)
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 3),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 3),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 3)
 		);
 		hasPipe = new Conditions(LogicType.OR,
 			repairedPipe,
@@ -367,9 +367,9 @@ public class ElementalWorkshopII extends BasicQuestHelper
 
 		hasCogsAndPipe = new Conditions(hasSmallCog, hasMediumCog, hasLargeCog, hasPipe);
 
-		smallCogPlaced = new VarbitRequirement(2655, 1);
-		mediumCogPlaced = new VarbitRequirement(2656, 2);
-		largeCogPlaced = new VarbitRequirement(2657, 3);
+		smallCogPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 1);
+		mediumCogPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 2);
+		largeCogPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 3);
 
 		// This potentially relates to varbit 2664
 		// Small cog in crate 18614
@@ -377,41 +377,41 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		// Medium cog in crate 18616
 		// Pipe in crate 18617
 
-		placedBar = new VarbitRequirement(2643, 1);
-		barHotOnJig = new VarbitRequirement(2643, 2);
-		flatHotBarOnJig = new VarbitRequirement(2643, 3);
-		coolFlatBarOnJig = new VarbitRequirement(2643, 4);
-		airCoolFlatBarOnJig = new VarbitRequirement(2643, 5);
-		craneLowered = new VarbitRequirement(2645, 1);
-		craneRaised = new VarbitRequirement(2645, 0);
-		craneHoldingBar = new VarbitRequirement(2644, 2);
-		craneAboveLava = new VarbitRequirement(2645, 2);
-		craneInLava = new VarbitRequirement(2645, 3);
-		barOutsideLava = new VarbitRequirement(2642, 0);
-		barUnderPress = new VarbitRequirement(2642, 1);
-		barOutsideTank = new VarbitRequirement(2642, 2);
-		barInTunnel = new VarbitRequirement(2642, 3);
-		craneHoldingHotBar = new VarbitRequirement(2644, 3);
+		placedBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 1);
+		barHotOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 2);
+		flatHotBarOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 3);
+		coolFlatBarOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 4);
+		airCoolFlatBarOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 5);
+		craneLowered = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 1);
+		craneRaised = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 0);
+		craneHoldingBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_STATE, 2);
+		craneAboveLava = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 2);
+		craneInLava = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 3);
+		barOutsideLava = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 0);
+		barUnderPress = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 1);
+		barOutsideTank = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 2);
+		barInTunnel = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 3);
+		craneHoldingHotBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_STATE, 3);
 
-		tankClosed = new VarbitRequirement(2653, 0);
-		tankOpen = new VarbitRequirement(2653, 1);
-		grabberOut = new VarbitRequirement(2653, 2);
-		grabberInWithHotFlatBarDoorOpen = new VarbitRequirement(2653, 4);
-		grabberInWithHotFlatBarDoorClosed = new VarbitRequirement(2653, 3);
-		grabberOutWithHotFlatBarDoorOpen = new VarbitRequirement(2653, 5);
-		grabberInWithCoolFlatBarDoorClosed = new VarbitRequirement(2653, 6);
-		grabberInWithCoolFlatBarDoorOpened = new VarbitRequirement(2653, 7);
-		grabberOutWithCoolFlatBar = new VarbitRequirement(2653, 8);
-		waterInOpen = new VarbitRequirement(2651, 1);
-		waterInClosed = new VarbitRequirement(2651, 0);
-		waterOutClosed = new VarbitRequirement(2652, 0);
-		waterOutOpen = new VarbitRequirement(2652, 1);
-		waterInTank = new VarbitRequirement(2654, 1);
-		fanOff = new VarbitRequirement(2660, 0);
-		fanOn = new VarbitRequirement(2660, 1);
+		tankClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 0);
+		tankOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 1);
+		grabberOut = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 2);
+		grabberInWithHotFlatBarDoorOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 4);
+		grabberInWithHotFlatBarDoorClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 3);
+		grabberOutWithHotFlatBarDoorOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 5);
+		grabberInWithCoolFlatBarDoorClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 6);
+		grabberInWithCoolFlatBarDoorOpened = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 7);
+		grabberOutWithCoolFlatBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 8);
+		waterInOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_1, 1);
+		waterInClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_1, 0);
+		waterOutClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_2, 0);
+		waterOutOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_2, 1);
+		waterInTank = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_LEVEL, 1);
+		fanOff = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_FAN_STATE, 0);
+		fanOn = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_FAN_STATE, 1);
 
-		primedBarPlaced = new VarbitRequirement(2662, 1);
-		mindBarPlaced = new VarbitRequirement(2662, 2);
+		primedBarPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_MIND_JIG, 1);
+		mindBarPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_MIND_JIG, 2);
 	}
 
 	public void setupSteps()

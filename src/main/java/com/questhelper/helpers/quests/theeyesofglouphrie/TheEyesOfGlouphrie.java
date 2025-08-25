@@ -47,6 +47,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -192,16 +193,16 @@ public class TheEyesOfGlouphrie extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCave = new ZoneRequirement(cave);
-		inspectedBowl = new VarbitRequirement(2515, 1);
-		inspectedMachine = new VarbitRequirement(2516, 1);
+		inspectedBowl = new VarbitRequirement(VarbitID.EYEGLO_BOWL_SEEN, 1);
+		inspectedMachine = new VarbitRequirement(VarbitID.EYEGLO_MACHINE_SEEN, 1);
 		inHazelmereHut = new ZoneRequirement(hazelmereHut);
 
-		killedCreature1 = new VarbitRequirement(2504, 2);
-		killedCreature2 = new VarbitRequirement(2505, 2);
-		killedCreature3 = new VarbitRequirement(2506, 2);
-		killedCreature4 = new VarbitRequirement(2507, 2);
-		killedCreature5 = new VarbitRequirement(2508, 2);
-		killedCreature6 = new VarbitRequirement(2509, 2);
+		killedCreature1 = new VarbitRequirement(VarbitID.EYEGLO_KILLED_EYE_1, 2);
+		killedCreature2 = new VarbitRequirement(VarbitID.EYEGLO_KILLED_EYE_2, 2);
+		killedCreature3 = new VarbitRequirement(VarbitID.EYEGLO_KILLED_EYE_3, 2);
+		killedCreature4 = new VarbitRequirement(VarbitID.EYEGLO_KILLED_EYE_4, 2);
+		killedCreature5 = new VarbitRequirement(VarbitID.EYEGLO_KILLED_EYE_5, 2);
+		killedCreature6 = new VarbitRequirement(VarbitID.EYEGLO_KILLED_EYE_6, 2);
 
 		inFloor1 = new ZoneRequirement(floor1);
 		inFloor2 = new ZoneRequirement(floor2);

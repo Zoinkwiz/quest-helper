@@ -213,7 +213,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		// Zone requirements
 		inMolchIsland = new ZoneRequirement(molchIsland);
 
-		hasBird = new VarbitRequirement(5983, 1);
+		hasBird = new VarbitRequirement(VarbitID.SETTINGS_BARBARIAN_POTION_MAKEX, 1);
 	}
 
 	@Override

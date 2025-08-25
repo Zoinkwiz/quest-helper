@@ -30,6 +30,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.Arrays;
@@ -66,9 +67,9 @@ public class FillBurghCrate extends DetailedQuestStep
 
 	protected void updateSteps()
 	{
-		int numBronzeAxeNeeded = 10 - client.getVarbitValue(1991);
-		int numSnailOrMackerelNeeded =  10 - client.getVarbitValue(1992);
-		int numTinderboxNeeded =  3 - client.getVarbitValue(1993);
+		int numBronzeAxeNeeded = 10 - client.getVarbitValue(VarbitID.BURGH_AXES_CRATE);
+		int numSnailOrMackerelNeeded =  10 - client.getVarbitValue(VarbitID.BURGH_FOOD_CRATE);
+		int numTinderboxNeeded =  3 - client.getVarbitValue(VarbitID.BURGH_TINDERBOX_CRATE);
 
 		tinderbox3.setQuantity(numTinderboxNeeded);
 		bronzeAxe10.setQuantity(numBronzeAxeNeeded);
@@ -77,7 +78,7 @@ public class FillBurghCrate extends DetailedQuestStep
 		if (!decidedOnSnailOrMackerel && QuestHelperQuest.IN_AID_OF_THE_MYREQUE.getVar(client) >= 165)
 		{
 			decidedOnSnailOrMackerel = true;
-			if (client.getVarbitValue(1976) == 1)
+			if (client.getVarbitValue(VarbitID.BURGH_FOOD_TYPE) == 1)
 			{
 				this.setText("Fill the crate with 3 tinderboxes, 10 bronze axes, and 10 raw mackerel.");
 				rawSnailsOrMackerel.setDisplayItemId(ItemID.RAW_MACKEREL);

@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -112,11 +113,11 @@ public class RFDFinal extends BasicQuestHelper
 	protected void setupZones()
 	{
 		fightArena = new Zone(new WorldPoint(1889, 5345, 2), new WorldPoint(1910, 5366, 2));
-		killedAgrith = new VarbitRequirement(1855, 1);
-		killedFlambeed = new VarbitRequirement(1855, 2);
-		killedKaramel = new VarbitRequirement(1855, 3);
-		killedDessourt = new VarbitRequirement(1855, 4);
-		killedMother = new VarbitRequirement(1855, 5);
+		killedAgrith = new VarbitRequirement(VarbitID.HUNDRED_MINIONSKILLED_TALLY, 1);
+		killedFlambeed = new VarbitRequirement(VarbitID.HUNDRED_MINIONSKILLED_TALLY, 2);
+		killedKaramel = new VarbitRequirement(VarbitID.HUNDRED_MINIONSKILLED_TALLY, 3);
+		killedDessourt = new VarbitRequirement(VarbitID.HUNDRED_MINIONSKILLED_TALLY, 4);
+		killedMother = new VarbitRequirement(VarbitID.HUNDRED_MINIONSKILLED_TALLY, 5);
 	}
 
 	public void setupConditions()

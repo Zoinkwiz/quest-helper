@@ -47,6 +47,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -188,14 +189,14 @@ public class AtFirstLight extends BasicQuestHelper
 	private void setupConditions()
 	{
 		inGuild = new ZoneRequirement(guild);
-		gotMouse = new VarbitRequirement(9843, 1);
-		usedMouse = new VarbitRequirement(9839, 1);
-		checkedBed = new VarbitRequirement(9837, 1);
+		gotMouse = new VarbitRequirement(VarbitID.AFL_MOUSETAKEN, 1);
+		usedMouse = new VarbitRequirement(VarbitID.AFL_CATDISTRACT, 1);
+		checkedBed = new VarbitRequirement(VarbitID.AFL_BEDCHECK, 1);
 
 		// 9842 0->1, received pelt once
-		equipmentUsable = new VarbitRequirement(9840, 1);
-		repairedEquipment = new VarbitRequirement(9840, 2);
-		handedInReport = new VarbitRequirement(9836, 1);
+		equipmentUsable = new VarbitRequirement(VarbitID.AFL_HOUSETRAPPED, 1);
+		repairedEquipment = new VarbitRequirement(VarbitID.AFL_HOUSETRAPPED, 2);
+		handedInReport = new VarbitRequirement(VarbitID.AFL_REPORT, 1);
 
 		foxsReport = new ItemRequirement("Fox's report", ItemID.AFL_REPORT).hideConditioned(handedInReport);
 		hadReport = or(foxsReport, handedInReport);

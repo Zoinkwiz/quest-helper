@@ -32,6 +32,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -44,31 +45,31 @@ public class IncantationStep extends DetailedQuestStep
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_1 = 1373;
+	private static final @Varbit int INCANTATION_WORD_1 = VarbitID.AGRITH_INCANTATION_1;
 	/**
 	 * The index of the second word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_2 = 1374;
+	private static final @Varbit int INCANTATION_WORD_2 = VarbitID.AGRITH_INCANTATION_2;
 	/**
 	 * The index of the third word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_3 = 1375;
+	private static final @Varbit int INCANTATION_WORD_3 = VarbitID.AGRITH_INCANTATION_3;
 	/**
 	 * The index of the fourth word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_4 = 1376;
+	private static final @Varbit int INCANTATION_WORD_4 = VarbitID.AGRITH_INCANTATION_4;
 	/**
 	 * The index of the fifth word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_5 = 1377;
+	private static final @Varbit int INCANTATION_WORD_5 = VarbitID.AGRITH_INCANTATION_5;
 
 	/**
 	 * The possible words that that can be used the incantation

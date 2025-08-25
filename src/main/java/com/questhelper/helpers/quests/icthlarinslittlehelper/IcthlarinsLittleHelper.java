@@ -255,27 +255,27 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	public void setupConditions()
 	{
 		puzzleOpen = new WidgetModelRequirement(147, 3, 6474);
-		givenToken = new VarbitRequirement(450, 1);
+		givenToken = new VarbitRequirement(VarbitID.ICS_GIVENSPHINXSTATUE, 1);
 
-		hasHetJar = new VarbitRequirement(397, 1);
-		hasCrondisJar = new VarbitRequirement(397, 4);
+		hasHetJar = new VarbitRequirement(VarbitID.ICS_LITTLE_JAR_MULTI, 1);
+		hasCrondisJar = new VarbitRequirement(VarbitID.ICS_LITTLE_JAR_MULTI, 4);
 
 		// TODO: Verify varbit values for apmeken/scarabas
-		hasApmekenJar = new VarbitRequirement(397, 3);
-		hasScarabasJar = new VarbitRequirement(397, 2);
+		hasApmekenJar = new VarbitRequirement(VarbitID.ICS_LITTLE_JAR_MULTI, 3);
+		hasScarabasJar = new VarbitRequirement(VarbitID.ICS_LITTLE_JAR_MULTI, 2);
 		killedGuardian = new VarbitRequirement(VarbitID.ICS_LITTLE_VAR, 11, Operation.GREATER_EQUAL);
 
 		// picked up het, 404 = 1
 		// picked up apmeken, 405 = 1
-		talkedToEmbalmer = new VarbitRequirement(399, 1);
+		talkedToEmbalmer = new VarbitRequirement(VarbitID.ICS_METEMBALMER, 1);
 
-		givenSalt = new VarbitRequirement(401, 1);
-		givenSap = new VarbitRequirement(402, 1);
-		givenLinen = new VarbitRequirement(403, 1);
-		givenEmbalmerAllItems = new VarbitRequirement(400, 7);
+		givenSalt = new VarbitRequirement(VarbitID.ICS_GOTSALT, 1);
+		givenSap = new VarbitRequirement(VarbitID.ICS_GOTSAP, 1);
+		givenLinen = new VarbitRequirement(VarbitID.ICS_GOTLINEN, 1);
+		givenEmbalmerAllItems = new VarbitRequirement(VarbitID.ICS_LITTLE_EMBALMER_MULTI, 7);
 
-		talkedToCarpenter = new VarbitRequirement(412, 1);
-		givenCarpenterLogs = new VarbitRequirement(398, 1);
+		talkedToCarpenter = new VarbitRequirement(VarbitID.ICS_METCARPENTER, 1);
+		givenCarpenterLogs = new VarbitRequirement(VarbitID.ICS_LITTLE_CARPENTER_MULTI, 1);
 
 		possessedPriestNearby = new NpcCondition(NpcID.ICS_LITTLE_POSSESSEDPRIEST);
 	}

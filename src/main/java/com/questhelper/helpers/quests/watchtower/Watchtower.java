@@ -49,6 +49,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -367,7 +368,7 @@ public class Watchtower extends BasicQuestHelper
 		hasRelic3 = new Conditions(true, LogicType.OR, relic3,
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I gave the dragon bones to Toban."));
 
-		gettingOgreRockCake = new VarbitRequirement(3120, 1);
+		gettingOgreRockCake = new VarbitRequirement(VarbitID.WATCHTOWER_GATE_CHAT_3, 1);
 		gaveCake = new Conditions(true, LogicType.OR,
 			new DialogRequirement("This time we will let it go."),
 			new DialogRequirement("Well, well, look at this."),
@@ -375,7 +376,7 @@ public class Watchtower extends BasicQuestHelper
 			inAreaBeforeBridgeJump
 		);
 		// 3319, 1, tried to enter city
-		knowsRiddle = new VarbitRequirement(3121, 1);
+		knowsRiddle = new VarbitRequirement(VarbitID.WATCHTOWER_PUZZLE_CHAT, 1);
 
 		talkedToScaredSkavid = new Conditions(true, LogicType.OR, new DialogRequirement("Master, how are you doing", "Those will gets you started."),
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "ar, nod, gor, ig, cur"));
@@ -389,23 +390,23 @@ public class Watchtower extends BasicQuestHelper
 		talkedToSkavid4 = new Conditions(true, LogicType.OR, new ChatMessageRequirement(inSkavidRoom4, "It seems the skavid understood you.", "You have already talked to this skavid."),
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "'Gor nod'"));
 
-		seenShamans = new VarbitRequirement(3125, 1);
+		seenShamans = new VarbitRequirement(VarbitID.WATCHTOWER_NIGHTSHADE_USED, 1);
 
-		killedOgre1 = new VarbitRequirement(3131, 1);
-		killedOgre2 = new VarbitRequirement(3132, 1);
-		killedOgre3 = new VarbitRequirement(3133, 1);
-		killedOgre4 = new VarbitRequirement(3134, 1);
-		killedOgre5 = new VarbitRequirement(3135, 1);
-		killedOgre6 = new VarbitRequirement(3136, 1);
+		killedOgre1 = new VarbitRequirement(VarbitID.WATCHTOWER_SHAMAN_1, 1);
+		killedOgre2 = new VarbitRequirement(VarbitID.WATCHTOWER_SHAMAN_2, 1);
+		killedOgre3 = new VarbitRequirement(VarbitID.WATCHTOWER_SHAMAN_3, 1);
+		killedOgre4 = new VarbitRequirement(VarbitID.WATCHTOWER_SHAMAN_4, 1);
+		killedOgre5 = new VarbitRequirement(VarbitID.WATCHTOWER_SHAMAN_5, 1);
+		killedOgre6 = new VarbitRequirement(VarbitID.WATCHTOWER_SHAMAN_6, 1);
 
 		killedAllOgres = new Conditions(killedOgre1, killedOgre2, killedOgre3, killedOgre4, killedOgre5, killedOgre6);
 
-		gotCrystal4 = new VarbitRequirement(3124, 1);
+		gotCrystal4 = new VarbitRequirement(VarbitID.WATCHTOWER_ROCK_MINED, 1);
 
-		placedCrystal1 = new VarbitRequirement(3128, 1);
-		placedCrystal2 = new VarbitRequirement(3129, 1);
-		placedCrystal3 = new VarbitRequirement(3127, 1);
-		placedCrystal4 = new VarbitRequirement(3130, 1);
+		placedCrystal1 = new VarbitRequirement(VarbitID.WATCHTOWER_PILLAR_2, 1);
+		placedCrystal2 = new VarbitRequirement(VarbitID.WATCHTOWER_PILLAR_3, 1);
+		placedCrystal3 = new VarbitRequirement(VarbitID.WATCHTOWER_PILLAR_1, 1);
+		placedCrystal4 = new VarbitRequirement(VarbitID.WATCHTOWER_PILLAR_4, 1);
 
 	}
 

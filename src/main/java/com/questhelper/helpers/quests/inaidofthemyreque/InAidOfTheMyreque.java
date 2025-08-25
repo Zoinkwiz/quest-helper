@@ -364,24 +364,24 @@ public class InAidOfTheMyreque extends BasicQuestHelper
 
 		// 1979, Cornelius is banker
 
-		filledCrate = new VarbitRequirement(1994, 938);
-		addedCoal = new VarbitRequirement(1980, 2);
-		litFurnace = new VarbitRequirement(1980, 3);
+		filledCrate = new VarbitRequirement(VarbitID.BURGH_CRATE_OVERSEER, 938);
+		addedCoal = new VarbitRequirement(VarbitID.BURGH_FURNACE_FIX, 2);
+		litFurnace = new VarbitRequirement(VarbitID.BURGH_FURNACE_FIX, 3);
 
-		talkedToGadderanks = new VarbitRequirement(1995, 1);
-		talkedToJuvinates = new VarbitRequirement(1997, 1);
-		talkedToWiskit = new VarbitRequirement(1996, 1);
+		talkedToGadderanks = new VarbitRequirement(VarbitID.GADDERANKS_BLOOD_TITHE_CHAT, 1);
+		talkedToJuvinates = new VarbitRequirement(VarbitID.JUVE_BLOOD_TITHE_CHAT, 1);
+		talkedToWiskit = new VarbitRequirement(VarbitID.VILLAGER_BLOOD_TITHE_CHAT, 1);
 
-		defeatedGadderanks = new VarbitRequirement(1999, 3);
+		defeatedGadderanks = new VarbitRequirement(VarbitID.JUVINATE_DEATHS, 3);
 		veliafReturnedToBase = new VarbitRequirement(VarbitID.BLOOD_TITHE_VISIBLE, 3, Operation.GREATER_EQUAL);
 
 		// 2001 = 1, travelling with ivan
 		// 2003 = 1, Ivan has silver sickle
 		// 2005 0-10 for food
 
-		libraryOpen = new VarbitRequirement(1982, 1);
+		libraryOpen = new VarbitRequirement(VarbitID.BURGH_TEMPLE_TRAPDOOR, 1);
 
-		boardsRemoved = new VarbitRequirement(1983, 1);
+		boardsRemoved = new VarbitRequirement(VarbitID.IVANDIS_TOMB_BOARDS, 1);
 
 		// 1981 1->2 when talked to Gadderanks
 

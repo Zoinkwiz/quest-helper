@@ -400,7 +400,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 
 		// 2098 200 -> 205 (SWAN SONG???) when WOM dies
 
-		pickedUpWom = new VarbitRequirement(6536, 0);
+		pickedUpWom = new VarbitRequirement(VarbitID.MY2ARM_CLIENT_COFFIN, 0);
 
 		oddMushroomDied = new VarbitRequirement(VarbitID.MY2ARM_STATUS, 150, Operation.GREATER_EQUAL);
 		defeatedBoss1 = new VarbitRequirement(VarbitID.MY2ARM_STATUS, 160, Operation.GREATER_EQUAL);

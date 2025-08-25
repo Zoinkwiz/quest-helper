@@ -200,9 +200,9 @@ public class VarrockHard extends ComplexStateQuestHelper
 
 		ancientBook = new SpellbookRequirement(Spellbook.ANCIENT);
 
-		yewNotChecked = new VarbitRequirement(4771, 45);
-		yewChecked = new VarbitRequirement(4771, 46);
-		yewStump = new VarbitRequirement(4771, 47);
+		yewNotChecked = new VarbitRequirement(VarbitID.FARMING_TRANSMIT_A, 45);
+		yewChecked = new VarbitRequirement(VarbitID.FARMING_TRANSMIT_A, 46);
+		yewStump = new VarbitRequirement(VarbitID.FARMING_TRANSMIT_A, 47);
 
 		botSceptre = new ItemRequirement("Bottom of sceptre", ItemID.SOS_HALF_SCEPTRE2).showConditioned(notSkullSceptre);
 		topSceptre = new ItemRequirement("Top of sceptre", ItemID.SOS_HALF_SCEPTRE1).showConditioned(notSkullSceptre);

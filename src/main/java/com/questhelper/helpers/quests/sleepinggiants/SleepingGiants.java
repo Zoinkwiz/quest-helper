@@ -245,9 +245,9 @@ public class SleepingGiants extends BasicQuestHelper
 		preformObtained = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 50, Operation.GREATER_EQUAL);
 
 		selectingMould = new WidgetPresenceRequirement(718, 2);
-		noForteSelected = new VarbitRequirement(13910, 0);
-		noBladeSelected = new VarbitRequirement(13911, 0);
-		noTipSelected = new VarbitRequirement(13912, 0);
+		noForteSelected = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_MOULD_SELECTED_RICASSO, 0);
+		noBladeSelected = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_MOULD_SELECTED_BLADE, 0);
+		noTipSelected = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_MOULD_SELECTED_TIP, 0);
 		forteTabOpen = new WidgetSpriteRequirement(718, 12, 1, 297);
 		bladeTabOpen = new WidgetSpriteRequirement(718, 12, 10, 297);
 		tipTabOpen = new WidgetSpriteRequirement(718, 12, 19, 297);
@@ -264,7 +264,7 @@ public class SleepingGiants extends BasicQuestHelper
 		metalTooHotForPolishing = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_TEMPERATURE, 333, Operation.GREATER_EQUAL);
 		metalTooCoolForPolishing = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_TEMPERATURE, 30, Operation.LESS_EQUAL);
 
-		swordMade = new VarbitRequirement(13949, 1000);
+		swordMade = new VarbitRequirement(VarbitID.GIANTS_FOUNDRY_PREFORM_COMPLETION, 1000);
 		preformHandedIn = new VarbitRequirement(VarbitID.SLEEPING_GIANTS_TUTORIAL, 55, Operation.GREATER_EQUAL);
 	}
 

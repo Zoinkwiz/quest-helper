@@ -332,13 +332,13 @@ public class RoyalTrouble extends BasicQuestHelper
 			hasCoalOrPickaxe = coal5;
 		}
 
-		astridIsHeir = new VarbitRequirement(14607, 0); // Goes to 1 for Brand
-		isMarryingNotFriend = new VarbitRequirement(14608, 0); // Goes to 1 for friend
-		startedInvestigation = new VarbitRequirement(2141, 10);
+		astridIsHeir = new VarbitRequirement(VarbitID.MISC_PARTNER_MULTIVAR, 0); // Goes to 1 for Brand
+		isMarryingNotFriend = new VarbitRequirement(VarbitID.MISC_NO_ROMANCE_MULTIVAR, 0); // Goes to 1 for friend
+		startedInvestigation = new VarbitRequirement(VarbitID.ROYAL_MISC, 10);
 		reportedToVargas = new VarbitRequirement(VarbitID.ROYAL_MISC, 20, Operation.GREATER_EQUAL);
-		talkedToGhrimInInvestigation = new VarbitRequirement(2141, 30);
-		talkedToSailor = new VarbitRequirement(2141, 40);
-		gottenScrollFromVargas = new VarbitRequirement(2141, 50);
+		talkedToGhrimInInvestigation = new VarbitRequirement(VarbitID.ROYAL_MISC, 30);
+		talkedToSailor = new VarbitRequirement(VarbitID.ROYAL_MISC, 40);
+		gottenScrollFromVargas = new VarbitRequirement(VarbitID.ROYAL_MISC, 50);
 		enteredDungeon = new VarbitRequirement(VarbitID.ROYAL_MISC, 60, Operation.GREATER_EQUAL);
 		// Missing 70
 		talkedToDonal = new VarbitRequirement(VarbitID.ROYAL_MISC, 80, Operation.GREATER_EQUAL);
@@ -346,41 +346,41 @@ public class RoyalTrouble extends BasicQuestHelper
 		talkedToKids = new VarbitRequirement(VarbitID.ROYAL_MISC, 110, Operation.GREATER_EQUAL);
 		killedBoss = new VarbitRequirement(VarbitID.ROYAL_MISC, 120, Operation.GREATER_EQUAL);
 
-		talkedToSigrid = new VarbitRequirement(2142, 10);
+		talkedToSigrid = new VarbitRequirement(VarbitID.ROYAL_ETC, 10);
 		reportedToSigrid = new VarbitRequirement(VarbitID.ROYAL_ETC, 20, Operation.GREATER_EQUAL);
-		finishedFinalConvoWithSigrid = new VarbitRequirement(2142, 40);
+		finishedFinalConvoWithSigrid = new VarbitRequirement(VarbitID.ROYAL_ETC, 40);
 
-		talkedToMiscSubject = new VarbitRequirement(2143, 1);
+		talkedToMiscSubject = new VarbitRequirement(VarbitID.ROYAL_MISC_VILLAGERS_ABOUTTHEFTS, 1);
 		talkedToEtcSubject = new VarbitRequirement(VarbitID.ROYAL_ETC_VILLAGERS_ABOUTTHEFTS, 1, Operation.GREATER_EQUAL);
-		usedProp = new VarbitRequirement(2145, 1);
-		hasUsedPulley = new VarbitRequirement(2146, 1);
-		hasUsedLongerPulley = new VarbitRequirement(2146, 2);
-		hasUsedPulley2 = new VarbitRequirement(2146, 3);
-		hasUsedRope = new VarbitRequirement(2146, 4);
-		hasUsedBeam = new VarbitRequirement(2146, 5);
-		hasUsedEngine = new VarbitRequirement(2146, 6);
+		usedProp = new VarbitRequirement(VarbitID.ROYAL_MISC_USEDMININGPROP, 1);
+		hasUsedPulley = new VarbitRequirement(VarbitID.ROYAL_LIFTSTAGE, 1);
+		hasUsedLongerPulley = new VarbitRequirement(VarbitID.ROYAL_LIFTSTAGE, 2);
+		hasUsedPulley2 = new VarbitRequirement(VarbitID.ROYAL_LIFTSTAGE, 3);
+		hasUsedRope = new VarbitRequirement(VarbitID.ROYAL_LIFTSTAGE, 4);
+		hasUsedBeam = new VarbitRequirement(VarbitID.ROYAL_LIFTSTAGE, 5);
+		hasUsedEngine = new VarbitRequirement(VarbitID.ROYAL_LIFTSTAGE, 6);
 		hasRepairedScaffold = new VarbitRequirement(VarbitID.ROYAL_LIFTSTAGE, 7, Operation.GREATER_EQUAL);
 
-		has1CoalInEngine = new VarbitRequirement(2156, 1);
-		has2CoalInEngine = new VarbitRequirement(2156, 2);
-		has3CoalInEngine = new VarbitRequirement(2156, 3);
-		has4CoalInEngine = new VarbitRequirement(2156, 4);
-		hasFullEngine = new VarbitRequirement(2156, 5);
+		has1CoalInEngine = new VarbitRequirement(VarbitID.ROYAL_COALINENGINE, 1);
+		has2CoalInEngine = new VarbitRequirement(VarbitID.ROYAL_COALINENGINE, 2);
+		has3CoalInEngine = new VarbitRequirement(VarbitID.ROYAL_COALINENGINE, 3);
+		has4CoalInEngine = new VarbitRequirement(VarbitID.ROYAL_COALINENGINE, 4);
+		hasFullEngine = new VarbitRequirement(VarbitID.ROYAL_COALINENGINE, 5);
 
-		attachedRope = new VarbitRequirement(2147, 1);
+		attachedRope = new VarbitRequirement(VarbitID.ROYAL_MISC_ROPELOC, 1);
 
 		inPlankRoom = new ZoneRequirement(plankRoom);
 
-		seenFire = new VarbitRequirement(2154, 1);
+		seenFire = new VarbitRequirement(VarbitID.ROYAL_NOTICED_FIRES, 1);
 		searchedFire1 = new VarbitRequirement(VarbitID.ROYAL_MISC_NUMBEROFCHAPTERS, 1, Operation.GREATER_EQUAL);
-		searchedFire2 = new VarbitRequirement(2148, 2);
-		searchedFire3 = new VarbitRequirement(2148, 3);
+		searchedFire2 = new VarbitRequirement(VarbitID.ROYAL_MISC_NUMBEROFCHAPTERS, 2);
+		searchedFire3 = new VarbitRequirement(VarbitID.ROYAL_MISC_NUMBEROFCHAPTERS, 3);
 		searchedFire4 = new VarbitRequirement(VarbitID.ROYAL_MISC_NUMBEROFCHAPTERS, 4, Operation.GREATER_EQUAL);
 		searchedFire5 = new VarbitRequirement(VarbitID.ROYAL_MISC_NUMBEROFCHAPTERS, 5, Operation.GREATER_EQUAL);
 
 		// TODO: hasReadDiary probably wrong varbit, need to verify
-		hasReadDiary = new VarbitRequirement(2149, 1);
-		enteredSnakeRoom = new VarbitRequirement(2157, 1);
+		hasReadDiary = new VarbitRequirement(VarbitID.ROYAL_MISC_DIARYCHAPTER1READ, 1);
+		enteredSnakeRoom = new VarbitRequirement(VarbitID.ROYAL_MEDDLINGKIDS_CUTSCENE, 1);
 	}
 
 	public void setupSteps()

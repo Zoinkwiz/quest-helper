@@ -190,11 +190,11 @@ public class MisthalinMystery extends BasicQuestHelper
 		playedAnyKey = new VarbitRequirement(VarbitID.MISTMYST_PIANO_ATTEMPTS, 1, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetTextRequirement(554, 20, "C");
 		inGemWidget = new WidgetTextRequirement(555, 1, 1, "Gemstone switch panel");
-		selectedSaphire = and(new VarbitRequirement(4051, 1), new VarbitRequirement(4050, 1));
-		selectedDiamond = and(new VarbitRequirement(4052, 1), new VarbitRequirement(4050, 2));
-		selectedZenyte = and(new VarbitRequirement(4053, 1), new VarbitRequirement(4050, 3));
-		selectedEmerald = and(new VarbitRequirement(4054, 1), new VarbitRequirement(4050, 4));
-		selectedOnyx = and(new VarbitRequirement(4055, 1), new VarbitRequirement(4050, 5));
+		selectedSaphire = and(new VarbitRequirement(VarbitID.MISTMYST_SAPPHIRE_SWITCHED, 1), new VarbitRequirement(VarbitID.MISTMYST_SWITCH_ATTEMPTS, 1));
+		selectedDiamond = and(new VarbitRequirement(VarbitID.MISTMYST_DIAMOND_SWITCHED, 1), new VarbitRequirement(VarbitID.MISTMYST_SWITCH_ATTEMPTS, 2));
+		selectedZenyte = and(new VarbitRequirement(VarbitID.MISTMYST_ZENYTE_SWITCHED, 1), new VarbitRequirement(VarbitID.MISTMYST_SWITCH_ATTEMPTS, 3));
+		selectedEmerald = and(new VarbitRequirement(VarbitID.MISTMYST_EMERALD_SWITCHED, 1), new VarbitRequirement(VarbitID.MISTMYST_SWITCH_ATTEMPTS, 4));
+		selectedOnyx = and(new VarbitRequirement(VarbitID.MISTMYST_ONYX_SWITCHED, 1), new VarbitRequirement(VarbitID.MISTMYST_SWITCH_ATTEMPTS, 5));
 		selectAnyGem = new VarbitRequirement(VarbitID.MISTMYST_SWITCH_ATTEMPTS, 1, Operation.GREATER_EQUAL);
 
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);

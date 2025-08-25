@@ -33,6 +33,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class GiveAugusteItems extends NpcStep
@@ -54,11 +55,11 @@ public class GiveAugusteItems extends NpcStep
 
 		super(questHelper, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0),
 			"Give Auguste the sandbags, silk, dyes, and bowl.", sandbag8, silk10, redDye, yellowDye, bowl);
-		givenRedDye = new VarbitRequirement(2873, 1);
-		givenYellowDye = new VarbitRequirement(2874, 1); // 2879 = 1 as well, maybe both dyes done
-		givenSandbags = new VarbitRequirement(2875, 1);
-		givenSilk = new VarbitRequirement(2876, 1);
-		givenBowl = new VarbitRequirement(2877, 1);
+		givenRedDye = new VarbitRequirement(VarbitID.ZEP_RDYE, 1);
+		givenYellowDye = new VarbitRequirement(VarbitID.ZEP_YDYE, 1); // 2879 = 1 as well, maybe both dyes done
+		givenSandbags = new VarbitRequirement(VarbitID.ZEP_SANDBAGS, 1);
+		givenSilk = new VarbitRequirement(VarbitID.ZEP_SILK, 1);
+		givenBowl = new VarbitRequirement(VarbitID.ZEP_LOGS, 1);
 	}
 
 	@Subscribe

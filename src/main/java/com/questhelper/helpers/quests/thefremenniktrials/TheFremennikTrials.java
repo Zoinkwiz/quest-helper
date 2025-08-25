@@ -53,6 +53,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -403,7 +404,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 				new DialogRequirement("I see... okay, well, bye!"),
 				new DialogRequirement("Human call itself Askeladden!")
 			));
-		gottenRock = new VarbitRequirement(6486, 1);
+		gottenRock = new VarbitRequirement(VarbitID.ASKELLADEN_HASOP, 1);
 
 		petRockInCauldron = new RuneliteRequirement(configManager, "fremmytrialsaddedpetrock",
 			new ChatMessageRequirement("You put your pet rock into the cauldron.")

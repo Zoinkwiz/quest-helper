@@ -38,6 +38,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.List;
 
@@ -446,50 +447,50 @@ public class IorwerthLightPuzzle extends ConditionalStep
 		int YELLOW = 6;
 		int GREEN = 7;
 
-		notResetTra = new VarbitRequirement(8773, YELLOW);
+		notResetTra = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_H_4_TO_2_I_4, YELLOW);
 
-		r1 = new VarbitRequirement(8987, GREEN);
-		r2 = new VarbitRequirement(8990, CYAN);
-		r3 = new VarbitRequirement(9002, CYAN);
-		r4 = new VarbitRequirement(8587, CYAN);
-		r5 = new VarbitRequirement(8876, CYAN);
+		r1 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_F_4_TO_1_F_5, GREEN);
+		r2 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_F_5_TO_1_F_6, CYAN);
+		r3 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_F_6_TO_1_E_6, CYAN);
+		r4 = new VarbitRequirement(VarbitID.SOTE_PILLAR_0_E_6_TO_1_E_6, CYAN);
+		r5 = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_E_6_TO_0_E_7, CYAN);
 		r6 = new Conditions(
-			new VarbitRequirement(8879, CYAN), // NORTH
-			new VarbitRequirement(8878, CYAN)  // EAST
+			new VarbitRequirement(VarbitID.SOTE_LIGHT_0_E_7_TO_0_E_8, CYAN), // NORTH
+			new VarbitRequirement(VarbitID.SOTE_LIGHT_0_E_7_TO_0_F_7, CYAN)  // EAST
 		);
 
-		r7 = new Conditions(r6, new VarbitRequirement(8881, CYAN));
-		r8 = new Conditions(r6, new VarbitRequirement(8591, CYAN));
+		r7 = new Conditions(r6, new VarbitRequirement(VarbitID.SOTE_LIGHT_0_E_8_TO_0_F_8, CYAN));
+		r8 = new Conditions(r6, new VarbitRequirement(VarbitID.SOTE_PILLAR_0_F_8_TO_1_F_8, CYAN));
 
-		r9 = new Conditions(r8, new VarbitRequirement(8882, CYAN));
-		r10 = new Conditions(r8, new VarbitRequirement(8883, CYAN));
-		r11 = new Conditions(r8, new VarbitRequirement(8885, GREEN));
-		r12 = new Conditions(r8, new VarbitRequirement(8886, GREEN));
-		r13 = new Conditions(r8, new VarbitRequirement(8887, GREEN));
-		r14 = new Conditions(r8, new VarbitRequirement(8888, GREEN));
-		r15 = new Conditions(r8, new VarbitRequirement(8592, GREEN));
-		r16 = new Conditions(r8, new VarbitRequirement(8992, GREEN));
+		r9 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_LIGHT_0_F_7_TO_0_F_6, CYAN));
+		r10 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_LIGHT_0_F_6_TO_0_G_6, CYAN));
+		r11 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_LIGHT_0_G_6_TO_0_H_6, GREEN));
+		r12 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_LIGHT_0_H_6_TO_0_H_7, GREEN));
+		r13 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_LIGHT_0_H_7_TO_0_G_7, GREEN));
+		r14 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_LIGHT_0_G_7_TO_0_G_8, GREEN));
+		r15 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_PILLAR_0_G_8_TO_1_G_8, GREEN));
+		r16 = new Conditions(r8, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_G_8_TO_1_G_7, GREEN));
 
 		// Back to cyan beam
-		r17 = new Conditions(r16, new VarbitRequirement(8614, BLUE));
+		r17 = new Conditions(r16, new VarbitRequirement(VarbitID.SOTE_PILLAR_1_F_8_TO_2_F_8, BLUE));
 
 		// Start on yellow beam
-		r18 = new Conditions(r17, new VarbitRequirement(8974, YELLOW));
-		r19 = new Conditions(r17, new VarbitRequirement(8982, YELLOW));
-		r20 = new Conditions(r17, new VarbitRequirement(8983, RED));
-		r21 = new Conditions(r17, new VarbitRequirement(8984, RED));
-		r22 = new Conditions(r17, new VarbitRequirement(8985, RED));
-		r23 = new Conditions(r17, new VarbitRequirement(8986, RED));
-		r24 = new Conditions(r17, new VarbitRequirement(8995, RED));
-		r25 = new Conditions(r17, new VarbitRequirement(8996, RED));
-		r26 = new Conditions(r17, new VarbitRequirement(8625, RED));
+		r18 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_G_3_TO_1_G_4, YELLOW));
+		r19 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_G_4_TO_1_H_4, YELLOW));
+		r20 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_H_4_TO_1_I_4, RED));
+		r21 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_I_4_TO_1_I_5, RED));
+		r22 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_I_5_TO_1_H_5, RED));
+		r23 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_H_5_TO_1_H_6, RED));
+		r24 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_H_6_TO_1_I_6, RED));
+		r25 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_1_I_6_TO_1_I_7, RED));
+		r26 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_PILLAR_1_I_7_TO_2_I_7, RED));
 
-		r27 = new Conditions(r17, new VarbitRequirement(8825, RED));
-		r28 = new Conditions(r17, new VarbitRequirement(8827, RED));
-		r29 = new Conditions(r17, new VarbitRequirement(8823, RED));
-		r30 = new Conditions(r17, new VarbitRequirement(8619, RED));
+		r27 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_2_I_7_TO_2_I_8, RED));
+		r28 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_2_I_8_TO_2_H_8, RED));
+		r29 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_LIGHT_2_H_8_TO_2_H_7, RED));
+		r30 = new Conditions(r17, new VarbitRequirement(VarbitID.SOTE_PILLAR_1_H_7_TO_2_H_7, RED));
 
-		r31 = new Conditions(r30, new VarbitRequirement(8804, BLUE));
+		r31 = new Conditions(r30, new VarbitRequirement(VarbitID.SOTE_LIGHT_2_F_7_TO_2_F_8, BLUE));
 	}
 
 	public List<QuestStep> getDisplaySteps()

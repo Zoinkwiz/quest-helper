@@ -42,6 +42,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -187,7 +188,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		inFalls = new ZoneRequirement(falls);
 		inEndRoom = new ZoneRequirement(endRoom);
 		inEnd2 = new ZoneRequirement(end2);
-		gotPebble = new VarbitRequirement(9110, 1);
+		gotPebble = new VarbitRequirement(VarbitID.WATERFALL_GOLRIE_CHAT, 1);
 	}
 
 	public void setupSteps()

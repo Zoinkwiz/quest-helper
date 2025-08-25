@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -164,11 +165,11 @@ public class TheGeneralsShadow extends BasicQuestHelper
 		inBouncerCave = new ZoneRequirement(bouncerCave);
 
 		hasNote = sinSeersNote;
-		givenNote = new VarbitRequirement(3335, 2);
-		talkedToGnomeScout = new VarbitRequirement(3332, 1);
-		talkedToFaladorScout = new VarbitRequirement(3333, 1);
-		talkedToShantayScout = new VarbitRequirement(3334, 1);
-		talkedToKaramjaScout = new VarbitRequirement(3331, 1);
+		givenNote = new VarbitRequirement(VarbitID.SHADOW_MAJ_SEER, 2);
+		talkedToGnomeScout = new VarbitRequirement(VarbitID.SHADOW_MAJ_SCOUT2, 1);
+		talkedToFaladorScout = new VarbitRequirement(VarbitID.SHADOW_MAJ_SCOUT3, 1);
+		talkedToShantayScout = new VarbitRequirement(VarbitID.SHADOW_MAJ_SCOUT4, 1);
+		talkedToKaramjaScout = new VarbitRequirement(VarbitID.SHADOW_MAJ_SCOUT1, 1);
 
 		// 3336 0->2 attempted to bribe Seer
 		// 3335 0->1 given money to Seer

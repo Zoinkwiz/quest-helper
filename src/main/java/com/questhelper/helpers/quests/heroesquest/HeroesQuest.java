@@ -296,7 +296,7 @@ public class HeroesQuest extends BasicQuestHelper
 		gottenPapers = new VarplayerRequirement(VarPlayerID.HEROQUEST, 9, Operation.GREATER_EQUAL);
 		enteredMansion = new VarplayerRequirement(VarPlayerID.HEROQUEST, 10, Operation.GREATER_EQUAL);
 		talkedToGrip = new VarplayerRequirement(VarPlayerID.HEROQUEST, 11, Operation.GREATER_EQUAL);
-		unlockedCandlestickBlackArm = new VarplayerRequirement(188, 12);
+		unlockedCandlestickBlackArm = new VarplayerRequirement(VarPlayerID.HEROQUEST, 12);
 		finishedBlackArm = new VarplayerRequirement(VarPlayerID.HEROQUEST, 13, Operation.GREATER_EQUAL);
 		talkedToStraven = new VarplayerRequirement(VarPlayerID.HEROQUEST, 2, Operation.GREATER_EQUAL);
 		talkedToAlfonse = new VarplayerRequirement(VarPlayerID.HEROQUEST, 3, Operation.GREATER_EQUAL);

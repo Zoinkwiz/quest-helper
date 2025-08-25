@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
@@ -350,33 +351,33 @@ public class Wanted extends BasicQuestHelper
 		isInRellekka = new ZoneRequirement(rellekka);
 		isInWizardsTower = new ZoneRequirement(wizardsTower);
 
-		becameSquire = new VarbitRequirement(1052, 1);
-		gotAssignmentDetailsFromSavant = new VarbitRequirement(1053, 1);
-		talkedToLordDaquarius = new VarbitRequirement(1055, 1);
-		hasKilledBlackKnight = new VarbitRequirement(1055, 2);
-		investigatedLordDaquarius = new VarbitRequirement(1058, 1);
-		talkedToMageOfZamorak = new VarbitRequirement(1056, 1);
-		talkedToSavantNearCanifis = new VarbitRequirement(1065, 1);
-		mustChaseToChampionsGuild = new VarbitRequirement(1067, 1);
-		mustChaseToDorgeshKaan = new VarbitRequirement(1069, 1);
-		mustChaseToEssenceMine = new VarbitRequirement(1071, 1);
-		mustChaseToMusaPoint = new VarbitRequirement(1073, 1);
-		mustChaseToDraynorMarket = new VarbitRequirement(1075, 1);
-		mustChaseToGoblinVillage = new VarbitRequirement(1077, 1);
-		mustChaseToArdougneMarket = new VarbitRequirement(1079, 1);
-		mustChaseToGrandTree = new VarbitRequirement(1081, 1);
-		mustChaseToScorpiusShrine = new VarbitRequirement(1083, 1);
-		mustChaseToAliMorrisane = new VarbitRequirement(1085, 1);
-		mustChaseToWizardsTower = new VarbitRequirement(1087, 1);
-		mustChaseToBrimhavenPub = new VarbitRequirement(1089, 1);
-		mustChaseToCastleWars = new VarbitRequirement(1091, 1);
-		mustChaseToRellekka = new VarbitRequirement(1093, 1);
-		mustChaseToMcGruborsWood = new VarbitRequirement(1095, 1);
-		mustChaseToSlayerTower = new VarbitRequirement(1097, 1);
-		mustChaseToYanillePub = new VarbitRequirement(1099, 1);
-		mustChaseToLumbridgeSwamp = new VarbitRequirement(1101, 1);
+		becameSquire = new VarbitRequirement(VarbitID.WANTED_JOKE_OPTION, 1);
+		gotAssignmentDetailsFromSavant = new VarbitRequirement(VarbitID.WANTED_COMMORB_INTEL, 1);
+		talkedToLordDaquarius = new VarbitRequirement(VarbitID.WANTED_DAQUARIUS_HINT, 1);
+		hasKilledBlackKnight = new VarbitRequirement(VarbitID.WANTED_DAQUARIUS_HINT, 2);
+		investigatedLordDaquarius = new VarbitRequirement(VarbitID.WANTED_LORD_D_EXPOSITION, 1);
+		talkedToMageOfZamorak = new VarbitRequirement(VarbitID.WANTED_ZAMMY_MAGE_HINT, 1);
+		talkedToSavantNearCanifis = new VarbitRequirement(VarbitID.WANTED_MISSION1, 1);
+		mustChaseToChampionsGuild = new VarbitRequirement(VarbitID.WANTED_MISSION2, 1);
+		mustChaseToDorgeshKaan = new VarbitRequirement(VarbitID.WANTED_MISSION3, 1);
+		mustChaseToEssenceMine = new VarbitRequirement(VarbitID.WANTED_MISSION4, 1);
+		mustChaseToMusaPoint = new VarbitRequirement(VarbitID.WANTED_MISSION5, 1);
+		mustChaseToDraynorMarket = new VarbitRequirement(VarbitID.WANTED_MISSION6, 1);
+		mustChaseToGoblinVillage = new VarbitRequirement(VarbitID.WANTED_MISSION7, 1);
+		mustChaseToArdougneMarket = new VarbitRequirement(VarbitID.WANTED_MISSION8, 1);
+		mustChaseToGrandTree = new VarbitRequirement(VarbitID.WANTED_MISSION9, 1);
+		mustChaseToScorpiusShrine = new VarbitRequirement(VarbitID.WANTED_MISSION10, 1);
+		mustChaseToAliMorrisane = new VarbitRequirement(VarbitID.WANTED_MISSION11, 1);
+		mustChaseToWizardsTower = new VarbitRequirement(VarbitID.WANTED_MISSION12, 1);
+		mustChaseToBrimhavenPub = new VarbitRequirement(VarbitID.WANTED_MISSION13, 1);
+		mustChaseToCastleWars = new VarbitRequirement(VarbitID.WANTED_MISSION14, 1);
+		mustChaseToRellekka = new VarbitRequirement(VarbitID.WANTED_MISSION15, 1);
+		mustChaseToMcGruborsWood = new VarbitRequirement(VarbitID.WANTED_MISSION16, 1);
+		mustChaseToSlayerTower = new VarbitRequirement(VarbitID.WANTED_MISSION17, 1);
+		mustChaseToYanillePub = new VarbitRequirement(VarbitID.WANTED_MISSION18, 1);
+		mustChaseToLumbridgeSwamp = new VarbitRequirement(VarbitID.WANTED_MISSION19, 1);
 
-		placedRope = new VarbitRequirement(279, 1);
+		placedRope = new VarbitRequirement(VarbitID.SWAMP_CAVES_ROPED_ENTRANCE, 1);
 		blackKnightNearby = new NpcHintArrowRequirement(NpcID.WANTED_SUMMONED_BLACK_KNIGHT);
 	}
 

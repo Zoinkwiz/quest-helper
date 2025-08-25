@@ -44,6 +44,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -194,16 +195,16 @@ public class TowerOfLife extends BasicQuestHelper
 		inTowerFloor2 = new ZoneRequirement(tower31, tower32, tower33, tower34);
 		inTowerFloor3 = new ZoneRequirement(tower41, tower42, tower43, tower44);
 
-		isPressureMachineBuilt = new VarbitRequirement(3338, 1);
-		isPressureMachineFixed = new VarbitRequirement(3338, 2);
+		isPressureMachineBuilt = new VarbitRequirement(VarbitID.TOL_PRES_PROG, 1);
+		isPressureMachineFixed = new VarbitRequirement(VarbitID.TOL_PRES_PROG, 2);
 
-		isPipeMachineBuilt = new VarbitRequirement(3339, 1);
-		isPipeMachineFixed = new VarbitRequirement(3339, 2);
+		isPipeMachineBuilt = new VarbitRequirement(VarbitID.TOL_PIPE_PROG, 1);
+		isPipeMachineFixed = new VarbitRequirement(VarbitID.TOL_PIPE_PROG, 2);
 
-		isCageBuilt = new VarbitRequirement(3340, 1);
-		isCageFixed = new VarbitRequirement(3340, 2);
+		isCageBuilt = new VarbitRequirement(VarbitID.TOL_CAGE_PROG, 1);
+		isCageFixed = new VarbitRequirement(VarbitID.TOL_CAGE_PROG, 2);
 
-		isTowerFixed = new VarbitRequirement(3354, 1);
+		isTowerFixed = new VarbitRequirement(VarbitID.TOL_CAGE_STATE, 1);
 	}
 
 	public void setupSteps()
@@ -398,7 +399,7 @@ public class TowerOfLife extends BasicQuestHelper
 		talkToNoFingers = new NpcStep(this, NpcID.TOL_NPC_BUILDER02, new WorldPoint(2645, 3224, 0), "Talk to 'No fingers'.");
 		pickpocketNoFingers = new NpcStep(this, NpcID.TOL_NPC_BUILDER02, new WorldPoint(2645, 3224, 0), "Pickpocket 'No " +
 			"fingers'.");
-		hasSpokenToNoFingers = new VarbitRequirement(3376, 1);
+		hasSpokenToNoFingers = new VarbitRequirement(VarbitID.TOL_NOFINGERS_ASKED, 1);
 		ConditionalStep getBoots = new ConditionalStep(this, talkToNoFingers); // "Get the Builder's Boots from 'No fingers'"
 		getBoots.addStep(hasSpokenToNoFingers, pickpocketNoFingers);
 

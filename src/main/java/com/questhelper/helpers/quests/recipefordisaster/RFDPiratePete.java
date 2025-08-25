@@ -53,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -199,16 +200,16 @@ public class RFDPiratePete extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inDiningRoom = new ZoneRequirement(diningRoom);
-		walkingUnderwater = new VarbitRequirement(1871, 1);
+		walkingUnderwater = new VarbitRequirement(VarbitID.HUNDRED_PIRATE_UNDERWATER_ONFLOOR, 1);
 
 		askedCookOptions = new Conditions(
-			new VarbitRequirement(1873, 1),
-			new VarbitRequirement(1876, 1),
-			new VarbitRequirement(1877, 1));
+			new VarbitRequirement(VarbitID.HUNDRED_PIRATE_MEAT_INTRO, 1),
+			new VarbitRequirement(VarbitID.HUNDRED_PIRATE_CRUMB_INTRO, 1),
+			new VarbitRequirement(VarbitID.HUNDRED_PIRATE_COD_INTRO, 1));
 
 		inUnderWater = new ZoneRequirement(underwater);
 
-		hasEnoughRocks = new VarbitRequirement(1869, 5);
+		hasEnoughRocks = new VarbitRequirement(VarbitID.HUNDRED_PIRATE_ROCKS, 5);
 
 		hasCrabMeat = new Conditions(LogicType.OR, crabMeat, groundCrabMeatHighlighted);
 		hasKelp = new Conditions(LogicType.OR, kelp, groundKelpHighlighted);
@@ -365,6 +366,6 @@ public class RFDPiratePete extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (client.getVarbitValue(1895) >= 110 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
+		return (client.getVarbitValue(VarbitID._100_PIRATE_QUEST_VAR) >= 110 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
 	}
 }

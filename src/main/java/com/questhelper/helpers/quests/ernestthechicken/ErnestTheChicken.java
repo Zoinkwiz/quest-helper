@@ -43,6 +43,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -158,18 +159,18 @@ public class ErnestTheChicken extends BasicQuestHelper
 		inGroundFloor = new ZoneRequirement(manorGround1, secretRoom, manorGround3);
 		inSecretRoom = new ZoneRequirement(secretRoom);
 		killedFish = new ChatMessageRequirement("... then die and float to the surface.");
-		isLeverADown = new VarbitRequirement(1788, 1);
-		isLeverBDown = new VarbitRequirement(1789, 1);
-		isLeverCDown = new VarbitRequirement(1790, 1);
-		isLeverDDown = new VarbitRequirement(1791, 1);
-		isLeverEDown = new VarbitRequirement(1792, 1);
-		isLeverFDown = new VarbitRequirement(1793, 1);
-		isLeverAUp = new VarbitRequirement(1788, 0);
-		isLeverBUp = new VarbitRequirement(1789, 0);
-		isLeverCUp = new VarbitRequirement(1790, 0);
-		isLeverDUp = new VarbitRequirement(1791, 0);
-		isLeverEUp = new VarbitRequirement(1792, 0);
-		isLeverFUp = new VarbitRequirement(1793, 0);
+		isLeverADown = new VarbitRequirement(VarbitID.ERNESTLEVER_A, 1);
+		isLeverBDown = new VarbitRequirement(VarbitID.ERNESTLEVER_B, 1);
+		isLeverCDown = new VarbitRequirement(VarbitID.ERNESTLEVER_C, 1);
+		isLeverDDown = new VarbitRequirement(VarbitID.ERNESTLEVER_D, 1);
+		isLeverEDown = new VarbitRequirement(VarbitID.ERNESTLEVER_E, 1);
+		isLeverFDown = new VarbitRequirement(VarbitID.ERNESTLEVER_F, 1);
+		isLeverAUp = new VarbitRequirement(VarbitID.ERNESTLEVER_A, 0);
+		isLeverBUp = new VarbitRequirement(VarbitID.ERNESTLEVER_B, 0);
+		isLeverCUp = new VarbitRequirement(VarbitID.ERNESTLEVER_C, 0);
+		isLeverDUp = new VarbitRequirement(VarbitID.ERNESTLEVER_D, 0);
+		isLeverEUp = new VarbitRequirement(VarbitID.ERNESTLEVER_E, 0);
+		isLeverFUp = new VarbitRequirement(VarbitID.ERNESTLEVER_F, 0);
 		inBasement = new ZoneRequirement(basement);
 		inRoomCD = new ZoneRequirement(roomCD);
 		inEmptyRoom = new ZoneRequirement(emptyRoom);

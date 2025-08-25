@@ -43,6 +43,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -138,11 +139,11 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inDungeon = new ZoneRequirement(dungeon);
-		fedAimeri = new VarbitRequirement(8393, 5);
+		fedAimeri = new VarbitRequirement(VarbitID.HOSDUN_AIMERI_STATUS, 5);
 
-		givenSunTome = new VarbitRequirement(8405, 1);
-		givenMoonTome = new VarbitRequirement(8404, 1);
-		givenTempleTome = new VarbitRequirement(8406, 1);
+		givenSunTome = new VarbitRequirement(VarbitID.HOSDUN_SUN_TOME_RETURNED, 1);
+		givenMoonTome = new VarbitRequirement(VarbitID.HOSDUN_MOON_TOME_RETURNED, 1);
+		givenTempleTome = new VarbitRequirement(VarbitID.HOSDUN_TEMPLE_TOME_RETURNED, 1);
 
 		hadTempleTome = new Conditions(true, LogicType.OR,
 			templeTome,
@@ -154,9 +155,9 @@ public class InSearchOfKnowledge extends BasicQuestHelper
 			sunTome,
 			givenSunTome);
 
-		repairedSun = new VarbitRequirement(8399, 4);
-		repairedMoon = new VarbitRequirement(8400, 4);
-		repairedTemple = new VarbitRequirement(8401, 4);
+		repairedSun = new VarbitRequirement(VarbitID.HOSDUN_SUN_PAGES, 4);
+		repairedMoon = new VarbitRequirement(VarbitID.HOSDUN_MOON_PAGES, 4);
+		repairedTemple = new VarbitRequirement(VarbitID.HOSDUN_TEMPLE_PAGES, 4);
 
 		repairedTomes = new Conditions(repairedSun, repairedMoon, repairedTemple);
 	}

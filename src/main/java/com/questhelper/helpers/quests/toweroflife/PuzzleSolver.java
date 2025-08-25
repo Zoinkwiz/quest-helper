@@ -26,6 +26,7 @@ package com.questhelper.helpers.quests.toweroflife;
 
 import com.questhelper.steps.widget.WidgetDetails;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 
 import java.util.Arrays;
@@ -56,17 +57,6 @@ public class PuzzleSolver
 	private static final WidgetDetails PRSS_4_WHEEL_RIGHT = new WidgetDetails(510, 135, 0);
 	private static final WidgetDetails PRSS_LEVER_LEFT = new WidgetDetails(510, 136, 0);
 	private static final WidgetDetails PRSS_LEVER_RIGHT = new WidgetDetails(510, 141, 0);
-	//State Varbits
-	private static final int PRSS_VBIT_LL = 3356;
-	private static final int PRSS_VBIT_LR = 3357;
-	private static final int PRSS_VBIT_P1 = 3347;
-	private static final int PRSS_VBIT_B1 = 3351;
-	private static final int PRSS_VBIT_P2 = 3348;
-	private static final int PRSS_VBIT_B2 = 3352;
-	private static final int PRSS_VBIT_P3 = 3349;
-	private static final int PRSS_VBIT_B3 = 3353;
-	private static final int PRSS_VBIT_P4 = 3350;
-	private static final int PRSS_VBIT_B4 = 3355;
 	//booleans
 	private boolean prss_3_passed = false;
 	private boolean prss_4_passed = false;
@@ -76,9 +66,9 @@ public class PuzzleSolver
 	{
 		HashSet<WidgetDetails> highlights = new HashSet<>();
 
-		int ball1Pos = client.getVarbitValue(PRSS_VBIT_B1);
-		boolean prss_1_locked = client.getVarbitValue(PRSS_VBIT_LL) != 0;
-		boolean prss_1_plugged = client.getVarbitValue(PRSS_VBIT_P1) == 1;
+		int ball1Pos = client.getVarbitValue(VarbitID.TOL_PRES1_LEVEL);
+		boolean prss_1_locked = client.getVarbitValue(VarbitID.TOL_LEVER1) != 0;
+		boolean prss_1_plugged = client.getVarbitValue(VarbitID.TOL_PRES_SOLVED1) == 1;
 		boolean prss_1_filled = (ball1Pos == 5);
 		if (!prss_1_filled)
 		{
@@ -97,9 +87,9 @@ public class PuzzleSolver
 			return highlights;
 		}
 
-		int ball2Pos = client.getVarbitValue(PRSS_VBIT_B2);
-		boolean prss_2_locked = client.getVarbitValue(PRSS_VBIT_LL) != 1;
-		boolean prss_2_plugged = client.getVarbitValue(PRSS_VBIT_P2) == 1;
+		int ball2Pos = client.getVarbitValue(VarbitID.TOL_PRES2_LEVEL);
+		boolean prss_2_locked = client.getVarbitValue(VarbitID.TOL_LEVER1) != 1;
+		boolean prss_2_plugged = client.getVarbitValue(VarbitID.TOL_PRES_SOLVED2) == 1;
 		boolean prss_2_filled = (ball2Pos == 5);
 		if (!prss_2_filled)
 		{
@@ -118,9 +108,9 @@ public class PuzzleSolver
 			return highlights;
 		}
 
-		int ball3Pos = client.getVarbitValue(PRSS_VBIT_B3);
-		boolean prss_3_locked = client.getVarbitValue(PRSS_VBIT_LR) != 0;
-		boolean prss_3_plugged = client.getVarbitValue(PRSS_VBIT_P3) == 1;
+		int ball3Pos = client.getVarbitValue(VarbitID.TOL_PRES3_LEVEL);
+		boolean prss_3_locked = client.getVarbitValue(VarbitID.TOL_LEVER2) != 0;
+		boolean prss_3_plugged = client.getVarbitValue(VarbitID.TOL_PRES_SOLVED3) == 1;
 		boolean prss_3_filled = (ball3Pos == 5);
 		if (!prss_3_filled)
 		{
@@ -144,9 +134,9 @@ public class PuzzleSolver
 			return highlights;
 		}
 
-		int ball4Pos = client.getVarbitValue(PRSS_VBIT_B4);
-		boolean prss_4_locked = client.getVarbitValue(PRSS_VBIT_LR) != 1;
-		boolean prss_4_plugged = client.getVarbitValue(PRSS_VBIT_P4) == 1;
+		int ball4Pos = client.getVarbitValue(VarbitID.TOL_PRES4_LEVEL);
+		boolean prss_4_locked = client.getVarbitValue(VarbitID.TOL_LEVER2) != 1;
+		boolean prss_4_plugged = client.getVarbitValue(VarbitID.TOL_PRES_SOLVED4) == 1;
 		boolean prss_4_filled = (ball4Pos == 5);
 		if (!prss_4_filled)
 		{
@@ -185,12 +175,7 @@ public class PuzzleSolver
 	private static final WidgetDetails PIPE_PCE_3 = new WidgetDetails(511, 11, 0); // T Piece
 	private static final WidgetDetails PIPE_PCE_4 = new WidgetDetails(511, 12, 0); // Big bend
 	private static final WidgetDetails PIPE_PCE_5 = new WidgetDetails(511, 13, 0); // Small bend
-	//Varbits
-	private static final int PIPE_VBIT_1_SELECT = 3343;
-	private static final int PIPE_VBIT_2_SELECT = 3341;
-	private static final int PIPE_VBIT_3_SELECT = 3344;
-	private static final int PIPE_VBIT_4_SELECT = 3345;
-	private static final int PIPE_VBIT_5_SELECT = 3342;
+	//Orientation
 	private static final int PIPE_PCE_1_ORIENTATION = 22547;
 	private static final int PIPE_PCE_2_ORIENTATION = 22531;
 	private static final int PIPE_PCE_3_ORIENTATION = 22555;
@@ -207,11 +192,11 @@ public class PuzzleSolver
 			if (pipeSolverSolutions == null)
 			{
 				pipeSolverSolutions = Arrays.asList(
-					new PipeSolverSolution(PIPE_PCE_1, 159, 69, PIPE_PCE_1_ORIENTATION, PIPE_VBIT_1_SELECT),
-					new PipeSolverSolution(PIPE_PCE_2, 83, 80, PIPE_PCE_2_ORIENTATION, PIPE_VBIT_2_SELECT),
-					new PipeSolverSolution(PIPE_PCE_3, 256, 60, PIPE_PCE_3_ORIENTATION, PIPE_VBIT_3_SELECT),
-					new PipeSolverSolution(PIPE_PCE_4, 237, 155, PIPE_PCE_4_ORIENTATION, PIPE_VBIT_4_SELECT),
-					new PipeSolverSolution(PIPE_PCE_5, 126, 64, PIPE_PCE_5_ORIENTATION, PIPE_VBIT_5_SELECT)
+					new PipeSolverSolution(PIPE_PCE_1, 159, 69, PIPE_PCE_1_ORIENTATION, VarbitID.TOL_PIPE_PIECE3_ACTIVE),
+					new PipeSolverSolution(PIPE_PCE_2, 83, 80, PIPE_PCE_2_ORIENTATION, VarbitID.TOL_PIPE_PIECE1_ACTIVE),
+					new PipeSolverSolution(PIPE_PCE_3, 256, 60, PIPE_PCE_3_ORIENTATION, VarbitID.TOL_PIPE_PIECE4_ACTIVE),
+					new PipeSolverSolution(PIPE_PCE_4, 237, 155, PIPE_PCE_4_ORIENTATION, VarbitID.TOL_PIPE_PIECE5_ACTIVE),
+					new PipeSolverSolution(PIPE_PCE_5, 126, 64, PIPE_PCE_5_ORIENTATION, VarbitID.TOL_PIPE_PIECE2_ACTIVE)
 				);
 			}
 

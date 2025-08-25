@@ -40,6 +40,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -195,8 +196,8 @@ public class PotionPuzzle extends DetailedOwnerStep
 		inSecondFloor = new ZoneRequirement(secondFloor);
 		inBasement = new ZoneRequirement(basement);
 
-		triedToActivate = new VarbitRequirement(7799, 2);
-		cleanedRefinery = new VarbitRequirement(7799, 3);
+		triedToActivate = new VarbitRequirement(VarbitID.LOVAQUEST_REFINERY, 2);
+		cleanedRefinery = new VarbitRequirement(VarbitID.LOVAQUEST_REFINERY, 3);
 		hasFluids = new Requirement[]{null, fluid1, fluid2, fluid3, fluid4, fluid5 };
 	}
 

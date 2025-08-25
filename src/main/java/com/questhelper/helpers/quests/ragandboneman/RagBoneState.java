@@ -116,7 +116,7 @@ public enum RagBoneState
 		boneCleanedItem = new ItemRequirement(Text.titleCase(this), boneID + 2);
 
 		VarbitRequirement boneAddedToBoiler = new VarbitRequirement(VarbitID.RAG_BOILER, 2, Operation.GREATER_EQUAL);
-		boneIsBeingCleaned = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, pos));
+		boneIsBeingCleaned = new Conditions(boneAddedToBoiler, new VarbitRequirement(VarbitID.RAG_POTBOILER, pos));
 
 		// Mark always true once obtained as no way to identify if a bone has been handed in easily
 		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>" + nameInList);

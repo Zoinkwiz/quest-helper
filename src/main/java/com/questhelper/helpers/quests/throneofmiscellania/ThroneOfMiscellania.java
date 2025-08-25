@@ -49,6 +49,7 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -280,34 +281,34 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		inAstridRoom = new ZoneRequirement(astridRoom1, astridRoom2);
 
 		// Chose Brand, 14607 0->1
-		courtingBrand = new VarbitRequirement(14607, 1);
+		courtingBrand = new VarbitRequirement(VarbitID.MISC_PARTNER_MULTIVAR, 1);
 
-		talked1P1 = new VarbitRequirement(85, 1);
-		talked1P2 = new VarbitRequirement(86, 1);
-		talked1P3 = new VarbitRequirement(87, 1);
-		givenFlowers = new VarbitRequirement(94, 1);
-		doneEmote = new VarbitRequirement(96, 1);
+		talked1P1 = new VarbitRequirement(VarbitID.MISC_S1_D1, 1);
+		talked1P2 = new VarbitRequirement(VarbitID.MISC_S1_D2, 1);
+		talked1P3 = new VarbitRequirement(VarbitID.MISC_S1_D3, 1);
+		givenFlowers = new VarbitRequirement(VarbitID.MISC_S1_GIVE, 1);
+		doneEmote = new VarbitRequirement(VarbitID.MISC_S1_EMOTE, 1);
 		talked1P4 = new VarbitRequirement(VarbitID.MISC_AFFECTION, 15, Operation.GREATER_EQUAL);
 
-		talked2P1 = new VarbitRequirement(88, 1);
-		talked2P2 = new VarbitRequirement(89, 1);
-		talked2P3 = new VarbitRequirement(90, 1);
-		givenBowOrCake = new VarbitRequirement(95, 1);
+		talked2P1 = new VarbitRequirement(VarbitID.MISC_S2_D1, 1);
+		talked2P2 = new VarbitRequirement(VarbitID.MISC_S2_D2, 1);
+		talked2P3 = new VarbitRequirement(VarbitID.MISC_S2_D3, 1);
+		givenBowOrCake = new VarbitRequirement(VarbitID.MISC_S2_GIVE, 1);
 		talked2P4 = new VarbitRequirement(VarbitID.MISC_AFFECTION, 24, Operation.GREATER_EQUAL);
 
-		talked3P1 = new VarbitRequirement(91, 1);
-		talked3P2 = new VarbitRequirement(92, 1);
-		talked3P3 = new VarbitRequirement(93, 1);
-		blownKiss = new VarbitRequirement(97, 1);
+		talked3P1 = new VarbitRequirement(VarbitID.MISC_S3_D1, 1);
+		talked3P2 = new VarbitRequirement(VarbitID.MISC_S3_D2, 1);
+		talked3P3 = new VarbitRequirement(VarbitID.MISC_S3_D3, 1);
+		blownKiss = new VarbitRequirement(VarbitID.MISC_S3_EMOTE, 1);
 
-		hasCourted = new VarbitRequirement(14606, 1);
+		hasCourted = new VarbitRequirement(VarbitID.MISC_ACCEPTEDTORULE, 1);
 
-		diplomacyStep1 = new VarplayerRequirement(359, 20);
-		diplomacyStep2 = new VarplayerRequirement(359, 30);
-		diplomacyStep3 = new VarplayerRequirement(359, 40);
-		diplomacyStep4 = new VarplayerRequirement(359, 50);
-		diplomacyStep5 = new VarplayerRequirement(359, 60);
-		diplomacyStep6 = new VarplayerRequirement(359, 70);
+		diplomacyStep1 = new VarplayerRequirement(VarPlayerID.MISC_QUEST, 20);
+		diplomacyStep2 = new VarplayerRequirement(VarPlayerID.MISC_QUEST, 30);
+		diplomacyStep3 = new VarplayerRequirement(VarPlayerID.MISC_QUEST, 40);
+		diplomacyStep4 = new VarplayerRequirement(VarPlayerID.MISC_QUEST, 50);
+		diplomacyStep5 = new VarplayerRequirement(VarPlayerID.MISC_QUEST, 60);
+		diplomacyStep6 = new VarplayerRequirement(VarPlayerID.MISC_QUEST, 70);
 
 		has75Support = new VarbitRequirement(VarbitID.MISC_APPROVAL, 96, Operation.GREATER_EQUAL);
 	}

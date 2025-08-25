@@ -162,8 +162,8 @@ public class RFDDwarf extends BasicQuestHelper
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inTunnel = new ZoneRequirement(tunnel);
 
-		learnedHowToMakeAle = new VarbitRequirement(1891, 1);
-		givenAle = new VarbitRequirement(1893, 1);
+		learnedHowToMakeAle = new VarbitRequirement(VarbitID.HUNDRED_DWARF_BEER, 1);
+		givenAle = new VarbitRequirement(VarbitID.HUNDRED_DWARF_DRUNK, 1);
 		has4AleOrGivenAle = new Conditions(LogicType.OR, asgoldianAle4, givenAle);
 	}
 

@@ -199,14 +199,14 @@ public class RagAndBoneManI extends BasicQuestHelper
 
 		// 2044 = 1, talked a bit to Odd Old Man
 
-		addedRope = new VarbitRequirement(279, 1);
+		addedRope = new VarbitRequirement(VarbitID.SWAMP_CAVES_ROPED_ENTRANCE, 1);
 
 		boneNearby = new Conditions(LogicType.OR, RagBoneGroups.getBonesOnFloor(RagBoneGroups.getBones(RagBoneGroups.getRagBoneIStates())));
 
 		logAdded = new VarbitRequirement(VarbitID.RAG_BOILER, 1, Operation.GREATER_EQUAL);
 		boneAddedToBoiler = new VarbitRequirement(VarbitID.RAG_BOILER, 2, Operation.GREATER_EQUAL);
 		logLit = new VarbitRequirement(VarbitID.RAG_BOILER, 3, Operation.GREATER_EQUAL);
-		boneReady = new VarbitRequirement(2046, 4);
+		boneReady = new VarbitRequirement(VarbitID.RAG_BOILER, 4);
 
 		// Every time handing in a bone, 2045 iterates from 0->28 1 by 1. Next time you hand in a bone it goes back
 		// to 0 and repeats???
@@ -217,7 +217,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 
 		hadAllBones = new Conditions(RagBoneGroups.allBonesObtained(RagBoneGroups.getRagBoneIStates(), questBank));
 
-		talkedToFortunato = new VarbitRequirement(2047, 1);
+		talkedToFortunato = new VarbitRequirement(VarbitID.RAG_WINE, 1);
 
 		hadVinegar = new Conditions(jugOfVinegar.alsoCheckBank(questBank));
 	}

@@ -5,6 +5,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -12,11 +13,6 @@ import java.awt.*;
 
 public class PaintingWall extends QuestStep
 {
-	private final int RIGHT_VARBIT = 3541;
-	private final int BOTTOM_VARBIT = 3542;
-	private final int LEFT_VARBIT = 3543;
-	private final int TOP_VARBIT = 3544;
-
 	private int highlightWidget = -1;
 
 	int rightPiece, bottomPiece, leftPiece, topPiece;
@@ -40,10 +36,10 @@ public class PaintingWall extends QuestStep
 
 	private void updateSolvedPositionState()
 	{
-		rightPiece = client.getVarbitValue(RIGHT_VARBIT);
-		bottomPiece = client.getVarbitValue(BOTTOM_VARBIT);
-		leftPiece = client.getVarbitValue(LEFT_VARBIT);
-		topPiece = client.getVarbitValue(TOP_VARBIT);
+		rightPiece = client.getVarbitValue(VarbitID.OLAF2_GATE_DISK_1);
+		bottomPiece = client.getVarbitValue(VarbitID.OLAF2_GATE_DISK_2);
+		leftPiece = client.getVarbitValue(VarbitID.OLAF2_GATE_DISK_3);
+		topPiece = client.getVarbitValue(VarbitID.OLAF2_GATE_DISK_4);
 
 		if (rightPiece != 4)
 		{

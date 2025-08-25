@@ -44,6 +44,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -129,7 +130,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 		inJunaRoom = new ZoneRequirement(junaRoom);
 		atRocks = new ZoneRequirement(rocks);
 
-		addedRope = new VarbitRequirement(279, 1);
+		addedRope = new VarbitRequirement(VarbitID.SWAMP_CAVES_ROPED_ENTRANCE, 1);
 
 		// 452 = 1, gone through Juna's first dialog
 	}

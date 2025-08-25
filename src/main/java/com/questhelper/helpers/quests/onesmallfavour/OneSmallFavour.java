@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -467,27 +468,27 @@ public class OneSmallFavour extends BasicQuestHelper
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inGoblinCave = new ZoneRequirement(goblinCave);
 
-		lamp1Empty = new VarbitRequirement(6225, 1);
-		lamp2Empty = new VarbitRequirement(6226, 1);
-		lamp3Empty = new VarbitRequirement(6227, 1);
-		lamp4Empty = new VarbitRequirement(6228, 1);
-		lamp5Empty = new VarbitRequirement(6229, 1);
-		lamp6Empty = new VarbitRequirement(6230, 1);
-		lamp7Empty = new VarbitRequirement(6231, 1);
-		lamp8Empty = new VarbitRequirement(6232, 1);
+		lamp1Empty = new VarbitRequirement(VarbitID.JADELIGHT1_TAKEN, 1);
+		lamp2Empty = new VarbitRequirement(VarbitID.TOPAZLIGHT1_TAKEN, 1);
+		lamp3Empty = new VarbitRequirement(VarbitID.OPALLIGHT1_TAKEN, 1);
+		lamp4Empty = new VarbitRequirement(VarbitID.SAPPHIRELIGHT1_TAKEN, 1);
+		lamp5Empty = new VarbitRequirement(VarbitID.JADELIGHT2_TAKEN, 1);
+		lamp6Empty = new VarbitRequirement(VarbitID.TOPAZLIGHT2_TAKEN, 1);
+		lamp7Empty = new VarbitRequirement(VarbitID.OPALLIGHT2_TAKEN, 1);
+		lamp8Empty = new VarbitRequirement(VarbitID.SAPPHIRELIGHT2_TAKEN, 1);
 
-		allEmpty = new VarbitRequirement(244, 255);
+		allEmpty = new VarbitRequirement(VarbitID.CHECKLANDINGLIGHTS, 255);
 
-		lamp1Full = new VarbitRequirement(6233, 1);
-		lamp2Full = new VarbitRequirement(6234, 1);
-		lamp3Full = new VarbitRequirement(6235, 1);
-		lamp4Full = new VarbitRequirement(6236, 1);
-		lamp5Full = new VarbitRequirement(6237, 1);
-		lamp6Full = new VarbitRequirement(6238, 1);
-		lamp7Full = new VarbitRequirement(6239, 1);
-		lamp8Full = new VarbitRequirement(6240, 1);
+		lamp1Full = new VarbitRequirement(VarbitID.JADELIGHT1_FIXED, 1);
+		lamp2Full = new VarbitRequirement(VarbitID.TOPAZLIGHT1_FIXED, 1);
+		lamp3Full = new VarbitRequirement(VarbitID.OPALLIGHT1_FIXED, 1);
+		lamp4Full = new VarbitRequirement(VarbitID.SAPPHIRELIGHT1_FIXED, 1);
+		lamp5Full = new VarbitRequirement(VarbitID.JADELIGHT2_FIXED, 1);
+		lamp6Full = new VarbitRequirement(VarbitID.TOPAZLIGHT2_FIXED, 1);
+		lamp7Full = new VarbitRequirement(VarbitID.OPALLIGHT2_FIXED, 1);
+		lamp8Full = new VarbitRequirement(VarbitID.SAPPHIRELIGHT2_FIXED, 1);
 
-		allFull = new VarbitRequirement(6241, 255);
+		allFull = new VarbitRequirement(VarbitID.FIXEDLANDINGLIGHTS, 255);
 
 		slagilithNearby = new NpcCondition(NpcID.SLAGILITH);
 		inScrollSpot = new ZoneRequirement(scrollSpot);
@@ -496,9 +497,9 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		petraNearby = new NpcCondition(NpcID.FAVOUR_PETRA);
 
-		addedOrnaments = new VarbitRequirement(255, 1);
-		addedDirectionals = new VarbitRequirement(254, 1);
-		addedWeathervanePillar = new VarbitRequirement(253, 1);
+		addedOrnaments = new VarbitRequirement(VarbitID.ORNAMENTFIXED, 1);
+		addedDirectionals = new VarbitRequirement(VarbitID.DIRECTIONALSFIXED, 1);
+		addedWeathervanePillar = new VarbitRequirement(VarbitID.ROTATINGPILLARFIXED, 1);
 
 		hasOrUsedDirectionals = new Conditions(LogicType.OR, addedDirectionals, directionals.alsoCheckBank(questBank));
 		hasOrUsedOrnament = new Conditions(LogicType.OR, addedOrnaments, ornament.alsoCheckBank(questBank));

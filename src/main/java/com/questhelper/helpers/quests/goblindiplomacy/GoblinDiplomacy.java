@@ -42,6 +42,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -127,9 +128,9 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	public void setupConditions()
 	{
 		isUpstairs = new ZoneRequirement(upstairs);
-		hasUpstairsArmour = new VarbitRequirement(2381, 1);
-		hasWestArmour = new VarbitRequirement(2380, 1);
-		hasNorthArmour = new VarbitRequirement(2379, 1);
+		hasUpstairsArmour = new VarbitRequirement(VarbitID.GOBDIP_CRATE3_SEARCHED, 1);
+		hasWestArmour = new VarbitRequirement(VarbitID.GOBDIP_CRATE2_SEARCHED, 1);
+		hasNorthArmour = new VarbitRequirement(VarbitID.GOBDIP_CRATE1_SEARCHED, 1);
 	}
 
 	@Override

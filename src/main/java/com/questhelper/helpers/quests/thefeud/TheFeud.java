@@ -191,12 +191,12 @@ public class TheFeud extends BasicQuestHelper
 		//318 Drunk Ali beer count 0->1->2->3
 
 		// 315 -> 2 Talked to thug -> 3 Talked to bandit
-		talkedToThug = new VarbitRequirement(315, 2);
-		talkedToBandit = new VarbitRequirement(315, 3);
+		talkedToThug = new VarbitRequirement(VarbitID.FEUD_VAR_TALK_GANGS, 2);
+		talkedToBandit = new VarbitRequirement(VarbitID.FEUD_VAR_TALK_GANGS, 3);
 
 		talkedToBanditReturn = new VarbitRequirement(VarbitID.FEUD_VAR_COMP_GANGS, true, 0); // Might have missed?
 		// 340 -> 1 when pickpocket villager
-		doorOpen = new VarbitRequirement(320, 1);
+		doorOpen = new VarbitRequirement(VarbitID.FEUD_VAR_MAYORSDOOR, 1);
 
 		//Varbit 325 keeps track of correctly entered safe values
 		//UPDATE: 325 keeps track of amount of numbers input. Even if they are incorrect
@@ -204,26 +204,26 @@ public class TheFeud extends BasicQuestHelper
 		//TODO: Overlay for safe cracking.
 
 		// Varbit 342 when found Traitor
-		traitorFound = new VarbitRequirement(342, 1);
+		traitorFound = new VarbitRequirement(VarbitID.FEUD_FOUND_TRAIT, 1);
 
 		// Varbit 321 when talked to bar man
-		talkedToBarman = new VarbitRequirement(321, 1);
+		talkedToBarman = new VarbitRequirement(VarbitID.FEUD_VAR_DRINK_FOUND, 1);
 
 		// 345 and 328 when talking to hag
-		talkedToAliTheHag = new VarbitRequirement(328, 1);
-		givenPoisonToHag = new VarbitRequirement(328, 2);
+		talkedToAliTheHag = new VarbitRequirement(VarbitID.FEUD_HAG_LIST, 1);
+		givenPoisonToHag = new VarbitRequirement(VarbitID.FEUD_HAG_LIST, 2);
 
 		// 335 = Poisoned drink
 
 		//322 Menaphite
-		menaphiteThugAlive = new VarbitRequirement(322, 1);
+		menaphiteThugAlive = new VarbitRequirement(VarbitID.FEUD_VAR_MENABOSS, 1);
 
 		// Talked to villager about Menaphite 343, 338
-		talkedToVillagerAboutMenaphite = new VarbitRequirement(343, 1);
-		banditChampionSpawned = new VarbitRequirement(323, 1);
+		talkedToVillagerAboutMenaphite = new VarbitRequirement(VarbitID.FEUD_TALK_VILLAGER, 1);
+		banditChampionSpawned = new VarbitRequirement(VarbitID.FEUD_VAR_BANDITBOSS, 1);
 
 		// 343 -> Mayor spawned
-		mayorSpawned = new VarbitRequirement(343, 2);
+		mayorSpawned = new VarbitRequirement(VarbitID.FEUD_TALK_VILLAGER, 2);
 	}
 
 	@Override

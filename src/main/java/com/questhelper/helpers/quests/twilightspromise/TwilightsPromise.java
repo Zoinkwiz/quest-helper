@@ -221,7 +221,7 @@ public class TwilightsPromise extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		beenToVarlamore = new VarbitRequirement(9650, 1);
+		beenToVarlamore = new VarbitRequirement(VarbitID.VARLAMORE_VISITED, 1);
 		inCrypt = new ZoneRequirement(crypt);
 		inColosseumUnderground = new ZoneRequirement(colosseumUnderground);
 		inColosseum = new ZoneRequirement(colosseum);

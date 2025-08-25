@@ -214,23 +214,23 @@ public class MountainDaughter extends BasicQuestHelper
 		onIsland3 = new Conditions(new ZoneRequirement(LAKE_ISLAND_3));
 
 		inTheCamp = new Conditions(new ZoneRequirement(CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3));
-		askedAboutDiplomacy = new Conditions(new VarbitRequirement(262, 10));
-		rubbedMudIntoTree = new Conditions(new VarbitRequirement(261, 1));
+		askedAboutDiplomacy = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 10));
+		rubbedMudIntoTree = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_MUD_VAR, 1));
 
 		VarbitRequirement askedAboutFood = new VarbitRequirement(VarbitID.MDAUGHTER_FOOD_VAR, 10, Operation.GREATER_EQUAL);
-		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(262, 10), askedAboutFood);
-		spokenToSvidi = new Conditions(new VarbitRequirement(262, 20), askedAboutFood);
-		spokenToBrundt = new Conditions(new VarbitRequirement(262, 30), askedAboutFood);
-		minedRock = new Conditions(new VarbitRequirement(262, 40), askedAboutFood);
-		gottenGuarantee = new Conditions(new VarbitRequirement(262, 50), askedAboutFood);
-		givenGuaranteeToSvidi = new Conditions(new VarbitRequirement(262, 60), askedAboutFood);
-		finishedDiplomacy = new Conditions(new VarbitRequirement(266, 1));
-		finishedFood = new VarbitRequirement(263, 20);
+		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 10), askedAboutFood);
+		spokenToSvidi = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 20), askedAboutFood);
+		spokenToBrundt = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 30), askedAboutFood);
+		minedRock = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 40), askedAboutFood);
+		gottenGuarantee = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 50), askedAboutFood);
+		givenGuaranteeToSvidi = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 60), askedAboutFood);
+		finishedDiplomacy = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_HAMAL_RELATIONS_DONE, 1));
+		finishedFood = new VarbitRequirement(VarbitID.MDAUGHTER_FOOD_VAR, 20);
 		finishedFoodAndDiplomacy = new Conditions(finishedDiplomacy, finishedFood);
 		inKendalCave = new Conditions(new ZoneRequirement(KENDAL_CAVE));
 		fightableKendalNearby = new Conditions(new NpcHintArrowRequirement(NpcID.MDAUGHTER_BEARMAN_FIGHTER));
 
-		hasBuried = new Conditions(new VarbitRequirement(273, 1));
+		hasBuried = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_BURIAL_STATE, 1));
 	}
 
 	private void loadQuestSteps()

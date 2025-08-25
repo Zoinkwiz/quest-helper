@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -421,19 +422,19 @@ public class Regicide extends BasicQuestHelper
 		guardNearby = new NpcInteractingRequirement(NpcID.REGICIDE_OLD_CAMP_GUARD, NpcID.REGICIDE_TYRAS_CAMP_GUARD);
 		// Guard appeared, 8446 0->1
 		// Gone through dart trap, 8450 0->1
-		hasReadBook = new VarbitRequirement(8453, 1);
-		knowHowToMakeFuse = new VarbitRequirement(8455, 1);
-		askedAboutBarrel = new VarbitRequirement(8456, 1);
-		askedAboutSulphur = new VarbitRequirement(8457, 1);
-		askedAboutQuicklime = new VarbitRequirement(8458, 1);
-		askedAboutNaptha = new VarbitRequirement(8459, 1);
+		hasReadBook = new VarbitRequirement(VarbitID.REGICIDE_READ_BOOK, 1);
+		knowHowToMakeFuse = new VarbitRequirement(VarbitID.REGICIDE_FUSE_CHAT, 1);
+		askedAboutBarrel = new VarbitRequirement(VarbitID.REGICIDE_BARREL_CHAT, 1);
+		askedAboutSulphur = new VarbitRequirement(VarbitID.REGICIDE_SULPHUR_CHAT, 1);
+		askedAboutQuicklime = new VarbitRequirement(VarbitID.REGICIDE_QUICKLIME_CHAT, 1);
+		askedAboutNaptha = new VarbitRequirement(VarbitID.REGICIDE_NAPHTHA_CHAT, 1);
 		knowHowToMakeBomb = new Conditions(hasReadBook, knowHowToMakeFuse, askedAboutBarrel, askedAboutQuicklime,
 			askedAboutSulphur, askedAboutNaptha);
 		hadGroundQuicklime = new Conditions(true, groundQuicklime);
 		hadGroundSulphur = new Conditions(true, groundSulphur);
-		talkedToChemist = new VarbitRequirement(8449, 1);
-		coalInStill = new VarbitRequirement(8448, 1);
-		givenRabbit = new VarbitRequirement(8447, 1);
+		talkedToChemist = new VarbitRequirement(VarbitID.REGICIDE_CHEMIST_CHAT, 1);
+		coalInStill = new VarbitRequirement(VarbitID.REGICIDE_HAD_TAR, 1);
+		givenRabbit = new VarbitRequirement(VarbitID.REGICIDE_GIVEN_RABBIT, 1);
 
 		arianwynNearby = new NpcInteractingRequirement(NpcID.REGICIDE_GOOD_ELF3);
 

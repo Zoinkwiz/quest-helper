@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
@@ -223,7 +224,7 @@ public class HauntedMine extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		askedAboutKey = new VarbitRequirement(2397, 1);
+		askedAboutKey = new VarbitRequirement(VarbitID.HAUNTEDMINE_HEARDABOUTKEY, 1);
 		inLevel1North = new ZoneRequirement(level1North);
 		inLevel1South = new ZoneRequirement(level1South);
 		inLevel2South = new ZoneRequirement(level2South);
@@ -240,22 +241,22 @@ public class HauntedMine extends BasicQuestHelper
 		inCrystalEntrance = new ZoneRequirement(crystalEntrance);
 		inCrystalOrCrystalEntranceRoom = new ZoneRequirement(crystalRoom1, crystalRoom2, crystalRoom3, crystalEntrance);
 
-		valveOpened = new VarbitRequirement(2393, 1);
-		valveOpen = new VarbitRequirement(2394, 1);
+		valveOpened = new VarbitRequirement(VarbitID.HAUNTEDMINE_LIFTPOWEREDONCE, 1);
+		valveOpen = new VarbitRequirement(VarbitID.HAUNTEDMINE_LIFTPOWEREDNOW, 1);
 
 		hasKeyOrOpenedValve = new Conditions(LogicType.OR, zealotsKey, valveOpened);
 
-		leverAWrong = new VarbitRequirement(2385, 0);
-		leverBWrong = new VarbitRequirement(2386, 0);
-		leverCWrong = new VarbitRequirement(2387, 1);
-		leverDWrong = new VarbitRequirement(2388, 1);
-		leverEWrong = new VarbitRequirement(2389, 0);
-		leverFWrong = new VarbitRequirement(2390, 0);
-		leverGWrong = new VarbitRequirement(2391, 1);
-		leverHWrong = new VarbitRequirement(2392, 1);
+		leverAWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_B, 0);
+		leverBWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_A, 0);
+		leverCWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_C, 1);
+		leverDWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_D, 1);
+		leverEWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_E, 0);
+		leverFWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_I, 0);
+		leverGWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_J, 1);
+		leverHWrong = new VarbitRequirement(VarbitID.HAUNTEDMINE_LEVER_K, 1);
 
-		fungusInCart = new VarbitRequirement(2395, 1);
-		fungusOnOtherSide = new VarbitRequirement(2396, 1);
+		fungusInCart = new VarbitRequirement(VarbitID.HAUNTEDMINE_BEGINCART_FUNGUS, 1);
+		fungusOnOtherSide = new VarbitRequirement(VarbitID.HAUNTEDMINE_ENDCART_FUNGUS, 1);
 
 		daythNearby = new NpcHintArrowRequirement(NpcID.HAUNTEDMINE_BOSS_GHOST, NpcID.HAUNTEDMINE_BOSS_GHOST_FADED);
 

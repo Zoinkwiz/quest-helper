@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -167,15 +168,15 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		notBalloon = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 27);
 		notVarrAgi = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 28);
 
-		notFlap = new VarbitRequirement(2309, 1);
-		notSlap = new VarbitRequirement(2310, 1);
-		notIdea = new VarbitRequirement(2311, 1);
-		notStamp = new VarbitRequirement(2312, 1);
+		notFlap = new VarbitRequirement(VarbitID.SOS_EMOTE_FLAP, 1);
+		notSlap = new VarbitRequirement(VarbitID.SOS_EMOTE_DOH, 1);
+		notIdea = new VarbitRequirement(VarbitID.SOS_EMOTE_IDEA, 1);
+		notStamp = new VarbitRequirement(VarbitID.SOS_EMOTE_STAMP, 1);
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		notVarrBalloon = new VarbitRequirement(2872, 0);
-		notVarrBalloon2 = new VarbitRequirement(2872, 1);
+		notVarrBalloon = new VarbitRequirement(VarbitID.ZEP_MULTI_VARR, 0);
+		notVarrBalloon2 = new VarbitRequirement(VarbitID.ZEP_MULTI_VARR, 1);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR, notApothStr, notCatColour, notMaho20));
 		limpRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notApothStr);

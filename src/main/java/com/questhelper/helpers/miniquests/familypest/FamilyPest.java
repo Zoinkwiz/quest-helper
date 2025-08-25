@@ -45,6 +45,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -123,9 +124,9 @@ public class FamilyPest extends BasicQuestHelper
 	{
 		upJollyBoar = new ZoneRequirement(upstairsJollyBoar);
 
-		talkedToCaleb = new VarbitRequirement(5348, 1);
-		talkedToAvan = new VarbitRequirement(5349, 1);
-		talkedToJohnathon = new VarbitRequirement(5350, 1);
+		talkedToCaleb = new VarbitRequirement(VarbitID.FAMILY_QUEST_CALEB, 1);
+		talkedToAvan = new VarbitRequirement(VarbitID.FAMILY_QUEST_AVAN, 1);
+		talkedToJohnathon = new VarbitRequirement(VarbitID.FAMILY_QUEST_JOHNATHON, 1);
 	}
 
 	@Override

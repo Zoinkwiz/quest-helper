@@ -294,16 +294,16 @@ public class MourningsEndPartI extends BasicQuestHelper
 		releasedGnome = new VarbitRequirement(VarbitID.MOURNING_GNOME, 7, Operation.GREATER_EQUAL);
 		repairedDevice = new VarbitRequirement(VarbitID.MOURNING_GNOME, 9, Operation.GREATER_EQUAL);
 
-		learntAboutToads = new VarbitRequirement(9155, 1);
-		redToadLoaded = new VarbitRequirement(804, 1);
-		greenToadLoaded = new VarbitRequirement(804, 2);
-		blueToadLoaded = new VarbitRequirement(804, 3);
-		yellowToadLoaded = new VarbitRequirement(804, 4);
+		learntAboutToads = new VarbitRequirement(VarbitID.MOURNING_DYE_CHAT, 1);
+		redToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 1);
+		greenToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 2);
+		blueToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 3);
+		yellowToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 4);
 
-		greenDyed = new VarbitRequirement(803, 1);
-		redDyed = new VarbitRequirement(801, 1);
-		yellowDyed = new VarbitRequirement(802, 1);
-		blueDyed = new VarbitRequirement(800, 1);
+		greenDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_GREEN, 1);
+		redDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_RED, 1);
+		yellowDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_YELLOW, 1);
+		blueDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_BLUE, 1);
 
 		greenToadGot = new Conditions(LogicType.OR, greenToadLoaded, greenToad, greenDyed);
 		redToadGot = new Conditions(LogicType.OR, redToadLoaded, redToad, redDyed);
@@ -315,9 +315,9 @@ public class MourningsEndPartI extends BasicQuestHelper
 		givenRottenApple = new VarbitRequirement(VarbitID.MOURNING_ELENA, 2, Operation.GREATER_EQUAL);
 		receivedSieve = new VarbitRequirement(VarbitID.MOURNING_ELENA, 4, Operation.GREATER_EQUAL);
 
-		poisoned1 = new VarbitRequirement(806, 1);
-		poisoned2 = new VarbitRequirement(807, 1);
-		poisoned3 = new VarbitRequirement(808, 1);
+		poisoned1 = new VarbitRequirement(VarbitID.MOURNING_FOOD_POISON1, 1);
+		poisoned2 = new VarbitRequirement(VarbitID.MOURNING_FOOD_POISON2, 1);
+		poisoned3 = new VarbitRequirement(VarbitID.MOURNING_FOOD_POISON3, 1);
 
 		twoPoisoned = new Conditions(LogicType.OR, new Conditions(poisoned1, poisoned2), new Conditions(poisoned1, poisoned3), new Conditions(poisoned2, poisoned3));
 	}

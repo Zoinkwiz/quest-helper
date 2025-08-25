@@ -167,15 +167,15 @@ public class ATailOfTwoCats extends BasicQuestHelper
 	{
 		bobNearby = new NpcRequirement("Bob nearby", NpcID.DEATH_GROWNCAT_BLACK_VIS);
 
-		rakedPatch = new VarbitRequirement(1033, 3);
+		rakedPatch = new VarbitRequirement(VarbitID.TWOCATS_CHORES_TIDYGARDEN, 3);
 		plantedSeed = new VarbitRequirement(VarbitID.TWOCATS_CHORES_TIDYGARDEN, 4, Operation.GREATER_EQUAL);
-		grownPotatoes = new VarbitRequirement(1033, 8);
-		madeBed = new VarbitRequirement(1029, 1);
-		placedLogs = new VarbitRequirement(1030, 1);
-		litLogs = new VarbitRequirement(1030, 2);
-		placedCake = new VarbitRequirement(1031, 3);
-		placedMilk = new VarbitRequirement(1031, 4);
-		usedShears = new VarbitRequirement(1032, 8);
+		grownPotatoes = new VarbitRequirement(VarbitID.TWOCATS_CHORES_TIDYGARDEN, 8);
+		madeBed = new VarbitRequirement(VarbitID.TWOCATS_CHORES_TIDYHOUSE, 1);
+		placedLogs = new VarbitRequirement(VarbitID.TWOCATS_CHORES_WARMHUMAN, 1);
+		litLogs = new VarbitRequirement(VarbitID.TWOCATS_CHORES_WARMHUMAN, 2);
+		placedCake = new VarbitRequirement(VarbitID.TWOCATS_CHORES_FEEDHUMAN, 3);
+		placedMilk = new VarbitRequirement(VarbitID.TWOCATS_CHORES_FEEDHUMAN, 4);
+		usedShears = new VarbitRequirement(VarbitID.TWOCATS_CHORES_TIDYHUMAN, 8);
 	}
 
 	public void setupSteps()

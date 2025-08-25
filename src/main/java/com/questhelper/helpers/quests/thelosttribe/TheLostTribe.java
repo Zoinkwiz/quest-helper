@@ -163,8 +163,8 @@ public class TheLostTribe extends BasicQuestHelper
 		foundRobes = new VarbitRequirement(VarbitID.LOST_TRIBE_HAM, 1, Operation.GREATER_EQUAL);
 		foundSilverwareOrToldOnSigmund = new VarbitRequirement(VarbitID.LOST_TRIBE_HAM, 3, Operation.GREATER_EQUAL);
 
-		hansKnows = new VarbitRequirement(537, 0);
-		bobKnows = new VarbitRequirement(537, 1);
+		hansKnows = new VarbitRequirement(VarbitID.LOST_TRIBE_CONTACT, 0);
+		bobKnows = new VarbitRequirement(VarbitID.LOST_TRIBE_CONTACT, 1);
 
 		// 537 0->2->0, Hans
 		// 537 0->1, Bob

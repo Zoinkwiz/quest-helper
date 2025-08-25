@@ -53,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -214,9 +215,9 @@ public class FairytaleII extends BasicQuestHelper
 		// 2328 0->1
 		// 2329 0->2
 
-		hasReadSign = new VarbitRequirement(2338, 4);
+		hasReadSign = new VarbitRequirement(VarbitID.FAIRY2_SIGN_READ, 4);
 
-		hasInvestigatedCertificate = new VarbitRequirement(2336, 1);
+		hasInvestigatedCertificate = new VarbitRequirement(VarbitID.FAIRY2_CERTIFICUTE_EXAMINED, 1);
 
 		talkedToGodfather = new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(), 40, Operation.GREATER_EQUAL);
 		addedFlowerCorrectly = new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(), 72, Operation.GREATER_EQUAL);
@@ -225,7 +226,7 @@ public class FairytaleII extends BasicQuestHelper
 
 		// 2334?
 		starflowerNearby = new NpcCondition(NpcID.FAIRY2_STARFLOWER_FULLGROWN);
-		pickedStarFlower = new VarbitRequirement(2330, 1);
+		pickedStarFlower = new VarbitRequirement(VarbitID.FAIRYRING_COSMIC_PLANE, 1);
 
 		clawNearby = new ItemOnTileRequirement(gorakClaw);
 		// 2327 1->2 when searched for certificate

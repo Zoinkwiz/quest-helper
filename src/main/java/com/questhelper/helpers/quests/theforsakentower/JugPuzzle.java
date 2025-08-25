@@ -44,6 +44,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -254,7 +255,7 @@ public class JugPuzzle extends DetailedOwnerStep
 	private void setupConditions()
 	{
 		missingTinderbox = new ItemRequirements(LogicType.NAND, tinderbox);
-		hasFilledWithFuel = new VarbitRequirement(7798, 3);
+		hasFilledWithFuel = new VarbitRequirement(VarbitID.LOVAQUEST_FURNACE, 3);
 		inFirstFloor = new ZoneRequirement(firstFloor);
 		inSecondFloor = new ZoneRequirement(secondFloor);
 		inBasement = new ZoneRequirement(basement);

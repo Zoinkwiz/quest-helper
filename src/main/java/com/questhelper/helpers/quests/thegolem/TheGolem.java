@@ -227,20 +227,20 @@ public class TheGolem extends BasicQuestHelper
 		hasReadNotes = new VarbitRequirement(VarbitID.GOLEM_B, 3, Operation.GREATER_EQUAL);
 		talkedToCurator = new VarbitRequirement(VarbitID.GOLEM_B, 4, Operation.GREATER_EQUAL);
 
-		added1Clay = new VarbitRequirement(348, 1);
-		added2Clay = new VarbitRequirement(348, 2);
-		added3Clay = new VarbitRequirement(348, 3);
+		added1Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 1);
+		added2Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 2);
+		added3Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 3);
 
-		turnedStatue1 = new VarbitRequirement(349, 1);
-		turnedStatue2 = new VarbitRequirement(350, 1);
-		turnedStatue3 = new VarbitRequirement(351, 0);
-		turnedStatue4 = new VarbitRequirement(352, 2);
+		turnedStatue1 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSA, 1);
+		turnedStatue2 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSB, 1);
+		turnedStatue3 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSC, 0);
+		turnedStatue4 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSD, 2);
 
-		openedHead = new VarbitRequirement(353, 1);
+		openedHead = new VarbitRequirement(VarbitID.GOLEM_HEAD_OPEN, 1);
 
-		stolenStatuette = new Conditions(LogicType.OR, new VarbitRequirement(355, 1), statuette);
+		stolenStatuette = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.GOLEM_RETRIEVED_STATUETTE, 1), statuette);
 
-		enteredRuins = new VarbitRequirement(356, 1);
+		enteredRuins = new VarbitRequirement(VarbitID.GOLEM_SEEN_UNDERGROUND, 1);
 	}
 
 	private void setupSteps()

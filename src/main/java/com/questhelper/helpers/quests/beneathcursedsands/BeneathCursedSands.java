@@ -343,7 +343,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		hasReadStoneTablet = new VarbitRequirement(VarbitID.BCS_FOUND_MOULD, 2, Operation.GREATER_EQUAL);
 
 		isRotatingScarab = new WidgetModelRequirement(750, 3, -1);
-		scarabRotatedDownwards = new VarbitRequirement(13849, 15);
+		scarabRotatedDownwards = new VarbitRequirement(VarbitID.BCS_EMBLEM_ROTATION, 15);
 		scarabRotationQuickestRight = new VarbitRequirement(VarbitID.BCS_EMBLEM_ROTATION, 15, Operation.GREATER_EQUAL);
 
 		firstLeverPulled = new ObjectCondition(ObjectID.BCS_TOMB_LEVER_ON, new WorldPoint(3439, 9225, 0));
@@ -352,14 +352,14 @@ public class BeneathCursedSands extends BasicQuestHelper
 		shouldDestroyShadowRift = new NpcCondition(NpcID.BCS_CHAMPION_RIFT);
 
 		inChemistryPuzzle = new WidgetModelRequirement(751, 3, -1);
-		chemistryValveLeftStepZero = new VarbitRequirement(13863, 0);
-		chemistryValveLeftStepOne = new VarbitRequirement(13863, 3);
-		chemistryValveLeftStepTwo = new VarbitRequirement(13863, 6);
-		chemistryValveLeftStepThree = new VarbitRequirement(13863, 9);
-		chemistryValveMiddleAtMaximum = new VarbitRequirement(13864, 45);
-		chemistryValveMiddleNearMax = new VarbitRequirement(13864, 42);
-		chemistryValveRightAtMaximum = new VarbitRequirement(13865, 45);
-		chemistryValveRightNearMax = new VarbitRequirement(13865, 42);
+		chemistryValveLeftStepZero = new VarbitRequirement(VarbitID.BCS_BURNER_1, 0);
+		chemistryValveLeftStepOne = new VarbitRequirement(VarbitID.BCS_BURNER_1, 3);
+		chemistryValveLeftStepTwo = new VarbitRequirement(VarbitID.BCS_BURNER_1, 6);
+		chemistryValveLeftStepThree = new VarbitRequirement(VarbitID.BCS_BURNER_1, 9);
+		chemistryValveMiddleAtMaximum = new VarbitRequirement(VarbitID.BCS_BURNER_2, 45);
+		chemistryValveMiddleNearMax = new VarbitRequirement(VarbitID.BCS_BURNER_2, 42);
+		chemistryValveRightAtMaximum = new VarbitRequirement(VarbitID.BCS_BURNER_3, 45);
+		chemistryValveRightNearMax = new VarbitRequirement(VarbitID.BCS_BURNER_3, 42);
 
 		shouldFightMenaphiteShadow = new NpcCondition(NpcID.BCS_MENAPHITE_AKH_SHADOW);
 	}

@@ -213,7 +213,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>with the <col=800000>book on dwarven costumes<col=000080> that I got from the")
 		);
 
-		talkedToVermundiWithBook = new VarbitRequirement(584, 1);
+		talkedToVermundiWithBook = new VarbitRequirement(VarbitID.GIANTDWARF_VERMUNDI_GIVENBOOK, 1);
 
 		askedToStartMachine = new Conditions(true, LogicType.OR,
 			new DialogRequirement(questHelperPlugin.getPlayerStateManager().getPlayerName(),
@@ -277,7 +277,7 @@ public class TheGiantDwarf extends BasicQuestHelper
 		talkedToReldo = new Conditions(true, LogicType.OR,
 			new DialogRequirement("you could try taking them some redberry pie."));
 
-		givenThurgoPie = new VarbitRequirement(580, 1);
+		givenThurgoPie = new VarbitRequirement(VarbitID.GIANTDWARF_PIE_GIVEN, 1);
 		// Thurgo makes axe, 2781 = 1
 		givenDwarvenBattleaxe = new VarbitRequirement(VarbitID.GIANTDWARF_MODEL_STATE, true, 2);
 		hasDwarvenBattleaxe = new Conditions(true, LogicType.OR,
@@ -290,14 +290,14 @@ public class TheGiantDwarf extends BasicQuestHelper
 		completedSecretaryTasks = new Conditions(true, new DialogRequirement("I'm afraid I have no more work to offer you", "You should speak directly to the director."));
 		completedDirectorTasks = new Conditions(true, new DialogRequirement("Have you ever considered joining"));
 		joinedCompany = new Conditions(true, LogicType.OR,
-			new VarbitRequirement(578, 1), // Purple Pewter
-			new VarbitRequirement(578, 2), // Yellow Fortune
-			new VarbitRequirement(578, 3), // Blue Opal
-			new VarbitRequirement(578, 4), // Green Gem
-			new VarbitRequirement(578, 5), // White Chisel
-			new VarbitRequirement(578, 6), // Silver Cog
-			new VarbitRequirement(578, 7), // Brown Engine
-			new VarbitRequirement(578, 8), // Would be Red Axe?
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 1), // Purple Pewter
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 2), // Yellow Fortune
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 3), // Blue Opal
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 4), // Green Gem
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 5), // White Chisel
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 6), // Silver Cog
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 7), // Brown Engine
+			new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 8), // Would be Red Axe?
 			new DialogRequirement("I will not disappoint you."),
 			new DialogRequirement("Come in, come in my friend!"));
 	}

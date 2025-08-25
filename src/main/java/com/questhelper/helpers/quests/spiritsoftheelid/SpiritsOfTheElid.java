@@ -47,6 +47,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -209,12 +210,12 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		notAwusahHouse = new ZoneRequirement(outsideAwusahHouse);
 		insideCrevice = new ZoneRequirement(creviceOutsideNardah);
 
-		whiteGolem = new VarbitRequirement(1447, 1);
-		greyGolem = new VarbitRequirement(1448, 1);
-		blackGolem = new VarbitRequirement(1446, 1);
-		stabChannel = new VarbitRequirement(1450, 1);
-		slashChannel = new VarbitRequirement(1449, 1);
-		crushChannel = new VarbitRequirement(1451, 1);
+		whiteGolem = new VarbitRequirement(VarbitID.ELID_WHITEGOLEM, 1);
+		greyGolem = new VarbitRequirement(VarbitID.ELID_GREYGOLEM, 1);
+		blackGolem = new VarbitRequirement(VarbitID.ELID_BLACKGOLEM, 1);
+		stabChannel = new VarbitRequirement(VarbitID.ELID_THIEVINGCHANNEL, 1);
+		slashChannel = new VarbitRequirement(VarbitID.ELID_MININGCHANNEL, 1);
+		crushChannel = new VarbitRequirement(VarbitID.ELID_RANGINGCHANNEL, 1);
 	}
 
 	public void setupSteps()

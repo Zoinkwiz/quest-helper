@@ -35,6 +35,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,6 @@ public class SirRenItchoodStep extends ConditionalStep
 	private String[] answers = {
 		"NULL", "TIME", "FISH", "RAIN", "BITE", "MEAT", "LAST"
 	};
-
-	private final int VARBIT_FINISHED_ROOM = 663;
-	private final int VARBIT_ANSWER = 666;
 
 	private Requirement answerWidgetOpen;
 	private DoorPuzzle enterDoorcode;
@@ -67,7 +65,7 @@ public class SirRenItchoodStep extends ConditionalStep
 	public void startUp()
 	{
 		super.startUp();
-		int answerID = client.getVarbitValue(VARBIT_ANSWER);
+		int answerID = client.getVarbitValue(VarbitID.RD_TEMPLOCK_1);
 		if (answerID == 0)
 		{
 			return;
@@ -80,7 +78,7 @@ public class SirRenItchoodStep extends ConditionalStep
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		super.onVarbitChanged(varbitChanged);
-		int answerID = client.getVarbitValue(VARBIT_ANSWER);
+		int answerID = client.getVarbitValue(VarbitID.RD_TEMPLOCK_1);
 		if (answerID == 0)
 		{
 			return;
@@ -91,7 +89,7 @@ public class SirRenItchoodStep extends ConditionalStep
 
 	private void addRenSteps()
 	{
-		finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
+		finishedRoomCondition = new VarbitRequirement(VarbitID.RD_ROOM5_COMPLETE, 1);
 		openAnswerWidget = new ObjectStep(questHelper, ObjectID.RD_ROOM5_EXITDOOR, "Open the door to be prompted to enter a code.");
 		answerWidgetOpen = new WidgetTextRequirement(285, 55, "Combination Lock Door");
 		enterDoorcode = new DoorPuzzle(questHelper, "NONE");

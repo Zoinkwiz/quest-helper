@@ -135,11 +135,11 @@ public class TheForsakenTower extends BasicQuestHelper
 		inSecondFloor = new ZoneRequirement(secondFloor);
 		inBasement = new ZoneRequirement(basement);
 
-		inspectedDisplayCase = new VarbitRequirement(7804, 1);
-		finishedPowerPuzzle = new VarbitRequirement(7797, 4);
-		finishedFurnacePuzzle = new VarbitRequirement(7798, 4);
-		finishedPotionPuzzle = new VarbitRequirement(7799, 4);
-		finishedAltarPuzzle = new VarbitRequirement(7800, 2);
+		inspectedDisplayCase = new VarbitRequirement(VarbitID.LOVAQUEST_FOUNDHAMMER, 1);
+		finishedPowerPuzzle = new VarbitRequirement(VarbitID.LOVAQUEST_ELECTRICITY, 4);
+		finishedFurnacePuzzle = new VarbitRequirement(VarbitID.LOVAQUEST_FURNACE, 4);
+		finishedPotionPuzzle = new VarbitRequirement(VarbitID.LOVAQUEST_REFINERY, 4);
+		finishedAltarPuzzle = new VarbitRequirement(VarbitID.LOVAQUEST_ALTAR, 2);
 		generatorStarted = new VarbitRequirement(VarbitID.LOVAQUEST_ELECTRICITY, 2, Operation.GREATER_EQUAL);
 		powerPuzzleVisible = new WidgetModelRequirement(624, 2, 0, 36246);
 	}

@@ -36,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,12 +48,10 @@ public class LadyTableStep extends DetailedOwnerStep
 	protected Client client;
 
 	private Statue[] statues;
-	private final int VARBIT_FINISHED_ROOM = 660;
-	private final int VARBIT_STATUE_ANSWER = 667;
 
 	private ObjectStep clickMissingStatue, leaveRoom;
 
-	VarbitRequirement finishedRoom = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
+	VarbitRequirement finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM2_COMPLETE, 1);
 
 	public LadyTableStep(QuestHelper questHelper, Requirement... requirements)
 	{
@@ -63,7 +62,7 @@ public class LadyTableStep extends DetailedOwnerStep
 	public void startUp()
 	{
 		super.startUp();
-		Statue answerStatue = statues[client.getVarbitValue(VARBIT_STATUE_ANSWER)];
+		Statue answerStatue = statues[client.getVarbitValue(VarbitID.RD_TEMPLOCK_2)];
 		clickMissingStatue.setText("Click the " + answerStatue.text + " once it appears.");
 		clickMissingStatue.setWorldPoint(answerStatue.point);
 	}
@@ -72,7 +71,7 @@ public class LadyTableStep extends DetailedOwnerStep
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		super.onVarbitChanged(varbitChanged);
-		Statue answerStatue = statues[client.getVarbitValue(VARBIT_STATUE_ANSWER)];
+		Statue answerStatue = statues[client.getVarbitValue(VarbitID.RD_TEMPLOCK_2)];
 		clickMissingStatue.setText("Click the " + answerStatue.text + " once it appears.");
 		clickMissingStatue.setWorldPoint(answerStatue.point);
 	}

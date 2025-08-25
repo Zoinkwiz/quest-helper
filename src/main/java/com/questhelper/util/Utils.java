@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +58,7 @@ public class Utils
 		{
 			return AccountType.NORMAL;
 		}
-		return AccountType.get(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
+		return AccountType.get(client.getVarbitValue(VarbitID.IRONMAN));
 	}
 
 	/**

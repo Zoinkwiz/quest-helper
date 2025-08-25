@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -402,18 +403,18 @@ public class TheFremennikIsles extends BasicQuestHelper
 		inTrollCave = new ZoneRequirement(trollCave);
 		inKingCave = new ZoneRequirement(kingCave);
 		hasJesterOutfit = new ItemRequirements(jesterBoots, jesterHat, jesterTights, jesterTop);
-		jestering1 = new VarbitRequirement(6719, 2);
-		repairedBridge1 = new VarbitRequirement(3313, 1);
-		repairedBridge2 = new VarbitRequirement(3314, 1);
+		jestering1 = new VarbitRequirement(VarbitID.MINIMAP_STATE, 2);
+		repairedBridge1 = new VarbitRequirement(VarbitID.FRIS_M_B3, 1);
+		repairedBridge2 = new VarbitRequirement(VarbitID.FRIS_M_B4, 1);
 
-		collectedHring = new VarbitRequirement(3321, 1);
-		collectedSkuli = new VarbitRequirement(3320, 1);
-		collectedValigga = new VarbitRequirement(3324, 1);
-		collectedKeepa = new VarbitRequirement(3325, 1);
-		collectedRaum = new VarbitRequirement(3323, 1);
-		collectedFlosi = new VarbitRequirement(3322, 1);
+		collectedHring = new VarbitRequirement(VarbitID.FRISD_OREMERCHANT_TAXCOLLECTED, 1);
+		collectedSkuli = new VarbitRequirement(VarbitID.FRISD_WEAPONMERCHANT_TAXCOLLECTED, 1);
+		collectedValigga = new VarbitRequirement(VarbitID.FRISD_PUB_TAXCOLLECTED, 1);
+		collectedKeepa = new VarbitRequirement(VarbitID.FRISD_COOK_TAXCOLLECTED, 1);
+		collectedRaum = new VarbitRequirement(VarbitID.FRISD_ARMOURMERCHANT_TAXCOLLECTED, 1);
+		collectedFlosi = new VarbitRequirement(VarbitID.FRISD_FISHMONGER_TAXCOLLECTED, 1);
 
-		killedTrolls = new VarbitRequirement(3312, 0);
+		killedTrolls = new VarbitRequirement(VarbitID.FRIS_TASK, 0);
 	}
 
 	public void setupSteps()

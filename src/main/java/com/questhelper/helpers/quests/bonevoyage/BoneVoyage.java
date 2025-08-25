@@ -279,9 +279,8 @@ public class BoneVoyage extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		final int KUDOS_VARBIT = 3637;
 		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new VarbitRequirement(KUDOS_VARBIT, Operation.GREATER_EQUAL, 100, "100 Kudos"));
+		req.add(new VarbitRequirement(VarbitID.VM_KUDOS, Operation.GREATER_EQUAL, 100, "100 Kudos"));
 		req.add(new QuestRequirement(QuestHelperQuest.THE_DIG_SITE, QuestState.FINISHED));
 		return req;
 	}

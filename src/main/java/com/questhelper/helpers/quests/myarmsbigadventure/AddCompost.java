@@ -31,6 +31,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.Arrays;
@@ -56,7 +57,7 @@ public class AddCompost extends ObjectStep
 
 	protected void updateSteps()
 	{
-		int numCompToAdd = 7 - client.getVarbitValue(2792);
+		int numCompToAdd = 7 - client.getVarbitValue(VarbitID.MYARM_SUPERCOMPOST);
 		compost.setQuantity(numCompToAdd);
 		this.setRequirements(Arrays.asList(compost, spade));
 		this.setText("Add " + numCompToAdd + " supercompost on My Arm's soil patch.");

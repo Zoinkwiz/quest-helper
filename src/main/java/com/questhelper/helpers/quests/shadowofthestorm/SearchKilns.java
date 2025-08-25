@@ -31,6 +31,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.Arrays;
@@ -54,7 +55,7 @@ public class SearchKilns extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		int correctKiln = client.getVarbitValue(1378);
+		int correctKiln = client.getVarbitValue(VarbitID.AGRITH_KILN);
 		if (correctKiln == 0)
 		{
 			startUpStep(searchKiln1);

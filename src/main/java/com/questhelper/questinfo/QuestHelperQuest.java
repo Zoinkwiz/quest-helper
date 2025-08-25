@@ -920,7 +920,8 @@ public enum QuestHelperQuest
 	{
 		for (QuestHelperQuest qhq : QuestHelperQuest.values())
 		{
-			if (qhq.name.equals(name)) return qhq.getQuestHelper();
+			if (qhq.name.equalsIgnoreCase(name)) return qhq.getQuestHelper();
+			if (qhq.keywords.stream().anyMatch((keyword) -> keyword.equalsIgnoreCase(name))) return qhq.getQuestHelper();
 		}
 		return null;
 	}

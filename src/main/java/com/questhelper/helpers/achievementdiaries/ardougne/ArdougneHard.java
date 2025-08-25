@@ -184,10 +184,11 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.MOURNING_CRYSTAL_TRINKET).showConditioned(notDeathRune).isNotConsumed();
 		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH)
 			.showConditioned(notDeathRune);
-		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed();
-		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
 
 		var hasCompletedSOTE = new QuestRequirement(QuestHelperQuest.SONG_OF_THE_ELVES, QuestState.FINISHED);
+
+		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
 
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		gasMask = new ItemRequirement("Gas mask", ItemID.GASMASK).isNotConsumed().hideConditioned(hasCompletedSOTE);

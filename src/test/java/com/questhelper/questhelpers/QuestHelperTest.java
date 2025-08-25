@@ -278,6 +278,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.DWARF_CANNON,
 			QuestHelperQuest.X_MARKS_THE_SPOT,
 			QuestHelperQuest.COOKS_ASSISTANT,
+			QuestHelperQuest.WATERFALL_QUEST,
 			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.BIOHAZARD,

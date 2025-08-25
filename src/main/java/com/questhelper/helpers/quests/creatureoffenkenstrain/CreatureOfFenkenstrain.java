@@ -271,7 +271,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			"Go back to the ground floor.");
 
 		talkToGardenerForHead = new NpcStep(this, NpcID.FENK_GARDENER, new WorldPoint(3548, 3562, 0),
-			"Talk to the Gardener Ghost.", ghostSpeakAmulet.equipped());
+			"Talk to the Gardener Ghost while wearing your Ghostspeak amulet.", ghostSpeakAmulet.equipped());
 		talkToGardenerForHead.addDialogStep("What happened to your head?");
 
 		goToHeadGrave = new DigStep(this, new WorldPoint(3608, 3490, 0),

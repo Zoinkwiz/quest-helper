@@ -10,6 +10,7 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.ReorderableConditionalStep;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Map;
@@ -207,7 +208,27 @@ public class QuestHelperTest extends MockedTest
 	{
 		assertNotNull(step);
 
-		if (step instanceof OwnerStep)
+		if (step instanceof ReorderableConditionalStep)
+		{
+			helper.startUpStep(step);
+			for (var e : ((ReorderableConditionalStep) step).getStepsMap().entrySet())
+			{
+				var req = e.getKey();
+				var innerStep = e.getValue();
+				if (checkedSteps.contains(innerStep))
+				{
+					continue;
+				}
+				checkedSteps.add(innerStep);
+				helper.startUpStep(innerStep);
+				// For reorderable steps, we _always_ allow the default-state to not have a sidebar step
+				var shouldActuallyError = req != null && shouldError;
+				checkSteps(helper, questOverviewPanel, shouldActuallyError, checkedSteps, innerStep);
+				helper.shutDownStep();
+			}
+			helper.shutDownStep();
+		}
+		else if (step instanceof OwnerStep)
 		{
 			helper.startUpStep(step);
 			for (var innerStep : ((OwnerStep) step).getSteps())

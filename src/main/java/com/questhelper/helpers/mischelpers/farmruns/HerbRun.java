@@ -366,7 +366,7 @@ public class HerbRun extends ComplexStateQuestHelper
 
 		hosidiusPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Plant your seeds into the Hosidius patch.", hosidiusHouseTeleport);
 		hosidiusPlant.addIcon(ItemID.RANARR_SEED);
-		hosidiusPlant.addSubSteps(hosidiusPlant);
+		hosidiusPatch.addSubSteps(hosidiusPlant);
 
 		farmingGuildPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_7, new WorldPoint(1238, 3726, 0), "Plant your seeds into the Farming Guild patch.", farmingGuildTeleport);
 		farmingGuildPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildPatch));

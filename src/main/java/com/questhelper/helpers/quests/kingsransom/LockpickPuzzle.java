@@ -37,9 +37,19 @@ import java.awt.*;
 
 public class LockpickPuzzle extends QuestStep
 {
-	int[] TUMBLER_ANSWERS = new int[]{3894, 3895, 3896, 3897};
+	int[] TUMBLER_ANSWERS = new int[]{
+		VarbitID.KR_TUMB1_ANS,
+		VarbitID.KR_TUMB2_ANS,
+		VarbitID.KR_TUMB3_ANS,
+		VarbitID.KR_TUMB4_ANS
+	};
 	int[] TUMBLER_WIDGETS = new int[]{20, 21, 22, 23};
-	int[] TUMBLER_CURRENT = new int[]{3901, 3902, 3903, 3904};
+	int[] TUMBLER_CURRENT = new int[]{
+		VarbitID.KR_TUMB1_CURR_POS,
+		VarbitID.KR_TUMB2_CURR_POS,
+		VarbitID.KR_TUMB3_CURR_POS, 
+		VarbitID.KR_TUMB4_CURR_POS
+	};
 	int UP_WIDGET = 12;
 	int DOWN_WIDGET = 13;
 	int TRY_LOCK = 14;

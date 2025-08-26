@@ -175,7 +175,7 @@ public class TrollStronghold extends BasicQuestHelper
 		cellKey1Nearby = new ItemOnTileRequirement(cellKey1);
 		cellKey2Nearby = new ItemOnTileRequirement(cellKey2);
 		freedEadgar = new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1);
-		freedGodric = new VarplayerRequirement(317, 40);
+		freedGodric = new VarplayerRequirement(VarPlayerID.TROLL_QUEST, 40);
 	}
 
 	public void setupSteps()

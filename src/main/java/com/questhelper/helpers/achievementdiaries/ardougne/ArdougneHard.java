@@ -184,16 +184,20 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.MOURNING_CRYSTAL_TRINKET).showConditioned(notDeathRune).isNotConsumed();
 		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH)
 			.showConditioned(notDeathRune);
-		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed();
+
+		var hasCompletedSOTE = new QuestRequirement(QuestHelperQuest.SONG_OF_THE_ELVES, QuestState.FINISHED);
+
+		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
-		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS).isNotConsumed();
-		gasMask = new ItemRequirement("Gas mask", ItemID.GASMASK).isNotConsumed();
-		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNING_MOURNER_GLOVES).isNotConsumed();
-		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNING_MOURNER_CLOAK).isNotConsumed();
-		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNING_MOURNER_TOP).isNotConsumed();
-		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNING_MOURNER_LEGS).isNotConsumed();
+
+		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		gasMask = new ItemRequirement("Gas mask", ItemID.GASMASK).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNING_MOURNER_GLOVES).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNING_MOURNER_CLOAK).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNING_MOURNER_TOP).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNING_MOURNER_LEGS).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers,
-			mournerCloak, mournerBoots, mournerGloves).showConditioned(notDeathRune).isNotConsumed();
+			mournerCloak, mournerBoots, mournerGloves).showConditioned(notDeathRune).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		mournersOutfit.setTooltip("Another set can be obtained at the north entrance to Arandar.");
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
 			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy)).isNotConsumed();

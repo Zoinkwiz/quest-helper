@@ -129,13 +129,13 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		doHard.addStep(notDragSquare, dragSquareTask);
 
 		deathRuneTask = new ConditionalStep(this, enterMournerHQ);
-		deathRuneTask.addStep(inMournerHQ, enterMournerBasement);
+		deathRuneTask.addStep(new Conditions(redAtAltar, inDeath02), deathAltar);
+		deathRuneTask.addStep(new Conditions(redAtDoor, inDeath02), turnKeyMirror);
+		deathRuneTask.addStep(new Conditions(inDeath), deathRune);
 		deathRuneTask.addStep(inDeath0, deathMoveUp1);
+		deathRuneTask.addStep(inDeath12, deathMoveDown0);
 		deathRuneTask.addStep(inDeath1, deathMoveUp2);
 		deathRuneTask.addStep(inDeath2, deathMoveDown1);
-		deathRuneTask.addStep(inDeath12, deathMoveDown0);
-		deathRuneTask.addStep(new Conditions(redAtDoor, inDeath02), turnKeyMirror);
-		deathRuneTask.addStep(new Conditions(redAtAltar, inDeath02), deathRune);
 		doHard.addStep(notDeathRune, deathRuneTask);
 
 		return doHard;
@@ -288,7 +288,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		turnKeyMirror = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_1_B, new WorldPoint(1881, 4639, 0),
 			"Enter the central area, and turn the pillar's mirror west.");
 		deathAltar = new ObjectStep(this, ObjectID.DEATHTEMPLE_RUINED, new WorldPoint(1860, 4639, 0),
-			"Enter the Death altar.", deathAccess, highEss, crystalTrink);
+			"Enter the Death altar.", deathAccess.highlighted(), highEss, crystalTrink);
 		deathAltar.addIcon(ItemID.DEATH_TALISMAN);
 		deathRune = new ObjectStep(this, ObjectID.DEATH_ALTAR, new WorldPoint(2205, 4836, 0),
 			"Craft some death runes from essence."

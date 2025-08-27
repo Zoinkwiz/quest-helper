@@ -226,8 +226,8 @@ public class GrimTales extends BasicQuestHelper
 		inTowerBase = new ZoneRequirement(towerBase);
 		inTowerUpstairs = new ZoneRequirement(towerUpstairs);
 
-		grimgnashAsleep = new VarbitRequirement(3717, 1);
-		givenFeather = new VarbitRequirement(3719, 1);
+		grimgnashAsleep = new VarbitRequirement(VarbitID.GRIM_GRIFFIN_ASLEEP, 1);
+		givenFeather = new VarbitRequirement(VarbitID.GRIM_GIVEN_FEATHER, 1);
 
 		talkedToDrainOnce = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 5, Operation.GREATER_EQUAL);
 		beardDropped = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 10, Operation.GREATER_EQUAL);
@@ -235,17 +235,17 @@ public class GrimTales extends BasicQuestHelper
 		talkedToMiazrqa = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 20, Operation.GREATER_EQUAL);
 		inPianoWidget = new WidgetModelRequirement(535, 1, 25890);
 
-		pressed1 = new VarbitRequirement(3697, 1);
-		pressed2 = new VarbitRequirement(3697, 2);
-		pressed3 = new VarbitRequirement(3697, 3);
-		pressed4 = new VarbitRequirement(3697, 4);
-		pressed5 = new VarbitRequirement(3697, 5);
-		pressed6 = new VarbitRequirement(3697, 6);
-		pressed7 = new VarbitRequirement(3697, 7);
-		pressed8 = new VarbitRequirement(3697, 8);
+		pressed1 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 1);
+		pressed2 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 2);
+		pressed3 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 3);
+		pressed4 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 4);
+		pressed5 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 5);
+		pressed6 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 6);
+		pressed7 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 7);
+		pressed8 = new VarbitRequirement(VarbitID.GRIM_PIANOTRACK, 8);
 
-		unlockedPiano = new VarbitRequirement(3698, 1);
-		searchedPiano = new VarbitRequirement(3716, 1);
+		unlockedPiano = new VarbitRequirement(VarbitID.GRIM_PIANO_USED, 1);
+		searchedPiano = new VarbitRequirement(VarbitID.GRIM_HEAD_FOUND, 1);
 
 		inMouseRoom1 = new ZoneRequirement(mouseRoom1);
 		inMouseRoom2 = new ZoneRequirement(mouseRoom2);
@@ -257,19 +257,19 @@ public class GrimTales extends BasicQuestHelper
 		inWrongMouse1 = new ZoneRequirement(wrongMouse1);
 		inWrongMouse2 = new ZoneRequirement(wrongMouse2);
 
-		hasMiazrqasPendant = new VarbitRequirement(3721, 1);
+		hasMiazrqasPendant = new VarbitRequirement(VarbitID.GRIM_HAVE_PENDANT, 1);
 
-		givenPendant = new VarbitRequirement(3694, 25);
+		givenPendant = new VarbitRequirement(VarbitID.GRIM_DWARFQUEST, 25);
 
-		releasedRupert = new VarbitRequirement(3701, 1);
+		releasedRupert = new VarbitRequirement(VarbitID.GRIM_DWARF_VIS, 1);
 
-		plantedSeed = new VarbitRequirement(3714, 1);
-		wateredSeed = new VarbitRequirement(3714, 2);
+		plantedSeed = new VarbitRequirement(VarbitID.GRIM_STALK_STATE, 1);
+		wateredSeed = new VarbitRequirement(VarbitID.GRIM_STALK_STATE, 2);
 		onCloud = new ZoneRequirement(cloud);
 
-		killedGlod = new VarbitRequirement(3715, 1);
+		killedGlod = new VarbitRequirement(VarbitID.GRIM_GIANT_DEAD, 1);
 
-		usedPotion = new VarbitRequirement(3714, 3);
+		usedPotion = new VarbitRequirement(VarbitID.GRIM_STALK_STATE, 3);
 	}
 
 	public void setupSteps()

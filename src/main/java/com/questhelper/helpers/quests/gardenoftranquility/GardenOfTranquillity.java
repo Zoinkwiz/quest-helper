@@ -286,27 +286,27 @@ public class GardenOfTranquillity extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		talkedToElstan = new VarbitRequirement(967, 1);
+		talkedToElstan = new VarbitRequirement(VarbitID.GARDEN_ELSTAN_VARBIT, 1);
 		plantedMarigold = new VarbitRequirement(VarbitID.GARDEN_ELSTAN_VARBIT, 2, Operation.GREATER_EQUAL);
-		harvestedMarigold = new VarbitRequirement(967, 3);
-		givenMarigold = new VarbitRequirement(967, 4);
+		harvestedMarigold = new VarbitRequirement(VarbitID.GARDEN_ELSTAN_VARBIT, 3);
+		givenMarigold = new VarbitRequirement(VarbitID.GARDEN_ELSTAN_VARBIT, 4);
 
-		talkedToLyra = new VarbitRequirement(968, 1);
+		talkedToLyra = new VarbitRequirement(VarbitID.GARDEN_LYRA_VARBIT, 1);
 		plantedOnions = new Conditions(LogicType.OR,
-			new VarbitRequirement(969, 1), // West patch
-			new VarbitRequirement(970, 1)); // East patch
+			new VarbitRequirement(VarbitID.GARDEN_PATCH_7_VARBIT, 1), // West patch
+			new VarbitRequirement(VarbitID.GARDEN_PATCH_8_VARBIT, 1)); // East patch
 		// Planted onion, 4771 3->13
 		onionsGrown = new VarbitRequirement(VarbitID.GARDEN_LYRA_VARBIT, 2, Operation.GREATER_EQUAL);
-		talkedToLyraAgain = new VarbitRequirement(968, 3);
-		talkedToKragen = new VarbitRequirement(971, 1);
+		talkedToLyraAgain = new VarbitRequirement(VarbitID.GARDEN_LYRA_VARBIT, 3);
+		talkedToKragen = new VarbitRequirement(VarbitID.GARDEN_KRAGEN_VARBIT, 1);
 		plantedCabbages = new Conditions(LogicType.OR,
-			new VarbitRequirement(974, 1), // North patch
-			new VarbitRequirement(975, 1)); // South patch
+			new VarbitRequirement(VarbitID.GARDEN_PATCH_5_VARBIT, 1), // North patch
+			new VarbitRequirement(VarbitID.GARDEN_PATCH_6_VARBIT, 1)); // South patch
 		cabbagesGrown = new VarbitRequirement(VarbitID.GARDEN_KRAGEN_VARBIT, 2, Operation.GREATER_EQUAL);
-		talkedToKragenAgain = new VarbitRequirement(971, 3);
+		talkedToKragenAgain = new VarbitRequirement(VarbitID.GARDEN_KRAGEN_VARBIT, 3);
 
-		talkedToDantaera = new VarbitRequirement(976, 1);
-		cutShoot = new VarbitRequirement(976, 2);
+		talkedToDantaera = new VarbitRequirement(VarbitID.GARDEN_DANTAERA_VARBIT, 1);
+		cutShoot = new VarbitRequirement(VarbitID.GARDEN_DANTAERA_VARBIT, 2);
 		hasPlantedShoot = new Conditions(whiteTreePot);
 		hasWateredShoot = new Conditions(LogicType.OR,
 			new VarbitRequirement(VarbitID.GARDEN_WHITE_TREE_VARBIT, 4, Operation.GREATER_EQUAL),
@@ -314,12 +314,12 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			whitetreeSapling);
 
 		talkedToAlthric = new VarbitRequirement(VarbitID.GARDEN_ALTHRIC_VARBIT, 1, Operation.GREATER_EQUAL);
-		ringInWell = new VarbitRequirement(966, 1);
+		ringInWell = new VarbitRequirement(VarbitID.GARDEN_RING_IN_WELL_VARBIT, 1);
 		canPickRoses = new Conditions(LogicType.OR,
 			new VarbitRequirement(VarbitID.GARDEN_ALTHRIC_VARBIT, 2, Operation.GREATER_EQUAL),
 			ringInWell
 		);
-		ringNotInWell = new VarbitRequirement(966, 0);
+		ringNotInWell = new VarbitRequirement(VarbitID.GARDEN_RING_IN_WELL_VARBIT, 0);
 
 		hasRedRoseSeed = new Conditions(LogicType.OR,
 			redRoseSeed,
@@ -335,17 +335,17 @@ public class GardenOfTranquillity extends BasicQuestHelper
 		);
 		hasRoseSeeds = new Conditions(hasRedRoseSeed, hasWhiteRoseSeed, hasPinkRoseSeed);
 
-		talkedToBernald = new VarbitRequirement(988, 1);
-		usedCureOnVines = new VarbitRequirement(988, 2);
-		talkedToAlain = new VarbitRequirement(988, 3);
-		curedVine = new VarbitRequirement(988, 4);
+		talkedToBernald = new VarbitRequirement(VarbitID.GARDEN_BERNALD_VARBIT, 1);
+		usedCureOnVines = new VarbitRequirement(VarbitID.GARDEN_BERNALD_VARBIT, 2);
+		talkedToAlain = new VarbitRequirement(VarbitID.GARDEN_BERNALD_VARBIT, 3);
+		curedVine = new VarbitRequirement(VarbitID.GARDEN_BERNALD_VARBIT, 4);
 		hasShards = runeShards;
 		hasDust = runeDust;
 		hasEnhancedCure = magicPlantCure;
-		gotVineSeeds = new VarbitRequirement(988, 5);
+		gotVineSeeds = new VarbitRequirement(VarbitID.GARDEN_BERNALD_VARBIT, 5);
 
-		notAddedCompost1 = new VarbitRequirement(984, 0);
-		notAddedCompost2 = new VarbitRequirement(986, 0);
+		notAddedCompost1 = new VarbitRequirement(VarbitID.GARDEN_ORCHIDS_PINK_VARBIT, 0);
+		notAddedCompost2 = new VarbitRequirement(VarbitID.GARDEN_ORCHIDS_YELLOW_VARBIT, 0);
 		notPlantedDelphinium =  new VarbitRequirement(VarbitID.GARDEN_DELPHINIUMS_VARBIT, 3, Operation.LESS_EQUAL);
 		notPlantedYellowOrchid = new VarbitRequirement(VarbitID.GARDEN_ORCHIDS_YELLOW_VARBIT, 1, Operation.LESS_EQUAL);
 		notPlantedPinkOrchid = new VarbitRequirement(VarbitID.GARDEN_ORCHIDS_PINK_VARBIT, 1, Operation.LESS_EQUAL);
@@ -363,11 +363,11 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			trolley,
 			new NpcCondition(NpcID.GARDEN_TROLLEY_SARADOMIN));
 
-		lumbridgeStatueOnTrolley = new VarbitRequirement(965, 2);
-		faladorStatueOnTrolley = new VarbitRequirement(965, 1);
+		lumbridgeStatueOnTrolley = new VarbitRequirement(VarbitID.GARDEN_TROLLEY_VARBIT, 2);
+		faladorStatueOnTrolley = new VarbitRequirement(VarbitID.GARDEN_TROLLEY_VARBIT, 1);
 
-		placedLumbridgeStatue = new VarbitRequirement(964, 2);
-		placedFaladorStatue = new VarbitRequirement(963, 2);
+		placedLumbridgeStatue = new VarbitRequirement(VarbitID.GARDEN_KING_STATUE_VARBIT, 2);
+		placedFaladorStatue = new VarbitRequirement(VarbitID.GARDEN_SARADOMIN_STATUE_VARBIT, 2);
 	}
 
 	public void setupSteps()

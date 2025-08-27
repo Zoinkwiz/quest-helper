@@ -427,28 +427,28 @@ public class DesertTreasureII extends BasicQuestHelper
 		inGolemRoom = new ZoneRequirement(golemRoom);
 		inFinalRoom = new ZoneRequirement(finalRoom);
 
-		inspectedPlaque = new VarbitRequirement(15105, 1);
-		inspectedStatueNE = new VarbitRequirement(15106, 1);
-		inspectedStatueSE = new VarbitRequirement(15107, 1);
-		inspectedStatueSW = new VarbitRequirement(15108, 1);
-		inspectedStatueNW = new VarbitRequirement(15109, 1);
+		inspectedPlaque = new VarbitRequirement(VarbitID.DT2_VAULT_PLAQUE, 1);
+		inspectedStatueNE = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_VARDORVIS, 1);
+		inspectedStatueSE = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_PERSERIYA, 1);
+		inspectedStatueSW = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_SUCELLUS, 1);
+		inspectedStatueNW = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_WHISPERER, 1);
 		// 12139 0->1 (cutscene specific ID)
 		// VarPlayer 3575 3840 -> 7936
 
 		inspectedGolem = new VarbitRequirement(QuestVarbits.QUEST_DESERT_TREASURE_II.getId(), 30,
 			Operation.GREATER_EQUAL);
 		// TODO: FIX CHECK FOR INSPECTED ALTAR, THOUGHT IT WAS 15111 BUT IT WASN'T
-		inspectedAltar = new VarbitRequirement(15109, 1);
+		inspectedAltar = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_WHISPERER, 1);
 
 		// CAST BLOOD BARRAGE
 		// 15116 0->4
 		// 15119 0->1
-		smokeBeenCast = new VarbitRequirement(15117, 1);
-		shadowBeenCast = new VarbitRequirement(15118, 1);
-		bloodBeenCast = new VarbitRequirement(15119, 1);
-		iceBeenCast = new VarbitRequirement(15120, 1);
+		smokeBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_SMOKE_TOTEM, 1);
+		shadowBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_SHADOW_TOTEM, 1);
+		bloodBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_BLOOD_TOTEM, 1);
+		iceBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_ICE_TOTEM, 1);
 
-		castAllSpells = new VarbitRequirement(15116, 15);
+		castAllSpells = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_ALTAR, 15);
 
 		inPuzzle = new WidgetTextRequirement(838, 10, "One cell per row!");
 
@@ -521,10 +521,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 14862 86->88
 		// 15129 0->1
 
-		cellUnlocked = new VarbitRequirement(15124, 1);
+		cellUnlocked = new VarbitRequirement(VarbitID.DT2_HIDEOUT_GATE_UNLOCKED, 1);
 		// Left cell, 88->90
 
-		itemsRetrieved = new VarbitRequirement(14283, 0);
+		itemsRetrieved = new VarbitRequirement(VarbitID.HOLDING_INVENTORY_LOCATION, 0);
 		// Stranger cutscene
 		// 4606 0->3
 		// 12139 0->1

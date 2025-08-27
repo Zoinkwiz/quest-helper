@@ -39,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.List;
 
@@ -355,31 +356,31 @@ public class TrahaearnLightPuzzle extends ConditionalStep
 		int YELLOW = 6;
 		int GREEN = 7;
 
-		notResetHefin = new VarbitRequirement(8837, BLUE);
+		notResetHefin = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_B_4_TO_0_B_3, BLUE);
 
-		r1 = new VarbitRequirement(8932, WHITE);
-		r2 = new VarbitRequirement(8931, WHITE);
-		r3 = new VarbitRequirement(8927, WHITE);
-		r4 = new VarbitRequirement(8577, GREEN);
-		r5 = new VarbitRequirement(8834, GREEN);
-		r6 = new VarbitRequirement(8580, GREEN);
-		r7 = new VarbitRequirement(8723, GREEN);
-		r8 = new VarbitRequirement(8726, GREEN);
-		r9 = new VarbitRequirement(8746, GREEN);
-		r10 = new VarbitRequirement(8747, GREEN);
-		r11 = new VarbitRequirement(8751, CYAN);
-		r12 = new VarbitRequirement(8753, CYAN);
-		r13 = new VarbitRequirement(8754, CYAN);
-		r14 = new VarbitRequirement(8755, CYAN);
-		r15 = new VarbitRequirement(8756, CYAN);
-		r16 = new VarbitRequirement(8758, CYAN);
+		r1 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_C_0_TO_1_C_1, WHITE);
+		r2 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_A_0_TO_1_C_0, WHITE);
+		r3 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_A_0_TO_1_A_1, WHITE);
+		r4 = new VarbitRequirement(VarbitID.SOTE_PILLAR_0_A_2_TO_1_A_2, GREEN);
+		r5 = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_A_2_TO_0_B_2, GREEN);
+		r6 = new VarbitRequirement(VarbitID.SOTE_PILLAR_0_B_2_TO_1_B_2, GREEN);
+		r7 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_B_2_TO_2_B_3, GREEN);
+		r8 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_B_3_TO_2_D_3, GREEN);
+		r9 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_D_1_TO_2_D_3, GREEN);
+		r10 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_D_1_TO_2_F_1, GREEN);
+		r11 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_F_1_TO_2_G_1, CYAN);
+		r12 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_G_1_TO_2_G_0, CYAN);
+		r13 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_G_0_TO_2_H_0, CYAN);
+		r14 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_H_0_TO_2_H_2, CYAN);
+		r15 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_H_2_TO_2_G_2, CYAN);
+		r16 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_G_2_TO_2_G_3, CYAN);
 
-		r17 = new VarbitRequirement(8974, YELLOW);
-		r18 = new VarbitRequirement(8982, YELLOW);
-		r19 = new VarbitRequirement(8617, YELLOW);
-		r20 = new VarbitRequirement(8773, YELLOW);
-		r21 = new VarbitRequirement(8776, YELLOW);
-		r22 = new VarbitRequirement(8777, YELLOW);
+		r17 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_G_3_TO_1_G_4, YELLOW);
+		r18 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_G_4_TO_1_H_4, YELLOW);
+		r19 = new VarbitRequirement(VarbitID.SOTE_PILLAR_1_H_4_TO_2_H_4, YELLOW);
+		r20 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_H_4_TO_2_I_4, YELLOW);
+		r21 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_I_4_TO_2_I_5, YELLOW);
+		r22 = new VarbitRequirement(VarbitID.SOTE_LIGHT_2_I_5_TO_2_G_5, YELLOW);
 	}
 
 	public List<QuestStep> getDisplaySteps()

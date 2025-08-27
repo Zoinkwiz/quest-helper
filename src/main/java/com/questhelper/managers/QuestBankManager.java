@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.EventBus;
 
 import javax.inject.Inject;
@@ -127,7 +128,7 @@ public class QuestBankManager
 
 	public void updateLocalGroupBank(Client client, ItemContainer itemContainer)
 	{
-		boolean hasChangedGroupStorage = client.getVarbitValue(4602) == 1;
+		boolean hasChangedGroupStorage = client.getVarbitValue(VarbitID.GIM_SHARED_BANK_HASEDITED) == 1;
 		if (hasChangedGroupStorage)
 		{
 			// If editing, group bank not actually 'saved', so don't update yet

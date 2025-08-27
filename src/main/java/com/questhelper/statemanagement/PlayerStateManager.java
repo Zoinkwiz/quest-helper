@@ -33,11 +33,11 @@ import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -139,7 +139,7 @@ public class PlayerStateManager
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.ACCOUNT_TYPE) {
+		if (event.getVarbitId() == VarbitID.IRONMAN) {
 			var newAccountType = AccountType.get(event.getValue());
 			if (newAccountType == null) {
 				// The account type value is invalid, leave previous account type as is

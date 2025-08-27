@@ -499,24 +499,24 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		inDeathAltar = new ZoneRequirement(deathAltar);
 
-		dispenserEmpty = new VarbitRequirement(1106, 0);
+		dispenserEmpty = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_MIRRORS_RESET_TRAY, 0);
 
 		// 1108 yellow crystal in dispenser
 		// 1107, blue crystal in dispenser
 
-		usedRope = new VarbitRequirement(1328, 1);
+		usedRope = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_ROPE, 1);
 
-		knowToUseCrystal = new VarbitRequirement(1104, 1);
+		knowToUseCrystal = new VarbitRequirement(VarbitID.MOURNING_ARIANWYN_TOLD, 1);
 
-		solvedPuzzle1 = new VarbitRequirement(1113, 1);
-		solvedPuzzle2 = new VarbitRequirement(1114, 1);
-		solvedPuzzle3 = new VarbitRequirement(1116, 1);
-		solvedPuzzle4 = new VarbitRequirement(1115, 1);
-		solvedPuzzle5 = new VarbitRequirement(1117, 1);
+		solvedPuzzle1 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_2, 1);
+		solvedPuzzle2 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_3, 1);
+		solvedPuzzle3 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_5, 1);
+		solvedPuzzle4 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_4, 1);
+		solvedPuzzle5 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_6, 1);
 
-		enteredDeathArea = new VarbitRequirement(1330, 1);
+		enteredDeathArea = new VarbitRequirement(VarbitID.MOURNING_LIGHT_DOOR_1_C_FIRST_TIME, 1);
 
-		receivedList = new VarbitRequirement(1327, 1);
+		receivedList = new VarbitRequirement(VarbitID.MOURNING_DWARF_STARTEDTASK, 1);
 
 		final int RED = 1;
 		final int YELLOW = 2;

@@ -230,11 +230,11 @@ public class DreamMentor extends BasicQuestHelper
 
 		lookingAtBank = new WidgetTextRequirement(260, 41, "Cyrisus's Bank");
 		gotItems = new CyrisusBankConditional();
-		cyrisusDressed = new VarbitRequirement(3623, 100);
+		cyrisusDressed = new VarbitRequirement(VarbitID.DREAM_ARMAMENT, 100);
 
-		litBrazier = new VarbitRequirement(2430, 1);
+		litBrazier = new VarbitRequirement(VarbitID.LUNAR_BRAZIER_LIT, 1);
 
-		unlockedDream = new VarbitRequirement(3625, 1);
+		unlockedDream = new VarbitRequirement(VarbitID.DREAM_CUTSCENE_SEEN, 1);
 		inadaquacyNearby = new NpcCondition(NpcID.DREAM_INADEQUACY);
 		everlastingNearby = new NpcCondition(NpcID.DREAM_EVERLASTING);
 		untouchableNearby = new NpcCondition(NpcID.DREAM_UNTOUCHABLE);

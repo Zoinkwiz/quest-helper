@@ -62,8 +62,6 @@ public class PerseriyaSteps extends ConditionalStep
 {
 	ItemRequirement eyeTeleport, facemask;
 
-	final int PERSERIYA_VARBIT = 15128;
-
 	DetailedQuestStep enterWizardBasement, enterPortalToTempleOfTheEye, killDemons, hopOverSteppingStone, talkToPersten, enterPassage1,
 		enterPathfinderRoom;
 
@@ -374,11 +372,11 @@ public class PerseriyaSteps extends ConditionalStep
 		// 13095 0->100
 		// 5934 0->1->2->3->4???
 
-		defeatedDemons = new VarbitRequirement(PERSERIYA_VARBIT, 8, Operation.GREATER_EQUAL);
+		defeatedDemons = new VarbitRequirement(VarbitID.DT2_SCAR, 8, Operation.GREATER_EQUAL);
 
-		attemptedToBoardBoat = new VarbitRequirement(PERSERIYA_VARBIT, 10, Operation.GREATER_EQUAL);
+		attemptedToBoardBoat = new VarbitRequirement(VarbitID.DT2_SCAR, 10, Operation.GREATER_EQUAL);
 		// 12139 1->0 after boat attempt
-		talkedToPersten = new VarbitRequirement(PERSERIYA_VARBIT, 14, Operation.GREATER_EQUAL);
+		talkedToPersten = new VarbitRequirement(VarbitID.DT2_SCAR, 14, Operation.GREATER_EQUAL);
 
 		// In room 1
 		// 15128 14->16
@@ -393,12 +391,12 @@ public class PerseriyaSteps extends ConditionalStep
 		onPath5 = new ZoneRequirement(path5);
 		onPath6 = new ZoneRequirement(path6);
 
-		destroyedTether = new VarbitRequirement(15258, 1);
+		destroyedTether = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_1_DONE, 1);
 
 		isNearCatalystRoom = new ZoneRequirement(nearCatalystRoom1, nearCatalystRoom2);
 		inCatalystRoom = new ZoneRequirement(catalystRoom);
 
-		completedCatalystRoom = new VarbitRequirement(15259, 1);
+		completedCatalystRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_2_DONE, 1);
 		isNearGrowthRoom = new ZoneRequirement(nearGrowth1, nearGrowth2);
 		// On login to main area, 12164 0->1
 		// 13989 0->1
@@ -427,24 +425,24 @@ public class PerseriyaSteps extends ConditionalStep
 		// 202
 		inGrowthRoom = new ZoneRequirement(growthRoom);
 
-		repairedGrowths = new VarbitRequirement(15210, 4);
-		solvedGrowthRoom = new VarbitRequirement(15260, 1);
+		repairedGrowths = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_LIGHTS, 4);
+		solvedGrowthRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_3_DONE, 1);
 
 		// Entered boat room, 15261 0->1
 		inBoatRoom1 = new ZoneRequirement(boatRoom1);
 		// TODO: Verify if order is random for this stuff, and thus variable needs to consider some shift based on area?h
 		haveReadTablet = new Conditions(LogicType.OR,
-			new VarbitRequirement(PERSERIYA_VARBIT, 18),
-			new VarbitRequirement(PERSERIYA_VARBIT, 26),
-			new VarbitRequirement(PERSERIYA_VARBIT, 34)
+			new VarbitRequirement(VarbitID.DT2_SCAR, 18),
+			new VarbitRequirement(VarbitID.DT2_SCAR, 26),
+			new VarbitRequirement(VarbitID.DT2_SCAR, 34)
 		);
 
 		// 18->20, burned ship
 		// 15128 20->22, talked to Persten
 
 		// Attempted to enter room 2, 22->24
-		completedRoom1 = new VarbitRequirement(PERSERIYA_VARBIT, 20, Operation.GREATER_EQUAL);
-		talkedToPerstenAfterRoom1 = new VarbitRequirement(PERSERIYA_VARBIT, 22, Operation.GREATER_EQUAL);
+		completedRoom1 = new VarbitRequirement(VarbitID.DT2_SCAR, 20, Operation.GREATER_EQUAL);
+		talkedToPerstenAfterRoom1 = new VarbitRequirement(VarbitID.DT2_SCAR, 22, Operation.GREATER_EQUAL);
 
 		// Room 2
 		inAxonRoom = new ZoneRequirement(axonRoom1, axonRoom2, axonRoom3);
@@ -455,7 +453,7 @@ public class PerseriyaSteps extends ConditionalStep
 		waterAxonPresent = new NpcRequirement(NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Water)");
 		fireAxonPresent = new NpcRequirement(NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Fire)");
 		natureAxonPresent = new NpcRequirement(NpcID.DT2_SCAR_MAZE_3_PATHING_NPC, "Abyssal Axon (Nature)");
-		completedAxonRoom = new VarbitRequirement(15258, 1);
+		completedAxonRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_1_DONE, 1);
 
 		nothingInHands = and(new NoItemRequirement("Weapon", ItemSlots.WEAPON),
 			new NoItemRequirement("Shield", ItemSlots.SHIELD));
@@ -471,14 +469,14 @@ public class PerseriyaSteps extends ConditionalStep
 		dustNerveBroken = new ObjectCondition(ObjectID.DT2_SCAR_MAZE_3_COMBINATION_ENDING_DUST, new WorldPoint(1784, 6433, 0));
 		steamNerveBroken = new ObjectCondition(ObjectID.DT2_SCAR_MAZE_3_COMBINATION_ENDING_STEAM, new WorldPoint(1783, 6430, 0));
 
-		completedNerveRoom = new VarbitRequirement(15259, 1);
+		completedNerveRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_2_DONE, 1);
 		inNervePassage = new ZoneRequirement(nervePassage);
 		impsNearby = new NpcRequirement("Scarred imp", NpcID.DT2_SCAR_MAZE_3_LINK_NPC);
-		completedSummoningRoom = new VarbitRequirement(15260, 1);
+		completedSummoningRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_3_DONE, 1);
 		// Entered boat room, 15261 0->1. Seems to indicate 'teleport to boat room if they leave'
-		shouldReadTablet1 = new VarbitRequirement(PERSERIYA_VARBIT, 16);
-		shouldReadTablet2 = new VarbitRequirement(PERSERIYA_VARBIT, 24);
-		shouldReadTablet3 = new VarbitRequirement(PERSERIYA_VARBIT, 32);
+		shouldReadTablet1 = new VarbitRequirement(VarbitID.DT2_SCAR, 16);
+		shouldReadTablet2 = new VarbitRequirement(VarbitID.DT2_SCAR, 24);
+		shouldReadTablet3 = new VarbitRequirement(VarbitID.DT2_SCAR, 32);
 		// 15128 26->28 burnt second boat
 		// 15260 1->0
 		// 15259 1->0
@@ -486,8 +484,8 @@ public class PerseriyaSteps extends ConditionalStep
 		// 15261 0->1
 
 		// PERSTEN 2 = 28
-		completedRoom2 = new VarbitRequirement(PERSERIYA_VARBIT, 28, Operation.GREATER_EQUAL);
-		talkedToPerstenAfterRoom2 = new VarbitRequirement(PERSERIYA_VARBIT, 30, Operation.GREATER_EQUAL);
+		completedRoom2 = new VarbitRequirement(VarbitID.DT2_SCAR, 28, Operation.GREATER_EQUAL);
+		talkedToPerstenAfterRoom2 = new VarbitRequirement(VarbitID.DT2_SCAR, 30, Operation.GREATER_EQUAL);
 
 		// ENTER ROOM 3
 		// 15212 0->1
@@ -512,18 +510,18 @@ public class PerseriyaSteps extends ConditionalStep
 		inLeechRoom = new ZoneRequirement(leechRoom);
 		inBoatRoom3 = new ZoneRequirement(boatRoom3);
 
-		solvedMemoryRoom = new VarbitRequirement(15258, 1);
-		solvedTreeRoom = new VarbitRequirement(15260, 1);
-		solvedLeechRoom = new VarbitRequirement(15259, 1);
+		solvedMemoryRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_1_DONE, 1);
+		solvedTreeRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_3_DONE, 1);
+		solvedLeechRoom = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_CHALLENGE_2_DONE, 1);
 		protectFromMagic = new PrayerRequirement("Protect from Magic", Prayer.PROTECT_FROM_MAGIC);
 		inSwRoom3 = new ZoneRequirement(swRoom3P1, swRoom3P2, swRoom3P3, swRoom3P4, swRoom3P5);
 
-		repairedGrowthRoom3 = new VarbitRequirement(15210, 4);
-		repairedCrimsonVeins = new VarbitRequirement(15219, 3);
+		repairedGrowthRoom3 = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_LIGHTS, 4);
+		repairedCrimsonVeins = new VarbitRequirement(VarbitID.DT2_SCAR_MAZE_2_RED_BLOOD_COUNT, 3);
 
-		completedRoom3 = new VarbitRequirement(PERSERIYA_VARBIT, 36, Operation.GREATER_EQUAL);
+		completedRoom3 = new VarbitRequirement(VarbitID.DT2_SCAR, 36, Operation.GREATER_EQUAL);
 
-		readyToFightLeviathan = new VarbitRequirement(PERSERIYA_VARBIT, 38, Operation.GREATER_EQUAL);
+		readyToFightLeviathan = new VarbitRequirement(VarbitID.DT2_SCAR, 38, Operation.GREATER_EQUAL);
 		inLeviathanArea = new ZoneRequirement(leviathanArea);
 
 		// Killed leviathan
@@ -533,10 +531,10 @@ public class PerseriyaSteps extends ConditionalStep
 		// 1683 12215->-1
 		// 12401 1->0 (healthbar?)
 
-		defeatedLeviathan = new VarbitRequirement(PERSERIYA_VARBIT, 42, Operation.GREATER_EQUAL);
+		defeatedLeviathan = new VarbitRequirement(VarbitID.DT2_SCAR, 42, Operation.GREATER_EQUAL);
 		inNELeviathanArea = new ZoneRequirement(neLeviathanArea);
-		perstenAtShip = new VarbitRequirement(PERSERIYA_VARBIT, 44, Operation.GREATER_EQUAL);
-		perstenLeft = new VarbitRequirement(PERSERIYA_VARBIT, 46, Operation.GREATER_EQUAL);
+		perstenAtShip = new VarbitRequirement(VarbitID.DT2_SCAR, 44, Operation.GREATER_EQUAL);
+		perstenLeft = new VarbitRequirement(VarbitID.DT2_SCAR, 46, Operation.GREATER_EQUAL);
 
 		// Searched debris
 		// 15128 46->48
@@ -549,7 +547,7 @@ public class PerseriyaSteps extends ConditionalStep
 		// Obtain medallion again, resets
 		// Seemed to cap at 10
 
-		foundPerseriyasMedallion = new VarbitRequirement(PERSERIYA_VARBIT, 48, Operation.GREATER_EQUAL);
+		foundPerseriyasMedallion = new VarbitRequirement(VarbitID.DT2_SCAR, 48, Operation.GREATER_EQUAL);
 	}
 
 	protected void setupSteps()

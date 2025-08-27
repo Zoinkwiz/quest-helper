@@ -45,6 +45,7 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -136,11 +137,11 @@ public class ObservatoryQuest extends BasicQuestHelper
 		// Started quest
 		// 3828 = 9
 		// 3827 = 1
-		usedKey = new VarbitRequirement(3826, 1);
+		usedKey = new VarbitRequirement(VarbitID.OBSERVATORY_GATELOCK, 1);
 		sleepingGuardNearby = new NpcCondition(NpcID.QIP_OBS_GOBLIN_GUARD);
-		hasMould = new VarbitRequirement(3837, 1);
+		hasMould = new VarbitRequirement(VarbitID.OBSERVATORY_MOULD_PRES, 1);
 		// Watched cutscene, 3838 = 1
-		lookedThroughTelescope = new VarbitRequirement(3836, 1);
+		lookedThroughTelescope = new VarbitRequirement(VarbitID.OBSERVATORY_SCOPELOOKED, 1);
 	}
 
 	@Override

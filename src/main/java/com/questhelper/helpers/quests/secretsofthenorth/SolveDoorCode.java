@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
@@ -80,11 +81,11 @@ public class SolveDoorCode extends QuestStep
 
 	private void updateSolvedPositionState()
 	{
-		final int SLOT_ONE = 1113;
-		final int SLOT_TWO = 1114;
-		final int SLOT_THREE = 1115;
-		final int SLOT_FOUR = 1116;
-		final int SLOT_FIVE = 1117;
+		final int SLOT_ONE = VarClientID.COMBINATION_LOCK_VALUE_0;
+		final int SLOT_TWO = VarClientID.COMBINATION_LOCK_VALUE_1;
+		final int SLOT_THREE = VarClientID.COMBINATION_LOCK_VALUE_2;
+		final int SLOT_FOUR = VarClientID.COMBINATION_LOCK_VALUE_3;
+		final int SLOT_FIVE = VarClientID.COMBINATION_LOCK_VALUE_4;
 
 		final int ENTRY_ONE = 3;
 		final int ENTRY_TWO = 5;

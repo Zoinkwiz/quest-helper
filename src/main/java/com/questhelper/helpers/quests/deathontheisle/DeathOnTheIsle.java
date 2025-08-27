@@ -307,11 +307,11 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		drinkingFlask = new ItemRequirement("Drinking flask", ItemID.DOTI_FLASK);
 		shippingContract = new ItemRequirement("Shipping contract", ItemID.DOTI_CONTRACT);
 
-		handedOverCluesToGuards = new VarbitRequirement(11233, 1);
+		handedOverCluesToGuards = new VarbitRequirement(VarbitID.DOTI_GIVEN_ITEMS, 1);
 
 		/// Zones
 		inButlerCostumeHouse = new ZoneRequirement(butlerCostumeHouse1, butlerCostumeHouse2, butlerCostumeHouse3, butlerCostumeHouse4);
-		inVilla = new VarbitRequirement(14283, 5);
+		inVilla = new VarbitRequirement(VarbitID.HOLDING_INVENTORY_LOCATION, 5);
 		aroundVilla = new ZoneRequirement(villaOutsideTheatre1, villaOutsideTheatre2);
 		outsideVillaByLooseRocks = new ZoneRequirement(
 			villaPlatueOnTheWayToTheatre
@@ -323,46 +323,46 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		inTheatreCellar = new ZoneRequirement(theatreCellar);
 
 		/// States
-		introducedYourselfToConstantinius = new VarbitRequirement(11214, 1);
-		introducedYourselfToCozyac = new VarbitRequirement(11212, 1);
-		introducedYourselfToPavo = new VarbitRequirement(11213, 1);
-		introducedYourselfToXocotla = new VarbitRequirement(11211, 1);
+		introducedYourselfToConstantinius = new VarbitRequirement(VarbitID.DOTI_MET_CONSTANTINIUS, 1);
+		introducedYourselfToCozyac = new VarbitRequirement(VarbitID.DOTI_MET_COZYAC, 1);
+		introducedYourselfToPavo = new VarbitRequirement(VarbitID.DOTI_MET_PAVO, 1);
+		introducedYourselfToXocotla = new VarbitRequirement(VarbitID.DOTI_MET_XOCOTLA, 1);
 
-		investigatedJug = new VarbitRequirement(11218, 1);
-		investigatedSmallBoxInSouthRoom = new VarbitRequirement(11221, 1);
-		investigatedBrokenStoolInSouthRoom = new VarbitRequirement(11222, 1);
-		investigatedWineStorageInEastRoom = new VarbitRequirement(11220, 1);
-		investigatedBrokenPotteryInEastRoom = new VarbitRequirement(11219, 1);
-		investigatedLiviusInEastRoom = new VarbitRequirement(11223, 1);
+		investigatedJug = new VarbitRequirement(VarbitID.DOTI_CLUE1, 1);
+		investigatedSmallBoxInSouthRoom = new VarbitRequirement(VarbitID.DOTI_CLUE4, 1);
+		investigatedBrokenStoolInSouthRoom = new VarbitRequirement(VarbitID.DOTI_CLUE5, 1);
+		investigatedWineStorageInEastRoom = new VarbitRequirement(VarbitID.DOTI_CLUE3, 1);
+		investigatedBrokenPotteryInEastRoom = new VarbitRequirement(VarbitID.DOTI_CLUE2, 1);
+		investigatedLiviusInEastRoom = new VarbitRequirement(VarbitID.DOTI_BODYCHECK, 1);
 
-		investigatedConstantinius = new VarbitRequirement(11227, 1);
-		investigatedCozyac = new VarbitRequirement(11225, 1);
-		investigatedPavo = new VarbitRequirement(11226, 1);
-		investigatedXocotla = new VarbitRequirement(11224, 1);
-		interrogatedPatziAndAdala = new VarbitRequirement(11234, 1);
+		investigatedConstantinius = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_CONSTANTINIUS, 1);
+		investigatedCozyac = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_COZYAC, 1);
+		investigatedPavo = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_PAVO, 1);
+		investigatedXocotla = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_XOCOTLA, 1);
+		interrogatedPatziAndAdala = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_PATZI, 1);
 
-		// pickpocketedAdala = new VarbitRequirement(11228, 1);
-		// pickpocketedCozyac = new VarbitRequirement(11216, 1);
-		// pickpocketedPavo = new VarbitRequirement(11217, 1);
-		// pickpocketedXocotla = new VarbitRequirement(11215, 1);
+		// pickpocketedAdala = new VarbitRequirement(VarbitID.DOTI_PICKPOCKET_ADALA, 1);
+		// pickpocketedCozyac = new VarbitRequirement(VarbitID.DOTI_PICKPOCKET_COZYAC, 1);
+		// pickpocketedPavo = new VarbitRequirement(VarbitID.DOTI_PICKPOCKET_PAVO, 1);
+		// pickpocketedXocotla = new VarbitRequirement(VarbitID.DOTI_PICKPOCKET_XOCOTLA, 1);
 
-		inspectedWineLabels = new VarbitRequirement(11236, 1);
-		inspectedThreateningNote = new VarbitRequirement(11237, 1);
-		inspectedDrinkingFlask = new VarbitRequirement(11235, 1);
-		inspectedShippingContract = new VarbitRequirement(11238, 1);
+		inspectedWineLabels = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_LABELS, 1);
+		inspectedThreateningNote = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_LETTER, 1);
+		inspectedDrinkingFlask = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_FLASK, 1);
+		inspectedShippingContract = new VarbitRequirement(VarbitID.DOTI_INVESTIGATED_CONTRACT, 1);
 
-		interrogatedConstantiniusAgain = new VarbitRequirement(11244, 1);
-		interrogatedXocotlaAgain = new VarbitRequirement(11245, 1);
-		interrogatedCozyacAgain = new VarbitRequirement(11243, 1);
-		interrogatedPavoAgain = new VarbitRequirement(11246, 1);
+		interrogatedConstantiniusAgain = new VarbitRequirement(VarbitID.DOTI_QUESTIONED_CONSTANTINIUS, 1);
+		interrogatedXocotlaAgain = new VarbitRequirement(VarbitID.DOTI_QUESTIONED_XOCOTLA, 1);
+		interrogatedCozyacAgain = new VarbitRequirement(VarbitID.DOTI_QUESTIONED_COZYAC, 1);
+		interrogatedPavoAgain = new VarbitRequirement(VarbitID.DOTI_QUESTIONED_PAVO, 1);
 
-		talkedtoGuardsAtTheatre = new VarbitRequirement(11249, 1);
+		talkedtoGuardsAtTheatre = new VarbitRequirement(VarbitID.DOTI_BACKSTAGE_INTRO, 1);
 
-		searchedCrateNextToStairs = new VarbitRequirement(11251, 1);
-		searchedBookshelf = new VarbitRequirement(11250, 1);
-		searchedCostumeRack = new VarbitRequirement(11252, 1);
+		searchedCrateNextToStairs = new VarbitRequirement(VarbitID.DOTI_POISON_CLUE, 1);
+		searchedBookshelf = new VarbitRequirement(VarbitID.DOTI_BOOKSHELF_CLUE, 1);
+		searchedCostumeRack = new VarbitRequirement(VarbitID.DOTI_CLOTHING_CLUE, 1);
 
-		trapSprung = new VarbitRequirement(11258, 2);
+		trapSprung = new VarbitRequirement(VarbitID.DOTI_FINAL_FIGHT, 2);
 		trapFailed = new VarbitRequirement(VarbitID.DOTI_FINAL_FIGHT, 3, Operation.GREATER_EQUAL);
 		naiatliDowned = new VarbitRequirement(VarbitID.DOTI_FINAL_FIGHT, 6, Operation.GREATER_EQUAL);
 	}
@@ -582,22 +582,22 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		var talkToCostumerAboutActors = talkToCostumerAgain.copy();
 		talkToCostumerAboutActors.addDialogStep("What can you tell me about the actors?");
 		talkToCostumerAgain.addSubSteps(talkToCostumerAboutActors);
-		var talkedAboutActors = new VarbitRequirement(11253, 1);
+		var talkedAboutActors = new VarbitRequirement(VarbitID.DOTI_ACTORS_CHAT, 1);
 
 		var talkToCostumerAboutPoison = talkToCostumerAgain.copy();
 		talkToCostumerAboutPoison.addDialogStep("What's the crate of poison for?");
 		talkToCostumerAgain.addSubSteps(talkToCostumerAboutPoison);
-		var talkedAboutPoison = new VarbitRequirement(11255, 1);
+		var talkedAboutPoison = new VarbitRequirement(VarbitID.DOTI_POISON_CHAT, 1);
 
 		var talkToCostumerAboutStainedCostume = talkToCostumerAgain.copy();
 		talkToCostumerAboutStainedCostume.addDialogStep("It seems one of the costumes has a stain on it.");
 		talkToCostumerAgain.addSubSteps(talkToCostumerAboutStainedCostume);
-		var talkedAboutStainedCostume = new VarbitRequirement(11256, 1);
+		var talkedAboutStainedCostume = new VarbitRequirement(VarbitID.DOTI_CLOTHING_CHAT, 1);
 
 		var talkToCostumerAboutHiddenPassage = talkToCostumerAgain.copy();
 		talkToCostumerAboutHiddenPassage.addDialogStep("Did you know there was a hidden passage in here?");
 		talkToCostumerAgain.addSubSteps(talkToCostumerAboutHiddenPassage);
-		// var talkedAboutHiddenPassage = new VarbitRequirement(11254, 1);
+		// var talkedAboutHiddenPassage = new VarbitRequirement(VarbitID.DOTI_BOOKSHELF_CHAT, 1);
 
 		investigateTheatreCellar = new ConditionalStep(this, talkToCostumerAboutHiddenPassage);
 		investigateTheatreCellar.addStep(not(inVilla), returnToButlerAndHeadInside);

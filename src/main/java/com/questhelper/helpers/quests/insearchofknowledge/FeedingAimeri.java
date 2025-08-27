@@ -32,6 +32,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class FeedingAimeri extends NpcStep
@@ -54,7 +55,7 @@ public class FeedingAimeri extends NpcStep
 
 	protected void updateSteps()
 	{
-		int numFoodUsed = client.getVarbitValue(8393);
+		int numFoodUsed = client.getVarbitValue(VarbitID.HOSDUN_AIMERI_STATUS);
 		food5Highlighted.setQuantity(5 - numFoodUsed);
 	}
 }

@@ -55,6 +55,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -225,13 +226,13 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		nearLongramble = new ZoneRequirement(longrambleZone);
 
 		inCutscene = new Conditions(LogicType.OR,
-			new VarbitRequirement(4606, 3),
-			new VarbitRequirement(12139, 1)
+			new VarbitRequirement(VarbitID.FOV_CLAMP, 3),
+			new VarbitRequirement(VarbitID.GRAVESTONE_TLI_HIDE, 1)
 		);
 
-		learnedAboutChapter1 = new VarbitRequirement(15291, 1);
-		learnedAboutChapter2 = new VarbitRequirement(15292, 1);
-		// learnedAboutChapter3 = new VarbitRequirement(15293, 1);
+		learnedAboutChapter1 = new VarbitRequirement(VarbitID.POG_BOLRIE_DIARY_1, 1);
+		learnedAboutChapter2 = new VarbitRequirement(VarbitID.POG_BOLRIE_DIARY_2, 1);
+		// learnedAboutChapter3 = new VarbitRequirement(VarbitID.POG_BOLRIE_DIARY_3, 1);
 
 		inSewer1 = new ZoneRequirement(sewer1);
 		inSewer2 = new ZoneRequirement(sewer2);

@@ -55,6 +55,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.game.FishingSpot;
 
@@ -163,8 +164,8 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		notIbanUpgrade = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 24);
 		notNecroTower = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY, false, 25);
 
-		notCWBallon = new VarbitRequirement(2869, 1);
-		notCWBallon2 = new VarbitRequirement(2869, 0);
+		notCWBallon = new VarbitRequirement(VarbitID.ZEP_MULTI_CAST, 1);
+		notCWBallon2 = new VarbitRequirement(VarbitID.ZEP_MULTI_CAST, 0);
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();

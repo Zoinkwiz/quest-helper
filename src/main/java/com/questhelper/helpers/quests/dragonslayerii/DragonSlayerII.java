@@ -626,43 +626,43 @@ public class DragonSlayerII extends BasicQuestHelper
 
 		emptyInv24 = new FreeInventorySlotRequirement(24);
 
-		hadMap1 = new Conditions(LogicType.OR, map1, new VarbitRequirement(6116, 1));
-		hadMap2 = new Conditions(LogicType.OR, map2, new VarbitRequirement(6117, 1));
-		hadMap3 = new Conditions(LogicType.OR, map3, new VarbitRequirement(6118, 1));
-		hadMap4 = new Conditions(LogicType.OR, map4, new VarbitRequirement(6119, 1));
-		hadMap5 = new Conditions(LogicType.OR, map5, new VarbitRequirement(6120, 1));
+		hadMap1 = new Conditions(LogicType.OR, map1, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_A1, 1));
+		hadMap2 = new Conditions(LogicType.OR, map2, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_A3, 1));
+		hadMap3 = new Conditions(LogicType.OR, map3, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_A4, 1));
+		hadMap4 = new Conditions(LogicType.OR, map4, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_A6, 1));
+		hadMap5 = new Conditions(LogicType.OR, map5, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_B1, 1));
 		hadChest1MapPieces = new Conditions(hadMap1, hadMap2, hadMap3, hadMap4, hadMap5);
 
-		hadMap6 = new Conditions(LogicType.OR, map6, new VarbitRequirement(6121, 1));
-		hadMap7 = new Conditions(LogicType.OR, map7, new VarbitRequirement(6122, 1));
-		hadMap8 = new Conditions(LogicType.OR, map8, new VarbitRequirement(6123, 1));
+		hadMap6 = new Conditions(LogicType.OR, map6, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_B2, 1));
+		hadMap7 = new Conditions(LogicType.OR, map7, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_B4, 1));
+		hadMap8 = new Conditions(LogicType.OR, map8, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_B5, 1));
 		hadChest2MapPieces = new Conditions(hadMap6, hadMap7, hadMap8);
 
-		hadMap9 = new Conditions(LogicType.OR, map9, new VarbitRequirement(6124, 1));
-		hadMap10 = new Conditions(LogicType.OR, map10, new VarbitRequirement(6125, 1));
-		hadMap11 = new Conditions(LogicType.OR, map11, new VarbitRequirement(6126, 1));
-		hadMap12 = new Conditions(LogicType.OR, map12, new VarbitRequirement(6127, 1));
+		hadMap9 = new Conditions(LogicType.OR, map9, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_C1, 1));
+		hadMap10 = new Conditions(LogicType.OR, map10, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_C3, 1));
+		hadMap11 = new Conditions(LogicType.OR, map11, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_C4, 1));
+		hadMap12 = new Conditions(LogicType.OR, map12, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_C5, 1));
 		hadFungiMapPieces = new Conditions(hadMap9, hadMap10, hadMap11, hadMap12);
 
-		hadMap13 = new Conditions(LogicType.OR, map13, new VarbitRequirement(6128, 1));
-		hadMap14 = new Conditions(LogicType.OR, map14, new VarbitRequirement(6129, 1));
-		hadMap15 = new Conditions(LogicType.OR, map15, new VarbitRequirement(6130, 1));
-		hadMap16 = new Conditions(LogicType.OR, map16, new VarbitRequirement(6131, 1));
-		hadMap17 = new Conditions(LogicType.OR, map17, new VarbitRequirement(6132, 1));
-		hadMap18 = new Conditions(LogicType.OR, map18, new VarbitRequirement(6133, 1));
-		hadMap19 = new Conditions(LogicType.OR, map19, new VarbitRequirement(6134, 1));
+		hadMap13 = new Conditions(LogicType.OR, map13, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_D2, 1));
+		hadMap14 = new Conditions(LogicType.OR, map14, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_D4, 1));
+		hadMap15 = new Conditions(LogicType.OR, map15, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_D5, 1));
+		hadMap16 = new Conditions(LogicType.OR, map16, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_D6, 1));
+		hadMap17 = new Conditions(LogicType.OR, map17, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_E1, 1));
+		hadMap18 = new Conditions(LogicType.OR, map18, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_E2, 1));
+		hadMap19 = new Conditions(LogicType.OR, map19, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_E3, 1));
 		hadBriarMapPieces = new Conditions(hadMap13, hadMap14, hadMap15, hadMap16, hadMap17, hadMap18, hadMap19);
 
-		hadMap20 = new Conditions(LogicType.OR, map20, new VarbitRequirement(6135, 1));
-		hadMap21 = new Conditions(LogicType.OR, map21, new VarbitRequirement(6136, 1));
-		hadMap22 = new Conditions(LogicType.OR, map22, new VarbitRequirement(6137, 1));
-		hadMap23 = new Conditions(LogicType.OR, map23, new VarbitRequirement(6138, 1));
-		hadMap24 = new Conditions(LogicType.OR, map24, new VarbitRequirement(6138, 1));
+		hadMap20 = new Conditions(LogicType.OR, map20, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_E5, 1));
+		hadMap21 = new Conditions(LogicType.OR, map21, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_F2, 1));
+		hadMap22 = new Conditions(LogicType.OR, map22, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_F4, 1));
+		hadMap23 = new Conditions(LogicType.OR, map23, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_F5, 1));
+		hadMap24 = new Conditions(LogicType.OR, map24, new VarbitRequirement(VarbitID.FOSSIL_MAP_PIECE_F5, 1));
 		hadMushtreeMapPieces = new Conditions(hadMap20, hadMap21, hadMap22, hadMap23, hadMap24);
 
 		inMapPuzzle = new WidgetModelRequirement(305, 1, 35060);
 
-		litBrazier = new VarbitRequirement(2430, 1);
+		litBrazier = new VarbitRequirement(VarbitID.LUNAR_BRAZIER_LIT, 1);
 
 		hasTheKourendKeyPiece = new VarbitRequirement(VarbitID.DS2_ZEAH, 35, Operation.GREATER_EQUAL);
 		hasTheKaramjaKeyPiece = new VarbitRequirement(VarbitID.DS2_KARAM, 20, Operation.GREATER_EQUAL);
@@ -702,11 +702,11 @@ public class DragonSlayerII extends BasicQuestHelper
 		// West dragon lit, 6109 = 1
 		// North dragon lit, 6110 = 1
 		// East dragon lit, 6111 = 1
-		litFurnace = new Conditions(new VarbitRequirement(6109, 1), new VarbitRequirement(6110, 1), new VarbitRequirement(6111, 1));
+		litFurnace = new Conditions(new VarbitRequirement(VarbitID.DS2_DRAGON_HEAD_WEST, 1), new VarbitRequirement(VarbitID.DS2_DRAGON_HEAD_NORTH, 1), new VarbitRequirement(VarbitID.DS2_DRAGON_HEAD_EAST, 1));
 
-		recruitedBrundt = new VarbitRequirement(6114, 1);
-		recruitedAmik = new VarbitRequirement(6115, 1);
-		recruitedLathas = new VarbitRequirement(6113, 1);
+		recruitedBrundt = new VarbitRequirement(VarbitID.DS2_BRUNDT, 1);
+		recruitedAmik = new VarbitRequirement(VarbitID.DS2_AMIK, 1);
+		recruitedLathas = new VarbitRequirement(VarbitID.DS2_LATHAS, 1);
 	}
 
 	public void setupSteps()

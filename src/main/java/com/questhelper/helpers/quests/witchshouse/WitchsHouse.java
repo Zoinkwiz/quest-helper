@@ -45,6 +45,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
 
@@ -155,7 +156,7 @@ public class WitchsHouse extends BasicQuestHelper
 		inDownstairsHouseEast = new ZoneRequirement(downstairsHouseEast);
 		inDownstairsHouse = new ZoneRequirement(downstairsHouseEast, downstairsHouseWest);
 		inHouseOrGarden = new ZoneRequirement(house, garden1, garden2, garden3);
-		ratHasMagnet = new VarplayerRequirement(226, 3);
+		ratHasMagnet = new VarplayerRequirement(VarPlayerID.BALLQUEST, 3);
 		inShed = new ZoneRequirement(shed);
 		experimentNearby = new Conditions(LogicType.OR,
 			new NpcCondition(NpcID.SHAPESHIFTERGLOB),

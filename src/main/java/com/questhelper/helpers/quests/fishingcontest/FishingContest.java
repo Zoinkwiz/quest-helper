@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -212,7 +213,7 @@ public class FishingContest extends BasicQuestHelper
 		notInWoods = new Conditions(LogicType.NOR, inWoods);
 
 		// 2051 0->1 also set for garlic in pipe
-		hasPutGarlicInPipe = new VarbitRequirement(2054, 1);
+		hasPutGarlicInPipe = new VarbitRequirement(VarbitID.FISHINGCOMPO_STRANGER, 1);
 		needsGarlic = and(nor(hasPutGarlicInPipe), new ItemRequirements(LogicType.NOR, "", garlic));
 		hasEverything = new Conditions(nor(needsGarlic), redVineWorm, fishingRod);
 		enteredContestArea = new Conditions(hasEverything, onContestGrounds);

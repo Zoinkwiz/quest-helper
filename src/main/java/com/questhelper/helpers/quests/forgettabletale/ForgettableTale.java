@@ -420,11 +420,11 @@ public class ForgettableTale extends BasicQuestHelper
 		// Part way through veldeban dialog, told about drunken dwarf:
 		// 824 = 1
 
-		givenBeerToDrunkenDwarf = new VarbitRequirement(838, 1);
-		rowdyDwarfMadeRequest = new VarbitRequirement(829, 1);
-		gotRowdySeed = new VarbitRequirement(826, 1);
-		gotGaussSeed = new VarbitRequirement(827, 1);
-		gotKhorvakSeed = new VarbitRequirement(828, 1);
+		givenBeerToDrunkenDwarf = new VarbitRequirement(VarbitID.FORGET_BEER_GIVEN, 1);
+		rowdyDwarfMadeRequest = new VarbitRequirement(VarbitID.FORGET_SEED2_TOLD, 1);
+		gotRowdySeed = new VarbitRequirement(VarbitID.FORGET_SEED2_GIVEN, 1);
+		gotGaussSeed = new VarbitRequirement(VarbitID.FORGET_SEED3_GIVEN, 1);
+		gotKhorvakSeed = new VarbitRequirement(VarbitID.FORGET_SEED4_GIVEN, 1);
 		// 830 = 1, talked a bit to gauss
 		// 831 = 1, asked about seed from khorvak
 
@@ -440,13 +440,13 @@ public class ForgettableTale extends BasicQuestHelper
 		keldaBrewed = new VarbitRequirement(VarbitID.BREWING_VAT_VARBIT_1, 71, Operation.GREATER_EQUAL);
 		keldaInBarrel = new VarbitRequirement(VarbitID.BREWING_BARREL_VARBIT_1, 3, Operation.GREATER_EQUAL);
 
-		inPurple = new VarbitRequirement(578, 1); // Purple Pewter
-		inYellow = new VarbitRequirement(578, 2); // Yellow Fortune
-		inBlue = new VarbitRequirement(578, 3); // Blue Opal
-		inGreen = new VarbitRequirement(578, 4); // Green Gem
-		inWhite = new VarbitRequirement(578, 5); // White Chisel
-		inSilver = new VarbitRequirement(578, 6); // Silver Cog
-		inBrown = new VarbitRequirement(578, 7); // Brown Engine
+		inPurple = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 1); // Purple Pewter
+		inYellow = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 2); // Yellow Fortune
+		inBlue = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 3); // Blue Opal
+		inGreen = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 4); // Green Gem
+		inWhite = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 5); // White Chisel
+		inSilver = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 6); // Silver Cog
+		inBrown = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 7); // Brown Engine
 
 		handsFree = new NoItemRequirement("No weapon equipped", ItemSlots.WEAPON);
 		shieldFree = new NoItemRequirement("No shield equipped", ItemSlots.SHIELD);
@@ -456,76 +456,76 @@ public class ForgettableTale extends BasicQuestHelper
 		// 863 = 1, Searched box
 
 		//
-		searchedBox1 = new VarbitRequirement(863, 1);
+		searchedBox1 = new VarbitRequirement(VarbitID.FORGET_START_EMPTIED, 1);
 
 		// 862, 861 are number of green/yellow
 		inPuzzle = new WidgetTextRequirement(248, 53, "Ok");
-		donePuzzle1P1 = new VarbitRequirement(842, 2);
-		donePuzzle1P2 = new VarbitRequirement(844, 1);
-		searchedPuzzle1Box = new VarbitRequirement(864, 1);
+		donePuzzle1P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 2);
+		donePuzzle1P2 = new VarbitRequirement(VarbitID.FORGET_IF3, 1);
+		searchedPuzzle1Box = new VarbitRequirement(VarbitID.FORGET_BOX1_EMPTIED, 1);
 
 		// Puzzle 2
-		donePuzzle2P1 = new VarbitRequirement(842, 1);
-		donePuzzle2P2 = new VarbitRequirement(843, 2);
-		donePuzzle2P3 = new VarbitRequirement(846, 1);
-		searchedPuzzle258Box = new VarbitRequirement(865, 1);
+		donePuzzle2P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 1);
+		donePuzzle2P2 = new VarbitRequirement(VarbitID.FORGET_IF2, 2);
+		donePuzzle2P3 = new VarbitRequirement(VarbitID.FORGET_IF5, 1);
+		searchedPuzzle258Box = new VarbitRequirement(VarbitID.FORGET_BOX2_EMPTIED, 1);
 
 		// Puzzle 3
-		donePuzzle3P1 = new VarbitRequirement(842, 2);
-		donePuzzle3P2 = new VarbitRequirement(844, 2);
-		donePuzzle3P3 = new VarbitRequirement(847, 1);
-		donePuzzle3P4 = new VarbitRequirement(848, 1);
+		donePuzzle3P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 2);
+		donePuzzle3P2 = new VarbitRequirement(VarbitID.FORGET_IF3, 2);
+		donePuzzle3P3 = new VarbitRequirement(VarbitID.FORGET_IF6, 1);
+		donePuzzle3P4 = new VarbitRequirement(VarbitID.FORGET_IF7, 1);
 
 		// Puzzle 4
 		inRoom2PuzzleWidget = new WidgetTextRequirement(244, 73, "Ok");
-		donePuzzle4P1 = new VarbitRequirement(842, 1);
-		donePuzzle4P2 = new VarbitRequirement(843, 2);
-		donePuzzle4P3 = new VarbitRequirement(846, 2);
-		searchedPuzzle147Box = new VarbitRequirement(864, 1);
+		donePuzzle4P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 1);
+		donePuzzle4P2 = new VarbitRequirement(VarbitID.FORGET_IF2, 2);
+		donePuzzle4P3 = new VarbitRequirement(VarbitID.FORGET_IF5, 2);
+		searchedPuzzle147Box = new VarbitRequirement(VarbitID.FORGET_BOX1_EMPTIED, 1);
 
 		// Puzzle 5
-		donePuzzle5P1 = new VarbitRequirement(842, 2);
-		donePuzzle5P2 = new VarbitRequirement(844, 2);
-		donePuzzle5P3 = new VarbitRequirement(847, 1);
-		donePuzzle5P4 = new VarbitRequirement(852, 1);
+		donePuzzle5P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 2);
+		donePuzzle5P2 = new VarbitRequirement(VarbitID.FORGET_IF3, 2);
+		donePuzzle5P3 = new VarbitRequirement(VarbitID.FORGET_IF6, 1);
+		donePuzzle5P4 = new VarbitRequirement(VarbitID.FORGET_IF11, 1);
 		inPuzzle5Room = new ZoneRequirement(puzzle5Room);
 
 		// Puzzle 6
-		donePuzzle6P1 = new VarbitRequirement(842, 1);
-		donePuzzle6P2 = new VarbitRequirement(843, 1);
-		donePuzzle6P3 = new VarbitRequirement(845, 2);
-		donePuzzle6P4 = new VarbitRequirement(851, 1);
-		donePuzzle6P5 = new VarbitRequirement(853, 2);
+		donePuzzle6P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 1);
+		donePuzzle6P2 = new VarbitRequirement(VarbitID.FORGET_IF2, 1);
+		donePuzzle6P3 = new VarbitRequirement(VarbitID.FORGET_IF4, 2);
+		donePuzzle6P4 = new VarbitRequirement(VarbitID.FORGET_IF10, 1);
+		donePuzzle6P5 = new VarbitRequirement(VarbitID.FORGET_IF12, 2);
 
 		inLibrary = new ZoneRequirement(library);
-		readBook = new VarbitRequirement(833, 1);
-		readCrate1 = new VarbitRequirement(834, 1);
-		readCrate2 = new VarbitRequirement(835, 1);
+		readBook = new VarbitRequirement(VarbitID.FORGET_ROOM2_BOOKCASE, 1);
+		readCrate1 = new VarbitRequirement(VarbitID.FORGET_ROOM2_PAPER1, 1);
+		readCrate2 = new VarbitRequirement(VarbitID.FORGET_ROOM2_PAPER2, 1);
 
 		// Puzzle 7
 		inRoom3PuzzleWidget = new WidgetTextRequirement(247, 108, "Ok");
-		donePuzzle7P1 = new VarbitRequirement(842, 1);
-		donePuzzle7P2 = new VarbitRequirement(843, 1);
-		donePuzzle7P3 = new VarbitRequirement(845, 2);
-		donePuzzle7P4 = new VarbitRequirement(847, 2);
+		donePuzzle7P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 1);
+		donePuzzle7P2 = new VarbitRequirement(VarbitID.FORGET_IF2, 1);
+		donePuzzle7P3 = new VarbitRequirement(VarbitID.FORGET_IF4, 2);
+		donePuzzle7P4 = new VarbitRequirement(VarbitID.FORGET_IF6, 2);
 
 		// Puzzle 8
-		donePuzzle8P1 = new VarbitRequirement(842, 2);
-		donePuzzle8P2 = new VarbitRequirement(844, 2);
-		donePuzzle8P3 = new VarbitRequirement(846, 2);
-		donePuzzle8P4 = new VarbitRequirement(848, 1);
-		donePuzzle8P5 = new VarbitRequirement(850, 1);
-		donePuzzle8P6 = new VarbitRequirement(853, 1);
+		donePuzzle8P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 2);
+		donePuzzle8P2 = new VarbitRequirement(VarbitID.FORGET_IF3, 2);
+		donePuzzle8P3 = new VarbitRequirement(VarbitID.FORGET_IF5, 2);
+		donePuzzle8P4 = new VarbitRequirement(VarbitID.FORGET_IF7, 1);
+		donePuzzle8P5 = new VarbitRequirement(VarbitID.FORGET_IF9, 1);
+		donePuzzle8P6 = new VarbitRequirement(VarbitID.FORGET_IF12, 1);
 
 		// Puzzle 9
-		donePuzzle9P1 = new VarbitRequirement(842, 1);
-		donePuzzle9P2 = new VarbitRequirement(843, 1);
-		donePuzzle9P3 = new VarbitRequirement(845, 2);
-		donePuzzle9P4 = new VarbitRequirement(847, 1);
-		donePuzzle9P5 = new VarbitRequirement(849, 2);
-		donePuzzle9P6 = new VarbitRequirement(852, 1);
-		donePuzzle9P7 = new VarbitRequirement(855, 2);
-		donePuzzle9P8 = new VarbitRequirement(858, 2);
+		donePuzzle9P1 = new VarbitRequirement(VarbitID.FORGET_IF1, 1);
+		donePuzzle9P2 = new VarbitRequirement(VarbitID.FORGET_IF2, 1);
+		donePuzzle9P3 = new VarbitRequirement(VarbitID.FORGET_IF4, 2);
+		donePuzzle9P4 = new VarbitRequirement(VarbitID.FORGET_IF6, 1);
+		donePuzzle9P5 = new VarbitRequirement(VarbitID.FORGET_IF8, 2);
+		donePuzzle9P6 = new VarbitRequirement(VarbitID.FORGET_IF11, 1);
+		donePuzzle9P7 = new VarbitRequirement(VarbitID.FORGET_IF14, 2);
+		donePuzzle9P8 = new VarbitRequirement(VarbitID.FORGET_IF17, 2);
 	}
 
 	public void setupSteps()

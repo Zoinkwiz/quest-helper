@@ -294,21 +294,21 @@ public class GhostsAhoy extends BasicQuestHelper
 		hasModelShip = modelShip.alsoCheckBank(questBank);
 		hasRepairedShip = repairedShip.alsoCheckBank(questBank);
 		hasCup = cup.alsoCheckBank(questBank);
-		hasBook = new Conditions(LogicType.OR, new VarbitRequirement(208, 1), book.alsoCheckBank(questBank));
-		hasManual = new Conditions(LogicType.OR, new VarbitRequirement(206, 1), new VarbitRequirement(212, 8));
+		hasBook = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.AHOY_GIVEN_BOOK, 1), book.alsoCheckBank(questBank));
+		hasManual = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.AHOY_GIVEN_MANUAL, 1), new VarbitRequirement(VarbitID.AHOY_SUBQUEST_BOW, 8));
 		hasSheet = bedsheet.alsoCheckBank(questBank);
 		hasEctoSheet = ectoSheets.alsoCheckBank(questBank);
-		hasMysticalRobes = new Conditions(LogicType.OR, new VarbitRequirement(207, 1), robes.alsoCheckBank(questBank));
+		hasMysticalRobes = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.AHOY_GIVEN_ROBES, 1), robes.alsoCheckBank(questBank));
 		hasSignedOakBow = signedOakBow.alsoCheckBank(questBank);
 		hasPetition = petition.alsoCheckBank(questBank);
 		hasSignatures = new VarbitRequirement(VarbitID.AHOY_SIGNATURECOUNTER, 11, Operation.GREATER_EQUAL);
 		givenPetitionToNecro = new VarbitRequirement(VarbitID.AHOY_SIGNATURECOUNTER, 31, Operation.GREATER_EQUAL);
 		hadChestKey = new Conditions(LogicType.OR, chestKey, new VarbitRequirement(VarbitID.AHOY_SUBQUEST_TOYBOAT, 2, Operation.GREATER_EQUAL));
 		unlockedChest2 = new VarbitRequirement(VarbitID.AHOY_SUBQUEST_TOYBOAT, 3, Operation.GREATER_EQUAL);
-		doorUnlocked = new VarbitRequirement(213, 1);
+		doorUnlocked = new VarbitRequirement(VarbitID.AHOY_TEMPLEDOOR_UNLOCKED, 1);
 
 		lobsterNearby = new NpcCondition(NpcID.GIANT_LOBSTER);
-		killedLobster = new VarbitRequirement(215, 1);
+		killedLobster = new VarbitRequirement(VarbitID.AHOY_KILLED_LOBSTER, 1);
 
 		boneKeyNearby = new ItemOnTileRequirement(boneKey);
 		hasBoneKey = new Conditions(LogicType.OR, boneKey, doorUnlocked);

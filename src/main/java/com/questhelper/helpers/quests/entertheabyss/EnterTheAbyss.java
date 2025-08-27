@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -118,11 +119,11 @@ public class EnterTheAbyss extends BasicQuestHelper
 	{
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 
-		teleportedFromWizardsTower = new VarbitRequirement(2314, 1);
-		teleportedFromVarrock = new VarbitRequirement(2315, 1);
-		teleportedFromArdougne = new VarbitRequirement(2316, 1);
-		teleportedFromDistentor = new VarbitRequirement(2317, 1);
-		teleportedFromGnome = new VarbitRequirement(2318, 1);
+		teleportedFromWizardsTower = new VarbitRequirement(VarbitID.RCU_ESSENCESPOT_WIZARDSTOWER, 1);
+		teleportedFromVarrock = new VarbitRequirement(VarbitID.RCU_ESSENCESPOT_AUBURY, 1);
+		teleportedFromArdougne = new VarbitRequirement(VarbitID.RCU_ESSENCESPOT_CROMPERTY, 1);
+		teleportedFromDistentor = new VarbitRequirement(VarbitID.RCU_ESSENCESPOT_BRIMSTAIL, 1);
+		teleportedFromGnome = new VarbitRequirement(VarbitID.RCU_ESSENCESPOT_WIZARDSGUILD, 1);
 	}
 
 	public void setupSteps()

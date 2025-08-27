@@ -38,6 +38,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -120,7 +121,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 	public void resetState()
 	{
 		setWorldPoint(null);
-		int locationStates = client.getVarbitValue(1391);
+		int locationStates = client.getVarbitValue(VarbitID.MAKINGHISTORY_LOCSTATUS);
 		Set<EnchantedKeyDigLocation> locations = Arrays.stream(EnchantedKeyDigLocation.values()).filter(p -> ((locationStates >> p.getBit()) & 1) == 0)
 			.collect(Collectors.toSet());
 		if (enchantedKeySolver != null)

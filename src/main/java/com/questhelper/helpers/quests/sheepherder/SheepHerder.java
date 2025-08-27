@@ -43,6 +43,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -123,43 +124,43 @@ public class SheepHerder extends BasicQuestHelper
 	{
 		inEnclosure = new ZoneRequirement(enclosure);
 
-		sheep1Burned = new VarbitRequirement(2233, 6);
+		sheep1Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_C, 6);
 		sheep1HasBones = new Conditions(LogicType.OR,
 			bones3,
 			sheep1Burned
 		);
 		sheep1InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(2233, 1),
+			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_C, 1),
 			sheep1HasBones
 		);
 
-		sheep2Burned = new VarbitRequirement(2234, 6);
+		sheep2Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_D, 6);
 		sheep2HasBones = new Conditions(LogicType.OR,
 			bones4,
 			sheep2Burned
 		);
 		sheep2InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(2234, 1),
+			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_D, 1),
 			sheep2HasBones
 		);
 
-		sheep3Burned = new VarbitRequirement(2232, 6);
+		sheep3Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_B, 6);
 		sheep3HasBones = new Conditions(LogicType.OR,
 			bones2,
 			sheep3Burned
 		);
 		sheep3InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(2232, 1),
+			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_B, 1),
 			sheep3HasBones
 		);
 
-		sheep4Burned = new VarbitRequirement(2231, 6);
+		sheep4Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_A, 6);
 		sheep4HasBones = new Conditions(LogicType.OR,
 			bones1,
 			sheep4Burned
 		);
 		sheep4InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(2231, 1),
+			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_A, 1),
 			sheep4HasBones
 		);
 

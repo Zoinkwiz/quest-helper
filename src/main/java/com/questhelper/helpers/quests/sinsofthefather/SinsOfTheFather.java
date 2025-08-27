@@ -347,11 +347,11 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		inPuzzleInterface = new WidgetTextRequirement(665, 7, "1");
 
-		talkedToKael = new VarbitRequirement(10347, 1);
-		talkedToVertida = new VarbitRequirement(10348, 1);
-		talkedToPolmafi = new VarbitRequirement(10350, 2);
-		talkedToRadigad = new VarbitRequirement(10351, 1);
-		talkedToIvan = new VarbitRequirement(10349, 1);
+		talkedToKael = new VarbitRequirement(VarbitID.MYQ5_KAEL_CONVINCED, 1);
+		talkedToVertida = new VarbitRequirement(VarbitID.MYQ5_VERTIDA_CONVINCED, 1);
+		talkedToPolmafi = new VarbitRequirement(VarbitID.MYQ5_POLMAFI_CONVINCED, 2);
+		talkedToRadigad = new VarbitRequirement(VarbitID.MYQ5_RADIGAD_CONVINCED, 1);
+		talkedToIvan = new VarbitRequirement(VarbitID.MYQ5_IVAN_CONVINCED, 1);
 	}
 
 	@Override

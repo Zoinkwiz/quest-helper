@@ -45,17 +45,12 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
 public class BelowIceMountain extends BasicQuestHelper
 {
-	// varbit 12065 tracks checkal line?
-	// varbit 12062 -> 1 after learning flex
-	private static final int VARBIT_CHECKAL_LINE = 12065;
-	private static final int VARBIT_MARLEY_LINE = 12064;
-	private static final int VARBIT_BURNTOF_LINE = 12066;
-
 	//Items Required
 	ItemRequirement cookedMeat, bread, knife, coins, knifeHighlight, breadHighlight, steakSandwich,
 		beerHighlight;
@@ -149,21 +144,21 @@ public class BelowIceMountain extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		needFlex = new VarbitRequirement(VARBIT_CHECKAL_LINE, 5);
-		leftFlexBeforeLearning = new VarbitRequirement(VARBIT_CHECKAL_LINE, 10);
-		haveFlex = new VarbitRequirement(VARBIT_CHECKAL_LINE, 15);
-		recruitedCheckal = new VarbitRequirement(VARBIT_CHECKAL_LINE, 40);
+		needFlex = new VarbitRequirement(VarbitID.BIM_CHECKAL, 5);
+		leftFlexBeforeLearning = new VarbitRequirement(VarbitID.BIM_CHECKAL, 10);
+		haveFlex = new VarbitRequirement(VarbitID.BIM_CHECKAL, 15);
+		recruitedCheckal = new VarbitRequirement(VarbitID.BIM_CHECKAL, 40);
 
-		needRecipe = new VarbitRequirement(VARBIT_MARLEY_LINE, 5);
-		haveRecipe = new VarbitRequirement(VARBIT_MARLEY_LINE, 10);
+		needRecipe = new VarbitRequirement(VarbitID.BIM_MARLEY, 5);
+		haveRecipe = new VarbitRequirement(VarbitID.BIM_MARLEY, 10);
 		haveIngredients = new ItemRequirements(cookedMeat, bread, knife);
-		fedMarley = new VarbitRequirement(VARBIT_MARLEY_LINE, 35);
-		recruitedMarley = new VarbitRequirement(VARBIT_MARLEY_LINE, 40);
+		fedMarley = new VarbitRequirement(VarbitID.BIM_MARLEY, 35);
+		recruitedMarley = new VarbitRequirement(VarbitID.BIM_MARLEY, 40);
 
-		needBeer = new VarbitRequirement(VARBIT_BURNTOF_LINE, 5);
-		gaveBeer = new VarbitRequirement(VARBIT_BURNTOF_LINE, 10);
-		needRPS = new VarbitRequirement(VARBIT_BURNTOF_LINE, 15);
-		recruitedBurntof = new VarbitRequirement(VARBIT_BURNTOF_LINE, 40);
+		needBeer = new VarbitRequirement(VarbitID.BIM_BURNTOF, 5);
+		gaveBeer = new VarbitRequirement(VarbitID.BIM_BURNTOF, 10);
+		needRPS = new VarbitRequirement(VarbitID.BIM_BURNTOF, 15);
+		recruitedBurntof = new VarbitRequirement(VarbitID.BIM_BURNTOF, 40);
 
 		inDungeon = new NpcRequirement("Ancient Guardian", 10654);
 	}

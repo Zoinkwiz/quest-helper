@@ -30,6 +30,7 @@ import com.questhelper.steps.NpcStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.Collections;
@@ -54,7 +55,7 @@ public class GetRohakDrunk extends NpcStep
 
 	protected void updateSteps()
 	{
-		int numAle = 4 - client.getVarbitValue(1893);
+		int numAle = 4 - client.getVarbitValue(VarbitID.HUNDRED_DWARF_DRUNK);
 		asgoldianAle.setQuantity(numAle);
 		if (numAle == 0)
 		{

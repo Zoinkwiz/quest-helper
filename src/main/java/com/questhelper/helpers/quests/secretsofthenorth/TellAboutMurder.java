@@ -30,6 +30,7 @@ import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class TellAboutMurder extends NpcStep
@@ -49,9 +50,9 @@ public class TellAboutMurder extends NpcStep
 
 	private void updateCorrectChoice()
 	{
-		boolean saidAboutWindow = client.getVarbitValue(14731) == 1;
-		boolean saidAboutCeril = client.getVarbitValue(14730) == 1;
-		boolean saidAboutWall = client.getVarbitValue(14732) == 1;
+		boolean saidAboutWindow = client.getVarbitValue(VarbitID.SOTN_EXPLAINED_WINDOW) == 1;
+		boolean saidAboutCeril = client.getVarbitValue(VarbitID.SOTN_EXPLAINED_BODY) == 1;
+		boolean saidAboutWall = client.getVarbitValue(VarbitID.SOTN_EXPLAINED_CHEST) == 1;
 
 		choices = new DialogChoiceSteps();
 

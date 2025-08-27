@@ -43,13 +43,13 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.*;
 
 public class CurseOfTheEmptyLord extends BasicQuestHelper
 {
-	private final int PATH_VARBIT = 815;
 	private int currentPath = 0;
 
 	//Items Required
@@ -105,7 +105,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 	{
 		if (currentPath == 0)
 		{
-			int newPath = client.getVarbitValue(PATH_VARBIT);
+			int newPath = client.getVarbitValue(VarbitID.SECRET_GHOST_RANDOMISER);
 			if (newPath != 0)
 			{
 				currentPath = newPath;
@@ -122,26 +122,26 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 		ghostspeakItems = new ItemRequirement("Ghostspeak amulet or Morytania legs 2 or better", ItemID.AMULET_OF_GHOSTSPEAK,
 			1, true).isNotConsumed();
 		ghostspeakItems.addAlternates(ItemID.MORYTANIA_LEGS_MEDIUM, ItemID.MORYTANIA_LEGS_HARD, ItemID.MORYTANIA_LEGS_ELITE);
-		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(new VarbitRequirement(PATH_VARBIT, 3)).isNotConsumed();
+		knife = new ItemRequirement("Knife", ItemID.KNIFE).showConditioned(new VarbitRequirement(VarbitID.SECRET_GHOST_RANDOMISER, 3)).isNotConsumed();
 	}
 
 	public void setupConditions()
 	{
-		talkedToValdez = new VarbitRequirement(816, 1);
-		talkedToRennard = new VarbitRequirement(817, 1);
-		talkedToKharrim = new VarbitRequirement(818, 1);
-		talkedToLennissa = new VarbitRequirement(819, 1);
-		talkedToDhalak = new VarbitRequirement(820, 1);
-		talkedToViggora = new VarbitRequirement(821, 1);
+		talkedToValdez = new VarbitRequirement(VarbitID.SECRET_GHOST1_BACKSTORY, 1);
+		talkedToRennard = new VarbitRequirement(VarbitID.SECRET_GHOST2_BACKSTORY, 1);
+		talkedToKharrim = new VarbitRequirement(VarbitID.SECRET_GHOST3_BACKSTORY, 1);
+		talkedToLennissa = new VarbitRequirement(VarbitID.SECRET_GHOST4_BACKSTORY, 1);
+		talkedToDhalak = new VarbitRequirement(VarbitID.SECRET_GHOST5_BACKSTORY, 1);
+		talkedToViggora = new VarbitRequirement(VarbitID.SECRET_GHOST6_BACKSTORY, 1);
 		inEdgevilleDungeon = new ZoneRequirement(edgevilleDungeon);
 		inRoguesCastle = new ZoneRequirement(roguesCastleFirstFloor);
 		inSlayerTower = new ZoneRequirement(slayerTowerFirstFloor);
 		inEdgevilleMonastery = new ZoneRequirement(edgevilleMonastery);
 		inPartyRoom = new ZoneRequirement(partyRoom);
 
-		onPath1 = new VarbitRequirement(PATH_VARBIT, 1);
-		onPath2 = new VarbitRequirement(PATH_VARBIT, 2);
-		onPath3 = new VarbitRequirement(PATH_VARBIT, 3);
+		onPath1 = new VarbitRequirement(VarbitID.SECRET_GHOST_RANDOMISER, 1);
+		onPath2 = new VarbitRequirement(VarbitID.SECRET_GHOST_RANDOMISER, 2);
+		onPath3 = new VarbitRequirement(VarbitID.SECRET_GHOST_RANDOMISER, 3);
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class CurseOfTheEmptyLord extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		int pathID = client.getVarbitValue(PATH_VARBIT);
+		int pathID = client.getVarbitValue(VarbitID.SECRET_GHOST_RANDOMISER);
 
 		talkToValdez = new NpcStep(this, NpcID.SECRET_GHOST_EXPLORER, new WorldPoint(2556, 3445, 0), "Talk to the Mysterious Ghost outside Glarial's Tomb.", ghostspeakItems, ringOfVis);
 		talkToValdez.addDialogStep("Tell me your story");

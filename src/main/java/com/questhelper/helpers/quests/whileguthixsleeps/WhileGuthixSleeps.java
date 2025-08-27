@@ -84,16 +84,15 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey,
 		silifTeleorb, strangeTeleorb, darkSquallHood, darkSquallBody, darkSquallLegs, fireOrb, waterOrb, airOrb, earthOrb, airBlock, waterBlock, earthBlock, fireBlock;
 
-	ItemRequirement toadflax, toadsLegs, guamLeaf, eyeOfNewt, iritLeaf, harralander, redSpidersEggs, garlic, silverDust, goatHorn, ranarrWeed, whiteBerries, cadantine, avantoe, moryMyreFungus,
-		chocolateDust, snapeGrass, kebbitTeethdust, lantadyme, potatoCactus, dwarfWeed, wineOfZamorak, snapdragon, tarromin, limpwurt, kwuarm, emptyDruidPouch, fullDruidPouch, silverSickleB;
+	ItemRequirement emptyDruidPouch;
+	ItemRequirement fullDruidPouch;
+	ItemRequirement silverSickleB;
 
 	FreeInventorySlotRequirement emptySlots9, emptySlots16;
 
 	Requirement doorNeedsEarthRune, doorNeedsMindRune, doorNeedsAirRune, doorNeedsFireRune, doorNeedsWaterRune, isElectricBookcase1, isElectricBookcase2, isElectricBookcase3, isElectricBookcase4,
 		isElectricBookcase5, isElectricBookcase6, isElectricBookcase7;
 
-	Requirement hadToadflax, hadToadsLegs, hadGuamLeaf, hadEyeOfNewt, hadIritLeaf, hadHarralander, hadRedSpidersEggs, hadGarlic, hadSilverDust, hadGoatHorn, hadRanarrWeed, hadWhiteBerries, hadCadantine, hadAvantoeForHunterPotion, hadMortMyreFungus,
-		hadChocolateDust, hadSnapeGrass, hadKebbitTeethdustForHunterPotion, hadLantadyme, hadPotatoCactus, hadDwarfWeed, hadWineOfZamorak, hadSnapdragon, hadTarromin, hadLimpwurt, hadKwuarm, hadEmptyDruidPouch, hadFullDruidPouch, hadSilverSickleB;
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable, claimedRunes,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
@@ -773,64 +772,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		fireBlock = new ItemRequirement("Fire block", ItemID.WGS_GUTHIX_TEMPLE_ELEMENTAL_KEY_FIRE);
 		fireBlock.setTooltip("You can get another by searching the recess near the middle cavity");
 
-		toadflax = new ItemRequirement("Toadflax", ItemID.TOADFLAX);
-		toadsLegs = new ItemRequirement("Toad's legs", ItemID.TOADS_LEGS);
-		guamLeaf = new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF);
-		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
-		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
-		harralander = new ItemRequirement("Harralander", ItemID.HARRALANDER);
-		redSpidersEggs = new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS);
-		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
-		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST);
-		goatHorn = new ItemRequirement("Goat horn dust", ItemID.GROUND_DESERT_GOAT_HORN);
-		ranarrWeed = new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED);
-		whiteBerries = new ItemRequirement("White berries", ItemID.WHITE_BERRIES);
-		cadantine = new ItemRequirement("Cadantine", ItemID.CADANTINE);
-		avantoe = new ItemRequirement("Avantoe", ItemID.AVANTOE);
-		moryMyreFungus = new ItemRequirement("Mory myre fungus", ItemID.MORTMYREMUSHROOM);
-		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
-		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
-		kebbitTeethdust = new ItemRequirement("Kebbit teeth dust", ItemID.HUNTINGBEAST_SABRETEETH_DUST);
-		lantadyme = new ItemRequirement("Lantadyme", ItemID.LANTADYME);
-		potatoCactus = new ItemRequirement("Potato cactus", ItemID.CACTUS_POTATO);
-		dwarfWeed = new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED);
-		wineOfZamorak = new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK);
-		snapdragon = new ItemRequirement("Snapdragon", ItemID.SNAPDRAGON);
-		tarromin = new ItemRequirement("Tarromin", ItemID.TARROMIN);
-		limpwurt = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT);
-		kwuarm = new ItemRequirement("Kwuarm", ItemID.KWUARM);
-
-		// None used!
-		hadToadflax = or(toadflax, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadToadsLegs = or(toadsLegs, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadGuamLeaf = or(guamLeaf, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadEyeOfNewt = or(eyeOfNewt, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadIritLeaf = or(iritLeaf, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadHarralander = or(harralander, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadRedSpidersEggs = or(redSpidersEggs, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadGarlic = or(garlic, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSilverDust = or(silverDust, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadGoatHorn = or(goatHorn, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadRanarrWeed = or(ranarrWeed, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadWhiteBerries = or(whiteBerries, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadCadantine = or(cadantine, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadAvantoeForHunterPotion = or(avantoe, new VarbitRequirement(10924, 1), new VarbitRequirement(10924, 3));
-		hadMortMyreFungus = or(mortMyreFungus, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadChocolateDust = or(chocolateDust, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSnapeGrass = or(snapeGrass, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadKebbitTeethdustForHunterPotion = or(kebbitTeethdust, new VarbitRequirement(10924, 2), new VarbitRequirement(10924, 3));
-		hadLantadyme = or(lantadyme, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadPotatoCactus = or(potatoCactus, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadDwarfWeed = or(dwarfWeed, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadWineOfZamorak = or(wineOfZamorak, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSnapdragon = or(snapdragon, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadTarromin = or(tarromin, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadLimpwurt = or(limpwurt, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadKwuarm = or(kwuarm, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadEmptyDruidPouch = or(emptyDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadFullDruidPouch = or(fullDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSilverSickleB = or(silverSickleB, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
 		isUpstairsNearThaerisk = new ZoneRequirement(upstairsNearThaeriskZone);
@@ -864,18 +805,18 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		library = new Zone(new WorldPoint(4166, 4946, 0), new WorldPoint(4190, 4968, 0));
 		inLibrary = new ZoneRequirement(library);
 
-		isElectricBookcase1 = new VarbitRequirement(10763, 1);
-		isElectricBookcase2 = new VarbitRequirement(10764, 1);
-		isElectricBookcase3 = new VarbitRequirement(10765, 1);
-		isElectricBookcase4 = new VarbitRequirement(10766, 1);
-		isElectricBookcase5 = new VarbitRequirement(10767, 1);
-		isElectricBookcase6 = new VarbitRequirement(10768, 1);
-		isElectricBookcase7 = new VarbitRequirement(10769, 1);
+		isElectricBookcase1 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_1, 1);
+		isElectricBookcase2 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_2, 1);
+		isElectricBookcase3 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_3, 1);
+		isElectricBookcase4 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_4, 1);
+		isElectricBookcase5 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_5, 1);
+		isElectricBookcase6 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_6, 1);
+		isElectricBookcase7 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_7, 1);
 
 		nextToSpiralStaircase = new Zone(new WorldPoint(4180, 4949, 0), new WorldPoint(4183, 4952, 0));
 		isNextToSpiralStaircase = new ZoneRequirement(nextToSpiralStaircase);
 
-		disarmedStaircase = new VarbitRequirement(10799, 1);
+		disarmedStaircase = new VarbitRequirement(VarbitID.WGS_STAIR_TRAP_DEAD, 1);
 
 		movarioBaseF1 = new Zone(new WorldPoint(4169, 4942, 1), new WorldPoint(4189, 4962, 1));
 		inMovarioBaseF1 = new ZoneRequirement(movarioBaseF1);
@@ -884,9 +825,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		inMovarioBaseF2 = new ZoneRequirement(movarioBaseF2);
 
 		hadRubyKey = or(rubyKey, new VarbitRequirement(VarbitID.WGS, 19, Operation.GREATER_EQUAL));
-		searchedBedForTraps = new VarbitRequirement(10798, 1);
+		searchedBedForTraps = new VarbitRequirement(VarbitID.WGS_BEDCHEST_TRAP_DISABLED, 1);
 
-		pulledPaintingLever = new VarbitRequirement(10758, 1);
+		pulledPaintingLever = new VarbitRequirement(VarbitID.WGS_MOVED_PAINTING, 1);
 
 		weightRoom = new Zone(new WorldPoint(4177, 4944, 1), new WorldPoint(4181, 4947, 1));
 		inWeightRoom = new ZoneRequirement(weightRoom);
@@ -913,13 +854,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		onLunarSpellbook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		notContactedTurael = new VarbitRequirement(10785, 0);
-		notContactedDuradel = new VarbitRequirement(10786, 0);
-		notContactedMazchna = new VarbitRequirement(10787, 0);
-		notRecruitedGhommal = new VarbitRequirement(10788, 0);
-		notRecruitedHarrallak = new VarbitRequirement(10789, 0);
-		notRecruitedSloane = new VarbitRequirement(10790, 0);
-		notContactedCyrisus = new VarbitRequirement(10791, 0);
+		notContactedTurael = new VarbitRequirement(VarbitID.WGS_TURAEL_RECRUIT, 0);
+		notContactedDuradel = new VarbitRequirement(VarbitID.WGS_DURADEL_RECRUIT, 0);
+		notContactedMazchna = new VarbitRequirement(VarbitID.WGS_MAZCHNA_RECRUIT, 0);
+		notRecruitedGhommal = new VarbitRequirement(VarbitID.WGS_GHOMMAL_RECRUIT, 0);
+		notRecruitedHarrallak = new VarbitRequirement(VarbitID.WGS_HARRALLAK_RECRUIT, 0);
+		notRecruitedSloane = new VarbitRequirement(VarbitID.WGS_SLOANE_RECRUIT, 0);
+		notContactedCyrisus = new VarbitRequirement(VarbitID.WGS_CYRISUS_RECRUIT, 0);
 
 		f1WarriorsGuild = new Zone(new WorldPoint(2835, 3531, 1), new WorldPoint(3878, 3558, 1));
 		onF1WarriorsGuild = new ZoneRequirement(f1WarriorsGuild);

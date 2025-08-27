@@ -43,6 +43,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -148,11 +149,11 @@ public class DemonSlayer extends BasicQuestHelper
 		inVarrockSewer = new ZoneRequirement(varrockSewer);
 		inTowerFloor1 = new ZoneRequirement(towerFloor1);
 		// 2568 going to 2 means you've taken the key, thus the key won't be there to be picked up should the key be deleted
-		hasPouredWaterIntoDrain = new VarbitRequirement(2568, 1);
-		obtainedSilverlight = new VarbitRequirement(2567, 1);
+		hasPouredWaterIntoDrain = new VarbitRequirement(VarbitID.DELRITH_DRAIN_KEY, 1);
+		obtainedSilverlight = new VarbitRequirement(VarbitID.DELRITH_SILVERLIGHT_CASE, 1);
 		delrithNearby = new NpcCondition(NpcID.DELRITH);
 		delrithWeakenedNearby = new NpcCondition(NpcID.DELRITH_WEAKENED);
-		inInstance = new VarbitRequirement(2569, 1);
+		inInstance = new VarbitRequirement(VarbitID.DELRITH_SEEN_SUMMONING_CUTSCENE, 1);
 	}
 
 	@Override

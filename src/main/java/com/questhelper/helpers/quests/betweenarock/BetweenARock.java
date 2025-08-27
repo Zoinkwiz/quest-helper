@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -250,10 +251,10 @@ public class BetweenARock extends BasicQuestHelper
 		inDwarvenMine = new ZoneRequirement(dwarvenMine);
 		inKhorvakRoom = new ZoneRequirement(khorvakRoom);
 
-		hasUsedGoldBar = new VarbitRequirement(301, 1);
-		shotGoldCannonball = new VarbitRequirement(313, 1);
+		hasUsedGoldBar = new VarbitRequirement(VarbitID.DWARFROCK_GOLD_CANNONBALL, 1);
+		shotGoldCannonball = new VarbitRequirement(VarbitID.DWARFROCK_FIRED_GOLD_CANNONBALL, 1);
 		hasCannonball = new Conditions(LogicType.OR, goldCannonball, shotGoldCannonball);
-		hasSolvedSchematic = new VarbitRequirement(305, 1);
+		hasSolvedSchematic = new VarbitRequirement(VarbitID.DWARFROCK_SCHEMATICS_SOLVED, 1);
 		inRealm = new ZoneRequirement(realm);
 
 		avatarNearby = new Conditions(LogicType.OR, new NpcCondition(NpcID.DWARF_ROCK_AVATAR_MAGE), new NpcCondition(NpcID.DWARF_ROCK_AVATAR_MAGE_GREEN),

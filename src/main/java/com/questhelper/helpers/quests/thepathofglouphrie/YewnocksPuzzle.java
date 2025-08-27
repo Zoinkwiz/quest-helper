@@ -38,6 +38,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.eventbus.Subscribe;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -54,12 +55,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 * Region ID of the storeroom this puzzle takes place in
 	 */
 	private static final int STOREROOM_REGION = 11074;
-	private static final int PUZZLE1_INSERTED_DISC_VARP_ID = 3994;
-	private static final int PUZZLE2_UPPER_INSERTED_DISC_VARP_ID = 3995;
-	private static final int PUZZLE2_LOWER_INSERTED_DISC_VARP_ID = 3996;
-	private static final int PUZZLE1_LEFT_VARP_ID = 3997;
-	private static final int PUZZLE1_RIGHT_VARP_ID = 3998;
-	private static final int PUZZLE2_VARP_ID = 3999;
 	/**
 	 * ItemID to ItemRequirement map
 	 */
@@ -366,9 +361,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	@Override
 	public void startUp()
 	{
-		puzzle1LeftItemID = client.getVarpValue(PUZZLE1_LEFT_VARP_ID);
-		puzzle1RightItemID = client.getVarpValue(PUZZLE1_RIGHT_VARP_ID);
-		puzzle2ItemID = client.getVarpValue(PUZZLE2_VARP_ID);
+		puzzle1LeftItemID = client.getVarpValue(VarPlayerID.POG_COIN_TARGET1_1_OBJ);
+		puzzle1RightItemID = client.getVarpValue(VarPlayerID.POG_COIN_TARGET1_2_OBJ);
+		puzzle2ItemID = client.getVarpValue(VarPlayerID.POG_COIN_TARGET2_OBJ);
 
 		updateSteps();
 	}
@@ -411,15 +406,15 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	{
 		if (varbitChanged.getVarbitId() == -1)
 		{
-			if (varbitChanged.getVarpId() == PUZZLE1_LEFT_VARP_ID)
+			if (varbitChanged.getVarpId() == VarPlayerID.POG_COIN_TARGET1_1_OBJ)
 			{
 				puzzle1LeftItemID = varbitChanged.getValue();
 			}
-			else if (varbitChanged.getVarpId() == PUZZLE1_RIGHT_VARP_ID)
+			else if (varbitChanged.getVarpId() == VarPlayerID.POG_COIN_TARGET1_2_OBJ)
 			{
 				puzzle1RightItemID = varbitChanged.getValue();
 			}
-			else if (varbitChanged.getVarpId() == PUZZLE2_VARP_ID)
+			else if (varbitChanged.getVarpId() == VarPlayerID.POG_COIN_TARGET2_OBJ)
 			{
 				puzzle2ItemID = varbitChanged.getValue();
 			}
@@ -601,9 +596,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				return;
 			}
 
-			var puzzle1InsertedDisc = client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID);
-			var puzzle2UpperInsertedDisc = client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID);
-			var puzzle2LowerInsertedDisc = client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID);
+			var puzzle1InsertedDisc = client.getVarpValue(VarPlayerID.POG_COIN_DISPLAY1_OBJ);
+			var puzzle2UpperInsertedDisc = client.getVarpValue(VarPlayerID.POG_COIN_DISPLAY2_1_OBJ);
+			var puzzle2LowerInsertedDisc = client.getVarpValue(VarPlayerID.POG_COIN_DISPLAY2_2_OBJ);
 
 			if (!solution.puzzle1Requirement.getAllIds().contains(puzzle1InsertedDisc))
 			{

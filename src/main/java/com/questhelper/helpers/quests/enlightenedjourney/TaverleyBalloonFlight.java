@@ -29,6 +29,7 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.WidgetStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,9 +154,9 @@ public class TaverleyBalloonFlight extends DetailedOwnerStep
 
 	protected void updateSteps()
 	{
-		int section = client.getVarbitValue(2884) - 1;
-		int xPos = client.getVarbitValue(2882);
-		int yPos = client.getVarbitValue(2883);
+		int section = client.getVarbitValue(VarbitID.ZEP_IF_CURRENT_MAP) - 1;
+		int xPos = client.getVarbitValue(VarbitID.ZEP_IF_SCREEN_DIST);
+		int yPos = client.getVarbitValue(VarbitID.ZEP_IF_BALLOON_HEIGHT);
 
 		// If we've gone to next section before updating the pos, return
 		if (sections.get(section).size() <= xPos + 1)

@@ -203,32 +203,32 @@ public class ZogreFleshEaters extends BasicQuestHelper
 		inTombF2 = new ZoneRequirement(tombF2);
 		inTombF0 = new ZoneRequirement(tombF0);
 		inTombF2ToBoss = new ZoneRequirement(tombF2ToBoss);
-		killedZombie = new VarbitRequirement(503, 2);
+		killedZombie = new VarbitRequirement(VarbitID.THZFE_BRENTLE_SKELE, 2);
 		hasBackpackOrTankard = new Conditions(LogicType.OR, backpack, tankard);
-		searchedCoffin = new VarbitRequirement(488, 1);
-		usedKnife = new VarbitRequirement(488, 2);
-		openedCoffin = new VarbitRequirement(488, 3);
+		searchedCoffin = new VarbitRequirement(VarbitID.THZFE_PRISMSEARCH, 1);
+		usedKnife = new VarbitRequirement(VarbitID.THZFE_PRISMSEARCH, 2);
+		openedCoffin = new VarbitRequirement(VarbitID.THZFE_PRISMSEARCH, 3);
 		talkedToZavistic = new VarbitRequirement(VarbitID.THZFE_PRISMSEARCH, 4, Operation.GREATER_EQUAL);
-		askedSithToLookAround = new VarbitRequirement(488, 5);
+		askedSithToLookAround = new VarbitRequirement(VarbitID.THZFE_PRISMSEARCH, 5);
 
 		atSith = new ZoneRequirement(sith);
 
-		usedTankardOnBartender = new VarbitRequirement(489, 1);
-		usedPortraitOnBartender = new VarbitRequirement(490, 1);
-		shownNecroBook = new VarbitRequirement(491, 1);
-		shownHamBook = new VarbitRequirement(492, 1);
-		shownTankard = new VarbitRequirement(493, 1);
-		shownSignedPortrait = new VarbitRequirement(494, 1);
+		usedTankardOnBartender = new VarbitRequirement(VarbitID.THZFE_INNKEEPERMUGSHOWN, 1);
+		usedPortraitOnBartender = new VarbitRequirement(VarbitID.THZFE_INNKEEPERPORTRAITSHOWN, 1);
+		shownNecroBook = new VarbitRequirement(VarbitID.THZFE_SHOWNNECROBOOK, 1);
+		shownHamBook = new VarbitRequirement(VarbitID.THZFE_SHOWNHAMBOOK, 1);
+		shownTankard = new VarbitRequirement(VarbitID.THZFE_SHOWNTANKARD, 1);
+		shownSignedPortrait = new VarbitRequirement(VarbitID.THZFE_SHOWNSIGNEDPORTRAIT, 1);
 
 		hasOrShownHamBook = new Conditions(LogicType.OR, shownHamBook, hamBook);
 		hasOrShownNecroBook = new Conditions(LogicType.OR, shownNecroBook, necroBook);
 		hasOrShownSignedPortrait = new Conditions(LogicType.OR, shownSignedPortrait, signedPort);
 
-		sithTransformed = new VarbitRequirement(495, 1);
+		sithTransformed = new VarbitRequirement(VarbitID.THZFE_SITHIK_TRANSFORMED, 1);
 
-		askedAboutDisease = new VarbitRequirement(498, 1);
-		askedAboutGettingRidOfUndead = new VarbitRequirement(499, 1);
-		askedAboutBow = new VarbitRequirement(500, 1);
+		askedAboutDisease = new VarbitRequirement(VarbitID.THZFE_MAKECUREDISEASE, 1);
+		askedAboutGettingRidOfUndead = new VarbitRequirement(VarbitID.THZFE_MAKEBRUTALARROW, 1);
+		askedAboutBow = new VarbitRequirement(VarbitID.THZFE_MAKECOMPOZOGREBOW, 1);
 
 		ogreRelicNearby = new ItemOnTileRequirement(ogreRelic);
 		// 507 1 when are ya sure?

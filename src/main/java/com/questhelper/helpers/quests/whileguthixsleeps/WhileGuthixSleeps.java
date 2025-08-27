@@ -92,8 +92,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	Requirement doorNeedsEarthRune, doorNeedsMindRune, doorNeedsAirRune, doorNeedsFireRune, doorNeedsWaterRune, isElectricBookcase1, isElectricBookcase2, isElectricBookcase3, isElectricBookcase4,
 		isElectricBookcase5, isElectricBookcase6, isElectricBookcase7;
 
-	Requirement hadToadflax, hadToadsLegs, hadGuamLeaf, hadEyeOfNewt, hadIritLeaf, hadHarralander, hadRedSpidersEggs, hadGarlic, hadSilverDust, hadGoatHorn, hadRanarrWeed, hadWhiteBerries, hadCadantine, hadAvantoeForHunterPotion, hadMortMyreFungus,
-		hadChocolateDust, hadSnapeGrass, hadKebbitTeethdustForHunterPotion, hadLantadyme, hadPotatoCactus, hadDwarfWeed, hadWineOfZamorak, hadSnapdragon, hadTarromin, hadLimpwurt, hadKwuarm, hadEmptyDruidPouch, hadFullDruidPouch, hadSilverSickleB;
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable, claimedRunes,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
@@ -799,37 +797,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		tarromin = new ItemRequirement("Tarromin", ItemID.TARROMIN);
 		limpwurt = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT);
 		kwuarm = new ItemRequirement("Kwuarm", ItemID.KWUARM);
-
-		// None used!
-		hadToadflax = or(toadflax, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadToadsLegs = or(toadsLegs, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadGuamLeaf = or(guamLeaf, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadEyeOfNewt = or(eyeOfNewt, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadIritLeaf = or(iritLeaf, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadHarralander = or(harralander, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadRedSpidersEggs = or(redSpidersEggs, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadGarlic = or(garlic, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadSilverDust = or(silverDust, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadGoatHorn = or(goatHorn, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadRanarrWeed = or(ranarrWeed, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadWhiteBerries = or(whiteBerries, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadCadantine = or(cadantine, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadAvantoeForHunterPotion = or(avantoe, new VarbitRequirement(VarbitID.WGS_TEMPLE_STATUE_CONTENTS_4, 1), new VarbitRequirement(VarbitID.WGS_TEMPLE_STATUE_CONTENTS_4, 3));
-		hadMortMyreFungus = or(mortMyreFungus, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadChocolateDust = or(chocolateDust, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadSnapeGrass = or(snapeGrass, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadKebbitTeethdustForHunterPotion = or(kebbitTeethdust, new VarbitRequirement(VarbitID.WGS_TEMPLE_STATUE_CONTENTS_4, 2), new VarbitRequirement(VarbitID.WGS_TEMPLE_STATUE_CONTENTS_4, 3));
-		hadLantadyme = or(lantadyme, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadPotatoCactus = or(potatoCactus, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadDwarfWeed = or(dwarfWeed, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadWineOfZamorak = or(wineOfZamorak, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadSnapdragon = or(snapdragon, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadTarromin = or(tarromin, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadLimpwurt = or(limpwurt, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadKwuarm = or(kwuarm, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadEmptyDruidPouch = or(emptyDruidPouch, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadFullDruidPouch = or(fullDruidPouch, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
-		hadSilverSickleB = or(silverSickleB, new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1), new VarbitRequirement(VarbitID.TROLL_FREED_EADGAR, 1));
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));

@@ -84,8 +84,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey,
 		silifTeleorb, strangeTeleorb, darkSquallHood, darkSquallBody, darkSquallLegs, fireOrb, waterOrb, airOrb, earthOrb, airBlock, waterBlock, earthBlock, fireBlock;
 
-	ItemRequirement toadflax, toadsLegs, guamLeaf, eyeOfNewt, iritLeaf, harralander, redSpidersEggs, garlic, silverDust, goatHorn, ranarrWeed, whiteBerries, cadantine, avantoe, moryMyreFungus,
-		chocolateDust, snapeGrass, kebbitTeethdust, lantadyme, potatoCactus, dwarfWeed, wineOfZamorak, snapdragon, tarromin, limpwurt, kwuarm, emptyDruidPouch, fullDruidPouch, silverSickleB;
+	ItemRequirement emptyDruidPouch;
+	ItemRequirement fullDruidPouch;
+	ItemRequirement silverSickleB;
 
 	FreeInventorySlotRequirement emptySlots9, emptySlots16;
 
@@ -770,33 +771,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		earthBlock.setTooltip("You can get another by searching the recess near the western cavity");
 		fireBlock = new ItemRequirement("Fire block", ItemID.WGS_GUTHIX_TEMPLE_ELEMENTAL_KEY_FIRE);
 		fireBlock.setTooltip("You can get another by searching the recess near the middle cavity");
-
-		toadflax = new ItemRequirement("Toadflax", ItemID.TOADFLAX);
-		toadsLegs = new ItemRequirement("Toad's legs", ItemID.TOADS_LEGS);
-		guamLeaf = new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF);
-		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
-		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
-		harralander = new ItemRequirement("Harralander", ItemID.HARRALANDER);
-		redSpidersEggs = new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS);
-		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
-		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST);
-		goatHorn = new ItemRequirement("Goat horn dust", ItemID.GROUND_DESERT_GOAT_HORN);
-		ranarrWeed = new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED);
-		whiteBerries = new ItemRequirement("White berries", ItemID.WHITE_BERRIES);
-		cadantine = new ItemRequirement("Cadantine", ItemID.CADANTINE);
-		avantoe = new ItemRequirement("Avantoe", ItemID.AVANTOE);
-		moryMyreFungus = new ItemRequirement("Mory myre fungus", ItemID.MORTMYREMUSHROOM);
-		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
-		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
-		kebbitTeethdust = new ItemRequirement("Kebbit teeth dust", ItemID.HUNTINGBEAST_SABRETEETH_DUST);
-		lantadyme = new ItemRequirement("Lantadyme", ItemID.LANTADYME);
-		potatoCactus = new ItemRequirement("Potato cactus", ItemID.CACTUS_POTATO);
-		dwarfWeed = new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED);
-		wineOfZamorak = new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK);
-		snapdragon = new ItemRequirement("Snapdragon", ItemID.SNAPDRAGON);
-		tarromin = new ItemRequirement("Tarromin", ItemID.TARROMIN);
-		limpwurt = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT);
-		kwuarm = new ItemRequirement("Kwuarm", ItemID.KWUARM);
 
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));

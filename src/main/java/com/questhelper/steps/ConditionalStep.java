@@ -479,6 +479,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		return steps.values();
 	}
 
+	public HashMap<Requirement, QuestStep> getStepsMap()
+	{
+		return steps;
+	}
+
 	public ConditionalStep copy()
 	{
 		ConditionalStep newStep = new ConditionalStep(getQuestHelper(), steps.get(null));

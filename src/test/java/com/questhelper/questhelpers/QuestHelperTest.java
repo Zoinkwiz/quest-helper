@@ -10,17 +10,17 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
+import com.questhelper.steps.ReorderableConditionalStep;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import net.runelite.api.Skill;
+import net.runelite.api.gameval.VarbitID;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -180,7 +180,8 @@ public class QuestHelperTest extends MockedTest
 		}
 	}
 
-	void checkStep(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, QuestStep step) {
+	void checkStep(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, QuestStep step)
+	{
 		var rawText = step.getText();
 		var text = rawText == null ? "" : String.join("\n", rawText);
 
@@ -207,12 +208,35 @@ public class QuestHelperTest extends MockedTest
 	{
 		assertNotNull(step);
 
-		if (step instanceof OwnerStep)
+		if (step instanceof ReorderableConditionalStep)
+		{
+			helper.startUpStep(step);
+			for (var e : ((ReorderableConditionalStep) step).getStepsMap().entrySet())
+			{
+				var req = e.getKey();
+				var innerStep = e.getValue();
+				if (checkedSteps.contains(innerStep))
+				{
+					continue;
+				}
+				checkedSteps.add(innerStep);
+				helper.startUpStep(innerStep);
+				// For reorderable steps, we _always_ allow the default-state to not have a sidebar step
+				var shouldActuallyError = req != null && shouldError;
+				checkSteps(helper, questOverviewPanel, shouldActuallyError, checkedSteps, innerStep);
+				helper.shutDownStep();
+			}
+			helper.shutDownStep();
+		}
+		else if (step instanceof OwnerStep)
 		{
 			helper.startUpStep(step);
 			for (var innerStep : ((OwnerStep) step).getSteps())
 			{
-				if (checkedSteps.contains(innerStep)) continue;
+				if (checkedSteps.contains(innerStep))
+				{
+					continue;
+				}
 				checkedSteps.add(innerStep);
 				helper.startUpStep(innerStep);
 				checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, innerStep);
@@ -305,6 +329,10 @@ public class QuestHelperTest extends MockedTest
 
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
 
+		when(client.getRealSkillLevel(Skill.FARMING)).thenReturn(99);
+		when(client.getIntStack()).thenReturn(new int[]{2});
+		when(client.getVarbitValue(VarbitID.MORYTANIA_ELITE_REWARD)).thenReturn(1);
+
 		AchievementDiaryStepManager.setup(configManager);
 
 		for (var quest : QuestHelperQuest.values())
@@ -347,7 +375,10 @@ public class QuestHelperTest extends MockedTest
 				for (var e : sortedSteps)
 				{
 					var step = e.getValue();
-					if (checkedSteps.contains(step)) continue;
+					if (checkedSteps.contains(step))
+					{
+						continue;
+					}
 					checkedSteps.add(step);
 					helper.startUpStep(step);
 

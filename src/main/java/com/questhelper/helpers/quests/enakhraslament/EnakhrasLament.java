@@ -407,6 +407,7 @@ public class EnakhrasLament extends BasicQuestHelper
 				"get all its limbs.", chiselHighlighted);
         cutOffLimb.addDialogSteps("Remove the statue's left arm", "Remove the statue's right arm", "Remove the statue's left leg", "Remove the statue's right" +
 				" leg");
+        cutOffLimb.addIcon(ItemID.CHISEL);
 
         takeM = new ObjectStep(this, ObjectID.ENAKH_PEDESTAL_SIGIL_M, new WorldPoint(3128, 9319, 0), "Take the M sigil from the pedestal in the room.");
         takeZ = new ObjectStep(this, ObjectID.ENAKH_PEDESTAL_SIGIL_Z, new WorldPoint(3097, 9336, 0), "Take the Z sigil from the pedestal in the north room.");
@@ -444,20 +445,22 @@ public class EnakhrasLament extends BasicQuestHelper
 				fireSpellRunes, onNormals);
         castAirSpell = new NpcStep(this, NpcID.ENAKH_DUMMY_FURNACE, new WorldPoint(3116, 9323, 1), "Cast an air spell on the furnace.", airSpellRunes,
 				onNormals);
-        useMapleLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_4_MULTILOC, new WorldPoint(3114, 9309, 1), "Use a maple log on the north west brazier.",
-				mapleLog);
-        useMapleLog.addIcon(ItemID.MAPLE_LOGS);
+
+        // Shadow Room Puzzle
+        useLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_1_MULTILOC, new WorldPoint(3114, 9306, 1), "Use a normal log on the south west brazier.", log);
+        useLog.addIcon(ItemID.LOGS);
         useOakLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_2_MULTILOC, new WorldPoint(3116, 9306, 1), "Use an oak log on the south brazier.", oakLog);
         useOakLog.addIcon(ItemID.OAK_LOGS);
-        useWillowLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_1_MULTILOC, new WorldPoint(3114, 9306, 1), "Use a willow log on the south east brazier.",
+        useWillowLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_3_MULTILOC, new WorldPoint(3118, 9306, 1), "Use a willow log on the south east brazier.",
 				willowLog);
         useWillowLog.addIcon(ItemID.WILLOW_LOGS);
-        useLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_3_MULTILOC, new WorldPoint(3118, 9306, 1), "Use a normal log on the south west brazier.", log);
-        useLog.addIcon(ItemID.LOGS);
-        useCoal = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_6_MULTILOC, new WorldPoint(3118, 9309, 1), "Use coal on the north east brazier.", coal);
-        useCoal.addIcon(ItemID.COAL);
+        useMapleLog = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_4_MULTILOC, new WorldPoint(3114, 9309, 1), "Use a maple log on the north west brazier.",
+                mapleLog);
+        useMapleLog.addIcon(ItemID.MAPLE_LOGS);
         useCandle = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_5_MULTILOC, new WorldPoint(3116, 9309, 1), "Use a candle on the north brazier.", candle);
         useCandle.addIcon(ItemID.UNLIT_CANDLE);
+        useCoal = new ObjectStep(this, ObjectID.ENAKH_BRAZIER_6_MULTILOC, new WorldPoint(3118, 9309, 1), "Use coal on the north east brazier.", coal);
+        useCoal.addIcon(ItemID.COAL);
 
         passBarrier = new ObjectStep(this, ObjectID.ENAKH_MAGIC_WALL, new WorldPoint(3104, 9319, 1), "Pass through the magic barrier and go up the ladder.");
         goUpFromPuzzleRoom = new ObjectStep(this, ObjectID.ENAKH_TEMPLE_LADDERUP, new WorldPoint(3104, 9332, 1), "Go up the ladder.");

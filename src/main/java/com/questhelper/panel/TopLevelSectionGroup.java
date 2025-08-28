@@ -29,131 +29,57 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class TopLevelSectionGroup extends JPanel
 {
-    private static final int OUTER_VGAP = 8;
-    private static final int OUTER_HGAP = 0;
-
-    private static final int INNER_PAD_TOP    = 10;
-    private static final int INNER_PAD_RIGHT  = 3;
-    private static final int INNER_PAD_BOTTOM = 1;
-    private static final int INNER_PAD_LEFT   = 3;
-
-
-    private static final float TITLE_SCALE = 1.05f;
-    private static final int   TITLE_BOTTOM_GAP = 6;
-
-    private static final int RADIUS = 8;
-    private static final int BORDER_THICK_OUTER = 1;
-    private static final int BORDER_THICK_INNER = 1;
-    private static final int BORDER_INNER_INSET = 1;
-
-    private static final Color BG_FRAME =
-            mix(ColorScheme.DARK_GRAY_HOVER_COLOR, ColorScheme.DARKER_GRAY_COLOR, 0.55f);
-    private static final Color BORDER_OUTER =
-            mix(ColorScheme.DARK_GRAY_HOVER_COLOR, Color.BLACK, 0.45f);
-    private static final Color BORDER_INNER =
-            mix(ColorScheme.BORDER_COLOR, Color.BLACK, 0.15f);
-
     @Getter
     private final JPanel contentPanel;
 
     public TopLevelSectionGroup(String title)
     {
+        Border outer = new LineBorder(ColorScheme.DARK_GRAY_HOVER_COLOR, 1, true);
+        Border gap = new EmptyBorder(1, 1, 1, 1);
+        Border innerBorder = new LineBorder(ColorScheme.BORDER_COLOR, 1, true);
+        Border doubleRounded = BorderFactory.createCompoundBorder(outer, BorderFactory.createCompoundBorder(gap, innerBorder));
+
+        TitledBorder titledBorder = new TightTitledBorder(doubleRounded, "", TitledBorder.LEFT, TitledBorder.TOP,
+                FontManager.getRunescapeBoldFont(),  ColorScheme.LIGHT_GRAY_COLOR);
+
         String title1 = title == null ? "" : title.trim();
 
         setOpaque(false);
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(OUTER_VGAP, OUTER_HGAP, OUTER_VGAP, OUTER_HGAP));
+        setBorder(new EmptyBorder(0, 0, 0, 0));
 
-        JPanel inner = new JPanel();
-        inner.setOpaque(false);
-        inner.setLayout(new BoxLayout(inner, BoxLayout.Y_AXIS));
-        inner.setBorder(new EmptyBorder(
-                INNER_PAD_TOP, INNER_PAD_LEFT, INNER_PAD_BOTTOM, INNER_PAD_RIGHT
-        ));
+        JLabel titleLabel = new JLabel(title1);
+        Font base = FontManager.getRunescapeBoldFont();
+        titleLabel.setFont(base.deriveFont(base.getSize2D()));
+        titleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        titleLabel.setOpaque(false);
 
-        JLabel titleLabel;
-        if (!title1.isEmpty())
-        {
-            titleLabel = new JLabel(title1);
-            Font base = FontManager.getRunescapeBoldFont();
-            titleLabel.setFont(base.deriveFont(base.getSize2D() * TITLE_SCALE));
-            titleLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-            titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            titleLabel.setOpaque(false);
+        TightTitledBorder framed = new TightTitledBorder(
+                titledBorder,
+                title1,
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                base,
+                ColorScheme.LIGHT_GRAY_COLOR
+        );
 
-            inner.add(titleLabel);
-            inner.add(Box.createVerticalStrut(TITLE_BOTTOM_GAP));
-        }
 
         contentPanel = new JPanel();
         contentPanel.setOpaque(false);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        inner.add(contentPanel);
+        contentPanel.setBorder(framed);
 
-        add(inner, BorderLayout.CENTER);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-        try
-        {
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            Insets out = getInsets();
-            int x = out.left;
-            int y = out.top;
-            int w = getWidth()  - out.left - out.right;
-            int h = getHeight() - out.top  - out.bottom;
-
-            // Frame background
-            g2.setColor(BG_FRAME);
-            g2.fillRoundRect(x, y, w, h, RADIUS, RADIUS);
-
-            // Outer border
-            if (BORDER_THICK_OUTER > 0)
-            {
-                g2.setColor(BORDER_OUTER);
-                g2.setStroke(new BasicStroke(BORDER_THICK_OUTER));
-                g2.drawRoundRect(x, y, w - 1, h - 1, RADIUS, RADIUS);
-            }
-
-            if (BORDER_THICK_INNER > 0)
-            {
-                int ix = x + BORDER_INNER_INSET + BORDER_THICK_OUTER;
-                int iy = y + BORDER_INNER_INSET + BORDER_THICK_OUTER;
-                int iw = w - 1 - 2 * (BORDER_INNER_INSET + BORDER_THICK_OUTER);
-                int ih = h - 1 - 2 * (BORDER_INNER_INSET + BORDER_THICK_OUTER);
-
-                if (iw > 0 && ih > 0)
-                {
-                    g2.setColor(BORDER_INNER);
-                    g2.setStroke(new BasicStroke(BORDER_THICK_INNER));
-                    g2.drawRoundRect(ix, iy, iw, ih, Math.max(0, RADIUS - 2), Math.max(0, RADIUS - 2));
-                }
-            }
-        }
-        finally
-        {
-            g2.dispose();
-        }
-    }
-
-    private static Color mix(Color a, Color b, double t)
-    {
-        float clamped = (float)Math.max(0.0, Math.min(1.0, t));
-        int r = Math.round(a.getRed()   * (1 - clamped) + b.getRed()   * clamped);
-        int g = Math.round(a.getGreen() * (1 - clamped) + b.getGreen() * clamped);
-        int bl= Math.round(a.getBlue()  * (1 - clamped) + b.getBlue()  * clamped);
-        return new Color(r, g, bl);
+        add(contentPanel, BorderLayout.CENTER);
     }
 }

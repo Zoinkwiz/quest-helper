@@ -417,7 +417,7 @@ public class QuestOverviewPanel extends JPanel
 	{
 		return allQuestStepPanelList.stream()
 			.filter(QuestStepPanel::isCollapsed)
-			.count() == questStepPanelList.size();
+			.count() == allQuestStepPanelList.size();
 	}
 
 	public void setupQuestRequirements(QuestHelper quest)

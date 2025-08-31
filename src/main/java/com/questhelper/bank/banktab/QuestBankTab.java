@@ -580,41 +580,31 @@ public class QuestBankTab
 						break;
 				}
 				// ~script669
-				int opIdx = 0;
-				c.setAction(opIdx++, "Withdraw-" + suffix);
+				c.setAction(0, "Withdraw-" + suffix);
 				if (quantityType != 0)
 				{
-					c.setAction(opIdx++, "Withdraw-1");
+					c.setAction(1, "Withdraw-1");
 				}
-				if (quantityType != 1)
+				c.setAction(2, "Withdraw-5");
+				c.setAction(3, "Withdraw-10");
+				if (requestQty > 0)
 				{
-					c.setAction(opIdx++, "Withdraw-5");
+					c.setAction(4, "Withdraw-" + requestQty);
 				}
-				if (quantityType != 2)
-				{
-					c.setAction(opIdx++, "Withdraw-10");
-				}
-				if (quantityType != 3 && requestQty > 0)
-				{
-					c.setAction(opIdx++, "Withdraw-" + requestQty);
-				}
-				c.setAction(opIdx++, "Withdraw-X");
-				if (quantityType != 4)
-				{
-					c.setAction(opIdx++, "Withdraw-All");
-				}
-				c.setAction(opIdx++, "Withdraw-All-but-1");
+				c.setAction(5, "Withdraw-X");
+				c.setAction(6, "Withdraw-All");
+				c.setAction(7, "Withdraw-All-but-1");
 				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1 && def.getIntValue(ParamID.BANK_AUTOCHARGE) != -1)
 				{
-					c.setAction(opIdx++, "Configure-Charges");
+					c.setAction(8, "Configure-Charges");
 				}
 				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
 				{
-					c.setAction(opIdx++, "Placeholder");
+					c.setAction(9, "Placeholder");
 				}
 				if (!isPotStorage)
 				{
-					c.setAction(9, "Examine");
+					c.setAction(10, "Examine");
 				}
 				c.setOpacity(0);
 			}

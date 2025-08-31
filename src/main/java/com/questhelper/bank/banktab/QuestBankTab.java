@@ -279,14 +279,8 @@ public class QuestBankTab
 					return;
 				}
 
-				idx = potionStorage.find(w.getItemId());
-				if (idx == VIAL_IDX)
-				{
-					potionStorage.prepareWidgets();
-					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
-					menu.setParam0(VIAL_IDX);
-				}
-				else if (idx > -1)
+				idx = potionStorage.getIdx(w.getItemId());
+				if (idx > -1)
 				{
 					potionStorage.prepareWidgets();
 					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);

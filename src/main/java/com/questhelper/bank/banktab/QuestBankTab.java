@@ -290,7 +290,7 @@ public class QuestBankTab
 				{
 					potionStorage.prepareWidgets();
 					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
-					menu.setParam0(idx * COMPONENTS_PER_POTION);
+					menu.setParam0(idx);
 				}
 			}
 		}

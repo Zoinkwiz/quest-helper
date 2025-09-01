@@ -27,6 +27,9 @@ package com.questhelper.panel;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
+import com.questhelper.panel.queststepsection.AbstractQuestSection;
+import com.questhelper.panel.queststepsection.QuestSectionSection;
+import com.questhelper.panel.queststepsection.QuestStepPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
@@ -51,9 +54,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -90,11 +90,7 @@ public class QuestOverviewPanel extends JPanel
 	private final JLabel questNameLabel = JGenerator.makeJLabel();
 
 	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
-
-	private final Map<JPanel, CopyOnWriteArrayList<QuestStepPanel>> questStepPanelList = new LinkedHashMap<>();
-	private final List<QuestStepPanel> allQuestStepPanelList = new CopyOnWriteArrayList<>();
-	private QuestStepPanel draggingPanel = null;
-
+	private final List<AbstractQuestSection> allQuestStepPanelList = new CopyOnWriteArrayList<>();
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
@@ -253,7 +249,6 @@ public class QuestOverviewPanel extends JPanel
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		currentQuest = quest;
-		questStepPanelList.clear();
 		allQuestStepPanelList.clear();
 
 		List<PanelDetails> steps = quest.getPanels();
@@ -280,96 +275,30 @@ public class QuestOverviewPanel extends JPanel
 			setupQuestRequirements(quest);
 			introPanel.setVisible(true);
 
-			List<PanelDetails> panelDetails = new ArrayList<>();
 			for (PanelDetails panelDetail : steps)
 			{
 				if (panelDetail instanceof TopLevelPanelDetails)
 				{
 					TopLevelPanelDetails topLevelPanelDetails = ((TopLevelPanelDetails) panelDetail);
-					if (!panelDetails.isEmpty())
-					{
-						createTopLevelSection("", panelDetails, currentStep);
-						panelDetails.clear();
-					}
-					createTopLevelSection(topLevelPanelDetails.getHeader(), new ArrayList<>(List.of(topLevelPanelDetails.getPanelDetails())), currentStep);
-					// We want to make a new JPanel to be orderable
+					QuestSectionSection questStepPanel = new QuestSectionSection(this, topLevelPanelDetails, currentStep, questManager, questHelperPlugin);
+					questStepsContainer.add(questStepPanel);
+					allQuestStepPanelList.add(questStepPanel);
 				}
 				else
 				{
-					panelDetails.add(panelDetail);
+					QuestStepPanel questStepPanel = new QuestStepPanel(panelDetail, currentStep, questManager, questHelperPlugin);
+					questStepsContainer.add(questStepPanel);
+					allQuestStepPanelList.add(questStepPanel);
 				}
 			}
-
-			if (!panelDetails.isEmpty())
-			{
-				createTopLevelSection("", panelDetails, currentStep);
-			}
+			questStepsContainer.revalidate();
+			questStepsContainer.repaint();
 		}
-	}
-
-	private void createTopLevelSection(String title, List<PanelDetails> panelDetails, QuestStep currentStep)
-	{
-		var topLevelSection = new TopLevelSectionGroup(title);
-
-		var draggable = panelDetails.stream().anyMatch((pDetails -> pDetails.id != -1));
-		List<Integer> order = questHelperPlugin.loadSidebarOrder(currentQuest);
-		if (draggable && order != null)
-		{
-			Map<Integer, Integer> idx = new HashMap<>();
-			for (int i = 0; i < order.size(); i++)
-				idx.put(order.get(i), i);
-
-			panelDetails.sort(Comparator.comparingInt(
-					pd -> idx.getOrDefault(pd.id, Integer.MAX_VALUE)
-			));
-		}
-		CopyOnWriteArrayList<QuestStepPanel> allNewSteps = new CopyOnWriteArrayList<>();
-		for (PanelDetails panelDetail : panelDetails)
-		{
-			var newStep = new QuestStepPanel(panelDetail, currentStep, questManager, questHelperPlugin);
-			if (draggable) makeDraggable(topLevelSection, newStep);
-
-			if (panelDetail.getLockingQuestSteps() != null &&
-					(panelDetail.getVars() == null
-							|| panelDetail.getVars().contains(currentQuest.getVar())))
-			{
-				newStep.setLockable(true);
-			}
-			allNewSteps.add(newStep);
-			allQuestStepPanelList.add(newStep);
-			topLevelSection.getContentPanel().add(newStep);
-			repaint();
-			revalidate();
-		}
-
-		questStepPanelList.put(topLevelSection, allNewSteps);
-		questStepsContainer.add(topLevelSection);
-		questStepsContainer.revalidate();
-		questStepsContainer.repaint();
 	}
 
 	public void updateStepsTexts()
 	{
-		allQuestStepPanelList.forEach(panel -> {
-			for (QuestStep step : panel.getSteps())
-			{
-				JTextPane label = panel.getStepsLabels().get(step);
-				if (label != null)
-				{
-					var newText = panel.generateText(step);
-					var oldText = label.getText();
-					if (newText == null)
-					{
-						continue;
-					}
-
-					if (!newText.equals(oldText))
-					{
-						label.setText(panel.generateText(step));
-					}
-				}
-			}
-		});
+		allQuestStepPanelList.forEach(AbstractQuestSection::updateAllText);
 	}
 
 	public void updateHighlight(Client client, QuestStep newStep)
@@ -385,7 +314,7 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateLocks()
 	{
-		allQuestStepPanelList.forEach(QuestStepPanel::updateLock);
+		allQuestStepPanelList.forEach(AbstractQuestSection::updateLock);
 	}
 
 	public void removeQuest()
@@ -416,7 +345,7 @@ public class QuestOverviewPanel extends JPanel
 	public boolean isAllCollapsed()
 	{
 		return allQuestStepPanelList.stream()
-			.filter(QuestStepPanel::isCollapsed)
+			.filter(AbstractQuestSection::isCollapsed)
 			.count() == allQuestStepPanelList.size();
 	}
 
@@ -686,111 +615,18 @@ public class QuestOverviewPanel extends JPanel
 		revalidate();
 	}
 
-	private void makeDraggable(TopLevelSectionGroup topLevelPanel, QuestStepPanel newStep)
+	public void saveSidebar()
 	{
-		JLabel grip = new JLabel("\u2630");
-		grip.setBorder(new EmptyBorder(0, 0, 3, 0));
-		grip.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+		List<Integer> newOrderIds = allQuestStepPanelList.stream()
+			.map(AbstractQuestSection::getIds)
+			.filter(wow -> {
+				System.out.println("WOW");
+				System.out.println(wow);
+				return true;
+			})
+			.flatMap(Collection::stream)
+			.collect(Collectors.toList());
 
-		GripDragListener listener = new GripDragListener(topLevelPanel, newStep);
-		grip.addMouseListener(listener);
-		grip.addMouseMotionListener(listener);
-
-		newStep.getLeftTitleContainer().add(grip, java.awt.BorderLayout.WEST);
-	}
-
-	private void swapPanels(TopLevelSectionGroup topLevelPanel, QuestStepPanel a, QuestStepPanel b)
-	{
-		List<QuestStepPanel> list = questStepPanelList.get(topLevelPanel);
-		int ia = list.indexOf(a);
-		int ib = list.indexOf(b);
-		if (ia < 0 || ib < 0) return;
-
-		Collections.swap(list, ia, ib);
-
-		topLevelPanel.getContentPanel().removeAll();
-		// Create again in new order
-		for (QuestStepPanel p : list)
-		{
-			topLevelPanel.getContentPanel().add(p);
-		}
-		topLevelPanel.revalidate();
-		topLevelPanel.repaint();
-	}
-
-	private class GripDragListener extends MouseAdapter implements MouseMotionListener
-	{
-		private final TopLevelSectionGroup topLevelPanel;
-		private final QuestStepPanel panel;
-
-		GripDragListener(TopLevelSectionGroup topLevelPanel, QuestStepPanel panel)
-		{
-			this.topLevelPanel = topLevelPanel;
-			this.panel = panel;
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e)
-		{
-			if (e.getButton() != MouseEvent.BUTTON1)
-			{
-				return;
-			}
-			draggingPanel = panel;
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e)
-		{
-			if (draggingPanel == null) return;
-
-			int currentY = e.getYOnScreen();
-			// We only need the absolute screen‐Y to compare midpoints:
-			List<QuestStepPanel> panels = questStepPanelList.get(topLevelPanel);
-			for (QuestStepPanel other : panels)
-			{
-				if (other == draggingPanel) continue;
-
-				Rectangle r = other.getBounds();
-				int otherYPos = 0;
-				if (other.isVisible()) otherYPos = other.getLocationOnScreen().y;
-				int midY = otherYPos + r.height / 2;
-
-				int fromIndex = panels.indexOf(draggingPanel);
-				int toIndex = panels.indexOf(other);
-
-				// dragged down
-				if (fromIndex < toIndex && currentY > midY)
-				{
-					swapPanels(topLevelPanel, draggingPanel, other);
-					break;
-				}
-				// dragged up
-				else if (fromIndex > toIndex && currentY < midY)
-				{
-					swapPanels(topLevelPanel, draggingPanel, other);
-					break;
-				}
-			}
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e)
-		{
-			if (e.getButton() != MouseEvent.BUTTON1)
-			{
-				return;
-			}
-			draggingPanel = null;
-			List<Integer> newOrderIds = questStepPanelList.values().stream()
-					.flatMap(List::stream)
-					.map(p -> p.getPanelDetails().getId())
-					.filter(p -> p != -1)
-					.collect(Collectors.toList());
-
-			questHelperPlugin.saveSidebarOrder(currentQuest, newOrderIds);
-		}
-
-		@Override public void mouseMoved(MouseEvent e) { }
+		questHelperPlugin.saveSidebarOrder(currentQuest, newOrderIds);
 	}
 }

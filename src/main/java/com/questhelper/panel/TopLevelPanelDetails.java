@@ -24,7 +24,9 @@
  */
 package com.questhelper.panel;
 
+import com.questhelper.steps.QuestStep;
 import lombok.Getter;
+import java.util.List;
 
 // The intention is to contain a set of PanelDetails.
 // This is intended to be the structure used for containing a reorderable set of PanelDetails
@@ -32,16 +34,21 @@ public class TopLevelPanelDetails extends PanelDetails
 {
     @Getter
     private final PanelDetails[] panelDetails;
-
-    public TopLevelPanelDetails(PanelDetails... panelDetails)
-    {
-        super("");
-        this.panelDetails = panelDetails;
-    }
-
+	
     public TopLevelPanelDetails(String header, PanelDetails... panelDetails)
-    {
-        super(header);
-        this.panelDetails = panelDetails;
-    }
+	{
+		super(header);
+		this.panelDetails = panelDetails;
+	}
+
+	@Override
+	public boolean contains(QuestStep questStep)
+	{
+		for (PanelDetails panelDetail : panelDetails)
+		{
+			if (panelDetail.contains(questStep)) return true;
+		}
+
+		return false;
+	}
 }

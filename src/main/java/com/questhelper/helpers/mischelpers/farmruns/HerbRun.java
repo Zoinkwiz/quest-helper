@@ -583,7 +583,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Wait for Herbs", waitForHerbs).withHideCondition(nor(allGrowing)));
-		TopLevelPanelDetails farmRunSidebar = new TopLevelPanelDetails(
+		TopLevelPanelDetails farmRunSidebar = new TopLevelPanelDetails("Farm Run",
 				new PanelDetails("Farming Guild", Collections.singletonList(farmingGuildPatch)).withId(0),
 				new PanelDetails("Falador", Collections.singletonList(faladorPatch)).withId(1),
 				new PanelDetails("Ardougne", Collections.singletonList(ardougnePatch)).withId(2),

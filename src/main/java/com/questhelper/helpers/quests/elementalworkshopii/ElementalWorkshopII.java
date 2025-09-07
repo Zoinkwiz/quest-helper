@@ -482,7 +482,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		connectPipes = new ConnectPipes(this);
 
 		getCogsAndPipe = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_1,
-			"Search the various marked crates on the catwalk and below for 3 cogs and a pipe.",
+			"Search the marked crates on the catwalk AND DOWN THE STAIRS for 3 cogs and a pipe.",
 			smallCog, mediumCog, largeCog, pipe);
 		((ObjectStep) getCogsAndPipe).addAlternateObjects(ObjectID.ELEMENTAL_WORKSHOP_2_BOX_2, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_3,
 			ObjectID.ELEMENTAL_WORKSHOP_2_BOX_4, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_5, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_6, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_7,

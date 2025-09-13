@@ -432,10 +432,10 @@ public class MourningsEndPartII extends BasicQuestHelper
 		blackenedCrystal = new ItemRequirement("Blackened crystal", ItemID.MOURNING_CRYSTAL_SAMPLE);
 
 		newlyMadeCrystal = new ItemRequirement("Newly made crystal", ItemID.MOURNING_CRYSTAL_NEW_SAMPLE);
-		newlyMadeCrystal.setTooltip("You can get another from Arianwyn in Llyeta");
+		newlyMadeCrystal.setTooltip("You can get another from Arianwyn in Lletya");
 
 		newlyMadeCrystalHighlight = new ItemRequirement("Newly made crystal", ItemID.MOURNING_CRYSTAL_NEW_SAMPLE);
-		newlyMadeCrystalHighlight.setTooltip("You can get another from Arianwyn in Llyeta");
+		newlyMadeCrystalHighlight.setTooltip("You can get another from Arianwyn in Lletya");
 		newlyMadeCrystalHighlight.setHighlightInInventory(true);
 
 		newlyIfOneTrip = new ItemRequirement("Newly made crystal (if already have death talisman)", ItemID.MOURNING_CRYSTAL_NEW_SAMPLE);

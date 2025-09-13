@@ -140,9 +140,9 @@ public class SongOfTheElves extends BasicQuestHelper
 	ConditionalStep finalBattle;
 
 	//Zones
-	Zone ardougneCastleF1, passF1, passF0, wellEntrance, ibanRoom, ardyPrison, hideout, westArdyInstance, mournerBasement, eastArdy, llyetaF1,
+	Zone ardougneCastleF1, passF1, passF0, wellEntrance, ibanRoom, ardyPrison, hideout, westArdyInstance, mournerBasement, eastArdy, lletyaF1,
 		hudonIsland, deadTreeIsland, ledge, falls, baxThroneRoom, valley, traRoom, lightPuzzleRoom, libraryF0, libraryF1, libraryF2, iorwerthCave,
-		llyetaF0Battle, llyetaF1Battle, llyetaF1Damaged, bossArea;
+		lletyaF0Battle, lletyaF1Battle, lletyaF1Damaged, bossArea;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -654,7 +654,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		inMournerBaseHQInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(mournerBasement));
 		inEastArdyInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(eastArdy));
 		inArdougneCastleF1Instance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(ardougneCastleF1));
-		inLletyaF1 = new ZoneRequirement(llyetaF1);
+		inLletyaF1 = new ZoneRequirement(lletyaF1);
 		inValley = new ZoneRequirement(valley);
 		inTraRoom = new ZoneRequirement(traRoom);
 		inLightPuzzle = new ZoneRequirement(lightPuzzleRoom);
@@ -669,9 +669,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		inBaxThroneRoom = new ZoneRequirement(baxThroneRoom);
 
 		inIorwerthCave = new ZoneRequirement(iorwerthCave);
-		inLletyaF0Battle = new Conditions(new ZoneRequirement(llyetaF0Battle));
-		inLletyaF1Battle = new Conditions(new ZoneRequirement(llyetaF1Battle));
-		inLletyaF1Damaged = new ZoneRequirement(llyetaF1Damaged);
+		inLletyaF0Battle = new Conditions(new ZoneRequirement(lletyaF0Battle));
+		inLletyaF1Battle = new Conditions(new ZoneRequirement(lletyaF1Battle));
+		inLletyaF1Damaged = new ZoneRequirement(lletyaF1Damaged);
 
 		inPassF0 = new ZoneRequirement(passF0);
 		inPassF1 = new ZoneRequirement(passF1);
@@ -780,10 +780,10 @@ public class SongOfTheElves extends BasicQuestHelper
 		westArdyInstance = new Zone(new WorldPoint(2509, 3263, 0), new WorldPoint(2558, 3334, 0));
 		eastArdy = new Zone(new WorldPoint(2559, 3256, 0), new WorldPoint(2696, 3343, 0));
 		mournerBasement = new Zone(new WorldPoint(2034, 4628, 0), new WorldPoint(2045, 4651, 0));
-		llyetaF0Battle = new Zone(new WorldPoint(2882, 6157, 0), new WorldPoint(2940, 6194, 0));
-		llyetaF1Battle = new Zone(new WorldPoint(2882, 6157, 1), new WorldPoint(2940, 6194, 1));
-		llyetaF1Damaged = new Zone(new WorldPoint(2750, 6070, 1), new WorldPoint(2810, 6140, 1));
-		llyetaF1 = new Zone(new WorldPoint(2331, 3154, 1), new WorldPoint(2358, 3189, 1));
+		lletyaF0Battle = new Zone(new WorldPoint(2882, 6157, 0), new WorldPoint(2940, 6194, 0));
+		lletyaF1Battle = new Zone(new WorldPoint(2882, 6157, 1), new WorldPoint(2940, 6194, 1));
+		lletyaF1Damaged = new Zone(new WorldPoint(2750, 6070, 1), new WorldPoint(2810, 6140, 1));
+		lletyaF1 = new Zone(new WorldPoint(2331, 3154, 1), new WorldPoint(2358, 3189, 1));
 
 		hudonIsland = new Zone(new WorldPoint(2510, 3476, 0), new WorldPoint(2515, 3482, 0));
 		deadTreeIsland = new Zone(new WorldPoint(2512, 3465, 0), new WorldPoint(2513, 3475, 0));

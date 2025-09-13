@@ -35,8 +35,10 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -74,7 +76,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	Requirement betweenARock;
 
 	Requirement notMineMith, notEntYew, notWildyGodWars, notWildyAgi, notKillGreenDrag, notKillAnkou,
-		notWildyGWBloodveld, notEmblemTrader, notGoldHelm, notMuddyChest, notEarthOrb;
+		notWildyGWBloodveld, notEmblemTrader, notGoldHelm, notMuddyChest, standardSpellbook, notEarthOrb;
 
 	QuestStep claimReward, mineMith, wildyAgi, killAnkou, wildyGWBloodveld, emblemTrader, goldHelm, muddyChest,
 		earthOrb, moveToResource, moveToGodWars1, moveToGodWars2, mineGoldOre, smeltGoldOre, moveToEdge, moveToSlayer1,
@@ -157,6 +159,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		notEmblemTrader = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 22);
 		notGoldHelm = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 23);
 		notMuddyChest = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 24);
+
+		standardSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -373,7 +377,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		allSteps.add(emblemSteps);
 
 		PanelDetails earthOrbSteps = new PanelDetails("Earth Orb", Arrays.asList(moveToEdge, earthOrb),
-			new SkillRequirement(Skill.MAGIC, 60, true), unpoweredOrb, earthRune.quantity(30), cosmicRune.quantity(3));
+			new SkillRequirement(Skill.MAGIC, 60, true), unpoweredOrb, standardSpellbook, earthRune.quantity(30), cosmicRune.quantity(3));
 		earthOrbSteps.setDisplayCondition(notEarthOrb);
 		earthOrbSteps.setLockingStep(earthOrbTask);
 		allSteps.add(earthOrbSteps);

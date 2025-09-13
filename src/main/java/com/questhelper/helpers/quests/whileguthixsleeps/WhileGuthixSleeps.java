@@ -1037,7 +1037,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 3->4 told to go to hunter expert
 
 		talkToHuntingExpert = new NpcStep(this, NpcID.HUNTING_JUNGLE_INFORMATION, new WorldPoint(2525, 2916, 0),
-			"Talk to the Hunting Expert in his hut in the middle of the Feldip Hills hunting area.", knife, logs);
+			"Talk to the Hunting Expert in her hut in the middle of the Feldip Hills hunting area.", knife, logs);
 		talkToHuntingExpert.addTeleport(feldipHillsTeleport);
 		talkToHuntingExpert.addDialogSteps("Do you think you could help me with broavs?", "A creature to help track down a person.");
 

@@ -258,10 +258,11 @@ public class HolyGrail extends BasicQuestHelper
 		startQuest.addDialogStep("Tell me of this quest.");
 		startQuest.addDialogStep("Yes.");
 
-		goUpStairsCamelot = new ObjectStep(this, ObjectID.KR_CAM_WOODENSTAIRS, new WorldPoint(2751, 3511, 0), "Go upstairs to talk to Merlin.");
-		openMerlinDoor = new ObjectStep(this, ObjectID.MERLINWORKSHOP, "Open the door to go to Merlin's room.");
-		talkToMerlin = new NpcStep(this, NpcID.MERLIN2, new WorldPoint(2763, 3513, 1), "Talk to Merlin");
+		goUpStairsCamelot = new ObjectStep(this, ObjectID.KR_CAM_WOODENSTAIRS, new WorldPoint(2751, 3511, 0), "Go upstairs and talk to Merlin.");
+		openMerlinDoor = new ObjectStep(this, ObjectID.MERLINWORKSHOP, "Go upstairs and talk to Merlin.");
+		talkToMerlin = new NpcStep(this, NpcID.MERLIN2, new WorldPoint(2763, 3513, 1), "Go upstairs and talk to Merlin.");
 		talkToMerlin.addDialogStep("Where can I find Sir Galahad?");
+		talkToMerlin.addSubSteps(goUpStairsCamelot, openMerlinDoor);
 
 		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.", true);
 		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_OF_ENTRANA, new WorldPoint(2851, 3348, 0), "Talk to the High Priest.");
@@ -442,8 +443,6 @@ public class HolyGrail extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Starting off", List.of(
 			startQuest,
-			goUpStairsCamelot,
-			openMerlinDoor,
 			talkToMerlin
 		)));
 

@@ -30,6 +30,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -253,15 +254,13 @@ public class SheepHerder extends BasicQuestHelper
 		steps.put(1, talkToOrbon);
 
 		var goBurnSheep = new ConditionalStep(this, enterEnclosure);
-		goBurnSheep.addStep(new Conditions(allSheepBurned), talkToHalgriveToFinish);
-		goBurnSheep.addStep(new Conditions(allSheepBonesObtained), useBonesOnIncinerator);
-		goBurnSheep.addStep(new Conditions(bonesNearby), pickupBones);
-		goBurnSheep.addStep(new Conditions(sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure,
-			sheep4InEnclosure), feedSheep);
-		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure),
-			prodSheep4);
-		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure, sheep2InEnclosure), prodSheep3);
-		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure), prodSheep2);
+		goBurnSheep.addStep(allSheepBurned, talkToHalgriveToFinish);
+		goBurnSheep.addStep(allSheepBonesObtained, useBonesOnIncinerator);
+		goBurnSheep.addStep(bonesNearby, pickupBones);
+		goBurnSheep.addStep(and(sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure, sheep4InEnclosure), feedSheep);
+		goBurnSheep.addStep(and(cattleprod, sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure), prodSheep4);
+		goBurnSheep.addStep(and(cattleprod, sheep1InEnclosure, sheep2InEnclosure), prodSheep3);
+		goBurnSheep.addStep(and(cattleprod, sheep1InEnclosure), prodSheep2);
 		goBurnSheep.addStep(cattleprod, prodSheep1);
 		goBurnSheep.addStep(inEnclosure, pickupCattleprod);
 		steps.put(2, goBurnSheep);

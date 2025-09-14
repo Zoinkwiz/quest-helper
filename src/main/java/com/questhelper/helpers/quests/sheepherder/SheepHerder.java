@@ -63,10 +63,10 @@ public class SheepHerder extends BasicQuestHelper
 	ItemRequirement energyRestore;
 
 	// Mid-quest item requirements
+	ItemRequirement sheepFeed;
 	ItemRequirement plagueJacket;
 	ItemRequirement plagueTrousers;
 	ItemRequirement cattleprod;
-	ItemRequirement sheepFeed;
 	ItemRequirement bones1;
 	ItemRequirement bones2;
 	ItemRequirement bones3;
@@ -126,13 +126,13 @@ public class SheepHerder extends BasicQuestHelper
 
 		energyRestore = new ItemRequirement("Energy restoring items", ItemCollections.RUN_RESTORE_ITEMS);
 
+		sheepFeed = new ItemRequirement("Sheep feed", ItemID.POISONED_FEED);
+		sheepFeed.setTooltip("You can get more from Halgrive");
 		plagueJacket = new ItemRequirement("Plague jacket", ItemID.PLAGUE_JACKET);
 		plagueJacket.setTooltip("You can buy another from Doctor Orbon for 100 coins");
 		plagueTrousers = new ItemRequirement("Plague trousers", ItemID.PLAGUE_TROUSERS);
 		plagueTrousers.setTooltip("You can buy another from Doctor Orbon for 100 coins");
 		cattleprod = new ItemRequirement("Cattle prod", ItemID.CATTLEPROD);
-		sheepFeed = new ItemRequirement("Sheep feed", ItemID.POISONED_FEED);
-		sheepFeed.setTooltip("You can get more from Halgrive");
 		bones1 = new ItemRequirement("Sheep bones 1", ItemID.SHEEPBONESA);
 		bones2 = new ItemRequirement("Sheep bones 2", ItemID.SHEEPBONESB);
 		bones3 = new ItemRequirement("Sheep bones 3", ItemID.SHEEPBONESC);

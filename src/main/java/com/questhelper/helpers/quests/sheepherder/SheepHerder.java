@@ -199,8 +199,10 @@ public class SheepHerder extends BasicQuestHelper
 		talkToOrbon = new NpcStep(this, NpcID.DOCTOR_ORBON, new WorldPoint(2616, 3306, 0),
 			"Talk to Doctor Orbon in the East Ardougne Church.", coins100);
 		talkToOrbon.addDialogStep("Okay, I'll take it.");
+
 		enterEnclosure = new ObjectStep(this, ObjectID.PLAGUESHEEP_GATEL, new WorldPoint(2594, 3362, 0),
-			"Enter the enclosure north of Ardougne.", plagueJacket.equipped(), plagueTrousers.equipped());
+			"Enter the enclosure north of Ardougne wearing the plague jacket and trousers.", plagueJacket.equipped(), plagueTrousers.equipped());
+
 		pickupCattleprod = new DetailedQuestStep(this, new WorldPoint(2604, 3357, 0), "Pickup the nearby cattleprod.",
 			cattleprod);
 		prodSheep1 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_3, new WorldPoint(2562, 3389, 0),

@@ -31,7 +31,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -145,49 +145,25 @@ public class SheepHerder extends BasicQuestHelper
 		inEnclosure = new ZoneRequirement(enclosure);
 
 		sheep1Burned = sheep1State.eq(6);
-		sheep1HasBones = new Conditions(LogicType.OR,
-			bones3,
-			sheep1Burned
-		);
-		sheep1InEnclosure = new Conditions(LogicType.OR,
-			sheep1State.eq(1),
-			sheep1HasBones
-		);
+		sheep1HasBones = or(bones3, sheep1Burned);
+		sheep1InEnclosure = or(sheep1State.eq(1), sheep1HasBones);
 
 		sheep2Burned = sheep2State.eq(6);
-		sheep2HasBones = new Conditions(LogicType.OR,
-			bones4,
-			sheep2Burned
-		);
-		sheep2InEnclosure = new Conditions(LogicType.OR,
-			sheep2State.eq(1),
-			sheep2HasBones
-		);
+		sheep2HasBones = or(bones4, sheep2Burned);
+		sheep2InEnclosure = or(sheep2State.eq(1), sheep2HasBones);
 
 		sheep3Burned = sheep3State.eq(6);
-		sheep3HasBones = new Conditions(LogicType.OR,
-			bones2,
-			sheep3Burned
-		);
-		sheep3InEnclosure = new Conditions(LogicType.OR,
-			sheep3State.eq(1),
-			sheep3HasBones
-		);
+		sheep3HasBones = or(bones2, sheep3Burned);
+		sheep3InEnclosure = or(sheep3State.eq(1), sheep3HasBones);
 
 		sheep4Burned = sheep4State.eq(6);
-		sheep4HasBones = new Conditions(LogicType.OR,
-			bones1,
-			sheep4Burned
-		);
-		sheep4InEnclosure = new Conditions(LogicType.OR,
-			sheep4State.eq(1),
-			sheep4HasBones
-		);
+		sheep4HasBones = or(bones1, sheep4Burned);
+		sheep4InEnclosure = or(sheep4State.eq(1), sheep4HasBones);
 
-		allSheepBonesObtained = new Conditions(sheep1HasBones, sheep2HasBones, sheep3HasBones, sheep4HasBones);
-		allSheepBurned = new Conditions(sheep1Burned, sheep2Burned, sheep3Burned, sheep4Burned);
+		allSheepBonesObtained = and(sheep1HasBones, sheep2HasBones, sheep3HasBones, sheep4HasBones);
+		allSheepBurned = and(sheep1Burned, sheep2Burned, sheep3Burned, sheep4Burned);
 
-		bonesNearby = new Conditions(LogicType.OR,
+		bonesNearby = or(
 			new ItemOnTileRequirement(bones1),
 			new ItemOnTileRequirement(bones2),
 			new ItemOnTileRequirement(bones3),

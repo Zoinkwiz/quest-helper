@@ -56,7 +56,7 @@ import net.runelite.api.gameval.VarbitID;
 public class SheepHerder extends BasicQuestHelper
 {
 	// Required items
-	ItemRequirement coins;
+	ItemRequirement coins100;
 
 	// Recommended items
 	ItemRequirement energyRestore;
@@ -116,7 +116,7 @@ public class SheepHerder extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		coins = new ItemRequirement("Coins", ItemCollections.COINS);
+		coins100 = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 
 		energyRestore = new ItemRequirement("Energy restoring items", ItemCollections.RUN_RESTORE_ITEMS);
 
@@ -190,7 +190,7 @@ public class SheepHerder extends BasicQuestHelper
 			"Talk to Councillor Halgrive outside the East Ardougne church.");
 		talkToHalgrive.addDialogSteps("What's wrong?", "I can do that for you.");
 		talkToOrbon = new NpcStep(this, NpcID.DOCTOR_ORBON, new WorldPoint(2616, 3306, 0),
-			"Talk to Doctor Orbon in the East Ardougne Church.", coins.quantity(100));
+			"Talk to Doctor Orbon in the East Ardougne Church.", coins100);
 		talkToOrbon.addDialogStep("Okay, I'll take it.");
 		enterEnclosure = new ObjectStep(this, ObjectID.PLAGUESHEEP_GATEL, new WorldPoint(2594, 3362, 0),
 			"Enter the enclosure north of Ardougne.", plagueJacket.equipped(), plagueTrousers.equipped());
@@ -265,7 +265,7 @@ public class SheepHerder extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
-			coins.quantity(100)
+			coins100
 		);
 	}
 
@@ -300,7 +300,7 @@ public class SheepHerder extends BasicQuestHelper
 			talkToHalgrive,
 			talkToOrbon
 		), List.of(
-			coins.quantity(100)
+			coins100
 		)));
 
 		sections.add(new PanelDetails("Killing sheep", List.of(

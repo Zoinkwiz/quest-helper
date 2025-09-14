@@ -135,9 +135,11 @@ public class HolyGrail extends BasicQuestHelper
 
 	// Steps
 	NpcStep startQuest;
-	NpcStep talkToMerlin;
+
 	ObjectStep goUpStairsCamelot;
 	ObjectStep openMerlinDoor;
+	NpcStep talkToMerlin;
+
 	NpcStep goToEntrana;
 	NpcStep talkToHighPriest;
 	NpcStep talkToGalahad;
@@ -263,8 +265,8 @@ public class HolyGrail extends BasicQuestHelper
 		talkToMerlin = new NpcStep(this, NpcID.MERLIN2, new WorldPoint(2763, 3513, 1), "Go upstairs and talk to Merlin.");
 		talkToMerlin.addSubSteps(goUpStairsCamelot, openMerlinDoor);
 
-		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.", true);
-		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_OF_ENTRANA, new WorldPoint(2851, 3348, 0), "Talk to the High Priest.");
+		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3235, 0), "Head to Port Sarim and talk to a monk of Entrana for passage to Entrana. Bank all combat gear.", true);
+		talkToHighPriest = new NpcStep(this, NpcID.HIGH_PRIEST_OF_ENTRANA, new WorldPoint(2851, 3348, 0), "Talk to the High Priest on Entrana.");
 		talkToHighPriest.addDialogSteps("Ask about the Holy Grail Quest", "Ok, I will go searching.");
 
 		talkToGalahad = new NpcStep(this, NpcID.BROTHER_GALAHAD, new WorldPoint(2612, 3475, 0), "Talk to Galahad in his house west of McGrubor's Woods.");

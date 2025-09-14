@@ -72,6 +72,7 @@ public class HolyGrail extends BasicQuestHelper
 	ItemRequirement ardyTele;
 	ItemRequirement faladorTele;
 	ItemRequirement sixtyCoins;
+	ItemRequirement thirtyCoins;
 	ItemRequirement draynorTele;
 
 	// Mid-quest item requirements
@@ -210,6 +211,9 @@ public class HolyGrail extends BasicQuestHelper
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.POH_TABLET_ARDOUGNETELEPORT);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.POH_TABLET_FALADORTELEPORT);
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
+		sixtyCoins.appendToTooltip("For travel from Ardougne to Brimhaven twice");
+		thirtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
+		thirtyCoins.appendToTooltip("For travel from Ardougne to Brimhaven");
 		antipoison = new ItemRequirement("Antipoison", ItemID._4DOSEANTIPOISON);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		combatGear = new ItemRequirement("A weapon and armour (melee recommended)", -1, -1).isNotConsumed();
@@ -283,6 +287,8 @@ public class HolyGrail extends BasicQuestHelper
 		goGetExcalibur = new ItemStep(this, "Go retrieve Excalibur from your bank. If you do not own Excalibur, you can retrieve it from the Lady of the Lake in Taverley for 500 coins.", twoMagicWhistles, excalibur);
 		WorldPoint teleportLocationPoint = new WorldPoint(2742, 3236, 0);
 		goToTeleportLocation1 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", twoMagicWhistles, excalibur);
+		goToTeleportLocation1.addDialogStep("I'd like to go to Brimhaven.");
+		goToTeleportLocation1.addRecommended(thirtyCoins);
 		goToTeleportLocation1.addSubSteps(goGetExcalibur);
 		blowWhistle1 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle1, excalibur);
 
@@ -478,6 +484,8 @@ public class HolyGrail extends BasicQuestHelper
 		), List.of(
 			twoMagicWhistles,
 			excalibur
+		), List.of(
+			thirtyCoins
 		)));
 
 		sections.add(new PanelDetails("Finding Percival", List.of(

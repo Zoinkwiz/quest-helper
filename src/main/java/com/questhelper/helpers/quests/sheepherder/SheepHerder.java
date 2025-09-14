@@ -39,7 +39,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -98,7 +97,7 @@ public class SheepHerder extends BasicQuestHelper
 	NpcStep talkToHalgrive;
 	NpcStep talkToOrbon;
 	ObjectStep enterEnclosure;
-	DetailedQuestStep pickupCattleprod;
+	ItemStep pickupCattleprod;
 	NpcStep prodSheep1;
 	NpcStep prodSheep2;
 	NpcStep prodSheep3;
@@ -204,7 +203,7 @@ public class SheepHerder extends BasicQuestHelper
 		enterEnclosure = new ObjectStep(this, ObjectID.PLAGUESHEEP_GATEL, new WorldPoint(2594, 3362, 0),
 			"Enter the enclosure north of Ardougne wearing the plague jacket and trousers.", plagueJacket.equipped(), plagueTrousers.equipped());
 
-		pickupCattleprod = new DetailedQuestStep(this, new WorldPoint(2604, 3357, 0), "Pickup the nearby cattleprod.",
+		pickupCattleprod = new ItemStep(this, new WorldPoint(2604, 3357, 0), "Pickup the nearby cattleprod.",
 			cattleprod);
 		prodSheep1 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_3, new WorldPoint(2562, 3389, 0),
 			"Prod one of the blue sheep north west of the enclosure to the enclosure gate.",

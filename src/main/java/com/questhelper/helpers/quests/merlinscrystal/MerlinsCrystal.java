@@ -33,7 +33,7 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.or;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -42,6 +42,7 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -73,6 +74,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 	ItemRequirement repellent;
 	ItemRequirement blackCandle;
 	ItemRequirement litBlackCandle;
+	ItemRequirement anyBlackCandle;
 	ItemRequirement excalibur;
 	ItemRequirement excaliburEquipped;
 
@@ -103,7 +105,6 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 	NpcCondition morganNearby;
 	ObjectCondition clearedHive;
-	Conditions hasAnyBlackCandle;
 	NpcCondition beggarNearby;
 	Conditions talkedToLady;
 	Conditions hasReadSpell;
@@ -122,15 +123,14 @@ public class MerlinsCrystal extends BasicQuestHelper
 	DetailedQuestStep talkToMorgan;
 	DetailedQuestStep goToCatherbyAfterFortress;
 	DetailedQuestStep optionalGetRepellent;
-	DetailedQuestStep optionalGetBucket;
+	ItemStep optionalGetBucket;
 	ObjectStep optionalUseRepellent;
 	NpcStep talkToCandleMaker;
 	NpcStep talkToLadyOfLake;
 	ObjectStep enterSarimShopAndTalk;
-	ObjectStep talkToBeggar;
+	NpcStep talkToBeggar;
 	ObjectStep goReadMagicWords;
 	ObjectStep returnToCamelot;
-	ObjectStep returnToCamelotLit;
 	DetailedQuestStep goStandInStar;
 	DetailedQuestStep lightCandle;
 	DetailedQuestStep dropBatBones;
@@ -142,8 +142,12 @@ public class MerlinsCrystal extends BasicQuestHelper
 	ObjectStep goDownLadder2Camelot;
 	NpcStep finishQuest;
 
+	ConditionalStep cGetBatBones;
 	ConditionalStep getBlackCandle;
 	ConditionalStep getExcalibur;
+	NpcStep getBatBones;
+	ObjectStep climbDownFaye2;
+	ObjectStep climbDownFaye1;
 
 	@Override
 	protected void setupZones()
@@ -179,8 +183,9 @@ public class MerlinsCrystal extends BasicQuestHelper
 		repellent = new ItemRequirement("Insect repellent", ItemID.INSECT_REPELLENT).isNotConsumed();
 		blackCandle = new ItemRequirement("Black candle", ItemID.UNLIT_BLACK_CANDLE);
 		litBlackCandle = new ItemRequirement("Lit black candle", ItemID.LIT_BLACK_CANDLE);
+		anyBlackCandle = new ItemRequirement("Black candle", List.of(ItemID.UNLIT_BLACK_CANDLE, ItemID.LIT_BLACK_CANDLE));
 		excalibur = new ItemRequirement("Excalibur", ItemID.EXCALIBUR).isNotConsumed();
-		excaliburEquipped = excalibur.equipped();
+		excaliburEquipped = excalibur.equipped().highlighted();
 
 		inFaye = new ZoneRequirement(faye1, fayeGround, faye2);
 		inFayeGround = new ZoneRequirement(fayeGround);
@@ -195,10 +200,9 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 		morganNearby = new NpcCondition(NpcID.MORGAN_LE_FAYE);
 		clearedHive = new ObjectCondition(ObjectID.BEEHIVE);
-		hasAnyBlackCandle = or(blackCandle, litBlackCandle);
 		beggarNearby = new NpcCondition(NpcID.LAKE_BEGGAR);
 		talkedToLady = new Conditions(true, new DialogRequirement(questHelperPlugin.getPlayerStateManager().getPlayerName(), "Ok. That seems easy enough.", false));
-		hasReadSpell = new Conditions(true, LogicType.AND, new WidgetTextRequirement(229, 1, "You find a small inscription"));
+		hasReadSpell = new Conditions(true, LogicType.AND, WidgetTextRequirement.messageBox("You find a small inscription"));
 		thrantaxNearby = new NpcCondition(NpcID.THRANTAX);
 	}
 
@@ -231,31 +235,38 @@ public class MerlinsCrystal extends BasicQuestHelper
 		talkToMorgan.addDialogStep("Tell me how to untrap Merlin and I might.");
 		talkToMorgan.addDialogStep("Ok I will do all that.");
 
-		goToCatherbyAfterFortress = new DetailedQuestStep(this, "Return to Catherby. If you still need bat bones, you can kill one of the bats just outside the fortress.");
+		getBatBones = new NpcStep(this, NpcID.BAT, new WorldPoint(2757, 3401, 0), "Kill a Giant bat outside Keep Le Faye for some bat bones.", true, batBones);
+		climbDownFaye2 = new ObjectStep(this, ObjectID.STAIRSTOP, new WorldPoint(2769, 3399, 2), "Climb down from Keep Le Faye and step through the front door, then kill a Giant bat for some bat bones.");
+		climbDownFaye1 = new ObjectStep(this, ObjectID.STAIRSTOP, new WorldPoint(2769, 3405, 1), "Climb down from Keep Le Faye and step through the front door, then kill a Giant bat for some bat bones.");
+		climbDownFaye2.addSubSteps(climbDownFaye1);
+
+		goToCatherbyAfterFortress = new DetailedQuestStep(this, "Return to Catherby.");
 		optionalGetRepellent = new DetailedQuestStep(this, new WorldPoint(2807, 3450, 0), "If you still need wax, go grab the insect repellent in a house in north Catherby. Otherwise, get your wax out.", repellent);
-		optionalGetBucket = new DetailedQuestStep(this, new WorldPoint(2766, 3441, 0), "Go grab the bucket in the bee field west of Catherby.", bucket);
+		optionalGetBucket = new ItemStep(this, new WorldPoint(2766, 3441, 0), "Go grab the bucket in the bee field west of Catherby.", bucket);
 
 		optionalUseRepellent = new ObjectStep(this, ObjectID.MERLIN_BEEHIVE, new WorldPoint(2762, 3443, 0), "Use the insect repellent on a bee hive, then try to take some wax.", bucket, repellent.highlighted());
 		talkToCandleMaker = new NpcStep(this, NpcID.CANDLE_MAKER, new WorldPoint(2797, 3440, 0), "Talk to the Candle Maker in Catherby twice until he gives you a black candle.", bucketOfWax);
 		talkToCandleMaker.addDialogStep("Have you got any black candles?");
 
 		talkToLadyOfLake = new NpcStep(this, NpcID.LADYOFTHELAKE, new WorldPoint(2924, 3404, 0), "Talk to the Lady of the Lake in Taverley.");
+		talkToLadyOfLake.addTeleport(twoFaladorTeleports.quantity(1));
 		talkToLadyOfLake.addDialogStep("I seek the sword Excalibur.");
 		talkToLadyOfLake.setLockingCondition(talkedToLady);
 
 		enterSarimShopAndTalk = new ObjectStep(this, ObjectID.JEWELLERSDOOR, new WorldPoint(3016, 3246, 0), "Attempt to enter the jewelery store in Port Sarim.", bread);
 		enterSarimShopAndTalk.addDialogStep("Yes certainly.");
-		talkToBeggar = new ObjectStep(this, ObjectID.JEWELLERSDOOR, new WorldPoint(3016, 3246, 0), "Talk to the beggar who appears and give him some bread.", bread);
+		enterSarimShopAndTalk.addDialogStep("Yes, here you go.");
+		talkToBeggar = new NpcStep(this, NpcID.LAKE_BEGGAR, new WorldPoint(3016, 3247, 0), "Talk to the beggar who appears and give him some bread.", bread);
 		talkToBeggar.addDialogStep("Yes certainly.");
+		talkToBeggar.addDialogStep("Yes, here you go.");
 
 		goReadMagicWords = new ObjectStep(this, ObjectID.THRANTAXALTAR, new WorldPoint(3260, 3381, 0), "Check the altar in the Zamorak Temple in south east Varrock. If you've already learnt the spell, just mark this step complete in the Quest Helper sidebar.");
+		goReadMagicWords.addTeleport(varrockTeleport);
 		goReadMagicWords.setLockingCondition(hasReadSpell);
 
-		returnToCamelot = new ObjectStep(this, ObjectID.KR_CAMELOT_METALGATECLOSEDR, new WorldPoint(2758, 3482, 0), "Return to Camelot", excalibur, blackCandle, batBones, tinderbox);
-		returnToCamelotLit = new ObjectStep(this, ObjectID.KR_CAMELOT_METALGATECLOSEDR, new WorldPoint(2758, 3482, 0), "Return to Camelot", excalibur, litBlackCandle, batBones);
-		returnToCamelot.addSubSteps(returnToCamelotLit);
+		returnToCamelot = new ObjectStep(this, ObjectID.KR_CAMELOT_METALGATECLOSEDR, new WorldPoint(2758, 3482, 0), "Enter the gates towards Camelot Castle.", excalibur, anyBlackCandle, batBones, tinderbox);
 
-		goStandInStar = new DetailedQuestStep(this, new WorldPoint(2780, 3515, 0), "Go stand in the star symbol north east of Camelot Castle.");
+		goStandInStar = new DetailedQuestStep(this, new WorldPoint(2780, 3515, 0), "Go stand in the star symbol north east of Camelot Castle.", excalibur, anyBlackCandle, batBones, tinderbox);
 		goStandInStar.addDialogStep("Snarthon Candtrick Termanto");
 
 		lightCandle = new DetailedQuestStep(this, "Light the Black candle with your tinderbox.", blackCandle.highlighted(), tinderbox.highlighted());
@@ -275,7 +286,6 @@ public class MerlinsCrystal extends BasicQuestHelper
 		finishQuest = new NpcStep(this, NpcID.KING_ARTHUR, new WorldPoint(2763, 3513, 0), "Tell King Arthur you've freed Merlin.");
 		finishQuest.addSubSteps(goDownLadder1Camelot, goDownLadder2Camelot);
 	}
-
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -302,12 +312,17 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 		steps.put(3, discoverHowToFreeMerlin);
 
+		cGetBatBones = new ConditionalStep(this, getBatBones);
+		cGetBatBones.addStep(inFaye2, climbDownFaye2);
+		cGetBatBones.addStep(inFaye1, climbDownFaye1);
+		cGetBatBones.setLockingCondition(batBones);
+
 		getBlackCandle = new ConditionalStep(this, optionalGetRepellent);
 		getBlackCandle.addStep(inFaye, goToCatherbyAfterFortress);
 		getBlackCandle.addStep(bucketOfWax, talkToCandleMaker);
 		getBlackCandle.addStep(and(repellent, bucket), optionalUseRepellent);
 		getBlackCandle.addStep(repellent, optionalGetBucket);
-		getBlackCandle.setLockingCondition(hasAnyBlackCandle);
+		getBlackCandle.setLockingCondition(anyBlackCandle);
 
 		getExcalibur = new ConditionalStep(this, talkToLadyOfLake);
 		getExcalibur.addStep(beggarNearby, talkToBeggar);
@@ -319,12 +334,12 @@ public class MerlinsCrystal extends BasicQuestHelper
 		performSpell.addStep(and(inStar, litBlackCandle), dropBatBones);
 		performSpell.addStep(inStar, lightCandle);
 		performSpell.addStep(inCamelot, goStandInStar);
-		performSpell.addStep(litBlackCandle, returnToCamelotLit);
 
 		var completeAllTasks = new ConditionalStep(this, getBlackCandle);
-		completeAllTasks.addStep(and(hasAnyBlackCandle, excalibur, hasReadSpell), performSpell);
-		completeAllTasks.addStep(and(hasAnyBlackCandle, excalibur), goReadMagicWords);
-		completeAllTasks.addStep(hasAnyBlackCandle, getExcalibur);
+		completeAllTasks.addStep(not(batBones), cGetBatBones);
+		completeAllTasks.addStep(and(anyBlackCandle, excalibur, hasReadSpell), performSpell);
+		completeAllTasks.addStep(and(anyBlackCandle, excalibur), goReadMagicWords);
+		completeAllTasks.addStep(anyBlackCandle, getExcalibur);
 
 		steps.put(4, completeAllTasks);
 
@@ -409,6 +424,15 @@ public class MerlinsCrystal extends BasicQuestHelper
 			combatGear
 		)));
 
+		var getBatBonesPanel = new PanelDetails("Get bat bones", List.of(
+			climbDownFaye2,
+			getBatBones
+		));
+		getBatBonesPanel.setLockingStep(cGetBatBones);
+		getBatBonesPanel.setVars(4);
+
+		sections.add(getBatBonesPanel);
+
 		var getBlackCandlePanel = new PanelDetails("Get a Black Candle", List.of(
 			goToCatherbyAfterFortress,
 			optionalGetRepellent,
@@ -448,7 +472,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 			dropBatBones,
 			sayWords
 		), List.of(
-			blackCandle,
+			anyBlackCandle,
 			batBones,
 			excalibur,
 			tinderbox

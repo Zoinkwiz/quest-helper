@@ -32,6 +32,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 
 import javax.annotation.Nonnull;
@@ -123,6 +124,13 @@ public class WidgetTextRequirement extends SimpleRequirement
 		this.childId = childId;
 		this.childChildId = childChildId;
 		this.text = Arrays.asList(text);
+	}
+
+	/// Checks for the text in the chat / message box.
+	///
+	/// Usually used when the player right-click checks a game object or item in their inventory.
+	public static WidgetTextRequirement messageBox(String... text) {
+		return new WidgetTextRequirement(InterfaceID.Messagebox.TEXT, text);
 	}
 
 	public void addRange(int min, int max)

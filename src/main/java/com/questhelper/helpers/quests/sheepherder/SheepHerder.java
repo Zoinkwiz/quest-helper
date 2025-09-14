@@ -31,6 +31,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -116,6 +117,11 @@ public class SheepHerder extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		var sheep1State = new VarbitBuilder(VarbitID.SHEEPHERDER_SHEEP_C);
+		var sheep2State = new VarbitBuilder(VarbitID.SHEEPHERDER_SHEEP_D);
+		var sheep3State = new VarbitBuilder(VarbitID.SHEEPHERDER_SHEEP_B);
+		var sheep4State = new VarbitBuilder(VarbitID.SHEEPHERDER_SHEEP_A);
+
 		coins100 = new ItemRequirement("Coins", ItemCollections.COINS, 100);
 
 		energyRestore = new ItemRequirement("Energy restoring items", ItemCollections.RUN_RESTORE_ITEMS);
@@ -133,43 +139,43 @@ public class SheepHerder extends BasicQuestHelper
 		bones4 = new ItemRequirement("Sheep bones 4", ItemID.SHEEPBONESD);
 		inEnclosure = new ZoneRequirement(enclosure);
 
-		sheep1Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_C, 6);
+		sheep1Burned = sheep1State.eq(6);
 		sheep1HasBones = new Conditions(LogicType.OR,
 			bones3,
 			sheep1Burned
 		);
 		sheep1InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_C, 1),
+			sheep1State.eq(1),
 			sheep1HasBones
 		);
 
-		sheep2Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_D, 6);
+		sheep2Burned = sheep2State.eq(6);
 		sheep2HasBones = new Conditions(LogicType.OR,
 			bones4,
 			sheep2Burned
 		);
 		sheep2InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_D, 1),
+			sheep2State.eq(1),
 			sheep2HasBones
 		);
 
-		sheep3Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_B, 6);
+		sheep3Burned = sheep3State.eq(6);
 		sheep3HasBones = new Conditions(LogicType.OR,
 			bones2,
 			sheep3Burned
 		);
 		sheep3InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_B, 1),
+			sheep3State.eq(1),
 			sheep3HasBones
 		);
 
-		sheep4Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_A, 6);
+		sheep4Burned = sheep4State.eq(6);
 		sheep4HasBones = new Conditions(LogicType.OR,
 			bones1,
 			sheep4Burned
 		);
 		sheep4InEnclosure = new Conditions(LogicType.OR,
-			new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_A, 1),
+			sheep4State.eq(1),
 			sheep4HasBones
 		);
 

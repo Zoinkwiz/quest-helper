@@ -256,7 +256,7 @@ public class HolyGrail extends BasicQuestHelper
 
 		startQuest = new NpcStep(this, NpcID.KING_ARTHUR, kingArthurWorldPoint, "Talk to King Arthur in Camelot Castle to start the quest.");
 		startQuest.addDialogStep("Tell me of this quest.");
-		startQuest.addDialogStep("I'd enjoy trying that.");
+		startQuest.addDialogStep("Yes.");
 
 		goUpStairsCamelot = new ObjectStep(this, ObjectID.KR_CAM_WOODENSTAIRS, new WorldPoint(2751, 3511, 0), "Go upstairs to talk to Merlin.");
 		openMerlinDoor = new ObjectStep(this, ObjectID.MERLINWORKSHOP, "Open the door to go to Merlin's room.");

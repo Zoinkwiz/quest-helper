@@ -194,7 +194,8 @@ public class SheepHerder extends BasicQuestHelper
 	{
 		talkToHalgrive = new NpcStep(this, NpcID.COUNCILLOR_HALGRIVE_VIS, new WorldPoint(2615, 3298, 0),
 			"Talk to Councillor Halgrive outside the East Ardougne church.");
-		talkToHalgrive.addDialogSteps("What's wrong?", "I can do that for you.");
+		talkToHalgrive.addDialogSteps("What's wrong?", "Yes.");
+
 		talkToOrbon = new NpcStep(this, NpcID.DOCTOR_ORBON, new WorldPoint(2616, 3306, 0),
 			"Talk to Doctor Orbon in the East Ardougne Church.", coins100);
 		talkToOrbon.addDialogStep("Okay, I'll take it.");

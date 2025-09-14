@@ -117,6 +117,11 @@ public class SheepHerder extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		// Sheep states:
+		// 0 = Sheep is loose
+		// 1 = Sheep has been prodded into the enclosure
+		// 2 = Sheep has been killed by the poisoned sheep food
+		// 6 = The bones of the sheep has been incinerated
 		var sheep1State = new VarbitBuilder(VarbitID.SHEEPHERDER_SHEEP_C);
 		var sheep2State = new VarbitBuilder(VarbitID.SHEEPHERDER_SHEEP_D);
 		var sheep3State = new VarbitBuilder(VarbitID.SHEEPHERDER_SHEEP_B);

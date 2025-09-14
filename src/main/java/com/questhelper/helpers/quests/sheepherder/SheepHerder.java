@@ -27,7 +27,6 @@ package com.questhelper.helpers.quests.sheepherder;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -37,61 +36,81 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import com.questhelper.tools.QuestTile;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class SheepHerder extends BasicQuestHelper
 {
-	//Items Required
+	// Required items
 	ItemRequirement coins;
 
-	//Items Recommended
+	// Recommended items
 	ItemRequirement energyRestore;
 
-	ItemRequirement plagueJacket, plagueTrousers, cattleprod, sheepFeed, bones1, bones2, bones3, bones4;
+	// Mid-quest item requirements
+	ItemRequirement plagueJacket;
+	ItemRequirement plagueTrousers;
+	ItemRequirement cattleprod;
+	ItemRequirement sheepFeed;
+	ItemRequirement bones1;
+	ItemRequirement bones2;
+	ItemRequirement bones3;
+	ItemRequirement bones4;
 
-	Requirement inEnclosure, sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure, sheep4InEnclosure,
-		sheep1HasBones, sheep2HasBones, sheep3HasBones, sheep4HasBones, sheep1Burned, sheep2Burned, sheep3Burned,
-		sheep4Burned, allSheepBonesObtained, allSheepBurned, bonesNearby;
-
-	DetailedQuestStep talkToHalgrive, talkToOrbon, enterEnclosure, pickupCattleprod, prodSheep1, prodSheep2,
-	prodSheep3, prodSheep4, feedSheep, pickupBones, useBonesOnIncinerator, talkToHalgriveToFinish;
-
+	// Zones
 	Zone enclosure;
 
+	// Miscellaneous requirements
+	ZoneRequirement inEnclosure;
+	Conditions sheep1InEnclosure;
+	Conditions sheep2InEnclosure;
+	Conditions sheep3InEnclosure;
+	Conditions sheep4InEnclosure;
+	Conditions sheep1HasBones;
+	Conditions sheep2HasBones;
+	Conditions sheep3HasBones;
+	Conditions sheep4HasBones;
+	VarbitRequirement sheep1Burned;
+	VarbitRequirement sheep2Burned;
+	VarbitRequirement sheep3Burned;
+	VarbitRequirement sheep4Burned;
+	Conditions allSheepBonesObtained;
+	Conditions allSheepBurned;
+	Conditions bonesNearby;
+
+	// Steps
+	NpcStep talkToHalgrive;
+	NpcStep talkToOrbon;
+	ObjectStep enterEnclosure;
+	DetailedQuestStep pickupCattleprod;
+	NpcStep prodSheep1;
+	NpcStep prodSheep2;
+	NpcStep prodSheep3;
+	NpcStep prodSheep4;
+	NpcStep feedSheep;
+	ItemStep pickupBones;
+	ObjectStep useBonesOnIncinerator;
+	NpcStep talkToHalgriveToFinish;
+
+
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-		steps.put(0, talkToHalgrive);
-		steps.put(1, talkToOrbon);
-
-		ConditionalStep goBurnSheep = new ConditionalStep(this, enterEnclosure);
-		goBurnSheep.addStep(new Conditions(allSheepBurned), talkToHalgriveToFinish);
-		goBurnSheep.addStep(new Conditions(allSheepBonesObtained), useBonesOnIncinerator);
-		goBurnSheep.addStep(new Conditions(bonesNearby), pickupBones);
-		goBurnSheep.addStep(new Conditions(sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure,
-				sheep4InEnclosure), feedSheep);
-		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure),
-			prodSheep4);
-		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure, sheep2InEnclosure), prodSheep3);
-		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure), prodSheep2);
-		goBurnSheep.addStep(cattleprod, prodSheep1);
-		goBurnSheep.addStep(inEnclosure, pickupCattleprod);
-		steps.put(2, goBurnSheep);
-
-		return steps;
+		enclosure = new Zone(new WorldPoint(2595, 3351, 0), new WorldPoint(2609, 3364, 0));
 	}
 
 	@Override
@@ -112,16 +131,6 @@ public class SheepHerder extends BasicQuestHelper
 		bones2 = new ItemRequirement("Sheep bones 2", ItemID.SHEEPBONESB);
 		bones3 = new ItemRequirement("Sheep bones 3", ItemID.SHEEPBONESC);
 		bones4 = new ItemRequirement("Sheep bones 4", ItemID.SHEEPBONESD);
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		enclosure = new Zone(new WorldPoint(2595, 3351, 0), new WorldPoint(2609, 3364, 0));
-	}
-
-	private void setupConditions()
-	{
 		inEnclosure = new ZoneRequirement(enclosure);
 
 		sheep1Burned = new VarbitRequirement(VarbitID.SHEEPHERDER_SHEEP_C, 6);
@@ -196,11 +205,11 @@ public class SheepHerder extends BasicQuestHelper
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep2.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
 		prodSheep3 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_2, new WorldPoint(2621, 3367, 0),
-		"Prod one of the green sheep east of the enclosure to the enclosure gate.",
+			"Prod one of the green sheep east of the enclosure to the enclosure gate.",
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep3.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
 		prodSheep4 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_1, new WorldPoint(2609, 3347, 0),
-		"Prod one of the red sheep south east of the enclosure to the enclosure gate.",
+			"Prod one of the red sheep south east of the enclosure to the enclosure gate.",
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep4.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
 
@@ -210,8 +219,8 @@ public class SheepHerder extends BasicQuestHelper
 		feedSheep = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_3, new WorldPoint(2597, 3361, 0),
 			"Feed the sheep the sheep feed.", true, sheepFeed.highlighted());
 		feedSheep.addIcon(ItemID.POISONED_FEED);
-		((NpcStep) feedSheep).setMaxRoamRange(3);
-		((NpcStep) feedSheep).addAlternateNpcs(NpcID.HERDER_PLAGUESHEEP_2, NpcID.HERDER_PLAGUESHEEP_1, NpcID.HERDER_PLAGUESHEEP_4);
+		feedSheep.setMaxRoamRange(3);
+		feedSheep.addAlternateNpcs(NpcID.HERDER_PLAGUESHEEP_2, NpcID.HERDER_PLAGUESHEEP_1, NpcID.HERDER_PLAGUESHEEP_4);
 
 		useBonesOnIncinerator = new ObjectStep(this, ObjectID.PLAGUESHEEP_FURNACE, new WorldPoint(2607, 3361, 0),
 			"Pickup the bones and incinerate them.", bones1.highlighted().hideConditioned(sheep4Burned),
@@ -223,15 +232,49 @@ public class SheepHerder extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToHalgrive);
+
+		steps.put(1, talkToOrbon);
+
+		var goBurnSheep = new ConditionalStep(this, enterEnclosure);
+		goBurnSheep.addStep(new Conditions(allSheepBurned), talkToHalgriveToFinish);
+		goBurnSheep.addStep(new Conditions(allSheepBonesObtained), useBonesOnIncinerator);
+		goBurnSheep.addStep(new Conditions(bonesNearby), pickupBones);
+		goBurnSheep.addStep(new Conditions(sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure,
+			sheep4InEnclosure), feedSheep);
+		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure, sheep2InEnclosure, sheep3InEnclosure),
+			prodSheep4);
+		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure, sheep2InEnclosure), prodSheep3);
+		goBurnSheep.addStep(new Conditions(cattleprod, sheep1InEnclosure), prodSheep2);
+		goBurnSheep.addStep(cattleprod, prodSheep1);
+		goBurnSheep.addStep(inEnclosure, pickupCattleprod);
+		steps.put(2, goBurnSheep);
+
+		return steps;
+	}
+
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Collections.singletonList(coins.quantity(100));
+		return List.of(
+			coins.quantity(100)
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(energyRestore);
+		return List.of(
+			energyRestore
+		);
 	}
 
 	@Override
@@ -243,18 +286,39 @@ public class SheepHerder extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 3100));
+		return List.of(
+			new ItemReward("Coins", ItemID.COINS, 3100)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting out", Arrays.asList(talkToHalgrive, talkToOrbon), coins.quantity(100)));
-		allSteps.add(new PanelDetails("Killing sheep", Arrays.asList(enterEnclosure, pickupCattleprod, prodSheep1,
-			prodSheep2, prodSheep3, prodSheep4, feedSheep, pickupBones, useBonesOnIncinerator, talkToHalgriveToFinish),
-			plagueJacket, plagueTrousers));
+		var sections = new ArrayList<PanelDetails>();
 
-		return allSteps;
+		sections.add(new PanelDetails("Starting out", List.of(
+			talkToHalgrive,
+			talkToOrbon
+		), List.of(
+			coins.quantity(100)
+		)));
+
+		sections.add(new PanelDetails("Killing sheep", List.of(
+			enterEnclosure,
+			pickupCattleprod,
+			prodSheep1,
+			prodSheep2,
+			prodSheep3,
+			prodSheep4,
+			feedSheep,
+			pickupBones,
+			useBonesOnIncinerator,
+			talkToHalgriveToFinish
+		), List.of(
+			plagueJacket,
+			plagueTrousers
+		)));
+
+		return sections;
 	}
 }

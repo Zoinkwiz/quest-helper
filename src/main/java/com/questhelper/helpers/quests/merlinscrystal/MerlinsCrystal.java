@@ -253,6 +253,7 @@ public class MerlinsCrystal extends BasicQuestHelper
 
 		returnToCamelot = new ObjectStep(this, ObjectID.KR_CAMELOT_METALGATECLOSEDR, new WorldPoint(2758, 3482, 0), "Return to Camelot", excalibur, blackCandle, batBones, tinderbox);
 		returnToCamelotLit = new ObjectStep(this, ObjectID.KR_CAMELOT_METALGATECLOSEDR, new WorldPoint(2758, 3482, 0), "Return to Camelot", excalibur, litBlackCandle, batBones);
+		returnToCamelot.addSubSteps(returnToCamelotLit);
 
 		goStandInStar = new DetailedQuestStep(this, new WorldPoint(2780, 3515, 0), "Go stand in the star symbol north east of Camelot Castle.");
 		goStandInStar.addDialogStep("Snarthon Candtrick Termanto");

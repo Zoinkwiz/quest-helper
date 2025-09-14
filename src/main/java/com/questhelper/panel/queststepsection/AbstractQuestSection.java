@@ -72,7 +72,5 @@ public abstract class AbstractQuestSection extends JPanel
 
 	public abstract void updateAllText();
 
-	public abstract HashMap<QuestStep, JTextPane> getStepsLabels();
-
 	public abstract List<Integer> getIds();
 }

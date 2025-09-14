@@ -281,6 +281,7 @@ public class HolyGrail extends BasicQuestHelper
 		goGetExcalibur = new ItemStep(this, "Go retrieve Excalibur from your bank. If you do not own Excalibur, you can retrieve it from the Lady of the Lake in Taverley for 500 coins.", twoMagicWhistles, excalibur);
 		WorldPoint teleportLocationPoint = new WorldPoint(2742, 3236, 0);
 		goToTeleportLocation1 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", twoMagicWhistles, excalibur);
+		goToTeleportLocation1.addSubSteps(goGetExcalibur);
 		blowWhistle1 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle1, excalibur);
 
 		attackTitan = new NpcStep(this, NpcID.BLACK_KNIGHT_TITAN, "Kill the Black Knight Titan with Excalibur. Melee is recommended as it has high Ranged and Magic defence. (You only need to deal the killing blow with excalibur!)", twoMagicWhistles, excalibur);

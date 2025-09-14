@@ -26,7 +26,6 @@ package com.questhelper.panel.queststepsection;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
-import com.questhelper.panel.JGenerator;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.QuestOverviewPanel;
 import com.questhelper.panel.TopLevelPanelDetails;
@@ -61,15 +60,8 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 	private final QuestOverviewPanel questOverviewPanel;
 	private final QuestHelperPlugin questHelperPlugin;
 
-
-	private final JPanel headerPanel = new JPanel();
-	private final JTextPane headerLabel = JGenerator.makeJTextPane();
 	private final JPanel stepsPanel = new JPanel();
-	private final JCheckBox lockStep = new JCheckBox();
 
-	@Getter
-	private final JPanel leftTitleContainer;
-	private final JPanel viewControls;
 	private final List<AbstractQuestSection> subPanels = new ArrayList<>();
 
 	private boolean stepAutoLocked;

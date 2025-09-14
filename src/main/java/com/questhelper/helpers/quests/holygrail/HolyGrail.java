@@ -261,7 +261,6 @@ public class HolyGrail extends BasicQuestHelper
 		goUpStairsCamelot = new ObjectStep(this, ObjectID.KR_CAM_WOODENSTAIRS, new WorldPoint(2751, 3511, 0), "Go upstairs and talk to Merlin.");
 		openMerlinDoor = new ObjectStep(this, ObjectID.MERLINWORKSHOP, "Go upstairs and talk to Merlin.");
 		talkToMerlin = new NpcStep(this, NpcID.MERLIN2, new WorldPoint(2763, 3513, 1), "Go upstairs and talk to Merlin.");
-		talkToMerlin.addDialogStep("Where can I find Sir Galahad?");
 		talkToMerlin.addSubSteps(goUpStairsCamelot, openMerlinDoor);
 
 		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3235, 0), "Talk to a monk of Entrana. Bank all combat gear.", true);

@@ -28,7 +28,6 @@ import com.questhelper.panel.JGenerator;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import lombok.Getter;
 import net.runelite.api.Client;
 import javax.swing.*;
 import java.util.HashMap;
@@ -40,11 +39,10 @@ public abstract class AbstractQuestSection extends JPanel
 	protected final JTextPane headerLabel = JGenerator.makeJTextPane();
 	protected final JPanel bodyPanel = new JPanel();
 	protected final JCheckBox lockStep = new JCheckBox();
-	@Getter
+
 	protected JPanel leftTitleContainer;
 	protected JPanel viewControls;
 
-	@Getter
 	protected PanelDetails panelDetails;
 
 

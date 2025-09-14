@@ -32,7 +32,6 @@ import com.questhelper.panel.QuestOverviewPanel;
 import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -440,7 +439,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		grip.addMouseListener(listener);
 		grip.addMouseMotionListener(listener);
 
-		newStep.getLeftTitleContainer().add(grip, java.awt.BorderLayout.WEST);
+		newStep.leftTitleContainer.add(grip, java.awt.BorderLayout.WEST);
 	}
 
 	private void swapPanels(AbstractQuestSection a, AbstractQuestSection b)

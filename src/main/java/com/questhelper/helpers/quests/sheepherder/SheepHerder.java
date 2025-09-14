@@ -203,7 +203,7 @@ public class SheepHerder extends BasicQuestHelper
 		enterEnclosure = new ObjectStep(this, ObjectID.PLAGUESHEEP_GATEL, new WorldPoint(2594, 3362, 0),
 			"Enter the enclosure north of Ardougne wearing the plague jacket and trousers.", plagueJacket.equipped(), plagueTrousers.equipped());
 
-		pickupCattleprod = new ItemStep(this, new WorldPoint(2604, 3357, 0), "Pickup the nearby cattleprod.",
+		pickupCattleprod = new ItemStep(this, new WorldPoint(2604, 3357, 0), "Pick up the nearby cattleprod.",
 			cattleprod);
 		prodSheep1 = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_3, new WorldPoint(2562, 3389, 0),
 			"Prod one of the blue sheep north west of the enclosure to the enclosure gate.",
@@ -222,7 +222,7 @@ public class SheepHerder extends BasicQuestHelper
 			true, cattleprod.equipped(), plagueJacket.equipped(), plagueTrousers.equipped());
 		prodSheep4.addTileMarker(new QuestTile(new WorldPoint(2594, 3362, 0)));
 
-		pickupBones = new ItemStep(this, "Pickup the bones.", bones1.hideConditioned(sheep4HasBones),
+		pickupBones = new ItemStep(this, "Pick up the bones.", bones1.hideConditioned(sheep4HasBones),
 			bones2.hideConditioned(sheep3HasBones), bones3.hideConditioned(sheep1HasBones),
 			bones4.hideConditioned(sheep2HasBones));
 		feedSheep = new NpcStep(this, NpcID.HERDER_PLAGUESHEEP_3, new WorldPoint(2597, 3361, 0),
@@ -232,7 +232,7 @@ public class SheepHerder extends BasicQuestHelper
 		feedSheep.addAlternateNpcs(NpcID.HERDER_PLAGUESHEEP_2, NpcID.HERDER_PLAGUESHEEP_1, NpcID.HERDER_PLAGUESHEEP_4);
 
 		useBonesOnIncinerator = new ObjectStep(this, ObjectID.PLAGUESHEEP_FURNACE, new WorldPoint(2607, 3361, 0),
-			"Pickup the bones and incinerate them.", bones1.highlighted().hideConditioned(sheep4Burned),
+			"Pick up the bones and incinerate them.", bones1.highlighted().hideConditioned(sheep4Burned),
 			bones2.highlighted().hideConditioned(sheep3Burned), bones3.highlighted().hideConditioned(sheep1Burned),
 			bones4.highlighted().hideConditioned(sheep2Burned));
 		useBonesOnIncinerator.addIcon(ItemID.SHEEPBONESA);

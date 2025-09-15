@@ -214,7 +214,7 @@ public class HolyGrail extends BasicQuestHelper
 		sixtyCoins.appendToTooltip("For travel from Ardougne to Brimhaven twice");
 		thirtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
 		thirtyCoins.appendToTooltip("For travel from Ardougne to Brimhaven");
-		antipoison = new ItemRequirement("Antipoison", ItemID._4DOSEANTIPOISON);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		antipoison.setTooltip("If you're below Combat level 41, the poisonous scorpions on Karamja are aggressive");
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		combatGear = new ItemRequirement("A weapon and armour (melee recommended)", -1, -1).isNotConsumed();

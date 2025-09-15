@@ -215,6 +215,7 @@ public class HolyGrail extends BasicQuestHelper
 		thirtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 30);
 		thirtyCoins.appendToTooltip("For travel from Ardougne to Brimhaven");
 		antipoison = new ItemRequirement("Antipoison", ItemID._4DOSEANTIPOISON);
+		antipoison.setTooltip("If you're below Combat level 41, the poisonous scorpions on Karamja are aggressive");
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		combatGear = new ItemRequirement("A weapon and armour (melee recommended)", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -289,6 +290,7 @@ public class HolyGrail extends BasicQuestHelper
 		goToTeleportLocation1 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", twoMagicWhistles, excalibur);
 		goToTeleportLocation1.addDialogStep("I'd like to go to Brimhaven.");
 		goToTeleportLocation1.addRecommended(thirtyCoins);
+		goToTeleportLocation1.addRecommended(antipoison);
 		goToTeleportLocation1.addSubSteps(goGetExcalibur);
 		blowWhistle1 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle1, excalibur);
 
@@ -485,7 +487,8 @@ public class HolyGrail extends BasicQuestHelper
 			twoMagicWhistles,
 			excalibur
 		), List.of(
-			thirtyCoins
+			thirtyCoins,
+			antipoison
 		)));
 
 		sections.add(new PanelDetails("Finding Percival", List.of(

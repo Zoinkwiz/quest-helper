@@ -336,7 +336,7 @@ public class HolyGrail extends BasicQuestHelper
 		goToCamelot = new DetailedQuestStep(this, new WorldPoint(2758, 3486, 0), "Go back to Camelot.");
 		talkToKingArthur2 = new NpcStep(this, NpcID.KING_ARTHUR, kingArthurWorldPoint, "Return to Camelot and talk to King Arthur.", emptyInvSpot);
 
-		openSack = new ObjectStep(this, ObjectID.PERCY_SACKS, new WorldPoint(2962, 3506, 0), "Travel to the Goblin Village North of Falador. Right click and open the sacks.", twoMagicWhistles);
+		openSack = new ObjectStep(this, ObjectID.PERCY_SACKS, new WorldPoint(2962, 3506, 0), "Travel to the Goblin Village, north of Falador. Right click and open the sacks.", twoMagicWhistles);
 		openSack.addDialogStep("Come with me, I shall make you a king.");
 
 		goToTeleportLocation2 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", oneMagicWhistle, goldFeather);

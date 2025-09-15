@@ -87,6 +87,8 @@ public class DruidicRitual extends BasicQuestHelper
 	NpcStep talkToSanfewWithMeat;
 	NpcStep talkToKaqemeexToFinish;
 
+	ObjectStep climbDownToEnterDungeon;
+
 	@Override
 	protected void setupZones()
 	{
@@ -137,6 +139,8 @@ public class DruidicRitual extends BasicQuestHelper
 		enterDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
 			"Enter Taverley Dungeon south of Taverley.", rawBear, rawBeef, rawChicken, rawRat);
 		enterDungeon.addDialogStep("Ok, I'll do that then.");
+		climbDownToEnterDungeon = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(2898, 3428, 1), "Enter Taverley Dungeon south of Taverley.", rawBear, rawBeef, rawChicken, rawRat);
+		enterDungeon.addSubSteps(climbDownToEnterDungeon);
 		useRatOnCauldron = new ObjectStep(this, ObjectID.CAULDRON_OF_THUNDER, new WorldPoint(2893, 9831, 0),
 			"Use the rat meat on the cauldron. To enter the room, spam-click the gate to get in.", rawRatHighlighted);
 		useRatOnCauldron.addIcon(ItemID.RAW_RAT_MEAT);
@@ -182,6 +186,7 @@ public class DruidicRitual extends BasicQuestHelper
 		prepareMeats.addStep(and(inDungeon, enchantedRat, enchantedBear), useBeefOnCauldron);
 		prepareMeats.addStep(and(inDungeon, enchantedRat), useBearOnCauldron);
 		prepareMeats.addStep(inDungeon, useRatOnCauldron);
+		prepareMeats.addStep(inSanfewRoom, climbDownToEnterDungeon);
 		steps.put(2, prepareMeats);
 
 		steps.put(3, talkToKaqemeexToFinish);

@@ -32,12 +32,14 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -136,6 +138,7 @@ public class HolyGrail extends BasicQuestHelper
 	ZoneRequirement inFisherKingCastle2BottomFloor;
 	ZoneRequirement inFisherKingCastle2SecondFloor;
 	ZoneRequirement inFisherKingCastle2ThirdFloor;
+	Conditions fisherKingCastleOuterDoorOpen;
 
 	// Steps
 	NpcStep startQuest;
@@ -261,6 +264,8 @@ public class HolyGrail extends BasicQuestHelper
 		highlightGrailBell.setHighlightInInventory(true);
 
 		bellInRightPosition = new ItemOnTileRequirement(ItemID.GRAIL_BELL, new WorldPoint(2762, 4694, 0));
+
+		fisherKingCastleOuterDoorOpen = not(new ObjectCondition(ObjectID.CASTLEDOUBLEDOORR, new WorldPoint(2634, 4693, 0)));
 	}
 
 	public void setupSteps()
@@ -340,12 +345,15 @@ public class HolyGrail extends BasicQuestHelper
 		openSack.addDialogStep("Come with me, I shall make you a king.");
 
 		goToTeleportLocation2 = new DetailedQuestStep(this, teleportLocationPoint, "Go to the tower on Karamja near gold mine west of Brimhaven.", oneMagicWhistle, goldFeather);
-		blowWhistle2 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle2, goldFeather);
+		goToTeleportLocation2.addDialogStep("I'd like to go to Brimhaven.");
+		goToTeleportLocation2.addRecommended(thirtyCoins);
+		goToTeleportLocation2.addRecommended(antipoison);
+		blowWhistle2 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle2);
 
-		openFisherKingCastleDoor = new ObjectStep(this, ObjectID.CASTLEDOUBLEDOORR, "Open the door to the castle and enter.", goldFeather);
-		goUpNewCastleStairs = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2649, 4684, 0), "Go up the stairs to the east.", goldFeather);
-		goUpNewCastleLadder = new ObjectStep(this, ObjectID.LADDER, "Climb the ladder on the second floor.", goldFeather);
-		takeGrail = new DetailedQuestStep(this, new WorldPoint(2649, 4684, 2), "Pickup the Grail.", goldFeather);
+		openFisherKingCastleDoor = new ObjectStep(this, ObjectID.CASTLEDOUBLEDOORR, "Open the door to the castle and enter.");
+		goUpNewCastleStairs = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2649, 4684, 0), "Go up the stairs to the east.");
+		goUpNewCastleLadder = new ObjectStep(this, ObjectID.LADDER, "Climb the ladder on the second floor.");
+		takeGrail = new ItemStep(this, new WorldPoint(2649, 4684, 2), "Pickup the Holy grail.", grail);
 
 		finishQuest = new NpcStep(this, NpcID.KING_ARTHUR, kingArthurWorldPoint, "Return to Camelot and talk to King Arthur", grail);
 	}
@@ -383,7 +391,7 @@ public class HolyGrail extends BasicQuestHelper
 		finishQuest.addStep(grail, this.finishQuest);
 		finishQuest.addStep(inFisherKingCastle2ThirdFloor, takeGrail);
 		finishQuest.addStep(inFisherKingCastle2SecondFloor, goUpNewCastleLadder);
-		finishQuest.addStep(inFisherKingCastle2BottomFloor, goUpNewCastleStairs);
+		finishQuest.addStep(or(inFisherKingCastle2BottomFloor, fisherKingCastleOuterDoorOpen), goUpNewCastleStairs);
 		finishQuest.addStep(inFisherKingRealm, openFisherKingCastleDoor);
 		finishQuest.addStep(inTeleportLocation, blowWhistle2);
 
@@ -518,8 +526,10 @@ public class HolyGrail extends BasicQuestHelper
 			goUpNewCastleLadder,
 			takeGrail
 		), List.of(
-			oneMagicWhistle,
-			goldFeather
+			oneMagicWhistle
+		), List.of(
+			thirtyCoins,
+			antipoison
 		)));
 
 		sections.add(new PanelDetails("Finishing up", List.of(

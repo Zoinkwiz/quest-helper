@@ -127,7 +127,8 @@ public class DruidicRitual extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToKaqemeex = new NpcStep(this, NpcID.KAQEMEEX, new WorldPoint(2925, 3486, 0), "Talk to Kaqemeex in the Druids' Circle in Taverley.");
-		talkToKaqemeex.addDialogSteps("I'm in search of a quest.", "Okay, I will try and help.");
+		talkToKaqemeex.addDialogStep("I'm in search of a quest.");
+		talkToKaqemeex.addDialogStep("Yes.");
 		goUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew.addDialogStep("I've been sent to help purify the Varrock stone circle.");

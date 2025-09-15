@@ -32,11 +32,13 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -126,6 +128,7 @@ public class HolyGrail extends BasicQuestHelper
 	NpcCondition titanNearby;
 	ZoneRequirement inFisherKingRealmAfterTitan;
 	Conditions talkedToFisherman;
+	ItemOnTileRequirement bellInRightPosition;
 	ZoneRequirement inGrailBellRingLocation;
 	ZoneRequirement inFisherKingCastle1BottomFloor;
 	ZoneRequirement inFisherKingCastle1SecondFloor;
@@ -157,6 +160,7 @@ public class HolyGrail extends BasicQuestHelper
 	NpcStep talkToFisherman;
 	DetailedQuestStep pickupBell;
 	DetailedQuestStep ringBell;
+	DetailedQuestStep ringBellHighlighted;
 	ObjectStep goUpStairsBrokenCastle;
 	NpcStep talkToFisherKing;
 	DetailedQuestStep goToCamelot;
@@ -255,6 +259,8 @@ public class HolyGrail extends BasicQuestHelper
 
 		highlightGrailBell = new ItemRequirement("Grail Bell", ItemID.GRAIL_BELL);
 		highlightGrailBell.setHighlightInInventory(true);
+
+		bellInRightPosition = new ItemOnTileRequirement(ItemID.GRAIL_BELL, new WorldPoint(2762, 4694, 0));
 	}
 
 	public void setupSteps()
@@ -297,9 +303,13 @@ public class HolyGrail extends BasicQuestHelper
 		attackTitan = new NpcStep(this, NpcID.BLACK_KNIGHT_TITAN, "Kill the Black Knight Titan with Excalibur. Melee is recommended as it has high Ranged and Magic defence. (You only need to deal the killing blow with excalibur!)", twoMagicWhistles, excalibur);
 		talkToFisherman = new NpcStep(this, NpcID.GRAIL_FISHERMAN, new WorldPoint(2798, 4706, 0), "Talk to the fisherman by the river. After talking to him walk West to the castle.");
 		talkToFisherman.addDialogStep("Any idea how to get into the castle?");
-		pickupBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Pickup the bell outside of the castle.");
-		ringBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Ring the grail bell directly north of the broken castle wall (Where you picked up the bell)", highlightGrailBell);
+		pickupBell = new ItemStep(this, new WorldPoint(2762, 4694, 0), "Pickup the grail bell outside of the castle. If it's not there, return to the fisherman and finish the conversation.", grailBell);
+		pickupBell.addDialogStep("Any idea how to get into the castle?");
+		ringBell = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Ring the grail bell while standing directly north of the broken castle wall (Where you picked up the bell)", grailBell);
 		ringBell.addIcon(ItemID.GRAIL_BELL);
+		ringBellHighlighted = new DetailedQuestStep(this, new WorldPoint(2762, 4694, 0), "Ring the grail bell while standing directly north of the broken castle wall (Where you picked up the bell)", highlightGrailBell);
+		ringBellHighlighted.addIcon(ItemID.GRAIL_BELL);
+		ringBell.addSubSteps(ringBellHighlighted);
 		goUpStairsBrokenCastle = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2762, 4681, 0), "Go up the stairs inside of the castle.");
 		talkToFisherKing = new NpcStep(this, NpcID.FISHER_KING, "Talk to The Fisher King.");
 		talkToFisherKing.addDialogStep("You don't look too well.");
@@ -307,8 +317,9 @@ public class HolyGrail extends BasicQuestHelper
 		findFisherKing = new ConditionalStep(this, talkToGalahad);
 		findFisherKing.addStep(inFisherKingCastle1SecondFloor, talkToFisherKing);
 		findFisherKing.addStep(inFisherKingCastle1BottomFloor, goUpStairsBrokenCastle);
+		findFisherKing.addStep(and(grailBell, inGrailBellRingLocation), ringBellHighlighted);
 		findFisherKing.addStep(and(grailBell, inFisherKingRealmAfterTitan), ringBell);
-		findFisherKing.addStep(talkedToFisherman, pickupBell);
+		findFisherKing.addStep(or(talkedToFisherman, bellInRightPosition), pickupBell);
 		findFisherKing.addStep(inFisherKingRealmAfterTitan, talkToFisherman);
 		findFisherKing.addStep(and(excalibur, titanNearby), attackTitan);
 		findFisherKing.addStep(and(twoMagicWhistles, inTeleportLocation, excalibur), blowWhistle1);

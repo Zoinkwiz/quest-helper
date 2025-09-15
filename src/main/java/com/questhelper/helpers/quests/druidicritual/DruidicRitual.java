@@ -126,7 +126,7 @@ public class DruidicRitual extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToKaqemeex = new NpcStep(this, NpcID.KAQEMEEX, new WorldPoint(2925, 3486, 0), "Talk to Kaqemeex in the Druid Circle in Taverley.");
+		talkToKaqemeex = new NpcStep(this, NpcID.KAQEMEEX, new WorldPoint(2925, 3486, 0), "Talk to Kaqemeex in the Druids' Circle in Taverley.");
 		talkToKaqemeex.addDialogSteps("I'm in search of a quest.", "Okay, I will try and help.");
 		goUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "Talk to Sanfew upstairs in the Taverley herblore store.");
 		talkToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Talk to Sanfew upstairs in the Taverley herblore store.");
@@ -157,7 +157,7 @@ public class DruidicRitual extends BasicQuestHelper
 		talkToSanfewWithMeat = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1),
 			"Bring the enchanted meats to Sanfew upstairs in the Taverley herblore store.", enchantedBear, enchantedBeef, enchantedChicken, enchantedRat);
 		talkToSanfewWithMeat.addSubSteps(goUpToSanfewWithMeat);
-		talkToKaqemeexToFinish = new NpcStep(this, NpcID.KAQEMEEX, new WorldPoint(2925, 3486, 0), "Return to Kaqemeex in the Druid Circle to finish the quest.");
+		talkToKaqemeexToFinish = new NpcStep(this, NpcID.KAQEMEEX, new WorldPoint(2925, 3486, 0), "Return to Kaqemeex in the Druids' Circle to finish the quest.");
 	}
 
 	@Override

@@ -306,6 +306,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.BIOHAZARD,
+			QuestHelperQuest.DRUIDIC_RITUAL,
 			QuestHelperQuest.MURDER_MYSTERY,
 			QuestHelperQuest.PLAGUE_CITY,
 			QuestHelperQuest.CLOCK_TOWER,

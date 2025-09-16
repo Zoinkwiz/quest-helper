@@ -782,7 +782,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		trapSetUp = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 1);
 		trapBaited = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 2, Operation.GREATER_EQUAL);
 		broavTrapped = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 4);
-		broavNearby = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.WGS_BROAV, 13516), 16);
+		broavNearby = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.WGS_BROAV, NpcID.WGS_WASHERMAN), 16);
 		hasBroav = or(broavNearby, broav.alsoCheckBank(questBank));
 
 		nearTable = new Zone(new WorldPoint(2516, 3246, 0), new WorldPoint(2522, 3252, 0));
@@ -919,7 +919,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10780 2->3 represents state of Silif
 		givenArmourToSilif = new VarbitRequirement(VarbitID.WGS, 550, Operation.GREATER_EQUAL);
 
-		silifIsFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 13522, 16);
+		silifIsFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, NpcID.WGS_SILIF_FOLLOWER_ARMOUR, 16);
 		seenMap = new VarbitRequirement(VarbitID.WGS, 580, Operation.GREATER_EQUAL);
 
 		squallFightRoom = new Zone(new WorldPoint(4126, 4840, 2), new WorldPoint(4151, 4861, 2));
@@ -1063,7 +1063,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		enterMovarioBase = new ObjectStep(this, ObjectID.WGS_BF_TABLE_BROKEN2_OPEN, new WorldPoint(2519, 3249, 0), "Enter Movario's base under the broken table in the Khazard Battlefield.");
 
-		// TODO: Update hardcoded 54117 to CHEST_54117
 		claimRunes = new ObjectStep(this, ObjectID.WGS_MOVARIO_RUNE_CHEST, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
 
 		// 4066 122878 -> 385022

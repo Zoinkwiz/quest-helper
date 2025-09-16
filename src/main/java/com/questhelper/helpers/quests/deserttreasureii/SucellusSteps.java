@@ -573,7 +573,7 @@ public class SucellusSteps extends ConditionalStep
 			"Talk to the assassin.");
 		goLightFirecrackers = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_FIRECRACKER_PACK, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
-				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
+				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 2 minutes.");
 		((ObjectStep) goLightFirecrackers).setLinePoints(Arrays.asList(
 			new WorldPoint(2905, 6375, 2),
 			new WorldPoint(2905, 6348, 2),
@@ -592,7 +592,7 @@ public class SucellusSteps extends ConditionalStep
 
 		goLightFirecrackersThroughCrevice = new ObjectStep(getQuestHelper(), ObjectID.DT2_GHORROCK_FIRECRACKER_PACK, new WorldPoint(2972, 6367, 2),
 			"Get a full inventory of food, and return to the refugee camp in the south-eastern room. " +
-				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 3 minutes.");
+				"Light the firecrackers there. Once you do, you'll need to survive Jhallan attacking you for 2 minutes.");
 		((ObjectStep) goLightFirecrackersThroughCrevice).setLinePoints(Arrays.asList(
 			new WorldPoint(2905, 6375, 2),
 			new WorldPoint(2905, 6348, 2),
@@ -607,7 +607,7 @@ public class SucellusSteps extends ConditionalStep
 
 		goLightFirecrackers.addSubSteps(goLightFirecrackersThroughCrevice);
 		survive3Mins = new NpcStep(getQuestHelper(), NpcID.DT2_JHALLAN_CUTSCENE, new WorldPoint(2975, 6362, 2),
-			"Survive Jhallan's attacks for 3 minutes. Protect from Mage, keep your health high, and avoid the shadow attacks.");
+			"Survive Jhallan's attacks for 2 minutes. Protect from Mage, keep your health high, and avoid the shadow attacks.");
 		((NpcStep) survive3Mins).addAlternateNpcs(NpcID.SOTN_JHALLAN_GHORROCK, NpcID.SOTN_JHALLAN_CUTSCENE, NpcID.DT2_JHALLAN_COMBAT, NpcID.DT2_JHALLAN_CHASE);
 
 		talkToAssassinAfterJhallanFight = new NpcStep(getQuestHelper(), NpcID.DT2_ASSASSIN_GHORROCK_VIS, new WorldPoint(2978, 6371, 2),

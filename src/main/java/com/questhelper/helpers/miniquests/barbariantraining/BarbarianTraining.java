@@ -631,7 +631,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		talkToOttoAboutHastae.addDialogStep("Tell me more about the use of spears.");
 		makeBronzeHasta = new ObjectStep(this, ObjectID.BRUT_ANVIL, new WorldPoint(2502, 3485, 0),
 			"Make a bronze hasta on the anvil south of Otto.", bronzeBar, logs, hammer);
-		makeBronzeHasta.addWidgetHighlightWithItemIdRequirement(270, 15, 11421, true);
+		makeBronzeHasta.addWidgetHighlightWithItemIdRequirement(270, 15, ItemID.BRUT_BRONZE_SPEAR_DUMMY, true);
 		talkToOttoAfterMakingHasta = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Talk to Otto in his hut north-west of Baxtorian Falls.");
 		talkToOttoAfterMakingHasta.addDialogStep("I've created a hasta!");

@@ -171,6 +171,7 @@ public class MorytaniaMedium extends ComplexStateQuestHelper
 			.showConditioned(notDragontoothIsland).isNotConsumed();
 		steelBar = new ItemRequirement("Steel bar", ItemID.STEEL_BAR).showConditioned(notCannonBall);
 		ammoMould = new ItemRequirement("Ammo mould", ItemID.AMMO_MOULD).showConditioned(notCannonBall).isNotConsumed();
+		ammoMould.addAlternates(ItemID.DOUBLE_AMMO_MOULD);
 		slayerGloves = new ItemRequirement("Slayer gloves", ItemID.SLAYERGUIDE_SLAYER_GLOVES).showConditioned(notFeverSpider).isNotConsumed();
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(notEctophialTP).isNotConsumed();
 		restorePot = new ItemRequirement("Restore potion (4)", ItemID._4DOSESTATRESTORE).showConditioned(notGuthBalance);

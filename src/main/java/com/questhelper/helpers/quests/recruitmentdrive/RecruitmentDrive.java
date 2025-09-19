@@ -229,13 +229,11 @@ public class RecruitmentDrive extends BasicQuestHelper
 		Conditions chickenPickedUp = new Conditions(LogicType.AND, chickenNotOnRightSide, chickenNotOnLeftSide);
 		Conditions grainPickedUp = new Conditions(LogicType.AND, grainNotOnLeftSide, grainNotOnRightSide);
 
-		int chickenOnRightId = 7279;
-		moveChickenOnRightToLeft = new ObjectStep(this, chickenOnRightId, chickenOnRightPoint,
+		moveChickenOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint,
 			getSpishyusPickupText("Chicken", true));
 		finishedSpishyusRoom = new ObjectStep(this, ObjectID.RD_ROOM1_EXITDOOR, "Leave through the portal to continue.");
 
-		int foxOnRightId = 7275;
-		moveFoxOnRightToLeft = new ObjectStep(this, foxOnRightId, foxOnRightPoint,
+		moveFoxOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_FOX_MULTI, foxOnRightPoint,
 			getSpishyusPickupText("Fox", true));
 
 		DetailedQuestStep moveChickenToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
@@ -244,19 +242,17 @@ public class RecruitmentDrive extends BasicQuestHelper
 		DetailedQuestStep moveFoxToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Fox", false));
 		moveFoxOnRightToLeft.addSubSteps(moveFoxToLeft);
 
-		int chickenOnLeftId = 7280;
-		moveChickenOnLeftToRight = new ObjectStep(this, chickenOnLeftId, chickenOnLeftPoint,
+		moveChickenOnLeftToRight = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI_RIGHT, chickenOnLeftPoint,
 			getSpishyusPickupText("Chicken", false));
 		DetailedQuestStep moveChickenToRight = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", true));
 		moveChickenOnLeftToRight.addSubSteps(moveChickenToRight);
 
-		int grainOnRightId = 7282;
-		moveGrainOnRightToLeft = new ObjectStep(this, grainOnRightId, grainOnRightPoint,
+		moveGrainOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_GRAIN_MULTI, grainOnRightPoint,
 			getSpishyusPickupText("Grain", true));
 		DetailedQuestStep moveGrainToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Grain", false));
 		moveGrainOnRightToLeft.addSubSteps(moveGrainToLeft);
 
-		moveChickenOnRightToLeftAgain = new ObjectStep(this, chickenOnRightId, chickenOnRightPoint,
+		moveChickenOnRightToLeftAgain = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint,
 			getSpishyusPickupText("Chicken", true));
 		DetailedQuestStep moveChickenToLeftAgain = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
 		moveChickenOnRightToLeftAgain.addSubSteps(moveChickenToLeftAgain);

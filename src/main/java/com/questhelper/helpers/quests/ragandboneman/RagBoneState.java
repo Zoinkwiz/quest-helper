@@ -35,6 +35,7 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.util.Text;
 
@@ -87,7 +88,7 @@ public enum RagBoneState
 	VULTURE_WING("Vulture", 34),
 	JACKAL_BONE("Jackal", 35);
 
-	private final int START_BONE_ID = 7809;
+	private final int START_BONE_ID = ItemID.SOULBANE_ANGER_SPEARQ;
 
 	private final int boneID;
 

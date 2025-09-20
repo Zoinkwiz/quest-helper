@@ -117,14 +117,10 @@ public class DruidicRitual extends BasicQuestHelper
 		rawChicken.setTooltip("Can be acquired from a farm north of Lumbridge");
 		rawChicken.addAlternates(ItemID.ENCHANTED_CHICKEN);
 
-		rawRatHighlighted = new ItemRequirement("Raw rat meat", ItemID.RAW_RAT_MEAT);
-		rawRatHighlighted.setHighlightInInventory(true);
-		rawBearHighlighted = new ItemRequirement("Raw bear meat", ItemID.RAW_BEAR_MEAT);
-		rawBearHighlighted.setHighlightInInventory(true);
-		rawBeefHighlighted = new ItemRequirement("Raw beef", ItemID.RAW_BEEF);
-		rawBeefHighlighted.setHighlightInInventory(true);
-		rawChickenHighlighted = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
-		rawChickenHighlighted.setHighlightInInventory(true);
+		rawRatHighlighted = rawRat.highlighted();
+		rawBearHighlighted = rawBear.highlighted();
+		rawBeefHighlighted = rawBeef.highlighted();
+		rawChickenHighlighted = rawChicken.highlighted();
 
 		enchantedBear = new ItemRequirement("Enchanted bear", ItemID.ENCHANTED_BEAR_MEAT);
 		enchantedBeef = new ItemRequirement("Enchanted beef", ItemID.ENCHANTED_BEEF);

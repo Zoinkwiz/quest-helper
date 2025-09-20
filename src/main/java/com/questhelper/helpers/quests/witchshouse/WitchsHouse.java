@@ -60,8 +60,6 @@ public class WitchsHouse extends BasicQuestHelper
 	// Required items
 	ItemRequirement cheese;
 	ItemRequirement leatherGloves;
-
-	// Recommended items
 	ItemRequirement armourAndWeapon;
 
 	// Mid-quest item requirements
@@ -250,14 +248,7 @@ public class WitchsHouse extends BasicQuestHelper
 	{
 		return List.of(
 			cheese,
-			leatherGloves
-		);
-	}
-
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return List.of(
+			leatherGloves,
 			armourAndWeapon
 		);
 	}

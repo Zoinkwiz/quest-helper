@@ -155,7 +155,8 @@ public class WitchsHouse extends BasicQuestHelper
 	{
 		talkToBoy = new NpcStep(this, NpcID.BALLBOY, new WorldPoint(2928, 3456, 0), "Talk to the Boy in Taverley to start the quest.");
 		talkToBoy.addDialogSteps("What's the matter?", "Ok, I'll see what I can do.", "Yes.");
-		getKey = new ObjectStep(this, ObjectID.WITCHPOT, new WorldPoint(2900, 3474, 0), "Look under the potted plant just outside the witch's house.");
+
+		getKey = new ObjectStep(this, ObjectID.WITCHPOT, new WorldPoint(2900, 3474, 0), "Look under the potted plant just outside the witch's house for the house key.");
 		enterHouse = new ObjectStep(this, ObjectID.WITCHHOUSEDOOR, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
 		goDownstairs = new ObjectStep(this, ObjectID.GRIM_WITCH_LADDER_DOWN, new WorldPoint(2907, 3476, 0), "Go down the ladder to the basement.");
 		enterGate = new ObjectStep(this, ObjectID.SHOCKGATER, new WorldPoint(2902, 9873, 0), "Go through the gate " +

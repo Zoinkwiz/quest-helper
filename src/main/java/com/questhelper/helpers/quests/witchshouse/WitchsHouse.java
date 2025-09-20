@@ -33,7 +33,9 @@ import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -41,6 +43,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -65,6 +68,7 @@ public class WitchsHouse extends BasicQuestHelper
 	// Mid-quest item requirements
 	ItemRequirement houseKey;
 	ItemRequirement magnet;
+	ItemRequirement witchesDiary;
 	ItemRequirement shedKey;
 	ItemRequirement ball;
 
@@ -88,18 +92,29 @@ public class WitchsHouse extends BasicQuestHelper
 	Requirement ratHasMagnet;
 	Requirement inShed;
 	Requirement experimentNearby;
+	VarplayerRequirement hasReadDiary;
 
 	// Steps
 	NpcStep talkToBoy;
+
 	ObjectStep getKey;
-	ObjectStep goDownstairs;
-	ObjectStep enterGate;
+
+	ObjectStep enterHouse;
 	ObjectStep goDownstairsFromTop;
+
+	ObjectStep goDownstairs;
+
+	ObjectStep enterGate;
+
 	ObjectStep openCupboardAndLoot;
 	ObjectStep openCupboardAndLoot2;
+
 	ObjectStep goBackUpstairs;
+
 	ObjectStep useCheeseOnHole;
-	ObjectStep enterHouse;
+
+	ItemStep readDiary;
+
 	ObjectStep searchFountain;
 	ObjectStep enterShed;
 	ObjectStep enterShedWithoutKey;
@@ -126,6 +141,7 @@ public class WitchsHouse extends BasicQuestHelper
 	{
 		cheese = new ItemRequirement("Cheese (multiple if you mess up)", ItemID.CHEESE);
 		leatherGloves = new ItemRequirement("Leather gloves", ItemID.LEATHER_GLOVES, 1, true).isNotConsumed();
+		leatherGloves.setHighlightInInventory(true);
 		leatherGloves.canBeObtainedDuringQuest();
 		houseKey = new ItemRequirement("Door key", ItemID.WITCHES_DOORKEY);
 		magnet = new ItemRequirement("Magnet", ItemID.MAGNET);
@@ -141,7 +157,7 @@ public class WitchsHouse extends BasicQuestHelper
 		inDownstairsHouseEast = new ZoneRequirement(downstairsHouseEast);
 		inDownstairsHouse = new ZoneRequirement(downstairsHouseEast, downstairsHouseWest);
 		inHouseOrGarden = new ZoneRequirement(house, garden1, garden2, garden3);
-		ratHasMagnet = new VarplayerRequirement(VarPlayerID.BALLQUEST, 3);
+		ratHasMagnet = new VarplayerRequirement(VarPlayerID.BALLQUEST, 3, Operation.GREATER_EQUAL);
 		inShed = new ZoneRequirement(shed);
 		experimentNearby = or(
 			new NpcCondition(NpcID.SHAPESHIFTERGLOB),
@@ -149,6 +165,8 @@ public class WitchsHouse extends BasicQuestHelper
 			new NpcCondition(NpcID.SHAPESHIFTERBEAR),
 			new NpcCondition(NpcID.SHAPESHIFTERWOLF)
 		);
+
+		hasReadDiary = new VarplayerRequirement(VarPlayerID.BALLQUEST, 5, Operation.GREATER_EQUAL);
 	}
 
 	public void setupSteps()
@@ -163,17 +181,24 @@ public class WitchsHouse extends BasicQuestHelper
 		enterHouse.addSubSteps(goDownstairsFromTop);
 
 		goDownstairs = new ObjectStep(this, ObjectID.GRIM_WITCH_LADDER_DOWN, new WorldPoint(2907, 3476, 0), "Go down the ladder to the basement.");
-		enterGate = new ObjectStep(this, ObjectID.SHOCKGATER, new WorldPoint(2902, 9873, 0), "Go through the gate " +
-			"whilst wearing gloves. Search the nearby boxes if you don't have gloves.", leatherGloves);
+
+		enterGate = new ObjectStep(this, ObjectID.SHOCKGATER, new WorldPoint(2902, 9873, 0), "Go through the gate whilst wearing gloves. If you don't have gloves, search the nearby boxes until you get a pair.", leatherGloves);
+
 		openCupboardAndLoot = new ObjectStep(this, ObjectID.MAGNETCBSHUT, new WorldPoint(2898, 9874, 0), "Open the cupboard and get a magnet from it");
 		openCupboardAndLoot2 = new ObjectStep(this, ObjectID.MAGNETCBOPEN, new WorldPoint(2898, 9874, 0), "Open the cupboard and get a magnet from it");
 		openCupboardAndLoot.addSubSteps(openCupboardAndLoot2);
 
 		goBackUpstairs = new ObjectStep(this, ObjectID.GRIM_WITCH_LADDER_UP, new WorldPoint(2907, 9876, 0), "Climb back up the ladder.");
 		useCheeseOnHole = new ObjectStep(this, ObjectID.WITCHMOUSEHOLE, new WorldPoint(2903, 3466, 0), "Use the cheese on the mouse hole in the south room, then use the magnet on the mouse which emerges.", cheese, magnet);
-		searchFountain = new ObjectStep(this, ObjectID.WITCHFOUNTAIN, new WorldPoint(2910, 3471, 0), "Enter the garden and sneak around the perimeter to search the fountain. If the witch spots you you'll be teleported outside.");
+
+		witchesDiary = new ItemRequirement("Witch's diary", ItemID.WITCHES_DIARY);
+
+		readDiary = new ItemStep(this, "Pick up the witch's diary from the table and read it to ensure the door stays unlocked. Check the \"Checkpoint\" section if you want to skip this step.", witchesDiary);
+
+		searchFountain = new ObjectStep(this, ObjectID.WITCHFOUNTAIN, new WorldPoint(2910, 3471, 0), "Enter the garden and sneak around the perimeter to search the fountain. If the witch spots you, you'll be teleported outside.");
 		enterShed = new ObjectStep(this, ObjectID.WITCHSHEDDOOR, new WorldPoint(2934, 3463, 0), "Use the shed key on the shed door to enter.", shedKey);
-		enterShedWithoutKey = new ObjectStep(this, ObjectID.WITCHSHEDDOOR, new WorldPoint(2934, 3463, 0), "Enter the shed.");
+		// NOTE: Testing 2025-09-20, it seems like the door does _not_ stay unlocked. I'm not sure if this is a temporary bug, so I'm leaving this state checking as is, and just adding text that makes sure the user knows to get the shed key from the fountain.
+		enterShedWithoutKey = new ObjectStep(this, ObjectID.WITCHSHEDDOOR, new WorldPoint(2934, 3463, 0), "Enter the shed. If the door doesn't open, you need to get the shed key from the fountain again.");
 		enterShed.addSubSteps(enterShedWithoutKey);
 		enterShed.addIcon(ItemID.WITCHES_SHEDKEY);
 
@@ -181,8 +206,9 @@ public class WitchsHouse extends BasicQuestHelper
 		killWitchsExperiment = new NpcStep(this, NpcID.SHAPESHIFTERGLOB, new WorldPoint(2935, 3463, 0), "Kill all four forms of the Witch's experiment (levels 19, 30, 42, and 53). You can safe spot the last two forms from the crate in the south of the room.");
 		killWitchsExperiment.addAlternateNpcs(NpcID.SHAPESHIFTERSPIDER, NpcID.SHAPESHIFTERBEAR, NpcID.SHAPESHIFTERWOLF);
 		killWitchsExperiment.addSubSteps(grabBall);
+		killWitchsExperiment.addSafeSpots(new WorldPoint(2936, 3459, 0));
 
-		pickupBall = new DetailedQuestStep(this, new WorldPoint(2936, 3470, 0), "Pick up the ball.", ball);
+		pickupBall = new ItemStep(this, new WorldPoint(2935, 3460, 0), "Pick up the ball.", ball);
 		returnToBoy = new NpcStep(this, NpcID.BALLBOY, new WorldPoint(2928, 3456, 0), "Return the ball to the boy. Make sure the witch doesn't spot you or you'll have to get the ball back again..");
 	}
 
@@ -209,6 +235,7 @@ public class WitchsHouse extends BasicQuestHelper
 		steps.put(2, getTheMagnet);
 
 		var killExperiment = new ConditionalStep(this, getKey);
+		killExperiment.addStep(not(hasReadDiary), readDiary);
 		killExperiment.addStep(and(inShed, experimentNearby), killWitchsExperiment);
 		killExperiment.addStep(inShed, grabBall);
 		killExperiment.addStep(and(ratHasMagnet, inHouseOrGarden, shedKey), enterShed);
@@ -301,6 +328,14 @@ public class WitchsHouse extends BasicQuestHelper
 			goBackUpstairs,
 			useCheeseOnHole
 		)));
+
+		var checkpoint = new PanelDetails("Checkpoint", List.of(
+			readDiary
+		));
+		checkpoint.setLockingStep(readDiary);
+		// It's not relevant for the user to be able to check off the step if they've already reached beyond quest state 3
+		checkpoint.setVars(0, 1, 2, 3, 4);
+		sections.add(checkpoint);
 
 		sections.add(new PanelDetails("Defeat the witch's experiment", List.of(
 			searchFountain,

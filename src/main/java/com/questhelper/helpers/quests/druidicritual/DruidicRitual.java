@@ -105,12 +105,16 @@ public class DruidicRitual extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		rawRat = new ItemRequirement("Raw rat meat", ItemID.RAW_RAT_MEAT);
+		rawRat.setTooltip("Can be acquired from a giant rat slightly north of the Varrock south-east mine");
 		rawRat.addAlternates(ItemID.ENCHANTED_RAT_MEAT);
 		rawBear = new ItemRequirement("Raw bear meat", ItemID.RAW_BEAR_MEAT);
+		rawBear.setTooltip("Can be acquired from a bear south-east of Varrock");
 		rawBear.addAlternates(ItemID.ENCHANTED_BEAR_MEAT);
 		rawBeef = new ItemRequirement("Raw beef", ItemID.RAW_BEEF);
+		rawBeef.setTooltip("Can be acquired from a farm north of Lumbridge");
 		rawBeef.addAlternates(ItemID.ENCHANTED_BEEF);
 		rawChicken = new ItemRequirement("Raw chicken", ItemID.RAW_CHICKEN);
+		rawChicken.setTooltip("Can be acquired from a farm north of Lumbridge");
 		rawChicken.addAlternates(ItemID.ENCHANTED_CHICKEN);
 
 		rawRatHighlighted = new ItemRequirement("Raw rat meat", ItemID.RAW_RAT_MEAT);

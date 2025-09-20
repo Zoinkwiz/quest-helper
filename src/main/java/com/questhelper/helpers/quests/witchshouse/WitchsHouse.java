@@ -157,7 +157,11 @@ public class WitchsHouse extends BasicQuestHelper
 		talkToBoy.addDialogSteps("What's the matter?", "Ok, I'll see what I can do.", "Yes.");
 
 		getKey = new ObjectStep(this, ObjectID.WITCHPOT, new WorldPoint(2900, 3474, 0), "Look under the potted plant just outside the witch's house for the house key.");
+
 		enterHouse = new ObjectStep(this, ObjectID.WITCHHOUSEDOOR, new WorldPoint(2900, 3473, 0), "Enter the witch's house.", houseKey);
+		goDownstairsFromTop = new ObjectStep(this, ObjectID.GRIM_WITCH_HOUSE_SPOOKYSTAIRSTOP, new WorldPoint(2907, 3471, 1), "Go back downstairs.");
+		enterHouse.addSubSteps(goDownstairsFromTop);
+
 		goDownstairs = new ObjectStep(this, ObjectID.GRIM_WITCH_LADDER_DOWN, new WorldPoint(2907, 3476, 0), "Go down the ladder to the basement.");
 		enterGate = new ObjectStep(this, ObjectID.SHOCKGATER, new WorldPoint(2902, 9873, 0), "Go through the gate " +
 			"whilst wearing gloves. Search the nearby boxes if you don't have gloves.", leatherGloves);
@@ -166,7 +170,6 @@ public class WitchsHouse extends BasicQuestHelper
 		openCupboardAndLoot.addSubSteps(openCupboardAndLoot2);
 
 		goBackUpstairs = new ObjectStep(this, ObjectID.GRIM_WITCH_LADDER_UP, new WorldPoint(2907, 9876, 0), "Climb back up the ladder.");
-		goDownstairsFromTop = new ObjectStep(this, ObjectID.GRIM_WITCH_HOUSE_SPOOKYSTAIRSTOP, new WorldPoint(2907, 3471, 1), "Go back downstairs.");
 		useCheeseOnHole = new ObjectStep(this, ObjectID.WITCHMOUSEHOLE, new WorldPoint(2903, 3466, 0), "Use the cheese on the mouse hole in the south room, then use the magnet on the mouse which emerges.", cheese, magnet);
 		searchFountain = new ObjectStep(this, ObjectID.WITCHFOUNTAIN, new WorldPoint(2910, 3471, 0), "Enter the garden and sneak around the perimeter to search the fountain. If the witch spots you you'll be teleported outside.");
 		enterShed = new ObjectStep(this, ObjectID.WITCHSHEDDOOR, new WorldPoint(2934, 3463, 0), "Use the shed key on the shed door to enter.", shedKey);

@@ -47,6 +47,11 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
+/**
+ * The quest guide for the "Druidic Ritual" OSRS quest
+ * <p>
+ * <a href="https://oldschool.runescape.wiki/w/Druidic_Ritual">The OSRS wiki guide</a> was referenced for this guide
+ */
 public class DruidicRitual extends BasicQuestHelper
 {
 	// Required items

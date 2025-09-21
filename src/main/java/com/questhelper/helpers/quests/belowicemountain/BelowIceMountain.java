@@ -86,8 +86,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	VarbitRequirement fedMarley;
 	VarbitRequirement recruitedMarley;
 	VarbitRequirement needBeer;
-	VarbitRequirement gaveBeer;
-	VarbitRequirement needRPS;
+	Conditions gaveBeer;
 	VarbitRequirement recruitedBurntof;
 	NpcRequirement inDungeon;
 
@@ -153,8 +152,7 @@ public class BelowIceMountain extends BasicQuestHelper
 
 		var burntofState = new VarbitBuilder(VarbitID.BIM_BURNTOF);
 		needBeer = burntofState.eq(5);
-		gaveBeer = burntofState.eq(10);
-		needRPS = burntofState.eq(15);
+		gaveBeer = or(burntofState.eq(10), burntofState.eq(15));
 		recruitedBurntof = burntofState.eq(40);
 
 		inDungeon = new NpcRequirement("Ancient Guardian", NpcID.BIM_GOLEM_BOSS);
@@ -248,7 +246,6 @@ public class BelowIceMountain extends BasicQuestHelper
 		getMarley.setLockingCondition(recruitedMarley);
 
 		var getBurntof = new ConditionalStep(this, talkToBurntof);
-		getBurntof.addStep(needRPS, playRPS);
 		getBurntof.addStep(gaveBeer, playRPS);
 		getBurntof.addStep(and(needBeer, beer), giveBeer);
 		getBurntof.addStep(needBeer, buyBeer);

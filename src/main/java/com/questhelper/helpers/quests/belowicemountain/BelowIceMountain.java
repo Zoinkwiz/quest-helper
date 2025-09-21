@@ -78,7 +78,7 @@ public class BelowIceMountain extends BasicQuestHelper
 
 	// Miscellaneous requirements
 	Conditions needFlex;
-	VarbitRequirement haveFlex;
+	Conditions haveFlex;
 	VarbitRequirement recruitedCheckal;
 	VarbitRequirement needRecipe;
 	VarbitRequirement haveRecipe;
@@ -96,7 +96,7 @@ public class BelowIceMountain extends BasicQuestHelper
 
 	NpcStep recruitCheckal;
 	NpcStep talkToAtlas;
-	NpcStep flexCheckal;
+	NpcEmoteStep flexCheckal;
 
 	NpcStep talkToMarley;
 	NpcStep talkToCook;
@@ -141,7 +141,7 @@ public class BelowIceMountain extends BasicQuestHelper
 
 		var checkalState = new VarbitBuilder(VarbitID.BIM_CHECKAL);
 		needFlex = or(checkalState.eq(5), checkalState.eq(10));
-		haveFlex = checkalState.eq(15);
+		haveFlex = or(checkalState.eq(15), checkalState.eq(20));
 		recruitedCheckal = checkalState.eq(40);
 
 		var marleyState = new VarbitBuilder(VarbitID.BIM_MARLEY);
@@ -176,7 +176,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		flexCheckal = new NpcEmoteStep(this, NpcID.BIM_CHECKAL, QuestEmote.FLEX, new WorldPoint(3087, 3415, 0), "Talk to Checkal and flex your muscles to prove your worth.");
 
 		talkToMarley = new NpcStep(this, NpcID.BIM_MARLEY, new WorldPoint(3088, 3470, 0), "Speak to Marley in the Edgeville" +
-			" Ruins.");
+			" Ruins. Pick up the cooked meat from the Barbarian longhall if you don't have it already.");
 
 		talkToCook = new NpcStep(this, NpcID.FAI_VARROCK_BLUEMOON_CHEF, new WorldPoint(3230, 3401, 0), "Ask the Cook at the Blue Moon Inn " +
 			"for a steak sandwich.");

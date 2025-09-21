@@ -34,6 +34,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -140,21 +141,24 @@ public class BelowIceMountain extends BasicQuestHelper
 		combatGearOrPickaxe = new ItemRequirement("Combat gear or a pickaxe if you don't want to fight", -1, -1).isNotConsumed();
 		combatGearOrPickaxe.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-		needFlex = new VarbitRequirement(VarbitID.BIM_CHECKAL, 5);
-		leftFlexBeforeLearning = new VarbitRequirement(VarbitID.BIM_CHECKAL, 10);
-		haveFlex = new VarbitRequirement(VarbitID.BIM_CHECKAL, 15);
-		recruitedCheckal = new VarbitRequirement(VarbitID.BIM_CHECKAL, 40);
+		var checkalState = new VarbitBuilder(VarbitID.BIM_CHECKAL);
+		needFlex = checkalState.eq(5);
+		leftFlexBeforeLearning = checkalState.eq(10);
+		haveFlex = checkalState.eq(15);
+		recruitedCheckal = checkalState.eq(40);
 
-		needRecipe = new VarbitRequirement(VarbitID.BIM_MARLEY, 5);
-		haveRecipe = new VarbitRequirement(VarbitID.BIM_MARLEY, 10);
+		var marleyState = new VarbitBuilder(VarbitID.BIM_MARLEY);
+		needRecipe = marleyState.eq(5);
+		haveRecipe = marleyState.eq(10);
 		haveIngredients = new ItemRequirements(cookedMeat, bread, knife);
-		fedMarley = new VarbitRequirement(VarbitID.BIM_MARLEY, 35);
-		recruitedMarley = new VarbitRequirement(VarbitID.BIM_MARLEY, 40);
+		fedMarley = marleyState.eq(35);
+		recruitedMarley = marleyState.eq(40);
 
-		needBeer = new VarbitRequirement(VarbitID.BIM_BURNTOF, 5);
-		gaveBeer = new VarbitRequirement(VarbitID.BIM_BURNTOF, 10);
-		needRPS = new VarbitRequirement(VarbitID.BIM_BURNTOF, 15);
-		recruitedBurntof = new VarbitRequirement(VarbitID.BIM_BURNTOF, 40);
+		var burntofState = new VarbitBuilder(VarbitID.BIM_BURNTOF);
+		needBeer = burntofState.eq(5);
+		gaveBeer = burntofState.eq(10);
+		needRPS = burntofState.eq(15);
+		recruitedBurntof = burntofState.eq(40);
 
 		inDungeon = new NpcRequirement("Ancient Guardian", NpcID.BIM_GOLEM_BOSS);
 	}

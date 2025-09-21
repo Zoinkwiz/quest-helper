@@ -170,7 +170,7 @@ public class BelowIceMountain extends BasicQuestHelper
 			"Attempt to recruit Checkal to your team in Barbarian Village.");
 
 		talkToAtlas = new NpcStep(this, NpcID.BIM_ATLAS, new WorldPoint(3076, 3440, 0), "Speak to Atlas in the Barbarian" +
-			" Village Inn to learn how to Flex.");
+			" Village Inn to learn how to Flex. Pick up a cooked meat if you need one.", cookedMeat);
 		talkToAtlas.addDialogStep("Yes.");
 
 		flexCheckal = new NpcEmoteStep(this, NpcID.BIM_CHECKAL, QuestEmote.FLEX, new WorldPoint(3087, 3415, 0), "Flex your muscles at Checkal to prove your worth.");

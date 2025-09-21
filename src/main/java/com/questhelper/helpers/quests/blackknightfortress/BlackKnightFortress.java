@@ -5,10 +5,9 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -17,92 +16,107 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class BlackKnightFortress extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement ironChainbody, cabbage, bronzeMed;
+	// Required items
+	ItemRequirement ironChainbody;
+	ItemRequirement cabbage;
+	ItemRequirement bronzeMed;
 
-	//Items Recommended
-	ItemRequirement teleportFalador, armour, food;
+	// Recommended items
+	ItemRequirement teleportFalador;
+	ItemRequirement armour;
+	ItemRequirement food;
 
-	Requirement onTopOfFortress, inBasement, inSecretRoomGroundFloor, inSecretRoomFirstFloor, inSecretRoomSecondFloor, inCentralAreaFloor1, inMainEntrance, inWestRoomFloor1,
-		inEastRoomFloor0, inEastRoomFloor1, inEastRoomFloor2, inListeningRoom, inCabbageHoleRoom, inPathToCabbageRoom
-	, inEastTurret, inFaladorF1, inFaladorF2;
+	// Zones
+	Zone secretRoomFloor0;
+	Zone secretRoomFloor1;
+	Zone secretRoomFloor2;
+	Zone secretRoomFloor3;
+	Zone secretBasement;
+	Zone mainEntrance1;
+	Zone mainEntrance2;
+	Zone mainEntrance3;
+	Zone mainEntrance4;
+	Zone westFloor1;
+	Zone eastRoom1Floor0;
+	Zone eastRoom2Floor0;
+	Zone listeningRoom1;
+	Zone listeningRoom2;
+	Zone eastRoomFloor2;
+	Zone centralArea1Floor1;
+	Zone centralArea2Floor1;
+	Zone centralArea3Floor1;
+	Zone northPathToCabbageHole1;
+	Zone northPathToCabbageHole2;
+	Zone northPathToCabbageHole3;
+	Zone cabbageHoleRoom;
+	Zone eastRoom1Floor1;
+	Zone eastRoom2Floor1;
+	Zone eastRoom3Floor1;
+	Zone eastRoom4Floor1;
+	Zone eastTurret;
+	Zone whiteKnightsCastleF1;
+	Zone whiteKnightsCastleF2;
 
-	Zone secretRoomFloor0, secretRoomFloor1, secretRoomFloor2, secretRoomFloor3, secretBasement, mainEntrance1, mainEntrance2, mainEntrance3, mainEntrance4, westFloor1,
-		eastRoom1Floor0, eastRoom2Floor0, listeningRoom1, listeningRoom2, eastRoomFloor2, centralArea1Floor1, centralArea2Floor1, centralArea3Floor1,
-		northPathToCabbageHole1, northPathToCabbageHole2, northPathToCabbageHole3, cabbageHoleRoom, eastRoom1Floor1, eastRoom2Floor1, eastRoom3Floor1, eastRoom4Floor1,
-		eastTurret, whiteKnightsCastleF1, whiteKnightsCastleF2;
+	// Miscellaneous requirements
+	ZoneRequirement onTopOfFortress;
+	ZoneRequirement inBasement;
+	ZoneRequirement inSecretRoomGroundFloor;
+	ZoneRequirement inSecretRoomFirstFloor;
+	ZoneRequirement inSecretRoomSecondFloor;
+	ZoneRequirement inCentralAreaFloor1;
+	ZoneRequirement inMainEntrance;
+	ZoneRequirement inWestRoomFloor1;
+	ZoneRequirement inEastRoomFloor0;
+	ZoneRequirement inEastRoomFloor1;
+	ZoneRequirement inEastRoomFloor2;
+	ZoneRequirement inListeningRoom;
+	ZoneRequirement inCabbageHoleRoom;
+	ZoneRequirement inPathToCabbageRoom;
+	ZoneRequirement inEastTurret;
+	ZoneRequirement inFaladorF1;
+	ZoneRequirement inFaladorF2;
 
-	QuestStep speakToAmik, enterFortress, pushWall, climbUpLadder1, climbUpLadder2, climbUpLadder3, climbUpLadder4, climbUpLadder5, climbUpLadder6,
-		climbDownLadder1, climbDownLadder2, climbDownLadder3, climbDownLadder4, climbDownLadder5, climbDownLadder6, listenAtGrill, pushWall2,
-		returnToAmik, exitBasement, exitTopOfFortress, exitEastTurret, exitWestRoomFirstFloor, goBackDownFromCabbageZone, goUpLadderToCabbageZone;
-	QuestStep climbToWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2, climbToWhiteKnightsCastleF1ToFinish,
-		climbToWhiteKnightsCastleF2ToFinish;
-
+	// Steps
+	NpcStep speakToAmik;
+	ObjectStep enterFortress;
+	ObjectStep pushWall;
+	ObjectStep climbUpLadder1;
+	ObjectStep climbUpLadder2;
+	ObjectStep climbUpLadder3;
+	ObjectStep climbUpLadder4;
+	ObjectStep climbUpLadder5;
+	ObjectStep climbUpLadder6;
+	ObjectStep climbDownLadder1;
+	ObjectStep climbDownLadder2;
+	ObjectStep climbDownLadder3;
+	ObjectStep climbDownLadder4;
+	ObjectStep climbDownLadder5;
+	ObjectStep climbDownLadder6;
+	ObjectStep listenAtGrill;
+	ObjectStep pushWall2;
+	NpcStep returnToAmik;
+	ObjectStep exitBasement;
+	ObjectStep exitTopOfFortress;
+	ObjectStep exitEastTurret;
+	ObjectStep exitWestRoomFirstFloor;
+	ObjectStep goBackDownFromCabbageZone;
+	ObjectStep goUpLadderToCabbageZone;
+	ObjectStep climbToWhiteKnightsCastleF1;
+	ObjectStep climbToWhiteKnightsCastleF2;
+	ObjectStep climbToWhiteKnightsCastleF1ToFinish;
+	ObjectStep climbToWhiteKnightsCastleF2ToFinish;
 	ObjectStep useCabbageOnHole;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		Map<Integer, QuestStep> steps = new HashMap<>();
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		ConditionalStep goStartQuest = new ConditionalStep(this, climbToWhiteKnightsCastleF1);
-		goStartQuest.addStep(inFaladorF2, speakToAmik);
-		goStartQuest.addStep(inFaladorF1, climbToWhiteKnightsCastleF2);
-		steps.put(0, goStartQuest);
-
-		ConditionalStep infiltrateTheFortress = new ConditionalStep(this, enterFortress);
-		infiltrateTheFortress.addStep(inListeningRoom, listenAtGrill);
-		infiltrateTheFortress.addStep(inEastRoomFloor1, climbDownLadder6);
-		infiltrateTheFortress.addStep(inEastRoomFloor2, climbDownLadder5);
-		infiltrateTheFortress.addStep(inCentralAreaFloor1, climbUpLadder4);
-		infiltrateTheFortress.addStep(inSecretRoomSecondFloor, climbDownLadder3);
-		infiltrateTheFortress.addStep(inSecretRoomFirstFloor, climbUpLadder2);
-		infiltrateTheFortress.addStep(inSecretRoomGroundFloor, climbUpLadder1);
-		infiltrateTheFortress.addStep(new Conditions(false, LogicType.OR, inMainEntrance, inEastRoomFloor0), pushWall);
-		infiltrateTheFortress.addStep(inWestRoomFloor1, exitWestRoomFirstFloor);
-		infiltrateTheFortress.addStep(inBasement, exitBasement);
-		infiltrateTheFortress.addStep(onTopOfFortress, exitTopOfFortress);
-		infiltrateTheFortress.addStep(inEastTurret, exitEastTurret);
-		infiltrateTheFortress.addStep(new Conditions(false, LogicType.OR, inCabbageHoleRoom, inPathToCabbageRoom), goBackDownFromCabbageZone);
-
-		steps.put(1, infiltrateTheFortress);
-
-		ConditionalStep sabotageThePotion = new ConditionalStep(this, enterFortress);
-		sabotageThePotion.addStep(new Conditions(false, LogicType.OR, inSecretRoomGroundFloor, inMainEntrance, inEastRoomFloor0), goUpLadderToCabbageZone);
-		sabotageThePotion.addStep(inCabbageHoleRoom, useCabbageOnHole);
-		sabotageThePotion.addStep(inPathToCabbageRoom, pushWall2);
-		sabotageThePotion.addStep(inSecretRoomFirstFloor, climbDownLadder1);
-		sabotageThePotion.addStep(inSecretRoomSecondFloor, climbDownLadder2);
-		sabotageThePotion.addStep(inCentralAreaFloor1, climbUpLadder3);
-		sabotageThePotion.addStep(inEastRoomFloor2, climbDownLadder4);
-		sabotageThePotion.addStep(inEastRoomFloor1, climbUpLadder5);
-		sabotageThePotion.addStep(inListeningRoom, climbUpLadder6);
-		sabotageThePotion.addStep(inWestRoomFloor1, exitWestRoomFirstFloor);
-		sabotageThePotion.addStep(inBasement, exitBasement);
-		sabotageThePotion.addStep(onTopOfFortress, exitTopOfFortress);
-		sabotageThePotion.addStep(inEastTurret, exitEastTurret);
-
-		steps.put(2, sabotageThePotion);
-
-		ConditionalStep goFinishQuest = new ConditionalStep(this, climbToWhiteKnightsCastleF1ToFinish);
-		goFinishQuest.addStep(inFaladorF2, returnToAmik);
-		goFinishQuest.addStep(inFaladorF1, climbToWhiteKnightsCastleF2ToFinish);
-		steps.put(3, goFinishQuest);
-
-		return steps;
-	}
 
 	@Override
 	protected void setupZones()
@@ -162,10 +176,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		armour = new ItemRequirement("Armour", -1, -1).isNotConsumed();
 		armour.setDisplayItemId(BankSlotIcons.getArmour());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
-	}
 
-	private void setupConditions()
-	{
 		inFaladorF1 = new ZoneRequirement(whiteKnightsCastleF1);
 		inFaladorF2 = new ZoneRequirement(whiteKnightsCastleF2);
 		onTopOfFortress = new ZoneRequirement(secretRoomFloor3);
@@ -260,31 +271,95 @@ public class BlackKnightFortress extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		var steps = new HashMap<Integer, QuestStep>();
+
+		initializeRequirements();
+		setupSteps();
+
+		var goStartQuest = new ConditionalStep(this, climbToWhiteKnightsCastleF1);
+		goStartQuest.addStep(inFaladorF2, speakToAmik);
+		goStartQuest.addStep(inFaladorF1, climbToWhiteKnightsCastleF2);
+		steps.put(0, goStartQuest);
+
+		var infiltrateTheFortress = new ConditionalStep(this, enterFortress);
+		infiltrateTheFortress.addStep(inListeningRoom, listenAtGrill);
+		infiltrateTheFortress.addStep(inEastRoomFloor1, climbDownLadder6);
+		infiltrateTheFortress.addStep(inEastRoomFloor2, climbDownLadder5);
+		infiltrateTheFortress.addStep(inCentralAreaFloor1, climbUpLadder4);
+		infiltrateTheFortress.addStep(inSecretRoomSecondFloor, climbDownLadder3);
+		infiltrateTheFortress.addStep(inSecretRoomFirstFloor, climbUpLadder2);
+		infiltrateTheFortress.addStep(inSecretRoomGroundFloor, climbUpLadder1);
+		infiltrateTheFortress.addStep(or(inMainEntrance, inEastRoomFloor0), pushWall);
+		infiltrateTheFortress.addStep(inWestRoomFloor1, exitWestRoomFirstFloor);
+		infiltrateTheFortress.addStep(inBasement, exitBasement);
+		infiltrateTheFortress.addStep(onTopOfFortress, exitTopOfFortress);
+		infiltrateTheFortress.addStep(inEastTurret, exitEastTurret);
+		infiltrateTheFortress.addStep(or(inCabbageHoleRoom, inPathToCabbageRoom), goBackDownFromCabbageZone);
+
+		steps.put(1, infiltrateTheFortress);
+
+		var sabotageThePotion = new ConditionalStep(this, enterFortress);
+		sabotageThePotion.addStep(or(inSecretRoomGroundFloor, inMainEntrance, inEastRoomFloor0), goUpLadderToCabbageZone);
+		sabotageThePotion.addStep(inCabbageHoleRoom, useCabbageOnHole);
+		sabotageThePotion.addStep(inPathToCabbageRoom, pushWall2);
+		sabotageThePotion.addStep(inSecretRoomFirstFloor, climbDownLadder1);
+		sabotageThePotion.addStep(inSecretRoomSecondFloor, climbDownLadder2);
+		sabotageThePotion.addStep(inCentralAreaFloor1, climbUpLadder3);
+		sabotageThePotion.addStep(inEastRoomFloor2, climbDownLadder4);
+		sabotageThePotion.addStep(inEastRoomFloor1, climbUpLadder5);
+		sabotageThePotion.addStep(inListeningRoom, climbUpLadder6);
+		sabotageThePotion.addStep(inWestRoomFloor1, exitWestRoomFirstFloor);
+		sabotageThePotion.addStep(inBasement, exitBasement);
+		sabotageThePotion.addStep(onTopOfFortress, exitTopOfFortress);
+		sabotageThePotion.addStep(inEastTurret, exitEastTurret);
+
+		steps.put(2, sabotageThePotion);
+
+		var goFinishQuest = new ConditionalStep(this, climbToWhiteKnightsCastleF1ToFinish);
+		goFinishQuest.addStep(inFaladorF2, returnToAmik);
+		goFinishQuest.addStep(inFaladorF1, climbToWhiteKnightsCastleF2ToFinish);
+		steps.put(3, goFinishQuest);
+
+		return steps;
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		return List.of(
+			new QuestPointRequirement(12)
+		);
+	}
+
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(bronzeMed);
-		reqs.add(ironChainbody);
-		reqs.add(cabbage);
-
-		return reqs;
+		return List.of(
+			bronzeMed,
+			ironChainbody,
+			cabbage
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(teleportFalador);
-		reqs.add(food);
-		reqs.add(armour);
-
-		return reqs;
+		return List.of(
+			teleportFalador,
+			food,
+			armour
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Able to survive being attacked by multiple level 33 Black Knights");
+		return List.of(
+			"Able to survive being attacked by multiple level 33 Black Knights"
+		);
 	}
 
 	@Override
@@ -296,29 +371,52 @@ public class BlackKnightFortress extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 2500));
+		return List.of(
+			new ItemReward("Coins", ItemID.COINS, 2500)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Talk to Sir Amik Varze", Collections.singletonList(speakToAmik)));
-		allSteps.add(new PanelDetails("Infiltrate the fortress",
-			Arrays.asList(enterFortress, pushWall, climbUpLadder1, climbUpLadder2, climbDownLadder3,
-				climbUpLadder4, climbDownLadder5, climbDownLadder6, listenAtGrill),
-			bronzeMed, ironChainbody, cabbage));
-		allSteps.add(new PanelDetails("Sabotage the potion",
-			Arrays.asList(climbUpLadder6, climbUpLadder5, climbDownLadder4, climbUpLadder3, climbDownLadder2, climbDownLadder1,
-				goUpLadderToCabbageZone, pushWall2, useCabbageOnHole)));
-		allSteps.add(new PanelDetails("Return to Sir Amik Varze", Collections.singletonList(returnToAmik)));
-		return allSteps;
-	}
+		sections.add(new PanelDetails("Talk to Sir Amik Varze", List.of(
+			speakToAmik
+		)));
 
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		return Collections.singletonList(new QuestPointRequirement(12));
+		sections.add(new PanelDetails("Infiltrate the fortress", List.of(
+			enterFortress,
+			pushWall,
+			climbUpLadder1,
+			climbUpLadder2,
+			climbDownLadder3,
+			climbUpLadder4,
+			climbDownLadder5,
+			climbDownLadder6,
+			listenAtGrill
+		), List.of(
+			bronzeMed,
+			ironChainbody,
+			cabbage
+		)));
+
+		sections.add(new PanelDetails("Sabotage the potion", List.of(
+			climbUpLadder6,
+			climbUpLadder5,
+			climbDownLadder4,
+			climbUpLadder3,
+			climbDownLadder2,
+			climbDownLadder1,
+			goUpLadderToCabbageZone,
+			pushWall2,
+			useCabbageOnHole
+		)));
+
+		sections.add(new PanelDetails("Return to Sir Amik Varze", List.of(
+			returnToAmik
+		)));
+
+		return sections;
 	}
 }

@@ -155,7 +155,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		gaveBeer = or(burntofState.eq(10), burntofState.eq(15));
 		recruitedBurntof = burntofState.eq(40);
 
-		inDungeon = new NpcRequirement("Ancient Guardian", 10654);
+		inDungeon = new NpcRequirement("Ancient Guardian", NpcID.BIM_GOLEM_BOSS);
 	}
 
 	public void setupSteps()

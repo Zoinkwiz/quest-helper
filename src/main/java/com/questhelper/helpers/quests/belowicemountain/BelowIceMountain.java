@@ -29,11 +29,13 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -75,8 +77,7 @@ public class BelowIceMountain extends BasicQuestHelper
 	ItemRequirement beer;
 
 	// Miscellaneous requirements
-	VarbitRequirement needFlex;
-	VarbitRequirement leftFlexBeforeLearning;
+	Conditions needFlex;
 	VarbitRequirement haveFlex;
 	VarbitRequirement recruitedCheckal;
 	VarbitRequirement needRecipe;
@@ -139,8 +140,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		combatGearOrPickaxe.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		var checkalState = new VarbitBuilder(VarbitID.BIM_CHECKAL);
-		needFlex = checkalState.eq(5);
-		leftFlexBeforeLearning = checkalState.eq(10);
+		needFlex = or(checkalState.eq(5), checkalState.eq(10));
 		haveFlex = checkalState.eq(15);
 		recruitedCheckal = checkalState.eq(40);
 
@@ -235,7 +235,6 @@ public class BelowIceMountain extends BasicQuestHelper
 
 		var getCheckal = new ConditionalStep(this, recruitCheckal);
 		getCheckal.addStep(needFlex, talkToAtlas);
-		getCheckal.addStep(leftFlexBeforeLearning, talkToAtlas);
 		getCheckal.addStep(haveFlex, flexCheckal);
 		getCheckal.setLockingCondition(recruitedCheckal);
 		steps.put(10, getCheckal);

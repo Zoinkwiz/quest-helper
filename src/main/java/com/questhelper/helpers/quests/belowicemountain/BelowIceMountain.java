@@ -173,7 +173,7 @@ public class BelowIceMountain extends BasicQuestHelper
 			" Village Inn to learn how to Flex. Pick up a cooked meat if you need one.", cookedMeat);
 		talkToAtlas.addDialogStep("Yes.");
 
-		flexCheckal = new NpcEmoteStep(this, NpcID.BIM_CHECKAL, QuestEmote.FLEX, new WorldPoint(3087, 3415, 0), "Flex your muscles at Checkal to prove your worth.");
+		flexCheckal = new NpcEmoteStep(this, NpcID.BIM_CHECKAL, QuestEmote.FLEX, new WorldPoint(3087, 3415, 0), "Talk to Checkal and flex your muscles to prove your worth.");
 
 		talkToMarley = new NpcStep(this, NpcID.BIM_MARLEY, new WorldPoint(3088, 3470, 0), "Speak to Marley in the Edgeville" +
 			" Ruins.");

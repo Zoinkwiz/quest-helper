@@ -93,12 +93,10 @@ public class BelowIceMountain extends BasicQuestHelper
 	// Steps
 	NpcStep talkToWillowToStart;
 
-	ConditionalStep getCheckal;
 	NpcStep recruitCheckal;
 	NpcStep talkToAtlas;
 	NpcStep flexCheckal;
 
-	ConditionalStep getMarley;
 	NpcStep talkToMarley;
 	NpcStep talkToCook;
 	DetailedQuestStep getIngredients;
@@ -106,7 +104,6 @@ public class BelowIceMountain extends BasicQuestHelper
 	NpcStep feedMarley;
 	NpcStep talkToMarleyAfterFeeding;
 
-	ConditionalStep getBurntof;
 	NpcStep talkToBurntof;
 	NpcStep buyBeer;
 	NpcStep giveBeer;
@@ -236,14 +233,14 @@ public class BelowIceMountain extends BasicQuestHelper
 		steps.put(5, talkToWillowToStart);
 		steps.put(7, talkToWillowToStart);
 
-		getCheckal = new ConditionalStep(this, recruitCheckal);
+		var getCheckal = new ConditionalStep(this, recruitCheckal);
 		getCheckal.addStep(needFlex, talkToAtlas);
 		getCheckal.addStep(leftFlexBeforeLearning, talkToAtlas);
 		getCheckal.addStep(haveFlex, flexCheckal);
 		getCheckal.setLockingCondition(recruitedCheckal);
 		steps.put(10, getCheckal);
 
-		getMarley = new ConditionalStep(this, talkToMarley);
+		var getMarley = new ConditionalStep(this, talkToMarley);
 		getMarley.addStep(fedMarley, talkToMarleyAfterFeeding);
 		getMarley.addStep(needRecipe, talkToCook);
 		getMarley.addStep(steakSandwich, feedMarley);
@@ -251,7 +248,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		getMarley.addStep(haveRecipe, getIngredients);
 		getMarley.setLockingCondition(recruitedMarley);
 
-		getBurntof = new ConditionalStep(this, talkToBurntof);
+		var getBurntof = new ConditionalStep(this, talkToBurntof);
 		getBurntof.addStep(needRPS, playRPS);
 		getBurntof.addStep(gaveBeer, playRPS);
 		getBurntof.addStep(and(needBeer, beer), giveBeer);
@@ -346,15 +343,13 @@ public class BelowIceMountain extends BasicQuestHelper
 			talkToWillowToStart
 		)));
 
-		var checkalPanel = new PanelDetails("Recruit Checkal", List.of(
+		sections.add(new PanelDetails("Recruit Checkal", List.of(
 			recruitCheckal,
 			talkToAtlas,
 			flexCheckal
-		));
-		checkalPanel.setLockingStep(getCheckal);
-		sections.add(checkalPanel);
+		)));
 
-		var marleyPanel = new PanelDetails("Recruit Marley", List.of(
+		sections.add(new PanelDetails("Recruit Marley", List.of(
 			talkToMarley,
 			talkToCook,
 			getIngredients,
@@ -364,20 +359,16 @@ public class BelowIceMountain extends BasicQuestHelper
 			cookedMeat,
 			bread,
 			knife
-		));
-		marleyPanel.setLockingStep(getMarley);
-		sections.add(marleyPanel);
+		)));
 
-		var burntofPanel = new PanelDetails("Recruit Burntof", List.of(
+		sections.add(new PanelDetails("Recruit Burntof", List.of(
 			talkToBurntof,
 			buyBeer,
 			giveBeer,
 			playRPS
 		), List.of(
 			coins
-		));
-		burntofPanel.setLockingStep(getBurntof);
-		sections.add(burntofPanel);
+		)));
 
 		sections.add(new PanelDetails("Excavation!", List.of(
 			goToDungeon, defeatGuardian, watchCutscene

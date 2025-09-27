@@ -305,6 +305,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.WATERFALL_QUEST,
 			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.SHEEP_SHEARER,
+			QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
 			QuestHelperQuest.BIOHAZARD,
 			QuestHelperQuest.MURDER_MYSTERY,
 			QuestHelperQuest.PLAGUE_CITY,

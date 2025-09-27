@@ -207,7 +207,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 			"Speak to Sir Amik Varze on the 2nd floor of Falador Castle.");
 		speakToAmik.addDialogStep("I seek a quest!");
 		speakToAmik.addDialogStep("I laugh in the face of danger!");
-		speakToAmik.addDialogStep("Ok, I'll do my best.");
+		speakToAmik.addDialogStep("Yes.");
 		speakToAmik.addSubSteps(climbToWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2);
 
 		/* Path to grill */

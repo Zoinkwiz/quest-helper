@@ -7,12 +7,15 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -24,6 +27,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class BlackKnightFortress extends BasicQuestHelper
 {
@@ -88,35 +92,41 @@ public class BlackKnightFortress extends BasicQuestHelper
 	ZoneRequirement inFaladorF2;
 
 	// Steps
+	ObjectStep climbToWhiteKnightsCastleF1;
+	ObjectStep climbToWhiteKnightsCastleF2;
 	NpcStep speakToAmik;
+
+	ObjectStep climbDownToWhiteKnightsCastleF1;
+	ObjectStep climbDownToWhiteKnightsCastleF0;
 	ObjectStep enterFortress;
 	ObjectStep pushWall;
 	ObjectStep climbUpLadder1;
 	ObjectStep climbUpLadder2;
-	ObjectStep climbUpLadder3;
-	ObjectStep climbUpLadder4;
-	ObjectStep climbUpLadder5;
-	ObjectStep climbUpLadder6;
-	ObjectStep climbDownLadder1;
-	ObjectStep climbDownLadder2;
 	ObjectStep climbDownLadder3;
-	ObjectStep climbDownLadder4;
+	ObjectStep climbUpLadder4;
 	ObjectStep climbDownLadder5;
 	ObjectStep climbDownLadder6;
 	ObjectStep listenAtGrill;
+
+	ObjectStep climbUpLadder6;
+	ObjectStep climbUpLadder5;
+	ObjectStep climbDownLadder4;
+	ObjectStep climbUpLadder3;
+	ObjectStep climbDownLadder2;
+	ObjectStep climbDownLadder1;
+	ObjectStep goUpLadderToCabbageZone;
 	ObjectStep pushWall2;
+	ObjectStep useCabbageOnHole;
+
+	ObjectStep climbToWhiteKnightsCastleF1ToFinish;
+	ObjectStep climbToWhiteKnightsCastleF2ToFinish;
 	NpcStep returnToAmik;
+
 	ObjectStep exitBasement;
 	ObjectStep exitTopOfFortress;
 	ObjectStep exitEastTurret;
 	ObjectStep exitWestRoomFirstFloor;
 	ObjectStep goBackDownFromCabbageZone;
-	ObjectStep goUpLadderToCabbageZone;
-	ObjectStep climbToWhiteKnightsCastleF1;
-	ObjectStep climbToWhiteKnightsCastleF2;
-	ObjectStep climbToWhiteKnightsCastleF1ToFinish;
-	ObjectStep climbToWhiteKnightsCastleF2ToFinish;
-	ObjectStep useCabbageOnHole;
 
 	@Override
 	protected void setupZones()
@@ -211,8 +221,13 @@ public class BlackKnightFortress extends BasicQuestHelper
 		speakToAmik.addSubSteps(climbToWhiteKnightsCastleF1, climbToWhiteKnightsCastleF2);
 
 		/* Path to grill */
+		climbDownToWhiteKnightsCastleF1 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP, new WorldPoint(2960, 3339, 2),
+			"Enter the Black Knights' Fortress. Be prepared for multiple level 33 Black Knights to attack you.", ironChainbody, bronzeMed, cabbage);
+		climbDownToWhiteKnightsCastleF0 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP, new WorldPoint(2955, 3338, 1),
+			"Enter the Black Knights' Fortress. Be prepared for multiple level 33 Black Knights to attack you.", ironChainbody, bronzeMed, cabbage);
 		enterFortress = new ObjectStep(this, ObjectID.BKFORTRESSDOOR1, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Be prepared for multiple level 33 Black Knights to attack you.",
 			ironChainbody, bronzeMed, cabbage);
+		enterFortress.addSubSteps(climbDownToWhiteKnightsCastleF1, climbDownToWhiteKnightsCastleF0);
 		pushWall = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
 		climbUpLadder1 = new ObjectStep(this, ObjectID.DK_LADDER, new WorldPoint(3015, 3519, 0),
 			"Climb up the ladder.");
@@ -246,30 +261,26 @@ public class BlackKnightFortress extends BasicQuestHelper
 			"Go into the east room and climb the ladder there. When trying to go through the door to the room, you'll have to go through some dialog. Select option 2.", cabbage);
 		goUpLadderToCabbageZone.addDialogStep("I don't care. I'm going in anyway.");
 		pushWall2 = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3030, 3510, 1),
-			"Push the wall to enter the storage room", cabbage);
+			"Push the wall to the south-east to enter the storage room", cabbage);
 		useCabbageOnHole = new ObjectStep(this, ObjectID.BLACKKNIGHTHOLE, new WorldPoint(3031, 3507, 1),
-			"USE the cabbage on the hole here. Be careful not to eat it.", cabbage.highlighted());
+			"USE the cabbage on the hole. Be careful not to eat it.", cabbage.highlighted());
 		useCabbageOnHole.addIcon(ItemID.CABBAGE);
 
-		goBackDownFromCabbageZone = new ObjectStep(this, ObjectID.DK_MEETING_LADDERTOP, new WorldPoint(3022, 3518, 1),
-			"Climb back down the ladder to continue.");
+		climbToWhiteKnightsCastleF1ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339, 0), "Return to Sir Amik Varze in Falador Castle to complete the quest.");
+		climbToWhiteKnightsCastleF1ToFinish.addTeleport(teleportFalador);
+		climbToWhiteKnightsCastleF2ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1), "Return to Sir Amik Varze in Falador Castle to complete the quest.");
+
+		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2959, 3339, 2),
+			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
+		returnToAmik.addSubSteps(climbToWhiteKnightsCastleF1ToFinish, climbToWhiteKnightsCastleF2ToFinish);
+
+		// Recovery steps inside the Black Knights' Fortress
+		goBackDownFromCabbageZone = new ObjectStep(this, ObjectID.DK_MEETING_LADDERTOP, new WorldPoint(3022, 3518, 1), "Climb back down the ladder to continue.");
 		exitEastTurret = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3029, 3507, 3), "Go back downstairs to continue.");
 		exitBasement = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDER, new WorldPoint(1867, 4244, 0), "Leave the basement to continue.");
 		exitTopOfFortress = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3010, 3516, 3), "Leave the basement to continue.");
 		exitWestRoomFirstFloor = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3011, 3515, 1), "Go back downstairs to continue");
 		enterFortress.addSubSteps(goBackDownFromCabbageZone, exitEastTurret, exitBasement, exitTopOfFortress, exitWestRoomFirstFloor);
-
-		climbToWhiteKnightsCastleF1ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339,
-			0),
-			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
-		climbToWhiteKnightsCastleF1ToFinish.addTeleport(teleportFalador);
-		climbToWhiteKnightsCastleF2ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339,
-			1),
-			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
-
-		returnToAmik = new NpcStep(this, NpcID.SIR_AMIK_VARZE, new WorldPoint(2959, 3339, 2),
-			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
-		returnToAmik.addSubSteps(climbToWhiteKnightsCastleF1ToFinish, climbToWhiteKnightsCastleF2ToFinish);
 	}
 
 	@Override
@@ -286,6 +297,8 @@ public class BlackKnightFortress extends BasicQuestHelper
 		steps.put(0, goStartQuest);
 
 		var infiltrateTheFortress = new ConditionalStep(this, enterFortress);
+		infiltrateTheFortress.addStep(inFaladorF2, climbDownToWhiteKnightsCastleF1);
+		infiltrateTheFortress.addStep(inFaladorF1, climbDownToWhiteKnightsCastleF0);
 		infiltrateTheFortress.addStep(inListeningRoom, listenAtGrill);
 		infiltrateTheFortress.addStep(inEastRoomFloor1, climbDownLadder6);
 		infiltrateTheFortress.addStep(inEastRoomFloor2, climbDownLadder5);
@@ -302,10 +315,20 @@ public class BlackKnightFortress extends BasicQuestHelper
 
 		steps.put(1, infiltrateTheFortress);
 
+		var pushWall3 = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Go into the east room and climb the ladder there. When trying to go through the door to the room, you'll have to go through some dialog. Select option 2.", cabbage);
+		goUpLadderToCabbageZone.addSubSteps(pushWall3);
+
+		var watchCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
+		useCabbageOnHole.addSubSteps(watchCutscene);
+		var inCabbageCutscene = and(new ZoneRequirement(new WorldPoint(3017, 3497, 0)), new VarbitRequirement(VarbitID.CUTSCENE_STATUS, 1));
+
 		var sabotageThePotion = new ConditionalStep(this, enterFortress);
+		sabotageThePotion.addStep(inSecretRoomGroundFloor, pushWall3);
 		sabotageThePotion.addStep(or(inSecretRoomGroundFloor, inMainEntrance, inEastRoomFloor0), goUpLadderToCabbageZone);
+		sabotageThePotion.addStep(inCabbageCutscene, watchCutscene);
 		sabotageThePotion.addStep(inCabbageHoleRoom, useCabbageOnHole);
 		sabotageThePotion.addStep(inPathToCabbageRoom, pushWall2);
+		sabotageThePotion.addStep(inSecretRoomFirstFloor, climbDownLadder1);
 		sabotageThePotion.addStep(inSecretRoomFirstFloor, climbDownLadder1);
 		sabotageThePotion.addStep(inSecretRoomSecondFloor, climbDownLadder2);
 		sabotageThePotion.addStep(inCentralAreaFloor1, climbUpLadder3);

@@ -301,6 +301,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 			QuestHelperQuest.DWARF_CANNON,
 			QuestHelperQuest.X_MARKS_THE_SPOT,
+			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,
 			QuestHelperQuest.ROMEO__JULIET,

@@ -138,7 +138,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		plank = new ItemRequirement("Plank", ItemID.WOODPLANK);
+		plank = new ItemRequirement("Plank", ItemID.WOODPLANK, 3);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
 
@@ -164,11 +164,11 @@ public class ObservatoryQuest extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToProfessor = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2442, 3186, 0),
-			"Talk to the Observatory professor north of Castle Wars.", plank.quantity(3), moltenGlass, bronzeBar);
+			"Talk to the Observatory professor north of Castle Wars.", plank, moltenGlass, bronzeBar);
 		talkToProfessor.addDialogSteps("Talk about the Observatory quest.", "An Observatory?", "Yes.");
 
 		giveProfessorPlanks = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2442, 3186, 0),
-			"Give the professor 3 planks.", plank.quantity(3));
+			"Give the professor 3 planks.", plank);
 		giveProfessorPlanks.addDialogSteps("Talk about the Observatory quest.");
 
 		giveProfessorBar = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2442, 3186, 0),
@@ -344,7 +344,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
-			plank.quantity(3),
+			plank,
 			bronzeBar,
 			moltenGlass
 		);
@@ -414,7 +414,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 			viewTelescope,
 			pwTellProfessorConstellation
 		), List.of(
-			plank.quantity(3),
+			plank,
 			bronzeBar,
 			moltenGlass
 		)));

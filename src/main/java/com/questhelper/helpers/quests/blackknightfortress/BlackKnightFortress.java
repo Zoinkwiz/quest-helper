@@ -262,6 +262,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		climbToWhiteKnightsCastleF1ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339,
 			0),
 			"Return to Sir Amik Varze in Falador Castle to complete the quest.");
+		climbToWhiteKnightsCastleF1ToFinish.addTeleport(teleportFalador);
 		climbToWhiteKnightsCastleF2ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339,
 			1),
 			"Return to Sir Amik Varze in Falador Castle to complete the quest.");

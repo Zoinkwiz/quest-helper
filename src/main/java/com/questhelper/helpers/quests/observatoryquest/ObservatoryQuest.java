@@ -27,10 +27,12 @@ package com.questhelper.helpers.quests.observatoryquest;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
+import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -41,6 +43,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +86,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 	VarbitRequirement usedKey;
 	NpcCondition sleepingGuardNearby;
 	VarbitRequirement hasMould;
+	Conditions inObservatoryCutscene;
 	VarbitRequirement lookedThroughTelescope;
 
 	// Steps
@@ -104,9 +108,24 @@ public class ObservatoryQuest extends BasicQuestHelper
 	NpcStep giveProfessorLensAndMould;
 	ObjectStep enterDungeonAgain;
 	ObjectStep enterObservatory;
+	DetailedQuestStep watchCutscene;
 	ObjectStep goToF2Observatory;
 	ObjectStep viewTelescope;
-	NpcStep tellProfessorConstellation;
+	NpcStep tellProfessorConstellationBase;
+	NpcStep tellAquarius;
+	NpcStep tellCapricorn;
+	NpcStep tellSagittarius;
+	NpcStep tellScorpio;
+	NpcStep tellLibra;
+	NpcStep tellVirgo;
+	NpcStep tellLeo;
+	NpcStep tellCancer;
+	NpcStep tellGemini;
+	NpcStep tellTaurus;
+	NpcStep tellAries;
+	NpcStep tellPisces;
+	ConditionalStep tellProfessorConstellation;
+	PuzzleWrapperStep pwTellProfessorConstellation;
 
 	@Override
 	protected void setupZones()
@@ -138,6 +157,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 		usedKey = new VarbitRequirement(VarbitID.OBSERVATORY_GATELOCK, 1);
 		sleepingGuardNearby = new NpcCondition(NpcID.QIP_OBS_GOBLIN_GUARD);
 		hasMould = new VarbitRequirement(VarbitID.OBSERVATORY_MOULD_PRES, 1);
+		inObservatoryCutscene = and(new VarbitRequirement(VarbitID.CUTSCENE_STATUS, 1), or(inObservatoryF1, inObservatoryF2));
 		lookedThroughTelescope = new VarbitRequirement(VarbitID.OBSERVATORY_SCOPELOOKED, 1);
 	}
 
@@ -165,6 +185,10 @@ public class ObservatoryQuest extends BasicQuestHelper
 			"Unmarked chests contain monsters and may poison you.");
 		searchChests.addAlternateObjects(ObjectID.QIP_OBS_DUNGEON_CHEST_OPEN, ObjectID.QIP_OBS_DUNGEON_CHEST_CLOSED2,
 			ObjectID.QIP_OBS_DUNGEON_CHEST_OPEN2, ObjectID.QIP_OBS_DUNGEON_CHEST_CLOSED3, ObjectID.QIP_OBS_DUNGEON_CHEST_OPEN3);
+
+		// [2025-09-27T13:01:56Z 1308] varbit OBSERVATORY_CHESTCHOICE (3827) 0 -> 2
+		// I had to open the 2351,9361,0 chest
+
 		prodGuard = new NpcStep(this, NpcID.QIP_OBS_GOBLIN_GUARD, new WorldPoint(2327, 9394, 0),
 			"Prod the sleeping guard in the north of the dungeon. He'll attack you. You need to then either kill him," +
 				" or get him in the marked spot to the north of the gate.");
@@ -190,8 +214,90 @@ public class ObservatoryQuest extends BasicQuestHelper
 			"Climb up the stairs in the observatory.");
 		viewTelescope = new ObjectStep(this, ObjectID.QIP_OBS_TELE_GEAR_UPPER_MULTI, new WorldPoint(2441, 3162, 1),
 			"Use the telescope.");
-		tellProfessorConstellation = new StarSignAnswer(this);
-		tellProfessorConstellation.addDialogSteps("Talk about the Observatory quest.");
+
+		watchCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
+		enterObservatory.addSubSteps(watchCutscene);
+
+		// Holds the varbit that controls which constellation / star sign you see in the observatory
+		var signState = new VarbitBuilder(VarbitID.OBSERVATORY_STARSIGN);
+
+		tellProfessorConstellationBase = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2440, 3159, 1), "Tell the professor which constellation you observed.");
+
+		// 0
+		tellAquarius = tellProfessorConstellationBase.copy();
+		tellAquarius.addDialogSteps("Talk about the Observatory quest.", "Aquarius", "~ previous ~");
+
+		// 1
+		tellCapricorn = tellProfessorConstellationBase.copy();
+		tellCapricorn.addDialogSteps("Talk about the Observatory quest.", "Capricorn", "~ previous ~");
+
+		// 2
+		tellSagittarius = tellProfessorConstellationBase.copy();
+		tellSagittarius.addDialogSteps("Talk about the Observatory quest.", "Sagittarius", "~ previous ~");
+
+		// 3
+		tellScorpio = tellProfessorConstellationBase.copy();
+		tellScorpio.addDialogSteps("Talk about the Observatory quest.", "Scorpio", "~ previous ~");
+
+		// 4
+		tellLibra = tellProfessorConstellationBase.copy();
+		tellLibra.addDialogSteps("Talk about the Observatory quest.", "Libra");
+		tellLibra.addDialogStepWithExclusions("~ next ~", "Libra", "Cancer");
+		tellLibra.addDialogStepWithExclusions("~ previous ~", "Libra");
+
+		// 5
+		tellVirgo = tellProfessorConstellationBase.copy();
+		tellVirgo.addDialogSteps("Talk about the Observatory quest.", "Virgo");
+		tellVirgo.addDialogStepWithExclusions("~ next ~", "Virgo", "Cancer");
+		tellVirgo.addDialogStepWithExclusions("~ previous ~", "Virgo");
+
+		// 6
+		tellLeo = tellProfessorConstellationBase.copy();
+		tellLeo.addDialogSteps("Talk about the Observatory quest.", "Leo");
+		tellLeo.addDialogStepWithExclusions("~ next ~", "Leo", "Cancer");
+		tellLeo.addDialogStepWithExclusions("~ previous ~", "Leo");
+
+		// 7
+		tellCancer = tellProfessorConstellationBase.copy();
+		tellCancer.addDialogSteps("Talk about the Observatory quest.", "Cancer");
+		tellCancer.addDialogStepWithExclusions("~ next ~", "Cancer");
+		tellCancer.addDialogStepWithExclusions("~ previous ~", "Cancer", "Libra");
+
+		// 8
+		tellGemini = tellProfessorConstellationBase.copy();
+		tellGemini.addDialogSteps("Talk about the Observatory quest.", "Gemini");
+		tellGemini.addDialogStepWithExclusions("~ next ~", "Gemini");
+		tellGemini.addDialogStepWithExclusions("~ previous ~", "Gemini", "Libra");
+
+		// 9
+		tellTaurus = tellProfessorConstellationBase.copy();
+		tellTaurus.addDialogSteps("Talk about the Observatory quest.", "Taurus");
+		tellTaurus.addDialogStepWithExclusions("~ next ~", "Taurus");
+		tellTaurus.addDialogStepWithExclusions("~ previous ~", "Taurus", "Libra");
+
+		// 10
+		tellAries = tellProfessorConstellationBase.copy();
+		tellAries.addDialogSteps("Talk about the Observatory quest.", "Aries", "~ next ~");
+
+		// 11
+		tellPisces = tellProfessorConstellationBase.copy();
+		tellPisces.addDialogSteps("Talk about the Observatory quest.", "Pisces", "~ next ~");
+
+		tellProfessorConstellation = new ConditionalStep(this, tellProfessorConstellationBase);
+		tellProfessorConstellation.addStep(signState.eq(0), tellAquarius);
+		tellProfessorConstellation.addStep(signState.eq(1), tellCapricorn);
+		tellProfessorConstellation.addStep(signState.eq(2), tellSagittarius);
+		tellProfessorConstellation.addStep(signState.eq(3), tellScorpio);
+		tellProfessorConstellation.addStep(signState.eq(4), tellLibra);
+		tellProfessorConstellation.addStep(signState.eq(5), tellVirgo);
+		tellProfessorConstellation.addStep(signState.eq(6), tellLeo);
+		tellProfessorConstellation.addStep(signState.eq(7), tellCancer);
+		tellProfessorConstellation.addStep(signState.eq(8), tellGemini);
+		tellProfessorConstellation.addStep(signState.eq(9), tellTaurus);
+		tellProfessorConstellation.addStep(signState.eq(10), tellAries);
+		tellProfessorConstellation.addStep(signState.eq(11), tellPisces);
+
+		pwTellProfessorConstellation = tellProfessorConstellation.puzzleWrapStep();
 	}
 
 	@Override
@@ -224,7 +330,8 @@ public class ObservatoryQuest extends BasicQuestHelper
 		steps.put(5, makeLens);
 
 		var goLookInTelescope = new ConditionalStep(this, enterDungeonAgain);
-		goLookInTelescope.addStep(and(lookedThroughTelescope, inObservatoryF2), tellProfessorConstellation);
+		goLookInTelescope.addStep(and(lookedThroughTelescope, inObservatoryF2), pwTellProfessorConstellation);
+		goLookInTelescope.addStep(inObservatoryCutscene, watchCutscene);
 		goLookInTelescope.addStep(inObservatoryF2, viewTelescope);
 		goLookInTelescope.addStep(inObservatoryF1, goToF2Observatory);
 		goLookInTelescope.addStep(inObservatoryDungeon, enterObservatory);
@@ -305,7 +412,7 @@ public class ObservatoryQuest extends BasicQuestHelper
 			enterObservatory,
 			goToF2Observatory,
 			viewTelescope,
-			tellProfessorConstellation
+			pwTellProfessorConstellation
 		), List.of(
 			plank.quantity(3),
 			bronzeBar,

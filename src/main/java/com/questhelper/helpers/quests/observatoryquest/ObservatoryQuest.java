@@ -27,18 +27,25 @@ package com.questhelper.helpers.quests.observatoryquest;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -47,68 +54,67 @@ import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class ObservatoryQuest extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement plank, bronzeBar, moltenGlass;
+	// Required items
+	ItemRequirement plank;
+	ItemRequirement bronzeBar;
+	ItemRequirement moltenGlass;
 
-	//Items Recommended
-	ItemRequirement food, duelingRing, antipoison;
+	// Recommended items
+	ItemRequirement food;
+	ItemRequirement duelingRing;
+	ItemRequirement antipoison;
 
-	ItemRequirement mould, lens, key;
+	// Mid-quest item requirements
+	ItemRequirement mould;
+	ItemRequirement lens;
+	ItemRequirement key;
 
-	Requirement inObservatoryDungeon, inObservatoryF1, inObservatoryF2, usedKey, sleepingGuardNearby, hasMould,
-		lookedThroughTelescope;
+	// Zones
+	Zone observatoryDungeon;
+	Zone observatoryF1;
+	Zone observatoryF2;
 
-	DetailedQuestStep talkToProfessor, giveProfessorPlanks, giveProfessorBar, giveProfessorGlass, talkToAssistant,
-		enterDungeon, searchChests, prodGuard, inspectStove, leaveDungeon, giveProfessorMould, useGlassOnMould,
-		giveProfessorLensAndMould, enterDungeonAgain, enterObservatory, goToF2Observatory, viewTelescope,
-		tellProfessorConstellation;
+	// Miscllaneous requirements
+	ZoneRequirement inObservatoryDungeon;
+	ZoneRequirement inObservatoryF1;
+	ZoneRequirement inObservatoryF2;
+	VarbitRequirement usedKey;
+	NpcCondition sleepingGuardNearby;
+	VarbitRequirement hasMould;
+	VarbitRequirement lookedThroughTelescope;
 
-	//Zones
-	Zone observatoryDungeon, observatoryF1, observatoryF2;
+	// Steps
+	NpcStep talkToProfessor;
+
+	NpcStep giveProfessorPlanks;
+
+	NpcStep giveProfessorBar;
+
+	NpcStep giveProfessorGlass;
+
+	NpcStep talkToAssistant;
+	ObjectStep enterDungeon;
+	ObjectStep searchChests;
+	NpcStep prodGuard;
+	ObjectStep inspectStove;
+	ObjectStep leaveDungeon;
+	NpcStep giveProfessorMould;
+	DetailedQuestStep useGlassOnMould;
+	NpcStep giveProfessorLensAndMould;
+	ObjectStep enterDungeonAgain;
+	ObjectStep enterObservatory;
+	ObjectStep goToF2Observatory;
+	ObjectStep viewTelescope;
+	NpcStep tellProfessorConstellation;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToProfessor);
-		steps.put(1, giveProfessorPlanks);
-		steps.put(2, giveProfessorBar);
-		steps.put(3, giveProfessorGlass);
-
-		ConditionalStep goGetLens = new ConditionalStep(this, enterDungeon);
-		goGetLens.addStep(new Conditions(inObservatoryDungeon, hasMould), leaveDungeon);
-		goGetLens.addStep(hasMould, giveProfessorMould);
-		goGetLens.addStep(new Conditions(inObservatoryDungeon, new Conditions(LogicType.OR,
-			key.alsoCheckBank(), usedKey), sleepingGuardNearby), prodGuard);
-		goGetLens.addStep(new Conditions(inObservatoryDungeon, new Conditions(LogicType.OR,
-				key.alsoCheckBank(), usedKey)), inspectStove);
-		goGetLens.addStep(inObservatoryDungeon, searchChests);
-		steps.put(4, goGetLens);
-
-		ConditionalStep makeLens = new ConditionalStep(this, enterDungeon);
-		makeLens.addStep(lens, giveProfessorLensAndMould);
-		makeLens.addStep(new Conditions(inObservatoryDungeon, hasMould), leaveDungeon);
-		makeLens.addStep(hasMould, useGlassOnMould);
-		makeLens.addStep(new Conditions(inObservatoryDungeon, usedKey, sleepingGuardNearby), prodGuard);
-		makeLens.addStep(new Conditions(inObservatoryDungeon, usedKey), inspectStove);
-		steps.put(5, makeLens);
-
-		ConditionalStep goLookInTelescope = new ConditionalStep(this, enterDungeonAgain);
-		goLookInTelescope.addStep(new Conditions(lookedThroughTelescope, inObservatoryF2), tellProfessorConstellation);
-		goLookInTelescope.addStep(inObservatoryF2, viewTelescope);
-		goLookInTelescope.addStep(inObservatoryF1, goToF2Observatory);
-		goLookInTelescope.addStep(inObservatoryDungeon, enterObservatory);
-		steps.put(6, goLookInTelescope);
-
-		return steps;
+		observatoryDungeon = new Zone(new WorldPoint(2295, 9340, 0), new WorldPoint(2370, 9410, 0));
+		observatoryF1 = new Zone(new WorldPoint(2433, 3154, 0), new WorldPoint(2448, 3169, 0));
+		observatoryF2 = new Zone(new WorldPoint(2433, 3154, 1), new WorldPoint(2448, 3169, 1));
 	}
 
 	@Override
@@ -120,36 +126,20 @@ public class ObservatoryQuest extends BasicQuestHelper
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		duelingRing = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS);
-		antipoison = new ItemRequirement("Antipoison (there is a spawn near the Observatory of superantipoison)",
-			ItemCollections.ANTIPOISONS);
+		antipoison = new ItemRequirement("Antipoison (there is a spawn of superantipoison near the Observatory)", ItemCollections.ANTIPOISONS);
 
 		mould = new ItemRequirement("Lens mould", ItemID.LENS_MOULD).isNotConsumed();
 		lens = new ItemRequirement("Observatory lens", ItemID.LENS).isNotConsumed();
 		key = new ItemRequirement("Goblin kitchen key", ItemID.KEEP_KEY).isNotConsumed();
-	}
 
-	public void setupConditions()
-	{
 		inObservatoryDungeon = new ZoneRequirement(observatoryDungeon);
 		inObservatoryF1 = new ZoneRequirement(observatoryF1);
 		inObservatoryF2 = new ZoneRequirement(observatoryF2);
 
-		// Started quest
-		// 3828 = 9
-		// 3827 = 1
 		usedKey = new VarbitRequirement(VarbitID.OBSERVATORY_GATELOCK, 1);
 		sleepingGuardNearby = new NpcCondition(NpcID.QIP_OBS_GOBLIN_GUARD);
 		hasMould = new VarbitRequirement(VarbitID.OBSERVATORY_MOULD_PRES, 1);
-		// Watched cutscene, 3838 = 1
 		lookedThroughTelescope = new VarbitRequirement(VarbitID.OBSERVATORY_SCOPELOOKED, 1);
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		observatoryDungeon = new Zone(new WorldPoint(2295, 9340, 0), new WorldPoint(2370, 9410, 0));
-		observatoryF1 = new Zone(new WorldPoint(2433, 3154, 0), new WorldPoint(2448, 3169, 0));
-		observatoryF2 = new Zone(new WorldPoint(2433, 3154, 1), new WorldPoint(2448, 3169, 1));
 	}
 
 	public void setupSteps()
@@ -157,22 +147,26 @@ public class ObservatoryQuest extends BasicQuestHelper
 		talkToProfessor = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2442, 3186, 0),
 			"Talk to the Observatory professor north of Castle Wars.", plank.quantity(3), moltenGlass, bronzeBar);
 		talkToProfessor.addDialogSteps("Talk about the Observatory quest.", "An Observatory?", "Yes.");
+
 		giveProfessorPlanks = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2442, 3186, 0),
 			"Give the professor 3 planks.", plank.quantity(3));
 		giveProfessorPlanks.addDialogSteps("Talk about the Observatory quest.");
+
 		giveProfessorBar = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2442, 3186, 0),
 			"Give the professor a bronze bar.", bronzeBar);
 		giveProfessorBar.addDialogSteps("Talk about the Observatory quest.");
+
 		giveProfessorGlass = new NpcStep(this, NpcID.OBSERVATORY_PROFESSOR, new WorldPoint(2442, 3186, 0),
 			"Give the professor some molten glass.", moltenGlass);
 		giveProfessorGlass.addDialogSteps("Talk about the Observatory quest.");
+
 		talkToAssistant = new NpcStep(this, NpcID.QIP_OBS_PROFFESORS_ASSISTANT, new WorldPoint(2443, 3189, 0),
 			"Talk to the observatory assistant.");
 		enterDungeon = new ObjectStep(this, ObjectID.QIP_OBS_VSTAIRS2, new WorldPoint(2458, 3186, 0),
 			"Enter the dungeon east of the Professor.");
 		searchChests = new ObjectStep(this, ObjectID.QIP_OBS_DUNGEON_CHEST_CLOSED, "Search only the marked chests in the dungeon. " +
 			"Unmarked chests contain monsters and may poison you.");
-		((ObjectStep) searchChests).addAlternateObjects(ObjectID.QIP_OBS_DUNGEON_CHEST_OPEN, ObjectID.QIP_OBS_DUNGEON_CHEST_CLOSED2,
+		searchChests.addAlternateObjects(ObjectID.QIP_OBS_DUNGEON_CHEST_OPEN, ObjectID.QIP_OBS_DUNGEON_CHEST_CLOSED2,
 			ObjectID.QIP_OBS_DUNGEON_CHEST_OPEN2, ObjectID.QIP_OBS_DUNGEON_CHEST_CLOSED3, ObjectID.QIP_OBS_DUNGEON_CHEST_OPEN3);
 		prodGuard = new NpcStep(this, NpcID.QIP_OBS_GOBLIN_GUARD, new WorldPoint(2327, 9394, 0),
 			"Prod the sleeping guard in the north of the dungeon. He'll attack you. You need to then either kill him," +
@@ -204,21 +198,70 @@ public class ObservatoryQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToProfessor);
+		steps.put(1, giveProfessorPlanks);
+		steps.put(2, giveProfessorBar);
+		steps.put(3, giveProfessorGlass);
+
+		var goGetLens = new ConditionalStep(this, enterDungeon);
+		goGetLens.addStep(and(inObservatoryDungeon, hasMould), leaveDungeon);
+		goGetLens.addStep(hasMould, giveProfessorMould);
+		goGetLens.addStep(and(inObservatoryDungeon, or(key.alsoCheckBank(), usedKey), sleepingGuardNearby), prodGuard);
+		goGetLens.addStep(and(inObservatoryDungeon, or(key.alsoCheckBank(), usedKey)), inspectStove);
+		goGetLens.addStep(inObservatoryDungeon, searchChests);
+		steps.put(4, goGetLens);
+
+		var makeLens = new ConditionalStep(this, enterDungeon);
+		makeLens.addStep(lens, giveProfessorLensAndMould);
+		makeLens.addStep(and(inObservatoryDungeon, hasMould), leaveDungeon);
+		makeLens.addStep(hasMould, useGlassOnMould);
+		makeLens.addStep(and(inObservatoryDungeon, usedKey, sleepingGuardNearby), prodGuard);
+		makeLens.addStep(and(inObservatoryDungeon, usedKey), inspectStove);
+		steps.put(5, makeLens);
+
+		var goLookInTelescope = new ConditionalStep(this, enterDungeonAgain);
+		goLookInTelescope.addStep(and(lookedThroughTelescope, inObservatoryF2), tellProfessorConstellation);
+		goLookInTelescope.addStep(inObservatoryF2, viewTelescope);
+		goLookInTelescope.addStep(inObservatoryF1, goToF2Observatory);
+		goLookInTelescope.addStep(inObservatoryDungeon, enterObservatory);
+		steps.put(6, goLookInTelescope);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(plank.quantity(3), bronzeBar, moltenGlass);
+		return List.of(
+			plank.quantity(3),
+			bronzeBar,
+			moltenGlass
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(duelingRing, antipoison, food);
+		return List.of(
+			duelingRing,
+			antipoison,
+			food
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Goblin Guard (level 42, or you can lure it/have someone else kill it)");
+		return List.of(
+			"Goblin Guard (level 42, or you can lure it/have someone else kill it)"
+		);
 	}
 
 	@Override
@@ -230,26 +273,48 @@ public class ObservatoryQuest extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.CRAFTING, 2250));
+		return List.of(
+			new ExperienceReward(Skill.CRAFTING, 2250)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("A reward depending on which constellation you observed."));
+		return List.of(
+			new UnlockReward("A reward depending on which constellation you observed.")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Helping the Professor",
-			Arrays.asList(talkToProfessor, giveProfessorPlanks, giveProfessorBar, giveProfessorGlass,
-				enterDungeon, searchChests, prodGuard, inspectStove, leaveDungeon, giveProfessorMould, useGlassOnMould,
-				giveProfessorLensAndMould, enterDungeonAgain, enterObservatory, goToF2Observatory, viewTelescope,
-				tellProfessorConstellation), plank.quantity(3), bronzeBar, moltenGlass));
+		var sections = new ArrayList<PanelDetails>();
 
+		sections.add(new PanelDetails("Helping the Professor", List.of(
+			talkToProfessor,
+			giveProfessorPlanks,
+			giveProfessorBar,
+			giveProfessorGlass,
+			enterDungeon,
+			searchChests,
+			prodGuard,
+			inspectStove,
+			leaveDungeon,
+			giveProfessorMould,
+			useGlassOnMould,
+			giveProfessorLensAndMould,
+			enterDungeonAgain,
+			enterObservatory,
+			goToF2Observatory,
+			viewTelescope,
+			tellProfessorConstellation
+		), List.of(
+			plank.quantity(3),
+			bronzeBar,
+			moltenGlass
+		)));
 
-		return allSteps;
+		return sections;
 	}
 }

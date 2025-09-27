@@ -94,7 +94,6 @@ public class ObservatoryQuest extends BasicQuestHelper
 
 	NpcStep giveProfessorGlass;
 
-	NpcStep talkToAssistant;
 	ObjectStep enterDungeon;
 	ObjectStep searchChests;
 	NpcStep prodGuard;
@@ -160,8 +159,6 @@ public class ObservatoryQuest extends BasicQuestHelper
 			"Give the professor some molten glass.", moltenGlass);
 		giveProfessorGlass.addDialogSteps("Talk about the Observatory quest.");
 
-		talkToAssistant = new NpcStep(this, NpcID.QIP_OBS_PROFFESORS_ASSISTANT, new WorldPoint(2443, 3189, 0),
-			"Talk to the observatory assistant.");
 		enterDungeon = new ObjectStep(this, ObjectID.QIP_OBS_VSTAIRS2, new WorldPoint(2458, 3186, 0),
 			"Enter the dungeon east of the Professor.");
 		searchChests = new ObjectStep(this, ObjectID.QIP_OBS_DUNGEON_CHEST_CLOSED, "Search only the marked chests in the dungeon. " +

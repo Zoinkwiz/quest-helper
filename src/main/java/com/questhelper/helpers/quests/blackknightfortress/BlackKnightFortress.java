@@ -257,6 +257,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 		exitBasement = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDER, new WorldPoint(1867, 4244, 0), "Leave the basement to continue.");
 		exitTopOfFortress = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3010, 3516, 3), "Leave the basement to continue.");
 		exitWestRoomFirstFloor = new ObjectStep(this, ObjectID.DK_SPIRALSTAIRSTOP, new WorldPoint(3011, 3515, 1), "Go back downstairs to continue");
+		enterFortress.addSubSteps(goBackDownFromCabbageZone, exitEastTurret, exitBasement, exitTopOfFortress, exitWestRoomFirstFloor);
 
 		climbToWhiteKnightsCastleF1ToFinish = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339,
 			0),

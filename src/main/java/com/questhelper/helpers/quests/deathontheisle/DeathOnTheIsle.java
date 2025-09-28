@@ -68,8 +68,6 @@ import static com.questhelper.requirements.util.LogicHelper.not;
  */
 public class DeathOnTheIsle extends BasicQuestHelper
 {
-	// TODO: Fix npc ID, I can't find it in runelite atm
-	final static private int CUSTOMER_NPC_ID = 13837;
 
 	/// Recommended items
 	private FreeInventorySlotRequirement emptyInvSlots;
@@ -561,7 +559,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		talkToGuardsAtTheatre.addSubSteps(headDownFromTopFloor);
 
 		var enterBackstage = new ObjectStep(this, ObjectID.ALDARIN_BACKSTAGE_ENTRANCE, new WorldPoint(1477, 2927, 0), "Enter the theatre through the backstage entrance.");
-		talkToCostumer = new NpcStep(this, CUSTOMER_NPC_ID, new WorldPoint(1466, 9330, 0), "Talk to the Costumer in the theatre cellar.");
+		talkToCostumer = new NpcStep(this, NpcID.DOTI_COSTUMER_VIS, new WorldPoint(1466, 9330, 0), "Talk to the Costumer in the theatre cellar.");
 		talkToCostumer.addSubSteps(enterBackstage);
 
 		var investigateTheatre = new ConditionalStep(this, talkToCostumer);
@@ -577,7 +575,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		searchCrateNextToStairs = new ObjectStep(this, ObjectID.DOTI_POISON_CRATE_OP, new WorldPoint(1469, 9330, 0), "Search the crate next to the stairs.");
 		searchBookshelf = new ObjectStep(this, ObjectID.DOTI_BOOKSHELF_CLOSED, new WorldPoint(1461, 9331, 0), "Search the bookshelf on the west wall.");
 		searchCostumeRack = new ObjectStep(this, ObjectID.DOTI_DAMAGED_COSTUME_OP, new WorldPoint(1464, 9337, 0), "Search the costume rack to the north.");
-		talkToCostumerAgain = new NpcStep(this, CUSTOMER_NPC_ID, new WorldPoint(1466, 9330, 0), "Talk to the Costumer about what you found.");
+		talkToCostumerAgain = new NpcStep(this, NpcID.DOTI_COSTUMER_VIS, new WorldPoint(1466, 9330, 0), "Talk to the Costumer about what you found.");
 
 		var talkToCostumerAboutActors = talkToCostumerAgain.copy();
 		talkToCostumerAboutActors.addDialogStep("What can you tell me about the actors?");

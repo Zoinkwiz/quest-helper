@@ -317,6 +317,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.GERTRUDES_CAT,
 			QuestHelperQuest.MONKS_FRIEND,
 			QuestHelperQuest.DADDYS_HOME,
+			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,

@@ -79,12 +79,12 @@ public class QuestBankTab
 	private static final int LINE_VERTICAL_SPACING = 5;
 	private static final int LINE_HEIGHT = 2;
 	private static final int TEXT_HEIGHT = 15;
-	private static final int EMPTY_BANK_SLOT_ID = 6512;
+	private static final int EMPTY_BANK_SLOT_ID = ItemID.BLANKOBJECT;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
-	private static final int CROSS_SPRITE_ID = 1216;
-	private static final int TICK_SPRITE_ID = 1217;
+	private static final int CROSS_SPRITE_ID = SpriteID.Checkbox.CROSSED;
+	private static final int TICK_SPRITE_ID = SpriteID.Checkbox.CHECKED;
 
 	private final ArrayList<Widget> addedWidgets = new ArrayList<>();
 

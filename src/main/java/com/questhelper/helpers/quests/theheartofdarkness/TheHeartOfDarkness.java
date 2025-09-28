@@ -785,8 +785,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         // Ice dungeon section
         takePickaxe = new ObjectStep(this, ObjectID.VMQ3_PICKAXE_BARREL, new WorldPoint(1696, 9633, 2), "Take a pickaxe from the nearby barrel.");
         mineRocks = new ObjectStep(this, ObjectID.VMQ3_RUINS_BLOCKAGE_START, new WorldPoint(1690, 9634, 2), "Mine the nearby rocks.", pickaxe);
-        int LEVER_ID = 55367; // Decorative object
-        pullFirstLever = new ObjectStep(this, LEVER_ID, new WorldPoint(1695, 9604, 2), "Pull the lever in the south-east of the area. Make sure to avoid the " +
+        pullFirstLever = new ObjectStep(this, ObjectID.VMQ3_RUINS_WALL_LEVER_3, new WorldPoint(1695, 9604, 2), "Pull the lever in the south-east of the area. Make sure to avoid the " +
                 "wall spikes.");
         pullFirstLever.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
                 new WorldPoint(1682, 9603, 2), new WorldPoint(1682, 9604, 2), new WorldPoint(1682, 9605, 2),

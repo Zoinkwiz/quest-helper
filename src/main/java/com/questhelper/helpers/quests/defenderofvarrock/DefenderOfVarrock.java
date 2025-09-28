@@ -255,8 +255,7 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		// TODO: Reported value is 12754, but uncertain why this'd be the case. Perhaps to do with different version of him?
-		eliasFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.ELIAS_WHITE_VIS, NpcID.ELIAS_WHITE_CUTSCENE, 12754), 16);
+		eliasFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.ELIAS_WHITE_VIS, NpcID.ELIAS_WHITE_CUTSCENE, NpcID.DOV_ELIAS_WHITE_FOLLOWER), 16);
 
 		// 9655 4->6
 		// 9659 0->1

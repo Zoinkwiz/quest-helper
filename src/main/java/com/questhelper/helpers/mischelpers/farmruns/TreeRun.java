@@ -971,7 +971,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		brimhavenPanel.setLockingStep(brimhavenStep);
 		allSteps.add(brimhavenPanel);
 
-		PanelDetails lletyaPanel = new PanelDetails("Llyeta", Arrays.asList(lletyaFruitTreePatchCheckHealth, lletyaFruitTreePatchClear)).withId(9);
+		PanelDetails lletyaPanel = new PanelDetails("Lletya", Arrays.asList(lletyaFruitTreePatchCheckHealth, lletyaFruitTreePatchClear)).withId(9);
 		lletyaPanel.setLockingStep(lletyaStep);
 		allSteps.add(lletyaPanel);
 

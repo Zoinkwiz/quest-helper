@@ -1006,7 +1006,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToElunedWithSeed = new NpcStep(this, NpcID.ROVING_FEMALE_WOODELF_2OP, new WorldPoint(2322, 3160, 0), "Talk to Eluned in" +
 			" Lletya.");
 		talkToElunedWithSeed.addDialogStep("I have a seed from Baxtorian that I think needs enchanting.");
-		rubCrystal = new DetailedQuestStep(this, "Rub the teleport crystal to teleport.", crystalSeed);
+		rubCrystal = new DetailedQuestStep(this, "Rub the crystal seed to teleport.", crystalSeed);
 		talkToFigure = new NpcStep(this, NpcID.SOTE_LORD_AMLODD_VIS_UNKNOWN, new WorldPoint(3051, 4486, 0),
 			"Talk to the Mysterious Figure.");
 		talkToBaxAfterValley = new NpcStep(this, NpcID.SOTE_BAXTORIAN_VIS, new WorldPoint(2352, 3170, 0),

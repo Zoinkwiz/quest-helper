@@ -160,7 +160,7 @@ public class BelowIceMountain extends BasicQuestHelper
 		needRPS = new VarbitRequirement(VarbitID.BIM_BURNTOF, 15);
 		recruitedBurntof = new VarbitRequirement(VarbitID.BIM_BURNTOF, 40);
 
-		inDungeon = new NpcRequirement("Ancient Guardian", 10654);
+		inDungeon = new NpcRequirement("Ancient Guardian", NpcID.BIM_GOLEM_BOSS);
 	}
 
 	public void setupSteps()

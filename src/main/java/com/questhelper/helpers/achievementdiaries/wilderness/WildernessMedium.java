@@ -297,7 +297,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.MINING, 55, true));
 		reqs.add(new SkillRequirement(Skill.SLAYER, 50, true));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 50, true));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 61, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 61, false));
 
 		reqs.add(betweenARock);
 

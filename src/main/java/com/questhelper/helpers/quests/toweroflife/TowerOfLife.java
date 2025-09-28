@@ -413,7 +413,7 @@ public class TowerOfLife extends BasicQuestHelper
 		getTrousers.addText("(Hint: try the south-east bushes first).");
 		((DetailedQuestStep) getTrousers).setHideWorldArrow(true);
 
-		talkToBonafidoWithOutfit = new NpcStep(this, NpcID.TOL_NPC_BARRY01, "Speak to Bonafido.",
+		talkToBonafidoWithOutfit = new NpcStep(this, NpcID.TOL_NPC_BARRY01, "Speak to Bonafido wearing the Builder's outfit.",
 			buildersHatEquipped, buildersShirtEquipped, buildersTrousersEquipped, buildersBootsEquipped);
 		talkToBonafidoWithOutfit.addDialogStep(2, "Tea");
 		talkToBonafidoWithOutfit.addDialogStep(3, "Whistle for attention");

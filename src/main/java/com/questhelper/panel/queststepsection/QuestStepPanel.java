@@ -175,7 +175,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 
 	public void updateAllText()
 	{
-		getStepsLabels().forEach((questStep, textPane) -> {
+		steps.forEach((questStep, textPane) -> {
 			if (textPane != null)
 			{
 				String newText = generateText(questStep);
@@ -213,11 +213,6 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	public List<QuestStep> getSteps()
 	{
 		return new ArrayList<>(steps.keySet());
-	}
-
-	public HashMap<QuestStep, JTextPane> getStepsLabels()
-	{
-		return steps;
 	}
 
 	public void setLockable(boolean canLock)

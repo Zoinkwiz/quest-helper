@@ -266,7 +266,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 	{
 		var sections = new ArrayList<PanelDetails>();
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Aleck's Hunter Emporium",
 			notAlecksEmporium,
 			alecksEmporiumTask,
@@ -275,7 +275,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			)
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Identify Sword",
 			notIdentifySword,
 			identifySword,
@@ -286,7 +286,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			coins
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Fishing Trawler",
 			notFishingTrawler,
 			fishingTrawlerTask,
@@ -295,7 +295,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			)
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Pet Insurance",
 			notProbitaPet,
 			probitaPetTask,
@@ -304,7 +304,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			)
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Restore Prayer",
 			notEastArdyAltar,
 			eastArdyAltarTask,
@@ -313,7 +313,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			)
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Sell Silk",
 			notSellSilk,
 			sellSilkTask,
@@ -323,7 +323,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			silk
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Steal Cake",
 			notStealCake,
 			stealCakeTask,
@@ -333,7 +333,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			thieving
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Essence Mine",
 			notEssMine,
 			essMineTask,
@@ -343,7 +343,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			runeMysteries
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Wilderness Lever",
 			notWildyLever,
 			wildyLeverTask,
@@ -352,7 +352,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 			)
 		));
 
-		sections.add(PanelDetails.diary(
+		sections.add(PanelDetails.lockedPanel(
 			"Combat Camp",
 			notEnterCombatCamp,
 			enterCombatCampTask,

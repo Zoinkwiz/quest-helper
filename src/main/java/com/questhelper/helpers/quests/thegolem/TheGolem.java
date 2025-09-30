@@ -33,7 +33,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
-import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -250,14 +250,16 @@ public class TheGolem extends BasicQuestHelper
 		inUpstairsMuseum = new ZoneRequirement(upstairsMuseum);
 		inThroneRoom = new ZoneRequirement(throneRoom);
 
-		hasReadLetter = new VarbitRequirement(VarbitID.GOLEM_B, 1, Operation.GREATER_EQUAL);
-		talkedToElissa = new VarbitRequirement(VarbitID.GOLEM_B, 2, Operation.GREATER_EQUAL);
-		hasReadNotes = new VarbitRequirement(VarbitID.GOLEM_B, 3, Operation.GREATER_EQUAL);
-		talkedToCurator = new VarbitRequirement(VarbitID.GOLEM_B, 4, Operation.GREATER_EQUAL);
+		var questSideState = new VarbitBuilder(VarbitID.GOLEM_B);
+		hasReadLetter = questSideState.ge(1);
+		talkedToElissa = questSideState.ge(2);
+		hasReadNotes = questSideState.ge(3);
+		talkedToCurator = questSideState.ge(4);
 
-		added1Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 1);
-		added2Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 2);
-		added3Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 3);
+		var golemClayState = new VarbitBuilder(VarbitID.GOLEM_CLAY);
+		added1Clay = golemClayState.eq(1);
+		added2Clay = golemClayState.eq(2);
+		added3Clay = golemClayState.eq(3);
 
 		turnedStatue1 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSA, 1);
 		turnedStatue2 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSB, 1);

@@ -24,6 +24,8 @@
  */
 package com.questhelper.requirements.var;
 
+import com.questhelper.requirements.util.Operation;
+
 /// VarbitBuilder can be used to build VarbitRequirements in case your
 /// quest needs to refer to multiple states of the same varbit.
 public class VarbitBuilder
@@ -41,5 +43,11 @@ public class VarbitBuilder
 	public VarbitRequirement eq(int value)
 	{
 		return new VarbitRequirement(id, value);
+	}
+
+	/// Returns a VarbitRequirement with the GREATER_EQUAL (>=) operator for the given value.
+	public VarbitRequirement ge(int value)
+	{
+		return new VarbitRequirement(id, value, Operation.GREATER_EQUAL);
 	}
 }

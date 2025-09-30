@@ -458,6 +458,7 @@ public class TheGolem extends BasicQuestHelper
 		return List.of(
 			varrockTeleport,
 			digsiteTeleport,
+			necklaceOfPassage,
 			waterskins
 		);
 	}

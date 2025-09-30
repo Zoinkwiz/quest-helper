@@ -285,7 +285,7 @@ public class TheGolem extends BasicQuestHelper
 		useClay3.addIcon(ItemID.SOFTCLAY);
 		useClay4 = new NpcStep(this, NpcID.GOLEM_PARTIALLY_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 1 soft clay on the Golem in Uzer.", clay1Highlight);
 		useClay4.addIcon(ItemID.SOFTCLAY);
-		// TODO: Add all clays to the same substep
+		useClay.addSubSteps(useClay2, useClay3, useClay4);
 
 		pickUpLetter = new DetailedQuestStep(this, new WorldPoint(3479, 3092, 0),
 			"Pick up the letter on the floor in Uzer and read it.", letter);

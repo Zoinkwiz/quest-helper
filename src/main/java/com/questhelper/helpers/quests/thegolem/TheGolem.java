@@ -30,6 +30,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
@@ -159,6 +160,9 @@ public class TheGolem extends BasicQuestHelper
 	ObjectStep enterThroneRoom;
 	ObjectStep leaveThroneRoom;
 
+	ObjectStep leaveRuin;
+	NpcStep talkToGolemAfterPortal;
+
 	ObjectStep pickBlackMushroom;
 
 	DetailedQuestStep grindMushroom;
@@ -172,10 +176,6 @@ public class TheGolem extends BasicQuestHelper
 	NpcStep useImplementOnGolem;
 
 	NpcStep useProgramOnGolem;
-
-	NpcStep talkToGolemAfterPortal;
-
-	ObjectStep leaveRuin;
 
 	@Override
 	protected void setupZones()
@@ -243,7 +243,7 @@ public class TheGolem extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemCollections.DIGSITE_PENDANTS);
 		digsiteTeleport.addAlternates(ItemID.TELEPORTSCROLL_DIGSITE);
-		necklaceOfPassage = new ItemRequirement("Necklace of passage to Eagle's Eyrie", ItemCollections.NECKLACE_OF_PASSAGES);
+		necklaceOfPassage = new TeleportItemRequirement("Necklace of passage to Eagle's Eyrie", ItemCollections.NECKLACE_OF_PASSAGES, 3);
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATER_SKIN4, -1);
 
 		inRuin = new ZoneRequirement(ruin);
@@ -278,6 +278,8 @@ public class TheGolem extends BasicQuestHelper
 		// -- Starting off
 		talkToGolem = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer to start the quest.");
 		talkToGolem.addDialogStep("Yes.");
+		talkToGolem.addTeleport(necklaceOfPassage.quantity(1));
+		talkToGolem.addDialogSteps("Eagle's Eyrie");
 
 		useClay = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 4 soft clay on the Golem in Uzer.", clay4Highlight);
 		useClay.addIcon(ItemID.SOFTCLAY);
@@ -291,35 +293,38 @@ public class TheGolem extends BasicQuestHelper
 
 		pickUpLetter = new DetailedQuestStep(this, new WorldPoint(3479, 3092, 0),
 			"Pick up the letter on the floor in Uzer and read it.", letter);
-		pickUpLetter.addTeleport(necklaceOfPassage);
 		pickUpLetter.addDialogSteps("Eagle's Eyrie");
 		readLetter = new DetailedQuestStep(this, "Read the letter.", letter);
 		pickUpLetter.addSubSteps(readLetter);
 
-		enterRuinForFirstTime = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		enterRuinForFirstTime = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins. You can drop the Letter you just read.");
 
 		pickUpImplement = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
 
 		// -- Finding the statuette
 		talkToElissa = new NpcStep(this, NpcID.GOLEM_ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north east of the Digsite.");
 		talkToElissa.addDialogStep("I found a letter in the desert with your name on.");
+		talkToElissa.addTeleport(digsiteTeleport);
 
 		searchBookcase = new ObjectStep(this, ObjectID.GOLEM_BOOKCASE, new WorldPoint(3367, 3332, 0), "Search the bookcase in the south east corner of the Digsite Exam Centre.");
 
-		readBook = new DetailedQuestStep(this, "Read the notes.", notesHighlight);
+		readBook = new DetailedQuestStep(this, "Read Varmen's notes.", notesHighlight);
 
-		talkToCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum.");
+		talkToCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum. You can drop Varmen's notes.");
 		talkToCurator.addDialogStep("I'm looking for a statuette recovered from the city of Uzer.");
+		talkToCurator.addTeleport(varrockTeleport);
 
-		pickpocketCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig.");
+		pickpocketCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig for the Display cabinet key.");
 
-		goUpInMuseum = new ObjectStep(this, ObjectID.FAI_VARROCK_WOODENSTAIRS_CASTLE, new WorldPoint(3267, 3453, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", key);
+		goUpInMuseum = new ObjectStep(this, ObjectID.FAI_VARROCK_WOODENSTAIRS_CASTLE, new WorldPoint(3266, 3452, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", key);
 
 		openCabinet = new ObjectStep(this, ObjectID.VM_TIMELINE_TERRACOTTA_STATUE, new WorldPoint(3257, 3453, 1), "Right-click open the golem statue's display case.", key);
 
 		// -- Opening the portal
 		enterRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", statuette, pestleAndMortar, vial, papyrus);
-		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		enterRuin.addTeleport(necklaceOfPassage.quantity(1));
+		enterRuin.addDialogSteps("Eagle's Eyrie");
+		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", pestleAndMortar, vial, papyrus);
 		enterRuin.addSubSteps(enterRuinWithoutStatuette);
 
 		useStatuette = new ObjectStep(this, ObjectID.GOLEM_STATUETTED, new WorldPoint(2725, 4896, 0), "Use the statue on the empty alcove.", statuetteHighlight);
@@ -331,15 +336,19 @@ public class TheGolem extends BasicQuestHelper
 		turnStatue4 = new ObjectStep(this, ObjectID.GOLEM_STATUETTED, new WorldPoint(2725, 4896, 0), "Turn each of the statuettes to face the door.");
 		turnStatue1.addSubSteps(turnStatue2, turnStatue3, turnStatue4);
 
-		enterThroneRoom = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.");
+		enterThroneRoom = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2720, 4912, 0), "Enter the portal.");
 		leaveThroneRoom = new ObjectStep(this, ObjectID.GOLEM_DEMON_PORTAL, new WorldPoint(2720, 4883, 2), "Leave the throne room and return to the Golem.");
+
+		leaveRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_BASE, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
+		talkToGolemAfterPortal = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
+		talkToGolemAfterPortal.addSubSteps(leaveRuin);
 
 		pickBlackMushroom = new ObjectStep(this, ObjectID.GOLEM_BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
 
 		grindMushroom = new DetailedQuestStep(this, "Grind the mushrooms into a vial.", pestleAndMortarHighlight, mushroomHighlight, vial);
 
 		stealFeather = new NpcStep(this, NpcID.GOLEM_PHOENIX, new WorldPoint(3414, 3154, 0), "Steal a feather from the desert phoenix north of Uzer.");
-		stealFeather.addTeleport(necklaceOfPassage);
+		stealFeather.addTeleport(necklaceOfPassage.quantity(1));
 		stealFeather.addDialogSteps("Eagle's Eyrie");
 
 		useFeatherOnInk = new DetailedQuestStep(this, "Use the phoenix feather on the ink.", phoenixFeather, inkHighlight);
@@ -350,10 +359,6 @@ public class TheGolem extends BasicQuestHelper
 		useImplementOnGolem.addIcon(ItemID.GOLEM_GOLEMKEY);
 		useProgramOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the golem program on the Golem in Uzer.", programHighlight);
 		useProgramOnGolem.addIcon(ItemID.GOLEM_PROGRAM);
-
-		talkToGolemAfterPortal = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
-
-		leaveRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_BASE, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
 	}
 
 	@Override
@@ -402,7 +407,7 @@ public class TheGolem extends BasicQuestHelper
 
 		steps.put(4, openPortal);
 
-		var goEnterPortal = new ConditionalStep(this, enterRuin);
+		var goEnterPortal = new ConditionalStep(this, enterRuinWithoutStatuette);
 		goEnterPortal.addStep(and(inRuin, strangeImplement), enterThroneRoom);
 		goEnterPortal.addStep(inRuin, pickUpImplement);
 

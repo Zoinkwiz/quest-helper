@@ -153,12 +153,12 @@ public class TempleOfIkov extends BasicQuestHelper
 
 		// TODO: Verify taking staff doesn't progress quest beyond varp 26 = 60
 		ConditionalStep goodOrBadPath = new ConditionalStep(this, enterDungeonGivenLimps);
-		goodOrBadPath.addStep(staffOfArmadyl.alsoCheckBank(questBank), bringStaffToLucien);
+		goodOrBadPath.addStep(staffOfArmadyl.alsoCheckBank(), bringStaffToLucien);
 		goodOrBadPath.addStep(new Conditions(inArmaRoom, shinyKey), makeChoice);
 		goodOrBadPath.addStep(new Conditions(inDemonArea, shinyKey), pushWall);
 		goodOrBadPath.addStep(new Conditions(LogicType.OR, inArmaRoom, inDemonArea), pickUpKey);
 		goodOrBadPath.addStep(new Conditions(LogicType.OR, inMainOrNorthRoom, inWitchRoom), talkToWinelda);
-		goodOrBadPath.addStep(shinyKey.alsoCheckBank(questBank), enterFromMcgrubbors);
+		goodOrBadPath.addStep(shinyKey.alsoCheckBank(), enterFromMcgrubbors);
 
 		steps.put(60, goodOrBadPath);
 

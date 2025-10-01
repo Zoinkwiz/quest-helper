@@ -175,8 +175,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		explorersRing = new TeleportItemRequirement("Explorers Ring (2) or above.", ItemID.LUMBRIDGE_RING_MEDIUM).isNotConsumed();
 		explorersRing.addAlternates(ItemID.LUMBRIDGE_RING_HARD, ItemID.LUMBRIDGE_RING_ELITE);
 
-		hasBluriteOre = bluriteOre.alsoCheckBank(questBank);
-		hasBluriteBar = bluriteBar.alsoCheckBank(questBank);
+		hasBluriteOre = bluriteOre.alsoCheckBank();
+		hasBluriteBar = bluriteBar.alsoCheckBank();
 
 		inMindAltar = new ZoneRequirement(mindAltar);
 		inBluriteDungeon = new ZoneRequirement(bluriteDungeon);

@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.deserttreasureii;
 
-import com.questhelper.bank.QuestBank;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
@@ -70,12 +69,9 @@ public class VardorvisSteps extends ConditionalStep
 		vardorvisMedallion, food;
 	Zone stranglewood, towerDefenseRoom, stranglewoodPyramidRoom, vardorvisArea, vault;
 
-	QuestBank questBank;
-
-	public VardorvisSteps(QuestHelper questHelper, NpcStep defaultStep, QuestBank questBank) // talkToElissa
+	public VardorvisSteps(QuestHelper questHelper, NpcStep defaultStep) // talkToElissa
 	{
 		super(questHelper, defaultStep);
-		this.questBank = questBank;
 		talkToElissa = defaultStep;
 
 		setupItemRequirements();
@@ -109,8 +105,8 @@ public class VardorvisSteps extends ConditionalStep
 		addStep(new Conditions(inStrangewood, finishedStranglewoodCutscene), talkToKasonde);
 		addStep(new Conditions(inStrangewood), runIntoStanglewood);
 		addStep(new Conditions(haveDrunkPotion), boardBoat);
-		addStep(new Conditions(haveReadPotionNote, strangePotion.alsoCheckBank(questBank)), drinkPotion);
-		addStep(new Conditions(new Conditions(LogicType.NOR, haveReadPotionNote), potionNote.alsoCheckBank(questBank)), readPotionNote);
+		addStep(new Conditions(haveReadPotionNote, strangePotion.alsoCheckBank()), drinkPotion);
+		addStep(new Conditions(new Conditions(LogicType.NOR, haveReadPotionNote), potionNote.alsoCheckBank()), readPotionNote);
 		addStep(talkedToBarus, searchDesk);
 		addStep(talkedToElissa, talkToBarus);
 	}
@@ -203,8 +199,8 @@ public class VardorvisSteps extends ConditionalStep
 		inStranglewoodPyramidRoom = new ZoneRequirement(stranglewoodPyramidRoom);
 		defendedKasondeWithHerb = new VarbitRequirement(VarbitID.DT2_STRANGLEWOOD, 34, Operation.GREATER_EQUAL);
 		receivedSerum = new VarbitRequirement(VarbitID.DT2_STRANGLEWOOD, 36, Operation.GREATER_EQUAL);
-		addedHerb = serumWithHerb.alsoCheckBank(questBank);
-		addedBerry = stranglerSerum.alsoCheckBank(questBank);
+		addedHerb = serumWithHerb.alsoCheckBank();
+		addedBerry = stranglerSerum.alsoCheckBank();
 		drankPotion = new VarbitRequirement(VarbitID.DT2_STRANGLEWOOD, 38, Operation.GREATER_EQUAL);
 		inAnyStranglewood = new Conditions(LogicType.OR, inStranglewoodPyramidRoom, inStrangewood);
 
@@ -409,8 +405,8 @@ public class VardorvisSteps extends ConditionalStep
 		returnToKasondeWithTempleKey = new ConditionalStep(getQuestHelper(), boardBoat,
 			"Return to Kasonde with the temple key, who is inside the main pyramid of the area to the north. " +
 				"Be ready for another fight.", combatGear, templeKey.hideConditioned(givenKasondeKey));
-		returnToKasondeWithTempleKey.addStep(new Conditions(inStranglewoodPyramidRoom, templeKey.alsoCheckBank(questBank)), giveKasondeKey);
-		returnToKasondeWithTempleKey.addStep(new Conditions(inAnyStranglewood, or(templeKey.alsoCheckBank(questBank), givenKasondeKey)), enterKasondeWithKey);
+		returnToKasondeWithTempleKey.addStep(new Conditions(inStranglewoodPyramidRoom, templeKey.alsoCheckBank()), giveKasondeKey);
+		returnToKasondeWithTempleKey.addStep(new Conditions(inAnyStranglewood, or(templeKey.alsoCheckBank(), givenKasondeKey)), enterKasondeWithKey);
 		returnToKasondeWithTempleKey.addStep(templeKeyNearby, pickUpTempleKey);
 		returnToKasondeWithTempleKey.addStep(inAnyStranglewood, getTempleKeyFromRocks);
 

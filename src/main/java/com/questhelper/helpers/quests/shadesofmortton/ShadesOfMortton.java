@@ -75,7 +75,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep goReadDiary = new ConditionalStep(this, searchShelf);
-		goReadDiary.addStep(diary.alsoCheckBank(questBank), readDiary);
+		goReadDiary.addStep(diary.alsoCheckBank(), readDiary);
 		steps.put(0, goReadDiary);
 
 		steps.put(5, addAshes);
@@ -112,7 +112,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		steps.put(60, makeSacredOil);
 
 		ConditionalStep saveRemains = new ConditionalStep(this, repairTemple);
-		saveRemains.addStep(new Conditions(serum208.alsoCheckBank(questBank), sacredOilHighlighted), useOilOnLog);
+		saveRemains.addStep(new Conditions(serum208.alsoCheckBank(), sacredOilHighlighted), useOilOnLog);
 		saveRemains.addStep(new Conditions(litFire, has20Sanctity, sacredOilHighlighted), use207OnFlame);
 		saveRemains.addStep(new Conditions(litFire, has20Sanctity), useOilOnFlame);
 		saveRemains.addStep(litFire, repairTo20Sanctity);

@@ -79,7 +79,7 @@ public class TearsOfGuthix extends BasicQuestHelper
 		steps.put(0, goTalkToJuna);
 
 		ConditionalStep goGetRock = new ConditionalStep(this, getToJunaRoom);
-		goGetRock.addStep(new Conditions(stoneBowl.alsoCheckBank(questBank), inJunaRoom), talkToJunaToFinish);
+		goGetRock.addStep(new Conditions(stoneBowl.alsoCheckBank(), inJunaRoom), talkToJunaToFinish);
 		goGetRock.addStep(rockHighlighted, useChiselOnRock);
 		goGetRock.addStep(atRocks, mineRock);
 		goGetRock.addStep(inJunaRoom, useLanternOnLightCreature);

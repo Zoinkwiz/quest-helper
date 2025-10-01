@@ -87,7 +87,7 @@ public class GrimTales extends BasicQuestHelper
 		steps.put(4, talkToSylas);
 
 		ConditionalStep getHelmet = new ConditionalStep(this, climbWall);
-		getHelmet.addStep(rupertsHelmet.alsoCheckBank(questBank), giveHelmetToSylas);
+		getHelmet.addStep(rupertsHelmet.alsoCheckBank(), giveHelmetToSylas);
 		getHelmet.addStep(releasedRupert, talkToRupertAfterAmulet);
 		getHelmet.addStep(new Conditions(givenPendant), talkMizAfterPendant);
 		getHelmet.addStep(new Conditions(hasMiazrqasPendant), givePendant);

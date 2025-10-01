@@ -211,7 +211,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		// Required items
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		pots = new ItemRequirement("Pot", ItemID.POT_EMPTY).isNotConsumed();
-		potNeeded = new ItemRequirement("Pot", ItemID.POT_EMPTY, 8).alsoCheckBank(questBank).highlighted().isNotConsumed();
+		potNeeded = new ItemRequirement("Pot", ItemID.POT_EMPTY, 8).alsoCheckBank().highlighted().isNotConsumed();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
@@ -261,9 +261,9 @@ public class RagAndBoneManII extends BasicQuestHelper
 		jugOfVinegar = new ItemRequirement("Jar of vinegar", ItemID.RAG_VINEGAR);
 		potOfVinegar = new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR);
 		potOfVinegarNeeded =
-			new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
+			new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR, 8).alsoCheckBank().highlighted();
 		jugOfVinegarNeeded =
-			new ItemRequirement("Jug of vinegar", ItemID.RAG_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
+			new ItemRequirement("Jug of vinegar", ItemID.RAG_VINEGAR, 8).alsoCheckBank().highlighted();
 		coinsOrVinegar = new ItemRequirement("Pots/Jugs of vinegar, or coins to buy", ItemID.RAG_POT_VINEGAR);
 		coinsOrVinegar.addAlternates(ItemID.RAG_VINEGAR, ItemID.COINS);
 
@@ -284,7 +284,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		AtomicInteger winesNeededQuantity = new AtomicInteger(27);
 
 		stepsForRagAndBoneManII.forEach((RagBoneState state, QuestStep step) -> {
-			if (state.hadBoneInVinegarItem(questBank).check(client))
+			if (state.hadBoneInVinegarItem().check(client))
 			{
 				winesNeededQuantity.getAndDecrement();
 			}
@@ -356,15 +356,15 @@ public class RagAndBoneManII extends BasicQuestHelper
 		mogreNearby = new NpcInteractingRequirement(NpcID.MUDSKIPPER_OGRE);
 
 
-		allBonesPolished = new Conditions(RagBoneGroups.allBonesPolished(RagBoneGroups.getRagBoneIIStates(),
-			questBank));
+		allBonesPolished = new Conditions(RagBoneGroups.allBonesPolished(RagBoneGroups.getRagBoneIIStates()
+		));
 
 		allBonesAtLeastAddedToVinegar =
-			new Conditions(RagBoneGroups.allBonesAddedToVinegar(RagBoneGroups.getRagBoneIIStates(), questBank));
+			new Conditions(RagBoneGroups.allBonesAddedToVinegar(RagBoneGroups.getRagBoneIIStates()));
 
-		hadAllBones = new Conditions(RagBoneGroups.allBonesObtained(RagBoneGroups.getRagBoneIIStates(), questBank));
+		hadAllBones = new Conditions(RagBoneGroups.allBonesObtained(RagBoneGroups.getRagBoneIIStates()));
 
-		hadVinegar = new Conditions(jugOfVinegar.alsoCheckBank(questBank));
+		hadVinegar = new Conditions(jugOfVinegar.alsoCheckBank());
 
 		// TODO: Setup check for marking bones 'done' if not on list
 		// Widget 220, 7-15, check Text
@@ -546,7 +546,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 			jugOfVinegarNeeded, potNeeded);
 
 		useBonesOnVinegar = new DetailedQuestStep(this, "Use the bones on the pots of vinegar.", potOfVinegar.highlighted());
-		useBonesOnVinegar.addItemRequirements(RagBoneGroups.bonesToAddToVinegar(RagBoneGroups.getRagBoneIIStates(), questBank));
+		useBonesOnVinegar.addItemRequirements(RagBoneGroups.bonesToAddToVinegar(RagBoneGroups.getRagBoneIIStates()));
 
 		placeLogs = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Place logs under the pot-boiler near the Odd Old Man. If you've already polished all the bones, hand " +
@@ -694,7 +694,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		// Take all reqs and compile as locking step for mory
 		morySteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Morytania"));
 		mapForMory.forEach((RagBoneState state, QuestStep step) -> {
-			moryReqsList.add(state.hadBoneItem(questBank));
+			moryReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -702,14 +702,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			morySteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			morySteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		moryReqs = new Conditions(moryReqsList);
 		morySteps.setLockingCondition(moryReqs);
 
 		varrockSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Varrock"));
 		mapForVarrock.forEach((RagBoneState state, QuestStep step) -> {
-			varrockReqsList.add(state.hadBoneItem(questBank));
+			varrockReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -717,14 +717,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			varrockSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			varrockSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		varrockReqs = new Conditions(varrockReqsList);
 		varrockSteps.setLockingCondition(varrockReqs);
 
 		lumbridgeSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Lumbridge"));
 		mapForLumbridge.forEach((RagBoneState state, QuestStep step) -> {
-			lumbridgeReqsList.add(state.hadBoneItem(questBank));
+			lumbridgeReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -732,14 +732,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			lumbridgeSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			lumbridgeSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		lumbridgeReqs = new Conditions(lumbridgeReqsList);
 		lumbridgeSteps.setLockingCondition(lumbridgeReqs);
 
 		desertSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Desert"));
 		mapForDesert.forEach((RagBoneState state, QuestStep step) -> {
-			desertReqsList.add(state.hadBoneItem(questBank));
+			desertReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -747,14 +747,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			desertSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			desertSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		desertReqs = new Conditions(desertReqsList);
 		desertSteps.setLockingCondition(desertReqs);
 
 		sarimSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Port Sarim"));
 		mapForSarim.forEach((RagBoneState state, QuestStep step) -> {
-			sarimReqsList.add(state.hadBoneItem(questBank));
+			sarimReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -762,14 +762,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			sarimSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			sarimSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		sarimReqs = new Conditions(sarimReqsList);
 		sarimSteps.setLockingCondition(sarimReqs);
 
 		karamjaSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Karamja"));
 		mapForKaramja.forEach((RagBoneState state, QuestStep step) -> {
-			karamjaReqsList.add(state.hadBoneItem(questBank));
+			karamjaReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -777,14 +777,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			karamjaSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			karamjaSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		karamjaReqs = new Conditions(karamjaReqsList);
 		karamjaSteps.setLockingCondition(karamjaReqs);
 
 		taverleySteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Taverley"));
 		mapForTaverley.forEach((RagBoneState state, QuestStep step) -> {
-			taverleyReqsList.add(state.hadBoneItem(questBank));
+			taverleyReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -792,14 +792,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			taverleySteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			taverleySteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		taverleyReqs = new Conditions(taverleyReqsList);
 		taverleySteps.setLockingCondition(taverleyReqs);
 
 		fremennikSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Fremennik"));
 		mapForFremennik.forEach((RagBoneState state, QuestStep step) -> {
-			fremennikReqsList.add(state.hadBoneItem(questBank));
+			fremennikReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -807,14 +807,14 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			fremennikSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			fremennikSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		fremennikReqs = new Conditions(fremennikReqsList);
 		fremennikSteps.setLockingCondition(fremennikReqs);
 
 		strongholdSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Gnome"));
 		mapForStronghold.forEach((RagBoneState state, QuestStep step) -> {
-			strongholdReqsList.add(state.hadBoneItem(questBank));
+			strongholdReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			if (step instanceof ConditionalStep)
@@ -822,18 +822,18 @@ public class RagAndBoneManII extends BasicQuestHelper
 				((ConditionalStep) step).getSteps().forEach((QuestStep substep) -> substep.addSubSteps(pickupBoneStep));
 			}
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			strongholdSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			strongholdSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		strongholdReqs = new Conditions(strongholdReqsList);
 		strongholdSteps.setLockingCondition(strongholdReqs);
 
 		feldipSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state Feldip"));
 		mapForFeldip.forEach((RagBoneState state, QuestStep step) -> {
-			feldipReqsList.add(state.hadBoneItem(questBank));
+			feldipReqsList.add(state.hadBoneItem());
 			ItemStep pickupBoneStep = new ItemStep(this, "Pickup the bone.", state.getBoneItem());
 			step.addSubSteps(pickupBoneStep);
 			pickupBoneSteps.addStep(new ItemOnTileRequirement(state.getBoneItem()), pickupBoneStep);
-			feldipSteps.addStep(nor(state.hadBoneItem(questBank)), step);
+			feldipSteps.addStep(nor(state.hadBoneItem()), step);
 		});
 		feldipReqs = new Conditions(feldipReqsList);
 		feldipSteps.setLockingCondition(feldipReqs);

@@ -124,7 +124,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		doMedium.addStep(notUsedGlider, usedGliderTask);
 
 		caughtKarambwanTask = new ConditionalStep(this, catchKarambwanji);
-		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(questBank), catchKarambwan);
+		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(), catchKarambwan);
 		doMedium.addStep(notCaughtKarambwan, caughtKarambwanTask);
 
 		charteredFromShipyardTask = new ConditionalStep(this, charterFromShipyard);

@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.ragandboneman;
 
-import com.questhelper.bank.QuestBank;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -124,39 +123,39 @@ public enum RagBoneState
 		hadFromWidgets = new Conditions(true, hadFromWidgetsCheck);
 	}
 
-	public Requirement hadBoneItem(QuestBank questBank)
+	public Requirement hadBoneItem()
 	{
 		if (hadBoneItem == null)
 		{
 			hadBoneItem = new Conditions(LogicType.OR,
-				hadBoneInVinegarItem(questBank),
-				boneItem.alsoCheckBank(questBank)
+				hadBoneInVinegarItem(),
+				boneItem.alsoCheckBank()
 			);
 		}
 
 		return hadBoneItem;
 	}
 
-	public Requirement hadBoneInVinegarItem(QuestBank questBank)
+	public Requirement hadBoneInVinegarItem()
 	{
 		if (hadBoneInVinegar == null)
 		{
 			hadBoneInVinegar = new Conditions(LogicType.OR,
-				boneProcessed(questBank),
+				boneProcessed(),
 				boneIsBeingCleaned,
-				boneInVinegarItem.alsoCheckBank(questBank)
+				boneInVinegarItem.alsoCheckBank()
 			);
 		}
 
 		return hadBoneInVinegar;
 	}
 
-	public Requirement boneProcessed(QuestBank questBank)
+	public Requirement boneProcessed()
 	{
 		if (hadBoneProcessed == null)
 		{
 			hadBoneProcessed = new Conditions(LogicType.OR,
-				boneCleanedItem.alsoCheckBank(questBank),
+				boneCleanedItem.alsoCheckBank(),
 				handedInBone()
 			);
 		}

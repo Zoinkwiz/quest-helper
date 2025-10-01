@@ -170,13 +170,13 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeAmulet.addStep(inHangar, talkToWaydarForAmuletMake);
 		makeAmulet.addStep(inFloor1, talkToDaeroForAmuletMake);
 		makeAmulet.addStep(inZooknockDungeon, leaveToPrepareForAmulet);
-		makeAmulet.setLockingCondition(amulet.alsoCheckBank(questBank));
+		makeAmulet.setLockingCondition(amulet.alsoCheckBank());
 
 		getTalisman = new ConditionalStep(this, talkToMonkeyChild);
 		getTalisman.addStep(inTempleDungeon, leaveTempleDungeon);
 		getTalisman.setLockingCondition(hasTalisman);
 
-		ItemRequirement talismans4 = anyTalisman.quantity(4).alsoCheckBank(questBank);
+		ItemRequirement talismans4 = anyTalisman.quantity(4).alsoCheckBank();
 		getBones = new ConditionalStep(this, talkToChildFor4Talismans);
 		getBones.addStep(and(talismans4, ninjaBones, gorillaBones, inTempleDungeon), killZombie);
 		getBones.addStep(and(talismans4, ninjaBones, gorillaBones), goDownToZombie);
@@ -195,14 +195,14 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeKaramjanGreeGree.addStep(inTempleDungeon, leaveToPrepareForTalismanRun);
 		makeKaramjanGreeGree.addStep(inMouldRoom, leaveToPrepareForTalismanRun);
 		makeKaramjanGreeGree.addStep(onApeAtollNorth, leaveToPrepareForTalismanRun);
-		makeKaramjanGreeGree.setLockingCondition(karamjanGreegree.alsoCheckBank(questBank));
+		makeKaramjanGreeGree.setLockingCondition(karamjanGreegree.alsoCheckBank());
 
 		ConditionalStep infiltratingTheMonkeys = new ConditionalStep(this, getAmuletParts);
-		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, talismans4, zombieBones.alsoCheckBank(questBank),
-			gorillaBones.alsoCheckBank(questBank),
-			ninjaBones.alsoCheckBank(questBank)), makeKaramjanGreeGree);
-		infiltratingTheMonkeys.addStep(and(talkedToGarkor, amulet.alsoCheckBank(questBank), talisman.alsoCheckBank(questBank)), getBones);
-		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, amulet.alsoCheckBank(questBank)), getTalisman);
+		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, talismans4, zombieBones.alsoCheckBank(),
+			gorillaBones.alsoCheckBank(),
+			ninjaBones.alsoCheckBank()), makeKaramjanGreeGree);
+		infiltratingTheMonkeys.addStep(and(talkedToGarkor, amulet.alsoCheckBank(), talisman.alsoCheckBank()), getBones);
+		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, amulet.alsoCheckBank()), getTalisman);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadEnchantedBar), makeAmulet);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadDenturesAndMould), makeBar);
 

@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.deserttreasureii;
 
-import com.questhelper.bank.QuestBank;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
@@ -58,8 +57,6 @@ import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class WhispererSteps extends ConditionalStep
 {
-	QuestBank questBank;
-
 	QuestStep enterRuinsOfCamdozaal, talkToRamarno, talkToPrescott, attachRope, descendDownRope,
 		activateTeleporter1, activateTeleporter2, activateTeleporter3, activateTeleporter4, activateTeleporter5,
 		activateTeleporter6, activateTeleporter7, recallShadowBlocker, useTeleporterToKetla, useTeleporterToScienceDistrict,
@@ -119,10 +116,9 @@ public class WhispererSteps extends ConditionalStep
 		lassarShadowRealmSW, drainF0, drainF1, visionRegion, startingRoom, scienceDistrict, residentialDistrict,
 		eastShadowRealm, realPub;
 
-	public WhispererSteps(QuestHelper questHelper, QuestStep defaultStep, QuestBank questBank)
+	public WhispererSteps(QuestHelper questHelper, QuestStep defaultStep)
 	{
 		super(questHelper, defaultStep);
-		this.questBank = questBank;
 		setupItemRequirements();
 		setupZones();
 		setupConditions();
@@ -297,8 +293,8 @@ public class WhispererSteps extends ConditionalStep
 
 		/* Quest items */
 		whisperersMedallion = new ItemRequirement("Whisperer's medallion", ItemID.DT2_MEDALLION_WHISPERER)
-			.alsoCheckBank(questBank);
-		veryLongRope = new ItemRequirement("Very long rope", ItemID.DT2_LASSAR_ROPE).alsoCheckBank(questBank);
+			.alsoCheckBank();
+		veryLongRope = new ItemRequirement("Very long rope", ItemID.DT2_LASSAR_ROPE).alsoCheckBank();
 		shadowBlockerSchematic = new ItemRequirement("Shadow blocker schematic", ItemID.DT2_LASSAR_SHADOW_BLOCKER_SCHEMATIC);
 		greenShadowKey = new ItemRequirement("Shadow key", ItemID.DT2_LASSAR_KEY_5);
 		purpleShadowKey = new ItemRequirement("Shadow key", ItemID.DT2_LASSAR_KEY_1);

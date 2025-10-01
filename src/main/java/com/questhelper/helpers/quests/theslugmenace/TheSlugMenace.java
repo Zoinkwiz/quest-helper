@@ -289,11 +289,11 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		pickedUpSlug = new VarbitRequirement(VarbitID.SLUG2_HAVESLUG, 1);
 
-		hasOrUsedAirRune = new Conditions(LogicType.OR, airRune.alsoCheckBank(questBank), usedAirRune);
-		hasOrUsedWaterRune = new Conditions(LogicType.OR, waterRune.alsoCheckBank(questBank), usedWaterRune);
-		hasOrUsedEarthRune = new Conditions(LogicType.OR, earthRune.alsoCheckBank(questBank), usedEarthRune);
-		hasOrUsedFireRune = new Conditions(LogicType.OR, fireRune.alsoCheckBank(questBank), usedFireRune);
-		hasOrUsedMindRune = new Conditions(LogicType.OR, mindRune.alsoCheckBank(questBank), usedMindRune);
+		hasOrUsedAirRune = new Conditions(LogicType.OR, airRune.alsoCheckBank(), usedAirRune);
+		hasOrUsedWaterRune = new Conditions(LogicType.OR, waterRune.alsoCheckBank(), usedWaterRune);
+		hasOrUsedEarthRune = new Conditions(LogicType.OR, earthRune.alsoCheckBank(), usedEarthRune);
+		hasOrUsedFireRune = new Conditions(LogicType.OR, fireRune.alsoCheckBank(), usedFireRune);
+		hasOrUsedMindRune = new Conditions(LogicType.OR, mindRune.alsoCheckBank(), usedMindRune);
 
 		hasAllRunes = new Conditions(hasOrUsedAirRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune, hasOrUsedWaterRune);
 

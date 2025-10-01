@@ -251,8 +251,8 @@ public class DaddysHome extends BasicQuestHelper
 
 		var cRepairFurniture = new ConditionalStep(this, talkToYarloAfterBuildingFurniture);
 		cRepairFurniture.addStep(needToBuildSimpleFurniture, buildSimpleFurniture);
-		cRepairFurniture.addStep(and(needToBuildCampbed, waxwoodPlank3.alsoCheckBank(questBank)), buildCampbed);
-		cRepairFurniture.addStep(and(needToBuildCampbed, waxwoodLog3.alsoCheckBank(questBank)), talkToOperator);
+		cRepairFurniture.addStep(and(needToBuildCampbed, waxwoodPlank3.alsoCheckBank()), buildCampbed);
+		cRepairFurniture.addStep(and(needToBuildCampbed, waxwoodLog3.alsoCheckBank()), talkToOperator);
 		cRepairFurniture.addStep(needToBuildCampbed, searchCrate);
 
 		steps.put(5, cRepairFurniture);

@@ -159,11 +159,11 @@ public class HopespearsWill extends BasicQuestHelper
 		plainOfMudSphere.addAlternates(ItemID.LOTG_TELEPORT_ARTIFACT);
 		combatLevel = new ItemRequirement("90+ combat", -1, -1);
 
-		snotheadBones = new ItemRequirement("Snothead bones", ItemID.LOTG_BONE_HIGHPRIEST1).alsoCheckBank(questBank);
-		snailfeetBones = new ItemRequirement("Snailfeet bones", ItemID.LOTG_BONE_HIGHPRIEST2).alsoCheckBank(questBank);
-		mosschinBones = new ItemRequirement("Mosschin bones", ItemID.LOTG_BONE_HIGHPRIEST3).alsoCheckBank(questBank);
-		redeyesBones = new ItemRequirement("Redeyes bones", ItemID.LOTG_BONE_HIGHPRIEST4).alsoCheckBank(questBank);
-		strongbonesBones = new ItemRequirement("Strongbones bones", ItemID.LOTG_BONE_HIGHPRIEST5).alsoCheckBank(questBank);
+		snotheadBones = new ItemRequirement("Snothead bones", ItemID.LOTG_BONE_HIGHPRIEST1).alsoCheckBank();
+		snailfeetBones = new ItemRequirement("Snailfeet bones", ItemID.LOTG_BONE_HIGHPRIEST2).alsoCheckBank();
+		mosschinBones = new ItemRequirement("Mosschin bones", ItemID.LOTG_BONE_HIGHPRIEST3).alsoCheckBank();
+		redeyesBones = new ItemRequirement("Redeyes bones", ItemID.LOTG_BONE_HIGHPRIEST4).alsoCheckBank();
+		strongbonesBones = new ItemRequirement("Strongbones bones", ItemID.LOTG_BONE_HIGHPRIEST5).alsoCheckBank();
 
 		inGoblinCave = new ZoneRequirement(goblinCave);
 		nothingEquipped = new NoItemRequirement("No items equipped", ItemSlots.ANY_EQUIPPED);

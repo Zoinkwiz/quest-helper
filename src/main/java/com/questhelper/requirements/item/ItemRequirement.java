@@ -27,7 +27,6 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.bank.QuestBank;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.managers.ItemAndLastUpdated;
@@ -125,13 +124,6 @@ public class ItemRequirement extends AbstractRequirement
 	@Setter
 	@Getter
 	protected Requirement conditionToHide = new ManualRequirement();
-
-	/**
-	 * The quest bank used for additional bank checks.
-	 */
-	@Setter
-	@Getter
-	private QuestBank questBank;
 
 	/**
 	 * Flag to indicate whether the bank should be checked.
@@ -380,26 +372,14 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	/**
-	 * Configures this requirement to check the specified quest bank. Needs to not need {@link QuestBank} in the future as it no longer uses it.
+	 * Returns a copy of this requirement that includes bank containers in its checks.
 	 *
-	 * @param questBank the {@link QuestBank} to use for bank checks; if {@code null}, bank checks are disabled
-	 */
-	public void useQuestBank(QuestBank questBank)
-	{
-		this.shouldCheckBank = questBank != null;
-		this.questBank = questBank;
-	}
-
-	/**
-	 * Returns a copy of this requirement that also checks the specified quest bank. Needs to not need {@link QuestBank} in the future as it no longer uses it.
-	 *
-	 * @param questBank the {@link QuestBank} to use for additional bank checks
 	 * @return a new {@link ItemRequirement} instance configured to check the bank
 	 */
-	public ItemRequirement alsoCheckBank(QuestBank questBank)
+	public ItemRequirement alsoCheckBank()
 	{
 		ItemRequirement newItem = copy();
-		newItem.useQuestBank(questBank);
+		newItem.setShouldCheckBank(true);
 		return newItem;
 	}
 
@@ -526,7 +506,6 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
-		newItem.questBank = questBank;
 		newItem.isConsumedItem = isConsumedItem;
 		newItem.shouldAggregate = shouldAggregate;
 		// Need to get actual tooltip or we get the appended containers info

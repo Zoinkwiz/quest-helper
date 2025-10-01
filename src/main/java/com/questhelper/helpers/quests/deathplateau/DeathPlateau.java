@@ -121,8 +121,8 @@ public class DeathPlateau extends BasicQuestHelper
 		finalSteps.addStep(new Conditions(isFarEnough, inBarUpstairs), goToHaroldDoor3);
 		finalSteps.addStep(new Conditions(isFarEnough), goToHaroldDoor3);
 		finalSteps.addStep(new Conditions(secretMap), goNorth);
-		finalSteps.addStep(new Conditions(spikedBoots.alsoCheckBank(questBank)), talkToTenzing2);
-		finalSteps.addStep(new Conditions(climbingBoots, certificate.alsoCheckBank(questBank)), talkToDunstan2);
+		finalSteps.addStep(new Conditions(spikedBoots.alsoCheckBank()), talkToTenzing2);
+		finalSteps.addStep(new Conditions(climbingBoots, certificate.alsoCheckBank()), talkToDunstan2);
 		finalSteps.addStep(new Conditions(climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
 		finalSteps.addStep(new Conditions(climbingBoots), talkToDunstan1);
 		finalSteps.addStep(new Conditions(talkedToSaba, inSabaCave), leaveSabaCave);

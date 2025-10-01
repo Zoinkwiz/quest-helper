@@ -83,16 +83,16 @@ public class DeviousMinds extends BasicQuestHelper
 		steps.put(0, talkToMonk);
 
 		ConditionalStep makeEntireBowSword = new ConditionalStep(this, makeBlade);
-		makeEntireBowSword.addStep(bowSword.alsoCheckBank(questBank), talkToMonk2);
-		makeEntireBowSword.addStep(slenderBlade.alsoCheckBank(questBank), makeBowSword);
+		makeEntireBowSword.addStep(bowSword.alsoCheckBank(), talkToMonk2);
+		makeEntireBowSword.addStep(slenderBlade.alsoCheckBank(), makeBowSword);
 		steps.put(10, makeEntireBowSword);
 		steps.put(20, talkToMonk2);   //Finished talking
 
 		ConditionalStep entranaAltarPouch = new ConditionalStep(this, makeIllumPouch);
-		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), onEntrana), usePouchOnAltar);
-		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), inLawAlter), leaveLawAltar);
-		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), inAbyss), enterLawRift);
-		entranaAltarPouch.addStep(illumPouch.alsoCheckBank(questBank), teleToAbyss);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(), onEntrana), usePouchOnAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(), inLawAlter), leaveLawAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(), inAbyss), enterLawRift);
+		entranaAltarPouch.addStep(illumPouch.alsoCheckBank(), teleToAbyss);
 		steps.put(30, entranaAltarPouch);
 		steps.put(40, entranaAltarPouch);   //Cutscene finished
 

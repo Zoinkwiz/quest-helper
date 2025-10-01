@@ -89,7 +89,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 
 		ConditionalStep saveGuide = new ConditionalStep(this, mixIngredients);
 		saveGuide.addStep(new Conditions(guidanceCake, inDiningRoom), useCakeOnLumbridgeGuide);
-		saveGuide.addStep(guidanceCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		saveGuide.addStep(guidanceCake.alsoCheckBank(), enterDiningRoomAgain);
 		saveGuide.addStep(rawGuidanceCake, cookCake);
 		steps.put(3, saveGuide);
 		steps.put(4, saveGuide);

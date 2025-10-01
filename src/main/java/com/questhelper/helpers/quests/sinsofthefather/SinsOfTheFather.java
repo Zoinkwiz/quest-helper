@@ -258,13 +258,13 @@ public class SinsOfTheFather extends BasicQuestHelper
 		steps.put(110, valveStep);
 
 		ConditionalStep getLogs = new ConditionalStep(this, cutLogs);
-		getLogs.addStep(blisterwood8.alsoCheckBank(questBank), bringVanesculaLogs);
+		getLogs.addStep(blisterwood8.alsoCheckBank(), bringVanesculaLogs);
 
 		steps.put(112, getLogs);
 
 		ConditionalStep bringItemsToVertida = new ConditionalStep(this, cutLogs);
 		bringItemsToVertida.addStep(new Conditions(inNewBase, blisterwood8), bringVertidaLogs);
-		bringItemsToVertida.addStep(blisterwood8.alsoCheckBank(questBank), goDownToVerditaWithLogs);
+		bringItemsToVertida.addStep(blisterwood8.alsoCheckBank(), goDownToVerditaWithLogs);
 		steps.put(114, bringItemsToVertida);
 
 		steps.put(116, talkToVertidaForFlail);

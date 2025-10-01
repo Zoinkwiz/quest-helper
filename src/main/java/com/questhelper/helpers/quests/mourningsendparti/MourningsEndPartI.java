@@ -114,8 +114,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 		enterMournerHQ.addStep(inMournerHQ, enterBasement);
 
 		ConditionalStep prepareItems = new ConditionalStep(this, getItems);
-		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(questBank), mournerLegs.alsoCheckBank(questBank)), enterMournerHQ);
-		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(questBank)), repairTrousersSteps);
+		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(), mournerLegs.alsoCheckBank()), enterMournerHQ);
+		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank()), repairTrousersSteps);
 		prepareItems.addStep(new Conditions(hasAllMournerItems), cleanTopSteps);
 
 		steps.put(3, prepareItems);
@@ -156,11 +156,11 @@ public class MourningsEndPartI extends BasicQuestHelper
 		takeAppleToElena.addStep(new Conditions(twoPoisoned, inMournerHQ), enterMournerBasementAfterPoison);
 		takeAppleToElena.addStep(twoPoisoned, enterMournerBaseAfterPoison);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, poisoned1), usePowderOnFood2);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicPowder.alsoCheckBank(questBank)), usePowderOnFood1);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicPowder.alsoCheckBank()), usePowderOnFood1);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicNaphtha), cookNaphtha);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, naphthaAppleMix), useSieveOnBarrel);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank), naphtha), useNaphthaOnBarrel);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank)), getNaphtha);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(), naphtha), useNaphthaOnBarrel);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank()), getNaphtha);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, barrelOfRottenApples), useApplesOnPress);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, emptyBarrel), useBarrelOnPile);
 		takeAppleToElena.addStep(receivedSieve, pickUpBarrel);

@@ -341,7 +341,7 @@ public class ItemRequirements extends ItemRequirement
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
 		newItem.setConditionToHide(getConditionToHide());
-		newItem.setQuestBank(getQuestBank());
+		newItem.setShouldCheckBank(isShouldCheckBank());
 		newItem.setTooltip(tooltip);
 		newItem.additionalOptions = additionalOptions;
 

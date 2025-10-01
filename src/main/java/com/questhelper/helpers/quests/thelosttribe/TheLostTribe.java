@@ -108,7 +108,7 @@ public class TheLostTribe extends BasicQuestHelper
 		steps.put(8, goTalkToDukeAfterEmote);
 
 		ConditionalStep revealSigmund = new ConditionalStep(this, goGetKey);
-		revealSigmund.addStep(silverware.alsoCheckBank(questBank), goToDukeWithSilverware);
+		revealSigmund.addStep(silverware.alsoCheckBank(), goToDukeWithSilverware);
 		revealSigmund.addStep(foundRobes, goIntoHamLair);
 		revealSigmund.addStep(key, goOpenRobeChest);
 		steps.put(9, revealSigmund);

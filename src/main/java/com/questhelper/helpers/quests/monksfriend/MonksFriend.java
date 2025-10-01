@@ -139,8 +139,8 @@ public class MonksFriend extends BasicQuestHelper
 		steps.put(0, talkToOmad);
 
 		var getBlanket = new ConditionalStep(this, goDownLadder);
-		getBlanket.addStep(and(inDungeon, blanket.alsoCheckBank(questBank)), goUpLadder);
-		getBlanket.addStep(blanket.alsoCheckBank(questBank), returnToOmadWithBlanket);
+		getBlanket.addStep(and(inDungeon, blanket.alsoCheckBank()), goUpLadder);
+		getBlanket.addStep(blanket.alsoCheckBank(), returnToOmadWithBlanket);
 		getBlanket.addStep(inDungeon, grabBlanket);
 
 		steps.put(10, getBlanket);

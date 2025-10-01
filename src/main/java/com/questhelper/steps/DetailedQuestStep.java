@@ -28,7 +28,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.bank.QuestBank;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -77,9 +76,6 @@ public class DetailedQuestStep extends QuestStep
 
 	@Inject
 	EventBus eventBus;
-
-	@Inject
-	private QuestBank questBank;
 
 	@Getter
 	protected WorldPoint worldPoint;

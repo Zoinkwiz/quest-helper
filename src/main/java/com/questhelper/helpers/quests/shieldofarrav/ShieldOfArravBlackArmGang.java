@@ -86,16 +86,16 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		gettingTheCrossbows.addStep(twoPhoenixCrossbow, returnToKatrine);
 		gettingTheCrossbows.addStep(new Conditions(weaponMasterAlive, inStoreRoom), killWeaponsMaster);
 		gettingTheCrossbows.addStep(inStoreRoom, pickupTwoCrossbows);
-		gettingTheCrossbows.addStep(storeRoomKey.alsoCheckBank(questBank), goUpToWeaponStore);
+		gettingTheCrossbows.addStep(storeRoomKey.alsoCheckBank(), goUpToWeaponStore);
 
 		steps.put(2, gettingTheCrossbows);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, goUpstairsInBase);
-		completeQuest.addStep(certificate.alsoCheckBank(questBank), talkToRoald);
-		completeQuest.addStep(new Conditions(certificateHalf.alsoCheckBank(questBank), phoenixCertificateHalf.alsoCheckBank(questBank)), combineCertificate);
-		completeQuest.addStep(certificateHalf.alsoCheckBank(questBank), tradeCertificateHalf);
-		completeQuest.addStep(new Conditions(shieldHalf.alsoCheckBank(questBank), isUpstairsInBase), goDownstairsInBase);
-		completeQuest.addStep(shieldHalf.alsoCheckBank(questBank), talkToHaig);
+		completeQuest.addStep(certificate.alsoCheckBank(), talkToRoald);
+		completeQuest.addStep(new Conditions(certificateHalf.alsoCheckBank(), phoenixCertificateHalf.alsoCheckBank()), combineCertificate);
+		completeQuest.addStep(certificateHalf.alsoCheckBank(), tradeCertificateHalf);
+		completeQuest.addStep(new Conditions(shieldHalf.alsoCheckBank(), isUpstairsInBase), goDownstairsInBase);
+		completeQuest.addStep(shieldHalf.alsoCheckBank(), talkToHaig);
 		completeQuest.addStep(new Conditions(isUpstairsInBase, cupboardOpen), getShieldFromCupboard1);
 		completeQuest.addStep(isUpstairsInBase, getShieldFromCupboard);
 

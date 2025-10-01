@@ -187,7 +187,7 @@ public class HazeelCult extends BasicQuestHelper
 		inManorF2LadderRoom = new ZoneRequirement(manorF2LadderRoom);
 
 		// Got armour, 14778 0->1
-		hadArmour = or(givenArmour, carnilleanArmour.alsoCheckBank(questBank));
+		hadArmour = or(givenArmour, carnilleanArmour.alsoCheckBank());
 
 		// Talking to Ceril
 		// 3679 -1 -> 71
@@ -376,13 +376,13 @@ public class HazeelCult extends BasicQuestHelper
 
 		var goTalkToClivetAfterPoison = new ConditionalStep(this, goTalkAfterPoison);
 		// Probably don't actually need the mark but nice to ensure the player gets it
-		goTalkToClivetAfterPoison.addStep(and(inCultRoom, hazeelMark.alsoCheckBank(questBank)), talkToAlomone);
-		goTalkToClivetAfterPoison.addStep(and(inCultEntrance, valveStepsHazeel.solved, hazeelMark.alsoCheckBank(questBank)), boardRaftAfterPoison);
+		goTalkToClivetAfterPoison.addStep(and(inCultRoom, hazeelMark.alsoCheckBank()), talkToAlomone);
+		goTalkToClivetAfterPoison.addStep(and(inCultEntrance, valveStepsHazeel.solved, hazeelMark.alsoCheckBank()), boardRaftAfterPoison);
 		goTalkToClivetAfterPoison.addStep(and(inCultEntrance, valveStepsHazeel.solved), talkToClivetAfterPoison);
 		goTalkToClivetAfterPoison.addStep(valveStepsHazeel.solved, enterCaveAfterPoison);
 		goTalkToClivetAfterPoison.addStep(talkedToCerilAfterPoison, valveStepsHazeel);
 
-		var hadScroll = or(hazeelScroll.alsoCheckBank(questBank), givenAlomoneScroll);
+		var hadScroll = or(hazeelScroll.alsoCheckBank(), givenAlomoneScroll);
 		var hazeelSteps = new ConditionalStep(this, enterKitchenAfterButler);
 		hazeelSteps.addStep(and(inCultRoom, hadScroll), giveAlomoneScroll);
 		hazeelSteps.addStep(and(inCultEntrance, hadScroll), boardRaftWithScroll);

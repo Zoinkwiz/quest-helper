@@ -136,7 +136,7 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notPickMasterFarmer, pickMasterFarmerTask);
 
 		ibanUpgradeTask = new ConditionalStep(this, ibanUpgrade);
-		ibanUpgradeTask.addStep(ibanStaffU.alsoCheckBank(questBank), equipIban);
+		ibanUpgradeTask.addStep(ibanStaffU.alsoCheckBank(), equipIban);
 		doMedium.addStep(notIbanUpgrade, ibanUpgradeTask);
 
 		uniPenTask = new ConditionalStep(this, uniPen);

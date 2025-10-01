@@ -143,38 +143,38 @@ public class VarrockHard extends ComplexStateQuestHelper
 
 		skullSceptreTask = new ConditionalStep(this, moveToStronghold);
 		// Kill minotaurs
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold1, new Conditions(LogicType.NOR, rightSkull.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank))), killMino);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold1, new Conditions(LogicType.NOR, rightSkull.alsoCheckBank(), strangeSkull.alsoCheckBank())), killMino);
 
 		// Go to the 2nd floor
-		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, rightSkull.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)),
+		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, rightSkull.alsoCheckBank(), strangeSkull.alsoCheckBank()),
 			notSkullSceptre, inStronghold1), moveToStronghold2);
 
 		// Kill Flesh crawlers
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold2, new Conditions(LogicType.NOR, botSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank))), killFlesh);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold2, new Conditions(LogicType.NOR, botSceptre.alsoCheckBank(), runedSceptre.alsoCheckBank())), killFlesh);
 
 		// Go to the 3rd floor
-		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, botSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
+		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, botSceptre.alsoCheckBank(), runedSceptre.alsoCheckBank()),
 			notSkullSceptre, inStronghold2), moveToStronghold3);
 
 		// Kill Catablepons
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold3, new Conditions(LogicType.NOR, topSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank))), killCatablepon);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold3, new Conditions(LogicType.NOR, topSceptre.alsoCheckBank(), runedSceptre.alsoCheckBank())), killCatablepon);
 
 		// Go to the 4th floor
-		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, topSceptre.alsoCheckBank(questBank), runedSceptre.alsoCheckBank(questBank)),
+		skullSceptreTask.addStep(new Conditions(new Conditions(LogicType.OR, topSceptre.alsoCheckBank(), runedSceptre.alsoCheckBank()),
 			notSkullSceptre, inStronghold3), moveToStronghold4);
 
 		// Kill Ankou
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold4, new Conditions(LogicType.NOR, leftSkull.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank), combinedSkullSceptre.alsoCheckBank(questBank))), killAnkou);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, inStronghold4, new Conditions(LogicType.NOR, leftSkull.alsoCheckBank(), strangeSkull.alsoCheckBank(), combinedSkullSceptre.alsoCheckBank())), killAnkou);
 
 		// Make strange skull
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, leftSkull.alsoCheckBank(questBank), rightSkull.alsoCheckBank(questBank)), makeSkull);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, leftSkull.alsoCheckBank(), rightSkull.alsoCheckBank()), makeSkull);
 
 		// Make runed sceptre
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(questBank), topSceptre.alsoCheckBank(questBank)), makeSceptre);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, botSceptre.alsoCheckBank(), topSceptre.alsoCheckBank()), makeSceptre);
 
 		// Make skull sceptre
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, runedSceptre.alsoCheckBank(questBank), strangeSkull.alsoCheckBank(questBank)), makeSkullSceptre);
-		skullSceptreTask.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre.alsoCheckBank(questBank)), skullSceptre);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, runedSceptre.alsoCheckBank(), strangeSkull.alsoCheckBank()), makeSkullSceptre);
+		skullSceptreTask.addStep(new Conditions(notSkullSceptre, combinedSkullSceptre.alsoCheckBank()), skullSceptre);
 		doHard.addStep(notSkullSceptre, skullSceptreTask);
 
 		return doHard;

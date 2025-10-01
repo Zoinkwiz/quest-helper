@@ -116,7 +116,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 
 		ConditionalStep creviceSteps = new ConditionalStep(this, takeShoes);
 		creviceSteps.addStep(insideCrevice, talkToGenie);
-		creviceSteps.addStep(soles.alsoCheckBank(questBank), enterCrevice);
+		creviceSteps.addStep(soles.alsoCheckBank(), enterCrevice);
 		creviceSteps.addStep(new Conditions(shoes, notAwusahHouse), cutShoes);
 		creviceSteps.addStep(new Conditions(shoes), leaveAwusah);
 		steps.put(40, creviceSteps);

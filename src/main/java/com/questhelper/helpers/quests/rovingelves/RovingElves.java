@@ -78,7 +78,7 @@ public class RovingElves extends BasicQuestHelper
 		steps.put(2, talkToEluned);
 
 		ConditionalStep getTheSeed = new ConditionalStep(this, enterGlarialsTombstone);
-		getTheSeed.addStep(seed.alsoCheckBank(questBank), returnSeedToEluned);
+		getTheSeed.addStep(seed.alsoCheckBank(), returnSeedToEluned);
 		getTheSeed.addStep(seedNearby, pickUpSeed);
 		getTheSeed.addStep(inGlarialsTomb, killGuardian);
 

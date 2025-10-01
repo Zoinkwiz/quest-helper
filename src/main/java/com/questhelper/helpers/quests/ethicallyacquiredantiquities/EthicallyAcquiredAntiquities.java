@@ -90,7 +90,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 		steps.put(8, talkToRegulus);
 		steps.put(10, talkToCrewmember);
 		ConditionalStep goRepairSail = new ConditionalStep(this, talkToArtima);
-		goRepairSail.addStep(fixedSail.alsoCheckBank(questBank), returnToCrewmember);
+		goRepairSail.addStep(fixedSail.alsoCheckBank(), returnToCrewmember);
 		steps.put(12, goRepairSail);
 		steps.put(14, returnToCrewmember);
 		steps.put(16, talkToTraderStan);

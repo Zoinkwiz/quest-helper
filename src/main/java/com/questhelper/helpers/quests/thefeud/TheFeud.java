@@ -288,7 +288,7 @@ public class TheFeud extends BasicQuestHelper
 		hasDisguiseComponents = new Conditions(fakeBeard, headPiece);
 		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguise);
 		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, fakeBeard, headPiece);
-		hasDisguise = new Conditions(desertDisguise.alsoCheckBank(questBank));
+		hasDisguise = new Conditions(desertDisguise.alsoCheckBank());
 
 		//a
 		notThroughShantayGate = new Conditions(LogicType.NAND, inShantayDesertSide);

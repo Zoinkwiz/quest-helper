@@ -102,7 +102,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 
 		collectBonesSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state."));
 		collectBonesSteps.addStep(boneNearby, pickupBone);
-		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> collectBonesSteps.addStep(nor(state.hadBoneItem(questBank)), step));
+		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> collectBonesSteps.addStep(nor(state.hadBoneItem()), step));
 		collectBonesSteps.setLockingCondition(hadAllBones);
 
 		preparingBonesSteps = new ConditionalStep(this, talkToFortunato);
@@ -135,7 +135,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		// Required items
 		coins = new ItemRequirement("Coins", ItemCollections.COINS);
 		pots = new ItemRequirement("Pot", ItemID.POT_EMPTY).isNotConsumed();
-		potNeeded = new ItemRequirement("Pot", ItemID.POT_EMPTY, 8).alsoCheckBank(questBank).highlighted();
+		potNeeded = new ItemRequirement("Pot", ItemID.POT_EMPTY, 8).alsoCheckBank().highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
@@ -156,9 +156,9 @@ public class RagAndBoneManI extends BasicQuestHelper
 		jugOfVinegar = new ItemRequirement("Jar of vinegar", ItemID.RAG_VINEGAR);
 		potOfVinegar = new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR);
 		potOfVinegarNeeded =
-			new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
+			new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR, 8).alsoCheckBank().highlighted();
 		jugOfVinegarNeeded =
-			new ItemRequirement("Jug of vinegar", ItemID.RAG_VINEGAR, 8).alsoCheckBank(questBank).highlighted();
+			new ItemRequirement("Jug of vinegar", ItemID.RAG_VINEGAR, 8).alsoCheckBank().highlighted();
 	}
 
 	@Subscribe
@@ -167,7 +167,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		AtomicInteger winesNeededQuantity = new AtomicInteger(8);
 
 		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> {
-			if (state.hadBoneInVinegarItem(questBank).check(client))
+			if (state.hadBoneInVinegarItem().check(client))
 			{
 				winesNeededQuantity.getAndDecrement();
 			}
@@ -211,15 +211,15 @@ public class RagAndBoneManI extends BasicQuestHelper
 		// Every time handing in a bone, 2045 iterates from 0->28 1 by 1. Next time you hand in a bone it goes back
 		// to 0 and repeats???
 
-		allBonesPolished = new Conditions(RagBoneGroups.allBonesPolished(RagBoneGroups.getRagBoneIStates(), questBank));
+		allBonesPolished = new Conditions(RagBoneGroups.allBonesPolished(RagBoneGroups.getRagBoneIStates()));
 
-		allBonesAtLeastAddedToVinegar = new Conditions(RagBoneGroups.allBonesAddedToVinegar(RagBoneGroups.getRagBoneIStates(), questBank));
+		allBonesAtLeastAddedToVinegar = new Conditions(RagBoneGroups.allBonesAddedToVinegar(RagBoneGroups.getRagBoneIStates()));
 
-		hadAllBones = new Conditions(RagBoneGroups.allBonesObtained(RagBoneGroups.getRagBoneIStates(), questBank));
+		hadAllBones = new Conditions(RagBoneGroups.allBonesObtained(RagBoneGroups.getRagBoneIStates()));
 
 		talkedToFortunato = new VarbitRequirement(VarbitID.RAG_WINE, 1);
 
-		hadVinegar = new Conditions(jugOfVinegar.alsoCheckBank(questBank));
+		hadVinegar = new Conditions(jugOfVinegar.alsoCheckBank());
 	}
 
 	public void setupSteps()
@@ -302,7 +302,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 			jugOfVinegarNeeded, potNeeded);
 
 		useBonesOnVinegar = new DetailedQuestStep(this, "Use the bones on the pots of vinegar.", potOfVinegar.highlighted());
-		useBonesOnVinegar.addItemRequirements(RagBoneGroups.bonesToAddToVinegar(RagBoneGroups.getRagBoneIStates(), questBank));
+		useBonesOnVinegar.addItemRequirements(RagBoneGroups.bonesToAddToVinegar(RagBoneGroups.getRagBoneIStates()));
 
 		placeLogs = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Place logs under the pot-boiler near the Odd Old Man. If you've already polished all the bones, hand " +
@@ -312,7 +312,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		useBoneOnBoiler = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Add a bone to the pot boiler.");
 		useBoneOnBoiler.addIcon(ItemID.RAG_POT_GOBLIN_BONE);
-		useBoneOnBoiler.addItemRequirements(RagBoneGroups.bonesToAddToBoiler(RagBoneGroups.getRagBoneIStates(), questBank));
+		useBoneOnBoiler.addItemRequirements(RagBoneGroups.bonesToAddToBoiler(RagBoneGroups.getRagBoneIStates()));
 
 		lightLogs = new ObjectStep(this, ObjectID.RAG_MULTI_POTBOILER, new WorldPoint(3360, 3505, 0),
 			"Light the logs under the pot-boiler.", tinderbox.highlighted());

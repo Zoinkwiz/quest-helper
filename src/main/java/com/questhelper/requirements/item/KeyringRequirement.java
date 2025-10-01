@@ -89,7 +89,6 @@ public class KeyringRequirement extends ItemRequirement
 		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
 		newItem.setConditionToHide(getConditionToHide());
 		newItem.setShouldCheckBank(isShouldCheckBank());
-		newItem.setQuestBank(getQuestBank());
 		newItem.setTooltip(getTooltip());
 		newItem.setUrlSuffix(getUrlSuffix());
 

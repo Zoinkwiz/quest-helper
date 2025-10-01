@@ -229,7 +229,7 @@ public class WitchsHouse extends BasicQuestHelper
 		getTheMagnet.addStep(inDownstairsHouseEast, enterGate);
 		getTheMagnet.addStep(inHouse, goDownstairs);
 		getTheMagnet.addStep(inUpstairsHouse, goDownstairsFromTop);
-		getTheMagnet.addStep(houseKey.alsoCheckBank(questBank), enterHouse);
+		getTheMagnet.addStep(houseKey.alsoCheckBank(), enterHouse);
 
 		steps.put(1, getTheMagnet);
 		steps.put(2, getTheMagnet);
@@ -248,17 +248,17 @@ public class WitchsHouse extends BasicQuestHelper
 		killExperiment.addStep(inDownstairsHouseEast, enterGate);
 		killExperiment.addStep(inHouse, goDownstairs);
 		killExperiment.addStep(inUpstairsHouse, goDownstairsFromTop);
-		killExperiment.addStep(houseKey.alsoCheckBank(questBank), enterHouse);
+		killExperiment.addStep(houseKey.alsoCheckBank(), enterHouse);
 
 		steps.put(3, killExperiment);
 		// TODO: Add 'pick up diary', 'read diary' after step 3
 		steps.put(5, killExperiment);
 
 		var returnBall = new ConditionalStep(this, getKey);
-		returnBall.addStep(ball.alsoCheckBank(questBank), returnToBoy);
+		returnBall.addStep(ball.alsoCheckBank(), returnToBoy);
 		returnBall.addStep(inShed, pickupBall);
 		returnBall.addStep(inHouseOrGarden, enterShedWithoutKey);
-		returnBall.addStep(houseKey.alsoCheckBank(questBank), enterHouse);
+		returnBall.addStep(houseKey.alsoCheckBank(), enterHouse);
 		returnBall.addStep(inDownstairsHouse, goBackUpstairs);
 		returnBall.addStep(inUpstairsHouse, goDownstairsFromTop);
 

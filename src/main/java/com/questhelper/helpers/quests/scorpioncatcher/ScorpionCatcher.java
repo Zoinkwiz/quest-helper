@@ -75,13 +75,13 @@ public class ScorpionCatcher extends BasicQuestHelper
 		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon), killJailerForKey);
 
 		ConditionalStep scorpions = new ConditionalStep(this, finishQuest);
-		scorpions.addStep(scorpionCageMissingTaverley.alsoCheckBank(questBank), goGetTaverleyScorpion);
+		scorpions.addStep(scorpionCageMissingTaverley.alsoCheckBank(), goGetTaverleyScorpion);
 
 		scorpions.addStep(new Conditions(scorpionCageMissingMonastery, inUpstairsMonastery), catchMonasteryScorpion);
-		scorpions.addStep(scorpionCageMissingMonastery.alsoCheckBank(questBank), enterMonastery);
+		scorpions.addStep(scorpionCageMissingMonastery.alsoCheckBank(), enterMonastery);
 
 		scorpions.addStep(new Conditions(scorpionCageTaverleyAndMonastery, inBarbarianOutpost), catchOutpostScorpion);
-		scorpions.addStep(scorpionCageTaverleyAndMonastery.alsoCheckBank(questBank), enterOutpost);
+		scorpions.addStep(scorpionCageTaverleyAndMonastery.alsoCheckBank(), enterOutpost);
 
 		steps.put(0, beginQuest);
 		steps.put(1, speakToSeer1);

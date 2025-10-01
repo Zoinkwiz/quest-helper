@@ -146,7 +146,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		steps.put(5, goTalkToEssyllt);
 
 		ConditionalStep getCrystal = new ConditionalStep(this, enterMournerHQ);
-		getCrystal.addStep(blackenedCrystal.alsoCheckBank(questBank), bringCrystalToArianwyn);
+		getCrystal.addStep(blackenedCrystal.alsoCheckBank(), bringCrystalToArianwyn);
 		getCrystal.addStep(inNorthF2, useChisel);
 		getCrystal.addStep(inTempleStairSquare, goUpFromMiddleToNorth);
 		getCrystal.addStep(inSouthF2, goToMiddleFromSouth);

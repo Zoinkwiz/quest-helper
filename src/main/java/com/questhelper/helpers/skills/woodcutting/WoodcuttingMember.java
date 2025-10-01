@@ -108,16 +108,16 @@ public class WoodcuttingMember extends ComplexStateQuestHelper
 
 
 		lumberjackBody = new ItemRequirement("Lumberjack top", ItemID.RAMBLE_LUMBERJACK_TOP);
-		lumberjackBody = lumberjackBody.showConditioned(lumberjackBody.alsoCheckBank(questBank));
+		lumberjackBody = lumberjackBody.showConditioned(lumberjackBody.alsoCheckBank());
 
 		lumberjackHat = new ItemRequirement("Lumberjack hat", ItemID.RAMBLE_LUMBERJACK_HAT);
-		lumberjackHat = lumberjackHat.showConditioned(lumberjackHat.alsoCheckBank(questBank));
+		lumberjackHat = lumberjackHat.showConditioned(lumberjackHat.alsoCheckBank());
 
 		lumberjackLegs = new ItemRequirement("Lumberjack legs", ItemID.RAMBLE_LUMBERJACK_LEGS);
-		lumberjackLegs = lumberjackLegs.showConditioned(lumberjackLegs.alsoCheckBank(questBank));
+		lumberjackLegs = lumberjackLegs.showConditioned(lumberjackLegs.alsoCheckBank());
 
 		lumberjackBoots = new ItemRequirement("Lumberjack boots", ItemID.RAMBLE_LUMBERJACK_BOOTS);
-		lumberjackBoots = lumberjackBoots.showConditioned(lumberjackBoots.alsoCheckBank(questBank));
+		lumberjackBoots = lumberjackBoots.showConditioned(lumberjackBoots.alsoCheckBank());
 	}
 
 	private void setupSteps()

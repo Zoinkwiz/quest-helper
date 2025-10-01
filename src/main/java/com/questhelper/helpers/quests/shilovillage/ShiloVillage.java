@@ -94,7 +94,7 @@ public class ShiloVillage extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep goStartQuest = new ConditionalStep(this, talkToMosol);
-		goStartQuest.addStep(belt.alsoCheckBank(questBank), useBeltOnTrufitus);
+		goStartQuest.addStep(belt.alsoCheckBank(), useBeltOnTrufitus);
 		steps.put(0, goStartQuest);
 
 		steps.put(1, useSpadeOnGround);

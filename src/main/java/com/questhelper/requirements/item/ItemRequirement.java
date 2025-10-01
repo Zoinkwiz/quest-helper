@@ -45,6 +45,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.util.Text;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
@@ -376,6 +377,7 @@ public class ItemRequirement extends AbstractRequirement
 	 *
 	 * @return a new {@link ItemRequirement} instance configured to check the bank
 	 */
+	@CheckReturnValue
 	public ItemRequirement alsoCheckBank()
 	{
 		ItemRequirement newItem = copy();

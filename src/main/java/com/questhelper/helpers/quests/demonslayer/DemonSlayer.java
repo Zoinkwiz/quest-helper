@@ -198,6 +198,7 @@ public class DemonSlayer extends BasicQuestHelper
 		// -- Get Rovin's key
 		goUpToRovin = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_TALLER, new WorldPoint(3203, 3498, 0), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		goUpToRovin2 = new ObjectStep(this, ObjectID.VARROCK_SPIRALSTAIRS_MIDDLE_TALLER, new WorldPoint(3203, 3498, 1), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
+		goUpToRovin2.addDialogStep("Climb up");
 		talkToRovin = new NpcStep(this, NpcID.CAPTAIN_ROVIN, new WorldPoint(3205, 3498, 2), "Talk to Captain Rovin upstairs in the north west of Varrock Castle.");
 		talkToRovin.addDialogStep("Yes I know, but this is important.");
 		talkToRovin.addDialogStep("There's a demon who wants to invade this city.");

@@ -314,6 +314,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.RUNE_MYSTERIES,
 			QuestHelperQuest.HAZEEL_CULT,
 			QuestHelperQuest.FIGHT_ARENA,
+			QuestHelperQuest.DEATH_ON_THE_ISLE,
 			QuestHelperQuest.TREE_GNOME_VILLAGE,
 			QuestHelperQuest.GERTRUDES_CAT,
 			QuestHelperQuest.MONKS_FRIEND,

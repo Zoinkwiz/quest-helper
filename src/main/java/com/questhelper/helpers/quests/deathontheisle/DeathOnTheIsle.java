@@ -35,6 +35,8 @@ import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -43,7 +45,15 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -51,14 +61,6 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.not;
 
 /**
  * The quest guide for the "Death on the Isle" OSRS quest
@@ -69,192 +71,152 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 public class DeathOnTheIsle extends BasicQuestHelper
 {
 
-	/// Recommended items
-	private FreeInventorySlotRequirement emptyInvSlots;
+	// Recommended items
+	FreeInventorySlotRequirement emptyInvSlots;
+	TeleportItemRequirement startTeleport;
 
-	/// Steps
-	private NpcStep talkToPatziToStartQuest;
-	private ObjectStep enterUniformHouse;
-	private ObjectStep stealUniformFromWardrobe;
-	private ObjectStep leaveUniformHouse;
-	private NpcStep talkToPatziAfterStealingUniform;
-	private ConditionalStep stealButlerUniform;
-	private NpcStep continueTalkingToPatzi;
-	private NpcStep equipButlersOutfitAndHeadInside;
-	private ConditionalStep introduceYourself;
-	private ConditionalStep enterTheCellarStep;
-	private ConditionalStep getWineStep;
-	private ConditionalStep investigateManStep;
-	private ConditionalStep beInterrogatedByThePoliceStep;
-	private ConditionalStep investigateMurder;
-	private ConditionalStep investigateMurder2;
-	private ConditionalStep talkToGuardsAgainToTellThemYouAreReadyStep;
-	private ConditionalStep speakToSuspects;
-	private ConditionalStep getAdalasConfessionStep;
-	private ConditionalStep talkToGuardsAboutAdalaStep;
-	private ConditionalStep getToTheGuardsAtTheatreStep;
-	private ConditionalStep investigateTheatreStep;
-	private ConditionalStep investigateTheatreCellar;
-	private ConditionalStep snitchToGuardsStep;
-	private ConditionalStep confrontNaiatliStep;
-	private NpcStep talkToGuardsToFinishTheQuest;
-	private NpcStep headInsideAndTalkToPatzi;
-	private NpcStep introduceYourselfToConstantinius;
-	private NpcStep introduceYourselfToCozyac;
-	private NpcStep introduceYourselfToPavo;
-	private NpcStep introduceYourselfToXocotla;
-	private NpcStep returnToPatzi;
-	private ObjectStep getWine;
-	private NpcStep investigateMan;
-	private NpcStep beInterrogatedByThePolice;
-	private ObjectStep enterTheCellarAgain;
-	private ObjectStep investigateJug;
-	private ObjectStep investigateSmallBoxInSouthRoom;
-	private ObjectStep investigateBrokenStoolInSouthRoom;
-	private ObjectStep investigateWineStorageInEastRoom;
-	private ObjectStep investigateBrokenPotteryInEastRoom;
-	private NpcStep investigateLiviusInEastRoom;
-	private ObjectStep leaveCellar;
-	private NpcStep investigateConstantinius;
-	private NpcStep investigateCozyac;
-	private NpcStep investigatePavo;
-	private NpcStep investigateXocotla;
-	private NpcStep interrogatePatziAndAdala;
-	private NpcStep returnToTheGuards;
-	private NpcStep pickpocketAdala;
-	private NpcStep pickpocketCozyac;
-	private NpcStep pickpocketPavo;
-	private NpcStep pickpocketXocotla;
-	private DetailedQuestStep inspectWineLabels;
-	private DetailedQuestStep inspectThreateningNote;
-	private DetailedQuestStep inspectDrinkingFlask;
-	private DetailedQuestStep inspectShippingContract;
-	private NpcStep returnStolenItemsToTheGuards;
-	private NpcStep talkToGuardsAgainToTellThemYouAreReady;
-	private NpcStep interrogateConstantiniusAgain;
-	private NpcStep interrogateXocotlaAgain;
-	private NpcStep interrogateCozyacAgain;
-	private NpcStep interrogatePavoAgain;
-	private NpcStep accuseAdala;
-	private NpcStep getAdalasConfession;
-	private NpcStep talkToGuardsAboutAdala;
-	private NpcStep talkToGuardsAtTheatre;
-	private NpcStep talkToCostumer;
-	private ObjectStep searchCrateNextToStairs;
-	private ObjectStep searchBookshelf;
-	private ObjectStep searchCostumeRack;
-	private NpcStep talkToCostumerAgain;
-	private NpcStep speakToGuards;
-	private NpcStep talkToStradiusToEnterTheTheatre;
-	private NpcStep confrontNaiatli;
-	private NpcStep talkToNaiatli;
+	// Zones
+	Zone butlerCostumeHouse1;
+	Zone butlerCostumeHouse2;
+	Zone butlerCostumeHouse3;
+	Zone butlerCostumeHouse4;
+	Zone villaOutsideTheatre1;
+	Zone villaOutsideTheatre2;
+	Zone villaPlatueOnTheWayToTheatre;
+	Zone outsideTheatreZone1;
+	Zone outsideTheatreZone2;
+	Zone villaCellar;
+	Zone villaTopFloor;
+	Zone villaMiddleFloor;
+	Zone theatreCellar;
 
-	/// Zones
-	private Zone butlerCostumeHouse1;
-	private Zone butlerCostumeHouse2;
-	private Zone butlerCostumeHouse3;
-	private Zone butlerCostumeHouse4;
-	private Zone villaOutsideTheatre1;
-	private Zone villaOutsideTheatre2;
-	private Zone villaPlatueOnTheWayToTheatre;
-	private Zone outsideTheatreZone1;
-	private Zone outsideTheatreZone2;
-	private Zone villaCellar;
-	private Zone villaTopFloor;
-	private Zone villaMiddleFloor;
-	private Zone theatreCellar;
+	// Mid-quest item requirements
+	ItemRequirements uniform;
 
-	/// Requirements
-	private ZoneRequirement inButlerCostumeHouse;
-	private ZoneRequirement aroundVilla;
-	private ZoneRequirement outsideVillaByLooseRocks;
-	private ZoneRequirement outsideTheatre;
+	// Miscellaneous requirements
+	ItemRequirement uniformEquipped;
+	ZoneRequirement inButlerCostumeHouse;
+	ZoneRequirement aroundVilla;
+	ZoneRequirement outsideVillaByLooseRocks;
+	ZoneRequirement outsideTheatre;
+	VarbitRequirement inVilla;
+	ConditionalStep headInsideAndTalkToPatziStep;
+	VarbitRequirement introducedYourselfToConstantinius;
+	VarbitRequirement introducedYourselfToCozyac;
+	VarbitRequirement introducedYourselfToPavo;
+	VarbitRequirement introducedYourselfToXocotla;
+	VarbitRequirement investigatedJug;
+	VarbitRequirement investigatedSmallBoxInSouthRoom;
+	VarbitRequirement investigatedBrokenStoolInSouthRoom;
+	VarbitRequirement investigatedWineStorageInEastRoom;
+	VarbitRequirement investigatedBrokenPotteryInEastRoom;
+	VarbitRequirement investigatedLiviusInEastRoom;
+	VarbitRequirement investigatedConstantinius;
+	VarbitRequirement investigatedCozyac;
+	VarbitRequirement investigatedPavo;
+	VarbitRequirement investigatedXocotla;
+	VarbitRequirement interrogatedPatziAndAdala;
+	ZoneRequirement inVillaCellar;
+	ZoneRequirement inVillaTopFloor;
+	ZoneRequirement inVillaMiddleFloor;
+	ZoneRequirement inTheatreCellar;
+	ItemRequirement wineLabels;
+	ItemRequirement threateningNote;
+	ItemRequirement drinkingFlask;
+	ItemRequirement shippingContract;
+	VarbitRequirement inspectedWineLabels;
+	VarbitRequirement inspectedThreateningNote;
+	VarbitRequirement inspectedDrinkingFlask;
+	VarbitRequirement inspectedShippingContract;
+	VarbitRequirement interrogatedConstantiniusAgain;
+	VarbitRequirement interrogatedXocotlaAgain;
+	VarbitRequirement interrogatedCozyacAgain;
+	VarbitRequirement interrogatedPavoAgain;
+	VarbitRequirement talkedtoGuardsAtTheatre;
+	VarbitRequirement searchedCrateNextToStairs;
+	VarbitRequirement searchedBookshelf;
+	VarbitRequirement searchedCostumeRack;
+	VarbitRequirement trapSprung;
+	VarbitRequirement trapFailed;
+	VarbitRequirement naiatliDowned;
+	VarbitRequirement handedOverCluesToGuards;
 
-	private TeleportItemRequirement startTeleport;
-	private ItemRequirements uniform;
-	private ItemRequirement uniformEquipped;
-	private VarbitRequirement inVilla;
-	private ConditionalStep headInsideAndTalkToPatziStep;
-	private VarbitRequirement introducedYourselfToConstantinius;
-	private VarbitRequirement introducedYourselfToCozyac;
-	private VarbitRequirement introducedYourselfToPavo;
-	private VarbitRequirement introducedYourselfToXocotla;
-	private VarbitRequirement investigatedJug;
-	private VarbitRequirement investigatedSmallBoxInSouthRoom;
-	private VarbitRequirement investigatedBrokenStoolInSouthRoom;
-	private VarbitRequirement investigatedWineStorageInEastRoom;
-	private VarbitRequirement investigatedBrokenPotteryInEastRoom;
-	private VarbitRequirement investigatedLiviusInEastRoom;
-	private VarbitRequirement investigatedConstantinius;
-	private VarbitRequirement investigatedCozyac;
-	private VarbitRequirement investigatedPavo;
-	private VarbitRequirement investigatedXocotla;
-	private VarbitRequirement interrogatedPatziAndAdala;
-	private ZoneRequirement inVillaCellar;
-	private ZoneRequirement inVillaTopFloor;
-	private ZoneRequirement inVillaMiddleFloor;
-	private ZoneRequirement inTheatreCellar;
-	private ItemRequirement wineLabels;
-	private ItemRequirement threateningNote;
-	private ItemRequirement drinkingFlask;
-	private ItemRequirement shippingContract;
-	private VarbitRequirement inspectedWineLabels;
-	private VarbitRequirement inspectedThreateningNote;
-	private VarbitRequirement inspectedDrinkingFlask;
-	private VarbitRequirement inspectedShippingContract;
-	private VarbitRequirement interrogatedConstantiniusAgain;
-	private VarbitRequirement interrogatedXocotlaAgain;
-	private VarbitRequirement interrogatedCozyacAgain;
-	private VarbitRequirement interrogatedPavoAgain;
-	private VarbitRequirement talkedtoGuardsAtTheatre;
-	private VarbitRequirement searchedCrateNextToStairs;
-	private VarbitRequirement searchedBookshelf;
-	private VarbitRequirement searchedCostumeRack;
-	private VarbitRequirement trapSprung;
-	private VarbitRequirement trapFailed;
-	private VarbitRequirement naiatliDowned;
-	private VarbitRequirement handedOverCluesToGuards;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupSteps();
-
-		var steps = new HashMap<Integer, QuestStep>();
-
-		steps.put(0, talkToPatziToStartQuest);
-		steps.put(2, talkToPatziToStartQuest);
-		steps.put(4, stealButlerUniform);
-		steps.put(6, stealButlerUniform);
-		steps.put(8, continueTalkingToPatzi);
-		steps.put(10, equipButlersOutfitAndHeadInside);
-		steps.put(12, equipButlersOutfitAndHeadInside);
-		steps.put(14, headInsideAndTalkToPatziStep);
-		steps.put(15, introduceYourself);
-		steps.put(16, enterTheCellarStep);
-		steps.put(18, getWineStep);
-		steps.put(19, investigateManStep);
-		steps.put(20, beInterrogatedByThePoliceStep);
-		steps.put(21, beInterrogatedByThePoliceStep);
-		steps.put(22, investigateMurder);
-		steps.put(24, investigateMurder);
-		steps.put(26, investigateMurder2);
-		steps.put(27, talkToGuardsAgainToTellThemYouAreReadyStep);
-		steps.put(28, speakToSuspects);
-		steps.put(30, speakToSuspects);
-		steps.put(32, getAdalasConfessionStep);
-		steps.put(33, talkToGuardsAboutAdalaStep);
-		steps.put(34, getToTheGuardsAtTheatreStep);
-		steps.put(36, investigateTheatreStep);
-		steps.put(38, investigateTheatreCellar);
-		steps.put(40, snitchToGuardsStep);
-		steps.put(42, confrontNaiatliStep);
-		steps.put(45, confrontNaiatliStep);
-		steps.put(49, talkToGuardsToFinishTheQuest);
-
-		return steps;
-	}
+	// Steps
+	NpcStep talkToPatziToStartQuest;
+	ObjectStep enterUniformHouse;
+	ObjectStep stealUniformFromWardrobe;
+	ObjectStep leaveUniformHouse;
+	NpcStep talkToPatziAfterStealingUniform;
+	ConditionalStep stealButlerUniform;
+	NpcStep continueTalkingToPatzi;
+	NpcStep equipButlersOutfitAndHeadInside;
+	ConditionalStep introduceYourself;
+	ConditionalStep enterTheCellarStep;
+	ConditionalStep getWineStep;
+	ConditionalStep investigateManStep;
+	ConditionalStep beInterrogatedByThePoliceStep;
+	ConditionalStep investigateMurder;
+	ConditionalStep investigateMurder2;
+	ConditionalStep talkToGuardsAgainToTellThemYouAreReadyStep;
+	ConditionalStep speakToSuspects;
+	ConditionalStep getAdalasConfessionStep;
+	ConditionalStep talkToGuardsAboutAdalaStep;
+	ConditionalStep getToTheGuardsAtTheatreStep;
+	ConditionalStep investigateTheatreStep;
+	ConditionalStep investigateTheatreCellar;
+	ConditionalStep snitchToGuardsStep;
+	ConditionalStep confrontNaiatliStep;
+	NpcStep talkToGuardsToFinishTheQuest;
+	NpcStep headInsideAndTalkToPatzi;
+	NpcStep introduceYourselfToConstantinius;
+	NpcStep introduceYourselfToCozyac;
+	NpcStep introduceYourselfToPavo;
+	NpcStep introduceYourselfToXocotla;
+	NpcStep returnToPatzi;
+	ObjectStep getWine;
+	NpcStep investigateMan;
+	NpcStep beInterrogatedByThePolice;
+	ObjectStep enterTheCellarAgain;
+	ObjectStep investigateJug;
+	ObjectStep investigateSmallBoxInSouthRoom;
+	ObjectStep investigateBrokenStoolInSouthRoom;
+	ObjectStep investigateWineStorageInEastRoom;
+	ObjectStep investigateBrokenPotteryInEastRoom;
+	NpcStep investigateLiviusInEastRoom;
+	ObjectStep leaveCellar;
+	NpcStep investigateConstantinius;
+	NpcStep investigateCozyac;
+	NpcStep investigatePavo;
+	NpcStep investigateXocotla;
+	NpcStep interrogatePatziAndAdala;
+	NpcStep returnToTheGuards;
+	NpcStep pickpocketAdala;
+	NpcStep pickpocketCozyac;
+	NpcStep pickpocketPavo;
+	NpcStep pickpocketXocotla;
+	DetailedQuestStep inspectWineLabels;
+	DetailedQuestStep inspectThreateningNote;
+	DetailedQuestStep inspectDrinkingFlask;
+	DetailedQuestStep inspectShippingContract;
+	NpcStep returnStolenItemsToTheGuards;
+	NpcStep talkToGuardsAgainToTellThemYouAreReady;
+	NpcStep interrogateConstantiniusAgain;
+	NpcStep interrogateXocotlaAgain;
+	NpcStep interrogateCozyacAgain;
+	NpcStep interrogatePavoAgain;
+	NpcStep accuseAdala;
+	NpcStep getAdalasConfession;
+	NpcStep talkToGuardsAboutAdala;
+	NpcStep talkToGuardsAtTheatre;
+	NpcStep talkToCostumer;
+	ObjectStep searchCrateNextToStairs;
+	ObjectStep searchBookshelf;
+	ObjectStep searchCostumeRack;
+	NpcStep talkToCostumerAgain;
+	NpcStep speakToGuards;
+	NpcStep talkToStradiusToEnterTheTheatre;
+	NpcStep confrontNaiatli;
+	NpcStep talkToNaiatli;
 
 	@Override
 	protected void setupZones()
@@ -650,15 +612,54 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		return List.of();
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToPatziToStartQuest);
+		steps.put(2, talkToPatziToStartQuest);
+		steps.put(4, stealButlerUniform);
+		steps.put(6, stealButlerUniform);
+		steps.put(8, continueTalkingToPatzi);
+		steps.put(10, equipButlersOutfitAndHeadInside);
+		steps.put(12, equipButlersOutfitAndHeadInside);
+		steps.put(14, headInsideAndTalkToPatziStep);
+		steps.put(15, introduceYourself);
+		steps.put(16, enterTheCellarStep);
+		steps.put(18, getWineStep);
+		steps.put(19, investigateManStep);
+		steps.put(20, beInterrogatedByThePoliceStep);
+		steps.put(21, beInterrogatedByThePoliceStep);
+		steps.put(22, investigateMurder);
+		steps.put(24, investigateMurder);
+		steps.put(26, investigateMurder2);
+		steps.put(27, talkToGuardsAgainToTellThemYouAreReadyStep);
+		steps.put(28, speakToSuspects);
+		steps.put(30, speakToSuspects);
+		steps.put(32, getAdalasConfessionStep);
+		steps.put(33, talkToGuardsAboutAdalaStep);
+		steps.put(34, getToTheGuardsAtTheatreStep);
+		steps.put(36, investigateTheatreStep);
+		steps.put(38, investigateTheatreCellar);
+		steps.put(40, snitchToGuardsStep);
+		steps.put(42, confrontNaiatliStep);
+		steps.put(45, confrontNaiatliStep);
+		steps.put(49, talkToGuardsToFinishTheQuest);
+
+		return steps;
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	public List<Requirement> getGeneralRequirements()
 	{
-		return List.of();
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED),
+			new SkillRequirement(Skill.THIEVING, 34),
+			new SkillRequirement(Skill.AGILITY, 32)
+		);
 	}
 
 	@Override
@@ -670,13 +671,15 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	}
 
 	@Override
-	public List<Requirement> getGeneralRequirements()
+	public List<ItemRequirement> getItemRequirements()
 	{
-		return List.of(
-			new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED),
-			new SkillRequirement(Skill.THIEVING, 34),
-			new SkillRequirement(Skill.AGILITY, 32)
-		);
+		return List.of();
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of();
 	}
 
 	@Override
@@ -722,13 +725,79 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		var panels = new ArrayList<PanelDetails>();
+		var sections = new ArrayList<PanelDetails>();
 
-		panels.add(new PanelDetails("Getting the right fit", List.of(talkToPatziToStartQuest, enterUniformHouse, stealUniformFromWardrobe, leaveUniformHouse, talkToPatziAfterStealingUniform, equipButlersOutfitAndHeadInside), List.of(emptyInvSlots)));
-		panels.add(new PanelDetails("Inside Villa Lucens", List.of(headInsideAndTalkToPatzi, introduceYourselfToConstantinius, introduceYourselfToCozyac, introduceYourselfToPavo, introduceYourselfToXocotla, returnToPatzi, getWine, investigateMan, beInterrogatedByThePolice), List.of()));
-		panels.add(new PanelDetails("Playing detective", List.of(enterTheCellarAgain, investigateJug, investigateSmallBoxInSouthRoom, investigateBrokenStoolInSouthRoom, investigateWineStorageInEastRoom, investigateBrokenPotteryInEastRoom, investigateLiviusInEastRoom, leaveCellar, investigateConstantinius, investigateCozyac, investigatePavo, investigateXocotla, interrogatePatziAndAdala, returnToTheGuards, pickpocketAdala, pickpocketCozyac, pickpocketPavo, pickpocketXocotla, inspectWineLabels, inspectThreateningNote, inspectDrinkingFlask, inspectShippingContract, returnStolenItemsToTheGuards, talkToGuardsAgainToTellThemYouAreReady, interrogateConstantiniusAgain, interrogateXocotlaAgain, interrogateCozyacAgain, interrogatePavoAgain, accuseAdala, getAdalasConfession, talkToGuardsAboutAdala), List.of()));
-		panels.add(new PanelDetails("The show must go on", List.of(talkToGuardsAtTheatre, talkToCostumer, searchCrateNextToStairs, searchBookshelf, searchCostumeRack, talkToCostumerAgain, speakToGuards, talkToStradiusToEnterTheTheatre, confrontNaiatli, talkToNaiatli, talkToGuardsToFinishTheQuest), List.of()));
+		sections.add(new PanelDetails("Getting the right fit", List.of(
+			talkToPatziToStartQuest,
+			enterUniformHouse,
+			stealUniformFromWardrobe,
+			leaveUniformHouse,
+			talkToPatziAfterStealingUniform,
+			equipButlersOutfitAndHeadInside
+		), List.of(
+			emptyInvSlots
+		)));
 
-		return panels;
+		sections.add(new PanelDetails("Inside Villa Lucens", List.of(
+			headInsideAndTalkToPatzi,
+			introduceYourselfToConstantinius,
+			introduceYourselfToCozyac,
+			introduceYourselfToPavo,
+			introduceYourselfToXocotla,
+			returnToPatzi,
+			getWine,
+			investigateMan,
+			beInterrogatedByThePolice
+		)));
+
+		sections.add(new PanelDetails("Playing detective", List.of(
+			enterTheCellarAgain,
+			investigateJug,
+			investigateSmallBoxInSouthRoom,
+			investigateBrokenStoolInSouthRoom,
+			investigateWineStorageInEastRoom,
+			investigateBrokenPotteryInEastRoom,
+			investigateLiviusInEastRoom,
+			leaveCellar,
+			investigateConstantinius,
+			investigateCozyac,
+			investigatePavo,
+			investigateXocotla,
+			interrogatePatziAndAdala,
+			returnToTheGuards,
+			pickpocketAdala,
+			pickpocketCozyac,
+			pickpocketPavo,
+			pickpocketXocotla,
+			inspectWineLabels,
+			inspectThreateningNote,
+			inspectDrinkingFlask,
+			inspectShippingContract,
+			returnStolenItemsToTheGuards,
+			talkToGuardsAgainToTellThemYouAreReady,
+			interrogateConstantiniusAgain,
+			interrogateXocotlaAgain,
+			interrogateCozyacAgain,
+			interrogatePavoAgain,
+			accuseAdala,
+			getAdalasConfession,
+			talkToGuardsAboutAdala
+		)));
+
+		sections.add(new PanelDetails("The show must go on", List.of(
+			talkToGuardsAtTheatre,
+			talkToCostumer,
+			searchCrateNextToStairs,
+			searchBookshelf,
+			searchCostumeRack,
+			talkToCostumerAgain,
+			speakToGuards,
+			talkToStradiusToEnterTheTheatre,
+			confrontNaiatli,
+			talkToNaiatli,
+			talkToGuardsToFinishTheQuest
+		)));
+
+		return sections;
 	}
 }

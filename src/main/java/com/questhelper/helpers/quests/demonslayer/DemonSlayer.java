@@ -267,8 +267,8 @@ public class DemonSlayer extends BasicQuestHelper
 		getSecondKey.addStep(hasPouredWaterIntoDrain, goDownManhole);
 		getSecondKey.addStep(inCastleNWFloor1, goDownstairsFromRovin2);
 		getSecondKey.addStep(inCastleNWFloor2, goDownstairsFromRovin);
+		getSecondKey.addStep(and(inCastleNEFloor1, or(bucket, bucketOfWater)), goDownFromBucket);
 		getSecondKey.addStep(bucketOfWater, useFilledBucketOnDrain);
-		getSecondKey.addStep(and(inCastleNEFloor1, bucketOfWater), goDownFromBucket);
 		getSecondKey.addStep(bucket, fillBucket);
 		getSecondKey.addStep(inCastleNEFloor1, pickupBucket);
 		getSecondKey.setLockingCondition(or(obtainedSilverlight, key2.alsoCheckBank()));

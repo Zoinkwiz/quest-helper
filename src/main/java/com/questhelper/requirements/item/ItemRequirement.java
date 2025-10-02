@@ -679,24 +679,27 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
-			color = Color.GRAY;
+			return Color.GRAY;
 		}
-		else if (additionalOptions != null && additionalOptions.check(client))
+
+		if (additionalOptions != null && additionalOptions.check(client))
 		{
-			color = config.passColour();
+			return config.passColour();
 		}
-		else if (this.checkContainersOnPlayer(client))
+
+		if (this.checkContainersOnPlayer(client))
 		{
-			color = config.passColour();
+			return config.passColour();
 		}
-		else if (this.checkWithAllContainers())
+
+		if (this.checkWithAllContainers())
 		{
-			color = config.partialSuccessColour();
+			return config.partialSuccessColour();
 		}
-		return color;
+
+		return config.failColour();
 	}
 
 	/**

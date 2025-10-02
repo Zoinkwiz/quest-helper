@@ -133,6 +133,28 @@ public class BikeShedder extends BasicQuestHelper
 			steps.addStep(new ZoneRequirement(new WorldPoint(1399, 2924, 0)), cPlankStep);
 		}
 
+		// mistrock bank
+		{
+			// does not need to be equipped
+			var blueWizardHat = new ItemRequirement("Blue wizard hat", ItemID.BLUEWIZHAT);
+			var step = new DetailedQuestStep(this, "Blue wizard hat, does not have to be equipped", blueWizardHat);
+			var stepPassed = new DetailedQuestStep(this, "Blue wizard hat, does not have to be equipped (Requirement used as conditional step passed)", blueWizardHat);
+			var cStep = new ConditionalStep(this, step);
+			cStep.addStep(blueWizardHat, stepPassed);
+			steps.addStep(new ZoneRequirement(new WorldPoint(1383, 2866, 0)), cStep);
+		}
+
+		{
+			// must be equipped
+			var blueWizardHat = new ItemRequirement("Blue wizard hat", ItemID.BLUEWIZHAT);
+			blueWizardHat.setMustBeEquipped(true);
+			var step = new DetailedQuestStep(this, "Blue wizard hat, must be equipped", blueWizardHat);
+			var stepPassed = new DetailedQuestStep(this, "Blue wizard hat, must be equipped (Requirement used as conditional step passed)", blueWizardHat);
+			var cStep = new ConditionalStep(this, step);
+			cStep.addStep(blueWizardHat, stepPassed);
+			steps.addStep(new ZoneRequirement(new WorldPoint(1382, 2866, 0)), cStep);
+		}
+
 		steps.addStep(byStaircaseInSunrisePalace, goDownstairsInSunrisePalace);
 		steps.addStep(outsideLumbridge, moveToLumbridge);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3218, 0)), haveRunes);

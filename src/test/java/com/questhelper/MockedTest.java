@@ -78,7 +78,7 @@ public abstract class MockedTest extends MockedTestBase
 	protected OverlayManager overlayManager = mock(OverlayManager.class);
 
 	@Bind
-	protected QuestHelperConfig questHelperConfig = mock(QuestHelperConfig.class);
+	protected QuestHelperConfig questHelperConfig = Mockito.spy(QuestHelperConfig.class);
 
 	@Bind
 	protected RuneLiteConfig runeLiteConfig = mock(RuneLiteConfig.class);

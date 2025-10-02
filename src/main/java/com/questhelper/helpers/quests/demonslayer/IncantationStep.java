@@ -27,16 +27,15 @@ package com.questhelper.helpers.quests.demonslayer;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.QuestStep;
+import java.util.HashMap;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 
-import java.util.HashMap;
-
 public class IncantationStep extends ConditionalStep
 {
-	private final HashMap<Integer, String> words = new HashMap<Integer, String>()
+	private final HashMap<Integer, String> words = new HashMap<>()
 	{{
 		put(0, "Carlem");
 		put(1, "Aber");
@@ -44,10 +43,9 @@ public class IncantationStep extends ConditionalStep
 		put(3, "Purchai");
 		put(4, "Gabindo");
 	}};
-
+	private final QuestStep incantationStep;
 	private String[] incantationOrder;
 	private int incantationPosition = 0;
-	private final QuestStep incantationStep;
 
 	public IncantationStep(QuestHelper questHelper, QuestStep incantationStep)
 	{
@@ -56,10 +54,10 @@ public class IncantationStep extends ConditionalStep
 		this.steps.get(null).getText().add("Incantation is currently unknown.");
 	}
 
-	@Override
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		int groupId = event.getGroupId();
@@ -113,26 +111,26 @@ public class IncantationStep extends ConditionalStep
 
 	private boolean shouldUpdateChoice()
 	{
-		Widget widget = client.getWidget(InterfaceID.CHATMENU, 1);
+		var widget = client.getWidget(InterfaceID.Chatmenu.OPTIONS);
 		if (widget == null)
 		{
 			return false;
 		}
 
-		Widget[] children = widget.getChildren();
+		var children = widget.getChildren();
 		if (children == null || children.length < 3)
 		{
 			return false;
 		}
 
-		Widget childWidget = widget.getChild(2);
+		var childWidget = widget.getChild(2);
 		return childWidget != null && "Aber".equals(childWidget.getText());
 	}
 
-	@Override
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	protected void updateSteps()
 	{
 		if (incantationOrder != null || (client.getVarbitValue(VarbitID.DELRITH_INCANTATION_1) == 0 && client.getVarbitValue(VarbitID.DELRITH_INCANTATION_2) == 0))
@@ -147,7 +145,7 @@ public class IncantationStep extends ConditionalStep
 			words.get(client.getVarbitValue(VarbitID.DELRITH_INCANTATION_4)),
 			words.get(client.getVarbitValue(VarbitID.DELRITH_INCANTATION_5)),
 		};
-		String incantString = "Say the following in order: " + String.join(", ", incantationOrder);
+		var incantString = "Say the following in order: " + String.join(", ", incantationOrder);
 		steps.get(null).getText().set(1, incantString);
 		startUpStep(incantationStep);
 	}

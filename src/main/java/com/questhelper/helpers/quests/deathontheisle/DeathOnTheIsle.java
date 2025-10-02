@@ -259,8 +259,9 @@ public class DeathOnTheIsle extends BasicQuestHelper
 
 		var uniformTopEquipped = uniformTop.equipped().highlighted();
 		var uniformBottomEquipped = uniformBottom.equipped().highlighted();
-		uniformEquipped = new ItemRequirements("Butler's uniform (equipped)", uniformTopEquipped, uniformBottomEquipped).highlighted();
+		uniformEquipped = new ItemRequirements("Butler's uniform", uniformTopEquipped, uniformBottomEquipped).highlighted();
 		uniformEquipped.setTooltip("This can be obtained from the wardrobe north of Villa Lucens.");
+		uniformEquipped.setMustBeEquipped(true);
 
 		wineLabels = new ItemRequirement("Wine labels", ItemID.DOTI_LABELS);
 		threateningNote = new ItemRequirement("Threatening note", ItemID.DOTI_LETTER);

@@ -311,6 +311,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.MURDER_MYSTERY,
 			QuestHelperQuest.PLAGUE_CITY,
 			QuestHelperQuest.CLOCK_TOWER,
+			QuestHelperQuest.SHEEP_HERDER,
 			QuestHelperQuest.RUNE_MYSTERIES,
 			QuestHelperQuest.HAZEEL_CULT,
 			QuestHelperQuest.FIGHT_ARENA,

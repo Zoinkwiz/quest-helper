@@ -312,6 +312,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.PLAGUE_CITY,
 			QuestHelperQuest.CLOCK_TOWER,
 			QuestHelperQuest.RUNE_MYSTERIES,
+			QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 			QuestHelperQuest.HAZEEL_CULT,
 			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.TREE_GNOME_VILLAGE,

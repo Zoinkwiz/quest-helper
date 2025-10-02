@@ -30,9 +30,11 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
+import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -40,7 +42,15 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -48,103 +58,124 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class TheGolem extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement strangeImplement, strangeImplementHighlight, programHighlight, pestleAndMortarHighlight, mushroomHighlight, vial, inkHighlight, pestleAndMortar,
-		papyrus, letter, clay4Highlight, notesHighlight, phoenixFeather, quill, clay3Highlight, clay2Highlight, clay1Highlight, key, statuette, statuetteHighlight,
-		papyrusHighlight;
+	// Required items
+	ItemRequirement clay4Highlight;
+	ItemRequirement vial;
+	ItemRequirement pestleAndMortar;
+	ItemRequirement papyrus;
 
-	//Items Recommended
-	ItemRequirement varrockTeleport, digsiteTeleport, waterskins, necklaceOfPassage;
+	// Recommended items
+	ItemRequirement varrockTeleport;
+	ItemRequirement digsiteTeleport;
+	ItemRequirement waterskins;
+	ItemRequirement necklaceOfPassage;
 
-	Requirement inRuin, turnedStatue1, turnedStatue2, turnedStatue3, turnedStatue4,hasReadLetter, added1Clay, added2Clay, added3Clay, talkedToElissa,
-		hasReadNotes, talkedToCurator, inUpstairsMuseum, stolenStatuette, inThroneRoom, openedHead, enteredRuins;
+	// Mid-quest item requirements
+	ItemRequirement pestleAndMortarHighlight;
+	ItemRequirement strangeImplement;
+	ItemRequirement strangeImplementHighlight;
+	ItemRequirement programHighlight;
+	ItemRequirement mushroomHighlight;
+	ItemRequirement inkHighlight;
+	ItemRequirement letter;
+	ItemRequirement notesHighlight;
+	ItemRequirement phoenixFeather;
+	ItemRequirement quill;
+	ItemRequirement clay3Highlight;
+	ItemRequirement clay2Highlight;
+	ItemRequirement clay1Highlight;
+	ItemRequirement key;
+	ItemRequirement statuette;
+	ItemRequirement statuetteHighlight;
+	ItemRequirement papyrusHighlight;
 
-	QuestStep pickUpLetter, readLetter, talkToGolem, useClay, useClay2, useClay3, useClay4, talkToElissa, searchBookcase, readBook, talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet,
-		stealFeather, enterRuin, useStatuette, turnStatue1, turnStatue2, turnStatue3, turnStatue4, enterThroneRoom, leaveThroneRoom, leaveRuin, pickBlackMushroom, grindMushroom,
-		useFeatherOnInk, talkToGolemAfterPortal, useQuillOnPapyrus, useImplementOnGolem, useProgramOnGolem, pickUpImplement, enterRuinWithoutStatuette, enterRuinForFirstTime;
+	// Zones
+	Zone ruin;
+	Zone upstairsMuseum;
+	Zone throneRoom;
 
-	//Zones
-	Zone ruin, upstairsMuseum, throneRoom;
+	// Miscellaneous requirements
+	ZoneRequirement inRuin;
+	ZoneRequirement inUpstairsMuseum;
+	ZoneRequirement inThroneRoom;
+	VarbitRequirement turnedStatue1;
+	VarbitRequirement turnedStatue2;
+	VarbitRequirement turnedStatue3;
+	VarbitRequirement turnedStatue4;
+	VarbitRequirement hasReadLetter;
+	VarbitRequirement added1Clay;
+	VarbitRequirement added2Clay;
+	VarbitRequirement added3Clay;
+	VarbitRequirement talkedToElissa;
+	VarbitRequirement hasReadNotes;
+	VarbitRequirement talkedToCurator;
+	Conditions stolenStatuette;
+	VarbitRequirement openedHead;
+	VarbitRequirement enteredRuins;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		Map<Integer, QuestStep> steps = new HashMap<>();
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
+	// Steps
+	// -- Starting off
+	NpcStep talkToGolem;
 
-		steps.put(0, talkToGolem);
+	NpcStep useClay;
+	NpcStep useClay2;
+	NpcStep useClay3;
+	NpcStep useClay4;
 
-		ConditionalStep repairGolem = new ConditionalStep(this, useClay);
-		repairGolem.addStep(added3Clay, useClay4);
-		repairGolem.addStep(added2Clay, useClay3);
-		repairGolem.addStep(added1Clay, useClay2);
+	DetailedQuestStep pickUpLetter;
+	DetailedQuestStep readLetter;
 
-		steps.put(1, repairGolem);
+	ObjectStep enterRuinForFirstTime;
 
-		ConditionalStep goTalkToElissa = new ConditionalStep(this, pickUpLetter);
-		goTalkToElissa.addStep(talkedToCurator, pickpocketCurator);
-		goTalkToElissa.addStep(new Conditions(hasReadNotes, enteredRuins), talkToCurator);
-		goTalkToElissa.addStep(new Conditions(notesHighlight, enteredRuins), readBook);
-		goTalkToElissa.addStep(new Conditions(talkedToElissa, enteredRuins), searchBookcase);
-		goTalkToElissa.addStep(new Conditions(inRuin, strangeImplement), talkToElissa);
-		goTalkToElissa.addStep(new Conditions(inRuin), pickUpImplement);
-		goTalkToElissa.addStep(new Conditions(hasReadLetter, enteredRuins), talkToElissa);
-		goTalkToElissa.addStep(hasReadLetter, enterRuinForFirstTime);
-		goTalkToElissa.addStep(letter, readLetter);
+	DetailedQuestStep pickUpImplement;
 
-		steps.put(2, goTalkToElissa);
+	// -- Finding the statuette
+	NpcStep talkToElissa;
 
-		ConditionalStep getStatuette = new ConditionalStep(this, pickpocketCurator);
-		getStatuette.addStep(new Conditions(stolenStatuette, inRuin), useStatuette);
-		getStatuette.addStep(stolenStatuette, enterRuin);
-		getStatuette.addStep(new Conditions(key, inUpstairsMuseum), openCabinet);
-		getStatuette.addStep(key, goUpInMuseum);
+	ObjectStep searchBookcase;
 
-		steps.put(3, getStatuette);
+	DetailedQuestStep readBook;
 
-		ConditionalStep openPortal = new ConditionalStep(this, enterRuin);
-		openPortal.addStep(new Conditions(turnedStatue4, turnedStatue3, turnedStatue2, inRuin), turnStatue1);
-		openPortal.addStep(new Conditions(turnedStatue4, turnedStatue3, inRuin), turnStatue2);
-		openPortal.addStep(new Conditions(turnedStatue4, inRuin), turnStatue3);
-		openPortal.addStep(new Conditions(inRuin), turnStatue4);
+	NpcStep talkToCurator;
 
-		steps.put(4, openPortal);
+	NpcStep pickpocketCurator;
 
-		ConditionalStep goEnterPortal = new ConditionalStep(this, enterRuin);
-		goEnterPortal.addStep(new Conditions(inRuin, strangeImplement), enterThroneRoom);
-		goEnterPortal.addStep(new Conditions(inRuin), pickUpImplement);
+	ObjectStep goUpInMuseum;
 
-		steps.put(5, goEnterPortal);
+	ObjectStep openCabinet;
 
-		ConditionalStep returnToTheGolem = new ConditionalStep(this, talkToGolemAfterPortal);
-		returnToTheGolem.addStep(new Conditions(inRuin, strangeImplement), leaveRuin);
-		returnToTheGolem.addStep(new Conditions(inRuin), pickUpImplement);
-		returnToTheGolem.addStep(inThroneRoom, leaveThroneRoom);
+	// -- Opening the portal
+	ObjectStep enterRuin;
+	ObjectStep enterRuinWithoutStatuette;
 
-		steps.put(6, returnToTheGolem);
+	ObjectStep useStatuette;
 
-		ConditionalStep reprogramTheGolem = new ConditionalStep(this, enterRuinWithoutStatuette);
-		reprogramTheGolem.addStep(new Conditions(openedHead, programHighlight), useProgramOnGolem);
-		reprogramTheGolem.addStep(new Conditions(strangeImplement, programHighlight), useImplementOnGolem);
-		reprogramTheGolem.addStep(new Conditions(strangeImplement, quill), useQuillOnPapyrus);
-		reprogramTheGolem.addStep(new Conditions(strangeImplement, phoenixFeather, inkHighlight), useFeatherOnInk);
-		reprogramTheGolem.addStep(new Conditions(strangeImplement, inkHighlight), stealFeather);
-		reprogramTheGolem.addStep(new Conditions(strangeImplement, mushroomHighlight), grindMushroom);
-		reprogramTheGolem.addStep(new Conditions(inRuin, strangeImplement), leaveRuin);
-		reprogramTheGolem.addStep(new Conditions(inRuin), pickUpImplement);
-		reprogramTheGolem.addStep(new Conditions(strangeImplement), pickBlackMushroom);
-		reprogramTheGolem.addStep(inThroneRoom, leaveThroneRoom);
+	ObjectStep turnStatue1;
+	ObjectStep turnStatue2;
+	ObjectStep turnStatue3;
+	ObjectStep turnStatue4;
 
-		steps.put(7, reprogramTheGolem);
+	ObjectStep enterThroneRoom;
+	ObjectStep leaveThroneRoom;
 
-		return steps;
-	}
+	ObjectStep leaveRuin;
+	NpcStep talkToGolemAfterPortal;
+
+	ObjectStep pickBlackMushroom;
+
+	DetailedQuestStep grindMushroom;
+
+	NpcStep stealFeather;
+
+	DetailedQuestStep useFeatherOnInk;
+
+	DetailedQuestStep useQuillOnPapyrus;
+
+	NpcStep useImplementOnGolem;
+
+	NpcStep useProgramOnGolem;
 
 	@Override
 	protected void setupZones()
@@ -212,24 +243,23 @@ public class TheGolem extends BasicQuestHelper
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		digsiteTeleport = new ItemRequirement("Digsite teleport", ItemCollections.DIGSITE_PENDANTS);
 		digsiteTeleport.addAlternates(ItemID.TELEPORTSCROLL_DIGSITE);
-		necklaceOfPassage = new ItemRequirement("Necklace of passage to Eagle's Eyrie", ItemCollections.NECKLACE_OF_PASSAGES);
+		necklaceOfPassage = new TeleportItemRequirement("Necklace of passage to Eagle's Eyrie", ItemCollections.NECKLACE_OF_PASSAGES, 3);
 		waterskins = new ItemRequirement("Waterskins", ItemID.WATER_SKIN4, -1);
-	}
 
-	private void setupConditions()
-	{
 		inRuin = new ZoneRequirement(ruin);
 		inUpstairsMuseum = new ZoneRequirement(upstairsMuseum);
 		inThroneRoom = new ZoneRequirement(throneRoom);
 
-		hasReadLetter = new VarbitRequirement(VarbitID.GOLEM_B, 1, Operation.GREATER_EQUAL);
-		talkedToElissa = new VarbitRequirement(VarbitID.GOLEM_B, 2, Operation.GREATER_EQUAL);
-		hasReadNotes = new VarbitRequirement(VarbitID.GOLEM_B, 3, Operation.GREATER_EQUAL);
-		talkedToCurator = new VarbitRequirement(VarbitID.GOLEM_B, 4, Operation.GREATER_EQUAL);
+		var questSideState = new VarbitBuilder(VarbitID.GOLEM_B);
+		hasReadLetter = questSideState.ge(1);
+		talkedToElissa = questSideState.ge(2);
+		hasReadNotes = questSideState.ge(3);
+		talkedToCurator = questSideState.ge(4);
 
-		added1Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 1);
-		added2Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 2);
-		added3Clay = new VarbitRequirement(VarbitID.GOLEM_CLAY, 3);
+		var golemClayState = new VarbitBuilder(VarbitID.GOLEM_CLAY);
+		added1Clay = golemClayState.eq(1);
+		added2Clay = golemClayState.eq(2);
+		added3Clay = golemClayState.eq(3);
 
 		turnedStatue1 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSA, 1);
 		turnedStatue2 = new VarbitRequirement(VarbitID.GOLEM_STATUETTESTATUSB, 1);
@@ -238,22 +268,19 @@ public class TheGolem extends BasicQuestHelper
 
 		openedHead = new VarbitRequirement(VarbitID.GOLEM_HEAD_OPEN, 1);
 
-		stolenStatuette = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.GOLEM_RETRIEVED_STATUETTE, 1), statuette);
+		stolenStatuette = or(new VarbitRequirement(VarbitID.GOLEM_RETRIEVED_STATUETTE, 1), statuette);
 
 		enteredRuins = new VarbitRequirement(VarbitID.GOLEM_SEEN_UNDERGROUND, 1);
 	}
 
 	private void setupSteps()
 	{
-		pickUpLetter = new DetailedQuestStep(this, new WorldPoint(3479, 3092, 0),
-			"Pick up the letter on the floor in Uzer and read it.", letter);
-		((DetailedQuestStep) pickUpLetter).addTeleport(necklaceOfPassage);
-		pickUpLetter.addDialogSteps("Eagle's Eyrie");
-		readLetter = new DetailedQuestStep(this, "Read the letter.", letter);
-		pickUpLetter.addSubSteps(readLetter);
+		// -- Starting off
+		talkToGolem = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer to start the quest.");
+		talkToGolem.addDialogStep("Yes.");
+		talkToGolem.addTeleport(necklaceOfPassage.quantity(1));
+		talkToGolem.addDialogSteps("Eagle's Eyrie");
 
-		talkToGolem = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
-		talkToGolem.addDialogStep("Shall I try to repair you?");
 		useClay = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 4 soft clay on the Golem in Uzer.", clay4Highlight);
 		useClay.addIcon(ItemID.SOFTCLAY);
 		useClay2 = new NpcStep(this, NpcID.GOLEM_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 3 soft clay on the Golem in Uzer.", clay3Highlight);
@@ -262,69 +289,183 @@ public class TheGolem extends BasicQuestHelper
 		useClay3.addIcon(ItemID.SOFTCLAY);
 		useClay4 = new NpcStep(this, NpcID.GOLEM_PARTIALLY_BROKEN_GOLEM, new WorldPoint(3485, 3088, 0), "Use 1 soft clay on the Golem in Uzer.", clay1Highlight);
 		useClay4.addIcon(ItemID.SOFTCLAY);
+		useClay.addSubSteps(useClay2, useClay3, useClay4);
 
-		enterRuinForFirstTime = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		pickUpLetter = new DetailedQuestStep(this, new WorldPoint(3479, 3092, 0),
+			"Pick up the letter on the floor in Uzer and read it.", letter);
+		pickUpLetter.addDialogSteps("Eagle's Eyrie");
+		readLetter = new DetailedQuestStep(this, "Read the letter.", letter);
+		pickUpLetter.addSubSteps(readLetter);
 
+		enterRuinForFirstTime = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins. You can drop the Letter you just read.");
+
+		pickUpImplement = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
+
+		// -- Finding the statuette
 		talkToElissa = new NpcStep(this, NpcID.GOLEM_ELISSA, new WorldPoint(3378, 3428, 0), "Talk to Elissa in the north east of the Digsite.");
 		talkToElissa.addDialogStep("I found a letter in the desert with your name on.");
+		talkToElissa.addTeleport(digsiteTeleport);
+
 		searchBookcase = new ObjectStep(this, ObjectID.GOLEM_BOOKCASE, new WorldPoint(3367, 3332, 0), "Search the bookcase in the south east corner of the Digsite Exam Centre.");
-		readBook = new DetailedQuestStep(this, "Read the notes.", notesHighlight);
-		talkToCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum.");
+
+		readBook = new DetailedQuestStep(this, "Read Varmen's notes.", notesHighlight);
+
+		talkToCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Talk to Curator Haig in the Varrock Museum. You can drop Varmen's notes.");
 		talkToCurator.addDialogStep("I'm looking for a statuette recovered from the city of Uzer.");
-		pickpocketCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig.");
-		goUpInMuseum = new ObjectStep(this, ObjectID.FAI_VARROCK_WOODENSTAIRS_CASTLE, new WorldPoint(3267, 3453, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", key);
+		talkToCurator.addTeleport(varrockTeleport);
+
+		pickpocketCurator = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3256, 3449, 0), "Pickpocket Curator Haig for the Display cabinet key.");
+
+		goUpInMuseum = new ObjectStep(this, ObjectID.FAI_VARROCK_WOODENSTAIRS_CASTLE, new WorldPoint(3266, 3452, 0), "Go to the first floor of the Varrock Museum and right-click open the golem statue's display case.", key);
+
 		openCabinet = new ObjectStep(this, ObjectID.VM_TIMELINE_TERRACOTTA_STATUE, new WorldPoint(3257, 3453, 1), "Right-click open the golem statue's display case.", key);
 
-		stealFeather = new NpcStep(this, NpcID.GOLEM_PHOENIX, new WorldPoint(3414, 3154, 0), "Steal a feather from the desert phoenix north of Uzer.");
-		((NpcStep) stealFeather).addTeleport(necklaceOfPassage);
-		stealFeather.addDialogSteps("Eagle's Eyrie");
+		// -- Opening the portal
 		enterRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", statuette, pestleAndMortar, vial, papyrus);
-		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.");
+		enterRuin.addTeleport(necklaceOfPassage.quantity(1));
+		enterRuin.addDialogSteps("Eagle's Eyrie");
+		enterRuinWithoutStatuette = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", pestleAndMortar, vial, papyrus);
 		enterRuin.addSubSteps(enterRuinWithoutStatuette);
-
-		useImplementOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlight);
-		useImplementOnGolem.addIcon(ItemID.GOLEM_GOLEMKEY);
-		useProgramOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the golem program on the Golem in Uzer.", programHighlight);
-		useProgramOnGolem.addIcon(ItemID.GOLEM_PROGRAM);
 
 		useStatuette = new ObjectStep(this, ObjectID.GOLEM_STATUETTED, new WorldPoint(2725, 4896, 0), "Use the statue on the empty alcove.", statuetteHighlight);
 		useStatuette.addIcon(ItemID.GOLEM_STATUETTE);
+
 		turnStatue1 = new ObjectStep(this, ObjectID.GOLEM_STATUETTEA, new WorldPoint(2718, 4899, 0), "Turn each of the statuettes to face the door.");
 		turnStatue2 = new ObjectStep(this, ObjectID.GOLEM_STATUETTEB, new WorldPoint(2718, 4896, 0), "Turn each of the statuettes to face the door.");
 		turnStatue3 = new ObjectStep(this, ObjectID.GOLEM_STATUETTEC, new WorldPoint(2725, 4899, 0), "Turn each of the statuettes to face the door.");
 		turnStatue4 = new ObjectStep(this, ObjectID.GOLEM_STATUETTED, new WorldPoint(2725, 4896, 0), "Turn each of the statuettes to face the door.");
 		turnStatue1.addSubSteps(turnStatue2, turnStatue3, turnStatue4);
 
-		enterThroneRoom = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.");
+		enterThroneRoom = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2720, 4912, 0), "Enter the portal.");
 		leaveThroneRoom = new ObjectStep(this, ObjectID.GOLEM_DEMON_PORTAL, new WorldPoint(2720, 4883, 2), "Leave the throne room and return to the Golem.");
-		pickUpImplement = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
 
 		leaveRuin = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_BASE, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
+		talkToGolemAfterPortal = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
+		talkToGolemAfterPortal.addSubSteps(leaveRuin);
 
 		pickBlackMushroom = new ObjectStep(this, ObjectID.GOLEM_BLACK_MUSHROOMS, new WorldPoint(3495, 3088, 0), "Pick up some black mushrooms.");
+
 		grindMushroom = new DetailedQuestStep(this, "Grind the mushrooms into a vial.", pestleAndMortarHighlight, mushroomHighlight, vial);
+
+		stealFeather = new NpcStep(this, NpcID.GOLEM_PHOENIX, new WorldPoint(3414, 3154, 0), "Steal a feather from the desert phoenix north of Uzer.");
+		stealFeather.addTeleport(necklaceOfPassage.quantity(1));
+		stealFeather.addDialogSteps("Eagle's Eyrie");
+
 		useFeatherOnInk = new DetailedQuestStep(this, "Use the phoenix feather on the ink.", phoenixFeather, inkHighlight);
+
 		useQuillOnPapyrus = new DetailedQuestStep(this, "Use the phoenix quill on the papyrus.", quill, papyrusHighlight);
-		talkToGolemAfterPortal = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.");
+
+		useImplementOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the strange implement on the Golem in Uzer.", strangeImplementHighlight);
+		useImplementOnGolem.addIcon(ItemID.GOLEM_GOLEMKEY);
+		useProgramOnGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Use the golem program on the Golem in Uzer.", programHighlight);
+		useProgramOnGolem.addIcon(ItemID.GOLEM_PROGRAM);
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		return Arrays.asList(clay4Highlight, vial, pestleAndMortar, papyrus);
-	}
+		initializeRequirements();
+		setupSteps();
 
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return Arrays.asList(varrockTeleport, digsiteTeleport, waterskins);
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToGolem);
+
+		var repairGolem = new ConditionalStep(this, useClay);
+		repairGolem.addStep(added3Clay, useClay4);
+		repairGolem.addStep(added2Clay, useClay3);
+		repairGolem.addStep(added1Clay, useClay2);
+
+		steps.put(1, repairGolem);
+
+		var goTalkToElissa = new ConditionalStep(this, pickUpLetter);
+		goTalkToElissa.addStep(talkedToCurator, pickpocketCurator);
+		goTalkToElissa.addStep(and(hasReadNotes, enteredRuins), talkToCurator);
+		goTalkToElissa.addStep(and(notesHighlight, enteredRuins), readBook);
+		goTalkToElissa.addStep(and(talkedToElissa, enteredRuins), searchBookcase);
+		goTalkToElissa.addStep(and(inRuin, strangeImplement), talkToElissa);
+		goTalkToElissa.addStep(inRuin, pickUpImplement);
+		goTalkToElissa.addStep(and(hasReadLetter, enteredRuins), talkToElissa);
+		goTalkToElissa.addStep(hasReadLetter, enterRuinForFirstTime);
+		goTalkToElissa.addStep(letter, readLetter);
+
+		steps.put(2, goTalkToElissa);
+
+		var getStatuette = new ConditionalStep(this, pickpocketCurator);
+		getStatuette.addStep(and(stolenStatuette, inRuin), useStatuette);
+		getStatuette.addStep(stolenStatuette, enterRuin);
+		getStatuette.addStep(and(key, inUpstairsMuseum), openCabinet);
+		getStatuette.addStep(key, goUpInMuseum);
+
+		steps.put(3, getStatuette);
+
+		var openPortal = new ConditionalStep(this, enterRuin);
+		openPortal.addStep(and(turnedStatue4, turnedStatue3, turnedStatue2, inRuin), turnStatue1);
+		openPortal.addStep(and(turnedStatue4, turnedStatue3, inRuin), turnStatue2);
+		openPortal.addStep(and(turnedStatue4, inRuin), turnStatue3);
+		openPortal.addStep(inRuin, turnStatue4);
+
+		steps.put(4, openPortal);
+
+		var goEnterPortal = new ConditionalStep(this, enterRuinWithoutStatuette);
+		goEnterPortal.addStep(and(inRuin, strangeImplement), enterThroneRoom);
+		goEnterPortal.addStep(inRuin, pickUpImplement);
+
+		steps.put(5, goEnterPortal);
+
+		var returnToTheGolem = new ConditionalStep(this, talkToGolemAfterPortal);
+		returnToTheGolem.addStep(and(inRuin, strangeImplement), leaveRuin);
+		returnToTheGolem.addStep(inRuin, pickUpImplement);
+		returnToTheGolem.addStep(inThroneRoom, leaveThroneRoom);
+
+		steps.put(6, returnToTheGolem);
+
+		var reprogramTheGolem = new ConditionalStep(this, enterRuinWithoutStatuette);
+		reprogramTheGolem.addStep(and(openedHead, programHighlight), useProgramOnGolem);
+		reprogramTheGolem.addStep(and(strangeImplement, programHighlight), useImplementOnGolem);
+		reprogramTheGolem.addStep(and(strangeImplement, quill), useQuillOnPapyrus);
+		reprogramTheGolem.addStep(and(strangeImplement, phoenixFeather, inkHighlight), useFeatherOnInk);
+		reprogramTheGolem.addStep(and(strangeImplement, inkHighlight), stealFeather);
+		reprogramTheGolem.addStep(and(strangeImplement, mushroomHighlight), grindMushroom);
+		reprogramTheGolem.addStep(and(inRuin, strangeImplement), leaveRuin);
+		reprogramTheGolem.addStep(and(inRuin), pickUpImplement);
+		reprogramTheGolem.addStep(strangeImplement, pickBlackMushroom);
+		reprogramTheGolem.addStep(inThroneRoom, leaveThroneRoom);
+
+		steps.put(7, reprogramTheGolem);
+
+		return steps;
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(new SkillRequirement(Skill.CRAFTING, 20),
-			new SkillRequirement(Skill.THIEVING, 25, true));
+		return List.of(
+			new SkillRequirement(Skill.CRAFTING, 20),
+			new SkillRequirement(Skill.THIEVING, 25, true)
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return List.of(
+			clay4Highlight,
+			vial,
+			pestleAndMortar,
+			papyrus
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of(
+			varrockTeleport,
+			digsiteTeleport,
+			necklaceOfPassage,
+			waterskins
+		);
 	}
 
 	@Override
@@ -336,39 +477,75 @@ public class TheGolem extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(
-				new ExperienceReward(Skill.THIEVING, 1000),
-				new ExperienceReward(Skill.CRAFTING, 1000));
+		return List.of(
+			new ExperienceReward(Skill.THIEVING, 1000),
+			new ExperienceReward(Skill.CRAFTING, 1000)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
-				new ItemReward("Rubies (by using a chisel and hammer on the throne)", ItemID.RUBY, 2),
-				new ItemReward("Emeralds (by using a chisel and hammer on the throne)", ItemID.EMERALD, 2),
-				new ItemReward("Sapphires (by using a chisel and hammer on the throne)", ItemID.SAPPHIRE, 2));
+		return List.of(
+			new ItemReward("Rubies (by using a chisel and hammer on the throne)", ItemID.RUBY, 2),
+			new ItemReward("Emeralds (by using a chisel and hammer on the throne)", ItemID.EMERALD, 2),
+			new ItemReward("Sapphires (by using a chisel and hammer on the throne)", ItemID.SAPPHIRE, 2)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Ability to take the Carpet ride from Shantay Pass to Uzer."));
+		return List.of(
+			new UnlockReward("Ability to take the Carpet ride from Shantay Pass to Uzer.")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToGolem, useClay, pickUpLetter, enterRuinForFirstTime,
-			pickUpImplement), clay4Highlight));
-		allSteps.add(new PanelDetails("Finding the statuette", Arrays.asList(talkToElissa, searchBookcase, readBook,
-			talkToCurator, pickpocketCurator, goUpInMuseum, openCabinet)));
-		allSteps.add(new PanelDetails("Opening the portal", Arrays.asList(enterRuin, useStatuette, turnStatue1,
-			enterThroneRoom, leaveThroneRoom, talkToGolemAfterPortal, pickBlackMushroom, grindMushroom,
-			stealFeather, useFeatherOnInk, useQuillOnPapyrus, useImplementOnGolem, useProgramOnGolem), vial, pestleAndMortar, papyrus));
+		sections.add(new PanelDetails("Starting off", List.of(
+			talkToGolem,
+			useClay,
+			pickUpLetter,
+			enterRuinForFirstTime,
+			pickUpImplement
+		), List.of(
+			clay4Highlight
+		)));
 
-		return allSteps;
+		sections.add(new PanelDetails("Finding the statuette", List.of(
+			talkToElissa,
+			searchBookcase,
+			readBook,
+			talkToCurator,
+			pickpocketCurator,
+			goUpInMuseum,
+			openCabinet
+		)));
+
+		sections.add(new PanelDetails("Opening the portal", List.of(
+			enterRuin,
+			useStatuette,
+			turnStatue1,
+			enterThroneRoom,
+			leaveThroneRoom,
+			talkToGolemAfterPortal,
+			pickBlackMushroom,
+			grindMushroom,
+			stealFeather,
+			useFeatherOnInk,
+			useQuillOnPapyrus,
+			useImplementOnGolem,
+			useProgramOnGolem
+		), List.of(
+			vial,
+			pestleAndMortar,
+			papyrus
+		)));
+
+		return sections;
 	}
 }

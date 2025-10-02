@@ -717,10 +717,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToElissa.addDialogStep("I hear you visited Lovakengj recently.");
 		talkToElissa.addTeleport(senntistenTeleport);
 
-		vardorvisSteps = new VardorvisSteps(this, talkToElissa, questBank);
+		vardorvisSteps = new VardorvisSteps(this, talkToElissa);
 		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."));
 		sucellusSteps = new SucellusSteps(this, new DetailedQuestStep(this, "Do Sucellus steps."));
-		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."), questBank);
+		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."));
 
 		returnToDesertWithFinalMedallion = new ObjectStep(this, ObjectID.DT2_DESERT_VAULT_DOOR,
 			new WorldPoint(3511, 2971, 0),

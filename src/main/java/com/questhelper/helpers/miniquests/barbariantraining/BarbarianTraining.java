@@ -117,7 +117,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		// Fishing
 		fishingSteps = new ConditionalStep(this, talkToOttoAboutFishing);
 		fishingSteps.addStep(caughtBarbarianFish, talkToOttoAfterFish);
-		fishingSteps.addStep(and(taskedWithFishing, barbFishingRod.alsoCheckBank(questBank)), catchFish);
+		fishingSteps.addStep(and(taskedWithFishing, barbFishingRod.alsoCheckBank()), catchFish);
 		fishingSteps.addStep(taskedWithFishing, searchBed);
 		fishingSteps.setLockingCondition(finishedFishing);
 
@@ -126,7 +126,7 @@ public class BarbarianTraining extends BasicQuestHelper
 		herbloreSteps.addStep(madePotion, talkToOttoAfterPotion);
 		herbloreSteps.addStep(and(taskedWithHerblore, roe), useRoeOnAttackPotion);
 		herbloreSteps.addStep(and(taskedWithHerblore, fish), dissectFish);
-		herbloreSteps.addStep(and(taskedWithHerblore, barbFishingRod.alsoCheckBank(questBank)), fishForHerblore);
+		herbloreSteps.addStep(and(taskedWithHerblore, barbFishingRod.alsoCheckBank()), fishForHerblore);
 		herbloreSteps.addStep(taskedWithHerblore, getBarbRodForHerblore);
 		herbloreSteps.setLockingCondition(finishedHerblore);
 
@@ -157,7 +157,7 @@ public class BarbarianTraining extends BasicQuestHelper
 
 		pyreSteps = new ConditionalStep(this, talkToOttoAboutPyre);
 		pyreSteps.addStep(and(sacrificedRemains), talkToOttoAfterPyre);
-		pyreSteps.addStep(and(taskedWithPyre, chewedBones.alsoCheckBank(questBank)), useLogOnPyre);
+		pyreSteps.addStep(and(taskedWithPyre, chewedBones.alsoCheckBank()), useLogOnPyre);
 		pyreSteps.addStep(and(taskedWithPyre, chewedBonesNearby), pickupChewedBones);
 		pyreSteps.addStep(and(taskedWithPyre, inAncientCavernArrivalRoom), enterWhirlpool);
 		pyreSteps.addStep(and(taskedWithPyre, inAncientCavernF0), goUpToMithrilDragons);

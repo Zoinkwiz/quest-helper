@@ -83,15 +83,15 @@ public class TheKnightsSword extends BasicQuestHelper
 		steps.put(4, talkToSquire2);
 
 		ConditionalStep getPortrait = new ConditionalStep(this, goUpCastle1);
-		getPortrait.addStep(portrait.alsoCheckBank(questBank), givePortraitToThurgo);
+		getPortrait.addStep(portrait.alsoCheckBank(), givePortraitToThurgo);
 		getPortrait.addStep(inFaladorCastle2, searchCupboard);
 		getPortrait.addStep(inFaladorCastle1, goUpCastle2);
 
 		steps.put(5, getPortrait);
 
 		ConditionalStep returnSwordToSquire = new ConditionalStep(this, enterDungeon);
-		returnSwordToSquire.addStep(bluriteSword.alsoCheckBank(questBank), finishQuest);
-		returnSwordToSquire.addStep(bluriteOre.alsoCheckBank(questBank), bringThurgoOre);
+		returnSwordToSquire.addStep(bluriteSword.alsoCheckBank(), finishQuest);
+		returnSwordToSquire.addStep(bluriteOre.alsoCheckBank(), bringThurgoOre);
 		returnSwordToSquire.addStep(inDungeon, mineBlurite);
 
 		steps.put(6, returnSwordToSquire);

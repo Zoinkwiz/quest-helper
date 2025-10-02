@@ -98,6 +98,41 @@ public class BikeShedder extends BasicQuestHelper
 		var outsideLumbridge = new ZoneRequirement(false, lumbridge);
 		moveToLumbridge.setHighlightZone(lumbridge);
 		var steps = new ConditionalStep(this, confuseHans);
+
+		// aldarin bank
+		var plankNoBank = new ItemRequirement("Plank (no bank)", ItemID.WOODPLANK);
+		{
+			// Do not check bank for plank
+			var plankStep = new DetailedQuestStep(this, "Plank requirement will not check bank", plankNoBank);
+			var plankStepPassed = new DetailedQuestStep(this, "Plank requirement will not check bank (Requirement used as conditional step passed)", plankNoBank);
+			var cPlankStep = new ConditionalStep(this, plankStep);
+			cPlankStep.addStep(plankNoBank, plankStepPassed);
+			steps.addStep(new ZoneRequirement(new WorldPoint(1399, 2926, 0)), cPlankStep);
+		}
+
+		{
+			// Check bank for plank using alsoCheckBank
+			var plank = plankNoBank.alsoCheckBank();
+			plank.setName("Plank (check bank 1)");
+			var plankStep = new DetailedQuestStep(this, "Plank requirement will check bank 1", plank);
+			var plankStepPassed = new DetailedQuestStep(this, "Plank requirement will check bank 1 (Requirement used as conditional step passed)", plank);
+			var cPlankStep = new ConditionalStep(this, plankStep);
+			cPlankStep.addStep(plank, plankStepPassed);
+			steps.addStep(new ZoneRequirement(new WorldPoint(1399, 2925, 0)), cPlankStep);
+		}
+
+		{
+			// Check bank for plank using setShouldCheckBank
+			var plank = new ItemRequirement("Plank (no bank)", ItemID.WOODPLANK);
+			plank.setShouldCheckBank(true);
+			plank.setName("Plank (check bank 2)");
+			var plankStep = new DetailedQuestStep(this, "Plank requirement will check bank 2", plank);
+			var plankStepPassed = new DetailedQuestStep(this, "Plank requirement will check bank 2 (Requirement used as conditional step passed)", plank);
+			var cPlankStep = new ConditionalStep(this, plankStep);
+			cPlankStep.addStep(plank, plankStepPassed);
+			steps.addStep(new ZoneRequirement(new WorldPoint(1399, 2924, 0)), cPlankStep);
+		}
+
 		steps.addStep(byStaircaseInSunrisePalace, goDownstairsInSunrisePalace);
 		steps.addStep(outsideLumbridge, moveToLumbridge);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3218, 0)), haveRunes);
@@ -108,6 +143,7 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3216, 0)), getCoins);
 		steps.addStep(conditionalRequirementZoneRequirement, conditionalRequirementLookAtCoins);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3221, 0)), lookAtCooksAssistant);
+
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(-1, steps)
 			.build();

@@ -176,8 +176,8 @@ public class TheDigSite extends BasicQuestHelper
 		steps.put(7, explodeWall);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, goDownForTablet);
-		completeQuest.addStep(new Conditions(tablet.alsoCheckBank(questBank), inUndergroundTemple2), goUpWithTablet);
-		completeQuest.addStep(new Conditions(tablet.alsoCheckBank(questBank)), useTabletOnExpert);
+		completeQuest.addStep(new Conditions(tablet.alsoCheckBank(), inUndergroundTemple2), goUpWithTablet);
+		completeQuest.addStep(new Conditions(tablet.alsoCheckBank()), useTabletOnExpert);
 		completeQuest.addStep(inUndergroundTemple2, takeTablet);
 		steps.put(8, completeQuest);
 

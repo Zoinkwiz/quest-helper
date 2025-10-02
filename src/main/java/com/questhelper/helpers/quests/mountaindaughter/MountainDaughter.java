@@ -104,8 +104,8 @@ public class MountainDaughter extends BasicQuestHelper
 		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, finishedFood), returnToHamalAboutDiplomacy);
 
 		// Get fruit
-		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearlSeed.alsoCheckBank(questBank)), returnToHamalAboutFood);
-		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearl.alsoCheckBank(questBank)), eatFruit);
+		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearlSeed.alsoCheckBank()), returnToHamalAboutFood);
+		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearl.alsoCheckBank()), eatFruit);
 		helpTheCamp.addStep(givenGuaranteeToSvidi, getFruit);
 
 		// Fremennik friendship
@@ -133,15 +133,15 @@ public class MountainDaughter extends BasicQuestHelper
 		steps.put(40, killKendalStep);
 
 		ConditionalStep returnTheCorpse = new ConditionalStep(this, enterCave);
-		returnTheCorpse.addStep(corpse.alsoCheckBank(questBank), bringCorpseToHamal);
+		returnTheCorpse.addStep(corpse.alsoCheckBank(), bringCorpseToHamal);
 		returnTheCorpse.addStep(inKendalCave, grabCorpse);
 
 		steps.put(50, returnTheCorpse);
 
 		ConditionalStep buryCorpse = new ConditionalStep(this, enterCampOverRocks);
 		buryCorpse.addStep(hasBuried, createCairn);
-		buryCorpse.addStep(necklace.alsoCheckBank(questBank), buryCorpseOnIsland);
-		buryCorpse.addStep(muddyRocks5.alsoCheckBank(questBank), speakRagnar);
+		buryCorpse.addStep(necklace.alsoCheckBank(), buryCorpseOnIsland);
+		buryCorpse.addStep(muddyRocks5.alsoCheckBank(), speakRagnar);
 		buryCorpse.addStep(inTheCamp, collectRocks);
 
 		steps.put(60, buryCorpse);

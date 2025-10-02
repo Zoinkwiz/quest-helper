@@ -87,9 +87,9 @@ public class ObservatoryQuest extends BasicQuestHelper
 		goGetLens.addStep(new Conditions(inObservatoryDungeon, hasMould), leaveDungeon);
 		goGetLens.addStep(hasMould, giveProfessorMould);
 		goGetLens.addStep(new Conditions(inObservatoryDungeon, new Conditions(LogicType.OR,
-			key.alsoCheckBank(questBank), usedKey), sleepingGuardNearby), prodGuard);
+			key.alsoCheckBank(), usedKey), sleepingGuardNearby), prodGuard);
 		goGetLens.addStep(new Conditions(inObservatoryDungeon, new Conditions(LogicType.OR,
-				key.alsoCheckBank(questBank), usedKey)), inspectStove);
+				key.alsoCheckBank(), usedKey)), inspectStove);
 		goGetLens.addStep(inObservatoryDungeon, searchChests);
 		steps.put(4, goGetLens);
 

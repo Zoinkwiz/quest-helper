@@ -743,7 +743,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		notInspectedSkeleton = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_TABLET_INSPECT, 1));
 		notInspectedDoor = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_DOOR_INSPECT, 1));
 		quetzalMadeSalvagerOverlook = new VarbitRequirement(VarbitID.QUETZAL_SALVAGEROVERLOOK, 1);
-		hasAtesAndActivatedTeleport = and(pendant.alsoCheckBank(questBank), new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TWILIGHT_FOUND, 1, Operation.GREATER_EQUAL));
+		hasAtesAndActivatedTeleport = and(pendant.alsoCheckBank(), new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TWILIGHT_FOUND, 1, Operation.GREATER_EQUAL));
 	}
 
 	public void setupSteps()

@@ -105,10 +105,10 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		steps.put(50, goTalkToBurntmeat);
 
 		ConditionalStep getGout = new ConditionalStep(this, useBucketOnPot);
-		getGout.addStep(new Conditions(goutLump.alsoCheckBank(questBank), inStrongholdFloor1), talkToArmWithLump);
-		getGout.addStep(new Conditions(goutLump.alsoCheckBank(questBank), inStrongholdFloor2), goDownToArmWithLump);
-		getGout.addStep(new Conditions(goutLump.alsoCheckBank(questBank), inPrison), goUpToArmWithLump);
-		getGout.addStep(goutLump.alsoCheckBank(questBank), enterStrongholdWithLump);
+		getGout.addStep(new Conditions(goutLump.alsoCheckBank(), inStrongholdFloor1), talkToArmWithLump);
+		getGout.addStep(new Conditions(goutLump.alsoCheckBank(), inStrongholdFloor2), goDownToArmWithLump);
+		getGout.addStep(new Conditions(goutLump.alsoCheckBank(), inPrison), goUpToArmWithLump);
+		getGout.addStep(goutLump.alsoCheckBank(), enterStrongholdWithLump);
 
 		steps.put(60, getGout);
 

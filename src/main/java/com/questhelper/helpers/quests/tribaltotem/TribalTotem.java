@@ -75,7 +75,7 @@ public class TribalTotem extends BasicQuestHelper
         useLabelOnCrate.addStep(addressLabel, useLabel);
 
         ConditionalStep navigateMansion = new ConditionalStep(this, talkToCromperty);
-        navigateMansion.addStep(totem.alsoCheckBank(questBank), talkToKangaiMauAgain);
+        navigateMansion.addStep(totem.alsoCheckBank(), talkToKangaiMauAgain);
         navigateMansion.addStep(new Conditions(openedLockWidget, inMiddleRoom), solvePassword);
         navigateMansion.addStep(inStairway, climbStairs);
         navigateMansion.addStep(isUpstairs, searchChest);

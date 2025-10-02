@@ -167,7 +167,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		glarialsPebble = new ItemRequirement("Glarial's pebble", ItemID.GLARIALS_PEBBLE_WATERFALL_QUEST);
 		glarialsPebble.setHighlightInInventory(true);
 		glarialsPebble.setTooltip("You can get another from Golrie under the Tree Gnome Village");
-		glarialsPebbleWithBank = glarialsPebble.alsoCheckBank(questBank);
+		glarialsPebbleWithBank = glarialsPebble.alsoCheckBank();
 		glarialsUrn = new ItemRequirement("Glarial's urn", ItemID.GLARIALS_URN_FULL_WATERFALL_QUEST);
 		glarialsUrn.setTooltip("You can get another from the chest in Glarial's tomb");
 		glarialsAmulet = new ItemRequirement("Glarial's amulet", ItemID.GLARIALS_AMULET_WATERFALL_QUEST, 1, true);
@@ -325,9 +325,9 @@ public class WaterfallQuest extends BasicQuestHelper
 		goGetPebble.setLockingCondition(glarialsPebbleWithBank);
 
 		getGlarialStuff = new ConditionalStep(this, usePebble);
-		getGlarialStuff.addStep(and(unequippedAmulet.alsoCheckBank(questBank), inGlarialTomb), searchGlarialCoffin);
+		getGlarialStuff.addStep(and(unequippedAmulet.alsoCheckBank(), inGlarialTomb), searchGlarialCoffin);
 		getGlarialStuff.addStep(inGlarialTomb, searchGlarialChest);
-		getGlarialStuff.setLockingCondition(and(unequippedAmulet.alsoCheckBank(questBank), glarialsUrn.alsoCheckBank(questBank)));
+		getGlarialStuff.setLockingCondition(and(unequippedAmulet.alsoCheckBank(), glarialsUrn.alsoCheckBank()));
 
 		var puttingToRest = new ConditionalStep(this, getFinalItems);
 		puttingToRest.addStep(inEnd2, useUrnOnChalice);
@@ -341,7 +341,7 @@ public class WaterfallQuest extends BasicQuestHelper
 		puttingToRest.addStep(and(glarialsUrn, glarialsAmulet, airRunes, earthRunes, waterRunes, rope), boardRaftFinal);
 
 		var finishingSteps = new ConditionalStep(this, goGetPebble);
-		finishingSteps.addStep(and(glarialsUrn.alsoCheckBank(questBank), glarialsAmulet.alsoCheckBank(questBank)), puttingToRest);
+		finishingSteps.addStep(and(glarialsUrn.alsoCheckBank(), glarialsAmulet.alsoCheckBank()), puttingToRest);
 		finishingSteps.addStep(gotPebble, getGlarialStuff);
 
 		steps.put(3, finishingSteps);

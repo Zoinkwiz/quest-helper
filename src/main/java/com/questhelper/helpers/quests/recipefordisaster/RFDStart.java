@@ -63,7 +63,7 @@ public class RFDStart extends BasicQuestHelper
 		steps.put(0, talkToCook);
 
 		ConditionalStep goGiveCookItems = new ConditionalStep(this, useAshesOnFruitBlast);
-		goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(questBank), talkToCookAgain);
+		goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(), talkToCookAgain);
 		steps.put(1, goGiveCookItems);
 
 		steps.put(2, enterDiningRoom);

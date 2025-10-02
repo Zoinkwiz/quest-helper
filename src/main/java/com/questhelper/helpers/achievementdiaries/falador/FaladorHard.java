@@ -135,8 +135,8 @@ public class FaladorHard extends ComplexStateQuestHelper
 		doHard.addStep(notCraftedMindRunes, craftedMindRunesTask);
 
 		praySarimAltarProsyTask = new ConditionalStep(this, getProsySet);
-		praySarimAltarProsyTask.addStep(new Conditions(notPraySarimAltarProsy, prosyHelm.alsoCheckBank(questBank),
-			prosyLegs.alsoCheckBank(questBank), prosyChest.alsoCheckBank(questBank)), prayAtAltarSarim);
+		praySarimAltarProsyTask.addStep(new Conditions(notPraySarimAltarProsy, prosyHelm.alsoCheckBank(),
+			prosyLegs.alsoCheckBank(), prosyChest.alsoCheckBank()), prayAtAltarSarim);
 		doHard.addStep(notPraySarimAltarProsy, praySarimAltarProsyTask);
 
 		killedWyvernTask = new ConditionalStep(this, goToIceDungeon);

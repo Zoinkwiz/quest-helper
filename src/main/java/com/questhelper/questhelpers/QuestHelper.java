@@ -30,7 +30,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.bank.QuestBank;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
@@ -69,9 +68,6 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	@Inject
 	protected RuneliteObjectManager runeliteObjectManager;
-
-	@Inject
-	protected QuestBank questBank;
 
 	@Getter
 	@Setter

@@ -106,7 +106,7 @@ public class ArdougneElite extends ComplexStateQuestHelper
 
 		imbueSalveTask = new ConditionalStep(this, farmMorePoints);
 		imbueSalveTask.addStep(enoughNMZPoints, imbueSalve);
-		imbueSalveTask.addStep(imbuedSalve.alsoCheckBank(questBank), equipSalve);
+		imbueSalveTask.addStep(imbuedSalve.alsoCheckBank(), equipSalve);
 		doElite.addStep(notImbueSalve, imbueSalveTask);
 
 		trawlerRayTask = new ConditionalStep(this, trawlerRay);

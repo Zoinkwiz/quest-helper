@@ -431,7 +431,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 		hadRumWithBanana = new Conditions(LogicType.OR, karamjanRumWithBanana, givenRum);
 		hadSeaweed = new Conditions(LogicType.OR, seaweed, seaweedSandwich, givenSandwich);
 		hadSeaweedSandwich = new Conditions(LogicType.OR, seaweedSandwich, givenSandwich);
-		hadMarinated = new Conditions(LogicType.OR, marinatedJogreBones.alsoCheckBank(questBank), givenBones);
+		hadMarinated = new Conditions(LogicType.OR, marinatedJogreBones.alsoCheckBank(), givenBones);
 
 		talkedTinsay1 = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>He requires <col=800000>banana in Karamja " +

@@ -84,7 +84,7 @@ public class DemonSlayer extends BasicQuestHelper
 		getFirstKey = new ConditionalStep(this, goUpToRovin);
 		getFirstKey.addStep(inCastleNWFloor2, talkToRovin);
 		getFirstKey.addStep(inCastleNWFloor1, goUpToRovin2);
-		getFirstKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key1.alsoCheckBank(questBank)));
+		getFirstKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key1.alsoCheckBank()));
 
 		getSecondKey = new ConditionalStep(this, goUpToBucket);
 		getSecondKey.addStep(new Conditions(hasPouredWaterIntoDrain, inVarrockSewer), pickupSecondKey);
@@ -95,15 +95,15 @@ public class DemonSlayer extends BasicQuestHelper
 		getSecondKey.addStep(new Conditions(inCastleNEFloor1, bucketOfWater), goDownFromBucket);
 		getSecondKey.addStep(bucket, fillBucket);
 		getSecondKey.addStep(inCastleNEFloor1, pickupBucket);
-		getSecondKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key2.alsoCheckBank(questBank)));
+		getSecondKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key2.alsoCheckBank()));
 
 		getThirdKey = new ConditionalStep(this, goUpstairsWizard);
 		getThirdKey.addStep(inTowerFloor1, talkToTraiborn);
 		getThirdKey.addStep(inVarrockSewer, goUpManhole);
-		getThirdKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key3.alsoCheckBank(questBank)));
+		getThirdKey.setLockingCondition(new Conditions(LogicType.OR, obtainedSilverlight, key3.alsoCheckBank()));
 
 		goAndKillDelrith = new ConditionalStep(this, getSilverlightBack);
-		goAndKillDelrith.addStep(silverlight.alsoCheckBank(questBank), killDelrith);
+		goAndKillDelrith.addStep(silverlight.alsoCheckBank(), killDelrith);
 
 		ConditionalStep getKeys = new ConditionalStep(this, getFirstKey);
 		getKeys.addStep(obtainedSilverlight, goAndKillDelrith);

@@ -136,10 +136,10 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		steps.put(20, returnAfterPeep);
 
 		ConditionalStep goGetBook = new ConditionalStep(this, searchBookcase);
-		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(questBank), hasReadPrayerBook, inHarmony),
+		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(), hasReadPrayerBook, inHarmony),
 			recitePrayer);
-		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(questBank), hasReadPrayerBook), returnToTranquility);
-		goGetBook.addStep(prayerBook.alsoCheckBank(questBank), readBook);
+		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(), hasReadPrayerBook), returnToTranquility);
+		goGetBook.addStep(prayerBook.alsoCheckBank(), readBook);
 		steps.put(30, goGetBook);
 		steps.put(40, goGetBook);
 
@@ -315,7 +315,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		addedCats = new VarbitRequirement(VarbitID.BRAIN_CRATE, 4, Operation.GREATER_EQUAL);
 		fenkInCrate = new VarbitRequirement(VarbitID.BRAIN_CRATE, 5, Operation.GREATER_EQUAL);
 
-		addedCatsOrHas10 = new Conditions(LogicType.OR, addedCats, woodenCats.quantity(10).alsoCheckBank(questBank));
+		addedCatsOrHas10 = new Conditions(LogicType.OR, addedCats, woodenCats.quantity(10).alsoCheckBank());
 
 		// 3392 0->10, added wooden cats
 

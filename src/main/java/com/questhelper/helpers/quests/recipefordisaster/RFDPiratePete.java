@@ -120,8 +120,8 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		ConditionalStep goLearnHowToMakeFishCake = new ConditionalStep(this, goDivingAgain);
 		goLearnHowToMakeFishCake.addStep(new Conditions(fishCake, inDiningRoom), useCakeOnPete);
-		goLearnHowToMakeFishCake.addStep(new Conditions(fishCake.alsoCheckBank(questBank)), enterDiningRoomAgain);
-		goLearnHowToMakeFishCake.addStep(new Conditions(rawFishCake.alsoCheckBank(questBank)), cookCake);
+		goLearnHowToMakeFishCake.addStep(new Conditions(fishCake.alsoCheckBank()), enterDiningRoomAgain);
+		goLearnHowToMakeFishCake.addStep(new Conditions(rawFishCake.alsoCheckBank()), cookCake);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, hasCrabMeat, inUnderWater), climbAnchor);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, inUnderWater, hasEnoughRocks), killCrab);
 		goLearnHowToMakeFishCake.addStep(new Conditions(hasKelp, inUnderWater), pickUpRocksAgain);
@@ -136,7 +136,7 @@ public class RFDPiratePete extends BasicQuestHelper
 
 		ConditionalStep savePete = new ConditionalStep(this, useCrabOnKelp);
 		savePete.addStep(new Conditions(fishCake, inDiningRoom), useCakeOnPete);
-		savePete.addStep(new Conditions(fishCake.alsoCheckBank(questBank)), enterDiningRoomAgain);
+		savePete.addStep(new Conditions(fishCake.alsoCheckBank()), enterDiningRoomAgain);
 		savePete.addStep(new Conditions(rawFishCake), cookCake);
 		steps.put(100, savePete);
 

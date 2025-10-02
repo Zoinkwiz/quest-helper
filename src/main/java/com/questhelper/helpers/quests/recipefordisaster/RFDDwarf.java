@@ -100,7 +100,7 @@ public class RFDDwarf extends BasicQuestHelper
 
 		ConditionalStep giveCakeToDwarf = new ConditionalStep(this, pickUpRockCake);
 		giveCakeToDwarf.addStep(new Conditions(rockCake, inDiningRoom), useRockCakeOnDwarf);
-		giveCakeToDwarf.addStep(rockCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		giveCakeToDwarf.addStep(rockCake.alsoCheckBank(), enterDiningRoomAgain);
 		giveCakeToDwarf.addStep(rockCakeHot, coolRockCake);
 		steps.put(50, giveCakeToDwarf);
 

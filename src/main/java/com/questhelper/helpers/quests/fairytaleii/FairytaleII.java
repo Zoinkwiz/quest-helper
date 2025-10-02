@@ -105,7 +105,7 @@ public class FairytaleII extends BasicQuestHelper
 		goInvestigate.addStep(new Conditions(hasInvestigatedCertificate, hasReadSign, talkedToGodfather), goToHideoutSurface);
 		goInvestigate.addStep(new Conditions(inZanaris, hasInvestigatedCertificate, hasReadSign), talkToGodfather);
 		goInvestigate.addStep(new Conditions(inZanaris, hasInvestigatedCertificate), readSign);
-		goInvestigate.addStep(new Conditions(inZanaris, fairyCertificate.alsoCheckBank(questBank)), studyCertificate);
+		goInvestigate.addStep(new Conditions(inZanaris, fairyCertificate.alsoCheckBank()), studyCertificate);
 		goInvestigate.addStep(inZanaris, takeCertificate);
 		steps.put(20, goInvestigate);
 		steps.put(30, goInvestigate);
@@ -113,9 +113,9 @@ public class FairytaleII extends BasicQuestHelper
 		steps.put(45, goInvestigate);
 
 		ConditionalStep goGetSecateurs = new ConditionalStep(this, goToZanarisToPickpocket);
-		goGetSecateurs.addStep(new Conditions(inHideout, queensSecateurs.alsoCheckBank(questBank)), giveSecateursToNuff);
-		goGetSecateurs.addStep(new Conditions(inZanaris, queensSecateurs.alsoCheckBank(questBank)), goToHideoutWithSec);
-		goGetSecateurs.addStep(queensSecateurs.alsoCheckBank(questBank), goToHideoutSurfaceWithSec);
+		goGetSecateurs.addStep(new Conditions(inHideout, queensSecateurs.alsoCheckBank()), giveSecateursToNuff);
+		goGetSecateurs.addStep(new Conditions(inZanaris, queensSecateurs.alsoCheckBank()), goToHideoutWithSec);
+		goGetSecateurs.addStep(queensSecateurs.alsoCheckBank(), goToHideoutSurfaceWithSec);
 		goGetSecateurs.addStep(inHideout, returnToZanarisFromBase);
 		goGetSecateurs.addStep(inZanaris, pickpocketGodfather);
 		steps.put(50, goGetSecateurs);
@@ -127,14 +127,14 @@ public class FairytaleII extends BasicQuestHelper
 		steps.put(65, goTalkNuffAfterSec);
 
 		ConditionalStep goMakePotion = new ConditionalStep(this, goToCkp);
-		goMakePotion.addStep(new Conditions(addedClawCorrectly, magicEssence.alsoCheckBank(questBank), inHideout),
+		goMakePotion.addStep(new Conditions(addedClawCorrectly, magicEssence.alsoCheckBank(), inHideout),
 			usePotionOnQueen);
-		goMakePotion.addStep(new Conditions(addedClawCorrectly, magicEssence.alsoCheckBank(questBank)), goToHideout2);
-		goMakePotion.addStep(new Conditions(addedFlowerCorrectly, gorakClawPowder.alsoCheckBank(questBank),
-			magicEssenceUnf.alsoCheckBank(questBank)), usePowderOnPotion);
-		goMakePotion.addStep(new Conditions(addedFlowerCorrectly, gorakClaw.alsoCheckBank(questBank),
-			magicEssenceUnf.alsoCheckBank(questBank)), usePestleOnClaw);
-		goMakePotion.addStep(new Conditions(gorakClaw.alsoCheckBank(questBank), starFlower.alsoCheckBank(questBank)),
+		goMakePotion.addStep(new Conditions(addedClawCorrectly, magicEssence.alsoCheckBank()), goToHideout2);
+		goMakePotion.addStep(new Conditions(addedFlowerCorrectly, gorakClawPowder.alsoCheckBank(),
+			magicEssenceUnf.alsoCheckBank()), usePowderOnPotion);
+		goMakePotion.addStep(new Conditions(addedFlowerCorrectly, gorakClaw.alsoCheckBank(),
+			magicEssenceUnf.alsoCheckBank()), usePestleOnClaw);
+		goMakePotion.addStep(new Conditions(gorakClaw.alsoCheckBank(), starFlower.alsoCheckBank()),
 			useStarFlowerOnVial);
 		goMakePotion.addStep(new Conditions(clawNearby, starflowerOrUnfCorrectlyMade), pickupGorakClaw);
 		goMakePotion.addStep(new Conditions(inGorakPlane, starflowerOrUnfCorrectlyMade), killGorak);
@@ -236,8 +236,8 @@ public class FairytaleII extends BasicQuestHelper
 		// Killed Gorak, 2382=1
 
 		starflowerOrUnfCorrectlyMade = new Conditions(LogicType.OR,
-			starFlower.alsoCheckBank(questBank),
-			new Conditions(addedFlowerCorrectly, magicEssenceUnf.alsoCheckBank(questBank))
+			starFlower.alsoCheckBank(),
+			new Conditions(addedFlowerCorrectly, magicEssenceUnf.alsoCheckBank())
 		);
 	}
 

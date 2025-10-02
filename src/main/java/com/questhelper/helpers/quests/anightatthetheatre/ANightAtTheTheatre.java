@@ -128,9 +128,9 @@ public class ANightAtTheTheatre extends BasicQuestHelper
 		steps.put(26, speakWithDaerKandConditional);
 
 		ConditionalStep returnToSpiderCaveConditional = new ConditionalStep(this, returnToSpiderCave);
-		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(questBank), inSpiderCave), useSulphuricAcidOnEggSac);
-		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(questBank), inSisterhoodSanctuaryF1), climbStairsDownSisterhoodF0);
-		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(questBank), inSisterhoodSanctuaryF0), exitSisterhoodSanctuary);
+		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(), inSpiderCave), useSulphuricAcidOnEggSac);
+		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(), inSisterhoodSanctuaryF1), climbStairsDownSisterhoodF0);
+		returnToSpiderCaveConditional.addStep(new Conditions(sulphuricAcid.alsoCheckBank(), inSisterhoodSanctuaryF0), exitSisterhoodSanctuary);
 		returnToSpiderCaveConditional.addStep(inSpiderCave, exitSpiderCave);
 		returnToSpiderCaveConditional.addStep(inSisterhoodSanctuaryF0, climbStairsToSisterhoodSanctuaryF1);
 		returnToSpiderCaveConditional.addStep(inSisterhoodSanctuaryF1, speakWithDaerKrand);

@@ -295,7 +295,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		stoneTablet.setHighlightInInventory(true);
 		chest = new ItemRequirement("Chest", ItemID.BCS_CHEST);
 		chest.setHighlightInInventory(true);
-		chest.alsoCheckBank(questBank);
+		chest.alsoCheckBank();
 		scarabMould = new ItemRequirement("Scarab mould", ItemID.BCS_EMBLEM_MOULD);
 		scarabEmblem = new ItemRequirement("Scarab emblem", ItemID.BCS_EMBLEM);
 		scarabEmblem.setHighlightInInventory(true);

@@ -80,11 +80,11 @@ public class PrinceAliRescue extends BasicQuestHelper
 		steps.put(10, talkToOsman);
 
 		makeDyedWig = new ConditionalStep(this, talkToNed);
-		makeDyedWig.addStep(wig.alsoCheckBank(questBank), dyeWig);
-		makeDyedWig.setLockingCondition(dyedWig.alsoCheckBank(questBank));
+		makeDyedWig.addStep(wig.alsoCheckBank(), dyeWig);
+		makeDyedWig.setLockingCondition(dyedWig.alsoCheckBank());
 
 		makePaste = new ConditionalStep(this, talkToAggie);
-		makePaste.setLockingCondition(paste.alsoCheckBank(questBank));
+		makePaste.setLockingCondition(paste.alsoCheckBank());
 
 		makeKeyMould = new ConditionalStep(this, talkToKeli);
 		makeKeyMould.setLockingCondition(hasOrGivenKeyMould);
@@ -93,17 +93,17 @@ public class PrinceAliRescue extends BasicQuestHelper
 		getKey.setLockingCondition(givenKeyMould);
 
 		ConditionalStep prepareToSaveAli = new ConditionalStep(this, makeDyedWig);
-		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank),
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(), paste.alsoCheckBank(),
 			new Conditions(LogicType.OR, madeMould, givenKeyMould)), talkToLeela);
-		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), hasOrGivenKeyMould), getKey);
-		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank)), makeKeyMould);
-		prepareToSaveAli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(), paste.alsoCheckBank(), hasOrGivenKeyMould), getKey);
+		prepareToSaveAli.addStep(new Conditions(dyedWig.alsoCheckBank(), paste.alsoCheckBank()), makeKeyMould);
+		prepareToSaveAli.addStep(dyedWig.alsoCheckBank(), makePaste);
 
 		steps.put(20, prepareToSaveAli);
 
 		ConditionalStep getJoeDrunk = new ConditionalStep(this, makeDyedWig);
 		getJoeDrunk.addStep(hasWigPasteAndKey, talkToJoe);
-		getJoeDrunk.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
+		getJoeDrunk.addStep(dyedWig.alsoCheckBank(), makePaste);
 
 		steps.put(30, getJoeDrunk);
 		steps.put(31, getJoeDrunk);
@@ -112,13 +112,13 @@ public class PrinceAliRescue extends BasicQuestHelper
 
 		ConditionalStep tieUpKeli = new ConditionalStep(this, makeDyedWig);
 		tieUpKeli.addStep(hasWigPasteAndKey, useRopeOnKeli);
-		tieUpKeli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
+		tieUpKeli.addStep(dyedWig.alsoCheckBank(), makePaste);
 		steps.put(40, tieUpKeli);
 
 		ConditionalStep freeAli = new ConditionalStep(this, makeDyedWig);
 		freeAli.addStep(new Conditions(hasWigPasteAndKey, inCell), talkToAli);
 		freeAli.addStep(hasWigPasteAndKey, useKeyOnDoor);
-		freeAli.addStep(dyedWig.alsoCheckBank(questBank), makePaste);
+		freeAli.addStep(dyedWig.alsoCheckBank(), makePaste);
 		steps.put(50, freeAli);
 
 		steps.put(100, returnToHassan);
@@ -163,18 +163,18 @@ public class PrinceAliRescue extends BasicQuestHelper
 	public void setupConditions()
 	{
 		inCell = new ZoneRequirement(cell);
-		hasWigPasteAndKey = new Conditions(dyedWig.alsoCheckBank(questBank), paste.alsoCheckBank(questBank), key.alsoCheckBank(questBank));
+		hasWigPasteAndKey = new Conditions(dyedWig.alsoCheckBank(), paste.alsoCheckBank(), key.alsoCheckBank());
 		givenKeyMould = new Conditions(true, LogicType.OR,	// TODO quest journal widget text outdated
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I have duplicated a key, I need to get it from"),
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I got a duplicated cell door key"),
 			new WidgetTextRequirement(11, 2, true, "You give Osman the imprint along with a bronze bar."),
 			new DialogRequirement("I'll use this to have a copy of the key made. I'll send it to Leela once it's ready."),
 			new DialogRequirement("I think I have everything needed."),
-			key.alsoCheckBank(questBank));
+			key.alsoCheckBank());
 		madeMould = new RuneliteRequirement(getConfigManager(), "princealikeymouldhandedin", "true", givenKeyMould);
 		madeMould.initWithValue("false");
 
-		hasOrGivenKeyMould = new Conditions(LogicType.OR, keyMould, givenKeyMould, key.alsoCheckBank(questBank));
+		hasOrGivenKeyMould = new Conditions(LogicType.OR, keyMould, givenKeyMould, key.alsoCheckBank());
 	}
 
 	@Override

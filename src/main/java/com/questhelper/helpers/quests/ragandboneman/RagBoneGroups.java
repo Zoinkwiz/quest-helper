@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.ragandboneman;
 
-import com.questhelper.bank.QuestBank;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
@@ -78,32 +77,32 @@ public class RagBoneGroups
 		return bonesOnFloor;
 	}
 
-	public static List<Requirement> allBonesObtained(List<RagBoneState> states, QuestBank questBank)
+	public static List<Requirement> allBonesObtained(List<RagBoneState> states)
 	{
 		List<Requirement> boneReq = new ArrayList<>();
 		for (RagBoneState ragBoneIState : states)
 		{
-			boneReq.add(ragBoneIState.hadBoneItem(questBank));
+			boneReq.add(ragBoneIState.hadBoneItem());
 		}
 		return boneReq;
 	}
 
-	public static List<Requirement> allBonesAddedToVinegar(List<RagBoneState> states, QuestBank questBank)
+	public static List<Requirement> allBonesAddedToVinegar(List<RagBoneState> states)
 	{
 		List<Requirement> boneReq = new ArrayList<>();
 		for (RagBoneState ragBoneIState : states)
 		{
-			boneReq.add(ragBoneIState.hadBoneInVinegarItem(questBank));
+			boneReq.add(ragBoneIState.hadBoneInVinegarItem());
 		}
 		return boneReq;
 	}
 
-	public static List<Requirement> allBonesPolished(List<RagBoneState> states, QuestBank questBank)
+	public static List<Requirement> allBonesPolished(List<RagBoneState> states)
 	{
 		List<Requirement> boneReq = new ArrayList<>();
 		for (RagBoneState ragBoneIState : states)
 		{
-			boneReq.add(ragBoneIState.boneProcessed(questBank));
+			boneReq.add(ragBoneIState.boneProcessed());
 		}
 		return boneReq;
 	}
@@ -120,24 +119,24 @@ public class RagBoneGroups
 		return boneReq;
 	}
 
-	public static List<ItemRequirement> bonesToAddToVinegar(List<RagBoneState> states, QuestBank questBank)
+	public static List<ItemRequirement> bonesToAddToVinegar(List<RagBoneState> states)
 	{
 		List<ItemRequirement> boneReq = new ArrayList<>();
 		for (RagBoneState ragBoneIState : states)
 		{
-			boneReq.add(ragBoneIState.getBoneItem().hideConditioned(ragBoneIState.hadBoneInVinegarItem(questBank)).highlighted());
+			boneReq.add(ragBoneIState.getBoneItem().hideConditioned(ragBoneIState.hadBoneInVinegarItem()).highlighted());
 		}
 		return boneReq;
 	}
 
-	public static List<ItemRequirement> bonesToAddToBoiler(List<RagBoneState> states, QuestBank questBank)
+	public static List<ItemRequirement> bonesToAddToBoiler(List<RagBoneState> states)
 	{
 		List<ItemRequirement> boneReq = new ArrayList<>();
 		for (RagBoneState ragBoneIState : states)
 		{
 			boneReq.add(ragBoneIState.getBoneInVinegarItem().hideConditioned(
 				new Conditions(LogicType.OR,
-					ragBoneIState.boneProcessed(questBank)
+					ragBoneIState.boneProcessed()
 				)
 			).highlighted());
 		}

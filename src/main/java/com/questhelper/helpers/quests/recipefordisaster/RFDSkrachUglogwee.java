@@ -105,7 +105,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		steps.put(100, talkToRantzAfterReturn);
 
 		ConditionalStep getJubbly = new ConditionalStep(this, fillUpBellows);
-		getJubbly.addStep(rawJubbly.alsoCheckBank(questBank), cookJubbly);
+		getJubbly.addStep(rawJubbly.alsoCheckBank(), cookJubbly);
 		getJubbly.addStep(rawJubblyOnFloor, pickUpRawJubbly);
 		getJubbly.addStep(jubblyCarcassNearby, lootJubbly);
 		getJubbly.addStep(jubblyNearby, killJubbly);

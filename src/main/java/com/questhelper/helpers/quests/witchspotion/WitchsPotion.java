@@ -94,7 +94,7 @@ public class WitchsPotion extends BasicQuestHelper
 		steps.put(0, talkToWitch);
 
 		var getIngredients = new ConditionalStep(this, killRat);
-		getIngredients.addStep(ratTail.alsoCheckBank(questBank), returnToWitch);
+		getIngredients.addStep(ratTail.alsoCheckBank(), returnToWitch);
 
 		steps.put(1, getIngredients);
 

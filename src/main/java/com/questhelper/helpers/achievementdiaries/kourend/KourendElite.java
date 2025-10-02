@@ -128,8 +128,8 @@ public class KourendElite extends ComplexStateQuestHelper
 		doElite.addStep(notCompleteRaid, completeRaidTask);
 
 		defeatSkotizoTask = new ConditionalStep(this, combineDarkTotem);
-		defeatSkotizoTask.addStep(darkTotem.alsoCheckBank(questBank), enterCatacombs);
-		defeatSkotizoTask.addStep(new Conditions(darkTotem.alsoCheckBank(questBank), inCatacombs), enterSkotizoLair);
+		defeatSkotizoTask.addStep(darkTotem.alsoCheckBank(), enterCatacombs);
+		defeatSkotizoTask.addStep(new Conditions(darkTotem.alsoCheckBank(), inCatacombs), enterSkotizoLair);
 		defeatSkotizoTask.addStep(inSkotizoLair, defeatSkotizo);
 		doElite.addStep(notDefeatSkotizo, defeatSkotizoTask);
 

@@ -135,7 +135,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notSubdueWintertodt, subdueWintertodtTask);
 
 		deliverIntelligenceTask = new ConditionalStep(this, killGangBoss);
-		deliverIntelligenceTask.addStep(intelligence.alsoCheckBank(questBank), deliverIntelligence);
+		deliverIntelligenceTask.addStep(intelligence.alsoCheckBank(), deliverIntelligence);
 		doMedium.addStep(notDeliverIntelligence, deliverIntelligenceTask);
 
 		travelWithMemoirsTask = new ConditionalStep(this, travelWithMemoirs);

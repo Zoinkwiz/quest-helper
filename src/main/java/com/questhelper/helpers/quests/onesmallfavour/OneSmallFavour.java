@@ -198,7 +198,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		fightSlagilith.addStep(slagilithNearby, killSlagilith);
 		fightSlagilith.addStep(inScrollSpot, readScroll);
 		fightSlagilith.addStep(inGoblinCave, standNextToSculpture);
-		fightSlagilith.addStep(pigeonCages5.alsoCheckBank(questBank), enterGoblinCaveAgain);
+		fightSlagilith.addStep(pigeonCages5.alsoCheckBank(), enterGoblinCaveAgain);
 
 		steps.put(145, fightSlagilith);
 		steps.put(150, fightSlagilith);
@@ -207,7 +207,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		freePetra.addStep(petraNearby, talkToPetra);
 		freePetra.addStep(inScrollSpot, readScroll);
 		freePetra.addStep(inGoblinCave, standNextToSculpture);
-		freePetra.addStep(pigeonCages5.alsoCheckBank(questBank), enterGoblinCaveAgain);
+		freePetra.addStep(pigeonCages5.alsoCheckBank(), enterGoblinCaveAgain);
 
 		steps.put(152, freePetra);
 		steps.put(155, freePetra);
@@ -501,9 +501,9 @@ public class OneSmallFavour extends BasicQuestHelper
 		addedDirectionals = new VarbitRequirement(VarbitID.DIRECTIONALSFIXED, 1);
 		addedWeathervanePillar = new VarbitRequirement(VarbitID.ROTATINGPILLARFIXED, 1);
 
-		hasOrUsedDirectionals = new Conditions(LogicType.OR, addedDirectionals, directionals.alsoCheckBank(questBank));
-		hasOrUsedOrnament = new Conditions(LogicType.OR, addedOrnaments, ornament.alsoCheckBank(questBank));
-		hasOrUsedWeathervanePillar = new Conditions(LogicType.OR, addedWeathervanePillar, weathervanePillar.alsoCheckBank(questBank));
+		hasOrUsedDirectionals = new Conditions(LogicType.OR, addedDirectionals, directionals.alsoCheckBank());
+		hasOrUsedOrnament = new Conditions(LogicType.OR, addedOrnaments, ornament.alsoCheckBank());
+		hasOrUsedWeathervanePillar = new Conditions(LogicType.OR, addedWeathervanePillar, weathervanePillar.alsoCheckBank());
 	}
 
 	public void setupSteps()

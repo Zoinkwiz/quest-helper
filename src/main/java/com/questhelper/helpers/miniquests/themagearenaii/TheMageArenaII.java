@@ -85,12 +85,12 @@ public class TheMageArenaII extends BasicQuestHelper
 		goKillMinions.addStep(demonsHeart, enterCavernWithHeart);
 		goKillMinions.addStep(new Conditions(givenHand, givenRoots), locateFollowerZammy);
 
-		goKillMinions.addStep(new Conditions(inCavern, entRoots.alsoCheckBank(questBank)), giveKolodionRoots);
-		goKillMinions.addStep(entRoots.alsoCheckBank(questBank), enterCavernWithRoots);
+		goKillMinions.addStep(new Conditions(inCavern, entRoots.alsoCheckBank()), giveKolodionRoots);
+		goKillMinions.addStep(entRoots.alsoCheckBank(), enterCavernWithRoots);
 		goKillMinions.addStep(givenHand, locateFollowerGuthix);
 
-		goKillMinions.addStep(new Conditions(inCavern, justicarsHand.alsoCheckBank(questBank)), giveKolodionHand);
-		goKillMinions.addStep(justicarsHand.alsoCheckBank(questBank), enterCavernWithHand);
+		goKillMinions.addStep(new Conditions(inCavern, justicarsHand.alsoCheckBank()), giveKolodionHand);
+		goKillMinions.addStep(justicarsHand.alsoCheckBank(), enterCavernWithHand);
 		steps.put(2, goKillMinions);
 
 		ConditionalStep goImbueCape = new ConditionalStep(this, enterCavernAfterMinions);

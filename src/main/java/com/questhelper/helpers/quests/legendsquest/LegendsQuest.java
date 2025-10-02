@@ -208,22 +208,22 @@ public class LegendsQuest extends BasicQuestHelper
 		gemPuzzle.addStep(new Conditions(sapphirePlaced, diamondPlaced, rubyPlaced), useTopaz);
 		gemPuzzle.addStep(new Conditions(sapphirePlaced, diamondPlaced), useRuby);
 		gemPuzzle.addStep(new Conditions(sapphirePlaced), useDiamond);
-		gemPuzzle.setLockingCondition(bindingBook.alsoCheckBank(questBank));
+		gemPuzzle.setLockingCondition(bindingBook.alsoCheckBank());
 		gemPuzzle.setBlocker(true);
 
 		blessBowl = new ConditionalStep(this, makeBowl);
-		blessBowl.addStep(new Conditions(inKharazi, goldBowlBlessed.alsoCheckBank(questBank), reed), useReedOnPool);
-		blessBowl.addStep(new Conditions(inKharazi, goldBowlBlessed.alsoCheckBank(questBank)), useMacheteOnReeds);
-		blessBowl.addStep(new Conditions(inKharazi, goldBowl.alsoCheckBank(questBank), gujuoNearby), talkToGujuoWithBowl);
-		blessBowl.addStep(new Conditions(inKharazi, goldBowl.alsoCheckBank(questBank)), spinBullToBless);
-		blessBowl.addStep(goldBowl.alsoCheckBank(questBank), enterJungleWithBowl);
+		blessBowl.addStep(new Conditions(inKharazi, goldBowlBlessed.alsoCheckBank(), reed), useReedOnPool);
+		blessBowl.addStep(new Conditions(inKharazi, goldBowlBlessed.alsoCheckBank()), useMacheteOnReeds);
+		blessBowl.addStep(new Conditions(inKharazi, goldBowl.alsoCheckBank(), gujuoNearby), talkToGujuoWithBowl);
+		blessBowl.addStep(new Conditions(inKharazi, goldBowl.alsoCheckBank()), spinBullToBless);
+		blessBowl.addStep(goldBowl.alsoCheckBank(), enterJungleWithBowl);
 
 		ConditionalStep solvingCaves = new ConditionalStep(this, enterJungleWithRoarer);
 		solvingCaves.addStep(new Conditions(inFire, nezNearby), fightNezikchenedInFire);
-		solvingCaves.addStep(new Conditions(inFire, bindingBook.alsoCheckBank(questBank)), useBindingBookOnUngadulu);
-		solvingCaves.addStep(new Conditions(inCaves, bindingBook.alsoCheckBank(questBank), goldBowlFull), useBowlOnFireWall);
-		solvingCaves.addStep(new Conditions(bindingBook.alsoCheckBank(questBank), goldBowlFull), enterMossyRockWithBowl);
-		solvingCaves.addStep(bindingBook.alsoCheckBank(questBank), blessBowl);
+		solvingCaves.addStep(new Conditions(inFire, bindingBook.alsoCheckBank()), useBindingBookOnUngadulu);
+		solvingCaves.addStep(new Conditions(inCaves, bindingBook.alsoCheckBank(), goldBowlFull), useBowlOnFireWall);
+		solvingCaves.addStep(new Conditions(bindingBook.alsoCheckBank(), goldBowlFull), enterMossyRockWithBowl);
+		solvingCaves.addStep(bindingBook.alsoCheckBank(), blessBowl);
 		solvingCaves.addStep(inCaveRoom5, gemPuzzle);
 		solvingCaves.addStep(hadSketch, runePuzzle);
 		solvingCaves.addStep(new Conditions(inKharazi, gujuoNearby), talkToGujuoAgain);
@@ -264,7 +264,7 @@ public class LegendsQuest extends BasicQuestHelper
 		reachingTheDeeperCaves.addStep(inCaveRoom2, enterGate1ToSource);
 		reachingTheDeeperCaves.addStep(new Conditions(inCaveRoom1, braveryPotion), enterBookcaseToSource);
 		reachingTheDeeperCaves.addStep(new Conditions(inKharazi, braveryPotion), enterMossyRockToSource);
-		reachingTheDeeperCaves.addStep(braveryPotion.alsoCheckBank(questBank), enterJungleToGoToSource);
+		reachingTheDeeperCaves.addStep(braveryPotion.alsoCheckBank(), enterJungleToGoToSource);
 		reachingTheDeeperCaves.addStep(snakeMixture, addArdrigalToSnake);
 		reachingTheDeeperCaves.addStep(ardrigalMixture, addSnake);
 

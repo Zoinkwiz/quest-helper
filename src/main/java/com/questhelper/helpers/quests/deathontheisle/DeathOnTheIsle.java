@@ -32,6 +32,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.TeleportItemRequirement;
+import com.questhelper.requirements.npc.NoFollowerRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -94,6 +95,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	ItemRequirement uniformTop;
 	ItemRequirement uniformBottom;
 	ItemRequirements uniform;
+	NoFollowerRequirement noPet;
 
 	// Miscellaneous requirements
 	ItemRequirement uniformEquipped;
@@ -260,6 +262,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		uniformBottom = new ItemRequirement("Butler's uniform pants", ItemID.DOTI_BUTLERUNIFORM_LEGS);
 		uniformBottom.addAlternates(ItemID.DOTI_BUTLERUNIFORM_LEGS_VILLA);
 		uniform = new ItemRequirements("Butler's uniform", uniformTop, uniformBottom);
+		noPet = new NoFollowerRequirement("No pet following you");
 
 		var uniformTopEquipped = uniformTop.equipped().highlighted();
 		var uniformBottomEquipped = uniformBottom.equipped().highlighted();
@@ -360,7 +363,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		talkToPatziAfterStealingUniform.addSubSteps(continueTalkingToPatzi);
 
 		/// 10 + 12
-		equipButlersOutfitAndHeadInside = new NpcStep(this, NpcID.DOTI_HEADBUTLER_CORE, new WorldPoint(1426, 2919, 0), "Equip the Butler's uniform pieces and talk to the Head Butler up the stone stairs and to the south.", uniformEquipped);
+		equipButlersOutfitAndHeadInside = new NpcStep(this, NpcID.DOTI_HEADBUTLER_CORE, new WorldPoint(1426, 2919, 0), "Equip the Butler's uniform pieces and talk to the Head Butler up the stone stairs and to the south.", uniformEquipped, noPet);
 		equipButlersOutfitAndHeadInside.addDialogStep("I am.");
 		equipButlersOutfitAndHeadInside.addSubSteps(returnToButlerAndHeadInside);
 
@@ -740,7 +743,8 @@ public class DeathOnTheIsle extends BasicQuestHelper
 			talkToPatziAfterStealingUniform,
 			equipButlersOutfitAndHeadInside
 		), List.of(
-			emptyInvSlots
+			emptyInvSlots,
+			noPet
 		)));
 
 		sections.add(new PanelDetails("Inside Villa Lucens", List.of(

@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.TeleportItemRequirement;
@@ -136,6 +137,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	VarbitRequirement interrogatedXocotlaAgain;
 	VarbitRequirement interrogatedCozyacAgain;
 	VarbitRequirement interrogatedPavoAgain;
+	NpcCondition adalaBossSpawned;
 	VarbitRequirement talkedtoGuardsAtTheatre;
 	VarbitRequirement searchedCrateNextToStairs;
 	VarbitRequirement searchedBookshelf;
@@ -209,6 +211,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	NpcStep interrogateCozyacAgain;
 	NpcStep interrogatePavoAgain;
 	NpcStep accuseAdala;
+	NpcStep fightAdala;
 	NpcStep getAdalasConfession;
 	NpcStep talkToGuardsAboutAdala;
 	NpcStep talkToGuardsAtTheatre;
@@ -323,6 +326,8 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		interrogatedXocotlaAgain = new VarbitRequirement(VarbitID.DOTI_QUESTIONED_XOCOTLA, 1);
 		interrogatedCozyacAgain = new VarbitRequirement(VarbitID.DOTI_QUESTIONED_COZYAC, 1);
 		interrogatedPavoAgain = new VarbitRequirement(VarbitID.DOTI_QUESTIONED_PAVO, 1);
+
+		adalaBossSpawned = new NpcCondition(NpcID.DOTI_ADALA_BOSS);
 
 		talkedtoGuardsAtTheatre = new VarbitRequirement(VarbitID.DOTI_BACKSTAGE_INTRO, 1);
 
@@ -495,7 +500,11 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		accuseAdala.addAlternateNpcs(NpcID.DOTI_ADALA_BOSS);
 		accuseAdala.addDialogStep("Accuse Adala.");
 
+		fightAdala = new NpcStep(this, NpcID.DOTI_ADALA_MASK_INSIDE, new WorldPoint(1446, 2933, 2), "Fight Adala. You cannot lose this fight.");
+		accuseAdala.addSubSteps(fightAdala);
+
 		speakToSuspects = new ConditionalStep(this, accuseAdala);
+		speakToSuspects.addStep(adalaBossSpawned, fightAdala);
 		speakToSuspects.addStep(not(inVilla), returnToButlerAndHeadInside);
 		speakToSuspects.addStep(not(interrogatedConstantiniusAgain), interrogateConstantiniusAgain);
 		speakToSuspects.addStep(not(interrogatedXocotlaAgain), interrogateXocotlaAgain);

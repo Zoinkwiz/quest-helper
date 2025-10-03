@@ -595,6 +595,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		speakToGuards = new NpcStep(this, NpcID.DOTI_STRADIUS, new WorldPoint(1472, 2925, 0), "Report back to Stradius near the theatre and accuse Naiatli.");
 		speakToGuards.addDialogStepWithExclusion("More options...", "Naiatli.");
 		speakToGuards.addDialogStep("Naiatli.");
+		speakToGuards.addDialogStep("Previous options...");
 		speakToGuards.addSubSteps(climbUpFromTheatreCellar);
 
 		// varbit 11257=1 if spoken to stradius a bit

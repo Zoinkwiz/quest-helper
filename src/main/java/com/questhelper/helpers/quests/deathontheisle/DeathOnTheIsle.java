@@ -91,6 +91,8 @@ public class DeathOnTheIsle extends BasicQuestHelper
 	Zone theatreCellar;
 
 	// Mid-quest item requirements
+	ItemRequirement uniformTop;
+	ItemRequirement uniformBottom;
 	ItemRequirements uniform;
 
 	// Miscellaneous requirements
@@ -253,8 +255,10 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		// TODO: Add alternates
 
 		/// Mid-quest item requirements
-		var uniformTop = new ItemRequirement("Butler's uniform shirt", ItemID.DOTI_BUTLERUNIFORM);
-		var uniformBottom = new ItemRequirement("Butler's uniform pants", ItemID.DOTI_BUTLERUNIFORM_LEGS);
+		uniformTop = new ItemRequirement("Butler's uniform shirt", ItemID.DOTI_BUTLERUNIFORM);
+		uniformTop.addAlternates(ItemID.DOTI_BUTLERUNIFORM_VILLA);
+		uniformBottom = new ItemRequirement("Butler's uniform pants", ItemID.DOTI_BUTLERUNIFORM_LEGS);
+		uniformBottom.addAlternates(ItemID.DOTI_BUTLERUNIFORM_LEGS_VILLA);
 		uniform = new ItemRequirements("Butler's uniform", uniformTop, uniformBottom);
 
 		var uniformTopEquipped = uniformTop.equipped().highlighted();
@@ -749,6 +753,9 @@ public class DeathOnTheIsle extends BasicQuestHelper
 			getWine,
 			investigateMan,
 			beInterrogatedByThePolice
+		), List.of(
+			uniformTop,
+			uniformBottom
 		)));
 
 		sections.add(new PanelDetails("Playing detective", List.of(

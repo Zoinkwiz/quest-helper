@@ -492,6 +492,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		// 11242 0->1 accused Pavo
 
 		accuseAdala = new NpcStep(this, NpcID.DOTI_ADALA_MASK_INSIDE, new WorldPoint(1446, 2933, 2), "Accuse Adala of the crime, ready for a fight you cannot lose.");
+		accuseAdala.addAlternateNpcs(NpcID.DOTI_ADALA_BOSS);
 		accuseAdala.addDialogStep("Accuse Adala.");
 
 		speakToSuspects = new ConditionalStep(this, accuseAdala);

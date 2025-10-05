@@ -272,7 +272,7 @@ public class DemonSlayer extends BasicQuestHelper
 		traibornPanel.setLockingStep(getThirdKey);
 		allSteps.add(traibornPanel);
 
-		PanelDetails killDelrithPanel = new PanelDetails("Kill Delrith", Arrays.asList(returnToPrysin, killDelrithStep), silverlight, combatGear, food);
+		PanelDetails killDelrithPanel = new PanelDetails("Kill Delrith", Arrays.asList(returnToPrysin, killDelrithStep), combatGear, food, key1, key2, key3);
 		allSteps.add(killDelrithPanel);
 		return allSteps;
 	}

@@ -376,7 +376,9 @@ public class DemonSlayer extends BasicQuestHelper
 			returnToPrysin,
 			killDelrithStep
 		), List.of(
-			silverlight,
+			key1,
+			key2,
+			key3,
 			combatGear,
 			food
 		)));

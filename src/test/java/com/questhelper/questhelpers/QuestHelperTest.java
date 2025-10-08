@@ -309,6 +309,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
 			QuestHelperQuest.BIOHAZARD,
+			QuestHelperQuest.THE_GOLEM,
 			QuestHelperQuest.DRUIDIC_RITUAL,
 			QuestHelperQuest.MURDER_MYSTERY,
 			QuestHelperQuest.PLAGUE_CITY,

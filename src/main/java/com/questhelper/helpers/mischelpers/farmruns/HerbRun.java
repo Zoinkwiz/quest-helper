@@ -28,6 +28,7 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.config.ConfigKeys;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questinfo.HelperConfig;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -130,6 +131,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	ManualRequirement weissReady;
 	ManualRequirement hosidiusReady;
 	ManualRequirement varlamoreReady;
+	Conditions allGrowing;
 
 	// Steps
 	ReorderableConditionalStep steps;
@@ -207,6 +209,10 @@ public class HerbRun extends ComplexStateQuestHelper
 		weissEmpty = new ManualRequirement();
 		hosidiusEmpty = new ManualRequirement();
 		varlamoreEmpty = new ManualRequirement();
+
+		allGrowing = nor(ardougneReady, catherbyReady, faladorReady, farmingGuildReady, harmonyReady, morytaniaReady, trollStrongholdReady, weissReady,
+				hosidiusReady, varlamoreReady, ardougneEmpty, catherbyEmpty, faladorEmpty, farmingGuildEmpty, harmonyEmpty, morytaniaEmpty,
+				trollStrongholdEmpty, weissEmpty, hosidiusEmpty, varlamoreEmpty);
 
 		accessToFarmingGuildPatch = new SkillRequirement(Skill.FARMING, 65);
 
@@ -575,16 +581,21 @@ public class HerbRun extends ComplexStateQuestHelper
 	private void prepopulateSidebarPanels()
 	{
 		allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Farming Guild", Collections.singletonList(farmingGuildPatch)).withId(0));
-		allSteps.add(new PanelDetails("Falador", Collections.singletonList(faladorPatch)).withId(1));
-		allSteps.add(new PanelDetails("Ardougne", Collections.singletonList(ardougnePatch)).withId(2));
-		allSteps.add(new PanelDetails("Catherby", Collections.singletonList(catherbyPatch)).withId(3));
-		allSteps.add(new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4));
-		allSteps.add(new PanelDetails("Hosidius", Collections.singletonList(hosidiusPatch)).withId(5));
-		allSteps.add(new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6));
-		allSteps.add(new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7));
-		allSteps.add(new PanelDetails("Weiss", Collections.singletonList(weissPatch)).withId(8));
-		allSteps.add(new PanelDetails("Harmony Island", Collections.singletonList(harmonyPatch)).withId(9).withHideCondition(nor(accessToHarmony)));
+
+		allSteps.add(new PanelDetails("Wait for Herbs", waitForHerbs).withHideCondition(nor(allGrowing)));
+		TopLevelPanelDetails farmRunSidebar = new TopLevelPanelDetails("Farm Run",
+				new PanelDetails("Farming Guild", Collections.singletonList(farmingGuildPatch)).withId(0),
+				new PanelDetails("Falador", Collections.singletonList(faladorPatch)).withId(1),
+				new PanelDetails("Ardougne", Collections.singletonList(ardougnePatch)).withId(2),
+				new PanelDetails("Catherby", Collections.singletonList(catherbyPatch)).withId(3),
+				new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4),
+				new PanelDetails("Hosidius", Collections.singletonList(hosidiusPatch)).withId(5),
+				new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6),
+				new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7),
+				new PanelDetails("Weiss", Collections.singletonList(weissPatch)).withId(8),
+				new PanelDetails("Harmony Island", Collections.singletonList(harmonyPatch)).withId(9).withHideCondition(nor(accessToHarmony))
+		);
+		allSteps.add(farmRunSidebar);
 	}
 
 	@Override

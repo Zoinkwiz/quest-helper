@@ -37,7 +37,7 @@ import java.util.*;
 public class PanelDetails
 {
 	@Getter
-	int id;
+	int id = -1;
 
 	@Getter
 	String header;

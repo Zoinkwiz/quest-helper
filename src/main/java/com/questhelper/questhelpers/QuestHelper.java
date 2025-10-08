@@ -38,6 +38,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.rewards.*;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
@@ -96,6 +97,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Setter
 	protected List<Integer> sidebarOrder;
 
+	protected QuestState lastQuestState;
+
 	@Override
 	public void configure(Binder binder)
 	{
@@ -126,6 +129,13 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		if (step != null)
 		{
 			currentStep = step;
+			currentStep.startUp();
+			eventBus.register(currentStep);
+		}
+		else if (!hasQuestStateBecomeFinished() && getState(client) == QuestState.FINISHED)
+		{
+			currentStep = new DetailedQuestStep(this, "Quest completed!");
+			instantiateStep(currentStep);
 			currentStep.startUp();
 			eventBus.register(currentStep);
 		}
@@ -219,6 +229,15 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	public int getVar()
 	{
 		return quest.getVar(client);
+	}
+
+	public boolean hasQuestStateBecomeFinished()
+	{
+		var currentQuestState = quest.getState(client);
+		if (lastQuestState == null) lastQuestState = currentQuestState;
+		boolean questStateEnteredFinished = currentQuestState == QuestState.FINISHED && lastQuestState != QuestState.FINISHED;
+		lastQuestState = currentQuestState;
+		return questStateEnteredFinished;
 	}
 
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)

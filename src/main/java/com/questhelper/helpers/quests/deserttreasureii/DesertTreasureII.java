@@ -242,7 +242,7 @@ public class DesertTreasureII extends BasicQuestHelper
 		findingTheFour.addStep(not(finishedVardorvis), vardorvisSteps);
 		findingTheFour.addStep(not(finishedPerseriya), perseriyaSteps);
 		findingTheFour.addStep(not(finishedSucellus), sucellusSteps);
-		steps.put(0, findingTheFour);
+		steps.put(42, findingTheFour);
 		/* Entered stranglewood */
 		steps.put(44, findingTheFour);
 		/* Entered vardorvis arena */

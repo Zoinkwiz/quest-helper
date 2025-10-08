@@ -619,11 +619,6 @@ public class QuestOverviewPanel extends JPanel
 	{
 		List<Integer> newOrderIds = allQuestStepPanelList.stream()
 			.map(AbstractQuestSection::getIds)
-			.filter(wow -> {
-				System.out.println("WOW");
-				System.out.println(wow);
-				return true;
-			})
 			.flatMap(Collection::stream)
 			.collect(Collectors.toList());
 

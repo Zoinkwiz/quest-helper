@@ -76,6 +76,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final JPanel allDropdownSections = new JPanel();
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
 	private final JComboBox<String> stateDropdown = new JComboBox<>();
+	private JPanel statePanel;
 
 	private final JButton skillExpandButton = new JButton();
 	private final IconTextField searchBar = new IconTextField();
@@ -413,7 +414,6 @@ public class QuestHelperPanel extends PluginPanel
 
 			// State dropdown for BasicQuestHelper
 			stateDropdown.setFocusable(false);
-			stateDropdown.setVisible(false);
 			stateDropdown.addItemListener((ev) -> {
 				if (ev.getStateChange() == ItemEvent.SELECTED)
 				{
@@ -438,7 +438,12 @@ public class QuestHelperPanel extends PluginPanel
 					}
 				}
 			});
-			searchQuestsPanel.add(stateDropdown, BorderLayout.CENTER);
+			
+			// Create a panel with label for the state dropdown
+			statePanel = makeDropdownPanel(stateDropdown, "Quest State");
+			statePanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
+			statePanel.setVisible(false);
+			searchQuestsPanel.add(statePanel, BorderLayout.CENTER);
 		}
 
 		refreshSkillFiltering();
@@ -698,16 +703,16 @@ public class QuestHelperPanel extends PluginPanel
 					stateDropdown.setSelectedItem("none");
 				}
 
-				stateDropdown.setVisible(true);
+				statePanel.setVisible(true);
 			}
 			else
 			{
-				stateDropdown.setVisible(false);
+				statePanel.setVisible(false);
 			}
 		}
 		else
 		{
-			stateDropdown.setVisible(false);
+			statePanel.setVisible(false);
 		}
 
 		for (ItemListener listener : listeners)

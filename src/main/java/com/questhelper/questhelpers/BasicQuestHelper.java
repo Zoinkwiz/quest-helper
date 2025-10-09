@@ -36,6 +36,7 @@ import java.util.Map;
 public abstract class BasicQuestHelper extends QuestHelper
 {
 	protected Map<Integer, QuestStep> steps;
+
 	protected int var;
 
 	@Getter
@@ -102,6 +103,12 @@ public abstract class BasicQuestHelper extends QuestHelper
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public int getVar()
+	{
+		return selectedStateOverride != null ? selectedStateOverride : quest.getVar(client);
 	}
 
 	public List<PanelDetails> getPanels()

@@ -120,7 +120,7 @@ public class QuestRequirement extends AbstractRequirement
 	{
 		if (minimumVarValue != null)
 		{
-			return quest.getVar(client) >= minimumVarValue;
+			return quest.getQuestHelper().getVar() >= minimumVarValue;
 		}
 
 		QuestState state = quest.getState(client);

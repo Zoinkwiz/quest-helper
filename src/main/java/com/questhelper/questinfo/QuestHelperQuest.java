@@ -657,7 +657,7 @@ public enum QuestHelperQuest
 	BIKE_SHEDDER(new BikeShedder(), "Bike Shedder", PlayerQuests.BIKE_SHEDDER, 4, true),
 
 	// Guides
-	BOATY_GUIDE(new BoatyGuideHelper(), "Boaty Guide", QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	BOATY_GUIDE(new BoatyGuideHelper(), "Boaty Guide", QuestDetails.Type.GUIDE, QuestDetails.Difficulty.GUIDE),
 	;
 
 	@Getter

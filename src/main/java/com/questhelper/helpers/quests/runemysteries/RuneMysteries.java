@@ -45,12 +45,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
+@Getter
 public class RuneMysteries extends BasicQuestHelper
 {
 	// Recommended items
@@ -64,7 +66,7 @@ public class RuneMysteries extends BasicQuestHelper
 	// Miscellaneous requirements
 	ItemRequirement airTalisman;
 	ItemRequirement researchPackage;
-	ItemRequirement notes;
+	ItemRequirement runeMysteriesNotes;
 
 	ZoneRequirement inUpstairsLumbridge;
 	ZoneRequirement inWizardBasement;
@@ -108,8 +110,8 @@ public class RuneMysteries extends BasicQuestHelper
 		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
 		researchPackage = new ItemRequirement("Research package", ItemID.RESEARCH_PACKAGE);
 		researchPackage.setTooltip("You can get another from Sedridor if you lost it");
-		notes = new ItemRequirement("Research notes", ItemID.RESEARCH_NOTES);
-		notes.setTooltip("You can get another from Aubury if you lost them");
+		runeMysteriesNotes = new ItemRequirement("Research notes", ItemID.RESEARCH_NOTES);
+		runeMysteriesNotes.setTooltip("You can get another from Aubury if you lost them");
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		wizardTeleport = new ItemRequirement("A teleport to the Wizard's Tower", ItemCollections.NECKLACE_OF_PASSAGES);
 	}
@@ -148,8 +150,8 @@ public class RuneMysteries extends BasicQuestHelper
 		deliverPackageToAubury.addTeleport(varrockTeleport);
 		talkToAudburyAgain = new NpcStep(this, NpcID.AUBURY_2OP, new WorldPoint(3253, 3401, 0), "Talk to Aubury again in south east Varrock.");
 
-		goDownToSedridor2 = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", notes);
-		deliverResearchNotesToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", notes);
+		goDownToSedridor2 = new ObjectStep(this, ObjectID.WIZARDS_TOWER_LADDERTOP, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", runeMysteriesNotes);
+		deliverResearchNotesToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", runeMysteriesNotes);
 		talkToSedridorAfterGivingHimTheNotes = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0), "Talk to Sedridor in the Wizard Tower's basement to finish the quest.");
 		deliverResearchNotesToSedridor.addSubSteps(goDownToSedridor2, talkToSedridorAfterGivingHimTheNotes);
 	}

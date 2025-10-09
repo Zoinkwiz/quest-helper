@@ -400,6 +400,11 @@ public class QuestHelperPanel extends PluginPanel
 			// If in developer mode, add this "reload quest" button.
 			// It's always visible under the search bar, and reloads the currently
 			// active quest, and ensures you're scrolled back to where you were.
+
+			var devModePanel = new JPanel();
+			devModePanel.setLayout(new BorderLayout());
+
+
 			var reloadQuest = new JButton("reload quest");
 			reloadQuest.addActionListener((ev) -> {
 				nextDesiredScrollValue = scrollableContainer.getVerticalScrollBar().getValue();
@@ -410,7 +415,7 @@ public class QuestHelperPanel extends PluginPanel
 				}
 				setSelectedQuest(questHelperPlugin.getSelectedQuest());
 			});
-			searchQuestsPanel.add(reloadQuest, BorderLayout.SOUTH);
+			devModePanel.add(reloadQuest, BorderLayout.SOUTH);
 
 			// State dropdown for BasicQuestHelper
 			stateDropdown.setFocusable(false);
@@ -443,7 +448,9 @@ public class QuestHelperPanel extends PluginPanel
 			statePanel = makeDropdownPanel(stateDropdown, "Quest State");
 			statePanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
 			statePanel.setVisible(false);
-			searchQuestsPanel.add(statePanel, BorderLayout.CENTER);
+			devModePanel.add(statePanel, BorderLayout.NORTH);
+
+			searchQuestsPanel.add(devModePanel, BorderLayout.SOUTH);
 		}
 
 		refreshSkillFiltering();

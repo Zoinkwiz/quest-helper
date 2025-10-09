@@ -679,6 +679,8 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void updateStateDropdown(QuestHelper questHelper)
 	{
+		if (!questHelperPlugin.isDeveloperMode()) return;
+
 		ItemListener[] listeners = stateDropdown.getItemListeners();
 		for (ItemListener listener : listeners)
 		{

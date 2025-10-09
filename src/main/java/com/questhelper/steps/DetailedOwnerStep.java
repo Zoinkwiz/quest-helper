@@ -188,7 +188,7 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 	@Override
 	public Collection<QuestStep> getSteps()
 	{
-		return null;
+		return List.of();
 	}
 }
 

@@ -685,6 +685,13 @@ public class DetailedQuestStep extends QuestStep
 				return;
 			}
 
+			var tileWp = tile.getWorldLocation();
+			if (tileWp == null || tileWp.getPlane() != player.getWorldLocation().getPlane())
+			{
+				return;
+			}
+
+
 			if (location.distanceTo(playerLocation) > MAX_DISTANCE)
 			{
 				return;

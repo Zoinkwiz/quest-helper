@@ -59,7 +59,10 @@ public class QuestHelperTooltipOverlay extends OverlayPanel
 		}
 
 		questHelperPlugin.getBackgroundHelpers().forEach(((s, questHelper) -> {
-			questHelper.getCurrentStep().renderQuestStepTooltip(panelComponent, !client.isMenuOpen(), true);
+			if (questHelper.getCurrentStep() != null)
+			{
+				questHelper.getCurrentStep().renderQuestStepTooltip(panelComponent, !client.isMenuOpen(), true);
+			}
 		}));
 
 		return super.render(graphics);

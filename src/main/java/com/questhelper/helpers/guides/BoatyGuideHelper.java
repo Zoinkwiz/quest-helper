@@ -61,6 +61,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.WidgetHighlight;
+import net.runelite.api.Item;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
@@ -81,7 +82,9 @@ import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class BoatyGuideHelper extends ComplexStateQuestHelper
 {
-	// Required items
+	/** Required items **/
+
+	// Bank 0
 	ItemRequirement bronzeDagger;
 	ItemRequirement bronzeSword;
 	ItemRequirement woodenShield;
@@ -91,17 +94,25 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 	ItemRequirement hammer;
 	ItemRequirement logs4;
 
+	// Bank 1
+	ItemRequirement coins;
+	ItemRequirement airRunes;
+	ItemRequirement mindRunes;
+	ItemRequirement bread;
+	ItemRequirement tinderbox;
+	ItemRequirement airTalisman;
+
 	// Zones
 
 
-	// Miscellaneous requirements
+	/** Miscellaneous requirements **/
+
+	// Bank 0
 	Conditions notClaimedRunes;
 	Conditions notSoldDaggerSwordShieldShortbow;
 	Conditions notOwnSpadeHammerChisel;
 
-	// Bank 0
-
-	// Steps
+	/** Steps **/
 
 	// Bank 0
 	NpcStep getRunesFromMagicTutor;
@@ -110,9 +121,15 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 	ConditionalStep goCollect4Logs;
 	ConditionalStep goDepositEverythingInLumbridgeBank;
 	ConditionalStep goSetBankPin;
+	ItemStep pickUpJug;
+	ItemStep pickUpBowl;
+	ItemStep pickUpKnife;
+	ObjectStep fillJug;
+	ObjectStep fillBowl;
+	// Dig X MARKS SPOT
+	NpcStep killGiantRat;
 
-
-	// Loaded Helpers
+	/** Loaded Helpers **/
 	TheRestlessGhost theRestlessGhost = (TheRestlessGhost) QuestHelperQuest.THE_RESTLESS_GHOST.getQuestHelper();
 	LumbridgeEasy lumbridgeEasy = (LumbridgeEasy) QuestHelperQuest.LUMBRIDGE_EASY.getQuestHelper();
 	XMarksTheSpot xMarksTheSpot = (XMarksTheSpot) QuestHelperQuest.X_MARKS_THE_SPOT.getQuestHelper();
@@ -147,6 +164,13 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 		notOwnSpadeHammerChisel = nand(chisel.alsoCheckBank(), spade.alsoCheckBank(), hammer.alsoCheckBank());
 
 		logs4 = new ItemRequirement("Logs", ItemID.LOGS, 4);
+
+		coins = new ItemRequirement("Coins", ItemID.COINS);
+		airRunes = new ItemRequirement("Air runes", ItemID.AIRRUNE);
+		mindRunes = new ItemRequirement("Mind runes", ItemID.MINDRUNE);
+		bread = new ItemRequirement("Bread", ItemID.BREAD);
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
+		airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN);
 	}
 
 	public void setupSteps()
@@ -192,36 +216,17 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 			"Make sure to make it something memorable as you will need to use it to access your bank after this point.");
 		goSetBankPin.addStep(lumbridgeCastleF2, setBankPin);
 		goSetBankPin.addStep(runeMysteries.getInUpstairsLumbridge(), goF1ToF2LumbridgeCastle);
-	}
 
-	public void setupHelpers()
-	{
-		theRestlessGhost.startUp(config);
-		lumbridgeEasy.startUp(config);
-		xMarksTheSpot.startUp(config);
-		runeMysteries.startUp(config);
-	}
 
-	@Override
-	public void shutDown()
-	{
-		super.shutDown();
-		theRestlessGhost.shutDown();
-		lumbridgeEasy.shutDown();
-		xMarksTheSpot.shutDown();
-		runeMysteries.shutDown();
-	}
-
-	@Override
-	public boolean updateQuest()
-	{
-		super.updateQuest();
-		theRestlessGhost.updateQuest();
-		lumbridgeEasy.updateQuest();
-		xMarksTheSpot.updateQuest();
-		runeMysteries.updateQuest();
-
-		return false;
+//		pickUpJug = ;
+//
+//		pickUpBowl = ;
+//
+//		pickUpKnife = ;
+//		fillJug = ;
+//		fillBowl = ;
+////		goDigXMarksTheSpot2 = ;
+//		killGiantRat = ;
 	}
 
 	@Override
@@ -229,7 +234,6 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 	{
 		initializeRequirements();
 		setupSteps();
-		setupHelpers();
 
 		var completedFirstStepRestlessGhost = new QuestRequirement(theRestlessGhost, 1);
 		var notPickpocketedManOrWoman = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY, false, 6);
@@ -238,15 +242,15 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 		var notStartedRuneMysteries = not(new QuestRequirement(runeMysteries, 1));
 
 		var fullHelper = new ConditionalStep(this, new DetailedQuestStep(this, "You've completed everything, or something has gone wrong!"));
-		fullHelper.addStep(nor(completedFirstStepRestlessGhost), theRestlessGhost.activeStepStep());
+		fullHelper.addStep(nor(completedFirstStepRestlessGhost), theRestlessGhost.loadStepsAsConditionalStep());
 		fullHelper.addStep(notPickpocketedManOrWoman, lumbridgeEasy.getPickpocket());
 		// TODO: Determine way to make this not annoying if you have runes or want to skip step somehow
 //		fullHelper.addStep(notClaimedRunes, getRunesFromMagicTutor);
 		fullHelper.addStep(notSoldDaggerSwordShieldShortbow, sellItemsToGeneralStore);
 		fullHelper.addStep(notOwnSpadeHammerChisel, buySpadeChiselHammer);
-		fullHelper.addStep(notCompletedFirstStepXMarksTheSpot, xMarksTheSpot.activeStepStep());
+		fullHelper.addStep(notCompletedFirstStepXMarksTheSpot, xMarksTheSpot.loadStepsAsConditionalStep());
 		fullHelper.addStep(notCheckPlaytime, lumbridgeEasy.getHans());
-		fullHelper.addStep(notStartedRuneMysteries, runeMysteries.activeStepStep());
+		fullHelper.addStep(notStartedRuneMysteries, runeMysteries.loadStepsAsConditionalStep());
 		fullHelper.addStep(not(logs4.alsoCheckBank()), goCollect4Logs);
 
 		var haveItems = not(new FreeInventorySlotRequirement(28));
@@ -261,6 +265,16 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 		fullHelper.addStep(haveItems, goDepositEverythingInLumbridgeBank);
 		fullHelper.addStep(notSetBankPin, goSetBankPin);
 		return fullHelper;
+	}
+
+	@Override
+	public void init()
+	{
+		super.init();
+		lumbridgeEasy.init();
+		xMarksTheSpot.init();
+		theRestlessGhost.init();
+		runeMysteries.init();
 	}
 
 	@Override
@@ -290,6 +304,23 @@ public class BoatyGuideHelper extends ComplexStateQuestHelper
 			goDepositEverythingInLumbridgeBank,
 			goSetBankPin
 		), List.of(
+		)));
+
+		steps.add(new PanelDetails("Bank 1", List.of(
+//			pickUpJug,
+//			pickUpBowl,
+//			pickUpKnife,
+//			fillJug,
+//			fillBowl,
+			xMarksTheSpot.getDigCastle()
+//			killGiantRat
+		), List.of(
+			coins,
+			airRunes,
+			mindRunes,
+			bread,
+			spade, tinderbox,
+			airTalisman
 		)));
 
 		return steps;

@@ -38,7 +38,6 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.rewards.*;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
-import com.questhelper.steps.ActiveStepFromHelperStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
@@ -406,9 +405,4 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	}
 
 	public abstract List<PanelDetails> getPanels();
-
-	public ActiveStepFromHelperStep activeStepStep()
-	{
-		return new ActiveStepFromHelperStep(this, this);
-	}
 }

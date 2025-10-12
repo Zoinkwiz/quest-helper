@@ -185,7 +185,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).hideConditioned(new VarbitRequirement(VarbitID.BRUT_MINIQUEST, true, 0));
+		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).hideConditioned(new RuneliteRequirement(getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey(), "true"));
 		rake = new ItemRequirement("Rake", ItemID.RAKE).hideConditioned(new VarbitRequirement(Varbits.AUTOWEED, 2));
 
 		seed = new ItemRequirement("Seeds of your choice", ItemID.GUAM_SEED);

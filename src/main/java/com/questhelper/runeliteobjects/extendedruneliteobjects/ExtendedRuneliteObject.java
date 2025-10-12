@@ -191,6 +191,7 @@ public class ExtendedRuneliteObject
 		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).isEmpty()) return null;
 
 		return Perspective.getClickbox(client,
+			client.getTopLevelWorldView(),
 			getRuneliteObject().getModel(),
 			getRuneliteObject().getOrientation(),
 			getRuneliteObject().getLocation().getX(),

@@ -96,7 +96,7 @@ public class ReplacedNpc extends FakeNpc
 	public Shape getClickbox()
 	{
 		if (npc == null) return null;
-		return Perspective.getClickbox(client, client.getTopLevelWorldView(), npc.getModel(), npc.getOrientation(), npc.getLocalLocation().getX(), npc.getLocalLocation().getY(),
+		return Perspective.getClickbox(client, npc.getWorldView(), npc.getModel(), npc.getOrientation(), npc.getLocalLocation().getX(), npc.getLocalLocation().getY(),
 			Perspective.getTileHeight(client, npc.getLocalLocation(), getWorldPoint().getPlane()));
 	}
 

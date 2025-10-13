@@ -31,6 +31,7 @@ import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
+import com.questhelper.helpers.guides.EarlyGameGuide;
 import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
@@ -157,6 +158,9 @@ public class QuestHelperPlugin extends Plugin
 	PlayerStateManager playerStateManager;
 
 	@Inject
+	EarlyGameGuide earlyGameGuide;
+
+	@Inject
 	PotionStorage potionStorage;
 
 	@Inject
@@ -180,6 +184,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
+		clientThread.invokeLater(() -> earlyGameGuide.setup(client));
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
 		QuestContainerManager.getGroupStorageData().setSpecialMethodToObtainItems(() -> questBankManager.getGroupBankItems().toArray(new Item[0]));
@@ -230,6 +235,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		earlyGameGuide.close(client);
 		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(playerStateManager);

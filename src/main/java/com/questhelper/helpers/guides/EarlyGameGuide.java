@@ -12,7 +12,6 @@ import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import javax.inject.Singleton;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Singleton
@@ -20,7 +19,7 @@ public class EarlyGameGuide
 {
 	Widget babyWidget;
 
-	final int BUTTONS_PER_COLUMN = 3;
+	final int BUTTONS_PER_COLUMN = 2;
 	final int BUTTON_LAYER_WIDTH = 460;
 	final int BUTTON_AREA_HEIGHT = 90;
 
@@ -187,143 +186,151 @@ public class EarlyGameGuide
 		closeButton.setNoClickThrough(true);
 		closeButton.revalidate();
 
-		for (int i = 0; i <= 30; i++)
-		{
-			makeButton(client, topLevelWidget, "Quest Guides" + i, SpriteID.AchievementDiaryIcons._0);
-		}
+		Widget buttonLayer = makeButtonLayer(topLevelWidget);
+		Widget scrollbar = makeScrollbar(client, topLevelWidget, buttonLayer);
+		makeButton(buttonLayer, scrollbar, "Quest Guides", SpriteID.AchievementDiaryIcons._0);
+		// ''
+		makeButton(buttonLayer, scrollbar,"Combat Goals", SpriteID.AccountIcons._0);
+		// Something like 'Barrows gloves', 'Demonbane', 'Zombie Axe'
+		makeButton(buttonLayer, scrollbar,"Guides", SpriteID.OrbIcon._11);
 
+		makeButton(buttonLayer, scrollbar,"Skilling goals", SpriteID.AccountIcons._1);
 		babyWidget = backgroundWidget;
 	}
 
-	Widget buttonLayer;
-
-	Widget scrollbar;
-
-	private void makeButton(Client client, Widget topWidget, String text, int icon)
+	private Widget makeButtonLayer(Widget topWidget)
 	{
-		if (buttonLayer == null)
-		{
-			buttonLayer = topWidget.createChild(-1, WidgetType.LAYER);
-			buttonLayer.setSize(BUTTON_LAYER_WIDTH, BUTTON_AREA_HEIGHT);
-			buttonLayer.setHeightMode(WidgetSizeMode.MINUS);
-			buttonLayer.setPos(6, 80);
-			buttonLayer.setHasListener(true);
-			buttonLayer.revalidate();
+		var buttonLayer = topWidget.createChild(-1, WidgetType.LAYER);
+		buttonLayer.setSize(BUTTON_LAYER_WIDTH, BUTTON_AREA_HEIGHT);
+		buttonLayer.setHeightMode(WidgetSizeMode.MINUS);
+		buttonLayer.setPos(6, 80);
+		buttonLayer.setHasListener(true);
+		buttonLayer.revalidate();
 
-			scrollbar = topWidget.createChild(-1, WidgetType.LAYER);
-			scrollbar.setSize(BUTTON_LAYER_WIDTH, SCROLLBAR_HEIGHT);
-			scrollbar.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			scrollbar.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
-			scrollbar.setOriginalY(SCROLLBAR_HEIGHT / 2);
-			scrollbar.revalidate();
+		return buttonLayer;
+	}
 
-			Widget scrollArea = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-			scrollArea.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._3);
-			scrollArea.setOriginalHeight(SCROLLBAR_HEIGHT);
-			scrollArea.setOriginalWidth(PADDING * 2);
-			scrollArea.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			scrollArea.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			scrollArea.setWidthMode(WidgetSizeMode.MINUS);
-			scrollArea.setNoClickThrough(true);
-			scrollArea.setHasListener(true);
+	private Widget makeScrollbar(Client client, Widget topWidget, Widget scrollableContainerWidget)
+	{
+		var scrollbar = topWidget.createChild(-1, WidgetType.LAYER);
+		scrollbar.setSize(BUTTON_LAYER_WIDTH, SCROLLBAR_HEIGHT);
+		scrollbar.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		scrollbar.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
+		scrollbar.setOriginalY(SCROLLBAR_HEIGHT / 2);
+		scrollbar.revalidate();
 
-			Widget mainDragger = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-			mainDragger.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._1);
-			mainDragger.setDragParent(scrollArea);
-			mainDragger.setOriginalX(PADDING);
-			mainDragger.setOriginalWidth(DRAGGER_WIDTH);
-			mainDragger.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			mainDragger.setHeightMode(WidgetSizeMode.MINUS);
-			mainDragger.revalidate();
+		var scrollArea = scrollbar.createChild(-1, WidgetType.GRAPHIC);
+		scrollArea.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._3);
+		scrollArea.setOriginalHeight(SCROLLBAR_HEIGHT);
+		scrollArea.setOriginalWidth(PADDING * 2);
+		scrollArea.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		scrollArea.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		scrollArea.setWidthMode(WidgetSizeMode.MINUS);
+		scrollArea.setNoClickThrough(true);
+		scrollArea.setHasListener(true);
 
-			Widget mainDraggerLeft = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-			mainDraggerLeft.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._2);
-			mainDraggerLeft.setOriginalX(PADDING);
-			mainDraggerLeft.setOriginalWidth(DRAGGER_END_WIDTH);
-			mainDraggerLeft.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			mainDraggerLeft.setHeightMode(WidgetSizeMode.MINUS);
-			mainDraggerLeft.revalidate();
+		var mainDragger = scrollbar.createChild(-1, WidgetType.GRAPHIC);
+		mainDragger.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._1);
+		mainDragger.setDragParent(scrollArea);
+		mainDragger.setOriginalX(PADDING);
+		mainDragger.setOriginalWidth(DRAGGER_WIDTH);
+		mainDragger.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		mainDragger.setHeightMode(WidgetSizeMode.MINUS);
+		mainDragger.revalidate();
 
-			Widget mainDraggerRight = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-			mainDraggerRight.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._0);
-			mainDraggerRight.setOriginalWidth(DRAGGER_END_WIDTH);
-			mainDraggerRight.setOriginalX(DRAGGER_WIDTH + PADDING);
-			mainDraggerRight.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			mainDraggerRight.setHeightMode(WidgetSizeMode.MINUS);
-			mainDraggerRight.revalidate();
+		var mainDraggerLeft = scrollbar.createChild(-1, WidgetType.GRAPHIC);
+		mainDraggerLeft.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._2);
+		mainDraggerLeft.setOriginalX(PADDING);
+		mainDraggerLeft.setOriginalWidth(DRAGGER_END_WIDTH);
+		mainDraggerLeft.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		mainDraggerLeft.setHeightMode(WidgetSizeMode.MINUS);
+		mainDraggerLeft.revalidate();
 
-			// Left scroll
-			Widget leftScroll = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-			leftScroll.setSpriteId(SpriteID.ScrollbarV2._2);
-			leftScroll.setOriginalWidth(PADDING);
-			leftScroll.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			leftScroll.setHeightMode(WidgetSizeMode.MINUS);
-			leftScroll.revalidate();
+		var mainDraggerRight = scrollbar.createChild(-1, WidgetType.GRAPHIC);
+		mainDraggerRight.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._0);
+		mainDraggerRight.setOriginalWidth(DRAGGER_END_WIDTH);
+		mainDraggerRight.setOriginalX(DRAGGER_WIDTH + PADDING);
+		mainDraggerRight.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		mainDraggerRight.setHeightMode(WidgetSizeMode.MINUS);
+		mainDraggerRight.revalidate();
 
-			Widget rightScroll = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-			rightScroll.setSpriteId(SpriteID.ScrollbarV2._3);
-			rightScroll.setOriginalWidth(PADDING);
-			rightScroll.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-			rightScroll.setHeightMode(WidgetSizeMode.MINUS);
-			rightScroll.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-			rightScroll.revalidate();
+		// Left scroll
+		var leftScroll = scrollbar.createChild(-1, WidgetType.GRAPHIC);
+		leftScroll.setSpriteId(SpriteID.ScrollbarV2._2);
+		leftScroll.setOriginalWidth(PADDING);
+		leftScroll.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		leftScroll.setHeightMode(WidgetSizeMode.MINUS);
+		leftScroll.revalidate();
 
-			buttonLayer.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
-				var existingButtons = (buttonLayer.getDynamicChildren() == null) ? 0 : buttonLayer.getDynamicChildren().length;
+		var rightScroll = scrollbar.createChild(-1, WidgetType.GRAPHIC);
+		rightScroll.setSpriteId(SpriteID.ScrollbarV2._3);
+		rightScroll.setOriginalWidth(PADDING);
+		rightScroll.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		rightScroll.setHeightMode(WidgetSizeMode.MINUS);
+		rightScroll.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
+		rightScroll.revalidate();
 
-				// Work out pos of mouse relative to scrollbar
-				var xPos = mainDragger.getOriginalX() + (10 * ev.getMouseY());
-				var totalArea = scrollArea.getWidth();
-				if (xPos > totalArea - (DRAGGER_WIDTH / 2)) xPos = totalArea - (DRAGGER_WIDTH / 2);
-				if (xPos < PADDING) xPos = PADDING;
-
-				scrollbarMove(scrollArea, buttonLayer, mainDragger, mainDraggerLeft, mainDraggerRight, xPos, existingButtons);
-			});
-			buttonLayer.revalidate();
-
-			var clicked = new AtomicBoolean(false);
-			// Setup position logic for scrolled
-			scrollArea.setOnClickListener((JavaScriptCallback) (ev) -> {
-				clicked.set(true);
-			});
-			scrollArea.setOnTimerListener((JavaScriptCallback) (ev) -> {
-				if (clicked.get())
+		var clicked = new AtomicBoolean(false);
+		// Setup position logic for scrolled
+		scrollArea.setOnClickListener((JavaScriptCallback) (ev) -> {
+			clicked.set(true);
+		});
+		scrollArea.setOnTimerListener((JavaScriptCallback) (ev) -> {
+			if (clicked.get())
+			{
+				if (client.getMouseCurrentButton() != 1)
 				{
-					if (client.getMouseCurrentButton() != 1)
-					{
-						clicked.set(false);
-						return;
-					}
-					var existingButtons = (buttonLayer.getDynamicChildren() == null) ? 0 : buttonLayer.getDynamicChildren().length;
-
-					// Work out pos of mouse relative to scrollbar
-					var mouseX = client.getMouseCanvasPosition().getX();
-					var scrollStartX = scrollArea.getRelativeX();
-					var xPosClicked = mouseX - scrollStartX - (BUTTON_LAYER_WIDTH / 2);
-					var totalArea = scrollArea.getWidth();
-					if (xPosClicked > totalArea - (DRAGGER_WIDTH / 2)) xPosClicked = totalArea - (DRAGGER_WIDTH / 2);
-					if (xPosClicked < PADDING) xPosClicked = PADDING;
-
-					scrollbarMove(scrollArea, buttonLayer, mainDragger, mainDraggerLeft, mainDraggerRight, xPosClicked, existingButtons);
+					clicked.set(false);
+					return;
 				}
-			});
-			scrollArea.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
-				var existingButtons = (buttonLayer.getDynamicChildren() == null) ? 0 : buttonLayer.getDynamicChildren().length;
+				var existingButtons = (scrollableContainerWidget.getDynamicChildren() == null) ? 0 : scrollableContainerWidget.getDynamicChildren().length;
 
 				// Work out pos of mouse relative to scrollbar
-				var xPos = mainDragger.getOriginalX() + (10 * ev.getMouseY());
+				var mouseX = client.getMouseCanvasPosition().getX();
+				var scrollStartX = scrollArea.getRelativeX();
+				var xPosClicked = mouseX - scrollStartX - (BUTTON_LAYER_WIDTH / 2);
 				var totalArea = scrollArea.getWidth();
-				if (xPos > totalArea - (DRAGGER_WIDTH / 2)) xPos = totalArea - (DRAGGER_WIDTH / 2);
-				if (xPos < PADDING) xPos = PADDING;
+				if (xPosClicked > totalArea - (DRAGGER_WIDTH / 2)) xPosClicked = totalArea - (DRAGGER_WIDTH / 2);
+				if (xPosClicked < PADDING) xPosClicked = PADDING;
 
-				scrollbarMove(scrollArea, buttonLayer, mainDragger, mainDraggerLeft, mainDraggerRight, xPos, existingButtons);
-			});
-			scrollArea.revalidate();
-		}
+				scrollbarMove(scrollArea, scrollableContainerWidget, mainDragger, mainDraggerLeft, mainDraggerRight, xPosClicked, existingButtons);
+			}
+		});
+		scrollArea.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
+			var existingButtons = (scrollableContainerWidget.getDynamicChildren() == null) ? 0 : scrollableContainerWidget.getDynamicChildren().length;
 
+			// Work out pos of mouse relative to scrollbar
+			var xPos = mainDragger.getOriginalX() + (10 * ev.getMouseY());
+			var totalArea = scrollArea.getWidth();
+			if (xPos > totalArea - (DRAGGER_WIDTH / 2)) xPos = totalArea - (DRAGGER_WIDTH / 2);
+			if (xPos < PADDING) xPos = PADDING;
+
+			scrollbarMove(scrollArea, scrollableContainerWidget, mainDragger, mainDraggerLeft, mainDraggerRight, xPos, existingButtons);
+		});
+		scrollArea.revalidate();
+
+		// Add scroll listener to scrollable container
+		scrollableContainerWidget.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
+			var existingButtons = (scrollableContainerWidget.getDynamicChildren() == null) ? 0 : scrollableContainerWidget.getDynamicChildren().length;
+
+			// Work out pos of mouse relative to scrollbar
+			var xPos = mainDragger.getOriginalX() + (10 * ev.getMouseY());
+			var totalArea = scrollArea.getWidth();
+			if (xPos > totalArea - (DRAGGER_WIDTH / 2)) xPos = totalArea - (DRAGGER_WIDTH / 2);
+			if (xPos < PADDING) xPos = PADDING;
+
+			scrollbarMove(scrollArea, scrollableContainerWidget, mainDragger, mainDraggerLeft, mainDraggerRight, xPos, existingButtons);
+		});
+		scrollableContainerWidget.revalidate();
+
+		return scrollbar;
+	}
+
+	private void makeButton(Widget buttonLayer, Widget scrollbar, String text, int icon)
+	{
 		int existingButtons = (buttonLayer.getDynamicChildren() == null) ? 0 : buttonLayer.getDynamicChildren().length;
-		int xShift = ((existingButtons) / 3) * BUTTON_BACKGROUND_WIDTH;
-		int yShift = (existingButtons % 3) * BUTTON_BACKGROUND_HEIGHT;
+		int xShift = ((existingButtons) / BUTTONS_PER_COLUMN) * BUTTON_BACKGROUND_WIDTH;
+		int yShift = (existingButtons % BUTTONS_PER_COLUMN) * BUTTON_BACKGROUND_HEIGHT;
 
 		Widget buttonContainer = buttonLayer.createChild(-1, WidgetType.LAYER);
 		buttonContainer.setSize(BUTTON_BACKGROUND_WIDTH, BUTTON_BACKGROUND_HEIGHT);
@@ -404,11 +411,12 @@ public class EarlyGameGuide
 
 		Widget buttonIcon = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
 		buttonIcon.setSpriteId(icon);
-		buttonIcon.setPos((BUTTON_WIDTH - ICON_SIZE) / 2, 19);
+		buttonIcon.setPos((BUTTON_WIDTH - ICON_SIZE) / 2, 25);
 		buttonIcon.setSize(ICON_SIZE, ICON_SIZE);
 		buttonIcon.revalidate();
 
-		buttonLayer.setScrollWidth(BUTTON_LAYER_WIDTH - xShift);
+		buttonLayer.setScrollWidth(xShift - BUTTON_LAYER_WIDTH);
+		scrollbar.setHidden(buttonLayer.getScrollWidth() <= buttonLayer.getOriginalWidth());
 	}
 
 	private void scrollbarMove(Widget scrollArea, Widget buttonLayer, Widget mainDragger, Widget mainDraggerLeft, Widget mainDraggerRight, int xPosToMoveScrollbar, int numButtons)
@@ -475,7 +483,5 @@ public class EarlyGameGuide
 		}
 
 		babyWidget = null;
-		buttonLayer = null;
-		scrollbar = null;
 	}
 }

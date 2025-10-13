@@ -57,7 +57,7 @@ public abstract class PlayerMadeQuestHelper extends ComplexStateQuestHelper
 	public void shutDown()
 	{
 		super.shutDown();
-		if (getQuest().getState(client, configManager) == QuestState.FINISHED)
+		if (getQuest().getState(client, configManager) == QuestState.FINISHED && lastQuestState != QuestState.FINISHED && lastQuestState != null)
 		{
 			runeliteObjectManager.createChatboxMessage("Quest completed!");
 			questCompletedWidget.createWidget(client, getQuest().getName(), getQuestRewardsText(), getItemWidget(), rotationX, rotationY, rotationZ, zoom);

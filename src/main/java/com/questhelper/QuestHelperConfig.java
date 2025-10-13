@@ -52,20 +52,20 @@ public interface QuestHelperConfig extends Config
 		 * Sort quests in alphabetical order
 		 */
 		A_TO_Z(QuestOrders.sortAToZ(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER, QuestFilter.PLAYER_MADE_QUESTS),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER, QuestFilter.GUIDES, QuestFilter.PLAYER_MADE_QUESTS),
 		/**
 		 * Sort quests in reverse alphabetical order
 		 */
 		Z_TO_A(QuestOrders.sortZToA(), QuestFilter.QUEST, QuestFilter.MINIQUEST, QuestFilter.ACHIEVEMENT_DIARY,
-			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER, QuestFilter.PLAYER_MADE_QUESTS),
+			QuestFilter.SKILL_HELPER, QuestFilter.GENERIC_HELPER, QuestFilter.GUIDES, QuestFilter.PLAYER_MADE_QUESTS),
 		/**
 		 * Sort quests according to the Optimal Quest Guide (https://oldschool.runescape.wiki/w/Optimal_quest_guide)
 		 */
-		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
+		OPTIMAL(QuestOrders.sortOptimalOrder(), QuestFilter.OPTIMAL, QuestFilter.GUIDES, QuestFilter.GENERIC_HELPER),
 		/**
 		 * Sort quests according to the Optimal Quest Guide (Ironman version) (https://oldschool.runescape.wiki/w/Optimal_quest_guide/Ironman)
 		 */
-		OPTIMAL_IRONMAN(QuestOrders.sortOptimalIronmanOrder(), QuestFilter.OPTIMAL, QuestFilter.GENERIC_HELPER),
+		OPTIMAL_IRONMAN(QuestOrders.sortOptimalIronmanOrder(), QuestFilter.OPTIMAL, QuestFilter.GUIDES, QuestFilter.GENERIC_HELPER),
 		/**
 		 * Sort quest by their release date (https://oldschool.runescape.wiki/w/Quests/Release_dates)
 		 */
@@ -155,7 +155,8 @@ public interface QuestHelperConfig extends Config
 		 */
 		SKILL_MEMBERS(QuestDetails.Type.SKILL_P2P),
 
-		PLAYER_MADE_QUESTS("Player-made quests", q -> q.getQuest().getQuestType() == QuestDetails.Type.PLAYER_QUEST);
+		PLAYER_MADE_QUESTS("Player-made quests", q -> q.getQuest().getQuestType() == QuestDetails.Type.PLAYER_QUEST),
+		GUIDES("Guides", QuestDetails.Type.GUIDE);
 
 
 		private final Predicate<QuestHelper> predicate;

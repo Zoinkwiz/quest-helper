@@ -27,6 +27,7 @@
 
 package com.questhelper.requirements.quest;
 
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.AbstractRequirement;
 import lombok.Getter;
@@ -92,6 +93,15 @@ public class QuestRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
+	public QuestRequirement(BasicQuestHelper questHelper, int minimumVarValue)
+	{
+		this.quest = questHelper.getQuest();
+		this.requiredState = null;
+		this.minimumVarValue = minimumVarValue;
+		shouldCountForFilter = true;
+	}
+
+
 	/**
 	 * Check if a {@link net.runelite.api.Quest} is past the minimum var value
 	 *
@@ -110,7 +120,7 @@ public class QuestRequirement extends AbstractRequirement
 	{
 		if (minimumVarValue != null)
 		{
-			return quest.getVar(client) >= minimumVarValue;
+			return quest.getQuestHelper().getVar() >= minimumVarValue;
 		}
 
 		QuestState state = quest.getState(client);

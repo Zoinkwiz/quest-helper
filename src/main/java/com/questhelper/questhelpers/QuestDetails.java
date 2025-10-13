@@ -56,7 +56,8 @@ public interface QuestDetails
 		ACHIEVEMENT_DIARY,
 		GENERIC,
 		SKILL,
-		PLAYER_QUEST
+		PLAYER_QUEST,
+		GUIDE
 		;
 
 		@Override
@@ -80,7 +81,8 @@ public interface QuestDetails
 		SKILL,
 		SKILL_F2P,
 		SKILL_P2P,
-		PLAYER_QUEST
+		PLAYER_QUEST,
+		GUIDE
 		;
 
 		@Override

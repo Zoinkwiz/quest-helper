@@ -44,6 +44,7 @@ import net.runelite.api.events.*;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.awt.*;
 import java.util.List;
@@ -110,6 +111,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	public void addStep(Requirement requirement, QuestStep step)
 	{
 		addStep(requirement, step, false);
+	}
+
+	public void addStep(Pair<Requirement, QuestStep> requirementQuestStepPair)
+	{
+		addStep(requirementQuestStepPair.getLeft(), requirementQuestStepPair.getRight(), false);
 	}
 
 	// Each addStep can have an ID. When you add an ID, it keeps a separate ID to Steps OrderedHashSet.

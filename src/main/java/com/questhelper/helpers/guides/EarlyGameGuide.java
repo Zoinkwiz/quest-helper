@@ -20,6 +20,7 @@ public class EarlyGameGuide
 	Widget babyWidget;
 
 	final int BUTTONS_PER_COLUMN = 2;
+	final int BUTTONS_Y_POS = 160;
 	final int BUTTON_LAYER_WIDTH = 460;
 	final int BUTTON_AREA_HEIGHT = 90;
 
@@ -186,15 +187,33 @@ public class EarlyGameGuide
 		closeButton.setNoClickThrough(true);
 		closeButton.revalidate();
 
+		String textToRepeat = "Blablablabla blablabla ";
+		StringBuilder bigText = new StringBuilder();
+		bigText.append(textToRepeat.repeat(30));
+		bigText.append("BLA.");
+		Widget textBox = topLevelWidget.createChild(-1, WidgetType.TEXT);
+		textBox.setWidthMode(WidgetSizeMode.MINUS);
+		textBox.setPos(8, 35);
+		textBox.setSize(16, 90);
+		textBox.setOriginalHeight(90);
+		textBox.setText(bigText.toString());
+		textBox.setFontId(FontID.PLAIN_12);
+		textBox.setTextColor(Integer.parseInt("ff9933", 16));
+		textBox.revalidate();
+
 		Widget buttonLayer = makeButtonLayer(topLevelWidget);
 		Widget scrollbar = makeScrollbar(client, topLevelWidget, buttonLayer);
-		makeButton(buttonLayer, scrollbar, "Quest Guides", SpriteID.AchievementDiaryIcons._0);
-		// ''
-		makeButton(buttonLayer, scrollbar,"Combat Goals", SpriteID.AccountIcons._0);
-		// Something like 'Barrows gloves', 'Demonbane', 'Zombie Axe'
-		makeButton(buttonLayer, scrollbar,"Guides", SpriteID.OrbIcon._11);
 
-		makeButton(buttonLayer, scrollbar,"Skilling goals", SpriteID.AccountIcons._1);
+		for (int i=0; i<20; i++)
+		{
+			makeButton(buttonLayer, scrollbar, "Quest Guides", SpriteID.AchievementDiaryIcons._0);
+			// ''
+			makeButton(buttonLayer, scrollbar, "Combat Goals", SpriteID.AccountIcons._0);
+			// Something like 'Barrows gloves', 'Demonbane', 'Zombie Axe'
+			makeButton(buttonLayer, scrollbar, "Guides", SpriteID.OrbIcon._11);
+
+			makeButton(buttonLayer, scrollbar, "Skilling goals", SpriteID.AccountIcons._1);
+		}
 		babyWidget = backgroundWidget;
 	}
 
@@ -203,7 +222,7 @@ public class EarlyGameGuide
 		var buttonLayer = topWidget.createChild(-1, WidgetType.LAYER);
 		buttonLayer.setSize(BUTTON_LAYER_WIDTH, BUTTON_AREA_HEIGHT);
 		buttonLayer.setHeightMode(WidgetSizeMode.MINUS);
-		buttonLayer.setPos(6, 80);
+		buttonLayer.setPos(6, BUTTONS_Y_POS);
 		buttonLayer.setHasListener(true);
 		buttonLayer.revalidate();
 
@@ -287,8 +306,8 @@ public class EarlyGameGuide
 
 				// Work out pos of mouse relative to scrollbar
 				var mouseX = client.getMouseCanvasPosition().getX();
-				var scrollStartX = scrollArea.getRelativeX();
-				var xPosClicked = mouseX - scrollStartX - (BUTTON_LAYER_WIDTH / 2);
+				var scrollStartX = scrollArea.getCanvasLocation().getX();
+				var xPosClicked = mouseX - scrollStartX;
 				var totalArea = scrollArea.getWidth();
 				if (xPosClicked > totalArea - (DRAGGER_WIDTH / 2)) xPosClicked = totalArea - (DRAGGER_WIDTH / 2);
 				if (xPosClicked < PADDING) xPosClicked = PADDING;

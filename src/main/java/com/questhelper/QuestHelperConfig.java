@@ -46,6 +46,36 @@ public interface QuestHelperConfig extends Config
 	String QUEST_BACKGROUND_GROUP = "questhelpervars";
 	String QUEST_HELPER_SIDEBAR_ORDER_KEY_START = "quest-sidebar-order-";
 
+	@ConfigItem(
+		keyName = "openGuideHotkey",
+		name = "Open early-game guide",
+		description = "Hotkey to open the early-game guide"
+	)
+	default Keybind openGuideHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
+		keyName = "showOnboardingPrompt",
+		name = "Show early-game prompt",
+		description = "Show the early-game guide once after Tutorial Island"
+	)
+	default boolean showOnboardingPrompt()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "activeProgressionGoalId",
+		name = "Active progression goal",
+		description = "Currently active progression goal ID"
+	)
+	default String activeProgressionGoalId()
+	{
+		return "";
+	}
+
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{
 		/**

@@ -103,6 +103,9 @@ public class QuestHelperPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
+	private net.runelite.client.input.KeyManager keyManager;
+
+	@Inject
 	private EventBus eventBus;
 
 	@Getter
@@ -175,6 +178,32 @@ public class QuestHelperPlugin extends Plugin
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
+	private final net.runelite.client.util.HotkeyListener openGuideHotkey = new net.runelite.client.util.HotkeyListener(() -> config.openGuideHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			clientThread.invokeLater(() -> openEarlyGameGuide());
+		}
+	};
+
+	public void openEarlyGameGuide()
+	{
+		if (client == null) return;
+		earlyGameGuide.setup(client);
+	}
+
+	private boolean shouldShowOnboarding()
+	{
+		// Basic heuristic: show if LOGGED_IN and not on Tutorial Island map regions (fallback)
+		// More precise TI detection can be added if a varbit is available in this project later
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return false;
+		}
+		return true;
+	}
+
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
 	{
@@ -184,7 +213,17 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
-		clientThread.invokeLater(() -> earlyGameGuide.setup(client));
+		keyManager.registerKeyListener(openGuideHotkey);
+		earlyGameGuide.setPlugin(this);
+		clientThread.invokeLater(() -> {
+			if (!Boolean.parseBoolean(String.valueOf(configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "earlyGuideSeen")))
+				&& config.showOnboardingPrompt()
+				&& shouldShowOnboarding())
+			{
+				openEarlyGameGuide();
+				configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "earlyGuideSeen", true);
+			}
+		});
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
 		QuestContainerManager.getGroupStorageData().setSpecialMethodToObtainItems(() -> questBankManager.getGroupBankItems().toArray(new Item[0]));
@@ -235,6 +274,13 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		try
+		{
+			keyManager.unregisterKeyListener(openGuideHotkey);
+		}
+		catch (Exception ignored)
+		{
+		}
 		earlyGameGuide.close(client);
 		runeliteObjectManager.shutDown();
 
@@ -443,7 +489,11 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
+		if (commandExecuted.getCommand().equals("qhguide"))
+		{
+			clientThread.invokeLater(this::openEarlyGameGuide);
+		}
+		else if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
 		{
 			if (commandExecuted.getArguments().length == 0 ||
 				(Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("disable"))

@@ -1,5 +1,14 @@
 package com.questhelper.helpers.guides;
 
+import com.questhelper.QuestHelperConfig;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.helpers.guides.ProgressionGoal;
+import com.questhelper.helpers.guides.GoalCategory;
+import com.questhelper.helpers.guides.ProgressionGoals;
+import com.questhelper.ui.widgets.SimpleWidgetBuilder;
+import com.questhelper.ui.widgets.ButtonSection;
 import net.runelite.api.Client;
 import net.runelite.api.FontID;
 import net.runelite.api.KeyCode;
@@ -12,31 +21,26 @@ import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import javax.inject.Singleton;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Singleton
 public class EarlyGameGuide
 {
 	Widget babyWidget;
+	Widget contentContainer;
+	Widget[] tabContents;
+	Widget[] tabHeaders;
+	int selectedTabIndex = 0;
+	
+	// Category collapse state tracking
+	java.util.Map<GoalCategory, Boolean> categoryCollapsed = new java.util.HashMap<>();
 
-	final int BUTTONS_PER_COLUMN = 2;
-	final int BUTTONS_Y_POS = 160;
-	final int BUTTON_LAYER_WIDTH = 460;
-	final int BUTTON_AREA_HEIGHT = 90;
+	QuestHelperPlugin plugin;
 
-	final int BUTTON_BACKGROUND_WIDTH = 95;
-	final int BUTTON_BACKGROUND_HEIGHT = 71;
-	final int BUTTON_PADDING = 4;
-	final int BUTTON_WIDTH = 90;
-	final int BUTTON_HEIGHT = 60;
-	final int BUTTON_EDGE_SIZE = 9;
-	final int ICON_SIZE = 24;
+	public void setPlugin(QuestHelperPlugin plugin)
+	{
+		this.plugin = plugin;
+	}
 
-	// Scrollbar
-	final int SCROLLBAR_HEIGHT = 20;
-	final int DRAGGER_WIDTH = 20;
-	final int PADDING = 16;
-	final int DRAGGER_END_WIDTH = 5;
 
 	public void setup(Client client)
 	{
@@ -44,417 +48,553 @@ public class EarlyGameGuide
 		Widget parentWidget = getTopLevelWidget(client);
 		if (parentWidget == null) return;
 
-		Widget topLevelWidget = parentWidget.createChild(-1, WidgetType.LAYER);
-		topLevelWidget.setSize(480, 326);
+		// Create main modal container
+		Widget topLevelWidget = SimpleWidgetBuilder.createLayer(parentWidget, 0, 0, 480, 326);
 		topLevelWidget.setPos(0, 0, WidgetPositionMode.ABSOLUTE_CENTER, WidgetPositionMode.ABSOLUTE_CENTER);
 		topLevelWidget.revalidate();
 
-		// Background
-		Widget backgroundWidget = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		backgroundWidget.setNoClickThrough(true);
-		backgroundWidget.setHasListener(true);
-		backgroundWidget.setOnClickListener((JavaScriptCallback) (ev) -> {});
-		backgroundWidget.setSpriteId(SpriteID.TRADEBACKING);
-		backgroundWidget.setOriginalWidth(512);
-		backgroundWidget.setOriginalHeight(334);
-		backgroundWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		backgroundWidget.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		backgroundWidget.revalidate();
+		// Create modal background with borders
+		SimpleWidgetBuilder.createModalBackground(topLevelWidget, 480, 326);
 
-		// Title
-		Widget titleWidget = topLevelWidget.createChild(-1, WidgetType.TEXT);
-		titleWidget.setText("Early game helper");
-		titleWidget.setFontId(496);
-		titleWidget.setTextColor(Integer.parseInt("ff981f", 16));
-		titleWidget.setTextShadowed(true);
-		titleWidget.setXTextAlignment(WidgetTextAlignment.CENTER);
-		titleWidget.setYTextAlignment(WidgetTextAlignment.CENTER);
-		titleWidget.setOriginalY(6);
-		titleWidget.setOriginalWidth(12);
-		titleWidget.setOriginalHeight(24);
-		titleWidget.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		titleWidget.setWidthMode(WidgetSizeMode.MINUS);
-		titleWidget.revalidate();
-
-		// Top-left corner border
-		Widget topLeftCorner = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		topLeftCorner.setSpriteId(SpriteID.Steelborder._0);
-		topLeftCorner.setOriginalWidth(25);
-		topLeftCorner.setOriginalHeight(30);
-		topLeftCorner.revalidate();
-
-		// Top-right corner border
-		Widget topRightCorner = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		topRightCorner.setSpriteId(SpriteID.Steelborder._1);
-		topRightCorner.setOriginalWidth(25);
-		topRightCorner.setOriginalHeight(30);
-		topRightCorner.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		topRightCorner.revalidate();
-
-		// Bottom-left corner border
-		Widget bottomLeftCorner = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		bottomLeftCorner.setSpriteId(SpriteID.Steelborder._2);
-		bottomLeftCorner.setOriginalWidth(25);
-		bottomLeftCorner.setOriginalHeight(30);
-		bottomLeftCorner.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
-		bottomLeftCorner.revalidate();
-
-		// Bottom-left corner border
-		Widget bottomRightCorner = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		bottomRightCorner.setSpriteId(SpriteID.Steelborder._3);
-		bottomRightCorner.setOriginalWidth(25);
-		bottomRightCorner.setOriginalHeight(30);
-		bottomRightCorner.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		bottomRightCorner.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
-		bottomRightCorner.revalidate();
-
-		// Left border
-		Widget leftBorder = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		leftBorder.setSpriteId(SpriteID.Miscgraphics._2);
-		leftBorder.setOriginalWidth(36);
-		leftBorder.setOriginalHeight(60);
-		leftBorder.setOriginalX(-15);
-		leftBorder.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		leftBorder.setHeightMode(WidgetSizeMode.MINUS);
-		leftBorder.revalidate();
-
-		// Right border
-		Widget rightBorder = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		rightBorder.setSpriteId(SpriteID.Steelborder2._1);
-		rightBorder.setOriginalWidth(36);
-		rightBorder.setOriginalHeight(60);
-		rightBorder.setOriginalX(-15);
-		rightBorder.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		rightBorder.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		rightBorder.setHeightMode(WidgetSizeMode.MINUS);
-		rightBorder.revalidate();
-
-		// Top border
-		Widget topBorder = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		topBorder.setSpriteId(SpriteID.Steelborder2._0);
-		topBorder.setOriginalWidth(50);
-		topBorder.setOriginalHeight(36);
-		topBorder.setOriginalY(-15);
-		topBorder.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		topBorder.setWidthMode(WidgetSizeMode.MINUS);
-		topBorder.revalidate();
-
-		// Bottom border
-		Widget bottomBorder = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		bottomBorder.setSpriteId(SpriteID.Miscgraphics._3);
-		bottomBorder.setOriginalWidth(50);
-		bottomBorder.setOriginalHeight(36);
-		bottomBorder.setOriginalY(-15);
-		bottomBorder.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		bottomBorder.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
-		bottomBorder.setWidthMode(WidgetSizeMode.MINUS);
-		bottomBorder.revalidate();
+		// Create title
+		SimpleWidgetBuilder.createTitle(topLevelWidget, "Early game helper");
 
 		// Title separator border
-		Widget titleSeparatorBorder = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		titleSeparatorBorder.setSpriteId(SpriteID.SteelborderDivider._0);
-		titleSeparatorBorder.setOriginalWidth(10);
-		titleSeparatorBorder.setOriginalHeight(26);
-		titleSeparatorBorder.setOriginalY(20);
-		titleSeparatorBorder.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		titleSeparatorBorder.setWidthMode(WidgetSizeMode.MINUS);
-		titleSeparatorBorder.revalidate();
+		Widget titleSeparator = SimpleWidgetBuilder.createGraphicAbsolute(topLevelWidget, SpriteID.SteelborderDivider._0, 0, 20, 10, 26);
+		titleSeparator.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		titleSeparator.setWidthMode(WidgetSizeMode.MINUS);
+		titleSeparator.revalidate();
 
-		Widget closeButton = topLevelWidget.createChild(-1, WidgetType.GRAPHIC);
-		closeButton.setSpriteId(SpriteID.CloseButtons._0);
-		closeButton.setOriginalX(3);
-		closeButton.setOriginalY(6);
-		closeButton.setOriginalWidth(26);
-		closeButton.setOriginalHeight(23);
-		closeButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		closeButton.setHasListener(true);
-		closeButton.setAction(0, "Close");
-		closeButton.setOnOpListener((JavaScriptCallback) (ev) -> {
-			close(client);
-		});
-		closeButton.setOnKeyListener((JavaScriptCallback) (ev) -> {
+		// Create close button
+		SimpleWidgetBuilder.createCloseButton(topLevelWidget, (ev) -> close(client));
+		
+		// Add ESC key handling to the entire modal
+		topLevelWidget.setOnKeyListener((JavaScriptCallback) (ev) -> {
 			if (client.isKeyPressed(KeyCode.KC_ESCAPE))
 			{
 				close(client);
 			}
 		});
-		closeButton.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
-			closeButton.setSpriteId(SpriteID.CloseButtons._1);
-		});
-		closeButton.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
-			closeButton.setSpriteId(SpriteID.CloseButtons._0);
-		});
-		closeButton.setNoClickThrough(true);
-		closeButton.revalidate();
 
-		String textToRepeat = "Blablablabla blablabla ";
-		StringBuilder bigText = new StringBuilder();
-		bigText.append(textToRepeat.repeat(30));
-		bigText.append("BLA.");
-		Widget textBox = topLevelWidget.createChild(-1, WidgetType.TEXT);
-		textBox.setWidthMode(WidgetSizeMode.MINUS);
-		textBox.setPos(8, 35);
-		textBox.setSize(16, 90);
-		textBox.setOriginalHeight(90);
-		textBox.setText(bigText.toString());
-		textBox.setFontId(FontID.PLAIN_12);
-		textBox.setTextColor(Integer.parseInt("ff9933", 16));
-		textBox.revalidate();
-
-		Widget buttonLayer = makeButtonLayer(topLevelWidget);
-		Widget scrollbar = makeScrollbar(client, topLevelWidget, buttonLayer);
-
-		for (int i=0; i<20; i++)
+		// Tabs header row
+		String[] tabTitles = new String[]{"Getting started", "First hour", "Money", "Training", "Paths", "Settings"};
+		tabHeaders = new Widget[tabTitles.length];
+		int headerX = 12;
+		for (int i = 0; i < tabTitles.length; i++)
 		{
-			makeButton(buttonLayer, scrollbar, "Quest Guides", SpriteID.AchievementDiaryIcons._0);
-			// ''
-			makeButton(buttonLayer, scrollbar, "Combat Goals", SpriteID.AccountIcons._0);
-			// Something like 'Barrows gloves', 'Demonbane', 'Zombie Axe'
-			makeButton(buttonLayer, scrollbar, "Guides", SpriteID.OrbIcon._11);
-
-			makeButton(buttonLayer, scrollbar, "Skilling goals", SpriteID.AccountIcons._1);
+			final int idx = i;
+			tabHeaders[i] = SimpleWidgetBuilder.createTabHeader(
+				topLevelWidget, 
+				tabTitles[i], 
+				headerX, 
+				36, 
+				i == 0, 
+				(ev) -> selectTab(idx)
+			);
+			headerX += tabTitles[i].length() * 6 + 18; // rough width spacing
 		}
-		babyWidget = backgroundWidget;
+
+		// Content container (fills under header, above scrollbar area)
+		contentContainer = SimpleWidgetBuilder.createContentContainer(topLevelWidget, 8, 55, 16, 58);
+
+		// Create per-tab content layers
+		tabContents = new Widget[tabTitles.length];
+		for (int i = 0; i < tabTitles.length; i++)
+		{
+			tabContents[i] = SimpleWidgetBuilder.createScrollableContent(contentContainer, 6, 0);
+		}
+
+		// Getting started content - button-based layout (3 rows for 6 buttons)
+		ButtonSection gettingStartedSection = SimpleWidgetBuilder.createButtonSection(tabContents[0], 6, 20, 3, client);
+		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Banking Guide", SpriteID.AccountIcons._0, (ev) -> openAction("Banking Guide"));
+		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openAction("Death Mechanics"));
+		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Home Teleport", SpriteID.AccountIcons._2, (ev) -> openAction("Home Teleport"));
+		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "World Switching", SpriteID.AccountIcons._3, (ev) -> openAction("World Switching"));
+		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Bonds Guide", SpriteID.AccountIcons._4, (ev) -> openAction("Bonds Guide"));
+		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Wiki Access", SpriteID.AccountIcons._0, (ev) -> openAction("Wiki Access"));
+
+
+		// First hour: curated buttons (2 rows for 4 buttons)
+		ButtonSection firstHourSection = SimpleWidgetBuilder.createButtonSection(tabContents[1], 6, 20, 2, client);
+		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Cook's Helper", SpriteID.OrbIcon._11, (ev) -> openAction("Cook's Helper"));
+		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Lumbridge cows", SpriteID.AccountIcons._0, (ev) -> openAction("Lumbridge cows"));
+		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Mining intro", SpriteID.Staticons.MINING, (ev) -> openAction("Mining intro"));
+		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Smithing intro", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing intro"));
+
+		// Money content - button-based layout (3 rows for 6 buttons)
+		ButtonSection moneySection = SimpleWidgetBuilder.createButtonSection(tabContents[2], 6, 20, 3, client);
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
+		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		// Training content - button-based layout (3 rows for 6 buttons)
+		ButtonSection trainingSection = SimpleWidgetBuilder.createButtonSection(tabContents[3], 6, 20, 3, client);
+		SimpleWidgetBuilder.createStyledButton(trainingSection, "Combat Training", SpriteID.Staticons.ATTACK, (ev) -> openAction("Combat Training"));
+		SimpleWidgetBuilder.createStyledButton(trainingSection, "Mining Guide", SpriteID.Staticons.MINING, (ev) -> openAction("Mining Guide"));
+		SimpleWidgetBuilder.createStyledButton(trainingSection, "Smithing Guide", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing Guide"));
+		SimpleWidgetBuilder.createStyledButton(trainingSection, "Cooking Guide", SpriteID.Staticons.COOKING, (ev) -> openAction("Cooking Guide"));
+		SimpleWidgetBuilder.createStyledButton(trainingSection, "Fishing Guide", SpriteID.Staticons.FISHING, (ev) -> openAction("Fishing Guide"));
+		SimpleWidgetBuilder.createStyledButton(trainingSection, "Quest Benefits", SpriteID.Staticons.ATTACK, (ev) -> openAction("Quest Benefits"));
+
+
+		// Paths: progression goals
+		buildPathsTab(tabContents[4]);
+
+		// Settings: toggle for onboarding prompt
+		Widget settingsLabel = SimpleWidgetBuilder.createText(
+			tabContents[5], 
+			"Show early-game prompt on login",
+			"ff9933", 
+			true, 
+			0, 0, 16, 20
+		);
+		settingsLabel.setWidthMode(WidgetSizeMode.MINUS);
+		settingsLabel.revalidate();
+
+		Widget toggleBg = SimpleWidgetBuilder.createGraphic(tabContents[5], SpriteID.TRADEBACKING, 0, 22, 60, 18);
+		toggleBg.setHasListener(true);
+		toggleBg.setOnClickListener((JavaScriptCallback) (ev) -> toggleOnboarding());
+		toggleBg.revalidate();
+
+		SimpleWidgetBuilder.createCenteredText(
+			tabContents[5], 
+			getOnboardingEnabled() ? "On" : "Off",
+			"c8aa6e", 
+			false, 
+			4, 24, 56, 14
+		);
+
+		// F2P-only filter toggle (placeholder)
+		Widget f2pLabel = SimpleWidgetBuilder.createText(
+			tabContents[5], 
+			"F2P-only recommendations (placeholder)",
+			"ff9933", 
+			true, 
+			0, 48, 16, 20
+		);
+		f2pLabel.setWidthMode(WidgetSizeMode.MINUS);
+		f2pLabel.revalidate();
+
+		Widget ironLabel = SimpleWidgetBuilder.createText(
+			tabContents[5], 
+			"Ironman hints (placeholder)",
+			"ff9933", 
+			true, 
+			0, 66, 16, 20
+		);
+		ironLabel.setWidthMode(WidgetSizeMode.MINUS);
+		ironLabel.revalidate();
+
+		// Initial tab selection
+		applyTabVisibility(0);
+		babyWidget = topLevelWidget;
 	}
 
-	private Widget makeButtonLayer(Widget topWidget)
+	private boolean getOnboardingEnabled()
 	{
-		var buttonLayer = topWidget.createChild(-1, WidgetType.LAYER);
-		buttonLayer.setSize(BUTTON_LAYER_WIDTH, BUTTON_AREA_HEIGHT);
-		buttonLayer.setHeightMode(WidgetSizeMode.MINUS);
-		buttonLayer.setPos(6, BUTTONS_Y_POS);
-		buttonLayer.setHasListener(true);
-		buttonLayer.revalidate();
-
-		return buttonLayer;
+		if (plugin == null || plugin.getConfig() == null) return true;
+		return plugin.getConfig().showOnboardingPrompt();
 	}
 
-	private Widget makeScrollbar(Client client, Widget topWidget, Widget scrollableContainerWidget)
+	private void toggleOnboarding()
 	{
-		var scrollbar = topWidget.createChild(-1, WidgetType.LAYER);
-		scrollbar.setSize(BUTTON_LAYER_WIDTH, SCROLLBAR_HEIGHT);
-		scrollbar.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		scrollbar.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
-		scrollbar.setOriginalY(SCROLLBAR_HEIGHT / 2);
-		scrollbar.revalidate();
+		if (plugin == null || plugin.getConfig() == null || plugin.getConfigManager() == null) return;
+		boolean next = !plugin.getConfig().showOnboardingPrompt();
+		plugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showOnboardingPrompt", next);
+	}
 
-		var scrollArea = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-		scrollArea.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._3);
-		scrollArea.setOriginalHeight(SCROLLBAR_HEIGHT);
-		scrollArea.setOriginalWidth(PADDING * 2);
-		scrollArea.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		scrollArea.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		scrollArea.setWidthMode(WidgetSizeMode.MINUS);
-		scrollArea.setNoClickThrough(true);
-		scrollArea.setHasListener(true);
-
-		var mainDragger = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-		mainDragger.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._1);
-		mainDragger.setDragParent(scrollArea);
-		mainDragger.setOriginalX(PADDING);
-		mainDragger.setOriginalWidth(DRAGGER_WIDTH);
-		mainDragger.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		mainDragger.setHeightMode(WidgetSizeMode.MINUS);
-		mainDragger.revalidate();
-
-		var mainDraggerLeft = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-		mainDraggerLeft.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._2);
-		mainDraggerLeft.setOriginalX(PADDING);
-		mainDraggerLeft.setOriginalWidth(DRAGGER_END_WIDTH);
-		mainDraggerLeft.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		mainDraggerLeft.setHeightMode(WidgetSizeMode.MINUS);
-		mainDraggerLeft.revalidate();
-
-		var mainDraggerRight = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-		mainDraggerRight.setSpriteId(SpriteID.ScrollbarDraggerHorizontalV2._0);
-		mainDraggerRight.setOriginalWidth(DRAGGER_END_WIDTH);
-		mainDraggerRight.setOriginalX(DRAGGER_WIDTH + PADDING);
-		mainDraggerRight.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		mainDraggerRight.setHeightMode(WidgetSizeMode.MINUS);
-		mainDraggerRight.revalidate();
-
-		// Left scroll
-		var leftScroll = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-		leftScroll.setSpriteId(SpriteID.ScrollbarV2._2);
-		leftScroll.setOriginalWidth(PADDING);
-		leftScroll.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		leftScroll.setHeightMode(WidgetSizeMode.MINUS);
-		leftScroll.revalidate();
-
-		var rightScroll = scrollbar.createChild(-1, WidgetType.GRAPHIC);
-		rightScroll.setSpriteId(SpriteID.ScrollbarV2._3);
-		rightScroll.setOriginalWidth(PADDING);
-		rightScroll.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		rightScroll.setHeightMode(WidgetSizeMode.MINUS);
-		rightScroll.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		rightScroll.revalidate();
-
-		var clicked = new AtomicBoolean(false);
-		// Setup position logic for scrolled
-		scrollArea.setOnClickListener((JavaScriptCallback) (ev) -> {
-			clicked.set(true);
-		});
-		scrollArea.setOnTimerListener((JavaScriptCallback) (ev) -> {
-			if (clicked.get())
-			{
-				if (client.getMouseCurrentButton() != 1)
+	private void openAction(String label)
+	{
+		if (plugin == null || plugin.getClient() == null) return;
+		
+		// First hour tab actions
+		if ("Cook's Helper".equals(label))
+		{
+			plugin.getClientThread().invokeLater(() -> {
+				plugin.displayPanel();
+				QuestHelper q = QuestHelperQuest.getByName("Cook's Helper");
+				if (q != null)
 				{
-					clicked.set(false);
-					return;
+					plugin.getQuestManager().startUpQuest(q, true);
 				}
-				var existingButtons = (scrollableContainerWidget.getDynamicChildren() == null) ? 0 : scrollableContainerWidget.getDynamicChildren().length;
+			});
+		}
+		else if ("Lumbridge cows".equals(label))
+		{
+			plugin.getClientThread().invokeLater(() -> {
+				plugin.displayPanel();
+				QuestHelper q = QuestHelperQuest.getByName("Boaty Guide");
+				if (q != null)
+				{
+					plugin.getQuestManager().startUpQuest(q, true);
+				}
+			});
+		}
+		else if ("Mining intro".equals(label))
+		{
+			plugin.getClientThread().invokeLater(() -> {
+				plugin.displayPanel();
+				QuestHelper q = QuestHelperQuest.getByName("Mining");
+				if (q != null)
+				{
+					plugin.getQuestManager().startUpQuest(q, true);
+				}
+			});
+		}
+		else if ("Smithing intro".equals(label))
+		{
+			plugin.getClientThread().invokeLater(() -> {
+				plugin.displayPanel();
+				QuestHelper q = QuestHelperQuest.getByName("Smithing");
+				if (q != null)
+				{
+					plugin.getQuestManager().startUpQuest(q, true);
+				}
+			});
+		}
+		
+		// Getting started tab actions
+		else if ("Banking Guide".equals(label))
+		{
+			// TODO: Implement banking guide
+			System.out.println("Banking Guide clicked - feature coming soon!");
+		}
+		else if ("Death Mechanics".equals(label))
+		{
+			// TODO: Implement death mechanics guide
+			System.out.println("Death Mechanics clicked - feature coming soon!");
+		}
+		else if ("Home Teleport".equals(label))
+		{
+			// TODO: Implement home teleport guide
+			System.out.println("Home Teleport clicked - feature coming soon!");
+		}
+		else if ("World Switching".equals(label))
+		{
+			// TODO: Implement world switching guide
+			System.out.println("World Switching clicked - feature coming soon!");
+		}
+		else if ("Bonds Guide".equals(label))
+		{
+			// TODO: Implement bonds guide
+			System.out.println("Bonds Guide clicked - feature coming soon!");
+		}
+		else if ("Wiki Access".equals(label))
+		{
+			// TODO: Open wiki or show wiki info
+			System.out.println("Wiki Access clicked - feature coming soon!");
+		}
+		
+		// Money tab actions
+		else if ("Feather Trading".equals(label))
+		{
+			// TODO: Implement feather trading guide
+			System.out.println("Feather Trading clicked - feature coming soon!");
+		}
+		else if ("Wine of Zamorak".equals(label))
+		{
+			// TODO: Implement wine of zamorak guide
+			System.out.println("Wine of Zamorak clicked - feature coming soon!");
+		}
+		else if ("Stronghold Guide".equals(label))
+		{
+			// TODO: Implement stronghold guide
+			System.out.println("Stronghold Guide clicked - feature coming soon!");
+		}
+		else if ("Cowhide Guide".equals(label))
+		{
+			// TODO: Implement cowhide guide
+			System.out.println("Cowhide Guide clicked - feature coming soon!");
+		}
+		else if ("Lobster Fishing".equals(label))
+		{
+			// TODO: Implement lobster fishing guide
+			System.out.println("Lobster Fishing clicked - feature coming soon!");
+		}
+		else if ("Safety Tips".equals(label))
+		{
+			// TODO: Implement safety tips guide
+			System.out.println("Safety Tips clicked - feature coming soon!");
+		}
+		
+		// Training tab actions
+		else if ("Combat Training".equals(label))
+		{
+			// TODO: Implement combat training guide
+			System.out.println("Combat Training clicked - feature coming soon!");
+		}
+		else if ("Mining Guide".equals(label))
+		{
+			// TODO: Implement mining guide
+			System.out.println("Mining Guide clicked - feature coming soon!");
+		}
+		else if ("Smithing Guide".equals(label))
+		{
+			// TODO: Implement smithing guide
+			System.out.println("Smithing Guide clicked - feature coming soon!");
+		}
+		else if ("Cooking Guide".equals(label))
+		{
+			// TODO: Implement cooking guide
+			System.out.println("Cooking Guide clicked - feature coming soon!");
+		}
+		else if ("Fishing Guide".equals(label))
+		{
+			// TODO: Implement fishing guide
+			System.out.println("Fishing Guide clicked - feature coming soon!");
+		}
+		else if ("Quest Benefits".equals(label))
+		{
+			// TODO: Implement quest benefits guide
+			System.out.println("Quest Benefits clicked - feature coming soon!");
+		}
+	}
 
-				// Work out pos of mouse relative to scrollbar
-				var mouseX = client.getMouseCanvasPosition().getX();
-				var scrollStartX = scrollArea.getCanvasLocation().getX();
-				var xPosClicked = mouseX - scrollStartX;
-				var totalArea = scrollArea.getWidth();
-				if (xPosClicked > totalArea - (DRAGGER_WIDTH / 2)) xPosClicked = totalArea - (DRAGGER_WIDTH / 2);
-				if (xPosClicked < PADDING) xPosClicked = PADDING;
+	private void selectTab(int index)
+	{
+		if (index < 0 || index >= tabContents.length) return;
+		if (selectedTabIndex == index) return;
+		selectedTabIndex = index;
+		applyTabVisibility(index);
+	}
 
-				scrollbarMove(scrollArea, scrollableContainerWidget, mainDragger, mainDraggerLeft, mainDraggerRight, xPosClicked, existingButtons);
+	private void applyTabVisibility(int index)
+	{
+		if (tabContents == null) return;
+		for (int i = 0; i < tabContents.length; i++)
+		{
+			boolean visible = (i == index);
+			if (tabContents[i] != null)
+			{
+				tabContents[i].setHidden(!visible);
 			}
-		});
-		scrollArea.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
-			var existingButtons = (scrollableContainerWidget.getDynamicChildren() == null) ? 0 : scrollableContainerWidget.getDynamicChildren().length;
-
-			// Work out pos of mouse relative to scrollbar
-			var xPos = mainDragger.getOriginalX() + (10 * ev.getMouseY());
-			var totalArea = scrollArea.getWidth();
-			if (xPos > totalArea - (DRAGGER_WIDTH / 2)) xPos = totalArea - (DRAGGER_WIDTH / 2);
-			if (xPos < PADDING) xPos = PADDING;
-
-			scrollbarMove(scrollArea, scrollableContainerWidget, mainDragger, mainDraggerLeft, mainDraggerRight, xPos, existingButtons);
-		});
-		scrollArea.revalidate();
-
-		// Add scroll listener to scrollable container
-		scrollableContainerWidget.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
-			var existingButtons = (scrollableContainerWidget.getDynamicChildren() == null) ? 0 : scrollableContainerWidget.getDynamicChildren().length;
-
-			// Work out pos of mouse relative to scrollbar
-			var xPos = mainDragger.getOriginalX() + (10 * ev.getMouseY());
-			var totalArea = scrollArea.getWidth();
-			if (xPos > totalArea - (DRAGGER_WIDTH / 2)) xPos = totalArea - (DRAGGER_WIDTH / 2);
-			if (xPos < PADDING) xPos = PADDING;
-
-			scrollbarMove(scrollArea, scrollableContainerWidget, mainDragger, mainDraggerLeft, mainDraggerRight, xPos, existingButtons);
-		});
-		scrollableContainerWidget.revalidate();
-
-		return scrollbar;
+			if (tabHeaders != null && tabHeaders[i] != null)
+			{
+				tabHeaders[i].setTextColor(Integer.parseInt(visible ? "ff981f" : "c8aa6e", 16));
+			}
+		}
 	}
 
-	private void makeButton(Widget buttonLayer, Widget scrollbar, String text, int icon)
+	private void buildPathsTab(Widget pathsContainer)
 	{
-		int existingButtons = (buttonLayer.getDynamicChildren() == null) ? 0 : buttonLayer.getDynamicChildren().length;
-		int xShift = ((existingButtons) / BUTTONS_PER_COLUMN) * BUTTON_BACKGROUND_WIDTH;
-		int yShift = (existingButtons % BUTTONS_PER_COLUMN) * BUTTON_BACKGROUND_HEIGHT;
+		if (pathsContainer == null) return;
 
-		Widget buttonContainer = buttonLayer.createChild(-1, WidgetType.LAYER);
-		buttonContainer.setSize(BUTTON_BACKGROUND_WIDTH, BUTTON_BACKGROUND_HEIGHT);
-		buttonContainer.setPos(xShift, yShift);
-		buttonContainer.revalidate();
+		// Create scrollable content for goals
+		Widget scrollableContent = SimpleWidgetBuilder.createScrollableContent(pathsContainer, 16, 96);
 
-		Widget buttonBackground = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonBackground.setSpriteId(SpriteID.TRADEBACKING);
-		buttonBackground.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		buttonBackground.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
-			buttonBackground.setSpriteId(SpriteID.TRADEBACKING_DARK);
-		});
-		buttonBackground.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
-			buttonBackground.setSpriteId(SpriteID.TRADEBACKING);
-		});
-		buttonBackground.setHasListener(true);
-		buttonBackground.setAction(0, "Open");
-		buttonBackground.revalidate();
+		int yPos = 0;
+		var goalsByCategory = ProgressionGoals.getGoalsByCategory();
+		String activeGoalId = plugin != null && plugin.getConfigManager() != null ? 
+			plugin.getConfigManager().getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "activeProgressionGoalId") : "";
 
-		Widget buttonTopLeft = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonTopLeft.setSpriteId(SpriteID.V2StoneButton._0);
-		buttonTopLeft.setPos(BUTTON_PADDING, 0);
-		buttonTopLeft.setSize(BUTTON_EDGE_SIZE, BUTTON_EDGE_SIZE);
-		buttonTopLeft.revalidate();
+		for (GoalCategory category : GoalCategory.values())
+		{
+			var goals = goalsByCategory.get(category);
+			if (goals == null || goals.isEmpty()) continue;
 
-		Widget buttonTopRight = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonTopRight.setSpriteId(SpriteID.V2StoneButton._1);
-		buttonTopRight.setPos(BUTTON_WIDTH - BUTTON_EDGE_SIZE, 0); // 85
-		buttonTopRight.setSize(BUTTON_EDGE_SIZE, BUTTON_EDGE_SIZE);
-		buttonTopRight.revalidate();
+			// Initialize collapse state if not set
+			categoryCollapsed.putIfAbsent(category, false);
+			boolean isCollapsed = categoryCollapsed.get(category);
 
-		Widget buttonBottomLeft = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonBottomLeft.setSpriteId(SpriteID.V2StoneButton._2);
-		buttonBottomLeft.setPos(BUTTON_PADDING, BUTTON_HEIGHT - BUTTON_EDGE_SIZE);
-		buttonBottomLeft.setSize(BUTTON_EDGE_SIZE, BUTTON_EDGE_SIZE);
-		buttonBottomLeft.revalidate();
+			// Category header with clickable expand/collapse
+			String collapseIcon = isCollapsed ? "▶" : "▼";
+			Widget categoryHeader = SimpleWidgetBuilder.createText(
+				scrollableContent,
+				collapseIcon + " " + category.getDisplayName() + " (" + goals.size() + " goals)",
+				"ff981f",
+				true,
+				0, yPos, 16, 16
+			);
+			categoryHeader.setWidthMode(WidgetSizeMode.MINUS);
+			categoryHeader.setHasListener(true);
+			categoryHeader.setOnOpListener((JavaScriptCallback) (ev) -> toggleCategory(category));
+			// Add hover effect to show it's clickable
+			categoryHeader.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
+				categoryHeader.setTextColor(Integer.parseInt("ffffff", 16));
+			});
+			categoryHeader.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
+				categoryHeader.setTextColor(Integer.parseInt("ff981f", 16));
+			});
+			categoryHeader.revalidate();
+			yPos += 18;
 
-		Widget buttonBottomRight = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonBottomRight.setSpriteId(SpriteID.V2StoneButton._3);
-		buttonBottomRight.setPos(BUTTON_WIDTH - BUTTON_EDGE_SIZE, BUTTON_HEIGHT - BUTTON_EDGE_SIZE);
-		buttonBottomRight.setSize(BUTTON_EDGE_SIZE, BUTTON_EDGE_SIZE);
-		buttonBottomRight.revalidate();
+			// Goals in category (only show if not collapsed)
+			if (!isCollapsed)
+			{
+				for (ProgressionGoal goal : goals)
+				{
+					// Check if this is the active goal
+					boolean isActiveGoal = goal.getId().equals(activeGoalId);
+					
+					// Goal name and difficulty stars
+					String stars = "★".repeat(goal.getDifficulty().getStars());
+					String progressText = "";
+					if (plugin != null && plugin.getClient() != null)
+					{
+						int completed = goal.getCompletedCount(plugin.getClient());
+						int total = goal.getTotalCount();
+						progressText = " (" + completed + "/" + total + ")";
+					}
+					
+					Widget goalName = SimpleWidgetBuilder.createText(
+						scrollableContent,
+						goal.getName() + " " + stars + progressText,
+						isActiveGoal ? "00ff00" : "ff9933",
+						true,
+						4, yPos, 12, 12
+					);
+					goalName.setWidthMode(WidgetSizeMode.MINUS);
+					goalName.revalidate();
 
-		Widget buttonLeft = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonLeft.setSpriteId(SpriteID.V2StoneButton._4);
-		buttonLeft.setPos(BUTTON_PADDING, BUTTON_EDGE_SIZE);
-		buttonLeft.setSize(BUTTON_EDGE_SIZE, BUTTON_HEIGHT - (BUTTON_EDGE_SIZE * 2));
-		buttonLeft.revalidate();
+					// Set as Goal button (only show if not completed)
+					boolean isCompleted = plugin != null && plugin.getClient() != null && goal.isCompleted(plugin.getClient());
+					if (!isCompleted)
+					{
+						SimpleWidgetBuilder.createTextButton(
+							scrollableContent,
+							isActiveGoal ? "Active" : "Set",
+							0, yPos, 40, 12,
+							(ev) -> setGoal(goal)
+						);
+					}
+					else
+					{
+						// Show completed indicator
+						Widget completedText = SimpleWidgetBuilder.createCenteredText(
+							scrollableContent,
+							"✓ Complete",
+							"00ff00",
+							false,
+							0, yPos + 1, 40, 10
+						);
+						completedText.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+						completedText.revalidate();
+					}
 
-		Widget buttonTop = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonTop.setSpriteId(SpriteID.V2StoneButton._5);
-		buttonTop.setPos(BUTTON_EDGE_SIZE + BUTTON_PADDING, 0);
-		buttonTop.setSize(BUTTON_WIDTH - (BUTTON_EDGE_SIZE * 2), BUTTON_EDGE_SIZE);
-		buttonTop.revalidate();
+					yPos += 16; // Increased spacing to prevent overlap
 
-		Widget buttonRight = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonRight.setSpriteId(SpriteID.V2StoneButton._6);
-		buttonRight.setPos(BUTTON_WIDTH - BUTTON_EDGE_SIZE, BUTTON_EDGE_SIZE);
-		buttonRight.setSize(BUTTON_EDGE_SIZE, BUTTON_HEIGHT - (BUTTON_EDGE_SIZE * 2));
-		buttonRight.revalidate();
+					// Benefit text
+					Widget benefitText = SimpleWidgetBuilder.createText(
+						scrollableContent,
+						goal.getBenefit(),
+						"c8aa6e",
+						true,
+						4, yPos, 16, 12
+					);
+					benefitText.setWidthMode(WidgetSizeMode.MINUS);
+					benefitText.revalidate();
 
-		Widget buttonBottom = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonBottom.setSpriteId(SpriteID.V2StoneButton._7);
-		buttonBottom.setPos(BUTTON_EDGE_SIZE + BUTTON_PADDING, BUTTON_HEIGHT - BUTTON_EDGE_SIZE);
-		buttonBottom.setSize(BUTTON_WIDTH - (BUTTON_EDGE_SIZE * 2), BUTTON_EDGE_SIZE);
-		buttonBottom.revalidate();
+					yPos += 18; // Increased spacing for better separation
 
-		Widget buttonText = buttonContainer.createChild(-1, WidgetType.TEXT);
-		buttonText.setText(text);
-		buttonText.setFontId(FontID.PLAIN_12);
-		buttonText.setTextShadowed(true);
-		buttonText.setTextColor(Integer.parseInt("ff9933", 16));
-		buttonText.setPos(BUTTON_PADDING, BUTTON_PADDING + 1);
-		buttonText.setSize(BUTTON_WIDTH, 12);
-		buttonText.setXTextAlignment(WidgetTextAlignment.CENTER);
-		buttonText.setYTextAlignment(WidgetTextAlignment.CENTER);
-		buttonText.revalidate();
+					// Clickable prerequisite chain view
+					if (goal.getPrerequisites().size() > 1)
+					{
+						Widget prereqButton = SimpleWidgetBuilder.createText(
+							scrollableContent,
+							"View prerequisites (" + goal.getPrerequisites().size() + " quests)",
+							"808080",
+							true,
+							4, yPos, 16, 12
+						);
+						prereqButton.setWidthMode(WidgetSizeMode.MINUS);
+						prereqButton.setHasListener(true);
+						prereqButton.setOnOpListener((JavaScriptCallback) (ev) -> showPrerequisites(goal));
+						// Add hover effect to show it's clickable
+						prereqButton.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
+							prereqButton.setTextColor(Integer.parseInt("ffffff", 16));
+						});
+						prereqButton.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
+							prereqButton.setTextColor(Integer.parseInt("808080", 16));
+						});
+						prereqButton.revalidate();
+						yPos += 16; // Increased spacing
+					}
+				}
+			}
 
-		Widget buttonIcon = buttonContainer.createChild(-1, WidgetType.GRAPHIC);
-		buttonIcon.setSpriteId(icon);
-		buttonIcon.setPos((BUTTON_WIDTH - ICON_SIZE) / 2, 25);
-		buttonIcon.setSize(ICON_SIZE, ICON_SIZE);
-		buttonIcon.revalidate();
+			yPos += 12; // Increased space between categories
+		}
 
-		buttonLayer.setScrollWidth(xShift - BUTTON_LAYER_WIDTH);
-		scrollbar.setHidden(buttonLayer.getScrollWidth() <= buttonLayer.getOriginalWidth());
+		// Set scroll height
+		scrollableContent.setScrollHeight(yPos);
 	}
 
-	private void scrollbarMove(Widget scrollArea, Widget buttonLayer, Widget mainDragger, Widget mainDraggerLeft, Widget mainDraggerRight, int xPosToMoveScrollbar, int numButtons)
+	private void toggleCategory(GoalCategory category)
 	{
-		var totalArea = scrollArea.getWidth();
-		mainDragger.setOriginalX(xPosToMoveScrollbar);
-		mainDragger.revalidate();
-		mainDraggerLeft.setOriginalX(xPosToMoveScrollbar);
-		mainDraggerLeft.revalidate();
-		mainDraggerRight.setOriginalX(xPosToMoveScrollbar + DRAGGER_WIDTH);
-		mainDraggerRight.revalidate();
-
-		// Update drag of panels
-		var totalDraggableArea = totalArea - (PADDING + (DRAGGER_WIDTH / 2));
-		var scrollRatio = (float) (xPosToMoveScrollbar - PADDING) / totalDraggableArea;
-		var xShift = (numButtons / BUTTONS_PER_COLUMN) * BUTTON_BACKGROUND_WIDTH;
-		var posToMoveButtonLayer = Math.max(0, Math.round((xShift + BUTTON_BACKGROUND_WIDTH - BUTTON_LAYER_WIDTH) * scrollRatio));
-		buttonLayer.setScrollX(posToMoveButtonLayer);
+		// Toggle collapse state
+		categoryCollapsed.put(category, !categoryCollapsed.get(category));
+		
+		// Rebuild the Paths tab to reflect the change
+		if (tabContents != null && tabContents.length > 4 && tabContents[4] != null)
+		{
+			buildPathsTab(tabContents[4]);
+		}
 	}
+
+	private void showPrerequisites(ProgressionGoal goal)
+	{
+		if (plugin == null || plugin.getClient() == null) return;
+		
+		// Create a simple dialog showing the prerequisite chain
+		StringBuilder sb = new StringBuilder();
+		sb.append("Prerequisites for ").append(goal.getName()).append(":\n\n");
+		
+		for (int i = 0; i < goal.getPrerequisites().size(); i++)
+		{
+			QuestHelperQuest quest = goal.getPrerequisites().get(i);
+			boolean isCompleted = quest.getState(plugin.getClient()) == net.runelite.api.QuestState.FINISHED;
+			String status = isCompleted ? "✓" : "○";
+			sb.append(status).append(" ").append(quest.getName()).append("\n");
+		}
+		
+		// For now, just print to console - in a real implementation, you'd show a proper dialog
+		System.out.println(sb.toString());
+	}
+
+	private void setGoal(ProgressionGoal goal)
+	{
+		if (plugin == null || plugin.getClient() == null) return;
+
+		// Find next incomplete quest
+		QuestHelper nextHelper = goal.getNextIncompleteQuestHelper(plugin.getClient());
+		if (nextHelper == null)
+		{
+			// Goal is complete
+			return;
+		}
+
+		// Set as active goal
+		plugin.getConfigManager().setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "activeProgressionGoalId", goal.getId());
+
+		// Start the quest helper
+		plugin.getClientThread().invokeLater(() -> {
+			plugin.displayPanel();
+			plugin.getQuestManager().startUpQuest(nextHelper, true);
+		});
+		
+		// Rebuild the Paths tab to show the new active goal
+		if (tabContents != null && tabContents.length > 4 && tabContents[4] != null)
+		{
+			buildPathsTab(tabContents[4]);
+		}
+	}
+
 
 	private Widget getTopLevelWidget(Client client)
 	{
@@ -483,24 +623,9 @@ public class EarlyGameGuide
 	{
 		if (babyWidget == null) return;
 
-		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.MAIN);
-		if (fixedContainer != null)
-		{
-			fixedContainer.deleteAllChildren();
-		}
-		// Resizable classic
-		Widget classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_BACK);
-		if (classicContainer != null)
-		{
-			classicContainer.deleteAllChildren();
-		}
-		// Resizable modern
-		Widget modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.MAINMODAL);
-		if (modernContainer != null)
-		{
-			modernContainer.deleteAllChildren();
-		}
-
+		// Hide and clear only the root widget created by this guide
+		babyWidget.setHidden(true);
+		babyWidget.deleteAllChildren();
 		babyWidget = null;
 	}
 }

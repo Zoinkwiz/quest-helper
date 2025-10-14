@@ -98,6 +98,7 @@ public class QuestHelperPanel extends PluginPanel
 	private static final ImageIcon SETTINGS_ICON;
 	private static final ImageIcon COLLAPSED_ICON;
 	private static final ImageIcon EXPANDED_ICON;
+    private static final ImageIcon INFO_ICON;
 
 	private int nextDesiredScrollValue = 0;
 
@@ -109,6 +110,7 @@ public class QuestHelperPanel extends PluginPanel
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		COLLAPSED_ICON = Icon.COLLAPSED.getIcon();
 		EXPANDED_ICON = Icon.EXPANDED.getIcon();
+        INFO_ICON = Icon.INFO_ICON.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 	}
 
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager, ConfigManager configManager)
@@ -133,7 +135,7 @@ public class QuestHelperPanel extends PluginPanel
 		titlePanel.add(title, BorderLayout.WEST);
 
 		// Options
-		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 4, 10, 0));
 		viewControls.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		// Settings
@@ -179,7 +181,20 @@ public class QuestHelperPanel extends PluginPanel
 				}
 			}
 		});
+
+		// Early-game guide launcher
+		JButton guideBtn = new JButton();
+		SwingUtil.removeButtonDecorations(guideBtn);
+		guideBtn.setIcon(INFO_ICON);
+		guideBtn.setToolTipText("Open early-game guide");
+		guideBtn.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		guideBtn.setUI(new BasicButtonUI());
+		guideBtn.addActionListener((ev) -> {
+			questHelperPlugin.getClientThread().invokeLater(() -> questHelperPlugin.openEarlyGameGuide());
+		});
+
 		viewControls.add(settingsBtn);
+		viewControls.add(guideBtn);
 
 		// Discord button
 		JButton discordBtn = new JButton();

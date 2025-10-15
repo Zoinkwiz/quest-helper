@@ -10,7 +10,6 @@ import com.questhelper.helpers.guides.ProgressionGoals;
 import com.questhelper.ui.widgets.SimpleWidgetBuilder;
 import com.questhelper.ui.widgets.ButtonSection;
 import net.runelite.api.Client;
-import net.runelite.api.FontID;
 import net.runelite.api.KeyCode;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
@@ -18,8 +17,6 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
-import net.runelite.api.widgets.WidgetTextAlignment;
-import net.runelite.api.widgets.WidgetType;
 import javax.inject.Singleton;
 
 @Singleton
@@ -44,7 +41,9 @@ public class EarlyGameGuide
 
 	public void setup(Client client)
 	{
-		close(client);
+		// Only create widgets if they don't exist yet
+		if (babyWidget != null) return;
+		
 		Widget parentWidget = getTopLevelWidget(client);
 		if (parentWidget == null) return;
 
@@ -204,6 +203,21 @@ public class EarlyGameGuide
 		// Initial tab selection
 		applyTabVisibility(0);
 		babyWidget = topLevelWidget;
+	}
+
+	public void show(Client client)
+	{
+		// Create widgets if they don't exist yet
+		if (babyWidget == null)
+		{
+			setup(client);
+		}
+		
+		// Make the guide visible
+		if (babyWidget != null)
+		{
+			babyWidget.setHidden(false);
+		}
 	}
 
 	private boolean getOnboardingEnabled()
@@ -623,9 +637,22 @@ public class EarlyGameGuide
 	{
 		if (babyWidget == null) return;
 
+		// Just hide the widget, don't destroy it
+		babyWidget.setHidden(true);
+	}
+
+	public void destroy()
+	{
+		if (babyWidget == null) return;
+
 		// Hide and clear only the root widget created by this guide
 		babyWidget.setHidden(true);
-		babyWidget.deleteAllChildren();
+		babyWidget.getParent().deleteAllChildren();
 		babyWidget = null;
+		contentContainer = null;
+		tabContents = null;
+		tabHeaders = null;
+		selectedTabIndex = 0;
+		categoryCollapsed.clear();
 	}
 }

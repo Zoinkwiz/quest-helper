@@ -190,7 +190,7 @@ public class QuestHelperPlugin extends Plugin
 	public void openEarlyGameGuide()
 	{
 		if (client == null) return;
-		earlyGameGuide.setup(client);
+		earlyGameGuide.show(client);
 	}
 
 	private boolean shouldShowOnboarding()
@@ -281,7 +281,7 @@ public class QuestHelperPlugin extends Plugin
 		catch (Exception ignored)
 		{
 		}
-		earlyGameGuide.close(client);
+		clientThread.invokeLater(earlyGameGuide::destroy);
 		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(playerStateManager);

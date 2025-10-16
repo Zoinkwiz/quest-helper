@@ -61,7 +61,7 @@ import java.util.*;
 public class GhostsAhoy extends BasicQuestHelper
 {
 	//Required Items
-	ItemRequirement ghostspeak, coins400, milk, silk, dyes, spade, oakLongbow, knife, needle, thread, bucketOfSlime, nettleTea, ectoToken2, ectoToken4, chestKey,
+	ItemRequirement ghostspeak, coins400, milk, silk, dyes, spade, oakLongbow, knife, needle, thread, needleThread, costumeNeedle, needleThreadOrCostumeNeedle, bucketOfSlime, nettleTea, ectoToken2, ectoToken4, chestKey,
 		nettleTeaHighlighted, milkHighlighted, milkyTea, cup, cupWithMilkyTea, cupWithTea, modelShip, repairedShip, ectoToken12, ectoToken27, charos, map, signedOakBow,
 		ectoToken10, ectoToken25, ectoSheets, bedsheet, petition, boneKey, boneKeyHighlighted, robes, book, manual, mapPiece1, mapPiece2, mapPiece3, silkHighlighted,
 		ectoTokensCharos, ectoTokensNoCharos, ectoSheetsEquipped, enchantedGhostspeakEquipped;
@@ -228,6 +228,10 @@ public class GhostsAhoy extends BasicQuestHelper
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
+		needleThread = new ItemRequirements(needle, thread);
+		costumeNeedle = new ItemRequirement("Costume needle", ItemID.COSTUMENEEDLE);
+		needleThreadOrCostumeNeedle = new ItemRequirements(LogicType.OR, "Needle/Thread or Costume needle", needleThread, costumeNeedle);
+		needleThreadOrCostumeNeedle.setDisplayMatchedItemName(true);
 		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_ECTOPLASM);
 		bucketOfSlime.setTooltip("You can buy one from the Charter Ship crew");
 		bucketOfSlime.setHighlightInInventory(true);
@@ -423,11 +427,11 @@ public class GhostsAhoy extends BasicQuestHelper
 	{
 		if (canUseCharos)
 		{
-			return Arrays.asList(ghostspeak, charos, ectoTokensCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime);
+			return Arrays.asList(ghostspeak, charos, ectoTokensCharos, coins400, nettleTea, milk, silk, knife, needleThreadOrCostumeNeedle, dyes, spade, oakLongbow, bucketOfSlime);
 		}
 		else
 		{
-			return Arrays.asList(ghostspeak, ectoTokensNoCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime);
+			return Arrays.asList(ghostspeak, ectoTokensNoCharos, coins400, nettleTea, milk, silk, knife, needleThreadOrCostumeNeedle, dyes, spade, oakLongbow, bucketOfSlime);
 		}
 	}
 

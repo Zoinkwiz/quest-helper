@@ -364,7 +364,15 @@ public class QuestHelperPlugin extends Plugin
 			questBankManager.emptyState();
 			questManager.shutDownQuest(true);
 			profileChanged = true;
+			earlyGameGuide.destroy();
 		}
+		else if (state == GameState.HOPPING)
+		{
+			earlyGameGuide.destroy();
+		}
+
+
+		System.out.println(event.getGameState());
 
 		if (state == GameState.LOGGED_IN && profileChanged)
 		{

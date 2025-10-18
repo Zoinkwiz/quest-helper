@@ -4,41 +4,27 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.ui.widgets.SimpleWidgetBuilder;
-import com.questhelper.ui.widgets.ButtonSection;
+import com.questhelper.ui.widgets.ModalDialog;
+import com.questhelper.ui.widgets.TabContainer;
+import com.questhelper.ui.widgets.ButtonGrid;
+import com.questhelper.ui.widgets.WidgetFactory;
 import net.runelite.api.Client;
-import net.runelite.api.KeyCode;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
-import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
-import net.runelite.api.widgets.WidgetType;
 import javax.inject.Singleton;
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class EarlyGameGuide
 {
-	Widget babyWidget;
-	Widget contentContainer;
-	Widget[] tabContents;
-	Widget[] tabHeaders;
-	int selectedTabIndex = 0;
+	private ModalDialog modalDialog;
+	private TabContainer tabContainer;
 	
 	// Category collapse state tracking
 	java.util.Map<GoalCategory, Boolean> categoryCollapsed = new java.util.HashMap<>();
-
-	// Drag state tracking
-	private final AtomicBoolean isDragging = new AtomicBoolean(false);
-	private final AtomicInteger dragStartX = new AtomicInteger(0);
-	private final AtomicInteger dragStartY = new AtomicInteger(0);
-	private final AtomicInteger widgetStartX = new AtomicInteger(0);
-	private final AtomicInteger widgetStartY = new AtomicInteger(0);
 
 	QuestHelperPlugin plugin;
 
@@ -50,236 +36,75 @@ public class EarlyGameGuide
 
 	public void setup(Client client)
 	{
-		// Only create widgets if they don't exist yet
-		if (babyWidget != null)
-		{
-			var tmpWidget = client.getWidget(babyWidget.getId());
-			if (tmpWidget != null)
-			{
-				var result = tmpWidget.getChildren() != null && Arrays.stream(tmpWidget.getChildren()).anyMatch((child) -> tmpWidget == child);
-				if (!result)
-				{
-					babyWidget = null;
-				}
-			}
-		}
-		if (babyWidget != null)
-		{
-			babyWidget.deleteAllChildren();
-		}
-
-//		client.getDraggedWidget()
+		// Create modal dialog
 		Widget parentWidget = getTopLevelWidget(client);
 		if (parentWidget == null) return;
 
-		Widget guideFloater;
-		if (babyWidget == null)
-		{
-			guideFloater = SimpleWidgetBuilder.createFloatLayer(parentWidget);
-		}
-		else
-		{
-			guideFloater = babyWidget;
-		}
-
-		// Create main modal container
-		var xForHelper = guideFloater.getWidth() / 4;
-		var yForHelper = guideFloater.getHeight() / 4;
+		// TODO: Have these saved configs so it remembers how you've had it before?
+		var xForHelper = parentWidget.getWidth() / 4;
+		var yForHelper = parentWidget.getHeight() / 4;
 		var widthForHelper = 480;
 		var heightForHelper = 326;
 
-		final int TITLE_HEIGHT = 32;
+		modalDialog = new ModalDialog(client, parentWidget, "Early game helper", widthForHelper, heightForHelper, xForHelper, yForHelper, (ev) -> close(client));
 
-		var draggedBorderWidget = SimpleWidgetBuilder.createDraggedOutline(guideFloater, xForHelper, yForHelper, widthForHelper, heightForHelper);
-
-		// Create the main content layer first
-		Widget topLevelWidget = SimpleWidgetBuilder.createLayer(guideFloater, xForHelper, yForHelper, widthForHelper, heightForHelper);
-		topLevelWidget.setNoClickThrough(true);
-		// Add ESC key handling to the entire modal
-		topLevelWidget.setOnKeyListener((JavaScriptCallback) (ev) -> {
-			if (client.isKeyPressed(KeyCode.KC_ESCAPE))
-			{
-				close(client);
-			}
-		});
-		topLevelWidget.revalidate();
-
-		// Create the dragger widget
-		var dragger = guideFloater.createChild(WidgetType.GRAPHIC);
-		dragger.setPos(xForHelper, yForHelper);
-		dragger.setOriginalWidth(widthForHelper);
-		dragger.setOriginalHeight(TITLE_HEIGHT);
-		dragger.setSpriteId(SpriteID.TRADEBACKING_LIGHT);
-		dragger.setOpacity(255);
-		dragger.setItemQuantityMode(ItemQuantityMode.STACKABLE);
-		dragger.setSpriteTiling(true);
-		dragger.setHasListener(true);
-		dragger.setDragDeadZone(1); // Minimum 1 pixel movement before drag starts
-		dragger.setDragDeadTime(5); // 5 game ticks delay before drag begins
-		dragger.setDragParent(guideFloater); // Make this widget the drag handle for itself
-
-		dragger.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
-			dragger.setOpacity(200);
-		});
-
-		dragger.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
-			dragger.setOpacity(255);
-		});
-
-		dragger.setOnClickListener((JavaScriptCallback) (ev) -> {
-			dragger.setOpacity(0);
-			dragStartX.set(ev.getMouseX());
-			dragStartY.set(ev.getMouseY());
-			widgetStartX.set(dragger.getOriginalX());
-			widgetStartY.set(dragger.getOriginalY());
-		});
-
-		dragger.setOnHoldListener((JavaScriptCallback) (ev) -> {
-			dragger.setOpacity(0);
-		});
-		
-		// Set up drag listeners
-		dragger.setOnDragListener((JavaScriptCallback) (ev) -> {
-			// Calculate new position based on mouse movement
-
-			int deltaX = ev.getMouseX() - dragStartX.get();
-			int deltaY = ev.getMouseY() - dragStartY.get();
-			int newX = widgetStartX.get() + deltaX;
-			int newY = widgetStartY.get() + deltaY;
-			
-			// Ensure widget stays within bounds
-			int maxX = guideFloater.getWidth() - widthForHelper;
-			int maxY = guideFloater.getHeight() - heightForHelper;
-			newX = Math.max(0, Math.min(newX, maxX));
-			newY = Math.max(0, Math.min(newY, maxY));
-			
-			// Update both dragger and topLevelWidget positions
-			dragger.setPos(newX, newY);
-			dragger.revalidate();
-
-			// TODO: Set borders to visible with different style
-			topLevelWidget.setHidden(true);
-			topLevelWidget.setPos(newX, newY);
-			topLevelWidget.revalidate();
-
-			draggedBorderWidget.setHidden(false);
-			draggedBorderWidget.setPos(newX, newY);
-			draggedBorderWidget.revalidate();
-		});
-		
-		dragger.setOnDragCompleteListener((JavaScriptCallback) (ev) -> {
-			// End of drag
-			isDragging.set(false);
-			dragger.setOpacity(250);
-			dragger.revalidate();
-
-			topLevelWidget.setHidden(false);
-			topLevelWidget.revalidate();
-
-			draggedBorderWidget.setHidden(true);
-			draggedBorderWidget.revalidate();
-		});
-		
-		dragger.revalidate();
-
-		// Create modal background with borders
-		SimpleWidgetBuilder.createModalBackground(topLevelWidget, 480, 326);
-
-		// Create draggable title
-		SimpleWidgetBuilder.createTitle(topLevelWidget, "Early game helper");
-
-		// Title separator border
-		Widget titleSeparator = SimpleWidgetBuilder.createGraphicAbsolute(topLevelWidget, SpriteID.SteelborderDivider._0, 0, 20, 10, 26);
-		titleSeparator.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		titleSeparator.setWidthMode(WidgetSizeMode.MINUS);
-		titleSeparator.revalidate();
-
-		// Create close button
-		SimpleWidgetBuilder.createCloseButton(topLevelWidget, (ev) -> close(client));
-
-		// Tabs header row
+		// Create tab container
 		String[] tabTitles = new String[]{"Getting started", "First hour", "Money", "Training", "Paths", "Settings"};
-		tabHeaders = new Widget[tabTitles.length];
-		int headerX = 12;
-		for (int i = 0; i < tabTitles.length; i++)
-		{
-			final int idx = i;
-			tabHeaders[i] = SimpleWidgetBuilder.createTabHeader(
-				topLevelWidget,
-				tabTitles[i],
-				headerX,
-				36,
-				i == 0,
-				(ev) -> selectTab(idx)
-			);
-			headerX += tabTitles[i].length() * 6 + 18; // rough width spacing
-		}
-
-		// Content container (fills under header, above scrollbar area)
-		contentContainer = SimpleWidgetBuilder.createContentContainer(topLevelWidget, 8, 55, 16, 58);
-
-		// Create per-tab content layers
-		tabContents = new Widget[tabTitles.length];
-		for (int i = 0; i < tabTitles.length; i++)
-		{
-			tabContents[i] = SimpleWidgetBuilder.createScrollableContent(contentContainer, 6, 0);
-		}
+		tabContainer = new TabContainer(modalDialog.getContentArea(), tabTitles);
 
 		// Getting started content - button-based layout (3 rows for 6 buttons)
-		ButtonSection gettingStartedSection = SimpleWidgetBuilder.createButtonSection(tabContents[0], 6, 20, 3, client);
-		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Banking Guide", SpriteID.AccountIcons._0, (ev) -> openAction("Banking Guide"));
-		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openAction("Death Mechanics"));
-		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Home Teleport", SpriteID.AccountIcons._2, (ev) -> openAction("Home Teleport"));
-		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "World Switching", SpriteID.AccountIcons._3, (ev) -> openAction("World Switching"));
-		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Bonds Guide", SpriteID.AccountIcons._4, (ev) -> openAction("Bonds Guide"));
-		SimpleWidgetBuilder.createStyledButton(gettingStartedSection, "Wiki Access", SpriteID.AccountIcons._0, (ev) -> openAction("Wiki Access"));
-
+		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 0, 0, 300, 300, 3, client);
+		gettingStartedGrid.addButton("Banking Guide", SpriteID.AccountIcons._0, (ev) -> openAction("Banking Guide"));
+		gettingStartedGrid.addButton("Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openAction("Death Mechanics"));
+		gettingStartedGrid.addButton("Home Teleport", SpriteID.AccountIcons._2, (ev) -> openAction("Home Teleport"));
+		gettingStartedGrid.addButton("World Switching", SpriteID.AccountIcons._3, (ev) -> openAction("World Switching"));
+		gettingStartedGrid.addButton("Bonds Guide", SpriteID.AccountIcons._4, (ev) -> openAction("Bonds Guide"));
+		gettingStartedGrid.addButton("Wiki Access", SpriteID.AccountIcons._0, (ev) -> openAction("Wiki Access"));
 
 		// First hour: curated buttons (2 rows for 4 buttons)
-		ButtonSection firstHourSection = SimpleWidgetBuilder.createButtonSection(tabContents[1], 6, 20, 2, client);
-		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Cook's Assistant", SpriteID.OrbIcon._11, (ev) -> openAction("Cook's Assistant"));
-		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Lumbridge cows", SpriteID.AccountIcons._0, (ev) -> openAction("Lumbridge cows"));
-		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Mining intro", SpriteID.Staticons.MINING, (ev) -> openAction("Mining intro"));
-		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Smithing intro", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing intro"));
+		ButtonGrid firstHourGrid = new ButtonGrid(tabContainer.getTabContent(1), 0, 0, 2, client);
+		firstHourGrid.addButton("Cook's Assistant", SpriteID.OrbIcon._11, (ev) -> openAction("Cook's Assistant"));
+		firstHourGrid.addButton("Lumbridge cows", SpriteID.AccountIcons._0, (ev) -> openAction("Lumbridge cows"));
+		firstHourGrid.addButton("Mining intro", SpriteID.Staticons.MINING, (ev) -> openAction("Mining intro"));
+		firstHourGrid.addButton("Smithing intro", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing intro"));
 
 		// Money content - button-based layout (3 rows for 6 buttons)
-		ButtonSection moneySection = SimpleWidgetBuilder.createButtonSection(tabContents[2], 6, 20, 3, client);
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		ButtonGrid moneyGrid = new ButtonGrid(tabContainer.getTabContent(2), 0, 0, 3, client);
+		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
+		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
+		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
+		moneyGrid.addButton("Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
+		moneyGrid.addButton("Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
+		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
+		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
+		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
+		moneyGrid.addButton("Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
+		moneyGrid.addButton("Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
+		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
+		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
+		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
+		moneyGrid.addButton("Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
+		moneyGrid.addButton("Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
+		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
 
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
-		SimpleWidgetBuilder.createStyledButton(moneySection, "Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
 		// Training content - button-based layout (3 rows for 6 buttons)
-		ButtonSection trainingSection = SimpleWidgetBuilder.createButtonSection(tabContents[3], 6, 20, 3, client);
-		SimpleWidgetBuilder.createStyledButton(trainingSection, "Combat Training", SpriteID.Staticons.ATTACK, (ev) -> openAction("Combat Training"));
-		SimpleWidgetBuilder.createStyledButton(trainingSection, "Mining Guide", SpriteID.Staticons.MINING, (ev) -> openAction("Mining Guide"));
-		SimpleWidgetBuilder.createStyledButton(trainingSection, "Smithing Guide", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing Guide"));
-		SimpleWidgetBuilder.createStyledButton(trainingSection, "Cooking Guide", SpriteID.Staticons.COOKING, (ev) -> openAction("Cooking Guide"));
-		SimpleWidgetBuilder.createStyledButton(trainingSection, "Fishing Guide", SpriteID.Staticons.FISHING, (ev) -> openAction("Fishing Guide"));
-		SimpleWidgetBuilder.createStyledButton(trainingSection, "Quest Benefits", SpriteID.Staticons.ATTACK, (ev) -> openAction("Quest Benefits"));
-
+		ButtonGrid trainingGrid = new ButtonGrid(tabContainer.getTabContent(3), 0, 0, 3, client);
+		trainingGrid.addButton("Combat Training", SpriteID.Staticons.ATTACK, (ev) -> openAction("Combat Training"));
+		trainingGrid.addButton("Mining Guide", SpriteID.Staticons.MINING, (ev) -> openAction("Mining Guide"));
+		trainingGrid.addButton("Smithing Guide", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing Guide"));
+		trainingGrid.addButton("Cooking Guide", SpriteID.Staticons.COOKING, (ev) -> openAction("Cooking Guide"));
+		trainingGrid.addButton("Fishing Guide", SpriteID.Staticons.FISHING, (ev) -> openAction("Fishing Guide"));
+		trainingGrid.addButton("Quest Benefits", SpriteID.Staticons.ATTACK, (ev) -> openAction("Quest Benefits"));
 
 		// Paths: progression goals
-		buildPathsTab(tabContents[4]);
+		buildPathsTab(tabContainer.getTabContent(4));
 
 		// Settings: toggle for onboarding prompt
-		Widget settingsLabel = SimpleWidgetBuilder.createText(
-			tabContents[5],
+		Widget settingsLabel = WidgetFactory.createText(
+			tabContainer.getTabContent(5),
 			"Show early-game prompt on login",
 			"ff9933",
 			true,
@@ -288,13 +113,13 @@ public class EarlyGameGuide
 		settingsLabel.setWidthMode(WidgetSizeMode.MINUS);
 		settingsLabel.revalidate();
 
-		Widget toggleBg = SimpleWidgetBuilder.createGraphic(tabContents[5], SpriteID.TRADEBACKING, 0, 22, 60, 18);
+		Widget toggleBg = WidgetFactory.createGraphic(tabContainer.getTabContent(5), SpriteID.TRADEBACKING, 0, 22, 60, 18);
 		toggleBg.setHasListener(true);
 		toggleBg.setOnClickListener((JavaScriptCallback) (ev) -> toggleOnboarding());
 		toggleBg.revalidate();
 
-		SimpleWidgetBuilder.createCenteredText(
-			tabContents[5],
+		WidgetFactory.createCenteredText(
+			tabContainer.getTabContent(5),
 			getOnboardingEnabled() ? "On" : "Off",
 			"c8aa6e",
 			false,
@@ -302,8 +127,8 @@ public class EarlyGameGuide
 		);
 
 		// F2P-only filter toggle (placeholder)
-		Widget f2pLabel = SimpleWidgetBuilder.createText(
-			tabContents[5],
+		Widget f2pLabel = WidgetFactory.createText(
+			tabContainer.getTabContent(5),
 			"F2P-only recommendations (placeholder)",
 			"ff9933",
 			true,
@@ -312,8 +137,8 @@ public class EarlyGameGuide
 		f2pLabel.setWidthMode(WidgetSizeMode.MINUS);
 		f2pLabel.revalidate();
 
-		Widget ironLabel = SimpleWidgetBuilder.createText(
-			tabContents[5],
+		Widget ironLabel = WidgetFactory.createText(
+			tabContainer.getTabContent(5),
 			"Ironman hints (placeholder)",
 			"ff9933",
 			true,
@@ -321,24 +146,23 @@ public class EarlyGameGuide
 		);
 		ironLabel.setWidthMode(WidgetSizeMode.MINUS);
 		ironLabel.revalidate();
-
-		// Initial tab selection
-		applyTabVisibility(0);
-		babyWidget = guideFloater;
 	}
 
 	public void show(Client client)
 	{
 		// Create widgets if they don't exist yet
-//		if (babyWidget == null)
-//		{
-			setup(client);
-//		}
+		if (modalDialog == null)
+		{
+//			setup(client);
+		}
+		// TODO: Temporary for testing. Should keep created one usually
+		destroy();
+		setup(client);
 		
 		// Make the guide visible
-		if (babyWidget != null)
+		if (modalDialog != null)
 		{
-			babyWidget.setHidden(false);
+			modalDialog.show();
 		}
 	}
 
@@ -502,37 +326,13 @@ public class EarlyGameGuide
 		}
 	}
 
-	private void selectTab(int index)
-	{
-		if (index < 0 || index >= tabContents.length) return;
-		if (selectedTabIndex == index) return;
-		selectedTabIndex = index;
-		applyTabVisibility(index);
-	}
-
-	private void applyTabVisibility(int index)
-	{
-		if (tabContents == null) return;
-		for (int i = 0; i < tabContents.length; i++)
-		{
-			boolean visible = (i == index);
-			if (tabContents[i] != null)
-			{
-				tabContents[i].setHidden(!visible);
-			}
-			if (tabHeaders != null && tabHeaders[i] != null)
-			{
-				tabHeaders[i].setTextColor(Integer.parseInt(visible ? "ff981f" : "c8aa6e", 16));
-			}
-		}
-	}
 
 	private void buildPathsTab(Widget pathsContainer)
 	{
 		if (pathsContainer == null) return;
 
 		// Create scrollable content for goals
-		Widget scrollableContent = SimpleWidgetBuilder.createScrollableContent(pathsContainer, 16, 96);
+		Widget scrollableContent = WidgetFactory.createScrollableContent(pathsContainer, 16, 96);
 
 		int yPos = 0;
 		var goalsByCategory = ProgressionGoals.getGoalsByCategory();
@@ -550,7 +350,7 @@ public class EarlyGameGuide
 
 			// Category header with clickable expand/collapse
 			String collapseIcon = isCollapsed ? "▶" : "▼";
-			Widget categoryHeader = SimpleWidgetBuilder.createText(
+			Widget categoryHeader = WidgetFactory.createText(
 				scrollableContent,
 				collapseIcon + " " + category.getDisplayName() + " (" + goals.size() + " goals)",
 				"ff981f",
@@ -588,7 +388,7 @@ public class EarlyGameGuide
 						progressText = " (" + completed + "/" + total + ")";
 					}
 					
-					Widget goalName = SimpleWidgetBuilder.createText(
+					Widget goalName = WidgetFactory.createText(
 						scrollableContent,
 						goal.getName() + " " + stars + progressText,
 						isActiveGoal ? "00ff00" : "ff9933",
@@ -602,7 +402,7 @@ public class EarlyGameGuide
 					boolean isCompleted = plugin != null && plugin.getClient() != null && goal.isCompleted(plugin.getClient());
 					if (!isCompleted)
 					{
-						SimpleWidgetBuilder.createTextButton(
+						WidgetFactory.createTextButton(
 							scrollableContent,
 							isActiveGoal ? "Active" : "Set",
 							0, yPos, 40, 12,
@@ -612,7 +412,7 @@ public class EarlyGameGuide
 					else
 					{
 						// Show completed indicator
-						Widget completedText = SimpleWidgetBuilder.createCenteredText(
+						Widget completedText = WidgetFactory.createCenteredText(
 							scrollableContent,
 							"✓ Complete",
 							"00ff00",
@@ -626,7 +426,7 @@ public class EarlyGameGuide
 					yPos += 16; // Increased spacing to prevent overlap
 
 					// Benefit text
-					Widget benefitText = SimpleWidgetBuilder.createText(
+					Widget benefitText = WidgetFactory.createText(
 						scrollableContent,
 						goal.getBenefit(),
 						"c8aa6e",
@@ -641,7 +441,7 @@ public class EarlyGameGuide
 					// Clickable prerequisite chain view
 					if (goal.getPrerequisites().size() > 1)
 					{
-						Widget prereqButton = SimpleWidgetBuilder.createText(
+						Widget prereqButton = WidgetFactory.createText(
 							scrollableContent,
 							"View prerequisites (" + goal.getPrerequisites().size() + " quests)",
 							"808080",
@@ -677,9 +477,9 @@ public class EarlyGameGuide
 		categoryCollapsed.put(category, !categoryCollapsed.get(category));
 		
 		// Rebuild the Paths tab to reflect the change
-		if (tabContents != null && tabContents.length > 4 && tabContents[4] != null)
+		if (tabContainer != null)
 		{
-			buildPathsTab(tabContents[4]);
+			buildPathsTab(tabContainer.getTabContent(4));
 		}
 	}
 
@@ -725,9 +525,9 @@ public class EarlyGameGuide
 		});
 		
 		// Rebuild the Paths tab to show the new active goal
-		if (tabContents != null && tabContents.length > 4 && tabContents[4] != null)
+		if (tabContainer != null)
 		{
-			buildPathsTab(tabContents[4]);
+			buildPathsTab(tabContainer.getTabContent(4));
 		}
 	}
 
@@ -757,24 +557,20 @@ public class EarlyGameGuide
 
 	public void close(Client client)
 	{
-		if (babyWidget == null) return;
+		if (modalDialog == null) return;
 
 		// Just hide the widget, don't destroy it
-		babyWidget.setHidden(true);
+		modalDialog.hide();
 	}
 
 	public void destroy()
 	{
-		if (babyWidget == null) return;
+		if (modalDialog == null) return;
 
-		// Hide and clear only the root widget created by this guide
-		babyWidget.setHidden(true);
-		babyWidget.getParent().deleteAllChildren();
-		babyWidget = null;
-		contentContainer = null;
-		tabContents = null;
-		tabHeaders = null;
-		selectedTabIndex = 0;
+		// Close and destroy the modal
+		modalDialog.close();
+		modalDialog = null;
+		tabContainer = null;
 		categoryCollapsed.clear();
 	}
 }

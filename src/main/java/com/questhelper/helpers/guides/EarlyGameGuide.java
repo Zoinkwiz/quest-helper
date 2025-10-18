@@ -4,20 +4,22 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.helpers.guides.ProgressionGoal;
-import com.questhelper.helpers.guides.GoalCategory;
-import com.questhelper.helpers.guides.ProgressionGoals;
 import com.questhelper.ui.widgets.SimpleWidgetBuilder;
 import com.questhelper.ui.widgets.ButtonSection;
 import net.runelite.api.Client;
 import net.runelite.api.KeyCode;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
 import javax.inject.Singleton;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class EarlyGameGuide
@@ -31,6 +33,13 @@ public class EarlyGameGuide
 	// Category collapse state tracking
 	java.util.Map<GoalCategory, Boolean> categoryCollapsed = new java.util.HashMap<>();
 
+	// Drag state tracking
+	private final AtomicBoolean isDragging = new AtomicBoolean(false);
+	private final AtomicInteger dragStartX = new AtomicInteger(0);
+	private final AtomicInteger dragStartY = new AtomicInteger(0);
+	private final AtomicInteger widgetStartX = new AtomicInteger(0);
+	private final AtomicInteger widgetStartY = new AtomicInteger(0);
+
 	QuestHelperPlugin plugin;
 
 	public void setPlugin(QuestHelperPlugin plugin)
@@ -42,20 +51,141 @@ public class EarlyGameGuide
 	public void setup(Client client)
 	{
 		// Only create widgets if they don't exist yet
-		if (babyWidget != null) return;
-		
+		if (babyWidget != null)
+		{
+			var tmpWidget = client.getWidget(babyWidget.getId());
+			if (tmpWidget != null)
+			{
+				var result = tmpWidget.getChildren() != null && Arrays.stream(tmpWidget.getChildren()).anyMatch((child) -> tmpWidget == child);
+				if (!result)
+				{
+					babyWidget = null;
+				}
+			}
+		}
+		if (babyWidget != null)
+		{
+			babyWidget.deleteAllChildren();
+		}
+
+//		client.getDraggedWidget()
 		Widget parentWidget = getTopLevelWidget(client);
 		if (parentWidget == null) return;
 
+		Widget guideFloater;
+		if (babyWidget == null)
+		{
+			guideFloater = SimpleWidgetBuilder.createFloatLayer(parentWidget);
+		}
+		else
+		{
+			guideFloater = babyWidget;
+		}
+
 		// Create main modal container
-		Widget topLevelWidget = SimpleWidgetBuilder.createLayer(parentWidget, 0, 0, 480, 326);
-		topLevelWidget.setPos(0, 0, WidgetPositionMode.ABSOLUTE_CENTER, WidgetPositionMode.ABSOLUTE_CENTER);
+		var xForHelper = guideFloater.getWidth() / 4;
+		var yForHelper = guideFloater.getHeight() / 4;
+		var widthForHelper = 480;
+		var heightForHelper = 326;
+
+		final int TITLE_HEIGHT = 32;
+
+		var draggedBorderWidget = SimpleWidgetBuilder.createDraggedOutline(guideFloater, xForHelper, yForHelper, widthForHelper, heightForHelper);
+
+		// Create the main content layer first
+		Widget topLevelWidget = SimpleWidgetBuilder.createLayer(guideFloater, xForHelper, yForHelper, widthForHelper, heightForHelper);
+		topLevelWidget.setNoClickThrough(true);
+		// Add ESC key handling to the entire modal
+		topLevelWidget.setOnKeyListener((JavaScriptCallback) (ev) -> {
+			if (client.isKeyPressed(KeyCode.KC_ESCAPE))
+			{
+				close(client);
+			}
+		});
 		topLevelWidget.revalidate();
+
+		// Create the dragger widget
+		var dragger = guideFloater.createChild(WidgetType.GRAPHIC);
+		dragger.setPos(xForHelper, yForHelper);
+		dragger.setOriginalWidth(widthForHelper);
+		dragger.setOriginalHeight(TITLE_HEIGHT);
+		dragger.setSpriteId(SpriteID.TRADEBACKING_LIGHT);
+		dragger.setOpacity(255);
+		dragger.setItemQuantityMode(ItemQuantityMode.STACKABLE);
+		dragger.setSpriteTiling(true);
+		dragger.setHasListener(true);
+		dragger.setDragDeadZone(1); // Minimum 1 pixel movement before drag starts
+		dragger.setDragDeadTime(5); // 5 game ticks delay before drag begins
+		dragger.setDragParent(guideFloater); // Make this widget the drag handle for itself
+
+		dragger.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
+			dragger.setOpacity(200);
+		});
+
+		dragger.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
+			dragger.setOpacity(255);
+		});
+
+		dragger.setOnClickListener((JavaScriptCallback) (ev) -> {
+			dragger.setOpacity(0);
+			dragStartX.set(ev.getMouseX());
+			dragStartY.set(ev.getMouseY());
+			widgetStartX.set(dragger.getOriginalX());
+			widgetStartY.set(dragger.getOriginalY());
+		});
+
+		dragger.setOnHoldListener((JavaScriptCallback) (ev) -> {
+			dragger.setOpacity(0);
+		});
+		
+		// Set up drag listeners
+		dragger.setOnDragListener((JavaScriptCallback) (ev) -> {
+			// Calculate new position based on mouse movement
+
+			int deltaX = ev.getMouseX() - dragStartX.get();
+			int deltaY = ev.getMouseY() - dragStartY.get();
+			int newX = widgetStartX.get() + deltaX;
+			int newY = widgetStartY.get() + deltaY;
+			
+			// Ensure widget stays within bounds
+			int maxX = guideFloater.getWidth() - widthForHelper;
+			int maxY = guideFloater.getHeight() - heightForHelper;
+			newX = Math.max(0, Math.min(newX, maxX));
+			newY = Math.max(0, Math.min(newY, maxY));
+			
+			// Update both dragger and topLevelWidget positions
+			dragger.setPos(newX, newY);
+			dragger.revalidate();
+
+			// TODO: Set borders to visible with different style
+			topLevelWidget.setHidden(true);
+			topLevelWidget.setPos(newX, newY);
+			topLevelWidget.revalidate();
+
+			draggedBorderWidget.setHidden(false);
+			draggedBorderWidget.setPos(newX, newY);
+			draggedBorderWidget.revalidate();
+		});
+		
+		dragger.setOnDragCompleteListener((JavaScriptCallback) (ev) -> {
+			// End of drag
+			isDragging.set(false);
+			dragger.setOpacity(250);
+			dragger.revalidate();
+
+			topLevelWidget.setHidden(false);
+			topLevelWidget.revalidate();
+
+			draggedBorderWidget.setHidden(true);
+			draggedBorderWidget.revalidate();
+		});
+		
+		dragger.revalidate();
 
 		// Create modal background with borders
 		SimpleWidgetBuilder.createModalBackground(topLevelWidget, 480, 326);
 
-		// Create title
+		// Create draggable title
 		SimpleWidgetBuilder.createTitle(topLevelWidget, "Early game helper");
 
 		// Title separator border
@@ -66,14 +196,6 @@ public class EarlyGameGuide
 
 		// Create close button
 		SimpleWidgetBuilder.createCloseButton(topLevelWidget, (ev) -> close(client));
-		
-		// Add ESC key handling to the entire modal
-		topLevelWidget.setOnKeyListener((JavaScriptCallback) (ev) -> {
-			if (client.isKeyPressed(KeyCode.KC_ESCAPE))
-			{
-				close(client);
-			}
-		});
 
 		// Tabs header row
 		String[] tabTitles = new String[]{"Getting started", "First hour", "Money", "Training", "Paths", "Settings"};
@@ -83,11 +205,11 @@ public class EarlyGameGuide
 		{
 			final int idx = i;
 			tabHeaders[i] = SimpleWidgetBuilder.createTabHeader(
-				topLevelWidget, 
-				tabTitles[i], 
-				headerX, 
-				36, 
-				i == 0, 
+				topLevelWidget,
+				tabTitles[i],
+				headerX,
+				36,
+				i == 0,
 				(ev) -> selectTab(idx)
 			);
 			headerX += tabTitles[i].length() * 6 + 18; // rough width spacing
@@ -115,7 +237,7 @@ public class EarlyGameGuide
 
 		// First hour: curated buttons (2 rows for 4 buttons)
 		ButtonSection firstHourSection = SimpleWidgetBuilder.createButtonSection(tabContents[1], 6, 20, 2, client);
-		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Cook's Helper", SpriteID.OrbIcon._11, (ev) -> openAction("Cook's Helper"));
+		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Cook's Assistant", SpriteID.OrbIcon._11, (ev) -> openAction("Cook's Assistant"));
 		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Lumbridge cows", SpriteID.AccountIcons._0, (ev) -> openAction("Lumbridge cows"));
 		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Mining intro", SpriteID.Staticons.MINING, (ev) -> openAction("Mining intro"));
 		SimpleWidgetBuilder.createStyledButton(firstHourSection, "Smithing intro", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing intro"));
@@ -157,10 +279,10 @@ public class EarlyGameGuide
 
 		// Settings: toggle for onboarding prompt
 		Widget settingsLabel = SimpleWidgetBuilder.createText(
-			tabContents[5], 
+			tabContents[5],
 			"Show early-game prompt on login",
-			"ff9933", 
-			true, 
+			"ff9933",
+			true,
 			0, 0, 16, 20
 		);
 		settingsLabel.setWidthMode(WidgetSizeMode.MINUS);
@@ -172,29 +294,29 @@ public class EarlyGameGuide
 		toggleBg.revalidate();
 
 		SimpleWidgetBuilder.createCenteredText(
-			tabContents[5], 
+			tabContents[5],
 			getOnboardingEnabled() ? "On" : "Off",
-			"c8aa6e", 
-			false, 
+			"c8aa6e",
+			false,
 			4, 24, 56, 14
 		);
 
 		// F2P-only filter toggle (placeholder)
 		Widget f2pLabel = SimpleWidgetBuilder.createText(
-			tabContents[5], 
+			tabContents[5],
 			"F2P-only recommendations (placeholder)",
-			"ff9933", 
-			true, 
+			"ff9933",
+			true,
 			0, 48, 16, 20
 		);
 		f2pLabel.setWidthMode(WidgetSizeMode.MINUS);
 		f2pLabel.revalidate();
 
 		Widget ironLabel = SimpleWidgetBuilder.createText(
-			tabContents[5], 
+			tabContents[5],
 			"Ironman hints (placeholder)",
-			"ff9933", 
-			true, 
+			"ff9933",
+			true,
 			0, 66, 16, 20
 		);
 		ironLabel.setWidthMode(WidgetSizeMode.MINUS);
@@ -202,16 +324,16 @@ public class EarlyGameGuide
 
 		// Initial tab selection
 		applyTabVisibility(0);
-		babyWidget = topLevelWidget;
+		babyWidget = guideFloater;
 	}
 
 	public void show(Client client)
 	{
 		// Create widgets if they don't exist yet
-		if (babyWidget == null)
-		{
+//		if (babyWidget == null)
+//		{
 			setup(client);
-		}
+//		}
 		
 		// Make the guide visible
 		if (babyWidget != null)
@@ -238,11 +360,11 @@ public class EarlyGameGuide
 		if (plugin == null || plugin.getClient() == null) return;
 		
 		// First hour tab actions
-		if ("Cook's Helper".equals(label))
+		if ("Cook's Assistant".equals(label))
 		{
 			plugin.getClientThread().invokeLater(() -> {
 				plugin.displayPanel();
-				QuestHelper q = QuestHelperQuest.getByName("Cook's Helper");
+				QuestHelper q = QuestHelperQuest.getByName("Cook's Assistant");
 				if (q != null)
 				{
 					plugin.getQuestManager().startUpQuest(q, true);
@@ -612,19 +734,19 @@ public class EarlyGameGuide
 
 	private Widget getTopLevelWidget(Client client)
 	{
-		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.MAIN);
+		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.VIEWPORT);
 		if (fixedContainer != null)
 		{
 			return fixedContainer;
 		}
 		// Resizable classic
-		Widget classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_BACK);
+		Widget classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
 		if (classicContainer != null)
 		{
 			return classicContainer;
 		}
 		// Resizable modern
-		Widget modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.MAINMODAL);
+		Widget modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_FRONT);
 		if (modernContainer != null)
 		{
 			return modernContainer;

@@ -97,6 +97,35 @@ public class SimpleWidgetBuilder
 		widget.revalidate();
 		return widget;
 	}
+
+	public static Widget createDraggedOutline(Widget parent, int x, int y, int width, int height)
+	{
+		Widget borderLayer = parent.createChild(-1, WidgetType.LAYER);
+		borderLayer.setPos(x, y);
+		borderLayer.setSize(width, height);
+		borderLayer.revalidate();
+
+		addLayerToBorder(borderLayer, 0);
+		addLayerToBorder(borderLayer, 1);
+		addLayerToBorder(borderLayer, 2);
+		addLayerToBorder(borderLayer, 3);
+
+		return borderLayer;
+	}
+
+	private static void addLayerToBorder(Widget borderLayer, int depth)
+	{
+		final String BORDER_COLOUR = "9f9f9f";
+
+		var border = borderLayer.createChild(-1, WidgetType.RECTANGLE);
+		border.setTextColor(Integer.parseInt(BORDER_COLOUR, 16));
+		border.setOpacity(100 + (10 * depth));
+		border.setWidthMode(WidgetSizeMode.MINUS);
+		border.setHeightMode(WidgetSizeMode.MINUS);
+		border.setSize(depth * 2, depth * 2);
+		border.setPos(depth, depth);
+		border.revalidate();
+	}
 	
 	/**
 	 * Create a layer widget (container)
@@ -113,11 +142,17 @@ public class SimpleWidgetBuilder
 	/**
 	 * Create a layer widget with size modes
 	 */
-	public static Widget createLayerWithModes(Widget parent, int x, int y, int width, int height, WidgetSizeMode widthMode, WidgetSizeMode heightMode)
+	public static Widget createFloatLayer(Widget parent)
 	{
 		Widget widget = parent.createChild(-1, WidgetType.LAYER);
-		widget.setPos(x, y);
-		widget.setSize(width, height);
+		widget.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		widget.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		widget.setWidthMode(WidgetSizeMode.MINUS);
+		widget.setHeightMode(WidgetSizeMode.MINUS);
+		widget.setHasListener(true);
+		// Modal mode 1??
+		// client.openInterface a consideration
+//		widget.modal
 		// Note: Size modes are set separately in the calling code to avoid API compatibility issues
 		widget.revalidate();
 		return widget;
@@ -145,10 +180,11 @@ public class SimpleWidgetBuilder
 	public static Widget createModalBackground(Widget parent, int width, int height)
 	{
 		// Main background
-		Widget background = createGraphicAbsolute(parent, SpriteID.TRADEBACKING, 0, 0, width + 32, height + 32);
+		Widget background = createGraphicAbsolute(parent, SpriteID.TRADEBACKING, 0, 0, 0, 0);
 		background.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		background.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-		background.setNoClickThrough(true);
+		background.setWidthMode(WidgetSizeMode.MINUS);
+		background.setHeightMode(WidgetSizeMode.MINUS);
 		background.setHasListener(true);
 		background.setOnClickListener((JavaScriptCallback) (ev) -> {}); // Prevent clicks from passing through
 		background.revalidate();
@@ -228,6 +264,28 @@ public class SimpleWidgetBuilder
 		widget.setFontId(496); // Title font
 		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
 		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
+		widget.revalidate();
+		return widget;
+	}
+	
+	/**
+	 * Create a draggable title widget
+	 */
+	public static Widget createDraggableTitle(Widget parent, String title)
+	{
+		Widget widget = createText(parent, title, "ff981f", true, 0, 6, 12, 24);
+		widget.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		widget.setWidthMode(WidgetSizeMode.MINUS);
+		widget.setFontId(496); // Title font
+		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
+		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
+		
+		// Enable drag functionality
+//		widget.setHasListener(true);
+//		widget.setDragDeadZone(1); // Minimum 1 pixel movement before drag starts
+//		widget.setDragDeadTime(5); // 5 game ticks delay before drag begins
+//		widget.setDragParent(parent); // Make this widget the drag handle for itself
+//
 		widget.revalidate();
 		return widget;
 	}

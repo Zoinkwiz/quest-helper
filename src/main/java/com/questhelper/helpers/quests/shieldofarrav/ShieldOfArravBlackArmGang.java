@@ -185,7 +185,7 @@ public class ShieldOfArravBlackArmGang extends BasicQuestHelper
 		talkToHaig = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3255, 3449, 0), "Talk to Curator Haig in the Varrock Museum.", shieldHalf);
 		talkToHaig.addSubSteps(goDownstairsInBase);
 
-		talkToRoald = new NpcStep(this, NpcID.SUROK_KING, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle to finish the quest.", certificate);
+		talkToRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0), "Talk to King Roald in Varrock Castle to finish the quest.", certificate);
 
 	}
 

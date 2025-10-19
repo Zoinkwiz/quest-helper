@@ -61,50 +61,37 @@ public class EarlyGameGuide
 
 		// Getting started content - button-based layout (3 rows for 6 buttons)
 		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 0, 0, 300, 2, client);
-		gettingStartedGrid.addButton("Banking Guide", SpriteID.AccountIcons._0, (ev) -> openAction("Banking Guide"));
-		gettingStartedGrid.addButton("Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openAction("Death Mechanics"));
-		gettingStartedGrid.addButton("Home Teleport", SpriteID.AccountIcons._2, (ev) -> openAction("Home Teleport"));
-		gettingStartedGrid.addButton("World Switching", SpriteID.AccountIcons._3, (ev) -> openAction("World Switching"));
-		gettingStartedGrid.addButton("Bonds Guide", SpriteID.AccountIcons._4, (ev) -> openAction("Bonds Guide"));
-		gettingStartedGrid.addButton("Wiki Access", SpriteID.AccountIcons._0, (ev) -> openAction("Wiki Access"));
+		gettingStartedGrid.addButton("Banking Guide", SpriteID.AccountIcons._0, (ev) -> openBankingGuide());
+		gettingStartedGrid.addButton("Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openDeathMechanics());
+		gettingStartedGrid.addButton("Home Teleport", SpriteID.AccountIcons._2, (ev) -> openHomeTeleport());
+		gettingStartedGrid.addButton("World Switching", SpriteID.AccountIcons._3, (ev) -> openWorldSwitching());
+		gettingStartedGrid.addButton("Bonds Guide", SpriteID.AccountIcons._4, (ev) -> openBondsGuide());
+		gettingStartedGrid.addButton("Wiki Access", SpriteID.AccountIcons._0, (ev) -> openWikiAccess());
 
 		// First hour: curated buttons (2 rows for 4 buttons)
 		ButtonGrid firstHourGrid = new ButtonGrid(tabContainer.getTabContent(1), 0, 0, 2, client);
-		firstHourGrid.addButton("Cook's Assistant", SpriteID.OrbIcon._11, (ev) -> openAction("Cook's Assistant"));
-		firstHourGrid.addButton("Lumbridge cows", SpriteID.AccountIcons._0, (ev) -> openAction("Lumbridge cows"));
-		firstHourGrid.addButton("Mining intro", SpriteID.Staticons.MINING, (ev) -> openAction("Mining intro"));
-		firstHourGrid.addButton("Smithing intro", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing intro"));
+		firstHourGrid.addButton("Cook's Assistant", SpriteID.OrbIcon._11, (ev) -> openCooksAssistant());
+		firstHourGrid.addButton("Lumbridge cows", SpriteID.AccountIcons._0, (ev) -> openLumbridgeCows());
+		firstHourGrid.addButton("Mining intro", SpriteID.Staticons.MINING, (ev) -> openMiningIntro());
+		firstHourGrid.addButton("Smithing intro", SpriteID.Staticons.SMITHING, (ev) -> openSmithingIntro());
 
 		// Money content - button-based layout (3 rows for 6 buttons)
 		ButtonGrid moneyGrid = new ButtonGrid(tabContainer.getTabContent(2), 0, 0, 3, client);
-		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
-		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
-		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
-		moneyGrid.addButton("Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
-		moneyGrid.addButton("Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
-		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
-		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
-		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
-		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
-		moneyGrid.addButton("Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
-		moneyGrid.addButton("Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
-		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
-		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
-		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openAction("Feather Trading"));
-		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openAction("Wine of Zamorak"));
-		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openAction("Stronghold Guide"));
-		moneyGrid.addButton("Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openAction("Cowhide Guide"));
-		moneyGrid.addButton("Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openAction("Lobster Fishing"));
-		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openAction("Safety Tips"));
+		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openFeatherTrading());
+		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openWineOfZamorak());
+		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openStrongholdGuide());
+		moneyGrid.addButton("Cowhide Guide", SpriteID.Staticons.ATTACK, (ev) -> openCowhideGuide());
+		moneyGrid.addButton("Lobster Fishing", SpriteID.Staticons.FISHING, (ev) -> openLobsterFishing());
+		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openSafetyTips());
 
 		// Training content - button-based layout (3 rows for 6 buttons)
 		ButtonGrid trainingGrid = new ButtonGrid(tabContainer.getTabContent(3), 0, 0, 3, client);
-		trainingGrid.addButton("Combat Training", SpriteID.Staticons.ATTACK, (ev) -> openAction("Combat Training"));
-		trainingGrid.addButton("Mining Guide", SpriteID.Staticons.MINING, (ev) -> openAction("Mining Guide"));
-		trainingGrid.addButton("Smithing Guide", SpriteID.Staticons.SMITHING, (ev) -> openAction("Smithing Guide"));
-		trainingGrid.addButton("Cooking Guide", SpriteID.Staticons.COOKING, (ev) -> openAction("Cooking Guide"));
-		trainingGrid.addButton("Fishing Guide", SpriteID.Staticons.FISHING, (ev) -> openAction("Fishing Guide"));
-		trainingGrid.addButton("Quest Benefits", SpriteID.Staticons.ATTACK, (ev) -> openAction("Quest Benefits"));
+		trainingGrid.addButton("Combat Training", SpriteID.Staticons.ATTACK, (ev) -> openCombatTraining());
+		trainingGrid.addButton("Mining Guide", SpriteID.Staticons.MINING, (ev) -> openMiningGuide());
+		trainingGrid.addButton("Smithing Guide", SpriteID.Staticons.SMITHING, (ev) -> openSmithingGuide());
+		trainingGrid.addButton("Cooking Guide", SpriteID.Staticons.COOKING, (ev) -> openCookingGuide());
+		trainingGrid.addButton("Fishing Guide", SpriteID.Staticons.FISHING, (ev) -> openFishingGuide());
+		trainingGrid.addButton("Quest Benefits", SpriteID.Staticons.ATTACK, (ev) -> openQuestBenefits());
 
 		// Paths: progression goals
 		buildPathsTab(tabContainer.getTabContent(4));
@@ -188,151 +175,172 @@ public class EarlyGameGuide
 		plugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showOnboardingPrompt", next);
 	}
 
-	private void openAction(String label)
+	// First hour tab actions
+	private void openCooksAssistant()
 	{
 		if (plugin == null || plugin.getClient() == null) return;
 		
-		// First hour tab actions
-		if ("Cook's Assistant".equals(label))
-		{
-			plugin.getClientThread().invokeLater(() -> {
-				plugin.displayPanel();
-				QuestHelper q = QuestHelperQuest.getByName("Cook's Assistant");
-				if (q != null)
-				{
-					plugin.getQuestManager().startUpQuest(q, true);
-				}
-			});
-		}
-		else if ("Lumbridge cows".equals(label))
-		{
-			plugin.getClientThread().invokeLater(() -> {
-				plugin.displayPanel();
-				QuestHelper q = QuestHelperQuest.getByName("Boaty Guide");
-				if (q != null)
-				{
-					plugin.getQuestManager().startUpQuest(q, true);
-				}
-			});
-		}
-		else if ("Mining intro".equals(label))
-		{
-			plugin.getClientThread().invokeLater(() -> {
-				plugin.displayPanel();
-				QuestHelper q = QuestHelperQuest.getByName("Mining");
-				if (q != null)
-				{
-					plugin.getQuestManager().startUpQuest(q, true);
-				}
-			});
-		}
-		else if ("Smithing intro".equals(label))
-		{
-			plugin.getClientThread().invokeLater(() -> {
-				plugin.displayPanel();
-				QuestHelper q = QuestHelperQuest.getByName("Smithing");
-				if (q != null)
-				{
-					plugin.getQuestManager().startUpQuest(q, true);
-				}
-			});
-		}
+		plugin.getClientThread().invokeLater(() -> {
+			plugin.displayPanel();
+			QuestHelper q = QuestHelperQuest.getByName("Cook's Assistant");
+			if (q != null)
+			{
+				plugin.getQuestManager().startUpQuest(q, true);
+			}
+		});
+	}
+	
+	private void openLumbridgeCows()
+	{
+		if (plugin == null || plugin.getClient() == null) return;
 		
-		// Getting started tab actions
-		else if ("Banking Guide".equals(label))
-		{
-			// TODO: Implement banking guide
-			System.out.println("Banking Guide clicked - feature coming soon!");
-		}
-		else if ("Death Mechanics".equals(label))
-		{
-			// TODO: Implement death mechanics guide
-			System.out.println("Death Mechanics clicked - feature coming soon!");
-		}
-		else if ("Home Teleport".equals(label))
-		{
-			// TODO: Implement home teleport guide
-			System.out.println("Home Teleport clicked - feature coming soon!");
-		}
-		else if ("World Switching".equals(label))
-		{
-			// TODO: Implement world switching guide
-			System.out.println("World Switching clicked - feature coming soon!");
-		}
-		else if ("Bonds Guide".equals(label))
-		{
-			// TODO: Implement bonds guide
-			System.out.println("Bonds Guide clicked - feature coming soon!");
-		}
-		else if ("Wiki Access".equals(label))
-		{
-			// TODO: Open wiki or show wiki info
-			System.out.println("Wiki Access clicked - feature coming soon!");
-		}
+		plugin.getClientThread().invokeLater(() -> {
+			plugin.displayPanel();
+			QuestHelper q = QuestHelperQuest.getByName("Boaty Guide");
+			if (q != null)
+			{
+				plugin.getQuestManager().startUpQuest(q, true);
+			}
+		});
+	}
+	
+	private void openMiningIntro()
+	{
+		if (plugin == null || plugin.getClient() == null) return;
 		
-		// Money tab actions
-		else if ("Feather Trading".equals(label))
-		{
-			// TODO: Implement feather trading guide
-			System.out.println("Feather Trading clicked - feature coming soon!");
-		}
-		else if ("Wine of Zamorak".equals(label))
-		{
-			// TODO: Implement wine of zamorak guide
-			System.out.println("Wine of Zamorak clicked - feature coming soon!");
-		}
-		else if ("Stronghold Guide".equals(label))
-		{
-			// TODO: Implement stronghold guide
-			System.out.println("Stronghold Guide clicked - feature coming soon!");
-		}
-		else if ("Cowhide Guide".equals(label))
-		{
-			// TODO: Implement cowhide guide
-			System.out.println("Cowhide Guide clicked - feature coming soon!");
-		}
-		else if ("Lobster Fishing".equals(label))
-		{
-			// TODO: Implement lobster fishing guide
-			System.out.println("Lobster Fishing clicked - feature coming soon!");
-		}
-		else if ("Safety Tips".equals(label))
-		{
-			// TODO: Implement safety tips guide
-			System.out.println("Safety Tips clicked - feature coming soon!");
-		}
+		plugin.getClientThread().invokeLater(() -> {
+			plugin.displayPanel();
+			QuestHelper q = QuestHelperQuest.getByName("Mining");
+			if (q != null)
+			{
+				plugin.getQuestManager().startUpQuest(q, true);
+			}
+		});
+	}
+	
+	private void openSmithingIntro()
+	{
+		if (plugin == null || plugin.getClient() == null) return;
 		
-		// Training tab actions
-		else if ("Combat Training".equals(label))
-		{
-			// TODO: Implement combat training guide
-			System.out.println("Combat Training clicked - feature coming soon!");
-		}
-		else if ("Mining Guide".equals(label))
-		{
-			// TODO: Implement mining guide
-			System.out.println("Mining Guide clicked - feature coming soon!");
-		}
-		else if ("Smithing Guide".equals(label))
-		{
-			// TODO: Implement smithing guide
-			System.out.println("Smithing Guide clicked - feature coming soon!");
-		}
-		else if ("Cooking Guide".equals(label))
-		{
-			// TODO: Implement cooking guide
-			System.out.println("Cooking Guide clicked - feature coming soon!");
-		}
-		else if ("Fishing Guide".equals(label))
-		{
-			// TODO: Implement fishing guide
-			System.out.println("Fishing Guide clicked - feature coming soon!");
-		}
-		else if ("Quest Benefits".equals(label))
-		{
-			// TODO: Implement quest benefits guide
-			System.out.println("Quest Benefits clicked - feature coming soon!");
-		}
+		plugin.getClientThread().invokeLater(() -> {
+			plugin.displayPanel();
+			QuestHelper q = QuestHelperQuest.getByName("Smithing");
+			if (q != null)
+			{
+				plugin.getQuestManager().startUpQuest(q, true);
+			}
+		});
+	}
+	
+	// Getting started tab actions
+	private void openBankingGuide()
+	{
+		// TODO: Implement banking guide
+		System.out.println("Banking Guide clicked - feature coming soon!");
+	}
+	
+	private void openDeathMechanics()
+	{
+		// TODO: Implement death mechanics guide
+		System.out.println("Death Mechanics clicked - feature coming soon!");
+	}
+	
+	private void openHomeTeleport()
+	{
+		// TODO: Implement home teleport guide
+		System.out.println("Home Teleport clicked - feature coming soon!");
+	}
+	
+	private void openWorldSwitching()
+	{
+		// TODO: Implement world switching guide
+		System.out.println("World Switching clicked - feature coming soon!");
+	}
+	
+	private void openBondsGuide()
+	{
+		// TODO: Implement bonds guide
+		System.out.println("Bonds Guide clicked - feature coming soon!");
+	}
+	
+	private void openWikiAccess()
+	{
+		// TODO: Open wiki or show wiki info
+		System.out.println("Wiki Access clicked - feature coming soon!");
+	}
+	
+	// Money tab actions
+	private void openFeatherTrading()
+	{
+		// TODO: Implement feather trading guide
+		System.out.println("Feather Trading clicked - feature coming soon!");
+	}
+	
+	private void openWineOfZamorak()
+	{
+		// TODO: Implement wine of zamorak guide
+		System.out.println("Wine of Zamorak clicked - feature coming soon!");
+	}
+	
+	private void openStrongholdGuide()
+	{
+		// TODO: Implement stronghold guide
+		System.out.println("Stronghold Guide clicked - feature coming soon!");
+	}
+	
+	private void openCowhideGuide()
+	{
+		// TODO: Implement cowhide guide
+		System.out.println("Cowhide Guide clicked - feature coming soon!");
+	}
+	
+	private void openLobsterFishing()
+	{
+		// TODO: Implement lobster fishing guide
+		System.out.println("Lobster Fishing clicked - feature coming soon!");
+	}
+	
+	private void openSafetyTips()
+	{
+		// TODO: Implement safety tips guide
+		System.out.println("Safety Tips clicked - feature coming soon!");
+	}
+	
+	// Training tab actions
+	private void openCombatTraining()
+	{
+		// TODO: Implement combat training guide
+		System.out.println("Combat Training clicked - feature coming soon!");
+	}
+	
+	private void openMiningGuide()
+	{
+		// TODO: Implement mining guide
+		System.out.println("Mining Guide clicked - feature coming soon!");
+	}
+	
+	private void openSmithingGuide()
+	{
+		// TODO: Implement smithing guide
+		System.out.println("Smithing Guide clicked - feature coming soon!");
+	}
+	
+	private void openCookingGuide()
+	{
+		// TODO: Implement cooking guide
+		System.out.println("Cooking Guide clicked - feature coming soon!");
+	}
+	
+	private void openFishingGuide()
+	{
+		// TODO: Implement fishing guide
+		System.out.println("Fishing Guide clicked - feature coming soon!");
+	}
+	
+	private void openQuestBenefits()
+	{
+		// TODO: Implement quest benefits guide
+		System.out.println("Quest Benefits clicked - feature coming soon!");
 	}
 
 

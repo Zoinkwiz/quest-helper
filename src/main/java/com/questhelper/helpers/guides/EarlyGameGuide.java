@@ -25,6 +25,12 @@ public class EarlyGameGuide
 	
 	// Category collapse state tracking
 	java.util.Map<GoalCategory, Boolean> categoryCollapsed = new java.util.HashMap<>();
+	
+	// Position memory for dialog placement
+	private Integer savedX = null;
+	private Integer savedY = null;
+	private boolean isFirstTime = true;
+	public boolean isOpen;
 
 	QuestHelperPlugin plugin;
 
@@ -33,27 +39,28 @@ public class EarlyGameGuide
 		this.plugin = plugin;
 	}
 
-
 	public void setup(Client client)
 	{
 		// Create modal dialog
 		Widget parentWidget = getTopLevelWidget(client);
 		if (parentWidget == null) return;
 
-		// TODO: Have these saved configs so it remembers how you've had it before?
-		var xForHelper = parentWidget.getWidth() / 4;
-		var yForHelper = parentWidget.getHeight() / 4;
 		var widthForHelper = 480;
 		var heightForHelper = 326;
+		
+		// Calculate smart positioning
+		int[] position = calculateDialogPosition(parentWidget, widthForHelper, heightForHelper);
+		var xForHelper = position[0];
+		var yForHelper = position[1];
 
-		modalDialog = new ModalDialog(client, parentWidget, "Early game helper", widthForHelper, heightForHelper, xForHelper, yForHelper, (ev) -> close(client));
+		modalDialog = new ModalDialog(client, parentWidget, "Early game helper", widthForHelper, heightForHelper, xForHelper, yForHelper, (ev) -> close(client), (ev) -> saveCurrentPosition());
 
 		// Create tab container
 		String[] tabTitles = new String[]{"Getting started", "First hour", "Money", "Training", "Paths", "Settings"};
 		tabContainer = new TabContainer(modalDialog.getContentArea(), tabTitles);
 
 		// Getting started content - button-based layout (3 rows for 6 buttons)
-		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 0, 0, 300, 300, 3, client);
+		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 0, 0, 300, 2, client);
 		gettingStartedGrid.addButton("Banking Guide", SpriteID.AccountIcons._0, (ev) -> openAction("Banking Guide"));
 		gettingStartedGrid.addButton("Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openAction("Death Mechanics"));
 		gettingStartedGrid.addButton("Home Teleport", SpriteID.AccountIcons._2, (ev) -> openAction("Home Teleport"));
@@ -156,6 +163,7 @@ public class EarlyGameGuide
 //			setup(client);
 		}
 		// TODO: Temporary for testing. Should keep created one usually
+		// When reverting, will need to consider swapping between interface types (modern, classic, fixed)
 		destroy();
 		setup(client);
 		
@@ -163,6 +171,7 @@ public class EarlyGameGuide
 		if (modalDialog != null)
 		{
 			modalDialog.show();
+			isOpen = true;
 		}
 	}
 
@@ -532,27 +541,63 @@ public class EarlyGameGuide
 	}
 
 
+	/**
+	 * Calculate smart positioning for the dialog
+	 * @param parentWidget The parent container widget
+	 * @param dialogWidth The width of the dialog
+	 * @param dialogHeight The height of the dialog
+	 * @return Array with [x, y] coordinates
+	 */
+	private int[] calculateDialogPosition(Widget parentWidget, int dialogWidth, int dialogHeight)
+	{
+		int parentWidth = parentWidget.getWidth();
+		int parentHeight = parentWidget.getHeight();
+		
+		int x, y;
+		
+		if (isFirstTime || savedX == null || savedY == null)
+		{
+			// First time: center the dialog perfectly
+			x = (parentWidth - dialogWidth) / 2;
+			y = (parentHeight - dialogHeight) / 2;
+			isFirstTime = false;
+		}
+		else
+		{
+			// Use saved position
+			x = savedX;
+			y = savedY;
+		}
+		
+		// Ensure dialog stays within parent bounds
+		x = Math.max(0, Math.min(x, parentWidth - dialogWidth));
+		y = Math.max(0, Math.min(y, parentHeight - dialogHeight));
+		
+		// Save the final position for next time
+		savedX = x;
+		savedY = y;
+		
+		return new int[]{x, y};
+	}
+
 	private Widget getTopLevelWidget(Client client)
 	{
-		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.VIEWPORT);
-		if (fixedContainer != null)
-		{
-			return fixedContainer;
-		}
 		// Resizable classic
 		Widget classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
-		if (classicContainer != null)
+		if (classicContainer != null && !classicContainer.isHidden())
 		{
 			return classicContainer;
 		}
 		// Resizable modern
 		Widget modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_FRONT);
-		if (modernContainer != null)
+		if (modernContainer != null && !modernContainer.isHidden())
 		{
 			return modernContainer;
 		}
 
-		return null;
+		// Fixed
+		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.MAIN);
+		return fixedContainer;
 	}
 
 	public void close(Client client)
@@ -561,16 +606,106 @@ public class EarlyGameGuide
 
 		// Just hide the widget, don't destroy it
 		modalDialog.hide();
+		isOpen = false;
 	}
 
 	public void destroy()
 	{
 		if (modalDialog == null) return;
 
+		// Save current position before destroying
+		saveCurrentPosition();
+
 		// Close and destroy the modal
 		modalDialog.close();
 		modalDialog = null;
 		tabContainer = null;
 		categoryCollapsed.clear();
+		isOpen = false;
+	}
+	
+	/**
+	 * Save the current position of the modal dialog
+	 */
+	private void saveCurrentPosition()
+	{
+		if (modalDialog != null && modalDialog.getModalWidget() != null)
+		{
+			savedX = modalDialog.getModalWidget().getOriginalX();
+			savedY = modalDialog.getModalWidget().getOriginalY();
+		}
+	}
+	
+	/**
+	 * Reset position memory to force centering on next creation
+	 */
+	public void resetPosition()
+	{
+		savedX = null;
+		savedY = null;
+		isFirstTime = true;
+	}
+
+	/**
+	 * Check if the dialog is currently open and visible
+	 */
+	public boolean isVisible()
+	{
+		return modalDialog != null && modalDialog.getModalWidget() != null && !modalDialog.getModalWidget().isHidden();
+	}
+	
+	/**
+	 * Check if the dialog position needs adjustment due to container size changes
+	 * @param client The client to get the current container
+	 * @return true if position needs adjustment
+	 */
+	public boolean needsPositionAdjustment(Client client)
+	{
+		if (modalDialog == null || modalDialog.getModalWidget() == null) return false;
+		
+		Widget parentWidget = getTopLevelWidget(client);
+		if (parentWidget == null) return false;
+		
+		Widget modalWidget = modalDialog.getModalWidget();
+		int currentX = modalWidget.getOriginalX();
+		int currentY = modalWidget.getOriginalY();
+		int dialogWidth = modalWidget.getWidth();
+		int dialogHeight = modalWidget.getHeight();
+		int parentWidth = parentWidget.getWidth();
+		int parentHeight = parentWidget.getHeight();
+		
+		// Check if dialog is outside bounds
+		return currentX < 0 || currentY < 0 || 
+		       currentX + dialogWidth > parentWidth || 
+		       currentY + dialogHeight > parentHeight;
+	}
+	
+	/**
+	 * Adjust the dialog position to stay within bounds without recreating it
+	 * @param client The client to get the current container
+	 */
+	public void adjustPosition(Client client)
+	{
+		if (modalDialog == null || modalDialog.getModalWidget() == null) return;
+		
+		Widget parentWidget = getTopLevelWidget(client);
+		if (parentWidget == null) return;
+		
+		Widget modalWidget = modalDialog.getModalWidget();
+		int dialogWidth = modalWidget.getWidth();
+		int dialogHeight = modalWidget.getHeight();
+		
+		// Calculate adjusted position
+		int[] position = calculateDialogPosition(parentWidget, dialogWidth, dialogHeight);
+		int newX = position[0];
+		int newY = position[1];
+		
+		// Update position
+		modalWidget.setPos(newX, newY);
+		modalWidget.revalidate();
+		
+		// Also update the dragger position if it exists
+		// Note: We'd need to expose the dragger from ModalDialog to update it too
+		// For now, the position will be corrected on next drag
 	}
 }

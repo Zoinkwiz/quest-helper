@@ -32,7 +32,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
  * Grid layout for StyledButtons with automatic scrollbar
  * Replaces ButtonSection with clearer name and better encapsulation
  */
-public class ButtonGrid
+public class ButtonGrid implements ScrollableContent
 {
 	// Button constants
 	private static final int BUTTON_BACKGROUND_WIDTH = 95;
@@ -44,13 +44,21 @@ public class ButtonGrid
 	public ButtonGrid(Widget parent, int x, int y, int rows, Client client)
 	{
 		this.rows = rows;
-		this.scrollableContainer = new ScrollableContainer(parent, x, y, 0, 0, rows, client);
+		// Calculate height based on number of rows and button dimensions
+		int buttonAreaHeight = rows * BUTTON_BACKGROUND_HEIGHT;
+		int totalHeight = buttonAreaHeight + 20; // Space for scrollbar
+		this.scrollableContainer = new ScrollableContainer(parent, x, y, 0, totalHeight, client);
+		this.scrollableContainer.setContent(this);
 	}
 
-	public ButtonGrid(Widget parent, int x, int y, int negativeWidth, int negativeHeight, int rows, Client client)
+	public ButtonGrid(Widget parent, int x, int y, int negativeWidth, int rows, Client client)
 	{
 		this.rows = rows;
-		this.scrollableContainer = new ScrollableContainer(parent, x, y, negativeWidth, negativeHeight, rows, client);
+		// Calculate height based on number of rows and button dimensions
+		int buttonAreaHeight = rows * BUTTON_BACKGROUND_HEIGHT;
+		int totalHeight = buttonAreaHeight + 20; // Space for scrollbar
+		this.scrollableContainer = new ScrollableContainer(parent, x, y, negativeWidth, totalHeight, client);
+		this.scrollableContainer.setContent(this);
 	}
 
 	/**
@@ -91,26 +99,42 @@ public class ButtonGrid
 	}
 
 	/**
-	 * Get the content layer where buttons are added
-	 */
-	public Widget getContentLayer()
-	{
-		return scrollableContainer.getContentLayer();
-	}
-
-	/**
-	 * Get the number of rows in the grid
-	 */
-	public int getRows()
-	{
-		return rows;
-	}
-
-	/**
 	 * Update the scrollbar based on current content
 	 */
 	public void updateScrollbar()
 	{
 		scrollableContainer.updateScrollbar();
+	}
+
+	// ScrollableContent interface implementation
+	@Override
+	public int getItemWidth()
+	{
+		return BUTTON_BACKGROUND_WIDTH;
+	}
+
+	@Override
+	public int getItemHeight()
+	{
+		return BUTTON_BACKGROUND_HEIGHT;
+	}
+
+	@Override
+	public int getRows()
+	{
+		return rows;
+	}
+
+	@Override
+	public int getItemCount()
+	{
+		Widget contentLayer = scrollableContainer.getContentLayer();
+		return (contentLayer.getDynamicChildren() == null) ? 0 : contentLayer.getDynamicChildren().length;
+	}
+
+	@Override
+	public Widget getContentLayer()
+	{
+		return scrollableContainer.getContentLayer();
 	}
 }

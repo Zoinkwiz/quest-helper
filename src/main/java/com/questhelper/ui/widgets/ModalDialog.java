@@ -44,15 +44,25 @@ public class ModalDialog
 	private final Widget modalWidget;
 	private final Widget contentArea;
 	private final Widget draggedBorderWidget;
+	private final Widget dragger;
 
 	// Drag state tracking
 	private final AtomicInteger dragStartX = new AtomicInteger(0);
 	private final AtomicInteger dragStartY = new AtomicInteger(0);
 	private final AtomicInteger widgetStartX = new AtomicInteger(0);
 	private final AtomicInteger widgetStartY = new AtomicInteger(0);
+	
+	// Position change callback
+	private final JavaScriptCallback onPositionChange;
 
 	public ModalDialog(Client client, Widget parentWidget, String title, int width, int height, int x, int y, JavaScriptCallback onClose)
 	{
+		this(client, parentWidget, title, width, height, x, y, onClose, null);
+	}
+	
+	public ModalDialog(Client client, Widget parentWidget, String title, int width, int height, int x, int y, JavaScriptCallback onClose, JavaScriptCallback onPositionChange)
+	{
+		this.onPositionChange = onPositionChange;
 		Widget guideFloater = WidgetFactory.createFloatLayer(parentWidget);
 
 		// Create dragged border widget
@@ -77,7 +87,7 @@ public class ModalDialog
 		modalWidget.revalidate();
 
 		// Create the dragger widget
-		createDragger(guideFloater, x, y, width);
+		dragger = createDragger(guideFloater, x, y, width);
 
 		// Create modal background with borders
 		createModalBackground(width, height);
@@ -120,6 +130,7 @@ public class ModalDialog
 	public void show()
 	{
 		modalWidget.setHidden(false);
+		dragger.setHidden(false);
 	}
 
 	/**
@@ -128,6 +139,7 @@ public class ModalDialog
 	public void hide()
 	{
 		modalWidget.setHidden(true);
+		dragger.setHidden(true);
 	}
 
 	/**
@@ -142,7 +154,7 @@ public class ModalDialog
 	/**
 	 * Create the dragger widget for dragging the modal
 	 */
-	private void createDragger(Widget parent, int x, int y, int width)
+	private Widget createDragger(Widget parent, int x, int y, int width)
 	{
 		final int TITLE_HEIGHT = 32;
 
@@ -217,9 +229,17 @@ public class ModalDialog
 
 			draggedBorderWidget.setHidden(true);
 			draggedBorderWidget.revalidate();
+			
+			// Notify about position change
+			if (onPositionChange != null)
+			{
+				onPositionChange.run(ev);
+			}
 		});
 
 		dragger.revalidate();
+
+		return dragger;
 	}
 
 	/**

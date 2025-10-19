@@ -371,9 +371,6 @@ public class QuestHelperPlugin extends Plugin
 			earlyGameGuide.destroy();
 		}
 
-
-		System.out.println(event.getGameState());
-
 		if (state == GameState.LOGGED_IN && profileChanged)
 		{
 			profileChanged = false;
@@ -537,6 +534,26 @@ public class QuestHelperPlugin extends Plugin
 	private void onClientShutdown(ClientShutdown e)
 	{
 		questBankManager.saveBankToConfig();
+	}
+
+	private MainBufferProvider lastBufferProvider;
+
+	@Subscribe
+	public void onClientTick(ClientTick clientTick)
+	{
+		var currentBufferProvider = (MainBufferProvider) client.getBufferProvider();
+		if (lastBufferProvider != currentBufferProvider)
+		{
+			// Only rebuild if the dialog is currently open
+			if (earlyGameGuide.isOpen)
+			{
+				// Buffer provider changed means container type changed or UI scaled, so we need full rebuild
+				// Possibly should for rescale detect that and if is rescale only move it don't rebuild it
+				earlyGameGuide.destroy();
+				earlyGameGuide.setup(client);
+			}
+		}
+		lastBufferProvider = currentBufferProvider;
 	}
 
 	public void refreshBank()

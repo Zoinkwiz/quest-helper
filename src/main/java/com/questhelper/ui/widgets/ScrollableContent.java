@@ -27,7 +27,7 @@ package com.questhelper.ui.widgets;
 import net.runelite.api.widgets.Widget;
 
 /**
- * Interface for content that can be scrolled horizontally
+ * Interface for content that can be scrolled horizontally or vertically
  * Allows different content types to define their own dimensions and behavior
  */
 public interface ScrollableContent
@@ -46,6 +46,11 @@ public interface ScrollableContent
 	 * Get the number of rows in the grid layout
 	 */
 	int getRows();
+	
+	/**
+	 * Get the number of columns in the grid layout
+	 */
+	int getColumns();
 	
 	/**
 	 * Get the total number of content items

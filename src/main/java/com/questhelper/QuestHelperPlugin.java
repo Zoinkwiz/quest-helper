@@ -233,6 +233,7 @@ public class QuestHelperPlugin extends Plugin
 		eventBus.register(playerStateManager);
 		playerStateManager.startUp();
 
+
 		eventBus.register(runeliteObjectManager);
 		runeliteObjectManager.startUp();
 

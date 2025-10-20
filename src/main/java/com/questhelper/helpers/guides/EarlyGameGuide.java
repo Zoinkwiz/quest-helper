@@ -8,12 +8,13 @@ import com.questhelper.ui.widgets.ModalDialog;
 import com.questhelper.ui.widgets.TabContainer;
 import com.questhelper.ui.widgets.ButtonGrid;
 import com.questhelper.ui.widgets.WidgetFactory;
+import com.questhelper.ui.widgets.VerticalScrollableContainer;
+import com.questhelper.ui.widgets.RowFirstButtonGrid;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import javax.inject.Singleton;
 
@@ -24,7 +25,24 @@ public class EarlyGameGuide
 	private TabContainer tabContainer;
 	
 	// Category collapse state tracking
-	java.util.Map<GoalCategory, Boolean> categoryCollapsed = new java.util.HashMap<>();
+	java.util.Map<UnlockCategory, Boolean> categoryCollapsed = new java.util.HashMap<>();
+	
+	// State tracking for unlock detail view
+	private boolean showingUnlockDetail = false;
+	
+	// Pre-created UI layers for Paths tab
+	private Widget mainPathsLayer = null;
+	private Widget detailPathsLayer = null;
+	
+	// Detail content is per-invocation; back button is created persistently without storing
+
+	// Track active content layers for main and detail views
+	private Widget activeMainContent = null;
+	private Widget activeDetailContent = null;
+	
+	// Pre-created main paths container reference (latest instance)
+	private VerticalScrollableContainer mainPathsContainer = null;
+	
 	
 	// Position memory for dialog placement
 	private Integer savedX = null;
@@ -58,9 +76,16 @@ public class EarlyGameGuide
 		// Create tab container
 		String[] tabTitles = new String[]{"Getting started", "First hour", "Money", "Training", "Paths", "Settings"};
 		tabContainer = new TabContainer(modalDialog.getContentArea(), tabTitles);
+		
+		// Set up tab change callback to reset unlock detail view when switching away from Paths tab
+		tabContainer.setOnTabChange((tabIndex) -> {
+			if (tabIndex != 4 && showingUnlockDetail) { // 4 is the Paths tab index
+				showingUnlockDetail = false;
+			}
+		});
 
 		// Getting started content - button-based layout (3 rows for 6 buttons)
-		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 0, 0, 300, 2, client);
+		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 5, 5, 300, 2, client);
 		gettingStartedGrid.addButton("Banking Guide", SpriteID.AccountIcons._0, (ev) -> openBankingGuide());
 		gettingStartedGrid.addButton("Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openDeathMechanics());
 		gettingStartedGrid.addButton("Home Teleport", SpriteID.AccountIcons._2, (ev) -> openHomeTeleport());
@@ -348,28 +373,59 @@ public class EarlyGameGuide
 	{
 		if (pathsContainer == null) return;
 
-		// Create scrollable content for goals
-		Widget scrollableContent = WidgetFactory.createScrollableContent(pathsContainer, 16, 96);
+		// Create the two layers if they don't exist
+		if (mainPathsLayer == null)
+		{
+			createMainPathsLayer(pathsContainer);
+		}
+		
+		if (detailPathsLayer == null)
+		{
+			createDetailPathsLayer(pathsContainer);
+		}
+		
+		// Set initial visibility based on current state
+		updatePathsLayerVisibility();
+	}
+	
+	private void createMainPathsLayer(Widget pathsContainer)
+	{
+		// Hide any existing main content instance
+		if (activeMainContent != null)
+		{
+			activeMainContent.setHidden(true);
+		}
+
+		// Create main paths layer
+		mainPathsLayer = WidgetFactory.createLayer(pathsContainer, 0, 0, 0, 0);
+		mainPathsLayer.setWidthMode(WidgetSizeMode.MINUS);
+		mainPathsLayer.setHeightMode(WidgetSizeMode.MINUS);
+		mainPathsLayer.revalidate();
+
+		// Create vertical scrollable container for all categories as a per-build content layer
+		mainPathsContainer = new VerticalScrollableContainer(
+			mainPathsLayer, 0, 0, 0, 0, plugin.getClient()
+		);
+		activeMainContent = mainPathsContainer.getContainer();
+
+		// Get unlocks organized by category
+		var unlocksByCategory = UnlockRegistry.getUnlocksByCategory();
 
 		int yPos = 0;
-		var goalsByCategory = ProgressionGoals.getGoalsByCategory();
-		String activeGoalId = plugin != null && plugin.getConfigManager() != null ? 
-			plugin.getConfigManager().getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "activeProgressionGoalId") : "";
-
-		for (GoalCategory category : GoalCategory.values())
+		for (UnlockCategory category : UnlockCategory.values())
 		{
-			var goals = goalsByCategory.get(category);
-			if (goals == null || goals.isEmpty()) continue;
+			var unlocks = unlocksByCategory.get(category);
+			if (unlocks == null || unlocks.isEmpty()) continue;
 
 			// Initialize collapse state if not set
 			categoryCollapsed.putIfAbsent(category, false);
 			boolean isCollapsed = categoryCollapsed.get(category);
 
 			// Category header with clickable expand/collapse
-			String collapseIcon = isCollapsed ? "▶" : "▼";
+			String collapseIcon = isCollapsed ? ">" : "^";
 			Widget categoryHeader = WidgetFactory.createText(
-				scrollableContent,
-				collapseIcon + " " + category.getDisplayName() + " (" + goals.size() + " goals)",
+				mainPathsContainer.getContentLayer(),
+				collapseIcon + " " + category.getDisplayName() + " (" + unlocks.size() + " unlocks)",
 				"ff981f",
 				true,
 				0, yPos, 16, 16
@@ -387,165 +443,182 @@ public class EarlyGameGuide
 			categoryHeader.revalidate();
 			yPos += 18;
 
-			// Goals in category (only show if not collapsed)
+			// Unlocks in category (only show if not collapsed)
 			if (!isCollapsed)
 			{
-				for (ProgressionGoal goal : goals)
+				// Create row-first button grid with 4 columns
+				RowFirstButtonGrid unlockGrid = new RowFirstButtonGrid(
+					mainPathsContainer.getContentLayer(), 0, yPos, 4, plugin.getClient()
+				);
+
+				// Add unlock buttons to the grid
+				for (Unlock unlock : unlocks)
 				{
-					// Check if this is the active goal
-					boolean isActiveGoal = goal.getId().equals(activeGoalId);
-					
-					// Goal name and difficulty stars
-					String stars = "★".repeat(goal.getDifficulty().getStars());
-					String progressText = "";
-					if (plugin != null && plugin.getClient() != null)
-					{
-						int completed = goal.getCompletedCount(plugin.getClient());
-						int total = goal.getTotalCount();
-						progressText = " (" + completed + "/" + total + ")";
-					}
-					
-					Widget goalName = WidgetFactory.createText(
-						scrollableContent,
-						goal.getName() + " " + stars + progressText,
-						isActiveGoal ? "00ff00" : "ff9933",
-						true,
-						4, yPos, 12, 12
+					unlockGrid.addButton(
+						unlock.getName(),
+						unlock.getIconSpriteId(),
+						(ev) -> showUnlockDetail(unlock)
 					);
-					goalName.setWidthMode(WidgetSizeMode.MINUS);
-					goalName.revalidate();
-
-					// Set as Goal button (only show if not completed)
-					boolean isCompleted = plugin != null && plugin.getClient() != null && goal.isCompleted(plugin.getClient());
-					if (!isCompleted)
-					{
-						WidgetFactory.createTextButton(
-							scrollableContent,
-							isActiveGoal ? "Active" : "Set",
-							0, yPos, 40, 12,
-							(ev) -> setGoal(goal)
-						);
-					}
-					else
-					{
-						// Show completed indicator
-						Widget completedText = WidgetFactory.createCenteredText(
-							scrollableContent,
-							"✓ Complete",
-							"00ff00",
-							false,
-							0, yPos + 1, 40, 10
-						);
-						completedText.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
-						completedText.revalidate();
-					}
-
-					yPos += 16; // Increased spacing to prevent overlap
-
-					// Benefit text
-					Widget benefitText = WidgetFactory.createText(
-						scrollableContent,
-						goal.getBenefit(),
-						"c8aa6e",
-						true,
-						4, yPos, 16, 12
-					);
-					benefitText.setWidthMode(WidgetSizeMode.MINUS);
-					benefitText.revalidate();
-
-					yPos += 18; // Increased spacing for better separation
-
-					// Clickable prerequisite chain view
-					if (goal.getPrerequisites().size() > 1)
-					{
-						Widget prereqButton = WidgetFactory.createText(
-							scrollableContent,
-							"View prerequisites (" + goal.getPrerequisites().size() + " quests)",
-							"808080",
-							true,
-							4, yPos, 16, 12
-						);
-						prereqButton.setWidthMode(WidgetSizeMode.MINUS);
-						prereqButton.setHasListener(true);
-						prereqButton.setOnOpListener((JavaScriptCallback) (ev) -> showPrerequisites(goal));
-						// Add hover effect to show it's clickable
-						prereqButton.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
-							prereqButton.setTextColor(Integer.parseInt("ffffff", 16));
-						});
-						prereqButton.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
-							prereqButton.setTextColor(Integer.parseInt("808080", 16));
-						});
-						prereqButton.revalidate();
-						yPos += 16; // Increased spacing
-					}
 				}
+
+				// Use the grid's actual height plus some padding
+				yPos += unlockGrid.getHeight() + 10; // 10px padding
 			}
 
-			yPos += 12; // Increased space between categories
+			yPos += 12; // Space between categories
 		}
 
-		// Set scroll height
-		scrollableContent.setScrollHeight(yPos);
+		// Update the vertical container's scrollbar
+		mainPathsContainer.updateScrollbar();
+	}
+	
+	private void createDetailPathsLayer(Widget pathsContainer)
+	{
+		// Create detail paths layer (initially hidden)
+		detailPathsLayer = WidgetFactory.createLayer(pathsContainer, 0, 0, 0, 0);
+		detailPathsLayer.setWidthMode(WidgetSizeMode.MINUS);
+		detailPathsLayer.setHeightMode(WidgetSizeMode.MINUS);
+		detailPathsLayer.setHidden(true);
+		detailPathsLayer.revalidate();
+		
+		// Create back button (persistent)
+		WidgetFactory.createTextButton(
+			detailPathsLayer,
+			"< Back to Paths",
+			8, 4, 120, 16,
+			(ev) -> showPathsMainView()
+		);
+		
+		// No shared title/description/quest list; built per-detail
+	}
+	
+	private void updatePathsLayerVisibility()
+	{
+		if (mainPathsLayer == null || detailPathsLayer == null) return;
+		
+		// Show main paths, hide detail
+		mainPathsLayer.setHidden(showingUnlockDetail);
+		detailPathsLayer.setHidden(!showingUnlockDetail);
 	}
 
-	private void toggleCategory(GoalCategory category)
+	private void toggleCategory(UnlockCategory category)
 	{
 		// Toggle collapse state
 		categoryCollapsed.put(category, !categoryCollapsed.get(category));
 		
-		// Rebuild the Paths tab to reflect the change
+		// Update the category header text to reflect the new state
+		updateCategoryHeader(category);
+		
+		// Update the unlock grid visibility for this category
+		updateCategoryUnlockGrid(category);
+	}
+	
+	private void updateCategoryHeader(UnlockCategory category)
+	{
+		// Rebuild a new main paths content instance and hide previous
 		if (tabContainer != null)
 		{
-			buildPathsTab(tabContainer.getTabContent(4));
+			createMainPathsLayer(tabContainer.getTabContent(4));
 		}
 	}
-
-	private void showPrerequisites(ProgressionGoal goal)
+	
+	private void updateCategoryUnlockGrid(UnlockCategory category)
 	{
-		if (plugin == null || plugin.getClient() == null) return;
+		// This would need to be implemented to show/hide the specific unlock grid
+		// For now, we'll rebuild the main paths layer as a fallback
+		// In a more sophisticated implementation, we'd track individual category widgets
+	}
+
+	private void showUnlockDetail(Unlock unlock)
+	{
+		if (plugin == null || plugin.getClient() == null || detailPathsLayer == null) return;
 		
-		// Create a simple dialog showing the prerequisite chain
-		StringBuilder sb = new StringBuilder();
-		sb.append("Prerequisites for ").append(goal.getName()).append(":\n\n");
+		// Set state tracking
+		showingUnlockDetail = true;
 		
-		for (int i = 0; i < goal.getPrerequisites().size(); i++)
+		// Hide and orphan previous detail content if exists
+		if (activeDetailContent != null)
 		{
-			QuestHelperQuest quest = goal.getPrerequisites().get(i);
+			activeDetailContent.setHidden(true);
+		}
+		
+		// Create a fresh container for this unlock detail
+		Widget detailContent = WidgetFactory.createLayer(detailPathsLayer, 0, 20, 0, 20);
+		detailContent.setWidthMode(WidgetSizeMode.MINUS);
+		detailContent.setHeightMode(WidgetSizeMode.MINUS);
+		detailContent.revalidate();
+		activeDetailContent = detailContent;
+		
+		// Title
+		WidgetFactory.createText(
+			detailContent,
+			unlock.getName(),
+			"ff981f",
+			true,
+			8, 6, 16, 16
+		);
+		
+		// Description
+		WidgetFactory.createText(
+			detailContent,
+			unlock.getDescription(),
+			"c8aa6e",
+			true,
+			8, 24, 16, 12
+		);
+		
+		// Quest list container (per-detail)
+		VerticalScrollableContainer questContainer = new VerticalScrollableContainer(
+			detailContent, 8, 44, 0, 44, plugin.getClient()
+		);
+		Widget questLayer = questContainer.getContentLayer();
+		
+		int yPos = 0;
+		for (QuestHelperQuest quest : unlock.getPrerequisiteQuests())
+		{
 			boolean isCompleted = quest.getState(plugin.getClient()) == net.runelite.api.QuestState.FINISHED;
-			String status = isCompleted ? "✓" : "○";
-			sb.append(status).append(" ").append(quest.getName()).append("\n");
+			boolean isActive = !isCompleted && quest.getState(plugin.getClient()) == net.runelite.api.QuestState.IN_PROGRESS;
+			String statusIcon = isCompleted ? "[Done]" : (isActive ? "[Active]" : "[ ]");
+			String baseColor = isCompleted ? "00ff00" : (isActive ? "ffff00" : "ff0000");
+			WidgetFactory.createLeftAlignedTextButtonColored(
+				questLayer,
+				statusIcon + " " + quest.getName(),
+				baseColor,
+				0, yPos, 300, 16,
+				(ev) -> startQuest(quest)
+			);
+			yPos += 20;
+		}
+		questContainer.updateScrollbar();
+		
+		// Update layer visibility
+		updatePathsLayerVisibility();
+	}
+	
+	private void showPathsMainView()
+	{
+		// Reset state tracking
+		showingUnlockDetail = false;
+		
+		// Hide active detail content if present
+		if (activeDetailContent != null)
+		{
+			activeDetailContent.setHidden(true);
 		}
 		
-		// For now, just print to console - in a real implementation, you'd show a proper dialog
-		System.out.println(sb.toString());
+		// Update layer visibility to show main paths
+		updatePathsLayerVisibility();
 	}
-
-	private void setGoal(ProgressionGoal goal)
+	
+	private void startQuest(QuestHelperQuest quest)
 	{
 		if (plugin == null || plugin.getClient() == null) return;
-
-		// Find next incomplete quest
-		QuestHelper nextHelper = goal.getNextIncompleteQuestHelper(plugin.getClient());
-		if (nextHelper == null)
-		{
-			// Goal is complete
-			return;
-		}
-
-		// Set as active goal
-		plugin.getConfigManager().setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "activeProgressionGoalId", goal.getId());
-
+		
 		// Start the quest helper
 		plugin.getClientThread().invokeLater(() -> {
 			plugin.displayPanel();
-			plugin.getQuestManager().startUpQuest(nextHelper, true);
+			plugin.getQuestManager().startUpQuest(quest.getQuestHelper(), true);
 		});
-		
-		// Rebuild the Paths tab to show the new active goal
-		if (tabContainer != null)
-		{
-			buildPathsTab(tabContainer.getTabContent(4));
-		}
 	}
 
 
@@ -629,6 +702,15 @@ public class EarlyGameGuide
 		modalDialog = null;
 		tabContainer = null;
 		categoryCollapsed.clear();
+		
+		// Reset unlock detail state and layer references
+		showingUnlockDetail = false;
+		mainPathsLayer = null;
+		detailPathsLayer = null;
+		mainPathsContainer = null;
+		activeMainContent = null;
+		activeDetailContent = null;
+		
 		isOpen = false;
 	}
 	

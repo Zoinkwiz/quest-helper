@@ -25,41 +25,67 @@
 package com.questhelper.ui.widgets;
 
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
 import java.util.function.Consumer;
 
 /**
- * Manages tabbed interface with headers and content panels
- * Handles tab selection and visibility toggling
+ * Manages tabbed interface with sprite-based headers and content panels
+ * Handles tab selection and visibility toggling with hover states
  */
 public class TabContainer
 {
 	private final Widget[] tabContents;
-	private final Widget[] tabHeaders;
+	private final UIButton[] tabButtons;
 	private final Widget contentContainer;
+	private final Widget divider;
 	private int selectedTabIndex = 0;
 	private Consumer<Integer> onTabChangeCallback;
 
+	// Tab dimensions
+	private static final int TAB_WIDTH = 90;
+	private static final int TAB_HEIGHT = 21;
+	private static final int TAB_SPACING = 2;
+
+	// Sprite IDs for tabs (using existing RuneLite sprites)
+	private static final int TAB_STANDARD_SPRITE = SpriteID.TRADEBACKING;
+	private static final int TAB_HOVER_SPRITE = SpriteID.CloseButtons._1;
+
 	public TabContainer(Widget parent, String[] tabTitles)
 	{
-		// Create tab headers
-		tabHeaders = new Widget[tabTitles.length];
-		int headerX = 12;
+		// Create tab buttons
+		tabButtons = new UIButton[tabTitles.length];
+		int tabX = TAB_SPACING;
 		for (int i = 0; i < tabTitles.length; i++)
 		{
+			// 2284 middle, Tiling on
+			// 2283 Right, Left
 			final int idx = i;
-			tabHeaders[i] = WidgetFactory.createTabHeader(
+			tabButtons[i] = WidgetFactory.createTabButton(
 				parent,
 				tabTitles[i],
-				headerX,
+				tabX,
 				2,
-				i == 0,
+				TAB_WIDTH,
+				TAB_HEIGHT,
+				"View " + tabTitles[i],
 				(ev) -> selectTab(idx)
 			);
-			headerX += tabTitles[i].length() * 6 + 18; // rough width spacing
+			tabX += TAB_WIDTH + TAB_SPACING;
 		}
 
+		// Create horizontal divider line below tabs
+		divider = WidgetFactory.createDivider(parent, 0, TAB_HEIGHT + 4, parent.getWidth());
+
 		// Content container (fills under header, above scrollbar area)
-		contentContainer = WidgetFactory.createContentContainer(parent, 8, 35, 16, 40);
+		contentContainer = WidgetFactory.createContentContainer(parent, 0, TAB_HEIGHT, 0, 20);
+		var contentRectangleWidget = contentContainer.createChild(-1, WidgetType.RECTANGLE);
+		contentRectangleWidget.setName("QH Content Rectangle");
+		contentRectangleWidget.setTextColor(Integer.parseInt("585040", 16));
+		contentRectangleWidget.setWidthMode(WidgetSizeMode.MINUS);
+		contentRectangleWidget.setHeightMode(WidgetSizeMode.MINUS);
+		contentRectangleWidget.revalidate();
 
 		// Create per-tab content layers
 		tabContents = new Widget[tabTitles.length];
@@ -118,9 +144,10 @@ public class TabContainer
 		if (selectedTabIndex == index) return;
 		selectedTabIndex = index;
 		applyTabVisibility(index);
-		
+
 		// Call the callback if set
-		if (onTabChangeCallback != null) {
+		if (onTabChangeCallback != null)
+		{
 			onTabChangeCallback.accept(index);
 		}
 	}
@@ -137,9 +164,17 @@ public class TabContainer
 			{
 				tabContents[i].setHidden(!visible);
 			}
-			if (tabHeaders != null && tabHeaders[i] != null)
+			if (tabButtons != null && tabButtons[i] != null)
 			{
-				tabHeaders[i].setTextColor(Integer.parseInt(visible ? "ff981f" : "c8aa6e", 16));
+				// Active tab shows hover sprite permanently, inactive tabs show standard sprite
+				if (visible)
+				{
+					tabButtons[i].setSelected(true);
+				}
+				else
+				{
+					tabButtons[i].setSelected(false);
+				}
 			}
 		}
 	}

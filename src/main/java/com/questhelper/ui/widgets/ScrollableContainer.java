@@ -65,11 +65,10 @@ public class ScrollableContainer
 		
 		// Create container for the entire scrollable section
 		this.container = WidgetFactory.createLayer(parent, x, y, width, height);
-		this.container.setWidthMode(WidgetSizeMode.MINUS);
 		this.container.revalidate();
 		
 		// Create content layer within the container (takes up most of the space, leaving room for scrollbar)
-		int contentHeight = height - SCROLLBAR_HEIGHT - 5; // Leave space for scrollbar
+		int contentHeight = SCROLLBAR_HEIGHT + 5; // Leave space for scrollbar
 		this.contentLayer = WidgetFactory.createButtonLayer(this.container, 0, 0, 0, contentHeight);
 
 		var border = container.createChild(-1, WidgetType.RECTANGLE);
@@ -83,6 +82,34 @@ public class ScrollableContainer
 		this.scrollbar = createHorizontalScrollbar(this.container, this.contentLayer, SCROLLBAR_HEIGHT);
 		this.scrollbar.revalidate();
 		
+		// Initially hide the scrollbar - it will be shown if needed when content is added
+		this.scrollbar.setHidden(true);
+	}
+
+	public ScrollableContainer(Widget parent, int x, int y, int height, Client client)
+	{
+		this.client = client;
+
+		// Create container for the entire scrollable section
+		this.container = WidgetFactory.createLayer(parent, x, y, 0, height);
+		this.container.setWidthMode(WidgetSizeMode.MINUS);
+		this.container.revalidate();
+
+		// Create content layer within the container (takes up most of the space, leaving room for scrollbar)
+		int contentHeight = SCROLLBAR_HEIGHT + 5; // Leave space for scrollbar
+		this.contentLayer = WidgetFactory.createButtonLayer(this.container, 0, 0, 0, contentHeight);
+
+		var border = container.createChild(-1, WidgetType.RECTANGLE);
+		border.setTextColor(Integer.parseInt("111111", 16));
+		border.setOpacity(100);
+		border.setWidthMode(WidgetSizeMode.MINUS);
+		border.setHeightMode(WidgetSizeMode.MINUS);
+		border.revalidate();
+
+		// Create scrollbar within the container, positioned at the bottom
+		this.scrollbar = createHorizontalScrollbar(this.container, this.contentLayer, SCROLLBAR_HEIGHT);
+		this.scrollbar.revalidate();
+
 		// Initially hide the scrollbar - it will be shown if needed when content is added
 		this.scrollbar.setHidden(true);
 	}

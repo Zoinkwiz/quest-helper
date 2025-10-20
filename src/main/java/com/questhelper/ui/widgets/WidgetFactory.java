@@ -113,6 +113,7 @@ public class WidgetFactory
 	public static Widget createFloatLayer(Widget parent)
 	{
 		Widget widget = parent.createChild(-1, WidgetType.LAYER);
+		widget.setName("QH Float Layer");
 		widget.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		widget.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		widget.setWidthMode(WidgetSizeMode.MINUS);
@@ -129,6 +130,7 @@ public class WidgetFactory
 	{
 		// Button background
 		Widget button = createGraphic(parent, SpriteID.TRADEBACKING, x, y, width, height);
+		button.setName("QH Text Button");
 		button.setHasListener(true);
 		button.setOnClickListener(onClick);
 		
@@ -139,11 +141,63 @@ public class WidgetFactory
 	}
 
 	/**
+	 * Create a clickable button with text
+	 */
+	public static Widget createLeftAlignedTextButton(Widget parent, String text, int x, int y, int width, int height, JavaScriptCallback onClick)
+	{
+		// Button background
+		Widget button = createGraphic(parent, SpriteID.TRADEBACKING, x, y, width, height);
+		button.setName("QH Text Button");
+		button.setHasListener(true);
+		button.setOnClickListener(onClick);
+
+		// Button text
+		createText(parent, text, "c8aa6e", false, x + 2, y + 1, width - 4, height - 2);
+
+		return button;
+	}
+
+	/**
+	 * Create a left-aligned text button with color and hover-to-white behavior
+	 */
+	public static Widget createLeftAlignedTextButtonColored(
+		Widget parent,
+		String text,
+		String baseColor,
+		int x,
+		int y,
+		int width,
+		int height,
+		JavaScriptCallback onClick
+	)
+	{
+		// Button background
+		Widget button = createGraphic(parent, SpriteID.TRADEBACKING, x, y, width, height);
+		button.setName("QH Text Button Colored");
+		button.setHasListener(true);
+		button.setOnClickListener(onClick);
+
+		// Button text
+		Widget textWidget = createText(parent, text, baseColor, false, x + 2, y + 1, width - 4, height - 2);
+
+		// Hover effects: to white on hover, restore base color on leave
+		button.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
+			textWidget.setTextColor(Integer.parseInt("ffffff", 16));
+		});
+		button.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
+			textWidget.setTextColor(Integer.parseInt(baseColor, 16));
+		});
+
+		return button;
+	}
+
+	/**
 	 * Create a title widget
 	 */
 	public static Widget createTitle(Widget parent, String title)
 	{
 		Widget widget = createText(parent, title, "ff981f", true, 0, 6, 12, 24);
+		widget.setName("QH Title");
 		widget.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		widget.setWidthMode(WidgetSizeMode.MINUS);
 		widget.setFontId(496); // Title font
@@ -159,6 +213,7 @@ public class WidgetFactory
 	public static Widget createCloseButton(Widget parent, JavaScriptCallback onClose)
 	{
 		Widget closeButton = createGraphicAbsolute(parent, SpriteID.CloseButtons._0, 3, 6, 26, 23);
+		closeButton.setName("QH Close Button");
 		closeButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
 		closeButton.setHasListener(true);
 		closeButton.setAction(0, "Close");
@@ -174,15 +229,55 @@ public class WidgetFactory
 	}
 	
 	/**
-	 * Create a tab header
+	 * Create a tab header (deprecated - use createTabButton instead)
 	 */
+	@Deprecated
 	public static Widget createTabHeader(Widget parent, String text, int x, int y, boolean selected, JavaScriptCallback onClick)
 	{
 		Widget widget = createText(parent, text, selected ? "ff981f" : "c8aa6e", true, x, y, 12, 16);
+		widget.setName("QH Tab Header");
 		widget.setHasListener(true);
 		widget.setOnClickListener(onClick);
 		widget.revalidate();
 		return widget;
+	}
+
+	/**
+	 * Create a horizontal divider line
+	 * @param parent the parent widget
+	 * @param x the x position
+	 * @param y the y position
+	 * @param width the width of the divider
+	 * @return the divider widget
+	 */
+	public static Widget createDivider(Widget parent, int x, int y, int width)
+	{
+		Widget widget = createGraphicAbsolute(parent, SpriteID.TRADEBACKING, x, y, width, 1);
+		widget.setName("QH Divider");
+		widget.setOpacity(100);
+		widget.revalidate();
+		return widget;
+	}
+
+	/**
+	 * Create a tab button using UIButton
+	 * @param parent the parent widget
+	 * @param x the x position
+	 * @param y the y position
+	 * @param width the width
+	 * @param height the height
+	 * @param action the action name
+	 * @param callback the click callback
+	 * @return the UIButton instance
+	 */
+	public static UIButton createTabButton(Widget parent, String text, int x, int y, int width, int height, String action, JavaScriptCallback callback)
+	{
+		UIButton button = new UIButton(parent, text);
+		button.setSize(width, height);
+		button.setPosition(x, y);
+		button.addAction(action, callback);
+		button.revalidate();
+		return button;
 	}
 	
 	/**
@@ -191,6 +286,7 @@ public class WidgetFactory
 	public static Widget createContentContainer(Widget parent, int x, int y, int width, int height)
 	{
 		Widget widget = createLayer(parent, x, y, width, height);
+		widget.setName("QH Content Container");
 		widget.setWidthMode(WidgetSizeMode.MINUS);
 		widget.setHeightMode(WidgetSizeMode.MINUS);
 		widget.revalidate();
@@ -203,6 +299,7 @@ public class WidgetFactory
 	public static Widget createScrollableContent(Widget parent, int width, int height)
 	{
 		Widget widget = createLayer(parent, 0, 0, width, height);
+		widget.setName("QH Scrollable Content");
 		widget.setWidthMode(WidgetSizeMode.MINUS);
 		widget.setHeightMode(WidgetSizeMode.MINUS);
 		widget.revalidate();
@@ -215,7 +312,9 @@ public class WidgetFactory
 	public static Widget createButtonLayer(Widget parent, int x, int y, int width, int height)
 	{
 		Widget buttonLayer = createLayer(parent, x, y, width, height);
+		buttonLayer.setName("QH Button Layer");
 		buttonLayer.setWidthMode(WidgetSizeMode.MINUS);
+		buttonLayer.setHeightMode(WidgetSizeMode.MINUS);
 		buttonLayer.setHasListener(true);
 		buttonLayer.revalidate();
 		return buttonLayer;

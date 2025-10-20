@@ -9,7 +9,7 @@ public class QuestHelperPluginTest
 	public static void main(String[] args) throws Exception
 	{
 		ExternalPluginManager.loadBuiltin(QuestHelperPlugin.class);
-		ExternalPluginManager.loadBuiltin(StepCopyPlugin.class);
+//		ExternalPluginManager.loadBuiltin(StepCopyPlugin.class);
 		RuneLite.main(args);
 	}
 }

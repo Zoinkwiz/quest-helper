@@ -33,6 +33,7 @@ import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.JavaScriptCallback;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -105,7 +106,7 @@ public class ModalDialog
 		WidgetFactory.createCloseButton(modalWidget, onClose);
 
 		// Create content area (fills under header, above scrollbar area)
-		this.contentArea = WidgetFactory.createContentContainer(modalWidget, 8, 35, 16, 42);
+		this.contentArea = WidgetFactory.createContentContainer(modalWidget, 6, 35, 14, 42);
 	}
 
 	/**
@@ -147,7 +148,6 @@ public class ModalDialog
 	 */
 	public void close()
 	{
-		hide();
 		modalWidget.getParent().deleteAllChildren();
 	}
 

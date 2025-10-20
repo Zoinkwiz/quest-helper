@@ -27,6 +27,7 @@ package com.questhelper.ui.widgets;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.api.widgets.WidgetSizeMode;
 
 /**
  * Grid layout for StyledButtons with automatic scrollbar
@@ -47,7 +48,7 @@ public class ButtonGrid implements ScrollableContent
 		// Calculate height based on number of rows and button dimensions
 		int buttonAreaHeight = rows * BUTTON_BACKGROUND_HEIGHT;
 		int totalHeight = buttonAreaHeight + 20; // Space for scrollbar
-		this.scrollableContainer = new ScrollableContainer(parent, x, y, 0, totalHeight, client);
+		this.scrollableContainer = new ScrollableContainer(parent, x, y, totalHeight, client);
 		this.scrollableContainer.setContent(this);
 	}
 
@@ -123,6 +124,14 @@ public class ButtonGrid implements ScrollableContent
 	public int getRows()
 	{
 		return rows;
+	}
+
+	@Override
+	public int getColumns()
+	{
+		// For horizontal scrolling, we don't have a fixed number of columns
+		// Return 1 to indicate single row layout
+		return 1;
 	}
 
 	@Override

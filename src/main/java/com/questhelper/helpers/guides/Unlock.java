@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Zoinkwiz
+ * Copyright (c) 2025, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,25 +35,23 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class ProgressionGoal
+public class Unlock
 {
 	private final String id;
 	private final String name;
-	private final GoalCategory category;
+	private final UnlockCategory category;
 	private final String description;
-	private final String benefit;
-	private final GoalDifficulty difficulty;
-	private final List<QuestHelperQuest> prerequisites; // Ordered chain
-	private final QuestHelperQuest finalQuest; // The one that gives the unlock
+	private final int iconSpriteId;
+	private final List<QuestHelperQuest> prerequisiteQuests;
 
 	/**
 	 * Get the next incomplete quest in the prerequisite chain
 	 */
 	public QuestHelper getNextIncompleteQuestHelper(Client client)
 	{
-		if (client == null || prerequisites == null) return null;
+		if (client == null || prerequisiteQuests == null) return null;
 
-		for (QuestHelperQuest quest : prerequisites)
+		for (QuestHelperQuest quest : prerequisiteQuests)
 		{
 			if (quest.getState(client) != QuestState.FINISHED)
 			{
@@ -68,10 +66,10 @@ public class ProgressionGoal
 	 */
 	public int getCompletedCount(Client client)
 	{
-		if (client == null || prerequisites == null) return 0;
+		if (client == null || prerequisiteQuests == null) return 0;
 
 		int count = 0;
-		for (QuestHelperQuest quest : prerequisites)
+		for (QuestHelperQuest quest : prerequisiteQuests)
 		{
 			if (quest.getState(client) == QuestState.FINISHED)
 			{
@@ -82,7 +80,7 @@ public class ProgressionGoal
 	}
 
 	/**
-	 * Check if the goal is fully completed
+	 * Check if the unlock is fully completed
 	 */
 	public boolean isCompleted(Client client)
 	{
@@ -90,11 +88,10 @@ public class ProgressionGoal
 	}
 
 	/**
-	 * Get total number of prerequisites
+	 * Get total number of prerequisite quests
 	 */
 	public int getTotalCount()
 	{
-		return prerequisites == null ? 0 : prerequisites.size();
+		return prerequisiteQuests == null ? 0 : prerequisiteQuests.size();
 	}
 }
-

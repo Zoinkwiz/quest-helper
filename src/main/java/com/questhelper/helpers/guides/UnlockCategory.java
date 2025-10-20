@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Zoinkwiz
+ * Copyright (c) 2025, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,19 +27,18 @@ package com.questhelper.helpers.guides;
 import lombok.Getter;
 
 @Getter
-public enum GoalCategory
+public enum UnlockCategory
 {
 	TRANSPORTATION("Transportation"),
-	SPELLBOOKS("Spellbooks"),
-	COMBAT("Combat"),
+	COMBAT_UNLOCKS("Combat Unlocks"),
 	AREA_UNLOCKS("Area Unlocks"),
-	SKILL_UNLOCKS("Skill Unlocks");
+	SKILL_UNLOCKS("Skill Unlocks"),
+	SPELLBOOKS("Spellbooks");
 
 	private final String displayName;
 
-	GoalCategory(String displayName)
+	UnlockCategory(String displayName)
 	{
 		this.displayName = displayName;
 	}
 }
-

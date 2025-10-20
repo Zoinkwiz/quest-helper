@@ -51,7 +51,6 @@ public class VerticalScrollableContainer
 	private final Widget contentLayer;
 	private final Widget scrollbar;
 	private final Client client;
-	private ScrollableContent content;
 
 	// Scrollbar interaction state
 	private final AtomicBoolean clicked = new AtomicBoolean(false);
@@ -59,17 +58,18 @@ public class VerticalScrollableContainer
 	private final AtomicBoolean upButtonPressed = new AtomicBoolean(false);
 	private final AtomicBoolean downButtonPressed = new AtomicBoolean(false);
 
-	public VerticalScrollableContainer(Widget parent, int x, int y, int width, int height, Client client)
+	public VerticalScrollableContainer(Widget parent, int x, int y, int negativeWidth, int negativeHeight, Client client)
 	{
 		this.client = client;
 		
 		// Create container for the entire scrollable section
-		this.container = WidgetFactory.createLayer(parent, x, y, width, height);
+		this.container = WidgetFactory.createLayer(parent, x, y, negativeWidth, negativeHeight);
 		this.container.setWidthMode(WidgetSizeMode.MINUS);
+		this.container.setHeightMode(WidgetSizeMode.MINUS);
 		this.container.revalidate();
 		
 		// Create content layer within the container (takes up most of the space, leaving room for scrollbar)
-		int contentWidth = width - SCROLLBAR_WIDTH - 5; // Leave space for scrollbar
+		int contentWidth = SCROLLBAR_WIDTH + 5; // Leave space for scrollbar
 		this.contentLayer = WidgetFactory.createButtonLayer(this.container, 0, 0, contentWidth, 0);
 		this.contentLayer.setHeightMode(WidgetSizeMode.MINUS);
 		this.contentLayer.revalidate();
@@ -91,10 +91,11 @@ public class VerticalScrollableContainer
 
 	/**
 	 * Set the content that this container will scroll
+	 * @deprecated This method is no longer needed as the container automatically detects content
 	 */
+	@Deprecated
 	public void setContent(ScrollableContent content)
 	{
-		this.content = content;
 		updateScrollbar();
 	}
 
@@ -119,16 +120,12 @@ public class VerticalScrollableContainer
 	 */
 	public void updateScrollbar()
 	{
-		if (content == null) return;
-		
-		// Calculate if we need to show the scrollbar based on total rows needed
-		int itemCount = content.getItemCount();
-		int totalRows = (int) Math.ceil(itemCount / (double) content.getColumns());
-		int totalContentHeight = totalRows * content.getItemHeight();
+		// Calculate total content height by examining child widgets
+		int totalContentHeight = calculateContentHeight();
 		int containerHeight = contentLayer.getHeight();
 		
-		// Show scrollbar if there's content that overflows, or if there's no content (for proper initialization)
-		boolean shouldShow = totalContentHeight > containerHeight || totalContentHeight == 0;
+		// Show scrollbar if there's content that overflows
+		boolean shouldShow = totalContentHeight > containerHeight;
 		scrollbar.setHidden(!shouldShow);
 		
 		// Update dragger size if scrollbar is visible
@@ -150,11 +147,11 @@ public class VerticalScrollableContainer
 				{
 					mainDragger = child;
 				}
-				else if (child.getSpriteId() == SpriteID.ScrollbarDraggerV2._2) // Top end
+				else if (child.getSpriteId() == SpriteID.ScrollbarDraggerV2._0) // Top end
 				{
 					mainDraggerTop = child;
 				}
-				else if (child.getSpriteId() == SpriteID.ScrollbarDraggerV2._0) // Bottom end
+				else if (child.getSpriteId() == SpriteID.ScrollbarDraggerV2._2) // Bottom end
 				{
 					mainDraggerBottom = child;
 				}
@@ -162,9 +159,28 @@ public class VerticalScrollableContainer
 			
 			if (scrollArea != null && mainDragger != null && mainDraggerTop != null && mainDraggerBottom != null)
 			{
-				initializeDraggerSize(scrollArea, contentLayer, mainDragger, mainDraggerBottom, totalRows);
+				initializeDraggerSize(scrollArea, contentLayer, mainDragger, mainDraggerBottom, totalContentHeight);
 			}
 		}
+	}
+	
+	/**
+	 * Calculate the total height of all content in the content layer
+	 */
+	private int calculateContentHeight()
+	{
+		if (contentLayer.getDynamicChildren() == null) return 0;
+		
+		int maxY = 0;
+		for (Widget child : contentLayer.getDynamicChildren())
+		{
+			int childBottom = child.getOriginalY() + child.getOriginalHeight();
+			if (childBottom > maxY)
+			{
+				maxY = childBottom;
+			}
+		}
+		return maxY;
 	}
 
 	/**
@@ -194,11 +210,11 @@ public class VerticalScrollableContainer
 		mainDragger.revalidate();
 
 		// Create dragger ends
-		Widget mainDraggerTop = WidgetFactory.createGraphicAbsolute(scrollbar, SpriteID.ScrollbarDraggerV2._2, 0, SCROLLBAR_PADDING, SCROLLBAR_WIDTH, DRAGGER_END_HEIGHT);
+		Widget mainDraggerTop = WidgetFactory.createGraphicAbsolute(scrollbar, SpriteID.ScrollbarDraggerV2._0, 0, SCROLLBAR_PADDING, SCROLLBAR_WIDTH, DRAGGER_END_HEIGHT);
 		mainDraggerTop.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		mainDraggerTop.revalidate();
 
-		Widget mainDraggerBottom = WidgetFactory.createGraphicAbsolute(scrollbar, SpriteID.ScrollbarDraggerV2._0, 0, DRAGGER_HEIGHT + SCROLLBAR_PADDING, SCROLLBAR_WIDTH, DRAGGER_END_HEIGHT);
+		Widget mainDraggerBottom = WidgetFactory.createGraphicAbsolute(scrollbar, SpriteID.ScrollbarDraggerV2._2, 0, DRAGGER_HEIGHT + SCROLLBAR_PADDING, SCROLLBAR_WIDTH, DRAGGER_END_HEIGHT);
 		mainDraggerBottom.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		mainDraggerBottom.revalidate();
 
@@ -247,8 +263,6 @@ public class VerticalScrollableContainer
 
 		// Scroll wheel handling
 		scrollArea.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
-			if (content == null) return;
-			int itemCount = content.getItemCount();
 			// Get current dragger position relative to scroll area
 			int currentDraggerY = mainDragger.getOriginalY() - SCROLLBAR_PADDING;
 			int yPos = currentDraggerY + (10 * ev.getMouseY());
@@ -261,13 +275,11 @@ public class VerticalScrollableContainer
 			if (yPos > totalArea - currentDraggerHeight) yPos = totalArea - currentDraggerHeight;
 			if (yPos < 0) yPos = 0;
 
-			scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, yPos, itemCount);
+			scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, yPos, 0);
 		});
 
 		// Add scroll listener to scrollable container
 		scrollableContainer.setOnScrollWheelListener((JavaScriptCallback) (ev) -> {
-			if (content == null) return;
-			int itemCount = content.getItemCount();
 			// Get current dragger position relative to scroll area
 			int currentDraggerY = mainDragger.getOriginalY() - SCROLLBAR_PADDING;
 			int yPos = currentDraggerY + (10 * ev.getMouseY());
@@ -280,7 +292,7 @@ public class VerticalScrollableContainer
 			if (yPos > totalArea - currentDraggerHeight) yPos = totalArea - currentDraggerHeight;
 			if (yPos < 0) yPos = 0;
 
-			scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, yPos, itemCount);
+			scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, yPos, 0);
 		});
 
 		// Up scroll button handling
@@ -315,8 +327,6 @@ public class VerticalScrollableContainer
 
 		// Timer handling for scroll buttons
 		scrollArea.setOnTimerListener((JavaScriptCallback) (ev) -> {
-			if (content == null) return;
-			
 			// Handle dragger dragging (existing logic)
 			if (clicked.get())
 			{
@@ -325,7 +335,6 @@ public class VerticalScrollableContainer
 					clicked.set(false);
 					return;
 				}
-				int itemCount = content.getItemCount();
 
 				// Get current dragger height (don't recalculate during drag)
 				int currentDraggerHeight = mainDragger.getOriginalHeight();
@@ -343,23 +352,21 @@ public class VerticalScrollableContainer
 				if (yPosClicked > totalArea - currentDraggerHeight) yPosClicked = totalArea - currentDraggerHeight;
 				if (yPosClicked < 0) yPosClicked = 0;
 
-				scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, yPosClicked, itemCount);
+				scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, yPosClicked, 0);
 			}
 			
 			// Handle scroll button pressing
 			if (upButtonPressed.get() && client.getMouseCurrentButton() == 1)
 			{
-				int itemCount = content.getItemCount();
 				int currentDraggerY = mainDragger.getOriginalY() - SCROLLBAR_PADDING;
 				
 				// Move dragger up by a small amount
 				int newYPos = Math.max(0, currentDraggerY - 5);
 				
-				scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, newYPos, itemCount);
+				scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, newYPos, 0);
 			}
 			else if (downButtonPressed.get() && client.getMouseCurrentButton() == 1)
 			{
-				int itemCount = content.getItemCount();
 				int currentDraggerY = mainDragger.getOriginalY() - SCROLLBAR_PADDING;
 				int currentDraggerHeight = mainDragger.getOriginalHeight();
 				int totalArea = scrollArea.getHeight();
@@ -368,7 +375,7 @@ public class VerticalScrollableContainer
 				// Move dragger down by a small amount
 				int newYPos = Math.min(totalDraggableArea, currentDraggerY + 5);
 				
-				scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, newYPos, itemCount);
+				scrollbarMove(scrollArea, scrollableContainer, mainDragger, mainDraggerTop, mainDraggerBottom, newYPos, 0);
 			}
 			else
 			{
@@ -385,14 +392,9 @@ public class VerticalScrollableContainer
 	/**
 	 * Initialize dragger size based on content
 	 */
-	private void initializeDraggerSize(Widget scrollArea, Widget contentLayer, Widget mainDragger, Widget mainDraggerBottom, int totalRows)
+	private void initializeDraggerSize(Widget scrollArea, Widget contentLayer, Widget mainDragger, Widget mainDraggerBottom, int totalContentHeight)
 	{
-		if (content == null) return;
-		
 		int totalArea = scrollArea.getHeight();
-		
-		// Calculate content dimensions
-		int totalContentHeight = totalRows * content.getItemHeight();
 		int containerHeight = contentLayer.getHeight();
 		
 		// Calculate dynamic dragger size based on visible area ratio
@@ -414,13 +416,10 @@ public class VerticalScrollableContainer
 	 */
 	private void scrollbarMove(Widget scrollArea, Widget contentLayer, Widget mainDragger, Widget mainDraggerTop, Widget mainDraggerBottom, int yPosToMoveScrollbar, int itemCount)
 	{
-		if (content == null) return;
-		
 		int totalArea = scrollArea.getHeight();
 		
 		// Calculate content dimensions
-		int totalRows = (int) Math.ceil(itemCount / (double) content.getColumns());
-		int totalContentHeight = totalRows * content.getItemHeight();
+		int totalContentHeight = calculateContentHeight();
 		int containerHeight = contentLayer.getHeight();
 		int overflowHeight = Math.max(0, totalContentHeight - containerHeight);
 		

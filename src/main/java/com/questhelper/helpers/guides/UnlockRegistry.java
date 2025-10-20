@@ -100,6 +100,19 @@ public class UnlockRegistry
 		SpriteID.Staticons.PRAYER,
 		Arrays.asList(
 			QuestHelperQuest.TREE_GNOME_VILLAGE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
+			QuestHelperQuest.THE_GRAND_TREE,
 			QuestHelperQuest.THE_GRAND_TREE
 		)
 	);

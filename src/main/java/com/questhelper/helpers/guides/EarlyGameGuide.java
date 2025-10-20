@@ -9,6 +9,7 @@ import com.questhelper.ui.widgets.TabContainer;
 import com.questhelper.ui.widgets.ButtonGrid;
 import com.questhelper.ui.widgets.WidgetFactory;
 import com.questhelper.ui.widgets.VerticalScrollableContainer;
+import com.questhelper.ui.widgets.QuestList;
 import com.questhelper.ui.widgets.RowFirstButtonGrid;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.InterfaceID;
@@ -482,9 +483,9 @@ public class EarlyGameGuide
 		detailPathsLayer.revalidate();
 		
 		// Create back button (persistent)
-		WidgetFactory.createTextButton(
+		WidgetFactory.createLeftAlignedTextButton(
 			detailPathsLayer,
-			"< Back to Paths",
+			"Back to Paths",
 			8, 4, 120, 16,
 			(ev) -> showPathsMainView()
 		);
@@ -566,30 +567,23 @@ public class EarlyGameGuide
 			true,
 			8, 24, 16, 12
 		);
-		
-		// Quest list container (per-detail)
-		VerticalScrollableContainer questContainer = new VerticalScrollableContainer(
-			detailContent, 8, 44, 0, 44, plugin.getClient()
-		);
-		Widget questLayer = questContainer.getContentLayer();
-		
-		int yPos = 0;
+
+		// Quest list using QuestList component (per-detail)
+		QuestList questList = new QuestList(plugin.getClient(), detailContent);
 		for (QuestHelperQuest quest : unlock.getPrerequisiteQuests())
 		{
 			boolean isCompleted = quest.getState(plugin.getClient()) == net.runelite.api.QuestState.FINISHED;
 			boolean isActive = !isCompleted && quest.getState(plugin.getClient()) == net.runelite.api.QuestState.IN_PROGRESS;
 			String statusIcon = isCompleted ? "[Done]" : (isActive ? "[Active]" : "[ ]");
 			String baseColor = isCompleted ? "00ff00" : (isActive ? "ffff00" : "ff0000");
-			WidgetFactory.createLeftAlignedTextButtonColored(
-				questLayer,
+			questList.addItem(
 				statusIcon + " " + quest.getName(),
+				"",
 				baseColor,
-				0, yPos, 300, 16,
 				(ev) -> startQuest(quest)
 			);
-			yPos += 20;
 		}
-		questContainer.updateScrollbar();
+		questList.refresh();
 		
 		// Update layer visibility
 		updatePathsLayerVisibility();

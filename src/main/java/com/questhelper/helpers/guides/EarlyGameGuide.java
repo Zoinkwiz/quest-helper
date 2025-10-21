@@ -14,19 +14,25 @@ import com.questhelper.ui.widgets.RowFirstButtonGrid;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetSizeMode;
+import org.apache.commons.lang3.tuple.Pair;
 import javax.inject.Singleton;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class EarlyGameGuide
 {
+	// Used for determining when the player has changed interface styles
+	private Widget currentTopLevelWidget;
 	private ModalDialog modalDialog;
 	private TabContainer tabContainer;
 	
 	// Category collapse state tracking
-	java.util.Map<UnlockCategory, Boolean> categoryCollapsed = new java.util.HashMap<>();
+	Map<UnlockCategory, Boolean> categoryCollapsed = new HashMap<>();
 	
 	// State tracking for unlock detail view
 	private boolean showingUnlockDetail = false;
@@ -48,7 +54,6 @@ public class EarlyGameGuide
 	// Position memory for dialog placement
 	private Integer savedX = null;
 	private Integer savedY = null;
-	private boolean isFirstTime = true;
 	public boolean isOpen;
 
 	QuestHelperPlugin plugin;
@@ -61,21 +66,21 @@ public class EarlyGameGuide
 	public void setup(Client client)
 	{
 		// Create modal dialog
-		Widget parentWidget = getTopLevelWidget(client);
-		if (parentWidget == null) return;
+		currentTopLevelWidget = getTopLevelWidget(client);
+		if (currentTopLevelWidget == null) return;
 
 		var widthForHelper = 480;
 		var heightForHelper = 326;
 		
 		// Calculate smart positioning
-		int[] position = calculateDialogPosition(parentWidget, widthForHelper, heightForHelper);
-		var xForHelper = position[0];
-		var yForHelper = position[1];
+		var position = calculateDialogPosition(currentTopLevelWidget, widthForHelper, heightForHelper);
+		var xForHelper = position.getLeft();
+		var yForHelper = position.getRight();
 
-		modalDialog = new ModalDialog(client, parentWidget, "Early game helper", widthForHelper, heightForHelper, xForHelper, yForHelper, (ev) -> close(client), (ev) -> saveCurrentPosition());
+		modalDialog = new ModalDialog(client, currentTopLevelWidget, "Early game helper", widthForHelper, heightForHelper, xForHelper, yForHelper, (ev) -> close(client), (ev) -> saveCurrentPosition());
 
 		// Create tab container
-		String[] tabTitles = new String[]{"Getting started", "First hour", "Money", "Training", "Paths", "Settings"};
+		var tabTitles = new String[]{"Getting started", "First hour", "Money", "Training", "Paths", "Settings"};
 		tabContainer = new TabContainer(modalDialog.getContentArea(), tabTitles);
 		
 		// Set up tab change callback to reset unlock detail view when switching away from Paths tab
@@ -86,23 +91,28 @@ public class EarlyGameGuide
 		});
 
 		// Getting started content - button-based layout (3 rows for 6 buttons)
-		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 5, 5, 300, 2, client);
-		gettingStartedGrid.addButton("Banking Guide", SpriteID.AccountIcons._0, (ev) -> openBankingGuide());
-		gettingStartedGrid.addButton("Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openDeathMechanics());
-		gettingStartedGrid.addButton("Home Teleport", SpriteID.AccountIcons._2, (ev) -> openHomeTeleport());
-		gettingStartedGrid.addButton("World Switching", SpriteID.AccountIcons._3, (ev) -> openWorldSwitching());
-		gettingStartedGrid.addButton("Bonds Guide", SpriteID.AccountIcons._4, (ev) -> openBondsGuide());
-		gettingStartedGrid.addButton("Wiki Access", SpriteID.AccountIcons._0, (ev) -> openWikiAccess());
+		var gettingStartedText = "Welcome to the Quest Helper's Early Game Guide. The purpose of this guide is to provide you with some routes and tips on what things to start persuing as you start your adventure into "  +
+			"the world of Gielinor. The First Hour tab will let you know good things you can do straight away, 'Money' will give you tips on ways to start making some cash to buy stuff, 'Training' will let you know how to get your "
+			+ " skills growing, and 'Paths' will let you know of various routes you can take to unlock some of the most impactful improvements to your character.";
+
+		var detailsForGettingStarted = WidgetFactory.createParagraphSection(tabContainer.getTabContent(0), gettingStartedText, 5, 2, 400, 400);
+//		ButtonGrid gettingStartedGrid = new ButtonGrid(tabContainer.getTabContent(0), 200, 5, 250, 2, client);
+//		gettingStartedGrid.addButton("Banking Guide", SpriteID.AccountIcons._0, (ev) -> openBankingGuide());
+//		gettingStartedGrid.addButton("Death Mechanics", SpriteID.AccountIcons._1, (ev) -> openDeathMechanics());
+//		gettingStartedGrid.addButton("Home Teleport", SpriteID.AccountIcons._2, (ev) -> openHomeTeleport());
+//		gettingStartedGrid.addButton("World Switching", SpriteID.AccountIcons._3, (ev) -> openWorldSwitching());
+//		gettingStartedGrid.addButton("Bonds Guide", SpriteID.AccountIcons._4, (ev) -> openBondsGuide());
+//		gettingStartedGrid.addButton("Wiki Access", SpriteID.AccountIcons._0, (ev) -> openWikiAccess());
 
 		// First hour: curated buttons (2 rows for 4 buttons)
-		ButtonGrid firstHourGrid = new ButtonGrid(tabContainer.getTabContent(1), 0, 0, 2, client);
+		var firstHourGrid = new ButtonGrid(tabContainer.getTabContent(1), 0, 0, 2, client);
 		firstHourGrid.addButton("Cook's Assistant", SpriteID.OrbIcon._11, (ev) -> openCooksAssistant());
 		firstHourGrid.addButton("Lumbridge cows", SpriteID.AccountIcons._0, (ev) -> openLumbridgeCows());
 		firstHourGrid.addButton("Mining intro", SpriteID.Staticons.MINING, (ev) -> openMiningIntro());
 		firstHourGrid.addButton("Smithing intro", SpriteID.Staticons.SMITHING, (ev) -> openSmithingIntro());
 
 		// Money content - button-based layout (3 rows for 6 buttons)
-		ButtonGrid moneyGrid = new ButtonGrid(tabContainer.getTabContent(2), 0, 0, 3, client);
+		var moneyGrid = new ButtonGrid(tabContainer.getTabContent(2), 0, 0, 3, client);
 		moneyGrid.addButton("Feather Trading", SpriteID.Staticons.FLETCHING, (ev) -> openFeatherTrading());
 		moneyGrid.addButton("Wine of Zamorak", SpriteID.Staticons.THIEVING, (ev) -> openWineOfZamorak());
 		moneyGrid.addButton("Stronghold Guide", SpriteID.Staticons.STRENGTH, (ev) -> openStrongholdGuide());
@@ -111,7 +121,7 @@ public class EarlyGameGuide
 		moneyGrid.addButton("Safety Tips", SpriteID.Staticons.DEFENCE, (ev) -> openSafetyTips());
 
 		// Training content - button-based layout (3 rows for 6 buttons)
-		ButtonGrid trainingGrid = new ButtonGrid(tabContainer.getTabContent(3), 0, 0, 3, client);
+		var trainingGrid = new ButtonGrid(tabContainer.getTabContent(3), 0, 0, 3, client);
 		trainingGrid.addButton("Combat Training", SpriteID.Staticons.ATTACK, (ev) -> openCombatTraining());
 		trainingGrid.addButton("Mining Guide", SpriteID.Staticons.MINING, (ev) -> openMiningGuide());
 		trainingGrid.addButton("Smithing Guide", SpriteID.Staticons.SMITHING, (ev) -> openSmithingGuide());
@@ -123,7 +133,7 @@ public class EarlyGameGuide
 		buildPathsTab(tabContainer.getTabContent(4));
 
 		// Settings: toggle for onboarding prompt
-		Widget settingsLabel = WidgetFactory.createText(
+		var settingsLabel = WidgetFactory.createText(
 			tabContainer.getTabContent(5),
 			"Show early-game prompt on login",
 			"ff9933",
@@ -133,7 +143,7 @@ public class EarlyGameGuide
 		settingsLabel.setWidthMode(WidgetSizeMode.MINUS);
 		settingsLabel.revalidate();
 
-		Widget toggleBg = WidgetFactory.createGraphic(tabContainer.getTabContent(5), SpriteID.TRADEBACKING, 0, 22, 60, 18);
+		var toggleBg = WidgetFactory.createGraphic(tabContainer.getTabContent(5), SpriteID.TRADEBACKING, 0, 22, 60, 18);
 		toggleBg.setHasListener(true);
 		toggleBg.setOnClickListener((JavaScriptCallback) (ev) -> toggleOnboarding());
 		toggleBg.revalidate();
@@ -147,7 +157,7 @@ public class EarlyGameGuide
 		);
 
 		// F2P-only filter toggle (placeholder)
-		Widget f2pLabel = WidgetFactory.createText(
+		var f2pLabel = WidgetFactory.createText(
 			tabContainer.getTabContent(5),
 			"F2P-only recommendations (placeholder)",
 			"ff9933",
@@ -157,7 +167,7 @@ public class EarlyGameGuide
 		f2pLabel.setWidthMode(WidgetSizeMode.MINUS);
 		f2pLabel.revalidate();
 
-		Widget ironLabel = WidgetFactory.createText(
+		var ironLabel = WidgetFactory.createText(
 			tabContainer.getTabContent(5),
 			"Ironman hints (placeholder)",
 			"ff9933",
@@ -166,26 +176,35 @@ public class EarlyGameGuide
 		);
 		ironLabel.setWidthMode(WidgetSizeMode.MINUS);
 		ironLabel.revalidate();
+
+		isOpen = true;
 	}
 
 	public void show(Client client)
 	{
 		// Create widgets if they don't exist yet
-		if (modalDialog == null)
-		{
+//		if (modalDialog == null)
+//		{
 //			setup(client);
-		}
+//		}
 		// TODO: Temporary for testing. Should keep created one usually
 		// When reverting, will need to consider swapping between interface types (modern, classic, fixed)
-		destroy();
-		setup(client);
+//		destroy();
+//		System.out.println(isVisible());
+//		setup(client);
 		
 		// Make the guide visible
-		if (modalDialog != null)
-		{
-			modalDialog.show();
-			isOpen = true;
-		}
+//		if (modalDialog != null)
+//		{
+//			modalDialog.show();
+//			isOpen = true;
+//		}
+
+		setupActivityAdvisorUI();
+	}
+
+	private void setupActivityAdvisorUI()
+	{
 	}
 
 	private boolean getOnboardingEnabled()
@@ -197,7 +216,7 @@ public class EarlyGameGuide
 	private void toggleOnboarding()
 	{
 		if (plugin == null || plugin.getConfig() == null || plugin.getConfigManager() == null) return;
-		boolean next = !plugin.getConfig().showOnboardingPrompt();
+		var next = !plugin.getConfig().showOnboardingPrompt();
 		plugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showOnboardingPrompt", next);
 	}
 
@@ -208,7 +227,7 @@ public class EarlyGameGuide
 		
 		plugin.getClientThread().invokeLater(() -> {
 			plugin.displayPanel();
-			QuestHelper q = QuestHelperQuest.getByName("Cook's Assistant");
+			var q = QuestHelperQuest.getByName("Cook's Assistant");
 			if (q != null)
 			{
 				plugin.getQuestManager().startUpQuest(q, true);
@@ -222,7 +241,7 @@ public class EarlyGameGuide
 		
 		plugin.getClientThread().invokeLater(() -> {
 			plugin.displayPanel();
-			QuestHelper q = QuestHelperQuest.getByName("Boaty Guide");
+			var q = QuestHelperQuest.getByName("Boaty Guide");
 			if (q != null)
 			{
 				plugin.getQuestManager().startUpQuest(q, true);
@@ -236,7 +255,7 @@ public class EarlyGameGuide
 		
 		plugin.getClientThread().invokeLater(() -> {
 			plugin.displayPanel();
-			QuestHelper q = QuestHelperQuest.getByName("Mining");
+			var q = QuestHelperQuest.getByName("Mining");
 			if (q != null)
 			{
 				plugin.getQuestManager().startUpQuest(q, true);
@@ -250,7 +269,7 @@ public class EarlyGameGuide
 		
 		plugin.getClientThread().invokeLater(() -> {
 			plugin.displayPanel();
-			QuestHelper q = QuestHelperQuest.getByName("Smithing");
+			var q = QuestHelperQuest.getByName("Smithing");
 			if (q != null)
 			{
 				plugin.getQuestManager().startUpQuest(q, true);
@@ -412,7 +431,7 @@ public class EarlyGameGuide
 		// Get unlocks organized by category
 		var unlocksByCategory = UnlockRegistry.getUnlocksByCategory();
 
-		int yPos = 0;
+		var yPos = 0;
 		for (UnlockCategory category : UnlockCategory.values())
 		{
 			var unlocks = unlocksByCategory.get(category);
@@ -420,11 +439,11 @@ public class EarlyGameGuide
 
 			// Initialize collapse state if not set
 			categoryCollapsed.putIfAbsent(category, false);
-			boolean isCollapsed = categoryCollapsed.get(category);
+			var isCollapsed = categoryCollapsed.get(category);
 
 			// Category header with clickable expand/collapse
-			String collapseIcon = isCollapsed ? ">" : "^";
-			Widget categoryHeader = WidgetFactory.createText(
+			var collapseIcon = isCollapsed ? ">" : "^";
+			var categoryHeader = WidgetFactory.createText(
 				mainPathsContainer.getContentLayer(),
 				collapseIcon + " " + category.getDisplayName() + " (" + unlocks.size() + " unlocks)",
 				"ff981f",
@@ -448,7 +467,7 @@ public class EarlyGameGuide
 			if (!isCollapsed)
 			{
 				// Create row-first button grid with 4 columns
-				RowFirstButtonGrid unlockGrid = new RowFirstButtonGrid(
+				var unlockGrid = new RowFirstButtonGrid(
 					mainPathsContainer.getContentLayer(), 0, yPos, 4, plugin.getClient()
 				);
 
@@ -544,7 +563,7 @@ public class EarlyGameGuide
 		}
 		
 		// Create a fresh container for this unlock detail
-		Widget detailContent = WidgetFactory.createLayer(detailPathsLayer, 0, 20, 0, 20);
+		var detailContent = WidgetFactory.createLayer(detailPathsLayer, 0, 20, 0, 20);
 		detailContent.setWidthMode(WidgetSizeMode.MINUS);
 		detailContent.setHeightMode(WidgetSizeMode.MINUS);
 		detailContent.revalidate();
@@ -569,7 +588,7 @@ public class EarlyGameGuide
 		);
 
 		// Quest list using QuestList component (per-detail)
-		QuestList questList = new QuestList(plugin.getClient(), detailContent);
+		var questList = new QuestList(plugin.getClient(), detailContent);
 		for (QuestHelperQuest quest : unlock.getPrerequisiteQuests())
 		{
 			boolean isCompleted = quest.getState(plugin.getClient()) == net.runelite.api.QuestState.FINISHED;
@@ -623,19 +642,18 @@ public class EarlyGameGuide
 	 * @param dialogHeight The height of the dialog
 	 * @return Array with [x, y] coordinates
 	 */
-	private int[] calculateDialogPosition(Widget parentWidget, int dialogWidth, int dialogHeight)
+	private Pair<Integer, Integer> calculateDialogPosition(Widget parentWidget, int dialogWidth, int dialogHeight)
 	{
-		int parentWidth = parentWidget.getWidth();
-		int parentHeight = parentWidget.getHeight();
+		var parentWidth = parentWidget.getWidth();
+		var parentHeight = parentWidget.getHeight();
 		
 		int x, y;
 		
-		if (isFirstTime || savedX == null || savedY == null)
+		if (savedX == null || savedY == null)
 		{
 			// First time: center the dialog perfectly
 			x = (parentWidth - dialogWidth) / 2;
 			y = (parentHeight - dialogHeight) / 2;
-			isFirstTime = false;
 		}
 		else
 		{
@@ -652,26 +670,27 @@ public class EarlyGameGuide
 		savedX = x;
 		savedY = y;
 		
-		return new int[]{x, y};
+		return Pair.of(savedX, savedY);
 	}
 
 	private Widget getTopLevelWidget(Client client)
 	{
 		// Resizable classic
-		Widget classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
+		var classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
 		if (classicContainer != null && !classicContainer.isHidden())
 		{
 			return classicContainer;
 		}
+
 		// Resizable modern
-		Widget modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_FRONT);
+		var modernContainer = client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_FRONT);
 		if (modernContainer != null && !modernContainer.isHidden())
 		{
 			return modernContainer;
 		}
 
 		// Fixed
-		Widget fixedContainer = client.getWidget(InterfaceID.Toplevel.MAIN);
+		var fixedContainer = client.getWidget(InterfaceID.Toplevel.MAIN);
 		return fixedContainer;
 	}
 
@@ -719,16 +738,6 @@ public class EarlyGameGuide
 			savedY = modalDialog.getModalWidget().getOriginalY();
 		}
 	}
-	
-	/**
-	 * Reset position memory to force centering on next creation
-	 */
-	public void resetPosition()
-	{
-		savedX = null;
-		savedY = null;
-		isFirstTime = true;
-	}
 
 	/**
 	 * Check if the dialog is currently open and visible
@@ -747,16 +756,16 @@ public class EarlyGameGuide
 	{
 		if (modalDialog == null || modalDialog.getModalWidget() == null) return false;
 		
-		Widget parentWidget = getTopLevelWidget(client);
+		var parentWidget = getTopLevelWidget(client);
 		if (parentWidget == null) return false;
 		
-		Widget modalWidget = modalDialog.getModalWidget();
-		int currentX = modalWidget.getOriginalX();
-		int currentY = modalWidget.getOriginalY();
-		int dialogWidth = modalWidget.getWidth();
-		int dialogHeight = modalWidget.getHeight();
-		int parentWidth = parentWidget.getWidth();
-		int parentHeight = parentWidget.getHeight();
+		var modalWidget = modalDialog.getModalWidget();
+		var currentX = modalWidget.getOriginalX();
+		var currentY = modalWidget.getOriginalY();
+		var dialogWidth = modalWidget.getWidth();
+		var dialogHeight = modalWidget.getHeight();
+		var parentWidth = parentWidget.getWidth();
+		var parentHeight = parentWidget.getHeight();
 		
 		// Check if dialog is outside bounds
 		return currentX < 0 || currentY < 0 || 
@@ -776,13 +785,13 @@ public class EarlyGameGuide
 		if (parentWidget == null) return;
 		
 		Widget modalWidget = modalDialog.getModalWidget();
-		int dialogWidth = modalWidget.getWidth();
-		int dialogHeight = modalWidget.getHeight();
+		var dialogWidth = modalWidget.getWidth();
+		var dialogHeight = modalWidget.getHeight();
 		
 		// Calculate adjusted position
-		int[] position = calculateDialogPosition(parentWidget, dialogWidth, dialogHeight);
-		int newX = position[0];
-		int newY = position[1];
+		var position = calculateDialogPosition(parentWidget, dialogWidth, dialogHeight);
+		var newX = position.getLeft();
+		var newY = position.getRight();
 		
 		// Update position
 		modalWidget.setPos(newX, newY);

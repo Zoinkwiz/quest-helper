@@ -157,6 +157,19 @@ public class WidgetFactory
 		return button;
 	}
 
+	public static Widget createParagraphSection(Widget parent, String text, int x, int y, int width, int height)
+	{
+		var widget = parent.createChild(-1, WidgetType.TEXT);
+		widget.setText(text);
+		widget.setTextColor(Integer.parseInt("ff981f", 16));
+		widget.setPos(x, y);
+		widget.setSize(width, height);
+		widget.setFontId(495);
+		widget.revalidate();
+
+		return widget;
+	}
+
 	/**
 	 * Create a left-aligned text button with color and hover-to-white behavior
 	 */

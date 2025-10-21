@@ -189,16 +189,16 @@ public class EarlyGameGuide
 //		}
 		// TODO: Temporary for testing. Should keep created one usually
 		// When reverting, will need to consider swapping between interface types (modern, classic, fixed)
-//		destroy();
+		destroy();
 //		System.out.println(isVisible());
-//		setup(client);
+		setup(client);
 		
 		// Make the guide visible
-//		if (modalDialog != null)
-//		{
-//			modalDialog.show();
-//			isOpen = true;
-//		}
+		if (modalDialog != null)
+		{
+			modalDialog.show();
+			isOpen = true;
+		}
 
 		setupActivityAdvisorUI();
 	}

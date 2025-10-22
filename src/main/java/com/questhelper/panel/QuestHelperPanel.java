@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.tools.Icon;
+import com.questhelper.ui.PathConflictDialog;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -60,6 +61,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -799,5 +801,55 @@ public class QuestHelperPanel extends PluginPanel
 		{
 			skillExpandButton.setText(String.format("%d active", numFilteredSkills));
 		}
+	}
+	
+	/**
+	 * Get the quest overview panel
+	 */
+	public QuestOverviewPanel getQuestOverviewPanel()
+	{
+		return questOverviewPanel;
+	}
+	
+	/**
+	 * Show the path conflict dialog overlay in the quest list panel
+	 */
+	public void showPathConflictDialog(com.questhelper.helpers.guides.Unlock activePath, String questName, Consumer<PathConflictDialog.ConflictChoice> callback)
+	{
+		// Hide the quest list and show the conflict dialog
+		scrollableContainer.setViewportView(createConflictDialogPanel(activePath, questName, callback));
+		
+		// Debug: Log that dialog is being shown
+		System.out.println("Showing path conflict dialog in quest list for quest: " + questName);
+	}
+	
+	/**
+	 * Create a panel containing the conflict dialog
+	 */
+	private JPanel createConflictDialogPanel(com.questhelper.helpers.guides.Unlock activePath, String questName, java.util.function.Consumer<PathConflictDialog.ConflictChoice> callback)
+	{
+		JPanel dialogPanel = new JPanel();
+		dialogPanel.setLayout(new BorderLayout());
+		dialogPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		
+		// Create the conflict dialog
+		PathConflictDialog conflictDialog = new PathConflictDialog(activePath, questName, callback);
+		
+		// Add the dialog to the center of the panel
+		dialogPanel.add(conflictDialog, BorderLayout.CENTER);
+		
+		// Show the dialog
+		conflictDialog.showOverlay();
+		
+		return dialogPanel;
+	}
+	
+	/**
+	 * Hide the path conflict dialog overlay
+	 */
+	public void hidePathConflictDialog()
+	{
+		// Restore the quest list view
+		activateQuestList();
 	}
 }

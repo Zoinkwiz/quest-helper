@@ -27,6 +27,8 @@ package com.questhelper.panel;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
+import com.questhelper.managers.PathManager;
+import com.questhelper.ui.PathConflictDialog;
 import com.questhelper.panel.queststepsection.AbstractQuestSection;
 import com.questhelper.panel.queststepsection.QuestSectionSection;
 import com.questhelper.panel.queststepsection.QuestStepPanel;
@@ -88,6 +90,13 @@ public class QuestOverviewPanel extends JPanel
 	private final JPanel introPanel = new JPanel();
 
 	private final JLabel questNameLabel = JGenerator.makeJLabel();
+	
+	// Path banner components
+	private final JPanel pathBannerPanel = new JPanel();
+	private final JLabel pathBannerLabel = JGenerator.makeJLabel();
+	
+	// Path conflict dialog overlay
+	private PathConflictDialog conflictDialog = null;
 
 	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
 	private final List<AbstractQuestSection> allQuestStepPanelList = new CopyOnWriteArrayList<>();
@@ -129,6 +138,9 @@ public class QuestOverviewPanel extends JPanel
 		leftTitleContainer.add(questNameLabel, BorderLayout.CENTER);
 
 		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
+		
+		// Setup path banner
+		setupPathBanner();
 
 		/* Quest config panel */
 		configContainer.setLayout(new BorderLayout());
@@ -266,6 +278,9 @@ public class QuestOverviewPanel extends JPanel
 		{
 			questNameLabel.setText(quest.getQuest().getName());
 			actionsContainer.setVisible(true);
+			
+			// Update path banner when quest changes
+			updatePathBanner();
 
 			if (quest.getConfigs() != null)
 			{
@@ -623,5 +638,129 @@ public class QuestOverviewPanel extends JPanel
 			.collect(Collectors.toList());
 
 		questHelperPlugin.saveSidebarOrder(currentQuest, newOrderIds);
+	}
+	
+	/**
+	 * Setup the path banner panel
+	 */
+	private void setupPathBanner()
+	{
+		pathBannerPanel.setLayout(new BorderLayout());
+		pathBannerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		pathBannerPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		pathBannerPanel.setVisible(false);
+		
+		pathBannerLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		pathBannerLabel.setFont(new Font("Arial", Font.PLAIN, 10));
+		pathBannerLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		// Add click listener to open the guide
+		pathBannerLabel.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e)
+			{
+				openPathInGuide();
+			}
+			
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e)
+			{
+				pathBannerLabel.setForeground(Color.WHITE);
+			}
+			
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e)
+			{
+				pathBannerLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			}
+		});
+		
+		pathBannerPanel.add(pathBannerLabel, BorderLayout.CENTER);
+		
+		// Add the path banner to the main panel (before quest title)
+		add(pathBannerPanel, 0); // Insert at the beginning
+	}
+	
+	/**
+	 * Update the path banner based on current path state
+	 */
+	public void updatePathBanner()
+	{
+		PathManager pathManager = questHelperPlugin.getPathManager();
+		if (pathManager == null || !pathManager.hasActivePath())
+		{
+			pathBannerPanel.setVisible(false);
+			return;
+		}
+		
+		// Show the banner
+		pathBannerPanel.setVisible(true);
+		
+		// Update the text
+		String pathName = pathManager.getActivePath().getName();
+		String stateText = pathManager.isPathPaused() ? " (Paused)" : "";
+		pathBannerLabel.setText("Path: " + pathName + stateText);
+	}
+	
+	/**
+	 * Open the path in the Early Game Guide
+	 */
+	private void openPathInGuide()
+	{
+		PathManager pathManager = questHelperPlugin.getPathManager();
+		if (pathManager == null || !pathManager.hasActivePath())
+		{
+			return;
+		}
+		
+		// Open the guide to the specific path
+		questHelperPlugin.openEarlyGameGuideToPath(pathManager.getActivePath().getId());
+	}
+	
+	/**
+	 * Show the path conflict dialog overlay
+	 */
+	public void showPathConflictDialog(com.questhelper.helpers.guides.Unlock activePath, String questName, java.util.function.Consumer<PathConflictDialog.ConflictChoice> callback)
+	{
+		// Remove existing dialog if any
+		if (conflictDialog != null)
+		{
+			remove(conflictDialog);
+		}
+		
+		// Create new dialog
+		conflictDialog = new PathConflictDialog(activePath, questName, callback);
+		
+		// Set the dialog to fill the panel and make it visible
+		conflictDialog.setBounds(0, 0, getWidth(), getHeight());
+		conflictDialog.setVisible(true);
+		conflictDialog.setOpaque(true);
+		
+		// Add to the top of the panel (index 0) to overlay on top
+		add(conflictDialog, 0);
+		
+		// Show the dialog
+		conflictDialog.showOverlay();
+		revalidate();
+		repaint();
+		
+		// Debug: Log that dialog is being shown
+		System.out.println("Showing path conflict dialog for quest: " + questName);
+	}
+	
+	/**
+	 * Hide the path conflict dialog overlay
+	 */
+	public void hidePathConflictDialog()
+	{
+		if (conflictDialog != null)
+		{
+			conflictDialog.hideOverlay();
+			remove(conflictDialog);
+			conflictDialog = null;
+			revalidate();
+			repaint();
+		}
 	}
 }

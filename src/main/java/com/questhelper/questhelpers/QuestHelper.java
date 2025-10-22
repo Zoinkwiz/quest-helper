@@ -99,6 +99,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	protected QuestState lastQuestState;
 
+	@Getter
+	@Setter
+	protected boolean questStateEnteredFinishedState;
+
 	@Override
 	public void configure(Binder binder)
 	{
@@ -237,6 +241,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		if (lastQuestState == null) lastQuestState = currentQuestState;
 		boolean questStateEnteredFinished = currentQuestState == QuestState.FINISHED && lastQuestState != QuestState.FINISHED;
 		lastQuestState = currentQuestState;
+		if (questStateEnteredFinished)
+		{
+			questStateEnteredFinishedState = true;
+		}
 		return questStateEnteredFinished;
 	}
 

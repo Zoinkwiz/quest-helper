@@ -33,7 +33,6 @@ import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.JavaScriptCallback;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -123,6 +122,17 @@ public class ModalDialog
 	public Widget getModalWidget()
 	{
 		return modalWidget;
+	}
+
+	public void setPos(int x, int y)
+	{
+		modalWidget.setPos(x, y);
+		modalWidget.revalidate();
+
+		dragger.setPos(x, y);
+		dragger.revalidate();
+		draggedBorderWidget.setPos(x, y);
+		draggedBorderWidget.revalidate();
 	}
 
 	/**

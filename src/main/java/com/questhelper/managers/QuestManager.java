@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.ui.PathConflictDialog;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -87,6 +88,9 @@ public class QuestManager
 
 	@Inject
 	QuestHelperPlugin questHelperPlugin;
+	
+	@Inject
+	PathManager pathManager;
 
 	@Getter
 	@Inject
@@ -190,15 +194,37 @@ public class QuestManager
 
 		if (selectedQuest.updateQuest() && selectedQuest.getCurrentStep() == null)
 		{
-			shutDownQuest(true);
-		}
-
-		clientThread.invokeLater(() -> {
-			if (selectedQuest != null && selectedQuest.hasQuestStateBecomeFinished())
+			if (!continuePath())
 			{
 				shutDownQuest(true);
 			}
+		}
+
+		clientThread.invokeLater(() -> {
+			if (selectedQuest != null && (selectedQuest.isQuestStateEnteredFinishedState() || selectedQuest.hasQuestStateBecomeFinished()))
+			{
+				if (!continuePath())
+				{
+					shutDownQuest(true);
+				}
+			}
 		});
+	}
+
+	private boolean continuePath()
+	{
+		if (selectedQuest == null) return false;
+		if (!selectedQuest.isQuestStateEnteredFinishedState() && !selectedQuest.hasQuestStateBecomeFinished()) return false;
+
+		selectedQuest.setQuestStateEnteredFinishedState(false);
+		// Check if this quest completion should trigger path progression
+		if (pathManager != null && pathManager.isPathActive() && pathManager.isQuestInActivePath(selectedQuest))
+		{
+			// Quest in active path completed, progress the path
+			return pathManager.progressPath();
+		}
+
+		return false;
 	}
 
 	/**
@@ -246,6 +272,19 @@ public class QuestManager
 	{
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
+			return;
+		}
+
+		// Check for path conflicts
+		if (pathManager != null && pathManager.hasActivePath() && !pathManager.isQuestInActivePath(questHelper))
+		{
+			// Debug: Log the conflict check
+			System.out.println("Path conflict detected for quest: " + questHelper.getQuest().getName());
+			System.out.println("Active path: " + (pathManager.getActivePath() != null ? pathManager.getActivePath().getName() : "null"));
+			System.out.println("Path state: " + pathManager.getPathState());
+			
+			// Show conflict dialog
+			showPathConflictDialog(questHelper, shouldOpenSidebarIfConfig);
 			return;
 		}
 
@@ -548,6 +587,65 @@ public class QuestManager
 		for (QuestHelperQuest questHelperQuest : QuestHelperQuest.values())
 		{
 			questHelperQuest.getQuestHelper().initializeRequirements();
+		}
+	}
+	
+	/**
+	 * Show the path conflict dialog when starting a quest that conflicts with active path
+	 */
+	private void showPathConflictDialog(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
+	{
+		if (pathManager == null || !pathManager.hasActivePath())
+		{
+			return;
+		}
+		
+		// Show the conflict dialog as a sidebar overlay in the quest list panel
+		if (panel != null)
+		{
+			panel.showPathConflictDialog(
+				pathManager.getActivePath(),
+				questHelper.getQuest().getName(),
+				(choice) -> handlePathConflictChoice(choice, questHelper, shouldOpenSidebarIfConfig)
+			);
+		}
+	}
+	
+	/**
+	 * Handle the user's choice from the path conflict dialog
+	 */
+	private void handlePathConflictChoice(PathConflictDialog.ConflictChoice choice, QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
+	{
+		// Hide the overlay dialog
+		if (panel != null)
+		{
+			panel.hidePathConflictDialog();
+		}
+		
+		switch (choice)
+		{
+			case CONTINUE_PATH:
+				// Continue with the current path, don't start the conflicting quest
+				// Do nothing - just hide the dialog
+				break;
+				
+			case PAUSE_PATH:
+				// Pause the path and start the quest
+				pathManager.pauseActivePath();
+				shutDownPreviousQuest();
+				initializeNewQuest(questHelper, shouldOpenSidebarIfConfig);
+				break;
+				
+			case STOP_PATH:
+				// Stop the path and start the quest
+				pathManager.stopActivePath();
+				shutDownPreviousQuest();
+				initializeNewQuest(questHelper, shouldOpenSidebarIfConfig);
+				break;
+				
+			case CANCEL:
+				// Do nothing, abort quest start
+				break;
 		}
 	}
 }

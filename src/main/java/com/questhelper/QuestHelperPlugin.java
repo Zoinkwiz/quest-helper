@@ -50,6 +50,7 @@ import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -103,9 +104,6 @@ public class QuestHelperPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private net.runelite.client.input.KeyManager keyManager;
-
-	@Inject
 	private EventBus eventBus;
 
 	@Getter
@@ -138,6 +136,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	@Getter
 	private QuestManager questManager;
+
+	@Inject
+	private PathManager pathManager;
 
 	@Inject
 	private WorldMapAreaManager worldMapAreaManager;
@@ -178,18 +179,8 @@ public class QuestHelperPlugin extends Plugin
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
-	private final net.runelite.client.util.HotkeyListener openGuideHotkey = new net.runelite.client.util.HotkeyListener(() -> config.openGuideHotkey())
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			clientThread.invokeLater(() -> openEarlyGameGuide());
-		}
-	};
-
 	public void openEarlyGameGuide()
 	{
-		if (client == null) return;
 		earlyGameGuide.show(client);
 	}
 
@@ -213,7 +204,6 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
-		keyManager.registerKeyListener(openGuideHotkey);
 		earlyGameGuide.setPlugin(this);
 		clientThread.invokeLater(() -> {
 			if (!Boolean.parseBoolean(String.valueOf(configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "earlyGuideSeen")))
@@ -275,13 +265,6 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		try
-		{
-			keyManager.unregisterKeyListener(openGuideHotkey);
-		}
-		catch (Exception ignored)
-		{
-		}
 		clientThread.invokeLater(earlyGameGuide::destroy);
 		runeliteObjectManager.shutDown();
 
@@ -305,7 +288,7 @@ public class QuestHelperPlugin extends Plugin
 
 	// Run our base game tick checks later than other Quest Helper checks
 	// This allows steps/requirements/conditions to run their checks first before we try to update the side panel
-	@Subscribe(priority=-1.0f)
+	@Subscribe(priority = -1.0f)
 	public void onGameTick(GameTick event)
 	{
 		questBankManager.loadInitialStateFromConfig(client);
@@ -383,6 +366,8 @@ public class QuestHelperPlugin extends Plugin
 			clientThread.invokeAtTickEnd(() -> {
 				questManager.setupRequirements();
 				questManager.setupOnLogin();
+				// Load and restore active path state
+				pathManager.loadPathState();
 			});
 		}
 	}
@@ -495,11 +480,7 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (commandExecuted.getCommand().equals("qhguide"))
-		{
-			clientThread.invokeLater(this::openEarlyGameGuide);
-		}
-		else if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
+		if (developerMode && commandExecuted.getCommand().equals("questhelperdebug"))
 		{
 			if (commandExecuted.getArguments().length == 0 ||
 				(Arrays.stream(commandExecuted.getArguments()).toArray()[0]).equals("disable"))
@@ -537,25 +518,35 @@ public class QuestHelperPlugin extends Plugin
 		questBankManager.saveBankToConfig();
 	}
 
-	private MainBufferProvider lastBufferProvider;
+	int lastViewportWidth;
+	int lastViewporthHeight;
+
+	Widget lastKnownTopLevelWidget;
 
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
-		var currentBufferProvider = (MainBufferProvider) client.getBufferProvider();
-		if (lastBufferProvider != currentBufferProvider)
+		if (!earlyGameGuide.isOpen)
 		{
-			// Only rebuild if the dialog is currently open
-			if (earlyGameGuide.isOpen)
-			{
-				// Buffer provider changed means container type changed or UI scaled, so we need full rebuild
-				// Possibly should for rescale detect that and if is rescale only move it don't rebuild it
-				earlyGameGuide.destroy();
-				earlyGameGuide.setup(client);
-			}
+			return;
 		}
-		lastBufferProvider = currentBufferProvider;
+
+		if (lastKnownTopLevelWidget != earlyGameGuide.getTopLevelWidget(client))
+		{
+			lastKnownTopLevelWidget = earlyGameGuide.getTopLevelWidget(client);
+			lastViewportWidth = client.getViewportWidth();
+			lastViewporthHeight = client.getViewportHeight();
+			earlyGameGuide.destroy();
+			earlyGameGuide.setup(client);
+			return;
+		}
+
+		if (lastViewportWidth != client.getViewportWidth() || lastViewporthHeight != client.getViewportHeight())
+		{
+			earlyGameGuide.adjustPosition(client);
+		}
 	}
+
 
 	public void refreshBank()
 	{
@@ -625,6 +616,12 @@ public class QuestHelperPlugin extends Plugin
 		}
 		if (config.autoStartQuests() && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
+			// Skip auto-start if a path is active
+			if (pathManager.hasActivePath())
+			{
+				return;
+			}
+			
 			if (questManager.getSelectedQuest() == null && chatMessage.getMessage().contains("You've started a new quest"))
 			{
 				String questName = chatMessage.getMessage().substring(chatMessage.getMessage().indexOf(">") + 1);
@@ -687,5 +684,29 @@ public class QuestHelperPlugin extends Plugin
 				.filter(s -> !s.isEmpty())
 				.map(Integer::parseInt)
 				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Open the Early Game Guide to a specific path
+	 */
+	public void openEarlyGameGuideToPath(String unlockId)
+	{
+		clientThread.invokeLater(() -> earlyGameGuide.openToPath(client, unlockId));
+	}
+	
+	/**
+	 * Get the quest helper panel
+	 */
+	public QuestHelperPanel getPanel()
+	{
+		return panel;
+	}
+	
+	/**
+	 * Get the path manager
+	 */
+	public PathManager getPathManager()
+	{
+		return pathManager;
 	}
 }

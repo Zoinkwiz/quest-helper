@@ -3,7 +3,6 @@ package com.questhelper.helpers.guides;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.ui.widgets.ModalDialog;
 import com.questhelper.ui.widgets.TabContainer;
 import com.questhelper.ui.widgets.ButtonGrid;
@@ -11,14 +10,16 @@ import com.questhelper.ui.widgets.WidgetFactory;
 import com.questhelper.ui.widgets.VerticalScrollableContainer;
 import com.questhelper.ui.widgets.QuestList;
 import com.questhelper.ui.widgets.RowFirstButtonGrid;
+import com.questhelper.managers.PathManager;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
-import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetSizeMode;
 import org.apache.commons.lang3.tuple.Pair;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.Map;
 public class EarlyGameGuide
 {
 	// Used for determining when the player has changed interface styles
+	@Getter
 	private Widget currentTopLevelWidget;
 	private ModalDialog modalDialog;
 	private TabContainer tabContainer;
@@ -50,6 +52,10 @@ public class EarlyGameGuide
 	// Pre-created main paths container reference (latest instance)
 	private VerticalScrollableContainer mainPathsContainer = null;
 	
+	// Path management
+	@Inject
+	private PathManager pathManager;
+	private Widget activePathButton = null;
 	
 	// Position memory for dialog placement
 	private Integer savedX = null;
@@ -61,6 +67,11 @@ public class EarlyGameGuide
 	public void setPlugin(QuestHelperPlugin plugin)
 	{
 		this.plugin = plugin;
+	}
+	
+	public void setPathManager(PathManager pathManager)
+	{
+		this.pathManager = pathManager;
 	}
 
 	public void setup(Client client)
@@ -587,6 +598,9 @@ public class EarlyGameGuide
 			8, 24, 16, 12
 		);
 
+		// Add Set Active/Stop Path button in top-right
+		addActivePathButton(detailContent, unlock);
+		
 		// Quest list using QuestList component (per-detail)
 		var questList = new QuestList(plugin.getClient(), detailContent);
 		for (QuestHelperQuest quest : unlock.getPrerequisiteQuests())
@@ -633,6 +647,163 @@ public class EarlyGameGuide
 			plugin.getQuestManager().startUpQuest(quest.getQuestHelper(), true);
 		});
 	}
+	
+	/**
+	 * Add the Set Active/Stop Path button to the unlock detail view
+	 */
+	private void addActivePathButton(Widget detailContent, Unlock unlock)
+	{
+		if (pathManager == null) return;
+		
+		// Calculate button position (top-right corner)
+		int buttonWidth = 80;
+		int buttonHeight = 20;
+		int buttonX = 400 - buttonWidth - 8; // Right edge minus padding
+		int buttonY = 6;
+		
+		// Create the button using createLeftAlignedTextButton for proper button behavior
+		activePathButton = WidgetFactory.createLeftAlignedTextButton(
+			detailContent,
+			getActivePathButtonText(unlock),
+			buttonX, buttonY, buttonWidth, buttonHeight,
+			(ev) -> handleActivePathButtonClick(unlock)
+		);
+	}
+	
+	/**
+	 * Get the appropriate button text based on current path state
+	 */
+	private String getActivePathButtonText(Unlock unlock)
+	{
+		if (pathManager == null) return "Set Active";
+		
+		if (pathManager.getActivePath() != null && pathManager.getActivePath().getId().equals(unlock.getId()))
+		{
+			if (pathManager.isPathPaused())
+			{
+				return "Resume";
+			}
+			else
+			{
+				return "Stop Path";
+			}
+		}
+		else
+		{
+			return "Set Active";
+		}
+	}
+	
+	/**
+	 * Handle the active path button click
+	 */
+	private void handleActivePathButtonClick(Unlock unlock)
+	{
+		if (pathManager == null) return;
+		
+		if (pathManager.getActivePath() != null && pathManager.getActivePath().getId().equals(unlock.getId()))
+		{
+			// This path is currently active
+			if (pathManager.isPathPaused())
+			{
+				// Resume the path
+				pathManager.resumeActivePath();
+			}
+			else
+			{
+				// Stop the path
+				pathManager.stopActivePath();
+			}
+		}
+		else
+		{
+			// Set this path as active
+			pathManager.setActivePath(unlock.getId());
+		}
+		
+		// Update button text
+		updateActivePathButton(unlock);
+		
+		// Update sidebar banner if panel is available
+		if (plugin != null && plugin.getPanel() != null)
+		{
+			plugin.getPanel().getQuestOverviewPanel().updatePathBanner();
+		}
+	}
+	
+	/**
+	 * Update the active path button text
+	 */
+	private void updateActivePathButton(Unlock unlock)
+	{
+		if (activePathButton == null) return;
+		
+		// Find the text child widget and update its text
+		// Note: This is a simplified approach - in practice you might need to recreate the button
+		// For now, we'll recreate the button with new text
+		Widget parent = activePathButton.getParent();
+		int x = activePathButton.getOriginalX();
+		int y = activePathButton.getOriginalY();
+		int width = activePathButton.getWidth();
+		int height = activePathButton.getHeight();
+		
+		// Remove old button
+		activePathButton.setHidden(true);
+		
+		// Create new button with updated text
+		activePathButton = WidgetFactory.createLeftAlignedTextButton(
+			parent,
+			getActivePathButtonText(unlock),
+			x, y, width, height,
+			(ev) -> handleActivePathButtonClick(unlock)
+		);
+	}
+	
+	/**
+	 * Open the guide to a specific path
+	 * Called from sidebar banner click
+	 */
+	public void openToPath(Client client, String unlockId)
+	{
+		// Find the unlock by ID
+		Unlock unlock = null;
+		for (UnlockCategory category : UnlockCategory.values())
+		{
+			var unlocksByCategory = UnlockRegistry.getUnlocksByCategory();
+			var unlocks = unlocksByCategory.get(category);
+			if (unlocks != null)
+			{
+				for (Unlock u : unlocks)
+				{
+					if (u.getId().equals(unlockId))
+					{
+						unlock = u;
+						break;
+					}
+				}
+			}
+			if (unlock != null) break;
+		}
+		
+		if (unlock == null)
+		{
+			System.out.println("Unlock not found: " + unlockId);
+			return;
+		}
+		
+		// Show the guide and switch to the specific path
+		show(client);
+		
+		// Switch to Paths tab (index 4)
+		if (tabContainer != null)
+		{
+			// Switch to Paths tab (index 4)
+			tabContainer.setActiveTab(4);
+		}
+		
+		// Show the unlock detail
+		showUnlockDetail(unlock);
+	}
 
 
 	/**
@@ -673,7 +844,7 @@ public class EarlyGameGuide
 		return Pair.of(savedX, savedY);
 	}
 
-	private Widget getTopLevelWidget(Client client)
+	public Widget getTopLevelWidget(Client client)
 	{
 		// Resizable classic
 		var classicContainer = client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
@@ -794,8 +965,7 @@ public class EarlyGameGuide
 		var newY = position.getRight();
 		
 		// Update position
-		modalWidget.setPos(newX, newY);
-		modalWidget.revalidate();
+		modalDialog.setPos(newX, newY);
 		
 		// Also update the dragger position if it exists
 		// Note: We'd need to expose the dragger from ModalDialog to update it too

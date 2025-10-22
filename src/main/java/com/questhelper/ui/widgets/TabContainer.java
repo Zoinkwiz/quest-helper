@@ -153,6 +153,14 @@ public class TabContainer
 	}
 
 	/**
+	 * Set the active tab by index (alias for selectTab)
+	 */
+	public void setActiveTab(int index)
+	{
+		selectTab(index);
+	}
+
+	/**
 	 * Apply tab visibility based on selection
 	 */
 	private void applyTabVisibility(int index)

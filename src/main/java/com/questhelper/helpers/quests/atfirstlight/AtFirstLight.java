@@ -57,7 +57,7 @@ import static com.questhelper.requirements.util.LogicHelper.or;
 public class AtFirstLight extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement needle, boxTrap, hammer, jerboaTail, jerboaTailOrBoxTrap, jerboaTail2OrBoxTrap;
+	ItemRequirement needle, costumeNeedle, needleOrCostumeNeedle, boxTrap, hammer, jerboaTail, jerboaTailOrBoxTrap, jerboaTail2OrBoxTrap;
 
 	// Items Recommended
 	ItemRequirement staminaPotion;
@@ -137,9 +137,9 @@ public class AtFirstLight extends BasicQuestHelper
 		steps.put(9, goWithTrimToFox);
 
 		ConditionalStep goToVerityWithReport = new ConditionalStep(this, talkToAtzaForTrim);
-		goToVerityWithReport.addStep(and(inGuild, trimmedFur, handedInReport, needle), useJerboaTailOnBed);
-		goToVerityWithReport.addStep(and(inGuild, trimmedFur, hadReport, needle), talkToVerityEnd);
-		goToVerityWithReport.addStep(and(trimmedFur, hadReport, needle), goDownTreeEnd);
+		goToVerityWithReport.addStep(and(inGuild, trimmedFur, handedInReport, needleOrCostumeNeedle), useJerboaTailOnBed);
+		goToVerityWithReport.addStep(and(inGuild, trimmedFur, hadReport, needleOrCostumeNeedle), talkToVerityEnd);
+		goToVerityWithReport.addStep(and(trimmedFur, hadReport, needleOrCostumeNeedle), goDownTreeEnd);
 		goToVerityWithReport.addStep(and(trimmedFur, hadReport), takeNeedle);
 		goToVerityWithReport.addStep(trimmedFur, getReportFromFox);
 		steps.put(10, goToVerityWithReport);
@@ -162,7 +162,10 @@ public class AtFirstLight extends BasicQuestHelper
 	{
 		// Required
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
-		needle.canBeObtainedDuringQuest();
+		costumeNeedle = new ItemRequirement("Costume needle", ItemID.COSTUMENEEDLE);
+		needleOrCostumeNeedle = new ItemRequirements(LogicType.OR, "Needle or Costume needle", needle, costumeNeedle);
+		needleOrCostumeNeedle.setDisplayMatchedItemName(true);
+		needleOrCostumeNeedle.canBeObtainedDuringQuest();
 		boxTrap = new ItemRequirement("Box trap", ItemID.HUNTING_BOX_TRAP).isNotConsumed();
 		boxTrap.setTooltip("You can buy one from Imia in the north of the Hunter Guild's surface area for 41gp.");
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
@@ -256,11 +259,11 @@ public class AtFirstLight extends BasicQuestHelper
 			"Return back to Fox to get his report.");
 		returnToFoxAfterTrim.addSubSteps(getReportFromFox);
 		goDownTreeEnd = new ObjectStep(this, ObjectID.HUNTERGUILD_STAIRS_DOWN01_COMBINED, new WorldPoint(1557, 3048, 0),
-			"Go down the stairs in the tree in the Hunters Guild.", foxsReport, trimmedFur, jerboaTail, needle);
+			"Go down the stairs in the tree in the Hunters Guild.", foxsReport, trimmedFur, jerboaTail, needleOrCostumeNeedle);
 		talkToVerityEnd = new NpcStep(this, NpcID.HG_VERITY, new WorldPoint(1559, 9464, 0),
 			"Talk to Guild Scribe Verity behind the bar again.");
 		useJerboaTailOnBed = new ObjectStep(this, ObjectID.AFL_CATBED_OP, new WorldPoint(1552, 9460, 0),
-			"Use a jerboa tail on the cat bed.", jerboaTail.highlighted(), trimmedFur, needle);
+			"Use a jerboa tail on the cat bed.", jerboaTail.highlighted(), trimmedFur, needleOrCostumeNeedle);
 		useJerboaTailOnBed.addIcon(ItemID.HUNTING_JERBOA_TAIL);
 		goUpTreeToFinishQuest = new ObjectStep(this, ObjectID.HUNTERGUILD_STAIRS_UP01, new WorldPoint(1557, 9449, 0),
 			"Go back up the stairs and talk to Guildmaster Apatura to finish the quest.");
@@ -279,7 +282,7 @@ public class AtFirstLight extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(jerboaTail2OrBoxTrap, hammer, needle);
+		return Arrays.asList(jerboaTail2OrBoxTrap, hammer, needleOrCostumeNeedle);
 	}
 
 	@Override
@@ -338,7 +341,7 @@ public class AtFirstLight extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Bed repairs", List.of(
 			talkToAtza, takeHammer, makeEquipmentPile, talkToAtzaForTrim, returnToFoxAfterTrim, takeNeedle,
 			goDownTreeEnd, talkToVerityEnd, useJerboaTailOnBed, goUpTreeToFinishQuest
-		), hammer, needle, jerboaTail));
+		), hammer, needleOrCostumeNeedle, jerboaTail));
 
 		return allSteps;
 	}

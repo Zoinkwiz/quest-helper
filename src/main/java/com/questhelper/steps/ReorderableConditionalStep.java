@@ -51,7 +51,6 @@ public class ReorderableConditionalStep extends ConditionalStep
                 if (step.getId() == null) continue;
                 if (step.getId().equals(sidebarId))
                 {
-					System.out.println(req);
 					newSteps.put(req, step);
                 }
             }

@@ -226,7 +226,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToSquire, talkToReldo)));
 		allSteps.add(new PanelDetails("Finding an Imcando", Arrays.asList(talkToThurgo, talkToThurgoAgain), redberryPie));
 		allSteps.add(new PanelDetails("Find the portrait", Arrays.asList(talkToSquire2, goUpCastle1, goUpCastle2, searchCupboard, givePortraitToThurgo)));
-		allSteps.add(new PanelDetails("Making the sword", Arrays.asList(enterDungeon, mineBlurite, bringThurgoOre), pickaxe, portrait, ironBars));
+		allSteps.add(new PanelDetails("Making the sword", Arrays.asList(enterDungeon, mineBlurite, bringThurgoOre), pickaxe, ironBars));
 		allSteps.add(new PanelDetails("Return the sword", Collections.singletonList(finishQuest)));
 		return allSteps;
 	}

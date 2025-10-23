@@ -17,6 +17,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.ScriptEvent;
 import net.runelite.api.widgets.WidgetSizeMode;
 import org.apache.commons.lang3.tuple.Pair;
 import javax.inject.Inject;
@@ -656,18 +657,57 @@ public class EarlyGameGuide
 		if (pathManager == null) return;
 		
 		// Calculate button position (top-right corner)
-		int buttonWidth = 80;
-		int buttonHeight = 20;
+		int buttonWidth = 120;
+		int buttonHeight = 25;
 		int buttonX = 400 - buttonWidth - 8; // Right edge minus padding
 		int buttonY = 6;
 		
-		// Create the button using createLeftAlignedTextButton for proper button behavior
-		activePathButton = WidgetFactory.createLeftAlignedTextButton(
-			detailContent,
-			getActivePathButtonText(unlock),
-			buttonX, buttonY, buttonWidth, buttonHeight,
-			(ev) -> handleActivePathButtonClick(unlock)
-		);
+		// Create button container
+		Widget buttonContainer = WidgetFactory.createLayer(detailContent, buttonX, buttonY, buttonWidth + 8, buttonHeight + 8);
+		
+		// Create button background with hover effects
+		activePathButton = WidgetFactory.createGraphic(buttonContainer, SpriteID.TRADEBACKING, 0, 0, buttonWidth, buttonHeight);
+		activePathButton.setOnMouseOverListener((JavaScriptCallback) (ev) -> {
+			activePathButton.setSpriteId(SpriteID.TRADEBACKING_DARK);
+		});
+		activePathButton.setOnMouseLeaveListener((JavaScriptCallback) (ev) -> {
+			activePathButton.setSpriteId(SpriteID.TRADEBACKING);
+		});
+		activePathButton.setHasListener(true);
+		activePathButton.setOnClickListener(new JavaScriptCallback() {
+			@Override
+			public void run(ScriptEvent ev) {
+				handleActivePathButtonClick(unlock);
+			}
+		});
+		activePathButton.revalidate();
+		
+		// Create button border pieces
+		createActivePathButtonBorder(buttonContainer, buttonWidth, buttonHeight);
+		
+		// Create button text
+		WidgetFactory.createCenteredText(buttonContainer, getActivePathButtonText(unlock), "c8aa6e", false, 0, 0, buttonWidth, buttonHeight);
+	}
+	
+	/**
+	 * Create button border pieces for the active path button
+	 */
+	private void createActivePathButtonBorder(Widget buttonContainer, int buttonWidth, int buttonHeight)
+	{
+		int buttonPadding = 0;
+		int buttonEdgeSize = 4;
+		
+		// Corner pieces
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._0, 0, 0, buttonEdgeSize, buttonEdgeSize); // Top-left
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._1, buttonWidth - buttonEdgeSize - 1, 0, buttonEdgeSize, buttonEdgeSize); // Top-right
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._2, 0, buttonHeight - buttonEdgeSize, buttonEdgeSize, buttonEdgeSize); // Bottom-left
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._3, buttonWidth - buttonEdgeSize, buttonHeight - buttonEdgeSize, buttonEdgeSize, buttonEdgeSize); // Bottom-right
+
+		// Edge pieces
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._4, 0, buttonEdgeSize, buttonEdgeSize, buttonHeight - (buttonEdgeSize * 2)); // Left
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._5, buttonEdgeSize, 0, buttonWidth - (buttonEdgeSize * 2), buttonEdgeSize); // Top
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._6, buttonWidth - buttonEdgeSize, buttonEdgeSize, buttonEdgeSize, buttonHeight - (buttonEdgeSize * 2)); // Right
+		WidgetFactory.createGraphic(buttonContainer, SpriteID.V2StoneButton._7, buttonEdgeSize + buttonPadding, buttonHeight - buttonEdgeSize, buttonWidth - (buttonEdgeSize * 2), buttonEdgeSize); // Bottom
 	}
 	
 	/**

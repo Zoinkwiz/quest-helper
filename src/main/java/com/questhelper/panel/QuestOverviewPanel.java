@@ -646,12 +646,13 @@ public class QuestOverviewPanel extends JPanel
 	private void setupPathBanner()
 	{
 		pathBannerPanel.setLayout(new BorderLayout());
-		pathBannerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		pathBannerPanel.setBackground(ColorScheme.BRAND_ORANGE);
 		pathBannerPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		pathBannerPanel.setVisible(false);
 		
-		pathBannerLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		pathBannerLabel.setFont(new Font("Arial", Font.PLAIN, 10));
+		pathBannerLabel.setForeground(ColorScheme.BORDER_COLOR);
+		pathBannerLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+//		pathBannerLabel.setFont(new Font("Arial", Font.PLAIN, 10));
 		pathBannerLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
 		// Add click listener to open the guide

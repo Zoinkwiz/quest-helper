@@ -76,7 +76,7 @@ public class PathConflictDialog extends JPanel
 		contentPanel.setLayout(new BorderLayout(5, 5));
 		contentPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		contentPanel.setOpaque(true);
-		contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
 		
 		// Message label
 		JLabel messageLabel = new JLabel();
@@ -122,7 +122,7 @@ public class PathConflictDialog extends JPanel
 		});
 		buttonPanel.add(cancelButton);
 		
-		contentPanel.add(buttonPanel, BorderLayout.SOUTH);
+		contentPanel.add(buttonPanel, BorderLayout.CENTER);
 		add(contentPanel, BorderLayout.CENTER);
 	}
 	

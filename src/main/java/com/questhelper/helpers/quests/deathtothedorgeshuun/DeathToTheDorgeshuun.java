@@ -297,7 +297,7 @@ public class DeathToTheDorgeshuun extends BasicQuestHelper
 		talkToMistagToTravel.addDialogStep("Can you show me the way out of the mines?");
 		talkToZanik = new NpcStep(this, NpcID.DTTD_ZANIK_MARKED, new WorldPoint(3212, 9620, 0), "");
 
-		talkToCook = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0), "");
+		talkToCook = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0), "");
 		talkToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE, new WorldPoint(3210, 3222, 1), "");
 		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "");
 		talkToWoman = new NpcStep(this, NpcID.DSKIN_W_ARDOUNGECITIZEN2, new WorldPoint(3224, 3218, 0), "", true);

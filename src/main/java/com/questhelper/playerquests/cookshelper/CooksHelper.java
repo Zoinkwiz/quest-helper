@@ -143,7 +143,7 @@ public class CooksHelper extends PlayerMadeQuestHelper
 	private void setupCooksCousin()
 	{
 		// Cook's Cousin
-		cooksCousin = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.POH_SERVANT_COOK_WOMAN).getModels(), new WorldPoint(3209, 3215, 0), 808);
+		cooksCousin = runeliteObjectManager.createFakeNpc(this.toString(), client.getNpcDefinition(NpcID.COOK).getModels(), new WorldPoint(3209, 3215, 0), 808);
 		cooksCousin.setName("Cook's Cousin");
 		cooksCousin.setFace(4626);
 		cooksCousin.setExamine("The Cook's cousin.");

@@ -37,7 +37,7 @@ public class AskAboutFishCake extends NpcStep
 {
 	public AskAboutFishCake(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0),
+		super(questHelper, NpcID.COOK, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook and ask him all the options about Pirate Pete.");
 	}
 

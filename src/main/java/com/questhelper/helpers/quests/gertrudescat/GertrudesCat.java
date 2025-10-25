@@ -181,7 +181,7 @@ public class GertrudesCat extends BasicQuestHelper
 		giveKittenToFluffy.addSubSteps(climbUpLadderStep);
 
 		finishQuest = new NpcStep(this, NpcID.GERTRUDE_QUEST,
-			new WorldPoint(3148, 3413, 0), "Return to Gertrude east of Varrock to complete the quest.");
+			new WorldPoint(3148, 3413, 0), "Return to Gertrude west of Varrock to complete the quest.");
 	}
 
 	@Override

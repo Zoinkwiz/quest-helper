@@ -70,6 +70,7 @@ import com.questhelper.helpers.achievementdiaries.wilderness.WildernessEasy;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessElite;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessHard;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessMedium;
+import com.questhelper.helpers.guides.BoatyGuideHelper;
 import com.questhelper.helpers.miniquests.alfredgrimhandsbarcrawl.AlfredGrimhandsBarcrawl;
 import com.questhelper.helpers.miniquests.barbariantraining.BarbarianTraining;
 import com.questhelper.helpers.miniquests.curseoftheemptylord.CurseOfTheEmptyLord;
@@ -653,7 +654,11 @@ public enum QuestHelperQuest
 
 	// Player Quests
 	COOKS_HELPER(new CooksHelper(), "Cook's Helper", PlayerQuests.COOKS_HELPER, 4, false),
-	BIKE_SHEDDER(new BikeShedder(), "Bike Shedder", PlayerQuests.BIKE_SHEDDER, 4, true);
+	BIKE_SHEDDER(new BikeShedder(), "Bike Shedder", PlayerQuests.BIKE_SHEDDER, 4, true),
+
+	// Guides
+	BOATY_GUIDE(new BoatyGuideHelper(), "Boaty Guide", QuestDetails.Type.GUIDE, QuestDetails.Difficulty.GUIDE),
+	;
 
 	@Getter
 	private final int id;

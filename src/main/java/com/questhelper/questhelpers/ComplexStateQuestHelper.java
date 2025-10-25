@@ -50,6 +50,7 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 	public void startUp(QuestHelperConfig config)
 	{
 		step = loadStep();
+		lastQuestState = getQuest().getState(client, configManager);
 		this.config = config;
 		instantiateSteps(Collections.singletonList(step));
 		var = getVar();
@@ -67,6 +68,7 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 	@Override
 	public boolean updateQuest()
 	{
+		lastQuestState = getQuest().getState(client, configManager);
 		return true;
 	}
 

@@ -25,6 +25,7 @@
 package com.questhelper.steps.widget;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.requirements.Requirement;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -33,7 +34,9 @@ import net.runelite.api.widgets.Widget;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import lombok.experimental.Accessors;
 
+@Accessors(chain=true)
 public class WidgetHighlight extends AbstractWidgetHighlight
 {
 	@Getter
@@ -57,6 +60,9 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 
 
 	protected final boolean checkChildren;
+
+	@Setter
+	protected Requirement requirementToShow;
 
 	public WidgetHighlight(int interfaceID)
 	{
@@ -102,6 +108,14 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		this.checkChildren = checkChildren;
 	}
 
+	public WidgetHighlight(int interfaceID, boolean checkChildren, int itemIdRequirement)
+	{
+		this.interfaceID = interfaceID;
+		this.childChildId = -1;
+		this.itemIdRequirement = itemIdRequirement;
+		this.checkChildren = checkChildren;
+	}
+
 	public WidgetHighlight(int groupId, int childId, String requiredText, boolean checkChildren)
 	{
 		this.interfaceID = groupId << 16 | childId;
@@ -137,12 +151,25 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		return w;
 	}
 
+	/**
+	 * Create a widget highlight that highlights an item inside the shop interface (e.g. general store)
+	 * @param itemIdRequirement The ID of the item to highlight
+	 * @return a fully built WidgetHighlight
+	 */
+	public static WidgetHighlight createShopInventoryItemHighlight(int itemIdRequirement)
+	{
+		var w = new WidgetHighlight(InterfaceID.Shopside.ITEMS, true);
+		w.itemIdRequirement = itemIdRequirement;
+		return w;
+	}
+
 	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{
 		Widget widgetToHighlight = client.getWidget(interfaceID);
 		if (widgetToHighlight == null) return;
 		if (widgetToHighlight.isHidden()) return;
+		if (requirementToShow != null && !requirementToShow.check(client)) return;
 
 		highlightChoices(widgetToHighlight, graphics, questHelper);
 	}

@@ -59,7 +59,12 @@ public enum ConfigKeys
 	BARBARIAN_TRAINING_HARPOONED_FISH("barbariantrainingharpoonedfish"),
 	BARBARIAN_TRAINING_MADE_POTION("barbariantrainingmadepotion"),
 	BARBARIAN_TRAINING_MADE_SPEAR("barbariantrainingmadespear"),
-	BARBARIAN_TRAINING_MADE_HASTA("barbariantrainingmadehasta");
+	BARBARIAN_TRAINING_MADE_HASTA("barbariantrainingmadehasta"),
+
+	// Boaty guide
+	CLAIMED_RUNES("claimed-runes"),
+	SET_BANK_PIN("set-bank-pin")
+	;
 
 	@Getter
 	final String key;

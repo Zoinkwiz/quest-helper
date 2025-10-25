@@ -82,7 +82,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	@Getter
 	@Setter
-	private QuestHelperQuest quest;
+	protected QuestHelperQuest quest;
 
 	@Setter
 	private Injector injector;

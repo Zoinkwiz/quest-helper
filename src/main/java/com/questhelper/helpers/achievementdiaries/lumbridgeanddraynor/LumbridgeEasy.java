@@ -43,6 +43,7 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
+import lombok.Getter;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -57,6 +58,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public class LumbridgeEasy extends ComplexStateQuestHelper
 {
 	// Items required
@@ -256,9 +258,9 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 			"Talk to Hans to learn your age.");
 		hans.addDialogStep("Can you tell me how long I've been here?");
 
-		pickpocket = new NpcStep(this, NpcID.MAN2, new WorldPoint(3215, 3219, 0),
+		pickpocket = new NpcStep(this, NpcID.MAN, new WorldPoint(3215, 3219, 0),
 			"Pickpocket a man or woman infront of Lumbridge Castle.", true);
-		pickpocket.addAlternateNpcs(NpcID.MAN3, NpcID.DSKIN_W_ARDOUNGECITIZEN2, NpcID.AVAN_FITZHARMON_MAN);
+		pickpocket.addAlternateNpcs(NpcID.MAN2, NpcID.MAN3, NpcID.WOMAN, NpcID.WOMAN2, NpcID.WOMAN3);
 
 		chopOak = new ObjectStep(this, ObjectID.OAKTREE, new WorldPoint(3219, 3206, 0),
 			"Chop the oak tree in the Lumbridge Castle Courtyard.", axe);

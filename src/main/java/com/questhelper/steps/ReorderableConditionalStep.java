@@ -79,7 +79,7 @@ public class ReorderableConditionalStep extends ConditionalStep
 		{
 			boolean stepIsLocked = steps.get(conditions).isLocked();
 			// Null condition usually skipped until the end. Here it can be reordered to earlier so we allow it
-			if (conditions == null && !stepIsLocked)
+			if (conditions == null && !stepIsLocked && sidebarOrder != null)
 			{
 				startUpStep(steps.get(null));
 				return;

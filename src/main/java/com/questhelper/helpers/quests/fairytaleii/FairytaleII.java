@@ -266,10 +266,10 @@ public class FairytaleII extends BasicQuestHelper
 			dramenOrLunarStaff.equipped());
 
 		goToHideout = new ObjectStep(this, ObjectID.FAIRYRING_HOMEHUB, new WorldPoint(2412, 4434, 0),
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
 			fairyCertificate);
 		goToHideoutSurface = new ObjectStep(this, ObjectID.FAIRYRING_MINORHUB,
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
 			fairyCertificate);
 		goToHideout.addSubSteps(goToHideoutSurface);
 		//varp 817 2->112->133->31 for each destination
@@ -285,20 +285,20 @@ public class FairytaleII extends BasicQuestHelper
 		pickpocketGodfather.addSubSteps(returnToZanarisFromBase, goToZanarisToPickpocket);
 
 		goToHideoutWithSec = new ObjectStep(this, ObjectID.FAIRYRING_HOMEHUB, new WorldPoint(2412, 4434, 0),
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
 			fairyCertificate, queensSecateurs);
 		goToHideoutSurfaceWithSec = new ObjectStep(this, ObjectID.FAIRYRING_MINORHUB,
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
 			fairyCertificate, queensSecateurs);
 
 		giveSecateursToNuff = new NpcStep(this, NpcID.FAIRY_NUFF2, new WorldPoint(2355, 4455, 0),
 			"Give Fairy Nuff the Queen's Secateurs.", queensSecateurs);
 
 		goToHideoutAfterSec = new ObjectStep(this, ObjectID.FAIRYRING_HOMEHUB, new WorldPoint(2412, 4434, 0),
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
 			fairyCertificate);
 		goToHideoutSurfaceAfterSec = new ObjectStep(this, ObjectID.FAIRYRING_MINORHUB,
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
 			fairyCertificate);
 		talkToNuffAfterSec = new NpcStep(this, NpcID.FAIRY_NUFF2, new WorldPoint(2355, 4455, 0),
 			"Talk to Fairy Nuff.");
@@ -327,7 +327,7 @@ public class FairytaleII extends BasicQuestHelper
 			gorakClawPowder.highlighted(), magicEssenceUnf.highlighted(), herbReq);
 
 		goToHideout2 = new ObjectStep(this, ObjectID.FAIRYRING_MINORHUB,
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(),
 			fairyCertificate, magicEssence);
 		((ObjectStep) goToHideout2).addAlternateObjects(ObjectID.FAIRYRING_HOMEHUB);
 
@@ -336,7 +336,7 @@ public class FairytaleII extends BasicQuestHelper
 		usePotionOnQueen.addIcon(ItemID._3DOSEMAGICESS);
 
 		goToHideoutToFinish = new ObjectStep(this, ObjectID.FAIRYRING_MINORHUB,
-			"Use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(), fairyCertificate);
+			"While carrying Nuff's certificate, use the Fairy Rings to travel to A.I.R., D.L.R., D.J.Q. then A.J.S.", dramenOrLunarStaff.equipped(), fairyCertificate);
 		((ObjectStep) goToHideoutToFinish).addAlternateObjects(ObjectID.FAIRYRING_HOMEHUB);
 		talkToQueen = new NpcStep(this, NpcID.FAIRY_QUEEN2, new WorldPoint(2354, 4455, 0),
 			"Talk to the Fairy Queen.");
@@ -414,7 +414,7 @@ public class FairytaleII extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Making a cure", Arrays.asList(goToCkp, waitForStarFlower, pickStarFlower,
 			goToDir, killGorak, pickupGorakClaw, useStarFlowerOnVial, usePestleOnClaw, usePowderOnPotion,
-			goToHideout2, usePotionOnQueen, talkToQueen), dramenOrLunarStaff, vialOfWater, pestleAndMortar));
+			goToHideout2, usePotionOnQueen, talkToQueen), dramenOrLunarStaff, vialOfWater, pestleAndMortar, fairyCertificate));
 
 		return allSteps;
 	}

@@ -35,6 +35,7 @@ import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.TreeSapling;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.PayOrCut;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.PayOrCompost;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questinfo.HelperConfig;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -148,6 +149,8 @@ public class TreeRun extends ComplexStateQuestHelper
 	PatchStates gnomeStrongholdFruitStates, gnomeVillageStates, brimhavenStates, catherbyStates, lletyaStates, farmingGuildFruitStates;
 
 	PatchStates eastHardwoodStates, middleHardwoodStates, westHardwoodStates, savannahStates;
+
+	Requirement allGrowing;
 
 	ConditionalStep farmingGuildStep, lumbridgeStep, varrockStep, faladorStep, taverleyStep, strongholdStep, villageStep, lletyaStep,
 		catherbyStep, brimhavenStep, fossilIslandStep, savannahStep, nemusRetreatStep;
@@ -356,6 +359,17 @@ public class TreeRun extends ComplexStateQuestHelper
 		middleHardwoodStates = new PatchStates("Fossil Island", "Middle");
 		eastHardwoodStates = new PatchStates("Fossil Island", "East");
 		savannahStates = new PatchStates("Avium Savannah", accessToSavannah);
+
+		allGrowing = and(lumbridgeStates.getIsGrowing(), faladorStates.getIsGrowing(), taverleyStates.getIsGrowing(), varrockStates.getIsGrowing(),
+			gnomeStrongholdTreeStates.getIsGrowing(), catherbyStates.getIsGrowing(), brimhavenStates.getIsGrowing(), gnomeVillageStates.getIsGrowing(),
+			gnomeStrongholdFruitStates.getIsGrowing(),
+			or(not(accessToLletya), lletyaStates.getIsGrowing()),
+			or(not(accessToVarlamore), nemusRetreatStates.getIsGrowing()),
+			or(not(accessToFarmingGuildTreePatch), farmingGuildTreeStates.getIsGrowing()),
+			or(not(accessToFarmingGuildFruitTreePatch), farmingGuildFruitStates.getIsGrowing()),
+			or(not(accessToFossilIsland), and(westHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing(), eastHardwoodStates.getIsGrowing())),
+			or(not(accessToSavannah), savannahStates.getIsGrowing())
+		);
 
 		payingForRemoval = new RuneliteRequirement(configManager, PAY_OR_CUT, PayOrCut.PAY.name());
 		payingForProtection = new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.PAY.name());
@@ -933,61 +947,56 @@ public class TreeRun extends ComplexStateQuestHelper
 	{
 		// IDEA: Can add ID to each step. onLoad and onConfigChanged it checks id ordering.
 		List<PanelDetails> allSteps = new ArrayList<>();
+
+		allSteps.add(new PanelDetails("Wait for Herbs", waitForTree).withHideCondition(nor(allGrowing)));
+
 		PanelDetails farmingGuildPanel = new PanelDetails("Farming Guild", Arrays.asList(farmingGuildTreePatchCheckHealth, farmingGuildTreePatchClear,
 				farmingGuildFruitTreePatchCheckHealth, farmingGuildFruitTreePatchClear)).withId(0);
 		farmingGuildPanel.setLockingStep(farmingGuildStep);
-		allSteps.add(farmingGuildPanel);
 
 		PanelDetails lumbridgePanel = new PanelDetails("Lumbridge", Arrays.asList(lumbridgeTreePatchCheckHealth, lumbridgeTreePatchClear)).withId(1);
 		lumbridgePanel.setLockingStep(lumbridgeStep);
-		allSteps.add(lumbridgePanel);
 
 		PanelDetails faladorPanel = new PanelDetails("Falador", Arrays.asList(faladorTreePatchCheckHealth, faladorTreePatchClear)).withId(2);
 		faladorPanel.setLockingStep(faladorStep);
-		allSteps.add(faladorPanel);
+
 		PanelDetails taverleyPanel = new PanelDetails("Taverley", Arrays.asList(taverleyTreePatchCheckHealth, taverleyTreePatchClear)).withId(3);
 		taverleyPanel.setLockingStep(taverleyStep);
-		allSteps.add(taverleyPanel);
 
 		PanelDetails varrockPanel = new PanelDetails("Varrock", Arrays.asList(varrockTreePatchCheckHealth, varrockTreePatchClear)).withId(4);
 		varrockPanel.setLockingStep(varrockStep);
-		allSteps.add(varrockPanel);
 
 		PanelDetails gnomeStrongholdPanel = new PanelDetails("Gnome Stronghold", Arrays.asList(gnomeStrongholdFruitTreePatchCheckHealth, gnomeVillageFruitTreePatchClear,
 			gnomeStrongholdTreePatchCheckHealth, gnomeStrongholdTreePatchClear)).withId(5);
 		gnomeStrongholdPanel.setLockingStep(strongholdStep);
-		allSteps.add(gnomeStrongholdPanel);
 
 		PanelDetails villagePanel = new PanelDetails("Tree Gnome Village", Arrays.asList(gnomeVillageFruitTreePatchCheckHealth,
 				gnomeVillageFruitTreePatchClear)).withId(6);
 		villagePanel.setLockingStep(villageStep);
-		allSteps.add(villagePanel);
 
 		PanelDetails catherbyPanel = new PanelDetails("Catherby", Arrays.asList(catherbyFruitTreePatchCheckHealth, catherbyFruitTreePatchClear)).withId(7);
 		catherbyPanel.setLockingStep(catherbyStep);
-		allSteps.add(catherbyPanel);
 
 		PanelDetails brimhavenPanel = new PanelDetails("Brimhaven", Arrays.asList(brimhavenFruitTreePatchCheckHealth, brimhavenFruitTreePatchClear)).withId(8);
 		brimhavenPanel.setLockingStep(brimhavenStep);
-		allSteps.add(brimhavenPanel);
 
 		PanelDetails lletyaPanel = new PanelDetails("Lletya", Arrays.asList(lletyaFruitTreePatchCheckHealth, lletyaFruitTreePatchClear)).withId(9);
 		lletyaPanel.setLockingStep(lletyaStep);
-		allSteps.add(lletyaPanel);
 
 		PanelDetails fossilIslandPanel = new PanelDetails("Fossil Island", Arrays.asList(eastHardwoodTreePatchCheckHealth, eastHardwoodTreePatchClear,
 			middleHardwoodTreePatchCheckHealth, middleHardwoodTreePatchClear,
 			westHardwoodTreePatchCheckHealth, westHardwoodTreePatchClear)).withId(10);
 		fossilIslandPanel.setLockingStep(fossilIslandStep);
-		allSteps.add(fossilIslandPanel);
 
 		PanelDetails savannahPanel = new PanelDetails("Avium Savannah", Arrays.asList(savannahCheckHealth, savannahClear, savannahPlant)).withId(11);
 		savannahPanel.setLockingStep(savannahStep);
-		allSteps.add(savannahPanel);
 
 		PanelDetails nemusRetreatPanel = new PanelDetails("Nemus Retreat", Arrays.asList(nemusRetreatTreePatchCheckHealth, nemusRetreatTreePatchClear, nemusRetreatTreePatchPlant)).withId(12);
 		nemusRetreatPanel.setLockingStep(nemusRetreatStep);
-		allSteps.add(nemusRetreatPanel);
+
+		TopLevelPanelDetails farmRunSidebar = new TopLevelPanelDetails("Tree Run", farmingGuildPanel, lumbridgePanel, faladorPanel, taverleyPanel,
+			varrockPanel, gnomeStrongholdPanel, villagePanel, catherbyPanel, brimhavenPanel, lletyaPanel, fossilIslandPanel, savannahPanel, nemusRetreatPanel);
+		allSteps.add(farmRunSidebar);
 
 		return allSteps;
 	}

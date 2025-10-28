@@ -637,6 +637,18 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	/**
+	 * Sets additional options for this requirement.
+	 *
+	 * @param additionalOptions an additional {@link Requirement} to be applied
+	 */
+	public Requirement withAdditionalOptions(Requirement additionalOptions)
+	{
+		ItemRequirement newItem = copy();
+		newItem.additionalOptions = additionalOptions;
+		return newItem;
+	}
+
+	/**
 	 * Retrieves the wiki URL for this item based on the URL suffix or item id.
 	 *
 	 * @return the wiki URL as a {@link String}, or {@code null} if not available

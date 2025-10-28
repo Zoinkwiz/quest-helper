@@ -26,16 +26,21 @@ package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class BasicQuestHelper extends QuestHelper
 {
 	protected Map<Integer, QuestStep> steps;
+
 	protected int var;
 
 	@Getter
@@ -55,12 +60,14 @@ public abstract class BasicQuestHelper extends QuestHelper
 	/**
 	 * Attempt to load steps from the quest if steps have not yet been loaded
 	 */
-	private void tryLoadSteps()
+	private Map<Integer, QuestStep> tryLoadSteps()
 	{
 		if (steps == null)
 		{
 			steps = loadSteps();
 		}
+
+		return steps;
 	}
 
 	@Override
@@ -104,6 +111,12 @@ public abstract class BasicQuestHelper extends QuestHelper
 		return false;
 	}
 
+	@Override
+	public int getVar()
+	{
+		return selectedStateOverride != null ? selectedStateOverride : quest.getVar(client);
+	}
+
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> panelSteps = new ArrayList<>();
@@ -112,4 +125,18 @@ public abstract class BasicQuestHelper extends QuestHelper
 	}
 
 	public abstract Map<Integer, QuestStep> loadSteps();
+
+	public ConditionalStep loadStepsAsConditionalStep()
+	{
+		var mapSteps = tryLoadSteps();
+
+		ConditionalStep conditionalStep = new ConditionalStep(this, new DetailedQuestStep(this, "Quest complete."));
+		// Sorted so we go from highest to lowest state, so higher checks of QuestRequirement work
+		for (Integer questState : mapSteps.keySet().stream().sorted((a, b) -> b - a).collect(Collectors.toList()))
+		{
+			conditionalStep.addStep(new QuestRequirement(getQuest(), questState), mapSteps.get(questState));
+		}
+
+		return conditionalStep;
+	}
 }

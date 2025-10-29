@@ -372,20 +372,6 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
-		{
-			clientThread.invokeLater(() -> {
-				if (config.showRuneliteObjects())
-				{
-					GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
-				}
-				else
-				{
-					GlobalFakeObjects.disableNpcs(runeliteObjectManager);
-				}
-			});
-		}
-
 		if (configEvents.contains(event.getKey()) || event.getKey().contains("skillfilter"))
 		{
 			clientThread.invokeLater(questManager::updateQuestList);
@@ -448,11 +434,6 @@ public class QuestHelperPlugin extends Plugin
 			{
 				questOverlayManager.addDebugOverlay();
 			}
-		}
-		else if (developerMode && commandExecuted.getCommand().equals("reset-cooks-helper"))
-		{
-			String step = (String) (Arrays.stream(commandExecuted.getArguments()).toArray()[0]);
-			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), step).setConfigValue();
 		}
 		else if (developerMode && commandExecuted.getCommand().equals("qh-inv"))
 		{

@@ -273,7 +273,6 @@ import com.questhelper.helpers.skills.mining.Mining;
 import com.questhelper.helpers.skills.woodcutting.Woodcutting;
 import com.questhelper.helpers.skills.woodcutting.WoodcuttingMember;
 import com.questhelper.playerquests.bikeshedder.BikeShedder;
-import com.questhelper.playerquests.cookshelper.CooksHelper;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import lombok.Getter;
@@ -652,7 +651,6 @@ public enum QuestHelperQuest
 	MINING(new Mining(), "Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
 
 	// Player Quests
-	COOKS_HELPER(new CooksHelper(), "Cook's Helper", PlayerQuests.COOKS_HELPER, 4, false),
 	BIKE_SHEDDER(new BikeShedder(), "Bike Shedder", PlayerQuests.BIKE_SHEDDER, 4, true);
 
 	@Getter

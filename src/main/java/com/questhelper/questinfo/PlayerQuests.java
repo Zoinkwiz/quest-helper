@@ -28,8 +28,6 @@ import lombok.Getter;
 
 public enum PlayerQuests
 {
-
-	COOKS_HELPER("cooks_helper"),
 	BIKE_SHEDDER("bike_shedder");
 
 	@Getter

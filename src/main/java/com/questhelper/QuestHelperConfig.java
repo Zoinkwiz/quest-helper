@@ -285,16 +285,6 @@ public interface QuestHelperConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "showRuneliteObjects",
-		name = "Show player-made quest rewards",
-		description = "Choose whether changes from player-made quests are displayed"
-	)
-	default boolean showRuneliteObjects()
-	{
-		return true;
-	}
-
 	@ConfigSection(
 		position = 0,
 		name = "Unfinished quest highlights",

@@ -233,7 +233,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	public boolean hasQuestStateBecomeFinished()
 	{
-		var currentQuestState = quest.getState(client);
+		var currentQuestState = getState(client);
 		if (lastQuestState == null) lastQuestState = currentQuestState;
 		boolean questStateEnteredFinished = currentQuestState == QuestState.FINISHED && lastQuestState != QuestState.FINISHED;
 		lastQuestState = currentQuestState;

@@ -215,6 +215,9 @@ public class HolyGrail extends BasicQuestHelper
 		threeCamelotTele = new ItemRequirement("Camelot Teleports", ItemID.POH_TABLET_CAMELOTTELEPORT, 3);
 		draynorTele = new ItemRequirement("Draynor Teleport Tablet", ItemID.TELETAB_DRAYNOR, 1);
 		draynorTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
+		feldipTeleport = new ItemRequirement("Feldip teleport. Fairy Ring (AKS), Gnome Glider", ItemID.TELEPORTSCROLL_FELDIP);
+		feldipTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
+		feldipTeleport.appendToTooltip("For travel to Fisher King's Realm");
 		ardyTele = new ItemRequirement("Ardougne Teleport", ItemID.POH_TABLET_ARDOUGNETELEPORT);
 		faladorTele = new ItemRequirement("Falador Teleport", ItemID.POH_TABLET_FALADORTELEPORT);
 		sixtyCoins = new ItemRequirement("Coins", ItemCollections.COINS, 60);
@@ -351,7 +354,7 @@ public class HolyGrail extends BasicQuestHelper
 		blowWhistle2 = new ItemStep(this, "Blow the whistle once you are underneath of the tower.", highlightMagicWhistle2);
 
 		openFisherKingCastleDoor = new ObjectStep(this, ObjectID.CASTLEDOUBLEDOORR, "Open the door to the castle and enter.");
-		goUpNewCastleStairs = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2649, 4684, 0), "Go up the stairs to the east.");
+		goUpNewCastleStairs = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2649, 4684, 0), "Return to the castle in Fisher King's Realm. Go up the stairs to the east.");
 		goUpNewCastleLadder = new ObjectStep(this, ObjectID.LADDER, "Climb the ladder on the second floor.");
 		takeGrail = new ItemStep(this, new WorldPoint(2649, 4684, 2), "Pickup the Holy grail.", grail);
 

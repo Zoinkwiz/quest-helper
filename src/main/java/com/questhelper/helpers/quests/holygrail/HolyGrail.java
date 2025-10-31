@@ -78,6 +78,7 @@ public class HolyGrail extends BasicQuestHelper
 	ItemRequirement sixtyCoins;
 	ItemRequirement thirtyCoins;
 	ItemRequirement draynorTele;
+	ItemRequirement feldipTeleport;
 
 	// Mid-quest item requirements
 	ItemRequirement holyTableNapkin;

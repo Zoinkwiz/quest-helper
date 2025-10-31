@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.ragandboneman;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.panel.PanelDetails;
@@ -39,14 +40,12 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
-import com.questhelper.tools.QuestTile;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -58,18 +57,18 @@ import static com.questhelper.requirements.util.LogicHelper.nor;
 public class RagAndBoneManI extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement coins, pots, logs, tinderbox, lightSource, rope;
+	ItemRequirement coins, pots, logs, tinderbox;
 
 	//Items Recommended
-	ItemRequirement spinyHelmet, varrockTeleport, lumbridgeTeleport, digsitePendant,
-		draynorTeleport, karamjaTeleport, dramenStaff;
+	ItemRequirement varrockTeleport, lumbridgeTeleport, digsitePendant,
+		draynorTeleport, karamjaTeleport, dramenStaff, combatGear;
 
 	ItemRequirement jugOfVinegar, jugOfVinegarNeeded, potOfVinegar, potOfVinegarNeeded, potNeeded;
 
 	DetailedQuestStep talkToOddOldMan, killGiantRat, killUnicorn, killBear, killRam, killGoblin, killFrog, killMonkey
 		, killBat, pickupBone;
 
-	DetailedQuestStep addRope, enterSwamp, leaveJunaRoom, enterKaramjaDungeon;
+	DetailedQuestStep enterKaramjaDungeon;
 
 	DetailedQuestStep talkToFortunato, makePotOfVinegar, useBonesOnVinegar;
 
@@ -138,11 +137,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 		potNeeded = new ItemRequirement("Pot", ItemID.POT_EMPTY, 8).alsoCheckBank().highlighted();
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
-		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
 		// Optional items
-		rope = new ItemRequirement("Rope", ItemID.ROPE);
-		spinyHelmet = new ItemRequirement("Spiny helmet", ItemID.WALLBEAST_SPIKE_HELMET);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		digsitePendant = new ItemRequirement("Digsite pendant", ItemCollections.DIGSITE_PENDANTS);
@@ -151,6 +147,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 		karamjaTeleport = new ItemRequirement("Karamja teleport", ItemCollections.AMULET_OF_GLORIES);
 		karamjaTeleport.addAlternates(ItemID.NZONE_TELETAB_BRIMHAVEN, ItemID.TELEPORTSCROLL_TAIBWO);
 		dramenStaff = new ItemRequirement("Dramen staff for fairy rings", ItemID.DRAMEN_STAFF).isNotConsumed();
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		// Quest items
 		jugOfVinegar = new ItemRequirement("Jar of vinegar", ItemID.RAG_VINEGAR);
@@ -250,24 +248,8 @@ public class RagAndBoneManI extends BasicQuestHelper
 			NpcID.GOBLIN_UNARMED_MELEE_IN_6, NpcID.GOBLIN_UNARMED_MELEE_IN_7, NpcID.GOBLIN_UNARMED_MELEE_IN_8, NpcID.GOBLIN_ARMED, NpcID.GOBLIN_HELMET,
 			NpcID.GOBLIN_RED_SOLDIER_1, NpcID.GOBLIN_GREEN_SOLDIER_1);
 
-		addRope = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
-			"Enter the hole to the Lumbridge Swamp caves.", rope.highlighted(), lightSource, tinderbox);
-		addRope.addIcon(ItemID.ROPE);
-		leaveJunaRoom = new ObjectStep(this, ObjectID.TOG_CAVE_UP, new WorldPoint(3219, 9534, 2),
-			"Enter the Lumbridge Swamp caves.");
-		enterSwamp = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
-			"Enter the hole to the Lumbridge Swamp caves.", lightSource, tinderbox);
-		enterSwamp.addSubSteps(addRope, leaveJunaRoom);
-		killFrog = new NpcStep(this, NpcID.MEDIUM_FROG, new WorldPoint(3153, 9558, 0),
-			"Kill a big frog in the south west of the caves. Make sure to RUN between the two marked run tiles to " +
-				"avoid the Wall Beast.",	true);
-		killFrog.addTileMarker(new QuestTile(new WorldPoint(3161, 9574, 0), SpriteID.OptionsIcons.RUNNING));
-		killFrog.addTileMarker(new QuestTile(new WorldPoint(3163, 9574, 0), SpriteID.OptionsIcons.RUNNING));
-
-		ConditionalStep killFrogSteps = new ConditionalStep(this, addRope);
-		killFrogSteps.addStep(inSwamp, killFrog);
-		killFrogSteps.addStep(inJunaRoom, leaveJunaRoom);
-		killFrogSteps.addStep(addedRope, enterSwamp);
+		killFrog = new NpcStep(this, NpcID.MEDIUM_FROG_NODROPS, new WorldPoint(3216, 3182, 0),
+			"Kill a big frog in the Lumbridge Swamp.", true);
 
 		killMonkey = new NpcStep(this, NpcID.MONKEY, new WorldPoint(2886, 3167, 0),
 			"Kill a monkey on Karamja.", true);
@@ -287,7 +269,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		stepsForRagAndBoneManI.put(RagBoneState.RAM_SKULL, killRam);
 
 		stepsForRagAndBoneManI.put(RagBoneState.GOBLIN_SKULL, killGoblin);
-		stepsForRagAndBoneManI.put(RagBoneState.BIG_FROG_LEG, killFrogSteps);
+		stepsForRagAndBoneManI.put(RagBoneState.BIG_FROG_LEG, killFrog);
 		stepsForRagAndBoneManI.put(RagBoneState.MONKEY_PAW, killMonkey);
 		stepsForRagAndBoneManI.put(RagBoneState.GIANT_BAT_WING, killBatSteps);
 
@@ -343,14 +325,13 @@ public class RagAndBoneManI extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins.quantity(8), pots.quantity(8), logs.quantity(8), tinderbox,
-			lightSource, rope.hideConditioned(addedRope));
+		return Arrays.asList(coins.quantity(8), pots.quantity(8), logs.quantity(8), tinderbox);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(varrockTeleport, lumbridgeTeleport, digsitePendant,
+		return Arrays.asList(combatGear, varrockTeleport, lumbridgeTeleport, digsitePendant,
 			draynorTeleport, karamjaTeleport);
 	}
 
@@ -382,8 +363,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToOddOldMan)));
 
 		PanelDetails collectingPanel = new PanelDetails("Collecting bones", Arrays.asList(killGiantRat, killUnicorn, killBear, killRam,
-			killGoblin, enterSwamp, killFrog, killMonkey, killBat, pickupBone), tinderbox, lightSource,
-			rope.hideConditioned(addedRope));
+			killGoblin, killFrog, killMonkey, killBat, pickupBone), List.of(), List.of(combatGear));
 		collectingPanel.setLockingStep(collectBonesSteps);
 		allSteps.add(collectingPanel);
 

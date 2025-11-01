@@ -55,7 +55,6 @@ import java.util.*;
 
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.steps.widget.WidgetHighlight;
-import com.questhelper.tools.ItemRequirementsHelper;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.Tile;
@@ -594,9 +593,9 @@ public class TheFinalDawn extends BasicQuestHelper
 		var givenBoneToDog = new VarbitRequirement(VarbitID.VMQ4, 17, Operation.GREATER_EQUAL);
 		bone = new ItemRequirement("Any type of bone or raw meat", ItemID.BONES);
 		bone.setConditionToHide(givenBoneToDog);
-		bone.addAlternates(ItemRequirementsHelper.AllBones);
-		bone.addAlternates(ItemRequirementsHelper.AllRawMeat);
-		bone.addAlternates(ItemRequirementsHelper.AllCookedMeat);
+		bone.addAlternates(ItemCollections.BONES);
+		bone.addAlternates(ItemCollections.RAW_MEAT);
+		bone.addAlternates(ItemCollections.COOKED_MEAT);
 
 		rangedGear = new ItemRequirement("Ranged/Magic Combat gear", -1, -1).isNotConsumed();
 		rangedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());

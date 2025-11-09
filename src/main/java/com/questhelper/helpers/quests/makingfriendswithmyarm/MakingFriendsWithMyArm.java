@@ -569,7 +569,7 @@ public class MakingFriendsWithMyArm extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(hammer, saw, boltOfCloth, mahogPlanks5, cadavaBerries, combatRangeMelee);
+		return Arrays.asList(hammer, saw, pickaxe, boltOfCloth, mahogPlanks5, cadavaBerries, combatRangeMelee);
 	}
 
 	@Override

@@ -303,7 +303,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		goSearchThievingLever.addSubSteps(goPullThievingLever);
 
 		tryToEnterWitchRoom = new ObjectStep(this, ObjectID.IKOV_FIREWARRIORDOOR, new WorldPoint(2646, 9870, 0),
-			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows.", yewOrBetterBowOrThrownWeapon, iceArrowsEquipped);
+			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows, or thrown weapons with a least one ice arrow equipped.", yewOrBetterBowOrThrownWeapon, iceArrowsEquipped);
 
 		fightLes = new NpcStep(this, NpcID.IKOV_FIREWARRIOR, new WorldPoint(2646, 9866, 0),
 			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBowOrThrownWeapon, iceArrowsEquipped);

@@ -178,7 +178,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		bootsOfLightness = new ItemRequirement("Boots of lightness", ItemID.IKOV_BOOTSOFLIGHTNESS).isNotConsumed();
 		bootsOfLightnessEquipped = bootsOfLightness.equipped();
 		limpwurt20 = new ItemRequirement("Limpwurt (unnoted)", ItemID.LIMPWURT_ROOT, 20);
-		yewOrBetterBowOrThrownWeapon = new ItemRequirement("Yew, magic, dark bow or any thrown weapon", ItemID.YEW_SHORTBOW).isNotConsumed();
+		yewOrBetterBowOrThrownWeapon = new ItemRequirement("Yew, magic or dark bow, or any thrown weapon", ItemID.YEW_SHORTBOW).isNotConsumed();
 		yewOrBetterBowOrThrownWeapon.addAlternates(ItemID.YEW_LONGBOW, ItemID.TRAIL_COMPOSITE_BOW_YEW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I,
 			ItemID.MAGIC_LONGBOW, ItemID.DARKBOW, ItemCollections.DARTS, ItemCollections.THROWING_KNIVES, ItemCollections.THROWNAXES, ItemCollections.OTHER_THROWABLE);
 		yewOrBetterBowOrThrownWeapon.setTooltip("Thrown weapons (darts, knives, thrownaxes, Toktz-xil-ul, and the Toxic blowpipe) can be used with at least one

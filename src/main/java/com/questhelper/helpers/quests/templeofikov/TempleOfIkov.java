@@ -56,7 +56,7 @@ import java.util.*;
 public class TempleOfIkov extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
+	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBowOrThrownWeapon, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
 		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, iceArrowsEquipped;
 
 	Requirement emptyInventorySpot;
@@ -178,9 +178,14 @@ public class TempleOfIkov extends BasicQuestHelper
 		bootsOfLightness = new ItemRequirement("Boots of lightness", ItemID.IKOV_BOOTSOFLIGHTNESS).isNotConsumed();
 		bootsOfLightnessEquipped = bootsOfLightness.equipped();
 		limpwurt20 = new ItemRequirement("Limpwurt (unnoted)", ItemID.LIMPWURT_ROOT, 20);
-		yewOrBetterBow = new ItemRequirement("Yew, magic, or dark bow", ItemID.YEW_SHORTBOW).isNotConsumed();
-		yewOrBetterBow.addAlternates(ItemID.YEW_LONGBOW, ItemID.TRAIL_COMPOSITE_BOW_YEW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I,
-			ItemID.MAGIC_LONGBOW, ItemID.DARKBOW);
+		yewOrBetterBowOrThrownWeapon = new ItemRequirement("Yew, magic or dark bow, or any thrown weapon", ItemID.YEW_SHORTBOW).isNotConsumed();
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemID.YEW_LONGBOW, ItemID.TRAIL_COMPOSITE_BOW_YEW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I,
+		ItemID.MAGIC_LONGBOW, ItemID.DARKBOW);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.DARTS);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.THROWING_KNIVES);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.THROWNAXES);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.OTHER_THROWABLE);
+		yewOrBetterBowOrThrownWeapon.setTooltip("Thrown weapons (darts, knives, thrownaxes, Toktz-xil-ul, and the Toxic blowpipe) can be used with at least one ice arrow equipped (it will not be lost). If doing this to circumvent the Ranged level requirement, your damage will be poor, so be sure to bring food and consider bringing rings of recoil.");
 		knife = new ItemRequirement("Knife to get the boots of lightness", ItemID.KNIFE).isNotConsumed();
 		lightSource = new ItemRequirement("A light source to get the boots of lightness", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
@@ -256,20 +261,20 @@ public class TempleOfIkov extends BasicQuestHelper
 		talkToLucien.addDialogSteps("I'm a mighty hero!", "That sounds like a laugh!");
 		prepare = new DetailedQuestStep(this,
 			"Get your weight below 0kg. You can get boots of lightness from the Temple of Ikov north of East Ardougne for -4.5kg.",
-			pendantOfLucienEquipped, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, limpwurt20, yewOrBetterBowOrThrownWeapon);
 
 		prepareBelow0 = new DetailedQuestStep(this,
 			"Get your weight below 0kg.",
-			pendantOfLucienEquipped, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, limpwurt20, yewOrBetterBowOrThrownWeapon);
 
 		prepare.addSubSteps(prepareBelow0);
 
 		enterDungeonForBoots = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2677, 3405, 0),
 			"Enter the Temple of Ikov. You can get Boots of Lightness inside to get -4.5kg.",
-			pendantOfLucienEquipped, knife, lightSource, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, knife, lightSource, limpwurt20, yewOrBetterBowOrThrownWeapon);
 
 		enterDungeon = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2677, 3405, 0),
-			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, yewOrBetterBow, limpwurt20);
+			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, yewOrBetterBowOrThrownWeapon, limpwurt20);
 
 		enterDungeon.addSubSteps(enterDungeonForBoots);
 
@@ -300,10 +305,10 @@ public class TempleOfIkov extends BasicQuestHelper
 		goSearchThievingLever.addSubSteps(goPullThievingLever);
 
 		tryToEnterWitchRoom = new ObjectStep(this, ObjectID.IKOV_FIREWARRIORDOOR, new WorldPoint(2646, 9870, 0),
-			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows.", yewOrBetterBow, iceArrowsEquipped);
+			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows, or thrown weapons with a least one ice arrow equipped.", yewOrBetterBowOrThrownWeapon, iceArrowsEquipped);
 
 		fightLes = new NpcStep(this, NpcID.IKOV_FIREWARRIOR, new WorldPoint(2646, 9866, 0),
-			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBow, iceArrowsEquipped);
+			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBowOrThrownWeapon, iceArrowsEquipped);
 
 		enterDungeonKilledLes = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2677, 3405, 0),
 			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, limpwurt20);
@@ -351,7 +356,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(yewOrBetterBow);
+		reqs.add(yewOrBetterBowOrThrownWeapon);
 		reqs.add(limpwurt20);
 		reqs.add(knife);
 		reqs.add(lightSource);
@@ -405,7 +410,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeat Lesarkus", 
 			Arrays.asList(prepare, enterDungeon, goDownToBoots, getBoots, goUpFromBoots, pickUpLever, useLeverOnHole,
 				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever,
-				tryToEnterWitchRoom, fightLes), pendantOfLucien, yewOrBetterBow, knife, lightSource, limpwurt20));
+				tryToEnterWitchRoom, fightLes), pendantOfLucien, yewOrBetterBowOrThrownWeapon, knife, lightSource, limpwurt20));
 		allSteps.add(new PanelDetails("Explore deeper", Arrays.asList(enterLesDoor, giveWineldaLimps, pickUpKey, pushWall, makeChoice, returnToLucien)));
 		return allSteps;
 	}

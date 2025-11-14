@@ -256,7 +256,7 @@ public enum ItemCollections
 
 	OTHER_THROWABLE("Other Throwable", ImmutableList.of(
 		ItemID.TZHAAR_THROWINGRING,
-		ItemID.TOXIC_BLOWPIPE,
+		ItemID.TOXIC_BLOWPIPE
 	)),
 
 	SWORDS("Swords", ImmutableList.of(

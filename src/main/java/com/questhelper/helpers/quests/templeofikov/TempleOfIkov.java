@@ -180,7 +180,11 @@ public class TempleOfIkov extends BasicQuestHelper
 		limpwurt20 = new ItemRequirement("Limpwurt (unnoted)", ItemID.LIMPWURT_ROOT, 20);
 		yewOrBetterBowOrThrownWeapon = new ItemRequirement("Yew, magic or dark bow, or any thrown weapon", ItemID.YEW_SHORTBOW).isNotConsumed();
 		yewOrBetterBowOrThrownWeapon.addAlternates(ItemID.YEW_LONGBOW, ItemID.TRAIL_COMPOSITE_BOW_YEW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I,
-		ItemID.MAGIC_LONGBOW, ItemID.DARKBOW, ItemCollections.DARTS, ItemCollections.THROWING_KNIVES, ItemCollections.THROWNAXES, ItemCollections.OTHER_THROWABLE);
+		ItemID.MAGIC_LONGBOW, ItemID.DARKBOW);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.DARTS);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.THROWING_KNIVES);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.THROWNAXES);
+		yewOrBetterBowOrThrownWeapon.addAlternates(ItemCollections.OTHER_THROWABLE);
 		yewOrBetterBowOrThrownWeapon.setTooltip("Thrown weapons (darts, knives, thrownaxes, Toktz-xil-ul, and the Toxic blowpipe) can be used with at least one ice arrow equipped (it will not be lost). If doing this to circumvent the Ranged level requirement, your damage will be poor, so be sure to bring food and consider bringing rings of recoil.");
 		knife = new ItemRequirement("Knife to get the boots of lightness", ItemID.KNIFE).isNotConsumed();
 		lightSource = new ItemRequirement("A light source to get the boots of lightness", ItemCollections.LIGHT_SOURCES).isNotConsumed();

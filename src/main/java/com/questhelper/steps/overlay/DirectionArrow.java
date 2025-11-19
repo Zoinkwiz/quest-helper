@@ -95,17 +95,35 @@ public class DirectionArrow
 	{
 		var maxMinimapDrawDistance = getMaxMinimapDrawDistance(client);
 		Player player = client.getLocalPlayer();
-		if (player == null)
+		if (player == null) return;
+
+		var playerLp = player.getLocalLocation();
+		var playerWorldView = client.getWorldView(playerLp.getWorldView());
+
+		WorldPoint playerRealLocation;
+
+		// If in a non-top level WorldView (a boat) need to translate
+		if (playerWorldView != null && !playerWorldView.isTopLevel())
 		{
-			return;
+			// Currently the entity should be the player's boat only?
+			var playerWorldEntity = client.getTopLevelWorldView()
+				.worldEntities()
+				.byIndex(playerWorldView.getId());
+
+			if (playerWorldEntity == null)
+			{
+				return;
+			}
+
+			var mainLocal = playerWorldEntity.transformToMainWorld(playerLp);
+			playerRealLocation = WorldPoint.fromLocal(client.getTopLevelWorldView(),
+				mainLocal.getX(), mainLocal.getY(), playerWorldView.getPlane());
+		}
+		else
+		{
+			playerRealLocation = WorldPoint.fromLocalInstance(client, playerLp);
 		}
 
-		if (worldPoint == null)
-		{
-			return;
-		}
-
-		WorldPoint playerRealLocation = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
 		if (playerRealLocation == null) return;
 
 		if (worldPoint.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)

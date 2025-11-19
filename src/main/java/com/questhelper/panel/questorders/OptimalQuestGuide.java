@@ -104,6 +104,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.A_SOULS_BANE,
 		QuestHelperQuest.ENTER_THE_ABYSS,
 		QuestHelperQuest.X_MARKS_THE_SPOT,
+		QuestHelperQuest.PANDEMONIUM,
 		QuestHelperQuest.PIRATES_TREASURE,
 		QuestHelperQuest.CLIENT_OF_KOUREND,
 		QuestHelperQuest.THE_QUEEN_OF_THIEVES,
@@ -262,7 +263,6 @@ public class OptimalQuestGuide
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Quest Guide
-		QuestHelperQuest.PANDEMONIUM,
 		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.BARBARIAN_TRAINING,
 		QuestHelperQuest.BEAR_YOUR_SOUL,

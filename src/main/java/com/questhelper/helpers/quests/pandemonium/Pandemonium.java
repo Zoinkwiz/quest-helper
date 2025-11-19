@@ -52,27 +52,20 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 
 public class Pandemonium extends BasicQuestHelper
 {
-	NpcStep talkToWill, completeInterview, boardWAShip, explainJob, explainJob2, learnWhereYouAre, learnWhoWAare, talkToRibs, findLocationWA, enterShipyard, informAboutShip, showCup, getLogBook, getNewJob, talkToJim, meetGrog, finishQuest;
-	ObjectStep buildCargoHold, embarkShipSY, disembarkShipSY, leaveShipyard, embarkShipP, disembarkShipPS, embarkShipPS, deliverCargo, disembarkShipP;
-	ItemStep getHammer, getSaw;
+	NpcStep getToPandemonium, talkToWill, completeInterview, boardWAShip, explainJob, explainJob2, learnWhereYouAre, learnWhoWAare, talkToRibs, findLocationWA, enterShipyard, informAboutShip, showCup, getLogBook, getNewJob, talkToJim, meetGrog, finishQuest;
+	ObjectStep buildCargoHold, embarkShipSY, disembarkShipSY, leaveShipyard, embarkShipP, dropCargoInCargoHold, disembarkShipPS, embarkShipPS, deliverCargo, disembarkShipP, getHammer, getSaw;
 	TileStep dockAtPortSarim, dockAtPandemonium;
-	DetailedQuestStep navigateShip, takeHelm, takeHelm2, takeHelm3, raiseSails, raiseSails2, raiseSails3, salvageShipwreck, sailToPortSarim, pickupCargo, dropCargoInCargoHold, pickupCargoShip, sailToPandemonium, letGoOfHelm;
-	Requirement onboardShip, onboardShipBuild, takenHelm, setSails, sailSpeed, gustOfWind, sailing, atShipwreck, canSalvage, hammerAndSaw, atShipyard, notAtShipyard, notOnboardShipBuild, atPortSarimDock, atPandemoniumDock, holdingCargo, notHoldingCargo, notOnboardShip, holdingCargoOnShip, holdingCargoNotOnShip;
+	Zone pandemonium, pandemoniumDockZone, portSarimDockZone, shipWreckZone;
+	DetailedQuestStep navigateShip, takeHelm, takeHelm2, takeHelm3, raiseSails, raiseSails2, raiseSails3, salvageShipwreck, sailToPortSarim, pickupCargo, pickupCargoShip, sailToPandemonium, letGoOfHelm;
+	Requirement onPandemonium, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, notAtShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, notHoldingCargo, cargoInCargoHold, notOnboardShip, holdingCargoOnShip, holdingCargoNotOnShip;
 	ItemRequirement hammer, saw;
-
-	private static final class AlphaNpcID
-	{
-		public static final int WILL = 122;
-		public static final int ANNE = 14177;
-		public static final int STEVE = 14181;
-		public static final int GROG = 14188;
-		public static final int RIBS = 14183;
-		public static final int JIM = 14185;
-	}
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -88,31 +81,44 @@ public class Pandemonium extends BasicQuestHelper
 		steps.put(6, explainJob);
 		ConditionalStep cNavigateToShipwreck = new ConditionalStep(this, boardWAShip);
 		cNavigateToShipwreck.addStep(canSalvage, salvageShipwreck);
-		cNavigateToShipwreck.addStep(atShipwreck, explainJob2);
-		cNavigateToShipwreck.addStep(sailing, navigateShip);
-		cNavigateToShipwreck.addStep(takenHelm, raiseSails);
-		cNavigateToShipwreck.addStep(onboardShip, takeHelm);
+		cNavigateToShipwreck.addStep(notAtShipwreck, explainJob2);
+		cNavigateToShipwreck.addStep(new Conditions(LogicType.AND, notAtShipwreck, sailing), navigateShip);
+		cNavigateToShipwreck.addStep(new Conditions(LogicType.AND, notAtShipwreck, takenHelm), raiseSails);
+		cNavigateToShipwreck.addStep(new Conditions(LogicType.AND, notAtShipwreck, onboardShip), takeHelm);
 		steps.put(8, cNavigateToShipwreck);
 		steps.put(10, cNavigateToShipwreck);
 		steps.put(12, cNavigateToShipwreck);
 		steps.put(14, cNavigateToShipwreck);
 
-		steps.put(16, learnWhereYouAre);
-		steps.put(18, learnWhoWAare);
-		steps.put(20, talkToRibs);
-		steps.put(22, findLocationWA);
-		steps.put(24, informAboutShip);
-		steps.put(26, showCup);
+
+		ConditionalStep cLearnWhereYouAre = new ConditionalStep(this, getToPandemonium);
+		cLearnWhereYouAre.addStep(onPandemonium, learnWhereYouAre);
+		steps.put(16, cLearnWhereYouAre);
+		ConditionalStep cLearnWhoWAare = new ConditionalStep(this, getToPandemonium);
+		cLearnWhoWAare.addStep(onPandemonium, learnWhoWAare);
+		steps.put(18, cLearnWhoWAare);
+		ConditionalStep cTalkToRibs = new ConditionalStep(this, getToPandemonium);
+		cTalkToRibs.addStep(onPandemonium, talkToRibs);
+		steps.put(20, cTalkToRibs);
+		ConditionalStep cFindLocationWA = new ConditionalStep(this, getToPandemonium);
+		cFindLocationWA.addStep(onPandemonium, findLocationWA);
+		steps.put(22, cFindLocationWA);
+		ConditionalStep cInformAboutShip = new ConditionalStep(this, getToPandemonium);
+		cInformAboutShip.addStep(onPandemonium, informAboutShip);
+		steps.put(24, cInformAboutShip);
+		ConditionalStep cShowCup = new ConditionalStep(this, getToPandemonium);
+		cShowCup.addStep(onPandemonium, showCup);
+		steps.put(26, cShowCup);
 
 		ConditionalStep cBuildCargoHold = new ConditionalStep(this, enterShipyard);
-		cBuildCargoHold.addStep(onboardShipBuild, buildCargoHold);
-		cBuildCargoHold.addStep(hammerAndSaw, embarkShipSY);
-		cBuildCargoHold.addStep(saw, getHammer);
+		cBuildCargoHold.addStep(new Conditions(LogicType.AND, atShipyard, onboardShip), buildCargoHold);
+		cBuildCargoHold.addStep(new Conditions(LogicType.AND, atShipyard, hammerAndSaw), embarkShipSY);
+		cBuildCargoHold.addStep(new Conditions(LogicType.AND, atShipyard, saw), getHammer);
 		cBuildCargoHold.addStep(atShipyard, getSaw);
 		steps.put(28, cBuildCargoHold);
 		ConditionalStep cGetLogBook = new ConditionalStep(this, disembarkShipSY);
 		cGetLogBook.addStep(notAtShipyard, getLogBook);
-		cGetLogBook.addStep(notOnboardShipBuild, leaveShipyard);
+		cGetLogBook.addStep(notOnboardShip, leaveShipyard);
 		steps.put(30, cGetLogBook); // Jim
 
 		steps.put(32, getNewJob); // Jim
@@ -123,25 +129,25 @@ public class Pandemonium extends BasicQuestHelper
 		cSailToPortSarim.addStep(onboardShip, takeHelm2);
 		steps.put(36, cSailToPortSarim);
 		ConditionalStep cCheckPortMaster = new ConditionalStep(this, sailToPortSarim);
-		cCheckPortMaster.addStep(holdingCargo, embarkShipPS);
-		cCheckPortMaster.addStep(notOnboardShip, pickupCargo);
-		cCheckPortMaster.addStep(takenHelm, letGoOfHelm);
-		cCheckPortMaster.addStep(onboardShip, disembarkShipPS);
-		cCheckPortMaster.addStep(new Conditions(sailing, atPortSarimDock), dockAtPortSarim);
+		cCheckPortMaster.addStep(new Conditions(holdingCargo, notOnboardShip), embarkShipPS);
+		cCheckPortMaster.addStep(new Conditions(cargoNotPickedUp, notOnboardShip), pickupCargo);
+		cCheckPortMaster.addStep(new Conditions(cargoNotPickedUp, takenHelm), letGoOfHelm);
+		cCheckPortMaster.addStep(new Conditions(cargoNotPickedUp, onboardShip), disembarkShipPS);
+		cCheckPortMaster.addStep(new Conditions(cargoNotPickedUp, sailing, atPortSarimDock), dockAtPortSarim);
 		steps.put(38, cCheckPortMaster);
-		ConditionalStep cSailToPandemonium = new ConditionalStep(this, pickupCargo);
-		cSailToPandemonium.addStep(sailing, sailToPandemonium);
-		cSailToPandemonium.addStep(takenHelm, raiseSails3);
-		cSailToPandemonium.addStep(notHoldingCargo, takeHelm3);
-		cSailToPandemonium.addStep(onboardShip, dropCargoInCargoHold);
+		ConditionalStep cSailToPandemonium = new ConditionalStep(this, cCheckPortMaster);
+		cSailToPandemonium.addStep(new Conditions(new Conditions(LogicType.NAND, atPandemoniumDock), cargoInCargoHold, onboardShip, takenHelm, sailing), sailToPandemonium);
+		cSailToPandemonium.addStep(new Conditions(new Conditions(LogicType.NAND, atPandemoniumDock), cargoInCargoHold, onboardShip, takenHelm), raiseSails3);
+		cSailToPandemonium.addStep(new Conditions(new Conditions(LogicType.NAND, atPandemoniumDock), cargoInCargoHold, onboardShip), takeHelm3);
+		cSailToPandemonium.addStep(new Conditions(new Conditions(LogicType.NAND, atPandemoniumDock), cargoPickedUp, holdingCargo, onboardShip), dropCargoInCargoHold);
 		steps.put(40, cSailToPandemonium);
 
-		ConditionalStep cDeliverCargo = new ConditionalStep(this, sailToPandemonium);
-		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, holdingCargoNotOnShip), deliverCargo);
-		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, holdingCargoOnShip), disembarkShipP);
-		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, takenHelm), letGoOfHelm);
-		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, onboardShip), pickupCargoShip);
-		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, sailing), dockAtPandemonium);
+		ConditionalStep cDeliverCargo = new ConditionalStep(this, cSailToPandemonium);
+		cDeliverCargo.addStep(new Conditions(notOnboardShip, holdingCargo), deliverCargo);
+		cDeliverCargo.addStep(new Conditions(onboardShip, holdingCargo), disembarkShipP);
+		cDeliverCargo.addStep(new Conditions(onboardShip, cargoInCargoHold), pickupCargoShip);
+		cDeliverCargo.addStep(new Conditions(cargoInCargoHold, takenHelm), letGoOfHelm);
+		cDeliverCargo.addStep(new Conditions(cargoInCargoHold, sailing), dockAtPandemonium);
 		steps.put(42, cDeliverCargo);
 		steps.put(44, talkToJim);
 		steps.put(46, meetGrog);
@@ -152,33 +158,36 @@ public class Pandemonium extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		onboardShip = new VarbitRequirement(16342, 1);
+		onboardShip = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
 		notOnboardShip = new Conditions(LogicType.NAND, onboardShip);
-		takenHelm = new VarbitRequirement(16343, 3);
-		setSails = new VarbitRequirement(16562, 1);
-		sailSpeed = new VarbitRequirement(16563, 1); // Unused, checks the sail speed
-		gustOfWind = new VarbitRequirement(14192, 1); // Unused, can be used to see if there is a gust of wind in the sails
-		canSalvage = new Conditions(LogicType.AND, atShipwreck, new VarbitRequirement(16187, 12, Operation.GREATER_EQUAL)); // At wreck, with explanation about salvaging
+		takenHelm = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_PLAYER_AT_HELM, 1);
+		setSails = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_BOAT_MOVE_MODE, 0, Operation.GREATER);
+		canSalvage = new Conditions(LogicType.AND, atShipwreck, new VarbitRequirement(VarbitID.SAILING_INTRO, 12, Operation.GREATER_EQUAL)); // At wreck, with explanation about salvaging
 		sailing = new Conditions(LogicType.AND, takenHelm, setSails, onboardShip);
 
-		atShipyard = new VarbitRequirement(16183, 1);
-		onboardShipBuild = new VarbitRequirement(16345, 1);
-		notOnboardShipBuild = new Conditions(LogicType.NAND, onboardShipBuild);
+		atShipyard = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_SHIPYARD_MODE, 1);
 		notAtShipyard = new Conditions(LogicType.NAND, atShipyard);
 
-		holdingCargo = new VarbitRequirement(16547, 1); //Other contenders: 17090, 17224
+		holdingCargo = new VarbitRequirement(VarbitID.SAILING_CARRYING_CARGO, 1);
 		notHoldingCargo = new Conditions(LogicType.NAND, holdingCargo);
-		holdingCargoOnShip = new Conditions(LogicType.AND, holdingCargo, onboardShip);
-		holdingCargoNotOnShip = new Conditions(LogicType.AND, holdingCargo, notOnboardShip);
+
+		cargoPickedUp = new VarbitRequirement(VarbitID.PORT_TASK_SLOT_0_CARGO_TAKEN, 1);
+		cargoNotPickedUp = new Conditions(LogicType.NAND, cargoPickedUp);
+		cargoInCargoHold = new Conditions(cargoPickedUp, notHoldingCargo);
 	}
 
 	@Override
 	protected void setupZones()
 	{
-		//Note: These don't seem to work when sailing. (Different plane?)
-		atShipwreck = new ZoneRequirement(new Zone(new WorldPoint(3040, 3050, 0), new WorldPoint(3000, 3052, 0)));
-		atPandemoniumDock = new ZoneRequirement(new Zone(new WorldPoint(3065, 2974, 0), new WorldPoint(3084, 2998, 0)));
-		atPortSarimDock = new ZoneRequirement(new Zone(new WorldPoint(3045, 3183, 0), new WorldPoint(3061, 3208, 0)));
+		shipWreckZone = new Zone(new WorldPoint(3018, 3030, 0), new WorldPoint(3040, 3052, 0));
+		pandemonium = new Zone(new WorldPoint(3069, 3005, 0), new WorldPoint(3028, 2963, 0));
+		pandemoniumDockZone = new Zone(new WorldPoint(3065, 2974, 0), new WorldPoint(3084, 2998, 0));
+		portSarimDockZone = new Zone(new WorldPoint(3045, 3183, 0), new WorldPoint(3061, 3208, 0));
+		atShipwreck = new ZoneRequirement(shipWreckZone);
+		notAtShipwreck = new Conditions(LogicType.NAND, atShipwreck);
+		onPandemonium = new ZoneRequirement(pandemonium);
+		atPandemoniumDock = new ZoneRequirement(pandemoniumDockZone);
+		atPortSarimDock = new ZoneRequirement(portSarimDockZone);
 	}
 
 	@Override
@@ -193,66 +202,76 @@ public class Pandemonium extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		//guardrails
+		getToPandemonium = new NpcStep(this, new int[]{NpcID.SEAMAN_LORRIS, NpcID.CAPTAIN_TOBIAS, NpcID.SEAMAN_THRESNOR}, new WorldPoint(3027, 3218, 0), "Get back to the Pandemonium.", true);
+		getToPandemonium.addDialogStep("Yes please.");
+		getToPandemonium.addDialogStep("I'd like to go to the Pandemonium.");
+		getToPandemonium.setHighlightZone(pandemonium);
+
+
 		//You got the Job!
-		talkToWill = new NpcStep(this, new int[]{AlphaNpcID.WILL, AlphaNpcID.ANNE}, new WorldPoint(3025, 3208, 0), "Talk to Will or Anne to start the quest", true);
+		talkToWill = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Talk to Will or Anne to start the quest", true);
 		talkToWill.addDialogStep("Yes");
-		completeInterview = new NpcStep(this, new int[]{AlphaNpcID.WILL, AlphaNpcID.ANNE}, new WorldPoint(3025, 3208, 0), "Finish your interview with Will and Anne", true);
-		boardWAShip = new NpcStep(this, new int[]{AlphaNpcID.WILL, AlphaNpcID.ANNE}, new WorldPoint(3025, 3208, 0), "Board the ship.", true);
+		completeInterview = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Finish your interview with Will and Anne", true);
+		boardWAShip = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Board the ship.", true);
 		boardWAShip.addDialogStep(Pattern.compile("(.*I guess.*)|(Okay.)"));
 
 		// What is the job?
-		explainJob = new NpcStep(this, new int[]{AlphaNpcID.WILL, AlphaNpcID.ANNE}, new WorldPoint(3056, 3190, 0), "Listen to the job explanation.", true);
+		explainJob = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_VIS, NpcID.SAILING_INTRO_ANNE_VIS}, new WorldPoint(3056, 3190, 0), "Listen to the job explanation.", true);
 		takeHelm = new DetailedQuestStep(this, "Navigate using the helm.");
 		raiseSails = new DetailedQuestStep(this, "Raise your sails.");
 		navigateShip = new DetailedQuestStep(this, "Sail south!");
-		explainJob2 = new NpcStep(this, new int[]{AlphaNpcID.WILL, AlphaNpcID.ANNE}, new WorldPoint(3027, 3048, 0), "Learn about the other part of your job.", true);
+		navigateShip.setHighlightZone(shipWreckZone);
+		explainJob2 = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_VIS, NpcID.SAILING_INTRO_ANNE_VIS}, new WorldPoint(3027, 3048, 0), "Learn about the other part of your job.", true);
 		salvageShipwreck = new DetailedQuestStep(this, "Deploy the Salvaging Hook.");
 
 		// You lost the Job!
-		learnWhereYouAre = new NpcStep(this, AlphaNpcID.STEVE, new WorldPoint(3050, 2966, 0), "Learn where you are.", true);
-		learnWhoWAare = new NpcStep(this, AlphaNpcID.STEVE, new WorldPoint(3050, 2966, 0), "Learn who Will and Anne are.", true);
-		talkToRibs = new NpcStep(this, AlphaNpcID.RIBS, new WorldPoint(3051, 2973, 0), "Talk to Ribs to learn about the map.", true);
+		learnWhereYouAre = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Learn where you are.", true);
+		learnWhoWAare = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Learn who Will and Anne are.", true);
+		talkToRibs = new NpcStep(this, NpcID.SAILING_INTRO_RIBS, new WorldPoint(3051, 2973, 0), "Talk to Ribs to learn about the map.", true);
 		talkToRibs.addDialogStep("No, tell me about him.");
-		findLocationWA = new NpcStep(this, AlphaNpcID.STEVE, new WorldPoint(3050, 2966, 0), "Ask Steve about Will and Anne's location.", true);
+		findLocationWA = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Ask Steve about Will and Anne's location.", true);
 		findLocationWA.addDialogStep("About Will and Anne...");
 		findLocationWA.addDialogStep("Do you have any idea where Will and Anne might have gone?");
-		informAboutShip = new NpcStep(this, AlphaNpcID.JIM, new WorldPoint(3059, 2979, 0), "Ask Jim about getting a boat.", true);
-		showCup = new NpcStep(this, AlphaNpcID.JIM, new WorldPoint(3059, 2979, 0), "Hand over the cup to Jim and retrieve your mighty vessel!", true);
+		informAboutShip = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Ask Jim about getting a boat.", true);
+		showCup = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Hand over the cup to Jim and receive your mighty vessel!", true);
 
 		// Your mighty vessel
-		enterShipyard = new NpcStep(this, AlphaNpcID.JIM, new WorldPoint(3059, 2979, 0), "Enter the shipyard.");
-		getHammer = new ItemStep(this, new WorldPoint(1364, 4736, 0), "Pick up the Hammer.", hammer);
-		getSaw = new ItemStep(this, new WorldPoint(1364, 4735, 0), "Pick up the Saw.", saw);
-		embarkShipSY = new ObjectStep(this, 56429, "Board your vessel.");
-		buildCargoHold = new ObjectStep(this, 56421, "Build the Cargo Hold.");
-		disembarkShipSY = new ObjectStep(this, 56429, "Disembark your vessel.");
-		leaveShipyard = new ObjectStep(this, 56413, "Leave the shipyard using the portal.");
-		getLogBook = new NpcStep(this, AlphaNpcID.JIM, new WorldPoint(3059, 2979, 0), "Get Jim to give you a log book.");
+		enterShipyard = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Enter the shipyard.");
+		getHammer = new ObjectStep(this, 59732, "Pick up a Hammer.");
+		getSaw = new ObjectStep(this, 59733, "Pick up a Saw.");
+		embarkShipSY = new ObjectStep(this, 59829, "Board your vessel.");
+		buildCargoHold = new ObjectStep(this, 59663, "Build the Cargo Hold.");
+		disembarkShipSY = new ObjectStep(this, 59720, "Disembark your vessel.");
+		leaveShipyard = new ObjectStep(this, 59722, "Leave the shipyard using the portal.");
+		getLogBook = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Get Jim to give you a log book.");
 
 		// You got the job!
-		getNewJob = new NpcStep(this, AlphaNpcID.JIM, new WorldPoint(3059, 2979, 0), "Get Jim to give you a new job.");
-		embarkShipP = new ObjectStep(this, 56429, new WorldPoint(3070, 2987, 0), "Board your vessel.");
+		getNewJob = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Get Jim to give you a new job.");
+		embarkShipP = new ObjectStep(this, 59832, new WorldPoint(3070, 2987, 0), "Board your vessel.");
 		takeHelm2 = new DetailedQuestStep(this, "Navigate using the helm.");
 		raiseSails2 = new DetailedQuestStep(this, "Raise your sails.");
 		sailToPortSarim = new DetailedQuestStep(this, "Sail to Port Sarim.");
+		sailToPortSarim.setHighlightZone(portSarimDockZone);
 		dockAtPortSarim = new TileStep(this, new WorldPoint(3048, 3187, 0), "Dock at the Port Sarim buoy.");
 		letGoOfHelm = new DetailedQuestStep(this, "Let go of the helm.");
-		disembarkShipPS = new ObjectStep(this, 56429, new WorldPoint(3151, 3193, 0), "Leave your vessel.");
+		disembarkShipPS = new ObjectStep(this, 59831, new WorldPoint(3151, 3193, 0), "Leave your vessel.");
 
-		pickupCargo = new ObjectStep(this, 56866, new WorldPoint(3028, 3194, 0), "Pick up the cargo from the table.");
-		embarkShipPS = new ObjectStep(this, 56429, new WorldPoint(3151, 3193, 0), "Board your vessel.");
-		dropCargoInCargoHold = new DetailedQuestStep(this, "Drop your crate in your cargo hold.");
+		pickupCargo = new ObjectStep(this, 60320, new WorldPoint(3028, 3194, 0), "Pick up the cargo from the table.");
+		embarkShipPS = new ObjectStep(this, 59832, new WorldPoint(3051, 3193, 0), "Board your vessel.");
+		dropCargoInCargoHold = new ObjectStep(this, 60245, "Drop your crate in your cargo hold.");
 		takeHelm3 = new DetailedQuestStep(this, "Navigate using the helm.");
 		raiseSails3 = new DetailedQuestStep(this, "Raise your sails.");
 		sailToPandemonium = new DetailedQuestStep(this, "Sail to the Pandemonium.");
+		sailToPandemonium.setHighlightZone(pandemoniumDockZone);
 		dockAtPandemonium = new TileStep(this, new WorldPoint(3075, 2994, 0), "Dock at the Pandemonium buoy.");
 		pickupCargoShip = new DetailedQuestStep(this, "Pick up your cargo from your ship.");
-		disembarkShipP = new ObjectStep(this, 56429, new WorldPoint(3070, 2987, 0), "Leave your vessel.");
-		deliverCargo = new ObjectStep(this, 56872, new WorldPoint(3061, 2985, 0), "Deliver the cargo at the table.");
+		disembarkShipP = new ObjectStep(this, 59831, new WorldPoint(3070, 2987, 0), "Leave your vessel.");
+		deliverCargo = new ObjectStep(this, 60320, new WorldPoint(3061, 2985, 0), "Deliver the cargo at the table.");
 		//Finish up
-		talkToJim = new NpcStep(this, AlphaNpcID.JIM, new WorldPoint(3059, 2979, 0), "Tell Jim about your delivery.");
-		meetGrog = new NpcStep(this, new int[]{AlphaNpcID.STEVE, AlphaNpcID.GROG}, new WorldPoint(3050, 2966, 0), "Meet Grog at the bar.", true);
-		finishQuest = new NpcStep(this, AlphaNpcID.STEVE, new WorldPoint(3050, 2966, 0), "Talk to Steve to finish the quest.");
+		talkToJim = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Tell Jim about your delivery.");
+		meetGrog = new NpcStep(this, new int[]{NpcID.STEVE_BEANIE, NpcID.SAILING_INTRO_GROG_VIS}, new WorldPoint(3050, 2966, 0), "Meet Grog at the bar.", true);
+		finishQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to Steve to finish the quest.");
 	}
 
 	@Override
@@ -270,7 +289,7 @@ public class Pandemonium extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return new ArrayList<>();
+		return Arrays.asList(new ExperienceReward(Skill.SAILING, 300));
 	}
 
 	@Override
@@ -282,7 +301,7 @@ public class Pandemonium extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(new UnlockReward("Access to the Sailing Skill"), new UnlockReward("Access to Pandemonium"), new UnlockReward("300 Sailing XP"), new UnlockReward("Your very own mighty ship!"));
+		return Arrays.asList(new UnlockReward("Access to the Sailing Skill"), new UnlockReward("Access to Pandemonium"), new UnlockReward("Your very own mighty ship!"));
 	}
 
 	@Override

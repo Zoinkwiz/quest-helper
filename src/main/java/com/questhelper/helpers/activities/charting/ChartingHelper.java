@@ -95,8 +95,12 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	{
 		var topLevelPanel = new TopLevelPanelDetails("Sea charting");
 
-		// We're ordering based on the in-game order in the cache, so this should remain consistent
-		int panelId = 0;
+		// Map sea names to their sections to get IDs
+		Map<String, ChartingSeaSection> seaNameToSection = new LinkedHashMap<>();
+		for (ChartingSeaSection section : ChartingTasksData.getSections())
+		{
+			seaNameToSection.put(section.getSea(), section);
+		}
 
 		for (Map.Entry<String, List<ChartingTaskInterface>> entry : stepsBySea.entrySet())
 		{
@@ -105,7 +109,9 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			{
 				steps.add((QuestStep) chartingStep);
 			}
-			var panel = new PanelDetails(entry.getKey(), steps).withId(panelId++);
+			ChartingSeaSection section = seaNameToSection.get(entry.getKey());
+			int panelId = section != null ? section.getId() : -1;
+			var panel = new PanelDetails(entry.getKey(), steps).withId(panelId);
 			var displayCondition = createDisplayCondition(entry.getValue());
 			if (displayCondition != null)
 			{

@@ -30,10 +30,12 @@ import java.util.List;
 @Getter
 public final class ChartingSeaSection
 {
+	private final int id;
 	private final String sea;
 	private final List<ChartingTaskDefinition> tasks;
-	public ChartingSeaSection(String sea, List<ChartingTaskDefinition> tasks)
+	public ChartingSeaSection(int id, String sea, List<ChartingTaskDefinition> tasks)
 	{
+		this.id = id;
 		this.sea = sea;
 		this.tasks = tasks;
 	}

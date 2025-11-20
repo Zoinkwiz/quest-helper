@@ -25,28 +25,31 @@
 package com.questhelper.helpers.activities.charting;
 
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
-import net.runelite.api.coords.WorldPoint;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Getter
-public final class ChartingTaskStep extends DetailedQuestStep
+public final class ChartingTaskStep extends DetailedQuestStep implements ChartingTaskInterface
 {
 	private final Requirement incompleteRequirement;
 
 	ChartingTaskStep(ChartingHelper helper, ChartingTaskDefinition definition)
 	{
 		super(helper, "[" + definition.getType() + "] " + definition.getDescription());
+		incompleteRequirement = setupChartingDetails(definition);
+	}
 
-		WorldPoint point = definition.getWorldPoint();
+	public Requirement setupChartingDetails(ChartingTaskDefinition definition)
+	{
+		var point = definition.getWorldPoint();
 		if (point != null)
 		{
-			this.worldPoint = point;
+			setWorldPoint(point);
 		}
 		else
 		{
@@ -54,15 +57,15 @@ public final class ChartingTaskStep extends DetailedQuestStep
 			setHideMinimapLines(true);
 		}
 
-		this.incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
-
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
 		addRequirement(sailingRequirement);
 
 		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
-		var levelNotMet = new Conditions(LogicType.NOR, sailingRequirement);
+		var levelNotMet = or(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
 		conditionToHideInSidebar(completedRequirement);
 		conditionToFadeInSidebar(levelNotMet);
+
+		return and(new VarbitRequirement(definition.getVarbitId(), 0), levelNotMet);
 	}
 }

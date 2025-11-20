@@ -28,20 +28,18 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.NpcStep;
-import lombok.Getter;
+import com.questhelper.steps.ObjectStep;
 import net.runelite.api.Skill;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
-@Getter
-public final class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterface
+public class ChartingTaskObjectStep extends ObjectStep implements ChartingTaskInterface
 {
 	private final Requirement incompleteRequirement;
 
-	ChartingTaskNpcStep(QuestHelper questHelper, int npcID, ChartingTaskDefinition definition, Requirement... requirements)
+	ChartingTaskObjectStep(QuestHelper questHelper, int objectID, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		super(questHelper, npcID, "[" + definition.getType() + "] " + definition.getDescription(), requirements);
+		super(questHelper, objectID, "[" + definition.getType() + "] " + definition.getDescription(), requirements);
 		incompleteRequirement = setupChartingDetails(definition);
 	}
 
@@ -68,5 +66,11 @@ public final class ChartingTaskNpcStep extends NpcStep implements ChartingTaskIn
 		conditionToFadeInSidebar(levelNotMet);
 
 		return and(new VarbitRequirement(definition.getVarbitId(), 0), levelNotMet);
+	}
+
+	@Override
+	public Requirement getIncompleteRequirement()
+	{
+		return incompleteRequirement;
 	}
 }

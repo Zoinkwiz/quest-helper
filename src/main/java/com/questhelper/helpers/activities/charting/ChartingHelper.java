@@ -58,15 +58,28 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	private void buildSteps()
 	{
 		chartingSteps.clear();
-		Map<String, List<ChartingTaskStep>> stepsBySea = new LinkedHashMap<>();
+		Map<String, List<ChartingTaskInterface>> stepsBySea = new LinkedHashMap<>();
 
 		for (ChartingSeaSection section : ChartingTasksData.getSections())
 		{
-			List<ChartingTaskStep> steps = new ArrayList<>();
+			List<ChartingTaskInterface> steps = new ArrayList<>();
 			for (ChartingTaskDefinition definition : section.getTasks())
 			{
-				var step = new ChartingTaskStep(this, definition);
-				chartingSteps.add(step);
+				ChartingTaskInterface step;
+				if (definition.getNpcId() != null)
+				{
+					step = new ChartingTaskNpcStep(this, definition.getNpcId(), definition);
+				}
+				else if (definition.getObjectId() != null)
+				{
+					step = new ChartingTaskObjectStep(this, definition.getObjectId(), definition);
+				}
+				else
+				{
+					step = new ChartingTaskStep(this, definition);
+				}
+
+				chartingSteps.add((QuestStep) step);
 				steps.add(step);
 			}
 			if (!steps.isEmpty())
@@ -78,16 +91,20 @@ public class ChartingHelper extends ComplexStateQuestHelper
 		buildSidePanel(stepsBySea);
 	}
 
-	private void buildSidePanel(Map<String, List<ChartingTaskStep>> stepsBySea)
+	private void buildSidePanel(Map<String, List<ChartingTaskInterface>> stepsBySea)
 	{
 		var topLevelPanel = new TopLevelPanelDetails("Sea charting");
 
 		// We're ordering based on the in-game order in the cache, so this should remain consistent
 		int panelId = 0;
 
-		for (Map.Entry<String, List<ChartingTaskStep>> entry : stepsBySea.entrySet())
+		for (Map.Entry<String, List<ChartingTaskInterface>> entry : stepsBySea.entrySet())
 		{
-			List<QuestStep> steps = new ArrayList<>(entry.getValue());
+			List<QuestStep> steps = new ArrayList<>();
+			for (ChartingTaskInterface chartingStep : entry.getValue())
+			{
+				steps.add((QuestStep) chartingStep);
+			}
 			var panel = new PanelDetails(entry.getKey(), steps).withId(panelId++);
 			var displayCondition = createDisplayCondition(entry.getValue());
 			if (displayCondition != null)
@@ -111,16 +128,17 @@ public class ChartingHelper extends ComplexStateQuestHelper
 		var chartingConditionalStep = new ReorderableConditionalStep(this, overviewStep);
 		for (QuestStep step : chartingSteps)
 		{
-			if (step instanceof ChartingTaskStep)
+			if (step instanceof ChartingTaskInterface)
 			{
-				chartingConditionalStep.addStep(((ChartingTaskStep) step).getIncompleteRequirement(), step);
+				var chartingStep = (ChartingTaskInterface) step;
+				chartingConditionalStep.addStep(chartingStep.getIncompleteRequirement(), step);
 			}
 		}
 
 		return chartingConditionalStep;
 	}
 
-	private Requirement createDisplayCondition(List<ChartingTaskStep> steps)
+	private Requirement createDisplayCondition(List<ChartingTaskInterface> steps)
 	{
 		if (steps.isEmpty())
 		{
@@ -133,7 +151,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 		}
 
 		var requirements = steps.stream()
-			.map(ChartingTaskStep::getIncompleteRequirement)
+			.map(ChartingTaskInterface::getIncompleteRequirement)
 			.toArray(Requirement[]::new);
 		return new Conditions(LogicType.OR, requirements);
 	}

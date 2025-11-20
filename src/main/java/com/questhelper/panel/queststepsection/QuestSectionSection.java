@@ -490,16 +490,19 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		{
 			if (draggingPanel == null) return;
 
-			int currentY = e.getYOnScreen();
-			// We only need the absolute screen‐Y to compare midpoints:
+			// Convert mouse position to coordinates relative to stepsPanel
+			// This ensures scrolling doesn't affect the drag calculations
+			Point mousePoint = e.getLocationOnScreen();
+			SwingUtilities.convertPointFromScreen(mousePoint, stepsPanel);
+			int currentY = mousePoint.y;
+
 			for (AbstractQuestSection other : subPanels)
 			{
 				if (other == draggingPanel) continue;
 
 				Rectangle r = other.getBounds();
-				int otherYPos = 0;
-				if (other.isVisible()) otherYPos = other.getLocationOnScreen().y;
-				int midY = otherYPos + r.height / 2;
+				// Use bounds relative to stepsPanel, not screen coordinates
+				int midY = r.y + r.height / 2;
 
 				int fromIndex = subPanels.indexOf(draggingPanel);
 				int toIndex = subPanels.indexOf(other);

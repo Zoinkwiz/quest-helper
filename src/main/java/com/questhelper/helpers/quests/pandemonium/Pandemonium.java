@@ -64,7 +64,7 @@ public class Pandemonium extends BasicQuestHelper
 	TileStep dockAtPortSarim, dockAtPandemonium;
 	Zone pandemonium, pandemoniumDockZone, portSarimDockZone, shipWreckZone;
 	DetailedQuestStep navigateShip, takeHelm, takeHelm2, takeHelm3, raiseSails, raiseSails2, raiseSails3, salvageShipwreck, sailToPortSarim, pickupCargo, pickupCargoShip, sailToPandemonium, letGoOfHelm;
-	Requirement onPandemonium, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, notAtShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, notHoldingCargo, cargoInCargoHold, notOnboardShip, holdingCargoOnShip, holdingCargoNotOnShip;
+	Requirement onPandemonium, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, notAtShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, notHoldingCargo, cargoInCargoHold, notOnboardShip;
 	ItemRequirement hammer, saw;
 
 	@Override

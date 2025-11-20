@@ -80,7 +80,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 
 	private void buildSidePanel(Map<String, List<ChartingTaskStep>> stepsBySea)
 	{
-		var topLevelPanel = new TopLevelPanelDetails("Sea chartering");
+		var topLevelPanel = new TopLevelPanelDetails("Sea charting");
 
 		// We're ordering based on the in-game order in the cache, so this should remain consistent
 		int panelId = 0;

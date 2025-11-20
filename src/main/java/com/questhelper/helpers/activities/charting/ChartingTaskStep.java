@@ -25,9 +25,13 @@
 package com.questhelper.helpers.activities.charting;
 
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.DetailedQuestStep;
 import lombok.Getter;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
@@ -35,9 +39,9 @@ public final class ChartingTaskStep extends DetailedQuestStep
 {
 	private final Requirement incompleteRequirement;
 
-	ChartingTaskStep(ChartingHelper helper, ChartingTaskDefinition definition, String action)
+	ChartingTaskStep(ChartingHelper helper, ChartingTaskDefinition definition)
 	{
-		super(helper, "[" + action + "]" + " " + definition.getDescription());
+		super(helper, "[" + definition.getType() + "] " + definition.getDescription());
 
 		WorldPoint point = definition.getWorldPoint();
 		if (point != null)
@@ -51,6 +55,12 @@ public final class ChartingTaskStep extends DetailedQuestStep
 		}
 
 		this.incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
-		conditionToHideInSidebar(new VarbitRequirement(definition.getVarbitId(), 1));
+
+		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
+		addRequirement(sailingRequirement);
+
+		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
+		var levelNotMet = new Conditions(LogicType.NOR, sailingRequirement);
+		conditionToHideInSidebar(new Conditions(LogicType.OR, completedRequirement, levelNotMet));
 	}
 }

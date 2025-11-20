@@ -34,13 +34,15 @@ public final class ChartingTaskDefinition
 	private final String description;
 	private final WorldPoint worldPoint;
 	private final String ocean;
+	private final int level;
 	private final int varbitId;
-	public ChartingTaskDefinition(String type, String description, WorldPoint worldPoint, String ocean, int varbitId)
+	public ChartingTaskDefinition(String type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId)
 	{
 		this.type = type;
 		this.description = description;
 		this.worldPoint = worldPoint;
 		this.ocean = ocean;
+		this.level = level;
 		this.varbitId = varbitId;
 	}
 }

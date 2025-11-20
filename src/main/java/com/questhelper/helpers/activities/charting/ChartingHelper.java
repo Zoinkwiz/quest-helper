@@ -65,7 +65,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			List<ChartingTaskStep> steps = new ArrayList<>();
 			for (ChartingTaskDefinition definition : section.getTasks())
 			{
-				var step = new ChartingTaskStep(this, definition, definition.getType());
+				var step = new ChartingTaskStep(this, definition);
 				chartingSteps.add(step);
 				steps.add(step);
 			}

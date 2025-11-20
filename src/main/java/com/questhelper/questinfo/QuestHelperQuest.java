@@ -25,6 +25,7 @@
 package com.questhelper.questinfo;
 
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.helpers.activities.charting.ChartingHelper;
 import com.questhelper.helpers.achievementdiaries.ardougne.ArdougneEasy;
 import com.questhelper.helpers.achievementdiaries.ardougne.ArdougneElite;
 import com.questhelper.helpers.achievementdiaries.ardougne.ArdougneHard;
@@ -642,6 +643,7 @@ public enum QuestHelperQuest
 	BARROWS_HELPER(new BarrowsHelper(), "Barrows helper", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	STRONGHOLD_OF_SECURITY(new StrongholdOfSecurity(), "Stronghold of Security", QuestVarbits.STRONGHOLD_OF_SECURITY, 1,
 		QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
+	SEA_CHARTING(new ChartingHelper(), "Sea charting", QuestVarbits.CHARTING, 1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	// Skill
 	AGILITY(new Agility(), "Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 	WOODCUTTING_MEMBER(new WoodcuttingMember(), "Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),

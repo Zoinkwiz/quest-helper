@@ -131,7 +131,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			if (step instanceof ChartingTaskInterface)
 			{
 				var chartingStep = (ChartingTaskInterface) step;
-				chartingConditionalStep.addStep(chartingStep.getIncompleteRequirement(), step);
+				chartingConditionalStep.addStep(chartingStep.getCanDoRequirement(), step);
 			}
 		}
 

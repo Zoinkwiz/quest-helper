@@ -32,20 +32,20 @@ import lombok.Getter;
 import net.runelite.api.Skill;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Getter
 public final class ChartingTaskStep extends DetailedQuestStep implements ChartingTaskInterface
 {
-	private final Requirement incompleteRequirement;
+	private Requirement incompleteRequirement;
+	private Requirement canDoRequirement;
 
 	ChartingTaskStep(ChartingHelper helper, ChartingTaskDefinition definition)
 	{
 		super(helper, "[" + definition.getType() + "] " + definition.getDescription());
-		incompleteRequirement = setupChartingDetails(definition);
+		setupChartingDetails(definition);
 	}
 
-	public Requirement setupChartingDetails(ChartingTaskDefinition definition)
+	public void setupChartingDetails(ChartingTaskDefinition definition)
 	{
 		var point = definition.getWorldPoint();
 		if (point != null)
@@ -67,6 +67,7 @@ public final class ChartingTaskStep extends DetailedQuestStep implements Chartin
 		conditionToHideInSidebar(completedRequirement);
 		conditionToFadeInSidebar(levelNotMet);
 
-		return and(new VarbitRequirement(definition.getVarbitId(), 0), levelNotMet);
+		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), sailingRequirement);
+		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
 	}
 }

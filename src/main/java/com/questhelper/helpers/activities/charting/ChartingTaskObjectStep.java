@@ -29,22 +29,24 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ObjectStep;
+import lombok.Getter;
 import net.runelite.api.Skill;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.or;
 
+@Getter
 public class ChartingTaskObjectStep extends ObjectStep implements ChartingTaskInterface
 {
-	private final Requirement incompleteRequirement;
+	private Requirement incompleteRequirement;
+	private Requirement canDoRequirement;
 
 	ChartingTaskObjectStep(QuestHelper questHelper, int objectID, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, objectID, "[" + definition.getType() + "] " + definition.getDescription(), requirements);
-		incompleteRequirement = setupChartingDetails(definition);
+		setupChartingDetails(definition);
 	}
 
-	public Requirement setupChartingDetails(ChartingTaskDefinition definition)
+	public void setupChartingDetails(ChartingTaskDefinition definition)
 	{
 		var point = definition.getWorldPoint();
 		if (point != null)
@@ -66,12 +68,7 @@ public class ChartingTaskObjectStep extends ObjectStep implements ChartingTaskIn
 		conditionToHideInSidebar(completedRequirement);
 		conditionToFadeInSidebar(levelNotMet);
 
-		return and(new VarbitRequirement(definition.getVarbitId(), 0), levelNotMet);
-	}
-
-	@Override
-	public Requirement getIncompleteRequirement()
-	{
-		return incompleteRequirement;
+		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), sailingRequirement);
+		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
 	}
 }

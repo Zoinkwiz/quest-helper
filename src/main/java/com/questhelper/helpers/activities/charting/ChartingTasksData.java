@@ -143,7 +143,7 @@ public final class ChartingTasksData
 		)),
 		new ChartingSeaSection("Sea of Shells", List.of(
 			new ChartingTaskDefinition("Generic", "Find the nest of a fearless bird on the Onyx Crest.", new WorldPoint(2963, 2266, 0), "Unquiet Ocean", 47, null, null, VarbitID.SAILING_CHARTING_GENERIC_BIRD_NEST_COMPLETE),
-			new ChartingTaskDefinition("Spyglass", "Use your spyglass to get a good view of the Summer Shore from the cliffs above it on the Great Conch.", new WorldPoint(3154, 2550, 0), "Unquiet Ocean", 45, null, null, VarbitID.SAILING_CHARTING_SPYGLASS_TORTUGAN_VILLAGE_COMPLETE),
+			new ChartingTaskDefinition("Spyglass", "Use your spyglass to get a good view of the Summer Shore from the cliffs above it on the Great Conch.", new WorldPoint(3187, 2432, 0), "Unquiet Ocean", 45, null, null, VarbitID.SAILING_CHARTING_SPYGLASS_TORTUGAN_VILLAGE_COMPLETE),
 			new ChartingTaskDefinition("Crate", "Find a Sealed crate off the western coast of the Great Conch and sample the contents.", new WorldPoint(3098, 2460, 0), "Unquiet Ocean", 12, null, null, VarbitID.SAILING_CHARTING_DRINK_CRATE_WAY_HOME_COMPLETE),
 			new ChartingTaskDefinition("Current", "Test the currents near the Summer Shore docks on the Great Conch.", new WorldPoint(3204, 2369, 0), "Unquiet Ocean", 22, null, null, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GREAT_CONCH_COMPLETE),
 			new ChartingTaskDefinition("Diving", "With help from a mermaid guide, document the water depth south of the Onyx Crest.", new WorldPoint(2963, 2205, 0), "Unquiet Ocean", 38, null, null, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SEA_OF_SHELLS_COMPLETE)
@@ -163,7 +163,7 @@ public final class ChartingTasksData
 		)),
 		new ChartingSeaSection("Bay of Elidinis", List.of(
 			new ChartingTaskDefinition("Generic", "Find a damaged golem east of Menaphos.", new WorldPoint(3243, 2704, 0), "Unquiet Ocean", 1, null, null, VarbitID.SAILING_CHARTING_GENERIC_GOLEM_CORPSE_COMPLETE),
-			new ChartingTaskDefinition("Spyglass", "Use your spyglass to get a good view of the Abalone Cliffs from the north east.", new WorldPoint(3187, 2432, 0), "Unquiet Ocean", 1, null, null, VarbitID.SAILING_CHARTING_SPYGLASS_CONCH_MOUNTAIN_COMPLETE),
+			new ChartingTaskDefinition("Spyglass", "Use your spyglass to get a good view of the Abalone Cliffs from the north east.", new WorldPoint(3154, 2550, 0), "Unquiet Ocean", 1, null, null, VarbitID.SAILING_CHARTING_SPYGLASS_CONCH_MOUNTAIN_COMPLETE),
 			new ChartingTaskDefinition("Crate", "Find a Sealed crate south of Menaphos and sample the contents.", new WorldPoint(3239, 2600, 0), "Unquiet Ocean", 12, null, null, VarbitID.SAILING_CHARTING_DRINK_CRATE_LIFE_WATER_COMPLETE),
 			new ChartingTaskDefinition("Current", "Test the currents to the south west of the Elid Delta.", new WorldPoint(3248, 2705, 0), "Unquiet Ocean", 22, null, null, VarbitID.SAILING_CHARTING_CURRENT_DUCK_BAY_OF_ELIDINIS_COMPLETE),
 			new ChartingTaskDefinition("Diving", "With help from a mermaid guide, document the water depth in the south east of the Bay of Elidinis.", new WorldPoint(3338, 2624, 0), "Unquiet Ocean", 38, null, null, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_BAY_OF_ELIDINIS_COMPLETE)

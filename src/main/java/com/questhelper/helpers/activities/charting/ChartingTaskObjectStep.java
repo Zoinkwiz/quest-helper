@@ -31,6 +31,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ObjectStep;
 import net.runelite.api.Skill;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class ChartingTaskObjectStep extends ObjectStep implements ChartingTaskInterface
@@ -60,7 +61,7 @@ public class ChartingTaskObjectStep extends ObjectStep implements ChartingTaskIn
 		addRequirement(sailingRequirement);
 
 		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
-		var levelNotMet = or(sailingRequirement);
+		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
 		conditionToHideInSidebar(completedRequirement);
 		conditionToFadeInSidebar(levelNotMet);

@@ -32,6 +32,7 @@ import com.questhelper.steps.NpcStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Getter
@@ -62,7 +63,7 @@ public final class ChartingTaskNpcStep extends NpcStep implements ChartingTaskIn
 		addRequirement(sailingRequirement);
 
 		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
-		var levelNotMet = or(sailingRequirement);
+		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
 		conditionToHideInSidebar(completedRequirement);
 		conditionToFadeInSidebar(levelNotMet);

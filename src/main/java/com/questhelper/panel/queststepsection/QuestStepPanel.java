@@ -233,13 +233,16 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 			{
 				if (sidebarStep.getConditionToHide() != null && sidebarStep.getConditionToHide().check(client)) continue;
 
-				if (sidebarStep.getFadeCondition() != null && sidebarStep.getFadeCondition().check(client))
+				if (sidebarStep.getFadeCondition() != null)
 				{
-					updateTextToFaded(sidebarStep);
-				}
-				else
-				{
-					updateTextToUnfaded(sidebarStep);
+					if (sidebarStep.getFadeCondition().check(client))
+					{
+						updateTextToFaded(sidebarStep);
+					}
+					else
+					{
+						updateTextToUnfaded(sidebarStep);
+					}
 				}
 
 				if (!highlighted && sidebarStep.containsSteps(newStep, new HashSet<>()))

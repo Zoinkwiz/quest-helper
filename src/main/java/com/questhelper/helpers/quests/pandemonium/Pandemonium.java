@@ -143,11 +143,12 @@ public class Pandemonium extends BasicQuestHelper
 		steps.put(40, cSailToPandemonium);
 
 		ConditionalStep cDeliverCargo = new ConditionalStep(this, cSailToPandemonium);
-		cDeliverCargo.addStep(new Conditions(notOnboardShip, holdingCargo), deliverCargo);
-		cDeliverCargo.addStep(new Conditions(onboardShip, holdingCargo), disembarkShipP);
-		cDeliverCargo.addStep(new Conditions(onboardShip, cargoInCargoHold), pickupCargoShip);
-		cDeliverCargo.addStep(new Conditions(cargoInCargoHold, takenHelm), letGoOfHelm);
-		cDeliverCargo.addStep(new Conditions(cargoInCargoHold, sailing), dockAtPandemonium);
+		cDeliverCargo.addStep(new Conditions(onPandemonium, notOnboardShip, holdingCargo), deliverCargo);
+		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, onboardShip, holdingCargo), disembarkShipP);
+		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, onboardShip, new Conditions(LogicType.NOR, takenHelm, setSails), cargoInCargoHold), pickupCargoShip);
+		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, notOnboardShip, cargoInCargoHold), embarkShipP);
+		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, cargoInCargoHold, takenHelm), letGoOfHelm);
+		cDeliverCargo.addStep(new Conditions(atPandemoniumDock, cargoInCargoHold, sailing), dockAtPandemonium);
 		steps.put(42, cDeliverCargo);
 		steps.put(44, talkToJim);
 		steps.put(46, meetGrog);
@@ -264,10 +265,10 @@ public class Pandemonium extends BasicQuestHelper
 		raiseSails3 = new DetailedQuestStep(this, "Raise your sails.");
 		sailToPandemonium = new DetailedQuestStep(this, "Sail to the Pandemonium.");
 		sailToPandemonium.setHighlightZone(pandemoniumDockZone);
-		dockAtPandemonium = new TileStep(this, new WorldPoint(3075, 2994, 0), "Dock at the Pandemonium buoy.");
+		dockAtPandemonium = new TileStep(this, new WorldPoint(3075, 2994, 0), "Dock at the Pandemonium buoy and let go of the helm.");
 		pickupCargoShip = new DetailedQuestStep(this, "Pick up your cargo from your ship.");
 		disembarkShipP = new ObjectStep(this, 59831, new WorldPoint(3070, 2987, 0), "Leave your vessel.");
-		deliverCargo = new ObjectStep(this, 60320, new WorldPoint(3061, 2985, 0), "Deliver the cargo at the table.");
+		deliverCargo = new ObjectStep(this, 60321, new WorldPoint(3061, 2985, 0), "Deliver the cargo at the table.");
 		//Finish up
 		talkToJim = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Tell Jim about your delivery.");
 		meetGrog = new NpcStep(this, new int[]{NpcID.STEVE_BEANIE, NpcID.SAILING_INTRO_GROG_VIS}, new WorldPoint(3050, 2966, 0), "Meet Grog at the bar.", true);

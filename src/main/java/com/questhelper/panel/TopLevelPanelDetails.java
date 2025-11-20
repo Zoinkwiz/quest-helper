@@ -26,6 +26,7 @@ package com.questhelper.panel;
 
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
+import java.util.ArrayList;
 import java.util.List;
 
 // The intention is to contain a set of PanelDetails.
@@ -33,12 +34,17 @@ import java.util.List;
 public class TopLevelPanelDetails extends PanelDetails
 {
     @Getter
-    private final PanelDetails[] panelDetails;
+    private final List<PanelDetails> panelDetails;
 	
     public TopLevelPanelDetails(String header, PanelDetails... panelDetails)
 	{
 		super(header);
-		this.panelDetails = panelDetails;
+		this.panelDetails = new ArrayList<>(List.of(panelDetails));
+	}
+
+	public void addPanelDetails(PanelDetails panelDetail)
+	{
+		panelDetails.add(panelDetail);
 	}
 
 	@Override

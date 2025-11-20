@@ -154,6 +154,9 @@ public abstract class QuestStep implements Module
 	private Requirement conditionToHide;
 
 	@Getter
+	private Requirement fadeCondition;
+
+	@Getter
 	@Setter
 	private boolean showInSidebar = true;
 
@@ -575,6 +578,11 @@ public abstract class QuestStep implements Module
 	public void conditionToHideInSidebar(Requirement hideCondition)
 	{
 		conditionToHide = hideCondition;
+	}
+
+	public void conditionToFadeInSidebar(Requirement fadeCondition)
+	{
+		this.fadeCondition = fadeCondition;
 	}
 
 	public BufferedImage getQuestImage()

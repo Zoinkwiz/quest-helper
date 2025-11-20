@@ -24,24 +24,25 @@
  */
 package com.questhelper.helpers.activities.charting;
 
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-public final class ChartingTaskStep extends DetailedQuestStep
+public final class ChartingTaskNpcStep extends NpcStep
 {
 	private final Requirement incompleteRequirement;
 
-	ChartingTaskStep(ChartingHelper helper, ChartingTaskDefinition definition)
+	ChartingTaskNpcStep(QuestHelper questHelper, int npcID, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		super(helper, "[" + definition.getType() + "] " + definition.getDescription());
+		super(questHelper, npcID, "[" + definition.getType() + "] " + definition.getDescription(), requirements);
 
 		WorldPoint point = definition.getWorldPoint();
 		if (point != null)

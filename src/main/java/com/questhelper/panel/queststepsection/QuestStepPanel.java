@@ -232,11 +232,20 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 			for (QuestStep sidebarStep : getSteps())
 			{
 				if (sidebarStep.getConditionToHide() != null && sidebarStep.getConditionToHide().check(client)) continue;
-				if (sidebarStep.containsSteps(newStep, new HashSet<>()))
+
+				if (sidebarStep.getFadeCondition() != null && sidebarStep.getFadeCondition().check(client))
+				{
+					updateTextToFaded(sidebarStep);
+				}
+				else
+				{
+					updateTextToUnfaded(sidebarStep);
+				}
+
+				if (!highlighted && sidebarStep.containsSteps(newStep, new HashSet<>()))
 				{
 					highlighted = true;
 					updateHighlight(sidebarStep);
-					break;
 				}
 			}
 
@@ -254,6 +263,22 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		}
 	}
 
+	public void updateTextToFaded(QuestStep questStep)
+	{
+		if (steps.get(questStep) != null)
+		{
+			steps.get(questStep).setForeground(Color.DARK_GRAY);
+			steps.get(questStep).setToolTipText(questStep.getFadeCondition().getDisplayText());
+		}
+	}
+
+	public void updateTextToUnfaded(QuestStep questStep)
+	{
+		if (steps.get(questStep) != null)
+		{
+			steps.get(questStep).setForeground(Color.LIGHT_GRAY);
+		}
+	}
 
 	public void updateHighlight(QuestStep currentStep)
 	{

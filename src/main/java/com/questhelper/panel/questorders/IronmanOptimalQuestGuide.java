@@ -89,6 +89,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.THE_DIG_SITE,
 		QuestHelperQuest.THE_GOLEM,
 		QuestHelperQuest.THE_KNIGHTS_SWORD,
+		QuestHelperQuest.PRYING_TIMES,
 		QuestHelperQuest.ELEMENTAL_WORKSHOP_I,
 		QuestHelperQuest.DEMON_SLAYER,
 		QuestHelperQuest.SHADOW_OF_THE_STORM,

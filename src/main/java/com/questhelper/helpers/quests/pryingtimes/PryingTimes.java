@@ -32,13 +32,11 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeSailingTaskSlotRequirement;
+import com.questhelper.requirements.player.PortRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.zone.Zone;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
@@ -47,20 +45,18 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PortTaskStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.VarbitID;
 
 public class PryingTimes extends BasicQuestHelper
 {
@@ -68,9 +64,13 @@ public class PryingTimes extends BasicQuestHelper
 	SkillRequirement sailingSkillRequirement, smithingSkillRequirement;
 	QuestRequirement pandemoniumQuestRequirement, knightsSwordQuestRequirement;
 	FreeSailingTaskSlotRequirement freeTaskSlotRequirement;
+	PortRequirement boatAtPortSarimDock;
+
+
+	Zone portSarimDockZone;
 
 	NpcStep startQuest;
-
+	PortTaskStep deliverCargo;
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -79,6 +79,7 @@ public class PryingTimes extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		steps.put(0,  startQuest);
+		steps.put(5,  deliverCargo);
 
 		return steps;
 	}
@@ -91,7 +92,7 @@ public class PryingTimes extends BasicQuestHelper
 	@Override
 	protected void setupZones()
 	{
-
+		portSarimDockZone = new Zone(new WorldPoint(3045, 3183, 0), new WorldPoint(3061, 3208, 0));
 	}
 
 	@Override
@@ -108,11 +109,15 @@ public class PryingTimes extends BasicQuestHelper
 		pandemoniumQuestRequirement = new QuestRequirement(QuestHelperQuest.PANDEMONIUM, QuestState.FINISHED);
 		knightsSwordQuestRequirement = new QuestRequirement(QuestHelperQuest.THE_KNIGHTS_SWORD, QuestState.FINISHED);
 		freeTaskSlotRequirement = new FreeSailingTaskSlotRequirement(1);
+
+		boatAtPortSarimDock = new PortRequirement(Port.PORT_SARIM);
 	}
 
 	public void setupSteps()
 	{
 		startQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to Steve to start the quest.", true);
+		startQuest.addDialogStep("Any word from Old Grog?");
+		deliverCargo = new PortTaskStep(this, Port.PORT_SARIM, Port.PANDEMONIUM, 600);
 	}
 
 	@Override
@@ -159,7 +164,10 @@ public class PryingTimes extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("How's Old Grog?", Arrays.asList(startQuest)));
+		List<QuestStep> lootyList = new ArrayList<>(){};
+		lootyList.add(startQuest);
+		lootyList.addAll(deliverCargo.getStepsList());
+		allSteps.add(new PanelDetails("Looty!", lootyList));
 		return allSteps;
 	}
 }

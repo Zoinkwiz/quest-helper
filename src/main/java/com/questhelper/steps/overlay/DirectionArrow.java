@@ -54,6 +54,46 @@ public class DirectionArrow
 		return 16;
 	}
 
+	/**
+	 * Converts a LocalPoint to a WorldPoint, handling WorldView considerations
+	 * for instanced areas like boats.
+	 *
+	 * @param client the {@link Client}
+	 * @param localPoint the {@link LocalPoint} to convert
+	 * @return the {@link WorldPoint} in the real world, or null if conversion fails
+	 */
+	private static WorldPoint getWorldPointFromLocal(Client client, LocalPoint localPoint)
+	{
+		if (localPoint == null)
+		{
+			return null;
+		}
+
+		var worldView = client.getWorldView(localPoint.getWorldView());
+
+		// If in a non-top level WorldView (a boat) need to translate
+		if (worldView != null && !worldView.isTopLevel())
+		{
+			// Currently the entity should be the player's boat only?
+			var worldEntity = client.getTopLevelWorldView()
+				.worldEntities()
+				.byIndex(worldView.getId());
+
+			if (worldEntity == null)
+			{
+				return null;
+			}
+
+			var mainLocal = worldEntity.transformToMainWorld(localPoint);
+			return WorldPoint.fromLocal(client.getTopLevelWorldView(),
+				mainLocal.getX(), mainLocal.getY(), worldView.getPlane());
+		}
+		else
+		{
+			return WorldPoint.fromLocalInstance(client, localPoint);
+		}
+	}
+
 	public static void renderMinimapArrowFromLocal(Graphics2D graphics, Client client, LocalPoint localPoint, Color color)
 	{
 		var maxMinimapDrawDistance = getMaxMinimapDrawDistance(client);
@@ -68,8 +108,8 @@ public class DirectionArrow
 			return;
 		}
 
-		WorldPoint playerRealLocation = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
-		WorldPoint goalRealLocation = WorldPoint.fromLocalInstance(client, localPoint);
+		WorldPoint playerRealLocation = getWorldPointFromLocal(client, player.getLocalLocation());
+		WorldPoint goalRealLocation = getWorldPointFromLocal(client, localPoint);
 		if (playerRealLocation == null) return;
 
 		if (goalRealLocation.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
@@ -97,33 +137,7 @@ public class DirectionArrow
 		Player player = client.getLocalPlayer();
 		if (player == null) return;
 
-		var playerLp = player.getLocalLocation();
-		var playerWorldView = client.getWorldView(playerLp.getWorldView());
-
-		WorldPoint playerRealLocation;
-
-		// If in a non-top level WorldView (a boat) need to translate
-		if (playerWorldView != null && !playerWorldView.isTopLevel())
-		{
-			// Currently the entity should be the player's boat only?
-			var playerWorldEntity = client.getTopLevelWorldView()
-				.worldEntities()
-				.byIndex(playerWorldView.getId());
-
-			if (playerWorldEntity == null)
-			{
-				return;
-			}
-
-			var mainLocal = playerWorldEntity.transformToMainWorld(playerLp);
-			playerRealLocation = WorldPoint.fromLocal(client.getTopLevelWorldView(),
-				mainLocal.getX(), mainLocal.getY(), playerWorldView.getPlane());
-		}
-		else
-		{
-			playerRealLocation = WorldPoint.fromLocalInstance(client, playerLp);
-		}
-
+		WorldPoint playerRealLocation = getWorldPointFromLocal(client, player.getLocalLocation());
 		if (playerRealLocation == null) return;
 
 		if (worldPoint.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)

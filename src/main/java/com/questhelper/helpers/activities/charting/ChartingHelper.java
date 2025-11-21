@@ -24,8 +24,6 @@
  */
 package com.questhelper.helpers.activities.charting;
 
-import com.questhelper.helpers.activities.charting.steps.ChartingTaskNpcStep;
-import com.questhelper.helpers.activities.charting.steps.ChartingTaskObjectStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingTaskStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.TopLevelPanelDetails;
@@ -68,19 +66,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			List<ChartingTaskInterface> steps = new ArrayList<>();
 			for (ChartingTaskDefinition definition : section.getTasks())
 			{
-				ChartingTaskInterface step;
-				if (definition.getNpcId() != null)
-				{
-					step = new ChartingTaskNpcStep(this, definition.getNpcId(), definition);
-				}
-				else if (definition.getObjectId() != null)
-				{
-					step = new ChartingTaskObjectStep(this, definition.getObjectId(), definition);
-				}
-				else
-				{
-					step = new ChartingTaskStep(this, definition);
-				}
+				ChartingTaskInterface step = new ChartingTaskStep(this, definition);
 
 				chartingSteps.add((QuestStep) step);
 				steps.add(step);

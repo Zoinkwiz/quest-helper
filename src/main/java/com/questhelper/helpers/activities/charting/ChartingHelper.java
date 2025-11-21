@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.activities.charting;
 
+import com.questhelper.helpers.activities.charting.steps.ChartingCrateStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingCurrentStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingDivingStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingGenericObjectStep;
@@ -123,6 +124,8 @@ public class ChartingHelper extends ComplexStateQuestHelper
 		{
 			case GENERIC:
 				return new ChartingGenericObjectStep(this, definition);
+			case CRATE:
+				return new ChartingCrateStep(this, definition);
 			case SPYGLASS:
 				return new ChartingTelescopeStep(this, definition);
 			case CURRENT:

@@ -474,7 +474,7 @@ public enum QuestHelperQuest
 	THE_FINAL_DAWN(new TheFinalDawn(), Quest.THE_FINAL_DAWN, QuestVarbits.QUEST_THE_FINAL_DAWN, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	SHADOWS_OF_CUSTODIA(new ShadowsOfCustodia(), Quest.SHADOWS_OF_CUSTODIA, QuestVarbits.QUEST_SHADOWS_OF_CUSTODIA, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	SCRAMBLED(new Scrambled(), Quest.SCRAMBLED, QuestVarbits.QUEST_SCRAMBLED, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
-
+	PANDEMONIUM(new Pandemonium(), Quest.PANDEMONIUM, QuestVarbits.QUEST_PANDEMONIUM, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
@@ -505,10 +505,6 @@ public enum QuestHelperQuest
 		QuestDetails.Difficulty.MINIQUEST),
 	BALLOON_TRANSPORT_GRAND_TREE(new GrandTreeBalloonFlight(), "Balloon Transport - Grand Tree", QuestVarbits.BALLOON_TRANSPORT_GRAND_TREE, 1, QuestDetails.Type.MINIQUEST,
 		QuestDetails.Difficulty.MINIQUEST),
-
-	// Alpha quests
-	PANDEMONIUM(new Pandemonium(), 16187, "Pandemonium", QuestVarbits.QUEST_PANDEMONIUM, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
-
 
 	// Achievement diaries
 

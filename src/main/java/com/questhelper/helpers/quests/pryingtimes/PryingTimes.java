@@ -29,20 +29,22 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.TeleportItemRequirement;
+import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.FreeSailingTaskSlotRequirement;
 import com.questhelper.requirements.player.PortRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Port;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.PortTaskStep;
@@ -52,25 +54,37 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import com.questhelper.steps.SailStep;
+import net.runelite.api.NPC;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class PryingTimes extends BasicQuestHelper
 {
-	ItemRequirement hammerRequirement, steelBarRequirement, redberryPieRequirement, captainsLogRequirement;
+	ItemRequirement hammerRequirement, steelBarRequirement, redberryPieRequirement, captainsLogRequirement, gotTheKey, gotStout;
 	SkillRequirement sailingSkillRequirement, smithingSkillRequirement;
 	QuestRequirement pandemoniumQuestRequirement, knightsSwordQuestRequirement;
 	FreeSailingTaskSlotRequirement freeTaskSlotRequirement;
 	PortRequirement boatAtPortSarimDock;
-
+	TeleportItemRequirement thurgoTeleportRecommend;
+	NpcRequirement spawnedTroll;
+	VarbitRequirement drankStout;
 
 	Zone portSarimDockZone;
 
-	NpcStep startQuest;
+	NpcStep startQuest, letSteveKnow, getKey, giveKey, killTheTroll, goToSteve;
 	PortTaskStep deliverCargo;
+	ObjectStep testKey, openCrate;
+	SailStep sailToCrate;
+	ItemStep drinkTheStout;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -80,6 +94,15 @@ public class PryingTimes extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		steps.put(0,  startQuest);
 		steps.put(5,  deliverCargo);
+		steps.put(10, letSteveKnow);
+		steps.put(15, getKey);
+		steps.put(20, giveKey);
+		ConditionalStep cTestKey = new ConditionalStep(this, sailToCrate);
+		cTestKey.addStep(and(sailToCrate.getZoneRequirement(), not(gotStout), not(drankStout)), testKey);
+		cTestKey.addStep(gotStout, drinkTheStout);
+		cTestKey.addStep(drankStout, goToSteve);
+		steps.put(25, cTestKey);
+		steps.put(30, openCrate);
 
 		return steps;
 	}
@@ -111,6 +134,13 @@ public class PryingTimes extends BasicQuestHelper
 		freeTaskSlotRequirement = new FreeSailingTaskSlotRequirement(1);
 
 		boatAtPortSarimDock = new PortRequirement(Port.PORT_SARIM);
+		gotTheKey = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
+		gotStout = new ItemRequirement("Bottle of fish bladder stout", ItemID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES);
+		spawnedTroll = new NpcRequirement(NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL);
+		drankStout = new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE,1);
+
+		//Recommended
+		thurgoTeleportRecommend = new TeleportItemRequirement("Fairy Ring [AIQ]", ItemCollections.FAIRY_STAFF);
 	}
 
 	public void setupSteps()
@@ -118,6 +148,21 @@ public class PryingTimes extends BasicQuestHelper
 		startQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to Steve to start the quest.", true);
 		startQuest.addDialogStep("Any word from Old Grog?");
 		deliverCargo = new PortTaskStep(this, Port.PORT_SARIM, Port.PANDEMONIUM, 600);
+		letSteveKnow = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Let Steve know you delivered the looty.", true);
+		letSteveKnow.addDialogStep("I delivered that cargo for you.");
+
+		getKey = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Get the key from Thurgo.", true,hammerRequirement, steelBarRequirement,redberryPieRequirement);
+		getKey.addDialogStep(Pattern.compile("(I need some help with a 'special key'\\.)|(So, can you help me make a crowbar\\?)"));
+		getKey.setRecommended(Arrays.asList(thurgoTeleportRecommend));
+		giveKey = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Give the key to Steve.", true, gotTheKey);
+		giveKey.addDialogStep("I made that 'special key' you needed.");
+		testKey = new ObjectStep(this, 59283, new WorldPoint(3013, 2998, 0), "Open the crate with the newly acquired key.");
+		sailToCrate = new SailStep(this, new WorldPoint(3013, 2998, 0));
+		drinkTheStout = new ItemStep(this, "Drink the stout. Warning: you will be attacked!", gotStout.highlighted());
+		killTheTroll = new NpcStep(this, NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL, new WorldPoint(3013, 2998, 0), "Kill the lvl 14 Drink Troll, or log out.");
+		goToSteve = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Tell Steve the key works.", true, gotTheKey);
+		goToSteve.addDialogStep("About that crate...");
+		openCrate = new ObjectStep(this, 58405, new WorldPoint(3048, 2965, 0), "Open Steve's crate.", gotTheKey);
 	}
 
 	@Override
@@ -164,10 +209,8 @@ public class PryingTimes extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		List<QuestStep> lootyList = new ArrayList<>(){};
-		lootyList.add(startQuest);
-		lootyList.addAll(deliverCargo.getStepsList());
-		allSteps.add(new PanelDetails("Looty!", lootyList));
+		allSteps.add(new PanelDetails("Looty!", Arrays.asList(startQuest, deliverCargo, letSteveKnow), captainsLogRequirement, freeTaskSlotRequirement));
+		allSteps.add(new PanelDetails("A key!", Arrays.asList(getKey, giveKey, sailToCrate, testKey, drinkTheStout, killTheTroll, goToSteve, openCrate), hammerRequirement, steelBarRequirement, redberryPieRequirement));
 		return allSteps;
 	}
 }

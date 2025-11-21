@@ -25,20 +25,86 @@
 package com.questhelper.helpers.activities.charting.steps;
 
 import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
+import com.questhelper.helpers.activities.charting.ChartingTaskInterface;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import lombok.Getter;
+import net.runelite.api.Skill;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 
-public class ChartingWeatherStep extends ChartingTaskNpcStep
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
+
+@Getter
+public class ChartingWeatherStep extends ConditionalStep implements ChartingTaskInterface
 {
-	// TODO: Need to define second step of going to the spot to measure weather
+	private Requirement incompleteRequirement;
+	private Requirement canDoRequirement;
+
+	// Steps
+	private ChartingTaskNpcStep talkToNpcStep;
+	private DetailedQuestStep measureWeatherStep;
+	private ChartingTaskNpcStep returnToNpcStep;
+
+	// Requirements
+	private ItemRequirement weatherStationEmpty;
+	private ItemRequirement weatherStationFull;
+
 	public ChartingWeatherStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		super(questHelper, NpcID.SAILING_CHARTING_WEATHER_TROLL, definition, requirements);
-		var weatherStation = new ItemRequirement("Weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_EMPTY);
-		weatherStation.addAlternates(ItemID.SAILING_CHARTING_WEATHER_STATION_FULL);
-		addRequirement(weatherStation);
+		super(questHelper, new DetailedQuestStep(questHelper, "Loading weather charting task..."));
+
+		setupRequirements();
+		setupSteps(questHelper, definition, requirements);
+		addConditionalSteps();
+		setupSidebarRequirements(definition);
+
+		setText("[" + definition.getType().getDisplayName() + "] " + definition.getDescription());
+	}
+
+	private void setupRequirements()
+	{
+		weatherStationEmpty = new ItemRequirement("Weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_EMPTY);
+		weatherStationFull = new ItemRequirement("Weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_FULL);
+	}
+
+	private void setupSteps(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
+	{
+		talkToNpcStep = new ChartingTaskNpcStep(questHelper, NpcID.SAILING_CHARTING_WEATHER_TROLL, definition, requirements);
+		talkToNpcStep.setText("Talk to the Meaty Aura Logist to get a weather station.");
+
+		measureWeatherStep = new DetailedQuestStep(questHelper, "Sail to the weather location and measure the winds.", weatherStationEmpty);
+		measureWeatherStep.setWorldPoint(definition.getSecondaryWorldPoint());
+
+		returnToNpcStep = new ChartingTaskNpcStep(questHelper, NpcID.SAILING_CHARTING_WEATHER_TROLL, definition, requirements);
+		returnToNpcStep.setText("Return to the Meaty Aura Logist with the full weather station.");
+		returnToNpcStep.addRequirement(weatherStationFull);
+	}
+
+	private void addConditionalSteps()
+	{
+		addStep(weatherStationFull, returnToNpcStep);
+		addStep(weatherStationEmpty, measureWeatherStep);
+		addStep(null, talkToNpcStep);
+	}
+
+	private void setupSidebarRequirements(ChartingTaskDefinition definition)
+	{
+		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
+		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
+		var levelNotMet = nor(sailingRequirement);
+		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
+
+		conditionToHideInSidebar(completedRequirement);
+		conditionToFadeInSidebar(levelNotMet);
+
+		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), sailingRequirement);
+		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
 	}
 }

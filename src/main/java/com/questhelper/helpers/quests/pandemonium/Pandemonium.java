@@ -39,7 +39,6 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +53,7 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.TileStep;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -296,7 +296,10 @@ public class Pandemonium extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return new ArrayList<>();
+		return Arrays.asList(
+			new ItemReward("Sawmill Coupon (wood plank)", ItemID.SAWMILL_COUPON, 25),
+			new ItemReward("Repair kits", ItemID.BOAT_REPAIR_KIT, 2),
+			new ItemReward("Spyglass", ItemID.SAILING_CHARTING_SPYGLASS, 1));
 	}
 
 	@Override

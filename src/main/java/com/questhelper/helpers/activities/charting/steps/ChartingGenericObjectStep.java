@@ -34,7 +34,7 @@ import net.runelite.api.gameval.ItemID;
 // This is a lazy implementation where we fully trust the location of the object to only have one thing to work
 public class ChartingGenericObjectStep extends ChartingTaskObjectStep
 {
-	ChartingGenericObjectStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
+	public ChartingGenericObjectStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, -1, definition, requirements);
 		var spyglass = new ItemRequirement("Spyglass", ItemID.SAILING_CHARTING_SPYGLASS);

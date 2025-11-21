@@ -33,7 +33,7 @@ import net.runelite.api.gameval.NpcID;
 
 public class ChartingDivingStep extends ChartingTaskNpcStep
 {
-	ChartingDivingStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
+	public ChartingDivingStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, NpcID.SAILING_CHARTING_MERMAID_GUIDE_1, definition, requirements);
 		addAlternateNpcs(NpcID.SAILING_CHARTING_MERMAID_GUIDE_2, NpcID.SAILING_CHARTING_MERMAID_GUIDE_3,

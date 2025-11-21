@@ -24,7 +24,12 @@
  */
 package com.questhelper.helpers.activities.charting;
 
+import com.questhelper.helpers.activities.charting.steps.ChartingCurrentStep;
+import com.questhelper.helpers.activities.charting.steps.ChartingDivingStep;
+import com.questhelper.helpers.activities.charting.steps.ChartingGenericObjectStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingTaskStep;
+import com.questhelper.helpers.activities.charting.steps.ChartingTelescopeStep;
+import com.questhelper.helpers.activities.charting.steps.ChartingWeatherStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -66,7 +71,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			List<ChartingTaskInterface> steps = new ArrayList<>();
 			for (ChartingTaskDefinition definition : section.getTasks())
 			{
-				ChartingTaskInterface step = new ChartingTaskStep(this, definition);
+				ChartingTaskInterface step = createStep(definition);
 
 				chartingSteps.add((QuestStep) step);
 				steps.add(step);
@@ -110,6 +115,25 @@ public class ChartingHelper extends ComplexStateQuestHelper
 		}
 
 		panelDetails = new ArrayList<>(List.of(topLevelPanel));
+	}
+
+	private ChartingTaskInterface createStep(ChartingTaskDefinition definition)
+	{
+		switch (definition.getType())
+		{
+			case GENERIC:
+				return new ChartingGenericObjectStep(this, definition);
+			case SPYGLASS:
+				return new ChartingTelescopeStep(this, definition);
+			case CURRENT:
+				return new ChartingCurrentStep(this, definition);
+			case DIVING:
+				return new ChartingDivingStep(this, definition);
+			case WEATHER:
+				return new ChartingWeatherStep(this, definition);
+			default:
+				return new ChartingTaskStep(this, definition);
+		}
 	}
 
 	@Override

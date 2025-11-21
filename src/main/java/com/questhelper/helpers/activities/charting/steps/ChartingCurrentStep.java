@@ -34,7 +34,7 @@ import net.runelite.api.gameval.ObjectID;
 public class ChartingCurrentStep extends ChartingTaskObjectStep
 {
 
-	ChartingCurrentStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
+	public ChartingCurrentStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, ObjectID.SAILING_CHARTING_HINT_MARKER_DUCK, definition, requirements);
 		var duck = new ItemRequirement("Current duck", ItemID.SAILING_CHARTING_CURRENT_DUCK);

@@ -34,7 +34,7 @@ import net.runelite.api.gameval.NpcID;
 public class ChartingWeatherStep extends ChartingTaskNpcStep
 {
 	// TODO: Need to define second step of going to the spot to measure weather
-	ChartingWeatherStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
+	public ChartingWeatherStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, NpcID.SAILING_CHARTING_WEATHER_TROLL, definition, requirements);
 		var weatherStation = new ItemRequirement("Weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_EMPTY);

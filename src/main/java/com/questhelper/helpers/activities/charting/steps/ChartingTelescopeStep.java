@@ -33,7 +33,7 @@ import net.runelite.api.gameval.ObjectID;
 
 public class ChartingTelescopeStep extends ChartingTaskObjectStep
 {
-	ChartingTelescopeStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
+	public ChartingTelescopeStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, ObjectID.SAILING_CHARTING_HINT_MARKER_SPYGLASS, definition, requirements);
 		var spyglass = new ItemRequirement("Spyglass", ItemID.SAILING_CHARTING_SPYGLASS);

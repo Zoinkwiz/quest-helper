@@ -371,7 +371,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Crystal Sea.", new WorldPoint(1979, 3211, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CRYSTAL_SEA_COMPLETE)
 		)),
 		new ChartingSeaSection(52, "Porth Gwenith", List.of(
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Ynysdail and sample the contents. Watch out for Crystal-flecked waters!", null, "Western Ocean", 66, VarbitID.SAILING_CHARTING_DRINK_CRATE_UNDERGROUND_MILK_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Ynysdail and sample the contents. Watch out for Crystal-flecked waters!", new WorldPoint(2206, 3484, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_DRINK_CRATE_UNDERGROUND_MILK_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an unusual boat north of Gwenith. Watch out for Crystal-flecked waters!", new WorldPoint(2210, 3445, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_GENERIC_CRYSTAL_DINGHY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island north west of Eagles' Peak. Watch out for Crystal-flecked waters!", new WorldPoint(2280, 3518, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_WEATHER_TROLL_VAGABONDS_REST_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of Gwenith. Watch out for Crystal-flecked waters!", new WorldPoint(2220, 3429, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_CURRENT_DUCK_PORTH_GWENITH_COMPLETE),

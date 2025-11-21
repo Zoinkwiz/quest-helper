@@ -280,6 +280,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		if (steps.get(questStep) != null)
 		{
 			steps.get(questStep).setForeground(Color.LIGHT_GRAY);
+			steps.get(questStep).setToolTipText(null);
 		}
 	}
 

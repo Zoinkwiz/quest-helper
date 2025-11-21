@@ -125,6 +125,7 @@ public enum QuestVarbits
 	QUEST_SHADOWS_OF_CUSTODIA(VarbitID.SOC),
 	QUEST_SCRAMBLED(VarbitID.SCRAMBLED),
 	QUEST_PANDEMONIUM(VarbitID.SAILING_INTRO),
+	QUEST_PRYING_TIMES(VarbitID.QUEST_PRY),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

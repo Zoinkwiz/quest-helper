@@ -210,7 +210,8 @@ public final class ChartingTasksData
 		new ChartingSeaSection(27, "Mythic Sea", List.of(
 			new ChartingTaskDefinition("Crate", "Find a Sealed crate west of the Void Knights' Outpost and sample the contents.", new WorldPoint(2556, 2666, 0), "Shrouded Ocean", 12, null, null, VarbitID.SAILING_CHARTING_DRINK_CRATE_MYTHS_MIXER_COMPLETE),
 			new ChartingTaskDefinition("Generic", "Find an abandoned camp on Anglers' Retreat. Watch out for Fetid waters!", new WorldPoint(2476, 2709, 0), "Shrouded Ocean", 51, null, null, VarbitID.SAILING_CHARTING_GENERIC_ABANDONED_CAMP_COMPLETE),
-			new ChartingTaskDefinition("Current", "Test the currents east of Anglers' Retreat. Watch out for Fetid waters!", new WorldPoint(2340, 2898, 0), "Shrouded Ocean", 40, null, null, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MYTHIC_SEA_COMPLETE),
+			// added WP myself
+			new ChartingTaskDefinition("Current", "Test the currents east of Anglers' Retreat. Watch out for Fetid waters!", new WorldPoint(2596, 2708, 0), "Shrouded Ocean", 40, null, null, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MYTHIC_SEA_COMPLETE),
 			new ChartingTaskDefinition("Diving", "With help from a mermaid guide, document the water depth south of the Myths' Guild. Watch out for Fetid waters!", new WorldPoint(2446, 2786, 0), "Shrouded Ocean", 40, null, null, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MYTHIC_SEA_COMPLETE)
 		)),
 		new ChartingSeaSection(28, "Breakbone Strait", List.of(

@@ -434,12 +434,8 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
-		System.out.println("BEEP");
-		System.out.println(object.getId());
-
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
-			System.out.println("SETTING");
 			setObjects(object);
 			return;
 		}

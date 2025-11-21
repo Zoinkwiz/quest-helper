@@ -108,8 +108,8 @@ public class DirectionArrow
 			return;
 		}
 
-		WorldPoint playerRealLocation = getWorldPointFromLocal(client, player.getLocalLocation());
-		WorldPoint goalRealLocation = getWorldPointFromLocal(client, localPoint);
+		WorldPoint playerRealLocation = QuestPerspective.getWorldPointConsideringWorldView(client, player.getLocalLocation());
+		WorldPoint goalRealLocation = QuestPerspective.getWorldPointConsideringWorldView(client, localPoint);
 		if (playerRealLocation == null) return;
 
 		if (goalRealLocation.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
@@ -137,7 +137,7 @@ public class DirectionArrow
 		Player player = client.getLocalPlayer();
 		if (player == null) return;
 
-		WorldPoint playerRealLocation = getWorldPointFromLocal(client, player.getLocalLocation());
+		WorldPoint playerRealLocation = QuestPerspective.getWorldPointConsideringWorldView(client, player.getLocalLocation());
 		if (playerRealLocation == null) return;
 
 		if (worldPoint.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
@@ -146,21 +146,18 @@ public class DirectionArrow
 			return;
 		}
 
-		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		LocalPoint localPoint = QuestPerspective.getLocalPointConsideringWorldView(client, worldPoint);
 
-		for (LocalPoint localPoint : localPoints)
+		Point posOnMinimap = Perspective.localToMinimap(client, localPoint);
+		if (posOnMinimap == null)
 		{
-			Point posOnMinimap = Perspective.localToMinimap(client, localPoint);
-			if (posOnMinimap == null)
-			{
-				continue;
-			}
-
-			Line2D.Double line = new Line2D.Double(posOnMinimap.getX(), posOnMinimap.getY() - 18, posOnMinimap.getX(),
-					posOnMinimap.getY() - 8);
-
-			drawMinimapArrow(graphics, line, color);
+			return;
 		}
+
+		Line2D.Double line = new Line2D.Double(posOnMinimap.getX(), posOnMinimap.getY() - 18, posOnMinimap.getX(),
+			posOnMinimap.getY() - 8);
+
+		drawMinimapArrow(graphics, line, color);
 	}
 
 	protected static void createMinimapDirectionArrow(Graphics2D graphics, Client client, WorldPoint playerRealWp, WorldPoint wp, Color color)

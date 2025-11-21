@@ -38,8 +38,8 @@ public class ChartingDivingStep extends ChartingTaskNpcStep
 		super(questHelper, NpcID.SAILING_CHARTING_MERMAID_GUIDE_1, definition, requirements);
 		addAlternateNpcs(NpcID.SAILING_CHARTING_MERMAID_GUIDE_2, NpcID.SAILING_CHARTING_MERMAID_GUIDE_3,
 			NpcID.SAILING_CHARTING_MERMAID_GUIDE_4, NpcID.SAILING_CHARTING_MERMAID_GUIDE_5);
-		var divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.HUNDRED_PIRATE_DIVING_HELMET);
-		var divingApparatus = new ItemRequirement("Diving apparatus", ItemID.HUNDRED_PIRATE_DIVING_BACKPACK);
+		var divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.HUNDRED_PIRATE_DIVING_HELMET).equipped();
+		var divingApparatus = new ItemRequirement("Diving apparatus", ItemID.HUNDRED_PIRATE_DIVING_BACKPACK).equipped();
 		addRequirement(divingHelmet, divingApparatus);
 	}
 }

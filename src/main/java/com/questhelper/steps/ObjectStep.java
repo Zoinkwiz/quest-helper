@@ -61,6 +61,7 @@ public class ObjectStep extends DetailedQuestStep
 	private int maxRenderDistance = 50;
 	private TileObject closestObject = null;
 	private int lastPlane;
+	@Setter
 	private boolean revalidateObjects;
 
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
@@ -116,11 +117,6 @@ public class ObjectStep extends DetailedQuestStep
 		return newStep;
 	}
 
-	public void setRevalidateObjects(boolean value)
-	{
-		this.revalidateObjects = value;
-	}
-
 	@Override
 	public void startUp()
 	{
@@ -165,9 +161,9 @@ public class ObjectStep extends DetailedQuestStep
 		super.onGameTick(event);
 		if (revalidateObjects)
 		{
-			if (lastPlane != client.getPlane())
+			if (lastPlane != client.getTopLevelWorldView().getPlane())
 			{
-				lastPlane = client.getPlane();
+				lastPlane = client.getTopLevelWorldView().getPlane();
 				loadObjects();
 			}
 		}
@@ -182,20 +178,17 @@ public class ObjectStep extends DetailedQuestStep
 
 	public void checkTileForObject(WorldPoint wp)
 	{
-		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, wp);
+		LocalPoint localPoint = QuestPerspective.getLocalPointConsideringWorldView(client, wp);
 
-		for (LocalPoint localPoint : localPoints)
+		Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
+
+		Tile tile = tiles[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+		if (tile != null)
 		{
-			Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
-
-			Tile tile = tiles[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-			if (tile != null)
-			{
-				Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
-				handleObjects(tile.getDecorativeObject());
-				handleObjects(tile.getGroundObject());
-				handleObjects(tile.getWallObject());
-			}
+			Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
+			handleObjects(tile.getDecorativeObject());
+			handleObjects(tile.getGroundObject());
+			handleObjects(tile.getWallObject());
 		}
 	}
 
@@ -297,11 +290,24 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			return;
 		}
-		WorldPoint playerPosition = client.getLocalPlayer().getWorldLocation();
+		WorldPoint playerPosition = QuestPerspective.getWorldPointConsideringWorldView(client,
+			client.getLocalPlayer().getWorldLocation());
+		if (playerPosition == null)
+		{
+			return;
+		}
+
+		WorldPoint closestObjectPosition = null;
 
 		for (TileObject tileObject : objects)
 		{
-			int distanceFromPlayer = tileObject.getWorldLocation().distanceTo(playerPosition);
+			WorldPoint objectPosition = QuestPerspective.getWorldPointConsideringWorldView(client, tileObject.getWorldLocation());
+			if (objectPosition == null)
+			{
+				continue;
+			}
+
+			int distanceFromPlayer = objectPosition.distanceTo(playerPosition);
 			if (maxRenderDistance < distanceFromPlayer)
 			{
 				continue;
@@ -309,9 +315,11 @@ public class ObjectStep extends DetailedQuestStep
 
 			if (tileObject.getPlane() == client.getPlane())
 			{
-				if (closestObject == null || closestObject.getWorldLocation().distanceTo(playerPosition) > distanceFromPlayer)
+				if (closestObject == null || closestObjectPosition == null
+					|| closestObjectPosition.distanceTo(playerPosition) > distanceFromPlayer)
 				{
 					closestObject = tileObject;
+					closestObjectPosition = objectPosition;
 				}
 
 				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
@@ -396,12 +404,12 @@ public class ObjectStep extends DetailedQuestStep
 				return;
 			}
 
-			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-			for (LocalPoint localPoint : localPoints)
+			LocalPoint localPoint = QuestPerspective.getLocalPointConsideringWorldView(client, worldPoint);
+			if (localPoint != null)
 			{
 				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
 			}
-			if (localPoints.isEmpty())
+			else
 			{
 				DirectionArrow.renderMinimapArrow(graphics, client, worldPoint, getQuestHelper().getConfig().targetOverlayColor());
 			}
@@ -425,8 +433,12 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
+		System.out.println("BEEP");
+		System.out.println(object.getId());
+
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
+			System.out.println("SETTING");
 			setObjects(object);
 			return;
 		}
@@ -456,7 +468,7 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
-		WorldPoint objectWP = QuestPerspective.getRealWorldPointFromLocal(client, object.getWorldLocation());
+		WorldPoint objectWP = QuestPerspective.getWorldPointConsideringWorldView(client, object.getWorldLocation());
 
 		if (objectWP == null)
 		{
@@ -489,7 +501,7 @@ public class ObjectStep extends DetailedQuestStep
 	// See https://github.com/runelite/runelite/commit/4f34a0de6a0100adf79cac5b92198aa432debc4c
 	private Zone objZone(GameObject obj)
 	{
-		WorldPoint bottomLeftCorner = QuestPerspective.getRealWorldPointFromLocal(client, obj.getWorldLocation());
+		WorldPoint bottomLeftCorner = QuestPerspective.getWorldPointConsideringWorldView(client, obj.getWorldLocation());
 		if (bottomLeftCorner == null)
 		{
 			return new Zone();

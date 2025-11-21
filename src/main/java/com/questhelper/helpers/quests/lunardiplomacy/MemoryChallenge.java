@@ -105,7 +105,7 @@ public class MemoryChallenge extends DetailedQuestStep
 
 	public void checkNextTile(int wpsPos)
 	{
-		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPointFromReal(client, wps.get(wpsPos));
+		WorldPoint instanceWp = QuestPerspective.getWorldPointConsideringWorldView(client, wps.get(wpsPos));
 		if (instanceWp == null)
 		{
 			return;

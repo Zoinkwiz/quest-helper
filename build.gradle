@@ -44,11 +44,11 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Test).configureEach {
-	maxHeapSize = "1g" 
-	minHeapSize = "256m"
+	maxHeapSize = "3g" 
+	minHeapSize = "512m"
 	jvmArgs = [
-			"-XX:ReservedCodeCacheSize=256m",
-			"-XX:MaxMetaspaceSize=512m"
+			"-XX:ReservedCodeCacheSize=512m",
+			"-XX:MaxMetaspaceSize=1g"
 	]
 	testLogging.showStandardStreams = true
 }

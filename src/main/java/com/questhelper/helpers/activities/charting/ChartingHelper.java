@@ -144,9 +144,9 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	{
 		buildSteps();
 
-		var overviewStep = new DetailedQuestStep(this,
-			"Do any incomplete Sea charting task from the sidebar.");
-
+		var overviewStep = new DetailedQuestStep(this, "You've charted everything!");
+		chartingSteps.get(0).addSubSteps(overviewStep);
+		
 		var chartingConditionalStep = new ReorderableConditionalStep(this, overviewStep);
 		for (QuestStep step : chartingSteps)
 		{

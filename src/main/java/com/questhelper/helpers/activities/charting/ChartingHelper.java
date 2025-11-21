@@ -24,6 +24,9 @@
  */
 package com.questhelper.helpers.activities.charting;
 
+import com.questhelper.helpers.activities.charting.steps.ChartingTaskNpcStep;
+import com.questhelper.helpers.activities.charting.steps.ChartingTaskObjectStep;
+import com.questhelper.helpers.activities.charting.steps.ChartingTaskStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;

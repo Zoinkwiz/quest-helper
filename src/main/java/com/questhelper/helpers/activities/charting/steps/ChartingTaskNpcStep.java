@@ -22,8 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.activities.charting;
+package com.questhelper.helpers.activities.charting.steps;
 
+import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
+import com.questhelper.helpers.activities.charting.ChartingTaskInterface;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -36,7 +38,7 @@ import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Getter
-public final class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterface
+public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterface
 {
 	private Requirement incompleteRequirement;
 	private Requirement canDoRequirement;

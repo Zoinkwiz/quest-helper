@@ -418,7 +418,7 @@ public class ObjectStep extends DetailedQuestStep
 		objects.remove(object);
 	}
 
-	private void handleObjects(TileObject object)
+	protected void handleObjects(TileObject object)
 	{
 		if (object == null)
 		{
@@ -445,7 +445,7 @@ public class ObjectStep extends DetailedQuestStep
 		}
 	}
 
-	private void setObjects(TileObject object)
+	protected void setObjects(TileObject object)
 	{
 		if (worldPoint == null)
 		{

@@ -179,6 +179,7 @@ public class ObjectStep extends DetailedQuestStep
 	public void checkTileForObject(WorldPoint wp)
 	{
 		LocalPoint localPoint = QuestPerspective.getLocalPointConsideringWorldView(client, wp);
+		if (localPoint == null) return;
 
 		Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
 

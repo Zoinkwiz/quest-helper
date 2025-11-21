@@ -27,6 +27,8 @@ package com.questhelper.helpers.activities.charting.steps;
 import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 
 public class ChartingCrateStep extends ChartingTaskObjectStep
@@ -34,5 +36,7 @@ public class ChartingCrateStep extends ChartingTaskObjectStep
 	public ChartingCrateStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, ObjectID.SAILING_CHARTING_DRINK_CRATE, definition, requirements);
+		var crowbar = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
+		addRequirement(crowbar);
 	}
 }

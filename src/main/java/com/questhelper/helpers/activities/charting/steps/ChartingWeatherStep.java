@@ -70,8 +70,8 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 
 	private void setupRequirements()
 	{
-		weatherStationEmpty = new ItemRequirement("Weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_EMPTY);
-		weatherStationFull = new ItemRequirement("Weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_FULL);
+		weatherStationEmpty = new ItemRequirement("Portable weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_EMPTY);
+		weatherStationFull = new ItemRequirement("Data filled portable weather station", ItemID.SAILING_CHARTING_WEATHER_STATION_FULL);
 	}
 
 	private void setupSteps(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)

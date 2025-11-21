@@ -41,7 +41,7 @@ public final class ChartingTaskStep extends DetailedQuestStep implements Chartin
 
 	ChartingTaskStep(ChartingHelper helper, ChartingTaskDefinition definition)
 	{
-		super(helper, "[" + definition.getType() + "] " + definition.getDescription());
+		super(helper, "[" + definition.getType().getDisplayName() + "] " + definition.getDescription());
 		setupChartingDetails(definition);
 	}
 

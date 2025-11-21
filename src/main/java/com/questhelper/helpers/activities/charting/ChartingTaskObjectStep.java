@@ -42,7 +42,7 @@ public class ChartingTaskObjectStep extends ObjectStep implements ChartingTaskIn
 
 	ChartingTaskObjectStep(QuestHelper questHelper, int objectID, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		super(questHelper, objectID, "[" + definition.getType() + "] " + definition.getDescription(), requirements);
+		super(questHelper, objectID, "[" + definition.getType().getDisplayName() + "] " + definition.getDescription(), requirements);
 		setupChartingDetails(definition);
 	}
 

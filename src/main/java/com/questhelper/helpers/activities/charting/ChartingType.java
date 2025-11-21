@@ -25,28 +25,22 @@
 package com.questhelper.helpers.activities.charting;
 
 import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
 
 @Getter
-public final class ChartingTaskDefinition
+public enum ChartingType
 {
-	private final ChartingType type;
-	private final String description;
-	private final WorldPoint worldPoint;
-	private final String ocean;
-	private final int level;
-	private final Integer objectId;
-	private final Integer npcId;
-	private final int varbitId;
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, Integer objectId, Integer npcId, int varbitId)
+	GENERIC("Generic"),
+	SPYGLASS("Spyglass"),
+	CRATE("Crate"),
+	CURRENT("Current"),
+	DIVING("Diving"),
+	WEATHER("Weather");
+
+	private final String displayName;
+
+	ChartingType(String displayName)
 	{
-		this.type = type;
-		this.description = description;
-		this.worldPoint = worldPoint;
-		this.ocean = ocean;
-		this.level = level;
-		this.objectId = objectId;
-		this.npcId = npcId;
-		this.varbitId = varbitId;
+		this.displayName = displayName;
 	}
 }
+

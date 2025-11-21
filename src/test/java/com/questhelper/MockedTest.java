@@ -33,6 +33,7 @@ import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
@@ -141,6 +142,7 @@ public abstract class MockedTest extends MockedTestBase
 
 		WorldView mockedWorldView = mock(WorldView.class);
 		when(mockedWorldView.getScene()).thenReturn(mockedScene);
+		when(mockedWorldView.getPlane()).thenReturn(-1);
 
 		@SuppressWarnings("unchecked")
 		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) mock(IndexedObjectSet.class);
@@ -148,6 +150,7 @@ public abstract class MockedTest extends MockedTestBase
 		doReturn(npcSetMock).when(mockedWorldView).npcs();
 		when(client.getTopLevelWorldView()).thenReturn(mockedWorldView);
 		when(client.getScene()).thenReturn(mockedScene); // TODO: We should not have to mock this
+		when(client.findWorldViewFromWorldPoint(any(WorldPoint.class))).thenReturn(mockedWorldView);
 		var mockedItemContainer = Mockito.mock(ItemContainer.class);
 		when(mockedItemContainer.getItems()).thenReturn(new Item[0]);
 		when(client.getItemContainer(anyInt())).thenReturn(mockedItemContainer);

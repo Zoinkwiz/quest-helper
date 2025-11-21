@@ -32,7 +32,6 @@ import net.runelite.api.Client;
 import javax.annotation.Nonnull;
 
 import lombok.Getter;
-import net.runelite.api.Skill;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -43,8 +42,7 @@ import net.runelite.api.gameval.VarbitID;
 @Getter
 public class FreeSailingTaskSlotRequirement extends AbstractRequirement
 {
-	private final int NUM_TASK_SLOTS_TOTAL = 5;
-	private int numSlotsFree;
+	private final int numSlotsFree;
 
 	/**
 	 * Checks if the player has a required number of slots free.

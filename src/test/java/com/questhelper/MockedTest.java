@@ -53,7 +53,6 @@ import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.IntStream;
 
 import static org.mockito.Mockito.*;
 

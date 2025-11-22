@@ -61,6 +61,9 @@ public class KeysAndLeversTest extends MockedTest
 		var mockedPlayer = Mockito.mock(Player.class);
 		// when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(1, 1, 1));
 		when(client.getLocalPlayer()).thenReturn(mockedPlayer);
+		var worldView = Mockito.mock(WorldView.class);
+		when(mockedPlayer.getWorldView()).thenReturn(worldView);
+		when(worldView.getId()).thenReturn(-1);
 
 		questPerspectiveMockedStatic = Mockito.mockStatic(QuestPerspective.class);
 

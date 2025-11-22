@@ -6,6 +6,7 @@ import com.questhelper.requirements.player.ShipInPortRequirement;
 import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
+import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 public class SailStep extends DetailedQuestStep

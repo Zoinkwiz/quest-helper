@@ -39,6 +39,7 @@ public final class ChartingTaskDefinition
 	private final String ocean;
 	private final int level;
 	private final int varbitId;
+	private final String answerText;
 	
 	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId)
 	{
@@ -55,9 +56,10 @@ public final class ChartingTaskDefinition
 		this.level = level;
 		this.varbitId = varbitId;
 		this.itemIds = null;
+		this.answerText = "";
 	}
 
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, List<Integer> itemIds)
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, String answerText, List<Integer> itemIds)
 	{
 		this.type = type;
 		this.description = description;
@@ -67,5 +69,6 @@ public final class ChartingTaskDefinition
 		this.ocean = ocean;
 		this.level = level;
 		this.varbitId = varbitId;
+		this.answerText = answerText;
 	}
 }

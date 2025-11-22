@@ -45,7 +45,7 @@ public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterfac
 
 	ChartingTaskNpcStep(QuestHelper questHelper, int npcID, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		super(questHelper, npcID, "[" + definition.getType().getDisplayName() + "] " + definition.getDescription(), requirements);
+		super(questHelper, npcID, "[" + definition.getType().getDisplayName() + "] " + definition.getDescription() + " " + definition.getAnswerText(), requirements);
 		 setupChartingDetails(definition);
 	}
 

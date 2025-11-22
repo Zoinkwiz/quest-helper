@@ -124,6 +124,7 @@ public enum QuestVarbits
 	QUEST_THE_FINAL_DAWN(VarbitID.VMQ4),
 	QUEST_SHADOWS_OF_CUSTODIA(VarbitID.SOC),
 	QUEST_SCRAMBLED(VarbitID.SCRAMBLED),
+	QUEST_TROUBLED_TORTUGANS(VarbitID.TT),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

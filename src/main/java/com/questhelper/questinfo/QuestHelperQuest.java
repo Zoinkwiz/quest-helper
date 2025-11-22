@@ -257,6 +257,7 @@ import com.questhelper.helpers.quests.treegnomevillage.TreeGnomeVillage;
 import com.questhelper.helpers.quests.tribaltotem.TribalTotem;
 import com.questhelper.helpers.quests.trollromance.TrollRomance;
 import com.questhelper.helpers.quests.trollstronghold.TrollStronghold;
+import com.questhelper.helpers.quests.troubledtortugans.TroubledTortugans;
 import com.questhelper.helpers.quests.twilightspromise.TwilightsPromise;
 import com.questhelper.helpers.quests.undergroundpass.UndergroundPass;
 import com.questhelper.helpers.quests.vampyreslayer.VampyreSlayer;
@@ -474,6 +475,7 @@ public enum QuestHelperQuest
 	THE_FINAL_DAWN(new TheFinalDawn(), Quest.THE_FINAL_DAWN, QuestVarbits.QUEST_THE_FINAL_DAWN, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	SHADOWS_OF_CUSTODIA(new ShadowsOfCustodia(), Quest.SHADOWS_OF_CUSTODIA, QuestVarbits.QUEST_SHADOWS_OF_CUSTODIA, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	SCRAMBLED(new Scrambled(), Quest.SCRAMBLED, QuestVarbits.QUEST_SCRAMBLED, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	TROUBLED_TORTUGANS(new TroubledTortugans(), Quest.TROUBLED_TORTUGANS, QuestVarbits.QUEST_TROUBLED_TORTUGANS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

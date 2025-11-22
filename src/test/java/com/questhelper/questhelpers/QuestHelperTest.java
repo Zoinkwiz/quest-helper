@@ -328,6 +328,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.ARDOUGNE_EASY,
+			QuestHelperQuest.TROUBLED_TORTUGANS,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.DEMON_SLAYER,
 			QuestHelperQuest.MISTHALIN_MYSTERY,

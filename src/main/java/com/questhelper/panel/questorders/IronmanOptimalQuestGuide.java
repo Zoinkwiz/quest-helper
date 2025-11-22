@@ -243,6 +243,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.BENEATH_CURSED_SANDS,
 		QuestHelperQuest.THE_CURSE_OF_ARRAV,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
+		QuestHelperQuest.TROUBLED_TORTUGANS,
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		QuestHelperQuest.FREMENNIK_MEDIUM,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,

@@ -107,7 +107,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the bananaless boat west of Ape Atoll.", new WorldPoint(2693, 2793, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BANANA_BOAT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the throne in Corsair Cove from the east.", new WorldPoint(2605, 2867, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_COVE_THRONE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate south of Corsair Cove and sample the contents.", new WorldPoint(2595, 2787, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_OOGLUG_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Corsair Cove.", new WorldPoint(2529, 2829, 0), "Ardent Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_OOGLOG_CHANNEL_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Corsair Cove.", new WorldPoint(2529, 2829, 0), "Ardent Ocean", 40, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_OOGLOG_CHANNEL_COMPLETE)
 		)),
 		new ChartingSeaSection(12, "Arrow Passage", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting aquatic life north west of Crash Island.", new WorldPoint(2881, 2750, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SEA_MONKEYS_COMPLETE),

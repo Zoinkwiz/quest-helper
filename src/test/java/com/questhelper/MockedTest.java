@@ -159,6 +159,8 @@ public abstract class MockedTest extends MockedTestBase
 		when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(1, 1, 1));
 		when(client.getLocalPlayer()).thenReturn(mockedPlayer);
 		when(client.getWorldView(anyInt())).thenReturn(mockedWorldView);
+		when(mockedPlayer.getWorldView()).thenReturn(mockedWorldView);
+		when(mockedWorldView.getId()).thenReturn(-1);
 
 		ItemComposition itemComposition = mock(ItemComposition.class);
 		when(itemComposition.getName()).thenReturn("Test item");

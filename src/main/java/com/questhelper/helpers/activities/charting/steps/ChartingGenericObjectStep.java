@@ -30,6 +30,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import net.runelite.api.TileObject;
 import net.runelite.api.gameval.ItemID;
+import java.util.List;
 
 // This is a lazy implementation where we fully trust the location of the object to only have one thing to work
 public class ChartingGenericObjectStep extends ChartingTaskObjectStep
@@ -38,6 +39,7 @@ public class ChartingGenericObjectStep extends ChartingTaskObjectStep
 	{
 		super(questHelper, -1, definition, requirements);
 		var spyglass = new ItemRequirement("Spyglass", ItemID.SAILING_CHARTING_SPYGLASS);
+		setGeInterfaceIcon(List.of(ItemID.FLOWERS_WATERFALL_QUEST_BLACK));
 		addRequirement(spyglass);
 	}
 

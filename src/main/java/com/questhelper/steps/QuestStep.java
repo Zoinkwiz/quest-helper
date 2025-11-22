@@ -176,7 +176,7 @@ public abstract class QuestStep implements Module
 
 	@Getter
 	@Setter
-	protected int geInterfaceIcon;
+	protected List<Integer> geInterfaceIcon;
 
 	public QuestStep(QuestHelper questHelper)
 	{

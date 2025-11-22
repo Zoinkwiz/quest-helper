@@ -36,6 +36,7 @@ import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.JagexColors;
@@ -81,16 +82,16 @@ public class QuestGrandExchangeInterface
 			return;
 		}
 
+		parent = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
+
 		if (notAtGE())
 		{
-			if (questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon() > 0)
+			if (questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon() != null)
 			{
-				onceOffActivateTab();
+				onceOffActivateTab(parent);
 			}
 			return;
 		}
-
-		parent = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
 
 		int QUEST_BUTTON_SIZE = 20;
 		int QUEST_BUTTON_X = 480;
@@ -203,9 +204,9 @@ public class QuestGrandExchangeInterface
 	}
 
 	// Used for non-ge ge interfaces
-	public void onceOffActivateTab()
+	public void onceOffActivateTab(Widget parent)
 	{
-		grandExchangeTitle.setHidden(false);
+		createTitleStepNeededItem(parent);
 		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "quest-helper");
 		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
 
@@ -267,8 +268,8 @@ public class QuestGrandExchangeInterface
 		widget.setOriginalX(0);
 		widget.setOriginalY(0);
 		widget.setTextShadowed(false);
-		widget.setXTextAlignment(1);
-		widget.setYTextAlignment(1);
+		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
+		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
 
 		widget.setText("<col=b40000>" + questHelper.getSelectedQuest().getQuest().getName() + "</col> required items");
 		widget.setFontId(FontID.BOLD_12);
@@ -278,6 +279,33 @@ public class QuestGrandExchangeInterface
 		{
 			widget.setHidden(true);
 		}
+
+		widget.revalidate();
+
+		return widget;
+	}
+
+	private Widget createTitleStepNeededItem(Widget container)
+	{
+		Widget chatbox = client.getWidget(InterfaceID.Chatbox.MES_TEXT2);
+
+		Widget widget = container.createChild(-1, WidgetType.TEXT);
+		if (chatbox == null)
+		{
+			return widget;
+		}
+
+		widget.setOriginalWidth(chatbox.getWidth());
+		widget.setOriginalHeight(chatbox.getHeight());
+		widget.setOriginalX(0);
+		widget.setOriginalY(0);
+		widget.setTextShadowed(false);
+		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
+		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
+
+		widget.setText("<col=b40000>Quest Helper</col> Item");
+		widget.setFontId(FontID.BOLD_12);
+		widget.setTextColor(JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND.getRGB());
 
 		widget.revalidate();
 

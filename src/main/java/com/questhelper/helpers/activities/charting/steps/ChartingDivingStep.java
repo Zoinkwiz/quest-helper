@@ -28,6 +28,8 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 
@@ -38,8 +40,11 @@ public class ChartingDivingStep extends ChartingTaskNpcStep
 		super(questHelper, NpcID.SAILING_CHARTING_MERMAID_GUIDE_1, definition, requirements);
 		addAlternateNpcs(NpcID.SAILING_CHARTING_MERMAID_GUIDE_2, NpcID.SAILING_CHARTING_MERMAID_GUIDE_3,
 			NpcID.SAILING_CHARTING_MERMAID_GUIDE_4, NpcID.SAILING_CHARTING_MERMAID_GUIDE_5);
+		var medallionOfTheDeep = new ItemRequirement("Medallion of the deep", ItemID.MEDALLION_OF_THE_DEEP).equipped();
 		var divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.HUNDRED_PIRATE_DIVING_HELMET).equipped();
 		var divingApparatus = new ItemRequirement("Diving apparatus", ItemID.HUNDRED_PIRATE_DIVING_BACKPACK).equipped();
-		addRequirement(divingHelmet, divingApparatus);
+		var divingGear = new ItemRequirements(LogicType.AND, divingHelmet, divingApparatus);
+		var canBreathUnderwater = new ItemRequirements(LogicType.OR, "Diving helmet + apparatus OR medallion of the deep", medallionOfTheDeep, divingGear);
+		addRequirement(canBreathUnderwater);
 	}
 }

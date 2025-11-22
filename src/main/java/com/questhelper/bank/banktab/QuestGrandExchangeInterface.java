@@ -86,7 +86,7 @@ public class QuestGrandExchangeInterface
 
 		if (notAtGE())
 		{
-			if (questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon() != null)
+			if (questHelper.getConfig().solvePuzzles() && questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon() != null)
 			{
 				onceOffActivateTab(parent);
 			}

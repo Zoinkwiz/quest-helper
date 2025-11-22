@@ -166,9 +166,12 @@ public class QuestBankTab
 		event.consume();
 
 		var itemsToTag = questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon();
-		if (geButtonWidget.notAtGE() && itemsToTag != null)
+		if (geButtonWidget.notAtGE())
 		{
-			updateGrandExchangeUiForSpecificItem(itemsToTag);
+			if (itemsToTag != null)
+			{
+				updateGrandExchangeUiForSpecificItem(itemsToTag);
+			}
 		}
 		else
 		{

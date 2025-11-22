@@ -78,10 +78,10 @@ public class NoItemRequirement extends ItemRequirement
 	public String getDisplayText()
 	{
 
-		String displayString = "Nothing in your";
+		String displayString = "Nothing in your ";
 		for (int i = 0; i < slots.length; i++)
 		{
-			if (i == slots.length - 1 && "Nothing in your".equals(displayString))
+			if (i == slots.length - 1 && "Nothing in your ".equals(displayString))
 			{
 				displayString += slots[i].getName();
 			}

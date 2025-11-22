@@ -28,8 +28,13 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitRequirement;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class ChartingCurrentStep extends ChartingTaskObjectStep
 {
@@ -39,5 +44,9 @@ public class ChartingCurrentStep extends ChartingTaskObjectStep
 		super(questHelper, ObjectID.SAILING_CHARTING_HINT_MARKER_DUCK, definition, requirements);
 		var duck = new ItemRequirement("Current duck", ItemID.SAILING_CHARTING_CURRENT_DUCK);
 		addRequirement(duck);
+
+		var reqWithQuest = or(getFadeCondition(), new VarbitRequirement(VarbitID.CURRENT_AFFAIRS, 45, Operation.GREATER_EQUAL));
+		reqWithQuest.setText(getFadeCondition().getDisplayText() + " You also require completion of the quest 'Current Affairs'.");
+		conditionToFadeInSidebar(reqWithQuest);
 	}
 }

@@ -145,7 +145,7 @@ public class QuestGrandExchangeInterface
 	{
 		// Only show button if we're at GE
 		var playerLocation = client.getLocalPlayer().getWorldLocation();
-		return playerLocation.distanceTo(new WorldPoint(3164, 3489, 0)) <= 20;
+		return playerLocation.distanceTo(new WorldPoint(3164, 3489, 0)) > 20;
 	}
 
 	public boolean isHidden()

@@ -40,10 +40,10 @@ import java.util.stream.IntStream;
  * Requirement that checks if a player has a ship at the requested port.
  */
 @Getter
-public class PortRequirement extends AbstractRequirement
+public class ShipAtDockRequirement extends AbstractRequirement
 {
 	private final Port port;
-	private final boolean strictOnRecentBoat;
+	private final boolean strictOnRecentShip;
 
 	private int[] allDocks;
 	private int lastDock;
@@ -52,20 +52,20 @@ public class PortRequirement extends AbstractRequirement
 	 * Checks if the player has a ship docked at the requested port.
 	 *
 	 * @param port the id of the port
-	 * @param strictOnRecentBoat if true, only checks is most recently used boat is at a port, if false checks if any boat is at a port.
+	 * @param strictOnRecentShip if true, only checks is most recently used boat is at a port, if false checks if any boat is at a port.
 	 */
-	public PortRequirement(Port port, boolean strictOnRecentBoat)
+	public ShipAtDockRequirement(Port port, boolean strictOnRecentShip)
 	{
 		assert(port != null);
 		this.port = port;
-		this.strictOnRecentBoat = strictOnRecentBoat;
+		this.strictOnRecentShip = strictOnRecentShip;
 	}
 	/**
 	 * Checks if the player's most-recently used ship is at the requested port.
 	 *
 	 * @param port the id of the port
 	 */
-	public PortRequirement(Port port)
+	public ShipAtDockRequirement(Port port)
 	{
 		this(port, true);
 	}
@@ -82,7 +82,7 @@ public class PortRequirement extends AbstractRequirement
 			client.getVarbitValue(VarbitID.SAILING_BOAT_5_PORT)
 		};
 
-		if(strictOnRecentBoat)
+		if(strictOnRecentShip)
 		{
 			return lastDock == port.getId();
 		}else

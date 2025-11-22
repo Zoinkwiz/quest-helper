@@ -27,88 +27,59 @@
 package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
-import com.questhelper.requirements.util.Port;
 import net.runelite.api.Client;
 
 import javax.annotation.Nonnull;
 
 import lombok.Getter;
 import net.runelite.api.gameval.VarbitID;
-import java.util.stream.IntStream;
 
 /**
- * Requirement that checks if a player has a ship at the requested port.
+ * Requirement that checks if a player has a required number of Port Task slots free.
  */
-@Getter
-public class PortRequirement extends AbstractRequirement
+public class FreePortTaskSlotsRequirement extends AbstractRequirement
 {
-	private final Port port;
-	private final boolean strictOnRecentBoat;
-
-	private int[] allDocks;
-	private int lastDock;
+	@Getter
+	private final int numSlotsFree;
 
 	/**
-	 * Checks if the player has a ship docked at the requested port.
+	 * Checks if the player has a required number of slots free.
 	 *
-	 * @param port the id of the port
-	 * @param strictOnRecentBoat if true, only checks is most recently used boat is at a port, if false checks if any boat is at a port.
+	 * @param numSlotsFree the required number of slots free
 	 */
-	public PortRequirement(Port port, boolean strictOnRecentBoat)
+	public FreePortTaskSlotsRequirement(int numSlotsFree)
 	{
-		assert(port != null);
-		this.port = port;
-		this.strictOnRecentBoat = strictOnRecentBoat;
-	}
-	/**
-	 * Checks if the player's most-recently used ship is at the requested port.
-	 *
-	 * @param port the id of the port
-	 */
-	public PortRequirement(Port port)
-	{
-		this(port, true);
+		this.numSlotsFree = numSlotsFree;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		lastDock = client.getVarbitValue(VarbitID.SAILING_BOARDED_BOAT_LAST_DOCK);
-		allDocks = new int[]{
-			client.getVarbitValue(VarbitID.SAILING_BOAT_1_PORT),
-			client.getVarbitValue(VarbitID.SAILING_BOAT_2_PORT),
-			client.getVarbitValue(VarbitID.SAILING_BOAT_3_PORT),
-			client.getVarbitValue(VarbitID.SAILING_BOAT_4_PORT),
-			client.getVarbitValue(VarbitID.SAILING_BOAT_5_PORT)
-		};
-
-		if(strictOnRecentBoat)
+		int freeSlots = client.getVarbitValue(VarbitID.PORT_TASK_SLOT_0_ID) == 0 ? 1 : 0;
+		int extraSlotsUnlocked = client.getVarbitValue(VarbitID.PORT_TASK_EXTRA_SLOTS_UNLOCKED);
+		if (extraSlotsUnlocked >= 1)
 		{
-			return lastDock == port.getId();
-		}else
-		{
-			return anyDocked();
+			freeSlots += client.getVarbitValue(VarbitID.PORT_TASK_SLOT_1_ID) == 0 ? 1 : 0;
 		}
-	}
-
-	private boolean anyDocked(){
-		return IntStream.of(allDocks).anyMatch(x -> x == port.getId());
+		if (extraSlotsUnlocked >= 2)
+		{
+			freeSlots += client.getVarbitValue(VarbitID.PORT_TASK_SLOT_2_ID) == 0 ? 1 : 0;
+		}
+		if (extraSlotsUnlocked >= 3)
+		{
+			freeSlots += client.getVarbitValue(VarbitID.PORT_TASK_SLOT_3_ID) == 0 ? 1 : 0;
+		}
+		if (extraSlotsUnlocked >= 4)
+		{
+			freeSlots += client.getVarbitValue(VarbitID.PORT_TASK_SLOT_4_ID) == 0 ? 1 : 0;
+		}
+		return freeSlots >= numSlotsFree;
 	}
 
 	@Nonnull
 	@Override
 	public String getDisplayText()
 	{
-		return "A ship docked at " + this.port.getName();
-	}
-
-	public String getTooltip()
-	{
-		if(lastDock != port.getId()){
-			if(anyDocked()){
-				return "You have other ships docked at this port!";
-			}
-		}
-		return null;
+		return getNumSlotsFree() + " free Sailing Port task slot" + (getNumSlotsFree() == 1 ? "" : "s");
 	}
 }

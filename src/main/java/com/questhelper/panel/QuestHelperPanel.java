@@ -98,6 +98,7 @@ public class QuestHelperPanel extends PluginPanel
 	private static final ImageIcon SETTINGS_ICON;
 	private static final ImageIcon COLLAPSED_ICON;
 	private static final ImageIcon EXPANDED_ICON;
+	private static final ImageIcon QUEST_ICON;
 
 	private int nextDesiredScrollValue = 0;
 
@@ -109,6 +110,7 @@ public class QuestHelperPanel extends PluginPanel
 		SETTINGS_ICON = Icon.SETTINGS.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
 		COLLAPSED_ICON = Icon.COLLAPSED.getIcon();
 		EXPANDED_ICON = Icon.EXPANDED.getIcon();
+		QUEST_ICON = Icon.QUEST_ICON.getIcon(img -> ImageUtil.resizeImage(img, 12, 12));
 	}
 
 	public QuestHelperPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager, ConfigManager configManager)
@@ -318,21 +320,21 @@ public class QuestHelperPanel extends PluginPanel
 		skillExpandButton.setHorizontalTextPosition(SwingConstants.LEFT);
 		skillExpandButton.setIconTextGap(10);
 		skillExpandButton.addMouseListener(new MouseAdapter()
-	{
-		@Override
-		public void mousePressed(MouseEvent mouseEvent)
 		{
-			skillFilterPanel.setVisible(!skillFilterPanel.isVisible());
-			if (skillFilterPanel.isVisible())
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
 			{
-				skillExpandButton.setIcon(EXPANDED_ICON);
+				skillFilterPanel.setVisible(!skillFilterPanel.isVisible());
+				if (skillFilterPanel.isVisible())
+				{
+					skillExpandButton.setIcon(EXPANDED_ICON);
+				}
+				else
+				{
+					skillExpandButton.setIcon(COLLAPSED_ICON);
+				}
 			}
-			else
-			{
-				skillExpandButton.setIcon(COLLAPSED_ICON);
-			}
-		}
-	});
+		});
 
 		JPanel skillExpandBar = new JPanel();
 		skillExpandBar.setLayout(new BorderLayout());
@@ -362,6 +364,50 @@ public class QuestHelperPanel extends PluginPanel
 			}
 		});
 
+		JLabel completedQuestsLabel = JGenerator.makeJLabel("Show completed quests?");
+		completedQuestsLabel.setForeground(Color.WHITE);
+
+		JButton completedQuestsButton = new JButton();
+		MouseAdapter completedAdapter = new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				boolean showCompleted = !("true".equals(questHelperPlugin.getConfigManager().getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showCompletedQuests")));
+				questHelperPlugin.getConfigManager().setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showCompletedQuests",
+					showCompleted);
+				if (showCompleted)
+				{
+					completedQuestsButton.setIcon(QUEST_ICON);
+				}
+				else
+				{
+					completedQuestsButton.setIcon(null);
+				}
+			}
+		};
+		boolean showCompleted = ("true".equals(questHelperPlugin.getConfigManager().getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "showCompletedQuests")));
+		if (showCompleted)
+		{
+			completedQuestsButton.setIcon(QUEST_ICON);
+		}
+		else
+		{
+			completedQuestsButton.setIcon(null);
+		}
+		completedQuestsButton.setPreferredSize(new Dimension(18, 18));
+		completedQuestsButton.setForeground(Color.GRAY);
+		completedQuestsButton.setHorizontalTextPosition(SwingConstants.LEFT);
+		completedQuestsButton.setIconTextGap(10);
+		completedQuestsButton.addMouseListener(completedAdapter);
+
+		JPanel completedQuestsBar = new JPanel();
+		completedQuestsBar.setLayout(new BorderLayout());
+		completedQuestsBar.add(completedQuestsLabel, BorderLayout.CENTER);
+		completedQuestsBar.add(completedQuestsButton, BorderLayout.EAST);
+		completedQuestsBar.addMouseListener(completedAdapter);
+		completedQuestsBar.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 0));
+
 		// Filter dropdown + search
 		allDropdownSections.setLayout(new BoxLayout(allDropdownSections, BoxLayout.Y_AXIS));
 		allDropdownSections.setBorder(new EmptyBorder(0, 0, 10, 0));
@@ -369,6 +415,7 @@ public class QuestHelperPanel extends PluginPanel
 		allDropdownSections.add(difficultyPanel);
 		allDropdownSections.add(orderPanel);
 		allDropdownSections.add(skillsFilterPanel);
+		allDropdownSections.add(completedQuestsBar);
 
 		searchQuestsPanel.add(allDropdownSections, BorderLayout.NORTH);
 
@@ -438,12 +485,14 @@ public class QuestHelperPanel extends PluginPanel
 								Integer stateValue = Integer.parseInt(selectedItem);
 								basicQuest.setSelectedStateOverride(stateValue);
 							}
-							catch (NumberFormatException ignored) {}
+							catch (NumberFormatException ignored)
+							{
+							}
 						}
 					}
 				}
 			});
-			
+
 			// Create a panel with label for the state dropdown
 			statePanel = makeDropdownPanel(stateDropdown, "Quest State");
 			statePanel.setPreferredSize(new Dimension(PANEL_WIDTH, DROPDOWN_HEIGHT));
@@ -679,7 +728,10 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void updateStateDropdown(QuestHelper questHelper)
 	{
-		if (!questHelperPlugin.isDeveloperMode()) return;
+		if (!questHelperPlugin.isDeveloperMode())
+		{
+			return;
+		}
 
 		ItemListener[] listeners = stateDropdown.getItemListeners();
 		for (ItemListener listener : listeners)

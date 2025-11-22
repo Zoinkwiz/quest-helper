@@ -35,6 +35,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.StepIsActiveRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.DetailedQuestStep;
@@ -44,9 +45,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class ChartingHelper extends ComplexStateQuestHelper
 {
+	private final DetailedQuestStep overviewStep = new DetailedQuestStep(this, "You have no more things you can chart at your current level.");
+
 	private final List<QuestStep> chartingSteps = new ArrayList<>();
 	private List<PanelDetails> panelDetails = new ArrayList<>();
 
@@ -114,8 +118,8 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			}
 			topLevelPanel.addPanelDetails(panel);
 		}
-
-		panelDetails = new ArrayList<>(List.of(topLevelPanel));
+		var allDonePanel = new PanelDetails("Done for now", overviewStep).withHideCondition(not(new StepIsActiveRequirement(overviewStep)));
+		panelDetails = new ArrayList<>(List.of(allDonePanel, topLevelPanel));
 	}
 
 	private ChartingTaskInterface createStep(ChartingTaskDefinition definition)
@@ -144,9 +148,6 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	{
 		buildSteps();
 
-		var overviewStep = new DetailedQuestStep(this, "You've charted everything!");
-		chartingSteps.get(0).addSubSteps(overviewStep);
-		
 		var chartingConditionalStep = new ReorderableConditionalStep(this, overviewStep);
 		for (QuestStep step : chartingSteps)
 		{

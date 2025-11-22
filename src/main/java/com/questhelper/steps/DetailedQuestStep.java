@@ -110,6 +110,7 @@ public class DetailedQuestStep extends QuestStep
 
 	protected final int MAX_RENDER_SIZE = 4;
 
+	@Getter
 	protected boolean started;
 
 	@Setter

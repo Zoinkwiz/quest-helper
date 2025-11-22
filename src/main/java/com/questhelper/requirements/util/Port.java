@@ -42,24 +42,4 @@ public enum Port
 	private final String name;
 	private final WorldPoint buoy;
 	private final Zone dockZone;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public Zone getDockZone()
-	{
-		return dockZone;
-	}
-
-	public WorldPoint getBuoy()
-	{
-		return buoy;
-	}
 }

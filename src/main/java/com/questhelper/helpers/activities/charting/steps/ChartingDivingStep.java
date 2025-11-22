@@ -42,11 +42,13 @@ public class ChartingDivingStep extends ChartingTaskNpcStep
 			NpcID.SAILING_CHARTING_MERMAID_GUIDE_4, NpcID.SAILING_CHARTING_MERMAID_GUIDE_5);
 		setGeInterfaceIcon(definition.getItemIds());
 
+		addDialogStep("Can I dive to the sea floor with you?");
+
 		var medallionOfTheDeep = new ItemRequirement("Medallion of the deep", ItemID.MEDALLION_OF_THE_DEEP).equipped();
 		var divingHelmet = new ItemRequirement("Fishbowl helmet", ItemID.HUNDRED_PIRATE_DIVING_HELMET).equipped();
 		var divingApparatus = new ItemRequirement("Diving apparatus", ItemID.HUNDRED_PIRATE_DIVING_BACKPACK).equipped();
 		var divingGear = new ItemRequirements(LogicType.AND, divingHelmet, divingApparatus);
-		var canBreathUnderwater = new ItemRequirements(LogicType.OR, "Diving helmet + apparatus OR medallion of the deep", medallionOfTheDeep, divingGear);
+		var canBreathUnderwater = new ItemRequirements(LogicType.OR, "Diving helmet + apparatus OR medallion of the deep", medallionOfTheDeep, divingGear).equipped();
 		addRequirement(canBreathUnderwater);
 	}
 }

@@ -35,9 +35,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 import static net.runelite.api.Constants.CHUNK_SIZE;
@@ -52,7 +50,7 @@ public class QuestPerspective
 
 	public static Collection<WorldPoint> toLocalInstanceFromReal(Client client, WorldPoint worldPoint)
 	{
-		if (!client.isInInstancedRegion())
+		if (!client.getTopLevelWorldView().isInstance())
 		{
 			return Collections.singleton(worldPoint);
 		}
@@ -62,7 +60,7 @@ public class QuestPerspective
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
 
-		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
+		int[][][] instanceTemplateChunks = client.getTopLevelWorldView().getInstanceTemplateChunks();
 		for (int z = 0; z < instanceTemplateChunks.length; ++z)
 		{
 			for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
@@ -77,8 +75,8 @@ public class QuestPerspective
 						&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
 					{
 						WorldPoint p =
-							new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-								client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
+							new WorldPoint(client.getTopLevelWorldView().getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
+								client.getTopLevelWorldView().getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
 								z);
 						p = rotate(p, rotation);
 						if (p.isInScene(client))
@@ -118,7 +116,7 @@ public class QuestPerspective
 		for (WorldPoint worldPoint : instanceWorldPoint)
 		{
 			if (worldPoint == null) continue;
-			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
+			LocalPoint lp = getLocalPointFromWorldPointInInstance(client, worldPoint);
 			if (lp != null)
 			{
 				localPoints.add(lp);
@@ -128,30 +126,63 @@ public class QuestPerspective
 		return localPoints;
 	}
 
-	public static WorldPoint getInstanceWorldPointFromReal(Client client, WorldPoint wp)
+	/**
+	 * Converts a LocalPoint to a WorldPoint, handling WorldView considerations
+	 * for instanced areas like boats.
+	 *
+	 * @param client the {@link Client}
+	 * @param localPoint the {@link LocalPoint} to convert
+	 * @return the {@link WorldPoint} in the real world, or null if conversion fails
+	 */
+	public static WorldPoint getWorldPointConsideringWorldView(Client client, LocalPoint localPoint)
 	{
-		if (wp == null) return null;
-		Collection<WorldPoint> points = QuestPerspective.toLocalInstanceFromReal(client, wp);
-
-		if (points.isEmpty()) return null;
-
-		WorldPoint p = null;
-		for (WorldPoint point : points)
+		if (localPoint == null)
 		{
-			if (point != null)
-			{
-				p = point;
-			}
+			return null;
 		}
-		return p;
+
+		var worldView = client.getWorldView(localPoint.getWorldView());
+
+		// If in a non-top level WorldView (a boat) need to translate
+		if (worldView != null && !worldView.isTopLevel())
+		{
+			// Currently the entity should be the player's boat only?
+			var worldEntity = client.getTopLevelWorldView()
+				.worldEntities()
+				.byIndex(worldView.getId());
+
+			if (worldEntity == null)
+			{
+				return null;
+			}
+
+			var mainLocal = worldEntity.transformToMainWorld(localPoint);
+			return WorldPoint.fromLocal(client.getTopLevelWorldView(),
+				mainLocal.getX(), mainLocal.getY(), client.getTopLevelWorldView().getPlane());
+		}
+		else
+		{
+			return WorldPoint.fromLocalInstance(client, localPoint);
+		}
 	}
 
-	public static WorldPoint getRealWorldPointFromLocal(Client client, WorldPoint wp)
+	public static LocalPoint getLocalPointFromWorldPointInInstance(Client client, WorldPoint worldPoint)
 	{
-		LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp);
-		if (lp == null) return null;
+		if (worldPoint == null) return null;
+		var instanceWps = WorldPoint.toLocalInstance(client.getTopLevelWorldView(), worldPoint);
+		if (instanceWps.isEmpty()) return null;
+		return LocalPoint.fromWorld(client, instanceWps.iterator().next());
+	}
 
-		return WorldPoint.fromLocalInstance(client, lp);
+	public static WorldPoint getWorldPointConsideringWorldView(Client client, WorldPoint worldPoint)
+	{
+		return getWorldPointConsideringWorldView(client, getLocalPointFromWorldPointInInstance(client, worldPoint));
+	}
+
+	public static LocalPoint getLocalPointConsideringWorldView(Client client, WorldPoint worldPoint)
+	{
+		var instanceWp = getWorldPointConsideringWorldView(client, worldPoint);
+		return getLocalPointFromWorldPointInInstance(client, instanceWp);
 	}
 
 	public static Rectangle getWorldMapClipArea(Client client)
@@ -303,7 +334,7 @@ public class QuestPerspective
 
 	private static void addToPoly(Client client, Polygon areaPoly, WorldPoint wp, int... points)
 	{
-		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp);
+		LocalPoint localPoint = getLocalPointFromWorldPointInInstance(client, wp);
 		if (localPoint == null) return;
 
 		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);

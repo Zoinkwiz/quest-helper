@@ -89,7 +89,7 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		if (worldPoint == null) return true;
 		if (!tileLoadedReq.check(client)) return true;
 
-		WorldPoint playerPoint = QuestPerspective.getRealWorldPointFromLocal(client, client.getLocalPlayer().getWorldLocation());
+		WorldPoint playerPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getLocalPlayer().getWorldLocation());
 		if (playerPoint == null) return false;
 		if (playerPoint.distanceTo(worldPoint) <= MAX_ZONE)
 		{

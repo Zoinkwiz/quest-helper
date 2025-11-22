@@ -39,7 +39,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
@@ -298,7 +297,7 @@ public class NpcStep extends DetailedQuestStep
 		// This MAY for some NPCs which have alternate version (The Kendal) require re-consideration
 		if (allIds().contains(newNpcId))
 		{
-			if (npcs.size() == 0 || allowMultipleHighlights)
+			if (npcs.isEmpty() || allowMultipleHighlights)
 			{
 				npcs.add(npcChanged.getNpc());
 			}
@@ -314,11 +313,8 @@ public class NpcStep extends DetailedQuestStep
 
 		if (worldPoint != null)
 		{
-			Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstanceFromReal(client, worldPoint);
-			if (localWorldPoints.isEmpty())
-			{
-				return;
-			}
+			WorldPoint localWorldPoint = QuestPerspective.getWorldPointConsideringWorldView(client, worldPoint);
+			if (localWorldPoint == null) return;
 		}
 
 		Color configColor = getQuestHelper().getConfig().targetOverlayColor();

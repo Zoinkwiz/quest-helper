@@ -322,7 +322,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 		}
 
 		var playerWp = localPlayer.getWorldLocation();
-		var localPoint = QuestPerspective.getRealWorldPointFromLocal(client, localPlayer.getWorldLocation());
+		var localPoint = QuestPerspective.getWorldPointConsideringWorldView(client, localPlayer.getWorldLocation());
 		if (localPoint == null) {
 			startUpStep(fallbackStep);
 			return;

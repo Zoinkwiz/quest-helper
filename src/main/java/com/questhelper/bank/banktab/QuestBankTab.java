@@ -164,7 +164,27 @@ public class QuestBankTab
 			return;
 		}
 		event.consume();
-		updateGrandExchangeResults();
+
+		var itemsToTag = questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon();
+		if (geButtonWidget.notAtGE())
+		{
+			if (itemsToTag != null)
+			{
+				updateGrandExchangeUiForSpecificItem(itemsToTag);
+			}
+		}
+		else
+		{
+			updateGrandExchangeResults();
+		}
+	}
+
+	public void updateGrandExchangeUiForSpecificItem(List<Integer> itemToTag)
+	{
+		client.setGeSearchResultIndex(0);
+		client.setGeSearchResultCount(1);
+
+		client.setGeSearchResultIds(Shorts.toArray(itemToTag));
 	}
 
 	public void updateGrandExchangeResults()

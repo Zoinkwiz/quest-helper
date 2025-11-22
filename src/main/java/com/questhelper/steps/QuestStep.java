@@ -154,6 +154,9 @@ public abstract class QuestStep implements Module
 	private Requirement conditionToHide;
 
 	@Getter
+	private Requirement fadeCondition;
+
+	@Getter
 	@Setter
 	private boolean showInSidebar = true;
 
@@ -170,6 +173,10 @@ public abstract class QuestStep implements Module
 	@Getter
 	@Setter
 	protected boolean shouldOverlayWidget;
+
+	@Getter
+	@Setter
+	protected List<Integer> geInterfaceIcon;
 
 	public QuestStep(QuestHelper questHelper)
 	{
@@ -577,6 +584,11 @@ public abstract class QuestStep implements Module
 		conditionToHide = hideCondition;
 	}
 
+	public void conditionToFadeInSidebar(Requirement fadeCondition)
+	{
+		this.fadeCondition = fadeCondition;
+	}
+
 	public BufferedImage getQuestImage()
 	{
 		return spriteManager.getSprite(SpriteID.SideiconsInterface.QUESTS, 0);
@@ -624,7 +636,7 @@ public abstract class QuestStep implements Module
 				if (distanceLimit)
 				{
 					WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-					WorldPoint goalWp = QuestPerspective.getInstanceWorldPointFromReal(client, worldPoint);
+					WorldPoint goalWp = QuestPerspective.getWorldPointConsideringWorldView(client, worldPoint);
 					if (goalWp != null && playerLocation.distanceTo(goalWp) <= 100) continue;
 				}
 

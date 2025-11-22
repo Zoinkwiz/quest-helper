@@ -168,6 +168,7 @@ public class QuestPerspective
 
 	public static LocalPoint getLocalPointFromWorldPointInInstance(Client client, WorldPoint worldPoint)
 	{
+		if (worldPoint == null) return null;
 		var instanceWps = WorldPoint.toLocalInstance(client.getTopLevelWorldView(), worldPoint);
 		if (instanceWps.isEmpty()) return null;
 		return LocalPoint.fromWorld(client, instanceWps.iterator().next());

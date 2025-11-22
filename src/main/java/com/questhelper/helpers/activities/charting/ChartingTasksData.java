@@ -219,8 +219,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Counterweight north west of Deepfin Point.", new WorldPoint(1845, 2824, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_WRECK_WEIGHT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the south eastern temple in the Avium Savannah from the south.", new WorldPoint(1737, 2907, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_AUREUM_COAST_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Aureum Coast and sample the contents.", new WorldPoint(1762, 2854, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_PORTAL_PERRY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Vatrachos Island.", new WorldPoint(1889, 2882, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_AUREUM_COAST_COMPLETE,
-				"The answer is 1 Equa leaves, 1 Batta tin, 2 Tomato, 1 Cheese, 1 Dwellberries, 1 Onion, 1 Cabbage, 1 Gianne dough.", List.of(ItemID.EQUA_LEAVES, ItemID.BATTA_TIN, ItemID.TOMATO, ItemID.CHEESE, ItemID.DWELLBERRIES, ItemID.ONION, ItemID.CABBAGE, ItemID.GIANNE_DOUGH))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Vatrachos Island.", new WorldPoint(1889, 2882, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_AUREUM_COAST_COMPLETE, "The answer is 1 Equa leaves, 1 Batta tin, 2 Tomato, 1 Cheese, 1 Dwellberries, 1 Onion, 1 Cabbage, 1 Gianne dough.", List.of(ItemID.EQUA_LEAVES, ItemID.BATTA_TIN, ItemID.TOMATO, ItemID.CHEESE, ItemID.DWELLBERRIES, ItemID.ONION, ItemID.CABBAGE, ItemID.GIANNE_DOUGH))
 		)),
 		new ChartingSeaSection(26, "Wyrm's Waters", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an interesting book on the Shimmering Atoll.", new WorldPoint(1593, 2755, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ATOLL_DICTIONARY_COMPLETE),
@@ -240,45 +239,39 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Crown Jewel from the east.", new WorldPoint(1796, 2664, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_SAPPHIRE_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate where three waters meet in the Sapphire Sea and sample the contents.", new WorldPoint(1675, 2478, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_COMP_KVASS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the Crown Jewel.", new WorldPoint(1745, 2662, 0), "Shrouded Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SAPPHIRE_SEA_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Crown Jewel.", new WorldPoint(1762, 2611, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SAPPHIRE_SEA_COMPLETE,
-				"The answer is 'Vial', 'Coconut milk', 'Toadflax', Yew roots'.", List.of(ItemID.VIAL_EMPTY, ItemID.VIAL_COCONUT_MILK, ItemID.TOADFLAX, ItemID.YEW_ROOTS))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Crown Jewel.", new WorldPoint(1762, 2611, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SAPPHIRE_SEA_COMPLETE, "The answer is 'Vial', 'Coconut milk', 'Toadflax', Yew roots'.", List.of(ItemID.VIAL_EMPTY, ItemID.VIAL_COCONUT_MILK, ItemID.TOADFLAX, ItemID.YEW_ROOTS))
 		)),
 		new ChartingSeaSection(37, "Western Gate", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find evidence of the Sharhai east of Vatrachos Island.", new WorldPoint(1947, 2985, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SHARHAIS_PURSE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting sea life in the middle of the Western Gate.", new WorldPoint(1996, 2947, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SNAKE_EGGS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Western Gate and sample the contents.", new WorldPoint(1993, 2972, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MANGO_GIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents east of Minotaurs' Rest.", new WorldPoint(1978, 3106, 0), "Shrouded Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_WESTERN_GATE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Western Gate.", new WorldPoint(2041, 3023, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WESTERN_GATE_COMPLETE,
-				"The answer is 'Black flowers'.", List.of(ItemID.FLOWERS_WATERFALL_QUEST_BLACK))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Western Gate.", new WorldPoint(2041, 3023, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WESTERN_GATE_COMPLETE, "The answer is 'Black flowers'.", List.of(ItemID.FLOWERS_WATERFALL_QUEST_BLACK))
 		)),
 		new ChartingSeaSection(40, "Sunset Bay", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a wrecked shiplike thing south of Villa Lucens.", new WorldPoint(1448, 2896, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PROP_WRECK_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Sunset Coast from the west.", new WorldPoint(1470, 2980, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_SUNSET_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Mistrock and sample the contents.", new WorldPoint(1426, 2865, 0), "Sunset Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_DRUNK_IMPLING_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Varla.", new WorldPoint(1422, 3046, 0), "Sunset Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SUNSET_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Colossal Wyrm Remains.", new WorldPoint(1575, 2942, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SUNSET_BAY_COMPLETE,
-				"The answer is 'Ring mould'.", List.of(ItemID.RING_MOULD))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Colossal Wyrm Remains.", new WorldPoint(1575, 2942, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SUNSET_BAY_COMPLETE, "The answer is 'Ring mould'.", List.of(ItemID.RING_MOULD))
 		)),
 		new ChartingSeaSection(41, "Misty Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some discarded fishing equipment in the middle of the Misty Sea.", new WorldPoint(1439, 2716, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_FISHING_NETS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Mistrock from the south.", new WorldPoint(1387, 2840, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_MISTY_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near some shipwrecks in the Misty Sea and sample the contents.", new WorldPoint(1561, 2655, 0), "Sunset Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MYSTERY_CIDER_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the south west of the Misty Sea.", new WorldPoint(1322, 2628, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MISTY_SEA_COMPLETE,
-				"The answer is `Bob's blue shirt`, `Bob's purple shirt`.", List.of(ItemID.TRAIL_BOB_SHIRT_BLUE, ItemID.TRAIL_BOB_SHIRT_PURPLE))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the south west of the Misty Sea.", new WorldPoint(1322, 2628, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MISTY_SEA_COMPLETE, "The answer is `Bob's blue shirt`, `Bob's purple shirt`.", List.of(ItemID.TRAIL_BOB_SHIRT_BLUE, ItemID.TRAIL_BOB_SHIRT_PURPLE))
 		)),
 		new ChartingSeaSection(42, "Dusk's Maw", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a collapsed cave on a small island south west of the Tlati Rainforest.", new WorldPoint(1232, 3005, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_HOLE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the far west of Dusk's Maw and sample the contents.", new WorldPoint(1050, 2886, 0), "Sunset Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SAILING_CAT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Darkmoon Ravine.", new WorldPoint(1259, 2876, 0), "Sunset Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_DUSKS_MAW_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Darkmoon Ravine.", new WorldPoint(1314, 2931, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_DUSKS_MAW_COMPLETE,
-				"The answer is 'Tarromin'.", List.of(ItemID.TARROMIN))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Darkmoon Ravine.", new WorldPoint(1314, 2931, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_DUSKS_MAW_COMPLETE, "The answer is 'Tarromin'.", List.of(ItemID.TARROMIN))
 		)),
 		new ChartingSeaSection(48, "Litus Lucis", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a strange corpse north east of Civitas illa Fortis.", new WorldPoint(1871, 3177, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_KRAKEN_SKELETON_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of Litus Lucis and sample the contents.", new WorldPoint(1783, 3252, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SEA_SHANDY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents east of the Twilight Temple.", new WorldPoint(1721, 3237, 0), "Western Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_LITUS_LUCIS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Fortis Colosseum.", new WorldPoint(1821, 3166, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_LITUS_LUCIS_COMPLETE,
-				"The answer is 'Dark bow tie'.", List.of(ItemID.TUXEDO_BOWTIE))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Fortis Colosseum.", new WorldPoint(1821, 3166, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_LITUS_LUCIS_COMPLETE, "The answer is 'Dark bow tie'.", List.of(ItemID.TUXEDO_BOWTIE))
 		)),
 		new ChartingSeaSection(51, "Crystal Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an elven shipwreck in the middle of the Crystal Sea.", new WorldPoint(1980, 3232, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ELVEN_SHIP_COMPLETE),
@@ -286,49 +279,37 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Port Roberts from the south.", new WorldPoint(1886, 3266, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CRYSTAL_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Crystal Sea and sample the contents.", new WorldPoint(2008, 3261, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SNAKE_GRAVY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents east of Port Roberts.", new WorldPoint(1920, 3296, 0), "Western Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_CRYSTAL_SEA_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Crystal Sea.", new WorldPoint(1979, 3211, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CRYSTAL_SEA_COMPLETE,
-				"The answer is 'Butterfly jar'.", List.of(ItemID.BUTTERFLY_JAR))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Crystal Sea.", new WorldPoint(1979, 3211, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CRYSTAL_SEA_COMPLETE, "The answer is 'Butterfly jar'.", List.of(ItemID.BUTTERFLY_JAR))
 		)),
 		new ChartingSeaSection(54, "Vagabonds Rest", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a crate of discarded goods north of Drumstick Isle. Go backwards with your ship to reach it.", new WorldPoint(2133, 3589, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_HUNTER_OUTFITS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a half-built ship west of Buccaneers' Haven.", new WorldPoint(2026, 3669, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_HALF_BUILT_SHIP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Buccaneers' Haven from the north.", new WorldPoint(2101, 3702, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_VAGABONDS_REST_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Buccaneers' Haven and sample the contents.", new WorldPoint(2079, 3655, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SEA_SPRAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of Buccaneers' Haven.", new WorldPoint(2018, 3705, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_VAGABONDS_REST_COMPLETE,
-				"The answer is 'Double eye patch'.", List.of(ItemID.DOUBLE_EYE_PATCH))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of Buccaneers' Haven.", new WorldPoint(2018, 3705, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_VAGABONDS_REST_COMPLETE, "The answer is 'Double eye patch'.", List.of(ItemID.DOUBLE_EYE_PATCH))
 		)),
 		new ChartingSeaSection(55, "Moonshadow", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Lunar Longship south west of Pirates' Cove.", new WorldPoint(2170, 3773, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_LUNAR_WRECK_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate south west of Lunar Isle and sample the contents.", new WorldPoint(2030, 3829, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_LUNARSHINE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Pirates' Cove.", new WorldPoint(2122, 3796, 0), "Western Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MOONSHADOW_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Lunar Isle.", new WorldPoint(2044, 3792, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MOONSHADOW_COMPLETE,
-				"The answer is 'Bucket helm (g)'.", List.of(ItemID.BUCKET_HELM_GOLD))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Lunar Isle.", new WorldPoint(2044, 3792, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MOONSHADOW_COMPLETE, "The answer is 'Bucket helm (g)'.", List.of(ItemID.BUCKET_HELM_GOLD))
 		)),
 		new ChartingSeaSection(61, "Lunar Bay", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find evidence of some strong magical spells east of Lunar Isle.", new WorldPoint(2225, 3892, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_MAGIC_WARDS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the pirate galleon docked at Lunar Isle from the east.", new WorldPoint(2160, 3901, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_LUNAR_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Lunar Isle docks and sample the contents. Reverse into the pier to reach it.", new WorldPoint(2142, 3874, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_EXILES_WELCOME_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of the Astral Altar on Lunar Isle.", new WorldPoint(2159, 3849, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_LUNAR_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north east of Pirates' Cove.", new WorldPoint(2221, 3833, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_LUNAR_BAY_COMPLETE,
-				"The answer is 'Torstol'.", List.of(ItemID.TORSTOL))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north east of Pirates' Cove.", new WorldPoint(2221, 3833, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_LUNAR_BAY_COMPLETE, "The answer is 'Torstol'.", List.of(ItemID.TORSTOL))
 		)),
 		new ChartingSeaSection(72, "Bonus Dives", List.of(
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the east of the Hosidian Sea.", new WorldPoint(1969, 3597, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_HOSIDIAN_SEA_COMPLETE,
-				"The answer is 'Potato', 'Potato cactus'.", List.of(ItemID.POTATO, ItemID.CACTUS_POTATO)),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the south of Crabclaw Bay.", new WorldPoint(1681, 3380, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CRABCLAW_BAY_COMPLETE,
-				"The answer is 1 silver ore, 1 chisel, 1 uncut jade, 1 ring mould, 1 cosmic rune, 3 air runes.", List.of(ItemID.SILVER_ORE, ItemID.CHISEL, ItemID.UNCUT_JADE, ItemID.RING_MOULD, ItemID.COSMICRUNE, ItemID.AIRRUNE)),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of Port Roberts.", new WorldPoint(1880, 3372, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PILGRIMS_PASSAGE_COMPLETE,
-				"The answer is 'Sandstone (2kg)', 'Sandstone (1kg)', 'Sandstone (10kg)'.", List.of(ItemID.ENAKH_SANDSTONE_SMALL, ItemID.ENAKH_SANDSTONE_TINY, ItemID.ENAKH_SANDSTONE_LARGE)),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Dibber.", new WorldPoint(1851, 3668, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GULF_OF_KOUREND_COMPLETE,
-				"The answer is 2 'Malicious ash'.", List.of(ItemID.MALICIOUS_ASHES)),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Mudskipper Point.", new WorldPoint(2979, 3085, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MUDSKIPPER_SOUND_COMPLETE,
-				"The answer is 'Pie dish', 'Pot of flour', 'Cooking apple'.", List.of(ItemID.PIEDISH, ItemID.POT_FLOUR, ItemID.COOKING_APPLE)),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Brimhaven.", new WorldPoint(2757, 3138, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_STRAIT_OF_KHAZARD_COMPLETE,
-				"The answer is 5 'Cabbage seeds'.", List.of(ItemID.CABBAGE_SEED)),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of the Pandemonium.", new WorldPoint(2988, 2949, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_KHARIDIAN_SEA_COMPLETE,
-				"The answer is 'Willow stock'.", List.of(ItemID.XBOWS_CROSSBOW_STOCK_WILLOW)),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the entrance to Taverley Dungeon.", new WorldPoint(2873, 3397, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CATHERBY_BAY_COMPLETE,
-				"The answer is 'Iron med helm', 'Bronze chainbody'.", List.of(ItemID.IRON_MED_HELM, ItemID.BRONZE_CHAINBODY))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the east of the Hosidian Sea.", new WorldPoint(1969, 3597, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_HOSIDIAN_SEA_COMPLETE, "The answer is 'Potato', 'Potato cactus'.", List.of(ItemID.POTATO, ItemID.CACTUS_POTATO)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the south of Crabclaw Bay.", new WorldPoint(1681, 3380, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CRABCLAW_BAY_COMPLETE, "The answer is 1 silver ore, 1 chisel, 1 uncut jade, 1 ring mould, 1 cosmic rune, 3 air runes.", List.of(ItemID.SILVER_ORE, ItemID.CHISEL, ItemID.UNCUT_JADE, ItemID.RING_MOULD, ItemID.COSMICRUNE, ItemID.AIRRUNE)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of Port Roberts.", new WorldPoint(1880, 3372, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PILGRIMS_PASSAGE_COMPLETE, "The answer is 'Sandstone (2kg)', 'Sandstone (1kg)', 'Sandstone (10kg)'.", List.of(ItemID.ENAKH_SANDSTONE_SMALL, ItemID.ENAKH_SANDSTONE_TINY, ItemID.ENAKH_SANDSTONE_LARGE)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Dibber.", new WorldPoint(1851, 3668, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GULF_OF_KOUREND_COMPLETE, "The answer is 2 'Malicious ash'.", List.of(ItemID.MALICIOUS_ASHES)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Mudskipper Point.", new WorldPoint(2979, 3085, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MUDSKIPPER_SOUND_COMPLETE, "The answer is 'Pie dish', 'Pot of flour', 'Cooking apple'.", List.of(ItemID.PIEDISH, ItemID.POT_FLOUR, ItemID.COOKING_APPLE)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Brimhaven.", new WorldPoint(2757, 3138, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_STRAIT_OF_KHAZARD_COMPLETE, "The answer is 5 'Cabbage seeds'.", List.of(ItemID.CABBAGE_SEED)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of the Pandemonium.", new WorldPoint(2988, 2949, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_KHARIDIAN_SEA_COMPLETE, "The answer is 'Willow stock'.", List.of(ItemID.XBOWS_CROSSBOW_STOCK_WILLOW)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the entrance to Taverley Dungeon.", new WorldPoint(2873, 3397, 0), "", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CATHERBY_BAY_COMPLETE, "The answer is 'Iron med helm', 'Bronze chainbody'.", List.of(ItemID.IRON_MED_HELM, ItemID.BRONZE_CHAINBODY))
 		)),
 		new ChartingSeaSection(11, "Oo'glog Channel", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the corpse of a sea monster north east of Corsair Cove.", new WorldPoint(2634, 2882, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_DEAD_MONSTER_COMPLETE),
@@ -389,16 +370,14 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an odd statue on Wintumber Island.", new WorldPoint(2066, 2608, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_STATUE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of a Barracuda ship north east of Sunbleak Island.", new WorldPoint(2281, 2447, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_PORTION_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the bank boat in the Barracuda Belt and sample the contents.", new WorldPoint(2282, 2506, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BARRACUDA_BREW_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the bank boat in the Barracuda Belt.", new WorldPoint(2276, 2598, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_BARRACUDA_HQ_COMPLETE,
-				"The answer is 'Vial', 'Avantoe', 'Snape grass', 'Caviar'.", List.of(ItemID.VIAL_EMPTY, ItemID.AVANTOE, ItemID.SNAPE_GRASS, ItemID.BRUT_CAVIAR)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the bank boat in the Barracuda Belt.", new WorldPoint(2276, 2598, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_BARRACUDA_HQ_COMPLETE, "The answer is 'Vial', 'Avantoe', 'Snape grass', 'Caviar'.", List.of(ItemID.VIAL_EMPTY, ItemID.AVANTOE, ItemID.SNAPE_GRASS, ItemID.BRUT_CAVIAR)),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island south east of Wintumber Island.", new WorldPoint(2082, 2590, 0), new WorldPoint(2154, 2440, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_BARRACUDA_BELT_COMPLETE)
 		)),
 		new ChartingSeaSection(35, "The Everdeep", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an odd shadow south of Deepfin Point.", new WorldPoint(1976, 2680, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SCARY_SHADOW_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Deepfin Point from the south.", new WorldPoint(1943, 2737, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_THE_EVERDEEP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Deepfin Point and sample the contents.", new WorldPoint(1854, 2771, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_CRYSTAL_VODKA_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the far south east of the Everdeep.", new WorldPoint(1942, 2650, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_THE_EVERDEEP_COMPLETE,
-				"The answer is 'Plank'.", List.of(ItemID.WOODPLANK)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the far south east of the Everdeep.", new WorldPoint(1942, 2650, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_THE_EVERDEEP_COMPLETE, "The answer is 'Plank'.", List.of(ItemID.WOODPLANK)),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the western coast of Deepfin Point.", new WorldPoint(1928, 2791, 0), new WorldPoint(1895, 2665, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_THE_EVERDEEP_COMPLETE)
 		)),
 		new ChartingSeaSection(56, "Fremensund", List.of(
@@ -406,8 +385,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the market in Rellekka from the north.", new WorldPoint(2636, 3707, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FREMENSUND_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate north of Rellekka and sample the contents.", new WorldPoint(2689, 3732, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_FISHIER_STOUT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of Rower's Arm.", new WorldPoint(2561, 3626, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FREMENSUND_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Waterbirth Island.", new WorldPoint(2518, 3690, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_FREMENSUND_COMPLETE,
-				"The answer is 'Kharyll teleport'.", List.of(ItemID.TABLET_KHARYLL)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Waterbirth Island.", new WorldPoint(2518, 3690, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_FREMENSUND_COMPLETE, "The answer is 'Kharyll teleport'.", List.of(ItemID.TABLET_KHARYLL)),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island south west of Rellekka.", new WorldPoint(2594, 3644, 0), new WorldPoint(2513, 3738, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_FREMENSUND_COMPLETE)
 		)),
 		new ChartingSeaSection(57, "Grandroot Bay", List.of(
@@ -415,8 +393,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the lighthouse on Rower's Arm from the south.", new WorldPoint(2504, 3612, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_GRANDROOT_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of Grandroot Bay and sample the contents.", new WorldPoint(2453, 3597, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_TOAD_CIDER_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents in the River Crannmor.", new WorldPoint(2369, 3507, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GRANDROOT_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Barbarian Outpost.", new WorldPoint(2513, 3571, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GRANDROOT_BAY_COMPLETE,
-				"The answer is 'Raw cod'.", List.of(ItemID.RAW_COD)),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Barbarian Outpost.", new WorldPoint(2513, 3571, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GRANDROOT_BAY_COMPLETE, "The answer is 'Raw cod'.", List.of(ItemID.RAW_COD)),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather west of the Barbarian Outpost.", new WorldPoint(2498, 3546, 0), new WorldPoint(2439, 3625, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_GRANDROOT_BAY_COMPLETE)
 		)),
 		new ChartingSeaSection(59, "Fremennik Strait", List.of(
@@ -455,8 +432,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island west of the Tyras Camp. Watch out for Crystal-flecked waters!", new WorldPoint(2118, 3159, 0), new WorldPoint(2028, 3220, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_WEATHER_TROLL_PORTH_NEIGWL_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Lledrith Island. Watch out for Crystal-flecked waters!", new WorldPoint(2071, 3186, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_CURRENT_DUCK_PORTH_NEIGWL_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Tyras Camp from the west. Watch out for Crystal-flecked waters!", new WorldPoint(2160, 3155, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_SPYGLASS_TYRAS_CAMP_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of Port Tyras. Watch out for Crystal-flecked waters!", new WorldPoint(2113, 3123, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PORTH_NEIGWL_COMPLETE,
-				"The answer is 2 Calquat keg, 1 Ale yeast, 1 Oak roots, 2 barley malt.", List.of(ItemID.CALQUAT_FRUIT_KEG_EMPTY, ItemID.ALE_YEAST, ItemID.OAK_ROOTS, ItemID.BARLEY_MALT))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of Port Tyras. Watch out for Crystal-flecked waters!", new WorldPoint(2113, 3123, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PORTH_NEIGWL_COMPLETE, "The answer is 2 Calquat keg, 1 Ale yeast, 1 Oak roots, 2 barley malt.", List.of(ItemID.CALQUAT_FRUIT_KEG_EMPTY, ItemID.ALE_YEAST, ItemID.OAK_ROOTS, ItemID.BARLEY_MALT))
 		)),
 		new ChartingSeaSection(50, "Tirannwn Bight", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a deadly trap west of the Iorwerth Camp. Watch out for Crystal-flecked waters!", new WorldPoint(2157, 3274, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_GENERIC_RIVER_MINE_COMPLETE),
@@ -464,46 +440,40 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather south west of Mynydd. Watch out for Crystal-flecked waters!", new WorldPoint(2130, 3395, 0), new WorldPoint(2041, 3328, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_WEATHER_TROLL_TIRANNWN_BIGHT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the Afon Ganol west of the Iorwerth Camp. Watch out for Crystal-flecked waters!", new WorldPoint(2165, 3260, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_CURRENT_DUCK_TIRANNWN_BIGHT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Prifddinas ' western gates from the south west. Watch out for Crystal-flecked waters!", new WorldPoint(2163, 3318, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_SPYGLASS_PRIFDDINAS_GATE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Tirannwn Bight. Watch out for Crystal-flecked waters!", new WorldPoint(2120, 3345, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_TIRANNWN_BIGHT_COMPLETE,
-				"The answer is 'Soiled page'.", List.of(ItemID.SOILED_PAGE))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Tirannwn Bight. Watch out for Crystal-flecked waters!", new WorldPoint(2120, 3345, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_TIRANNWN_BIGHT_COMPLETE, "The answer is 'Soiled page'.", List.of(ItemID.SOILED_PAGE))
 		)),
 		new ChartingSeaSection(52, "Porth Gwenith", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Ynysdail and sample the contents. Watch out for Crystal-flecked waters!", new WorldPoint(2206, 3484, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_DRINK_CRATE_UNDERGROUND_MILK_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an unusual boat north of Gwenith. Watch out for Crystal-flecked waters!", new WorldPoint(2210, 3445, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_GENERIC_CRYSTAL_DINGHY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island north west of Eagles' Peak. Watch out for Crystal-flecked waters!", new WorldPoint(2280, 3518, 0), new WorldPoint(2118, 3587, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_WEATHER_TROLL_VAGABONDS_REST_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of Gwenith. Watch out for Crystal-flecked waters!", new WorldPoint(2220, 3429, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_CURRENT_DUCK_PORTH_GWENITH_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of Gorlah. Watch out for Crystal-flecked waters!", new WorldPoint(2283, 3459, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PORTH_GWENITH_COMPLETE,
-				"The answer is 'Thatch spar dense'.", List.of(ItemID.THATCHING_SPAR_DENSE))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of Gorlah. Watch out for Crystal-flecked waters!", new WorldPoint(2283, 3459, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PORTH_GWENITH_COMPLETE, "The answer is 'Thatch spar dense'.", List.of(ItemID.THATCHING_SPAR_DENSE))
 		)),
 		new ChartingSeaSection(53, "Piscatoris Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find evidence of kraken activity south west of the Piscatoris Fishing Colony.", new WorldPoint(2300, 3662, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_KRAKEN_SLIME_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Piscatoris Fishing Colony from the north west.", new WorldPoint(2303, 3700, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FISHING_COLONY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate north west of the Piscatoris Fishing Colony and sample the contents.", new WorldPoint(2248, 3744, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MONKFISH_STOUT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Kraken Cove. Watch out for Crystal-flecked waters!", new WorldPoint(2260, 3589, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PISCATORIS_SEA_COMPLETE,
-				"The answer is 'Gold ore'.", List.of(ItemID.GOLD_ORE))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south west of Kraken Cove. Watch out for Crystal-flecked waters!", new WorldPoint(2260, 3589, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_PISCATORIS_SEA_COMPLETE, "The answer is 'Gold ore'.", List.of(ItemID.GOLD_ORE))
 		)),
 		new ChartingSeaSection(38, "Rainbow Reef", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a lost friend on Rainbow's End. Watch out for Tangled kelp!", new WorldPoint(2336, 2267, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_GENERIC_GNOME_BALL_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a rowboat to the far south of Rainbow's End. Watch out for Tangled kelp!", new WorldPoint(2334, 2118, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_GENERIC_EDGE_BOAT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Sunbleak Island and sample the contents. Watch out for Tangled kelp!", new WorldPoint(2205, 2303, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_DRINK_CRATE_PLATINUM_RUM_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of Rainbow's End. Watch out for Tangled kelp!", new WorldPoint(2335, 2286, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_CURRENT_DUCK_RAINBOW_REEF_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of Rainbow Reef. Watch out for Tangled kelp!", new WorldPoint(2250, 2315, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_RAINBOW_REEF_COMPLETE,
-				"The answer is 'Bucket of sap', 'Raw slimy eel'.", List.of(ItemID.ICS_LITTLE_SAP_BUCKET, ItemID.MORT_SLIMEY_EEL)) // TODO
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of Rainbow Reef. Watch out for Tangled kelp!", new WorldPoint(2250, 2315, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_RAINBOW_REEF_COMPLETE, "The answer is 'Bucket of sap', 'Raw slimy eel'.", List.of(ItemID.ICS_LITTLE_SAP_BUCKET, ItemID.MORT_SLIMEY_EEL)) // TODO
 		)),
 		new ChartingSeaSection(39, "Southern Expanse", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Isle of Serpents and sample the contents. Watch out for Tangled kelp!", new WorldPoint(1822, 2439, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_DRINK_CRATE_PUZZLERS_POTEEN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a useful sign to the far south of the Isle of Serpents. Watch out for Tangled kelp!", new WorldPoint(1829, 2139, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_GENERIC_NOTHING_SIGN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small islands [ sic ] east of the Isle of Serpents. Watch out for Tangled kelp!", new WorldPoint(1881, 2445, 0), new WorldPoint(1813, 2191, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_WEATHER_TROLL_SOUTHERN_EXPANSE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of Sunbleak Island. Watch out for Tangled kelp!", new WorldPoint(2053, 2315, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SOUTHERN_EXPANSE_COMPLETE,
-				"The answer is 'Ghrazi rapier'.", List.of(ItemID.GHRAZI_RAPIER))
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of Sunbleak Island. Watch out for Tangled kelp!", new WorldPoint(2053, 2315, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SOUTHERN_EXPANSE_COMPLETE, "The answer is 'Ghrazi rapier'.", List.of(ItemID.GHRAZI_RAPIER))
 		)),
 		new ChartingSeaSection(58, "V's Belt", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an informative sign on a small island south of Miscellania.", new WorldPoint(2528, 3818, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_GHRIM_SIGN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the castle on Miscellania from the west.", new WorldPoint(2477, 3862, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_VS_BELT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of V's Belt and sample the contents.", new WorldPoint(2474, 3798, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BLUE_LAGOON_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north east of Jatizso.", new WorldPoint(2428, 3831, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_VS_BELT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north west of Miscellania. Watch out for Icy seas!", new WorldPoint(2505, 3892, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_VS_BELT_COMPLETE,
-				"The answer is unknown.", List.of()) // TODO
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north west of Miscellania. Watch out for Icy seas!", new WorldPoint(2505, 3892, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_VS_BELT_COMPLETE, "The answer is unknown.", List.of()) // TODO
 		)),
 		new ChartingSeaSection(60, "Idestia Strait", List.of(
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the castle on Etceteria from the east.", new WorldPoint(2636, 3874, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_IDESTIA_STRAIT_COMPLETE),
@@ -511,8 +481,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the hunter area near Trollweiss Mountain.", new WorldPoint(2695, 3828, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_IDESTIA_STRAIT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a hunter free haven on a small island west of Trollweiss Mountain. Watch out for Icy seas!", new WorldPoint(2726, 3855, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_GENERIC_KEBBIT_BURROW_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island north of Etceteria. Watch out for Icy seas!", new WorldPoint(2600, 3910, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_WEATHER_TROLL_IDESTIA_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Iceberg. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_IDESTIA_STRAIT_COMPLETE,
-				"The answer is unknown.", List.of()) // TODO
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Iceberg. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_IDESTIA_STRAIT_COMPLETE, "The answer is unknown.", List.of()) // TODO
 		)),
 		new ChartingSeaSection(62, "Winter's Edge", List.of(
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the town on Lunar Isle from the west.", new WorldPoint(2051, 3913, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_WINTERS_EDGE_COMPLETE),
@@ -520,15 +489,13 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an odd dead plant on a small island north west of Lunar Isle. Watch out for Icy seas!", new WorldPoint(2083, 3953, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_GENERIC_DEAD_LIVID_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island north of the River of Souls. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_WEATHER_TROLL_WINTERS_EDGE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north east of the River of Souls. Watch out for Icy seas!", new WorldPoint(1866, 3911, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_CURRENT_DUCK_WINTERS_EDGE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of Winter's Edge. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WINTERS_EDGE_COMPLETE,
-				"The answer is unknown.", List.of()) // TODO
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of Winter's Edge. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WINTERS_EDGE_COMPLETE, "The answer is unknown.", List.of()) // TODO
 		)),
 		new ChartingSeaSection(63, "Lunar Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the far north of the Lunar Sea and sample the contents. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_DRINK_CRATE_SUQAH_COLA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some cleaning supplies north of Lunar Isle. Watch out for Icy seas!", new WorldPoint(2144, 4067, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_GENERIC_LUNAR_BROOMS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Ungael from the west. Watch out for Icy seas!", new WorldPoint(2237, 4064, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_LUNAR_SEA_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the north west of the Lunar Sea. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_LUNAR_SEA_COMPLETE,
-				"The answer is unknown.", List.of()) // TODO
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the north west of the Lunar Sea. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_LUNAR_SEA_COMPLETE, "The answer is unknown.", List.of()) // TODO
 		)),
 		new ChartingSeaSection(64, "Everwinter Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the far north of the Everwinter Sea and sample the contents. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_DRINK_CRATE_WINTER_SUN_COMPLETE),
@@ -536,24 +503,21 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on Brittle Isle. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_WEATHER_TROLL_EVERWINTER_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents near the shipwrecks in the Everwinter Sea. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_CURRENT_DUCK_EVERWINTER_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the area north of the River of Souls from the east. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_RIVER_OF_SOULS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the River of Souls. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_EVERWINTER_SEA_COMPLETE,
-				"The answer is unknown.", List.of())
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the River of Souls. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_EVERWINTER_SEA_COMPLETE, "The answer is unknown.", List.of())
 		)),
 		new ChartingSeaSection(65, "Kannski Tides", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the waters of the Fremennik Isles and sample the contents.", new WorldPoint(2359, 3878, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BLACK_LOBSTER_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Fearless Fremennik south west of the Island of Stone. Watch out for Icy seas!", new WorldPoint(2426, 3961, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_GENERIC_FEARLESS_FREMENNIK_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of the western cave on the Fremennik Isles. Watch out for Icy seas!", new WorldPoint(2316, 3903, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KANNSKI_TIDES_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the ice trolls of the Fremennik Isles from the north. Watch out for Icy seas!", new WorldPoint(2351, 3904, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_KANNSKI_TIDES_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Fremennik Isles. Watch out for Icy seas!", new WorldPoint(2221, 3893, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_KANNSKI_TIDES_COMPLETE,
-				"The answer is unknown.", List.of())
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Fremennik Isles. Watch out for Icy seas!", new WorldPoint(2221, 3893, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_KANNSKI_TIDES_COMPLETE, "The answer is unknown.", List.of())
 		)),
 		new ChartingSeaSection(66, "Weissmere", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of Weissmere and sample the contents. Watch out for Icy seas!", new WorldPoint(2775, 3935, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_DRINK_CRATE_DWARVERN_WIZARD_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some missing mountaineering equipment north of Trollweiss Mountain. Watch out for Icy seas!", new WorldPoint(2783, 3882, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_GENERIC_DISCARDED_SLED_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north west of Weiss. Watch out for Icy seas!", new WorldPoint(2833, 3960, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_CURRENT_DUCK_WEISSMERE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the large rock formations in Weissmere from their centre. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_WEISSMERE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north west of Weiss. Watch out for Icy seas!", new WorldPoint(2504, 3975, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WEISSMERE_COMPLETE,
-				"The answer is unknown.", List.of())
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north west of Weiss. Watch out for Icy seas!", new WorldPoint(2504, 3975, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WEISSMERE_COMPLETE, "The answer is unknown.", List.of())
 		)),
 		new ChartingSeaSection(67, "Stoneheart Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the far north of the Stoneheart Sea and sample the contents. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_DRINK_CRATE_KGP_MARTINI_COMPLETE),
@@ -561,24 +525,21 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island south west of the Island of Stone. Watch out for Icy seas!", new WorldPoint(2447, 3995, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_WEATHER_TROLL_STONEHEART_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the Island of Stone. Watch out for Icy seas!", new WorldPoint(2433, 4006, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STONEHEART_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the KGP training area from the west. Watch out for Icy seas!", new WorldPoint(2620, 4059, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_STONEHEART_SEA_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Island of Stone. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_STONEHEART_SEA_COMPLETE,
-				"The answer is unknown.", List.of())
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Island of Stone. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_STONEHEART_SEA_COMPLETE, "The answer is unknown.", List.of())
 		)),
 		new ChartingSeaSection(68, "Shiverwake Expanse", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the large rock formations in Weissmere and sample the contents. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_DRINK_CRATE_CORPSE_REVIVER_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find evidence of spying north east of the Iceberg. Watch out for Icy seas!", new WorldPoint(2709, 4124, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_GENERIC_KGP_PERISCOPE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the large rock formations in Weissmere. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_WEATHER_TROLL_SHIVERWAKE_EXPANSE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Grimstone from the west. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_SHIVERWAKE_EXPANSE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the east of the Shiverwake Expanse. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SHIVERWAKE_EXPANSE_COMPLETE,
-				"The answer is unknown.", List.of())
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the east of the Shiverwake Expanse. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SHIVERWAKE_EXPANSE_COMPLETE,"The answer is unknown.", List.of())
 		)),
 		new ChartingSeaSection(69, "Weiss Melt", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a failing boat north east of Weiss. Watch out for Icy seas!", new WorldPoint(2902, 3965, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_GENERIC_ICE_SHIP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate north of Grimstone and sample the contents. Watch out for Icy seas!", null, "Northern Ocean", 78, VarbitID.SAILING_CHARTING_DRINK_CRATE_WEISS_MELTWATER_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island north of the Frozen Waste Plateau. Watch out for Icy seas!", new WorldPoint(2951, 3962, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_WEATHER_TROLL_WEISS_MELT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of Weiss. Watch out for Icy seas!", new WorldPoint(2880, 3985, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_CURRENT_DUCK_WEISS_MELT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the agility course in the Wilderness from the north. Watch out for Icy seas!", new WorldPoint(2990, 3971, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_WEISS_MELT_COMPLETE,
-				"The answer is ''.", List.of())
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the agility course in the Wilderness from the north. Watch out for Icy seas!", new WorldPoint(2990, 3971, 0), "Northern Ocean", 78, VarbitID.SAILING_CHARTING_SPYGLASS_WEISS_MELT_COMPLETE,"The answer is ''.", List.of())
 		))
 	);
 

@@ -34,6 +34,7 @@ public final class ChartingTaskDefinition
 	private final String description;
 	private final WorldPoint worldPoint;
 	private final WorldPoint secondaryWorldPoint;
+	private final int itemId;
 	private final String ocean;
 	private final int level;
 	private final int varbitId;
@@ -49,6 +50,19 @@ public final class ChartingTaskDefinition
 		this.description = description;
 		this.worldPoint = worldPoint;
 		this.secondaryWorldPoint = secondaryWorldPoint;
+		this.ocean = ocean;
+		this.level = level;
+		this.varbitId = varbitId;
+		this.itemId = -1;
+	}
+
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, int itemId, String ocean, int level, int varbitId)
+	{
+		this.type = type;
+		this.description = description;
+		this.worldPoint = worldPoint;
+		this.secondaryWorldPoint = null;
+		this.itemId = itemId;
 		this.ocean = ocean;
 		this.level = level;
 		this.varbitId = varbitId;

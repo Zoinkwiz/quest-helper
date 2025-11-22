@@ -25,6 +25,7 @@
 package com.questhelper.helpers.activities.charting;
 
 import java.util.List;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.coords.WorldPoint;
 
@@ -279,7 +280,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting sea life in the middle of the Western Gate.", new WorldPoint(1996, 2947, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SNAKE_EGGS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Western Gate and sample the contents.", new WorldPoint(1993, 2972, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MANGO_GIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents east of Minotaurs' Rest.", new WorldPoint(1978, 3106, 0), "Shrouded Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_WESTERN_GATE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Western Gate.", new WorldPoint(2041, 3023, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WESTERN_GATE_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Western Gate.", new WorldPoint(2041, 3023, 0), ItemID.FLOWERS_WATERFALL_QUEST_BLACK, "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_WESTERN_GATE_COMPLETE)
 		)),
 		new ChartingSeaSection(38, "Rainbow Reef", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a lost friend on Rainbow's End. Watch out for Tangled kelp!", new WorldPoint(2336, 2267, 0), "Shrouded Ocean", 72, VarbitID.SAILING_CHARTING_GENERIC_GNOME_BALL_COMPLETE),

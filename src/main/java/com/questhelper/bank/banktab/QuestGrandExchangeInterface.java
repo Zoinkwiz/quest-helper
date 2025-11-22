@@ -30,6 +30,7 @@ import com.questhelper.QuestHelperPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarClientID;
@@ -78,6 +79,15 @@ public class QuestGrandExchangeInterface
 		if (isHidden() || questHelper.getSelectedQuest() == null)
 		{
 			return;
+		}
+
+		if (notAtGE())
+		{
+			if (questHelper.getSelectedQuest().getCurrentStep().getGeInterfaceIcon() > 0)
+			{
+				onceOffActivateTab();
+				return;
+			}
 		}
 
 		parent = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
@@ -131,6 +141,13 @@ public class QuestGrandExchangeInterface
 		active = false;
 	}
 
+	public boolean notAtGE()
+	{
+		// Only show button if we're at GE
+		var playerLocation = client.getLocalPlayer().getWorldLocation();
+		return playerLocation.distanceTo(new WorldPoint(3164, 3489, 0)) <= 20;
+	}
+
 	public boolean isHidden()
 	{
 		Widget widget = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
@@ -179,6 +196,16 @@ public class QuestGrandExchangeInterface
 		questBackgroundWidget.revalidate();
 		grandExchangeTitle.setHidden(false);
 		active = true;
+		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "quest-helper");
+		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
+
+		clientThread.invokeLater(() -> updateSearchInterface(true));
+	}
+
+	// Used for non-ge ge interfaces
+	public void onceOffActivateTab()
+	{
+		grandExchangeTitle.setHidden(false);
 		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "quest-helper");
 		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
 

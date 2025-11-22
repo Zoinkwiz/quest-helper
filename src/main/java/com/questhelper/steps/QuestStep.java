@@ -174,6 +174,10 @@ public abstract class QuestStep implements Module
 	@Setter
 	protected boolean shouldOverlayWidget;
 
+	@Getter
+	@Setter
+	protected int geInterfaceIcon;
+
 	public QuestStep(QuestHelper questHelper)
 	{
 		this.questHelper = questHelper;

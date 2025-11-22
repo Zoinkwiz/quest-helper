@@ -28,6 +28,7 @@ import com.questhelper.helpers.activities.charting.steps.ChartingCrateStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingCurrentStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingDivingStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingGenericObjectStep;
+import com.questhelper.helpers.activities.charting.steps.ChartingPuzzleWrapStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingTaskStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingTelescopeStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingWeatherStep;
@@ -50,7 +51,6 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 public class ChartingHelper extends ComplexStateQuestHelper
 {
 	private final DetailedQuestStep overviewStep = new DetailedQuestStep(this, "You have no more things you can chart at your current level.");
-
 	private final List<QuestStep> chartingSteps = new ArrayList<>();
 	private List<PanelDetails> panelDetails = new ArrayList<>();
 
@@ -135,7 +135,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			case CURRENT:
 				return new ChartingCurrentStep(this, definition);
 			case DIVING:
-				return new ChartingDivingStep(this, definition);
+				return new ChartingPuzzleWrapStep(this, new ChartingDivingStep(this, definition), definition);
 			case WEATHER:
 				return new ChartingWeatherStep(this, definition);
 			default:

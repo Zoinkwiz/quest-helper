@@ -28,8 +28,12 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.helpers.activities.charting.ChartingTaskInterface;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.Skill;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 
 public class ChartingPuzzleWrapStep extends PuzzleWrapperStep implements ChartingTaskInterface
 {
@@ -39,6 +43,14 @@ public class ChartingPuzzleWrapStep extends PuzzleWrapperStep implements Chartin
 	{
 		super(questHelper, questStep, definition.getDescription());
 		this.questStep = (ChartingTaskInterface) questStep;
+
+		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
+		var levelNotMet = nor(sailingRequirement);
+		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
+		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
+		
+		conditionToHideInSidebar(completedRequirement);
+		conditionToFadeInSidebar(levelNotMet);
 	}
 
 	@Override

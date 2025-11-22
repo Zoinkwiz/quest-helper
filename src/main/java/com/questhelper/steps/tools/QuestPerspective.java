@@ -116,7 +116,7 @@ public class QuestPerspective
 		for (WorldPoint worldPoint : instanceWorldPoint)
 		{
 			if (worldPoint == null) continue;
-			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
+			LocalPoint lp = getLocalPointFromWorldPointInInstance(client, worldPoint);
 			if (lp != null)
 			{
 				localPoints.add(lp);
@@ -166,15 +166,22 @@ public class QuestPerspective
 		}
 	}
 
+	public static LocalPoint getLocalPointFromWorldPointInInstance(Client client, WorldPoint worldPoint)
+	{
+		var instanceWps = WorldPoint.toLocalInstance(client.getTopLevelWorldView(), worldPoint);
+		if (instanceWps.isEmpty()) return null;
+		return LocalPoint.fromWorld(client, instanceWps.iterator().next());
+	}
+
 	public static WorldPoint getWorldPointConsideringWorldView(Client client, WorldPoint worldPoint)
 	{
-		return getWorldPointConsideringWorldView(client, LocalPoint.fromWorld(client, worldPoint));
+		return getWorldPointConsideringWorldView(client, getLocalPointFromWorldPointInInstance(client, worldPoint));
 	}
 
 	public static LocalPoint getLocalPointConsideringWorldView(Client client, WorldPoint worldPoint)
 	{
-		var worldviewTransformedWP = getWorldPointConsideringWorldView(client, LocalPoint.fromWorld(client, worldPoint));
-		return LocalPoint.fromWorld(client, Objects.requireNonNullElse(worldviewTransformedWP, worldPoint));
+		var instanceWp = getWorldPointConsideringWorldView(client, worldPoint);
+		return getLocalPointFromWorldPointInInstance(client, instanceWp);
 	}
 
 	public static Rectangle getWorldMapClipArea(Client client)
@@ -326,7 +333,7 @@ public class QuestPerspective
 
 	private static void addToPoly(Client client, Polygon areaPoly, WorldPoint wp, int... points)
 	{
-		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp);
+		LocalPoint localPoint = getLocalPointFromWorldPointInInstance(client, wp);
 		if (localPoint == null) return;
 
 		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);

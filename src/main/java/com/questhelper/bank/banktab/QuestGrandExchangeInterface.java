@@ -83,11 +83,11 @@ public class QuestGrandExchangeInterface
 
 		if (notAtGE())
 		{
-			if (questHelper.getSelectedQuest().getCurrentStep().getGeInterfaceIcon() > 0)
+			if (questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon() > 0)
 			{
 				onceOffActivateTab();
-				return;
 			}
+			return;
 		}
 
 		parent = client.getWidget(InterfaceID.Chatbox.MES_LAYER);

@@ -33,6 +33,8 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class ChartingCrateStep extends ChartingTaskObjectStep
@@ -42,8 +44,9 @@ public class ChartingCrateStep extends ChartingTaskObjectStep
 		super(questHelper, ObjectID.SAILING_CHARTING_DRINK_CRATE, definition, requirements);
 		var crowbar = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CURRENT_DUCK);
 		addRequirement(crowbar);
-		var reqWithQuest = or(getFadeCondition(), new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE, 1));
+		var reqWithQuest = or(getFadeCondition(), new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE, 0));
 		reqWithQuest.setText(getFadeCondition().getDisplayText() + " You also require completion of the quest 'Prying Times'.");
 		conditionToFadeInSidebar(reqWithQuest);
+		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), not(reqWithQuest));
 	}
 }

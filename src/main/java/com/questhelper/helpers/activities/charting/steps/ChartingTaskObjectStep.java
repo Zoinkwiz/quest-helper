@@ -40,7 +40,7 @@ import static com.questhelper.requirements.util.LogicHelper.nor;
 public class ChartingTaskObjectStep extends ObjectStep implements ChartingTaskInterface
 {
 	private Requirement incompleteRequirement;
-	private Requirement canDoRequirement;
+	protected Requirement canDoRequirement;
 
 	ChartingTaskObjectStep(QuestHelper questHelper, int objectID, ChartingTaskDefinition definition, Requirement... requirements)
 	{

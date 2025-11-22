@@ -2,11 +2,10 @@ package com.questhelper.steps;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.PortRequirement;
+import com.questhelper.requirements.player.ShipAtDockRequirement;
 import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
-import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 public class SailStep extends DetailedQuestStep
@@ -14,9 +13,9 @@ public class SailStep extends DetailedQuestStep
 	private final ZoneRequirement zoneReq;
 
 	public SailStep(QuestHelper questHelper, Port toPort){
-		this(questHelper, new PortRequirement(toPort));
+		this(questHelper, new ShipAtDockRequirement(toPort));
 	}
-	public SailStep(QuestHelper questHelper, PortRequirement toPort)
+	public SailStep(QuestHelper questHelper, ShipAtDockRequirement toPort)
 	{
 		super(questHelper, "Sail to " + toPort.getPort().getName());
 		Zone zone = toPort.getPort().getDockZone();
@@ -25,9 +24,9 @@ public class SailStep extends DetailedQuestStep
 		setWorldPoint(toPort.getPort().getBuoy());
 	}
 	public SailStep(QuestHelper questHelper, Port toPort, Requirement... requirements){
-		this(questHelper, new PortRequirement(toPort), requirements);
+		this(questHelper, new ShipAtDockRequirement(toPort), requirements);
 	}
-	public SailStep(QuestHelper questHelper, PortRequirement toPort, Requirement... requirements)
+	public SailStep(QuestHelper questHelper, ShipAtDockRequirement toPort, Requirement... requirements)
 	{
 		this(questHelper,toPort);
 		this.addRequirement(requirements);

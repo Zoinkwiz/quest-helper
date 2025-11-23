@@ -39,8 +39,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static net.runelite.api.Constants.CHUNK_SIZE;
-
 public class QuestPerspective
 {
 	// Order of poly corners from getCanvasTilePoly
@@ -90,12 +88,13 @@ public class QuestPerspective
 	}
 
 	/**
-	 * Converts a hardcoded WorldPoint to a WorldPoint in proximity, handling WorldView considerations
-	 * for instanced areas like boats.
+	 * Converts a WorldPoint from a given WorldView to the main world coordinate system,
+	 * handling WorldView considerations for instanced areas like boats.
 	 *
 	 * @param client the {@link Client}
+	 * @param worldView the {@link WorldView} the worldPoint is currently in
 	 * @param worldPoint the {@link WorldPoint} to convert
-	 * @return the {@link WorldPoint} in the instanced world, or real world WorldPoint if not
+	 * @return the {@link WorldPoint} in the main/real world, or the original worldPoint if conversion fails
 	 */
 	public static WorldPoint getWorldPointConsideringWorldView(Client client, WorldView worldView, WorldPoint worldPoint)
 	{
@@ -105,9 +104,12 @@ public class QuestPerspective
 		}
 
 		var localPoint = LocalPoint.fromWorld(worldView, worldPoint);
-		if (localPoint == null) return worldPoint;
+		if (localPoint == null)
+		{
+			return worldPoint;
+		}
 
-		// If in a non-top level WorldView (a boat) need to translate
+		// If in a non-top level WorldView (a boat) need to translate to main world
 		if (!worldView.isTopLevel())
 		{
 			// Currently the entity should be the player's boat only?
@@ -126,6 +128,7 @@ public class QuestPerspective
 		}
 		else
 		{
+			// For top-level WorldView, still use fromLocalInstance to handle any instance normalization
 			return WorldPoint.fromLocalInstance(client, localPoint);
 		}
 	}
@@ -207,7 +210,18 @@ public class QuestPerspective
 
 	public static Point getMinimapPoint(Client client, WorldPoint start, WorldPoint destination)
 	{
-		var worldMapData = client.getWorldMap().getWorldMapData();
+		var worldMap = client.getWorldMap();
+		if (worldMap == null)
+		{
+			return null;
+		}
+
+		var worldMapData = worldMap.getWorldMapData();
+		if (worldMapData == null)
+		{
+			return null;
+		}
+
 		if (worldMapData.surfaceContainsPosition(start.getX(), start.getY()) !=
 			worldMapData.surfaceContainsPosition(destination.getX(), destination.getY()))
 		{
@@ -218,6 +232,12 @@ public class QuestPerspective
 		int y = (destination.getY() - start.getY());
 
 		float maxDistance = Math.max(Math.abs(x), Math.abs(y));
+		// Avoid division by zero when start == destination
+		if (maxDistance == 0)
+		{
+			return null;
+		}
+
 		x = x * 100;
 		y = y * 100;
 		x /= maxDistance;

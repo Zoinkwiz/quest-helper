@@ -153,7 +153,8 @@ public class PryingTimes extends BasicQuestHelper
 		letSteveKnow.addDialogStep("I delivered that cargo for you.");
 
 		getKey = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Get the key from Thurgo in the shed near Mudskipper's Point.", true,hammerRequirement, steelBarRequirement,redberryPieRequirement);
-		getKey.addDialogStep(Pattern.compile("(I need some help with a 'special key'\\.)|(So, can you help me make a crowbar\\?)"));
+		getKey.addDialogSteps("I need some help with a 'special key'.", "So, can you help me make a crowbar?)");
+		getKey.addDialogStep("Yes.");
 		getKey.setRecommended(Arrays.asList(thurgoTeleportRecommend));
 		giveKey = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Give the 'key' to 'Squawking' Steve Beanie behind the Pandemonium bar.", true, gotTheKey);
 		giveKey.addDialogStep("I made that 'special key' you needed.");
@@ -182,6 +183,12 @@ public class PryingTimes extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Arrays.asList(sailingSkillRequirement, smithingSkillRequirement, pandemoniumQuestRequirement, knightsSwordQuestRequirement, freeTaskSlotRequirement);
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("Drink Troll (level 14) (can be ignored)");
 	}
 
 	@Override

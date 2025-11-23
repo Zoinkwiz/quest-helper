@@ -78,6 +78,15 @@ public enum Port
 	private final WorldPoint ledgerTableLocation; // Relevant ObjectIDs: DOCK_LOADING_BAY_LEDGER_TABLE_WITHDRAW, DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT;
 	private final int portTaskBoardId;
 	private final WorldPoint portTaskBoardLocation; // Relevant ObjectIDs: DOCK_LOADING_BAY_LEDGER_TABLE_WITHDRAW, DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT;
+
+	static Port getPort(int portId) {
+		for (Port p : Port.values()) {
+			if (p.id == portId) {
+				return p;
+			}
+		}
+		return null;
+	}
 }
 
 //	SAILING_DOCKING_BUOY_ISLE_OF_SOULS = 59801;

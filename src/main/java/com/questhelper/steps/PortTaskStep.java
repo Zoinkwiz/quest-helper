@@ -2,7 +2,7 @@ package com.questhelper.steps;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.player.ShipAtDockRequirement;
+import com.questhelper.requirements.player.ShipInPortRequirement;
 import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -28,7 +28,7 @@ public class PortTaskStep extends ConditionalStep
 	{
 		super(questHelper, new SailStep(questHelper, fromPort), requirements);
 		stepsList.add(super.getStepsMap().get(null));
-		ShipAtDockRequirement fromPortReq = new ShipAtDockRequirement(fromPort);
+		ShipInPortRequirement fromPortReq = new ShipInPortRequirement(fromPort);
 		ZoneRequirement toPortReq = new ZoneRequirement(toPort.getDockZone());
 
 		Requirement cargoForTaskTaken = or(

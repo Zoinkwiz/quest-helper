@@ -7,6 +7,7 @@ import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import lombok.Getter;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +42,11 @@ public class PortTaskStep extends ConditionalStep
 		Requirement holdingCargo = new VarbitRequirement(VarbitID.SAILING_CARRYING_CARGO, 1);
 		Requirement notHoldingCargo = new VarbitRequirement(VarbitID.SAILING_CARRYING_CARGO, 0);
 
-		DetailedQuestStep pickupCargo = new DetailedQuestStep(questHelper, "Pickup the cargo.");
-		DetailedQuestStep placeCargoInHold = new DetailedQuestStep(questHelper, "Place the cargo in the cargo hold.");
+		DetailedQuestStep pickupCargo = new ObjectStep(questHelper, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_WITHDRAW, fromPort.getLedgerTableLocation(), "Pickup the cargo from the ledger table on the docks of " + fromPort.getName() + ".");
+		DetailedQuestStep placeCargoInHold = new DetailedQuestStep(questHelper, "Place the cargo in the cargo hold of your ship.");
 		SailStep sailToToPort = new SailStep(questHelper, toPort);
-		DetailedQuestStep pickupCargoFromHold = new DetailedQuestStep(questHelper, "Pickup the cargo from the cargo hold.");
-		DetailedQuestStep deliverCargo = new DetailedQuestStep(questHelper, "Deliver the cargo.");
+		DetailedQuestStep pickupCargoFromHold = new DetailedQuestStep(questHelper, "Pickup the cargo from the cargo hold of your ship.");
+		DetailedQuestStep deliverCargo = new ObjectStep(questHelper, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT, toPort.getLedgerTableLocation(), "Deliver the cargo to the ledger table on the docks of " + toPort.getName() + ".");
 		super.addStep(and(toPortReq, cargoForTaskTaken, holdingCargo), deliverCargo);
 		super.addStep(and(toPortReq, notHoldingCargo, cargoForTaskTaken), pickupCargoFromHold);
 		super.addStep(and(fromPortReq, notHoldingCargo, cargoForTaskTaken), sailToToPort);

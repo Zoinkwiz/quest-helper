@@ -49,7 +49,6 @@ public class ChartingGenericObjectStep extends ChartingTaskObjectStep
 			return;
 		}
 
-		System.out.println(object.getId());
 		setObjects(object);
 	}
 }

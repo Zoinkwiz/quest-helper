@@ -54,6 +54,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
 import java.util.regex.Pattern;
 import com.questhelper.steps.SailStep;
 import net.runelite.api.QuestState;
@@ -144,24 +145,25 @@ public class PryingTimes extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to Steve to start the quest.", true);
+		startQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the Pandemonium bar to start the quest.", true, captainsLogRequirement);
 		startQuest.addDialogStep("Any word from Old Grog?");
+		startQuest.addDialogStep("Yes.");
 		deliverCargo = new PortTaskStep(this, Port.PORT_SARIM, Port.PANDEMONIUM, 600);
-		letSteveKnow = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Let Steve know you delivered the looty.", true);
+		letSteveKnow = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Let 'Squawking' Steve Beanie behind the bar know you delivered the looty.", true);
 		letSteveKnow.addDialogStep("I delivered that cargo for you.");
 
-		getKey = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Get the key from Thurgo.", true,hammerRequirement, steelBarRequirement,redberryPieRequirement);
+		getKey = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Get the key from Thurgo in the shed near Mudskipper's Point.", true,hammerRequirement, steelBarRequirement,redberryPieRequirement);
 		getKey.addDialogStep(Pattern.compile("(I need some help with a 'special key'\\.)|(So, can you help me make a crowbar\\?)"));
 		getKey.setRecommended(Arrays.asList(thurgoTeleportRecommend));
-		giveKey = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Give the key to Steve.", true, gotTheKey);
+		giveKey = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Give the 'key' to 'Squawking' Steve Beanie behind the Pandemonium bar.", true, gotTheKey);
 		giveKey.addDialogStep("I made that 'special key' you needed.");
-		testKey = new ObjectStep(this, 59283, new WorldPoint(3013, 2998, 0), "Open the crate with the newly acquired key.");
+		testKey = new ObjectStep(this, 59283, new WorldPoint(3013, 2998, 0), "Open the Sealed crate with the newly acquired 'key'.", gotTheKey);
 		sailToCrate = new SailStep(this, new WorldPoint(3013, 2998, 0));
-		drinkTheStout = new ItemStep(this, "Drink the stout. Warning: you will be attacked!", gotStout.highlighted());
-		killTheTroll = new NpcStep(this, NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL, new WorldPoint(3013, 2998, 0), "Kill the lvl 14 Drink Troll, or log out.");
-		goToSteve = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Tell Steve the key works.", true, gotTheKey);
+		drinkTheStout = new ItemStep(this, "Drink the stout. Warning: you will be attacked by a level 14 Drink Troll.", gotStout.highlighted());
+		killTheTroll = new NpcStep(this, NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL, new WorldPoint(3013, 2998, 0), "Kill the Drink Troll, or log out.");
+		goToSteve = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Tell 'Squawking' Steve Beanie behind the Pandemonium bar the key works.", true, gotTheKey);
 		goToSteve.addDialogStep("About that crate...");
-		openCrate = new ObjectStep(this, 58405, new WorldPoint(3048, 2965, 0), "Open Steve's crate.", gotTheKey);
+		openCrate = new ObjectStep(this, 58405, new WorldPoint(3048, 2965, 0), "Open Steve's crate in the corner of behind the bar.", gotTheKey);
 	}
 
 	@Override

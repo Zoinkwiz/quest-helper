@@ -282,7 +282,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the middle of the Crystal Sea.", new WorldPoint(1979, 3211, 0), "Western Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_CRYSTAL_SEA_COMPLETE, "The answer is 'Butterfly jar'.", List.of(ItemID.BUTTERFLY_JAR))
 		)),
 		new ChartingSeaSection(54, "Vagabonds Rest", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a crate of discarded goods north of Drumstick Isle. Go backwards with your ship to reach it.", new WorldPoint(2133, 3589, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_HUNTER_OUTFITS_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a crate of discarded goods north of Drumstick Isle. Go backwards with your ship to reach it.", new WorldPoint(2133, 3589, 0), "Western Ocean", 66, VarbitID.SAILING_CHARTING_GENERIC_HUNTER_OUTFITS_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a half-built ship west of Buccaneers' Haven.", new WorldPoint(2026, 3669, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_HALF_BUILT_SHIP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Buccaneers' Haven from the north.", new WorldPoint(2101, 3702, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_VAGABONDS_REST_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Buccaneers' Haven and sample the contents.", new WorldPoint(2079, 3655, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SEA_SPRAY_COMPLETE),

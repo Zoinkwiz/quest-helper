@@ -182,7 +182,7 @@ public class QuestBankTab
 	public void updateGrandExchangeUiForSpecificItem(List<Integer> itemToTag)
 	{
 		client.setGeSearchResultIndex(0);
-		client.setGeSearchResultCount(1);
+		client.setGeSearchResultCount(itemToTag.size());
 
 		client.setGeSearchResultIds(Shorts.toArray(itemToTag));
 	}

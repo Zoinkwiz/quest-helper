@@ -23,7 +23,7 @@ public class SailStep extends DetailedQuestStep
 		Zone zone = toPort.getPort().getDockZone();
 		setHighlightZone(zone);
 		this.zoneRequirement = new ZoneRequirement(zone);
-		setWorldPoint(toPort.getPort().getBuoyLocation());
+		setWorldPoint(toPort.getPort().getGangplankLocation());
 	}
 	public SailStep(QuestHelper questHelper, Port toPort, Requirement... requirements){
 		this(questHelper, new ShipInPortRequirement(toPort), requirements);

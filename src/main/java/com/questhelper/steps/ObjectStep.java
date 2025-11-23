@@ -135,7 +135,17 @@ public class ObjectStep extends DetailedQuestStep
 	{
 		// TODO: This needs to be tested in Shadow of the Storm's Demon Room
 		objects.clear();
-		Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
+		loadObjectsInWorldView(client.getTopLevelWorldView());
+		var playerWorldView = client.getLocalPlayer().getWorldView();
+		if (playerWorldView != client.getTopLevelWorldView())
+		{
+			loadObjectsInWorldView(client.getLocalPlayer().getWorldView());
+		}
+	}
+
+	protected void loadObjectsInWorldView(WorldView worldView)
+	{
+		Tile[][] tiles = worldView.getScene().getTiles()[worldView.getPlane()];
 		for (Tile[] lineOfTiles : tiles)
 		{
 			for (Tile tile : lineOfTiles)
@@ -314,8 +324,6 @@ public class ObjectStep extends DetailedQuestStep
 				continue;
 			}
 
-			if (tileObject.getPlane() == client.getPlane())
-			{
 				if (closestObject == null || closestObjectPosition == null
 					|| closestObjectPosition.distanceTo(playerPosition) > distanceFromPlayer)
 				{
@@ -353,7 +361,6 @@ public class ObjectStep extends DetailedQuestStep
 						break;
 					default:
 				}
-			}
 		}
 
 		if (iconItemID != -1 && closestObject != null && questHelper.getConfig().showSymbolOverlay())

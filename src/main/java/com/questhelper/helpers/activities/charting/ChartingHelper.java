@@ -135,7 +135,10 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			case CURRENT:
 				return new ChartingCurrentStep(this, definition);
 			case DIVING:
-				return new ChartingPuzzleWrapStep(this, new ChartingDivingStep(this, definition), definition);
+				return new ChartingPuzzleWrapStep(this,
+					new ChartingDivingStep(this, definition, true),
+					new ChartingDivingStep(this, definition, false),
+					definition);
 			case WEATHER:
 				return new ChartingWeatherStep(this, definition);
 			default:

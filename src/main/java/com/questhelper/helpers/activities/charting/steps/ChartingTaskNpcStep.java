@@ -49,6 +49,12 @@ public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterfac
 		 setupChartingDetails(definition);
 	}
 
+	ChartingTaskNpcStep(QuestHelper questHelper, int npcID, ChartingTaskDefinition definition, boolean showAnswer, Requirement... requirements)
+	{
+		super(questHelper, npcID, "[" + definition.getType().getDisplayName() + "] " + definition.getDescription() + ((showAnswer) ? " " + definition.getAnswerText() : "") , requirements);
+		setupChartingDetails(definition);
+	}
+
 	public void setupChartingDetails(ChartingTaskDefinition definition)
 	{
 		var point = definition.getWorldPoint();

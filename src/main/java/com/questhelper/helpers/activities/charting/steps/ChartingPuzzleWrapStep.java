@@ -39,9 +39,9 @@ public class ChartingPuzzleWrapStep extends PuzzleWrapperStep implements Chartin
 {
 	private final ChartingTaskInterface questStep;
 
-	public ChartingPuzzleWrapStep(QuestHelper questHelper, QuestStep questStep, ChartingTaskDefinition definition)
+	public ChartingPuzzleWrapStep(QuestHelper questHelper, QuestStep questStep, QuestStep noAnswerStep, ChartingTaskDefinition definition)
 	{
-		super(questHelper, questStep, definition.getDescription());
+		super(questHelper, questStep, noAnswerStep);
 		this.questStep = (ChartingTaskInterface) questStep;
 
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));

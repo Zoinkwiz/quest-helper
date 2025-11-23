@@ -363,8 +363,8 @@ public abstract class QuestStep implements Module
 
 	public QuestStep addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
 	{
-		DialogChoiceStep choice = new DialogChoiceStep(questHelper.getConfig(), choiceValue);
-		choice.setExpectedPreviousLine(dialogString);
+		DialogChoiceStep choice = new DialogChoiceStep(questHelper.getConfig(), dialogString);
+		choice.setExpectedPreviousLine(choiceValue);
 		choices.addChoice(choice);
 		return this;
 	}

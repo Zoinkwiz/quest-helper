@@ -17,5 +17,6 @@ public class BoardShipStep extends ConditionalStep
 		for(Port port: Port.values()){
 			this.addStep(new ShipInPortRequirement(port), new ObjectStep(questHelper, ObjectID.SAILING_GANGPLANK_EMBARK, port.getGangplankLocation(), "Board your ship in " + port.getName() + ".", requirements));
 		}
+		this.setShouldPassthroughText(true);
 	}
 }

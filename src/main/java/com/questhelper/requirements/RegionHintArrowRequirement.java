@@ -53,7 +53,7 @@ public class RegionHintArrowRequirement extends SimpleRequirement
 			return false;
 		}
 
-		WorldPoint wp = QuestPerspective.getWorldPointConsideringWorldView(client, hintArrowPoint);
+		WorldPoint wp = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), hintArrowPoint);
 		if (wp == null)
 		{
 			return false;

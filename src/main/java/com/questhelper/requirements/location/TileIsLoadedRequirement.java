@@ -56,7 +56,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
 		for (LocalPoint localPoint : localPoints)
 		{
 			// Final tiles of a scene do not have objects of them

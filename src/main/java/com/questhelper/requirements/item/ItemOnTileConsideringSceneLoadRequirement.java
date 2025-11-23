@@ -89,7 +89,7 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		if (worldPoint == null) return true;
 		if (!tileLoadedReq.check(client)) return true;
 
-		WorldPoint playerPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getLocalPlayer().getWorldLocation());
+		WorldPoint playerPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getLocalPlayer().getWorldView(), client.getLocalPlayer().getWorldLocation());
 		if (playerPoint == null) return false;
 		if (playerPoint.distanceTo(worldPoint) <= MAX_ZONE)
 		{
@@ -105,7 +105,7 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 	{
 		if (worldPoint != null)
 		{
-			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
 			for (LocalPoint localPoint : localPoints)
 			{
 				Tile tile = client.getTopLevelWorldView().getScene().getTiles()[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];

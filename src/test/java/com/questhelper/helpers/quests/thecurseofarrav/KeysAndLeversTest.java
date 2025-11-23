@@ -66,7 +66,7 @@ public class KeysAndLeversTest extends MockedTest
 
 		worldPointMockedStatic = Mockito.mockStatic(WorldPoint.class);
 
-		questPerspectiveMockedStatic.when(() -> QuestPerspective.getInstanceLocalPointFromReal(any(), any()))
+		questPerspectiveMockedStatic.when(() -> QuestPerspective.getLocalPointFromWorldPointInInstance(any(), any()))
 				.thenReturn(List.of());
 
 		helper = new TheCurseOfArrav();

@@ -30,6 +30,7 @@ import com.questhelper.panel.JGenerator;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.QuestRequirementsPanel;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.steps.BoardShipStep;
 import com.questhelper.steps.PortTaskStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
@@ -145,8 +146,10 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 
 		for (QuestStep step : panelDetails.getSteps())
 		{
-			if(step instanceof PortTaskStep){
-				for (QuestStep step2 : ((PortTaskStep)step).getStepsList()){
+			if(step instanceof PortTaskStep)
+			{
+				for (QuestStep step2 : ((PortTaskStep) step).getStepsList())
+				{
 					JTextPane questStepLabel = createQuestStepLabel(step2);
 					steps.put(step2, questStepLabel);
 					questStepsPanel.add(questStepLabel);
@@ -204,11 +207,14 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	public String generateText(QuestStep step)
 	{
 		StringBuilder text = new StringBuilder();
-
-		if (step.getText() != null)
+		QuestStep textStep = step;
+		if(step instanceof BoardShipStep){
+			textStep = step.getActiveStep();
+		}
+		if (textStep.getText() != null)
 		{
 			var first = true;
-			for (var line : step.getText())
+			for (var line : textStep.getText())
 			{
 				if (!first)
 				{

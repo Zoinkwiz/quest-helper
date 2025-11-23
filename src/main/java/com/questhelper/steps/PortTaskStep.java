@@ -41,7 +41,7 @@ public class PortTaskStep extends ConditionalStep
 		Requirement holdingCargo = new VarbitRequirement(VarbitID.SAILING_CARRYING_CARGO, 1);
 		Requirement notHoldingCargo = new VarbitRequirement(VarbitID.SAILING_CARRYING_CARGO, 0);
 
-		DetailedQuestStep pickupCargo = new DetailedQuestStep(questHelper, "Pickup the cargo");
+		DetailedQuestStep pickupCargo = new DetailedQuestStep(questHelper, "Pickup the cargo.");
 		DetailedQuestStep placeCargoInHold = new DetailedQuestStep(questHelper, "Place the cargo in the cargo hold.");
 		SailStep sailToToPort = new SailStep(questHelper, toPort);
 		DetailedQuestStep pickupCargoFromHold = new DetailedQuestStep(questHelper, "Pickup the cargo from the cargo hold.");

@@ -62,6 +62,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
@@ -157,13 +158,13 @@ public class PryingTimes extends BasicQuestHelper
 		getKey.setRecommended(Arrays.asList(thurgoTeleportRecommend));
 		giveKey = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Give the 'key' to 'Squawking' Steve Beanie behind the Pandemonium bar.", true, gotTheKey);
 		giveKey.addDialogStep("I made that 'special key' you needed.");
-		testKey = new ObjectStep(this, 59283, new WorldPoint(3013, 2998, 0), "Open the Sealed crate with the newly acquired 'key'.", gotTheKey);
+		testKey = new ObjectStep(this, ObjectID.SAILING_CHARTING_DRINK_CRATE, new WorldPoint(3013, 2998, 0), "Open the Sealed crate with the newly acquired 'key'.", gotTheKey);
 		sailToCrate = new SailStep(this, new WorldPoint(3013, 2998, 0));
 		drinkTheStout = new ItemStep(this, "Drink the stout. Warning: you will be attacked by a level 14 Drink Troll.", gotStout.highlighted());
 		killTheTroll = new NpcStep(this, NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL, new WorldPoint(3013, 2998, 0), "Kill the Drink Troll, or log out.");
 		goToSteve = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Tell 'Squawking' Steve Beanie behind the Pandemonium bar the key works.", true, gotTheKey);
 		goToSteve.addDialogStep("About that crate...");
-		openCrate = new ObjectStep(this, 58405, new WorldPoint(3048, 2965, 0), "Open Steve's crate in the corner of behind the bar.", gotTheKey);
+		openCrate = new ObjectStep(this, ObjectID.PRY_CRATE_SEALED, new WorldPoint(3048, 2965, 0), "Open Steve's crate in the corner of behind the bar.", gotTheKey);
 	}
 
 	@Override

@@ -89,10 +89,12 @@ public class Pandemonium extends BasicQuestHelper
 		steps.put(0, talkToWill);
 		steps.put(2, talkToWill);
 
+		steps.put(4, boardWAShip);
+
 		ConditionalStep goListenOnShip = new ConditionalStep(this, talkToWill);
 		goListenOnShip.addStep(onboardShip, explainJob);
-		steps.put(4, boardWAShip);
 		steps.put(6, goListenOnShip);
+
 		ConditionalStep cNavigateToShipwreck = new ConditionalStep(this, boardWAShip);
 		cNavigateToShipwreck.addStep(atShipwreck, explainJob2);
 		cNavigateToShipwreck.addStep(and(notAtShipwreck, sailing), navigateShip);
@@ -230,8 +232,8 @@ public class Pandemonium extends BasicQuestHelper
 
 		// What is the job?
 		explainJob = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_BOAT, NpcID.SAILING_INTRO_ANNE_BOAT}, new WorldPoint(3056, 3190, 0), "Listen to the job explanation.", true);
-		takeHelm = new DetailedQuestStep(this, "Navigate using the helm.");
-		raiseSails = new DetailedQuestStep(this, "Raise your sails.");
+		takeHelm = new ObjectStep(this, ObjectID.SAILING_INTRO_NAVIGATING, "Navigate using the helm.");
+		raiseSails = new ObjectStep(this, ObjectID.SAILING_BOAT_SAILS_INTRO, "Raise your sails.");
 		navigateShip = new DetailedQuestStep(this, "Sail south!");
 		navigateShip.setHighlightZone(shipWreckZone);
 		explainJob2 = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_VIS, NpcID.SAILING_INTRO_ANNE_VIS}, new WorldPoint(3027, 3048, 0), "Learn about the other part of your job.", true);

@@ -29,12 +29,14 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.player.ShipInPortRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -69,7 +71,7 @@ public class Pandemonium extends BasicQuestHelper
 	ObjectStep buildCargoHold, embarkShipSY, disembarkShipSY, leaveShipyard, embarkShipP, dropCargoInCargoHold, disembarkShipPS, embarkShipPS, deliverCargo, disembarkShipP, getHammer, getSaw;
 	Zone pandemonium, portSarim, pandemoniumDockZone, portSarimDockZone, shipWreckZone;
 	DetailedQuestStep navigateShip, takeHelm, takeHelm2, takeHelm3, raiseSails, raiseSails2, raiseSails3, salvageShipwreck, sailToPortSarim, pickupCargo, pickupCargoShip, sailToPandemonium, letGoOfHelm, letGoOfHelm2;
-	Requirement onPandemonium, atPortSarim, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, notAtShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, notHoldingCargo, cargoInCargoHold, notOnboardShip;
+	Requirement onPandemonium, atPortSarim, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, cargoInCargoHold;
 	ItemRequirement hammer, saw;
 	NoItemRequirement nothingInHands;
 
@@ -124,8 +126,8 @@ public class Pandemonium extends BasicQuestHelper
 		cBuildCargoHold.addStep(atShipyard, getSaw);
 		steps.put(28, cBuildCargoHold);
 		ConditionalStep cGetLogBook = new ConditionalStep(this, disembarkShipSY);
-		cGetLogBook.addStep(notAtShipyard, getLogBook);
-		cGetLogBook.addStep(notOnboardShip, leaveShipyard);
+		cGetLogBook.addStep(not(atShipyard), getLogBook);
+		cGetLogBook.addStep(not(onboardShip), leaveShipyard);
 		steps.put(30, cGetLogBook); // Jim
 
 		steps.put(32, getNewJob); // Jim
@@ -136,8 +138,8 @@ public class Pandemonium extends BasicQuestHelper
 		cSailToPortSarim.addStep(and(not(atPortSarimDock), onboardShip), takeHelm2);
 		steps.put(36, cSailToPortSarim);
 		ConditionalStep cCheckPortMaster = new ConditionalStep(this, cSailToPortSarim);
-		cCheckPortMaster.addStep(and(atPortSarim, holdingCargo, notOnboardShip), embarkShipPS);
-		cCheckPortMaster.addStep(and(atPortSarim, cargoNotPickedUp, notOnboardShip), pickupCargo);
+		cCheckPortMaster.addStep(and(atPortSarim, holdingCargo, not(onboardShip)), embarkShipPS);
+		cCheckPortMaster.addStep(and(atPortSarim, cargoNotPickedUp, not(onboardShip)), pickupCargo);
 		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, takenHelm), letGoOfHelm);
 		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, onboardShip), disembarkShipPS);
 		steps.put(38, cCheckPortMaster);
@@ -148,10 +150,10 @@ public class Pandemonium extends BasicQuestHelper
 		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoPickedUp, holdingCargo, onboardShip), dropCargoInCargoHold);
 
 		ConditionalStep cDeliverCargo = new ConditionalStep(this, cSailToPandemonium);
-		cDeliverCargo.addStep(and(onPandemonium, notOnboardShip, holdingCargo), deliverCargo);
+		cDeliverCargo.addStep(and(onPandemonium, not(onboardShip), holdingCargo), deliverCargo);
 		cDeliverCargo.addStep(and(atPandemoniumDock, onboardShip, holdingCargo), disembarkShipP);
 		cDeliverCargo.addStep(and(atPandemoniumDock, onboardShip, nor(takenHelm, setSails), cargoInCargoHold), pickupCargoShip);
-		cDeliverCargo.addStep(and(atPandemoniumDock, notOnboardShip, cargoInCargoHold), embarkShipP);
+		cDeliverCargo.addStep(and(atPandemoniumDock, not(onboardShip), cargoInCargoHold), embarkShipP);
 		cDeliverCargo.addStep(and(atPandemoniumDock, cargoInCargoHold, takenHelm), letGoOfHelm2);
 		steps.put(40, cDeliverCargo);
 		steps.put(42, cDeliverCargo);
@@ -165,21 +167,18 @@ public class Pandemonium extends BasicQuestHelper
 	public void setupConditions()
 	{
 		onboardShip = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
-		notOnboardShip = not(onboardShip);
 		takenHelm = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_PLAYER_AT_HELM, 1);
 		setSails = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_BOAT_MOVE_MODE, 0, Operation.GREATER);
 		canSalvage = and(atShipwreck, new VarbitRequirement(VarbitID.SAILING_INTRO, 14, Operation.GREATER_EQUAL)); // At wreck, with explanation about salvaging
 		sailing = and(takenHelm, setSails, onboardShip);
 
 		atShipyard = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_SHIPYARD_MODE, 1);
-		notAtShipyard = not(atShipyard);
-
 		holdingCargo = new VarbitRequirement(VarbitID.SAILING_CARRYING_CARGO, 1);
 		notHoldingCargo = not(holdingCargo);
 
 		cargoPickedUp = new VarbitRequirement(VarbitID.PORT_TASK_SLOT_0_CARGO_TAKEN, 1);
 		cargoNotPickedUp = not(cargoPickedUp);
-		cargoInCargoHold = and(cargoPickedUp, notHoldingCargo);
+		cargoInCargoHold = and(cargoPickedUp, not(holdingCargo));
 
 		nothingInHands = new NoItemRequirement("Nothing equipped in your hands.",ItemSlots.WEAPON, ItemSlots.SHIELD);
 	}

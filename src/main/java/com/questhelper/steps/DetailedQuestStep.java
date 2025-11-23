@@ -292,7 +292,7 @@ public class DetailedQuestStep extends QuestStep
 			for (QuestTile location : markedTiles)
 			{
 				BufferedImage combatIcon = spriteManager.getSprite(location.getIconID(), 0);
-				List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, location.getWorldPoint());
+				List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), location.getWorldPoint());
 
 				for (LocalPoint localPoint : localPoints)
 				{
@@ -315,7 +315,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		if (icon == null || iconItemID == -1) return;
 
-		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+		List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
 
 		for (LocalPoint localPoint : localPoints)
 		{
@@ -376,7 +376,7 @@ public class DetailedQuestStep extends QuestStep
 				return;
 			}
 
-			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
 
 			for (LocalPoint localPoint : localPoints)
 			{
@@ -510,7 +510,8 @@ public class DetailedQuestStep extends QuestStep
 	{
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
-			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
+			List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
+			if (localPoints == null) return;
 			for (LocalPoint localPoint : localPoints)
 			{
 				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
@@ -569,7 +570,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		TileItem item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
-		if (onlyHighlightItemsOnTile && !QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).contains(tile.getLocalLocation())) return;
+		if (onlyHighlightItemsOnTile && !QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint).contains(tile.getLocalLocation())) return;
 		for (Requirement requirement : requirements)
 		{
 			if (isItemRequirement(requirement) && requirementContainsID((ItemRequirement) requirement, item.getId()))
@@ -619,7 +620,7 @@ public class DetailedQuestStep extends QuestStep
 					{
 						continue;
 					}
-					if (onlyHighlightItemsOnTile && !QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).contains(tile.getLocalLocation())) continue;
+					if (onlyHighlightItemsOnTile && !QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint).contains(tile.getLocalLocation())) continue;
 					for (Requirement requirement : requirements)
 					{
 						if (isValidRequirementForTileItem(requirement, item))

@@ -157,11 +157,11 @@ public class ExtendedRuneliteObject
 
 		this.worldPoint = worldPoint;
 
-		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (localPoints.isEmpty()) return;
+		LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
+		if (localPoint == null) return;
 
 		// Set it to first found local point
-		runeliteObject.setLocation(localPoints.get(0), client.getTopLevelWorldView().getPlane());
+		runeliteObject.setLocation(localPoint, client.getTopLevelWorldView().getPlane());
 		activate();
 	}
 
@@ -188,7 +188,7 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
-		if (QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint).isEmpty()) return null;
+		if (QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint) == null) return null;
 
 		return Perspective.getClickbox(client,
 			client.getWorldView(getRuneliteObject().getWorldView()),
@@ -220,11 +220,11 @@ public class ExtendedRuneliteObject
 	public void setWorldPoint(WorldPoint worldPoint)
 	{
 		this.worldPoint = worldPoint;
-		List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, worldPoint);
-		if (localPoints.isEmpty()) return;
+		LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
+		if (localPoint == null) return;
 
 		// Set it to first found local point
-		this.runeliteObject.setLocation(localPoints.get(0), client.getTopLevelWorldView().getPlane());
+		this.runeliteObject.setLocation(localPoint, client.getTopLevelWorldView().getPlane());
 	}
 
 	public void setScaledModel(int[] model, int xScale, int yScale, int zScale)

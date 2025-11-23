@@ -28,6 +28,7 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
 import net.runelite.api.gameval.ItemID;
 import java.util.List;
@@ -43,7 +44,7 @@ public class ChartingGenericObjectStep extends ChartingTaskObjectStep
 	@Override
 	protected void handleObjects(TileObject object)
 	{
-		if (object == null)
+		if (!(object instanceof GameObject))
 		{
 			return;
 		}

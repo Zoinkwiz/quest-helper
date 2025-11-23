@@ -35,12 +35,12 @@ import net.runelite.api.gameval.NpcID;
 
 public class ChartingDivingStep extends ChartingTaskNpcStep
 {
-	public ChartingDivingStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
+	public ChartingDivingStep(QuestHelper questHelper, ChartingTaskDefinition definition, boolean showAnswer, Requirement... requirements)
 	{
-		super(questHelper, NpcID.SAILING_CHARTING_MERMAID_GUIDE_1, definition, requirements);
+		super(questHelper, NpcID.SAILING_CHARTING_MERMAID_GUIDE_1, definition, showAnswer, requirements);
 		addAlternateNpcs(NpcID.SAILING_CHARTING_MERMAID_GUIDE_2, NpcID.SAILING_CHARTING_MERMAID_GUIDE_3,
 			NpcID.SAILING_CHARTING_MERMAID_GUIDE_4, NpcID.SAILING_CHARTING_MERMAID_GUIDE_5);
-		setGeInterfaceIcon(definition.getItemIds());
+		if (showAnswer) setGeInterfaceIcon(definition.getItemIds());
 
 		addDialogStep("Can I dive to the sea floor with you?");
 

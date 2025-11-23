@@ -313,7 +313,7 @@ public class NpcStep extends DetailedQuestStep
 
 		if (worldPoint != null)
 		{
-			WorldPoint localWorldPoint = QuestPerspective.getWorldPointConsideringWorldView(client, worldPoint);
+			WorldPoint localWorldPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), worldPoint);
 			if (localWorldPoint == null) return;
 		}
 

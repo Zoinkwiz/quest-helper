@@ -146,7 +146,7 @@ public class DirectionArrow
 			return;
 		}
 
-		LocalPoint localPoint = QuestPerspective.getLocalPointConsideringWorldView(client, worldPoint);
+		LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
 
 		Point posOnMinimap = Perspective.localToMinimap(client, localPoint);
 		if (posOnMinimap == null)

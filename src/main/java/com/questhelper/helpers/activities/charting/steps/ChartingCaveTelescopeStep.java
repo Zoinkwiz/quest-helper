@@ -30,50 +30,47 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.NpcStep;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ObjectStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Getter
-public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterface
+public class ChartingCaveTelescopeStep extends ConditionalStep implements ChartingTaskInterface
 {
 	private Requirement incompleteRequirement;
 	private Requirement canDoRequirement;
 
-	ChartingTaskNpcStep(QuestHelper questHelper, int npcID, ChartingTaskDefinition definition, Requirement... requirements)
+	public ChartingCaveTelescopeStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		super(questHelper, npcID, "[" + definition.getType().getDisplayName() + "] " + definition.getDescription() + " " + definition.getAnswerText(), requirements);
-		 setupChartingDetails(definition);
+		super(questHelper,
+			new ObjectStep(questHelper, ObjectID.PANDEMONIUM_CAVE_ENTRANCE, new WorldPoint(3045, 2997, 0),
+			"Enter the cave on the Pandemonium island."),
+			"[" + definition.getType().getDisplayName() + "] " + definition.getDescription()
+			);
+
+		ZoneRequirement inCaveZone = new ZoneRequirement(new Zone(12178));
+		var useTelescopeStep = new ChartingTelescopeStep(questHelper, definition, requirements);
+		useTelescopeStep.setText("");
+		addStep(inCaveZone, useTelescopeStep);
+
+		setupSidebarRequirements(definition);
 	}
 
-	ChartingTaskNpcStep(QuestHelper questHelper, int npcID, ChartingTaskDefinition definition, boolean showAnswer, Requirement... requirements)
+	private void setupSidebarRequirements(ChartingTaskDefinition definition)
 	{
-		super(questHelper, npcID, "[" + definition.getType().getDisplayName() + "] " + definition.getDescription() + ((showAnswer) ? " " + definition.getAnswerText() : "") , requirements);
-		setupChartingDetails(definition);
-	}
-
-	public void setupChartingDetails(ChartingTaskDefinition definition)
-	{
-		var point = definition.getWorldPoint();
-		if (point != null)
-		{
-			setWorldPoint(point);
-		}
-		else
-		{
-			setHideWorldArrow(true);
-			setHideMinimapLines(true);
-		}
-
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
-		addRequirement(sailingRequirement);
-
 		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
 		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
+
 		conditionToHideInSidebar(completedRequirement);
 		conditionToFadeInSidebar(levelNotMet);
 
@@ -81,3 +78,4 @@ public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterfac
 		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
 	}
 }
+

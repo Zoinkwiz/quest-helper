@@ -178,7 +178,7 @@ public class ObjectStep extends DetailedQuestStep
 
 	public void checkTileForObject(WorldPoint wp)
 	{
-		LocalPoint localPoint = QuestPerspective.getLocalPointConsideringWorldView(client, wp);
+		LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), wp);
 		if (localPoint == null) return;
 
 		Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
@@ -291,7 +291,7 @@ public class ObjectStep extends DetailedQuestStep
 		{
 			return;
 		}
-		WorldPoint playerPosition = QuestPerspective.getWorldPointConsideringWorldView(client,
+		WorldPoint playerPosition = QuestPerspective.getWorldPointConsideringWorldView(client, client.getLocalPlayer().getWorldView(),
 			client.getLocalPlayer().getWorldLocation());
 		if (playerPosition == null)
 		{
@@ -302,7 +302,7 @@ public class ObjectStep extends DetailedQuestStep
 
 		for (TileObject tileObject : objects)
 		{
-			WorldPoint objectPosition = QuestPerspective.getWorldPointConsideringWorldView(client, tileObject.getWorldLocation());
+			WorldPoint objectPosition = QuestPerspective.getWorldPointConsideringWorldView(client, tileObject.getWorldView(), tileObject.getWorldLocation());
 			if (objectPosition == null)
 			{
 				continue;
@@ -405,7 +405,7 @@ public class ObjectStep extends DetailedQuestStep
 				return;
 			}
 
-			LocalPoint localPoint = QuestPerspective.getLocalPointConsideringWorldView(client, worldPoint);
+			LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
 			if (localPoint != null)
 			{
 				DirectionArrow.renderMinimapArrowFromLocal(graphics, client, localPoint, getQuestHelper().getConfig().targetOverlayColor());
@@ -465,7 +465,7 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
-		WorldPoint objectWP = QuestPerspective.getWorldPointConsideringWorldView(client, object.getWorldLocation());
+		WorldPoint objectWP = QuestPerspective.getWorldPointConsideringWorldView(client, object.getWorldView(), object.getWorldLocation());
 
 		if (objectWP == null)
 		{
@@ -473,7 +473,7 @@ public class ObjectStep extends DetailedQuestStep
 		}
 
 		if (
-			(worldPoint.equals(objectWP)) ||
+				(worldPoint.equals(objectWP)) ||
 				(object instanceof GameObject && objZone((GameObject) object).contains(worldPoint))
 		)
 		{
@@ -498,7 +498,7 @@ public class ObjectStep extends DetailedQuestStep
 	// See https://github.com/runelite/runelite/commit/4f34a0de6a0100adf79cac5b92198aa432debc4c
 	private Zone objZone(GameObject obj)
 	{
-		WorldPoint bottomLeftCorner = QuestPerspective.getWorldPointConsideringWorldView(client, obj.getWorldLocation());
+		WorldPoint bottomLeftCorner = QuestPerspective.getWorldPointConsideringWorldView(client, obj.getWorldView(), obj.getWorldLocation());
 		if (bottomLeftCorner == null)
 		{
 			return new Zone();

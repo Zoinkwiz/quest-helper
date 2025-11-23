@@ -322,25 +322,24 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 		}
 
 		var playerWp = localPlayer.getWorldLocation();
-		var localPoint = QuestPerspective.getWorldPointConsideringWorldView(client, localPlayer.getWorldLocation());
-		if (localPoint == null) {
+		var worldPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), localPlayer.getWorldLocation());
+		if (worldPoint == null) {
 			startUpStep(fallbackStep);
 			return;
 		}
 
-
 		var baseX = 3737;
 		var baseY = 4709;
 
-		var xInPuzzle = localPoint.getX() - baseX;
-		var yInPuzzle = localPoint.getY() - baseY;
+		var xInPuzzle = worldPoint.getX() - baseX;
+		var yInPuzzle = worldPoint.getY() - baseY;
 
 		if (xInPuzzle > 0 && xInPuzzle < SIZE && yInPuzzle >= 0 && yInPuzzle < SIZE) {
 			log.debug("Player is in the puzzle, at {}/{}", xInPuzzle, yInPuzzle);
 			startUpStep(pathStep);
 		} else {
-			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, localPoint, xInPuzzle, yInPuzzle);
-			var userIsPastPuzzle = localPoint.getX() <= 3730 || (localPoint.getX() <= baseX && localPoint.getY() >= 4701);
+			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, worldPoint, xInPuzzle, yInPuzzle);
+			var userIsPastPuzzle = worldPoint.getX() <= 3730 || (worldPoint.getX() <= baseX && worldPoint.getY() >= 4701);
 			if (userIsPastPuzzle) {
 				// highlight lever
 				startUpStep(finishPuzzleStep);

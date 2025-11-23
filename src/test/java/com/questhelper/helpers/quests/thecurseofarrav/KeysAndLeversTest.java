@@ -59,15 +59,11 @@ public class KeysAndLeversTest extends MockedTest
 		when(playerStateManager.getAccountType()).thenReturn(AccountType.NORMAL);
 
 		var mockedPlayer = Mockito.mock(Player.class);
-		// when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(1, 1, 1));
 		when(client.getLocalPlayer()).thenReturn(mockedPlayer);
 
 		questPerspectiveMockedStatic = Mockito.mockStatic(QuestPerspective.class);
 
 		worldPointMockedStatic = Mockito.mockStatic(WorldPoint.class);
-
-		questPerspectiveMockedStatic.when(() -> QuestPerspective.getInstanceLocalPointFromReal(any(), any()))
-				.thenReturn(List.of());
 
 		helper = new TheCurseOfArrav();
 

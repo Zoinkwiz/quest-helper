@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.activities.charting;
 
+import com.questhelper.helpers.activities.charting.steps.ChartingCaveTelescopeStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingCrateStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingCurrentStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingDivingStep;
@@ -32,6 +33,7 @@ import com.questhelper.helpers.activities.charting.steps.ChartingPuzzleWrapStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingTaskStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingTelescopeStep;
 import com.questhelper.helpers.activities.charting.steps.ChartingWeatherStep;
+import net.runelite.api.gameval.VarbitID;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -131,11 +133,18 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			case CRATE:
 				return new ChartingCrateStep(this, definition);
 			case SPYGLASS:
+				if (definition.getVarbitId() == VarbitID.SAILING_CHARTING_SPYGLASS_CHARTING_TUTOR_COMPLETE)
+				{
+					return new ChartingCaveTelescopeStep(this, definition);
+				}
 				return new ChartingTelescopeStep(this, definition);
 			case CURRENT:
 				return new ChartingCurrentStep(this, definition);
 			case DIVING:
-				return new ChartingPuzzleWrapStep(this, new ChartingDivingStep(this, definition), definition);
+				return new ChartingPuzzleWrapStep(this,
+					new ChartingDivingStep(this, definition, true),
+					new ChartingDivingStep(this, definition, false),
+					definition);
 			case WEATHER:
 				return new ChartingWeatherStep(this, definition);
 			default:

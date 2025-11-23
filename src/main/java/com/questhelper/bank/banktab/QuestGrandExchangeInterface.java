@@ -303,7 +303,7 @@ public class QuestGrandExchangeInterface
 		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
 		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
 
-		widget.setText("<col=b40000>Quest Helper</col> Item");
+		widget.setText("<col=b40000>Quest Helper</col> Items");
 		widget.setFontId(FontID.BOLD_12);
 		widget.setTextColor(JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND.getRGB());
 

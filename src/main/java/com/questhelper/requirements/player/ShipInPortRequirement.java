@@ -40,7 +40,7 @@ import java.util.stream.IntStream;
  * Requirement that checks if a player has a ship at the requested port.
  */
 @Getter
-public class ShipAtDockRequirement extends AbstractRequirement
+public class ShipInPortRequirement extends AbstractRequirement
 {
 	private final Port port;
 	private final boolean strictOnRecentShip;
@@ -54,7 +54,7 @@ public class ShipAtDockRequirement extends AbstractRequirement
 	 * @param port the id of the port
 	 * @param strictOnRecentShip if true, only checks is most recently used boat is at a port, if false checks if any boat is at a port.
 	 */
-	public ShipAtDockRequirement(Port port, boolean strictOnRecentShip)
+	public ShipInPortRequirement(Port port, boolean strictOnRecentShip)
 	{
 		assert(port != null);
 		this.port = port;
@@ -65,7 +65,7 @@ public class ShipAtDockRequirement extends AbstractRequirement
 	 *
 	 * @param port the id of the port
 	 */
-	public ShipAtDockRequirement(Port port)
+	public ShipInPortRequirement(Port port)
 	{
 		this(port, true);
 	}

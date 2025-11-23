@@ -48,7 +48,6 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
@@ -188,9 +187,12 @@ public class NpcStep extends DetailedQuestStep
 
 	public void scanForNpcs()
 	{
-		for (NPC npc : client.getTopLevelWorldView().npcs())
+		for (WorldView worldView : client.getTopLevelWorldView().worldViews())
 		{
-			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
+			for (NPC npc : worldView.npcs())
+			{
+				addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
+			}
 		}
 	}
 
@@ -259,8 +261,8 @@ public class NpcStep extends DetailedQuestStep
 	{
 		if (condition.apply(npc))
 		{
-			WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-			if (npcs.size() == 0)
+			WorldPoint npcPoint = QuestPerspective.getWorldPointConsideringWorldView(client, npc.getLocalLocation());
+			if (npcs.isEmpty())
 			{
 				if (worldPoint == null)
 				{

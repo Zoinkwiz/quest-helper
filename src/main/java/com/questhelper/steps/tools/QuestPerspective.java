@@ -89,6 +89,14 @@ public class QuestPerspective
 		}
 	}
 
+	/**
+	 * Converts a hardcoded WorldPoint to a WorldPoint in proximity, handling WorldView considerations
+	 * for instanced areas like boats.
+	 *
+	 * @param client the {@link Client}
+	 * @param worldPoint the {@link WorldPoint} to convert
+	 * @return the {@link WorldPoint} in the instanced world, or real world WorldPoint if not
+	 */
 	public static WorldPoint getWorldPointConsideringWorldView(Client client, WorldView worldView, WorldPoint worldPoint)
 	{
 		if (worldPoint == null)
@@ -97,7 +105,7 @@ public class QuestPerspective
 		}
 
 		var localPoint = LocalPoint.fromWorld(worldView, worldPoint);
-		if (localPoint == null) return null;
+		if (localPoint == null) return worldPoint;
 
 		// If in a non-top level WorldView (a boat) need to translate
 		if (!worldView.isTopLevel())
@@ -109,7 +117,7 @@ public class QuestPerspective
 
 			if (worldEntity == null)
 			{
-				return null;
+				return worldPoint;
 			}
 
 			var mainLocal = worldEntity.transformToMainWorld(localPoint);

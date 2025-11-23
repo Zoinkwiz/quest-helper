@@ -174,7 +174,6 @@ public class Pandemonium extends BasicQuestHelper
 
 		atShipyard = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_SHIPYARD_MODE, 1);
 		holdingCargo = new VarbitRequirement(VarbitID.SAILING_CARRYING_CARGO, 1);
-		notHoldingCargo = not(holdingCargo);
 
 		cargoPickedUp = new VarbitRequirement(VarbitID.PORT_TASK_SLOT_0_CARGO_TAKEN, 1);
 		cargoNotPickedUp = not(cargoPickedUp);

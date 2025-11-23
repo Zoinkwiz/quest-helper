@@ -88,8 +88,11 @@ public class Pandemonium extends BasicQuestHelper
 
 		steps.put(0, talkToWill);
 		steps.put(2, talkToWill);
+
+		ConditionalStep goListenOnShip = new ConditionalStep(this, talkToWill);
+		goListenOnShip.addStep(onboardShip, explainJob);
 		steps.put(4, boardWAShip);
-		steps.put(6, explainJob);
+		steps.put(6, goListenOnShip);
 		ConditionalStep cNavigateToShipwreck = new ConditionalStep(this, boardWAShip);
 		cNavigateToShipwreck.addStep(atShipwreck, explainJob2);
 		cNavigateToShipwreck.addStep(and(notAtShipwreck, sailing), navigateShip);
@@ -219,15 +222,14 @@ public class Pandemonium extends BasicQuestHelper
 		getToPandemonium.addDialogStep("I'd like to go to the Pandemonium.");
 		getToPandemonium.setHighlightZone(pandemonium);
 
-
 		//You got the Job!
 		talkToWill = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Talk to Will or Anne on the docks of Port Sarim to start the quest.", true);
-		talkToWill.addDialogStep("Yes.");
+		talkToWill.addDialogSteps("Yes.", "Okay.");
 		boardWAShip = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Board the ship.", true);
 		boardWAShip.addDialogStep(Pattern.compile("(I guess I'm ready\\.\\.\\.)|(I guess so\\.\\.\\.)|(Okay\\.)"));
 
 		// What is the job?
-		explainJob = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_VIS, NpcID.SAILING_INTRO_ANNE_VIS}, new WorldPoint(3056, 3190, 0), "Listen to the job explanation.", true);
+		explainJob = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_BOAT, NpcID.SAILING_INTRO_ANNE_BOAT}, new WorldPoint(3056, 3190, 0), "Listen to the job explanation.", true);
 		takeHelm = new DetailedQuestStep(this, "Navigate using the helm.");
 		raiseSails = new DetailedQuestStep(this, "Raise your sails.");
 		navigateShip = new DetailedQuestStep(this, "Sail south!");

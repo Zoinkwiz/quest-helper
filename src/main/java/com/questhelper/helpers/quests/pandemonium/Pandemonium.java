@@ -48,6 +48,7 @@ import com.questhelper.steps.BoardShipStep;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.SailStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -260,8 +261,7 @@ public class Pandemonium extends BasicQuestHelper
 		boardShip = new BoardShipStep(this);
 		takeHelm2 = new DetailedQuestStep(this, "Navigate using the helm.");
 		raiseSails2 = new DetailedQuestStep(this, "Raise your sails.");
-		sailToPortSarim = new DetailedQuestStep(this, "Sail to Port Sarim.");
-		sailToPortSarim.setHighlightZone(portSarimDockZone);
+		sailToPortSarim = new SailStep(this, Port.PORT_SARIM);
 		letGoOfHelm = new DetailedQuestStep(this, "Let go of the helm.");
 		disembarkShipPS = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_DISEMBARK, new WorldPoint(3151, 3193, 0), "Leave your ship.");
 
@@ -270,8 +270,7 @@ public class Pandemonium extends BasicQuestHelper
 		dropCargoInCargoHold = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Drop the crate in your cargo hold.");
 		takeHelm3 = new DetailedQuestStep(this, "Navigate using the helm.");
 		raiseSails3 = new DetailedQuestStep(this, "Raise your sails.");
-		sailToPandemonium = new DetailedQuestStep(this, "Sail to the Pandemonium.");
-		sailToPandemonium.setHighlightZone(pandemoniumDockZone);
+		sailToPandemonium = new SailStep(this, Port.PANDEMONIUM);
 		letGoOfHelm2 = new DetailedQuestStep(this, "Let go of the helm.");
 		pickupCargoShip = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Pick up the cargo from your ship.", nothingInHands);
 		boardShip3 = new BoardShipStep(this);

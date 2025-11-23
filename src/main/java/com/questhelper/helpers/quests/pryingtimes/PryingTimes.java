@@ -54,7 +54,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Condition;
 import java.util.regex.Pattern;
 import com.questhelper.steps.SailStep;
 import net.runelite.api.QuestState;

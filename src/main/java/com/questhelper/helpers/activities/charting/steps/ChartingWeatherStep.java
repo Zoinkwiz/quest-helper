@@ -64,6 +64,7 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 		setupSteps(questHelper, definition, requirements);
 		addConditionalSteps();
 		setupSidebarRequirements(definition);
+		addDialogStep("Can I help you with collecting weather data?");
 
 		setText("[" + definition.getType().getDisplayName() + "] " + definition.getDescription());
 	}

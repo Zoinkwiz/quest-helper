@@ -318,6 +318,7 @@ public class ObjectStep extends DetailedQuestStep
 
 		for (TileObject tileObject : objects)
 		{
+			if (tileObject.getWorldView() == null) continue;
 			WorldPoint objectPosition = QuestPerspective.getWorldPointConsideringWorldView(client, tileObject.getWorldView(), tileObject.getWorldLocation());
 			if (objectPosition == null)
 			{

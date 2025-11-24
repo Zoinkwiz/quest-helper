@@ -348,6 +348,7 @@ public class QuestPerspective
 
 	private static void addToPoly(Client client, Polygon areaPoly, LocalPoint localPoint, int... points)
 	{
+		if (localPoint == null) return;
 		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
 		if (poly != null)
 		{

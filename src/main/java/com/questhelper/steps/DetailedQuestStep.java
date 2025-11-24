@@ -81,8 +81,7 @@ public class DetailedQuestStep extends QuestStep
 	@Getter
 	protected DefinedPoint definedPoint;
 
-	@Setter
-	protected Zone highlightZone;
+	protected List<Zone> highlightZones = new ArrayList<>();
 
 	@Setter
 	protected List<WorldPoint> linePoints;
@@ -302,11 +301,12 @@ public class DetailedQuestStep extends QuestStep
 			}
 		}
 
-		if (highlightZone != null)
+		for (Zone highlightZone : highlightZones)
 		{
 			Polygon zonePoly = QuestPerspective.getZonePoly(client, highlightZone);
 			OverlayUtil.renderPolygon(graphics, zonePoly, questHelper.getConfig().targetOverlayColor());
 		}
+
 
 		tileHighlights.keySet().forEach(tile -> checkAllTilesForItemHighlighting(tile, tileHighlights.get(tile), graphics));
 		renderTileIcon(graphics);
@@ -894,5 +894,25 @@ public class DetailedQuestStep extends QuestStep
 	private boolean isLineDrawn()
 	{
 		return linePoints != null && !linePoints.isEmpty();
+	}
+
+	public void setHighlightZone(List<Zone> zones)
+	{
+		highlightZones = new ArrayList<>(zones);
+	}
+
+	public void addHighlightZones(Zone[] zones)
+	{
+		highlightZones.addAll(List.of(zones));
+	}
+
+	public void setHighlightZone(Zone zone)
+	{
+		highlightZones = new ArrayList<>(List.of(zone));
+	}
+
+	public void addHighlightZone(Zone zone)
+	{
+		highlightZones.add(zone);
 	}
 }

@@ -30,6 +30,8 @@ import com.questhelper.panel.JGenerator;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.QuestRequirementsPanel;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.steps.BoardShipStep;
+import com.questhelper.steps.PortTaskStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
@@ -144,22 +146,19 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 
 		for (QuestStep step : panelDetails.getSteps())
 		{
-			JTextPane questStepLabel = JGenerator.makeJTextPane();
-			questStepLabel.setLayout(new BorderLayout());
-			questStepLabel.setAlignmentX(SwingConstants.LEFT);
-			questStepLabel.setAlignmentY(SwingConstants.TOP);
-			questStepLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			questStepLabel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(1, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR.brighter()),
-				BorderFactory.createEmptyBorder(5, 5, 10, 0)
-			));
-			questStepLabel.setText(generateText(step));
-			questStepLabel.setOpaque(true);
-			questStepLabel.setVisible(step.isShowInSidebar());
-
-			steps.put(step, questStepLabel);
-			questStepsPanel.add(questStepLabel);
-
+			if(step instanceof PortTaskStep)
+			{
+				for (QuestStep step2 : ((PortTaskStep) step).getStepsList())
+				{
+					JTextPane questStepLabel = createQuestStepLabel(step2);
+					steps.put(step2, questStepLabel);
+					questStepsPanel.add(questStepLabel);
+				}
+			}else{
+				JTextPane questStepLabel = createQuestStepLabel(step);
+				steps.put(step, questStepLabel);
+				questStepsPanel.add(questStepLabel);
+			}
 		}
 
 		bodyPanel.add(questStepsPanel, BorderLayout.SOUTH);
@@ -171,6 +170,22 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		{
 			collapse();
 		}
+	}
+
+	private JTextPane createQuestStepLabel(QuestStep step){
+		JTextPane questStepLabel = JGenerator.makeJTextPane();
+		questStepLabel.setLayout(new BorderLayout());
+		questStepLabel.setAlignmentX(SwingConstants.LEFT);
+		questStepLabel.setAlignmentY(SwingConstants.TOP);
+		questStepLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		questStepLabel.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createMatteBorder(1, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR.brighter()),
+			BorderFactory.createEmptyBorder(5, 5, 10, 0)
+		));
+		questStepLabel.setText(generateText(step));
+		questStepLabel.setOpaque(true);
+		questStepLabel.setVisible(step.isShowInSidebar());
+		return questStepLabel;
 	}
 
 	public void updateAllText()
@@ -192,11 +207,14 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	public String generateText(QuestStep step)
 	{
 		StringBuilder text = new StringBuilder();
-
-		if (step.getText() != null)
+		QuestStep textStep = step;
+		if(step instanceof BoardShipStep){
+			textStep = step.getActiveStep();
+		}
+		if (textStep.getText() != null)
 		{
 			var first = true;
-			for (var line : step.getText())
+			for (var line : textStep.getText())
 			{
 				if (!first)
 				{

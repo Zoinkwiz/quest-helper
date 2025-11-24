@@ -54,7 +54,6 @@ import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.IntStream;
 
 import static org.mockito.Mockito.*;
 
@@ -159,6 +158,8 @@ public abstract class MockedTest extends MockedTestBase
 		when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(1, 1, 1));
 		when(client.getLocalPlayer()).thenReturn(mockedPlayer);
 		when(client.getWorldView(anyInt())).thenReturn(mockedWorldView);
+		when(mockedPlayer.getWorldView()).thenReturn(mockedWorldView);
+		when(mockedWorldView.getId()).thenReturn(-1);
 
 		ItemComposition itemComposition = mock(ItemComposition.class);
 		when(itemComposition.getName()).thenReturn("Test item");

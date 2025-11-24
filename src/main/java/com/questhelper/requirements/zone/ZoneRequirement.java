@@ -33,6 +33,8 @@ import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.WorldEntity;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.annotation.Nonnull;
@@ -50,7 +52,7 @@ public class ZoneRequirement extends AbstractRequirement
 	 * Check if the player is either in the specified zone.
 	 *
 	 * @param displayText display text
-	 * @param zone the zone to check
+	 * @param zone        the zone to check
 	 */
 	public ZoneRequirement(String displayText, Zone zone)
 	{
@@ -60,9 +62,9 @@ public class ZoneRequirement extends AbstractRequirement
 	/**
 	 * Check if the player is either in, or not in, the specified zone.
 	 *
-	 * @param displayText display text
+	 * @param displayText    display text
 	 * @param checkNotInZone true to negate this requirement check (i.e. it will check if the player is NOT in the zone)
-	 * @param zone the zone to check
+	 * @param zone           the zone to check
 	 */
 	public ZoneRequirement(String displayText, boolean checkNotInZone, Zone zone)
 	{
@@ -106,8 +108,20 @@ public class ZoneRequirement extends AbstractRequirement
 		Player player = client.getLocalPlayer();
 		if (player != null && zones != null)
 		{
-			WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
-			boolean inZone = zones.stream().anyMatch(z -> z.contains(location));
+			int worldViewId = client.getLocalPlayer().getWorldView().getId();
+			boolean isOnBoat = worldViewId != -1;
+			LocalPoint localLocation;
+			if (isOnBoat)
+			{
+				WorldEntity we = client.getTopLevelWorldView().worldEntities().byIndex(worldViewId);
+				localLocation = we.getLocalLocation();
+			}
+			else
+			{
+				localLocation = player.getLocalLocation();
+			}
+			final WorldPoint checkableLocation = WorldPoint.fromLocalInstance(client, localLocation);
+			boolean inZone = zones.stream().anyMatch(z -> z.contains(checkableLocation));
 			return inZone == checkInZone;
 		}
 		return false;

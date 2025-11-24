@@ -29,6 +29,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.WorldView;
+import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
@@ -133,7 +134,7 @@ public class QuestPerspective
 		}
 	}
 
-	public static LocalPoint getLocalPointFromWorldPointInInstance(WorldView wv, WorldPoint worldPoint)
+	private static LocalPoint getLocalPointFromWorldPointInInstance(WorldView wv, WorldPoint worldPoint)
 	{
 		if (worldPoint == null) return null;
 		var instanceWps = WorldPoint.toLocalInstance(wv, worldPoint);
@@ -279,51 +280,74 @@ public class QuestPerspective
 		return new Point(miniMapX, miniMapY);
 	}
 
+	private static boolean worldViewContainsWorldPoint(WorldView worldView, WorldPoint wp)
+	{
+		var wvRegions = worldView.getMapRegions();
+		for (int wvRegion : wvRegions)
+		{
+			if (wvRegion == wp.getRegionID()) return true;
+		}
+
+		return false;
+	}
+
 	public static Polygon getZonePoly(Client client, Zone zone)
 	{
 		Polygon areaPoly = new Polygon();
 		if (zone == null) return areaPoly;
 
+		var minWp = zone.getMinWorldPoint();
+		var localPlayerWorldView = client.getLocalPlayer().getWorldView();
+		WorldView worldView = client.getTopLevelWorldView();
+		if (localPlayerWorldView != worldView && worldViewContainsWorldPoint(localPlayerWorldView, minWp))
+		{
+			worldView = localPlayerWorldView;
+		}
+
 		for (int x = zone.getMinX(); x < zone.getMaxX(); x++)
 		{
-			addToPoly(client, areaPoly, new WorldPoint(x, zone.getMaxY(), zone.getMinWorldPoint().getPlane()), NW);
+			var convertedWp = QuestPerspective.getLocalPointFromWorldPointInInstance(worldView, new WorldPoint(x, zone.getMaxY(), zone.getMinWorldPoint().getPlane()));
+			addToPoly(client, areaPoly, convertedWp, NW);
 		}
 
 		// NE corner
-		addToPoly(client, areaPoly, new WorldPoint(zone.getMaxX(), zone.getMaxY(), zone.getMinWorldPoint().getPlane()), NW, NE, SE);
+		var convertedWp = QuestPerspective.getLocalPointFromWorldPointInInstance(worldView, new WorldPoint(zone.getMaxX(), zone.getMaxY(), zone.getMinWorldPoint().getPlane()));
+		addToPoly(client, areaPoly, convertedWp, NW, NE, SE);
 
 		// West side
 		for (int y = zone.getMaxY() - 1; y > zone.getMinY(); y--)
 		{
-			addToPoly(client, areaPoly, new WorldPoint(zone.getMaxX(), y, zone.getMinWorldPoint().getPlane()), SE);
+			var newConvertedWp = QuestPerspective.getLocalPointFromWorldPointInInstance(worldView, new WorldPoint(zone.getMaxX(), y, zone.getMinWorldPoint().getPlane()));
+			addToPoly(client, areaPoly, newConvertedWp, SE);
 		}
 
 		// SE corner
-		addToPoly(client, areaPoly, new WorldPoint(zone.getMaxX(), zone.getMinY(), zone.getMinWorldPoint().getPlane()), SE, SW);
+		var newConvertedWp = QuestPerspective.getLocalPointFromWorldPointInInstance(worldView, new WorldPoint(zone.getMaxX(), zone.getMinY(), zone.getMinWorldPoint().getPlane()));
+		addToPoly(client, areaPoly, newConvertedWp, SE, SW);
 
 		// South side
 		for (int x = zone.getMaxX() - 1; x > zone.getMinX(); x--)
 		{
-			addToPoly(client, areaPoly, new WorldPoint(x, zone.getMinY(), zone.getMinWorldPoint().getPlane()), SW);
+			var southConvertedWp = QuestPerspective.getLocalPointFromWorldPointInInstance(worldView, new WorldPoint(x, zone.getMinY(), zone.getMinWorldPoint().getPlane()));
+			addToPoly(client, areaPoly, southConvertedWp, SW);
 		}
 
 		// SW corner
-		addToPoly(client, areaPoly, new WorldPoint(zone.getMinX(), zone.getMinY(), zone.getMinWorldPoint().getPlane()), SW, NW);
+		var southWestConvertedWp = QuestPerspective.getLocalPointFromWorldPointInInstance(worldView, new WorldPoint(zone.getMinX(), zone.getMinY(), zone.getMinWorldPoint().getPlane()));
+		addToPoly(client, areaPoly, southWestConvertedWp, SW, NW);
 
 		for (int y = zone.getMinY() + 1; y < zone.getMaxY(); y++)
 		{
-			addToPoly(client, areaPoly, new WorldPoint(zone.getMinX(), y, zone.getMinWorldPoint().getPlane()), NW);
+			var sConvertedWp = QuestPerspective.getLocalPointFromWorldPointInInstance(worldView, new WorldPoint(zone.getMinX(), y, zone.getMinWorldPoint().getPlane()));
+			addToPoly(client, areaPoly, sConvertedWp, NW);
 		}
 
 
 		return areaPoly;
 	}
 
-	private static void addToPoly(Client client, Polygon areaPoly, WorldPoint wp, int... points)
+	private static void addToPoly(Client client, Polygon areaPoly, LocalPoint localPoint, int... points)
 	{
-		LocalPoint localPoint = getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), wp);
-		if (localPoint == null) return;
-
 		Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
 		if (poly != null)
 		{
@@ -332,5 +356,159 @@ public class QuestPerspective
 				areaPoly.addPoint(poly.xpoints[point], poly.ypoints[point]);
 			}
 		}
+	}
+
+	/**
+	 * Compares a quest-defined {@link WorldPoint} with a runtime {@link LocalPoint}, normalizing
+	 * both into the top-level world space so they can be compared safely across WorldViews.
+	 *
+	 * @return {@code true} when both coordinates refer to the same tile in the main world.
+	 */
+	public static boolean matchesWorldPoint(Client client, WorldPoint definedWorldPoint, LocalPoint runtimeLocalPoint)
+	{
+		if (client == null || definedWorldPoint == null || runtimeLocalPoint == null)
+		{
+			return false;
+		}
+
+		var runtimeWorldView = client.getWorldView(runtimeLocalPoint.getWorldView());
+		return matchesWorldPoint(client, definedWorldPoint, runtimeLocalPoint, runtimeWorldView);
+	}
+
+	/**
+	 * Variant of {@link #matchesWorldPoint(Client, WorldPoint, LocalPoint)} that allows callers to
+	 * explicitly pass the {@link WorldView} associated with the runtime {@link LocalPoint}.
+	 */
+	public static boolean matchesWorldPoint(Client client, WorldPoint definedWorldPoint, LocalPoint runtimeLocalPoint, WorldView runtimeWorldView)
+	{
+		if (client == null || definedWorldPoint == null || runtimeLocalPoint == null)
+		{
+			return false;
+		}
+
+		var runtimeWorldPoint = getWorldPointConsideringWorldView(client, runtimeLocalPoint);
+		if (runtimeWorldPoint == null)
+		{
+			return false;
+		}
+
+		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedWorldPoint);
+		return normalizedDefinedPoint != null && normalizedDefinedPoint.equals(runtimeWorldPoint);
+	}
+
+	/**
+	 * Compares two {@link WorldPoint}s that may originate from different {@link WorldView}s.
+	 */
+	public static boolean matchesWorldPoint(Client client, WorldPoint definedWorldPoint, WorldPoint runtimeWorldPoint, WorldView runtimeWorldView)
+	{
+		if (client == null || definedWorldPoint == null || runtimeWorldPoint == null)
+		{
+			return false;
+		}
+
+		var normalizedRuntimePoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, runtimeWorldPoint);
+		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedWorldPoint);
+
+		return normalizedDefinedPoint != null && normalizedDefinedPoint.equals(normalizedRuntimePoint);
+	}
+
+	private static WorldPoint normalizeWorldPointToTopLevel(Client client, WorldView sourceWorldView, WorldPoint worldPoint)
+	{
+		if (client == null || worldPoint == null)
+		{
+			return null;
+		}
+
+		var viewToUse = sourceWorldView != null ? sourceWorldView : client.getTopLevelWorldView();
+		if (viewToUse == null)
+		{
+			return worldPoint;
+		}
+
+		return getWorldPointConsideringWorldView(client, viewToUse, worldPoint);
+	}
+
+	/**
+	 * Resolves the {@link LocalPoint} to use for drawing a {@link WorldPoint}, automatically
+	 * checking the preferred view, the player's active view, and finally the top-level view.
+	 */
+	public static LocalPoint resolveLocalPointForWorldPoint(Client client, WorldPoint worldPoint, WorldView preferredWorldView)
+	{
+		if (client == null || worldPoint == null)
+		{
+			return null;
+		}
+
+		var viewsToCheck = new LinkedHashSet<WorldView>();
+		if (preferredWorldView != null)
+		{
+			viewsToCheck.add(preferredWorldView);
+		}
+
+		Player localPlayer = client.getLocalPlayer();
+		if (localPlayer != null && localPlayer.getWorldView() != null)
+		{
+			viewsToCheck.add(localPlayer.getWorldView());
+		}
+
+		var topLevel = client.getTopLevelWorldView();
+		if (topLevel != null)
+		{
+			viewsToCheck.add(topLevel);
+		}
+
+		for (WorldView view : viewsToCheck)
+		{
+			LocalPoint localPoint = getLocalPointFromWorldPointInInstance(view, worldPoint);
+			if (localPoint != null)
+			{
+				return localPoint;
+			}
+		}
+
+		return null;
+	}
+
+	public static Polygon getCanvasTilePoly(Client client, WorldPoint worldPoint, WorldView preferredWorldView)
+	{
+		LocalPoint localPoint = resolveLocalPointForWorldPoint(client, worldPoint, preferredWorldView);
+		if (localPoint == null)
+		{
+			return null;
+		}
+		return Perspective.getCanvasTilePoly(client, localPoint);
+	}
+
+	public static int getTileDistance(Client client, DefinedPoint definedWorldPoint, LocalPoint runtimeLocalPoint)
+	{
+		if (runtimeLocalPoint == null || client == null)
+		{
+			return Integer.MAX_VALUE;
+		}
+
+		var runtimeWorldView = client.getWorldView(runtimeLocalPoint.getWorldView());
+		return getTileDistance(client, definedWorldPoint, runtimeLocalPoint, runtimeWorldView);
+	}
+
+	public static int getTileDistance(Client client, DefinedPoint definedPoint, LocalPoint runtimeLocalPoint, WorldView runtimeWorldView)
+	{
+		if (client == null || definedPoint == null || runtimeLocalPoint == null)
+		{
+			return Integer.MAX_VALUE;
+		}
+
+		var runtimeWorldPoint = getWorldPointConsideringWorldView(client, runtimeLocalPoint);
+		if (runtimeWorldPoint == null)
+		{
+			return Integer.MAX_VALUE;
+		}
+
+		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedPoint.getWorldPoint());
+		if (normalizedDefinedPoint == null)
+		{
+			return Integer.MAX_VALUE;
+		}
+
+		return normalizedDefinedPoint.distanceTo(runtimeWorldPoint);
 	}
 }

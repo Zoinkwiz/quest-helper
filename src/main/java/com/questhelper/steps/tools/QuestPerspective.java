@@ -104,6 +104,7 @@ public class QuestPerspective
 			return null;
 		}
 
+		if (worldView == null) return worldPoint;
 		var localPoint = LocalPoint.fromWorld(worldView, worldPoint);
 		if (localPoint == null)
 		{

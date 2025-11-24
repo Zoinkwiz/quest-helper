@@ -321,7 +321,7 @@ public class BikeShedder extends BasicQuestHelper
 		useSalvagingHook.addAlternateObjects(salvagingHookIds.toArray(new Integer[0]));
 		useSalvagingHook.setHighlightZone(new Zone(new WorldPoint(3044, 3202, 0), new WorldPoint(3050, 3205, 0)));
 		useSalvagingHook.addHighlightZones(zones3);
-		
+
 		useObjectOffBoat = new ObjectStep(this, ObjectID.DRAGONSHIPGANGPLANK_ON, new WorldPoint(3047, 3205, 0), "Click Klarense's gangplank.");
 		useObjectOffBoat.addHighlightZones(zones4);
 	}

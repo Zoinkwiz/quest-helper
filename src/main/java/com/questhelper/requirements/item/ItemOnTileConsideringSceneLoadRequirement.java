@@ -3,7 +3,7 @@ package com.questhelper.requirements.item;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import com.questhelper.requirements.location.TileIsLoadedRequirement;
-import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.steps.tools.DefinedPoint;
 import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
@@ -18,7 +18,7 @@ import java.util.List;
 public class ItemOnTileConsideringSceneLoadRequirement implements InitializableRequirement
 {
 	private final List<Integer> itemID;
-	private WorldPoint worldPoint;
+	private DefinedPoint definedPoint;
 
 	// This is inclusive of 27
 	private final int MAX_ZONE = 27;
@@ -35,8 +35,8 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		assert(worldPoint != null);
 
 		this.itemID = item.getAllIds();
-		this.worldPoint = worldPoint;
-		tileLoadedReq = new TileIsLoadedRequirement(worldPoint);
+		this.definedPoint = DefinedPoint.of(worldPoint);
+		tileLoadedReq = new TileIsLoadedRequirement(definedPoint);
 	}
 
 	public ItemOnTileConsideringSceneLoadRequirement(int itemID, WorldPoint worldPoint)
@@ -44,8 +44,8 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		assert(worldPoint != null);
 
 		this.itemID = Collections.singletonList(itemID);
-		this.worldPoint = worldPoint;
-		tileLoadedReq = new TileIsLoadedRequirement(worldPoint);
+		this.definedPoint = DefinedPoint.of(worldPoint);
+		tileLoadedReq = new TileIsLoadedRequirement(definedPoint);
 	}
 
 
@@ -86,12 +86,12 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 	private boolean playerInRegion(Client client)
 	{
 		// Return true for unknown
-		if (worldPoint == null) return true;
+		if (definedPoint == null) return true;
 		if (!tileLoadedReq.check(client)) return true;
 
-		WorldPoint playerPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getLocalPlayer().getWorldView(), client.getLocalPlayer().getWorldLocation());
+		var playerPoint = client.getLocalPlayer().getLocalLocation();
 		if (playerPoint == null) return false;
-		if (playerPoint.distanceTo(worldPoint) <= MAX_ZONE)
+		if (definedPoint.distanceTo(client, playerPoint) <= MAX_ZONE)
 		{
 
 
@@ -103,9 +103,9 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 
 	private boolean checkAllTiles(Client client)
 	{
-		if (worldPoint != null)
+		if (definedPoint != null)
 		{
-			List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
+			List<LocalPoint> localPoints = definedPoint.resolveLocalPoints(client);
 			for (LocalPoint localPoint : localPoints)
 			{
 				Tile tile = client.getTopLevelWorldView().getScene().getTiles()[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
@@ -126,7 +126,7 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 			return false;
 		}
 
-		Tile[][] squareOfTiles = client.getScene().getTiles()[client.getPlane()];
+		Tile[][] squareOfTiles = client.getTopLevelWorldView().getScene().getTiles()[client.getTopLevelWorldView().getPlane()];
 		for (Tile[] lineOfTiles : squareOfTiles)
 		{
 			for (Tile tile : lineOfTiles)

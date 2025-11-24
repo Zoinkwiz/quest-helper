@@ -86,7 +86,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 				.left("Possible locations:")
 				.build());
 		}
-		else if (digLocations.size() < 1)
+		else if (digLocations.isEmpty())
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Unable to establish dig location")
@@ -139,12 +139,12 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (worldPoint == null)
+		if (definedPoint == null)
 		{
 			return;
 		}
 
-		LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint localLocation = LocalPoint.fromWorld(client, definedPoint.getWorldPoint());
 
 		if (localLocation == null)
 		{

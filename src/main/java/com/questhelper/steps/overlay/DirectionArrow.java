@@ -24,6 +24,7 @@
  */
 package com.questhelper.steps.overlay;
 
+import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.tools.QuestHelperWorldMapPoint;
 import net.runelite.api.Client;
@@ -32,12 +33,11 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.util.List;
-
 public class DirectionArrow
 {
 	/**
@@ -62,6 +62,7 @@ public class DirectionArrow
 	 * @param localPoint the {@link LocalPoint} to convert
 	 * @return the {@link WorldPoint} in the real world, or null if conversion fails
 	 */
+	@SuppressWarnings("unused")
 	private static WorldPoint getWorldPointFromLocal(Client client, LocalPoint localPoint)
 	{
 		if (localPoint == null)
@@ -114,7 +115,7 @@ public class DirectionArrow
 
 		if (goalRealLocation.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
 		{
-			createMinimapDirectionArrow(graphics, client, playerRealLocation, goalRealLocation, color);
+			createMinimapDirectionArrow(graphics, client, goalRealLocation, color);
 			return;
 		}
 
@@ -131,22 +132,23 @@ public class DirectionArrow
 
 	}
 
-	public static void renderMinimapArrow(Graphics2D graphics, Client client, WorldPoint worldPoint, Color color)
+	public static void renderMinimapArrow(Graphics2D graphics, Client client, DefinedPoint definedPoint, Color color)
 	{
 		var maxMinimapDrawDistance = getMaxMinimapDrawDistance(client);
 		Player player = client.getLocalPlayer();
 		if (player == null) return;
 
-		WorldPoint playerRealLocation = QuestPerspective.getWorldPointConsideringWorldView(client, player.getLocalLocation());
-		if (playerRealLocation == null) return;
-
-		if (worldPoint.distanceTo(playerRealLocation) >= maxMinimapDrawDistance)
+		if (definedPoint.distanceTo(client, player.getLocalLocation()) >= maxMinimapDrawDistance)
 		{
-			createMinimapDirectionArrow(graphics, client, playerRealLocation, worldPoint, color);
+			createMinimapDirectionArrow(graphics, client, definedPoint.getWorldPoint(), color);
 			return;
 		}
 
-		LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
+		LocalPoint localPoint = definedPoint.resolveLocalPoint(client);
+		if (localPoint == null)
+		{
+			return;
+		}
 
 		Point posOnMinimap = Perspective.localToMinimap(client, localPoint);
 		if (posOnMinimap == null)
@@ -160,7 +162,7 @@ public class DirectionArrow
 		drawMinimapArrow(graphics, line, color);
 	}
 
-	protected static void createMinimapDirectionArrow(Graphics2D graphics, Client client, WorldPoint playerRealWp, WorldPoint wp, Color color)
+	protected static void createMinimapDirectionArrow(Graphics2D graphics, Client client, WorldPoint wp, Color color)
 	{
 		Player player = client.getLocalPlayer();
 
@@ -168,6 +170,9 @@ public class DirectionArrow
 		{
 			return;
 		}
+
+		var playerRealWp = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+		playerRealWp = QuestPerspective.getWorldPointConsideringWorldView(client, player.getLocalLocation());
 
 		if (wp == null)
 		{
@@ -183,6 +188,14 @@ public class DirectionArrow
 			return;
 		}
 
+		Line2D.Double line = getLine(playerPosOnMinimap, destinationPosOnMinimap);
+
+		drawMinimapArrow(graphics, line, color);
+	}
+
+	@NotNull
+	private static Line2D.Double getLine(Point playerPosOnMinimap, Point destinationPosOnMinimap)
+	{
 		double xDiff = playerPosOnMinimap.getX() - destinationPosOnMinimap.getX();
 		double yDiff = destinationPosOnMinimap.getY() - playerPosOnMinimap.getY();
 		double angle = Math.atan2(yDiff, xDiff);
@@ -193,9 +206,7 @@ public class DirectionArrow
 		int endX = (int) (playerPosOnMinimap.getX() - (Math.cos(angle) * 65));
 		int endY = (int) (playerPosOnMinimap.getY() + (Math.sin(angle) * 65));
 
-		Line2D.Double line = new Line2D.Double(startX, startY, endX, endY);
-
-		drawMinimapArrow(graphics, line, color);
+		return new Line2D.Double(startX, startY, endX, endY);
 	}
 
 	public static void drawWorldArrow(Graphics2D graphics, Color color, int startX, int startY)

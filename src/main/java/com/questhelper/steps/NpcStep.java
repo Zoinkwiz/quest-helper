@@ -48,7 +48,6 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
@@ -156,7 +155,7 @@ public class NpcStep extends DetailedQuestStep
 
 	public NpcStep copy()
 	{
-		NpcStep newStep = new NpcStep(getQuestHelper(), npcID, worldPoint, null, requirements, recommended);
+		NpcStep newStep = new NpcStep(getQuestHelper(), npcID, definedPoint.getWorldPoint(), null, requirements, recommended);
 		if (text != null)
 		{
 			newStep.setText(text);
@@ -189,6 +188,11 @@ public class NpcStep extends DetailedQuestStep
 	public void scanForNpcs()
 	{
 		for (NPC npc : client.getTopLevelWorldView().npcs())
+		{
+			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
+		}
+		var playerWorldView = client.getLocalPlayer().getWorldView();
+		for (NPC npc : playerWorldView.npcs())
 		{
 			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
 		}
@@ -259,21 +263,26 @@ public class NpcStep extends DetailedQuestStep
 	{
 		if (condition.apply(npc))
 		{
-			WorldPoint npcPoint = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-			if (npcs.size() == 0)
+			var npcPoint = npc.getLocalLocation();
+			if (npcPoint == null)
 			{
-				if (worldPoint == null)
+				return;
+			}
+
+			if (npcs.isEmpty())
+			{
+				if (definedPoint == null)
 				{
 					list.add(npc);
 				}
-				else if (npcPoint.distanceTo(worldPoint) < maxRoamRange)
+				else if (definedPoint.distanceTo(client, npcPoint) < maxRoamRange)
 				{
 					list.add(npc);
 				}
 			}
 			else if (allowMultipleHighlights)
 			{
-				if (worldPoint == null || npcPoint.distanceTo(worldPoint) < maxRoamRange)
+				if (definedPoint == null || definedPoint.distanceTo(client, npcPoint) < maxRoamRange)
 				{
 					list.add(npc);
 				}
@@ -311,9 +320,9 @@ public class NpcStep extends DetailedQuestStep
 
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (worldPoint != null)
+		if (definedPoint != null)
 		{
-			WorldPoint localWorldPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), worldPoint);
+			WorldPoint localWorldPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), definedPoint.getWorldPoint());
 			if (localWorldPoint == null) return;
 		}
 
@@ -392,7 +401,7 @@ public class NpcStep extends DetailedQuestStep
 	{
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
-			if (npcs.size() == 0)
+			if (npcs.isEmpty())
 			{
 				super.renderArrow(graphics);
 			}

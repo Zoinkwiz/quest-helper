@@ -69,17 +69,17 @@ public final class DefinedPoint
 
 	public boolean matchesLocalPoint(Client client, LocalPoint runtimeLocalPoint)
 	{
-		return QuestPerspective.matchesWorldPoint(client, worldPoint, runtimeLocalPoint);
+		return QuestPerspective.matchesWorldPoint(client, this, runtimeLocalPoint);
 	}
 
 	public boolean matchesLocalPoint(Client client, LocalPoint runtimeLocalPoint, WorldView runtimeWorldView)
 	{
-		return QuestPerspective.matchesWorldPoint(client, worldPoint, runtimeLocalPoint, runtimeWorldView);
+		return QuestPerspective.matchesWorldPoint(client, this, runtimeLocalPoint, runtimeWorldView);
 	}
 
 	public boolean matchesWorldPoint(Client client, WorldPoint runtimeWorldPoint, WorldView runtimeWorldView)
 	{
-		return QuestPerspective.matchesWorldPoint(client, worldPoint, runtimeWorldPoint, runtimeWorldView);
+		return QuestPerspective.matchesWorldPoint(client, this, runtimeWorldPoint, runtimeWorldView);
 	}
 
 	public boolean matchesTileObject(Client client, TileObject tileObject)
@@ -88,7 +88,7 @@ public final class DefinedPoint
 		{
 			return false;
 		}
-		return QuestPerspective.matchesWorldPoint(client, worldPoint, tileObject.getWorldLocation(), tileObject.getWorldView());
+		return QuestPerspective.matchesWorldPoint(client, this, tileObject.getWorldLocation(), tileObject.getWorldView());
 	}
 
 	public LocalPoint resolveLocalPoint(Client client)

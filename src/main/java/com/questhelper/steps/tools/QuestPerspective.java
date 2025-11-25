@@ -366,24 +366,24 @@ public class QuestPerspective
 	 *
 	 * @return {@code true} when both coordinates refer to the same tile in the main world.
 	 */
-	public static boolean matchesWorldPoint(Client client, WorldPoint definedWorldPoint, LocalPoint runtimeLocalPoint)
+	public static boolean matchesWorldPoint(Client client, DefinedPoint definedPoint, LocalPoint runtimeLocalPoint)
 	{
-		if (client == null || definedWorldPoint == null || runtimeLocalPoint == null)
+		if (client == null || definedPoint == null || runtimeLocalPoint == null)
 		{
 			return false;
 		}
 
 		var runtimeWorldView = client.getWorldView(runtimeLocalPoint.getWorldView());
-		return matchesWorldPoint(client, definedWorldPoint, runtimeLocalPoint, runtimeWorldView);
+		return matchesWorldPoint(client, definedPoint, runtimeLocalPoint, runtimeWorldView);
 	}
 
 	/**
-	 * Variant of {@link #matchesWorldPoint(Client, WorldPoint, LocalPoint)} that allows callers to
+	 * Variant of {@link #matchesWorldPoint(Client, DefinedPoint, LocalPoint)} that allows callers to
 	 * explicitly pass the {@link WorldView} associated with the runtime {@link LocalPoint}.
 	 */
-	public static boolean matchesWorldPoint(Client client, WorldPoint definedWorldPoint, LocalPoint runtimeLocalPoint, WorldView runtimeWorldView)
+	public static boolean matchesWorldPoint(Client client, DefinedPoint definedPoint, LocalPoint runtimeLocalPoint, WorldView runtimeWorldView)
 	{
-		if (client == null || definedWorldPoint == null || runtimeLocalPoint == null)
+		if (client == null || definedPoint == null || runtimeLocalPoint == null)
 		{
 			return false;
 		}
@@ -394,22 +394,22 @@ public class QuestPerspective
 			return false;
 		}
 
-		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedWorldPoint);
+		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedPoint.getWorldPoint());
 		return normalizedDefinedPoint != null && normalizedDefinedPoint.equals(runtimeWorldPoint);
 	}
 
 	/**
 	 * Compares two {@link WorldPoint}s that may originate from different {@link WorldView}s.
 	 */
-	public static boolean matchesWorldPoint(Client client, WorldPoint definedWorldPoint, WorldPoint runtimeWorldPoint, WorldView runtimeWorldView)
+	public static boolean matchesWorldPoint(Client client, DefinedPoint definedPoint, WorldPoint runtimeWorldPoint, WorldView runtimeWorldView)
 	{
-		if (client == null || definedWorldPoint == null || runtimeWorldPoint == null)
+		if (client == null || definedPoint == null || runtimeWorldPoint == null)
 		{
 			return false;
 		}
 
 		var normalizedRuntimePoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, runtimeWorldPoint);
-		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedWorldPoint);
+		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedPoint.getWorldPoint());
 
 		return normalizedDefinedPoint != null && normalizedDefinedPoint.equals(normalizedRuntimePoint);
 	}

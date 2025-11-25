@@ -32,6 +32,7 @@ import net.runelite.api.TileObject;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -45,7 +46,8 @@ public final class DefinedPoint
 {
 	private final WorldPoint worldPoint;
 
-	public static DefinedPoint of(WorldPoint worldPoint)
+	@Nullable
+	public static DefinedPoint of(@Nullable WorldPoint worldPoint)
 	{
 		return worldPoint == null ? null : new DefinedPoint(worldPoint);
 	}

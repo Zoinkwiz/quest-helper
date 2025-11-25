@@ -48,9 +48,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	 */
 	public TileIsLoadedRequirement(WorldPoint worldPoint)
 	{
-		assert(worldPoint != null);
-		definedPoint = DefinedPoint.of(worldPoint);
-		this.displayText = "WorldPoint " + definedPoint.getWorldPoint().toString() + "is loaded locally.";
+		this(DefinedPoint.of(worldPoint));
 	}
 
 	public TileIsLoadedRequirement(DefinedPoint definedPoint)

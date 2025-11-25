@@ -71,7 +71,7 @@ public class Pandemonium extends BasicQuestHelper
 	DetailedQuestStep navigateShip, watchSalvageCutscene, takeHelm, takeHelm2, takeHelm3, raiseSails, raiseSails2, raiseSails3, salvageShipwreck, sailToPortSarim, pickupCargo, pickupCargoShip, sailToPandemonium, letGoOfHelm, letGoOfHelm2;
 	BoardShipStep boardShip, boardShip2, boardShip3;
 	Requirement onPandemonium, atPortSarim, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, cargoInCargoHold;
-	ItemRequirement hammer, saw;
+	ItemRequirement hammer, saw, cup;
 	NoItemRequirement nothingInHands;
 
 	@Override
@@ -212,6 +212,10 @@ public class Pandemonium extends BasicQuestHelper
 		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed().canBeObtainedDuringQuest();
 		saw.setTooltip("You can pick this up at the shipyard.");
 		hammerAndSaw = and(hammer, saw);
+
+		// Quest items
+		cup = new ItemRequirement("Old cup", ItemID.SAILING_INTRO_CUP);
+		cup.setTooltip("You can get another from Steve Beanie behind the bar on Pandemonium");
 	}
 
 	public void setupSteps()
@@ -245,9 +249,11 @@ public class Pandemonium extends BasicQuestHelper
 		findLocationWA = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Ask 'Squawking' Steve Beanie behind the bar about Will and Anne's location.", true);
 		findLocationWA.addDialogStep("About Will and Anne...");
 		findLocationWA.addDialogStep("Do you have any idea where Will and Anne might have gone?");
-		informAboutShip = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Ask Junior Jim by the docks about getting a ship.", true);
-		showCup = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Hand over the cup to Junior Jim and receive your mighty vessel!", true);
-
+		informAboutShip = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Ask Junior Jim by the docks about getting a ship.", true, cup);
+		informAboutShip.addDialogStep("I think I might have lost a cup here.");
+		showCup = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Hand over the cup to Junior Jim and receive your mighty vessel!", true, cup);
+		showCup.addDialogStep("I think I might have lost a cup here.");
+		
 		// Your mighty vessel
 		enterShipyard = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Talk to Junior Jim to enter the shipyard.");
 		getHammer = new ObjectStep(this, ObjectID.CRATE_HAMMERS, "Pick up a hammer from the crate of hammers.");

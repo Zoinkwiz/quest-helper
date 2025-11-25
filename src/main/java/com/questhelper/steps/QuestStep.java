@@ -637,7 +637,7 @@ public abstract class QuestStep implements Module
 				if (distanceLimit)
 				{
 					WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-					if (definedPoint.distanceTo(playerLocation) <= 100) continue;
+					if (definedPoint == null || definedPoint.distanceTo(playerLocation) <= 100) continue;
 				}
 
 				if (isValidRequirementForRenderInInventory(requirement, item))

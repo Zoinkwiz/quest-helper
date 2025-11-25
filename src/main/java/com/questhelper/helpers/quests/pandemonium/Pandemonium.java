@@ -26,15 +26,12 @@ package com.questhelper.helpers.quests.pandemonium;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
-import com.questhelper.requirements.player.ShipInPortRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -59,7 +56,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.TileStep;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -88,20 +84,26 @@ public class Pandemonium extends BasicQuestHelper
 
 		steps.put(0, talkToWill);
 		steps.put(2, talkToWill);
+
 		steps.put(4, boardWAShip);
-		steps.put(6, explainJob);
+
+		ConditionalStep goListenOnShip = new ConditionalStep(this, talkToWill);
+		goListenOnShip.addStep(onboardShip, explainJob);
+		steps.put(6, goListenOnShip);
+
+		ConditionalStep cNavigateToShipwreckOnShip = new ConditionalStep(this, takeHelm);
+		cNavigateToShipwreckOnShip.addStep(canSalvage, salvageShipwreck);
+		cNavigateToShipwreckOnShip.addStep(atShipwreck, explainJob2);
+		cNavigateToShipwreckOnShip.addStep(sailing, navigateShip);
+		cNavigateToShipwreckOnShip.addStep(takenHelm, raiseSails);
+		cNavigateToShipwreckOnShip.addStep(notAtShipwreck, takeHelm);
+
 		ConditionalStep cNavigateToShipwreck = new ConditionalStep(this, boardWAShip);
-		cNavigateToShipwreck.addStep(atShipwreck, explainJob2);
-		cNavigateToShipwreck.addStep(and(notAtShipwreck, sailing), navigateShip);
-		cNavigateToShipwreck.addStep(and(notAtShipwreck, takenHelm), raiseSails);
-		cNavigateToShipwreck.addStep(and(notAtShipwreck, onboardShip), takeHelm);
+		cNavigateToShipwreck.addStep(onboardShip, cNavigateToShipwreckOnShip);
 		steps.put(8, cNavigateToShipwreck);
 		steps.put(10, cNavigateToShipwreck);
 		steps.put(12, cNavigateToShipwreck);
-		ConditionalStep cSalvage = cNavigateToShipwreck.copy();
-		cSalvage.addStep(canSalvage, salvageShipwreck);
-		steps.put(14, cSalvage);
-
+		steps.put(14, cNavigateToShipwreck);
 
 		ConditionalStep cLearnWhereYouAre = new ConditionalStep(this, getToPandemonium);
 		cLearnWhereYouAre.addStep(onPandemonium, learnWhereYouAre);
@@ -188,12 +190,12 @@ public class Pandemonium extends BasicQuestHelper
 	@Override
 	protected void setupZones()
 	{
-		shipWreckZone = new Zone(new WorldPoint(3018, 3030, 0), new WorldPoint(3040, 3052, 0));
+		shipWreckZone = new Zone(new WorldPoint(3018, 3030, 0), new WorldPoint(3040, 3050, 0));
 		pandemonium = new Zone(new WorldPoint(3069, 3005, 0), new WorldPoint(3028, 2963, 0));
 		portSarim = new Zone(new WorldPoint(3027, 3192, 0), new WorldPoint(3050, 3204, 0));
 		pandemoniumDockZone = new Zone(new WorldPoint(3065, 2974, 0), new WorldPoint(3084, 2998, 0));
 		portSarimDockZone = new Zone(new WorldPoint(3045, 3183, 0), new WorldPoint(3061, 3208, 0));
-		atShipwreck = new ZoneRequirement(shipWreckZone);
+		atShipwreck = new VarbitRequirement(VarbitID.SAILING_INTRO_REACHED_WRECK, 1);
 		notAtShipwreck = not(atShipwreck);
 		onPandemonium = new ZoneRequirement(pandemonium);
 		atPortSarim = new ZoneRequirement(portSarim);
@@ -219,21 +221,20 @@ public class Pandemonium extends BasicQuestHelper
 		getToPandemonium.addDialogStep("I'd like to go to the Pandemonium.");
 		getToPandemonium.setHighlightZone(pandemonium);
 
-
 		//You got the Job!
 		talkToWill = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Talk to Will or Anne on the docks of Port Sarim to start the quest.", true);
-		talkToWill.addDialogStep("Yes.");
-		boardWAShip = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Board the ship.", true);
+		talkToWill.addDialogSteps("Yes.", "Okay.");
+		boardWAShip = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_SARIM, NpcID.SAILING_INTRO_ANNE_SARIM}, new WorldPoint(3025, 3208, 0), "Talk to Will or Anne on the docks to board the ship.", true);
 		boardWAShip.addDialogStep(Pattern.compile("(I guess I'm ready\\.\\.\\.)|(I guess so\\.\\.\\.)|(Okay\\.)"));
 
 		// What is the job?
-		explainJob = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_VIS, NpcID.SAILING_INTRO_ANNE_VIS}, new WorldPoint(3056, 3190, 0), "Listen to the job explanation.", true);
-		takeHelm = new DetailedQuestStep(this, "Navigate using the helm.");
-		raiseSails = new DetailedQuestStep(this, "Raise your sails.");
-		navigateShip = new DetailedQuestStep(this, "Sail south!");
+		explainJob = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_BOAT, NpcID.SAILING_INTRO_ANNE_BOAT}, new WorldPoint(3056, 3190, 0), "Listen to the job explanation.", true);
+		takeHelm = new ObjectStep(this, ObjectID.SAILING_INTRO_NAVIGATING, "Navigate using the helm.");
+		raiseSails = new ObjectStep(this, ObjectID.SAILING_BOAT_SAILS_INTRO, "Raise your sails.");
+		navigateShip = new DetailedQuestStep(this, new WorldPoint(3031, 3039, 0), "Sail south to the wreck north of the Pandemonium!");
 		navigateShip.setHighlightZone(shipWreckZone);
-		explainJob2 = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_VIS, NpcID.SAILING_INTRO_ANNE_VIS}, new WorldPoint(3027, 3048, 0), "Learn about the other part of your job.", true);
-		salvageShipwreck = new DetailedQuestStep(this, "Deploy the Salvaging Hook.");
+		explainJob2 = new NpcStep(this, new int[]{NpcID.SAILING_INTRO_WILL_BOAT, NpcID.SAILING_INTRO_ANNE_BOAT}, new WorldPoint(3027, 3048, 0), "Learn about the other part of your job.", true);
+		salvageShipwreck = new ObjectStep(this, ObjectID.SAILING_INTRO_SALVAGING_HOOK, new WorldPoint(3843, 6402, 1), "Deploy the Salvaging Hook.");
 
 		// You lost the Job!
 		learnWhereYouAre = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the bar to learn about where you are.", true);

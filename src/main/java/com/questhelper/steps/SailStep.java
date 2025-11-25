@@ -19,7 +19,7 @@ public class SailStep extends DetailedQuestStep
 	}
 	public SailStep(QuestHelper questHelper, ShipInPortRequirement toPort)
 	{
-		super(questHelper, "Sail to " + toPort.getPort().getName());
+		super(questHelper, "Sail to " + toPort.getPort().getName() + ".");
 		Zone zone = toPort.getPort().getDockZone();
 		setHighlightZone(zone);
 		this.zoneRequirement = new ZoneRequirement(zone);

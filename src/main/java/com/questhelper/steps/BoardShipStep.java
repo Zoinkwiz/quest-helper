@@ -13,7 +13,7 @@ public class BoardShipStep extends ConditionalStep
 {
 	public BoardShipStep(QuestHelper questHelper, Requirement... requirements)
 	{
-		super(questHelper, new ObjectStep(questHelper, ObjectID.SAILING_GANGPLANK_EMBARK, Port.PORT_SARIM.getGangplankLocation(), "Board your ship in Port Sarim.", requirements));
+		super(questHelper, new ObjectStep(questHelper, ObjectID.SAILING_GANGPLANK_EMBARK, Port.PORT_SARIM.getGangplankLocation(), "Board your ship in Port Sarim.", requirements), "Board your ship.");
 		for(Port port: Port.values()){
 			this.addStep(new ShipInPortRequirement(port), new ObjectStep(questHelper, ObjectID.SAILING_GANGPLANK_EMBARK, port.getGangplankLocation(), "Board your ship in " + port.getName() + ".", requirements));
 		}

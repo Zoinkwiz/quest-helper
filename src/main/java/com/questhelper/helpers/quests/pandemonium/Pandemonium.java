@@ -176,7 +176,7 @@ public class Pandemonium extends BasicQuestHelper
 	public void setupConditions()
 	{
 		onboardShip = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
-		takenHelm = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_PLAYER_AT_HELM, 1);
+		takenHelm = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_HELM_STATUS, 2);
 		setSails = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_BOAT_MOVE_MODE, 0, Operation.GREATER);
 		canSalvage = and(atShipwreck, new VarbitRequirement(VarbitID.SAILING_INTRO, 14, Operation.GREATER_EQUAL)); // At wreck, with explanation about salvaging
 		sailing = and(takenHelm, setSails, onboardShip);
@@ -270,7 +270,7 @@ public class Pandemonium extends BasicQuestHelper
 		// You got the job!
 		getNewJob = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Talk to Junior Jim for a new job.");
 		boardShip = new BoardShipStep(this);
-		takeHelm2 = new DetailedQuestStep(this, "Navigate using the helm.");
+		takeHelm2 = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IDLE, new WorldPoint(3843, 6460, 1), "Navigate using the helm.");
 		raiseSails2 = new DetailedQuestStep(this, "Raise your sails.");
 		sailToPortSarim = new SailStep(this, Port.PORT_SARIM);
 		letGoOfHelm = new DetailedQuestStep(this, "Let go of the helm.");

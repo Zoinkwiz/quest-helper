@@ -25,7 +25,11 @@
  */
 package com.questhelper.requirements.zone;
 
+import com.questhelper.steps.tools.QuestPerspective;
 import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.WorldView;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 import static net.runelite.api.Constants.REGION_SIZE;
@@ -99,6 +103,46 @@ public class Zone
 			&& worldPoint.getY() <= maxY
 			&& minPlane <= worldPoint.getPlane()
 			&& worldPoint.getPlane() <= maxPlane;
+	}
+
+	public boolean contains(Client client, LocalPoint localPoint)
+	{
+		if (client == null || localPoint == null)
+		{
+			return false;
+		}
+
+		WorldPoint normalizedPoint;
+		WorldView worldView = client.getWorldView(localPoint.getWorldView());
+		var zoneWorldView = QuestPerspective.getLocalPointsFromWorldPointInInstance(worldView, new WorldPoint(minX, minY, minPlane));
+		if (!zoneWorldView.isEmpty())
+		{
+			return contains(WorldPoint.fromLocalInstance(client, localPoint));
+		}
+
+		if (worldView != null && !worldView.isTopLevel())
+		{
+			var topLevel = client.getTopLevelWorldView();
+			var worldEntity = topLevel.worldEntities().byIndex(worldView.getId());
+			if (worldEntity == null)
+			{
+				return false;
+			}
+
+			LocalPoint mainLocal = worldEntity.transformToMainWorld(localPoint);
+			normalizedPoint = WorldPoint.fromLocalInstance(client, mainLocal);
+		}
+		else
+		{
+			normalizedPoint = WorldPoint.fromLocalInstance(client, localPoint);
+		}
+
+		if (normalizedPoint == null)
+		{
+			return false;
+		}
+
+		return contains(normalizedPoint);
 	}
 
 	public WorldPoint getMinWorldPoint()

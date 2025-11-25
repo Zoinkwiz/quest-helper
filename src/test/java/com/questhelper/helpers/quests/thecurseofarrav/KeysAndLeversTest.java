@@ -30,6 +30,7 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.gameval.InventoryID;
@@ -45,6 +46,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class KeysAndLeversTest extends MockedTest
@@ -62,6 +64,7 @@ public class KeysAndLeversTest extends MockedTest
 		when(client.getLocalPlayer()).thenReturn(mockedPlayer);
 		var worldView = Mockito.mock(WorldView.class);
 		when(mockedPlayer.getWorldView()).thenReturn(worldView);
+		when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(0, 0, -1));
 		when(worldView.getId()).thenReturn(-1);
 
 		questPerspectiveMockedStatic = Mockito.mockStatic(QuestPerspective.class);
@@ -88,6 +91,11 @@ public class KeysAndLeversTest extends MockedTest
 	{
 		worldPointMockedStatic.when(() -> WorldPoint.fromLocalInstance(any(), any()))
 				.thenReturn(playerLocation);
+		worldPointMockedStatic.when(() -> WorldPoint.fromLocalInstance(any(), any()))
+			.thenReturn(playerLocation);
+
+		questPerspectiveMockedStatic.when(() -> QuestPerspective.getLocalPointsFromWorldPointInInstance(any(), any()))
+			.thenReturn(List.of(new LocalPoint(0, 0, -1)));
 
 		var mockedItemContainer = Mockito.mock(ItemContainer.class);
 		if (mockedItems == null) mockedItems = new Item[0];
@@ -175,7 +183,6 @@ public class KeysAndLeversTest extends MockedTest
 		};
 		when(client.getVarbitValue(VarbitID.COA_MASTABA_LEVER_2)).thenReturn(1);
 		var conditionalStep = this.init(new WorldPoint(3845, 4547, 0), mockedItems);
-
 		assertEquals(this.helper.getToSouthLever, conditionalStep.getActiveStep());
 	}
 

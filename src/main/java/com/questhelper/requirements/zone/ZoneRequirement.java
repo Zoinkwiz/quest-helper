@@ -33,8 +33,6 @@ import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.WorldEntity;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.annotation.Nonnull;
@@ -108,20 +106,7 @@ public class ZoneRequirement extends AbstractRequirement
 		Player player = client.getLocalPlayer();
 		if (player != null && zones != null)
 		{
-			int worldViewId = client.getLocalPlayer().getWorldView().getId();
-			boolean isOnBoat = worldViewId != -1;
-			LocalPoint localLocation;
-			if (isOnBoat)
-			{
-				WorldEntity we = client.getTopLevelWorldView().worldEntities().byIndex(worldViewId);
-				localLocation = we.getLocalLocation();
-			}
-			else
-			{
-				localLocation = player.getLocalLocation();
-			}
-			final WorldPoint checkableLocation = WorldPoint.fromLocalInstance(client, localLocation);
-			boolean inZone = zones.stream().anyMatch(z -> z.contains(checkableLocation));
+			boolean inZone = zones.stream().anyMatch(z -> z.contains(client, player.getLocalLocation()));
 			return inZone == checkInZone;
 		}
 		return false;

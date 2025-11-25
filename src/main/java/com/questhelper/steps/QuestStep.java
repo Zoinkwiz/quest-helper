@@ -34,6 +34,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.choice.*;
 import com.questhelper.steps.overlay.IconOverlay;
+import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.steps.widget.Spell;
@@ -615,7 +616,7 @@ public abstract class QuestStep implements Module
 		return client.getWidget(InterfaceID.Inventory.ITEMS);
 	}
 
-	protected void renderInventory(Graphics2D graphics, WorldPoint worldPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)
+	protected void renderInventory(Graphics2D graphics, DefinedPoint definedPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)
 	{
 		Widget inventoryWidget = getInventoryWidget();
 		if (inventoryWidget == null || inventoryWidget.isHidden())
@@ -636,8 +637,7 @@ public abstract class QuestStep implements Module
 				if (distanceLimit)
 				{
 					WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-					WorldPoint goalWp = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), worldPoint);
-					if (goalWp != null && playerLocation.distanceTo(goalWp) <= 100) continue;
+					if (definedPoint == null || definedPoint.distanceTo(playerLocation) <= 100) continue;
 				}
 
 				if (isValidRequirementForRenderInInventory(requirement, item))

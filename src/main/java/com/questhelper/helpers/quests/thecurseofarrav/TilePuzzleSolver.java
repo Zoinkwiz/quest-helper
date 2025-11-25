@@ -28,7 +28,6 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.tools.QuestPerspective;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
@@ -321,9 +320,9 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 			return;
 		}
 
-		var playerWp = localPlayer.getWorldLocation();
-		var worldPoint = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), localPlayer.getWorldLocation());
-		if (worldPoint == null) {
+		var worldPoint = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation());
+		if (worldPoint == null)
+		{
 			startUpStep(fallbackStep);
 			return;
 		}
@@ -338,7 +337,7 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 			log.debug("Player is in the puzzle, at {}/{}", xInPuzzle, yInPuzzle);
 			startUpStep(pathStep);
 		} else {
-			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, worldPoint, xInPuzzle, yInPuzzle);
+			log.debug("player is outside of puzzle: {} / {} / {}/{}", localPlayer.getWorldLocation(), worldPoint, xInPuzzle, yInPuzzle);
 			var userIsPastPuzzle = worldPoint.getX() <= 3730 || (worldPoint.getX() <= baseX && worldPoint.getY() >= 4701);
 			if (userIsPastPuzzle) {
 				// highlight lever

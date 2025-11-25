@@ -26,7 +26,7 @@ package com.questhelper.helpers.quests.lunardiplomacy;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.steps.tools.DefinedPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -71,7 +71,7 @@ public class MemoryChallenge extends DetailedQuestStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (wps.size() == 0)
+		if (wps.isEmpty())
 		{
 			return;
 		}
@@ -82,7 +82,7 @@ public class MemoryChallenge extends DetailedQuestStep
 		}
 
 		// If start of path, check first point in legit path
-		if (currentPath.size() == 0)
+		if (currentPath.isEmpty())
 		{
 			checkNextTile(0);
 			return;
@@ -105,15 +105,11 @@ public class MemoryChallenge extends DetailedQuestStep
 
 	public void checkNextTile(int wpsPos)
 	{
-		WorldPoint instanceWp = QuestPerspective.getWorldPointConsideringWorldView(client, client.getTopLevelWorldView(), wps.get(wpsPos));
-		if (instanceWp == null)
-		{
-			return;
-		}
-
+		var definedPoint = DefinedPoint.of(wps.get(wpsPos));
 		// If on same tiles as wpsPos
 		if (client.getLocalPlayer() != null &&
-			client.getLocalPlayer().getWorldLocation().distanceTo(instanceWp) == 0)
+			definedPoint != null &&
+			definedPoint.distanceTo(client, client.getLocalPlayer().getLocalLocation()) == 0)
 		{
 			currentPath.add(wps.get(wpsPos));
 			lastPos = wpsPos;

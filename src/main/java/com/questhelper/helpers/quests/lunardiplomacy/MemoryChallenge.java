@@ -106,9 +106,9 @@ public class MemoryChallenge extends DetailedQuestStep
 	public void checkNextTile(int wpsPos)
 	{
 		var definedPoint = DefinedPoint.of(wps.get(wpsPos));
-
 		// If on same tiles as wpsPos
 		if (client.getLocalPlayer() != null &&
+			definedPoint != null &&
 			definedPoint.distanceTo(client, client.getLocalPlayer().getLocalLocation()) == 0)
 		{
 			currentPath.add(wps.get(wpsPos));

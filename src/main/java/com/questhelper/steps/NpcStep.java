@@ -165,7 +165,7 @@ public class NpcStep extends DetailedQuestStep
 		NpcStep newStep = new NpcStep(getQuestHelper(), npcID, definedPoint, null);
 		newStep.setRequirements(requirements);
 		newStep.setRecommended(recommended);
-		
+
 		if (text != null)
 		{
 			newStep.setText(text);
@@ -202,6 +202,7 @@ public class NpcStep extends DetailedQuestStep
 			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
 		}
 		var playerWorldView = client.getLocalPlayer().getWorldView();
+		if (playerWorldView == null || playerWorldView.npcs() == null) return;
 		for (NPC npc : playerWorldView.npcs())
 		{
 			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);

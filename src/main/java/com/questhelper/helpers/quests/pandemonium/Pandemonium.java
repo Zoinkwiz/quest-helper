@@ -241,7 +241,7 @@ public class Pandemonium extends BasicQuestHelper
 		learnWhereYouAre = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the bar to learn about where you are.", true);
 		learnWhoWAare = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie about Will and Anne.", true);
 		talkToRibs = new NpcStep(this, NpcID.SAILING_INTRO_RIBS, new WorldPoint(3051, 2973, 0), "Talk to Ribs near the door to learn about the map.", true);
-		talkToRibs.addDialogStep(Pattern.compile("(No, tell me about him\\.)|(Now's not really the time for tales\\.)"));
+		talkToRibs.addDialogSteps("No, tell me about him.", "Now's not really the time for tales.");
 		findLocationWA = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Ask 'Squawking' Steve Beanie behind the bar about Will and Anne's location.", true);
 		findLocationWA.addDialogStep("About Will and Anne...");
 		findLocationWA.addDialogStep("Do you have any idea where Will and Anne might have gone?");

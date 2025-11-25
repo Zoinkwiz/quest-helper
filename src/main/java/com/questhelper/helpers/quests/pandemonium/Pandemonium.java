@@ -125,11 +125,12 @@ public class Pandemonium extends BasicQuestHelper
 		cShowCup.addStep(onPandemonium, showCup);
 		steps.put(26, cShowCup);
 
-		ConditionalStep cBuildCargoHold = new ConditionalStep(this, enterShipyard);
+		ConditionalStep cBuildCargoHold = new ConditionalStep(this, getToPandemonium);
 		cBuildCargoHold.addStep(and(atShipyard, onboardShip), buildCargoHold);
 		cBuildCargoHold.addStep(and(atShipyard, hammerAndSaw), embarkShipSY);
 		cBuildCargoHold.addStep(and(atShipyard, saw), getHammer);
 		cBuildCargoHold.addStep(atShipyard, getSaw);
+		cBuildCargoHold.addStep(onPandemonium, enterShipyard);
 		steps.put(28, cBuildCargoHold);
 		ConditionalStep cGetLogBook = new ConditionalStep(this, disembarkShipSY);
 		cGetLogBook.addStep(not(atShipyard), getLogBook);
@@ -221,9 +222,9 @@ public class Pandemonium extends BasicQuestHelper
 	public void setupSteps()
 	{
 		//guardrails
-		getToPandemonium = new NpcStep(this, new int[]{NpcID.SEAMAN_LORRIS, NpcID.CAPTAIN_TOBIAS, NpcID.SEAMAN_THRESNOR}, new WorldPoint(3027, 3218, 0), "Get back to the Pandemonium.", true);
-		getToPandemonium.addDialogStep("Yes please.");
-		getToPandemonium.addDialogStep("I'd like to go to the Pandemonium.");
+		getToPandemonium = new NpcStep(this, new int[]{NpcID.SEAMAN_LORRIS, NpcID.CAPTAIN_TOBIAS, NpcID.SEAMAN_THRESNOR}, new WorldPoint(3027, 3218, 0), "Get back to the Pandemonium. You can travel with Captain Tobias on Port Sarim dock for 30gp.", true);
+		getToPandemonium.addDialogSteps("Yes please.", "I'd like to go to the Pandemonium.");
+		getToPandemonium.conditionToHideInSidebar(onPandemonium);
 		getToPandemonium.setHighlightZone(pandemonium);
 
 		//You got the Job!
@@ -253,7 +254,7 @@ public class Pandemonium extends BasicQuestHelper
 		informAboutShip.addDialogStep("I think I might have lost a cup here.");
 		showCup = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Hand over the cup to Junior Jim and receive your mighty vessel!", true, cup);
 		showCup.addDialogStep("I think I might have lost a cup here.");
-		
+
 		// Your mighty vessel
 		enterShipyard = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Talk to Junior Jim to enter the shipyard.");
 		getHammer = new ObjectStep(this, ObjectID.CRATE_HAMMERS, "Pick up a hammer from the crate of hammers.");
@@ -329,7 +330,7 @@ public class Pandemonium extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("You got the job!", Arrays.asList(talkToWill, boardWAShip)));
 		allSteps.add(new PanelDetails("What's the job?", Arrays.asList(explainJob, takeHelm, raiseSails, navigateShip, explainJob2, salvageShipwreck, watchSalvageCutscene)));
-		allSteps.add(new PanelDetails("You lost the job!", Arrays.asList(learnWhereYouAre, learnWhoWAare, talkToRibs, findLocationWA, informAboutShip, showCup)));
+		allSteps.add(new PanelDetails("You lost the job!", Arrays.asList(getToPandemonium, learnWhereYouAre, learnWhoWAare, talkToRibs, findLocationWA, informAboutShip, showCup)));
 		allSteps.add(new PanelDetails("Your mighty vessel", Arrays.asList(enterShipyard, getSaw, getHammer, embarkShipSY, buildCargoHold, disembarkShipSY, leaveShipyard, getLogBook)));
 		allSteps.add(new PanelDetails("You got the job... again!", Arrays.asList(getNewJob, boardShip, takeHelm2, raiseSails2, sailToPortSarim, letGoOfHelm, disembarkShipPS, pickupCargo, boardShip2)));
 		allSteps.add(new PanelDetails("Deliver the cargo.", Arrays.asList(dropCargoInCargoHold, takeHelm3, raiseSails3, sailToPandemonium, letGoOfHelm2, pickupCargoShip, disembarkShipP, deliverCargo)));

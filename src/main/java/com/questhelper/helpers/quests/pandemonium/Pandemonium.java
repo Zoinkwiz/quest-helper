@@ -132,9 +132,11 @@ public class Pandemonium extends BasicQuestHelper
 		cBuildCargoHold.addStep(atShipyard, getSaw);
 		cBuildCargoHold.addStep(onPandemonium, enterShipyard);
 		steps.put(28, cBuildCargoHold);
-		ConditionalStep cGetLogBook = new ConditionalStep(this, disembarkShipSY);
-		cGetLogBook.addStep(not(atShipyard), getLogBook);
-		cGetLogBook.addStep(not(onboardShip), leaveShipyard);
+
+
+		ConditionalStep cGetLogBook = new ConditionalStep(this, getToPandemonium);
+		cGetLogBook.addStep(onPandemonium, getLogBook);
+		cGetLogBook.addStep(atShipyard, leaveShipyard);
 		steps.put(30, cGetLogBook); // Jim
 
 		steps.put(32, getNewJob); // Jim
@@ -263,10 +265,10 @@ public class Pandemonium extends BasicQuestHelper
 		buildCargoHold = new ObjectStep(this, ObjectID.SAILING_BOAT_FACILITY_PLACEHOLDER_RAFT_0, "Build the Cargo Hold.");
 		disembarkShipSY = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_SHIPYARD_DISEMBARK, "Disembark your vessel.");
 		leaveShipyard = new ObjectStep(this, ObjectID.SAILING_SHIPYARD_PORTAL_EXIT, "Leave the shipyard using the portal.");
-		getLogBook = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Get Junior Jim to give you a log book.");
+		getLogBook = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Talk to Junior Jim to get a log book.");
 
 		// You got the job!
-		getNewJob = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Get Junior Jim to give you a new job.");
+		getNewJob = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Talk to Junior Jim for a new job.");
 		boardShip = new BoardShipStep(this);
 		takeHelm2 = new DetailedQuestStep(this, "Navigate using the helm.");
 		raiseSails2 = new DetailedQuestStep(this, "Raise your sails.");

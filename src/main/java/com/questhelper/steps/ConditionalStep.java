@@ -423,7 +423,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			currentStep.makeWidgetOverlayHint(graphics, plugin);
 		}
-		DefinedPoint activeDp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).definedPoint : null;
+		DefinedPoint activeDp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).getDefinedPoint(): null;
 		List<ItemRequirement> itemRequirements = requirements.stream()
 				.filter(ItemRequirement.class::isInstance)
 				.map(ItemRequirement.class::cast)

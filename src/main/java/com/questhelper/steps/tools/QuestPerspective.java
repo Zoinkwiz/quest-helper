@@ -394,24 +394,8 @@ public class QuestPerspective
 			return false;
 		}
 
-		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedPoint.getWorldPoint());
+		var normalizedDefinedPoint = getWorldPointConsideringWorldView(client, definedPoint.resolveLocalPoint(client));
 		return normalizedDefinedPoint != null && normalizedDefinedPoint.equals(runtimeWorldPoint);
-	}
-
-	/**
-	 * Compares two {@link WorldPoint}s that may originate from different {@link WorldView}s.
-	 */
-	public static boolean matchesWorldPoint(Client client, DefinedPoint definedPoint, WorldPoint runtimeWorldPoint, WorldView runtimeWorldView)
-	{
-		if (client == null || definedPoint == null || runtimeWorldPoint == null)
-		{
-			return false;
-		}
-
-		var normalizedRuntimePoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, runtimeWorldPoint);
-		var normalizedDefinedPoint = normalizeWorldPointToTopLevel(client, runtimeWorldView, definedPoint.getWorldPoint());
-
-		return normalizedDefinedPoint != null && normalizedDefinedPoint.equals(normalizedRuntimePoint);
 	}
 
 	private static WorldPoint normalizeWorldPointToTopLevel(Client client, WorldView sourceWorldView, WorldPoint worldPoint)
@@ -469,16 +453,6 @@ public class QuestPerspective
 		}
 
 		return null;
-	}
-
-	public static Polygon getCanvasTilePoly(Client client, WorldPoint worldPoint, WorldView preferredWorldView)
-	{
-		LocalPoint localPoint = resolveLocalPointForWorldPoint(client, worldPoint, preferredWorldView);
-		if (localPoint == null)
-		{
-			return null;
-		}
-		return Perspective.getCanvasTilePoly(client, localPoint);
 	}
 
 	public static int getTileDistance(Client client, DefinedPoint definedWorldPoint, LocalPoint runtimeLocalPoint)

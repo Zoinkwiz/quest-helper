@@ -30,6 +30,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
+import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.tools.QuestPerspective;
 import lombok.Setter;
 import net.runelite.api.Point;
@@ -153,9 +154,18 @@ public class NpcStep extends DetailedQuestStep
 		this(questHelper, npcID, null, text, allowMultipleHighlights, requirements);
 	}
 
+	public NpcStep(QuestHelper questHelper, int npcID, DefinedPoint definedPoint, String text, Requirement... requirements)
+	{
+		super(questHelper, definedPoint, text, requirements);
+		this.npcID = npcID;
+	}
+
 	public NpcStep copy()
 	{
-		NpcStep newStep = new NpcStep(getQuestHelper(), npcID, definedPoint.getWorldPoint(), null, requirements, recommended);
+		NpcStep newStep = new NpcStep(getQuestHelper(), npcID, definedPoint, null);
+		newStep.setRequirements(requirements);
+		newStep.setRecommended(recommended);
+		
 		if (text != null)
 		{
 			newStep.setText(text);

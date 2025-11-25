@@ -32,6 +32,7 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.tools.QuestPerspective;
+import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.Point;
 import net.runelite.api.*;
@@ -81,13 +82,13 @@ public class ObjectStep extends DetailedQuestStep
 
 	public ObjectStep(QuestHelper questHelper, int objectID, String text, Requirement... requirements)
 	{
-		super(questHelper, null, text, requirements);
+		super(questHelper, DefinedPoint.of(null), text, requirements);
 		this.objectID = objectID;
 	}
 
 	public ObjectStep(QuestHelper questHelper, int objectID, String text, boolean showAllInArea, Requirement... requirements)
 	{
-		super(questHelper, null, text, requirements);
+		super(questHelper, DefinedPoint.of(null), text, requirements);
 		this.showAllInArea = showAllInArea;
 		this.objectID = objectID;
 	}
@@ -99,9 +100,18 @@ public class ObjectStep extends DetailedQuestStep
 		this.showAllInArea = false;
 	}
 
+	// New DefinedPoint function
+	public ObjectStep(QuestHelper questHelper, int objectID, DefinedPoint definedPoint, String text, Requirement... requirements)
+	{
+		super(questHelper, definedPoint, text, requirements);
+		this.objectID = objectID;
+	}
+
 	public ObjectStep copy()
 	{
-		ObjectStep newStep = new ObjectStep(getQuestHelper(), objectID, definedPoint.getWorldPoint(), null, requirements, recommended);
+		ObjectStep newStep = new ObjectStep(getQuestHelper(), objectID, definedPoint, null);
+		newStep.setRequirements(requirements);
+		newStep.setRecommended(recommended);
 		if (text != null)
 		{
 			newStep.setText(text);

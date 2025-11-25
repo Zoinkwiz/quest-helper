@@ -146,6 +146,13 @@ public class DetailedQuestStep extends QuestStep
 		this.requirements.addAll(Arrays.asList(requirements));
 	}
 
+	public DetailedQuestStep(QuestHelper questHelper, DefinedPoint definedPoint, String text, Requirement... requirements)
+	{
+		super(questHelper, text);
+		this.definedPoint = definedPoint;
+		this.requirements.addAll(Arrays.asList(requirements));
+	}
+
 	public DetailedQuestStep(QuestHelper questHelper, WorldPoint worldPoint, String text, List<Requirement> requirements, List<Requirement> recommended)
 	{
 		super(questHelper, text);
@@ -268,7 +275,7 @@ public class DetailedQuestStep extends QuestStep
 			}
 		}
 	}
-	
+
 	public void setWorldPoint(WorldPoint worldPoint)
 	{
 		setWorldPoint(DefinedPoint.of(worldPoint));

@@ -30,6 +30,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.tools.DefinedPoint;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Player;
@@ -120,7 +121,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 
 	public void resetState()
 	{
-		setWorldPoint(null);
+		setWorldPoint(DefinedPoint.of(null));
 		int locationStates = client.getVarbitValue(VarbitID.MAKINGHISTORY_LOCSTATUS);
 		Set<EnchantedKeyDigLocation> locations = Arrays.stream(EnchantedKeyDigLocation.values()).filter(p -> ((locationStates >> p.getBit()) & 1) == 0)
 			.collect(Collectors.toSet());
@@ -200,7 +201,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 		}
 		else
 		{
-			this.setWorldPoint(null);
+			this.setWorldPoint(DefinedPoint.of(null));
 		}
 
 		return true;
@@ -224,7 +225,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 	public void shutDown()
 	{
 		super.shutDown();
-		this.setWorldPoint(null);
+		this.setWorldPoint(DefinedPoint.of(null));
 	}
 
 	private BufferedImage getSpadeImage()

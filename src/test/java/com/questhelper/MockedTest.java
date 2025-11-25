@@ -53,6 +53,7 @@ import org.mockito.Mockito;
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static org.mockito.Mockito.*;
@@ -141,7 +142,8 @@ public abstract class MockedTest extends MockedTestBase
 
 		WorldView mockedWorldView = mock(WorldView.class);
 		when(mockedWorldView.getScene()).thenReturn(mockedScene);
-		when(mockedWorldView.getPlane()).thenReturn(-1);
+		when(mockedWorldView.getPlane()).thenReturn(0);
+		when(mockedWorldView.isTopLevel()).thenReturn(true);
 
 		@SuppressWarnings("unchecked")
 		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) mock(IndexedObjectSet.class);
@@ -153,6 +155,10 @@ public abstract class MockedTest extends MockedTestBase
 		var mockedItemContainer = Mockito.mock(ItemContainer.class);
 		when(mockedItemContainer.getItems()).thenReturn(new Item[0]);
 		when(client.getItemContainer(anyInt())).thenReturn(mockedItemContainer);
+
+		IndexedObjectSet<? extends WorldView> wvSetMock = (IndexedObjectSet<? extends WorldView>) mock(IndexedObjectSet.class);
+		when(wvSetMock.iterator()).thenReturn(Collections.emptyIterator());
+		doReturn(wvSetMock).when(mockedWorldView).worldViews();
 
 		var mockedPlayer = Mockito.mock(Player.class);
 		when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(1, 1, 1));

@@ -245,20 +245,20 @@ public class DetailedQuestStep extends QuestStep
 		}
 	}
 
-	public void setWorldPoint(WorldPoint worldPoint)
+	public void setWorldPoint(DefinedPoint definedPoint)
 	{
-		this.definedPoint = DefinedPoint.of(worldPoint);
+		this.definedPoint = definedPoint;
 		if (started)
 		{
 			if (mapPoint != null)
 			{
 				worldMapPointManager.remove(mapPoint);
 			}
-			if (worldPoint != null)
+			if (definedPoint != null)
 			{
 				if (questHelper.getConfig().showWorldMapPoint())
 				{
-					mapPoint = new QuestHelperWorldMapPoint(worldPoint, getQuestImage());
+					mapPoint = new QuestHelperWorldMapPoint(definedPoint.getWorldPoint(), getQuestImage());
 					worldMapPointManager.add(mapPoint);
 				}
 			}
@@ -267,6 +267,11 @@ public class DetailedQuestStep extends QuestStep
 				mapPoint = null;
 			}
 		}
+	}
+	
+	public void setWorldPoint(WorldPoint worldPoint)
+	{
+		setWorldPoint(DefinedPoint.of(worldPoint));
 	}
 
 	public void setWorldPoint(int x, int y, int z)

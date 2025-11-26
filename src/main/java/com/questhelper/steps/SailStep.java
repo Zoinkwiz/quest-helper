@@ -33,9 +33,10 @@ public class SailStep extends DetailedQuestStep
 		this(questHelper,toPort);
 		this.addRequirement(requirements);
 	}
-	public SailStep(QuestHelper questHelper, WorldPoint toPoint)
+	public SailStep(QuestHelper questHelper, WorldPoint toPoint, String text, Requirement... requirements)
 	{
-		super(questHelper, "Sail to the location on your map");
+		super(questHelper, text);
+		this.addRequirement(requirements);
 		Zone zone = new Zone(toPoint.dx(-5).dy(-5), toPoint.dx(5).dy(5));
 		setHighlightZone(zone);
 		this.zoneRequirement = new ZoneRequirement(zone);
@@ -43,7 +44,7 @@ public class SailStep extends DetailedQuestStep
 	}
 	public SailStep(QuestHelper questHelper, WorldPoint toPoint, Requirement... requirements)
 	{
-		this(questHelper,toPoint);
+		this(questHelper, toPoint, "Sail to the location on your map.");
 		this.addRequirement(requirements);
 	}
 }

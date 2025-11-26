@@ -117,6 +117,7 @@ import com.questhelper.helpers.quests.coldwar.ColdWar;
 import com.questhelper.helpers.quests.contact.Contact;
 import com.questhelper.helpers.quests.cooksassistant.CooksAssistant;
 import com.questhelper.helpers.quests.creatureoffenkenstrain.CreatureOfFenkenstrain;
+import com.questhelper.helpers.quests.currentaffairs.CurrentAffairs;
 import com.questhelper.helpers.quests.darknessofhallowvale.DarknessOfHallowvale;
 import com.questhelper.helpers.quests.deathontheisle.DeathOnTheIsle;
 import com.questhelper.helpers.quests.deathplateau.DeathPlateau;
@@ -478,6 +479,7 @@ public enum QuestHelperQuest
 	SCRAMBLED(new Scrambled(), Quest.SCRAMBLED, QuestVarbits.QUEST_SCRAMBLED, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	PANDEMONIUM(new Pandemonium(), Quest.PANDEMONIUM, QuestVarbits.QUEST_PANDEMONIUM, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	PRYING_TIMES(new PryingTimes(), Quest.PRYING_TIMES, QuestVarbits.QUEST_PRYING_TIMES, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	CURRENT_AFFAIRS(new CurrentAffairs(), Quest.CURRENT_AFFAIRS, QuestVarbits.QUEST_CURRENT_AFFAIRS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

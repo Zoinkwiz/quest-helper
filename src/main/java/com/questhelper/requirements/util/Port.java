@@ -43,7 +43,7 @@ public enum Port
 //	, HOSIDIUS(4, "Hosidius", ObjectID.SAILING_DOCKING_BUOY_HOSIDIUS, null, null, null, null, -1, null)
 //	, PORT_PISCARILIUS(-1, "Port Piscarilius", ObjectID.SAILING_DOCKING_BUOY_PORT_PISCARILIUS, null, null, null, null, ObjectID.PORT_TASK_BOARD_PORT_PISCARILIUS, null)
 //	, RIMMINGTON(-1, "Rimmington", ObjectID.SAILING_DOCKING_BUOY_RIMMINGTON, null, null, null, null, -1, null)
-//	, CATHERBY(-1, "Catherby", ObjectID.SAILING_DOCKING_BUOY_CATHERBY, null, null, null, null, ObjectID.PORT_TASK_BOARD_CATHERBY, null)
+	, CATHERBY(6, "Catherby", ObjectID.SAILING_DOCKING_BUOY_CATHERBY, new WorldPoint(2788, 3409, 0), new Zone(new WorldPoint(2804, 3401, 0), new WorldPoint(2786, 3413, 0)), new WorldPoint(2796, 3412, 0), new WorldPoint(2799, 3413, 0), ObjectID.PORT_TASK_BOARD_CATHERBY, new WorldPoint(2803, 3418, 0))
 //	, BRIMHAVEN(-1, "Brimhaven", ObjectID.SAILING_DOCKING_BUOY_BRIMHAVEN, null, null, null, null, ObjectID.PORT_TASK_BOARD_BRIMHAVEN, null)
 //	, ARDOUGNE(-1, "Ardougne", ObjectID.SAILING_DOCKING_BUOY_ARDOUGNE, null, null, null, null, ObjectID.PORT_TASK_BOARD_ARDOUGNE, null)
 //	, PORT_KHAZARD(-1, "Port Khazard", ObjectID.SAILING_DOCKING_BUOY_PORT_KHAZARD, null, null, null, null, ObjectID.PORT_TASK_BOARD_PORT_KHAZARD, null)

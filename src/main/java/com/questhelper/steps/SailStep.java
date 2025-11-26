@@ -17,6 +17,7 @@ public class SailStep extends DetailedQuestStep
 	public SailStep(QuestHelper questHelper, Port toPort){
 		this(questHelper, new ShipInPortRequirement(toPort));
 	}
+  
 	public SailStep(QuestHelper questHelper, ShipInPortRequirement toPort)
 	{
 		super(questHelper, "Sail to " + toPort.getPort().getName() + ".");
@@ -25,14 +26,17 @@ public class SailStep extends DetailedQuestStep
 		this.zoneRequirement = new ZoneRequirement(zone);
 		setWorldPoint(toPort.getPort().getGangplankLocation());
 	}
+  
 	public SailStep(QuestHelper questHelper, Port toPort, Requirement... requirements){
 		this(questHelper, new ShipInPortRequirement(toPort), requirements);
 	}
+  
 	public SailStep(QuestHelper questHelper, ShipInPortRequirement toPort, Requirement... requirements)
 	{
 		this(questHelper,toPort);
 		this.addRequirement(requirements);
 	}
+  
 	public SailStep(QuestHelper questHelper, WorldPoint toPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, text);
@@ -42,6 +46,7 @@ public class SailStep extends DetailedQuestStep
 		this.zoneRequirement = new ZoneRequirement(zone);
 		setWorldPoint(toPoint);
 	}
+  
 	public SailStep(QuestHelper questHelper, WorldPoint toPoint, Requirement... requirements)
 	{
 		this(questHelper, toPoint, "Sail to the location on your map.");

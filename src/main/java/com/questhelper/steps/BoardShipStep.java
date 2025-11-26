@@ -20,7 +20,7 @@ public class BoardShipStep extends ConditionalStep
 	{
 		super(questHelper, new ObjectStep(questHelper, ObjectID.SAILING_GANGPLANK_EMBARK, Port.PORT_SARIM.getGangplankLocation(), "Board your ship in Port Sarim.", requirements), "Board your ship.");
 		for(Port port: Port.values()){
-			this.addStep(new ShipInPortRequirement(port), new ObjectStep(questHelper, ObjectID.SAILING_GANGPLANK_EMBARK, port.getGangplankLocation(), "Board your ship in " + port.getName() + ".", requirements));
+			this.addStep(new ShipInPortRequirement(port), new ObjectStep(questHelper, ObjectID.SAILING_GANGPLANK_EMBARK, port.getGangplankLocation(), "Board your ship in " + port.getName() + ", or reclaim it with a shipwright/ teleport it to you at your preferred dock.", requirements));
 		}
 	}
 

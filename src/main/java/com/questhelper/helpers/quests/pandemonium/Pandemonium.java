@@ -28,6 +28,7 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
+import com.questhelper.requirements.player.ShipInPortRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
@@ -58,6 +59,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -70,7 +72,7 @@ public class Pandemonium extends BasicQuestHelper
 	Zone pandemonium, portSarim, pandemoniumDockZone, portSarimDockZone, shipWreckZone;
 	DetailedQuestStep navigateShip, watchSalvageCutscene, takeHelm, takeHelm2, takeHelm3, raiseSails, raiseSails2, raiseSails3, salvageShipwreck, sailToPortSarim, pickupCargo, pickupCargoShip, sailToPandemonium, letGoOfHelm, letGoOfHelm2;
 	BoardShipStep boardShip, boardShip2, boardShip3;
-	Requirement onPandemonium, atPortSarim, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, cargoInCargoHold;
+	Requirement onPandemonium, boatAtPortSarim, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, cargoInCargoHold;
 	ItemRequirement hammer, saw, cup;
 	NoItemRequirement nothingInHands;
 
@@ -147,8 +149,8 @@ public class Pandemonium extends BasicQuestHelper
 		cSailToPortSarim.addStep(and(not(atPortSarimDock), onboardShip), takeHelm2);
 		steps.put(36, cSailToPortSarim);
 		ConditionalStep cCheckPortMaster = new ConditionalStep(this, cSailToPortSarim);
-		cCheckPortMaster.addStep(and(atPortSarim, holdingCargo, not(onboardShip)), boardShip2);
-		cCheckPortMaster.addStep(and(atPortSarim, cargoNotPickedUp, not(onboardShip)), pickupCargo);
+		cCheckPortMaster.addStep(and(boatAtPortSarim, holdingCargo, not(onboardShip)), boardShip2);
+		cCheckPortMaster.addStep(and(boatAtPortSarim, cargoNotPickedUp, not(onboardShip)), pickupCargo);
 		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, takenHelm), letGoOfHelm);
 		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, onboardShip), disembarkShipPS);
 		steps.put(38, cCheckPortMaster);
@@ -202,7 +204,7 @@ public class Pandemonium extends BasicQuestHelper
 		atShipwreck = new VarbitRequirement(VarbitID.SAILING_INTRO_REACHED_WRECK, 1);
 		notAtShipwreck = not(atShipwreck);
 		onPandemonium = new ZoneRequirement(pandemonium);
-		atPortSarim = new ZoneRequirement(portSarim);
+		boatAtPortSarim = new ShipInPortRequirement(Port.PORT_SARIM);
 		atPandemoniumDock = new ZoneRequirement(pandemoniumDockZone);
 		atPortSarimDock = new ZoneRequirement(portSarimDockZone);
 	}
@@ -271,19 +273,21 @@ public class Pandemonium extends BasicQuestHelper
 		getNewJob = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Talk to Junior Jim for a new job.");
 		boardShip = new BoardShipStep(this);
 		takeHelm2 = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IDLE, new WorldPoint(3843, 6460, 1), "Navigate using the helm.");
-		raiseSails2 = new DetailedQuestStep(this, "Raise your sails.");
+		raiseSails2 = new ObjectStep(this, ObjectID.SAILING_BOAT_SAIL_KANDARIN_1X3_WOOD, "Raise your sails.");
+		raiseSails2.addWidgetHighlight(InterfaceID.SAILING_SIDEPANEL, InterfaceID.SailingSidepanel.FACILITIES_CONTENT_CLICKLAYER & 0xFFFF, 0);
 		sailToPortSarim = new SailStep(this, Port.PORT_SARIM);
-		letGoOfHelm = new DetailedQuestStep(this, "Let go of the helm.");
-		disembarkShipPS = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_DISEMBARK, new WorldPoint(3151, 3193, 0), "Leave your ship.");
+		letGoOfHelm = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IN_USE, new WorldPoint(3843, 6460, 1), "Let go of the helm.");
+		disembarkShipPS = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_DISEMBARK, new WorldPoint(3051, 3193, 0), "Leave your ship.");
 
-		pickupCargo = new ObjectStep(this, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_WITHDRAW, new WorldPoint(3028, 3194, 0), "Pick up the cargo from the ledger table on the docks.", nothingInHands, atPortSarim);
+		pickupCargo = new ObjectStep(this, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_WITHDRAW, new WorldPoint(3028, 3194, 0), "Pick up the cargo from the ledger table on the docks.", nothingInHands);
 		boardShip2 = new BoardShipStep(this);
-		dropCargoInCargoHold = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Drop the crate in your cargo hold.");
-		takeHelm3 = new DetailedQuestStep(this, "Navigate using the helm.");
-		raiseSails3 = new DetailedQuestStep(this, "Raise your sails.");
+		dropCargoInCargoHold = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Deposit the crate into your cargo hold.");
+		takeHelm3 = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IDLE, new WorldPoint(3843, 6460, 1), "Navigate using the helm.");
+		raiseSails3 = new ObjectStep(this, ObjectID.SAILING_BOAT_SAIL_KANDARIN_1X3_WOOD, "Raise your sails.");
+		raiseSails3.addWidgetHighlight(InterfaceID.SAILING_SIDEPANEL, InterfaceID.SailingSidepanel.FACILITIES_CONTENT_CLICKLAYER & 0xFFFF, 0);
 		sailToPandemonium = new SailStep(this, Port.PANDEMONIUM);
-		letGoOfHelm2 = new DetailedQuestStep(this, "Let go of the helm.");
-		pickupCargoShip = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Pick up the cargo from your ship.", nothingInHands);
+		letGoOfHelm2 = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IN_USE, new WorldPoint(3843, 6460, 1), "Let go of the helm.");
+		pickupCargoShip = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Pick up the cargo from your ship's cargo hold.", nothingInHands);
 		boardShip3 = new BoardShipStep(this);
 		disembarkShipP = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_DISEMBARK, new WorldPoint(3070, 2987, 0), "Leave your ship.");
 		deliverCargo = new ObjectStep(this, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT, new WorldPoint(3061, 2985, 0), "Deliver the cargo at the ledger table on the docks.");
@@ -308,7 +312,7 @@ public class Pandemonium extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(new ExperienceReward(Skill.SAILING, 300));
+		return List.of(new ExperienceReward(Skill.SAILING, 300));
 	}
 
 	@Override

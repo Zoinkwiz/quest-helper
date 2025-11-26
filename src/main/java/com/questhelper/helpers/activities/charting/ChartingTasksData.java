@@ -46,7 +46,9 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation south of Lumbridge Swamp.", new WorldPoint(3182, 3136, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_LUMBRIDGE_BASIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an unfortunate corpse on a small island south east of Tutorial Island.", new WorldPoint(3133, 3053, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CORPSE_LUMBRIDGE_BASIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the western mine in Lumbridge Swamp from the south.", new WorldPoint(3145, 3134, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_LUMBRIDGE_MINE_COMPLETE)
-		)),
+			// TODO: Use this here despite not being part of group?
+//			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the Lum Lagoon and sample the contents. You'll need a raft to reach it. You'll take 5 damage drinking it.", new WorldPoint(3277, 3135, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU_COMPLETE)
+			)),
 		new ChartingSeaSection(1, "Bay of Sarim", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Grandyozenaym north east of the Wizards' Tower.", new WorldPoint(3126, 3202, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_BAY_OF_SARIM_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Wizards' Tower from the north.", new WorldPoint(3104, 3181, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_WIZARDS_TOWER_COMPLETE),
@@ -62,40 +64,50 @@ public final class ChartingTasksData
 		new ChartingSeaSection(4, "Rimmington Strait", List.of(
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Karamja Volcano from the north.", new WorldPoint(2839, 3210, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_KARAMJA_VOLCANO_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a warning about dragons east of Crandor.", new WorldPoint(2873, 3260, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_DRAGON_STATUE_RIMMINGTON_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation west of the Crafting Guild.", new WorldPoint(2905, 3281, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_RIMMINGTON_STRAIT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation west of the Crafting Guild.", new WorldPoint(2905, 3281, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_RIMMINGTON_STRAIT_COMPLETE)
 		)),
 		// Got to here, level, 14 Sailing. Should be able to unlock the crates
+		new ChartingSeaSection(5, "Catherby Bay", List.of(
+			// TODO: Add despite being part of bonus drink?
+			// new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Mudskipper Point and sample the contents.", new WorldPoint(2994, 3134, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SMUGGLED_RUM_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some odd aquatic plant life west of the Dark Wizards' Tower.", new WorldPoint(2897, 3335, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_THORNS_CATHERBY_BAY_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Entrana and sample the contents.", new WorldPoint(2869, 3378, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MARROW_WINE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Keep le Faye from the east.", new WorldPoint(2784, 3401, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_KEEP_LE_FAYE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find evidence of megashrimp activity east of the Legends' Guild.", new WorldPoint(2760, 3364, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_MEGASHRIMP_CATHERBY_BAY_COMPLETE)
+		)),
+		// Level 19 Sailing here with just quests + charting
+		// Recommend tele to pisc, and recover boat?
+		// Could be good to have this as a step
+ 		new ChartingSeaSection(46, "Hosidian Sea", List.of(
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some discarded farming equipment east of Hosidius.", new WorldPoint(1855, 3586, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_DISCARDED_PLOUGH_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the eastern coast of Hosidius and sample the contents. WARNNG: You will have all the items on you banked when you drink it!", new WorldPoint(1887, 3556, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BANKERS_DRAUGHT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Tithe Farm from the north east.", new WorldPoint(1861, 3528, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_TITHE_FARM_COMPLETE)
+		)),
+		new ChartingSeaSection(44, "Crabclaw Bay", List.of(
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a sabotaged mooring point on Crabclaw Island.", new WorldPoint(1789, 3401, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SABOTAGED_MOORING_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Crabclaw Island from the south west.", new WorldPoint(1744, 3405, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CRABCLAW_BAY_2_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Salvager Overlook from the west.", new WorldPoint(1600, 3310, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CRABCLAW_BAY_1_COMPLETE)
+		)),
 		new ChartingSeaSection(43, "Great Sound", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an advert on a small island north east of Salvager Overlook.", new WorldPoint(1656, 3304, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_ADVERT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an interesting sign south east of Land's End.", new WorldPoint(1529, 3405, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BEGINNING_SIGN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Auburnvale from the north.", new WorldPoint(1413, 3394, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_GREAT_SOUND_COMPLETE)
+			// TODO: Bonus crate, should include here for efficiency? Perhaps hide if not done quest?
+			// new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Land's End and sample the contents.", new WorldPoint(1437, 3430, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_COMPLETE)
 		)),
-		new ChartingSeaSection(44, "Crabclaw Bay", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a sabotaged mooring point on Crabclaw Island.", new WorldPoint(1789, 3401, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SABOTAGED_MOORING_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Salvager Overlook from the west.", new WorldPoint(1600, 3310, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CRABCLAW_BAY_1_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Crabclaw Island from the south west.", new WorldPoint(1744, 3405, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CRABCLAW_BAY_2_COMPLETE)
-		)),
-		new ChartingSeaSection(5, "Catherby Bay", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find evidence of megashrimp activity east of the Legends' Guild.", new WorldPoint(2760, 3364, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_MEGASHRIMP_CATHERBY_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some odd aquatic plant life west of the Dark Wizards' Tower.", new WorldPoint(2897, 3335, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_THORNS_CATHERBY_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Keep le Faye from the east.", new WorldPoint(2784, 3401, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_KEEP_LE_FAYE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Entrana and sample the contents.", new WorldPoint(2869, 3378, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MARROW_WINE_COMPLETE)
-		)),
-		new ChartingSeaSection(46, "Hosidian Sea", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some discarded farming equipment east of Hosidius.", new WorldPoint(1855, 3586, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_DISCARDED_PLOUGH_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Tithe Farm from the north east.", new WorldPoint(1861, 3528, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_TITHE_FARM_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the eastern coast of Hosidius and sample the contents.", new WorldPoint(1887, 3556, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BANKERS_DRAUGHT_COMPLETE)
-		)),
+		// TODO: Remove entire section and integrate into other sections? Keep as both so player can prioritise finishing section and also do passively??
 		new ChartingSeaSection(70, "Bonus Drinks", List.of(
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the Lum Lagoon and sample the contents.", new WorldPoint(3277, 3135, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the Lum Lagoon and sample the contents. You'll need a raft to reach it.", new WorldPoint(3277, 3135, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Mudskipper Point and sample the contents.", new WorldPoint(2994, 3134, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SMUGGLED_RUM_COMPLETE),
+			// TODO: Remove as part of quest?
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Pandemonium and sample the contents.", new WorldPoint(3013, 2998, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Land's End and sample the contents.", new WorldPoint(1437, 3430, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_COMPLETE)
 		)),
 		new ChartingSeaSection(6, "Brimhaven Passage", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a set of someone else's charts south of the Fishing Platform and copy them.", new WorldPoint(2769, 3267, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BOTTLE_BRIMHAVEN_PASSAGE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Shelled Snail east of Witchaven.", new WorldPoint(2741, 3270, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_WRECK_BRIMHAVEN_PASSAGE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Fishing Platform from the south.", new WorldPoint(2779, 3265, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FISHING_PLATFORM_COMPLETE),
+			// Managed to reach 22 Sailing at this stage with above spyglass + the Bonus Drinks
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Shelled Snail east of Witchaven.", new WorldPoint(2741, 3270, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_WRECK_BRIMHAVEN_PASSAGE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south east of Ardougne Zoo.", new WorldPoint(2648, 3244, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_BRIMHAVEN_PASSAGE_COMPLETE)
 		)),
 		new ChartingSeaSection(7, "Strait of Khazard", List.of(

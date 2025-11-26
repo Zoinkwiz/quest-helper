@@ -59,7 +59,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-
+		// Book of the dead / tele to pisc for changing location?
 	}
 
 	@Override

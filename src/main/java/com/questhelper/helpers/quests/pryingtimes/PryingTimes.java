@@ -54,7 +54,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import com.questhelper.steps.SailStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -65,6 +64,7 @@ import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class PryingTimes extends BasicQuestHelper
 {
@@ -76,10 +76,11 @@ public class PryingTimes extends BasicQuestHelper
 	TeleportItemRequirement thurgoTeleportRecommend;
 	NpcRequirement spawnedTroll;
 	VarbitRequirement drankStout;
+	Requirement haveDeliveryTask;
 
 	Zone portSarimDockZone;
 
-	NpcStep startQuest, letSteveKnow, getKey, giveKey, killTheTroll, goToSteve;
+	NpcStep startQuest, getDeliveryTask, letSteveKnow, getKey, giveKey, killTheTroll, goToSteve;
 	PortTaskStep deliverCargo;
 	ObjectStep testKey, openCrate;
 	SailStep sailToCrate;
@@ -93,7 +94,9 @@ public class PryingTimes extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		steps.put(0,  startQuest);
-		steps.put(5,  deliverCargo);
+		ConditionalStep cDeliverCargo = new ConditionalStep(this, getDeliveryTask);
+		cDeliverCargo.addStep(haveDeliveryTask, deliverCargo);
+		steps.put(5,  cDeliverCargo);
 		steps.put(10, letSteveKnow);
 		steps.put(15, getKey);
 		steps.put(20, giveKey);
@@ -133,11 +136,20 @@ public class PryingTimes extends BasicQuestHelper
 		knightsSwordQuestRequirement = new QuestRequirement(QuestHelperQuest.THE_KNIGHTS_SWORD, QuestState.FINISHED);
 		freeTaskSlotRequirement = new FreePortTaskSlotsRequirement(1);
 
+		var PORT_TASK_ID = 600;
+		haveDeliveryTask = or(
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_0_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_1_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_2_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_3_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_4_ID, PORT_TASK_ID)
+		);
+
 		shipAtPortSarimDock = new ShipInPortRequirement(Port.PORT_SARIM);
 		gotTheKey = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
 		gotStout = new ItemRequirement("Bottle of fish bladder stout", ItemID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES);
 		spawnedTroll = new NpcRequirement(NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL);
-		drankStout = new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE,1);
+		drankStout = new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE, 1);
 
 		//Recommended
 		thurgoTeleportRecommend = new TeleportItemRequirement("Fairy Ring [AIQ]", ItemCollections.FAIRY_STAFF);
@@ -148,6 +160,11 @@ public class PryingTimes extends BasicQuestHelper
 		startQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the Pandemonium bar to start the quest.", true, captainsLogRequirement);
 		startQuest.addDialogStep("Any word from Old Grog?");
 		startQuest.addDialogStep("Yes.");
+
+		getDeliveryTask = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the Pandemonium bar to start the quest.", true, captainsLogRequirement);
+		getDeliveryTask.addDialogStep("About that job you wanted doing...");
+		startQuest.addSubSteps(getDeliveryTask);
+
 		deliverCargo = new PortTaskStep(this, Port.PORT_SARIM, Port.PANDEMONIUM, 600);
 		letSteveKnow = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Let 'Squawking' Steve Beanie behind the bar know you delivered the looty.", true);
 		letSteveKnow.addDialogStep("I delivered that cargo for you.");

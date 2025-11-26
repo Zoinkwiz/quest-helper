@@ -36,34 +36,35 @@ public final class ChartingTasksData
 
 	private static final List<ChartingSeaSection> SECTIONS = List.of(
 		new ChartingSeaSection(0, "Kharidian Sea", List.of(
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Pandemonium from the cave entrance on the island.", new WorldPoint(3045, 2995, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_THE_PANDEMONIUM_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to admire Chartin' Charles McAtless in the cave on the Pandemonium.", new WorldPoint(3051, 9388, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CHARTING_TUTOR_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a crashed glider south of the Karamja Shipyard.", new WorldPoint(2987, 3010, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_GLIDER_KHARIDIAN_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Pandemonium II west of the Pandemonium.", new WorldPoint(2973, 2994, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PANDEMONIUM_2_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Pandemonium III west of the Kharidian Bandit Camp.", new WorldPoint(3143, 2979, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PANDEMONIUM_3_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to admire Chartin' Charles McAtless in the cave on the Pandemonium.", new WorldPoint(3051, 9388, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CHARTING_TUTOR_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Pandemonium from the cave entrance on the island.", new WorldPoint(3045, 2995, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_THE_PANDEMONIUM_COMPLETE)
-		)),
-		new ChartingSeaSection(1, "Bay of Sarim", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation near Draynor Village.", new WorldPoint(3079, 3231, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_BAY_OF_SARIM_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Grandyozenaym north east of the Wizards' Tower.", new WorldPoint(3126, 3202, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_BAY_OF_SARIM_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Interact with the salvaging station in Port Sarim.", new WorldPoint(3029, 3207, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SALVAGE_STATION_PORT_SARIM_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Look at the port task board in Port Sarim.", new WorldPoint(3030, 3198, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BOARD_PORT_SARIM_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Wizards' Tower from the north.", new WorldPoint(3104, 3181, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_WIZARDS_TOWER_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Pandemonium III west of the Kharidian Bandit Camp.", new WorldPoint(3143, 2979, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PANDEMONIUM_3_COMPLETE)
 		)),
 		new ChartingSeaSection(2, "Lumbridge Basin", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation south of Lumbridge Swamp.", new WorldPoint(3182, 3136, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_LUMBRIDGE_BASIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an unfortunate corpse on a small island south east of Tutorial Island.", new WorldPoint(3133, 3053, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CORPSE_LUMBRIDGE_BASIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the western mine in Lumbridge Swamp from the south.", new WorldPoint(3145, 3134, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_LUMBRIDGE_MINE_COMPLETE)
 		)),
+		new ChartingSeaSection(1, "Bay of Sarim", List.of(
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Grandyozenaym north east of the Wizards' Tower.", new WorldPoint(3126, 3202, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_BAY_OF_SARIM_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Wizards' Tower from the north.", new WorldPoint(3104, 3181, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_WIZARDS_TOWER_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation near Draynor Village.", new WorldPoint(3079, 3231, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_BAY_OF_SARIM_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Look at the port task board in Port Sarim.", new WorldPoint(3030, 3198, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BOARD_PORT_SARIM_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Interact with the salvaging station in Port Sarim.", new WorldPoint(3029, 3207, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SALVAGE_STATION_PORT_SARIM_COMPLETE)
+		)),
 		new ChartingSeaSection(3, "Mudskipper Sound", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a strange stone tablet south east of Musa Point.", new WorldPoint(2944, 3138, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRUNCH_POSTER_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Salty Grouper south west of Tutorial Island.", new WorldPoint(3054, 3051, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_MUDSKIPPER_SOUND_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Karamja Shipyard from the east.", new WorldPoint(3008, 3049, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_SHIPYARD_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Karamja Shipyard from the east.", new WorldPoint(3008, 3049, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_SHIPYARD_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a strange stone tablet south east of Musa Point.", new WorldPoint(2944, 3138, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRUNCH_POSTER_COMPLETE)
 		)),
 		new ChartingSeaSection(4, "Rimmington Strait", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation west of the Crafting Guild.", new WorldPoint(2905, 3281, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_RIMMINGTON_STRAIT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Karamja Volcano from the north.", new WorldPoint(2839, 3210, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_KARAMJA_VOLCANO_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a warning about dragons east of Crandor.", new WorldPoint(2873, 3260, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_DRAGON_STATUE_RIMMINGTON_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Karamja Volcano from the north.", new WorldPoint(2839, 3210, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_KARAMJA_VOLCANO_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation west of the Crafting Guild.", new WorldPoint(2905, 3281, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_RIMMINGTON_STRAIT_COMPLETE),
 		)),
+		// Got to here, level, 14 Sailing. Should be able to unlock the crates
 		new ChartingSeaSection(43, "Great Sound", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an advert on a small island north east of Salvager Overlook.", new WorldPoint(1656, 3304, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_ADVERT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an interesting sign south east of Land's End.", new WorldPoint(1529, 3405, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BEGINNING_SIGN_COMPLETE),

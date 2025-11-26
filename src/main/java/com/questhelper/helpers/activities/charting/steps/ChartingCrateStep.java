@@ -42,7 +42,7 @@ public class ChartingCrateStep extends ChartingTaskObjectStep
 	public ChartingCrateStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, ObjectID.SAILING_CHARTING_DRINK_CRATE, definition, requirements);
-		var crowbar = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CURRENT_DUCK);
+		var crowbar = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
 		addRequirement(crowbar);
 		var reqWithQuest = or(getFadeCondition(), new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE, 0));
 		reqWithQuest.setText(getFadeCondition().getDisplayText() + " You also require completion of the quest 'Prying Times'.");

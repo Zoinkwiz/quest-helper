@@ -111,22 +111,41 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south east of Ardougne Zoo.", new WorldPoint(2648, 3244, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_BRIMHAVEN_PASSAGE_COMPLETE)
 		)),
 		new ChartingSeaSection(7, "Strait of Khazard", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a notice from General Khazard south east of Port Khazard.", new WorldPoint(2681, 3134, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SIGN_STRAIT_OF_KHAZARD_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a rowboat off the west coast of Karamja near Port Khazard.", new WorldPoint(2702, 3151, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_PORT_KHAZARD_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find what remains of Colbansea Island in the middle of the Strait of Khazard.", new WorldPoint(2720, 3103, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_STRAIT_OF_KHAZARD_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Tower of Life from the east.", new WorldPoint(2664, 3219, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_TWO_TOWERS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Yanille Chain and sample the contents.", new WorldPoint(2674, 3103, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SLUG_BALM_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the trawler in Port Khazard.", new WorldPoint(2664, 3172, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STRAIT_OF_KHAZARD_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the trawler in Port Khazard. You can spot the next two chartable locations whilst following it.", new WorldPoint(2664, 3172, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STRAIT_OF_KHAZARD_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a rowboat off the west coast of Karamja near Port Khazard.", new WorldPoint(2702, 3151, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_PORT_KHAZARD_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a notice from General Khazard south east of Port Khazard.", new WorldPoint(2681, 3134, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SIGN_STRAIT_OF_KHAZARD_COMPLETE), new ChartingTaskDefinition(ChartingType.GENERIC, "Find what remains of Colbansea Island in the middle of the Strait of Khazard.", new WorldPoint(2720, 3103, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_STRAIT_OF_KHAZARD_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Yanille Chain and sample the contents. This will teleport you to Witchaven, so you may wish to skip drinking this until you want to return to land.", new WorldPoint(2674, 3103, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SLUG_BALM_COMPLETE)
 		)),
 		new ChartingSeaSection(9, "Feldip Gulf", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an odd geological phenomenon in the middle of the Feldip Gulf.", new WorldPoint(2695, 2981, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_FELDIP_RIDGE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Feldip Gulf and sample the contents.", new WorldPoint(2691, 2940, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_POINT_PUNCH_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south east of Rantz's cave.", new WorldPoint(2645, 2974, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FELDIP_GULF_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south east of Rantz's cave.", new WorldPoint(2645, 2974, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FELDIP_GULF_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Feldip Gulf and sample the contents. You'll take 5 damage over 5 damage ticks.", new WorldPoint(2691, 2940, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_POINT_PUNCH_COMPLETE)
+		)),
+		new ChartingSeaSection(8, "Gu'tanoth Bay", List.of(
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of an ogre ship in Gu'tanoth Bay.", new WorldPoint(2633, 3039, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_OGRE_BOAT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the island in Gu'tanoth Bay from the east.", new WorldPoint(2597, 3027, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_OGRE_ISLAND_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Yanille and sample the contents.", new WorldPoint(2624, 3069, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_OGRE_PRAYER_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Yanille Chain.", new WorldPoint(2676, 3035, 0),  "Ardent Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GUTANOTH_BAY_COMPLETE, "The answer is 'Earth Impling'.", List.of(ItemID.II_CAPTURED_IMPLING_4))
+		)),
+		new ChartingSeaSection(10, "Kharazi Strait", List.of(
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents off the south western coast of the Kharazi Jungle.", new WorldPoint(2767, 2895, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARAZI_STRAIT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a map south west of the Kharazi Jungle and copy it.", new WorldPoint(2798, 2891, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_MAP_BOTTLE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a crashed glider north of Ape Atoll.", new WorldPoint(2781, 2815, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_GLIDER_KHARAZI_STRAIT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some curious rapids west of Rock Island Prison.", new WorldPoint(2843, 2837, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_RAPIDLESS_RAPID_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Rock Island Prison and sample the contents.", new WorldPoint(2888, 2857, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_KHARAZI_COOLER_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of a cave in the Kharazi Jungle from the south. Watch out for Stormy seas!", new WorldPoint(2945, 2878, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_SPYGLASS_KHARAZI_CAVE_COMPLETE)
+		)),
+		new ChartingSeaSection(12, "Arrow Passage", List.of(
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting aquatic life north west of Crash Island.", new WorldPoint(2881, 2750, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SEA_MONKEYS_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the temple on Ape Atoll from the east.", new WorldPoint(2828, 2785, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_MONKEY_TEMPLE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the eastern coast of Ape Atoll and sample the contents.", new WorldPoint(2816, 2733, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BANANA_DAIQUIRI_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of Crash Island.", new WorldPoint(2917, 2765, 0), "Ardent Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_ARROW_PASSAGE_COMPLETE, "The answer is 'Harralander potion (unf)'.", List.of(ItemID.HARRALANDERVIAL))
 		)),
 		new ChartingSeaSection(14, "The Simian Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a makeshift flag near Cape Atoll.", new WorldPoint(2681, 2714, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ATOLL_CAPE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Void Knights' Outpost from the north.", new WorldPoint(2654, 2682, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_VOID_KNIGHTS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Void Knights' Outpost and sample the contents.", new WorldPoint(2677, 2654, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SPINNERS_GASP_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Void Knights' Outpost and sample the contents. You'll get poisoned for 4 damage.", new WorldPoint(2677, 2654, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SPINNERS_GASP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of Cape Atoll.", new WorldPoint(2691, 2703, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_THE_SIMIAN_SEA_COMPLETE)
 		)),
 		new ChartingSeaSection(45, "Gulf of Kourend", List.of(
@@ -149,31 +168,12 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Obelisk of Water.", new WorldPoint(2835, 3417, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_CATHERBY_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the Lum Lagoon.", new WorldPoint(3209, 3134, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_LUMBRIDGE_BASIN_COMPLETE)
 		)),
-		new ChartingSeaSection(10, "Kharazi Strait", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a crashed glider north of Ape Atoll.", new WorldPoint(2781, 2815, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_GLIDER_KHARAZI_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a map south west of the Kharazi Jungle and copy it.", new WorldPoint(2798, 2891, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_MAP_BOTTLE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some curious rapids west of Rock Island Prison.", new WorldPoint(2843, 2837, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_RAPIDLESS_RAPID_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Rock Island Prison and sample the contents.", new WorldPoint(2888, 2857, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_KHARAZI_COOLER_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents off the south western coast of the Kharazi Jungle.", new WorldPoint(2767, 2895, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARAZI_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of a cave in the Kharazi Jungle from the south. Watch out for Stormy seas!", new WorldPoint(2945, 2878, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_SPYGLASS_KHARAZI_CAVE_COMPLETE)
-		)),
+		// Oak master desired? Should have in reqs
 		new ChartingSeaSection(15, "The Storm Tempor", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something trying to leech power from the Storm Tempor. Watch out for Stormy seas!", new WorldPoint(3065, 2885, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_LIGHTNING_ROD_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Desert Trout south of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3033, 2796, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_DESERT_TROUT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3001, 2847, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STORM_TEMPOR_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Ruins of Unkah from north of the docks. Watch out for Stormy seas!", new WorldPoint(3144, 2854, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_SPYGLASS_UNKAH_SHIP_COMPLETE)
-		)),
-		new ChartingSeaSection(8, "Gu'tanoth Bay", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of an ogre ship in Gu'tanoth Bay.", new WorldPoint(2633, 3039, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_OGRE_BOAT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the island in Gu'tanoth Bay from the east.", new WorldPoint(2597, 3027, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_OGRE_ISLAND_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Yanille and sample the contents.", new WorldPoint(2624, 3069, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_OGRE_PRAYER_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Yanille Chain.", new WorldPoint(2676, 3035, 0),  "Ardent Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GUTANOTH_BAY_COMPLETE, "The answer is 'Earth Impling'.", List.of(ItemID.II_CAPTURED_IMPLING_4))
-		)),
-		new ChartingSeaSection(12, "Arrow Passage", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting aquatic life north west of Crash Island.", new WorldPoint(2881, 2750, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SEA_MONKEYS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the temple on Ape Atoll from the east.", new WorldPoint(2828, 2785, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_MONKEY_TEMPLE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the eastern coast of Ape Atoll and sample the contents.", new WorldPoint(2816, 2733, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BANANA_DAIQUIRI_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of Crash Island.", new WorldPoint(2917, 2765, 0), "Ardent Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_ARROW_PASSAGE_COMPLETE, "The answer is 'Harralander potion (unf)'.", List.of(ItemID.HARRALANDERVIAL))
 		)),
 		new ChartingSeaSection(13, "Menaphite Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some collected sand on an island west of Menaphos.", new WorldPoint(3143, 2770, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SAND_PIT_COMPLETE),

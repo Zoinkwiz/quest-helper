@@ -222,6 +222,7 @@ public class ReleaseDate
 		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
 		QuestHelperQuest.SCRAMBLED,
 		QuestHelperQuest.PANDEMONIUM,
+		QuestHelperQuest.PRYING_TIMES,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

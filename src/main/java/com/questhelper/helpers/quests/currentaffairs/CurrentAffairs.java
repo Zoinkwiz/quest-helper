@@ -65,7 +65,7 @@ public class CurrentAffairs extends BasicQuestHelper
 	ItemRequirement charcoalRequirement, coinsRequirement, hasFormCr4p, hasTinyNet, hasMayoralFishbowl, hasMayor, hasForm7r45h, hasForm7r45hSigned, hasDuck;
 	QuestRequirement pandemoniumQuestRequirement;
 	Requirement filledFormCr4p, formCr4pGiven, boughtFishbowl, auditStarted, onboardShip, duckCanBeFollowed, catherbyCharted;
-	NpcStep startQuest, talkToCouncillor, handOverFormCr4p, talkToArhein, talkToHarry, getNewFishbowl, showArheinMayor, getNewMayor, showCatherineMayor, doAudit, getForm7r45h, showCatherineForm, giveArheimNews, getDuck, showCurrentsArhein;
+	NpcStep startQuest, talkToCouncillor, handOverFormCr4p, talkAfterFormHandedIn, talkToArhein, talkToHarry, getNewFishbowl, showArheinMayor, getNewMayor, showCatherineMayor, doAudit, getForm7r45h, showCatherineForm, giveArheimNews, getDuck, showCurrentsArhein;
 	ObjectStep grabCharcoal, fishInAquarium;
 	DetailedQuestStep fillFormCr4p, signForm7r45h, followThatDuck;
 	ConditionalStep cGetMayor, cShowCatherineMayor, cSign7r45h, cBoardShip, cSailToStart;
@@ -91,7 +91,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		steps.put(0, startQuest);
 		steps.put(5, talkToCouncillor);
 		ConditionalStep cFillForm = new ConditionalStep(this, talkToCouncillor);
-		cFillForm.addStep(formCr4pGiven, talkToCouncillor);
+		cFillForm.addStep(formCr4pGiven, talkAfterFormHandedIn);
 		cFillForm.addStep(and(not(formCr4pGiven), hasFormCr4p, filledFormCr4p), handOverFormCr4p);
 		cFillForm.addStep(and(not(formCr4pGiven), charcoalRequirement, not(filledFormCr4p), hasFormCr4p.highlighted()), fillFormCr4p);
 		cFillForm.addStep(and(not(formCr4pGiven), hasFormCr4p, not(charcoalRequirement)), grabCharcoal);
@@ -189,6 +189,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		startQuest.addDialogStep("Yes.");
 
 		talkToCouncillor = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Talk to Councillor Catherine in the north-east of Catherby.");
+		talkAfterFormHandedIn = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Finish talking to Councillor Catherine in the north-east of Catherby.");
 		grabCharcoal = new ObjectStep(this, ObjectID.CURRENT_AFFAIRS_CABINET, new WorldPoint(2827, 3453, 0), "Grab a piece of charcoal from the cabinet.");
 		fillFormCr4p = new DetailedQuestStep(this, "Fill form cr-4p. The answers you provide do not matter.", hasFormCr4p.highlighted(), charcoalRequirement);
 
@@ -291,8 +292,8 @@ public class CurrentAffairs extends BasicQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Arhein's employee", Arrays.asList(startQuest, talkToCouncillor, fillFormCr4p, handOverFormCr4p), charcoalRequirement));
-		allSteps.add(new PanelDetails("A new mayor", Arrays.asList(talkToHarry, fishInAquarium, showArheinMayor, cShowCatherineMayor, cSign7r45h), coinsRequirement));
+		allSteps.add(new PanelDetails("Arhein's employee", Arrays.asList(startQuest, talkToCouncillor, fillFormCr4p, handOverFormCr4p, talkAfterFormHandedIn), charcoalRequirement));
+		allSteps.add(new PanelDetails("A new mayor", Arrays.asList(talkToArhein, talkToHarry, fishInAquarium, showArheinMayor, cShowCatherineMayor, cSign7r45h), coinsRequirement));
 		allSteps.add(new PanelDetails("Map the currents!", Arrays.asList(cBoardShip, sailToStart, followThatDuck, showCurrentsArhein), hasDuck));
 		return allSteps;
 	}

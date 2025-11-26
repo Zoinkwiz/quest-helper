@@ -209,9 +209,6 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	{
 		StringBuilder text = new StringBuilder();
 		QuestStep textStep = step;
-		if(step instanceof BoardShipStep){
-			textStep = step.getActiveStep();
-		}
 		if (textStep.getText() != null)
 		{
 			var first = true;

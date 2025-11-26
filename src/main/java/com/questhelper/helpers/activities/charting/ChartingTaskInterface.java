@@ -22,39 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel;
+package com.questhelper.helpers.activities.charting;
 
-import com.questhelper.steps.QuestStep;
-import lombok.Getter;
-import java.util.ArrayList;
-import java.util.List;
+import com.questhelper.requirements.Requirement;
 
-// The intention is to contain a set of PanelDetails.
-// This is intended to be the structure used for containing a reorderable set of PanelDetails
-public class TopLevelPanelDetails extends PanelDetails
+public interface ChartingTaskInterface
 {
-    @Getter
-    private final List<PanelDetails> panelDetails;
-	
-    public TopLevelPanelDetails(String header, PanelDetails... panelDetails)
-	{
-		super(header);
-		this.panelDetails = new ArrayList<>(List.of(panelDetails));
-	}
-
-	public void addPanelDetails(PanelDetails panelDetail)
-	{
-		panelDetails.add(panelDetail);
-	}
-
-	@Override
-	public boolean contains(QuestStep questStep)
-	{
-		for (PanelDetails panelDetail : panelDetails)
-		{
-			if (panelDetail.contains(questStep)) return true;
-		}
-
-		return false;
-	}
+	Requirement getIncompleteRequirement();
+	Requirement getCanDoRequirement();
 }

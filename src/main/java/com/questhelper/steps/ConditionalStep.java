@@ -35,6 +35,7 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
+import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import lombok.NonNull;
 import lombok.Setter;
@@ -422,12 +423,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			currentStep.makeWidgetOverlayHint(graphics, plugin);
 		}
-		WorldPoint activeWp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).getWorldPoint() : null;
+		DefinedPoint activeDp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).getDefinedPoint(): null;
 		List<ItemRequirement> itemRequirements = requirements.stream()
 				.filter(ItemRequirement.class::isInstance)
 				.map(ItemRequirement.class::cast)
 				.collect(Collectors.toList());
-		renderInventory(graphics, activeWp, itemRequirements, false);
+		renderInventory(graphics, activeDp, itemRequirements, false);
 		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
 		{
 			widgetHighlights.highlightChoices(graphics, client, plugin);

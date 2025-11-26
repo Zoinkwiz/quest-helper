@@ -22,39 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel;
+package com.questhelper.requirements;
 
-import com.questhelper.steps.QuestStep;
-import lombok.Getter;
-import java.util.ArrayList;
-import java.util.List;
+import com.questhelper.steps.DetailedQuestStep;
+import net.runelite.api.Client;
+import org.jetbrains.annotations.NotNull;
 
-// The intention is to contain a set of PanelDetails.
-// This is intended to be the structure used for containing a reorderable set of PanelDetails
-public class TopLevelPanelDetails extends PanelDetails
+public class StepIsActiveRequirement extends AbstractRequirement
 {
-    @Getter
-    private final List<PanelDetails> panelDetails;
-	
-    public TopLevelPanelDetails(String header, PanelDetails... panelDetails)
-	{
-		super(header);
-		this.panelDetails = new ArrayList<>(List.of(panelDetails));
-	}
+	private final DetailedQuestStep questStep;
 
-	public void addPanelDetails(PanelDetails panelDetail)
+	public StepIsActiveRequirement(DetailedQuestStep questStep)
 	{
-		panelDetails.add(panelDetail);
+		this.questStep = questStep;
 	}
 
 	@Override
-	public boolean contains(QuestStep questStep)
+	public boolean check(Client client)
 	{
-		for (PanelDetails panelDetail : panelDetails)
-		{
-			if (panelDetail.contains(questStep)) return true;
-		}
+		return questStep.isStarted();
+	}
 
-		return false;
+	@NotNull
+	@Override
+	public String getDisplayText()
+	{
+		return "Step '" + questStep.getText() + "' is active.";
 	}
 }

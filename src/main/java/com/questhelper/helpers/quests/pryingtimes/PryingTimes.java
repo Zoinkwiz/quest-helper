@@ -54,7 +54,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import com.questhelper.steps.SailStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -65,10 +64,11 @@ import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class PryingTimes extends BasicQuestHelper
 {
-	ItemRequirement hammerRequirement, steelBarRequirement, redberryPieRequirement, captainsLogRequirement, gotTheKey, gotStout;
+	ItemRequirement hammerRequirement, steelBarRequirement, redberryPieRequirement, captainsLogRequirement, gotTheKey, gotStout, crowbar;
 	SkillRequirement sailingSkillRequirement, smithingSkillRequirement;
 	QuestRequirement pandemoniumQuestRequirement, knightsSwordQuestRequirement;
 	FreePortTaskSlotsRequirement freeTaskSlotRequirement;
@@ -76,10 +76,11 @@ public class PryingTimes extends BasicQuestHelper
 	TeleportItemRequirement thurgoTeleportRecommend;
 	NpcRequirement spawnedTroll;
 	VarbitRequirement drankStout;
+	Requirement haveDeliveryTask;
 
 	Zone portSarimDockZone;
 
-	NpcStep startQuest, letSteveKnow, getKey, giveKey, killTheTroll, goToSteve;
+	NpcStep startQuest, getDeliveryTask, letSteveKnow, getKey, giveKey, killTheTroll, goToSteve;
 	PortTaskStep deliverCargo;
 	ObjectStep testKey, openCrate;
 	SailStep sailToCrate;
@@ -93,10 +94,14 @@ public class PryingTimes extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		steps.put(0,  startQuest);
-		steps.put(5,  deliverCargo);
+		ConditionalStep cDeliverCargo = new ConditionalStep(this, getDeliveryTask);
+		cDeliverCargo.addStep(haveDeliveryTask, deliverCargo);
+		steps.put(5,  cDeliverCargo);
 		steps.put(10, letSteveKnow);
 		steps.put(15, getKey);
-		steps.put(20, giveKey);
+		ConditionalStep goGetAndGiveKey = new ConditionalStep(this, getKey);
+		goGetAndGiveKey.addStep(gotTheKey.alsoCheckBank(), giveKey);
+		steps.put(20, goGetAndGiveKey);
 		ConditionalStep cTestKey = new ConditionalStep(this, sailToCrate);
 		cTestKey.addStep(and(sailToCrate.getZoneRequirement(), not(gotStout), not(drankStout)), testKey);
 		cTestKey.addStep(gotStout, drinkTheStout);
@@ -133,11 +138,24 @@ public class PryingTimes extends BasicQuestHelper
 		knightsSwordQuestRequirement = new QuestRequirement(QuestHelperQuest.THE_KNIGHTS_SWORD, QuestState.FINISHED);
 		freeTaskSlotRequirement = new FreePortTaskSlotsRequirement(1);
 
+		var PORT_TASK_ID = 600;
+		haveDeliveryTask = or(
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_0_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_1_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_2_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_3_ID, PORT_TASK_ID),
+			new VarbitRequirement(VarbitID.PORT_TASK_SLOT_4_ID, PORT_TASK_ID)
+		);
+
 		shipAtPortSarimDock = new ShipInPortRequirement(Port.PORT_SARIM);
 		gotTheKey = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
+		gotTheKey.setTooltip("You can get another from Thurgo. You'll need another redberry pie, iron bar, and hammer");
+
+		crowbar = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
+		crowbar.setTooltip("You can get another from the cargo hold of your boat");
 		gotStout = new ItemRequirement("Bottle of fish bladder stout", ItemID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES);
 		spawnedTroll = new NpcRequirement(NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL);
-		drankStout = new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE,1);
+		drankStout = new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE, 1);
 
 		//Recommended
 		thurgoTeleportRecommend = new TeleportItemRequirement("Fairy Ring [AIQ]", ItemCollections.FAIRY_STAFF);
@@ -145,25 +163,31 @@ public class PryingTimes extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		startQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the Pandemonium bar to start the quest.", true, captainsLogRequirement);
+		startQuest = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the Pandemonium bar to start the quest. You can travel there via Captain Tobias on Port Sarim docks for 30gp.", true, captainsLogRequirement);
 		startQuest.addDialogStep("Any word from Old Grog?");
 		startQuest.addDialogStep("Yes.");
+
+		getDeliveryTask = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Talk to 'Squawking' Steve Beanie behind the Pandemonium bar to start the quest.", true, captainsLogRequirement);
+		getDeliveryTask.addDialogStep("About that job you wanted doing...");
+		startQuest.addSubSteps(getDeliveryTask);
+
 		deliverCargo = new PortTaskStep(this, Port.PORT_SARIM, Port.PANDEMONIUM, 600);
 		letSteveKnow = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Let 'Squawking' Steve Beanie behind the bar know you delivered the looty.", true);
 		letSteveKnow.addDialogStep("I delivered that cargo for you.");
 
 		getKey = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Get the key from Thurgo in the shed near Mudskipper's Point.", true,hammerRequirement, steelBarRequirement,redberryPieRequirement);
-		getKey.addDialogStep(Pattern.compile("(I need some help with a 'special key'\\.)|(So, can you help me make a crowbar\\?)"));
+		getKey.addDialogSteps("I need some help with a 'special key'.", "So, can you help me make a crowbar?", "Can you help me make another crowbar?");
+		getKey.addDialogStep("Yes.");
 		getKey.setRecommended(Arrays.asList(thurgoTeleportRecommend));
-		giveKey = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Give the 'key' to 'Squawking' Steve Beanie behind the Pandemonium bar.", true, gotTheKey);
+		giveKey = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Give the 'key' to 'Squawking' Steve Beanie behind the Pandemonium bar. You can travel there via Captain Tobias on Port Sarim docks for 30gp.", true, gotTheKey);
 		giveKey.addDialogStep("I made that 'special key' you needed.");
-		testKey = new ObjectStep(this, ObjectID.SAILING_CHARTING_DRINK_CRATE, new WorldPoint(3013, 2998, 0), "Open the Sealed crate with the newly acquired 'key'.", gotTheKey);
-		sailToCrate = new SailStep(this, new WorldPoint(3013, 2998, 0));
+		testKey = new ObjectStep(this, ObjectID.SAILING_CHARTING_DRINK_CRATE, new WorldPoint(3013, 2998, 0), "Open the Sealed crate with the newly acquired 'key'.", crowbar);
+		sailToCrate = new SailStep(this, new WorldPoint(3013, 2998, 0), "Sail to the crate north-west of Pandemonium.", crowbar);
 		drinkTheStout = new ItemStep(this, "Drink the stout. Warning: you will be attacked by a level 14 Drink Troll.", gotStout.highlighted());
 		killTheTroll = new NpcStep(this, NpcID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL, new WorldPoint(3013, 2998, 0), "Kill the Drink Troll, or log out.");
-		goToSteve = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Tell 'Squawking' Steve Beanie behind the Pandemonium bar the key works.", true, gotTheKey);
+		goToSteve = new NpcStep(this, NpcID.STEVE_BEANIE, new WorldPoint(3050, 2966, 0), "Tell 'Squawking' Steve Beanie behind the Pandemonium bar the key works.", true, crowbar);
 		goToSteve.addDialogStep("About that crate...");
-		openCrate = new ObjectStep(this, ObjectID.PRY_CRATE_SEALED, new WorldPoint(3048, 2965, 0), "Open Steve's crate in the corner of behind the bar.", gotTheKey);
+		openCrate = new ObjectStep(this, ObjectID.PRY_CRATE_SEALED, new WorldPoint(3048, 2965, 0), "Open Steve's crate in the corner behind the bar.", crowbar);
 	}
 
 	@Override
@@ -182,6 +206,12 @@ public class PryingTimes extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		return Arrays.asList(sailingSkillRequirement, smithingSkillRequirement, pandemoniumQuestRequirement, knightsSwordQuestRequirement, freeTaskSlotRequirement);
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return Arrays.asList("Drink Troll (level 14) (can be ignored)");
 	}
 
 	@Override

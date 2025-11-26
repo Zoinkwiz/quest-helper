@@ -22,39 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.panel;
+package com.questhelper.helpers.activities.charting.steps;
 
-import com.questhelper.steps.QuestStep;
-import lombok.Getter;
-import java.util.ArrayList;
+import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import net.runelite.api.GameObject;
+import net.runelite.api.TileObject;
+import net.runelite.api.gameval.ItemID;
 import java.util.List;
 
-// The intention is to contain a set of PanelDetails.
-// This is intended to be the structure used for containing a reorderable set of PanelDetails
-public class TopLevelPanelDetails extends PanelDetails
+// This is a lazy implementation where we fully trust the location of the object to only have one thing to work
+public class ChartingGenericObjectStep extends ChartingTaskObjectStep
 {
-    @Getter
-    private final List<PanelDetails> panelDetails;
-	
-    public TopLevelPanelDetails(String header, PanelDetails... panelDetails)
+	public ChartingGenericObjectStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		super(header);
-		this.panelDetails = new ArrayList<>(List.of(panelDetails));
-	}
-
-	public void addPanelDetails(PanelDetails panelDetail)
-	{
-		panelDetails.add(panelDetail);
+		super(questHelper, -1, definition, requirements);
 	}
 
 	@Override
-	public boolean contains(QuestStep questStep)
+	protected void handleObjects(TileObject object)
 	{
-		for (PanelDetails panelDetail : panelDetails)
+		if (!(object instanceof GameObject))
 		{
-			if (panelDetail.contains(questStep)) return true;
+			return;
 		}
 
-		return false;
+		setObjects(object);
 	}
 }

@@ -34,6 +34,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,7 +44,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -56,6 +56,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 {
 	// Idea is to contain multiple sections or queststeppanel
 	private static final int TITLE_PADDING = 5;
+	private static final ImageIcon DRAG_ICON = new ImageIcon(ImageUtil.loadImageResource(QuestHelperPlugin.class, "/hamburger.png"));
 
 	private final QuestOverviewPanel questOverviewPanel;
 	private final QuestHelperPlugin questHelperPlugin;
@@ -127,10 +128,10 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		stepsPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		// Dragging functionality
-		var draggable = Arrays.stream(panelDetails.getPanelDetails()).anyMatch((pDetails -> pDetails.getId() != -1));
+		var draggable = panelDetails.getPanelDetails().stream().anyMatch((pDetails -> pDetails.getId() != -1));
 		List<Integer> order = questHelperPlugin.loadSidebarOrder(questManager.getSelectedQuest());
 
-		List<PanelDetails> panelDetailsList = new ArrayList<>(List.of(panelDetails.getPanelDetails()));
+		List<PanelDetails> panelDetailsList = panelDetails.getPanelDetails();
 
 		if (draggable && order != null)
 		{
@@ -181,8 +182,6 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 			collapse();
 		}
 	}
-
-
 
 	@Override
 	public void mouseClicked(MouseEvent e)
@@ -423,7 +422,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 
 	private void makeDraggable(AbstractQuestSection newStep)
 	{
-		JLabel grip = new JLabel("☰");
+		JLabel grip = new JLabel(DRAG_ICON);
 		grip.setBorder(new EmptyBorder(0, 0, 3, 0));
 		grip.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 
@@ -431,7 +430,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		grip.addMouseListener(listener);
 		grip.addMouseMotionListener(listener);
 
-		newStep.leftTitleContainer.add(grip, java.awt.BorderLayout.WEST);
+		newStep.leftTitleContainer.add(grip, BorderLayout.WEST);
 	}
 
 	private void swapPanels(AbstractQuestSection a, AbstractQuestSection b)
@@ -491,16 +490,19 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		{
 			if (draggingPanel == null) return;
 
-			int currentY = e.getYOnScreen();
-			// We only need the absolute screen‐Y to compare midpoints:
+			// Convert mouse position to coordinates relative to stepsPanel
+			// This ensures scrolling doesn't affect the drag calculations
+			Point mousePoint = e.getLocationOnScreen();
+			SwingUtilities.convertPointFromScreen(mousePoint, stepsPanel);
+			int currentY = mousePoint.y;
+
 			for (AbstractQuestSection other : subPanels)
 			{
 				if (other == draggingPanel) continue;
 
 				Rectangle r = other.getBounds();
-				int otherYPos = 0;
-				if (other.isVisible()) otherYPos = other.getLocationOnScreen().y;
-				int midY = otherYPos + r.height / 2;
+				// Use bounds relative to stepsPanel, not screen coordinates
+				int midY = r.y + r.height / 2;
 
 				int fromIndex = subPanels.indexOf(draggingPanel);
 				int toIndex = subPanels.indexOf(other);

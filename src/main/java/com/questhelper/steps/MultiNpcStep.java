@@ -138,7 +138,7 @@ public class MultiNpcStep extends NpcStep
 	@Override
 	public NpcStep copy()
 	{
-		MultiNpcStep newStep = new MultiNpcStep(getQuestHelper(), npcID, worldPoint, null, multinpcVarbit, npcCompositionID, requirements);
+		MultiNpcStep newStep = new MultiNpcStep(getQuestHelper(), npcID, definedPoint.getWorldPoint(), null, multinpcVarbit, npcCompositionID, requirements);
 		if (text != null)
 		{
 			newStep.setText(text);

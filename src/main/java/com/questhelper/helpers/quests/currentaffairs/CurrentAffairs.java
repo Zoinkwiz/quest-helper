@@ -104,12 +104,10 @@ public class CurrentAffairs extends BasicQuestHelper
 		cGetMayor.addStep(boughtFishbowl, getNewFishbowl);
 		steps.put(20, cGetMayor);
 		cShowCatherineMayor = new ConditionalStep(this, getNewMayor);
-		cShowCatherineMayor.setShouldPassthroughText(true);
 		cShowCatherineMayor.addStep(and(auditStarted), doAudit);
 		cShowCatherineMayor.addStep(and(not(auditStarted), hasMayor), showCatherineMayor);
 		steps.put(25, cShowCatherineMayor);
 		cSign7r45h = new ConditionalStep(this, getNewMayor);
-		cSign7r45h.setShouldPassthroughText(true);
 		cSign7r45h.addStep(and(hasForm7r45hSigned), showCatherineForm);
 		cSign7r45h.addStep(and(hasForm7r45h, hasMayor), signForm7r45h);
 		cSign7r45h.addStep(and(hasMayor, not(hasForm7r45h)), getForm7r45h);
@@ -143,6 +141,9 @@ public class CurrentAffairs extends BasicQuestHelper
 		auditStarted = new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_AUDIT_START, 1);
 		onboardShip = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
 		catherbyCharted = new VarbitRequirement(VarbitID.SAILING_CHARTING_CURRENT_DUCK_CATHERBY_BAY_COMPLETE, 1);
+
+		charcoalRequirement.setConditionToHide(filledFormCr4p);
+		coinsRequirement.setConditionToHide(boughtFishbowl);
 	}
 
 	@Override
@@ -212,9 +213,10 @@ public class CurrentAffairs extends BasicQuestHelper
 		talkToHarry = new NpcStep(this, NpcID.HARRY, new WorldPoint(2831, 3444, 0), "Talk to Harry in the fish shop in south-east Catherby about a new mayor.", true, coinsRequirement);
 		talkToHarry.addDialogStep("I'm here about the mayor.");
 		talkToHarry.addDialogStep("Yes.");
-		fishInAquarium = new ObjectStep(this, ObjectID.AQUARIUM, new WorldPoint(2831, 3444, 0), "Fish a new mayor from the aquarium", true, hasTinyNet, hasMayoralFishbowl);
+		fishInAquarium = new ObjectStep(this, ObjectID.AQUARIUM, new WorldPoint(2831, 3444, 0), "Fish a new mayor from the aquarium.", true, hasTinyNet, hasMayoralFishbowl);
 		getNewFishbowl = new NpcStep(this, NpcID.HARRY, new WorldPoint(2831, 3444, 0), "Talk to Harry in the fish shop in south-east Catherby about a new mayoral fishbowl.", true);
 		getNewFishbowl.addDialogStep("I'm here about the mayor.");
+		talkToHarry.addSubSteps(getNewFishbowl);
 		showArheinMayor = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Introduce Arhein on the Catherby docks to the new Mayor of Catherby.", true, hasMayor);
 		showArheinMayor.addDialogStep("About the mayor...");
 		showCatherineMayor = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Talk to Councillor Catherine about changing the by-laws.", hasMayor);
@@ -242,7 +244,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		getDuck = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Get a new duck from Arhein on the Catherby docks.", true);
 		getDuck.addDialogStep("About that duck...");
 
-		followThatDuck = new DetailedQuestStep(this, "Follow that Duck!"); //It ends up at (2802,3322,0)
+		followThatDuck = new DetailedQuestStep(this, new WorldPoint(2802, 3322, 0), "Follow that Duck! It'll end up south-west of Entrana."); //It ends up at (2802,3322,0)
 		showCurrentsArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Share what you've learned with Arhein on the Catherby docks.", true);
 		showCurrentsArhein.addDialogStep("I've charted the currents!");
 	}
@@ -293,7 +295,7 @@ public class CurrentAffairs extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Arhein's employee", Arrays.asList(startQuest, talkToCouncillor, fillFormCr4p, handOverFormCr4p, talkAfterFormHandedIn), charcoalRequirement));
-		allSteps.add(new PanelDetails("A new mayor", Arrays.asList(talkToArhein, talkToHarry, fishInAquarium, showArheinMayor, cShowCatherineMayor, cSign7r45h), coinsRequirement));
+		allSteps.add(new PanelDetails("A new mayor", Arrays.asList(talkToArhein, talkToHarry, fishInAquarium, showArheinMayor, showCatherineMayor, doAudit, getForm7r45h, signForm7r45h, showCatherineForm, giveArheimNews), coinsRequirement));
 		allSteps.add(new PanelDetails("Map the currents!", Arrays.asList(cBoardShip, sailToStart, followThatDuck, showCurrentsArhein), hasDuck));
 		return allSteps;
 	}

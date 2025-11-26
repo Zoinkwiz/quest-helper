@@ -464,6 +464,12 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
+		var worldViewsToConsider = List.of(client.getTopLevelWorldView(), client.getLocalPlayer().getWorldView());
+		if (!worldViewsToConsider.contains(object.getWorldView()))
+		{
+			return;
+		}
+
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
 			setObjects(object);

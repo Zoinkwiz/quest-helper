@@ -44,6 +44,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.X_MARKS_THE_SPOT,
 		QuestHelperQuest.WITCHS_POTION,
 		QuestHelperQuest.CLIENT_OF_KOUREND,
+		QuestHelperQuest.PANDEMONIUM,
 		QuestHelperQuest.STRONGHOLD_OF_SECURITY,
 		QuestHelperQuest.CHILDREN_OF_THE_SUN,
 		QuestHelperQuest.ROMEO__JULIET,

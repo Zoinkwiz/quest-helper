@@ -104,6 +104,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.A_SOULS_BANE,
 		QuestHelperQuest.ENTER_THE_ABYSS,
 		QuestHelperQuest.X_MARKS_THE_SPOT,
+		QuestHelperQuest.PANDEMONIUM,
 		QuestHelperQuest.PIRATES_TREASURE,
 		QuestHelperQuest.CLIENT_OF_KOUREND,
 		QuestHelperQuest.THE_QUEEN_OF_THIEVES,

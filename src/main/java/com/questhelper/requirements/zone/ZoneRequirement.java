@@ -33,6 +33,8 @@ import com.questhelper.util.Utils;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.WorldEntity;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.annotation.Nonnull;

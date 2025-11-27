@@ -207,7 +207,6 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 
 		List<Integer> sectionIds = getIds();
 		questHelperPlugin.resetSidebarOrderForSection(questHelper, sectionIds);
-		questOverviewPanel.regenerateQuest();
 	}
 
 	@Override

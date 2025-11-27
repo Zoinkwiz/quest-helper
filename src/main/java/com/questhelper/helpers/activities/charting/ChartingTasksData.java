@@ -45,9 +45,9 @@ public final class ChartingTasksData
 		new ChartingSeaSection(2, "Lumbridge Basin", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation south of Lumbridge Swamp.", new WorldPoint(3182, 3136, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_LUMBRIDGE_BASIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an unfortunate corpse on a small island south east of Tutorial Island.", new WorldPoint(3133, 3053, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CORPSE_LUMBRIDGE_BASIN_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the western mine in Lumbridge Swamp from the south.", new WorldPoint(3145, 3134, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_LUMBRIDGE_MINE_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the western mine in Lumbridge Swamp from the south.", new WorldPoint(3145, 3134, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_LUMBRIDGE_MINE_COMPLETE),
 			// TODO: Use this here despite not being part of group?
-//			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the Lum Lagoon and sample the contents. You'll need a raft to reach it. You'll take 5 damage drinking it.", new WorldPoint(3277, 3135, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the Lum Lagoon and sample the contents. You'll need a raft to reach it. You'll take 5 damage drinking it.", new WorldPoint(3277, 3135, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SORODAMIN_BRU_COMPLETE)
 			)),
 		new ChartingSeaSection(1, "Bay of Sarim", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Grandyozenaym north east of the Wizards' Tower.", new WorldPoint(3126, 3202, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_BAY_OF_SARIM_COMPLETE),
@@ -69,7 +69,7 @@ public final class ChartingTasksData
 		// Got to here, level, 14 Sailing. Should be able to unlock the crates
 		new ChartingSeaSection(5, "Catherby Bay", List.of(
 			// TODO: Add despite being part of bonus drink?
-			// new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Mudskipper Point and sample the contents.", new WorldPoint(2994, 3134, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SMUGGLED_RUM_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Mudskipper Point and sample the contents.", new WorldPoint(2994, 3134, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SMUGGLED_RUM_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some odd aquatic plant life west of the Dark Wizards' Tower.", new WorldPoint(2897, 3335, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_THORNS_CATHERBY_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Entrana and sample the contents.", new WorldPoint(2869, 3378, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MARROW_WINE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Keep le Faye from the east.", new WorldPoint(2784, 3401, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_KEEP_LE_FAYE_COMPLETE),
@@ -91,9 +91,9 @@ public final class ChartingTasksData
 		new ChartingSeaSection(43, "Great Sound", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an advert on a small island north east of Salvager Overlook.", new WorldPoint(1656, 3304, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_ADVERT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an interesting sign south east of Land's End.", new WorldPoint(1529, 3405, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BEGINNING_SIGN_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Auburnvale from the north.", new WorldPoint(1413, 3394, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_GREAT_SOUND_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Auburnvale from the north.", new WorldPoint(1413, 3394, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_GREAT_SOUND_COMPLETE),
 			// TODO: Bonus crate, should include here for efficiency? Perhaps hide if not done quest?
-			// new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Land's End and sample the contents.", new WorldPoint(1437, 3430, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_COMPLETE)
+			 new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Land's End and sample the contents.", new WorldPoint(1437, 3430, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_COMPLETE)
 		)),
 		// TODO: Remove entire section and integrate into other sections? Keep as both so player can prioritise finishing section and also do passively??
 		new ChartingSeaSection(70, "Bonus Drinks", List.of(
@@ -148,11 +148,19 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Void Knights' Outpost and sample the contents. You'll get poisoned for 4 damage.", new WorldPoint(2677, 2654, 0), "Ardent Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SPINNERS_GASP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of Cape Atoll.", new WorldPoint(2691, 2703, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_THE_SIMIAN_SEA_COMPLETE)
 		)),
+		// Oak master desired? Should have in reqs
+		new ChartingSeaSection(15, "The Storm Tempor", List.of(
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something trying to leech power from the Storm Tempor. Watch out for Stormy seas!", new WorldPoint(3065, 2885, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_LIGHTNING_ROD_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Desert Trout south of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3033, 2796, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_DESERT_TROUT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3001, 2847, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STORM_TEMPOR_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Ruins of Unkah from north of the docks. Watch out for Stormy seas!", new WorldPoint(3144, 2854, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_SPYGLASS_UNKAH_SHIP_COMPLETE)
+		)),
+		// Tele over here?
 		new ChartingSeaSection(45, "Gulf of Kourend", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something in desperate need of repair north east of Port Piscarilius.", new WorldPoint(1847, 3796, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BROKEN_CRANE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north west of the Dibber.", new WorldPoint(1813, 3664, 0), "Western Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GULF_OF_KOUREND_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Gulf of Kourend and sample the contents. Your inventory will be filled with ensouled heads.", new WorldPoint(1934, 3742, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_HEADLESS_UNICORNMAN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Port Piscarilius from north of the Foodhall.", new WorldPoint(1846, 3769, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_PORT_PISCARILIUS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of the Gulf of Kourend and sample the contents.", new WorldPoint(1934, 3742, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_HEADLESS_UNICORNMAN_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north west of the Dibber.", new WorldPoint(1813, 3664, 0), "Western Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GULF_OF_KOUREND_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something in desperate need of repair north east of Port Piscarilius.", new WorldPoint(1847, 3796, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BROKEN_CRANE_COMPLETE)
 		)),
 		new ChartingSeaSection(47, "Pilgrims' Passage", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find evidence of an experiment on Chinchompa Island.", new WorldPoint(1887, 3424, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CHINCHOMPA_TABLE_COMPLETE),
@@ -160,20 +168,14 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Chinchompa Island.", new WorldPoint(1871, 3430, 0), "Western Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_PILGRIMS_PASSAGE_COMPLETE)
 		)),
 		new ChartingSeaSection(71, "Bonus Currents", List.of(
+			// TODO: Integrate into other sections?
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Amja south of Musa Point.", new WorldPoint(2890, 3121, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MUSA_POINT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of Lacerta Falls.", new WorldPoint(1384, 3465, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GREAT_SOUND_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of the small island in the Bay of Sarim.", new WorldPoint(3082, 3201, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FAIRY_RING_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Kharidian Bandit Camp.", new WorldPoint(3145, 2963, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARIDIAN_SEA_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Makeover Mage 's home.", new WorldPoint(2902, 3317, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_RIMMINGTON_STRAIT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Makeover Mage's home.", new WorldPoint(2902, 3317, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_RIMMINGTON_STRAIT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Obelisk of Water.", new WorldPoint(2835, 3417, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_CATHERBY_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the Lum Lagoon.", new WorldPoint(3209, 3134, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_LUMBRIDGE_BASIN_COMPLETE)
-		)),
-		// Oak master desired? Should have in reqs
-		new ChartingSeaSection(15, "The Storm Tempor", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something trying to leech power from the Storm Tempor. Watch out for Stormy seas!", new WorldPoint(3065, 2885, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_LIGHTNING_ROD_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Desert Trout south of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3033, 2796, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_DESERT_TROUT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3001, 2847, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STORM_TEMPOR_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Ruins of Unkah from north of the docks. Watch out for Stormy seas!", new WorldPoint(3144, 2854, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_SPYGLASS_UNKAH_SHIP_COMPLETE)
 		)),
 		new ChartingSeaSection(13, "Menaphite Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some collected sand on an island west of Menaphos.", new WorldPoint(3143, 2770, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SAND_PIT_COMPLETE),

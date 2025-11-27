@@ -68,6 +68,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 	private boolean stepAutoLocked;
 	private final QuestHelper questHelper;
 	private AbstractQuestSection lastHighlightedSection = null;
+	private final boolean draggable;
 	public QuestSectionSection(QuestOverviewPanel questOverviewPanel, TopLevelPanelDetails panelDetails, QuestStep currentStep, QuestManager questManager, QuestHelperPlugin questHelperPlugin)
 	{
 		this.questOverviewPanel = questOverviewPanel;
@@ -128,7 +129,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		stepsPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		// Dragging functionality
-		var draggable = panelDetails.getPanelDetails().stream().anyMatch((pDetails -> pDetails.getId() != -1));
+		this.draggable = panelDetails.getPanelDetails().stream().anyMatch((pDetails -> pDetails.getId() != -1));
 		List<Integer> order = questHelperPlugin.loadSidebarOrder(questManager.getSelectedQuest());
 
 		List<PanelDetails> panelDetailsList = panelDetails.getPanelDetails();
@@ -181,6 +182,32 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		{
 			collapse();
 		}
+
+		// Setup right-click context menu for resetting order
+		if (draggable)
+		{
+			setupContextMenu();
+		}
+	}
+
+	private void setupContextMenu()
+	{
+		JPopupMenu contextMenu = new JPopupMenu();
+		JMenuItem resetOrderItem = new JMenuItem("Reset order");
+		resetOrderItem.addActionListener(e -> resetSectionOrder());
+		contextMenu.add(resetOrderItem);
+
+		headerPanel.setComponentPopupMenu(contextMenu);
+		headerLabel.setComponentPopupMenu(contextMenu);
+	}
+
+	private void resetSectionOrder()
+	{
+		if (questHelper == null) return;
+
+		List<Integer> sectionIds = getIds();
+		questHelperPlugin.resetSidebarOrderForSection(questHelper, sectionIds);
+		questOverviewPanel.regenerateQuest();
 	}
 
 	@Override

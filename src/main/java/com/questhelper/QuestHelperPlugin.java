@@ -587,4 +587,36 @@ public class QuestHelperPlugin extends Plugin
 				.map(Integer::parseInt)
 				.collect(Collectors.toList());
 	}
+
+	public void resetSidebarOrderForSection(QuestHelper currentQuest, List<Integer> sectionIds)
+	{
+		if (currentQuest == null || currentQuest.getQuest() == null || sectionIds == null || sectionIds.isEmpty())
+		{
+			return;
+		}
+
+		List<Integer> currentOrder = loadSidebarOrder(currentQuest);
+		if (currentOrder == null || currentOrder.isEmpty())
+		{
+			return;
+		}
+
+		// Remove all IDs belonging to this section from the order
+		List<Integer> updatedOrder = currentOrder.stream()
+			.filter(id -> !sectionIds.contains(id))
+			.collect(Collectors.toList());
+
+		// If the order is now empty, remove the config entry (set to null) to use default order
+		// Otherwise save the updated order
+		if (updatedOrder.isEmpty())
+		{
+			configManager.unsetRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP,
+				QuestHelperConfig.QUEST_HELPER_SIDEBAR_ORDER_KEY_START + currentQuest.getQuest().name());
+		}
+		else
+		{
+			saveSidebarOrder(currentQuest, updatedOrder);
+		}
+		questManager.startUpQuest(currentQuest, true);
+	}
 }

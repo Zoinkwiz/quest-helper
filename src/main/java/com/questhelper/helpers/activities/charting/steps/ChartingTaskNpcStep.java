@@ -71,6 +71,9 @@ public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterfac
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
 		addRequirement(sailingRequirement);
 
+		// Additional reqs and recc
+		setupRequiredAndRecommended(definition);
+
 		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
 		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
@@ -79,5 +82,19 @@ public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterfac
 
 		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), sailingRequirement);
 		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
+	}
+
+	@Override
+	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
+	{
+		// Additional reqs and recc
+		if (!definition.getAdditionalRequirements().isEmpty())
+		{
+			addRequirement(definition.getAdditionalRequirements().toArray(new Requirement[0]));
+		}
+		if (!definition.getAdditionalRecommended().isEmpty())
+		{
+			addRecommended(definition.getAdditionalRequirements());
+		}
 	}
 }

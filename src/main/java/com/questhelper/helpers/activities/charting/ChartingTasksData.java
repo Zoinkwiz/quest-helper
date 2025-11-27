@@ -25,6 +25,8 @@
 package com.questhelper.helpers.activities.charting;
 
 import java.util.List;
+import com.questhelper.requirements.sailing.BoatResistanceType;
+import com.questhelper.requirements.sailing.HasBoatResistanceRequirement;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.coords.WorldPoint;
@@ -170,10 +172,15 @@ public final class ChartingTasksData
 		)),
 		// Oak master desired? Should have in reqs
 		new ChartingSeaSection(15, "The Storm Tempor", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something trying to leech power from the Storm Tempor. Watch out for Stormy seas!", new WorldPoint(3065, 2885, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_LIGHTNING_ROD_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Desert Trout south of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3033, 2796, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_DESERT_TROUT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3001, 2847, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STORM_TEMPOR_COMPLETE),
+			// TODO: Return to value
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something trying to leech power from the Storm Tempor. Watch out for Stormy seas!", new WorldPoint(3065, 2885, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_LIGHTNING_ROD_COMPLETE)
+				.withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1))),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Desert Trout south of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3033, 2796, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_DESERT_TROUT_COMPLETE)
+				.withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1))),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3001, 2847, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STORM_TEMPOR_COMPLETE)
+				.withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1))),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Ruins of Unkah from north of the docks. Watch out for Stormy seas!", new WorldPoint(3144, 2854, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_SPYGLASS_UNKAH_SHIP_COMPLETE)
+				.withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1)))
 		)),
 		new ChartingSeaSection(13, "Menaphite Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some collected sand on an island west of Menaphos.", new WorldPoint(3143, 2770, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SAND_PIT_COMPLETE),

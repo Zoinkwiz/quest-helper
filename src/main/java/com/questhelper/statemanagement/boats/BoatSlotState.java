@@ -22,13 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.activities.charting;
+package com.questhelper.statemanagement.boats;
 
-import com.questhelper.requirements.Requirement;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public interface ChartingTaskInterface
+/**
+ * Snapshot of a Sailing boat slot's defensive upgrades.
+ */
+@Getter
+@Builder
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+public class BoatSlotState
 {
-	void setupRequiredAndRecommended(ChartingTaskDefinition definition);
-	Requirement getIncompleteRequirement();
-	Requirement getCanDoRequirement();
+	private int boatId;
+	private boolean kelpResistant;
+	private boolean iceResistant;
+	private boolean crystalResistant;
+	private boolean fetidWaterResistant;
+	private int rapidResistanceLevel;
+	private int stormResistanceLevel;
+
+	public boolean hasKelpResistance()
+	{
+		return kelpResistant;
+	}
+
+	public boolean hasIceResistance()
+	{
+		return iceResistant;
+	}
+
+	public boolean hasCrystalResistance()
+	{
+		return crystalResistant;
+	}
+
+	public boolean hasFetidWaterResistance()
+	{
+		return fetidWaterResistant;
+	}
+
+	public boolean hasRapidResistanceAtLeast(int requiredLevel)
+	{
+		return rapidResistanceLevel >= requiredLevel;
+	}
+
+	public boolean hasStormResistanceAtLeast(int requiredLevel)
+	{
+		return stormResistanceLevel >= requiredLevel;
+	}
 }
+

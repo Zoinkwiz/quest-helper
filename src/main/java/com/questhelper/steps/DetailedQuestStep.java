@@ -211,6 +211,11 @@ public class DetailedQuestStep extends QuestStep
 		this.requirements.addAll(Arrays.asList(requirements));
 	}
 
+	public void addRequirement(List<Requirement> requirements)
+	{
+		this.requirements.addAll(requirements);
+	}
+
 	public void addItemRequirements(List<ItemRequirement> requirement)
 	{
 		requirements.addAll(requirement);
@@ -230,6 +235,11 @@ public class DetailedQuestStep extends QuestStep
 	public void addRecommended(Requirement newRecommended)
 	{
 		recommended.add(newRecommended);
+	}
+
+	public void addRecommended(List<Requirement> newRecommended)
+	{
+		recommended.addAll(newRecommended);
 	}
 
 	public void setRecommended(List<Requirement> newRecommended)

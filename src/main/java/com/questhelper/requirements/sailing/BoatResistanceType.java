@@ -22,13 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.activities.charting;
+package com.questhelper.requirements.sailing;
 
-import com.questhelper.requirements.Requirement;
+import com.questhelper.statemanagement.boats.BoatSlotState;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.gameval.VarbitID;
+import java.util.function.Function;
 
-public interface ChartingTaskInterface
+@AllArgsConstructor
+@Getter
+public enum BoatResistanceType
 {
-	void setupRequiredAndRecommended(ChartingTaskDefinition definition);
-	Requirement getIncompleteRequirement();
-	Requirement getCanDoRequirement();
+	KELP("kelp", VarbitID.SAILING_SIDEPANEL_BOAT_TANGLEDKELP_RESISTANT, boat -> boat.hasKelpResistance() ? 1 : 0, false),
+	ICE("ice", VarbitID.SAILING_SIDEPANEL_BOAT_ICYSEAS_RESISTANT, boat -> boat.hasIceResistance() ? 1 : 0, false),
+	CRYSTAL("crystal", VarbitID.SAILING_SIDEPANEL_BOAT_CRYSTALFLECKED_RESISTANT, boat -> boat.hasCrystalResistance() ? 1 : 0, false),
+	FETID_WATER("fetid water", VarbitID.SAILING_SIDEPANEL_BOAT_FETIDWATER_RESISTANT, boat -> boat.hasFetidWaterResistance() ? 1 : 0, false),
+	RAPID("rapid", VarbitID.SAILING_SIDEPANEL_BOAT_RAPIDRESISTANCE, BoatSlotState::getRapidResistanceLevel, true),
+	STORM("storm", VarbitID.SAILING_SIDEPANEL_BOAT_STORMRESISTANCE, BoatSlotState::getStormResistanceLevel, true);
+
+	private final String displayName;
+	private final int varbitId;
+	private final Function<BoatSlotState, Integer> levelGetter;
+	private final boolean showLevel;
+
+	public int getLevel(BoatSlotState boat)
+	{
+		return levelGetter.apply(boat);
+	}
+
+	public int getActiveBoatLevel(Client client)
+	{
+		return client.getVarbitValue(varbitId);
+	}
 }
+

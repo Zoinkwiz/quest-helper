@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.activities.charting;
 
+import com.questhelper.requirements.Requirement;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 import java.util.List;
@@ -40,13 +41,14 @@ public final class ChartingTaskDefinition
 	private final int level;
 	private final int varbitId;
 	private final String answerText;
+	private final List<Requirement> additionalRequirements;
 	
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId)
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, Requirement... requirements)
 	{
-		this(type, description, worldPoint, null, ocean, level, varbitId);
+		this(type, description, worldPoint, null, ocean, level, varbitId, requirements);
 	}
 	
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, WorldPoint secondaryWorldPoint, String ocean, int level, int varbitId)
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, WorldPoint secondaryWorldPoint, String ocean, int level, int varbitId, Requirement... requirements)
 	{
 		this.type = type;
 		this.description = description;
@@ -57,9 +59,10 @@ public final class ChartingTaskDefinition
 		this.varbitId = varbitId;
 		this.itemIds = null;
 		this.answerText = "";
+		this.additionalRequirements = List.of(requirements);
 	}
 
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, String answerText, List<Integer> itemIds)
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, String answerText, List<Integer> itemIds, Requirement... requirements)
 	{
 		this.type = type;
 		this.description = description;
@@ -70,5 +73,6 @@ public final class ChartingTaskDefinition
 		this.level = level;
 		this.varbitId = varbitId;
 		this.answerText = answerText;
+		this.additionalRequirements = List.of(requirements);
 	}
 }

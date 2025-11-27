@@ -25,7 +25,6 @@
 package com.questhelper.requirements.sailing;
 
 import com.questhelper.requirements.AbstractRequirement;
-import com.questhelper.statemanagement.boats.BoatStateStore;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.gameval.VarbitID;
@@ -35,6 +34,8 @@ import java.util.Objects;
 
 public class HasBoatResistanceRequirement extends AbstractRequirement
 {
+	private static final int MAX_BOATS = 5;
+
 	private final BoatResistanceType resistanceType;
 	private final boolean checkCurrentShip;
 	private final int minimumLevel;
@@ -61,28 +62,23 @@ public class HasBoatResistanceRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
+		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		{
+			return false;
+		}
+
 		if (checkCurrentShip)
 		{
 			return checkCurrentShipFromVarbits(client);
 		}
 		else
 		{
-			BoatStateStore store = BoatStateStore.getInstance();
-			if (store == null)
-			{
-				return false;
-			}
-			return store.hasBoatMatching(boat -> resistanceType.getLevel(boat) >= minimumLevel);
+			return checkAnyShipFromVarbits(client);
 		}
 	}
 
 	private boolean checkCurrentShipFromVarbits(Client client)
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
-		{
-			return false;
-		}
-
 		// Check if player is on a boat
 		if (client.getVarbitValue(VarbitID.SAILING_BOARDED_BOAT) != 1)
 		{
@@ -91,6 +87,19 @@ public class HasBoatResistanceRequirement extends AbstractRequirement
 
 		int currentLevel = resistanceType.getActiveBoatLevel(client);
 		return currentLevel >= minimumLevel;
+	}
+
+	private boolean checkAnyShipFromVarbits(Client client)
+	{
+		for (int boatSlot = 1; boatSlot <= MAX_BOATS; boatSlot++)
+		{
+			int level = resistanceType.getBoatSlotLevel(client, boatSlot);
+			if (level >= minimumLevel)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Nonnull

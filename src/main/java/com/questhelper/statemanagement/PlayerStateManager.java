@@ -28,8 +28,6 @@ import com.questhelper.collections.KeyringCollection;
 import com.questhelper.domain.AccountType;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.QuestCompletedWidget;
-import com.questhelper.statemanagement.boats.BoatStateStore;
-import com.questhelper.statemanagement.boats.BoatStateTracker;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
@@ -43,7 +41,6 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.RuneScapeProfileChanged;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -67,13 +64,6 @@ public class PlayerStateManager
 	@Inject
 	BarbarianTrainingStateTracker barbarianTrainingStateTracker;
 
-	@Inject
-	BoatStateTracker boatStateTracker;
-
-	@Getter
-	@Inject
-	BoatStateStore boatStateStore;
-
 	List<KeyringRequirement> keyringKeys;
 
 	WorldPoint lastPlayerPos = null;
@@ -90,14 +80,11 @@ public class PlayerStateManager
 		keyringKeys = KeyringCollection.allKeyRequirements(configManager);
 		AchievementDiaryStepManager.setup(configManager);
 		barbarianTrainingStateTracker.startUp(configManager, eventBus);
-		boatStateStore.initialize();
-		boatStateTracker.startUp(eventBus);
 	}
 
 	public void shutDown()
 	{
 		barbarianTrainingStateTracker.shutDown(eventBus);
-		boatStateTracker.shutDown(eventBus);
 	}
 
 	@Subscribe
@@ -163,11 +150,6 @@ public class PlayerStateManager
 		}
 	}
 
-	@Subscribe
-	public void onRuneScapeProfileChanged(RuneScapeProfileChanged event)
-	{
-		boatStateStore.handleProfileChanged();
-	}
 
 	public String getPlayerName()
 	{

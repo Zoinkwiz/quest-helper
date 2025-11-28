@@ -732,6 +732,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		finishWithPhantuwti.addDialogStep("I've fixed the weather vane!");
 
 		returnToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2804, 3432, 0), "Talk to Arhein in Catherby.", weatherReport);
+		returnToArhein.addDialogStep("What did you want me to do again?");
 		returnToArhein.addDialogStep("I have the weather report for you.");
 
 		returnToBleemadge = new NpcStep(this, NpcID.PILOT_WHITE_WOLF_BASE, new WorldPoint(2847, 3498, 0), "Right-click talk to Captain Bleemadge on White Wolf Mountain.");

@@ -595,7 +595,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToBleemadge.addSubSteps(talkToBleemadgeNoTea);
 
 		talkToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2804, 3432, 0), "Talk to Arhein in Catherby.");
-		talkToArhein.addDialogStep("I need to talk T.R.A.S.H to you.");
+		talkToArhein.addDialogStep("I need to talk T.R.A.S.H. to you.");
 		talkToArhein.addDialogStep("Yes, Ok, I'll do it!");
 
 		talkToPhantuwti = new NpcStep(this, NpcID.FAVOUR_PHANTUWTI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Talk to Phantuwti in the south west house of Seers' Village.");

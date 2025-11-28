@@ -45,7 +45,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Pandemonium III west of the Kharidian Bandit Camp.", new WorldPoint(3143, 2979, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PANDEMONIUM_3_COMPLETE),
 
 			// Extra
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Kharidian Bandit Camp.", new WorldPoint(3145, 2963, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARIDIAN_SEA_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Kharidian Bandit Camp.", new WorldPoint(3145, 2963, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARIDIAN_SEA_COMPLETE)
 			)),
 		new ChartingSeaSection(2, "Lumbridge Basin", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation south of Lumbridge Swamp.", new WorldPoint(3182, 3136, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_LUMBRIDGE_BASIN_COMPLETE),

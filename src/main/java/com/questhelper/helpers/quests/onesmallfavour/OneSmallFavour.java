@@ -595,7 +595,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToBleemadge.addSubSteps(talkToBleemadgeNoTea);
 
 		talkToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2804, 3432, 0), "Talk to Arhein in Catherby.");
-		talkToArhein.addDialogStep("I need to talk T.R.A.S.H to you.");
+		talkToArhein.addDialogStep("I need to talk T.R.A.S.H. to you.");
 		talkToArhein.addDialogStep("Yes, Ok, I'll do it!");
 
 		talkToPhantuwti = new NpcStep(this, NpcID.FAVOUR_PHANTUWTI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Talk to Phantuwti in the south west house of Seers' Village.");
@@ -732,6 +732,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		finishWithPhantuwti.addDialogStep("I've fixed the weather vane!");
 
 		returnToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2804, 3432, 0), "Talk to Arhein in Catherby.", weatherReport);
+		returnToArhein.addDialogStep("What did you want me to do again?");
 		returnToArhein.addDialogStep("I have the weather report for you.");
 
 		returnToBleemadge = new NpcStep(this, NpcID.PILOT_WHITE_WOLF_BASE, new WorldPoint(2847, 3498, 0), "Right-click talk to Captain Bleemadge on White Wolf Mountain.");

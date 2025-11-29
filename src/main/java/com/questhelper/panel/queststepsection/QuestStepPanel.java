@@ -30,6 +30,7 @@ import com.questhelper.panel.JGenerator;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.QuestRequirementsPanel;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.BoardShipStep;
 import com.questhelper.steps.PortTaskStep;
 import com.questhelper.steps.QuestStep;
@@ -208,9 +209,6 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	{
 		StringBuilder text = new StringBuilder();
 		QuestStep textStep = step;
-		if(step instanceof BoardShipStep){
-			textStep = step.getActiveStep();
-		}
 		if (textStep.getText() != null)
 		{
 			var first = true;

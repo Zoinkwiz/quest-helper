@@ -207,9 +207,10 @@ public class ObjectStep extends DetailedQuestStep
 		LocalPoint localPoint = point.resolveLocalPoint(client, client.getTopLevelWorldView());
 		if (localPoint == null) return;
 
-		Tile[][][] tiles = client.getTopLevelWorldView().getScene().getTiles();
+		var wv = client.getWorldView(localPoint.getWorldView());
+		Tile[][][] tiles = wv.getScene().getTiles();
 
-		Tile tile = tiles[client.getTopLevelWorldView().getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+		Tile tile = tiles[wv.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
 		if (tile != null)
 		{
 			Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
@@ -463,6 +464,12 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
+		var worldViewsToConsider = List.of(client.getTopLevelWorldView(), client.getLocalPlayer().getWorldView());
+		if (!worldViewsToConsider.contains(object.getWorldView()))
+		{
+			return;
+		}
+
 		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
 		{
 			setObjects(object);
@@ -494,15 +501,7 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
-		WorldPoint objectWP = QuestPerspective.getWorldPointConsideringWorldView(client, object.getWorldView(), object.getWorldLocation());
-
-		if (objectWP == null)
-		{
-			return;
-		}
-
-		if (
-				definedPoint.matchesTileObject(client, object) ||
+		if (definedPoint.matchesTileObject(client, object) ||
 				(object instanceof GameObject && objZone((GameObject) object).contains(definedPoint.getWorldPoint()))
 		)
 		{
@@ -513,7 +512,7 @@ public class ObjectStep extends DetailedQuestStep
 		}
 		else if (showAllInArea)
 		{
-			if (definedPoint != null && definedPoint.distanceTo(objectWP) < maxObjectDistance)
+			if (definedPoint != null && definedPoint.distanceTo(client, object.getLocalLocation()) < maxObjectDistance)
 			{
 				if (!this.objects.contains(object))
 				{

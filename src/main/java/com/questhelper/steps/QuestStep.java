@@ -377,6 +377,14 @@ public abstract class QuestStep implements Module
 		return this;
 	}
 
+	public QuestStep addDialogConsideringLastLineAndVarbit(String dialogString, int varbitId, Map<Integer, String> valueToAnswer)
+	{
+		DialogChoiceStep choice = new DialogChoiceStep(questHelper.getConfig(), varbitId, valueToAnswer);
+		choice.setExpectedPreviousLine(dialogString);
+		choices.addChoice(choice);
+		return this;
+	}
+
 	public QuestStep addDialogChange(String choice, String newText)
 	{
 		choices.addChoice(new DialogChoiceChange(questHelper.getConfig(), choice, newText));

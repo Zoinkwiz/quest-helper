@@ -117,6 +117,7 @@ import com.questhelper.helpers.quests.coldwar.ColdWar;
 import com.questhelper.helpers.quests.contact.Contact;
 import com.questhelper.helpers.quests.cooksassistant.CooksAssistant;
 import com.questhelper.helpers.quests.creatureoffenkenstrain.CreatureOfFenkenstrain;
+import com.questhelper.helpers.quests.currentaffairs.CurrentAffairs;
 import com.questhelper.helpers.quests.darknessofhallowvale.DarknessOfHallowvale;
 import com.questhelper.helpers.quests.deathontheisle.DeathOnTheIsle;
 import com.questhelper.helpers.quests.deathplateau.DeathPlateau;
@@ -186,11 +187,13 @@ import com.questhelper.helpers.quests.naturespirit.NatureSpirit;
 import com.questhelper.helpers.quests.observatoryquest.ObservatoryQuest;
 import com.questhelper.helpers.quests.olafsquest.OlafsQuest;
 import com.questhelper.helpers.quests.onesmallfavour.OneSmallFavour;
+import com.questhelper.helpers.quests.pandemonium.Pandemonium;
 import com.questhelper.helpers.quests.perilousmoon.PerilousMoon;
 import com.questhelper.helpers.quests.piratestreasure.PiratesTreasure;
 import com.questhelper.helpers.quests.plaguecity.PlagueCity;
 import com.questhelper.helpers.quests.priestinperil.PriestInPeril;
 import com.questhelper.helpers.quests.princealirescue.PrinceAliRescue;
+import com.questhelper.helpers.quests.pryingtimes.PryingTimes;
 import com.questhelper.helpers.quests.ragandboneman.RagAndBoneManI;
 import com.questhelper.helpers.quests.ragandboneman.RagAndBoneManII;
 import com.questhelper.helpers.quests.ratcatchers.RatCatchers;
@@ -475,8 +478,10 @@ public enum QuestHelperQuest
 	THE_FINAL_DAWN(new TheFinalDawn(), Quest.THE_FINAL_DAWN, QuestVarbits.QUEST_THE_FINAL_DAWN, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	SHADOWS_OF_CUSTODIA(new ShadowsOfCustodia(), Quest.SHADOWS_OF_CUSTODIA, QuestVarbits.QUEST_SHADOWS_OF_CUSTODIA, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	SCRAMBLED(new Scrambled(), Quest.SCRAMBLED, QuestVarbits.QUEST_SCRAMBLED, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	PANDEMONIUM(new Pandemonium(), Quest.PANDEMONIUM, QuestVarbits.QUEST_PANDEMONIUM, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	PRYING_TIMES(new PryingTimes(), Quest.PRYING_TIMES, QuestVarbits.QUEST_PRYING_TIMES, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
+	CURRENT_AFFAIRS(new CurrentAffairs(), Quest.CURRENT_AFFAIRS, QuestVarbits.QUEST_CURRENT_AFFAIRS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	TROUBLED_TORTUGANS(new TroubledTortugans(), Quest.TROUBLED_TORTUGANS, QuestVarbits.QUEST_TROUBLED_TORTUGANS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
-
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
@@ -507,7 +512,6 @@ public enum QuestHelperQuest
 		QuestDetails.Difficulty.MINIQUEST),
 	BALLOON_TRANSPORT_GRAND_TREE(new GrandTreeBalloonFlight(), "Balloon Transport - Grand Tree", QuestVarbits.BALLOON_TRANSPORT_GRAND_TREE, 1, QuestDetails.Type.MINIQUEST,
 		QuestDetails.Difficulty.MINIQUEST),
-
 
 	// Achievement diaries
 

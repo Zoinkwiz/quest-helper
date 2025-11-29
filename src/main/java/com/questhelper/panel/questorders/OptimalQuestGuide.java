@@ -91,6 +91,8 @@ public class OptimalQuestGuide
 		QuestHelperQuest.RECIPE_FOR_DISASTER_START,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE,
 		QuestHelperQuest.SEA_SLUG,
+		QuestHelperQuest.PANDEMONIUM,
+		QuestHelperQuest.PRYING_TIMES,
 		QuestHelperQuest.FISHING_CONTEST,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_DWARF,
 		QuestHelperQuest.MOUNTAIN_DAUGHTER,

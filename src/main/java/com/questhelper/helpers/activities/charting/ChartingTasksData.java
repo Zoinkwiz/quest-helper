@@ -25,6 +25,8 @@
 package com.questhelper.helpers.activities.charting;
 
 import java.util.List;
+import com.questhelper.requirements.sailing.BoatResistanceType;
+import com.questhelper.requirements.sailing.HasBoatResistanceRequirement;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.coords.WorldPoint;
@@ -40,8 +42,11 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to admire Chartin' Charles McAtless in the cave on the Pandemonium.", new WorldPoint(3051, 9388, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_CHARTING_TUTOR_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a crashed glider south of the Karamja Shipyard.", new WorldPoint(2987, 3010, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_GLIDER_KHARIDIAN_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Pandemonium II west of the Pandemonium.", new WorldPoint(2973, 2994, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PANDEMONIUM_2_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Pandemonium III west of the Kharidian Bandit Camp.", new WorldPoint(3143, 2979, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PANDEMONIUM_3_COMPLETE)
-		)),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Pandemonium III west of the Kharidian Bandit Camp.", new WorldPoint(3143, 2979, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PANDEMONIUM_3_COMPLETE),
+
+			// Extra
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Kharidian Bandit Camp.", new WorldPoint(3145, 2963, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARIDIAN_SEA_COMPLETE)
+			)),
 		new ChartingSeaSection(2, "Lumbridge Basin", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an unfortunate corpse on a small island south east of Tutorial Island.", new WorldPoint(3133, 3053, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CORPSE_LUMBRIDGE_BASIN_COMPLETE),
 			// Extra
@@ -55,7 +60,10 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Wizards' Tower from the north.", new WorldPoint(3104, 3181, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_WIZARDS_TOWER_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation near Draynor Village.", new WorldPoint(3079, 3231, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_BAY_OF_SARIM_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Look at the port task board in Port Sarim.", new WorldPoint(3030, 3198, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BOARD_PORT_SARIM_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Interact with the salvaging station in Port Sarim.", new WorldPoint(3029, 3207, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SALVAGE_STATION_PORT_SARIM_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Interact with the salvaging station in Port Sarim.", new WorldPoint(3029, 3207, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SALVAGE_STATION_PORT_SARIM_COMPLETE),
+
+			// Extra
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of the small island in the Bay of Sarim.", new WorldPoint(3082, 3201, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FAIRY_RING_COMPLETE)
 		)),
 		new ChartingSeaSection(3, "Mudskipper Sound", List.of(
 			// Extra
@@ -63,12 +71,18 @@ public final class ChartingTasksData
 
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Salty Grouper south west of Tutorial Island.", new WorldPoint(3054, 3051, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROWBOAT_MUDSKIPPER_SOUND_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Karamja Shipyard from the east.", new WorldPoint(3008, 3049, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_SHIPYARD_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a strange stone tablet south east of Musa Point.", new WorldPoint(2944, 3138, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRUNCH_POSTER_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a strange stone tablet south east of Musa Point.", new WorldPoint(2944, 3138, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRUNCH_POSTER_COMPLETE),
+
+			// Extra
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Amja south of Musa Point.", new WorldPoint(2890, 3121, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MUSA_POINT_COMPLETE)
 		)),
 		new ChartingSeaSection(4, "Rimmington Strait", List.of(
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Karamja Volcano from the north.", new WorldPoint(2839, 3210, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_KARAMJA_VOLCANO_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a warning about dragons east of Crandor.", new WorldPoint(2873, 3260, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_DRAGON_STATUE_RIMMINGTON_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation west of the Crafting Guild.", new WorldPoint(2905, 3281, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_RIMMINGTON_STRAIT_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a treacherous rock formation west of the Crafting Guild.", new WorldPoint(2905, 3281, 0), "Ardent Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ROCK_RIMMINGTON_STRAIT_COMPLETE),
+
+			// Extra
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Makeover Mage's home.", new WorldPoint(2902, 3317, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_RIMMINGTON_STRAIT_COMPLETE)
 		)),
 		// Got to here, level, 14 Sailing. Should be able to unlock the crates
 		new ChartingSeaSection(5, "Catherby Bay", List.of(
@@ -95,8 +109,10 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an advert on a small island north east of Salvager Overlook.", new WorldPoint(1656, 3304, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_ADVERT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an interesting sign south east of Land's End.", new WorldPoint(1529, 3405, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BEGINNING_SIGN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Auburnvale from the north.", new WorldPoint(1413, 3394, 0), "Western Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_GREAT_SOUND_COMPLETE),
-			// TODO: Bonus crate, should include here for efficiency? Perhaps hide if not done quest?
-			 new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Land's End and sample the contents.", new WorldPoint(1437, 3430, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_COMPLETE)
+
+			// Extra
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Land's End and sample the contents.", new WorldPoint(1437, 3430, 0), "", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of Lacerta Falls.", new WorldPoint(1384, 3465, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GREAT_SOUND_COMPLETE), new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Kharidian Bandit Camp.", new WorldPoint(3145, 2963, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARIDIAN_SEA_COMPLETE)
 		)),
 		// TODO: Remove entire section and integrate into other sections? Keep as both so player can prioritise finishing section and also do passively??
 		new ChartingSeaSection(70, "Bonus Drinks", List.of(
@@ -154,10 +170,14 @@ public final class ChartingTasksData
 		)),
 		// Oak master desired? Should have in reqs
 		new ChartingSeaSection(15, "The Storm Tempor", List.of(
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3001, 2847, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STORM_TEMPOR_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Desert Trout south of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3033, 2796, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_DESERT_TROUT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something trying to leech power from the Storm Tempor. Watch out for Stormy seas!", new WorldPoint(3065, 2885, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_LIGHTNING_ROD_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3001, 2847, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_CURRENT_DUCK_STORM_TEMPOR_COMPLETE)
+        .withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1))),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of the Desert Trout south of Tempoross Cove. Watch out for Stormy seas!", new WorldPoint(3033, 2796, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_DESERT_TROUT_COMPLETE)
+        .withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1))),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find something trying to leech power from the Storm Tempor. Watch out for Stormy seas!", new WorldPoint(3065, 2885, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_GENERIC_LIGHTNING_ROD_COMPLETE)
+        .withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1))),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Ruins of Unkah from north of the docks. Watch out for Stormy seas!", new WorldPoint(3144, 2854, 0), "Ardent Ocean", 24, VarbitID.SAILING_CHARTING_SPYGLASS_UNKAH_SHIP_COMPLETE)
+				.withRecommended(List.of(new HasBoatResistanceRequirement(BoatResistanceType.STORM, true, 1)))
 		)),
 		// Tele over here?
 		new ChartingSeaSection(45, "Gulf of Kourend", List.of(
@@ -171,15 +191,18 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of Pilgrims' Passage and sample the contents.", new WorldPoint(1926, 3394, 0), "Western Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_ROBERTS_PORT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Chinchompa Island.", new WorldPoint(1871, 3430, 0), "Western Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_PILGRIMS_PASSAGE_COMPLETE)
 		)),
+		// 2k off of 36 after doing Tempor Tantrum
 		new ChartingSeaSection(71, "Bonus Currents", List.of(
 			// TODO: Integrate into other sections?
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Amja south of Musa Point.", new WorldPoint(2890, 3121, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MUSA_POINT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of Lacerta Falls.", new WorldPoint(1384, 3465, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GREAT_SOUND_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of the small island in the Bay of Sarim.", new WorldPoint(3082, 3201, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FAIRY_RING_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the Lum Lagoon.", new WorldPoint(3209, 3134, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_LUMBRIDGE_BASIN_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Kharidian Bandit Camp.", new WorldPoint(3145, 2963, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARIDIAN_SEA_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of the small island in the Bay of Sarim.", new WorldPoint(3082, 3201, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FAIRY_RING_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Amja south of Musa Point.", new WorldPoint(2890, 3121, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MUSA_POINT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Makeover Mage's home.", new WorldPoint(2902, 3317, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_RIMMINGTON_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Obelisk of Water.", new WorldPoint(2835, 3417, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_CATHERBY_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of the Lum Lagoon.", new WorldPoint(3209, 3134, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_LUMBRIDGE_BASIN_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of Lacerta Falls.", new WorldPoint(1384, 3465, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GREAT_SOUND_COMPLETE), new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Kharidian Bandit Camp.", new WorldPoint(3145, 2963, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_KHARIDIAN_SEA_COMPLETE),
+
+			// TODO: Remove as part of quest?
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Obelisk of Water.", new WorldPoint(2835, 3417, 0), "", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_CATHERBY_BAY_COMPLETE)
 		)),
 
 		// North sea segment

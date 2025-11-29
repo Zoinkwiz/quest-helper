@@ -108,4 +108,10 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), sailingRequirement);
 		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
 	}
+
+	@Override
+	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
+	{
+		// Should've been implemented in substeps. Needed if we used any reqs for blocking
+	}
 }

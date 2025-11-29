@@ -27,6 +27,7 @@ package com.questhelper.helpers.activities.charting;
 import com.questhelper.requirements.Requirement;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -41,14 +42,15 @@ public final class ChartingTaskDefinition
 	private final int level;
 	private final int varbitId;
 	private final String answerText;
-	private final List<Requirement> additionalRequirements;
+	private final List<Requirement> additionalRequirements = new ArrayList<>();
+	private final List<Requirement> additionalRecommended = new ArrayList<>();
 	
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, Requirement... requirements)
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId)
 	{
-		this(type, description, worldPoint, null, ocean, level, varbitId, requirements);
+		this(type, description, worldPoint, null, ocean, level, varbitId);
 	}
 	
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, WorldPoint secondaryWorldPoint, String ocean, int level, int varbitId, Requirement... requirements)
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, WorldPoint secondaryWorldPoint, String ocean, int level, int varbitId)
 	{
 		this.type = type;
 		this.description = description;
@@ -59,10 +61,9 @@ public final class ChartingTaskDefinition
 		this.varbitId = varbitId;
 		this.itemIds = null;
 		this.answerText = "";
-		this.additionalRequirements = List.of(requirements);
 	}
 
-	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, String answerText, List<Integer> itemIds, Requirement... requirements)
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, String answerText, List<Integer> itemIds)
 	{
 		this.type = type;
 		this.description = description;
@@ -73,6 +74,17 @@ public final class ChartingTaskDefinition
 		this.level = level;
 		this.varbitId = varbitId;
 		this.answerText = answerText;
-		this.additionalRequirements = List.of(requirements);
+	}
+
+	public ChartingTaskDefinition withRequirements(List<Requirement> requirements)
+	{
+		additionalRequirements.addAll(requirements);
+		return this;
+	}
+
+	public ChartingTaskDefinition withRecommended(List<Requirement> recommended)
+	{
+		additionalRecommended.addAll(recommended);
+		return this;
 	}
 }

@@ -77,5 +77,11 @@ public class ChartingCaveTelescopeStep extends ConditionalStep implements Charti
 		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), sailingRequirement);
 		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
 	}
+
+	@Override
+	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
+	{
+		// Not implemented in ConditionalStep. Not needed for this so won't bother
+	}
 }
 

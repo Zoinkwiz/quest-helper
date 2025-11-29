@@ -252,6 +252,8 @@ public class RepairTown extends DetailedOwnerStep
 		// The following logic could probably be refactored a bit, but changing it without being at the quest spot with your
 		// brain intact is a dangerous task, so I'm leaving this as-is.
 
+		this.setText(String.format("Gather materials and repair the objects around the town. You need %d jactoba logs, %d sea shells, and %d tortugan scutes.", requiredLogs, requiredShells, requiredScutes));
+
 		if (numFreeSlots == 0)
 		{
 			// The player's inventory is full, we should tell them to do the first available repair task.
@@ -261,11 +263,11 @@ public class RepairTown extends DetailedOwnerStep
 			if (numFreeSlotsNeeded == 0)
 			{
 				// If the user is actually done gathering everything, but their inventory is full, make the messaging nicer.
-				this.setText("Repair the objects around the town.");
+				this.setOverlayText("Repair the objects around the town.");
 			}
 			else
 			{
-				this.setText(String.format("Gather materials and repair the objects around the town. Clear your inventory until you have %d slots free for the material to speed up repairing.", numFreeSlotsNeeded));
+				this.setOverlayText(String.format("Gather materials and repair the objects around the town. Clear your inventory until you have %d slots free for the material to speed up repairing.", numFreeSlotsNeeded));
 			}
 			startUpStep(task);
 			return;
@@ -276,27 +278,27 @@ public class RepairTown extends DetailedOwnerStep
 			// User has enough free inventory slots to gather everything _then_ repair things.
 			if (numShells < requiredShells)
 			{
-				this.setText("Gather materials, then repair the objects around the town.");
+				this.setOverlayText("Gather materials, then repair the objects around the town.");
 				startUpStep(gatherShells);
 				return;
 			}
 
 			if (numScutes < requiredScutes)
 			{
-				this.setText("Gather materials, then repair the objects around the town.");
+				this.setOverlayText("Gather materials, then repair the objects around the town.");
 				startUpStep(gatherScutes);
 				return;
 			}
 
 			if (numLogs < requiredLogs)
 			{
-				this.setText("Gather materials, then repair the objects around the town.");
+				this.setOverlayText("Gather materials, then repair the objects around the town.");
 				startUpStep(chopJatobaTrees);
 				return;
 			}
 		}
 
-		this.setText(String.format("Gather materials and repair the objects around the town. Clear your inventory until you have %d more slots free for the material to speed up repairing. You need %d jactoba logs, %d sea shells, and %d tortugan scutes.", numFreeSlotsNeeded, requiredLogs, requiredShells, requiredScutes));
+		this.setOverlayText(String.format("Gather materials and repair the objects around the town. Clear your inventory until you have %d slots free for the material to speed up repairing.", numFreeSlotsNeeded));
 		startUpStep(task);
 	}
 

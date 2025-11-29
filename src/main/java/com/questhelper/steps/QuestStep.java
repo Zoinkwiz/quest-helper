@@ -35,7 +35,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.choice.*;
 import com.questhelper.steps.overlay.IconOverlay;
 import com.questhelper.steps.tools.DefinedPoint;
-import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import com.questhelper.steps.widget.Spell;
 import com.questhelper.steps.widget.SpellWidgetHighlight;
@@ -480,7 +479,7 @@ public abstract class QuestStep implements Module
 			.filter(s -> !s.isEmpty())
 			.forEach(line -> addTextToPanel(panelComponent, line));
 
-		if (text != null && (text.size() > 0 && !text.get(0).isEmpty()))
+		if (text != null && (!text.isEmpty() && !text.get(0).isEmpty()))
 		{
 			addTextToPanel(panelComponent, "");
 		}

@@ -297,14 +297,15 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a wrecked shiplike thing south of Villa Lucens.", new WorldPoint(1448, 2896, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_PROP_WRECK_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Colossal Wyrm Remains.", new WorldPoint(1575, 2942, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SUNSET_BAY_COMPLETE, "The answer is 'Ring mould'.", List.of(ItemID.RING_MOULD)),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Sunset Coast from the west.", new WorldPoint(1470, 2980, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_SUNSET_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Varla.", new WorldPoint(1422, 3046, 0), "Sunset Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SUNSET_BAY_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Varla. You should use a a raft to get in, or reverse in with a skiff.", new WorldPoint(1422, 3046, 0), "Sunset Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SUNSET_BAY_COMPLETE)
 		)),
 		new ChartingSeaSection(42, "Dusk's Maw", List.of(
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the Darkmoon Ravine.", new WorldPoint(1314, 2931, 0), "Sunset Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_DUSKS_MAW_COMPLETE, "The answer is 'Tarromin'.", List.of(ItemID.TARROMIN)),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Darkmoon Ravine.", new WorldPoint(1259, 2876, 0), "Sunset Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_DUSKS_MAW_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a collapsed cave on a small island south west of the Tlati Rainforest.", new WorldPoint(1232, 3005, 0), "Sunset Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_HOLE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south west of the Darkmoon Ravine.", new WorldPoint(1259, 2876, 0), "Sunset Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_DUSKS_MAW_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the far west of Dusk's Maw and sample the contents.", new WorldPoint(1050, 2886, 0), "Sunset Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_SAILING_CAT_COMPLETE)
 		)),
+		// Sunset Ocean fully charted with Dusk's Maw!
 
 		// Pandemonium return?
 		new ChartingSeaSection(13, "Menaphite Sea", List.of(

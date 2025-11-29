@@ -283,7 +283,7 @@ public class TroubledTortugans extends BasicQuestHelper
 		cReturnToElder.addStep(inGryphonCave, exitGryphonCave);
 
 		// 34 + 36 + 38
-		getShield = new NpcStep(this, NpcID.TORTUGAN_BLUNN_1OP, new WorldPoint(3172, 2417, 0), "Get a Tortugan shield from Elder Blunn.", tortuganShield);
+		getShield = new NpcStep(this, NpcID.TORTUGAN_BLUNN_1OP, new WorldPoint(3172, 2417, 0), "Get a Tortugan shield from Elder Blunn.");
 		boardBoatAtConch = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_EMBARK, new WorldPoint(3174, 2367, 0), "Sail to Little Pearl island, south-east of The Great Conch, to confront the Shellbane gryphon.", combatGear, food, prayer, tortuganShield);
 		sailToLittlePearl = new ObjectStep(this, ObjectID.SAILING_MOORING_DISEMBARK, new WorldPoint(3354, 2216, 0), "Sail to Little Pearl island, south-east of The Great Conch, to confront the Shellbane gryphon.", combatGear, food, prayer, tortuganShield.equipped());
 		sailToLittlePearl.addSubSteps(boardBoatAtConch);

@@ -30,6 +30,7 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
@@ -63,7 +64,6 @@ import net.runelite.api.gameval.VarbitID;
 public class CurrentAffairs extends BasicQuestHelper
 {
 	ItemRequirement charcoalRequirement, coinsRequirement, hasFormCr4p, hasTinyNet, hasMayoralFishbowl, hasMayor, hasForm7r45h, hasForm7r45hSigned, hasDuck;
-	QuestRequirement pandemoniumQuestRequirement;
 	Requirement filledFormCr4p, formCr4pGiven, boughtFishbowl, auditStarted, onboardShip, duckCanBeFollowed, catherbyCharted;
 	NpcStep startQuest, talkToCouncillor, handOverFormCr4p, talkAfterFormHandedIn, talkToArhein, talkToHarry, getNewFishbowl, showArheinMayor, getNewMayor, showCatherineMayor, doAudit, getForm7r45h, showCatherineForm, giveArheimNews, getDuck, showCurrentsArhein;
 	ObjectStep grabCharcoal, fishInAquarium;
@@ -158,7 +158,6 @@ public class CurrentAffairs extends BasicQuestHelper
 		charcoalRequirement = new ItemRequirement("Charcoal", ItemID.CHARCOAL).isNotConsumed().canBeObtainedDuringQuest();
 		charcoalRequirement.setTooltip("You can pick this up in the cabinet near Councillor Catherine in the north-east of Catherby.");
 		coinsRequirement = new ItemRequirement("Coins", ItemID.COINS, 50);
-		pandemoniumQuestRequirement = new QuestRequirement(QuestHelperQuest.PANDEMONIUM, QuestState.FINISHED);
 
 		hasFormCr4p = new ItemRequirement("Form cr-4p", ItemID.CURRENT_AFFAIRS_FORM);
 		hasFormCr4p.setTooltip("You can receive a new one from Councillor Catherine in the north-east of Catherby.");
@@ -264,7 +263,11 @@ public class CurrentAffairs extends BasicQuestHelper
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Arrays.asList(pandemoniumQuestRequirement);
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.PANDEMONIUM, QuestState.FINISHED),
+			new SkillRequirement(Skill.SAILING, 22, false),
+			new SkillRequirement(Skill.FISHING, 10, false)
+		);
 	}
 
 	@Override

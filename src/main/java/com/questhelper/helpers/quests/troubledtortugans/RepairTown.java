@@ -296,7 +296,7 @@ public class RepairTown extends DetailedOwnerStep
 			}
 		}
 
-		this.setText(String.format("Gather materials and repair the objects around the town. Clear your inventory until you have %d slots free for the material to speed up repairing.", numFreeSlotsNeeded));
+		this.setText(String.format("Gather materials and repair the objects around the town. Clear your inventory until you have %d more slots free for the material to speed up repairing. You need %d jactoba logs, %d sea shells, and %d tortugan scutes.", numFreeSlotsNeeded, requiredLogs, requiredShells, requiredScutes));
 		startUpStep(task);
 	}
 

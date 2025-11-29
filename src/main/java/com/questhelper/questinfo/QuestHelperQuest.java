@@ -260,6 +260,7 @@ import com.questhelper.helpers.quests.treegnomevillage.TreeGnomeVillage;
 import com.questhelper.helpers.quests.tribaltotem.TribalTotem;
 import com.questhelper.helpers.quests.trollromance.TrollRomance;
 import com.questhelper.helpers.quests.trollstronghold.TrollStronghold;
+import com.questhelper.helpers.quests.troubledtortugans.TroubledTortugans;
 import com.questhelper.helpers.quests.twilightspromise.TwilightsPromise;
 import com.questhelper.helpers.quests.undergroundpass.UndergroundPass;
 import com.questhelper.helpers.quests.vampyreslayer.VampyreSlayer;
@@ -480,6 +481,7 @@ public enum QuestHelperQuest
 	PANDEMONIUM(new Pandemonium(), Quest.PANDEMONIUM, QuestVarbits.QUEST_PANDEMONIUM, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	PRYING_TIMES(new PryingTimes(), Quest.PRYING_TIMES, QuestVarbits.QUEST_PRYING_TIMES, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	CURRENT_AFFAIRS(new CurrentAffairs(), Quest.CURRENT_AFFAIRS, QuestVarbits.QUEST_CURRENT_AFFAIRS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	TROUBLED_TORTUGANS(new TroubledTortugans(), Quest.TROUBLED_TORTUGANS, QuestVarbits.QUEST_TROUBLED_TORTUGANS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

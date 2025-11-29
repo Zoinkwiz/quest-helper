@@ -29,6 +29,7 @@ package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -45,7 +46,10 @@ import java.util.Locale;
 public class FreeInventorySlotRequirement extends AbstractRequirement
 {
 	private final int NUM_INVENTORY_SLOTS_TOTAL = 28;
-	private int inventoryID;
+
+	private final int inventoryID;
+
+	@Setter
 	private int numSlotsFree;
 
 	/**

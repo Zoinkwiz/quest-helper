@@ -223,6 +223,7 @@ public class ReleaseDate
 		QuestHelperQuest.SCRAMBLED,
 		QuestHelperQuest.PANDEMONIUM,
 		QuestHelperQuest.PRYING_TIMES,
+    QuestHelperQuest.TROUBLED_TORTUGANS,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

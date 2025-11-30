@@ -278,7 +278,7 @@ public class CurrentAffairs extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
+		return List.of(
 			new ItemReward("Current Duck", ItemID.SAILING_CHARTING_CURRENT_DUCK),
 			new ItemReward("Mayor of Catherby", ItemID.CURRENT_AFFAIRS_MAYOR_OF_CATHERBY),
 			new ItemReward("Sawmill Coupon (oak plank)", ItemID.SAWMILL_COUPON, 25)

@@ -295,10 +295,42 @@ public class CurrentAffairs extends BasicQuestHelper
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Arhein's employee", Arrays.asList(startQuest, talkToCouncillor, fillFormCr4p, handOverFormCr4p, talkAfterFormHandedIn), charcoalRequirement));
-		allSteps.add(new PanelDetails("A new mayor", Arrays.asList(talkToArhein, talkToHarry, fishInAquarium, showArheinMayor, showCatherineMayor, doAudit, getForm7r45h, signForm7r45h, showCatherineForm, giveArheimNews), coinsRequirement));
-		allSteps.add(new PanelDetails("Map the currents!", Arrays.asList(cBoardShip, sailToStart, followThatDuck, showCurrentsArhein), hasDuck));
-		return allSteps;
+		var sections = new ArrayList<PanelDetails>();
+
+		sections.add(new PanelDetails("Arhein's employee", List.of(
+			startQuest,
+			talkToCouncillor,
+			fillFormCr4p,
+			handOverFormCr4p,
+			talkAfterFormHandedIn
+		), List.of(
+			charcoalRequirement
+		)));
+
+		sections.add(new PanelDetails("A new mayor", List.of(
+			talkToArhein,
+			talkToHarry,
+			fishInAquarium,
+			showArheinMayor,
+			showCatherineMayor,
+			doAudit,
+			getForm7r45h,
+			signForm7r45h,
+			showCatherineForm,
+			giveArheimNews
+		), List.of(
+			coinsRequirement
+		)));
+
+		sections.add(new PanelDetails("Map the currents!", List.of(
+			cBoardShip,
+			sailToStart,
+			followThatDuck,
+			showCurrentsArhein
+		), List.of(
+			hasDuck
+		)));
+
+		return sections;
 	}
 }

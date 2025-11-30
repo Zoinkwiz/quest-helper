@@ -148,7 +148,7 @@ public class CurrentAffairs extends BasicQuestHelper
 
 		hasTinyNet = new ItemRequirement("Tiny net", ItemID.TINY_NET).isNotConsumed().canBeObtainedDuringQuest();
 		hasTinyNet.setTooltip("You can receive a new one in the fish shop in the south-east of Catherby.");
-		hasMayoralFishbowl = new ItemRequirement("Mayoral Fishbowl", ItemID.CURRENT_AFFAIRS_MAYORAL_FISHBOWL).canBeObtainedDuringQuest().isNotConsumed();
+		hasMayoralFishbowl = new ItemRequirement("Mayoral fishbowl", ItemID.CURRENT_AFFAIRS_MAYORAL_FISHBOWL).canBeObtainedDuringQuest().isNotConsumed();
 		hasMayoralFishbowl.setTooltip("You can receive a new one in the fish shop in the south-east of Catherby.");
 		hasMayor = new ItemRequirement("Mayor of Catherby", ItemID.CURRENT_AFFAIRS_MAYOR_OF_CATHERBY).canBeObtainedDuringQuest().isNotConsumed();
 		hasMayor.setTooltip("You can receive a new one in the fish shop in the south-east of Catherby.");

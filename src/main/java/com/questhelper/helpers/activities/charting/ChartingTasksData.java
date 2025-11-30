@@ -376,23 +376,36 @@ public final class ChartingTasksData
 		)),
 		// Ardent ocean charted with Oo'glog channel! Should indicate to go cash in for exp
 		new ChartingSeaSection(28, "Breakbone Strait", List.of(
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Tear of the Soul and sample the contents. Watch out for Fetid waters!", new WorldPoint(2334, 2781, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_GOLDLESS_ALE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Myths' Guild from the west. Watch out for Fetid waters!", new WorldPoint(2429, 2852, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_SPYGLASS_MYTHS_GUILD_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a chest of equipment north of the Myths' Guild. Watch out for Fetid waters!", new WorldPoint(2460, 2881, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_GENERIC_ARMY_ATTIRE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the Tear of the Soul and sample the contents. Watch out for Fetid waters!", new WorldPoint(2334, 2781, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_GOLDLESS_ALE_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Myths' Guild from the west. Watch out for Fetid waters!", new WorldPoint(2429, 2852, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_SPYGLASS_MYTHS_GUILD_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a chest of equipment north of the Myths' Guild. Watch out for Fetid waters!", new WorldPoint(2460, 2881, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_GENERIC_ARMY_ATTIRE_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents off the eastern coast of the Isle of Souls. Watch out for Fetid waters!", new WorldPoint(2340, 2896, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_CURRENT_DUCK_BREAKBONE_STRAIT_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1)))
 		)),
 		new ChartingSeaSection(29, "Backwater", List.of(
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the north eastern coast of the Isle of Souls and sample the contents. Watch out for Fetid waters!", new WorldPoint(2318, 2966, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_DESTRUCTORS_COCKTAIL_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the western coast of the Feldip Hills and sample the contents. Watch out for Fetid waters!", new WorldPoint(2476, 2969, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_ZOGRES_KISS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Jiggig. Watch out for Fetid waters!", new WorldPoint(2469, 3006, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_BACKWATER_COMPLETE, "The answer is 'Grimy kwuarm'.", List.of(ItemID.UNIDENTIFIED_KWUARM)),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Chompy Marsh from the south. Watch out for Fetid waters!", new WorldPoint(2399, 3027, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_SPYGLASS_TOAD_PONDS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Dougne west of Chompy Marsh. Watch out for Fetid waters!", new WorldPoint(2318, 3057, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_CURRENT_DUCK_BACKWATER_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the north eastern coast of the Isle of Souls and sample the contents. Watch out for Fetid waters!", new WorldPoint(2318, 2966, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_DESTRUCTORS_COCKTAIL_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the western coast of the Feldip Hills and sample the contents. It will poison and disease you.", new WorldPoint(2476, 2969, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_ZOGRES_KISS_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Jiggig. Watch out for Fetid waters!", new WorldPoint(2469, 3006, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_BACKWATER_COMPLETE, "The answer is 'Grimy kwuarm'.", List.of(ItemID.UNIDENTIFIED_KWUARM))
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Chompy Marsh from the south. Watch out for Fetid waters!", new WorldPoint(2399, 3027, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_SPYGLASS_TOAD_PONDS_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents at the mouth of the River Dougne west of Chompy Marsh. Watch out for Fetid waters!", new WorldPoint(2318, 3057, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_CURRENT_DUCK_BACKWATER_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting coral south east of the Poison Waste. Watch out for Fetid waters!", new WorldPoint(2300, 3043, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_GENERIC_DISEASED_CORAL_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1)))
 		)),
 		new ChartingSeaSection(30, "Zul-Egil", List.of(
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate south of the poison waste and sample the contents. Watch out for Fetid waters!", new WorldPoint(2279, 3036, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_ZUL_RYE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Zul-Andra from the south. Watch out for Fetid waters!", new WorldPoint(2199, 3036, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_SPYGLASS_ZUL_ANDRA_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a toxic hazard in the middle of Zul-Egil. Watch out for Fetid waters!", new WorldPoint(2165, 3030, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_GENERIC_POISON_SPILL_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate south of the poison waste and sample the contents. It will give you venom.", new WorldPoint(2279, 3036, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_DRINK_CRATE_ZUL_RYE_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Zul-Andra from the south. Watch out for Fetid waters!", new WorldPoint(2199, 3036, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_SPYGLASS_ZUL_ANDRA_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a toxic hazard in the middle of Zul-Egil. Watch out for Fetid waters!", new WorldPoint(2165, 3030, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_GENERIC_POISON_SPILL_COMPLETE)
+				.withRequirements(List.of(new HasBoatResistanceRequirement(BoatResistanceType.FETID_WATER, true, 1))),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the ruined tower on the Isle of Souls from the south.", new WorldPoint(2128, 2983, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_RUINED_TOWER_COMPLETE)
 		)),
 
@@ -424,7 +437,7 @@ public final class ChartingTasksData
 		new ChartingSeaSection(17, "Sea of Shells", List.of(
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents near the Summer Shore docks on the Great Conch.", new WorldPoint(3204, 2367, 0), "Unquiet Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GREAT_CONCH_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the Summer Shore from the cliffs above it on the Great Conch.", new WorldPoint(3187, 2430, 0), "Unquiet Ocean", 45, VarbitID.SAILING_CHARTING_SPYGLASS_TORTUGAN_VILLAGE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the western coast of the Great Conch and sample the contents.", new WorldPoint(3098, 2458, 0), "Unquiet Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WAY_HOME_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the western coast of the Great Conch and sample the contents. This will teleport you to your POH portal when drank, so hold off drinking until you're ready!", new WorldPoint(3098, 2458, 0), "Unquiet Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_WAY_HOME_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the nest of a fearless bird on the Onyx Crest.", new WorldPoint(2963, 2264, 0), "Unquiet Ocean", 47, VarbitID.SAILING_CHARTING_GENERIC_BIRD_NEST_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Onyx Crest.", new WorldPoint(2963, 2203, 0), "Unquiet Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SEA_OF_SHELLS_COMPLETE, "The answer is 'Nose peg'.", List.of(ItemID.SLAYER_NOSEPEG))
 		)),

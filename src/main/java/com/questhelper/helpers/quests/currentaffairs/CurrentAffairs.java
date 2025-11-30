@@ -235,7 +235,7 @@ public class CurrentAffairs extends BasicQuestHelper
 
 		getForm7r45h = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Talk to Councillor Catherine in the north-east of Catherby to receive a new form 7r4-5h.");
 		signForm7r45h = new DetailedQuestStep(this, "Use form 7r4-5h on the Mayor of Catherby.", hasForm7r45h.highlighted(), hasMayor.highlighted());
-		showCatherineForm = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Show Councillor Catherine signed form 7r4-5h.", hasForm7r45hSigned);
+		showCatherineForm = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Show Councillor Catherine the signed form.", hasForm7r45hSigned);
 
 		giveArheimNews = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Give Arhein on the Catherby docks the good news.", true);
 		giveArheimNews.addDialogStep("The by-law has been changed!");

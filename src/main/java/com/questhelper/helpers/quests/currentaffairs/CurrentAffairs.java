@@ -146,11 +146,6 @@ public class CurrentAffairs extends BasicQuestHelper
 	}
 
 	@Override
-	protected void setupZones()
-	{
-	}
-
-	@Override
 	protected void setupRequirements()
 	{
 		//Quest Requirements

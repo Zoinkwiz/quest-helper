@@ -42,15 +42,26 @@ public final class ChartingTaskDefinition
 	private final int level;
 	private final int varbitId;
 	private final String answerText;
+	private final Integer bottleItemId;
 	private final List<Requirement> additionalRequirements = new ArrayList<>();
 	private final List<Requirement> additionalRecommended = new ArrayList<>();
 	
 	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId)
 	{
-		this(type, description, worldPoint, null, ocean, level, varbitId);
+		this(type, description, worldPoint, null, ocean, level, varbitId, null);
 	}
 	
 	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, WorldPoint secondaryWorldPoint, String ocean, int level, int varbitId)
+	{
+		this(type, description, worldPoint, secondaryWorldPoint, ocean, level, varbitId, null);
+	}
+
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, Integer bottleItemId)
+	{
+		this(type, description, worldPoint, null, ocean, level, varbitId, bottleItemId);
+	}
+
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, WorldPoint secondaryWorldPoint, String ocean, int level, int varbitId, Integer bottleItemId)
 	{
 		this.type = type;
 		this.description = description;
@@ -61,9 +72,15 @@ public final class ChartingTaskDefinition
 		this.varbitId = varbitId;
 		this.itemIds = null;
 		this.answerText = "";
+		this.bottleItemId = bottleItemId;
 	}
 
 	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, String answerText, List<Integer> itemIds)
+	{
+		this(type, description, worldPoint, ocean, level, varbitId, answerText, itemIds, null);
+	}
+
+	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId, String answerText, List<Integer> itemIds, Integer bottleItemId)
 	{
 		this.type = type;
 		this.description = description;
@@ -74,6 +91,7 @@ public final class ChartingTaskDefinition
 		this.level = level;
 		this.varbitId = varbitId;
 		this.answerText = answerText;
+		this.bottleItemId = bottleItemId;
 	}
 
 	public ChartingTaskDefinition withRequirements(List<Requirement> requirements)

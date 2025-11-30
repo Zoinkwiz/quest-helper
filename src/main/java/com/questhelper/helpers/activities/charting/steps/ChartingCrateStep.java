@@ -28,7 +28,6 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
@@ -47,6 +46,21 @@ public class ChartingCrateStep extends ChartingTaskObjectStep
 		var reqWithQuest = or(getFadeCondition(), new VarbitRequirement(VarbitID.SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_COMPLETE, 0));
 		reqWithQuest.setText(getFadeCondition().getDisplayText() + " You also require completion of the quest 'Prying Times'.");
 		conditionToFadeInSidebar(reqWithQuest);
-		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), not(reqWithQuest));
+		
+		// Task is complete if varbit is 1 (already drank) OR player has the bottle item
+		var completedVarbit = new VarbitRequirement(definition.getVarbitId(), 1);
+		Requirement completionRequirement = completedVarbit;
+		
+		if (definition.getBottleItemId() != null)
+		{
+			var bottleItem = new ItemRequirement("Bottle", definition.getBottleItemId());
+			bottleItem.alsoCheckBank();
+			completionRequirement = or(completedVarbit, bottleItem);
+		}
+		
+		// Task can be done if: varbit is 0 (not completed via varbit) AND quest requirement met AND task not complete (via bottle)
+		var varbitNotComplete = new VarbitRequirement(definition.getVarbitId(), 0);
+		var taskNotComplete = not(completionRequirement);
+		canDoRequirement = and(varbitNotComplete, not(reqWithQuest), taskNotComplete);
 	}
 }

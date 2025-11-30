@@ -31,6 +31,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
@@ -49,7 +50,6 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.SailStep;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +85,8 @@ public class CurrentAffairs extends BasicQuestHelper
 	Requirement duckCanBeFollowed;
 	Requirement duckHasStopped;
 	Requirement catherbyCharted;
+	FreeInventorySlotRequirement twoFreeInvSlots;
+	FreeInventorySlotRequirement oneFreeInvSlot;
 
 	// Steps
 	NpcStep startQuest;
@@ -180,6 +182,9 @@ public class CurrentAffairs extends BasicQuestHelper
 
 		charcoalRequirement.setConditionToHide(filledFormCr4p);
 		coinsRequirement.setConditionToHide(boughtFishbowl);
+
+		twoFreeInvSlots = new FreeInventorySlotRequirement(2);
+		oneFreeInvSlot = new FreeInventorySlotRequirement(1);
 	}
 
 	public void setupSteps()
@@ -210,7 +215,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		talkToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Talk to Arhein on the docks about the mayor.", true);
 		talkToArhein.addDialogStep("I need to find the Mayor of Catherby.");
 
-		talkToHarry = new NpcStep(this, NpcID.HARRY, new WorldPoint(2831, 3444, 0), "Talk to Harry in the fish shop in south-east Catherby about a new mayor.", true, coinsRequirement);
+		talkToHarry = new NpcStep(this, NpcID.HARRY, new WorldPoint(2831, 3444, 0), "Talk to Harry in the fish shop in south-east Catherby about a new mayor.", true, coinsRequirement, twoFreeInvSlots);
 		talkToHarry.addDialogStep("I'm here about the mayor.");
 		talkToHarry.addDialogStep("Yes.");
 		fishInAquarium = new ObjectStep(this, ObjectID.AQUARIUM, new WorldPoint(2831, 3444, 0), "Fish a new mayor from the aquarium.", true, hasTinyNet, hasMayoralFishbowl);
@@ -235,7 +240,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		doAudit.addDialogConsideringLastLineAndVarbit("How much experience do you have sailing?", VarbitID.CURRENT_AFFAIRS_FORM_Q7, q7Answers);
 		doAudit.addDialogConsideringLastLineAndVarbit("Where would you say your home port is?", VarbitID.CURRENT_AFFAIRS_FORM_Q8, q8Answers);
 
-		getForm7r45h = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Talk to Councillor Catherine in the north-east of Catherby to receive a new form 7r4-5h.");
+		getForm7r45h = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Talk to Councillor Catherine in the north-east of Catherby to receive a new form 7r4-5h.", oneFreeInvSlot);
 		signForm7r45h = new DetailedQuestStep(this, "Use form 7r4-5h on the Mayor of Catherby.", hasForm7r45h.highlighted(), hasMayor.highlighted());
 		showCatherineForm = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Show Councillor Catherine the signed form.", hasForm7r45hSigned);
 
@@ -309,9 +314,11 @@ public class CurrentAffairs extends BasicQuestHelper
 		return List.of(
 			new QuestRequirement(QuestHelperQuest.PANDEMONIUM, QuestState.FINISHED),
 			new SkillRequirement(Skill.SAILING, 22, false),
-			new SkillRequirement(Skill.FISHING, 10, false)
+			new SkillRequirement(Skill.FISHING, 10, false),
+			twoFreeInvSlots
 		);
 	}
+
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{

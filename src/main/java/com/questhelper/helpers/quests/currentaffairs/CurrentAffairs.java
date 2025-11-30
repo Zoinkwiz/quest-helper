@@ -81,71 +81,6 @@ public class CurrentAffairs extends BasicQuestHelper
 	private static final Map<Integer, String> q8Answers = Map.of(1, "Varrock.", 2, "Falador.", 3, "Edgeville.");
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-		steps.put(0, startQuest);
-		steps.put(5, talkToCouncillor);
-		ConditionalStep cFillForm = new ConditionalStep(this, talkToCouncillor);
-		cFillForm.addStep(formCr4pGiven, talkAfterFormHandedIn);
-		cFillForm.addStep(and(not(formCr4pGiven), hasFormCr4p, filledFormCr4p), handOverFormCr4p);
-		cFillForm.addStep(and(not(formCr4pGiven), charcoalRequirement, not(filledFormCr4p), hasFormCr4p.highlighted()), fillFormCr4p);
-		cFillForm.addStep(and(not(formCr4pGiven), hasFormCr4p, not(charcoalRequirement)), grabCharcoal);
-		steps.put(10, cFillForm);
-		steps.put(15, talkToArhein);
-		cGetMayor = new ConditionalStep(this, talkToHarry);
-		cGetMayor.setShouldPassthroughText(true);
-		cGetMayor.addStep(hasMayor, showArheinMayor);
-		cGetMayor.addStep(and(hasMayoralFishbowl, hasTinyNet), fishInAquarium);
-		cGetMayor.addStep(boughtFishbowl, getNewFishbowl);
-		steps.put(20, cGetMayor);
-		cShowCatherineMayor = new ConditionalStep(this, getNewMayor);
-		cShowCatherineMayor.addStep(and(auditStarted), doAudit);
-		cShowCatherineMayor.addStep(and(not(auditStarted), hasMayor), showCatherineMayor);
-		steps.put(25, cShowCatherineMayor);
-		cSign7r45h = new ConditionalStep(this, getNewMayor);
-		cSign7r45h.addStep(and(hasForm7r45hSigned), showCatherineForm);
-		cSign7r45h.addStep(and(hasForm7r45h, hasMayor), signForm7r45h);
-		cSign7r45h.addStep(and(hasMayor, not(hasForm7r45h)), getForm7r45h);
-		steps.put(30, cSign7r45h);
-		steps.put(35, giveArheimNews);
-
-		cBoardShip = new ConditionalStep(this, getDuck);
-		cBoardShip.setShouldPassthroughText(true);
-		cBoardShip.addStep(and(not(catherbyCharted), hasDuck, not(onboardShip)), boardShip);
-		cSailToStart = new ConditionalStep(this, cBoardShip);
-		cSailToStart.addStep(and(not(catherbyCharted), hasDuck, onboardShip), sailToStart);
-		cSailToStart.addStep(duckCanBeFollowed, followThatDuck);
-		cSailToStart.addStep(catherbyCharted, showCurrentsArhein);
-		steps.put(40, cSailToStart);
-		return steps;
-	}
-
-	public void setupConditions()
-	{
-		filledFormCr4p = and(
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q1, 0, Operation.GREATER),
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q2, 0, Operation.GREATER),
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q3, 0, Operation.GREATER),
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q4, 0, Operation.GREATER),
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q5, 0, Operation.GREATER),
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q6, 0, Operation.GREATER),
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q7, 0, Operation.GREATER),
-			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q8, 0, Operation.GREATER));
-		formCr4pGiven = new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_GIVEN, 1);
-		boughtFishbowl = new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_KIT_PURCHASED, 1);
-		auditStarted = new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_AUDIT_START, 1);
-		onboardShip = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
-		catherbyCharted = new VarbitRequirement(VarbitID.SAILING_CHARTING_CURRENT_DUCK_CATHERBY_BAY_COMPLETE, 1);
-
-		charcoalRequirement.setConditionToHide(filledFormCr4p);
-		coinsRequirement.setConditionToHide(boughtFishbowl);
-	}
-
-	@Override
 	protected void setupRequirements()
 	{
 		//Quest Requirements
@@ -174,6 +109,24 @@ public class CurrentAffairs extends BasicQuestHelper
 		hasForm7r45hSigned.setTooltip("You can receive a new one from Arheim on the Catherby Docks.");
 
 		duckCanBeFollowed = new NpcRequirement(NpcID.SAILING_CHARTING_CURRENT_DUCK_MOVING);
+
+		filledFormCr4p = and(
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q1, 0, Operation.GREATER),
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q2, 0, Operation.GREATER),
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q3, 0, Operation.GREATER),
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q4, 0, Operation.GREATER),
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q5, 0, Operation.GREATER),
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q6, 0, Operation.GREATER),
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q7, 0, Operation.GREATER),
+			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q8, 0, Operation.GREATER));
+		formCr4pGiven = new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_GIVEN, 1);
+		boughtFishbowl = new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_KIT_PURCHASED, 1);
+		auditStarted = new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_AUDIT_START, 1);
+		onboardShip = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
+		catherbyCharted = new VarbitRequirement(VarbitID.SAILING_CHARTING_CURRENT_DUCK_CATHERBY_BAY_COMPLETE, 1);
+
+		charcoalRequirement.setConditionToHide(filledFormCr4p);
+		coinsRequirement.setConditionToHide(boughtFishbowl);
 	}
 
 	public void setupSteps()
@@ -243,18 +196,46 @@ public class CurrentAffairs extends BasicQuestHelper
 	}
 
 	@Override
-	public QuestPointReward getQuestPointReward()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		return new QuestPointReward(1);
-	}
+		initializeRequirements();
+		setupSteps();
+		Map<Integer, QuestStep> steps = new HashMap<>();
+		steps.put(0, startQuest);
+		steps.put(5, talkToCouncillor);
+		ConditionalStep cFillForm = new ConditionalStep(this, talkToCouncillor);
+		cFillForm.addStep(formCr4pGiven, talkAfterFormHandedIn);
+		cFillForm.addStep(and(not(formCr4pGiven), hasFormCr4p, filledFormCr4p), handOverFormCr4p);
+		cFillForm.addStep(and(not(formCr4pGiven), charcoalRequirement, not(filledFormCr4p), hasFormCr4p.highlighted()), fillFormCr4p);
+		cFillForm.addStep(and(not(formCr4pGiven), hasFormCr4p, not(charcoalRequirement)), grabCharcoal);
+		steps.put(10, cFillForm);
+		steps.put(15, talkToArhein);
+		cGetMayor = new ConditionalStep(this, talkToHarry);
+		cGetMayor.setShouldPassthroughText(true);
+		cGetMayor.addStep(hasMayor, showArheinMayor);
+		cGetMayor.addStep(and(hasMayoralFishbowl, hasTinyNet), fishInAquarium);
+		cGetMayor.addStep(boughtFishbowl, getNewFishbowl);
+		steps.put(20, cGetMayor);
+		cShowCatherineMayor = new ConditionalStep(this, getNewMayor);
+		cShowCatherineMayor.addStep(and(auditStarted), doAudit);
+		cShowCatherineMayor.addStep(and(not(auditStarted), hasMayor), showCatherineMayor);
+		steps.put(25, cShowCatherineMayor);
+		cSign7r45h = new ConditionalStep(this, getNewMayor);
+		cSign7r45h.addStep(and(hasForm7r45hSigned), showCatherineForm);
+		cSign7r45h.addStep(and(hasForm7r45h, hasMayor), signForm7r45h);
+		cSign7r45h.addStep(and(hasMayor, not(hasForm7r45h)), getForm7r45h);
+		steps.put(30, cSign7r45h);
+		steps.put(35, giveArheimNews);
 
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return List.of(
-			charcoalRequirement,
-			coinsRequirement
-		);
+		cBoardShip = new ConditionalStep(this, getDuck);
+		cBoardShip.setShouldPassthroughText(true);
+		cBoardShip.addStep(and(not(catherbyCharted), hasDuck, not(onboardShip)), boardShip);
+		cSailToStart = new ConditionalStep(this, cBoardShip);
+		cSailToStart.addStep(and(not(catherbyCharted), hasDuck, onboardShip), sailToStart);
+		cSailToStart.addStep(duckCanBeFollowed, followThatDuck);
+		cSailToStart.addStep(catherbyCharted, showCurrentsArhein);
+		steps.put(40, cSailToStart);
+		return steps;
 	}
 
 	@Override
@@ -265,6 +246,20 @@ public class CurrentAffairs extends BasicQuestHelper
 			new SkillRequirement(Skill.SAILING, 22, false),
 			new SkillRequirement(Skill.FISHING, 10, false)
 		);
+	}
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return List.of(
+			charcoalRequirement,
+			coinsRequirement
+		);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
 	}
 
 	@Override

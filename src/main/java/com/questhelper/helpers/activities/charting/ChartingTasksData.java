@@ -441,29 +441,30 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the nest of a fearless bird on the Onyx Crest.", new WorldPoint(2963, 2264, 0), "Unquiet Ocean", 47, VarbitID.SAILING_CHARTING_GENERIC_BIRD_NEST_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Onyx Crest.", new WorldPoint(2963, 2203, 0), "Unquiet Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SEA_OF_SHELLS_COMPLETE, "The answer is 'Nose peg'.", List.of(ItemID.SLAYER_NOSEPEG))
 		)),
-		// TODO: Done up to here
-		new ChartingSeaSection(33, "Soul Bay", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting sea life in the middle of Soul Bay.", new WorldPoint(2089, 2797, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_LARGE_JELLYFISH_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the western coast of the Isle of Souls and sample the contents.", new WorldPoint(2086, 2882, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_CREATORS_COCKTAIL_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_CREATORS_COCKTAIL),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents off the western coast of the Isle of Souls.", new WorldPoint(2080, 2859, 0), "Shrouded Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SOUL_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Isle of Souls.", new WorldPoint(2012, 2874, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SOUL_BAY_COMPLETE, "The answer is 'Dwellberries'.", List.of(ItemID.DWELLBERRIES)),
-			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the south western coast of the Isle of Souls.", new WorldPoint(2140, 2806, 0), new WorldPoint(2021, 2681, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_SOUL_BAY_COMPLETE)
-		)),
+		// Up to here, level 52 (5k to 53). Claimed seas from Chartin' Charles. Done all quests. easy, medium, and 3x hard storm barracuda
 		new ChartingSeaSection(34, "Barracuda Belt", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a spool of Barracuda grade rope east of Wintumber Island.", new WorldPoint(2149, 2615, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_ROPE_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an odd statue on Wintumber Island.", new WorldPoint(2066, 2608, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_STATUE_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the wreck of a Barracuda ship north east of Sunbleak Island.", new WorldPoint(2281, 2447, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_PORTION_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near the bank boat in the Barracuda Belt and sample the contents.", new WorldPoint(2282, 2506, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_BARRACUDA_BREW_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_BARRACUDA_BREW),
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of the bank boat in the Barracuda Belt.", new WorldPoint(2276, 2598, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_BARRACUDA_HQ_COMPLETE, "The answer is 'Vial', 'Avantoe', 'Snape grass', 'Caviar'.", List.of(ItemID.VIAL_EMPTY, ItemID.AVANTOE, ItemID.SNAPE_GRASS, ItemID.BRUT_CAVIAR)),
-			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island south east of Wintumber Island.", new WorldPoint(2082, 2590, 0), new WorldPoint(2154, 2440, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_BARRACUDA_BELT_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a spool of Barracuda grade rope east of Wintumber Island.", new WorldPoint(2149, 2615, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_BARRACUDA_ROPE_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island south east of Wintumber Island.", new WorldPoint(2082, 2590, 0), new WorldPoint(2154, 2440, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_BARRACUDA_BELT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an odd statue on Wintumber Island.", new WorldPoint(2066, 2608, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_STATUE_COMPLETE)
 		)),
 		new ChartingSeaSection(35, "The Everdeep", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an odd shadow south of Deepfin Point.", new WorldPoint(1976, 2680, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_SCARY_SHADOW_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the far south east of the Everdeep.", new WorldPoint(1942, 2650, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_THE_EVERDEEP_COMPLETE, "The answer is 'Plank'.", List.of(ItemID.WOODPLANK)),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of Deepfin Point from the south.", new WorldPoint(1943, 2737, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_THE_EVERDEEP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of Deepfin Point and sample the contents.", new WorldPoint(1854, 2771, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_CRYSTAL_VODKA_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_CRYSTAL_VODKA),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth in the far south east of the Everdeep.", new WorldPoint(1942, 2650, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_THE_EVERDEEP_COMPLETE, "The answer is 'Plank'.", List.of(ItemID.WOODPLANK)),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the western coast of Deepfin Point.", new WorldPoint(1928, 2791, 0), new WorldPoint(1895, 2665, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_THE_EVERDEEP_COMPLETE)
 		)),
+		new ChartingSeaSection(33, "Soul Bay", List.of(
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Isle of Souls.", new WorldPoint(2012, 2874, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SOUL_BAY_COMPLETE, "The answer is 'Dwellberries'.", List.of(ItemID.DWELLBERRIES)),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents off the western coast of the Isle of Souls.", new WorldPoint(2080, 2859, 0), "Shrouded Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SOUL_BAY_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the western coast of the Isle of Souls and sample the contents.", new WorldPoint(2086, 2882, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_CREATORS_COCKTAIL_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_CREATORS_COCKTAIL),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting sea life in the middle of Soul Bay.", new WorldPoint(2089, 2797, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_LARGE_JELLYFISH_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the south western coast of the Isle of Souls.", new WorldPoint(2140, 2806, 0), new WorldPoint(2021, 2681, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_SOUL_BAY_COMPLETE)
+		)),
+		// Done up to here
 		new ChartingSeaSection(56, "Fremensund", List.of(
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some suspicious eyes west of Rellekka.", new WorldPoint(2587, 3657, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_EYES_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the market in Rellekka from the north.", new WorldPoint(2636, 3707, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FREMENSUND_COMPLETE),

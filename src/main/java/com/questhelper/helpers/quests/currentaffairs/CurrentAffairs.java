@@ -202,7 +202,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		fillFormCr4p.addDialogSteps("Less than a month.", "Less than a year.", "A year or more.");
 		fillFormCr4p.addDialogSteps("Varrock.", "Falador.", "Edgeville.");
 
-		handOverFormCr4p = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Hand over the filled form to Councillor Catherine.", filledFormCr4p, hasFormCr4p);
+		handOverFormCr4p = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Hand over the filled form to Councillor Catherine.", hasFormCr4p);
 		handOverFormCr4p.addDialogStep("Yes, I have it here.");
 
 		talkToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Talk to Arhein on the docks about the mayor.", true);

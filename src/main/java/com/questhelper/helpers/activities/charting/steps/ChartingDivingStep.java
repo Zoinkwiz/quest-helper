@@ -40,7 +40,6 @@ public class ChartingDivingStep extends ChartingTaskNpcStep
 		super(questHelper, NpcID.SAILING_CHARTING_MERMAID_GUIDE_1, definition, showAnswer, requirements);
 		addAlternateNpcs(NpcID.SAILING_CHARTING_MERMAID_GUIDE_2, NpcID.SAILING_CHARTING_MERMAID_GUIDE_3,
 			NpcID.SAILING_CHARTING_MERMAID_GUIDE_4, NpcID.SAILING_CHARTING_MERMAID_GUIDE_5);
-		if (showAnswer) setGeInterfaceIcon(definition.getItemIds());
 
 		addDialogStep("Can I dive to the sea floor with you?");
 

@@ -27,7 +27,7 @@
 package com.questhelper.requirements.location;
 
 import com.questhelper.requirements.AbstractRequirement;
-import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.steps.tools.DefinedPoint;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.coords.LocalPoint;
@@ -38,7 +38,7 @@ import java.util.List;
 
 public class TileIsLoadedRequirement extends AbstractRequirement
 {
-	private final WorldPoint worldPoint;
+	private final DefinedPoint definedPoint;
 	private final String displayText;
 
 	/**
@@ -48,15 +48,20 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	 */
 	public TileIsLoadedRequirement(WorldPoint worldPoint)
 	{
-		assert(worldPoint != null);
-		this.worldPoint = worldPoint;
-		this.displayText = "WorldPoint " + worldPoint.toString() + "is loaded locally.";
+		this(DefinedPoint.of(worldPoint));
+	}
+
+	public TileIsLoadedRequirement(DefinedPoint definedPoint)
+	{
+		assert(definedPoint != null);
+		this.definedPoint = definedPoint;
+		this.displayText = "WorldPoint " + definedPoint.getWorldPoint().toString() + "is loaded locally.";
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
+		List<LocalPoint> localPoints = definedPoint.resolveLocalPoints(client);
 		for (LocalPoint localPoint : localPoints)
 		{
 			// Final tiles of a scene do not have objects of them

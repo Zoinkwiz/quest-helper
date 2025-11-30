@@ -234,7 +234,7 @@ public class RuneMysteries extends BasicQuestHelper
 			bringTalismanToSedridor
 		)));
 
-		sections.add(new PanelDetails("Discovering the list incantation", List.of(
+		sections.add(new PanelDetails("Discovering the lost incantation", List.of(
 			getResearchPackageFromSedridor,
 			deliverPackageToAubury,
 			talkToAudburyAgain,

@@ -221,6 +221,9 @@ public class ReleaseDate
 		QuestHelperQuest.THE_FINAL_DAWN,
 		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
 		QuestHelperQuest.SCRAMBLED,
+		QuestHelperQuest.PANDEMONIUM,
+		QuestHelperQuest.PRYING_TIMES,
+    QuestHelperQuest.TROUBLED_TORTUGANS,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

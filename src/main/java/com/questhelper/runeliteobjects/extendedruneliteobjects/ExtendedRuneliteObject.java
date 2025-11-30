@@ -157,11 +157,11 @@ public class ExtendedRuneliteObject
 
 		this.worldPoint = worldPoint;
 
-		LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
-		if (localPoint == null) return;
+		if (!updateRuneLiteObjectLocation(worldPoint))
+		{
+			return;
+		}
 
-		// Set it to first found local point
-		runeliteObject.setLocation(localPoint, client.getTopLevelWorldView().getPlane());
 		activate();
 	}
 
@@ -188,7 +188,7 @@ public class ExtendedRuneliteObject
 
 	public Shape getClickbox()
 	{
-		if (QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint) == null) return null;
+		if (QuestPerspective.resolveLocalPointForWorldPoint(client, worldPoint, null) == null) return null;
 
 		return Perspective.getClickbox(client,
 			client.getWorldView(getRuneliteObject().getWorldView()),
@@ -220,11 +220,7 @@ public class ExtendedRuneliteObject
 	public void setWorldPoint(WorldPoint worldPoint)
 	{
 		this.worldPoint = worldPoint;
-		LocalPoint localPoint = QuestPerspective.getLocalPointFromWorldPointInInstance(client.getTopLevelWorldView(), worldPoint);
-		if (localPoint == null) return;
-
-		// Set it to first found local point
-		this.runeliteObject.setLocation(localPoint, client.getTopLevelWorldView().getPlane());
+		updateRuneLiteObjectLocation(worldPoint);
 	}
 
 	public void setScaledModel(int[] model, int xScale, int yScale, int zScale)
@@ -663,5 +659,20 @@ public class ExtendedRuneliteObject
 //			runeliteObject.setAnimation(client.loadAnimation(animation));
 		}
 		return isFacingPlayer;
+	}
+
+	private boolean updateRuneLiteObjectLocation(WorldPoint worldPoint)
+	{
+		LocalPoint localPoint = QuestPerspective.resolveLocalPointForWorldPoint(client, worldPoint, null);
+		if (localPoint == null)
+		{
+			return false;
+		}
+
+		WorldView worldView = client.getWorldView(localPoint.getWorldView());
+		int plane = worldView != null ? worldView.getPlane() : client.getTopLevelWorldView().getPlane();
+
+		runeliteObject.setLocation(localPoint, plane);
+		return true;
 	}
 }

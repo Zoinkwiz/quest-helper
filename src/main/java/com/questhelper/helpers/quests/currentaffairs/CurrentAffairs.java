@@ -288,8 +288,9 @@ public class CurrentAffairs extends BasicQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-			new UnlockReward("Access to charting currents"));
+		return List.of(
+			new UnlockReward("Access to charting currents")
+		);
 	}
 
 	@Override

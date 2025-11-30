@@ -240,6 +240,7 @@ public abstract class QuestStep implements Module
 
 	public void addSubSteps(Collection<QuestStep> substeps)
 	{
+		if (substeps == null) return;
 		this.substeps.addAll(substeps);
 	}
 

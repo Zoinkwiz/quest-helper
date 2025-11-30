@@ -64,4 +64,10 @@ public class ChartingPuzzleWrapStep extends PuzzleWrapperStep implements Chartin
 	{
 		return questStep.getCanDoRequirement();
 	}
+
+	@Override
+	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
+	{
+		// Hopefully implemented in the wrapped step?
+	}
 }

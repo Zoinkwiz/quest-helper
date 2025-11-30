@@ -58,8 +58,15 @@ public class ReorderableConditionalStep extends ConditionalStep
         for (Requirement req : steps.keySet())
         {
             QuestStep step = steps.get(req);
-            if (step.getId() == null) newSteps.put(req, step);
+			if (step.getId() == null && req == null) continue;
+            if (step.getId() == null || !sideOrder.contains(step.getId()))
+			{
+				newSteps.put(req, step);
+			}
         }
+		QuestStep step = steps.get(null);
+		if (step.getId() == null) newSteps.put(null, step);
+
         steps = newSteps;
     }
 

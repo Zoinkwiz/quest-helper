@@ -24,8 +24,10 @@
  */
 package com.questhelper.helpers.activities.charting;
 
+import com.questhelper.requirements.Requirement;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,6 +42,8 @@ public final class ChartingTaskDefinition
 	private final int level;
 	private final int varbitId;
 	private final String answerText;
+	private final List<Requirement> additionalRequirements = new ArrayList<>();
+	private final List<Requirement> additionalRecommended = new ArrayList<>();
 	
 	public ChartingTaskDefinition(ChartingType type, String description, WorldPoint worldPoint, String ocean, int level, int varbitId)
 	{
@@ -70,5 +74,17 @@ public final class ChartingTaskDefinition
 		this.level = level;
 		this.varbitId = varbitId;
 		this.answerText = answerText;
+	}
+
+	public ChartingTaskDefinition withRequirements(List<Requirement> requirements)
+	{
+		additionalRequirements.addAll(requirements);
+		return this;
+	}
+
+	public ChartingTaskDefinition withRecommended(List<Requirement> recommended)
+	{
+		additionalRecommended.addAll(recommended);
+		return this;
 	}
 }

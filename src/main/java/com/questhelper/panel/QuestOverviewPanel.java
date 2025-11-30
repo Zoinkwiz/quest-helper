@@ -239,6 +239,7 @@ public class QuestOverviewPanel extends JPanel
 
 		JPanel filtersPanel = new JPanel();
 		filtersPanel.setLayout(new BorderLayout());
+		filtersPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
 		filtersPanel.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 		filtersPanel.add(filterName, BorderLayout.CENTER);
 		filtersPanel.add(dropdown, BorderLayout.EAST);

@@ -150,6 +150,7 @@ public class PlayerStateManager
 		}
 	}
 
+
 	public String getPlayerName()
 	{
 		if (client.getLocalPlayer() == null)

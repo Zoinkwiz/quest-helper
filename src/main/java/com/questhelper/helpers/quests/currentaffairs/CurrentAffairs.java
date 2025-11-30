@@ -221,6 +221,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		showCatherineMayor.addDialogStep("Yes, I have it here.");
 		getNewMayor = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Talk to Arhein on the Catherby docks for a new mayor.", true);
 		getNewMayor.addDialogStep("About the mayor...");
+		showCatherineMayor.addSubSteps(getNewMayor);
 
 		doAudit = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Talk to Councillor Catherine to complete the audit.");
 		doAudit.addDialogConsideringLastLineAndVarbit("What is your main reason for making port at Catherby?", VarbitID.CURRENT_AFFAIRS_FORM_Q1, q1Answers);

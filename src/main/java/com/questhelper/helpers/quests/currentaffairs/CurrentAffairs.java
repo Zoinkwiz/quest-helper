@@ -272,7 +272,10 @@ public class CurrentAffairs extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(new ExperienceReward(Skill.SAILING, 1400), new ExperienceReward(Skill.FISHING, 1000));
+		return List.of(
+			new ExperienceReward(Skill.SAILING, 1400),
+			new ExperienceReward(Skill.FISHING, 1000)
+		);
 	}
 
 	@Override

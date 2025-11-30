@@ -256,7 +256,10 @@ public class CurrentAffairs extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(charcoalRequirement, coinsRequirement);
+		return List.of(
+			charcoalRequirement,
+			coinsRequirement
+		);
 	}
 
 	@Override

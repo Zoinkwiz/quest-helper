@@ -28,6 +28,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -82,6 +83,7 @@ public class CurrentAffairs extends BasicQuestHelper
 	Requirement auditStarted;
 	Requirement onboardShip;
 	Requirement duckCanBeFollowed;
+	Requirement duckHasStopped;
 	Requirement catherbyCharted;
 
 	// Steps
@@ -117,7 +119,9 @@ public class CurrentAffairs extends BasicQuestHelper
 	NpcStep getDuck;
 	BoardShipStep boardShip;
 	SailStep sailToStart;
+	DetailedQuestStep releaseDuck;
 	DetailedQuestStep followThatDuck;
+	NpcStep collectDuck;
 	NpcStep showCurrentsArhein;
 	ConditionalStep cBoardShip;
 	ConditionalStep cSailToStart;
@@ -153,13 +157,11 @@ public class CurrentAffairs extends BasicQuestHelper
 		hasMayor = new ItemRequirement("Mayor of Catherby", ItemID.CURRENT_AFFAIRS_MAYOR_OF_CATHERBY).canBeObtainedDuringQuest().isNotConsumed();
 		hasMayor.setTooltip("You can receive a new one in the fish shop in the south-east of Catherby.");
 
-		boardShip = new BoardShipStep(this, hasDuck);
-		sailToStart = new SailStep(this, new WorldPoint(2835, 3418, 0), hasDuck);
-
 		hasDuck = new ItemRequirement("Current Duck", ItemID.SAILING_CHARTING_CURRENT_DUCK).canBeObtainedDuringQuest().isNotConsumed();
 		hasForm7r45hSigned.setTooltip("You can receive a new one from Arheim on the Catherby Docks.");
 
 		duckCanBeFollowed = new NpcRequirement(NpcID.SAILING_CHARTING_CURRENT_DUCK_MOVING);
+		duckHasStopped = new NpcCondition(NpcID.SAILING_CHARTING_CURRENT_DUCK_STOPPED, new WorldPoint(2802, 3322, 0));
 
 		filledFormCr4p = and(
 			new VarbitRequirement(VarbitID.CURRENT_AFFAIRS_FORM_Q1, 0, Operation.GREATER),
@@ -240,10 +242,18 @@ public class CurrentAffairs extends BasicQuestHelper
 		giveArheimNews = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Give Arhein on the Catherby docks the good news.", true);
 		giveArheimNews.addDialogStep("The by-law has been changed!");
 
-		getDuck = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Get a new duck from Arhein on the Catherby docks.", true);
+		// TODO: We might be able to check if the duck is in the cargo hold and only recommend that?
+		getDuck = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Get a new duck from Arhein on the Catherby docks, or from your ship's cargo hold.", true);
 		getDuck.addDialogStep("About that duck...");
 
-		followThatDuck = new DetailedQuestStep(this, new WorldPoint(2802, 3322, 0), "Follow that Duck! It'll end up south-west of Entrana."); //It ends up at (2802,3322,0)
+		boardShip = new BoardShipStep(this, hasDuck);
+		sailToStart = new SailStep(this, new WorldPoint(2835, 3418, 0), "Sail to the small island east of Catherby, then release the Current duck.", hasDuck);
+		releaseDuck = new DetailedQuestStep(this, "Release the Current duck.", hasDuck.highlighted());
+
+		followThatDuck = new DetailedQuestStep(this, new WorldPoint(2802, 3322, 0), "Follow the Current duck! It'll end up south-west of Entrana."); //It ends up at (2802,3322,0)
+
+		collectDuck = new NpcStep(this, NpcID.SAILING_CHARTING_CURRENT_DUCK_STOPPED, "Collect your Current duck.");
+
 		showCurrentsArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2803, 3430, 0), "Share what you've learned with Arhein on the Catherby docks.", true);
 		showCurrentsArhein.addDialogStep("I've charted the currents!");
 	}
@@ -284,9 +294,11 @@ public class CurrentAffairs extends BasicQuestHelper
 		cBoardShip.setShouldPassthroughText(true);
 		cBoardShip.addStep(and(not(catherbyCharted), hasDuck, not(onboardShip)), boardShip);
 		cSailToStart = new ConditionalStep(this, cBoardShip);
-		cSailToStart.addStep(and(not(catherbyCharted), hasDuck, onboardShip), sailToStart);
-		cSailToStart.addStep(duckCanBeFollowed, followThatDuck);
 		cSailToStart.addStep(catherbyCharted, showCurrentsArhein);
+		cSailToStart.addStep(and(not(catherbyCharted), hasDuck, onboardShip, sailToStart.getZoneRequirement()), releaseDuck);
+		cSailToStart.addStep(and(not(catherbyCharted), hasDuck, onboardShip), sailToStart);
+		cSailToStart.addStep(duckHasStopped, collectDuck);
+		cSailToStart.addStep(duckCanBeFollowed, followThatDuck);
 		steps.put(40, cSailToStart);
 		return steps;
 	}
@@ -375,7 +387,9 @@ public class CurrentAffairs extends BasicQuestHelper
 		sections.add(new PanelDetails("Map the currents!", List.of(
 			cBoardShip,
 			sailToStart,
+			releaseDuck,
 			followThatDuck,
+			collectDuck,
 			showCurrentsArhein
 		), List.of(
 			hasDuck

@@ -190,6 +190,7 @@ public class CurrentAffairs extends BasicQuestHelper
 		talkAfterFormHandedIn = new NpcStep(this, NpcID.CURRENT_AFFAIRS_COUNCILLOR, new WorldPoint(2825, 3454, 0), "Finish talking to Councillor Catherine in the north-east of Catherby.");
 		grabCharcoal = new ObjectStep(this, ObjectID.CURRENT_AFFAIRS_CABINET, new WorldPoint(2827, 3453, 0), "Grab a piece of charcoal from the cabinet.");
 		fillFormCr4p = new DetailedQuestStep(this, "Fill form cr-4p. The answers you provide do not matter.", hasFormCr4p.highlighted(), charcoalRequirement);
+		fillFormCr4p.addSubSteps(grabCharcoal);
 
 		//Answer values range from 1-3
 		fillFormCr4p.addDialogSteps("Pleasure.", "Trade.", "Piracy.");

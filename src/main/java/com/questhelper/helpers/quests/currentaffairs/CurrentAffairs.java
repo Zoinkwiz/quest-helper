@@ -62,14 +62,65 @@ import net.runelite.api.gameval.VarbitID;
 
 public class CurrentAffairs extends BasicQuestHelper
 {
-	ItemRequirement charcoalRequirement, coinsRequirement, hasFormCr4p, hasTinyNet, hasMayoralFishbowl, hasMayor, hasForm7r45h, hasForm7r45hSigned, hasDuck;
-	Requirement filledFormCr4p, formCr4pGiven, boughtFishbowl, auditStarted, onboardShip, duckCanBeFollowed, catherbyCharted;
-	NpcStep startQuest, talkToCouncillor, handOverFormCr4p, talkAfterFormHandedIn, talkToArhein, talkToHarry, getNewFishbowl, showArheinMayor, getNewMayor, showCatherineMayor, doAudit, getForm7r45h, showCatherineForm, giveArheimNews, getDuck, showCurrentsArhein;
-	ObjectStep grabCharcoal, fishInAquarium;
-	DetailedQuestStep fillFormCr4p, signForm7r45h, followThatDuck;
-	ConditionalStep cGetMayor, cShowCatherineMayor, cSign7r45h, cBoardShip, cSailToStart;
+	// Required items
+	ItemRequirement charcoalRequirement;
+	ItemRequirement coinsRequirement;
+
+	// Mid-quest item requirements
+	ItemRequirement hasFormCr4p;
+	ItemRequirement hasTinyNet;
+	ItemRequirement hasMayoralFishbowl;
+	ItemRequirement hasMayor;
+	ItemRequirement hasForm7r45h;
+	ItemRequirement hasForm7r45hSigned;
+	ItemRequirement hasDuck;
+
+	// Miscellaneous requirements
+	Requirement filledFormCr4p;
+	Requirement formCr4pGiven;
+	Requirement boughtFishbowl;
+	Requirement auditStarted;
+	Requirement onboardShip;
+	Requirement duckCanBeFollowed;
+	Requirement catherbyCharted;
+
+	// Steps
+	NpcStep startQuest;
+
+	NpcStep talkToCouncillor;
+
+	ObjectStep grabCharcoal;
+	DetailedQuestStep fillFormCr4p;
+	NpcStep handOverFormCr4p;
+	NpcStep talkAfterFormHandedIn;
+
+	NpcStep talkToArhein;
+
+	NpcStep talkToHarry;
+	NpcStep getNewFishbowl;
+	NpcStep showArheinMayor;
+	ObjectStep fishInAquarium;
+	ConditionalStep cGetMayor;
+
+	NpcStep getNewMayor;
+	NpcStep showCatherineMayor;
+	NpcStep doAudit;
+	ConditionalStep cShowCatherineMayor;
+
+	NpcStep getForm7r45h;
+	DetailedQuestStep signForm7r45h;
+	NpcStep showCatherineForm;
+	ConditionalStep cSign7r45h;
+
+	NpcStep giveArheimNews;
+
+	NpcStep getDuck;
 	BoardShipStep boardShip;
 	SailStep sailToStart;
+	DetailedQuestStep followThatDuck;
+	NpcStep showCurrentsArhein;
+	ConditionalStep cBoardShip;
+	ConditionalStep cSailToStart;
 
 	private static final Map<Integer, String> q1Answers = Map.of(1, "Pleasure.", 2, "Trade.", 3, "Piracy.");
 	private static final Map<Integer, String> q2Answers = Map.of(1, "0", 2, "1", 3, "2+");

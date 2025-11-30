@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.ReorderableConditionalStep;
 import com.questhelper.steps.tools.QuestPerspective;
@@ -78,9 +79,22 @@ public class ChartingConditionalStep extends ReorderableConditionalStep
 		{
 			var condition = entry.getKey();
 			var step = entry.getValue();
-
-			if (!(step instanceof DetailedQuestStep)) continue;
-			var detailedStep = (DetailedQuestStep) step;
+			DetailedQuestStep detailedStep;
+			if (!(step instanceof DetailedQuestStep))
+			{
+				if (step instanceof PuzzleWrapperStep && ((PuzzleWrapperStep) step).getSolvingStep() instanceof DetailedQuestStep)
+				{
+					detailedStep = (DetailedQuestStep) ((PuzzleWrapperStep) step).getSolvingStep();
+				}
+				else
+				{
+					continue;
+				}
+			}
+			else
+			{
+				detailedStep = (DetailedQuestStep) step;
+			}
 
 			if (condition != null && !condition.check(client))
 			{

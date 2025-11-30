@@ -459,34 +459,34 @@ public final class ChartingTasksData
 		)),
 		new ChartingSeaSection(33, "Soul Bay", List.of(
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Isle of Souls.", new WorldPoint(2012, 2874, 0), "Shrouded Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_SOUL_BAY_COMPLETE, "The answer is 'Dwellberries'.", List.of(ItemID.DWELLBERRIES)),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents off the western coast of the Isle of Souls.", new WorldPoint(2080, 2859, 0), new WorldPoint(2102, 2816, 0), "Shrouded Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SOUL_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate off the western coast of the Isle of Souls and sample the contents.", new WorldPoint(2086, 2882, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_CREATORS_COCKTAIL_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_CREATORS_COCKTAIL),
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents off the western coast of the Isle of Souls.", new WorldPoint(2080, 2859, 0), new WorldPoint(2102, 2816, 0), "Shrouded Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_SOUL_BAY_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some interesting sea life in the middle of Soul Bay.", new WorldPoint(2089, 2797, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_LARGE_JELLYFISH_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the south western coast of the Isle of Souls.", new WorldPoint(2140, 2806, 0), new WorldPoint(2021, 2681, 0), "Shrouded Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_SOUL_BAY_COMPLETE)
 		)),
 		// Done up to here
-		new ChartingSeaSection(56, "Fremensund", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some suspicious eyes west of Rellekka.", new WorldPoint(2587, 3657, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_EYES_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the market in Rellekka from the north.", new WorldPoint(2636, 3707, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FREMENSUND_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate north of Rellekka and sample the contents.", new WorldPoint(2689, 3732, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_FISHIER_STOUT_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_FISHIER_STOUT),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of Rower's Arm.", new WorldPoint(2561, 3626, 0), new WorldPoint(2484, 3628, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FREMENSUND_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Waterbirth Island.", new WorldPoint(2518, 3690, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_FREMENSUND_COMPLETE, "The answer is 'Kharyll teleport'.", List.of(ItemID.TABLET_KHARYLL)),
-			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island south west of Rellekka.", new WorldPoint(2594, 3644, 0), new WorldPoint(2513, 3738, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_FREMENSUND_COMPLETE)
-		)),
-		new ChartingSeaSection(57, "Grandroot Bay", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the roots of the Grand Tree in Grandroot Bay.", new WorldPoint(2479, 3546, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_TREE_ROOTS_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the lighthouse on Rower's Arm from the south.", new WorldPoint(2504, 3612, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_GRANDROOT_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of Grandroot Bay and sample the contents.", new WorldPoint(2453, 3597, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_TOAD_CIDER_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_TOAD_CIDER),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents in the River Crannmor.", new WorldPoint(2369, 3507, 0), new WorldPoint(2404, 3591, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GRANDROOT_BAY_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Barbarian Outpost.", new WorldPoint(2513, 3571, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GRANDROOT_BAY_COMPLETE, "The answer is 'Raw cod'.", List.of(ItemID.RAW_COD)),
-			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather west of the Barbarian Outpost.", new WorldPoint(2498, 3546, 0), new WorldPoint(2439, 3625, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_GRANDROOT_BAY_COMPLETE)
-		)),
 		new ChartingSeaSection(59, "Fremennik Strait", List.of(
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a discarded book south of Jatizso.", new WorldPoint(2383, 3769, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_NEDS_BOOK_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the towers on the Fremennik Isles from the south.", new WorldPoint(2366, 3777, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FREMENNIK_STRAIT_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate north west of the Piscatoris Fishing Colony and sample the contents.", new WorldPoint(2273, 3745, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_FISHTONGUE_TONIC_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_FISHTONGUE_TONIC),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents west of Neitiznot.", new WorldPoint(2305, 3795, 0), new WorldPoint(2340, 3875, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FREMENNIK_STRAIT_COMPLETE),
-			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the southern coast of Neitiznot.", new WorldPoint(2341, 3790, 0), new WorldPoint(2426, 3841, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_FREMENNIK_STRAIT_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on the southern coast of Neitiznot.", new WorldPoint(2341, 3790, 0), new WorldPoint(2426, 3841, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_FREMENNIK_STRAIT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the towers on the Fremennik Isles from the south.", new WorldPoint(2366, 3777, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FREMENNIK_STRAIT_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find a discarded book south of Jatizso.", new WorldPoint(2383, 3769, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_NEDS_BOOK_COMPLETE)
+		)),
+		new ChartingSeaSection(57, "Grandroot Bay", List.of(
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents in the River Crannmor.", new WorldPoint(2369, 3507, 0), new WorldPoint(2404, 3591, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_GRANDROOT_BAY_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate in the middle of Grandroot Bay and sample the contents.", new WorldPoint(2453, 3597, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_TOAD_CIDER_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_TOAD_CIDER),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the roots of the Grand Tree in Grandroot Bay.", new WorldPoint(2479, 3546, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_TREE_ROOTS_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather west of the Barbarian Outpost.", new WorldPoint(2498, 3546, 0), new WorldPoint(2439, 3625, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_GRANDROOT_BAY_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth west of the Barbarian Outpost.", new WorldPoint(2513, 3571, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_GRANDROOT_BAY_COMPLETE, "The answer is 'Raw cod'.", List.of(ItemID.RAW_COD)),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the lighthouse on Rower's Arm from the south.", new WorldPoint(2504, 3612, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_GRANDROOT_BAY_COMPLETE)
+	)),
+		new ChartingSeaSection(56, "Fremensund", List.of(
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents north of Rower's Arm.", new WorldPoint(2561, 3626, 0), new WorldPoint(2484, 3628, 0), "Northern Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_FREMENSUND_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of Waterbirth Island.", new WorldPoint(2518, 3690, 0), "Northern Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_FREMENSUND_COMPLETE, "The answer is 'Kharyll teleport'.", List.of(ItemID.TABLET_KHARYLL)),
+			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather on a small island south west of Rellekka.", new WorldPoint(2594, 3644, 0), new WorldPoint(2513, 3738, 0), "Northern Ocean", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_FREMENSUND_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find some suspicious eyes west of Rellekka.", new WorldPoint(2587, 3657, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_CRAB_EYES_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.SPYGLASS, "Use your spyglass to get a good view of the market in Rellekka from the north.", new WorldPoint(2636, 3707, 0), "Northern Ocean", 1, VarbitID.SAILING_CHARTING_SPYGLASS_FREMENSUND_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate north of Rellekka and sample the contents.", new WorldPoint(2689, 3732, 0), "Northern Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_FISHIER_STOUT_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_FISHIER_STOUT)
 		)),
 		new ChartingSeaSection(73, "Bonus Weather", List.of(
 			new ChartingTaskDefinition(ChartingType.WEATHER, "Help the meteorologist document the local weather at the south east tip of Cape Conch.", new WorldPoint(3321, 2327, 0), new WorldPoint(3177, 2456, 0), "", 57, VarbitID.SAILING_CHARTING_WEATHER_TROLL_GREAT_CONCH_COMPLETE),

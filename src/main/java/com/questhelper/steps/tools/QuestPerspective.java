@@ -152,7 +152,8 @@ public class QuestPerspective
 		List<LocalPoint> lps = new ArrayList<>();
 		for (WorldPoint instanceWp : instanceWps)
 		{
-			lps.add(LocalPoint.fromWorld(wv, instanceWp));
+			var lp = LocalPoint.fromWorld(wv, instanceWp);
+			if (lp != null) lps.add(LocalPoint.fromWorld(wv, instanceWp));
 		}
 		return lps;
 	}

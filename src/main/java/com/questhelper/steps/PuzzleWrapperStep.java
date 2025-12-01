@@ -32,6 +32,7 @@ import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import lombok.Getter;
 import com.questhelper.steps.choice.DialogChoiceStep;
 import lombok.NonNull;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -48,6 +49,9 @@ public class PuzzleWrapperStep extends ConditionalStep
 {
 	public static String DEFAULT_TEXT = "If you want help with this, enable 'Show Puzzle Solutions' in the Quest Helper configuration settings.";
 	final QuestHelperConfig questHelperConfig;
+
+	@Getter
+	final QuestStep solvingStep;
 	final QuestStep noSolvingStep;
 	ManualRequirement shouldHideHiddenPuzzleHintInSidebar = new ManualRequirement();
 
@@ -55,6 +59,7 @@ public class PuzzleWrapperStep extends ConditionalStep
 	{
 		super(questHelper, step, "", requirements);
 		this.text = hiddenStep.getText();
+		this.solvingStep = step;
 		this.noSolvingStep = hiddenStep;
 		this.questHelperConfig = questHelper.getConfig();
 		addStep(not(new ConfigRequirement(questHelper.getConfig()::solvePuzzles)), noSolvingStep);

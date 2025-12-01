@@ -41,10 +41,12 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.StepIsActiveRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.QuestHelperConfig;
+import com.questhelper.questinfo.HelperConfig;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.ReorderableConditionalStep;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +54,14 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class ChartingHelper extends ComplexStateQuestHelper
 {
+	private enum SelectionMethod
+	{
+		SORTED_ORDER,
+		PROXIMITY
+	}
+
+	private final String SELECTION_METHOD = "chartingSelectionMethod";
+
 	private final DetailedQuestStep overviewStep = new DetailedQuestStep(this, "You have no more things you can chart at your current level.");
 	private final List<QuestStep> chartingSteps = new ArrayList<>();
 	private List<PanelDetails> panelDetails = new ArrayList<>();
@@ -59,7 +69,7 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-
+		// Book of the dead / tele to pisc for changing location?
 	}
 
 	@Override
@@ -79,8 +89,9 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			for (ChartingTaskDefinition definition : section.getTasks())
 			{
 				ChartingTaskInterface step = createStep(definition);
+				QuestStep questStep = (QuestStep) step;
 
-				chartingSteps.add((QuestStep) step);
+				chartingSteps.add(questStep);
 				steps.add(step);
 			}
 			if (!steps.isEmpty())
@@ -157,7 +168,14 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	{
 		buildSteps();
 
-		var chartingConditionalStep = new ReorderableConditionalStep(this, overviewStep);
+		// Initialize default config value if not set
+		String selectionMethodName = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, SELECTION_METHOD);
+		if (selectionMethodName == null)
+		{
+			configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, SELECTION_METHOD, SelectionMethod.PROXIMITY.name());
+		}
+
+		var chartingConditionalStep = new ChartingConditionalStep(this, overviewStep, SELECTION_METHOD);
 		for (QuestStep step : chartingSteps)
 		{
 			if (step instanceof ChartingTaskInterface)
@@ -166,8 +184,20 @@ public class ChartingHelper extends ComplexStateQuestHelper
 				chartingConditionalStep.addStep(chartingStep.getCanDoRequirement(), step);
 			}
 		}
-
 		return chartingConditionalStep;
+	}
+
+	@Override
+	public List<HelperConfig> getConfigs()
+	{
+		HelperConfig selectionMethodConfig = new HelperConfig("Selection Method", SELECTION_METHOD, SelectionMethod.values());
+		return List.of(selectionMethodConfig);
+	}
+
+	@Override
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("You can choose to have the steps shown in the order of the sidebar, or to show the closest step to you at any time");
 	}
 
 	private Requirement createDisplayCondition(List<ChartingTaskInterface> steps)

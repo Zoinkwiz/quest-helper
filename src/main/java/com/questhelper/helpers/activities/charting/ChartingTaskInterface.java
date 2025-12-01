@@ -28,6 +28,7 @@ import com.questhelper.requirements.Requirement;
 
 public interface ChartingTaskInterface
 {
+	void setupRequiredAndRecommended(ChartingTaskDefinition definition);
 	Requirement getIncompleteRequirement();
 	Requirement getCanDoRequirement();
 }

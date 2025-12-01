@@ -73,4 +73,18 @@ public final class ChartingTaskStep extends DetailedQuestStep implements Chartin
 		canDoRequirement = and(new VarbitRequirement(definition.getVarbitId(), 0), sailingRequirement);
 		incompleteRequirement = new VarbitRequirement(definition.getVarbitId(), 0);
 	}
+
+	@Override
+	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
+	{
+		// Additional reqs and recc
+		if (!definition.getAdditionalRequirements().isEmpty())
+		{
+			addRequirement(definition.getAdditionalRequirements().toArray(new Requirement[0]));
+		}
+		if (!definition.getAdditionalRecommended().isEmpty())
+		{
+			addRecommended(definition.getAdditionalRequirements());
+		}
+	}
 }

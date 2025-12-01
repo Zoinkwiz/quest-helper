@@ -36,6 +36,7 @@ import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -105,11 +106,17 @@ public class ItemOnTileRequirement extends ConditionForStep
 			return false;
 		}
 
-		var worldViews = new WorldView[2];
-		worldViews[0] = client.getTopLevelWorldView();
-		if (client.getLocalPlayer().getWorldView() != client.getTopLevelWorldView())
+		var worldViews = new ArrayList<WorldView>();
+		var topLevelWorldView = client.getTopLevelWorldView();
+		var playerWorldView = client.getLocalPlayer().getWorldView();
+		if (topLevelWorldView != null)
 		{
-			worldViews[1] = client.getLocalPlayer().getWorldView();
+			worldViews.add(topLevelWorldView);
+		}
+
+		if (playerWorldView != null && playerWorldView != topLevelWorldView)
+		{
+			worldViews.add(playerWorldView);
 		}
 
 		for (WorldView worldView : worldViews)

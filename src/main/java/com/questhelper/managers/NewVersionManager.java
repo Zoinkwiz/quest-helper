@@ -44,7 +44,7 @@ public class NewVersionManager
 
 	private final String LAST_VERSION_SEEN_CONFIG_KEY = "lastversionchecked";
 
-	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.11.0.1! This adds a new helper, 'Sea Charting'!";
+	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.12.0! This adds all of the new Sailing quests!";
 
 	public void updateChatWithNotificationIfNewVersion()
 	{

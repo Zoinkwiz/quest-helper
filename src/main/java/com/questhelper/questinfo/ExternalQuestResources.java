@@ -188,6 +188,10 @@ public enum ExternalQuestResources
 	THE_FINAL_DAWN("https://oldschool.runescape.wiki/w/The_Final_Dawn"),
 	SHADOWS_OF_CUSTODIA("https://oldschool.runescape.wiki/w/Shadows_of_Custodia"),
 	SCRAMBLED("https://oldschool.runescape.wiki/w/Scrambled!"),
+	PANDEMONIUM("https://oldschool.runescape.wiki/w/Pandemonium"),
+	PRYING_TIMES("https://oldschool.runescape.wiki/w/Prying_Times"),
+	CURRENT_AFFAIRS("https://oldschool.runescape.wiki/w/Current_Affairs"),
+	TROUBLED_TORTUGANS("https://oldschool.runescape.wiki/w/Troubled_Tortugans"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

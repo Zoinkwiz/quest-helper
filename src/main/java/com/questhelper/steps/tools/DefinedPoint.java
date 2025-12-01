@@ -67,28 +67,13 @@ public final class DefinedPoint
 		return worldPoint.getPlane();
 	}
 
-	public boolean matchesLocalPoint(Client client, LocalPoint runtimeLocalPoint)
-	{
-		return QuestPerspective.matchesWorldPoint(client, this, runtimeLocalPoint);
-	}
-
-	public boolean matchesLocalPoint(Client client, LocalPoint runtimeLocalPoint, WorldView runtimeWorldView)
-	{
-		return QuestPerspective.matchesWorldPoint(client, this, runtimeLocalPoint, runtimeWorldView);
-	}
-
-	public boolean matchesWorldPoint(Client client, WorldPoint runtimeWorldPoint, WorldView runtimeWorldView)
-	{
-		return QuestPerspective.matchesWorldPoint(client, this, runtimeWorldPoint, runtimeWorldView);
-	}
-
 	public boolean matchesTileObject(Client client, TileObject tileObject)
 	{
 		if (tileObject == null)
 		{
 			return false;
 		}
-		return QuestPerspective.matchesWorldPoint(client, this, tileObject.getWorldLocation(), tileObject.getWorldView());
+		return QuestPerspective.matchesWorldPoint(client, this, tileObject.getLocalLocation());
 	}
 
 	public LocalPoint resolveLocalPoint(Client client)
@@ -125,4 +110,3 @@ public final class DefinedPoint
 		return QuestPerspective.getTileDistance(client, this, runtimeLocalPoint);
 	}
 }
-

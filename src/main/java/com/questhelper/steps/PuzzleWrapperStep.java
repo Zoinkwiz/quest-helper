@@ -33,6 +33,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import lombok.Getter;
+import com.questhelper.steps.choice.DialogChoiceStep;
 import lombok.NonNull;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -177,9 +178,9 @@ public class PuzzleWrapperStep extends ConditionalStep
 	}
 
 	@Override
-	public QuestStep addDialogConsideringLastLineCondition(String dialogString, String choiceValue)
+	public QuestStep addDialogStep(DialogChoiceStep dialogStep)
 	{
-		steps.get(null).addDialogConsideringLastLineCondition(dialogString, choiceValue);
+		steps.get(null).addDialogStep(dialogStep);
 		return this;
 	}
 

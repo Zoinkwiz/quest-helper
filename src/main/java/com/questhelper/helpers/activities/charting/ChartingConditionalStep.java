@@ -25,6 +25,7 @@
 package com.questhelper.helpers.activities.charting;
 
 import com.google.inject.Inject;
+import com.questhelper.helpers.activities.charting.steps.ChartingWeatherStep;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
@@ -85,6 +86,10 @@ public class ChartingConditionalStep extends ReorderableConditionalStep
 				if (step instanceof PuzzleWrapperStep && ((PuzzleWrapperStep) step).getSolvingStep() instanceof DetailedQuestStep)
 				{
 					detailedStep = (DetailedQuestStep) ((PuzzleWrapperStep) step).getSolvingStep();
+				}
+				else if (step instanceof ChartingWeatherStep)
+				{
+					detailedStep = ((ChartingWeatherStep) step).getTalkToNpcStep();
 				}
 				else
 				{

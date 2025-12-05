@@ -26,6 +26,8 @@
  */
 package com.questhelper.requirements.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -38,34 +40,38 @@ import java.util.stream.Stream;
 @Getter
 public enum ItemSlots
 {
-	ANY_EQUIPPED_AND_INVENTORY(-3, "inventory or equipped", InventorySlots.EQUIPMENT_AND_INVENTORY_SLOTS),
-	ANY_INVENTORY(-2, "inventory slots", InventorySlots.INVENTORY_SLOTS),
-	ANY_EQUIPPED(-1, "equipped slots", InventorySlots.EQUIPMENT_SLOTS),
-	HEAD(0, "head slot"),
-	CAPE(1, "cape slot"),
-	AMULET(2, "amulet slot"),
-	WEAPON(3, "weapon slot"),
-	BODY(4, "body slot"),
-	SHIELD(5, "shield slot"),
-	LEGS(7, "legs slot"),
-	GLOVES(9, "gloves slot"),
-	BOOTS(10, "boots slot"),
-	RING(12, "ring slot"),
-	AMMO(13, "ammo slot");
+	ANY_EQUIPPED_AND_INVENTORY("inventory or equipped", InventorySlots.EQUIPMENT_AND_INVENTORY_SLOTS, -3),
+	ANY_INVENTORY("inventory slots", InventorySlots.INVENTORY_SLOTS, -2),
+	ANY_EQUIPPED("equipped slots", InventorySlots.EQUIPMENT_SLOTS, -1),
 
-	private final int slotIdx;
+	EMPTY_HANDS("weapons and shield slot", 3, 5),
+	BARE_HANDS("weapon, shield and gloves slot", 3, 5, 9),
+	
+	HEAD("head slot", 0),
+	CAPE("cape slot", 1),
+	AMULET("amulet slot", 2),
+	WEAPON("weapon slot", 3),
+	BODY("body slot", 4),
+	SHIELD("shield slot", 5),
+	LEGS("legs slot", 7),
+	GLOVES("gloves slot", 9),
+	BOOTS("boots slot", 10),
+	RING("ring slot", 12),
+	AMMO("ammo slot", 13);
+
+	private final int[] slotIdxs;
 	private final String name;
 	private final InventorySlots inventorySlots;
 
-	ItemSlots(int slotIdx, String name)
+	ItemSlots(String name, int... slotIdx)
 	{
-		this.slotIdx = slotIdx;
+		this.slotIdxs = slotIdx;
 		this.name = name;
 		this.inventorySlots = null;
 	}
-	ItemSlots(int slotIdx, String name, InventorySlots slots)
+	ItemSlots(String name, InventorySlots slots, int... slotIdx)
 	{
-		this.slotIdx = slotIdx;
+		this.slotIdxs = slotIdx;
 		this.name = name;
 		this.inventorySlots = slots;
 	}
@@ -90,14 +96,7 @@ public enum ItemSlots
 		{
 			return false;
 		}
-		ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
-		if (equipment == null || getSlotIdx() < 0) // unknown slot
-		{
-			return false;
-		}
-		Item item = equipment.getItem(getSlotIdx());
-
-		return predicate.test(item);
+		return getItems(client).allMatch(predicate);
 	}
 
 	/**
@@ -120,17 +119,21 @@ public enum ItemSlots
 		{
 			return false;
 		}
-		ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
-		if (equipment == null || getSlotIdx() < 0) // unknown slot
-		{
-			return false;
-		}
-		Item item = equipment.getItem(getSlotIdx());
-		if (item == null)
-		{
-			return false;
-		}
+		return getItems(client).anyMatch(predicate);
+	}
 
-		return predicate.test(item);
+	private Stream<Item> getItems(Client client){
+		ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+
+		List<Item> items = new ArrayList<>();
+		for(int slotIdx: getSlotIdxs())
+		{
+			if (equipment == null || slotIdx < 0) // unknown slot
+			{
+				continue;
+			}
+			items.add(equipment.getItem(slotIdx));
+		}
+		return items.stream();
 	}
 }

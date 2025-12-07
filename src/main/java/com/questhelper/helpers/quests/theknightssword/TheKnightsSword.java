@@ -115,6 +115,7 @@ public class TheKnightsSword extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		redberryPie = new ItemRequirement("Redberry pie", ItemID.REDBERRY_PIE);
+		redberryPie.setTooltip("Purchasable from the grand exchange, or for ironmen: 10 cooking to cook one, or 32 cooking and a chef's hat to buy one from the Cooks' Guild.");
 		ironBars = new ItemRequirement("Iron bar", ItemID.IRON_BAR, 2);
 		bluriteOre = new ItemRequirement("Blurite ore", ItemID.BLURITE_ORE);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();

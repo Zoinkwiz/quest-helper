@@ -121,7 +121,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 
 		varrockTeleport = new ItemRequirement("A teleport to Varrock", ItemID.POH_TABLET_VARROCKTELEPORT);
-		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.POH_TABLET_FALADORTELEPORT, 4);
+		faladorTeleports = new ItemRequirement("Teleports to Falador", ItemID.POH_TABLET_FALADORTELEPORT, 3);
 		homeTele = new ItemRequirement("A teleport near Mudskipper Point, such as POH teleport or Fairy Ring to AIQ", ItemID.NZONE_TELETAB_RIMMINGTON, 2);
 
 		bluriteSword = new ItemRequirement("Blurite sword", ItemID.FALADIAN_SWORD);
@@ -142,17 +142,21 @@ public class TheKnightsSword extends BasicQuestHelper
 		talkToSquire.addDialogStep("I can make a new sword if you like...");
 		talkToSquire.addDialogStep("So would these dwarves make another one?");
 		talkToSquire.addDialogStep("Yes.");
+		talkToSquire.addTeleport(faladorTeleports.quantity(1));
 
 		talkToReldo = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3211, 3494, 0), "Talk to Reldo in Varrock Castle's library.");
 		talkToReldo.addDialogStep("What do you know about the Imcando dwarves?");
+		talkToReldo.addTeleport(varrockTeleport.quantity(1));
 
 		talkToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo south of Port Sarim and give him a redberry pie.", redberryPie);
 		talkToThurgo.addDialogStep("Would you like a redberry pie?");
+		talkToThurgo.addTeleport(homeTele.quantity(1));
 
 		talkToThurgoAgain = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Talk to Thurgo again.");
 		talkToThurgoAgain.addDialogStep("Can you make a special sword for me?");
 
 		talkToSquire2 = new NpcStep(this, NpcID.SQUIRE, new WorldPoint(2978, 3341, 0), "Talk to the Squire in Falador Castle's courtyard.");
+		talkToSquire2.addTeleport(faladorTeleports.quantity(1));
 
 		goUpCastle1 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_LADDER_UP, new WorldPoint(2994, 3341, 0), "Climb up the east ladder in Falador Castle.");
 
@@ -163,6 +167,7 @@ public class TheKnightsSword extends BasicQuestHelper
 
 		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", ironBars, portrait);
 		givePortraitToThurgo.addDialogStep("About that sword...");
+		givePortraitToThurgo.addTeleport(homeTele.quantity(1));
 
 		enterDungeon = new ObjectStep(this, ObjectID.FAI_TRAPDOOR, new WorldPoint(3008, 3150, 0), "Go down the ladder south of Port Sarim. Be prepared for ice giants and ice warriors to attack you.", pickaxe, ironBars);
 
@@ -172,6 +177,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		bringThurgoOre.addDialogStep("Can you make that replacement sword now?");
 
 		finishQuest = new NpcStep(this, NpcID.SQUIRE, new WorldPoint(2978, 3341, 0), "Return to the Squire with the sword to finish the quest.", bluriteSword);
+		finishQuest.addTeleport(faladorTeleports.quantity(1));
 	}
 
 	@Override

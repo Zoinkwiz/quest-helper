@@ -141,7 +141,6 @@ public class TheKnightsSword extends BasicQuestHelper
 		talkToSquire.addDialogStep("And how is life as a squire?");
 		talkToSquire.addDialogStep("I can make a new sword if you like...");
 		talkToSquire.addDialogStep("So would these dwarves make another one?");
-		talkToSquire.addDialogStep("Ok, I'll give it a go.");
 		talkToSquire.addDialogStep("Yes.");
 
 		talkToReldo = new NpcStep(this, NpcID.RELDO_NORMAL, new WorldPoint(3211, 3494, 0), "Talk to Reldo in Varrock Castle's library.");

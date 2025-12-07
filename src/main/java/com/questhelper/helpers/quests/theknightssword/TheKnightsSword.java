@@ -27,13 +27,10 @@ package com.questhelper.helpers.quests.theknightssword;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -78,12 +75,11 @@ public class TheKnightsSword extends BasicQuestHelper
 	Zone faladorCastle2Bedroom;
 
 	// Miscellaneous requirements
-	ComplexRequirement searchCupboardReq;
+	NpcRequirement sirVyvinNotInRoom;
 	ZoneRequirement inDungeon;
 	ZoneRequirement inFaladorCastle1;
 	ZoneRequirement inFaladorCastle2;
 	ZoneRequirement inFaladorCastle2Bedroom;
-	Requirement sirVyinNotInRoom;
 
 	// Steps
 	NpcStep talkToSquire;
@@ -134,11 +130,8 @@ public class TheKnightsSword extends BasicQuestHelper
 		inFaladorCastle1 = new ZoneRequirement(faladorCastle1);
 		inFaladorCastle2 = new ZoneRequirement(faladorCastle2);
 		inFaladorCastle2Bedroom = new ZoneRequirement(faladorCastle2Bedroom);
-		sirVyinNotInRoom = new NpcCondition(NpcID.SIR_VYVIN, faladorCastle2Bedroom);
 
-		var sirVyinNotInRoom = new NpcRequirement("Sir Vyin not in the bedroom.", NpcID.SIR_VYVIN, true, faladorCastle2Bedroom);
-		var playerIsUpstairs = new ZoneRequirement("Upstairs", faladorCastle2);
-		searchCupboardReq = new ComplexRequirement(LogicType.AND, "Sir Vyin not in the bedroom.", playerIsUpstairs, sirVyinNotInRoom);
+		sirVyvinNotInRoom = new NpcRequirement("Sir Vyvin not in the bedroom.", NpcID.SIR_VYVIN, true, faladorCastle2Bedroom);
 	}
 
 	public void setupSteps()
@@ -165,7 +158,7 @@ public class TheKnightsSword extends BasicQuestHelper
 
 		goUpCastle2 = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_STAIRS, new WorldPoint(2985, 3338, 1), "Go up the staircase west of the ladder on the 1st floor.");
 
-		searchCupboard = new ObjectStep(this, ObjectID.VYVINCUPBOARDOPEN, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", searchCupboardReq);
+		searchCupboard = new ObjectStep(this, ObjectID.VYVINCUPBOARDOPEN, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", sirVyvinNotInRoom);
 		searchCupboard.addAlternateObjects(ObjectID.VYVINCUPBOARDSHUT);
 
 		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", ironBars, portrait);

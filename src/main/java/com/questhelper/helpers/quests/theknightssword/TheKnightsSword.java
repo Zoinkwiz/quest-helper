@@ -165,7 +165,7 @@ public class TheKnightsSword extends BasicQuestHelper
 		searchCupboard = new ObjectStep(this, ObjectID.VYVINCUPBOARDOPEN, new WorldPoint(2985, 3336, 2), "Search the cupboard in the room south of the staircase. You'll need Sir Vyvin to be in the other room.", sirVyvinNotInRoom);
 		searchCupboard.addAlternateObjects(ObjectID.VYVINCUPBOARDSHUT);
 
-		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", ironBars, portrait);
+		givePortraitToThurgo = new NpcStep(this, NpcID.THURGO, new WorldPoint(3000, 3145, 0), "Bring Thurgo the portrait.", pickaxe, ironBars, portrait);
 		givePortraitToThurgo.addDialogStep("About that sword...");
 		givePortraitToThurgo.addTeleport(homeTele.quantity(1));
 

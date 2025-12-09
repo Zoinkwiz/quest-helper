@@ -252,7 +252,7 @@ public class RepairTown extends DetailedOwnerStep
 		// The following logic could probably be refactored a bit, but changing it without being at the quest spot with your
 		// brain intact is a dangerous task, so I'm leaving this as-is.
 
-		this.setText(String.format("Gather materials and repair the objects around the town. You need %d jactoba logs, %d sea shells, and %d tortugan scutes.", requiredLogs, requiredShells, requiredScutes));
+		this.setText(String.format("Gather materials and repair the objects around the town. You need %d jatoba logs, %d sea shells, and %d tortugan scutes.", requiredLogs, requiredShells, requiredScutes));
 
 		if (numFreeSlots == 0)
 		{

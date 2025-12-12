@@ -89,7 +89,7 @@ public class ChartingConditionalStep extends ReorderableConditionalStep
 				}
 				else if (step instanceof ChartingWeatherStep)
 				{
-					detailedStep = ((ChartingWeatherStep) step).getTalkToNpcStep();
+					detailedStep = ((ChartingWeatherStep) step).getStepToUse();
 				}
 				else
 				{

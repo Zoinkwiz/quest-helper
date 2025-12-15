@@ -1047,7 +1047,7 @@ public class TreeRun extends ComplexStateQuestHelper
 			farmingWorld.getTabs().get(Tab.FRUIT_TREE), allFruitSaplings, allProtectionItemFruitTree);
 		handleTreePatches(PatchImplementation.CALQUAT,
 			List.of(taiBwoWannaiStates, kastoriCalquatStates, greatConchStates),
-			farmingWorld.getTabs().get(Tab.SPECIAL), allCalquatSaplings, allProtectionItemCalquat);
+			farmingWorld.getTabs().get(Tab.FRUIT_TREE), allCalquatSaplings, allProtectionItemCalquat);
 		handleTreePatches(PatchImplementation.HARDWOOD_TREE, List.of(westHardwoodStates, middleHardwoodStates, eastHardwoodStates, savannahStates),
 			farmingWorld.getTabs().get(Tab.TREE), allHardwoodSaplings, allProtectionItemHardwood);
 	}

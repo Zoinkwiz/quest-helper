@@ -271,7 +271,6 @@ public class PriestInPeril extends BasicQuestHelper
 		fillBucket.addIcon(ItemID.BUCKET_EMPTY);
 
 		useKeyForKey = new DetailedQuestStep(this, "Go to the central room, and study the monuments to find which has a key on it. Use the Golden Key on it.", goldenKeyHighlighted);
-		useKeyForKey.addIcon(ItemID.PIPKEY_GOLD);
 
 		goDownToFloorOneTemple = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(3410, 3485, 2), "Go down to the underground of the temple.", bucket);
 		goDownToGroundFloorTemple = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(3417, 3485, 0), "Go down to the underground of the temple.", bucket);

@@ -93,19 +93,19 @@ public class TreeRun extends ComplexStateQuestHelper
 	// Trees
 	DetailedQuestStep farmingGuildTreePatchCheckHealth, lumbridgeTreePatchCheckHealth, faladorTreePatchCheckHealth,
 		taverleyTreePatchCheckHealth, varrockTreePatchCheckHealth, gnomeStrongholdTreePatchCheckHealth,
-		nemusRetreatTreePatchCheckHealth;
+		auburnvaleTreePatchCheckHealth;
 	DetailedQuestStep farmingGuildTreePatchPlant, lumbridgeTreePatchPlant, faladorTreePatchPlant,
 		taverleyTreePatchPlant, varrockTreePatchPlant, gnomeStrongholdTreePatchPlant,
-		nemusRetreatTreePatchPlant;
+		auburnvaleTreePatchPlant;
 
 	DetailedQuestStep lumbridgeTreePatchClear, faladorTreePatchClear, taverleyTreePatchClear, varrockTreePatchClear,
-		gnomeStrongholdTreePatchClear, farmingGuildTreePatchClear, nemusRetreatTreePatchClear;
+		gnomeStrongholdTreePatchClear, farmingGuildTreePatchClear, auburnvaleTreePatchClear;
 	DetailedQuestStep lumbridgeTreePatchDig, faladorTreePatchDig, taverleyTreePatchDig, varrockTreePatchDig,
-		gnomeStrongholdTreePatchDig, farmingGuildTreePatchDig, nemusRetreatTreePatchDig;
+		gnomeStrongholdTreePatchDig, farmingGuildTreePatchDig, auburnvaleTreePatchDig;
 
 	DetailedQuestStep farmingGuildTreePayForProtection, lumbridgeTreeProtect,
 		faladorTreeProtect, taverleyTreeProtect, varrockTreeProtect, strongholdTreeProtect,
-		nemusRetreatTreeProtect;
+		auburnvaleTreeProtect;
 
 	// Fruit Trees
 	DetailedQuestStep farmingGuildFruitTreePatchCheckHealth, gnomeStrongholdFruitTreePatchCheckHealth,
@@ -152,7 +152,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	// Teleport Items
 	// TODO: Add these...
 	ItemRequirement farmingGuildTeleport, crystalTeleport, catherbyTeleport, varrockTeleport, lumbridgeTeleport,
-		faladorTeleport, fossilIslandTeleport, nemusRetreatTeleport, kastoriTeleport;
+		faladorTeleport, fossilIslandTeleport, auburnvaleTeleport, kastoriTeleport;
 
 	// Graceful Set
 	ItemRequirement gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape,
@@ -168,18 +168,18 @@ public class TreeRun extends ComplexStateQuestHelper
 	Requirement payingForRemoval, payingForProtection, usingCompostorNothing;
 
 	PatchStates faladorStates, lumbridgeStates, farmingGuildTreeStates, taverleyStates, varrockStates,
-		gnomeStrongholdTreeStates, nemusRetreatStates;
+		gnomeStrongholdTreeStates, auburnvaleStates;
 
 	PatchStates gnomeStrongholdFruitStates, gnomeVillageStates, brimhavenStates, catherbyStates, lletyaStates,
-		farmingGuildFruitStates, taiBwoWannaiStates, kastoriStates, kastoriCalquatStates, greatConchStates;
+		farmingGuildFruitStates, taiBwoWannaiStates, kastoriStates, greatConchStates;
 
 	PatchStates eastHardwoodStates, middleHardwoodStates, westHardwoodStates, savannahStates, anglersRetreatStates;
 
 	Requirement allGrowing;
 
 	ConditionalStep farmingGuildStep, lumbridgeStep, varrockStep, faladorStep, taverleyStep, strongholdStep,
-		villageStep, lletyaStep, catherbyStep, brimhavenStep, fossilIslandStep, savannahStep, nemusRetreatStep,
-		taiBwoWannaiStep, kastoriStep, kastoriCalquatStep, anglersRetreatStep, greatConchStep;
+		villageStep, lletyaStep, catherbyStep, brimhavenStep, fossilIslandStep, savannahStep, auburnvaleStep,
+		kastoriStep,  anglersRetreatStep, greatConchStep;
 
 	private final String PAY_OR_CUT = "payOrCutTree";
 	private final String PAY_OR_COMPOST = "payOrCompostTree";
@@ -291,18 +291,14 @@ public class TreeRun extends ComplexStateQuestHelper
 		brimhavenStep.addStep(brimhavenStates.getIsHarvestable(), brimhavenFruitTreePatchClear);
 		brimhavenStep.addStep(brimhavenStates.getIsStump(), brimhavenFruitTreePatchDig);
 		brimhavenStep.addStep(nor(usingCompostorNothing, brimhavenStates.getIsProtected()), brimhavenFruitProtect);
-
-		steps.addStep(nor(brimhavenStates.getIsGrowing()), brimhavenStep.withId(8));
-
-		taiBwoWannaiStep = new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsUnchecked(), taiBwoWannaiCalquatPatchCheckHealth);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsEmpty(), taiBwoWannaiCalquatPatchPlant);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsHarvestable(), taiBwoWannaiCalquatPatchClear);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsStump(), taiBwoWannaiCalquatPatchDig);
-		taiBwoWannaiStep.addStep(nor(usingCompostorNothing, taiBwoWannaiStates.getIsProtected()),
+		brimhavenStep.addStep(taiBwoWannaiStates.getIsUnchecked(), taiBwoWannaiCalquatPatchCheckHealth);
+		brimhavenStep.addStep(taiBwoWannaiStates.getIsEmpty(), taiBwoWannaiCalquatPatchPlant);
+		brimhavenStep.addStep(taiBwoWannaiStates.getIsHarvestable(), taiBwoWannaiCalquatPatchClear);
+		brimhavenStep.addStep(taiBwoWannaiStates.getIsStump(), taiBwoWannaiCalquatPatchDig);
+		brimhavenStep.addStep(nor(usingCompostorNothing, taiBwoWannaiStates.getIsProtected()),
 			taiBwoWannaiCalquatProtect);
 
-		steps.addStep(nor(taiBwoWannaiStates.getIsGrowing()), taiBwoWannaiStep.withId(9));
+		steps.addStep(nand(brimhavenStates.getIsGrowing(), taiBwoWannaiStates.getIsGrowing()), brimhavenStep.withId(8));
 
 		lletyaStep = new ConditionalStep(this, lletyaFruitTreePatchCheckHealth);
 		lletyaStep.addStep(lletyaStates.getIsUnchecked(), lletyaFruitTreePatchCheckHealth);
@@ -311,7 +307,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		lletyaStep.addStep(lletyaStates.getIsStump(), lletyaFruitTreePatchDig);
 		lletyaStep.addStep(nor(usingCompostorNothing, lletyaStates.getIsProtected()), lletyaFruitProtect);
 
-		steps.addStep(and(accessToLletya, nor(lletyaStates.getIsGrowing())), lletyaStep.withId(10));
+		steps.addStep(and(accessToLletya, nor(lletyaStates.getIsGrowing())), lletyaStep.withId(9));
 
 		fossilIslandStep = new ConditionalStep(this, eastHardwoodTreePatchCheckHealth);
 		fossilIslandStep.addStep(eastHardwoodStates.getIsUnchecked(), eastHardwoodTreePatchCheckHealth);
@@ -334,7 +330,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		steps.addStep(and(accessToFossilIsland,
 			nand(eastHardwoodStates.getIsGrowing(), westHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing())),
-			fossilIslandStep.withId(11));
+			fossilIslandStep.withId(10));
 
 		savannahStep = new ConditionalStep(this, savannahCheckHealth);
 		savannahStep.addStep(savannahStates.getIsUnchecked(), savannahCheckHealth);
@@ -343,16 +339,16 @@ public class TreeRun extends ComplexStateQuestHelper
 		savannahStep.addStep(savannahStates.getIsStump(), savannahDig);
 		savannahStep.addStep(nor(usingCompostorNothing, savannahStates.getIsProtected()), savannahProtect);
 
-		steps.addStep(and(accessToSavannah, nor(savannahStates.getIsGrowing())), savannahStep.withId(12));
+		steps.addStep(and(accessToSavannah, nor(savannahStates.getIsGrowing())), savannahStep.withId(11));
 
-		nemusRetreatStep = new ConditionalStep(this, nemusRetreatTreePatchCheckHealth);
-		nemusRetreatStep.addStep(nemusRetreatStates.getIsUnchecked(), nemusRetreatTreePatchCheckHealth);
-		nemusRetreatStep.addStep(nemusRetreatStates.getIsEmpty(), nemusRetreatTreePatchPlant);
-		nemusRetreatStep.addStep(nemusRetreatStates.getIsHarvestable(), nemusRetreatTreePatchClear);
-		nemusRetreatStep.addStep(nemusRetreatStates.getIsStump(), nemusRetreatTreePatchDig);
-		nemusRetreatStep.addStep(nor(usingCompostorNothing, nemusRetreatStates.getIsProtected()), nemusRetreatTreeProtect);
+		auburnvaleStep = new ConditionalStep(this, auburnvaleTreePatchCheckHealth);
+		auburnvaleStep.addStep(auburnvaleStates.getIsUnchecked(), auburnvaleTreePatchCheckHealth);
+		auburnvaleStep.addStep(auburnvaleStates.getIsEmpty(), auburnvaleTreePatchPlant);
+		auburnvaleStep.addStep(auburnvaleStates.getIsHarvestable(), auburnvaleTreePatchClear);
+		auburnvaleStep.addStep(auburnvaleStates.getIsStump(), auburnvaleTreePatchDig);
+		auburnvaleStep.addStep(nor(usingCompostorNothing, auburnvaleStates.getIsProtected()), auburnvaleTreeProtect);
 
-		steps.addStep(and(accessToVarlamore, nor(nemusRetreatStates.getIsGrowing())), nemusRetreatStep.withId(13));
+		steps.addStep(and(accessToVarlamore, nor(auburnvaleStates.getIsGrowing())), auburnvaleStep.withId(12));
 
 
 		//kastoriStep, anglersRetreatStep, greatConchStep;
@@ -364,15 +360,13 @@ public class TreeRun extends ComplexStateQuestHelper
 		kastoriStep.addStep(kastoriStates.getIsStump(), kastoriFruitTreePatchDig);
 		kastoriStep.addStep(nor(usingCompostorNothing, kastoriStates.getIsProtected()), kastoriFruitProtect);
 
-		steps.addStep(and(accessToVarlamore, nor(kastoriStates.getIsGrowing())), kastoriStep.withId(14));
+		kastoriStep.addStep(kastoriStates.getIsUnchecked(), kastoriCalquatPatchCheckHealth);
+		kastoriStep.addStep(kastoriStates.getIsEmpty(), kastoriCalquatPatchPlant);
+		kastoriStep.addStep(kastoriStates.getIsHarvestable(), kastoriCalquatPatchClear);
+		kastoriStep.addStep(kastoriStates.getIsStump(), kastoriCalquatPatchDig);
+		kastoriStep.addStep(nor(usingCompostorNothing, kastoriStates.getIsProtected()), kastoriCalquatProtect);
 
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsUnchecked(), kastoriCalquatPatchCheckHealth);
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsEmpty(), kastoriCalquatPatchPlant);
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsHarvestable(), kastoriCalquatPatchClear);
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsStump(), kastoriCalquatPatchDig);
-		kastoriCalquatStep.addStep(nor(usingCompostorNothing, kastoriCalquatStates.getIsProtected()), kastoriCalquatProtect);
-
-		steps.addStep(and(accessToVarlamore, nor(kastoriCalquatStates.getIsGrowing())), kastoriCalquatStep.withId(15));
+		steps.addStep(and(accessToVarlamore, nand(kastoriStates.getIsGrowing(), kastoriStates.getIsGrowing())), kastoriStep.withId(13));
 
 		anglersRetreatStep = new ConditionalStep(this, anglersCheckHealth);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsUnchecked(), anglersCheckHealth);
@@ -382,7 +376,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		anglersRetreatStep.addStep(nor(usingCompostorNothing, anglersRetreatStates.getIsProtected()), anglersProtect);
 
 		steps.addStep(and(accessToAnglersRetreat, nor(anglersRetreatStates.getIsGrowing())),
-			anglersRetreatStep.withId(16));
+			anglersRetreatStep.withId(14));
 
 		greatConchStep = new ConditionalStep(this, greatConchCalquatPatchCheckHealth);
 		greatConchStep.addStep(greatConchStates.getIsUnchecked(), greatConchCalquatPatchCheckHealth);
@@ -392,7 +386,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		greatConchStep.addStep(nor(usingCompostorNothing, greatConchStates.getIsProtected()), greatConchCalquatProtect);
 
 		steps.addStep(and(accessToGreatConch, nor(greatConchStates.getIsGrowing())),
-			greatConchStep.withId(17));
+			greatConchStep.withId(15));
 
 		return steps;
 	}
@@ -427,7 +421,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		varrockStates = new PatchStates("Varrock");
 		gnomeStrongholdTreeStates = new PatchStates("Gnome Stronghold");
 		farmingGuildTreeStates = new PatchStates("Farming Guild", accessToFarmingGuildTreePatch);
-		nemusRetreatStates = new PatchStates("Nemus Retreat", accessToVarlamore);
+		auburnvaleStates = new PatchStates("Auburnvale", accessToVarlamore);
 
 		// Fruit trees
 		catherbyStates = new PatchStates("Catherby");
@@ -438,7 +432,6 @@ public class TreeRun extends ComplexStateQuestHelper
 		lletyaStates = new PatchStates("Lletya", accessToLletya);
 		farmingGuildFruitStates = new PatchStates("Farming Guild", accessToFarmingGuildFruitTreePatch);
 		kastoriStates = new PatchStates("Kastori", accessToVarlamore);
-		kastoriCalquatStates = new PatchStates("Kastori Calquat", accessToVarlamore);
 		greatConchStates = new PatchStates("Great Conch", accessToGreatConch);
 
 		westHardwoodStates = new PatchStates("Fossil Island", "West");
@@ -452,9 +445,8 @@ public class TreeRun extends ComplexStateQuestHelper
 			brimhavenStates.getIsGrowing(), taiBwoWannaiStates.getIsGrowing(), gnomeVillageStates.getIsGrowing(),
 			gnomeStrongholdFruitStates.getIsGrowing(),
 			or(not(accessToLletya), lletyaStates.getIsGrowing()),
-			or(not(accessToVarlamore), nemusRetreatStates.getIsGrowing()),
+			or(not(accessToVarlamore), auburnvaleStates.getIsGrowing()),
 			or(not(accessToVarlamore), kastoriStates.getIsGrowing()),
-			or(not(accessToVarlamore), kastoriCalquatStates.getIsGrowing()),
 			or(not(accessToFarmingGuildTreePatch), farmingGuildTreeStates.getIsGrowing()),
 			or(not(accessToFarmingGuildFruitTreePatch), farmingGuildFruitStates.getIsGrowing()),
 			or(not(accessToFossilIsland), and(westHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing(), eastHardwoodStates.getIsGrowing())),
@@ -515,6 +507,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		allCalquatSaplings = calquatSapling.copy();
 
 		protectionItemCalquat = calquatTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		protectionItemCalquat.addAlternates(protectionItemCalquat.getId() + 1);
 		allProtectionItemCalquat = protectionItemCalquat.copy();
 
 		compost	= new ItemRequirement("Compost", ItemCollections.COMPOST).showConditioned(usingCompostorNothing);
@@ -530,8 +523,10 @@ public class TreeRun extends ComplexStateQuestHelper
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemCollections.RING_OF_WEALTHS);
 		faladorTeleport.addAlternates(ItemID.POH_TABLET_FALADORTELEPORT);
 		fossilIslandTeleport = new ItemRequirement("Teleport to Fossil Island", ItemCollections.DIGSITE_PENDANTS);
-		nemusRetreatTeleport = new ItemRequirement("Nemus Retreat Teleport", ItemID.PENDANT_OF_ATES);
-		nemusRetreatTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
+		auburnvaleTeleport = new ItemRequirement("Auburnvale Teleport", ItemID.PENDANT_OF_ATES);
+		auburnvaleTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
+		kastoriTeleport = new ItemRequirement("Kastori Teleport", ItemID.PENDANT_OF_ATES);
+		kastoriTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
 		// Graceful and Farming Outfit
 		gracefulHood = new ItemRequirement(
@@ -611,9 +606,9 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Speak to Rosie to clear the patch.");
 		farmingGuildTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		nemusRetreatTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
+		auburnvaleTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
 			"Speak to Aub to clear the patch.");
-		nemusRetreatTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		auburnvaleTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		lumbridgeTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to protect the patch.");
@@ -639,9 +634,9 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Speak to Rosie to protect the patch.");
 		farmingGuildTreePayForProtection.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		nemusRetreatTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
+		auburnvaleTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
 			"Speak to Aub to protect the patch.");
-		nemusRetreatTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		auburnvaleTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		// Tree Patch Steps
 		lumbridgeTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
@@ -666,10 +661,10 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
 
-		nemusRetreatTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
-			"Check the health of the tree planted at the Nemus Retreat");
-		nemusRetreatTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
-		nemusRetreatTreePatchCheckHealth.addTeleport(nemusRetreatTeleport);
+		auburnvaleTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
+			"Check the health of the tree planted at Auburnvale");
+		auburnvaleTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		auburnvaleTreePatchCheckHealth.addTeleport(auburnvaleTeleport);
 
 		// Tree Plant Steps
 		lumbridgeTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
@@ -703,11 +698,11 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
 		farmingGuildTreePatchCheckHealth.addSubSteps(farmingGuildTreePatchPlant);
 
-		nemusRetreatTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
-			"Plant your sapling in the Nemus Retreat tree patch.", treeSapling);
-		nemusRetreatTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
-		nemusRetreatTreePatchPlant.addIcon(treeSapling.getId());
-		nemusRetreatTreePatchCheckHealth.addSubSteps(nemusRetreatTreePatchPlant);
+		auburnvaleTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
+			"Plant your sapling in the Auburnvale tree patch.", treeSapling);
+		auburnvaleTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		auburnvaleTreePatchPlant.addIcon(treeSapling.getId());
+		auburnvaleTreePatchCheckHealth.addSubSteps(auburnvaleTreePatchPlant);
 
 		// Dig
 		lumbridgeTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
@@ -722,8 +717,8 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Dig up the tree stump in the Tree Gnome Stronghold.");
 		farmingGuildTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Dig up the tree stump in the Farming Guild tree patch.");
-		nemusRetreatTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
-			"Dig up the tree stump in the Nemus Retreat tree patch.");
+		auburnvaleTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
+			"Dig up the tree stump in the Auburnvale tree patch.");
 
 		faladorTreePatchClear.addSubSteps(faladorTreePatchDig, faladorTreeProtect);
 		taverleyTreePatchClear.addSubSteps(taverleyTreePatchDig, taverleyTreeProtect);
@@ -731,7 +726,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		gnomeStrongholdTreePatchClear.addSubSteps(gnomeStrongholdTreePatchDig, strongholdTreeProtect);
 		lumbridgeTreePatchClear.addSubSteps(lumbridgeTreePatchDig, lumbridgeTreeProtect);
 		farmingGuildTreePatchClear.addSubSteps(farmingGuildTreePatchDig, farmingGuildTreePayForProtection);
-		nemusRetreatTreePatchClear.addSubSteps(nemusRetreatTreePatchDig, nemusRetreatTreeProtect);
+		auburnvaleTreePatchClear.addSubSteps(auburnvaleTreePatchDig, auburnvaleTreeProtect);
 
 		// Fruit Tree Steps
 
@@ -875,7 +870,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		kastoriCalquatPatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_2, new WorldPoint(1366, 3033, 0),
 			"Pay Tziuhtla 200 coins to clear the calquat tree, or pick all the fruit and cut it down.");
 		kastoriCalquatPatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		greatConchCalquatPatchPlant = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_3, new WorldPoint(3129, 2406, 0),
+		greatConchCalquatPatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_3, new WorldPoint(3129, 2406, 0),
 			"Pay Guppa 200 coins to clear the calquat tree, or pick all the fruit and cut it down.");
 		greatConchCalquatPatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
@@ -1038,15 +1033,16 @@ public class TreeRun extends ComplexStateQuestHelper
 		allProtectionItemTree.setQuantity(protectionItemTree.getQuantity());
 		allProtectionItemFruitTree.setQuantity(protectionItemFruitTree.getQuantity());
 		allProtectionItemHardwood.setQuantity(protectionItemHardwood.getQuantity());
+		allProtectionItemCalquat.setQuantity(protectionItemCalquat.getQuantity());
 		handleTreePatches(PatchImplementation.TREE,
-			List.of(farmingGuildTreeStates, varrockStates, faladorStates, taverleyStates, lumbridgeStates, gnomeStrongholdTreeStates, nemusRetreatStates),
+			List.of(farmingGuildTreeStates, varrockStates, faladorStates, taverleyStates, lumbridgeStates, gnomeStrongholdTreeStates, auburnvaleStates),
 			farmingWorld.getTabs().get(Tab.TREE), allTreeSaplings, allProtectionItemTree);
 		handleTreePatches(PatchImplementation.FRUIT_TREE,
 			List.of(farmingGuildFruitStates, brimhavenStates, catherbyStates, gnomeStrongholdFruitStates, gnomeVillageStates, lletyaStates,
 				kastoriStates),
 			farmingWorld.getTabs().get(Tab.FRUIT_TREE), allFruitSaplings, allProtectionItemFruitTree);
 		handleTreePatches(PatchImplementation.CALQUAT,
-			List.of(taiBwoWannaiStates, kastoriCalquatStates, greatConchStates),
+			List.of(taiBwoWannaiStates, kastoriStates, greatConchStates),
 			farmingWorld.getTabs().get(Tab.FRUIT_TREE), allCalquatSaplings, allProtectionItemCalquat);
 		handleTreePatches(PatchImplementation.HARDWOOD_TREE, List.of(westHardwoodStates, middleHardwoodStates, eastHardwoodStates, savannahStates),
 			farmingWorld.getTabs().get(Tab.TREE), allHardwoodSaplings, allProtectionItemHardwood);
@@ -1204,22 +1200,25 @@ public class TreeRun extends ComplexStateQuestHelper
 		PanelDetails savannahPanel = new PanelDetails("Avium Savannah", Arrays.asList(savannahCheckHealth, savannahClear, savannahPlant)).withId(11);
 		savannahPanel.setLockingStep(savannahStep);
 
-		PanelDetails nemusRetreatPanel = new PanelDetails("Nemus Retreat", Arrays.asList(nemusRetreatTreePatchCheckHealth, nemusRetreatTreePatchClear, nemusRetreatTreePatchPlant)).withId(12);
-		nemusRetreatPanel.setLockingStep(nemusRetreatStep);
+		PanelDetails auburnvalePanel = new PanelDetails("Auburnvale", Arrays.asList(auburnvaleTreePatchCheckHealth, auburnvaleTreePatchClear, auburnvaleTreePatchPlant)).withId(12);
+		auburnvalePanel.setLockingStep(auburnvaleStep);
 
 		PanelDetails kastoriPanel = new PanelDetails("Kastori", Arrays.asList(kastoriFruitTreePatchCheckHealth,
 			kastoriFruitTreePatchClear, kastoriFruitTreePatchPlant, kastoriCalquatPatchCheckHealth,
 			kastoriCalquatPatchClear, kastoriCalquatPatchPlant)).withId(13);
+		kastoriPanel.setLockingStep(kastoriStep);
 
 		PanelDetails anglersPanel = new PanelDetails("Anglers' Retreat", Arrays.asList(anglersCheckHealth,
 			anglersClear)).withId(14);
+		anglersPanel.setLockingStep(anglersRetreatStep);
 
 		PanelDetails greatConchPanel = new PanelDetails("Great Conch",
 			Arrays.asList(greatConchCalquatPatchCheckHealth, greatConchCalquatPatchClear,
 				greatConchCalquatPatchPlant)).withId(15);
+		greatConchPanel.setLockingStep(greatConchStep);
 
 		TopLevelPanelDetails farmRunSidebar = new TopLevelPanelDetails("Tree Run", farmingGuildPanel, lumbridgePanel, faladorPanel, taverleyPanel,
-			varrockPanel, gnomeStrongholdPanel, villagePanel, catherbyPanel, brimhavenPanel, lletyaPanel, fossilIslandPanel, savannahPanel, nemusRetreatPanel,
+			varrockPanel, gnomeStrongholdPanel, villagePanel, catherbyPanel, brimhavenPanel, lletyaPanel, fossilIslandPanel, savannahPanel, auburnvalePanel,
 			kastoriPanel, anglersPanel, greatConchPanel);
 		allSteps.add(farmRunSidebar);
 

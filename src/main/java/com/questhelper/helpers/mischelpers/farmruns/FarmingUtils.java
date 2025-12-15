@@ -30,7 +30,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;

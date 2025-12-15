@@ -337,7 +337,7 @@ public class DetailedQuestStep extends QuestStep
 	protected void renderTileIcon(Graphics2D graphics)
 	{
 		if (icon == null || iconItemID == -1) return;
-
+		if (definedPoint == null) return;
 		List<LocalPoint> localPoints = definedPoint.resolveLocalPoints(client);
 		for (LocalPoint localPoint : localPoints)
 		{

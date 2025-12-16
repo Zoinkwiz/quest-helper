@@ -33,6 +33,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.QuestStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
 import net.runelite.api.gameval.ItemID;
@@ -86,6 +87,22 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 		returnToNpcStep = new ChartingTaskNpcStep(questHelper, NpcID.SAILING_CHARTING_WEATHER_TROLL, definition, requirements);
 		returnToNpcStep.setText("Return to the Meaty Aura Logist with the full weather station.");
 		returnToNpcStep.addRequirement(weatherStationFull);
+	}
+
+	public DetailedQuestStep getStepToUse()
+	{
+		if (getWeatherStationEmpty().check(client))
+		{
+			return getMeasureWeatherStep();
+		}
+		else if (getWeatherStationFull().check(client))
+		{
+			return getReturnToNpcStep();
+		}
+		else
+		{
+			return getTalkToNpcStep();
+		}
 	}
 
 	private void addConditionalSteps()

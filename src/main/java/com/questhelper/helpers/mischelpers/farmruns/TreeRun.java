@@ -52,7 +52,6 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.*;
 import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
-import java.awt.Panel;
 import java.util.Set;
 
 import com.questhelper.steps.widget.WidgetHighlight;
@@ -1156,8 +1155,6 @@ public class TreeRun extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Wait for Herbs", waitForTree).withHideCondition(nor(allGrowing)));
-
-		var treeRunSidebar = new TopLevelPanelDetails("Tree Run");
 
 		PanelDetails farmingGuildTreePanel = new PanelDetails("Tree Patch",
 			Arrays.asList(farmingGuildTreePatchCheckHealth, farmingGuildTreePatchClear, farmingGuildTreePatchPlant));

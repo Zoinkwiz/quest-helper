@@ -1195,7 +1195,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		lletyaPanel.setLockingStep(lletyaStep);
 
 		PanelDetails fossilIslandPanel = new PanelDetails("Fossil Island", Arrays.asList(eastHardwoodTreePatchCheckHealth, eastHardwoodTreePatchClear, eastHardwoodTreePatchPlant
-			middleHardwoodTreePatchCheckHealth, middleHardwoodTreePatchClear, middleHardwoodTreePatchPlant
+			middleHardwoodTreePatchCheckHealth, middleHardwoodTreePatchClear, middleHardwoodTreePatchPlant,
 			westHardwoodTreePatchCheckHealth, westHardwoodTreePatchClear, westHardwoodTreePatchPlant)).withId(10);
 		fossilIslandPanel.setLockingStep(fossilIslandStep);
 

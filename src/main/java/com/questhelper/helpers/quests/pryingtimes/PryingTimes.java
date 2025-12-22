@@ -149,7 +149,7 @@ public class PryingTimes extends BasicQuestHelper
 
 		shipAtPortSarimDock = new ShipInPortRequirement(Port.PORT_SARIM);
 		gotTheKey = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
-		gotTheKey.setTooltip("You can get another from Thurgo. You'll need another redberry pie, iron bar, and hammer");
+		gotTheKey.setTooltip("You can get another from Thurgo. You'll need another redberry pie, steel bar, and hammer");
 
 		crowbar = new ItemRequirement("Crowbar", ItemID.SAILING_CHARTING_CROWBAR);
 		crowbar.setTooltip("You can get another from the cargo hold of your boat");

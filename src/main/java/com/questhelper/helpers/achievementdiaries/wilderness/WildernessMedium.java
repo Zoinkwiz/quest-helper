@@ -341,7 +341,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails entSteps = new PanelDetails("Ent Yew", Collections.singletonList(entYew),
-			new SkillRequirement(Skill.WOODCUTTING, 61, true), combatGear, food, runeAxe);
+			new SkillRequirement(Skill.WOODCUTTING, 61, false), combatGear, food, runeAxe);
 		entSteps.setDisplayCondition(notEntYew);
 		entSteps.setLockingStep(entYewTask);
 		allSteps.add(entSteps);

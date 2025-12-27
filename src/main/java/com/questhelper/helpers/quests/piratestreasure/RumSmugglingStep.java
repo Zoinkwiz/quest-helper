@@ -187,11 +187,11 @@ public class RumSmugglingStep extends ConditionalStep
 		talkToLuthas.addDialogStep("Could you offer me employment on your plantation?");
 		talkToLuthas.addDialogStep("Will you pay me for another crate full?");
 
-		addRumToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2943, 3151, 0),
+		addRumToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2939, 3149, 0),
 			"Put the Karamjan rum into the crate.", karamjanRum.highlighted(), pt.tenBananas);
 		addRumToCrate.addIcon(ItemID.KARAMJA_RUM);
 
-		addBananasToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2943, 3151, 0),
+		addBananasToCrate = new ObjectStep(getQuestHelper(), ObjectID.BANANACRATE, new WorldPoint(2939, 3149, 0),
 			"Right-click fill the rest of the crate with bananas, then talk to Luthas.", pt.tenBananas);
 
 		talkToLuthasAgain = new NpcStep(getQuestHelper(), NpcID.LUTHAS, new WorldPoint(2938, 3154, 0),

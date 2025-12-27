@@ -201,6 +201,8 @@ public class RumSmugglingStep extends ConditionalStep
 			"Head back to Port Sarim. Pay the Customs Officer to sail there.", new ItemRequirement("Coins", ItemCollections.COINS, 30));
 		talkToCustomsOfficer.addDialogStep("Thank you, I'll be on my way");
 		talkToCustomsOfficer.addDialogStep("Can I journey on this ship?");
+		talkToCustomsOfficer.addDialogStep("Search away, I have nothing to hide.");
+		talkToCustomsOfficer.addDialogStep("Ok.");
 		talkToCustomsOfficer.addDialogStep("Search away. I have nothing to hide.");
 		talkToCustomsOfficer.addDialogStep("Okay.");
 

@@ -190,6 +190,7 @@ public class PriestInPeril extends BasicQuestHelper
 		goDownToDog.addAlternateObjects(ObjectID.TRAPDOOR_OPEN);
 		killTheDog = new NpcStep(this, NpcID.PRIESTPERIL_GUARDIAN_MODEL, new WorldPoint(3405, 9901, 0),
 			"Kill the Temple Guardian (level 30). It is immune to magic so you will need to use either ranged or melee.");
+		killTheDog.addSubSteps(goDownToDog);
 		climbUpAfterKillingDog = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3405, 9907, 0),
 			"Climb back up the ladder and return to King Roald.");
 		returnToKingRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0),

@@ -35,33 +35,24 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 
-import java.util.*;
-
 public class DoricsQuest extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement clay, copper, iron;
+	// Required items
+	ItemRequirement clay;
+	ItemRequirement copper;
+	ItemRequirement iron;
 
-	//NPC Steps
-	QuestStep talkToDoric;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToDoric);
-		steps.put(10, talkToDoric);
-
-		return steps;
-	}
+	// Steps
+	NpcStep talkToDoric;
 
 	@Override
 	protected void setupRequirements()
@@ -79,21 +70,36 @@ public class DoricsQuest extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToDoric);
+		steps.put(10, talkToDoric);
+
+		return steps;
+	}
+
+
+	@Override
 	public List<Requirement> getGeneralRecommended()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new SkillRequirement(Skill.MINING, 15, true, "15 Mining to get ores yourself"));
-		return req;
+		return List.of(
+			new SkillRequirement(Skill.MINING, 15, true, "15 Mining to get ores yourself")
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(clay);
-		reqs.add(copper);
-		reqs.add(iron);
-		return reqs;
+		return List.of(
+			clay,
+			copper,
+			iron
+		);
 	}
 
 	@Override
@@ -105,27 +111,40 @@ public class DoricsQuest extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.MINING, 1300));
+		return List.of(
+			new ExperienceReward(Skill.MINING, 1300)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 180));
+		return List.of(
+			new ItemReward("Coins", ItemID.COINS, 180)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Use of Doric's Anvil"));
+		return List.of(
+			new UnlockReward("Use of Doric's Anvil")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Help Doric", Collections.singletonList(talkToDoric), clay, copper, iron));
-		return allSteps;
+		sections.add(new PanelDetails("Help Doric", List.of(
+			talkToDoric
+		), List.of(
+			clay,
+			copper,
+			iron
+		)));
+
+		return sections;
 	}
 }

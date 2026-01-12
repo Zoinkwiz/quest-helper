@@ -375,6 +375,7 @@ public class PriestInPeril extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
+			weaponAndArmour,
 			varrockTeleport,
 			runePouches
 		);

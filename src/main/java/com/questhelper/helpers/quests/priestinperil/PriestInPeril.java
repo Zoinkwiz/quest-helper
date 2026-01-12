@@ -195,6 +195,7 @@ public class PriestInPeril extends BasicQuestHelper
 			"Climb back up the ladder and return to King Roald.");
 		returnToKingRoald = new NpcStep(this, NpcID.KING_ROALD, new WorldPoint(3222, 3473, 0),
 			"Return to King Roald.");
+		returnToKingRoald.addDialogStep("About that job I'm doing...");
 		returnToKingRoald.addSubSteps(climbUpAfterKillingDog);
 
 		returnToTemple = new ObjectStep(this, ObjectID.PRIESTPERILTEMPLEDOORR, new WorldPoint(3408, 3488, 0),

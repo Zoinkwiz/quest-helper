@@ -190,7 +190,7 @@ public class Pandemonium extends BasicQuestHelper
 		cargoNotPickedUp = not(cargoPickedUp);
 		cargoInCargoHold = and(cargoPickedUp, not(holdingCargo));
 
-		nothingInHands = new NoItemRequirement("Nothing equipped in your hands.",ItemSlots.WEAPON, ItemSlots.SHIELD);
+		nothingInHands = new NoItemRequirement("Nothing equipped in your hands.",ItemSlots.EMPTY_HANDS);
 	}
 
 	@Override

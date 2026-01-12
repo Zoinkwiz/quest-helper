@@ -69,7 +69,7 @@ public class ForgettableTale extends BasicQuestHelper
 
 	Requirement inKelgdagrim, inWolfUnderground, inPubUpstairs, inConsortium, inPuzzleRoom, givenBeerToDrunkenDwarf,
 		rowdyDwarfMadeRequest, gotRowdySeed, gotKhorvakSeed, gotGaussSeed, plotRaked, keldaGrowing, keldaGrown,
-		addedWater, addedYeast, addedHop, addedMalt, keldaBrewed, keldaInBarrel, handsFree, shieldFree;
+		addedWater, addedYeast, addedHop, addedMalt, keldaBrewed, keldaInBarrel, handsFree;
 
 	Requirement inPurple, inYellow, inBlue, inGreen, inSilver, inWhite, inBrown;
 
@@ -448,8 +448,7 @@ public class ForgettableTale extends BasicQuestHelper
 		inSilver = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 6); // Silver Cog
 		inBrown = new VarbitRequirement(VarbitID.GIANTDWARF_CURRENT_COMPANY, 7); // Brown Engine
 
-		handsFree = new NoItemRequirement("No weapon equipped", ItemSlots.WEAPON);
-		shieldFree = new NoItemRequirement("No shield equipped", ItemSlots.SHIELD);
+		handsFree = new NoItemRequirement("No weapon or shield equipped", ItemSlots.EMPTY_HANDS);
 
 		// 837 = 1, entered first puzzle
 		// 839 = 1, cutscene entering done
@@ -654,7 +653,7 @@ public class ForgettableTale extends BasicQuestHelper
 		goDownFromDirector = new ObjectStep(this, ObjectID.DWARF_KELDAGRIM_WIDE_STAIRS_UPPER, new WorldPoint(2895, 10210, 1),
 			"Go downstairs.");
 		takeSecretCart = new ObjectStep(this, ObjectID.KELDAGRIM_TRAIN_CART, new WorldPoint(2919, 10164, 0),
-			"", handsFree, shieldFree);
+			"", handsFree);
 
 		searchBox1 = new ObjectStep(this, ObjectID.KELDAGRIM_TRACK_JUNCTION_CARD_BOX, new WorldPoint(1862, 4954, 1),
 			"Search the box.");

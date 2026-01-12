@@ -235,7 +235,7 @@ public class PriestInPeril extends BasicQuestHelper
 		talkToDrezelAfterFreeing = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3418, 3489, 2), "Talk to Drezel again.");
 
 		goDownToFloorOneAfterFreeing = new ObjectStep(this, ObjectID.LADDERTOP, new WorldPoint(3410, 3485, 2), "Go down to the underground of the temple.", lotsOfRuneEssence);
-		goDownToGroundFloorAfterFreeing = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(3417, 3485, 0), "Go down to the underground of the temple.", lotsOfRuneEssence);
+		goDownToGroundFloorAfterFreeing = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP, new WorldPoint(3417, 3485, 1), "Go down to the underground of the temple.", lotsOfRuneEssence);
 		enterUndergroundAfterFreeing = new ObjectStep(this, ObjectID.TRAPDOOR, new WorldPoint(3405, 3507, 0), "Go down to the underground of the temple.", lotsOfRuneEssence);
 		enterUndergroundAfterFreeing.addAlternateObjects(ObjectID.TRAPDOOR_OPEN);
 		talkToDrezelUnderground = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Talk to Drezel in the east of the underground temple area.", lotsOfRuneEssence);

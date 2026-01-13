@@ -66,6 +66,15 @@ public class DoorPuzzle extends QuestStep
 		distance.put(4, 0);
 	}
 
+	@Override
+	public void startUp()
+	{
+		super.startUp();
+
+		// Recalculate once when the step starts up to ensure highlights aren't wrong for a tick
+		updateSolvedPositionState();
+	}
+
 	public void updateWord(String word)
 	{
 		ENTRY_ONE = word.charAt(0);
@@ -73,6 +82,7 @@ public class DoorPuzzle extends QuestStep
 		ENTRY_THREE = word.charAt(2);
 		ENTRY_FOUR = word.charAt(3);
 		setText("Click the highlighted arrows to move the slots to the solution. The answer is " + word + ".");
+		updateSolvedPositionState();
 	}
 
 	@Subscribe

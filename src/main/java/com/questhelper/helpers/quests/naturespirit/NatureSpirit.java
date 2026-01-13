@@ -214,7 +214,8 @@ public class NatureSpirit extends BasicQuestHelper
 		talkToDrezelForBlessing = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Return to Drezel under the Paterdomus Temple to get blessed.");
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
-		castSpellAndGetMushroom = new DetailedQuestStep(this, "Cast the druidic spell next to a rotten log in Mort Myre to grow a mushroom. Pick it. If you already have, open the quest journal to re-sync your state.", druidicSpell);
+		castSpellAndGetMushroom = new ObjectStep(this, ObjectID.LOG_DRUIDICSPIRIT2, "Cast the druidic spell next to a rotten log in Mort Myre to grow a mushroom. Pick it. If you already have, open the quest journal to re-sync your state.", druidicSpell);
+		castSpellAndGetMushroom.addDialogStep("Could I have another bloom scroll please?");
 		useMushroom = new ObjectStep(this, ObjectID.STONEDISC_DS_NATURE, new WorldPoint(3439, 3336, 0), "Use the mushroom on the brown stone outside the grotto. If you already have, search it instead.", mushroomHighlighted);
 		useMushroom.addIcon(ItemID.MORTMYREMUSHROOM);
 		useSpellCard = new ObjectStep(this, ObjectID.STONEDISC_DS_SPIRIT, new WorldPoint(3441, 3336, 0), "Use the used spell on the gray stone outside the grotto. If you already have, search it instead.", spellCard);

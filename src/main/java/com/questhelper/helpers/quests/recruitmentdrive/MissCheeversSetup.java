@@ -42,7 +42,7 @@ import net.runelite.api.gameval.VarbitID;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MsCheevesSetup
+public class MissCheeversSetup
 {
 	private QuestHelper questHelper;
 
@@ -78,7 +78,7 @@ public class MsCheevesSetup
 	private VarbitRequirement hasLiquidInTin;
 	ItemRequirement hasGypsumTin, hasTinKeyPrint, hasTinCupricOre, hasTinWithTinOre, hasTinWithAllOre;
 
-	public MsCheevesSetup(QuestHelper questHelper)
+	public MissCheeversSetup(QuestHelper questHelper)
 	{
 		this.questHelper = questHelper;
 		setupRequirements();

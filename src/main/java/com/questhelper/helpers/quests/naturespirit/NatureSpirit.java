@@ -43,7 +43,15 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -52,113 +60,84 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class NatureSpirit extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement ghostspeak, silverSickle, washingBowl, mirror, journal, druidicSpell, druidPouch, blessedSickle,
-		spellCard, mirrorHighlighted, journalHighlighted, mushroom, mushroomHighlighted, druidPouchFull;
+	// Required items
+	ItemRequirement ghostspeak;
+	ItemRequirement silverSickle;
 
-	//Items Recommended
-	ItemRequirement combatGear, salveTele;
+	// Recommended items
+	ItemRequirement combatGear;
+	ItemRequirement salveTele;
 
-	Requirement inUnderground, fillimanNearby, mirrorNearby, usedMushroom, onOrange,
-		usedCard, inGrotto, natureSpiritNearby, ghastNearby, prayerPoints;
+	// Mid-quest requirements
+	ItemRequirement washingBowl;
+	ItemRequirement mirror;
+	ItemRequirement journal;
+	ItemRequirement druidicSpell;
+	ItemRequirement druidPouch;
+	ItemRequirement blessedSickle;
+	ItemRequirement spellCard;
+	ItemRequirement mirrorHighlighted;
+	ItemRequirement journalHighlighted;
+	ItemRequirement mushroom;
+	ItemRequirement mushroomHighlighted;
+	ItemRequirement druidPouchFull;
 
-	QuestStep goDownToDrezel, talkToDrezel, leaveDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
-		takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman, goBackDownToDrezel, talkToDrezelForBlessing,
-		castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange, tellFillimanToCast, enterGrotto, searchAltar,
-		blessSickle, fillPouches, killGhasts, killGhast, enterGrottoAgain, touchAltarAgain, talkToNatureSpiritToFinish,
-		spawnFillimanForRitual, talkToFillimanInGrotto;
+	// Zones
+	Zone underground;
+	Zone orangeStone;
+	Zone grotto;
 
-	//Zones
-	Zone underground, orangeStone, grotto;
+	// Miscellaneous requirements
+	ZoneRequirement inUnderground;
+	NpcCondition fillimanNearby;
+	ItemOnTileRequirement mirrorNearby;
+	Conditions usedMushroom;
+	ZoneRequirement onOrange;
+	Conditions usedCard;
+	ZoneRequirement inGrotto;
+	NpcCondition natureSpiritNearby;
+	NpcCondition ghastNearby;
+	PrayerPointRequirement prayerPoints;
+
+	// Steps
+	ObjectStep goDownToDrezel;
+	NpcStep talkToDrezel;
+	ObjectStep leaveDrezel;
+	ObjectStep enterSwamp;
+	ObjectStep tryToEnterGrotto;
+	NpcStep talkToFilliman;
+	DetailedQuestStep takeWashingBowl;
+	DetailedQuestStep takeMirror;
+	NpcStep useMirrorOnFilliman;
+	ObjectStep searchGrotto;
+	NpcStep useJournalOnFilliman;
+	ObjectStep goBackDownToDrezel;
+	NpcStep talkToDrezelForBlessing;
+	DetailedQuestStep castSpellAndGetMushroom;
+	ObjectStep useMushroom;
+	ObjectStep useSpellCard;
+	DetailedQuestStep standOnOrange;
+	NpcStep tellFillimanToCast;
+	ObjectStep enterGrotto;
+	ObjectStep searchAltar;
+	NpcStep blessSickle;
+	DetailedQuestStep fillPouches;
+	NpcStep killGhasts;
+	NpcStep killGhast;
+	ObjectStep enterGrottoAgain;
+	ObjectStep touchAltarAgain;
+	NpcStep talkToNatureSpiritToFinish;
+	ObjectStep spawnFillimanForRitual;
+	NpcStep talkToFillimanInGrotto;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		ConditionalStep startQuest = new ConditionalStep(this, goDownToDrezel);
-		startQuest.addStep(inUnderground, talkToDrezel);
-
-		steps.put(0, startQuest);
-
-		ConditionalStep goEnterSwamp = new ConditionalStep(this, enterSwamp);
-		goEnterSwamp.addStep(inUnderground, leaveDrezel);
-		steps.put(1, goEnterSwamp);
-		steps.put(2, goEnterSwamp);
-		steps.put(3, goEnterSwamp);
-		steps.put(4, goEnterSwamp);
-		steps.put(5, goEnterSwamp);
-
-		ConditionalStep goTalkToFilliman = new ConditionalStep(this, tryToEnterGrotto);
-		goTalkToFilliman.addStep(fillimanNearby, talkToFilliman);
-		steps.put(10, goTalkToFilliman);
-		steps.put(15, goTalkToFilliman);
-
-		ConditionalStep showFillimanReflection = new ConditionalStep(this, takeWashingBowl);
-		showFillimanReflection.addStep(new Conditions(mirror, fillimanNearby), useMirrorOnFilliman);
-		showFillimanReflection.addStep(mirror, tryToEnterGrotto);
-		showFillimanReflection.addStep(mirrorNearby, takeMirror);
-		steps.put(20, showFillimanReflection);
-
-		ConditionalStep goGetJournal = new ConditionalStep(this, searchGrotto);
-		goGetJournal.addStep(new Conditions(journal, fillimanNearby), useJournalOnFilliman);
-		goGetJournal.addStep(journal, tryToEnterGrotto);
-		steps.put(25, goGetJournal);
-
-		ConditionalStep goOfferHelp = new ConditionalStep(this, tryToEnterGrotto);
-		goOfferHelp.addStep(fillimanNearby, useJournalOnFilliman);
-		steps.put(30, goOfferHelp);
-
-		ConditionalStep getBlessed = new ConditionalStep(this, goBackDownToDrezel);
-		getBlessed.addStep(inUnderground, talkToDrezelForBlessing);
-		steps.put(35, getBlessed);
-
-		ConditionalStep performRitual = new ConditionalStep(this, castSpellAndGetMushroom);
-		performRitual.addStep(new Conditions(usedMushroom, usedCard, fillimanNearby, onOrange), tellFillimanToCast);
-		performRitual.addStep(new Conditions(usedMushroom, usedCard, fillimanNearby), standOnOrange);
-		performRitual.addStep(new Conditions(usedMushroom, usedCard), spawnFillimanForRitual);
-		performRitual.addStep(usedMushroom, useSpellCard);
-		performRitual.addStep(mushroom, useMushroom);
-		steps.put(40, performRitual);
-		steps.put(45, performRitual);
-		steps.put(50, performRitual);
-		steps.put(55, performRitual);
-
-		ConditionalStep goTalkInGrotto = new ConditionalStep(this, enterGrotto);
-		goTalkInGrotto.addStep(new Conditions(inGrotto, fillimanNearby), talkToFillimanInGrotto);
-		goTalkInGrotto.addStep(inGrotto, searchAltar);
-		steps.put(60, goTalkInGrotto);
-
-		ConditionalStep goBlessSickle = new ConditionalStep(this, enterGrotto);
-		goBlessSickle.addStep(new Conditions(inGrotto, natureSpiritNearby), blessSickle);
-		goBlessSickle.addStep(inGrotto, searchAltar);
-		steps.put(65, goBlessSickle);
-		steps.put(70, goBlessSickle);
-
-		ConditionalStep goKillGhasts = new ConditionalStep(this, fillPouches);
-		// TODO: Fix ghast changing form not counting towards becoming nearby
-		goKillGhasts.addStep(ghastNearby, killGhast);
-		goKillGhasts.addStep(druidPouchFull, killGhasts);
-		steps.put(75, goKillGhasts);
-		steps.put(80, goKillGhasts);
-		steps.put(85, goKillGhasts);
-		steps.put(90, goKillGhasts);
-		steps.put(95, goKillGhasts);
-		steps.put(100, goKillGhasts);
-
-		ConditionalStep finishOff = new ConditionalStep(this, enterGrottoAgain);
-		finishOff.addStep(new Conditions(inGrotto, natureSpiritNearby), talkToNatureSpiritToFinish);
-		finishOff.addStep(inGrotto, touchAltarAgain);
-		steps.put(105, finishOff);
-
-		return steps;
+		underground = new Zone(new WorldPoint(3402, 9880, 0), new WorldPoint(3443, 9907, 0));
+		orangeStone = new Zone(new WorldPoint(3440, 3335, 0), new WorldPoint(3440, 3335, 0));
+		grotto = new Zone(new WorldPoint(3435, 9733, 0), new WorldPoint(3448, 9746, 0));
 	}
 
 	@Override
@@ -184,23 +163,10 @@ public class NatureSpirit extends BasicQuestHelper
 		spellCard.addAlternates(ItemID.BLOOM_SPELL);
 		spellCard.setTooltip("You can get another spell from Filliman");
 		mushroom = new ItemRequirement("Mort myre fungus", ItemID.MORTMYREMUSHROOM);
-		mushroomHighlighted = new ItemRequirement("Mort myre fungus", ItemID.MORTMYREMUSHROOM);
-		mushroomHighlighted.setHighlightInInventory(true);
+		mushroomHighlighted = mushroom.highlighted();
 		salveTele = new ItemRequirement("Salve Graveyard Teleports", ItemID.TELETAB_SALVE, 2);
 		combatGear = new ItemRequirement("Combat gear to kill the ghasts", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		underground = new Zone(new WorldPoint(3402, 9880, 0), new WorldPoint(3443, 9907, 0));
-		orangeStone = new Zone(new WorldPoint(3440, 3335, 0), new WorldPoint(3440, 3335, 0));
-		grotto = new Zone(new WorldPoint(3435, 9733, 0), new WorldPoint(3448, 9746, 0));
-	}
-
-	public void setupConditions()
-	{
 		inUnderground = new ZoneRequirement(underground);
 		onOrange = new ZoneRequirement(orangeStone);
 		inGrotto = new ZoneRequirement(grotto);
@@ -223,7 +189,7 @@ public class NatureSpirit extends BasicQuestHelper
 	public void setupSteps()
 	{
 		goDownToDrezel = new ObjectStep(this, ObjectID.TRAPDOOR, new WorldPoint(3405, 3507, 0), "Talk to Drezel under the Paterdomus Temple.");
-		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.TRAPDOOR_OPEN);
+		goDownToDrezel.addAlternateObjects(ObjectID.TRAPDOOR_OPEN);
 		talkToDrezel = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
 		talkToDrezel.addDialogSteps("Well, what is it, I may be able to help?", "Yes.");
 		talkToDrezel.addSubSteps(goDownToDrezel);
@@ -243,7 +209,7 @@ public class NatureSpirit extends BasicQuestHelper
 		useJournalOnFilliman.addIcon(ItemID.FILLIMAN_JOURNAL);
 		useJournalOnFilliman.addDialogStep("How can I help?");
 		goBackDownToDrezel = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR, new WorldPoint(3422, 3485, 0), "Talk to Drezel to get blessed.");
-		((ObjectStep) (goBackDownToDrezel)).addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR_OPEN);
+		goBackDownToDrezel.addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR_OPEN);
 		talkToDrezelForBlessing = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
@@ -265,7 +231,7 @@ public class NatureSpirit extends BasicQuestHelper
 		blessSickle = new NpcStep(this, NpcID.FILLIMAN_TARLOCK_NS, new WorldPoint(3441, 9738, 0), "Talk to the Nature Spirit in the grotto to bless your sickle.", ghostspeak, silverSickle);
 		fillPouches = new DetailedQuestStep(this,
 			"Right-click 'bloom' the blessed sickle next to rotten logs for mort myre fungi. Use these to fill the druid pouch.", blessedSickle, prayerPoints
-				, druidPouch);
+			, druidPouch);
 		killGhasts = new NpcStep(this, NpcID.GHAST_INVIS, "Use the filled druid pouch on a ghast to make it attackable and kill it. You'll need to kill 3.", druidPouchFull);
 		killGhast = new NpcStep(this, NpcID.GHAST_VIS, "Kill the ghast.", druidPouchFull);
 		killGhasts.addSubSteps(killGhast);
@@ -276,36 +242,132 @@ public class NatureSpirit extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		var startQuest = new ConditionalStep(this, goDownToDrezel);
+		startQuest.addStep(inUnderground, talkToDrezel);
+		steps.put(0, startQuest);
+
+		var goEnterSwamp = new ConditionalStep(this, enterSwamp);
+		goEnterSwamp.addStep(inUnderground, leaveDrezel);
+		steps.put(1, goEnterSwamp);
+		steps.put(2, goEnterSwamp);
+		steps.put(3, goEnterSwamp);
+		steps.put(4, goEnterSwamp);
+		steps.put(5, goEnterSwamp);
+
+		var goTalkToFilliman = new ConditionalStep(this, tryToEnterGrotto);
+		goTalkToFilliman.addStep(fillimanNearby, talkToFilliman);
+		steps.put(10, goTalkToFilliman);
+		steps.put(15, goTalkToFilliman);
+
+		var showFillimanReflection = new ConditionalStep(this, takeWashingBowl);
+		showFillimanReflection.addStep(new Conditions(mirror, fillimanNearby), useMirrorOnFilliman);
+		showFillimanReflection.addStep(mirror, tryToEnterGrotto);
+		showFillimanReflection.addStep(mirrorNearby, takeMirror);
+		steps.put(20, showFillimanReflection);
+
+		var goGetJournal = new ConditionalStep(this, searchGrotto);
+		goGetJournal.addStep(new Conditions(journal, fillimanNearby), useJournalOnFilliman);
+		goGetJournal.addStep(journal, tryToEnterGrotto);
+		steps.put(25, goGetJournal);
+
+		var goOfferHelp = new ConditionalStep(this, tryToEnterGrotto);
+		goOfferHelp.addStep(fillimanNearby, useJournalOnFilliman);
+		steps.put(30, goOfferHelp);
+
+		var getBlessed = new ConditionalStep(this, goBackDownToDrezel);
+		getBlessed.addStep(inUnderground, talkToDrezelForBlessing);
+		steps.put(35, getBlessed);
+
+		var performRitual = new ConditionalStep(this, castSpellAndGetMushroom);
+		performRitual.addStep(new Conditions(usedMushroom, usedCard, fillimanNearby, onOrange), tellFillimanToCast);
+		performRitual.addStep(new Conditions(usedMushroom, usedCard, fillimanNearby), standOnOrange);
+		performRitual.addStep(new Conditions(usedMushroom, usedCard), spawnFillimanForRitual);
+		performRitual.addStep(usedMushroom, useSpellCard);
+		performRitual.addStep(mushroom, useMushroom);
+		steps.put(40, performRitual);
+		steps.put(45, performRitual);
+		steps.put(50, performRitual);
+		steps.put(55, performRitual);
+
+		var goTalkInGrotto = new ConditionalStep(this, enterGrotto);
+		goTalkInGrotto.addStep(new Conditions(inGrotto, fillimanNearby), talkToFillimanInGrotto);
+		goTalkInGrotto.addStep(inGrotto, searchAltar);
+		steps.put(60, goTalkInGrotto);
+
+		var goBlessSickle = new ConditionalStep(this, enterGrotto);
+		goBlessSickle.addStep(new Conditions(inGrotto, natureSpiritNearby), blessSickle);
+		goBlessSickle.addStep(inGrotto, searchAltar);
+		steps.put(65, goBlessSickle);
+		steps.put(70, goBlessSickle);
+
+		var goKillGhasts = new ConditionalStep(this, fillPouches);
+		// TODO: Fix ghast changing form not counting towards becoming nearby
+		goKillGhasts.addStep(ghastNearby, killGhast);
+		goKillGhasts.addStep(druidPouchFull, killGhasts);
+		steps.put(75, goKillGhasts);
+		steps.put(80, goKillGhasts);
+		steps.put(85, goKillGhasts);
+		steps.put(90, goKillGhasts);
+		steps.put(95, goKillGhasts);
+		steps.put(100, goKillGhasts);
+
+		var finishOff = new ConditionalStep(this, enterGrottoAgain);
+		finishOff.addStep(new Conditions(inGrotto, natureSpiritNearby), talkToNatureSpiritToFinish);
+		finishOff.addStep(inGrotto, touchAltarAgain);
+		steps.put(105, finishOff);
+
+		return steps;
+	}
+
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED)
+		);
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(ghostspeak, silverSickle);
+		return List.of(
+			ghostspeak,
+			silverSickle
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(salveTele, combatGear);
-	}
-
-	@Override
-	public List<String> getNotes()
-	{
-		return Collections.singletonList("Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory.");
+		return List.of(
+			salveTele,
+			combatGear
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("3 Ghasts (level 30)");
+		return List.of(
+			"3 Ghasts (level 30)"
+		);
 	}
 
 	@Override
-	public List<Requirement> getGeneralRequirements()
+	public List<String> getNotes()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(QuestHelperQuest.THE_RESTLESS_GHOST, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED));
-		return req;
+		return List.of(
+			"Whilst in Mort Myre, the Ghasts will occasionally rot the food in your inventory."
+		);
 	}
 
 	@Override
@@ -317,33 +379,70 @@ public class NatureSpirit extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(
-				new ExperienceReward(Skill.CRAFTING, 3000),
-				new ExperienceReward(Skill.DEFENCE, 2000),
-				new ExperienceReward(Skill.HITPOINTS, 2000));
+		return List.of(
+			new ExperienceReward(Skill.CRAFTING, 3000),
+			new ExperienceReward(Skill.DEFENCE, 2000),
+			new ExperienceReward(Skill.HITPOINTS, 2000)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-				new UnlockReward("Access to Mort Myre Swamp"),
-				new UnlockReward("Ability to fight Ghasts."));
+		return List.of(
+			new UnlockReward("Access to Mort Myre Swamp"),
+			new UnlockReward("Ability to fight Ghasts.")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Start the quest",
-			Arrays.asList(talkToDrezel, enterSwamp, tryToEnterGrotto, talkToFilliman, takeWashingBowl,
-				takeMirror, useMirrorOnFilliman, searchGrotto, useJournalOnFilliman), ghostspeak, silverSickle, prayerPoints));
-		allSteps.add(new PanelDetails("Helping Filliman",
-			Arrays.asList(talkToDrezelForBlessing, castSpellAndGetMushroom, useMushroom, useSpellCard, standOnOrange,
-				tellFillimanToCast, enterGrotto, searchAltar, talkToFillimanInGrotto, blessSickle), ghostspeak, silverSickle));
-		allSteps.add(new PanelDetails("Killing Ghasts",
-			Arrays.asList(fillPouches, killGhasts, enterGrottoAgain, talkToNatureSpiritToFinish), ghostspeak, blessedSickle, prayerPoints));
+		var sections = new ArrayList<PanelDetails>();
 
-		return allSteps;
+		sections.add(new PanelDetails("Start the quest", List.of(
+			talkToDrezel,
+			enterSwamp,
+			tryToEnterGrotto,
+			talkToFilliman,
+			takeWashingBowl,
+			takeMirror,
+			useMirrorOnFilliman,
+			searchGrotto,
+			useJournalOnFilliman
+		), List.of(
+			ghostspeak,
+			silverSickle,
+			prayerPoints
+		)));
+
+		sections.add(new PanelDetails("Helping Filliman", List.of(
+			talkToDrezelForBlessing,
+			castSpellAndGetMushroom,
+			useMushroom,
+			useSpellCard,
+			standOnOrange,
+			tellFillimanToCast,
+			enterGrotto,
+			searchAltar,
+			talkToFillimanInGrotto,
+			blessSickle
+		), List.of(
+			ghostspeak,
+			silverSickle
+		)));
+
+		sections.add(new PanelDetails("Killing Ghasts", List.of(
+			fillPouches,
+			killGhasts,
+			enterGrottoAgain,
+			talkToNatureSpiritToFinish
+		), List.of(
+			ghostspeak,
+			blessedSickle,
+			prayerPoints
+		)));
+
+		return sections;
 	}
 }

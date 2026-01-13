@@ -30,61 +30,119 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.*;
-import lombok.Getter;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.List;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MissCheeversSetup
+@SuppressWarnings("FieldCanBeLocal")
+public class MissCheeversStep extends ConditionalStep
 {
-	private QuestHelper questHelper;
+	// Requirements
+	ItemRequirement hasGypsumTin;
+	ItemRequirement hasTinKeyPrint;
+	ItemRequirement hasTinCupricOre;
+	ItemRequirement hasTinWithTinOre;
+	ItemRequirement hasTinWithAllOre;
+	ItemRequirement hasMagnet;
+	ItemRequirement hasAceticAcid;
+	ItemRequirement hasOneVialOfLiquid;
+	ItemRequirement hasCupricSulfate;
+	ItemRequirement hasGypsum;
+	ItemRequirement hasSodiumChloride;
+	ItemRequirement hasWire;
+	ItemRequirement hasTin;
+	ItemRequirement hasShears;
+	ItemRequirement hasChisel;
+	ItemRequirement hasNitrousOxide;
+	ItemRequirement hasTinOrePowder;
+	ItemRequirement hasCupricOrePowder;
+	ItemRequirement hasKnife;
+	ItemRequirement hasMetalSpade;
+	ItemRequirement hasMetalSpadeHead;
+	ItemRequirement hasAshes;
+	ItemRequirement hasBronzeKey;
 
-	@Getter
-	private ConditionalStep conditionalStep;
+	ItemRequirement metalSpade;
+	ItemRequirement metalSpadeHead;
+	ItemRequirement ashes;
+	ItemRequirement cupricSulfate;
+	ItemRequirement vialOfLiquid;
+	VarbitRequirement hasRetrievedThreeVials;
+	VarbitRequirement hasSpadeHeadOnDoor;
+	VarbitRequirement hasCupricSulfateOnDoor;
+	VarbitRequirement hasVialOfLiquidOnDoor;
+	VarbitRequirement hasFirstDoorOpen;
 
-	private ObjectStep getMagnetStep, getTwoVials, getCupricSulfate,
-		getGypsum, getSodiumChloride, getWire, getTin, getShears,
-		getChisel, getNitrousOxide, getTinOrePowder, getCupricOrePowder, getThreeVials,
-		getKnife, leaveRoom;
-	private ItemStep getMetalSpade;
+	ItemRequirement tin;
+	ItemRequirement gypsumTin;
+	ItemRequirement gypsum;
+	ItemRequirement tinKeyPrint;
+	ItemRequirement cupricOrePowder;
+	ItemRequirement tinOrePowder;
+	ItemRequirement tinWithCupricOre;
+	ItemRequirement tinWithTinOre;
+	ItemRequirement tinWithAllOre;
+	ItemRequirement bronzeKey;
+	ItemRequirement knife;
+	ItemRequirement chisel;
+	ItemRequirement bronzeWire;
+	VarbitRequirement hasLiquidInTin;
 
-	// TODO: Clean up to just use ItemRequirement
-	private Requirement hasMagnet, hasAceticAcid, hasOneVialOfLiquid,
-		hasCupricSulfate, hasGypsum, hasSodiumChloride, hasWire, hasTin,
-		hasShears, hasChisel, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
-		hasKnife, hasMetalSpade, hasMetalSpadeHead, hasAshes, hasBronzeKey;
+	VarbitRequirement finishedRoom;
 
-	private VarbitRequirement finishedRoom;
+	// Steps
+	ObjectStep getMagnet;
+	ObjectStep getTwoVials;
+	ObjectStep getCupricSulfate;
+	ObjectStep getGypsum;
+	ObjectStep getSodiumChloride;
+	ObjectStep getWire;
+	ObjectStep getTin;
+	ObjectStep getShears;
+	ObjectStep getChisel;
+	ObjectStep getNitrousOxide;
+	ObjectStep getTinOrePowder;
+	ObjectStep getCupricOrePowder;
+	ObjectStep getThreeVials;
+	ObjectStep getKnife;
+	ObjectStep leaveRoom;
+	ItemStep getMetalSpade;
 
 	// Destroying first door steps
-	private QuestStep useSpadeOnBunsenBurner, useSpadeHeadOnDoor, useCupricSulfateOnDoor, useVialOfLiquidOnDoor, openDoor;
-	private VarbitRequirement hasRetrievedThreeVials, hasSpadeHeadOnDoor, hasCupricSulfateOnDoor, hasVialOfLiquidOnDoor, hasFirstDoorOpen;
-	private ItemRequirement metalSpade, metalSpadeHead, ashes, cupricSulfate, vialOfLiquid;
-
+	QuestStep useSpadeOnBunsenBurner;
+	QuestStep useSpadeHeadOnDoor;
+	QuestStep useCupricSulfateOnDoor;
+	QuestStep useVialOfLiquidOnDoor;
+	QuestStep openDoor;
 	// Creating second door key steps
-	private QuestStep useVialOfLiquidOnCakeTin, useGypsumOnTin, useTinOnKey, useCupricOrePowderOnTin, useTinOrePowderOnTin, useTinOnBunsenBurner, useEquipmentOnTin;
-	private ItemRequirement tin, gypsumTin, gypsum, tinKeyPrint, cupricOrePowder, tinOrePowder, tinWithCupricOre,
-		tinWithTinOre, tinWithAllOre, bronzeKey, knife, chisel, bronzeWire;
-	private VarbitRequirement hasLiquidInTin;
-	ItemRequirement hasGypsumTin, hasTinKeyPrint, hasTinCupricOre, hasTinWithTinOre, hasTinWithAllOre;
+	QuestStep useVialOfLiquidOnCakeTin;
+	QuestStep useGypsumOnTin;
+	QuestStep useTinOnKey;
+	QuestStep useCupricOrePowderOnTin;
+	QuestStep useTinOrePowderOnTin;
+	QuestStep useTinOnBunsenBurner;
+	QuestStep useEquipmentOnTin;
 
-	public MissCheeversSetup(QuestHelper questHelper)
+	public MissCheeversStep(QuestHelper questHelper, Requirement... requirements)
 	{
-		this.questHelper = questHelper;
+		// null safety - addSteps sets the null conditional step
+		super(questHelper, null, requirements);
+
 		setupRequirements();
-		setupConditions();
 		setupSteps();
 		addSteps();
 	}
 
 	private void setupSteps()
 	{
-		getMagnetStep = new ObjectStep(questHelper, ObjectID.RD_BOOKSHELF_OLD_TALL, "Get the magnet from the old bookshelf.");
+		getMagnet = new ObjectStep(questHelper, ObjectID.RD_BOOKSHELF_OLD_TALL, "Get the magnet from the old bookshelf.");
 		getTwoVials = new ObjectStep(questHelper, ObjectID.RD_SHELVES_CHEMICALS_1, "Get two vials from the shelves");
 		getTwoVials.addDialogStep("Take both vials.");
 		getCupricSulfate = new ObjectStep(questHelper, ObjectID.RD_SHELVES_CHEMICALS_2, "Get Cupric Sulfate from the shelves.");
@@ -102,112 +160,68 @@ public class MissCheeversSetup
 		getNitrousOxide.addDialogStep("YES");
 		getTinOrePowder = new ObjectStep(questHelper, ObjectID.RD_SHELVES_CHEMICALS_6, "Get Tin Ore Powder from the Shelves.");
 		getTinOrePowder.addDialogStep("YES");
-		getCupricOrePowder = new ObjectStep(questHelper, ObjectID.RD_SHELVES_CHEMICALS_7, "Get Curpic Ore Powder from the Shelves.");
+		getCupricOrePowder = new ObjectStep(questHelper, ObjectID.RD_SHELVES_CHEMICALS_7, "Get Cupric Ore Powder from the Shelves.");
 		getCupricOrePowder.addDialogStep("YES");
 		getThreeVials = new ObjectStep(questHelper, ObjectID.RD_SHELVES_CHEMICALS_8, "Get Three Vials Of Liquid from the Shelves.");
 		getThreeVials.addDialogStep("Take all three vials");
 		getKnife = new ObjectStep(questHelper, ObjectID.RD_BOOKSHELF_OLD_TALL3, "Get a Knife from the old bookshelf.");
 		getMetalSpade = new ItemStep(questHelper, "Get the metal spade off the table", metalSpade);
 
-		useSpadeOnBunsenBurner = new ObjectStep(questHelper, ObjectID.RD_WOODEN_TABLE_BUNSEN_BURNER, "Use the spade in your inventory on the bunsen burner"
-			, metalSpade);
+		useSpadeOnBunsenBurner = new ObjectStep(questHelper, ObjectID.RD_WOODEN_TABLE_BUNSEN_BURNER, "Use the spade in your inventory on the bunsen burner", metalSpade);
 		useSpadeOnBunsenBurner.addIcon(ItemID.RD_METAL_SPADE);
 
-		useSpadeHeadOnDoor = new ObjectStep(questHelper, ObjectID.RD_STONE_DOOR, "Use the spade in your inventory on the door.",
-			metalSpadeHead);
+		useSpadeHeadOnDoor = new ObjectStep(questHelper, ObjectID.RD_STONE_DOOR, "Use the spade in your inventory on the door.", metalSpadeHead);
 		useSpadeHeadOnDoor.addIcon(ItemID.RD_METAL_SPADE_NO_HANDLE);
 
-		useCupricSulfateOnDoor = new ObjectStep(questHelper, ObjectID.RD_STONE_DOOR, "Use Cupric Sulfate in your inventory on the door.",
-			cupricSulfate);
+		useCupricSulfateOnDoor = new ObjectStep(questHelper, ObjectID.RD_STONE_DOOR, "Use Cupric Sulfate in your inventory on the door.", cupricSulfate);
 		useCupricSulfateOnDoor.addIcon(ItemID.RD_CUPRIC_SULPHATE);
 
-		useVialOfLiquidOnDoor = new ObjectStep(questHelper, ObjectID.RD_STONE_DOOR, "Use vial of liquid in your inventory on the door.",
-			vialOfLiquid);
+		useVialOfLiquidOnDoor = new ObjectStep(questHelper, ObjectID.RD_STONE_DOOR, "Use vial of liquid in your inventory on the door.", vialOfLiquid);
 		useVialOfLiquidOnDoor.addIcon(ItemID.RD_DIHYDROGEN_MONOXIDE);
 
 		openDoor = new ObjectStep(questHelper, ObjectID.RD_STONE_DOOR, "Open the door.");
 
-		useVialOfLiquidOnCakeTin = new DetailedQuestStep(questHelper, "Use a vial of liquid on the tin in your inventory.",
-			tin, vialOfLiquid);
+		useVialOfLiquidOnCakeTin = new DetailedQuestStep(questHelper, "Use a vial of liquid on the tin in your inventory.", tin, vialOfLiquid);
 
-		useGypsumOnTin = new DetailedQuestStep(questHelper, "Use a vial of Gypsum on the tin in your inventory.",
-			gypsum, tin);
+		useGypsumOnTin = new DetailedQuestStep(questHelper, "Use a vial of Gypsum on the tin in your inventory.", gypsum, tin);
 
-		useTinOnKey = new ObjectStep(questHelper, ObjectID.RD_KEY_CHAINED, "Use tin full with Gypsum on the key on the ground.",
-			gypsumTin);
+		useTinOnKey = new ObjectStep(questHelper, ObjectID.RD_KEY_CHAINED, "Use tin full with Gypsum on the key on the ground.", gypsumTin);
 		useTinOnKey.addIcon(ItemID.RD_TINFULL);
 
-		useCupricOrePowderOnTin = new DetailedQuestStep(questHelper, "Use Tin on the cupric ore powder in your inventory.",
-			tinKeyPrint, cupricOrePowder);
+		useCupricOrePowderOnTin = new DetailedQuestStep(questHelper, "Use Tin on the cupric ore powder in your inventory.", tinKeyPrint, cupricOrePowder);
 
-		useTinOrePowderOnTin = new DetailedQuestStep(questHelper, "Use Tin on the tin ore powder in your inventory.",
-			tinWithCupricOre, tinOrePowder);
+		useTinOrePowderOnTin = new DetailedQuestStep(questHelper, "Use Tin on the tin ore powder in your inventory.", tinWithCupricOre, tinOrePowder);
 
-		useTinOnBunsenBurner = new ObjectStep(questHelper, ObjectID.RD_WOODEN_TABLE_BUNSEN_BURNER,
-			"Use your tin with the bunsen burner to create a bronze key.", tinWithTinOre);
+		useTinOnBunsenBurner = new ObjectStep(questHelper, ObjectID.RD_WOODEN_TABLE_BUNSEN_BURNER, "Use your tin with the bunsen burner to create a bronze key.", tinWithTinOre);
 		useTinOnBunsenBurner.addIcon(ItemID.RD_FULL_KEYMOULD_UNHEATED);
 
-		useEquipmentOnTin = new DetailedQuestStep(questHelper, "Use your chisel, knife or bronze wires on your tin in your inventory.",
-			tinWithAllOre, chisel, knife, bronzeWire);
+		useEquipmentOnTin = new DetailedQuestStep(questHelper, "Use your chisel, knife or bronze wires on your tin in your inventory.", tinWithAllOre, chisel, knife, bronzeWire);
 
 		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM6_EXITDOOR, new WorldPoint(2478, 4940, 0), "Leave the room by the second door to enter the portal");
 	}
 
 	private void addSteps()
 	{
-		conditionalStep = new ConditionalStep(questHelper, getMagnetStep);
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasBronzeKey, finishedRoom), leaveRoom);
+		this.addStep(null, getMagnet);
+		this.addStep(new Conditions(hasFirstDoorOpen, hasBronzeKey, finishedRoom), leaveRoom);
 		setupSecondDoorKeyStep();
 		destroyFirstDoorSteps();
 		retrieveItemSteps();
 	}
 
-	public List<QuestStep> GetPanelSteps()
-	{
-		List<QuestStep> steps = new ArrayList<>();
-		steps.add(getMagnetStep);
-		steps.add(getTwoVials);
-		steps.add(getCupricSulfate);
-		steps.add(getGypsum);
-		steps.add(getSodiumChloride);
-		steps.add(getWire);
-		steps.add(getTin);
-		steps.add(getShears);
-		steps.add(getChisel);
-		steps.add(getNitrousOxide);
-		steps.add(getTinOrePowder);
-		steps.add(getCupricOrePowder);
-		steps.add(getThreeVials);
-		steps.add(getKnife);
-		steps.add(getMetalSpade);
-		steps.add(useSpadeOnBunsenBurner);
-		steps.add(useSpadeHeadOnDoor);
-		steps.add(useCupricSulfateOnDoor);
-		steps.add(useVialOfLiquidOnDoor);
-		steps.add(openDoor);
-		steps.add(useVialOfLiquidOnCakeTin);
-		steps.add(useGypsumOnTin);
-		steps.add(useTinOnKey);
-		steps.add(useCupricOrePowderOnTin);
-		steps.add(useTinOrePowderOnTin);
-		steps.add(useTinOnBunsenBurner);
-		steps.add(useEquipmentOnTin);
-		steps.add(leaveRoom);
-		return steps;
-	}
 
 	/***
 	 * 	Steps and conditions required to create the key for the second door.
 	 */
 	private void setupSecondDoorKeyStep()
 	{
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasTinWithAllOre), useEquipmentOnTin);
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasTinWithTinOre), useTinOnBunsenBurner);
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasTinCupricOre), useTinOrePowderOnTin);
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasTinKeyPrint), useCupricOrePowderOnTin);
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasGypsumTin), useTinOnKey);
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen, hasLiquidInTin), useGypsumOnTin);
-		conditionalStep.addStep(new Conditions(hasFirstDoorOpen), useVialOfLiquidOnCakeTin);
+		this.addStep(new Conditions(hasFirstDoorOpen, hasTinWithAllOre), useEquipmentOnTin);
+		this.addStep(new Conditions(hasFirstDoorOpen, hasTinWithTinOre), useTinOnBunsenBurner);
+		this.addStep(new Conditions(hasFirstDoorOpen, hasTinCupricOre), useTinOrePowderOnTin);
+		this.addStep(new Conditions(hasFirstDoorOpen, hasTinKeyPrint), useCupricOrePowderOnTin);
+		this.addStep(new Conditions(hasFirstDoorOpen, hasGypsumTin), useTinOnKey);
+		this.addStep(new Conditions(hasFirstDoorOpen, hasLiquidInTin), useGypsumOnTin);
+		this.addStep(new Conditions(hasFirstDoorOpen), useVialOfLiquidOnCakeTin);
 	}
 
 	/***
@@ -215,23 +229,23 @@ public class MissCheeversSetup
 	 */
 	private void destroyFirstDoorSteps()
 	{
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 			hasRetrievedThreeVials, hasKnife, hasAshes, hasVialOfLiquidOnDoor), openDoor);
 
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 			hasRetrievedThreeVials, hasKnife, hasAshes, hasCupricSulfateOnDoor), useVialOfLiquidOnDoor);
 
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 			hasRetrievedThreeVials, hasKnife, hasAshes, hasSpadeHeadOnDoor), useCupricSulfateOnDoor);
 
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 			hasRetrievedThreeVials, hasKnife, hasMetalSpadeHead, hasAshes), useSpadeHeadOnDoor);
 
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 			hasRetrievedThreeVials, hasKnife, hasMetalSpade), useSpadeOnBunsenBurner);
 	}
@@ -241,34 +255,34 @@ public class MissCheeversSetup
 	 */
 	private void retrieveItemSteps()
 	{
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 			hasRetrievedThreeVials, hasKnife), getMetalSpade);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder,
 			hasRetrievedThreeVials), getKnife);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 				hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder, hasCupricOrePowder)
 			, getThreeVials);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide, hasTinOrePowder), getCupricOrePowder);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasNitrousOxide, hasNitrousOxide), getTinOrePowder);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears, hasChisel), getNitrousOxide);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin, hasShears), getChisel);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire, hasTin), getShears);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride, hasWire), getTin);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum,
 			hasSodiumChloride), getWire);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum),
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate, hasGypsum),
 			getSodiumChloride);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate), getGypsum);
-		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid), getCupricSulfate);
-		conditionalStep.addStep(hasMagnet, getTwoVials);
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate), getGypsum);
+		this.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid), getCupricSulfate);
+		this.addStep(hasMagnet, getTwoVials);
 	}
 
 	public void setupRequirements()
@@ -329,10 +343,7 @@ public class MissCheeversSetup
 		knife.setHighlightInInventory(true);
 
 		bronzeKey = new ItemRequirement("Bronze Key", ItemID.RD_PUZZLEROOM_KEY);
-	}
 
-	private void setupConditions()
-	{
 		hasMagnet = new ItemRequirements(new ItemRequirement("Magnet", ItemID.RD_MAGNET));
 		hasAceticAcid = new ItemRequirements(new ItemRequirement("Acetic Acid", ItemID.RD_ACETIC_ACID));
 		hasOneVialOfLiquid = vialOfLiquid;
@@ -367,5 +378,39 @@ public class MissCheeversSetup
 		finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM6_COMPLETE, 1);
 
 		hasLiquidInTin = new VarbitRequirement(VarbitID.RD_WATER_IN_TIN, 1);
+	}
+
+	public List<QuestStep> getPanelSteps()
+	{
+		return List.of(
+			getMagnet,
+			getTwoVials,
+			getCupricSulfate,
+			getGypsum,
+			getSodiumChloride,
+			getWire,
+			getTin,
+			getShears,
+			getChisel,
+			getNitrousOxide,
+			getTinOrePowder,
+			getCupricOrePowder,
+			getThreeVials,
+			getKnife,
+			getMetalSpade,
+			useSpadeOnBunsenBurner,
+			useSpadeHeadOnDoor,
+			useCupricSulfateOnDoor,
+			useVialOfLiquidOnDoor,
+			openDoor,
+			useVialOfLiquidOnCakeTin,
+			useGypsumOnTin,
+			useTinOnKey,
+			useCupricOrePowderOnTin,
+			useTinOrePowderOnTin,
+			useTinOnBunsenBurner,
+			useEquipmentOnTin,
+			leaveRoom
+		);
 	}
 }

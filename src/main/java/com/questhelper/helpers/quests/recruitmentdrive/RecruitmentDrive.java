@@ -127,7 +127,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	MsHynnAnswerDialogQuizStep msHynnDialogQuiz;
 
 	// Miss Cheevers
-	MissCheeversSetup missCheeversSetup;
+	MissCheeversStep missCheeversStep;
 
 	@Override
 	protected void setupZones()
@@ -187,8 +187,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 		talkToSirTiffy.addSubSteps(climbDownfirstFloorStaircase, climbDownSecondFloorStaircase);
 
 		// Testing grounds
-		// Ms Cheeves
-		missCheeversSetup = new MissCheeversSetup(this);
+		// Miss Cheevers
+		{
+			missCheeversStep = new MissCheeversStep(this);
+		}
 
 		// Sir Tinley
 		{
@@ -323,7 +325,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTestingGrounds.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
 
 		// Testing steps below
-		cTestingGrounds.addStep(isInMissCheeversRoom, missCheeversSetup.getConditionalStep());
+		cTestingGrounds.addStep(isInMissCheeversRoom, missCheeversStep);
 		cTestingGrounds.addStep(isInSirTinleysRoom, sirTinleyStep);
 		cTestingGrounds.addStep(isInMsHynnRoom, msHynnDialogQuiz);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
@@ -447,7 +449,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		));
 
 		sections.add(new PanelDetails("Miss Cheevers",
-			missCheeversSetup.GetPanelSteps()
+			missCheeversStep.getPanelSteps()
 		));
 
 		sections.add(new PanelDetails("Lady Table",

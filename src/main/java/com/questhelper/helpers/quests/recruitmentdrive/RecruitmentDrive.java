@@ -311,7 +311,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTalkToSirAmikVarze = new ConditionalStep(this, climbBottomSteps, "Talk to Sir Amik Varze.");
 		cTalkToSirAmikVarze.addStep(isFirstFloorCastle, climbSecondSteps);
 		cTalkToSirAmikVarze.addStep(isSecondFloorCastle, talkToSirAmikVarze);
-		cTalkToSirAmikVarze.addSubSteps(climbSecondSteps, climbBottomSteps, talkToSirAmikVarze);
 		steps.put(0, cTalkToSirAmikVarze);
 
 		var cTestingGrounds = new ConditionalStep(this, talkToSirTiffy);

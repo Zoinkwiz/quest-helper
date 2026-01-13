@@ -39,7 +39,7 @@ public class SkillRequirementTest extends MockedTest
 
 	@Test
 	void boostable() {
-		var req = new SkillRequirement(Skill.FISHING, 60, true);
+		var req = new SkillRequirement(Skill.FISHING, 61, true);
 
 		// User is outside of boost range
 		initFishing(54, 54);

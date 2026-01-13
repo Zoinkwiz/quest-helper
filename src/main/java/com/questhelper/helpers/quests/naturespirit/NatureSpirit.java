@@ -195,6 +195,7 @@ public class NatureSpirit extends BasicQuestHelper
 		talkToDrezel.addSubSteps(goDownToDrezel);
 		leaveDrezel = new ObjectStep(this, ObjectID.PIP_UNDERGROUND_WALL_SIDE_WITHPORTAL, new WorldPoint(3440, 9886, 0), "Enter the Mort Myre from the north gate.");
 		enterSwamp = new ObjectStep(this, ObjectID.MORTMYRE_METALGATECLOSED_L, new WorldPoint(3444, 3458, 0), "Enter the Mort Myre from the north gate.", ghostspeak);
+		enterSwamp.addSubSteps(leaveDrezel);
 		tryToEnterGrotto = new ObjectStep(this, ObjectID.GROTTO_DOOR_DRUIDICSPIRIT, new WorldPoint(3440, 3337, 0), "Attempt to enter the Grotto in the south of Mort Myre.", ghostspeak);
 		tryToEnterGrotto.addDialogStep("How long have you been a ghost?");
 		talkToFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK_SPIRIT, new WorldPoint(3440, 3336, 0), "Talk to Filliman Tarlock.", ghostspeak);

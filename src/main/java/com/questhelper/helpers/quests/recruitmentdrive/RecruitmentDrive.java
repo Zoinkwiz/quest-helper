@@ -177,7 +177,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		climbDownSecondFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP, new WorldPoint(2960, 3339, 2), "Climb down the stairs from the second floor.");
 		climbDownfirstFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP, new WorldPoint(2955, 3338, 1), "Climb down the stairs from the first floor.");
 
-		talkToSirTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, "Talk to Sir Tiffy Cashien in Falador Park.", noItemRequirement);
+		talkToSirTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, new WorldPoint(2997, 3373, 0), "Talk to Sir Tiffy Cashien in Falador Park.", noItemRequirement);
 		talkToSirTiffy.addDialogStep("Yes, let's go!");
 		talkToSirTiffy.addSubSteps(climbDownfirstFloorStaircase, climbDownSecondFloorStaircase);
 

@@ -30,8 +30,6 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
@@ -45,9 +43,6 @@ import java.util.List;
 public class MissCheeversSetup
 {
 	private QuestHelper questHelper;
-
-	@Getter
-	private ZoneRequirement isInMsCheeversRoom;
 
 	@Getter
 	private ConditionalStep conditionalStep;
@@ -82,7 +77,6 @@ public class MissCheeversSetup
 	{
 		this.questHelper = questHelper;
 		setupRequirements();
-		setupZoneCondition();
 		setupConditions();
 		setupSteps();
 		addSteps();
@@ -275,13 +269,6 @@ public class MissCheeversSetup
 		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid, hasCupricSulfate), getGypsum);
 		conditionalStep.addStep(new Conditions(hasMagnet, hasAceticAcid, hasOneVialOfLiquid), getCupricSulfate);
 		conditionalStep.addStep(hasMagnet, getTwoVials);
-	}
-
-	private void setupZoneCondition()
-	{
-		Zone missCheevesZone = new Zone(new WorldPoint(2466, 4936, 0),
-			new WorldPoint(2480, 4947, 0));
-		isInMsCheeversRoom = new ZoneRequirement(missCheevesZone);
 	}
 
 	public void setupRequirements()

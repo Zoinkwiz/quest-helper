@@ -349,6 +349,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.DEMON_SLAYER,
 			QuestHelperQuest.DORICS_QUEST,
+			QuestHelperQuest.RECRUITMENT_DRIVE,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.HOLY_GRAIL,

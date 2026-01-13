@@ -465,7 +465,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 
 	public List<Integer> getIds()
 	{
-		if (panelDetails.getId() == -1) return List.of();
+		if (panelDetails.getId() == Integer.MIN_VALUE) return List.of();
 		return List.of(panelDetails.getId());
 	}
 

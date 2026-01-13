@@ -31,6 +31,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.List;
 import net.runelite.api.events.VarbitChanged;
@@ -46,6 +47,7 @@ public class SirRenItchoodStep extends ConditionalStep
 	private final QuestStep talkToRen;
 
 	private DoorPuzzle enterDoorCode;
+	private PuzzleWrapperStep pwEnterDoorCode;
 	private QuestStep tryOpenDoor;
 	private QuestStep leaveRoom;
 
@@ -94,10 +96,11 @@ public class SirRenItchoodStep extends ConditionalStep
 		var answerWidgetOpen = new WidgetTextRequirement(InterfaceID.RdCombolock.RDCOMBOLOCK, "Combination Lock Door");
 		tryOpenDoor = new ObjectStep(questHelper, ObjectID.RD_ROOM5_EXITDOOR, "Open the door to be prompted to enter a code.");
 		enterDoorCode = new DoorPuzzle(questHelper, "NONE");
+		pwEnterDoorCode = enterDoorCode.puzzleWrapStepWithDefaultText("Solve the door combination lock using the hints from Sir Ren Itchood.");
 		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM5_EXITDOOR, "Leave through the door to enter the portal and continue.");
 
 		addStep(finishedRoomCondition, leaveRoom);
-		addStep(answerWidgetOpen, enterDoorCode);
+		addStep(answerWidgetOpen, pwEnterDoorCode);
 		addStep(null, tryOpenDoor);
 	}
 
@@ -106,7 +109,7 @@ public class SirRenItchoodStep extends ConditionalStep
 		return List.of(
 			talkToRen,
 			tryOpenDoor,
-			enterDoorCode,
+			pwEnterDoorCode,
 			leaveRoom
 		);
 	}

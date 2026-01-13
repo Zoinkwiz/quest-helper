@@ -209,9 +209,9 @@ public class NatureSpirit extends BasicQuestHelper
 		useJournalOnFilliman = new NpcStep(this, NpcID.FILLIMAN_TARLOCK_SPIRIT, new WorldPoint(3440, 3336, 0), "Use the journal on Filliman Tarlock.", ghostspeak, journalHighlighted);
 		useJournalOnFilliman.addIcon(ItemID.FILLIMAN_JOURNAL);
 		useJournalOnFilliman.addDialogStep("How can I help?");
-		goBackDownToDrezel = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR, new WorldPoint(3422, 3485, 0), "Talk to Drezel to get blessed.");
+		goBackDownToDrezel = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR, new WorldPoint(3422, 3485, 0), "Return to Drezel under the Paterdomus Temple to get blessed.");
 		goBackDownToDrezel.addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR_OPEN);
-		talkToDrezelForBlessing = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Talk to Drezel under the Paterdomus Temple.");
+		talkToDrezelForBlessing = new NpcStep(this, NpcID.PRIESTPERILTRAPPEDMONK_VIS, new WorldPoint(3439, 9896, 0), "Return to Drezel under the Paterdomus Temple to get blessed.");
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
 		talkToDrezelForBlessing.addSubSteps(goBackDownToDrezel);
 		castSpellAndGetMushroom = new DetailedQuestStep(this, "Cast the druidic spell next to a rotten log in Mort Myre to grow a mushroom. Pick it. If you already have, open the quest journal to re-sync your state.", druidicSpell);

@@ -27,12 +27,14 @@ package com.questhelper.helpers.quests.recruitmentdrive;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ConfigRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -114,8 +116,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 	QuestStep moveChickenOnLeftToRight;
 	QuestStep moveGrainOnRightToLeft;
 	QuestStep moveChickenOnRightToLeftAgain;
-	QuestStep finishedSpishyusRoom;
-	ConditionalStep sirSpishyusStep;
+	QuestStep leaveSirSpishyusRoom;
+	ConditionalStep sirSpishyusPuzzle;
+	ConditionalStep cSirSpishyus;
+	PuzzleWrapperStep pwSirSpishyusStep;
 
 	// Sir Ren
 	SirRenItchoodStep sirRenStep;
@@ -268,47 +272,100 @@ public class RecruitmentDrive extends BasicQuestHelper
 			var grainNotOnLeftSide = new VarbitRequirement(VarbitID.RD_GRAINRIGHT, 0);
 			var finishedSpishyus = new VarbitRequirement(VarbitID.RD_ROOM1_COMPLETE, 1);
 
+			var westSide = new Zone(new WorldPoint(2472, 4976, 0), new WorldPoint(2479, 4968, 0));
+			var playerOnWestSide = new ZoneRequirement(westSide);
+			var playerOnEastSide = not(playerOnWestSide);
+
 			var foxPickedUp = and(foxNotOnLeftSide, foxNotOnRightSide);
 			var chickenPickedUp = and(chickenNotOnRightSide, chickenNotOnLeftSide);
 			var grainPickedUp = and(grainNotOnLeftSide, grainNotOnRightSide);
 
-			moveChickenOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true));
-			finishedSpishyusRoom = new ObjectStep(this, ObjectID.RD_ROOM1_EXITDOOR, "Leave through the portal to continue.");
+			moveChickenOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true)).puzzleWrapStep(true);
 
-			moveFoxOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_FOX_MULTI, foxOnRightPoint, getSpishyusPickupText("Fox", true));
+			moveFoxOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_FOX_MULTI, foxOnRightPoint, getSpishyusPickupText("Fox", true)).puzzleWrapStep(true);
 
-			var moveChickenToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
-			moveChickenOnRightToLeft.addSubSteps(moveChickenToLeft);
+			var moveChickenToLeft = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Chicken", false));
+			moveChickenToLeft.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnRightToLeft).getSolvingStep().addSubSteps(moveChickenToLeft);
 
-			var moveFoxToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Fox", false));
-			moveFoxOnRightToLeft.addSubSteps(moveFoxToLeft);
+			var moveFoxToWest = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Fox", false));
+			moveFoxToWest.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveFoxOnRightToLeft).getSolvingStep().addSubSteps(moveFoxToWest);
 
-			moveChickenOnLeftToRight = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI_RIGHT, chickenOnLeftPoint, getSpishyusPickupText("Chicken", false));
-			var moveChickenToRight = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", true));
-			moveChickenOnLeftToRight.addSubSteps(moveChickenToRight);
+			moveChickenOnLeftToRight = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI_RIGHT, chickenOnLeftPoint, getSpishyusPickupText("Chicken", false)).puzzleWrapStep(true);
+			var moveChickenToRight = new ObjectStep(this, ObjectID.RD_BRIDGE_RIGHT, new WorldPoint(2477, 4972, 0), getSpishyusMoveText("Chicken", true));
+			moveChickenToRight.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnLeftToRight).getSolvingStep().addSubSteps(moveChickenToRight);
 
-			moveGrainOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_GRAIN_MULTI, grainOnRightPoint, getSpishyusPickupText("Grain", true));
-			var moveGrainToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Grain", false));
-			moveGrainOnRightToLeft.addSubSteps(moveGrainToLeft);
+			moveGrainOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_GRAIN_MULTI, grainOnRightPoint, getSpishyusPickupText("Grain", true)).puzzleWrapStep(true);
+			var moveGrainToLeft = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Grain", false));
+			moveGrainToLeft.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveGrainOnRightToLeft).getSolvingStep().addSubSteps(moveGrainToLeft);
 
-			moveChickenOnRightToLeftAgain = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true));
-			var moveChickenToLeftAgain = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
-			moveChickenOnRightToLeftAgain.addSubSteps(moveChickenToLeftAgain);
+			moveChickenOnRightToLeftAgain = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true)).puzzleWrapStep(true);
+			var moveChickenToLeftAgain = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Chicken", false));
+			moveChickenToLeftAgain.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnRightToLeftAgain).getSolvingStep().addSubSteps(moveChickenToLeftAgain);
 
-			sirSpishyusStep = new ConditionalStep(this, moveChickenOnRightToLeft);
-			sirSpishyusStep.addStep(finishedSpishyus, finishedSpishyusRoom);
+			sirSpishyusPuzzle = new ConditionalStep(this, moveChickenOnRightToLeft, "Solve Sir Spishyus' riddle.");
 
-			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnRightSide, grainOnRightSide), moveChickenOnRightToLeft);
-			sirSpishyusStep.addStep(and(chickenPickedUp, foxOnRightSide, grainOnRightSide), moveChickenToLeft);
-			sirSpishyusStep.addStep(and(chickenOnLeftSide, foxOnRightSide, grainOnRightSide), moveFoxOnRightToLeft);
-			sirSpishyusStep.addStep(and(chickenOnLeftSide, foxPickedUp, grainOnRightSide), moveFoxToLeft);
-			sirSpishyusStep.addStep(and(chickenOnLeftSide, foxOnLeftSide, grainOnRightSide), moveChickenOnLeftToRight);
-			sirSpishyusStep.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnRightSide), moveChickenToRight);
+			var dropChickenWest = new DetailedQuestStep(this, "Drop the Chicken on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveChickenOnRightToLeft).getSolvingStep().addSubSteps(dropChickenWest);
 
-			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnRightSide), moveGrainOnRightToLeft);
-			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnLeftSide, grainPickedUp), moveGrainToLeft);
-			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide), moveChickenOnRightToLeftAgain);
-			sirSpishyusStep.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnLeftSide), moveChickenToLeftAgain);
+			// 1. Move Chicken from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnRightSide, grainOnRightSide), moveChickenOnRightToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnRightSide, grainOnRightSide, playerOnEastSide), moveChickenToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnRightSide, grainOnRightSide), dropChickenWest);
+
+			var moveToEastSide1 = new ObjectStep(this, ObjectID.RD_BRIDGE_RIGHT, new WorldPoint(2477, 4972, 0), "Cross the bridge to the east side.");
+			moveToEastSide1.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveFoxOnRightToLeft).getSolvingStep().addSubSteps(moveToEastSide1);
+
+			var dropFoxWest = new DetailedQuestStep(this, "Drop the Fox on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveFoxOnRightToLeft).getSolvingStep().addSubSteps(dropFoxWest);
+
+			// 2. Return to east side, then move Fox from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxOnRightSide, grainOnRightSide, playerOnWestSide), moveToEastSide1);
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxOnRightSide, grainOnRightSide), moveFoxOnRightToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxPickedUp, grainOnRightSide, playerOnEastSide), moveFoxToWest);
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxPickedUp, grainOnRightSide), dropFoxWest);
+
+			var dropChickenEast = new DetailedQuestStep(this, "Drop the Chicken on the east side from your equipped items.");
+			((PuzzleWrapperStep) moveChickenOnLeftToRight).getSolvingStep().addSubSteps(dropChickenEast);
+
+			// 3. Move chicken from west to east
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxOnLeftSide, grainOnRightSide), moveChickenOnLeftToRight);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnRightSide, playerOnWestSide), moveChickenToRight);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnRightSide), dropChickenEast);
+
+			var dropGrainWest = new DetailedQuestStep(this, "Drop the Grain on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveGrainOnRightToLeft).getSolvingStep().addSubSteps(dropGrainWest);
+
+			// 4. Move grain from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnRightSide), moveGrainOnRightToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainPickedUp, playerOnEastSide), moveGrainToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainPickedUp), dropGrainWest);
+
+			var moveToEastSide2 = new ObjectStep(this, ObjectID.RD_BRIDGE_RIGHT, new WorldPoint(2477, 4972, 0), "Cross the bridge to the east side.");
+			moveToEastSide2.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnRightToLeftAgain).getSolvingStep().addSubSteps(moveToEastSide2);
+
+			var dropChickenWest2 = new DetailedQuestStep(this, "Drop the Chicken on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveChickenOnRightToLeftAgain).getSolvingStep().addSubSteps(dropChickenWest2);
+
+			// 5. Cross the bridge to the east, then move the chicken from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide, playerOnWestSide), moveToEastSide2);
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide), moveChickenOnRightToLeftAgain);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnLeftSide, playerOnEastSide), moveChickenToLeftAgain);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnLeftSide), dropChickenWest2);
+
+			pwSirSpishyusStep = sirSpishyusPuzzle.puzzleWrapStepWithDefaultText("Solve Sir Spishyus' riddle.");
+			pwSirSpishyusStep.conditionToHideInSidebar(new ConfigRequirement(this.getConfig()::solvePuzzles));
+
+			leaveSirSpishyusRoom = new ObjectStep(this, ObjectID.RD_ROOM1_EXITDOOR, "Leave through the portal to continue.");
+
+			cSirSpishyus = new ConditionalStep(this, pwSirSpishyusStep);
+			cSirSpishyus.addStep(finishedSpishyus, leaveSirSpishyusRoom);
 		}
 
 		// Sir Kuam
@@ -351,7 +408,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTestingGrounds.addStep(isInMsHynnRoom, msHynnTerprettStep);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
 		cTestingGrounds.addStep(isInladyTableRoom, ladyTableStep);
-		cTestingGrounds.addStep(isInSirSpishyusRoom, sirSpishyusStep);
+		cTestingGrounds.addStep(isInSirSpishyusRoom, cSirSpishyus);
 		cTestingGrounds.addStep(isInSirKuamsRoom, sirKuamStep);
 
 		steps.put(1, cTestingGrounds);
@@ -457,12 +514,13 @@ public class RecruitmentDrive extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Sir Spishyus", List.of(
+			pwSirSpishyusStep,
 			moveChickenOnRightToLeft,
 			moveFoxOnRightToLeft,
 			moveChickenOnLeftToRight,
 			moveGrainOnRightToLeft,
 			moveChickenOnRightToLeftAgain,
-			finishedSpishyusRoom
+			leaveSirSpishyusRoom
 		)));
 
 		sections.add(new PanelDetails("Sir Ren Itchood",

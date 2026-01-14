@@ -45,6 +45,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,6 +125,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	// Ms Hynn
 	MsHynnAnswerDialogQuizStep msHynnDialogQuiz;
+	PuzzleWrapperStep pwMsHynnTerprett;
 	ObjectStep leaveMsHynnTerprettRoom;
 	ConditionalStep msHynnTerprettStep;
 
@@ -224,10 +226,11 @@ public class RecruitmentDrive extends BasicQuestHelper
 			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM7_COMPLETE, 1);
 
 			msHynnDialogQuiz = new MsHynnAnswerDialogQuizStep(this);
+			pwMsHynnTerprett = msHynnDialogQuiz.puzzleWrapStepWithDefaultText("Talk to Ms Hynn Terprett and answer the riddle.");
 
 			leaveMsHynnTerprettRoom = new ObjectStep(this, ObjectID.RD_ROOM7_EXITDOOR, "Leave through the door to enter the portal and continue.");
 
-			msHynnTerprettStep = new ConditionalStep(this, msHynnDialogQuiz);
+			msHynnTerprettStep = new ConditionalStep(this, pwMsHynnTerprett);
 			msHynnTerprettStep.addStep(finishedRoom, leaveMsHynnTerprettRoom);
 		}
 
@@ -442,8 +445,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 			leaveSirTinleyRoom
 		)));
 
-		sections.add(new PanelDetails("Ms Hynn Terprett", List.of(
-			msHynnDialogQuiz,
+		sections.add(new PanelDetails("Ms. Hynn Terprett", List.of(
+			pwMsHynnTerprett,
 			leaveMsHynnTerprettRoom
 		)));
 

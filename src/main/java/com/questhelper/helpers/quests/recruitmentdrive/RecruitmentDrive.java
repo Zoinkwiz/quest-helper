@@ -123,8 +123,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 	LadyTableStep ladyTableStep;
 
 	// Ms Hynn
-	QuestStep talkToMsHynnTerprett;
 	MsHynnAnswerDialogQuizStep msHynnDialogQuiz;
+	ObjectStep leaveMsHynnTerprettRoom;
+	ConditionalStep msHynnTerprettStep;
 
 	// Miss Cheevers
 	MissCheeversStep missCheeversStep;
@@ -220,9 +221,14 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		// Ms Hynn Terprett
 		{
-			talkToMsHynnTerprett = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_7, "Talk to Ms Hynn Terprett and answer the riddle.");
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM7_COMPLETE, 1);
 
-			msHynnDialogQuiz = new MsHynnAnswerDialogQuizStep(this, talkToMsHynnTerprett);
+			msHynnDialogQuiz = new MsHynnAnswerDialogQuizStep(this);
+
+			leaveMsHynnTerprettRoom = new ObjectStep(this, ObjectID.RD_ROOM7_EXITDOOR, "Leave through the door to enter the portal and continue.");
+
+			msHynnTerprettStep = new ConditionalStep(this, msHynnDialogQuiz);
+			msHynnTerprettStep.addStep(finishedRoom, leaveMsHynnTerprettRoom);
 		}
 
 		// Sir Ren Itchood
@@ -339,7 +345,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		// Testing steps below
 		cTestingGrounds.addStep(isInMissCheeversRoom, cMissCheevers);
 		cTestingGrounds.addStep(isInSirTinleysRoom, sirTinleyStep);
-		cTestingGrounds.addStep(isInMsHynnRoom, msHynnDialogQuiz);
+		cTestingGrounds.addStep(isInMsHynnRoom, msHynnTerprettStep);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
 		cTestingGrounds.addStep(isInladyTableRoom, ladyTableStep);
 		cTestingGrounds.addStep(isInSirSpishyusRoom, sirSpishyusStep);
@@ -436,10 +442,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 			leaveSirTinleyRoom
 		)));
 
-		var hynnSteps = new ArrayList<QuestStep>();
-		hynnSteps.add(talkToMsHynnTerprett);
-		hynnSteps.addAll(msHynnDialogQuiz.getPanelSteps());
-		sections.add(new PanelDetails("Ms Hynn Terprett", hynnSteps));
+		sections.add(new PanelDetails("Ms Hynn Terprett", List.of(
+			msHynnDialogQuiz,
+			leaveMsHynnTerprettRoom
+		)));
 
 		sections.add(new PanelDetails("Sir Kuam", List.of(
 			talkToSirKuam,

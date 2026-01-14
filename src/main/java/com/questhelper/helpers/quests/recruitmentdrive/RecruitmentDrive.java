@@ -116,6 +116,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	QuestStep moveChickenOnRightToLeftAgain;
 	QuestStep finishedSpishyusRoom;
 	ConditionalStep sirSpishyusStep;
+	PuzzleWrapperStep pwSirSpishyusStep;
 
 	// Sir Ren
 	SirRenItchoodStep sirRenStep;
@@ -260,30 +261,30 @@ public class RecruitmentDrive extends BasicQuestHelper
 			var chickenPickedUp = and(chickenNotOnRightSide, chickenNotOnLeftSide);
 			var grainPickedUp = and(grainNotOnLeftSide, grainNotOnRightSide);
 
-			moveChickenOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true));
+			moveChickenOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true)).puzzleWrapStep(true);
 			finishedSpishyusRoom = new ObjectStep(this, ObjectID.RD_ROOM1_EXITDOOR, "Leave through the portal to continue.");
 
-			moveFoxOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_FOX_MULTI, foxOnRightPoint, getSpishyusPickupText("Fox", true));
+			moveFoxOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_FOX_MULTI, foxOnRightPoint, getSpishyusPickupText("Fox", true)).puzzleWrapStep(true);
 
-			var moveChickenToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
+			var moveChickenToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false)).puzzleWrapStep(true);
 			moveChickenOnRightToLeft.addSubSteps(moveChickenToLeft);
 
-			var moveFoxToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Fox", false));
+			var moveFoxToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Fox", false)).puzzleWrapStep(true);
 			moveFoxOnRightToLeft.addSubSteps(moveFoxToLeft);
 
-			moveChickenOnLeftToRight = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI_RIGHT, chickenOnLeftPoint, getSpishyusPickupText("Chicken", false));
-			var moveChickenToRight = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", true));
+			moveChickenOnLeftToRight = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI_RIGHT, chickenOnLeftPoint, getSpishyusPickupText("Chicken", false)).puzzleWrapStep(true);
+			var moveChickenToRight = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", true)).puzzleWrapStep(true);
 			moveChickenOnLeftToRight.addSubSteps(moveChickenToRight);
 
-			moveGrainOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_GRAIN_MULTI, grainOnRightPoint, getSpishyusPickupText("Grain", true));
+			moveGrainOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_GRAIN_MULTI, grainOnRightPoint, getSpishyusPickupText("Grain", true)).puzzleWrapStep(true);
 			var moveGrainToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Grain", false));
 			moveGrainOnRightToLeft.addSubSteps(moveGrainToLeft);
 
-			moveChickenOnRightToLeftAgain = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true));
-			var moveChickenToLeftAgain = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
+			moveChickenOnRightToLeftAgain = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true)).puzzleWrapStep(true);
+			var moveChickenToLeftAgain = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false)).puzzleWrapStep(true);
 			moveChickenOnRightToLeftAgain.addSubSteps(moveChickenToLeftAgain);
 
-			sirSpishyusStep = new ConditionalStep(this, moveChickenOnRightToLeft);
+			sirSpishyusStep = new ConditionalStep(this, moveChickenOnRightToLeft, "Solve Sir Spishyus' riddle.");
 			sirSpishyusStep.addStep(finishedSpishyus, finishedSpishyusRoom);
 
 			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnRightSide, grainOnRightSide), moveChickenOnRightToLeft);
@@ -297,6 +298,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnLeftSide, grainPickedUp), moveGrainToLeft);
 			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide), moveChickenOnRightToLeftAgain);
 			sirSpishyusStep.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnLeftSide), moveChickenToLeftAgain);
+
+			pwSirSpishyusStep = sirSpishyusStep.puzzleWrapStepWithDefaultText("Solve Sir Spishyus' riddle.");
 		}
 
 		// Sir Kuam
@@ -339,7 +342,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTestingGrounds.addStep(isInMsHynnRoom, msHynnTerprettStep);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
 		cTestingGrounds.addStep(isInladyTableRoom, ladyTableStep);
-		cTestingGrounds.addStep(isInSirSpishyusRoom, sirSpishyusStep);
+		cTestingGrounds.addStep(isInSirSpishyusRoom, pwSirSpishyusStep);
 		cTestingGrounds.addStep(isInSirKuamsRoom, sirKuamStep);
 
 		steps.put(1, cTestingGrounds);
@@ -445,6 +448,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Sir Spishyus", List.of(
+			pwSirSpishyusStep,
 			moveChickenOnRightToLeft,
 			moveFoxOnRightToLeft,
 			moveChickenOnLeftToRight,

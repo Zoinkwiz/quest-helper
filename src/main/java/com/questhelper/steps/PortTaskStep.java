@@ -47,7 +47,7 @@ public class PortTaskStep extends ConditionalStep
 		Requirement onShip = new VarbitRequirement(VarbitID.SAILING_PLAYER_IS_ON_PLAYER_BOAT, 1);
 
 		Collection<Integer> cargoHoldIds = new HashSet<>();
-		for (int i = ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT_OPEN; i <= ObjectID.SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE_OPEN; i++)
+		for (int i = ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT; i <= ObjectID.SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE; i++)
 		{
 			cargoHoldIds.add(i);
 		}

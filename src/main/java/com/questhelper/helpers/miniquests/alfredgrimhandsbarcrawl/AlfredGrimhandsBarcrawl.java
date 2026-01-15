@@ -36,6 +36,7 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -55,7 +56,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	ItemRequirement coins208, coins50, coins10, coins70, coins8, coins7, coins15, coins18, coins12, barcrawlCard;
 
 	//Items Recommended
-	ItemRequirement gamesNecklace, varrockTeleport, faladorTeleport, glory, ardougneTeleport, camelotTeleport,
+	ItemRequirement gamesNecklace, varrockTeleport, lumberyardTeleport, faladorTeleport, glory, ardougneTeleport, camelotTeleport,
 		duelingRing;
 
 	Requirement notTalkedToGuard, notTalkedToBlueMoon, notTalkedToJollyBoar, notTalkedToRisingSun,
@@ -63,7 +64,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 		notTalkedToZambo, notTalkedToDeadMansChest, notTalkedToFlyingHorseInn, notTalkedToForestersArms, notTalkedToBlurberry,
 		notTalkedToDragonInn, inGrandTreeF1;
 
-	QuestStep talkToGuardToGetCard, talkToBlueMoon, talkToJollyBoar, talkToRisingSun, talkToRustyAnchor, talkToZambo,
+	DetailedQuestStep talkToGuardToGetCard, talkToBlueMoon, talkToJollyBoar, talkToRisingSun, talkToRustyAnchor, talkToZambo,
 		talkToDeadMansChest, talkToFlyingHorseInn, talkToForestersArms, goUpToBlurberry, talkToBlurberry,
 		talkToDragonInn, talkToGuardAgain;
 
@@ -110,6 +111,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
+		lumberyardTeleport = new ItemRequirement("Lumberyard teleport", ItemID.TELEPORTSCROLL_LUMBERYARD);
 		faladorTeleport = new ItemRequirement("Falador teleport", ItemID.POH_TABLET_FALADORTELEPORT);
 		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES).isNotConsumed();
 		ardougneTeleport = new ItemRequirement("Ardougne teleport", ItemID.POH_TABLET_ARDOUGNETELEPORT);
@@ -156,6 +158,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 		talkToJollyBoar = new NpcStep(this, NpcID.JOLLYBOAR_BARTENDER, new WorldPoint(3279, 3488, 0),
 			"Talk to the bartender in the Jolly Boar Inn north east of Varrock.", coins10);
+		talkToJollyBoar.addTeleport(lumberyardTeleport);
 		talkToJollyBoar.addDialogStep("I'm doing Alfred Grimhands Barcrawl.");
 
 		talkToRisingSun = new NpcStep(this, NpcID.RISINGSUN_BARMAID2, new WorldPoint(2956, 3370, 0),
@@ -201,7 +204,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return List.of(gamesNecklace, varrockTeleport, faladorTeleport, glory, ardougneTeleport,
+		return List.of(gamesNecklace, varrockTeleport, lumberyardTeleport, faladorTeleport, glory, ardougneTeleport,
 			camelotTeleport, duelingRing);
 	}
 

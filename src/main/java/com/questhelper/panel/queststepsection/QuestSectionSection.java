@@ -129,7 +129,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		stepsPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
 		// Dragging functionality
-		this.draggable = panelDetails.getPanelDetails().stream().anyMatch((pDetails -> pDetails.getId() != -1));
+		this.draggable = panelDetails.getPanelDetails().stream().anyMatch((pDetails -> pDetails.getId() != Integer.MIN_VALUE));
 		List<Integer> order = questHelperPlugin.loadSidebarOrder(questManager.getSelectedQuest());
 
 		List<PanelDetails> panelDetailsList = panelDetails.getPanelDetails();
@@ -480,7 +480,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 	public List<Integer> getIds()
 	{
 		List<Integer> allIds = new ArrayList<>();
-		if (panelDetails.getId() != -1) allIds.add(panelDetails.getId());
+		if (panelDetails.getId() != Integer.MIN_VALUE) allIds.add(panelDetails.getId());
 
 		allIds.addAll(subPanels.stream()
 			.map(AbstractQuestSection::getIds)

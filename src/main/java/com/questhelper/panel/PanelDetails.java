@@ -37,7 +37,7 @@ import java.util.*;
 public class PanelDetails
 {
 	@Getter
-	int id = -1;
+	int id = Integer.MIN_VALUE;
 
 	@Getter
 	String header;

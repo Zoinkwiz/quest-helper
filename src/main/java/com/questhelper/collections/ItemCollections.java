@@ -221,6 +221,44 @@ public enum ItemCollections
 		ItemID.CROSSBOW
 	)),
 
+	DARTS("Darts", ImmutableList.of(
+		ItemID.DRAGON_DART,
+		ItemID.RUNE_DART,
+		ItemID.AMETHYST_DART,
+		ItemID.ADAMANT_DART,
+		ItemID.MITHRIL_DART,
+		ItemID.STEEL_DART,
+		ItemID.BLACK_DART,
+		ItemID.IRON_DART,
+		ItemID.BRONZE_DART
+	)),
+
+	THROWING_KNIVES("Throwing Knives", ImmutableList.of(
+		ItemID.DRAGON_KNIFE,
+		ItemID.RUNE_KNIFE,
+		ItemID.ADAMANT_KNIFE,
+		ItemID.MITHRIL_KNIFE,
+		ItemID.STEEL_KNIFE,
+		ItemID.BLACK_KNIFE,
+		ItemID.IRON_KNIFE,
+		ItemID.BRONZE_KNIFE
+	)),
+
+	THROWNAXES("Thrownaxes", ImmutableList.of(
+		ItemID.DRAGON_THROWNAXE,
+		ItemID.RUNE_THROWNAXE,
+		ItemID.ADAMANT_THROWNAXE,
+		ItemID.MITHRIL_THROWNAXE,
+		ItemID.STEEL_THROWNAXE,
+		ItemID.IRON_THROWNAXE,
+		ItemID.BRONZE_THROWNAXE
+	)),
+
+	OTHER_THROWABLE("Other Throwable", ImmutableList.of(
+		ItemID.TZHAAR_THROWINGRING,
+		ItemID.TOXIC_BLOWPIPE
+	)),
+
 	SWORDS("Swords", ImmutableList.of(
 		ItemID.AIDE_SHORTSWORD,
 		ItemID.BRONZE_SWORD,

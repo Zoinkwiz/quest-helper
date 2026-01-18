@@ -103,8 +103,8 @@ public class TreeRun extends ComplexStateQuestHelper
 	DetailedQuestStep lumbridgeTreePatchDig, faladorTreePatchDig, taverleyTreePatchDig, varrockTreePatchDig,
 		gnomeStrongholdTreePatchDig, farmingGuildTreePatchDig, auburnvaleTreePatchDig;
 
-	DetailedQuestStep farmingGuildTreePayForProtection, lumbridgeTreeProtect,
-		faladorTreeProtect, taverleyTreeProtect, varrockTreeProtect, strongholdTreeProtect,
+	DetailedQuestStep farmingGuildTreeProtect, lumbridgeTreeProtect,
+		faladorTreeProtect, taverleyTreeProtect, varrockTreeProtect, gnomeStrongholdTreeProtect,
 		auburnvaleTreeProtect;
 
 	// Fruit Trees
@@ -125,7 +125,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		brimhavenFruitTreePatchDig, lletyaFruitTreePatchDig, catherbyFruitTreePatchDig,
 		taiBwoWannaiCalquatPatchDig, kastoriFruitTreePatchDig, kastoriCalquatPatchDig, greatConchCalquatPatchDig;
 
-	DetailedQuestStep guildFruitProtect, strongholdFruitProtect, villageFruitProtect, brimhavenFruitProtect,
+	DetailedQuestStep farmingGuildFruitProtect, gnomeStrongholdFruitProtect, gnomeVillageFruitProtect, brimhavenFruitProtect,
 		lletyaFruitProtect, catherbyFruitProtect, taiBwoWannaiCalquatProtect, kastoriFruitProtect,
 		kastoriCalquatProtect, greatConchCalquatProtect;
 
@@ -177,7 +177,6 @@ public class TreeRun extends ComplexStateQuestHelper
 
 	Requirement allGrowing;
 
-	ReorderableConditionalStep farmingGuildStep, strongholdStep, karamjaStep, fossilIslandStep, kastoriStep;
 	ConditionalStep farmingGuildTreeStep, farmingGuildFruitStep, lumbridgeStep, varrockStep, faladorStep, taverleyStep,
 		strongholdTreeStep,	strongholdFruitStep, villageStep, lletyaStep, catherbyStep, brimhavenStep,
 		taiBwoWannaiStep, fossilIslandEastStep, fossilIslandMiddleStep, fossilIslandWestStep, savannahStep,
@@ -201,22 +200,21 @@ public class TreeRun extends ComplexStateQuestHelper
 		// Varrock -> Gnome Stronghold Fruit -> Gnome Stronghold Tree -> Gnome Village -> catherby
 		// -> Brimhaven -> lletya -> east hardwood -> middle hardwood -> west hardwood.
 
-		farmingGuildTreeStep = (ConditionalStep) new ConditionalStep(this, farmingGuildTreePatchCheckHealth).withId(-1);
+		farmingGuildTreeStep = new ConditionalStep(this, farmingGuildTreePatchCheckHealth);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsUnchecked(), farmingGuildTreePatchCheckHealth);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsHarvestable(), farmingGuildTreePatchClear);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsStump(), farmingGuildTreePatchDig);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsEmpty(), farmingGuildTreePatchPlant);
-		farmingGuildTreeStep.addStep(nor(farmingGuildTreeStates.getIsProtected(), usingCompostorNothing), farmingGuildTreePayForProtection);
-		farmingGuildStep = new ReorderableConditionalStep(this, farmingGuildTreeStep);
+		farmingGuildTreeStep.addStep(nor(farmingGuildTreeStates.getIsProtected(), usingCompostorNothing), farmingGuildTreeProtect);
+		steps.addStep(and(accessToFarmingGuildTreePatch, not(farmingGuildTreeStates.getIsGrowing())), farmingGuildTreeStep.withId(1));
 
-		farmingGuildFruitStep = (ConditionalStep) new ConditionalStep(this, farmingGuildFruitTreePatchCheckHealth).withId(-2);
+		farmingGuildFruitStep = new ConditionalStep(this, farmingGuildFruitTreePatchCheckHealth);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsUnchecked()), farmingGuildFruitTreePatchCheckHealth);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsHarvestable()), farmingGuildFruitTreePatchClear);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsStump()), farmingGuildFruitTreePatchDig);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsEmpty()), farmingGuildFruitTreePatchPlant);
-		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, nor(farmingGuildFruitStates.getIsProtected(), usingCompostorNothing)), guildFruitProtect);
-		farmingGuildStep.addStep(and(accessToFarmingGuildFruitTreePatch, not(farmingGuildFruitStates.getIsGrowing())), farmingGuildFruitStep);
-		steps.addStep(or(and(accessToFarmingGuildTreePatch, not(farmingGuildTreeStates.getIsGrowing())), and(accessToFarmingGuildFruitTreePatch, not(farmingGuildFruitStates.getIsGrowing()))), farmingGuildStep.withId(0));
+		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, nor(farmingGuildFruitStates.getIsProtected(), usingCompostorNothing)), farmingGuildFruitProtect);
+		steps.addStep(and(accessToFarmingGuildFruitTreePatch, not(farmingGuildFruitStates.getIsGrowing())), farmingGuildFruitStep.withId(2));
 
 		lumbridgeStep = new ConditionalStep(this, lumbridgeTreePatchCheckHealth);
 		lumbridgeStep.addStep(lumbridgeStates.getIsUnchecked(), lumbridgeTreePatchCheckHealth);
@@ -224,7 +222,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		lumbridgeStep.addStep(lumbridgeStates.getIsHarvestable(), lumbridgeTreePatchClear);
 		lumbridgeStep.addStep(lumbridgeStates.getIsStump(), lumbridgeTreePatchDig);
 		lumbridgeStep.addStep(nor(usingCompostorNothing, lumbridgeStates.getIsProtected()), lumbridgeTreeProtect);
-		steps.addStep(not(lumbridgeStates.getIsGrowing()), lumbridgeStep.withId(1));
+		steps.addStep(not(lumbridgeStates.getIsGrowing()), lumbridgeStep.withId(3));
 
 		faladorStep = new ConditionalStep(this, faladorTreePatchCheckHealth);
 		faladorStep.addStep(faladorStates.getIsUnchecked(), faladorTreePatchCheckHealth);
@@ -232,7 +230,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		faladorStep.addStep(faladorStates.getIsHarvestable(), faladorTreePatchClear);
 		faladorStep.addStep(faladorStates.getIsStump(), faladorTreePatchDig);
 		faladorStep.addStep(nor(usingCompostorNothing, faladorStates.getIsProtected()), faladorTreeProtect);
-		steps.addStep(not(faladorStates.getIsGrowing()), faladorStep.withId(2));
+		steps.addStep(not(faladorStates.getIsGrowing()), faladorStep.withId(4));
 
 		taverleyStep = new ConditionalStep(this, taverleyTreePatchCheckHealth);
 		taverleyStep.addStep(taverleyStates.getIsUnchecked(), taverleyTreePatchCheckHealth);
@@ -240,7 +238,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		taverleyStep.addStep(taverleyStates.getIsHarvestable(), taverleyTreePatchClear);
 		taverleyStep.addStep(taverleyStates.getIsStump(), taverleyTreePatchDig);
 		taverleyStep.addStep(nor(usingCompostorNothing, taverleyStates.getIsProtected()), taverleyTreeProtect);
-		steps.addStep(not(taverleyStates.getIsGrowing()), taverleyStep.withId(3));
+		steps.addStep(not(taverleyStates.getIsGrowing()), taverleyStep.withId(5));
 
 		varrockStep = new ConditionalStep(this, varrockTreePatchCheckHealth);
 		varrockStep.addStep(varrockStates.getIsUnchecked(), varrockTreePatchCheckHealth);
@@ -248,32 +246,31 @@ public class TreeRun extends ComplexStateQuestHelper
 		varrockStep.addStep(varrockStates.getIsHarvestable(), varrockTreePatchClear);
 		varrockStep.addStep(varrockStates.getIsStump(), varrockTreePatchDig);
 		varrockStep.addStep(nor(usingCompostorNothing, varrockStates.getIsProtected()), varrockTreeProtect);
-		steps.addStep(not(varrockStates.getIsGrowing()), varrockStep.withId(4));
+		steps.addStep(not(varrockStates.getIsGrowing()), varrockStep.withId(6));
 
-		strongholdFruitStep = (ConditionalStep) new ConditionalStep(this, gnomeStrongholdFruitTreePatchCheckHealth).withId(51);
+		strongholdFruitStep = new ConditionalStep(this, gnomeStrongholdFruitTreePatchCheckHealth);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsUnchecked(), gnomeStrongholdFruitTreePatchCheckHealth);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsEmpty(), gnomeStrongholdFruitTreePatchPlant);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsHarvestable(), gnomeStrongholdFruitTreePatchClear);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsStump(), gnomeStrongholdFruitTreePatchDig);
-		strongholdFruitStep.addStep(nor(usingCompostorNothing, gnomeStrongholdFruitStates.getIsProtected()), strongholdFruitProtect);
-		strongholdStep = new ReorderableConditionalStep(this, strongholdFruitStep, not(gnomeStrongholdFruitStates.getIsGrowing()));
+		strongholdFruitStep.addStep(nor(usingCompostorNothing, gnomeStrongholdFruitStates.getIsProtected()), gnomeStrongholdFruitProtect);
+		steps.addStep(not(gnomeStrongholdFruitStates.getIsGrowing()), strongholdFruitStep.withId(7));
 
-		strongholdTreeStep = (ConditionalStep) new ConditionalStep(this, gnomeStrongholdTreePatchCheckHealth).withId(52);
+		strongholdTreeStep = new ConditionalStep(this, gnomeStrongholdTreePatchCheckHealth);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsUnchecked(), gnomeStrongholdTreePatchCheckHealth);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsEmpty(), gnomeStrongholdTreePatchPlant);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsHarvestable(), gnomeStrongholdTreePatchClear);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsStump(), gnomeStrongholdTreePatchDig);
-		strongholdTreeStep.addStep(nor(usingCompostorNothing, gnomeStrongholdTreeStates.getIsProtected()), strongholdTreeProtect);
-		strongholdStep.addStep(not(gnomeStrongholdTreeStates.getIsGrowing()), strongholdTreeStep);
-		steps.addStep(nand(gnomeStrongholdFruitStates.getIsGrowing(), gnomeStrongholdTreeStates.getIsGrowing()), strongholdStep.withId(5));
+		strongholdTreeStep.addStep(nor(usingCompostorNothing, gnomeStrongholdTreeStates.getIsProtected()), gnomeStrongholdTreeProtect);
+		steps.addStep(not(gnomeStrongholdTreeStates.getIsGrowing()), strongholdTreeStep.withId(8));
 
 		villageStep = new ConditionalStep(this, gnomeVillageFruitTreePatchCheckHealth);
 		villageStep.addStep(gnomeVillageStates.getIsUnchecked(), gnomeVillageFruitTreePatchCheckHealth);
 		villageStep.addStep(gnomeVillageStates.getIsEmpty(), gnomeVillageFruitTreePatchPlant);
 		villageStep.addStep(gnomeVillageStates.getIsHarvestable(), gnomeVillageFruitTreePatchClear);
 		villageStep.addStep(gnomeVillageStates.getIsStump(), gnomeVillageFruitTreePatchDig);
-		villageStep.addStep(nor(usingCompostorNothing, gnomeVillageStates.getIsProtected()), villageFruitProtect);
-		steps.addStep(not(gnomeVillageStates.getIsGrowing()), villageStep.withId(6));
+		villageStep.addStep(nor(usingCompostorNothing, gnomeVillageStates.getIsProtected()), gnomeVillageFruitProtect);
+		steps.addStep(not(gnomeVillageStates.getIsGrowing()), villageStep.withId(9));
 
 		catherbyStep = new ConditionalStep(this, catherbyFruitTreePatchCheckHealth);
 		catherbyStep.addStep(catherbyStates.getIsUnchecked(), catherbyFruitTreePatchCheckHealth);
@@ -281,25 +278,24 @@ public class TreeRun extends ComplexStateQuestHelper
 		catherbyStep.addStep(catherbyStates.getIsHarvestable(), catherbyFruitTreePatchClear);
 		catherbyStep.addStep(catherbyStates.getIsStump(), catherbyFruitTreePatchDig);
 		catherbyStep.addStep(nor(usingCompostorNothing, catherbyStates.getIsProtected()), catherbyFruitProtect);
-		steps.addStep(not(catherbyStates.getIsGrowing()), catherbyStep.withId(7));
+		steps.addStep(not(catherbyStates.getIsGrowing()), catherbyStep.withId(10));
 
-		brimhavenStep = (ConditionalStep) new ConditionalStep(this, brimhavenFruitTreePatchCheckHealth).withId(81);
+		brimhavenStep = new ConditionalStep(this, brimhavenFruitTreePatchCheckHealth, not(brimhavenStates.getIsGrowing()));
 		brimhavenStep.addStep(brimhavenStates.getIsUnchecked(), brimhavenFruitTreePatchCheckHealth);
 		brimhavenStep.addStep(brimhavenStates.getIsEmpty(), brimhavenFruitTreePatchPlant);
 		brimhavenStep.addStep(brimhavenStates.getIsHarvestable(), brimhavenFruitTreePatchClear);
 		brimhavenStep.addStep(brimhavenStates.getIsStump(), brimhavenFruitTreePatchDig);
 		brimhavenStep.addStep(nor(usingCompostorNothing, brimhavenStates.getIsProtected()), brimhavenFruitProtect);
-		karamjaStep = new ReorderableConditionalStep(this, brimhavenStep, not(brimhavenStates.getIsGrowing()));
+		steps.addStep(not(brimhavenStates.getIsGrowing()), brimhavenStep.withId(11));
 
-		taiBwoWannaiStep = (ConditionalStep) new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth).withId(82);
+		taiBwoWannaiStep = new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsUnchecked(), taiBwoWannaiCalquatPatchCheckHealth);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsEmpty(), taiBwoWannaiCalquatPatchPlant);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsHarvestable(), taiBwoWannaiCalquatPatchClear);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsStump(), taiBwoWannaiCalquatPatchDig);
 		taiBwoWannaiStep.addStep(nor(usingCompostorNothing, taiBwoWannaiStates.getIsProtected()),
 			taiBwoWannaiCalquatProtect);
-		karamjaStep.addStep(not(taiBwoWannaiStates.getIsGrowing()), taiBwoWannaiStep);
-		steps.addStep(nand(brimhavenStates.getIsGrowing(), taiBwoWannaiStates.getIsGrowing()), karamjaStep.withId(8));
+		steps.addStep(not(taiBwoWannaiStates.getIsGrowing()), taiBwoWannaiStep.withId(12));
 
 		lletyaStep = new ConditionalStep(this, lletyaFruitTreePatchCheckHealth);
 		lletyaStep.addStep(lletyaStates.getIsUnchecked(), lletyaFruitTreePatchCheckHealth);
@@ -307,32 +303,31 @@ public class TreeRun extends ComplexStateQuestHelper
 		lletyaStep.addStep(lletyaStates.getIsHarvestable(), lletyaFruitTreePatchClear);
 		lletyaStep.addStep(lletyaStates.getIsStump(), lletyaFruitTreePatchDig);
 		lletyaStep.addStep(nor(usingCompostorNothing, lletyaStates.getIsProtected()), lletyaFruitProtect);
-		steps.addStep(and(accessToLletya, not(lletyaStates.getIsGrowing())), lletyaStep.withId(9));
+		steps.addStep(and(accessToLletya, not(lletyaStates.getIsGrowing())), lletyaStep.withId(13));
 
-		fossilIslandEastStep = (ConditionalStep) new ConditionalStep(this, eastHardwoodTreePatchCheckHealth).withId(101);
+		fossilIslandEastStep = new ConditionalStep(this, eastHardwoodTreePatchCheckHealth);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsUnchecked(), eastHardwoodTreePatchCheckHealth);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsEmpty(), eastHardwoodTreePatchPlant);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsHarvestable(), eastHardwoodTreePatchClear);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsStump(), eastHardwoodTreePatchDig);
 		fossilIslandEastStep.addStep(nor(usingCompostorNothing,  eastHardwoodStates.getIsProtected()), eastHardwoodProtect);
-		fossilIslandStep = new ReorderableConditionalStep(this, fossilIslandEastStep, and(accessToFossilIsland, not(eastHardwoodStates.getIsGrowing())));
+		steps.addStep(and(accessToFossilIsland, not(eastHardwoodStates.getIsGrowing())), fossilIslandEastStep.withId(14));
 
-		fossilIslandMiddleStep = (ConditionalStep) new ConditionalStep(this, middleHardwoodTreePatchCheckHealth).withId(102);
+		fossilIslandMiddleStep = new ConditionalStep(this, middleHardwoodTreePatchCheckHealth);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsUnchecked(), middleHardwoodTreePatchCheckHealth);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsEmpty(), middleHardwoodTreePatchPlant);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsHarvestable(), middleHardwoodTreePatchClear);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsStump(), middleHardwoodTreePatchDig);
 		fossilIslandMiddleStep.addStep(nor(usingCompostorNothing, middleHardwoodStates.getIsProtected()), middleHardwoodProtect);
-		fossilIslandStep.addStep(and(accessToFossilIsland, not(middleHardwoodStates.getIsGrowing())), fossilIslandMiddleStep);
+		steps.addStep(and(accessToFossilIsland, not(middleHardwoodStates.getIsGrowing())), fossilIslandMiddleStep.withId(15));
 
-		fossilIslandWestStep = (ConditionalStep) new ConditionalStep(this, westHardwoodTreePatchCheckHealth).withId(103);
+		fossilIslandWestStep = new ConditionalStep(this, westHardwoodTreePatchCheckHealth);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsUnchecked(), westHardwoodTreePatchCheckHealth);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsEmpty(), westHardwoodTreePatchPlant);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsHarvestable(), westHardwoodTreePatchClear);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsStump(), westHardwoodTreePatchDig);
 		fossilIslandWestStep.addStep(nor(usingCompostorNothing, westHardwoodStates.getIsProtected()), westHardwoodProtect);
-		fossilIslandStep.addStep(and(accessToFossilIsland, not(westHardwoodStates.getIsGrowing())), fossilIslandWestStep);
-		steps.addStep(nand(eastHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing(), westHardwoodStates.getIsGrowing()), fossilIslandStep.withId(10));
+		steps.addStep(and(accessToFossilIsland, not(westHardwoodStates.getIsGrowing())), fossilIslandWestStep.withId(16));
 
 		savannahStep = new ConditionalStep(this, savannahCheckHealth);
 		savannahStep.addStep(savannahStates.getIsUnchecked(), savannahCheckHealth);
@@ -340,7 +335,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		savannahStep.addStep(savannahStates.getIsHarvestable(), savannahClear);
 		savannahStep.addStep(savannahStates.getIsStump(), savannahDig);
 		savannahStep.addStep(nor(usingCompostorNothing, savannahStates.getIsProtected()), savannahProtect);
-		steps.addStep(and(accessToSavannah, not(savannahStates.getIsGrowing())), savannahStep.withId(11));
+		steps.addStep(and(accessToSavannah, not(savannahStates.getIsGrowing())), savannahStep.withId(17));
 
 		auburnvaleStep = new ConditionalStep(this, auburnvaleTreePatchCheckHealth);
 		auburnvaleStep.addStep(auburnvaleStates.getIsUnchecked(), auburnvaleTreePatchCheckHealth);
@@ -348,24 +343,23 @@ public class TreeRun extends ComplexStateQuestHelper
 		auburnvaleStep.addStep(auburnvaleStates.getIsHarvestable(), auburnvaleTreePatchClear);
 		auburnvaleStep.addStep(auburnvaleStates.getIsStump(), auburnvaleTreePatchDig);
 		auburnvaleStep.addStep(nor(usingCompostorNothing, auburnvaleStates.getIsProtected()), auburnvaleTreeProtect);
-		steps.addStep(and(accessToVarlamore, not(auburnvaleStates.getIsGrowing())), auburnvaleStep.withId(12));
+		steps.addStep(and(accessToVarlamore, not(auburnvaleStates.getIsGrowing())), auburnvaleStep.withId(18));
 
-		kastoriFruitStep = (ConditionalStep) new ConditionalStep(this, kastoriFruitTreePatchCheckHealth).withId(131);
+		kastoriFruitStep = new ConditionalStep(this, kastoriFruitTreePatchCheckHealth);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsUnchecked(), kastoriFruitTreePatchCheckHealth);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsEmpty(), kastoriFruitTreePatchPlant);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsHarvestable(), kastoriFruitTreePatchClear);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsStump(), kastoriFruitTreePatchDig);
 		kastoriFruitStep.addStep(nor(usingCompostorNothing, kastoriFruitStates.getIsProtected()), kastoriFruitProtect);
-		kastoriStep = new ReorderableConditionalStep(this, kastoriFruitStep, and(accessToVarlamore, not(kastoriFruitStates.getIsGrowing())));
+		steps.addStep(and(accessToVarlamore, not(kastoriFruitStates.getIsGrowing())), kastoriFruitStep.withId(19));
 
-		kastoriCalquatStep = (ConditionalStep) new ConditionalStep(this, kastoriCalquatPatchCheckHealth).withId(132);
+		kastoriCalquatStep = new ConditionalStep(this, kastoriCalquatPatchCheckHealth);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsUnchecked(), kastoriCalquatPatchCheckHealth);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsEmpty(), kastoriCalquatPatchPlant);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsHarvestable(), kastoriCalquatPatchClear);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsStump(), kastoriCalquatPatchDig);
 		kastoriCalquatStep.addStep(nor(usingCompostorNothing, kastoriCalquatStates.getIsProtected()), kastoriCalquatProtect);
-		kastoriStep.addStep(and(accessToVarlamore, not(kastoriCalquatStates.getIsGrowing())), kastoriCalquatStep);
-		steps.addStep(and(accessToVarlamore, nand(kastoriFruitStates.getIsGrowing(), kastoriCalquatStates.getIsGrowing())), kastoriStep.withId(13));
+		steps.addStep(and(accessToVarlamore, not(kastoriCalquatStates.getIsGrowing())), kastoriCalquatStep.withId(20));
 
 		anglersRetreatStep = new ConditionalStep(this, anglersCheckHealth);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsUnchecked(), anglersCheckHealth);
@@ -373,7 +367,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsHarvestable(), anglersClear);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsStump(), anglersDig);
 		anglersRetreatStep.addStep(nor(usingCompostorNothing, anglersRetreatStates.getIsProtected()), anglersProtect);
-		steps.addStep(and(accessToAnglersRetreat, not(anglersRetreatStates.getIsGrowing())), anglersRetreatStep.withId(14));
+		steps.addStep(and(accessToAnglersRetreat, not(anglersRetreatStates.getIsGrowing())), anglersRetreatStep.withId(21));
 
 		greatConchStep = new ConditionalStep(this, greatConchCalquatPatchCheckHealth);
 		greatConchStep.addStep(greatConchStates.getIsUnchecked(), greatConchCalquatPatchCheckHealth);
@@ -381,7 +375,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		greatConchStep.addStep(greatConchStates.getIsHarvestable(), greatConchCalquatPatchClear);
 		greatConchStep.addStep(greatConchStates.getIsStump(), greatConchCalquatPatchDig);
 		greatConchStep.addStep(nor(usingCompostorNothing, greatConchStates.getIsProtected()), greatConchCalquatProtect);
-		steps.addStep(and(accessToGreatConch, not(greatConchStates.getIsGrowing())), greatConchStep.withId(15));
+		steps.addStep(and(accessToGreatConch, not(greatConchStates.getIsGrowing())), greatConchStep.withId(22));
 
 		return steps;
 	}
@@ -623,13 +617,13 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Speak to Treznor to protect the patch.");
 		varrockTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		strongholdTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2436, 3415, 0),
+		gnomeStrongholdTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to protect the patch.");
-		strongholdTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		gnomeStrongholdTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		farmingGuildTreePayForProtection = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T2, new WorldPoint(1232, 3736, 0),
+		farmingGuildTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T2, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to protect the patch.");
-		farmingGuildTreePayForProtection.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		farmingGuildTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		auburnvaleTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
 			"Speak to Aub to protect the patch.");
@@ -720,9 +714,9 @@ public class TreeRun extends ComplexStateQuestHelper
 		faladorTreePatchClear.addSubSteps(faladorTreePatchDig, faladorTreeProtect);
 		taverleyTreePatchClear.addSubSteps(taverleyTreePatchDig, taverleyTreeProtect);
 		varrockTreePatchClear.addSubSteps(varrockTreePatchDig, varrockTreeProtect);
-		gnomeStrongholdTreePatchClear.addSubSteps(gnomeStrongholdTreePatchDig, strongholdTreeProtect);
+		gnomeStrongholdTreePatchClear.addSubSteps(gnomeStrongholdTreePatchDig, gnomeStrongholdTreeProtect);
 		lumbridgeTreePatchClear.addSubSteps(lumbridgeTreePatchDig, lumbridgeTreeProtect);
-		farmingGuildTreePatchClear.addSubSteps(farmingGuildTreePatchDig, farmingGuildTreePayForProtection);
+		farmingGuildTreePatchClear.addSubSteps(farmingGuildTreePatchDig, farmingGuildTreeProtect);
 		auburnvaleTreePatchClear.addSubSteps(auburnvaleTreePatchDig, auburnvaleTreeProtect);
 
 		// Fruit Tree Steps
@@ -871,12 +865,12 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Pay Guppa 200 coins to clear the calquat tree, or pick all the fruit and cut it down.");
 		greatConchCalquatPatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
-		strongholdFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
+		gnomeStrongholdFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo to protect the patch.");
-		strongholdFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
-		villageFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_2, new WorldPoint(2490, 3180, 0),
+		gnomeStrongholdFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		gnomeVillageFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_2, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth to protect the patch.");
-		villageFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		gnomeVillageFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		brimhavenFruitProtect = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth to protect the patch.");
 		brimhavenFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
@@ -887,9 +881,9 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Pay Liliwen to protect the patch.");
 		lletyaFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
 				"chop my tree down please.", "Yes.");
-		guildFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T3, new WorldPoint(1243, 3760, 0),
+		farmingGuildFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T3, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie to protect the patch.");
-		guildFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
+		farmingGuildFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
 				"chop my tree down please.", "Yes.");
 		kastoriFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_7, new WorldPoint(1350, 3057, 0),
 			"Pay Ehecatl to protect the patch.");
@@ -926,12 +920,12 @@ public class TreeRun extends ComplexStateQuestHelper
 		greatConchCalquatPatchDig = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
 			"Dig up the calquat tree's stump in Great Conch.");
 
-		gnomeStrongholdFruitTreePatchClear.addSubSteps(gnomeStrongholdFruitTreePatchDig, strongholdFruitProtect);
-		gnomeVillageFruitTreePatchClear.addSubSteps(gnomeVillageFruitTreePatchDig, villageFruitProtect);
+		gnomeStrongholdFruitTreePatchClear.addSubSteps(gnomeStrongholdFruitTreePatchDig, gnomeStrongholdFruitProtect);
+		gnomeVillageFruitTreePatchClear.addSubSteps(gnomeVillageFruitTreePatchDig, gnomeVillageFruitProtect);
 		brimhavenFruitTreePatchClear.addSubSteps(brimhavenFruitTreePatchDig, brimhavenFruitProtect);
 		catherbyFruitTreePatchClear.addSubSteps(catherbyFruitTreePatchDig, catherbyFruitProtect);
 		lletyaFruitTreePatchClear.addSubSteps(lletyaFruitTreePatchDig, lletyaFruitProtect);
-		farmingGuildFruitTreePatchClear.addSubSteps(farmingGuildFruitTreePatchDig, guildFruitProtect);
+		farmingGuildFruitTreePatchClear.addSubSteps(farmingGuildFruitTreePatchDig, farmingGuildFruitProtect);
 		kastoriFruitTreePatchClear.addSubSteps(kastoriFruitTreePatchDig, kastoriFruitProtect);
 		taiBwoWannaiCalquatPatchClear.addSubSteps(taiBwoWannaiCalquatPatchDig, taiBwoWannaiCalquatProtect);
 		kastoriCalquatPatchClear.addSubSteps(kastoriCalquatPatchDig, kastoriCalquatProtect);
@@ -1156,96 +1150,86 @@ public class TreeRun extends ComplexStateQuestHelper
 		
 		allSteps.add(new PanelDetails("Wait for Trees", waitForTree).withHideCondition(nor(allGrowing)));
 
-		PanelDetails farmingGuildTreePanel = new PanelDetails("Tree Patch",
-			Arrays.asList(farmingGuildTreePatchCheckHealth, farmingGuildTreePatchClear, farmingGuildTreePatchPlant)).withId(-1);
+		PanelDetails farmingGuildTreePanel = new PanelDetails("Farming Guild Tree Patch",
+			Arrays.asList(farmingGuildTreePatchCheckHealth, farmingGuildTreePatchClear, farmingGuildTreePatchPlant, farmingGuildTreeProtect)).withId(1);
 		farmingGuildTreePanel.setLockingStep(farmingGuildTreeStep);
-		PanelDetails farmingGuildFruitPanel = new PanelDetails("Fruit Tree Patch",
-			Arrays.asList(farmingGuildFruitTreePatchCheckHealth, farmingGuildFruitTreePatchClear, farmingGuildFruitTreePatchPlant)).withId(-2);
+		PanelDetails farmingGuildFruitPanel = new PanelDetails("Farming Guild Fruit Tree Patch",
+			Arrays.asList(farmingGuildFruitTreePatchCheckHealth, farmingGuildFruitTreePatchClear, farmingGuildFruitTreePatchPlant, farmingGuildFruitProtect)).withId(2);
 		farmingGuildFruitPanel.setLockingStep((farmingGuildFruitStep));
-		var farmingGuildPanel = new TopLevelPanelDetails("Farming Guild",
-			farmingGuildTreePanel, farmingGuildFruitPanel).withId(0);
-		farmingGuildPanel.setLockingStep(farmingGuildStep);
 
-		PanelDetails lumbridgePanel = new PanelDetails("Lumbridge", Arrays.asList(lumbridgeTreePatchCheckHealth, lumbridgeTreePatchClear, lumbridgeTreePatchPlant)).withId(1);
+		PanelDetails lumbridgePanel = new PanelDetails("Lumbridge", Arrays.asList(lumbridgeTreePatchCheckHealth, lumbridgeTreePatchClear, lumbridgeTreePatchPlant, lumbridgeTreeProtect)).withId(3);
 		lumbridgePanel.setLockingStep(lumbridgeStep);
 
-		PanelDetails faladorPanel = new PanelDetails("Falador", Arrays.asList(faladorTreePatchCheckHealth, faladorTreePatchClear, faladorTreePatchPlant)).withId(2);
+		PanelDetails faladorPanel = new PanelDetails("Falador", Arrays.asList(faladorTreePatchCheckHealth, faladorTreePatchClear, faladorTreePatchPlant, faladorTreeProtect)).withId(4);
 		faladorPanel.setLockingStep(faladorStep);
 
-		PanelDetails taverleyPanel = new PanelDetails("Taverley", Arrays.asList(taverleyTreePatchCheckHealth, taverleyTreePatchClear, taverleyTreePatchPlant)).withId(3);
+		PanelDetails taverleyPanel = new PanelDetails("Taverley", Arrays.asList(taverleyTreePatchCheckHealth, taverleyTreePatchClear, taverleyTreePatchPlant, taverleyTreeProtect)).withId(5);
 		taverleyPanel.setLockingStep(taverleyStep);
 
-		PanelDetails varrockPanel = new PanelDetails("Varrock", Arrays.asList(varrockTreePatchCheckHealth, varrockTreePatchClear, varrockTreePatchPlant)).withId(4);
+		PanelDetails varrockPanel = new PanelDetails("Varrock", Arrays.asList(varrockTreePatchCheckHealth, varrockTreePatchClear, varrockTreePatchPlant, varrockTreeProtect)).withId(6);
 		varrockPanel.setLockingStep(varrockStep);
 
-		PanelDetails gnomeStrongholdFruitPanel = new PanelDetails("Fruit Tree Patch",
-			Arrays.asList(gnomeStrongholdFruitTreePatchCheckHealth, gnomeStrongholdFruitTreePatchClear, gnomeStrongholdFruitTreePatchPlant)).withId(51);
+		PanelDetails gnomeStrongholdFruitPanel = new PanelDetails("Gnome Stronghold Fruit Tree Patch",
+			Arrays.asList(gnomeStrongholdFruitTreePatchCheckHealth, gnomeStrongholdFruitTreePatchClear, gnomeStrongholdFruitTreePatchPlant, gnomeStrongholdFruitProtect)).withId(7);
 		gnomeStrongholdFruitPanel.setLockingStep(strongholdFruitStep);
-		PanelDetails gnomeStrongholdTreePanel = new PanelDetails("Tree Patch",
-			Arrays.asList(gnomeStrongholdTreePatchCheckHealth, gnomeStrongholdTreePatchClear, gnomeStrongholdTreePatchPlant)).withId(52);
+		PanelDetails gnomeStrongholdTreePanel = new PanelDetails("Gnome Stronghold Tree Patch",
+			Arrays.asList(gnomeStrongholdTreePatchCheckHealth, gnomeStrongholdTreePatchClear, gnomeStrongholdTreePatchPlant, gnomeStrongholdTreeProtect)).withId(8);
 		gnomeStrongholdTreePanel.setLockingStep(strongholdTreeStep);
-		var gnomeStrongholdPanel = new TopLevelPanelDetails("Gnome Stronghold",
-			gnomeStrongholdFruitPanel, gnomeStrongholdTreePanel).withId(5);
-		gnomeStrongholdPanel.setLockingStep(strongholdStep);
 
 		PanelDetails villagePanel = new PanelDetails("Tree Gnome Village", Arrays.asList(gnomeVillageFruitTreePatchCheckHealth,
-				gnomeVillageFruitTreePatchClear, gnomeVillageFruitTreePatchPlant)).withId(6);
+				gnomeVillageFruitTreePatchClear, gnomeVillageFruitTreePatchPlant, gnomeVillageFruitProtect)).withId(9);
 		villagePanel.setLockingStep(villageStep);
 
-		PanelDetails catherbyPanel = new PanelDetails("Catherby", Arrays.asList(catherbyFruitTreePatchCheckHealth, catherbyFruitTreePatchClear, catherbyFruitTreePatchPlant)).withId(7);
+		PanelDetails catherbyPanel = new PanelDetails("Catherby", Arrays.asList(catherbyFruitTreePatchCheckHealth, catherbyFruitTreePatchClear, catherbyFruitTreePatchPlant, catherbyFruitProtect)).withId(10);
 		catherbyPanel.setLockingStep(catherbyStep);
 
-		PanelDetails brimhavenPanel = new PanelDetails("Brimhaven", Arrays.asList(brimhavenFruitTreePatchCheckHealth, brimhavenFruitTreePatchClear, brimhavenFruitTreePatchPlant)).withId(81);
+		PanelDetails brimhavenPanel = new PanelDetails("Brimhaven", Arrays.asList(brimhavenFruitTreePatchCheckHealth, brimhavenFruitTreePatchClear, brimhavenFruitTreePatchPlant, brimhavenFruitProtect)).withId(11);
 		brimhavenPanel.setLockingStep(brimhavenStep);
-		PanelDetails taiBwoWannaiPanel = new PanelDetails("Tai Bwo Wannai", Arrays.asList(taiBwoWannaiCalquatPatchCheckHealth, taiBwoWannaiCalquatPatchClear, taiBwoWannaiCalquatPatchPlant)).withId(82);
-		taiBwoWannaiPanel.setLockingStep(taiBwoWannaiStep);
-		var karamjaPanel = new TopLevelPanelDetails("Karamja", brimhavenPanel, taiBwoWannaiPanel).withId(8);
-		karamjaPanel.setLockingStep(karamjaStep);
 
-		PanelDetails lletyaPanel = new PanelDetails("Lletya", Arrays.asList(lletyaFruitTreePatchCheckHealth, lletyaFruitTreePatchClear, lletyaFruitTreePatchPlant)).withId(9);
+		PanelDetails taiBwoWannaiPanel = new PanelDetails("Tai Bwo Wannai", Arrays.asList(taiBwoWannaiCalquatPatchCheckHealth, taiBwoWannaiCalquatPatchClear, taiBwoWannaiCalquatPatchPlant, taiBwoWannaiCalquatProtect)).withId(12);
+		taiBwoWannaiPanel.setLockingStep(taiBwoWannaiStep);
+
+		PanelDetails lletyaPanel = new PanelDetails("Lletya", Arrays.asList(lletyaFruitTreePatchCheckHealth, lletyaFruitTreePatchClear, lletyaFruitTreePatchPlant, lletyaFruitProtect)).withId(13);
 		lletyaPanel.setLockingStep(lletyaStep);
 
 		PanelDetails fossilIslandEastPanel = new PanelDetails("East Hardwood Patch",
-			Arrays.asList(eastHardwoodTreePatchCheckHealth, eastHardwoodTreePatchClear, eastHardwoodTreePatchPlant)
-		).withId(101);
+			Arrays.asList(eastHardwoodTreePatchCheckHealth, eastHardwoodTreePatchClear, eastHardwoodTreePatchPlant, eastHardwoodProtect)
+		).withId(14);
 		fossilIslandEastPanel.setLockingStep(fossilIslandEastStep);
 		PanelDetails fossilIslandMiddlePanel = new PanelDetails("Middle Hardwood Patch",
-			Arrays.asList(middleHardwoodTreePatchCheckHealth, middleHardwoodTreePatchClear, middleHardwoodTreePatchPlant)
-		).withId(102);
+			Arrays.asList(middleHardwoodTreePatchCheckHealth, middleHardwoodTreePatchClear, middleHardwoodTreePatchPlant, middleHardwoodProtect)
+		).withId(15);
 		fossilIslandMiddlePanel.setLockingStep(fossilIslandMiddleStep);
 		PanelDetails fossilIslandWestPanel = new PanelDetails("West Hardwood Patch",
-			Arrays.asList(westHardwoodTreePatchCheckHealth, westHardwoodTreePatchClear, westHardwoodTreePatchPlant)
-		).withId(103);
+			Arrays.asList(westHardwoodTreePatchCheckHealth, westHardwoodTreePatchClear, westHardwoodTreePatchPlant, westHardwoodProtect)
+		).withId(16);
 		fossilIslandWestPanel.setLockingStep(fossilIslandWestStep);
-		var fossilIslandPanel = new TopLevelPanelDetails("Fossil Island",
-			fossilIslandEastPanel, fossilIslandMiddlePanel, fossilIslandWestPanel).withId(10);
-		fossilIslandPanel.setLockingStep(fossilIslandStep);
 
-		PanelDetails savannahPanel = new PanelDetails("Avium Savannah", Arrays.asList(savannahCheckHealth, savannahClear, savannahPlant)).withId(11);
+		PanelDetails savannahPanel = new PanelDetails("Avium Savannah", Arrays.asList(savannahCheckHealth, savannahClear, savannahPlant, savannahProtect)).withId(17);
 		savannahPanel.setLockingStep(savannahStep);
 
-		PanelDetails auburnvalePanel = new PanelDetails("Auburnvale", Arrays.asList(auburnvaleTreePatchCheckHealth, auburnvaleTreePatchClear, auburnvaleTreePatchPlant)).withId(12);
+		PanelDetails auburnvalePanel = new PanelDetails("Auburnvale", Arrays.asList(auburnvaleTreePatchCheckHealth, auburnvaleTreePatchClear, auburnvaleTreePatchPlant, auburnvaleTreeProtect)).withId(18);
 		auburnvalePanel.setLockingStep(auburnvaleStep);
 
-		PanelDetails kastoriFruitPanel = new PanelDetails("Fruit Tree Patch", Arrays.asList(kastoriFruitTreePatchCheckHealth, kastoriFruitTreePatchClear, kastoriFruitTreePatchPlant)).withId(131);
+		PanelDetails kastoriFruitPanel = new PanelDetails("Fruit Tree Patch", Arrays.asList(kastoriFruitTreePatchCheckHealth, kastoriFruitTreePatchClear, kastoriFruitTreePatchPlant, kastoriFruitProtect)).withId(19);
 		kastoriFruitPanel.setLockingStep(kastoriFruitStep);
-		PanelDetails kastoriCalquatPanel = new PanelDetails("Calquat Patch", Arrays.asList(kastoriCalquatPatchCheckHealth, kastoriCalquatPatchClear, kastoriCalquatPatchPlant)).withId(132);
+		PanelDetails kastoriCalquatPanel = new PanelDetails("Calquat Patch", Arrays.asList(kastoriCalquatPatchCheckHealth, kastoriCalquatPatchClear, kastoriCalquatPatchPlant, kastoriCalquatProtect)).withId(20);
 		kastoriCalquatPanel.setLockingStep(kastoriCalquatStep);
-		var kastoriPanel = new TopLevelPanelDetails("Kastori", kastoriFruitPanel, kastoriCalquatPanel).withId(13);
-		kastoriPanel.setLockingStep(kastoriStep);
 
 		PanelDetails anglersPanel = new PanelDetails("Anglers' Retreat", Arrays.asList(anglersCheckHealth,
-			anglersClear, anglersPlant)).withId(14);
+			anglersClear, anglersPlant, anglersProtect)).withId(21);
 		anglersPanel.setLockingStep(anglersRetreatStep);
 
 		PanelDetails greatConchPanel = new PanelDetails("Great Conch",
 			Arrays.asList(greatConchCalquatPatchCheckHealth, greatConchCalquatPatchClear,
-				greatConchCalquatPatchPlant)).withId(15);
+				greatConchCalquatPatchPlant, greatConchCalquatProtect)).withId(22);
 		greatConchPanel.setLockingStep(greatConchStep);
 
-		var farmRunSidebar = new TopLevelPanelDetails("Tree Run", farmingGuildPanel, lumbridgePanel, faladorPanel, taverleyPanel,
-			varrockPanel, gnomeStrongholdPanel, villagePanel, catherbyPanel, karamjaPanel, lletyaPanel, fossilIslandPanel, savannahPanel, auburnvalePanel,
-			kastoriPanel, anglersPanel, greatConchPanel);
+		var farmRunSidebar = new TopLevelPanelDetails("Tree Run", farmingGuildTreePanel, farmingGuildFruitPanel,
+			lumbridgePanel, faladorPanel, taverleyPanel, varrockPanel, gnomeStrongholdTreePanel, gnomeStrongholdFruitPanel,
+			villagePanel,catherbyPanel, brimhavenPanel, taiBwoWannaiPanel, lletyaPanel, fossilIslandEastPanel,
+			fossilIslandMiddlePanel, fossilIslandWestPanel, savannahPanel, auburnvalePanel, kastoriFruitPanel,
+			kastoriCalquatPanel, anglersPanel, greatConchPanel);
 		allSteps.add(farmRunSidebar);
 
 		return allSteps;

@@ -55,6 +55,7 @@ import com.questhelper.steps.widget.NormalSpells;
 import java.util.Set;
 
 import com.questhelper.steps.widget.WidgetHighlight;
+import net.runelite.api.Item;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -152,7 +153,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	// Teleport Items
 	// TODO: Add these...
 	ItemRequirement farmingGuildTeleport, crystalTeleport, catherbyTeleport, varrockTeleport, lumbridgeTeleport,
-		faladorTeleport, fossilIslandTeleport, auburnvaleTeleport, kastoriTeleport;
+		faladorTeleport, fossilIslandTeleport, auburnvaleTeleport, kastoriTeleport, anglerTeleport;
 
 	// Graceful Set
 	ItemRequirement gracefulHood, gracefulTop, gracefulLegs, gracefulGloves, gracefulBoots, gracefulCape,
@@ -163,7 +164,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 	// Access Requirements
 	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland,
-		accessToSavannah, accessToVarlamore, accessToAnglersRetreat, accessToGreatConch;
+		accessToSavannah, accessToVarlamore, accessToAnglersRetreat, accessToGreatConch, accessToCalquats;
 
 	Requirement payingForRemoval, payingForProtection, usingCompostorNothing;
 
@@ -403,6 +404,10 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		accessToGreatConch = new QuestRequirement(QuestHelperQuest.TROUBLED_TORTUGANS, QuestState.FINISHED);
 
+		accessToCalquats = new Conditions(
+			new SkillRequirement(Skill.FARMING, 72, true)
+		);
+
 		// Trees
 		lumbridgeStates = new PatchStates("Lumbridge");
 		faladorStates = new PatchStates("Falador");
@@ -518,6 +523,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		auburnvaleTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 		kastoriTeleport = new ItemRequirement("Kastori Teleport", ItemID.PENDANT_OF_ATES);
 		kastoriTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
+		anglerTeleport = new ItemRequirement("Anglers' Retreat Teleport", ItemID.MYTHICAL_CAPE);
 
 		// Graceful and Farming Outfit
 		gracefulHood = new ItemRequirement(
@@ -755,16 +761,17 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		taiBwoWannaiCalquatPatchPlant = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH, new WorldPoint(2795, 3102, 0),
 			"Plant your sapling in the Tai Bwo Wannai patch.", calquatSapling);
+		taiBwoWannaiCalquatPatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToCalquats));
 		taiBwoWannaiCalquatPatchPlant.addIcon(calquatSapling.getId());
 
 		kastoriCalquatPatchPlant = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_2, new WorldPoint(1366, 3033, 0),
 			"Plant your sapling in the Kastori Calquat patch.", calquatSapling);
-		kastoriCalquatPatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriCalquatPatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NAND, accessToVarlamore, accessToCalquats));
 		kastoriCalquatPatchPlant.addIcon(calquatSapling.getId());
 
 		greatConchCalquatPatchPlant = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
 			"Plant your sapling in the Great Conch patch.", calquatSapling);
-		greatConchCalquatPatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToGreatConch));
+		greatConchCalquatPatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NAND, accessToGreatConch, accessToCalquats));
 		greatConchCalquatPatchPlant.addIcon(calquatSapling.getId());
 
 		// Fruit Tree Check Health Steps
@@ -816,17 +823,18 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the calquat tree planted in Tai Bwo Wannai.", calquatSapling);
 		taiBwoWannaiCalquatPatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Tai Bwo Wannai", true);
 		taiBwoWannaiCalquatPatchCheckHealth.addSubSteps(taiBwoWannaiCalquatPatchPlant);
+		taiBwoWannaiCalquatPatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToCalquats));
 
 		kastoriCalquatPatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_2, new WorldPoint(1366, 3033, 0),
 			"Check the health of the calquat tree planted in Kastori.");
-		kastoriCalquatPatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriCalquatPatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NAND, accessToVarlamore, accessToCalquats));
 		kastoriCalquatPatchCheckHealth.addTeleport(kastoriTeleport);
 		kastoriCalquatPatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Kastori", true);
 		kastoriCalquatPatchCheckHealth.addSubSteps(kastoriCalquatPatchPlant);
 
 		greatConchCalquatPatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
 			"Check the health of the calquat tree planted in Great Conch.", calquatSapling);
-		greatConchCalquatPatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToGreatConch));
+		greatConchCalquatPatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NAND, accessToGreatConch, accessToCalquats));
 		greatConchCalquatPatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Great Conch", true);
 		greatConchCalquatPatchCheckHealth.addSubSteps(greatConchCalquatPatchPlant);
 
@@ -934,14 +942,18 @@ public class TreeRun extends ComplexStateQuestHelper
 		// Hardwood Tree Steps
 		westHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Check the health of the western hardwood tree on Fossil Island.");
+		westHardwoodTreePatchCheckHealth.addTeleport(fossilIslandTeleport);
 		middleHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Check the health of the centre hardwood tree on Fossil Island.");
+		middleHardwoodTreePatchCheckHealth.addTeleport(fossilIslandTeleport);
 		eastHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Check the health of the eastern hardwood tree on Fossil Island.");
+		eastHardwoodTreePatchCheckHealth.addTeleport(fossilIslandTeleport);
 		savannahCheckHealth  = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Check the health of the hardwood tree in the Avium Savannah.");
 		anglersCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_5, new WorldPoint(2470, 2704, 0),
 			"Check the health of the hardwood tree in the Anglers' Retreat.");
+		anglersCheckHealth.addTeleport(anglerTeleport);
 
 		// Hardwood Tree Plant Steps
 		westHardwoodTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),

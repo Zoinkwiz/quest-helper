@@ -173,7 +173,7 @@ public class RumSmugglingStep extends ConditionalStep
 	private void setupSteps()
 	{
 		goToKaramja = new NpcStep(getQuestHelper(), NpcID.SEAMAN_LORRIS, new WorldPoint(3027, 3222, 0),
-			"Talk to one of the Seamen on the docks in Port Sarim to go to Karamja.", new ItemRequirement("Coins", ItemCollections.COINS, 60));
+			"Talk to one of the Seamen on the docks in Port Sarim to go to Musa Point.", new ItemRequirement("Coins", ItemCollections.COINS, 60));
 		goToKaramja.addDialogStep("Yes please.");
 
 		talkToZambo = new NpcStep(getQuestHelper(), NpcID.ZEMBO, new WorldPoint(2929, 3145, 0),

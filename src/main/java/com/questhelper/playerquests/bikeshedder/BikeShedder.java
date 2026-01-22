@@ -91,6 +91,16 @@ public class BikeShedder extends BasicQuestHelper
 	private ItemRequirement anyCoins;
 	private ItemStep getCoins;
 
+	// Sailing
+	private NpcStep talkToNpcOnBoat;
+	private NpcStep talkToKlarenceFromShip;
+	private ObjectStep useSalvagingHook;
+	private ObjectStep useObjectOffBoat;
+	private ZoneRequirement onBoat1;
+	private ZoneRequirement onBoat2;
+	private ZoneRequirement onBoat3;
+	private ZoneRequirement onBoat4;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -132,6 +142,34 @@ public class BikeShedder extends BasicQuestHelper
 			cPlankStep.addStep(plank, plankStepPassed);
 			steps.addStep(new ZoneRequirement(new WorldPoint(1399, 2924, 0)), cPlankStep);
 		}
+
+		// mistrock bank
+		{
+			// does not need to be equipped
+			var blueWizardHat = new ItemRequirement("Blue wizard hat", ItemID.BLUEWIZHAT);
+			var step = new DetailedQuestStep(this, "Blue wizard hat, does not have to be equipped", blueWizardHat);
+			var stepPassed = new DetailedQuestStep(this, "Blue wizard hat, does not have to be equipped (Requirement used as conditional step passed)", blueWizardHat);
+			var cStep = new ConditionalStep(this, step);
+			cStep.addStep(blueWizardHat, stepPassed);
+			steps.addStep(new ZoneRequirement(new WorldPoint(1383, 2866, 0)), cStep);
+		}
+
+		{
+			// must be equipped
+			var blueWizardHat = new ItemRequirement("Blue wizard hat", ItemID.BLUEWIZHAT);
+			blueWizardHat.setMustBeEquipped(true);
+			var step = new DetailedQuestStep(this, "Blue wizard hat, must be equipped", blueWizardHat);
+			var stepPassed = new DetailedQuestStep(this, "Blue wizard hat, must be equipped (Requirement used as conditional step passed)", blueWizardHat);
+			var cStep = new ConditionalStep(this, step);
+			cStep.addStep(blueWizardHat, stepPassed);
+			steps.addStep(new ZoneRequirement(new WorldPoint(1382, 2866, 0)), cStep);
+		}
+
+		// Boat
+		steps.addStep(onBoat1, talkToNpcOnBoat);
+		steps.addStep(onBoat2, talkToKlarenceFromShip);
+		steps.addStep(onBoat3, useSalvagingHook);
+		steps.addStep(onBoat4, useObjectOffBoat);
 
 		steps.addStep(byStaircaseInSunrisePalace, goDownstairsInSunrisePalace);
 		steps.addStep(outsideLumbridge, moveToLumbridge);
@@ -210,22 +248,82 @@ public class BikeShedder extends BasicQuestHelper
 
 
 		var fire30 = new ItemRequirement("Fire runes", ItemID.FIRERUNE, 30)
-				.showConditioned(new SkillRequirement(Skill.MAGIC, 63));
+			.showConditioned(new SkillRequirement(Skill.MAGIC, 63));
 		var air30 = new ItemRequirement("Air runes", ItemID.AIRRUNE, 30)
-				.showConditioned(new SkillRequirement(Skill.MAGIC, 66));
+			.showConditioned(new SkillRequirement(Skill.MAGIC, 66));
 		var water30 = new ItemRequirement("Water runes", ItemID.WATERRUNE, 30)
-				.showConditioned(new SkillRequirement(Skill.MAGIC, 56));
+			.showConditioned(new SkillRequirement(Skill.MAGIC, 56));
 		var earth30 = new ItemRequirement("Earth runes", ItemID.EARTHRUNE, 30)
-				.showConditioned(new SkillRequirement(Skill.MAGIC, 60));
+			.showConditioned(new SkillRequirement(Skill.MAGIC, 60));
 		elemental30Unique = new ItemRequirements(LogicType.OR, "Elemental runes as ItemRequirements OR", air30, water30, earth30, fire30);
 		elemental30Unique.addAlternates(ItemID.FIRERUNE, ItemID.EARTHRUNE, ItemID.AIRRUNE);
 		elemental30 = new ItemRequirement("Elemental rune as ItemRequirement", List.of(ItemID.AIRRUNE, ItemID.EARTHRUNE, ItemID.WATERRUNE,
-				ItemID.FIRERUNE),	30);
+			ItemID.FIRERUNE), 30);
 		elemental30.setTooltip("You have potato");
 		haveRunes = new DetailedQuestStep(this, "Compare rune checks for ItemRequirement and ItemRequirements with OR.", elemental30, elemental30Unique);
 
 		anyCoins = new ItemRequirement("Coins", ItemCollections.COINS);
 		getCoins = new ItemStep(this, new WorldPoint(3224, 3215, 0), "Get coins", anyCoins);
+
+		// Sailing
+
+		var zones1 = new Zone[] {
+			new Zone(new WorldPoint(3843, 6402, 1), new WorldPoint(3844, 6402, 1)), // Tutorial
+			new Zone(new WorldPoint(3842, 6389, 1), new WorldPoint(3876, 6389, 1)),
+			new Zone(new WorldPoint(3842, 6365, 1), new WorldPoint(3860, 6365, 1)),
+			new Zone(new WorldPoint(3843, 6354, 1), new WorldPoint(3884, 6354, 1))
+		};
+		onBoat1 = new ZoneRequirement(zones1);
+
+		var zones2 = new Zone[] {
+			new Zone(new WorldPoint(3843, 6403, 1), new WorldPoint(3844, 6403, 1)), // Tutorial
+			new Zone(new WorldPoint(3842, 6390, 1), new WorldPoint(3876, 6390, 1)),
+			new Zone(new WorldPoint(3842, 6366, 1), new WorldPoint(3860, 6366, 1)),
+			new Zone(new WorldPoint(3843, 6355, 1), new WorldPoint(3884, 6355, 1))
+		};
+		onBoat2 = new ZoneRequirement(zones2);
+
+		var zones3 = new Zone[] {
+			new Zone(new WorldPoint(3843, 6404, 1), new WorldPoint(3844, 6404, 1)), // Tutorial
+			new Zone(new WorldPoint(3842, 6391, 1), new WorldPoint(3876, 6391, 1)),
+			new Zone(new WorldPoint(3842, 6367, 1), new WorldPoint(3860, 6367, 1)),
+			new Zone(new WorldPoint(3843, 6356, 1), new WorldPoint(3884, 6356, 1))
+		};
+		onBoat3 = new ZoneRequirement(zones3);
+
+		var zones4 = new Zone[] {
+			new Zone(new WorldPoint(3843, 6405, 1), new WorldPoint(3844, 6405, 1)), // Tutorial
+			new Zone(new WorldPoint(3842, 6312, 1), new WorldPoint(3876, 6392, 1)),
+			new Zone(new WorldPoint(3842, 6368, 1), new WorldPoint(3860, 6368, 1)),
+			new Zone(new WorldPoint(3843, 6357, 1), new WorldPoint(3884, 6357, 1))
+		};
+		onBoat4 = new ZoneRequirement(zones4);
+
+		talkToNpcOnBoat = new NpcStep(this, NpcID.SAILING_INTRO_ANNE_BOAT, "Talk to a ship NPC.");
+		List<Integer> shipNpcs = new ArrayList<>();
+		for (int i = NpcID.SAILING_CREW_GENERIC_1_WORLD; i <= NpcID.SAILING_CREW_GHOST_JENKINS_CARGO_3; i++)
+		{
+			shipNpcs.add(i);
+		}
+		talkToNpcOnBoat.addHighlightZones(zones1);
+		talkToNpcOnBoat.addAlternateNpcs(shipNpcs.toArray(new Integer[0]));
+
+		talkToKlarenceFromShip = new NpcStep(this, NpcID.KLARENSE, new WorldPoint(3046, 3205, 0), "Klarence off the ship.");
+		talkToKlarenceFromShip.setHighlightZone(new Zone(new WorldPoint(3044, 3202, 0), new WorldPoint(3050, 3205, 0)));
+		talkToKlarenceFromShip.addHighlightZones(zones2);
+		List<Integer> salvagingHookIds = new ArrayList<>();
+		for (int i = ObjectID.SAILING_INTRO_SALVAGING_HOOK; i <= ObjectID.SALVAGING_HOOK_LARGE_DRAGON_B; i++)
+		{
+			salvagingHookIds.add(i);
+		}
+
+		useSalvagingHook = new ObjectStep(this, ObjectID.SAILING_INTRO_SALVAGING_HOOK, "Use the salvaging hook.");
+		useSalvagingHook.addAlternateObjects(salvagingHookIds.toArray(new Integer[0]));
+		useSalvagingHook.addHighlightZones(zones3);
+
+		useObjectOffBoat = new ObjectStep(this, ObjectID.DRAGONSHIPGANGPLANK_ON, new WorldPoint(3047, 3205, 0), "Click Klarense's gangplank.");
+		useObjectOffBoat.setHighlightZone(new Zone(new WorldPoint(3044, 3202, 0), new WorldPoint(3050, 3205, 0)));
+		useObjectOffBoat.addHighlightZones(zones4);
 	}
 
 	@Override
@@ -247,6 +345,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Item step", List.of(getCoins), List.of(anyCoins)));
 		panels.add(new PanelDetails("Quest state", List.of(lookAtCooksAssistant), List.of(lookAtCooksAssistantRequirement, lookAtCooksAssistantTextRequirement)));
 		panels.add(new PanelDetails("Ensure staircase upstairs in Sunrise Palace is highlighted", List.of(goDownstairsInSunrisePalace), List.of()));
+		panels.add(new PanelDetails("Sailing", List.of(talkToNpcOnBoat, talkToKlarenceFromShip, useSalvagingHook, useObjectOffBoat), List.of()));
 
 		return panels;
 	}

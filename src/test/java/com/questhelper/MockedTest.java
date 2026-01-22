@@ -33,6 +33,7 @@ import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
@@ -52,8 +53,8 @@ import org.mockito.Mockito;
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.IntStream;
 
 import static org.mockito.Mockito.*;
 
@@ -78,7 +79,7 @@ public abstract class MockedTest extends MockedTestBase
 	protected OverlayManager overlayManager = mock(OverlayManager.class);
 
 	@Bind
-	protected QuestHelperConfig questHelperConfig = mock(QuestHelperConfig.class);
+	protected QuestHelperConfig questHelperConfig = Mockito.spy(QuestHelperConfig.class);
 
 	@Bind
 	protected RuneLiteConfig runeLiteConfig = mock(RuneLiteConfig.class);
@@ -141,6 +142,8 @@ public abstract class MockedTest extends MockedTestBase
 
 		WorldView mockedWorldView = mock(WorldView.class);
 		when(mockedWorldView.getScene()).thenReturn(mockedScene);
+		when(mockedWorldView.getPlane()).thenReturn(0);
+		when(mockedWorldView.isTopLevel()).thenReturn(true);
 
 		@SuppressWarnings("unchecked")
 		IndexedObjectSet<? extends NPC> npcSetMock = (IndexedObjectSet<? extends NPC>) mock(IndexedObjectSet.class);
@@ -148,14 +151,21 @@ public abstract class MockedTest extends MockedTestBase
 		doReturn(npcSetMock).when(mockedWorldView).npcs();
 		when(client.getTopLevelWorldView()).thenReturn(mockedWorldView);
 		when(client.getScene()).thenReturn(mockedScene); // TODO: We should not have to mock this
+		when(client.findWorldViewFromWorldPoint(any(WorldPoint.class))).thenReturn(mockedWorldView);
 		var mockedItemContainer = Mockito.mock(ItemContainer.class);
 		when(mockedItemContainer.getItems()).thenReturn(new Item[0]);
 		when(client.getItemContainer(anyInt())).thenReturn(mockedItemContainer);
+
+		IndexedObjectSet<? extends WorldView> wvSetMock = (IndexedObjectSet<? extends WorldView>) mock(IndexedObjectSet.class);
+		when(wvSetMock.iterator()).thenReturn(Collections.emptyIterator());
+		doReturn(wvSetMock).when(mockedWorldView).worldViews();
 
 		var mockedPlayer = Mockito.mock(Player.class);
 		when(mockedPlayer.getLocalLocation()).thenReturn(new LocalPoint(1, 1, 1));
 		when(client.getLocalPlayer()).thenReturn(mockedPlayer);
 		when(client.getWorldView(anyInt())).thenReturn(mockedWorldView);
+		when(mockedPlayer.getWorldView()).thenReturn(mockedWorldView);
+		when(mockedWorldView.getId()).thenReturn(-1);
 
 		ItemComposition itemComposition = mock(ItemComposition.class);
 		when(itemComposition.getName()).thenReturn("Test item");

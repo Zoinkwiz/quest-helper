@@ -33,6 +33,7 @@ import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -59,7 +60,7 @@ public class RFDFinal extends BasicQuestHelper
 {
 	ItemRequirement iceGloves, restorePotions, combatGear;
 
-	Requirement inFightArena, killedAgrith, killedFlambeed, killedKaramel, killedDessourt, killedMother;
+	Requirement inFightArena, killedAgrith, killedFlambeed, killedKaramel, killedDessourt, killedMother, inventorySlot1;
 
 	QuestStep enterPortal, killAgrith, enterPortalFlambeed, killFlambeed, enterPortalKaramel, killKaramel, enterPortalDessourt, killDessourt,
 		enterPortalMother, killMother, enterPortalCulinaromancer, killCulinaromancer;
@@ -107,6 +108,7 @@ public class RFDFinal extends BasicQuestHelper
 		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
+		inventorySlot1 = new FreeInventorySlotRequirement(1);
 	}
 
 	@Override
@@ -127,11 +129,15 @@ public class RFDFinal extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		enterPortal = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight. You can leave between fights to re-gear.", combatGear);
+		enterPortal = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight. " +
+			"You can leave between fights to re-gear. Have your ice gloves pre-equipped for the second fight against Flambeed to avoid them making you drop your weapon on the floor.", iceGloves.equipped(), combatGear, inventorySlot1);
 		killAgrith = new NpcStep(this, NpcID.HUNDRED_MINION1, new WorldPoint(1900, 5355, 2),"Kill Agrith-Na-Na. He uses magic at ranged, and melee up close.");
 
-		enterPortalFlambeed = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight kill Flambeed. Water spells are especially effective.", combatGear, iceGloves);
-		killFlambeed = new NpcStep(this, NpcID.HUNDRED_MINION2, new WorldPoint(1900, 5355, 2),"Equip ice gloves and kill Flambeed. Water spells are especially effective.", iceGloves);
+		enterPortalFlambeed = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight kill Flambeed." +
+			" Water spells are especially effective. If you have a full inventory and no ice gloves on Flambeed can make you drop your weapon, so it's recommended you keep a free inventory slot.", combatGear, iceGloves.equipped(),
+			inventorySlot1);
+		killFlambeed = new NpcStep(this, NpcID.HUNDRED_MINION2, new WorldPoint(1900, 5355, 2),"Equip ice gloves and kill Flambeed. Water spells are especially effective. " +
+			"FLAMBEED WILL MAKE YOU DROP YOUR WEAPON ON THE FLOOR if you do not have ice gloves on and have a full inventory.", iceGloves.equipped(), inventorySlot1);
 		killFlambeed.addSubSteps(enterPortalFlambeed);
 
 		enterPortalKaramel = new ObjectStep(this, ObjectID.HUNDRED_PORTAL_MULTI, new WorldPoint(3209, 3218, 0), "Enter the portal to fight Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);

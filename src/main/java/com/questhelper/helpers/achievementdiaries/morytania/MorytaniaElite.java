@@ -63,7 +63,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, magicRedwoodPyreLogs, shadeRemains, tinderbox, earthRune, astralRune, natureRune,
-		blackLeather, needle, thread, barrowsSet, ahrimSet, karilSet, guthanSet, veracSet, dharokSet, toragSet;
+		blackLeather, needle, thread, needleThread, costumeNeedle, needleThreadOrCostumeNeedle, barrowsSet, ahrimSet, karilSet, guthanSet, veracSet, dharokSet, toragSet;
 
 	// Items recommended
 	ItemRequirement food, barrowsTab, slayerRing, ectophial, mortTP, spade;
@@ -140,7 +140,10 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		blackLeather = new ItemRequirement("Black dragon leather", ItemID.DRAGON_LEATHER_BLACK).showConditioned(notCraftBlackDhideBody);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).showConditioned(notCraftBlackDhideBody);
 		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftBlackDhideBody);
-
+		needleThread = new ItemRequirements(needle, thread);
+		costumeNeedle = new ItemRequirement("Costume needle", ItemID.COSTUMENEEDLE);
+		needleThreadOrCostumeNeedle = new ItemRequirements(LogicType.OR, "Needle/Thread or Costume needle", needleThread, costumeNeedle);
+		needleThreadOrCostumeNeedle.setDisplayMatchedItemName(true);
 
 		ahrimSet = new ItemRequirements("Ahrim Set", new ItemRequirement("Hood", ItemCollections.AHRIM_HOOD),
 			new ItemRequirement("Staff", ItemCollections.AHRIM_STAFF), new ItemRequirement("Top",
@@ -231,7 +234,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		moveToCanifisBank = new DetailedQuestStep(this, new WorldPoint(3511, 3480, 0),
 			"Move to the bank in Canifis.", blackLeather.quantity(3).highlighted(), needle.highlighted(), thread);
 		craftBlackDhideBody = new DetailedQuestStep(this, "Craft a black dragon hide body.",
-			blackLeather.quantity(3).highlighted(), needle.highlighted(), thread);
+			blackLeather.quantity(3).highlighted(), needle.highlighted(), needleThreadOrCostumeNeedle);
 
 		fertilizeHerb = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_4, new WorldPoint(3606, 3530, 0),
 			"Cast Fertile Soil on the herb patch in Morytania.", lunarBook, earthRune.quantity(15),
@@ -248,7 +251,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(combatGear, magicRedwoodPyreLogs, shadeRemains, tinderbox, barrowsSet,
 			blackLeather.quantity(3),
-			needle, thread, earthRune.quantity(15), astralRune.quantity(3), natureRune.quantity(2));
+			needleThreadOrCostumeNeedle.quantity(1), earthRune.quantity(15), astralRune.quantity(3), natureRune.quantity(2));
 	}
 
 	@Override
@@ -342,7 +345,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 
 		PanelDetails craftSteps = new PanelDetails("Craft Black D'hide Body", Arrays.asList(moveToCanifisBank,
 			craftBlackDhideBody), new SkillRequirement(Skill.CRAFTING, 84, true),
-			blackLeather.quantity(3), needle, thread);
+			blackLeather.quantity(3), needleThreadOrCostumeNeedle.quantity(1));
 		craftSteps.setDisplayCondition(notCraftBlackDhideBody);
 		craftSteps.setLockingStep(craftBlackDhideBodyTask);
 		allSteps.add(craftSteps);

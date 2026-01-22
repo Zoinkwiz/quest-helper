@@ -1417,7 +1417,7 @@ public enum ItemCollections
 			ItemID.TIARA_ELEMENTAL
 		).build()),
 	FIRE_ALTAR(new ImmutableList.Builder<Integer>()
-		.addAll(AIR_ALTAR_WEARABLE.getItems()).add(
+		.addAll(FIRE_ALTAR_WEARABLE.getItems()).add(
 			ItemID.ELEMENTAL_TALISMAN,
 			ItemID.FIRE_TALISMAN
 		).build()),

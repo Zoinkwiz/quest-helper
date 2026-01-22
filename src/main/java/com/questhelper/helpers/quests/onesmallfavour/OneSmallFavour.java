@@ -511,7 +511,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToYanni = new NpcStep(this, NpcID.SHILOANTIQUES, new WorldPoint(2836, 2983, 0), "Talk to Yanni Salika in Shilo Village. CKR fairy ring or take cart from Brimhaven.");
 		talkToYanni.addDialogStep("Yes.");
 		talkToYanni.addDialogSteps("Is there anything else interesting to do around here?", "Ok, see you in a tick!");
-		talkToJungleForester = new NpcStep(this, new int[]{NpcID.JUNGLEFORESTER_F, NpcID.JUNGLEFORESTER_M}, new WorldPoint(2861, 2942, 0), "Talk to a Jungle Forester south of Shilo Village.", true, bluntAxe);
+		talkToJungleForester = new NpcStep(this, new int[]{NpcID.JUNGLEFORESTER_F, NpcID.JUNGLEFORESTER_M}, new WorldPoint(2861, 2942, 0), "Talk to a Jungle Forester south of Shilo Village.", true);
 		talkToJungleForester.addDialogSteps("I'll get going then!", "I need to talk to you about red mahogany.");
 		talkToJungleForester.addDialogStep("Okay, I'll take your axe to get it sharpened.");
 		talkToBrian = new NpcStep(this, NpcID.BRIAN, new WorldPoint(3027, 3249, 0), "Talk to Brian in the Port Sarim axe shop.", bluntAxe);
@@ -595,7 +595,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		talkToBleemadge.addSubSteps(talkToBleemadgeNoTea);
 
 		talkToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2804, 3432, 0), "Talk to Arhein in Catherby.");
-		talkToArhein.addDialogStep("I need to talk T.R.A.S.H to you.");
+		talkToArhein.addDialogStep("I need to talk T.R.A.S.H. to you.");
 		talkToArhein.addDialogStep("Yes, Ok, I'll do it!");
 
 		talkToPhantuwti = new NpcStep(this, NpcID.FAVOUR_PHANTUWTI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Talk to Phantuwti in the south west house of Seers' Village.");
@@ -732,6 +732,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		finishWithPhantuwti.addDialogStep("I've fixed the weather vane!");
 
 		returnToArhein = new NpcStep(this, NpcID.ARHEIN, new WorldPoint(2804, 3432, 0), "Talk to Arhein in Catherby.", weatherReport);
+		returnToArhein.addDialogStep("What did you want me to do again?");
 		returnToArhein.addDialogStep("I have the weather report for you.");
 
 		returnToBleemadge = new NpcStep(this, NpcID.PILOT_WHITE_WOLF_BASE, new WorldPoint(2847, 3498, 0), "Right-click talk to Captain Bleemadge on White Wolf Mountain.");

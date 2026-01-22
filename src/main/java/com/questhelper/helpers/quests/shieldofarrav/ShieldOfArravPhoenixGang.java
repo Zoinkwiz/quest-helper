@@ -147,7 +147,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 
 		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.PHOENIXLADDER, new WorldPoint(3244, 9783, 0),
 			"Go back up to the surface.");
-		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD_1OP, new WorldPoint(3222, 3395, 0),
+		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD_2OP, new WorldPoint(3222, 3395, 0),
 			"Kill Jonny the Beard in the Blue Moon Inn in Varrock.");
 		pickupIntelReport = new DetailedQuestStep(this, "Pick up the Intel Report.", intelReport);
 		returnDownLadder = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_DEEP, new WorldPoint(3244, 3383, 0),

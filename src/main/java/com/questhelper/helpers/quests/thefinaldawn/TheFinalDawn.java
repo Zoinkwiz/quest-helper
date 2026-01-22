@@ -517,7 +517,7 @@ public class TheFinalDawn extends BasicQuestHelper
 
 		for (WorldPoint wp : wps)
 		{
-			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, wp);
+			List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), wp);
 
 			if (localPoints.isEmpty()) return -1;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz
+ * Copyright (c) 2025, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.helpers.activities.charting.steps;
 
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.steps.tools.QuestPerspective;
-import net.runelite.api.Client;
-import net.runelite.api.coords.WorldPoint;
+import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 
-public class RegionHintArrowRequirement extends SimpleRequirement
+public class ChartingTelescopeStep extends ChartingTaskObjectStep
 {
-	private final Zone zone;
-
-	public RegionHintArrowRequirement(WorldPoint worldPoint)
+	public ChartingTelescopeStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
-		assert(worldPoint != null);
-		this.zone = new Zone(worldPoint, worldPoint);
-	}
-
-	public RegionHintArrowRequirement(Zone zone)
-	{
-		assert(zone != null);
-		this.zone = zone;
-	}
-
-	public boolean check(Client client)
-	{
-		WorldPoint hintArrowPoint = client.getHintArrowPoint();
-		if (hintArrowPoint == null)
-		{
-			return false;
-		}
-
-		WorldPoint wp = QuestPerspective.getInstanceWorldPointFromReal(client, hintArrowPoint);
-		if (wp == null)
-		{
-			return false;
-		}
-
-		return zone.contains(wp);
+		super(questHelper, ObjectID.SAILING_CHARTING_HINT_MARKER_SPYGLASS, definition, requirements);
+		var spyglass = new ItemRequirement("Spyglass", ItemID.SAILING_CHARTING_SPYGLASS);
+		addRequirement(spyglass);
 	}
 }

@@ -545,7 +545,7 @@ public class CabinFever extends BasicQuestHelper
 		useRopeOnSailToLoot = new ObjectStep(this, ObjectID.FEVER_SAIL1_HOISTEDL_CLIMB, new WorldPoint(1817, 4830, 2), "Use a rope on the hoisted sail.", ropeHighlight);
 		useRopeOnSailToLoot.addIcon(ItemID.ROPE);
 
-		lootEnemyShip = new ObjectStep(this, ObjectID.FEVER_MULTI_CHEST, "Plunder the chest, loot the crate and ransack the barrel for 10 plunder.", loot10);
+		lootEnemyShip = new ObjectStep(this, ObjectID.FEVER_MULTI_CHEST, "Plunder the chest, loot the crate and ransack the barrel for 10 plunder. Switch world after looting to make plunder respawn instantly.", loot10);
 		lootEnemyShip.addAlternateObjects(ObjectID.FEVER_MULTI_CRATE, ObjectID.FEVER_MULTI_BARREL);
 
 		hopWorld = new DetailedQuestStep(this, "Hop worlds so that the chest resets.");

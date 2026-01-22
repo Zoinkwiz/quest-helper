@@ -1052,7 +1052,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		goToBrokenTable = new DetailedQuestStep(this, new WorldPoint(2519, 3248, 0), "Go to the broken table in the middle of the Khazard side of the Khazard-Gnome battlefield.", broav);
 		goToBrokenTable.addTeleport(khazardTeleport);
-		goToBrokenTable.setHighlightZone(nearTable);
+		goToBrokenTable.addHighlightZone(nearTable);
 
 		dropBroav = new DetailedQuestStep(this, "Drop your broav.", broav.highlighted());
 

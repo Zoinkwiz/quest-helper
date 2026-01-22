@@ -372,20 +372,6 @@ public class QuestHelperPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("showRuneliteObjects") && client.getGameState() == GameState.LOGGED_IN)
-		{
-			clientThread.invokeLater(() -> {
-				if (config.showRuneliteObjects())
-				{
-					GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
-				}
-				else
-				{
-					GlobalFakeObjects.disableNpcs(runeliteObjectManager);
-				}
-			});
-		}
-
 		if (configEvents.contains(event.getKey()) || event.getKey().contains("skillfilter"))
 		{
 			clientThread.invokeLater(questManager::updateQuestList);
@@ -448,11 +434,6 @@ public class QuestHelperPlugin extends Plugin
 			{
 				questOverlayManager.addDebugOverlay();
 			}
-		}
-		else if (developerMode && commandExecuted.getCommand().equals("reset-cooks-helper"))
-		{
-			String step = (String) (Arrays.stream(commandExecuted.getArguments()).toArray()[0]);
-			new RuneliteConfigSetter(configManager, QuestHelperQuest.COOKS_HELPER.getPlayerQuests().getConfigValue(), step).setConfigValue();
 		}
 		else if (developerMode && commandExecuted.getCommand().equals("qh-inv"))
 		{
@@ -605,5 +586,37 @@ public class QuestHelperPlugin extends Plugin
 				.filter(s -> !s.isEmpty())
 				.map(Integer::parseInt)
 				.collect(Collectors.toList());
+	}
+
+	public void resetSidebarOrderForSection(QuestHelper currentQuest, List<Integer> sectionIds)
+	{
+		if (currentQuest == null || currentQuest.getQuest() == null || sectionIds == null || sectionIds.isEmpty())
+		{
+			return;
+		}
+
+		List<Integer> currentOrder = loadSidebarOrder(currentQuest);
+		if (currentOrder == null || currentOrder.isEmpty())
+		{
+			return;
+		}
+
+		// Remove all IDs belonging to this section from the order
+		List<Integer> updatedOrder = currentOrder.stream()
+			.filter(id -> !sectionIds.contains(id))
+			.collect(Collectors.toList());
+
+		// If the order is now empty, remove the config entry (set to null) to use default order
+		// Otherwise save the updated order
+		if (updatedOrder.isEmpty())
+		{
+			configManager.unsetRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP,
+				QuestHelperConfig.QUEST_HELPER_SIDEBAR_ORDER_KEY_START + currentQuest.getQuest().name());
+		}
+		else
+		{
+			saveSidebarOrder(currentQuest, updatedOrder);
+		}
+		questManager.startUpQuest(currentQuest, true);
 	}
 }

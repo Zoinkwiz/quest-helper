@@ -28,7 +28,6 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import com.questhelper.steps.tools.QuestPerspective;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Tile;
@@ -321,26 +320,25 @@ public class TilePuzzleSolver extends DetailedOwnerStep
 			return;
 		}
 
-		var playerWp = localPlayer.getWorldLocation();
-		var localPoint = QuestPerspective.getRealWorldPointFromLocal(client, localPlayer.getWorldLocation());
-		if (localPoint == null) {
+		var worldPoint = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation());
+		if (worldPoint == null)
+		{
 			startUpStep(fallbackStep);
 			return;
 		}
 
-
 		var baseX = 3737;
 		var baseY = 4709;
 
-		var xInPuzzle = localPoint.getX() - baseX;
-		var yInPuzzle = localPoint.getY() - baseY;
+		var xInPuzzle = worldPoint.getX() - baseX;
+		var yInPuzzle = worldPoint.getY() - baseY;
 
 		if (xInPuzzle > 0 && xInPuzzle < SIZE && yInPuzzle >= 0 && yInPuzzle < SIZE) {
 			log.debug("Player is in the puzzle, at {}/{}", xInPuzzle, yInPuzzle);
 			startUpStep(pathStep);
 		} else {
-			log.debug("player is outside of puzzle: {} / {} / {}/{}", playerWp, localPoint, xInPuzzle, yInPuzzle);
-			var userIsPastPuzzle = localPoint.getX() <= 3730 || (localPoint.getX() <= baseX && localPoint.getY() >= 4701);
+			log.debug("player is outside of puzzle: {} / {} / {}/{}", localPlayer.getWorldLocation(), worldPoint, xInPuzzle, yInPuzzle);
+			var userIsPastPuzzle = worldPoint.getX() <= 3730 || (worldPoint.getX() <= baseX && worldPoint.getY() >= 4701);
 			if (userIsPastPuzzle) {
 				// highlight lever
 				startUpStep(finishPuzzleStep);

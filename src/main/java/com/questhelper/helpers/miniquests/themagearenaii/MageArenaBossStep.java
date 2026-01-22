@@ -32,6 +32,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.tools.DefinedPoint;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.coords.LocalPoint;
@@ -114,7 +115,7 @@ public class MageArenaBossStep extends DetailedQuestStep
 				.left("Possible locations:")
 				.build());
 		}
-		else if (digLocations.size() < 1)
+		else if (digLocations.isEmpty())
 		{
 			if (!foundLocation)
 			{
@@ -165,7 +166,7 @@ public class MageArenaBossStep extends DetailedQuestStep
 
 	public void resetState()
 	{
-		setWorldPoint(null);
+		setWorldPoint(DefinedPoint.of(null));
 		Set<MageArenaSpawnLocation> locations =
 			Arrays.stream(MageArenaSpawnLocation.values())
 			.collect(Collectors.toSet());
@@ -185,12 +186,12 @@ public class MageArenaBossStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (worldPoint == null)
+		if (definedPoint == null)
 		{
 			return;
 		}
 
-		LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint localLocation = LocalPoint.fromWorld(client, definedPoint.getWorldPoint());
 
 		if (localLocation == null)
 		{
@@ -244,7 +245,7 @@ public class MageArenaBossStep extends DetailedQuestStep
 		}
 		else
 		{
-			this.setWorldPoint(null);
+			this.setWorldPoint(DefinedPoint.of(null));
 		}
 
 	}
@@ -268,7 +269,7 @@ public class MageArenaBossStep extends DetailedQuestStep
 	public void shutDown()
 	{
 		super.shutDown();
-		this.setWorldPoint(null);
+		this.setWorldPoint(DefinedPoint.of(null));
 	}
 
 	private BufferedImage getSymbolLocation()

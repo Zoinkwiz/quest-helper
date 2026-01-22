@@ -274,7 +274,10 @@ public class FarmingUtils
 	public enum HardwoodTreeSapling implements PlantableItem
 	{
 		TEAK(ItemID.PLANTPOT_TEAK_SAPLING, ItemID.LIMPWURT_ROOT, 15),
-		MAHOGANY(ItemID.PLANTPOT_MAHOGANY_SAPLING, ItemID.YANILLIAN_HOPS, 25);
+		MAHOGANY(ItemID.PLANTPOT_MAHOGANY_SAPLING, ItemID.YANILLIAN_HOPS, 25),
+		CAMPHOR(ItemID.PLANTPOT_CAMPHOR_SAPLING, ItemID.WHITE_BERRIES, 10),
+		IRONWOOD(ItemID.PLANTPOT_IRONWOOD_SAPLING, ItemID.CURRY, 10),
+		ROSEWOOD(ItemID.PLANTPOT_ROSEWOOD_SAPLING, ItemID.DRAGONFRUIT, 8);
 
 		final int hardwoodTreeSaplingId;
 		final int protectionItemId;
@@ -315,6 +318,52 @@ public class FarmingUtils
 		public ConfigEnum getDefault()
 		{
 			return HardwoodTreeSapling.TEAK;
+		}
+	}
+
+	public enum CalquatTreeSapling implements PlantableItem
+	{
+		CALQUAT(ItemID.PLANTPOT_CALQUAT_SAPLING, ItemID.POISONIVY_BERRIES, 8);
+
+		final int calquatTreeSaplingId;
+		final int protectionItemId;
+		final int protectionItemQuantity;
+
+		CalquatTreeSapling(int calquatTreeSaplingId, int protectionItemId, int protectionItemQuantity)
+		{
+			this.calquatTreeSaplingId = calquatTreeSaplingId;
+			this.protectionItemId = protectionItemId;
+			this.protectionItemQuantity = protectionItemQuantity;
+		}
+
+		@Override
+		public String getConfigKey()
+		{
+			return "calquatTreeSaplings";
+		}
+
+		@Override
+		public int getPlantableItemId()
+		{
+			return calquatTreeSaplingId;
+		}
+
+		@Override
+		public int getProtectionItemId()
+		{
+			return protectionItemId;
+		}
+
+		@Override
+		public int getProtectionItemQuantity()
+		{
+			return protectionItemQuantity;
+		}
+
+		@Override
+		public ConfigEnum getDefault()
+		{
+			return CalquatTreeSapling.CALQUAT;
 		}
 	}
 

@@ -58,21 +58,18 @@ public class QuestSelectPanel extends JPanel
 
 		JLabel nameLabel = JGenerator.makeJLabel(questHelper.getQuest().getName());
 		Color color = questState == QuestState.FINISHED ? questHelperPlugin.getConfig().passColour() : (questState == QuestState.IN_PROGRESS ?
-			new Color(240,207, 123) : Color.WHITE);
+			new Color(240, 207, 123) : Color.WHITE);
 		nameLabel.setForeground(color);
 		add(nameLabel, BorderLayout.CENTER);
 
-		if (questState != QuestState.FINISHED)
+		JButton startButton = new JButton();
+		startButton.setIcon(START_ICON);
+		startButton.addActionListener(e ->
 		{
-			JButton startButton = new JButton();
-			startButton.setIcon(START_ICON);
-			startButton.addActionListener(e ->
-			{
-				questHelperPanel.setSelectedQuest(questHelper);
-				questHelperPanel.emptyBar();
-			});
-			add(startButton, BorderLayout.LINE_END);
-		}
+			questHelperPanel.setSelectedQuest(questHelper);
+			questHelperPanel.emptyBar();
+		});
+		add(startButton, BorderLayout.LINE_END);
 	}
 
 	public QuestSelectPanel(String text)

@@ -216,8 +216,7 @@ public class FairytaleI extends BasicQuestHelper
 			"you're right!");
 		talkToFarmers = new NpcStep(this, NpcID.ELSTAN,
 			"Talk to 5 farmers, then return to Martin in Draynor Village. The recommended 5 are:");
-		talkToFarmers.addText("If you don't already have one, a secateurs 
-							  can be purchased from Sarah in South Falador Farm");
+		talkToFarmers.addText("If you don't already have one, a secateurs can be purchased from Sarah in South Falador Farm");
 		talkToFarmers.addText("Frizzy in Port Sarim.");
 		talkToFarmers.addText("Elstan north west of Draynor.");
 		talkToFarmers.addText("Heskel in Falador Park.");

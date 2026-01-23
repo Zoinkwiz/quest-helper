@@ -632,7 +632,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Collecting beard tax", Arrays.asList(collectFromHringAgain, collectFromRaum, collectFromSkuliAgain, collectFromKeepaAgain, collectFromFlosi, talkToGjukiAfterCollection2)));
 		allSteps.add(new PanelDetails("Spy on Mawnis again", Arrays.asList(talkToSlugToSpyAgain, goSpyOnMawnisAgain, reportBackToSlugAgain, talkToGjukiAfterSpy2, talkToMawnisWithDecree)));
 		allSteps.add(prepareForCombatPanel);
-		allSteps.add(new PanelDetails("Killing the king", Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest), yakBottom, yakTop, roundShield, meleeWeapon, food));
+		allSteps.add(new PanelDetails("Killing the king", Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest), roundShield, meleeWeapon, food));
 
 		return allSteps;
 	}

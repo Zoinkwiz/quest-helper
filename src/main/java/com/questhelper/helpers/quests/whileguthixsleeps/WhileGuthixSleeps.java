@@ -984,7 +984,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		placedEarthBlock = new VarbitRequirement(VarbitID.WGS_EARTH_KEY_USED, 1);
 		notPlacedFireBlock = new VarbitRequirement(VarbitID.WGS_FIRE_KEY_USED, 0);
 
-		noWeaponOrShieldEquipped = new ComplexRequirement("No weapon or shield equipped", new NoItemRequirement("", ItemSlots.WEAPON), new NoItemRequirement("", ItemSlots.SHIELD));
+		noWeaponOrShieldEquipped = new NoItemRequirement("Nothing equipped in your hands", ItemSlots.EMPTY_HANDS);
 
 		airCavity = new Zone(new WorldPoint(4107, 5095, 0), new WorldPoint(4119, 5116, 0));
 		inAirCavity = new ZoneRequirement(airCavity);

@@ -127,6 +127,10 @@ public class TreeRun extends ComplexStateQuestHelper
 	DetailedQuestStep farmingGuildFruitTreePatchDig, gnomeStrongholdFruitTreePatchDig, gnomeVillageFruitTreePatchDig,
 		brimhavenFruitTreePatchDig, lletyaFruitTreePatchDig, catherbyFruitTreePatchDig,
 		taiBwoWannaiCalquatPatchDig, kastoriFruitTreePatchDig, kastoriCalquatPatchDig, greatConchCalquatPatchDig;
+	DetailedQuestStep farmingGuildFruitTreePatchCutDown, gnomeStrongholdFruitTreePatchCutDown, gnomeVillageFruitTreePatchCutDown,
+		brimhavenFruitTreePatchCutDown, lletyaFruitTreePatchCutDown, catherbyFruitTreePatchCutDown,
+		kastoriFruitTreePatchCutDown;
+	DetailedQuestStep taiBwoWannaiCalquatPatchRemove, kastoriCalquatPatchRemove, greatConchCalquatPatchRemove;
 
 	DetailedQuestStep guildFruitProtect, strongholdFruitProtect, villageFruitProtect, brimhavenFruitProtect,
 		lletyaFruitProtect, catherbyFruitProtect, taiBwoWannaiCalquatProtect, kastoriFruitProtect,
@@ -142,6 +146,8 @@ public class TreeRun extends ComplexStateQuestHelper
 
 	DetailedQuestStep eastHardwoodTreePatchClear, westHardwoodTreePatchClear, middleHardwoodTreePatchClear,
 		savannahClear, anglersClear;
+	DetailedQuestStep eastHardwoodTreePatchCutDown, westHardwoodTreePatchCutDown, middleHardwoodTreePatchCutDown,
+		savannahCutDown, anglersCutDown;
 
 	DetailedQuestStep eastHardwoodProtect, westHardwoodProtect, middleHardwoodProtect, savannahProtect,
 		anglersProtect;
@@ -215,6 +221,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		farmingGuildFruitStep = (ConditionalStep) new ConditionalStep(this, farmingGuildFruitTreePatchCheckHealth).withId(-2);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsUnchecked()), farmingGuildFruitTreePatchCheckHealth);
+		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsHarvestable(), not(payingForRemoval)), farmingGuildFruitTreePatchCutDown);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsHarvestable()), farmingGuildFruitTreePatchClear);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsStump()), farmingGuildFruitTreePatchDig);
 		farmingGuildFruitStep.addStep(and(accessToFarmingGuildFruitTreePatch, farmingGuildFruitStates.getIsEmpty()), farmingGuildFruitTreePatchPlant);
@@ -260,6 +267,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		strongholdFruitStep = (ConditionalStep) new ConditionalStep(this, gnomeStrongholdFruitTreePatchCheckHealth).withId(51);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsUnchecked(), gnomeStrongholdFruitTreePatchCheckHealth);
+		strongholdFruitStep.addStep(and(gnomeStrongholdFruitStates.getIsHarvestable(), not(payingForRemoval)), gnomeStrongholdFruitTreePatchCutDown);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsEmpty(), gnomeStrongholdFruitTreePatchPlant);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsHarvestable(), gnomeStrongholdFruitTreePatchClear);
 		strongholdFruitStep.addStep(gnomeStrongholdFruitStates.getIsStump(), gnomeStrongholdFruitTreePatchDig);
@@ -278,6 +286,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		villageStep = new ConditionalStep(this, gnomeVillageFruitTreePatchCheckHealth);
 		villageStep.addStep(gnomeVillageStates.getIsUnchecked(), gnomeVillageFruitTreePatchCheckHealth);
+		villageStep.addStep(and(gnomeVillageStates.getIsHarvestable(), not(payingForRemoval)), gnomeVillageFruitTreePatchCutDown);
 		villageStep.addStep(gnomeVillageStates.getIsEmpty(), gnomeVillageFruitTreePatchPlant);
 		villageStep.addStep(gnomeVillageStates.getIsHarvestable(), gnomeVillageFruitTreePatchClear);
 		villageStep.addStep(gnomeVillageStates.getIsStump(), gnomeVillageFruitTreePatchDig);
@@ -286,6 +295,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		catherbyStep = new ConditionalStep(this, catherbyFruitTreePatchCheckHealth);
 		catherbyStep.addStep(catherbyStates.getIsUnchecked(), catherbyFruitTreePatchCheckHealth);
+		catherbyStep.addStep(and(catherbyStates.getIsHarvestable(), not(payingForRemoval)), catherbyFruitTreePatchCutDown);
 		catherbyStep.addStep(catherbyStates.getIsEmpty(), catherbyFruitTreePatchPlant);
 		catherbyStep.addStep(catherbyStates.getIsHarvestable(), catherbyFruitTreePatchClear);
 		catherbyStep.addStep(catherbyStates.getIsStump(), catherbyFruitTreePatchDig);
@@ -294,6 +304,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		brimhavenStep = (ConditionalStep) new ConditionalStep(this, brimhavenFruitTreePatchCheckHealth).withId(81);
 		brimhavenStep.addStep(brimhavenStates.getIsUnchecked(), brimhavenFruitTreePatchCheckHealth);
+		brimhavenStep.addStep(and(brimhavenStates.getIsHarvestable(), not(payingForRemoval)), brimhavenFruitTreePatchCutDown);
 		brimhavenStep.addStep(brimhavenStates.getIsEmpty(), brimhavenFruitTreePatchPlant);
 		brimhavenStep.addStep(brimhavenStates.getIsHarvestable(), brimhavenFruitTreePatchClear);
 		brimhavenStep.addStep(brimhavenStates.getIsStump(), brimhavenFruitTreePatchDig);
@@ -302,6 +313,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		taiBwoWannaiStep = (ConditionalStep) new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth).withId(82);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsUnchecked(), taiBwoWannaiCalquatPatchCheckHealth);
+		taiBwoWannaiStep.addStep(and(taiBwoWannaiStates.getIsHarvestable(), not(payingForRemoval)), taiBwoWannaiCalquatPatchRemove);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsEmpty(), taiBwoWannaiCalquatPatchPlant);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsHarvestable(), taiBwoWannaiCalquatPatchClear);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsStump(), taiBwoWannaiCalquatPatchDig);
@@ -312,6 +324,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		lletyaStep = new ConditionalStep(this, lletyaFruitTreePatchCheckHealth);
 		lletyaStep.addStep(lletyaStates.getIsUnchecked(), lletyaFruitTreePatchCheckHealth);
+		lletyaStep.addStep(and(lletyaStates.getIsHarvestable(), not(payingForRemoval)), lletyaFruitTreePatchCutDown);
 		lletyaStep.addStep(lletyaStates.getIsEmpty(), lletyaFruitTreePatchPlant);
 		lletyaStep.addStep(lletyaStates.getIsHarvestable(), lletyaFruitTreePatchClear);
 		lletyaStep.addStep(lletyaStates.getIsStump(), lletyaFruitTreePatchDig);
@@ -320,6 +333,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		fossilIslandEastStep = (ConditionalStep) new ConditionalStep(this, eastHardwoodTreePatchCheckHealth).withId(101);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsUnchecked(), eastHardwoodTreePatchCheckHealth);
+		fossilIslandEastStep.addStep(and(eastHardwoodStates.getIsHarvestable(), not(payingForRemoval)), eastHardwoodTreePatchCutDown);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsEmpty(), eastHardwoodTreePatchPlant);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsHarvestable(), eastHardwoodTreePatchClear);
 		fossilIslandEastStep.addStep(eastHardwoodStates.getIsStump(), eastHardwoodTreePatchDig);
@@ -328,6 +342,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		fossilIslandMiddleStep = (ConditionalStep) new ConditionalStep(this, middleHardwoodTreePatchCheckHealth).withId(102);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsUnchecked(), middleHardwoodTreePatchCheckHealth);
+		fossilIslandMiddleStep.addStep(and(middleHardwoodStates.getIsHarvestable(), not(payingForRemoval)), middleHardwoodTreePatchCutDown);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsEmpty(), middleHardwoodTreePatchPlant);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsHarvestable(), middleHardwoodTreePatchClear);
 		fossilIslandMiddleStep.addStep(middleHardwoodStates.getIsStump(), middleHardwoodTreePatchDig);
@@ -336,6 +351,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		fossilIslandWestStep = (ConditionalStep) new ConditionalStep(this, westHardwoodTreePatchCheckHealth).withId(103);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsUnchecked(), westHardwoodTreePatchCheckHealth);
+		fossilIslandWestStep.addStep(and(westHardwoodStates.getIsHarvestable(), not(payingForRemoval)), westHardwoodTreePatchCutDown);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsEmpty(), westHardwoodTreePatchPlant);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsHarvestable(), westHardwoodTreePatchClear);
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsStump(), westHardwoodTreePatchDig);
@@ -345,6 +361,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		savannahStep = new ConditionalStep(this, savannahCheckHealth);
 		savannahStep.addStep(savannahStates.getIsUnchecked(), savannahCheckHealth);
+		savannahStep.addStep(and(savannahStates.getIsHarvestable(), not(payingForRemoval)), savannahCutDown);
 		savannahStep.addStep(savannahStates.getIsEmpty(), savannahPlant);
 		savannahStep.addStep(savannahStates.getIsHarvestable(), savannahClear);
 		savannahStep.addStep(savannahStates.getIsStump(), savannahDig);
@@ -362,6 +379,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		kastoriFruitStep = (ConditionalStep) new ConditionalStep(this, kastoriFruitTreePatchCheckHealth).withId(131);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsUnchecked(), kastoriFruitTreePatchCheckHealth);
+		kastoriFruitStep.addStep(and(kastoriFruitStates.getIsHarvestable(), not(payingForRemoval)), kastoriFruitTreePatchCutDown);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsEmpty(), kastoriFruitTreePatchPlant);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsHarvestable(), kastoriFruitTreePatchClear);
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsStump(), kastoriFruitTreePatchDig);
@@ -370,6 +388,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		kastoriCalquatStep = (ConditionalStep) new ConditionalStep(this, kastoriCalquatPatchCheckHealth).withId(132);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsUnchecked(), kastoriCalquatPatchCheckHealth);
+		kastoriCalquatStep.addStep(and(kastoriCalquatStates.getIsHarvestable(), not(payingForRemoval)), kastoriCalquatPatchRemove);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsEmpty(), kastoriCalquatPatchPlant);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsHarvestable(), kastoriCalquatPatchClear);
 		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsStump(), kastoriCalquatPatchDig);
@@ -379,6 +398,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		anglersRetreatStep = new ConditionalStep(this, anglersCheckHealth);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsUnchecked(), anglersCheckHealth);
+		anglersRetreatStep.addStep(and(anglersRetreatStates.getIsHarvestable(), not(payingForRemoval)), anglersCutDown);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsEmpty(), anglersPlant);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsHarvestable(), anglersClear);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsStump(), anglersDig);
@@ -387,6 +407,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		greatConchStep = new ConditionalStep(this, greatConchCalquatPatchCheckHealth);
 		greatConchStep.addStep(greatConchStates.getIsUnchecked(), greatConchCalquatPatchCheckHealth);
+		greatConchStep.addStep(and(greatConchStates.getIsHarvestable(), not(payingForRemoval)), greatConchCalquatPatchRemove);
 		greatConchStep.addStep(greatConchStates.getIsEmpty(), greatConchCalquatPatchPlant);
 		greatConchStep.addStep(greatConchStates.getIsHarvestable(), greatConchCalquatPatchClear);
 		greatConchStep.addStep(greatConchStates.getIsStump(), greatConchCalquatPatchDig);
@@ -575,7 +596,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		farmingBoots = new ItemRequirement(
 			"Graceful cape", ItemID.TITHE_REWARD_FEET_MALE, 1, true).isNotConsumed();
-		farmingBoots.addAlternates(nItemID.TITHE_REWARD_FEET_FEMALE);
+		farmingBoots.addAlternates(ItemID.TITHE_REWARD_FEET_FEMALE);
 
 		farmersOutfit = new ItemRequirements(
 			"Farmer's outfit (equipped)",
@@ -879,6 +900,59 @@ public class TreeRun extends ComplexStateQuestHelper
 		greatConchCalquatPatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Great Conch", true);
 		greatConchCalquatPatchCheckHealth.addSubSteps(greatConchCalquatPatchPlant);
 
+		// Fruit Tree Cut Down Steps
+		gnomeStrongholdFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
+			"Cut down the fruit tree planted in the Tree Gnome Stronghold.", axe);
+		gnomeStrongholdFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Gnome Stronghold", true);
+
+		gnomeVillageFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
+			"Cut down the fruit tree planted outside the Tree Gnome Village.", axe);
+		gnomeVillageFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Tree Gnome Village", true);
+
+		brimhavenFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
+			"Cut down the fruit tree planted in Brimhaven.", axe);
+		brimhavenFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(InterfaceID.MENU, InterfaceID.Menu.LJ_LAYER1 & 0xFFFF, "Brimhaven", true);
+		brimhavenFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(InterfaceID.CHARTERING_MENU_SIDE, InterfaceID.CharteringMenuSide.LIST_CONTENT & 0xFFFF, "Brimhaven", true);
+		brimhavenFruitTreePatchCutDown.addWidgetHighlight(new WidgetHighlight(InterfaceID.SAILING_MENU, InterfaceID.SailingMenu.CONTENT & 0xFFFF, 2));
+
+		catherbyFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
+			"Cut down the fruit tree planted in Catherby.", axe);
+		catherbyFruitTreePatchCutDown.addTeleport(catherbyTeleport);
+		catherbyFruitTreePatchCutDown.addSpellHighlight(NormalSpells.CAMELOT_TELEPORT);
+		catherbyFruitTreePatchCutDown.addSpellHighlight(LunarSpells.CATHERBY_TELEPORT);
+
+		lletyaFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
+			"Cut down the fruit tree planted in Lletya.", axe);
+		lletyaFruitTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
+		lletyaFruitTreePatchCutDown.addTeleport(crystalTeleport);
+
+		farmingGuildFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
+			"Cut down the fruit tree planted in the Farming Guild.", axe);
+		farmingGuildFruitTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
+		farmingGuildFruitTreePatchCutDown.addTeleport(farmingGuildTeleport);
+		farmingGuildFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Farming Guild", true);
+
+		kastoriFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_7, new WorldPoint(1350, 3057, 0),
+			"Cut down the fruit tree planted in Kastori.", axe);
+		kastoriFruitTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriFruitTreePatchCutDown.addTeleport(kastoriTeleport);
+		kastoriFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Kastori", true);
+
+		taiBwoWannaiCalquatPatchRemove = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH, new WorldPoint(2795, 3102, 0),
+			"Pick the fruit off the calquat and clear the patch in Tai Bwo Wannai.");
+		taiBwoWannaiCalquatPatchRemove.addWidgetHighlightWithTextRequirement(187, 3, "Tai Bwo Wannai", true);
+
+		kastoriCalquatPatchRemove = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_2, new WorldPoint(1366, 3033, 0),
+			"Pick the fruit off the calquat and clear the patch in Kastori.");
+		kastoriCalquatPatchRemove.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriCalquatPatchRemove.addTeleport(kastoriTeleport);
+		kastoriCalquatPatchRemove.addWidgetHighlightWithTextRequirement(187, 3, "Kastori", true);
+
+		greatConchCalquatPatchRemove = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
+			"Pick the fruit off the calquat and clear the patch in Great Conch.");
+		greatConchCalquatPatchRemove.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToGreatConch));
+		greatConchCalquatPatchRemove.addWidgetHighlightWithTextRequirement(187, 3, "Great Conch", true);
+
 		// Clear
 		gnomeStrongholdFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
@@ -1013,6 +1087,22 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		anglersPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_5, new WorldPoint(2470, 2704, 0),
 			"Plant your sapling on the hardwood tree patch on Anglers' Retreat.", hardwoodSapling);
+
+		// Hardwood Tree Cut Down Steps
+		eastHardwoodTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
+			"Cut down the hardwood tree planted on the eastern hardwood tree patch on Fossil Island.", axe);
+
+		middleHardwoodTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
+			"Cut down the hardwood tree planted on the centre hardwood tree patch on Fossil Island.", axe);
+
+		westHardwoodTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
+			"Cut down the hardwood tree planted on the western hardwood tree patch on Fossil Island.", axe);
+
+		savannahCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
+			"Cut down the hardwood tree planted in the Avium Savannah.", axe);
+
+		anglersCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_5, new WorldPoint(2470, 2704, 0),
+			"Cut down the hardwood tree planted in the Anglers' Retreat.", axe);
 
 		westHardwoodTreePatchClear = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER3, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to remove the west tree.");

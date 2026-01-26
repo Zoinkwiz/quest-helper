@@ -94,6 +94,9 @@ public class TreeRun extends ComplexStateQuestHelper
 	DetailedQuestStep farmingGuildTreePatchCheckHealth, lumbridgeTreePatchCheckHealth, faladorTreePatchCheckHealth,
 		taverleyTreePatchCheckHealth, varrockTreePatchCheckHealth, gnomeStrongholdTreePatchCheckHealth,
 		auburnvaleTreePatchCheckHealth;
+	DetailedQuestStep farmingGuildTreePatchCutDown, lumbridgeTreePatchCutDown, faladorTreePatchCutDown,
+		taverleyTreePatchCutDown, varrockTreePatchCutDown, gnomeStrongholdTreePatchCutDown,
+		auburnvaleTreePatchCutDown;
 	DetailedQuestStep farmingGuildTreePatchPlant, lumbridgeTreePatchPlant, faladorTreePatchPlant,
 		taverleyTreePatchPlant, varrockTreePatchPlant, gnomeStrongholdTreePatchPlant,
 		auburnvaleTreePatchPlant;
@@ -203,6 +206,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		farmingGuildTreeStep = (ConditionalStep) new ConditionalStep(this, farmingGuildTreePatchCheckHealth).withId(-1);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsUnchecked(), farmingGuildTreePatchCheckHealth);
+		farmingGuildTreeStep.addStep(and(farmingGuildTreeStates.getIsHarvestable(), not(payingForRemoval)), farmingGuildTreePatchCutDown);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsHarvestable(), farmingGuildTreePatchClear);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsStump(), farmingGuildTreePatchDig);
 		farmingGuildTreeStep.addStep(farmingGuildTreeStates.getIsEmpty(), farmingGuildTreePatchPlant);
@@ -220,6 +224,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		lumbridgeStep = new ConditionalStep(this, lumbridgeTreePatchCheckHealth);
 		lumbridgeStep.addStep(lumbridgeStates.getIsUnchecked(), lumbridgeTreePatchCheckHealth);
+		lumbridgeStep.addStep(and(lumbridgeStates.getIsHarvestable(), not(payingForRemoval)), lumbridgeTreePatchCutDown);
 		lumbridgeStep.addStep(lumbridgeStates.getIsEmpty(), lumbridgeTreePatchPlant);
 		lumbridgeStep.addStep(lumbridgeStates.getIsHarvestable(), lumbridgeTreePatchClear);
 		lumbridgeStep.addStep(lumbridgeStates.getIsStump(), lumbridgeTreePatchDig);
@@ -228,6 +233,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		faladorStep = new ConditionalStep(this, faladorTreePatchCheckHealth);
 		faladorStep.addStep(faladorStates.getIsUnchecked(), faladorTreePatchCheckHealth);
+		faladorStep.addStep(and(faladorStates.getIsHarvestable(), not(payingForRemoval)), faladorTreePatchCutDown);
 		faladorStep.addStep(faladorStates.getIsEmpty(), faladorTreePatchPlant);
 		faladorStep.addStep(faladorStates.getIsHarvestable(), faladorTreePatchClear);
 		faladorStep.addStep(faladorStates.getIsStump(), faladorTreePatchDig);
@@ -236,6 +242,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		taverleyStep = new ConditionalStep(this, taverleyTreePatchCheckHealth);
 		taverleyStep.addStep(taverleyStates.getIsUnchecked(), taverleyTreePatchCheckHealth);
+		taverleyStep.addStep(and(taverleyStates.getIsHarvestable(), not(payingForRemoval)), taverleyTreePatchCutDown);
 		taverleyStep.addStep(taverleyStates.getIsEmpty(), taverleyTreePatchPlant);
 		taverleyStep.addStep(taverleyStates.getIsHarvestable(), taverleyTreePatchClear);
 		taverleyStep.addStep(taverleyStates.getIsStump(), taverleyTreePatchDig);
@@ -244,6 +251,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		varrockStep = new ConditionalStep(this, varrockTreePatchCheckHealth);
 		varrockStep.addStep(varrockStates.getIsUnchecked(), varrockTreePatchCheckHealth);
+		varrockStep.addStep(and(varrockStates.getIsHarvestable(), not(payingForRemoval)), varrockTreePatchCutDown);
 		varrockStep.addStep(varrockStates.getIsEmpty(), varrockTreePatchPlant);
 		varrockStep.addStep(varrockStates.getIsHarvestable(), varrockTreePatchClear);
 		varrockStep.addStep(varrockStates.getIsStump(), varrockTreePatchDig);
@@ -260,6 +268,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		strongholdTreeStep = (ConditionalStep) new ConditionalStep(this, gnomeStrongholdTreePatchCheckHealth).withId(52);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsUnchecked(), gnomeStrongholdTreePatchCheckHealth);
+		strongholdTreeStep.addStep(and(gnomeStrongholdTreeStates.getIsHarvestable(), not(payingForRemoval)), gnomeStrongholdTreePatchCutDown);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsEmpty(), gnomeStrongholdTreePatchPlant);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsHarvestable(), gnomeStrongholdTreePatchClear);
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsStump(), gnomeStrongholdTreePatchDig);
@@ -344,6 +353,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		auburnvaleStep = new ConditionalStep(this, auburnvaleTreePatchCheckHealth);
 		auburnvaleStep.addStep(auburnvaleStates.getIsUnchecked(), auburnvaleTreePatchCheckHealth);
+		auburnvaleStep.addStep(and(auburnvaleStates.getIsHarvestable(), not(payingForRemoval)), auburnvaleTreePatchCutDown);
 		auburnvaleStep.addStep(auburnvaleStates.getIsEmpty(), auburnvaleTreePatchPlant);
 		auburnvaleStep.addStep(auburnvaleStates.getIsHarvestable(), auburnvaleTreePatchClear);
 		auburnvaleStep.addStep(auburnvaleStates.getIsStump(), auburnvaleTreePatchDig);
@@ -463,12 +473,12 @@ public class TreeRun extends ComplexStateQuestHelper
 	{
 		setupConditions();
 		// Farming Item Requirements
-		spade = new ItemRequirement("Spade", net.runelite.api.gameval.ItemID.SPADE);
-		rake = new ItemRequirement("Rake", net.runelite.api.gameval.ItemID.RAKE)
+		spade = new ItemRequirement("Spade", ItemID.SPADE);
+		rake = new ItemRequirement("Rake", ItemID.RAKE)
 			.hideConditioned(new VarbitRequirement(VarbitID.FARMING_BLOCKWEEDS, 2));
 		coins = new ItemRequirement("Coins to quickly remove trees.", ItemID.COINS)
 			.showConditioned(payingForRemoval);
-		axe = new ItemRequirement("Any axe you can use", ItemCollections.AXES);
+		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed().showConditioned(not(payingForRemoval));
 
 		TreeSapling treeSaplingEnum = (TreeSapling) FarmingUtils.getEnumFromConfig(configManager, TreeSapling.MAGIC);
 		treeSapling = treeSaplingEnum.getPlantableItemRequirement(itemManager);
@@ -552,7 +562,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 
 		farmingHat = new ItemRequirement(
-			"Farmer's strawhat", net.runelite.api.gameval.ItemID.TITHE_REWARD_HAT_MALE, 1 ,true).isNotConsumed();
+			"Farmer's strawhat", ItemID.TITHE_REWARD_HAT_MALE, 1 ,true).isNotConsumed();
 		farmingHat.addAlternates(ItemID.TITHE_REWARD_HAT_FEMALE);
 
 		farmingTop = new ItemRequirement(
@@ -561,11 +571,11 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		farmingLegs = new ItemRequirement(
 			"Farmer's boro trousers", ItemID.TITHE_REWARD_LEGS_MALE, 1, true).isNotConsumed();
-		farmingLegs.addAlternates(net.runelite.api.gameval.ItemID.TITHE_REWARD_LEGS_FEMALE);
+		farmingLegs.addAlternates(ItemID.TITHE_REWARD_LEGS_FEMALE);
 
 		farmingBoots = new ItemRequirement(
 			"Graceful cape", ItemID.TITHE_REWARD_FEET_MALE, 1, true).isNotConsumed();
-		farmingBoots.addAlternates(net.runelite.api.gameval.ItemID.TITHE_REWARD_FEET_FEMALE);
+		farmingBoots.addAlternates(nItemID.TITHE_REWARD_FEET_FEMALE);
 
 		farmersOutfit = new ItemRequirements(
 			"Farmer's outfit (equipped)",
@@ -662,6 +672,39 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the tree planted at Auburnvale");
 		auburnvaleTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
 		auburnvaleTreePatchCheckHealth.addTeleport(auburnvaleTeleport);
+
+		// Tree Cut Down Steps
+		farmingGuildTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
+			"Cut down the tree planted in the Farming Guild.", axe);
+		farmingGuildTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
+		farmingGuildTreePatchCutDown.addTeleport(farmingGuildTeleport);
+
+		lumbridgeTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
+			"Cut down the tree planted in Lumbridge.", axe);
+		lumbridgeTreePatchCutDown.addTeleport(lumbridgeTeleport);
+		lumbridgeTreePatchCutDown.addSpellHighlight(NormalSpells.LUMBRIDGE_TELEPORT);
+		lumbridgeTreePatchCutDown.addSpellHighlight(NormalSpells.LUMBRIDGE_HOME_TELEPORT);
+
+		faladorTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
+			"Cut down the tree planted in Falador.", axe);
+		faladorTreePatchCutDown.addTeleport(faladorTeleport);
+		faladorTreePatchCutDown.addSpellHighlight(NormalSpells.FALADOR_TELEPORT);
+
+		taverleyTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
+			"Cut down the tree planted in Taverley.", axe);
+
+		varrockTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
+			"Cut down the tree planted in Varrock.", axe);
+		varrockTreePatchCutDown.addTeleport(varrockTeleport);
+		varrockTreePatchCutDown.addSpellHighlight(NormalSpells.VARROCK_TELEPORT);
+
+		gnomeStrongholdTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
+			"Cut down the tree planted in the Tree Gnome Stronghold.", axe);
+
+		auburnvaleTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
+			"Cut down the tree planted at Auburnvale.", axe);
+		auburnvaleTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		auburnvaleTreePatchCutDown.addTeleport(auburnvaleTeleport);
 
 		// Tree Plant Steps
 		lumbridgeTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
@@ -1139,7 +1182,7 @@ public class TreeRun extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(spade, rake, compost, coins, allTreeSaplings, allFruitSaplings, allHardwoodSaplings, allCalquatSaplings, allProtectionItemTree, allProtectionItemFruitTree, allProtectionItemHardwood, allProtectionItemCalquat);
+		return Arrays.asList(spade, rake, compost, coins, axe, allTreeSaplings, allFruitSaplings, allHardwoodSaplings, allCalquatSaplings, allProtectionItemTree, allProtectionItemFruitTree, allProtectionItemHardwood, allProtectionItemCalquat);
 	}
 
 	@Override

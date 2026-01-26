@@ -170,10 +170,9 @@ public class DeviousMinds extends BasicQuestHelper
 		talkToMonk2 = new NpcStep(this, NpcID.DEVIOUS_MONK_HOODED_VISABLE, new WorldPoint(3406, 3494, 0),
 			"Return to the monk near the Paterdomus temple with the bow-sword.", bowSword);
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
-		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large/Colossal Pouch.", orb, largePouch);
-
+		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large/Colossal Pouch. You will also be going to Entrana via the Abyss, so you must bank all combat gear.", orb, largePouch);
 		teleToAbyss = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1B, new WorldPoint(3106, 3556, 0),
-			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
+			"Teleport with the Mage of Zamorak IN THE WILDERNESS (other players can attack you here) to the Abyss. You will be attacked by " +
 				"monsters upon entering, and your prayer drained to 0!", illumPouch, noEquipment);
 		enterLawRift = new ObjectStep(this, ObjectID.ABYSS_EXIT_TO_LAW, new WorldPoint(3049, 4839, 0),
 			"Enter the central area through a gap/passage/eyes. Enter the Law Rift.", illumPouch, noEquipment);

@@ -385,7 +385,7 @@ public class MyArmsBigAdventure extends BasicQuestHelper
 		talkToMyArmAfterBaby = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0),
 			"Talk to My Arm. Be prepared to fight the Giant Roc.", combatGear, spade);
 
-		killGiantRoc = new NpcStep(this, NpcID.MYARM_GIANT_ROC, "Kill the Giant Roc. Use protected from ranged, and keep your distance. You can dodge the boulders it throws.");
+		killGiantRoc = new NpcStep(this, NpcID.MYARM_GIANT_ROC, "Kill the Giant Roc. Use protect from missiles, and keep your distance. You can dodge the boulders it throws.");
 		talkToMyArmAfterHarvest = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Talk to My Arm.");
 		giveSpade = new NpcStep(this, NpcID.MYARM_FIXED, new WorldPoint(2829, 3695, 0), "Give My Arm a spade.", spadeHighlight);
 		giveSpade.addIcon(ItemID.SPADE);

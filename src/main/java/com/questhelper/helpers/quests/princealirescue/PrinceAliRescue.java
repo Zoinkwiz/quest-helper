@@ -201,7 +201,6 @@ public class PrinceAliRescue extends BasicQuestHelper
 		makeKey = new ObjectStep(this, ObjectID.FAI_FALADOR_FURNACE, new WorldPoint(3227, 3256, 0), "Use the key print on any furnace with a bronze bar in your inventory to make a key.", keyPrint.highlighted(), bronzeBar);
 		talkToLeela = new NpcStep(this, NpcID.LEELA, new WorldPoint(3113, 3262, 0), "Talk to Leela east of Draynor Village.", beers3, dyedWig, paste, rope, pinkSkirt);
 		reobtainKey = new NpcStep(this, NpcID.LEELA, new WorldPoint(3113, 3262, 0), "Talk to Leela east of Draynor Village for another key. It'll cost 15gp.", coins100.quantity(15));
-		talkToLeela.addSubSteps(reobtainKey);
 
 		talkToJoe = new NpcStep(this, NpcID.JOE_VIS, new WorldPoint(3124, 3245, 0), "Bring everything to the jail and give Joe there three beers.", beers3, key, dyedWig, paste, rope, pinkSkirt);
 		talkToJoe.addDialogStep("I have some beer here. Fancy one?");

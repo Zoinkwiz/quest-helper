@@ -29,6 +29,12 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew build
 
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v6
+        if: success() || failure()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+
       - name: Build shadowJar
         run: ./gradlew shadowJar
 

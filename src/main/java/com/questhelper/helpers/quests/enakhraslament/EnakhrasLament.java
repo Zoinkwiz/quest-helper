@@ -262,7 +262,10 @@ public class EnakhrasLament extends BasicQuestHelper
 		camelHead.setHighlightInInventory(true);
 
 		breadOrCake = new ItemRequirement("Bread or cake", ItemID.BREAD);
-		breadOrCake.addAlternates(ItemID.CAKE);
+		// Excluded mud pie, botanical pie, mushroom pie, dragonfruit pie as unsure if those would work due to inedibility and/or newness of pie
+		breadOrCake.addAlternates(ItemID.CAKE, ItemID.CHOCOLATE_CAKE, ItemID.REDBERRY_PIE, ItemID.MEAT_PIE, ItemID.APPLE_PIE, ItemID.GARDEN_PIE, ItemID.FISH_PIE, ItemID.ADMIRAL_PIE, ItemID.WILD_PIE, ItemID.SUMMER_PIE);
+		breadOrCake.addAlternates(ItemID.PLAIN_PIZZA, ItemID.MEAT_PIZZA, ItemID.ANCHOVIE_PIZZA, ItemID.PINEAPPLE_PIZZA);
+		breadOrCake.addAlternates(ItemID.POTATO_BUTTER, ItemID.POTATO_CHILLI_CARNE, ItemID.POTATO_CHEESE, ItemID.POTATO_EGG_TOMATO, ItemID.POTATO_MUSHROOM_ONION, ItemID.POTATO_TUNA_SWEETCORN);
 		breadOrCake.setHighlightInInventory(true);
 		breadOrCake.setDisplayMatchedItemName(true);
 

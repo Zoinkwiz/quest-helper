@@ -370,7 +370,7 @@ public class DwarfCannon extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Finding the lad", List.of(
 			gotoCave,
-			// searchCrates,
+			searchCrates,
 			talkToCaptainLawgof4,
 			pwFixMulticannon,
 			talkToCaptainLawgof5

@@ -336,6 +336,8 @@ public class Pandemonium extends BasicQuestHelper
 		steps.put(32, getNewJob); // Jim
 		steps.put(34, boardShip);
 		var cSailToPortSarim = new ConditionalStep(this, boardShip);
+		cSailToPortSarim.addStep(and(atPortSarimDock, cargoNotPickedUp, takenHelm), letGoOfHelm);
+		cSailToPortSarim.addStep(and(atPortSarimDock, cargoNotPickedUp, onboardShip), disembarkShipPS);
 		cSailToPortSarim.addStep(and(not(atPortSarimDock), sailing), sailToPortSarim);
 		cSailToPortSarim.addStep(and(not(atPortSarimDock), takenHelm), raiseSails2);
 		cSailToPortSarim.addStep(and(not(atPortSarimDock), onboardShip), takeHelm2);

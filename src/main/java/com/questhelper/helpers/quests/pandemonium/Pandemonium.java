@@ -255,7 +255,11 @@ public class Pandemonium extends BasicQuestHelper
 		sailToPandemonium = new SailStep(this, Port.PANDEMONIUM);
 		letGoOfHelm2 = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IN_USE, new WorldPoint(3843, 6460, 1), "Let go of the helm.");
 		pickupCargoShip = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Pick up the cargo from your ship's cargo hold.", nothingInHands);
+
+		// In case the user boards the Pandemonium without picking up the cargo from their ship
 		boardShip3 = new BoardShipStep(this);
+		pickupCargoShip.addSubSteps(boardShip3);
+
 		disembarkShipP = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_DISEMBARK, new WorldPoint(3070, 2987, 0), "Leave your ship.");
 		deliverCargo = new ObjectStep(this, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT, new WorldPoint(3061, 2985, 0), "Deliver the cargo at the ledger table on the docks.");
 		//Finish up

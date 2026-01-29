@@ -27,12 +27,17 @@ package com.questhelper.helpers.quests.recruitmentdrive;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ConfigRequirement;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -299,7 +304,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 			sirSpishyusStep.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide), moveChickenOnRightToLeftAgain);
 			sirSpishyusStep.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnLeftSide), moveChickenToLeftAgain);
 
-			pwSirSpishyusStep = sirSpishyusStep.puzzleWrapStepWithDefaultText("Solve Sir Spishyus' riddle.");
+			pwSirSpishyusStep = sirSpishyusStep.puzzleWrapStepWithDefaultText("Solve Sir Spishyus' riddle XD."); //
+			// sirSpishyusStep.conditionToHideInSidebar(not(new ConfigRequirement(this.getConfig()::solvePuzzles)));
 		}
 
 		// Sir Kuam
@@ -447,15 +453,25 @@ public class RecruitmentDrive extends BasicQuestHelper
 			leaveSirKuamRoom
 		)));
 
-		sections.add(new PanelDetails("Sir Spishyus", List.of(
-			pwSirSpishyusStep,
+		var sirSpishyusPanel = new PanelDetails("Sir Spishyus", List.of(
 			moveChickenOnRightToLeft,
+			pwSirSpishyusStep,
 			moveFoxOnRightToLeft,
 			moveChickenOnLeftToRight,
 			moveGrainOnRightToLeft,
 			moveChickenOnRightToLeftAgain,
 			finishedSpishyusRoom
-		)));
+		));
+		// sirSpishyusPanel.setHideCondition(not(new ConfigRequirement(this.getConfig()::solvePuzzles)));
+		sections.add(sirSpishyusPanel);
+
+		// This is a bit of a janky solution for how to include
+		// var sirSpishyusPanelPW = new PanelDetails("Sir Spishyus", List.of(
+		// 	pwSirSpishyusStep,
+		// 	finishedSpishyusRoom
+		// ));
+		// sirSpishyusPanelPW.setHideCondition(new ConfigRequirement(this.getConfig()::solvePuzzles));
+		// sections.add(sirSpishyusPanelPW);
 
 		sections.add(new PanelDetails("Sir Ren Itchood",
 			sirRenStep.getPanelSteps()

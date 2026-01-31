@@ -152,7 +152,7 @@ public class ValeTotems extends BasicQuestHelper
 		oneDecorativeItem.setTooltip("You can also use Willow, Maple, Yew, Magic, or Redwood decorative items, but it needs to match the logs you used to build the totem.");
 
 		needToBuildTotem = new VarbitRequirement(VarbitID.ENT_TOTEMS_BROKEN_CHAT, 1);
-		isTotemBaseBuilt = new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_BASE, 1);
+		isTotemBaseBuilt = new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_BASE, 0, Operation.GREATER);
 
 		isBuffaloNearby = or(
 			new VarbitRequirement(VarbitID.ENT_TOTEMS_SITE_1_ANIMAL_1, 1),

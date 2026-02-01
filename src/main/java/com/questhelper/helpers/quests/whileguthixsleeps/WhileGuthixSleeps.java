@@ -63,6 +63,8 @@ import net.runelite.api.gameval.*;
 
 import java.util.*;
 
+import static com.questhelper.requirements.item.ItemRequirement.SOME_QUANTITY;
+import static com.questhelper.requirements.item.ItemRequirement.UNDEFINED_QUANTITY;
 import static com.questhelper.requirements.util.LogicHelper.*;
 
 public class WhileGuthixSleeps extends BasicQuestHelper
@@ -70,7 +72,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	//Items Required
 	ItemRequirement litSapphireLantern, airRune, earthRune, fireRune, waterRune, mindRune, lawRune,
 		deathRune, dibber, log, charcoal, papyrus, lanternLens, mortMyreFungus, unpoweredOrb, ringOfCharosA, coins, bronzeMedHelm,
-		ironChainbody, chargeOrbSpell, meleeGear, rangedGear, combatGear, logs, knife, snapdragonSeed, astralRune, cosmicRune,
+		ironChainbody, chargeOrbSpell, magicWeaponSurok, meleeGear, rangedGear, combatGear, logs, knife, snapdragonSeed, astralRune, cosmicRune,
 		bindRunes, weakenRunes, magicGear, squallOutfit, eliteBlackKnightOutfit, telegrabRunes, alchRunes, elementalSpellRunes;
 
 	// Items Recommended
@@ -139,7 +141,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 	DetailedQuestStep talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile, castChargedOrbOnTile, enterCatacombs, jumpBridge,
 		climbWallInCatacombs, useWesternSolidDoor, enterCatacombShortcut, enterNorthernSolidDoor, killKnightsForEliteArmour, equipSquallOrEliteArmour, searchWardrobeForEliteArmour, searchWardrobeForSquallRobes,
 		searchDeskForTeleorb, searchDeskForLobster, searchDeskForLawAndDeathRune, searchKeyRack, leaveSolidDoor, openSilifsCell, useLobsterOnSilif, useRestoreOnSilif, giveSilifEliteArmour,
-		talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurok, defeatSurokSidebar, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn,
+		talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, enterBlacKnightFortressToFight, climbUpCatacombLadder, defeatSurok, defeatSurokSidebar, plantOrbOnSurok, talkToAkrisaeAfterSurok, enterCellWithRobesOn,
 		talkToSilifForRobes, activateStrangeTeleorb, climbIceWall, jumpToLedge, talkToIdriaAfterChapel;
 
 	DetailedQuestStep goDownForOrbAndRunes, takeStrangeTeleorb, takeRunes, goUpToUseTeleorb, getRunes, standAtTeleportSpot;
@@ -406,6 +408,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		goEnterCatacombs.addStep(inBlackKnightFortressBasement, enterCatacombs);
 		goEnterCatacombs.addStep(inHiddenRoom, climbDownBlackKnightBasement);
 		goEnterCatacombs.addStep(inBlackKnightFortress, pushHiddenWall);
+		goEnterCatacombs.addStep(seenMap, enterBlacKnightFortressToFight);
 		steps.put(480, goEnterCatacombs);
 		steps.put(490, goEnterCatacombs);
 		steps.put(500, goEnterCatacombs);
@@ -656,6 +659,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		magicGear = new ItemRequirement("Magic weapon", -1, -1).isNotConsumed();
 		magicGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 
+		magicWeaponSurok = new ItemRequirement("Magic weapon for casting elemental spells", -1, UNDEFINED_QUANTITY);
+
 		// Recommended items
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 		burthorpeTeleport = new ItemRequirement("Teleport to Burthorpe", ItemCollections.COMBAT_BRACELETS);
@@ -709,8 +714,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		fullDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH);
 		silverSickleB = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_BLESSED);
 
-		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD);
-		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, SOME_QUANTITY);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, SOME_QUANTITY);
 
 		// Quest items
 		dirtyShirt = new ItemRequirement("Dirty shirt", ItemID.WGS_DIRTYCLOTHES);
@@ -1320,6 +1325,11 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank()), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
 		// 10962 0->1 when teleported
 		enterBlackKnightFortress.addDialogStep("Yes.");
+
+		enterBlacKnightFortressToFight = new ObjectStep(this, ObjectID.BKFORTRESSDOOR1, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Be ready to fight Surok. You'll only be able to hurt him with elemental spells from the normal spellbook.",
+			normalSpellbook, ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank()), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank()), squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank()),
+			elementalSpellRunes, bindRunes, weakenRunes, alchRunes, telegrabRunes, food, prayerPotions);
+
 		pushHiddenWall = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");
 		climbDownBlackKnightBasement = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDERTOP, new WorldPoint(3016, 3519, 0), "Go down the ladder.");
 		inspectCarvedTile = new ObjectStep(this, ObjectID.WGS_BLACK_KNIGHTS_TUNNEL_MULTI, new WorldPoint(1870, 4237, 0), "Inspect the tile on the floor on the east side of the room.");
@@ -1371,8 +1381,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		talkToSilifToFollow.addDialogStep("Let's go.");
 		enterNorthernSolidDoorAgain = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_BASE_MAIN_DOOR_ACTIVE, new WorldPoint(4104, 4799, 2), "Enter the most northern solid door again.");
 		goNearMap = new DetailedQuestStep(this, new WorldPoint(4120, 4840, 1), "Stand near the map just east of the door until Silif talks about it.");
-		climbUpCatacombLadder = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_LADDER, new WorldPoint(4142, 4855, 1), "Climb up the ladder to the east, ready to fight Surok.",
-			darkSquallHood.equipped(), darkSquallBody.equipped(), darkSquallLegs.equipped());
+		climbUpCatacombLadder = new ObjectStep(this, ObjectID.LUC2_DARKSQUALL_LADDER, new WorldPoint(4142, 4855, 1), "Bank if you haven't already to get ready for the Surok fight (details in the sidebar). Climb up the ladder to the east once you're ready.",
+			darkSquallHood.equipped(), darkSquallBody.equipped(), darkSquallLegs.equipped(), magicGear, bindRunes, weakenRunes, alchRunes, telegrabRunes,
+			elementalSpellRunes);
 		talkToSilifAtMap = new NpcStep(this, NpcID.WGS_SILIF_ARMOUR, new WorldPoint(4142, 4855, 1), "Talk to Silif near the map until he gives you a teleorb.");
 		defeatSurok = new NpcStep(this, NpcID.DARK_SQUALL_COMBAT, new WorldPoint(4145, 4850, 2), "Defeat Surok. Read the sidebar for more details.");
 
@@ -1663,10 +1674,12 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Infiltration", List.of(talkToAkrisaeAfterRecruitment, enterBlackKnightFortress, pushHiddenWall, climbDownBlackKnightBasement, inspectCarvedTile,
 			castChargedOrbOnTile, enterCatacombs, jumpBridge, climbWallInCatacombs, useWesternSolidDoor, enterNorthernSolidDoor, killKnightsForEliteArmour, searchWardrobeForEliteArmour,
 			searchKeyRack, searchWardrobeForSquallRobes, searchDeskForTeleorb, searchDeskForLawAndDeathRune, searchDeskForLobster, leaveSolidDoor, openSilifsCell, useLobsterOnSilif,
-			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
-			talkToAkrisaeAfterSurok),
-			List.of(normalSpellbook, emptySlots9, bronzeMedHelm, ironChainbody, magicGear, meleeGear, unpoweredOrb, chargeOrbSpell), List.of(bindRunes, weakenRunes, alchRunes, telegrabRunes,
-			elementalSpellRunes, food, prayerPotions, faladorTeleport, staminaPotion)));
+			useRestoreOnSilif, giveSilifEliteArmour, talkToSilifToFollow, enterNorthernSolidDoorAgain, goNearMap, talkToSilifAtMap),
+			List.of(normalSpellbook, emptySlots9, bronzeMedHelm, ironChainbody, magicGear, meleeGear, unpoweredOrb, chargeOrbSpell), List.of(food, prayerPotions, faladorTeleport, staminaPotion)));
+		allSteps.add(new PanelDetails("Dark Squall", List.of(enterBlacKnightFortressToFight, enterCatacombShortcut, enterNorthernSolidDoorAgain, climbUpCatacombLadder, defeatSurokSidebar, plantOrbOnSurok,
+			talkToAkrisaeAfterSurok), List.of(normalSpellbook, squallOutfit, magicWeaponSurok, bindRunes, weakenRunes, alchRunes, telegrabRunes,
+			elementalSpellRunes, food, prayerPotions), List.of(faladorTeleport, staminaPotion)));
+
 		allSteps.add(new PanelDetails("Confrontation", List.of(enterCellWithRobesOn, goDownForOrbAndRunes, takeRunes, takeStrangeTeleorb, goUpToUseTeleorb,
 			standAtTeleportSpot, activateStrangeTeleorb, climbIceWall, jumpToLedge)));
 		allSteps.add(new PanelDetails("Delving Deeper", List.of(talkToIdriaAfterChapel, teleportToJuna, talkToMovario, useLitSapphireLanternOnLightCreature, searchRemainsForSpade,

@@ -326,6 +326,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.DADDYS_HOME,
 			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
+			QuestHelperQuest.THE_KNIGHTS_SWORD,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.ARDOUGNE_EASY,
 			QuestHelperQuest.TROUBLED_TORTUGANS,

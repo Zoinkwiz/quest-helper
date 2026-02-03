@@ -25,7 +25,9 @@
 package com.questhelper.helpers.quests.pandemonium;
 
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.requirements.Requirement;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.player.ShipInPortRequirement;
@@ -46,17 +48,14 @@ import com.questhelper.steps.BoardShipStep;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.SailStep;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import com.questhelper.panel.PanelDetails;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
@@ -67,116 +66,114 @@ import net.runelite.api.gameval.VarbitID;
 
 public class Pandemonium extends BasicQuestHelper
 {
-	NpcStep getToPandemonium, talkToWill, boardWAShip, explainJob, explainJob2, learnWhereYouAre, learnWhoWAare, talkToRibs, findLocationWA, enterShipyard, informAboutShip, showCup, getLogBook, getNewJob, talkToJim, meetGrog, finishQuest;
-	ObjectStep buildCargoHold, embarkShipSY, disembarkShipSY, leaveShipyard,dropCargoInCargoHold, disembarkShipPS, deliverCargo, disembarkShipP, getHammer, getSaw;
-	Zone pandemonium, portSarim, pandemoniumDockZone, portSarimDockZone, shipWreckZone;
-	DetailedQuestStep navigateShip, watchSalvageCutscene, takeHelm, takeHelm2, takeHelm3, raiseSails, raiseSails2, raiseSails3, salvageShipwreck, sailToPortSarim, pickupCargo, pickupCargoShip, sailToPandemonium, letGoOfHelm, letGoOfHelm2;
-	BoardShipStep boardShip, boardShip2, boardShip3;
-	Requirement onPandemonium, boatAtPortSarim, onboardShip, takenHelm, setSails, sailing, atShipwreck, notAtShipwreck, canSalvage, hammerAndSaw, atShipyard, atPortSarimDock, atPandemoniumDock, holdingCargo, cargoPickedUp, cargoNotPickedUp, cargoInCargoHold;
-	ItemRequirement hammer, saw, cup;
+	// Required items
+	ItemRequirement hammer;
+	ItemRequirement saw;
+
+	// Mid-quest item requirements
+	ItemRequirement cup;
+
+	// Zones
+	Zone pandemonium;
+	Zone portSarim;
+	Zone pandemoniumDockZone;
+	Zone portSarimDockZone;
+	Zone shipWreckZone;
+
+	// Miscellaneous requirements
+	ZoneRequirement onPandemonium;
+	ShipInPortRequirement boatAtPortSarim;
+	VarbitRequirement onboardShip;
+	VarbitRequirement takenHelm;
+	VarbitRequirement setSails;
+	Conditions sailing;
+	VarbitRequirement atShipwreck;
+	Conditions canSalvage;
+	VarbitRequirement atShipyard;
+	VarbitRequirement holdingCargo;
+	VarbitRequirement cargoPickedUp;
+	Conditions cargoNotPickedUp;
+	ZoneRequirement atPortSarimDock;
+	ZoneRequirement atPandemoniumDock;
+	Conditions cargoInCargoHold;
 	NoItemRequirement nothingInHands;
 
+	// Steps
+	NpcStep getToPandemonium;
+	NpcStep talkToWill;
+	NpcStep boardWAShip;
+	NpcStep explainJob;
+	NpcStep explainJob2;
+	NpcStep learnWhereYouAre;
+	NpcStep learnWhoWAare;
+	NpcStep talkToRibs;
+	NpcStep findLocationWA;
+	NpcStep enterShipyard;
+	NpcStep informAboutShip;
+	NpcStep showCup;
+	NpcStep getLogBook;
+	NpcStep getNewJob;
+	NpcStep talkToJim;
+	NpcStep meetGrog;
+	NpcStep finishQuest;
+	ObjectStep buildCargoHold;
+	ObjectStep embarkShipSY;
+	ObjectStep disembarkShipSY;
+	ObjectStep leaveShipyard;
+	ObjectStep dropCargoInCargoHold;
+	ObjectStep disembarkShipPS;
+	ObjectStep deliverCargo;
+	ObjectStep disembarkShipP;
+	ObjectStep getHammer;
+	ObjectStep getSaw;
+	DetailedQuestStep navigateShip;
+	DetailedQuestStep watchSalvageCutscene;
+	DetailedQuestStep takeHelm;
+	DetailedQuestStep takeHelm2;
+	DetailedQuestStep takeHelm3;
+	DetailedQuestStep raiseSails;
+	DetailedQuestStep raiseSails2;
+	DetailedQuestStep raiseSails3;
+	DetailedQuestStep salvageShipwreck;
+	DetailedQuestStep sailToPortSarim;
+	DetailedQuestStep pickupCargo;
+	DetailedQuestStep pickupCargoShip;
+	DetailedQuestStep sailToPandemonium;
+	DetailedQuestStep letGoOfHelm;
+	DetailedQuestStep letGoOfHelm2;
+	BoardShipStep boardShip;
+	BoardShipStep boardShip2;
+	BoardShipStep boardShip3;
+
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToWill);
-		steps.put(2, talkToWill);
-
-		steps.put(4, boardWAShip);
-
-		ConditionalStep goListenOnShip = new ConditionalStep(this, talkToWill);
-		goListenOnShip.addStep(onboardShip, explainJob);
-		steps.put(6, goListenOnShip);
-
-		ConditionalStep cNavigateToShipwreckOnShip = new ConditionalStep(this, takeHelm);
-		cNavigateToShipwreckOnShip.addStep(canSalvage, salvageShipwreck);
-		cNavigateToShipwreckOnShip.addStep(atShipwreck, explainJob2);
-		cNavigateToShipwreckOnShip.addStep(sailing, navigateShip);
-		cNavigateToShipwreckOnShip.addStep(takenHelm, raiseSails);
-		cNavigateToShipwreckOnShip.addStep(notAtShipwreck, takeHelm);
-
-		ConditionalStep cNavigateToShipwreck = new ConditionalStep(this, boardWAShip);
-		cNavigateToShipwreck.addStep(and(new VarbitRequirement(VarbitID.CUTSCENE_STATUS, 1), canSalvage), watchSalvageCutscene);
-		cNavigateToShipwreck.addStep(onboardShip, cNavigateToShipwreckOnShip);
-		steps.put(8, cNavigateToShipwreck);
-		steps.put(10, cNavigateToShipwreck);
-		steps.put(12, cNavigateToShipwreck);
-		steps.put(14, cNavigateToShipwreck);
-
-		ConditionalStep cLearnWhereYouAre = new ConditionalStep(this, getToPandemonium);
-		cLearnWhereYouAre.addStep(onPandemonium, learnWhereYouAre);
-		steps.put(16, cLearnWhereYouAre);
-		ConditionalStep cLearnWhoWAare = new ConditionalStep(this, getToPandemonium);
-		cLearnWhoWAare.addStep(onPandemonium, learnWhoWAare);
-		steps.put(18, cLearnWhoWAare);
-		ConditionalStep cTalkToRibs = new ConditionalStep(this, getToPandemonium);
-		cTalkToRibs.addStep(onPandemonium, talkToRibs);
-		steps.put(20, cTalkToRibs);
-		ConditionalStep cFindLocationWA = new ConditionalStep(this, getToPandemonium);
-		cFindLocationWA.addStep(onPandemonium, findLocationWA);
-		steps.put(22, cFindLocationWA);
-		ConditionalStep cInformAboutShip = new ConditionalStep(this, getToPandemonium);
-		cInformAboutShip.addStep(onPandemonium, informAboutShip);
-		steps.put(24, cInformAboutShip);
-		ConditionalStep cShowCup = new ConditionalStep(this, getToPandemonium);
-		cShowCup.addStep(onPandemonium, showCup);
-		steps.put(26, cShowCup);
-
-		ConditionalStep cBuildCargoHold = new ConditionalStep(this, getToPandemonium);
-		cBuildCargoHold.addStep(and(atShipyard, onboardShip), buildCargoHold);
-		cBuildCargoHold.addStep(and(atShipyard, hammerAndSaw), embarkShipSY);
-		cBuildCargoHold.addStep(and(atShipyard, saw), getHammer);
-		cBuildCargoHold.addStep(atShipyard, getSaw);
-		cBuildCargoHold.addStep(onPandemonium, enterShipyard);
-		steps.put(28, cBuildCargoHold);
-
-
-		ConditionalStep cGetLogBook = new ConditionalStep(this, getToPandemonium);
-		cGetLogBook.addStep(onPandemonium, getLogBook);
-		cGetLogBook.addStep(atShipyard, leaveShipyard);
-		steps.put(30, cGetLogBook); // Jim
-
-		steps.put(32, getNewJob); // Jim
-		steps.put(34, boardShip);
-		ConditionalStep cSailToPortSarim = new ConditionalStep(this, boardShip);
-		cSailToPortSarim.addStep(and(not(atPortSarimDock), sailing), sailToPortSarim);
-		cSailToPortSarim.addStep(and(not(atPortSarimDock), takenHelm), raiseSails2);
-		cSailToPortSarim.addStep(and(not(atPortSarimDock), onboardShip), takeHelm2);
-		steps.put(36, cSailToPortSarim);
-		ConditionalStep cCheckPortMaster = new ConditionalStep(this, cSailToPortSarim);
-		cCheckPortMaster.addStep(and(boatAtPortSarim, holdingCargo, not(onboardShip)), boardShip2);
-		cCheckPortMaster.addStep(and(boatAtPortSarim, cargoNotPickedUp, not(onboardShip)), pickupCargo);
-		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, takenHelm), letGoOfHelm);
-		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, onboardShip), disembarkShipPS);
-		steps.put(38, cCheckPortMaster);
-		ConditionalStep cSailToPandemonium = new ConditionalStep(this, cCheckPortMaster);
-		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoInCargoHold, onboardShip, takenHelm, sailing), sailToPandemonium);
-		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoInCargoHold, onboardShip, takenHelm), raiseSails3);
-		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoInCargoHold, onboardShip), takeHelm3);
-		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoPickedUp, holdingCargo, onboardShip), dropCargoInCargoHold);
-
-		ConditionalStep cDeliverCargo = new ConditionalStep(this, cSailToPandemonium);
-		cDeliverCargo.addStep(and(onPandemonium, not(onboardShip), holdingCargo), deliverCargo);
-		cDeliverCargo.addStep(and(atPandemoniumDock, onboardShip, holdingCargo), disembarkShipP);
-		cDeliverCargo.addStep(and(atPandemoniumDock, onboardShip, nor(takenHelm, setSails), cargoInCargoHold), pickupCargoShip);
-		cDeliverCargo.addStep(and(onPandemonium, not(onboardShip), cargoInCargoHold), boardShip3);
-		cDeliverCargo.addStep(and(atPandemoniumDock, cargoInCargoHold, takenHelm), letGoOfHelm2);
-		steps.put(40, cDeliverCargo);
-		steps.put(42, cDeliverCargo);
-		steps.put(44, talkToJim);
-		steps.put(46, meetGrog);
-		steps.put(48, finishQuest);
-
-		return steps;
+		shipWreckZone = new Zone(new WorldPoint(3018, 3030, 0), new WorldPoint(3040, 3050, 0));
+		pandemonium = new Zone(new WorldPoint(3069, 3005, 0), new WorldPoint(3028, 2963, 0));
+		portSarim = new Zone(new WorldPoint(3027, 3192, 0), new WorldPoint(3050, 3204, 0));
+		pandemoniumDockZone = new Zone(new WorldPoint(3065, 2974, 0), new WorldPoint(3084, 2998, 0));
+		portSarimDockZone = new Zone(new WorldPoint(3045, 3183, 0), new WorldPoint(3061, 3208, 0));
 	}
 
-	public void setupConditions()
+	@Override
+	protected void setupRequirements()
 	{
+		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed().canBeObtainedDuringQuest();
+		hammer.setTooltip("You can pick this up at the shipyard.");
+		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed().canBeObtainedDuringQuest();
+		saw.setTooltip("You can pick this up at the shipyard.");
+
+		// Quest items
+		cup = new ItemRequirement("Old cup", ItemID.SAILING_INTRO_CUP);
+		cup.setTooltip("You can get another from Steve Beanie behind the bar on Pandemonium");
+
+		atShipwreck = new VarbitRequirement(VarbitID.SAILING_INTRO_REACHED_WRECK, 1);
+		onPandemonium = new ZoneRequirement(pandemonium);
+		boatAtPortSarim = new ShipInPortRequirement(Port.PORT_SARIM);
+		atPandemoniumDock = new ZoneRequirement(pandemoniumDockZone);
+		atPortSarimDock = new ZoneRequirement(portSarimDockZone);
+
+		// Miscellaneous requirements
 		onboardShip = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
 		takenHelm = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_HELM_STATUS, 2);
 		setSails = new VarbitRequirement(VarbitID.SAILING_SIDEPANEL_BOAT_MOVE_MODE, 0, Operation.GREATER);
@@ -190,37 +187,7 @@ public class Pandemonium extends BasicQuestHelper
 		cargoNotPickedUp = not(cargoPickedUp);
 		cargoInCargoHold = and(cargoPickedUp, not(holdingCargo));
 
-		nothingInHands = new NoItemRequirement("Nothing equipped in your hands.",ItemSlots.EMPTY_HANDS);
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		shipWreckZone = new Zone(new WorldPoint(3018, 3030, 0), new WorldPoint(3040, 3050, 0));
-		pandemonium = new Zone(new WorldPoint(3069, 3005, 0), new WorldPoint(3028, 2963, 0));
-		portSarim = new Zone(new WorldPoint(3027, 3192, 0), new WorldPoint(3050, 3204, 0));
-		pandemoniumDockZone = new Zone(new WorldPoint(3065, 2974, 0), new WorldPoint(3084, 2998, 0));
-		portSarimDockZone = new Zone(new WorldPoint(3045, 3183, 0), new WorldPoint(3061, 3208, 0));
-		atShipwreck = new VarbitRequirement(VarbitID.SAILING_INTRO_REACHED_WRECK, 1);
-		notAtShipwreck = not(atShipwreck);
-		onPandemonium = new ZoneRequirement(pandemonium);
-		boatAtPortSarim = new ShipInPortRequirement(Port.PORT_SARIM);
-		atPandemoniumDock = new ZoneRequirement(pandemoniumDockZone);
-		atPortSarimDock = new ZoneRequirement(portSarimDockZone);
-	}
-
-	@Override
-	protected void setupRequirements()
-	{
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed().canBeObtainedDuringQuest();
-		hammer.setTooltip("You can pick this up at the shipyard.");
-		saw = new ItemRequirement("Saw", ItemCollections.SAW).isNotConsumed().canBeObtainedDuringQuest();
-		saw.setTooltip("You can pick this up at the shipyard.");
-		hammerAndSaw = and(hammer, saw);
-
-		// Quest items
-		cup = new ItemRequirement("Old cup", ItemID.SAILING_INTRO_CUP);
-		cup.setTooltip("You can get another from Steve Beanie behind the bar on Pandemonium");
+		nothingInHands = new NoItemRequirement("Nothing equipped in your hands.", ItemSlots.EMPTY_HANDS);
 	}
 
 	public void setupSteps()
@@ -278,7 +245,7 @@ public class Pandemonium extends BasicQuestHelper
 		sailToPortSarim = new SailStep(this, Port.PORT_SARIM);
 		letGoOfHelm = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IN_USE, new WorldPoint(3843, 6460, 1), "Let go of the helm.");
 		disembarkShipPS = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_DISEMBARK, new WorldPoint(3051, 3193, 0), "Leave your ship.");
-		
+
 		pickupCargo = new ObjectStep(this, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_WITHDRAW, new WorldPoint(3028, 3194, 0), "Pick up the cargo from the ledger table on the docks.", nothingInHands);
 		boardShip2 = new BoardShipStep(this);
 		dropCargoInCargoHold = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Deposit the crate into your cargo hold.");
@@ -288,7 +255,11 @@ public class Pandemonium extends BasicQuestHelper
 		sailToPandemonium = new SailStep(this, Port.PANDEMONIUM);
 		letGoOfHelm2 = new ObjectStep(this, ObjectID.SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_IN_USE, new WorldPoint(3843, 6460, 1), "Let go of the helm.");
 		pickupCargoShip = new ObjectStep(this, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Pick up the cargo from your ship's cargo hold.", nothingInHands);
+
+		// In case the user boards the Pandemonium without picking up the cargo from their ship
 		boardShip3 = new BoardShipStep(this);
+		pickupCargoShip.addSubSteps(boardShip3);
+
 		disembarkShipP = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_DISEMBARK, new WorldPoint(3070, 2987, 0), "Leave your ship.");
 		deliverCargo = new ObjectStep(this, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT, new WorldPoint(3061, 2985, 0), "Deliver the cargo at the ledger table on the docks.");
 		//Finish up
@@ -298,15 +269,119 @@ public class Pandemonium extends BasicQuestHelper
 	}
 
 	@Override
-	public QuestPointReward getQuestPointReward()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		return new QuestPointReward(1);
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToWill);
+		steps.put(2, talkToWill);
+
+		steps.put(4, boardWAShip);
+
+		var goListenOnShip = new ConditionalStep(this, talkToWill);
+		goListenOnShip.addStep(onboardShip, explainJob);
+		steps.put(6, goListenOnShip);
+
+		var cNavigateToShipwreckOnShip = new ConditionalStep(this, takeHelm);
+		cNavigateToShipwreckOnShip.addStep(canSalvage, salvageShipwreck);
+		cNavigateToShipwreckOnShip.addStep(atShipwreck, explainJob2);
+		cNavigateToShipwreckOnShip.addStep(sailing, navigateShip);
+		cNavigateToShipwreckOnShip.addStep(takenHelm, raiseSails);
+		cNavigateToShipwreckOnShip.addStep(not(atShipwreck), takeHelm);
+
+		var cNavigateToShipwreck = new ConditionalStep(this, boardWAShip);
+		cNavigateToShipwreck.addStep(and(new VarbitRequirement(VarbitID.CUTSCENE_STATUS, 1), canSalvage), watchSalvageCutscene);
+		cNavigateToShipwreck.addStep(onboardShip, cNavigateToShipwreckOnShip);
+		steps.put(8, cNavigateToShipwreck);
+		steps.put(10, cNavigateToShipwreck);
+		steps.put(12, cNavigateToShipwreck);
+		steps.put(14, cNavigateToShipwreck);
+
+		var cLearnWhereYouAre = new ConditionalStep(this, getToPandemonium);
+		cLearnWhereYouAre.addStep(onPandemonium, learnWhereYouAre);
+		steps.put(16, cLearnWhereYouAre);
+		var cLearnWhoWAare = new ConditionalStep(this, getToPandemonium);
+		cLearnWhoWAare.addStep(onPandemonium, learnWhoWAare);
+		steps.put(18, cLearnWhoWAare);
+		var cTalkToRibs = new ConditionalStep(this, getToPandemonium);
+		cTalkToRibs.addStep(onPandemonium, talkToRibs);
+		steps.put(20, cTalkToRibs);
+		var cFindLocationWA = new ConditionalStep(this, getToPandemonium);
+		cFindLocationWA.addStep(onPandemonium, findLocationWA);
+		steps.put(22, cFindLocationWA);
+		var cInformAboutShip = new ConditionalStep(this, getToPandemonium);
+		cInformAboutShip.addStep(onPandemonium, informAboutShip);
+		steps.put(24, cInformAboutShip);
+		var cShowCup = new ConditionalStep(this, getToPandemonium);
+		cShowCup.addStep(onPandemonium, showCup);
+		steps.put(26, cShowCup);
+
+		var cBuildCargoHold = new ConditionalStep(this, getToPandemonium);
+		cBuildCargoHold.addStep(and(atShipyard, onboardShip), buildCargoHold);
+		cBuildCargoHold.addStep(and(atShipyard, hammer, saw), embarkShipSY);
+		cBuildCargoHold.addStep(and(atShipyard, saw), getHammer);
+		cBuildCargoHold.addStep(atShipyard, getSaw);
+		cBuildCargoHold.addStep(onPandemonium, enterShipyard);
+		steps.put(28, cBuildCargoHold);
+
+
+		var cGetLogBook = new ConditionalStep(this, getToPandemonium);
+		cGetLogBook.addStep(onPandemonium, getLogBook);
+		cGetLogBook.addStep(atShipyard, leaveShipyard);
+		steps.put(30, cGetLogBook); // Jim
+
+		steps.put(32, getNewJob); // Jim
+		steps.put(34, boardShip);
+		var cSailToPortSarim = new ConditionalStep(this, boardShip);
+		cSailToPortSarim.addStep(and(atPortSarimDock, cargoNotPickedUp, takenHelm), letGoOfHelm);
+		cSailToPortSarim.addStep(and(atPortSarimDock, cargoNotPickedUp, onboardShip), disembarkShipPS);
+		cSailToPortSarim.addStep(and(not(atPortSarimDock), sailing), sailToPortSarim);
+		cSailToPortSarim.addStep(and(not(atPortSarimDock), takenHelm), raiseSails2);
+		cSailToPortSarim.addStep(and(not(atPortSarimDock), onboardShip), takeHelm2);
+		steps.put(36, cSailToPortSarim);
+		var cCheckPortMaster = new ConditionalStep(this, cSailToPortSarim);
+		cCheckPortMaster.addStep(and(boatAtPortSarim, holdingCargo, not(onboardShip)), boardShip2);
+		cCheckPortMaster.addStep(and(boatAtPortSarim, cargoNotPickedUp, not(onboardShip)), pickupCargo);
+		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, takenHelm), letGoOfHelm);
+		cCheckPortMaster.addStep(and(atPortSarimDock, cargoNotPickedUp, onboardShip), disembarkShipPS);
+		steps.put(38, cCheckPortMaster);
+		var cSailToPandemonium = new ConditionalStep(this, cCheckPortMaster);
+		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoInCargoHold, onboardShip, takenHelm, sailing), sailToPandemonium);
+		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoInCargoHold, onboardShip, takenHelm), raiseSails3);
+		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoInCargoHold, onboardShip), takeHelm3);
+		cSailToPandemonium.addStep(and(not(atPandemoniumDock), cargoPickedUp, holdingCargo, onboardShip), dropCargoInCargoHold);
+
+		var cDeliverCargo = new ConditionalStep(this, cSailToPandemonium);
+		cDeliverCargo.addStep(and(onPandemonium, not(onboardShip), holdingCargo), deliverCargo);
+		cDeliverCargo.addStep(and(atPandemoniumDock, onboardShip, holdingCargo), disembarkShipP);
+		cDeliverCargo.addStep(and(atPandemoniumDock, onboardShip, nor(takenHelm, setSails), cargoInCargoHold), pickupCargoShip);
+		cDeliverCargo.addStep(and(onPandemonium, not(onboardShip), cargoInCargoHold), boardShip3);
+		cDeliverCargo.addStep(and(atPandemoniumDock, cargoInCargoHold, takenHelm), letGoOfHelm2);
+		steps.put(40, cDeliverCargo);
+		steps.put(42, cDeliverCargo);
+		steps.put(44, talkToJim);
+		steps.put(46, meetGrog);
+		steps.put(48, finishQuest);
+
+		return steps;
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(hammer, saw);
+		return List.of(
+			hammer,
+			saw
+		);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
 	}
 
 	@Override
@@ -318,29 +393,93 @@ public class Pandemonium extends BasicQuestHelper
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
+		return List.of(
 			new ItemReward("Sawmill Coupon (wood plank)", ItemID.SAWMILL_COUPON, 25),
 			new ItemReward("Repair kits", ItemID.BOAT_REPAIR_KIT, 2),
-			new ItemReward("Spyglass", ItemID.SAILING_CHARTING_SPYGLASS, 1));
+			new ItemReward("Spyglass", ItemID.SAILING_CHARTING_SPYGLASS, 1)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(new UnlockReward("Access to the Sailing Skill"), new UnlockReward("Access to Pandemonium"), new UnlockReward("Your very own mighty ship!"));
+		return List.of(
+			new UnlockReward("Access to the Sailing Skill"),
+			new UnlockReward("Access to Pandemonium"),
+			new UnlockReward("Your very own mighty ship!")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("You got the job!", Arrays.asList(talkToWill, boardWAShip)));
-		allSteps.add(new PanelDetails("What's the job?", Arrays.asList(explainJob, takeHelm, raiseSails, navigateShip, explainJob2, salvageShipwreck, watchSalvageCutscene)));
-		allSteps.add(new PanelDetails("You lost the job!", Arrays.asList(getToPandemonium, learnWhereYouAre, learnWhoWAare, talkToRibs, findLocationWA, informAboutShip, showCup)));
-		allSteps.add(new PanelDetails("Your mighty vessel", Arrays.asList(enterShipyard, getSaw, getHammer, embarkShipSY, buildCargoHold, disembarkShipSY, leaveShipyard, getLogBook)));
-		allSteps.add(new PanelDetails("You got the job... again!", Arrays.asList(getNewJob, boardShip, takeHelm2, raiseSails2, sailToPortSarim, letGoOfHelm, disembarkShipPS, pickupCargo, boardShip2)));
-		allSteps.add(new PanelDetails("Deliver the cargo.", Arrays.asList(dropCargoInCargoHold, takeHelm3, raiseSails3, sailToPandemonium, letGoOfHelm2, pickupCargoShip, disembarkShipP, deliverCargo)));
-		allSteps.add(new PanelDetails("Finishing up", Arrays.asList(talkToJim, meetGrog, finishQuest)));
-		return allSteps;
+		var sections = new ArrayList<PanelDetails>();
+
+		sections.add(new PanelDetails("You got the job!", List.of(
+			talkToWill,
+			boardWAShip
+		)));
+
+		sections.add(new PanelDetails("What's the job?", List.of(
+			explainJob,
+			takeHelm,
+			raiseSails,
+			navigateShip,
+			explainJob2,
+			salvageShipwreck,
+			watchSalvageCutscene
+		)));
+
+		sections.add(new PanelDetails("You lost the job!", List.of(
+			getToPandemonium,
+			learnWhereYouAre,
+			learnWhoWAare,
+			talkToRibs,
+			findLocationWA,
+			informAboutShip,
+			showCup
+		)));
+
+		sections.add(new PanelDetails("Your mighty vessel", List.of(
+			enterShipyard,
+			getSaw,
+			getHammer,
+			embarkShipSY,
+			buildCargoHold,
+			disembarkShipSY,
+			leaveShipyard,
+			getLogBook
+		)));
+
+		sections.add(new PanelDetails("You got the job... again!", List.of(
+			getNewJob,
+			boardShip,
+			takeHelm2,
+			raiseSails2,
+			sailToPortSarim,
+			letGoOfHelm,
+			disembarkShipPS,
+			pickupCargo,
+			boardShip2
+		)));
+
+		sections.add(new PanelDetails("Deliver the cargo.", List.of(
+			dropCargoInCargoHold,
+			takeHelm3,
+			raiseSails3,
+			sailToPandemonium,
+			letGoOfHelm2,
+			pickupCargoShip,
+			disembarkShipP,
+			deliverCargo
+		)));
+
+		sections.add(new PanelDetails("Finishing up", List.of(
+			talkToJim,
+			meetGrog,
+			finishQuest
+		)));
+
+		return sections;
 	}
 }

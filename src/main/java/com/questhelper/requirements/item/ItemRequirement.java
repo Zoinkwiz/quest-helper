@@ -646,11 +646,11 @@ public class ItemRequirement extends AbstractRequirement
 	public String getWikiUrl()
 	{
 		if (getUrlSuffix() != null) {
-			return "https://oldschool.runescape.wiki/w/" + getUrlSuffix();
+			return "https://oldschool.runescape.wiki/w/" + getUrlSuffix() + "#Item_sources";
 		}
 
 		if (getId() != -1) {
-			return "https://oldschool.runescape.wiki/w/Special:Lookup?type=item&id=" + getId();
+			return "https://oldschool.runescape.wiki/w/Special:Lookup?type=item&id=" + getId() + "#Item_sources";
 		}
 
 		return null;

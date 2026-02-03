@@ -278,7 +278,7 @@ public class ArdougneEasy extends ComplexStateQuestHelper
 		sections.add(PanelDetails.lockedPanel(
 			"Identify Sword",
 			notIdentifySword,
-			identifySword,
+			identifySwordTask,
 			List.of(
 				identifySword
 			),

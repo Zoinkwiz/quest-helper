@@ -128,6 +128,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	// Miss Cheevers
 	MissCheeversStep missCheeversStep;
+	PuzzleWrapperStep pwMissCheeversStep;
+	ObjectStep leaveMissCheeversRoom;
+	ConditionalStep cMissCheevers;
 
 	@Override
 	protected void setupZones()
@@ -190,6 +193,15 @@ public class RecruitmentDrive extends BasicQuestHelper
 		// Miss Cheevers
 		{
 			missCheeversStep = new MissCheeversStep(this);
+			pwMissCheeversStep = missCheeversStep.puzzleWrapStepWithDefaultText("Solve Miss Cheevers' puzzle.");
+			pwMissCheeversStep.conditionToHideInSidebar(new ConfigRequirement(this.getConfig()::solvePuzzles));
+
+			leaveMissCheeversRoom = new ObjectStep(this, ObjectID.RD_ROOM6_EXITDOOR, new WorldPoint(2478, 4940, 0), "Leave the room by the second door to enter the portal.");
+
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM6_COMPLETE, 1);
+
+			cMissCheevers = new ConditionalStep(this, pwMissCheeversStep);
+			cMissCheevers.addStep(and(missCheeversStep.hasFirstDoorOpen, missCheeversStep.bronzeKey, finishedRoom), leaveMissCheeversRoom);
 		}
 
 		// Sir Tinley
@@ -325,7 +337,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTestingGrounds.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
 
 		// Testing steps below
-		cTestingGrounds.addStep(isInMissCheeversRoom, missCheeversStep);
+		cTestingGrounds.addStep(isInMissCheeversRoom, cMissCheevers);
 		cTestingGrounds.addStep(isInSirTinleysRoom, sirTinleyStep);
 		cTestingGrounds.addStep(isInMsHynnRoom, msHynnDialogQuiz);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
@@ -448,9 +460,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 			sirRenStep.getPanelSteps()
 		));
 
-		sections.add(new PanelDetails("Miss Cheevers",
-			missCheeversStep.getPanelSteps()
-		));
+		var missCheeversSection = new PanelDetails("Miss Cheevers", pwMissCheeversStep);
+		missCheeversSection.addSteps(missCheeversStep.getPanelSteps());
+		missCheeversSection.addSteps(leaveMissCheeversRoom);
+		sections.add(missCheeversSection);
 
 		sections.add(new PanelDetails("Lady Table",
 			ladyTableStep.getPanelSteps()

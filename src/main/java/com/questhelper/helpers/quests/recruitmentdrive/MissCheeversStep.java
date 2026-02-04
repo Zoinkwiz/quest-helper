@@ -33,6 +33,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.List;
 import net.runelite.api.coords.WorldPoint;
@@ -74,7 +75,6 @@ public class MissCheeversStep extends ConditionalStep
 	VarbitRequirement hasVialOfLiquidOnDoor;
 	VarbitRequirement hasFirstDoorOpen;
 	VarbitRequirement hasLiquidInTin;
-	VarbitRequirement finishedRoom;
 
 	// Steps
 	ObjectStep getMagnet;
@@ -91,7 +91,6 @@ public class MissCheeversStep extends ConditionalStep
 	ObjectStep getCupricOrePowder;
 	ObjectStep getThreeVials;
 	ObjectStep getKnife;
-	ObjectStep leaveRoom;
 	ItemStep getMetalSpade;
 
 	// Destroying first door steps
@@ -108,6 +107,34 @@ public class MissCheeversStep extends ConditionalStep
 	QuestStep useTinOrePowderOnTin;
 	QuestStep useTinOnBunsenBurner;
 	QuestStep useEquipmentOnTin;
+
+	PuzzleWrapperStep pwGetMagnet;
+	PuzzleWrapperStep pwGetTwoVials;
+	PuzzleWrapperStep pwGetCupricSulfate;
+	PuzzleWrapperStep pwGetGypsum;
+	PuzzleWrapperStep pwGetSodiumChloride;
+	PuzzleWrapperStep pwGetWire;
+	PuzzleWrapperStep pwGetTin;
+	PuzzleWrapperStep pwGetShears;
+	PuzzleWrapperStep pwGetChisel;
+	PuzzleWrapperStep pwGetNitrousOxide;
+	PuzzleWrapperStep pwGetTinOrePowder;
+	PuzzleWrapperStep pwGetCupricOrePowder;
+	PuzzleWrapperStep pwGetThreeVials;
+	PuzzleWrapperStep pwGetKnife;
+	PuzzleWrapperStep pwGetMetalSpade;
+	PuzzleWrapperStep pwUseSpadeOnBunsenBurner;
+	PuzzleWrapperStep pwUseSpadeHeadOnDoor;
+	PuzzleWrapperStep pwUseCupricSulfateOnDoor;
+	PuzzleWrapperStep pwUseVialOfLiquidOnDoor;
+	PuzzleWrapperStep pwOpenDoor;
+	PuzzleWrapperStep pwUseVialOfLiquidOnCakeTin;
+	PuzzleWrapperStep pwUseGypsumOnTin;
+	PuzzleWrapperStep pwUseTinOnKey;
+	PuzzleWrapperStep pwUseCupricOrePowderOnTin;
+	PuzzleWrapperStep pwUseTinOrePowderOnTin;
+	PuzzleWrapperStep pwUseTinOnBunsenBurner;
+	PuzzleWrapperStep pwUseEquipmentOnTin;
 
 	public MissCheeversStep(QuestHelper questHelper, Requirement... requirements)
 	{
@@ -177,7 +204,6 @@ public class MissCheeversStep extends ConditionalStep
 		hasCupricSulfateOnDoor = new VarbitRequirement(VarbitID.RD_REACT_ON_SPADE, 1);
 		hasVialOfLiquidOnDoor = new VarbitRequirement(VarbitID.RD_ROOM6_STONE_DOOR, 2);
 		hasFirstDoorOpen = new VarbitRequirement(VarbitID.RD_ROOM6_STONE_DOOR, 3);
-		finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM6_COMPLETE, 1);
 
 		hasLiquidInTin = new VarbitRequirement(VarbitID.RD_WATER_IN_TIN, 1);
 	}
@@ -239,13 +265,38 @@ public class MissCheeversStep extends ConditionalStep
 
 		useEquipmentOnTin = new DetailedQuestStep(questHelper, "Use your chisel, knife or bronze wires on your tin in your inventory.", tinWithAllOre, chisel, knife, bronzeWire);
 
-		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM6_EXITDOOR, new WorldPoint(2478, 4940, 0), "Leave the room by the second door to enter the portal");
+		pwGetMagnet = getMagnet.puzzleWrapStep(true);
+		pwGetTwoVials = getTwoVials.puzzleWrapStep(true);
+		pwGetCupricSulfate = getCupricSulfate.puzzleWrapStep(true);
+		pwGetGypsum = getGypsum.puzzleWrapStep(true);
+		pwGetSodiumChloride = getSodiumChloride.puzzleWrapStep(true);
+		pwGetWire = getWire.puzzleWrapStep(true);
+		pwGetTin = getTin.puzzleWrapStep(true);
+		pwGetShears = getShears.puzzleWrapStep(true);
+		pwGetChisel = getChisel.puzzleWrapStep(true);
+		pwGetNitrousOxide = getNitrousOxide.puzzleWrapStep(true);
+		pwGetTinOrePowder = getTinOrePowder.puzzleWrapStep(true);
+		pwGetCupricOrePowder = getCupricOrePowder.puzzleWrapStep(true);
+		pwGetThreeVials = getThreeVials.puzzleWrapStep(true);
+		pwGetKnife = getKnife.puzzleWrapStep(true);
+		pwGetMetalSpade = getMetalSpade.puzzleWrapStep(true);
+		pwUseSpadeOnBunsenBurner = useSpadeOnBunsenBurner.puzzleWrapStep(true);
+		pwUseSpadeHeadOnDoor = useSpadeHeadOnDoor.puzzleWrapStep(true);
+		pwUseCupricSulfateOnDoor = useCupricSulfateOnDoor.puzzleWrapStep(true);
+		pwUseVialOfLiquidOnDoor = useVialOfLiquidOnDoor.puzzleWrapStep(true);
+		pwOpenDoor = openDoor.puzzleWrapStep(true);
+		pwUseVialOfLiquidOnCakeTin = useVialOfLiquidOnCakeTin.puzzleWrapStep(true);
+		pwUseGypsumOnTin = useGypsumOnTin.puzzleWrapStep(true);
+		pwUseTinOnKey = useTinOnKey.puzzleWrapStep(true);
+		pwUseCupricOrePowderOnTin = useCupricOrePowderOnTin.puzzleWrapStep(true);
+		pwUseTinOrePowderOnTin = useTinOrePowderOnTin.puzzleWrapStep(true);
+		pwUseTinOnBunsenBurner = useTinOnBunsenBurner.puzzleWrapStep(true);
+		pwUseEquipmentOnTin = useEquipmentOnTin.puzzleWrapStep(true);
 	}
 
 	private void addSteps()
 	{
-		this.addStep(null, getMagnet);
-		this.addStep(and(hasFirstDoorOpen, bronzeKey, finishedRoom), leaveRoom);
+		this.addStep(null, pwGetMagnet);
 		setupSecondDoorKeyStep();
 		destroyFirstDoorSteps();
 		retrieveItemSteps();
@@ -256,13 +307,13 @@ public class MissCheeversStep extends ConditionalStep
 	 */
 	private void setupSecondDoorKeyStep()
 	{
-		this.addStep(and(hasFirstDoorOpen, tinWithAllOre), useEquipmentOnTin);
-		this.addStep(and(hasFirstDoorOpen, tinWithTinOre), useTinOnBunsenBurner);
-		this.addStep(and(hasFirstDoorOpen, tinWithCupricOre), useTinOrePowderOnTin);
-		this.addStep(and(hasFirstDoorOpen, tinKeyPrint), useCupricOrePowderOnTin);
-		this.addStep(and(hasFirstDoorOpen, gypsumTin), useTinOnKey);
-		this.addStep(and(hasFirstDoorOpen, hasLiquidInTin), useGypsumOnTin);
-		this.addStep(hasFirstDoorOpen, useVialOfLiquidOnCakeTin);
+		this.addStep(and(hasFirstDoorOpen, tinWithAllOre), pwUseEquipmentOnTin);
+		this.addStep(and(hasFirstDoorOpen, tinWithTinOre), pwUseTinOnBunsenBurner);
+		this.addStep(and(hasFirstDoorOpen, tinWithCupricOre), pwUseTinOrePowderOnTin);
+		this.addStep(and(hasFirstDoorOpen, tinKeyPrint), pwUseCupricOrePowderOnTin);
+		this.addStep(and(hasFirstDoorOpen, gypsumTin), pwUseTinOnKey);
+		this.addStep(and(hasFirstDoorOpen, hasLiquidInTin), pwUseGypsumOnTin);
+		this.addStep(hasFirstDoorOpen, pwUseVialOfLiquidOnCakeTin);
 	}
 
 	/***
@@ -270,11 +321,11 @@ public class MissCheeversStep extends ConditionalStep
 	 */
 	private void destroyFirstDoorSteps()
 	{
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, ashes, hasVialOfLiquidOnDoor), openDoor);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, ashes, hasCupricSulfateOnDoor), useVialOfLiquidOnDoor);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, ashes, hasSpadeHeadOnDoor), useCupricSulfateOnDoor);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, metalSpadeHead, ashes), useSpadeHeadOnDoor);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, metalSpade), useSpadeOnBunsenBurner);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, ashes, hasVialOfLiquidOnDoor), pwOpenDoor);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, ashes, hasCupricSulfateOnDoor), pwUseVialOfLiquidOnDoor);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, ashes, hasSpadeHeadOnDoor), pwUseCupricSulfateOnDoor);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, metalSpadeHead, ashes), pwUseSpadeHeadOnDoor);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife, metalSpade), pwUseSpadeOnBunsenBurner);
 	}
 
 	/**
@@ -282,53 +333,52 @@ public class MissCheeversStep extends ConditionalStep
 	 */
 	private void retrieveItemSteps()
 	{
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife), getMetalSpade);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials), getKnife);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder), getThreeVials);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder), getCupricOrePowder);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide), getTinOrePowder);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, chisel), getNitrousOxide);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears), getChisel);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin), getShears);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire), getTin);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride), getWire);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum), getSodiumChloride);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate), getGypsum);
-		this.addStep(and(magnet, aceticAcid, vialOfLiquid), getCupricSulfate);
-		this.addStep(magnet, getTwoVials);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials, knife), pwGetMetalSpade);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder, hasRetrievedThreeVials), pwGetKnife);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder, cupricOrePowder), pwGetThreeVials);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide, tinOrePowder), pwGetCupricOrePowder);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, nitrousOxide, nitrousOxide), pwGetTinOrePowder);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears, chisel), pwGetNitrousOxide);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin, shears), pwGetChisel);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire, tin), pwGetShears);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride, bronzeWire), pwGetTin);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum, sodiumChloride), pwGetWire);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate, gypsum), pwGetSodiumChloride);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid, cupricSulfate), pwGetGypsum);
+		this.addStep(and(magnet, aceticAcid, vialOfLiquid), pwGetCupricSulfate);
+		this.addStep(magnet, pwGetTwoVials);
 	}
 
 	public List<QuestStep> getPanelSteps()
 	{
 		return List.of(
-			getMagnet,
-			getTwoVials,
-			getCupricSulfate,
-			getGypsum,
-			getSodiumChloride,
-			getWire,
-			getTin,
-			getShears,
-			getChisel,
-			getNitrousOxide,
-			getTinOrePowder,
-			getCupricOrePowder,
-			getThreeVials,
-			getKnife,
-			getMetalSpade,
-			useSpadeOnBunsenBurner,
-			useSpadeHeadOnDoor,
-			useCupricSulfateOnDoor,
-			useVialOfLiquidOnDoor,
-			openDoor,
-			useVialOfLiquidOnCakeTin,
-			useGypsumOnTin,
-			useTinOnKey,
-			useCupricOrePowderOnTin,
-			useTinOrePowderOnTin,
-			useTinOnBunsenBurner,
-			useEquipmentOnTin,
-			leaveRoom
+			pwGetMagnet,
+			pwGetTwoVials,
+			pwGetCupricSulfate,
+			pwGetGypsum,
+			pwGetSodiumChloride,
+			pwGetWire,
+			pwGetTin,
+			pwGetShears,
+			pwGetChisel,
+			pwGetNitrousOxide,
+			pwGetTinOrePowder,
+			pwGetCupricOrePowder,
+			pwGetThreeVials,
+			pwGetKnife,
+			pwGetMetalSpade,
+			pwUseSpadeOnBunsenBurner,
+			pwUseSpadeHeadOnDoor,
+			pwUseCupricSulfateOnDoor,
+			pwUseVialOfLiquidOnDoor,
+			pwOpenDoor,
+			pwUseVialOfLiquidOnCakeTin,
+			pwUseGypsumOnTin,
+			pwUseTinOnKey,
+			pwUseCupricOrePowderOnTin,
+			pwUseTinOrePowderOnTin,
+			pwUseTinOnBunsenBurner,
+			pwUseEquipmentOnTin
 		);
 	}
 }

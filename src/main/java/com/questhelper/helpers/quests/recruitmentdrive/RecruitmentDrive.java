@@ -128,6 +128,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	// Miss Cheevers
 	MissCheeversStep missCheeversStep;
+	PuzzleWrapperStep pwMissCheeversStep;
 
 	@Override
 	protected void setupZones()
@@ -190,6 +191,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 		// Miss Cheevers
 		{
 			missCheeversStep = new MissCheeversStep(this);
+			pwMissCheeversStep = missCheeversStep.puzzleWrapStepWithDefaultText("Solve Miss Cheevers' puzzle.");
+			// TODO: TEST THIS IN GAME BECAUSE IT FAILS IN TESTS
+			// pwMissCheeversStep.conditionToHideInSidebar(new ConfigRequirement(this.getConfig()::solvePuzzles));
 		}
 
 		// Sir Tinley
@@ -325,7 +329,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTestingGrounds.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
 
 		// Testing steps below
-		cTestingGrounds.addStep(isInMissCheeversRoom, missCheeversStep);
+		cTestingGrounds.addStep(isInMissCheeversRoom, pwMissCheeversStep);
 		cTestingGrounds.addStep(isInSirTinleysRoom, sirTinleyStep);
 		cTestingGrounds.addStep(isInMsHynnRoom, msHynnDialogQuiz);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
@@ -448,9 +452,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 			sirRenStep.getPanelSteps()
 		));
 
-		sections.add(new PanelDetails("Miss Cheevers",
-			missCheeversStep.getPanelSteps()
-		));
+		var missCheeversSection = new PanelDetails("Miss Cheevers", pwMissCheeversStep);
+		missCheeversSection.addSteps(missCheeversStep.getPanelSteps());
+		sections.add(missCheeversSection);
 
 		sections.add(new PanelDetails("Lady Table",
 			ladyTableStep.getPanelSteps()

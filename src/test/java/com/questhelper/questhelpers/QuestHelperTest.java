@@ -3,6 +3,7 @@ package com.questhelper.questhelpers;
 import com.questhelper.MockedTest;
 import com.questhelper.domain.AccountType;
 import com.questhelper.panel.QuestOverviewPanel;
+import com.questhelper.playerquests.puzzlewrapper.PuzzleWrapper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -424,6 +425,55 @@ public class QuestHelperTest extends MockedTest
 			{
 				System.out.format("Unsupported quest helper type: %s\n", quest);
 			}
+		}
+	}
+
+	@Test
+	void asd()
+	{
+		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+
+		when(client.getRealSkillLevel(Skill.FARMING)).thenReturn(99);
+		when(client.getIntStack()).thenReturn(new int[]{2});
+		when(client.getVarbitValue(VarbitID.MORYTANIA_ELITE_REWARD)).thenReturn(1);
+
+		AchievementDiaryStepManager.setup(configManager);
+
+		var helper = new PuzzleWrapper();
+
+		Set<QuestStep> checkedSteps = new HashSet<>();
+
+		var shouldError = false;
+
+		when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
+
+		this.injector.injectMembers(helper);
+		helper.setQuest(QuestHelperQuest.PUZZLE_WRAPPER);
+		helper.setInjector(this.injector);
+		helper.setQuestHelperPlugin(questHelperPlugin);
+		helper.setConfig(questHelperConfig);
+		helper.init();
+		helper.startUp(questHelperConfig);
+
+		var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
+		questOverviewPanel.addQuest(helper, false);
+		var basicHelper = (BasicQuestHelper) helper;
+		var steps = basicHelper.getStepList();
+		var sortedSteps = steps.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+		for (var e : sortedSteps)
+		{
+			var step = e.getValue();
+			if (checkedSteps.contains(step))
+			{
+				continue;
+			}
+			checkedSteps.add(step);
+			helper.startUpStep(step);
+
+			assertNotNull(step);
+
+			checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, step);
 		}
 	}
 }

@@ -54,6 +54,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -404,8 +405,31 @@ public class QuestHelperPanel extends PluginPanel
 			var devModePanel = new JPanel();
 			devModePanel.setLayout(new BorderLayout());
 
+			var togglePuzzleHelper = new JMenuItem(new AbstractAction("toggle puzzle helper")
+			{
+				@Override
+				public void actionPerformed(ActionEvent actionEvent)
+				{
+					var v = questHelperPlugin.getConfig().solvePuzzles();
+					configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, "solvePuzzles", !v);
+				}
+			});
+
+			var menu = new JPopupMenu("Menu");
+			menu.add(togglePuzzleHelper);
 
 			var reloadQuest = new JButton("reload quest");
+			reloadQuest.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					if (SwingUtilities.isRightMouseButton(e) && e.getClickCount() == 1)
+					{
+						menu.show(reloadQuest, e.getX(), e.getY());
+					}
+				}
+			});
 			reloadQuest.addActionListener((ev) -> {
 				nextDesiredScrollValue = scrollableContainer.getVerticalScrollBar().getValue();
 				var currentQuest = questHelperPlugin.getSelectedQuest();

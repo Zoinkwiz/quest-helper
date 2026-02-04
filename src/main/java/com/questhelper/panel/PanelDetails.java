@@ -139,6 +139,11 @@ public class PanelDetails
 		this.steps.addAll(Arrays.asList(steps));
 	}
 
+	public void addSteps(Collection<QuestStep> steps)
+	{
+		this.steps.addAll(steps);
+	}
+
 	public boolean contains(QuestStep currentStep)
 	{
 		if (getSteps().contains(currentStep))

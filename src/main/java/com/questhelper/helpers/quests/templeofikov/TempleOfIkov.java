@@ -56,13 +56,13 @@ import java.util.*;
 public class TempleOfIkov extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, knife, lightSource, lever, iceArrows20, iceArrows, shinyKey,
+	ItemRequirement pendantOfLucien, bootsOfLightness, limpwurt20, yewOrBetterBow, throwableWeapon, yewOrBetterBowOrThrowableWeapon, knife, lightSource, lever, iceArrows20, iceArrowsWithThrowableWeapon, enoughArrows, iceArrows, shinyKey,
 		armadylPendant, staffOfArmadyl, pendantOfLucienEquipped, bootsOfLightnessEquipped, iceArrowsEquipped;
 
 	Requirement emptyInventorySpot;
 
 	Requirement  belowMinus1Weight, below4Weight, inEntryRoom, inNorthRoom, inBootsRoom, dontHaveBoots, inMainOrNorthRoom,
-		leverNearby, pulledLever, inArrowRoom, hasEnoughArrows, lesNearby, inLesRoom, inWitchRoom, inDemonArea,
+		leverNearby, pulledLever, inArrowRoom, hasArrowsWithThrowableWeapon, hasEnoughArrows, lesNearby, inLesRoom, inWitchRoom, inDemonArea,
 		inArmaRoom;
 
 	QuestStep talkToLucien, prepare, prepareBelow0, enterDungeonForBoots, enterDungeon, goDownToBoots, getBoots, goUpFromBoots, pickUpLever,
@@ -181,12 +181,18 @@ public class TempleOfIkov extends BasicQuestHelper
 		yewOrBetterBow = new ItemRequirement("Yew, magic, or dark bow", ItemID.YEW_SHORTBOW).isNotConsumed();
 		yewOrBetterBow.addAlternates(ItemID.YEW_LONGBOW, ItemID.TRAIL_COMPOSITE_BOW_YEW, ItemID.MAGIC_SHORTBOW, ItemID.MAGIC_SHORTBOW_I,
 			ItemID.MAGIC_LONGBOW, ItemID.DARKBOW);
+		throwableWeapon = new ItemRequirement("Throwable Weapon", ItemCollections.THROWING_KNIVES);
+		throwableWeapon.addAlternates(ItemCollections.DARTS);
+		throwableWeapon.addAlternates(ItemCollections.THROWING_AXES);
+		yewOrBetterBowOrThrowableWeapon = new ItemRequirements(LogicType.OR, "Yew, magic, dark bow, or thrown ranged weapons (darts, knives, thrownaxes)", yewOrBetterBow, throwableWeapon);
 		knife = new ItemRequirement("Knife to get the boots of lightness", ItemID.KNIFE).isNotConsumed();
 		lightSource = new ItemRequirement("A light source to get the boots of lightness", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
 		iceArrows20 = new ItemRequirement("Ice arrows", ItemID.ICE_ARROW, 20);
 
 		iceArrows = new ItemRequirement("Ice arrows", ItemID.ICE_ARROW);
+		iceArrowsWithThrowableWeapon = new ItemRequirements(LogicType.AND, "Ice Arrow with Throwable Weapon", iceArrows, throwableWeapon);
+		enoughArrows = new ItemRequirements(LogicType.OR, "Sufficient Arrows", iceArrows20, iceArrowsWithThrowableWeapon);
 		iceArrowsEquipped = new ItemRequirement("Ice arrows", ItemID.ICE_ARROW, 1, true);
 		lever = new ItemRequirement("Lever", ItemID.IKOV_LEVER);
 		lever.setHighlightInInventory(true);
@@ -236,10 +242,11 @@ public class TempleOfIkov extends BasicQuestHelper
 		inBootsRoom = new ZoneRequirement(bootsRoom);
 		inMainOrNorthRoom = new Conditions(LogicType.OR, inEntryRoom, inNorthRoom, inLesRoom);
 
-		pulledLever = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 1, "You hear the clunking of some hidden machinery."));
+		pulledLever = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 3, "You hear the clunking of some hidden machinery."));
 		leverNearby = new ObjectCondition(ObjectID.IKOV_MENDEDLEVER, new WorldPoint(2671, 9804, 0));
 		inArrowRoom = new ZoneRequirement(arrowRoom1, arrowRoom2, arrowRoom3);
-		hasEnoughArrows = new Conditions(true, LogicType.OR, iceArrows20);
+		hasArrowsWithThrowableWeapon = new Conditions(true, LogicType.AND, iceArrows, throwableWeapon);
+		hasEnoughArrows = new Conditions(true, LogicType.OR, iceArrows20, hasArrowsWithThrowableWeapon);
 		lesNearby = new NpcCondition(NpcID.IKOV_FIREWARRIOR);
 		inWitchRoom = new ZoneRequirement(witchRoom);
 
@@ -256,20 +263,20 @@ public class TempleOfIkov extends BasicQuestHelper
 		talkToLucien.addDialogSteps("I'm a mighty hero!", "That sounds like a laugh!");
 		prepare = new DetailedQuestStep(this,
 			"Get your weight below 0kg. You can get boots of lightness from the Temple of Ikov north of East Ardougne for -4.5kg.",
-			pendantOfLucienEquipped, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, limpwurt20, yewOrBetterBowOrThrowableWeapon);
 
 		prepareBelow0 = new DetailedQuestStep(this,
 			"Get your weight below 0kg.",
-			pendantOfLucienEquipped, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, limpwurt20, yewOrBetterBowOrThrowableWeapon);
 
 		prepare.addSubSteps(prepareBelow0);
 
 		enterDungeonForBoots = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2677, 3405, 0),
 			"Enter the Temple of Ikov. You can get Boots of Lightness inside to get -4.5kg.",
-			pendantOfLucienEquipped, knife, lightSource, limpwurt20, yewOrBetterBow);
+			pendantOfLucienEquipped, knife, lightSource, limpwurt20, yewOrBetterBowOrThrowableWeapon);
 
 		enterDungeon = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2677, 3405, 0),
-			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, yewOrBetterBow, limpwurt20);
+			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, yewOrBetterBowOrThrowableWeapon, limpwurt20);
 
 		enterDungeon.addSubSteps(enterDungeonForBoots);
 
@@ -285,7 +292,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		pullLever = new ObjectStep(this, ObjectID.IKOV_MENDEDLEVER, new WorldPoint(2671, 9804, 0), "Pull the lever.");
 
 		enterArrowRoom = new ObjectStep(this, ObjectID.IKOV_MENDEDLEVERDOORL, new WorldPoint(2662, 9803, 0), "Enter the south gate.");
-		collectArrows = new ObjectStep(this, ObjectID.IKOV_CHESTCLOSED, "Search the chests in the ice area of this room until you have at least 20 Ice Arrows or more to be safe. A random chest has the arrows each time.", iceArrows20);
+		collectArrows = new ObjectStep(this, ObjectID.IKOV_CHESTCLOSED, "Search the chests in the ice area of this room until you have at least 20 Ice Arrows or more to be safe. If using a throwable weapon (darts, knives) a single Ice Arrow is sufficient. A random chest has the arrows each time.", enoughArrows);
 		collectArrows.setHideWorldArrow(true);
 		collectArrows.addAlternateObjects(ObjectID.IKOV_CHESTOPEN);
 
@@ -300,10 +307,10 @@ public class TempleOfIkov extends BasicQuestHelper
 		goSearchThievingLever.addSubSteps(goPullThievingLever);
 
 		tryToEnterWitchRoom = new ObjectStep(this, ObjectID.IKOV_FIREWARRIORDOOR, new WorldPoint(2646, 9870, 0),
-			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows.", yewOrBetterBow, iceArrowsEquipped);
+			"Try to enter the far north door. Be prepared to fight Lesarkus, who can only be hurt by ice arrows.", yewOrBetterBowOrThrowableWeapon, iceArrowsEquipped);
 
 		fightLes = new NpcStep(this, NpcID.IKOV_FIREWARRIOR, new WorldPoint(2646, 9866, 0),
-			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBow, iceArrowsEquipped);
+			"Kill the Fire Warrior of Lesarkus. He can only be hurt by the ice arrows.", yewOrBetterBowOrThrowableWeapon, iceArrowsEquipped);
 
 		enterDungeonKilledLes = new ObjectStep(this, ObjectID.LADDER_CELLAR, new WorldPoint(2677, 3405, 0),
 			"Enter the Temple of Ikov north of East Ardougne.", pendantOfLucienEquipped, limpwurt20);
@@ -351,7 +358,7 @@ public class TempleOfIkov extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(yewOrBetterBow);
+		reqs.add(yewOrBetterBowOrThrowableWeapon);
 		reqs.add(limpwurt20);
 		reqs.add(knife);
 		reqs.add(lightSource);
@@ -405,7 +412,7 @@ public class TempleOfIkov extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Defeat Lesarkus", 
 			Arrays.asList(prepare, enterDungeon, goDownToBoots, getBoots, goUpFromBoots, pickUpLever, useLeverOnHole,
 				pullLever, enterArrowRoom, collectArrows, returnToMainRoom, goSearchThievingLever,
-				tryToEnterWitchRoom, fightLes), pendantOfLucien, yewOrBetterBow, knife, lightSource, limpwurt20));
+				tryToEnterWitchRoom, fightLes), pendantOfLucien, yewOrBetterBowOrThrowableWeapon, knife, lightSource, limpwurt20));
 		allSteps.add(new PanelDetails("Explore deeper", Arrays.asList(enterLesDoor, giveWineldaLimps, pickUpKey, pushWall, makeChoice, returnToLucien)));
 		return allSteps;
 	}

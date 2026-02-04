@@ -66,6 +66,11 @@ public class ObjectStep extends DetailedQuestStep
 	@Setter
 	private boolean revalidateObjects;
 
+	/// Force the highlight to use the clickbox highlight, regardless of the user's setting.
+	/// This is useful if the object you're trying to highlight is technically visible but cannot feasibly be outline-highlighted.
+	@Setter
+	private boolean forceClickboxHighlight = false;
+
 	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
@@ -351,9 +356,14 @@ public class ObjectStep extends DetailedQuestStep
 
 			Color configColor = getQuestHelper().getConfig().targetOverlayColor();
 
-			QuestHelperConfig.ObjectHighlightStyle highlightStyle = visibilityHelper.isObjectVisible(tileObject)
+			var isObjectVisible = visibilityHelper.isObjectVisible(tileObject);
+			var highlightStyle = isObjectVisible
 				? questHelper.getConfig().highlightStyleObjects()
 				: CLICK_BOX;
+
+			if (highlightStyle == QuestHelperConfig.ObjectHighlightStyle.OUTLINE && forceClickboxHighlight) {
+				highlightStyle = QuestHelperConfig.ObjectHighlightStyle.CLICK_BOX;
+			}
 
 			switch (highlightStyle)
 			{

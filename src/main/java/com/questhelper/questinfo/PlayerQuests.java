@@ -28,7 +28,8 @@ import lombok.Getter;
 
 public enum PlayerQuests
 {
-	BIKE_SHEDDER("bike_shedder");
+	BIKE_SHEDDER("bike_shedder"),
+	PUZZLE_WRAPPER("puzzle_wrapper");
 
 	@Getter
 	private final String configValue;

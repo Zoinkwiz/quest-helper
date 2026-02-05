@@ -220,7 +220,7 @@ public class RFDSkrachUglogwee extends BasicQuestHelper
 		getToad.addSubSteps(fillUpBellows);
 		getRock = new ObjectStep(this, ObjectID.SWAMP_ROCK1, new WorldPoint(2567, 2960, 0), "Mine a pile of rocks near the Feldip Hills Fairy Ring for a rock.", pickaxe);
 		useBellowOnToadInInv = new DetailedQuestStep(this, "Use the bellows on your toad with a ball of wool in your inventory.", ogreBellowsFilled, toad, ballOfWool);
-		dropBalloonToad = new DetailedQuestStep(this, new WorldPoint(2593, 2964, 0), "Drop the balloon toad near a swamp and wait for a Jubbly to arrive.", toadReady, ogreBowAndArrows);
+		dropBalloonToad = new DetailedQuestStep(this, new WorldPoint(2635, 2965, 0), "Drop the balloon toad in the dark area south of Rantz's cave and wait for a Jubbly to arrive.", toadReady, ogreBowAndArrows);
 		killJubbly = new NpcStep(this, NpcID._100_JUBBLY_BIRD, "Kill then pluck jubbly.", ogreBowAndArrows);
 		pickUpRawJubbly = new ItemStep(this, "Pick up the raw jubbly.", rawJubbly);
 		lootJubbly = new NpcStep(this, NpcID._100_JUBBLY_BIRD_DEAD, "Pluck the jubbly's carcass.");

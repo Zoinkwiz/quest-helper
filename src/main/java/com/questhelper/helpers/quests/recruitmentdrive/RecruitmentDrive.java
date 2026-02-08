@@ -434,7 +434,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	{
 		String firstSide = moveRightToLeft ? "east" : "west";
 		String secondSide = moveRightToLeft ? "west" : "east";
-		return "Pickup the " + itemName + " on the " + firstSide + " and move it to the "
+		return "Pick up the " + itemName + " on the " + firstSide + " and move it to the "
 			+ secondSide + " side by crossing the bridge";
 	}
 

@@ -99,9 +99,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 	QuestStep talkToSirTiffy;
 
 	// Sir Tinley steps
-	QuestStep doNothingStep;
-	QuestStep talkToSirTinley;
-	QuestStep leaveSirTinleyRoom;
+	PuzzleWrapperStep talkToSirTinley;
+	PuzzleWrapperStep doNothingStep;
+	ObjectStep leaveSirTinleyRoom;
 	ConditionalStep sirTinleyStep;
 
 	// Sir Kuam Ferentse steps
@@ -217,12 +217,14 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		// Sir Tinley
 		{
-			talkToSirTinley = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_4, "Talk to Sir Tinley. Once you have pressed continue do not do anything or you will fail.");
-			doNothingStep = new DetailedQuestStep(this, "Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.");
+			talkToSirTinley = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_4, "Talk to Sir Tinley. Once you have pressed continue do not do anything or you will fail.").puzzleWrapStepWithDefaultText("Talk to Sir Tinley and solve his puzzle.");
+			doNothingStep = new DetailedQuestStep(this, "Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.").puzzleWrapStepWithDefaultText("Talk to Sir Tinley and solve his puzzle.").withNoHelpHiddenInSidebar(true);
 			leaveSirTinleyRoom = new ObjectStep(this, ObjectID.RD_ROOM4_EXITDOOR, "Leave through the portal to continue.");
 
 			var waitForCondition = new VarbitRequirement(VarbitID.RD_TEMPLOCK_2, 1, Operation.GREATER_EQUAL);
 			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM4_COMPLETE, 1);
+
+			talkToSirTinley.addSubSteps(doNothingStep);
 
 			sirTinleyStep = new ConditionalStep(this, talkToSirTinley);
 			sirTinleyStep.addStep(finishedRoom, leaveSirTinleyRoom);

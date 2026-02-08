@@ -522,4 +522,8 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 		return super.getText();
 	}
+
+	public String toString() {
+		return String.format("%s", String.join("", this.getText()));
+	}
 }

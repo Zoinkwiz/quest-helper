@@ -3,6 +3,7 @@ package com.questhelper.questhelpers;
 import com.questhelper.MockedTest;
 import com.questhelper.domain.AccountType;
 import com.questhelper.panel.QuestOverviewPanel;
+import com.questhelper.playerquests.puzzlewrapper.PuzzleWrapper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -186,6 +187,22 @@ public class QuestHelperTest extends MockedTest
 		var text = rawText == null ? "" : String.join("\n", rawText);
 
 		questOverviewPanel.updateHighlight(this.client, step); // getactivestep?
+		System.out.format("foo %s\n", text);
+		questOverviewPanel.xd();
+
+		var isAllCollapsed = questOverviewPanel.isAllCollapsed();
+		if (isAllCollapsed)
+		{
+			// Before failing this step, try again but with the puzzle helper disabled.
+			// This can be useful for steps that want to show the non-solving step standalone if all the solving steps are hidden.
+			when(questHelperConfig.solvePuzzles()).thenReturn(false);
+
+			questOverviewPanel.updateHighlight(this.client, step);
+			System.out.format("Step %s failed initially when puzzle solver was enabled. Try again without puzzle solver\n", text);
+			isAllCollapsed = questOverviewPanel.isAllCollapsed();
+
+			when(questHelperConfig.solvePuzzles()).thenReturn(true);
+		}
 
 		// All steps must have at least one category/step that's erected
 		// If all panels are collapsed, it means the step this fails on needs to be either:
@@ -193,11 +210,12 @@ public class QuestHelperTest extends MockedTest
 		// 2. Added as a panel step
 		if (shouldError)
 		{
-			assertFalse(questOverviewPanel.isAllCollapsed(), String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
+			questOverviewPanel.xd();
+			assertFalse(isAllCollapsed, String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
 		}
 		else
 		{
-			if (questOverviewPanel.isAllCollapsed())
+			if (isAllCollapsed)
 			{
 				System.out.format("For quest %s, step '%s' is missing sub steps or should be added to panel\n", helper.getQuest(), text);
 			}
@@ -231,7 +249,8 @@ public class QuestHelperTest extends MockedTest
 		else if (step instanceof OwnerStep)
 		{
 			helper.startUpStep(step);
-			for (var innerStep : ((OwnerStep) step).getSteps())
+			var steps = ((OwnerStep) step).getSteps();
+			for (var innerStep : steps)
 			{
 				if (checkedSteps.contains(innerStep))
 				{
@@ -332,6 +351,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.DEMON_SLAYER,
 			QuestHelperQuest.DORICS_QUEST,
+			QuestHelperQuest.RECRUITMENT_DRIVE,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.HOLY_GRAIL,
@@ -343,6 +363,7 @@ public class QuestHelperTest extends MockedTest
 
 		// If you add a quest to this list, then this unit test will *only* test this quest
 		Set<QuestHelperQuest> exclusiveQuests = Set.of(
+			QuestHelperQuest.RECRUITMENT_DRIVE
 		);
 
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
@@ -424,6 +445,55 @@ public class QuestHelperTest extends MockedTest
 			{
 				System.out.format("Unsupported quest helper type: %s\n", quest);
 			}
+		}
+	}
+
+	@Test
+	void asd()
+	{
+		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+
+		when(client.getRealSkillLevel(Skill.FARMING)).thenReturn(99);
+		when(client.getIntStack()).thenReturn(new int[]{2});
+		when(client.getVarbitValue(VarbitID.MORYTANIA_ELITE_REWARD)).thenReturn(1);
+
+		AchievementDiaryStepManager.setup(configManager);
+
+		var helper = new PuzzleWrapper();
+
+		Set<QuestStep> checkedSteps = new HashSet<>();
+
+		var shouldError = false;
+
+		when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
+
+		this.injector.injectMembers(helper);
+		helper.setQuest(QuestHelperQuest.PUZZLE_WRAPPER);
+		helper.setInjector(this.injector);
+		helper.setQuestHelperPlugin(questHelperPlugin);
+		helper.setConfig(questHelperConfig);
+		helper.init();
+		helper.startUp(questHelperConfig);
+
+		var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
+		questOverviewPanel.addQuest(helper, false);
+		var basicHelper = (BasicQuestHelper) helper;
+		var steps = basicHelper.getStepList();
+		var sortedSteps = steps.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+		for (var e : sortedSteps)
+		{
+			var step = e.getValue();
+			if (checkedSteps.contains(step))
+			{
+				continue;
+			}
+			checkedSteps.add(step);
+			helper.startUpStep(step);
+
+			assertNotNull(step);
+
+			checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, step);
 		}
 	}
 }

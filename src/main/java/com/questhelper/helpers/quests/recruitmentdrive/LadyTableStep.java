@@ -25,113 +25,70 @@
  */
 package com.questhelper.helpers.quests.recruitmentdrive;
 
-import com.google.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
-import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-public class LadyTableStep extends DetailedOwnerStep
+public class LadyTableStep extends ObjectStep
 {
-	@Inject
-	protected Client client;
+	private final Statue[] statues = new Statue[]{
+		new Statue("Unknown", new WorldPoint(0, 0, 0)),
+		new Statue("Bronze Halberd", new WorldPoint(2452, 4976, 0)),
+		new Statue("Silver Halberd", new WorldPoint(2452, 4979, 0)),
+		new Statue("Gold Halberd", new WorldPoint(2452, 4982, 0)),
 
-	private Statue[] statues;
+		new Statue("Bronze 2H", new WorldPoint(2450, 4976, 0)),
+		new Statue("Silver 2H", new WorldPoint(2450, 4979, 0)),
+		new Statue("Gold 2H", new WorldPoint(2450, 4982, 0)),
 
-	private ObjectStep clickMissingStatue, leaveRoom;
+		new Statue("Gold Mace", new WorldPoint(2456, 4982, 0)),
+		new Statue("Silver Mace", new WorldPoint(2456, 4979, 0)),
+		new Statue("Bronze mace", new WorldPoint(2456, 4976, 0)),
 
-	VarbitRequirement finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM2_COMPLETE, 1);
+		new Statue("Bronze axe", new WorldPoint(2454, 4976, 0)),
+		new Statue("Silver axe", new WorldPoint(2454, 4979, 0)),
+		new Statue("Gold axe", new WorldPoint(2454, 4972, 0))
+	};
 
 	public LadyTableStep(QuestHelper questHelper, Requirement... requirements)
 	{
-		super(questHelper, requirements);
+		super(questHelper, ObjectID.RD_1G, new WorldPoint(0, 0, 0), "Click the missing statue.", requirements);
+
+		addAlternateObjects(ObjectID.RD_1S, ObjectID.RD_1B,
+			ObjectID.RD_2G, ObjectID.RD_2S, ObjectID.RD_2B, ObjectID.RD_3G,
+			ObjectID.RD_3S, ObjectID.RD_3B, ObjectID.RD_4G, ObjectID.RD_4B);
 	}
 
 	@Override
 	public void startUp()
 	{
 		super.startUp();
-		Statue answerStatue = statues[client.getVarbitValue(VarbitID.RD_TEMPLOCK_2)];
-		clickMissingStatue.setText("Click the " + answerStatue.text + " once it appears.");
-		clickMissingStatue.setWorldPoint(answerStatue.point);
+
+		var answerIndex = client.getVarbitValue(VarbitID.RD_TEMPLOCK_2);
+		if (answerIndex < statues.length)
+		{
+			var answerStatue = statues[answerIndex];
+			setText("Click the " + answerStatue.text + " once it appears.");
+			setWorldPoint(answerStatue.point);
+		}
 	}
 
 	@Override
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		super.onVarbitChanged(varbitChanged);
-		Statue answerStatue = statues[client.getVarbitValue(VarbitID.RD_TEMPLOCK_2)];
-		clickMissingStatue.setText("Click the " + answerStatue.text + " once it appears.");
-		clickMissingStatue.setWorldPoint(answerStatue.point);
-	}
 
-	@Override
-	public void setupSteps()
-	{
-		statues = new Statue[]{
-			new Statue("Unknown", new WorldPoint(0, 0, 0)),
-			new Statue("Bronze Halberd", new WorldPoint(2452, 4976, 0)),
-			new Statue("Silver Halberd", new WorldPoint(2452, 4979, 0)),
-			new Statue("Gold Halberd", new WorldPoint(2452, 4982, 0)),
-
-			new Statue("Bronze 2H", new WorldPoint(2450, 4976, 0)),
-			new Statue("Silver 2H", new WorldPoint(2450, 4979, 0)),
-			new Statue("Gold 2H", new WorldPoint(2450, 4982, 0)),
-
-			new Statue("Gold Mace", new WorldPoint(2456, 4982, 0)),
-			new Statue("Silver Mace", new WorldPoint(2456, 4979, 0)),
-			new Statue("Bronze mace", new WorldPoint(2456, 4976, 0)),
-
-			new Statue("Bronze axe", new WorldPoint(2454, 4976, 0)),
-			new Statue("Silver axe", new WorldPoint(2454, 4979, 0)),
-			new Statue("Gold axe", new WorldPoint(2454, 4972, 0))
-		};
-
-		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM2_EXITDOOR, "Leave through the door to enter the portal and continue.");
-		clickMissingStatue = new ObjectStep(questHelper, 0, statues[0].point, "CLick the missing statue.");
-		clickMissingStatue.addAlternateObjects(ObjectID.RD_1G, ObjectID.RD_1S, ObjectID.RD_1B,
-			ObjectID.RD_2G, ObjectID.RD_2S, ObjectID.RD_2B, ObjectID.RD_3G,
-			ObjectID.RD_3S, ObjectID.RD_3B, ObjectID.RD_4G, ObjectID.RD_4B);
-	}
-
-	@Override
-	public Collection<QuestStep> getSteps()
-	{
-		List<QuestStep> step = new ArrayList<>();
-
-		step.add(clickMissingStatue);
-		step.add(leaveRoom);
-		return step;
-	}
-
-	@Override
-	protected void updateSteps()
-	{
-		if (finishedRoom.check(client))
+		if (varbitChanged.getVarbitId() == VarbitID.RD_TEMPLOCK_2)
 		{
-			startUpStep(leaveRoom);
+			var answerIndex = varbitChanged.getValue();
+			var answerStatue = statues[answerIndex];
+			setText("Click the " + answerStatue.text + " once it appears.");
+			setWorldPoint(answerStatue.point);
 		}
-		startUpStep(clickMissingStatue);
-	}
-
-	public List<QuestStep> getPanelSteps()
-	{
-		List<QuestStep> steps = new ArrayList<>();
-		steps.add(clickMissingStatue);
-		steps.add(leaveRoom);
-
-		return steps;
 	}
 
 	static class Statue

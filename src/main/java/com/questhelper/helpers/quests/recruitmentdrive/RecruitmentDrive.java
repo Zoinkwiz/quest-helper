@@ -128,6 +128,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	// Lady Table
 	LadyTableStep ladyTableStep;
+	PuzzleWrapperStep pwLadyTableStep;
 	ObjectStep leaveLadyTableRoom;
 	ConditionalStep cLadyTableStep;
 
@@ -245,12 +246,13 @@ public class RecruitmentDrive extends BasicQuestHelper
 		// Lady Table
 		{
 			ladyTableStep = new LadyTableStep(this);
+			pwLadyTableStep = ladyTableStep.puzzleWrapStepWithDefaultText("Solve Lady Table's puzzle.");
 
 			leaveLadyTableRoom = new ObjectStep(this, ObjectID.RD_ROOM2_EXITDOOR, "Leave through the door to enter the portal and continue.");
 
 			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM2_COMPLETE, 1);
 
-			cLadyTableStep = new ConditionalStep(this, ladyTableStep);
+			cLadyTableStep = new ConditionalStep(this, pwLadyTableStep);
 			cLadyTableStep.addStep(finishedRoom, leaveLadyTableRoom);
 		}
 
@@ -532,7 +534,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		sections.add(missCheeversSection);
 
 		sections.add(new PanelDetails("Lady Table", List.of(
-			ladyTableStep,
+			pwLadyTableStep,
 			leaveLadyTableRoom
 		)));
 

@@ -126,6 +126,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 	// Lady Table
 	LadyTableStep ladyTableStep;
+	ObjectStep leaveLadyTableRoom;
+	ConditionalStep cLadyTableStep;
 
 	// Ms Hynn
 	MsHynnAnswerDialogQuizStep msHynnDialogQuiz;
@@ -249,6 +251,13 @@ public class RecruitmentDrive extends BasicQuestHelper
 		// Lady Table
 		{
 			ladyTableStep = new LadyTableStep(this);
+
+			leaveLadyTableRoom = new ObjectStep(this, ObjectID.RD_ROOM2_EXITDOOR, "Leave through the door to enter the portal and continue.");
+
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM2_COMPLETE, 1);
+
+			cLadyTableStep = new ConditionalStep(this, ladyTableStep);
+			cLadyTableStep.addStep(finishedRoom, leaveLadyTableRoom);
 		}
 
 		// Sir Spishyus
@@ -407,7 +416,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTestingGrounds.addStep(isInSirTinleysRoom, sirTinleyStep);
 		cTestingGrounds.addStep(isInMsHynnRoom, msHynnTerprettStep);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
-		cTestingGrounds.addStep(isInladyTableRoom, ladyTableStep);
+		cTestingGrounds.addStep(isInladyTableRoom, cLadyTableStep);
 		cTestingGrounds.addStep(isInSirSpishyusRoom, cSirSpishyus);
 		cTestingGrounds.addStep(isInSirKuamsRoom, sirKuamStep);
 
@@ -532,9 +541,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 		missCheeversSection.addSteps(leaveMissCheeversRoom);
 		sections.add(missCheeversSection);
 
-		sections.add(new PanelDetails("Lady Table",
-			ladyTableStep.getPanelSteps()
-		));
+		sections.add(new PanelDetails("Lady Table", List.of(
+			ladyTableStep,
+			leaveLadyTableRoom
+		)));
 
 		return sections;
 	}

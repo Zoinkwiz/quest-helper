@@ -34,6 +34,7 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -78,7 +79,11 @@ public class SirRenItchoodStep extends ConditionalStep
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		super.onVarbitChanged(varbitChanged);
-		int answerID = client.getVarbitValue(VarbitID.RD_TEMPLOCK_1);
+		if (varbitChanged.getVarbitId() != VarbitID.RD_TEMPLOCK_1)
+		{
+			return;
+		}
+		var answerID = varbitChanged.getValue();
 		if (answerID == 0)
 		{
 			return;
@@ -91,7 +96,7 @@ public class SirRenItchoodStep extends ConditionalStep
 	{
 		finishedRoomCondition = new VarbitRequirement(VarbitID.RD_ROOM5_COMPLETE, 1);
 		openAnswerWidget = new ObjectStep(questHelper, ObjectID.RD_ROOM5_EXITDOOR, "Open the door to be prompted to enter a code.");
-		answerWidgetOpen = new WidgetTextRequirement(285, 55, "Combination Lock Door");
+		answerWidgetOpen = new WidgetTextRequirement(InterfaceID.RdCombolock.RDCOMBOLOCK, "Combination Lock Door");
 		enterDoorcode = new DoorPuzzle(questHelper, "NONE");
 		leaveRoom = new ObjectStep(questHelper, ObjectID.RD_ROOM5_EXITDOOR, "Leave through the door to enter the portal and continue.");
 

@@ -66,6 +66,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	// Zones
 	Zone firstFloorZone;
 	Zone secondFloorZone;
+	Zone missCheeversZone;
 	Zone sirTinleyRoomZone;
 	Zone msHynnRoomZone;
 	Zone sirKuamRoomZone;
@@ -76,6 +77,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	// Miscellaneous requirements
 	ZoneRequirement isFirstFloorCastle;
 	ZoneRequirement isSecondFloorCastle;
+	ZoneRequirement isInMissCheeversRoom;
 	ZoneRequirement isInSirTinleysRoom;
 	ZoneRequirement isInMsHynnRoom;
 	ZoneRequirement isInSirKuamsRoom;
@@ -125,7 +127,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	MsHynnAnswerDialogQuizStep msHynnDialogQuiz;
 
 	// Miss Cheevers
-	private MsCheevesSetup msCheevesSetup;
+	MissCheeversStep missCheeversStep;
 
 	@Override
 	protected void setupZones()
@@ -135,6 +137,8 @@ public class RecruitmentDrive extends BasicQuestHelper
 		secondFloorZone = new Zone(new WorldPoint(2955, 3334, 2),
 			new WorldPoint(2964, 3342, 2));
 
+		missCheeversZone = new Zone(new WorldPoint(2466, 4936, 0),
+			new WorldPoint(2480, 4947, 0));
 		sirTinleyRoomZone = new Zone(new WorldPoint(2471, 4954, 0),
 			new WorldPoint(2481, 4960, 0));
 		msHynnRoomZone = new Zone(new WorldPoint(2446, 4934, 0),
@@ -156,6 +160,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		isFirstFloorCastle = new ZoneRequirement(firstFloorZone);
 		isSecondFloorCastle = new ZoneRequirement(secondFloorZone);
+		isInMissCheeversRoom = new ZoneRequirement(missCheeversZone);
 		isInSirTinleysRoom = new ZoneRequirement(sirTinleyRoomZone);
 		isInMsHynnRoom = new ZoneRequirement(msHynnRoomZone);
 		isInSirKuamsRoom = new ZoneRequirement(sirKuamRoomZone);
@@ -182,8 +187,10 @@ public class RecruitmentDrive extends BasicQuestHelper
 		talkToSirTiffy.addSubSteps(climbDownfirstFloorStaircase, climbDownSecondFloorStaircase);
 
 		// Testing grounds
-		// Ms Cheeves
-		msCheevesSetup = new MsCheevesSetup(this);
+		// Miss Cheevers
+		{
+			missCheeversStep = new MissCheeversStep(this);
+		}
 
 		// Sir Tinley
 		{
@@ -318,7 +325,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		cTestingGrounds.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
 
 		// Testing steps below
-		cTestingGrounds.addStep(msCheevesSetup.getIsInMsCheeversRoom(), msCheevesSetup.getConditionalStep());
+		cTestingGrounds.addStep(isInMissCheeversRoom, missCheeversStep);
 		cTestingGrounds.addStep(isInSirTinleysRoom, sirTinleyStep);
 		cTestingGrounds.addStep(isInMsHynnRoom, msHynnDialogQuiz);
 		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
@@ -442,7 +449,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 		));
 
 		sections.add(new PanelDetails("Miss Cheevers",
-			msCheevesSetup.GetPanelSteps()
+			missCheeversStep.getPanelSteps()
 		));
 
 		sections.add(new PanelDetails("Lady Table",

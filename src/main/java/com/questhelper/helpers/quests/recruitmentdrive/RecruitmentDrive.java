@@ -108,9 +108,9 @@ public class RecruitmentDrive extends BasicQuestHelper
 	ConditionalStep sirTinleyStep;
 
 	// Sir Kuam Ferentse steps
-	QuestStep talkToSirKuam;
-	QuestStep killSirLeye;
-	QuestStep leaveSirKuamRoom;
+	NpcStep talkToSirKuam;
+	NpcStep killSirLeye;
+	ObjectStep leaveSirKuamRoom;
 	ConditionalStep sirKuamStep;
 
 	// Sir Spishyus
@@ -381,7 +381,6 @@ public class RecruitmentDrive extends BasicQuestHelper
 			var npcCondition = new NpcCondition(NpcID.RD_COMBAT_NPC_ROOM_3);
 
 			sirKuamStep = new ConditionalStep(this, talkToSirKuam);
-
 			sirKuamStep.addStep(finishedRoom, leaveSirKuamRoom);
 			sirKuamStep.addStep(npcCondition, killSirLeye);
 		}
@@ -509,7 +508,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 			leaveMsHynnTerprettRoom
 		)));
 
-		sections.add(new PanelDetails("Sir Kuam", List.of(
+		sections.add(new PanelDetails("Sir Kuam Ferentse", List.of(
 			talkToSirKuam,
 			killSirLeye,
 			leaveSirKuamRoom

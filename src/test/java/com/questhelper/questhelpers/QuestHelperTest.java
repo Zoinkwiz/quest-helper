@@ -187,6 +187,8 @@ public class QuestHelperTest extends MockedTest
 		var text = rawText == null ? "" : String.join("\n", rawText);
 
 		questOverviewPanel.updateHighlight(this.client, step); // getactivestep?
+		System.out.format("foo %s\n", text);
+		questOverviewPanel.xd();
 
 		// All steps must have at least one category/step that's erected
 		// If all panels are collapsed, it means the step this fails on needs to be either:

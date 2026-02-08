@@ -107,6 +107,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 	// Sir Kuam Ferentse steps
 	NpcStep talkToSirKuam;
 	NpcStep killSirLeye;
+	PuzzleWrapperStep pwKillSirLeye;
 	ObjectStep leaveSirKuamRoom;
 	ConditionalStep sirKuamStep;
 
@@ -385,13 +386,14 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 			talkToSirKuam = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_3, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye.");
 			killSirLeye = new NpcStep(this, NpcID.RD_COMBAT_NPC_ROOM_3, "Defeat Sir Leye to win this challenge. You must use the steel warhammer or your bare hands to deal the final hit on him.", true);
+			pwKillSirLeye = killSirLeye.puzzleWrapStepWithDefaultText("Defeat Sir Leye to win this challenge.");
 
 			leaveSirKuamRoom = new ObjectStep(this, ObjectID.RD_ROOM3_EXITDOOR, "Leave through the portal to continue.");
 			var npcCondition = new NpcCondition(NpcID.RD_COMBAT_NPC_ROOM_3);
 
 			sirKuamStep = new ConditionalStep(this, talkToSirKuam);
 			sirKuamStep.addStep(finishedRoom, leaveSirKuamRoom);
-			sirKuamStep.addStep(npcCondition, killSirLeye);
+			sirKuamStep.addStep(npcCondition, pwKillSirLeye);
 		}
 	}
 
@@ -519,7 +521,7 @@ public class RecruitmentDrive extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Sir Kuam Ferentse", List.of(
 			talkToSirKuam,
-			killSirLeye,
+			pwKillSirLeye,
 			leaveSirKuamRoom
 		)));
 

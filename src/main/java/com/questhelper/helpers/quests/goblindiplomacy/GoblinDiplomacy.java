@@ -142,6 +142,7 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		talkToGeneral1 = new NpcStep(this, NpcID.GENERAL_BENTNOZE_RED, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village.", orangeArmour);
 		talkToGeneral1.addDialogStep("Do you want me to pick an armour colour for you?");
 		talkToGeneral1.addDialogStep("What about a different colour?");
+		talkToGeneral1.addDialogStep("Yes.");
 		talkToGeneral1.addDialogStep("So how is life for the goblins?");
 		talkToGeneral1.addDialogStep("Yes, Wartface looks fat");
 		talkToGeneral1.addDialogStep("I have some orange armour here.");

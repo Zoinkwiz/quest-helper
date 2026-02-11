@@ -590,9 +590,9 @@ public class HerbRun extends ComplexStateQuestHelper
 				new PanelDetails("Catherby", Collections.singletonList(catherbyPatch)).withId(3),
 				new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4),
 				new PanelDetails("Hosidius", Collections.singletonList(hosidiusPatch)).withId(5),
-				new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6),
-				new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7),
-				new PanelDetails("Weiss", Collections.singletonList(weissPatch)).withId(8),
+				new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6).withHideCondition(nor(accessToVarlamore)),
+				new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7).withHideCondition(nor(accessToTrollStronghold)),
+				new PanelDetails("Weiss", Collections.singletonList(weissPatch)).withId(8).withHideCondition(nor(accessToWeiss)),
 				new PanelDetails("Harmony Island", Collections.singletonList(harmonyPatch)).withId(9).withHideCondition(nor(accessToHarmony))
 		);
 		allSteps.add(farmRunSidebar);

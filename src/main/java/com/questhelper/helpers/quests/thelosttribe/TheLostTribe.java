@@ -212,6 +212,7 @@ public class TheLostTribe extends BasicQuestHelper
 		goUpFromBasement = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3209, 9616, 0), "Go up to the surface.");
 		goDownFromF2 = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP_3, new WorldPoint(3205, 3208, 2), "Go downstairs.");
 		climbOutThroughHole = new ObjectStep(this, ObjectID.LOST_TRIBE_CAVEWALL_HOLE_WALLDECOR, new WorldPoint(3221, 9618, 0), "");
+		climbOutThroughHole.setForceClickboxHighlight(true);
 
 		goToF1Steps = new ConditionalStep(this, goUpToF1);
 		goToF1Steps.addStep(inLumbridgeF2, goDownFromF2);
@@ -262,6 +263,7 @@ public class TheLostTribe extends BasicQuestHelper
 		goMineRubble.addStep(inBasement, usePickaxeOnRubble);
 
 		climbThroughHole = new ObjectStep(this, ObjectID.LOST_TRIBE_CELLAR_WALL, new WorldPoint(3219, 9618, 0), "");
+		climbThroughHole.setForceClickboxHighlight(true);
 
 		enterTunnels = new ConditionalStep(this, goDownToBasement, "Enter the hole in Lumbridge Castle's basement.", lightSource);
 		enterTunnels.addStep(inBasement, climbThroughHole);

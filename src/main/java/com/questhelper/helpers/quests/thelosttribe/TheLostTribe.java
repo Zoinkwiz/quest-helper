@@ -249,7 +249,6 @@ public class TheLostTribe extends BasicQuestHelper
 		talkToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE, new WorldPoint(3210, 3222, 1), "");
 
 		goTalkToDukeAfterHans = new ConditionalStep(this, goToF1Steps, "Talk to Duke Horacio in Lumbridge Castle.");
-		// TODO: Move these dialog steps to talkToDuke instead
 		goTalkToDukeAfterHans.addDialogSteps("Hans says he saw something in the cellar", "Bob says he saw something in the cellar", "Father Aereck says he saw something in the cellar", "The cook says he saw something in the cellar");
 		goTalkToDukeAfterHans.addStep(inLumbridgeF1, talkToDuke);
 
@@ -337,7 +336,6 @@ public class TheLostTribe extends BasicQuestHelper
 		goTravelToMistag.addSubSteps(walkToMistag);
 
 		goTalkToDukeAfterEmote = new ConditionalStep(this, goToF1Steps, "Talk to Duke Horacio in Lumbridge Castle. You can fast-travel with Mistag back to Lumbridge.");
-		// TODO: Move dialog steps to npc step
 		goTalkToDukeAfterEmote.addDialogSteps("I've made contact with the cave goblins...");
 		goTalkToDukeAfterEmote.addStep(inLumbridgeF1, talkToDuke);
 

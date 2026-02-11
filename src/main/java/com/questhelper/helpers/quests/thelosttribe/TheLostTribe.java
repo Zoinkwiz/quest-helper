@@ -258,7 +258,7 @@ public class TheLostTribe extends BasicQuestHelper
 		usePickaxeOnRubble = new ObjectStep(this, ObjectID.LOST_TRIBE_CELLAR_WALL, new WorldPoint(3219, 9618, 0), "");
 		usePickaxeOnRubble.addIcon(ItemID.BRONZE_PICKAXE);
 
-		goMineRubble = new ConditionalStep(this, goDownToBasement, "Go use a pickaxe on the rubble in the Lumbridge Castle basement.", pickaxe.highlighted(), lightSource);
+		goMineRubble = new ConditionalStep(this, goDownToBasement, "Use a pickaxe on the rubble in the Lumbridge Castle basement.", pickaxe.highlighted(), lightSource);
 		goMineRubble.addStep(inBasement, usePickaxeOnRubble);
 
 		climbThroughHole = new ObjectStep(this, ObjectID.LOST_TRIBE_CELLAR_WALL, new WorldPoint(3219, 9618, 0), "");

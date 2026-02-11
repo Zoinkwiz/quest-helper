@@ -55,6 +55,7 @@ import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -280,8 +281,7 @@ public class TheLostTribe extends BasicQuestHelper
 		searchBookcase.addTeleport(varrockTeleport);
 
 		readBook = new DetailedQuestStep(this, "Read the entire goblin symbol book.", book);
-		// TODO: Gameval this
-		readBook.addWidgetHighlight(183, 16);
+		readBook.addWidgetHighlight(InterfaceID.LostTribeSymbolBook.LOST_TRIBE_RIGHT_ARROW);
 
 		talkToGenerals = new NpcStep(this, NpcID.GENERAL_WARTFACE_GREEN, new WorldPoint(2957, 3512, 0), "Talk to the Goblin Generals in the Goblin Village.");
 		talkToGenerals.addTeleport(faladorTeleport);

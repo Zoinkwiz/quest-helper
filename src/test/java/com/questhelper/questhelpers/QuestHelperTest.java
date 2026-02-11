@@ -338,6 +338,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.HOLY_GRAIL,
 			QuestHelperQuest.PRIEST_IN_PERIL,
+			QuestHelperQuest.THE_LOST_TRIBE,
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,
 			QuestHelperQuest.HERB_RUN

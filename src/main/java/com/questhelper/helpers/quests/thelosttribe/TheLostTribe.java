@@ -210,6 +210,7 @@ public class TheLostTribe extends BasicQuestHelper
 		goDownFromF1 = new ObjectStep(this, ObjectID.SPIRALSTAIRSMIDDLE, new WorldPoint(3205, 3208, 1), "Go down the staircase.");
 		goDownFromF1.addDialogStep("Climb down the stairs.");
 		goUpToF1 = new ObjectStep(this, ObjectID.SPIRALSTAIRSBOTTOM_3, new WorldPoint(3205, 3208, 0), "Go up to the first floor of Lumbridge Castle.");
+		goUpToF1.addDialogStep("Can you show me the way out of the mines?");
 		goUpFromBasement = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3209, 9616, 0), "Go up to the surface.");
 		goDownFromF2 = new ObjectStep(this, ObjectID.SPIRALSTAIRSTOP_3, new WorldPoint(3205, 3208, 2), "Go downstairs.");
 		climbOutThroughHole = new ObjectStep(this, ObjectID.LOST_TRIBE_CAVEWALL_HOLE_WALLDECOR, new WorldPoint(3221, 9618, 0), "");

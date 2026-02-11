@@ -279,7 +279,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		farmingGuildTeleport.addAlternates(ItemCollections.SKILLS_NECKLACES);
 		farmingGuildTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
-		harmonyTeleport = new ItemRequirement("Harmony Teleport", ItemID.TELETAB_HARMONY);
+		harmonyTeleport = new ItemRequirement("Harmony Teleport", ItemID.TELETAB_HARMONY).showConditioned(accessToHarmony);
 
 		hunterWhistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_PERFECTED).showConditioned(accessToVarlamore);
 		hunterWhistle.addAlternates(ItemID.HG_QUETZALWHISTLE_BASIC);

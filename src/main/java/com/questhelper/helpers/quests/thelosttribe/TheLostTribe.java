@@ -228,7 +228,7 @@ public class TheLostTribe extends BasicQuestHelper
 		talkToHans = new NpcStep(this, NpcID.HANS, new WorldPoint(3222, 3218, 0), "Talk to Hans who is roaming around the castle.");
 		talkToHans.addDialogStep("Do you know what happened in the cellar?");
 
-		talkToBob = new NpcStep(this, NpcID.TWOCATS_BOB_CUTSCENE, new WorldPoint(3231, 3203, 0), "Talk to Bob in the south of Lumbridge.");
+		talkToBob = new NpcStep(this, NpcID.BOB, new WorldPoint(3231, 3203, 0), "Talk to Bob in the south of Lumbridge.");
 		talkToBob.addDialogStep("Do you know what happened in the castle cellar?");
 
 		talkToAllAboutCellar = new NpcStep(this, NpcID.COOK, "");

@@ -257,7 +257,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERIC_TALISMAN);
 
 		hosidiusHouseTeleport = new ItemRequirement("Teleport to Hosidius House", ItemID.NZONE_TELETAB_KOUREND);
-		hosidiusHouseTeleport.addAlternates(ItemID.XERIC_TALISMAN);
+		xericsTalisman.addAlternates(ItemID.NZONE_TELETAB_KOUREND);
 
 		var catherbyRunes = new ItemRequirements("Catherby teleport runes", new ItemRequirement("Law rune",
 				ItemID.LAWRUNE), new ItemRequirement("Air rune", ItemID.AIRRUNE, 5));
@@ -566,7 +566,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(compost, ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, hosidiusHouseTeleport, catherbyTeleport,
+		return Arrays.asList(compost, ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport,
 				trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, hunterWhistle, harmonyTeleport,  gracefulOutfit, farmersOutfit);
 	}
 

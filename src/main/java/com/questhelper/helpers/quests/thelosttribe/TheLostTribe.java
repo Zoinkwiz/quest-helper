@@ -366,9 +366,11 @@ public class TheLostTribe extends BasicQuestHelper
 		goToDukeWithSilverware.addStep(inLumbridgeF1, talkToDuke);
 
 		talkToKazgar = new NpcStep(this, NpcID.LOST_TRIBE_GUIDE_2OPS, new WorldPoint(3230, 9610, 0), "Travel with Kazgar to shortcut to Mistag.");
+		talkToKazgar.addDialogStep("Can you show me the way to the mines?");
 		talkToMistagForEnd = new NpcStep(this, NpcID.LOST_TRIBE_MISTAG_2OPS, new WorldPoint(3319, 9615, 0), "");
 
 		travelToMakePeace = new ConditionalStep(this, goDownToBasement, "Travel through the tunnels until you reach Mistag, and give him the treaty.", lightSource, treaty);
+		travelToMakePeace.addDialogStep("What was I doing again?");
 		travelToMakePeace.addStep(inMines, talkToMistagForEnd);
 		travelToMakePeace.addStep(inTunnels, talkToKazgar);
 		travelToMakePeace.addStep(inBasement, climbThroughHole);

@@ -56,9 +56,6 @@ public class ScorpionCatcher extends BasicQuestHelper
 	ItemRequirement scorpionCageTaverleyAndMonastery;
 	ItemRequirement scorpionCageFull;
 
-	// ??
-	QuestRequirement fairyRingAccess;
-
 	// Zones
 	Zone sorcerersTower3;
 	Zone sorcerersTower2;
@@ -163,8 +160,6 @@ public class ScorpionCatcher extends BasicQuestHelper
 		gamesNecklace = new ItemRequirement("Games Necklace", ItemCollections.GAMES_NECKLACES);
 		gloryOrCombatBracelet = new ItemRequirement("A charged glory or a combat bracelet", ItemCollections.AMULET_OF_GLORIES);
 		gloryOrCombatBracelet.addAlternates(ItemCollections.COMBAT_BRACELETS);
-		fairyRingAccess = new QuestRequirement(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS, "Fairy ring access");
-		fairyRingAccess.setTooltip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
 
 		has70Agility = new SkillRequirement(Skill.AGILITY, 70, true);
 		has80Agility = new SkillRequirement(Skill.AGILITY, 80, true);

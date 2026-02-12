@@ -133,8 +133,12 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		has70Agility = new SkillRequirement(Skill.AGILITY, 70, true);
+		has80Agility = new SkillRequirement(Skill.AGILITY, 80, true);
+
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");
+		dustyKey.setConditionToHide(has70Agility);
 
 		jailKey = new ItemRequirement("Jail Key", ItemID.JAIL_KEY);
 
@@ -163,9 +167,6 @@ public class ScorpionCatcher extends BasicQuestHelper
 		gamesNecklace = new ItemRequirement("Games Necklace", ItemCollections.GAMES_NECKLACES);
 		gloryOrCombatBracelet = new ItemRequirement("A charged glory or a combat bracelet", ItemCollections.AMULET_OF_GLORIES);
 		gloryOrCombatBracelet.addAlternates(ItemCollections.COMBAT_BRACELETS);
-
-		has70Agility = new SkillRequirement(Skill.AGILITY, 70, true);
-		has80Agility = new SkillRequirement(Skill.AGILITY, 80, true);
 
 		inSorcerersTower1 = new ZoneRequirement(sorcerersTower1);
 		inSorcerersTower2 = new ZoneRequirement(sorcerersTower2);
@@ -203,17 +204,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		speakToSeer1.addDialogStep("I need to locate some scorpions.");
 		speakToSeer1.addDialogStep("Your friend Thormac sent me to speak to you.");
 
-		// TODO: This should be a conditional step
-		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)
-		{
-			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
-				"Go to Taverley Dungeon. As you're 70 Agility, you don't need a dusty key.", scorpionCageMissingTaverley);
-		}
-		else
-		{
-			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
-				"Go to Taverley Dungeon. Bring a dusty key if you have one, otherwise you can get one in the dungeon.", scorpionCageMissingTaverley, dustyKey);
-		}
+		enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0), "Go to Taverley Dungeon.", scorpionCageMissingTaverley, dustyKey);
 
 		goOverStrangeFloor = new ObjectStep(this, ObjectID.TAVERLY_DUNGEON_FLOOR_SPIKES_SC, new WorldPoint(2879, 9813, 0), "Go over the strange floor.");
 
@@ -302,14 +293,9 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		// TODO: Fix this with a conditionToHide instead
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		if (client.getRealSkillLevel(Skill.AGILITY) < 70)
-		{
-			reqs.add(dustyKey);
-		}
-
-		return reqs.isEmpty() ? null : reqs;
+		return List.of(
+			dustyKey
+		);
 	}
 
 	@Override
@@ -370,6 +356,8 @@ public class ScorpionCatcher extends BasicQuestHelper
 			enterTaverleyDungeon,
 			searchOldWall,
 			catchTaverleyScorpion
+		), List.of(
+			dustyKey
 		)));
 
 		sections.add(new PanelDetails("The second scorpion", List.of(

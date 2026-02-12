@@ -27,12 +27,10 @@ package com.questhelper.helpers.quests.shadowofthestorm;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
-import java.util.Collections;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -86,12 +84,9 @@ public class IncantationStep extends DetailedQuestStep
 	private String[] incantationOrder;
 	private int incantationPosition = 0;
 
-	public IncantationStep(QuestHelper questHelper, boolean reverse)
+	public IncantationStep(QuestHelper questHelper, boolean reverse, ItemRequirement sigilHighlighted)
 	{
-		super(questHelper, "Click the demonic sigil and read the incantation.");
-		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.AGRITH_SIGIL);
-		sigilHighlighted.setHighlightInInventory(true);
-		this.addItemRequirements(Collections.singletonList(sigilHighlighted));
+		super(questHelper, "Click the demonic sigil and read the incantation.", sigilHighlighted);
 		this.reverse = reverse;
 	}
 

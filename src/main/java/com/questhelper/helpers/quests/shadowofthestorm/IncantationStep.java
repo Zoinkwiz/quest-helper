@@ -100,6 +100,7 @@ public class IncantationStep extends DetailedQuestStep
 	public void startUp()
 	{
 		super.startUp();
+		incantationPosition = 0;
 		updateHints();
 	}
 
@@ -127,7 +128,7 @@ public class IncantationStep extends DetailedQuestStep
 			return;
 		}
 
-		if (widget.getId() != InterfaceID.INVENTORY)
+		if (widget.getId() != InterfaceID.Inventory.ITEMS)
 		{
 			return;
 		}
@@ -211,5 +212,6 @@ public class IncantationStep extends DetailedQuestStep
 
 		setText("Click the demonic sigil and read the incantation.");
 		addText(incantString);
+		addText("If the highlight feels wrong, click the demonic sigil again.");
 	}
 }

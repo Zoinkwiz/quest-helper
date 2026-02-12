@@ -89,7 +89,10 @@ public class ScorpionCatcher extends BasicQuestHelper
 	ObjectStep sorcerersTowerLadder1;
 	ObjectStep sorcerersTowerLadder2;
 	ConditionalStep goToTopOfTower;
+
+	ConditionalStep beginQuest;
 	NpcStep speakToThormac;
+
 	NpcStep speakToSeer1;
 	QuestStep enterTaverleyDungeon;
 	ObjectStep goThroughPipe;
@@ -185,16 +188,16 @@ public class ScorpionCatcher extends BasicQuestHelper
 		sorcerersTowerLadder1 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2704, 3403, 1), "Climb to the top of the Sorcerer's Tower south of Seers' Village.");
 		sorcerersTowerLadder2 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2699, 3405, 2), "Climb to the top of the Sorcerer's Tower south of Seers' Village.");
 
-		speakToThormac = new NpcStep(this, NpcID.THORMAC, new WorldPoint(2702, 3405, 3), "Speak to Thormac on the top floor of the Sorcerer's Tower south of Seer's Village.");
-		speakToThormac.addDialogStep("What do you need assistance with?");
-		speakToThormac.addDialogStep("So how would I go about catching them then?");
-		speakToThormac.addDialogStep("Ok, I will do it then");
-
-		speakToThormac.addSubSteps(sorcerersTowerLadder0, sorcerersTowerLadder1, sorcerersTowerLadder2);
-
 		goToTopOfTower = new ConditionalStep(this, sorcerersTowerLadder0);
 		goToTopOfTower.addStep(inSorcerersTower1, sorcerersTowerLadder1);
 		goToTopOfTower.addStep(inSorcerersTower2, sorcerersTowerLadder2);
+
+		speakToThormac = new NpcStep(this, NpcID.THORMAC, new WorldPoint(2702, 3405, 3), "");
+		speakToThormac.addDialogStep("What do you need assistance with?");
+		speakToThormac.addDialogStep("Yes.");
+
+		beginQuest = new ConditionalStep(this, goToTopOfTower, "Speak to Thormac on the top floor of the Sorcerer's Tower south of Seer's Village.");
+		beginQuest.addStep(inSorcerersTower3, speakToThormac);
 
 		speakToSeer1 = new NpcStep(this, NpcID.SEER, new WorldPoint(2710, 3484, 0), "Speak to a seer in Seer's Village.");
 		speakToSeer1.addDialogStep("I need to locate some scorpions.");
@@ -258,9 +261,6 @@ public class ScorpionCatcher extends BasicQuestHelper
 		setupSteps();
 
 		var steps = new HashMap<Integer, QuestStep>();
-
-		var beginQuest = new ConditionalStep(this, goToTopOfTower);
-		beginQuest.addStep(inSorcerersTower3, speakToThormac);
 
 		steps.put(0, beginQuest);
 		steps.put(1, speakToSeer1);
@@ -362,7 +362,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		var sections = new ArrayList<PanelDetails>();
 
 		sections.add(new PanelDetails("Talk to Thormac", List.of(
-			speakToThormac
+			beginQuest
 		)));
 
 		sections.add(new PanelDetails("The first scorpion", List.of(

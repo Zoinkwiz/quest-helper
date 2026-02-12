@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.questhelper.steps.TileStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -131,7 +132,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	ObjectStep enterRuinAfterBook;
 	ObjectStep enterPortalAfterBook;
 	NpcStep talkToMatthewAfterBook;
-	DetailedQuestStep standInCircle;
+	TileStep standInCircle;
 	ItemStep pickUpSigil;
 	ObjectStep leavePortal;
 	NpcStep tellDaveToReturn;
@@ -147,7 +148,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	ObjectStep enterPortalAfterRecruiting;
 	NpcStep talkToMatthewToStartFight;
 	NpcStep killDemon;
-	DetailedQuestStep standInCircleAgain;
+	TileStep standInCircleAgain;
 	ObjectStep enterRuinNoDark;
 	ObjectStep enterRuinForRitual;
 	ObjectStep enterPortalForRitual;
@@ -284,7 +285,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		enterRuinForRitual = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", sigil, silverlightDyed, combatGear);
 		enterPortalForRitual = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.");
 
-		standInCircle = new DetailedQuestStep(this, new WorldPoint(2718, 4902, 2), "Stand in the correct spot in the circle.", sigil);
+		standInCircle = new TileStep(this, new WorldPoint(2718, 4902, 2), "Stand in the correct spot in the circle.", sigil);
 		standInCircle.addSubSteps(enterRuinForRitual, enterPortalForRitual);
 		readIncantation = new IncantationStep(this, true);
 		pwReadIncantation = readIncantation.puzzleWrapStepWithDefaultText("Click the demonic sigil and read the incantation.");
@@ -315,7 +316,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToMatthewToStartFight = new NpcStep(this, NpcID.AGRITH_MATTHEW, new WorldPoint(2727, 4897, 2), "Talk to Matthew in the throne room.", silverlightDyed, sigil, combatGear);
 		talkToMatthewToStartFight.addSubSteps(enterRuinAfterRecruiting, enterPortalAfterRecruiting);
 		talkToMatthewToStartFight.addDialogStep("Yes.");
-		standInCircleAgain = new DetailedQuestStep(this, new WorldPoint(2720, 4903, 2), "Stand in the correct spot in the circle.", sigil);
+		standInCircleAgain = new TileStep(this, new WorldPoint(2720, 4903, 2), "Stand in the correct spot in the circle.", sigil);
 		incantRitual = new IncantationStep(this, false);
 		pwIncantRitual = incantRitual.puzzleWrapStepWithDefaultText("Click the demonic sigil and read the incantation.");
 		enterRuinForFight = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins to finish fighting Agrith-Naar.", silverlightDyed, combatGear);

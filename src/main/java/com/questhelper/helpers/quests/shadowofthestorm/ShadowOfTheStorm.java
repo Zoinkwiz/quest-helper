@@ -32,6 +32,7 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
@@ -108,6 +109,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	VarbitRequirement golemRejected;
 	VarbitRequirement golemReprogrammed;
 	ZoneRequirement inSecondCircleSpot;
+	FreeInventorySlotRequirement freeSlot1;
 
 	// Steps
 	NpcStep talkToReen;
@@ -221,6 +223,8 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		golemRejected = new VarbitRequirement(VarbitID.AGRITH_CONVINCED_GOLEM, 1, Operation.GREATER_EQUAL);
 		golemReprogrammed = new VarbitRequirement(VarbitID.AGRITH_CONVINCED_GOLEM, 2, Operation.GREATER_EQUAL);
 		golemMoved = new VarbitRequirement(VarbitID.AGRITH_CONVINCED_GOLEM, 3, Operation.GREATER_EQUAL);
+
+		freeSlot1 = new FreeInventorySlotRequirement(1);
 	}
 
 	private void setupSteps()
@@ -242,7 +246,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToDenath = new NpcStep(this, NpcID.AGRITH_DENATH, new WorldPoint(2720, 4912, 2), "Talk to Denath next to the throne.");
 		talkToDenath.addDialogStep("What do I have to do?");
 		talkToDenath.addSubSteps(enterRuinNoDark, enterPortal);
-		talkToJennifer = new NpcStep(this, NpcID.AGRITH_JENNIFER, new WorldPoint(2723, 4901, 2), "Talk to Jennifer.");
+		talkToJennifer = new NpcStep(this, NpcID.AGRITH_JENNIFER, new WorldPoint(2723, 4901, 2), "Talk to Jennifer.", freeSlot1);
 		talkToJennifer.addDialogStep("Do you have the demonic sigil mould?");
 		talkToMatthew = new NpcStep(this, NpcID.AGRITH_MATTHEW, new WorldPoint(2727, 4897, 2), "Talk to Matthew.");
 		talkToMatthew.addDialogStep("Do you know what happened to Josef?");

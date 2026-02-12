@@ -37,6 +37,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -153,7 +154,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	ObjectStep enterPortalForFight;
 	ObjectStep enterRuinForFight;
 	DetailedQuestStep unequipDarklight;
-	SearchKilns searchKiln;
+	ConditionalStep searchKilns;
 	IncantationStep readIncantation;
 	IncantationStep incantRitual;
 
@@ -255,7 +256,18 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToGolem = new NpcStep(this, NpcID.GOLEM_FIXED_GOLEM, new WorldPoint(3485, 3088, 0), "Talk to the Golem in Uzer.", silverlightDyed, sigil, combatGear);
 		talkToGolem.addDialogStep("Uzer");
 		talkToGolem.addDialogStep("Did you see anything happen last night?");
-		searchKiln = new SearchKilns(this);
+
+		var searchKiln1 = new ObjectStep(this, ObjectID.AGRITH_KILN_1, new WorldPoint(3468, 3124, 0), "");
+		var searchKiln2 = new ObjectStep(this, ObjectID.AGRITH_KILN_2, new WorldPoint(3479, 3083, 0), "");
+		var searchKiln3 = new ObjectStep(this, ObjectID.AGRITH_KILN_3, new WorldPoint(3473, 3093, 0), "");
+		var searchKiln4 = new ObjectStep(this, ObjectID.AGRITH_KILN_4, new WorldPoint(3501, 3085, 0), "");
+
+		var kilnBuilder = new VarbitBuilder(VarbitID.AGRITH_KILN);
+		searchKilns = new ConditionalStep(this, searchKiln1, "Search the kilns in Uzer until you find a book.");
+		searchKilns.addStep(kilnBuilder.eq(1), searchKiln2);
+		searchKilns.addStep(kilnBuilder.eq(2), searchKiln3);
+		searchKilns.addStep(kilnBuilder.eq(3), searchKiln4);
+
 		readBook = new DetailedQuestStep(this, "Read the book.", bookHighlighted);
 		enterRuinAfterBook = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyed, book, sigil);
 		enterPortalAfterBook = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.", book, sigil);
@@ -333,7 +345,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		completeSubTasks.addStep(and(book, sigil, inThroneRoom), talkToMatthewAfterBook);
 		completeSubTasks.addStep(and(book, sigil, inRuin), enterPortalAfterBook);
 		completeSubTasks.addStep(and(book, sigil), enterRuinAfterBook);
-		completeSubTasks.addStep(and(talkedToGolem, sigil), searchKiln);
+		completeSubTasks.addStep(and(talkedToGolem, sigil), searchKilns);
 		completeSubTasks.addStep(and(talkedToMatthew, sigil), talkToGolem);
 		completeSubTasks.addStep(and(talkedToMatthew, sigilMould), smeltSigil);
 		completeSubTasks.addStep(and(inThroneRoom, sigilMould), talkToMatthew);
@@ -487,7 +499,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		sections.add(new PanelDetails("Uncovering the truth", List.of(
 			smeltSigil,
 			talkToGolem,
-			searchKiln,
+			searchKilns,
 			readBook,
 			talkToMatthewAfterBook,
 			standInCircle,

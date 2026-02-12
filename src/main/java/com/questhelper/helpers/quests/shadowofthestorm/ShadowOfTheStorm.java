@@ -263,6 +263,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		enterPortalForRitual = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.");
 
 		standInCircle = new DetailedQuestStep(this, new WorldPoint(2718, 4902, 2), "Stand in the correct spot in the circle.", sigil);
+		standInCircle.addSubSteps(enterRuinForRitual, enterPortalForRitual);
 		readIncantation = new IncantationStep(this, true);
 		pickUpSigil = new ItemStep(this, "Pick up the sigil.", sigil);
 		leavePortal = new ObjectStep(this, ObjectID.AGRITH_PORTAL_CLOSING, new WorldPoint(2720, 4883, 2), "Leave the throne room.");
@@ -276,7 +277,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 
 		goUpToBadden = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_BASE, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
 		talkToBaddenAfterRitual = new NpcStep(this, NpcID.AGRITH_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", sigil2);
-		talkToBaddenAfterRitual.addSubSteps(goUpToBadden);
+		talkToBaddenAfterRitual.addSubSteps(goUpToBadden, pickUpImplementAfterRitual);
 
 		talkToReenAfterRitual = new NpcStep(this, NpcID.AGRITH_REEN, new WorldPoint(3490, 3090, 0), "Talk to Father Reen in Uzer.", sigil2);
 		talkToReenAfterRitual.addDialogStep("Oh, don't be so simple-minded!");

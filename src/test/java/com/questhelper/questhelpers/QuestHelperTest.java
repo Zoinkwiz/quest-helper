@@ -302,6 +302,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.DWARF_CANNON,
 			QuestHelperQuest.MERLINS_CRYSTAL,
 			QuestHelperQuest.X_MARKS_THE_SPOT,
+			QuestHelperQuest.SHADOW_OF_THE_STORM,
 			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,

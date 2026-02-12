@@ -6,19 +6,27 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -26,70 +34,81 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class ScorpionCatcher extends BasicQuestHelper
 {
-	ItemRequirement dustyKey, jailKey, scorpionCageMissingTaverley, scorpionCageMissingMonastery, scorpionCageEmptyOrTaverley, scorpionCageTaverleyAndMonastery, scorpionCageFull, food,
-		antiDragonShield, antiPoison, teleRunesFalador, gamesNecklace, gloryOrCombatBracelet, camelotTeleport;
+	// Required items
+	ItemRequirement dustyKey;
+
+	// Recommended items
+	ItemRequirement antiDragonShield;
+	ItemRequirement antiPoison;
+	ItemRequirement food;
+	ItemRequirement teleRunesFalador;
+	ItemRequirement camelotTeleport;
+	ItemRequirement gamesNecklace;
+	ItemRequirement gloryOrCombatBracelet;
+
+	// Mid-quest item requirements
+	ItemRequirement jailKey;
+	ItemRequirement scorpionCageMissingTaverley;
+	ItemRequirement scorpionCageMissingMonastery;
+	ItemRequirement scorpionCageEmptyOrTaverley;
+	ItemRequirement scorpionCageTaverleyAndMonastery;
+	ItemRequirement scorpionCageFull;
+
+	// ??
 	QuestRequirement fairyRingAccess;
-	Zone sorcerersTower3, sorcerersTower2, sorcerersTower1, taverleyDungeon, deepTaverleyDungeon1, deepTaverleyDungeon2, deepTaverleyDungeon3, deepTaverleyDungeon4,
-		jailCell, taverleyScorpionRoom, upstairsMonastery, barbarianOutpost;
-	Requirement has70Agility, has80Agility, inTaverleyDungeon, inDeepTaverleyDungeon, inJailCell, inSorcerersTower1, inSorcerersTower2,
-		inSorcerersTower3, inTaverleyScorpionRoom, inUpstairsMonastery, inBarbarianOutpost, jailKeyNearby;
-	QuestStep speakToThormac, speakToSeer1, enterTaverleyDungeon, goThroughPipe, goOverStrangeFloor, killJailerForKey,
-		getDustyFromAdventurer, enterDeeperTaverley, pickUpJailKey,
-		searchOldWall, catchTaverleyScorpion, sorcerersTowerLadder0, sorcerersTowerLadder1, sorcerersTowerLadder2, enterMonastery, catchMonasteryScorpion,
-		catchOutpostScorpion, enterOutpost, returnToThormac;
 
+	// Zones
+	Zone sorcerersTower3;
+	Zone sorcerersTower2;
+	Zone sorcerersTower1;
+	Zone taverleyDungeon;
+	Zone deepTaverleyDungeon1;
+	Zone deepTaverleyDungeon2;
+	Zone deepTaverleyDungeon3;
+	Zone deepTaverleyDungeon4;
+	Zone jailCell;
+	Zone taverleyScorpionRoom;
+	Zone upstairsMonastery;
+	Zone barbarianOutpost;
+
+	// Miscellaneous requirements
+	SkillRequirement has70Agility;
+	SkillRequirement has80Agility;
+	ZoneRequirement inTaverleyDungeon;
+	ZoneRequirement inDeepTaverleyDungeon;
+	ZoneRequirement inJailCell;
+	ZoneRequirement inSorcerersTower1;
+	ZoneRequirement inSorcerersTower2;
+	ZoneRequirement inSorcerersTower3;
+	ZoneRequirement inTaverleyScorpionRoom;
+	ZoneRequirement inUpstairsMonastery;
+	ZoneRequirement inBarbarianOutpost;
+	ItemOnTileRequirement jailKeyNearby;
+
+	// Steps
+	ObjectStep sorcerersTowerLadder0;
+	ObjectStep sorcerersTowerLadder1;
+	ObjectStep sorcerersTowerLadder2;
+	ConditionalStep goToTopOfTower;
+	NpcStep speakToThormac;
+	NpcStep speakToSeer1;
+	QuestStep enterTaverleyDungeon;
+	ObjectStep goThroughPipe;
+	ObjectStep goOverStrangeFloor;
+	NpcStep killJailerForKey;
+	NpcStep getDustyFromAdventurer;
+	ObjectStep enterDeeperTaverley;
+	ItemStep pickUpJailKey;
+	ObjectStep searchOldWall;
+	NpcStep catchTaverleyScorpion;
+	ObjectStep enterMonastery;
+	NpcStep catchMonasteryScorpion;
+	NpcStep catchOutpostScorpion;
+	ObjectStep enterOutpost;
+	NpcStep returnToThormac;
 	ConditionalStep finishQuest;
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		ConditionalStep goToTopOfTower = new ConditionalStep(this, sorcerersTowerLadder0);
-		goToTopOfTower.addStep(inSorcerersTower1, sorcerersTowerLadder1);
-		goToTopOfTower.addStep(inSorcerersTower2, sorcerersTowerLadder2);
-
-		ConditionalStep beginQuest = new ConditionalStep(this, goToTopOfTower);
-		beginQuest.addStep(inSorcerersTower3, speakToThormac);
-
-		finishQuest = new ConditionalStep(this, goToTopOfTower,
-			"Return to Thormac to finish the quest.",	scorpionCageFull);
-		finishQuest.addStep(inSorcerersTower3, returnToThormac);
-
-		ConditionalStep goGetTaverleyScorpion = new ConditionalStep(this, enterTaverleyDungeon);
-		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyScorpionRoom), catchTaverleyScorpion);
-		goGetTaverleyScorpion.addStep(new Conditions(inDeepTaverleyDungeon), searchOldWall);
-		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, has80Agility), goOverStrangeFloor);
-		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, has70Agility), goThroughPipe);
-		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, dustyKey), enterDeeperTaverley);
-		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, new Conditions(LogicType.OR, inJailCell, jailKey)), getDustyFromAdventurer);
-		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon, jailKeyNearby), pickUpJailKey);
-		goGetTaverleyScorpion.addStep(new Conditions(inTaverleyDungeon), killJailerForKey);
-
-		ConditionalStep scorpions = new ConditionalStep(this, finishQuest);
-		scorpions.addStep(scorpionCageMissingTaverley.alsoCheckBank(), goGetTaverleyScorpion);
-
-		scorpions.addStep(new Conditions(scorpionCageMissingMonastery, inUpstairsMonastery), catchMonasteryScorpion);
-		scorpions.addStep(scorpionCageMissingMonastery.alsoCheckBank(), enterMonastery);
-
-		scorpions.addStep(new Conditions(scorpionCageTaverleyAndMonastery, inBarbarianOutpost), catchOutpostScorpion);
-		scorpions.addStep(scorpionCageTaverleyAndMonastery.alsoCheckBank(), enterOutpost);
-
-		steps.put(0, beginQuest);
-		steps.put(1, speakToSeer1);
-		steps.put(2, scorpions);
-		steps.put(3, scorpions);
-
-		return steps;
-	}
 
 	@Override
 	protected void setupZones()
@@ -116,6 +135,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	{
 		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");
+
 		jailKey = new ItemRequirement("Jail Key", ItemID.JAIL_KEY);
 
 		scorpionCageMissingTaverley = new ItemRequirement("Scorpion Cage", ItemID.SCORPIONCAGEEMPTY);
@@ -146,10 +166,6 @@ public class ScorpionCatcher extends BasicQuestHelper
 		fairyRingAccess = new QuestRequirement(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS, "Fairy ring access");
 		fairyRingAccess.setTooltip(QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN.getName() + " is required to at least be started in order to use fairy rings");
 
-	}
-
-	private void setupConditions()
-	{
 		has70Agility = new SkillRequirement(Skill.AGILITY, 70, true);
 		has80Agility = new SkillRequirement(Skill.AGILITY, 80, true);
 
@@ -170,24 +186,26 @@ public class ScorpionCatcher extends BasicQuestHelper
 
 	private void setupSteps()
 	{
+		sorcerersTowerLadder0 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2701, 3408, 0), "Climb to the top of the Sorcerer's Tower south of Seers' Village.");
+		sorcerersTowerLadder1 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2704, 3403, 1), "Climb to the top of the Sorcerer's Tower south of Seers' Village.");
+		sorcerersTowerLadder2 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2699, 3405, 2), "Climb to the top of the Sorcerer's Tower south of Seers' Village.");
+
 		speakToThormac = new NpcStep(this, NpcID.THORMAC, new WorldPoint(2702, 3405, 3), "Speak to Thormac on the top floor of the Sorcerer's Tower south of Seer's Village.");
 		speakToThormac.addDialogStep("What do you need assistance with?");
 		speakToThormac.addDialogStep("So how would I go about catching them then?");
 		speakToThormac.addDialogStep("Ok, I will do it then");
 
-		sorcerersTowerLadder0 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2701, 3408, 0),
-			"Climb to the top of the Sorcerer's Tower south of Seers' Village.");
-		sorcerersTowerLadder1 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2704, 3403, 1),
-			"Climb to the top of the Sorcerer's Tower south of Seers' Village.");
-		sorcerersTowerLadder2 = new ObjectStep(this, ObjectID.LADDER, new WorldPoint(2699, 3405, 2),
-			"Climb to the top of the Sorcerer's Tower south of Seers' Village.");
 		speakToThormac.addSubSteps(sorcerersTowerLadder0, sorcerersTowerLadder1, sorcerersTowerLadder2);
 
-		speakToSeer1 = new NpcStep(this, NpcID.SEER, new WorldPoint(2710, 3484, 0),
-			"Speak to a seer in Seer's Village.");
+		goToTopOfTower = new ConditionalStep(this, sorcerersTowerLadder0);
+		goToTopOfTower.addStep(inSorcerersTower1, sorcerersTowerLadder1);
+		goToTopOfTower.addStep(inSorcerersTower2, sorcerersTowerLadder2);
+
+		speakToSeer1 = new NpcStep(this, NpcID.SEER, new WorldPoint(2710, 3484, 0), "Speak to a seer in Seer's Village.");
 		speakToSeer1.addDialogStep("I need to locate some scorpions.");
 		speakToSeer1.addDialogStep("Your friend Thormac sent me to speak to you.");
 
+		// TODO: This should be a conditional step
 		if (client.getRealSkillLevel(Skill.AGILITY) >= 70)
 		{
 			enterTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2884, 3397, 0),
@@ -232,13 +250,64 @@ public class ScorpionCatcher extends BasicQuestHelper
 			"Use the scorpion cage on the scorpion.", scorpionCageTaverleyAndMonastery);
 		catchOutpostScorpion.addIcon(ItemID.SCORPIONCAGEEMPTY);
 
-		returnToThormac = new NpcStep(this, NpcID.THORMAC,
-			"", scorpionCageFull);
+		returnToThormac = new NpcStep(this, NpcID.THORMAC, "", scorpionCageFull);
+
+		finishQuest = new ConditionalStep(this, goToTopOfTower, "Return to Thormac to finish the quest.", scorpionCageFull);
+		finishQuest.addStep(inSorcerersTower3, returnToThormac);
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRequirements()
+	public Map<Integer, QuestStep> loadSteps()
 	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		var beginQuest = new ConditionalStep(this, goToTopOfTower);
+		beginQuest.addStep(inSorcerersTower3, speakToThormac);
+
+		steps.put(0, beginQuest);
+		steps.put(1, speakToSeer1);
+
+		var goGetTaverleyScorpion = new ConditionalStep(this, enterTaverleyDungeon);
+		goGetTaverleyScorpion.addStep(and(inTaverleyScorpionRoom), catchTaverleyScorpion);
+		goGetTaverleyScorpion.addStep(and(inDeepTaverleyDungeon), searchOldWall);
+		goGetTaverleyScorpion.addStep(and(inTaverleyDungeon, has80Agility), goOverStrangeFloor);
+		goGetTaverleyScorpion.addStep(and(inTaverleyDungeon, has70Agility), goThroughPipe);
+		goGetTaverleyScorpion.addStep(and(inTaverleyDungeon, dustyKey), enterDeeperTaverley);
+		goGetTaverleyScorpion.addStep(and(inTaverleyDungeon, or(inJailCell, jailKey)), getDustyFromAdventurer);
+		goGetTaverleyScorpion.addStep(and(inTaverleyDungeon, jailKeyNearby), pickUpJailKey);
+		goGetTaverleyScorpion.addStep(and(inTaverleyDungeon), killJailerForKey);
+
+		var scorpions = new ConditionalStep(this, finishQuest);
+		scorpions.addStep(scorpionCageMissingTaverley.alsoCheckBank(), goGetTaverleyScorpion);
+
+		scorpions.addStep(and(scorpionCageMissingMonastery, inUpstairsMonastery), catchMonasteryScorpion);
+		scorpions.addStep(scorpionCageMissingMonastery.alsoCheckBank(), enterMonastery);
+
+		scorpions.addStep(and(scorpionCageTaverleyAndMonastery, inBarbarianOutpost), catchOutpostScorpion);
+		scorpions.addStep(scorpionCageTaverleyAndMonastery.alsoCheckBank(), enterOutpost);
+
+		steps.put(2, scorpions);
+		steps.put(3, scorpions);
+
+		return steps;
+	}
+
+	@Override
+	public List<Requirement> getGeneralRequirements()
+	{
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED),
+			new SkillRequirement(Skill.PRAYER, 31)
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		// TODO: Fix this with a conditionToHide instead
 		ArrayList<ItemRequirement> reqs = new ArrayList<>();
 		if (client.getRealSkillLevel(Skill.AGILITY) < 70)
 		{
@@ -249,16 +318,25 @@ public class ScorpionCatcher extends BasicQuestHelper
 	}
 
 	@Override
-	public ArrayList<ItemRequirement> getItemRecommended()
+	public List<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(antiDragonShield, antiPoison, food, teleRunesFalador, camelotTeleport, gamesNecklace,
-			gloryOrCombatBracelet));
+		return List.of(
+			antiDragonShield,
+			antiPoison,
+			food,
+			teleRunesFalador,
+			camelotTeleport,
+			gamesNecklace,
+			gloryOrCombatBracelet
+		);
 	}
 
 	@Override
-	public ArrayList<String> getCombatRequirements()
+	public List<String> getCombatRequirements()
 	{
-		return new ArrayList<>(Collections.singletonList("The ability to run past level 172 black demons and level 64 poison spiders"));
+		return List.of(
+			"The ability to run past level 172 black demons and level 64 poison spiders"
+		);
 	}
 
 	@Override
@@ -270,36 +348,50 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.STRENGTH, 6625));
+		return List.of(
+			new ExperienceReward(Skill.STRENGTH, 6625)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Ability to have Thormac turn a Battlestaff into a Mystic Staff for 40,000 Coins."));
+		return List.of(
+			new UnlockReward("Ability to have Thormac turn a Battlestaff into a Mystic Staff for 40,000 Coins.")
+		);
 	}
 
 	@Override
-	public ArrayList<PanelDetails> getPanels()
+	public List<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Talk to Thormac", new ArrayList<>(Collections.singletonList(speakToThormac))));
-		allSteps.add(new PanelDetails("The first scorpion", new ArrayList<>(Arrays.asList(speakToSeer1, enterTaverleyDungeon, searchOldWall, catchTaverleyScorpion))));
-		allSteps.add(new PanelDetails("The second scorpion", new ArrayList<>(Arrays.asList(enterMonastery, catchMonasteryScorpion))));
-		allSteps.add(new PanelDetails("The third scorpion", new ArrayList<>(Arrays.asList(enterOutpost, catchOutpostScorpion))));
-		allSteps.add(new PanelDetails("Finishing up", new ArrayList<>(Collections.singletonList(finishQuest))));
+		sections.add(new PanelDetails("Talk to Thormac", List.of(
+			speakToThormac
+		)));
 
-		return allSteps;
+		sections.add(new PanelDetails("The first scorpion", List.of(
+			speakToSeer1,
+			enterTaverleyDungeon,
+			searchOldWall,
+			catchTaverleyScorpion
+		)));
+
+		sections.add(new PanelDetails("The second scorpion", List.of(
+			enterMonastery,
+			catchMonasteryScorpion
+		)));
+
+		sections.add(new PanelDetails("The third scorpion", List.of(
+			enterOutpost,
+			catchOutpostScorpion
+		)));
+
+		sections.add(new PanelDetails("Finishing up", List.of(
+			finishQuest
+		)));
+
+		return sections;
 	}
 
-	@Override
-	public ArrayList<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> reqs = new ArrayList<>();
-		reqs.add(new QuestRequirement(QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL, QuestState.FINISHED));
-		reqs.add(new SkillRequirement(Skill.PRAYER, 31));
-
-		return reqs;
-	}
 }

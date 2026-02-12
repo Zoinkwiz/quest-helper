@@ -150,7 +150,7 @@ public class AlfredGrimhandsBarcrawl extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		talkToGuardToGetCard = new NpcStep(this, NpcID.BARBGUARD1_PRECRAWL, new WorldPoint(2544, 3568, 0), "Talk to a barbarian guard outside the Barbarian Agility Course.");
+		talkToGuardToGetCard = new NpcStep(this, NpcID.BARBGUARD1_PRECRAWL, new WorldPoint(2544, 3568, 0), "Talk to a barbarian guard outside the Barbarian Agility Course at the Barbarian Outpost to learn about Alfred Grimhand's Barcrawl.");
 		talkToGuardToGetCard.addDialogSteps("I want to come through this gate.", "Looks can be deceiving, I am in fact a barbarian.");
 
 		talkToBlueMoon = new NpcStep(this, NpcID.BLUEMOON_BARTENDER, new WorldPoint(3226, 3399, 0), "Talk to the bartender in the Blue Moon Inn in Varrock.", coins50);

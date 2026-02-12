@@ -48,6 +48,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,8 +156,11 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 	ObjectStep enterRuinForFight;
 	DetailedQuestStep unequipDarklight;
 	ConditionalStep searchKilns;
+	PuzzleWrapperStep pwSearchKilns;
 	IncantationStep readIncantation;
+	PuzzleWrapperStep pwReadIncantation;
 	IncantationStep incantRitual;
+	PuzzleWrapperStep pwIncantRitual;
 
 	@Override
 	protected void setupZones()
@@ -268,6 +272,8 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		searchKilns.addStep(kilnBuilder.eq(2), searchKiln3);
 		searchKilns.addStep(kilnBuilder.eq(3), searchKiln4);
 
+		pwSearchKilns = searchKilns.puzzleWrapStep("Search Uzer for a book.");
+
 		readBook = new DetailedQuestStep(this, "Read the book.", bookHighlighted);
 		enterRuinAfterBook = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins.", silverlightDyed, book, sigil);
 		enterPortalAfterBook = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal.", book, sigil);
@@ -281,6 +287,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		standInCircle = new DetailedQuestStep(this, new WorldPoint(2718, 4902, 2), "Stand in the correct spot in the circle.", sigil);
 		standInCircle.addSubSteps(enterRuinForRitual, enterPortalForRitual);
 		readIncantation = new IncantationStep(this, true);
+		pwReadIncantation = readIncantation.puzzleWrapStepWithDefaultText("Click the demonic sigil and read the incantation.");
 		pickUpSigil = new ItemStep(this, "Pick up the sigil.", sigil);
 		leavePortal = new ObjectStep(this, ObjectID.AGRITH_PORTAL_CLOSING, new WorldPoint(2720, 4883, 2), "Leave the throne room.");
 		enterRuinForDave = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Talk to Evil Dave in the Uzer ruins.");
@@ -310,6 +317,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		talkToMatthewToStartFight.addDialogStep("Yes.");
 		standInCircleAgain = new DetailedQuestStep(this, new WorldPoint(2720, 4903, 2), "Stand in the correct spot in the circle.", sigil);
 		incantRitual = new IncantationStep(this, false);
+		pwIncantRitual = incantRitual.puzzleWrapStepWithDefaultText("Click the demonic sigil and read the incantation.");
 		enterRuinForFight = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Enter the Uzer ruins to finish fighting Agrith-Naar.", silverlightDyed, combatGear);
 		enterPortalForFight = new ObjectStep(this, ObjectID.GOLEM_PORTAL, new WorldPoint(2722, 4913, 0), "Enter the portal to finish fighting Agrith-Naar.", silverlightDyed, combatGear);
 		killDemon = new NpcStep(this, NpcID.AGRITH_NAAR, "Kill Agrith-Naar. You can hurt him with any weapon, BUT YOU MUST DEAL THE FINAL BLOW WITH SILVERLIGHT.", silverlightDyedEquipped, combatGear);
@@ -345,7 +353,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		completeSubTasks.addStep(and(book, sigil, inThroneRoom), talkToMatthewAfterBook);
 		completeSubTasks.addStep(and(book, sigil, inRuin), enterPortalAfterBook);
 		completeSubTasks.addStep(and(book, sigil), enterRuinAfterBook);
-		completeSubTasks.addStep(and(talkedToGolem, sigil), searchKilns);
+		completeSubTasks.addStep(and(talkedToGolem, sigil), pwSearchKilns);
 		completeSubTasks.addStep(and(talkedToMatthew, sigil), talkToGolem);
 		completeSubTasks.addStep(and(talkedToMatthew, sigilMould), smeltSigil);
 		completeSubTasks.addStep(and(inThroneRoom, sigilMould), talkToMatthew);
@@ -361,7 +369,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		steps.put(70, startRitual);
 
 		var performRitual = new ConditionalStep(this, enterRuinForRitual);
-		performRitual.addStep(inCircleSpot, readIncantation);
+		performRitual.addStep(inCircleSpot, pwReadIncantation);
 		performRitual.addStep(inThroneRoom, standInCircle);
 		performRitual.addStep(inRuin, enterPortalForRitual);
 		steps.put(80, performRitual);
@@ -385,7 +393,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		steps.put(100, prepareForSecondRitual);
 
 		var summonAgrith = new ConditionalStep(this, enterRuinAfterRecruiting);
-		summonAgrith.addStep(inSecondCircleSpot, incantRitual);
+		summonAgrith.addStep(inSecondCircleSpot, pwIncantRitual);
 		summonAgrith.addStep(inThroneRoom, standInCircleAgain);
 		summonAgrith.addStep(inRuin, enterPortalAfterRecruiting);
 		steps.put(110, summonAgrith);
@@ -499,11 +507,11 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		sections.add(new PanelDetails("Uncovering the truth", List.of(
 			smeltSigil,
 			talkToGolem,
-			searchKilns,
+			pwSearchKilns,
 			readBook,
 			talkToMatthewAfterBook,
 			standInCircle,
-			readIncantation
+			pwReadIncantation
 		), List.of(
 			silverBar,
 			silverlightDyed,
@@ -522,7 +530,7 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 			talkToGolemAfterReprogramming,
 			talkToMatthewToStartFight,
 			standInCircleAgain,
-			incantRitual,
+			pwIncantRitual,
 			killDemon,
 			unequipDarklight
 		), List.of(

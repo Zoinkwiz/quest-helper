@@ -289,15 +289,15 @@ public class ShadowOfTheStorm extends BasicQuestHelper
 		standInCircle.addSubSteps(enterRuinForRitual, enterPortalForRitual);
 		readIncantation = new IncantationStep(this, true);
 		pwReadIncantation = readIncantation.puzzleWrapStepWithDefaultText("Click the demonic sigil and read the incantation.");
-		pickUpSigil = new ItemStep(this, "Pick up the sigil.", sigil);
+		pickUpSigil = new ItemStep(this, "Pick up the demonic sigil from the circle.", sigil);
 		leavePortal = new ObjectStep(this, ObjectID.AGRITH_PORTAL_CLOSING, new WorldPoint(2720, 4883, 2), "Leave the throne room.");
 		enterRuinForDave = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_TOP, new WorldPoint(3493, 3090, 0), "Talk to Evil Dave in the Uzer ruins.");
-		tellDaveToReturn = new NpcStep(this, NpcID.AGRITH_DAVE, new WorldPoint(2721, 4900, 0), "Talk to Evil Dave.");
+		tellDaveToReturn = new NpcStep(this, NpcID.AGRITH_DAVE, new WorldPoint(2721, 4900, 0), "Talk to Evil Dave.", freeSlot1);
 		tellDaveToReturn.addDialogStep("You've got to get back to the throne room!");
 		tellDaveToReturn.addSubSteps(enterRuinForDave);
 
 		pickUpImplementAfterRitual = new DetailedQuestStep(this, new WorldPoint(2713, 4913, 0), "Pick up the strange implement in the north west corner of the ruin.", strangeImplement);
-		pickUpSigil2 = new ItemStep(this, "Pick up the sigil Tanya dropped.", sigil);
+		pickUpSigil2 = new ItemStep(this, "Pick up the demonic sigil Tanya dropped.", sigil);
 
 		goUpToBadden = new ObjectStep(this, ObjectID.GOLEM_INSIDESTAIRS_BASE, new WorldPoint(2722, 4885, 0), "Leave the ruins.");
 		talkToBaddenAfterRitual = new NpcStep(this, NpcID.AGRITH_BADDEN, new WorldPoint(3490, 3090, 0), "Talk to Father Badden in Uzer.", sigil2);

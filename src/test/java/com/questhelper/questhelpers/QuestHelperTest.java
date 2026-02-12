@@ -306,6 +306,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,
 			QuestHelperQuest.ROMEO__JULIET,
+			QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
 			QuestHelperQuest.BIOHAZARD,

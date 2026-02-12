@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.shadowofthestorm;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
+import java.util.Collections;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -35,8 +36,6 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
-
-import java.util.Collections;
 
 public class IncantationStep extends DetailedQuestStep
 {
@@ -124,7 +123,8 @@ public class IncantationStep extends DetailedQuestStep
 	{
 		var widget = event.getWidget();
 
-		if (widget == null) {
+		if (widget == null)
+		{
 			return;
 		}
 
@@ -191,7 +191,8 @@ public class IncantationStep extends DetailedQuestStep
 			return;
 		}
 
-		if (reverse) {
+		if (reverse)
+		{
 			incantationOrder = new String[]{
 				WORDS[client.getVarbitValue(INCANTATION_WORD_5)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_4)],
@@ -199,7 +200,9 @@ public class IncantationStep extends DetailedQuestStep
 				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
 			};
-		} else {
+		}
+		else
+		{
 			incantationOrder = new String[]{
 				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],

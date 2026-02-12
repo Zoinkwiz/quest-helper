@@ -356,6 +356,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.RECRUITMENT_DRIVE,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.ONE_SMALL_FAVOUR,
+			QuestHelperQuest.SCORPION_CATCHER,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.HOLY_GRAIL,
 			QuestHelperQuest.PRIEST_IN_PERIL,

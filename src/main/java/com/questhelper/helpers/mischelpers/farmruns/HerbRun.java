@@ -109,10 +109,12 @@ public class HerbRun extends ComplexStateQuestHelper
 	QuestRequirement accessToHarmony;
 	QuestRequirement accessToWeiss;
 	QuestRequirement accessToTrollStronghold;
-	SkillRequirement accessToFarmingGuildPatch;
+	Conditions accessToFarmingGuildPatch;
 	QuestRequirement accessToVarlamore;
 	QuestRequirement accessToMorytania;
+	QuestRequirement accessToKourend;
 	RuneliteRequirement unlockedBarbarianPlanting;
+
 
 	ManualRequirement ardougneEmpty;
 	ManualRequirement catherbyEmpty;
@@ -217,13 +219,15 @@ public class HerbRun extends ComplexStateQuestHelper
 				hosidiusReady, varlamoreReady, ardougneEmpty, catherbyEmpty, faladorEmpty, farmingGuildEmpty, harmonyEmpty, morytaniaEmpty,
 				trollStrongholdEmpty, weissEmpty, hosidiusEmpty, varlamoreEmpty);
 
-		accessToFarmingGuildPatch = new SkillRequirement(Skill.FARMING, 65);
 
 		accessToHarmony = new QuestRequirement(QuestHelperQuest.MORYTANIA_ELITE, QuestState.FINISHED);
 		accessToWeiss = new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED);
 		accessToTrollStronghold = new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED);
 		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
 		accessToMorytania = new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED);
+		accessToKourend   = new QuestRequirement(QuestHelperQuest.X_MARKS_THE_SPOT, QuestState.FINISHED);
+
+		accessToFarmingGuildPatch = new Conditions(new SkillRequirement(Skill.FARMING, 65), accessToKourend);
 
 		unlockedBarbarianPlanting = new RuneliteRequirement(configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey());
 
@@ -348,6 +352,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		catherbyPatch = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_2, new WorldPoint(2813, 3463, 0), "Harvest your herbs from the Catherby patch.", catherbyTeleport);
 		faladorPatch = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_1, new WorldPoint(3058, 3311, 0), "Harvest your herbs from the Falador patch.", explorerRing2);
 		hosidiusPatch = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Harvest your herbs from the Hosidius patch.", xericsTalisman);
+		hosidiusPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToKourend));
 
 		farmingGuildPatch = new ObjectStep(this, ObjectID.HS_NPT2_WALL_CUTS_03, new WorldPoint(1238, 3726, 0), "Harvest your herbs from the Farming Guild patch.", farmingGuildTeleport);
 		farmingGuildPatch.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildPatch));
@@ -378,7 +383,8 @@ public class HerbRun extends ComplexStateQuestHelper
 		faladorPlant.addIcon(ItemID.RANARR_SEED);
 		faladorPatch.addSubSteps(faladorPlant);
 
-		hosidiusPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Plant your seeds into the Hosidius patch.", hosidiusHouseTeleport);
+		hosidiusPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Plant your seeds into the Hosidius patch.", xericsTalisman);
+		hosidiusPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToKourend));
 		hosidiusPlant.addIcon(ItemID.RANARR_SEED);
 		hosidiusPatch.addSubSteps(hosidiusPlant);
 
@@ -435,8 +441,8 @@ public class HerbRun extends ComplexStateQuestHelper
 		steps.addStep(new Conditions(accessToMorytania, morytaniaReady), morytaniaPatch);
 		steps.addStep(new Conditions(accessToMorytania, morytaniaEmpty), morytaniaPlant);
 
-		steps.addStep(hosidiusReady, hosidiusPatch);
-		steps.addStep(hosidiusEmpty, hosidiusPlant);
+		steps.addStep(new Conditions(hosidiusReady, accessToKourend), hosidiusPatch);
+		steps.addStep(new Conditions(hosidiusEmpty, accessToKourend), hosidiusPlant);
 
 		steps.addStep(new Conditions(accessToTrollStronghold, trollStrongholdReady), trollStrongholdPatch);
 		steps.addStep(new Conditions(accessToTrollStronghold, trollStrongholdEmpty), trollStrongholdPlant);
@@ -593,12 +599,12 @@ public class HerbRun extends ComplexStateQuestHelper
 
 		allSteps.add(new PanelDetails("Wait for Herbs", waitForHerbs).withHideCondition(nor(allGrowing)));
 		TopLevelPanelDetails farmRunSidebar = new TopLevelPanelDetails("Farm Run",
-				new PanelDetails("Farming Guild", Collections.singletonList(farmingGuildPatch)).withId(0),
+				new PanelDetails("Farming Guild", Collections.singletonList(farmingGuildPatch)).withId(0).withHideCondition(nor(accessToFarmingGuildPatch)),
 				new PanelDetails("Falador", Collections.singletonList(faladorPatch)).withId(1),
 				new PanelDetails("Ardougne", Collections.singletonList(ardougnePatch)).withId(2),
 				new PanelDetails("Catherby", Collections.singletonList(catherbyPatch)).withId(3),
 				new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4).withHideCondition(nor(accessToMorytania)),
-				new PanelDetails("Hosidius", Collections.singletonList(hosidiusPatch)).withId(5),
+				new PanelDetails("Hosidius", Collections.singletonList(hosidiusPatch)).withId(5).withHideCondition((nor(accessToKourend))),
 				new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6).withHideCondition(nor(accessToVarlamore)),
 				new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7).withHideCondition(nor(accessToTrollStronghold)),
 				new PanelDetails("Weiss", Collections.singletonList(weissPatch)).withId(8).withHideCondition(nor(accessToWeiss)),

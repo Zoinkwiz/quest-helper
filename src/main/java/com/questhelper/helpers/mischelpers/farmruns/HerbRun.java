@@ -77,6 +77,8 @@ public class HerbRun extends ComplexStateQuestHelper
 
 	// Recommended items
 	ItemRequirement compost;
+	ItemRequirement enoughCompost;
+	ItemRequirement bottomlessBucket;
 	ItemRequirement ectophial;
 	ItemRequirement magicSec;
 	ItemRequirement explorerRing2;
@@ -247,6 +249,10 @@ public class HerbRun extends ComplexStateQuestHelper
 		}
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 		compost.setDisplayMatchedItemName(true);
+
+		bottomlessBucket = new ItemRequirement("Bottomless Compost Bucket", ItemID.BOTTOMLESS_COMPOST_BUCKET_FILLED);
+		enoughCompost = new ItemRequirements(LogicType.OR, "Compost or bottomless bucket", bottomlessBucket, compost);
+
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.FINISHED));
 		ectophial.addAlternates(ItemID.ECTOPHIAL_EMPTY);
 		magicSec = new ItemRequirement("Magic secateurs", ItemID.FAIRY_ENCHANTED_SECATEURS).showConditioned(new QuestRequirement(QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS, QuestState.FINISHED));
@@ -566,7 +572,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(compost, ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport,
+		return Arrays.asList(enoughCompost, ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport,
 				trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, hunterWhistle, harmonyTeleport,  gracefulOutfit, farmersOutfit);
 	}
 

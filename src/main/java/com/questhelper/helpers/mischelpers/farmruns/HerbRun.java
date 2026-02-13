@@ -89,7 +89,6 @@ public class HerbRun extends ComplexStateQuestHelper
 	ItemRequirement icyBasalt;
 	ItemRequirement stonyBasalt;
 	ItemRequirement farmingGuildTeleport;
-	ItemRequirement hosidiusHouseTeleport;
 	ItemRequirement hunterWhistle;
 	ItemRequirement harmonyTeleport;
 	ItemRequirement gracefulHood;
@@ -264,7 +263,6 @@ public class HerbRun extends ComplexStateQuestHelper
 		ardyCloak2.addAlternates(ItemID.ARDY_CAPE_HARD, ItemID.ARDY_CAPE_ELITE);
 		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERIC_TALISMAN);
 
-		hosidiusHouseTeleport = new ItemRequirement("Teleport to Hosidius House", ItemID.NZONE_TELETAB_KOUREND);
 		xericsTalisman.addAlternates(ItemID.NZONE_TELETAB_KOUREND);
 
 		var catherbyRunes = new ItemRequirements("Catherby teleport runes", new ItemRequirement("Law rune",
@@ -378,7 +376,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		faladorPlant.addIcon(ItemID.RANARR_SEED);
 		faladorPatch.addSubSteps(faladorPlant);
 
-		hosidiusPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Plant your seeds into the Hosidius patch.", hosidiusHouseTeleport);
+		hosidiusPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Plant your seeds into the Hosidius patch.", xericsTalisman);
 		hosidiusPlant.addIcon(ItemID.RANARR_SEED);
 		hosidiusPatch.addSubSteps(hosidiusPlant);
 

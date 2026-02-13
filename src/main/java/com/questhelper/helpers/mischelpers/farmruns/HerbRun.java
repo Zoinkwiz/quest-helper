@@ -111,6 +111,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	QuestRequirement accessToTrollStronghold;
 	SkillRequirement accessToFarmingGuildPatch;
 	QuestRequirement accessToVarlamore;
+	QuestRequirement accessToMorytania;
 	RuneliteRequirement unlockedBarbarianPlanting;
 
 	ManualRequirement ardougneEmpty;
@@ -222,6 +223,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		accessToWeiss = new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED);
 		accessToTrollStronghold = new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED);
 		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
+		accessToMorytania = new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED);
 
 		unlockedBarbarianPlanting = new RuneliteRequirement(configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey());
 
@@ -391,6 +393,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		harmonyPatch.addSubSteps(harmonyPlant);
 
 		morytaniaPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_4, new WorldPoint(3605, 3529, 0), "Plant your seeds into the Morytania patch.", ectophial);
+		morytaniaPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToMorytania));
 		morytaniaPlant.addIcon(ItemID.RANARR_SEED);
 		morytaniaPatch.addSubSteps(morytaniaPlant);
 
@@ -429,8 +432,8 @@ public class HerbRun extends ComplexStateQuestHelper
 		steps.addStep(catherbyReady, catherbyPatch);
 		steps.addStep(catherbyEmpty, catherbyPlant);
 
-		steps.addStep(morytaniaReady, morytaniaPatch);
-		steps.addStep(morytaniaEmpty, morytaniaPlant);
+		steps.addStep(new Conditions(accessToMorytania, morytaniaReady), morytaniaPatch);
+		steps.addStep(new Conditions(accessToMorytania, morytaniaEmpty), morytaniaPlant);
 
 		steps.addStep(hosidiusReady, hosidiusPatch);
 		steps.addStep(hosidiusEmpty, hosidiusPlant);
@@ -594,7 +597,7 @@ public class HerbRun extends ComplexStateQuestHelper
 				new PanelDetails("Falador", Collections.singletonList(faladorPatch)).withId(1),
 				new PanelDetails("Ardougne", Collections.singletonList(ardougnePatch)).withId(2),
 				new PanelDetails("Catherby", Collections.singletonList(catherbyPatch)).withId(3),
-				new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4),
+				new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4).withHideCondition(nor(accessToMorytania)),
 				new PanelDetails("Hosidius", Collections.singletonList(hosidiusPatch)).withId(5),
 				new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6).withHideCondition(nor(accessToVarlamore)),
 				new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7).withHideCondition(nor(accessToTrollStronghold)),

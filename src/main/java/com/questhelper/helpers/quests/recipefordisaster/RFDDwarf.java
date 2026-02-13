@@ -144,7 +144,7 @@ public class RFDDwarf extends BasicQuestHelper
 		asgoldianAle4 = new ItemRequirement("Asgoldian ale", ItemID.HUNDRED_DWARF_ASGARNIAN_ALE, 4);
 
 		// Recommended
-		taverleyTeleport = new ItemRequirement("Teleport to taverley", ItemID.NZONE_TELETAB_TAVERLEY);
+		taverleyTeleport = new ItemRequirement("Teleport to Taverley", ItemID.NZONE_TELETAB_TAVERLEY);
 		taverleyTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
 		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT);
 		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.POH_TABLET_LUMBRIDGETELEPORT);

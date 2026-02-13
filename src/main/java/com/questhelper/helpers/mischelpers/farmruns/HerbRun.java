@@ -89,7 +89,6 @@ public class HerbRun extends ComplexStateQuestHelper
 	ItemRequirement icyBasalt;
 	ItemRequirement stonyBasalt;
 	ItemRequirement farmingGuildTeleport;
-	ItemRequirement hosidiusHouseTeleport;
 	ItemRequirement hunterWhistle;
 	ItemRequirement harmonyTeleport;
 	ItemRequirement gracefulHood;
@@ -268,7 +267,6 @@ public class HerbRun extends ComplexStateQuestHelper
 		ardyCloak2.addAlternates(ItemID.ARDY_CAPE_HARD, ItemID.ARDY_CAPE_ELITE);
 		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERIC_TALISMAN);
 
-		hosidiusHouseTeleport = new ItemRequirement("Teleport to Hosidius House", ItemID.NZONE_TELETAB_KOUREND);
 		xericsTalisman.addAlternates(ItemID.NZONE_TELETAB_KOUREND);
 
 		var catherbyRunes = new ItemRequirements("Catherby teleport runes", new ItemRequirement("Law rune",

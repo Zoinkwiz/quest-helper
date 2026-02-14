@@ -149,9 +149,9 @@ public class JunglePotion extends BasicQuestHelper
 	private void setupSteps()
 	{
 		startQuest = talkToTrufitus("Talk to Trufitus in Tai Bwo Wannai on Karamja.");
-		startQuest.addDialogSteps("It's a nice village, where is everyone?");
-		startQuest.addDialogSteps("Me? How can I help?");
-		startQuest.addDialogSteps("It sounds like just the challenge for me.");
+		startQuest.addDialogStep("It's a nice village, where is everyone?");
+		startQuest.addDialogStep("Me? How can I help?");
+		startQuest.addDialogStep("It sounds like just the challenge for me.");
 		startQuest.addDialogStep("Yes.");
 
 		getSnakeWeed = new ObjectStep(this, ObjectID.SNAKE_VINE_FULL, new WorldPoint(2763, 3044, 0), "Search a marshy jungle vine south of Tai Bwo Wannai for some snake weed.");

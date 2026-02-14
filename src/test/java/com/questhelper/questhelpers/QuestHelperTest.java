@@ -321,6 +321,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.DEATH_ON_THE_ISLE,
 			QuestHelperQuest.TREE_GNOME_VILLAGE,
+			QuestHelperQuest.SHILO_VILLAGE,
 			QuestHelperQuest.GERTRUDES_CAT,
 			QuestHelperQuest.MONKS_FRIEND,
 			QuestHelperQuest.DADDYS_HOME,

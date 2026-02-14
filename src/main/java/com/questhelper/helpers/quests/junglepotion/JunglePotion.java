@@ -152,6 +152,7 @@ public class JunglePotion extends BasicQuestHelper
 		startQuest.addDialogSteps("It's a nice village, where is everyone?");
 		startQuest.addDialogSteps("Me? How can I help?");
 		startQuest.addDialogSteps("It sounds like just the challenge for me.");
+		startQuest.addDialogStep("Yes.");
 
 		getSnakeWeed = new ObjectStep(this, ObjectID.SNAKE_VINE_FULL, new WorldPoint(2763, 3044, 0), "Search a marshy jungle vine south of Tai Bwo Wannai for some snake weed.");
 		getSnakeWeed.addText("If you want to do Zogre Flesh Eaters or Legends' Quest grab one for each as you will need them later.");

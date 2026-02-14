@@ -111,7 +111,8 @@ public class ShiloVillage extends BasicQuestHelper
 	Zone cavern4;
 
 	// Miscellaneous requirements
-	FreeInventorySlotRequirement emptySlot3;
+	FreeInventorySlotRequirement freeInvSlot1;
+	FreeInventorySlotRequirement freeInvSlot2;
 	ObjectCondition moundNearby;
 	ZoneRequirement inCavern1;
 	ZoneRequirement inCavern2;
@@ -129,7 +130,7 @@ public class ShiloVillage extends BasicQuestHelper
 
 	// Steps
 	NpcStep talkToMosol;
-	NpcStep useBeltOnTrufitus;
+	NpcStep showBeltToTrufitus;
 	ObjectStep useSpadeOnGround;
 	ObjectStep useTorchOnFissure;
 	ObjectStep useRopeOnFissure;
@@ -193,7 +194,8 @@ public class ShiloVillage extends BasicQuestHelper
 		charcoal = new ItemRequirement("Charcoal", ItemID.CHARCOAL);
 		crumbleUndead = new ItemRequirement("Crumble undead spell for final boss", -1, -1);
 
-		emptySlot3 = new FreeInventorySlotRequirement(3);
+		freeInvSlot1 = new FreeInventorySlotRequirement(1);
+		freeInvSlot2 = new FreeInventorySlotRequirement(2);
 
 		belt = new ItemRequirement("Wampum belt", ItemID.MOSOL_WAMPUM_BELT);
 		stonePlaque = new ItemRequirement("Stone-plaque", ItemID.ZQPLAQUE);
@@ -208,8 +210,7 @@ public class ShiloVillage extends BasicQuestHelper
 		pommel = new ItemRequirement("Sword pommel", ItemID.ZQBEVSWORD);
 		beads = new ItemRequirement("Bone beads", ItemID.ZQBONEBEADS);
 		beadsOfTheDead = new ItemRequirement("Beads of the dead", ItemID.ZQDEADBEADS);
-		// TODO: spelling
-		rashCorpse = new ItemRequirement("Rashiliya corpse", ItemID.ZQCORPSE);
+		rashCorpse = new ItemRequirement("Rashiliyia corpse", ItemID.ZQCORPSE);
 
 		moundNearby = new ObjectCondition(ObjectID.AHZARHOON_ENTRANCE, new WorldPoint(2922, 3000, 0));
 		inCavern1 = new ZoneRequirement(cavern1);
@@ -228,22 +229,20 @@ public class ShiloVillage extends BasicQuestHelper
 		);
 
 		hasReadTattered = new Conditions(true, LogicType.OR,
-			// TODO: gameval
-			new WidgetTextRequirement(220, 3, "Bervirius, son of King Danthalas"),
+			new WidgetTextRequirement(InterfaceID.Messagescroll.MESSCROLL3, "Bervirius, son of King Danthalas"),
 			new VarplayerRequirement(VarPlayerID.ZOMBIEQUEEN, 9, Operation.GREATER_EQUAL)
 		);
 
 		hasReadCrumpled = new Conditions(true, LogicType.OR,
-			// TODO: gameval / spelling?
-			new WidgetTextRequirement(222, 3, "Rashiliyia's rage went unchecked."),
+			new WidgetTextRequirement(InterfaceID.MessagescrollHandwriting.MESSAGESCROLL3_HW, "Rashiliyia's rage went unchecked."),
 			beadsOfTheDead
 		);
 
 		revealedDoor = new VarbitRequirement(VarbitID.ZQDOOR_MULTI, 1, Operation.GREATER_EQUAL);
 		doorOpened = new VarbitRequirement(VarbitID.ZQDOOR_MULTI, 2, Operation.GREATER_EQUAL);
 		searchedDoor = new Conditions(true, LogicType.OR,
-			// TODO: gameval
-			new WidgetTextRequirement(229, 1, "Examining the door,")
+			// TODO: This might be able to use varbit ZQDOOR_MULTI == 1
+			WidgetTextRequirement.messageBox("Examining the door,")
 		);
 
 		nazNearby = new NpcInteractingRequirement(NpcID.ZQ_MAINZOMBIE1, NpcID.ZQ_MAINZOMBIE2, NpcID.ZQ_MAINZOMBIE3);
@@ -253,15 +252,17 @@ public class ShiloVillage extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToMosol = new NpcStep(this, NpcID.MOSOL_REI, new WorldPoint(2884, 2951, 0), "Talk to Mosol Rei east of Shilo Village in south Karamja.");
+		talkToMosol = new NpcStep(this, NpcID.MOSOL_REI, new WorldPoint(2884, 2951, 0), "Talk to Mosol Rei east of Shilo Village in south Karamja to receive a wampum belt.", freeInvSlot1);
 		talkToMosol.addDialogSteps("Why do I need to run?", "Rashiliyia? Who is she?", "I'll go to see the Shaman.", "Yes, I'm sure and I'll take the Wampum belt to Trufitus.");
 		talkToMosol.addDialogStep(1, "What can we do?");
 
-		useBeltOnTrufitus = new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0), "Use the belt on to Trufitus.", belt.highlighted());
-		useBeltOnTrufitus.addIcon(ItemID.MOSOL_WAMPUM_BELT);
-		useBeltOnTrufitus.addDialogSteps("Mosol Rei said something about a legend?", "Why was it called Ah Za Rhoon?",
-			"Tell me more.", "I am going to search for Ah Za Rhoon!",
-			"Yes, I will seriously look for Ah Za Rhoon and I'd appreciate your help.", "Yes.");
+		showBeltToTrufitus = new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0), "Show the wampum belt to Trufitus in Tai Bwo Wannai village.", belt.highlighted());
+		showBeltToTrufitus.addDialogStep("Mosol gave me something to show you.");
+		showBeltToTrufitus.addDialogStep("Mosol Rei said something about a legend?");
+		showBeltToTrufitus.addDialogStep("Why was it called Ah Za Rhoon?");
+		showBeltToTrufitus.addDialogStep("I am going to search for Ah Za Rhoon!");
+		showBeltToTrufitus.addDialogStep("Yes.");
+
 		useSpadeOnGround = new ObjectStep(this, ObjectID.AHZARHOON_ENTRANCE, new WorldPoint(2922, 3000, 0), "Use a spade on the ground in south east Karamja.", spade.highlighted());
 		useSpadeOnGround.addIcon(ItemID.SPADE);
 
@@ -276,7 +277,7 @@ public class ShiloVillage extends BasicQuestHelper
 		searchFissure.addDialogStep("Yes, I'll give it a go!");
 		useChiselOnStone = new ObjectStep(this, ObjectID.ZQSECRETSTONE, new WorldPoint(2901, 9379, 0), "Use a chisel on the strange looking stone to the south.", chisel.highlighted());
 		useChiselOnStone.addIcon(ItemID.CHISEL);
-		enterDeeperCave = new ObjectStep(this, ObjectID.SECRETRUBBLE, new WorldPoint(2888, 9373, 0), "Search the cave in to go deeper in the caverns.");
+		enterDeeperCave = new ObjectStep(this, ObjectID.SECRETRUBBLE, new WorldPoint(2888, 9373, 0), "Search the nearby cave-in to go deeper in the caverns.");
 		enterDeeperCave.addDialogStep("Yes, I'll wriggle through.");
 		searchForTatteredScroll = new ObjectStep(this, ObjectID.SECRETRUBBLEBOOK, new WorldPoint(2885, 9318, 0), "Search the loose rocks to the north for a tattered scroll.");
 		searchForTatteredScroll.addDialogStep("Yes, I'll carefully move the rocks to see what's behind them.");
@@ -302,13 +303,13 @@ public class ShiloVillage extends BasicQuestHelper
 
 		searchRocksOnCairn = new ObjectStep(this, ObjectID.ZQROCKS, new WorldPoint(2762, 2990, 0), "Right-click search the rocks on Cairn Isle.");
 		searchRocksOnCairn.addDialogSteps("Yes please, I can think of nothing nicer!");
-		searchDolmen = new ObjectStep(this, ObjectID.ZQDOLMEN, new WorldPoint(2767, 9365, 0), "Right-click search the dolmen to the south.");
+		searchDolmen = new ObjectStep(this, ObjectID.ZQDOLMEN, new WorldPoint(2767, 9365, 0), "Right-click search the tomb dolmen to the south.");
 		useChiselOnPommel = new DetailedQuestStep(this, "Use a chisel on the pommel.", chisel.highlighted(), pommel.highlighted());
 		useWireOnBeads = new DetailedQuestStep(this, "Use bronze wire on the beads.", bronzeWire.highlighted(), beads.highlighted());
 
 		searchPalms = new ObjectStep(this, ObjectID.ZQQUEST_HIDYTREE, new WorldPoint(2916, 3093, 0), "Search the palm trees in the north east of Karamja. Come equipped for a boss fight.", List.of(beadsOfTheDead.equipped(), boneShard, chisel, bones3, combatGear), List.of(crumbleUndead, food));
 
-		searchDoors = new ObjectStep(this, ObjectID.HILLSIDEDOORR_MULTI, new WorldPoint(2916, 3091, 0), "Right-click search the doors behind the palm trees.", combatGear);
+		searchDoors = new ObjectStep(this, ObjectID.HILLSIDEDOORR_MULTI, new WorldPoint(2916, 3091, 0), "Right-click search the carved doors behind the palm trees.", combatGear);
 
 		// 8180 opened?
 		makeKey = new DetailedQuestStep(this, "Use a chisel on the bone shard.", chisel.highlighted(), boneShard.highlighted());
@@ -317,9 +318,9 @@ public class ShiloVillage extends BasicQuestHelper
 		enterDoor = new ObjectStep(this, ObjectID.HILLSIDEDOORR_MULTI, new WorldPoint(2916, 3091, 0), "Enter the doors behind the palm trees.", beadsOfTheDead.equipped(), bones3, combatGear);
 		useBonesOnDoor = new ObjectStep(this, ObjectID.THZQ_TOMBROOML1, new WorldPoint(2892, 9480, 0), "Equip the beads of the dead, then make your way through the gate, down the rocks, then to the south west corner. Use bones on the door there.", beadsOfTheDead.equipped(), bones3.highlighted());
 		useBonesOnDoor.addIcon(ItemID.BONES);
-		searchDolmenForFight = new ObjectStep(this, ObjectID.ZQRASHDOLMEN, new WorldPoint(2893, 9488, 0), "Search the dolmen, ready to fight.");
+		searchDolmenForFight = new ObjectStep(this, ObjectID.ZQRASHDOLMEN, new WorldPoint(2893, 9488, 0), "Search the tomb dolmen, ready to fight.");
 
-		killNazastarool = new NpcStep(this, NpcID.ZQ_MAINZOMBIE1, new WorldPoint(2892, 9488, 0), "Defeat Nazastarool's 3 forms. You can safe spot them over the dolmen, and the Crumble Undead spell is very strong against them.");
+		killNazastarool = new NpcStep(this, NpcID.ZQ_MAINZOMBIE1, new WorldPoint(2892, 9488, 0), "Defeat Nazastarool's 3 forms. You can safe spot them over the tomb dolmen. The Crumble Undead spell is very strong against them.");
 		killNazastarool.addAlternateNpcs(NpcID.ZQ_MAINZOMBIE2, NpcID.ZQ_MAINZOMBIE3);
 		killNazastarool.addSafeSpots(new WorldPoint(2894, 9486, 0), new WorldPoint(2891, 9486, 0));
 		pickupCorpse = new ItemStep(this, "Pickup Rashiliyia's corpse.", rashCorpse);
@@ -338,7 +339,7 @@ public class ShiloVillage extends BasicQuestHelper
 		var steps = new HashMap<Integer, QuestStep>();
 
 		var goStartQuest = new ConditionalStep(this, talkToMosol);
-		goStartQuest.addStep(belt.alsoCheckBank(), useBeltOnTrufitus);
+		goStartQuest.addStep(belt.alsoCheckBank(), showBeltToTrufitus);
 		steps.put(0, goStartQuest);
 
 		steps.put(1, useSpadeOnGround);
@@ -475,7 +476,7 @@ public class ShiloVillage extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Exploring", List.of(
 			talkToMosol,
-			useBeltOnTrufitus,
+			showBeltToTrufitus,
 			useSpadeOnGround,
 			useTorchOnFissure,
 			useRopeOnFissure,
@@ -493,10 +494,11 @@ public class ShiloVillage extends BasicQuestHelper
 			torchOrCandle,
 			rope,
 			chisel
+		), List.of(
+			freeInvSlot1
 		)));
 
-		// TODO: name of section?
-		sections.add(new PanelDetails("Free Raiysha", List.of(
+		sections.add(new PanelDetails("Free Rashiliyia", List.of(
 			searchRocksOnCairn,
 			searchDolmen,
 			useChiselOnPommel,
@@ -520,7 +522,8 @@ public class ShiloVillage extends BasicQuestHelper
 			combatGear,
 			food,
 			crumbleUndead,
-			prayerPotions
+			prayerPotions,
+			freeInvSlot2
 		)));
 
 		return sections;

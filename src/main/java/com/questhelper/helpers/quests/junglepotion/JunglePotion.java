@@ -288,7 +288,8 @@ public class JunglePotion extends BasicQuestHelper
 		sections.add(new PanelDetails("Rogues Purse", List.of(
 			enterCave,
 			getRoguePurseHerb,
-			cleanAndReturnRoguesPurse
+			cleanAndReturnRoguesPurse,
+			finishQuest
 		)));
 
 		return sections;

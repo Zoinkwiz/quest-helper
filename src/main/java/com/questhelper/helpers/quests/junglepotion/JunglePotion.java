@@ -261,7 +261,7 @@ public class JunglePotion extends BasicQuestHelper
 	{
 		var sections = new ArrayList<PanelDetails>();
 
-		sections.add(new PanelDetails("Starting quest", List.of(
+		sections.add(new PanelDetails("Starting off", List.of(
 			startQuest
 		)));
 

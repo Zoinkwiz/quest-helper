@@ -327,6 +327,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
+			QuestHelperQuest.JUNGLE_POTION,
 			QuestHelperQuest.ARDOUGNE_EASY,
 			QuestHelperQuest.TROUBLED_TORTUGANS,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,

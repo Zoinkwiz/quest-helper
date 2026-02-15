@@ -748,6 +748,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		searchVaneAgain = new ObjectStep(this, ObjectID.OSF_WEATHERVANE, new WorldPoint(2702, 3476, 3), "Right-click search the weathervane on top of the Seers' building again.");
 
 		goDownFromRoof = new ObjectStep(this, ObjectID.FAVOUR_ROOF_TRAPDOOR, new WorldPoint(2715, 3472, 3), "Climb down from the roof.");
+		goDownFromRoof.addDialogStep("Yes.");
 		goDownLadderToSeers = new ObjectStep(this, ObjectID.KR_LADDERTOP, new WorldPoint(2715, 3470, 1), "Repair the vane parts on the anvil in north Seers' Village.");
 		useVane123OnAnvil = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(2712, 3495, 0), "Repair the vane parts on an anvil. You can find one in the north of Seers' Village.", brokenVane1, brokenVane2, brokenVane3, hammer, steelBar, ironBar, bronzeBar);
 		useVane12OnAnvil = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(2712, 3495, 0), "Repair the vane parts on an anvil. You can find one in the north of Seers' Village.", brokenVane1, brokenVane2, hammer, steelBar, bronzeBar);
@@ -766,6 +767,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		goBackUpLadder.addSubSteps(goBackUpToRoof, useVane1, useVane2, useVane3);
 
 		goFromRoofToPhantuwti = new ObjectStep(this, ObjectID.FAVOUR_ROOF_TRAPDOOR, new WorldPoint(2715, 3472, 3), "Return to Phantuwti.");
+		goFromRoofToPhantuwti.addDialogStep("Yes.");
 		goDownLadderToPhantuwti = new ObjectStep(this, ObjectID.KR_LADDERTOP_DIRECTIONAL, new WorldPoint(2699, 3476, 1), "Return to Phantuwti.");
 		finishWithPhantuwti = new NpcStep(this, NpcID.FAVOUR_PHANTUWTI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Return to Phantuwti in the south west house of Seers' Village.");
 		finishWithPhantuwti.addSubSteps(goFromRoofToPhantuwti, goDownLadderToPhantuwti);

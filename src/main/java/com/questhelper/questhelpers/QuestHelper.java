@@ -35,6 +35,7 @@ import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.RequirementFactory;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.rewards.*;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
@@ -69,6 +70,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	@Inject
 	protected RuneliteObjectManager runeliteObjectManager;
+
+	@Inject
+	protected RequirementFactory requirementFactory;
 
 	@Getter
 	@Setter

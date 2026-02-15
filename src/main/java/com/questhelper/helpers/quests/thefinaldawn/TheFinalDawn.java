@@ -593,14 +593,9 @@ public class TheFinalDawn extends BasicQuestHelper
 		var givenBoneToDog = new VarbitRequirement(VarbitID.VMQ4, 17, Operation.GREATER_EQUAL);
 		bone = new ItemRequirement("Any type of bone or raw meat", ItemID.BONES);
 		bone.setConditionToHide(givenBoneToDog);
-		bone.addAlternates(ItemID.BIG_BONES, ItemID.BONES_BURNT, ItemID.WOLF_BONES, ItemID.BAT_BONES, ItemID.DAGANNOTH_KING_BONES, ItemID.TBWT_BEAST_BONES,
-				ItemID.WYRM_BONES, ItemID.BABYWYRM_BONES, ItemID.BABYDRAGON_BONES, ItemID.WYVERN_BONES, ItemID.DRAGON_BONES, ItemID.DRAKE_BONES,
-				ItemID.HYDRA_BONES, ItemID.LAVA_DRAGON_BONES, ItemID.DRAGON_BONES_SUPERIOR, ItemID.MM_NORMAL_MONKEY_BONES,
-				ItemID.MM_BEARDED_GORILLA_MONKEY_BONES, ItemID.MM_NORMAL_GORILLA_MONKEY_BONES, ItemID.MM_LARGE_ZOMBIE_MONKEY_BONES,
-				ItemID.MM_SMALL_ZOMBIE_MONKEY_BONES, ItemID.MM_SMALL_NINJA_MONKEY_BONES, ItemID.MM_MEDIUM_NINJA_MONKEY_BONES, ItemID.TBWT_JOGRE_BONES,
-				ItemID.TBWT_BURNT_JOGRE_BONES, ItemID.ZOGRE_BONES, ItemID.ZOGRE_ANCESTRAL_BONES_FAYG, ItemID.ZOGRE_ANCESTRAL_BONES_RAURG,
-				ItemID.ZOGRE_ANCESTRAL_BONES_OURG, ItemID.ALAN_BONES, ItemID.RAW_BEAR_MEAT, ItemID.RAW_BOAR_MEAT, ItemID.RAW_RAT_MEAT,
-				ItemID.RAW_UGTHANKI_MEAT, ItemID.YAK_MEAT_RAW);
+		bone.addAlternates(ItemCollections.BONES);
+		bone.addAlternates(ItemCollections.RAW_MEAT);
+		bone.addAlternates(ItemCollections.COOKED_MEAT);
 
 		rangedGear = new ItemRequirement("Ranged/Magic Combat gear", -1, -1).isNotConsumed();
 		rangedGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());

@@ -177,7 +177,6 @@ public class OneSmallFavour extends BasicQuestHelper
 	VarbitRequirement lamp7Full;
 	VarbitRequirement lamp8Empty;
 	VarbitRequirement lamp8Full;
-	VarbitRequirement allEmpty;
 	VarbitRequirement allFull;
 	ZoneRequirement inScrollSpot;
 	NpcCondition slagilithNearby;
@@ -522,8 +521,6 @@ public class OneSmallFavour extends BasicQuestHelper
 		lamp6Empty = new VarbitRequirement(VarbitID.TOPAZLIGHT2_TAKEN, 1);
 		lamp7Empty = new VarbitRequirement(VarbitID.OPALLIGHT2_TAKEN, 1);
 		lamp8Empty = new VarbitRequirement(VarbitID.SAPPHIRELIGHT2_TAKEN, 1);
-
-		allEmpty = new VarbitRequirement(VarbitID.CHECKLANDINGLIGHTS, 255);
 
 		lamp1Full = new VarbitRequirement(VarbitID.JADELIGHT1_FIXED, 1);
 		lamp2Full = new VarbitRequirement(VarbitID.TOPAZLIGHT1_FIXED, 1);

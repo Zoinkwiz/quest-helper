@@ -804,7 +804,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		spinPotLid.addWidgetHighlight(WidgetHighlight.createMultiskillByItemId(ItemID.POTLID_UNFIRED));
 		pickUpPot = new ItemStep(this, "Get a pot to put your lid on. There's one in the Barbarian Village helmet shop.", pot);
 		firePotLid = new ObjectStep(this, ObjectID.FAI_BARBARIAN_POTTERY_OVEN, new WorldPoint(3085, 3407, 0), "Fire the unfired pot lid.", unfiredPotLid);
-		firePotLid.addWidgetHighlight(WidgetHighlight.createMultiskillByItemId(ItemID.POTLID));
+		firePotLid.addWidgetHighlight(WidgetHighlight.createMultiskillByItemId(ItemID.POTLID_UNFIRED));
 		usePotLidOnPot = new DetailedQuestStep(this, "Use the pot lid on a pot.", pot, potLid);
 		returnToApothecary = new NpcStep(this, NpcID.APOTHECARY, new WorldPoint(3196, 3404, 0), "Return to the Apothecary in west Varrock.", potWithLid);
 		returnToApothecary.addDialogStep("Talk about One Small Favour.");

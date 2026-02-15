@@ -93,6 +93,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	ItemRequirement opal2;
 	ItemRequirement jade2;
 	ItemRequirement redTopaz2;
+	ItemRequirement coins3000;
 	ItemRequirement combatGear;
 
 	// Mid-quest item requirements
@@ -412,6 +413,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		jade2.setHighlightInInventory(true);
 		redTopaz2 = new ItemRequirement("Red topaz", ItemID.RED_TOPAZ, 2);
 		redTopaz2.setHighlightInInventory(true);
+		coins3000 = new ItemRequirement("Coins", ItemID.COINS, 3000);
+		coins3000.setTooltip("Alternatively for purchasing backup gems from Gnormadium Avlafrim");
 
 		bluntAxe = new ItemRequirement("Blunt axe", ItemID.FAVOUR_JUNGLEFORESTERAXE_BLUNT);
 		bluntAxe.setTooltip("You can get another from a Jungle Forester south of Shilo Village");
@@ -1089,6 +1092,7 @@ public class OneSmallFavour extends BasicQuestHelper
 			opal2,
 			jade2,
 			redTopaz2,
+			coins3000,
 			pickaxe
 		);
 	}
@@ -1166,6 +1170,11 @@ public class OneSmallFavour extends BasicQuestHelper
 			guam2,
 			marrentill,
 			harralander
+		), List.of(
+			opal2,
+			jade2,
+			redTopaz2,
+			coins3000
 		)));
 
 		sections.add(new PanelDetails("Completing the favours", List.of(

@@ -554,8 +554,8 @@ public class OneSmallFavour extends BasicQuestHelper
 	void setupSteps()
 	{
 		talkToYanni = new NpcStep(this, NpcID.SHILOANTIQUES, new WorldPoint(2836, 2983, 0), "Talk to Yanni Salika in Shilo Village. CKR fairy ring or take cart from Brimhaven.");
+		talkToYanni.addDialogStep("Is there anything else interesting to do around here?");
 		talkToYanni.addDialogStep("Yes.");
-		talkToYanni.addDialogSteps("Is there anything else interesting to do around here?", "Ok, see you in a tick!");
 		talkToJungleForester = new NpcStep(this, new int[]{NpcID.JUNGLEFORESTER_F, NpcID.JUNGLEFORESTER_M}, new WorldPoint(2861, 2942, 0), "Talk to a Jungle Forester south of Shilo Village.", true);
 		talkToJungleForester.addDialogSteps("I'll get going then!", "I need to talk to you about red mahogany.");
 		talkToJungleForester.addDialogStep("Okay, I'll take your axe to get it sharpened.");

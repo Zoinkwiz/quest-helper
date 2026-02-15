@@ -723,7 +723,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		killSlagilith = new NpcStep(this, NpcID.SLAGILITH, new WorldPoint(2617, 9837, 0), "Kill the Slagilith. They take reduced damage from anything other than a pickaxe.");
 		killSlagilith.addRecommended(pickaxe);
-		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll.", animateRockScrollHighlight);
+		readScrollAgain = new DetailedQuestStep(this, "Read the animate rock scroll again.", animateRockScrollHighlight);
 		talkToPetra = new NpcStep(this, NpcID.FAVOUR_PETRA, new WorldPoint(2617, 9837, 0), "Talk to Petra Fiyed.");
 
 		returnToPhantuwti = new NpcStep(this, NpcID.FAVOUR_PHANTUWTI_FARSIGHT, new WorldPoint(2702, 3473, 0), "Return to Phantuwti in the south west house of Seers' Village.");
@@ -941,7 +941,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		var freePetra = new ConditionalStep(this, getPigeonCages);
 		freePetra.addStep(petraNearby, talkToPetra);
-		freePetra.addStep(inScrollSpot, readScroll); // TODO: Should this be readScrollAgain?
+		freePetra.addStep(inScrollSpot, readScrollAgain);
 		freePetra.addStep(inGoblinCave, standNextToSculpture);
 		freePetra.addStep(pigeonCages5.alsoCheckBank(), enterGoblinCaveAgain);
 

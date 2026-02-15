@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.onesmallfavour;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -92,6 +93,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	ItemRequirement opal2;
 	ItemRequirement jade2;
 	ItemRequirement redTopaz2;
+	ItemRequirement combatGear;
 
 	// Mid-quest item requirements
 	ItemRequirement opal;
@@ -400,6 +402,9 @@ public class OneSmallFavour extends BasicQuestHelper
 		feldipHillsTeleports = new ItemRequirement("Teleports to Feldip Hills", ItemID.TELEPORTSCROLL_FELDIP, 2);
 
 		pickaxe = new ItemRequirement("Any pickaxe to kill Slagilith", ItemCollections.PICKAXES).isNotConsumed();
+
+		combatGear = new ItemRequirement("Combat gear to fight Slagilith and the dwarf gang members", -1, -1);
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		opal2 = new ItemRequirement("Opal", ItemID.OPAL, 2);
 		opal2.setHighlightInInventory(true);
@@ -1207,6 +1212,9 @@ public class OneSmallFavour extends BasicQuestHelper
 			steelBar,
 			hammer,
 			pot
+		), List.of(
+			combatGear,
+			pickaxe
 		)));
 
 		return sections;

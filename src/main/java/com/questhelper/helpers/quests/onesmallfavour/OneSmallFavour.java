@@ -33,6 +33,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
@@ -189,6 +190,7 @@ public class OneSmallFavour extends BasicQuestHelper
 	Conditions hasOrUsedOrnament;
 	Conditions hasOrUsedDirectionals;
 	Conditions hasOrUsedWeathervanePillar;
+	FreeInventorySlotRequirement freeSlots3;
 
 	// Steps
 	NpcStep talkToYanni;
@@ -547,6 +549,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		hasOrUsedDirectionals = or(addedDirectionals, directionals.alsoCheckBank());
 		hasOrUsedOrnament = or(addedOrnaments, ornament.alsoCheckBank());
 		hasOrUsedWeathervanePillar = or(addedWeathervanePillar, weathervanePillar.alsoCheckBank());
+
+		freeSlots3 = new FreeInventorySlotRequirement(3);
 	}
 
 	void setupSteps()
@@ -742,7 +746,8 @@ public class OneSmallFavour extends BasicQuestHelper
 		searchVane.addSubSteps(goUpLadder, goUpToRoof);
 		useHammerOnVane = new ObjectStep(this, ObjectID.OSF_WEATHERVANE, new WorldPoint(2702, 3476, 3), "Use a hammer on the weathervane.", hammerHighlight);
 		useHammerOnVane.addIcon(ItemID.HAMMER);
-		searchVaneAgain = new ObjectStep(this, ObjectID.OSF_WEATHERVANE, new WorldPoint(2702, 3476, 3), "Right-click search the weathervane on top of the Seers' building again.");
+
+		searchVaneAgain = new ObjectStep(this, ObjectID.OSF_WEATHERVANE, new WorldPoint(2702, 3476, 3), "Right-click search the weathervane on top of the Seers' building again.", freeSlots3);
 
 		goDownFromRoof = new ObjectStep(this, ObjectID.FAVOUR_ROOF_TRAPDOOR, new WorldPoint(2715, 3472, 3), "Climb down from the roof.");
 		goDownFromRoof.addDialogStep("Yes.");

@@ -50,6 +50,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.TileStep;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -715,7 +716,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 		enterGoblinCaveAgain = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2624, 3393, 0), "Enter the cave south east of the Fishing Guild. " +
 			"Be prepared to fight the Slagilith(level 92, takes reduced damage from anything other than pickaxes).", Arrays.asList(pigeonCages5, animateRockScroll), Collections.singletonList(pickaxe));
-		standNextToSculpture = new DetailedQuestStep(this, new WorldPoint(2616, 9835, 0), "Use the animate rock scroll next to the sculpture in the north east cavern.", animateRockScroll);
+		standNextToSculpture = new TileStep(this, new WorldPoint(2616, 9835, 0), "Use the animate rock scroll next to the sculpture in the north east cavern.", animateRockScroll);
 		readScroll = new DetailedQuestStep(this, "Read the animate rock scroll.", animateRockScrollHighlight);
 
 		standNextToSculpture.addSubSteps(readScroll);

@@ -894,6 +894,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		steps.put(115, talkToGnormadium);
 
 		var repairLights = new ConditionalStep(this, take1);
+		repairLights.addStep(allFull, talkToGnormadiumAgain);
 		repairLights.addStep(and(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Full, lamp8Empty, sapphire), put8);
 		repairLights.addStep(and(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Full, lamp8Empty), cutSaph);
 		repairLights.addStep(and(lamp1Full, lamp2Full, lamp3Full, lamp4Full, lamp5Full, lamp6Full, lamp7Full), take8);

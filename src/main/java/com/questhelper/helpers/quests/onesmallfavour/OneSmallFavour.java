@@ -326,7 +326,7 @@ public class OneSmallFavour extends BasicQuestHelper
 
 	NpcStep killGangMembers;
 
-	NpcStep talkToHammerspikeFinal; // TODO: weird one, never selected
+	NpcStep talkToHammerspikeFinal;
 
 	NpcStep returnToTassie;
 
@@ -798,7 +798,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		killGangMembers = new NpcStep(this, NpcID.FAVOUR_GANGSTER_DWARF, new WorldPoint(2968, 9811, 0),
 			"Kill 3 dwarf gang members until Hammerspike gives in. One dwarf gang member should appear after each kill.", true);
 		killGangMembers.addAlternateNpcs(NpcID.FAVOUR_GANGSTER_DWARF_2, NpcID.FAVOUR_GANGSTER_DWARF_3);
-		talkToHammerspikeFinal = new NpcStep(this, NpcID.FAVOUR_HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");
+		talkToHammerspikeFinal = new NpcStep(this, NpcID.FAVOUR_HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine after killing his dwarf gang members.");
 		returnToTassie = new NpcStep(this, NpcID.FAVOUR_TASSIE_SLIPCAST, new WorldPoint(3085, 3409, 0), "Return to Tassie Slipcast in the Barbarian Village pottery building.");
 		spinPotLid = new ObjectStep(this, ObjectID.POTTERYWHEEL, new WorldPoint(3087, 3409, 0), "Spin the clay into a pot lid.", softClay);
 		spinPotLid.addWidgetHighlight(WidgetHighlight.createMultiskillByItemId(ItemID.POTLID_UNFIRED));
@@ -1019,7 +1019,10 @@ public class OneSmallFavour extends BasicQuestHelper
 		steps.put(210, sortOutGangMembers);
 		steps.put(215, sortOutGangMembers);
 		steps.put(220, sortOutGangMembers);
-		steps.put(225, dealWithHammerspike);
+
+		var dealWithHammerspikeAfterKillingHisGang = new ConditionalStep(this, goDownToHammerspikeAgain);
+		dealWithHammerspikeAfterKillingHisGang.addStep(inDwarvenMine, talkToHammerspikeFinal);
+		steps.put(225, dealWithHammerspikeAfterKillingHisGang);
 
 		steps.put(230, returnToTassie);
 

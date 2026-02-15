@@ -786,6 +786,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		returnUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "Return to Sanfew upstairs in the Taverley herblore store.");
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "Return to Sanfew upstairs in the Taverley herblore store.");
 		returnToSanfew.addDialogStep("Hi there, the Gnome Pilot has agreed to take you to see the ogres!");
+		returnToSanfew.addSubSteps(returnUpToSanfew);
 
 		goDownToHammerspikeAgain = new ObjectStep(this, ObjectID.FAI_DWARF_TRAPDOOR_DOWN, new WorldPoint(3019, 3450, 0), "Return to the Dwarven Mine and talk to Hammerspike Stoutbeard in the west side.");
 		returnToHammerspike = new NpcStep(this, NpcID.FAVOUR_HAMMERSPIKE_STOUTBEARD, new WorldPoint(2968, 9811, 0), "Return to Hammerspike Stoutbeard in the west cavern of the Dwarven Mine.");

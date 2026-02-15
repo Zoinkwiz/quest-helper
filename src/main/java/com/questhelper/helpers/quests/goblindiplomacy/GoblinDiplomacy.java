@@ -26,17 +26,24 @@ package com.questhelper.helpers.quests.goblindiplomacy;
 
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -44,62 +51,47 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class GoblinDiplomacy extends BasicQuestHelper
 {
-	//Required items
-	ItemRequirement goblinMailThree, orangeDye, blueDye, goblinMail, goblinMailTwo, blueArmour, orangeArmour, mailReq;
+	// Required items
+	ItemRequirement goblinMailThree;
+	ItemRequirement orangeDye;
+	ItemRequirement blueDye;
 
-	Requirement isUpstairs, hasUpstairsArmour, hasWestArmour, hasNorthArmour;
+	// Mid-quest item requirements
+	ItemRequirement goblinMail;
+	ItemRequirement goblinMailTwo;
+	ItemRequirement blueArmour;
+	ItemRequirement orangeArmour;
+	ItemRequirement mailReq;
 
-	QuestStep talkToGeneral1, talkToGeneral2, talkToGeneral3, goUpLadder, searchUpLadder, goDownLadder, searchWestHut, searchBehindGenerals,
-		dyeOrange, dyeBlue, getCrate2, getCrate3;
-
-	//Zones
+	// Zones
 	Zone upstairs;
 
+	// Miscellaneous requirements
+	ZoneRequirement isUpstairs;
+	VarbitRequirement hasUpstairsArmour;
+	VarbitRequirement hasWestArmour;
+	VarbitRequirement hasNorthArmour;
+
+	// Steps
+	NpcStep talkToGeneral1;
+	NpcStep talkToGeneral2;
+	NpcStep talkToGeneral3;
+	ObjectStep goUpLadder;
+	ObjectStep searchUpLadder;
+	ObjectStep goDownLadder;
+	ObjectStep searchWestHut;
+	ObjectStep searchBehindGenerals;
+	DetailedQuestStep dyeOrange;
+	DetailedQuestStep dyeBlue;
+	DetailedQuestStep getCrate2;
+	DetailedQuestStep getCrate3;
+
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		ConditionalStep lootArmour = new ConditionalStep(this, goUpLadder);
-		lootArmour.addStep(new Conditions(isUpstairs, hasUpstairsArmour), goDownLadder);
-		lootArmour.addStep(new Conditions(hasUpstairsArmour, hasWestArmour), searchBehindGenerals);
-		lootArmour.addStep(hasUpstairsArmour, searchWestHut);
-		lootArmour.addStep(isUpstairs, searchUpLadder);
-
-		ConditionalStep prepareForQuest = new ConditionalStep(this, lootArmour);
-		prepareForQuest.addStep(new Conditions(goblinMail, blueArmour), dyeOrange);
-		prepareForQuest.addStep(new Conditions(LogicType.OR, goblinMailThree, new Conditions(hasUpstairsArmour, hasWestArmour,
-			hasNorthArmour)), dyeBlue);
-
-		ConditionalStep step1 = new ConditionalStep(this, prepareForQuest);
-		step1.addStep(new Conditions(goblinMail, blueArmour, orangeArmour), talkToGeneral1);
-
-		steps.put(0, step1);
-		steps.put(3, step1);
-
-		ConditionalStep prepareBlueArmour = new ConditionalStep(this, lootArmour);
-		prepareBlueArmour.addStep(new Conditions(LogicType.OR, goblinMailTwo, new Conditions(hasUpstairsArmour, hasWestArmour,
-			hasNorthArmour)), dyeBlue);
-
-		ConditionalStep step2 = new ConditionalStep(this, prepareBlueArmour);
-		step2.addStep(blueArmour, talkToGeneral2);
-
-		steps.put(4, step2);
-
-		ConditionalStep step3 = new ConditionalStep(this, lootArmour);
-		step3.addStep(new Conditions(LogicType.OR, goblinMail, new Conditions(hasUpstairsArmour, hasWestArmour,
-			hasNorthArmour)), talkToGeneral3);
-
-		steps.put(5, step3);
-
-		return steps;
+		upstairs = new Zone(new WorldPoint(2952, 3495, 2), new WorldPoint(2959, 3498, 2));
 	}
 
 	@Override
@@ -123,26 +115,16 @@ public class GoblinDiplomacy extends BasicQuestHelper
 
 		blueArmour = new ItemRequirement("Blue goblin mail", ItemID.GOBLIN_ARMOUR_DARKBLUE);
 		orangeArmour = new ItemRequirement("Orange goblin mail", ItemID.GOBLIN_ARMOUR_ORANGE);
-	}
 
-	public void setupConditions()
-	{
 		isUpstairs = new ZoneRequirement(upstairs);
 		hasUpstairsArmour = new VarbitRequirement(VarbitID.GOBDIP_CRATE3_SEARCHED, 1);
 		hasWestArmour = new VarbitRequirement(VarbitID.GOBDIP_CRATE2_SEARCHED, 1);
 		hasNorthArmour = new VarbitRequirement(VarbitID.GOBDIP_CRATE1_SEARCHED, 1);
 	}
 
-	@Override
-	protected void setupZones()
-	{
-		upstairs = new Zone(new WorldPoint(2952, 3495, 2), new WorldPoint(2959, 3498, 2));
-	}
-
 	public void setupSteps()
 	{
-		goUpLadder = new ObjectStep(this, ObjectID.GOBLIN_LADDER_BOTTOM, new WorldPoint(2954, 3497, 0), "You need three goblin mails, which you can find around the Goblin " +
-			"Village. The first is up the ladder in a crate in the south of the village.");
+		goUpLadder = new ObjectStep(this, ObjectID.GOBLIN_LADDER_BOTTOM, new WorldPoint(2954, 3497, 0), "You need three goblin mails, which you can find around the Goblin Village. The first is up the ladder in a crate in the south of the village.");
 		searchUpLadder = new ObjectStep(this, ObjectID.GOBLIN_OUTPOST_LARGE_CRATE_ARMOUR3, new WorldPoint(2955, 3498, 2), "Search the crate up the ladder.");
 		goUpLadder.addSubSteps(searchUpLadder);
 		goDownLadder = new ObjectStep(this, ObjectID.GOBLIN_LADDER_TOP, new WorldPoint(2954, 3497, 2), "Go back down the ladder.");
@@ -158,10 +140,11 @@ public class GoblinDiplomacy extends BasicQuestHelper
 		dyeOrange = new DetailedQuestStep(this, "Use the orange dye on one of the goblin mail.", orangeDye, goblinMail);
 
 		talkToGeneral1 = new NpcStep(this, NpcID.GENERAL_BENTNOZE_RED, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village.", orangeArmour);
-		talkToGeneral1.addDialogStep("So how is life for the goblins?");
-		talkToGeneral1.addDialogStep("Yes, Wartface looks fat");
 		talkToGeneral1.addDialogStep("Do you want me to pick an armour colour for you?");
 		talkToGeneral1.addDialogStep("What about a different colour?");
+		talkToGeneral1.addDialogStep("Yes.");
+		talkToGeneral1.addDialogStep("So how is life for the goblins?");
+		talkToGeneral1.addDialogStep("Yes, Wartface looks fat");
 		talkToGeneral1.addDialogStep("I have some orange armour here.");
 
 		talkToGeneral2 = new NpcStep(this, NpcID.GENERAL_BENTNOZE_RED, new WorldPoint(2958, 3512, 0), "Talk to one of the Goblin Generals in Goblin Village again.", blueArmour);
@@ -175,13 +158,53 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		var lootArmour = new ConditionalStep(this, goUpLadder);
+		lootArmour.addStep(and(isUpstairs, hasUpstairsArmour), goDownLadder);
+		lootArmour.addStep(and(hasUpstairsArmour, hasWestArmour), searchBehindGenerals);
+		lootArmour.addStep(hasUpstairsArmour, searchWestHut);
+		lootArmour.addStep(isUpstairs, searchUpLadder);
+
+		var prepareForQuest = new ConditionalStep(this, lootArmour);
+		prepareForQuest.addStep(and(goblinMail, blueArmour), dyeOrange);
+		prepareForQuest.addStep(or(goblinMailThree, and(hasUpstairsArmour, hasWestArmour, hasNorthArmour)), dyeBlue);
+
+		var step1 = new ConditionalStep(this, prepareForQuest);
+		step1.addStep(and(goblinMail, blueArmour, orangeArmour), talkToGeneral1);
+
+		steps.put(0, step1);
+		steps.put(3, step1);
+
+		var prepareBlueArmour = new ConditionalStep(this, lootArmour);
+		prepareBlueArmour.addStep(or(goblinMailTwo, and(hasUpstairsArmour, hasWestArmour, hasNorthArmour)), dyeBlue);
+
+		var step2 = new ConditionalStep(this, prepareBlueArmour);
+		step2.addStep(blueArmour, talkToGeneral2);
+
+		steps.put(4, step2);
+
+		var step3 = new ConditionalStep(this, lootArmour);
+		step3.addStep(or(goblinMail, and(hasUpstairsArmour, hasWestArmour, hasNorthArmour)), talkToGeneral3);
+
+		steps.put(5, step3);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(blueDye);
-		reqs.add(orangeDye);
-		reqs.add(mailReq);
-		return reqs;
+		return List.of(
+			blueDye,
+			orangeDye,
+			mailReq
+		);
 	}
 
 	@Override
@@ -193,24 +216,42 @@ public class GoblinDiplomacy extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.CRAFTING, 200));
+		return List.of(
+			new ExperienceReward(Skill.CRAFTING, 200)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("A Gold Bar", ItemID.GOLD_BAR, 1));
+		return List.of(
+			new ItemReward("A Gold Bar", ItemID.GOLD_BAR, 1)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		PanelDetails getArmours = new PanelDetails("Prepare goblin mail",
-			Arrays.asList(goUpLadder, getCrate2, getCrate3, dyeBlue, dyeOrange), blueDye, orangeDye, goblinMailThree);
-		allSteps.add(getArmours);
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Present the armours", Arrays.asList(talkToGeneral1, talkToGeneral2, talkToGeneral3)));
-		return allSteps;
+		sections.add(new PanelDetails("Prepare goblin mail", List.of(
+			goUpLadder,
+			getCrate2,
+			getCrate3,
+			dyeBlue,
+			dyeOrange
+		), List.of(
+			blueDye,
+			orangeDye,
+			goblinMailThree
+		)));
+
+		sections.add(new PanelDetails("Present the armours", List.of(
+			talkToGeneral1,
+			talkToGeneral2,
+			talkToGeneral3
+		)));
+
+		return sections;
 	}
 }

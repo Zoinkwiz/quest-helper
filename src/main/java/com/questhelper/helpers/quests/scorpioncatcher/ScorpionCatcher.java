@@ -228,7 +228,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 		getDustyFromAdventurer.addDialogStep("Yes please!");
 		enterDeeperTaverley = new ObjectStep(this, ObjectID.DEEPDUNGEONDOOR, new WorldPoint(2924, 9803, 0),
 			"Enter the gate to the deeper Taverley dungeon.", dustyKey);
-		enterTaverleyDungeon.addSubSteps(goThroughPipe, goOverStrangeFloor, killJailerForKey, getDustyFromAdventurer, enterDeeperTaverley);
+		enterTaverleyDungeon.addSubSteps(goThroughPipe, goOverStrangeFloor, killJailerForKey, pickUpJailKey, getDustyFromAdventurer, enterDeeperTaverley);
 		searchOldWall = new ObjectStep(this, ObjectID.SCORPIONWALL, new WorldPoint(2875, 9799, 0), "Search the Old wall.");
 		// TODO: Highlight item
 		catchTaverleyScorpion = new NpcStep(this, NpcID.QUESTSCORPIONA, "Use the scorpion cage on the scorpion.", scorpionCageMissingTaverley);

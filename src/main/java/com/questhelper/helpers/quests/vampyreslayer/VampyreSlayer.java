@@ -28,63 +28,72 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class VampyreSlayer extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement hammer, beer, garlic, garlicObtainable, stake, combatGear;
+	// Required items
+	ItemRequirement hammer;
+	ItemRequirement beer;
+	ItemRequirement combatGear;
 
-	//Items Recommended
-	ItemRequirement varrockTeleport, draynorManorTeleport;
+	// Recommended items
+	ItemRequirement varrockTeleport;
+	ItemRequirement draynorManorTeleport;
+	ItemRequirement garlic;
+	ItemRequirement garlicObtainable;
 
-	Requirement inManor, inBasement, isUpstairsInMorgans, draynorNearby;
+	// Mid-quest item requirements
+	ItemRequirement stake;
 
-	QuestStep talkToMorgan, goUpstairsMorgan, getGarlic, ifNeedGarlic, talkToHarlow, talkToHarlowAgain, enterDraynorManor, goDownToBasement, openCoffin, killDraynor;
+	// Zones
+	Zone manor;
+	Zone basement;
+	Zone upstairsInMorgans;
 
-	//Zones
-	Zone manor, basement, upstairsInMorgans;
+	// Miscellaneous requirements
+	ZoneRequirement inManor;
+	ZoneRequirement inBasement;
+	ZoneRequirement isUpstairsInMorgans;
+	NpcCondition draynorNearby;
+
+	// Steps
+	NpcStep talkToMorgan;
+	ObjectStep goUpstairsMorgan;
+	ObjectStep getGarlic;
+	DetailedQuestStep ifNeedGarlic;
+	NpcStep talkToHarlow;
+	NpcStep talkToHarlowAgain;
+	ObjectStep enterDraynorManor;
+	ObjectStep goDownToBasement;
+	ObjectStep openCoffin;
+	NpcStep killDraynor;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToMorgan);
-
-		ConditionalStep getGarlicAndStake = new ConditionalStep(this, goUpstairsMorgan);
-		getGarlicAndStake.addStep(garlic, talkToHarlow);
-		getGarlicAndStake.addStep(isUpstairsInMorgans, getGarlic);
-
-		steps.put(1, getGarlicAndStake);
-
-		ConditionalStep prepareAndKillDraynor = new ConditionalStep(this, getGarlicAndStake);
-		prepareAndKillDraynor.addStep(draynorNearby, killDraynor);
-		prepareAndKillDraynor.addStep(inBasement, openCoffin);
-		prepareAndKillDraynor.addStep(inManor, goDownToBasement);
-		prepareAndKillDraynor.addStep(stake, enterDraynorManor);
-
-		steps.put(2, prepareAndKillDraynor);
-
-
-		return steps;
+		basement = new Zone(new WorldPoint(3074, 9767, 0), new WorldPoint(3081, 9779, 0));
+		manor = new Zone(new WorldPoint(3097, 3354, 0), new WorldPoint(3119, 3373, 0));
+		upstairsInMorgans = new Zone(new WorldPoint(3096, 3266, 1), new WorldPoint(3102, 3270, 1));
 	}
 
 	@Override
@@ -102,22 +111,11 @@ public class VampyreSlayer extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		garlicObtainable = new ItemRequirement("Garlic", ItemID.GARLIC);
 		garlicObtainable.canBeObtainedDuringQuest();
-	}
 
-	public void setupConditions()
-	{
 		inBasement = new ZoneRequirement(basement);
 		inManor = new ZoneRequirement(manor);
 		isUpstairsInMorgans = new ZoneRequirement(upstairsInMorgans);
 		draynorNearby = new NpcCondition(NpcID.COUNT_DRAYNOR);
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		basement = new Zone(new WorldPoint(3074, 9767, 0), new WorldPoint(3081, 9779, 0));
-		manor = new Zone(new WorldPoint(3097, 3354, 0), new WorldPoint(3119, 3373, 0));
-		upstairsInMorgans = new Zone(new WorldPoint(3096, 3266, 1), new WorldPoint(3102, 3270, 1));
 	}
 
 	public void setupSteps()
@@ -127,7 +125,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		talkToMorgan.addDialogStep("Accept quest");
 		goUpstairsMorgan = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(3100, 3267, 0), "Go upstairs in Morgan's house and search the cupboard for some garlic.");
 		getGarlic = new ObjectStep(this, ObjectID.GARLICCUPBOARDOPEN, new WorldPoint(3096, 3270, 1), "Search the cupboard upstairs in Morgan's house.");
-		((ObjectStep) getGarlic).addAlternateObjects(ObjectID.GARLICCUPBOARDSHUT);
+		getGarlic.addAlternateObjects(ObjectID.GARLICCUPBOARDSHUT);
 		ifNeedGarlic = new DetailedQuestStep(this, "If you need garlic, you can get some from the cupboard upstairs in Morgan's house.");
 		ifNeedGarlic.addSubSteps(goUpstairsMorgan, getGarlic);
 
@@ -142,31 +140,58 @@ public class VampyreSlayer extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToMorgan);
+
+		var getGarlicAndStake = new ConditionalStep(this, goUpstairsMorgan);
+		getGarlicAndStake.addStep(garlic, talkToHarlow);
+		getGarlicAndStake.addStep(isUpstairsInMorgans, getGarlic);
+
+		steps.put(1, getGarlicAndStake);
+
+		var prepareAndKillDraynor = new ConditionalStep(this, getGarlicAndStake);
+		prepareAndKillDraynor.addStep(draynorNearby, killDraynor);
+		prepareAndKillDraynor.addStep(inBasement, openCoffin);
+		prepareAndKillDraynor.addStep(inManor, goDownToBasement);
+		prepareAndKillDraynor.addStep(stake, enterDraynorManor);
+
+		steps.put(2, prepareAndKillDraynor);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(hammer);
-		reqs.add(beer);
-		reqs.add(combatGear);
-		return reqs;
+		return List.of(
+			hammer,
+			beer,
+			combatGear
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(varrockTeleport);
-		reqs.add(draynorManorTeleport);
-		reqs.add(garlicObtainable);
-		return reqs;
+		return List.of(
+			varrockTeleport,
+			draynorManorTeleport,
+			garlicObtainable
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Count Draynor (level 34)");
-		return reqs;
+		return List.of(
+			"Count Draynor (level 34)"
+		);
 	}
 
 	@Override
@@ -178,17 +203,39 @@ public class VampyreSlayer extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.ATTACK, 4825));
+		return List.of(
+			new ExperienceReward(Skill.ATTACK, 4825)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Starting off", Arrays.asList(talkToMorgan, ifNeedGarlic)));
-		allSteps.add(new PanelDetails("Get a stake", Arrays.asList(talkToHarlow, talkToHarlowAgain), beer));
-		allSteps.add(new PanelDetails("Kill Count Draynor", Arrays.asList(enterDraynorManor, goDownToBasement, openCoffin), hammer, stake, garlic, combatGear));
-		return allSteps;
+		sections.add(new PanelDetails("Starting off", List.of(
+			talkToMorgan,
+			ifNeedGarlic
+		)));
+
+		sections.add(new PanelDetails("Get a stake", List.of(
+			talkToHarlow,
+			talkToHarlowAgain
+		), List.of(
+			beer
+		)));
+
+		sections.add(new PanelDetails("Kill Count Draynor", List.of(
+			enterDraynorManor,
+			goDownToBasement,
+			openCoffin
+		), List.of(
+			hammer,
+			stake,
+			garlic,
+			combatGear
+		)));
+
+		return sections;
 	}
 }

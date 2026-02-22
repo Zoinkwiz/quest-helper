@@ -234,8 +234,8 @@ public class ScorpionCatcher extends BasicQuestHelper
 		catchTaverleyScorpion = new NpcStep(this, NpcID.QUESTSCORPIONA, "Use the scorpion cage on the scorpion.", scorpionCageMissingTaverley);
 		catchTaverleyScorpion.addIcon(ItemID.SCORPIONCAGEEMPTY);
 
-		enterMonastery = new ObjectStep(this, ObjectID.MONASTERYLADDER, new WorldPoint(3057, 3483, 0),
-			"Enter the Edgeville Monastery.");
+		enterMonastery = new ObjectStep(this, ObjectID.MONASTERYLADDER, new WorldPoint(3057, 3483, 0), "Enter the Edgeville Monastery.");
+		enterMonastery.addDialogStep("Well can I join your order?");
 		// TODO: Highlight item
 		catchMonasteryScorpion = new NpcStep(this, NpcID.QUESTSCORPIONC, "Use the scorpion cage on the scorpion.",
 			scorpionCageMissingMonastery);

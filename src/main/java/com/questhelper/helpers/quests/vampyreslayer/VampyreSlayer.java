@@ -35,7 +35,6 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
@@ -78,9 +77,11 @@ public class VampyreSlayer extends BasicQuestHelper
 
 	// Steps
 	NpcStep talkToMorgan;
+
 	ObjectStep goUpstairsMorgan;
 	ObjectStep getGarlic;
-	DetailedQuestStep ifNeedGarlic;
+	ConditionalStep cGetGarlic;
+
 	NpcStep talkToHarlow;
 	NpcStep talkToHarlowAgain;
 	ObjectStep enterDraynorManor;
@@ -123,11 +124,11 @@ public class VampyreSlayer extends BasicQuestHelper
 		talkToMorgan = new NpcStep(this, NpcID.MORGAN, new WorldPoint(3098, 3268, 0), "Talk to Morgan in the north of Draynor Village.");
 		talkToMorgan.addDialogStep("Yes.");
 
-		goUpstairsMorgan = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(3100, 3267, 0), "Go upstairs in Morgan's house and search the cupboard for some garlic.");
-		getGarlic = new ObjectStep(this, ObjectID.GARLICCUPBOARDOPEN, new WorldPoint(3096, 3270, 1), "Search the cupboard upstairs in Morgan's house.");
+		goUpstairsMorgan = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(3100, 3267, 0), "Climb the stairs.");
+		getGarlic = new ObjectStep(this, ObjectID.GARLICCUPBOARDOPEN, new WorldPoint(3096, 3270, 1), "Search the cupboard.");
 		getGarlic.addAlternateObjects(ObjectID.GARLICCUPBOARDSHUT);
-		ifNeedGarlic = new DetailedQuestStep(this, "If you need garlic, you can get some from the cupboard upstairs in Morgan's house.");
-		ifNeedGarlic.addSubSteps(goUpstairsMorgan, getGarlic);
+		cGetGarlic = new ConditionalStep(this, goUpstairsMorgan, "Get garlic from the cupboard upstairs in Morgan's house.\nYou can tick off this section to skip the garlic acquisition.");
+		cGetGarlic.addStep(isUpstairsInMorgans, getGarlic);
 
 		talkToHarlow = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow in the Blue Moon Inn in Varrock.", beer);
 		talkToHarlow.addDialogStep("Morgan needs your help!");
@@ -149,9 +150,8 @@ public class VampyreSlayer extends BasicQuestHelper
 
 		steps.put(0, talkToMorgan);
 
-		var getGarlicAndStake = new ConditionalStep(this, goUpstairsMorgan);
+		var getGarlicAndStake = new ConditionalStep(this, cGetGarlic);
 		getGarlicAndStake.addStep(garlic, talkToHarlow);
-		getGarlicAndStake.addStep(isUpstairsInMorgans, getGarlic);
 
 		steps.put(1, getGarlicAndStake);
 
@@ -214,9 +214,14 @@ public class VampyreSlayer extends BasicQuestHelper
 		var sections = new ArrayList<PanelDetails>();
 
 		sections.add(new PanelDetails("Starting off", List.of(
-			talkToMorgan,
-			ifNeedGarlic
+			talkToMorgan
 		)));
+
+		var garlicSection = new PanelDetails("Get garlic", List.of(
+			cGetGarlic
+		));
+		garlicSection.setLockingStep(cGetGarlic);
+		sections.add(garlicSection);
 
 		sections.add(new PanelDetails("Get a stake", List.of(
 			talkToHarlow,

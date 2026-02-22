@@ -340,6 +340,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.PRIEST_IN_PERIL,
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,
+			QuestHelperQuest.VAMPYRE_SLAYER,
 			QuestHelperQuest.HERB_RUN
 		);
 

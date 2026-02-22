@@ -28,6 +28,7 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -116,13 +117,13 @@ public class VampyreSlayer extends BasicQuestHelper
 		stake.setTooltip("You can get another from Dr. Harlow in the Blue Moon Inn in Varrock.");
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
-		garlic.setTooltip("Optional, makes Count Draynor weaker");
+		garlic.setTooltip("Weakens Count Draynor");
 		beer = new ItemRequirement("Beer", ItemID.BEER);
 		twoCoins = new ItemRequirement("Coins", ItemID.COINS, 2);
 		beerOrTwoCoins = new ItemRequirements(LogicType.OR, "A beer, or 2 coins to buy one", beer, twoCoins);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		garlicObtainable = new ItemRequirement("Garlic", ItemID.GARLIC);
+		garlicObtainable = garlic.copy();
 		garlicObtainable.canBeObtainedDuringQuest();
 
 		inBasement = new ZoneRequirement(basement);
@@ -156,10 +157,12 @@ public class VampyreSlayer extends BasicQuestHelper
 		talkToHarlowAgain = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow again with a beer.", beer);
 		talkToHarlowAgain.addDialogStep("Yes. Here you go.");
 
-		enterDraynorManor = new ObjectStep(this, ObjectID.HAUNTEDDOORL, new WorldPoint(3108, 3353, 0), "Prepare to fight Count Draynor (level 34), and enter Draynor Manor.", combatGear, stake, hammer, garlic);
-		goDownToBasement = new ObjectStep(this, ObjectID.CRYPTSTAIRSDOWN, new WorldPoint(3116, 3358, 0), "Enter Draynor Manor's basement.", combatGear, stake, hammer, garlic);
-		openCoffin = new ObjectStep(this, ObjectID.VAMPCOFFIN, new WorldPoint(3078, 9776, 0), "Open the coffin and kill Count Draynor.", combatGear, stake, hammer, garlic);
-		killDraynor = new NpcStep(this, NpcID.COUNT_DRAYNOR, new WorldPoint(3077, 9769, 0), "Kill Count Draynor.", combatGear, stake, hammer, garlic);
+		List<Requirement> countDraynorReqs = List.of(hammer, stake, combatGear);
+		List<Requirement> countDraynorRecommended = List.of(garlic);
+		enterDraynorManor = new ObjectStep(this, ObjectID.HAUNTEDDOORL, new WorldPoint(3108, 3353, 0), "Prepare to fight Count Draynor (level 34), and enter Draynor Manor.", countDraynorReqs, countDraynorRecommended);
+		goDownToBasement = new ObjectStep(this, ObjectID.CRYPTSTAIRSDOWN, new WorldPoint(3116, 3358, 0), "Enter Draynor Manor's basement.", countDraynorReqs, countDraynorRecommended);
+		openCoffin = new ObjectStep(this, ObjectID.VAMPCOFFIN, new WorldPoint(3078, 9776, 0), "Open the coffin and kill Count Draynor.", countDraynorReqs, countDraynorRecommended);
+		killDraynor = new NpcStep(this, NpcID.COUNT_DRAYNOR, new WorldPoint(3077, 9769, 0), "Kill Count Draynor.", countDraynorReqs, countDraynorRecommended);
 		openCoffin.addSubSteps(killDraynor);
 	}
 
@@ -263,8 +266,9 @@ public class VampyreSlayer extends BasicQuestHelper
 		), List.of(
 			hammer,
 			stake,
-			garlic,
 			combatGear
+		), List.of(
+			garlic
 		)));
 
 		return sections;

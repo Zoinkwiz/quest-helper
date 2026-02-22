@@ -28,9 +28,13 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.DialogRequirement;
+import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -78,6 +82,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	ZoneRequirement inBasement;
 	ZoneRequirement isUpstairsInMorgans;
 	NpcCondition draynorNearby;
+	Conditions givenBeerToHarlow;
 
 	// Steps
 	NpcStep talkToMorgan;
@@ -87,6 +92,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	ConditionalStep cGetGarlic;
 
 	NpcStep talkToHarlow;
+	NpcStep buyBeer;
 	NpcStep talkToHarlowAgain;
 	ObjectStep enterDraynorManor;
 	ObjectStep goDownToBasement;
@@ -111,7 +117,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		garlic.setTooltip("Optional, makes Count Draynor weaker");
-		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);
+		beer = new ItemRequirement("Beer", ItemID.BEER);
 		twoCoins = new ItemRequirement("Coins", ItemID.COINS, 2);
 		beerOrTwoCoins = new ItemRequirements(LogicType.OR, "A beer, or 2 coins to buy one", beer, twoCoins);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1).isNotConsumed();
@@ -123,6 +129,13 @@ public class VampyreSlayer extends BasicQuestHelper
 		inManor = new ZoneRequirement(manor);
 		isUpstairsInMorgans = new ZoneRequirement(upstairsInMorgans);
 		draynorNearby = new NpcCondition(NpcID.COUNT_DRAYNOR);
+
+		var givenBeerToHarlow1 = new DialogRequirement("You give a beer to Dr Harlow.");
+		givenBeerToHarlow1.setMustBeActive(true);
+		givenBeerToHarlow1.setAllowMesbox(true);
+		var givenBeerToHarlow2 = new DialogRequirement("Cheersh matey...", "So tell me how to kill vampyres then.", "Yesh, yesh vampyres, I was very good at killing em once", "Well, you're going to need a stake");
+		givenBeerToHarlow2.setMustBeActive(true);
+		givenBeerToHarlow = or(givenBeerToHarlow1, givenBeerToHarlow2);
 	}
 
 	public void setupSteps()
@@ -138,7 +151,11 @@ public class VampyreSlayer extends BasicQuestHelper
 
 		talkToHarlow = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow in the Blue Moon Inn in Varrock.", beerOrTwoCoins);
 		talkToHarlow.addDialogStep("Morgan needs your help!");
-		talkToHarlowAgain = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow again with a beer. You can buy one for 2gp in the Blue Moon Inn.", beer);
+		buyBeer = new NpcStep(this, NpcID.BLUEMOON_BARTENDER, "Buy a beer from the bartender in the Blue Moon Inn in Varrock.", twoCoins);
+		buyBeer.addDialogStep("A glass of your finest ale please.");
+		talkToHarlowAgain = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow again with a beer.", beer);
+		talkToHarlowAgain.addDialogStep("Yes. Here you go.");
+
 		enterDraynorManor = new ObjectStep(this, ObjectID.HAUNTEDDOORL, new WorldPoint(3108, 3353, 0), "Prepare to fight Count Draynor (level 34), and enter Draynor Manor.", combatGear, stake, hammer, garlic);
 		goDownToBasement = new ObjectStep(this, ObjectID.CRYPTSTAIRSDOWN, new WorldPoint(3116, 3358, 0), "Enter Draynor Manor's basement.", combatGear, stake, hammer, garlic);
 		openCoffin = new ObjectStep(this, ObjectID.VAMPCOFFIN, new WorldPoint(3078, 9776, 0), "Open the coffin and kill Count Draynor.", combatGear, stake, hammer, garlic);
@@ -158,10 +175,12 @@ public class VampyreSlayer extends BasicQuestHelper
 
 		var getGarlicAndStake = new ConditionalStep(this, cGetGarlic);
 		getGarlicAndStake.addStep(garlic, talkToHarlow);
-
 		steps.put(1, getGarlicAndStake);
 
-		var prepareAndKillDraynor = new ConditionalStep(this, getGarlicAndStake);
+		var getStake = new ConditionalStep(this, talkToHarlowAgain);
+		getStake.addStep(givenBeerToHarlow, talkToHarlowAgain);
+		getStake.addStep(not(beer), buyBeer);
+		var prepareAndKillDraynor = new ConditionalStep(this, getStake);
 		prepareAndKillDraynor.addStep(draynorNearby, killDraynor);
 		prepareAndKillDraynor.addStep(inBasement, openCoffin);
 		prepareAndKillDraynor.addStep(inManor, goDownToBasement);
@@ -177,7 +196,7 @@ public class VampyreSlayer extends BasicQuestHelper
 	{
 		return List.of(
 			hammer,
-			beer,
+			beerOrTwoCoins,
 			combatGear
 		);
 	}
@@ -231,6 +250,7 @@ public class VampyreSlayer extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Get a stake", List.of(
 			talkToHarlow,
+			buyBeer,
 			talkToHarlowAgain
 		), List.of(
 			beerOrTwoCoins

@@ -40,9 +40,15 @@ public class DialogRequirement extends SimpleRequirement
 	@Setter
 	String talkerName;
 	final List<String> text = new ArrayList<>();
-	final boolean mustBeActive;
+
+	@Setter
+	boolean mustBeActive;
 
 	boolean hasSeenDialog = false;
+
+	/// Also allow the dialog message to check MESBOX messages
+	@Setter
+	boolean allowMesbox = false;
 
 	public DialogRequirement(String... text)
 	{
@@ -77,7 +83,21 @@ public class DialogRequirement extends SimpleRequirement
 
 	public void validateCondition(ChatMessage chatMessage)
 	{
-		if (chatMessage.getType() != ChatMessageType.DIALOG) return;
+		if (chatMessage.getType() != ChatMessageType.DIALOG)
+		{
+			if (allowMesbox)
+			{
+				// This requirement also allows validating the condition against MESBOX entries
+				if (chatMessage.getType() != ChatMessageType.MESBOX)
+				{
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
+		}
 
 		String dialogMessage = chatMessage.getMessage();
 		if (!hasSeenDialog)

@@ -230,22 +230,16 @@ public class ScorpionCatcher extends BasicQuestHelper
 			"Enter the gate to the deeper Taverley dungeon.", dustyKey);
 		enterTaverleyDungeon.addSubSteps(goThroughPipe, goOverStrangeFloor, killJailerForKey, pickUpJailKey, getDustyFromAdventurer, enterDeeperTaverley);
 		searchOldWall = new ObjectStep(this, ObjectID.SCORPIONWALL, new WorldPoint(2875, 9799, 0), "Search the Old wall.");
-		// TODO: Highlight item
-		catchTaverleyScorpion = new NpcStep(this, NpcID.QUESTSCORPIONA, "Use the scorpion cage on the scorpion.", scorpionCageMissingTaverley);
+		catchTaverleyScorpion = new NpcStep(this, NpcID.QUESTSCORPIONA, "Use the scorpion cage on the scorpion.", scorpionCageMissingTaverley.highlighted());
 		catchTaverleyScorpion.addIcon(ItemID.SCORPIONCAGEEMPTY);
 
 		enterMonastery = new ObjectStep(this, ObjectID.MONASTERYLADDER, new WorldPoint(3057, 3483, 0), "Enter the Edgeville Monastery.");
 		enterMonastery.addDialogStep("Well can I join your order?");
-		// TODO: Highlight item
-		catchMonasteryScorpion = new NpcStep(this, NpcID.QUESTSCORPIONC, "Use the scorpion cage on the scorpion.",
-			scorpionCageMissingMonastery);
+		catchMonasteryScorpion = new NpcStep(this, NpcID.QUESTSCORPIONC, "Use the scorpion cage on the scorpion.", scorpionCageMissingMonastery.highlighted());
 		catchMonasteryScorpion.addIcon(ItemID.SCORPIONCAGEEMPTY);
 
-		enterOutpost = new ObjectStep(this, ObjectID.BARBARIANGATEL, new WorldPoint(2545, 3570, 0),
-			"Enter the Barbarian Outpost.");
-		// TODO: Highlight item
-		catchOutpostScorpion = new NpcStep(this, NpcID.QUESTSCORPIONB, new WorldPoint(2553, 3570, 0),
-			"Use the scorpion cage on the scorpion.", scorpionCageTaverleyAndMonastery);
+		enterOutpost = new ObjectStep(this, ObjectID.BARBARIANGATEL, new WorldPoint(2545, 3570, 0), "Enter the Barbarian Outpost.");
+		catchOutpostScorpion = new NpcStep(this, NpcID.QUESTSCORPIONB, new WorldPoint(2553, 3570, 0), "Use the scorpion cage on the scorpion.", scorpionCageTaverleyAndMonastery.highlighted());
 		catchOutpostScorpion.addIcon(ItemID.SCORPIONCAGEEMPTY);
 
 		returnToThormac = new NpcStep(this, NpcID.THORMAC, "", scorpionCageFull);

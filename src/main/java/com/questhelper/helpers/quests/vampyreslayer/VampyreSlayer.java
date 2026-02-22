@@ -30,6 +30,8 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -53,6 +55,8 @@ public class VampyreSlayer extends BasicQuestHelper
 	// Required items
 	ItemRequirement hammer;
 	ItemRequirement beer;
+	ItemRequirement twoCoins;
+	ItemRequirements beerOrTwoCoins;
 	ItemRequirement combatGear;
 
 	// Recommended items
@@ -108,6 +112,8 @@ public class VampyreSlayer extends BasicQuestHelper
 		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
 		garlic.setTooltip("Optional, makes Count Draynor weaker");
 		beer = new ItemRequirement("A beer, or 2 coins to buy one", ItemID.BEER);
+		twoCoins = new ItemRequirement("Coins", ItemID.COINS, 2);
+		beerOrTwoCoins = new ItemRequirements(LogicType.OR, "A beer, or 2 coins to buy one", beer, twoCoins);
 		combatGear = new ItemRequirement("Combat gear + food to defeat Count Draynor", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		garlicObtainable = new ItemRequirement("Garlic", ItemID.GARLIC);
@@ -130,7 +136,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		cGetGarlic = new ConditionalStep(this, goUpstairsMorgan, "Get garlic from the cupboard upstairs in Morgan's house.\nYou can tick off this section to skip the garlic acquisition.");
 		cGetGarlic.addStep(isUpstairsInMorgans, getGarlic);
 
-		talkToHarlow = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow in the Blue Moon Inn in Varrock.", beer);
+		talkToHarlow = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow in the Blue Moon Inn in Varrock.", beerOrTwoCoins);
 		talkToHarlow.addDialogStep("Morgan needs your help!");
 		talkToHarlowAgain = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow again with a beer. You can buy one for 2gp in the Blue Moon Inn.", beer);
 		enterDraynorManor = new ObjectStep(this, ObjectID.HAUNTEDDOORL, new WorldPoint(3108, 3353, 0), "Prepare to fight Count Draynor (level 34), and enter Draynor Manor.", combatGear, stake, hammer, garlic);
@@ -227,7 +233,7 @@ public class VampyreSlayer extends BasicQuestHelper
 			talkToHarlow,
 			talkToHarlowAgain
 		), List.of(
-			beer
+			beerOrTwoCoins
 		)));
 
 		sections.add(new PanelDetails("Kill Count Draynor", List.of(

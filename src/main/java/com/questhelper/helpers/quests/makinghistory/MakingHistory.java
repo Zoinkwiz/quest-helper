@@ -150,7 +150,7 @@ public class MakingHistory extends BasicQuestHelper
 		portPhasmatysEntry.setTooltip(ectoTokens.getTooltip());
 
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.RING_OF_DUELINGS);
-		enchantedKey = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);
+		enchantedKey = new KeyringRequirement("Enchanted key", KeyringCollection.ENCHANTED_KEY);
 		enchantedKey.setTooltip("You can get another from the silver merchant in East Ardougne's market");
 
 		enchantedKeyHighlighted = new ItemRequirement("Enchanted key", ItemID.MAKINGHISTORY_KEY);

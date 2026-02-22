@@ -31,7 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Item;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 @Slf4j
@@ -53,11 +55,35 @@ public class ItemAndLastUpdated
         this.containerType = containerType;
     }
 
+	/// Updates the full list of items in this container
     public void update(int updateTick, Item[] items)
     {
         this.lastUpdated = updateTick;
         this.items = items;
     }
+
+	/// Helper function to add a single item into the container.
+	///
+	/// Prefer using the update method if possible.
+	public void add(int updateTick, int itemID, int itemQuantity)
+	{
+		this.lastUpdated = updateTick;
+
+		var newItems = new ArrayList<>(List.of(this.items));
+		newItems.add(new Item(itemID, itemQuantity));
+
+		this.items = newItems.toArray(new Item[0]);
+	}
+
+	/// Helper function to remove items with a given item ID from the container.
+	///
+	/// Prefer using the update method if possible.
+	public void removeByItemID(int updateTick, int itemID)
+	{
+		this.lastUpdated = updateTick;
+
+		this.items = Arrays.stream(this.items).filter((item) -> item.getId() != itemID).toArray(Item[]::new);
+	}
 
     /**
      * Get the Items contained within the Tracked Container.

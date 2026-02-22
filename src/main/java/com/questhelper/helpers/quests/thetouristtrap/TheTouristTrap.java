@@ -191,7 +191,7 @@ public class TheTouristTrap extends BasicQuestHelper
 		bronzeBar3 = new ItemRequirement("Bronze bars", ItemID.BRONZE_BAR, 3);
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 
-		metalKey = new KeyringRequirement("Metal key", configManager, KeyringCollection.METAL_KEY);
+		metalKey = new KeyringRequirement("Metal key", KeyringCollection.METAL_KEY);
 		metalKey.setTooltip("You can get another by killing the Mercenary Guard outside the Desert Mining Camp");
 		slaveTop = new ItemRequirement("Slave shirt", ItemID.SLAVE_SHIRT);
 		slaveTop.setTooltip("You can trade in a desert robe set for slave clothes with the Male Slave");

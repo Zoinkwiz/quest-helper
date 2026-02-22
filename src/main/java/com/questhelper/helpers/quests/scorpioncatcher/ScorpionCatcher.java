@@ -114,7 +114,7 @@ public class ScorpionCatcher extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
+		dustyKey = new KeyringRequirement("Dusty Key", KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.setTooltip("Not needed if you have level 70 Agility, can be obtained during the quest");
 		jailKey = new ItemRequirement("Jail Key", ItemID.JAIL_KEY);
 

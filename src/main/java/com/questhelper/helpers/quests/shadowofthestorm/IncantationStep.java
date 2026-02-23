@@ -31,12 +31,9 @@ import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
-
-import java.util.Collections;
 
 public class IncantationStep extends DetailedQuestStep
 {
@@ -87,12 +84,9 @@ public class IncantationStep extends DetailedQuestStep
 	private String[] incantationOrder;
 	private int incantationPosition = 0;
 
-	public IncantationStep(QuestHelper questHelper, boolean reverse)
+	public IncantationStep(QuestHelper questHelper, boolean reverse, ItemRequirement sigilHighlighted)
 	{
-		super(questHelper, "Click the demonic sigil and read the incantation.");
-		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.AGRITH_SIGIL);
-		sigilHighlighted.setHighlightInInventory(true);
-		this.addItemRequirements(Collections.singletonList(sigilHighlighted));
+		super(questHelper, "Click the demonic sigil and read the incantation.", sigilHighlighted);
 		this.reverse = reverse;
 	}
 
@@ -100,6 +94,7 @@ public class IncantationStep extends DetailedQuestStep
 	public void startUp()
 	{
 		super.startUp();
+		incantationPosition = 0;
 		updateHints();
 	}
 
@@ -123,11 +118,12 @@ public class IncantationStep extends DetailedQuestStep
 	{
 		var widget = event.getWidget();
 
-		if (widget == null) {
+		if (widget == null)
+		{
 			return;
 		}
 
-		if (widget.getId() != InterfaceID.INVENTORY)
+		if (widget.getId() != InterfaceID.Inventory.ITEMS)
 		{
 			return;
 		}
@@ -190,7 +186,8 @@ public class IncantationStep extends DetailedQuestStep
 			return;
 		}
 
-		if (reverse) {
+		if (reverse)
+		{
 			incantationOrder = new String[]{
 				WORDS[client.getVarbitValue(INCANTATION_WORD_5)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_4)],
@@ -198,7 +195,9 @@ public class IncantationStep extends DetailedQuestStep
 				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
 			};
-		} else {
+		}
+		else
+		{
 			incantationOrder = new String[]{
 				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],
@@ -211,5 +210,6 @@ public class IncantationStep extends DetailedQuestStep
 
 		setText("Click the demonic sigil and read the incantation.");
 		addText(incantString);
+		addText("If the highlight feels wrong, click the demonic sigil again.");
 	}
 }

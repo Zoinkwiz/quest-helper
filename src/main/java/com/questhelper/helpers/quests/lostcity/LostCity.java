@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -49,9 +50,9 @@ import java.util.*;
 public class LostCity extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement knife, axe, combatGear, teleport, bronzeAxe, dramenBranch, dramenStaff, dramenStaffEquipped;
+	ItemRequirement knife, axe, combatGear, teleport, bronzeOrIronAxe, dramenBranch, dramenStaff, dramenStaffEquipped;
 
-	Requirement onEntrana, inDungeon, shamusNearby, bronzeAxeNearby, dramenSpiritNearby;
+	Requirement onEntrana, inDungeon, shamusNearby, axeNearby, dramenSpiritNearby;
 
 	DetailedQuestStep talkToWarrior, chopTree, talkToShamus, goToEntrana, goDownHole, getAxe, pickupAxe, attemptToCutDramen, killDramenSpirit, cutDramenBranch,
 		teleportAway, craftBranch, enterZanaris, getAnotherBranch;
@@ -76,8 +77,8 @@ public class LostCity extends BasicQuestHelper
 
 		ConditionalStep killingTheSpirit = new ConditionalStep(this, goToEntrana);
 		killingTheSpirit.addStep(new Conditions(inDungeon, dramenSpiritNearby), killDramenSpirit);
-		killingTheSpirit.addStep(new Conditions(inDungeon, bronzeAxe), attemptToCutDramen);
-		killingTheSpirit.addStep(new Conditions(inDungeon, bronzeAxeNearby), pickupAxe);
+		killingTheSpirit.addStep(new Conditions(inDungeon, bronzeOrIronAxe), attemptToCutDramen);
+		killingTheSpirit.addStep(new Conditions(inDungeon, axeNearby), pickupAxe);
 		killingTheSpirit.addStep(inDungeon, getAxe);
 		killingTheSpirit.addStep(onEntrana, goDownHole);
 
@@ -88,8 +89,8 @@ public class LostCity extends BasicQuestHelper
 		finishQuest.addStep(dramenStaff, enterZanaris);
 		finishQuest.addStep(new Conditions(inDungeon, dramenBranch), teleportAway);
 		finishQuest.addStep(dramenBranch, craftBranch);
-		finishQuest.addStep(new Conditions(inDungeon, bronzeAxe), cutDramenBranch);
-		finishQuest.addStep(new Conditions(inDungeon, bronzeAxeNearby), pickupAxe);
+		finishQuest.addStep(new Conditions(inDungeon, bronzeOrIronAxe), cutDramenBranch);
+		finishQuest.addStep(new Conditions(inDungeon, axeNearby), pickupAxe);
 		finishQuest.addStep(inDungeon, getAxe);
 		finishQuest.addStep(onEntrana, goDownHole);
 
@@ -106,7 +107,8 @@ public class LostCity extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
-		bronzeAxe = new ItemRequirement("Bronze axe", ItemID.BRONZE_AXE).isNotConsumed();
+		bronzeOrIronAxe = new ItemRequirement("Bronze or Iron axe", ItemID.BRONZE_AXE).isNotConsumed();
+		bronzeOrIronAxe.addAlternates(ItemID.IRON_AXE);
 		axe = new ItemRequirement("Any axe", ItemID.BRONZE_AXE).isNotConsumed();
 		axe.addAlternates(ItemCollections.AXES);
 		combatGear = new ItemRequirement("Runes, or a way of dealing damage which you can smuggle onto Entrana. Runes for Crumble Undead (level 39 Magic) are best", -1, -1).isNotConsumed();
@@ -130,7 +132,7 @@ public class LostCity extends BasicQuestHelper
 		onEntrana = new ZoneRequirement(entrana);
 		inDungeon = new ZoneRequirement(entranaDungeon);
 		shamusNearby = new NpcCondition(NpcID.ZANARISLEPRECHAUN);
-		bronzeAxeNearby = new ItemOnTileRequirement(ItemID.BRONZE_AXE);
+		axeNearby = new Conditions(LogicType.OR, new ItemOnTileRequirement(ItemID.BRONZE_AXE), new ItemOnTileRequirement(ItemID.IRON_AXE));
 		dramenSpiritNearby = new NpcCondition(NpcID.TREE_SPIRIT);
 	}
 
@@ -148,9 +150,9 @@ public class LostCity extends BasicQuestHelper
 		goToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3047, 3236, 0), "Bank all weapons and armour you have (including the axe), and go to Port Sarim to get a boat to Entrana.", combatGear);
 		goDownHole = new ObjectStep(this, ObjectID.ENTRANALADDERTOP, new WorldPoint(2820, 3374, 0), "Climb down the ladder on the north side of the island. Once you go down, you can only escape via teleport.");
 		goDownHole.addDialogStep("Well that is a risk I will have to take.");
-		getAxe = new DetailedQuestStep(this, new WorldPoint(2843, 9760, 0), "Kill zombies until one drops a bronze axe.");
-		pickupAxe = new DetailedQuestStep(this, "Pick up the bronze axe", bronzeAxe);
-		attemptToCutDramen = new ObjectStep(this, ObjectID.DRAMENTREE, new WorldPoint(2861, 9735, 0), "Attempt to cut a branch from the Dramen tree. Be prepared for a Tree Spirit (level 101) to appear, which you can safespot behind nearby fungus.", bronzeAxe);
+		getAxe = new DetailedQuestStep(this, new WorldPoint(2843, 9760, 0), "Kill zombies until one drops an axe.");
+		pickupAxe = new DetailedQuestStep(this, "Pick up the axe", bronzeOrIronAxe);
+		attemptToCutDramen = new ObjectStep(this, ObjectID.DRAMENTREE, new WorldPoint(2861, 9735, 0), "Attempt to cut a branch from the Dramen tree. Be prepared for a Tree Spirit (level 101) to appear, which you can safespot behind nearby fungus.", bronzeOrIronAxe);
 		killDramenSpirit = new NpcStep(this, NpcID.TREE_SPIRIT, new WorldPoint(2859, 9734, 0), "Kill the Tree Spirit. They can be safespotted behind nearby fungi to the east.");
 		cutDramenBranch = new ObjectStep(this, ObjectID.DRAMENTREE, new WorldPoint(2861, 9735, 0), "Cut at least one branch from the Dramen tree. It's recommended you cut at least 4 branches so you don't have to return in future quests.");
 		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches, preferably to Lumbridge.", dramenBranch);

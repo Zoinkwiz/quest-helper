@@ -36,7 +36,15 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -44,33 +52,61 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class JunglePotion extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement grimySnakeWeed, snakeWeed, grimyArdrigal, ardrigal, grimySitoFoil, sitoFoil, grimyVolenciaMoss, volenciaMoss,
-		roguesPurse, grimyRoguesPurse;
+	// Recommended items
+	ItemRequirement food;
+	ItemRequirement antipoison;
+	ItemRequirement karaTele;
 
-	QuestStep startQuest, finishQuest;
+	// Mid-quest item requirements
+	ItemRequirement grimySnakeWeed;
+	ItemRequirement snakeWeed;
+	ItemRequirement grimyArdrigal;
+	ItemRequirement ardrigal;
+	ItemRequirement grimySitoFoil;
+	ItemRequirement sitoFoil;
+	ItemRequirement grimyVolenciaMoss;
+	ItemRequirement volenciaMoss;
+	ItemRequirement roguesPurse;
+	ItemRequirement grimyRoguesPurse;
 
-	ObjectStep getSnakeWeed, getArdrigal, getSitoFoil, getVolenciaMoss, enterCave, getRoguePurseHerb;
+	// Zones
+	Zone undergroundZone;
 
-	ConditionalStep cleanAndReturnSnakeWeed, cleanAndReturnArdrigal, cleanAndReturnSitoFoil, cleanAndReturnVolenciaMoss,
-		getRoguesPurse, cleanAndReturnRoguesPurse;
-
+	// Miscellaneous requirements
 	ZoneRequirement isUnderground;
 
+	// Steps
+	NpcStep startQuest;
+	ObjectStep getSnakeWeed;
+	ConditionalStep cleanAndReturnSnakeWeed;
+	ObjectStep getArdrigal;
+	ConditionalStep cleanAndReturnArdrigal;
+	ObjectStep getSitoFoil;
+	ConditionalStep cleanAndReturnSitoFoil;
+	ObjectStep getVolenciaMoss;
+	ConditionalStep cleanAndReturnVolenciaMoss;
+	ObjectStep enterCave;
+	ObjectStep getRoguePurseHerb;
+	ConditionalStep getRoguesPurse;
+	ConditionalStep cleanAndReturnRoguesPurse;
+	NpcStep finishQuest;
+
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		return getSteps();
+		undergroundZone = new Zone(new WorldPoint(2824, 9462, 0), new WorldPoint(2883, 9533, 0));
 	}
 
 	@Override
 	protected void setupRequirements()
 	{
+		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
+		karaTele = new ItemRequirement("Teleport to Karamja (Glory/house teleport)", ItemID.NZONE_TELETAB_BRIMHAVEN);
+		karaTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
+
 		grimySnakeWeed = new ItemRequirement("Grimy Snake Weed", ItemID.UNIDENTIFIED_SNAKE_WEED);
 		grimySnakeWeed.setHighlightInInventory(true);
 		snakeWeed = new ItemRequirement("Snake Weed", ItemID.SNAKE_WEED);
@@ -90,116 +126,53 @@ public class JunglePotion extends BasicQuestHelper
 		grimyRoguesPurse = new ItemRequirement("Grimy Rogues Purse", ItemID.UNIDENTIFIED_ROGUES_PURSE);
 		grimyRoguesPurse.setHighlightInInventory(true);
 		roguesPurse = new ItemRequirement("Rogues Purse", ItemID.ROGUES_PURSE);
-	}
 
-	@Override
-	protected void setupZones()
-	{
-		//2824,9462,0
-		//2883, 9533, 0
-		Zone undergroundZone = new Zone(new WorldPoint(2824, 9462, 0), new WorldPoint(2883, 9533, 0));
 		isUnderground = new ZoneRequirement(undergroundZone);
-	}
-
-	private Map<Integer, QuestStep> getSteps()
-	{
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, startQuestStep());
-		steps.put(1, getSnakeWeed());
-		steps.put(2, returnSnakeWeed());
-		steps.put(3, getArdrigal());
-		steps.put(4, returnArdigal());
-		steps.put(5, getSitoFoil());
-		steps.put(6, returnSitoFoil());
-		steps.put(7, getVolenciaMoss());
-		steps.put(8, returnVolenciaMoss());
-		steps.put(9, getRoguesPurse());
-		steps.put(10, returnRoguesPurse());
-		steps.put(11, finishQuestStep());
-		return steps;
-	}
-
-	private QuestStep startQuestStep()
-	{
-		startQuest = talkToTrufitus("Talk to Trufitus in Tai Bwo Wannai on Karamja.");
-		startQuest.addDialogSteps("It's a nice village, where is everyone?");
-		startQuest.addDialogSteps("Me? How can I help?");
-		startQuest.addDialogSteps("It sounds like just the challenge for me.");
-		return startQuest;
-	}
-
-	private QuestStep returnArdigal()
-	{
-		return cleanAndReturnArdrigal = getReturnHerbStep("Ardrigal", grimyArdrigal, ardrigal);
-	}
-
-	private QuestStep returnSnakeWeed()
-	{
-		return cleanAndReturnSnakeWeed = getReturnHerbStep("Snake Weed", grimySnakeWeed, snakeWeed);
-	}
-
-	private QuestStep returnSitoFoil()
-	{
-		return cleanAndReturnSitoFoil = getReturnHerbStep("Sito Foil", grimySitoFoil, sitoFoil);
-	}
-
-	private QuestStep returnVolenciaMoss()
-	{
-		return cleanAndReturnVolenciaMoss = getReturnHerbStep("Volencia Moss", grimyVolenciaMoss, volenciaMoss);
-	}
-
-	private QuestStep returnRoguesPurse()
-	{
-		cleanAndReturnRoguesPurse = getReturnHerbStep("Rogues Purse", grimyRoguesPurse, roguesPurse);
-		cleanAndReturnRoguesPurse.addStep(isUnderground, new ObjectStep(this,
-			ObjectID.JP_CAVEROCKSOUT, new WorldPoint(2830, 9522, 0), "Climb out of the cave."));
-		return cleanAndReturnRoguesPurse;
 	}
 
 	private ConditionalStep getReturnHerbStep(String herbName, ItemRequirement grimyHerb, ItemRequirement cleanHerb)
 	{
 		NpcStep returnHerb = talkToTrufitus("", cleanHerb);
 		returnHerb.addDialogSteps("Of course!");
-		DetailedQuestStep cleanGrimyHerb = new DetailedQuestStep(this, "", grimyHerb);
+		var cleanGrimyHerb = new DetailedQuestStep(this, "", grimyHerb);
 
-		ConditionalStep cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return the " + herbName + " to Trufitus.");
+		var cleanAndReturnHerb = new ConditionalStep(this, cleanGrimyHerb, "Clean and return the " + herbName + " to Trufitus.");
 		cleanAndReturnHerb.addStep(cleanHerb, returnHerb);
 		return cleanAndReturnHerb;
 	}
 
-	private QuestStep getSnakeWeed()
+	private NpcStep talkToTrufitus(String text, Requirement... requirements)
 	{
-		getSnakeWeed = new ObjectStep(this, ObjectID.SNAKE_VINE_FULL, new WorldPoint(2763, 3044, 0),
-			"Search a marshy jungle vine south of Tai Bwo Wannai for some snake weed.");
+		return new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0), text, requirements);
+	}
+
+	private void setupSteps()
+	{
+		startQuest = talkToTrufitus("Talk to Trufitus in Tai Bwo Wannai on Karamja.");
+		startQuest.addDialogStep("It's a nice village, where is everyone?");
+		startQuest.addDialogStep("Me? How can I help?");
+		startQuest.addDialogStep("It sounds like just the challenge for me.");
+		startQuest.addDialogStep("Yes.");
+
+		getSnakeWeed = new ObjectStep(this, ObjectID.SNAKE_VINE_FULL, new WorldPoint(2763, 3044, 0), "Search a marshy jungle vine south of Tai Bwo Wannai for some snake weed.");
 		getSnakeWeed.addText("If you want to do Zogre Flesh Eaters or Legends' Quest grab one for each as you will need them later.");
-		return getSnakeWeed;
-	}
 
-	private QuestStep getArdrigal()
-	{
-		getArdrigal = new ObjectStep(this, ObjectID.ARDRIGAL_PALM_FULL, new WorldPoint(2871, 3116, 0),
-			"Search the palm trees north east of Tai Bwo Wannai for an Ardrigal herb.");
+		cleanAndReturnSnakeWeed = getReturnHerbStep("Snake Weed", grimySnakeWeed, snakeWeed);
+
+		getArdrigal = new ObjectStep(this, ObjectID.ARDRIGAL_PALM_FULL, new WorldPoint(2871, 3116, 0), "Search the palm trees north east of Tai Bwo Wannai for an Ardrigal herb.");
 		getArdrigal.addText("If you want to do Legends' Quest grab one extra as you will need it later.");
-		return getArdrigal;
-	}
 
-	private QuestStep getSitoFoil()
-	{
-		return getSitoFoil = new ObjectStep(this, ObjectID.SITO_SOIL_FULL, new WorldPoint(2791, 3047, 0),
-			"Search the scorched earth in the south of Tai Bwo Wannai for a Sito Foil herb.");
-	}
+		cleanAndReturnArdrigal = getReturnHerbStep("Ardrigal", grimyArdrigal, ardrigal);
 
-	private QuestStep getVolenciaMoss()
-	{
-		getVolenciaMoss = new ObjectStep(this, ObjectID.VOLENCIA_MOSS_ROCK_FULL, new WorldPoint(2851, 3036, 0),
-			"Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
+		getSitoFoil = new ObjectStep(this, ObjectID.SITO_SOIL_FULL, new WorldPoint(2791, 3047, 0), "Search the scorched earth in the south of Tai Bwo Wannai for a Sito Foil herb.");
+
+		cleanAndReturnSitoFoil = getReturnHerbStep("Sito Foil", grimySitoFoil, sitoFoil);
+
+		getVolenciaMoss = new ObjectStep(this, ObjectID.VOLENCIA_MOSS_ROCK_FULL, new WorldPoint(2851, 3036, 0), "Search the rock for a Volencia Moss herb at the mine south east of Tai Bwo Wannai.");
 		getVolenciaMoss.addText("If you plan on doing Fairy Tale I then take an extra.");
-		return getVolenciaMoss;
-	}
 
-	private QuestStep getRoguesPurse()
-	{
+		cleanAndReturnVolenciaMoss = getReturnHerbStep("Volencia Moss", grimyVolenciaMoss, volenciaMoss);
+
 		enterCave = new ObjectStep(this, ObjectID.POTHOLE_CAVE_ENTRANCE, new WorldPoint(2825, 3119, 0),
 			"Enter the cave to the north by clicking on the rocks.");
 		enterCave.addDialogStep("Yes, I'll enter the cave.");
@@ -212,51 +185,62 @@ public class JunglePotion extends BasicQuestHelper
 		getRoguesPurse.addStep(isUnderground, getRoguePurseHerb);
 
 		getRoguesPurse.addSubSteps(enterCave);
-		return getRoguesPurse;
-	}
 
-	private QuestStep finishQuestStep()
-	{
+		cleanAndReturnRoguesPurse = getReturnHerbStep("Rogues Purse", grimyRoguesPurse, roguesPurse);
+		cleanAndReturnRoguesPurse.addStep(isUnderground, new ObjectStep(this, ObjectID.JP_CAVEROCKSOUT, new WorldPoint(2830, 9522, 0), "Climb out of the cave."));
+
 		finishQuest = talkToTrufitus("Talk to Trufitus to finish the quest.");
-		return finishQuest;
-	}
-
-	private NpcStep talkToTrufitus(String text, Requirement... requirements)
-	{
-		return new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0), text, requirements);
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Survive against level 53 Jogres and level 46 Harpie Bug Swarms.");
-		return reqs;
-	}
+		initializeRequirements();
+		setupSteps();
 
-	//Recommended
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		ItemRequirement food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		var steps = new HashMap<Integer, QuestStep>();
 
-		reqs.add(food);
-		reqs.add(new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS));
-		ItemRequirement karaTele = new ItemRequirement("Teleport to Karamja (Glory/house teleport)",
-			ItemID.NZONE_TELETAB_BRIMHAVEN);
-		karaTele.addAlternates(ItemCollections.AMULET_OF_GLORIES);
-		reqs.add(karaTele);
-		return reqs;
+		steps.put(0, startQuest);
+		steps.put(1, getSnakeWeed);
+		steps.put(2, cleanAndReturnSnakeWeed);
+		steps.put(3, getArdrigal);
+		steps.put(4, cleanAndReturnArdrigal);
+		steps.put(5, getSitoFoil);
+		steps.put(6, cleanAndReturnSitoFoil);
+		steps.put(7, getVolenciaMoss);
+		steps.put(8, cleanAndReturnVolenciaMoss);
+		steps.put(9, getRoguesPurse);
+		steps.put(10, cleanAndReturnRoguesPurse);
+		steps.put(11, finishQuest);
+
+		return steps;
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.HERBLORE, 3, false));
-		return req;
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED),
+			new SkillRequirement(Skill.HERBLORE, 3, false)
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of(
+			food,
+			antipoison,
+			karaTele
+		);
+	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return List.of(
+			"Survive against level 53 Jogres and level 46 Harpie Bug Swarms."
+		);
 	}
 
 	@Override
@@ -268,38 +252,47 @@ public class JunglePotion extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.HERBLORE, 775));
+		return List.of(
+			new ExperienceReward(Skill.HERBLORE, 775)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> steps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		PanelDetails startingPanel = new PanelDetails("Starting quest",
-			Collections.singletonList(startQuest));
-		steps.add(startingPanel);
+		sections.add(new PanelDetails("Starting off", List.of(
+			startQuest
+		)));
 
-		PanelDetails snakeWeedPanel = new PanelDetails("Snake Weed",
-			Arrays.asList(getSnakeWeed, cleanAndReturnSnakeWeed));
-		steps.add(snakeWeedPanel);
+		sections.add(new PanelDetails("Snake Weed", List.of(
+			getSnakeWeed,
+			cleanAndReturnSnakeWeed
+		)));
 
-		PanelDetails ardrigalPanel = new PanelDetails("Ardrigal",
-			Arrays.asList(getArdrigal, cleanAndReturnArdrigal));
-		steps.add(ardrigalPanel);
+		sections.add(new PanelDetails("Ardrigal", List.of(
+			getArdrigal,
+			cleanAndReturnArdrigal
+		)));
 
-		PanelDetails sitoFoilpanel = new PanelDetails("Sito Foil",
-			Arrays.asList(getSitoFoil, cleanAndReturnSitoFoil));
-		steps.add(sitoFoilpanel);
+		sections.add(new PanelDetails("Sito Foil", List.of(
+			getSitoFoil,
+			cleanAndReturnSitoFoil
+		)));
 
-		PanelDetails volenciaMossPanel = new PanelDetails("Volencia Moss",
-			Arrays.asList(getVolenciaMoss, cleanAndReturnVolenciaMoss));
-		steps.add(volenciaMossPanel);
+		sections.add(new PanelDetails("Volencia Moss", List.of(
+			getVolenciaMoss,
+			cleanAndReturnVolenciaMoss
+		)));
 
-		PanelDetails roguesPursePanel = new PanelDetails("Rogues Purse",
-			Arrays.asList(enterCave, getRoguePurseHerb, cleanAndReturnRoguesPurse));
-		steps.add(roguesPursePanel);
+		sections.add(new PanelDetails("Rogues Purse", List.of(
+			enterCave,
+			getRoguePurseHerb,
+			cleanAndReturnRoguesPurse,
+			finishQuest
+		)));
 
-		return steps;
+		return sections;
 	}
 }

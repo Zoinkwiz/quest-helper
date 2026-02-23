@@ -29,6 +29,7 @@ import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.util.Text;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class DialogRequirement extends SimpleRequirement
 		this.text.addAll(Arrays.asList(text));
 		this.mustBeActive = false;
 	}
+
 	public DialogRequirement(String talkerName, String text, boolean mustBeActive)
 	{
 		this.talkerName = talkerName;
@@ -79,6 +81,18 @@ public class DialogRequirement extends SimpleRequirement
 	public boolean check(Client client)
 	{
 		return hasSeenDialog;
+	}
+
+	public void validateActiveWidget(Client client)
+	{
+		if (!mustBeActive) return;
+
+		var chatModal = client.getWidget(InterfaceID.Chatbox.CHATMODAL);
+
+		if (chatModal == null || chatModal.isHidden())
+		{
+			hasSeenDialog = false;
+		}
 	}
 
 	public void validateCondition(ChatMessage chatMessage)

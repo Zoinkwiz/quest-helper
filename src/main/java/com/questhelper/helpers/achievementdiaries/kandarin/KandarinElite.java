@@ -147,7 +147,7 @@ public class KandarinElite extends ComplexStateQuestHelper
 		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(notPickDwarf).isNotConsumed();
 		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPickDwarf).isNotConsumed();
 		compost = new ItemRequirement("Any compost", ItemCollections.COMPOST).showConditioned(notPickDwarf);
-		harpoon = new ItemRequirement("Harpoon", ItemID.HARPOON).showConditioned(not5Shark).isNotConsumed();
+		harpoon = new ItemRequirement("Harpoon", ItemCollections.HARPOONS).showConditioned(not5Shark).isNotConsumed();
 		cookingGaunt = new ItemRequirement("Cooking gauntlets", ItemID.GAUNTLETS_OF_COOKING).showConditioned(not5Shark).isNotConsumed();
 		stamPot = new ItemRequirement("Stamina potion (2)", ItemID._2DOSESTAMINA).showConditioned(notStamMix);
 		caviar = new ItemRequirement("Caviar", ItemID.BRUT_CAVIAR).showConditioned(notStamMix);

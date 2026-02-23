@@ -293,7 +293,6 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.AGILITY, 10, true));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 15, true));
 		reqs.add(new SkillRequirement(Skill.FISHING, 15, true));
 		reqs.add(new SkillRequirement(Skill.MINING, 15, true));
@@ -336,8 +335,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails draynorRooftopsSteps = new PanelDetails("Draynor Rooftops", Collections.singletonList(drayAgi),
-			new SkillRequirement(Skill.AGILITY, 10, true));
+		PanelDetails draynorRooftopsSteps = new PanelDetails("Draynor Rooftops", Collections.singletonList(drayAgi));
 		draynorRooftopsSteps.setDisplayCondition(notDrayAgi);
 		draynorRooftopsSteps.setLockingStep(drayAgiTask);
 		allSteps.add(draynorRooftopsSteps);

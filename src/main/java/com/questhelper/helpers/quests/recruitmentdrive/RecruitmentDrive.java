@@ -27,13 +27,14 @@ package com.questhelper.helpers.quests.recruitmentdrive;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ConfigRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.NoItemRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.ItemSlots;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -42,7 +43,16 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -51,89 +61,120 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class RecruitmentDrive extends BasicQuestHelper
 {
-	private NoItemRequirement noItemRequirement;
-	private ZoneRequirement isFirstFloorCastle, isSecondFloorCastle,
-		isInSirTinleysRoom, isInMsHynnRoom, isInSirKuamsRoom,
-		isInSirSpishyusRoom, isInSirRenItchood, isInladyTableRoom;
+	// Mid-quest requirements
+	NoItemRequirement noItemRequirement;
 
-	private ConditionalStep conditionalTalkToSirAmikVarze;
+	// Zones
+	Zone firstFloorZone;
+	Zone secondFloorZone;
+	Zone missCheeversZone;
+	Zone sirTinleyRoomZone;
+	Zone msHynnRoomZone;
+	Zone sirKuamRoomZone;
+	Zone sirSphishyusZone;
+	Zone sirRenItchoodZone;
+	Zone ladyTableZone;
 
-	private QuestStep talkToSirTiffy;
+	// Miscellaneous requirements
+	ZoneRequirement isFirstFloorCastle;
+	ZoneRequirement isSecondFloorCastle;
+	ZoneRequirement isInMissCheeversRoom;
+	ZoneRequirement isInSirTinleysRoom;
+	ZoneRequirement isInMsHynnRoom;
+	ZoneRequirement isInSirKuamsRoom;
+	ZoneRequirement isInSirSpishyusRoom;
+	ZoneRequirement isInSirRenItchood;
+	ZoneRequirement isInladyTableRoom;
 
-	//Sir Tinsley steps
-	QuestStep doNothingStep, talkToSirTinley, leaveSirTinleyRoom;
+	// Steps
+	ConditionalStep cTalkToSirAmikVarze;
+	ObjectStep climbBottomSteps;
+	ObjectStep climbSecondSteps;
+	NpcStep talkToSirAmikVarze;
+
+	ObjectStep climbDownSecondFloorStaircase;
+	ObjectStep climbDownfirstFloorStaircase;
+	QuestStep talkToSirTiffy;
+
+	// Sir Tinley steps
+	PuzzleWrapperStep talkToSirTinley;
+	PuzzleWrapperStep doNothingStep;
+	ObjectStep leaveSirTinleyRoom;
+	ConditionalStep sirTinleyStep;
 
 	// Sir Kuam Ferentse steps
-	QuestStep talkToSirKuam, killSirLeye, leaveSirKuamRoom;
+	NpcStep talkToSirKuam;
+	NpcStep killSirLeye;
+	PuzzleWrapperStep pwKillSirLeye;
+	ObjectStep leaveSirKuamRoom;
+	ConditionalStep sirKuamStep;
 
 	// Sir Spishyus
-	QuestStep moveChickenOnRightToLeft, moveFoxOnRightToLeft, moveChickenOnLeftToRight,
-		moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain, finishedSpishyusRoom;
+	QuestStep moveChickenOnRightToLeft;
+	QuestStep moveFoxOnRightToLeft;
+	QuestStep moveChickenOnLeftToRight;
+	QuestStep moveGrainOnRightToLeft;
+	QuestStep moveChickenOnRightToLeftAgain;
+	QuestStep leaveSirSpishyusRoom;
+	ConditionalStep sirSpishyusPuzzle;
+	ConditionalStep cSirSpishyus;
+	PuzzleWrapperStep pwSirSpishyusStep;
 
 	// Sir Ren
 	SirRenItchoodStep sirRenStep;
 
 	// Lady Table
 	LadyTableStep ladyTableStep;
+	PuzzleWrapperStep pwLadyTableStep;
+	ObjectStep leaveLadyTableRoom;
+	ConditionalStep cLadyTableStep;
 
 	// Ms Hynn
-	private QuestStep talkToMsHynnTerprett;
-	private MsHynnAnswerDialogQuizStep msHynnDialogQuiz;
+	MsHynnAnswerDialogQuizStep msHynnDialogQuiz;
+	PuzzleWrapperStep pwMsHynnTerprett;
+	ObjectStep leaveMsHynnTerprettRoom;
+	ConditionalStep msHynnTerprettStep;
 
-	// Ms Cheeves
-	private MsCheevesSetup msCheevesSetup;
+	// Miss Cheevers
+	MissCheeversStep missCheeversStep;
+	PuzzleWrapperStep pwMissCheeversStep;
+	ObjectStep leaveMissCheeversRoom;
+	ConditionalStep cMissCheevers;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
+		firstFloorZone = new Zone(new WorldPoint(2954, 3335, 1),
+			new WorldPoint(2966, 3343, 1));
+		secondFloorZone = new Zone(new WorldPoint(2955, 3334, 2),
+			new WorldPoint(2964, 3342, 2));
 
-		return getSteps();
-	}
-
-	private Map<Integer, QuestStep> getSteps()
-	{
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, TalkToSirAmikVarze());
-		steps.put(1, TalkToSirTiffyInFaladorPark());
-
-		return steps;
+		missCheeversZone = new Zone(new WorldPoint(2466, 4936, 0),
+			new WorldPoint(2480, 4947, 0));
+		sirTinleyRoomZone = new Zone(new WorldPoint(2471, 4954, 0),
+			new WorldPoint(2481, 4960, 0));
+		msHynnRoomZone = new Zone(new WorldPoint(2446, 4934, 0),
+			new WorldPoint(2457, 4946, 0));
+		sirKuamRoomZone = new Zone(new WorldPoint(2453, 4958, 0),
+			new WorldPoint(2466, 4970, 0));
+		sirSphishyusZone = new Zone(new WorldPoint(2469, 4968, 0),
+			new WorldPoint(2492, 4980, 0));
+		sirRenItchoodZone = new Zone(new WorldPoint(2438, 4952, 0),
+			new WorldPoint(2448, 4962, 0));
+		ladyTableZone = new Zone(new WorldPoint(2445, 4974, 0),
+			new WorldPoint(2461, 4987, 0));
 	}
 
 	@Override
 	protected void setupRequirements()
 	{
 		noItemRequirement = new NoItemRequirement("No items or equipment carried", ItemSlots.ANY_EQUIPPED_AND_INVENTORY);
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		Zone firstFloorZone = new Zone(new WorldPoint(2954, 3335, 1),
-			new WorldPoint(2966, 3343, 1));
-		Zone secondFloorZone = new Zone(new WorldPoint(2955, 3334, 2),
-			new WorldPoint(2964, 3342, 2));
-
-		Zone sirTinleyRoomZone = new Zone(new WorldPoint(2471, 4954, 0),
-			new WorldPoint(2481, 4960, 0));
-		Zone msHynnRoomZone = new Zone(new WorldPoint(2446, 4934, 0),
-			new WorldPoint(2457, 4946, 0));
-		Zone sirKuamRoomZone = new Zone(new WorldPoint(2453, 4958, 0),
-			new WorldPoint(2466, 4970, 0));
-		Zone sirSphishyusZone = new Zone(new WorldPoint(2469, 4968, 0),
-			new WorldPoint(2492, 4980, 0));
-		Zone sirRenItchoodZone = new Zone(new WorldPoint(2438, 4952, 0),
-			new WorldPoint(2448, 4962, 0));
-		Zone ladyTableZone = new Zone(new WorldPoint(2445, 4974, 0),
-			new WorldPoint(2461, 4987, 0));
 
 		isFirstFloorCastle = new ZoneRequirement(firstFloorZone);
 		isSecondFloorCastle = new ZoneRequirement(secondFloorZone);
+		isInMissCheeversRoom = new ZoneRequirement(missCheeversZone);
 		isInSirTinleysRoom = new ZoneRequirement(sirTinleyRoomZone);
 		isInMsHynnRoom = new ZoneRequirement(msHynnRoomZone);
 		isInSirKuamsRoom = new ZoneRequirement(sirKuamRoomZone);
@@ -142,144 +183,258 @@ public class RecruitmentDrive extends BasicQuestHelper
 		isInladyTableRoom = new ZoneRequirement(ladyTableZone);
 	}
 
-	private QuestStep TalkToSirTiffyInFaladorPark()
+	public void setupSteps()
 	{
-		WorldPoint firstFloorStairsPosition = new WorldPoint(2955, 3338, 1);
-		WorldPoint secondFloorStairsPosition = new WorldPoint(2960, 3339, 2);
+		climbBottomSteps = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2955, 3339, 0),
+			"Climb up the stairs to the first floor on the Falador Castle.");
 
-		ObjectStep climbDownSecondFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP,
-			secondFloorStairsPosition, "Climb down the stairs from the second floor.");
-		ObjectStep climbDownfirstFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP,
-			firstFloorStairsPosition, "Climb down the stairs from the first floor.");
+		climbSecondSteps = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, new WorldPoint(2961, 3339, 1),
+			"Climb up the stairs to talk to Sir Amik Varze.");
+		talkToSirAmikVarze = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "");
+		talkToSirAmikVarze.addDialogStep("Yes.");
 
-		talkToSirTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY,
-			"Talk to Sir Tiffy Cashien in Falador Park.", noItemRequirement);
+		climbDownSecondFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP, new WorldPoint(2960, 3339, 2), "Climb down the stairs from the second floor.");
+		climbDownfirstFloorStaircase = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRSTOP, new WorldPoint(2955, 3338, 1), "Climb down the stairs from the first floor.");
 
-		ConditionalStep conditionalTalkToSirTiffy = new ConditionalStep(this, talkToSirTiffy);
-		conditionalTalkToSirTiffy.addStep(isSecondFloorCastle, climbDownSecondFloorStaircase);
-		conditionalTalkToSirTiffy.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
+		talkToSirTiffy = new NpcStep(this, NpcID.RD_TELEPORTER_GUY, new WorldPoint(2997, 3373, 0), "Talk to Sir Tiffy Cashien in Falador Park.", noItemRequirement);
 		talkToSirTiffy.addDialogStep("Yes, let's go!");
-		talkToSirTiffy.addSubSteps(climbDownfirstFloorStaircase,
-			climbDownSecondFloorStaircase);
-		getMsCheeves();
+		talkToSirTiffy.addSubSteps(climbDownfirstFloorStaircase, climbDownSecondFloorStaircase);
+
+		// Testing grounds
+		// Miss Cheevers
+		{
+			missCheeversStep = new MissCheeversStep(this);
+			pwMissCheeversStep = missCheeversStep.puzzleWrapStepWithDefaultText("Solve Miss Cheevers' puzzle.");
+			pwMissCheeversStep.conditionToHideInSidebar(new ConfigRequirement(this.getConfig()::solvePuzzles));
+
+			leaveMissCheeversRoom = new ObjectStep(this, ObjectID.RD_ROOM6_EXITDOOR, new WorldPoint(2478, 4940, 0), "Leave the room by the second door to enter the portal.");
+
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM6_COMPLETE, 1);
+
+			cMissCheevers = new ConditionalStep(this, pwMissCheeversStep);
+			cMissCheevers.addStep(and(missCheeversStep.hasFirstDoorOpen, missCheeversStep.bronzeKey, finishedRoom), leaveMissCheeversRoom);
+		}
+
+		// Sir Tinley
+		{
+			talkToSirTinley = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_4, "Talk to Sir Tinley. Once you have pressed continue do not do anything or you will fail.").puzzleWrapStepWithDefaultText("Talk to Sir Tinley and solve his puzzle.");
+			doNothingStep = new DetailedQuestStep(this, "Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.").puzzleWrapStepWithDefaultText("Talk to Sir Tinley and solve his puzzle.").withNoHelpHiddenInSidebar(true);
+			leaveSirTinleyRoom = new ObjectStep(this, ObjectID.RD_ROOM4_EXITDOOR, "Leave through the portal to continue.");
+
+			var waitForCondition = new VarbitRequirement(VarbitID.RD_TEMPLOCK_2, 1, Operation.GREATER_EQUAL);
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM4_COMPLETE, 1);
+
+			talkToSirTinley.addSubSteps(doNothingStep);
+
+			sirTinleyStep = new ConditionalStep(this, talkToSirTinley);
+			sirTinleyStep.addStep(finishedRoom, leaveSirTinleyRoom);
+			sirTinleyStep.addStep(waitForCondition, doNothingStep);
+		}
+
+		// Ms Hynn Terprett
+		{
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM7_COMPLETE, 1);
+
+			msHynnDialogQuiz = new MsHynnAnswerDialogQuizStep(this);
+			pwMsHynnTerprett = msHynnDialogQuiz.puzzleWrapStepWithDefaultText("Talk to Ms Hynn Terprett and answer the riddle.");
+
+			leaveMsHynnTerprettRoom = new ObjectStep(this, ObjectID.RD_ROOM7_EXITDOOR, "Leave through the door to enter the portal and continue.");
+
+			msHynnTerprettStep = new ConditionalStep(this, pwMsHynnTerprett);
+			msHynnTerprettStep.addStep(finishedRoom, leaveMsHynnTerprettRoom);
+		}
+
+		// Sir Ren Itchood
+		{
+			var talkToSirRenItchood = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_5, "Talk to Sir Ren Itchood to receive the clue.");
+			talkToSirRenItchood.addDialogSteps("Can I have the clue for the door?");
+
+			sirRenStep = new SirRenItchoodStep(this, talkToSirRenItchood);
+		}
+
+		// Lady Table
+		{
+			ladyTableStep = new LadyTableStep(this);
+			pwLadyTableStep = ladyTableStep.puzzleWrapStepWithDefaultText("Solve Lady Table's puzzle.");
+
+			leaveLadyTableRoom = new ObjectStep(this, ObjectID.RD_ROOM2_EXITDOOR, "Leave through the door to enter the portal and continue.");
+
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM2_COMPLETE, 1);
+
+			cLadyTableStep = new ConditionalStep(this, pwLadyTableStep);
+			cLadyTableStep.addStep(finishedRoom, leaveLadyTableRoom);
+		}
+
+		// Sir Spishyus
+		{
+			var chickenOnLeftPoint = new WorldPoint(2473, 4970, 0);
+			var chickenOnRightPoint = new WorldPoint(2487, 4974, 0);
+			var foxOnRightPoint = new WorldPoint(2485, 4974, 0);
+			var grainOnRightPoint = new WorldPoint(2486, 4974, 0);
+
+			var foxOnRightSide = new VarbitRequirement(VarbitID.RD_FOXLEFT, 0);
+			var foxOnLeftSide = new VarbitRequirement(VarbitID.RD_FOXRIGHT, 1);
+			var foxNotOnRightSide = new VarbitRequirement(VarbitID.RD_FOXLEFT, 1);
+			var foxNotOnLeftSide = new VarbitRequirement(VarbitID.RD_FOXRIGHT, 0);
+			var chickenOnRightSide = new VarbitRequirement(VarbitID.RD_CHICKLEFT, 0);
+			var chickenOnLeftSide = new VarbitRequirement(VarbitID.RD_CHICKRIGHT, 1);
+			var chickenNotOnRightSide = new VarbitRequirement(VarbitID.RD_CHICKLEFT, 1);
+			var chickenNotOnLeftSide = new VarbitRequirement(VarbitID.RD_CHICKRIGHT, 0);
+			var grainOnRightSide = new VarbitRequirement(VarbitID.RD_GRAINLEFT, 0);
+			var grainOnLeftSide = new VarbitRequirement(VarbitID.RD_GRAINRIGHT, 1);
+			var grainNotOnRightSide = new VarbitRequirement(VarbitID.RD_GRAINLEFT, 1);
+			var grainNotOnLeftSide = new VarbitRequirement(VarbitID.RD_GRAINRIGHT, 0);
+			var finishedSpishyus = new VarbitRequirement(VarbitID.RD_ROOM1_COMPLETE, 1);
+
+			var westSide = new Zone(new WorldPoint(2472, 4976, 0), new WorldPoint(2479, 4968, 0));
+			var playerOnWestSide = new ZoneRequirement(westSide);
+			var playerOnEastSide = not(playerOnWestSide);
+
+			var foxPickedUp = and(foxNotOnLeftSide, foxNotOnRightSide);
+			var chickenPickedUp = and(chickenNotOnRightSide, chickenNotOnLeftSide);
+			var grainPickedUp = and(grainNotOnLeftSide, grainNotOnRightSide);
+
+			moveChickenOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true)).puzzleWrapStep(true);
+
+			moveFoxOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_FOX_MULTI, foxOnRightPoint, getSpishyusPickupText("Fox", true)).puzzleWrapStep(true);
+
+			var moveChickenToLeft = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Chicken", false));
+			moveChickenToLeft.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnRightToLeft).getSolvingStep().addSubSteps(moveChickenToLeft);
+
+			var moveFoxToWest = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Fox", false));
+			moveFoxToWest.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveFoxOnRightToLeft).getSolvingStep().addSubSteps(moveFoxToWest);
+
+			moveChickenOnLeftToRight = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI_RIGHT, chickenOnLeftPoint, getSpishyusPickupText("Chicken", false)).puzzleWrapStep(true);
+			var moveChickenToRight = new ObjectStep(this, ObjectID.RD_BRIDGE_RIGHT, new WorldPoint(2477, 4972, 0), getSpishyusMoveText("Chicken", true));
+			moveChickenToRight.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnLeftToRight).getSolvingStep().addSubSteps(moveChickenToRight);
+
+			moveGrainOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_GRAIN_MULTI, grainOnRightPoint, getSpishyusPickupText("Grain", true)).puzzleWrapStep(true);
+			var moveGrainToLeft = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Grain", false));
+			moveGrainToLeft.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveGrainOnRightToLeft).getSolvingStep().addSubSteps(moveGrainToLeft);
+
+			moveChickenOnRightToLeftAgain = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint, getSpishyusPickupText("Chicken", true)).puzzleWrapStep(true);
+			var moveChickenToLeftAgain = new ObjectStep(this, ObjectID.RD_BRIDGE_LEFT, new WorldPoint(2483, 4972, 0), getSpishyusMoveText("Chicken", false));
+			moveChickenToLeftAgain.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnRightToLeftAgain).getSolvingStep().addSubSteps(moveChickenToLeftAgain);
+
+			sirSpishyusPuzzle = new ConditionalStep(this, moveChickenOnRightToLeft, "Solve Sir Spishyus' riddle.");
+
+			var dropChickenWest = new DetailedQuestStep(this, "Drop the Chicken on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveChickenOnRightToLeft).getSolvingStep().addSubSteps(dropChickenWest);
+
+			// 1. Move Chicken from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnRightSide, grainOnRightSide), moveChickenOnRightToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnRightSide, grainOnRightSide, playerOnEastSide), moveChickenToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnRightSide, grainOnRightSide), dropChickenWest);
+
+			var moveToEastSide1 = new ObjectStep(this, ObjectID.RD_BRIDGE_RIGHT, new WorldPoint(2477, 4972, 0), "Cross the bridge to the east side.");
+			moveToEastSide1.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveFoxOnRightToLeft).getSolvingStep().addSubSteps(moveToEastSide1);
+
+			var dropFoxWest = new DetailedQuestStep(this, "Drop the Fox on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveFoxOnRightToLeft).getSolvingStep().addSubSteps(dropFoxWest);
+
+			// 2. Return to east side, then move Fox from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxOnRightSide, grainOnRightSide, playerOnWestSide), moveToEastSide1);
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxOnRightSide, grainOnRightSide), moveFoxOnRightToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxPickedUp, grainOnRightSide, playerOnEastSide), moveFoxToWest);
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxPickedUp, grainOnRightSide), dropFoxWest);
+
+			var dropChickenEast = new DetailedQuestStep(this, "Drop the Chicken on the east side from your equipped items.");
+			((PuzzleWrapperStep) moveChickenOnLeftToRight).getSolvingStep().addSubSteps(dropChickenEast);
+
+			// 3. Move chicken from west to east
+			sirSpishyusPuzzle.addStep(and(chickenOnLeftSide, foxOnLeftSide, grainOnRightSide), moveChickenOnLeftToRight);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnRightSide, playerOnWestSide), moveChickenToRight);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnRightSide), dropChickenEast);
+
+			var dropGrainWest = new DetailedQuestStep(this, "Drop the Grain on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveGrainOnRightToLeft).getSolvingStep().addSubSteps(dropGrainWest);
+
+			// 4. Move grain from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnRightSide), moveGrainOnRightToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainPickedUp, playerOnEastSide), moveGrainToLeft);
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainPickedUp), dropGrainWest);
+
+			var moveToEastSide2 = new ObjectStep(this, ObjectID.RD_BRIDGE_RIGHT, new WorldPoint(2477, 4972, 0), "Cross the bridge to the east side.");
+			moveToEastSide2.setForceClickboxHighlight(true);
+			((PuzzleWrapperStep) moveChickenOnRightToLeftAgain).getSolvingStep().addSubSteps(moveToEastSide2);
+
+			var dropChickenWest2 = new DetailedQuestStep(this, "Drop the Chicken on the west side from your equipped items.");
+			((PuzzleWrapperStep) moveChickenOnRightToLeftAgain).getSolvingStep().addSubSteps(dropChickenWest2);
+
+			// 5. Cross the bridge to the east, then move the chicken from east to west
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide, playerOnWestSide), moveToEastSide2);
+			sirSpishyusPuzzle.addStep(and(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide), moveChickenOnRightToLeftAgain);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnLeftSide, playerOnEastSide), moveChickenToLeftAgain);
+			sirSpishyusPuzzle.addStep(and(chickenPickedUp, foxOnLeftSide, grainOnLeftSide), dropChickenWest2);
+
+			pwSirSpishyusStep = sirSpishyusPuzzle.puzzleWrapStepWithDefaultText("Solve Sir Spishyus' riddle.");
+			pwSirSpishyusStep.conditionToHideInSidebar(new ConfigRequirement(this.getConfig()::solvePuzzles));
+
+			leaveSirSpishyusRoom = new ObjectStep(this, ObjectID.RD_ROOM1_EXITDOOR, "Leave through the portal to continue.");
+
+			cSirSpishyus = new ConditionalStep(this, pwSirSpishyusStep);
+			cSirSpishyus.addStep(finishedSpishyus, leaveSirSpishyusRoom);
+		}
+
+		// Sir Kuam
+		{
+			var finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM3_COMPLETE, 1);
+
+			talkToSirKuam = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_3, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye.");
+			killSirLeye = new NpcStep(this, NpcID.RD_COMBAT_NPC_ROOM_3, "Defeat Sir Leye to win this challenge. You must use the steel warhammer or your bare hands to deal the final hit on him.", true);
+			pwKillSirLeye = killSirLeye.puzzleWrapStepWithDefaultText("Defeat Sir Leye to win this challenge.");
+
+			leaveSirKuamRoom = new ObjectStep(this, ObjectID.RD_ROOM3_EXITDOOR, "Leave through the portal to continue.");
+			var npcCondition = new NpcCondition(NpcID.RD_COMBAT_NPC_ROOM_3);
+
+			sirKuamStep = new ConditionalStep(this, talkToSirKuam);
+			sirKuamStep.addStep(finishedRoom, leaveSirKuamRoom);
+			sirKuamStep.addStep(npcCondition, pwKillSirLeye);
+		}
+	}
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		cTalkToSirAmikVarze = new ConditionalStep(this, climbBottomSteps, "Talk to Sir Amik Varze.");
+		cTalkToSirAmikVarze.addStep(isFirstFloorCastle, climbSecondSteps);
+		cTalkToSirAmikVarze.addStep(isSecondFloorCastle, talkToSirAmikVarze);
+		steps.put(0, cTalkToSirAmikVarze);
+
+		var cTestingGrounds = new ConditionalStep(this, talkToSirTiffy);
+		cTestingGrounds.addStep(isSecondFloorCastle, climbDownSecondFloorStaircase);
+		cTestingGrounds.addStep(isFirstFloorCastle, climbDownfirstFloorStaircase);
 
 		// Testing steps below
-		conditionalTalkToSirTiffy.addStep(isInSirTinleysRoom, getSirTinley());
-		conditionalTalkToSirTiffy.addStep(isInMsHynnRoom, getMsHynnTerprett());
-		conditionalTalkToSirTiffy.addStep(isInSirRenItchood, getSirRenItchood());
-		conditionalTalkToSirTiffy.addStep(isInladyTableRoom, getLadyTableStep());
-		conditionalTalkToSirTiffy.addStep(isInSirSpishyusRoom, getSirSpishyus());
-		conditionalTalkToSirTiffy.addStep(isInSirKuamsRoom, getSirKuam());
+		cTestingGrounds.addStep(isInMissCheeversRoom, cMissCheevers);
+		cTestingGrounds.addStep(isInSirTinleysRoom, sirTinleyStep);
+		cTestingGrounds.addStep(isInMsHynnRoom, msHynnTerprettStep);
+		cTestingGrounds.addStep(isInSirRenItchood, sirRenStep);
+		cTestingGrounds.addStep(isInladyTableRoom, cLadyTableStep);
+		cTestingGrounds.addStep(isInSirSpishyusRoom, cSirSpishyus);
+		cTestingGrounds.addStep(isInSirKuamsRoom, sirKuamStep);
 
-		conditionalTalkToSirTiffy.addStep(msCheevesSetup.getIsInMsCheeversRoom(), msCheevesSetup.getConditionalStep());
-		return conditionalTalkToSirTiffy;
-	}
+		steps.put(1, cTestingGrounds);
 
-	private LadyTableStep getLadyTableStep()
-	{
-		this.ladyTableStep = new LadyTableStep(this);
-		return this.ladyTableStep;
-	}
-
-	private QuestStep getSirKuam()
-	{
-		VarbitRequirement finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM3_COMPLETE, 1);
-
-		talkToSirKuam = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_3, "Talk to Sir Kuam Ferentse to have him spawn Sir Leye.");
-		killSirLeye = new NpcStep(this, NpcID.RD_COMBAT_NPC_ROOM_3,
-			"Defeat Sir Leye to win this challenge. You must use the steel warhammer or your barehands to deal the final hit on him.", true);
-
-		leaveSirKuamRoom = new ObjectStep(this, ObjectID.RD_ROOM3_EXITDOOR, "Leave through the portal to continue.");
-		NpcCondition npcCondition = new NpcCondition(NpcID.RD_COMBAT_NPC_ROOM_3);
-
-		ConditionalStep sirKuamConditional = new ConditionalStep(this, talkToSirKuam);
-
-		sirKuamConditional.addStep(finishedRoom, leaveSirKuamRoom);
-		sirKuamConditional.addStep(npcCondition, killSirLeye);
-		return sirKuamConditional;
-	}
-
-	private void getMsCheeves()
-	{
-		msCheevesSetup = new MsCheevesSetup(this);
-	}
-
-	private QuestStep getSirSpishyus()
-	{
-		WorldPoint chickenOnLeftPoint = new WorldPoint(2473, 4970, 0);
-		WorldPoint chickenOnRightPoint = new WorldPoint(2487, 4974, 0);
-		WorldPoint foxOnRightPoint = new WorldPoint(2485, 4974, 0);
-		WorldPoint grainOnRightPoint = new WorldPoint(2486, 4974, 0);
-
-		VarbitRequirement foxOnRightSide = new VarbitRequirement(VarbitID.RD_FOXLEFT, 0);
-		VarbitRequirement foxOnLeftSide = new VarbitRequirement(VarbitID.RD_FOXRIGHT, 1);
-		VarbitRequirement foxNotOnRightSide = new VarbitRequirement(VarbitID.RD_FOXLEFT, 1);
-		VarbitRequirement foxNotOnLeftSide = new VarbitRequirement(VarbitID.RD_FOXRIGHT, 0);
-		VarbitRequirement chickenOnRightSide = new VarbitRequirement(VarbitID.RD_CHICKLEFT, 0);
-		VarbitRequirement chickenOnLeftSide = new VarbitRequirement(VarbitID.RD_CHICKRIGHT, 1);
-		VarbitRequirement chickenNotOnRightSide = new VarbitRequirement(VarbitID.RD_CHICKLEFT, 1);
-		VarbitRequirement chickenNotOnLeftSide = new VarbitRequirement(VarbitID.RD_CHICKRIGHT, 0);
-		VarbitRequirement grainOnRightSide = new VarbitRequirement(VarbitID.RD_GRAINLEFT, 0);
-		VarbitRequirement grainOnLeftSide = new VarbitRequirement(VarbitID.RD_GRAINRIGHT, 1);
-		VarbitRequirement grainNotOnRightSide = new VarbitRequirement(VarbitID.RD_GRAINLEFT, 1);
-		VarbitRequirement grainNotOnLeftSide = new VarbitRequirement(VarbitID.RD_GRAINRIGHT, 0);
-		VarbitRequirement finishedSpishyus = new VarbitRequirement(VarbitID.RD_ROOM1_COMPLETE, 1);
-
-		Conditions foxPickedUp = new Conditions(LogicType.AND, foxNotOnLeftSide, foxNotOnRightSide);
-		Conditions chickenPickedUp = new Conditions(LogicType.AND, chickenNotOnRightSide, chickenNotOnLeftSide);
-		Conditions grainPickedUp = new Conditions(LogicType.AND, grainNotOnLeftSide, grainNotOnRightSide);
-
-		moveChickenOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint,
-			getSpishyusPickupText("Chicken", true));
-		finishedSpishyusRoom = new ObjectStep(this, ObjectID.RD_ROOM1_EXITDOOR, "Leave through the portal to continue.");
-
-		moveFoxOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_FOX_MULTI, foxOnRightPoint,
-			getSpishyusPickupText("Fox", true));
-
-		DetailedQuestStep moveChickenToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
-		moveChickenOnRightToLeft.addSubSteps(moveChickenToLeft);
-
-		DetailedQuestStep moveFoxToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Fox", false));
-		moveFoxOnRightToLeft.addSubSteps(moveFoxToLeft);
-
-		moveChickenOnLeftToRight = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI_RIGHT, chickenOnLeftPoint,
-			getSpishyusPickupText("Chicken", false));
-		DetailedQuestStep moveChickenToRight = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", true));
-		moveChickenOnLeftToRight.addSubSteps(moveChickenToRight);
-
-		moveGrainOnRightToLeft = new ObjectStep(this, ObjectID.RD_ROOM2_GRAIN_MULTI, grainOnRightPoint,
-			getSpishyusPickupText("Grain", true));
-		DetailedQuestStep moveGrainToLeft = new DetailedQuestStep(this, getSpishyusMoveText("Grain", false));
-		moveGrainOnRightToLeft.addSubSteps(moveGrainToLeft);
-
-		moveChickenOnRightToLeftAgain = new ObjectStep(this, ObjectID.RD_ROOM2_CHICKEN_MULTI, chickenOnRightPoint,
-			getSpishyusPickupText("Chicken", true));
-		DetailedQuestStep moveChickenToLeftAgain = new DetailedQuestStep(this, getSpishyusMoveText("Chicken", false));
-		moveChickenOnRightToLeftAgain.addSubSteps(moveChickenToLeftAgain);
-
-		ConditionalStep sirSpishyus = new ConditionalStep(this, moveChickenOnRightToLeft);
-		sirSpishyus.addStep(finishedSpishyus, finishedSpishyusRoom);
-
-		sirSpishyus.addStep(new Conditions(chickenOnRightSide, foxOnRightSide, grainOnRightSide), moveChickenOnRightToLeft);
-		sirSpishyus.addStep(new Conditions(chickenPickedUp, foxOnRightSide, grainOnRightSide), moveChickenToLeft);
-		sirSpishyus.addStep(new Conditions(chickenOnLeftSide, foxOnRightSide, grainOnRightSide), moveFoxOnRightToLeft);
-		sirSpishyus.addStep(new Conditions(chickenOnLeftSide, foxPickedUp, grainOnRightSide), moveFoxToLeft);
-		sirSpishyus.addStep(new Conditions(chickenOnLeftSide, foxOnLeftSide, grainOnRightSide), moveChickenOnLeftToRight);
-		sirSpishyus.addStep(new Conditions(chickenPickedUp, foxOnLeftSide, grainOnRightSide), moveChickenToRight);
-
-		sirSpishyus.addStep(new Conditions(chickenOnRightSide, foxOnLeftSide, grainOnRightSide), moveGrainOnRightToLeft);
-		sirSpishyus.addStep(new Conditions(chickenOnRightSide, foxOnLeftSide, grainPickedUp), moveGrainToLeft);
-		sirSpishyus.addStep(new Conditions(chickenOnRightSide, foxOnLeftSide, grainOnLeftSide), moveChickenOnRightToLeftAgain);
-		sirSpishyus.addStep(new Conditions(chickenPickedUp, foxOnLeftSide, grainOnLeftSide), moveChickenToLeftAgain);
-
-		return sirSpishyus;
+		return steps;
 	}
 
 	private String getSpishyusPickupText(String itemName, boolean moveRightToLeft)
 	{
 		String firstSide = moveRightToLeft ? "east" : "west";
 		String secondSide = moveRightToLeft ? "west" : "east";
-		return "Pickup the " + itemName + " on the " + firstSide + " and move it to the "
+		return "Pick up the " + itemName + " on the " + firstSide + " and move it to the "
 			+ secondSide + " side by crossing the bridge";
 	}
 
@@ -289,75 +444,21 @@ public class RecruitmentDrive extends BasicQuestHelper
 		return "Cross the bridge to the " + dropSide + " and drop the " + itemName + " from your equipped items.";
 	}
 
-	private QuestStep getSirRenItchood()
+	@Override
+	public List<Requirement> getGeneralRequirements()
 	{
-		NpcStep talkToSirRenItchood = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_5, "Talk to Sir Ren Itchood to receive the clue.");
-		talkToSirRenItchood.addDialogSteps("Can I have the clue for the door?");
-
-		sirRenStep = new SirRenItchoodStep(this, talkToSirRenItchood);
-		return sirRenStep;
-	}
-
-	private QuestStep getSirTinley()
-	{
-		talkToSirTinley = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_4,
-			"Talk to Sir Tinley. \n Once you have pressed continue do not do anything or you will fail.");
-		doNothingStep = new DetailedQuestStep(this,
-			"Press Continue and do nothing. Sir Tinley will eventually talk to you and let you pass.");
-		leaveSirTinleyRoom = new ObjectStep(this, ObjectID.RD_ROOM4_EXITDOOR, "Leave through the portal to continue.");
-
-		VarbitRequirement waitForCondition = new VarbitRequirement(VarbitID.RD_TEMPLOCK_2, 1, Operation.GREATER_EQUAL);
-		VarbitRequirement finishedRoom = new VarbitRequirement(VarbitID.RD_ROOM4_COMPLETE, 1);
-
-		ConditionalStep sirTinleyStep = new ConditionalStep(this, talkToSirTinley);
-		sirTinleyStep.addStep(finishedRoom, leaveSirTinleyRoom);
-		sirTinleyStep.addStep(waitForCondition, doNothingStep);
-
-		return sirTinleyStep;
-	}
-
-	private QuestStep getMsHynnTerprett()
-	{
-		talkToMsHynnTerprett = new NpcStep(this, NpcID.RD_OBSERVER_ROOM_7,
-			"Talk to Ms Hynn Terprett and answer the riddle.");
-
-		msHynnDialogQuiz = new MsHynnAnswerDialogQuizStep(this, talkToMsHynnTerprett);
-		return msHynnDialogQuiz;
-	}
-
-	private QuestStep TalkToSirAmikVarze()
-	{
-		WorldPoint bottomStairsPosition = new WorldPoint(2955, 3339, 0);
-		WorldPoint secondStairsPosition = new WorldPoint(2961, 3339, 1);
-		ObjectStep climbBottomSteps = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, bottomStairsPosition,
-			"Climb up the stairs to the first floor on the Falador Castle.");
-
-		ObjectStep climbSecondSteps = new ObjectStep(this, ObjectID.FAI_FALADOR_CASTLE_SPIRALSTAIRS, secondStairsPosition,
-			"Climb up the stairs to talk to Sir Amik Vaze.");
-		NpcStep talkToSirAmikVarze = new NpcStep(this, NpcID.SIR_AMIK_VARZE, "");
-		talkToSirAmikVarze.addDialogStep("Yes please");
-
-		conditionalTalkToSirAmikVarze = new ConditionalStep(this, climbBottomSteps,
-			"Talk to Sir Amik Varze.");
-		conditionalTalkToSirAmikVarze.addStep(isFirstFloorCastle, climbSecondSteps);
-		conditionalTalkToSirAmikVarze.addStep(isSecondFloorCastle, talkToSirAmikVarze);
-		conditionalTalkToSirAmikVarze.addSubSteps(climbSecondSteps, climbBottomSteps, talkToSirAmikVarze);
-		return conditionalTalkToSirAmikVarze;
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED)
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("Sir Leye (level 20) with no items");
-	}
-
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> reqs = new ArrayList<>();
-		reqs.add(new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
-		reqs.add(new QuestRequirement(QuestHelperQuest.DRUIDIC_RITUAL, QuestState.FINISHED));
-		return reqs;
+		return List.of(
+			"Sir Leye (level 20) with no items"
+		);
 	}
 
 	@Override
@@ -369,69 +470,87 @@ public class RecruitmentDrive extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(
-				new ExperienceReward(Skill.PRAYER, 1000),
-				new ExperienceReward(Skill.AGILITY, 1000),
-				new ExperienceReward(Skill.HERBLORE, 1000));
+		return List.of(
+			new ExperienceReward(Skill.PRAYER, 1000),
+			new ExperienceReward(Skill.AGILITY, 1000),
+			new ExperienceReward(Skill.HERBLORE, 1000)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Arrays.asList(
-				new ItemReward("Initiate Helm", ItemID.BASIC_TK_HELM, 1),
-				new ItemReward("Coins", ItemID.COINS, 3000));
+		return List.of(
+			new ItemReward("Initiate Helm", ItemID.BASIC_TK_HELM, 1),
+			new ItemReward("Coins", ItemID.COINS, 3000)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-				new UnlockReward("Ability to respawn in Falador"),
-				new UnlockReward("Access to Initiate Armor"));
+		return List.of(
+			new UnlockReward("Ability to respawn in Falador"),
+			new UnlockReward("Access to Initiate Armor")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> steps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		PanelDetails startingPanel = new PanelDetails("Starting out",
-			new ArrayList<>(Collections.singletonList(conditionalTalkToSirAmikVarze)));
+		sections.add(new PanelDetails("Starting out", List.of(
+			cTalkToSirAmikVarze
+		)));
 
-		PanelDetails testing = new PanelDetails("Start the testing",
-			Collections.singletonList(talkToSirTiffy), noItemRequirement);
+		sections.add(new PanelDetails("Start the testing", List.of(
+			talkToSirTiffy
+		), List.of(
+			noItemRequirement
+		)));
 
-		PanelDetails sirTinleysRoom = new PanelDetails("Sir Tinley",
-			Arrays.asList(talkToSirTinley, doNothingStep, leaveSirTinleyRoom));
+		sections.add(new PanelDetails("Sir Tinley", List.of(
+			talkToSirTinley,
+			doNothingStep,
+			leaveSirTinleyRoom
+		)));
 
-		List<QuestStep> hynnSteps = new ArrayList<>();
-		hynnSteps.add(talkToMsHynnTerprett);
-		hynnSteps.addAll(msHynnDialogQuiz.getPanelSteps());
-		PanelDetails msHynnsRoom = new PanelDetails("Ms Hynn Terprett", hynnSteps);
+		sections.add(new PanelDetails("Ms. Hynn Terprett", List.of(
+			pwMsHynnTerprett,
+			leaveMsHynnTerprettRoom
+		)));
 
-		PanelDetails sirKuamRoom = new PanelDetails("Sir Kuam",
-			Arrays.asList(talkToSirKuam, killSirLeye, leaveSirKuamRoom));
+		sections.add(new PanelDetails("Sir Kuam Ferentse", List.of(
+			talkToSirKuam,
+			pwKillSirLeye,
+			leaveSirKuamRoom
+		)));
 
-		PanelDetails sirSpishyusRoom = new PanelDetails("Sir Spishyus",
-			Arrays.asList(moveChickenOnRightToLeft, moveFoxOnRightToLeft,
-				moveChickenOnLeftToRight, moveGrainOnRightToLeft, moveChickenOnRightToLeftAgain));
+		sections.add(new PanelDetails("Sir Spishyus", List.of(
+			pwSirSpishyusStep,
+			moveChickenOnRightToLeft,
+			moveFoxOnRightToLeft,
+			moveChickenOnLeftToRight,
+			moveGrainOnRightToLeft,
+			moveChickenOnRightToLeftAgain,
+			leaveSirSpishyusRoom
+		)));
 
-		PanelDetails sirRensRoom = new PanelDetails("Sir Ren Itchood", sirRenStep.getPanelSteps());
+		sections.add(new PanelDetails("Sir Ren Itchood",
+			sirRenStep.getPanelSteps()
+		));
 
-		PanelDetails missCheeversRoom = new PanelDetails("Mis Cheevers", msCheevesSetup.GetPanelSteps());
+		var missCheeversSection = new PanelDetails("Miss Cheevers", pwMissCheeversStep);
+		missCheeversSection.addSteps(missCheeversStep.getPanelSteps());
+		missCheeversSection.addSteps(leaveMissCheeversRoom);
+		sections.add(missCheeversSection);
 
-		PanelDetails ladyTable = new PanelDetails("Lady Table", ladyTableStep.getPanelSteps());
+		sections.add(new PanelDetails("Lady Table", List.of(
+			pwLadyTableStep,
+			leaveLadyTableRoom
+		)));
 
-		steps.add(startingPanel);
-		steps.add(testing);
-		steps.add(sirKuamRoom);
-		steps.add(sirSpishyusRoom);
-		steps.add(msHynnsRoom);
-		steps.add(sirTinleysRoom);
-		steps.add(sirRensRoom);
-		steps.add(missCheeversRoom);
-		steps.add(ladyTable);
-		return steps;
+		return sections;
 	}
 }

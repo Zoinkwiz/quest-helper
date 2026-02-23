@@ -277,7 +277,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		final var DIALOG_GROUP_IDS = List.of(InterfaceID.CHAT_LEFT, InterfaceID.CHAT_RIGHT, InterfaceID.OBJECTBOX);
 		if (!DIALOG_GROUP_IDS.contains(event.getGroupId())) return;
 
-		clientThread.invokeLater(() -> {
+		clientThread.invokeAtTickEnd(() -> {
 			dialogConditions.forEach(requirement -> requirement.validateActiveWidget(client));
 		});
 	}

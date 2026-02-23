@@ -147,7 +147,7 @@ public class VampyreSlayer extends BasicQuestHelper
 		goUpstairsMorgan = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(3100, 3267, 0), "Climb the stairs.");
 		getGarlic = new ObjectStep(this, ObjectID.GARLICCUPBOARDOPEN, new WorldPoint(3096, 3270, 1), "Search the cupboard.");
 		getGarlic.addAlternateObjects(ObjectID.GARLICCUPBOARDSHUT);
-		cGetGarlic = new ConditionalStep(this, goUpstairsMorgan, "Get garlic from the cupboard upstairs in Morgan's house.\nYou can tick off this section to skip the garlic acquisition.");
+		cGetGarlic = new ConditionalStep(this, goUpstairsMorgan, "Get garlic from the cupboard upstairs in Morgan's house.\n\nYou can tick off this section in the sidebar to skip the garlic acquisition.");
 		cGetGarlic.addStep(isUpstairsInMorgans, getGarlic);
 
 		talkToHarlow = new NpcStep(this, NpcID.DR_HARLOW, new WorldPoint(3222, 3399, 0), "Talk to Dr. Harlow in the Blue Moon Inn in Varrock.", beerOrTwoCoins);

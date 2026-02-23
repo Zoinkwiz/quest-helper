@@ -32,6 +32,7 @@ import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.client.config.ConfigManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -49,6 +50,9 @@ public class QuestHelperBankTagService
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ConfigManager configManager;
 
 	ArrayList<Integer> taggedItems;
 
@@ -221,14 +225,18 @@ public class QuestHelperBankTagService
 		else if (itemRequirement instanceof KeyringRequirement)
 		{
 			KeyringRequirement keyringRequirement = (KeyringRequirement) itemRequirement;
-			KeyringRequirement fakeRequirement = new KeyringRequirement(keyringRequirement.getName(), plugin.getConfigManager(),
-					keyringRequirement.getKeyringCollection());
-			if (keyringRequirement.hasKeyOnKeyRing())
+			var keyringCollection = keyringRequirement.getKeyringCollection();
+			var fakeRequirement = keyringRequirement.copy();
+			if (keyringCollection.hasKeyOnKeyRing(configManager))
 			{
 				fakeRequirement.addAlternates(ItemID.FAVOUR_KEY_RING);
+				// NOTE: If the key is on your key ring _AND_ in your bank, we will still suggest using the key ring.
+				pluginItems.add(new BankTabItem(fakeRequirement, ItemID.FAVOUR_KEY_RING));
 			}
-			pluginItems.add(makeBankTabItem(fakeRequirement));
-
+			else
+			{
+				pluginItems.add(makeBankTabItem(fakeRequirement));
+			}
 		}
 		else
 		{

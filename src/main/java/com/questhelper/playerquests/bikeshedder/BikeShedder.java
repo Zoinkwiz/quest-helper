@@ -26,11 +26,13 @@ package com.questhelper.playerquests.bikeshedder;
 
 import com.google.common.collect.ImmutableMap;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.collections.KeyringCollection;
 import com.questhelper.collections.TeleportCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.item.KeyringRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -101,9 +103,16 @@ public class BikeShedder extends BasicQuestHelper
 	private ZoneRequirement onBoat3;
 	private ZoneRequirement onBoat4;
 
+	// Keyring
+	private ItemRequirement dustyKeyItem;
+	private KeyringRequirement dustyKeyKeyRing;
+	private DetailedQuestStep keyringStep;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
+		setupRequirements();
+
 		var lumbridge = new Zone(new WorldPoint(3217, 3210, 0), new WorldPoint(3226, 3228, 0));
 		var outsideLumbridge = new ZoneRequirement(false, lumbridge);
 		moveToLumbridge.setHighlightZone(lumbridge);
@@ -170,6 +179,8 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(onBoat2, talkToKlarenceFromShip);
 		steps.addStep(onBoat3, useSalvagingHook);
 		steps.addStep(onBoat4, useObjectOffBoat);
+
+		steps.addStep(new ZoneRequirement(new WorldPoint(2655, 3286, 0)), keyringStep);
 
 		steps.addStep(byStaircaseInSunrisePalace, goDownstairsInSunrisePalace);
 		steps.addStep(outsideLumbridge, moveToLumbridge);
@@ -324,6 +335,10 @@ public class BikeShedder extends BasicQuestHelper
 		useObjectOffBoat = new ObjectStep(this, ObjectID.DRAGONSHIPGANGPLANK_ON, new WorldPoint(3047, 3205, 0), "Click Klarense's gangplank.");
 		useObjectOffBoat.setHighlightZone(new Zone(new WorldPoint(3044, 3202, 0), new WorldPoint(3050, 3205, 0)));
 		useObjectOffBoat.addHighlightZones(zones4);
+
+		dustyKeyItem = new ItemRequirement("Dusty key (ItemReq)", ItemID.DUSTY_KEY);
+		dustyKeyKeyRing = new KeyringRequirement("Dusty key (KeyRingReq)", KeyringCollection.DUSTY_KEY);
+		keyringStep = new DetailedQuestStep(this, "We need the dusty key", dustyKeyItem, dustyKeyKeyRing);
 	}
 
 	@Override
@@ -346,6 +361,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Quest state", List.of(lookAtCooksAssistant), List.of(lookAtCooksAssistantRequirement, lookAtCooksAssistantTextRequirement)));
 		panels.add(new PanelDetails("Ensure staircase upstairs in Sunrise Palace is highlighted", List.of(goDownstairsInSunrisePalace), List.of()));
 		panels.add(new PanelDetails("Sailing", List.of(talkToNpcOnBoat, talkToKlarenceFromShip, useSalvagingHook, useObjectOffBoat), List.of()));
+		panels.add(new PanelDetails("Key ring", List.of(keyringStep), List.of(dustyKeyItem, dustyKeyKeyRing)));
 
 		return panels;
 	}

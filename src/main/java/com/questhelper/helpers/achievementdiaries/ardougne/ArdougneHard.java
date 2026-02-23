@@ -187,7 +187,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 
 		var hasCompletedSOTE = new QuestRequirement(QuestHelperQuest.SONG_OF_THE_ELVES, QuestState.FINISHED);
 
-		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		newKey = new KeyringRequirement("New key", KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
 
 		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS).isNotConsumed().hideConditioned(hasCompletedSOTE);

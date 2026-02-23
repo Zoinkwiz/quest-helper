@@ -256,6 +256,7 @@ public class QuestHelperPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		questBankManager.loadInitialStateFromConfig(client);
+		playerStateManager.loadInitialStateFromConfig();
 		questManager.updateQuestState();
 	}
 
@@ -310,6 +311,7 @@ public class QuestHelperPlugin extends Plugin
 			questBankManager.saveBankToConfig();
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBankManager.emptyState();
+			playerStateManager.emptyState();
 			questManager.shutDownQuest(true);
 			profileChanged = true;
 		}
@@ -321,6 +323,7 @@ public class QuestHelperPlugin extends Plugin
 			GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			newVersionManager.updateChatWithNotificationIfNewVersion();
 			questBankManager.setUnknownInitialState();
+			playerStateManager.setUnknownInitialState();
 			potionStorage.updateCachedPotions = true;
 			clientThread.invokeAtTickEnd(() -> {
 				questManager.setupRequirements();
@@ -447,6 +450,33 @@ public class QuestHelperPlugin extends Plugin
 				}
 			}
 			log.debug(String.valueOf(inv));
+		}
+		else if (developerMode && commandExecuted.getCommand().equals("qh"))
+		{
+			var args = commandExecuted.getArguments();
+			if (args.length == 0)
+			{
+				return;
+			}
+			var subCommand = args[0];
+			if (subCommand.equals("container"))
+			{
+				if (args.length < 2)
+				{
+					return;
+				}
+				var container = args[1];
+				switch (container)
+				{
+					case "keyring":
+						var keyringItems = QuestContainerManager.getKeyRingData().getItems();
+						for (var item : keyringItems)
+						{
+							log.debug("Key ring item: {}", item);
+						}
+						break;
+				}
+			}
 		}
 	}
 

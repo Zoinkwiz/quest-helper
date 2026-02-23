@@ -174,7 +174,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		Conditions not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
 
-		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
+		dustyKey = new KeyringRequirement("Dusty Key", KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
 			notWaterOrb)).isNotConsumed();
 		dustyKey.setTooltip("You can get this by killing the Jailer in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");

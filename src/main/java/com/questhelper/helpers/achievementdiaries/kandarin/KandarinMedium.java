@@ -187,7 +187,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		hornDust = new ItemRequirement("Horn Dust", ItemID.UNICORN_HORN_DUST, 1).showConditioned(notSuperAnti);
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.VIAL_WATER, 1).showConditioned(notSuperAnti);
 		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF, 1).showConditioned(notSuperAnti);
-		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
+		dustyKey = new KeyringRequirement("Dusty Key", KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
 			notGrapOb)).isNotConsumed();
 		dustyKey.setTooltip("You can get this by killing the Jailer in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");
@@ -202,7 +202,7 @@ public class KandarinMedium extends ComplexStateQuestHelper
 		primedMind = new ItemRequirement("Mind bar", ItemID.ELEM_MIND_BAR).showConditioned(notMindHelm);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notMindHelm).isNotConsumed();
 		beatenBook = new ItemRequirement("Beaten Book", ItemID.ELEMENTAL_WORKSHOP_HELM_BOOK).showConditioned(notMindHelm);
-		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY).showConditioned(notMindHelm);
+		batteredKey = new KeyringRequirement("Battered Key", KeyringCollection.BATTERED_KEY).showConditioned(notMindHelm);
 		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
 			"Workshop, then reading the book you get from it");
 

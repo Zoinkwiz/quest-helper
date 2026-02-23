@@ -176,7 +176,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
         rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute).isNotConsumed();
         seedDibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(notPlantJute).isNotConsumed();
-        batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY).showConditioned(notKillEle).isNotConsumed();
+        batteredKey = new KeyringRequirement("Battered Key", KeyringCollection.BATTERED_KEY).showConditioned(notKillEle).isNotConsumed();
         batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
 			"Workshop, then reading the book you get from it");
 

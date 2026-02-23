@@ -198,8 +198,8 @@ public class HeroesQuest extends BasicQuestHelper
 		fishingRod.addAlternates(ItemID.OILY_FISHING_ROD);
 		fishingBait = new ItemRequirement("Fishing bait", ItemID.FISHING_BAIT);
 		jailKey = new ItemRequirement("Jail key", ItemID.JAIL_KEY).isNotConsumed();
-		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
-		dustyKeyHint = new KeyringRequirement("Dusty key (obtainable in quest)", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
+		dustyKey = new KeyringRequirement("Dusty Key", KeyringCollection.DUSTY_KEY).isNotConsumed();
+		dustyKeyHint = new KeyringRequirement("Dusty key (obtainable in quest)", KeyringCollection.DUSTY_KEY).isNotConsumed();
 		harralanderUnf = new ItemRequirement("Harralander potion (unf)", ItemID.HARRALANDERVIAL);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemID.BRONZE_PICKAXE).isNotConsumed();
 		pickaxe.addAlternates(ItemCollections.PICKAXES);

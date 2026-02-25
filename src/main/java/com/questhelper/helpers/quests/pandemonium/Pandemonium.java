@@ -229,7 +229,7 @@ public class Pandemonium extends BasicQuestHelper
 		// Your mighty vessel
 		enterShipyard = new NpcStep(this, NpcID.JUNIOR_JIM, new WorldPoint(3059, 2979, 0), "Talk to Junior Jim to enter the shipyard.");
 		getHammer = new ObjectStep(this, ObjectID.CRATE_HAMMERS, "Pick up a hammer from the crate of hammers.");
-		getSaw = new ObjectStep(this, ObjectID.CRATE_SAWS, "Pick up a from the crate of saws.");
+		getSaw = new ObjectStep(this, ObjectID.CRATE_SAWS, "Pick up a saw from the crate of saws.");
 		embarkShipSY = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_PROXY_WIDE, "Board your vessel.");
 		buildCargoHold = new ObjectStep(this, ObjectID.SAILING_BOAT_FACILITY_PLACEHOLDER_RAFT_0, "Build the Cargo Hold.");
 		disembarkShipSY = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_SHIPYARD_DISEMBARK, "Disembark your vessel.");

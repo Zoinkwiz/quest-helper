@@ -49,9 +49,6 @@ import net.runelite.api.gameval.VarbitID;
 
 public class TheIdesOfMilk extends BasicQuestHelper
 {
-	// ObjectID1.FENCEGATE_L_COWBOSS_START -- not visible outside gameval package
-	private static final int FENCEGATE_L_COWBOSS_START = 60763;
-
 	// Mid-quest item requirements
 	ItemRequirement husbandryBook;
 	ItemRequirement milkSample1;
@@ -127,7 +124,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		drinkMilkSample2 = new DetailedQuestStep(this,
 			"Drink the milk sample near Gillie.", milkSample2.highlighted());
 
-		openBullPen = new ObjectStep(this, FENCEGATE_L_COWBOSS_START,
+		openBullPen = new ObjectStep(this, ObjectID.FENCEGATE_L_COWBOSS_START,
 			new WorldPoint(3262, 3294, 0),
 			"Open the bull pen gate in the north-east corner of the cow field and defeat Brutus (level 30).");
 		openBullPen.addDialogStep("Yes.");

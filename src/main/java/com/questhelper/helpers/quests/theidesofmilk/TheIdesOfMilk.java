@@ -94,7 +94,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		talkToCassius = new NpcStep(this, NpcID.COWBOSS_FARMER,
 			new WorldPoint(3171, 3277, 0),
 			"Speak to Cassius by the lake north-west of Lumbridge to start the quest.", true);
-		talkToCassius.addDialogStep("Yes");
+		talkToCassius.addDialogStep("Yes.");
 
 		talkToGillie = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,
 			new WorldPoint(3253, 3270, 0),
@@ -130,7 +130,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		openBullPen = new ObjectStep(this, FENCEGATE_L_COWBOSS_START,
 			new WorldPoint(3262, 3294, 0),
 			"Open the bull pen gate in the north-east corner of the cow field and defeat Brutus (level 30).");
-		openBullPen.addDialogStep("Yes");
+		openBullPen.addDialogStep("Yes.");
 
 		talkToGillieAfterFight = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,
 			new WorldPoint(3253, 3270, 0),

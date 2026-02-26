@@ -117,7 +117,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 		talkToCassiusAfterDrink = new NpcStep(this, NpcID.COWBOSS_FARMER,
 			new WorldPoint(3171, 3277, 0),
-			"Speak to Cassius after drinking the milk sample.", true);
+			"Talk to Cassius after drinking the milk sample.", true);
 
 		talkToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE,
 			new WorldPoint(3210, 3220, 1),
@@ -132,7 +132,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 		talkToGillieAfterDrink = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,
 			new WorldPoint(3253, 3270, 0),
-			"Speak to Gillie Groats after drinking the milk sample.");
+			"Talk to Gillie Groats after drinking the milk sample.");
 
 		openBullPen = new ObjectStep(this, ObjectID.FENCEGATE_L_COWBOSS_START,
 			new WorldPoint(3262, 3294, 0),

@@ -24,9 +24,11 @@
  */
 package com.questhelper.helpers.quests.theidesofmilk;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -49,6 +51,10 @@ import net.runelite.api.gameval.VarbitID;
 
 public class TheIdesOfMilk extends BasicQuestHelper
 {
+	// Recommended items
+	ItemRequirement combatGear;
+	ItemRequirement food;
+
 	// Mid-quest item requirements
 	ItemRequirement husbandryBook;
 	ItemRequirement milkSample1;
@@ -56,6 +62,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 	// Miscellaneous requirements
 	VarbitRequirement gillieInformed;
+	NpcCondition brutusNearby;
 
 	// Steps
 	NpcStep talkToCassius;
@@ -70,6 +77,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	DetailedQuestStep drinkMilkSample2;
 	NpcStep talkToGillieAfterDrink;
 	ObjectStep openBullPen;
+	NpcStep killBrutus;
 	NpcStep talkToGillieAfterFight;
 	NpcStep finishQuest;
 
@@ -86,6 +94,12 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		milkSample2.canBeObtainedDuringQuest();
 
 		gillieInformed = new VarbitRequirement(VarbitID.COWQUEST_GILLIE_INFORMATION, 1);
+
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
 
 	public void setupSteps()
@@ -134,10 +148,19 @@ public class TheIdesOfMilk extends BasicQuestHelper
 			new WorldPoint(3253, 3270, 0),
 			"Talk to Gillie Groats after drinking the milk sample.");
 
+		brutusNearby = new NpcCondition(NpcID.COWBOSS);
+
 		openBullPen = new ObjectStep(this, ObjectID.FENCEGATE_L_COWBOSS_START,
 			new WorldPoint(3262, 3294, 0),
-			"Open the bull pen gate in the north-east corner of the cow field and defeat Brutus (level 30).");
+			"Open the bull pen gate in the north-east corner of the cow field to fight Brutus (level 30).",
+			combatGear, food);
 		openBullPen.addDialogStep("Yes.");
+
+		killBrutus = new NpcStep(this, NpcID.COWBOSS,
+			new WorldPoint(3262, 3294, 0),
+			"Kill Brutus (level 30). Protect from Melee blocks his basic attacks (max hit 3). Dodge his ground slam ('snorts') and charge ('growls') by walking through him. Special attacks can hit over 15.",
+			combatGear, food);
+		openBullPen.addSubSteps(killBrutus);
 
 		talkToGillieAfterFight = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,
 			new WorldPoint(3253, 3270, 0),
@@ -175,7 +198,9 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		steps.put(12, talkToGillieAgain);
 		steps.put(14, drinkMilkSample2);
 		steps.put(16, talkToGillieAfterDrink);
-		steps.put(18, openBullPen);
+		var cFightBrutus = new ConditionalStep(this, openBullPen);
+		cFightBrutus.addStep(brutusNearby, killBrutus);
+		steps.put(18, cFightBrutus);
 		steps.put(20, talkToGillieAfterFight);
 		steps.put(21, finishQuest);
 
@@ -188,6 +213,12 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		return List.of(
 			new CombatLevelRequirement(15)
 		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of(combatGear, food);
 	}
 
 	@Override
@@ -242,7 +273,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		sections.add(new PanelDetails("The bull fight", List.of(
 			openBullPen,
 			talkToGillieAfterFight
-		)));
+		), combatGear, food));
 
 		sections.add(new PanelDetails("Finishing up", List.of(
 			finishQuest

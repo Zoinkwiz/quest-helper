@@ -64,9 +64,11 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	ObjectStep searchShelves;
 	NpcStep returnToCassiusWithBook;
 	DetailedQuestStep drinkMilkSample1;
+	NpcStep talkToCassiusAfterDrink;
 	NpcStep talkToDuke;
 	NpcStep talkToGillieAgain;
 	DetailedQuestStep drinkMilkSample2;
+	NpcStep talkToGillieAfterDrink;
 	ObjectStep openBullPen;
 	NpcStep talkToGillieAfterFight;
 	NpcStep finishQuest;
@@ -113,6 +115,10 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		drinkMilkSample1 = new DetailedQuestStep(this,
 			"Drink the milk sample near Cassius.", milkSample1.highlighted());
 
+		talkToCassiusAfterDrink = new NpcStep(this, NpcID.COWBOSS_FARMER,
+			new WorldPoint(3171, 3277, 0),
+			"Speak to Cassius after drinking the milk sample.", true);
+
 		talkToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE,
 			new WorldPoint(3210, 3220, 1),
 			"Speak to Duke Horacio on the first floor of Lumbridge Castle.", milkSample2);
@@ -123,6 +129,10 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 		drinkMilkSample2 = new DetailedQuestStep(this,
 			"Drink the milk sample near Gillie.", milkSample2.highlighted());
+
+		talkToGillieAfterDrink = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,
+			new WorldPoint(3253, 3270, 0),
+			"Speak to Gillie Groats after drinking the milk sample.");
 
 		openBullPen = new ObjectStep(this, ObjectID.FENCEGATE_L_COWBOSS_START,
 			new WorldPoint(3262, 3294, 0),
@@ -160,11 +170,11 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		steps.put(5, returnToCassiusWithBook);
 
 		steps.put(6, drinkMilkSample1);
-		steps.put(8, drinkMilkSample1);
+		steps.put(8, talkToCassiusAfterDrink);
 		steps.put(10, talkToDuke);
 		steps.put(12, talkToGillieAgain);
 		steps.put(14, drinkMilkSample2);
-		steps.put(16, drinkMilkSample2);
+		steps.put(16, talkToGillieAfterDrink);
 		steps.put(18, openBullPen);
 		steps.put(20, talkToGillieAfterFight);
 		steps.put(21, finishQuest);
@@ -218,13 +228,15 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Milk tasting", List.of(
 			returnToCassiusWithBook,
-			drinkMilkSample1
+			drinkMilkSample1,
+			talkToCassiusAfterDrink
 		)));
 
 		sections.add(new PanelDetails("The Duke's opinion", List.of(
 			talkToDuke,
 			talkToGillieAgain,
-			drinkMilkSample2
+			drinkMilkSample2,
+			talkToGillieAfterDrink
 		)));
 
 		sections.add(new PanelDetails("The bull fight", List.of(

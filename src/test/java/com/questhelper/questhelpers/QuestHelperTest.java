@@ -362,7 +362,8 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.THE_LOST_TRIBE,
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,
-			QuestHelperQuest.HERB_RUN
+			QuestHelperQuest.HERB_RUN,
+			QuestHelperQuest.THE_IDES_OF_MILK
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest

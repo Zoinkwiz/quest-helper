@@ -145,7 +145,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 		finishQuest = new NpcStep(this, NpcID.COWBOSS_FARMER,
 			new WorldPoint(3171, 3277, 0),
-			"Return to Cassius to complete the quest.", true);
+			"Return to Cassius to complete the quest. You can then speak to Gillie Groats for a cow bell amulet and magic lamp (1,000 XP combat/Prayer).", true);
 	}
 
 	@Override

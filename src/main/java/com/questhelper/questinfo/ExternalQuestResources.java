@@ -28,6 +28,7 @@ public enum ExternalQuestResources
 	SHEEP_SHEARER("https://oldschool.runescape.wiki/w/Sheep_Shearer"),
 	SHIELD_OF_ARRAV_PHOENIX_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
 	SHIELD_OF_ARRAV_BLACK_ARM_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
+	THE_IDES_OF_MILK("https://oldschool.runescape.wiki/w/The_Ides_of_Milk"),
 	VAMPYRE_SLAYER("https://oldschool.runescape.wiki/w/Vampyre_Slayer"),
 	WITCHS_POTION("https://oldschool.runescape.wiki/w/Witch%27s_Potion"),
 	X_MARKS_THE_SPOT("https://oldschool.runescape.wiki/w/X_Marks_the_Spot"),

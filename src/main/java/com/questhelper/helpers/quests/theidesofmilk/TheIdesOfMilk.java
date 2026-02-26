@@ -173,9 +173,11 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	}
 
 	@Override
-	public QuestPointReward getQuestPointReward()
+	public List<Requirement> getGeneralRecommended()
 	{
-		return new QuestPointReward(1);
+		return List.of(
+			new CombatLevelRequirement(15)
+		);
 	}
 
 	@Override
@@ -185,11 +187,9 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	}
 
 	@Override
-	public List<Requirement> getGeneralRecommended()
+	public QuestPointReward getQuestPointReward()
 	{
-		return List.of(
-			new CombatLevelRequirement(15)
-		);
+		return new QuestPointReward(1);
 	}
 
 	@Override

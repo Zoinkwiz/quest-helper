@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, adamsbytes <https://github.com/adamsbytes>
+ * Copyright (c) 2026, adamsbytes <https://github.com/adamsbytes>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

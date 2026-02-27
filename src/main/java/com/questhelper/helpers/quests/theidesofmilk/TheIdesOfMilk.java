@@ -152,19 +152,19 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 		openBullPen = new ObjectStep(this, ObjectID.FENCEGATE_L_COWBOSS_START,
 			new WorldPoint(3262, 3294, 0),
-			"Open the bull pen gate in the north-east corner of the cow field to fight Brutus (level 30).",
+			"Open the bull pen gate in the north-east corner of the cow field to fight the Bull (level 30).",
 			combatGear, food);
 		openBullPen.addDialogStep("Yes.");
 
 		killBrutus = new NpcStep(this, NpcID.COWBOSS,
 			new WorldPoint(3262, 3294, 0),
-			"Kill Brutus (level 30). Protect from Melee blocks his basic attacks (max hit 3). Dodge his ground slam ('snorts') and charge ('growls') by walking through him. Special attacks can hit over 15.",
+			"Kill the Bull (level 30). Protect from Melee blocks his basic attacks (max hit 3). Dodge his ground slam ('snorts') and charge ('growls') by walking through him. Special attacks can hit over 15.",
 			combatGear, food);
 		openBullPen.addSubSteps(killBrutus);
 
 		talkToGillieAfterFight = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,
 			new WorldPoint(3253, 3270, 0),
-			"Speak to Gillie Groats after defeating Brutus.");
+			"Speak to Gillie Groats after defeating the Bull.");
 
 		finishQuest = new NpcStep(this, NpcID.COWBOSS_FARMER,
 			new WorldPoint(3171, 3277, 0),
@@ -224,7 +224,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return List.of("Brutus the bull (level 30)");
+		return List.of("Bull (level 30)");
 	}
 
 	@Override
@@ -237,7 +237,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
-			new UnlockReward("Access to Brutus, the cow boss"),
+			new UnlockReward("Access to the cow boss"),
 			new UnlockReward("Cow bell amulet and magic lamp (1,000 XP combat/Prayer) from Gillie Groats")
 		);
 	}

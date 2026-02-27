@@ -32,6 +32,9 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.util.QHObjectID;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -60,8 +63,12 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	ItemRequirement milkSample1;
 	ItemRequirement milkSample2;
 
+	// Zones
+	Zone lumbridgeCastleF1;
+
 	// Miscellaneous requirements
 	VarbitRequirement gillieInformed;
+	ZoneRequirement inLumbridgeCastleF1;
 	NpcCondition brutusNearby;
 
 	// Steps
@@ -70,8 +77,10 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	NpcStep talkToSeth;
 	ObjectStep searchShelves;
 	NpcStep returnToCassiusWithBook;
+	NpcStep talkToCassiusAboutBook;
 	DetailedQuestStep drinkMilkSample1;
 	NpcStep talkToCassiusAfterDrink;
+	ObjectStep goUpToLumbridgeCastleF1;
 	NpcStep talkToDuke;
 	NpcStep talkToGillieAgain;
 	DetailedQuestStep drinkMilkSample2;
@@ -82,6 +91,12 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	NpcStep finishQuest;
 
 	@Override
+	protected void setupZones()
+	{
+		lumbridgeCastleF1 = new Zone(new WorldPoint(3203, 3206, 1), new WorldPoint(3218, 3231, 1));
+	}
+
+	@Override
 	protected void setupRequirements()
 	{
 		husbandryBook = new ItemRequirement("The groats principles", ItemID.COWQUEST_HUSBANDRY_BOOK);
@@ -89,11 +104,14 @@ public class TheIdesOfMilk extends BasicQuestHelper
 
 		milkSample1 = new ItemRequirement("Milk sample", ItemID.COWQUEST_MILK_SAMPLE_1);
 		milkSample1.canBeObtainedDuringQuest();
+		milkSample1.setTooltip("You can get another from Cassius");
 
 		milkSample2 = new ItemRequirement("Milk sample", ItemID.COWQUEST_MILK_SAMPLE_2);
 		milkSample2.canBeObtainedDuringQuest();
+		milkSample2.setTooltip("You can get another from Cassius");
 
 		gillieInformed = new VarbitRequirement(VarbitID.COWQUEST_GILLIE_INFORMATION, 1);
+		inLumbridgeCastleF1 = new ZoneRequirement(lumbridgeCastleF1);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -126,6 +144,11 @@ public class TheIdesOfMilk extends BasicQuestHelper
 			new WorldPoint(3171, 3277, 0),
 			"Return to Cassius with the book.", true, husbandryBook);
 
+		talkToCassiusAboutBook = new NpcStep(this, NpcID.COWBOSS_FARMER,
+			new WorldPoint(3171, 3277, 0),
+			"Talk to Cassius.", true);
+		returnToCassiusWithBook.addSubSteps(talkToCassiusAboutBook);
+
 		drinkMilkSample1 = new DetailedQuestStep(this,
 			"Drink the milk sample near Cassius.", milkSample1.highlighted());
 
@@ -133,9 +156,14 @@ public class TheIdesOfMilk extends BasicQuestHelper
 			new WorldPoint(3171, 3277, 0),
 			"Talk to Cassius after drinking the milk sample.", true);
 
+		goUpToLumbridgeCastleF1 = new ObjectStep(this, QHObjectID.LUMBRIDGE_CASTLE_F0_SOUTH_STAIRCASE,
+			new WorldPoint(3205, 3208, 0),
+			"Speak to Duke Horacio on the first floor of Lumbridge Castle.", milkSample2);
+
 		talkToDuke = new NpcStep(this, NpcID.DUKE_OF_LUMBRIDGE,
 			new WorldPoint(3210, 3220, 1),
 			"Speak to Duke Horacio on the first floor of Lumbridge Castle.", milkSample2);
+		talkToDuke.addSubSteps(goUpToLumbridgeCastleF1);
 
 		talkToGillieAgain = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,
 			new WorldPoint(3253, 3270, 0),
@@ -190,11 +218,15 @@ public class TheIdesOfMilk extends BasicQuestHelper
 		var cGetBook = new ConditionalStep(this, searchShelves);
 		cGetBook.addStep(husbandryBook, returnToCassiusWithBook);
 		steps.put(4, cGetBook);
-		steps.put(5, returnToCassiusWithBook);
+		var cReturnBook = new ConditionalStep(this, talkToCassiusAboutBook);
+		cReturnBook.addStep(husbandryBook, returnToCassiusWithBook);
+		steps.put(5, cReturnBook);
 
 		steps.put(6, drinkMilkSample1);
 		steps.put(8, talkToCassiusAfterDrink);
-		steps.put(10, talkToDuke);
+		var cTalkToDuke = new ConditionalStep(this, goUpToLumbridgeCastleF1);
+		cTalkToDuke.addStep(inLumbridgeCastleF1, talkToDuke);
+		steps.put(10, cTalkToDuke);
 		steps.put(12, talkToGillieAgain);
 		steps.put(14, drinkMilkSample2);
 		steps.put(16, talkToGillieAfterDrink);

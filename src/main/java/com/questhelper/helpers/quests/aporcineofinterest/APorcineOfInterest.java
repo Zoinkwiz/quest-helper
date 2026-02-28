@@ -100,6 +100,10 @@ public class APorcineOfInterest extends BasicQuestHelper
 
 		slashItem = new ItemRequirement("A knife or slash weapon", ItemID.KNIFE).isNotConsumed();
 		slashItem.setTooltip("Except abyssal whip, abyssal tentacle, noxious halberd, or dragon claws.");
+		// This is not intended to be a full list, but rather just a reasonable list of slash weapons a user might bring.
+		// This does not fit super well into an item collection since it's not reusable.
+		slashItem.addAlternates(ItemID.DRAGON_SCIMITAR, ItemID.RUNE_SCIMITAR, ItemID.ADAMANT_SCIMITAR, ItemID.MITHRIL_SCIMITAR, ItemID.STEEL_SCIMITAR, ItemID.IRON_SCIMITAR, ItemID.BRONZE_SCIMITAR);
+		slashItem.addAlternates(ItemID.DRAGON_LONGSWORD, ItemID.RUNE_LONGSWORD, ItemID.ADAMANT_LONGSWORD, ItemID.MITHRIL_LONGSWORD, ItemID.STEEL_LONGSWORD, ItemID.IRON_LONGSWORD, ItemID.BRONZE_LONGSWORD);
 
 		reinforcedGoggles = new ItemRequirement("Reinforced goggles", ItemID.SLAYER_REINFORCED_GOGGLES, 1, true).isNotConsumed();
 		reinforcedGoggles.setTooltip("You can get another pair from Spria");

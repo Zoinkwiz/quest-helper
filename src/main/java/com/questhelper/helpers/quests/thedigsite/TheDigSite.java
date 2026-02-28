@@ -414,6 +414,7 @@ public class TheDigSite extends BasicQuestHelper
 	{
 		talkToExaminer = new NpcStep(this, NpcID.EXAMINER, new WorldPoint(3362, 3337, 0), "Talk to an Examiner in the Exam Centre south east of Varrock.");
 		talkToExaminer.addDialogStep("Can I take an exam?");
+		talkToExaminer.addDialogStep("Yes.");
 		talkToExaminer.addAlternateNpcs(NpcID.QIP_DIGSITE_EXAMINER_02, NpcID.QIP_DIGSITE_EXAMINER_03);
 		talkToHaig = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3257, 3448, 0),
 			"Talk to Curator Haig in the Varrock Museum.", unstampedLetter);

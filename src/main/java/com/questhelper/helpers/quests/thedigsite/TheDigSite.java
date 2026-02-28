@@ -503,7 +503,7 @@ public class TheDigSite extends BasicQuestHelper
 		useLiquidOnExpert.addIcon(ItemID.UNIDENTIFIED_LIQUID);
 		mixNitroWithNitrate = new DetailedQuestStep(this, "Mix the nitroglycerin and ammonium nitrate together.", nitro, nitrate);
 		grindCharcoal = new DetailedQuestStep(this, "Grind charcoal with a pestle and mortar.", pestleAndMortar, charcoal);
-		addCharcoal = new DetailedQuestStep(this, "Add charcoal to the vial.", groundCharcoal, mixedChemicals);
+		addCharcoal = new DetailedQuestStep(this, "Add the ground charcoal to the vial.", groundCharcoal, mixedChemicals);
 		addRoot = new DetailedQuestStep(this, "Add arcenia root to the vial.", arcenia, mixedChemicals2);
 		goDownToExplode = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.", chemicalCompound, tinderbox);
 		goDownToExplode2 = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.", tinderbox);

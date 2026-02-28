@@ -52,6 +52,7 @@ import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -218,7 +219,7 @@ public class TheDigSite extends BasicQuestHelper
 	ObjectStep goUpWithTablet;
 	NpcStep useTabletOnExpert;
 
-	DetailedQuestStep syncStep;
+	QuestSyncStep syncStep;
 
 	@Override
 	protected void setupZones()
@@ -519,7 +520,7 @@ public class TheDigSite extends BasicQuestHelper
 		useTabletOnExpert.addIcon(ItemID.ZAROSSTONETABLET);
 		useTabletOnExpert.addSubSteps(goUpWithTablet);
 
-		syncStep = new DetailedQuestStep(this, "Open the quest's journal to sync your current quest state.");
+		syncStep = new QuestSyncStep(this, getQuest(), "Open the quest's journal to sync your current quest state.");
 	}
 
 	@Override

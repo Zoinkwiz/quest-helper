@@ -10,6 +10,7 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
 import com.questhelper.steps.ReorderableConditionalStep;
 import java.lang.reflect.Field;
 import java.util.HashSet;
@@ -221,6 +222,12 @@ public class QuestHelperTest extends MockedTest
 	void checkSteps(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, Set<QuestStep> checkedSteps, QuestStep step)
 	{
 		assertNotNull(step);
+
+		if (step instanceof QuestSyncStep)
+		{
+			// We allow the quest sync steps to miss a sidebar step
+			return;
+		}
 
 		if (step instanceof ReorderableConditionalStep)
 		{

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, Zoinkwiz
+ * Copyright (c) 2026, pajlada <rasmus.karlsson@pajlada.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

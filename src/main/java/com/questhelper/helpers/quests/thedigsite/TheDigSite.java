@@ -213,6 +213,7 @@ public class TheDigSite extends BasicQuestHelper
 	ObjectStep useCompound;
 
 	ObjectStep useTinderbox;
+	DetailedQuestStep waitForBricksToBlowUp;
 	ObjectStep takeTablet;
 	ObjectStep goDownForTablet;
 
@@ -513,6 +514,8 @@ public class TheDigSite extends BasicQuestHelper
 
 		useTinderbox = new ObjectStep(this, ObjectID.DIGBLASTBRICK, new WorldPoint(3378, 9824, 0), "Use a tinderbox on the bricks to the south.", tinderbox.highlighted());
 		useTinderbox.addIcon(ItemID.TINDERBOX);
+		waitForBricksToBlowUp = new DetailedQuestStep(this, new WorldPoint(3378, 9824, 0), "Use a tinderbox on the bricks to the south.");
+		useTinderbox.addSubSteps(waitForBricksToBlowUp);
 		takeTablet = new ObjectStep(this, ObjectID.QIP_DIGSITE_ZAROS_STONE_TABLET_MULTILOC, new WorldPoint(3373, 9746, 0), "Take the stone tablet in the south room.");
 		goDownForTablet = new ObjectStep(this, ObjectID.DIGWINCH1, new WorldPoint(3353, 3417, 0), "Climb down the rope on the west winch.");
 		takeTablet.addSubSteps(goDownForTablet);
@@ -630,6 +633,7 @@ public class TheDigSite extends BasicQuestHelper
 		completeQuest.addStep(and(tablet.alsoCheckBank(), inUndergroundTemple2), goUpWithTablet);
 		completeQuest.addStep(and(tablet.alsoCheckBank()), useTabletOnExpert);
 		completeQuest.addStep(inUndergroundTemple2, takeTablet);
+		completeQuest.addStep(inUndergroundTemple1, waitForBricksToBlowUp);
 		steps.put(8, completeQuest);
 
 		return steps;

@@ -314,6 +314,7 @@ public class QuestHelperTest extends MockedTest
 	{
 		var optedInQuests = Set.of(
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
+			QuestHelperQuest.ANIMAL_MAGNETISM,
 			QuestHelperQuest.DWARF_CANNON,
 			QuestHelperQuest.MERLINS_CRYSTAL,
 			QuestHelperQuest.X_MARKS_THE_SPOT,

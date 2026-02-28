@@ -108,7 +108,6 @@ public class APorcineOfInterest extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		hoof = new ItemRequirement("Sourhog foot", ItemID.PORCINE_SOURHOG_TROPHY);
-		hoof.setTooltip("You can get another from Sourhog's corpse in his cave");
 
 		// Recommended
 		draynorTeleport = new ItemRequirement("Teleport to north Draynor", ItemID.TELETAB_DRAYNOR);
@@ -176,7 +175,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 		steps.put(25, goKillSourhog);
 
 		var getFootSteps = new ConditionalStep(this, enterHoleForFoot);
-		getFootSteps.addStep(hoof, returnToSarah);
+		getFootSteps.addStep(hoof.alsoCheckBank(), returnToSarah);
 		getFootSteps.addStep(inCave, cutOffFoot);
 
 		steps.put(30, getFootSteps);

@@ -315,7 +315,7 @@ public class TheDigSite extends BasicQuestHelper
 			new DialogRequirement("Hey! Excellent!"));
 
 		syncedUp3 = new Conditions(true, LogicType.OR, knowStateAsJustCompletedSecondExam,
-			new WidgetTextRequirement(119, 2, "The Dig Site"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "The Dig Site"),
 			new DialogRequirement("You got all the questions correct, well done!"),
 			new DialogRequirement("Great, I'm getting good at this."));
 
@@ -373,7 +373,7 @@ public class TheDigSite extends BasicQuestHelper
 			new DialogRequirement("OK, I'll see what I can turn up for you."),
 			new DialogRequirement("Well, I have seen people get them from panning"),
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I need to bring her an opal"));
-		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the purple skirt about");
+		WidgetTextRequirement femaleGivenAnswer3Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to bring her an opal");
 		femaleGivenAnswer3Diary.addRange(56, 63);
 		femaleStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Sample preparation: Samples cleaned"),
@@ -386,7 +386,7 @@ public class TheDigSite extends BasicQuestHelper
 			orangeGivenAnswer3Diary);
 
 		WidgetTextRequirement greenGivenAnswer3Diary = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I need to speak to the student in the green top about the");
-		greenGivenAnswer3Diary.addRange(56, 63);
+		greenGivenAnswer3Diary.addRange(54, 63);
 		greenStudentQ3Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Specimen brush use: Brush carefully"),
 			greenGivenAnswer3Diary);

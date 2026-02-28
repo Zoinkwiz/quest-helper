@@ -329,6 +329,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,
+			QuestHelperQuest.THE_DIG_SITE,
 			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 			QuestHelperQuest.SHEEP_SHEARER,

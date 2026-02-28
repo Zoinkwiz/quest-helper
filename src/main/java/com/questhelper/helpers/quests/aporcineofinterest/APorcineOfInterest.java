@@ -249,8 +249,7 @@ public class APorcineOfInterest extends BasicQuestHelper
 	{
 		var sections = new ArrayList<PanelDetails>();
 
-		// TODO: Rename section since it's just a single section
-		sections.add(new PanelDetails("Starting off", List.of(
+		sections.add(new PanelDetails("Helping Sarah", List.of(
 			readNotice,
 			talkToSarah,
 			useRopeOnHole,

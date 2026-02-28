@@ -334,7 +334,7 @@ public class TheDigSite extends BasicQuestHelper
 		orangeGivenAnswer1Diary.addRange(20, 35);
 		talkedToOrangeStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Look what I found!"),
-			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>to find it and return it to him."));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>He has lost his Special Cup"));
 		orangeStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The people eligible to use the digsite are:"),
 			orangeGivenAnswer1Diary);
@@ -344,7 +344,7 @@ public class TheDigSite extends BasicQuestHelper
 
 		talkedToGreenStudent = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Oh wow! You've found it!"),
-			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>to him; maybe someone has picked it up?"));
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>He has lost his Animal Skull"));
 		greenStudentQ1Learnt = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The study of Earth Sciences is:"),
 			greenGivenAnswer1Diary);

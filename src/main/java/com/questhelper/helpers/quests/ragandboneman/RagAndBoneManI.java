@@ -193,9 +193,6 @@ public class RagAndBoneManI extends BasicQuestHelper
 		logLit = new VarbitRequirement(VarbitID.RAG_BOILER, 3, Operation.GREATER_EQUAL);
 		boneReady = new VarbitRequirement(VarbitID.RAG_BOILER, 4);
 
-		// Every time handing in a bone, 2045 iterates from 0->28 1 by 1. Next time you hand in a bone it goes back
-		// to 0 and repeats???
-
 		allBonesPolished = new Conditions(RagBoneGroups.allBonesPolished(RagBoneGroups.getRagBoneIStates()));
 
 		allBonesAtLeastAddedToVinegar = new Conditions(RagBoneGroups.allBonesAddedToVinegar(RagBoneGroups.getRagBoneIStates()));

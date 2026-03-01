@@ -152,8 +152,8 @@ public class LostCity extends BasicQuestHelper
 		goDownHole.addDialogStep("Well that is a risk I will have to take.");
 
 		getAxe = new DetailedQuestStep(this, new WorldPoint(2843, 9760, 0), "Kill zombies until one drops an axe.");
-
 		pickupAxe = new DetailedQuestStep(this, "Pick up the axe", bronzeOrIronAxe);
+		getAxe.addSubSteps(pickupAxe);
 
 		attemptToCutDramen = new ObjectStep(this, ObjectID.DRAMENTREE, new WorldPoint(2861, 9735, 0), "Attempt to cut a branch from the Dramen tree. Be prepared for a Tree Spirit (level 101) to appear, which you can safespot behind nearby fungus.", bronzeOrIronAxe);
 
@@ -164,7 +164,8 @@ public class LostCity extends BasicQuestHelper
 		teleportAway = new DetailedQuestStep(this, "Teleport away with the branches, preferably to Lumbridge.", dramenBranch);
 		teleportAway.addTeleport(teleport);
 
-		getAnotherBranch = new DetailedQuestStep(this, "If you've lost your Dramen branch/staff, you will need to return to Entrana and cut another. You will not need to defeat the Tree Spirit again.");
+		getAnotherBranch = new DetailedQuestStep(this, "If you've lost your Dramen branch/staff, you will need to return to Entrana and cut another. You will not need to defeat the Tree Spirit again.", dramenBranch);
+		goToEntrana.addSubSteps(getAnotherBranch);
 
 		craftBranch = new DetailedQuestStep(this, "Use a knife on the dramen branch to craft a dramen staff.", knife, dramenBranch);
 
@@ -197,9 +198,9 @@ public class LostCity extends BasicQuestHelper
 
 		var finishQuest = new ConditionalStep(this, getAnotherBranch);
 		finishQuest.addStep(and(inDungeon, dramenStaff), teleportAway);
-		finishQuest.addStep(dramenStaff, enterZanaris);
+		finishQuest.addStep(dramenStaff.alsoCheckBank(), enterZanaris);
 		finishQuest.addStep(and(inDungeon, dramenBranch), teleportAway);
-		finishQuest.addStep(dramenBranch, craftBranch);
+		finishQuest.addStep(dramenBranch.alsoCheckBank(), craftBranch);
 		finishQuest.addStep(and(inDungeon, bronzeOrIronAxe), cutDramenBranch);
 		finishQuest.addStep(and(inDungeon, axeNearby), pickupAxe);
 		finishQuest.addStep(inDungeon, getAxe);

@@ -307,7 +307,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 			var rbs = RagBoneState.GIANT_BAT_WING;
 
 			enterKaramjaDungeon = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0), "Kill a giant bat in the Karamja Volcano Dungeon and pick up its bone.");
-			killBat = new NpcStep(this, NpcID.SMALL_BAT, new WorldPoint(2858, 9572, 0), "Kill a giant bat in the Karamja Volcano Dungeon and pick up its bone.", true);
+			killBat = new NpcStep(this, NpcID.BAT, new WorldPoint(2858, 9572, 0), "Kill a giant bat in the Karamja Volcano Dungeon and pick up its bone.", true);
 			killBat.addSubSteps(enterKaramjaDungeon);
 			killBat.conditionToHideInSidebar(rbs.hadBoneItem());
 			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());

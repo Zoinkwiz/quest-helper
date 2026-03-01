@@ -335,6 +335,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
+			QuestHelperQuest.LOST_CITY,
 			QuestHelperQuest.BIOHAZARD,
 			QuestHelperQuest.THE_GOLEM,
 			QuestHelperQuest.DRUIDIC_RITUAL,

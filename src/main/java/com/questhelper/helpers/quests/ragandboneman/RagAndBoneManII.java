@@ -215,7 +215,7 @@ public class RagAndBoneManII extends BasicQuestHelper
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
-		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
+		dustyKey = new KeyringRequirement("Dusty Key", KeyringCollection.DUSTY_KEY).isNotConsumed();
 		dustyKey.canBeObtainedDuringQuest();
 		mirrorShield = new ItemRequirement("Mirror shield", ItemID.SLAYER_MIRROR_SHIELD).isNotConsumed();
 		mirrorShield.addAlternates(ItemID.VIKINGEXILE_V_SHIELD, ItemID.V_SHIELD);

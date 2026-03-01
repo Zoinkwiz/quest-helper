@@ -24,15 +24,10 @@
  */
 package com.questhelper.collections;
 
-import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.QuestHelperConfig;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public enum KeyringCollection
 {
@@ -50,14 +45,18 @@ public enum KeyringCollection
 	ENCHANTED_KEY(ItemID.MAKINGHISTORY_KEY),
 	NEW_KEY(ItemID.MOURNING_EXCAVATION_KEY);
 
+	private final String CONFIG_GROUP = QuestHelperConfig.QUEST_BACKGROUND_GROUP;
+
 	@Getter
 	private final int itemID;
+
 	KeyringCollection(int itemID)
 	{
 		this.itemID = itemID;
 	}
 
-	public String toChatText()
+	/// The name of this key as seen in the chat box.
+	public String chatboxText()
 	{
 		return name().toLowerCase().replaceAll("_", " ");
 	}
@@ -67,19 +66,20 @@ public enum KeyringCollection
 		return name().toLowerCase().replaceAll("_", "");
 	}
 
-	public static List<KeyringRequirement> allKeyRequirements(ConfigManager configManager)
+	public boolean hasKeyOnKeyRing(ConfigManager configManager)
 	{
-		List<KeyringRequirement> keys = new ArrayList<>();
-		for (KeyringCollection keyringCollection : Collections.unmodifiableList(Arrays.asList(values())))
-		{
-			keys.add(new KeyringRequirement(configManager, keyringCollection));
-		}
+		var value = configManager.getRSProfileConfiguration(CONFIG_GROUP, runeliteName());
 
-		return keys;
+		return "true".equals(value);
 	}
 
-	public KeyringRequirement getRequirement(ConfigManager configManager)
+	public void setHasKeyOnKeyRing(ConfigManager configManager, boolean value)
 	{
-		return new KeyringRequirement(configManager, this);
+		if (configManager.getRSProfileKey() == null)
+		{
+			return;
+		}
+
+		configManager.setRSProfileConfiguration(CONFIG_GROUP, runeliteName(), value ? "true" : "false");
 	}
 }

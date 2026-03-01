@@ -1260,7 +1260,7 @@ public enum PatchImplementation
 				if (value == 33)
 				{
 					// Apple tree stump[Clear,Inspect,Guide] 7961
-					return new PatchState(Produce.APPLE, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.APPLE, CropState.STUMP, 0);
 				}
 				if (value == 34)
 				{
@@ -1290,7 +1290,7 @@ public enum PatchImplementation
 				if (value == 60)
 				{
 					// Banana tree stump[Clear,Inspect,Guide] 8019
-					return new PatchState(Produce.BANANA, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.BANANA, CropState.STUMP, 0);
 				}
 				if (value == 61)
 				{
@@ -1330,7 +1330,7 @@ public enum PatchImplementation
 				if (value == 97)
 				{
 					// Orange tree stump[Clear,Inspect,Guide] 8077
-					return new PatchState(Produce.ORANGE, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.ORANGE, CropState.STUMP, 0);
 				}
 				if (value == 98)
 				{
@@ -1360,7 +1360,7 @@ public enum PatchImplementation
 				if (value == 124)
 				{
 					// Curry tree stump[Clear,Inspect,Guide] 8046
-					return new PatchState(Produce.CURRY, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.CURRY, CropState.STUMP, 0);
 				}
 				if (value == 125)
 				{
@@ -1395,7 +1395,7 @@ public enum PatchImplementation
 				if (value == 161)
 				{
 					// Pineapple plant stump[Clear,Inspect,Guide] 7992
-					return new PatchState(Produce.PINEAPPLE, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.PINEAPPLE, CropState.STUMP, 0);
 				}
 				if (value == 162)
 				{
@@ -1425,7 +1425,7 @@ public enum PatchImplementation
 				if (value == 188)
 				{
 					// Papaya tree stump[Clear,Inspect,Guide] 8131
-					return new PatchState(Produce.PAPAYA, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.PAPAYA, CropState.STUMP, 0);
 				}
 				if (value == 189)
 				{
@@ -1460,7 +1460,7 @@ public enum PatchImplementation
 				if (value == 225)
 				{
 					// Palm tree stump[Clear,Inspect,Guide] 8104
-					return new PatchState(Produce.PALM, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.PALM, CropState.STUMP, 0);
 				}
 				if (value == 226)
 				{
@@ -1490,7 +1490,7 @@ public enum PatchImplementation
 				if (value == 252)
 				{
 					// Dragonfruit tree stump[Clear,Inspect,Guide] 34034
-					return new PatchState(Produce.DRAGONFRUIT, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.DRAGONFRUIT, CropState.STUMP, 0);
 				}
 				if (value == 253)
 				{
@@ -1866,7 +1866,7 @@ public enum PatchImplementation
 				if (value == 14)
 				{
 					// Oak tree stump[Clear,Inspect,Guide] 8468
-					return new PatchState(Produce.OAK, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.OAK, CropState.STUMP, 0);
 				}
 				if (value >= 15 && value <= 20)
 				{
@@ -1886,7 +1886,7 @@ public enum PatchImplementation
 				if (value == 23)
 				{
 					// Willow tree stump[Clear,Inspect,Guide] 8489
-					return new PatchState(Produce.WILLOW, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.WILLOW, CropState.STUMP, 0);
 				}
 				if (value >= 24 && value <= 31)
 				{
@@ -1906,7 +1906,7 @@ public enum PatchImplementation
 				if (value == 34)
 				{
 					// Tree stump[Clear,Inspect,Guide] 8445
-					return new PatchState(Produce.MAPLE, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.MAPLE, CropState.STUMP, 0);
 				}
 				if (value >= 35 && value <= 44)
 				{
@@ -1926,7 +1926,7 @@ public enum PatchImplementation
 				if (value == 47)
 				{
 					// Yew tree stump[Clear,Inspect,Guide] 8514
-					return new PatchState(Produce.YEW, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.YEW, CropState.STUMP, 0);
 				}
 				if (value >= 48 && value <= 59)
 				{
@@ -1946,7 +1946,7 @@ public enum PatchImplementation
 				if (value == 62)
 				{
 					// Magic Tree Stump[Clear,Inspect,Guide] 8410
-					return new PatchState(Produce.MAGIC, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.MAGIC, CropState.STUMP, 0);
 				}
 				if (value >= 63 && value <= 72)
 				{
@@ -2149,7 +2149,7 @@ public enum PatchImplementation
 				if (value == 17)
 				{
 					// Tree stump[Clear,Inspect,Guide] 30446
-					return new PatchState(Produce.TEAK, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.TEAK, CropState.STUMP, 0);
 				}
 				if (value >= 18 && value <= 23)
 				{
@@ -2179,7 +2179,7 @@ public enum PatchImplementation
 				if (value == 40)
 				{
 					// Mahogany tree stump[Clear,Inspect,Guide] 30418
-					return new PatchState(Produce.MAHOGANY, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.MAHOGANY, CropState.STUMP, 0);
 				}
 				if (value >= 41 && value <= 47)
 				{
@@ -2209,7 +2209,7 @@ public enum PatchImplementation
 				if (value == 65)
 				{
 					// Camphor tree stump[Clear,Inspect,Guide] 58724
-					return new PatchState(Produce.CAMPHOR, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.CAMPHOR, CropState.STUMP, 0);
 				}
 				if (value >= 66 && value <= 72)
 				{
@@ -2239,7 +2239,7 @@ public enum PatchImplementation
 				if (value == 90)
 				{
 					// Ironwood tree stump[Clear,Inspect,Guide] 58755
-					return new PatchState(Produce.IRONWOOD, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.IRONWOOD, CropState.STUMP, 0);
 				}
 				if (value >= 91 && value <= 97)
 				{
@@ -2269,7 +2269,7 @@ public enum PatchImplementation
 				if (value == 116)
 				{
 					// Rosewood tree stump[Clear,Inspect,Guide] 58786
-					return new PatchState(Produce.ROSEWOOD, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.ROSEWOOD, CropState.STUMP, 0);
 				}
 				if (value >= 117 && value <= 124)
 				{
@@ -2750,7 +2750,7 @@ public enum PatchImplementation
 				if (value == 28)
 				{
 					// Celastrus tree stump[Clear,Inspect,Guide] 33721
-					return new PatchState(Produce.CELASTRUS, CropState.HARVESTABLE, 0);
+					return new PatchState(Produce.CELASTRUS, CropState.STUMP, 0);
 				}
 				if (value >= 29 && value <= 255)
 				{

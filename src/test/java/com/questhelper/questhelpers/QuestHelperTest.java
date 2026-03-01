@@ -187,17 +187,31 @@ public class QuestHelperTest extends MockedTest
 
 		questOverviewPanel.updateHighlight(this.client, step); // getactivestep?
 
+		var isAllCollapsed = questOverviewPanel.isAllCollapsed();
+		if (isAllCollapsed)
+		{
+			// Before failing this step, try again but with the puzzle helper disabled.
+			// This can be useful for steps that want to show the non-solving step standalone if all the solving steps are hidden.
+			when(questHelperConfig.solvePuzzles()).thenReturn(false);
+
+			questOverviewPanel.updateHighlight(this.client, step);
+			System.out.format("Step %s failed initially when puzzle solver was enabled. Try again without puzzle solver\n", text);
+			isAllCollapsed = questOverviewPanel.isAllCollapsed();
+
+			when(questHelperConfig.solvePuzzles()).thenReturn(true);
+		}
+
 		// All steps must have at least one category/step that's erected
 		// If all panels are collapsed, it means the step this fails on needs to be either:
 		// 1. Added as a substep to another step
 		// 2. Added as a panel step
 		if (shouldError)
 		{
-			assertFalse(questOverviewPanel.isAllCollapsed(), String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
+			assertFalse(isAllCollapsed, String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
 		}
 		else
 		{
-			if (questOverviewPanel.isAllCollapsed())
+			if (isAllCollapsed)
 			{
 				System.out.format("For quest %s, step '%s' is missing sub steps or should be added to panel\n", helper.getQuest(), text);
 			}
@@ -231,7 +245,8 @@ public class QuestHelperTest extends MockedTest
 		else if (step instanceof OwnerStep)
 		{
 			helper.startUpStep(step);
-			for (var innerStep : ((OwnerStep) step).getSteps())
+			var steps = ((OwnerStep) step).getSteps();
+			for (var innerStep : steps)
 			{
 				if (checkedSteps.contains(innerStep))
 				{
@@ -302,11 +317,13 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.DWARF_CANNON,
 			QuestHelperQuest.MERLINS_CRYSTAL,
 			QuestHelperQuest.X_MARKS_THE_SPOT,
+			QuestHelperQuest.SHADOW_OF_THE_STORM,
 			QuestHelperQuest.PANDEMONIUM,
 			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,
 			QuestHelperQuest.ROMEO__JULIET,
+			QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
 			QuestHelperQuest.BIOHAZARD,
@@ -322,26 +339,34 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.DEATH_ON_THE_ISLE,
 			QuestHelperQuest.TREE_GNOME_VILLAGE,
+			QuestHelperQuest.SHILO_VILLAGE,
 			QuestHelperQuest.GERTRUDES_CAT,
 			QuestHelperQuest.MONKS_FRIEND,
 			QuestHelperQuest.DADDYS_HOME,
 			QuestHelperQuest.GOBLIN_DIPLOMACY,
 			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
+			QuestHelperQuest.THE_KNIGHTS_SWORD,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
+			QuestHelperQuest.JUNGLE_POTION,
 			QuestHelperQuest.ARDOUGNE_EASY,
 			QuestHelperQuest.TROUBLED_TORTUGANS,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.DEMON_SLAYER,
 			QuestHelperQuest.DORICS_QUEST,
+			QuestHelperQuest.RECRUITMENT_DRIVE,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
+			QuestHelperQuest.ONE_SMALL_FAVOUR,
+			QuestHelperQuest.SCORPION_CATCHER,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.HOLY_GRAIL,
 			QuestHelperQuest.PRIEST_IN_PERIL,
+			QuestHelperQuest.THE_LOST_TRIBE,
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,
 			QuestHelperQuest.VAMPYRE_SLAYER,
 			QuestHelperQuest.HERB_RUN
+			QuestHelperQuest.THE_IDES_OF_MILK
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest

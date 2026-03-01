@@ -185,6 +185,7 @@ public class WhatLiesBelow extends BasicQuestHelper
 
 		talkToSurok = new NpcStep(this, NpcID.SUROK_SUROK, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.", letterToSurok);
 		talkToSurokNoLetter = new NpcStep(this, NpcID.WGS_SUROK_TRANSITION, new WorldPoint(3211, 3493, 0), "Talk to Surok Magis in the Varrock Library.");
+		((NpcStep) talkToSurokNoLetter).addAlternateNpcs(NpcID.SUROK_SUROK_TYPE1);
 		talkToSurokNoLetter.addDialogSteps("Go on, then!", "Go on then!");
 
 		talkToSurok.addSubSteps(talkToSurokNoLetter);

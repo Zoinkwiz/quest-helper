@@ -425,7 +425,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 			ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
-		newKey = new KeyringRequirement("New Key", configManager, KeyringCollection.NEW_KEY);
+		newKey = new KeyringRequirement("New Key", KeyringCollection.NEW_KEY);
 		newKey.setTooltip("You can get another from Essyllt's desk");
 
 		edernsJournal = new ItemRequirement("Edern's journal", ItemID.MOURNING_EDERNS_JOURNAL);

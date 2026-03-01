@@ -77,6 +77,8 @@ public class HerbRun extends ComplexStateQuestHelper
 
 	// Recommended items
 	ItemRequirement compost;
+	ItemRequirement enoughCompost;
+	ItemRequirement bottomlessBucket;
 	ItemRequirement ectophial;
 	ItemRequirement magicSec;
 	ItemRequirement explorerRing2;
@@ -87,7 +89,6 @@ public class HerbRun extends ComplexStateQuestHelper
 	ItemRequirement icyBasalt;
 	ItemRequirement stonyBasalt;
 	ItemRequirement farmingGuildTeleport;
-	ItemRequirement hosidiusHouseTeleport;
 	ItemRequirement hunterWhistle;
 	ItemRequirement harmonyTeleport;
 	ItemRequirement gracefulHood;
@@ -109,6 +110,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	QuestRequirement accessToTrollStronghold;
 	SkillRequirement accessToFarmingGuildPatch;
 	QuestRequirement accessToVarlamore;
+	QuestRequirement accessToMorytania;
 	RuneliteRequirement unlockedBarbarianPlanting;
 
 	ManualRequirement ardougneEmpty;
@@ -220,6 +222,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		accessToWeiss = new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED);
 		accessToTrollStronghold = new QuestRequirement(QuestHelperQuest.MY_ARMS_BIG_ADVENTURE, QuestState.FINISHED);
 		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
+		accessToMorytania = new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED);
 
 		unlockedBarbarianPlanting = new RuneliteRequirement(configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey());
 
@@ -247,6 +250,10 @@ public class HerbRun extends ComplexStateQuestHelper
 		}
 		compost = new ItemRequirement("Compost", ItemCollections.COMPOST);
 		compost.setDisplayMatchedItemName(true);
+
+		bottomlessBucket = new ItemRequirement("Bottomless Compost Bucket", ItemID.BOTTOMLESS_COMPOST_BUCKET_FILLED);
+		enoughCompost = new ItemRequirements(LogicType.OR, "Compost or bottomless bucket", bottomlessBucket, compost);
+
 		ectophial = new ItemRequirement("Ectophial", ItemID.ECTOPHIAL).showConditioned(new QuestRequirement(QuestHelperQuest.GHOSTS_AHOY, QuestState.FINISHED));
 		ectophial.addAlternates(ItemID.ECTOPHIAL_EMPTY);
 		magicSec = new ItemRequirement("Magic secateurs", ItemID.FAIRY_ENCHANTED_SECATEURS).showConditioned(new QuestRequirement(QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS, QuestState.FINISHED));
@@ -256,20 +263,19 @@ public class HerbRun extends ComplexStateQuestHelper
 		ardyCloak2.addAlternates(ItemID.ARDY_CAPE_HARD, ItemID.ARDY_CAPE_ELITE);
 		xericsTalisman = new ItemRequirement("Xeric's talisman", ItemID.XERIC_TALISMAN);
 
-		hosidiusHouseTeleport = new ItemRequirement("Teleport to Hosidius House", ItemID.NZONE_TELETAB_KOUREND);
-		hosidiusHouseTeleport.addAlternates(ItemID.XERIC_TALISMAN);
+		xericsTalisman.addAlternates(ItemID.NZONE_TELETAB_KOUREND);
 
 		var catherbyRunes = new ItemRequirements("Catherby teleport runes", new ItemRequirement("Law rune",
 				ItemID.LAWRUNE), new ItemRequirement("Air rune", ItemID.AIRRUNE, 5));
 		var catherbyTablet = new ItemRequirement("Catherby tablet", ItemID.LUNAR_TABLET_CATHERBY_TELEPORT);
 
-		catherbyTeleport = new ItemRequirements(LogicType.OR, "Catherby teleport", catherbyRunes, catherbyTablet);
+		catherbyTeleport = new ItemRequirements(LogicType.OR, "Catherby teleport", catherbyTablet, catherbyRunes);
 
 		var trollheimRunes = new ItemRequirements("Trollheim teleport runes", new ItemRequirement("Law rune",
 				ItemID.LAWRUNE, 2), new ItemRequirement("Fire rune", ItemID.FIRERUNE, 2));
 		var trollheimTablet = new ItemRequirement("Trollheim tablet", ItemID.NZONE_TELETAB_TROLLHEIM);
-		trollheimTeleport = new ItemRequirements(LogicType.OR, "Trollheim teleport", trollheimRunes, trollheimTablet)
-				.hideConditioned(new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED));
+		trollheimTeleport = new ItemRequirements(LogicType.OR, "Trollheim teleport", trollheimTablet, trollheimRunes)
+				.showConditioned(new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED));
 
 		icyBasalt = new ItemRequirement("Icy basalt", ItemID.WEISS_TELEPORT_BASALT).showConditioned(new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED));
 		stonyBasalt = new ItemRequirement("Stony basalt", ItemID.STRONGHOLD_TELEPORT_BASALT).showConditioned(new QuestRequirement(QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM, QuestState.FINISHED));
@@ -279,7 +285,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		farmingGuildTeleport.addAlternates(ItemCollections.SKILLS_NECKLACES);
 		farmingGuildTeleport.addAlternates(ItemCollections.FAIRY_STAFF);
 
-		harmonyTeleport = new ItemRequirement("Harmony Teleport", ItemID.TELETAB_HARMONY);
+		harmonyTeleport = new ItemRequirement("Harmony Teleport", ItemID.TELETAB_HARMONY).showConditioned(accessToHarmony);
 
 		hunterWhistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_PERFECTED).showConditioned(accessToVarlamore);
 		hunterWhistle.addAlternates(ItemID.HG_QUETZALWHISTLE_BASIC);
@@ -370,7 +376,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		faladorPlant.addIcon(ItemID.RANARR_SEED);
 		faladorPatch.addSubSteps(faladorPlant);
 
-		hosidiusPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Plant your seeds into the Hosidius patch.", hosidiusHouseTeleport);
+		hosidiusPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_6, new WorldPoint(1738, 3550, 0), "Plant your seeds into the Hosidius patch.", xericsTalisman);
 		hosidiusPlant.addIcon(ItemID.RANARR_SEED);
 		hosidiusPatch.addSubSteps(hosidiusPlant);
 
@@ -385,6 +391,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		harmonyPatch.addSubSteps(harmonyPlant);
 
 		morytaniaPlant = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_4, new WorldPoint(3605, 3529, 0), "Plant your seeds into the Morytania patch.", ectophial);
+		morytaniaPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToMorytania));
 		morytaniaPlant.addIcon(ItemID.RANARR_SEED);
 		morytaniaPatch.addSubSteps(morytaniaPlant);
 
@@ -423,8 +430,8 @@ public class HerbRun extends ComplexStateQuestHelper
 		steps.addStep(catherbyReady, catherbyPatch);
 		steps.addStep(catherbyEmpty, catherbyPlant);
 
-		steps.addStep(morytaniaReady, morytaniaPatch);
-		steps.addStep(morytaniaEmpty, morytaniaPlant);
+		steps.addStep(new Conditions(accessToMorytania, morytaniaReady), morytaniaPatch);
+		steps.addStep(new Conditions(accessToMorytania, morytaniaEmpty), morytaniaPlant);
 
 		steps.addStep(hosidiusReady, hosidiusPatch);
 		steps.addStep(hosidiusEmpty, hosidiusPlant);
@@ -566,7 +573,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(compost, ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, hosidiusHouseTeleport, catherbyTeleport,
+		return Arrays.asList(enoughCompost, ectophial, magicSec, explorerRing2, ardyCloak2, xericsTalisman, catherbyTeleport,
 				trollheimTeleport, icyBasalt, stonyBasalt, farmingGuildTeleport, hunterWhistle, harmonyTeleport,  gracefulOutfit, farmersOutfit);
 	}
 
@@ -588,11 +595,11 @@ public class HerbRun extends ComplexStateQuestHelper
 				new PanelDetails("Falador", Collections.singletonList(faladorPatch)).withId(1),
 				new PanelDetails("Ardougne", Collections.singletonList(ardougnePatch)).withId(2),
 				new PanelDetails("Catherby", Collections.singletonList(catherbyPatch)).withId(3),
-				new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4),
+				new PanelDetails("Morytania", Collections.singletonList(morytaniaPatch)).withId(4).withHideCondition(nor(accessToMorytania)),
 				new PanelDetails("Hosidius", Collections.singletonList(hosidiusPatch)).withId(5),
-				new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6),
-				new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7),
-				new PanelDetails("Weiss", Collections.singletonList(weissPatch)).withId(8),
+				new PanelDetails("Varlamore", Collections.singletonList(varlamorePatch)).withId(6).withHideCondition(nor(accessToVarlamore)),
+				new PanelDetails("Troll Stronghold", Collections.singletonList(trollStrongholdPatch)).withId(7).withHideCondition(nor(accessToTrollStronghold)),
+				new PanelDetails("Weiss", Collections.singletonList(weissPatch)).withId(8).withHideCondition(nor(accessToWeiss)),
 				new PanelDetails("Harmony Island", Collections.singletonList(harmonyPatch)).withId(9).withHideCondition(nor(accessToHarmony))
 		);
 		allSteps.add(farmRunSidebar);

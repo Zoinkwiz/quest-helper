@@ -246,6 +246,7 @@ import com.questhelper.helpers.quests.thegrandtree.TheGrandTree;
 import com.questhelper.helpers.quests.thegreatbrainrobbery.TheGreatBrainRobbery;
 import com.questhelper.helpers.quests.thehandinthesand.TheHandInTheSand;
 import com.questhelper.helpers.quests.theheartofdarkness.TheHeartOfDarkness;
+import com.questhelper.helpers.quests.theidesofmilk.TheIdesOfMilk;
 import com.questhelper.helpers.quests.theknightssword.TheKnightsSword;
 import com.questhelper.helpers.quests.thelosttribe.TheLostTribe;
 import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
@@ -303,6 +304,7 @@ public enum QuestHelperQuest
 	ERNEST_THE_CHICKEN(new ErnestTheChicken(), Quest.ERNEST_THE_CHICKEN, QuestVarPlayer.QUEST_ERNEST_THE_CHICKEN, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
 	GOBLIN_DIPLOMACY(new GoblinDiplomacy(), Quest.GOBLIN_DIPLOMACY, QuestVarbits.QUEST_GOBLIN_DIPLOMACY, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
 	IMP_CATCHER(new ImpCatcher(), Quest.IMP_CATCHER, QuestVarPlayer.QUEST_IMP_CATCHER, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	THE_IDES_OF_MILK(new TheIdesOfMilk(), Quest.THE_IDES_OF_MILK, QuestVarbits.QUEST_THE_IDES_OF_MILK, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
 	THE_KNIGHTS_SWORD(new TheKnightsSword(), Quest.THE_KNIGHTS_SWORD, QuestVarPlayer.QUEST_THE_KNIGHTS_SWORD, QuestDetails.Type.F2P, QuestDetails.Difficulty.INTERMEDIATE),
 	MISTHALIN_MYSTERY(new MisthalinMystery(), Quest.MISTHALIN_MYSTERY, QuestVarbits.QUEST_MISTHALIN_MYSTERY, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
 	PIRATES_TREASURE(new PiratesTreasure(), Quest.PIRATES_TREASURE, QuestVarPlayer.QUEST_PIRATES_TREASURE, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),

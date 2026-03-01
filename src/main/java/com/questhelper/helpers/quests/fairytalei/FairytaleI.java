@@ -208,10 +208,11 @@ public class FairytaleI extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToMartin = new NpcStep(this, NpcID.MARTIN_THE_MASTER_FARMER, new WorldPoint(3078, 3256, 0),
-			"Talk to Martin in the Draynor Market.");
-		talkToMartin.addDialogSteps("Ask about the quest.", "Anything I can help with?", "Now that I think about it, " +
-			"you're right!");
+		talkToMartin = new NpcStep(this, NpcID.MARTIN_THE_MASTER_FARMER, new WorldPoint(3078, 3256, 0), "Talk to Martin in the Draynor Market.");
+		talkToMartin.addDialogStep("Ask about the quest.");
+		talkToMartin.addDialogStep("Anything I can help with?");
+		talkToMartin.addDialogStep("Yes.");
+
 		talkToFarmers = new NpcStep(this, NpcID.ELSTAN,
 			"Talk to 5 farmers, then return to Martin in Draynor Village. The recommended 5 are:");
 		talkToFarmers.addText("If you don't already have one, a secateurs can be purchased from Sarah in South Falador Farm");

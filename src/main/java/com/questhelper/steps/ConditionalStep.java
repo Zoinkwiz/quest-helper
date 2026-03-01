@@ -42,6 +42,7 @@ import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -268,6 +269,17 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		dialogConditions.forEach(requirement -> requirement.validateCondition(chatMessage));
 
 		handleChildRequirementValidation(step -> step.handleChatMessage(chatMessage, parentDefinedRecursion), parentDefinedRecursion);
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed event)
+	{
+		final var DIALOG_GROUP_IDS = List.of(InterfaceID.CHAT_LEFT, InterfaceID.CHAT_RIGHT, InterfaceID.OBJECTBOX);
+		if (!DIALOG_GROUP_IDS.contains(event.getGroupId())) return;
+
+		clientThread.invokeAtTickEnd(() -> {
+			dialogConditions.forEach(requirement -> requirement.validateActiveWidget(client));
+		});
 	}
 
 	@Subscribe

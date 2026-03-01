@@ -32,7 +32,8 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
-import static com.questhelper.requirements.util.LogicHelper.nor;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -51,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -63,6 +63,7 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.util.Text;
 
 public class RagAndBoneManI extends BasicQuestHelper
 {
@@ -124,7 +125,6 @@ public class RagAndBoneManI extends BasicQuestHelper
 	NpcStep killMonkey;
 	ObjectStep enterKaramjaDungeon;
 	NpcStep killBat;
-	ItemStep pickupBone;
 	ConditionalStep collectBonesSteps;
 
 	NpcStep talkToFortunato;
@@ -140,8 +140,6 @@ public class RagAndBoneManI extends BasicQuestHelper
 	NpcStep talkToFinish;
 	ConditionalStep preparingBonesSteps;
 	ConditionalStep cookingSteps;
-
-	LinkedHashMap<RagBoneState, QuestStep> stepsForRagAndBoneManI = new LinkedHashMap<>();
 
 	@Override
 	protected void setupZones()
@@ -216,47 +214,112 @@ public class RagAndBoneManI extends BasicQuestHelper
 		talkToOddOldMan = new NpcStep(this, NpcID.RAG_ODD_OLD_MAN, new WorldPoint(3362, 3502, 0), "Talk to the Odd Old Man east of Varrock.");
 		talkToOddOldMan.addDialogSteps("Anything I can do to help?", "Yes.");
 
-		killGiantRat = new NpcStep(this, NpcID.GIANTRAT, new WorldPoint(3289, 3373, 0), "Kill a giant rat south east of Varrock.", true);
-		killGiantRat.addAlternateNpcs(NpcID.GIANTRAT2, NpcID.GIANTRAT3, NpcID.GIANTRAT_GREY, NpcID.GIANTRAT_GREY2, NpcID.GIANTRAT_GREY3, NpcID.GIANTRAT1, NpcID.GIANTRAT1_2, NpcID.GIANTRAT1_3);
-
-		killUnicorn = new NpcStep(this, NpcID.UNICORN, new WorldPoint(3285, 3351, 0), "Kill the unicorn south east of Varrock.", true);
-
-		killBear = new NpcStep(this, NpcID.DARKBEAR, new WorldPoint(3295, 3354, 0), "Kill the bear south east of Varrock.", true);
-
-		killRam = new NpcStep(this, NpcID.RAMSHEERED, new WorldPoint(3253, 3350, 0), "Kill a ram south of Varrock.", true);
-		killRam.addAlternateNpcs(NpcID.RAMUNSHEERED, NpcID.RAMUNSHEERED2, NpcID.RAMUNSHEERED3, NpcID.RAMUNSHEEREDSHAGGY);
-
-		killGoblin = new NpcStep(this, NpcID.GOBLIN_RED_SOLDIER_2, new WorldPoint(3252, 3251, 0), "Kill a goblin east of Lumbridge.", true);
-		killGoblin.addAlternateNpcs(NpcID.GOBLIN_UNARMED_MELEE_1, NpcID.GOBLIN_UNARMED_MELEE_2, NpcID.GOBLIN_UNARMED_MELEE_3, NpcID.GOBLIN_UNARMED_MELEE_4, NpcID.GOBLIN_UNARMED_MELEE_5, NpcID.GOBLIN_UNARMED_MELEE_6, NpcID.GOBLIN_UNARMED_MELEE_7, NpcID.GOBLIN_UNARMED_MELEE_8, NpcID.GOBLIN_UNARMED_MELEE_IN_1, NpcID.GOBLIN_UNARMED_MELEE_IN_2, NpcID.GOBLIN_UNARMED_MELEE_IN_3, NpcID.GOBLIN_UNARMED_MELEE_IN_4, NpcID.GOBLIN_UNARMED_MELEE_IN_5, NpcID.GOBLIN_UNARMED_MELEE_IN_6, NpcID.GOBLIN_UNARMED_MELEE_IN_7, NpcID.GOBLIN_UNARMED_MELEE_IN_8, NpcID.GOBLIN_ARMED, NpcID.GOBLIN_HELMET, NpcID.GOBLIN_RED_SOLDIER_1, NpcID.GOBLIN_GREEN_SOLDIER_1);
-
-		killFrog = new NpcStep(this, NpcID.MEDIUM_FROG_NODROPS, new WorldPoint(3216, 3182, 0), "Kill a big frog in the Lumbridge Swamp.", true);
-
-		killMonkey = new NpcStep(this, NpcID.MONKEY, new WorldPoint(2886, 3167, 0), "Kill a monkey on Karamja.", true);
-
-		enterKaramjaDungeon = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0), "Kill a giant bat in the Karamja Volcano Dungeon.");
-		killBat = new NpcStep(this, NpcID.SMALL_BAT, new WorldPoint(2858, 9572, 0), "Kill a giant bat in the Karamja Volcano Dungeon.", true);
-		killBat.addSubSteps(enterKaramjaDungeon);
-
-		var killBatSteps = new ConditionalStep(this, enterKaramjaDungeon);
-		killBatSteps.addStep(inKaramjaDungeon, killBat);
-
-		stepsForRagAndBoneManI.put(RagBoneState.GIANT_RAT_BONE, killGiantRat);
-		stepsForRagAndBoneManI.put(RagBoneState.UNICORN_BONE, killUnicorn);
-		stepsForRagAndBoneManI.put(RagBoneState.BEAR_RIBS, killBear);
-		stepsForRagAndBoneManI.put(RagBoneState.RAM_SKULL, killRam);
-
-		stepsForRagAndBoneManI.put(RagBoneState.GOBLIN_SKULL, killGoblin);
-		stepsForRagAndBoneManI.put(RagBoneState.BIG_FROG_LEG, killFrog);
-		stepsForRagAndBoneManI.put(RagBoneState.MONKEY_PAW, killMonkey);
-		stepsForRagAndBoneManI.put(RagBoneState.GIANT_BAT_WING, killBatSteps);
-
-		pickupBone = new ItemStep(this, "Pickup the bone.");
-		pickupBone.addItemRequirements(RagBoneGroups.pickupBones(RagBoneGroups.getRagBoneIStates()));
-		pickupBone.setShowInSidebar(false);
-
 		collectBonesSteps = new ConditionalStep(this, questSyncStep);
-		collectBonesSteps.addStep(boneNearby, pickupBone);
-		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> collectBonesSteps.addStep(nor(state.hadBoneItem()), step));
+
+		{
+			var rbs = RagBoneState.GIANT_RAT_BONE;
+
+			killGiantRat = new NpcStep(this, NpcID.GIANTRAT, new WorldPoint(3289, 3373, 0), "Kill a giant rat south east of Varrock and pick up its bone.", true);
+			killGiantRat.addAlternateNpcs(NpcID.GIANTRAT2, NpcID.GIANTRAT3, NpcID.GIANTRAT_GREY, NpcID.GIANTRAT_GREY2, NpcID.GIANTRAT_GREY3, NpcID.GIANTRAT1, NpcID.GIANTRAT1_2, NpcID.GIANTRAT1_3);
+			killGiantRat.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killGiantRat.addSubSteps(takeBones);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killGiantRat);
+		}
+
+		{
+			var rbs = RagBoneState.UNICORN_BONE;
+
+			killUnicorn = new NpcStep(this, NpcID.UNICORN, new WorldPoint(3285, 3351, 0), "Kill the unicorn south east of Varrock and pick up its bone.", true);
+			killUnicorn.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killUnicorn.addSubSteps(takeBones);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killUnicorn);
+		}
+
+		{
+			var rbs = RagBoneState.BEAR_RIBS;
+
+			killBear = new NpcStep(this, NpcID.DARKBEAR, new WorldPoint(3295, 3354, 0), "Kill the bear south east of Varrock and pick up its bone.", true);
+			killBear.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killBear.addSubSteps(takeBones);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killBear);
+		}
+
+		{
+			var rbs = RagBoneState.RAM_SKULL;
+
+			killRam = new NpcStep(this, NpcID.RAMSHEERED, new WorldPoint(3253, 3350, 0), "Kill a ram south of Varrock and pick up its bone.", true);
+			killRam.addAlternateNpcs(NpcID.RAMUNSHEERED, NpcID.RAMUNSHEERED2, NpcID.RAMUNSHEERED3, NpcID.RAMUNSHEEREDSHAGGY);
+			killRam.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killRam.addSubSteps(takeBones);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killRam);
+		}
+
+		{
+			var rbs = RagBoneState.GOBLIN_SKULL;
+
+			killGoblin = new NpcStep(this, NpcID.GOBLIN_RED_SOLDIER_2, new WorldPoint(3252, 3251, 0), "Kill a goblin east of Lumbridge and pick up its bone.", true);
+			killGoblin.addAlternateNpcs(NpcID.GOBLIN_UNARMED_MELEE_1, NpcID.GOBLIN_UNARMED_MELEE_2, NpcID.GOBLIN_UNARMED_MELEE_3, NpcID.GOBLIN_UNARMED_MELEE_4, NpcID.GOBLIN_UNARMED_MELEE_5, NpcID.GOBLIN_UNARMED_MELEE_6, NpcID.GOBLIN_UNARMED_MELEE_7, NpcID.GOBLIN_UNARMED_MELEE_8, NpcID.GOBLIN_UNARMED_MELEE_IN_1, NpcID.GOBLIN_UNARMED_MELEE_IN_2, NpcID.GOBLIN_UNARMED_MELEE_IN_3, NpcID.GOBLIN_UNARMED_MELEE_IN_4, NpcID.GOBLIN_UNARMED_MELEE_IN_5, NpcID.GOBLIN_UNARMED_MELEE_IN_6, NpcID.GOBLIN_UNARMED_MELEE_IN_7, NpcID.GOBLIN_UNARMED_MELEE_IN_8, NpcID.GOBLIN_ARMED, NpcID.GOBLIN_HELMET, NpcID.GOBLIN_RED_SOLDIER_1, NpcID.GOBLIN_GREEN_SOLDIER_1);
+			killGoblin.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killGoblin.addSubSteps(takeBones);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killGoblin);
+		}
+
+		{
+			var rbs = RagBoneState.BIG_FROG_LEG;
+
+			killFrog = new NpcStep(this, NpcID.MEDIUM_FROG_NODROPS, new WorldPoint(3216, 3182, 0), "Kill a big frog in the Lumbridge Swamp and pick up its bone.", true);
+			killFrog.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killFrog.addSubSteps(takeBones);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killFrog);
+		}
+
+		{
+			var rbs = RagBoneState.MONKEY_PAW;
+
+			killMonkey = new NpcStep(this, NpcID.MONKEY, new WorldPoint(2886, 3167, 0), "Kill a monkey on Karamja and pick up its bone.", true);
+			killMonkey.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killMonkey.addSubSteps(takeBones);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killMonkey);
+		}
+
+		{
+			var rbs = RagBoneState.GIANT_BAT_WING;
+
+			enterKaramjaDungeon = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0), "Kill a giant bat in the Karamja Volcano Dungeon and pick up its bone.");
+			killBat = new NpcStep(this, NpcID.SMALL_BAT, new WorldPoint(2858, 9572, 0), "Kill a giant bat in the Karamja Volcano Dungeon and pick up its bone.", true);
+			killBat.addSubSteps(enterKaramjaDungeon);
+			killBat.conditionToHideInSidebar(rbs.hadBoneItem());
+			var takeBones = new ItemStep(this, "Pick up the " + Text.titleCase(rbs) + ".", rbs.getBoneItem());
+			killBat.addSubSteps(takeBones);
+
+			var killBatSteps = new ConditionalStep(this, enterKaramjaDungeon);
+			killBatSteps.addStep(inKaramjaDungeon, killBat);
+
+			collectBonesSteps.addStep(and(rbs.boneNearby(), not(rbs.hadBoneItem())), takeBones);
+			collectBonesSteps.addStep(not(rbs.hadBoneItem()), killBatSteps);
+		}
+
 		collectBonesSteps.setLockingCondition(hadAllBones);
 
 		talkToFortunato = new NpcStep(this, NpcID.RAG_WINE_MERCHANT, new WorldPoint(3085, 3251, 0),
@@ -404,8 +467,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 			killGoblin,
 			killFrog,
 			killMonkey,
-			killBat,
-			pickupBone
+			killBat
 		), List.of(
 			// no requirements
 		), List.of(
@@ -450,12 +512,13 @@ public class RagAndBoneManI extends BasicQuestHelper
 	{
 		var winesNeededQuantity = new AtomicInteger(8);
 
-		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> {
+		for (var state : RagBoneState.values())
+		{
 			if (state.hadBoneInVinegarItem().check(client))
 			{
 				winesNeededQuantity.getAndDecrement();
 			}
-		});
+		}
 
 		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
 

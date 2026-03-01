@@ -26,6 +26,7 @@ package com.questhelper.helpers.quests.ragandboneman;
 
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.Operation;
@@ -154,5 +155,10 @@ public enum RagBoneState
 	public Requirement handedInBone()
 	{
 		return hadFromWidgets;
+	}
+
+	public ItemOnTileRequirement boneNearby()
+	{
+		return new ItemOnTileRequirement(boneItem);
 	}
 }

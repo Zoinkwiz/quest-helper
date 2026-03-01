@@ -430,6 +430,7 @@ public class FairytaleI extends BasicQuestHelper
 			enterZanarisForFight,
 			enterTanglefootRoom,
 			killTanglefoot,
+			pickUpSecateurs,
 			talkToGodfatherToFinish
 		), List.of(
 			dramenOrLunarStaff,

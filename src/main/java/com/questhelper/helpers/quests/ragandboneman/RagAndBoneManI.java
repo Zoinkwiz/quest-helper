@@ -32,6 +32,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -39,7 +40,21 @@ import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
@@ -49,83 +64,91 @@ import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.questhelper.requirements.util.LogicHelper.nor;
-
 public class RagAndBoneManI extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement coins, pots, logs, tinderbox;
+	// Required items
+	ItemRequirement coins;
+	ItemRequirement pots;
+	ItemRequirement logs;
+	ItemRequirement tinderbox;
 
-	//Items Recommended
-	ItemRequirement varrockTeleport, lumbridgeTeleport, digsitePendant,
-		draynorTeleport, karamjaTeleport, dramenStaff, combatGear;
+	// Recommended items
+	ItemRequirement combatGear;
+	ItemRequirement varrockTeleport;
+	ItemRequirement lumbridgeTeleport;
+	ItemRequirement digsitePendant;
+	ItemRequirement draynorTeleport;
+	ItemRequirement karamjaTeleport;
+	// TODO: Remove this unused requirement
+	ItemRequirement dramenStaff;
 
-	ItemRequirement jugOfVinegar, jugOfVinegarNeeded, potOfVinegar, potOfVinegarNeeded, potNeeded;
+	// Mid-quest item requirements
+	ItemRequirement jugOfVinegar;
+	ItemRequirement jugOfVinegarNeeded;
+	ItemRequirement potOfVinegar;
+	ItemRequirement potOfVinegarNeeded;
+	ItemRequirement potNeeded;
 
-	DetailedQuestStep talkToOddOldMan, killGiantRat, killUnicorn, killBear, killRam, killGoblin, killFrog, killMonkey
-		, killBat, pickupBone;
+	// Zones
+	Zone swamp;
+	Zone junaRoom;
+	Zone karamjaDungeon;
 
-	DetailedQuestStep enterKaramjaDungeon;
+	// Miscellaneous requirements
+	Requirement inSwamp;
+	Requirement inJunaRoom;
+	Requirement inKaramjaDungeon;
+	Requirement addedRope;
+	Requirement boneNearby;
+	Requirement hadAllBones;
+	Requirement talkedToFortunato;
+	Requirement hadVinegar;
+	Requirement allBonesAtLeastAddedToVinegar;
+	Requirement allBonesPolished;
+	Requirement logAdded;
+	Requirement boneAddedToBoiler;
+	Requirement logLit;
+	Requirement boneReady;
 
-	DetailedQuestStep talkToFortunato, makePotOfVinegar, useBonesOnVinegar;
+	// Steps
+	QuestSyncStep questSyncStep;
 
-	DetailedQuestStep placeLogs, useBoneOnBoiler, lightLogs, waitForCooking, removePot, repeatSteps;
+	NpcStep talkToOddOldMan;
 
-	DetailedQuestStep giveBones, talkToFinish;
+	NpcStep killGiantRat;
+	NpcStep killUnicorn;
+	NpcStep killBear;
+	NpcStep killRam;
+	NpcStep killGoblin;
+	NpcStep killFrog;
+	NpcStep killMonkey;
+	ObjectStep enterKaramjaDungeon;
+	NpcStep killBat;
+	ItemStep pickupBone;
+	ConditionalStep collectBonesSteps;
 
-	Requirement inSwamp, inJunaRoom, inKaramjaDungeon, addedRope, boneNearby, hadAllBones, talkedToFortunato;
-
-	Requirement hadVinegar, allBonesAtLeastAddedToVinegar, allBonesPolished;
-
-	Requirement logAdded, boneAddedToBoiler, logLit, boneReady;
-
-	Zone swamp, junaRoom, karamjaDungeon;
-
-	ConditionalStep collectBonesSteps, preparingBonesSteps, cookingSteps;
+	NpcStep talkToFortunato;
+	DetailedQuestStep makePotOfVinegar;
+	DetailedQuestStep useBonesOnVinegar;
+	ObjectStep placeLogs;
+	ObjectStep useBoneOnBoiler;
+	ObjectStep lightLogs;
+	DetailedQuestStep waitForCooking;
+	ObjectStep removePot;
+	DetailedQuestStep repeatSteps;
+	NpcStep giveBones;
+	NpcStep talkToFinish;
+	ConditionalStep preparingBonesSteps;
+	ConditionalStep cookingSteps;
 
 	LinkedHashMap<RagBoneState, QuestStep> stepsForRagAndBoneManI = new LinkedHashMap<>();
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-		steps.put(0, talkToOddOldMan);
-		steps.put(1, talkToOddOldMan);
-
-		collectBonesSteps = new ConditionalStep(this, new DetailedQuestStep(this, "Unknown state."));
-		collectBonesSteps.addStep(boneNearby, pickupBone);
-		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> collectBonesSteps.addStep(nor(state.hadBoneItem()), step));
-		collectBonesSteps.setLockingCondition(hadAllBones);
-
-		preparingBonesSteps = new ConditionalStep(this, talkToFortunato);
-		preparingBonesSteps.addStep(potOfVinegarNeeded, useBonesOnVinegar);
-		preparingBonesSteps.addStep(talkedToFortunato, makePotOfVinegar);
-		preparingBonesSteps.setLockingCondition(allBonesAtLeastAddedToVinegar);
-
-		cookingSteps = new ConditionalStep(this, placeLogs);
-		cookingSteps.addStep(boneReady, removePot);
-		cookingSteps.addStep(logLit, waitForCooking);
-		cookingSteps.addStep(boneAddedToBoiler, lightLogs);
-		cookingSteps.addStep(logAdded, useBoneOnBoiler);
-		cookingSteps.setLockingCondition(allBonesPolished);
-
-		ConditionalStep doQuest = new ConditionalStep(this, collectBonesSteps);
-		doQuest.addStep(allBonesPolished, giveBones);
-		doQuest.addStep(allBonesAtLeastAddedToVinegar, cookingSteps);
-		doQuest.addStep(hadAllBones, preparingBonesSteps);
-
-		steps.put(2, doQuest);
-
-		steps.put(3, talkToFinish);
-
-		return steps;
+		swamp = new Zone(new WorldPoint(3138, 9536, 0), new WorldPoint(3261, 9601, 0));
+		junaRoom = new Zone(new WorldPoint(3205, 9484, 0), new WorldPoint(3263, 9537, 2));
+		karamjaDungeon = new Zone(new WorldPoint(2827, 9547, 0), new WorldPoint(2867, 9599, 0));
 	}
 
 	@Override
@@ -138,7 +161,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 		logs = new ItemRequirement("Logs", ItemID.LOGS);
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
-		// Optional items
+		// Recommended items
 		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.POH_TABLET_VARROCKTELEPORT);
 		lumbridgeTeleport = new ItemRequirement("Lumbridge teleport", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
 		digsitePendant = new ItemRequirement("Digsite pendant", ItemCollections.DIGSITE_PENDANTS);
@@ -157,40 +180,6 @@ public class RagAndBoneManI extends BasicQuestHelper
 			new ItemRequirement("Pot of vinegar", ItemID.RAG_POT_VINEGAR, 8).alsoCheckBank().highlighted();
 		jugOfVinegarNeeded =
 			new ItemRequirement("Jug of vinegar", ItemID.RAG_VINEGAR, 8).alsoCheckBank().highlighted();
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		AtomicInteger winesNeededQuantity = new AtomicInteger(8);
-
-		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> {
-			if (state.hadBoneInVinegarItem().check(client))
-			{
-				winesNeededQuantity.getAndDecrement();
-			}
-		});
-
-		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
-
-		int jugsNeeded = winesNeededQuantity.get();
-		jugsNeeded -= potOfVinegar.checkTotalMatchesInContainers(QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
-		potNeeded.setQuantity(jugsNeeded);
-		jugOfVinegarNeeded.setQuantity(jugsNeeded);
-
-		// Need to know how many pots of vinegar needed, and if missing some
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		swamp = new Zone(new WorldPoint(3138, 9536, 0), new WorldPoint(3261, 9601, 0));
-		junaRoom = new Zone(new WorldPoint(3205, 9484, 0), new WorldPoint(3263, 9537, 2));
-		karamjaDungeon = new Zone(new WorldPoint(2827, 9547, 0), new WorldPoint(2867, 9599, 0));
-	}
-
-	private void setupConditions()
-	{
 		inSwamp = new ZoneRequirement(swamp);
 		inJunaRoom = new ZoneRequirement(junaRoom);
 		inKaramjaDungeon = new ZoneRequirement(karamjaDungeon);
@@ -222,45 +211,33 @@ public class RagAndBoneManI extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToOddOldMan = new NpcStep(this, NpcID.RAG_ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
-			"Talk to the Odd Old Man east of Varrock.");
+		questSyncStep = new QuestSyncStep(this, getQuest(), "Open the quest's Quest Journal to sync your state.");
+
+		talkToOddOldMan = new NpcStep(this, NpcID.RAG_ODD_OLD_MAN, new WorldPoint(3362, 3502, 0), "Talk to the Odd Old Man east of Varrock.");
 		talkToOddOldMan.addDialogSteps("Anything I can do to help?", "Yes.");
 
-		killGiantRat = new NpcStep(this, NpcID.GIANTRAT, new WorldPoint(3289, 3373, 0),
-			"Kill a giant rat south east of Varrock.", true);
-		((NpcStep) killGiantRat).addAlternateNpcs(NpcID.GIANTRAT2, NpcID.GIANTRAT3, NpcID.GIANTRAT_GREY,
-			NpcID.GIANTRAT_GREY2, NpcID.GIANTRAT_GREY3, NpcID.GIANTRAT1, NpcID.GIANTRAT1_2,
-			NpcID.GIANTRAT1_3);
+		killGiantRat = new NpcStep(this, NpcID.GIANTRAT, new WorldPoint(3289, 3373, 0), "Kill a giant rat south east of Varrock.", true);
+		killGiantRat.addAlternateNpcs(NpcID.GIANTRAT2, NpcID.GIANTRAT3, NpcID.GIANTRAT_GREY, NpcID.GIANTRAT_GREY2, NpcID.GIANTRAT_GREY3, NpcID.GIANTRAT1, NpcID.GIANTRAT1_2, NpcID.GIANTRAT1_3);
 
-		killUnicorn = new NpcStep(this, NpcID.UNICORN, new WorldPoint(3285, 3351, 0),
-			"Kill the unicorn south east of Varrock.", true);
-		killBear = new NpcStep(this, NpcID.DARKBEAR, new WorldPoint(3295, 3354, 0),
-			"Kill the bear south east of Varrock.", true);
-		killRam = new NpcStep(this, NpcID.RAMSHEERED, new WorldPoint(3253, 3350, 0),
-			"Kill a ram south of Varrock.", true);
-		((NpcStep) killRam).addAlternateNpcs(NpcID.RAMUNSHEERED, NpcID.RAMUNSHEERED2, NpcID.RAMUNSHEERED3, NpcID.RAMUNSHEEREDSHAGGY);
+		killUnicorn = new NpcStep(this, NpcID.UNICORN, new WorldPoint(3285, 3351, 0), "Kill the unicorn south east of Varrock.", true);
 
-		killGoblin = new NpcStep(this, NpcID.GOBLIN_RED_SOLDIER_2, new WorldPoint(3252, 3251, 0),
-			"Kill a goblin east of Lumbridge.", true);
-		((NpcStep) killGoblin).addAlternateNpcs(NpcID.GOBLIN_UNARMED_MELEE_1, NpcID.GOBLIN_UNARMED_MELEE_2, NpcID.GOBLIN_UNARMED_MELEE_3,
-			NpcID.GOBLIN_UNARMED_MELEE_4, NpcID.GOBLIN_UNARMED_MELEE_5, NpcID.GOBLIN_UNARMED_MELEE_6, NpcID.GOBLIN_UNARMED_MELEE_7, NpcID.GOBLIN_UNARMED_MELEE_8,
-			NpcID.GOBLIN_UNARMED_MELEE_IN_1, NpcID.GOBLIN_UNARMED_MELEE_IN_2, NpcID.GOBLIN_UNARMED_MELEE_IN_3, NpcID.GOBLIN_UNARMED_MELEE_IN_4, NpcID.GOBLIN_UNARMED_MELEE_IN_5,
-			NpcID.GOBLIN_UNARMED_MELEE_IN_6, NpcID.GOBLIN_UNARMED_MELEE_IN_7, NpcID.GOBLIN_UNARMED_MELEE_IN_8, NpcID.GOBLIN_ARMED, NpcID.GOBLIN_HELMET,
-			NpcID.GOBLIN_RED_SOLDIER_1, NpcID.GOBLIN_GREEN_SOLDIER_1);
+		killBear = new NpcStep(this, NpcID.DARKBEAR, new WorldPoint(3295, 3354, 0), "Kill the bear south east of Varrock.", true);
 
-		killFrog = new NpcStep(this, NpcID.MEDIUM_FROG_NODROPS, new WorldPoint(3216, 3182, 0),
-			"Kill a big frog in the Lumbridge Swamp.", true);
+		killRam = new NpcStep(this, NpcID.RAMSHEERED, new WorldPoint(3253, 3350, 0), "Kill a ram south of Varrock.", true);
+		killRam.addAlternateNpcs(NpcID.RAMUNSHEERED, NpcID.RAMUNSHEERED2, NpcID.RAMUNSHEERED3, NpcID.RAMUNSHEEREDSHAGGY);
 
-		killMonkey = new NpcStep(this, NpcID.MONKEY, new WorldPoint(2886, 3167, 0),
-			"Kill a monkey on Karamja.", true);
+		killGoblin = new NpcStep(this, NpcID.GOBLIN_RED_SOLDIER_2, new WorldPoint(3252, 3251, 0), "Kill a goblin east of Lumbridge.", true);
+		killGoblin.addAlternateNpcs(NpcID.GOBLIN_UNARMED_MELEE_1, NpcID.GOBLIN_UNARMED_MELEE_2, NpcID.GOBLIN_UNARMED_MELEE_3, NpcID.GOBLIN_UNARMED_MELEE_4, NpcID.GOBLIN_UNARMED_MELEE_5, NpcID.GOBLIN_UNARMED_MELEE_6, NpcID.GOBLIN_UNARMED_MELEE_7, NpcID.GOBLIN_UNARMED_MELEE_8, NpcID.GOBLIN_UNARMED_MELEE_IN_1, NpcID.GOBLIN_UNARMED_MELEE_IN_2, NpcID.GOBLIN_UNARMED_MELEE_IN_3, NpcID.GOBLIN_UNARMED_MELEE_IN_4, NpcID.GOBLIN_UNARMED_MELEE_IN_5, NpcID.GOBLIN_UNARMED_MELEE_IN_6, NpcID.GOBLIN_UNARMED_MELEE_IN_7, NpcID.GOBLIN_UNARMED_MELEE_IN_8, NpcID.GOBLIN_ARMED, NpcID.GOBLIN_HELMET, NpcID.GOBLIN_RED_SOLDIER_1, NpcID.GOBLIN_GREEN_SOLDIER_1);
 
-		enterKaramjaDungeon = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0),
-			"Kill a giant bat in the Karamja Volcano Dungeon.");
-		killBat = new NpcStep(this, NpcID.SMALL_BAT, new WorldPoint(2858, 9572, 0),
-			"Kill a giant bat in the Karamja Volcano Dungeon.", true);
+		killFrog = new NpcStep(this, NpcID.MEDIUM_FROG_NODROPS, new WorldPoint(3216, 3182, 0), "Kill a big frog in the Lumbridge Swamp.", true);
+
+		killMonkey = new NpcStep(this, NpcID.MONKEY, new WorldPoint(2886, 3167, 0), "Kill a monkey on Karamja.", true);
+
+		enterKaramjaDungeon = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0), "Kill a giant bat in the Karamja Volcano Dungeon.");
+		killBat = new NpcStep(this, NpcID.SMALL_BAT, new WorldPoint(2858, 9572, 0), "Kill a giant bat in the Karamja Volcano Dungeon.", true);
 		killBat.addSubSteps(enterKaramjaDungeon);
 
-		ConditionalStep killBatSteps = new ConditionalStep(this, enterKaramjaDungeon);
+		var killBatSteps = new ConditionalStep(this, enterKaramjaDungeon);
 		killBatSteps.addStep(inKaramjaDungeon, killBat);
 
 		stepsForRagAndBoneManI.put(RagBoneState.GIANT_RAT_BONE, killGiantRat);
@@ -276,6 +253,11 @@ public class RagAndBoneManI extends BasicQuestHelper
 		pickupBone = new ItemStep(this, "Pickup the bone.");
 		pickupBone.addItemRequirements(RagBoneGroups.pickupBones(RagBoneGroups.getRagBoneIStates()));
 		pickupBone.setShowInSidebar(false);
+
+		collectBonesSteps = new ConditionalStep(this, questSyncStep);
+		collectBonesSteps.addStep(boneNearby, pickupBone);
+		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> collectBonesSteps.addStep(nor(state.hadBoneItem()), step));
+		collectBonesSteps.setLockingCondition(hadAllBones);
 
 		talkToFortunato = new NpcStep(this, NpcID.RAG_WINE_MERCHANT, new WorldPoint(3085, 3251, 0),
 			"Talk to Fortunato in Draynor Village, and then buy 8 jugs of vinegar from him.", coins.quantity(8));
@@ -306,7 +288,7 @@ public class RagAndBoneManI extends BasicQuestHelper
 			"Take the pot from the pot-boiler.");
 
 		giveBones = new NpcStep(this, NpcID.RAG_ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
-		"Give the Odd Old Man the bones.");
+			"Give the Odd Old Man the bones.");
 		giveBones.addItemRequirements(RagBoneGroups.cleanBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
 
 		talkToFinish = new NpcStep(this, NpcID.RAG_ODD_OLD_MAN, new WorldPoint(3362, 3502, 0),
@@ -314,32 +296,82 @@ public class RagAndBoneManI extends BasicQuestHelper
 		giveBones.addSubSteps(talkToFinish);
 
 		repeatSteps = new DetailedQuestStep(this, "Repeat the steps until all the bones are cleaned.");
+
+		preparingBonesSteps = new ConditionalStep(this, talkToFortunato);
+		preparingBonesSteps.addStep(potOfVinegarNeeded, useBonesOnVinegar);
+		preparingBonesSteps.addStep(talkedToFortunato, makePotOfVinegar);
+		preparingBonesSteps.setLockingCondition(allBonesAtLeastAddedToVinegar);
+
+		cookingSteps = new ConditionalStep(this, placeLogs);
+		cookingSteps.addStep(boneReady, removePot);
+		cookingSteps.addStep(logLit, waitForCooking);
+		cookingSteps.addStep(boneAddedToBoiler, lightLogs);
+		cookingSteps.addStep(logAdded, useBoneOnBoiler);
+		cookingSteps.setLockingCondition(allBonesPolished);
+
 	}
 
 	@Override
-	public List<String> getCombatRequirements()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		return Collections.singletonList("8 low leveled monsters for their bones");
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+		steps.put(0, talkToOddOldMan);
+		steps.put(1, talkToOddOldMan);
+
+		var doQuest = new ConditionalStep(this, collectBonesSteps);
+		doQuest.addStep(allBonesPolished, giveBones);
+		doQuest.addStep(allBonesAtLeastAddedToVinegar, cookingSteps);
+		doQuest.addStep(hadAllBones, preparingBonesSteps);
+
+		steps.put(2, doQuest);
+
+		steps.put(3, talkToFinish);
+
+		return steps;
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins.quantity(8), pots.quantity(8), logs.quantity(8), tinderbox);
+		return List.of(
+			coins.quantity(8),
+			pots.quantity(8),
+			logs.quantity(8),
+			tinderbox
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, varrockTeleport, lumbridgeTeleport, digsitePendant,
-			draynorTeleport, karamjaTeleport);
+		return List.of(
+			combatGear,
+			varrockTeleport,
+			lumbridgeTeleport,
+			digsitePendant,
+			draynorTeleport,
+			karamjaTeleport
+		);
 	}
+
+	@Override
+	public List<String> getCombatRequirements()
+	{
+		return List.of(
+			"8 low leveled monsters for their bones"
+		);
+	}
+
 
 	@Override
 	public List<String> getNotes()
 	{
-		return Collections.singletonList("If you've handed in any bones to the Odd Old Man, open the quest journal to" +
-			" sync up the helper's state");
+		return List.of(
+			"If you've handed in any bones to the Odd Old Man, open the quest journal to sync up the helper's state"
+		);
 	}
 
 	@Override
@@ -351,40 +383,87 @@ public class RagAndBoneManI extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(
-				new ExperienceReward(Skill.COOKING, 500),
-				new ExperienceReward(Skill.PRAYER, 500));
+		return List.of(
+			new ExperienceReward(Skill.COOKING, 500),
+			new ExperienceReward(Skill.PRAYER, 500)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting out", Collections.singletonList(talkToOddOldMan)));
+		var sections = new ArrayList<PanelDetails>();
 
-		PanelDetails collectingPanel = new PanelDetails("Collecting bones", Arrays.asList(killGiantRat, killUnicorn, killBear, killRam,
-			killGoblin, killFrog, killMonkey, killBat, pickupBone), List.of(), List.of(combatGear));
+		sections.add(new PanelDetails("Starting out", Collections.singletonList(talkToOddOldMan)));
+
+		var collectingPanel = new PanelDetails("Collecting bones", List.of(
+			killGiantRat,
+			killUnicorn,
+			killBear,
+			killRam,
+			killGoblin,
+			killFrog,
+			killMonkey,
+			killBat,
+			pickupBone
+		), List.of(
+			// no requirements
+		), List.of(
+			combatGear
+		));
 		collectingPanel.setLockingStep(collectBonesSteps);
-		allSteps.add(collectingPanel);
+		sections.add(collectingPanel);
 
-		List<Requirement> dirtyBones = new ArrayList<>(Arrays.asList(coins.quantity(8), pots.quantity(8)));
+		var dirtyBones = new ArrayList<Requirement>(Arrays.asList(coins.quantity(8), pots.quantity(8)));
 		dirtyBones.addAll(RagBoneGroups.dirtyBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
-		PanelDetails preparingPanel = new PanelDetails("Preparing the bones", Arrays.asList(talkToFortunato, makePotOfVinegar, useBonesOnVinegar),
-			dirtyBones);
+		var preparingPanel = new PanelDetails("Preparing the bones", List.of(
+			talkToFortunato,
+			makePotOfVinegar,
+			useBonesOnVinegar
+		), dirtyBones);
 		preparingPanel.setLockingStep(preparingBonesSteps);
-		allSteps.add(preparingPanel);
+		sections.add(preparingPanel);
 
-		List<Requirement> cleaningBones = new ArrayList<>(Arrays.asList(logs.quantity(8), tinderbox));
+		var cleaningBones = new ArrayList<Requirement>(Arrays.asList(logs.quantity(8), tinderbox));
 		cleaningBones.addAll(RagBoneGroups.vinegarBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
-		PanelDetails cookingPanel = new PanelDetails("Cleaning the bones", Arrays.asList(placeLogs, useBoneOnBoiler, lightLogs,
-			waitForCooking, removePot, repeatSteps), cleaningBones);
+		var cookingPanel = new PanelDetails("Cleaning the bones", List.of(
+			placeLogs,
+			useBoneOnBoiler,
+			lightLogs,
+			waitForCooking,
+			removePot,
+			repeatSteps
+		), cleaningBones);
 		cookingPanel.setLockingStep(cookingSteps);
-		allSteps.add(cookingPanel);
+		sections.add(cookingPanel);
 
-		List<Requirement> cleanedBones = new ArrayList<>(RagBoneGroups.cleanBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
-		allSteps.add(new PanelDetails("Handing the bones in", Collections.singletonList(giveBones),
-			cleanedBones));
+		var cleanedBones = new ArrayList<Requirement>(RagBoneGroups.cleanBonesNotHandedIn(RagBoneGroups.getRagBoneIStates()));
+		sections.add(new PanelDetails("Handing the bones in", List.of(
+			giveBones
+		), cleanedBones));
 
-		return allSteps;
+		return sections;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		var winesNeededQuantity = new AtomicInteger(8);
+
+		stepsForRagAndBoneManI.forEach((RagBoneState state, QuestStep step) -> {
+			if (state.hadBoneInVinegarItem().check(client))
+			{
+				winesNeededQuantity.getAndDecrement();
+			}
+		});
+
+		potOfVinegarNeeded.setQuantity(winesNeededQuantity.get());
+
+		int jugsNeeded = winesNeededQuantity.get();
+		jugsNeeded -= potOfVinegar.checkTotalMatchesInContainers(QuestContainerManager.getEquippedData(), QuestContainerManager.getInventoryData(), QuestContainerManager.getBankData());
+		potNeeded.setQuantity(jugsNeeded);
+		jugOfVinegarNeeded.setQuantity(jugsNeeded);
+
+		// Need to know how many pots of vinegar needed, and if missing some
 	}
 }

@@ -365,7 +365,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,
 			QuestHelperQuest.VAMPYRE_SLAYER,
-			QuestHelperQuest.HERB_RUN
+			QuestHelperQuest.HERB_RUN,
 			QuestHelperQuest.THE_IDES_OF_MILK
 		);
 

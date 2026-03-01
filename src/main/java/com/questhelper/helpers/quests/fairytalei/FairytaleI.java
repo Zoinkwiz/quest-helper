@@ -199,7 +199,7 @@ public class FairytaleI extends BasicQuestHelper
 
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
-			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "back and talk to <col=800000>Martin"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "about what the problem actually is. I'd better go back and talk"),
 			new DialogRequirement("Right, well thanks for your input."),
 			new DialogRequirement("I don't think the crops ARE failing"));
 

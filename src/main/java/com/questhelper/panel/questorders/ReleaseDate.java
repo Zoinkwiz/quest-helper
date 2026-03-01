@@ -225,6 +225,7 @@ public class ReleaseDate
 		QuestHelperQuest.PRYING_TIMES,
 		QuestHelperQuest.CURRENT_AFFAIRS,
 		QuestHelperQuest.TROUBLED_TORTUGANS,
+		QuestHelperQuest.THE_IDES_OF_MILK,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

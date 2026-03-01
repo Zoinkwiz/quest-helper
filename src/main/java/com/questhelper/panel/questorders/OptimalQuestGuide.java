@@ -265,6 +265,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
+		QuestHelperQuest.THE_IDES_OF_MILK,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Quest Guide
 		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.BARBARIAN_TRAINING,

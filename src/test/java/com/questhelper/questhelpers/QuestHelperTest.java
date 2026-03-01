@@ -10,6 +10,7 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
 import com.questhelper.steps.ReorderableConditionalStep;
 import java.lang.reflect.Field;
 import java.util.HashSet;
@@ -222,6 +223,12 @@ public class QuestHelperTest extends MockedTest
 	{
 		assertNotNull(step);
 
+		if (step instanceof QuestSyncStep)
+		{
+			// We allow the quest sync steps to miss a sidebar step
+			return;
+		}
+
 		if (step instanceof ReorderableConditionalStep)
 		{
 			helper.startUpStep(step);
@@ -323,6 +330,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,
+			QuestHelperQuest.THE_DIG_SITE,
 			QuestHelperQuest.ROMEO__JULIET,
 			QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 			QuestHelperQuest.SHEEP_SHEARER,

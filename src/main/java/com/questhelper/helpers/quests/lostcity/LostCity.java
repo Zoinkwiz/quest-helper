@@ -139,6 +139,7 @@ public class LostCity extends BasicQuestHelper
 		talkToWarrior.addDialogStep("What makes you think it's out here?");
 		talkToWarrior.addDialogStep("If it's hidden how are you planning to find it?");
 		talkToWarrior.addDialogStep("Looks like you don't know either.");
+		talkToWarrior.addDialogStep("Yes.");
 
 		chopTree = new ObjectStep(this, ObjectID.LEPRECHAUNTREE, new WorldPoint(3139, 3213, 0), "Try cutting the tree just to the west.", axe);
 		chopTree.addDialogStep("I've been in that shed, I didn't see a city.");

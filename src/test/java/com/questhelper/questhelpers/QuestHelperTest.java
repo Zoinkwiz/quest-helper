@@ -346,6 +346,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.GOBLIN_DIPLOMACY,
 			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
+			QuestHelperQuest.THE_KNIGHTS_SWORD,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.JUNGLE_POTION,
 			QuestHelperQuest.ARDOUGNE_EASY,

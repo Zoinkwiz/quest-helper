@@ -228,7 +228,6 @@ public class FairytaleI extends BasicQuestHelper
 		talkToMartinAgain = new NpcStep(this, NpcID.MARTIN_THE_MASTER_FARMER, new WorldPoint(3078, 3256, 0),
 			"Return to Martin in the Draynor Market.");
 		talkToMartinAgain.addDialogStep("Ask about the quest.");
-		talkToFarmers.addSubSteps(talkToMartinAgain);
 
 		enterZanaris = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0), "Travel to Zanaris.",
 			dramenOrLunarStaff);

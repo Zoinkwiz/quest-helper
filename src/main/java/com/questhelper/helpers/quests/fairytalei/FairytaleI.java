@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.fairytalei;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -55,10 +56,13 @@ import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.eventbus.Subscribe;
 
 public class FairytaleI extends BasicQuestHelper
 {
@@ -82,7 +86,9 @@ public class FairytaleI extends BasicQuestHelper
 	ItemRequirement magicSecateurs;
 	ItemRequirement magicSecateursEquipped;
 	ItemRequirement queensSecateurs;
-	ItemRequirement items3;
+	MaligniusItem maligniusItem1;
+	MaligniusItem maligniusItem2;
+	MaligniusItem maligniusItem3;
 	ItemRequirement skullOrSpade;
 
 	// Zones
@@ -168,35 +174,16 @@ public class FairytaleI extends BasicQuestHelper
 		magicSecateursEquipped.setTooltip("If you lost these you'll need to have the Nature Spirit enchant another secateur");
 		queensSecateurs = new ItemRequirement("Queen's secateurs", ItemID.FAIRY_QUEEN_SECATEURS);
 		queensSecateurs.setTooltip("You can get another by killing another Tanglefoot");
-		items3 = new ItemRequirement("3 items Malignius Mortifer told you to get", -1, -1);
+
+		maligniusItem1 = new MaligniusItem(VarbitID.FAIRY_NATURE_ITEM1, "The first item Malignius asked you to get");
+		maligniusItem2 = new MaligniusItem(VarbitID.FAIRY_NATURE_ITEM2, "The second item Malignius asked you to get");
+		maligniusItem3 = new MaligniusItem(VarbitID.FAIRY_NATURE_ITEM3, "The third item Malignius asked you to get");
+
 		inZanaris = new ZoneRequirement(zanaris);
 		inTowerF1 = new ZoneRequirement(towerF1);
 		inTowerF2 = new ZoneRequirement(towerF2);
 		inGrotto = new ZoneRequirement(grotto);
 		inTanglefootRoom = new Conditions(new InInstanceRequirement(), new ZoneRequirement(tanglefootRoom));
-
-		// Enter Zanaris,
-		// 1808 0->1
-		// 1807 0->1
-
-		// Given skull
-		// Try 1:
-		// 1804 0->8
-		// 1805 0->9
-		// 1806 0->10
-		// 2543 0->8->296->10536
-		// Mosquito, jangerberries, potato cactus
-
-		// Try 2
-		// 1804: 15
-		// 1805: 16
-		// 1807: 17
-		// 2543 stays 0
-		// Baby dragon bones, uncut diamond, raw cave eel
-
-		// Try 3:
-		// 1804: 14, Volencia moss
-
 
 		talkedToFarmers = new Conditions(true, LogicType.OR,
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "about what the problem actually is. I'd better go back and talk"),
@@ -256,9 +243,9 @@ public class FairytaleI extends BasicQuestHelper
 			"Give Malignius Mortifer the items he wanted.");
 		enterGrotto = new ObjectStep(this, ObjectID.GROTTO_DOOR_DRUIDICSPIRIT, new WorldPoint(3440, 3337, 0),
 			"Get the items Mortifer tells you to get, and enter the Grotto in the south of Mort Myre.",
-			ghostspeak, secateurs, items3);
+			ghostspeak, secateurs, maligniusItem1, maligniusItem2, maligniusItem3);
 		talkToSpirit = new NpcStep(this, NpcID.FILLIMAN_TARLOCK_NS, new WorldPoint(3441, 9738, 1),
-			"Talk to the Nature Spirit.", ghostspeak, secateurs, items3);
+			"Talk to the Nature Spirit.", ghostspeak, secateurs, maligniusItem1, maligniusItem2, maligniusItem3);
 
 		enterZanarisForFight = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0),
 			"Travel to Zanaris, ready to fight the Tanglefoot.",
@@ -271,8 +258,9 @@ public class FairytaleI extends BasicQuestHelper
 
 		enterZanarisForEnd = new ObjectStep(this, ObjectID.ZANARISDOOR, new WorldPoint(3202, 3169, 0),
 			"Talk to the Fairy Godfather in Zanaris to finish the quest.", dramenOrLunarStaff, queensSecateurs);
-		talkToGodfatherToFinish = new NpcStep(this, NpcID.FAIRY_GODFATHER2, new WorldPoint(2447, 4430, 0),
+		talkToGodfatherToFinish = new NpcStep(this, NpcID.FAIRY_GODFATHER, new WorldPoint(2447, 4430, 0),
 			"Talk to the Fairy Godfather to finish the quest.", queensSecateurs);
+		talkToGodfatherToFinish.addAlternateNpcs(NpcID.FAIRY_GODFATHER2);
 		talkToGodfatherToFinish.addSubSteps(enterZanarisForEnd);
 	}
 
@@ -423,7 +411,9 @@ public class FairytaleI extends BasicQuestHelper
 		), List.of(
 			ghostspeak,
 			secateurs,
-			items3
+			maligniusItem1,
+			maligniusItem2,
+			maligniusItem3
 		)));
 
 		sections.add(new PanelDetails("Defeat the Tanglefoot", List.of(
@@ -439,5 +429,23 @@ public class FairytaleI extends BasicQuestHelper
 		)));
 
 		return sections;
+	}
+
+	@Subscribe
+	void onVarbitChanged(VarbitChanged event)
+	{
+		maligniusItem1.varbitChanged(event);
+		maligniusItem2.varbitChanged(event);
+		maligniusItem3.varbitChanged(event);
+	}
+
+	@Override
+	public void startUp(QuestHelperConfig config)
+	{
+		super.startUp(config);
+
+		maligniusItem1.check(client);
+		maligniusItem2.check(client);
+		maligniusItem3.check(client);
 	}
 }

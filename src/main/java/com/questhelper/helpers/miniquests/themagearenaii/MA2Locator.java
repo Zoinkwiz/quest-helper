@@ -107,7 +107,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		locateFollowerSara = new MageArenaBossStep(this, saradominStaff, "desired", "",
+		locateFollowerSara = new MageArenaBossStep(this, saradominStaff, "",
 			enchantedSymbol, food);
 
 	}

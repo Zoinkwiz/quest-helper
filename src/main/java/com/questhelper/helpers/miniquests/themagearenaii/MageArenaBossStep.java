@@ -31,6 +31,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.tools.DefinedPoint;
 import lombok.NonNull;
@@ -179,6 +180,35 @@ public class MageArenaBossStep extends DetailedQuestStep
 		{
 			this.setWorldPoint(mageArenaSolver.getPossibleLocations().iterator().next().getWorldPoint());
 		}
+	}
+
+	@Override
+	public void setWorldPoint(DefinedPoint definedPoint)
+	{
+		super.setWorldPoint(definedPoint);
+
+		if (definedPoint == null || definedPoint.getWorldPoint() == null)
+		{
+			setHighlightZone(java.util.Collections.emptyList());
+			return;
+		}
+
+		final WorldPoint worldPoint = definedPoint.getWorldPoint();
+		final int maxDistance = MageArenaTemperature.SHAKING.getMaxDistance();
+
+		final WorldPoint minPoint = new WorldPoint(
+			worldPoint.getX() - maxDistance,
+			worldPoint.getY() - maxDistance,
+			worldPoint.getPlane()
+		);
+
+		final WorldPoint maxPoint = new WorldPoint(
+			worldPoint.getX() + maxDistance,
+			worldPoint.getY() + maxDistance,
+			worldPoint.getPlane()
+		);
+
+		setHighlightZone(new Zone(minPoint, maxPoint));
 	}
 
 	@Override

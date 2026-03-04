@@ -600,7 +600,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 			Collections.singletonList(meleeCombatGear), Arrays.asList(waterskins, food)));
 		allSteps.add(new PanelDetails("The Ruins of Ullek", Arrays.asList(talkToMaisaExploreCliffs, goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, digForChest, openChest, craftEmblem, useEmblemOnPillar, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor), Arrays.asList(meleeCombatGear, coal, tinderbox, spade, ironBar), Arrays.asList(food, antipoison, waterskins)));
 		allSteps.add(new PanelDetails("Riddle of the Tomb", Arrays.asList(solveTombRiddle, enterTombDoor, talkToSpirit, takeRustyKey)));
-		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey)));
+		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey), Collections.singletonList(antipoison)));
 		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, chemistryPuzzleWrapped, bringCureToPriest), Arrays.asList(meat, waterskins)));
 		allSteps.add(new PanelDetails("Fight with the Menaphite Akh", Arrays.asList(prepareFightMenaphiteAkh, defeatMenaphiteAkh, finishQuest), Arrays.asList(meleeCombatGear, waterskins)));
 

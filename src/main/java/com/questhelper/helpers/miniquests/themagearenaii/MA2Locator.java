@@ -49,7 +49,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, godStaff, runesForCasts, magicCombatGear, knife, brews, restores
 		, food, recoils, enchantedSymbol, justicarsHand, demonsHeart, entRoots, godCape;
 
-	QuestStep locateFollowerSara;
+	QuestStep locateFollowers;
 
 	Zone cavern;
 
@@ -59,7 +59,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 		initializeRequirements();
 		setupSteps();
 
-		return locateFollowerSara;
+		return locateFollowers;
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		locateFollowerSara = new MageArenaBossStep(this, saradominStaff, "",
+		locateFollowers = new MageArenaBossStep(this, godStaff, "",
 			enchantedSymbol, food);
 
 	}
@@ -151,7 +151,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Upgrading the God Cape", Collections.singletonList(locateFollowerSara),
+		allSteps.add(new PanelDetails("Upgrading the God Cape", Collections.singletonList(locateFollowers),
 			knife, saradominStaff, guthixStaff, zamorakStaff, runesForCasts));
 		return allSteps;
 	}

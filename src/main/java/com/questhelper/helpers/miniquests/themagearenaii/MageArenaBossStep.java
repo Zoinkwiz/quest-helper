@@ -300,9 +300,11 @@ public class MageArenaBossStep extends DetailedQuestStep
 
 	private void handleBossButtonClick(God godClicked)
 	{
-		if (allowChangingBoss)
+		if (allowChangingBoss && godToFind != godClicked)
 		{
-			mageArenaSolvers.get(godClicked).setLastWorldPoint(mageArenaSolvers.get(godToFind).getLastWorldPoint());
+			// Technically this could be set to the last wp of the previous god tracking, but that
+			// Seemed to cause issues sometimes so something seems wrong with that assumption
+			mageArenaSolvers.get(godClicked).setLastWorldPoint(null);
 			godToFind = godClicked;
 		}
 		else
@@ -360,10 +362,6 @@ public class MageArenaBossStep extends DetailedQuestStep
 		{
 			return;
 		}
-
-
-		System.out.println("Finding temp for god " + godToFind + ", with previous wp of " + mageArenaSolvers.get(godToFind).getLastWorldPoint());
-		System.out.println(mageArenaSolvers.get(godToFind).getPossibleLocations().size());
 
 		final MageArenaSolver currentMageArenaSolver = mageArenaSolvers.get(godToFind);
 		currentMageArenaSolver.signal(localWorld, temperature, temperatureChange);

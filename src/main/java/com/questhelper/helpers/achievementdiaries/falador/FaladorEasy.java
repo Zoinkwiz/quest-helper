@@ -156,16 +156,16 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		notBluriteLimbs = new VarplayerRequirement(VarPlayerID.FALADOR_ACHIEVEMENT_DIARY, false, 10);
 
 		//Required
-		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).showConditioned(notFilledWater).isNotConsumed();
-		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
-		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
-		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
+		bucket = requirementFactory.newItem(ItemID.BUCKET_EMPTY).showConditioned(notFilledWater).isNotConsumed();
+		tiara = requirementFactory.newItem(ItemID.TIARA).showConditioned(notMindTiara);
+		mindTalisman = requirementFactory.newItem(ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
+		hammer = requirementFactory.newItem(ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES)
 			.showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
 		combatGear = new ItemRequirement("A range or mage attack to kill a Duck (Level 1)", -1, -1).showConditioned(notKilledDuck).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
-		bluriteOre = new ItemRequirement("Blurite Ore", ItemID.BLURITE_ORE);
-		bluriteBar = new ItemRequirement("Blurite Bar", ItemID.BLURITE_BAR);
+		bluriteOre = requirementFactory.newItem(ItemID.BLURITE_ORE);
+		bluriteBar = requirementFactory.newItem(ItemID.BLURITE_BAR);
 		bluriteOre.canBeObtainedDuringQuest();
 		bluriteBar.canBeObtainedDuringQuest();
 

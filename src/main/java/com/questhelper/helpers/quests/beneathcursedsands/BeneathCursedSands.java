@@ -96,9 +96,9 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(4, readMessage);
 
 		steps.put(6, talkToMaisaStartInvestigation);
-		// steps.put(8, talkToMaisaStartInvestigation);
-		// steps.put(10, talkToMaisaStartInvestigation);
-		// steps.put(12, talkToMaisaStartInvestigation);
+		steps.put(8, talkToMaisaStartInvestigation);
+		steps.put(10, talkToMaisaStartInvestigation);
+		steps.put(12, talkToMaisaStartInvestigation);
 
 		ConditionalStep investigatePyramid = new ConditionalStep(this, inspectBlockedPyramidEntry);
 		investigatePyramid.addStep(new Conditions(investigatedPyramid), talkToCitizenOrGuard);
@@ -108,7 +108,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(18, fightHeadMenaphiteGuard);
 		steps.put(20, talkToMaisaPostFightCutsceneInterruption);
 		steps.put(22, talkToMaisaExploreCliffs);
-		// steps.put(24, talkToMaisaExploreCliffs);
+		steps.put(24, talkToMaisaExploreCliffs);
 
 		ConditionalStep goToAndInspectFurnace = new ConditionalStep(this, goFromCampsiteToRuinsOfUllek);
 		goToAndInspectFurnace.addStep(new Conditions(LogicType.NOR, tinderbox), obtainTinderbox);
@@ -128,7 +128,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		obtainEmblem.addStep(new Conditions(new Conditions(LogicType.NOR, scarabEmblem), scarabMould, inRuinsOfUllek), craftEmblem);
 		obtainEmblem.addStep(new Conditions(scarabEmblem, inRuinsOfUllek), useEmblemOnPillar);
 		steps.put(32, obtainEmblem);
-		// steps.put(34, obtainEmblem);
+		steps.put(34, obtainEmblem);
 
 		ConditionalStep rotateScarab = new ConditionalStep(this, goToRuinsOfUllek);
 		rotateScarab.addStep(new Conditions(new Conditions(LogicType.NOR, isRotatingScarab), inRuinsOfUllek), useEmblemOnPillar);
@@ -141,7 +141,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		defeatScarabMages.addStep(new Conditions(inRuinsOfUllek), enterDungeonToFightScarabMages);
 		defeatScarabMages.addStep(new Conditions(inScarabMageArea), fightScarabMages);
 		steps.put(38, defeatScarabMages);
-		// steps.put(40, defeatScarabMages);
+		steps.put(40, defeatScarabMages);
 
 		ConditionalStep climbDownSecondSteps = new ConditionalStep(this, goToRuinsOfUllek);
 		climbDownSecondSteps.addStep(new Conditions(inRuinsOfUllek), enterDungeon);
@@ -169,8 +169,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		enterTomb.addStep(new Conditions(inRiddleArea), enterTombDoor);
 		enterTomb.addStep(new Conditions(inTombArea), talkToSpirit);
 		steps.put(48, enterTomb);
-		// steps.put(50, enterTomb);
-		// steps.put(52, enterTomb);
+		steps.put(50, enterTomb);
+		steps.put(52, enterTomb);
 
 		ConditionalStep obtainKey = new ConditionalStep(this, goToRuinsOfUllek);
 		obtainKey.addStep(new Conditions(inRuinsOfUllek), enterDungeon);
@@ -196,7 +196,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 //		championOfScabarasFight.addStep(new Conditions(shouldDestroyShadowRift), destroyShadowRift);
 		championOfScabarasFight.addStep(new Conditions(inBossArea), fightChampionOfScabaras);
 		steps.put(58, championOfScabarasFight);
-		// steps.put(60, championOfScabarasFight);
+		steps.put(60, championOfScabarasFight);
 
 		ConditionalStep highPriest = new ConditionalStep(this, goToRuinsOfUllek);
 		highPriest.addStep(new Conditions(inRuinsOfUllek), enterDungeon);
@@ -204,8 +204,8 @@ public class BeneathCursedSands extends BasicQuestHelper
 		highPriest.addStep(new Conditions(inBossTransitionArea), goToScabarasHighPriestDoorTwo);
 		highPriest.addStep(new Conditions(inBossArea), talkToScabarasHighPriest);
 		steps.put(62, highPriest);
-		// steps.put(64, highPriest);
-		// steps.put(66, highPriest);
+		steps.put(64, highPriest);
+		steps.put(66, highPriest);
 
 		ConditionalStep goToNardah = new ConditionalStep(this, talkToMaisaInNardah);
 		goToNardah.addStep(new Conditions(inRuinsOfUllek), leaveRuinsOfUllek);
@@ -213,18 +213,18 @@ public class BeneathCursedSands extends BasicQuestHelper
 		goToNardah.addStep(new Conditions(inBossTransitionArea), leaveHighPriestDoorTwo);
 		goToNardah.addStep(new Conditions(inBossArea), leaveHighPriestDoorOne);
 		steps.put(68, goToNardah);
-		// steps.put(70, goToNardah);
+		steps.put(70, goToNardah);
 
 		ConditionalStep buyMeat = new ConditionalStep(this, talkToMaisaInNardah);
 		buyMeat.addStep(new Conditions(LogicType.NOR, meat), purchaseBeef);
 		buyMeat.addStep(new Conditions(meat), attemptSteppingStones);
 		steps.put(72, buyMeat);
-		// steps.put(74, buyMeat);
+		steps.put(74, buyMeat);
 
 		ConditionalStep returnToZahur = new ConditionalStep(this, pickLilyOfElid);
 		returnToZahur.addStep(new Conditions(lilyOfTheElid), takeLilyToZahur);
 		steps.put(76, returnToZahur);
-		// steps.put(78, returnToZahur);
+		steps.put(78, returnToZahur);
 		steps.put(80, talkToZahur);
 
 		ConditionalStep chemistryPuzzle = new ConditionalStep(this, warmUpChemistryEquipment);
@@ -237,22 +237,22 @@ public class BeneathCursedSands extends BasicQuestHelper
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle), chemistryValveDecreaseLeft);
 		chemistryPuzzleWrapped = new PuzzleWrapperStep(this, chemistryPuzzle, "Warm up Zahur's Chemistry Equipment.");
 		steps.put(82, chemistryPuzzleWrapped);
-		// steps.put(84, talkToZahur);
-		// steps.put(86, talkToZahur);
+		steps.put(84, talkToZahur);
+		steps.put(86, talkToZahur);
 
 		steps.put(88, bringCureToPriest);
 		steps.put(90, talkToSophanemHighPriest);
 		steps.put(92, prepareFightMenaphiteAkh);
-		// steps.put(94, prepareFightMenaphiteAkh);
-		// steps.put(96, prepareFightMenaphiteAkh);
+		steps.put(94, prepareFightMenaphiteAkh);
+		steps.put(96, prepareFightMenaphiteAkh);
 
 		ConditionalStep menaphiteAkhFight = new ConditionalStep(this, defeatMenaphiteAkh);
 //		menaphiteAkhFight.addStep(shouldFightMenaphiteShadow, defeatMenaphiteShadow);
 		steps.put(98, menaphiteAkhFight);
 		steps.put(100, talkToOsman);
 		steps.put(102, finishQuest);
-		// steps.put(104, finishQuest);
-		// steps.put(106, finishQuest);
+		steps.put(104, finishQuest);
+		steps.put(106, finishQuest);
 
 		return steps;
 	}

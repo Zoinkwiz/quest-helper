@@ -1,35 +1,31 @@
 package com.questhelper.helpers.quests.animalmagnetism;
 
+import com.questhelper.steps.PuzzleStep;
 import com.questhelper.steps.widget.WidgetDetails;
-
 import java.util.HashSet;
 
-public class PuzzleSolver
+public class PuzzleSolver implements PuzzleStep.ButtonHighlighCalculator
 {
+	private final HashSet<WidgetDetails> highlights = new HashSet<>();
 
-	public PuzzleSolver() {}
-
-	//Controls
-    private static final WidgetDetails[] buttons = new WidgetDetails[]{
-		new WidgetDetails(480, 26, 0),
-		//Skip 2
-		new WidgetDetails(480, 31, 0),
-		new WidgetDetails(480, 34, 0),
-		//Skip 5
-		new WidgetDetails(480, 40, 0),
-		new WidgetDetails(480, 43, 0),
-		new WidgetDetails(480, 46, 0)
-		//Skip 9
-	};
-
-	public HashSet<WidgetDetails> solver()
+	public PuzzleSolver()
 	{
-		HashSet<WidgetDetails> highlights = new HashSet<>();
+		// Controls
+		// TODO: gameval/interfaceid this
+		highlights.add(new WidgetDetails(480, 26, 0));
+		// Skip 2
+		highlights.add(new WidgetDetails(480, 31, 0));
+		highlights.add(new WidgetDetails(480, 34, 0));
+		// Skip 5
+		highlights.add(new WidgetDetails(480, 40, 0));
+		highlights.add(new WidgetDetails(480, 43, 0));
+		highlights.add(new WidgetDetails(480, 46, 0));
+		// Skip 9
+	}
 
-		for (WidgetDetails button : buttons) {
-			highlights.add(button);
-		}
-
+	@Override
+	public HashSet<WidgetDetails> getHighlightedButtons()
+	{
 		return highlights;
 	}
 }

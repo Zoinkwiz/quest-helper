@@ -324,15 +324,16 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 	private void updateSection2Route()
 	{
 		ArrayList<WorldPoint> newRoute = new ArrayList<>();
+		boolean[] visited = new boolean[fifthSectionMap.length];
 		if(shouldUsePath4V2.check(client))
 		{
 			newRoute.addAll(path4V2);
-			newRoute.addAll(workOutFifthSection(0, new ArrayList<>(), 0));
+			newRoute.addAll(workOutFifthSection(0, visited, 0));
 		}
 		else
 		{
 			newRoute.addAll(path4V1);
-			newRoute.addAll(workOutFifthSection(0, new ArrayList<>(), 2));
+			newRoute.addAll(workOutFifthSection(0, visited, 2));
 		}
 		traverseDungeonThirdSection.setLinePoints(newRoute);
 	}
@@ -355,13 +356,14 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		}
 	}
 
-	public ArrayList<WorldPoint> workOutFifthSection(int currentDepth, ArrayList<Integer> previousIds, int id)
+	public ArrayList<WorldPoint> workOutFifthSection(int currentDepth, boolean[] visited, int id)
 	{
-		previousIds.add(id);
-		if (currentDepth > MAX_DEPTH)
+		if (currentDepth > MAX_DEPTH || visited[id])
 		{
 			return new ArrayList<>();
 		}
+
+		visited[id] = true;
 
 		ArrayList<WorldPoint> newPoints = new ArrayList<>();
 		MM2AgilityNodes currentNode = fifthSectionMap[id];
@@ -372,15 +374,15 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		// If we've tried the un-indicated path and it was correct...
 		if (currentCorrectRoute != -1)
 		{
+			nextNodeId = currentNode.getPaths()[currentCorrectRoute].getIdEnd();
 			// Check if we've just gone backwards/looped, thus it's not the 'correct' next step
-			if (previousIds.contains(currentNode.getPaths()[currentCorrectRoute].getIdEnd()))
+			if (visited[nextNodeId])
 			{
 				// If we're going back onto ourself, we've done something wrong. Set back to unknown
 				fifthSectionRightPaths[id] = -1;
 			}
 			else
 			{
-				nextNodeId = currentNode.getPaths()[currentCorrectRoute].getIdEnd();
 
 				// If we know this path is correct, all other paths are invalid. Save them as thus
 				for (MM2Route path : currentNode.getPaths())
@@ -392,7 +394,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 				}
 
 				newPoints.addAll(currentNode.getPaths()[currentCorrectRoute].getPath());
-				newPoints.addAll(workOutFifthSection(currentDepth + 1, previousIds, nextNodeId));
+				newPoints.addAll(workOutFifthSection(currentDepth + 1, visited, nextNodeId));
 				return newPoints;
 			}
 		}
@@ -401,11 +403,11 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 			if (currentNode.getPaths()[i] != null)
 			{
 				if (currentNode.getPaths()[i].getWrongWay().check(client)) routeSavedValues.get(currentNode.getPaths()[i]).setConfigValue("true");
-				if (routeSavedValues.get(currentNode.getPaths()[i]).check(client) && !previousIds.contains(currentNode.getPaths()[i].getIdEnd()))
+				nextNodeId = currentNode.getPaths()[i].getIdEnd();
+				if (routeSavedValues.get(currentNode.getPaths()[i]).check(client) && !visited[nextNodeId])
 				{
-					nextNodeId = currentNode.getPaths()[i].getIdEnd();
 					newPoints.addAll(currentNode.getPaths()[i].getPath());
-					newPoints.addAll(workOutFifthSection(currentDepth + 1, previousIds, nextNodeId));
+					newPoints.addAll(workOutFifthSection(currentDepth + 1, visited, nextNodeId));
 					return newPoints;
 				}
 			}

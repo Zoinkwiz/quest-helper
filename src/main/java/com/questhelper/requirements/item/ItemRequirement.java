@@ -62,6 +62,9 @@ import java.util.stream.Collectors;
  */
 public class ItemRequirement extends AbstractRequirement
 {
+	public static int UNDEFINED_QUANTITY = -1;
+	public static int SOME_QUANTITY = -2;
+
 	/**
 	 * The primary item id for this requirement.
 	 */
@@ -350,14 +353,29 @@ public class ItemRequirement extends AbstractRequirement
 		this.alternateItems.addAll(Arrays.asList(alternates));
 	}
 
+	public String getQuantityText()
+	{
+		if (quantity == UNDEFINED_QUANTITY)
+		{
+			return "";
+		}
+
+		if (quantity == SOME_QUANTITY)
+		{
+			return "Some ";
+		}
+
+		return quantity + " x ";
+	}
+
 	/**
 	 * Determines whether the quantity should be displayed.
 	 *
-	 * @return {@code true} if the quantity is not -1, {@code false} otherwise
+	 * @return {@code true} if the quantity is not UNDEFINED_QUANTITY, {@code false} otherwise
 	 */
 	public boolean showQuantity()
 	{
-		return quantity != -1;
+		return quantity != UNDEFINED_QUANTITY;
 	}
 
 	/**
@@ -527,7 +545,7 @@ public class ItemRequirement extends AbstractRequirement
 	 */
 	public boolean isActualItem()
 	{
-		return id != -1 && quantity != -1;
+		return id != -1 && quantity >= 0;
 	}
 
 	/**
@@ -581,9 +599,9 @@ public class ItemRequirement extends AbstractRequirement
 		}
 
 		StringBuilder text = new StringBuilder();
-		if (this.showQuantity())
+		if (showQuantity())
 		{
-			text.append(this.getQuantity()).append(" x ");
+			text.append(getQuantityText());
 		}
 
 		int itemID = findItemID();
@@ -618,7 +636,7 @@ public class ItemRequirement extends AbstractRequirement
 
 		if (showQuantity())
 		{
-			text.append(getQuantity()).append(" x ");
+			text.append(getQuantityText());
 		}
 
 		text.append(getName());

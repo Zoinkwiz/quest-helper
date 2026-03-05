@@ -768,7 +768,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		));
 		killZombie = new NpcStep(this, NpcID.MM_TRANSMOGRIFICATION_SMALL_ZOMBIE_MONKEY, new WorldPoint(2808, 9201, 0), "Kill a zombie monkey for their bones.",
 			true, zombieBones);
-		killGorilla = new NpcStep(this, NpcID.MM_RELIGIOUS_GUARD, new WorldPoint(2801, 2785, 0), "Kill a gorilla in the temple for their bones.",
+		killGorilla = new NpcStep(this, NpcID.MM_RELIGIOUS_GUARD, new WorldPoint(2801, 2785, 0), "Kill a gorilla in the temple for their bones. If they can attack you they will heal on hit, so it's recommended to safespot or flinch one.",
 			true, gorillaBones);
 		((NpcStep) killGorilla).addAlternateNpcs(NpcID.MM_RELIGIOUS_TRAPDOOR_GUARD);
 		killGorilla.setLinePoints(Arrays.asList(

@@ -46,10 +46,10 @@ import java.util.List;
 
 public class MA2Locator extends ComplexStateQuestHelper
 {
-	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, runesForCasts, magicCombatGear, knife, brews, restores
+	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, godStaff, runesForCasts, magicCombatGear, knife, brews, restores
 		, food, recoils, enchantedSymbol, justicarsHand, demonsHeart, entRoots, godCape;
 
-	QuestStep locateFollowerSara;
+	QuestStep locateFollowers;
 
 	Zone cavern;
 
@@ -59,7 +59,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 		initializeRequirements();
 		setupSteps();
 
-		return locateFollowerSara;
+		return locateFollowers;
 	}
 
 	@Override
@@ -71,6 +71,11 @@ public class MA2Locator extends ComplexStateQuestHelper
 		guthixStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
 		saradominStaff = new ItemRequirement("Saradomin staff", ItemID.SARADOMIN_STAFF);
 		saradominStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
+
+		godStaff = new ItemRequirement("God staff matching boss you're killing", ItemID.SARADOMIN_STAFF);
+		godStaff.addAlternates(ItemID.ZAMORAK_STAFF, ItemID.GUTHIX_STAFF);
+		godStaff.setTooltip("You can buy one from the Chamber Guardian in the Mage Arena Cavern for 80k");
+
 		runesForCasts = new ItemRequirements("Runes for 50+ casts of god spells",
 			new ItemRequirement("Blood runes", ItemID.BLOODRUNE, -1),
 			new ItemRequirement("Air runes", ItemID.AIRRUNE, -1),
@@ -102,7 +107,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		locateFollowerSara = new MageArenaBossStep(this, saradominStaff, "desired", "",
+		locateFollowers = new MageArenaBossStep(this, godStaff, "",
 			enchantedSymbol, food);
 
 	}
@@ -146,7 +151,7 @@ public class MA2Locator extends ComplexStateQuestHelper
 	public List<PanelDetails> getPanels()
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Upgrading the God Cape", Collections.singletonList(locateFollowerSara),
+		allSteps.add(new PanelDetails("Upgrading the God Cape", Collections.singletonList(locateFollowers),
 			knife, saradominStaff, guthixStaff, zamorakStaff, runesForCasts));
 		return allSteps;
 	}

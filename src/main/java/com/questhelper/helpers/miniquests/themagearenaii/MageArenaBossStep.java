@@ -31,28 +31,34 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.tools.DefinedPoint;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.KeyCode;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -77,12 +83,20 @@ public class MageArenaBossStep extends DetailedQuestStep
 
 	ItemRequirement[] baseRequirements;
 
-	@Nullable
-	private MageArenaSolver mageArenaSolver;
+	private God godToFind;
+
+	private God lastGodClicked;
+
+	private final Map<God, MageArenaSolver> mageArenaSolvers = new HashMap<>();
 
 	boolean foundLocation = false;
 
 	int currentVar = 0;
+
+	boolean allowChangingBoss;
+
+	// We need this as a player can press multiple keys in the options dialog, but only the first press counts
+	boolean keyPressedOnce;
 
 	public MageArenaBossStep(QuestHelper questHelper, ItemRequirement staff, String bossName,
 							 String abilityDetail, ItemRequirement... requirements)
@@ -92,18 +106,31 @@ public class MageArenaBossStep extends DetailedQuestStep
 		this.abilityDetail = abilityDetail;
 		this.staff = staff;
 		this.baseRequirements = requirements;
+		this.godToFind = God.getByName(bossName);
+	}
+
+	public MageArenaBossStep(QuestHelper questHelper, ItemRequirement staff,
+							 String abilityDetail, ItemRequirement... requirements)
+	{
+		super(questHelper, originalTextStart + "desired" + originalTextEnd, requirements);
+		this.bossName = "desired";
+		this.abilityDetail = abilityDetail;
+		this.staff = staff;
+		this.baseRequirements = requirements;
+		this.allowChangingBoss = true;
+		this.godToFind = God.SARADOMIN;
 	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, @NonNull List<String> additionalText, @NonNull List<Requirement> additionalRequirements)
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText, additionalRequirements);
-		if (mageArenaSolver == null)
+		if (mageArenaSolvers == null)
 		{
 			return;
 		}
 
-		final Collection<MageArenaSpawnLocation> digLocations = mageArenaSolver.getPossibleLocations();
+		final Collection<MageArenaSpawnLocation> digLocations = mageArenaSolvers.get(godToFind).getPossibleLocations();
 		List<String> locations = digLocations.stream()
 			.map(MageArenaSpawnLocation::getArea)
 			.distinct()
@@ -169,16 +196,47 @@ public class MageArenaBossStep extends DetailedQuestStep
 		setWorldPoint(DefinedPoint.of(null));
 		Set<MageArenaSpawnLocation> locations =
 			Arrays.stream(MageArenaSpawnLocation.values())
-			.collect(Collectors.toSet());
+				.collect(Collectors.toSet());
 
-		if (mageArenaSolver != null)
+		if (mageArenaSolvers == null) return;
+
+		mageArenaSolvers.forEach(((god, mageArenaSolver) ->
+			mageArenaSolver.resetSolver(locations)
+		));
+
+		if (mageArenaSolvers.get(godToFind).getPossibleLocations().size() == 1)
 		{
-			mageArenaSolver.resetSolver(locations);
+			this.setWorldPoint(mageArenaSolvers.get(godToFind).getPossibleLocations().iterator().next().getWorldPoint());
 		}
-		if (mageArenaSolver.getPossibleLocations().size() == 1)
+	}
+
+	@Override
+	public void setWorldPoint(DefinedPoint definedPoint)
+	{
+		super.setWorldPoint(definedPoint);
+
+		if (definedPoint == null || definedPoint.getWorldPoint() == null)
 		{
-			this.setWorldPoint(mageArenaSolver.getPossibleLocations().iterator().next().getWorldPoint());
+			setHighlightZone(java.util.Collections.emptyList());
+			return;
 		}
+
+		final WorldPoint worldPoint = definedPoint.getWorldPoint();
+		final int maxDistance = MageArenaTemperature.SHAKING.getMaxDistance();
+
+		final WorldPoint minPoint = new WorldPoint(
+			worldPoint.getX() - maxDistance,
+			worldPoint.getY() - maxDistance,
+			worldPoint.getPlane()
+		);
+
+		final WorldPoint maxPoint = new WorldPoint(
+			worldPoint.getX() + maxDistance,
+			worldPoint.getY() + maxDistance,
+			worldPoint.getPlane()
+		);
+
+		setHighlightZone(new Zone(minPoint, maxPoint));
 	}
 
 	@Override
@@ -201,9 +259,71 @@ public class MageArenaBossStep extends DetailedQuestStep
 		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSymbolLocation(), questHelper.getConfig().targetOverlayColor());
 	}
 
-	@Subscribe
+	@Override
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	{
+		super.onWidgetLoaded(widgetLoaded);
+		if (widgetLoaded.getGroupId() != InterfaceID.CHATMENU) return;
+
+		clientThread.invokeAtTickEnd(this::addListeners);
+	}
+
+	public void addListeners()
+	{
+		final var SARADOMIN_POS = 1;
+		final var GUTHIX_POS = 2;
+		final var ZAMORAK_POS = 3;
+		var chatMenu = client.getWidget(InterfaceID.Chatmenu.OPTIONS);
+		if (chatMenu == null || chatMenu.isHidden()) return;
+		if (chatMenu.getChildren() == null || chatMenu.getChildren().length < 4) return;
+
+		var saradominButton = chatMenu.getChildren()[SARADOMIN_POS];
+		var guthixButton = chatMenu.getChildren()[GUTHIX_POS];
+		var zamorakButton = chatMenu.getChildren()[ZAMORAK_POS];
+		if (saradominButton == null || guthixButton == null || zamorakButton == null) return;
+		saradominButton.setOnClickListener((JavaScriptCallback) ev -> { handleBossButtonClick(God.SARADOMIN); });
+		guthixButton.setOnClickListener((JavaScriptCallback) ev -> {handleBossButtonClick(God.GUTHIX);});
+		zamorakButton.setOnClickListener((JavaScriptCallback) ev -> { handleBossButtonClick(God.ZAMORAK); });
+
+		keyPressedOnce = false;
+
+		chatMenu.setHasListener(true);
+		chatMenu.setOnKeyListener((JavaScriptCallback) ev -> {
+			if (keyPressedOnce) return;
+			keyPressedOnce = true;
+			if (ev.getTypedKeyCode() == KeyCode.KC_1) handleBossButtonClick(God.SARADOMIN);
+			if (ev.getTypedKeyCode() == KeyCode.KC_2) handleBossButtonClick(God.GUTHIX);
+			if (ev.getTypedKeyCode() == KeyCode.KC_3) handleBossButtonClick(God.ZAMORAK);
+		});
+		chatMenu.revalidate();
+	}
+
+	private void handleBossButtonClick(God godClicked)
+	{
+		if (allowChangingBoss && godToFind != godClicked)
+		{
+			// Technically this could be set to the last wp of the previous god tracking, but that
+			// Seemed to cause issues sometimes so something seems wrong with that assumption
+			mageArenaSolvers.get(godClicked).setLastWorldPoint(null);
+			godToFind = godClicked;
+		}
+		else
+		{
+			lastGodClicked = godClicked;
+		}
+	}
+
+	@Override
+	public void onGameTick(GameTick gameTick)
+	{
+		super.onGameTick(gameTick);
+	}
+
+	@Override
 	public void onChatMessage(ChatMessage chatMessage)
 	{
+		super.onChatMessage(chatMessage);
+
 		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			update(chatMessage.getMessage());
@@ -212,7 +332,15 @@ public class MageArenaBossStep extends DetailedQuestStep
 
 	public void update(final String message)
 	{
-		if (mageArenaSolver == null)
+		final MageArenaTemperatureChange temperatureChange = MageArenaTemperatureChange.of(message);
+
+		if (mageArenaSolvers == null || mageArenaSolvers.get(godToFind) == null)
+		{
+			return;
+		}
+
+		// If looking only for a specific boss, don't bother checking others
+		if (!allowChangingBoss && lastGodClicked != godToFind)
 		{
 			return;
 		}
@@ -235,13 +363,12 @@ public class MageArenaBossStep extends DetailedQuestStep
 			return;
 		}
 
-		final MageArenaTemperatureChange temperatureChange = MageArenaTemperatureChange.of(message);
+		final MageArenaSolver currentMageArenaSolver = mageArenaSolvers.get(godToFind);
+		currentMageArenaSolver.signal(localWorld, temperature, temperatureChange);
 
-		mageArenaSolver.signal(localWorld, temperature, temperatureChange);
-
-		if (mageArenaSolver.getPossibleLocations().size() == 1)
+		if (currentMageArenaSolver.getPossibleLocations().size() == 1)
 		{
-			this.setWorldPoint(mageArenaSolver.getPossibleLocations().iterator().next().getWorldPoint());
+			this.setWorldPoint(currentMageArenaSolver.getPossibleLocations().iterator().next().getWorldPoint());
 		}
 		else
 		{
@@ -255,14 +382,20 @@ public class MageArenaBossStep extends DetailedQuestStep
 	{
 		super.startUp();
 		currentVar = client.getVarbitValue(VarbitID.MA2_TIMER_REMAINING);
-		Set<MageArenaSpawnLocation> locations =
-			Arrays.stream(MageArenaSpawnLocation.values())
+
+		mageArenaSolvers.put(God.SARADOMIN, new MageArenaSolver(Arrays.stream(MageArenaSpawnLocation.values()).collect(Collectors.toSet())));
+		mageArenaSolvers.put(God.GUTHIX, new MageArenaSolver(Arrays.stream(MageArenaSpawnLocation.values()).collect(Collectors.toSet())));
+		mageArenaSolvers.put(God.ZAMORAK, new MageArenaSolver(Arrays.stream(MageArenaSpawnLocation.values()).collect(Collectors.toSet())));
+
+		var locations = Arrays.stream(MageArenaSpawnLocation.values())
 			.collect(Collectors.toSet());
-		mageArenaSolver = new MageArenaSolver(locations);
+
 		if (locations.size() == 1)
 		{
 			this.setWorldPoint(locations.iterator().next().getWorldPoint());
 		}
+
+		addListeners();
 	}
 
 	@Override
@@ -275,5 +408,29 @@ public class MageArenaBossStep extends DetailedQuestStep
 	private BufferedImage getSymbolLocation()
 	{
 		return itemManager.getImage(ItemID.MA2_SYMBOL);
+	}
+
+	enum God
+	{
+		SARADOMIN("Saradomin"),
+		GUTHIX("Guthix"),
+		ZAMORAK("Zamorak");
+
+		final String name;
+
+		God(String name)
+		{
+			this.name = name;
+		}
+
+		public static God getByName(String name)
+		{
+			for (God god : God.values())
+			{
+				if (god.name.equals(name)) return god;
+			}
+			// Failure catch
+			return SARADOMIN;
+		}
 	}
 }

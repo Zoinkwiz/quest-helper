@@ -273,8 +273,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		waterskins.addAlternates(ItemID.WATER_SKIN3, ItemID.WATER_SKIN2, ItemID.WATER_SKIN1);
 		waterskins.setTooltip("Used for protection against the desert heat");
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
-		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
-		accessToFairyRings.addAlternates(ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF);
+		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemCollections.FAIRY_STAFF).isNotConsumed();
 		pharaohsSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
 		pharaohsSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
 		food = new ItemRequirement("Food", -1, -1);

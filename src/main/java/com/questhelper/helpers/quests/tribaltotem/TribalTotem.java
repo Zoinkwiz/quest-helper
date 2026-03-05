@@ -43,6 +43,7 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.*;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -127,7 +128,7 @@ public class TribalTotem extends BasicQuestHelper
     {
         inEntrance = new ZoneRequirement(houseGroundFloorEntrance);
         inMiddleRoom = new ZoneRequirement(houseGroundFloorMiddleRoom);
-        openedLockWidget = new WidgetTextRequirement(369, 54,"Combination Lock Door");
+        openedLockWidget = new WidgetTextRequirement(InterfaceID.TribalDoor.TITLE_TEXT, "Combination Lock Door");
         inStairway = new ZoneRequirement(houseGroundFloor);
         investigatedStairs = new WidgetTextRequirement(229, 1, "Your trained senses as a thief enable you to see that there is a trap<br>in these stairs. You make a note of its location for future reference<br>when using these stairs.");
         isUpstairs = new ZoneRequirement(houseFirstFloor);
@@ -137,7 +138,7 @@ public class TribalTotem extends BasicQuestHelper
     public void setupSteps()
     {
         talkToKangaiMau = new NpcStep(this, NpcID.KANGAI_MAU, new WorldPoint(2794, 3182, 0), "Talk to Kangai Mau in the Brimhaven food store.");
-        talkToKangaiMau.addDialogSteps("I'm in search of adventure!", "Ok, I will get it back.");
+        talkToKangaiMau.addDialogSteps("I'm in search of adventure!", "Ok, I will get it back.", "Yes.");
 
         investigateCrate = new ObjectStep(this, ObjectID.HORNCRATE, new WorldPoint(2650, 3273, 0), "Travel to the GPDT depot in Ardougne and investigate the most northeastern crate for a label.");
         useLabel = new ObjectStep(this, ObjectID.TELEPORTCRATE, new WorldPoint(2650, 3271, 0), "Use the label on the highlighted crate.", addressLabel);

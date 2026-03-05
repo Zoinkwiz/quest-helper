@@ -510,7 +510,6 @@ public class TheFinalDawn extends BasicQuestHelper
 				new WorldPoint(1286, 9438, 1),
 				new WorldPoint(1289, 9435, 1),
 				new WorldPoint(1296, 9435, 1)
-
 		);
 
 		int total = 0;
@@ -888,7 +887,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		showSackToVibia = showSackToVibiaNotPuzzleWrapped.puzzleWrapStep(true);
 		showSackToVibiaNotPuzzleWrapped.addSubSteps(goF2ToF1HideoutEnd, goToF0HideoutEnd);
 
-		takePotato.addSubSteps(removePotatoesFromSack, takeKnife, takeCoinPurse, goToF1Hideout, goDownFromF2Hideout, goF1ToF2Hideout, useKnifeOnPottedFan,
+		takePotato.addSubSteps(takeKnife, takeCoinPurse, goToF1Hideout, goDownFromF2Hideout, goF1ToF2Hideout, useKnifeOnPottedFan,
 				fillCoinPurse, emptyCoinPurse, useBranchOnCoinPurse, goToF0Hideout, goToF0HideoutEnd, goF2ToF1HideoutEnd, showSackToVibia);
 
 		searchBodyForKey = new NpcStep(this, NpcID.VMQ4_JANUS_HOUSE_JANUS_UNCONSCIOUS, new WorldPoint(1647, 3093, 0), "Search Janus.");
@@ -1246,7 +1245,7 @@ public class TheFinalDawn extends BasicQuestHelper
 			civitasTeleport
 		)));
 		panels.add(new PanelDetails("The hideout", List.of(talkToQueen, talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, enterDoorCode, takePotato,
-				takeKnife, goToF1Hideout, takeCoinPurse, goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia,
+				removePotatoesFromSack, takeKnife, goToF1Hideout, takeCoinPurse, goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia,
 				searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum),
 				List.of(bone),
 				List.of()));

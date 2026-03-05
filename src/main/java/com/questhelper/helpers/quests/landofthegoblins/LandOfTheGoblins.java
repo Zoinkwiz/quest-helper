@@ -65,7 +65,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 {
 	Requirement noPet;
 	ItemRequirement lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye, purpleDye, blackDye, fishingRod, rawSlimyEel, coins, combatGear;
-	ItemRequirement tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing, salveAmulet;
+	ItemRequirement tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing;
 	CombatLevelRequirement recommendedCombatLevel;
 	ItemRequirement pharmakosBerryHighlight, toadflaxUnfHighlight, goblinPotion, goblinPotionHighlight, noEquippedItems,
 		dorgeshKaanSphere, blackGoblinMail, huzamogaarbKey, hemensterWhitefish, pestleAndMortar, vial,
@@ -379,7 +379,6 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		draynorTeleport = new ItemRequirement("Draynor Village teleport", ItemCollections.AMULET_OF_GLORIES, 2);
 		draynorTeleport.setChargedItem(true);
 		explorersRing = new ItemRequirement("Explorer's ring 3 or 4", Arrays.asList(ItemID.LUMBRIDGE_RING_HARD, ItemID.LUMBRIDGE_RING_ELITE));
-		salveAmulet = new ItemRequirement("Salve amulet or Salve amulet (e)", ItemCollections.SALVE_AMULET);
 
 		pharmakosBerryHighlight = new ItemRequirement("Pharmakos berries", ItemID.LOTG_PHARMAKOS_BERRY);
 		pharmakosBerryHighlight.setHighlightInInventory(true);
@@ -679,7 +678,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing, salveAmulet));
+		return new ArrayList<>(Arrays.asList(tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing));
 	}
 
 	@Override

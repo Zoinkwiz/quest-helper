@@ -447,7 +447,10 @@ public class FremennikMedium extends ComplexStateQuestHelper
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(new UnlockReward("Improved rate of gaining approval on Miscellania."));
+		return Arrays.asList(
+			new UnlockReward("Improved rate of gaining approval on Miscellania."),
+			new UnlockReward("Unlocking infinite charges for your lyre with Fossegrimen costs 600 of each fish rather than 800")
+		);
 	}
 
 	@Override

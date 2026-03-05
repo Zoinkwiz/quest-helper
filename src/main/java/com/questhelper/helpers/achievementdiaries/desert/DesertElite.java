@@ -225,7 +225,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(rawPie, waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4),
 			dragonDartTip, feather, kqHead, mahoganyPlank.quantity(2), goldLeaves.quantity(2), coins.quantity(50000), saw,
-			hammer, kqHead);
+			hammer);
 	}
 
 	@Override

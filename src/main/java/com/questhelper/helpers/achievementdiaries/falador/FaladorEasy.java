@@ -157,7 +157,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
 		//Required
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).showConditioned(notFilledWater).isNotConsumed();
-		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
+		tiara = new ItemRequirement("Tiara", ItemID.TIARA).showConditioned(notMindTiara);
 		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES)

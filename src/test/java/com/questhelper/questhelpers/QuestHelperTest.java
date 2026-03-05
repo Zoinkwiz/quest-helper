@@ -332,6 +332,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.WATERFALL_QUEST,
 			QuestHelperQuest.THE_DIG_SITE,
 			QuestHelperQuest.ROMEO__JULIET,
+			QuestHelperQuest.RAG_AND_BONE_MAN_I,
 			QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 			QuestHelperQuest.SHEEP_SHEARER,
 			QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,

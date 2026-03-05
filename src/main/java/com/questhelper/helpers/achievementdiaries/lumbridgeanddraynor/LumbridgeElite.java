@@ -217,7 +217,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			"Climb the stairs to the second level of Dorgesh-Kaan.", lockpick);
 
 		dorgLadderToAgi = new ObjectStep(this, ObjectID.DORGESH_CAVEWALL_SLOPE_STEPS, new WorldPoint(2716, 5241, 0),
-			"If teleported to fairy ring, climb the ladder to the agility course", mithgrap, crossbow, lightsource);
+			"If teleported to fairy ring, climb the ladder to the agility course.", mithgrap, crossbow, lightsource);
 
 		richChest = new ObjectStep(this, ObjectID.DORGESH_RICH_CHEST_CLOSED, new WorldPoint(2703, 5348, 1),
 			"Lockpick the chest.", lockpick);

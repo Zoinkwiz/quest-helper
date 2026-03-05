@@ -613,9 +613,12 @@ public class TheFinalDawn extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		// Technically only applies for the cultist fight to have these foods available, but as they're recommended last
+		// It shouldn't impact any existing suggestions for players
+		food.addAlternates(ItemID.COOKED_LIZARD, ItemID.BREAM_FISH_COOKED);
 		food.setUrlSuffix("Food");
-
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, 3);
+		prayerPotions.addAlternates(ItemID._4DOSEMOONLIGHTPOTION, ItemID._3DOSEMOONLIGHTPOTION, ItemID._2DOSEMOONLIGHTPOTION, ItemID._1DOSEMOONLIGHTPOTION);
 
 		whistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_BASIC);
 		whistle.addAlternates(ItemID.HG_QUETZALWHISTLE_ENHANCED, ItemID.HG_QUETZALWHISTLE_PERFECTED);

@@ -227,7 +227,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(78, returnToZahur);
 		steps.put(80, talkToZahur);
 
-		ConditionalStep chemistryPuzzle = new ConditionalStep(this, warmUpChemistryEquipment);
+		ConditionalStep chemistryPuzzle = new ConditionalStep(this, warmUpChemistryEquipment, "Warm up Zahur's Chemistry Equipment.");
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, new Conditions(LogicType.NAND, chemistryValveMiddleAtMaximum)), chemistryValveIncreaseMiddle);
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, new Conditions(LogicType.NAND, chemistryValveRightAtMaximum)), chemistryValveIncreaseRight);
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);

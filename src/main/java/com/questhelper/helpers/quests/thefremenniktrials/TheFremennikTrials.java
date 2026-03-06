@@ -302,7 +302,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		petRock = new ItemRequirement("Pet rock", ItemID.VT_USELESS_ROCK).isNotConsumed();
 		petRock.setTooltip("You can get another from Askeladden");
 
-		emptySlot4 = new ItemRequirement("4 empty inventory slots", -1, 4);
+		emptySlot4 = new ItemRequirement("Empty inventory slots for vegetables and a pet rock", -1, 4);
 
 		goldenWool = new ItemRequirement("Golden wool", ItemID.VIKING_GOLDEN_WOOL);
 		goldenFleece = new ItemRequirement("Golden fleece", ItemID.VIKING_GOLDEN_FLEECE);

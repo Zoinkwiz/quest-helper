@@ -60,7 +60,7 @@ public class DoorPuzzleStep extends DetailedQuestStep
 
 	private boolean solving = false;
 
-	static class PuzzleLine
+	public static class PuzzleLine
 	{
 		public int[] cells;
 
@@ -96,7 +96,11 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		super(questHelper, "Solve the puzzle by marking the highlighted squares.");
 	}
 
-	private PuzzleLine[] solve()
+	/**
+	 * Entry point used in-game – reads the sums from the puzzle widgets
+	 * and solves the Kakurasu grid.
+	 */
+	public PuzzleLine[] solve()
 	{
 		int[] rowSums = new int[SIZE];
 		int[] colSums = new int[SIZE];
@@ -114,32 +118,81 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		}
 
 		PuzzleState solved = newSolveState(rowSums, colSums);
-		return solveGrid(solved);
+		return solveGrid(solved, rowSums, colSums);
 	}
 
-	private PuzzleLine[] solveGrid(PuzzleState puzzleState)
+	/**
+	 * Intended for testing purposes, so we can easily feed in our own puzzles
+	 */
+	static PuzzleLine[] solveForSums(int[] rowSums, int[] colSums)
+	{
+		DoorPuzzleStep step = new DoorPuzzleStep(null);
+		PuzzleState solved = step.newSolveState(rowSums, colSums);
+		return step.solveGrid(solved, rowSums, colSums);
+	}
+
+	private boolean gridSatisfiesSums(PuzzleLine[] grid, int[] rowSums, int[] colSums)
+	{
+		for (int r = 0; r < SIZE; r++)
+		{
+			int rowSum = 0;
+			for (int c = 0; c < SIZE; c++)
+			{
+				if (grid[r].cells[c] == FILLED)
+				{
+					rowSum += (c + 1);
+				}
+			}
+			if (rowSum != rowSums[r])
+			{
+				return false;
+			}
+		}
+		for (int c = 0; c < SIZE; c++)
+		{
+			int colSum = 0;
+			for (int r = 0; r < SIZE; r++)
+			{
+				if (grid[r].cells[c] == FILLED)
+				{
+					colSum += (r + 1);
+				}
+			}
+			if (colSum != colSums[c])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private PuzzleLine[] solveGrid(PuzzleState puzzleState, int[] rowSums, int[] colSums)
 	{
 		int iterations = 0;
 		Queue<PuzzleState> puzzleStates = new LinkedList<>();
 		puzzleStates.add(puzzleState);
 		int MAX_ITERATIONS = 20;
-		while (iterations < MAX_ITERATIONS)
+		while (iterations < MAX_ITERATIONS && !puzzleStates.isEmpty())
 		{
 			PuzzleState solution = checkSolutionOverlaps(puzzleStates.remove());
-			if (solution == null && puzzleStates.isEmpty())
+			if (solution == null)
 			{
-				return null;
+				continue;
 			}
-			else if (solution != null && solution.numberOfGray == 0)
-			{ // If solved
-				return solution.grid;
-			}
-			/* If unable to find answer, assume a square if filled or empty and then try solving again */
-			if (solution != null)
+			if (solution.numberOfGray == 0)
 			{
-				puzzleStates.add(setFirstUnknownTo(solution, FILLED));
-				puzzleStates.add(setFirstUnknownTo(solution, EMPTY));
+				if (gridSatisfiesSums(solution.grid, rowSums, colSums))
+				{
+					return solution.grid;
+				}
+
+				iterations++;
+				continue;
 			}
+			/* If unable to find answer, assume a square is filled or empty and then try solving again */
+			puzzleStates.add(setFirstUnknownTo(solution, FILLED));
+			puzzleStates.add(setFirstUnknownTo(solution, EMPTY));
 			iterations++;
 		}
 		return null;

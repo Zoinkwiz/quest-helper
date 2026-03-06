@@ -67,7 +67,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	ItemRequirement camelotTeleport, digsiteTeleport;
 
 	ItemRequirement elementalOre, elementalBar, mindBar, primedBar, beatenBook, scroll, key, craneSchematic, claw,
-		smallCog, mediumCog, largeCog, pipe;
+		smallCog, mediumCog, largeCog, pipe, slashedBook;
 
 	Requirement magic20;
 
@@ -266,9 +266,9 @@ public class ElementalWorkshopII extends BasicQuestHelper
 
 		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_WORKSHOP_ORE);
 		elementalOre.addAlternates(ItemID.ELEMENTAL_WORKSHOP_BAR);
-		elementalBar = new ItemRequirement("Elemental metal", ItemID.ELEMENTAL_WORKSHOP_BAR);
+		elementalBar = new ItemRequirement("Elemental metal. Bring an additional elemental metal if you want to smith a mind shield after this quest", ItemID.ELEMENTAL_WORKSHOP_BAR);
 		mindBar = new ItemRequirement("Primed mind bar", ItemID.ELEM_MIND_BAR);
-		primedBar = new ItemRequirement("Primed bar", ItemID.ELEM_PRIMED_BAR);
+		primedBar = new ItemRequirement("Primed bar. Bring an additional primed bar if you want to smith a mind shield after this quest", ItemID.ELEM_PRIMED_BAR);
 
 		beatenBook = new ItemRequirement("Beaten book", ItemID.ELEMENTAL_WORKSHOP_HELM_BOOK);
 		beatenBook.setTooltip("You can get another from a bookcase in the Exam Center");
@@ -287,6 +287,10 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		pipe = new ItemRequirement("Pipe", ItemID.ELEM2_SPARE_PIPE);
 
 		magic20 = new SkillRequirement(Skill.MAGIC, 20, true);
+
+		slashedBook = new ItemRequirement("Slashed book if you want to smith a mind shield after this quest", ItemID.ELEMENTAL_WORKSHOP_SHIELD_BOOK_SLASHED);
+		slashedBook.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
+			"the odd wall");
 	}
 
 	@Override
@@ -424,7 +428,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		readScroll = new DetailedQuestStep(this, "Read the scroll.", scroll.highlighted());
 
 		enterWorkshop = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_SPIRALSTAIRSTOP, new WorldPoint(2711, 3498, 0),
-			"Enter the elemental workshop.", batteredKey, beatenBook);
+			"Enter the elemental workshop.", Arrays.asList(batteredKey, beatenBook), Collections.singletonList(slashedBook));
 
 		searchMachinery = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_2_BOILER_MULTI, new WorldPoint(2715, 9903, 0),
 			"");
@@ -444,6 +448,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		mineRock = new NpcStep(this, NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION_ROCK, new WorldPoint(2703, 9894, 0),
 			"You need 2 elemental bars. Mine one of the elemental rocks in the west room, ready to fight a level 35.",
 			true, pickaxe);
+		mineRock.addText("If you want to smith a mind shield after this quest, get a third elemental ore and also smelt it into a bar.");
 		killRock = new NpcStep(this, NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION, new WorldPoint(2703, 9897, 0),
 			"Kill the rock elemental that appeared.");
 		pickUpOre = new ItemStep(this, "Pick up the elemental ore.", elementalOre);
@@ -558,6 +563,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		pullLeverToMoveToLava = new ObjectStep(this, ObjectID.ELEM2_LEVER_3WAY, new WorldPoint(1953, 5151, 2),
 			"Pull the central lever to move the jig back to the start.");
 		pickUpBar = new NpcStep(this, NpcID.ELEM2_CART_NPC_FLAT_BAR_DRY, new WorldPoint(1954, 5147, 2), "Pick up the primed bar.");
+		pickUpBar.addText("If you want to smith a mind shield after this quest, repeat this process one more time.");
 
 		goDownToBasement = new ObjectStep(this, ObjectID.ELEM2_STAIRS_DOOR_OPEN_NO_HATCH, new WorldPoint(1949, 5159, 2),
 			"Go down from the priming room.");
@@ -568,11 +574,13 @@ public class ElementalWorkshopII extends BasicQuestHelper
 			"Sit in the extractor chair.", magic20);
 		takeMindBar = new ObjectStep(this, ObjectID.ELEM_EXTRACTOR_GUN, new WorldPoint(1962, 5148, 0),
 			"Take the mind bar.");
+		takeMindBar.addText("If you want to smith a mind shield after this quest, repeat this process one more time.");
 		goUpFromBasement = new ObjectStep(this, ObjectID.ELEM2_STAIRS2, new WorldPoint(1949, 5160, 0),
 			"Go up the stairs.");
 		makeMindHelmet = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_WORKBENCH, new WorldPoint(2717, 9888, 0),
-			"Use the mind bar on one of the workbenches in the central room.", mindBar.highlighted(), hammer,
+			"Use the mind bar on one of the workbenches in the central room with the beaten book in your inventory.", mindBar.highlighted(), hammer,
 			beatenBook);
+		makeMindHelmet.addText("If you want to smith a mind shield after this quest, use the remaining mind bar on one of the workbenches with the slashed book in your inventory.");
 		makeMindHelmet.addIcon(ItemID.ELEM_MIND_BAR);
 
 		goToWorkshopTopFloor = new ConditionalStep(this, enterWorkshop);
@@ -605,7 +613,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(digsiteTeleport, camelotTeleport);
+		return Arrays.asList(digsiteTeleport, camelotTeleport, slashedBook);
 	}
 
 	@Override
@@ -656,8 +664,8 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(searchBookcase, readBook, readScroll)));
-		allSteps.add(new PanelDetails("Unlocking the Hatch", Arrays.asList(getKey, unlockHatch), batteredKey, pickaxe,
-			coal.quantity(8), hammer, beatenBook));
+		allSteps.add(new PanelDetails("Unlocking the Hatch", Arrays.asList(getKey, unlockHatch), Arrays.asList(batteredKey, pickaxe,
+			coal.quantity(8), hammer, beatenBook), Collections.singletonList(slashedBook)));
 		allSteps.add(new PanelDetails("Repairing the crane", Arrays.asList(takeSchematics, goMakeClaw, goRepairCrane)));
 		allSteps.add(new PanelDetails("Repairing the workshop", Arrays.asList(goSortTubes, getCogsAndPipe,
 			goRepairPipe, goPlaceCogs)));
@@ -666,10 +674,10 @@ public class ElementalWorkshopII extends BasicQuestHelper
 			pullLeverToMoveToPress, lowerPress, pullLeverToMoveToTank, pullLeverToOpenTankDoor, turnCorkscrew, turnCorkscrewAgain,
 			pullLeverToCloseTankDoor, turnWestValve, turnEastValve, turnEastValveAgain, turnWestValveAgain, pullLeverToOpenTankDoorAgain,
 			turnCorkscrewToRetrieve, turnCorkscrewToRetrieveAgain, pullLeverToCloseTankDoorAgain, pullLeverToMoveToFan, pullFanLever,
-			pullFanLeverAgain, pullLeverToMoveToLava, pickUpBar), elementalBar));
+			pullFanLeverAgain, pullLeverToMoveToLava, pickUpBar), Collections.singletonList(elementalBar)));
 
 		allSteps.add(new PanelDetails("Making a Mind Helm", Arrays.asList(goDownToBasement, useBarOnGun, operateHat,
-			takeMindBar, goMakeMindHelmet), primedBar, hammer, beatenBook));
+			takeMindBar, goMakeMindHelmet), Arrays.asList(primedBar, hammer, beatenBook), Collections.singletonList(slashedBook)));
 		return allSteps;
 	}
 }

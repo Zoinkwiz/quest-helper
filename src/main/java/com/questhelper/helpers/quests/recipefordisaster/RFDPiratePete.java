@@ -162,6 +162,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		fishBowl = new ItemRequirement("Empty fishbowl", ItemID.FISHBOWL_EMPTY);
 		bronzeWire3 = new ItemRequirement("Bronze wire", ItemID.BRONZECRAFTWIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
+		needle.setTooltip("Costume needle cannot be used as a substitute");
 		fishCake = new ItemRequirement("Cooked fishcake", ItemID.HUNDRED_PIRATE_FISHCAKE);
 		fishCakeHighlighted = new ItemRequirement("Cooked fishcake", ItemID.HUNDRED_PIRATE_FISHCAKE);
 		fishCakeHighlighted.setHighlightInInventory(true);

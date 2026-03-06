@@ -151,7 +151,9 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		bronzeWire = new ItemRequirement("Bronze wire", ItemID.BRONZECRAFTWIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
+		needle.setTooltip("Costume needle cannot be used as a substitute");
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 5);
+		thread.setTooltip("Costume needle cannot be used as a substitute");
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		coins = new ItemRequirement("Coins at least", ItemCollections.COINS, 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.FENK_BRAIN);

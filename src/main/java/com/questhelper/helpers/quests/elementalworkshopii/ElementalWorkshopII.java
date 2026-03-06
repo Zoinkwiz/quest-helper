@@ -657,7 +657,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(searchBookcase, readBook, readScroll)));
 		allSteps.add(new PanelDetails("Unlocking the Hatch", Arrays.asList(getKey, unlockHatch), batteredKey, pickaxe,
-			coal.quantity(8), hammer));
+			coal.quantity(8), hammer, beatenBook));
 		allSteps.add(new PanelDetails("Repairing the crane", Arrays.asList(takeSchematics, goMakeClaw, goRepairCrane)));
 		allSteps.add(new PanelDetails("Repairing the workshop", Arrays.asList(goSortTubes, getCogsAndPipe,
 			goRepairPipe, goPlaceCogs)));

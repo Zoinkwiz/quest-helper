@@ -50,6 +50,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class ChartingHelper extends ComplexStateQuestHelper
@@ -60,7 +61,20 @@ public class ChartingHelper extends ComplexStateQuestHelper
 		PROXIMITY
 	}
 
+	private enum OceanFilter
+	{
+		ALL,
+		ARDENT_OCEAN,
+		WESTERN_OCEAN,
+		SUNSET_OCEAN,
+		UNQUIET_OCEAN,
+		SHROUDED_OCEAN,
+		NORTHERN_OCEAN,
+		BONUS
+	}
+
 	private final String SELECTION_METHOD = "chartingSelectionMethod";
+	private final String OCEAN_FILTER = "chartingOceanFilter";
 
 	private final DetailedQuestStep overviewStep = new DetailedQuestStep(this, "You have no more things you can chart at your current level.");
 	private final List<QuestStep> chartingSteps = new ArrayList<>();
@@ -119,11 +133,15 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			List<QuestStep> steps = new ArrayList<>();
 			for (ChartingTaskInterface chartingStep : entry.getValue())
 			{
+				// Add hide condition for ocean filter to each step
+				chartingStep.addOceanFilterHideCondition(not(createStepShowCondition(chartingStep)));
 				steps.add((QuestStep) chartingStep);
 			}
 			ChartingSeaSection section = seaNameToSection.get(entry.getKey());
 			int panelId = section != null ? section.getId() : -1;
 			var panel = new PanelDetails(entry.getKey(), steps).withId(panelId);
+
+			// Show panel if any task is BOTH incomplete AND matches the ocean filter
 			var displayCondition = createDisplayCondition(entry.getValue());
 			if (displayCondition != null)
 			{
@@ -168,14 +186,19 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	{
 		buildSteps();
 
-		// Initialize default config value if not set
+		// Initialize default config values if not set
 		String selectionMethodName = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, SELECTION_METHOD);
 		if (selectionMethodName == null)
 		{
 			configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, SELECTION_METHOD, SelectionMethod.PROXIMITY.name());
 		}
+		String oceanFilterName = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, OCEAN_FILTER);
+		if (oceanFilterName == null)
+		{
+			configManager.setRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, OCEAN_FILTER, OceanFilter.ALL.name());
+		}
 
-		var chartingConditionalStep = new ChartingConditionalStep(this, overviewStep, SELECTION_METHOD);
+		var chartingConditionalStep = new ChartingConditionalStep(this, overviewStep, SELECTION_METHOD, OCEAN_FILTER);
 		for (QuestStep step : chartingSteps)
 		{
 			if (step instanceof ChartingTaskInterface)
@@ -191,7 +214,8 @@ public class ChartingHelper extends ComplexStateQuestHelper
 	public List<HelperConfig> getConfigs()
 	{
 		HelperConfig selectionMethodConfig = new HelperConfig("Selection Method", SELECTION_METHOD, SelectionMethod.values());
-		return List.of(selectionMethodConfig);
+		HelperConfig oceanFilterConfig = new HelperConfig("Ocean Filter", OCEAN_FILTER, OceanFilter.values());
+		return List.of(selectionMethodConfig, oceanFilterConfig);
 	}
 
 	@Override
@@ -207,14 +231,90 @@ public class ChartingHelper extends ComplexStateQuestHelper
 			return null;
 		}
 
-		if (steps.size() == 1)
+		// For each task, create a condition: (incomplete AND matches ocean filter)
+		// Then OR all of them together: show panel if ANY task satisfies both
+		List<Requirement> perTaskConditions = new ArrayList<>();
+		for (ChartingTaskInterface step : steps)
 		{
-			return steps.get(0).getIncompleteRequirement();
+			Requirement incompleteReq = step.getIncompleteRequirement();
+			Requirement matchesFilterReq = createStepShowCondition(step);
+			perTaskConditions.add(new Conditions(LogicType.AND, incompleteReq, matchesFilterReq));
 		}
 
-		var requirements = steps.stream()
-			.map(ChartingTaskInterface::getIncompleteRequirement)
-			.toArray(Requirement[]::new);
-		return new Conditions(LogicType.OR, requirements);
+		if (perTaskConditions.size() == 1)
+		{
+			return perTaskConditions.get(0);
+		}
+
+		return new Conditions(LogicType.OR, perTaskConditions.toArray(new Requirement[0]));
+	}
+
+	private Requirement createStepShowCondition(ChartingTaskInterface step)
+	{
+		// Returns true if the step MATCHES the current filter (opposite of hide condition)
+		return new Requirement()
+		{
+			@Override
+			public boolean check(net.runelite.api.Client client)
+			{
+				String filterValue = configManager.getRSProfileConfiguration(
+					QuestHelperConfig.QUEST_BACKGROUND_GROUP, OCEAN_FILTER);
+
+				if (filterValue == null || filterValue.equals("ALL"))
+				{
+					return true;
+				}
+
+				return passesOceanFilter(step.getOcean(), filterValue);
+			}
+
+			@Nonnull
+			@Override
+			public String getDisplayText()
+			{
+				return "";
+			}
+		};
+	}
+
+	private boolean passesOceanFilter(String stepOcean, String filterValue)
+	{
+		if (stepOcean.isEmpty())
+		{
+			return filterValue.equals("BONUS");
+		}
+
+		if (filterValue.equals("BONUS"))
+		{
+			return false;
+		}
+
+		String expectedOcean = filterValue.replace("_", " ");
+		expectedOcean = toTitleCase(expectedOcean);
+		return stepOcean.equals(expectedOcean);
+	}
+
+	private String toTitleCase(String input)
+	{
+		StringBuilder result = new StringBuilder();
+		boolean capitalizeNext = true;
+		for (char c : input.toLowerCase().toCharArray())
+		{
+			if (Character.isWhitespace(c))
+			{
+				capitalizeNext = true;
+				result.append(c);
+			}
+			else if (capitalizeNext)
+			{
+				result.append(Character.toUpperCase(c));
+				capitalizeNext = false;
+			}
+			else
+			{
+				result.append(c);
+			}
+		}
+		return result.toString();
 	}
 }

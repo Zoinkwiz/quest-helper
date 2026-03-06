@@ -81,7 +81,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 
 	ZoneRequirement inUnderground, inDorg1, inDorg2, inDraySewer, inOldman, inWaterAltar, inDorgAgi, inLowerDorgAgi;
 
-	ConditionalStep richChestTask, grapplePylonTask, chopMagicTask, addyPlatebodyTask, waterRunesTask, qcEmoteTask;
+	ConditionalStep richChestTask, grapplePylonTask, moveToDorgAgiCourse, chopMagicTask, addyPlatebodyTask, waterRunesTask, qcEmoteTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -105,13 +105,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		richChestTask.addStep(inDorg2, richChest);
 		doElite.addStep(notRichChest, richChestTask);
 
-		grapplePylonTask = new ConditionalStep(this, moveToUndergroundPylon);
-		grapplePylonTask.addStep(inUnderground, moveToDorgPylon);
-		grapplePylonTask.addStep(inDorg1, dorgStairsPylon);
-		grapplePylonTask.addStep(inDorg2, moveToDorgAgi);
-		grapplePylonTask.addStep(inLowerDorgAgi, dorgLadderToAgi);
+		grapplePylonTask = new ConditionalStep(this, moveToDorgAgiCourse);
 		grapplePylonTask.addStep(inDorgAgi, grapplePylon);
-
 		doElite.addStep(notGrapplePylon, grapplePylonTask);
 
 
@@ -149,7 +144,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		waterAccessOrAbyss.setTooltip("Water Tiara, Elemental Tiara, RC-skill cape or via Abyss");
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote).isNotConsumed();
 		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESH_TELEPORT_ARTIFACT)
-			.showConditioned(new Conditions(notGrapplePylon, notRichChest));
+			.showConditioned(new Conditions(LogicType.OR, notGrapplePylon, notRichChest));
 		ringOfDueling = new ItemRequirement("Ring of dueling to Emir's Arena", ItemCollections.RING_OF_DUELINGS)
 			.showConditioned(notChopMagic);
 		dramenStaff = new ItemRequirement("Dramen or Lunar staff to AJQ", ItemCollections.FAIRY_STAFF).isNotConsumed()
@@ -200,7 +195,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			"Craft water runes.", essence.quantity(28));
 
 		moveToUndergroundPylon = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
-			"Climb down the trapdoor in the Lumbridge Castle.", mithgrap, crossbow, lightsource);
+			"Either enter the trapdoor in the Lumbridge Castle or use a fairy ring to AJQ.", mithgrap, crossbow, lightsource);
 		moveToUndergroundChest = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
 			"Climb down the trapdoor in the Lumbridge Castle.", lockpick, lightsource);
 
@@ -215,14 +210,19 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 			"Climb the stairs to the second level of Dorgesh-Kaan.", mithgrap, crossbow, lightsource);
 		dorgStairsChest = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH, new WorldPoint(2721, 5360, 0),
 			"Climb the stairs to the second level of Dorgesh-Kaan.", lockpick);
-
+		moveToDorgAgi = new ObjectStep(this, ObjectID.DORGESH_2STAIRS_POSH, new WorldPoint(2723, 5253, 1),
+			"Climb the stairs to enter the Dorgesh-Kaan agility course.", mithgrap, crossbow, lightsource);
 		dorgLadderToAgi = new ObjectStep(this, ObjectID.DORGESH_CAVEWALL_SLOPE_STEPS, new WorldPoint(2716, 5241, 0),
-			"If teleported to fairy ring, climb the ladder to the agility course.", mithgrap, crossbow, lightsource);
+			"Climb the ladder to enter the Dorgesh-Kaan agility course.", mithgrap, crossbow, lightsource);
+
+		moveToDorgAgiCourse = new ConditionalStep(this, moveToUndergroundPylon, "Travel to the Dorgesh-Kaan agility course.");
+		moveToDorgAgiCourse.addStep(inUnderground, moveToDorgPylon);
+		moveToDorgAgiCourse.addStep(inDorg1, dorgStairsPylon);
+		moveToDorgAgiCourse.addStep(inDorg2, moveToDorgAgi);
+		moveToDorgAgiCourse.addStep(inLowerDorgAgi, dorgLadderToAgi);
 
 		richChest = new ObjectStep(this, ObjectID.DORGESH_RICH_CHEST_CLOSED, new WorldPoint(2703, 5348, 1),
 			"Lockpick the chest.", lockpick);
-		moveToDorgAgi = new ObjectStep(this, ObjectID.DORGESH_2STAIRS_POSH, new WorldPoint(2723, 5253, 1),
-			"Climb the stairs to enter the Dorgesh-Kaan agility course.", mithgrap, crossbow, lightsource);
 		grapplePylon = new ObjectStep(this, ObjectID.DORGESH_PYLON_GRAPPLE_BASE, new WorldPoint(2714, 5242, 3),
 			"Grapple a pylon near the start of the grapple route in the agility course.", mithgrap, crossbow, lightsource);
 
@@ -317,8 +317,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		richChestSteps.setLockingStep(richChestTask);
 		allSteps.add(richChestSteps);
 
-		PanelDetails pylonSteps = new PanelDetails("Grapple Dorgesh-Kaan Pylon", Arrays.asList(moveToUndergroundPylon, moveToDorgPylon,
-			dorgStairsPylon, moveToDorgAgi, dorgLadderToAgi, grapplePylon), Arrays.asList(
+		PanelDetails pylonSteps = new PanelDetails("Grapple Dorgesh-Kaan Pylon", Arrays.asList(moveToDorgAgiCourse, grapplePylon), Arrays.asList(
 			new SkillRequirement(Skill.AGILITY, 70, true), new SkillRequirement(Skill.RANGED, 70, true),
 			new SkillRequirement(Skill.STRENGTH, 70, true), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource),
 			Arrays.asList(dramenStaff, dorgSphere));

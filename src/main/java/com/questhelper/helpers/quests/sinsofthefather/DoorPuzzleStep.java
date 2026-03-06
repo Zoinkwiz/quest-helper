@@ -96,6 +96,10 @@ public class DoorPuzzleStep extends DetailedQuestStep
 		super(questHelper, "Solve the puzzle by marking the highlighted squares.");
 	}
 
+	/**
+	 * Entry point used in-game – reads the sums from the puzzle widgets
+	 * and solves the Kakurasu grid.
+	 */
 	public PuzzleLine[] solve()
 	{
 		int[] rowSums = new int[SIZE];
@@ -115,6 +119,16 @@ public class DoorPuzzleStep extends DetailedQuestStep
 
 		PuzzleState solved = newSolveState(rowSums, colSums);
 		return solveGrid(solved, rowSums, colSums);
+	}
+
+	/**
+	 * Intended for testing purposes, so we can easily feed in our own puzzles
+	 */
+	static PuzzleLine[] solveForSums(int[] rowSums, int[] colSums)
+	{
+		DoorPuzzleStep step = new DoorPuzzleStep(null);
+		PuzzleState solved = step.newSolveState(rowSums, colSums);
+		return step.solveGrid(solved, rowSums, colSums);
 	}
 
 	private boolean gridSatisfiesSums(PuzzleLine[] grid, int[] rowSums, int[] colSums)

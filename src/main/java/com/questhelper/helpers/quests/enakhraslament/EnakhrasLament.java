@@ -469,7 +469,8 @@ public class EnakhrasLament extends BasicQuestHelper
 		goUpFromPuzzleRoom = new ObjectStep(this, ObjectID.ENAKH_TEMPLE_LADDERUP, new WorldPoint(3104, 9332, 1), "Go up the ladder.");
 		passBarrier.addSubSteps(goUpFromPuzzleRoom);
 
-		castCrumbleUndead = new NpcStep(this, NpcID.ENAKH_BONEGUARD, new WorldPoint(3104, 9307, 2), "Cast crumble undead on the Boneguard.", earth2,
+		castCrumbleUndead = new NpcStep(this, NpcID.ENAKH_BONEGUARD, new WorldPoint(3104, 9307, 2), "Cast crumble undead on the Boneguard. " +
+			"Make sure you take off any armour or weapons which give you a negative magic attack bonus or else you might splash.", earth2,
 			airRuneOrStaff, chaos, onNormals);
 
 		goDownToFinalRoom = new ObjectStep(this, ObjectID.ENAKH_TEMPLE_PILLAR_LADDER_TOP, new WorldPoint(3105, 9300, 2), "Climb down the stone ladder past " +

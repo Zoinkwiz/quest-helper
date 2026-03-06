@@ -520,7 +520,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		raiseCraneFromBar = new ObjectStep(this, ObjectID.ELEM2_FIRE_LEVER_2, new WorldPoint(1953, 5148, 2),
 			"Pull the south west lever to raise the claw once more.");
 		pullLeverToMoveToPress = new ObjectStep(this, ObjectID.ELEM2_LEVER_3WAY, new WorldPoint(1953, 5151, 2),
-			"Pull the central lever to move the jig to the press.");
+			"Pull the central lever to activate the press.");
 		lowerPress = new ObjectStep(this, ObjectID.ELEM2_EARTH_LEVER_1, new WorldPoint(1950, 5153, 2),
 			"Pull the west lever to move the jig to the press.");
 		pullLeverToMoveToTank = new ObjectStep(this, ObjectID.ELEM2_LEVER_3WAY, new WorldPoint(1953, 5151, 2),

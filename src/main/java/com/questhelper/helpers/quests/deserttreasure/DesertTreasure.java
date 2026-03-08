@@ -64,7 +64,7 @@ import static com.questhelper.requirements.util.LogicHelper.or;
 public class DesertTreasure extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement combatGear, magicCombatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele,
+	ItemRequirement combatGear, magicCombatGear, rangedCombatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele,
 		canifisTeleport, bedabinTeleport, pollnivneachTeleport, waterfallTeleport, banditCampTeleport,
 		draynorTeleport, trollheimTeleport, pyramidTeleport;
 
@@ -298,6 +298,8 @@ public class DesertTreasure extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		magicCombatGear = new ItemRequirement("Magic combat gear", -1, -1);
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
+		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
+		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		digTele = new ItemRequirement("Digsite pendant/teleport", ItemCollections.DIGSITE_PENDANTS);
 		digTele.addAlternates(ItemID.TELEPORTSCROLL_DIGSITE);
@@ -701,9 +703,15 @@ public class DesertTreasure extends BasicQuestHelper
 		addPowder.addSubSteps(addPowderToFinish);
 
 		usePotOnGrave = new ObjectStep(this, ObjectID.VAMPIRE_BIG_GRAVE_NOBLOOD, new WorldPoint(3570, 3402, 0),
-			"Use the blessed pot on the vampyre tomb in the graveyard south east of Canifis. Be prepared to fight Dessous.", potComplete);
+			"Use the blessed pot on the vampyre tomb in the graveyard south east of Canifis. Be prepared to fight Dessous.", List.of(potComplete), List.of(magicCombatGear, rangedCombatGear));
 		usePotOnGrave.addIcon(ItemID.FD_SILVER_POT_BLOOD_GARLIC_SPICED_BLESSED);
-		killDessous = new NpcStep(this, NpcID.BLOODDIAMOND_VAMPIREWARRIOR, new WorldPoint(3570, 3403, 0), "Kill Dessous.");
+		usePotOnGrave.addText("Dying or leaving the fight early will require you to to fill up a new pot.");
+		killDessous = new NpcStep(this, NpcID.BLOODDIAMOND_VAMPIREWARRIOR, new WorldPoint(3570, 3403, 0), "Kill Dessous.", null, List.of(magicCombatGear, rangedCombatGear));
+		killDessous.addText("Dessous is weakest to magic or ranged attacks overall, but does have a weakness to stab attacks.");
+		killDessous.addText("If you attack Dessous from far away he will teleport to you, and if he does this 3 times he will end the fight.");
+		killDessous.addText("Dessous has 2 attacks: a fast and accurate melee attack and a half magic/half ranged bat attack that always hits for double 5s.");
+		killDessous.addText("He will detect your protection prayers and switch his attacks accordingly. Because his melee attack is stronger, it is recommended to pray Protect from Melee.");
+		killDessous.addText("If you are able to switch prayers between Melee and Ranged every single tick, he will teleport around but not attack, allowing you to kill him without him attacking.");
 
 		talkToMalakForDiamond = new NpcStep(this, NpcID.FOURDIAMONDS_VAMPIRE_LORD, new WorldPoint(3496, 3479, 0), "Return to Malak in Canifis to get the Blood Diamond.");
 		talkToMalakForDiamond.addTeleport(canifisTeleport);
@@ -859,7 +867,7 @@ public class DesertTreasure extends BasicQuestHelper
 			Arrays.asList(talkToMalak, askAboutKillingDessous, talkToRuantun, blessPot, talkToMalakWithPot,
 				addPowder, addSpice, usePotOnGrave, killDessous, talkToMalakForDiamond),
 			Arrays.asList(silverBar, spice, garlicPowder, combatGear, food),
-			Arrays.asList(canifisTeleport.quantity(3), draynorTeleport));
+			Arrays.asList(magicCombatGear, rangedCombatGear, canifisTeleport.quantity(3), draynorTeleport));
 		bloodDiamondPanel.setLockingStep(getBloodDiamond);
 
 		PanelDetails iceDiamondPanel = new PanelDetails("Ice diamond",

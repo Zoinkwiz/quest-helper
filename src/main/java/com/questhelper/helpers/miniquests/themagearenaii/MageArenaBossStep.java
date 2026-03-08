@@ -41,12 +41,14 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -86,6 +88,10 @@ public class MageArenaBossStep extends DetailedQuestStep
 	private God godToFind;
 
 	private God lastGodClicked;
+
+	/// Set to true after the user clicks "Activate" on the MA2 Enchanted Symbol.
+	/// This helps ensure we don't add key and mouse listeners to unrelated dialogs.
+	private boolean clickedActivateOnSymbol = false;
 
 	private final Map<God, MageArenaSolver> mageArenaSolvers = new HashMap<>();
 
@@ -264,7 +270,9 @@ public class MageArenaBossStep extends DetailedQuestStep
 	{
 		super.onWidgetLoaded(widgetLoaded);
 		if (widgetLoaded.getGroupId() != InterfaceID.CHATMENU) return;
+		if (!clickedActivateOnSymbol) return;
 
+		clickedActivateOnSymbol = false;
 		clientThread.invokeAtTickEnd(this::addListeners);
 	}
 
@@ -296,6 +304,15 @@ public class MageArenaBossStep extends DetailedQuestStep
 			if (ev.getTypedKeyCode() == KeyCode.KC_3) handleBossButtonClick(God.ZAMORAK);
 		});
 		chatMenu.revalidate();
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked e)
+	{
+		if (e.getItemId() == ItemID.MA2_SYMBOL && "Activate".equals(e.getMenuOption()))
+		{
+			clickedActivateOnSymbol = true;
+		}
 	}
 
 	private void handleBossButtonClick(God godClicked)

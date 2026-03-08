@@ -451,13 +451,16 @@ public class DesertTreasure extends BasicQuestHelper
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch1.addIcon(ItemID.TINDERBOX);
 
-		lightTorch2 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH2, new WorldPoint(3321, 9355, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
+		lightTorch2 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH2, new WorldPoint(3321, 9355, 0),
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch2.addIcon(ItemID.TINDERBOX);
 
-		lightTorch3 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH4, new WorldPoint(3207, 9395, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
+		lightTorch3 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH4, new WorldPoint(3207, 9395, 0),
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch3.addIcon(ItemID.TINDERBOX);
 
-		lightTorch4 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH3, new WorldPoint(3204, 9350, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
+		lightTorch4 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH3, new WorldPoint(3204, 9350, 0),
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch4.addIcon(ItemID.TINDERBOX);
 
 		lightTorch1.addSubSteps(lightTorch2, lightTorch3, lightTorch4);

@@ -50,6 +50,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -425,6 +426,33 @@ public class MageArenaBossStep extends DetailedQuestStep
 	private BufferedImage getSymbolLocation()
 	{
 		return itemManager.getImage(ItemID.MA2_SYMBOL);
+	}
+
+	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
+	{
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("God name")
+			.leftColor(ColorScheme.BRAND_ORANGE_TRANSPARENT)
+			.right(this.bossName)
+			.rightColor(ColorScheme.BRAND_ORANGE_TRANSPARENT)
+			.build()
+		);
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("God to find")
+			.leftColor(ColorScheme.BRAND_ORANGE_TRANSPARENT)
+			.right(this.godToFind.name)
+			.rightColor(ColorScheme.BRAND_ORANGE_TRANSPARENT)
+			.build()
+		);
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Pending")
+			.leftColor(ColorScheme.BRAND_ORANGE_TRANSPARENT)
+			.right(clickedActivateOnSymbol ? "y" : "n")
+			.rightColor(ColorScheme.BRAND_ORANGE_TRANSPARENT)
+			.build()
+		);
 	}
 
 	enum God

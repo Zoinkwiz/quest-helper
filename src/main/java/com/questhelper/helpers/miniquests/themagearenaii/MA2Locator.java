@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.miniquests.themagearenaii;
 
+import com.questhelper.QuestHelperPlugin;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
@@ -38,7 +39,9 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -154,5 +157,18 @@ public class MA2Locator extends ComplexStateQuestHelper
 		allSteps.add(new PanelDetails("Upgrading the God Cape", Collections.singletonList(locateFollowers),
 			knife, saradominStaff, guthixStaff, zamorakStaff, runesForCasts));
 		return allSteps;
+	}
+
+	@Override
+	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
+	{
+		super.renderDebugOverlay(graphics, plugin, panelComponent);
+
+		var currentStep = this.getCurrentStep();
+		if (currentStep instanceof MageArenaBossStep)
+		{
+			var bossStep = (MageArenaBossStep) currentStep;
+			bossStep.renderDebugOverlay(graphics, plugin, panelComponent);
+		}
 	}
 }

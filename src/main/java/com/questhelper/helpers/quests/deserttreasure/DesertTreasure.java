@@ -406,6 +406,96 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupSteps()
 	{
+		var pathSmokeDungeonTorch1 = List.of(
+			new WorldPoint(3205, 9379, 0),
+			new WorldPoint(3212, 9377, 0),
+			new WorldPoint(3216, 9374, 0),
+			new WorldPoint(3219, 9373, 0),
+			new WorldPoint(3223, 9384, 0),
+			new WorldPoint(3228, 9388, 0),
+			new WorldPoint(3228, 9393, 0),
+			new WorldPoint(3237, 9401, 0),
+			new WorldPoint(3272, 9399, 0),
+			new WorldPoint(3275, 9393, 0),
+			new WorldPoint(3272, 9386, 0),
+			new WorldPoint(3273, 9379, 0),
+			new WorldPoint(3282, 9378, 0),
+			new WorldPoint(3277, 9366, 0),
+			new WorldPoint(3272, 9363, 0),
+			new WorldPoint(3278, 9352, 0),
+			new WorldPoint(3291, 9361, 0),
+			new WorldPoint(3293, 9375, 0),
+			new WorldPoint(3302, 9386, 0),
+			new WorldPoint(3302, 9397, 0),
+			new WorldPoint(3305, 9400, 0),
+			new WorldPoint(3320, 9400, 0),
+			new WorldPoint(3323, 9398, 0)
+		);
+
+		var pathSmokeDungeonTorch2 = List.of(
+			new WorldPoint(3323, 9398, 0),
+			new WorldPoint(3320, 9400, 0),
+			new WorldPoint(3305, 9400, 0),
+			new WorldPoint(3302, 9397, 0),
+			new WorldPoint(3302, 9386, 0),
+			new WorldPoint(3300, 9383, 0),
+			new WorldPoint(3301, 9378, 0),
+			new WorldPoint(3303, 9376, 0),
+			new WorldPoint(3300, 9355, 0),
+			new WorldPoint(3308, 9351, 0),
+			new WorldPoint(3319, 9352, 0),
+			new WorldPoint(3321, 9355, 0)
+		);
+
+		var pathSmokeDungeonTorch3 = List.of(
+			new WorldPoint(3321, 9355, 0),
+			new WorldPoint(3319, 9352, 0),
+			new WorldPoint(3308, 9351, 0),
+			new WorldPoint(3300, 9355, 0),
+			new WorldPoint(3302, 9367, 0),
+			new WorldPoint(3297, 9372, 0),
+			new WorldPoint(3292, 9372, 0),
+			new WorldPoint(3291, 9361, 0),
+			new WorldPoint(3278, 9352, 0),
+			new WorldPoint(3272, 9363, 0),
+			new WorldPoint(3277, 9366, 0),
+			new WorldPoint(3282, 9378, 0),
+			new WorldPoint(3273, 9379, 0),
+			new WorldPoint(3272, 9386, 0),
+			new WorldPoint(3275, 9393, 0),
+			new WorldPoint(3272, 9399, 0),
+			new WorldPoint(3237, 9401, 0),
+			new WorldPoint(3227, 9396, 0),
+			new WorldPoint(3218, 9399, 0),
+			new WorldPoint(3212, 9403, 0),
+			new WorldPoint(3210, 9401, 0),
+			new WorldPoint(3207, 9395, 0)
+		);
+
+		var pathSmokeDungeonTorch4 = List.of(
+			new WorldPoint(3207, 9395, 0),
+			new WorldPoint(3210, 9401, 0),
+			new WorldPoint(3212, 9403, 0),
+			new WorldPoint(3218, 9399, 0),
+			new WorldPoint(3227, 9396, 0),
+			new WorldPoint(3228, 9393, 0),
+			new WorldPoint(3228, 9388, 0),
+			new WorldPoint(3223, 9384, 0),
+			new WorldPoint(3219, 9373, 0),
+			new WorldPoint(3216, 9361, 0),
+			new WorldPoint(3211, 9351, 0),
+			new WorldPoint(3204, 9350, 0)
+		);
+
+		var pathSmokeDungeonChest = List.of(
+			new WorldPoint(3204, 9350, 0),
+			new WorldPoint(3215, 9350, 0),
+			new WorldPoint(3223, 9347, 0),
+			new WorldPoint(3227, 9354, 0),
+			new WorldPoint(3237, 9363, 0),
+			new WorldPoint(3248, 9364, 0)
+		);
+
 		talkToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0), "Talk to the " +
 			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
@@ -451,22 +541,27 @@ public class DesertTreasure extends BasicQuestHelper
 		lightTorch1 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH1, new WorldPoint(3323, 9398, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch1.addIcon(ItemID.TINDERBOX);
+		lightTorch1.setLinePoints(pathSmokeDungeonTorch1);
 
 		lightTorch2 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH2, new WorldPoint(3321, 9355, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch2.addIcon(ItemID.TINDERBOX);
+		lightTorch2.setLinePoints(pathSmokeDungeonTorch2);
 
 		lightTorch3 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH4, new WorldPoint(3207, 9395, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch3.addIcon(ItemID.TINDERBOX);
+		lightTorch3.setLinePoints(pathSmokeDungeonTorch3);
 
 		lightTorch4 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH3, new WorldPoint(3204, 9350, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch4.addIcon(ItemID.TINDERBOX);
+		lightTorch4.setLinePoints(pathSmokeDungeonTorch4);
 
 		lightTorch1.addSubSteps(lightTorch2, lightTorch3, lightTorch4);
 
 		openChest = new ObjectStep(this, ObjectID.FD_FIREDUNGEON_SHUTCHEST, new WorldPoint(3248, 9364, 0), "Open the chest in the middle of the dungeon.");
+		openChest.setLinePoints(pathSmokeDungeonChest);
 
 		useWarmKey = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Use the warm key on the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", warmKey, iceGloves, waterSpellOrMelee);

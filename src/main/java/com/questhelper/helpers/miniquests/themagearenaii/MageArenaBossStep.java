@@ -332,12 +332,6 @@ public class MageArenaBossStep extends DetailedQuestStep
 	}
 
 	@Override
-	public void onGameTick(GameTick gameTick)
-	{
-		super.onGameTick(gameTick);
-	}
-
-	@Override
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		super.onChatMessage(chatMessage);

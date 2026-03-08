@@ -521,6 +521,57 @@ public class DesertTreasure extends BasicQuestHelper
 			new WorldPoint(3304, 9375, 0)
 		);
 
+		var pathShadowDungeonDamis = List.of(
+			new WorldPoint(2629, 5072, 0),
+			new WorldPoint(2637, 5068, 0),
+			new WorldPoint(2638, 5065, 0),
+			new WorldPoint(2648, 5064, 0),
+			new WorldPoint(2654, 5062, 0),
+			new WorldPoint(2658, 5066, 0),
+			new WorldPoint(2663, 5065, 0),
+			new WorldPoint(2665, 5062, 0),
+			new WorldPoint(2670, 5060, 0),
+			new WorldPoint(2678, 5060, 0),
+			new WorldPoint(2681, 5070, 0),
+			new WorldPoint(2680, 5079, 0),
+			new WorldPoint(2676, 5086, 0),
+			new WorldPoint(2676, 5089, 0),
+			new WorldPoint(2678, 5090, 0),
+			new WorldPoint(2681, 5091, 0),
+			new WorldPoint(2681, 5097, 0),
+			new WorldPoint(2678, 5099, 0),
+			new WorldPoint(2678, 5113, 0),
+			new WorldPoint(2683, 5113, 0),
+			new WorldPoint(2688, 5110, 0),
+			new WorldPoint(2692, 5110, 0),
+			new WorldPoint(2693, 5100, 0),
+			new WorldPoint(2695, 5095, 0),
+			new WorldPoint(2695, 5090, 0),
+			new WorldPoint(2692, 5088, 0),
+			new WorldPoint(2692, 5078, 0),
+			new WorldPoint(2693, 5075, 0),
+			new WorldPoint(2692, 5071, 0),
+			new WorldPoint(2693, 5066, 0),
+			new WorldPoint(2693, 5061, 0),
+			new WorldPoint(2701, 5061, 0),
+			new WorldPoint(2705, 5065, 0),
+			new WorldPoint(2710, 5065, 0),
+			new WorldPoint(2712, 5061, 0),
+			new WorldPoint(2721, 5061, 0),
+			new WorldPoint(2721, 5067, 0),
+			new WorldPoint(2719, 5070, 0),
+			new WorldPoint(2721, 5071, 0),
+			new WorldPoint(2725, 5072, 0),
+			new WorldPoint(2730, 5072, 0),
+			new WorldPoint(2734, 5074, 0),
+			new WorldPoint(2743, 5105, 0),
+			new WorldPoint(2746, 5108, 0),
+			new WorldPoint(2745, 5114, 0),
+			new WorldPoint(2742, 5115, 0),
+			new WorldPoint(2738, 5114, 0),
+			new WorldPoint(2739, 5112, 0)
+		);
+
 		talkToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0), "Talk to the " +
 			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
@@ -624,6 +675,7 @@ public class DesertTreasure extends BasicQuestHelper
 			"Equip the Ring of Visibility, then go down the ladder in the area east of Rasolo. It's recommended you bring combat gear to safe spot Damis.", ringOfVisibility);
 		enterShadowDungeon.addTeleport(waterfallTeleport);
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
+		waitForDamis.setLinePoints(pathShadowDungeonDamis);
 
 		killDamis1 = new NpcStep(this, NpcID.FD_DAMIS_NORMAL, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
 		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");

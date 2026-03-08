@@ -296,7 +296,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		magicCombatGear = new ItemRequirement("Magic combat gear and water spells", -1, -1);
+		magicCombatGear = new ItemRequirement("Magic combat gear", -1, -1);
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		digTele = new ItemRequirement("Digsite pendant/teleport", ItemCollections.DIGSITE_PENDANTS);
@@ -677,9 +677,11 @@ public class DesertTreasure extends BasicQuestHelper
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
 		waitForDamis.setLinePoints(pathShadowDungeonDamis);
 
-		killDamis1 = new NpcStep(this, NpcID.FD_DAMIS_NORMAL, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
-		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
+		killDamis1 = new NpcStep(this, NpcID.FD_DAMIS_NORMAL, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat or rat and keeping it between the two of you.");
+		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat or rat and keeping it between the two of you.");
 		killDamis1.addSubSteps(killDamis2);
+		killDamis1.addText("Damis only attacks with melee in both forms, and his second form rapidly drains prayer with his attacks.");
+		killDamis2.addText("Damis only attacks with melee in both forms, and his second form rapidly drains prayer with his attacks.");
 
 		pickUpShadowDiamond = new DetailedQuestStep(this, "Pick up the shadow diamond.", shadowDiamond);
 
@@ -850,7 +852,7 @@ public class DesertTreasure extends BasicQuestHelper
 		PanelDetails shadowDiamondPanel = new PanelDetails("Shadow diamond",
 			Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1, pickUpShadowDiamond),
 			Arrays.asList(manyLockpicks, antipoison, combatGear, food),
-			Arrays.asList(waterfallTeleport.quantity(2), banditCampTeleport));
+			Arrays.asList(magicCombatGear, waterfallTeleport.quantity(2), banditCampTeleport));
 		shadowDiamondPanel.setLockingStep(getShadowDiamond);
 
 		PanelDetails bloodDiamondPanel = new PanelDetails("Blood diamond",

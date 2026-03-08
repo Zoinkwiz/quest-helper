@@ -496,6 +496,29 @@ public class DesertTreasure extends BasicQuestHelper
 			new WorldPoint(3248, 9364, 0)
 		);
 
+		var pathSmokeDungeonFareed = List.of(
+			new WorldPoint(3248, 9364, 0),
+			new WorldPoint(3236, 9364, 0),
+			new WorldPoint(3235, 9372, 0),
+			new WorldPoint(3238, 9379, 0),
+			new WorldPoint(3238, 9391, 0),
+			new WorldPoint(3232, 9397, 0),
+			new WorldPoint(3237, 9401, 0),
+			new WorldPoint(3272, 9399, 0),
+			new WorldPoint(3275, 9393, 0),
+			new WorldPoint(3272, 9386, 0),
+			new WorldPoint(3273, 9379, 0),
+			new WorldPoint(3282, 9378, 0),
+			new WorldPoint(3277, 9366, 0),
+			new WorldPoint(3272, 9363, 0),
+			new WorldPoint(3278, 9352, 0),
+			new WorldPoint(3291, 9361, 0),
+			new WorldPoint(3292, 9372, 0),
+			new WorldPoint(3297, 9372, 0),
+			new WorldPoint(3302, 9373, 0),
+			new WorldPoint(3304, 9375, 0)
+		);
+
 		talkToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0), "Talk to the " +
 			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
@@ -566,6 +589,7 @@ public class DesertTreasure extends BasicQuestHelper
 		useWarmKey = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Use the warm key on the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", warmKey, iceGloves, waterSpellOrMelee);
 		useWarmKey.addIcon(ItemID.FD_FIREKEY);
+		useWarmKey.setLinePoints(pathSmokeDungeonFareed);
 
 		enterFareedRoom = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Enter the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", iceGloves, waterSpellOrMelee);

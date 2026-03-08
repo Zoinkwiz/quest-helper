@@ -441,6 +441,7 @@ public class DesertTreasure extends BasicQuestHelper
 		bringItemsToEblis = new GiveItems(this, NpcID.FD_ELDER_VILLAGE, new WorldPoint(3184, 2989, 0), "Use the items on Eblis " +
 			"in the east of the Bandit Camp. Items can be noted.", ashes, bloodRune, bones,
 			charcoal, moltenGlass6, magicLogs12, steelBars6);
+		bringItemsToEblis.addText("DO NOT WEAR A ZAMORAK ITEM WHEN GIVING HIM THE ITEMS OR HE WILL NOT MAKE THE GLASSES.");
 
 		talkToEblisAtMirrors = new NpcStep(this, NpcID.FD_ELDER_BY_MIRRORS, new WorldPoint(3214, 2954, 0), "Talk to Eblis at the mirrors south east of the Bandit Camp.");
 

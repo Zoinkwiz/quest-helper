@@ -64,7 +64,7 @@ import static com.questhelper.requirements.util.LogicHelper.or;
 public class DesertTreasure extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement combatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele,
+	ItemRequirement combatGear, magicCombatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele,
 		canifisTeleport, bedabinTeleport, pollnivneachTeleport, waterfallTeleport, banditCampTeleport,
 		draynorTeleport, trollheimTeleport, pyramidTeleport;
 
@@ -268,7 +268,7 @@ public class DesertTreasure extends BasicQuestHelper
 		iceGloves.setTooltip("to be able to wield a weapon against Fareed if not using water spells with runes only");
 		iceGloves.addAlternates(ItemID.SMITHING_UNIFORM_GLOVES_ICE);
 
-		waterSpellOrMelee = new ItemRequirement("Water spells or melee gear", -1, -1);
+		waterSpellOrMelee = new ItemRequirement("Magic combat gear with water spells or melee gear", -1, -1);
 		waterSpellOrMelee.setDisplayItemId(ItemID.WATERRUNE);
 
 		cross = new ItemRequirement("Gilded cross", ItemID.FD_SWORD_CROSS);
@@ -296,6 +296,8 @@ public class DesertTreasure extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		magicCombatGear = new ItemRequirement("Magic combat gear and water spells", -1, -1);
+		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		digTele = new ItemRequirement("Digsite pendant/teleport", ItemCollections.DIGSITE_PENDANTS);
 		digTele.addAlternates(ItemID.TELEPORTSCROLL_DIGSITE);
@@ -590,11 +592,15 @@ public class DesertTreasure extends BasicQuestHelper
 			"Use the warm key on the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", warmKey, iceGloves, waterSpellOrMelee);
 		useWarmKey.addIcon(ItemID.FD_FIREKEY);
 		useWarmKey.setLinePoints(pathSmokeDungeonFareed);
+		useWarmKey.addText("If you leave the fight before killing Fareed, you will NOT need to get the key again.");
 
 		enterFareedRoom = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Enter the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", iceGloves, waterSpellOrMelee);
+		enterFareedRoom.addText("If you leave the fight before killing Fareed, you will NOT need to get the key again.");
 		useWarmKey.addSubSteps(enterFareedRoom);
 		killFareed = new NpcStep(this, NpcID.FIREDIAMOND_FIREWARRIOR, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", iceGloves, waterSpellOrMelee);
+		killFareed.addText("Fareed is weakest to water spells and Protection from Melee prayers should be used if he is in melee distance.");
+		killFareed.addText("Fareed has a magic attack that is only used in melee distance, so Magic defence is recommended in addition to Protection from Melee.");
 
 		talkToRasolo = new NpcStep(this, NpcID.SHADOW_WARRIOR_RASOOL, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
 		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");

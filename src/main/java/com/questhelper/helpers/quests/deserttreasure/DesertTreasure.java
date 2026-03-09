@@ -474,17 +474,17 @@ public class DesertTreasure extends BasicQuestHelper
 		lightTorch1.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch1.getPoints());
 
 		lightTorch2 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH2, new WorldPoint(3321, 9355, 0),
-			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible.", tinderbox.highlighted());
 		lightTorch2.addIcon(ItemID.TINDERBOX);
 		lightTorch2.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch2.getPoints());
 
 		lightTorch3 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH4, new WorldPoint(3207, 9395, 0),
-			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible.", tinderbox.highlighted());
 		lightTorch3.addIcon(ItemID.TINDERBOX);
 		lightTorch3.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch3.getPoints());
 
 		lightTorch4 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH3, new WorldPoint(3204, 9350, 0),
-			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible.", tinderbox.highlighted());
 		lightTorch4.addIcon(ItemID.TINDERBOX);
 		lightTorch4.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch4.getPoints());
 

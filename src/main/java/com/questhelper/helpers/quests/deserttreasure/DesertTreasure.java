@@ -223,7 +223,16 @@ public class DesertTreasure extends BasicQuestHelper
 		spice = new ItemRequirement("Spice", ItemID.SPICESPOT);
 		spice.setHighlightInInventory(true);
 
-		sweetTreat = new ItemRequirement("Sweet Treat, e.g. Cake", ItemCollections.TROLL_CHILD_SWEET_TREAT);
+		sweetTreat = new ItemRequirement("Sweet Treat, e.g. Cake", List.of(
+			ItemID.CAKE,
+			ItemID.PARTIAL_CAKE,
+			ItemID.CAKE_SLICE,
+			ItemID.CHOCOLATE_CAKE,
+			ItemID.PARTIAL_CHOCOLATE_CAKE,
+			ItemID.CHOCOLATE_SLICE,
+			ItemID.CHOCOLATE_BAR,
+			ItemID.COOKING_APPLE,
+			ItemID.PINEAPPLE_PIZZA));
 		sweetTreat.setDisplayMatchedItemName(true);
 		sweetTreat.setHighlightInInventory(true);
 
@@ -309,7 +318,6 @@ public class DesertTreasure extends BasicQuestHelper
 		digTele.addAlternates(ItemID.TELEPORTSCROLL_DIGSITE);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS);
 		restorePotions = new ItemRequirement("Restore potions", ItemCollections.RESTORE_POTIONS);
-		restorePotions.addAlternates(ItemCollections.SUPER_RESTORE_POTIONS);
 		energyOrStaminas = new ItemRequirement("Energy/Stamina potions", ItemCollections.RUN_RESTORE_ITEMS);
 
 		// Teleports

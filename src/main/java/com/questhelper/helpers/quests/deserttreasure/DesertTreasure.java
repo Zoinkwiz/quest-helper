@@ -426,12 +426,12 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToArchaeologist.addTeleport(bedabinTeleport);
 
 		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0),
-			"Talk to the Terry Balando in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
+			"Talk to Terry Balando in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
 		talkToExpert.addDialogStep("Ask about the Desert Treasure quest.");
 		talkToExpert.addTeleport(digTele);
 
 		talkToExpertAgain = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0),
-			"Talk to the Terry Balando again.");
+			"Talk to Terry Balando again.");
 		talkToExpertAgain.addDialogStep("Ask about the Desert Treasure quest.");
 
 		bringTranslationToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0),

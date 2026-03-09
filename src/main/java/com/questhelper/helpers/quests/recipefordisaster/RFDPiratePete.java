@@ -61,7 +61,7 @@ public class RFDPiratePete extends BasicQuestHelper
 {
 	ItemRequirement combatGear, pestleHighlighted, rawCodHighlighted, knifeHighlighted, breadHighlighted, divingAparatus, divingHelmet, fishBowl, bronzeWire3, needle, fishCake,
 		fishCakeHighlighted, rocks5, mudskipperHide5, crabMeat, kelp, groundKelpHighlighted, groundCrabMeatHighlighted, kelpHighlighted, crabMeatHighlighted,
-		rawFishCake, groundCod, breadcrumbs;
+		rawFishCake, groundCod, breadcrumbs, emptySlotsX6;
 
 	WeightRequirement canSwim;
 
@@ -162,6 +162,7 @@ public class RFDPiratePete extends BasicQuestHelper
 		fishBowl = new ItemRequirement("Empty fishbowl", ItemID.FISHBOWL_EMPTY);
 		bronzeWire3 = new ItemRequirement("Bronze wire", ItemID.BRONZECRAFTWIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
+		needle.setTooltip("Costume needle cannot be used as a substitute");
 		fishCake = new ItemRequirement("Cooked fishcake", ItemID.HUNDRED_PIRATE_FISHCAKE);
 		fishCakeHighlighted = new ItemRequirement("Cooked fishcake", ItemID.HUNDRED_PIRATE_FISHCAKE);
 		fishCakeHighlighted.setHighlightInInventory(true);
@@ -185,6 +186,8 @@ public class RFDPiratePete extends BasicQuestHelper
 		groundCod = new ItemRequirement("Ground cod", ItemID.HUNDRED_PIRATE_GROUND_COD);
 		groundCod.setTooltip("You can make this by use a pestle and mortar on a raw cod");
 		breadcrumbs = new ItemRequirement("Breadcrumbs", ItemID.HUNDRED_PIRATE_BREADCRUMBS);
+		emptySlotsX6 = new ItemRequirement("Empty inventory slots at minimum", -1, 6);
+		emptySlotsX6.setTooltip("Have an additional empty slot for each additional kelp beyond the minimum of 1");
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -341,7 +344,7 @@ public class RFDPiratePete extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(inspectPete, talkToCook, talkToMurphy, talkToMurphyAgain), fishBowl));
-		allSteps.add(new PanelDetails("Get Crab and Kelp", Arrays.asList(goDiving, pickKelp, talkToNung, pickUpRocks, enterCave, killMudksippers5, returnToNung, giveNungWire, killCrab, climbAnchor), divingHelmet, divingAparatus, bronzeWire3, needle));
+		allSteps.add(new PanelDetails("Get Crab and Kelp", Arrays.asList(goDiving, pickKelp, talkToNung, pickUpRocks, enterCave, killMudksippers5, returnToNung, giveNungWire, killCrab, climbAnchor), Arrays.asList(divingHelmet, divingAparatus, bronzeWire3, needle, emptySlotsX6, canSwim), Collections.singletonList(combatGear)));
 		allSteps.add(new PanelDetails("Saving Pete", Arrays.asList(grindCrab, grindKelp, usePestleOnCod, useKnifeOnBread, talkToCookAgain, useCrabOnKelp, cookCake, useCakeOnPete), pestleHighlighted, knifeHighlighted, rawCodHighlighted, breadHighlighted, crabMeat, kelp));
 		return allSteps;
 	}

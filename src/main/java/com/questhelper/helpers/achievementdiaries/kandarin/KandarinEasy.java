@@ -62,7 +62,7 @@ import java.util.List;
 public class KandarinEasy extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement combatGear, bigFishingNet, coins, juteSeed, seedDibber, rake, batteredKey,
+	ItemRequirement combatGear, bigFishingNet, coins, juteSeed, seedDibber, rake, spade, batteredKey,
 		emptyFishbowl, fishBowl, seaweed, fishBowlSeaweed, tinyNet, genericFishbowl;
 
 	// Items recommended
@@ -79,7 +79,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
 	QuestStep killFire, killEarth, killWater, killAir;
 
-	NpcStep catchMackerel, killEle;
+	NpcStep catchMackerel;
 
 	Zone workshop;
 
@@ -127,8 +127,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		killEleTask.addStep(new Conditions(inWorkshop, killedFire, killedEarth, killedWater), killAir);
 		killEleTask.addStep(new Conditions(inWorkshop, killedFire, killedEarth), killWater);
 		killEleTask.addStep(new Conditions(inWorkshop, killedFire), killEarth);
-		killEleTask.addStep(new Conditions(inWorkshop), killFire);
-		killEleTask.addStep(inWorkshop, killEle);
+		killEleTask.addStep(inWorkshop, killFire);
 		doEasy.addStep(notKillEle, killEleTask);
 
 		plantJuteTask = new ConditionalStep(this, plantJute);
@@ -176,7 +175,9 @@ public class KandarinEasy extends ComplexStateQuestHelper
         juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
         rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute).isNotConsumed();
         seedDibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(notPlantJute).isNotConsumed();
-        batteredKey = new KeyringRequirement("Battered Key", KeyringCollection.BATTERED_KEY).showConditioned(notKillEle).isNotConsumed();
+        spade = new ItemRequirement("Spade (if existing plant in hops patch)", ItemID.SPADE).showConditioned(notPlantJute).isNotConsumed();
+
+		batteredKey = new KeyringRequirement("Battered Key", KeyringCollection.BATTERED_KEY).showConditioned(notKillEle).isNotConsumed();
         batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
 			"Workshop, then reading the book you get from it");
 
@@ -227,18 +228,14 @@ public class KandarinEasy extends ComplexStateQuestHelper
 			"Speak with Sherlock west of Catherby.");
 		moveToWorkshop = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_SPIRALSTAIRSTOP, new WorldPoint(2711, 3498, 0),
 			"Enter the Elemental Workshop in Seers' Village.", batteredKey, combatGear, food);
-		killEle = new NpcStep(this, NpcID.ELEMENTAL_FIRE, new WorldPoint(2719, 9889, 0),
-			"Kill one of each of the 4 elementals.", combatGear, food);
-		killEle.addAlternateNpcs(NpcID.ELEMENTAL_WATER, NpcID.ELEMENTAL_AIR, NpcID.ELEMENTAL_EARTH);
 		killFire = new NpcStep(this, NpcID.ELEMENTAL_FIRE, new WorldPoint(2719, 9877, 0),
-			"Kill one of each of the 4 elementals.", true, combatGear, food);
+			"Kill one of the fire elementals.", true, combatGear, food);
 		killEarth = new NpcStep(this, NpcID.ELEMENTAL_EARTH, new WorldPoint(2700, 9903, 0),
-			"Kill one of each of the 4 elementals.", true, combatGear, food);
+			"Kill one of the earth elementals. Only the roaming ones work for this.", true, combatGear, food);
 		killWater = new NpcStep(this, NpcID.ELEMENTAL_WATER, new WorldPoint(2719, 9903, 0),
-			"Kill one of each of the 4 elementals.", true, combatGear, food);
+			"Kill one of the water elementals.", true, combatGear, food);
 		killAir = new NpcStep(this, NpcID.ELEMENTAL_AIR, new WorldPoint(2735, 9891, 0),
-			"Kill one of each of the 4 elementals.", true, combatGear, food);
-		killEle.addSubSteps(killFire, killEarth, killWater, killAir);
+			"Kill one of the air elementals.", true, combatGear, food);
 
 		buyStew = new NpcStep(this, NpcID.FORESTERS_BARTENDER, new WorldPoint(2691, 3494, 0),
 			"Talk with the bartender in Seers' Village and buy a stew.", coins.quantity(20));
@@ -247,7 +244,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 			"Play the organ in Seers' Village Church.");
 		plantJute = new ObjectStep(this, ObjectID.FARMING_HOPS_PATCH_4, new WorldPoint(2669, 3523, 0),
 			"Plant 3 jute seeds in the hops patch north west of Seers' Village.", juteSeed.quantity(3),
-			seedDibber, rake);
+			seedDibber, rake, spade);
 		plantJute.addIcon(ItemID.JUTE_SEED);
 		cupTea = new NpcStep(this, NpcID.BROTHER_GALAHAD, new WorldPoint(2612, 3474, 0),
 			"Talk with Galahad west of McGrubor's Wood until he gives you some tea.");
@@ -264,7 +261,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins.quantity(33), bigFishingNet, juteSeed.quantity(3),
-			seedDibber, rake, batteredKey, genericFishbowl, seaweed, combatGear);
+			seedDibber, rake, spade, batteredKey, genericFishbowl, seaweed, combatGear);
 	}
 
 	@Override
@@ -354,14 +351,14 @@ public class KandarinEasy extends ComplexStateQuestHelper
 		buyStewSteps.setLockingStep(buyStewTask);
 		allSteps.add(buyStewSteps);
 
-		PanelDetails killElesSteps = new PanelDetails("Defeat Elementals", Arrays.asList(moveToWorkshop, killEle),
+		PanelDetails killElesSteps = new PanelDetails("Defeat Elementals", Arrays.asList(moveToWorkshop, killFire, killEarth, killWater, killAir),
 			eleWorkI, batteredKey, combatGear, food);
 		killElesSteps.setDisplayCondition(notKillEle);
 		killElesSteps.setLockingStep(killEleTask);
 		allSteps.add(killElesSteps);
 
 		PanelDetails plantJuteSteps = new PanelDetails("Plant Jute", Collections.singletonList(plantJute),
-			new SkillRequirement(Skill.FARMING, 13, true), juteSeed.quantity(3), seedDibber, rake);
+			new SkillRequirement(Skill.FARMING, 13, true), juteSeed.quantity(3), seedDibber, rake, spade);
 		plantJuteSteps.setDisplayCondition(notPlantJute);
 		plantJuteSteps.setLockingStep(plantJuteTask);
 		allSteps.add(plantJuteSteps);

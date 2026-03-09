@@ -410,170 +410,6 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		var pathSmokeDungeonTorch1 = List.of(
-			new WorldPoint(3205, 9379, 0),
-			new WorldPoint(3212, 9377, 0),
-			new WorldPoint(3216, 9374, 0),
-			new WorldPoint(3219, 9373, 0),
-			new WorldPoint(3223, 9384, 0),
-			new WorldPoint(3228, 9388, 0),
-			new WorldPoint(3228, 9393, 0),
-			new WorldPoint(3237, 9401, 0),
-			new WorldPoint(3272, 9399, 0),
-			new WorldPoint(3275, 9393, 0),
-			new WorldPoint(3272, 9386, 0),
-			new WorldPoint(3273, 9379, 0),
-			new WorldPoint(3282, 9378, 0),
-			new WorldPoint(3277, 9366, 0),
-			new WorldPoint(3272, 9363, 0),
-			new WorldPoint(3278, 9352, 0),
-			new WorldPoint(3291, 9361, 0),
-			new WorldPoint(3293, 9375, 0),
-			new WorldPoint(3302, 9386, 0),
-			new WorldPoint(3302, 9397, 0),
-			new WorldPoint(3305, 9400, 0),
-			new WorldPoint(3320, 9400, 0),
-			new WorldPoint(3323, 9398, 0)
-		);
-
-		var pathSmokeDungeonTorch2 = List.of(
-			new WorldPoint(3323, 9398, 0),
-			new WorldPoint(3320, 9400, 0),
-			new WorldPoint(3305, 9400, 0),
-			new WorldPoint(3302, 9397, 0),
-			new WorldPoint(3302, 9386, 0),
-			new WorldPoint(3300, 9383, 0),
-			new WorldPoint(3301, 9378, 0),
-			new WorldPoint(3303, 9376, 0),
-			new WorldPoint(3300, 9355, 0),
-			new WorldPoint(3308, 9351, 0),
-			new WorldPoint(3319, 9352, 0),
-			new WorldPoint(3321, 9355, 0)
-		);
-
-		var pathSmokeDungeonTorch3 = List.of(
-			new WorldPoint(3321, 9355, 0),
-			new WorldPoint(3319, 9352, 0),
-			new WorldPoint(3308, 9351, 0),
-			new WorldPoint(3300, 9355, 0),
-			new WorldPoint(3302, 9367, 0),
-			new WorldPoint(3297, 9372, 0),
-			new WorldPoint(3292, 9372, 0),
-			new WorldPoint(3291, 9361, 0),
-			new WorldPoint(3278, 9352, 0),
-			new WorldPoint(3272, 9363, 0),
-			new WorldPoint(3277, 9366, 0),
-			new WorldPoint(3282, 9378, 0),
-			new WorldPoint(3273, 9379, 0),
-			new WorldPoint(3272, 9386, 0),
-			new WorldPoint(3275, 9393, 0),
-			new WorldPoint(3272, 9399, 0),
-			new WorldPoint(3237, 9401, 0),
-			new WorldPoint(3227, 9396, 0),
-			new WorldPoint(3218, 9399, 0),
-			new WorldPoint(3212, 9403, 0),
-			new WorldPoint(3210, 9401, 0),
-			new WorldPoint(3207, 9395, 0)
-		);
-
-		var pathSmokeDungeonTorch4 = List.of(
-			new WorldPoint(3207, 9395, 0),
-			new WorldPoint(3210, 9401, 0),
-			new WorldPoint(3212, 9403, 0),
-			new WorldPoint(3218, 9399, 0),
-			new WorldPoint(3227, 9396, 0),
-			new WorldPoint(3228, 9393, 0),
-			new WorldPoint(3228, 9388, 0),
-			new WorldPoint(3223, 9384, 0),
-			new WorldPoint(3219, 9373, 0),
-			new WorldPoint(3216, 9361, 0),
-			new WorldPoint(3211, 9351, 0),
-			new WorldPoint(3204, 9350, 0)
-		);
-
-		var pathSmokeDungeonChest = List.of(
-			new WorldPoint(3204, 9350, 0),
-			new WorldPoint(3215, 9350, 0),
-			new WorldPoint(3223, 9347, 0),
-			new WorldPoint(3227, 9354, 0),
-			new WorldPoint(3237, 9363, 0),
-			new WorldPoint(3248, 9364, 0)
-		);
-
-		var pathSmokeDungeonFareed = List.of(
-			new WorldPoint(3248, 9364, 0),
-			new WorldPoint(3236, 9364, 0),
-			new WorldPoint(3235, 9372, 0),
-			new WorldPoint(3238, 9379, 0),
-			new WorldPoint(3238, 9391, 0),
-			new WorldPoint(3232, 9397, 0),
-			new WorldPoint(3237, 9401, 0),
-			new WorldPoint(3272, 9399, 0),
-			new WorldPoint(3275, 9393, 0),
-			new WorldPoint(3272, 9386, 0),
-			new WorldPoint(3273, 9379, 0),
-			new WorldPoint(3282, 9378, 0),
-			new WorldPoint(3277, 9366, 0),
-			new WorldPoint(3272, 9363, 0),
-			new WorldPoint(3278, 9352, 0),
-			new WorldPoint(3291, 9361, 0),
-			new WorldPoint(3292, 9372, 0),
-			new WorldPoint(3297, 9372, 0),
-			new WorldPoint(3302, 9373, 0),
-			new WorldPoint(3304, 9375, 0)
-		);
-
-		var pathShadowDungeonDamis = List.of(
-			new WorldPoint(2629, 5072, 0),
-			new WorldPoint(2637, 5068, 0),
-			new WorldPoint(2638, 5065, 0),
-			new WorldPoint(2648, 5064, 0),
-			new WorldPoint(2654, 5062, 0),
-			new WorldPoint(2658, 5066, 0),
-			new WorldPoint(2663, 5065, 0),
-			new WorldPoint(2665, 5062, 0),
-			new WorldPoint(2670, 5060, 0),
-			new WorldPoint(2678, 5060, 0),
-			new WorldPoint(2681, 5070, 0),
-			new WorldPoint(2680, 5079, 0),
-			new WorldPoint(2676, 5086, 0),
-			new WorldPoint(2676, 5089, 0),
-			new WorldPoint(2678, 5090, 0),
-			new WorldPoint(2681, 5091, 0),
-			new WorldPoint(2681, 5097, 0),
-			new WorldPoint(2678, 5099, 0),
-			new WorldPoint(2678, 5113, 0),
-			new WorldPoint(2683, 5113, 0),
-			new WorldPoint(2688, 5110, 0),
-			new WorldPoint(2692, 5110, 0),
-			new WorldPoint(2693, 5100, 0),
-			new WorldPoint(2695, 5095, 0),
-			new WorldPoint(2695, 5090, 0),
-			new WorldPoint(2692, 5088, 0),
-			new WorldPoint(2692, 5078, 0),
-			new WorldPoint(2693, 5075, 0),
-			new WorldPoint(2692, 5071, 0),
-			new WorldPoint(2693, 5066, 0),
-			new WorldPoint(2693, 5061, 0),
-			new WorldPoint(2701, 5061, 0),
-			new WorldPoint(2705, 5065, 0),
-			new WorldPoint(2710, 5065, 0),
-			new WorldPoint(2712, 5061, 0),
-			new WorldPoint(2721, 5061, 0),
-			new WorldPoint(2721, 5067, 0),
-			new WorldPoint(2719, 5070, 0),
-			new WorldPoint(2721, 5071, 0),
-			new WorldPoint(2725, 5072, 0),
-			new WorldPoint(2730, 5072, 0),
-			new WorldPoint(2734, 5074, 0),
-			new WorldPoint(2743, 5105, 0),
-			new WorldPoint(2746, 5108, 0),
-			new WorldPoint(2745, 5114, 0),
-			new WorldPoint(2742, 5115, 0),
-			new WorldPoint(2738, 5114, 0),
-			new WorldPoint(2739, 5112, 0)
-		);
-
 		talkToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0), "Talk to the " +
 			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
@@ -619,32 +455,32 @@ public class DesertTreasure extends BasicQuestHelper
 		lightTorch1 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH1, new WorldPoint(3323, 9398, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch1.addIcon(ItemID.TINDERBOX);
-		lightTorch1.setLinePoints(pathSmokeDungeonTorch1);
+		lightTorch1.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch1.getPoints());
 
 		lightTorch2 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH2, new WorldPoint(3321, 9355, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch2.addIcon(ItemID.TINDERBOX);
-		lightTorch2.setLinePoints(pathSmokeDungeonTorch2);
+		lightTorch2.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch2.getPoints());
 
 		lightTorch3 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH4, new WorldPoint(3207, 9395, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch3.addIcon(ItemID.TINDERBOX);
-		lightTorch3.setLinePoints(pathSmokeDungeonTorch3);
+		lightTorch3.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch3.getPoints());
 
 		lightTorch4 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH3, new WorldPoint(3204, 9350, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch4.addIcon(ItemID.TINDERBOX);
-		lightTorch4.setLinePoints(pathSmokeDungeonTorch4);
+		lightTorch4.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch4.getPoints());
 
 		lightTorch1.addSubSteps(lightTorch2, lightTorch3, lightTorch4);
 
 		openChest = new ObjectStep(this, ObjectID.FD_FIREDUNGEON_SHUTCHEST, new WorldPoint(3248, 9364, 0), "Open the chest in the middle of the dungeon.");
-		openChest.setLinePoints(pathSmokeDungeonChest);
+		openChest.setLinePoints(DesertTreasurePaths.pathSmokeDungeonChest.getPoints());
 
 		useWarmKey = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Use the warm key on the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", warmKey, iceGloves, waterSpellOrMelee);
 		useWarmKey.addIcon(ItemID.FD_FIREKEY);
-		useWarmKey.setLinePoints(pathSmokeDungeonFareed);
+		useWarmKey.setLinePoints(DesertTreasurePaths.pathSmokeDungeonFareed.getPoints());
 		useWarmKey.addText("If you leave the fight before killing Fareed, you will NOT need to get the key again.");
 
 		enterFareedRoom = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
@@ -677,7 +513,7 @@ public class DesertTreasure extends BasicQuestHelper
 			"Equip the Ring of Visibility, then go down the ladder in the area east of Rasolo. It's recommended you bring combat gear to safe spot Damis.", ringOfVisibility);
 		enterShadowDungeon.addTeleport(waterfallTeleport);
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
-		waitForDamis.setLinePoints(pathShadowDungeonDamis);
+		waitForDamis.setLinePoints(DesertTreasurePaths.pathShadowDungeonDamis.getPoints());
 
 		killDamis1 = new NpcStep(this, NpcID.FD_DAMIS_NORMAL, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat or rat and keeping it between the two of you.");
 		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat or rat and keeping it between the two of you.");
@@ -779,16 +615,23 @@ public class DesertTreasure extends BasicQuestHelper
 		placeBlood.addSubSteps(placeSmoke, placeShadow, placeIce);
 
 		enterPyramid = new ObjectStep(this, ObjectID.DESERT_LADDERTOP, new WorldPoint(3233, 2897, 0),
-				"Bring any energy/stamina potions you have, some food, and enter the pyramid south east of the Bandit Camp.", energyOrStaminas, food, antipoison);
+				"Bring any energy/stamina potions you have, some food, antipoison, and enter the pyramid south east of the Bandit Camp.", energyOrStaminas, food, antipoison);
 
-		goDownFromFirstFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP3_2, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid. " +
-				"You may randomly fall out of the pyramid as you traverse it and need to start again.");
+		goDownFromFirstFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP3_2, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid.");
+		goDownFromFirstFloor.addText("You may randomly fall out of the pyramid as you traverse it and need to start again.");
+		goDownFromFirstFloor.addText("It is recommended to open the house option interface as you run to the ladder to stall the traps, reopening it whenever it closes.");
+		goDownFromFirstFloor.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor1.getPoints());
+
 		goDownFromSecondFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP2_1, new WorldPoint(2846, 4973, 2), "Go down to the bottom of the pyramid.");
+		goDownFromSecondFloor.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor2.getPoints());
+
 		goDownFromThirdFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP1_0, new WorldPoint(2784, 4941, 1), "Go down to the bottom of the pyramid.");
+		goDownFromThirdFloor.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor3.getPoints());
 
 		goDownFromFirstFloor.addSubSteps(goDownFromSecondFloor, goDownFromThirdFloor);
 
 		enterMiddleOfPyramid = new ObjectStep(this, ObjectID.DT_ANCIENT_TEMPLE_DOOR_OPEN, new WorldPoint(3234, 9324, 0), "Enter the central room of the bottom floor.");
+		enterMiddleOfPyramid.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor4.getPoints());
 
 		talkToAzz = new NpcStep(this, NpcID.AZZANADRA_REAL, new WorldPoint(3232, 9317, 0), "Talk to Azzanadra to finish the quest!");
 	}

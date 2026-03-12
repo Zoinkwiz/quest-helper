@@ -529,7 +529,7 @@ public enum ItemCollections
 		ItemID.BUTTERFLY_JAR_MOONMOTH
 	)),
 
-	// Covers all Restore and Super Restore potions 
+	/// Covers all Restore and Super Restore potions 
 	RESTORE_POTIONS(ImmutableList.of(
 		ItemID._4DOSE2RESTORE,
 		ItemID._3DOSE2RESTORE,

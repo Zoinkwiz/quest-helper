@@ -78,7 +78,7 @@ public class DesertTreasure extends BasicQuestHelper
 	ItemRequirement coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal, bloodRune, bones, silverBar, garlicPowder, spice, sweetTreat, spikedBoots,
 		climbingBoots, faceMask, tinderbox, manyLockpicks, etchings, translation, warmKey, smokeDiamond, shadowDiamond, iceDiamond, bloodDiamond, iceGloves,
 		waterSpellOrMelee, cross, ringOfVisibility, antipoison, silverPot, silverPot2, potOfBlood, potWithGarlic, potWithSpice, potComplete, fireSpells,
-		spikedBootsEquipped, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted, shadowDiamondHighlighted, readTheWiki;
+		spikedBootsEquipped, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted, shadowDiamondHighlighted;
 
 	Requirement gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3, inDraynorSewer,
 		litTorch4, unlockedFareedDoor, killedFareed, talkedToRasolo, unlockedCrossChest, gotRing, inShadowDungeon, damis1Nearby, damis2Nearby, talkedToMalak,
@@ -336,9 +336,6 @@ public class DesertTreasure extends BasicQuestHelper
 		trollheimTeleport.addAlternates(ItemCollections.GHOMMALS_HILT);
 		pyramidTeleport = new TeleportItemRequirement("Teleport to Jaldraocht Pyramid. Camulet, Pollnivneach house teleport", ItemID.CAMULET);
 		pyramidTeleport.addAlternates(ItemID.NZONE_TELETAB_POLLNIVNEACH);
-
-		// Note to read the wiki
-		readTheWiki = new ItemRequirement("Due to the complexity of this quest, it is recommended to read through the relevant wiki section before starting any new section.", -1, -1);
 	}
 
 	@Override
@@ -662,7 +659,7 @@ public class DesertTreasure extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(readTheWiki, combatGear, magicCombatGear, food, prayerPotions, energyOrStaminas, restorePotions, digTele,
+		return Arrays.asList(combatGear, magicCombatGear, food, prayerPotions, energyOrStaminas, restorePotions, digTele,
 			bedabinTeleport.quantity(2), pollnivneachTeleport, waterfallTeleport.quantity(2),
 			banditCampTeleport.quantity(2), canifisTeleport.quantity(3), draynorTeleport,
 			trollheimTeleport, pyramidTeleport);

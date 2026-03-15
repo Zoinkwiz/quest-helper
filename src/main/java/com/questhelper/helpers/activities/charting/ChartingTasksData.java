@@ -341,7 +341,7 @@ public final class ChartingTasksData
 			new ChartingTaskDefinition(ChartingType.GENERIC, "Find the corpse of a wayward shifter on a small island south of Red Rock.", new WorldPoint(2804, 2460, 0), "Unquiet Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_DEAD_SHIFTER_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth north of Red Rock.", new WorldPoint(2788, 2548, 0), "Unquiet Ocean", 38, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_RED_REEF_COMPLETE, "The answer is 10 watermelons.", List.of(ItemID.WATERMELON))
 			, new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate near Red Rock and sample the contents.", new WorldPoint(2778, 2523, 0), "Unquiet Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_REDDEST_RUM_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_REDDEST_RUM),
-			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of the pest-filled island near the Void Knights' Outpost.", new WorldPoint(2665, 2560, 0), new WorldPoint(2654, 2610, 0), "Unquiet Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_PEST_ISLAND_COMPLETE)
+			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents south of the pest-filled island near the Void Knights' Outpost.", new WorldPoint(2665, 2560, 0), new WorldPoint(2654, 2610, 0), "Ardent Ocean", 22, VarbitID.SAILING_CHARTING_CURRENT_DUCK_PEST_ISLAND_COMPLETE)
 		)),
 		new ChartingSeaSection(19, "Anglerfish's Light", List.of(
 			// Extra

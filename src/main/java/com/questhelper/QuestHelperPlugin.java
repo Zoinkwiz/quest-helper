@@ -580,8 +580,16 @@ public class QuestHelperPlugin extends Plugin
 
 	private void instantiate(QuestHelperQuest quest)
 	{
-		QuestHelper questHelper = quest.getQuestHelper();
+		instantiateHelper(quest, quest.getQuestHelper());
+		for (QuestHelper altHelper : quest.getAltHelpers())
+		{
+			instantiateHelper(quest, altHelper);
+		}
 
+	}
+
+	private void instantiateHelper(QuestHelperQuest quest, QuestHelper questHelper)
+	{
 		Module questModule = (Binder binder) ->
 		{
 			binder.bind(QuestHelper.class).toInstance(questHelper);

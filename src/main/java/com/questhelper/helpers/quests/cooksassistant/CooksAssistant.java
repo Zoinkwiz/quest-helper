@@ -25,10 +25,13 @@
  */
 package com.questhelper.helpers.quests.cooksassistant;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
@@ -52,15 +55,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 
 public class CooksAssistant extends BasicQuestHelper
 {
 	QuestHelper baseHelper = this;
+	static String QUEST_TYPES = "quest-types";
 
 	// Required items
 	ItemRequirement egg;
@@ -223,6 +230,52 @@ public class CooksAssistant extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
+	public boolean updateQuest()
+	{
+		var response = super.updateQuest();
+		// Start up speedrun helper if on speedrun world and speedrun option is selected
+		var worldTypes = client.getWorldType();
+		if (worldTypes != null && worldTypes.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			var helperType = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, QUEST_TYPES);
+			if (HelperTypes.SPEEDRUN.name().equals(helperType))
+			{
+				questHelperPlugin.getQuestManager().startUpQuest(QuestHelperQuest.COOKS_ASSISTANT.getAltHelpers().get(0), true);
+			}
+		}
+		return response;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
+		{
+			return;
+		}
+
+		if (event.getKey().equals(QUEST_TYPES))
+		{
+			if (HelperTypes.SPEEDRUN.name().equals(event.getNewValue()))
+			{
+				questHelperPlugin.getQuestManager().startUpQuest(QuestHelperQuest.COOKS_ASSISTANT.getAltHelpers().get(0), true);
+			}
+		}
+	}
+
+	@Override
+	public List<HelperConfig> getConfigs()
+	{
+		var worldTypes = client.getWorldType();
+		if (worldTypes == null || !worldTypes.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			return null;
+		}
+
+		HelperConfig helperTypeConfig = new HelperConfig("Helper Type", QUEST_TYPES, HelperTypes.values());
+		return List.of(helperTypeConfig);
+	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
@@ -306,5 +359,12 @@ public class CooksAssistant extends BasicQuestHelper
 		)));
 
 		return steps;
+	}
+
+	enum HelperTypes
+	{
+		NORMAL(),
+		SPEEDRUN();
+
 	}
 }

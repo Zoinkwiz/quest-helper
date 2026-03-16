@@ -1,7 +1,10 @@
 package com.questhelper.helpers.quests.cooksassistant;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -12,13 +15,17 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.NormalSpells;
 import com.questhelper.steps.widget.WidgetHighlight;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static com.questhelper.helpers.quests.cooksassistant.CooksAssistant.QUEST_TYPES;
 import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class CooksAssistantSpeedrun extends BasicQuestHelper
@@ -75,6 +82,7 @@ public class CooksAssistantSpeedrun extends BasicQuestHelper
 		ca.baseHelper = this;
 		ca.loadSteps();
 
+		initializeRequirements();
 		setupSteps();
 
 		var steps = new HashMap<Integer, QuestStep>();
@@ -91,6 +99,36 @@ public class CooksAssistantSpeedrun extends BasicQuestHelper
 		steps.put(1, doQuest);
 
 		return steps;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
+		{
+			return;
+		}
+
+		if (event.getKey().equals(QUEST_TYPES))
+		{
+			if (CooksAssistant.HelperTypes.NORMAL.name().equals(event.getNewValue()))
+			{
+				questHelperPlugin.getQuestManager().startUpQuest(QuestHelperQuest.COOKS_ASSISTANT.getQuestHelper(), true);
+			}
+		}
+	}
+
+	@Override
+	public List<HelperConfig> getConfigs()
+	{
+		var worldTypes = client.getWorldType();
+		if (worldTypes == null || !worldTypes.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			return null;
+		}
+
+		HelperConfig helperTypeConfig = new HelperConfig("Helper Type", QUEST_TYPES, CooksAssistant.HelperTypes.values());
+		return List.of(helperTypeConfig);
 	}
 
 	@Override

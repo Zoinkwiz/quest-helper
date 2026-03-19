@@ -477,6 +477,10 @@ public class QuestHelperPlugin extends Plugin
 						break;
 				}
 			}
+			else if (subCommand.equals("cheer"))
+			{
+				addCheerer();
+			}
 		}
 	}
 

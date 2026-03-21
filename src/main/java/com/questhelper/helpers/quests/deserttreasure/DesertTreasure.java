@@ -61,28 +61,33 @@ import net.runelite.api.gameval.VarbitID;
 import java.util.*;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
+/**
+ * The quest guide for the "Desert Treasure I" OSRS quest
+ * <p>
+ * <a href="https://oldschool.runescape.wiki/w/Desert_Treasure_I">The OSRS wiki guide</a> was referenced for this guide
+ */
+
 public class DesertTreasure extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement combatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele,
+	ItemRequirement combatGear, magicCombatGear, rangedCombatGear, food, prayerPotions, restorePotions, energyOrStaminas, digTele,
 		canifisTeleport, bedabinTeleport, pollnivneachTeleport, waterfallTeleport, banditCampTeleport,
 		draynorTeleport, trollheimTeleport, pyramidTeleport;
 
 	//Items Required
-	ItemRequirement coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal, bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots,
+	ItemRequirement coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal, bloodRune, bones, silverBar, garlicPowder, spice, sweetTreat, spikedBoots,
 		climbingBoots, faceMask, tinderbox, manyLockpicks, etchings, translation, warmKey, smokeDiamond, shadowDiamond, iceDiamond, bloodDiamond, iceGloves,
 		waterSpellOrMelee, cross, ringOfVisibility, antipoison, silverPot, silverPot2, potOfBlood, potWithGarlic, potWithSpice, potComplete, fireSpells,
-		spikedBootsEquipped, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted,
-		shadowDiamondHighlighted;
+		spikedBootsEquipped, iceDiamondHighlighted, bloodDiamondHighlighted, smokeDiamondHighlighted, shadowDiamondHighlighted;
 
 	Requirement gotBloodDiamond, hadSmokeDiamond, gotIceDiamond, killedDamis, inSmokeDungeon, inFareedRoom, litTorch1, litTorch2, litTorch3, inDraynorSewer,
 		litTorch4, unlockedFareedDoor, killedFareed, talkedToRasolo, unlockedCrossChest, gotRing, inShadowDungeon, damis1Nearby, damis2Nearby, talkedToMalak,
-		askedAboutKillingDessous, dessousNearby, killedDessous, gaveCake, talkedToTrollChild, killedTrolls, inTrollArea, inPath, killedKamil, onIcePath,
+		askedAboutKillingDessous, dessousNearby, killedDessous, gaveSweetTreat, talkedToTrollChild, killedTrolls, inTrollArea, inPath, killedKamil, onIcePath,
 		onIceBridge, smashedIce1, freedTrolls, placedBlood, placedIce, placedSmoke, placedShadow, inFloor1, inFloor2, inFloor3, inFloor4, inAzzRoom;
 
 	DetailedQuestStep talkToArchaeologist, talkToExpert, talkToExpertAgain, bringTranslationToArchaeologist, talkToArchaeologistAgainAfterTranslation,
 		buyDrink, talkToBartender, talkToEblis, bringItemsToEblis, talkToEblisAtMirrors, enterSmokeDungeon, lightTorch1, lightTorch2, lightTorch3,
-		lightTorch4, openChest, useWarmKey, enterFareedRoom, killFareed, talkToRasolo, giveCakeToTroll, talkToMalak, askAboutKillingDessous,
+		lightTorch4, openChest, useWarmKey, enterFareedRoom, killFareed, talkToRasolo, giveSweetTreatToTroll, talkToMalak, askAboutKillingDessous,
 		talkToRuantun, blessPot, talkToMalakWithPot, addSpice, addPowder, addPowderToFinish, usePotOnGrave, killDessous, talkToMalakForDiamond,
 		getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1, killDamis2, pickUpShadowDiamond, talkToChildTroll, enterIceGate, enterTrollCave,
 		killKamil, climbOnToLedge, goThroughPathGate, breakIce1, breakIce2, talkToTrolls, talkToChildTrollAfterFreeing, placeBlood, placeShadow,
@@ -152,7 +157,7 @@ public class DesertTreasure extends BasicQuestHelper
 		getBloodDiamond.addStep(talkedToMalak, askAboutKillingDessous);
 		getBloodDiamond.setLockingCondition(gotBloodDiamond);
 
-		getIceDiamond = new ConditionalStep(this, giveCakeToTroll);
+		getIceDiamond = new ConditionalStep(this, giveSweetTreatToTroll);
 		getIceDiamond.addStep(new Conditions(onIceBridge, freedTrolls), talkToTrolls);
 		getIceDiamond.addStep(new Conditions(freedTrolls), talkToChildTrollAfterFreeing);
 		getIceDiamond.addStep(new Conditions(onIceBridge, killedKamil, smashedIce1), breakIce2);
@@ -163,7 +168,7 @@ public class DesertTreasure extends BasicQuestHelper
 		getIceDiamond.addStep(new Conditions(killedTrolls, inTrollArea), enterTrollCave);
 		getIceDiamond.addStep(inTrollArea, killIceTrolls);
 		getIceDiamond.addStep(talkedToTrollChild, enterIceGate);
-		getIceDiamond.addStep(gaveCake, talkToChildTroll);
+		getIceDiamond.addStep(gaveSweetTreat, talkToChildTroll);
 		getIceDiamond.setLockingCondition(gotIceDiamond);
 
 		ConditionalStep pickUpDiamonds = new ConditionalStep(this, pickUpShadowDiamond);
@@ -218,10 +223,18 @@ public class DesertTreasure extends BasicQuestHelper
 		spice = new ItemRequirement("Spice", ItemID.SPICESPOT);
 		spice.setHighlightInInventory(true);
 
-		cake = new ItemRequirement("Cake", ItemID.CAKE);
-		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
-		cake.setDisplayMatchedItemName(true);
-		cake.setHighlightInInventory(true);
+		sweetTreat = new ItemRequirement("Sweet Treat, e.g. Cake", List.of(
+			ItemID.CAKE,
+			ItemID.PARTIAL_CAKE,
+			ItemID.CAKE_SLICE,
+			ItemID.CHOCOLATE_CAKE,
+			ItemID.PARTIAL_CHOCOLATE_CAKE,
+			ItemID.CHOCOLATE_SLICE,
+			ItemID.CHOCOLATE_BAR,
+			ItemID.COOKING_APPLE,
+			ItemID.PINEAPPLE_PIZZA));
+		sweetTreat.setDisplayMatchedItemName(true);
+		sweetTreat.setHighlightInInventory(true);
 
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.DEATH_SPIKEDBOOTS).isNotConsumed();
 		spikedBoots.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");
@@ -268,7 +281,7 @@ public class DesertTreasure extends BasicQuestHelper
 		iceGloves.setTooltip("to be able to wield a weapon against Fareed if not using water spells with runes only");
 		iceGloves.addAlternates(ItemID.SMITHING_UNIFORM_GLOVES_ICE);
 
-		waterSpellOrMelee = new ItemRequirement("Water spells or melee gear", -1, -1);
+		waterSpellOrMelee = new ItemRequirement("Magic combat gear with water spells or melee gear", -1, -1);
 		waterSpellOrMelee.setDisplayItemId(ItemID.WATERRUNE);
 
 		cross = new ItemRequirement("Gilded cross", ItemID.FD_SWORD_CROSS);
@@ -296,6 +309,10 @@ public class DesertTreasure extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Decent combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		magicCombatGear = new ItemRequirement("Magic combat gear", -1, -1);
+		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
+		rangedCombatGear = new ItemRequirement("Ranged combat gear", -1, -1);
+		rangedCombatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 		digTele = new ItemRequirement("Digsite pendant/teleport", ItemCollections.DIGSITE_PENDANTS);
 		digTele.addAlternates(ItemID.TELEPORTSCROLL_DIGSITE);
@@ -376,7 +393,7 @@ public class DesertTreasure extends BasicQuestHelper
 
 		killedDessous = new VarbitRequirement(VarbitID.FDVW_SUBQUEST, 3);
 
-		gaveCake = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 1);
+		gaveSweetTreat = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 1);
 		talkedToTrollChild = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 2, Operation.GREATER_EQUAL);
 		// Killed kamil also results in 377 0->1
 		killedKamil = new VarbitRequirement(VarbitID.FD_ICEWARRIOR_SUBQUEST, 3, Operation.GREATER_EQUAL);
@@ -414,12 +431,12 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToArchaeologist.addTeleport(bedabinTeleport);
 
 		talkToExpert = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0),
-			"Talk to the Terry Balando in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
+			"Talk to Terry Balando in the Exam Centre found south-east of Varrock, directly south of the Digsite.", etchings);
 		talkToExpert.addDialogStep("Ask about the Desert Treasure quest.");
 		talkToExpert.addTeleport(digTele);
 
 		talkToExpertAgain = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0),
-			"Talk to the Terry Balando again.");
+			"Talk to Terry Balando again.");
 		talkToExpertAgain.addDialogStep("Ask about the Desert Treasure quest.");
 
 		bringTranslationToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0),
@@ -441,6 +458,7 @@ public class DesertTreasure extends BasicQuestHelper
 		bringItemsToEblis = new GiveItems(this, NpcID.FD_ELDER_VILLAGE, new WorldPoint(3184, 2989, 0), "Use the items on Eblis " +
 			"in the east of the Bandit Camp. Items can be noted.", ashes, bloodRune, bones,
 			charcoal, moltenGlass6, magicLogs12, steelBars6);
+		bringItemsToEblis.addText("DO NOT WEAR A ZAMORAK ITEM WHEN GIVING HIM THE ITEMS OR HE WILL NOT MAKE THE GLASSES.");
 
 		talkToEblisAtMirrors = new NpcStep(this, NpcID.FD_ELDER_BY_MIRRORS, new WorldPoint(3214, 2954, 0), "Talk to Eblis at the mirrors south east of the Bandit Camp.");
 
@@ -450,28 +468,41 @@ public class DesertTreasure extends BasicQuestHelper
 		lightTorch1 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH1, new WorldPoint(3323, 9398, 0),
 			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible. Start with the north east torch, and work your way to the south west.", tinderbox.highlighted());
 		lightTorch1.addIcon(ItemID.TINDERBOX);
+		lightTorch1.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch1.getPoints());
 
-		lightTorch2 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH2, new WorldPoint(3321, 9355, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
+		lightTorch2 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH2, new WorldPoint(3321, 9355, 0),
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible.", tinderbox.highlighted());
 		lightTorch2.addIcon(ItemID.TINDERBOX);
+		lightTorch2.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch2.getPoints());
 
-		lightTorch3 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH4, new WorldPoint(3207, 9395, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
+		lightTorch3 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH4, new WorldPoint(3207, 9395, 0),
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible.", tinderbox.highlighted());
 		lightTorch3.addIcon(ItemID.TINDERBOX);
+		lightTorch3.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch3.getPoints());
 
-		lightTorch4 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH3, new WorldPoint(3204, 9350, 0), "Light all the torches in the corners of the dungeon.", tinderbox.highlighted());
+		lightTorch4 = new ObjectStep(this, ObjectID._4D_STANDING_TORCH3, new WorldPoint(3204, 9350, 0),
+			"Light all the torches in the corners of the dungeon. This is timed, so try to do it as fast as possible.", tinderbox.highlighted());
 		lightTorch4.addIcon(ItemID.TINDERBOX);
+		lightTorch4.setLinePoints(DesertTreasurePaths.pathSmokeDungeonTorch4.getPoints());
 
 		lightTorch1.addSubSteps(lightTorch2, lightTorch3, lightTorch4);
 
 		openChest = new ObjectStep(this, ObjectID.FD_FIREDUNGEON_SHUTCHEST, new WorldPoint(3248, 9364, 0), "Open the chest in the middle of the dungeon.");
+		openChest.setLinePoints(DesertTreasurePaths.pathSmokeDungeonChest.getPoints());
 
 		useWarmKey = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Use the warm key on the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", warmKey, iceGloves, waterSpellOrMelee);
 		useWarmKey.addIcon(ItemID.FD_FIREKEY);
+		useWarmKey.setLinePoints(DesertTreasurePaths.pathSmokeDungeonFareed.getPoints());
+		useWarmKey.addText("If you leave the fight before killing Fareed, you will NOT need to get the key again.");
 
 		enterFareedRoom = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Enter the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", iceGloves, waterSpellOrMelee);
+		enterFareedRoom.addText("If you leave the fight before killing Fareed, you will NOT need to get the key again.");
 		useWarmKey.addSubSteps(enterFareedRoom);
 		killFareed = new NpcStep(this, NpcID.FIREDIAMOND_FIREWARRIOR, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", iceGloves, waterSpellOrMelee);
+		killFareed.addText("Fareed is weakest to water spells and Protection from Melee prayers should be used if he is in melee distance.");
+		killFareed.addText("Fareed has a magic attack that is only used in melee distance, so Magic defence is recommended in addition to Protection from Melee.");
 
 		talkToRasolo = new NpcStep(this, NpcID.SHADOW_WARRIOR_RASOOL, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
 		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");
@@ -495,10 +526,13 @@ public class DesertTreasure extends BasicQuestHelper
 			"Equip the Ring of Visibility, then go down the ladder in the area east of Rasolo. It's recommended you bring combat gear to safe spot Damis.", ringOfVisibility);
 		enterShadowDungeon.addTeleport(waterfallTeleport);
 		waitForDamis = new DetailedQuestStep(this, new WorldPoint(2745, 5115, 0), "Go to the far eastern room of the dungeon, and wait for Damis to spawn.");
+		waitForDamis.setLinePoints(DesertTreasurePaths.pathShadowDungeonDamis.getPoints());
 
-		killDamis1 = new NpcStep(this, NpcID.FD_DAMIS_NORMAL, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
-		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
+		killDamis1 = new NpcStep(this, NpcID.FD_DAMIS_NORMAL, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat or rat and keeping it between the two of you.");
+		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat or rat and keeping it between the two of you.");
 		killDamis1.addSubSteps(killDamis2);
+		killDamis1.addText("Damis only attacks with melee in both forms, and his second form rapidly drains prayer with his attacks.");
+		killDamis2.addText("Damis only attacks with melee in both forms, and his second form rapidly drains prayer with his attacks.");
 
 		pickUpShadowDiamond = new DetailedQuestStep(this, "Pick up the shadow diamond.", shadowDiamond);
 
@@ -518,27 +552,41 @@ public class DesertTreasure extends BasicQuestHelper
 		addPowder.addSubSteps(addPowderToFinish);
 
 		usePotOnGrave = new ObjectStep(this, ObjectID.VAMPIRE_BIG_GRAVE_NOBLOOD, new WorldPoint(3570, 3402, 0),
-			"Use the blessed pot on the vampyre tomb in the graveyard south east of Canifis. Be prepared to fight Dessous.", potComplete);
+			"Use the blessed pot on the vampyre tomb in the graveyard south east of Canifis. Be prepared to fight Dessous.", List.of(potComplete), List.of(magicCombatGear, rangedCombatGear));
 		usePotOnGrave.addIcon(ItemID.FD_SILVER_POT_BLOOD_GARLIC_SPICED_BLESSED);
-		killDessous = new NpcStep(this, NpcID.BLOODDIAMOND_VAMPIREWARRIOR, new WorldPoint(3570, 3403, 0), "Kill Dessous.");
+		usePotOnGrave.addText("Dying or leaving the fight early will require you to to fill up a new pot.");
+		killDessous = new NpcStep(this, NpcID.BLOODDIAMOND_VAMPIREWARRIOR, new WorldPoint(3570, 3403, 0), "Kill Dessous.", null, List.of(magicCombatGear, rangedCombatGear));
+		killDessous.addText("Dessous is weakest to magic or ranged attacks overall, but does have a weakness to stab attacks.");
+		killDessous.addText("If you attack Dessous from far away he will teleport to you, and if he does this 3 times he will end the fight.");
+		killDessous.addText("Dessous has 2 attacks: a fast and accurate melee attack and a half magic/half ranged bat attack that always hits for double 5s.");
+		killDessous.addText("He will detect your protection prayers and switch his attacks accordingly. Because his melee attack is stronger, it is recommended to pray Protect from Melee.");
+		killDessous.addText("If you are able to switch prayers between Melee and Ranged every single tick, he will teleport around but not attack, allowing you to kill him without him attacking.");
 
 		talkToMalakForDiamond = new NpcStep(this, NpcID.FOURDIAMONDS_VAMPIRE_LORD, new WorldPoint(3496, 3479, 0), "Return to Malak in Canifis to get the Blood Diamond.");
 		talkToMalakForDiamond.addTeleport(canifisTeleport);
-		giveCakeToTroll = new NpcStep(this, NpcID.FOURDIAMONDS_TROLL_CHILD_CRYING, new WorldPoint(2835, 3740, 0),
-			"Use a cake on the Troll Child north of Trollheim.", cake, climbingBoots.equipped(), spikedBoots);
-		giveCakeToTroll.addIcon(ItemID.CAKE);
-		giveCakeToTroll.addTeleport(trollheimTeleport);
+		giveSweetTreatToTroll = new NpcStep(this, NpcID.FOURDIAMONDS_TROLL_CHILD_CRYING, new WorldPoint(2835, 3740, 0),
+			"Use a sweet treat on the Troll Child north of Trollheim.", sweetTreat, climbingBoots.equipped(), spikedBoots);
+		giveSweetTreatToTroll.addIcon(ItemID.CAKE);
+		giveSweetTreatToTroll.addTeleport(trollheimTeleport);
 		talkToChildTroll = new NpcStep(this, NpcID.FOURDIAMONDS_TROLL_CHILD_OKAY, new WorldPoint(2835, 3740, 0), "Talk to the Troll Child north of Trollheim.");
 		talkToChildTroll.addDialogStep("Yes");
 
-		enterIceGate = new ObjectStep(this, ObjectID.ICEGATE_LEFT, new WorldPoint(2838, 3740, 0), "Enter the ice gate east of the troll child. Make sure you're prepared for combat, and your stats to be continually drained.", fireSpells, spikedBoots);
+		enterIceGate = new ObjectStep(this, ObjectID.ICEGATE_LEFT, new WorldPoint(2838, 3740, 0), "Enter the ice gate east of the troll child.", List.of(fireSpells, spikedBoots), List.of(restorePotions));
+		enterIceGate.addText("Make sure you're prepared for combat, and for your stats to be continually drained once you pass through the gate.");
+		enterIceGate.addText("While on this path your run energy and special attack energy will be reduced to 0, your stats will be periodicially drained, and you will periodically take damage.");
 		killIceTrolls = new NpcStep(this, NpcID.TROLLRESCUE_ICETROLL_MELEE1, new WorldPoint(2854, 3733, 0), "Kill 5 ice trolls.", true);
 		killIceTrolls.addAlternateNpcs(NpcID.TROLLRESCUE_ICETROLL_MELEE2, NpcID.TROLLRESCUE_ICETROLL_MELEE3, NpcID.TROLLRESCUE_ICETROLL_MELEE4, NpcID.TROLLRESCUE_ICETROLL_MELEE5, NpcID.TROLLRESCUE_ICETROLL_MELEE6, NpcID.TROLLRESCUE_ICETROLL_MELEE7);
+		killIceTrolls.addText("Ice trolls with higher levels have stronger offensives but weaker defences, so can be killed faster if praying Protect from Melee.");
+		killIceTrolls.addText("These 5 trolls do not have to be killed in one go, so you are able to leave and return without losing any progress.");
 		enterTrollCave = new ObjectStep(this, ObjectID.TROLLRESCUE_TROLL_CAVE_ENTRANCE, new WorldPoint(2869, 3719, 0), "Continue along the path through the cave to the east.");
 
 		killKamil = new NpcStep(this, NpcID.ICEDIAMOND_ICEWARRIOR, new WorldPoint(2863, 3757, 0),
-			"Continue along the path until you find Kamil. Kill him with fire spells. Get into melee distance and " +
-				"protect from melee.", fireSpells);
+			"Continue along the path until you find Kamil, praying Protect from Melee due to wolves.", List.of(fireSpells, magicCombatGear), List.of(food, prayerPotions));
+		killKamil.addText("Kamil is weakest to fire spells overall, therefore using Magic is recommended. However, he is immune to all other non-fire magic damage and effects.");
+		killKamil.addText("It is recommended to use a fire spell well below your max Magic level, due to the constant draining effect in the arena.");
+		killKamil.addText("Kamil has 2 attacks: a strong melee attack and a magic attack that always hits for 5 and freezes you.");
+		killKamil.addText("Stay in melee distance and pray Protect from Melee regardless of attack style. If you are not in melee distance, he uses his magic attack very often, keeping you stunned.");
+
 		climbOnToLedge = new ObjectStep(this, ObjectID.TROLLRESCUE_BLANKMODEL, new WorldPoint(2837, 3804, 0),
 			"Equip the spiked boots, then continue along the path until you reach an ice ledge. Climb up it.", spikedBootsEquipped);
 		goThroughPathGate = new ObjectStep(this, ObjectID.ICEGATE_RIGHT_SMALL, new WorldPoint(2854, 3811, 1),
@@ -580,16 +628,23 @@ public class DesertTreasure extends BasicQuestHelper
 		placeBlood.addSubSteps(placeSmoke, placeShadow, placeIce);
 
 		enterPyramid = new ObjectStep(this, ObjectID.DESERT_LADDERTOP, new WorldPoint(3233, 2897, 0),
-				"Bring any energy/stamina potions you have, some food, and enter the pyramid south east of the Bandit Camp.", energyOrStaminas, food, antipoison);
+				"Bring any energy/stamina potions you have, some food, antipoison, and enter the pyramid south east of the Bandit Camp.", energyOrStaminas, food, antipoison);
 
-		goDownFromFirstFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP3_2, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid. " +
-				"You may randomly fall out of the pyramid as you traverse it and need to start again.");
+		goDownFromFirstFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP3_2, new WorldPoint(2909, 4964, 3), "Go down to the bottom of the pyramid.");
+		goDownFromFirstFloor.addText("You may randomly fall out of the pyramid as you traverse it and need to start again.");
+		goDownFromFirstFloor.addText("It is recommended to open the house option interface as you run to the ladder to stall the traps, reopening it whenever it closes.");
+		goDownFromFirstFloor.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor1.getPoints());
+
 		goDownFromSecondFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP2_1, new WorldPoint(2846, 4973, 2), "Go down to the bottom of the pyramid.");
+		goDownFromSecondFloor.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor2.getPoints());
+
 		goDownFromThirdFloor = new ObjectStep(this, ObjectID.DESERT_LADDERTOP1_0, new WorldPoint(2784, 4941, 1), "Go down to the bottom of the pyramid.");
+		goDownFromThirdFloor.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor3.getPoints());
 
 		goDownFromFirstFloor.addSubSteps(goDownFromSecondFloor, goDownFromThirdFloor);
 
 		enterMiddleOfPyramid = new ObjectStep(this, ObjectID.DT_ANCIENT_TEMPLE_DOOR_OPEN, new WorldPoint(3234, 9324, 0), "Enter the central room of the bottom floor.");
+		enterMiddleOfPyramid.setLinePoints(DesertTreasurePaths.pathAncientPyramidFloor4.getPoints());
 
 		talkToAzz = new NpcStep(this, NpcID.AZZANADRA_REAL, new WorldPoint(3232, 9317, 0), "Talk to Azzanadra to finish the quest!");
 	}
@@ -598,13 +653,13 @@ public class DesertTreasure extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(coins650, magicLogs12, steelBars6, moltenGlass6, ashes, charcoal,
-			bloodRune, bones, silverBar, garlicPowder, spice, cake, spikedBoots, climbingBoots, faceMask, tinderbox, iceGloves, manyLockpicks);
+			bloodRune, bones, silverBar, garlicPowder, spice, sweetTreat, spikedBoots, climbingBoots, faceMask, tinderbox, iceGloves, manyLockpicks);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(combatGear, food, prayerPotions, energyOrStaminas, restorePotions, digTele,
+		return Arrays.asList(combatGear, magicCombatGear, food, prayerPotions, energyOrStaminas, restorePotions, digTele,
 			bedabinTeleport.quantity(2), pollnivneachTeleport, waterfallTeleport.quantity(2),
 			banditCampTeleport.quantity(2), canifisTeleport.quantity(3), draynorTeleport,
 			trollheimTeleport, pyramidTeleport);
@@ -669,20 +724,20 @@ public class DesertTreasure extends BasicQuestHelper
 		PanelDetails shadowDiamondPanel = new PanelDetails("Shadow diamond",
 			Arrays.asList(talkToRasolo, getCross, returnCross, enterShadowDungeon, waitForDamis, killDamis1, pickUpShadowDiamond),
 			Arrays.asList(manyLockpicks, antipoison, combatGear, food),
-			Arrays.asList(waterfallTeleport.quantity(2), banditCampTeleport));
+			Arrays.asList(magicCombatGear, waterfallTeleport.quantity(2), banditCampTeleport));
 		shadowDiamondPanel.setLockingStep(getShadowDiamond);
 
 		PanelDetails bloodDiamondPanel = new PanelDetails("Blood diamond",
 			Arrays.asList(talkToMalak, askAboutKillingDessous, talkToRuantun, blessPot, talkToMalakWithPot,
 				addPowder, addSpice, usePotOnGrave, killDessous, talkToMalakForDiamond),
 			Arrays.asList(silverBar, spice, garlicPowder, combatGear, food),
-			Arrays.asList(canifisTeleport.quantity(3), draynorTeleport));
+			Arrays.asList(magicCombatGear, rangedCombatGear, canifisTeleport.quantity(3), draynorTeleport));
 		bloodDiamondPanel.setLockingStep(getBloodDiamond);
 
 		PanelDetails iceDiamondPanel = new PanelDetails("Ice diamond",
-			Arrays.asList(giveCakeToTroll, talkToChildTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1,
+			Arrays.asList(giveSweetTreatToTroll, talkToChildTroll, enterIceGate, killIceTrolls, enterTrollCave, killKamil, climbOnToLedge, goThroughPathGate, breakIce1,
 				breakIce2, talkToTrolls, talkToChildTrollAfterFreeing),
-			Arrays.asList(cake, spikedBoots, combatGear, food, restorePotions, prayerPotions, energyOrStaminas, fireSpells),
+			Arrays.asList(sweetTreat, spikedBoots, combatGear, magicCombatGear, food, restorePotions, prayerPotions, energyOrStaminas, fireSpells),
                 Collections.singletonList(trollheimTeleport));
 		iceDiamondPanel.setLockingStep(getIceDiamond);
 

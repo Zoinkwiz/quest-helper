@@ -254,7 +254,7 @@ public class QuestOverviewPanel extends JPanel
 
 		List<PanelDetails> steps = quest.getPanels();
 		QuestStep currentStep;
-		if (isActive)
+		if (isActive && quest.getCurrentStep() != null)
 		{
 			currentStep = quest.getCurrentStep().getActiveStep();
 		}

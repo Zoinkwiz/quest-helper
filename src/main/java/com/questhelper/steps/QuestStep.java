@@ -561,7 +561,10 @@ public abstract class QuestStep implements Module
 
 	public boolean containsSteps(QuestStep questStep, Set<QuestStep> checkedSteps)
 	{
-		if (checkedSteps.contains(this)) return false;
+		if (checkedSteps.contains(this))
+		{
+			return false;
+		}
 		checkedSteps.add(this);
 		return this == questStep || this.getSubsteps().stream().anyMatch((subStep) ->
 		{

@@ -29,7 +29,7 @@ public enum TeleportCollections
 				ItemRequirement varrockRunes = new ItemRequirements("Varrock teleport runes",
 					new ItemRequirement("Law rune", ItemID.LAWRUNE, 1),
 					new ItemRequirement("Air rune", ItemID.AIRRUNE, 3),
-					new ItemRequirement("Water rune", ItemID.WATERRUNE, 1)
+					new ItemRequirement("Fire rune", ItemID.FIRERUNE, 1)
 				);
 				return new ItemRequirements(LogicType.OR, "Teleport to Varrock. Varrock teleport tablet/spell, Chronicle, Ring of Wealth (Grand Exchange [2])",
 					varrockTele, varrockRunes);

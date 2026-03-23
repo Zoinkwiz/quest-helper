@@ -270,7 +270,7 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			marbleAmulet.highlighted(),
 			obsidianAmulet.highlighted());
 
-		goDownstairsForStar = new ObjectStep(this, ObjectID.FENK_STAIRS_LV1_TOP, new WorldPoint(3573, 3553, 1),
+		goDownstairsForStar = new ObjectStep(this, ObjectID.FENK_STAIRS_LV1_TOP, new WorldPoint(3537, 3553, 1),
 			"Go back to the ground floor.");
 
 		talkToGardenerForHead = new NpcStep(this, NpcID.FENK_GARDENER, new WorldPoint(3548, 3562, 0),

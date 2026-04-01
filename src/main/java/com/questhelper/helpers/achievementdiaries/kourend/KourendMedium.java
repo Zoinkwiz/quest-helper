@@ -256,7 +256,7 @@ public class KourendMedium extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		// Travel to Fairy Ring
-		travelFairyRing = new ObjectStep(this, ObjectID.POH_FAIRY_RING_LAST_AIP, new WorldPoint(2658, 3230, 0),
+		travelFairyRing = new ObjectStep(this, ObjectID.FAIRYRING_MINORHUB, new WorldPoint(2658, 3230, 0),
 			"Travel from any fairy ring to south of Mount Karuulm (CIR).", dramenStaff.highlighted());
 
 		// Kill a lizardman

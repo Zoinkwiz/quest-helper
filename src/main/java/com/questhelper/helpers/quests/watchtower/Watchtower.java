@@ -471,7 +471,7 @@ public class Watchtower extends BasicQuestHelper
 
 		stealRockCake = new ObjectStep(this, ObjectID.ROCKCOUNTER_WITHCAKES, new WorldPoint(2514, 3036, 0), "Steal a rock cake from Gu'Tanoth's market.");
 
-		talkToGuardBattlement = new NpcStep(this, NpcID.OGRE_GUARD3, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battelement.");
+		talkToGuardBattlement = new NpcStep(this, NpcID.OGRE_GUARD3, new WorldPoint(2503, 3012, 0), "Talk to an Ogre Guard next to the battlement.");
 		talkToGuardBattlement.addDialogStep("But I am a friend to ogres...");
 		talkToGuardWithRockCake = new ObjectStep(this, NpcID.OGRE_GUARD3, new WorldPoint(2507, 3012, 0),
 			"Attempt to cross the battlement again with a rock cake.", rockCake);

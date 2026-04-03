@@ -312,7 +312,8 @@ public class TreeRun extends ComplexStateQuestHelper
 		brimhavenStep.addStep(brimhavenStates.getIsHarvestable(), brimhavenFruitTreePatchClear);
 		brimhavenStep.addStep(brimhavenStates.getIsStump(), brimhavenFruitTreePatchDig);
 		brimhavenStep.addStep(nor(usingCompostorNothing, brimhavenStates.getIsProtected()), brimhavenFruitProtect);
-		karamjaStep = new ReorderableConditionalStep(this, brimhavenStep, not(brimhavenStates.getIsGrowing()));
+		karamjaStep = new ReorderableConditionalStep(this, new DetailedQuestStep(this, "Unreachable."));
+		karamjaStep.addStep(not(brimhavenStates.getIsGrowing()), brimhavenStep);
 
 		taiBwoWannaiStep = (ConditionalStep) new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth).withId(82);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsUnchecked(), taiBwoWannaiCalquatPatchCheckHealth);
@@ -1281,8 +1282,9 @@ public class TreeRun extends ComplexStateQuestHelper
 			boolean isUnchecked = state == CropState.UNCHECKED; // 'Check health'
 			boolean isHarvestable = state == CropState.HARVESTABLE; // 'Chop'
 			boolean isStump = state == CropState.STUMP; // 'Clear'
-			boolean isProtected = paymentTracker.getProtectedState(patch);
 			boolean isGrowing = state == CropState.GROWING;
+			boolean isProtected = paymentTracker.getProtectedState(patch);
+			boolean needsProtection = isGrowing && !isProtected && payingForProtection.check(client);
 
 			if (state != CropState.GROWING)
 			{
@@ -1302,7 +1304,7 @@ public class TreeRun extends ComplexStateQuestHelper
 				region.getIsUnchecked().setShouldPass(isUnchecked);
 				region.getIsStump().setShouldPass(isStump);
 				region.getIsProtected().setShouldPass(isProtected);
-				region.getIsGrowing().setShouldPass(isGrowing);
+				region.getIsGrowing().setShouldPass(isGrowing && !needsProtection);
 				if (!region.canAccess(client))
 				{
 					numberOfSaplings--;

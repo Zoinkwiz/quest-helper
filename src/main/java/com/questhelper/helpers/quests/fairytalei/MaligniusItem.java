@@ -30,13 +30,18 @@ import net.runelite.api.Client;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
 public class MaligniusItem extends ItemRequirement
 {
-	@Varbit private final int varbitID;
+	@Varbit
+	private final int varbitID;
 
 	/// The value as received by the given varbit ID
 	private int itemIndex = -1;
+
+	/// The value from the FAIRY_NATURE_ALLITEMS varbit, used as an anchor to know whether we can trust itemIndex
+	private int allItemsValue = 0;
 
 	public MaligniusItem(@Varbit int varbitID, String name)
 	{
@@ -48,6 +53,8 @@ public class MaligniusItem extends ItemRequirement
 	@Override
 	public boolean check(Client client)
 	{
+		allItemsValue = client.getVarbitValue(VarbitID.FAIRY_NATURE_ALLITEMS);
+
 		if (itemIndex == -1)
 		{
 			itemIndex = client.getVarbitValue(varbitID);
@@ -59,7 +66,7 @@ public class MaligniusItem extends ItemRequirement
 
 	private void rebuild()
 	{
-		if (itemIndex == -1)
+		if (itemIndex == -1 || allItemsValue == 0)
 		{
 			// Not ready to build requirements yet
 			return;
@@ -232,7 +239,12 @@ public class MaligniusItem extends ItemRequirement
 
 	public void varbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == varbitID)
+		if (event.getVarbitId() == VarbitID.FAIRY_NATURE_ALLITEMS)
+		{
+			allItemsValue = event.getValue();
+			rebuild();
+		}
+		else if (event.getVarbitId() == varbitID)
 		{
 			itemIndex = event.getValue();
 			rebuild();

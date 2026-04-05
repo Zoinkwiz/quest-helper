@@ -241,7 +241,7 @@ public class FairytaleII extends BasicQuestHelper
 		talkToMartinAgain = new NpcStep(this, NpcID.MARTIN_THE_MASTER_FARMER, new WorldPoint(3078, 3256, 0),
 			"Return to Martin in the Draynor Market.");
 		talkToMartinAgain.addDialogSteps("Ask about the quest.",
-			"I suppose I'd better go and see what the problem is then.");
+			"Yes.");
 
 		takeCertificate = new ObjectStep(this, ObjectID.FAIRYTALE2_CERT_LARGE_BROKEN_A_MULTI, new WorldPoint(2389, 4471, 0),
 			"Search the healing certificate in Fairy Nuff's room.");

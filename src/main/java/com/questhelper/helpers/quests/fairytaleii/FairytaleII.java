@@ -31,13 +31,13 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.util.LogicType;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -46,7 +46,16 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -55,104 +64,97 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class FairytaleII extends BasicQuestHelper
 {
-	ItemRequirement dramenOrLunarStaff, vialOfWater, pestleAndMortar;
+	// Required items
+	ItemRequirement dramenOrLunarStaff;
+	ItemRequirement vialOfWater;
+	ItemRequirement pestleAndMortar;
 
-	ItemRequirement combatGear, food;
+	// Recommended items
+	ItemRequirement combatGear;
+	ItemRequirement food;
 
-	ItemRequirement fairyCertificate, queensSecateurs, starFlower, gorakClaw, gorakClawPowder, magicEssenceUnf,
-		magicEssence;
+	// Mid-quest item requirements
+	ItemRequirement fairyCertificate;
+	ItemRequirement queensSecateurs;
+	ItemRequirement starFlower;
+	ItemRequirement gorakClaw;
+	ItemRequirement gorakClawPowder;
+	ItemRequirement magicEssenceUnf;
+	ItemRequirement magicEssence;
 
-	Zone zanaris, hideout, starPlane, gorakPlane;
+	// Zones
+	Zone zanaris;
+	Zone hideout;
+	Zone starPlane;
+	Zone gorakPlane;
 
-	Requirement inZanaris, inHideout, inStarPlane, inGorakPlane, hasReadSign, hasInvestigatedCertificate,
-		talkedToGodfather, pickedStarFlower, starflowerNearby, clawNearby, herbReq, farmReq, thievingReq,
-		addedFlowerCorrectly, addedClawCorrectly, starflowerOrUnfCorrectlyMade;
+	// Miscellaneous requirements
+	ZoneRequirement inZanaris;
+	ZoneRequirement inHideout;
+	ZoneRequirement inStarPlane;
+	ZoneRequirement inGorakPlane;
+	VarbitRequirement hasInvestigatedCertificate;
+	VarbitRequirement hasReadSign;
+	Requirement talkedToGodfather;
+	Requirement pickedStarFlower;
+	Requirement starflowerNearby;
+	Requirement clawNearby;
+	Requirement herbReq;
+	Requirement farmReq;
+	Requirement thievingReq;
+	Requirement addedFlowerCorrectly;
+	Requirement addedClawCorrectly;
+	Requirement starflowerOrUnfCorrectlyMade;
 
-	QuestStep talkToMartin, waitForMartin, talkToMartinAgain;
+	// Steps
+	QuestStep talkToMartin;
+	QuestStep waitForMartin;
+	QuestStep talkToMartinAgain;
 
-	QuestStep enterZanaris, takeCertificate, studyCertificate, readSign, talkToGodfather;
+	QuestStep enterZanaris;
+	QuestStep takeCertificate;
+	QuestStep studyCertificate;
+	QuestStep readSign;
+	QuestStep talkToGodfather;
 
-	QuestStep goToHideout, goToHideoutSurface, talkToNuff, returnToZanarisFromBase, goToZanarisToPickpocket,
-		pickpocketGodfather, goToHideoutWithSec, goToHideoutSurfaceWithSec, giveSecateursToNuff,
-		goToHideoutAfterSec, goToHideoutSurfaceAfterSec, talkToNuffAfterSec;
+	QuestStep goToHideout;
+	QuestStep goToHideoutSurface;
+	QuestStep talkToNuff;
+	QuestStep returnToZanarisFromBase;
+	QuestStep goToZanarisToPickpocket;
+	QuestStep pickpocketGodfather;
+	QuestStep goToHideoutWithSec;
+	QuestStep goToHideoutSurfaceWithSec;
+	QuestStep giveSecateursToNuff;
+	QuestStep goToHideoutAfterSec;
+	QuestStep goToHideoutSurfaceAfterSec;
+	QuestStep talkToNuffAfterSec;
 
-	QuestStep goToCkp, waitForStarFlower, pickStarFlower;
+	QuestStep goToCkp;
+	QuestStep waitForStarFlower;
+	QuestStep pickStarFlower;
 
-	QuestStep goToDir, killGorak, pickupGorakClaw;
+	QuestStep goToDir;
+	QuestStep killGorak;
+	QuestStep pickupGorakClaw;
 
-	QuestStep goToHideout2, useStarFlowerOnVial, usePestleOnClaw, usePowderOnPotion,
-		usePotionOnQueen, goToHideoutToFinish, talkToQueen;
+	QuestStep goToHideout2;
+	QuestStep useStarFlowerOnVial;
+	QuestStep usePestleOnClaw;
+	QuestStep usePowderOnPotion;
+	QuestStep usePotionOnQueen;
+	QuestStep goToHideoutToFinish;
+	QuestStep talkToQueen;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToMartin);
-		steps.put(5, waitForMartin);
-		steps.put(10, talkToMartinAgain);
-		ConditionalStep goInvestigate = new ConditionalStep(this, enterZanaris);
-		goInvestigate.addStep(new Conditions(inHideout), talkToNuff);
-		goInvestigate.addStep(new Conditions(inZanaris, hasInvestigatedCertificate, hasReadSign, talkedToGodfather), goToHideout);
-		goInvestigate.addStep(new Conditions(hasInvestigatedCertificate, hasReadSign, talkedToGodfather), goToHideoutSurface);
-		goInvestigate.addStep(new Conditions(inZanaris, hasInvestigatedCertificate, hasReadSign), talkToGodfather);
-		goInvestigate.addStep(new Conditions(inZanaris, hasInvestigatedCertificate), readSign);
-		goInvestigate.addStep(new Conditions(inZanaris, fairyCertificate.alsoCheckBank()), studyCertificate);
-		goInvestigate.addStep(inZanaris, takeCertificate);
-		steps.put(20, goInvestigate);
-		steps.put(30, goInvestigate);
-		steps.put(40, goInvestigate);
-		steps.put(45, goInvestigate);
-
-		ConditionalStep goGetSecateurs = new ConditionalStep(this, goToZanarisToPickpocket);
-		goGetSecateurs.addStep(new Conditions(inHideout, queensSecateurs.alsoCheckBank()), giveSecateursToNuff);
-		goGetSecateurs.addStep(new Conditions(inZanaris, queensSecateurs.alsoCheckBank()), goToHideoutWithSec);
-		goGetSecateurs.addStep(queensSecateurs.alsoCheckBank(), goToHideoutSurfaceWithSec);
-		goGetSecateurs.addStep(inHideout, returnToZanarisFromBase);
-		goGetSecateurs.addStep(inZanaris, pickpocketGodfather);
-		steps.put(50, goGetSecateurs);
-		steps.put(60, goGetSecateurs);
-
-		ConditionalStep goTalkNuffAfterSec = new ConditionalStep(this, goToHideoutSurfaceAfterSec);
-		goTalkNuffAfterSec.addStep(inHideout, talkToNuffAfterSec);
-		goTalkNuffAfterSec.addStep(inZanaris, goToHideoutAfterSec);
-		steps.put(65, goTalkNuffAfterSec);
-
-		ConditionalStep goMakePotion = new ConditionalStep(this, goToCkp);
-		goMakePotion.addStep(new Conditions(addedClawCorrectly, magicEssence.alsoCheckBank(), inHideout),
-			usePotionOnQueen);
-		goMakePotion.addStep(new Conditions(addedClawCorrectly, magicEssence.alsoCheckBank()), goToHideout2);
-		goMakePotion.addStep(new Conditions(addedFlowerCorrectly, gorakClawPowder.alsoCheckBank(),
-			magicEssenceUnf.alsoCheckBank()), usePowderOnPotion);
-		goMakePotion.addStep(new Conditions(addedFlowerCorrectly, gorakClaw.alsoCheckBank(),
-			magicEssenceUnf.alsoCheckBank()), usePestleOnClaw);
-		goMakePotion.addStep(new Conditions(gorakClaw.alsoCheckBank(), starFlower.alsoCheckBank()),
-			useStarFlowerOnVial);
-		goMakePotion.addStep(new Conditions(clawNearby, starflowerOrUnfCorrectlyMade), pickupGorakClaw);
-		goMakePotion.addStep(new Conditions(inGorakPlane, starflowerOrUnfCorrectlyMade), killGorak);
-		goMakePotion.addStep(starflowerOrUnfCorrectlyMade, goToDir);
-		goMakePotion.addStep(starflowerNearby, pickStarFlower);
-		goMakePotion.addStep(inStarPlane, waitForStarFlower);
-		steps.put(70, goMakePotion);
-
-		// 72, added flower to vial
-		steps.put(72, goMakePotion);
-		steps.put(73, goMakePotion);
-
-		ConditionalStep goFinish = new ConditionalStep(this, goToHideoutToFinish);
-		goFinish.addStep(inHideout, talkToQueen);
-		steps.put(75, goFinish);
-		steps.put(80, goFinish);
-
-		return steps;
+		zanaris = new Zone(new WorldPoint(2368, 4353, 0), new WorldPoint(2495, 4479, 0));
+		hideout = new Zone(new WorldPoint(2324, 4420, 0), new WorldPoint(2367, 4468, 0));
+		starPlane = new Zone(new WorldPoint(2060, 4806, 0), new WorldPoint(2098, 4862, 0));
+		gorakPlane = new Zone(new WorldPoint(3009, 5312, 0), new WorldPoint(3072, 5380, 0));
 	}
 
 	@Override
@@ -181,19 +183,7 @@ public class FairytaleII extends BasicQuestHelper
 		magicEssence = new ItemRequirement("Magic essence", ItemID._1DOSEMAGICESS);
 		magicEssence.addAlternates(ItemID._2DOSEMAGICESS, ItemID._3DOSEMAGICESS, ItemID._4DOSEMAGICESS);
 		queensSecateurs = new ItemRequirement("Queen's secateurs", ItemID.FAIRY_QUEEN_SECATEURS2);
-	}
 
-	@Override
-	protected void setupZones()
-	{
-		zanaris = new Zone(new WorldPoint(2368, 4353, 0), new WorldPoint(2495, 4479, 0));
-		hideout = new Zone(new WorldPoint(2324, 4420, 0), new WorldPoint(2367, 4468, 0));
-		starPlane = new Zone(new WorldPoint(2060, 4806, 0), new WorldPoint(2098, 4862, 0));
-		gorakPlane = new Zone(new WorldPoint(3009, 5312, 0), new WorldPoint(3072, 5380, 0));
-	}
-
-	public void setupConditions()
-	{
 		inZanaris = new ZoneRequirement(zanaris);
 		inHideout = new ZoneRequirement(hideout);
 		inStarPlane = new ZoneRequirement(starPlane);
@@ -215,9 +205,9 @@ public class FairytaleII extends BasicQuestHelper
 		// 2328 0->1
 		// 2329 0->2
 
-		hasReadSign = new VarbitRequirement(VarbitID.FAIRY2_SIGN_READ, 4);
-
 		hasInvestigatedCertificate = new VarbitRequirement(VarbitID.FAIRY2_CERTIFICUTE_EXAMINED, 1);
+
+		hasReadSign = new VarbitRequirement(VarbitID.FAIRY2_SIGN_READ, 4);
 
 		talkedToGodfather = new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(), 40, Operation.GREATER_EQUAL);
 		addedFlowerCorrectly = new VarbitRequirement(QuestVarbits.QUEST_FAIRYTALE_II_CURE_A_QUEEN.getId(), 72, Operation.GREATER_EQUAL);
@@ -235,9 +225,9 @@ public class FairytaleII extends BasicQuestHelper
 
 		// Killed Gorak, 2382=1
 
-		starflowerOrUnfCorrectlyMade = new Conditions(LogicType.OR,
+		starflowerOrUnfCorrectlyMade = or(
 			starFlower.alsoCheckBank(),
-			new Conditions(addedFlowerCorrectly, magicEssenceUnf.alsoCheckBank())
+			and(addedFlowerCorrectly, magicEssenceUnf.alsoCheckBank())
 		);
 	}
 
@@ -344,32 +334,107 @@ public class FairytaleII extends BasicQuestHelper
 	}
 
 	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToMartin);
+		steps.put(5, waitForMartin);
+		steps.put(10, talkToMartinAgain);
+		var goInvestigate = new ConditionalStep(this, enterZanaris);
+		goInvestigate.addStep(inHideout, talkToNuff);
+		goInvestigate.addStep(and(inZanaris, hasInvestigatedCertificate, hasReadSign, talkedToGodfather), goToHideout);
+		goInvestigate.addStep(and(hasInvestigatedCertificate, hasReadSign, talkedToGodfather), goToHideoutSurface);
+		goInvestigate.addStep(and(inZanaris, hasInvestigatedCertificate, hasReadSign), talkToGodfather);
+		goInvestigate.addStep(and(inZanaris, hasInvestigatedCertificate), readSign);
+		goInvestigate.addStep(and(inZanaris, fairyCertificate.alsoCheckBank()), studyCertificate);
+		goInvestigate.addStep(inZanaris, takeCertificate);
+		steps.put(20, goInvestigate);
+		steps.put(30, goInvestigate);
+		steps.put(40, goInvestigate);
+		steps.put(45, goInvestigate);
+
+		var goGetSecateurs = new ConditionalStep(this, goToZanarisToPickpocket);
+		goGetSecateurs.addStep(and(inHideout, queensSecateurs.alsoCheckBank()), giveSecateursToNuff);
+		goGetSecateurs.addStep(and(inZanaris, queensSecateurs.alsoCheckBank()), goToHideoutWithSec);
+		goGetSecateurs.addStep(queensSecateurs.alsoCheckBank(), goToHideoutSurfaceWithSec);
+		goGetSecateurs.addStep(inHideout, returnToZanarisFromBase);
+		goGetSecateurs.addStep(inZanaris, pickpocketGodfather);
+		steps.put(50, goGetSecateurs);
+		steps.put(60, goGetSecateurs);
+
+		var goTalkNuffAfterSec = new ConditionalStep(this, goToHideoutSurfaceAfterSec);
+		goTalkNuffAfterSec.addStep(inHideout, talkToNuffAfterSec);
+		goTalkNuffAfterSec.addStep(inZanaris, goToHideoutAfterSec);
+		steps.put(65, goTalkNuffAfterSec);
+
+		var goMakePotion = new ConditionalStep(this, goToCkp);
+		goMakePotion.addStep(and(addedClawCorrectly, magicEssence.alsoCheckBank(), inHideout),
+			usePotionOnQueen);
+		goMakePotion.addStep(and(addedClawCorrectly, magicEssence.alsoCheckBank()), goToHideout2);
+		goMakePotion.addStep(and(addedFlowerCorrectly, gorakClawPowder.alsoCheckBank(),
+			magicEssenceUnf.alsoCheckBank()), usePowderOnPotion);
+		goMakePotion.addStep(and(addedFlowerCorrectly, gorakClaw.alsoCheckBank(),
+			magicEssenceUnf.alsoCheckBank()), usePestleOnClaw);
+		goMakePotion.addStep(and(gorakClaw.alsoCheckBank(), starFlower.alsoCheckBank()),
+			useStarFlowerOnVial);
+		goMakePotion.addStep(and(clawNearby, starflowerOrUnfCorrectlyMade), pickupGorakClaw);
+		goMakePotion.addStep(and(inGorakPlane, starflowerOrUnfCorrectlyMade), killGorak);
+		goMakePotion.addStep(starflowerOrUnfCorrectlyMade, goToDir);
+		goMakePotion.addStep(starflowerNearby, pickStarFlower);
+		goMakePotion.addStep(inStarPlane, waitForStarFlower);
+		steps.put(70, goMakePotion);
+
+		// 72, added flower to vial
+		steps.put(72, goMakePotion);
+		steps.put(73, goMakePotion);
+
+		var goFinish = new ConditionalStep(this, goToHideoutToFinish);
+		goFinish.addStep(inHideout, talkToQueen);
+		steps.put(75, goFinish);
+		steps.put(80, goFinish);
+
+		return steps;
+	}
+
+	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(dramenOrLunarStaff, vialOfWater, pestleAndMortar);
+		return List.of(
+			dramenOrLunarStaff,
+			vialOfWater,
+			pestleAndMortar
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(combatGear);
+		return List.of(
+			combatGear
+		);
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		List<Requirement> reqs = new ArrayList<>();
-		reqs.add(new QuestRequirement(QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS, QuestState.FINISHED));
-		reqs.add(thievingReq);
-		reqs.add(farmReq);
-		reqs.add(herbReq);
-		return reqs;
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS, QuestState.FINISHED),
+			thievingReq,
+			farmReq,
+			herbReq
+		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return Collections.singletonList("At least 1 Gorak (level 145)");
+		return List.of(
+			"At least 1 Gorak (level 145)"
+		);
 	}
 
 	@Override
@@ -381,41 +446,76 @@ public class FairytaleII extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(
-				new ExperienceReward(Skill.HERBLORE, 3500),
-				new ExperienceReward(Skill.THIEVING, 2500));
+		return List.of(
+			new ExperienceReward(Skill.HERBLORE, 3500),
+			new ExperienceReward(Skill.THIEVING, 2500)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("2,500 Experience Lamp (Any skill over level 30.)", ItemID.THOSF_REWARD_LAMP, 1));
+		return List.of(
+			new ItemReward("2,500 Experience Lamp (Any skill over level 30.)", ItemID.THOSF_REWARD_LAMP, 1)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-				new UnlockReward("Access to Fairy Rings."),
-				new UnlockReward("Access to Fairy Fixit's Fairy Enhancement Store."));
+		return List.of(
+			new UnlockReward("Access to Fairy Rings."),
+			new UnlockReward("Access to Fairy Fixit's Fairy Enhancement Store.")
+		);
 	}
 
 	@Override
 	public ArrayList<PanelDetails> getPanels()
 	{
-		ArrayList<PanelDetails> allSteps = new ArrayList<>();
+		var sections = new ArrayList<PanelDetails>();
 
-		allSteps.add(new PanelDetails("Starting off",
-			Arrays.asList(talkToMartin, waitForMartin, talkToMartinAgain)));
+		sections.add(new PanelDetails("Starting off", List.of(
+			talkToMartin,
+			waitForMartin,
+			talkToMartinAgain
+		)));
 
-		allSteps.add(new PanelDetails("Betrayal",
-			Arrays.asList(enterZanaris, takeCertificate, studyCertificate, readSign, talkToGodfather, goToHideout,
-				talkToNuff, pickpocketGodfather, giveSecateursToNuff), dramenOrLunarStaff, vialOfWater, pestleAndMortar));
+		sections.add(new PanelDetails("Betrayal", List.of(
+			enterZanaris,
+			takeCertificate,
+			studyCertificate,
+			readSign,
+			talkToGodfather,
+			goToHideout,
+			talkToNuff,
+			pickpocketGodfather,
+			giveSecateursToNuff
+		), List.of(
+			dramenOrLunarStaff,
+			vialOfWater,
+			pestleAndMortar
+		)));
 
-		allSteps.add(new PanelDetails("Making a cure", Arrays.asList(goToCkp, waitForStarFlower, pickStarFlower,
-			goToDir, killGorak, pickupGorakClaw, useStarFlowerOnVial, usePestleOnClaw, usePowderOnPotion,
-			goToHideout2, usePotionOnQueen, talkToQueen), dramenOrLunarStaff, vialOfWater, pestleAndMortar, fairyCertificate));
+		sections.add(new PanelDetails("Making a cure", List.of(
+			goToCkp,
+			waitForStarFlower,
+			pickStarFlower,
+			goToDir,
+			killGorak,
+			pickupGorakClaw,
+			useStarFlowerOnVial,
+			usePestleOnClaw,
+			usePowderOnPotion,
+			goToHideout2,
+			usePotionOnQueen,
+			talkToQueen
+		), List.of(
+			dramenOrLunarStaff,
+			vialOfWater,
+			pestleAndMortar,
+			fairyCertificate
+		)));
 
-		return allSteps;
+		return sections;
 	}
 }

@@ -881,7 +881,14 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		var playerWp = client.getLocalPlayer().getWorldLocation();
+
+		var localPlayer = client.getLocalPlayer();
+		if (localPlayer == null)
+		{
+			return;
+		}
+
+		var playerWp = localPlayer.getWorldLocation();
 		if (playerWp == null)
 		{
 			return;

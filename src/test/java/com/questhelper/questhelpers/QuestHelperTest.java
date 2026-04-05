@@ -366,6 +366,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.DORICS_QUEST,
 			QuestHelperQuest.RECRUITMENT_DRIVE,
 			QuestHelperQuest.MISTHALIN_MYSTERY,
+			QuestHelperQuest.FAIRYTALE_II__CURE_A_QUEEN,
 			QuestHelperQuest.ONE_SMALL_FAVOUR,
 			QuestHelperQuest.SCORPION_CATCHER,
 			QuestHelperQuest.CURRENT_AFFAIRS,

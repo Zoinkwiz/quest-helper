@@ -297,7 +297,7 @@ public class HauntedMine extends BasicQuestHelper
 		pullLeverG = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER7, new WorldPoint(2769, 4533, 0), "Pull the marked lever.");
 		pullLeverH = new ObjectStep(this, ObjectID.HAUNTEDMINE_POINT_LEVER8, new WorldPoint(2770, 4533, 0), "Pull the marked lever.");
 
-		solvePuzzle = new DetailedQuestStep(this, "Pull levers until the tracks are lined up to take the cart to the north east corner.");
+		solvePuzzle = new DetailedQuestStep(this, "Pull levers until the tracks are lined up to take the cart to the north west corner (the panel's map UI shows north as pointing to the right).");
 		solvePuzzle.addSubSteps(pullLeverA, pullLeverB, pullLeverC, pullLeverD, pullLeverE, pullLeverF, pullLeverG, pullLeverH);
 
 		useKeyOnValve = new ObjectStep(this, ObjectID.HAUNTEDMINE_LIFT_VALVE, new WorldPoint(2808, 4496, 0),

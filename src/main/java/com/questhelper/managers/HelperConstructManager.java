@@ -1,12 +1,17 @@
 package com.questhelper.managers;
 
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.steps.tools.QuestPerspective;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.util.Text;
 
@@ -67,6 +72,7 @@ public class HelperConstructManager
 		int rawId = sourceEntry.getIdentifier();
 		String option = sourceEntry.getOption();
 		String target = Text.removeTags(sourceEntry.getTarget());
+		WorldPoint clickedWorldPoint = resolveClickedWorldPoint(sourceEntry, event);
 
 		if (!menuEntryExists(menuEntries, MENU_PREFIX + " Start New Draft"))
 		{
@@ -75,11 +81,11 @@ public class HelperConstructManager
 		}
 		if (isNpcAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, rawId, option, target));
+			addAction(menuEntries, MENU_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, rawId, option, target, clickedWorldPoint));
 		}
 		if (isObjectAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add Object Step", target, () -> addStep(StepKind.OBJECT, rawId, option, target));
+			addAction(menuEntries, MENU_PREFIX + " Add Object Step", target, () -> addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint));
 		}
 		if (isItemAction(sourceType))
 		{
@@ -126,7 +132,7 @@ public class HelperConstructManager
 		sendGameMessage("Quest Helper Construct: started new draft '" + currentDraft.getClassName() + "'.");
 	}
 
-	private void addStep(StepKind kind, int rawId, String option, String target)
+	private void addStep(StepKind kind, int rawId, String option, String target, WorldPoint clickedWorldPoint)
 	{
 		DraftStep step = new DraftStep();
 		step.setKind(kind);
@@ -136,12 +142,101 @@ public class HelperConstructManager
 		step.setInstructionText(instructionText(option, target));
 		step.setPanelName("Captured Steps");
 		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(option + " " + target, "step"));
+		step.setWorldPoint(clickedWorldPoint);
+		currentDraft.getSteps().add(step);
+		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + ") at " + formatWorldPoint(clickedWorldPoint) + ".");
+	}
+
+	private WorldPoint resolveClickedWorldPoint(MenuEntry sourceEntry, MenuEntryAdded event)
+	{
+		WorldPoint fromNpc = resolveNpcWorldPoint(sourceEntry);
+		if (fromNpc != null)
+		{
+			return fromNpc;
+		}
+
+		WorldPoint fromSceneTile = resolveSceneTileWorldPoint(event);
+		if (fromSceneTile != null)
+		{
+			return fromSceneTile;
+		}
+
 		if (client.getLocalPlayer() != null)
 		{
-			step.setWorldPoint(client.getLocalPlayer().getWorldLocation());
+			return normalizeLocalPoint(client.getLocalPlayer().getLocalLocation());
 		}
-		currentDraft.getSteps().add(step);
-		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + ").");
+
+		return null;
+	}
+
+	private WorldPoint resolveNpcWorldPoint(MenuEntry sourceEntry)
+	{
+		NPC npc = sourceEntry.getNpc();
+		if (npc == null)
+		{
+			return null;
+		}
+		if (npc.getLocalLocation() != null)
+		{
+			return normalizeLocalPoint(npc.getLocalLocation());
+		}
+		return normalizeWorldPointWithWorldView(npc.getWorldView(), npc.getWorldLocation());
+	}
+
+	private WorldPoint resolveSceneTileWorldPoint(MenuEntryAdded event)
+	{
+		if (client.getTopLevelWorldView() == null)
+		{
+			return null;
+		}
+
+		int sceneX = event.getActionParam0();
+		int sceneY = event.getActionParam1();
+		var worldView = client.getTopLevelWorldView();
+		Tile[][][] tiles = worldView.getScene().getTiles();
+		int plane = worldView.getPlane();
+
+		if (tiles == null || plane < 0 || plane >= tiles.length)
+		{
+			return null;
+		}
+		Tile[][] planeTiles = tiles[plane];
+		if (planeTiles == null
+			|| sceneX < 0 || sceneY < 0
+			|| sceneX >= planeTiles.length
+			|| sceneY >= planeTiles[sceneX].length)
+		{
+			return null;
+		}
+
+		Tile tile = planeTiles[sceneX][sceneY];
+		if (tile == null)
+		{
+			return null;
+		}
+		if (tile.getLocalLocation() != null)
+		{
+			return normalizeLocalPoint(tile.getLocalLocation());
+		}
+		return normalizeWorldPointWithWorldView(worldView, tile.getWorldLocation());
+	}
+
+	private WorldPoint normalizeLocalPoint(LocalPoint localPoint)
+	{
+		if (localPoint == null)
+		{
+			return null;
+		}
+		return QuestPerspective.getWorldPointConsideringWorldView(client, localPoint);
+	}
+
+	private WorldPoint normalizeWorldPointWithWorldView(net.runelite.api.WorldView worldView, WorldPoint worldPoint)
+	{
+		if (worldPoint == null)
+		{
+			return null;
+		}
+		return QuestPerspective.getWorldPointConsideringWorldView(client, worldView, worldPoint);
 	}
 
 	private void addRequirement(int rawId, String target)
@@ -253,5 +348,14 @@ public class HelperConstructManager
 	private void sendGameMessage(String message)
 	{
 		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null);
+	}
+
+	private String formatWorldPoint(WorldPoint point)
+	{
+		if (point == null)
+		{
+			return "(unknown)";
+		}
+		return "(" + point.getX() + ", " + point.getY() + ", " + point.getPlane() + ")";
 	}
 }

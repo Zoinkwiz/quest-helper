@@ -44,6 +44,8 @@ import com.questhelper.tools.VisibilityHelper;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -175,8 +177,6 @@ public abstract class QuestStep implements Module
 	@Getter
 	@Setter
 	private String sidebarManualSkipPersistenceKey;
-
-
 
 	protected String lastDialogSeen = "";
 
@@ -495,7 +495,7 @@ public abstract class QuestStep implements Module
 	private void addTitleToPanel(PanelComponent panelComponent)
 	{
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(questHelper.getQuest().getName())
+			.left(questHelper.getDisplayedQuestName())
 			.build());
 	}
 

@@ -229,7 +229,7 @@ public class QuestBankTab
 				{
 					if (questHelper.getSelectedQuest() != null)
 					{
-						bankTitle.setText("Tab <col=ff0000>" + questHelper.getSelectedQuest().getQuest().getName() + "</col>");
+						bankTitle.setText("Tab <col=ff0000>" + questHelper.getSelectedQuest().getDisplayedQuestName() + "</col>");
 					}
 					else
 					{

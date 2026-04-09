@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.maker;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Client;
-
-public class ManualRequirement extends SimpleRequirement
+/**
+ * Public façade for NPC / Object / Generic (text) step rows in the Quest Helper Maker step library.
+ * Maps to the internal {@link HelperConstructModels.StepKind} used in persisted drafts.
+ */
+public enum ConstructStepKind
 {
-	@Getter
-	@Setter
-	boolean shouldPass;
+	NPC(HelperConstructModels.StepKind.NPC),
+	OBJECT(HelperConstructModels.StepKind.OBJECT),
+	/** Generic step: optional world point and attachments; not tied to a specific NPC/object id. */
+	TEXT(HelperConstructModels.StepKind.TEXT);
 
-	@Override
-	public boolean check(Client client)
+	private final HelperConstructModels.StepKind stepKind;
+
+	ConstructStepKind(HelperConstructModels.StepKind stepKind)
 	{
-		return shouldPass;
+		this.stepKind = stepKind;
+	}
+
+	HelperConstructModels.StepKind stepKind()
+	{
+		return stepKind;
 	}
 }

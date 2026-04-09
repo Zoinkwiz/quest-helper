@@ -142,6 +142,9 @@ public class QuestHelperPlugin extends Plugin
 	private QuestMenuHandler questMenuHandler;
 
 	@Inject
+	private HelperConstructManager helperConstructManager;
+
+	@Inject
 	private NewVersionManager newVersionManager;
 
 	@Getter
@@ -543,6 +546,7 @@ public class QuestHelperPlugin extends Plugin
 		String target = Text.removeTags(event.getTarget());
 
 		questMenuHandler.setupQuestMenuOptions(menuEntries, widgetIndex, widgetID, target, option);
+		helperConstructManager.setupConstructMenuOptions(event);
 	}
 
 	@Subscribe

@@ -702,4 +702,16 @@ public interface QuestHelperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "constructModeEnabled",
+		name = "Enable construct mode",
+		description = "Adds developer-only menu options to capture helper steps and build scaffold code.",
+		position = 5,
+		section = developmentSection
+	)
+	default boolean constructModeEnabled()
+	{
+		return false;
+	}
 }

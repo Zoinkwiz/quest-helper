@@ -3,38 +3,13 @@ package com.questhelper.managers;
 import net.runelite.api.coords.WorldPoint;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
+import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
+import static com.questhelper.managers.ConstructDraftTestUtil.addSectionDivider;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HelperScaffoldGeneratorTest
 {
-	private static void addDefinitionAndRef(HelperConstructModels.DraftHelper draft, HelperConstructModels.DraftStep step)
-	{
-		if (step.getStepId() == null || step.getStepId().isBlank())
-		{
-			step.setStepId(UUID.randomUUID().toString());
-		}
-		draft.getStepDefinitions().add(step);
-		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
-		line.setSectionDivider(false);
-		line.setRefStepId(step.getStepId());
-		line.setLinkedRequirementRawId(null);
-		draft.getOrder().add(line);
-	}
-
-	private static void addSectionDivider(HelperConstructModels.DraftHelper draft, String name)
-	{
-		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
-		line.setLineId(UUID.randomUUID().toString());
-		line.setSectionDivider(true);
-		line.setSuggestedVarName(name);
-		line.setSectionCondition("");
-		line.setSkipWhenConditionMet(false);
-		draft.getOrder().add(line);
-	}
-
 	@Test
 	void varNameSanitizationIsDeterministic()
 	{

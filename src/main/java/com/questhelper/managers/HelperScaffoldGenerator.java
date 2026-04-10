@@ -129,13 +129,7 @@ public class HelperScaffoldGenerator
 		{
 			if (line.isSectionDivider())
 			{
-				String sectionName = line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? "Unnamed Section" : line.getSuggestedVarName();
-				String sectionCondition = line.getSectionCondition() == null || line.getSectionCondition().isBlank()
-					? "no condition"
-					: line.getSectionCondition();
-				String mode = line.isSkipWhenConditionMet() ? "skip when true" : "show when true";
-				out.append("\t\t// Section: ").append(escape(sectionName)).append(" [").append(mode).append(": ")
-					.append(escape(sectionCondition)).append("]\n");
+				appendSectionSetupComment(out, line);
 				continue;
 			}
 			DraftStep step = findDefinition(draft, line.getRefStepId());
@@ -143,41 +137,7 @@ public class HelperScaffoldGenerator
 			{
 				continue;
 			}
-			String varName = stepVarNames.get(step);
-			String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
-				? "TODO: refine instruction text"
-				: step.getInstructionText();
-			if (step.getKind() == StepKind.ITEM)
-			{
-				String requirementVarName = requirementVarNamesByRawId.get(step.getLinkedRequirementRawId());
-				if (requirementVarName == null)
-				{
-					warnings.add("Missing linked requirement for item step ID: " + step.getRawId());
-					ResolutionResult resolvedItem = symbolResolver.resolve(IdType.ITEM, step.getRawId());
-					out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
-						.append(escape(instruction)).append("\", new ItemRequirement(\"TODO linked item\", ")
-						.append(resolvedItem.getSymbol()).append(").highlighted());\n");
-				}
-				else
-				{
-					out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
-						.append(escape(instruction)).append("\", ").append(requirementVarName).append(".highlighted());\n");
-				}
-			}
-			else
-			{
-				String point = worldPointLiteral(step);
-				String symbol = resolveSymbol(step, warnings);
-				out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
-					.append(symbol).append(", ").append(point).append(", \"")
-					.append(escape(instruction)).append("\");\n");
-			}
-			if (!stepHasLinkedItemRequirement(step, requirementVarNamesByRawId))
-			{
-				String varbitReqVarName = varbitReqVarNames.get(step);
-				out.append("\t\t").append(varbitReqVarName)
-					.append(" = new VarbitRequirement(/* TODO varbit id */ 0, 1);\n");
-			}
+			appendDefinitionSetup(out, step, stepVarNames.get(step), requirementVarNamesByRawId, varbitReqVarNames, warnings);
 		}
 		out.append("\t}\n\n");
 
@@ -186,15 +146,11 @@ public class HelperScaffoldGenerator
 		out.append("\t{\n");
 		out.append("\t\tinitializeRequirements();\n");
 		out.append("\t\tsetupSteps();\n\n");
-		if (!sectionTaskNames.isEmpty())
+		List<SectionGroup> nonEmptySectionGroups = sectionGroups.stream().filter(g -> !g.slots.isEmpty()).collect(Collectors.toList());
+		if (!nonEmptySectionGroups.isEmpty())
 		{
-			List<SectionGroup> nonEmptySectionGroups = sectionGroups.stream().filter(g -> !g.slots.isEmpty()).collect(Collectors.toList());
-			for (SectionGroup group : sectionGroups)
+			for (SectionGroup group : nonEmptySectionGroups)
 			{
-				if (group.slots.isEmpty())
-				{
-					continue;
-				}
 				String sectionTask = sectionTaskNames.get(group);
 				int initIndex = group.slots.size() - 1;
 				OrderedSlot initSlot = group.slots.get(initIndex);
@@ -262,6 +218,61 @@ public class HelperScaffoldGenerator
 		out.append("}\n");
 
 		return new GeneratedScaffold(out.toString(), warnings);
+	}
+
+	private void appendSectionSetupComment(StringBuilder out, DraftOrderLine line)
+	{
+		String sectionName = line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? "Unnamed Section" : line.getSuggestedVarName();
+		String sectionCondition = line.getSectionCondition() == null || line.getSectionCondition().isBlank()
+			? "no condition"
+			: line.getSectionCondition();
+		String mode = line.isSkipWhenConditionMet() ? "skip when true" : "show when true";
+		out.append("\t\t// Section: ").append(escape(sectionName)).append(" [").append(mode).append(": ")
+			.append(escape(sectionCondition)).append("]\n");
+	}
+
+	private void appendDefinitionSetup(
+		StringBuilder out,
+		DraftStep step,
+		String varName,
+		Map<Integer, String> requirementVarNamesByRawId,
+		Map<DraftStep, String> varbitReqVarNames,
+		List<String> warnings)
+	{
+		String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
+			? "TODO: refine instruction text"
+			: step.getInstructionText();
+		if (step.getKind() == StepKind.ITEM)
+		{
+			String requirementVarName = requirementVarNamesByRawId.get(step.getLinkedRequirementRawId());
+			if (requirementVarName == null)
+			{
+				warnings.add("Missing linked requirement for item step ID: " + step.getRawId());
+				ResolutionResult resolvedItem = symbolResolver.resolve(IdType.ITEM, step.getRawId());
+				out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
+					.append(escape(instruction)).append("\", new ItemRequirement(\"TODO linked item\", ")
+					.append(resolvedItem.getSymbol()).append(").highlighted());\n");
+			}
+			else
+			{
+				out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
+					.append(escape(instruction)).append("\", ").append(requirementVarName).append(".highlighted());\n");
+			}
+		}
+		else
+		{
+			String point = worldPointLiteral(step);
+			String symbol = resolveSymbol(step, warnings);
+			out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
+				.append(symbol).append(", ").append(point).append(", \"")
+				.append(escape(instruction)).append("\");\n");
+		}
+		if (!stepHasLinkedItemRequirement(step, requirementVarNamesByRawId))
+		{
+			String varbitReqVarName = varbitReqVarNames.get(step);
+			out.append("\t\t").append(varbitReqVarName)
+				.append(" = new VarbitRequirement(/* TODO varbit id */ 0, 1);\n");
+		}
 	}
 
 	private String resolveSymbol(DraftStep step, List<String> warnings)

@@ -15,6 +15,10 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,8 +26,8 @@ import java.util.Objects;
 public class HelperConstructPanel extends PluginPanel
 {
 	private final HelperConstructManager helperConstructManager;
-	private final LibraryTableModel npcLibraryModel = new LibraryTableModel();
-	private final LibraryTableModel objectLibraryModel = new LibraryTableModel();
+	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(true);
+	private final StepLibraryTableModel objectLibraryModel = new StepLibraryTableModel(false);
 	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
 	private JTable orderTable;
 	private final CardLayout stepsViewLayout = new CardLayout();
@@ -52,33 +56,20 @@ public class HelperConstructPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 		root.add(title);
 		root.add(Box.createVerticalStrut(6));
-		JPanel buttonRow = new JPanel(new GridLayout(2, 3, 6, 6));
+		JPanel buttonRow = new JPanel(new GridLayout(3, 3, 6, 6));
 		buttonRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		buttonRow.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 58));
+		buttonRow.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 88));
 		JButton buildButton = new JButton("Build");
 		JButton resetButton = new JButton("Reset");
 		JButton mapButton = new JButton("Map");
 		JButton previewButton = new JButton("Preview");
 		JButton worldMapRouteButton = new JButton("WorldMap Route");
 		JButton viewModeButton = new JButton("Order View");
-		SwingUtil.removeButtonDecorations(buildButton);
-		SwingUtil.removeButtonDecorations(resetButton);
-		SwingUtil.removeButtonDecorations(mapButton);
-		SwingUtil.removeButtonDecorations(previewButton);
-		SwingUtil.removeButtonDecorations(worldMapRouteButton);
-		SwingUtil.removeButtonDecorations(viewModeButton);
-		buildButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		resetButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		mapButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		previewButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		worldMapRouteButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		viewModeButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		buildButton.setForeground(Color.WHITE);
-		resetButton.setForeground(Color.WHITE);
-		mapButton.setForeground(Color.WHITE);
-		previewButton.setForeground(Color.WHITE);
-		worldMapRouteButton.setForeground(Color.WHITE);
-		viewModeButton.setForeground(Color.WHITE);
+		JButton exportJsonButton = new JButton("Export JSON");
+		JButton saveJsonButton = new JButton("Save JSON…");
+		JButton importJsonButton = new JButton("Import JSON…");
+		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton, viewModeButton,
+			exportJsonButton, saveJsonButton, importJsonButton);
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
 		resetButton.addActionListener(e ->
 		{
@@ -99,12 +90,18 @@ public class HelperConstructPanel extends PluginPanel
 			viewModeButton.setText(showingOrderedView ? "Section View" : "Order View");
 			refresh();
 		});
+		exportJsonButton.addActionListener(e -> exportDraftJsonToClipboard());
+		saveJsonButton.addActionListener(e -> saveDraftJsonToFile());
+		importJsonButton.addActionListener(e -> showImportDraftJsonDialog());
 		buttonRow.add(buildButton);
 		buttonRow.add(resetButton);
 		buttonRow.add(mapButton);
 		buttonRow.add(previewButton);
 		buttonRow.add(worldMapRouteButton);
 		buttonRow.add(viewModeButton);
+		buttonRow.add(exportJsonButton);
+		buttonRow.add(saveJsonButton);
+		buttonRow.add(importJsonButton);
 		root.add(buttonRow);
 		root.add(Box.createVerticalStrut(10));
 
@@ -129,6 +126,104 @@ public class HelperConstructPanel extends PluginPanel
 		refreshTimer.start();
 	}
 
+	private void exportDraftJsonToClipboard()
+	{
+		String json = helperConstructManager.exportDraftJson();
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(json), null);
+		JOptionPane.showMessageDialog(this,
+			"Draft JSON copied to clipboard (pretty-printed).",
+			"Export JSON",
+			JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private void saveDraftJsonToFile()
+	{
+		JFileChooser fc = new JFileChooser();
+		String base = helperConstructManager.getCurrentDraftClassName();
+		if (base == null || base.isBlank())
+		{
+			base = "construct-draft";
+		}
+		fc.setSelectedFile(new File(base.replaceAll("[^a-zA-Z0-9_-]+", "_") + "-draft.json"));
+		if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION)
+		{
+			return;
+		}
+		File f = fc.getSelectedFile();
+		try
+		{
+			Files.write(f.toPath(), helperConstructManager.exportDraftJson().getBytes(StandardCharsets.UTF_8));
+			JOptionPane.showMessageDialog(this, "Saved to:\n" + f.getAbsolutePath(), "Save JSON", JOptionPane.INFORMATION_MESSAGE);
+		}
+		catch (IOException ex)
+		{
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Save failed", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void showImportDraftJsonDialog()
+	{
+		int confirm = JOptionPane.showConfirmDialog(this,
+			"Replace the current maker draft with imported JSON?\nExport or save first if you need a backup.",
+			"Import draft",
+			JOptionPane.OK_CANCEL_OPTION,
+			JOptionPane.WARNING_MESSAGE);
+		if (confirm != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		JTextArea textArea = new JTextArea(14, 44);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		JButton browse = new JButton("Load from file…");
+		browse.addActionListener(ev ->
+		{
+			JFileChooser fc = new JFileChooser();
+			if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+			{
+				try
+				{
+					textArea.setText(new String(Files.readAllBytes(fc.getSelectedFile().toPath()), StandardCharsets.UTF_8));
+				}
+				catch (IOException ex)
+				{
+					JOptionPane.showMessageDialog(this, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
+		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+		panel.add(browse, BorderLayout.SOUTH);
+
+		int r = JOptionPane.showConfirmDialog(this, panel, "Paste construct draft JSON", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		HelperConstructManager.ImportDraftResult result = helperConstructManager.importDraftFromJson(textArea.getText());
+		if (result.isSuccess())
+		{
+			refresh();
+			JOptionPane.showMessageDialog(this, "Draft imported and saved to plugin config.", "Import", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(this, result.getErrorMessage(), "Import failed", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void applyMakerToolbarStyle(JButton... buttons)
+	{
+		for (JButton b : buttons)
+		{
+			SwingUtil.removeButtonDecorations(b);
+			b.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			b.setForeground(Color.WHITE);
+		}
+	}
+
 	private JPanel buildSectionedView()
 	{
 		JPanel sectioned = new JPanel();
@@ -136,19 +231,50 @@ public class HelperConstructPanel extends PluginPanel
 		sectioned.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		sectioned.add(sectionLabel("NPC Steps (library)"));
-		sectioned.add(wrapLibraryTable(new JTable(npcLibraryModel), LibraryRemoveKind.NPC));
+		sectioned.add(wrapStepLibraryTable(new JTable(npcLibraryModel), LibraryRemoveKind.NPC));
 		sectioned.add(Box.createVerticalStrut(10));
 		sectioned.add(sectionLabel("Object Steps (library)"));
-		sectioned.add(wrapLibraryTable(new JTable(objectLibraryModel), LibraryRemoveKind.OBJECT));
+		sectioned.add(wrapStepLibraryTable(new JTable(objectLibraryModel), LibraryRemoveKind.OBJECT));
 		sectioned.add(Box.createVerticalStrut(10));
 		sectioned.add(sectionLabel("Captured Requirements"));
-		sectioned.add(wrapLibraryTable(new JTable(requirementLibraryModel), LibraryRemoveKind.REQUIREMENT));
+		sectioned.add(wrapRequirementLibraryTable(new JTable(requirementLibraryModel)));
 		return sectioned;
 	}
 
-	private JScrollPane wrapLibraryTable(JTable table, LibraryRemoveKind removeKind)
+	private JScrollPane wrapStepLibraryTable(JTable table, LibraryRemoveKind removeKind)
 	{
-		styleLibraryTable(table);
+		styleStepLibraryTable(table);
+		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
+		table.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				int row = table.rowAtPoint(e.getPoint());
+				int col = table.columnAtPoint(e.getPoint());
+				if (row < 0 || col != 2)
+				{
+					return;
+				}
+				if (removeKind == LibraryRemoveKind.NPC)
+				{
+					helperConstructManager.removeNpcStepAt(row);
+				}
+				else
+				{
+					helperConstructManager.removeObjectStepAt(row);
+				}
+				refresh();
+			}
+		});
+		JScrollPane sp = new JScrollPane(table);
+		sp.setBorder(new EmptyBorder(0, 0, 0, 0));
+		return sp;
+	}
+
+	private JScrollPane wrapRequirementLibraryTable(JTable table)
+	{
+		styleRequirementLibraryTable(table);
 		table.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -160,18 +286,7 @@ public class HelperConstructPanel extends PluginPanel
 				{
 					return;
 				}
-				switch (removeKind)
-				{
-					case NPC:
-						helperConstructManager.removeNpcStepAt(row);
-						break;
-					case OBJECT:
-						helperConstructManager.removeObjectStepAt(row);
-						break;
-					case REQUIREMENT:
-						helperConstructManager.removeRequirementAt(row);
-						break;
-				}
+				helperConstructManager.removeRequirementAt(row);
 				refresh();
 			}
 		});
@@ -180,7 +295,34 @@ public class HelperConstructPanel extends PluginPanel
 		return sp;
 	}
 
-	private void styleLibraryTable(JTable table)
+	private void styleStepLibraryTable(JTable table)
+	{
+		table.setFillsViewportHeight(true);
+		table.setRowHeight(24);
+		table.setShowGrid(false);
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+		{
+			@Override
+			public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			{
+				Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+				if (!isSelected)
+				{
+					c.setBackground(ColorScheme.DARK_GRAY_COLOR);
+					c.setForeground(column == 2 ? new Color(100, 180, 255) : Color.WHITE);
+				}
+				return c;
+			}
+		});
+		if (table.getColumnModel().getColumnCount() >= 3)
+		{
+			table.getColumnModel().getColumn(0).setPreferredWidth(260);
+			table.getColumnModel().getColumn(1).setPreferredWidth(220);
+			table.getColumnModel().getColumn(2).setPreferredWidth(72);
+		}
+	}
+
+	private void styleRequirementLibraryTable(JTable table)
 	{
 		table.setFillsViewportHeight(true);
 		table.setRowHeight(24);
@@ -209,8 +351,7 @@ public class HelperConstructPanel extends PluginPanel
 	private enum LibraryRemoveKind
 	{
 		NPC,
-		OBJECT,
-		REQUIREMENT
+		OBJECT
 	}
 
 	private static final class LibraryTableModel extends AbstractTableModel
@@ -259,6 +400,96 @@ public class HelperConstructPanel extends PluginPanel
 		}
 	}
 
+	private final class StepLibraryTableModel extends AbstractTableModel
+	{
+		private final boolean npcSteps;
+		private final String[] columns = {"Captured", "Instruction text", "Remove"};
+		private List<String> summaries = new ArrayList<>();
+		private List<String> instructions = new ArrayList<>();
+
+		private StepLibraryTableModel(boolean npcSteps)
+		{
+			this.npcSteps = npcSteps;
+		}
+
+		void setRows(List<String> updatedSummaries, List<String> updatedInstructions)
+		{
+			summaries = new ArrayList<>(updatedSummaries);
+			instructions = new ArrayList<>(updatedInstructions);
+			while (instructions.size() < summaries.size())
+			{
+				instructions.add("");
+			}
+			if (instructions.size() > summaries.size())
+			{
+				instructions = new ArrayList<>(instructions.subList(0, summaries.size()));
+			}
+			fireTableDataChanged();
+		}
+
+		@Override
+		public int getRowCount()
+		{
+			return summaries.size();
+		}
+
+		@Override
+		public int getColumnCount()
+		{
+			return columns.length;
+		}
+
+		@Override
+		public String getColumnName(int column)
+		{
+			return columns[column];
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+		{
+			if (columnIndex == 0)
+			{
+				return summaries.get(rowIndex);
+			}
+			if (columnIndex == 1)
+			{
+				return rowIndex < instructions.size() ? instructions.get(rowIndex) : "";
+			}
+			return summaries.isEmpty() ? "" : "Remove";
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex)
+		{
+			return columnIndex == 1;
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+		{
+			if (columnIndex != 1 || rowIndex < 0 || rowIndex >= summaries.size())
+			{
+				return;
+			}
+			String text = aValue == null ? "" : String.valueOf(aValue);
+			if (npcSteps)
+			{
+				helperConstructManager.updateNpcStepInstructionAt(rowIndex, text);
+			}
+			else
+			{
+				helperConstructManager.updateObjectStepInstructionAt(rowIndex, text);
+			}
+			while (instructions.size() <= rowIndex)
+			{
+				instructions.add("");
+			}
+			instructions.set(rowIndex, text);
+			fireTableCellUpdated(rowIndex, 1);
+		}
+	}
+
 	private JPanel buildOrderedView()
 	{
 		JPanel ordered = new JPanel(new BorderLayout(0, 6));
@@ -278,6 +509,14 @@ public class HelperConstructPanel extends PluginPanel
 						return new DefaultCellEditor(new JTextField());
 					}
 					return buildRequirementComboEditor(row);
+				}
+				if (column == 2)
+				{
+					var entry = stepOrderTableModel.getRow(row);
+					if (entry != null && !entry.isSectionDivider())
+					{
+						return new DefaultCellEditor(new JTextField());
+					}
 				}
 				return super.getCellEditor(row, column);
 			}
@@ -314,8 +553,9 @@ public class HelperConstructPanel extends PluginPanel
 				return c;
 			}
 		});
-		orderTable.getColumnModel().getColumn(0).setPreferredWidth(150);
-		orderTable.getColumnModel().getColumn(1).setPreferredWidth(240);
+		orderTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+		orderTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+		orderTable.getColumnModel().getColumn(2).setPreferredWidth(200);
 		orderTable.setTransferHandler(new StepReorderTransferHandler(orderTable));
 
 		JScrollPane tableScroll = new JScrollPane(orderTable);
@@ -325,15 +565,7 @@ public class HelperConstructPanel extends PluginPanel
 		JButton removeSelectedButton = new JButton("Remove Selected");
 		JButton addStepButton = new JButton("Add Step");
 		JButton addSectionButton = new JButton("Add Section");
-		SwingUtil.removeButtonDecorations(removeSelectedButton);
-		SwingUtil.removeButtonDecorations(addStepButton);
-		SwingUtil.removeButtonDecorations(addSectionButton);
-		removeSelectedButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		addStepButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		addSectionButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		removeSelectedButton.setForeground(Color.WHITE);
-		addStepButton.setForeground(Color.WHITE);
-		addSectionButton.setForeground(Color.WHITE);
+		applyMakerToolbarStyle(removeSelectedButton, addStepButton, addSectionButton);
 		removeSelectedButton.addActionListener(e ->
 		{
 			int selected = orderTable.getSelectedRow();
@@ -373,10 +605,7 @@ public class HelperConstructPanel extends PluginPanel
 		}
 		JList<HelperConstructManager.StepDefinitionPickOption> list = new JList<>(options.toArray(new HelperConstructManager.StepDefinitionPickOption[0]));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		if (!options.isEmpty())
-		{
-			list.setSelectedIndex(0);
-		}
+		list.setSelectedIndex(0);
 		JScrollPane sp = new JScrollPane(list);
 		sp.setPreferredSize(new Dimension(420, 240));
 		int r = JOptionPane.showConfirmDialog(this, sp, "Add Step to order", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -390,6 +619,15 @@ public class HelperConstructPanel extends PluginPanel
 	private TableCellEditor buildRequirementComboEditor(int row)
 	{
 		JComboBox<ReqChoice> combo = new JComboBox<>();
+		var entry = stepOrderTableModel.getRow(row);
+		Integer cur = entry == null ? null : entry.getOrderLinkedRequirementRawId();
+		populateRequirementCombo(combo, cur);
+		return new DefaultCellEditor(combo);
+	}
+
+	private void populateRequirementCombo(JComboBox<ReqChoice> combo, Integer selectedRawId)
+	{
+		combo.removeAllItems();
 		combo.addItem(new ReqChoice("Default (from step)", null));
 		combo.addItem(new ReqChoice("Varbit only", HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY));
 		List<Integer> ids = helperConstructManager.getRequirementRawIds();
@@ -399,17 +637,41 @@ public class HelperConstructPanel extends PluginPanel
 			String lab = i < labels.size() ? labels.get(i) : String.valueOf(ids.get(i));
 			combo.addItem(new ReqChoice(lab, ids.get(i)));
 		}
-		var entry = stepOrderTableModel.getRow(row);
-		Integer cur = entry == null ? null : entry.getOrderLinkedRequirementRawId();
+		selectRequirementComboValue(combo, selectedRawId);
+	}
+
+	private static void selectRequirementComboValue(JComboBox<ReqChoice> combo, Integer rawId)
+	{
 		for (int i = 0; i < combo.getItemCount(); i++)
 		{
-			if (Objects.equals(combo.getItemAt(i).value, cur))
+			if (Objects.equals(combo.getItemAt(i).getValue(), rawId))
 			{
 				combo.setSelectedIndex(i);
-				break;
+				return;
 			}
 		}
-		return new DefaultCellEditor(combo);
+	}
+
+	private String labelForOrderRequirementOverride(Integer v)
+	{
+		if (v == null)
+		{
+			return "Default (from step)";
+		}
+		if (v.equals(HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY))
+		{
+			return "Varbit only";
+		}
+		List<Integer> ids = helperConstructManager.getRequirementRawIds();
+		List<String> labels = helperConstructManager.getRequirementSummaries();
+		for (int i = 0; i < ids.size(); i++)
+		{
+			if (ids.get(i).equals(v))
+			{
+				return i < labels.size() ? labels.get(i) : String.valueOf(v);
+			}
+		}
+		return "Requirement id " + v;
 	}
 
 	private static final class ReqChoice
@@ -423,6 +685,11 @@ public class HelperConstructPanel extends PluginPanel
 			this.value = value;
 		}
 
+		Integer getValue()
+		{
+			return value;
+		}
+
 		@Override
 		public String toString()
 		{
@@ -433,8 +700,8 @@ public class HelperConstructPanel extends PluginPanel
 	public void refresh()
 	{
 		int scrollValue = scrollPane.getVerticalScrollBar().getValue();
-		npcLibraryModel.setRows(helperConstructManager.getNpcStepSummaries());
-		objectLibraryModel.setRows(helperConstructManager.getObjectStepSummaries());
+		npcLibraryModel.setRows(helperConstructManager.getNpcStepSummaries(), helperConstructManager.getNpcStepInstructionTexts());
+		objectLibraryModel.setRows(helperConstructManager.getObjectStepSummaries(), helperConstructManager.getObjectStepInstructionTexts());
 		requirementLibraryModel.setRows(helperConstructManager.getRequirementSummaries());
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
 		lastRenderSignature = computeSignature();
@@ -462,7 +729,9 @@ public class HelperConstructPanel extends PluginPanel
 	{
 		return helperConstructManager.getCurrentDraftClassName()
 			+ "|N|" + String.join("\n", helperConstructManager.getNpcStepSummaries())
+			+ "|Ni|" + String.join("\n", helperConstructManager.getNpcStepInstructionTexts())
 			+ "|O|" + String.join("\n", helperConstructManager.getObjectStepSummaries())
+			+ "|Oi|" + String.join("\n", helperConstructManager.getObjectStepInstructionTexts())
 			+ "|A|" + stepOrderTableModel.signature()
 			+ "|R|" + String.join("\n", helperConstructManager.getRequirementSummaries());
 	}
@@ -478,7 +747,7 @@ public class HelperConstructPanel extends PluginPanel
 
 	private final class StepOrderTableModel extends AbstractTableModel
 	{
-		private final String[] columns = {"Name/Var", "Requirement / condition"};
+		private final String[] columns = {"Name/Var", "Requirement / condition", "Instruction text"};
 		private List<HelperConstructManager.CombinedStepRow> rows = new ArrayList<>();
 
 		@Override
@@ -507,34 +776,15 @@ public class HelperConstructPanel extends PluginPanel
 			{
 				return row.getVarName();
 			}
+			if (columnIndex == 2)
+			{
+				return row.isSectionDivider() ? "" : row.getInstructionText();
+			}
 			if (row.isSectionDivider())
 			{
 				return row.getSectionCondition() == null ? "" : row.getSectionCondition();
 			}
-			return formatRequirementChoiceLabel(row);
-		}
-
-		private String formatRequirementChoiceLabel(HelperConstructManager.CombinedStepRow row)
-		{
-			Integer v = row.getOrderLinkedRequirementRawId();
-			if (v == null)
-			{
-				return "Default (from step)";
-			}
-			if (v == HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY)
-			{
-				return "Varbit only";
-			}
-			List<Integer> ids = helperConstructManager.getRequirementRawIds();
-			List<String> labels = helperConstructManager.getRequirementSummaries();
-			for (int i = 0; i < ids.size(); i++)
-			{
-				if (ids.get(i).equals(v))
-				{
-					return i < labels.size() ? labels.get(i) : String.valueOf(v);
-				}
-			}
-			return "Requirement id " + v;
+			return labelForOrderRequirementOverride(row.getOrderLinkedRequirementRawId());
 		}
 
 		@Override
@@ -545,6 +795,10 @@ public class HelperConstructPanel extends PluginPanel
 			{
 				return true;
 			}
+			if (columnIndex == 2)
+			{
+				return !row.isSectionDivider();
+			}
 			return columnIndex == 1;
 		}
 
@@ -554,7 +808,13 @@ public class HelperConstructPanel extends PluginPanel
 			var row = rows.get(rowIndex);
 			if (columnIndex == 0)
 			{
-				helperConstructManager.updateStepVarName(rowIndex, aValue == null ? "" : String.valueOf(aValue));
+				helperConstructManager.updateStepVarName(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
+				setRows(helperConstructManager.getCombinedStepRows());
+				return;
+			}
+			if (columnIndex == 2 && !row.isSectionDivider())
+			{
+				helperConstructManager.updateOrderReferencedStepInstructionText(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
 				setRows(helperConstructManager.getCombinedStepRows());
 				return;
 			}
@@ -562,11 +822,11 @@ public class HelperConstructPanel extends PluginPanel
 			{
 				if (row.isSectionDivider())
 				{
-					helperConstructManager.updateSectionCondition(rowIndex, aValue == null ? "" : String.valueOf(aValue));
+					helperConstructManager.updateSectionCondition(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
 				}
 				else if (aValue instanceof ReqChoice)
 				{
-					helperConstructManager.updateOrderLinkedRequirement(rowIndex, ((ReqChoice) aValue).value);
+					helperConstructManager.updateOrderLinkedRequirement(row.getIndex(), ((ReqChoice) aValue).getValue());
 				}
 				setRows(helperConstructManager.getCombinedStepRows());
 			}
@@ -592,7 +852,8 @@ public class HelperConstructPanel extends PluginPanel
 			List<String> parts = new ArrayList<>();
 			for (HelperConstructManager.CombinedStepRow row : rows)
 			{
-				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getSectionCondition() + "|" + row.getOrderLinkedRequirementRawId());
+				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getSectionCondition() + "|" + row.getOrderLinkedRequirementRawId()
+					+ "|" + row.getInstructionText());
 			}
 			return String.join("\n", parts);
 		}

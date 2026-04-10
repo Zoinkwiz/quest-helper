@@ -5,26 +5,15 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import net.runelite.api.coords.WorldPoint;
+
+import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HelperConstructManagerTest
 {
-	private static void addDefinitionAndRef(HelperConstructManager manager, HelperConstructModels.DraftStep step)
-	{
-		if (step.getStepId() == null || step.getStepId().isBlank())
-		{
-			step.setStepId("test-step-id");
-		}
-		manager.getCurrentDraft().getStepDefinitions().add(step);
-		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
-		line.setSectionDivider(false);
-		line.setRefStepId(step.getStepId());
-		line.setLinkedRequirementRawId(null);
-		manager.getCurrentDraft().getOrder().add(line);
-	}
-
 	@Test
 	void removeStepAtBoundsChecked()
 	{
@@ -119,5 +108,42 @@ class HelperConstructManagerTest
 		assertTrue(manager.removeNpcStepAt(0));
 		assertTrue(manager.getCurrentDraft().getStepDefinitions().isEmpty());
 		assertTrue(manager.getCurrentDraft().getOrder().isEmpty());
+	}
+
+	@Test
+	void exportImportJsonRoundTripPreservesDraft()
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		manager.getCurrentDraft().setQuestName("RoundTripQuest");
+		manager.getCurrentDraft().setClassName("RoundTripHelper");
+		HelperConstructModels.DraftStep step = new HelperConstructModels.DraftStep();
+		step.setStepId("s1");
+		step.setKind(HelperConstructModels.StepKind.NPC);
+		step.setInstructionText("Do the thing");
+		step.getRequiredItems().add(995);
+		step.setWorldPoint(new WorldPoint(3200, 3200, 0));
+		addDefinitionAndRef(manager, step);
+
+		String json = manager.exportDraftJson();
+		HelperConstructManager receiver = new HelperConstructManager();
+		HelperConstructManager.ImportDraftResult result = receiver.importDraftFromJson(json);
+		assertTrue(result.isSuccess(), result.getErrorMessage());
+		assertEquals("RoundTripQuest", receiver.getCurrentDraft().getQuestName());
+		assertEquals("RoundTripHelper", receiver.getCurrentDraft().getClassName());
+		assertEquals(1, receiver.getCurrentDraft().getStepDefinitions().size());
+		HelperConstructModels.DraftStep loaded = receiver.getCurrentDraft().getStepDefinitions().get(0);
+		assertEquals("Do the thing", loaded.getInstructionText());
+		assertEquals(995, loaded.getRequiredItems().get(0).intValue());
+		assertEquals(3200, loaded.getWorldPoint().getX());
+	}
+
+	@Test
+	void importJsonWithoutRequirementsFieldDoesNotThrow()
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		String json = "{\"formatVersion\":1,\"questName\":\"X\",\"className\":\"YHelper\",\"definitions\":[],\"order\":[]}";
+		assertTrue(manager.importDraftFromJson(json).isSuccess());
+		assertEquals("X", manager.getCurrentDraft().getQuestName());
+		assertTrue(manager.getCurrentDraft().getRequirements().isEmpty());
 	}
 }

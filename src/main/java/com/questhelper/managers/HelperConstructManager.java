@@ -1,6 +1,7 @@
 package com.questhelper.managers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
@@ -77,6 +78,8 @@ public class HelperConstructManager
 	public static final int ORDER_REQUIREMENT_VARBIT_ONLY = ORDER_ROUTING_VARBIT_SENTINEL;
 
 	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
+	/** Written on export/save; older JSON without this field is still loaded (Gson default 0). */
+	private static final int DRAFT_STATE_FORMAT_VERSION = 1;
 	private static final String DEFAULT_SECTION_NAME = "New Section";
 	private static final int MAP_MIN_X = 960;
 	private static final int MAP_MIN_Y = 2048;
@@ -115,7 +118,43 @@ public class HelperConstructManager
 	private DraftHelper currentDraft = new DraftHelper();
 	private boolean loadedFromConfig;
 	private final Gson gson = new Gson();
+	private final Gson prettyDraftGson = new GsonBuilder().setPrettyPrinting().create();
 	private boolean worldMapRoutePreviewEnabled;
+
+	/**
+	 * Result of {@link #importDraftFromJson(String)}.
+	 */
+	public static final class ImportDraftResult
+	{
+		private final boolean success;
+		private final String errorMessage;
+
+		private ImportDraftResult(boolean success, String errorMessage)
+		{
+			this.success = success;
+			this.errorMessage = errorMessage;
+		}
+
+		public static ImportDraftResult ok()
+		{
+			return new ImportDraftResult(true, null);
+		}
+
+		public static ImportDraftResult failure(String message)
+		{
+			return new ImportDraftResult(false, message == null ? "Unknown error" : message);
+		}
+
+		public boolean isSuccess()
+		{
+			return success;
+		}
+
+		public String getErrorMessage()
+		{
+			return errorMessage;
+		}
+	}
 
 	public String getCurrentDraftClassName()
 	{
@@ -692,6 +731,66 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(summaries);
 	}
 
+	private List<String> getStepInstructionTextsByKind(StepKind kind)
+	{
+		ensureDraftLoaded();
+		List<String> texts = new ArrayList<>();
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step.getKind() == kind)
+			{
+				String t = step.getInstructionText();
+				texts.add(t == null ? "" : t);
+			}
+		}
+		return Collections.unmodifiableList(texts);
+	}
+
+	public List<String> getNpcStepInstructionTexts()
+	{
+		return getStepInstructionTextsByKind(StepKind.NPC);
+	}
+
+	public List<String> getObjectStepInstructionTexts()
+	{
+		return getStepInstructionTextsByKind(StepKind.OBJECT);
+	}
+
+	private boolean updateStepInstructionByKindAt(StepKind kind, int filteredIndex, String instructionText)
+	{
+		ensureDraftLoaded();
+		if (filteredIndex < 0)
+		{
+			return false;
+		}
+		int i = 0;
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step.getKind() != kind)
+			{
+				continue;
+			}
+			if (i == filteredIndex)
+			{
+				step.setInstructionText(instructionText == null ? "" : instructionText);
+				saveDraftToConfig();
+				return true;
+			}
+			i++;
+		}
+		return false;
+	}
+
+	public boolean updateNpcStepInstructionAt(int index, String instructionText)
+	{
+		return updateStepInstructionByKindAt(StepKind.NPC, index, instructionText);
+	}
+
+	public boolean updateObjectStepInstructionAt(int index, String instructionText)
+	{
+		return updateStepInstructionByKindAt(StepKind.OBJECT, index, instructionText);
+	}
+
 	public List<CombinedStepRow> getCombinedStepRows()
 	{
 		ensureDraftLoaded();
@@ -715,7 +814,8 @@ public class HelperConstructManager
 					true,
 					line.getSectionCondition(),
 					line.isSkipWhenConditionMet(),
-					null));
+					null,
+					""));
 				continue;
 			}
 			DraftStep def = findDefinitionByStepId(line.getRefStepId());
@@ -729,7 +829,8 @@ public class HelperConstructManager
 					false,
 					"",
 					false,
-					line.getLinkedRequirementRawId()));
+					line.getLinkedRequirementRawId(),
+					""));
 				continue;
 			}
 			if (def.getStepId() == null || def.getStepId().isBlank())
@@ -737,6 +838,7 @@ public class HelperConstructManager
 				def.setStepId(UUID.randomUUID().toString());
 				saveDraftToConfig();
 			}
+			String instr = def.getInstructionText();
 			rows.add(new CombinedStepRow(
 				i,
 				def.getStepId(),
@@ -745,7 +847,8 @@ public class HelperConstructManager
 				false,
 				"",
 				false,
-				line.getLinkedRequirementRawId()));
+				line.getLinkedRequirementRawId(),
+				instr == null ? "" : instr));
 		}
 		return Collections.unmodifiableList(rows);
 	}
@@ -836,6 +939,28 @@ public class HelperConstructManager
 		{
 			rebuildWorldMapRoutePoints();
 		}
+		return true;
+	}
+
+	public boolean updateOrderReferencedStepInstructionText(int orderIndex, String instructionText)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return false;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return false;
+		}
+		DraftStep def = findDefinitionByStepId(line.getRefStepId());
+		if (def == null)
+		{
+			return false;
+		}
+		def.setInstructionText(instructionText == null ? "" : instructionText);
+		saveDraftToConfig();
 		return true;
 	}
 
@@ -1101,39 +1226,102 @@ public class HelperConstructManager
 			{
 				return;
 			}
+			currentDraft = draftHelperFromState(state);
+		}
+		catch (JsonSyntaxException ignored)
+		{
+			currentDraft = new DraftHelper();
+		}
+	}
 
-			DraftHelper loaded = new DraftHelper();
-			if (state.questName != null) loaded.setQuestName(state.questName);
-			if (state.className != null) loaded.setClassName(state.className);
-			if (state.packagePath != null) loaded.setPackagePath(state.packagePath);
-			if (state.helperType != null) loaded.setHelperType(state.helperType);
+	/**
+	 * Pretty-printed JSON of the current draft (same shape as config / import). For sharing or saving to a file.
+	 */
+	public String exportDraftJson()
+	{
+		ensureDraftLoaded();
+		return prettyDraftGson.toJson(toDraftState(currentDraft));
+	}
 
-			if (state.order != null && !state.order.isEmpty())
+	/**
+	 * Replace the current draft from JSON (e.g. pasted or read from a file). Persists to config on success.
+	 */
+	public ImportDraftResult importDraftFromJson(String json)
+	{
+		ensureDraftLoaded();
+		if (json == null || json.isBlank())
+		{
+			return ImportDraftResult.failure("JSON is empty");
+		}
+		try
+		{
+			DraftState state = gson.fromJson(json.trim(), DraftState.class);
+			if (state == null)
 			{
-				if (state.definitions != null)
-				{
-					for (DraftStepState stepState : state.definitions)
-					{
-						loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
-					}
-				}
-				for (DraftOrderLineState lineState : state.order)
-				{
-					loaded.getOrder().add(draftOrderLineFromState(lineState));
-				}
+				return ImportDraftResult.failure("Could not parse draft");
 			}
-			else if (state.definitions != null && !state.definitions.isEmpty())
+			currentDraft = draftHelperFromState(state);
+			saveDraftToConfig();
+			if (worldMapRoutePreviewEnabled)
+			{
+				rebuildWorldMapRoutePoints();
+			}
+			return ImportDraftResult.ok();
+		}
+		catch (JsonSyntaxException e)
+		{
+			return ImportDraftResult.failure(e.getMessage());
+		}
+	}
+
+	private static DraftHelper draftHelperFromState(DraftState state)
+	{
+		DraftHelper loaded = new DraftHelper();
+		if (state.questName != null)
+		{
+			loaded.setQuestName(state.questName);
+		}
+		if (state.className != null)
+		{
+			loaded.setClassName(state.className);
+		}
+		if (state.packagePath != null)
+		{
+			loaded.setPackagePath(state.packagePath);
+		}
+		if (state.helperType != null)
+		{
+			loaded.setHelperType(state.helperType);
+		}
+
+		if (state.order != null && !state.order.isEmpty())
+		{
+			if (state.definitions != null)
 			{
 				for (DraftStepState stepState : state.definitions)
 				{
 					loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
 				}
 			}
-			else if (state.steps != null && !state.steps.isEmpty())
+			for (DraftOrderLineState lineState : state.order)
 			{
-				migrateLegacyStepsList(state.steps, loaded);
+				loaded.getOrder().add(draftOrderLineFromState(lineState));
 			}
+		}
+		else if (state.definitions != null && !state.definitions.isEmpty())
+		{
+			for (DraftStepState stepState : state.definitions)
+			{
+				loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
+			}
+		}
+		else if (state.steps != null && !state.steps.isEmpty())
+		{
+			migrateLegacyStepsList(state.steps, loaded);
+		}
 
+		if (state.requirements != null)
+		{
 			for (DraftRequirementState reqState : state.requirements)
 			{
 				DraftRequirement req = new DraftRequirement();
@@ -1142,13 +1330,72 @@ public class HelperConstructManager
 				req.setDisplayName(reqState.displayName);
 				loaded.getRequirements().add(req);
 			}
+		}
 
-			currentDraft = loaded;
-		}
-		catch (JsonSyntaxException ignored)
+		return loaded;
+	}
+
+	private static DraftState toDraftState(DraftHelper draft)
+	{
+		DraftState state = new DraftState();
+		state.formatVersion = DRAFT_STATE_FORMAT_VERSION;
+		state.questName = draft.getQuestName();
+		state.className = draft.getClassName();
+		state.packagePath = draft.getPackagePath();
+		state.helperType = draft.getHelperType();
+
+		for (DraftStep step : draft.getStepDefinitions())
 		{
-			currentDraft = new DraftHelper();
+			DraftStepState stepState = new DraftStepState();
+			stepState.stepId = step.getStepId();
+			stepState.kind = step.getKind();
+			stepState.sectionDivider = false;
+			stepState.rawId = step.getRawId();
+			stepState.linkedRequirementRawId = step.getLinkedRequirementRawId();
+			stepState.resolvedSymbol = step.getResolvedSymbol();
+			stepState.option = step.getOption();
+			stepState.targetText = step.getTargetText();
+			stepState.suggestedVarName = step.getSuggestedVarName();
+			stepState.instructionText = step.getInstructionText();
+			stepState.panelName = step.getPanelName();
+			stepState.sectionCondition = step.getSectionCondition();
+			stepState.skipWhenConditionMet = step.isSkipWhenConditionMet();
+			if (step.getRequiredItems() != null && !step.getRequiredItems().isEmpty())
+			{
+				stepState.requiredItems = new ArrayList<>(step.getRequiredItems());
+			}
+			if (step.getWorldPoint() != null)
+			{
+				stepState.worldX = step.getWorldPoint().getX();
+				stepState.worldY = step.getWorldPoint().getY();
+				stepState.worldPlane = step.getWorldPoint().getPlane();
+			}
+			state.definitions.add(stepState);
 		}
+
+		for (DraftOrderLine line : draft.getOrder())
+		{
+			DraftOrderLineState lineState = new DraftOrderLineState();
+			lineState.lineId = line.getLineId();
+			lineState.sectionDivider = line.isSectionDivider();
+			lineState.suggestedVarName = line.getSuggestedVarName();
+			lineState.sectionCondition = line.getSectionCondition();
+			lineState.skipWhenConditionMet = line.isSkipWhenConditionMet();
+			lineState.refStepId = line.getRefStepId();
+			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
+			state.order.add(lineState);
+		}
+
+		for (DraftRequirement req : draft.getRequirements())
+		{
+			DraftRequirementState reqState = new DraftRequirementState();
+			reqState.rawId = req.getRawId();
+			reqState.resolvedSymbol = req.getResolvedSymbol();
+			reqState.displayName = req.getDisplayName();
+			state.requirements.add(reqState);
+		}
+
+		return state;
 	}
 
 	private static DraftStep draftStepFromState(DraftStepState stepState, boolean keepSectionDivider)
@@ -1170,6 +1417,11 @@ public class HelperConstructManager
 		if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
 		{
 			step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
+		}
+		if (stepState.requiredItems != null && !stepState.requiredItems.isEmpty())
+		{
+			step.getRequiredItems().clear();
+			step.getRequiredItems().addAll(stepState.requiredItems);
 		}
 		return step;
 	}
@@ -1219,60 +1471,7 @@ public class HelperConstructManager
 		{
 			return;
 		}
-		DraftState state = new DraftState();
-		state.questName = currentDraft.getQuestName();
-		state.className = currentDraft.getClassName();
-		state.packagePath = currentDraft.getPackagePath();
-		state.helperType = currentDraft.getHelperType();
-
-		for (DraftStep step : currentDraft.getStepDefinitions())
-		{
-			DraftStepState stepState = new DraftStepState();
-			stepState.stepId = step.getStepId();
-			stepState.kind = step.getKind();
-			stepState.sectionDivider = false;
-			stepState.rawId = step.getRawId();
-			stepState.linkedRequirementRawId = step.getLinkedRequirementRawId();
-			stepState.resolvedSymbol = step.getResolvedSymbol();
-			stepState.option = step.getOption();
-			stepState.targetText = step.getTargetText();
-			stepState.suggestedVarName = step.getSuggestedVarName();
-			stepState.instructionText = step.getInstructionText();
-			stepState.panelName = step.getPanelName();
-			stepState.sectionCondition = step.getSectionCondition();
-			stepState.skipWhenConditionMet = step.isSkipWhenConditionMet();
-			if (step.getWorldPoint() != null)
-			{
-				stepState.worldX = step.getWorldPoint().getX();
-				stepState.worldY = step.getWorldPoint().getY();
-				stepState.worldPlane = step.getWorldPoint().getPlane();
-			}
-			state.definitions.add(stepState);
-		}
-
-		for (DraftOrderLine line : currentDraft.getOrder())
-		{
-			DraftOrderLineState lineState = new DraftOrderLineState();
-			lineState.lineId = line.getLineId();
-			lineState.sectionDivider = line.isSectionDivider();
-			lineState.suggestedVarName = line.getSuggestedVarName();
-			lineState.sectionCondition = line.getSectionCondition();
-			lineState.skipWhenConditionMet = line.isSkipWhenConditionMet();
-			lineState.refStepId = line.getRefStepId();
-			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
-			state.order.add(lineState);
-		}
-
-		for (DraftRequirement req : currentDraft.getRequirements())
-		{
-			DraftRequirementState reqState = new DraftRequirementState();
-			reqState.rawId = req.getRawId();
-			reqState.resolvedSymbol = req.getResolvedSymbol();
-			reqState.displayName = req.getDisplayName();
-			state.requirements.add(reqState);
-		}
-
-		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY, gson.toJson(state));
+		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY, gson.toJson(toDraftState(currentDraft)));
 	}
 
 	private boolean isNpcAction(MenuAction menuAction)
@@ -1920,6 +2119,7 @@ public class HelperConstructManager
 
 	private static class DraftState
 	{
+		int formatVersion;
 		String questName;
 		String className;
 		String packagePath;
@@ -1949,6 +2149,7 @@ public class HelperConstructManager
 		Integer worldX;
 		Integer worldY;
 		Integer worldPlane;
+		List<Integer> requiredItems;
 	}
 
 	public static final class StepDefinitionPickOption
@@ -1989,8 +2190,9 @@ public class HelperConstructManager
 		private final String sectionCondition;
 		private final boolean skipWhenConditionMet;
 		private final Integer orderLinkedRequirementRawId;
+		private final String instructionText;
 
-		public CombinedStepRow(int index, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId)
+		public CombinedStepRow(int index, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText)
 		{
 			this.index = index;
 			this.stepId = stepId;
@@ -2000,6 +2202,7 @@ public class HelperConstructManager
 			this.sectionCondition = sectionCondition;
 			this.skipWhenConditionMet = skipWhenConditionMet;
 			this.orderLinkedRequirementRawId = orderLinkedRequirementRawId;
+			this.instructionText = instructionText == null ? "" : instructionText;
 		}
 
 		public int getIndex()
@@ -2043,6 +2246,12 @@ public class HelperConstructManager
 		public Integer getOrderLinkedRequirementRawId()
 		{
 			return orderLinkedRequirementRawId;
+		}
+
+		/** Player-facing step text used in generated helpers (empty for section rows). */
+		public String getInstructionText()
+		{
+			return instructionText;
 		}
 	}
 

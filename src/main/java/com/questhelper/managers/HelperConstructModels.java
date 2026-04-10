@@ -62,11 +62,7 @@ final class HelperConstructModels
 		private final List<Integer> requiredItems = new ArrayList<>();
 	}
 
-	/**
-	 * One row in the ordered sequence: either a section divider or a reference to a step definition.
-	 * {@link #linkedRequirementRawId}: {@code null} = inherit definition's link for routing;
-	 * {@code -1} = force varbit routing for this slot; else raw id of a captured {@link DraftRequirement}.
-	 */
+	/** Order row: section divider or ref to a definition. {@code linkedRequirementRawId}: null inherit, -1 varbit routing, else item req raw id. */
 	@Data
 	@NoArgsConstructor
 	static class DraftOrderLine

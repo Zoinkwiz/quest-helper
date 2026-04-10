@@ -32,6 +32,7 @@ import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.managers.*;
+import com.questhelper.panel.HelperConstructPanel;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -166,8 +167,10 @@ public class QuestHelperPlugin extends Plugin
 	public SkillIconManager skillIconManager;
 
 	private QuestHelperPanel panel;
+	private HelperConstructPanel helperConstructPanel;
 
 	private NavigationButton navButton;
+	private NavigationButton constructNavButton;
 
 	boolean profileChanged;
 
@@ -219,6 +222,18 @@ public class QuestHelperPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+		if (developerMode)
+		{
+			final BufferedImage constructIcon = Icon.START.getImage();
+			helperConstructPanel = new HelperConstructPanel(helperConstructManager);
+			constructNavButton = NavigationButton.builder()
+				.tooltip("Quest Helper Construct")
+				.icon(constructIcon)
+				.priority(6)
+				.panel(helperConstructPanel)
+				.build();
+			clientToolbar.addNavigation(constructNavButton);
+		}
 
 		clientThread.invokeAtTickEnd(() -> {
 			if (client.getGameState() == GameState.LOGGED_IN)
@@ -247,6 +262,14 @@ public class QuestHelperPlugin extends Plugin
 		playerStateManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);
+		if (constructNavButton != null)
+		{
+			clientToolbar.removeNavigation(constructNavButton);
+		}
+		if (helperConstructPanel != null)
+		{
+			helperConstructPanel.shutDown();
+		}
 		questManager.shutDown();
 		questBankManager.shutDown(eventBus);
 

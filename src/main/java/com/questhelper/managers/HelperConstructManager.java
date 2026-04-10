@@ -1,5 +1,7 @@
 package com.questhelper.managers;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.steps.tools.QuestPerspective;
 import lombok.Getter;
@@ -13,6 +15,8 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
@@ -21,6 +25,7 @@ import javax.inject.Singleton;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -35,15 +40,25 @@ public class HelperConstructManager
 {
 	private static final String MENU_PREFIX = "Construct:";
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
+	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
 
 	@Inject
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private QuestHelperConfig config;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private HelperScaffoldGenerator scaffoldGenerator;
+
+	@Inject
+	private GamevalSymbolResolver symbolResolver;
 
 	@Inject
 	@Named("developerMode")
@@ -51,9 +66,18 @@ public class HelperConstructManager
 
 	@Getter
 	private DraftHelper currentDraft = new DraftHelper();
+	private boolean loadedFromConfig;
+	private final Gson gson = new Gson();
+
+	public String getCurrentDraftClassName()
+	{
+		ensureDraftLoaded();
+		return currentDraft.getClassName();
+	}
 
 	public void setupConstructMenuOptions(MenuEntryAdded event)
 	{
+		ensureDraftLoaded();
 		if (!developerMode || !config.constructModeEnabled())
 		{
 			return;
@@ -73,15 +97,10 @@ public class HelperConstructManager
 		String option = sourceEntry.getOption();
 		String target = Text.removeTags(sourceEntry.getTarget());
 		WorldPoint clickedWorldPoint = resolveClickedWorldPoint(sourceEntry, event);
-
-		if (!menuEntryExists(menuEntries, MENU_PREFIX + " Start New Draft"))
-		{
-			addAction(menuEntries, MENU_PREFIX + " Start New Draft", "Quest Helper Dev", () -> startNewDraft(target));
-
-		}
+		var itemID = sourceEntry.getItemId();
 		if (isNpcAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, rawId, option, target, clickedWorldPoint));
+			addAction(menuEntries, MENU_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, sourceEntry.getNpc().getId(), option, target, clickedWorldPoint));
 		}
 		if (isObjectAction(sourceType))
 		{
@@ -91,9 +110,9 @@ public class HelperConstructManager
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(rawId, target));
 		}
-		if (!menuEntryExists(menuEntries, MENU_PREFIX + " Build Scaffold To Clipboard"))
+		if (isInventoryItemAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Build Scaffold To Clipboard", "Quest Helper Dev", this::buildToClipboard);
+			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(itemID, target));
 		}
 	}
 
@@ -132,11 +151,39 @@ public class HelperConstructManager
 		sendGameMessage("Quest Helper Construct: started new draft '" + currentDraft.getClassName() + "'.");
 	}
 
+	public void startNewDraftFromUi()
+	{
+		ensureDraftLoaded();
+		startNewDraft("Generated Quest");
+		saveDraftToConfig();
+	}
+
+	public void resetDraftAndClearSavedStateFromUi()
+	{
+		ensureDraftLoaded();
+		startNewDraft("Generated Quest");
+		configManager.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+	}
+
 	private void addStep(StepKind kind, int rawId, String option, String target, WorldPoint clickedWorldPoint)
 	{
+		ensureDraftLoaded();
+		if (isDuplicateStep(kind, rawId, target, clickedWorldPoint))
+		{
+			sendGameMessage("Quest Helper Construct: skipped duplicate " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + ").");
+			return;
+		}
+
 		DraftStep step = new DraftStep();
 		step.setKind(kind);
 		step.setRawId(rawId);
+		var idType = kind == StepKind.NPC
+			? HelperConstructModels.IdType.NPC
+			: kind == StepKind.OBJECT
+			? HelperConstructModels.IdType.OBJECT
+			: HelperConstructModels.IdType.ITEM;
+		var resolved = symbolResolver.resolve(idType, rawId);
+		step.setResolvedSymbol(resolved.getSymbol());
 		step.setOption(option);
 		step.setTargetText(target);
 		step.setInstructionText(instructionText(option, target));
@@ -144,7 +191,36 @@ public class HelperConstructManager
 		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(option + " " + target, "step"));
 		step.setWorldPoint(clickedWorldPoint);
 		currentDraft.getSteps().add(step);
-		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + ") at " + formatWorldPoint(clickedWorldPoint) + ".");
+		saveDraftToConfig();
+		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + " -> " + resolved.getSymbol() + ") at " + formatWorldPoint(clickedWorldPoint) + ".");
+	}
+
+	private boolean isDuplicateStep(StepKind kind, int rawId, String targetText, WorldPoint worldPoint)
+	{
+		for (DraftStep existingStep : currentDraft.getSteps())
+		{
+			if (existingStep.getKind() != kind)
+			{
+				continue;
+			}
+			if (existingStep.getRawId() != rawId)
+			{
+				continue;
+			}
+			if (!safeEquals(normalizeText(existingStep.getTargetText()), normalizeText(targetText)))
+			{
+				continue;
+			}
+			if (worldPoint == null && existingStep.getWorldPoint() == null)
+			{
+				return true;
+			}
+			if (worldPoint != null && worldPoint.equals(existingStep.getWorldPoint()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private WorldPoint resolveClickedWorldPoint(MenuEntry sourceEntry, MenuEntryAdded event)
@@ -241,15 +317,25 @@ public class HelperConstructManager
 
 	private void addRequirement(int rawId, String target)
 	{
+		ensureDraftLoaded();
+		var idToUse = rawId;
+		var itemDefinition = client.getItemDefinition(rawId);
+		if (itemDefinition.getNote() >= 0)
+		{
+			idToUse = itemDefinition.getLinkedNoteId();
+		}
 		DraftRequirement requirement = new DraftRequirement();
-		requirement.setRawId(rawId);
+		requirement.setRawId(idToUse);
+		requirement.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, idToUse).getSymbol());
 		requirement.setDisplayName(normalizeText(target).isBlank() ? "Captured Item" : normalizeText(target));
 		currentDraft.getRequirements().add(requirement);
-		sendGameMessage("Quest Helper Construct: added item requirement (" + rawId + ").");
+		saveDraftToConfig();
+		sendGameMessage("Quest Helper Construct: added item requirement (" + idToUse + " -> " + requirement.getResolvedSymbol() + ").");
 	}
 
 	private void buildToClipboard()
 	{
+		ensureDraftLoaded();
 		List<String> validationErrors = validateDraft();
 		if (!validationErrors.isEmpty())
 		{
@@ -274,6 +360,11 @@ public class HelperConstructManager
 		sendGameMessage("Quest Helper Construct: scaffold copied to clipboard.");
 	}
 
+	public void buildToClipboardFromUi()
+	{
+		buildToClipboard();
+	}
+
 	private List<String> validateDraft()
 	{
 		List<String> errors = new ArrayList<>();
@@ -292,6 +383,236 @@ public class HelperConstructManager
 		return errors;
 	}
 
+	public List<String> getStepSummaries()
+	{
+		ensureDraftLoaded();
+		var steps = currentDraft.getSteps();
+		List<String> summaries = new ArrayList<>(steps.size());
+		for (int i = 0; i < steps.size(); i++)
+		{
+			summaries.add(formatStepSummary(steps.get(i), i + 1));
+		}
+		return Collections.unmodifiableList(summaries);
+	}
+
+	public List<String> getNpcStepSummaries()
+	{
+		return getStepSummariesByKind(StepKind.NPC);
+	}
+
+	public List<String> getObjectStepSummaries()
+	{
+		return getStepSummariesByKind(StepKind.OBJECT);
+	}
+
+	private List<String> getStepSummariesByKind(StepKind kind)
+	{
+		ensureDraftLoaded();
+		List<String> summaries = new ArrayList<>();
+		int index = 1;
+		for (DraftStep step : currentDraft.getSteps())
+		{
+			if (step.getKind() == kind)
+			{
+				summaries.add(formatStepSummary(step, index++));
+			}
+		}
+		return Collections.unmodifiableList(summaries);
+	}
+
+	public List<String> getRequirementSummaries()
+	{
+		ensureDraftLoaded();
+		var requirements = currentDraft.getRequirements();
+		List<String> summaries = new ArrayList<>(requirements.size());
+		for (int i = 0; i < requirements.size(); i++)
+		{
+			var requirement = requirements.get(i);
+			String displayName = normalizeText(requirement.getDisplayName());
+			if (displayName.isBlank())
+			{
+				displayName = requirement.getResolvedSymbol() != null ? requirement.getResolvedSymbol() : String.valueOf(requirement.getRawId());
+			}
+			String summary = String.format("%d. %s",
+				i + 1,
+				displayName);
+			summaries.add(summary);
+		}
+		return Collections.unmodifiableList(summaries);
+	}
+
+	private boolean safeEquals(String left, String right)
+	{
+		return left == null ? right == null : left.equals(right);
+	}
+
+	public boolean removeStepAt(int index)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getSteps().size())
+		{
+			return false;
+		}
+		currentDraft.getSteps().remove(index);
+		saveDraftToConfig();
+		return true;
+	}
+
+	public boolean removeRequirementAt(int index)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getRequirements().size())
+		{
+			return false;
+		}
+		currentDraft.getRequirements().remove(index);
+		saveDraftToConfig();
+		return true;
+	}
+
+	public boolean removeNpcStepAt(int index)
+	{
+		return removeStepByKindAt(StepKind.NPC, index);
+	}
+
+	public boolean removeObjectStepAt(int index)
+	{
+		return removeStepByKindAt(StepKind.OBJECT, index);
+	}
+
+	private boolean removeStepByKindAt(StepKind kind, int index)
+	{
+		ensureDraftLoaded();
+		if (index < 0)
+		{
+			return false;
+		}
+
+		int filteredIndex = 0;
+		for (int i = 0; i < currentDraft.getSteps().size(); i++)
+		{
+			if (currentDraft.getSteps().get(i).getKind() != kind)
+			{
+				continue;
+			}
+			if (filteredIndex == index)
+			{
+				currentDraft.getSteps().remove(i);
+				saveDraftToConfig();
+				return true;
+			}
+			filteredIndex++;
+		}
+		return false;
+	}
+
+	private void ensureDraftLoaded()
+	{
+		if (loadedFromConfig)
+		{
+			return;
+		}
+		loadedFromConfig = true;
+		loadDraftFromConfig();
+	}
+
+	private void loadDraftFromConfig()
+	{
+		String json = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+		if (json == null || json.isBlank())
+		{
+			return;
+		}
+
+		try
+		{
+			DraftState state = gson.fromJson(json, DraftState.class);
+			if (state == null)
+			{
+				return;
+			}
+
+			DraftHelper loaded = new DraftHelper();
+			if (state.questName != null) loaded.setQuestName(state.questName);
+			if (state.className != null) loaded.setClassName(state.className);
+			if (state.packagePath != null) loaded.setPackagePath(state.packagePath);
+			if (state.helperType != null) loaded.setHelperType(state.helperType);
+
+			for (DraftStepState stepState : state.steps)
+			{
+				DraftStep step = new DraftStep();
+				step.setKind(stepState.kind);
+				step.setRawId(stepState.rawId);
+				step.setResolvedSymbol(stepState.resolvedSymbol);
+				step.setOption(stepState.option);
+				step.setTargetText(stepState.targetText);
+				step.setSuggestedVarName(stepState.suggestedVarName);
+				step.setInstructionText(stepState.instructionText);
+				step.setPanelName(stepState.panelName);
+				if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
+				{
+					step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
+				}
+				loaded.getSteps().add(step);
+			}
+
+			for (DraftRequirementState reqState : state.requirements)
+			{
+				DraftRequirement req = new DraftRequirement();
+				req.setRawId(reqState.rawId);
+				req.setResolvedSymbol(reqState.resolvedSymbol);
+				req.setDisplayName(reqState.displayName);
+				loaded.getRequirements().add(req);
+			}
+
+			currentDraft = loaded;
+		}
+		catch (JsonSyntaxException ignored)
+		{
+			currentDraft = new DraftHelper();
+		}
+	}
+
+	private void saveDraftToConfig()
+	{
+		DraftState state = new DraftState();
+		state.questName = currentDraft.getQuestName();
+		state.className = currentDraft.getClassName();
+		state.packagePath = currentDraft.getPackagePath();
+		state.helperType = currentDraft.getHelperType();
+
+		for (DraftStep step : currentDraft.getSteps())
+		{
+			DraftStepState stepState = new DraftStepState();
+			stepState.kind = step.getKind();
+			stepState.rawId = step.getRawId();
+			stepState.resolvedSymbol = step.getResolvedSymbol();
+			stepState.option = step.getOption();
+			stepState.targetText = step.getTargetText();
+			stepState.suggestedVarName = step.getSuggestedVarName();
+			stepState.instructionText = step.getInstructionText();
+			stepState.panelName = step.getPanelName();
+			if (step.getWorldPoint() != null)
+			{
+				stepState.worldX = step.getWorldPoint().getX();
+				stepState.worldY = step.getWorldPoint().getY();
+				stepState.worldPlane = step.getWorldPoint().getPlane();
+			}
+			state.steps.add(stepState);
+		}
+
+		for (DraftRequirement req : currentDraft.getRequirements())
+		{
+			DraftRequirementState reqState = new DraftRequirementState();
+			reqState.rawId = req.getRawId();
+			reqState.resolvedSymbol = req.getResolvedSymbol();
+			reqState.displayName = req.getDisplayName();
+			state.requirements.add(reqState);
+		}
+
+		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY, gson.toJson(state));
+	}
+
 	private boolean isNpcAction(MenuAction menuAction)
 	{
 		return menuAction == MenuAction.EXAMINE_NPC;
@@ -305,6 +626,11 @@ public class HelperConstructManager
 	private boolean isItemAction(MenuAction menuAction)
 	{
 		return menuAction == MenuAction.EXAMINE_ITEM_GROUND;
+	}
+
+	private boolean isInventoryItemAction(MenuAction menuAction)
+	{
+		return menuAction == MenuAction.WIDGET_TARGET;
 	}
 
 	private String instructionText(String option, String target)
@@ -342,12 +668,12 @@ public class HelperConstructManager
 				out.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1).toLowerCase(Locale.ROOT));
 			}
 		}
-		return out.isEmpty() ? "GeneratedQuest" : out.toString();
+		return out.length() == 0 ? "GeneratedQuest" : out.toString();
 	}
 
 	private void sendGameMessage(String message)
 	{
-		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null);
+		clientThread.invokeLater(() -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null));
 	}
 
 	private String formatWorldPoint(WorldPoint point)
@@ -357,5 +683,50 @@ public class HelperConstructManager
 			return "(unknown)";
 		}
 		return "(" + point.getX() + ", " + point.getY() + ", " + point.getPlane() + ")";
+	}
+
+	private String formatStepSummary(DraftStep step, int displayIndex)
+	{
+		String displayName = normalizeText(step.getTargetText());
+		if (displayName.isBlank())
+		{
+			displayName = step.getResolvedSymbol() != null ? step.getResolvedSymbol() : String.valueOf(step.getRawId());
+		}
+		return String.format("%d. %s (%s)",
+			displayIndex,
+			displayName,
+			formatWorldPoint(step.getWorldPoint()));
+	}
+
+	private static class DraftState
+	{
+		String questName;
+		String className;
+		String packagePath;
+		String helperType;
+		List<DraftStepState> steps = new ArrayList<>();
+		List<DraftRequirementState> requirements = new ArrayList<>();
+	}
+
+	private static class DraftStepState
+	{
+		StepKind kind;
+		int rawId;
+		String resolvedSymbol;
+		String option;
+		String targetText;
+		String suggestedVarName;
+		String instructionText;
+		String panelName;
+		Integer worldX;
+		Integer worldY;
+		Integer worldPlane;
+	}
+
+	private static class DraftRequirementState
+	{
+		int rawId;
+		String resolvedSymbol;
+		String displayName;
 	}
 }

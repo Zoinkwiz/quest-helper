@@ -26,7 +26,9 @@
 package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.HelperConstructManager;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.steps.overlay.WorldLines;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -37,28 +39,40 @@ import java.awt.*;
 public class QuestHelperWorldLineOverlay extends Overlay
 {
 	private final QuestHelperPlugin plugin;
+	private final HelperConstructManager helperConstructManager;
 
 	@Inject
-	public QuestHelperWorldLineOverlay(QuestHelperPlugin plugin)
+	public QuestHelperWorldLineOverlay(QuestHelperPlugin plugin, HelperConstructManager helperConstructManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.plugin = plugin;
+		this.helperConstructManager = helperConstructManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.getConfig().showWorldLines())
+		boolean showQuestWorldLines = plugin.getConfig().showWorldLines();
+		boolean showConstructPreview = helperConstructManager.isWorldMapRoutePreviewEnabled();
+		if (!showQuestWorldLines && !showConstructPreview)
 		{
 			return null;
 		}
 
 		QuestHelper quest = plugin.getSelectedQuest();
 
-		if (quest != null && quest.getCurrentStep() != null)
+		if (showQuestWorldLines && quest != null && quest.getCurrentStep() != null)
 		{
 			quest.getCurrentStep().makeWorldLineOverlayHint(graphics, plugin);
+		}
+		if (showConstructPreview)
+		{
+			WorldLines.createWorldMapLines(
+				graphics,
+				plugin.getClient(),
+				helperConstructManager.getWorldMapRouteLinePoints(),
+				plugin.getConfig().targetOverlayColor());
 		}
 
 		return null;

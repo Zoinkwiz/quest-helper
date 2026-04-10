@@ -118,13 +118,74 @@ public class WorldLines
 		{
 			return;
 		}
-		if (!mapViewArea.contains(startPoint.getX(), startPoint.getY()) && !mapViewArea.contains(endPoint.getX(), endPoint.getY()))
+		Line2D.Double clipped = clipLineToRect(
+			startPoint.getX(), startPoint.getY(),
+			endPoint.getX(), endPoint.getY(),
+			mapViewArea);
+		if (clipped == null)
 		{
 			return;
 		}
 
-		Line2D.Double line = new Line2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
-		DirectionArrow.drawLine(graphics, line, color, QuestPerspective.getWorldMapClipArea(client));
+		DirectionArrow.drawLine(graphics, clipped, color, QuestPerspective.getWorldMapClipArea(client));
+	}
+
+	private static Line2D.Double clipLineToRect(double x0, double y0, double x1, double y1, Rectangle rect)
+	{
+		double dx = x1 - x0;
+		double dy = y1 - y0;
+		double t0 = 0.0;
+		double t1 = 1.0;
+
+		double[] p = {-dx, dx, -dy, dy};
+		double[] q = {
+			x0 - rect.getMinX(),
+			rect.getMaxX() - x0,
+			y0 - rect.getMinY(),
+			rect.getMaxY() - y0
+		};
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (p[i] == 0)
+			{
+				if (q[i] < 0)
+				{
+					return null;
+				}
+				continue;
+			}
+
+			double r = q[i] / p[i];
+			if (p[i] < 0)
+			{
+				if (r > t1)
+				{
+					return null;
+				}
+				if (r > t0)
+				{
+					t0 = r;
+				}
+			}
+			else
+			{
+				if (r < t0)
+				{
+					return null;
+				}
+				if (r < t1)
+				{
+					t1 = r;
+				}
+			}
+		}
+
+		double cx0 = x0 + (t0 * dx);
+		double cy0 = y0 + (t0 * dy);
+		double cx1 = x0 + (t1 * dx);
+		double cy1 = y0 + (t1 * dy);
+		return new Line2D.Double(cx0, cy0, cx1, cy1);
 	}
 
 	public static Line2D.Double getWorldLines(@Nonnull Client client, @Nonnull LocalPoint startLocation, LocalPoint endLocation)

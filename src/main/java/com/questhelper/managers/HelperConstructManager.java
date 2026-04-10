@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.tools.ConstructWorldMapPoint;
+import com.questhelper.util.worldmap.WorldPointMapper;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -17,6 +19,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
@@ -67,6 +70,9 @@ public class HelperConstructManager
 	private HelperScaffoldGenerator scaffoldGenerator;
 
 	@Inject
+	private WorldMapPointManager worldMapPointManager;
+
+	@Inject
 	private GamevalSymbolResolver symbolResolver;
 
 	@Inject
@@ -77,6 +83,7 @@ public class HelperConstructManager
 	private DraftHelper currentDraft = new DraftHelper();
 	private boolean loadedFromConfig;
 	private final Gson gson = new Gson();
+	private boolean worldMapRoutePreviewEnabled;
 
 	public String getCurrentDraftClassName()
 	{
@@ -158,6 +165,10 @@ public class HelperConstructManager
 		}
 		helper.setHelperType("ComplexStateQuestHelper");
 		currentDraft = helper;
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
 		sendGameMessage("Quest Helper Construct: started new draft '" + currentDraft.getClassName() + "'.");
 	}
 
@@ -206,6 +217,10 @@ public class HelperConstructManager
 		step.setWorldPoint(clickedWorldPoint);
 		currentDraft.getSteps().add(step);
 		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
 		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + " -> " + resolved.getSymbol() + ") at " + formatWorldPoint(clickedWorldPoint) + ".");
 	}
 
@@ -409,6 +424,52 @@ public class HelperConstructManager
 		}
 	}
 
+	public void toggleWorldMapRoutePreviewFromUi()
+	{
+		ensureDraftLoaded();
+		worldMapRoutePreviewEnabled = !worldMapRoutePreviewEnabled;
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+			sendGameMessage("Quest Helper Construct: in-game world map route preview enabled.");
+		}
+		else
+		{
+			clearWorldMapRoutePoints();
+			sendGameMessage("Quest Helper Construct: in-game world map route preview disabled.");
+		}
+	}
+
+	public boolean isWorldMapRoutePreviewEnabled()
+	{
+		return worldMapRoutePreviewEnabled;
+	}
+
+	public void disableWorldMapRoutePreview()
+	{
+		worldMapRoutePreviewEnabled = false;
+		clearWorldMapRoutePoints();
+	}
+
+	public List<WorldPoint> getWorldMapRouteLinePoints()
+	{
+		ensureDraftLoaded();
+		if (!worldMapRoutePreviewEnabled)
+		{
+			return Collections.emptyList();
+		}
+		List<WorldPoint> points = new ArrayList<>();
+		for (DraftStep step : currentDraft.getSteps())
+		{
+			WorldPoint wp = step.getWorldPoint();
+			if (wp != null && isWithinMapBounds(wp))
+			{
+				points.add(WorldPointMapper.getMapWorldPointFromRealWorldPoint(wp).getWorldPoint());
+			}
+		}
+		return points;
+	}
+
 	private List<String> validateDraft()
 	{
 		List<String> errors = new ArrayList<>();
@@ -497,6 +558,10 @@ public class HelperConstructManager
 		DraftStep moved = steps.remove(fromIndex);
 		steps.add(toIndex, moved);
 		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
 		return true;
 	}
 
@@ -509,6 +574,10 @@ public class HelperConstructManager
 		}
 		currentDraft.getSteps().get(index).setSuggestedVarName(updatedVarName == null ? "" : updatedVarName);
 		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
 		return true;
 	}
 
@@ -547,6 +616,10 @@ public class HelperConstructManager
 		}
 		currentDraft.getSteps().remove(index);
 		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
 		return true;
 	}
 
@@ -591,6 +664,10 @@ public class HelperConstructManager
 			{
 				currentDraft.getSteps().remove(i);
 				saveDraftToConfig();
+				if (worldMapRoutePreviewEnabled)
+				{
+					rebuildWorldMapRoutePoints();
+				}
 				return true;
 			}
 			filteredIndex++;
@@ -802,6 +879,85 @@ public class HelperConstructManager
 			displayIndex,
 			displayName,
 			formatWorldPoint(step.getWorldPoint()));
+	}
+
+	private void rebuildWorldMapRoutePoints()
+	{
+		if (worldMapPointManager == null)
+		{
+			return;
+		}
+		clearWorldMapRoutePoints();
+		List<DraftStep> steps = currentDraft.getSteps();
+		for (int i = 0; i < steps.size(); i++)
+		{
+			DraftStep step = steps.get(i);
+			WorldPoint wp = step.getWorldPoint();
+			if (wp == null || !isWithinMapBounds(wp))
+			{
+				continue;
+			}
+			String label = (i + 1) + ". " + displayStepName(step);
+			ConstructWorldMapPoint point = new ConstructWorldMapPoint(wp, routePointIcon(i, steps.size()), label);
+			worldMapPointManager.add(point);
+		}
+	}
+
+	private void clearWorldMapRoutePoints()
+	{
+		if (worldMapPointManager != null)
+		{
+			worldMapPointManager.removeIf(ConstructWorldMapPoint.class::isInstance);
+		}
+	}
+
+	private String displayStepName(DraftStep step)
+	{
+		String varName = step.getSuggestedVarName();
+		if (varName != null && !varName.isBlank())
+		{
+			return varName;
+		}
+		String target = normalizeText(step.getTargetText());
+		if (!target.isBlank())
+		{
+			return target;
+		}
+		return step.getResolvedSymbol() != null ? step.getResolvedSymbol() : "step";
+	}
+
+	private BufferedImage routePointIcon(int index, int total)
+	{
+		BufferedImage image = new BufferedImage(14, 14, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = image.createGraphics();
+		try
+		{
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			Color color = new Color(23, 162, 184);
+			if (index == 0)
+			{
+				color = new Color(40, 167, 69);
+			}
+			else if (index == total - 1)
+			{
+				color = new Color(220, 53, 69);
+			}
+			g.setColor(color);
+			g.fillOval(1, 1, 12, 12);
+			g.setColor(Color.WHITE);
+			g.drawOval(1, 1, 12, 12);
+		}
+		finally
+		{
+			g.dispose();
+		}
+		return image;
+	}
+
+	private boolean isWithinMapBounds(WorldPoint worldPoint)
+	{
+		return worldPoint.getX() >= MAP_MIN_X && worldPoint.getX() <= MAP_MAX_X
+			&& worldPoint.getY() >= MAP_MIN_Y && worldPoint.getY() <= MAP_MAX_Y;
 	}
 
 	private RouteImageResult writeRouteImage(List<WorldPoint> points) throws IOException

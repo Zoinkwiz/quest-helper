@@ -99,7 +99,17 @@ class HelperScaffoldGeneratorTest
 		itemStep.setSuggestedVarName("useBones");
 		draft.getSteps().add(itemStep);
 
+		HelperConstructModels.DraftStep priorStep = new HelperConstructModels.DraftStep();
+		priorStep.setKind(HelperConstructModels.StepKind.OBJECT);
+		priorStep.setRawId(1000);
+		priorStep.setInstructionText("First.");
+		priorStep.setSuggestedVarName("firstStep");
+		priorStep.setWorldPoint(new WorldPoint(3200, 3200, 0));
+		draft.getSteps().add(0, priorStep);
+
 		var source = generator.generate(draft).getSource();
 		assertTrue(source.contains("useBones = new ItemStep(this, \"Use Bones.\", bones.highlighted());"));
+		assertTrue(source.contains("route.addStep(not(bones), useBones);"));
+		assertTrue(!source.contains("useBonesVarbitReq"));
 	}
 }

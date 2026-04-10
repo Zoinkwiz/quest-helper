@@ -78,10 +78,13 @@ public class HelperScaffoldGenerator
 			String candidate = toVarName(step.getSuggestedVarName(), "step");
 			String unique = makeUnique(candidate, usedNames);
 			stepVarNames.put(step, unique);
-			String varbitReqVar = makeUnique(unique + "VarbitReq", usedNames);
-			varbitReqVarNames.put(step, varbitReqVar);
 			out.append("\t").append(stepType).append(" ").append(unique).append(";\n");
-			out.append("\tVarbitRequirement ").append(varbitReqVar).append(";\n");
+			if (!stepHasLinkedItemRequirement(step, requirementVarNamesByRawId))
+			{
+				String varbitReqVar = makeUnique(unique + "VarbitReq", usedNames);
+				varbitReqVarNames.put(step, varbitReqVar);
+				out.append("\tVarbitRequirement ").append(varbitReqVar).append(";\n");
+			}
 		}
 
 		out.append("\n\t@Override\n");
@@ -106,7 +109,6 @@ public class HelperScaffoldGenerator
 		for (DraftStep step : steps)
 		{
 			String varName = stepVarNames.get(step);
-			String varbitReqVarName = varbitReqVarNames.get(step);
 			String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
 				? "TODO: refine instruction text"
 				: step.getInstructionText();
@@ -135,8 +137,12 @@ public class HelperScaffoldGenerator
 					.append(symbol).append(", ").append(point).append(", \"")
 					.append(escape(instruction)).append("\");\n");
 			}
-			out.append("\t\t").append(varbitReqVarName)
-				.append(" = new VarbitRequirement(/* TODO varbit id */ 0, 1);\n");
+			if (!stepHasLinkedItemRequirement(step, requirementVarNamesByRawId))
+			{
+				String varbitReqVarName = varbitReqVarNames.get(step);
+				out.append("\t\t").append(varbitReqVarName)
+					.append(" = new VarbitRequirement(/* TODO varbit id */ 0, 1);\n");
+			}
 		}
 		out.append("\t}\n\n");
 
@@ -152,7 +158,7 @@ public class HelperScaffoldGenerator
 			for (int i = 1; i < steps.size(); i++)
 			{
 				String stepVar = stepVarNames.get(steps.get(i));
-				String reqVar = varbitReqVarNames.get(steps.get(i));
+				String reqVar = requirementExpressionForStep(steps.get(i), requirementVarNamesByRawId, varbitReqVarNames, warnings);
 				out.append("\t\troute.addStep(not(").append(reqVar).append("), ").append(stepVar).append(");\n");
 			}
 			out.append("\t\treturn route;\n");
@@ -207,6 +213,31 @@ public class HelperScaffoldGenerator
 			return "new WorldPoint(0, 0, 0) /* TODO point */";
 		}
 		return "new WorldPoint(" + step.getWorldPoint().getX() + ", " + step.getWorldPoint().getY() + ", " + step.getWorldPoint().getPlane() + ")";
+	}
+
+	private boolean stepHasLinkedItemRequirement(DraftStep step, Map<Integer, String> requirementVarNamesByRawId)
+	{
+		Integer linkedReqId = step.getLinkedRequirementRawId();
+		return linkedReqId != null && requirementVarNamesByRawId.containsKey(linkedReqId);
+	}
+
+	private String requirementExpressionForStep(
+		DraftStep step,
+		Map<Integer, String> requirementVarNamesByRawId,
+		Map<DraftStep, String> varbitReqVarNames,
+		List<String> warnings)
+	{
+		Integer linkedReqId = step.getLinkedRequirementRawId();
+		if (linkedReqId != null)
+		{
+			String requirementVar = requirementVarNamesByRawId.get(linkedReqId);
+			if (requirementVar != null)
+			{
+				return requirementVar;
+			}
+			warnings.add("Missing linked item requirement for step ID: " + step.getRawId() + " linked requirement: " + linkedReqId);
+		}
+		return varbitReqVarNames.get(step);
 	}
 
 	private String sanitizeClassName(String className)

@@ -265,7 +265,8 @@ public class QuestOverviewPanel extends JPanel
 
 		if (quest.getCurrentStep() != null)
 		{
-			questNameLabel.setText(quest.getQuest().getName());
+			String questName = quest.getQuest() != null ? quest.getQuest().getName() : quest.toString();
+			questNameLabel.setText(questName);
 			actionsContainer.setVisible(true);
 
 			if (quest.getConfigs() != null)
@@ -415,6 +416,10 @@ public class QuestOverviewPanel extends JPanel
 
 	private static void collectRequirements(QuestHelper quest, List<Requirement> allRequirements, Set<String> processedQuestIds)
 	{
+		if (quest.getQuest() == null)
+		{
+			return;
+		}
 		if (quest.getQuest().getQuestHelper().getGeneralRequirements() == null) return;
 
 		List<Requirement> generalRequirements = quest.getQuest().getQuestHelper().getGeneralRequirements();
@@ -524,6 +529,11 @@ public class QuestOverviewPanel extends JPanel
 	private void updateExternalResourcesPanel(QuestHelper quest)
 	{
 		List<String> externalResourcesList;
+		if (quest.getQuest() == null)
+		{
+			questExternalResourcesList.removeAll();
+			return;
+		}
 		try
 		{
 			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()).getWikiURL());

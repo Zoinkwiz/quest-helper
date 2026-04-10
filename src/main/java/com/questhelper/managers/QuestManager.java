@@ -435,7 +435,7 @@ public class QuestManager
 			return;
 		}
 
-		if (!backgroundHelpers.containsKey(questHelper.getQuest().getName()))
+		if (questHelper.getQuest() == null || !backgroundHelpers.containsKey(questHelper.getQuest().getName()))
 		{
 			return;
 		}

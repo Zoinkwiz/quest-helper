@@ -2,7 +2,21 @@ package com.questhelper.managers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.inject.Binder;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.tools.ConstructWorldMapPoint;
 import com.questhelper.util.worldmap.WorldPointMapper;
@@ -17,6 +31,8 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.QuestState;
+import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -32,8 +48,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -42,6 +61,7 @@ import static com.questhelper.managers.HelperConstructModels.DraftHelper;
 import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.requirements.util.LogicHelper.nor;
 
 @Singleton
 public class HelperConstructManager
@@ -75,6 +95,9 @@ public class HelperConstructManager
 
 	@Inject
 	private GamevalSymbolResolver symbolResolver;
+
+	@Inject
+	private QuestManager questManager;
 
 	@Inject
 	@Named("developerMode")
@@ -481,6 +504,36 @@ public class HelperConstructManager
 		{
 			sendGameMessage("Quest Helper Construct: failed to save route map image (" + ex.getMessage() + ").");
 		}
+	}
+
+	public void previewInSidebarFromUi()
+	{
+		ensureDraftLoaded();
+		List<String> validationErrors = validateDraft();
+		if (!validationErrors.isEmpty())
+		{
+			sendGameMessage("Quest Helper Construct: preview failed - " + String.join(" | ", validationErrors));
+			return;
+		}
+
+		PreviewQuestHelper previewHelper = new PreviewQuestHelper(currentDraft);
+		wireQuestHelperForRuntimeUse(previewHelper);
+		questManager.startUpQuest(previewHelper, true);
+		sendGameMessage("Quest Helper Construct: preview loaded in Quest Helper sidebar.");
+	}
+
+	private void wireQuestHelperForRuntimeUse(QuestHelper questHelper)
+	{
+		Module questModule = (Binder binder) ->
+		{
+			binder.bind(QuestHelper.class).toInstance(questHelper);
+			binder.install(questHelper);
+		};
+		Injector questInjector = RuneLite.getInjector().createChildInjector(questModule);
+		RuneLite.getInjector().injectMembers(questHelper);
+		questHelper.setInjector(questInjector);
+		questHelper.setConfig(config);
+		questHelper.setQuestHelperPlugin(questManager.questHelperPlugin);
 	}
 
 	public void toggleWorldMapRoutePreviewFromUi()
@@ -1203,6 +1256,233 @@ public class HelperConstructManager
 			this.file = file;
 			this.drawnCount = drawnCount;
 			this.skippedCount = skippedCount;
+		}
+	}
+
+	private static class PreviewQuestHelper extends ComplexStateQuestHelper
+	{
+		private final DraftHelper draft;
+		private final List<ItemRequirement> previewRequirements = new ArrayList<>();
+		private final List<PanelDetails> previewPanels = new ArrayList<>();
+
+		private PreviewQuestHelper(DraftHelper draft)
+		{
+			this.draft = draft;
+		}
+
+		@Override
+		protected void setupRequirements()
+		{
+			previewRequirements.clear();
+			for (DraftRequirement requirement : draft.getRequirements())
+			{
+				String display = requirement.getDisplayName() == null || requirement.getDisplayName().isBlank()
+					? "Required item"
+					: requirement.getDisplayName();
+				previewRequirements.add(new ItemRequirement(display, requirement.getRawId()));
+			}
+		}
+
+		@Override
+		public QuestStep loadStep()
+		{
+			initializeRequirements();
+			previewPanels.clear();
+			Map<Integer, ItemRequirement> requirementById = new HashMap<>();
+			for (ItemRequirement req : previewRequirements)
+			{
+				requirementById.put(req.getId(), req);
+			}
+
+			List<ConditionalStep> sectionTasks = new ArrayList<>();
+			List<List<Requirement>> sectionCompletionRequirements = new ArrayList<>();
+			List<QuestStep> currentPanelSteps = new ArrayList<>();
+			String currentPanelName = "Captured Steps";
+
+			for (DraftStep draftStep : draft.getSteps())
+			{
+				if (draftStep.isSectionDivider())
+				{
+					ConditionalStep sectionTask = createSectionTask(currentPanelName, currentPanelSteps);
+					if (sectionTask != null)
+					{
+						sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentPanelSteps));
+						addPanelWithLockingStep(currentPanelName, currentPanelSteps, sectionTask);
+						sectionTasks.add(sectionTask);
+					}
+					String sectionName = draftStep.getSuggestedVarName();
+					currentPanelName = (sectionName == null || sectionName.isBlank()) ? "Section" : sectionName;
+					continue;
+				}
+
+				QuestStep step = toPreviewStep(draftStep, requirementById);
+				currentPanelSteps.add(step);
+			}
+
+			if (!currentPanelSteps.isEmpty())
+			{
+				ConditionalStep sectionTask = createSectionTask(currentPanelName, currentPanelSteps);
+				if (sectionTask != null)
+				{
+					sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentPanelSteps));
+					addPanelWithLockingStep(currentPanelName, currentPanelSteps, sectionTask);
+					sectionTasks.add(sectionTask);
+				}
+			}
+			if (sectionTasks.isEmpty())
+			{
+				QuestStep empty = new DetailedQuestStep(this, "No previewable steps captured yet.");
+				previewPanels.add(new PanelDetails("Captured Steps", List.of(empty)));
+				return empty;
+			}
+
+			if (sectionTasks.size() == 1)
+			{
+				return sectionTasks.get(0);
+			}
+
+			int lastSectionIndex = sectionTasks.size() - 1;
+			ConditionalStep allSections = new ConditionalStep(this, sectionTasks.get(lastSectionIndex), "All Sections");
+			allSections.setShouldPassthroughText(true);
+
+			List<Requirement> priorSectionRequirements = new ArrayList<>();
+			for (int i = 0; i < lastSectionIndex; i++)
+			{
+				allSections.addStep(nor(priorSectionRequirements.toArray(new Requirement[0])), sectionTasks.get(i));
+				priorSectionRequirements.addAll(sectionCompletionRequirements.get(i));
+			}
+
+			return allSections;
+		}
+
+		private ConditionalStep createSectionTask(String panelName, List<QuestStep> panelSteps)
+		{
+			if (panelSteps.isEmpty())
+			{
+				return null;
+			}
+
+			QuestStep fallbackStep = panelSteps.get(0);
+			ConditionalStep sectionTask = new ConditionalStep(this, fallbackStep, panelName);
+			sectionTask.setShouldPassthroughText(true);
+			return sectionTask;
+		}
+
+		private void addPanelWithLockingStep(String panelName, List<QuestStep> panelSteps, ConditionalStep sectionTask)
+		{
+			if (sectionTask == null || panelSteps.isEmpty())
+			{
+				return;
+			}
+
+			List<QuestStep> stepsForPanel = new ArrayList<>(panelSteps);
+			PanelDetails panel = new PanelDetails(panelName, stepsForPanel);
+			panel.setLockingStep(sectionTask);
+			previewPanels.add(panel);
+			panelSteps.clear();
+		}
+
+		private List<Requirement> extractSectionCompletionRequirements(List<QuestStep> panelSteps)
+		{
+			LinkedHashSet<Requirement> requirements = new LinkedHashSet<>();
+			for (QuestStep step : panelSteps)
+			{
+				if (step instanceof DetailedQuestStep)
+				{
+					requirements.addAll(((DetailedQuestStep) step).getRequirements());
+				}
+				if (step instanceof ConditionalStep)
+				{
+					for (Requirement condition : ((ConditionalStep) step).getConditions())
+					{
+						if (condition != null)
+						{
+							requirements.add(condition);
+						}
+					}
+				}
+			}
+			return new ArrayList<>(requirements);
+		}
+
+		private QuestStep toPreviewStep(DraftStep draftStep, Map<Integer, ItemRequirement> requirementById)
+		{
+			String instruction = (draftStep.getInstructionText() == null || draftStep.getInstructionText().isBlank())
+				? "Complete step."
+				: draftStep.getInstructionText();
+			if (draftStep.getKind() == StepKind.NPC)
+			{
+				if (draftStep.getWorldPoint() != null)
+				{
+					return new NpcStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction);
+				}
+				return new NpcStep(this, draftStep.getRawId(), instruction);
+			}
+			if (draftStep.getKind() == StepKind.OBJECT)
+			{
+				if (draftStep.getWorldPoint() != null)
+				{
+					return new ObjectStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction);
+				}
+				return new ObjectStep(this, draftStep.getRawId(), instruction);
+			}
+			if (draftStep.getKind() == StepKind.ITEM)
+			{
+				ItemRequirement itemRequirement = null;
+				Integer linkedRequirementRawId = draftStep.getLinkedRequirementRawId();
+				if (linkedRequirementRawId != null)
+				{
+					itemRequirement = requirementById.get(linkedRequirementRawId);
+				}
+				if (itemRequirement == null)
+				{
+					itemRequirement = requirementById.get(draftStep.getRawId());
+				}
+				if (itemRequirement != null)
+				{
+					return new ItemStep(this, instruction, itemRequirement.highlighted());
+				}
+				return new ItemStep(this, instruction);
+			}
+			return new DetailedQuestStep(this, instruction);
+		}
+
+		@Override
+		public List<ItemRequirement> getItemRequirements()
+		{
+			return previewRequirements;
+		}
+
+		@Override
+		public List<PanelDetails> getPanels()
+		{
+			return previewPanels;
+		}
+
+		@Override
+		public int getVar()
+		{
+			return 0;
+		}
+
+		@Override
+		public QuestState getState(Client client)
+		{
+			return QuestState.IN_PROGRESS;
+		}
+
+		@Override
+		public boolean hasQuestStateBecomeFinished()
+		{
+			return false;
+		}
+
+		@Override
+		public String toString()
+		{
+			return draft.getQuestName() == null || draft.getQuestName().isBlank()
+				? "Construct Preview"
+				: draft.getQuestName() + " (Preview)";
 		}
 	}
 

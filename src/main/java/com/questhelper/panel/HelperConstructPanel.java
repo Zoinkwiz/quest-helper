@@ -47,28 +47,31 @@ public class HelperConstructPanel extends PluginPanel
 		var title = JGenerator.makeJTextArea("Quest Helper Construct");
 		title.setForeground(Color.WHITE);
 		root.add(title);
-		root.add(Box.createVerticalStrut(8));
 		JPanel buttonRow = new JPanel(new GridLayout(2, 3, 6, 6));
 		buttonRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		buttonRow.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 58));
 		JButton buildButton = new JButton("Build");
 		JButton resetButton = new JButton("Reset");
 		JButton mapButton = new JButton("Map");
+		JButton previewButton = new JButton("Preview");
 		JButton worldMapRouteButton = new JButton("WorldMap Route");
 		JButton viewModeButton = new JButton("Order View");
 		SwingUtil.removeButtonDecorations(buildButton);
 		SwingUtil.removeButtonDecorations(resetButton);
 		SwingUtil.removeButtonDecorations(mapButton);
+		SwingUtil.removeButtonDecorations(previewButton);
 		SwingUtil.removeButtonDecorations(worldMapRouteButton);
 		SwingUtil.removeButtonDecorations(viewModeButton);
 		buildButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		resetButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		mapButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		previewButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		worldMapRouteButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		viewModeButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		buildButton.setForeground(Color.WHITE);
 		resetButton.setForeground(Color.WHITE);
 		mapButton.setForeground(Color.WHITE);
+		previewButton.setForeground(Color.WHITE);
 		worldMapRouteButton.setForeground(Color.WHITE);
 		viewModeButton.setForeground(Color.WHITE);
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
@@ -78,6 +81,7 @@ public class HelperConstructPanel extends PluginPanel
 			refresh();
 		});
 		mapButton.addActionListener(e -> helperConstructManager.buildRouteMapImageFromUi());
+		previewButton.addActionListener(e -> helperConstructManager.previewInSidebarFromUi());
 		worldMapRouteButton.addActionListener(e ->
 		{
 			helperConstructManager.toggleWorldMapRoutePreviewFromUi();
@@ -93,9 +97,9 @@ public class HelperConstructPanel extends PluginPanel
 		buttonRow.add(buildButton);
 		buttonRow.add(resetButton);
 		buttonRow.add(mapButton);
+		buttonRow.add(previewButton);
 		buttonRow.add(worldMapRouteButton);
 		buttonRow.add(viewModeButton);
-		buttonRow.add(new JLabel());
 		root.add(buttonRow);
 		root.add(Box.createVerticalStrut(10));
 

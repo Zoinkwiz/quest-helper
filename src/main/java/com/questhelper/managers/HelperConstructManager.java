@@ -125,10 +125,12 @@ public class HelperConstructManager
 		if (isItemAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(rawId, target));
+			addAction(menuEntries, MENU_PREFIX + " Add Item Step", target, () -> addItemStep(rawId, target));
 		}
 		if (isInventoryItemAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(itemID, target));
+			addAction(menuEntries, MENU_PREFIX + " Add Item Step", target, () -> addItemStep(itemID, target));
 		}
 	}
 
@@ -347,12 +349,7 @@ public class HelperConstructManager
 	private void addRequirement(int rawId, String target)
 	{
 		ensureDraftLoaded();
-		var idToUse = rawId;
-		var itemDefinition = client.getItemDefinition(rawId);
-		if (itemDefinition.getNote() >= 0)
-		{
-			idToUse = itemDefinition.getLinkedNoteId();
-		}
+		var idToUse = normalizeItemId(rawId);
 		DraftRequirement requirement = new DraftRequirement();
 		requirement.setRawId(idToUse);
 		requirement.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, idToUse).getSymbol());
@@ -360,6 +357,67 @@ public class HelperConstructManager
 		currentDraft.getRequirements().add(requirement);
 		saveDraftToConfig();
 		sendGameMessage("Quest Helper Construct: added item requirement (" + idToUse + " -> " + requirement.getResolvedSymbol() + ").");
+	}
+
+	private void addItemStep(int rawId, String target)
+	{
+		ensureDraftLoaded();
+		int normalizedItemId = normalizeItemId(rawId);
+		DraftRequirement requirement = findOrCreateRequirement(normalizedItemId, target);
+
+		if (isDuplicateStep(StepKind.ITEM, normalizedItemId, target, null))
+		{
+			sendGameMessage("Quest Helper Construct: skipped duplicate item step (" + normalizedItemId + ").");
+			return;
+		}
+
+		DraftStep step = new DraftStep();
+		step.setStepId(UUID.randomUUID().toString());
+		step.setKind(StepKind.ITEM);
+		step.setRawId(normalizedItemId);
+		step.setLinkedRequirementRawId(requirement.getRawId());
+		step.setResolvedSymbol(requirement.getResolvedSymbol());
+		step.setOption("Use");
+		step.setTargetText(target);
+		String itemName = normalizeText(target).isBlank() ? requirement.getDisplayName() : normalizeText(target);
+		step.setInstructionText("Use " + itemName + ".");
+		step.setPanelName("Captured Steps");
+		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("use " + itemName, "itemStep"));
+		currentDraft.getSteps().add(step);
+		saveDraftToConfig();
+		sendGameMessage("Quest Helper Construct: added item step (" + normalizedItemId + " -> " + requirement.getResolvedSymbol() + ").");
+	}
+
+	private DraftRequirement findOrCreateRequirement(int normalizedItemId, String target)
+	{
+		for (DraftRequirement requirement : currentDraft.getRequirements())
+		{
+			if (requirement.getRawId() == normalizedItemId)
+			{
+				return requirement;
+			}
+		}
+
+		DraftRequirement requirement = new DraftRequirement();
+		requirement.setRawId(normalizedItemId);
+		requirement.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, normalizedItemId).getSymbol());
+		requirement.setDisplayName(normalizeText(target).isBlank() ? "Captured Item" : normalizeText(target));
+		currentDraft.getRequirements().add(requirement);
+		return requirement;
+	}
+
+	private int normalizeItemId(int rawId)
+	{
+		if (client == null)
+		{
+			return rawId;
+		}
+		var itemDefinition = client.getItemDefinition(rawId);
+		if (itemDefinition != null && itemDefinition.getNote() >= 0)
+		{
+			return itemDefinition.getLinkedNoteId();
+		}
+		return rawId;
 	}
 
 	private void buildToClipboard()
@@ -717,6 +775,7 @@ public class HelperConstructManager
 				step.setStepId(stepState.stepId == null || stepState.stepId.isBlank() ? UUID.randomUUID().toString() : stepState.stepId);
 				step.setKind(stepState.kind);
 				step.setRawId(stepState.rawId);
+				step.setLinkedRequirementRawId(stepState.linkedRequirementRawId);
 				step.setResolvedSymbol(stepState.resolvedSymbol);
 				step.setOption(stepState.option);
 				step.setTargetText(stepState.targetText);
@@ -765,6 +824,7 @@ public class HelperConstructManager
 			stepState.stepId = step.getStepId();
 			stepState.kind = step.getKind();
 			stepState.rawId = step.getRawId();
+			stepState.linkedRequirementRawId = step.getLinkedRequirementRawId();
 			stepState.resolvedSymbol = step.getResolvedSymbol();
 			stepState.option = step.getOption();
 			stepState.targetText = step.getTargetText();
@@ -1092,6 +1152,7 @@ public class HelperConstructManager
 		String stepId;
 		StepKind kind;
 		int rawId;
+		Integer linkedRequirementRawId;
 		String resolvedSymbol;
 		String option;
 		String targetText;

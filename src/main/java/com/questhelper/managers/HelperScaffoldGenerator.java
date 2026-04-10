@@ -65,8 +65,13 @@ public class HelperScaffoldGenerator
 
 		out.append("\n\t// Captured steps\n");
 		Map<DraftStep, String> stepVarNames = new LinkedHashMap<>();
+		Map<Integer, String> requirementVarNamesByRawId = new LinkedHashMap<>();
 		Set<String> usedNames = new LinkedHashSet<>();
 		Map<DraftStep, String> varbitReqVarNames = new LinkedHashMap<>();
+		for (DraftRequirement requirement : requirements)
+		{
+			requirementVarNamesByRawId.put(requirement.getRawId(), toVarName(requirement.getDisplayName(), "itemReq"));
+		}
 		for (DraftStep step : steps)
 		{
 			String stepType = stepTypeFor(step.getKind());
@@ -105,11 +110,31 @@ public class HelperScaffoldGenerator
 			String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
 				? "TODO: refine instruction text"
 				: step.getInstructionText();
-			String point = worldPointLiteral(step);
-			String symbol = resolveSymbol(step, warnings);
-			out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
-				.append(symbol).append(", ").append(point).append(", \"")
-				.append(escape(instruction)).append("\");\n");
+			if (step.getKind() == StepKind.ITEM)
+			{
+				String requirementVarName = requirementVarNamesByRawId.get(step.getLinkedRequirementRawId());
+				if (requirementVarName == null)
+				{
+					warnings.add("Missing linked requirement for item step ID: " + step.getRawId());
+					ResolutionResult resolvedItem = symbolResolver.resolve(IdType.ITEM, step.getRawId());
+					out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
+						.append(escape(instruction)).append("\", new ItemRequirement(\"TODO linked item\", ")
+						.append(resolvedItem.getSymbol()).append(").highlighted());\n");
+				}
+				else
+				{
+					out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
+						.append(escape(instruction)).append("\", ").append(requirementVarName).append(".highlighted());\n");
+				}
+			}
+			else
+			{
+				String point = worldPointLiteral(step);
+				String symbol = resolveSymbol(step, warnings);
+				out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
+					.append(symbol).append(", ").append(point).append(", \"")
+					.append(escape(instruction)).append("\");\n");
+			}
 			out.append("\t\t").append(varbitReqVarName)
 				.append(" = new VarbitRequirement(/* TODO varbit id */ 0, 1);\n");
 		}

@@ -48,6 +48,7 @@ final class HelperConstructModels
 		private String stepId;
 		private StepKind kind;
 		private int rawId;
+		private Integer linkedRequirementRawId;
 		private String resolvedSymbol;
 		private WorldPoint worldPoint;
 		private String option;

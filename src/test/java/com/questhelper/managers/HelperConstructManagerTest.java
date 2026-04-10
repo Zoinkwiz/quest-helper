@@ -2,6 +2,7 @@ package com.questhelper.managers;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -67,5 +68,22 @@ class HelperConstructManagerTest
 		assertTrue(manager.updateStepVarName(0, "newName"));
 		assertEquals("newName", manager.getCombinedStepRows().get(0).getVarName());
 		assertFalse(manager.updateStepVarName(1, "x"));
+	}
+
+	@Test
+	void addItemStepReusesExistingRequirement()
+		throws Exception
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		Method addItemStep = HelperConstructManager.class.getDeclaredMethod("addItemStep", int.class, String.class);
+		addItemStep.setAccessible(true);
+
+		addItemStep.invoke(manager, 100, "Bucket");
+		addItemStep.invoke(manager, 100, "Bucket");
+
+		assertEquals(1, manager.getCurrentDraft().getRequirements().size());
+		assertEquals(2, manager.getCurrentDraft().getSteps().size());
+		assertEquals(100, manager.getCurrentDraft().getRequirements().get(0).getRawId());
+		assertEquals(100, manager.getCurrentDraft().getSteps().get(0).getLinkedRequirementRawId());
 	}
 }

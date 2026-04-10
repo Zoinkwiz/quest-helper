@@ -77,4 +77,29 @@ class HelperScaffoldGeneratorTest
 		assertTrue(source.contains("return route;"));
 		assertTrue(source.contains("new VarbitRequirement(/* TODO varbit id */ 0, 1)"));
 	}
+
+	@Test
+	void itemStepUsesHighlightedLinkedRequirement()
+	{
+		HelperScaffoldGenerator generator = new HelperScaffoldGenerator(new GamevalSymbolResolver());
+		HelperConstructModels.DraftHelper draft = new HelperConstructModels.DraftHelper();
+		draft.setClassName("ItemStepGenerated");
+		draft.setPackagePath("com.questhelper.helpers.quests.generated");
+
+		HelperConstructModels.DraftRequirement req = new HelperConstructModels.DraftRequirement();
+		req.setRawId(526);
+		req.setDisplayName("Bones");
+		draft.getRequirements().add(req);
+
+		HelperConstructModels.DraftStep itemStep = new HelperConstructModels.DraftStep();
+		itemStep.setKind(HelperConstructModels.StepKind.ITEM);
+		itemStep.setRawId(526);
+		itemStep.setLinkedRequirementRawId(526);
+		itemStep.setInstructionText("Use Bones.");
+		itemStep.setSuggestedVarName("useBones");
+		draft.getSteps().add(itemStep);
+
+		var source = generator.generate(draft).getSource();
+		assertTrue(source.contains("useBones = new ItemStep(this, \"Use Bones.\", bones.highlighted());"));
+	}
 }

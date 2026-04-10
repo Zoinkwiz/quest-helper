@@ -59,8 +59,10 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import static com.questhelper.managers.HelperConstructModels.DraftHelper;
+import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
+import static com.questhelper.managers.HelperConstructModels.ORDER_ROUTING_VARBIT_SENTINEL;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
@@ -71,6 +73,9 @@ public class HelperConstructManager
 {
 	private static final String MENU_PREFIX = "Construct:";
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
+	/** Use in UI when forcing varbit-based routing for an order row (matches persisted sentinel). */
+	public static final int ORDER_REQUIREMENT_VARBIT_ONLY = ORDER_ROUTING_VARBIT_SENTINEL;
+
 	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
 	private static final String DEFAULT_SECTION_NAME = "New Section";
 	private static final int MAP_MIN_X = 960;
@@ -244,18 +249,14 @@ public class HelperConstructManager
 		step.setPanelName("Captured Steps");
 		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(option + " " + target, "step"));
 		step.setWorldPoint(clickedWorldPoint);
-		currentDraft.getSteps().add(step);
+		currentDraft.getStepDefinitions().add(step);
 		saveDraftToConfig();
-		if (worldMapRoutePreviewEnabled)
-		{
-			rebuildWorldMapRoutePoints();
-		}
-		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + " -> " + resolved.getSymbol() + ") at " + formatWorldPoint(clickedWorldPoint) + ".");
+		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + " -> " + resolved.getSymbol() + ") at " + formatWorldPoint(clickedWorldPoint) + ". Use Add Step in Order View to place it in the quest order.");
 	}
 
 	private boolean isDuplicateStep(StepKind kind, int rawId, String targetText, WorldPoint worldPoint)
 	{
-		for (DraftStep existingStep : currentDraft.getSteps())
+		for (DraftStep existingStep : currentDraft.getStepDefinitions())
 		{
 			if (existingStep.getKind() != kind)
 			{
@@ -410,9 +411,9 @@ public class HelperConstructManager
 		step.setInstructionText("Use " + itemName + ".");
 		step.setPanelName("Captured Steps");
 		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("use " + itemName, "itemStep"));
-		currentDraft.getSteps().add(step);
+		currentDraft.getStepDefinitions().add(step);
 		saveDraftToConfig();
-		sendGameMessage("Quest Helper Construct: added item step (" + normalizedItemId + " -> " + requirement.getResolvedSymbol() + ").");
+		sendGameMessage("Quest Helper Construct: added item step (" + normalizedItemId + " -> " + requirement.getResolvedSymbol() + "). Use Add Step in Order View to place it in the quest order.");
 	}
 
 	private DraftRequirement findOrCreateRequirement(int normalizedItemId, String target)
@@ -483,7 +484,7 @@ public class HelperConstructManager
 	{
 		ensureDraftLoaded();
 		List<WorldPoint> points = new ArrayList<>();
-		for (DraftStep step : currentDraft.getSteps())
+		for (DraftStep step : expandOrderToDefinitionsInOrder())
 		{
 			if (step.getWorldPoint() != null)
 			{
@@ -613,7 +614,7 @@ public class HelperConstructManager
 			return Collections.emptyList();
 		}
 		List<WorldPoint> points = new ArrayList<>();
-		for (DraftStep step : currentDraft.getSteps())
+		for (DraftStep step : expandOrderToDefinitionsInOrder())
 		{
 			WorldPoint wp = step.getWorldPoint();
 			if (wp != null && isWithinMapBounds(wp))
@@ -635,21 +636,33 @@ public class HelperConstructManager
 		{
 			errors.add("missing packagePath");
 		}
-		if (currentDraft.getSteps().isEmpty())
+		if (!hasAnyOrderRef())
 		{
-			errors.add("no steps captured");
+			errors.add("no steps in quest order (use Add Step)");
 		}
 		return errors;
+	}
+
+	private boolean hasAnyOrderRef()
+	{
+		for (DraftOrderLine line : currentDraft.getOrder())
+		{
+			if (!line.isSectionDivider())
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public List<String> getStepSummaries()
 	{
 		ensureDraftLoaded();
-		var steps = currentDraft.getSteps();
-		List<String> summaries = new ArrayList<>(steps.size());
-		for (int i = 0; i < steps.size(); i++)
+		var defs = currentDraft.getStepDefinitions();
+		List<String> summaries = new ArrayList<>(defs.size());
+		for (int i = 0; i < defs.size(); i++)
 		{
-			summaries.add(formatStepSummary(steps.get(i), i + 1));
+			summaries.add(formatStepSummary(defs.get(i), i + 1));
 		}
 		return Collections.unmodifiableList(summaries);
 	}
@@ -669,7 +682,7 @@ public class HelperConstructManager
 		ensureDraftLoaded();
 		List<String> summaries = new ArrayList<>();
 		int index = 1;
-		for (DraftStep step : currentDraft.getSteps())
+		for (DraftStep step : currentDraft.getStepDefinitions())
 		{
 			if (step.getKind() == kind)
 			{
@@ -682,23 +695,57 @@ public class HelperConstructManager
 	public List<CombinedStepRow> getCombinedStepRows()
 	{
 		ensureDraftLoaded();
-		List<CombinedStepRow> rows = new ArrayList<>(currentDraft.getSteps().size());
-		for (int i = 0; i < currentDraft.getSteps().size(); i++)
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		List<CombinedStepRow> rows = new ArrayList<>(order.size());
+		for (int i = 0; i < order.size(); i++)
 		{
-			DraftStep step = currentDraft.getSteps().get(i);
-			if (step.getStepId() == null || step.getStepId().isBlank())
+			DraftOrderLine line = order.get(i);
+			if (line.getLineId() == null || line.getLineId().isBlank())
 			{
-				step.setStepId(UUID.randomUUID().toString());
+				line.setLineId(UUID.randomUUID().toString());
+				saveDraftToConfig();
+			}
+			if (line.isSectionDivider())
+			{
+				rows.add(new CombinedStepRow(
+					i,
+					line.getLineId(),
+					line.getSuggestedVarName(),
+					formatSectionLineSummary(line, i + 1),
+					true,
+					line.getSectionCondition(),
+					line.isSkipWhenConditionMet(),
+					null));
+				continue;
+			}
+			DraftStep def = findDefinitionByStepId(line.getRefStepId());
+			if (def == null)
+			{
+				rows.add(new CombinedStepRow(
+					i,
+					line.getRefStepId() == null ? "" : line.getRefStepId(),
+					"?",
+					"(missing step definition)",
+					false,
+					"",
+					false,
+					line.getLinkedRequirementRawId()));
+				continue;
+			}
+			if (def.getStepId() == null || def.getStepId().isBlank())
+			{
+				def.setStepId(UUID.randomUUID().toString());
 				saveDraftToConfig();
 			}
 			rows.add(new CombinedStepRow(
 				i,
-				step.getStepId(),
-				step.getSuggestedVarName(),
-				formatStepSummary(step, i + 1),
-				step.isSectionDivider(),
-				step.getSectionCondition(),
-				step.isSkipWhenConditionMet()));
+				def.getStepId(),
+				def.getSuggestedVarName(),
+				formatStepSummary(def, i + 1),
+				false,
+				"",
+				false,
+				line.getLinkedRequirementRawId()));
 		}
 		return Collections.unmodifiableList(rows);
 	}
@@ -706,29 +753,84 @@ public class HelperConstructManager
 	public void addSectionDivider()
 	{
 		ensureDraftLoaded();
-		DraftStep divider = new DraftStep();
-		divider.setStepId(UUID.randomUUID().toString());
-		divider.setKind(StepKind.TEXT);
-		divider.setSectionDivider(true);
-		divider.setSuggestedVarName(DEFAULT_SECTION_NAME);
-		divider.setInstructionText(DEFAULT_SECTION_NAME);
-		divider.setSectionCondition("");
-		divider.setSkipWhenConditionMet(false);
-		currentDraft.getSteps().add(divider);
+		DraftOrderLine line = new DraftOrderLine();
+		line.setLineId(UUID.randomUUID().toString());
+		line.setSectionDivider(true);
+		line.setSuggestedVarName(DEFAULT_SECTION_NAME);
+		line.setSectionCondition("");
+		line.setSkipWhenConditionMet(false);
+		currentDraft.getOrder().add(line);
 		saveDraftToConfig();
+	}
+
+	public void addOrderRef(String stepId)
+	{
+		ensureDraftLoaded();
+		if (stepId == null || stepId.isBlank() || findDefinitionByStepId(stepId) == null)
+		{
+			return;
+		}
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setRefStepId(stepId);
+		line.setLinkedRequirementRawId(null);
+		currentDraft.getOrder().add(line);
+		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
+	}
+
+	public boolean updateOrderLinkedRequirement(int orderIndex, Integer linkedRequirementRawId)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return false;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return false;
+		}
+		line.setLinkedRequirementRawId(linkedRequirementRawId);
+		saveDraftToConfig();
+		return true;
+	}
+
+	public List<StepDefinitionPickOption> getStepDefinitionPickOptions()
+	{
+		ensureDraftLoaded();
+		List<StepDefinitionPickOption> out = new ArrayList<>();
+		int i = 1;
+		for (DraftStep def : currentDraft.getStepDefinitions())
+		{
+			if (def.getStepId() == null || def.getStepId().isBlank())
+			{
+				def.setStepId(UUID.randomUUID().toString());
+			}
+			String label = formatStepSummary(def, i++) + " [" + def.getKind() + "]";
+			out.add(new StepDefinitionPickOption(def.getStepId(), label));
+		}
+		if (!out.isEmpty())
+		{
+			saveDraftToConfig();
+		}
+		return Collections.unmodifiableList(out);
 	}
 
 	public boolean moveStep(int fromIndex, int toIndex)
 	{
 		ensureDraftLoaded();
-		List<DraftStep> steps = currentDraft.getSteps();
-		if (fromIndex < 0 || toIndex < 0 || fromIndex >= steps.size() || toIndex >= steps.size() || fromIndex == toIndex)
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		if (fromIndex < 0 || toIndex < 0 || fromIndex >= order.size() || toIndex >= order.size() || fromIndex == toIndex)
 		{
 			return false;
 		}
 
-		DraftStep moved = steps.remove(fromIndex);
-		steps.add(toIndex, moved);
+		DraftOrderLine moved = order.remove(fromIndex);
+		order.add(toIndex, moved);
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)
 		{
@@ -740,11 +842,25 @@ public class HelperConstructManager
 	public boolean updateStepVarName(int index, String updatedVarName)
 	{
 		ensureDraftLoaded();
-		if (index < 0 || index >= currentDraft.getSteps().size())
+		if (index < 0 || index >= currentDraft.getOrder().size())
 		{
 			return false;
 		}
-		currentDraft.getSteps().get(index).setSuggestedVarName(updatedVarName == null ? "" : updatedVarName);
+		DraftOrderLine line = currentDraft.getOrder().get(index);
+		String v = updatedVarName == null ? "" : String.valueOf(updatedVarName);
+		if (line.isSectionDivider())
+		{
+			line.setSuggestedVarName(v);
+		}
+		else
+		{
+			DraftStep def = findDefinitionByStepId(line.getRefStepId());
+			if (def == null)
+			{
+				return false;
+			}
+			def.setSuggestedVarName(v);
+		}
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)
 		{
@@ -756,16 +872,16 @@ public class HelperConstructManager
 	public boolean updateSectionCondition(int index, String condition)
 	{
 		ensureDraftLoaded();
-		if (index < 0 || index >= currentDraft.getSteps().size())
+		if (index < 0 || index >= currentDraft.getOrder().size())
 		{
 			return false;
 		}
-		DraftStep step = currentDraft.getSteps().get(index);
-		if (!step.isSectionDivider())
+		DraftOrderLine line = currentDraft.getOrder().get(index);
+		if (!line.isSectionDivider())
 		{
 			return false;
 		}
-		step.setSectionCondition(condition == null ? "" : condition);
+		line.setSectionCondition(condition == null ? "" : condition);
 		saveDraftToConfig();
 		return true;
 	}
@@ -773,16 +889,16 @@ public class HelperConstructManager
 	public boolean toggleSectionSkipMode(int index)
 	{
 		ensureDraftLoaded();
-		if (index < 0 || index >= currentDraft.getSteps().size())
+		if (index < 0 || index >= currentDraft.getOrder().size())
 		{
 			return false;
 		}
-		DraftStep step = currentDraft.getSteps().get(index);
-		if (!step.isSectionDivider())
+		DraftOrderLine line = currentDraft.getOrder().get(index);
+		if (!line.isSectionDivider())
 		{
 			return false;
 		}
-		step.setSkipWhenConditionMet(!step.isSkipWhenConditionMet());
+		line.setSkipWhenConditionMet(!line.isSkipWhenConditionMet());
 		saveDraftToConfig();
 		return true;
 	}
@@ -808,6 +924,17 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(summaries);
 	}
 
+	public List<Integer> getRequirementRawIds()
+	{
+		ensureDraftLoaded();
+		List<Integer> ids = new ArrayList<>();
+		for (DraftRequirement r : currentDraft.getRequirements())
+		{
+			ids.add(r.getRawId());
+		}
+		return Collections.unmodifiableList(ids);
+	}
+
 	private boolean safeEquals(String left, String right)
 	{
 		return left == null ? right == null : left.equals(right);
@@ -816,11 +943,11 @@ public class HelperConstructManager
 	public boolean removeStepAt(int index)
 	{
 		ensureDraftLoaded();
-		if (index < 0 || index >= currentDraft.getSteps().size())
+		if (index < 0 || index >= currentDraft.getOrder().size())
 		{
 			return false;
 		}
-		currentDraft.getSteps().remove(index);
+		currentDraft.getOrder().remove(index);
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)
 		{
@@ -860,15 +987,16 @@ public class HelperConstructManager
 		}
 
 		int filteredIndex = 0;
-		for (int i = 0; i < currentDraft.getSteps().size(); i++)
+		for (int i = 0; i < currentDraft.getStepDefinitions().size(); i++)
 		{
-			if (currentDraft.getSteps().get(i).getKind() != kind)
+			if (currentDraft.getStepDefinitions().get(i).getKind() != kind)
 			{
 				continue;
 			}
 			if (filteredIndex == index)
 			{
-				currentDraft.getSteps().remove(i);
+				DraftStep removed = currentDraft.getStepDefinitions().remove(i);
+				removeOrderRefsToStepId(removed.getStepId());
 				saveDraftToConfig();
 				if (worldMapRoutePreviewEnabled)
 				{
@@ -879,6 +1007,69 @@ public class HelperConstructManager
 			filteredIndex++;
 		}
 		return false;
+	}
+
+	public boolean removeItemStepAt(int index)
+	{
+		return removeStepByKindAt(StepKind.ITEM, index);
+	}
+
+	private void removeOrderRefsToStepId(String stepId)
+	{
+		if (stepId == null || stepId.isBlank())
+		{
+			return;
+		}
+		currentDraft.getOrder().removeIf(line -> !line.isSectionDivider() && stepId.equals(line.getRefStepId()));
+	}
+
+	private DraftStep findDefinitionByStepId(String stepId)
+	{
+		if (stepId == null || stepId.isBlank())
+		{
+			return null;
+		}
+		for (DraftStep def : currentDraft.getStepDefinitions())
+		{
+			if (stepId.equals(def.getStepId()))
+			{
+				return def;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Ordered definitions for route map / preview: one entry per non-section order line with a resolved definition.
+	 */
+	public List<DraftStep> expandOrderToDefinitionsInOrder()
+	{
+		ensureDraftLoaded();
+		List<DraftStep> out = new ArrayList<>();
+		for (DraftOrderLine line : currentDraft.getOrder())
+		{
+			if (line.isSectionDivider())
+			{
+				continue;
+			}
+			DraftStep def = findDefinitionByStepId(line.getRefStepId());
+			if (def != null)
+			{
+				out.add(def);
+			}
+		}
+		return out;
+	}
+
+	private String formatSectionLineSummary(DraftOrderLine line, int displayIndex)
+	{
+		String mode = line.isSkipWhenConditionMet() ? "skip when true" : "show when true";
+		String condition = line.getSectionCondition() == null || line.getSectionCondition().isBlank() ? "no condition" : line.getSectionCondition();
+		return String.format("SECTION %d. %s [%s: %s]",
+			displayIndex,
+			line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? DEFAULT_SECTION_NAME : line.getSuggestedVarName(),
+			mode,
+			condition);
 	}
 
 	private void ensureDraftLoaded()
@@ -917,27 +1108,30 @@ public class HelperConstructManager
 			if (state.packagePath != null) loaded.setPackagePath(state.packagePath);
 			if (state.helperType != null) loaded.setHelperType(state.helperType);
 
-			for (DraftStepState stepState : state.steps)
+			if (state.order != null && !state.order.isEmpty())
 			{
-				DraftStep step = new DraftStep();
-				step.setStepId(stepState.stepId == null || stepState.stepId.isBlank() ? UUID.randomUUID().toString() : stepState.stepId);
-				step.setKind(stepState.kind);
-				step.setSectionDivider(stepState.sectionDivider);
-				step.setRawId(stepState.rawId);
-				step.setLinkedRequirementRawId(stepState.linkedRequirementRawId);
-				step.setResolvedSymbol(stepState.resolvedSymbol);
-				step.setOption(stepState.option);
-				step.setTargetText(stepState.targetText);
-				step.setSuggestedVarName(stepState.suggestedVarName);
-				step.setInstructionText(stepState.instructionText);
-				step.setPanelName(stepState.panelName);
-				step.setSectionCondition(stepState.sectionCondition);
-				step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
-				if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
+				if (state.definitions != null)
 				{
-					step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
+					for (DraftStepState stepState : state.definitions)
+					{
+						loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
+					}
 				}
-				loaded.getSteps().add(step);
+				for (DraftOrderLineState lineState : state.order)
+				{
+					loaded.getOrder().add(draftOrderLineFromState(lineState));
+				}
+			}
+			else if (state.definitions != null && !state.definitions.isEmpty())
+			{
+				for (DraftStepState stepState : state.definitions)
+				{
+					loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
+				}
+			}
+			else if (state.steps != null && !state.steps.isEmpty())
+			{
+				migrateLegacyStepsList(state.steps, loaded);
 			}
 
 			for (DraftRequirementState reqState : state.requirements)
@@ -957,6 +1151,68 @@ public class HelperConstructManager
 		}
 	}
 
+	private static DraftStep draftStepFromState(DraftStepState stepState, boolean keepSectionDivider)
+	{
+		DraftStep step = new DraftStep();
+		step.setStepId(stepState.stepId == null || stepState.stepId.isBlank() ? UUID.randomUUID().toString() : stepState.stepId);
+		step.setKind(stepState.kind);
+		step.setSectionDivider(keepSectionDivider && stepState.sectionDivider);
+		step.setRawId(stepState.rawId);
+		step.setLinkedRequirementRawId(stepState.linkedRequirementRawId);
+		step.setResolvedSymbol(stepState.resolvedSymbol);
+		step.setOption(stepState.option);
+		step.setTargetText(stepState.targetText);
+		step.setSuggestedVarName(stepState.suggestedVarName);
+		step.setInstructionText(stepState.instructionText);
+		step.setPanelName(stepState.panelName);
+		step.setSectionCondition(stepState.sectionCondition);
+		step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
+		if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
+		{
+			step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
+		}
+		return step;
+	}
+
+	private static DraftOrderLine draftOrderLineFromState(DraftOrderLineState s)
+	{
+		DraftOrderLine line = new DraftOrderLine();
+		line.setLineId(s.lineId == null || s.lineId.isBlank() ? UUID.randomUUID().toString() : s.lineId);
+		line.setSectionDivider(s.sectionDivider);
+		line.setSuggestedVarName(s.suggestedVarName);
+		line.setSectionCondition(s.sectionCondition);
+		line.setSkipWhenConditionMet(s.skipWhenConditionMet);
+		line.setRefStepId(s.refStepId);
+		line.setLinkedRequirementRawId(s.linkedRequirementRawId);
+		return line;
+	}
+
+	private static void migrateLegacyStepsList(List<DraftStepState> legacySteps, DraftHelper loaded)
+	{
+		for (DraftStepState stepState : legacySteps)
+		{
+			DraftStep step = draftStepFromState(stepState, true);
+			if (step.isSectionDivider())
+			{
+				DraftOrderLine line = new DraftOrderLine();
+				line.setLineId(step.getStepId());
+				line.setSectionDivider(true);
+				line.setSuggestedVarName(step.getSuggestedVarName());
+				line.setSectionCondition(step.getSectionCondition());
+				line.setSkipWhenConditionMet(step.isSkipWhenConditionMet());
+				loaded.getOrder().add(line);
+				continue;
+			}
+			step.setSectionDivider(false);
+			loaded.getStepDefinitions().add(step);
+			DraftOrderLine refLine = new DraftOrderLine();
+			refLine.setSectionDivider(false);
+			refLine.setRefStepId(step.getStepId());
+			refLine.setLinkedRequirementRawId(null);
+			loaded.getOrder().add(refLine);
+		}
+	}
+
 	private void saveDraftToConfig()
 	{
 		if (configManager == null)
@@ -969,12 +1225,12 @@ public class HelperConstructManager
 		state.packagePath = currentDraft.getPackagePath();
 		state.helperType = currentDraft.getHelperType();
 
-		for (DraftStep step : currentDraft.getSteps())
+		for (DraftStep step : currentDraft.getStepDefinitions())
 		{
 			DraftStepState stepState = new DraftStepState();
 			stepState.stepId = step.getStepId();
 			stepState.kind = step.getKind();
-			stepState.sectionDivider = step.isSectionDivider();
+			stepState.sectionDivider = false;
 			stepState.rawId = step.getRawId();
 			stepState.linkedRequirementRawId = step.getLinkedRequirementRawId();
 			stepState.resolvedSymbol = step.getResolvedSymbol();
@@ -991,7 +1247,20 @@ public class HelperConstructManager
 				stepState.worldY = step.getWorldPoint().getY();
 				stepState.worldPlane = step.getWorldPoint().getPlane();
 			}
-			state.steps.add(stepState);
+			state.definitions.add(stepState);
+		}
+
+		for (DraftOrderLine line : currentDraft.getOrder())
+		{
+			DraftOrderLineState lineState = new DraftOrderLineState();
+			lineState.lineId = line.getLineId();
+			lineState.sectionDivider = line.isSectionDivider();
+			lineState.suggestedVarName = line.getSuggestedVarName();
+			lineState.sectionCondition = line.getSectionCondition();
+			lineState.skipWhenConditionMet = line.isSkipWhenConditionMet();
+			lineState.refStepId = line.getRefStepId();
+			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
+			state.order.add(lineState);
 		}
 
 		for (DraftRequirement req : currentDraft.getRequirements())
@@ -1008,7 +1277,7 @@ public class HelperConstructManager
 
 	private boolean isNpcAction(MenuAction menuAction)
 	{
-		return menuAction == MenuAction.NPC_FIRST_OPTION;
+		return menuAction == MenuAction.NPC_FIRST_OPTION || menuAction == MenuAction.NPC_SECOND_OPTION;
 	}
 
 	private boolean isObjectAction(MenuAction menuAction)
@@ -1112,7 +1381,7 @@ public class HelperConstructManager
 			return;
 		}
 		clearWorldMapRoutePoints();
-		List<DraftStep> steps = currentDraft.getSteps();
+		List<DraftStep> steps = expandOrderToDefinitionsInOrder();
 		for (int i = 0; i < steps.size(); i++)
 		{
 			DraftStep step = steps.get(i);
@@ -1301,7 +1570,7 @@ public class HelperConstructManager
 		}
 	}
 
-	private static class PreviewQuestHelper extends ComplexStateQuestHelper
+	private class PreviewQuestHelper extends ComplexStateQuestHelper
 	{
 		private final DraftHelper draft;
 		private final List<ItemRequirement> previewRequirements = new ArrayList<>();
@@ -1344,9 +1613,9 @@ public class HelperConstructManager
 			List<PreviewStepEntry> currentSectionEntries = new ArrayList<>();
 			String currentPanelName = "Captured Steps";
 
-			for (DraftStep draftStep : draft.getSteps())
+			for (DraftOrderLine orderLine : draft.getOrder())
 			{
-				if (draftStep.isSectionDivider())
+				if (orderLine.isSectionDivider())
 				{
 					ConditionalStep sectionTask = createSectionTask(currentPanelName, currentSectionEntries);
 					if (sectionTask != null)
@@ -1355,12 +1624,18 @@ public class HelperConstructManager
 						addPanelWithLockingStep(currentPanelName, currentSectionEntries, sectionTask);
 						sectionTasks.add(sectionTask);
 					}
-					String sectionName = draftStep.getSuggestedVarName();
+					String sectionName = orderLine.getSuggestedVarName();
 					currentPanelName = (sectionName == null || sectionName.isBlank()) ? "Section" : sectionName;
 					continue;
 				}
 
-				PreviewStepEntry stepEntry = toPreviewStep(draftStep, requirementById);
+				DraftStep def = findDefinitionByStepId(orderLine.getRefStepId());
+				if (def == null)
+				{
+					continue;
+				}
+
+				PreviewStepEntry stepEntry = toPreviewStep(def, requirementById, orderLine.getLinkedRequirementRawId());
 				if (stepEntry != null)
 				{
 					currentSectionEntries.add(stepEntry);
@@ -1458,13 +1733,13 @@ public class HelperConstructManager
 			return new ArrayList<>(requirements);
 		}
 
-		private PreviewStepEntry toPreviewStep(DraftStep draftStep, Map<Integer, ItemRequirement> requirementById)
+		private PreviewStepEntry toPreviewStep(DraftStep draftStep, Map<Integer, ItemRequirement> requirementById, Integer orderLinkedOverride)
 		{
 			String instruction = (draftStep.getInstructionText() == null || draftStep.getInstructionText().isBlank())
 				? "Complete step."
 				: draftStep.getInstructionText();
 			QuestStep step;
-			Requirement originalCompletionRequirement = defaultIncompleteRequirement();
+			Requirement originalCompletionRequirement = previewCompletionRequirement(draftStep, requirementById, orderLinkedOverride);
 			if (draftStep.getKind() == StepKind.NPC)
 			{
 				if (draftStep.getWorldPoint() != null)
@@ -1489,11 +1764,11 @@ public class HelperConstructManager
 			}
 			else if (draftStep.getKind() == StepKind.ITEM)
 			{
+				Integer highlightRawId = itemHighlightRawIdForPreview(draftStep, orderLinkedOverride);
 				ItemRequirement itemRequirement = null;
-				Integer linkedRequirementRawId = draftStep.getLinkedRequirementRawId();
-				if (linkedRequirementRawId != null)
+				if (highlightRawId != null)
 				{
-					itemRequirement = requirementById.get(linkedRequirementRawId);
+					itemRequirement = requirementById.get(highlightRawId);
 				}
 				if (itemRequirement == null)
 				{
@@ -1502,7 +1777,6 @@ public class HelperConstructManager
 				if (itemRequirement != null)
 				{
 					step = new ItemStep(this, instruction, itemRequirement.highlighted());
-					originalCompletionRequirement = itemRequirement;
 				}
 				else
 				{
@@ -1517,6 +1791,33 @@ public class HelperConstructManager
 			ManualRequirement manualOverride = defaultIncompleteRequirement();
 			manualStepRequirements.add(manualOverride);
 			return new PreviewStepEntry(step, or(originalCompletionRequirement, manualOverride));
+		}
+
+		private Requirement previewCompletionRequirement(DraftStep def, Map<Integer, ItemRequirement> requirementById, Integer orderLinkedOverride)
+		{
+			if (orderLinkedOverride != null && orderLinkedOverride == ORDER_ROUTING_VARBIT_SENTINEL)
+			{
+				return defaultIncompleteRequirement();
+			}
+			Integer rid = orderLinkedOverride != null ? orderLinkedOverride : def.getLinkedRequirementRawId();
+			if (rid != null)
+			{
+				ItemRequirement ir = requirementById.get(rid);
+				if (ir != null)
+				{
+					return ir;
+				}
+			}
+			return defaultIncompleteRequirement();
+		}
+
+		private Integer itemHighlightRawIdForPreview(DraftStep def, Integer orderLinkedOverride)
+		{
+			if (orderLinkedOverride != null && orderLinkedOverride != ORDER_ROUTING_VARBIT_SENTINEL)
+			{
+				return orderLinkedOverride;
+			}
+			return def.getLinkedRequirementRawId();
 		}
 
 		private ManualRequirement defaultIncompleteRequirement()
@@ -1623,7 +1924,10 @@ public class HelperConstructManager
 		String className;
 		String packagePath;
 		String helperType;
+		/** @deprecated Legacy single-list format; migrated on load. */
 		List<DraftStepState> steps = new ArrayList<>();
+		List<DraftStepState> definitions = new ArrayList<>();
+		List<DraftOrderLineState> order = new ArrayList<>();
 		List<DraftRequirementState> requirements = new ArrayList<>();
 	}
 
@@ -1647,6 +1951,34 @@ public class HelperConstructManager
 		Integer worldPlane;
 	}
 
+	public static final class StepDefinitionPickOption
+	{
+		private final String stepId;
+		private final String label;
+
+		public StepDefinitionPickOption(String stepId, String label)
+		{
+			this.stepId = stepId;
+			this.label = label;
+		}
+
+		public String getStepId()
+		{
+			return stepId;
+		}
+
+		public String getLabel()
+		{
+			return label;
+		}
+
+		@Override
+		public String toString()
+		{
+			return label;
+		}
+	}
+
 	public static class CombinedStepRow
 	{
 		private final int index;
@@ -1656,8 +1988,9 @@ public class HelperConstructManager
 		private final boolean sectionDivider;
 		private final String sectionCondition;
 		private final boolean skipWhenConditionMet;
+		private final Integer orderLinkedRequirementRawId;
 
-		public CombinedStepRow(int index, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet)
+		public CombinedStepRow(int index, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId)
 		{
 			this.index = index;
 			this.stepId = stepId;
@@ -1666,6 +1999,7 @@ public class HelperConstructManager
 			this.sectionDivider = sectionDivider;
 			this.sectionCondition = sectionCondition;
 			this.skipWhenConditionMet = skipWhenConditionMet;
+			this.orderLinkedRequirementRawId = orderLinkedRequirementRawId;
 		}
 
 		public int getIndex()
@@ -1702,6 +2036,25 @@ public class HelperConstructManager
 		{
 			return skipWhenConditionMet;
 		}
+
+		/**
+		 * Order-line override for routing / item highlight: {@code null} inherit, {@link HelperConstructModels#ORDER_ROUTING_VARBIT_SENTINEL} varbit, else requirement raw id.
+		 */
+		public Integer getOrderLinkedRequirementRawId()
+		{
+			return orderLinkedRequirementRawId;
+		}
+	}
+
+	private static class DraftOrderLineState
+	{
+		String lineId;
+		boolean sectionDivider;
+		String suggestedVarName;
+		String sectionCondition;
+		boolean skipWhenConditionMet;
+		String refStepId;
+		Integer linkedRequirementRawId;
 	}
 
 	private static class DraftRequirementState

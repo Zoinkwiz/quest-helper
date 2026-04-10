@@ -8,20 +8,24 @@ import net.runelite.client.util.SwingUtil;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.border.BevelBorder;
+import javax.swing.table.TableCellEditor;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HelperConstructPanel extends PluginPanel
 {
 	private final HelperConstructManager helperConstructManager;
-	private final JPanel npcStepsList = new JPanel();
-	private final JPanel objectStepsList = new JPanel();
-	private final JPanel requirementsList = new JPanel();
+	private final LibraryTableModel npcLibraryModel = new LibraryTableModel();
+	private final LibraryTableModel objectLibraryModel = new LibraryTableModel();
+	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
+	private JTable orderTable;
 	private final CardLayout stepsViewLayout = new CardLayout();
 	private final JPanel stepsViewContainer = new JPanel(stepsViewLayout);
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
@@ -47,6 +51,7 @@ public class HelperConstructPanel extends PluginPanel
 		var title = JGenerator.makeJTextArea("Quest Helper Maker");
 		title.setForeground(Color.WHITE);
 		root.add(title);
+		root.add(Box.createVerticalStrut(6));
 		JPanel buttonRow = new JPanel(new GridLayout(2, 3, 6, 6));
 		buttonRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		buttonRow.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 58));
@@ -130,46 +135,158 @@ public class HelperConstructPanel extends PluginPanel
 		sectioned.setLayout(new BoxLayout(sectioned, BoxLayout.Y_AXIS));
 		sectioned.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		var borderNpcSteps = new JPanel(new BorderLayout());
-		borderNpcSteps.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		npcStepsList.setLayout(new BoxLayout(npcStepsList, BoxLayout.Y_AXIS));
-		npcStepsList.setBorder(new EmptyBorder(10, 5, 10, 5));
-		borderNpcSteps.add(npcStepsList);
-
-		var borderObjectSteps = new JPanel(new BorderLayout());
-		objectStepsList.setLayout(new BoxLayout(objectStepsList, BoxLayout.Y_AXIS));
-		objectStepsList.setBorder(new EmptyBorder(10, 5, 10, 5));
-		borderObjectSteps.add(objectStepsList);
-
-		var borderRequirements = new JPanel(new BorderLayout());
-		borderRequirements.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		requirementsList.setLayout(new BoxLayout(requirementsList, BoxLayout.Y_AXIS));
-		requirementsList.setBorder(new EmptyBorder(10, 5, 10, 5));
-		borderRequirements.add(requirementsList);
-
-		sectioned.add(sectionLabel("NPC Steps"));
-		sectioned.add(borderNpcSteps);
+		sectioned.add(sectionLabel("NPC Steps (library)"));
+		sectioned.add(wrapLibraryTable(new JTable(npcLibraryModel), LibraryRemoveKind.NPC));
 		sectioned.add(Box.createVerticalStrut(10));
-		sectioned.add(sectionLabel("Object Steps"));
-		sectioned.add(borderObjectSteps);
+		sectioned.add(sectionLabel("Object Steps (library)"));
+		sectioned.add(wrapLibraryTable(new JTable(objectLibraryModel), LibraryRemoveKind.OBJECT));
 		sectioned.add(Box.createVerticalStrut(10));
 		sectioned.add(sectionLabel("Captured Requirements"));
-		sectioned.add(borderRequirements);
+		sectioned.add(wrapLibraryTable(new JTable(requirementLibraryModel), LibraryRemoveKind.REQUIREMENT));
 		return sectioned;
+	}
+
+	private JScrollPane wrapLibraryTable(JTable table, LibraryRemoveKind removeKind)
+	{
+		styleLibraryTable(table);
+		table.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				int row = table.rowAtPoint(e.getPoint());
+				int col = table.columnAtPoint(e.getPoint());
+				if (row < 0 || col != 1)
+				{
+					return;
+				}
+				switch (removeKind)
+				{
+					case NPC:
+						helperConstructManager.removeNpcStepAt(row);
+						break;
+					case OBJECT:
+						helperConstructManager.removeObjectStepAt(row);
+						break;
+					case REQUIREMENT:
+						helperConstructManager.removeRequirementAt(row);
+						break;
+				}
+				refresh();
+			}
+		});
+		JScrollPane sp = new JScrollPane(table);
+		sp.setBorder(new EmptyBorder(0, 0, 0, 0));
+		return sp;
+	}
+
+	private void styleLibraryTable(JTable table)
+	{
+		table.setFillsViewportHeight(true);
+		table.setRowHeight(24);
+		table.setShowGrid(false);
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+		{
+			@Override
+			public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			{
+				Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+				if (!isSelected)
+				{
+					c.setBackground(ColorScheme.DARK_GRAY_COLOR);
+					c.setForeground(column == 1 ? new Color(100, 180, 255) : Color.WHITE);
+				}
+				return c;
+			}
+		});
+		if (table.getColumnModel().getColumnCount() >= 2)
+		{
+			table.getColumnModel().getColumn(0).setPreferredWidth(320);
+			table.getColumnModel().getColumn(1).setPreferredWidth(72);
+		}
+	}
+
+	private enum LibraryRemoveKind
+	{
+		NPC,
+		OBJECT,
+		REQUIREMENT
+	}
+
+	private static final class LibraryTableModel extends AbstractTableModel
+	{
+		private final String[] columns = {"Captured", "Remove"};
+		private List<String> rows = new ArrayList<>();
+
+		void setRows(List<String> updatedRows)
+		{
+			rows = new ArrayList<>(updatedRows);
+			fireTableDataChanged();
+		}
+
+		@Override
+		public int getRowCount()
+		{
+			return rows.size();
+		}
+
+		@Override
+		public int getColumnCount()
+		{
+			return columns.length;
+		}
+
+		@Override
+		public String getColumnName(int column)
+		{
+			return columns[column];
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+		{
+			if (columnIndex == 0)
+			{
+				return rows.get(rowIndex);
+			}
+			return rows.isEmpty() ? "" : "Remove";
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex)
+		{
+			return false;
+		}
 	}
 
 	private JPanel buildOrderedView()
 	{
 		JPanel ordered = new JPanel(new BorderLayout(0, 6));
 		ordered.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		ordered.add(sectionLabel("Sections and Steps"), BorderLayout.NORTH);
+		ordered.add(sectionLabel("Quest order (sections + step references)"), BorderLayout.NORTH);
 
-		JTable table = new JTable(stepOrderTableModel);
-		table.setDragEnabled(true);
-		table.setDropMode(DropMode.INSERT_ROWS);
-		table.setFillsViewportHeight(true);
-		table.setRowHeight(24);
-		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+		orderTable = new JTable(stepOrderTableModel)
+		{
+			@Override
+			public TableCellEditor getCellEditor(int row, int column)
+			{
+				if (column == 1)
+				{
+					var entry = stepOrderTableModel.getRow(row);
+					if (entry != null && entry.isSectionDivider())
+					{
+						return new DefaultCellEditor(new JTextField());
+					}
+					return buildRequirementComboEditor(row);
+				}
+				return super.getCellEditor(row, column);
+			}
+		};
+		orderTable.setDragEnabled(true);
+		orderTable.setDropMode(DropMode.INSERT_ROWS);
+		orderTable.setFillsViewportHeight(true);
+		orderTable.setRowHeight(24);
+		orderTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
 		{
 			@Override
 			public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column)
@@ -197,31 +314,36 @@ public class HelperConstructPanel extends PluginPanel
 				return c;
 			}
 		});
-		table.getColumnModel().getColumn(0).setPreferredWidth(150);
-		table.getColumnModel().getColumn(1).setPreferredWidth(240);
-		table.setTransferHandler(new StepReorderTransferHandler(table));
+		orderTable.getColumnModel().getColumn(0).setPreferredWidth(150);
+		orderTable.getColumnModel().getColumn(1).setPreferredWidth(240);
+		orderTable.setTransferHandler(new StepReorderTransferHandler(orderTable));
 
-		JScrollPane tableScroll = new JScrollPane(table);
+		JScrollPane tableScroll = new JScrollPane(orderTable);
 		tableScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		ordered.add(tableScroll, BorderLayout.CENTER);
 
 		JButton removeSelectedButton = new JButton("Remove Selected");
+		JButton addStepButton = new JButton("Add Step");
 		JButton addSectionButton = new JButton("Add Section");
 		SwingUtil.removeButtonDecorations(removeSelectedButton);
+		SwingUtil.removeButtonDecorations(addStepButton);
 		SwingUtil.removeButtonDecorations(addSectionButton);
 		removeSelectedButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		addStepButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		addSectionButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		removeSelectedButton.setForeground(Color.WHITE);
+		addStepButton.setForeground(Color.WHITE);
 		addSectionButton.setForeground(Color.WHITE);
 		removeSelectedButton.addActionListener(e ->
 		{
-			int selected = table.getSelectedRow();
+			int selected = orderTable.getSelectedRow();
 			if (selected >= 0)
 			{
 				helperConstructManager.removeStepAt(selected);
 				refresh();
 			}
 		});
+		addStepButton.addActionListener(e -> showAddStepDialog());
 		addSectionButton.addActionListener(e ->
 		{
 			helperConstructManager.addSectionDivider();
@@ -229,6 +351,8 @@ public class HelperConstructPanel extends PluginPanel
 		});
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		actions.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		actions.add(addStepButton);
+		actions.add(Box.createHorizontalStrut(6));
 		actions.add(addSectionButton);
 		actions.add(Box.createHorizontalStrut(6));
 		actions.add(removeSelectedButton);
@@ -236,12 +360,82 @@ public class HelperConstructPanel extends PluginPanel
 		return ordered;
 	}
 
+	private void showAddStepDialog()
+	{
+		var options = helperConstructManager.getStepDefinitionPickOptions();
+		if (options.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				"Capture NPC, object, or item steps in Section View first, then add them to the quest order here.",
+				"Add Step",
+				JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		JList<HelperConstructManager.StepDefinitionPickOption> list = new JList<>(options.toArray(new HelperConstructManager.StepDefinitionPickOption[0]));
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		if (!options.isEmpty())
+		{
+			list.setSelectedIndex(0);
+		}
+		JScrollPane sp = new JScrollPane(list);
+		sp.setPreferredSize(new Dimension(420, 240));
+		int r = JOptionPane.showConfirmDialog(this, sp, "Add Step to order", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r == JOptionPane.OK_OPTION && list.getSelectedValue() != null)
+		{
+			helperConstructManager.addOrderRef(list.getSelectedValue().getStepId());
+			refresh();
+		}
+	}
+
+	private TableCellEditor buildRequirementComboEditor(int row)
+	{
+		JComboBox<ReqChoice> combo = new JComboBox<>();
+		combo.addItem(new ReqChoice("Default (from step)", null));
+		combo.addItem(new ReqChoice("Varbit only", HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY));
+		List<Integer> ids = helperConstructManager.getRequirementRawIds();
+		List<String> labels = helperConstructManager.getRequirementSummaries();
+		for (int i = 0; i < ids.size(); i++)
+		{
+			String lab = i < labels.size() ? labels.get(i) : String.valueOf(ids.get(i));
+			combo.addItem(new ReqChoice(lab, ids.get(i)));
+		}
+		var entry = stepOrderTableModel.getRow(row);
+		Integer cur = entry == null ? null : entry.getOrderLinkedRequirementRawId();
+		for (int i = 0; i < combo.getItemCount(); i++)
+		{
+			if (Objects.equals(combo.getItemAt(i).value, cur))
+			{
+				combo.setSelectedIndex(i);
+				break;
+			}
+		}
+		return new DefaultCellEditor(combo);
+	}
+
+	private static final class ReqChoice
+	{
+		private final String label;
+		private final Integer value;
+
+		private ReqChoice(String label, Integer value)
+		{
+			this.label = label;
+			this.value = value;
+		}
+
+		@Override
+		public String toString()
+		{
+			return label;
+		}
+	}
+
 	public void refresh()
 	{
 		int scrollValue = scrollPane.getVerticalScrollBar().getValue();
-		rebuildNpcStepRows();
-		rebuildObjectStepRows();
-		rebuildRequirementRows();
+		npcLibraryModel.setRows(helperConstructManager.getNpcStepSummaries());
+		objectLibraryModel.setRows(helperConstructManager.getObjectStepSummaries());
+		requirementLibraryModel.setRows(helperConstructManager.getRequirementSummaries());
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
 		lastRenderSignature = computeSignature();
 		revalidate();
@@ -253,44 +447,6 @@ public class HelperConstructPanel extends PluginPanel
 	{
 		refreshTimer.stop();
 		helperConstructManager.disableWorldMapRoutePreview();
-	}
-
-	private void rebuildNpcStepRows()
-	{
-		npcStepsList.removeAll();
-		var rows = helperConstructManager.getNpcStepSummaries();
-		if (rows.isEmpty())
-		{
-			npcStepsList.add(emptyLabel("No NPC steps captured."));
-			return;
-		}
-
-		for (int i = 0; i < rows.size(); i++)
-		{
-			JPanel row = makeStepRow(rows.get(i), i, StepCategory.NPC);
-			row.setAlignmentX(Component.LEFT_ALIGNMENT);
-			row.setMaximumSize(new Dimension(Integer.MAX_VALUE, row.getPreferredSize().height));
-			npcStepsList.add(row);
-		}
-	}
-
-	private void rebuildObjectStepRows()
-	{
-		objectStepsList.removeAll();
-		var rows = helperConstructManager.getObjectStepSummaries();
-		if (rows.isEmpty())
-		{
-			objectStepsList.add(emptyLabel("No object steps captured."));
-			return;
-		}
-
-		for (int i = 0; i < rows.size(); i++)
-		{
-			JPanel row = makeStepRow(rows.get(i), i, StepCategory.OBJECT);
-			row.setAlignmentX(Component.LEFT_ALIGNMENT);
-			row.setMaximumSize(new Dimension(Integer.MAX_VALUE, row.getPreferredSize().height));
-			objectStepsList.add(row);
-		}
 	}
 
 	private void refreshIfChanged()
@@ -311,102 +467,6 @@ public class HelperConstructPanel extends PluginPanel
 			+ "|R|" + String.join("\n", helperConstructManager.getRequirementSummaries());
 	}
 
-	private void rebuildRequirementRows()
-	{
-		requirementsList.removeAll();
-		var rows = helperConstructManager.getRequirementSummaries();
-		if (rows.isEmpty())
-		{
-			requirementsList.add(emptyLabel("No requirements captured."));
-			return;
-		}
-
-		for (int i = 0; i < rows.size(); i++)
-		{
-			JPanel row = makeRequirementRow(rows.get(i), i);
-			row.setAlignmentX(Component.LEFT_ALIGNMENT);
-			row.setMaximumSize(new Dimension(Integer.MAX_VALUE, row.getPreferredSize().height));
-			requirementsList.add(row);
-		}
-	}
-
-	private JPanel makeStepRow(String text, int index, StepCategory category)
-	{
-		JPanel row = new FixedWidthPanel();
-		row.setLayout(new BorderLayout(0, 4));
-		row.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		row.setBorder(new EmptyBorder(4, 0, 4, 0));
-		row.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-		var textArea = JGenerator.makeJTextArea(text);
-		textArea.setForeground(Color.WHITE);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setFocusable(false);
-		textArea.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
-		row.add(textArea, BorderLayout.CENTER);
-
-		JButton remove = new JButton("Remove");
-		SwingUtil.removeButtonDecorations(remove);
-		remove.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		remove.setForeground(Color.WHITE);
-		remove.setPreferredSize(new Dimension(68, 22));
-		remove.addActionListener(e ->
-		{
-			if (category == StepCategory.NPC)
-			{
-				helperConstructManager.removeNpcStepAt(index);
-			}
-			else
-			{
-				helperConstructManager.removeObjectStepAt(index);
-			}
-			refresh();
-		});
-		JPanel actionRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-		actionRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		actionRow.add(remove);
-		row.add(actionRow, BorderLayout.SOUTH);
-		return row;
-	}
-
-	private JPanel makeRequirementRow(String text, int index)
-	{
-		JPanel row = new FixedWidthPanel();
-		row.setLayout(new BorderLayout(0, 4));
-		row.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		row.setBorder(new EmptyBorder(4, 0, 4, 0));
-		row.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-		var textArea = JGenerator.makeJTextArea(text);
-		textArea.setForeground(Color.WHITE);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setFocusable(false);
-		textArea.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		textArea.setBorder(new EmptyBorder(0, 0, 0, 0));
-		row.add(textArea, BorderLayout.CENTER);
-
-		JButton remove = new JButton("Remove");
-		SwingUtil.removeButtonDecorations(remove);
-		remove.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		remove.setForeground(Color.WHITE);
-		remove.setPreferredSize(new Dimension(68, 22));
-		remove.addActionListener(e ->
-		{
-			helperConstructManager.removeRequirementAt(index);
-			refresh();
-		});
-		JPanel actionRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-		actionRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		actionRow.add(remove);
-		row.add(actionRow, BorderLayout.SOUTH);
-		return row;
-	}
-
 	private JTextArea sectionLabel(String text)
 	{
 		var label = JGenerator.makeJTextArea(text);
@@ -416,25 +476,9 @@ public class HelperConstructPanel extends PluginPanel
 		return label;
 	}
 
-	private JTextArea emptyLabel(String text)
-	{
-		var label = JGenerator.makeJTextArea(text);
-		label.setForeground(Color.GRAY);
-		label.setAlignmentX(Component.LEFT_ALIGNMENT);
-		label.setLineWrap(true);
-		label.setWrapStyleWord(true);
-		return label;
-	}
-
-	private enum StepCategory
-	{
-		NPC,
-		OBJECT
-	}
-
 	private final class StepOrderTableModel extends AbstractTableModel
 	{
-		private final String[] columns = {"Name/Var", "Detail"};
+		private final String[] columns = {"Name/Var", "Requirement / condition"};
 		private List<HelperConstructManager.CombinedStepRow> rows = new ArrayList<>();
 
 		@Override
@@ -463,7 +507,34 @@ public class HelperConstructPanel extends PluginPanel
 			{
 				return row.getVarName();
 			}
-			return row.isSectionDivider() ? (row.getSectionCondition() == null ? "" : row.getSectionCondition()) : row.getSummary();
+			if (row.isSectionDivider())
+			{
+				return row.getSectionCondition() == null ? "" : row.getSectionCondition();
+			}
+			return formatRequirementChoiceLabel(row);
+		}
+
+		private String formatRequirementChoiceLabel(HelperConstructManager.CombinedStepRow row)
+		{
+			Integer v = row.getOrderLinkedRequirementRawId();
+			if (v == null)
+			{
+				return "Default (from step)";
+			}
+			if (v == HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY)
+			{
+				return "Varbit only";
+			}
+			List<Integer> ids = helperConstructManager.getRequirementRawIds();
+			List<String> labels = helperConstructManager.getRequirementSummaries();
+			for (int i = 0; i < ids.size(); i++)
+			{
+				if (ids.get(i).equals(v))
+				{
+					return i < labels.size() ? labels.get(i) : String.valueOf(v);
+				}
+			}
+			return "Requirement id " + v;
 		}
 
 		@Override
@@ -474,27 +545,31 @@ public class HelperConstructPanel extends PluginPanel
 			{
 				return true;
 			}
-			if (columnIndex == 1)
-			{
-				return row.isSectionDivider();
-			}
-			return false;
+			return columnIndex == 1;
 		}
 
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 		{
-			if (columnIndex != 0)
+			var row = rows.get(rowIndex);
+			if (columnIndex == 0)
 			{
-				if (columnIndex == 1)
-				{
-					helperConstructManager.updateSectionCondition(rowIndex, aValue == null ? "" : String.valueOf(aValue));
-					setRows(helperConstructManager.getCombinedStepRows());
-				}
+				helperConstructManager.updateStepVarName(rowIndex, aValue == null ? "" : String.valueOf(aValue));
+				setRows(helperConstructManager.getCombinedStepRows());
 				return;
 			}
-			helperConstructManager.updateStepVarName(rowIndex, aValue == null ? "" : String.valueOf(aValue));
-			setRows(helperConstructManager.getCombinedStepRows());
+			if (columnIndex == 1)
+			{
+				if (row.isSectionDivider())
+				{
+					helperConstructManager.updateSectionCondition(rowIndex, aValue == null ? "" : String.valueOf(aValue));
+				}
+				else if (aValue instanceof ReqChoice)
+				{
+					helperConstructManager.updateOrderLinkedRequirement(rowIndex, ((ReqChoice) aValue).value);
+				}
+				setRows(helperConstructManager.getCombinedStepRows());
+			}
 		}
 
 		void setRows(List<HelperConstructManager.CombinedStepRow> updatedRows)
@@ -517,7 +592,7 @@ public class HelperConstructPanel extends PluginPanel
 			List<String> parts = new ArrayList<>();
 			for (HelperConstructManager.CombinedStepRow row : rows)
 			{
-				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getSectionCondition());
+				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getSectionCondition() + "|" + row.getOrderLinkedRequirementRawId());
 			}
 			return String.join("\n", parts);
 		}

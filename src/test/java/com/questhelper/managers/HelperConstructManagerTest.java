@@ -5,17 +5,33 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HelperConstructManagerTest
 {
+	private static void addDefinitionAndRef(HelperConstructManager manager, HelperConstructModels.DraftStep step)
+	{
+		if (step.getStepId() == null || step.getStepId().isBlank())
+		{
+			step.setStepId("test-step-id");
+		}
+		manager.getCurrentDraft().getStepDefinitions().add(step);
+		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setRefStepId(step.getStepId());
+		line.setLinkedRequirementRawId(null);
+		manager.getCurrentDraft().getOrder().add(line);
+	}
+
 	@Test
 	void removeStepAtBoundsChecked()
 	{
 		HelperConstructManager manager = new HelperConstructManager();
-		manager.getCurrentDraft().getSteps().add(new HelperConstructModels.DraftStep());
+		HelperConstructModels.DraftStep step = new HelperConstructModels.DraftStep();
+		step.setStepId("a");
+		addDefinitionAndRef(manager, step);
 
 		assertFalse(manager.removeStepAt(-1));
 		assertFalse(manager.removeStepAt(1));
@@ -43,12 +59,12 @@ class HelperConstructManagerTest
 		step1.setStepId("a");
 		step1.setSuggestedVarName("firstStep");
 		step1.setTargetText("First");
+		addDefinitionAndRef(manager, step1);
 		HelperConstructModels.DraftStep step2 = new HelperConstructModels.DraftStep();
 		step2.setStepId("b");
 		step2.setSuggestedVarName("secondStep");
 		step2.setTargetText("Second");
-		manager.getCurrentDraft().getSteps().add(step1);
-		manager.getCurrentDraft().getSteps().add(step2);
+		addDefinitionAndRef(manager, step2);
 
 		assertTrue(manager.moveStep(1, 0));
 		List<HelperConstructManager.CombinedStepRow> rows = manager.getCombinedStepRows();
@@ -63,7 +79,7 @@ class HelperConstructManagerTest
 		HelperConstructModels.DraftStep step = new HelperConstructModels.DraftStep();
 		step.setStepId("a");
 		step.setSuggestedVarName("oldName");
-		manager.getCurrentDraft().getSteps().add(step);
+		addDefinitionAndRef(manager, step);
 
 		assertTrue(manager.updateStepVarName(0, "newName"));
 		assertEquals("newName", manager.getCombinedStepRows().get(0).getVarName());
@@ -82,8 +98,26 @@ class HelperConstructManagerTest
 		addItemStep.invoke(manager, 100, "Bucket");
 
 		assertEquals(1, manager.getCurrentDraft().getRequirements().size());
-		assertEquals(2, manager.getCurrentDraft().getSteps().size());
+		assertEquals(1, manager.getCurrentDraft().getStepDefinitions().size());
 		assertEquals(100, manager.getCurrentDraft().getRequirements().get(0).getRawId());
-		assertEquals(100, manager.getCurrentDraft().getSteps().get(0).getLinkedRequirementRawId());
+		assertEquals(100, manager.getCurrentDraft().getStepDefinitions().get(0).getLinkedRequirementRawId());
+	}
+
+	@Test
+	void removingNpcDefinitionRemovesOrderRefs()
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		HelperConstructModels.DraftStep npc = new HelperConstructModels.DraftStep();
+		npc.setStepId("npc1");
+		npc.setKind(HelperConstructModels.StepKind.NPC);
+		manager.getCurrentDraft().getStepDefinitions().add(npc);
+		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setRefStepId("npc1");
+		manager.getCurrentDraft().getOrder().add(line);
+
+		assertTrue(manager.removeNpcStepAt(0));
+		assertTrue(manager.getCurrentDraft().getStepDefinitions().isEmpty());
+		assertTrue(manager.getCurrentDraft().getOrder().isEmpty());
 	}
 }

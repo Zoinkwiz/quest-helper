@@ -14,9 +14,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.questhelper.managers.HelperConstructModels.DraftHelper;
+import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.IdType;
+import static com.questhelper.managers.HelperConstructModels.ORDER_ROUTING_VARBIT_SENTINEL;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 
 @Singleton
@@ -36,10 +38,9 @@ public class HelperScaffoldGenerator
 		StringBuilder out = new StringBuilder();
 		String className = sanitizeClassName(draft.getClassName());
 		String packageName = draft.getPackagePath();
-		List<DraftStep> steps = draft.getSteps();
-		List<DraftStep> executableSteps = steps.stream().filter(s -> !s.isSectionDivider()).collect(Collectors.toList());
+		List<DraftStep> definitions = draft.getStepDefinitions();
 		List<DraftRequirement> requirements = draft.getRequirements();
-		List<SectionGroup> sectionGroups = buildSectionGroups(steps);
+		List<SectionGroup> sectionGroups = buildSectionGroups(draft);
 
 		out.append("package ").append(packageName).append(";\n\n");
 		out.append("import com.questhelper.panel.PanelDetails;\n");
@@ -78,7 +79,7 @@ public class HelperScaffoldGenerator
 		{
 			requirementVarNamesByRawId.put(requirement.getRawId(), toVarName(requirement.getDisplayName(), "itemReq"));
 		}
-		for (DraftStep step : executableSteps)
+		for (DraftStep step : definitions)
 		{
 			String stepType = stepTypeFor(step.getKind());
 			String candidate = toVarName(step.getSuggestedVarName(), "step");
@@ -95,7 +96,7 @@ public class HelperScaffoldGenerator
 		for (int i = 0; i < sectionGroups.size(); i++)
 		{
 			SectionGroup group = sectionGroups.get(i);
-			if (group.steps.isEmpty())
+			if (group.slots.isEmpty())
 			{
 				continue;
 			}
@@ -123,20 +124,25 @@ public class HelperScaffoldGenerator
 
 		out.append("\tprivate void setupSteps()\n");
 		out.append("\t{\n");
-		for (DraftStep step : steps)
+		Set<String> emittedDefinitionIds = new LinkedHashSet<>();
+		for (DraftOrderLine line : draft.getOrder())
 		{
-			if (step.isSectionDivider())
+			if (line.isSectionDivider())
 			{
-				String sectionName = step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank() ? "Unnamed Section" : step.getSuggestedVarName();
-				String sectionCondition = step.getSectionCondition() == null || step.getSectionCondition().isBlank()
+				String sectionName = line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? "Unnamed Section" : line.getSuggestedVarName();
+				String sectionCondition = line.getSectionCondition() == null || line.getSectionCondition().isBlank()
 					? "no condition"
-					: step.getSectionCondition();
-				String mode = step.isSkipWhenConditionMet() ? "skip when true" : "show when true";
+					: line.getSectionCondition();
+				String mode = line.isSkipWhenConditionMet() ? "skip when true" : "show when true";
 				out.append("\t\t// Section: ").append(escape(sectionName)).append(" [").append(mode).append(": ")
 					.append(escape(sectionCondition)).append("]\n");
 				continue;
 			}
-
+			DraftStep step = findDefinition(draft, line.getRefStepId());
+			if (step == null || step.getStepId() == null || !emittedDefinitionIds.add(step.getStepId()))
+			{
+				continue;
+			}
 			String varName = stepVarNames.get(step);
 			String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
 				? "TODO: refine instruction text"
@@ -182,27 +188,27 @@ public class HelperScaffoldGenerator
 		out.append("\t\tsetupSteps();\n\n");
 		if (!sectionTaskNames.isEmpty())
 		{
-			List<SectionGroup> nonEmptySectionGroups = sectionGroups.stream().filter(g -> !g.steps.isEmpty()).collect(Collectors.toList());
+			List<SectionGroup> nonEmptySectionGroups = sectionGroups.stream().filter(g -> !g.slots.isEmpty()).collect(Collectors.toList());
 			for (SectionGroup group : sectionGroups)
 			{
-				if (group.steps.isEmpty())
+				if (group.slots.isEmpty())
 				{
 					continue;
 				}
 				String sectionTask = sectionTaskNames.get(group);
-				int initIndex = group.steps.size() - 1;
-				DraftStep initStep = group.steps.get(initIndex);
-				String initStepVar = stepVarNames.get(initStep);
+				int initIndex = group.slots.size() - 1;
+				OrderedSlot initSlot = group.slots.get(initIndex);
+				String initStepVar = stepVarNames.get(initSlot.definition);
 				out.append("\t\t").append(sectionTask).append(" = new ConditionalStep(this, ").append(initStepVar).append(");\n");
-				for (int i = 0; i < group.steps.size(); i++)
+				for (int i = 0; i < group.slots.size(); i++)
 				{
 					if (i == initIndex)
 					{
 						continue;
 					}
-					DraftStep step = group.steps.get(i);
-					String stepVar = stepVarNames.get(step);
-					String reqVar = requirementExpressionForStep(step, requirementVarNamesByRawId, varbitReqVarNames, warnings);
+					OrderedSlot slot = group.slots.get(i);
+					String stepVar = stepVarNames.get(slot.definition);
+					String reqVar = requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitReqVarNames, warnings);
 					out.append("\t\t").append(sectionTask).append(".addStep(not(").append(reqVar).append("), ").append(stepVar).append(");\n");
 				}
 				out.append("\n");
@@ -214,8 +220,8 @@ public class HelperScaffoldGenerator
 			for (int i = 0; i < nonEmptySectionGroups.size() - 1; i++)
 			{
 				SectionGroup group = nonEmptySectionGroups.get(i);
-				String sectionRequirementExpression = group.steps.stream()
-					.map(step -> requirementExpressionForStep(step, requirementVarNamesByRawId, varbitReqVarNames, warnings))
+				String sectionRequirementExpression = group.slots.stream()
+					.map(slot -> requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitReqVarNames, warnings))
 					.collect(Collectors.joining(", "));
 				out.append("\t\tallSections.addStep(nor(").append(sectionRequirementExpression).append("), ")
 					.append(sectionTaskNames.get(group)).append(");\n");
@@ -288,13 +294,18 @@ public class HelperScaffoldGenerator
 		return linkedReqId != null && requirementVarNamesByRawId.containsKey(linkedReqId);
 	}
 
-	private String requirementExpressionForStep(
-		DraftStep step,
+	private String requirementExpressionForSlot(
+		OrderedSlot slot,
 		Map<Integer, String> requirementVarNamesByRawId,
 		Map<DraftStep, String> varbitReqVarNames,
 		List<String> warnings)
 	{
-		Integer linkedReqId = step.getLinkedRequirementRawId();
+		Integer override = slot.orderLine.getLinkedRequirementRawId();
+		if (override != null && override == ORDER_ROUTING_VARBIT_SENTINEL)
+		{
+			return varbitReqVarNames.get(slot.definition);
+		}
+		Integer linkedReqId = override != null ? override : slot.definition.getLinkedRequirementRawId();
 		if (linkedReqId != null)
 		{
 			String requirementVar = requirementVarNamesByRawId.get(linkedReqId);
@@ -302,9 +313,25 @@ public class HelperScaffoldGenerator
 			{
 				return requirementVar;
 			}
-			warnings.add("Missing linked item requirement for step ID: " + step.getRawId() + " linked requirement: " + linkedReqId);
+			warnings.add("Missing linked item requirement for step ID: " + slot.definition.getRawId() + " linked requirement: " + linkedReqId);
 		}
-		return varbitReqVarNames.get(step);
+		return varbitReqVarNames.get(slot.definition);
+	}
+
+	private DraftStep findDefinition(DraftHelper draft, String stepId)
+	{
+		if (stepId == null || stepId.isBlank())
+		{
+			return null;
+		}
+		for (DraftStep def : draft.getStepDefinitions())
+		{
+			if (stepId.equals(def.getStepId()))
+			{
+				return def;
+			}
+		}
+		return null;
 	}
 
 	private void appendPanelsFromSections(
@@ -322,7 +349,7 @@ public class HelperScaffoldGenerator
 		for (int i = 0; i < sectionGroups.size(); i++)
 		{
 			SectionGroup group = sectionGroups.get(i);
-			if (group.steps.isEmpty())
+			if (group.slots.isEmpty())
 			{
 				continue;
 			}
@@ -331,13 +358,13 @@ public class HelperScaffoldGenerator
 
 			out.append("\t\tPanelDetails ").append(panelVar).append(" = new PanelDetails(\"")
 				.append(panelName).append("\", List.of(");
-			for (int j = 0; j < group.steps.size(); j++)
+			for (int j = 0; j < group.slots.size(); j++)
 			{
 				if (j > 0)
 				{
 					out.append(", ");
 				}
-				out.append(stepVarNames.get(group.steps.get(j)));
+				out.append(stepVarNames.get(group.slots.get(j).definition));
 			}
 			out.append("));\n");
 			if (group.divider != null && group.divider.getSectionCondition() != null && !group.divider.getSectionCondition().isBlank())
@@ -350,29 +377,33 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	private List<SectionGroup> buildSectionGroups(List<DraftStep> allDraftSteps)
+	private List<SectionGroup> buildSectionGroups(DraftHelper draft)
 	{
 		List<SectionGroup> groups = new ArrayList<>();
-		List<DraftStep> currentGroup = new ArrayList<>();
+		List<OrderedSlot> currentGroup = new ArrayList<>();
 		String currentGroupName = "Captured Steps";
-		DraftStep currentDivider = null;
+		DraftOrderLine currentDivider = null;
 
-		for (DraftStep step : allDraftSteps)
+		for (DraftOrderLine line : draft.getOrder())
 		{
-			if (step.isSectionDivider())
+			if (line.isSectionDivider())
 			{
 				if (!currentGroup.isEmpty())
 				{
 					groups.add(new SectionGroup(currentGroupName, currentDivider, currentGroup));
 					currentGroup = new ArrayList<>();
 				}
-				currentGroupName = (step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank())
+				currentGroupName = (line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank())
 					? "Section"
-					: step.getSuggestedVarName();
-				currentDivider = step;
+					: line.getSuggestedVarName();
+				currentDivider = line;
 				continue;
 			}
-			currentGroup.add(step);
+			DraftStep def = findDefinition(draft, line.getRefStepId());
+			if (def != null)
+			{
+				currentGroup.add(new OrderedSlot(line, def));
+			}
 		}
 
 		if (!currentGroup.isEmpty())
@@ -382,17 +413,29 @@ public class HelperScaffoldGenerator
 		return groups;
 	}
 
+	private static final class OrderedSlot
+	{
+		private final DraftOrderLine orderLine;
+		private final DraftStep definition;
+
+		private OrderedSlot(DraftOrderLine orderLine, DraftStep definition)
+		{
+			this.orderLine = orderLine;
+			this.definition = definition;
+		}
+	}
+
 	private static final class SectionGroup
 	{
 		private final String name;
-		private final DraftStep divider;
-		private final List<DraftStep> steps;
+		private final DraftOrderLine divider;
+		private final List<OrderedSlot> slots;
 
-		private SectionGroup(String name, DraftStep divider, List<DraftStep> steps)
+		private SectionGroup(String name, DraftOrderLine divider, List<OrderedSlot> slots)
 		{
 			this.name = name;
 			this.divider = divider;
-			this.steps = steps;
+			this.slots = slots;
 		}
 	}
 

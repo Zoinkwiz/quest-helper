@@ -62,6 +62,24 @@ final class HelperConstructModels
 		private final List<Integer> requiredItems = new ArrayList<>();
 	}
 
+	/**
+	 * One row in the ordered sequence: either a section divider or a reference to a step definition.
+	 * {@link #linkedRequirementRawId}: {@code null} = inherit definition's link for routing;
+	 * {@code -1} = force varbit routing for this slot; else raw id of a captured {@link DraftRequirement}.
+	 */
+	@Data
+	@NoArgsConstructor
+	static class DraftOrderLine
+	{
+		private boolean sectionDivider;
+		private String lineId;
+		private String suggestedVarName;
+		private String sectionCondition;
+		private boolean skipWhenConditionMet;
+		private String refStepId;
+		private Integer linkedRequirementRawId;
+	}
+
 	@Data
 	@NoArgsConstructor
 	static class DraftHelper
@@ -70,7 +88,11 @@ final class HelperConstructModels
 		private String className = "GeneratedQuestHelper";
 		private String packagePath = "com.questhelper.helpers.quests.generated";
 		private String helperType = "BasicQuestHelper";
-		private final List<DraftStep> steps = new ArrayList<>();
+		private final List<DraftStep> stepDefinitions = new ArrayList<>();
+		private final List<DraftOrderLine> order = new ArrayList<>();
 		private final List<DraftRequirement> requirements = new ArrayList<>();
 	}
+
+	/** Sentinel for order line: use varbit (not item requirement) for routing on this slot. */
+	static final int ORDER_ROUTING_VARBIT_SENTINEL = -1;
 }

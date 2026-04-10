@@ -44,7 +44,7 @@ public class HelperConstructPanel extends PluginPanel
 		root.setBorder(new EmptyBorder(8, 8, 8, 8));
 		root.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		var title = JGenerator.makeJTextArea("Quest Helper Construct");
+		var title = JGenerator.makeJTextArea("Quest Helper Maker");
 		title.setForeground(Color.WHITE);
 		root.add(title);
 		JPanel buttonRow = new JPanel(new GridLayout(2, 3, 6, 6));
@@ -162,7 +162,7 @@ public class HelperConstructPanel extends PluginPanel
 	{
 		JPanel ordered = new JPanel(new BorderLayout(0, 6));
 		ordered.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		ordered.add(sectionLabel("Ordered Steps + Section Dividers (drag rows to reorder)"), BorderLayout.NORTH);
+		ordered.add(sectionLabel("Sections and Steps"), BorderLayout.NORTH);
 
 		JTable table = new JTable(stepOrderTableModel);
 		table.setDragEnabled(true);

@@ -109,7 +109,7 @@ public class QuestOverviewPanel extends JPanel
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 1, 6, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JButton closeBtn = new JButton();

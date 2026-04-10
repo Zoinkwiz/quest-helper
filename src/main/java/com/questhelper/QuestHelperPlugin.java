@@ -531,6 +531,31 @@ public class QuestHelperPlugin extends Plugin
 		return questManager.getSelectedQuest();
 	}
 
+	public boolean isConstructPreviewSelected()
+	{
+		return helperConstructManager.isSelectedConstructPreview();
+	}
+
+	public boolean canStepConstructPreviewLeft()
+	{
+		return helperConstructManager.canStepConstructPreviewLeft();
+	}
+
+	public boolean canStepConstructPreviewRight()
+	{
+		return helperConstructManager.canStepConstructPreviewRight();
+	}
+
+	public void stepConstructPreviewLeft()
+	{
+		helperConstructManager.stepConstructPreviewLeftFromUi();
+	}
+
+	public void stepConstructPreviewRight()
+	{
+		helperConstructManager.stepConstructPreviewRightFromUi();
+	}
+
 	public Map<String, QuestHelper> getBackgroundHelpers()
 	{
 		return questManager.backgroundHelpers;

@@ -9,6 +9,7 @@ import com.questhelper.QuestHelperConfig;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.ConditionalStep;
@@ -61,6 +62,8 @@ import static com.questhelper.managers.HelperConstructModels.DraftHelper;
 import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 
 @Singleton
@@ -520,6 +523,45 @@ public class HelperConstructManager
 		wireQuestHelperForRuntimeUse(previewHelper);
 		questManager.startUpQuest(previewHelper, true);
 		sendGameMessage("Quest Helper Construct: preview loaded in Quest Helper sidebar.");
+	}
+
+	public boolean isSelectedConstructPreview()
+	{
+		return questManager.getSelectedQuest() instanceof PreviewQuestHelper;
+	}
+
+	public boolean canStepConstructPreviewLeft()
+	{
+		var selected = questManager.getSelectedQuest();
+		return selected instanceof PreviewQuestHelper && ((PreviewQuestHelper) selected).canStepLeft();
+	}
+
+	public boolean canStepConstructPreviewRight()
+	{
+		var selected = questManager.getSelectedQuest();
+		return selected instanceof PreviewQuestHelper && ((PreviewQuestHelper) selected).canStepRight();
+	}
+
+	public void stepConstructPreviewLeftFromUi()
+	{
+		var selected = questManager.getSelectedQuest();
+		if (!(selected instanceof PreviewQuestHelper))
+		{
+			return;
+		}
+		PreviewQuestHelper preview = (PreviewQuestHelper) selected;
+		preview.stepLeft();
+	}
+
+	public void stepConstructPreviewRightFromUi()
+	{
+		var selected = questManager.getSelectedQuest();
+		if (!(selected instanceof PreviewQuestHelper))
+		{
+			return;
+		}
+		PreviewQuestHelper preview = (PreviewQuestHelper) selected;
+		preview.stepRight();
 	}
 
 	private void wireQuestHelperForRuntimeUse(QuestHelper questHelper)
@@ -1264,6 +1306,8 @@ public class HelperConstructManager
 		private final DraftHelper draft;
 		private final List<ItemRequirement> previewRequirements = new ArrayList<>();
 		private final List<PanelDetails> previewPanels = new ArrayList<>();
+		private final List<ManualRequirement> manualStepRequirements = new ArrayList<>();
+		private int previewProgressIndex;
 
 		private PreviewQuestHelper(DraftHelper draft)
 		{
@@ -1288,6 +1332,7 @@ public class HelperConstructManager
 		{
 			initializeRequirements();
 			previewPanels.clear();
+			manualStepRequirements.clear();
 			Map<Integer, ItemRequirement> requirementById = new HashMap<>();
 			for (ItemRequirement req : previewRequirements)
 			{
@@ -1296,18 +1341,18 @@ public class HelperConstructManager
 
 			List<ConditionalStep> sectionTasks = new ArrayList<>();
 			List<List<Requirement>> sectionCompletionRequirements = new ArrayList<>();
-			List<QuestStep> currentPanelSteps = new ArrayList<>();
+			List<PreviewStepEntry> currentSectionEntries = new ArrayList<>();
 			String currentPanelName = "Captured Steps";
 
 			for (DraftStep draftStep : draft.getSteps())
 			{
 				if (draftStep.isSectionDivider())
 				{
-					ConditionalStep sectionTask = createSectionTask(currentPanelName, currentPanelSteps);
+					ConditionalStep sectionTask = createSectionTask(currentPanelName, currentSectionEntries);
 					if (sectionTask != null)
 					{
-						sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentPanelSteps));
-						addPanelWithLockingStep(currentPanelName, currentPanelSteps, sectionTask);
+						sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentSectionEntries));
+						addPanelWithLockingStep(currentPanelName, currentSectionEntries, sectionTask);
 						sectionTasks.add(sectionTask);
 					}
 					String sectionName = draftStep.getSuggestedVarName();
@@ -1315,17 +1360,20 @@ public class HelperConstructManager
 					continue;
 				}
 
-				QuestStep step = toPreviewStep(draftStep, requirementById);
-				currentPanelSteps.add(step);
+				PreviewStepEntry stepEntry = toPreviewStep(draftStep, requirementById);
+				if (stepEntry != null)
+				{
+					currentSectionEntries.add(stepEntry);
+				}
 			}
 
-			if (!currentPanelSteps.isEmpty())
+			if (!currentSectionEntries.isEmpty())
 			{
-				ConditionalStep sectionTask = createSectionTask(currentPanelName, currentPanelSteps);
+				ConditionalStep sectionTask = createSectionTask(currentPanelName, currentSectionEntries);
 				if (sectionTask != null)
 				{
-					sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentPanelSteps));
-					addPanelWithLockingStep(currentPanelName, currentPanelSteps, sectionTask);
+					sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentSectionEntries));
+					addPanelWithLockingStep(currentPanelName, currentSectionEntries, sectionTask);
 					sectionTasks.add(sectionTask);
 				}
 			}
@@ -1335,6 +1383,16 @@ public class HelperConstructManager
 				previewPanels.add(new PanelDetails("Captured Steps", List.of(empty)));
 				return empty;
 			}
+
+			if (previewProgressIndex < 0)
+			{
+				previewProgressIndex = 0;
+			}
+			if (previewProgressIndex > manualStepRequirements.size())
+			{
+				previewProgressIndex = manualStepRequirements.size();
+			}
+			syncManualProgress();
 
 			if (sectionTasks.size() == 1)
 			{
@@ -1355,78 +1413,81 @@ public class HelperConstructManager
 			return allSections;
 		}
 
-		private ConditionalStep createSectionTask(String panelName, List<QuestStep> panelSteps)
+		private ConditionalStep createSectionTask(String panelName, List<PreviewStepEntry> sectionEntries)
 		{
-			if (panelSteps.isEmpty())
+			if (sectionEntries.isEmpty())
 			{
 				return null;
 			}
 
-			QuestStep fallbackStep = panelSteps.get(0);
+			QuestStep fallbackStep = sectionEntries.get(sectionEntries.size() - 1).step;
 			ConditionalStep sectionTask = new ConditionalStep(this, fallbackStep, panelName);
 			sectionTask.setShouldPassthroughText(true);
+			for (PreviewStepEntry entry : sectionEntries)
+			{
+				sectionTask.addStep(not(entry.completionRequirement), entry.step);
+			}
 			return sectionTask;
 		}
 
-		private void addPanelWithLockingStep(String panelName, List<QuestStep> panelSteps, ConditionalStep sectionTask)
+		private void addPanelWithLockingStep(String panelName, List<PreviewStepEntry> sectionEntries, ConditionalStep sectionTask)
 		{
-			if (sectionTask == null || panelSteps.isEmpty())
+			if (sectionTask == null || sectionEntries.isEmpty())
 			{
 				return;
 			}
 
-			List<QuestStep> stepsForPanel = new ArrayList<>(panelSteps);
+			List<QuestStep> stepsForPanel = new ArrayList<>();
+			for (PreviewStepEntry entry : sectionEntries)
+			{
+				stepsForPanel.add(entry.step);
+			}
 			PanelDetails panel = new PanelDetails(panelName, stepsForPanel);
 			panel.setLockingStep(sectionTask);
 			previewPanels.add(panel);
-			panelSteps.clear();
+			sectionEntries.clear();
 		}
 
-		private List<Requirement> extractSectionCompletionRequirements(List<QuestStep> panelSteps)
+		private List<Requirement> extractSectionCompletionRequirements(List<PreviewStepEntry> sectionEntries)
 		{
 			LinkedHashSet<Requirement> requirements = new LinkedHashSet<>();
-			for (QuestStep step : panelSteps)
+			for (PreviewStepEntry entry : sectionEntries)
 			{
-				if (step instanceof DetailedQuestStep)
-				{
-					requirements.addAll(((DetailedQuestStep) step).getRequirements());
-				}
-				if (step instanceof ConditionalStep)
-				{
-					for (Requirement condition : ((ConditionalStep) step).getConditions())
-					{
-						if (condition != null)
-						{
-							requirements.add(condition);
-						}
-					}
-				}
+				requirements.add(entry.completionRequirement);
 			}
 			return new ArrayList<>(requirements);
 		}
 
-		private QuestStep toPreviewStep(DraftStep draftStep, Map<Integer, ItemRequirement> requirementById)
+		private PreviewStepEntry toPreviewStep(DraftStep draftStep, Map<Integer, ItemRequirement> requirementById)
 		{
 			String instruction = (draftStep.getInstructionText() == null || draftStep.getInstructionText().isBlank())
 				? "Complete step."
 				: draftStep.getInstructionText();
+			QuestStep step;
+			Requirement originalCompletionRequirement = defaultIncompleteRequirement();
 			if (draftStep.getKind() == StepKind.NPC)
 			{
 				if (draftStep.getWorldPoint() != null)
 				{
-					return new NpcStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction);
+					step = new NpcStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction);
 				}
-				return new NpcStep(this, draftStep.getRawId(), instruction);
+				else
+				{
+					step = new NpcStep(this, draftStep.getRawId(), instruction);
+				}
 			}
-			if (draftStep.getKind() == StepKind.OBJECT)
+			else if (draftStep.getKind() == StepKind.OBJECT)
 			{
 				if (draftStep.getWorldPoint() != null)
 				{
-					return new ObjectStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction);
+					step = new ObjectStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction);
 				}
-				return new ObjectStep(this, draftStep.getRawId(), instruction);
+				else
+				{
+					step = new ObjectStep(this, draftStep.getRawId(), instruction);
+				}
 			}
-			if (draftStep.getKind() == StepKind.ITEM)
+			else if (draftStep.getKind() == StepKind.ITEM)
 			{
 				ItemRequirement itemRequirement = null;
 				Integer linkedRequirementRawId = draftStep.getLinkedRequirementRawId();
@@ -1440,11 +1501,69 @@ public class HelperConstructManager
 				}
 				if (itemRequirement != null)
 				{
-					return new ItemStep(this, instruction, itemRequirement.highlighted());
+					step = new ItemStep(this, instruction, itemRequirement.highlighted());
+					originalCompletionRequirement = itemRequirement;
 				}
-				return new ItemStep(this, instruction);
+				else
+				{
+					step = new ItemStep(this, instruction);
+				}
 			}
-			return new DetailedQuestStep(this, instruction);
+			else
+			{
+				step = new DetailedQuestStep(this, instruction);
+			}
+
+			ManualRequirement manualOverride = defaultIncompleteRequirement();
+			manualStepRequirements.add(manualOverride);
+			return new PreviewStepEntry(step, or(originalCompletionRequirement, manualOverride));
+		}
+
+		private ManualRequirement defaultIncompleteRequirement()
+		{
+			ManualRequirement requirement = new ManualRequirement();
+			requirement.setShouldPass(false);
+			return requirement;
+		}
+
+		private void syncManualProgress()
+		{
+			for (int i = 0; i < manualStepRequirements.size(); i++)
+			{
+				manualStepRequirements.get(i).setShouldPass(i < previewProgressIndex);
+			}
+		}
+
+		private boolean canStepLeft()
+		{
+			return previewProgressIndex > 0 && !manualStepRequirements.isEmpty();
+		}
+
+		private boolean canStepRight()
+		{
+			return previewProgressIndex < manualStepRequirements.size();
+		}
+
+		private boolean stepLeft()
+		{
+			if (!canStepLeft())
+			{
+				return false;
+			}
+			previewProgressIndex--;
+			syncManualProgress();
+			return true;
+		}
+
+		private boolean stepRight()
+		{
+			if (!canStepRight())
+			{
+				return false;
+			}
+			previewProgressIndex++;
+			syncManualProgress();
+			return true;
 		}
 
 		@Override
@@ -1483,6 +1602,18 @@ public class HelperConstructManager
 			return draft.getQuestName() == null || draft.getQuestName().isBlank()
 				? "Construct Preview"
 				: draft.getQuestName() + " (Preview)";
+		}
+	}
+
+	private static class PreviewStepEntry
+	{
+		private final QuestStep step;
+		private final Requirement completionRequirement;
+
+		private PreviewStepEntry(QuestStep step, Requirement completionRequirement)
+		{
+			this.step = step;
+			this.completionRequirement = completionRequirement;
 		}
 	}
 

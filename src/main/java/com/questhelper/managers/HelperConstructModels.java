@@ -45,6 +45,7 @@ final class HelperConstructModels
 	@AllArgsConstructor
 	static class DraftStep
 	{
+		private String stepId;
 		private StepKind kind;
 		private int rawId;
 		private String resolvedSymbol;

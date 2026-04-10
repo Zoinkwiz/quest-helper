@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static com.questhelper.managers.HelperConstructModels.DraftHelper;
@@ -147,6 +148,7 @@ public class HelperConstructManager
 			helper.setClassName(classStem + "Helper");
 			helper.setQuestName(classStem.replace("Helper", ""));
 		}
+		helper.setHelperType("ComplexStateQuestHelper");
 		currentDraft = helper;
 		sendGameMessage("Quest Helper Construct: started new draft '" + currentDraft.getClassName() + "'.");
 	}
@@ -162,7 +164,10 @@ public class HelperConstructManager
 	{
 		ensureDraftLoaded();
 		startNewDraft("Generated Quest");
-		configManager.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+		if (configManager != null)
+		{
+			configManager.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+		}
 	}
 
 	private void addStep(StepKind kind, int rawId, String option, String target, WorldPoint clickedWorldPoint)
@@ -175,6 +180,7 @@ public class HelperConstructManager
 		}
 
 		DraftStep step = new DraftStep();
+		step.setStepId(UUID.randomUUID().toString());
 		step.setKind(kind);
 		step.setRawId(rawId);
 		var idType = kind == StepKind.NPC
@@ -420,6 +426,54 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(summaries);
 	}
 
+	public List<CombinedStepRow> getCombinedStepRows()
+	{
+		ensureDraftLoaded();
+		List<CombinedStepRow> rows = new ArrayList<>(currentDraft.getSteps().size());
+		for (int i = 0; i < currentDraft.getSteps().size(); i++)
+		{
+			DraftStep step = currentDraft.getSteps().get(i);
+			if (step.getStepId() == null || step.getStepId().isBlank())
+			{
+				step.setStepId(UUID.randomUUID().toString());
+				saveDraftToConfig();
+			}
+			rows.add(new CombinedStepRow(
+				i,
+				step.getStepId(),
+				step.getSuggestedVarName(),
+				formatStepSummary(step, i + 1)));
+		}
+		return Collections.unmodifiableList(rows);
+	}
+
+	public boolean moveStep(int fromIndex, int toIndex)
+	{
+		ensureDraftLoaded();
+		List<DraftStep> steps = currentDraft.getSteps();
+		if (fromIndex < 0 || toIndex < 0 || fromIndex >= steps.size() || toIndex >= steps.size() || fromIndex == toIndex)
+		{
+			return false;
+		}
+
+		DraftStep moved = steps.remove(fromIndex);
+		steps.add(toIndex, moved);
+		saveDraftToConfig();
+		return true;
+	}
+
+	public boolean updateStepVarName(int index, String updatedVarName)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getSteps().size())
+		{
+			return false;
+		}
+		currentDraft.getSteps().get(index).setSuggestedVarName(updatedVarName == null ? "" : updatedVarName);
+		saveDraftToConfig();
+		return true;
+	}
+
 	public List<String> getRequirementSummaries()
 	{
 		ensureDraftLoaded();
@@ -518,6 +572,10 @@ public class HelperConstructManager
 
 	private void loadDraftFromConfig()
 	{
+		if (configManager == null)
+		{
+			return;
+		}
 		String json = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
 		if (json == null || json.isBlank())
 		{
@@ -541,6 +599,7 @@ public class HelperConstructManager
 			for (DraftStepState stepState : state.steps)
 			{
 				DraftStep step = new DraftStep();
+				step.setStepId(stepState.stepId == null || stepState.stepId.isBlank() ? UUID.randomUUID().toString() : stepState.stepId);
 				step.setKind(stepState.kind);
 				step.setRawId(stepState.rawId);
 				step.setResolvedSymbol(stepState.resolvedSymbol);
@@ -575,6 +634,10 @@ public class HelperConstructManager
 
 	private void saveDraftToConfig()
 	{
+		if (configManager == null)
+		{
+			return;
+		}
 		DraftState state = new DraftState();
 		state.questName = currentDraft.getQuestName();
 		state.className = currentDraft.getClassName();
@@ -584,6 +647,7 @@ public class HelperConstructManager
 		for (DraftStep step : currentDraft.getSteps())
 		{
 			DraftStepState stepState = new DraftStepState();
+			stepState.stepId = step.getStepId();
 			stepState.kind = step.getKind();
 			stepState.rawId = step.getRawId();
 			stepState.resolvedSymbol = step.getResolvedSymbol();
@@ -615,12 +679,12 @@ public class HelperConstructManager
 
 	private boolean isNpcAction(MenuAction menuAction)
 	{
-		return menuAction == MenuAction.EXAMINE_NPC;
+		return menuAction == MenuAction.NPC_FIRST_OPTION;
 	}
 
 	private boolean isObjectAction(MenuAction menuAction)
 	{
-		return menuAction == MenuAction.EXAMINE_OBJECT;
+		return menuAction == MenuAction.GAME_OBJECT_FIRST_OPTION;
 	}
 
 	private boolean isItemAction(MenuAction menuAction)
@@ -673,6 +737,10 @@ public class HelperConstructManager
 
 	private void sendGameMessage(String message)
 	{
+		if (clientThread == null || client == null)
+		{
+			return;
+		}
 		clientThread.invokeLater(() -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null));
 	}
 
@@ -710,6 +778,7 @@ public class HelperConstructManager
 
 	private static class DraftStepState
 	{
+		String stepId;
 		StepKind kind;
 		int rawId;
 		String resolvedSymbol;
@@ -721,6 +790,42 @@ public class HelperConstructManager
 		Integer worldX;
 		Integer worldY;
 		Integer worldPlane;
+	}
+
+	public static class CombinedStepRow
+	{
+		private final int index;
+		private final String stepId;
+		private final String varName;
+		private final String summary;
+
+		public CombinedStepRow(int index, String stepId, String varName, String summary)
+		{
+			this.index = index;
+			this.stepId = stepId;
+			this.varName = varName;
+			this.summary = summary;
+		}
+
+		public int getIndex()
+		{
+			return index;
+		}
+
+		public String getStepId()
+		{
+			return stepId;
+		}
+
+		public String getVarName()
+		{
+			return varName;
+		}
+
+		public String getSummary()
+		{
+			return summary;
+		}
 	}
 
 	private static class DraftRequirementState

@@ -42,4 +42,39 @@ class HelperScaffoldGeneratorTest
 		assertTrue(scaffold.getSource().contains("TODO unresolved item"));
 		assertTrue(scaffold.getWarnings().size() >= 2);
 	}
+
+	@Test
+	void generatorUsesComplexStateAndCapturedStepOrder()
+	{
+		HelperScaffoldGenerator generator = new HelperScaffoldGenerator(new GamevalSymbolResolver());
+		HelperConstructModels.DraftHelper draft = new HelperConstructModels.DraftHelper();
+		draft.setClassName("LeaguesStart");
+		draft.setPackagePath("com.questhelper.helpers.quests.generated");
+
+		HelperConstructModels.DraftStep first = new HelperConstructModels.DraftStep();
+		first.setKind(HelperConstructModels.StepKind.OBJECT);
+		first.setRawId(1);
+		first.setSuggestedVarName("first step");
+		first.setInstructionText("First.");
+		first.setTargetText("First");
+		first.setWorldPoint(new WorldPoint(3200, 3200, 0));
+		draft.getSteps().add(first);
+
+		HelperConstructModels.DraftStep second = new HelperConstructModels.DraftStep();
+		second.setKind(HelperConstructModels.StepKind.NPC);
+		second.setRawId(2);
+		second.setSuggestedVarName("first step");
+		second.setInstructionText("Second.");
+		second.setTargetText("Second");
+		second.setWorldPoint(new WorldPoint(3201, 3201, 0));
+		draft.getSteps().add(second);
+
+		var source = generator.generate(draft).getSource();
+		assertTrue(source.contains("extends ComplexStateQuestHelper"));
+		assertTrue(source.contains("public QuestStep loadStep()"));
+		assertTrue(source.contains("ConditionalStep route = new ConditionalStep(this, firstStep);"));
+		assertTrue(source.contains("route.addStep(not(firstStep2VarbitReq), firstStep2);"));
+		assertTrue(source.contains("return route;"));
+		assertTrue(source.contains("new VarbitRequirement(/* TODO varbit id */ 0, 1)"));
+	}
 }

@@ -40,21 +40,22 @@ public class HelperScaffoldGenerator
 		List<DraftRequirement> requirements = draft.getRequirements();
 
 		out.append("package ").append(packageName).append(";\n\n");
-		out.append("import com.questhelper.questhelpers.BasicQuestHelper;\n");
+		out.append("import com.questhelper.questhelpers.ComplexStateQuestHelper;\n");
 		out.append("import com.questhelper.requirements.item.ItemRequirement;\n");
+		out.append("import static com.questhelper.requirements.util.LogicHelper.not;\n");
+		out.append("import com.questhelper.requirements.var.VarbitRequirement;\n");
+		out.append("import com.questhelper.steps.ConditionalStep;\n");
 		out.append("import com.questhelper.steps.ItemStep;\n");
 		out.append("import com.questhelper.steps.NpcStep;\n");
 		out.append("import com.questhelper.steps.ObjectStep;\n");
 		out.append("import com.questhelper.steps.QuestStep;\n");
-		out.append("import java.util.HashMap;\n");
 		out.append("import java.util.List;\n");
-		out.append("import java.util.Map;\n");
 		out.append("import net.runelite.api.coords.WorldPoint;\n");
 		out.append("import net.runelite.api.gameval.ItemID;\n");
 		out.append("import net.runelite.api.gameval.NpcID;\n");
 		out.append("import net.runelite.api.gameval.ObjectID;\n\n");
 
-		out.append("public class ").append(className).append(" extends BasicQuestHelper\n");
+		out.append("public class ").append(className).append(" extends ComplexStateQuestHelper\n");
 		out.append("{\n");
 		out.append("\t// Captured requirements\n");
 		for (DraftRequirement requirement : requirements)
@@ -65,13 +66,17 @@ public class HelperScaffoldGenerator
 		out.append("\n\t// Captured steps\n");
 		Map<DraftStep, String> stepVarNames = new LinkedHashMap<>();
 		Set<String> usedNames = new LinkedHashSet<>();
+		Map<DraftStep, String> varbitReqVarNames = new LinkedHashMap<>();
 		for (DraftStep step : steps)
 		{
 			String stepType = stepTypeFor(step.getKind());
 			String candidate = toVarName(step.getSuggestedVarName(), "step");
 			String unique = makeUnique(candidate, usedNames);
 			stepVarNames.put(step, unique);
+			String varbitReqVar = makeUnique(unique + "VarbitReq", usedNames);
+			varbitReqVarNames.put(step, varbitReqVar);
 			out.append("\t").append(stepType).append(" ").append(unique).append(";\n");
+			out.append("\tVarbitRequirement ").append(varbitReqVar).append(";\n");
 		}
 
 		out.append("\n\t@Override\n");
@@ -96,6 +101,7 @@ public class HelperScaffoldGenerator
 		for (DraftStep step : steps)
 		{
 			String varName = stepVarNames.get(step);
+			String varbitReqVarName = varbitReqVarNames.get(step);
 			String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
 				? "TODO: refine instruction text"
 				: step.getInstructionText();
@@ -104,27 +110,33 @@ public class HelperScaffoldGenerator
 			out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
 				.append(symbol).append(", ").append(point).append(", \"")
 				.append(escape(instruction)).append("\");\n");
+			out.append("\t\t").append(varbitReqVarName)
+				.append(" = new VarbitRequirement(/* TODO varbit id */ 0, 1);\n");
 		}
 		out.append("\t}\n\n");
 
 		out.append("\t@Override\n");
-		out.append("\tpublic Map<Integer, QuestStep> loadSteps()\n");
+		out.append("\tpublic QuestStep loadStep()\n");
 		out.append("\t{\n");
 		out.append("\t\tinitializeRequirements();\n");
 		out.append("\t\tsetupSteps();\n\n");
-		out.append("\t\tvar steps = new HashMap<Integer, QuestStep>();\n");
 		if (!steps.isEmpty())
 		{
 			String firstStepVar = stepVarNames.get(steps.get(0));
-			out.append("\t\tsteps.put(0, ").append(firstStepVar).append(");\n");
-			out.append("\t\tsteps.put(1, ").append(firstStepVar).append(");\n");
+			out.append("\t\tConditionalStep route = new ConditionalStep(this, ").append(firstStepVar).append(");\n");
+			for (int i = 1; i < steps.size(); i++)
+			{
+				String stepVar = stepVarNames.get(steps.get(i));
+				String reqVar = varbitReqVarNames.get(steps.get(i));
+				out.append("\t\troute.addStep(not(").append(reqVar).append("), ").append(stepVar).append(");\n");
+			}
+			out.append("\t\treturn route;\n");
 		}
 		else
 		{
-			out.append("\t\t// TODO: add state->step mapping once steps are captured.\n");
+			out.append("\t\treturn new QuestStep(this, \"TODO: add captured steps and build ConditionalStep routing.\");\n");
 		}
-		out.append("\n\t\t// TODO: replace baseline mapping with full ConditionalStep graph logic.\n");
-		out.append("\t\treturn steps;\n");
+		out.append("\n\t\t// TODO: refine per-step requirement logic for real route progression conditions.\n");
 		out.append("\t}\n\n");
 
 		out.append("\t@Override\n");

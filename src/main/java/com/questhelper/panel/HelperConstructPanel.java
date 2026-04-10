@@ -7,6 +7,7 @@ import net.runelite.client.util.SwingUtil;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -18,7 +19,6 @@ import java.util.List;
 public class HelperConstructPanel extends PluginPanel
 {
 	private final HelperConstructManager helperConstructManager;
-	private final JTextArea draftInfo = JGenerator.makeJTextArea();
 	private final JPanel npcStepsList = new JPanel();
 	private final JPanel objectStepsList = new JPanel();
 	private final JPanel requirementsList = new JPanel();
@@ -48,15 +48,6 @@ public class HelperConstructPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 		root.add(title);
 		root.add(Box.createVerticalStrut(8));
-
-		draftInfo.setForeground(Color.LIGHT_GRAY);
-		draftInfo.setText("Draft: " + helperConstructManager.getCurrentDraftClassName());
-		draftInfo.setLineWrap(true);
-		draftInfo.setWrapStyleWord(true);
-		draftInfo.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, Integer.MAX_VALUE));
-		root.add(draftInfo);
-		root.add(Box.createVerticalStrut(8));
-
 		JPanel buttonRow = new JPanel(new GridLayout(2, 3, 6, 6));
 		buttonRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		buttonRow.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 58));
@@ -167,15 +158,43 @@ public class HelperConstructPanel extends PluginPanel
 	{
 		JPanel ordered = new JPanel(new BorderLayout(0, 6));
 		ordered.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		ordered.add(sectionLabel("Ordered Steps (drag rows to reorder)"), BorderLayout.NORTH);
+		ordered.add(sectionLabel("Ordered Steps + Section Dividers (drag rows to reorder)"), BorderLayout.NORTH);
 
 		JTable table = new JTable(stepOrderTableModel);
 		table.setDragEnabled(true);
 		table.setDropMode(DropMode.INSERT_ROWS);
 		table.setFillsViewportHeight(true);
 		table.setRowHeight(24);
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+		{
+			@Override
+			public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			{
+				Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+				var entry = stepOrderTableModel.getRow(row);
+				if (entry != null && entry.isSectionDivider())
+				{
+					if (!isSelected)
+					{
+						c.setBackground(new Color(46, 52, 64));
+						c.setForeground(new Color(143, 188, 187));
+					}
+					setFont(getFont().deriveFont(Font.BOLD));
+				}
+				else
+				{
+					if (!isSelected)
+					{
+						c.setBackground(ColorScheme.DARK_GRAY_COLOR);
+						c.setForeground(Color.WHITE);
+					}
+					setFont(getFont().deriveFont(Font.PLAIN));
+				}
+				return c;
+			}
+		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);
-		table.getColumnModel().getColumn(1).setPreferredWidth(260);
+		table.getColumnModel().getColumn(1).setPreferredWidth(240);
 		table.setTransferHandler(new StepReorderTransferHandler(table));
 
 		JScrollPane tableScroll = new JScrollPane(table);
@@ -183,9 +202,13 @@ public class HelperConstructPanel extends PluginPanel
 		ordered.add(tableScroll, BorderLayout.CENTER);
 
 		JButton removeSelectedButton = new JButton("Remove Selected");
+		JButton addSectionButton = new JButton("Add Section");
 		SwingUtil.removeButtonDecorations(removeSelectedButton);
+		SwingUtil.removeButtonDecorations(addSectionButton);
 		removeSelectedButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		addSectionButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		removeSelectedButton.setForeground(Color.WHITE);
+		addSectionButton.setForeground(Color.WHITE);
 		removeSelectedButton.addActionListener(e ->
 		{
 			int selected = table.getSelectedRow();
@@ -195,8 +218,15 @@ public class HelperConstructPanel extends PluginPanel
 				refresh();
 			}
 		});
+		addSectionButton.addActionListener(e ->
+		{
+			helperConstructManager.addSectionDivider();
+			refresh();
+		});
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		actions.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		actions.add(addSectionButton);
+		actions.add(Box.createHorizontalStrut(6));
 		actions.add(removeSelectedButton);
 		ordered.add(actions, BorderLayout.SOUTH);
 		return ordered;
@@ -205,7 +235,6 @@ public class HelperConstructPanel extends PluginPanel
 	public void refresh()
 	{
 		int scrollValue = scrollPane.getVerticalScrollBar().getValue();
-		draftInfo.setText("Draft: " + helperConstructManager.getCurrentDraftClassName());
 		rebuildNpcStepRows();
 		rebuildObjectStepRows();
 		rebuildRequirementRows();
@@ -401,7 +430,7 @@ public class HelperConstructPanel extends PluginPanel
 
 	private final class StepOrderTableModel extends AbstractTableModel
 	{
-		private final String[] columns = {"Variable", "Step"};
+		private final String[] columns = {"Name/Var", "Detail"};
 		private List<HelperConstructManager.CombinedStepRow> rows = new ArrayList<>();
 
 		@Override
@@ -426,13 +455,26 @@ public class HelperConstructPanel extends PluginPanel
 		public Object getValueAt(int rowIndex, int columnIndex)
 		{
 			var row = rows.get(rowIndex);
-			return columnIndex == 0 ? row.getVarName() : row.getSummary();
+			if (columnIndex == 0)
+			{
+				return row.getVarName();
+			}
+			return row.isSectionDivider() ? (row.getSectionCondition() == null ? "" : row.getSectionCondition()) : row.getSummary();
 		}
 
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex)
 		{
-			return columnIndex == 0;
+			var row = rows.get(rowIndex);
+			if (columnIndex == 0)
+			{
+				return true;
+			}
+			if (columnIndex == 1)
+			{
+				return row.isSectionDivider();
+			}
+			return false;
 		}
 
 		@Override
@@ -440,6 +482,11 @@ public class HelperConstructPanel extends PluginPanel
 		{
 			if (columnIndex != 0)
 			{
+				if (columnIndex == 1)
+				{
+					helperConstructManager.updateSectionCondition(rowIndex, aValue == null ? "" : String.valueOf(aValue));
+					setRows(helperConstructManager.getCombinedStepRows());
+				}
 				return;
 			}
 			helperConstructManager.updateStepVarName(rowIndex, aValue == null ? "" : String.valueOf(aValue));
@@ -466,7 +513,7 @@ public class HelperConstructPanel extends PluginPanel
 			List<String> parts = new ArrayList<>();
 			for (HelperConstructManager.CombinedStepRow row : rows)
 			{
-				parts.add(row.getVarName() + "|" + row.getSummary());
+				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getSectionCondition());
 			}
 			return String.join("\n", parts);
 		}

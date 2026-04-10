@@ -49,6 +49,7 @@ public class HelperConstructManager
 	private static final String MENU_PREFIX = "Construct:";
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
 	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
+	private static final String DEFAULT_SECTION_NAME = "New Section";
 	private static final int MAP_MIN_X = 960;
 	private static final int MAP_MIN_Y = 2048;
 	private static final int MAP_MAX_X = 4031;
@@ -599,9 +600,27 @@ public class HelperConstructManager
 				i,
 				step.getStepId(),
 				step.getSuggestedVarName(),
-				formatStepSummary(step, i + 1)));
+				formatStepSummary(step, i + 1),
+				step.isSectionDivider(),
+				step.getSectionCondition(),
+				step.isSkipWhenConditionMet()));
 		}
 		return Collections.unmodifiableList(rows);
+	}
+
+	public void addSectionDivider()
+	{
+		ensureDraftLoaded();
+		DraftStep divider = new DraftStep();
+		divider.setStepId(UUID.randomUUID().toString());
+		divider.setKind(StepKind.TEXT);
+		divider.setSectionDivider(true);
+		divider.setSuggestedVarName(DEFAULT_SECTION_NAME);
+		divider.setInstructionText(DEFAULT_SECTION_NAME);
+		divider.setSectionCondition("");
+		divider.setSkipWhenConditionMet(false);
+		currentDraft.getSteps().add(divider);
+		saveDraftToConfig();
 	}
 
 	public boolean moveStep(int fromIndex, int toIndex)
@@ -636,6 +655,40 @@ public class HelperConstructManager
 		{
 			rebuildWorldMapRoutePoints();
 		}
+		return true;
+	}
+
+	public boolean updateSectionCondition(int index, String condition)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getSteps().size())
+		{
+			return false;
+		}
+		DraftStep step = currentDraft.getSteps().get(index);
+		if (!step.isSectionDivider())
+		{
+			return false;
+		}
+		step.setSectionCondition(condition == null ? "" : condition);
+		saveDraftToConfig();
+		return true;
+	}
+
+	public boolean toggleSectionSkipMode(int index)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getSteps().size())
+		{
+			return false;
+		}
+		DraftStep step = currentDraft.getSteps().get(index);
+		if (!step.isSectionDivider())
+		{
+			return false;
+		}
+		step.setSkipWhenConditionMet(!step.isSkipWhenConditionMet());
+		saveDraftToConfig();
 		return true;
 	}
 
@@ -774,6 +827,7 @@ public class HelperConstructManager
 				DraftStep step = new DraftStep();
 				step.setStepId(stepState.stepId == null || stepState.stepId.isBlank() ? UUID.randomUUID().toString() : stepState.stepId);
 				step.setKind(stepState.kind);
+				step.setSectionDivider(stepState.sectionDivider);
 				step.setRawId(stepState.rawId);
 				step.setLinkedRequirementRawId(stepState.linkedRequirementRawId);
 				step.setResolvedSymbol(stepState.resolvedSymbol);
@@ -782,6 +836,8 @@ public class HelperConstructManager
 				step.setSuggestedVarName(stepState.suggestedVarName);
 				step.setInstructionText(stepState.instructionText);
 				step.setPanelName(stepState.panelName);
+				step.setSectionCondition(stepState.sectionCondition);
+				step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
 				if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
 				{
 					step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
@@ -823,6 +879,7 @@ public class HelperConstructManager
 			DraftStepState stepState = new DraftStepState();
 			stepState.stepId = step.getStepId();
 			stepState.kind = step.getKind();
+			stepState.sectionDivider = step.isSectionDivider();
 			stepState.rawId = step.getRawId();
 			stepState.linkedRequirementRawId = step.getLinkedRequirementRawId();
 			stepState.resolvedSymbol = step.getResolvedSymbol();
@@ -831,6 +888,8 @@ public class HelperConstructManager
 			stepState.suggestedVarName = step.getSuggestedVarName();
 			stepState.instructionText = step.getInstructionText();
 			stepState.panelName = step.getPanelName();
+			stepState.sectionCondition = step.getSectionCondition();
+			stepState.skipWhenConditionMet = step.isSkipWhenConditionMet();
 			if (step.getWorldPoint() != null)
 			{
 				stepState.worldX = step.getWorldPoint().getX();
@@ -930,6 +989,16 @@ public class HelperConstructManager
 
 	private String formatStepSummary(DraftStep step, int displayIndex)
 	{
+		if (step.isSectionDivider())
+		{
+			String mode = step.isSkipWhenConditionMet() ? "skip when true" : "show when true";
+			String condition = step.getSectionCondition() == null || step.getSectionCondition().isBlank() ? "no condition" : step.getSectionCondition();
+			return String.format("SECTION %d. %s [%s: %s]",
+				displayIndex,
+				step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank() ? DEFAULT_SECTION_NAME : step.getSuggestedVarName(),
+				mode,
+				condition);
+		}
 		String displayName = normalizeText(step.getTargetText());
 		if (displayName.isBlank())
 		{
@@ -1151,6 +1220,7 @@ public class HelperConstructManager
 	{
 		String stepId;
 		StepKind kind;
+		boolean sectionDivider;
 		int rawId;
 		Integer linkedRequirementRawId;
 		String resolvedSymbol;
@@ -1159,6 +1229,8 @@ public class HelperConstructManager
 		String suggestedVarName;
 		String instructionText;
 		String panelName;
+		String sectionCondition;
+		boolean skipWhenConditionMet;
 		Integer worldX;
 		Integer worldY;
 		Integer worldPlane;
@@ -1170,13 +1242,19 @@ public class HelperConstructManager
 		private final String stepId;
 		private final String varName;
 		private final String summary;
+		private final boolean sectionDivider;
+		private final String sectionCondition;
+		private final boolean skipWhenConditionMet;
 
-		public CombinedStepRow(int index, String stepId, String varName, String summary)
+		public CombinedStepRow(int index, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet)
 		{
 			this.index = index;
 			this.stepId = stepId;
 			this.varName = varName;
 			this.summary = summary;
+			this.sectionDivider = sectionDivider;
+			this.sectionCondition = sectionCondition;
+			this.skipWhenConditionMet = skipWhenConditionMet;
 		}
 
 		public int getIndex()
@@ -1197,6 +1275,21 @@ public class HelperConstructManager
 		public String getSummary()
 		{
 			return summary;
+		}
+
+		public boolean isSectionDivider()
+		{
+			return sectionDivider;
+		}
+
+		public String getSectionCondition()
+		{
+			return sectionCondition;
+		}
+
+		public boolean isSkipWhenConditionMet()
+		{
+			return skipWhenConditionMet;
 		}
 	}
 

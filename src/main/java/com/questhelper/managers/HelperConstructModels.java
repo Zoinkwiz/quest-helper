@@ -47,6 +47,7 @@ final class HelperConstructModels
 	{
 		private String stepId;
 		private StepKind kind;
+		private boolean sectionDivider;
 		private int rawId;
 		private Integer linkedRequirementRawId;
 		private String resolvedSymbol;
@@ -56,6 +57,8 @@ final class HelperConstructModels
 		private String suggestedVarName;
 		private String instructionText;
 		private String panelName;
+		private String sectionCondition;
+		private boolean skipWhenConditionMet;
 		private final List<Integer> requiredItems = new ArrayList<>();
 	}
 

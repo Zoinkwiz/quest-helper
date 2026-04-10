@@ -37,18 +37,23 @@ public class HelperScaffoldGenerator
 		String className = sanitizeClassName(draft.getClassName());
 		String packageName = draft.getPackagePath();
 		List<DraftStep> steps = draft.getSteps();
+		List<DraftStep> executableSteps = steps.stream().filter(s -> !s.isSectionDivider()).collect(Collectors.toList());
 		List<DraftRequirement> requirements = draft.getRequirements();
+		List<SectionGroup> sectionGroups = buildSectionGroups(steps);
 
 		out.append("package ").append(packageName).append(";\n\n");
+		out.append("import com.questhelper.panel.PanelDetails;\n");
 		out.append("import com.questhelper.questhelpers.ComplexStateQuestHelper;\n");
 		out.append("import com.questhelper.requirements.item.ItemRequirement;\n");
 		out.append("import static com.questhelper.requirements.util.LogicHelper.not;\n");
+		out.append("import static com.questhelper.requirements.util.LogicHelper.nor;\n");
 		out.append("import com.questhelper.requirements.var.VarbitRequirement;\n");
 		out.append("import com.questhelper.steps.ConditionalStep;\n");
 		out.append("import com.questhelper.steps.ItemStep;\n");
 		out.append("import com.questhelper.steps.NpcStep;\n");
 		out.append("import com.questhelper.steps.ObjectStep;\n");
 		out.append("import com.questhelper.steps.QuestStep;\n");
+		out.append("import java.util.ArrayList;\n");
 		out.append("import java.util.List;\n");
 		out.append("import net.runelite.api.coords.WorldPoint;\n");
 		out.append("import net.runelite.api.gameval.ItemID;\n");
@@ -66,13 +71,14 @@ public class HelperScaffoldGenerator
 		out.append("\n\t// Captured steps\n");
 		Map<DraftStep, String> stepVarNames = new LinkedHashMap<>();
 		Map<Integer, String> requirementVarNamesByRawId = new LinkedHashMap<>();
+		Map<SectionGroup, String> sectionTaskNames = new LinkedHashMap<>();
 		Set<String> usedNames = new LinkedHashSet<>();
 		Map<DraftStep, String> varbitReqVarNames = new LinkedHashMap<>();
 		for (DraftRequirement requirement : requirements)
 		{
 			requirementVarNamesByRawId.put(requirement.getRawId(), toVarName(requirement.getDisplayName(), "itemReq"));
 		}
-		for (DraftStep step : steps)
+		for (DraftStep step : executableSteps)
 		{
 			String stepType = stepTypeFor(step.getKind());
 			String candidate = toVarName(step.getSuggestedVarName(), "step");
@@ -85,6 +91,17 @@ public class HelperScaffoldGenerator
 				varbitReqVarNames.put(step, varbitReqVar);
 				out.append("\tVarbitRequirement ").append(varbitReqVar).append(";\n");
 			}
+		}
+		for (int i = 0; i < sectionGroups.size(); i++)
+		{
+			SectionGroup group = sectionGroups.get(i);
+			if (group.steps.isEmpty())
+			{
+				continue;
+			}
+			String sectionTaskName = makeUnique("section" + (i + 1) + "Task", usedNames);
+			sectionTaskNames.put(group, sectionTaskName);
+			out.append("\tConditionalStep ").append(sectionTaskName).append(";\n");
 		}
 
 		out.append("\n\t@Override\n");
@@ -108,6 +125,18 @@ public class HelperScaffoldGenerator
 		out.append("\t{\n");
 		for (DraftStep step : steps)
 		{
+			if (step.isSectionDivider())
+			{
+				String sectionName = step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank() ? "Unnamed Section" : step.getSuggestedVarName();
+				String sectionCondition = step.getSectionCondition() == null || step.getSectionCondition().isBlank()
+					? "no condition"
+					: step.getSectionCondition();
+				String mode = step.isSkipWhenConditionMet() ? "skip when true" : "show when true";
+				out.append("\t\t// Section: ").append(escape(sectionName)).append(" [").append(mode).append(": ")
+					.append(escape(sectionCondition)).append("]\n");
+				continue;
+			}
+
 			String varName = stepVarNames.get(step);
 			String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
 				? "TODO: refine instruction text"
@@ -151,17 +180,47 @@ public class HelperScaffoldGenerator
 		out.append("\t{\n");
 		out.append("\t\tinitializeRequirements();\n");
 		out.append("\t\tsetupSteps();\n\n");
-		if (!steps.isEmpty())
+		if (!sectionTaskNames.isEmpty())
 		{
-			String firstStepVar = stepVarNames.get(steps.get(0));
-			out.append("\t\tConditionalStep route = new ConditionalStep(this, ").append(firstStepVar).append(");\n");
-			for (int i = 1; i < steps.size(); i++)
+			List<SectionGroup> nonEmptySectionGroups = sectionGroups.stream().filter(g -> !g.steps.isEmpty()).collect(Collectors.toList());
+			for (SectionGroup group : sectionGroups)
 			{
-				String stepVar = stepVarNames.get(steps.get(i));
-				String reqVar = requirementExpressionForStep(steps.get(i), requirementVarNamesByRawId, varbitReqVarNames, warnings);
-				out.append("\t\troute.addStep(not(").append(reqVar).append("), ").append(stepVar).append(");\n");
+				if (group.steps.isEmpty())
+				{
+					continue;
+				}
+				String sectionTask = sectionTaskNames.get(group);
+				int initIndex = group.steps.size() - 1;
+				DraftStep initStep = group.steps.get(initIndex);
+				String initStepVar = stepVarNames.get(initStep);
+				out.append("\t\t").append(sectionTask).append(" = new ConditionalStep(this, ").append(initStepVar).append(");\n");
+				for (int i = 0; i < group.steps.size(); i++)
+				{
+					if (i == initIndex)
+					{
+						continue;
+					}
+					DraftStep step = group.steps.get(i);
+					String stepVar = stepVarNames.get(step);
+					String reqVar = requirementExpressionForStep(step, requirementVarNamesByRawId, varbitReqVarNames, warnings);
+					out.append("\t\t").append(sectionTask).append(".addStep(not(").append(reqVar).append("), ").append(stepVar).append(");\n");
+				}
+				out.append("\n");
 			}
-			out.append("\t\treturn route;\n");
+
+			SectionGroup lastSection = nonEmptySectionGroups.get(nonEmptySectionGroups.size() - 1);
+			out.append("\t\tConditionalStep allSections = new ConditionalStep(this, ")
+				.append(sectionTaskNames.get(lastSection)).append(");\n");
+			for (int i = 0; i < nonEmptySectionGroups.size() - 1; i++)
+			{
+				SectionGroup group = nonEmptySectionGroups.get(i);
+				String sectionRequirementExpression = group.steps.stream()
+					.map(step -> requirementExpressionForStep(step, requirementVarNamesByRawId, varbitReqVarNames, warnings))
+					.collect(Collectors.joining(", "));
+				out.append("\t\tallSections.addStep(nor(").append(sectionRequirementExpression).append("), ")
+					.append(sectionTaskNames.get(group)).append(");\n");
+			}
+			out.append("\t\treturn allSections;\n");
 		}
 		else
 		{
@@ -185,6 +244,14 @@ public class HelperScaffoldGenerator
 					.collect(Collectors.joining(", ")))
 				.append(");\n");
 		}
+		out.append("\t}\n");
+
+		out.append("\n\t@Override\n");
+		out.append("\tpublic List<PanelDetails> getPanels()\n");
+		out.append("\t{\n");
+		out.append("\t\tList<PanelDetails> allSteps = new ArrayList<>();\n\n");
+		appendPanelsFromSections(out, sectionGroups, stepVarNames, sectionTaskNames);
+		out.append("\t\treturn allSteps;\n");
 		out.append("\t}\n");
 		out.append("}\n");
 
@@ -238,6 +305,95 @@ public class HelperScaffoldGenerator
 			warnings.add("Missing linked item requirement for step ID: " + step.getRawId() + " linked requirement: " + linkedReqId);
 		}
 		return varbitReqVarNames.get(step);
+	}
+
+	private void appendPanelsFromSections(
+		StringBuilder out,
+		List<SectionGroup> sectionGroups,
+		Map<DraftStep, String> stepVarNames,
+		Map<SectionGroup, String> sectionTaskNames)
+	{
+		if (sectionGroups.isEmpty())
+		{
+			out.append("\t\tallSteps.add(new PanelDetails(\"Captured Steps\", List.of()));\n");
+			return;
+		}
+
+		for (int i = 0; i < sectionGroups.size(); i++)
+		{
+			SectionGroup group = sectionGroups.get(i);
+			if (group.steps.isEmpty())
+			{
+				continue;
+			}
+			String panelVar = "section" + (i + 1) + "Steps";
+			String panelName = escape(group.name);
+
+			out.append("\t\tPanelDetails ").append(panelVar).append(" = new PanelDetails(\"")
+				.append(panelName).append("\", List.of(");
+			for (int j = 0; j < group.steps.size(); j++)
+			{
+				if (j > 0)
+				{
+					out.append(", ");
+				}
+				out.append(stepVarNames.get(group.steps.get(j)));
+			}
+			out.append("));\n");
+			if (group.divider != null && group.divider.getSectionCondition() != null && !group.divider.getSectionCondition().isBlank())
+			{
+				out.append("\t\t// TODO: evaluate section condition: ")
+					.append(escape(group.divider.getSectionCondition())).append("\n");
+			}
+			out.append("\t\t").append(panelVar).append(".setLockingStep(").append(sectionTaskNames.get(group)).append(");\n");
+			out.append("\t\tallSteps.add(").append(panelVar).append(");\n\n");
+		}
+	}
+
+	private List<SectionGroup> buildSectionGroups(List<DraftStep> allDraftSteps)
+	{
+		List<SectionGroup> groups = new ArrayList<>();
+		List<DraftStep> currentGroup = new ArrayList<>();
+		String currentGroupName = "Captured Steps";
+		DraftStep currentDivider = null;
+
+		for (DraftStep step : allDraftSteps)
+		{
+			if (step.isSectionDivider())
+			{
+				if (!currentGroup.isEmpty())
+				{
+					groups.add(new SectionGroup(currentGroupName, currentDivider, currentGroup));
+					currentGroup = new ArrayList<>();
+				}
+				currentGroupName = (step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank())
+					? "Section"
+					: step.getSuggestedVarName();
+				currentDivider = step;
+				continue;
+			}
+			currentGroup.add(step);
+		}
+
+		if (!currentGroup.isEmpty())
+		{
+			groups.add(new SectionGroup(currentGroupName, currentDivider, currentGroup));
+		}
+		return groups;
+	}
+
+	private static final class SectionGroup
+	{
+		private final String name;
+		private final DraftStep divider;
+		private final List<DraftStep> steps;
+
+		private SectionGroup(String name, DraftStep divider, List<DraftStep> steps)
+		{
+			this.name = name;
+			this.divider = divider;
+			this.steps = steps;
+		}
 	}
 
 	private String sanitizeClassName(String className)

@@ -57,20 +57,24 @@ public class HelperConstructPanel extends PluginPanel
 		root.add(draftInfo);
 		root.add(Box.createVerticalStrut(8));
 
-		JPanel buttonRow = new JPanel(new GridLayout(1, 3, 6, 0));
+		JPanel buttonRow = new JPanel(new GridLayout(2, 2, 6, 6));
 		buttonRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		buttonRow.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 28));
+		buttonRow.setMaximumSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 58));
 		JButton buildButton = new JButton("Build");
 		JButton resetButton = new JButton("Reset");
+		JButton mapButton = new JButton("Map");
 		JButton viewModeButton = new JButton("Order View");
 		SwingUtil.removeButtonDecorations(buildButton);
 		SwingUtil.removeButtonDecorations(resetButton);
+		SwingUtil.removeButtonDecorations(mapButton);
 		SwingUtil.removeButtonDecorations(viewModeButton);
 		buildButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		resetButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		mapButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		viewModeButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		buildButton.setForeground(Color.WHITE);
 		resetButton.setForeground(Color.WHITE);
+		mapButton.setForeground(Color.WHITE);
 		viewModeButton.setForeground(Color.WHITE);
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
 		resetButton.addActionListener(e ->
@@ -78,6 +82,7 @@ public class HelperConstructPanel extends PluginPanel
 			helperConstructManager.resetDraftAndClearSavedStateFromUi();
 			refresh();
 		});
+		mapButton.addActionListener(e -> helperConstructManager.buildRouteMapImageFromUi());
 		viewModeButton.addActionListener(e ->
 		{
 			showingOrderedView = !showingOrderedView;
@@ -87,6 +92,7 @@ public class HelperConstructPanel extends PluginPanel
 		});
 		buttonRow.add(buildButton);
 		buttonRow.add(resetButton);
+		buttonRow.add(mapButton);
 		buttonRow.add(viewModeButton);
 		root.add(buttonRow);
 		root.add(Box.createVerticalStrut(10));

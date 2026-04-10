@@ -24,12 +24,16 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 
 import static com.questhelper.managers.HelperConstructModels.DraftHelper;
 import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
@@ -42,6 +46,10 @@ public class HelperConstructManager
 	private static final String MENU_PREFIX = "Construct:";
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
 	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
+	private static final int MAP_MIN_X = 960;
+	private static final int MAP_MIN_Y = 2048;
+	private static final int MAP_MAX_X = 4031;
+	private static final int MAP_MAX_Y = 4223;
 
 	@Inject
 	private Client client;
@@ -369,6 +377,36 @@ public class HelperConstructManager
 	public void buildToClipboardFromUi()
 	{
 		buildToClipboard();
+	}
+
+	public void buildRouteMapImageFromUi()
+	{
+		ensureDraftLoaded();
+		List<WorldPoint> points = new ArrayList<>();
+		for (DraftStep step : currentDraft.getSteps())
+		{
+			if (step.getWorldPoint() != null)
+			{
+				points.add(step.getWorldPoint());
+			}
+		}
+
+		if (points.size() < 2)
+		{
+			sendGameMessage("Quest Helper Construct: need at least 2 steps with world points to generate route image.");
+			return;
+		}
+
+		try
+		{
+			RouteImageResult result = writeRouteImage(points);
+			sendGameMessage("Quest Helper Construct: route map image saved to " + result.file.getAbsolutePath()
+				+ " (drawn " + result.drawnCount + ", skipped " + result.skippedCount + ").");
+		}
+		catch (IOException ex)
+		{
+			sendGameMessage("Quest Helper Construct: failed to save route map image (" + ex.getMessage() + ").");
+		}
 	}
 
 	private List<String> validateDraft()
@@ -764,6 +802,123 @@ public class HelperConstructManager
 			displayIndex,
 			displayName,
 			formatWorldPoint(step.getWorldPoint()));
+	}
+
+	private RouteImageResult writeRouteImage(List<WorldPoint> points) throws IOException
+	{
+		BufferedImage mapImage = loadWorldMapImage();
+		int width = mapImage.getWidth();
+		int height = mapImage.getHeight();
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = image.createGraphics();
+		try
+		{
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.drawImage(mapImage, 0, 0, null);
+
+			List<Point> plotted = new ArrayList<>();
+			int skipped = 0;
+			for (int i = 0; i < points.size(); i++)
+			{
+				WorldPoint wp = points.get(i);
+				if (wp.getX() < MAP_MIN_X || wp.getX() > MAP_MAX_X || wp.getY() < MAP_MIN_Y || wp.getY() > MAP_MAX_Y)
+				{
+					skipped++;
+					continue;
+				}
+				double nx = (double) (wp.getX() - MAP_MIN_X) / (MAP_MAX_X - MAP_MIN_X);
+				double ny = (double) (wp.getY() - MAP_MIN_Y) / (MAP_MAX_Y - MAP_MIN_Y);
+				int px = (int) Math.round(nx * (width - 1));
+				int py = height - 1 - (int) Math.round(ny * (height - 1));
+				plotted.add(new Point(px, py));
+			}
+
+			if (plotted.size() < 2)
+			{
+				throw new IOException("Not enough in-bounds route points to draw.");
+			}
+
+			g.setStroke(new BasicStroke(3f));
+			g.setColor(new Color(255, 193, 7));
+			for (int i = 0; i < plotted.size() - 1; i++)
+			{
+				Point a = plotted.get(i);
+				Point b = plotted.get(i + 1);
+				g.drawLine(a.x, a.y, b.x, b.y);
+			}
+
+			for (int i = 0; i < plotted.size(); i++)
+			{
+				Point p = plotted.get(i);
+				boolean isStart = i == 0;
+				boolean isEnd = i == plotted.size() - 1;
+				if (isStart)
+				{
+					g.setColor(new Color(40, 167, 69));
+				}
+				else if (isEnd)
+				{
+					g.setColor(new Color(220, 53, 69));
+				}
+				else
+				{
+					g.setColor(new Color(23, 162, 184));
+				}
+				g.fillOval(p.x - 6, p.y - 6, 12, 12);
+				g.setColor(Color.WHITE);
+				g.drawString(String.valueOf(i + 1), p.x + 8, p.y - 8);
+			}
+
+			g.setColor(Color.WHITE);
+			g.drawString("Quest Helper Construct Route", 12, 20);
+			g.drawString("Bounds: (" + MAP_MIN_X + ", " + MAP_MIN_Y + ") to (" + MAP_MAX_X + ", " + MAP_MAX_Y + ")", 12, 38);
+			g.drawString("Drawn: " + plotted.size() + "  Skipped: " + skipped, 12, 56);
+
+			File outputDir = new File(System.getProperty("java.io.tmpdir"), "quest-helper-construct");
+			if (!outputDir.exists() && !outputDir.mkdirs())
+			{
+				throw new IOException("Could not create output directory");
+			}
+			File outFile = new File(outputDir, "route-map-" + System.currentTimeMillis() + ".png");
+			ImageIO.write(image, "png", outFile);
+			return new RouteImageResult(outFile, plotted.size(), skipped);
+		}
+		finally
+		{
+			g.dispose();
+		}
+	}
+
+	private BufferedImage loadWorldMapImage() throws IOException
+	{
+		var stream = HelperConstructManager.class.getResourceAsStream("/world-map.png");
+		if (stream == null)
+		{
+			throw new IOException("world-map.png not found in resources");
+		}
+		try (stream)
+		{
+			BufferedImage image = ImageIO.read(stream);
+			if (image == null)
+			{
+				throw new IOException("world-map.png could not be decoded");
+			}
+			return image;
+		}
+	}
+
+	private static class RouteImageResult
+	{
+		final File file;
+		final int drawnCount;
+		final int skippedCount;
+
+		private RouteImageResult(File file, int drawnCount, int skippedCount)
+		{
+			this.file = file;
+			this.drawnCount = drawnCount;
+			this.skippedCount = skippedCount;
+		}
 	}
 
 	private static class DraftState

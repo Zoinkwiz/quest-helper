@@ -17,9 +17,6 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.ItemStep;
-import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.tools.ConstructWorldMapPoint;
@@ -32,6 +29,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Tile;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
@@ -83,8 +81,6 @@ public class HelperConstructManager
 	public static final int ORDER_REQUIREMENT_VARBIT_ONLY = ORDER_ROUTING_VARBIT_SENTINEL;
 
 	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
-	/** Written on export/save; older JSON without this field is still loaded (Gson default 0). */
-	private static final int DRAFT_STATE_FORMAT_VERSION = 1;
 	private static final String DEFAULT_SECTION_NAME = "New Section";
 	private static final int MAP_MIN_X = 960;
 	private static final int MAP_MIN_Y = 2048;
@@ -201,12 +197,16 @@ public class HelperConstructManager
 		if (isItemAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(rawId, target));
-			addAction(menuEntries, MENU_PREFIX + " Add Item Step", target, () -> addItemStep(rawId, target));
+			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(rawId, target));
 		}
 		if (isInventoryItemAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(itemID, target));
-			addAction(menuEntries, MENU_PREFIX + " Add Item Step", target, () -> addItemStep(itemID, target));
+			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(itemID, target));
+		}
+		if (isWalkHereMenu(sourceType, option) && clickedWorldPoint != null)
+		{
+			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (here)", target, () -> addGenericStepAtWorldPoint(clickedWorldPoint));
 		}
 	}
 
@@ -280,11 +280,9 @@ public class HelperConstructManager
 		step.setStepId(UUID.randomUUID().toString());
 		step.setKind(kind);
 		step.setRawId(rawId);
-		var idType = kind == StepKind.NPC
+		HelperConstructModels.IdType idType = kind == StepKind.NPC
 			? HelperConstructModels.IdType.NPC
-			: kind == StepKind.OBJECT
-			? HelperConstructModels.IdType.OBJECT
-			: HelperConstructModels.IdType.ITEM;
+			: HelperConstructModels.IdType.OBJECT;
 		var resolved = symbolResolver.resolve(idType, rawId);
 		step.setResolvedSymbol(resolved.getSymbol());
 		step.setOption(option);
@@ -369,35 +367,12 @@ public class HelperConstructManager
 			return null;
 		}
 
-		int sceneX = event.getActionParam0();
-		int sceneY = event.getActionParam1();
-		var worldView = client.getTopLevelWorldView();
-		Tile[][][] tiles = worldView.getScene().getTiles();
-		int plane = worldView.getPlane();
+		var tile = client.getTopLevelWorldView().getSelectedSceneTile();
+		if (tile == null) return null;
+		if (tile.getLocalLocation() == null) return null;
 
-		if (tiles == null || plane < 0 || plane >= tiles.length)
-		{
-			return null;
-		}
-		Tile[][] planeTiles = tiles[plane];
-		if (planeTiles == null
-			|| sceneX < 0 || sceneY < 0
-			|| sceneX >= planeTiles.length
-			|| sceneY >= planeTiles[sceneX].length)
-		{
-			return null;
-		}
+		return normalizeLocalPoint(tile.getLocalLocation());
 
-		Tile tile = planeTiles[sceneX][sceneY];
-		if (tile == null)
-		{
-			return null;
-		}
-		if (tile.getLocalLocation() != null)
-		{
-			return normalizeLocalPoint(tile.getLocalLocation());
-		}
-		return normalizeWorldPointWithWorldView(worldView, tile.getWorldLocation());
 	}
 
 	private WorldPoint normalizeLocalPoint(LocalPoint localPoint)
@@ -409,7 +384,7 @@ public class HelperConstructManager
 		return QuestPerspective.getWorldPointConsideringWorldView(client, localPoint);
 	}
 
-	private WorldPoint normalizeWorldPointWithWorldView(net.runelite.api.WorldView worldView, WorldPoint worldPoint)
+	private WorldPoint normalizeWorldPointWithWorldView(WorldView worldView, WorldPoint worldPoint)
 	{
 		if (worldPoint == null)
 		{
@@ -431,32 +406,118 @@ public class HelperConstructManager
 		sendGameMessage("Quest Helper Construct: added item requirement (" + idToUse + " -> " + requirement.getResolvedSymbol() + ").");
 	}
 
-	private void addItemStep(int rawId, String target)
+	private void addGenericStepFromItem(int rawId, String target)
 	{
 		ensureDraftLoaded();
 		int normalizedItemId = normalizeItemId(rawId);
 		DraftRequirement requirement = findOrCreateRequirement(normalizedItemId, target);
-
-		if (isDuplicateStep(StepKind.ITEM, normalizedItemId, target, null))
+		if (isDuplicateGenericItemStep(normalizedItemId, target))
 		{
-			sendGameMessage("Quest Helper Construct: skipped duplicate item step (" + normalizedItemId + ").");
+			sendGameMessage("Quest Helper Construct: skipped duplicate generic step for item (" + normalizedItemId + ").");
 			return;
 		}
 
 		DraftStep step = new DraftStep();
 		step.setStepId(UUID.randomUUID().toString());
-		step.setKind(StepKind.ITEM);
-		step.setRawId(normalizedItemId);
-		step.setResolvedSymbol(requirement.getResolvedSymbol());
+		step.setKind(StepKind.TEXT);
+		step.setRawId(0);
+		step.setResolvedSymbol("");
 		step.setOption("Use");
 		step.setTargetText(target);
 		String itemName = normalizeText(target).isBlank() ? requirement.getDisplayName() : normalizeText(target);
 		step.setInstructionText("Use " + itemName + ".");
 		step.setPanelName("Captured Steps");
-		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("use " + itemName, "itemStep"));
+		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("use " + itemName, "step"));
+		step.getAttachedRequirements().add(DraftStepAttachedRequirement.item(normalizedItemId));
 		currentDraft.getStepDefinitions().add(step);
 		saveDraftToConfig();
-		sendGameMessage("Quest Helper Construct: added item step (" + normalizedItemId + " -> " + requirement.getResolvedSymbol() + "). Use Add Step in Order View to place it in the quest order.");
+		sendGameMessage("Quest Helper Construct: added generic step with item " + normalizedItemId + " (" + requirement.getResolvedSymbol() + "). Add it to quest order if needed.");
+	}
+
+	private void addGenericStepAtWorldPoint(WorldPoint worldPoint)
+	{
+		ensureDraftLoaded();
+		if (worldPoint == null)
+		{
+			return;
+		}
+		if (isDuplicateGenericWalkStep(worldPoint))
+		{
+			sendGameMessage("Quest Helper Construct: skipped duplicate generic step at " + formatWorldPoint(worldPoint) + ".");
+			return;
+		}
+		DraftStep step = new DraftStep();
+		step.setStepId(UUID.randomUUID().toString());
+		step.setKind(StepKind.TEXT);
+		step.setRawId(0);
+		step.setResolvedSymbol("");
+		step.setWorldPoint(worldPoint);
+		step.setOption("Walk here");
+		step.setTargetText("");
+		step.setInstructionText("Go to " + formatWorldPoint(worldPoint) + ".");
+		step.setPanelName("Captured Steps");
+		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("go " + worldPoint.getX() + " " + worldPoint.getY(), "step"));
+		currentDraft.getStepDefinitions().add(step);
+		saveDraftToConfig();
+		sendGameMessage("Quest Helper Construct: added generic step at " + formatWorldPoint(worldPoint) + ".");
+	}
+
+	private boolean isWalkHereMenu(MenuAction sourceType, String option)
+	{
+		if (option == null)
+		{
+			return false;
+		}
+		if (!"Walk here".equalsIgnoreCase(option.trim()))
+		{
+			return false;
+		}
+		return !isNpcAction(sourceType) && !isObjectAction(sourceType);
+	}
+
+	private boolean isDuplicateGenericItemStep(int normalizedItemId, String target)
+	{
+		String t = normalizeText(target);
+		for (DraftStep existing : currentDraft.getStepDefinitions())
+		{
+			if (existing.getKind() != StepKind.TEXT)
+			{
+				continue;
+			}
+			if (existing.getWorldPoint() != null)
+			{
+				continue;
+			}
+			if (!safeEquals(normalizeText(existing.getTargetText()), t))
+			{
+				continue;
+			}
+			for (DraftStepAttachedRequirement a : existing.getAttachedRequirements())
+			{
+				if (StepAttachmentKind.ITEM.name().equalsIgnoreCase(a.getKind())
+					&& a.getItemRawId() != null && a.getItemRawId() == normalizedItemId)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean isDuplicateGenericWalkStep(WorldPoint worldPoint)
+	{
+		for (DraftStep existing : currentDraft.getStepDefinitions())
+		{
+			if (existing.getKind() != StepKind.TEXT || existing.getWorldPoint() == null)
+			{
+				continue;
+			}
+			if (worldPoint.equals(existing.getWorldPoint()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private DraftRequirement findOrCreateRequirement(int normalizedItemId, String target)
@@ -712,19 +773,31 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(summaries);
 	}
 
-	public List<String> getNpcStepSummaries()
+	public List<String> getStepSummaries(ConstructStepKind kind)
 	{
-		return getStepSummariesByKind(StepKind.NPC);
+		return getStepSummariesByKind(kind.stepKind());
 	}
 
-	public List<String> getObjectStepSummaries()
+	/** Variable names for step definitions in the maker tables (same field as order column Name/Var). */
+	public List<String> getStepVarNames(ConstructStepKind kind)
 	{
-		return getStepSummariesByKind(StepKind.OBJECT);
+		return getStepVarNamesByKind(kind.stepKind());
 	}
 
-	public List<String> getItemStepSummaries()
+	private List<String> getStepVarNamesByKind(StepKind kind)
 	{
-		return getStepSummariesByKind(StepKind.ITEM);
+		ensureDraftLoaded();
+		List<String> out = new ArrayList<>();
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step.getKind() != kind)
+			{
+				continue;
+			}
+			String v = step.getSuggestedVarName();
+			out.add(v == null || v.isBlank() ? "?" : v);
+		}
+		return Collections.unmodifiableList(out);
 	}
 
 	private List<String> getStepSummariesByKind(StepKind kind)
@@ -757,19 +830,9 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(texts);
 	}
 
-	public List<String> getNpcStepInstructionTexts()
+	public List<String> getStepInstructionTexts(ConstructStepKind kind)
 	{
-		return getStepInstructionTextsByKind(StepKind.NPC);
-	}
-
-	public List<String> getObjectStepInstructionTexts()
-	{
-		return getStepInstructionTextsByKind(StepKind.OBJECT);
-	}
-
-	public List<String> getItemStepInstructionTexts()
-	{
-		return getStepInstructionTextsByKind(StepKind.ITEM);
+		return getStepInstructionTextsByKind(kind.stepKind());
 	}
 
 	private boolean updateStepInstructionByKindAt(StepKind kind, int filteredIndex, String instructionText)
@@ -797,139 +860,112 @@ public class HelperConstructManager
 		return false;
 	}
 
-	public boolean updateNpcStepInstructionAt(int index, String instructionText)
+	public boolean updateStepInstructionAt(ConstructStepKind kind, int index, String instructionText)
 	{
-		return updateStepInstructionByKindAt(StepKind.NPC, index, instructionText);
+		return updateStepInstructionByKindAt(kind.stepKind(), index, instructionText);
 	}
 
-	public boolean updateObjectStepInstructionAt(int index, String instructionText)
+	public List<String> getStepRawIdTexts(ConstructStepKind kind)
 	{
-		return updateStepInstructionByKindAt(StepKind.OBJECT, index, instructionText);
+		return getStepRawIdTextsByKind(kind.stepKind());
 	}
 
-	public boolean updateItemStepInstructionAt(int index, String instructionText)
+	private List<String> getStepRawIdTextsByKind(StepKind kind)
 	{
-		return updateStepInstructionByKindAt(StepKind.ITEM, index, instructionText);
+		ensureDraftLoaded();
+		List<String> out = new ArrayList<>();
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step.getKind() != kind)
+			{
+				continue;
+			}
+			if (kind == StepKind.NPC || kind == StepKind.OBJECT)
+			{
+				out.add(String.valueOf(step.getRawId()));
+			}
+			else
+			{
+				out.add("");
+			}
+		}
+		return Collections.unmodifiableList(out);
 	}
 
-	public List<String> getNpcStepWorldPointTexts()
+	public boolean updateStepRawIdAt(ConstructStepKind kind, int index, String rawIdText)
 	{
-		return getWorldPointTextsByKind(StepKind.NPC);
+		return updateStepRawIdAt(kind.stepKind(), index, rawIdText);
 	}
 
-	public List<String> getObjectStepWorldPointTexts()
+	public void addEmptyStepFromUi(ConstructStepKind kind)
 	{
-		return getWorldPointTextsByKind(StepKind.OBJECT);
+		ensureDraftLoaded();
+		StepKind sk = kind.stepKind();
+		DraftStep step = new DraftStep();
+		step.setStepId(UUID.randomUUID().toString());
+		step.setKind(sk);
+		step.setInstructionText("");
+		step.setTargetText("");
+		step.setPanelName("Captured Steps");
+		step.setWorldPoint(null);
+		step.setOption("");
+		step.setSectionDivider(false);
+		if (sk == StepKind.NPC || sk == StepKind.OBJECT)
+		{
+			step.setRawId(0);
+			HelperConstructModels.IdType idType = sk == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
+			step.setResolvedSymbol(symbolResolver.resolve(idType, 0).getSymbol());
+			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(sk == StepKind.NPC ? "npc step" : "object step", "step"));
+		}
+		else
+		{
+			step.setRawId(0);
+			step.setResolvedSymbol("");
+			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("generic step", "step"));
+		}
+		currentDraft.getStepDefinitions().add(step);
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
 	}
 
-	public List<String> getItemStepWorldPointTexts()
+	public List<String> getStepWorldPointTexts(ConstructStepKind kind)
 	{
-		return getWorldPointTextsByKind(StepKind.ITEM);
+		return getWorldPointTextsByKind(kind.stepKind());
 	}
 
-	public List<String> getNpcStepRequiredItemsTexts()
+	public List<String> getStepRequiredItemsTexts(ConstructStepKind kind)
 	{
-		return getRequiredItemsTextsByKind(StepKind.NPC);
+		return getRequiredItemsTextsByKind(kind.stepKind());
 	}
 
-	public List<String> getObjectStepRequiredItemsTexts()
+	public boolean updateStepWorldPointAt(ConstructStepKind kind, int index, String text)
 	{
-		return getRequiredItemsTextsByKind(StepKind.OBJECT);
+		return updateStepWorldPointAt(kind.stepKind(), index, text);
 	}
 
-	public List<String> getItemStepRequiredItemsTexts()
+	public boolean updateStepRequiredItemsAt(ConstructStepKind kind, int index, String text)
 	{
-		return getRequiredItemsTextsByKind(StepKind.ITEM);
+		return updateStepRequiredItemsAt(kind.stepKind(), index, text);
 	}
 
-	public boolean updateNpcStepWorldPointAt(int index, String text)
+	public List<String> getStepRequirementsDisplays(ConstructStepKind kind)
 	{
-		return updateStepWorldPointAt(StepKind.NPC, index, text);
+		return getRequirementsDisplaysByKind(kind.stepKind());
 	}
 
-	public boolean updateObjectStepWorldPointAt(int index, String text)
+	public List<Integer> getStepRequiredItemIdsCopyAt(ConstructStepKind kind, int index)
 	{
-		return updateStepWorldPointAt(StepKind.OBJECT, index, text);
+		return getRequiredItemIdsCopyAt(kind.stepKind(), index);
 	}
 
-	public boolean updateItemStepWorldPointAt(int index, String text)
+	public List<StepAttachmentEdit> getStepAttachmentsAt(ConstructStepKind kind, int index)
 	{
-		return updateStepWorldPointAt(StepKind.ITEM, index, text);
+		return getStepAttachmentsAt(kind.stepKind(), index);
 	}
 
-	public boolean updateNpcStepRequiredItemsAt(int index, String text)
+	public boolean applyStepAttachmentsAt(ConstructStepKind kind, int index, List<StepAttachmentEdit> attachments)
 	{
-		return updateStepRequiredItemsAt(StepKind.NPC, index, text);
-	}
-
-	public boolean updateObjectStepRequiredItemsAt(int index, String text)
-	{
-		return updateStepRequiredItemsAt(StepKind.OBJECT, index, text);
-	}
-
-	public boolean updateItemStepRequiredItemsAt(int index, String text)
-	{
-		return updateStepRequiredItemsAt(StepKind.ITEM, index, text);
-	}
-
-	public List<String> getNpcStepRequirementsDisplays()
-	{
-		return getRequirementsDisplaysByKind(StepKind.NPC);
-	}
-
-	public List<String> getObjectStepRequirementsDisplays()
-	{
-		return getRequirementsDisplaysByKind(StepKind.OBJECT);
-	}
-
-	public List<String> getItemStepRequirementsDisplays()
-	{
-		return getRequirementsDisplaysByKind(StepKind.ITEM);
-	}
-
-	public List<Integer> getNpcStepRequiredItemIdsCopyAt(int index)
-	{
-		return getRequiredItemIdsCopyAt(StepKind.NPC, index);
-	}
-
-	public List<Integer> getObjectStepRequiredItemIdsCopyAt(int index)
-	{
-		return getRequiredItemIdsCopyAt(StepKind.OBJECT, index);
-	}
-
-	public List<Integer> getItemStepRequiredItemIdsCopyAt(int index)
-	{
-		return getRequiredItemIdsCopyAt(StepKind.ITEM, index);
-	}
-
-	public List<StepAttachmentEdit> getNpcStepAttachmentsAt(int index)
-	{
-		return getStepAttachmentsAt(StepKind.NPC, index);
-	}
-
-	public List<StepAttachmentEdit> getObjectStepAttachmentsAt(int index)
-	{
-		return getStepAttachmentsAt(StepKind.OBJECT, index);
-	}
-
-	public List<StepAttachmentEdit> getItemStepAttachmentsAt(int index)
-	{
-		return getStepAttachmentsAt(StepKind.ITEM, index);
-	}
-
-	public boolean applyNpcStepAttachmentsAt(int index, List<StepAttachmentEdit> attachments)
-	{
-		return applyStepAttachmentsAt(StepKind.NPC, index, attachments);
-	}
-
-	public boolean applyObjectStepAttachmentsAt(int index, List<StepAttachmentEdit> attachments)
-	{
-		return applyStepAttachmentsAt(StepKind.OBJECT, index, attachments);
-	}
-
-	public boolean applyItemStepAttachmentsAt(int index, List<StepAttachmentEdit> attachments)
-	{
-		return applyStepAttachmentsAt(StepKind.ITEM, index, attachments);
+		return applyStepAttachmentsAt(kind.stepKind(), index, attachments);
 	}
 
 	public String summarizeStepAttachmentEdit(StepAttachmentEdit edit)
@@ -940,18 +976,26 @@ public class HelperConstructManager
 		}
 		if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(edit.getKind()))
 		{
+			String disp = edit.getVarbitDisplayText();
+			if (disp != null && !disp.isBlank())
+			{
+				return disp;
+			}
 			int vid = edit.getVarbitId() == null ? 0 : edit.getVarbitId();
 			int val = edit.getVarbitRequiredValue() == null ? 0 : edit.getVarbitRequiredValue();
 			String op = edit.getVarbitOperation() == null ? "EQUAL" : edit.getVarbitOperation();
-			String disp = edit.getVarbitDisplayText();
-			String tail = disp == null || disp.isBlank() ? "" : " \"" + disp + "\"";
-			return "Varbit " + vid + " " + op + " " + val + tail;
+			return vid + " " + op + " " + val;
 		}
-		if (edit.getItemRawId() == null)
+		if (StepAttachmentKind.ITEM.name().equalsIgnoreCase(edit.getKind()))
 		{
-			return "Item (unset)";
+			if (edit.getItemRawId() == null)
+			{
+				return "(unset)";
+			}
+			return requirementDisplayLabelForRawId(edit.getItemRawId());
 		}
-		return "Item: " + labelForCapturedRequirementRawId(edit.getItemRawId());
+		String fk = edit.getKind();
+		return fk == null || fk.isBlank() ? "Attachment" : fk;
 	}
 
 	private List<String> getRequirementsDisplaysByKind(StepKind kind)
@@ -998,7 +1042,14 @@ public class HelperConstructManager
 				return i < labels.size() ? labels.get(i) : String.valueOf(rawId);
 			}
 		}
-		return "item " + rawId;
+		return String.valueOf(rawId);
+	}
+
+	/** Display text for a captured requirement id (no {@code N.} list prefix, no type prefix). */
+	private String requirementDisplayLabelForRawId(int rawId)
+	{
+		String numbered = labelForCapturedRequirementRawId(rawId);
+		return numbered.replaceFirst("^\\d+\\.\\s*", "").trim();
 	}
 
 	private List<StepAttachmentEdit> getStepAttachmentsAt(StepKind kind, int filteredIndex)
@@ -1057,7 +1108,7 @@ public class HelperConstructManager
 			return StepAttachmentEdit.varbit(vid, val, a.getVarbitOperation(), a.getVarbitDisplayText());
 		}
 		int itemId = a.getItemRawId() == null ? 0 : a.getItemRawId();
-		return StepAttachmentEdit.item(itemId);
+		return StepAttachmentEdit.item(itemId, a.isAttachmentHighlighted());
 	}
 
 	private static DraftStepAttachedRequirement draftAttachedRequirementFromEdit(StepAttachmentEdit edit)
@@ -1068,26 +1119,22 @@ public class HelperConstructManager
 		}
 		if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(edit.getKind()))
 		{
-			if (edit.getVarbitId() == null)
+			VarbitSpec spec = VarbitSpec.tryFromStepAttachmentEdit(edit);
+			if (spec == null)
 			{
 				return null;
 			}
-			int val = edit.getVarbitRequiredValue() == null ? 1 : edit.getVarbitRequiredValue();
-			try
-			{
-				Operation.valueOf(edit.getVarbitOperation() == null ? "EQUAL" : edit.getVarbitOperation().trim());
-			}
-			catch (IllegalArgumentException ex)
-			{
-				return null;
-			}
-			return DraftStepAttachedRequirement.varbit(edit.getVarbitId(), val, edit.getVarbitOperation(), edit.getVarbitDisplayText());
+			return DraftStepAttachedRequirement.varbit(
+				spec.getVarbitId(),
+				spec.getRequiredValue(),
+				spec.getOperation().name(),
+				spec.getDisplayText());
 		}
 		if (edit.getItemRawId() == null)
 		{
 			return null;
 		}
-		return DraftStepAttachedRequirement.item(edit.getItemRawId());
+		return DraftStepAttachedRequirement.item(edit.getItemRawId(), edit.isItemHighlighted());
 	}
 
 	private DraftStep stepDefinitionAtKindIndexOrNull(StepKind kind, int filteredIndex)
@@ -1111,6 +1158,35 @@ public class HelperConstructManager
 			i++;
 		}
 		return null;
+	}
+
+	private List<Integer> getRequiredItemIdsCopyAt(StepKind kind, int filteredIndex)
+	{
+		DraftStep step = stepDefinitionAtKindIndexOrNull(kind, filteredIndex);
+		if (step == null)
+		{
+			return Collections.emptyList();
+		}
+		List<DraftStepAttachedRequirement> list = step.getAttachedRequirements();
+		if (list == null || list.isEmpty())
+		{
+			return Collections.emptyList();
+		}
+		List<Integer> out = new ArrayList<>();
+		for (DraftStepAttachedRequirement a : list)
+		{
+			String k = a.getKind() == null ? StepAttachmentKind.ITEM.name() : a.getKind();
+			if (!StepAttachmentKind.ITEM.name().equalsIgnoreCase(k))
+			{
+				continue;
+			}
+			Integer id = a.getItemRawId();
+			if (id != null)
+			{
+				out.add(id);
+			}
+		}
+		return Collections.unmodifiableList(out);
 	}
 
 	private List<String> getWorldPointTextsByKind(StepKind kind)
@@ -1139,6 +1215,34 @@ public class HelperConstructManager
 			}
 		}
 		return Collections.unmodifiableList(out);
+	}
+
+	private boolean updateStepRawIdAt(StepKind kind, int filteredIndex, String rawIdText)
+	{
+		if (kind != StepKind.NPC && kind != StepKind.OBJECT)
+		{
+			return false;
+		}
+		DraftStep step = stepDefinitionAtKindIndexOrNull(kind, filteredIndex);
+		if (step == null)
+		{
+			return false;
+		}
+		int parsed;
+		try
+		{
+			parsed = Integer.parseInt(rawIdText == null ? "" : rawIdText.trim());
+		}
+		catch (NumberFormatException ex)
+		{
+			return false;
+		}
+		HelperConstructModels.IdType idType = kind == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
+		step.setRawId(parsed);
+		step.setResolvedSymbol(symbolResolver.resolve(idType, parsed).getSymbol());
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return true;
 	}
 
 	private boolean updateStepWorldPointAt(StepKind kind, int filteredIndex, String text)
@@ -1616,6 +1720,37 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(out);
 	}
 
+	/**
+	 * Labels and {@link StepAttachmentEdit} payloads for the single "Add…" control in the step attachments dialog:
+	 * captured item requirements plus varbit routing rows from quest order.
+	 */
+	public List<StepAttachmentPickOption> getStepAttachmentPickOptions()
+	{
+		ensureDraftLoaded();
+		reconcileVarbitRequirementsWithOrder();
+		List<StepAttachmentPickOption> out = new ArrayList<>();
+		List<Integer> ids = getRequirementRawIds();
+		List<String> labels = getRequirementSummaries();
+		for (int i = 0; i < ids.size(); i++)
+		{
+			String lab = i < labels.size() ? labels.get(i) : String.valueOf(ids.get(i));
+			String shortLab = lab.replaceFirst("^\\d+\\.\\s*", "").trim();
+			out.add(new StepAttachmentPickOption(shortLab, StepAttachmentEdit.item(ids.get(i))));
+		}
+		for (VarbitSlotRow row : getVarbitSlotsInQuestOrderForEditor())
+		{
+			String disp = row.getDisplayText();
+			String base = row.getOrderSlotSummary() + " — " + row.getVarbitId() + " " + row.getOperation() + " " + row.getRequiredValue();
+			String label = disp != null && !disp.isBlank() ? disp + " — " + base : base;
+			out.add(new StepAttachmentPickOption(label, StepAttachmentEdit.varbit(
+				row.getVarbitId(),
+				row.getRequiredValue(),
+				row.getOperation(),
+				disp)));
+		}
+		return Collections.unmodifiableList(out);
+	}
+
 	public boolean moveStep(int fromIndex, int toIndex)
 	{
 		ensureDraftLoaded();
@@ -1788,14 +1923,9 @@ public class HelperConstructManager
 		return true;
 	}
 
-	public boolean removeNpcStepAt(int index)
+	public boolean removeStepAt(ConstructStepKind kind, int index)
 	{
-		return removeStepByKindAt(StepKind.NPC, index);
-	}
-
-	public boolean removeObjectStepAt(int index)
-	{
-		return removeStepByKindAt(StepKind.OBJECT, index);
+		return removeStepByKindAt(kind.stepKind(), index);
 	}
 
 	private boolean removeStepByKindAt(StepKind kind, int index)
@@ -1827,11 +1957,6 @@ public class HelperConstructManager
 			filteredIndex++;
 		}
 		return false;
-	}
-
-	public boolean removeItemStepAt(int index)
-	{
-		return removeStepByKindAt(StepKind.ITEM, index);
 	}
 
 	private void removeOrderRefsToStepId(String stepId)
@@ -1924,12 +2049,12 @@ public class HelperConstructManager
 
 		try
 		{
-			DraftState state = gson.fromJson(json, DraftState.class);
+			ConstructDraftPersistence.DraftState state = gson.fromJson(json, ConstructDraftPersistence.DraftState.class);
 			if (state == null)
 			{
 				return;
 			}
-			currentDraft = draftHelperFromState(state);
+			currentDraft = ConstructDraftPersistence.draftHelperFromState(state);
 			reconcileVarbitRequirementsWithOrder();
 		}
 		catch (JsonSyntaxException ignored)
@@ -1945,7 +2070,7 @@ public class HelperConstructManager
 	{
 		ensureDraftLoaded();
 		reconcileVarbitRequirementsWithOrder();
-		return prettyDraftGson.toJson(toDraftState(currentDraft));
+		return prettyDraftGson.toJson(ConstructDraftPersistence.toDraftState(currentDraft));
 	}
 
 	/**
@@ -1960,12 +2085,12 @@ public class HelperConstructManager
 		}
 		try
 		{
-			DraftState state = gson.fromJson(json.trim(), DraftState.class);
+			ConstructDraftPersistence.DraftState state = gson.fromJson(json.trim(), ConstructDraftPersistence.DraftState.class);
 			if (state == null)
 			{
 				return ImportDraftResult.failure("Could not parse draft");
 			}
-			currentDraft = draftHelperFromState(state);
+			currentDraft = ConstructDraftPersistence.draftHelperFromState(state);
 			reconcileVarbitRequirementsWithOrder();
 			saveDraftToConfig();
 			if (worldMapRoutePreviewEnabled)
@@ -1980,301 +2105,13 @@ public class HelperConstructManager
 		}
 	}
 
-	private static DraftHelper draftHelperFromState(DraftState state)
-	{
-		DraftHelper loaded = new DraftHelper();
-		if (state.questName != null)
-		{
-			loaded.setQuestName(state.questName);
-		}
-		if (state.className != null)
-		{
-			loaded.setClassName(state.className);
-		}
-		if (state.packagePath != null)
-		{
-			loaded.setPackagePath(state.packagePath);
-		}
-		if (state.helperType != null)
-		{
-			loaded.setHelperType(state.helperType);
-		}
-
-		if (state.order != null && !state.order.isEmpty())
-		{
-			Map<String, Integer> legacyDefLinkedByStepId = new HashMap<>();
-			if (state.definitions != null)
-			{
-				for (DraftStepState stepState : state.definitions)
-				{
-					DraftStep step = draftStepFromState(stepState, false);
-					loaded.getStepDefinitions().add(step);
-					if (stepState.linkedRequirementRawId != null)
-					{
-						legacyDefLinkedByStepId.put(step.getStepId(), stepState.linkedRequirementRawId);
-					}
-				}
-			}
-			for (DraftOrderLineState lineState : state.order)
-			{
-				loaded.getOrder().add(draftOrderLineFromState(lineState));
-			}
-			applyLegacyDefinitionLinkedRequirementsToOrderLines(loaded, legacyDefLinkedByStepId);
-		}
-		else if (state.definitions != null && !state.definitions.isEmpty())
-		{
-			for (DraftStepState stepState : state.definitions)
-			{
-				loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
-			}
-		}
-		else if (state.steps != null && !state.steps.isEmpty())
-		{
-			migrateLegacyStepsList(state.steps, loaded);
-		}
-
-		if (state.requirements != null)
-		{
-			for (DraftRequirementState reqState : state.requirements)
-			{
-				DraftRequirement req = new DraftRequirement();
-				req.setRawId(reqState.rawId);
-				req.setResolvedSymbol(reqState.resolvedSymbol);
-				req.setDisplayName(reqState.displayName);
-				loaded.getRequirements().add(req);
-			}
-		}
-
-		if (state.varbitRequirements != null)
-		{
-			for (DraftVarbitRequirementState vState : state.varbitRequirements)
-			{
-				if (vState.lineId == null || vState.lineId.isBlank())
-				{
-					continue;
-				}
-				loaded.getVarbitRequirements().add(new DraftVarbitRequirement(
-					vState.lineId,
-					vState.varbitId,
-					vState.requiredValue,
-					vState.operation == null || vState.operation.isBlank() ? "EQUAL" : vState.operation,
-					vState.displayText));
-			}
-		}
-
-		return loaded;
-	}
-
-	/**
-	 * Older drafts stored a per-definition linked item id on each step. That now lives only on quest order rows;
-	 * copy legacy values onto order lines that still use default (null) routing.
-	 */
-	private static void applyLegacyDefinitionLinkedRequirementsToOrderLines(DraftHelper loaded, Map<String, Integer> legacyDefLinkedByStepId)
-	{
-		if (legacyDefLinkedByStepId.isEmpty())
-		{
-			return;
-		}
-		for (DraftOrderLine line : loaded.getOrder())
-		{
-			if (line.isSectionDivider())
-			{
-				continue;
-			}
-			if (line.getLinkedRequirementRawId() != null)
-			{
-				continue;
-			}
-			Integer leg = legacyDefLinkedByStepId.get(line.getRefStepId());
-			if (leg != null)
-			{
-				line.setLinkedRequirementRawId(leg);
-			}
-		}
-	}
-
-	private static DraftState toDraftState(DraftHelper draft)
-	{
-		DraftState state = new DraftState();
-		state.formatVersion = DRAFT_STATE_FORMAT_VERSION;
-		state.questName = draft.getQuestName();
-		state.className = draft.getClassName();
-		state.packagePath = draft.getPackagePath();
-		state.helperType = draft.getHelperType();
-
-		for (DraftStep step : draft.getStepDefinitions())
-		{
-			DraftStepState stepState = new DraftStepState();
-			stepState.stepId = step.getStepId();
-			stepState.kind = step.getKind();
-			stepState.sectionDivider = false;
-			stepState.rawId = step.getRawId();
-			stepState.resolvedSymbol = step.getResolvedSymbol();
-			stepState.option = step.getOption();
-			stepState.targetText = step.getTargetText();
-			stepState.suggestedVarName = step.getSuggestedVarName();
-			stepState.instructionText = step.getInstructionText();
-			stepState.panelName = step.getPanelName();
-			stepState.sectionCondition = step.getSectionCondition();
-			stepState.skipWhenConditionMet = step.isSkipWhenConditionMet();
-			for (DraftStepAttachedRequirement a : step.getAttachedRequirements())
-			{
-				DraftStepAttachedRequirementState st = new DraftStepAttachedRequirementState();
-				st.kind = a.getKind();
-				st.itemRawId = a.getItemRawId();
-				st.varbitId = a.getVarbitId();
-				st.varbitRequiredValue = a.getVarbitRequiredValue();
-				st.varbitOperation = a.getVarbitOperation();
-				st.varbitDisplayText = a.getVarbitDisplayText();
-				stepState.attachedRequirements.add(st);
-			}
-			if (step.getWorldPoint() != null)
-			{
-				stepState.worldX = step.getWorldPoint().getX();
-				stepState.worldY = step.getWorldPoint().getY();
-				stepState.worldPlane = step.getWorldPoint().getPlane();
-			}
-			state.definitions.add(stepState);
-		}
-
-		for (DraftOrderLine line : draft.getOrder())
-		{
-			DraftOrderLineState lineState = new DraftOrderLineState();
-			lineState.lineId = line.getLineId();
-			lineState.sectionDivider = line.isSectionDivider();
-			lineState.suggestedVarName = line.getSuggestedVarName();
-			lineState.sectionCondition = line.getSectionCondition();
-			lineState.skipWhenConditionMet = line.isSkipWhenConditionMet();
-			lineState.refStepId = line.getRefStepId();
-			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
-			state.order.add(lineState);
-		}
-
-		for (DraftRequirement req : draft.getRequirements())
-		{
-			DraftRequirementState reqState = new DraftRequirementState();
-			reqState.rawId = req.getRawId();
-			reqState.resolvedSymbol = req.getResolvedSymbol();
-			reqState.displayName = req.getDisplayName();
-			state.requirements.add(reqState);
-		}
-
-		for (DraftVarbitRequirement v : draft.getVarbitRequirements())
-		{
-			if (v.getLineId() == null || v.getLineId().isBlank())
-			{
-				continue;
-			}
-			DraftVarbitRequirementState vs = new DraftVarbitRequirementState();
-			vs.lineId = v.getLineId();
-			vs.varbitId = v.getVarbitId();
-			vs.requiredValue = v.getRequiredValue();
-			vs.operation = v.getOperation();
-			vs.displayText = v.getDisplayText();
-			state.varbitRequirements.add(vs);
-		}
-
-		return state;
-	}
-
-	private static DraftStep draftStepFromState(DraftStepState stepState, boolean keepSectionDivider)
-	{
-		DraftStep step = new DraftStep();
-		step.setStepId(stepState.stepId == null || stepState.stepId.isBlank() ? UUID.randomUUID().toString() : stepState.stepId);
-		step.setKind(stepState.kind);
-		step.setSectionDivider(keepSectionDivider && stepState.sectionDivider);
-		step.setRawId(stepState.rawId);
-		step.setResolvedSymbol(stepState.resolvedSymbol);
-		step.setOption(stepState.option);
-		step.setTargetText(stepState.targetText);
-		step.setSuggestedVarName(stepState.suggestedVarName);
-		step.setInstructionText(stepState.instructionText);
-		step.setPanelName(stepState.panelName);
-		step.setSectionCondition(stepState.sectionCondition);
-		step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
-		if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
-		{
-			step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
-		}
-		migrateStepStateAttachmentsToStep(stepState, step);
-		return step;
-	}
-
-	private static void migrateStepStateAttachmentsToStep(DraftStepState stepState, DraftStep step)
-	{
-		if (stepState.attachedRequirements != null && !stepState.attachedRequirements.isEmpty())
-		{
-			for (DraftStepAttachedRequirementState st : stepState.attachedRequirements)
-			{
-				DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
-				d.setKind(st.kind);
-				d.setItemRawId(st.itemRawId);
-				d.setVarbitId(st.varbitId);
-				d.setVarbitRequiredValue(st.varbitRequiredValue);
-				d.setVarbitOperation(st.varbitOperation);
-				d.setVarbitDisplayText(st.varbitDisplayText);
-				step.getAttachedRequirements().add(d);
-			}
-		}
-		else if (stepState.requiredItems != null)
-		{
-			for (Integer id : stepState.requiredItems)
-			{
-				if (id != null)
-				{
-					step.getAttachedRequirements().add(DraftStepAttachedRequirement.item(id));
-				}
-			}
-		}
-	}
-
-	private static DraftOrderLine draftOrderLineFromState(DraftOrderLineState s)
-	{
-		DraftOrderLine line = new DraftOrderLine();
-		line.setLineId(s.lineId == null || s.lineId.isBlank() ? UUID.randomUUID().toString() : s.lineId);
-		line.setSectionDivider(s.sectionDivider);
-		line.setSuggestedVarName(s.suggestedVarName);
-		line.setSectionCondition(s.sectionCondition);
-		line.setSkipWhenConditionMet(s.skipWhenConditionMet);
-		line.setRefStepId(s.refStepId);
-		line.setLinkedRequirementRawId(s.linkedRequirementRawId);
-		return line;
-	}
-
-	private static void migrateLegacyStepsList(List<DraftStepState> legacySteps, DraftHelper loaded)
-	{
-		for (DraftStepState stepState : legacySteps)
-		{
-			DraftStep step = draftStepFromState(stepState, true);
-			if (step.isSectionDivider())
-			{
-				DraftOrderLine line = new DraftOrderLine();
-				line.setLineId(step.getStepId());
-				line.setSectionDivider(true);
-				line.setSuggestedVarName(step.getSuggestedVarName());
-				line.setSectionCondition(step.getSectionCondition());
-				line.setSkipWhenConditionMet(step.isSkipWhenConditionMet());
-				loaded.getOrder().add(line);
-				continue;
-			}
-			step.setSectionDivider(false);
-			loaded.getStepDefinitions().add(step);
-			DraftOrderLine refLine = new DraftOrderLine();
-			refLine.setLineId(UUID.randomUUID().toString());
-			refLine.setSectionDivider(false);
-			refLine.setRefStepId(step.getStepId());
-			refLine.setLinkedRequirementRawId(stepState.linkedRequirementRawId);
-			loaded.getOrder().add(refLine);
-		}
-	}
-
 	private void saveDraftToConfig()
 	{
 		if (configManager == null)
 		{
 			return;
 		}
-		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY, gson.toJson(toDraftState(currentDraft)));
+		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY, gson.toJson(ConstructDraftPersistence.toDraftState(currentDraft)));
 	}
 
 	private boolean isNpcAction(MenuAction menuAction)
@@ -2365,10 +2202,26 @@ public class HelperConstructManager
 				mode,
 				condition);
 		}
-		String displayName = normalizeText(step.getTargetText());
-		if (displayName.isBlank())
+		String displayName;
+		if (step.getKind() == StepKind.TEXT)
 		{
-			displayName = step.getResolvedSymbol() != null ? step.getResolvedSymbol() : String.valueOf(step.getRawId());
+			String ins = normalizeText(step.getInstructionText());
+			if (!ins.isBlank())
+			{
+				displayName = ins.length() > 48 ? ins.substring(0, 45) + "…" : ins;
+			}
+			else
+			{
+				displayName = "Generic step";
+			}
+		}
+		else
+		{
+			displayName = normalizeText(step.getTargetText());
+			if (displayName.isBlank())
+			{
+				displayName = step.getResolvedSymbol() != null ? step.getResolvedSymbol() : String.valueOf(step.getRawId());
+			}
 		}
 		return String.format("%d. %s (%s)",
 			displayIndex,
@@ -2757,25 +2610,7 @@ public class HelperConstructManager
 				String k = a.getKind() == null ? StepAttachmentKind.ITEM.name() : a.getKind();
 				if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(k))
 				{
-					Operation op = Operation.EQUAL;
-					if (a.getVarbitOperation() != null && !a.getVarbitOperation().isBlank())
-					{
-						try
-						{
-							op = Operation.valueOf(a.getVarbitOperation().trim());
-						}
-						catch (IllegalArgumentException ignored)
-						{
-						}
-					}
-					int vid = a.getVarbitId() == null ? 0 : a.getVarbitId();
-					int val = a.getVarbitRequiredValue() == null ? 1 : a.getVarbitRequiredValue();
-					String disp = a.getVarbitDisplayText();
-					if (disp != null && disp.isBlank())
-					{
-						disp = null;
-					}
-					reqs.add(new VarbitRequirement(vid, op, val, disp));
+					reqs.add(VarbitSpec.fromStepAttachment(a).toVarbitRequirement());
 					continue;
 				}
 				Integer id = a.getItemRawId();
@@ -2784,14 +2619,8 @@ public class HelperConstructManager
 					continue;
 				}
 				ItemRequirement ir = requirementById.get(id);
-				if (ir != null)
-				{
-					reqs.add(ir);
-				}
-				else
-				{
-					reqs.add(new ItemRequirement("Item " + id, id));
-				}
+				ItemRequirement base = ir != null ? ir : new ItemRequirement("Item " + id, id);
+				reqs.add(a.isAttachmentHighlighted() ? base.highlighted() : base);
 			}
 			return reqs;
 		}
@@ -2801,68 +2630,15 @@ public class HelperConstructManager
 			String instruction = (draftStep.getInstructionText() == null || draftStep.getInstructionText().isBlank())
 				? "Complete step."
 				: draftStep.getInstructionText();
-			QuestStep step;
 			Requirement originalCompletionRequirement = previewCompletionRequirement(draftStep, requirementById, orderLine);
 			List<Requirement> extras = extraAttachedRequirementsForStep(draftStep, requirementById);
 			Requirement[] extrasArr = extras.toArray(new Requirement[0]);
-			if (draftStep.getKind() == StepKind.NPC)
-			{
-				if (draftStep.getWorldPoint() != null)
-				{
-					step = new NpcStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction, extrasArr);
-				}
-				else
-				{
-					step = new NpcStep(this, draftStep.getRawId(), instruction, extrasArr);
-				}
-			}
-			else if (draftStep.getKind() == StepKind.OBJECT)
-			{
-				if (draftStep.getWorldPoint() != null)
-				{
-					step = new ObjectStep(this, draftStep.getRawId(), draftStep.getWorldPoint(), instruction, extrasArr);
-				}
-				else
-				{
-					step = new ObjectStep(this, draftStep.getRawId(), instruction, extrasArr);
-				}
-			}
-			else if (draftStep.getKind() == StepKind.ITEM)
-			{
-				Integer highlightRawId = itemHighlightRawIdForPreview(draftStep, orderLine.getLinkedRequirementRawId());
-				ItemRequirement itemRequirement = null;
-				if (highlightRawId != null)
-				{
-					itemRequirement = requirementById.get(highlightRawId);
-				}
-				if (itemRequirement == null)
-				{
-					itemRequirement = requirementById.get(draftStep.getRawId());
-				}
-				List<Requirement> itemReqs = new ArrayList<>();
-				if (itemRequirement != null)
-				{
-					itemReqs.add(itemRequirement.highlighted());
-				}
-				itemReqs.addAll(extras);
-				Requirement[] itemReqArr = itemReqs.toArray(new Requirement[0]);
-				if (draftStep.getWorldPoint() != null)
-				{
-					step = new ItemStep(this, draftStep.getWorldPoint(), instruction, itemReqArr);
-				}
-				else if (!itemReqs.isEmpty())
-				{
-					step = new ItemStep(this, instruction, itemReqArr);
-				}
-				else
-				{
-					step = new ItemStep(this, instruction);
-				}
-			}
-			else
-			{
-				step = new DetailedQuestStep(this, instruction);
-			}
+			Integer itemHighlightRawId = itemHighlightRawIdForPreview(draftStep, orderLine.getLinkedRequirementRawId());
+			ConstructStepKindHandlers.ConstructStepKindHandler handler = ConstructStepKindHandlers.forStepKind(draftStep.getKind());
+			QuestStep step = handler != null
+				? handler.buildPreviewQuestStep(new ConstructStepKindHandlers.ConstructPreviewStepParams(
+				this, draftStep, instruction, extrasArr, requirementById, itemHighlightRawId))
+				: new DetailedQuestStep(this, instruction);
 
 			ManualRequirement manualOverride = defaultIncompleteRequirement();
 			manualStepRequirements.add(manualOverride);
@@ -2901,23 +2677,7 @@ public class HelperConstructManager
 				{
 					continue;
 				}
-				Operation op = Operation.EQUAL;
-				if (cfg.getOperation() != null && !cfg.getOperation().isBlank())
-				{
-					try
-					{
-						op = Operation.valueOf(cfg.getOperation().trim());
-					}
-					catch (IllegalArgumentException ignored)
-					{
-					}
-				}
-				String display = cfg.getDisplayText();
-				if (display != null && display.isBlank())
-				{
-					display = null;
-				}
-				return new VarbitRequirement(cfg.getVarbitId(), op, cfg.getRequiredValue(), display);
+				return VarbitSpec.fromDraftVarbit(cfg).toVarbitRequirement();
 			}
 			return defaultIncompleteRequirement();
 		}
@@ -3025,6 +2785,29 @@ public class HelperConstructManager
 		}
 	}
 
+	/** One row in the unified step-attachment picker (items + varbit routing slots). */
+	public static final class StepAttachmentPickOption
+	{
+		private final String label;
+		private final StepAttachmentEdit edit;
+
+		public StepAttachmentPickOption(String label, StepAttachmentEdit edit)
+		{
+			this.label = label;
+			this.edit = edit;
+		}
+
+		public String getLabel()
+		{
+			return label;
+		}
+
+		public StepAttachmentEdit getEdit()
+		{
+			return edit;
+		}
+	}
+
 	/** UI / API DTO for extra requirements on a step (items, varbits, extensible kinds). */
 	public static final class StepAttachmentEdit
 	{
@@ -3034,8 +2817,16 @@ public class HelperConstructManager
 		private final Integer varbitRequiredValue;
 		private final String varbitOperation;
 		private final String varbitDisplayText;
+		private boolean itemHighlighted;
 
-		private StepAttachmentEdit(String kind, Integer itemRawId, Integer varbitId, Integer varbitRequiredValue, String varbitOperation, String varbitDisplayText)
+		private StepAttachmentEdit(
+			String kind,
+			Integer itemRawId,
+			Integer varbitId,
+			Integer varbitRequiredValue,
+			String varbitOperation,
+			String varbitDisplayText,
+			boolean itemHighlighted)
 		{
 			this.kind = kind;
 			this.itemRawId = itemRawId;
@@ -3043,17 +2834,40 @@ public class HelperConstructManager
 			this.varbitRequiredValue = varbitRequiredValue;
 			this.varbitOperation = varbitOperation;
 			this.varbitDisplayText = varbitDisplayText;
+			this.itemHighlighted = itemHighlighted;
+		}
+
+		public static StepAttachmentEdit copyOf(StepAttachmentEdit o)
+		{
+			if (o == null)
+			{
+				return null;
+			}
+			if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(o.getKind()))
+			{
+				return varbit(o.getVarbitId(), o.getVarbitRequiredValue(), o.getVarbitOperation(), o.getVarbitDisplayText());
+			}
+			if (o.getItemRawId() == null)
+			{
+				return null;
+			}
+			return item(o.getItemRawId(), o.isItemHighlighted());
 		}
 
 		public static StepAttachmentEdit item(int rawId)
 		{
-			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null);
+			return item(rawId, false);
+		}
+
+		public static StepAttachmentEdit item(int rawId, boolean highlighted)
+		{
+			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, highlighted);
 		}
 
 		public static StepAttachmentEdit varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText);
+			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false);
 		}
 
 		public String getKind()
@@ -3085,63 +2899,16 @@ public class HelperConstructManager
 		{
 			return varbitDisplayText;
 		}
-	}
 
-	private static class DraftState
-	{
-		int formatVersion;
-		String questName;
-		String className;
-		String packagePath;
-		String helperType;
-		/** @deprecated Legacy single-list format; migrated on load. */
-		List<DraftStepState> steps = new ArrayList<>();
-		List<DraftStepState> definitions = new ArrayList<>();
-		List<DraftOrderLineState> order = new ArrayList<>();
-		List<DraftRequirementState> requirements = new ArrayList<>();
-		List<DraftVarbitRequirementState> varbitRequirements = new ArrayList<>();
-	}
+		public boolean isItemHighlighted()
+		{
+			return itemHighlighted;
+		}
 
-	private static class DraftVarbitRequirementState
-	{
-		String lineId;
-		int varbitId;
-		int requiredValue;
-		String operation;
-		String displayText;
-	}
-
-	private static class DraftStepState
-	{
-		String stepId;
-		StepKind kind;
-		boolean sectionDivider;
-		int rawId;
-		Integer linkedRequirementRawId;
-		String resolvedSymbol;
-		String option;
-		String targetText;
-		String suggestedVarName;
-		String instructionText;
-		String panelName;
-		String sectionCondition;
-		boolean skipWhenConditionMet;
-		Integer worldX;
-		Integer worldY;
-		Integer worldPlane;
-		/** @deprecated Prefer {@link #attachedRequirements}; migrated on load. */
-		List<Integer> requiredItems;
-		List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
-	}
-
-	private static class DraftStepAttachedRequirementState
-	{
-		String kind;
-		Integer itemRawId;
-		Integer varbitId;
-		Integer varbitRequiredValue;
-		String varbitOperation;
-		String varbitDisplayText;
+		public void setItemHighlighted(boolean itemHighlighted)
+		{
+			this.itemHighlighted = itemHighlighted;
+		}
 	}
 
 	public static final class StepDefinitionPickOption
@@ -3253,23 +3020,5 @@ public class HelperConstructManager
 		{
 			return instructionText;
 		}
-	}
-
-	private static class DraftOrderLineState
-	{
-		String lineId;
-		boolean sectionDivider;
-		String suggestedVarName;
-		String sectionCondition;
-		boolean skipWhenConditionMet;
-		String refStepId;
-		Integer linkedRequirementRawId;
-	}
-
-	private static class DraftRequirementState
-	{
-		int rawId;
-		String resolvedSymbol;
-		String displayName;
 	}
 }

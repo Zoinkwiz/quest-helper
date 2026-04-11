@@ -107,7 +107,7 @@ class HelperConstructManagerTest
 		line.setRefStepId("npc1");
 		manager.getCurrentDraft().getOrder().add(line);
 
-		assertTrue(manager.removeNpcStepAt(0));
+		assertTrue(manager.removeStepAt(ConstructStepKind.NPC, 0));
 		assertTrue(manager.getCurrentDraft().getStepDefinitions().isEmpty());
 		assertTrue(manager.getCurrentDraft().getOrder().isEmpty());
 	}
@@ -150,11 +150,11 @@ class HelperConstructManagerTest
 		npc.setRawId(1);
 		manager.getCurrentDraft().getStepDefinitions().add(npc);
 
-		assertTrue(manager.updateNpcStepWorldPointAt(0, "3000, 3100, 1"));
+		assertTrue(manager.updateStepWorldPointAt(ConstructStepKind.NPC, 0, "3000, 3100, 1"));
 		assertEquals(3000, manager.getCurrentDraft().getStepDefinitions().get(0).getWorldPoint().getX());
 		assertEquals(1, manager.getCurrentDraft().getStepDefinitions().get(0).getWorldPoint().getPlane());
 
-		assertTrue(manager.updateNpcStepRequiredItemsAt(0, "995, 2349"));
+		assertTrue(manager.updateStepRequiredItemsAt(ConstructStepKind.NPC, 0, "995, 2349"));
 		List<Integer> ids = new ArrayList<>();
 		for (HelperConstructModels.DraftStepAttachedRequirement a : manager.getCurrentDraft().getStepDefinitions().get(0).getAttachedRequirements())
 		{
@@ -162,7 +162,7 @@ class HelperConstructManagerTest
 		}
 		assertEquals(List.of(995, 2349), ids);
 
-		assertFalse(manager.updateNpcStepWorldPointAt(0, "not-a-point"));
+		assertFalse(manager.updateStepWorldPointAt(ConstructStepKind.NPC, 0, "not-a-point"));
 	}
 
 	@Test
@@ -184,7 +184,7 @@ class HelperConstructManagerTest
 		npc.setRawId(1);
 		manager.getCurrentDraft().getStepDefinitions().add(npc);
 
-		assertTrue(manager.applyNpcStepAttachmentsAt(0, Arrays.asList(
+		assertTrue(manager.applyStepAttachmentsAt(ConstructStepKind.NPC, 0, Arrays.asList(
 			HelperConstructManager.StepAttachmentEdit.item(100),
 			HelperConstructManager.StepAttachmentEdit.item(200))));
 		List<Integer> ids = new ArrayList<>();

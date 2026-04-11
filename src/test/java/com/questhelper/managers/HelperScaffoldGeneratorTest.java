@@ -103,10 +103,12 @@ class HelperScaffoldGeneratorTest
 		addDefinitionAndRef(draft, priorStep);
 
 		HelperConstructModels.DraftStep itemStep = new HelperConstructModels.DraftStep();
-		itemStep.setKind(HelperConstructModels.StepKind.ITEM);
-		itemStep.setRawId(526);
+		itemStep.setKind(HelperConstructModels.StepKind.TEXT);
+		itemStep.setRawId(0);
+		itemStep.setResolvedSymbol("");
 		itemStep.setInstructionText("Use Bones.");
 		itemStep.setSuggestedVarName("useBones");
+		itemStep.getAttachedRequirements().add(HelperConstructModels.DraftStepAttachedRequirement.item(526));
 		addDefinitionAndRef(draft, itemStep);
 		for (HelperConstructModels.DraftOrderLine line : draft.getOrder())
 		{
@@ -118,7 +120,8 @@ class HelperScaffoldGeneratorTest
 		}
 
 		var source = generator.generate(draft).getSource();
-		assertTrue(source.contains("useBones = new ItemStep(this, \"Use Bones.\", bones.highlighted());"));
+		assertTrue(source.contains("useBones = new DetailedQuestStep(this, \"Use Bones.\");"));
+		assertTrue(source.contains("useBones.addRequirement(bones.highlighted());"));
 		assertTrue(source.contains("section1Task.addStep(not(bones), useBones);"));
 		assertTrue(source.contains("section1Task.addStep(not(firstStepVarbitReq), firstStep);"));
 		assertTrue(!source.contains("useBonesVarbitReq"));
@@ -161,11 +164,18 @@ class HelperScaffoldGeneratorTest
 
 		addSectionDivider(draft, "Second Section");
 
+		HelperConstructModels.DraftRequirement amuletReq = new HelperConstructModels.DraftRequirement();
+		amuletReq.setRawId(1712);
+		amuletReq.setDisplayName("Dragonstone amulet");
+		draft.getRequirements().add(amuletReq);
+
 		HelperConstructModels.DraftStep step4 = new HelperConstructModels.DraftStep();
-		step4.setKind(HelperConstructModels.StepKind.ITEM);
-		step4.setRawId(1712);
+		step4.setKind(HelperConstructModels.StepKind.TEXT);
+		step4.setRawId(0);
+		step4.setResolvedSymbol("");
 		step4.setSuggestedVarName("usedragonstoneamulet");
 		step4.setInstructionText("Use dragonstone amulet.");
+		step4.getAttachedRequirements().add(HelperConstructModels.DraftStepAttachedRequirement.item(1712));
 		addDefinitionAndRef(draft, step4);
 
 		var source = generator.generate(draft).getSource();

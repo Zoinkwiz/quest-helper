@@ -58,7 +58,7 @@ public class HelperScaffoldGenerator
 		out.append("import com.questhelper.requirements.util.Operation;\n");
 		out.append("import com.questhelper.requirements.var.VarbitRequirement;\n");
 		out.append("import com.questhelper.steps.ConditionalStep;\n");
-		out.append("import com.questhelper.steps.ItemStep;\n");
+		out.append("import com.questhelper.steps.DetailedQuestStep;\n");
 		out.append("import com.questhelper.steps.NpcStep;\n");
 		out.append("import com.questhelper.steps.ObjectStep;\n");
 		out.append("import com.questhelper.steps.QuestStep;\n");
@@ -269,51 +269,40 @@ public class HelperScaffoldGenerator
 		String instruction = step.getInstructionText() == null || step.getInstructionText().isBlank()
 			? "TODO: refine instruction text"
 			: step.getInstructionText();
-		if (step.getKind() == StepKind.ITEM)
+		ConstructStepKindHandlers.ConstructStepKindHandler handler = ConstructStepKindHandlers.forStepKind(step.getKind());
+		if (handler != null)
 		{
-			String wpArg = finiteWorldPointLiteral(step);
-			Integer orderItemLink = firstConcreteOrderItemLinkForStep(draft, step.getStepId());
-			String requirementVarName = orderItemLink == null ? null : requirementVarNamesByRawId.get(orderItemLink);
-			if (requirementVarName == null)
-			{
-				warnings.add("Missing linked requirement for item step ID: " + step.getRawId());
-				ResolutionResult resolvedItem = symbolResolver.resolve(IdType.ITEM, step.getRawId());
-				if (wpArg != null)
-				{
-					out.append("\t\t").append(varName).append(" = new ItemStep(this, ").append(wpArg).append(", \"")
-						.append(escape(instruction)).append("\", new ItemRequirement(\"TODO linked item\", ")
-						.append(resolvedItem.getSymbol()).append(").highlighted());\n");
-				}
-				else
-				{
-					out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
-						.append(escape(instruction)).append("\", new ItemRequirement(\"TODO linked item\", ")
-						.append(resolvedItem.getSymbol()).append(").highlighted());\n");
-				}
-			}
-			else if (wpArg != null)
-			{
-				out.append("\t\t").append(varName).append(" = new ItemStep(this, ").append(wpArg).append(", \"")
-					.append(escape(instruction)).append("\", ").append(requirementVarName).append(".highlighted());\n");
-			}
-			else
-			{
-				out.append("\t\t").append(varName).append(" = new ItemStep(this, \"")
-					.append(escape(instruction)).append("\", ").append(requirementVarName).append(".highlighted());\n");
-			}
+			handler.appendScaffoldDefinitionSetup(new ConstructStepKindHandlers.ScaffoldDefinitionSetupContext(
+				this, out, draft, step, varName, instruction, requirementVarNamesByRawId, warnings));
+		}
+		appendExtraStepRequirements(out, draft, varName, step, requirementVarNamesByRawId, warnings);
+	}
+
+	void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
+	{
+		String point = worldPointLiteral(step);
+		String symbol = resolveSymbol(step, warnings);
+		out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
+			.append(symbol).append(", ").append(point).append(", \"")
+			.append(escape(instruction)).append("\");\n");
+	}
+
+	void appendTextGenericDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction)
+	{
+		if (step.getWorldPoint() != null)
+		{
+			out.append("\t\t").append(varName).append(" = new DetailedQuestStep(this, ")
+				.append(worldPointLiteral(step)).append(", \"")
+				.append(escape(instruction)).append("\");\n");
 		}
 		else
 		{
-			String point = worldPointLiteral(step);
-			String symbol = resolveSymbol(step, warnings);
-			out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
-				.append(symbol).append(", ").append(point).append(", \"")
+			out.append("\t\t").append(varName).append(" = new DetailedQuestStep(this, \"")
 				.append(escape(instruction)).append("\");\n");
 		}
-		appendExtraStepRequirements(out, varName, step, warnings);
 	}
 
-	private String resolveSymbol(DraftStep step, List<String> warnings)
+	String resolveSymbol(DraftStep step, List<String> warnings)
 	{
 		IdType idType = step.getKind() == StepKind.NPC ? IdType.NPC : step.getKind() == StepKind.OBJECT ? IdType.OBJECT : IdType.ITEM;
 		ResolutionResult result = symbolResolver.resolve(idType, step.getRawId());
@@ -328,7 +317,7 @@ public class HelperScaffoldGenerator
 		return result.getSymbol();
 	}
 
-	private String worldPointLiteral(DraftStep step)
+	String worldPointLiteral(DraftStep step)
 	{
 		if (step.getWorldPoint() == null)
 		{
@@ -338,7 +327,7 @@ public class HelperScaffoldGenerator
 	}
 
 	/** {@code null} when the draft has no world point (ItemStep overload without coordinates). */
-	private String finiteWorldPointLiteral(DraftStep step)
+	String finiteWorldPointLiteral(DraftStep step)
 	{
 		if (step.getWorldPoint() == null)
 		{
@@ -347,7 +336,13 @@ public class HelperScaffoldGenerator
 		return "new WorldPoint(" + step.getWorldPoint().getX() + ", " + step.getWorldPoint().getY() + ", " + step.getWorldPoint().getPlane() + ")";
 	}
 
-	private void appendExtraStepRequirements(StringBuilder out, String varName, DraftStep step, List<String> warnings)
+	void appendExtraStepRequirements(
+		StringBuilder out,
+		DraftHelper draft,
+		String varName,
+		DraftStep step,
+		Map<Integer, String> requirementVarNamesByRawId,
+		List<String> warnings)
 	{
 		if (step.getAttachedRequirements() == null || step.getAttachedRequirements().isEmpty())
 		{
@@ -358,26 +353,24 @@ public class HelperScaffoldGenerator
 			String k = a.getKind() == null ? StepAttachmentKind.ITEM.name() : a.getKind();
 			if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(k))
 			{
-				int vid = a.getVarbitId() == null ? 0 : a.getVarbitId();
-				int val = a.getVarbitRequiredValue() == null ? 1 : a.getVarbitRequiredValue();
-				Operation op = Operation.EQUAL;
 				if (a.getVarbitOperation() != null && !a.getVarbitOperation().isBlank())
 				{
 					try
 					{
-						op = Operation.valueOf(a.getVarbitOperation().trim());
+						Operation.valueOf(a.getVarbitOperation().trim());
 					}
 					catch (IllegalArgumentException ex)
 					{
 						warnings.add("Unknown varbit Operation on step attachment: " + a.getVarbitOperation());
 					}
 				}
-				String displayArg = a.getVarbitDisplayText() == null || a.getVarbitDisplayText().isBlank()
+				VarbitSpec spec = VarbitSpec.fromStepAttachment(a);
+				String displayArg = spec.getDisplayText() == null || spec.getDisplayText().isBlank()
 					? "null"
-					: "\"" + escape(a.getVarbitDisplayText()) + "\"";
+					: "\"" + escape(spec.getDisplayText()) + "\"";
 				out.append("\t\t").append(varName).append(".addRequirement(new VarbitRequirement(")
-					.append(vid).append(", Operation.").append(op.name()).append(", ")
-					.append(val).append(", ").append(displayArg).append("));\n");
+					.append(spec.getVarbitId()).append(", Operation.").append(spec.getOperation().name()).append(", ")
+					.append(spec.getRequiredValue()).append(", ").append(displayArg).append("));\n");
 				continue;
 			}
 			if (StepAttachmentKind.ITEM.name().equalsIgnoreCase(k))
@@ -387,20 +380,29 @@ public class HelperScaffoldGenerator
 				{
 					continue;
 				}
+				String reqVar = requirementVarNamesByRawId != null ? requirementVarNamesByRawId.get(rid) : null;
+				if (reqVar != null)
+				{
+					Integer orderLink = firstConcreteOrderItemLinkForStep(draft, step.getStepId());
+					boolean highlight = a.isAttachmentHighlighted() || (orderLink != null && orderLink.equals(rid));
+					out.append("\t\t").append(varName).append(".addRequirement(").append(reqVar)
+						.append(highlight ? ".highlighted()" : "").append(");\n");
+					continue;
+				}
 				ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, rid);
 				if (resolved.isFallbackLiteral())
 				{
 					warnings.add("Unresolved extra item ID on step: " + rid);
 				}
 				out.append("\t\t").append(varName).append(".addRequirement(new ItemRequirement(\"Item requirement\", ")
-					.append(resolved.getSymbol()).append("));\n");
+					.append(resolved.getSymbol()).append(")").append(a.isAttachmentHighlighted() ? ".highlighted()" : "").append(");\n");
 				continue;
 			}
 			warnings.add("Unknown step attachment kind (skipped in scaffold): " + k);
 		}
 	}
 
-	private static Integer firstConcreteOrderItemLinkForStep(DraftHelper draft, String stepId)
+	static Integer firstConcreteOrderItemLinkForStep(DraftHelper draft, String stepId)
 	{
 		if (stepId == null || stepId.isBlank())
 		{
@@ -754,7 +756,7 @@ public class HelperScaffoldGenerator
 		return unique;
 	}
 
-	private String stepTypeFor(StepKind kind)
+	String stepTypeFor(StepKind kind)
 	{
 		switch (kind)
 		{
@@ -762,12 +764,16 @@ public class HelperScaffoldGenerator
 				return "NpcStep";
 			case OBJECT:
 				return "ObjectStep";
+			case TEXT:
+				return "DetailedQuestStep";
+			case ITEM:
+				return "DetailedQuestStep";
 			default:
-				return "ItemStep";
+				return "DetailedQuestStep";
 		}
 	}
 
-	private String escape(String text)
+	String escape(String text)
 	{
 		return text.replace("\\", "\\\\").replace("\"", "\\\"");
 	}

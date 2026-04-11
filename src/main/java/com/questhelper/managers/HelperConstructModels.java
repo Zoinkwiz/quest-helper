@@ -49,16 +49,23 @@ final class HelperConstructModels
 		/** {@link com.questhelper.requirements.util.Operation} name. */
 		private String varbitOperation;
 		private String varbitDisplayText;
+		/** When {@code kind} is {@link StepAttachmentKind#ITEM}: show {@link com.questhelper.requirements.item.ItemRequirement#highlighted()} in preview / codegen. */
+		private boolean attachmentHighlighted;
 
 		static DraftStepAttachedRequirement item(int rawId)
 		{
-			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null);
+			return item(rawId, false);
+		}
+
+		static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted)
+		{
+			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, attachmentHighlighted);
 		}
 
 		static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.questhelper.panel;
 
+import com.questhelper.managers.ConstructStepKind;
 import com.questhelper.managers.HelperConstructManager;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.client.ui.ColorScheme;
@@ -21,24 +22,24 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 
 public final class HelperConstructEditorPanel extends JPanel
 {
 	private static final String USAGE_GUIDE = String.join("\n",
-		"1. In-game: right-click NPCs, objects, or items and use the Construct: menu entries to capture definitions.",
-		"2. NPC / Object / Item tabs: edit world point and instruction; click Attachments to add item or varbit requirements (and optional extra item raw IDs). Item highlight / completion for item steps is set per row in Quest order. Remove deletes a row.",
-		"3. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder.",
-		"4. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit only routing — edit varbit id, value, Operation name (e.g. EQUAL), and optional display text. Choosing a concrete item override on that order row removes the varbit row.",
-		"5. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
-		"6. JSON export/import uses the same format as the plugin's saved draft — share with others or back up your work.");
+		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
+		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Remove deletes a row. Use Add step to insert an empty row of that tab's type.",
+		"3. Item reqs tab lists captured items used for quest order overrides and attachments.",
+		"4. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder.",
+		"5. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit only routing — edit varbit id, value, Operation name (e.g. EQUAL), and optional display text. Choosing a concrete item override on that order row removes the varbit row.",
+		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
+		"7. JSON export/import uses the same format as the plugin's saved draft — share with others or back up your work.");
 
 	private final HelperConstructManager helperConstructManager;
-	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(StepLibraryKind.NPC);
-	private final StepLibraryTableModel objectLibraryModel = new StepLibraryTableModel(StepLibraryKind.OBJECT);
-	private final StepLibraryTableModel itemLibraryModel = new StepLibraryTableModel(StepLibraryKind.ITEM);
+	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(ConstructStepKind.NPC);
+	private final StepLibraryTableModel objectLibraryModel = new StepLibraryTableModel(ConstructStepKind.OBJECT);
+	private final StepLibraryTableModel genericLibraryModel = new StepLibraryTableModel(ConstructStepKind.TEXT);
 	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
 	private JTable orderTable;
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
@@ -141,9 +142,10 @@ public final class HelperConstructEditorPanel extends JPanel
 		JTabbedPane mainTabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 		mainTabs.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		styleConstructTabbedPane(mainTabs);
-		mainTabs.addTab("NPC steps", wrapStepLibraryTable(new JTable(npcLibraryModel), StepLibraryKind.NPC));
-		mainTabs.addTab("Object steps", wrapStepLibraryTable(new JTable(objectLibraryModel), StepLibraryKind.OBJECT));
-		mainTabs.addTab("Item steps", buildItemStepsAndRequirementsPanel());
+		mainTabs.addTab("NPC steps", wrapStepLibraryTableWithToolbar(new JTable(npcLibraryModel), ConstructStepKind.NPC));
+		mainTabs.addTab("Object steps", wrapStepLibraryTableWithToolbar(new JTable(objectLibraryModel), ConstructStepKind.OBJECT));
+		mainTabs.addTab("Generic steps", wrapStepLibraryTableWithToolbar(new JTable(genericLibraryModel), ConstructStepKind.TEXT));
+		mainTabs.addTab("Item reqs", buildItemRequirementsPanel());
 
 		JTable varbitTable = new JTable(varbitRoutingTableModel);
 		styleVarbitRoutingTable(varbitTable);
@@ -340,28 +342,74 @@ public final class HelperConstructEditorPanel extends JPanel
 		return o.name() + " (" + o.getDisplayText() + ")";
 	}
 
-	private JPanel buildItemStepsAndRequirementsPanel()
+	private JPanel buildItemRequirementsPanel()
 	{
-		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
 		panel.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		JScrollPane itemScroll = wrapStepLibraryTable(new JTable(itemLibraryModel), StepLibraryKind.ITEM);
-		JPanel reqBlock = new JPanel(new BorderLayout(0, 6));
-		reqBlock.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		reqBlock.add(sectionLabel("Captured requirements (used in quest order overrides)"), BorderLayout.NORTH);
-		reqBlock.add(wrapRequirementLibraryTable(new JTable(requirementLibraryModel)), BorderLayout.CENTER);
-		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, itemScroll, reqBlock);
-		split.setResizeWeight(0.55);
-		split.setBorder(null);
-		split.setContinuousLayout(true);
-		panel.add(split, BorderLayout.CENTER);
+		panel.add(sectionLabel("Captured item requirements (quest order overrides and step attachments)"), BorderLayout.NORTH);
+		panel.add(wrapRequirementLibraryTable(new JTable(requirementLibraryModel)), BorderLayout.CENTER);
 		return panel;
 	}
 
-	private JScrollPane wrapStepLibraryTable(JTable table, StepLibraryKind stepKind)
+	private JPanel wrapStepLibraryTableWithToolbar(JTable table, ConstructStepKind stepKind)
 	{
-		styleStepLibraryTable(table);
-		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
-		table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
+		JPanel wrap = new JPanel(new BorderLayout(0, 6));
+		wrap.setOpaque(false);
+		JButton addStep = new JButton("Add step");
+		addStep.setForeground(Color.WHITE);
+		addStep.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		addStep.addActionListener(e ->
+		{
+			helperConstructManager.addEmptyStepFromUi(stepKind);
+			refresh();
+		});
+		JPanel bar = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+		bar.setOpaque(false);
+		bar.add(addStep);
+		wrap.add(bar, BorderLayout.NORTH);
+		wrap.add(wrapStepLibraryTable(table, stepKind), BorderLayout.CENTER);
+		return wrap;
+	}
+
+	private static int stepLibIdColumn(ConstructStepKind k)
+	{
+		return k == ConstructStepKind.TEXT ? -1 : 1;
+	}
+
+	private static int stepLibWorldColumn(ConstructStepKind k)
+	{
+		return k == ConstructStepKind.TEXT ? 1 : 2;
+	}
+
+	private static int stepLibAttachmentsColumn(ConstructStepKind k)
+	{
+		return k == ConstructStepKind.TEXT ? 2 : 3;
+	}
+
+	private static int stepLibInstructionColumn(ConstructStepKind k)
+	{
+		return k == ConstructStepKind.TEXT ? 3 : 4;
+	}
+
+	private static int stepLibRemoveColumn(ConstructStepKind k)
+	{
+		return k == ConstructStepKind.TEXT ? 4 : 5;
+	}
+
+	private JScrollPane wrapStepLibraryTable(JTable table, ConstructStepKind stepKind)
+	{
+		styleStepLibraryTable(table, stepKind);
+		int worldCol = stepLibWorldColumn(stepKind);
+		int instrCol = stepLibInstructionColumn(stepKind);
+		table.getColumnModel().getColumn(worldCol).setCellEditor(new DefaultCellEditor(new JTextField()));
+		table.getColumnModel().getColumn(instrCol).setCellEditor(new DefaultCellEditor(new JTextField()));
+		int idCol = stepLibIdColumn(stepKind);
+		if (idCol >= 0)
+		{
+			table.getColumnModel().getColumn(idCol).setCellEditor(new DefaultCellEditor(new JTextField()));
+		}
+		int attachCol = stepLibAttachmentsColumn(stepKind);
+		int removeCol = stepLibRemoveColumn(stepKind);
 		table.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -373,27 +421,16 @@ public final class HelperConstructEditorPanel extends JPanel
 				{
 					return;
 				}
-				if (col == 2)
+				if (col == attachCol)
 				{
 					openStepRequirementsEditor(stepKind, row);
 					return;
 				}
-				if (col != 4)
+				if (col != removeCol)
 				{
 					return;
 				}
-				switch (stepKind)
-				{
-					case NPC:
-						helperConstructManager.removeNpcStepAt(row);
-						break;
-					case OBJECT:
-						helperConstructManager.removeObjectStepAt(row);
-						break;
-					case ITEM:
-						helperConstructManager.removeItemStepAt(row);
-						break;
-				}
+				helperConstructManager.removeStepAt(stepKind, row);
 				refresh();
 			}
 		});
@@ -403,28 +440,19 @@ public final class HelperConstructEditorPanel extends JPanel
 		return sp;
 	}
 
-	private void openStepRequirementsEditor(StepLibraryKind kind, int row)
+	private void openStepRequirementsEditor(ConstructStepKind kind, int row)
 	{
 		List<HelperConstructManager.StepAttachmentEdit> initial = new ArrayList<>();
-		switch (kind)
-		{
-			case NPC:
-				initial.addAll(helperConstructManager.getNpcStepAttachmentsAt(row));
-				break;
-			case OBJECT:
-				initial.addAll(helperConstructManager.getObjectStepAttachmentsAt(row));
-				break;
-			case ITEM:
-				initial.addAll(helperConstructManager.getItemStepAttachmentsAt(row));
-				break;
-			default:
-				return;
-		}
+		initial.addAll(helperConstructManager.getStepAttachmentsAt(kind, row));
 
 		DefaultListModel<HelperConstructManager.StepAttachmentEdit> model = new DefaultListModel<>();
 		for (HelperConstructManager.StepAttachmentEdit e : initial)
 		{
-			model.addElement(e);
+			HelperConstructManager.StepAttachmentEdit c = HelperConstructManager.StepAttachmentEdit.copyOf(e);
+			if (c != null)
+			{
+				model.addElement(c);
+			}
 		}
 
 		JList<HelperConstructManager.StepAttachmentEdit> list = new JList<>(model);
@@ -440,11 +468,42 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 		});
 
-		JButton addItemsButton = new JButton("Add items…");
-		addItemsButton.addActionListener(ev -> appendCapturedItemsToAttachmentModel(model));
+		JCheckBox highlightCb = new JCheckBox("Highlight (item attachments only)");
+		highlightCb.setOpaque(false);
+		highlightCb.setForeground(Color.WHITE);
+		Runnable syncHighlightFromSelection = () ->
+		{
+			HelperConstructManager.StepAttachmentEdit sel = list.getSelectedValue();
+			boolean item = sel != null && "ITEM".equalsIgnoreCase(sel.getKind());
+			highlightCb.setEnabled(item);
+			if (item)
+			{
+				highlightCb.setSelected(sel.isItemHighlighted());
+			}
+			else
+			{
+				highlightCb.setSelected(false);
+			}
+		};
+		list.addListSelectionListener(e ->
+		{
+			if (!e.getValueIsAdjusting())
+			{
+				syncHighlightFromSelection.run();
+			}
+		});
+		highlightCb.addActionListener(ev ->
+		{
+			HelperConstructManager.StepAttachmentEdit sel = list.getSelectedValue();
+			if (sel != null && "ITEM".equalsIgnoreCase(sel.getKind()))
+			{
+				sel.setItemHighlighted(highlightCb.isSelected());
+				list.repaint();
+			}
+		});
 
-		JButton addVarbitButton = new JButton("Add varbit…");
-		addVarbitButton.addActionListener(ev -> appendVarbitFromDialogToAttachmentModel(model));
+		JButton addPickButton = new JButton("Add…");
+		addPickButton.addActionListener(ev -> appendRequirementPickToAttachmentModel(model));
 
 		JButton removeButton = new JButton("Remove selected");
 		removeButton.addActionListener(ev ->
@@ -453,24 +512,35 @@ public final class HelperConstructEditorPanel extends JPanel
 			if (i >= 0)
 			{
 				model.remove(i);
+				syncHighlightFromSelection.run();
 			}
 		});
 
 		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
 		toolbar.setOpaque(false);
-		toolbar.add(addItemsButton);
-		toolbar.add(addVarbitButton);
+		toolbar.add(addPickButton);
 		toolbar.add(removeButton);
 
-		JLabel hint = new JLabel("<html>Attach extra requirements to this step (items from your captured list, or varbits).<br>Preview and generated code use <code>QuestStep.addRequirement</code> where supported.");
+		JLabel hint = new JLabel("<html>Choose from captured item requirements and varbit routing rows (same list as the Varbit reqs tab).<br>Preview and generated code use <code>QuestStep.addRequirement</code> where supported.");
 		hint.setForeground(Color.GRAY);
+
+		JPanel south = new JPanel(new BorderLayout(0, 6));
+		south.setOpaque(false);
+		south.add(highlightCb, BorderLayout.NORTH);
+		south.add(hint, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel(new BorderLayout(8, 8));
 		panel.setOpaque(false);
 		panel.add(toolbar, BorderLayout.NORTH);
 		panel.add(new JScrollPane(list), BorderLayout.CENTER);
-		panel.add(hint, BorderLayout.SOUTH);
-		panel.setPreferredSize(new Dimension(500, 380));
+		panel.add(south, BorderLayout.SOUTH);
+		panel.setPreferredSize(new Dimension(500, 420));
+
+		if (model.size() > 0)
+		{
+			list.setSelectedIndex(0);
+			syncHighlightFromSelection.run();
+		}
 
 		int r = JOptionPane.showConfirmDialog(this, panel, "Step attachments", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
@@ -484,22 +554,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			out.add(model.get(i));
 		}
 
-		boolean applied;
-		switch (kind)
-		{
-			case NPC:
-				applied = helperConstructManager.applyNpcStepAttachmentsAt(row, out);
-				break;
-			case OBJECT:
-				applied = helperConstructManager.applyObjectStepAttachmentsAt(row, out);
-				break;
-			case ITEM:
-				applied = helperConstructManager.applyItemStepAttachmentsAt(row, out);
-				break;
-			default:
-				applied = false;
-				break;
-		}
+		boolean applied = helperConstructManager.applyStepAttachmentsAt(kind, row, out);
 		if (!applied)
 		{
 			JOptionPane.showMessageDialog(this,
@@ -511,126 +566,50 @@ public final class HelperConstructEditorPanel extends JPanel
 		refresh();
 	}
 
-	private void appendCapturedItemsToAttachmentModel(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
+	private void appendRequirementPickToAttachmentModel(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
 	{
-		List<Integer> known = helperConstructManager.getRequirementRawIds();
-		LinkedHashSet<Integer> knownSet = new LinkedHashSet<>(known);
-		List<ReqChoice> listChoices = new ArrayList<>();
-		List<String> labels = helperConstructManager.getRequirementSummaries();
-		for (int i = 0; i < known.size(); i++)
+		List<HelperConstructManager.StepAttachmentPickOption> picks = helperConstructManager.getStepAttachmentPickOptions();
+		if (picks.isEmpty())
 		{
-			int raw = known.get(i);
-			String lab = i < labels.size() ? labels.get(i) : String.valueOf(raw);
-			listChoices.add(new ReqChoice(lab, raw));
+			JOptionPane.showMessageDialog(this,
+				"Add item requirements (Item reqs tab) or quest-order rows that use varbit routing first.",
+				"Add attachment",
+				JOptionPane.INFORMATION_MESSAGE);
+			return;
 		}
-		JList<ReqChoice> extrasList = new JList<>(listChoices.toArray(new ReqChoice[0]));
-		extrasList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		extrasList.setVisibleRowCount(6);
-		JTextField otherField = new JTextField(24);
+		JList<HelperConstructManager.StepAttachmentPickOption> list = new JList<>(picks.toArray(new HelperConstructManager.StepAttachmentPickOption[0]));
+		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		list.setVisibleRowCount(10);
+		list.setCellRenderer(new DefaultListCellRenderer()
+		{
+			@Override
+			public Component getListCellRendererComponent(JList<?> jList, Object value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				HelperConstructManager.StepAttachmentPickOption o = (HelperConstructManager.StepAttachmentPickOption) value;
+				return super.getListCellRendererComponent(jList, o.getLabel(), index, isSelected, cellHasFocus);
+			}
+		});
 		JPanel p = new JPanel(new BorderLayout(0, 6));
 		p.setOpaque(false);
-		p.add(new JLabel("Captured items (Ctrl/Cmd+click):", SwingConstants.LEFT), BorderLayout.NORTH);
-		p.add(new JScrollPane(extrasList), BorderLayout.CENTER);
-		JPanel south = new JPanel(new BorderLayout(0, 4));
-		south.setOpaque(false);
-		south.add(new JLabel("Other item raw IDs (comma-separated):", SwingConstants.LEFT), BorderLayout.NORTH);
-		south.add(otherField, BorderLayout.CENTER);
-		p.add(south, BorderLayout.SOUTH);
-		p.setPreferredSize(new Dimension(420, 280));
-
-		if (JOptionPane.showConfirmDialog(this, p, "Add item attachments", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION)
+		p.add(new JLabel("Select one or more (Ctrl/Cmd+click):", SwingConstants.LEFT), BorderLayout.NORTH);
+		p.add(new JScrollPane(list), BorderLayout.CENTER);
+		p.setPreferredSize(new Dimension(520, 320));
+		if (JOptionPane.showConfirmDialog(this, p, "Add attachment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION)
 		{
 			return;
 		}
-		for (ReqChoice c : extrasList.getSelectedValuesList())
+		for (HelperConstructManager.StepAttachmentPickOption o : list.getSelectedValuesList())
 		{
-			if (c != null && c.getValue() != null && knownSet.contains(c.getValue()))
-			{
-				model.addElement(HelperConstructManager.StepAttachmentEdit.item(c.getValue()));
-			}
-		}
-		for (Integer id : parseCommaSeparatedInts(otherField.getText()))
-		{
-			if (id != null)
-			{
-				model.addElement(HelperConstructManager.StepAttachmentEdit.item(id));
-			}
-		}
-	}
-
-	private void appendVarbitFromDialogToAttachmentModel(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
-	{
-		JTextField idField = new JTextField(8);
-		JTextField valueField = new JTextField("1", 6);
-		JComboBox<Operation> opCombo = new JComboBox<>(Operation.values());
-		opCombo.setSelectedItem(Operation.EQUAL);
-		JTextField displayField = new JTextField(20);
-		JPanel form = new JPanel(new GridLayout(0, 2, 6, 6));
-		form.setOpaque(false);
-		form.add(new JLabel("Varbit id:"));
-		form.add(idField);
-		form.add(new JLabel("Required value:"));
-		form.add(valueField);
-		form.add(new JLabel("Operation:"));
-		form.add(opCombo);
-		form.add(new JLabel("Display text (optional):"));
-		form.add(displayField);
-
-		if (JOptionPane.showConfirmDialog(this, form, "Add varbit attachment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION)
-		{
-			return;
-		}
-		try
-		{
-			int vid = Integer.parseInt(idField.getText().trim());
-			int val = Integer.parseInt(valueField.getText().trim());
-			Operation op = (Operation) opCombo.getSelectedItem();
-			String disp = displayField.getText();
-			model.addElement(HelperConstructManager.StepAttachmentEdit.varbit(vid, val, op == null ? "EQUAL" : op.name(), disp));
-		}
-		catch (NumberFormatException ex)
-		{
-			JOptionPane.showMessageDialog(this, "Enter valid integers for varbit id and required value.", "Add varbit", JOptionPane.WARNING_MESSAGE);
-		}
-	}
-
-	private static List<Integer> parseCommaSeparatedInts(String raw)
-	{
-		List<Integer> out = new ArrayList<>();
-		if (raw == null)
-		{
-			return out;
-		}
-		String t = raw.trim();
-		if (t.isEmpty())
-		{
-			return out;
-		}
-		for (String part : t.split(","))
-		{
-			String p = part.trim();
-			if (p.isEmpty())
+			if (o == null || o.getEdit() == null)
 			{
 				continue;
 			}
-			try
+			HelperConstructManager.StepAttachmentEdit add = HelperConstructManager.StepAttachmentEdit.copyOf(o.getEdit());
+			if (add != null)
 			{
-				out.add(Integer.parseInt(p));
-			}
-			catch (NumberFormatException ignored)
-			{
+				model.addElement(add);
 			}
 		}
-		return out;
-	}
-
-	private static void appendCommaSeparated(StringBuilder sb, int id)
-	{
-		if (sb.length() > 0)
-		{
-			sb.append(", ");
-		}
-		sb.append(id);
 	}
 
 	private JScrollPane wrapRequirementLibraryTable(JTable table)
@@ -657,8 +636,10 @@ public final class HelperConstructEditorPanel extends JPanel
 		return sp;
 	}
 
-	private void styleStepLibraryTable(JTable table)
+	private void styleStepLibraryTable(JTable table, ConstructStepKind stepKind)
 	{
+		int attachCol = stepLibAttachmentsColumn(stepKind);
+		int removeCol = stepLibRemoveColumn(stepKind);
 		table.setFillsViewportHeight(true);
 		table.setRowHeight(24);
 		table.setShowGrid(false);
@@ -672,19 +653,31 @@ public final class HelperConstructEditorPanel extends JPanel
 				if (!isSelected)
 				{
 					c.setBackground(ColorScheme.DARK_GRAY_COLOR);
-					boolean clickable = column == 2 || column == 4;
+					boolean clickable = column == attachCol || column == removeCol;
 					c.setForeground(clickable ? new Color(100, 180, 255) : Color.WHITE);
 				}
 				return c;
 			}
 		});
-		if (table.getColumnModel().getColumnCount() >= 5)
+		int n = table.getColumnModel().getColumnCount();
+		if (n >= 5)
 		{
 			table.getColumnModel().getColumn(0).setPreferredWidth(200);
-			table.getColumnModel().getColumn(1).setPreferredWidth(110);
-			table.getColumnModel().getColumn(2).setPreferredWidth(220);
-			table.getColumnModel().getColumn(3).setPreferredWidth(200);
-			table.getColumnModel().getColumn(4).setPreferredWidth(56);
+			if (n >= 6)
+			{
+				table.getColumnModel().getColumn(1).setPreferredWidth(72);
+				table.getColumnModel().getColumn(2).setPreferredWidth(110);
+				table.getColumnModel().getColumn(3).setPreferredWidth(200);
+				table.getColumnModel().getColumn(4).setPreferredWidth(200);
+				table.getColumnModel().getColumn(5).setPreferredWidth(56);
+			}
+			else
+			{
+				table.getColumnModel().getColumn(1).setPreferredWidth(110);
+				table.getColumnModel().getColumn(2).setPreferredWidth(220);
+				table.getColumnModel().getColumn(3).setPreferredWidth(200);
+				table.getColumnModel().getColumn(4).setPreferredWidth(56);
+			}
 		}
 	}
 
@@ -744,13 +737,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
-	private enum StepLibraryKind
-	{
-		NPC,
-		OBJECT,
-		ITEM
-	}
-
 	private static final class LibraryTableModel extends AbstractTableModel
 	{
 		private final String[] columns = {"Captured", "Remove"};
@@ -799,35 +785,36 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private final class StepLibraryTableModel extends AbstractTableModel
 	{
-		private final StepLibraryKind kind;
-		private final String[] columns = {
-			"Captured",
-			"World (x, y, plane)",
-			"Attachments",
-			"Instruction",
-			"Remove"
-		};
+		private final ConstructStepKind kind;
+		private final String[] columns;
 		private List<String> summaries = new ArrayList<>();
+		private List<String> rawIdTexts = new ArrayList<>();
 		private List<String> worldPoints = new ArrayList<>();
 		private List<String> requirementDisplays = new ArrayList<>();
 		private List<String> instructions = new ArrayList<>();
 
-		private StepLibraryTableModel(StepLibraryKind kind)
+		private StepLibraryTableModel(ConstructStepKind kind)
 		{
 			this.kind = kind;
+			this.columns = kind == ConstructStepKind.TEXT
+				? new String[]{"Name/Var", "World (x, y, plane)", "Attachments", "Instruction", "Remove"}
+				: new String[]{"Name/Var", "Id to use", "World (x, y, plane)", "Attachments", "Instruction", "Remove"};
 		}
 
 		void setRows(
 			List<String> updatedSummaries,
+			List<String> updatedRawIdTexts,
 			List<String> updatedWorldPoints,
 			List<String> updatedRequirementDisplays,
 			List<String> updatedInstructions)
 		{
 			summaries = new ArrayList<>(updatedSummaries);
+			rawIdTexts = new ArrayList<>(updatedRawIdTexts);
 			worldPoints = new ArrayList<>(updatedWorldPoints);
 			requirementDisplays = new ArrayList<>(updatedRequirementDisplays);
 			instructions = new ArrayList<>(updatedInstructions);
 			int n = summaries.size();
+			padToSize(rawIdTexts, n);
 			padToSize(worldPoints, n);
 			padToSize(requirementDisplays, n);
 			padToSize(instructions, n);
@@ -867,17 +854,36 @@ public final class HelperConstructEditorPanel extends JPanel
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex)
 		{
+			if (kind == ConstructStepKind.TEXT)
+			{
+				switch (columnIndex)
+				{
+					case 0:
+						return summaries.get(rowIndex);
+					case 1:
+						return rowIndex < worldPoints.size() ? worldPoints.get(rowIndex) : "";
+					case 2:
+						return rowIndex < requirementDisplays.size() ? requirementDisplays.get(rowIndex) : "";
+					case 3:
+						return rowIndex < instructions.size() ? instructions.get(rowIndex) : "";
+					case 4:
+					default:
+						return summaries.isEmpty() ? "" : "Remove";
+				}
+			}
 			switch (columnIndex)
 			{
 				case 0:
 					return summaries.get(rowIndex);
 				case 1:
-					return rowIndex < worldPoints.size() ? worldPoints.get(rowIndex) : "";
+					return rowIndex < rawIdTexts.size() ? rawIdTexts.get(rowIndex) : "";
 				case 2:
-					return rowIndex < requirementDisplays.size() ? requirementDisplays.get(rowIndex) : "";
+					return rowIndex < worldPoints.size() ? worldPoints.get(rowIndex) : "";
 				case 3:
-					return rowIndex < instructions.size() ? instructions.get(rowIndex) : "";
+					return rowIndex < requirementDisplays.size() ? requirementDisplays.get(rowIndex) : "";
 				case 4:
+					return rowIndex < instructions.size() ? instructions.get(rowIndex) : "";
+				case 5:
 				default:
 					return summaries.isEmpty() ? "" : "Remove";
 			}
@@ -886,13 +892,17 @@ public final class HelperConstructEditorPanel extends JPanel
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex)
 		{
-			return columnIndex == 1 || columnIndex == 3;
+			if (kind == ConstructStepKind.TEXT)
+			{
+				return columnIndex == 1 || columnIndex == 3;
+			}
+			return columnIndex == 1 || columnIndex == 2 || columnIndex == 4;
 		}
 
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 		{
-			if (rowIndex < 0 || rowIndex >= summaries.size() || (columnIndex != 1 && columnIndex != 3))
+			if (rowIndex < 0 || rowIndex >= summaries.size() || !isCellEditable(rowIndex, columnIndex))
 			{
 				return;
 			}
@@ -902,7 +912,22 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				return;
 			}
-			if (columnIndex == 1)
+			if (kind == ConstructStepKind.TEXT)
+			{
+				if (columnIndex == 1)
+				{
+					worldPoints.set(rowIndex, text);
+				}
+				else
+				{
+					instructions.set(rowIndex, text);
+				}
+			}
+			else if (columnIndex == 1)
+			{
+				rawIdTexts.set(rowIndex, text);
+			}
+			else if (columnIndex == 2)
 			{
 				worldPoints.set(rowIndex, text);
 			}
@@ -914,34 +939,28 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
-	private boolean applyStepLibraryEdit(StepLibraryKind kind, int row, int column, String text)
+	private boolean applyStepLibraryEdit(ConstructStepKind kind, int row, int column, String text)
 	{
+		if (kind == ConstructStepKind.TEXT)
+		{
+			switch (column)
+			{
+				case 1:
+					return helperConstructManager.updateStepWorldPointAt(kind, row, text);
+				case 3:
+					return helperConstructManager.updateStepInstructionAt(kind, row, text);
+				default:
+					return false;
+			}
+		}
 		switch (column)
 		{
 			case 1:
-				switch (kind)
-				{
-					case NPC:
-						return helperConstructManager.updateNpcStepWorldPointAt(row, text);
-					case OBJECT:
-						return helperConstructManager.updateObjectStepWorldPointAt(row, text);
-					case ITEM:
-						return helperConstructManager.updateItemStepWorldPointAt(row, text);
-					default:
-						return false;
-				}
-			case 3:
-				switch (kind)
-				{
-					case NPC:
-						return helperConstructManager.updateNpcStepInstructionAt(row, text);
-					case OBJECT:
-						return helperConstructManager.updateObjectStepInstructionAt(row, text);
-					case ITEM:
-						return helperConstructManager.updateItemStepInstructionAt(row, text);
-					default:
-						return false;
-				}
+				return helperConstructManager.updateStepRawIdAt(kind, row, text);
+			case 2:
+				return helperConstructManager.updateStepWorldPointAt(kind, row, text);
+			case 4:
+				return helperConstructManager.updateStepInstructionAt(kind, row, text);
 			default:
 				return false;
 		}
@@ -1059,7 +1078,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		if (options.isEmpty())
 		{
 			JOptionPane.showMessageDialog(this,
-				"Capture NPC, object, or item steps in Section View first, then add them to the quest order here.",
+				"Capture NPC, object, or generic steps in the maker tabs first, then add them to the quest order here.",
 				"Add Step",
 				JOptionPane.INFORMATION_MESSAGE);
 			return;
@@ -1160,21 +1179,9 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	public void refresh()
 	{
-		npcLibraryModel.setRows(
-			helperConstructManager.getNpcStepSummaries(),
-			helperConstructManager.getNpcStepWorldPointTexts(),
-			helperConstructManager.getNpcStepRequirementsDisplays(),
-			helperConstructManager.getNpcStepInstructionTexts());
-		objectLibraryModel.setRows(
-			helperConstructManager.getObjectStepSummaries(),
-			helperConstructManager.getObjectStepWorldPointTexts(),
-			helperConstructManager.getObjectStepRequirementsDisplays(),
-			helperConstructManager.getObjectStepInstructionTexts());
-		itemLibraryModel.setRows(
-			helperConstructManager.getItemStepSummaries(),
-			helperConstructManager.getItemStepWorldPointTexts(),
-			helperConstructManager.getItemStepRequirementsDisplays(),
-			helperConstructManager.getItemStepInstructionTexts());
+		refreshStepLibraryTable(npcLibraryModel, ConstructStepKind.NPC);
+		refreshStepLibraryTable(objectLibraryModel, ConstructStepKind.OBJECT);
+		refreshStepLibraryTable(genericLibraryModel, ConstructStepKind.TEXT);
 		requirementLibraryModel.setRows(helperConstructManager.getRequirementSummaries());
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
 		varbitRoutingTableModel.reloadFromManager();
@@ -1201,22 +1208,45 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private String computeSignature()
 	{
-		return helperConstructManager.getCurrentDraftClassName()
-			+ "|N|" + String.join("\n", helperConstructManager.getNpcStepSummaries())
-			+ "|Nw|" + String.join("\n", helperConstructManager.getNpcStepWorldPointTexts())
-			+ "|Nrq|" + String.join("\n", helperConstructManager.getNpcStepRequirementsDisplays())
-			+ "|Ni|" + String.join("\n", helperConstructManager.getNpcStepInstructionTexts())
-			+ "|O|" + String.join("\n", helperConstructManager.getObjectStepSummaries())
-			+ "|Ow|" + String.join("\n", helperConstructManager.getObjectStepWorldPointTexts())
-			+ "|Orq|" + String.join("\n", helperConstructManager.getObjectStepRequirementsDisplays())
-			+ "|Oi|" + String.join("\n", helperConstructManager.getObjectStepInstructionTexts())
-			+ "|I|" + String.join("\n", helperConstructManager.getItemStepSummaries())
-			+ "|Iw|" + String.join("\n", helperConstructManager.getItemStepWorldPointTexts())
-			+ "|Irq|" + String.join("\n", helperConstructManager.getItemStepRequirementsDisplays())
-			+ "|Ii|" + String.join("\n", helperConstructManager.getItemStepInstructionTexts())
-			+ "|A|" + stepOrderTableModel.signature()
-			+ "|R|" + String.join("\n", helperConstructManager.getRequirementSummaries())
-			+ "|V|" + varbitRoutingTableModel.signature();
+		StringBuilder sb = new StringBuilder(helperConstructManager.getCurrentDraftClassName());
+		for (ConstructStepKind k : ConstructStepKind.values())
+		{
+			String p;
+			switch (k)
+			{
+				case NPC:
+					p = "N";
+					break;
+				case OBJECT:
+					p = "O";
+					break;
+				case TEXT:
+					p = "T";
+					break;
+				default:
+					p = "N";
+					break;
+			}
+			sb.append('|').append(p).append('|').append(String.join("\n", helperConstructManager.getStepVarNames(k)));
+			sb.append('|').append(p).append('r').append('|').append(String.join("\n", helperConstructManager.getStepRawIdTexts(k)));
+			sb.append('|').append(p).append('w').append('|').append(String.join("\n", helperConstructManager.getStepWorldPointTexts(k)));
+			sb.append('|').append(p).append("rq|").append(String.join("\n", helperConstructManager.getStepRequirementsDisplays(k)));
+			sb.append('|').append(p).append('i').append('|').append(String.join("\n", helperConstructManager.getStepInstructionTexts(k)));
+		}
+		sb.append("|A|").append(stepOrderTableModel.signature());
+		sb.append("|R|").append(String.join("\n", helperConstructManager.getRequirementSummaries()));
+		sb.append("|V|").append(varbitRoutingTableModel.signature());
+		return sb.toString();
+	}
+
+	private void refreshStepLibraryTable(StepLibraryTableModel model, ConstructStepKind kind)
+	{
+		model.setRows(
+			helperConstructManager.getStepVarNames(kind),
+			helperConstructManager.getStepRawIdTexts(kind),
+			helperConstructManager.getStepWorldPointTexts(kind),
+			helperConstructManager.getStepRequirementsDisplays(kind),
+			helperConstructManager.getStepInstructionTexts(kind));
 	}
 
 	private JTextArea sectionLabel(String text)

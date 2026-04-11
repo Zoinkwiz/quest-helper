@@ -33,7 +33,6 @@ import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.managers.*;
 import com.questhelper.panel.HelperConstructFrame;
-import com.questhelper.panel.HelperConstructPanel;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -168,15 +167,14 @@ public class QuestHelperPlugin extends Plugin
 	public SkillIconManager skillIconManager;
 
 	private QuestHelperPanel panel;
-	private HelperConstructPanel helperConstructPanel;
 	private HelperConstructFrame helperConstructFrame;
 
 	private NavigationButton navButton;
-	private NavigationButton constructNavButton;
 
 	boolean profileChanged;
 
-	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
+	private final Collection<String> configEvents = Arrays.asList(
+		"orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "constructModeEnabled");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Provides
@@ -224,18 +222,6 @@ public class QuestHelperPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
-		if (developerMode)
-		{
-			final BufferedImage constructIcon = Icon.START.getImage();
-			helperConstructPanel = new HelperConstructPanel(this::openOrFocusHelperConstructFrame);
-			constructNavButton = NavigationButton.builder()
-				.tooltip("Quest Helper Construct")
-				.icon(constructIcon)
-				.priority(6)
-				.panel(helperConstructPanel)
-				.build();
-			clientToolbar.addNavigation(constructNavButton);
-		}
 
 		clientThread.invokeAtTickEnd(() -> {
 			if (client.getGameState() == GameState.LOGGED_IN)
@@ -247,7 +233,7 @@ public class QuestHelperPlugin extends Plugin
 		});
 	}
 
-	private void openOrFocusHelperConstructFrame()
+	public void openOrFocusHelperConstructFrame()
 	{
 		if (helperConstructFrame == null)
 		{
@@ -273,18 +259,10 @@ public class QuestHelperPlugin extends Plugin
 		playerStateManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);
-		if (constructNavButton != null)
-		{
-			clientToolbar.removeNavigation(constructNavButton);
-		}
 		if (helperConstructFrame != null)
 		{
 			helperConstructFrame.disposeForShutdown();
 			helperConstructFrame = null;
-		}
-		if (helperConstructPanel != null)
-		{
-			helperConstructPanel.shutDown();
 		}
 		questManager.shutDown();
 		questBankManager.shutDown(eventBus);

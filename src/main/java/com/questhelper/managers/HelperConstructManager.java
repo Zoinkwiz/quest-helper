@@ -41,7 +41,6 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -111,10 +110,6 @@ public class HelperConstructManager
 	@Inject
 	private QuestManager questManager;
 
-	@Inject
-	@Named("developerMode")
-	private boolean developerMode;
-
 	@Getter
 	private DraftHelper currentDraft = new DraftHelper();
 	private boolean loadedFromConfig;
@@ -166,7 +161,7 @@ public class HelperConstructManager
 	public void setupConstructMenuOptions(MenuEntryAdded event)
 	{
 		ensureDraftLoaded();
-		if (!developerMode || !config.constructModeEnabled())
+		if (!config.constructModeEnabled())
 		{
 			return;
 		}

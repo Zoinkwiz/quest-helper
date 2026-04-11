@@ -75,6 +75,8 @@ public class QuestHelperPanel extends PluginPanel
 	private final JPanel searchQuestsPanel;
 
 	private final JPanel allDropdownSections = new JPanel();
+	private final JPanel filterStackPanel = new JPanel();
+	private JButton qhMakerButton;
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
 	private final JComboBox<String> stateDropdown = new JComboBox<>();
 	private JPanel statePanel;
@@ -373,7 +375,25 @@ public class QuestHelperPanel extends PluginPanel
 		allDropdownSections.add(orderPanel);
 		allDropdownSections.add(skillsFilterPanel);
 
-		searchQuestsPanel.add(allDropdownSections, BorderLayout.NORTH);
+		qhMakerButton = new JButton("QH Maker");
+		qhMakerButton.setFocusable(false);
+		SwingUtil.removeButtonDecorations(qhMakerButton);
+		qhMakerButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		qhMakerButton.setForeground(Color.WHITE);
+		qhMakerButton.setHorizontalAlignment(SwingConstants.CENTER);
+		qhMakerButton.setToolTipText("Open Quest Helper Maker");
+		qhMakerButton.addActionListener(e -> questHelperPlugin.openOrFocusHelperConstructFrame());
+		qhMakerButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		qhMakerButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 32));
+		qhMakerButton.setVisible(questHelperPlugin.getConfig().constructModeEnabled());
+
+		filterStackPanel.setLayout(new BoxLayout(filterStackPanel, BoxLayout.Y_AXIS));
+		filterStackPanel.setOpaque(false);
+		filterStackPanel.add(qhMakerButton);
+		filterStackPanel.add(Box.createVerticalStrut(8));
+		filterStackPanel.add(allDropdownSections);
+
+		searchQuestsPanel.add(filterStackPanel, BorderLayout.NORTH);
 
 		// Wrapper
 		questListWrapper.setLayout(new BorderLayout());
@@ -565,21 +585,25 @@ public class QuestHelperPanel extends PluginPanel
 
 	private void showMatchingQuests(String text)
 	{
-		if (text.isEmpty())
+		questSelectPanels.forEach(questListPanel::remove);
+
+		if (text == null || text.isEmpty())
 		{
 			questSelectPanels.forEach(questListPanel::add);
-			return;
 		}
-
-		final String[] searchTerms = text.toLowerCase().split(" ");
-
-		questSelectPanels.forEach(listItem ->
+		else
 		{
-			if (Text.matchesSearchTerms(Arrays.asList(searchTerms), listItem.getKeywords()))
+			final String[] searchTerms = text.toLowerCase().split(" ");
+			questSelectPanels.forEach(listItem ->
 			{
-				questListPanel.add(listItem);
-			}
-		});
+				if (Text.matchesSearchTerms(Arrays.asList(searchTerms), listItem.getKeywords()))
+				{
+					questListPanel.add(listItem);
+				}
+			});
+		}
+		revalidate();
+		repaint();
 	}
 
 	public void refresh(List<QuestHelper> questHelpers, boolean loggedOut,
@@ -637,12 +661,25 @@ public class QuestHelperPanel extends PluginPanel
 
 		revalidate();
 		repaint();
+		refreshQhMakerButtonVisibility();
 		showMatchingQuests(searchBar.getText() != null ? searchBar.getText() : "");
+	}
+
+	private void refreshQhMakerButtonVisibility()
+	{
+		if (qhMakerButton != null)
+		{
+			qhMakerButton.setVisible(questHelperPlugin.getConfig().constructModeEnabled());
+		}
 	}
 
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		allDropdownSections.setVisible(false);
+		if (qhMakerButton != null)
+		{
+			qhMakerButton.setVisible(false);
+		}
 		scrollableContainer.setViewportView(questOverviewWrapper);
 
 		questOverviewPanel.addQuest(quest, isActive);
@@ -725,6 +762,7 @@ public class QuestHelperPanel extends PluginPanel
 		scrollableContainer.setViewportView(questListWrapper);
 		searchQuestsPanel.setVisible(true);
 		allDropdownSections.setVisible(true);
+		refreshQhMakerButtonVisibility();
 
 		repaint();
 		revalidate();

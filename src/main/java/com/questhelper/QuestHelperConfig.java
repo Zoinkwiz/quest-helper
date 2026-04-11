@@ -685,6 +685,27 @@ public interface QuestHelperConfig extends Config
 
 	@ConfigSection(
 		position = 5,
+		name = "Quest Helper Maker",
+		description = "Build quest helpers from in-game captures and export generated Java.",
+		closedByDefault = true
+	)
+	String questHelperMakerSection = "questHelperMakerSection";
+
+	@ConfigItem(
+		keyName = "constructModeEnabled",
+		name = "Quest Helper Maker",
+		description = "When enabled, adds a QH Maker button above the quest list filters, in-game Construct: right-click menu entries to capture steps, and access to the maker window for ordering and code export."
+			+ " Turn off to hide maker UI and context menus.",
+		position = 0,
+		section = questHelperMakerSection
+	)
+	default boolean constructModeEnabled()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		position = 6,
 		name = "Development",
 		description = "Options that configure the quest helper development experience",
 		closedByDefault = true
@@ -699,18 +720,6 @@ public interface QuestHelperConfig extends Config
 		section = developmentSection
 	)
 	default boolean devShowOverlayOnLaunch()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "constructModeEnabled",
-		name = "Enable construct mode",
-		description = "Adds developer-only menu options to capture helper steps and build scaffold code.",
-		position = 5,
-		section = developmentSection
-	)
-	default boolean constructModeEnabled()
 	{
 		return false;
 	}

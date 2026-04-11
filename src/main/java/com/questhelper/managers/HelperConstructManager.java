@@ -22,6 +22,7 @@ import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.tools.ConstructWorldMapPoint;
 import com.questhelper.util.worldmap.WorldPointMapper;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Menu;
@@ -47,6 +48,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -72,6 +75,7 @@ import static com.questhelper.requirements.util.LogicHelper.or;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 
 @Singleton
+@Slf4j
 public class HelperConstructManager
 {
 	private static final String MENU_PREFIX = "Construct:";
@@ -79,7 +83,10 @@ public class HelperConstructManager
 	/** Use in UI when forcing varbit-based routing for an order row (matches persisted sentinel). */
 	public static final int ORDER_REQUIREMENT_VARBIT_ONLY = ORDER_ROUTING_VARBIT_SENTINEL;
 
+	/** Legacy config key; draft is now stored under {@link #constructDraftFile()}. Migrated once on load when the file is missing. */
 	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
+	private static final String DRAFT_SUBDIR = "quest-helper";
+	private static final String DRAFT_FILENAME = "construct-draft.json";
 	private static final String DEFAULT_SECTION_NAME = "New Section";
 	private static final int MAP_MIN_X = 960;
 	private static final int MAP_MIN_Y = 2048;
@@ -258,6 +265,7 @@ public class HelperConstructManager
 	{
 		ensureDraftLoaded();
 		startNewDraft("Generated Quest");
+		saveDraftToConfig();
 		if (configManager != null)
 		{
 			configManager.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
@@ -2238,13 +2246,35 @@ public class HelperConstructManager
 		loadDraftFromConfig();
 	}
 
+	private static File constructDraftFile()
+	{
+		if (RuneLite.RUNELITE_DIR == null)
+		{
+			return null;
+		}
+		return new File(new File(RuneLite.RUNELITE_DIR, DRAFT_SUBDIR), DRAFT_FILENAME);
+	}
+
 	private void loadDraftFromConfig()
 	{
-		if (configManager == null)
+		File draftFile = constructDraftFile();
+		final boolean fileExisted = draftFile != null && draftFile.isFile();
+		String json = null;
+		if (fileExisted)
 		{
-			return;
+			try
+			{
+				json = Files.readString(draftFile.toPath(), StandardCharsets.UTF_8);
+			}
+			catch (IOException e)
+			{
+				log.warn("Could not read Quest Helper Maker draft from {}", draftFile.getAbsolutePath(), e);
+			}
 		}
-		String json = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+		if ((json == null || json.isBlank()) && configManager != null)
+		{
+			json = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+		}
 		if (json == null || json.isBlank())
 		{
 			return;
@@ -2252,13 +2282,14 @@ public class HelperConstructManager
 
 		try
 		{
-			ConstructDraftPersistence.DraftState state = gson.fromJson(json, ConstructDraftPersistence.DraftState.class);
+			ConstructDraftPersistence.DraftState state = gson.fromJson(json.trim(), ConstructDraftPersistence.DraftState.class);
 			if (state == null)
 			{
 				return;
 			}
 			currentDraft = ConstructDraftPersistence.draftHelperFromState(state);
 			reconcileVarbitRequirementsWithOrder();
+			finalizeDraftPersistenceAfterLoad(fileExisted);
 		}
 		catch (JsonSyntaxException ignored)
 		{
@@ -2267,7 +2298,29 @@ public class HelperConstructManager
 	}
 
 	/**
-	 * Pretty-printed JSON of the current draft (same shape as config / import). For sharing or saving to a file.
+	 * After a successful load: if the draft came from legacy config (no file yet), persist the parsed draft to disk.
+	 * If a legacy config key is still set, remove it so the file is the single source of truth.
+	 */
+	private void finalizeDraftPersistenceAfterLoad(boolean draftFileExistedBeforeLoad)
+	{
+		if (configManager == null)
+		{
+			return;
+		}
+		String legacy = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+		if (legacy == null || legacy.isBlank())
+		{
+			return;
+		}
+		if (!draftFileExistedBeforeLoad)
+		{
+			saveDraftToConfig();
+		}
+		configManager.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+	}
+
+	/**
+	 * Pretty-printed JSON of the current draft (same shape as on-disk draft / import). For sharing or saving to a file.
 	 */
 	public String exportDraftJson()
 	{
@@ -2277,7 +2330,7 @@ public class HelperConstructManager
 	}
 
 	/**
-	 * Replace the current draft from JSON (e.g. pasted or read from a file). Persists to config on success.
+	 * Replace the current draft from JSON (e.g. pasted or read from a file). Persists to the maker draft file on success.
 	 */
 	public ImportDraftResult importDraftFromJson(String json)
 	{
@@ -2310,11 +2363,28 @@ public class HelperConstructManager
 
 	private void saveDraftToConfig()
 	{
-		if (configManager == null)
+		File file = constructDraftFile();
+		if (file == null)
 		{
+			log.warn("Cannot save Quest Helper Maker draft: RuneLite data directory is not set.");
 			return;
 		}
-		configManager.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY, gson.toJson(ConstructDraftPersistence.toDraftState(currentDraft)));
+		try
+		{
+			File parent = file.getParentFile();
+			if (parent != null)
+			{
+				Files.createDirectories(parent.toPath());
+			}
+			Files.writeString(
+				file.toPath(),
+				gson.toJson(ConstructDraftPersistence.toDraftState(currentDraft)),
+				StandardCharsets.UTF_8);
+		}
+		catch (IOException e)
+		{
+			log.warn("Could not save Quest Helper Maker draft to {}", file.getAbsolutePath(), e);
+		}
 	}
 
 	private boolean isNpcAction(MenuAction menuAction)

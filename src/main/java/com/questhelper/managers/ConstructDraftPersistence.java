@@ -18,7 +18,7 @@ import static com.questhelper.managers.HelperConstructModels.StepAttachmentKind;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 
 /**
- * Gson DTOs and load/save mapping for the maker draft (same JSON shape as config / import-export).
+ * Gson DTOs and load/save mapping for the maker draft (same JSON shape as on-disk draft / import-export).
  */
 final class ConstructDraftPersistence
 {

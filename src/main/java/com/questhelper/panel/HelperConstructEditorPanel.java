@@ -34,7 +34,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		"4. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit-only routing — edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove at the bottom right deletes the selected row. Choosing a concrete item override on that order row removes the varbit row.",
 		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
-		"7. JSON export/import uses the same format as the plugin's saved draft — share with others or back up your work.");
+		"7. JSON export/import matches the maker draft file format. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / manual Save JSON).");
 
 	private final HelperConstructManager helperConstructManager;
 	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(ConstructStepKind.NPC);
@@ -89,20 +89,20 @@ public final class HelperConstructEditorPanel extends JPanel
 		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton,
 			exportJsonButton, saveJsonButton, importJsonButton);
 		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
-		resetButton.setToolTipText("Clear the draft and remove saved maker state from the plugin config (asks for confirmation).");
+		resetButton.setToolTipText("Clear the draft and reset the auto-saved maker file (asks for confirmation).");
 		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
 		mapButton.setToolTipText("Save a PNG of step world positions connected as a route (needs 2+ points with coordinates).");
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
-		exportJsonButton.setToolTipText("Copy the whole draft as pretty-printed JSON (same shape as plugin save).");
+		exportJsonButton.setToolTipText("Copy the whole draft as pretty-printed JSON (same shape as the auto-saved draft file).");
 		saveJsonButton.setToolTipText("Write the draft JSON to a file.");
-		importJsonButton.setToolTipText("Replace the current draft from pasted JSON or a file (saved to config when successful).");
+		importJsonButton.setToolTipText("Replace the current draft from pasted JSON or a file (writes the auto-saved draft file when successful).");
 		syncWorldMapRouteButtonLabel();
 
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
 		resetButton.addActionListener(e ->
 		{
 			int confirm = JOptionPane.showConfirmDialog(this,
-				"Clear the maker draft and remove saved maker state from the plugin config?\nExport or save first if you need a backup.",
+				"Clear the maker draft and reset the auto-saved file under your RuneLite folder?\nExport or save first if you need a backup.",
 				"Reset draft",
 				JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE);
@@ -312,7 +312,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		if (result.isSuccess())
 		{
 			refresh();
-			JOptionPane.showMessageDialog(this, "Draft imported and saved to plugin config.", "Import", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Draft imported and saved to the maker draft file.", "Import", JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
 		{

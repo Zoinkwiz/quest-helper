@@ -716,6 +716,11 @@ public class HelperConstructManager
 		return getStepSummariesByKind(StepKind.OBJECT);
 	}
 
+	public List<String> getItemStepSummaries()
+	{
+		return getStepSummariesByKind(StepKind.ITEM);
+	}
+
 	private List<String> getStepSummariesByKind(StepKind kind)
 	{
 		ensureDraftLoaded();
@@ -756,6 +761,11 @@ public class HelperConstructManager
 		return getStepInstructionTextsByKind(StepKind.OBJECT);
 	}
 
+	public List<String> getItemStepInstructionTexts()
+	{
+		return getStepInstructionTextsByKind(StepKind.ITEM);
+	}
+
 	private boolean updateStepInstructionByKindAt(StepKind kind, int filteredIndex, String instructionText)
 	{
 		ensureDraftLoaded();
@@ -789,6 +799,11 @@ public class HelperConstructManager
 	public boolean updateObjectStepInstructionAt(int index, String instructionText)
 	{
 		return updateStepInstructionByKindAt(StepKind.OBJECT, index, instructionText);
+	}
+
+	public boolean updateItemStepInstructionAt(int index, String instructionText)
+	{
+		return updateStepInstructionByKindAt(StepKind.ITEM, index, instructionText);
 	}
 
 	public List<CombinedStepRow> getCombinedStepRows()

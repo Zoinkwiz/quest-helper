@@ -24,17 +24,22 @@ import java.util.Objects;
 
 public final class HelperConstructEditorPanel extends JPanel
 {
+	private static final String USAGE_GUIDE = String.join("\n",
+		"1. In-game: right-click NPCs, objects, or items and use the Construct: menu entries to capture definitions.",
+		"2. NPC / Object / Item tabs: edit instruction text in the middle column; Remove deletes a captured row (requirements live under Item steps).",
+		"3. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder.",
+		"4. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
+		"5. JSON export/import uses the same format as the plugin's saved draft — share with others or back up your work.");
+
 	private final HelperConstructManager helperConstructManager;
-	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(true);
-	private final StepLibraryTableModel objectLibraryModel = new StepLibraryTableModel(false);
+	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(StepLibraryKind.NPC);
+	private final StepLibraryTableModel objectLibraryModel = new StepLibraryTableModel(StepLibraryKind.OBJECT);
+	private final StepLibraryTableModel itemLibraryModel = new StepLibraryTableModel(StepLibraryKind.ITEM);
 	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
 	private JTable orderTable;
-	private final CardLayout stepsViewLayout = new CardLayout();
-	private final JPanel stepsViewContainer = new JPanel(stepsViewLayout);
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
-	private boolean showingOrderedView = false;
 	private final Timer refreshTimer;
-	private final JScrollPane scrollPane;
+	private JButton worldMapRouteButton;
 	private String lastRenderSignature = "";
 
 	public HelperConstructEditorPanel(HelperConstructManager helperConstructManager)
@@ -43,30 +48,50 @@ public final class HelperConstructEditorPanel extends JPanel
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
+		setBorder(new EmptyBorder(8, 8, 8, 8));
 
-		JPanel root = new JPanel();
-		root.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-		root.setBorder(new EmptyBorder(8, 8, 8, 8));
-		root.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JPanel header = new JPanel(new BorderLayout(0, 6));
+		header.setOpaque(false);
 
+		JPanel titleRow = new JPanel(new BorderLayout(8, 0));
+		titleRow.setOpaque(false);
 		var title = JGenerator.makeJTextArea("Quest Helper Maker");
 		title.setForeground(Color.WHITE);
-		root.add(title);
-		root.add(Box.createVerticalStrut(6));
-		JPanel buttonRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
-		buttonRow.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		titleRow.add(title, BorderLayout.CENTER);
+		JButton helpButton = new JButton("How to use…");
+		SwingUtil.removeButtonDecorations(helpButton);
+		helpButton.setForeground(new Color(143, 188, 187));
+		helpButton.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		helpButton.setToolTipText("Open the full usage guide");
+		helpButton.addActionListener(e -> JOptionPane.showMessageDialog(this, USAGE_GUIDE, "Quest Helper Maker", JOptionPane.INFORMATION_MESSAGE));
+		titleRow.add(helpButton, BorderLayout.LINE_END);
+		header.add(titleRow, BorderLayout.NORTH);
+
+		JLabel workflowLine = new JLabel(
+			"Capture in-game → edit in tabs below → Build / Preview / JSON. Hover buttons for details.");
+		workflowLine.setForeground(new Color(160, 160, 170));
+		header.add(workflowLine, BorderLayout.CENTER);
+
 		JButton buildButton = new JButton("Build");
 		JButton resetButton = new JButton("Reset");
-		JButton mapButton = new JButton("Map");
 		JButton previewButton = new JButton("Preview");
-		JButton worldMapRouteButton = new JButton("WorldMap Route");
-		JButton viewModeButton = new JButton("Order View");
+		JButton mapButton = new JButton("Route map");
+		worldMapRouteButton = new JButton("WorldMap");
 		JButton exportJsonButton = new JButton("Export JSON");
 		JButton saveJsonButton = new JButton("Save JSON…");
 		JButton importJsonButton = new JButton("Import JSON…");
-		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton, viewModeButton,
+		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton,
 			exportJsonButton, saveJsonButton, importJsonButton);
+		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
+		resetButton.setToolTipText("Clear the draft and remove saved maker state from the plugin config.");
+		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
+		mapButton.setToolTipText("Save a PNG of step world positions connected as a route (needs 2+ points with coordinates).");
+		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
+		exportJsonButton.setToolTipText("Copy the whole draft as pretty-printed JSON (same shape as plugin save).");
+		saveJsonButton.setToolTipText("Write the draft JSON to a file.");
+		importJsonButton.setToolTipText("Replace the current draft from pasted JSON or a file (saved to config when successful).");
+		syncWorldMapRouteButtonLabel();
+
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
 		resetButton.addActionListener(e ->
 		{
@@ -78,42 +103,37 @@ public final class HelperConstructEditorPanel extends JPanel
 		worldMapRouteButton.addActionListener(e ->
 		{
 			helperConstructManager.toggleWorldMapRoutePreviewFromUi();
-			worldMapRouteButton.setText(helperConstructManager.isWorldMapRoutePreviewEnabled() ? "WorldMap Off" : "WorldMap Route");
-		});
-		viewModeButton.addActionListener(e ->
-		{
-			showingOrderedView = !showingOrderedView;
-			stepsViewLayout.show(stepsViewContainer, showingOrderedView ? "ordered" : "sectioned");
-			viewModeButton.setText(showingOrderedView ? "Section View" : "Order View");
-			refresh();
+			syncWorldMapRouteButtonLabel();
 		});
 		exportJsonButton.addActionListener(e -> exportDraftJsonToClipboard());
 		saveJsonButton.addActionListener(e -> saveDraftJsonToFile());
 		importJsonButton.addActionListener(e -> showImportDraftJsonDialog());
-		buttonRow.add(buildButton);
-		buttonRow.add(resetButton);
-		buttonRow.add(mapButton);
-		buttonRow.add(previewButton);
-		buttonRow.add(worldMapRouteButton);
-		buttonRow.add(viewModeButton);
-		buttonRow.add(exportJsonButton);
-		buttonRow.add(saveJsonButton);
-		buttonRow.add(importJsonButton);
-		root.add(buttonRow);
-		root.add(Box.createVerticalStrut(10));
 
-		JPanel sectionedView = buildSectionedView();
+		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
+		toolbar.setOpaque(false);
+		toolbar.add(buildButton);
+		toolbar.add(resetButton);
+		toolbar.add(previewButton);
+		toolbar.add(newToolbarSeparator());
+		toolbar.add(mapButton);
+		toolbar.add(worldMapRouteButton);
+		toolbar.add(newToolbarSeparator());
+		toolbar.add(exportJsonButton);
+		toolbar.add(saveJsonButton);
+		toolbar.add(importJsonButton);
+		header.add(toolbar, BorderLayout.SOUTH);
+
 		JPanel orderedView = buildOrderedView();
-		stepsViewContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		stepsViewContainer.add(sectionedView, "sectioned");
-		stepsViewContainer.add(orderedView, "ordered");
-		stepsViewLayout.show(stepsViewContainer, "sectioned");
-		root.add(stepsViewContainer);
+		JTabbedPane mainTabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+		mainTabs.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		styleConstructTabbedPane(mainTabs);
+		mainTabs.addTab("NPC steps", wrapStepLibraryTable(new JTable(npcLibraryModel), StepLibraryKind.NPC));
+		mainTabs.addTab("Object steps", wrapStepLibraryTable(new JTable(objectLibraryModel), StepLibraryKind.OBJECT));
+		mainTabs.addTab("Item steps", buildItemStepsAndRequirementsPanel());
+		mainTabs.addTab("Quest order", orderedView);
 
-		scrollPane = new JScrollPane(root);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-		add(scrollPane, BorderLayout.CENTER);
+		add(header, BorderLayout.NORTH);
+		add(mainTabs, BorderLayout.CENTER);
 
 		refresh();
 
@@ -221,24 +241,48 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
-	private JPanel buildSectionedView()
+	private void syncWorldMapRouteButtonLabel()
 	{
-		JPanel sectioned = new JPanel();
-		sectioned.setLayout(new BoxLayout(sectioned, BoxLayout.Y_AXIS));
-		sectioned.setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		sectioned.add(sectionLabel("NPC Steps (library)"));
-		sectioned.add(wrapStepLibraryTable(new JTable(npcLibraryModel), LibraryRemoveKind.NPC));
-		sectioned.add(Box.createVerticalStrut(10));
-		sectioned.add(sectionLabel("Object Steps (library)"));
-		sectioned.add(wrapStepLibraryTable(new JTable(objectLibraryModel), LibraryRemoveKind.OBJECT));
-		sectioned.add(Box.createVerticalStrut(10));
-		sectioned.add(sectionLabel("Captured Requirements"));
-		sectioned.add(wrapRequirementLibraryTable(new JTable(requirementLibraryModel)));
-		return sectioned;
+		if (worldMapRouteButton != null)
+		{
+			worldMapRouteButton.setText(helperConstructManager.isWorldMapRoutePreviewEnabled()
+				? "WorldMap (on)"
+				: "WorldMap (off)");
+		}
 	}
 
-	private JScrollPane wrapStepLibraryTable(JTable table, LibraryRemoveKind removeKind)
+	private static JComponent newToolbarSeparator()
+	{
+		JSeparator sep = new JSeparator(SwingConstants.VERTICAL);
+		Dimension d = sep.getPreferredSize();
+		sep.setPreferredSize(new Dimension(Math.max(d.width, 2), 22));
+		return sep;
+	}
+
+	private static void styleConstructTabbedPane(JTabbedPane tabs)
+	{
+		tabs.setOpaque(true);
+		tabs.setBackground(ColorScheme.DARK_GRAY_COLOR);
+	}
+
+	private JPanel buildItemStepsAndRequirementsPanel()
+	{
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		JScrollPane itemScroll = wrapStepLibraryTable(new JTable(itemLibraryModel), StepLibraryKind.ITEM);
+		JPanel reqBlock = new JPanel(new BorderLayout(0, 6));
+		reqBlock.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		reqBlock.add(sectionLabel("Captured requirements (used in quest order overrides)"), BorderLayout.NORTH);
+		reqBlock.add(wrapRequirementLibraryTable(new JTable(requirementLibraryModel)), BorderLayout.CENTER);
+		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, itemScroll, reqBlock);
+		split.setResizeWeight(0.55);
+		split.setBorder(null);
+		split.setContinuousLayout(true);
+		panel.add(split, BorderLayout.CENTER);
+		return panel;
+	}
+
+	private JScrollPane wrapStepLibraryTable(JTable table, StepLibraryKind stepKind)
 	{
 		styleStepLibraryTable(table);
 		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
@@ -253,13 +297,17 @@ public final class HelperConstructEditorPanel extends JPanel
 				{
 					return;
 				}
-				if (removeKind == LibraryRemoveKind.NPC)
+				switch (stepKind)
 				{
-					helperConstructManager.removeNpcStepAt(row);
-				}
-				else
-				{
-					helperConstructManager.removeObjectStepAt(row);
+					case NPC:
+						helperConstructManager.removeNpcStepAt(row);
+						break;
+					case OBJECT:
+						helperConstructManager.removeObjectStepAt(row);
+						break;
+					case ITEM:
+						helperConstructManager.removeItemStepAt(row);
+						break;
 				}
 				refresh();
 			}
@@ -316,9 +364,9 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		if (table.getColumnModel().getColumnCount() >= 3)
 		{
-			table.getColumnModel().getColumn(0).setPreferredWidth(420);
-			table.getColumnModel().getColumn(1).setPreferredWidth(360);
-			table.getColumnModel().getColumn(2).setPreferredWidth(80);
+			table.getColumnModel().getColumn(0).setPreferredWidth(280);
+			table.getColumnModel().getColumn(1).setPreferredWidth(240);
+			table.getColumnModel().getColumn(2).setPreferredWidth(72);
 		}
 	}
 
@@ -344,15 +392,16 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		if (table.getColumnModel().getColumnCount() >= 2)
 		{
-			table.getColumnModel().getColumn(0).setPreferredWidth(520);
-			table.getColumnModel().getColumn(1).setPreferredWidth(80);
+			table.getColumnModel().getColumn(0).setPreferredWidth(400);
+			table.getColumnModel().getColumn(1).setPreferredWidth(72);
 		}
 	}
 
-	private enum LibraryRemoveKind
+	private enum StepLibraryKind
 	{
 		NPC,
-		OBJECT
+		OBJECT,
+		ITEM
 	}
 
 	private static final class LibraryTableModel extends AbstractTableModel
@@ -403,14 +452,14 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private final class StepLibraryTableModel extends AbstractTableModel
 	{
-		private final boolean npcSteps;
+		private final StepLibraryKind kind;
 		private final String[] columns = {"Captured", "Instruction text", "Remove"};
 		private List<String> summaries = new ArrayList<>();
 		private List<String> instructions = new ArrayList<>();
 
-		private StepLibraryTableModel(boolean npcSteps)
+		private StepLibraryTableModel(StepLibraryKind kind)
 		{
-			this.npcSteps = npcSteps;
+			this.kind = kind;
 		}
 
 		void setRows(List<String> updatedSummaries, List<String> updatedInstructions)
@@ -474,13 +523,17 @@ public final class HelperConstructEditorPanel extends JPanel
 				return;
 			}
 			String text = aValue == null ? "" : String.valueOf(aValue);
-			if (npcSteps)
+			switch (kind)
 			{
-				helperConstructManager.updateNpcStepInstructionAt(rowIndex, text);
-			}
-			else
-			{
-				helperConstructManager.updateObjectStepInstructionAt(rowIndex, text);
+				case NPC:
+					helperConstructManager.updateNpcStepInstructionAt(rowIndex, text);
+					break;
+				case OBJECT:
+					helperConstructManager.updateObjectStepInstructionAt(rowIndex, text);
+					break;
+				case ITEM:
+					helperConstructManager.updateItemStepInstructionAt(rowIndex, text);
+					break;
 			}
 			while (instructions.size() <= rowIndex)
 			{
@@ -495,7 +548,9 @@ public final class HelperConstructEditorPanel extends JPanel
 	{
 		JPanel ordered = new JPanel(new BorderLayout(0, 6));
 		ordered.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		ordered.add(sectionLabel("Quest order (sections + step references)"), BorderLayout.NORTH);
+		JLabel orderHint = new JLabel("Drag rows to reorder. Add Step / Add Section / Remove use the buttons below.");
+		orderHint.setForeground(Color.GRAY);
+		ordered.add(orderHint, BorderLayout.NORTH);
 
 		orderTable = new JTable(stepOrderTableModel)
 		{
@@ -555,9 +610,9 @@ public final class HelperConstructEditorPanel extends JPanel
 				return c;
 			}
 		});
-		orderTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-		orderTable.getColumnModel().getColumn(1).setPreferredWidth(280);
-		orderTable.getColumnModel().getColumn(2).setPreferredWidth(400);
+		orderTable.getColumnModel().getColumn(0).setPreferredWidth(160);
+		orderTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+		orderTable.getColumnModel().getColumn(2).setPreferredWidth(260);
 		orderTable.setTransferHandler(new StepReorderTransferHandler(orderTable));
 
 		JScrollPane tableScroll = new JScrollPane(orderTable);
@@ -702,15 +757,15 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	public void refresh()
 	{
-		int scrollValue = scrollPane.getVerticalScrollBar().getValue();
 		npcLibraryModel.setRows(helperConstructManager.getNpcStepSummaries(), helperConstructManager.getNpcStepInstructionTexts());
 		objectLibraryModel.setRows(helperConstructManager.getObjectStepSummaries(), helperConstructManager.getObjectStepInstructionTexts());
+		itemLibraryModel.setRows(helperConstructManager.getItemStepSummaries(), helperConstructManager.getItemStepInstructionTexts());
 		requirementLibraryModel.setRows(helperConstructManager.getRequirementSummaries());
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
+		syncWorldMapRouteButtonLabel();
 		lastRenderSignature = computeSignature();
 		revalidate();
 		repaint();
-		SwingUtilities.invokeLater(() -> scrollPane.getVerticalScrollBar().setValue(scrollValue));
 	}
 
 	public void shutDown()
@@ -735,6 +790,8 @@ public final class HelperConstructEditorPanel extends JPanel
 			+ "|Ni|" + String.join("\n", helperConstructManager.getNpcStepInstructionTexts())
 			+ "|O|" + String.join("\n", helperConstructManager.getObjectStepSummaries())
 			+ "|Oi|" + String.join("\n", helperConstructManager.getObjectStepInstructionTexts())
+			+ "|I|" + String.join("\n", helperConstructManager.getItemStepSummaries())
+			+ "|Ii|" + String.join("\n", helperConstructManager.getItemStepInstructionTexts())
 			+ "|A|" + stepOrderTableModel.signature()
 			+ "|R|" + String.join("\n", helperConstructManager.getRequirementSummaries());
 	}

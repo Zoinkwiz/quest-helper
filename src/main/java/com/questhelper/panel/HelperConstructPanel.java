@@ -25,7 +25,7 @@ public class HelperConstructPanel extends PluginPanel
 		setBorder(new EmptyBorder(12, 8, 12, 8));
 
 		JTextArea intro = JGenerator.makeJTextArea(
-			"The maker opens in a separate window so tables and actions have enough space.\n\n"
+			"The maker opens in a separate window (NPC / object / item step tabs plus quest order, compact toolbar and “How to use…” for the full guide).\n\n"
 				+ "Use the button below. You can return to this tab anytime to open or focus the window.");
 		intro.setForeground(Color.LIGHT_GRAY);
 		intro.setLineWrap(true);

@@ -1504,6 +1504,40 @@ public class HelperConstructManager
 		}
 	}
 
+	/**
+	 * Appends a new empty generic step (for quest-order targeting), a quest-order row with default varbit routing,
+	 * and a fresh varbit record (id 0, required value 0). The new step's suggested var name is set to a generic
+	 * {@code varbit} label so the Varbit reqs tab does not inherit an unrelated captured step name.
+	 */
+	public void addEmptyVarbitSlotFromUi()
+	{
+		ensureDraftLoaded();
+		addEmptyStepFromUi(ConstructStepKind.TEXT);
+		List<DraftStep> defs = currentDraft.getStepDefinitions();
+		DraftStep placeholder = defs.get(defs.size() - 1);
+		placeholder.setSuggestedVarName(HelperScaffoldGenerator.toVarName("varbit", "step"));
+		addOrderRef(placeholder.getStepId());
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		if (order.isEmpty())
+		{
+			return;
+		}
+		DraftOrderLine added = order.get(order.size() - 1);
+		if (added.isSectionDivider())
+		{
+			return;
+		}
+		DraftVarbitRequirement cfg = findVarbitRequirementByLineId(added.getLineId());
+		if (cfg != null)
+		{
+			cfg.setVarbitId(0);
+			cfg.setRequiredValue(0);
+			cfg.setOperation("EQUAL");
+			cfg.setDisplayText("");
+		}
+		saveDraftToConfig();
+	}
+
 	public boolean updateOrderLinkedRequirement(int orderIndex, Integer linkedRequirementRawId)
 	{
 		ensureDraftLoaded();
@@ -1632,12 +1666,12 @@ public class HelperConstructManager
 				continue;
 			}
 			DraftStep def = findDefinitionByStepId(line.getRefStepId());
-			String summary = def == null
-				? "Order row " + (ord + 1) + " (missing definition)"
-				: "Row " + (ord + 1) + ": " + formatStepSummary(def, ord + 1);
+			String varName = def == null
+				? "?"
+				: (def.getSuggestedVarName() == null || def.getSuggestedVarName().isBlank() ? "?" : def.getSuggestedVarName());
 			out.add(new VarbitSlotRow(
 				line.getLineId(),
-				summary,
+				varName,
 				cfg.getVarbitId(),
 				cfg.getRequiredValue(),
 				cfg.getOperation() == null || cfg.getOperation().isBlank() ? "EQUAL" : cfg.getOperation(),
@@ -1690,16 +1724,16 @@ public class HelperConstructManager
 	public static final class VarbitSlotRow
 	{
 		private final String orderLineId;
-		private final String orderSlotSummary;
+		private final String varName;
 		private final int varbitId;
 		private final int requiredValue;
 		private final String operation;
 		private final String displayText;
 
-		public VarbitSlotRow(String orderLineId, String orderSlotSummary, int varbitId, int requiredValue, String operation, String displayText)
+		public VarbitSlotRow(String orderLineId, String varName, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			this.orderLineId = orderLineId;
-			this.orderSlotSummary = orderSlotSummary;
+			this.varName = varName == null ? "" : varName;
 			this.varbitId = varbitId;
 			this.requiredValue = requiredValue;
 			this.operation = operation;
@@ -1711,9 +1745,9 @@ public class HelperConstructManager
 			return orderLineId;
 		}
 
-		public String getOrderSlotSummary()
+		public String getVarName()
 		{
-			return orderSlotSummary;
+			return varName;
 		}
 
 		public int getVarbitId()
@@ -1778,7 +1812,7 @@ public class HelperConstructManager
 		for (VarbitSlotRow row : getVarbitSlotsInQuestOrderForEditor())
 		{
 			String disp = row.getDisplayText();
-			String base = row.getOrderSlotSummary() + " — " + row.getVarbitId() + " " + row.getOperation() + " " + row.getRequiredValue();
+			String base = row.getVarName() + " — " + row.getVarbitId() + " " + row.getOperation() + " " + row.getRequiredValue();
 			String label = disp != null && !disp.isBlank() ? disp + " — " + base : base;
 			out.add(new StepAttachmentPickOption(label, StepAttachmentEdit.varbit(
 				row.getVarbitId(),
@@ -1787,6 +1821,142 @@ public class HelperConstructManager
 				disp)));
 		}
 		return Collections.unmodifiableList(out);
+	}
+
+	public boolean updateStepVarNameAt(ConstructStepKind kind, int filteredIndex, String varName)
+	{
+		return updateStepVarNameByKindAt(kind.stepKind(), filteredIndex, varName);
+	}
+
+	private boolean updateStepVarNameByKindAt(StepKind kind, int filteredIndex, String varName)
+	{
+		DraftStep step = stepDefinitionAtKindIndexOrNull(kind, filteredIndex);
+		if (step == null)
+		{
+			return false;
+		}
+		step.setSuggestedVarName(varName == null ? "" : varName.trim());
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return true;
+	}
+
+	/** Updates {@link DraftStep#getSuggestedVarName()} for the step referenced by this quest-order line (varbit / order UI). */
+	public boolean updateStepVarNameForOrderLineId(String orderLineId, String varName)
+	{
+		ensureDraftLoaded();
+		if (orderLineId == null || orderLineId.isBlank())
+		{
+			return false;
+		}
+		DraftOrderLine line = findOrderLineByLineId(orderLineId);
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		DraftStep def = findDefinitionByStepId(line.getRefStepId());
+		if (def == null)
+		{
+			return false;
+		}
+		def.setSuggestedVarName(varName == null ? "" : varName.trim());
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return true;
+	}
+
+	public List<String> getRequirementDisplayNames()
+	{
+		ensureDraftLoaded();
+		List<String> out = new ArrayList<>();
+		for (DraftRequirement r : currentDraft.getRequirements())
+		{
+			String d = normalizeText(r.getDisplayName());
+			out.add(d.isBlank() ? "" : d);
+		}
+		return Collections.unmodifiableList(out);
+	}
+
+	public List<String> getRequirementRawIdStrings()
+	{
+		ensureDraftLoaded();
+		List<String> out = new ArrayList<>();
+		for (DraftRequirement r : currentDraft.getRequirements())
+		{
+			out.add(String.valueOf(r.getRawId()));
+		}
+		return Collections.unmodifiableList(out);
+	}
+
+	public boolean updateRequirementDisplayNameAt(int index, String displayName)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getRequirements().size())
+		{
+			return false;
+		}
+		currentDraft.getRequirements().get(index).setDisplayName(displayName == null ? "" : displayName.trim());
+		saveDraftToConfig();
+		return true;
+	}
+
+	public boolean updateRequirementRawIdAt(int index, String rawIdText)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getRequirements().size())
+		{
+			return false;
+		}
+		int parsed;
+		try
+		{
+			parsed = Integer.parseInt(rawIdText == null ? "" : rawIdText.trim());
+		}
+		catch (NumberFormatException ex)
+		{
+			return false;
+		}
+		int normalized = normalizeItemId(parsed);
+		DraftRequirement r = currentDraft.getRequirements().get(index);
+		r.setRawId(normalized);
+		r.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, normalized).getSymbol());
+		saveDraftToConfig();
+		return true;
+	}
+
+	public void addEmptyItemRequirementFromUi()
+	{
+		ensureDraftLoaded();
+		DraftRequirement r = new DraftRequirement();
+		r.setRawId(0);
+		r.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, 0).getSymbol());
+		r.setDisplayName("Item");
+		currentDraft.getRequirements().add(r);
+		saveDraftToConfig();
+	}
+
+	/** Removes the quest-order row with this {@link DraftOrderLine#getLineId()} (and its varbit routing row if any). */
+	public boolean removeOrderLineByLineId(String lineId)
+	{
+		ensureDraftLoaded();
+		if (lineId == null || lineId.isBlank())
+		{
+			return false;
+		}
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		for (int i = 0; i < order.size(); i++)
+		{
+			DraftOrderLine line = order.get(i);
+			if (line.isSectionDivider())
+			{
+				continue;
+			}
+			if (lineId.equals(line.getLineId()))
+			{
+				return removeStepAt(i);
+			}
+		}
+		return false;
 	}
 
 	public boolean moveStep(int fromIndex, int toIndex)

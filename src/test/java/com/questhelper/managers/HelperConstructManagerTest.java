@@ -3,6 +3,8 @@ package com.questhelper.managers;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.runelite.api.coords.WorldPoint;
@@ -89,7 +91,7 @@ class HelperConstructManagerTest
 		assertEquals(1, manager.getCurrentDraft().getRequirements().size());
 		assertEquals(1, manager.getCurrentDraft().getStepDefinitions().size());
 		assertEquals(100, manager.getCurrentDraft().getRequirements().get(0).getRawId());
-		assertEquals(100, manager.getCurrentDraft().getStepDefinitions().get(0).getLinkedRequirementRawId());
+		assertEquals(100, manager.getCurrentDraft().getStepDefinitions().get(0).getRawId());
 	}
 
 	@Test
@@ -120,7 +122,7 @@ class HelperConstructManagerTest
 		step.setStepId("s1");
 		step.setKind(HelperConstructModels.StepKind.NPC);
 		step.setInstructionText("Do the thing");
-		step.getRequiredItems().add(995);
+		step.getAttachedRequirements().add(HelperConstructModels.DraftStepAttachedRequirement.item(995));
 		step.setWorldPoint(new WorldPoint(3200, 3200, 0));
 		addDefinitionAndRef(manager, step);
 
@@ -133,8 +135,64 @@ class HelperConstructManagerTest
 		assertEquals(1, receiver.getCurrentDraft().getStepDefinitions().size());
 		HelperConstructModels.DraftStep loaded = receiver.getCurrentDraft().getStepDefinitions().get(0);
 		assertEquals("Do the thing", loaded.getInstructionText());
-		assertEquals(995, loaded.getRequiredItems().get(0).intValue());
+		assertEquals(1, loaded.getAttachedRequirements().size());
+		assertEquals(995, loaded.getAttachedRequirements().get(0).getItemRawId().intValue());
 		assertEquals(3200, loaded.getWorldPoint().getX());
+	}
+
+	@Test
+	void stepWorldPointAndRequiredItemsCanBeUpdatedByIndex()
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		HelperConstructModels.DraftStep npc = new HelperConstructModels.DraftStep();
+		npc.setStepId("n1");
+		npc.setKind(HelperConstructModels.StepKind.NPC);
+		npc.setRawId(1);
+		manager.getCurrentDraft().getStepDefinitions().add(npc);
+
+		assertTrue(manager.updateNpcStepWorldPointAt(0, "3000, 3100, 1"));
+		assertEquals(3000, manager.getCurrentDraft().getStepDefinitions().get(0).getWorldPoint().getX());
+		assertEquals(1, manager.getCurrentDraft().getStepDefinitions().get(0).getWorldPoint().getPlane());
+
+		assertTrue(manager.updateNpcStepRequiredItemsAt(0, "995, 2349"));
+		List<Integer> ids = new ArrayList<>();
+		for (HelperConstructModels.DraftStepAttachedRequirement a : manager.getCurrentDraft().getStepDefinitions().get(0).getAttachedRequirements())
+		{
+			ids.add(a.getItemRawId());
+		}
+		assertEquals(List.of(995, 2349), ids);
+
+		assertFalse(manager.updateNpcStepWorldPointAt(0, "not-a-point"));
+	}
+
+	@Test
+	void applyStepAttachmentsAtStoresItemAttachments()
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		HelperConstructModels.DraftRequirement r1 = new HelperConstructModels.DraftRequirement();
+		r1.setRawId(100);
+		r1.setDisplayName("A");
+		manager.getCurrentDraft().getRequirements().add(r1);
+		HelperConstructModels.DraftRequirement r2 = new HelperConstructModels.DraftRequirement();
+		r2.setRawId(200);
+		r2.setDisplayName("B");
+		manager.getCurrentDraft().getRequirements().add(r2);
+
+		HelperConstructModels.DraftStep npc = new HelperConstructModels.DraftStep();
+		npc.setStepId("n1");
+		npc.setKind(HelperConstructModels.StepKind.NPC);
+		npc.setRawId(1);
+		manager.getCurrentDraft().getStepDefinitions().add(npc);
+
+		assertTrue(manager.applyNpcStepAttachmentsAt(0, Arrays.asList(
+			HelperConstructManager.StepAttachmentEdit.item(100),
+			HelperConstructManager.StepAttachmentEdit.item(200))));
+		List<Integer> ids = new ArrayList<>();
+		for (HelperConstructModels.DraftStepAttachedRequirement a : manager.getCurrentDraft().getStepDefinitions().get(0).getAttachedRequirements())
+		{
+			ids.add(a.getItemRawId());
+		}
+		assertEquals(List.of(100, 200), ids);
 	}
 
 	@Test

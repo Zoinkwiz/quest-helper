@@ -1,8 +1,10 @@
 package com.questhelper.panel;
 
 import com.questhelper.managers.HelperConstructManager;
+import com.questhelper.requirements.util.Operation;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.SwingUtil;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,10 +29,11 @@ public final class HelperConstructEditorPanel extends JPanel
 {
 	private static final String USAGE_GUIDE = String.join("\n",
 		"1. In-game: right-click NPCs, objects, or items and use the Construct: menu entries to capture definitions.",
-		"2. NPC / Object / Item tabs: edit instruction text in the middle column; Remove deletes a captured row (requirements live under Item steps).",
+		"2. NPC / Object / Item tabs: edit world point and instruction; click Attachments to add item or varbit requirements (and optional extra item raw IDs). Item highlight / completion for item steps is set per row in Quest order. Remove deletes a row.",
 		"3. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder.",
-		"4. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
-		"5. JSON export/import uses the same format as the plugin's saved draft — share with others or back up your work.");
+		"4. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit only routing — edit varbit id, value, Operation name (e.g. EQUAL), and optional display text. Choosing a concrete item override on that order row removes the varbit row.",
+		"5. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
+		"6. JSON export/import uses the same format as the plugin's saved draft — share with others or back up your work.");
 
 	private final HelperConstructManager helperConstructManager;
 	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(StepLibraryKind.NPC);
@@ -38,6 +42,7 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
 	private JTable orderTable;
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
+	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
 	private final Timer refreshTimer;
 	private JButton worldMapRouteButton;
 	private String lastRenderSignature = "";
@@ -83,7 +88,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton,
 			exportJsonButton, saveJsonButton, importJsonButton);
 		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
-		resetButton.setToolTipText("Clear the draft and remove saved maker state from the plugin config.");
+		resetButton.setToolTipText("Clear the draft and remove saved maker state from the plugin config (asks for confirmation).");
 		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
 		mapButton.setToolTipText("Save a PNG of step world positions connected as a route (needs 2+ points with coordinates).");
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
@@ -95,6 +100,15 @@ public final class HelperConstructEditorPanel extends JPanel
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
 		resetButton.addActionListener(e ->
 		{
+			int confirm = JOptionPane.showConfirmDialog(this,
+				"Clear the maker draft and remove saved maker state from the plugin config?\nExport or save first if you need a backup.",
+				"Reset draft",
+				JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.WARNING_MESSAGE);
+			if (confirm != JOptionPane.OK_OPTION)
+			{
+				return;
+			}
 			helperConstructManager.resetDraftAndClearSavedStateFromUi();
 			refresh();
 		});
@@ -130,6 +144,29 @@ public final class HelperConstructEditorPanel extends JPanel
 		mainTabs.addTab("NPC steps", wrapStepLibraryTable(new JTable(npcLibraryModel), StepLibraryKind.NPC));
 		mainTabs.addTab("Object steps", wrapStepLibraryTable(new JTable(objectLibraryModel), StepLibraryKind.OBJECT));
 		mainTabs.addTab("Item steps", buildItemStepsAndRequirementsPanel());
+
+		JTable varbitTable = new JTable(varbitRoutingTableModel);
+		styleVarbitRoutingTable(varbitTable);
+		varbitTable.setRowHeight(24);
+		varbitTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
+		varbitTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
+		JComboBox<Operation> varbitOperationCombo = getOperationJComboBox();
+		varbitTable.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer()
+		{
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			{
+				Object label = value instanceof Operation ? operationChoiceLabel((Operation) value) : value;
+				return super.getTableCellRendererComponent(table, label, isSelected, hasFocus, row, column);
+			}
+		});
+		varbitTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(varbitOperationCombo));
+		varbitTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(new JTextField()));
+		JScrollPane varbitScroll = new JScrollPane(varbitTable);
+		varbitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		varbitScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
+		mainTabs.addTab("Varbit reqs", varbitScroll);
+
 		mainTabs.addTab("Quest order", orderedView);
 
 		add(header, BorderLayout.NORTH);
@@ -141,6 +178,22 @@ public final class HelperConstructEditorPanel extends JPanel
 		refreshTimer = new Timer(1000, e -> refreshIfChanged());
 		refreshTimer.setRepeats(true);
 		refreshTimer.start();
+	}
+
+	private static @NotNull JComboBox<Operation> getOperationJComboBox()
+	{
+		JComboBox<Operation> varbitOperationCombo = new JComboBox<>(Operation.values());
+		varbitOperationCombo.setMaximumRowCount(Operation.values().length);
+		varbitOperationCombo.setRenderer(new DefaultListCellRenderer()
+		{
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				Object label = value instanceof Operation ? operationChoiceLabel((Operation) value) : value;
+				return super.getListCellRendererComponent(list, label, index, isSelected, cellHasFocus);
+			}
+		});
+		return varbitOperationCombo;
 	}
 
 	private void exportDraftJsonToClipboard()
@@ -265,6 +318,28 @@ public final class HelperConstructEditorPanel extends JPanel
 		tabs.setBackground(ColorScheme.DARK_GRAY_COLOR);
 	}
 
+	/** Maps persisted operation name to enum; unknown values become {@link Operation#EQUAL}. */
+	private static Operation operationFromPersistedName(String name)
+	{
+		if (name == null || name.isBlank())
+		{
+			return Operation.EQUAL;
+		}
+		try
+		{
+			return Operation.valueOf(name.trim());
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return Operation.EQUAL;
+		}
+	}
+
+	private static String operationChoiceLabel(Operation o)
+	{
+		return o.name() + " (" + o.getDisplayText() + ")";
+	}
+
 	private JPanel buildItemStepsAndRequirementsPanel()
 	{
 		JPanel panel = new JPanel(new BorderLayout());
@@ -286,6 +361,7 @@ public final class HelperConstructEditorPanel extends JPanel
 	{
 		styleStepLibraryTable(table);
 		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
+		table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
 		table.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -293,7 +369,16 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				int row = table.rowAtPoint(e.getPoint());
 				int col = table.columnAtPoint(e.getPoint());
-				if (row < 0 || col != 2)
+				if (row < 0)
+				{
+					return;
+				}
+				if (col == 2)
+				{
+					openStepRequirementsEditor(stepKind, row);
+					return;
+				}
+				if (col != 4)
 				{
 					return;
 				}
@@ -316,6 +401,236 @@ public final class HelperConstructEditorPanel extends JPanel
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setBorder(new EmptyBorder(0, 0, 0, 0));
 		return sp;
+	}
+
+	private void openStepRequirementsEditor(StepLibraryKind kind, int row)
+	{
+		List<HelperConstructManager.StepAttachmentEdit> initial = new ArrayList<>();
+		switch (kind)
+		{
+			case NPC:
+				initial.addAll(helperConstructManager.getNpcStepAttachmentsAt(row));
+				break;
+			case OBJECT:
+				initial.addAll(helperConstructManager.getObjectStepAttachmentsAt(row));
+				break;
+			case ITEM:
+				initial.addAll(helperConstructManager.getItemStepAttachmentsAt(row));
+				break;
+			default:
+				return;
+		}
+
+		DefaultListModel<HelperConstructManager.StepAttachmentEdit> model = new DefaultListModel<>();
+		for (HelperConstructManager.StepAttachmentEdit e : initial)
+		{
+			model.addElement(e);
+		}
+
+		JList<HelperConstructManager.StepAttachmentEdit> list = new JList<>(model);
+		list.setVisibleRowCount(8);
+		list.setCellRenderer(new DefaultListCellRenderer()
+		{
+			@Override
+			public Component getListCellRendererComponent(JList<?> jList, Object value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				HelperConstructManager.StepAttachmentEdit e = (HelperConstructManager.StepAttachmentEdit) value;
+				String text = helperConstructManager.summarizeStepAttachmentEdit(e);
+				return super.getListCellRendererComponent(jList, text, index, isSelected, cellHasFocus);
+			}
+		});
+
+		JButton addItemsButton = new JButton("Add items…");
+		addItemsButton.addActionListener(ev -> appendCapturedItemsToAttachmentModel(model));
+
+		JButton addVarbitButton = new JButton("Add varbit…");
+		addVarbitButton.addActionListener(ev -> appendVarbitFromDialogToAttachmentModel(model));
+
+		JButton removeButton = new JButton("Remove selected");
+		removeButton.addActionListener(ev ->
+		{
+			int i = list.getSelectedIndex();
+			if (i >= 0)
+			{
+				model.remove(i);
+			}
+		});
+
+		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+		toolbar.setOpaque(false);
+		toolbar.add(addItemsButton);
+		toolbar.add(addVarbitButton);
+		toolbar.add(removeButton);
+
+		JLabel hint = new JLabel("<html>Attach extra requirements to this step (items from your captured list, or varbits).<br>Preview and generated code use <code>QuestStep.addRequirement</code> where supported.");
+		hint.setForeground(Color.GRAY);
+
+		JPanel panel = new JPanel(new BorderLayout(8, 8));
+		panel.setOpaque(false);
+		panel.add(toolbar, BorderLayout.NORTH);
+		panel.add(new JScrollPane(list), BorderLayout.CENTER);
+		panel.add(hint, BorderLayout.SOUTH);
+		panel.setPreferredSize(new Dimension(500, 380));
+
+		int r = JOptionPane.showConfirmDialog(this, panel, "Step attachments", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		List<HelperConstructManager.StepAttachmentEdit> out = new ArrayList<>();
+		for (int i = 0; i < model.size(); i++)
+		{
+			out.add(model.get(i));
+		}
+
+		boolean applied;
+		switch (kind)
+		{
+			case NPC:
+				applied = helperConstructManager.applyNpcStepAttachmentsAt(row, out);
+				break;
+			case OBJECT:
+				applied = helperConstructManager.applyObjectStepAttachmentsAt(row, out);
+				break;
+			case ITEM:
+				applied = helperConstructManager.applyItemStepAttachmentsAt(row, out);
+				break;
+			default:
+				applied = false;
+				break;
+		}
+		if (!applied)
+		{
+			JOptionPane.showMessageDialog(this,
+				"Could not save attachments (check varbit id/value and Operation name, e.g. EQUAL).",
+				"Step attachments",
+				JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		refresh();
+	}
+
+	private void appendCapturedItemsToAttachmentModel(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
+	{
+		List<Integer> known = helperConstructManager.getRequirementRawIds();
+		LinkedHashSet<Integer> knownSet = new LinkedHashSet<>(known);
+		List<ReqChoice> listChoices = new ArrayList<>();
+		List<String> labels = helperConstructManager.getRequirementSummaries();
+		for (int i = 0; i < known.size(); i++)
+		{
+			int raw = known.get(i);
+			String lab = i < labels.size() ? labels.get(i) : String.valueOf(raw);
+			listChoices.add(new ReqChoice(lab, raw));
+		}
+		JList<ReqChoice> extrasList = new JList<>(listChoices.toArray(new ReqChoice[0]));
+		extrasList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		extrasList.setVisibleRowCount(6);
+		JTextField otherField = new JTextField(24);
+		JPanel p = new JPanel(new BorderLayout(0, 6));
+		p.setOpaque(false);
+		p.add(new JLabel("Captured items (Ctrl/Cmd+click):", SwingConstants.LEFT), BorderLayout.NORTH);
+		p.add(new JScrollPane(extrasList), BorderLayout.CENTER);
+		JPanel south = new JPanel(new BorderLayout(0, 4));
+		south.setOpaque(false);
+		south.add(new JLabel("Other item raw IDs (comma-separated):", SwingConstants.LEFT), BorderLayout.NORTH);
+		south.add(otherField, BorderLayout.CENTER);
+		p.add(south, BorderLayout.SOUTH);
+		p.setPreferredSize(new Dimension(420, 280));
+
+		if (JOptionPane.showConfirmDialog(this, p, "Add item attachments", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+		for (ReqChoice c : extrasList.getSelectedValuesList())
+		{
+			if (c != null && c.getValue() != null && knownSet.contains(c.getValue()))
+			{
+				model.addElement(HelperConstructManager.StepAttachmentEdit.item(c.getValue()));
+			}
+		}
+		for (Integer id : parseCommaSeparatedInts(otherField.getText()))
+		{
+			if (id != null)
+			{
+				model.addElement(HelperConstructManager.StepAttachmentEdit.item(id));
+			}
+		}
+	}
+
+	private void appendVarbitFromDialogToAttachmentModel(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
+	{
+		JTextField idField = new JTextField(8);
+		JTextField valueField = new JTextField("1", 6);
+		JComboBox<Operation> opCombo = new JComboBox<>(Operation.values());
+		opCombo.setSelectedItem(Operation.EQUAL);
+		JTextField displayField = new JTextField(20);
+		JPanel form = new JPanel(new GridLayout(0, 2, 6, 6));
+		form.setOpaque(false);
+		form.add(new JLabel("Varbit id:"));
+		form.add(idField);
+		form.add(new JLabel("Required value:"));
+		form.add(valueField);
+		form.add(new JLabel("Operation:"));
+		form.add(opCombo);
+		form.add(new JLabel("Display text (optional):"));
+		form.add(displayField);
+
+		if (JOptionPane.showConfirmDialog(this, form, "Add varbit attachment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+		try
+		{
+			int vid = Integer.parseInt(idField.getText().trim());
+			int val = Integer.parseInt(valueField.getText().trim());
+			Operation op = (Operation) opCombo.getSelectedItem();
+			String disp = displayField.getText();
+			model.addElement(HelperConstructManager.StepAttachmentEdit.varbit(vid, val, op == null ? "EQUAL" : op.name(), disp));
+		}
+		catch (NumberFormatException ex)
+		{
+			JOptionPane.showMessageDialog(this, "Enter valid integers for varbit id and required value.", "Add varbit", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	private static List<Integer> parseCommaSeparatedInts(String raw)
+	{
+		List<Integer> out = new ArrayList<>();
+		if (raw == null)
+		{
+			return out;
+		}
+		String t = raw.trim();
+		if (t.isEmpty())
+		{
+			return out;
+		}
+		for (String part : t.split(","))
+		{
+			String p = part.trim();
+			if (p.isEmpty())
+			{
+				continue;
+			}
+			try
+			{
+				out.add(Integer.parseInt(p));
+			}
+			catch (NumberFormatException ignored)
+			{
+			}
+		}
+		return out;
+	}
+
+	private static void appendCommaSeparated(StringBuilder sb, int id)
+	{
+		if (sb.length() > 0)
+		{
+			sb.append(", ");
+		}
+		sb.append(id);
 	}
 
 	private JScrollPane wrapRequirementLibraryTable(JTable table)
@@ -357,16 +672,19 @@ public final class HelperConstructEditorPanel extends JPanel
 				if (!isSelected)
 				{
 					c.setBackground(ColorScheme.DARK_GRAY_COLOR);
-					c.setForeground(column == 2 ? new Color(100, 180, 255) : Color.WHITE);
+					boolean clickable = column == 2 || column == 4;
+					c.setForeground(clickable ? new Color(100, 180, 255) : Color.WHITE);
 				}
 				return c;
 			}
 		});
-		if (table.getColumnModel().getColumnCount() >= 3)
+		if (table.getColumnModel().getColumnCount() >= 5)
 		{
-			table.getColumnModel().getColumn(0).setPreferredWidth(280);
-			table.getColumnModel().getColumn(1).setPreferredWidth(240);
-			table.getColumnModel().getColumn(2).setPreferredWidth(72);
+			table.getColumnModel().getColumn(0).setPreferredWidth(200);
+			table.getColumnModel().getColumn(1).setPreferredWidth(110);
+			table.getColumnModel().getColumn(2).setPreferredWidth(220);
+			table.getColumnModel().getColumn(3).setPreferredWidth(200);
+			table.getColumnModel().getColumn(4).setPreferredWidth(56);
 		}
 	}
 
@@ -394,6 +712,35 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			table.getColumnModel().getColumn(0).setPreferredWidth(400);
 			table.getColumnModel().getColumn(1).setPreferredWidth(72);
+		}
+	}
+
+	private void styleVarbitRoutingTable(JTable table)
+	{
+		table.setFillsViewportHeight(true);
+		table.setShowGrid(false);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+		{
+			@Override
+			public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			{
+				Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+				if (!isSelected)
+				{
+					c.setBackground(ColorScheme.DARK_GRAY_COLOR);
+					c.setForeground(Color.WHITE);
+				}
+				return c;
+			}
+		});
+		if (table.getColumnModel().getColumnCount() >= 5)
+		{
+			table.getColumnModel().getColumn(0).setPreferredWidth(320);
+			table.getColumnModel().getColumn(1).setPreferredWidth(88);
+			table.getColumnModel().getColumn(2).setPreferredWidth(96);
+			table.getColumnModel().getColumn(3).setPreferredWidth(100);
+			table.getColumnModel().getColumn(4).setPreferredWidth(220);
 		}
 	}
 
@@ -453,8 +800,16 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final class StepLibraryTableModel extends AbstractTableModel
 	{
 		private final StepLibraryKind kind;
-		private final String[] columns = {"Captured", "Instruction text", "Remove"};
+		private final String[] columns = {
+			"Captured",
+			"World (x, y, plane)",
+			"Attachments",
+			"Instruction",
+			"Remove"
+		};
 		private List<String> summaries = new ArrayList<>();
+		private List<String> worldPoints = new ArrayList<>();
+		private List<String> requirementDisplays = new ArrayList<>();
 		private List<String> instructions = new ArrayList<>();
 
 		private StepLibraryTableModel(StepLibraryKind kind)
@@ -462,19 +817,33 @@ public final class HelperConstructEditorPanel extends JPanel
 			this.kind = kind;
 		}
 
-		void setRows(List<String> updatedSummaries, List<String> updatedInstructions)
+		void setRows(
+			List<String> updatedSummaries,
+			List<String> updatedWorldPoints,
+			List<String> updatedRequirementDisplays,
+			List<String> updatedInstructions)
 		{
 			summaries = new ArrayList<>(updatedSummaries);
+			worldPoints = new ArrayList<>(updatedWorldPoints);
+			requirementDisplays = new ArrayList<>(updatedRequirementDisplays);
 			instructions = new ArrayList<>(updatedInstructions);
-			while (instructions.size() < summaries.size())
-			{
-				instructions.add("");
-			}
-			if (instructions.size() > summaries.size())
-			{
-				instructions = new ArrayList<>(instructions.subList(0, summaries.size()));
-			}
+			int n = summaries.size();
+			padToSize(worldPoints, n);
+			padToSize(requirementDisplays, n);
+			padToSize(instructions, n);
 			fireTableDataChanged();
+		}
+
+		private void padToSize(List<String> list, int n)
+		{
+			while (list.size() < n)
+			{
+				list.add("");
+			}
+			if (list.size() > n)
+			{
+				list.subList(n, list.size()).clear();
+			}
 		}
 
 		@Override
@@ -498,49 +867,83 @@ public final class HelperConstructEditorPanel extends JPanel
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex)
 		{
-			if (columnIndex == 0)
+			switch (columnIndex)
 			{
-				return summaries.get(rowIndex);
+				case 0:
+					return summaries.get(rowIndex);
+				case 1:
+					return rowIndex < worldPoints.size() ? worldPoints.get(rowIndex) : "";
+				case 2:
+					return rowIndex < requirementDisplays.size() ? requirementDisplays.get(rowIndex) : "";
+				case 3:
+					return rowIndex < instructions.size() ? instructions.get(rowIndex) : "";
+				case 4:
+				default:
+					return summaries.isEmpty() ? "" : "Remove";
 			}
-			if (columnIndex == 1)
-			{
-				return rowIndex < instructions.size() ? instructions.get(rowIndex) : "";
-			}
-			return summaries.isEmpty() ? "" : "Remove";
 		}
 
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex)
 		{
-			return columnIndex == 1;
+			return columnIndex == 1 || columnIndex == 3;
 		}
 
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 		{
-			if (columnIndex != 1 || rowIndex < 0 || rowIndex >= summaries.size())
+			if (rowIndex < 0 || rowIndex >= summaries.size() || (columnIndex != 1 && columnIndex != 3))
 			{
 				return;
 			}
 			String text = aValue == null ? "" : String.valueOf(aValue);
-			switch (kind)
+			boolean ok = applyStepLibraryEdit(kind, rowIndex, columnIndex, text);
+			if (!ok)
 			{
-				case NPC:
-					helperConstructManager.updateNpcStepInstructionAt(rowIndex, text);
-					break;
-				case OBJECT:
-					helperConstructManager.updateObjectStepInstructionAt(rowIndex, text);
-					break;
-				case ITEM:
-					helperConstructManager.updateItemStepInstructionAt(rowIndex, text);
-					break;
+				return;
 			}
-			while (instructions.size() <= rowIndex)
+			if (columnIndex == 1)
 			{
-				instructions.add("");
+				worldPoints.set(rowIndex, text);
 			}
-			instructions.set(rowIndex, text);
-			fireTableCellUpdated(rowIndex, 1);
+			else
+			{
+				instructions.set(rowIndex, text);
+			}
+			fireTableCellUpdated(rowIndex, columnIndex);
+		}
+	}
+
+	private boolean applyStepLibraryEdit(StepLibraryKind kind, int row, int column, String text)
+	{
+		switch (column)
+		{
+			case 1:
+				switch (kind)
+				{
+					case NPC:
+						return helperConstructManager.updateNpcStepWorldPointAt(row, text);
+					case OBJECT:
+						return helperConstructManager.updateObjectStepWorldPointAt(row, text);
+					case ITEM:
+						return helperConstructManager.updateItemStepWorldPointAt(row, text);
+					default:
+						return false;
+				}
+			case 3:
+				switch (kind)
+				{
+					case NPC:
+						return helperConstructManager.updateNpcStepInstructionAt(row, text);
+					case OBJECT:
+						return helperConstructManager.updateObjectStepInstructionAt(row, text);
+					case ITEM:
+						return helperConstructManager.updateItemStepInstructionAt(row, text);
+					default:
+						return false;
+				}
+			default:
+				return false;
 		}
 	}
 
@@ -686,7 +1089,7 @@ public final class HelperConstructEditorPanel extends JPanel
 	private void populateRequirementCombo(JComboBox<ReqChoice> combo, Integer selectedRawId)
 	{
 		combo.removeAllItems();
-		combo.addItem(new ReqChoice("Default (from step)", null));
+		combo.addItem(new ReqChoice("Default (varbit routing)", null));
 		combo.addItem(new ReqChoice("Varbit only", HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY));
 		List<Integer> ids = helperConstructManager.getRequirementRawIds();
 		List<String> labels = helperConstructManager.getRequirementSummaries();
@@ -714,7 +1117,7 @@ public final class HelperConstructEditorPanel extends JPanel
 	{
 		if (v == null)
 		{
-			return "Default (from step)";
+			return "Default (varbit routing)";
 		}
 		if (v.equals(HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY))
 		{
@@ -757,11 +1160,24 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	public void refresh()
 	{
-		npcLibraryModel.setRows(helperConstructManager.getNpcStepSummaries(), helperConstructManager.getNpcStepInstructionTexts());
-		objectLibraryModel.setRows(helperConstructManager.getObjectStepSummaries(), helperConstructManager.getObjectStepInstructionTexts());
-		itemLibraryModel.setRows(helperConstructManager.getItemStepSummaries(), helperConstructManager.getItemStepInstructionTexts());
+		npcLibraryModel.setRows(
+			helperConstructManager.getNpcStepSummaries(),
+			helperConstructManager.getNpcStepWorldPointTexts(),
+			helperConstructManager.getNpcStepRequirementsDisplays(),
+			helperConstructManager.getNpcStepInstructionTexts());
+		objectLibraryModel.setRows(
+			helperConstructManager.getObjectStepSummaries(),
+			helperConstructManager.getObjectStepWorldPointTexts(),
+			helperConstructManager.getObjectStepRequirementsDisplays(),
+			helperConstructManager.getObjectStepInstructionTexts());
+		itemLibraryModel.setRows(
+			helperConstructManager.getItemStepSummaries(),
+			helperConstructManager.getItemStepWorldPointTexts(),
+			helperConstructManager.getItemStepRequirementsDisplays(),
+			helperConstructManager.getItemStepInstructionTexts());
 		requirementLibraryModel.setRows(helperConstructManager.getRequirementSummaries());
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
+		varbitRoutingTableModel.reloadFromManager();
 		syncWorldMapRouteButtonLabel();
 		lastRenderSignature = computeSignature();
 		revalidate();
@@ -787,13 +1203,20 @@ public final class HelperConstructEditorPanel extends JPanel
 	{
 		return helperConstructManager.getCurrentDraftClassName()
 			+ "|N|" + String.join("\n", helperConstructManager.getNpcStepSummaries())
+			+ "|Nw|" + String.join("\n", helperConstructManager.getNpcStepWorldPointTexts())
+			+ "|Nrq|" + String.join("\n", helperConstructManager.getNpcStepRequirementsDisplays())
 			+ "|Ni|" + String.join("\n", helperConstructManager.getNpcStepInstructionTexts())
 			+ "|O|" + String.join("\n", helperConstructManager.getObjectStepSummaries())
+			+ "|Ow|" + String.join("\n", helperConstructManager.getObjectStepWorldPointTexts())
+			+ "|Orq|" + String.join("\n", helperConstructManager.getObjectStepRequirementsDisplays())
 			+ "|Oi|" + String.join("\n", helperConstructManager.getObjectStepInstructionTexts())
 			+ "|I|" + String.join("\n", helperConstructManager.getItemStepSummaries())
+			+ "|Iw|" + String.join("\n", helperConstructManager.getItemStepWorldPointTexts())
+			+ "|Irq|" + String.join("\n", helperConstructManager.getItemStepRequirementsDisplays())
 			+ "|Ii|" + String.join("\n", helperConstructManager.getItemStepInstructionTexts())
 			+ "|A|" + stepOrderTableModel.signature()
-			+ "|R|" + String.join("\n", helperConstructManager.getRequirementSummaries());
+			+ "|R|" + String.join("\n", helperConstructManager.getRequirementSummaries())
+			+ "|V|" + varbitRoutingTableModel.signature();
 	}
 
 	private JTextArea sectionLabel(String text)
@@ -916,6 +1339,187 @@ public final class HelperConstructEditorPanel extends JPanel
 					+ "|" + row.getInstructionText());
 			}
 			return String.join("\n", parts);
+		}
+	}
+
+	private final class VarbitRoutingTableModel extends AbstractTableModel
+	{
+		private final String[] columns = {"Order slot", "Varbit ID", "Required value", "Operation", "Display text"};
+		private final List<VarbitRoutingRow> rows = new ArrayList<>();
+
+		void reloadFromManager()
+		{
+			rows.clear();
+			for (HelperConstructManager.VarbitSlotRow slot : helperConstructManager.getVarbitSlotsInQuestOrderForEditor())
+			{
+				rows.add(new VarbitRoutingRow(
+					slot.getOrderLineId(),
+					slot.getOrderSlotSummary(),
+					slot.getVarbitId(),
+					slot.getRequiredValue(),
+					slot.getOperation(),
+					slot.getDisplayText()));
+			}
+			fireTableDataChanged();
+		}
+
+		String signature()
+		{
+			List<String> parts = new ArrayList<>();
+			for (VarbitRoutingRow row : rows)
+			{
+				parts.add(row.orderLineId + "|" + row.summary + "|" + row.varbitId + "|" + row.requiredValue + "|" + row.operation + "|" + row.displayText);
+			}
+			return String.join("\n", parts);
+		}
+
+		@Override
+		public int getRowCount()
+		{
+			return rows.size();
+		}
+
+		@Override
+		public int getColumnCount()
+		{
+			return columns.length;
+		}
+
+		@Override
+		public String getColumnName(int column)
+		{
+			return columns[column];
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+		{
+			VarbitRoutingRow row = rows.get(rowIndex);
+			switch (columnIndex)
+			{
+				case 0:
+					return row.summary;
+				case 1:
+					return row.varbitId;
+				case 2:
+					return row.requiredValue;
+				case 3:
+					return operationFromPersistedName(row.operation);
+				case 4:
+					return row.displayText;
+				default:
+					return "";
+			}
+		}
+
+		@Override
+		public Class<?> getColumnClass(int columnIndex)
+		{
+			if (columnIndex == 1 || columnIndex == 2)
+			{
+				return Integer.class;
+			}
+			if (columnIndex == 3)
+			{
+				return Operation.class;
+			}
+			return String.class;
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex)
+		{
+			return columnIndex >= 1;
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+		{
+			if (columnIndex < 1)
+			{
+				return;
+			}
+			VarbitRoutingRow row = rows.get(rowIndex);
+			int newVarbit = row.varbitId;
+			int newReq = row.requiredValue;
+			String newOp = row.operation;
+			String newDisp = row.displayText;
+			switch (columnIndex)
+			{
+				case 1:
+					try
+					{
+						newVarbit = Integer.parseInt(String.valueOf(aValue).trim());
+					}
+					catch (NumberFormatException ex)
+					{
+						JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+							"Enter a valid integer for varbit id.",
+							"Varbit reqs",
+							JOptionPane.WARNING_MESSAGE);
+						reloadFromManager();
+						return;
+					}
+					break;
+				case 2:
+					try
+					{
+						newReq = Integer.parseInt(String.valueOf(aValue).trim());
+					}
+					catch (NumberFormatException ex)
+					{
+						JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+							"Enter a valid integer for required value.",
+							"Varbit reqs",
+							JOptionPane.WARNING_MESSAGE);
+						reloadFromManager();
+						return;
+					}
+					break;
+				case 3:
+					if (aValue instanceof Operation)
+					{
+						newOp = ((Operation) aValue).name();
+					}
+					else
+					{
+						newOp = operationFromPersistedName(String.valueOf(aValue)).name();
+					}
+					break;
+				case 4:
+					newDisp = String.valueOf(aValue);
+					break;
+				default:
+					return;
+			}
+			if (!helperConstructManager.updateVarbitSlotForOrderLine(row.orderLineId, newVarbit, newReq, newOp, newDisp))
+			{
+				JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+					"Could not apply varbit settings.",
+					"Varbit reqs",
+					JOptionPane.WARNING_MESSAGE);
+			}
+			reloadFromManager();
+		}
+
+		private final class VarbitRoutingRow
+		{
+			private final String orderLineId;
+			private final String summary;
+			private final int varbitId;
+			private final int requiredValue;
+			private final String operation;
+			private final String displayText;
+
+			private VarbitRoutingRow(String orderLineId, String summary, int varbitId, int requiredValue, String operation, String displayText)
+			{
+				this.orderLineId = orderLineId;
+				this.summary = summary;
+				this.varbitId = varbitId;
+				this.requiredValue = requiredValue;
+				this.operation = operation;
+				this.displayText = displayText;
+			}
 		}
 	}
 

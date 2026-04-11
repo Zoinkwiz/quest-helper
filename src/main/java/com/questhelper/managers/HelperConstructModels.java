@@ -30,6 +30,44 @@ final class HelperConstructModels
 		VARBIT
 	}
 
+	/**
+	 * Extra requirements on a step definition (shown in preview / emitted on the step).
+	 * {@code kind} is extensible for future types (unknown kinds are skipped at runtime with a warning in codegen).
+	 */
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	static class DraftStepAttachedRequirement
+	{
+		/** {@link StepAttachmentKind#name()} or future discriminator. */
+		private String kind;
+		/** When {@code kind} is {@code ITEM}: captured / item raw id. */
+		private Integer itemRawId;
+		/** When {@code kind} is {@code VARBIT}: varbit id. */
+		private Integer varbitId;
+		private Integer varbitRequiredValue;
+		/** {@link com.questhelper.requirements.util.Operation} name. */
+		private String varbitOperation;
+		private String varbitDisplayText;
+
+		static DraftStepAttachedRequirement item(int rawId)
+		{
+			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null);
+		}
+
+		static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
+		{
+			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText);
+		}
+	}
+
+	enum StepAttachmentKind
+	{
+		ITEM,
+		VARBIT
+	}
+
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
@@ -49,7 +87,6 @@ final class HelperConstructModels
 		private StepKind kind;
 		private boolean sectionDivider;
 		private int rawId;
-		private Integer linkedRequirementRawId;
 		private String resolvedSymbol;
 		private WorldPoint worldPoint;
 		private String option;
@@ -59,10 +96,10 @@ final class HelperConstructModels
 		private String panelName;
 		private String sectionCondition;
 		private boolean skipWhenConditionMet;
-		private final List<Integer> requiredItems = new ArrayList<>();
+		private final List<DraftStepAttachedRequirement> attachedRequirements = new ArrayList<>();
 	}
 
-	/** Order row: section divider or ref to a definition. {@code linkedRequirementRawId}: null inherit, -1 varbit routing, else item req raw id. */
+	/** Order row: section divider or ref to a definition. {@code linkedRequirementRawId}: {@code null} = varbit-based routing (item steps use definition raw id for highlight); {@code -1} = varbit only; else captured item requirement raw id. */
 	@Data
 	@NoArgsConstructor
 	static class DraftOrderLine
@@ -76,6 +113,20 @@ final class HelperConstructModels
 		private Integer linkedRequirementRawId;
 	}
 
+	/** Routing varbit for one quest-order row (Default / Varbit only). Keyed by {@link DraftOrderLine#lineId}. */
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	static class DraftVarbitRequirement
+	{
+		private String lineId;
+		private int varbitId;
+		private int requiredValue;
+		/** {@link com.questhelper.requirements.util.Operation} name, e.g. EQUAL */
+		private String operation;
+		private String displayText;
+	}
+
 	@Data
 	@NoArgsConstructor
 	static class DraftHelper
@@ -87,6 +138,7 @@ final class HelperConstructModels
 		private final List<DraftStep> stepDefinitions = new ArrayList<>();
 		private final List<DraftOrderLine> order = new ArrayList<>();
 		private final List<DraftRequirement> requirements = new ArrayList<>();
+		private final List<DraftVarbitRequirement> varbitRequirements = new ArrayList<>();
 	}
 
 	/** Sentinel for order line: use varbit (not item requirement) for routing on this slot. */

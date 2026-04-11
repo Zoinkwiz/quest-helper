@@ -78,7 +78,7 @@ class HelperScaffoldGeneratorTest
 		assertTrue(source.contains("section1Task.addStep(not(firstStepVarbitReq), firstStep);"));
 		assertTrue(source.contains("ConditionalStep allSections = new ConditionalStep(this, section1Task);"));
 		assertTrue(source.contains("return allSections;"));
-		assertTrue(source.contains("new VarbitRequirement(/* TODO varbit id */ 0, 1)"));
+		assertTrue(source.contains("new VarbitRequirement(0, Operation.EQUAL, 1, null)"));
 	}
 
 	@Test
@@ -105,10 +105,17 @@ class HelperScaffoldGeneratorTest
 		HelperConstructModels.DraftStep itemStep = new HelperConstructModels.DraftStep();
 		itemStep.setKind(HelperConstructModels.StepKind.ITEM);
 		itemStep.setRawId(526);
-		itemStep.setLinkedRequirementRawId(526);
 		itemStep.setInstructionText("Use Bones.");
 		itemStep.setSuggestedVarName("useBones");
 		addDefinitionAndRef(draft, itemStep);
+		for (HelperConstructModels.DraftOrderLine line : draft.getOrder())
+		{
+			if (!line.isSectionDivider() && itemStep.getStepId().equals(line.getRefStepId()))
+			{
+				line.setLinkedRequirementRawId(526);
+				break;
+			}
+		}
 
 		var source = generator.generate(draft).getSource();
 		assertTrue(source.contains("useBones = new ItemStep(this, \"Use Bones.\", bones.highlighted());"));

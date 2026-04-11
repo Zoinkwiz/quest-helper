@@ -184,27 +184,29 @@ public class HelperConstructManager
 		int rawId = sourceEntry.getIdentifier();
 		String option = sourceEntry.getOption();
 		String target = Text.removeTags(sourceEntry.getTarget());
-		WorldPoint clickedWorldPoint = resolveClickedWorldPoint(sourceEntry, event);
 		var itemID = sourceEntry.getItemId();
+
+		WorldPoint clickedWorldPoint = resolveClickedWorldPoint(sourceEntry, event);
+
 		if (isNpcAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, sourceEntry.getNpc().getId(), option, target, clickedWorldPoint));
 		}
-		if (isObjectAction(sourceType))
+		else if (isObjectAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Object Step", target, () -> addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint));
 		}
-		if (isItemAction(sourceType))
+		else if (isItemAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(rawId, target));
 			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(rawId, target));
 		}
-		if (isInventoryItemAction(sourceType))
+		else if (isInventoryItemAction(sourceType))
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(itemID, target));
 			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(itemID, target));
 		}
-		if (isWalkHereMenu(sourceType, option) && clickedWorldPoint != null)
+		else if (isWalkHereMenu(sourceType, option) && clickedWorldPoint != null)
 		{
 			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (here)", target, () -> addGenericStepAtWorldPoint(clickedWorldPoint));
 		}
@@ -332,6 +334,24 @@ public class HelperConstructManager
 			return fromNpc;
 		}
 
+		if (isObjectAction(sourceEntry.getType()))
+		{
+			var fromObject = resolveObjectWorldPoint(sourceEntry);
+			if (fromObject != null)
+			{
+				return fromObject;
+			}
+		}
+		if (sourceEntry.getTarget().contains("Gauntlet"))
+		{
+			System.out.println("Wow");
+			System.out.println(sourceEntry.getType());
+			System.out.println(sourceEntry.getTarget());
+			System.out.println(sourceEntry.getActor());
+			System.out.println(sourceEntry.getParam0());
+			System.out.println(sourceEntry.getParam1());
+		}
+
 		WorldPoint fromSceneTile = resolveSceneTileWorldPoint(event);
 		if (fromSceneTile != null)
 		{
@@ -358,6 +378,24 @@ public class HelperConstructManager
 			return normalizeLocalPoint(npc.getLocalLocation());
 		}
 		return normalizeWorldPointWithWorldView(npc.getWorldView(), npc.getWorldLocation());
+	}
+
+	private WorldPoint resolveObjectWorldPoint(MenuEntry sourceEntry)
+	{
+		if (client.getTopLevelWorldView() == null)
+		{
+			return null;
+		}
+
+		var baseX = client.getTopLevelWorldView().getBaseX();
+		var baseY = client.getTopLevelWorldView().getBaseY();
+
+		var sceneX = sourceEntry.getParam0();
+		var sceneY = sourceEntry.getParam1();
+
+		var worldView = client.getTopLevelWorldView();
+
+		return normalizeWorldPointWithWorldView(worldView, new WorldPoint(baseX + sceneX, baseY + sceneY, worldView.getPlane()));
 	}
 
 	private WorldPoint resolveSceneTileWorldPoint(MenuEntryAdded event)
@@ -2142,7 +2180,7 @@ public class HelperConstructManager
 		{
 			return "TODO: capture instruction text";
 		}
-		return (cleanOption + " " + cleanTarget).trim();
+		return (cleanOption + " " + cleanTarget + ".").trim();
 	}
 
 	private String normalizeText(String text)
@@ -2482,7 +2520,7 @@ public class HelperConstructManager
 			{
 				if (orderLine.isSectionDivider())
 				{
-					ConditionalStep sectionTask = createSectionTask(currentPanelName, currentSectionEntries);
+					ConditionalStep sectionTask = createSectionTask(currentSectionEntries);
 					if (sectionTask != null)
 					{
 						sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentSectionEntries));
@@ -2501,15 +2539,12 @@ public class HelperConstructManager
 				}
 
 				PreviewStepEntry stepEntry = toPreviewStep(def, requirementById, orderLine);
-				if (stepEntry != null)
-				{
-					currentSectionEntries.add(stepEntry);
-				}
+				currentSectionEntries.add(stepEntry);
 			}
 
 			if (!currentSectionEntries.isEmpty())
 			{
-				ConditionalStep sectionTask = createSectionTask(currentPanelName, currentSectionEntries);
+				ConditionalStep sectionTask = createSectionTask(currentSectionEntries);
 				if (sectionTask != null)
 				{
 					sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentSectionEntries));
@@ -2540,7 +2575,7 @@ public class HelperConstructManager
 			}
 
 			int lastSectionIndex = sectionTasks.size() - 1;
-			ConditionalStep allSections = new ConditionalStep(this, sectionTasks.get(lastSectionIndex), "All Sections");
+			ConditionalStep allSections = new ConditionalStep(this, sectionTasks.get(lastSectionIndex));
 			allSections.setShouldPassthroughText(true);
 
 			List<Requirement> priorSectionRequirements = new ArrayList<>();
@@ -2553,7 +2588,7 @@ public class HelperConstructManager
 			return allSections;
 		}
 
-		private ConditionalStep createSectionTask(String panelName, List<PreviewStepEntry> sectionEntries)
+		private ConditionalStep createSectionTask(List<PreviewStepEntry> sectionEntries)
 		{
 			if (sectionEntries.isEmpty())
 			{
@@ -2561,7 +2596,7 @@ public class HelperConstructManager
 			}
 
 			QuestStep fallbackStep = sectionEntries.get(sectionEntries.size() - 1).step;
-			ConditionalStep sectionTask = new ConditionalStep(this, fallbackStep, panelName);
+			ConditionalStep sectionTask = new ConditionalStep(this, fallbackStep);
 			sectionTask.setShouldPassthroughText(true);
 			for (PreviewStepEntry entry : sectionEntries)
 			{

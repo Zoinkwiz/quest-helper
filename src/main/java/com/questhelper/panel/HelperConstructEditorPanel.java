@@ -73,11 +73,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		titleRow.add(helpButton, BorderLayout.LINE_END);
 		header.add(titleRow, BorderLayout.NORTH);
 
-		JLabel workflowLine = new JLabel(
-			"Capture in-game → edit in tabs below → Build / Preview / JSON. Hover buttons for details.");
-		workflowLine.setForeground(new Color(160, 160, 170));
-		header.add(workflowLine, BorderLayout.CENTER);
-
 		JButton buildButton = new JButton("Build");
 		JButton resetButton = new JButton("Reset");
 		JButton previewButton = new JButton("Preview");
@@ -558,8 +553,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		if (!applied)
 		{
 			JOptionPane.showMessageDialog(this,
-				"Could not save attachments (check varbit id/value and Operation name, e.g. EQUAL).",
-				"Step attachments",
+				"Could not save requirements (check varbit id/value and Operation name, e.g. EQUAL).",
+				"Step requirements",
 				JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -797,8 +792,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			this.kind = kind;
 			this.columns = kind == ConstructStepKind.TEXT
-				? new String[]{"Name/Var", "World (x, y, plane)", "Attachments", "Instruction", "Remove"}
-				: new String[]{"Name/Var", "Id to use", "World (x, y, plane)", "Attachments", "Instruction", "Remove"};
+				? new String[]{"Var name", "World (x, y, plane)", "Reqs", "Text", "Remove"}
+				: new String[]{"Var name", "Id to use", "World (x, y, plane)", "Reqs", "Text", "Remove"};
 		}
 
 		void setRows(
@@ -970,9 +965,6 @@ public final class HelperConstructEditorPanel extends JPanel
 	{
 		JPanel ordered = new JPanel(new BorderLayout(0, 6));
 		ordered.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		JLabel orderHint = new JLabel("Drag rows to reorder. Add Step / Add Section / Remove use the buttons below.");
-		orderHint.setForeground(Color.GRAY);
-		ordered.add(orderHint, BorderLayout.NORTH);
 
 		orderTable = new JTable(stepOrderTableModel)
 		{
@@ -1260,7 +1252,7 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private final class StepOrderTableModel extends AbstractTableModel
 	{
-		private final String[] columns = {"Name/Var", "Requirement / condition", "Instruction text"};
+		private final String[] columns = {"Var name", "Requirement", "Text"};
 		private List<HelperConstructManager.CombinedStepRow> rows = new ArrayList<>();
 
 		@Override

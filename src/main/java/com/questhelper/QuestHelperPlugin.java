@@ -32,6 +32,7 @@ import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.managers.*;
+import com.questhelper.panel.HelperConstructFrame;
 import com.questhelper.panel.HelperConstructPanel;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
@@ -168,6 +169,7 @@ public class QuestHelperPlugin extends Plugin
 
 	private QuestHelperPanel panel;
 	private HelperConstructPanel helperConstructPanel;
+	private HelperConstructFrame helperConstructFrame;
 
 	private NavigationButton navButton;
 	private NavigationButton constructNavButton;
@@ -225,7 +227,7 @@ public class QuestHelperPlugin extends Plugin
 		if (developerMode)
 		{
 			final BufferedImage constructIcon = Icon.START.getImage();
-			helperConstructPanel = new HelperConstructPanel(helperConstructManager);
+			helperConstructPanel = new HelperConstructPanel(this::openOrFocusHelperConstructFrame);
 			constructNavButton = NavigationButton.builder()
 				.tooltip("Quest Helper Construct")
 				.icon(constructIcon)
@@ -243,6 +245,15 @@ public class QuestHelperPlugin extends Plugin
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
 		});
+	}
+
+	private void openOrFocusHelperConstructFrame()
+	{
+		if (helperConstructFrame == null)
+		{
+			helperConstructFrame = new HelperConstructFrame(helperConstructManager);
+		}
+		helperConstructFrame.openWindow();
 	}
 
 	@Override
@@ -265,6 +276,11 @@ public class QuestHelperPlugin extends Plugin
 		if (constructNavButton != null)
 		{
 			clientToolbar.removeNavigation(constructNavButton);
+		}
+		if (helperConstructFrame != null)
+		{
+			helperConstructFrame.disposeForShutdown();
+			helperConstructFrame = null;
 		}
 		if (helperConstructPanel != null)
 		{

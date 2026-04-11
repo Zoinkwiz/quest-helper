@@ -84,6 +84,14 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Setter
 	private QuestHelperQuest quest;
 
+	/**
+	 * When set (e.g. construct preview / imported player guides), used for sidebar and step overlays
+	 * instead of {@link QuestHelperQuest#getName()} from {@link #quest}.
+	 */
+	@Getter
+	@Setter
+	private String playerFacingQuestName;
+
 	@Setter
 	private Injector injector;
 
@@ -116,6 +124,23 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	public void removeRuneliteObjects()
 	{
 		runeliteObjectManager.removeGroupAndSubgroups(toString());
+	}
+
+	/**
+	 * Human-readable quest title for UI (sidebar, overlays). Uses {@link #playerFacingQuestName} when set,
+	 * otherwise the linked {@link QuestHelperQuest} name, otherwise a generic label.
+	 */
+	public String getDisplayedQuestName()
+	{
+		if (playerFacingQuestName != null && !playerFacingQuestName.isBlank())
+		{
+			return playerFacingQuestName.trim();
+		}
+		if (quest != null)
+		{
+			return quest.getName();
+		}
+		return "Quest Helper";
 	}
 
 	public abstract boolean updateQuest();
@@ -218,9 +243,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			.build()
 		);
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getQuest().getName())
+			.left(getDisplayedQuestName())
 			.leftColor(getConfig().debugColor())
-			.right(getVar() + "")
+			.right(getQuest() != null ? String.valueOf(getVar()) : "—")
 			.rightColor(getConfig().debugColor())
 			.build()
 		);
@@ -228,6 +253,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	public int getVar()
 	{
+		if (quest == null)
+		{
+			return 0;
+		}
 		return quest.getVar(client);
 	}
 

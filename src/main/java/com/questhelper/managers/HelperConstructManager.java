@@ -1780,6 +1780,16 @@ public class HelperConstructManager
 		private PreviewQuestHelper(DraftHelper draft)
 		{
 			this.draft = draft;
+			String display = draft.getQuestName();
+			if (display == null || display.isBlank())
+			{
+				display = draft.getClassName();
+			}
+			if (display == null || display.isBlank())
+			{
+				display = "Shared helper";
+			}
+			setPlayerFacingQuestName(display.trim());
 		}
 
 		@Override
@@ -2079,12 +2089,6 @@ public class HelperConstructManager
 		}
 
 		@Override
-		public int getVar()
-		{
-			return 0;
-		}
-
-		@Override
 		public QuestState getState(Client client)
 		{
 			return QuestState.IN_PROGRESS;
@@ -2099,9 +2103,7 @@ public class HelperConstructManager
 		@Override
 		public String toString()
 		{
-			return draft.getQuestName() == null || draft.getQuestName().isBlank()
-				? "Construct Preview"
-				: draft.getQuestName() + " (Preview)";
+			return getDisplayedQuestName() + " (Preview)";
 		}
 	}
 

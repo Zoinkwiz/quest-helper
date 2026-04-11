@@ -500,7 +500,7 @@ public abstract class QuestStep implements Module
 	private void addTitleToPanel(PanelComponent panelComponent)
 	{
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(questHelper.getQuestHelperPlugin().getName())
+			.left(questHelper.getDisplayedQuestName())
 			.build());
 	}
 

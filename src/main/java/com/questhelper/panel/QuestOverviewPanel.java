@@ -265,8 +265,7 @@ public class QuestOverviewPanel extends JPanel
 
 		if (quest.getCurrentStep() != null)
 		{
-			String questName = quest.getQuest() != null ? quest.getQuest().getName() : quest.toString();
-			questNameLabel.setText(questName);
+			questNameLabel.setText(quest.getDisplayedQuestName());
 			actionsContainer.setVisible(true);
 
 			if (quest.getConfigs() != null)

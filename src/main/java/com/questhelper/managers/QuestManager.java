@@ -86,7 +86,7 @@ public class QuestManager
 	QuestHelperConfig config;
 
 	@Inject
-	QuestHelperPlugin questHelperPlugin;
+	public QuestHelperPlugin questHelperPlugin;
 
 	@Getter
 	@Inject

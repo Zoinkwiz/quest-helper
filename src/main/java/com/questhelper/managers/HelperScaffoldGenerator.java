@@ -324,7 +324,7 @@ public class HelperScaffoldGenerator
 		appendExtraStepRequirements(out, draft, varName, step, requirementVarNamesByRawId, warnings);
 	}
 
-	void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
+	public void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
 	{
 		String point = worldPointLiteral(step);
 		List<Integer> ids = DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds());
@@ -381,7 +381,7 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	void appendTextGenericDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction)
+	public void appendTextGenericDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction)
 	{
 		if (step.getWorldPoint() != null)
 		{
@@ -595,7 +595,7 @@ public class HelperScaffoldGenerator
 		return requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
 	}
 
-	static String varbitFieldNameForOrderSlot(
+	public static String varbitFieldNameForOrderSlot(
 		DraftOrderLine orderLine,
 		Map<String, String> varbitFieldByOrderSlotId,
 		List<String> warnings)
@@ -935,7 +935,7 @@ public class HelperScaffoldGenerator
 		return escapeJavaLiteral(text);
 	}
 
-	static String escapeJavaLiteral(String text)
+	public static String escapeJavaLiteral(String text)
 	{
 		if (text == null)
 		{

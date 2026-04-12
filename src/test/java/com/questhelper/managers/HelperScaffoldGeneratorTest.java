@@ -34,7 +34,6 @@ class HelperScaffoldGeneratorTest
 		step.setSuggestedVarName("inspectThing");
 		step.setTargetText("Thing");
 		step.setWorldPoint(new WorldPoint(3200, 3200, 0));
-		addDefinitionAndRef(draft, step);
 
 		HelperConstructModels.DraftRequirement req = new HelperConstructModels.DraftRequirement();
 		req.setRawId(-999999);

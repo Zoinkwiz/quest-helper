@@ -3,7 +3,6 @@ package com.questhelper.maker.construct;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.questhelper.maker.ConstructDraftPersistence;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto;
@@ -20,8 +19,11 @@ import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 @Slf4j
 public final class MakerDraftJsonLoader
 {
-	private MakerDraftJsonLoader()
+	private final Gson gson;
+
+	private MakerDraftJsonLoader(Gson gson)
 	{
+		this.gson = gson;
 	}
 
 	public static final class LoadOutcome
@@ -64,12 +66,11 @@ public final class MakerDraftJsonLoader
 		}
 	}
 
-	public static boolean jsonHasTopLevelRouteEnvelope(String json)
+	public static boolean jsonHasTopLevelRouteEnvelope(Gson gson, String json)
 	{
 		try
 		{
-			@SuppressWarnings("deprecation")
-			JsonElement el = new JsonParser().parse(json);
+			JsonElement el = gson.fromJson(json, JsonElement.class);
 			if (!el.isJsonObject())
 			{
 				return false;
@@ -93,7 +94,7 @@ public final class MakerDraftJsonLoader
 			return LoadOutcome.failure("JSON is empty");
 		}
 		String trimmed = json.trim();
-		if (!jsonHasTopLevelRouteEnvelope(trimmed))
+		if (!jsonHasTopLevelRouteEnvelope(gson, trimmed))
 		{
 			return LoadOutcome.failure(
 				"Expected extended Tasks Tracker route JSON (top-level \"sections\" array). "

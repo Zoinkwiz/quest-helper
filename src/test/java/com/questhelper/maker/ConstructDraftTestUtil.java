@@ -9,7 +9,7 @@ public final class ConstructDraftTestUtil
 	{
 	}
 
-	static void addDefinitionAndRef(HelperConstructModels.DraftHelper draft, HelperConstructModels.DraftStep step)
+	public static void addDefinitionAndRef(HelperConstructModels.DraftHelper draft, HelperConstructModels.DraftStep step)
 	{
 		if (step.getStepId() == null || step.getStepId().isBlank())
 		{
@@ -23,7 +23,7 @@ public final class ConstructDraftTestUtil
 		draft.getOrder().add(line);
 	}
 
-	static void addSectionDivider(HelperConstructModels.DraftHelper draft, String name)
+	public static void addSectionDivider(HelperConstructModels.DraftHelper draft, String name)
 	{
 		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
 		line.setOrderSlotId(UUID.randomUUID().toString());

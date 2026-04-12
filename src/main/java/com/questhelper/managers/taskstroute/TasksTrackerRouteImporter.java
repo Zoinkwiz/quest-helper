@@ -1,10 +1,6 @@
 package com.questhelper.managers.taskstroute;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
@@ -13,7 +9,6 @@ import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteLocationDt
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteSectionDto;
 import net.runelite.api.coords.WorldPoint;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,36 +25,8 @@ import static com.questhelper.maker.HelperConstructModels.StepKind;
  */
 public final class TasksTrackerRouteImporter
 {
-	private static final Gson HUB_PARSE_GSON = new Gson();
-
 	private TasksTrackerRouteImporter()
 	{
-	}
-
-	public static Map<Integer, JsonObject> parseLeagueFullHub(String leagueFullJson) throws JsonSyntaxException
-	{
-		JsonElement root = HUB_PARSE_GSON.fromJson(leagueFullJson.trim(), JsonElement.class);
-		if (root == null || !root.isJsonArray())
-		{
-			throw new JsonSyntaxException("LEAGUE_5.full.json must be a JSON array of tasks");
-		}
-		JsonArray arr = root.getAsJsonArray();
-		Map<Integer, JsonObject> byStruct = new HashMap<>();
-		for (JsonElement el : arr)
-		{
-			if (!el.isJsonObject())
-			{
-				continue;
-			}
-			JsonObject o = el.getAsJsonObject();
-			if (!o.has("structId"))
-			{
-				continue;
-			}
-			int sid = o.get("structId").getAsInt();
-			byStruct.put(sid, o);
-		}
-		return byStruct;
 	}
 
 	/**
@@ -158,10 +125,6 @@ public final class TasksTrackerRouteImporter
 		{
 			kind = StepKind.NPC;
 			rawId = firstNpc;
-			if (firstObj != null)
-			{
-				// Object ids ignored when NPC list is present (same as before).
-			}
 		}
 		else if (firstObj != null)
 		{
@@ -253,13 +216,13 @@ public final class TasksTrackerRouteImporter
 		}
 		if (c.getDescription() != null && !c.getDescription().isBlank())
 		{
-			if (instr.length() > 0)
+			if (!instr.isEmpty())
 			{
 				instr.append("\n\n");
 			}
 			instr.append(c.getDescription().trim());
 		}
-		if (instr.length() == 0)
+		if (instr.isEmpty())
 		{
 			instr.append("Custom step");
 		}

@@ -1,6 +1,7 @@
 package com.questhelper.maker;
 
 import com.questhelper.maker.construct.DraftRoutingIds;
+import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -51,12 +52,12 @@ public final class ConstructStepKindHandlers
 		return out;
 	}
 
-	static ConstructStepKindHandler forStepKind(StepKind kind)
+	public static ConstructStepKindHandler forStepKind(StepKind kind)
 	{
 		return BY_KIND.get(kind);
 	}
 
-	interface ConstructStepKindHandler
+	public interface ConstructStepKindHandler
 	{
 		StepKind kind();
 
@@ -126,7 +127,7 @@ public final class ConstructStepKindHandlers
 		}
 	}
 
-	static final class ScaffoldDefinitionSetupContext
+	public static final class ScaffoldDefinitionSetupContext
 	{
 		private final HelperScaffoldGenerator generator;
 		private final StringBuilder out;
@@ -137,7 +138,7 @@ public final class ConstructStepKindHandlers
 		private final Map<Integer, String> requirementVarNamesByRawId;
 		private final List<String> warnings;
 
-		ScaffoldDefinitionSetupContext(
+		public ScaffoldDefinitionSetupContext(
 			HelperScaffoldGenerator generator,
 			StringBuilder out,
 			DraftHelper draft,

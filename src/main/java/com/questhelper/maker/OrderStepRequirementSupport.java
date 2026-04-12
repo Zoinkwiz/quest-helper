@@ -1,5 +1,6 @@
 package com.questhelper.maker;
 
+import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;

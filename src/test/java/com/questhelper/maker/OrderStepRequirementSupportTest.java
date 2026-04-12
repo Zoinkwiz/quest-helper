@@ -1,6 +1,8 @@
 package com.questhelper.maker;
 
 import com.google.gson.Gson;
+import com.questhelper.managers.GamevalSymbolResolver;
+import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import net.runelite.api.coords.WorldPoint;

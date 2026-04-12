@@ -2,6 +2,7 @@ package com.questhelper.maker;
 
 import com.questhelper.maker.ConstructStepKind;
 import com.questhelper.maker.HelperConstructManager;
+import com.questhelper.panel.JGenerator;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.SwingUtil;

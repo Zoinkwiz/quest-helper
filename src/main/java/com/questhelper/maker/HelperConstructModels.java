@@ -309,5 +309,5 @@ public final class HelperConstructModels
 	}
 
 	/** Sentinel for order line: use varbit (not item requirement) for routing on this slot. */
-	static final int ORDER_ROUTING_VARBIT_SENTINEL = -1;
+	public static final int ORDER_ROUTING_VARBIT_SENTINEL = -1;
 }

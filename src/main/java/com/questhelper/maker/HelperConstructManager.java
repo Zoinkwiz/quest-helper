@@ -2,6 +2,9 @@ package com.questhelper.maker;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.questhelper.managers.GamevalSymbolResolver;
+import com.questhelper.managers.HelperScaffoldGenerator;
+import com.questhelper.managers.QuestManager;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteExporter;
 import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import com.questhelper.maker.construct.DraftRoutingIds;
@@ -20,7 +23,6 @@ import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.Operation;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
@@ -28,6 +30,7 @@ import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.tools.ConstructWorldMapPoint;
 import com.questhelper.util.worldmap.WorldPointMapper;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -35,7 +38,6 @@ import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.Tile;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -86,6 +88,7 @@ public class HelperConstructManager
 {
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
 	/** One quest-order "linked item" option: label and the raw item id used for routing / highlight. */
+	@Getter
 	public static final class RequirementRoutingChoice
 	{
 		private final String label;
@@ -97,15 +100,6 @@ public class HelperConstructManager
 			this.rawId = rawId;
 		}
 
-		public String getLabel()
-		{
-			return label;
-		}
-
-		public int getRawId()
-		{
-			return rawId;
-		}
 	}
 
 	private static final String DEFAULT_SECTION_NAME = "New Section";
@@ -138,16 +132,20 @@ public class HelperConstructManager
 	@Inject
 	private QuestManager questManager;
 
+	@Inject
+	private Gson gson;
+
 	@Getter
 	private DraftHelper currentDraft = new DraftHelper();
 	private boolean loadedFromConfig;
-	private final Gson gson = new Gson();
 	private final Gson prettyDraftGson = new GsonBuilder().setPrettyPrinting().create();
+	@Getter
 	private boolean worldMapRoutePreviewEnabled;
 
 	/**
 	 * Result of {@link #importDraftFromJson(String)}.
 	 */
+	@Getter
 	public static final class ImportDraftResult
 	{
 		private final boolean success;
@@ -169,15 +167,6 @@ public class HelperConstructManager
 			return new ImportDraftResult(false, message == null ? "Unknown error" : message);
 		}
 
-		public boolean isSuccess()
-		{
-			return success;
-		}
-
-		public String getErrorMessage()
-		{
-			return errorMessage;
-		}
 	}
 
 	public String getCurrentDraftClassName()
@@ -577,7 +566,7 @@ public class HelperConstructManager
 			return rawId;
 		}
 		var itemDefinition = client.getItemDefinition(rawId);
-		if (itemDefinition != null && itemDefinition.getNote() >= 0)
+		if (itemDefinition.getNote() >= 0)
 		{
 			return itemDefinition.getLinkedNoteId();
 		}
@@ -731,11 +720,6 @@ public class HelperConstructManager
 			clearWorldMapRoutePoints();
 			sendGameMessage("Quest Helper Construct: in-game world map route preview disabled.");
 		}
-	}
-
-	public boolean isWorldMapRoutePreviewEnabled()
-	{
-		return worldMapRoutePreviewEnabled;
 	}
 
 	public void disableWorldMapRoutePreview()
@@ -1618,7 +1602,7 @@ public class HelperConstructManager
 		line.setSectionCondition("");
 		line.setSkipWhenConditionMet(false);
 		List<DraftOrderLine> order = currentDraft.getOrder();
-		int idx = insertAt < 0 ? order.size() : Math.min(Math.max(0, insertAt), order.size());
+		int idx = insertAt < 0 ? order.size() : Math.min(insertAt, order.size());
 		order.add(idx, line);
 		saveDraftToConfig();
 	}
@@ -1645,7 +1629,7 @@ public class HelperConstructManager
 		line.setRefStepId(stepId);
 		line.setLinkedRequirementRawId(null);
 		List<DraftOrderLine> order = currentDraft.getOrder();
-		int idx = insertAt < 0 ? order.size() : Math.min(Math.max(0, insertAt), order.size());
+		int idx = insertAt < 0 ? order.size() : Math.min(insertAt, order.size());
 		order.add(idx, line);
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)
@@ -1682,29 +1666,6 @@ public class HelperConstructManager
 			DraftStepAttachedRequirement.setOrderLineRoutingVarbit(added, DraftStepAttachedRequirement.varbit(0, 0, "EQUAL", ""));
 		}
 		saveDraftToConfig();
-	}
-
-	public boolean updateOrderLinkedRequirement(int orderIndex, Integer linkedRequirementRawId)
-	{
-		ensureDraftLoaded();
-		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
-		{
-			return false;
-		}
-		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
-		if (line.isSectionDivider())
-		{
-			return false;
-		}
-		ensureOrderSlotId(line);
-		line.setLinkedRequirementRawId(linkedRequirementRawId);
-		line.setStepRequirement(null);
-		if (linkedRequirementRawId != null && linkedRequirementRawId > 0)
-		{
-			removeRoutingVarbitForOrderSlot(line.getOrderSlotId());
-		}
-		saveDraftToConfig();
-		return true;
 	}
 
 	/**
@@ -2265,30 +2226,6 @@ public class HelperConstructManager
 		ensureDraftLoaded();
 		currentDraft.getRequirements().add(RequirementDraftFactory.newPlaceholderItemRequirement());
 		saveDraftToConfig();
-	}
-
-	/** Removes the quest-order row with this {@link DraftOrderLine#getOrderSlotId()} (and its routing varbit attachment if any). */
-	public boolean removeOrderLineByOrderSlotId(String orderSlotId)
-	{
-		ensureDraftLoaded();
-		if (orderSlotId == null || orderSlotId.isBlank())
-		{
-			return false;
-		}
-		List<DraftOrderLine> order = currentDraft.getOrder();
-		for (int i = 0; i < order.size(); i++)
-		{
-			DraftOrderLine line = order.get(i);
-			if (line.isSectionDivider())
-			{
-				continue;
-			}
-			if (orderSlotId.equals(line.getOrderSlotId()))
-			{
-				return removeStepAt(i);
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -3455,6 +3392,7 @@ public class HelperConstructManager
 	}
 
 	/** UI / API DTO for extra requirements on a step (items, varbits, extensible kinds). */
+	@Getter
 	public static final class StepAttachmentEdit
 	{
 		private final String kind;
@@ -3463,6 +3401,7 @@ public class HelperConstructManager
 		private final Integer varbitRequiredValue;
 		private final String varbitOperation;
 		private final String varbitDisplayText;
+		@Setter
 		private boolean itemHighlighted;
 		private final String orderSlotId;
 
@@ -3528,52 +3467,6 @@ public class HelperConstructManager
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
 			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, orderSlotId);
 		}
-
-		public String getKind()
-		{
-			return kind;
-		}
-
-		public Integer getItemRawId()
-		{
-			return itemRawId;
-		}
-
-		public Integer getVarbitId()
-		{
-			return varbitId;
-		}
-
-		public Integer getVarbitRequiredValue()
-		{
-			return varbitRequiredValue;
-		}
-
-		public String getVarbitOperation()
-		{
-			return varbitOperation;
-		}
-
-		public String getVarbitDisplayText()
-		{
-			return varbitDisplayText;
-		}
-
-		/** When set for a VARBIT edit, binds to {@link DraftOrderLine#getOrderSlotId()}. */
-		public String getOrderSlotId()
-		{
-			return orderSlotId;
-		}
-
-		public boolean isItemHighlighted()
-		{
-			return itemHighlighted;
-		}
-
-		public void setItemHighlighted(boolean itemHighlighted)
-		{
-			this.itemHighlighted = itemHighlighted;
-		}
 	}
 
 	public static final class StepDefinitionPickOption
@@ -3604,6 +3497,7 @@ public class HelperConstructManager
 		}
 	}
 
+	@Getter
 	public static class CombinedStepRow
 	{
 		private final int index;
@@ -3615,6 +3509,10 @@ public class HelperConstructManager
 		private final String sectionCondition;
 		private final boolean skipWhenConditionMet;
 		private final Integer orderLinkedRequirementRawId;
+		/**
+		 * -- GETTER --
+		 * Player-facing step text used in generated helpers (empty for section rows).
+		 */
 		private final String instructionText;
 		private final boolean customOrderStepRequirement;
 		private final boolean hasOrderStepRequirementTree;
@@ -3633,70 +3531,6 @@ public class HelperConstructManager
 			this.instructionText = instructionText == null ? "" : instructionText;
 			this.customOrderStepRequirement = customOrderStepRequirement;
 			this.hasOrderStepRequirementTree = hasOrderStepRequirementTree;
-		}
-
-		public int getIndex()
-		{
-			return index;
-		}
-
-		/** Stable id of the quest-order slot (not the step definition id); matches {@link DraftOrderLine#getOrderSlotId()}. */
-		public String getOrderSlotId()
-		{
-			return orderSlotId;
-		}
-
-		public String getStepId()
-		{
-			return stepId;
-		}
-
-		public String getVarName()
-		{
-			return varName;
-		}
-
-		public String getSummary()
-		{
-			return summary;
-		}
-
-		public boolean isSectionDivider()
-		{
-			return sectionDivider;
-		}
-
-		public String getSectionCondition()
-		{
-			return sectionCondition;
-		}
-
-		public boolean isSkipWhenConditionMet()
-		{
-			return skipWhenConditionMet;
-		}
-
-		/**
-		 * Optional captured item raw id for highlight when no {@link DraftOrderLine#getStepRequirement()} tree is set.
-		 */
-		public Integer getOrderLinkedRequirementRawId()
-		{
-			return orderLinkedRequirementRawId;
-		}
-
-		/** Player-facing step text used in generated helpers (empty for section rows). */
-		public String getInstructionText()
-		{
-			return instructionText;
-		}
-
-		/**
-		 * When {@code true}, the persisted {@link DraftOrderLine#getStepRequirement()} tree is not the same as the
-		 * legacy scalar migration would synthesize (user-edited JSON / non-trivial logic).
-		 */
-		public boolean isCustomOrderStepRequirement()
-		{
-			return customOrderStepRequirement;
 		}
 
 		public boolean hasOrderStepRequirementTree()

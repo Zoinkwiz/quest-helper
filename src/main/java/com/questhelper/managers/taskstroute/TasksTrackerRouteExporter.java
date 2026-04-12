@@ -102,20 +102,24 @@ public final class TasksTrackerRouteExporter
 
 	private static RouteInteractDto interactFromStep(DraftStep def)
 	{
-		RouteInteractDto inter = new RouteInteractDto();
-		if (def.getKind() == StepKind.NPC && def.getRawId() != 0)
-		{
-			List<Integer> npc = new ArrayList<>(HelperConstructManager.mergedStepOrRequirementIds(def.getRawId(), def.getAlternateRawIds()));
-			inter.setNpc(npc);
-		}
-		else if (def.getKind() == StepKind.OBJECT && def.getRawId() != 0)
-		{
-			List<Integer> obj = new ArrayList<>(HelperConstructManager.mergedStepOrRequirementIds(def.getRawId(), def.getAlternateRawIds()));
-			inter.setObject(obj);
-		}
-		if (inter.getNpc() == null && inter.getObject() == null)
+		if (def.getKind() != StepKind.NPC && def.getKind() != StepKind.OBJECT)
 		{
 			return null;
+		}
+		List<Integer> merged = new ArrayList<>(HelperConstructManager.mergedStepOrRequirementIds(def.getRawId(), def.getAlternateRawIds()));
+		merged.removeIf(id -> id == null || id == 0);
+		if (merged.isEmpty())
+		{
+			return null;
+		}
+		RouteInteractDto inter = new RouteInteractDto();
+		if (def.getKind() == StepKind.NPC)
+		{
+			inter.setNpc(merged);
+		}
+		else
+		{
+			inter.setObject(merged);
 		}
 		return inter;
 	}
@@ -136,6 +140,7 @@ public final class TasksTrackerRouteExporter
 		c.setDescription(desc == null || desc.isBlank() ? null : desc);
 		item.setCustomItem(c);
 		item.setLocation(locationFromStep(def));
+		item.setInteract(interactFromStep(def));
 		return item;
 	}
 

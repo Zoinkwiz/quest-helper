@@ -273,6 +273,56 @@ class TasksTrackerRouteConverterTest
 		assertTrue(items.get(1).getCustomItem().getId().startsWith("qh_"));
 	}
 
+	@Test
+	void exportDraft_customNpcStep_includesNpcInteract()
+	{
+		DraftHelper draft = new DraftHelper();
+		draft.setQuestName("CustomNpcExport");
+		DraftStep npc = new DraftStep();
+		npc.setStepId("custom-npc-1");
+		npc.setStructId(null);
+		npc.setKind(StepKind.NPC);
+		npc.setRawId(1234);
+		npc.setInstructionText("Talk to the NPC.");
+		draft.getStepDefinitions().add(npc);
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setRefStepId("custom-npc-1");
+		draft.getOrder().add(line);
+
+		TasksTrackerRouteDto out = TasksTrackerRouteExporter.export(draft);
+		RouteItemDto item = out.getSections().get(0).getItems().get(0);
+		assertNotNull(item.getCustomItem());
+		assertNotNull(item.getInteract());
+		assertEquals(List.of(1234), item.getInteract().getNpc());
+		assertNull(item.getInteract().getObject());
+	}
+
+	@Test
+	void exportDraft_customObjectStep_usesAlternateIdsWhenPrimaryZero()
+	{
+		DraftHelper draft = new DraftHelper();
+		draft.setQuestName("CustomObjExport");
+		DraftStep obj = new DraftStep();
+		obj.setStepId("custom-obj-1");
+		obj.setStructId(null);
+		obj.setKind(StepKind.OBJECT);
+		obj.setRawId(0);
+		obj.getAlternateRawIds().add(9999);
+		obj.setInstructionText("Click the thing.");
+		draft.getStepDefinitions().add(obj);
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setRefStepId("custom-obj-1");
+		draft.getOrder().add(line);
+
+		TasksTrackerRouteDto out = TasksTrackerRouteExporter.export(draft);
+		RouteItemDto item = out.getSections().get(0).getItems().get(0);
+		assertNotNull(item.getCustomItem());
+		assertNotNull(item.getInteract());
+		assertEquals(List.of(9999), item.getInteract().getObject());
+	}
+
 	private static TasksTrackerRouteDto minimalRoute(String name)
 	{
 		TasksTrackerRouteDto route = new TasksTrackerRouteDto();

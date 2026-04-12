@@ -313,11 +313,6 @@ public class HelperConstructManager
 		step.setStepId(UUID.randomUUID().toString());
 		step.setKind(kind);
 		step.setRawId(rawId);
-		HelperConstructModels.IdType idType = kind == StepKind.NPC
-			? HelperConstructModels.IdType.NPC
-			: HelperConstructModels.IdType.OBJECT;
-		var resolved = symbolResolver.resolve(idType, rawId);
-		step.setResolvedSymbol(resolved.getSymbol());
 		step.setOption(option);
 		step.setTargetText(target);
 		step.setInstructionText(instructionText(option, target));
@@ -459,11 +454,10 @@ public class HelperConstructManager
 		var idToUse = normalizeItemId(rawId);
 		DraftRequirement requirement = new DraftRequirement();
 		requirement.setRawId(idToUse);
-		requirement.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, idToUse).getSymbol());
 		requirement.setDisplayName(normalizeText(target).isBlank() ? "Captured Item" : normalizeText(target));
 		currentDraft.getRequirements().add(requirement);
 		saveDraftToConfig();
-		sendGameMessage("Quest Helper Construct: added item requirement (" + idToUse + " -> " + requirement.getResolvedSymbol() + ").");
+		sendGameMessage("Quest Helper Construct: added item requirement (" + idToUse + ").");
 	}
 
 	private void addGenericStepFromItem(int rawId, String target)
@@ -481,7 +475,6 @@ public class HelperConstructManager
 		step.setStepId(UUID.randomUUID().toString());
 		step.setKind(StepKind.TEXT);
 		step.setRawId(0);
-		step.setResolvedSymbol("");
 		step.setOption("Use");
 		step.setTargetText(target);
 		String itemName = normalizeText(target).isBlank() ? requirement.getDisplayName() : normalizeText(target);
@@ -491,7 +484,7 @@ public class HelperConstructManager
 		step.getAttachedRequirements().add(DraftStepAttachedRequirement.item(normalizedItemId));
 		currentDraft.getStepDefinitions().add(step);
 		saveDraftToConfig();
-		sendGameMessage("Quest Helper Construct: added generic step with item " + normalizedItemId + " (" + requirement.getResolvedSymbol() + "). Add it to quest order if needed.");
+		sendGameMessage("Quest Helper Construct: added generic step with item " + normalizedItemId + ". Add it to quest order if needed.");
 	}
 
 	private void addGenericStepAtWorldPoint(WorldPoint worldPoint)
@@ -510,7 +503,6 @@ public class HelperConstructManager
 		step.setStepId(UUID.randomUUID().toString());
 		step.setKind(StepKind.TEXT);
 		step.setRawId(0);
-		step.setResolvedSymbol("");
 		step.setWorldPoint(worldPoint);
 		step.setOption("Walk here");
 		step.setTargetText("");
@@ -596,7 +588,6 @@ public class HelperConstructManager
 
 		DraftRequirement requirement = new DraftRequirement();
 		requirement.setRawId(normalizedItemId);
-		requirement.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, normalizedItemId).getSymbol());
 		requirement.setDisplayName(normalizeText(target).isBlank() ? "Captured Item" : normalizeText(target));
 		currentDraft.getRequirements().add(requirement);
 		return requirement;
@@ -984,16 +975,13 @@ public class HelperConstructManager
 		{
 			step.setRawId(0);
 			step.getAlternateRawIds().clear();
-			step.setResolvedSymbol("");
 			step.setOption("");
 			step.setTargetText("");
 		}
 		else if (toSk == StepKind.NPC || toSk == StepKind.OBJECT)
 		{
-			HelperConstructModels.IdType idType = toSk == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
 			step.setRawId(0);
 			step.getAlternateRawIds().clear();
-			step.setResolvedSymbol(symbolResolver.resolve(idType, 0).getSymbol());
 			if (step.getOption() == null)
 			{
 				step.setOption("");
@@ -1025,14 +1013,11 @@ public class HelperConstructManager
 		if (sk == StepKind.NPC || sk == StepKind.OBJECT)
 		{
 			step.setRawId(0);
-			HelperConstructModels.IdType idType = sk == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
-			step.setResolvedSymbol(symbolResolver.resolve(idType, 0).getSymbol());
 			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(sk == StepKind.NPC ? "npc step" : "object step", "step"));
 		}
 		else
 		{
 			step.setRawId(0);
-			step.setResolvedSymbol("");
 			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("generic step", "step"));
 		}
 		currentDraft.getStepDefinitions().add(step);
@@ -1343,14 +1328,12 @@ public class HelperConstructManager
 			return false;
 		}
 		List<Integer> ids = dedupeIntsPreserveOrder(parsed);
-		HelperConstructModels.IdType idType = kind == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
 		step.setRawId(ids.get(0));
 		step.getAlternateRawIds().clear();
 		for (int i = 1; i < ids.size(); i++)
 		{
 			step.getAlternateRawIds().add(ids.get(i));
 		}
-		step.setResolvedSymbol(symbolResolver.resolve(idType, step.getRawId()).getSymbol());
 		saveDraftToConfig();
 		rebuildWorldMapRouteIfEnabled();
 		return true;
@@ -2212,7 +2195,6 @@ public class HelperConstructManager
 		{
 			r.getAlternateRawIds().add(normalized.get(i));
 		}
-		r.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, r.getRawId()).getSymbol());
 		saveDraftToConfig();
 		return true;
 	}
@@ -2222,7 +2204,6 @@ public class HelperConstructManager
 		ensureDraftLoaded();
 		DraftRequirement r = new DraftRequirement();
 		r.setRawId(0);
-		r.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, 0).getSymbol());
 		r.setDisplayName("Item");
 		currentDraft.getRequirements().add(r);
 		saveDraftToConfig();
@@ -2368,7 +2349,11 @@ public class HelperConstructManager
 			String displayName = normalizeText(requirement.getDisplayName());
 			if (displayName.isBlank())
 			{
-				displayName = requirement.getResolvedSymbol() != null ? requirement.getResolvedSymbol() : String.valueOf(requirement.getRawId());
+				displayName = formatCsvIds(mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()));
+				if (displayName.isBlank())
+				{
+					displayName = String.valueOf(requirement.getRawId());
+				}
 			}
 			String summary = String.format("%d. %s",
 				i + 1,
@@ -2684,7 +2669,7 @@ public class HelperConstructManager
 			{
 				return ImportDraftResult.failure(validationError);
 			}
-			currentDraft = TasksTrackerRouteImporter.importRoute(route, null, symbolResolver);
+			currentDraft = TasksTrackerRouteImporter.importRoute(route, null);
 			reconcileVarbitRequirementsWithOrder();
 			saveDraftToConfig();
 			if (worldMapRoutePreviewEnabled)
@@ -2831,7 +2816,11 @@ public class HelperConstructManager
 			displayName = normalizeText(step.getTargetText());
 			if (displayName.isBlank())
 			{
-				displayName = step.getResolvedSymbol() != null ? step.getResolvedSymbol() : String.valueOf(step.getRawId());
+				displayName = formatCsvIds(mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds()));
+				if (displayName.isBlank())
+				{
+					displayName = String.valueOf(step.getRawId());
+				}
 			}
 		}
 		return String.format("%d. %s (%s)",
@@ -2882,7 +2871,8 @@ public class HelperConstructManager
 		{
 			return target;
 		}
-		return step.getResolvedSymbol() != null ? step.getResolvedSymbol() : "step";
+		String idLabel = formatCsvIds(mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds()));
+		return idLabel.isBlank() ? "step" : idLabel;
 	}
 
 	private BufferedImage routePointIcon(int index, int total)

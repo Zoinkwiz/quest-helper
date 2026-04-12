@@ -80,7 +80,6 @@ public final class HelperConstructModels
 	public static class DraftRequirement
 	{
 		private int rawId;
-		private String resolvedSymbol;
 		private String displayName;
 		/** Additional item ids (comma-separated in UI); first id is {@link #rawId}. */
 		private final List<Integer> alternateRawIds = new ArrayList<>();
@@ -98,7 +97,6 @@ public final class HelperConstructModels
 		 */
 		private Integer structId;
 		private int rawId;
-		private String resolvedSymbol;
 		private WorldPoint worldPoint;
 		private String option;
 		private String targetText;

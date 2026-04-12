@@ -12,14 +12,10 @@ import java.util.List;
 import net.runelite.api.coords.WorldPoint;
 
 import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
-import static com.questhelper.managers.HelperConstructModels.IdType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class HelperConstructManagerTest
 {
@@ -216,12 +212,6 @@ class HelperConstructManagerTest
 	void convertStepDefinitionKindPreservesStepIdAndOrderRef() throws Exception
 	{
 		HelperConstructManager manager = new HelperConstructManager();
-		GamevalSymbolResolver resolver = mock(GamevalSymbolResolver.class);
-		when(resolver.resolve(any(IdType.class), eq(0)))
-			.thenReturn(new GamevalSymbolResolver.ResolutionResult("SYM", false, false));
-		Field fr = HelperConstructManager.class.getDeclaredField("symbolResolver");
-		fr.setAccessible(true);
-		fr.set(manager, resolver);
 		ConfigManager cm = mock(ConfigManager.class);
 		Field fc = HelperConstructManager.class.getDeclaredField("configManager");
 		fc.setAccessible(true);
@@ -231,7 +221,6 @@ class HelperConstructManagerTest
 		step.setStepId("step-keep");
 		step.setKind(HelperConstructModels.StepKind.TEXT);
 		step.setRawId(0);
-		step.setResolvedSymbol("");
 		step.setInstructionText("do thing");
 		manager.getCurrentDraft().getStepDefinitions().add(step);
 		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
@@ -249,6 +238,5 @@ class HelperConstructManagerTest
 		assertEquals("step-keep", manager.getCurrentDraft().getStepDefinitions().get(0).getStepId());
 		assertEquals("step-keep", manager.getCurrentDraft().getOrder().get(0).getRefStepId());
 		assertEquals(0, manager.getCurrentDraft().getStepDefinitions().get(0).getRawId());
-		assertEquals("SYM", manager.getCurrentDraft().getStepDefinitions().get(0).getResolvedSymbol());
 	}
 }

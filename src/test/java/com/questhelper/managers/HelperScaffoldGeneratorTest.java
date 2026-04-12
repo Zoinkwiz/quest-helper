@@ -105,7 +105,6 @@ class HelperScaffoldGeneratorTest
 		HelperConstructModels.DraftStep itemStep = new HelperConstructModels.DraftStep();
 		itemStep.setKind(HelperConstructModels.StepKind.TEXT);
 		itemStep.setRawId(0);
-		itemStep.setResolvedSymbol("");
 		itemStep.setInstructionText("Use Bones.");
 		itemStep.setSuggestedVarName("useBones");
 		itemStep.getAttachedRequirements().add(HelperConstructModels.DraftStepAttachedRequirement.item(526));
@@ -172,7 +171,6 @@ class HelperScaffoldGeneratorTest
 		HelperConstructModels.DraftStep step4 = new HelperConstructModels.DraftStep();
 		step4.setKind(HelperConstructModels.StepKind.TEXT);
 		step4.setRawId(0);
-		step4.setResolvedSymbol("");
 		step4.setSuggestedVarName("usedragonstoneamulet");
 		step4.setInstructionText("Use dragonstone amulet.");
 		step4.getAttachedRequirements().add(HelperConstructModels.DraftStepAttachedRequirement.item(1712));

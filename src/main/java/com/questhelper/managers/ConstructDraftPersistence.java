@@ -83,7 +83,6 @@ final class ConstructDraftPersistence
 			{
 				DraftRequirement req = new DraftRequirement();
 				req.setRawId(reqState.rawId);
-				req.setResolvedSymbol(reqState.resolvedSymbol);
 				req.setDisplayName(reqState.displayName);
 				if (reqState.alternateRawIds != null && !reqState.alternateRawIds.isEmpty())
 				{
@@ -158,7 +157,6 @@ final class ConstructDraftPersistence
 			stepState.kind = step.getKind();
 			stepState.sectionDivider = false;
 			stepState.rawId = step.getRawId();
-			stepState.resolvedSymbol = step.getResolvedSymbol();
 			stepState.option = step.getOption();
 			stepState.targetText = step.getTargetText();
 			stepState.suggestedVarName = step.getSuggestedVarName();
@@ -209,7 +207,6 @@ final class ConstructDraftPersistence
 		{
 			DraftRequirementState reqState = new DraftRequirementState();
 			reqState.rawId = req.getRawId();
-			reqState.resolvedSymbol = req.getResolvedSymbol();
 			reqState.displayName = req.getDisplayName();
 			if (!req.getAlternateRawIds().isEmpty())
 			{
@@ -244,7 +241,6 @@ final class ConstructDraftPersistence
 		step.setKind(stepState.kind);
 		step.setSectionDivider(keepSectionDivider && stepState.sectionDivider);
 		step.setRawId(stepState.rawId);
-		step.setResolvedSymbol(stepState.resolvedSymbol);
 		step.setOption(stepState.option);
 		step.setTargetText(stepState.targetText);
 		step.setSuggestedVarName(stepState.suggestedVarName);
@@ -278,7 +274,6 @@ final class ConstructDraftPersistence
 		int rid = step.getRawId();
 		step.setKind(StepKind.TEXT);
 		step.setRawId(0);
-		step.setResolvedSymbol("");
 		if (rid == 0)
 		{
 			return;
@@ -356,7 +351,6 @@ final class ConstructDraftPersistence
 		boolean sectionDivider;
 		int rawId;
 		Integer linkedRequirementRawId;
-		String resolvedSymbol;
 		String option;
 		String targetText;
 		String suggestedVarName;
@@ -397,7 +391,6 @@ final class ConstructDraftPersistence
 	static class DraftRequirementState
 	{
 		int rawId;
-		String resolvedSymbol;
 		String displayName;
 		List<Integer> alternateRawIds;
 	}

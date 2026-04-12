@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.questhelper.managers.GamevalSymbolResolver;
 import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
@@ -23,7 +22,6 @@ import static com.questhelper.managers.HelperConstructModels.DraftHelper;
 import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.DraftVarbitRequirement;
-import static com.questhelper.managers.HelperConstructModels.IdType;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 
 /**
@@ -70,8 +68,7 @@ public final class TasksTrackerRouteImporter
 	 */
 	public static DraftHelper importRoute(
 		TasksTrackerRouteDto route,
-		Map<Integer, JsonObject> hubByStructId,
-		GamevalSymbolResolver symbolResolver)
+		Map<Integer, JsonObject> hubByStructId)
 	{
 		DraftHelper draft = new DraftHelper();
 		draft.setQuestName(trimOrDefault(route.getName(), "Imported Route"));
@@ -117,11 +114,11 @@ public final class TasksTrackerRouteImporter
 			{
 				if (item.getTaskId() != null)
 				{
-					appendLeagueTaskRow(draft, item, hubByStructId, symbolResolver);
+					appendLeagueTaskRow(draft, item, hubByStructId);
 				}
 				else if (item.getCustomItem() != null)
 				{
-					appendCustomItemRow(draft, item, symbolResolver);
+					appendCustomItemRow(draft, item);
 				}
 			}
 		}
@@ -131,8 +128,7 @@ public final class TasksTrackerRouteImporter
 	private static void appendLeagueTaskRow(
 		DraftHelper draft,
 		RouteItemDto item,
-		Map<Integer, JsonObject> hubByStructId,
-		GamevalSymbolResolver symbolResolver)
+		Map<Integer, JsonObject> hubByStructId)
 	{
 		int structId = item.getTaskId();
 		JsonObject hub = hubByStructId != null ? hubByStructId.get(structId) : null;
@@ -218,8 +214,6 @@ public final class TasksTrackerRouteImporter
 				}
 			}
 		}
-		applyResolvedSymbol(step, symbolResolver);
-
 		draft.getStepDefinitions().add(step);
 
 		String lineId = UUID.randomUUID().toString();
@@ -243,7 +237,7 @@ public final class TasksTrackerRouteImporter
 		draft.getVarbitRequirements().add(vb);
 	}
 
-	private static void appendCustomItemRow(DraftHelper draft, RouteItemDto item, GamevalSymbolResolver symbolResolver)
+	private static void appendCustomItemRow(DraftHelper draft, RouteItemDto item)
 	{
 		RouteCustomItemDto c = item.getCustomItem();
 		String stepId = UUID.randomUUID().toString();
@@ -288,7 +282,6 @@ public final class TasksTrackerRouteImporter
 		step.setSectionCondition("");
 		step.setSkipWhenConditionMet(false);
 		applyWorldPoint(step, item.getLocation(), null);
-		step.setResolvedSymbol("");
 		draft.getStepDefinitions().add(step);
 
 		String lineId = UUID.randomUUID().toString();
@@ -312,22 +305,6 @@ public final class TasksTrackerRouteImporter
 			return null;
 		}
 		return list.get(0);
-	}
-
-	private static void applyResolvedSymbol(DraftStep step, GamevalSymbolResolver symbolResolver)
-	{
-		if (step.getKind() == StepKind.NPC)
-		{
-			step.setResolvedSymbol(symbolResolver.resolve(IdType.NPC, step.getRawId()).getSymbol());
-		}
-		else if (step.getKind() == StepKind.OBJECT)
-		{
-			step.setResolvedSymbol(symbolResolver.resolve(IdType.OBJECT, step.getRawId()).getSymbol());
-		}
-		else
-		{
-			step.setResolvedSymbol("");
-		}
 	}
 
 	private static void applyWorldPoint(DraftStep step, RouteLocationDto itemLoc, JsonObject hub)

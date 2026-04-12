@@ -25,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TasksTrackerRouteConverterTest
 {
-	private static final GamevalSymbolResolver SYMBOLS = new GamevalSymbolResolver();
-
 	private static String hubRow(int structId, int sortId, String name, String description, int x, int y, int plane)
 	{
 		return "{\"structId\":" + structId + ",\"sortId\":" + sortId + ",\"name\":\"" + name + "\",\"description\":\""
@@ -68,7 +66,7 @@ class TasksTrackerRouteConverterTest
 		item.setTaskId(2645);
 		item.setNote("Do the league step.");
 		route.getSections().get(0).setItems(List.of(item));
-		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null);
 		DraftStep step = firstStepDefinition(draft);
 		assertEquals(2645, (int) step.getStructId());
 		assertTrue(step.getInstructionText().contains("Do the league step"));
@@ -89,7 +87,7 @@ class TasksTrackerRouteConverterTest
 		item.setNote("npc step");
 		route.getSections().get(0).setItems(List.of(item));
 
-		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null);
 
 		DraftStep step = firstStepDefinition(draft);
 		assertEquals(StepKind.NPC, step.getKind());
@@ -109,7 +107,7 @@ class TasksTrackerRouteConverterTest
 		item.setNote("multi");
 		route.getSections().get(0).setItems(List.of(item));
 
-		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null);
 		DraftStep step = firstStepDefinition(draft);
 		assertEquals(StepKind.NPC, step.getKind());
 		assertEquals(100, step.getRawId());
@@ -133,7 +131,7 @@ class TasksTrackerRouteConverterTest
 		item.setNote("obj step");
 		route.getSections().get(0).setItems(List.of(item));
 
-		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null);
 
 		DraftStep step = firstStepDefinition(draft);
 		assertEquals(StepKind.OBJECT, step.getKind());
@@ -158,7 +156,7 @@ class TasksTrackerRouteConverterTest
 		item.setInteract(inter);
 		route.getSections().get(0).setItems(List.of(item));
 
-		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null);
 
 		TasksTrackerRouteDto out = TasksTrackerRouteExporter.export(draft);
 		assertEquals("Round", out.getName());
@@ -185,7 +183,7 @@ class TasksTrackerRouteConverterTest
 		item.setCustomItem(c);
 		route.getSections().get(0).setItems(List.of(item));
 
-		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null);
 
 		DraftStep step = firstStepDefinition(draft);
 		assertNull(step.getStructId());
@@ -207,7 +205,7 @@ class TasksTrackerRouteConverterTest
 		item.setNote("Deposit all.");
 		route.getSections().get(0).setItems(List.of(item));
 
-		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null);
 		DraftStep step = firstStepDefinition(draft);
 		assertTrue(step.getInstructionText().contains("Bank"));
 		assertTrue(step.getInstructionText().contains("Deposit all"));
@@ -223,7 +221,7 @@ class TasksTrackerRouteConverterTest
 		route.getSections().get(0).setItems(List.of(item));
 		String hubJson = "[" + hubRow(sid, 5, "Official Name", "Extra desc", 10, 20, 0) + "]";
 		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route,
-			TasksTrackerRouteImporter.parseLeagueFullHub(hubJson), SYMBOLS);
+			TasksTrackerRouteImporter.parseLeagueFullHub(hubJson));
 		DraftStep step = firstStepDefinition(draft);
 		assertTrue(step.getInstructionText().contains("Official Name"));
 		assertTrue(step.getSuggestedVarName().endsWith("5"));

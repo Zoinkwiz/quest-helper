@@ -7,6 +7,10 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
+
+import net.runelite.api.coords.WorldPoint;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -88,6 +92,11 @@ public final class OrderStepRequirementSupport
 			{
 				return mig;
 			}
+			String zoneMig = migrateInlineZoneLeavesToOrderRouting(line, tree);
+			if (zoneMig != null)
+			{
+				return zoneMig;
+			}
 		}
 		return validateTreeOrError(tree);
 	}
@@ -140,6 +149,116 @@ public final class OrderStepRequirementSupport
 			for (DraftOrderStepRequirement ch : root.getChildren())
 			{
 				if (treeContainsOrderVarbitLeaf(ch))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/** True when generated Java needs {@link com.questhelper.requirements.zone.Zone} / {@link com.questhelper.requirements.zone.ZoneRequirement} imports. */
+	public static boolean draftUsesZoneRequirement(@Nullable DraftHelper draft)
+	{
+		if (draft == null || draft.getOrder() == null)
+		{
+			return false;
+		}
+		for (DraftOrderLine line : draft.getOrder())
+		{
+			if (line == null || line.isSectionDivider())
+			{
+				continue;
+			}
+			if (treeContainsZoneLeaf(line.getStepRequirement())
+				|| treeContainsOrderZoneLeaf(line.getStepRequirement())
+				|| orderLineHasZoneRoutingCorners(line))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** True when this order row has zone corners persisted for the Zone reqs tab / {@code ORDER_ZONE}. */
+	public static boolean orderLineHasZoneRoutingCorners(@Nullable DraftOrderLine line)
+	{
+		return line != null && line.getZoneRoutingCorner1() != null && line.getZoneRoutingCorner2() != null;
+	}
+
+	/** True when the Zone reqs tab should list this row (slot leaf in tree or zone corners already set on the line). */
+	public static boolean orderLineUsesZoneRoutingForEditor(@Nullable DraftOrderLine line)
+	{
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		return treeContainsOrderZoneLeaf(line.getStepRequirement()) || orderLineHasZoneRoutingCorners(line);
+	}
+
+	/** Clears orphan zone routing on order lines (e.g. before codegen). */
+	public static void normalizeZoneRoutingOnDraft(@Nullable DraftHelper draft)
+	{
+		if (draft == null || draft.getOrder() == null)
+		{
+			return;
+		}
+		for (DraftOrderLine line : draft.getOrder())
+		{
+			if (line == null || line.isSectionDivider())
+			{
+				continue;
+			}
+			if (!orderLineUsesZoneRoutingForEditor(line))
+			{
+				line.setZoneRoutingCorner1(null);
+				line.setZoneRoutingCorner2(null);
+				line.setZoneRoutingDisplayText(null);
+			}
+		}
+	}
+
+	/** True when the tree still has legacy inline {@code ZONE} leaves (corners on the node; migrate to tab + {@code ORDER_ZONE}). */
+	public static boolean treeContainsZoneLeaf(@Nullable DraftOrderStepRequirement root)
+	{
+		if (root == null)
+		{
+			return false;
+		}
+		String k = root.getKind() == null ? "" : root.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("ZONE".equals(k))
+		{
+			return true;
+		}
+		if (root.getChildren() != null)
+		{
+			for (DraftOrderStepRequirement ch : root.getChildren())
+			{
+				if (treeContainsZoneLeaf(ch))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean treeContainsOrderZoneLeaf(@Nullable DraftOrderStepRequirement root)
+	{
+		if (root == null)
+		{
+			return false;
+		}
+		String k = root.getKind() == null ? "" : root.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("ORDER_ZONE".equals(k))
+		{
+			return true;
+		}
+		if (root.getChildren() != null)
+		{
+			for (DraftOrderStepRequirement ch : root.getChildren())
+			{
+				if (treeContainsOrderZoneLeaf(ch))
 				{
 					return true;
 				}
@@ -271,6 +390,120 @@ public final class OrderStepRequirementSupport
 	}
 
 	/**
+	 * Collects inline {@code ZONE} leaves, syncs {@link DraftOrderLine} zone routing fields, replaces each leaf with {@code ORDER_ZONE}.
+	 *
+	 * @return {@code null} when nothing to do or migration succeeded; otherwise a short error (caller should not persist).
+	 */
+	@Nullable
+	public static String migrateInlineZoneLeavesToOrderRouting(DraftOrderLine line, DraftOrderStepRequirement root)
+	{
+		if (line == null || line.isSectionDivider() || root == null)
+		{
+			return null;
+		}
+		List<DraftOrderStepRequirement> leaves = new ArrayList<>();
+		collectZoneLikeLeaves(root, leaves);
+		if (leaves.isEmpty())
+		{
+			return null;
+		}
+		for (DraftOrderStepRequirement n : leaves)
+		{
+			if (n.getZoneCorner1() == null || n.getZoneCorner2() == null)
+			{
+				return "ZONE needs both zone corners (world points).";
+			}
+		}
+		Set<String> signatures = new LinkedHashSet<>();
+		for (DraftOrderStepRequirement n : leaves)
+		{
+			signatures.add(persistedZoneSignature(n));
+		}
+		if (signatures.size() > 1)
+		{
+			return "This order row mixes different zone rectangles in the conditions tree. Use one zone per row, or split across multiple quest-order rows. Set corners on the Zone reqs tab and use only \"Order zone (slot)\" here.";
+		}
+		DraftOrderStepRequirement sample = leaves.get(0);
+		if (orderLineHasZoneRoutingCorners(line))
+		{
+			if (!zoneSampleMatchesLineRouting(sample, line))
+			{
+				return "The Zone reqs tab corners for this row do not match ZONE leaves in conditions. Edit the zone on the Zone tab, or remove conflicting nodes.";
+			}
+		}
+		else
+		{
+			line.setZoneRoutingCorner1(sample.getZoneCorner1());
+			line.setZoneRoutingCorner2(sample.getZoneCorner2());
+			line.setZoneRoutingDisplayText(sample.getZoneDisplayText());
+		}
+		for (DraftOrderStepRequirement n : leaves)
+		{
+			convertZoneLeafToOrderSlot(n);
+		}
+		return null;
+	}
+
+	private static void collectZoneLikeLeaves(DraftOrderStepRequirement node, List<DraftOrderStepRequirement> out)
+	{
+		if (node == null)
+		{
+			return;
+		}
+		String k = node.getKind() == null ? "" : node.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("ZONE".equals(k))
+		{
+			out.add(node);
+			return;
+		}
+		if (node.getChildren() != null)
+		{
+			for (DraftOrderStepRequirement ch : node.getChildren())
+			{
+				collectZoneLikeLeaves(ch, out);
+			}
+		}
+	}
+
+	private static String persistedZoneSignature(DraftOrderStepRequirement n)
+	{
+		WorldPoint a = n.getZoneCorner1();
+		WorldPoint b = n.getZoneCorner2();
+		String disp = n.getZoneDisplayText();
+		if (disp != null && disp.isBlank())
+		{
+			disp = null;
+		}
+		return a.getX() + "," + a.getY() + "," + a.getPlane() + "|" + b.getX() + "," + b.getY() + "," + b.getPlane() + "|" + (disp == null ? "" : disp);
+	}
+
+	private static boolean zoneSampleMatchesLineRouting(DraftOrderStepRequirement sample, DraftOrderLine line)
+	{
+		return worldPointsEqual(sample.getZoneCorner1(), line.getZoneRoutingCorner1())
+			&& worldPointsEqual(sample.getZoneCorner2(), line.getZoneRoutingCorner2())
+			&& Objects.equals(
+				sample.getZoneDisplayText() == null || sample.getZoneDisplayText().isBlank() ? null : sample.getZoneDisplayText().trim(),
+				line.getZoneRoutingDisplayText() == null || line.getZoneRoutingDisplayText().isBlank() ? null : line.getZoneRoutingDisplayText().trim());
+	}
+
+	private static void convertZoneLeafToOrderSlot(DraftOrderStepRequirement n)
+	{
+		n.setKind("ORDER_ZONE");
+		n.setZoneCorner1(null);
+		n.setZoneCorner2(null);
+		n.setZoneDisplayText(null);
+		n.setItemRawId(null);
+		n.setVarbitId(null);
+		n.setVarbitRequiredValue(null);
+		n.setVarbitOperation(null);
+		n.setVarbitDisplayText(null);
+		if (n.getChildren() != null)
+		{
+			n.getChildren().clear();
+		}
+	}
+
+	/**
 	 * Removes {@code ORDER_VARBIT} / {@code ROUTING_VARBIT} leaves and unwraps single-child groups. Returns
 	 * {@code null} when nothing remains (caller should clear the order row's tree).
 	 */
@@ -308,6 +541,63 @@ public final class OrderStepRequirementSupport
 			for (DraftOrderStepRequirement c : ch)
 			{
 				DraftOrderStepRequirement p = stripOrderVarbitLeaves(c);
+				if (p != null)
+				{
+					kept.add(p);
+				}
+			}
+			if (kept.isEmpty())
+			{
+				return null;
+			}
+			if (kept.size() == 1)
+			{
+				return kept.get(0);
+			}
+			node.getChildren().clear();
+			node.getChildren().addAll(kept);
+			return node;
+		}
+		return node;
+	}
+
+	/**
+	 * Removes {@code ORDER_ZONE} leaves and unwraps single-child groups. Returns {@code null} when nothing remains.
+	 */
+	@Nullable
+	public static DraftOrderStepRequirement stripOrderZoneLeaves(@Nullable DraftOrderStepRequirement node)
+	{
+		if (node == null)
+		{
+			return null;
+		}
+		String k = node.getKind() == null ? "" : node.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("ORDER_ZONE".equals(k))
+		{
+			return null;
+		}
+		if ("INVERT".equals(k))
+		{
+			if (node.getChildren() == null || node.getChildren().isEmpty())
+			{
+				return null;
+			}
+			DraftOrderStepRequirement inner = stripOrderZoneLeaves(node.getChildren().get(0));
+			if (inner == null)
+			{
+				return null;
+			}
+			node.getChildren().clear();
+			node.getChildren().add(inner);
+			return node;
+		}
+		if ("GROUP".equals(k))
+		{
+			List<DraftOrderStepRequirement> kept = new ArrayList<>();
+			List<DraftOrderStepRequirement> ch = node.getChildren() == null ? List.of() : new ArrayList<>(node.getChildren());
+			for (DraftOrderStepRequirement c : ch)
+			{
+				DraftOrderStepRequirement p = stripOrderZoneLeaves(c);
 				if (p != null)
 				{
 					kept.add(p);
@@ -390,7 +680,10 @@ public final class OrderStepRequirementSupport
 			|| !Objects.equals(a.getVarbitId(), b.getVarbitId())
 			|| !Objects.equals(a.getVarbitRequiredValue(), b.getVarbitRequiredValue())
 			|| !Objects.equals(a.getVarbitOperation(), b.getVarbitOperation())
-			|| !Objects.equals(a.getVarbitDisplayText(), b.getVarbitDisplayText()))
+			|| !Objects.equals(a.getVarbitDisplayText(), b.getVarbitDisplayText())
+			|| !worldPointsEqual(a.getZoneCorner1(), b.getZoneCorner1())
+			|| !worldPointsEqual(a.getZoneCorner2(), b.getZoneCorner2())
+			|| !Objects.equals(a.getZoneDisplayText(), b.getZoneDisplayText()))
 		{
 			return false;
 		}
@@ -408,6 +701,19 @@ public final class OrderStepRequirementSupport
 			}
 		}
 		return true;
+	}
+
+	private static boolean worldPointsEqual(@Nullable WorldPoint a, @Nullable WorldPoint b)
+	{
+		if (a == null && b == null)
+		{
+			return true;
+		}
+		if (a == null || b == null)
+		{
+			return false;
+		}
+		return a.getX() == b.getX() && a.getY() == b.getY() && a.getPlane() == b.getPlane();
 	}
 
 	private static DraftStep findDefinition(DraftHelper draft, String refStepId)
@@ -464,6 +770,8 @@ public final class OrderStepRequirementSupport
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
 				return routingVarbitDone(line, def);
+			case "ORDER_ZONE":
+				return routingZoneDone(line);
 			case "VARBIT":
 			case "INLINE_VARBIT":
 			{
@@ -480,6 +788,21 @@ public final class OrderStepRequirementSupport
 					disp = null;
 				}
 				return new VarbitRequirement(vid, op, val, disp);
+			}
+			case "ZONE":
+			{
+				WorldPoint c1 = node.getZoneCorner1();
+				WorldPoint c2 = node.getZoneCorner2();
+				if (c1 == null || c2 == null)
+				{
+					return null;
+				}
+				String disp = node.getZoneDisplayText();
+				if (disp == null || disp.isBlank())
+				{
+					disp = "In zone";
+				}
+				return new ZoneRequirement(disp, new Zone(c1, c2));
 			}
 			default:
 				return null;
@@ -565,6 +888,23 @@ public final class OrderStepRequirementSupport
 		return VarbitSpec.fromStepAttachment(cfg).toVarbitRequirement();
 	}
 
+	@Nullable
+	private static Requirement routingZoneDone(DraftOrderLine line)
+	{
+		WorldPoint c1 = line.getZoneRoutingCorner1();
+		WorldPoint c2 = line.getZoneRoutingCorner2();
+		if (c1 == null || c2 == null)
+		{
+			return null;
+		}
+		String disp = line.getZoneRoutingDisplayText();
+		if (disp == null || disp.isBlank())
+		{
+			disp = "In zone";
+		}
+		return new ZoneRequirement(disp, new Zone(c1, c2));
+	}
+
 	/**
 	 * Java source for the game selector (argument to {@code addStep} when using a tree — no outer {@code not()}).
 	 */
@@ -574,6 +914,7 @@ public final class OrderStepRequirementSupport
 		DraftStep def,
 		Map<Integer, String> requirementVarNamesByRawId,
 		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> zoneFieldByOrderSlotId,
 		List<String> warnings)
 	{
 		if (node == null)
@@ -585,12 +926,12 @@ public final class OrderStepRequirementSupport
 		switch (k)
 		{
 			case "GROUP":
-				return emitGroupJava(node, line, def, requirementVarNamesByRawId, varbitFieldByOrderSlotId, warnings);
+				return emitGroupJava(node, line, def, requirementVarNamesByRawId, varbitFieldByOrderSlotId, zoneFieldByOrderSlotId, warnings);
 			case "INVERT":
 			{
 				String inner = node.getChildren() == null || node.getChildren().isEmpty()
 					? null
-					: emitSelectorJava(node.getChildren().get(0), line, def, requirementVarNamesByRawId, varbitFieldByOrderSlotId, warnings);
+					: emitSelectorJava(node.getChildren().get(0), line, def, requirementVarNamesByRawId, varbitFieldByOrderSlotId, zoneFieldByOrderSlotId, warnings);
 				if (inner == null || inner.isBlank())
 				{
 					warnings.add("INVERT without child in order step requirement");
@@ -618,6 +959,8 @@ public final class OrderStepRequirementSupport
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
 				return HelperScaffoldGenerator.varbitFieldNameForOrderSlot(line, varbitFieldByOrderSlotId, warnings);
+			case "ORDER_ZONE":
+				return HelperScaffoldGenerator.zoneFieldNameForOrderSlot(line, zoneFieldByOrderSlotId, warnings);
 			case "VARBIT":
 			case "INLINE_VARBIT":
 			{
@@ -635,10 +978,32 @@ public final class OrderStepRequirementSupport
 				String dispArg = disp == null || disp.isBlank() ? "null" : "\"" + HelperScaffoldGenerator.escapeJavaLiteral(disp) + "\"";
 				return "new VarbitRequirement(" + vid + ", Operation." + opName + ", " + val + ", " + dispArg + ")";
 			}
+			case "ZONE":
+			{
+				WorldPoint c1 = node.getZoneCorner1();
+				WorldPoint c2 = node.getZoneCorner2();
+				if (c1 == null || c2 == null)
+				{
+					warnings.add("ZONE without both corners");
+					return "new VarbitRequirement(0, Operation.EQUAL, 1, null)";
+				}
+				String disp = node.getZoneDisplayText();
+				String dispLit = disp == null || disp.isBlank()
+					? "In zone"
+					: HelperScaffoldGenerator.escapeJavaLiteral(disp);
+				String dispArg = "\"" + dispLit + "\"";
+				return "new ZoneRequirement(" + dispArg + ", new Zone("
+					+ worldPointJavaLiteral(c1) + ", " + worldPointJavaLiteral(c2) + "))";
+			}
 			default:
 				warnings.add("Unknown order step requirement kind: " + node.getKind());
 				return "new VarbitRequirement(0, Operation.EQUAL, 1, null)";
 		}
+	}
+
+	private static String worldPointJavaLiteral(WorldPoint p)
+	{
+		return "new WorldPoint(" + p.getX() + ", " + p.getY() + ", " + p.getPlane() + ")";
 	}
 
 	private static String emitGroupJava(
@@ -647,6 +1012,7 @@ public final class OrderStepRequirementSupport
 		DraftStep def,
 		Map<Integer, String> requirementVarNamesByRawId,
 		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> zoneFieldByOrderSlotId,
 		List<String> warnings)
 	{
 		LogicType lt = parseLogicType(node.getLogic());
@@ -655,7 +1021,7 @@ public final class OrderStepRequirementSupport
 		{
 			for (DraftOrderStepRequirement ch : node.getChildren())
 			{
-				parts.add(emitSelectorJava(ch, line, def, requirementVarNamesByRawId, varbitFieldByOrderSlotId, warnings));
+				parts.add(emitSelectorJava(ch, line, def, requirementVarNamesByRawId, varbitFieldByOrderSlotId, zoneFieldByOrderSlotId, warnings));
 			}
 		}
 		if (parts.isEmpty())
@@ -737,9 +1103,13 @@ public final class OrderStepRequirementSupport
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
 				return null;
+			case "ORDER_ZONE":
+				return null;
 			case "VARBIT":
 			case "INLINE_VARBIT":
 				return "Order conditions cannot use inline VARBIT nodes. Set the varbit on the Varbit reqs tab for this row, then use only \"Order varbit (slot)\" here (or save again to auto-migrate legacy drafts).";
+			case "ZONE":
+				return "Order conditions cannot use inline ZONE nodes. Set corners on the Zone reqs tab for this row, then use only \"Order zone (slot)\" here (or save again to auto-migrate).";
 			default:
 				return "Unknown kind: " + node.getKind();
 		}

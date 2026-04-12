@@ -159,6 +159,15 @@ public final class ConstructDraftPersistence
 			lineState.refStepId = line.getRefStepId();
 			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
 			lineState.stepRequirement = line.getStepRequirement();
+			if (line.getZoneRoutingCorner1() != null)
+			{
+				lineState.zoneRoutingCorner1 = locationStateFromWorldPoint(line.getZoneRoutingCorner1());
+			}
+			if (line.getZoneRoutingCorner2() != null)
+			{
+				lineState.zoneRoutingCorner2 = locationStateFromWorldPoint(line.getZoneRoutingCorner2());
+			}
+			lineState.zoneRoutingDisplayText = line.getZoneRoutingDisplayText();
 			for (DraftStepAttachedRequirement a : line.getAttachedRequirements())
 			{
 				DraftStepAttachedRequirementState st = new DraftStepAttachedRequirementState();
@@ -248,6 +257,19 @@ public final class ConstructDraftPersistence
 		return null;
 	}
 
+	private static DraftLocationState locationStateFromWorldPoint(WorldPoint wp)
+	{
+		if (wp == null)
+		{
+			return null;
+		}
+		DraftLocationState loc = new DraftLocationState();
+		loc.x = wp.getX();
+		loc.y = wp.getY();
+		loc.plane = wp.getPlane();
+		return loc;
+	}
+
 	private static DraftOrderLine draftOrderLineFromState(DraftOrderLineState s)
 	{
 		DraftOrderLine line = new DraftOrderLine();
@@ -279,6 +301,15 @@ public final class ConstructDraftPersistence
 				line.getAttachedRequirements().add(d);
 			}
 		}
+		if (s.zoneRoutingCorner1 != null)
+		{
+			line.setZoneRoutingCorner1(new WorldPoint(s.zoneRoutingCorner1.x, s.zoneRoutingCorner1.y, s.zoneRoutingCorner1.plane));
+		}
+		if (s.zoneRoutingCorner2 != null)
+		{
+			line.setZoneRoutingCorner2(new WorldPoint(s.zoneRoutingCorner2.x, s.zoneRoutingCorner2.y, s.zoneRoutingCorner2.plane));
+		}
+		line.setZoneRoutingDisplayText(s.zoneRoutingDisplayText);
 		return line;
 	}
 
@@ -347,6 +378,9 @@ public final class ConstructDraftPersistence
 		public Integer linkedRequirementRawId;
 		public DraftOrderStepRequirement stepRequirement;
 		public List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
+		public DraftLocationState zoneRoutingCorner1;
+		public DraftLocationState zoneRoutingCorner2;
+		public String zoneRoutingDisplayText;
 	}
 
 	public static class DraftRequirementState

@@ -200,7 +200,7 @@ public final class HelperConstructModels
 	 * Recursive order-line requirement tree: branch requirement for {@link com.questhelper.steps.ConditionalStep#addStep}
 	 * (when {@link com.questhelper.requirements.Requirement#check} is true, that child step is active for routing).
 	 * <p>
-	 * {@link #kind}: {@code GROUP}, {@code INVERT}, {@code ITEM}, {@code ORDER_VARBIT}, {@code VARBIT}.
+	 * {@link #kind}: {@code GROUP}, {@code INVERT}, {@code ITEM}, {@code ORDER_VARBIT}, {@code VARBIT}, {@code ZONE}.
 	 * For {@code GROUP}, {@link #logic} is a {@link com.questhelper.requirements.util.LogicType} name ({@code AND}, {@code OR}, {@code NOR}, {@code NAND}).
 	 * {@code INVERT} uses a single entry in {@link #children}. Leaves have empty {@link #children}.
 	 */
@@ -217,6 +217,11 @@ public final class HelperConstructModels
 		private Integer varbitRequiredValue;
 		private String varbitOperation;
 		private String varbitDisplayText;
+		/** When {@code kind} is {@code ZONE}: inclusive axis-aligned box (two opposite corners). */
+		private WorldPoint zoneCorner1;
+		private WorldPoint zoneCorner2;
+		/** Optional label for {@link com.questhelper.requirements.zone.ZoneRequirement} in preview/codegen. */
+		private String zoneDisplayText;
 
 		public static DraftOrderStepRequirement group(String logicTypeName, DraftOrderStepRequirement... ch)
 		{
@@ -252,6 +257,14 @@ public final class HelperConstructModels
 			return n;
 		}
 
+		/** Zone from this quest-order row’s {@link DraftOrderLine#getZoneRoutingCorner1()} / {@link DraftOrderLine#getZoneRoutingCorner2()} (Zone reqs tab). */
+		public static DraftOrderStepRequirement orderZoneSlot()
+		{
+			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
+			n.setKind("ORDER_ZONE");
+			return n;
+		}
+
 		public static DraftOrderStepRequirement item(int rawId)
 		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
@@ -270,14 +283,26 @@ public final class HelperConstructModels
 			n.setVarbitDisplayText(displayText);
 			return n;
 		}
+
+		/** Player must be inside the rectangle defined by the two corners (same semantics as {@link com.questhelper.requirements.zone.Zone}). */
+		public static DraftOrderStepRequirement zone(WorldPoint corner1, WorldPoint corner2, String displayText)
+		{
+			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
+			n.setKind("ZONE");
+			n.setZoneCorner1(corner1);
+			n.setZoneCorner2(corner2);
+			n.setZoneDisplayText(displayText);
+			return n;
+		}
 	}
 
 	/**
 	 * Order row: section divider or ref to a definition.
 	 * {@code linkedRequirementRawId}: optional captured item raw id for highlight / legacy item routing when no tree is set; otherwise unused.
-	 * {@link #orderSlotId}: stable id for this slot (conditions tree {@code ORDER_VARBIT} and persistence).
+	 * {@link #orderSlotId}: stable id for this slot (conditions tree {@code ORDER_VARBIT}, {@code ORDER_ZONE}, and persistence).
 	 * {@link #attachedRequirements}: order-scoped extras (e.g. VARBIT routing for this slot). Step definitions keep only
 	 * inline varbits and item attachments that apply to every use of the step.
+	 * Zone corners for {@code ORDER_ZONE} are stored on the line ({@link #zoneRoutingCorner1} / {@link #zoneRoutingCorner2}), edited on the Zone reqs tab.
 	 * When {@link #stepRequirement} is set, preview and codegen use it as the game branch selector (see {@link DraftOrderStepRequirement}).
 	 */
 	@Data
@@ -293,6 +318,10 @@ public final class HelperConstructModels
 		private Integer linkedRequirementRawId;
 		private DraftOrderStepRequirement stepRequirement;
 		private final List<DraftStepAttachedRequirement> attachedRequirements = new ArrayList<>();
+		/** When conditions use {@code ORDER_ZONE}: rectangle corners (Zone reqs tab). */
+		private WorldPoint zoneRoutingCorner1;
+		private WorldPoint zoneRoutingCorner2;
+		private String zoneRoutingDisplayText;
 	}
 
 	@Data

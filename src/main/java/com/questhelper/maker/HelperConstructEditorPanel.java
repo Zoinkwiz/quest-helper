@@ -42,11 +42,12 @@ public final class HelperConstructEditorPanel extends JPanel
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
 		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
-		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Click Conditions in a row to edit branch requirements (logic groups AND/OR/NOR/NAND, Add varbit from an existing slot, Create new varbit, captured items, NOT). Varbit id/value/operation are edited on the Varbit reqs tab, not on the order-varbit tree node. Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
+		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
-		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
-		"7. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON).",
-		"8. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Older root-only maker JSON (no top-level `sections`) must be converted first: run `python maker/scripts/convert_legacy_maker_draft.py` (see `maker/scripts/README.md`).");
+		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add appends a placeholder generic step and order row with default corners. Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
+		"7. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
+		"8. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON).",
+		"9. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Older root-only maker JSON (no top-level `sections`) must be converted first: run `python maker/scripts/convert_legacy_maker_draft.py` (see `maker/scripts/README.md`).");
 
 	private final HelperConstructManager helperConstructManager;
 	/** Step library tabs in display order (NPC, Object, Generic); add a {@link ConstructStepKind} here to add a tab. */
@@ -54,9 +55,11 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
 	private JTable requirementTable;
 	private JTable varbitReqsTable;
+	private JTable zoneReqsTable;
 	private JTable orderTable;
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
 	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
+	private final ZoneRoutingTableModel zoneRoutingTableModel = new ZoneRoutingTableModel();
 	private final Timer refreshTimer;
 	private JButton worldMapRouteButton;
 	/** Maker header actions; reflows into a "More…" menu when the panel is too narrow. */
@@ -220,6 +223,54 @@ public final class HelperConstructEditorPanel extends JPanel
 		varbitActions.add(removeVarbitSlotButton);
 		varbitPanel.add(varbitActions, BorderLayout.SOUTH);
 		mainTabs.addTab("Varbit reqs", varbitPanel);
+
+		zoneReqsTable = new JTable(zoneRoutingTableModel);
+		styleZoneRoutingTable(zoneReqsTable);
+		zoneReqsTable.setRowHeight(24);
+		zoneReqsTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()));
+		zoneReqsTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
+		zoneReqsTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
+		zoneReqsTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
+		JScrollPane zoneScroll = new JScrollPane(zoneReqsTable);
+		zoneScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		zoneScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
+		JPanel zonePanel = new JPanel(new BorderLayout(0, 6));
+		zonePanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		JPanel zoneCenter = new JPanel(new BorderLayout(0, 4));
+		zoneCenter.setOpaque(false);
+		JTextField zoneSearch = newMakerSearchField("Filter by var name, corner coordinates, or display text.");
+		wireTableSearchField(zoneSearch, zoneReqsTable);
+		zoneCenter.add(zoneSearch, BorderLayout.NORTH);
+		zoneCenter.add(zoneScroll, BorderLayout.CENTER);
+		zonePanel.add(zoneCenter, BorderLayout.CENTER);
+		JButton addZoneSlotButton = new JButton("Add");
+		JButton removeZoneSlotButton = new JButton("Remove");
+		applyMakerToolbarStyle(addZoneSlotButton, removeZoneSlotButton);
+		addZoneSlotButton.addActionListener(e ->
+		{
+			helperConstructManager.addEmptyZoneSlotFromUi();
+			refresh();
+		});
+		addZoneSlotButton.setToolTipText("Append a placeholder generic step, a quest-order row, and default zone corners for the Zone reqs tab.");
+		removeZoneSlotButton.addActionListener(e ->
+		{
+			int r = selectedModelRow(zoneReqsTable);
+			if (r < 0)
+			{
+				return;
+			}
+			String orderSlotId = zoneRoutingTableModel.getOrderSlotIdAt(r);
+			if (orderSlotId != null && helperConstructManager.clearZoneRoutingForOrderSlotId(orderSlotId))
+			{
+				refresh();
+			}
+		});
+		JPanel zoneActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+		zoneActions.setOpaque(false);
+		zoneActions.add(addZoneSlotButton);
+		zoneActions.add(removeZoneSlotButton);
+		zonePanel.add(zoneActions, BorderLayout.SOUTH);
+		mainTabs.addTab("Zone reqs", zonePanel);
 
 		mainTabs.addTab("Quest order", orderedView);
 
@@ -1036,6 +1087,34 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
+	private void styleZoneRoutingTable(JTable table)
+	{
+		table.setFillsViewportHeight(true);
+		table.setShowGrid(false);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()
+		{
+			@Override
+			public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			{
+				Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
+				if (!isSelected)
+				{
+					c.setBackground(ColorScheme.DARK_GRAY_COLOR);
+					c.setForeground(Color.WHITE);
+				}
+				return c;
+			}
+		});
+		if (table.getColumnModel().getColumnCount() >= 4)
+		{
+			table.getColumnModel().getColumn(0).setPreferredWidth(200);
+			table.getColumnModel().getColumn(1).setPreferredWidth(160);
+			table.getColumnModel().getColumn(2).setPreferredWidth(160);
+			table.getColumnModel().getColumn(3).setPreferredWidth(220);
+		}
+	}
+
 	private final class LibraryTableModel extends AbstractTableModel
 	{
 		private final String[] columns = {"Name", "ID"};
@@ -1670,6 +1749,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			helperConstructManager.getRequirementRawIdStrings());
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
 		varbitRoutingTableModel.reloadFromManager();
+		zoneRoutingTableModel.reloadFromManager();
 		syncWorldMapRouteButtonLabel();
 		lastRenderSignature = computeSignature();
 		revalidate();
@@ -1722,6 +1802,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		sb.append("|R|").append(String.join("\n", helperConstructManager.getRequirementDisplayNames()));
 		sb.append("|Rid|").append(String.join("\n", helperConstructManager.getRequirementRawIdStrings()));
 		sb.append("|V|").append(varbitRoutingTableModel.signature());
+		sb.append("|Z|").append(zoneRoutingTableModel.signature());
 		return sb.toString();
 	}
 
@@ -2086,6 +2167,159 @@ public final class HelperConstructEditorPanel extends JPanel
 				this.requiredValue = requiredValue;
 				this.operation = operation;
 				this.displayText = displayText;
+			}
+
+			private String getOrderSlotId()
+			{
+				return orderSlotId;
+			}
+		}
+	}
+
+	private final class ZoneRoutingTableModel extends AbstractTableModel
+	{
+		private final String[] columns = {"Var name", "Corner 1 (x, y, plane)", "Corner 2 (x, y, plane)", "Display text"};
+		private final List<ZoneRoutingRow> rows = new ArrayList<>();
+
+		String getOrderSlotIdAt(int rowIndex)
+		{
+			if (rowIndex < 0 || rowIndex >= rows.size())
+			{
+				return null;
+			}
+			return rows.get(rowIndex).getOrderSlotId();
+		}
+
+		void reloadFromManager()
+		{
+			rows.clear();
+			for (HelperConstructManager.ZoneSlotRow slot : helperConstructManager.getZoneSlotsInQuestOrderForEditor())
+			{
+				rows.add(new ZoneRoutingRow(
+					slot.getOrderSlotId(),
+					slot.getVarName(),
+					slot.getCorner1Text(),
+					slot.getCorner2Text(),
+					slot.getDisplayText()));
+			}
+			fireTableDataChanged();
+		}
+
+		String signature()
+		{
+			List<String> parts = new ArrayList<>();
+			for (ZoneRoutingRow row : rows)
+			{
+				parts.add(row.getOrderSlotId() + "|" + row.varName + "|" + row.corner1 + "|" + row.corner2 + "|" + row.displayText);
+			}
+			return String.join("\n", parts);
+		}
+
+		@Override
+		public int getRowCount()
+		{
+			return rows.size();
+		}
+
+		@Override
+		public int getColumnCount()
+		{
+			return columns.length;
+		}
+
+		@Override
+		public String getColumnName(int column)
+		{
+			return columns[column];
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+		{
+			ZoneRoutingRow row = rows.get(rowIndex);
+			switch (columnIndex)
+			{
+				case 0:
+					return row.varName;
+				case 1:
+					return row.corner1;
+				case 2:
+					return row.corner2;
+				case 3:
+					return row.displayText;
+				default:
+					return "";
+			}
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex)
+		{
+			return columnIndex >= 0;
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+		{
+			if (rowIndex < 0 || rowIndex >= rows.size())
+			{
+				return;
+			}
+			ZoneRoutingRow row = rows.get(rowIndex);
+			if (columnIndex == 0)
+			{
+				if (!helperConstructManager.updateStepVarNameForOrderSlotId(row.getOrderSlotId(), String.valueOf(aValue)))
+				{
+					JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+						"Could not update var name.",
+						"Zone reqs",
+						JOptionPane.WARNING_MESSAGE);
+				}
+				reloadFromManager();
+				return;
+			}
+			String c1 = row.corner1;
+			String c2 = row.corner2;
+			String disp = row.displayText;
+			switch (columnIndex)
+			{
+				case 1:
+					c1 = String.valueOf(aValue);
+					break;
+				case 2:
+					c2 = String.valueOf(aValue);
+					break;
+				case 3:
+					disp = String.valueOf(aValue);
+					break;
+				default:
+					return;
+			}
+			if (!helperConstructManager.updateZoneSlotForOrderSlot(row.getOrderSlotId(), c1, c2, disp))
+			{
+				JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+					"Enter corners as three integers: x, y, plane (e.g. 3200, 3200, 0).",
+					"Zone reqs",
+					JOptionPane.WARNING_MESSAGE);
+			}
+			reloadFromManager();
+		}
+
+		private final class ZoneRoutingRow
+		{
+			private final String orderSlotId;
+			private final String varName;
+			private final String corner1;
+			private final String corner2;
+			private final String displayText;
+
+			private ZoneRoutingRow(String orderSlotId, String varName, String corner1, String corner2, String displayText)
+			{
+				this.orderSlotId = orderSlotId;
+				this.varName = varName == null ? "" : varName;
+				this.corner1 = corner1 == null ? "" : corner1;
+				this.corner2 = corner2 == null ? "" : corner2;
+				this.displayText = displayText == null ? "" : displayText;
 			}
 
 			private String getOrderSlotId()

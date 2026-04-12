@@ -5,10 +5,13 @@ import com.questhelper.managers.GamevalSymbolResolver;
 import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import net.runelite.api.coords.WorldPoint;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
@@ -18,6 +21,7 @@ import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,6 +40,117 @@ class OrderStepRequirementSupportTest
 		assertTrue(OrderStepRequirementSupport.orderStepTreesEqual(root, back));
 		assertEquals("OR", back.getLogic());
 		assertEquals(2, back.getChildren().size());
+	}
+
+	@Test
+	void gsonRoundTripsTreeWithZoneLeaf()
+	{
+		DraftOrderStepRequirement root = DraftOrderStepRequirement.group("AND",
+			DraftOrderStepRequirement.zone(new WorldPoint(10, 20, 0), new WorldPoint(30, 40, 0), "Near bank"),
+			DraftOrderStepRequirement.item(99));
+		Gson gson = new Gson();
+		String json = gson.toJson(root);
+		DraftOrderStepRequirement back = gson.fromJson(json, DraftOrderStepRequirement.class);
+		assertTrue(OrderStepRequirementSupport.orderStepTreesEqual(root, back), json);
+	}
+
+	@Test
+	void validateRejectsInlineZoneNodes()
+	{
+		DraftOrderStepRequirement z = DraftOrderStepRequirement.zone(
+			new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 0), null);
+		assertNotNull(OrderStepRequirementSupport.validateTreeOrError(z));
+	}
+
+	@Test
+	void validateAcceptsOrderZoneLeaf()
+	{
+		assertNull(OrderStepRequirementSupport.validateTreeOrError(DraftOrderStepRequirement.orderZoneSlot()));
+	}
+
+	@Test
+	void emitSelectorJavaEmitsInlineZoneLiteral()
+	{
+		DraftOrderStepRequirement z = DraftOrderStepRequirement.zone(
+			new WorldPoint(10, 20, 0), new WorldPoint(30, 40, 1), "Area");
+		DraftOrderLine line = new DraftOrderLine();
+		DraftStep def = new DraftStep();
+		List<String> warnings = new ArrayList<>();
+		String out = OrderStepRequirementSupport.emitSelectorJava(z, line, def, Map.of(), Map.of(), Map.of(), warnings);
+		assertTrue(out.contains("ZoneRequirement"), out);
+		assertTrue(out.contains("new Zone("), out);
+		assertTrue(out.contains("new WorldPoint(10, 20, 0)"), out);
+		assertTrue(out.contains("new WorldPoint(30, 40, 1)"), out);
+		assertTrue(out.contains("Area"), out);
+	}
+
+	@Test
+	void emitSelectorJavaEmitsOrderZoneFieldReference()
+	{
+		DraftOrderLine line = new DraftOrderLine();
+		line.setOrderSlotId("slot-z");
+		line.setZoneRoutingCorner1(new WorldPoint(1, 2, 0));
+		line.setZoneRoutingCorner2(new WorldPoint(3, 4, 0));
+		DraftOrderStepRequirement z = DraftOrderStepRequirement.orderZoneSlot();
+		List<String> warnings = new ArrayList<>();
+		String out = OrderStepRequirementSupport.emitSelectorJava(
+			z, line, new DraftStep(), Map.of(), Map.of(), Map.of("slot-z", "zoneReqField"), warnings);
+		assertEquals("zoneReqField", out);
+	}
+
+	@Test
+	void draftUsesZoneRequirementScansOrder()
+	{
+		DraftHelper d = new DraftHelper();
+		assertFalse(OrderStepRequirementSupport.draftUsesZoneRequirement(d));
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setStepRequirement(DraftOrderStepRequirement.orderZoneSlot());
+		line.setZoneRoutingCorner1(new WorldPoint(0, 0, 0));
+		line.setZoneRoutingCorner2(new WorldPoint(1, 0, 0));
+		d.getOrder().add(line);
+		assertTrue(OrderStepRequirementSupport.draftUsesZoneRequirement(d));
+	}
+
+	@Test
+	void buildRuntimeSelectorOrderZoneUsesLineRouting()
+	{
+		DraftOrderLine line = new DraftOrderLine();
+		line.setZoneRoutingCorner1(new WorldPoint(5, 5, 0));
+		line.setZoneRoutingCorner2(new WorldPoint(6, 7, 0));
+		line.setZoneRoutingDisplayText("L");
+		DraftOrderStepRequirement z = DraftOrderStepRequirement.orderZoneSlot();
+		Requirement r = OrderStepRequirementSupport.buildRuntimeSelector(z, line, null, Map.of());
+		assertNotNull(r);
+		assertTrue(r instanceof ZoneRequirement);
+	}
+
+	@Test
+	void migrateInlineZoneLeavesWritesRoutingAndRewritesLeaf()
+	{
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setOrderSlotId("slot-z");
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.group("AND",
+			DraftOrderStepRequirement.zone(new WorldPoint(1, 2, 0), new WorldPoint(3, 4, 0), "z"),
+			DraftOrderStepRequirement.item(10));
+		assertNull(OrderStepRequirementSupport.migrateInlineZoneLeavesToOrderRouting(line, tree));
+		assertEquals("ORDER_ZONE", tree.getChildren().get(0).getKind());
+		assertNotNull(line.getZoneRoutingCorner1());
+		assertEquals(1, line.getZoneRoutingCorner1().getX());
+		assertEquals(3, line.getZoneRoutingCorner2().getX());
+	}
+
+	@Test
+	void stripOrderZoneLeavesRemovesSlotLeaf()
+	{
+		DraftOrderStepRequirement root = DraftOrderStepRequirement.group("AND",
+			DraftOrderStepRequirement.orderZoneSlot(),
+			DraftOrderStepRequirement.item(10));
+		DraftOrderStepRequirement out = OrderStepRequirementSupport.stripOrderZoneLeaves(root);
+		assertNotNull(out);
+		assertEquals("ITEM", out.getKind());
+		assertEquals(10, out.getItemRawId().intValue());
 	}
 
 	@Test
@@ -147,6 +262,49 @@ class OrderStepRequirementSupportTest
 		String source = generator.generate(draft).getSource();
 		assertTrue(source.contains("new Conditions(LogicType.AND,"), source);
 		assertTrue(source.contains(".addStep(new Conditions(LogicType.AND,"), source);
+	}
+
+	@Test
+	void scaffoldGeneratorAddsZoneImportsWhenOrderUsesZone()
+	{
+		HelperScaffoldGenerator generator = new HelperScaffoldGenerator(new GamevalSymbolResolver());
+		DraftHelper draft = new DraftHelper();
+		draft.setClassName("ZoneOrderTest");
+		draft.setPackagePath("com.questhelper.helpers.quests.generated");
+
+		DraftRequirement req = new DraftRequirement();
+		req.setRawId(10);
+		req.setDisplayName("A");
+		draft.getRequirements().add(req);
+
+		DraftStep step1 = new DraftStep();
+		step1.setKind(HelperConstructModels.StepKind.OBJECT);
+		step1.setRawId(1);
+		step1.setStepId("st1");
+		step1.setInstructionText("First.");
+		step1.setSuggestedVarName("firstStep");
+		step1.setWorldPoint(new WorldPoint(3200, 3200, 0));
+		draft.getStepDefinitions().add(step1);
+
+		DraftOrderLine line1 = new DraftOrderLine();
+		line1.setSectionDivider(false);
+		line1.setRefStepId("st1");
+		line1.setOrderSlotId("os1");
+		line1.setLinkedRequirementRawId(null);
+		line1.setZoneRoutingCorner1(new WorldPoint(1000, 2000, 0));
+		line1.setZoneRoutingCorner2(new WorldPoint(1005, 2005, 0));
+		line1.setZoneRoutingDisplayText("Cell");
+		line1.setStepRequirement(DraftOrderStepRequirement.group("AND",
+			DraftOrderStepRequirement.invert(DraftOrderStepRequirement.orderVarbitSlot()),
+			DraftOrderStepRequirement.item(10),
+			DraftOrderStepRequirement.orderZoneSlot()));
+		line1.getAttachedRequirements().add(DraftStepAttachedRequirement.varbit(5, 1, "EQUAL", ""));
+		draft.getOrder().add(line1);
+
+		String source = generator.generate(draft).getSource();
+		assertTrue(source.contains("import com.questhelper.requirements.zone.Zone;"), source);
+		assertTrue(source.contains("import com.questhelper.requirements.zone.ZoneRequirement;"), source);
+		assertTrue(source.contains("new ZoneRequirement("), source);
 	}
 
 	@Test

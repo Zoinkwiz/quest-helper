@@ -8,6 +8,8 @@ import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.maker.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.Operation;
 
+import net.runelite.api.coords.WorldPoint;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class HelperScaffoldGenerator
 	public GeneratedScaffold generate(DraftHelper draft)
 	{
 		normalizeVarbitRoutingDraft(draft);
+		OrderStepRequirementSupport.normalizeZoneRoutingOnDraft(draft);
 		List<String> warnings = new ArrayList<>();
 		StringBuilder out = new StringBuilder();
 		String className = sanitizeClassName(draft.getClassName());
@@ -71,6 +74,11 @@ public class HelperScaffoldGenerator
 		out.append("import java.util.ArrayList;\n");
 		out.append("import java.util.List;\n");
 		out.append("import net.runelite.api.coords.WorldPoint;\n");
+		if (OrderStepRequirementSupport.draftUsesZoneRequirement(draft))
+		{
+			out.append("import com.questhelper.requirements.zone.Zone;\n");
+			out.append("import com.questhelper.requirements.zone.ZoneRequirement;\n");
+		}
 		out.append("import net.runelite.api.gameval.ItemID;\n");
 		out.append("import net.runelite.api.gameval.NpcID;\n");
 		out.append("import net.runelite.api.gameval.ObjectID;\n\n");
@@ -105,6 +113,7 @@ public class HelperScaffoldGenerator
 			out.append("\t").append(stepType).append(" ").append(unique).append(";\n");
 		}
 		Map<String, String> varbitFieldByOrderSlotId = new LinkedHashMap<>();
+		Map<String, String> zoneFieldByOrderSlotId = new LinkedHashMap<>();
 		Map<String, String> manualFieldByOrderSlotId = new LinkedHashMap<>();
 		for (DraftOrderLine line : draft.getOrder())
 		{
@@ -132,6 +141,16 @@ public class HelperScaffoldGenerator
 				String fieldName = makeUnique(stepVar + "OrderVarbitReq", usedNames);
 				varbitFieldByOrderSlotId.put(sid, fieldName);
 				out.append("\tVarbitRequirement ").append(fieldName).append(";\n");
+			}
+			if (OrderStepRequirementSupport.treeContainsOrderZoneLeaf(line.getStepRequirement()))
+			{
+				if (stepVar == null)
+				{
+					continue;
+				}
+				String zoneField = makeUnique(stepVar + "OrderZoneReq", usedNames);
+				zoneFieldByOrderSlotId.put(sid, zoneField);
+				out.append("\tZoneRequirement ").append(zoneField).append(";\n");
 			}
 			if (line.getStepRequirement() == null)
 			{
@@ -211,6 +230,7 @@ public class HelperScaffoldGenerator
 			appendDefinitionSetup(out, draft, step, stepVarNames.get(step), requirementVarNamesByRawId, warnings);
 		}
 		appendOrderVarbitRequirementInits(out, draft, varbitFieldByOrderSlotId, warnings);
+		appendOrderZoneRequirementInits(out, draft, zoneFieldByOrderSlotId, warnings);
 		appendOrderManualRequirementInits(out, manualFieldByOrderSlotId);
 		out.append("\t}\n\n");
 
@@ -237,7 +257,7 @@ public class HelperScaffoldGenerator
 					}
 					OrderedSlot slot = group.slots.get(i);
 					String stepVar = stepVarNames.get(slot.definition);
-					String branchExpr = branchRequirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
+					String branchExpr = branchRequirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, zoneFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
 					out.append("\t\t").append(sectionTask).append(".addStep(").append(branchExpr).append(", ").append(stepVar).append(");\n");
 				}
 				out.append("\n");
@@ -250,7 +270,7 @@ public class HelperScaffoldGenerator
 			{
 				SectionGroup group = nonEmptySectionGroups.get(i);
 				String sectionRequirementExpression = group.slots.stream()
-					.map(slot -> sectionNorCompletionExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings))
+					.map(slot -> sectionNorCompletionExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, zoneFieldByOrderSlotId, manualFieldByOrderSlotId, warnings))
 					.collect(Collectors.joining(", "));
 				out.append("\t\tallSections.addStep(nor(").append(sectionRequirementExpression).append("), ")
 					.append(sectionTaskNames.get(group)).append(");\n");
@@ -557,6 +577,7 @@ public class HelperScaffoldGenerator
 		OrderedSlot slot,
 		Map<Integer, String> requirementVarNamesByRawId,
 		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> zoneFieldByOrderSlotId,
 		Map<String, String> manualFieldByOrderSlotId,
 		List<String> warnings)
 	{
@@ -568,6 +589,7 @@ public class HelperScaffoldGenerator
 				slot.definition,
 				requirementVarNamesByRawId,
 				varbitFieldByOrderSlotId,
+				zoneFieldByOrderSlotId,
 				warnings);
 		}
 		return "not(" + requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings) + ")";
@@ -578,6 +600,7 @@ public class HelperScaffoldGenerator
 		OrderedSlot slot,
 		Map<Integer, String> requirementVarNamesByRawId,
 		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> zoneFieldByOrderSlotId,
 		Map<String, String> manualFieldByOrderSlotId,
 		List<String> warnings)
 	{
@@ -589,6 +612,7 @@ public class HelperScaffoldGenerator
 				slot.definition,
 				requirementVarNamesByRawId,
 				varbitFieldByOrderSlotId,
+				zoneFieldByOrderSlotId,
 				warnings);
 			return "not(" + sel + ")";
 		}
@@ -606,6 +630,21 @@ public class HelperScaffoldGenerator
 		{
 			warnings.add("Missing varbit routing field for order slot " + sid);
 			return "new VarbitRequirement(0, Operation.EQUAL, 1, null)";
+		}
+		return field;
+	}
+
+	public static String zoneFieldNameForOrderSlot(
+		DraftOrderLine orderLine,
+		Map<String, String> zoneFieldByOrderSlotId,
+		List<String> warnings)
+	{
+		String sid = orderLine.getOrderSlotId();
+		String field = sid == null ? null : zoneFieldByOrderSlotId.get(sid);
+		if (field == null)
+		{
+			warnings.add("Missing zone routing field for order slot " + sid);
+			return "new ZoneRequirement(\"In zone\", new Zone(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0)))";
 		}
 		return field;
 	}
@@ -702,6 +741,44 @@ public class HelperScaffoldGenerator
 			out.append("\t\t").append(field).append(" = new VarbitRequirement(")
 				.append(varbitId).append(", Operation.").append(op.name()).append(", ")
 				.append(requiredValue).append(", ").append(displayArg).append(");\n");
+		}
+	}
+
+	private void appendOrderZoneRequirementInits(
+		StringBuilder out,
+		DraftHelper draft,
+		Map<String, String> zoneFieldByOrderSlotId,
+		List<String> warnings)
+	{
+		for (DraftOrderLine line : draft.getOrder())
+		{
+			if (line.isSectionDivider())
+			{
+				continue;
+			}
+			if (!OrderStepRequirementSupport.treeContainsOrderZoneLeaf(line.getStepRequirement()))
+			{
+				continue;
+			}
+			String field = zoneFieldByOrderSlotId.get(line.getOrderSlotId());
+			if (field == null)
+			{
+				continue;
+			}
+			WorldPoint c1 = line.getZoneRoutingCorner1();
+			WorldPoint c2 = line.getZoneRoutingCorner2();
+			if (c1 == null || c2 == null)
+			{
+				warnings.add("ORDER_ZONE in tree but zone corners missing on order row " + line.getOrderSlotId());
+				continue;
+			}
+			String disp = line.getZoneRoutingDisplayText();
+			String dispArg = disp == null || disp.isBlank()
+				? "\"In zone\""
+				: "\"" + escape(disp) + "\"";
+			out.append("\t\t").append(field).append(" = new ZoneRequirement(").append(dispArg).append(", new Zone(")
+				.append("new WorldPoint(").append(c1.getX()).append(", ").append(c1.getY()).append(", ").append(c1.getPlane()).append("), ")
+				.append("new WorldPoint(").append(c2.getX()).append(", ").append(c2.getY()).append(", ").append(c2.getPlane()).append(")));\n");
 		}
 	}
 

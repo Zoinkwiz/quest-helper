@@ -1669,6 +1669,38 @@ public class HelperConstructManager
 	}
 
 	/**
+	 * Appends a new empty generic step, a quest-order row, and placeholder zone corners on that order row
+	 * so the Zone reqs tab can edit them immediately.
+	 */
+	public void addEmptyZoneSlotFromUi()
+	{
+		ensureDraftLoaded();
+		addEmptyStepFromUi(ConstructStepKind.TEXT);
+		List<DraftStep> defs = currentDraft.getStepDefinitions();
+		DraftStep placeholder = defs.get(defs.size() - 1);
+		placeholder.setSuggestedVarName(HelperScaffoldGenerator.toVarName("zone", "step"));
+		addOrderRef(placeholder.getStepId());
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		if (order.isEmpty())
+		{
+			return;
+		}
+		DraftOrderLine added = order.get(order.size() - 1);
+		if (added.isSectionDivider())
+		{
+			return;
+		}
+		ensureOrderSlotId(added);
+		if (added.getZoneRoutingCorner1() == null || added.getZoneRoutingCorner2() == null)
+		{
+			added.setZoneRoutingCorner1(new WorldPoint(0, 0, 0));
+			added.setZoneRoutingCorner2(new WorldPoint(1, 1, 0));
+			added.setZoneRoutingDisplayText(null);
+		}
+		saveDraftToConfig();
+	}
+
+	/**
 	 * @return {@code null} on success, otherwise a short error message for the UI.
 	 */
 	public String applyOrderStepRequirementJson(int orderIndex, String json)
@@ -1848,6 +1880,23 @@ public class HelperConstructManager
 		}
 	}
 
+	private void reconcileOrderSlotZoneRouting()
+	{
+		for (DraftOrderLine line : currentDraft.getOrder())
+		{
+			if (line == null || line.isSectionDivider())
+			{
+				continue;
+			}
+			if (!OrderStepRequirementSupport.orderLineUsesZoneRoutingForEditor(line))
+			{
+				line.setZoneRoutingCorner1(null);
+				line.setZoneRoutingCorner2(null);
+				line.setZoneRoutingDisplayText(null);
+			}
+		}
+	}
+
 	/** True when the Varbit tab should keep routing data: conditions reference the slot or the row already has a tab attachment. */
 	private static boolean orderLineUsesVarbitRouting(DraftOrderLine line)
 	{
@@ -1875,6 +1924,7 @@ public class HelperConstructManager
 	{
 		ensureDraftLoaded();
 		reconcileOrderSlotRoutingAttachments();
+		reconcileOrderSlotZoneRouting();
 		List<VarbitSlotRow> out = new ArrayList<>();
 		List<DraftOrderLine> order = currentDraft.getOrder();
 		for (int ord = 0; ord < order.size(); ord++)
@@ -2042,6 +2092,167 @@ public class HelperConstructManager
 		public String getOperation()
 		{
 			return operation;
+		}
+
+		public String getDisplayText()
+		{
+			return displayText;
+		}
+	}
+
+	public List<ZoneSlotRow> getZoneSlotsInQuestOrderForEditor()
+	{
+		ensureDraftLoaded();
+		reconcileOrderSlotRoutingAttachments();
+		reconcileOrderSlotZoneRouting();
+		List<ZoneSlotRow> out = new ArrayList<>();
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		for (DraftOrderLine line : order)
+		{
+			if (line.isSectionDivider())
+			{
+				continue;
+			}
+			if (!OrderStepRequirementSupport.orderLineUsesZoneRoutingForEditor(line))
+			{
+				continue;
+			}
+			ensureOrderSlotId(line);
+			DraftStep def = findDefinitionByStepId(line.getRefStepId());
+			String varName = def == null
+				? "?"
+				: (def.getSuggestedVarName() == null || def.getSuggestedVarName().isBlank() ? "?" : def.getSuggestedVarName());
+			WorldPoint c1 = line.getZoneRoutingCorner1();
+			WorldPoint c2 = line.getZoneRoutingCorner2();
+			if (c1 == null || c2 == null)
+			{
+				continue;
+			}
+			out.add(new ZoneSlotRow(
+				line.getOrderSlotId(),
+				varName,
+				formatWorldPointForField(c1),
+				formatWorldPointForField(c2),
+				line.getZoneRoutingDisplayText() == null ? "" : line.getZoneRoutingDisplayText()));
+		}
+		return Collections.unmodifiableList(out);
+	}
+
+	private boolean applyZoneRoutingToOrderLine(
+		DraftOrderLine line,
+		WorldPoint corner1,
+		WorldPoint corner2,
+		String displayText,
+		boolean requireResolvedStepDefinition)
+	{
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		if (requireResolvedStepDefinition && findDefinitionByStepId(line.getRefStepId()) == null)
+		{
+			return false;
+		}
+		if (corner1 == null || corner2 == null)
+		{
+			return false;
+		}
+		ensureOrderSlotId(line);
+		line.setZoneRoutingCorner1(corner1);
+		line.setZoneRoutingCorner2(corner2);
+		line.setZoneRoutingDisplayText(displayText == null || displayText.isBlank() ? null : displayText.trim());
+		return true;
+	}
+
+	public boolean updateZoneSlotForOrderSlot(String orderSlotId, String corner1Text, String corner2Text, String displayText)
+	{
+		ensureDraftLoaded();
+		if (orderSlotId == null || orderSlotId.isBlank())
+		{
+			return false;
+		}
+		DraftOrderLine line = findOrderLineByOrderSlotId(orderSlotId);
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		WorldPoint c1 = parseWorldPointField(corner1Text);
+		WorldPoint c2 = parseWorldPointField(corner2Text);
+		if (c1 == null || c2 == null)
+		{
+			return false;
+		}
+		if (!applyZoneRoutingToOrderLine(line, c1, c2, displayText, true))
+		{
+			return false;
+		}
+		saveDraftToConfig();
+		return true;
+	}
+
+	/**
+	 * Applies zone routing to the quest-order row at {@code orderIndex}. Used from the conditions editor; when
+	 * {@code persist} is false the caller saves afterward (e.g. with {@link #applyOrderStepRequirementTree}).
+	 */
+	public boolean applyZoneRoutingToOrderLineByIndex(
+		int orderIndex,
+		WorldPoint corner1,
+		WorldPoint corner2,
+		String displayText,
+		boolean persist)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return false;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (!applyZoneRoutingToOrderLine(line, corner1, corner2, displayText, false))
+		{
+			return false;
+		}
+		if (persist)
+		{
+			saveDraftToConfig();
+		}
+		return true;
+	}
+
+	public static final class ZoneSlotRow
+	{
+		private final String orderSlotId;
+		private final String varName;
+		private final String corner1Text;
+		private final String corner2Text;
+		private final String displayText;
+
+		public ZoneSlotRow(String orderSlotId, String varName, String corner1Text, String corner2Text, String displayText)
+		{
+			this.orderSlotId = orderSlotId;
+			this.varName = varName == null ? "" : varName;
+			this.corner1Text = corner1Text == null ? "" : corner1Text;
+			this.corner2Text = corner2Text == null ? "" : corner2Text;
+			this.displayText = displayText == null ? "" : displayText;
+		}
+
+		public String getOrderSlotId()
+		{
+			return orderSlotId;
+		}
+
+		public String getVarName()
+		{
+			return varName;
+		}
+
+		public String getCorner1Text()
+		{
+			return corner1Text;
+		}
+
+		public String getCorner2Text()
+		{
+			return corner2Text;
 		}
 
 		public String getDisplayText()
@@ -2281,6 +2492,69 @@ public class HelperConstructManager
 			return disp + " — vb " + spec.getVarbitId() + " " + spec.getOperation() + " " + spec.getRequiredValue();
 		}
 		return "Varbit " + spec.getVarbitId() + " " + spec.getOperation() + " " + spec.getRequiredValue();
+	}
+
+	/**
+	 * Clears zone routing for this quest-order slot, removes {@code ORDER_ZONE} nodes from that row's conditions tree.
+	 * Does not remove the order row or any step definition.
+	 */
+	public boolean clearZoneRoutingForOrderSlotId(String orderSlotId)
+	{
+		ensureDraftLoaded();
+		if (orderSlotId == null || orderSlotId.isBlank())
+		{
+			return false;
+		}
+		DraftOrderLine line = findOrderLineByOrderSlotId(orderSlotId);
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		line.setZoneRoutingCorner1(null);
+		line.setZoneRoutingCorner2(null);
+		line.setZoneRoutingDisplayText(null);
+		DraftOrderStepRequirement tree = line.getStepRequirement();
+		if (tree != null)
+		{
+			DraftOrderStepRequirement pruned = OrderStepRequirementSupport.stripOrderZoneLeaves(tree);
+			line.setStepRequirement(pruned);
+			OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
+		}
+		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
+		return true;
+	}
+
+	/** Short label for {@code ORDER_ZONE} leaves in the order-conditions editor (from this row's Zone reqs tab). */
+	public String formatOrderZoneLeafSummaryForEditor(int orderIndex)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return "Zone";
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return "Zone";
+		}
+		WorldPoint c1 = line.getZoneRoutingCorner1();
+		WorldPoint c2 = line.getZoneRoutingCorner2();
+		if (c1 == null || c2 == null)
+		{
+			return "Zone (set corners on Zone reqs tab)";
+		}
+		String disp = line.getZoneRoutingDisplayText();
+		String pts = "(" + c1.getX() + "," + c1.getY() + "," + c1.getPlane() + ")–("
+			+ c2.getX() + "," + c2.getY() + "," + c2.getPlane() + ")";
+		if (disp != null && !disp.isBlank())
+		{
+			return disp + " — " + pts;
+		}
+		return "Zone " + pts;
 	}
 
 	public boolean moveStep(int fromIndex, int toIndex)

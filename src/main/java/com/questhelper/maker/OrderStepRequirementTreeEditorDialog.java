@@ -5,6 +5,7 @@ import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import com.questhelper.maker.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ import java.util.Locale;
 /**
  * Visual editor for {@link DraftOrderStepRequirement} on a quest-order row: logic groups (AND/OR/NOR/NAND),
  * order varbit leaves ({@code Add varbit} reuses another slot’s routing; {@code Create new varbit} defines routing for
- * this row), captured items, and NOT (invert). Varbit values are edited on the Varbit reqs tab.
+ * this row), captured items, order zone slots (corners on the Zone reqs tab), and NOT (invert). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab.
  */
 public final class OrderStepRequirementTreeEditorDialog extends JDialog
 {
@@ -48,6 +49,11 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	private int pendingVarbitRequiredValue;
 	private String pendingVarbitOperation;
 	private String pendingVarbitDisplayText;
+
+	private boolean pendingZoneRouting;
+	private WorldPoint pendingZoneC1;
+	private WorldPoint pendingZoneC2;
+	private String pendingZoneDisplayText;
 
 	private final DefaultMutableTreeNode visualRoot = new DefaultMutableTreeNode(RootMarker.INSTANCE);
 	private final DefaultTreeModel treeModel;
@@ -92,6 +98,8 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		reqMenu.add(newAddVarbitFromExistingItem());
 		reqMenu.add(newCreateVarbitItem());
 		reqMenu.add(newCapturedItemItem());
+		reqMenu.add(newAddZoneFromExistingItem());
+		reqMenu.add(newCreateZoneItem());
 		reqMenu.add(newInvertItem());
 		addReq.addActionListener(e -> reqMenu.show(addReq, 0, addReq.getHeight()));
 
@@ -167,6 +175,20 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	{
 		JMenuItem it = new JMenuItem("Captured item…");
 		it.addActionListener(e -> addCapturedItemInteractive());
+		return it;
+	}
+
+	private JMenuItem newAddZoneFromExistingItem()
+	{
+		JMenuItem it = new JMenuItem("Add zone (slot)");
+		it.addActionListener(e -> addZoneFromExistingInteractive(false));
+		return it;
+	}
+
+	private JMenuItem newCreateZoneItem()
+	{
+		JMenuItem it = new JMenuItem("Create new zone…");
+		it.addActionListener(e -> addZoneCreateNewInteractive(false));
 		return it;
 	}
 
@@ -394,6 +416,10 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	private void clearPendingVarbitRouting()
 	{
 		pendingVarbitRouting = false;
+		pendingZoneRouting = false;
+		pendingZoneC1 = null;
+		pendingZoneC2 = null;
+		pendingZoneDisplayText = null;
 	}
 
 	private void stashPendingVarbitRouting(int varbitId, int requiredValue, String operationName, String displayText)
@@ -403,6 +429,108 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		pendingVarbitRequiredValue = requiredValue;
 		pendingVarbitOperation = operationName == null || operationName.isBlank() ? "EQUAL" : operationName.trim();
 		pendingVarbitDisplayText = displayText == null ? "" : displayText;
+	}
+
+	private void stashPendingZoneRouting(WorldPoint c1, WorldPoint c2, String displayText)
+	{
+		pendingZoneRouting = true;
+		pendingZoneC1 = c1;
+		pendingZoneC2 = c2;
+		pendingZoneDisplayText = displayText == null || displayText.isBlank() ? null : displayText.trim();
+	}
+
+	private void addZoneFromExistingInteractive(boolean forInvert)
+	{
+		List<HelperConstructManager.ZoneSlotRow> rows = manager.getZoneSlotsInQuestOrderForEditor();
+		if (rows.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				"No zone rows yet. Use \"Create new zone…\" or add rows on the Zone reqs tab first.",
+				"Add zone",
+				JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		JComboBox<String> combo = new JComboBox<>();
+		for (HelperConstructManager.ZoneSlotRow row : rows)
+		{
+			combo.addItem(formatZoneSlotChoiceLabel(row));
+		}
+		int r = JOptionPane.showConfirmDialog(this, combo, "Pick zone row", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+		int idx = combo.getSelectedIndex();
+		if (idx < 0)
+		{
+			return;
+		}
+		HelperConstructManager.ZoneSlotRow pick = rows.get(idx);
+		WorldPoint c1 = parseCsvWorldPointOrNull(pick.getCorner1Text());
+		WorldPoint c2 = parseCsvWorldPointOrNull(pick.getCorner2Text());
+		if (c1 == null || c2 == null)
+		{
+			JOptionPane.showMessageDialog(this, "Could not read zone corners from the selected row.", "Add zone", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		stashPendingZoneRouting(c1, c2, pick.getDisplayText());
+		if (forInvert)
+		{
+			addInvertWithInner(DraftOrderStepRequirement.orderZoneSlot());
+		}
+		else
+		{
+			addLeaf(DraftOrderStepRequirement.orderZoneSlot());
+		}
+	}
+
+	private static WorldPoint parseCsvWorldPointOrNull(String text)
+	{
+		if (text == null)
+		{
+			return null;
+		}
+		String[] parts = text.trim().split(",");
+		if (parts.length != 3)
+		{
+			return null;
+		}
+		try
+		{
+			int x = Integer.parseInt(parts[0].trim());
+			int y = Integer.parseInt(parts[1].trim());
+			int p = Integer.parseInt(parts[2].trim());
+			return new WorldPoint(x, y, p);
+		}
+		catch (NumberFormatException ex)
+		{
+			return null;
+		}
+	}
+
+	private static String formatZoneSlotChoiceLabel(HelperConstructManager.ZoneSlotRow row)
+	{
+		String disp = row.getDisplayText();
+		String base = row.getVarName() + " — " + row.getCorner1Text() + " / " + row.getCorner2Text();
+		return disp != null && !disp.isBlank() ? disp + " — " + base : base;
+	}
+
+	private void addZoneCreateNewInteractive(boolean forInvert)
+	{
+		ZonePick pick = showZoneFormOrNull(null, null, null);
+		if (pick == null)
+		{
+			return;
+		}
+		stashPendingZoneRouting(pick.corner1, pick.corner2, pick.displayText);
+		if (forInvert)
+		{
+			addInvertWithInner(DraftOrderStepRequirement.orderZoneSlot());
+		}
+		else
+		{
+			addLeaf(DraftOrderStepRequirement.orderZoneSlot());
+		}
 	}
 
 	private void addVarbitFromExistingInteractive(boolean forInvert)
@@ -496,9 +624,64 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		return new VarbitRoutingPick(vid, vval, opName, disp.getText());
 	}
 
+	/**
+	 * Two opposite corners of an axis-aligned rectangle (same as {@link com.questhelper.requirements.zone.Zone}).
+	 */
+	private ZonePick showZoneFormOrNull(WorldPoint corner1Existing, WorldPoint corner2Existing, String displayExisting)
+	{
+		int x1 = corner1Existing != null ? corner1Existing.getX() : 0;
+		int y1 = corner1Existing != null ? corner1Existing.getY() : 0;
+		int p1 = corner1Existing != null ? corner1Existing.getPlane() : 0;
+		int x2 = corner2Existing != null ? corner2Existing.getX() : 1;
+		int y2 = corner2Existing != null ? corner2Existing.getY() : 1;
+		int p2 = corner2Existing != null ? corner2Existing.getPlane() : 0;
+		JSpinner c1x = new JSpinner(new SpinnerNumberModel(x1, -60000, 60000, 1));
+		JSpinner c1y = new JSpinner(new SpinnerNumberModel(y1, -60000, 60000, 1));
+		JSpinner c1p = new JSpinner(new SpinnerNumberModel(p1, -3, 3, 1));
+		JSpinner c2x = new JSpinner(new SpinnerNumberModel(x2, -60000, 60000, 1));
+		JSpinner c2y = new JSpinner(new SpinnerNumberModel(y2, -60000, 60000, 1));
+		JSpinner c2p = new JSpinner(new SpinnerNumberModel(p2, -3, 3, 1));
+		JTextField disp = new JTextField(displayExisting == null ? "" : displayExisting, 24);
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(new JLabel("Corner 1 — world X, Y, plane:"));
+		p.add(cornerSpinnersRow(c1x, c1y, c1p));
+		p.add(new JLabel("Corner 2 — world X, Y, plane:"));
+		p.add(cornerSpinnersRow(c2x, c2y, c2p));
+		p.add(labeled("Display text (optional)", disp));
+		int r = JOptionPane.showConfirmDialog(this, p, "Zone (rectangle from two corners)",
+			JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return null;
+		}
+		WorldPoint wp1 = new WorldPoint(
+			((Number) c1x.getValue()).intValue(),
+			((Number) c1y.getValue()).intValue(),
+			((Number) c1p.getValue()).intValue());
+		WorldPoint wp2 = new WorldPoint(
+			((Number) c2x.getValue()).intValue(),
+			((Number) c2y.getValue()).intValue(),
+			((Number) c2p.getValue()).intValue());
+		String dt = disp.getText().trim();
+		return new ZonePick(wp1, wp2, dt.isEmpty() ? null : dt);
+	}
+
+	private static JPanel cornerSpinnersRow(JSpinner x, JSpinner y, JSpinner plane)
+	{
+		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 2));
+		row.add(new JLabel("X"));
+		row.add(x);
+		row.add(new JLabel("Y"));
+		row.add(y);
+		row.add(new JLabel("Plane"));
+		row.add(plane);
+		return row;
+	}
+
 	private void addInvertInteractive()
 	{
-		String[] options = { "Add varbit", "Create new varbit", "Item…" };
+		String[] options = { "Add varbit", "Create new varbit", "Item…", "Zone…" };
 		int c = JOptionPane.showOptionDialog(this,
 			"Choose the inner requirement for NOT:",
 			"NOT (invert)",
@@ -519,6 +702,27 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		if (c == 1)
 		{
 			addVarbitCreateNewInteractive(true);
+			return;
+		}
+		if (c == 3)
+		{
+			String[] zopts = { "From existing zone row", "New zone…" };
+			int z = JOptionPane.showOptionDialog(this,
+				"Choose how to add NOT(zone):",
+				"Zone",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				zopts,
+				zopts[0]);
+			if (z == 0)
+			{
+				addZoneFromExistingInteractive(true);
+			}
+			else if (z == 1)
+			{
+				addZoneCreateNewInteractive(true);
+			}
 			return;
 		}
 		List<HelperConstructManager.RequirementRoutingChoice> choices = manager.getRequirementRoutingChoices();
@@ -656,6 +860,18 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 					"Order varbit",
 					JOptionPane.INFORMATION_MESSAGE);
 				break;
+			case "ORDER_ZONE":
+				JOptionPane.showMessageDialog(this,
+					"Zone corners and display text are edited on the Zone reqs tab for this quest-order row.",
+					"Order zone",
+					JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case "ZONE":
+				JOptionPane.showMessageDialog(this,
+					"Inline ZONE nodes are migrated when you save. Use the Zone reqs tab and \"Order zone (slot)\" in conditions.",
+					"Zone",
+					JOptionPane.INFORMATION_MESSAGE);
+				break;
 			default:
 				JOptionPane.showMessageDialog(this, "Nothing to edit for this node type.", "Edit", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -747,6 +963,22 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				return;
 			}
 		}
+		if (rootDto != null && pendingZoneRouting && OrderStepRequirementSupport.treeContainsOrderZoneLeaf(rootDto))
+		{
+			if (!manager.applyZoneRoutingToOrderLineByIndex(
+				orderIndex,
+				pendingZoneC1,
+				pendingZoneC2,
+				pendingZoneDisplayText,
+				false))
+			{
+				JOptionPane.showMessageDialog(this,
+					"Could not apply zone routing to this order row.",
+					"Could not save",
+					JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
 		String err = manager.applyOrderStepRequirementTree(orderIndex, rootDto);
 		if (err != null)
 		{
@@ -755,6 +987,20 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 		accepted = true;
 		dispose();
+	}
+
+	private static final class ZonePick
+	{
+		final WorldPoint corner1;
+		final WorldPoint corner2;
+		final String displayText;
+
+		ZonePick(WorldPoint corner1, WorldPoint corner2, String displayText)
+		{
+			this.corner1 = corner1;
+			this.corner2 = corner2;
+			this.displayText = displayText;
+		}
 	}
 
 	private static final class VarbitRoutingPick
@@ -786,6 +1032,21 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		return "Varbit " + pendingVarbitId + " " + op + " " + pendingVarbitRequiredValue;
 	}
 
+	private String formatPendingZoneSummary()
+	{
+		if (pendingZoneC1 == null || pendingZoneC2 == null)
+		{
+			return "Zone (pending)";
+		}
+		String pts = "(" + pendingZoneC1.getX() + "," + pendingZoneC1.getY() + "," + pendingZoneC1.getPlane() + ")–("
+			+ pendingZoneC2.getX() + "," + pendingZoneC2.getY() + "," + pendingZoneC2.getPlane() + ")";
+		if (pendingZoneDisplayText != null && !pendingZoneDisplayText.isBlank())
+		{
+			return pendingZoneDisplayText + " — " + pts;
+		}
+		return "Zone " + pts;
+	}
+
 	private String describeNode(DraftOrderStepRequirement d)
 	{
 		if (d == null || d.getKind() == null)
@@ -808,9 +1069,17 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 					return formatPendingVarbitSummary();
 				}
 				return manager.formatOrderVarbitLeafSummaryForEditor(orderIndex);
+			case "ORDER_ZONE":
+				if (pendingZoneRouting)
+				{
+					return formatPendingZoneSummary();
+				}
+				return manager.formatOrderZoneLeafSummaryForEditor(orderIndex);
 			case "VARBIT":
 			case "INLINE_VARBIT":
 				return "Varbit " + d.getVarbitId() + " " + (d.getVarbitOperation() == null ? "" : d.getVarbitOperation()) + " " + d.getVarbitRequiredValue();
+			case "ZONE":
+				return "Zone (inline — save to migrate to tab)";
 			default:
 				return d.getKind();
 		}

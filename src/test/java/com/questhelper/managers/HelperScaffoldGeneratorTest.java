@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
 import static com.questhelper.managers.ConstructDraftTestUtil.addSectionDivider;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HelperScaffoldGeneratorTest
@@ -75,10 +76,11 @@ class HelperScaffoldGeneratorTest
 		assertTrue(source.contains("extends ComplexStateQuestHelper"));
 		assertTrue(source.contains("public QuestStep loadStep()"));
 		assertTrue(source.contains("section1Task = new ConditionalStep(this, firstStep2);"));
-		assertTrue(source.contains("section1Task.addStep(not(firstStepVarbitReq), firstStep);"));
+		assertTrue(source.contains("ManualRequirement"));
+		assertTrue(source.matches("(?s).*section1Task\\.addStep\\(not\\(orderManual_[a-zA-Z0-9_]+\\), firstStep\\);.*"));
 		assertTrue(source.contains("ConditionalStep allSections = new ConditionalStep(this, section1Task);"));
 		assertTrue(source.contains("return allSections;"));
-		assertTrue(source.contains("new VarbitRequirement(0, Operation.EQUAL, 1, null)"));
+		assertFalse(source.contains("firstStepVarbitReq"));
 	}
 
 	@Test
@@ -122,7 +124,7 @@ class HelperScaffoldGeneratorTest
 		assertTrue(source.contains("useBones = new DetailedQuestStep(this, \"Use Bones.\");"));
 		assertTrue(source.contains("useBones.addRequirement(bones.highlighted());"));
 		assertTrue(source.contains("section1Task.addStep(not(bones), useBones);"));
-		assertTrue(source.contains("section1Task.addStep(not(firstStepVarbitReq), firstStep);"));
+		assertTrue(source.matches("(?s).*section1Task\\.addStep\\(not\\(orderManual_[a-zA-Z0-9_]+\\), firstStep\\);.*"));
 		assertTrue(!source.contains("useBonesVarbitReq"));
 		assertTrue(source.contains("public List<PanelDetails> getPanels()"));
 		assertTrue(source.contains("PanelDetails section1Steps = new PanelDetails("));
@@ -216,7 +218,8 @@ class HelperScaffoldGeneratorTest
 		int idx = source.indexOf("NpcStep ");
 		assertTrue(idx >= 0);
 		assertTrue(source.indexOf("NpcStep ", idx + 1) < 0, "expected single NpcStep field");
-		assertTrue(source.contains("section1Task.addStep(not(talkGuardVarbitReq), talkGuard);"));
+		assertTrue(source.matches("(?s).*section1Task\\.addStep\\(not\\(orderManual_[a-zA-Z0-9_]+\\), talkGuard\\);.*"));
+		assertFalse(source.contains("talkGuardVarbitReq"));
 		assertTrue(source.contains("List.of(talkGuard, talkGuard)"));
 	}
 }

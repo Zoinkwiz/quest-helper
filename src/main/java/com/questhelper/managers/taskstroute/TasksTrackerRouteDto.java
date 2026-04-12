@@ -1,6 +1,7 @@
 package com.questhelper.managers.taskstroute;
 
 import com.google.gson.annotations.SerializedName;
+import com.questhelper.managers.ConstructDraftPersistence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * Gson DTOs for Tasks Tracker "Import Route from Clipboard" JSON
  * (<a href="https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin">wiki</a>).
  * Optional {@link RouteItemDto#interact} is a Quest Helper extension for NPC/object ids.
+ * Optional {@link #questHelperMaker} holds the full Quest Helper maker draft snapshot (same JSON shape as legacy root draft).
  */
 @SuppressWarnings("unused")
 public final class TasksTrackerRouteDto
@@ -20,6 +22,8 @@ public final class TasksTrackerRouteDto
 	private String description;
 	private List<Object> completed;
 	private List<RouteSectionDto> sections = new ArrayList<>();
+	@SerializedName("questHelperMaker")
+	private ConstructDraftPersistence.DraftState questHelperMaker;
 
 	public String getId()
 	{
@@ -89,6 +93,16 @@ public final class TasksTrackerRouteDto
 	public void setSections(List<RouteSectionDto> sections)
 	{
 		this.sections = sections != null ? sections : new ArrayList<>();
+	}
+
+	public ConstructDraftPersistence.DraftState getQuestHelperMaker()
+	{
+		return questHelperMaker;
+	}
+
+	public void setQuestHelperMaker(ConstructDraftPersistence.DraftState questHelperMaker)
+	{
+		this.questHelperMaker = questHelperMaker;
 	}
 
 	public static final class RouteSectionDto

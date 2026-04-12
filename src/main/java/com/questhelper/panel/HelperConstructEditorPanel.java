@@ -41,11 +41,11 @@ public final class HelperConstructEditorPanel extends JPanel
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
 		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
-		"4. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Search filters by var name, requirement label, section text, or instruction. Add Step dialog has a search field for the definition list.",
-		"5. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit-only routing — edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove at the bottom right deletes the selected row. Choosing a concrete item override on that order row removes the varbit row. Search filters varbit rows.",
+		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Click Conditions in a row to edit branch requirements (logic groups AND/OR/NOR/NAND, order varbit, items, inline varbits, NOT). Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
+		"5. Varbit reqs tab: one row per quest-order slot whose Conditions tree includes an order varbit — values are stored on that order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove at the bottom right deletes the selected row. Search filters varbit rows.",
 		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
-		"7. JSON export/import matches the maker draft file format. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / manual Save JSON).",
-		"8. Export Tasks route copies JSON for the Tasks Tracker plugin (Import Route from Clipboard); Import Tasks route replaces the draft from pasted route JSON (taskId = struct id, plus notes and locations on the route).");
+		"7. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON).",
+		"8. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Legacy root-only draft JSON (no `sections` key) still imports.");
 
 	private final HelperConstructManager helperConstructManager;
 	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(ConstructStepKind.NPC);
@@ -96,23 +96,19 @@ public final class HelperConstructEditorPanel extends JPanel
 		JButton previewButton = new JButton("Preview");
 		JButton mapButton = new JButton("Route map");
 		worldMapRouteButton = new JButton("WorldMap");
-		JButton exportJsonButton = new JButton("Export JSON");
+		JButton exportJsonButton = new JButton("Export route JSON");
 		JButton saveJsonButton = new JButton("Save JSON…");
-		JButton importJsonButton = new JButton("Import JSON…");
-		JButton exportTasksRouteButton = new JButton("Export Tasks route");
-		JButton importTasksRouteButton = new JButton("Import Tasks route…");
+		JButton importJsonButton = new JButton("Import route JSON…");
 		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton,
-			exportJsonButton, saveJsonButton, importJsonButton, exportTasksRouteButton, importTasksRouteButton);
+			exportJsonButton, saveJsonButton, importJsonButton);
 		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
 		resetButton.setToolTipText("Clear the draft and reset the auto-saved maker file (asks for confirmation).");
 		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
 		mapButton.setToolTipText("Save a PNG of step world positions connected as a route (needs 2+ points with coordinates).");
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
-		exportJsonButton.setToolTipText("Copy the whole draft as pretty-printed JSON (same shape as the auto-saved draft file).");
-		saveJsonButton.setToolTipText("Write the draft JSON to a file.");
-		importJsonButton.setToolTipText("Replace the current draft from pasted JSON or a file (writes the auto-saved draft file when successful).");
-		exportTasksRouteButton.setToolTipText("<html>Copy Tasks Tracker route JSON to the clipboard.<br>Schema: <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">How to Export Routes to Plugin</a>.<br>Paste in the plugin: route selector … → Import Route from Clipboard.</html>");
-		importTasksRouteButton.setToolTipText("<html>Replace the draft from Tasks Tracker route JSON (<code>taskId</code> = struct id, <code>note</code>, <code>location</code>, optional <code>interact</code>).<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a>. If both <code>npc</code> and <code>object</code> ids are set in <code>interact</code>, import uses the first NPC id only.<br>Section <code>description</code> is not stored on section dividers.</html>");
+		exportJsonButton.setToolTipText("<html>Copy extended Tasks Tracker route JSON (pretty-printed): <code>sections</code>/<code>items</code> for the plugin wiki plus <code>questHelperMaker</code> with the full maker state.<br><a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">Tasks Tracker: Import Route from Clipboard</a>. Re-exporting from the plugin may drop <code>questHelperMaker</code>; keep a Quest Helper copy.</html>");
+		saveJsonButton.setToolTipText("Write the same extended route JSON document to a file.");
+		importJsonButton.setToolTipText("<html>Replace the draft from pasted JSON or a file: extended route with <code>questHelperMaker</code>, route-only (no maker blob), or legacy root draft JSON.<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a> for route fields.</html>");
 		syncWorldMapRouteButtonLabel();
 
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
@@ -140,8 +136,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		exportJsonButton.addActionListener(e -> exportDraftJsonToClipboard());
 		saveJsonButton.addActionListener(e -> saveDraftJsonToFile());
 		importJsonButton.addActionListener(e -> showImportDraftJsonDialog());
-		exportTasksRouteButton.addActionListener(e -> exportTasksTrackerRouteToClipboard());
-		importTasksRouteButton.addActionListener(e -> showImportTasksTrackerRouteDialog());
 
 		List<JComponent> makerToolbarChain = new ArrayList<>();
 		makerToolbarChain.add(buildButton);
@@ -154,9 +148,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		makerToolbarChain.add(exportJsonButton);
 		makerToolbarChain.add(saveJsonButton);
 		makerToolbarChain.add(importJsonButton);
-		makerToolbarChain.add(newToolbarSeparator());
-		makerToolbarChain.add(exportTasksRouteButton);
-		makerToolbarChain.add(importTasksRouteButton);
 		makerToolbarRow = new OverflowingMakerToolbar(makerToolbarChain, this::applyMakerToolbarStyle);
 		makerToolbarRow.setOpaque(false);
 		header.add(makerToolbarRow, BorderLayout.SOUTH);
@@ -211,7 +202,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			helperConstructManager.addEmptyVarbitSlotFromUi();
 			refresh();
 		});
-		addVarbitSlotButton.setToolTipText("Append a placeholder generic step, a quest-order row with default varbit routing, and a new varbit (0 / 0) named for routing.");
+		addVarbitSlotButton.setToolTipText("Append a placeholder generic step, a quest-order row, and a routing varbit (0 / 0) stored on that order row for the Varbit tab.");
 		removeVarbitSlotButton.addActionListener(e ->
 		{
 			int r = selectedModelRow(varbitReqsTable);
@@ -219,8 +210,8 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				return;
 			}
-			String lineId = varbitRoutingTableModel.getOrderLineIdAt(r);
-			if (lineId != null && helperConstructManager.removeOrderLineByLineId(lineId))
+			String orderSlotId = varbitRoutingTableModel.getOrderSlotIdAt(r);
+			if (orderSlotId != null && helperConstructManager.removeOrderLineByOrderSlotId(orderSlotId))
 			{
 				refresh();
 			}
@@ -266,8 +257,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		String json = helperConstructManager.exportDraftJson();
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(json), null);
 		JOptionPane.showMessageDialog(this,
-			"Draft JSON copied to clipboard (pretty-printed).",
-			"Export JSON",
+			"Extended route JSON copied to clipboard (pretty-printed).\nIncludes questHelperMaker for full round-trip in Quest Helper.",
+			"Export route JSON",
 			JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -296,83 +287,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
-	private void exportTasksTrackerRouteToClipboard()
-	{
-		String json = helperConstructManager.exportTasksTrackerRouteJson();
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(json), null);
-		JOptionPane.showMessageDialog(this,
-			"Tasks Tracker route JSON copied to clipboard.\nIn the plugin: route selector … → Import Route from Clipboard.",
-			"Export Tasks route",
-			JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	private void showImportTasksTrackerRouteDialog()
-	{
-		int confirm = JOptionPane.showConfirmDialog(this,
-			"Replace the current maker draft with an imported Tasks Tracker route?\n"
-				+ "Paste route JSON (taskId, note, location per step). Export or save first if you need a backup.",
-			"Import Tasks route",
-			JOptionPane.OK_CANCEL_OPTION,
-			JOptionPane.WARNING_MESSAGE);
-		if (confirm != JOptionPane.OK_OPTION)
-		{
-			return;
-		}
-
-		JTextArea routeArea = new JTextArea(12, 52);
-		routeArea.setLineWrap(true);
-		routeArea.setWrapStyleWord(true);
-		JButton loadRouteFile = new JButton("Load route JSON from file…");
-		loadRouteFile.addActionListener(ev -> loadTextFileIntoArea(this, routeArea));
-
-		JPanel routePanel = new JPanel(new BorderLayout(0, 4));
-		routePanel.add(new JLabel("Tasks Tracker route JSON:"), BorderLayout.NORTH);
-		routePanel.add(new JScrollPane(routeArea), BorderLayout.CENTER);
-		routePanel.add(loadRouteFile, BorderLayout.SOUTH);
-
-		int r = JOptionPane.showConfirmDialog(this, new JScrollPane(routePanel), "Import Tasks route",
-			JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r != JOptionPane.OK_OPTION)
-		{
-			return;
-		}
-
-		HelperConstructManager.ImportDraftResult result = helperConstructManager.importTasksTrackerRouteFromJson(
-			routeArea.getText());
-		if (result.isSuccess())
-		{
-			refresh();
-			JOptionPane.showMessageDialog(this, "Route imported and saved to the maker draft file.", "Import",
-				JOptionPane.INFORMATION_MESSAGE);
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(this, result.getErrorMessage(), "Import failed", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	private static void loadTextFileIntoArea(Component parent, JTextArea area)
-	{
-		JFileChooser fc = new JFileChooser();
-		if (fc.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION)
-		{
-			return;
-		}
-		try
-		{
-			area.setText(new String(Files.readAllBytes(fc.getSelectedFile().toPath()), StandardCharsets.UTF_8));
-		}
-		catch (IOException ex)
-		{
-			JOptionPane.showMessageDialog(parent, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
 	private void showImportDraftJsonDialog()
 	{
 		int confirm = JOptionPane.showConfirmDialog(this,
-			"Replace the current maker draft with imported JSON?\nExport or save first if you need a backup.",
-			"Import draft",
+			"Replace the current maker draft with imported JSON?\n"
+				+ "Accepts extended route JSON (questHelperMaker), route-only JSON, or legacy draft JSON.\n"
+				+ "Export or save first if you need a backup.",
+			"Import route JSON",
 			JOptionPane.OK_CANCEL_OPTION,
 			JOptionPane.WARNING_MESSAGE);
 		if (confirm != JOptionPane.OK_OPTION)
@@ -403,7 +324,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
 		panel.add(browse, BorderLayout.SOUTH);
 
-		int r = JOptionPane.showConfirmDialog(this, panel, "Paste construct draft JSON", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int r = JOptionPane.showConfirmDialog(this, panel, "Paste route / draft JSON", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
 		{
 			return;
@@ -1414,7 +1335,6 @@ public final class HelperConstructEditorPanel extends JPanel
 					{
 						return new DefaultCellEditor(new JTextField());
 					}
-					return buildRequirementComboEditor(mRow);
 				}
 				if (column == 2)
 				{
@@ -1427,6 +1347,26 @@ public final class HelperConstructEditorPanel extends JPanel
 				return super.getCellEditor(row, column);
 			}
 		};
+		orderTable.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				int vRow = orderTable.rowAtPoint(e.getPoint());
+				int vCol = orderTable.columnAtPoint(e.getPoint());
+				if (vRow < 0 || vCol != 1)
+				{
+					return;
+				}
+				int mRow = orderTable.convertRowIndexToModel(vRow);
+				var entry = stepOrderTableModel.getRow(mRow);
+				if (entry == null || entry.isSectionDivider())
+				{
+					return;
+				}
+				openOrderConditionsEditor(entry.getIndex(), entry.getVarName());
+			}
+		});
 		orderTable.setDragEnabled(true);
 		// Reorder drag uses StepReorderTransferHandler's edge autoscroll (ramps with drag time).
 		orderTable.setAutoscrolls(false);
@@ -1604,42 +1544,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
-	private TableCellEditor buildRequirementComboEditor(int row)
+	private void openOrderConditionsEditor(int orderIndex, String varNameHint)
 	{
-		JComboBox<ReqChoice> combo = new JComboBox<>();
-		var entry = stepOrderTableModel.getRow(row);
-		Integer cur = entry == null ? null : entry.getOrderLinkedRequirementRawId();
-		populateRequirementCombo(combo, cur);
-		return new DefaultCellEditor(combo);
-	}
-
-	private void populateRequirementCombo(JComboBox<ReqChoice> combo, Integer selectedRawId)
-	{
-		combo.removeAllItems();
-		combo.addItem(new ReqChoice("Default (varbit routing)", null));
-		combo.addItem(new ReqChoice("Varbit only", HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY));
-		for (HelperConstructManager.RequirementRoutingChoice c : helperConstructManager.getRequirementRoutingChoices())
+		String label = varNameHint == null || varNameHint.isBlank() ? "order row " + (orderIndex + 1) : varNameHint;
+		if (OrderStepRequirementTreeEditorDialog.showEditor(SwingUtilities.getWindowAncestor(this), helperConstructManager, orderIndex, label))
 		{
-			combo.addItem(new ReqChoice(c.getLabel(), c.getRawId()));
+			refresh();
 		}
-		selectRequirementComboValue(combo, selectedRawId);
-	}
-
-	private static void selectRequirementComboValue(JComboBox<ReqChoice> combo, Integer rawId)
-	{
-		for (int i = 0; i < combo.getItemCount(); i++)
-		{
-			if (Objects.equals(combo.getItemAt(i).getValue(), rawId))
-			{
-				combo.setSelectedIndex(i);
-				return;
-			}
-		}
-	}
-
-	private String labelForOrderRequirementOverride(Integer v)
-	{
-		return helperConstructManager.labelForOrderLinkedRequirementRawId(v);
 	}
 
 	/**
@@ -1750,29 +1661,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
-	private static final class ReqChoice
-	{
-		private final String label;
-		private final Integer value;
-
-		private ReqChoice(String label, Integer value)
-		{
-			this.label = label;
-			this.value = value;
-		}
-
-		Integer getValue()
-		{
-			return value;
-		}
-
-		@Override
-		public String toString()
-		{
-			return label;
-		}
-	}
-
 	public void refresh()
 	{
 		refreshStepLibraryTable(npcLibraryModel, ConstructStepKind.NPC);
@@ -1859,7 +1747,7 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private final class StepOrderTableModel extends AbstractTableModel
 	{
-		private final String[] columns = {"Var name", "Requirement", "Text"};
+		private final String[] columns = {"Var name", "Conditions", "Text"};
 		private List<HelperConstructManager.CombinedStepRow> rows = new ArrayList<>();
 
 		@Override
@@ -1896,7 +1784,11 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				return row.getSectionCondition() == null ? "" : row.getSectionCondition();
 			}
-			return labelForOrderRequirementOverride(row.getOrderLinkedRequirementRawId());
+			if (row.hasOrderStepRequirementTree())
+			{
+				return row.isCustomOrderStepRequirement() ? "Conditions (custom)…" : "Conditions (set)…";
+			}
+			return "Conditions…";
 		}
 
 		@Override
@@ -1911,7 +1803,11 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				return !row.isSectionDivider();
 			}
-			return columnIndex == 1;
+			if (columnIndex == 1)
+			{
+				return row.isSectionDivider();
+			}
+			return false;
 		}
 
 		@Override
@@ -1930,16 +1826,9 @@ public final class HelperConstructEditorPanel extends JPanel
 				setRows(helperConstructManager.getCombinedStepRows());
 				return;
 			}
-			if (columnIndex == 1)
+			if (columnIndex == 1 && row.isSectionDivider())
 			{
-				if (row.isSectionDivider())
-				{
-					helperConstructManager.updateSectionCondition(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
-				}
-				else if (aValue instanceof ReqChoice)
-				{
-					helperConstructManager.updateOrderLinkedRequirement(row.getIndex(), ((ReqChoice) aValue).getValue());
-				}
+				helperConstructManager.updateSectionCondition(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
 				setRows(helperConstructManager.getCombinedStepRows());
 			}
 		}
@@ -1965,7 +1854,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			for (HelperConstructManager.CombinedStepRow row : rows)
 			{
 				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getSectionCondition() + "|" + row.getOrderLinkedRequirementRawId()
-					+ "|" + row.getInstructionText());
+					+ "|" + row.getInstructionText() + "|" + row.isCustomOrderStepRequirement() + "|" + row.hasOrderStepRequirementTree());
 			}
 			return String.join("\n", parts);
 		}
@@ -1976,13 +1865,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		private final String[] columns = {"Var name", "Varbit ID", "Required value", "Operation", "Display text"};
 		private final List<VarbitRoutingRow> rows = new ArrayList<>();
 
-		String getOrderLineIdAt(int rowIndex)
+		String getOrderSlotIdAt(int rowIndex)
 		{
 			if (rowIndex < 0 || rowIndex >= rows.size())
 			{
 				return null;
 			}
-			return rows.get(rowIndex).getOrderLineId();
+			return rows.get(rowIndex).getOrderSlotId();
 		}
 
 		void reloadFromManager()
@@ -1991,7 +1880,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			for (HelperConstructManager.VarbitSlotRow slot : helperConstructManager.getVarbitSlotsInQuestOrderForEditor())
 			{
 				rows.add(new VarbitRoutingRow(
-					slot.getOrderLineId(),
+					slot.getOrderSlotId(),
 					slot.getVarName(),
 					slot.getVarbitId(),
 					slot.getRequiredValue(),
@@ -2006,7 +1895,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			List<String> parts = new ArrayList<>();
 			for (VarbitRoutingRow row : rows)
 			{
-				parts.add(row.getOrderLineId() + "|" + row.varName + "|" + row.varbitId + "|" + row.requiredValue + "|" + row.operation + "|" + row.displayText);
+				parts.add(row.getOrderSlotId() + "|" + row.varName + "|" + row.varbitId + "|" + row.requiredValue + "|" + row.operation + "|" + row.displayText);
 			}
 			return String.join("\n", parts);
 		}
@@ -2080,7 +1969,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			VarbitRoutingRow row = rows.get(rowIndex);
 			if (columnIndex == 0)
 			{
-				if (!helperConstructManager.updateStepVarNameForOrderLineId(row.getOrderLineId(), String.valueOf(aValue)))
+				if (!helperConstructManager.updateStepVarNameForOrderSlotId(row.getOrderSlotId(), String.valueOf(aValue)))
 				{
 					JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
 						"Could not update var name.",
@@ -2142,7 +2031,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				default:
 					return;
 			}
-			if (!helperConstructManager.updateVarbitSlotForOrderLine(row.getOrderLineId(), newVarbit, newReq, newOp, newDisp))
+			if (!helperConstructManager.updateVarbitSlotForOrderSlot(row.getOrderSlotId(), newVarbit, newReq, newOp, newDisp))
 			{
 				JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
 					"Could not apply varbit settings.",
@@ -2154,16 +2043,16 @@ public final class HelperConstructEditorPanel extends JPanel
 
 		private final class VarbitRoutingRow
 		{
-			private final String orderLineId;
+			private final String orderSlotId;
 			private final String varName;
 			private final int varbitId;
 			private final int requiredValue;
 			private final String operation;
 			private final String displayText;
 
-			private VarbitRoutingRow(String orderLineId, String varName, int varbitId, int requiredValue, String operation, String displayText)
+			private VarbitRoutingRow(String orderSlotId, String varName, int varbitId, int requiredValue, String operation, String displayText)
 			{
-				this.orderLineId = orderLineId;
+				this.orderSlotId = orderSlotId;
 				this.varName = varName == null ? "" : varName;
 				this.varbitId = varbitId;
 				this.requiredValue = requiredValue;
@@ -2171,9 +2060,9 @@ public final class HelperConstructEditorPanel extends JPanel
 				this.displayText = displayText;
 			}
 
-			private String getOrderLineId()
+			private String getOrderSlotId()
 			{
-				return orderLineId;
+				return orderSlotId;
 			}
 		}
 	}

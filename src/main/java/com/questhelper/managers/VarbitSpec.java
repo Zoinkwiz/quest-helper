@@ -3,7 +3,6 @@ package com.questhelper.managers;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.util.Operation;
 
-import static com.questhelper.managers.HelperConstructModels.DraftVarbitRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
 
 /**
@@ -40,26 +39,12 @@ final class VarbitSpec
 		}
 	}
 
-	static VarbitSpec fromDraftVarbit(DraftVarbitRequirement cfg)
-	{
-		if (cfg == null)
-		{
-			return new VarbitSpec(0, 0, Operation.EQUAL, null);
-		}
-		String disp = cfg.getDisplayText();
-		if (disp != null && disp.isBlank())
-		{
-			disp = null;
-		}
-		return new VarbitSpec(
-			cfg.getVarbitId(),
-			cfg.getRequiredValue(),
-			parseOperation(cfg.getOperation(), Operation.EQUAL),
-			disp);
-	}
-
 	static VarbitSpec fromStepAttachment(DraftStepAttachedRequirement a)
 	{
+		if (a == null)
+		{
+			return new VarbitSpec(0, 1, Operation.EQUAL, null);
+		}
 		int vid = a.getVarbitId() == null ? 0 : a.getVarbitId();
 		int val = a.getVarbitRequiredValue() == null ? 1 : a.getVarbitRequiredValue();
 		String disp = a.getVarbitDisplayText();

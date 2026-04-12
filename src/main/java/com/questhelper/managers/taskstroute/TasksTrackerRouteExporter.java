@@ -1,5 +1,6 @@
 package com.questhelper.managers.taskstroute;
 
+import com.questhelper.managers.ConstructDraftPersistence;
 import com.questhelper.managers.HelperConstructManager;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
@@ -19,7 +20,8 @@ import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 
 /**
- * Converts a maker {@link DraftHelper} into {@link TasksTrackerRouteDto} for Tasks Tracker clipboard import.
+ * Converts a maker {@link DraftHelper} into {@link TasksTrackerRouteDto} for Tasks Tracker clipboard import,
+ * including {@link TasksTrackerRouteDto#getQuestHelperMaker()} for lossless round-trip in Quest Helper.
  */
 public final class TasksTrackerRouteExporter
 {
@@ -81,6 +83,7 @@ public final class TasksTrackerRouteExporter
 		sections.add(current);
 
 		route.setSections(sections);
+		route.setQuestHelperMaker(ConstructDraftPersistence.toDraftState(draft));
 		return route;
 	}
 

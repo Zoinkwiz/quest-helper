@@ -1,5 +1,7 @@
 package com.questhelper.managers;
 
+import com.questhelper.managers.HelperConstructModels.DraftOrderStepRequirement;
+
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
@@ -13,22 +15,32 @@ import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
-import static com.questhelper.managers.HelperConstructModels.DraftVarbitRequirement;
 import static com.questhelper.managers.HelperConstructModels.StepAttachmentKind;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 
 /**
- * Gson DTOs and load/save mapping for the maker draft (same JSON shape as on-disk draft / import-export).
+ * Gson DTOs and load/save mapping for the maker draft (same JSON shape as nested {@code questHelperMaker}
+ * in extended Tasks Tracker route files, or legacy root-only draft JSON).
+ * <p>
+ * Step definitions align with the Tasks Tracker route item shape where practical: {@code note} (was
+ * {@code instructionText}), {@code location: {x, y, plane}} (was {@code worldX}/{@code worldY}/
+ * {@code worldPlane}). Legacy keys are still accepted on load.
  */
-final class ConstructDraftPersistence
+public final class ConstructDraftPersistence
 {
-	static final int DRAFT_FORMAT_VERSION = 1;
+	public static final int DRAFT_FORMAT_VERSION = 1;
 
 	private ConstructDraftPersistence()
 	{
 	}
 
-	static DraftHelper draftHelperFromState(DraftState state)
+	/** Whether {@code state} is a usable maker snapshot inside {@code questHelperMaker}. */
+	public static boolean isSupportedMakerSnapshot(DraftState state)
+	{
+		return state != null && state.formatVersion == DRAFT_FORMAT_VERSION;
+	}
+
+	public static DraftHelper draftHelperFromState(DraftState state)
 	{
 		DraftHelper loaded = new DraftHelper();
 		if (state.questName != null)
@@ -68,6 +80,7 @@ final class ConstructDraftPersistence
 				loaded.getOrder().add(draftOrderLineFromState(lineState));
 			}
 			applyLegacyDefinitionLinkedRequirementsToOrderLines(loaded, legacyDefLinkedByStepId);
+			hoistRoutingVarbitsFromStepDefinitionsOntoOrderLines(loaded);
 		}
 		else if (state.definitions != null && !state.definitions.isEmpty())
 		{
@@ -92,25 +105,138 @@ final class ConstructDraftPersistence
 			}
 		}
 
-		if (state.varbitRequirements != null)
+		migrateLegacyVarbitRequirementsIntoAttachments(loaded, state);
+
+		OrderStepRequirementSupport.normalizeLoadedDraft(loaded);
+
+		return loaded;
+	}
+
+	/**
+	 * Legacy: VARBIT rows with {@link DraftStepAttachedRequirement#getOrderSlotId()} lived on the step definition.
+	 * Move each onto the matching {@link DraftOrderLine#getAttachedRequirements()} (same {@code orderSlotId}).
+	 */
+	private static void hoistRoutingVarbitsFromStepDefinitionsOntoOrderLines(DraftHelper loaded)
+	{
+		if (loaded.getStepDefinitions() == null || loaded.getOrder() == null)
 		{
-			for (DraftVarbitRequirementState vState : state.varbitRequirements)
+			return;
+		}
+		for (DraftStep step : loaded.getStepDefinitions())
+		{
+			if (step.getAttachedRequirements() == null || step.getAttachedRequirements().isEmpty())
 			{
-				if (vState.lineId == null || vState.lineId.isBlank())
+				continue;
+			}
+			List<DraftStepAttachedRequirement> copy = new ArrayList<>(step.getAttachedRequirements());
+			for (DraftStepAttachedRequirement a : copy)
+			{
+				if (!StepAttachmentKind.VARBIT.name().equalsIgnoreCase(a.getKind()))
 				{
 					continue;
 				}
-				loaded.getVarbitRequirements().add(new DraftVarbitRequirement(
-					vState.lineId,
-					vState.varbitId,
-					vState.requiredValue,
-					vState.operation == null || vState.operation.isBlank() ? "EQUAL" : vState.operation,
-					vState.displayText,
-					vState.structId));
+				String slot = a.getOrderSlotId();
+				if (slot == null || slot.isBlank())
+				{
+					continue;
+				}
+				DraftOrderLine target = null;
+				for (DraftOrderLine ol : loaded.getOrder())
+				{
+					if (ol.isSectionDivider())
+					{
+						continue;
+					}
+					if (slot.equals(ol.getOrderSlotId()))
+					{
+						target = ol;
+						break;
+					}
+				}
+				if (target == null)
+				{
+					continue;
+				}
+				step.getAttachedRequirements().remove(a);
+				DraftStepAttachedRequirement.setOrderLineRoutingVarbit(target, a);
 			}
 		}
+	}
 
-		return loaded;
+	/**
+	 * Older drafts stored per–quest-order varbits in {@code varbitRequirements}; those become VARBIT rows on the
+	 * matching {@link DraftOrderLine#getAttachedRequirements()}.
+	 */
+	private static void migrateLegacyVarbitRequirementsIntoAttachments(DraftHelper loaded, DraftState state)
+	{
+		if (state.varbitRequirements == null || state.varbitRequirements.isEmpty())
+		{
+			return;
+		}
+		for (DraftVarbitRequirementState vState : state.varbitRequirements)
+		{
+			String slot = firstNonBlank(vState.orderSlotId, vState.lineId);
+			if (slot == null || slot.isBlank())
+			{
+				continue;
+			}
+			DraftOrderLine match = null;
+			for (DraftOrderLine ol : loaded.getOrder())
+			{
+				if (!ol.isSectionDivider() && slot.equals(ol.getOrderSlotId()))
+				{
+					match = ol;
+					break;
+				}
+			}
+			if (match == null)
+			{
+				continue;
+			}
+			DraftStep step = findDefinitionByStepId(loaded, match.getRefStepId());
+			if (DraftStepAttachedRequirement.findOrderRoutingVarbit(match) != null)
+			{
+				continue;
+			}
+			DraftStepAttachedRequirement.setOrderLineRoutingVarbit(match, DraftStepAttachedRequirement.varbit(
+				vState.varbitId,
+				vState.requiredValue,
+				vState.operation == null || vState.operation.isBlank() ? "EQUAL" : vState.operation,
+				vState.displayText));
+			if (step != null && step.getStructId() == null && vState.structId != null)
+			{
+				step.setStructId(vState.structId);
+			}
+		}
+	}
+
+	private static DraftStep findDefinitionByStepId(DraftHelper draft, String stepId)
+	{
+		if (draft == null || stepId == null || stepId.isBlank())
+		{
+			return null;
+		}
+		for (DraftStep s : draft.getStepDefinitions())
+		{
+			if (stepId.equals(s.getStepId()))
+			{
+				return s;
+			}
+		}
+		return null;
+	}
+
+	private static String firstNonBlank(String a, String b)
+	{
+		if (a != null && !a.isBlank())
+		{
+			return a;
+		}
+		if (b != null && !b.isBlank())
+		{
+			return b;
+		}
+		return null;
 	}
 
 	/**
@@ -141,7 +267,7 @@ final class ConstructDraftPersistence
 		}
 	}
 
-	static DraftState toDraftState(DraftHelper draft)
+	public static DraftState toDraftState(DraftHelper draft)
 	{
 		DraftState state = new DraftState();
 		state.formatVersion = DRAFT_FORMAT_VERSION;
@@ -160,7 +286,7 @@ final class ConstructDraftPersistence
 			stepState.option = step.getOption();
 			stepState.targetText = step.getTargetText();
 			stepState.suggestedVarName = step.getSuggestedVarName();
-			stepState.instructionText = step.getInstructionText();
+			stepState.note = step.getInstructionText();
 			stepState.panelName = step.getPanelName();
 			stepState.sectionCondition = step.getSectionCondition();
 			stepState.skipWhenConditionMet = step.isSkipWhenConditionMet();
@@ -175,13 +301,16 @@ final class ConstructDraftPersistence
 				st.varbitOperation = a.getVarbitOperation();
 				st.varbitDisplayText = a.getVarbitDisplayText();
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
+				st.orderSlotId = a.getOrderSlotId();
 				stepState.attachedRequirements.add(st);
 			}
 			if (step.getWorldPoint() != null)
 			{
-				stepState.worldX = step.getWorldPoint().getX();
-				stepState.worldY = step.getWorldPoint().getY();
-				stepState.worldPlane = step.getWorldPoint().getPlane();
+				DraftLocationState loc = new DraftLocationState();
+				loc.x = step.getWorldPoint().getX();
+				loc.y = step.getWorldPoint().getY();
+				loc.plane = step.getWorldPoint().getPlane();
+				stepState.location = loc;
 			}
 			if (!step.getAlternateRawIds().isEmpty())
 			{
@@ -193,13 +322,27 @@ final class ConstructDraftPersistence
 		for (DraftOrderLine line : draft.getOrder())
 		{
 			DraftOrderLineState lineState = new DraftOrderLineState();
-			lineState.lineId = line.getLineId();
+			lineState.orderSlotId = line.getOrderSlotId();
 			lineState.sectionDivider = line.isSectionDivider();
 			lineState.suggestedVarName = line.getSuggestedVarName();
 			lineState.sectionCondition = line.getSectionCondition();
 			lineState.skipWhenConditionMet = line.isSkipWhenConditionMet();
 			lineState.refStepId = line.getRefStepId();
 			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
+			lineState.stepRequirement = line.getStepRequirement();
+			for (DraftStepAttachedRequirement a : line.getAttachedRequirements())
+			{
+				DraftStepAttachedRequirementState st = new DraftStepAttachedRequirementState();
+				st.kind = a.getKind();
+				st.itemRawId = a.getItemRawId();
+				st.varbitId = a.getVarbitId();
+				st.varbitRequiredValue = a.getVarbitRequiredValue();
+				st.varbitOperation = a.getVarbitOperation();
+				st.varbitDisplayText = a.getVarbitDisplayText();
+				st.attachmentHighlighted = a.isAttachmentHighlighted();
+				st.orderSlotId = a.getOrderSlotId();
+				lineState.attachedRequirements.add(st);
+			}
 			state.order.add(lineState);
 		}
 
@@ -215,22 +358,6 @@ final class ConstructDraftPersistence
 			state.requirements.add(reqState);
 		}
 
-		for (DraftVarbitRequirement v : draft.getVarbitRequirements())
-		{
-			if (v.getLineId() == null || v.getLineId().isBlank())
-			{
-				continue;
-			}
-			DraftVarbitRequirementState vs = new DraftVarbitRequirementState();
-			vs.lineId = v.getLineId();
-			vs.varbitId = v.getVarbitId();
-			vs.requiredValue = v.getRequiredValue();
-			vs.operation = v.getOperation();
-			vs.displayText = v.getDisplayText();
-			vs.structId = v.getStructId();
-			state.varbitRequirements.add(vs);
-		}
-
 		return state;
 	}
 
@@ -244,7 +371,7 @@ final class ConstructDraftPersistence
 		step.setOption(stepState.option);
 		step.setTargetText(stepState.targetText);
 		step.setSuggestedVarName(stepState.suggestedVarName);
-		step.setInstructionText(stepState.instructionText);
+		step.setInstructionText(noteOrLegacyInstructionText(stepState));
 		step.setPanelName(stepState.panelName);
 		step.setSectionCondition(stepState.sectionCondition);
 		step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
@@ -253,9 +380,10 @@ final class ConstructDraftPersistence
 		{
 			step.getAlternateRawIds().addAll(stepState.alternateRawIds);
 		}
-		if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
+		WorldPoint wp = worldPointFromStepState(stepState);
+		if (wp != null)
 		{
-			step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
+			step.setWorldPoint(wp);
 		}
 		migrateStepStateAttachmentsToStep(stepState, step);
 		if (step.getKind() == StepKind.ITEM)
@@ -304,94 +432,174 @@ final class ConstructDraftPersistence
 			d.setVarbitOperation(st.varbitOperation);
 			d.setVarbitDisplayText(st.varbitDisplayText);
 			d.setAttachmentHighlighted(st.attachmentHighlighted);
+			d.setOrderSlotId(st.orderSlotId);
 			step.getAttachedRequirements().add(d);
 		}
+	}
+
+	private static String noteOrLegacyInstructionText(DraftStepState stepState)
+	{
+		if (stepState.note != null && !stepState.note.isBlank())
+		{
+			return stepState.note;
+		}
+		if (stepState.instructionText != null)
+		{
+			return stepState.instructionText;
+		}
+		return "";
+	}
+
+	private static WorldPoint worldPointFromStepState(DraftStepState stepState)
+	{
+		if (stepState.location != null)
+		{
+			return new WorldPoint(stepState.location.x, stepState.location.y, stepState.location.plane);
+		}
+		if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
+		{
+			return new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane);
+		}
+		return null;
 	}
 
 	private static DraftOrderLine draftOrderLineFromState(DraftOrderLineState s)
 	{
 		DraftOrderLine line = new DraftOrderLine();
-		line.setLineId(s.lineId == null || s.lineId.isBlank() ? UUID.randomUUID().toString() : s.lineId);
+		String slot = firstNonBlank(s.orderSlotId, s.lineId);
+		line.setOrderSlotId(slot == null || slot.isBlank() ? UUID.randomUUID().toString() : slot);
 		line.setSectionDivider(s.sectionDivider);
 		line.setSuggestedVarName(s.suggestedVarName);
 		line.setSectionCondition(s.sectionCondition);
 		line.setSkipWhenConditionMet(s.skipWhenConditionMet);
 		line.setRefStepId(s.refStepId);
 		line.setLinkedRequirementRawId(s.linkedRequirementRawId);
+		if (s.stepRequirement != null)
+		{
+			line.setStepRequirement(s.stepRequirement);
+		}
+		if (s.attachedRequirements != null)
+		{
+			for (DraftStepAttachedRequirementState st : s.attachedRequirements)
+			{
+				DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+				d.setKind(st.kind);
+				d.setItemRawId(st.itemRawId);
+				d.setVarbitId(st.varbitId);
+				d.setVarbitRequiredValue(st.varbitRequiredValue);
+				d.setVarbitOperation(st.varbitOperation);
+				d.setVarbitDisplayText(st.varbitDisplayText);
+				d.setAttachmentHighlighted(st.attachmentHighlighted);
+				d.setOrderSlotId(st.orderSlotId);
+				line.getAttachedRequirements().add(d);
+			}
+		}
 		return line;
 	}
 
-	static class DraftState
+	public static class DraftState
 	{
-		int formatVersion;
-		String questName;
-		String className;
-		String packagePath;
-		String helperType;
-		List<DraftStepState> definitions = new ArrayList<>();
-		List<DraftOrderLineState> order = new ArrayList<>();
-		List<DraftRequirementState> requirements = new ArrayList<>();
-		List<DraftVarbitRequirementState> varbitRequirements = new ArrayList<>();
+		public int formatVersion;
+		public String questName;
+		public String className;
+		public String packagePath;
+		public String helperType;
+		public List<DraftStepState> definitions = new ArrayList<>();
+		public List<DraftOrderLineState> order = new ArrayList<>();
+		public List<DraftRequirementState> requirements = new ArrayList<>();
+		public List<DraftVarbitRequirementState> varbitRequirements = new ArrayList<>();
 	}
 
-	static class DraftVarbitRequirementState
+	/**
+	 * World position; same keys as Tasks Tracker route {@code location}.
+	 */
+	public static class DraftLocationState
 	{
-		String lineId;
-		int varbitId;
-		int requiredValue;
-		String operation;
-		String displayText;
-		Integer structId;
+		public int x;
+		public int y;
+		public int plane;
 	}
 
-	static class DraftStepState
+	public static class DraftVarbitRequirementState
 	{
-		String stepId;
-		StepKind kind;
-		boolean sectionDivider;
-		int rawId;
-		Integer linkedRequirementRawId;
-		String option;
-		String targetText;
-		String suggestedVarName;
-		String instructionText;
-		String panelName;
-		String sectionCondition;
-		boolean skipWhenConditionMet;
-		Integer structId;
-		Integer worldX;
-		Integer worldY;
-		Integer worldPlane;
-		List<Integer> alternateRawIds;
-		List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
+		/** Legacy JSON key; prefer {@link #orderSlotId}. */
+		public String lineId;
+		public String orderSlotId;
+		public int varbitId;
+		public int requiredValue;
+		public String operation;
+		public String displayText;
+		public Integer structId;
 	}
 
-	static class DraftStepAttachedRequirementState
+	public static class DraftStepState
 	{
-		String kind;
-		Integer itemRawId;
-		Integer varbitId;
-		Integer varbitRequiredValue;
-		String varbitOperation;
-		String varbitDisplayText;
-		boolean attachmentHighlighted;
+		public String stepId;
+		public StepKind kind;
+		public boolean sectionDivider;
+		public int rawId;
+		public Integer linkedRequirementRawId;
+		public String option;
+		public String targetText;
+		public String suggestedVarName;
+		/** Same role as Tasks Tracker route {@code note}; preferred on serialize. */
+		public String note;
+		/** @deprecated read-only for legacy drafts; use {@link #note}. */
+		public String instructionText;
+		public String panelName;
+		public String sectionCondition;
+		public boolean skipWhenConditionMet;
+		public Integer structId;
+		/** Same shape as Tasks Tracker route {@code location}; preferred on serialize. */
+		public DraftLocationState location;
+		/** @deprecated read-only for legacy drafts; use {@link #location}. */
+		public Integer worldX;
+		/** @deprecated read-only for legacy drafts; use {@link #location}. */
+		public Integer worldY;
+		/** @deprecated read-only for legacy drafts; use {@link #location}. */
+		public Integer worldPlane;
+		public List<Integer> alternateRawIds;
+		public List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
 	}
 
-	static class DraftOrderLineState
+	public static class DraftStepAttachedRequirementState
 	{
-		String lineId;
-		boolean sectionDivider;
-		String suggestedVarName;
-		String sectionCondition;
-		boolean skipWhenConditionMet;
-		String refStepId;
-		Integer linkedRequirementRawId;
+		public String kind;
+		public Integer itemRawId;
+		public Integer varbitId;
+		public Integer varbitRequiredValue;
+		public String varbitOperation;
+		public String varbitDisplayText;
+		public boolean attachmentHighlighted;
+		/** When set with VARBIT kind, ties this row to {@link DraftOrderLineState#orderSlotId}. */
+		public String orderSlotId;
 	}
 
-	static class DraftRequirementState
+	public static class DraftOrderLineState
 	{
-		int rawId;
-		String displayName;
-		List<Integer> alternateRawIds;
+		/**
+		 * Stable id for this quest-order row; ties to VARBIT routing attachments via the same value on
+		 * {@link DraftStepAttachedRequirementState#orderSlotId}. Legacy drafts used {@code lineId}.
+		 */
+		public String orderSlotId;
+		/** @deprecated Gson-only; use {@link #orderSlotId}. */
+		public String lineId;
+		public boolean sectionDivider;
+		public String suggestedVarName;
+		public String sectionCondition;
+		public boolean skipWhenConditionMet;
+		public String refStepId;
+		public Integer linkedRequirementRawId;
+		/** Optional per–quest-order branch requirement tree (see {@link DraftOrderStepRequirement}). */
+		public DraftOrderStepRequirement stepRequirement;
+		/** Order-scoped attachments (e.g. routing VARBIT for this slot). */
+		public List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
+	}
+
+	public static class DraftRequirementState
+	{
+		public int rawId;
+		public String displayName;
+		public List<Integer> alternateRawIds;
 	}
 }

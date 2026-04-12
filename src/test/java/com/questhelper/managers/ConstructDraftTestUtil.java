@@ -26,7 +26,7 @@ final class ConstructDraftTestUtil
 	static void addSectionDivider(HelperConstructModels.DraftHelper draft, String name)
 	{
 		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
-		line.setLineId(UUID.randomUUID().toString());
+		line.setOrderSlotId(UUID.randomUUID().toString());
 		line.setSectionDivider(true);
 		line.setSuggestedVarName(name);
 		line.setSectionCondition("");

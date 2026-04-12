@@ -21,7 +21,7 @@ import java.util.UUID;
 import static com.questhelper.managers.HelperConstructModels.DraftHelper;
 import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.DraftVarbitRequirement;
+import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 
 /**
@@ -78,8 +78,6 @@ public final class TasksTrackerRouteImporter
 		draft.getRequirements().clear();
 		draft.getStepDefinitions().clear();
 		draft.getOrder().clear();
-		draft.getVarbitRequirements().clear();
-
 		List<RouteSectionDto> sections = route.getSections();
 		for (int si = 0; si < sections.size(); si++)
 		{
@@ -87,7 +85,7 @@ public final class TasksTrackerRouteImporter
 			if (si > 0)
 			{
 				DraftOrderLine div = new DraftOrderLine();
-				div.setLineId(UUID.randomUUID().toString());
+				div.setOrderSlotId(UUID.randomUUID().toString());
 				div.setSectionDivider(true);
 				div.setSuggestedVarName(trimOrDefault(sec.getName(), "Section"));
 				div.setSectionCondition("");
@@ -99,7 +97,7 @@ public final class TasksTrackerRouteImporter
 			else if (sec.getItems() == null || sec.getItems().isEmpty())
 			{
 				DraftOrderLine div = new DraftOrderLine();
-				div.setLineId(UUID.randomUUID().toString());
+				div.setOrderSlotId(UUID.randomUUID().toString());
 				div.setSectionDivider(true);
 				div.setSuggestedVarName(trimOrDefault(sec.getName(), "Section"));
 				div.setSectionCondition("");
@@ -216,9 +214,9 @@ public final class TasksTrackerRouteImporter
 		}
 		draft.getStepDefinitions().add(step);
 
-		String lineId = UUID.randomUUID().toString();
+		String orderSlotId = UUID.randomUUID().toString();
 		DraftOrderLine ord = new DraftOrderLine();
-		ord.setLineId(lineId);
+		ord.setOrderSlotId(orderSlotId);
 		ord.setSectionDivider(false);
 		ord.setSuggestedVarName(null);
 		ord.setSectionCondition("");
@@ -227,14 +225,11 @@ public final class TasksTrackerRouteImporter
 		ord.setLinkedRequirementRawId(null);
 		draft.getOrder().add(ord);
 
-		DraftVarbitRequirement vb = new DraftVarbitRequirement(
-			lineId,
+		DraftStepAttachedRequirement.setOrderLineRoutingVarbit(ord, DraftStepAttachedRequirement.varbit(
 			0,
 			0,
 			"EQUAL",
-			truncate(name, 120),
-			structId);
-		draft.getVarbitRequirements().add(vb);
+			truncate(name, 120)));
 	}
 
 	private static void appendCustomItemRow(DraftHelper draft, RouteItemDto item)
@@ -284,9 +279,9 @@ public final class TasksTrackerRouteImporter
 		applyWorldPoint(step, item.getLocation(), null);
 		draft.getStepDefinitions().add(step);
 
-		String lineId = UUID.randomUUID().toString();
+		String orderSlotId = UUID.randomUUID().toString();
 		DraftOrderLine ord = new DraftOrderLine();
-		ord.setLineId(lineId);
+		ord.setOrderSlotId(orderSlotId);
 		ord.setSectionDivider(false);
 		ord.setSuggestedVarName(null);
 		ord.setSectionCondition("");
@@ -295,7 +290,11 @@ public final class TasksTrackerRouteImporter
 		ord.setLinkedRequirementRawId(null);
 		draft.getOrder().add(ord);
 
-		draft.getVarbitRequirements().add(new DraftVarbitRequirement(lineId, 0, 0, "EQUAL", truncate(c.getLabel(), 120), null));
+		DraftStepAttachedRequirement.setOrderLineRoutingVarbit(ord, DraftStepAttachedRequirement.varbit(
+			0,
+			0,
+			"EQUAL",
+			truncate(c.getLabel(), 120)));
 	}
 
 	private static Integer firstId(List<Integer> list)

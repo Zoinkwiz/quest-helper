@@ -12,6 +12,7 @@ import java.util.List;
 import net.runelite.api.coords.WorldPoint;
 
 import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
+import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -144,6 +145,36 @@ class HelperConstructManagerTest
 	}
 
 	@Test
+	void importLegacyRootOnlyDraftStateJsonStillWorks()
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		String json = "{\"formatVersion\":1,\"questName\":\"LegacyOnly\",\"className\":\"LH\",\"packagePath\":\"p\",\"helperType\":\"BasicQuestHelper\","
+			+ "\"definitions\":[],\"order\":[],\"requirements\":[],\"varbitRequirements\":[]}";
+		assertTrue(manager.importDraftFromJson(json).isSuccess());
+		assertEquals("LegacyOnly", manager.getCurrentDraft().getQuestName());
+		assertEquals("LH", manager.getCurrentDraft().getClassName());
+	}
+
+	@Test
+	void importUnifiedRouteJsonUsesQuestHelperMaker()
+	{
+		HelperConstructManager source = new HelperConstructManager();
+		source.getCurrentDraft().setQuestName("UnifiedQ");
+		DraftRequirement r = new DraftRequirement();
+		r.setRawId(4151);
+		r.setDisplayName("Axe");
+		source.getCurrentDraft().getRequirements().add(r);
+		String json = source.exportDraftJson();
+		assertTrue(json.contains("questHelperMaker"));
+		assertTrue(json.contains("\"sections\""));
+		HelperConstructManager receiver = new HelperConstructManager();
+		assertTrue(receiver.importDraftFromJson(json).isSuccess());
+		assertEquals("UnifiedQ", receiver.getCurrentDraft().getQuestName());
+		assertEquals(1, receiver.getCurrentDraft().getRequirements().size());
+		assertEquals(4151, receiver.getCurrentDraft().getRequirements().get(0).getRawId());
+	}
+
+	@Test
 	void stepWorldPointAndRequiredItemsCanBeUpdatedByIndex()
 	{
 		HelperConstructManager manager = new HelperConstructManager();
@@ -224,7 +255,7 @@ class HelperConstructManagerTest
 		step.setInstructionText("do thing");
 		manager.getCurrentDraft().getStepDefinitions().add(step);
 		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
-		line.setLineId("line-1");
+		line.setOrderSlotId("line-1");
 		line.setRefStepId("step-keep");
 		line.setSectionDivider(false);
 		manager.getCurrentDraft().getOrder().add(line);

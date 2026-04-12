@@ -1,5 +1,6 @@
 package com.questhelper.managers;
 
+import com.google.gson.Gson;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static com.questhelper.managers.HelperConstructModels.DraftHelper;
 import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.StepKind;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -260,6 +262,9 @@ class TasksTrackerRouteConverterTest
 		draft.getOrder().add(ol2);
 
 		TasksTrackerRouteDto out = TasksTrackerRouteExporter.export(draft);
+		assertNotNull(out.getQuestHelperMaker());
+		assertEquals(ConstructDraftPersistence.DRAFT_FORMAT_VERSION, out.getQuestHelperMaker().formatVersion);
+		assertEquals(2, out.getQuestHelperMaker().definitions.size());
 		assertEquals(1, out.getSections().size());
 		List<RouteItemDto> items = out.getSections().get(0).getItems();
 		assertEquals(2, items.size());
@@ -319,6 +324,34 @@ class TasksTrackerRouteConverterTest
 		assertNotNull(item.getCustomItem());
 		assertNotNull(item.getInteract());
 		assertEquals(List.of(9999), item.getInteract().getObject());
+	}
+
+	@Test
+	void importTasksTrackerRoute_unifiedJsonRestoresRequirementsFromMaker()
+	{
+		DraftHelper draft = new DraftHelper();
+		draft.setQuestName("ReqRound");
+		DraftRequirement req = new DraftRequirement();
+		req.setRawId(12345);
+		req.setDisplayName("Rare item");
+		draft.getRequirements().add(req);
+		DraftStep step = new DraftStep();
+		step.setStepId("only");
+		step.setStructId(99);
+		step.setKind(StepKind.TEXT);
+		step.setInstructionText("Do it.");
+		draft.getStepDefinitions().add(step);
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setRefStepId("only");
+		draft.getOrder().add(line);
+
+		String json = new Gson().toJson(TasksTrackerRouteExporter.export(draft));
+		HelperConstructManager receiver = new HelperConstructManager();
+		assertTrue(receiver.importTasksTrackerRouteFromJson(json).isSuccess());
+		assertEquals("ReqRound", receiver.getCurrentDraft().getQuestName());
+		assertEquals(1, receiver.getCurrentDraft().getRequirements().size());
+		assertEquals(12345, receiver.getCurrentDraft().getRequirements().get(0).getRawId());
 	}
 
 	private static TasksTrackerRouteDto minimalRoute(String name)

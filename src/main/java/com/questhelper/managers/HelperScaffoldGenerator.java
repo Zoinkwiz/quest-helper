@@ -2,6 +2,7 @@ package com.questhelper.managers;
 
 import com.questhelper.managers.GamevalSymbolResolver.ResolutionResult;
 
+import com.questhelper.managers.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.Operation;
 
 import javax.inject.Inject;
@@ -21,7 +22,6 @@ import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
 import static com.questhelper.managers.HelperConstructModels.DraftStep;
 import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
-import static com.questhelper.managers.HelperConstructModels.DraftVarbitRequirement;
 import static com.questhelper.managers.HelperConstructModels.StepAttachmentKind;
 import static com.questhelper.managers.HelperConstructModels.IdType;
 import static com.questhelper.managers.HelperConstructModels.ORDER_ROUTING_VARBIT_SENTINEL;
@@ -53,9 +53,12 @@ public class HelperScaffoldGenerator
 		out.append("import com.questhelper.panel.PanelDetails;\n");
 		out.append("import com.questhelper.questhelpers.ComplexStateQuestHelper;\n");
 		out.append("import com.questhelper.requirements.item.ItemRequirement;\n");
+		out.append("import com.questhelper.requirements.conditional.Conditions;\n");
 		out.append("import static com.questhelper.requirements.util.LogicHelper.not;\n");
 		out.append("import static com.questhelper.requirements.util.LogicHelper.nor;\n");
+		out.append("import com.questhelper.requirements.util.LogicType;\n");
 		out.append("import com.questhelper.requirements.util.Operation;\n");
+		out.append("import com.questhelper.requirements.ManualRequirement;\n");
 		out.append("import com.questhelper.requirements.var.VarbitRequirement;\n");
 		out.append("import com.questhelper.steps.ConditionalStep;\n");
 		out.append("import com.questhelper.steps.DetailedQuestStep;\n");
@@ -98,14 +101,11 @@ public class HelperScaffoldGenerator
 			stepVarNames.put(step, unique);
 			out.append("\t").append(stepType).append(" ").append(unique).append(";\n");
 		}
-		Map<String, String> varbitFieldByOrderLineId = new LinkedHashMap<>();
+		Map<String, String> varbitFieldByOrderSlotId = new LinkedHashMap<>();
+		Map<String, String> manualFieldByOrderSlotId = new LinkedHashMap<>();
 		for (DraftOrderLine line : draft.getOrder())
 		{
 			if (line.isSectionDivider())
-			{
-				continue;
-			}
-			if (!orderRowUsesDefaultOrVarbitRouting(line.getLinkedRequirementRawId()))
 			{
 				continue;
 			}
@@ -114,14 +114,32 @@ public class HelperScaffoldGenerator
 			{
 				continue;
 			}
-			String stepVar = stepVarNames.get(step);
-			if (stepVar == null)
+			String sid = line.getOrderSlotId();
+			if (sid == null || sid.isBlank())
 			{
 				continue;
 			}
-			String fieldName = makeUnique(stepVar + "VarbitReq", usedNames);
-			varbitFieldByOrderLineId.put(line.getLineId(), fieldName);
-			out.append("\tVarbitRequirement ").append(fieldName).append(";\n");
+			String stepVar = stepVarNames.get(step);
+			if (OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
+			{
+				if (stepVar == null)
+				{
+					continue;
+				}
+				String fieldName = makeUnique(stepVar + "OrderVarbitReq", usedNames);
+				varbitFieldByOrderSlotId.put(sid, fieldName);
+				out.append("\tVarbitRequirement ").append(fieldName).append(";\n");
+			}
+			if (line.getStepRequirement() == null)
+			{
+				Integer lk = line.getLinkedRequirementRawId();
+				if (lk == null || lk <= 0 || lk == ORDER_ROUTING_VARBIT_SENTINEL)
+				{
+					String mf = makeUnique("orderManual_" + shortSlotSuffixForJava(sid), usedNames);
+					manualFieldByOrderSlotId.put(sid, mf);
+					out.append("\tManualRequirement ").append(mf).append(";\n");
+				}
+			}
 		}
 		for (int i = 0; i < sectionGroups.size(); i++)
 		{
@@ -189,7 +207,8 @@ public class HelperScaffoldGenerator
 			}
 			appendDefinitionSetup(out, draft, step, stepVarNames.get(step), requirementVarNamesByRawId, warnings);
 		}
-		appendOrderVarbitRequirementInits(out, draft, varbitFieldByOrderLineId, warnings);
+		appendOrderVarbitRequirementInits(out, draft, varbitFieldByOrderSlotId, warnings);
+		appendOrderManualRequirementInits(out, manualFieldByOrderSlotId);
 		out.append("\t}\n\n");
 
 		out.append("\t@Override\n");
@@ -215,8 +234,8 @@ public class HelperScaffoldGenerator
 					}
 					OrderedSlot slot = group.slots.get(i);
 					String stepVar = stepVarNames.get(slot.definition);
-					String reqVar = requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderLineId, warnings);
-					out.append("\t\t").append(sectionTask).append(".addStep(not(").append(reqVar).append("), ").append(stepVar).append(");\n");
+					String branchExpr = branchRequirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
+					out.append("\t\t").append(sectionTask).append(".addStep(").append(branchExpr).append(", ").append(stepVar).append(");\n");
 				}
 				out.append("\n");
 			}
@@ -228,7 +247,7 @@ public class HelperScaffoldGenerator
 			{
 				SectionGroup group = nonEmptySectionGroups.get(i);
 				String sectionRequirementExpression = group.slots.stream()
-					.map(slot -> requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderLineId, warnings))
+					.map(slot -> sectionNorCompletionExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings))
 					.collect(Collectors.joining(", "));
 				out.append("\t\tallSections.addStep(nor(").append(sectionRequirementExpression).append("), ")
 					.append(sectionTaskNames.get(group)).append(");\n");
@@ -425,6 +444,10 @@ public class HelperScaffoldGenerator
 			String k = a.getKind() == null ? StepAttachmentKind.ITEM.name() : a.getKind();
 			if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(k))
 			{
+				if (a.getOrderSlotId() != null && !a.getOrderSlotId().isBlank())
+				{
+					continue;
+				}
 				if (a.getVarbitOperation() != null && !a.getVarbitOperation().isBlank())
 				{
 					try
@@ -502,16 +525,12 @@ public class HelperScaffoldGenerator
 	private String requirementExpressionForSlot(
 		OrderedSlot slot,
 		Map<Integer, String> requirementVarNamesByRawId,
-		Map<String, String> varbitFieldByOrderLineId,
+		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> manualFieldByOrderSlotId,
 		List<String> warnings)
 	{
-		Integer override = slot.orderLine.getLinkedRequirementRawId();
-		if (override != null && override == ORDER_ROUTING_VARBIT_SENTINEL)
-		{
-			return varbitFieldNameForOrderLine(slot.orderLine, varbitFieldByOrderLineId, warnings);
-		}
-		Integer linkedReqId = override;
-		if (linkedReqId != null)
+		Integer linkedReqId = slot.orderLine.getLinkedRequirementRawId();
+		if (linkedReqId != null && linkedReqId > 0)
 		{
 			String requirementVar = requirementVarNamesByRawId.get(linkedReqId);
 			if (requirementVar != null)
@@ -520,27 +539,72 @@ public class HelperScaffoldGenerator
 			}
 			warnings.add("Missing linked item requirement for step ID: " + slot.definition.getRawId() + " linked requirement: " + linkedReqId);
 		}
-		return varbitFieldNameForOrderLine(slot.orderLine, varbitFieldByOrderLineId, warnings);
+		String sid = slot.orderLine.getOrderSlotId();
+		String manual = sid == null ? null : manualFieldByOrderSlotId.get(sid);
+		if (manual != null)
+		{
+			return manual;
+		}
+		warnings.add("No order-slot ManualRequirement field for slot " + sid);
+		return "new ManualRequirement()";
 	}
 
-	private static String varbitFieldNameForOrderLine(
-		DraftOrderLine orderLine,
-		Map<String, String> varbitFieldByOrderLineId,
+	/** Per-slot branch requirement passed to {@code ConditionalStep.addStep} (selector semantics; no outer {@code not()}). */
+	private String branchRequirementExpressionForSlot(
+		OrderedSlot slot,
+		Map<Integer, String> requirementVarNamesByRawId,
+		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> manualFieldByOrderSlotId,
 		List<String> warnings)
 	{
-		String lid = orderLine.getLineId();
-		String field = lid == null ? null : varbitFieldByOrderLineId.get(lid);
+		if (slot.orderLine.getStepRequirement() != null)
+		{
+			return OrderStepRequirementSupport.emitSelectorJava(
+				slot.orderLine.getStepRequirement(),
+				slot.orderLine,
+				slot.definition,
+				requirementVarNamesByRawId,
+				varbitFieldByOrderSlotId,
+				warnings);
+		}
+		return "not(" + requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings) + ")";
+	}
+
+	/** Per-slot completion-style expression for {@code nor(...)} between sections (game "done" checks). */
+	private String sectionNorCompletionExpressionForSlot(
+		OrderedSlot slot,
+		Map<Integer, String> requirementVarNamesByRawId,
+		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> manualFieldByOrderSlotId,
+		List<String> warnings)
+	{
+		if (slot.orderLine.getStepRequirement() != null)
+		{
+			String sel = OrderStepRequirementSupport.emitSelectorJava(
+				slot.orderLine.getStepRequirement(),
+				slot.orderLine,
+				slot.definition,
+				requirementVarNamesByRawId,
+				varbitFieldByOrderSlotId,
+				warnings);
+			return "not(" + sel + ")";
+		}
+		return requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
+	}
+
+	static String varbitFieldNameForOrderSlot(
+		DraftOrderLine orderLine,
+		Map<String, String> varbitFieldByOrderSlotId,
+		List<String> warnings)
+	{
+		String sid = orderLine.getOrderSlotId();
+		String field = sid == null ? null : varbitFieldByOrderSlotId.get(sid);
 		if (field == null)
 		{
-			warnings.add("Missing varbit routing field for order line " + lid);
+			warnings.add("Missing varbit routing field for order slot " + sid);
 			return "new VarbitRequirement(0, Operation.EQUAL, 1, null)";
 		}
 		return field;
-	}
-
-	private static boolean orderRowUsesDefaultOrVarbitRouting(Integer linkedRequirementRawId)
-	{
-		return linkedRequirementRawId == null || linkedRequirementRawId == ORDER_ROUTING_VARBIT_SENTINEL;
 	}
 
 	private void normalizeVarbitRoutingDraft(DraftHelper draft)
@@ -551,99 +615,117 @@ public class HelperScaffoldGenerator
 			{
 				continue;
 			}
-			if (line.getLineId() == null || line.getLineId().isBlank())
+			if (line.getOrderSlotId() == null || line.getOrderSlotId().isBlank())
 			{
-				line.setLineId(UUID.randomUUID().toString());
+				line.setOrderSlotId(UUID.randomUUID().toString());
 			}
 		}
-		LinkedHashSet<String> wanted = new LinkedHashSet<>();
+		LinkedHashSet<String> wantedSlots = new LinkedHashSet<>();
 		for (DraftOrderLine line : draft.getOrder())
 		{
 			if (line.isSectionDivider())
 			{
 				continue;
 			}
-			if (orderRowUsesDefaultOrVarbitRouting(line.getLinkedRequirementRawId()))
+			if (OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
 			{
-				wanted.add(line.getLineId());
+				wantedSlots.add(line.getOrderSlotId());
 			}
 		}
-		draft.getVarbitRequirements().removeIf(v -> v.getLineId() == null || !wanted.contains(v.getLineId()));
-		for (String lineId : wanted)
+		for (DraftOrderLine line : draft.getOrder())
 		{
-			boolean has = false;
-			for (DraftVarbitRequirement v : draft.getVarbitRequirements())
+			if (line.isSectionDivider())
 			{
-				if (lineId.equals(v.getLineId()))
-				{
-					has = true;
-					break;
-				}
+				continue;
 			}
-			if (!has)
+			if (!OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
 			{
-				draft.getVarbitRequirements().add(new DraftVarbitRequirement(lineId, 0, 1, "EQUAL", null, null));
+				DraftStepAttachedRequirement.clearVarbitAttachmentsOnOrderLine(line);
 			}
+		}
+		for (DraftStep step : draft.getStepDefinitions())
+		{
+			if (step.getAttachedRequirements() == null)
+			{
+				continue;
+			}
+			step.getAttachedRequirements().removeIf(a ->
+				StepAttachmentKind.VARBIT.name().equalsIgnoreCase(a.getKind())
+					&& a.getOrderSlotId() != null && !a.getOrderSlotId().isBlank()
+					&& !wantedSlots.contains(a.getOrderSlotId()));
 		}
 	}
 
 	private void appendOrderVarbitRequirementInits(
 		StringBuilder out,
 		DraftHelper draft,
-		Map<String, String> varbitFieldByOrderLineId,
+		Map<String, String> varbitFieldByOrderSlotId,
 		List<String> warnings)
 	{
-		Map<String, DraftVarbitRequirement> byLineId = new LinkedHashMap<>();
-		for (DraftVarbitRequirement v : draft.getVarbitRequirements())
-		{
-			if (v.getLineId() != null && !v.getLineId().isBlank())
-			{
-				byLineId.put(v.getLineId(), v);
-			}
-		}
 		for (DraftOrderLine line : draft.getOrder())
 		{
 			if (line.isSectionDivider())
 			{
 				continue;
 			}
-			if (!orderRowUsesDefaultOrVarbitRouting(line.getLinkedRequirementRawId()))
+			if (!OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
 			{
 				continue;
 			}
-			String field = varbitFieldByOrderLineId.get(line.getLineId());
+			String field = varbitFieldByOrderSlotId.get(line.getOrderSlotId());
 			if (field == null)
 			{
 				continue;
 			}
-			DraftVarbitRequirement cfg = byLineId.get(line.getLineId());
-			int varbitId = cfg == null ? 0 : cfg.getVarbitId();
-			int requiredValue = cfg == null ? 1 : cfg.getRequiredValue();
-			Operation op = Operation.EQUAL;
-			if (cfg != null && cfg.getOperation() != null && !cfg.getOperation().isBlank())
+			DraftStep def = findDefinition(draft, line.getRefStepId());
+			DraftStepAttachedRequirement cfg = DraftStepAttachedRequirement.findOrderRoutingVarbit(line);
+			if (cfg == null && def != null)
 			{
-				try
-				{
-					op = Operation.valueOf(cfg.getOperation().trim());
-				}
-				catch (IllegalArgumentException ex)
-				{
-					warnings.add("Unknown varbit Operation '" + cfg.getOperation() + "' for order line " + line.getLineId() + "; using EQUAL.");
-				}
+				cfg = DraftStepAttachedRequirement.findRoutingVarbitForSlot(def, line.getOrderSlotId());
 			}
+			VarbitSpec spec = VarbitSpec.fromStepAttachment(cfg);
+			int varbitId = spec.getVarbitId();
+			int requiredValue = spec.getRequiredValue();
+			Operation op = spec.getOperation();
 			String displayArg;
-			if (cfg == null || cfg.getDisplayText() == null || cfg.getDisplayText().isBlank())
+			if (spec.getDisplayText() == null || spec.getDisplayText().isBlank())
 			{
 				displayArg = "null";
 			}
 			else
 			{
-				displayArg = "\"" + escape(cfg.getDisplayText()) + "\"";
+				displayArg = "\"" + escape(spec.getDisplayText()) + "\"";
 			}
 			out.append("\t\t").append(field).append(" = new VarbitRequirement(")
 				.append(varbitId).append(", Operation.").append(op.name()).append(", ")
 				.append(requiredValue).append(", ").append(displayArg).append(");\n");
 		}
+	}
+
+	private void appendOrderManualRequirementInits(StringBuilder out, Map<String, String> manualFieldByOrderSlotId)
+	{
+		for (String field : manualFieldByOrderSlotId.values())
+		{
+			out.append("\t\t").append(field).append(" = new ManualRequirement();\n");
+		}
+	}
+
+	static String shortSlotSuffixForJava(String orderSlotId)
+	{
+		if (orderSlotId == null || orderSlotId.isBlank())
+		{
+			return "slot";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < orderSlotId.length() && sb.length() < 16; i++)
+		{
+			char c = orderSlotId.charAt(i);
+			if (Character.isLetterOrDigit(c))
+			{
+				sb.append(c);
+			}
+		}
+		return sb.length() > 0 ? sb.toString() : "slot";
 	}
 
 	private DraftStep findDefinition(DraftHelper draft, String stepId)
@@ -847,6 +929,15 @@ public class HelperScaffoldGenerator
 
 	String escape(String text)
 	{
+		return escapeJavaLiteral(text);
+	}
+
+	static String escapeJavaLiteral(String text)
+	{
+		if (text == null)
+		{
+			return "";
+		}
 		return text.replace("\\", "\\\\").replace("\"", "\\\"");
 	}
 

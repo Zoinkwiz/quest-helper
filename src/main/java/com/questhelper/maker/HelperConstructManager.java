@@ -2703,6 +2703,17 @@ public class HelperConstructManager
 		return left == null ? right == null : left.equals(right);
 	}
 
+	private void removeOrderLineAtIndexNoSave(int index)
+	{
+		if (index < 0 || index >= currentDraft.getOrder().size())
+		{
+			return;
+		}
+		DraftOrderLine removed = currentDraft.getOrder().get(index);
+		removeRoutingVarbitForOrderSlot(removed.getOrderSlotId());
+		currentDraft.getOrder().remove(index);
+	}
+
 	public boolean removeStepAt(int index)
 	{
 		ensureDraftLoaded();
@@ -2710,15 +2721,45 @@ public class HelperConstructManager
 		{
 			return false;
 		}
-		DraftOrderLine removed = currentDraft.getOrder().get(index);
-		removeRoutingVarbitForOrderSlot(removed.getOrderSlotId());
-		currentDraft.getOrder().remove(index);
+		removeOrderLineAtIndexNoSave(index);
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)
 		{
 			rebuildWorldMapRoutePoints();
 		}
 		return true;
+	}
+
+	/**
+	 * Removes several quest-order rows in one save. Pass model indices (positions in the draft order list), not view
+	 * indices; duplicates are ignored. Indices may be in any order.
+	 */
+	public void removeOrderLinesAtModelIndices(List<Integer> modelIndices)
+	{
+		ensureDraftLoaded();
+		if (modelIndices == null || modelIndices.isEmpty())
+		{
+			return;
+		}
+		List<Integer> uniqueSortedDesc = new ArrayList<>(new LinkedHashSet<>(modelIndices));
+		uniqueSortedDesc.sort(Collections.reverseOrder());
+		boolean any = false;
+		for (int idx : uniqueSortedDesc)
+		{
+			if (idx >= 0 && idx < currentDraft.getOrder().size())
+			{
+				removeOrderLineAtIndexNoSave(idx);
+				any = true;
+			}
+		}
+		if (any)
+		{
+			saveDraftToConfig();
+			if (worldMapRoutePreviewEnabled)
+			{
+				rebuildWorldMapRoutePoints();
+			}
+		}
 	}
 
 	public boolean removeRequirementAt(int index)

@@ -28,9 +28,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import java.awt.event.ComponentAdapter;
@@ -42,7 +45,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
 		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
-		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
+		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
 		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add appends a placeholder generic step and order row with default corners. Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
 		"7. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
@@ -513,17 +516,55 @@ public final class HelperConstructEditorPanel extends JPanel
 	}
 
 	/**
-	 * @return model index at which to insert a new quest-order row so it appears directly under the current selection,
-	 *         or {@code -1} if nothing is selected (caller should append).
+	 * Distinct model indices for all selected view rows, sorted descending (safe for removing from a list by index).
+	 */
+	private static List<Integer> selectedModelRowsDescending(JTable table)
+	{
+		int[] viewRows = table.getSelectedRows();
+		if (viewRows == null || viewRows.length == 0)
+		{
+			return List.of();
+		}
+		Set<Integer> model = new LinkedHashSet<>();
+		for (int v : viewRows)
+		{
+			int m = table.convertRowIndexToModel(v);
+			if (m >= 0)
+			{
+				model.add(m);
+			}
+		}
+		List<Integer> out = new ArrayList<>(model);
+		out.sort(Collections.reverseOrder());
+		return out;
+	}
+
+	/**
+	 * @return model index at which to insert a new quest-order row so it appears directly under the selection
+	 *         (below the lowest selected row when several are selected), or {@code -1} if nothing is selected
+	 *         (caller should append).
 	 */
 	private int questOrderInsertIndexBelowSelection()
 	{
-		int r = selectedModelRow(orderTable);
-		if (r < 0)
+		int[] viewRows = orderTable.getSelectedRows();
+		if (viewRows == null || viewRows.length == 0)
 		{
 			return -1;
 		}
-		return r + 1;
+		int maxModel = -1;
+		for (int v : viewRows)
+		{
+			int m = orderTable.convertRowIndexToModel(v);
+			if (m >= 0)
+			{
+				maxModel = Math.max(maxModel, m);
+			}
+		}
+		if (maxModel < 0)
+		{
+			return -1;
+		}
+		return maxModel + 1;
 	}
 
 	/** Maps persisted operation name to enum; unknown values become {@link Operation#EQUAL}. */
@@ -1445,6 +1486,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 		});
 		orderTable.setDragEnabled(true);
+		orderTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		// Reorder drag uses StepReorderTransferHandler's edge autoscroll (ramps with drag time).
 		orderTable.setAutoscrolls(false);
 		orderTable.setDropMode(DropMode.INSERT_ROWS);
@@ -1496,16 +1538,16 @@ public final class HelperConstructEditorPanel extends JPanel
 		orderCenter.add(tableScroll, BorderLayout.CENTER);
 		ordered.add(orderCenter, BorderLayout.CENTER);
 
-		JButton removeSelectedButton = new JButton("Remove");
+		JButton removeSelectedButton = new JButton("Remove selected");
 		JButton addStepButton = new JButton("Add Step");
 		JButton addSectionButton = new JButton("Add Section");
 		applyMakerToolbarStyle(removeSelectedButton, addStepButton, addSectionButton);
 		removeSelectedButton.addActionListener(e ->
 		{
-			int selected = selectedModelRow(orderTable);
-			if (selected >= 0)
+			List<Integer> selected = selectedModelRowsDescending(orderTable);
+			if (!selected.isEmpty())
 			{
-				helperConstructManager.removeStepAt(selected);
+				helperConstructManager.removeOrderLinesAtModelIndices(selected);
 				refresh();
 			}
 		});

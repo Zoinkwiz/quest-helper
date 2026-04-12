@@ -1,4 +1,4 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
 import javax.annotation.Nullable;
 

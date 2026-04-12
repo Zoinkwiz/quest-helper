@@ -1,8 +1,8 @@
-package com.questhelper.panel;
+package com.questhelper.maker;
 
-import com.questhelper.managers.HelperConstructManager;
-import com.questhelper.managers.HelperConstructModels.DraftOrderStepRequirement;
-import com.questhelper.managers.OrderStepRequirementSupport;
+import com.questhelper.maker.HelperConstructManager;
+import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
+import com.questhelper.maker.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.client.ui.ColorScheme;

@@ -1,7 +1,7 @@
 package com.questhelper.managers.taskstroute;
 
-import com.questhelper.managers.ConstructDraftPersistence;
-import com.questhelper.managers.construct.DraftRoutingIds;
+import com.questhelper.maker.ConstructDraftPersistence;
+import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteItemDto;
@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
-import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
-import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.maker.HelperConstructModels.DraftStep;
+import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 /**
  * Converts a maker {@link DraftHelper} into {@link TasksTrackerRouteDto} for Tasks Tracker clipboard import,

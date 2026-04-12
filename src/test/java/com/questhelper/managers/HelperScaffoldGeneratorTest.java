@@ -1,10 +1,11 @@
 package com.questhelper.managers;
 
+import com.questhelper.maker.HelperConstructModels;
 import net.runelite.api.coords.WorldPoint;
 import org.junit.jupiter.api.Test;
 
-import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
-import static com.questhelper.managers.ConstructDraftTestUtil.addSectionDivider;
+import static com.questhelper.maker.ConstructDraftTestUtil.addDefinitionAndRef;
+import static com.questhelper.maker.ConstructDraftTestUtil.addSectionDivider;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

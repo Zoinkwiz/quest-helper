@@ -1,4 +1,4 @@
-package com.questhelper.managers.construct;
+package com.questhelper.maker.construct;
 
 import net.runelite.client.RuneLite;
 

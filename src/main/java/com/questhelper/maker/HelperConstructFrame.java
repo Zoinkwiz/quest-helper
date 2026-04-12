@@ -1,6 +1,6 @@
-package com.questhelper.panel;
+package com.questhelper.maker;
 
-import com.questhelper.managers.HelperConstructManager;
+import com.questhelper.maker.HelperConstructManager;
 
 import javax.swing.*;
 import java.awt.*;

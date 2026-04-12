@@ -26,7 +26,7 @@
 package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.managers.HelperConstructManager;
+import com.questhelper.maker.HelperConstructManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.overlay.WorldLines;
 import net.runelite.client.ui.overlay.Overlay;

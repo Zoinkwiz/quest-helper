@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
-import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
-import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
-import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.maker.HelperConstructModels.DraftStep;
+import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 /**
  * Builds a maker {@link DraftHelper} from Tasks Tracker route JSON.

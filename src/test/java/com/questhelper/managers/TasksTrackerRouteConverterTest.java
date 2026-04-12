@@ -15,11 +15,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
-import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
-import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
-import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftStep;
+import static com.questhelper.maker.HelperConstructModels.StepKind;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;

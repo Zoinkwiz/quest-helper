@@ -1,7 +1,7 @@
-package com.questhelper.panel;
+package com.questhelper.maker;
 
-import com.questhelper.managers.ConstructStepKind;
-import com.questhelper.managers.HelperConstructManager;
+import com.questhelper.maker.ConstructStepKind;
+import com.questhelper.maker.HelperConstructManager;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.SwingUtil;
@@ -45,16 +45,12 @@ public final class HelperConstructEditorPanel extends JPanel
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
 		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
 		"7. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON).",
-		"8. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Older root-only maker JSON (no top-level `sections`) must be converted first: run `python scripts/construct/convert_legacy_maker_draft.py` (see `scripts/construct/README.md`).");
+		"8. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Older root-only maker JSON (no top-level `sections`) must be converted first: run `python maker/scripts/convert_legacy_maker_draft.py` (see `maker/scripts/README.md`).");
 
 	private final HelperConstructManager helperConstructManager;
-	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(ConstructStepKind.NPC);
-	private final StepLibraryTableModel objectLibraryModel = new StepLibraryTableModel(ConstructStepKind.OBJECT);
-	private final StepLibraryTableModel genericLibraryModel = new StepLibraryTableModel(ConstructStepKind.TEXT);
+	/** Step library tabs in display order (NPC, Object, Generic); add a {@link ConstructStepKind} here to add a tab. */
+	private final List<StepLibraryTab> stepLibraryTabs = new ArrayList<>();
 	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
-	private JTable npcStepTable;
-	private JTable objectStepTable;
-	private JTable genericStepTable;
 	private JTable requirementTable;
 	private JTable varbitReqsTable;
 	private JTable orderTable;
@@ -108,7 +104,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
 		exportJsonButton.setToolTipText("<html>Copy extended Tasks Tracker route JSON (pretty-printed): <code>sections</code>/<code>items</code> for the plugin wiki plus <code>questHelperMaker</code> with the full maker state.<br><a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">Tasks Tracker: Import Route from Clipboard</a>. Re-exporting from the plugin may drop <code>questHelperMaker</code>; keep a Quest Helper copy.</html>");
 		saveJsonButton.setToolTipText("Write the same extended route JSON document to a file.");
-		importJsonButton.setToolTipText("<html>Replace the draft from pasted JSON or a file: extended route with <code>questHelperMaker</code> or route-only (no maker blob). Convert old root-only drafts with <code>scripts/construct/convert_legacy_maker_draft.py</code>.<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a> for route fields.</html>");
+		importJsonButton.setToolTipText("<html>Replace the draft from pasted JSON or a file: extended route with <code>questHelperMaker</code> or route-only (no maker blob). Convert old root-only drafts with <code>maker/scripts/convert_legacy_maker_draft.py</code>.<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a> for route fields.</html>");
 		syncWorldMapRouteButtonLabel();
 
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
@@ -156,12 +152,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		JTabbedPane mainTabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 		mainTabs.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		styleConstructTabbedPane(mainTabs);
-		npcStepTable = new JTable(npcLibraryModel);
-		objectStepTable = new JTable(objectLibraryModel);
-		genericStepTable = new JTable(genericLibraryModel);
-		mainTabs.addTab("NPC steps", wrapStepLibraryTableWithToolbar(npcStepTable, ConstructStepKind.NPC));
-		mainTabs.addTab("Object steps", wrapStepLibraryTableWithToolbar(objectStepTable, ConstructStepKind.OBJECT));
-		mainTabs.addTab("Generic steps", wrapStepLibraryTableWithToolbar(genericStepTable, ConstructStepKind.TEXT));
+		for (ConstructStepKind k : List.of(ConstructStepKind.NPC, ConstructStepKind.OBJECT, ConstructStepKind.TEXT))
+		{
+			StepLibraryTableModel model = new StepLibraryTableModel(k);
+			JTable table = new JTable(model);
+			mainTabs.addTab(stepLibraryTabTitle(k), wrapStepLibraryTableWithToolbar(table, k));
+			stepLibraryTabs.add(new StepLibraryTab(k, model, table));
+		}
 		mainTabs.addTab("Item reqs", buildItemRequirementsPanel());
 
 		varbitReqsTable = new JTable(varbitRoutingTableModel);
@@ -1663,9 +1660,10 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	public void refresh()
 	{
-		refreshStepLibraryTable(npcLibraryModel, ConstructStepKind.NPC);
-		refreshStepLibraryTable(objectLibraryModel, ConstructStepKind.OBJECT);
-		refreshStepLibraryTable(genericLibraryModel, ConstructStepKind.TEXT);
+		for (StepLibraryTab tab : stepLibraryTabs)
+		{
+			refreshStepLibraryTable(tab.model, tab.kind);
+		}
 		requirementLibraryModel.setRows(
 			helperConstructManager.getRequirementDisplayNames(),
 			helperConstructManager.getRequirementRawIdStrings());
@@ -1724,6 +1722,35 @@ public final class HelperConstructEditorPanel extends JPanel
 		sb.append("|Rid|").append(String.join("\n", helperConstructManager.getRequirementRawIdStrings()));
 		sb.append("|V|").append(varbitRoutingTableModel.signature());
 		return sb.toString();
+	}
+
+	private static String stepLibraryTabTitle(ConstructStepKind kind)
+	{
+		switch (kind)
+		{
+			case NPC:
+				return "NPC steps";
+			case OBJECT:
+				return "Object steps";
+			case TEXT:
+				return "Generic steps";
+			default:
+				return kind.name();
+		}
+	}
+
+	private static final class StepLibraryTab
+	{
+		final ConstructStepKind kind;
+		final StepLibraryTableModel model;
+		final JTable table;
+
+		StepLibraryTab(ConstructStepKind kind, StepLibraryTableModel model, JTable table)
+		{
+			this.kind = kind;
+			this.model = model;
+			this.table = table;
+		}
 	}
 
 	private void refreshStepLibraryTable(StepLibraryTableModel model, ConstructStepKind kind)

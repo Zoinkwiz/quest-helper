@@ -1,8 +1,8 @@
-package com.questhelper.managers.construct;
+package com.questhelper.maker.construct;
 
 /**
  * Quest Helper Maker in-game menu capture. Option prefix for right-click entries; orchestration remains on
- * {@link com.questhelper.managers.HelperConstructManager}.
+ * {@link com.questhelper.maker.HelperConstructManager}.
  */
 public final class ConstructMenuCapture
 {

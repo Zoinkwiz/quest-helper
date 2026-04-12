@@ -2,8 +2,10 @@ package com.questhelper.managers;
 
 import com.questhelper.managers.GamevalSymbolResolver.ResolutionResult;
 
-import com.questhelper.managers.construct.DraftRoutingIds;
-import com.questhelper.managers.OrderStepRequirementSupport;
+import com.questhelper.maker.ConstructStepKindHandlers;
+import com.questhelper.maker.VarbitSpec;
+import com.questhelper.maker.construct.DraftRoutingIds;
+import com.questhelper.maker.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.Operation;
 
 import javax.inject.Inject;
@@ -18,15 +20,15 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
-import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
-import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
-import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
-import static com.questhelper.managers.HelperConstructModels.StepAttachmentKind;
-import static com.questhelper.managers.HelperConstructModels.IdType;
-import static com.questhelper.managers.HelperConstructModels.ORDER_ROUTING_VARBIT_SENTINEL;
-import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftStep;
+import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
+import static com.questhelper.maker.HelperConstructModels.IdType;
+import static com.questhelper.maker.HelperConstructModels.ORDER_ROUTING_VARBIT_SENTINEL;
+import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 @Singleton
 public class HelperScaffoldGenerator

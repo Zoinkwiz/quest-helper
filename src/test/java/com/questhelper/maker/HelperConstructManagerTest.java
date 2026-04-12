@@ -1,4 +1,4 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
 import net.runelite.client.config.ConfigManager;
 import org.junit.jupiter.api.Test;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import net.runelite.api.coords.WorldPoint;
 
-import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
-import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
+import static com.questhelper.maker.ConstructDraftTestUtil.addDefinitionAndRef;
+import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

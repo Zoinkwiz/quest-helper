@@ -1,21 +1,21 @@
-package com.questhelper.managers.construct;
+package com.questhelper.maker.construct;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.questhelper.managers.ConstructDraftPersistence;
+import com.questhelper.maker.ConstructDraftPersistence;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteImporter;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteValidation;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 
 /**
  * Parses Quest Helper Maker JSON: extended Tasks Tracker route documents only
- * ({@code sections} at root). Use {@code scripts/construct/convert_legacy_maker_draft.py} for older shapes.
+ * ({@code sections} at root). Use {@code maker/scripts/convert_legacy_maker_draft.py} for older shapes.
  */
 @Slf4j
 public final class MakerDraftJsonLoader
@@ -97,7 +97,7 @@ public final class MakerDraftJsonLoader
 		{
 			return LoadOutcome.failure(
 				"Expected extended Tasks Tracker route JSON (top-level \"sections\" array). "
-					+ "Convert legacy maker files with: python scripts/construct/convert_legacy_maker_draft.py <file.json>");
+					+ "Convert legacy maker files with: python maker/scripts/convert_legacy_maker_draft.py <file.json>");
 		}
 		try
 		{

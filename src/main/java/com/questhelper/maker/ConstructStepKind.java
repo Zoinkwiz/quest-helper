@@ -1,4 +1,4 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
 /**
  * Public façade for NPC / Object / Generic (text) step rows in the Quest Helper Maker step library.

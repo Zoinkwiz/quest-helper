@@ -1,9 +1,9 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
 import java.util.UUID;
 
 /** Shared helpers for construct draft / scaffold tests. */
-final class ConstructDraftTestUtil
+public final class ConstructDraftTestUtil
 {
 	private ConstructDraftTestUtil()
 	{

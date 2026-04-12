@@ -1,4 +1,4 @@
-package com.questhelper.managers.construct;
+package com.questhelper.maker.construct;
 
 import com.questhelper.tools.ConstructWorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;

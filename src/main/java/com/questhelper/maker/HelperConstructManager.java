@@ -1,14 +1,14 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteExporter;
-import com.questhelper.managers.HelperConstructModels.DraftOrderStepRequirement;
-import com.questhelper.managers.construct.DraftRoutingIds;
-import com.questhelper.managers.construct.ConstructMenuCapture;
-import com.questhelper.managers.construct.MakerDraftFileStore;
-import com.questhelper.managers.construct.MakerDraftJsonLoader;
-import com.questhelper.managers.construct.MakerPreviewRuntime;
+import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
+import com.questhelper.maker.construct.DraftRoutingIds;
+import com.questhelper.maker.construct.ConstructMenuCapture;
+import com.questhelper.maker.construct.MakerDraftFileStore;
+import com.questhelper.maker.construct.MakerDraftJsonLoader;
+import com.questhelper.maker.construct.MakerPreviewRuntime;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -68,13 +68,13 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
-import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
-import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
-import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
-import static com.questhelper.managers.HelperConstructModels.StepAttachmentKind;
-import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftStep;
+import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
+import static com.questhelper.maker.HelperConstructModels.StepKind;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
@@ -978,25 +978,13 @@ public class HelperConstructManager
 	{
 		ensureDraftLoaded();
 		StepKind sk = kind.stepKind();
-		DraftStep step = new DraftStep();
+		ConstructStepKindHandlers.ConstructStepKindHandler handler = ConstructStepKindHandlers.forStepKind(sk);
+		if (handler == null)
+		{
+			handler = ConstructStepKindHandlers.forStepKind(StepKind.TEXT);
+		}
+		DraftStep step = handler.createBlankStepForMakerUi();
 		step.setStepId(UUID.randomUUID().toString());
-		step.setKind(sk);
-		step.setInstructionText("");
-		step.setTargetText("");
-		step.setPanelName("Captured Steps");
-		step.setWorldPoint(null);
-		step.setOption("");
-		step.setSectionDivider(false);
-		if (sk == StepKind.NPC || sk == StepKind.OBJECT)
-		{
-			step.setRawId(0);
-			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(sk == StepKind.NPC ? "npc step" : "object step", "step"));
-		}
-		else
-		{
-			step.setRawId(0);
-			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("generic step", "step"));
-		}
 		currentDraft.getStepDefinitions().add(step);
 		saveDraftToConfig();
 		rebuildWorldMapRouteIfEnabled();
@@ -2275,10 +2263,7 @@ public class HelperConstructManager
 	public void addEmptyItemRequirementFromUi()
 	{
 		ensureDraftLoaded();
-		DraftRequirement r = new DraftRequirement();
-		r.setRawId(0);
-		r.setDisplayName("Item");
-		currentDraft.getRequirements().add(r);
+		currentDraft.getRequirements().add(RequirementDraftFactory.newPlaceholderItemRequirement());
 		saveDraftToConfig();
 	}
 

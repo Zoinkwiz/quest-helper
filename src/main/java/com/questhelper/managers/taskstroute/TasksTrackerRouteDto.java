@@ -1,7 +1,7 @@
 package com.questhelper.managers.taskstroute;
 
 import com.google.gson.annotations.SerializedName;
-import com.questhelper.managers.ConstructDraftPersistence;
+import com.questhelper.maker.ConstructDraftPersistence;
 
 import java.util.ArrayList;
 import java.util.List;

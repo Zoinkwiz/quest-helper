@@ -1,4 +1,4 @@
-package com.questhelper.managers.construct;
+package com.questhelper.maker.construct;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

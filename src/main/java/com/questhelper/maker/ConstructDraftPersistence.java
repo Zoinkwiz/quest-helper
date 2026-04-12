@@ -1,6 +1,6 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
-import com.questhelper.managers.HelperConstructModels.DraftOrderStepRequirement;
+import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 
 import net.runelite.api.coords.WorldPoint;
 
@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
-import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
-import static com.questhelper.managers.HelperConstructModels.DraftRequirement;
-import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
-import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftStep;
+import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 /**
  * Gson DTOs and load/save mapping for the maker draft (nested {@code questHelperMaker} in extended Tasks Tracker
  * route files). Canonical JSON uses {@code note}, {@code location}, and {@code orderSlotId} only; convert older
- * files with {@code scripts/construct/convert_legacy_maker_draft.py}.
+ * files with {@code maker/scripts/convert_legacy_maker_draft.py}.
  */
 public final class ConstructDraftPersistence
 {

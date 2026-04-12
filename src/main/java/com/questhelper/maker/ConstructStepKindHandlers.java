@@ -1,6 +1,6 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
-import com.questhelper.managers.construct.DraftRoutingIds;
+import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -15,14 +15,14 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.questhelper.managers.HelperConstructModels.DraftStep;
-import static com.questhelper.managers.HelperConstructModels.DraftHelper;
-import static com.questhelper.managers.HelperConstructModels.StepKind;
+import static com.questhelper.maker.HelperConstructModels.DraftStep;
+import static com.questhelper.maker.HelperConstructModels.DraftHelper;
+import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 /**
  * Registry of per-{@link StepKind} behavior for maker preview and scaffold emission (NPC / Object / TEXT; legacy ITEM shares TEXT).
  */
-final class ConstructStepKindHandlers
+public final class ConstructStepKindHandlers
 {
 	private static final EnumMap<StepKind, ConstructStepKindHandler> BY_KIND = new EnumMap<>(StepKind.class);
 
@@ -63,6 +63,11 @@ final class ConstructStepKindHandlers
 		QuestStep buildPreviewQuestStep(ConstructPreviewStepParams params);
 
 		void appendScaffoldDefinitionSetup(ScaffoldDefinitionSetupContext ctx);
+
+		/**
+		 * Blank step row from the maker UI (Add step). Caller sets {@link DraftStep#setStepId(String)}.
+		 */
+		DraftStep createBlankStepForMakerUi();
 	}
 
 	static final class ConstructPreviewStepParams
@@ -215,6 +220,22 @@ final class ConstructStepKindHandlers
 		{
 			c.generator().appendNpcObjectDefinitionSetup(c.out(), c.step(), c.varName(), c.instruction(), c.warnings());
 		}
+
+		@Override
+		public DraftStep createBlankStepForMakerUi()
+		{
+			DraftStep step = new DraftStep();
+			step.setKind(StepKind.NPC);
+			step.setRawId(0);
+			step.setInstructionText("");
+			step.setTargetText("");
+			step.setPanelName("Captured Steps");
+			step.setWorldPoint(null);
+			step.setOption("");
+			step.setSectionDivider(false);
+			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("npc step", "step"));
+			return step;
+		}
 	}
 
 	private static final class ObjectHandler implements ConstructStepKindHandler
@@ -251,6 +272,22 @@ final class ConstructStepKindHandlers
 		public void appendScaffoldDefinitionSetup(ScaffoldDefinitionSetupContext c)
 		{
 			c.generator().appendNpcObjectDefinitionSetup(c.out(), c.step(), c.varName(), c.instruction(), c.warnings());
+		}
+
+		@Override
+		public DraftStep createBlankStepForMakerUi()
+		{
+			DraftStep step = new DraftStep();
+			step.setKind(StepKind.OBJECT);
+			step.setRawId(0);
+			step.setInstructionText("");
+			step.setTargetText("");
+			step.setPanelName("Captured Steps");
+			step.setWorldPoint(null);
+			step.setOption("");
+			step.setSectionDivider(false);
+			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("object step", "step"));
+			return step;
 		}
 	}
 
@@ -300,6 +337,22 @@ final class ConstructStepKindHandlers
 		public void appendScaffoldDefinitionSetup(ScaffoldDefinitionSetupContext c)
 		{
 			c.generator().appendTextGenericDefinitionSetup(c.out(), c.step(), c.varName(), c.instruction());
+		}
+
+		@Override
+		public DraftStep createBlankStepForMakerUi()
+		{
+			DraftStep step = new DraftStep();
+			step.setKind(StepKind.TEXT);
+			step.setRawId(0);
+			step.setInstructionText("");
+			step.setTargetText("");
+			step.setPanelName("Captured Steps");
+			step.setWorldPoint(null);
+			step.setOption("");
+			step.setSectionDivider(false);
+			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("generic step", "step"));
+			return step;
 		}
 	}
 }

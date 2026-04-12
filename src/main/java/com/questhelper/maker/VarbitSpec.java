@@ -1,14 +1,14 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.util.Operation;
 
-import static com.questhelper.managers.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 
 /**
  * Shared varbit id / value / operation / display for order-slot varbits and VARBIT step attachments.
  */
-final class VarbitSpec
+public final class VarbitSpec
 {
 	private final int varbitId;
 	private final int requiredValue;
@@ -23,7 +23,7 @@ final class VarbitSpec
 		this.displayText = displayText;
 	}
 
-	static Operation parseOperation(String operationName, Operation defaultOp)
+	public static Operation parseOperation(String operationName, Operation defaultOp)
 	{
 		if (operationName == null || operationName.isBlank())
 		{
@@ -39,7 +39,7 @@ final class VarbitSpec
 		}
 	}
 
-	static VarbitSpec fromStepAttachment(DraftStepAttachedRequirement a)
+	public static VarbitSpec fromStepAttachment(DraftStepAttachedRequirement a)
 	{
 		if (a == null)
 		{
@@ -56,7 +56,7 @@ final class VarbitSpec
 	}
 
 	/** @return {@code null} when the operation name is not a valid {@link Operation} constant. */
-	static VarbitSpec tryFromStepAttachmentEdit(HelperConstructManager.StepAttachmentEdit edit)
+	public static VarbitSpec tryFromStepAttachmentEdit(HelperConstructManager.StepAttachmentEdit edit)
 	{
 		if (edit == null || edit.getVarbitId() == null)
 		{
@@ -79,27 +79,27 @@ final class VarbitSpec
 		return new VarbitSpec(edit.getVarbitId(), val, parseOperation(edit.getVarbitOperation(), Operation.EQUAL), disp);
 	}
 
-	VarbitRequirement toVarbitRequirement()
+	public VarbitRequirement toVarbitRequirement()
 	{
 		return new VarbitRequirement(varbitId, operation, requiredValue, displayText);
 	}
 
-	int getVarbitId()
+	public int getVarbitId()
 	{
 		return varbitId;
 	}
 
-	int getRequiredValue()
+	public int getRequiredValue()
 	{
 		return requiredValue;
 	}
 
-	Operation getOperation()
+	public Operation getOperation()
 	{
 		return operation;
 	}
 
-	String getDisplayText()
+	public String getDisplayText()
 	{
 		return displayText;
 	}

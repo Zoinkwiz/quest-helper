@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.questhelper.managers.HelperConstructModels.IdType;
+import static com.questhelper.maker.HelperConstructModels.IdType;
 
 @Singleton
 public class GamevalSymbolResolver

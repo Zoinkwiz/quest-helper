@@ -1,4 +1,4 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -21,7 +21,7 @@ class LegacyMakerDraftScriptIT
 	@Test
 	void convertScriptProducesExtendedRoute() throws Exception
 	{
-		Path script = Path.of("scripts/construct/convert_legacy_maker_draft.py").toAbsolutePath().normalize();
+		Path script = Path.of("maker/scripts/convert_legacy_maker_draft.py").toAbsolutePath().normalize();
 		Assumptions.assumeTrue(Files.isRegularFile(script));
 
 		String legacyRoot = "{\"formatVersion\":1,\"questName\":\"FromScript\",\"className\":\"SH\",\"packagePath\":\"p\","

@@ -163,4 +163,60 @@ class OrderStepRequirementSupportTest
 		Requirement r = OrderStepRequirementSupport.buildRuntimeSelector(tree, line, step, byId);
 		assertNotNull(r);
 	}
+
+	@Test
+	void migrateConvertsInlineVarbitLeavesToOrderSlotAndWritesRouting()
+	{
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.setOrderSlotId("slot-x");
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.group("AND",
+			DraftOrderStepRequirement.varbit(7, 2, "GREATER_EQUAL", "d"),
+			DraftOrderStepRequirement.item(10));
+		assertNull(OrderStepRequirementSupport.migrateInlineVarbitLeavesToOrderRouting(line, tree));
+		assertEquals("ORDER_VARBIT", tree.getChildren().get(0).getKind());
+		DraftStepAttachedRequirement cfg = DraftStepAttachedRequirement.findOrderRoutingVarbit(line);
+		assertNotNull(cfg);
+		assertEquals(7, cfg.getVarbitId().intValue());
+		assertEquals(2, cfg.getVarbitRequiredValue().intValue());
+	}
+
+	@Test
+	void prepareRejectsConflictingInlineVarbitsOnSameRow()
+	{
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.group("AND",
+			DraftOrderStepRequirement.varbit(1, 1, "EQUAL", null),
+			DraftOrderStepRequirement.varbit(2, 1, "EQUAL", null));
+		assertNotNull(OrderStepRequirementSupport.prepareOrderStepTreeForPersistence(line, tree));
+	}
+
+	@Test
+	void migrateRejectsWhenVarbitTabValueDisagreesWithInlineTree()
+	{
+		DraftOrderLine line = new DraftOrderLine();
+		line.setSectionDivider(false);
+		line.getAttachedRequirements().add(DraftStepAttachedRequirement.varbit(99, 1, "EQUAL", null));
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.varbit(1, 1, "EQUAL", null);
+		assertNotNull(OrderStepRequirementSupport.migrateInlineVarbitLeavesToOrderRouting(line, tree));
+	}
+
+	@Test
+	void stripOrderVarbitLeavesRemovesSlotAndUnwrapsSingleChildGroup()
+	{
+		DraftOrderStepRequirement root = DraftOrderStepRequirement.group("AND",
+			DraftOrderStepRequirement.orderVarbitSlot(),
+			DraftOrderStepRequirement.item(10));
+		DraftOrderStepRequirement out = OrderStepRequirementSupport.stripOrderVarbitLeaves(root);
+		assertNotNull(out);
+		assertEquals("ITEM", out.getKind());
+		assertEquals(10, out.getItemRawId().intValue());
+	}
+
+	@Test
+	void stripOrderVarbitLeavesReturnsNullWhenOnlyOrderVarbit()
+	{
+		assertNull(OrderStepRequirementSupport.stripOrderVarbitLeaves(DraftOrderStepRequirement.orderVarbitSlot()));
+	}
 }

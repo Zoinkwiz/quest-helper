@@ -2,6 +2,7 @@ package com.questhelper.panel;
 
 import com.questhelper.managers.HelperConstructManager;
 import com.questhelper.managers.HelperConstructModels.DraftOrderStepRequirement;
+import com.questhelper.managers.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.client.ui.ColorScheme;
@@ -23,7 +24,8 @@ import java.util.Locale;
 
 /**
  * Visual editor for {@link DraftOrderStepRequirement} on a quest-order row: logic groups (AND/OR/NOR/NAND),
- * leaves (routing varbit, captured item, inline varbit), and NOT (invert).
+ * order varbit leaves ({@code Add varbit} reuses another slot’s routing; {@code Create new varbit} defines routing for
+ * this row), captured items, and NOT (invert). Varbit values are edited on the Varbit reqs tab.
  */
 public final class OrderStepRequirementTreeEditorDialog extends JDialog
 {
@@ -39,6 +41,13 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	private final HelperConstructManager manager;
 	private final int orderIndex;
 	private DraftOrderStepRequirement rootDto;
+
+	/** Routing to apply to this order row when OK is pressed (if the tree still has an order varbit leaf). */
+	private boolean pendingVarbitRouting;
+	private int pendingVarbitId;
+	private int pendingVarbitRequiredValue;
+	private String pendingVarbitOperation;
+	private String pendingVarbitDisplayText;
 
 	private final DefaultMutableTreeNode visualRoot = new DefaultMutableTreeNode(RootMarker.INSTANCE);
 	private final DefaultTreeModel treeModel;
@@ -56,6 +65,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		this.manager = manager;
 		this.orderIndex = orderIndex;
 		this.rootDto = initialClone;
+		clearPendingVarbitRouting();
 
 		treeModel = new DefaultTreeModel(visualRoot);
 		tree = new JTree(treeModel);
@@ -79,9 +89,9 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 
 		JButton addReq = new JButton("Add requirement ▾");
 		JPopupMenu reqMenu = new JPopupMenu();
-		reqMenu.add(newRoutingVarbitItem());
+		reqMenu.add(newAddVarbitFromExistingItem());
+		reqMenu.add(newCreateVarbitItem());
 		reqMenu.add(newCapturedItemItem());
-		reqMenu.add(newInlineVarbitItem());
 		reqMenu.add(newInvertItem());
 		addReq.addActionListener(e -> reqMenu.show(addReq, 0, addReq.getHeight()));
 
@@ -139,10 +149,17 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		getRootPane().setDefaultButton(ok);
 	}
 
-	private JMenuItem newRoutingVarbitItem()
+	private JMenuItem newAddVarbitFromExistingItem()
 	{
-		JMenuItem it = new JMenuItem("Order varbit (slot attachment)");
-		it.addActionListener(e -> addLeaf(DraftOrderStepRequirement.orderVarbitSlot()));
+		JMenuItem it = new JMenuItem("Add varbit");
+		it.addActionListener(e -> addVarbitFromExistingInteractive(false));
+		return it;
+	}
+
+	private JMenuItem newCreateVarbitItem()
+	{
+		JMenuItem it = new JMenuItem("Create new varbit");
+		it.addActionListener(e -> addVarbitCreateNewInteractive(false));
 		return it;
 	}
 
@@ -150,13 +167,6 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	{
 		JMenuItem it = new JMenuItem("Captured item…");
 		it.addActionListener(e -> addCapturedItemInteractive());
-		return it;
-	}
-
-	private JMenuItem newInlineVarbitItem()
-	{
-		JMenuItem it = new JMenuItem("Inline varbit…");
-		it.addActionListener(e -> addInlineVarbitInteractive());
 		return it;
 	}
 
@@ -381,7 +391,84 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		addLeaf(DraftOrderStepRequirement.item(choices.get(idx).getRawId()));
 	}
 
-	private void addInlineVarbitInteractive()
+	private void clearPendingVarbitRouting()
+	{
+		pendingVarbitRouting = false;
+	}
+
+	private void stashPendingVarbitRouting(int varbitId, int requiredValue, String operationName, String displayText)
+	{
+		pendingVarbitRouting = true;
+		pendingVarbitId = varbitId;
+		pendingVarbitRequiredValue = requiredValue;
+		pendingVarbitOperation = operationName == null || operationName.isBlank() ? "EQUAL" : operationName.trim();
+		pendingVarbitDisplayText = displayText == null ? "" : displayText;
+	}
+
+	private void addVarbitFromExistingInteractive(boolean forInvert)
+	{
+		List<HelperConstructManager.VarbitSlotRow> rows = manager.getVarbitSlotsInQuestOrderForEditor();
+		if (rows.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				"No varbit slots yet. Use \"Create new varbit\" or add rows on the Varbit reqs tab first.",
+				"Add varbit",
+				JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		JComboBox<String> combo = new JComboBox<>();
+		for (HelperConstructManager.VarbitSlotRow row : rows)
+		{
+			combo.addItem(formatVarbitSlotChoiceLabel(row));
+		}
+		int r = JOptionPane.showConfirmDialog(this, combo, "Pick varbit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+		int idx = combo.getSelectedIndex();
+		if (idx < 0)
+		{
+			return;
+		}
+		HelperConstructManager.VarbitSlotRow pick = rows.get(idx);
+		stashPendingVarbitRouting(pick.getVarbitId(), pick.getRequiredValue(), pick.getOperation(), pick.getDisplayText());
+		if (forInvert)
+		{
+			addInvertWithInner(DraftOrderStepRequirement.orderVarbitSlot());
+		}
+		else
+		{
+			addLeaf(DraftOrderStepRequirement.orderVarbitSlot());
+		}
+	}
+
+	private static String formatVarbitSlotChoiceLabel(HelperConstructManager.VarbitSlotRow row)
+	{
+		String disp = row.getDisplayText();
+		String base = row.getVarName() + " — " + row.getVarbitId() + " " + row.getOperation() + " " + row.getRequiredValue();
+		return disp != null && !disp.isBlank() ? disp + " — " + base : base;
+	}
+
+	private void addVarbitCreateNewInteractive(boolean forInvert)
+	{
+		VarbitRoutingPick p = showCreateVarbitFormOrNull();
+		if (p == null)
+		{
+			return;
+		}
+		stashPendingVarbitRouting(p.varbitId, p.requiredValue, p.operation, p.displayText);
+		if (forInvert)
+		{
+			addInvertWithInner(DraftOrderStepRequirement.orderVarbitSlot());
+		}
+		else
+		{
+			addLeaf(DraftOrderStepRequirement.orderVarbitSlot());
+		}
+	}
+
+	private VarbitRoutingPick showCreateVarbitFormOrNull()
 	{
 		JSpinner idSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 		JSpinner valSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
@@ -398,20 +485,20 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		p.add(labeled("Required value", valSp));
 		p.add(labeled("Operation", op));
 		p.add(labeled("Display text (optional)", disp));
-		int r = JOptionPane.showConfirmDialog(this, p, "Inline varbit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int r = JOptionPane.showConfirmDialog(this, p, "Create new varbit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
 		{
-			return;
+			return null;
 		}
 		int vid = ((Number) idSp.getValue()).intValue();
 		int vval = ((Number) valSp.getValue()).intValue();
 		String opName = (String) op.getSelectedItem();
-		addLeaf(DraftOrderStepRequirement.varbit(vid, vval, opName, disp.getText()));
+		return new VarbitRoutingPick(vid, vval, opName, disp.getText());
 	}
 
 	private void addInvertInteractive()
 	{
-		String[] options = { "Order varbit (slot)", "Item…", "Varbit…" };
+		String[] options = { "Add varbit", "Create new varbit", "Item…" };
 		int c = JOptionPane.showOptionDialog(this,
 			"Choose the inner requirement for NOT:",
 			"NOT (invert)",
@@ -424,67 +511,33 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			return;
 		}
-		if (c == 2)
-		{
-			addInvertWithInlineInner();
-			return;
-		}
-		DraftOrderStepRequirement inner;
 		if (c == 0)
 		{
-			inner = DraftOrderStepRequirement.orderVarbitSlot();
+			addVarbitFromExistingInteractive(true);
+			return;
 		}
-		else
+		if (c == 1)
 		{
-			List<HelperConstructManager.RequirementRoutingChoice> choices = manager.getRequirementRoutingChoices();
-			if (choices.isEmpty())
-			{
-				JOptionPane.showMessageDialog(this, "Add captured items on the Item reqs tab first.", "Captured item", JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}
-			JComboBox<String> combo = new JComboBox<>();
-			for (HelperConstructManager.RequirementRoutingChoice ch : choices)
-			{
-				combo.addItem(ch.getLabel() + " (" + ch.getRawId() + ")");
-			}
-			int r = JOptionPane.showConfirmDialog(this, combo, "Pick item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-			if (r != JOptionPane.OK_OPTION || combo.getSelectedIndex() < 0)
-			{
-				return;
-			}
-			inner = DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId());
+			addVarbitCreateNewInteractive(true);
+			return;
 		}
-		addInvertWithInner(inner);
-	}
-
-	private void addInvertWithInlineInner()
-	{
-		JSpinner idSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-		JSpinner valSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-		JComboBox<String> op = new JComboBox<>();
-		for (Operation o : Operation.values())
+		List<HelperConstructManager.RequirementRoutingChoice> choices = manager.getRequirementRoutingChoices();
+		if (choices.isEmpty())
 		{
-			op.addItem(o.name());
+			JOptionPane.showMessageDialog(this, "Add captured items on the Item reqs tab first.", "Captured item", JOptionPane.INFORMATION_MESSAGE);
+			return;
 		}
-		op.setSelectedItem(Operation.EQUAL.name());
-		JTextField disp = new JTextField(20);
-		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-		p.add(labeled("Varbit id", idSp));
-		p.add(labeled("Required value", valSp));
-		p.add(labeled("Operation", op));
-		p.add(labeled("Display text", disp));
-		int r = JOptionPane.showConfirmDialog(this, p, "Inline varbit (inner)", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r != JOptionPane.OK_OPTION)
+		JComboBox<String> combo = new JComboBox<>();
+		for (HelperConstructManager.RequirementRoutingChoice ch : choices)
+		{
+			combo.addItem(ch.getLabel() + " (" + ch.getRawId() + ")");
+		}
+		int r = JOptionPane.showConfirmDialog(this, combo, "Pick item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION || combo.getSelectedIndex() < 0)
 		{
 			return;
 		}
-		DraftOrderStepRequirement inner = DraftOrderStepRequirement.varbit(
-			((Number) idSp.getValue()).intValue(),
-			((Number) valSp.getValue()).intValue(),
-			(String) op.getSelectedItem(),
-			disp.getText());
-		addInvertWithInner(inner);
+		addInvertWithInner(DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId()));
 	}
 
 	private void addInvertWithInner(DraftOrderStepRequirement inner)
@@ -596,12 +649,10 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				break;
 			case "VARBIT":
 			case "INLINE_VARBIT":
-				editInline(d);
-				break;
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
 				JOptionPane.showMessageDialog(this,
-					"This node uses the Varbit attachment on the step for this order slot (Varbits tab).",
+					"Varbit id, value, and operation are edited on the Varbit reqs tab for this quest-order row.",
 					"Order varbit",
 					JOptionPane.INFORMATION_MESSAGE);
 				break;
@@ -651,36 +702,6 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 	}
 
-	private void editInline(DraftOrderStepRequirement d)
-	{
-		JSpinner idSp = new JSpinner(new SpinnerNumberModel(d.getVarbitId() == null ? 0 : d.getVarbitId(), 0, Integer.MAX_VALUE, 1));
-		JSpinner valSp = new JSpinner(new SpinnerNumberModel(d.getVarbitRequiredValue() == null ? 0 : d.getVarbitRequiredValue(), 0, Integer.MAX_VALUE, 1));
-		JComboBox<String> op = new JComboBox<>();
-		for (Operation o : Operation.values())
-		{
-			op.addItem(o.name());
-		}
-		String curOp = d.getVarbitOperation() == null ? "EQUAL" : d.getVarbitOperation().trim();
-		op.setSelectedItem(curOp.toUpperCase(Locale.ROOT));
-		JTextField disp = new JTextField(d.getVarbitDisplayText() == null ? "" : d.getVarbitDisplayText(), 24);
-		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-		p.add(labeled("Varbit id", idSp));
-		p.add(labeled("Required value", valSp));
-		p.add(labeled("Operation", op));
-		p.add(labeled("Display text", disp));
-		int r = JOptionPane.showConfirmDialog(this, p, "Inline varbit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r == JOptionPane.OK_OPTION)
-		{
-			d.setVarbitId(((Number) idSp.getValue()).intValue());
-			d.setVarbitRequiredValue(((Number) valSp.getValue()).intValue());
-			d.setVarbitOperation((String) op.getSelectedItem());
-			d.setVarbitDisplayText(disp.getText());
-			rebuildTree();
-			selectDto(d);
-		}
-	}
-
 	private void selectDto(DraftOrderStepRequirement dto)
 	{
 		DefaultMutableTreeNode node = findVisual(visualRoot, dto);
@@ -709,12 +730,20 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 
 	private void onOk()
 	{
-		if (rootDto != null)
+		if (rootDto != null && pendingVarbitRouting && OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(rootDto))
 		{
-			String err = com.questhelper.managers.OrderStepRequirementSupport.validateTreeOrError(rootDto);
-			if (err != null)
+			if (!manager.applyVarbitRoutingToOrderLineByIndex(
+				orderIndex,
+				pendingVarbitId,
+				pendingVarbitRequiredValue,
+				pendingVarbitOperation,
+				pendingVarbitDisplayText,
+				false))
 			{
-				JOptionPane.showMessageDialog(this, err, "Invalid requirement tree", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this,
+					"Invalid operation or could not apply varbit routing to this order row.",
+					"Could not save",
+					JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
@@ -728,7 +757,36 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		dispose();
 	}
 
-	private static String describe(DraftOrderStepRequirement d)
+	private static final class VarbitRoutingPick
+	{
+		final int varbitId;
+		final int requiredValue;
+		final String operation;
+		final String displayText;
+
+		VarbitRoutingPick(int varbitId, int requiredValue, String operation, String displayText)
+		{
+			this.varbitId = varbitId;
+			this.requiredValue = requiredValue;
+			this.operation = operation;
+			this.displayText = displayText;
+		}
+	}
+
+	private String formatPendingVarbitSummary()
+	{
+		String disp = pendingVarbitDisplayText == null || pendingVarbitDisplayText.isBlank()
+			? null
+			: pendingVarbitDisplayText;
+		String op = pendingVarbitOperation == null || pendingVarbitOperation.isBlank() ? "EQUAL" : pendingVarbitOperation;
+		if (disp != null)
+		{
+			return disp + " — vb " + pendingVarbitId + " " + op + " " + pendingVarbitRequiredValue;
+		}
+		return "Varbit " + pendingVarbitId + " " + op + " " + pendingVarbitRequiredValue;
+	}
+
+	private String describeNode(DraftOrderStepRequirement d)
 	{
 		if (d == null || d.getKind() == null)
 		{
@@ -745,7 +803,11 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				return "Item raw id " + d.getItemRawId();
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
-				return "Order varbit (slot)";
+				if (pendingVarbitRouting)
+				{
+					return formatPendingVarbitSummary();
+				}
+				return manager.formatOrderVarbitLeafSummaryForEditor(orderIndex);
 			case "VARBIT":
 			case "INLINE_VARBIT":
 				return "Varbit " + d.getVarbitId() + " " + (d.getVarbitOperation() == null ? "" : d.getVarbitOperation()) + " " + d.getVarbitRequiredValue();
@@ -754,7 +816,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 	}
 
-	private static final class ReqTreeCellRenderer extends DefaultTreeCellRenderer
+	private final class ReqTreeCellRenderer extends DefaultTreeCellRenderer
 	{
 		@Override
 		public Component getTreeCellRendererComponent(
@@ -778,7 +840,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			}
 			else if (u instanceof DraftOrderStepRequirement)
 			{
-				setText(describe((DraftOrderStepRequirement) u));
+				setText(describeNode((DraftOrderStepRequirement) u));
 			}
 			return this;
 		}

@@ -1,7 +1,7 @@
 package com.questhelper.managers.taskstroute;
 
 import com.questhelper.managers.ConstructDraftPersistence;
-import com.questhelper.managers.HelperConstructManager;
+import com.questhelper.managers.construct.DraftRoutingIds;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteItemDto;
@@ -109,7 +109,7 @@ public final class TasksTrackerRouteExporter
 		{
 			return null;
 		}
-		List<Integer> merged = new ArrayList<>(HelperConstructManager.mergedStepOrRequirementIds(def.getRawId(), def.getAlternateRawIds()));
+		List<Integer> merged = new ArrayList<>(DraftRoutingIds.mergedStepOrRequirementIds(def.getRawId(), def.getAlternateRawIds()));
 		merged.removeIf(id -> id == null || id == 0);
 		if (merged.isEmpty())
 		{

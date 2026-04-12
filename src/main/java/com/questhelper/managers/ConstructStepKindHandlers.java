@@ -1,5 +1,6 @@
 package com.questhelper.managers;
 
+import com.questhelper.managers.construct.DraftRoutingIds;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -41,7 +42,7 @@ final class ConstructStepKindHandlers
 
 	private static int[] mergedNpcObjectIds(DraftStep d)
 	{
-		List<Integer> merged = HelperConstructManager.mergedStepOrRequirementIds(d.getRawId(), d.getAlternateRawIds());
+		List<Integer> merged = DraftRoutingIds.mergedStepOrRequirementIds(d.getRawId(), d.getAlternateRawIds());
 		int[] out = new int[merged.size()];
 		for (int i = 0; i < merged.size(); i++)
 		{

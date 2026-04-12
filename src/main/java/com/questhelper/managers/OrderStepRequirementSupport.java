@@ -9,10 +9,12 @@ import com.questhelper.requirements.var.VarbitRequirement;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.questhelper.managers.HelperConstructModels.DraftHelper;
 import static com.questhelper.managers.HelperConstructModels.DraftOrderLine;
@@ -59,8 +61,34 @@ public final class OrderStepRequirementSupport
 			if (line.getStepRequirement() != null)
 			{
 				upgradeLegacyKindsInTree(line.getStepRequirement());
+				migrateInlineVarbitLeavesToOrderRouting(line, line.getStepRequirement());
 			}
 		}
+	}
+
+	/**
+	 * Upgrades legacy kinds, moves any inline {@code VARBIT} leaves onto this row's routing attachment, replaces those
+	 * leaves with {@code ORDER_VARBIT}, then validates. Call before persisting a conditions tree from the editor or JSON.
+	 *
+	 * @return {@code null} if the tree is OK to save, otherwise a short error for the UI.
+	 */
+	@Nullable
+	public static String prepareOrderStepTreeForPersistence(@Nullable DraftOrderLine line, @Nullable DraftOrderStepRequirement tree)
+	{
+		if (tree == null)
+		{
+			return null;
+		}
+		upgradeLegacyKindsInTree(tree);
+		if (line != null && !line.isSectionDivider())
+		{
+			String mig = migrateInlineVarbitLeavesToOrderRouting(line, tree);
+			if (mig != null)
+			{
+				return mig;
+			}
+		}
+		return validateTreeOrError(tree);
 	}
 
 	/** Renames persisted {@code kind} strings from older drafts to current names ({@code ITEM}, {@code ORDER_VARBIT}, {@code VARBIT}). */
@@ -117,6 +145,186 @@ public final class OrderStepRequirementSupport
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Collects {@code VARBIT} / {@code INLINE_VARBIT} leaves, ensures a single config, syncs
+	 * {@link DraftStepAttachedRequirement#setOrderLineRoutingVarbit}, and rewrites each leaf to {@code ORDER_VARBIT}.
+	 *
+	 * @return {@code null} when nothing to do or migration succeeded; otherwise a short error (caller should not persist).
+	 */
+	@Nullable
+	public static String migrateInlineVarbitLeavesToOrderRouting(DraftOrderLine line, DraftOrderStepRequirement root)
+	{
+		if (line == null || line.isSectionDivider() || root == null)
+		{
+			return null;
+		}
+		List<DraftOrderStepRequirement> leaves = new ArrayList<>();
+		collectVarbitLikeLeaves(root, leaves);
+		if (leaves.isEmpty())
+		{
+			return null;
+		}
+		for (DraftOrderStepRequirement n : leaves)
+		{
+			if (n.getVarbitId() == null)
+			{
+				return "VARBIT needs varbitId.";
+			}
+		}
+		Set<String> signatures = new LinkedHashSet<>();
+		for (DraftOrderStepRequirement n : leaves)
+		{
+			signatures.add(persistedVarbitSignature(n));
+		}
+		if (signatures.size() > 1)
+		{
+			return "This order row mixes different varbit configs in the conditions tree. Use one varbit per row, or split across multiple quest-order rows. Set values on the Varbit reqs tab and use only \"Order varbit (slot)\" in conditions.";
+		}
+		DraftOrderStepRequirement sample = leaves.get(0);
+		int reqVal = sample.getVarbitRequiredValue() == null ? 1 : sample.getVarbitRequiredValue();
+		String op = sample.getVarbitOperation() == null || sample.getVarbitOperation().isBlank()
+			? "EQUAL"
+			: sample.getVarbitOperation().trim();
+		VarbitSpec fromTree = VarbitSpec.fromStepAttachment(DraftStepAttachedRequirement.varbit(
+			sample.getVarbitId(), reqVal, op, sample.getVarbitDisplayText()));
+		DraftStepAttachedRequirement existing = DraftStepAttachedRequirement.findOrderRoutingVarbit(line);
+		if (existing != null)
+		{
+			VarbitSpec fromLine = VarbitSpec.fromStepAttachment(existing);
+			if (!varbitSpecsMatchForOrderRouting(fromTree, fromLine))
+			{
+				return "The Varbit reqs tab value for this row does not match varbit leaves in conditions. Edit the varbit on the Varbit tab, or remove conflicting nodes.";
+			}
+		}
+		else
+		{
+			DraftStepAttachedRequirement.setOrderLineRoutingVarbit(line, DraftStepAttachedRequirement.varbit(
+				fromTree.getVarbitId(), fromTree.getRequiredValue(), fromTree.getOperation().name(), fromTree.getDisplayText()));
+		}
+		for (DraftOrderStepRequirement n : leaves)
+		{
+			convertVarbitLeafToOrderSlot(n);
+		}
+		return null;
+	}
+
+	private static void collectVarbitLikeLeaves(DraftOrderStepRequirement node, List<DraftOrderStepRequirement> out)
+	{
+		if (node == null)
+		{
+			return;
+		}
+		String k = node.getKind() == null ? "" : node.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("VARBIT".equals(k) || "INLINE_VARBIT".equals(k))
+		{
+			out.add(node);
+			return;
+		}
+		if (node.getChildren() != null)
+		{
+			for (DraftOrderStepRequirement ch : node.getChildren())
+			{
+				collectVarbitLikeLeaves(ch, out);
+			}
+		}
+	}
+
+	private static String persistedVarbitSignature(DraftOrderStepRequirement n)
+	{
+		int reqVal = n.getVarbitRequiredValue() == null ? 1 : n.getVarbitRequiredValue();
+		String op = n.getVarbitOperation() == null || n.getVarbitOperation().isBlank()
+			? "EQUAL"
+			: n.getVarbitOperation().trim().toUpperCase(Locale.ROOT);
+		String disp = n.getVarbitDisplayText();
+		if (disp != null && disp.isBlank())
+		{
+			disp = null;
+		}
+		return n.getVarbitId() + "|" + reqVal + "|" + op + "|" + (disp == null ? "" : disp);
+	}
+
+	private static boolean varbitSpecsMatchForOrderRouting(VarbitSpec a, VarbitSpec b)
+	{
+		return a.getVarbitId() == b.getVarbitId()
+			&& a.getRequiredValue() == b.getRequiredValue()
+			&& a.getOperation() == b.getOperation()
+			&& Objects.equals(
+				a.getDisplayText() == null || a.getDisplayText().isBlank() ? null : a.getDisplayText(),
+				b.getDisplayText() == null || b.getDisplayText().isBlank() ? null : b.getDisplayText());
+	}
+
+	private static void convertVarbitLeafToOrderSlot(DraftOrderStepRequirement n)
+	{
+		n.setKind("ORDER_VARBIT");
+		n.setVarbitId(null);
+		n.setVarbitRequiredValue(null);
+		n.setVarbitOperation(null);
+		n.setVarbitDisplayText(null);
+		n.setItemRawId(null);
+		if (n.getChildren() != null)
+		{
+			n.getChildren().clear();
+		}
+	}
+
+	/**
+	 * Removes {@code ORDER_VARBIT} / {@code ROUTING_VARBIT} leaves and unwraps single-child groups. Returns
+	 * {@code null} when nothing remains (caller should clear the order row's tree).
+	 */
+	@Nullable
+	public static DraftOrderStepRequirement stripOrderVarbitLeaves(@Nullable DraftOrderStepRequirement node)
+	{
+		if (node == null)
+		{
+			return null;
+		}
+		String k = node.getKind() == null ? "" : node.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("ORDER_VARBIT".equals(k) || "ROUTING_VARBIT".equals(k))
+		{
+			return null;
+		}
+		if ("INVERT".equals(k))
+		{
+			if (node.getChildren() == null || node.getChildren().isEmpty())
+			{
+				return null;
+			}
+			DraftOrderStepRequirement inner = stripOrderVarbitLeaves(node.getChildren().get(0));
+			if (inner == null)
+			{
+				return null;
+			}
+			node.getChildren().clear();
+			node.getChildren().add(inner);
+			return node;
+		}
+		if ("GROUP".equals(k))
+		{
+			List<DraftOrderStepRequirement> kept = new ArrayList<>();
+			List<DraftOrderStepRequirement> ch = node.getChildren() == null ? List.of() : new ArrayList<>(node.getChildren());
+			for (DraftOrderStepRequirement c : ch)
+			{
+				DraftOrderStepRequirement p = stripOrderVarbitLeaves(c);
+				if (p != null)
+				{
+					kept.add(p);
+				}
+			}
+			if (kept.isEmpty())
+			{
+				return null;
+			}
+			if (kept.size() == 1)
+			{
+				return kept.get(0);
+			}
+			node.getChildren().clear();
+			node.getChildren().addAll(kept);
+			return node;
+		}
+		return node;
 	}
 
 	@Nullable
@@ -530,11 +738,7 @@ public final class OrderStepRequirementSupport
 				return null;
 			case "VARBIT":
 			case "INLINE_VARBIT":
-				if (node.getVarbitId() == null)
-				{
-					return "VARBIT needs varbitId.";
-				}
-				return null;
+				return "Order conditions cannot use inline VARBIT nodes. Set the varbit on the Varbit reqs tab for this row, then use only \"Order varbit (slot)\" here (or save again to auto-migrate legacy drafts).";
 			default:
 				return "Unknown kind: " + node.getKind();
 		}

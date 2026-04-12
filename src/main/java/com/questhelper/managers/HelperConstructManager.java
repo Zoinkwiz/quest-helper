@@ -2,15 +2,13 @@ package com.questhelper.managers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteExporter;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteImporter;
 import com.questhelper.managers.HelperConstructModels.DraftOrderStepRequirement;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteValidation;
+import com.questhelper.managers.construct.DraftRoutingIds;
+import com.questhelper.managers.construct.ConstructMenuCapture;
+import com.questhelper.managers.construct.MakerDraftFileStore;
+import com.questhelper.managers.construct.MakerDraftJsonLoader;
+import com.questhelper.managers.construct.MakerPreviewRuntime;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -86,7 +84,6 @@ import static com.questhelper.requirements.util.LogicHelper.nor;
 @Slf4j
 public class HelperConstructManager
 {
-	private static final String MENU_PREFIX = "Construct:";
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
 	/** One quest-order "linked item" option: label and the raw item id used for routing / highlight. */
 	public static final class RequirementRoutingChoice
@@ -111,10 +108,6 @@ public class HelperConstructManager
 		}
 	}
 
-	/** Legacy config key; draft is now stored under {@link #constructDraftFile()}. Migrated once on load when the file is missing. */
-	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
-	private static final String DRAFT_SUBDIR = "quest-helper";
-	private static final String DRAFT_FILENAME = "construct-draft.json";
 	private static final String DEFAULT_SECTION_NAME = "New Section";
 	private static final int MAP_MIN_X = 960;
 	private static final int MAP_MIN_Y = 2048;
@@ -220,25 +213,25 @@ public class HelperConstructManager
 
 		if (isNpcAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, sourceEntry.getNpc().getId(), option, target, clickedWorldPoint));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, sourceEntry.getNpc().getId(), option, target, clickedWorldPoint));
 		}
 		else if (isObjectAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add Object Step", target, () -> addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Object Step", target, () -> addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint));
 		}
 		else if (isItemAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(rawId, target));
-			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(rawId, target));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Item Requirement", target, () -> addRequirement(rawId, target));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(rawId, target));
 		}
 		else if (isInventoryItemAction(sourceType))
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add Item Requirement", target, () -> addRequirement(itemID, target));
-			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(itemID, target));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Item Requirement", target, () -> addRequirement(itemID, target));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(itemID, target));
 		}
 		else if (isWalkHereMenu(sourceType, option) && clickedWorldPoint != null)
 		{
-			addAction(menuEntries, MENU_PREFIX + " Add Generic Step (here)", target, () -> addGenericStepAtWorldPoint(clickedWorldPoint));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (here)", target, () -> addGenericStepAtWorldPoint(clickedWorldPoint));
 		}
 	}
 
@@ -249,18 +242,6 @@ public class HelperConstructManager
 			.setTarget("<col=ff9040>" + target + "</col>")
 			.setType(MenuAction.RUNELITE)
 			.onClick((menuEntry) -> callback.run());
-	}
-
-	private boolean menuEntryExists(MenuEntry[] entries, String option)
-	{
-		for (MenuEntry entry : entries)
-		{
-			if (entry != null && option.equals(entry.getOption()))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private void startNewDraft(String targetText)
@@ -294,10 +275,6 @@ public class HelperConstructManager
 		ensureDraftLoaded();
 		startNewDraft("Generated Quest");
 		saveDraftToConfig();
-		if (configManager != null)
-		{
-			configManager.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
-		}
 	}
 
 	private void addStep(StepKind kind, int rawId, String option, String target, WorldPoint clickedWorldPoint)
@@ -937,7 +914,7 @@ public class HelperConstructManager
 			}
 			if (kind == StepKind.NPC || kind == StepKind.OBJECT)
 			{
-				out.add(formatCsvIds(mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds())));
+				out.add(DraftRoutingIds.formatCsvIds(DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds())));
 			}
 			else
 			{
@@ -1351,12 +1328,12 @@ public class HelperConstructManager
 		{
 			return false;
 		}
-		List<Integer> parsed = parseCsvIntsStrict(rawIdText == null ? "" : rawIdText);
+		List<Integer> parsed = DraftRoutingIds.parseCsvIntsStrict(rawIdText == null ? "" : rawIdText);
 		if (parsed == null || parsed.isEmpty())
 		{
 			return false;
 		}
-		List<Integer> ids = dedupeIntsPreserveOrder(parsed);
+		List<Integer> ids = DraftRoutingIds.dedupeIntsPreserveOrder(parsed);
 		step.setRawId(ids.get(0));
 		step.getAlternateRawIds().clear();
 		for (int i = 1; i < ids.size(); i++)
@@ -1502,7 +1479,7 @@ public class HelperConstructManager
 		{
 			DraftRequirement r = reqs.get(i);
 			String lab = i < labels.size() ? labels.get(i) : String.valueOf(r.getRawId());
-			List<Integer> itemIds = mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds());
+			List<Integer> itemIds = DraftRoutingIds.mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds());
 			if (itemIds.size() <= 1)
 			{
 				out.add(new RequirementRoutingChoice(lab, r.getRawId()));
@@ -1550,79 +1527,6 @@ public class HelperConstructManager
 			}
 		}
 		return -1;
-	}
-
-	private static List<Integer> parseCsvIntsStrict(String rawIdText)
-	{
-		List<Integer> out = new ArrayList<>();
-		if (rawIdText == null || rawIdText.trim().isEmpty())
-		{
-			return out;
-		}
-		for (String part : rawIdText.split(","))
-		{
-			String p = part.trim();
-			if (p.isEmpty())
-			{
-				continue;
-			}
-			try
-			{
-				out.add(Integer.parseInt(p));
-			}
-			catch (NumberFormatException e)
-			{
-				return null;
-			}
-		}
-		return out;
-	}
-
-	private static List<Integer> dedupeIntsPreserveOrder(List<Integer> in)
-	{
-		List<Integer> out = new ArrayList<>();
-		LinkedHashSet<Integer> seen = new LinkedHashSet<>();
-		for (Integer v : in)
-		{
-			if (v == null)
-			{
-				continue;
-			}
-			if (seen.add(v))
-			{
-				out.add(v);
-			}
-		}
-		return out;
-	}
-
-	public static List<Integer> mergedStepOrRequirementIds(int primary, List<Integer> alternates)
-	{
-		List<Integer> merged = new ArrayList<>();
-		merged.add(primary);
-		if (alternates != null)
-		{
-			merged.addAll(alternates);
-		}
-		return dedupeIntsPreserveOrder(merged);
-	}
-
-	private static String formatCsvIds(List<Integer> ids)
-	{
-		if (ids.isEmpty())
-		{
-			return "";
-		}
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < ids.size(); i++)
-		{
-			if (i > 0)
-			{
-				sb.append(", ");
-			}
-			sb.append(ids.get(i));
-		}
-		return sb.toString();
 	}
 
 	public List<CombinedStepRow> getCombinedStepRows()
@@ -1840,8 +1744,7 @@ public class HelperConstructManager
 		try
 		{
 			DraftOrderStepRequirement parsed = gson.fromJson(trimmed, DraftOrderStepRequirement.class);
-			OrderStepRequirementSupport.upgradeLegacyKindsInTree(parsed);
-			String err = OrderStepRequirementSupport.validateTreeOrError(parsed);
+			String err = OrderStepRequirementSupport.prepareOrderStepTreeForPersistence(line, parsed);
 			if (err != null)
 			{
 				return err;
@@ -1921,8 +1824,7 @@ public class HelperConstructManager
 			saveDraftToConfig();
 			return null;
 		}
-		OrderStepRequirementSupport.upgradeLegacyKindsInTree(tree);
-		String err = OrderStepRequirementSupport.validateTreeOrError(tree);
+		String err = OrderStepRequirementSupport.prepareOrderStepTreeForPersistence(line, tree);
 		if (err != null)
 		{
 			return err;
@@ -1968,7 +1870,7 @@ public class HelperConstructManager
 				continue;
 			}
 			ensureOrderSlotId(line);
-			if (OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
+			if (orderLineUsesVarbitRouting(line))
 			{
 				wantedSlots.add(line.getOrderSlotId());
 			}
@@ -1979,7 +1881,7 @@ public class HelperConstructManager
 			{
 				continue;
 			}
-			if (!OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
+			if (!orderLineUsesVarbitRouting(line))
 			{
 				DraftStepAttachedRequirement.clearVarbitAttachmentsOnOrderLine(line);
 			}
@@ -1995,6 +1897,17 @@ public class HelperConstructManager
 					&& a.getOrderSlotId() != null && !a.getOrderSlotId().isBlank()
 					&& !wantedSlots.contains(a.getOrderSlotId()));
 		}
+	}
+
+	/** True when the Varbit tab should keep routing data: conditions reference the slot or the row already has a tab attachment. */
+	private static boolean orderLineUsesVarbitRouting(DraftOrderLine line)
+	{
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		return OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement())
+			|| DraftStepAttachedRequirement.findOrderRoutingVarbit(line) != null;
 	}
 
 	private DraftOrderLine findOrderLineByOrderSlotId(String orderSlotId)
@@ -2022,7 +1935,7 @@ public class HelperConstructManager
 			{
 				continue;
 			}
-			if (!OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
+			if (!orderLineUsesVarbitRouting(line))
 			{
 				continue;
 			}
@@ -2044,23 +1957,28 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(out);
 	}
 
-	public boolean updateVarbitSlotForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operationName, String displayText)
+	/**
+	 * Updates varbit routing stored on a quest-order row (Varbit reqs tab / {@code ORDER_VARBIT}).
+	 *
+	 * @param requireResolvedStepDefinition when true, fails if the row has no step definition (Varbit table editing).
+	 */
+	private boolean applyVarbitRoutingToOrderLine(
+		DraftOrderLine line,
+		int varbitId,
+		int requiredValue,
+		String operationName,
+		String displayText,
+		boolean requireResolvedStepDefinition)
 	{
-		ensureDraftLoaded();
-		if (orderSlotId == null || orderSlotId.isBlank())
-		{
-			return false;
-		}
-		DraftOrderLine line = findOrderLineByOrderSlotId(orderSlotId);
 		if (line == null || line.isSectionDivider())
 		{
 			return false;
 		}
-		DraftStep def = findDefinitionByStepId(line.getRefStepId());
-		if (def == null)
+		if (requireResolvedStepDefinition && findDefinitionByStepId(line.getRefStepId()) == null)
 		{
 			return false;
 		}
+		ensureOrderSlotId(line);
 		DraftStepAttachedRequirement cfg = DraftStepAttachedRequirement.findOrderRoutingVarbit(line);
 		if (cfg == null)
 		{
@@ -2080,7 +1998,56 @@ public class HelperConstructManager
 		cfg.setVarbitRequiredValue(requiredValue);
 		cfg.setVarbitOperation(op.name());
 		cfg.setVarbitDisplayText(displayText == null ? "" : displayText);
+		return true;
+	}
+
+	public boolean updateVarbitSlotForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operationName, String displayText)
+	{
+		ensureDraftLoaded();
+		if (orderSlotId == null || orderSlotId.isBlank())
+		{
+			return false;
+		}
+		DraftOrderLine line = findOrderLineByOrderSlotId(orderSlotId);
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		if (!applyVarbitRoutingToOrderLine(line, varbitId, requiredValue, operationName, displayText, true))
+		{
+			return false;
+		}
 		saveDraftToConfig();
+		return true;
+	}
+
+	/**
+	 * Applies varbit routing to the quest-order row at {@code orderIndex}. Used from the conditions editor so routing
+	 * can be updated without requiring a resolved step definition. When {@code persist} is false, only the in-memory
+	 * draft changes (caller saves afterward, e.g. with {@link #applyOrderStepRequirementTree}).
+	 */
+	public boolean applyVarbitRoutingToOrderLineByIndex(
+		int orderIndex,
+		int varbitId,
+		int requiredValue,
+		String operationName,
+		String displayText,
+		boolean persist)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return false;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (!applyVarbitRoutingToOrderLine(line, varbitId, requiredValue, operationName, displayText, false))
+		{
+			return false;
+		}
+		if (persist)
+		{
+			saveDraftToConfig();
+		}
 		return true;
 	}
 
@@ -2171,7 +2138,7 @@ public class HelperConstructManager
 			DraftRequirement r = reqs.get(i);
 			String lab = i < labels.size() ? labels.get(i) : String.valueOf(r.getRawId());
 			String shortLab = lab.replaceFirst("^\\d+\\.\\s*", "").trim();
-			List<Integer> itemIds = mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds());
+			List<Integer> itemIds = DraftRoutingIds.mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds());
 			if (itemIds.size() <= 1)
 			{
 				out.add(new StepAttachmentPickOption(shortLab, StepAttachmentEdit.item(r.getRawId())));
@@ -2259,7 +2226,7 @@ public class HelperConstructManager
 		List<String> out = new ArrayList<>();
 		for (DraftRequirement r : currentDraft.getRequirements())
 		{
-			out.add(formatCsvIds(mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds())));
+			out.add(DraftRoutingIds.formatCsvIds(DraftRoutingIds.mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds())));
 		}
 		return Collections.unmodifiableList(out);
 	}
@@ -2283,7 +2250,7 @@ public class HelperConstructManager
 		{
 			return false;
 		}
-		List<Integer> parsed = parseCsvIntsStrict(rawIdText == null ? "" : rawIdText);
+		List<Integer> parsed = DraftRoutingIds.parseCsvIntsStrict(rawIdText == null ? "" : rawIdText);
 		if (parsed == null || parsed.isEmpty())
 		{
 			return false;
@@ -2293,7 +2260,7 @@ public class HelperConstructManager
 		{
 			normalized.add(normalizeItemId(v));
 		}
-		normalized = dedupeIntsPreserveOrder(normalized);
+		normalized = DraftRoutingIds.dedupeIntsPreserveOrder(normalized);
 		DraftRequirement r = currentDraft.getRequirements().get(index);
 		r.setRawId(normalized.get(0));
 		r.getAlternateRawIds().clear();
@@ -2337,6 +2304,61 @@ public class HelperConstructManager
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Clears varbit routing for this quest-order slot, removes {@code ORDER_VARBIT} nodes from that row's conditions
+	 * tree, and drops step-definition routing rows for the slot. Does not remove the order row or any step definition.
+	 */
+	public boolean clearVarbitRoutingForOrderSlotId(String orderSlotId)
+	{
+		ensureDraftLoaded();
+		if (orderSlotId == null || orderSlotId.isBlank())
+		{
+			return false;
+		}
+		DraftOrderLine line = findOrderLineByOrderSlotId(orderSlotId);
+		if (line == null || line.isSectionDivider())
+		{
+			return false;
+		}
+		removeRoutingVarbitForOrderSlot(orderSlotId);
+		DraftOrderStepRequirement tree = line.getStepRequirement();
+		if (tree != null)
+		{
+			DraftOrderStepRequirement pruned = OrderStepRequirementSupport.stripOrderVarbitLeaves(tree);
+			line.setStepRequirement(pruned);
+			OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
+		}
+		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
+		{
+			rebuildWorldMapRoutePoints();
+		}
+		return true;
+	}
+
+	/** Short label for {@code ORDER_VARBIT} leaves in the order-conditions editor (from this row's Varbit routing). */
+	public String formatOrderVarbitLeafSummaryForEditor(int orderIndex)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return "Varbit";
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return "Varbit";
+		}
+		DraftStepAttachedRequirement cfg = DraftStepAttachedRequirement.findOrderRoutingVarbit(line);
+		VarbitSpec spec = VarbitSpec.fromStepAttachment(cfg);
+		String disp = spec.getDisplayText();
+		if (disp != null && !disp.isBlank())
+		{
+			return disp + " — vb " + spec.getVarbitId() + " " + spec.getOperation() + " " + spec.getRequiredValue();
+		}
+		return "Varbit " + spec.getVarbitId() + " " + spec.getOperation() + " " + spec.getRequiredValue();
 	}
 
 	public boolean moveStep(int fromIndex, int toIndex)
@@ -2455,7 +2477,7 @@ public class HelperConstructManager
 			String displayName = normalizeText(requirement.getDisplayName());
 			if (displayName.isBlank())
 			{
-				displayName = formatCsvIds(mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()));
+				displayName = DraftRoutingIds.formatCsvIds(DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()));
 				if (displayName.isBlank())
 				{
 					displayName = String.valueOf(requirement.getRawId());
@@ -2627,60 +2649,11 @@ public class HelperConstructManager
 		loadDraftFromConfig();
 	}
 
-	private static File constructDraftFile()
-	{
-		if (RuneLite.RUNELITE_DIR == null)
-		{
-			return null;
-		}
-		return new File(new File(RuneLite.RUNELITE_DIR, DRAFT_SUBDIR), DRAFT_FILENAME);
-	}
-
-	/**
-	 * True when JSON looks like a Tasks Tracker route document (possibly with {@code questHelperMaker}),
-	 * as opposed to a legacy root-only {@link ConstructDraftPersistence.DraftState} file.
-	 */
-	private static boolean jsonHasTopLevelRouteEnvelope(String json)
-	{
-		try
-		{
-			@SuppressWarnings("deprecation")
-			JsonElement el = new JsonParser().parse(json);
-			if (!el.isJsonObject())
-			{
-				return false;
-			}
-			JsonObject o = el.getAsJsonObject();
-			return o.has("sections") && o.get("sections").isJsonArray();
-		}
-		catch (Exception e)
-		{
-			return false;
-		}
-	}
-
-	private void loadCurrentDraftFromParsedRoute(TasksTrackerRouteDto route)
-	{
-		if (ConstructDraftPersistence.isSupportedMakerSnapshot(route.getQuestHelperMaker()))
-		{
-			currentDraft = ConstructDraftPersistence.draftHelperFromState(route.getQuestHelperMaker());
-		}
-		else
-		{
-			if (route.getQuestHelperMaker() != null)
-			{
-				log.warn("Ignoring questHelperMaker: unsupported formatVersion or malformed snapshot; using route sections only.");
-			}
-			currentDraft = TasksTrackerRouteImporter.importRoute(route, null);
-		}
-	}
-
 	private void loadDraftFromConfig()
 	{
-		File draftFile = constructDraftFile();
-		final boolean fileExisted = draftFile != null && draftFile.isFile();
+		File draftFile = MakerDraftFileStore.draftFileOrNull();
 		String json = null;
-		if (fileExisted)
+		if (draftFile != null && draftFile.isFile())
 		{
 			try
 			{
@@ -2691,70 +2664,19 @@ public class HelperConstructManager
 				log.warn("Could not read Quest Helper Maker draft from {}", draftFile.getAbsolutePath(), e);
 			}
 		}
-		if ((json == null || json.isBlank()) && configManager != null)
-		{
-			json = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
-		}
 		if (json == null || json.isBlank())
 		{
 			return;
 		}
-
-		try
+		MakerDraftJsonLoader.LoadOutcome outcome = MakerDraftJsonLoader.loadDraftFromJson(json, gson);
+		if (!outcome.isSuccess())
 		{
-			String trimmed = json.trim();
-			if (jsonHasTopLevelRouteEnvelope(trimmed))
-			{
-				TasksTrackerRouteDto route = gson.fromJson(trimmed, TasksTrackerRouteDto.class);
-				String validationError = TasksTrackerRouteValidation.validateRoute(route);
-				if (validationError != null)
-				{
-					log.warn("Quest Helper Maker draft file is invalid Tasks Tracker route JSON: {}", validationError);
-					currentDraft = new DraftHelper();
-				}
-				else
-				{
-					loadCurrentDraftFromParsedRoute(route);
-				}
-			}
-			else
-			{
-				ConstructDraftPersistence.DraftState state = gson.fromJson(trimmed, ConstructDraftPersistence.DraftState.class);
-				if (state == null)
-				{
-					return;
-				}
-				currentDraft = ConstructDraftPersistence.draftHelperFromState(state);
-			}
-			reconcileOrderSlotRoutingAttachments();
-			finalizeDraftPersistenceAfterLoad(fileExisted);
-		}
-		catch (JsonSyntaxException ignored)
-		{
+			log.warn("Quest Helper Maker draft file is not valid extended route JSON: {}", outcome.getErrorMessage());
 			currentDraft = new DraftHelper();
-		}
-	}
-
-	/**
-	 * After a successful load: if the draft came from legacy config (no file yet), persist the parsed draft to disk.
-	 * If a legacy config key is still set, remove it so the file is the single source of truth.
-	 */
-	private void finalizeDraftPersistenceAfterLoad(boolean draftFileExistedBeforeLoad)
-	{
-		if (configManager == null)
-		{
 			return;
 		}
-		String legacy = configManager.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
-		if (legacy == null || legacy.isBlank())
-		{
-			return;
-		}
-		if (!draftFileExistedBeforeLoad)
-		{
-			saveDraftToConfig();
-		}
-		configManager.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, CONSTRUCT_DRAFT_CONFIG_KEY);
+		currentDraft = outcome.getDraft();
+		reconcileOrderSlotRoutingAttachments();
 	}
 
 	/**
@@ -2774,44 +2696,19 @@ public class HelperConstructManager
 	public ImportDraftResult importDraftFromJson(String json)
 	{
 		ensureDraftLoaded();
-		if (json == null || json.isBlank())
+		MakerDraftJsonLoader.LoadOutcome outcome = MakerDraftJsonLoader.loadDraftFromJson(json, gson);
+		if (!outcome.isSuccess())
 		{
-			return ImportDraftResult.failure("JSON is empty");
+			return ImportDraftResult.failure(outcome.getErrorMessage());
 		}
-		try
+		currentDraft = outcome.getDraft();
+		reconcileOrderSlotRoutingAttachments();
+		saveDraftToConfig();
+		if (worldMapRoutePreviewEnabled)
 		{
-			String trimmed = json.trim();
-			if (jsonHasTopLevelRouteEnvelope(trimmed))
-			{
-				TasksTrackerRouteDto route = gson.fromJson(trimmed, TasksTrackerRouteDto.class);
-				String validationError = TasksTrackerRouteValidation.validateRoute(route);
-				if (validationError != null)
-				{
-					return ImportDraftResult.failure(validationError);
-				}
-				loadCurrentDraftFromParsedRoute(route);
-			}
-			else
-			{
-				ConstructDraftPersistence.DraftState state = gson.fromJson(trimmed, ConstructDraftPersistence.DraftState.class);
-				if (state == null)
-				{
-					return ImportDraftResult.failure("Could not parse draft");
-				}
-				currentDraft = ConstructDraftPersistence.draftHelperFromState(state);
-			}
-			reconcileOrderSlotRoutingAttachments();
-			saveDraftToConfig();
-			if (worldMapRoutePreviewEnabled)
-			{
-				rebuildWorldMapRoutePoints();
-			}
-			return ImportDraftResult.ok();
+			rebuildWorldMapRoutePoints();
 		}
-		catch (JsonSyntaxException e)
-		{
-			return ImportDraftResult.failure(e.getMessage());
-		}
+		return ImportDraftResult.ok();
 	}
 
 	/**
@@ -2828,41 +2725,12 @@ public class HelperConstructManager
 	 */
 	public ImportDraftResult importTasksTrackerRouteFromJson(String routeJson)
 	{
-		ensureDraftLoaded();
-		if (routeJson == null || routeJson.isBlank())
-		{
-			return ImportDraftResult.failure("Route JSON is empty");
-		}
-		try
-		{
-			TasksTrackerRouteDto route = gson.fromJson(routeJson.trim(), TasksTrackerRouteDto.class);
-			if (route == null)
-			{
-				return ImportDraftResult.failure("Could not parse route JSON");
-			}
-			String validationError = TasksTrackerRouteValidation.validateRoute(route);
-			if (validationError != null)
-			{
-				return ImportDraftResult.failure(validationError);
-			}
-			loadCurrentDraftFromParsedRoute(route);
-			reconcileOrderSlotRoutingAttachments();
-			saveDraftToConfig();
-			if (worldMapRoutePreviewEnabled)
-			{
-				rebuildWorldMapRoutePoints();
-			}
-			return ImportDraftResult.ok();
-		}
-		catch (JsonSyntaxException | IllegalArgumentException e)
-		{
-			return ImportDraftResult.failure(e.getMessage());
-		}
+		return importDraftFromJson(routeJson);
 	}
 
 	private void saveDraftToConfig()
 	{
-		File file = constructDraftFile();
+		File file = MakerDraftFileStore.draftFileOrNull();
 		if (file == null)
 		{
 			log.warn("Cannot save Quest Helper Maker draft: RuneLite data directory is not set.");
@@ -2871,15 +2739,7 @@ public class HelperConstructManager
 		try
 		{
 			reconcileOrderSlotRoutingAttachments();
-			File parent = file.getParentFile();
-			if (parent != null)
-			{
-				Files.createDirectories(parent.toPath());
-			}
-			Files.writeString(
-				file.toPath(),
-				gson.toJson(TasksTrackerRouteExporter.export(currentDraft)),
-				StandardCharsets.UTF_8);
+			MakerDraftFileStore.writeUtf8(file, gson.toJson(TasksTrackerRouteExporter.export(currentDraft)));
 		}
 		catch (IOException e)
 		{
@@ -2993,7 +2853,7 @@ public class HelperConstructManager
 			displayName = normalizeText(step.getTargetText());
 			if (displayName.isBlank())
 			{
-				displayName = formatCsvIds(mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds()));
+				displayName = DraftRoutingIds.formatCsvIds(DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds()));
 				if (displayName.isBlank())
 				{
 					displayName = String.valueOf(step.getRawId());
@@ -3012,7 +2872,7 @@ public class HelperConstructManager
 		{
 			return;
 		}
-		clearWorldMapRoutePoints();
+		MakerPreviewRuntime.clearConstructWorldMapPoints(worldMapPointManager);
 		List<DraftStep> steps = expandOrderToDefinitionsInOrder();
 		for (int i = 0; i < steps.size(); i++)
 		{
@@ -3030,10 +2890,7 @@ public class HelperConstructManager
 
 	private void clearWorldMapRoutePoints()
 	{
-		if (worldMapPointManager != null)
-		{
-			worldMapPointManager.removeIf(ConstructWorldMapPoint.class::isInstance);
-		}
+		MakerPreviewRuntime.clearConstructWorldMapPoints(worldMapPointManager);
 	}
 
 	private String displayStepName(DraftStep step)
@@ -3048,7 +2905,7 @@ public class HelperConstructManager
 		{
 			return target;
 		}
-		String idLabel = formatCsvIds(mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds()));
+		String idLabel = DraftRoutingIds.formatCsvIds(DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds()));
 		return idLabel.isBlank() ? "step" : idLabel;
 	}
 
@@ -3235,7 +3092,7 @@ public class HelperConstructManager
 				String display = requirement.getDisplayName() == null || requirement.getDisplayName().isBlank()
 					? "Required item"
 					: requirement.getDisplayName();
-				List<Integer> ids = mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
+				List<Integer> ids = DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
 				if (ids.size() <= 1)
 				{
 					previewRequirements.add(new ItemRequirement(display, requirement.getRawId()));

@@ -2,6 +2,7 @@ package com.questhelper.managers;
 
 import com.questhelper.managers.GamevalSymbolResolver.ResolutionResult;
 
+import com.questhelper.managers.construct.DraftRoutingIds;
 import com.questhelper.managers.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.Operation;
 
@@ -88,7 +89,7 @@ public class HelperScaffoldGenerator
 		for (DraftRequirement requirement : requirements)
 		{
 			String var = toVarName(requirement.getDisplayName(), "itemReq");
-			for (int rid : HelperConstructManager.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()))
+			for (int rid : DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()))
 			{
 				requirementVarNamesByRawId.put(rid, var);
 			}
@@ -159,7 +160,7 @@ public class HelperScaffoldGenerator
 		for (DraftRequirement requirement : requirements)
 		{
 			String varName = toVarName(requirement.getDisplayName(), "itemReq");
-			List<Integer> itemIds = HelperConstructManager.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
+			List<Integer> itemIds = DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
 			if (itemIds.size() == 1)
 			{
 				ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, itemIds.get(0));
@@ -324,7 +325,7 @@ public class HelperScaffoldGenerator
 	void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
 	{
 		String point = worldPointLiteral(step);
-		List<Integer> ids = HelperConstructManager.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds());
+		List<Integer> ids = DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds());
 		IdType idType = step.getKind() == StepKind.NPC ? IdType.NPC : IdType.OBJECT;
 		List<String> symbols = new ArrayList<>();
 		for (int id : ids)

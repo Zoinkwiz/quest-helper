@@ -10,7 +10,7 @@ import java.util.List;
  * Gson DTOs for Tasks Tracker "Import Route from Clipboard" JSON
  * (<a href="https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin">wiki</a>).
  * Optional {@link RouteItemDto#interact} is a Quest Helper extension for NPC/object ids.
- * Optional {@link #questHelperMaker} holds the full Quest Helper maker draft snapshot (same JSON shape as legacy root draft).
+ * Optional {@link #questHelperMaker} holds the full Quest Helper maker draft snapshot ({@link ConstructDraftPersistence.DraftState}).
  */
 @SuppressWarnings("unused")
 public final class TasksTrackerRouteDto

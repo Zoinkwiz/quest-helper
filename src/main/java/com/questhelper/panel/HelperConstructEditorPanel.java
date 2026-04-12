@@ -41,11 +41,11 @@ public final class HelperConstructEditorPanel extends JPanel
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
 		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
-		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Click Conditions in a row to edit branch requirements (logic groups AND/OR/NOR/NAND, order varbit, items, inline varbits, NOT). Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
-		"5. Varbit reqs tab: one row per quest-order slot whose Conditions tree includes an order varbit — values are stored on that order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove at the bottom right deletes the selected row. Search filters varbit rows.",
+		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Click Conditions in a row to edit branch requirements (logic groups AND/OR/NOR/NAND, Add varbit from an existing slot, Create new varbit, captured items, NOT). Varbit id/value/operation are edited on the Varbit reqs tab, not on the order-varbit tree node. Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
+		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
 		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
 		"7. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON).",
-		"8. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Legacy root-only draft JSON (no `sections` key) still imports.");
+		"8. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Older root-only maker JSON (no top-level `sections`) must be converted first: run `python scripts/construct/convert_legacy_maker_draft.py` (see `scripts/construct/README.md`).");
 
 	private final HelperConstructManager helperConstructManager;
 	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(ConstructStepKind.NPC);
@@ -108,7 +108,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
 		exportJsonButton.setToolTipText("<html>Copy extended Tasks Tracker route JSON (pretty-printed): <code>sections</code>/<code>items</code> for the plugin wiki plus <code>questHelperMaker</code> with the full maker state.<br><a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">Tasks Tracker: Import Route from Clipboard</a>. Re-exporting from the plugin may drop <code>questHelperMaker</code>; keep a Quest Helper copy.</html>");
 		saveJsonButton.setToolTipText("Write the same extended route JSON document to a file.");
-		importJsonButton.setToolTipText("<html>Replace the draft from pasted JSON or a file: extended route with <code>questHelperMaker</code>, route-only (no maker blob), or legacy root draft JSON.<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a> for route fields.</html>");
+		importJsonButton.setToolTipText("<html>Replace the draft from pasted JSON or a file: extended route with <code>questHelperMaker</code> or route-only (no maker blob). Convert old root-only drafts with <code>scripts/construct/convert_legacy_maker_draft.py</code>.<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a> for route fields.</html>");
 		syncWorldMapRouteButtonLabel();
 
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
@@ -211,7 +211,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				return;
 			}
 			String orderSlotId = varbitRoutingTableModel.getOrderSlotIdAt(r);
-			if (orderSlotId != null && helperConstructManager.removeOrderLineByOrderSlotId(orderSlotId))
+			if (orderSlotId != null && helperConstructManager.clearVarbitRoutingForOrderSlotId(orderSlotId))
 			{
 				refresh();
 			}

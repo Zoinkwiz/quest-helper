@@ -4,7 +4,6 @@ import net.runelite.client.config.ConfigManager;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,23 +81,6 @@ class HelperConstructManagerTest
 	}
 
 	@Test
-	void addItemStepReusesExistingRequirement()
-		throws Exception
-	{
-		HelperConstructManager manager = new HelperConstructManager();
-		Method addItemStep = HelperConstructManager.class.getDeclaredMethod("addItemStep", int.class, String.class);
-		addItemStep.setAccessible(true);
-
-		addItemStep.invoke(manager, 100, "Bucket");
-		addItemStep.invoke(manager, 100, "Bucket");
-
-		assertEquals(1, manager.getCurrentDraft().getRequirements().size());
-		assertEquals(1, manager.getCurrentDraft().getStepDefinitions().size());
-		assertEquals(100, manager.getCurrentDraft().getRequirements().get(0).getRawId());
-		assertEquals(100, manager.getCurrentDraft().getStepDefinitions().get(0).getRawId());
-	}
-
-	@Test
 	void removingNpcDefinitionRemovesOrderRefs()
 	{
 		HelperConstructManager manager = new HelperConstructManager();
@@ -145,11 +127,23 @@ class HelperConstructManagerTest
 	}
 
 	@Test
-	void importLegacyRootOnlyDraftStateJsonStillWorks()
+	void importRejectsRootOnlyDraftAndMentionsConversionScript()
 	{
 		HelperConstructManager manager = new HelperConstructManager();
 		String json = "{\"formatVersion\":1,\"questName\":\"LegacyOnly\",\"className\":\"LH\",\"packagePath\":\"p\",\"helperType\":\"BasicQuestHelper\","
-			+ "\"definitions\":[],\"order\":[],\"requirements\":[],\"varbitRequirements\":[]}";
+			+ "\"definitions\":[],\"order\":[],\"requirements\":[]}";
+		HelperConstructManager.ImportDraftResult result = manager.importDraftFromJson(json);
+		assertFalse(result.isSuccess());
+		assertTrue(result.getErrorMessage().contains("convert_legacy_maker_draft"));
+	}
+
+	@Test
+	void importExtendedRouteWithMakerSnapshotWorks()
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		String json = "{\"name\":\"LegacyOnly\",\"taskType\":\"LEAGUE_5\",\"author\":\"t\",\"sections\":[{\"name\":\"Main\",\"description\":null,\"items\":[]}],"
+			+ "\"questHelperMaker\":{\"formatVersion\":1,\"questName\":\"LegacyOnly\",\"className\":\"LH\",\"packagePath\":\"p\",\"helperType\":\"BasicQuestHelper\","
+			+ "\"definitions\":[],\"order\":[],\"requirements\":[]}}";
 		assertTrue(manager.importDraftFromJson(json).isSuccess());
 		assertEquals("LegacyOnly", manager.getCurrentDraft().getQuestName());
 		assertEquals("LH", manager.getCurrentDraft().getClassName());
@@ -233,7 +227,8 @@ class HelperConstructManagerTest
 	void importJsonWithoutRequirementsFieldDoesNotThrow()
 	{
 		HelperConstructManager manager = new HelperConstructManager();
-		String json = "{\"formatVersion\":1,\"questName\":\"X\",\"className\":\"YHelper\",\"definitions\":[],\"order\":[]}";
+		String json = "{\"name\":\"X\",\"taskType\":\"LEAGUE_5\",\"author\":\"t\",\"sections\":[{\"name\":\"Main\",\"items\":[]}],"
+			+ "\"questHelperMaker\":{\"formatVersion\":1,\"questName\":\"X\",\"className\":\"YHelper\",\"definitions\":[],\"order\":[]}}";
 		assertTrue(manager.importDraftFromJson(json).isSuccess());
 		assertEquals("X", manager.getCurrentDraft().getQuestName());
 		assertTrue(manager.getCurrentDraft().getRequirements().isEmpty());

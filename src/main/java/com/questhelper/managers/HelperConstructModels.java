@@ -61,18 +61,18 @@ public final class HelperConstructModels
 		 */
 		private String orderSlotId;
 
-		static DraftStepAttachedRequirement item(int rawId)
+		public static DraftStepAttachedRequirement item(int rawId)
 		{
 			return item(rawId, false);
 		}
 
-		static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted)
+		public static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted)
 		{
 			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, attachmentHighlighted, null);
 		}
 
 		/** Extra (non–order-slot) varbit requirement on the step. */
-		static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
+		public static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
 			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, null);

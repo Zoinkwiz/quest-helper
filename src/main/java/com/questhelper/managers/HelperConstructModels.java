@@ -8,13 +8,13 @@ import net.runelite.api.coords.WorldPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-final class HelperConstructModels
+public final class HelperConstructModels
 {
 	private HelperConstructModels()
 	{
 	}
 
-	enum StepKind
+	public enum StepKind
 	{
 		NPC,
 		OBJECT,
@@ -22,7 +22,7 @@ final class HelperConstructModels
 		TEXT
 	}
 
-	enum IdType
+	public enum IdType
 	{
 		NPC,
 		OBJECT,
@@ -37,7 +37,7 @@ final class HelperConstructModels
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
-	static class DraftStepAttachedRequirement
+	public static class DraftStepAttachedRequirement
 	{
 		/** {@link StepAttachmentKind#name()} or future discriminator. */
 		private String kind;
@@ -69,7 +69,7 @@ final class HelperConstructModels
 		}
 	}
 
-	enum StepAttachmentKind
+	public enum StepAttachmentKind
 	{
 		ITEM,
 		VARBIT
@@ -78,7 +78,7 @@ final class HelperConstructModels
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
-	static class DraftRequirement
+	public static class DraftRequirement
 	{
 		private int rawId;
 		private String resolvedSymbol;
@@ -88,7 +88,7 @@ final class HelperConstructModels
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
-	static class DraftStep
+	public static class DraftStep
 	{
 		private String stepId;
 		private StepKind kind;
@@ -113,7 +113,7 @@ final class HelperConstructModels
 	/** Order row: section divider or ref to a definition. {@code linkedRequirementRawId}: {@code null} = varbit-based routing (item steps use definition raw id for highlight); {@code -1} = varbit only; else captured item requirement raw id. */
 	@Data
 	@NoArgsConstructor
-	static class DraftOrderLine
+	public static class DraftOrderLine
 	{
 		private boolean sectionDivider;
 		private String lineId;
@@ -128,7 +128,7 @@ final class HelperConstructModels
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
-	static class DraftVarbitRequirement
+	public static class DraftVarbitRequirement
 	{
 		private String lineId;
 		private int varbitId;
@@ -144,7 +144,7 @@ final class HelperConstructModels
 
 	@Data
 	@NoArgsConstructor
-	static class DraftHelper
+	public static class DraftHelper
 	{
 		private String questName = "Generated Quest";
 		private String className = "GeneratedQuestHelper";

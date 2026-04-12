@@ -24,6 +24,10 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public final class HelperConstructEditorPanel extends JPanel
 {
@@ -34,7 +38,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		"4. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit-only routing — edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove at the bottom right deletes the selected row. Choosing a concrete item override on that order row removes the varbit row.",
 		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
-		"7. JSON export/import matches the maker draft file format. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / manual Save JSON).");
+		"7. JSON export/import matches the maker draft file format. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / manual Save JSON).",
+		"8. Export Tasks route copies JSON for the Tasks Tracker plugin (Import Route from Clipboard); Import Tasks route replaces the draft from pasted route JSON (taskId = struct id, plus notes and locations on the route).");
 
 	private final HelperConstructManager helperConstructManager;
 	private final StepLibraryTableModel npcLibraryModel = new StepLibraryTableModel(ConstructStepKind.NPC);
@@ -51,6 +56,8 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
 	private final Timer refreshTimer;
 	private JButton worldMapRouteButton;
+	/** Maker header actions; reflows into a "More…" menu when the panel is too narrow. */
+	private OverflowingMakerToolbar makerToolbarRow;
 	private String lastRenderSignature = "";
 
 	public HelperConstructEditorPanel(HelperConstructManager helperConstructManager)
@@ -86,8 +93,10 @@ public final class HelperConstructEditorPanel extends JPanel
 		JButton exportJsonButton = new JButton("Export JSON");
 		JButton saveJsonButton = new JButton("Save JSON…");
 		JButton importJsonButton = new JButton("Import JSON…");
+		JButton exportTasksRouteButton = new JButton("Export Tasks route");
+		JButton importTasksRouteButton = new JButton("Import Tasks route…");
 		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton,
-			exportJsonButton, saveJsonButton, importJsonButton);
+			exportJsonButton, saveJsonButton, importJsonButton, exportTasksRouteButton, importTasksRouteButton);
 		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
 		resetButton.setToolTipText("Clear the draft and reset the auto-saved maker file (asks for confirmation).");
 		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
@@ -96,6 +105,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		exportJsonButton.setToolTipText("Copy the whole draft as pretty-printed JSON (same shape as the auto-saved draft file).");
 		saveJsonButton.setToolTipText("Write the draft JSON to a file.");
 		importJsonButton.setToolTipText("Replace the current draft from pasted JSON or a file (writes the auto-saved draft file when successful).");
+		exportTasksRouteButton.setToolTipText("<html>Copy Tasks Tracker route JSON to the clipboard.<br>Schema: <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">How to Export Routes to Plugin</a>.<br>Paste in the plugin: route selector … → Import Route from Clipboard.</html>");
+		importTasksRouteButton.setToolTipText("<html>Replace the draft from Tasks Tracker route JSON (<code>taskId</code> = struct id, <code>note</code>, <code>location</code>, optional <code>interact</code>).<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a>. If both <code>npc</code> and <code>object</code> ids are set in <code>interact</code>, import uses the first NPC id only.<br>Section <code>description</code> is not stored on section dividers.</html>");
 		syncWorldMapRouteButtonLabel();
 
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
@@ -123,20 +134,26 @@ public final class HelperConstructEditorPanel extends JPanel
 		exportJsonButton.addActionListener(e -> exportDraftJsonToClipboard());
 		saveJsonButton.addActionListener(e -> saveDraftJsonToFile());
 		importJsonButton.addActionListener(e -> showImportDraftJsonDialog());
+		exportTasksRouteButton.addActionListener(e -> exportTasksTrackerRouteToClipboard());
+		importTasksRouteButton.addActionListener(e -> showImportTasksTrackerRouteDialog());
 
-		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
-		toolbar.setOpaque(false);
-		toolbar.add(buildButton);
-		toolbar.add(resetButton);
-		toolbar.add(previewButton);
-		toolbar.add(newToolbarSeparator());
-		toolbar.add(mapButton);
-		toolbar.add(worldMapRouteButton);
-		toolbar.add(newToolbarSeparator());
-		toolbar.add(exportJsonButton);
-		toolbar.add(saveJsonButton);
-		toolbar.add(importJsonButton);
-		header.add(toolbar, BorderLayout.SOUTH);
+		List<JComponent> makerToolbarChain = new ArrayList<>();
+		makerToolbarChain.add(buildButton);
+		makerToolbarChain.add(resetButton);
+		makerToolbarChain.add(previewButton);
+		makerToolbarChain.add(newToolbarSeparator());
+		makerToolbarChain.add(mapButton);
+		makerToolbarChain.add(worldMapRouteButton);
+		makerToolbarChain.add(newToolbarSeparator());
+		makerToolbarChain.add(exportJsonButton);
+		makerToolbarChain.add(saveJsonButton);
+		makerToolbarChain.add(importJsonButton);
+		makerToolbarChain.add(newToolbarSeparator());
+		makerToolbarChain.add(exportTasksRouteButton);
+		makerToolbarChain.add(importTasksRouteButton);
+		makerToolbarRow = new OverflowingMakerToolbar(makerToolbarChain, this::applyMakerToolbarStyle);
+		makerToolbarRow.setOpaque(false);
+		header.add(makerToolbarRow, BorderLayout.SOUTH);
 
 		JPanel orderedView = buildOrderedView();
 		JTabbedPane mainTabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -267,6 +284,78 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
+	private void exportTasksTrackerRouteToClipboard()
+	{
+		String json = helperConstructManager.exportTasksTrackerRouteJson();
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(json), null);
+		JOptionPane.showMessageDialog(this,
+			"Tasks Tracker route JSON copied to clipboard.\nIn the plugin: route selector … → Import Route from Clipboard.",
+			"Export Tasks route",
+			JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private void showImportTasksTrackerRouteDialog()
+	{
+		int confirm = JOptionPane.showConfirmDialog(this,
+			"Replace the current maker draft with an imported Tasks Tracker route?\n"
+				+ "Paste route JSON (taskId, note, location per step). Export or save first if you need a backup.",
+			"Import Tasks route",
+			JOptionPane.OK_CANCEL_OPTION,
+			JOptionPane.WARNING_MESSAGE);
+		if (confirm != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		JTextArea routeArea = new JTextArea(12, 52);
+		routeArea.setLineWrap(true);
+		routeArea.setWrapStyleWord(true);
+		JButton loadRouteFile = new JButton("Load route JSON from file…");
+		loadRouteFile.addActionListener(ev -> loadTextFileIntoArea(this, routeArea));
+
+		JPanel routePanel = new JPanel(new BorderLayout(0, 4));
+		routePanel.add(new JLabel("Tasks Tracker route JSON:"), BorderLayout.NORTH);
+		routePanel.add(new JScrollPane(routeArea), BorderLayout.CENTER);
+		routePanel.add(loadRouteFile, BorderLayout.SOUTH);
+
+		int r = JOptionPane.showConfirmDialog(this, new JScrollPane(routePanel), "Import Tasks route",
+			JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		HelperConstructManager.ImportDraftResult result = helperConstructManager.importTasksTrackerRouteFromJson(
+			routeArea.getText());
+		if (result.isSuccess())
+		{
+			refresh();
+			JOptionPane.showMessageDialog(this, "Route imported and saved to the maker draft file.", "Import",
+				JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(this, result.getErrorMessage(), "Import failed", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private static void loadTextFileIntoArea(Component parent, JTextArea area)
+	{
+		JFileChooser fc = new JFileChooser();
+		if (fc.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION)
+		{
+			return;
+		}
+		try
+		{
+			area.setText(new String(Files.readAllBytes(fc.getSelectedFile().toPath()), StandardCharsets.UTF_8));
+		}
+		catch (IOException ex)
+		{
+			JOptionPane.showMessageDialog(parent, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	private void showImportDraftJsonDialog()
 	{
 		int confirm = JOptionPane.showConfirmDialog(this,
@@ -337,6 +426,10 @@ public final class HelperConstructEditorPanel extends JPanel
 			worldMapRouteButton.setText(helperConstructManager.isWorldMapRoutePreviewEnabled()
 				? "WorldMap (on)"
 				: "WorldMap (off)");
+		}
+		if (makerToolbarRow != null)
+		{
+			makerToolbarRow.reconcile();
 		}
 	}
 
@@ -1312,6 +1405,114 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 		}
 		return "Requirement id " + v;
+	}
+
+	/**
+	 * Keeps maker header actions on one row; when width is insufficient, trailing items move under {@code More…} (popup menu).
+	 */
+	private static final class OverflowingMakerToolbar extends JPanel
+	{
+		private final List<JComponent> chain;
+		private final JPanel inlinePanel;
+		private final JButton moreButton;
+		private final JPopupMenu overflowMenu;
+		private final Consumer<JButton> styleMoreLikeToolbar;
+
+		OverflowingMakerToolbar(List<JComponent> chain, Consumer<JButton> styleMoreLikeToolbar)
+		{
+			super(new BorderLayout());
+			this.chain = List.copyOf(chain);
+			this.styleMoreLikeToolbar = styleMoreLikeToolbar;
+			setOpaque(false);
+			inlinePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
+			inlinePanel.setOpaque(false);
+			moreButton = new JButton("More…");
+			styleMoreLikeToolbar.accept(moreButton);
+			moreButton.setToolTipText("Additional maker actions that do not fit in the toolbar.");
+			overflowMenu = new JPopupMenu();
+			moreButton.addActionListener(e -> overflowMenu.show(moreButton, 0, moreButton.getHeight()));
+			add(inlinePanel, BorderLayout.CENTER);
+			addComponentListener(new ComponentAdapter()
+			{
+				@Override
+				public void componentResized(ComponentEvent e)
+				{
+					reconcile();
+				}
+			});
+			SwingUtilities.invokeLater(this::reconcile);
+		}
+
+		void reconcile()
+		{
+			final int hgap = 8;
+			int avail = getWidth() - getInsets().left - getInsets().right;
+			if (avail <= 0)
+			{
+				return;
+			}
+			int n = chain.size();
+			int moreW = moreButton.getPreferredSize().width + hgap;
+			int best = 0;
+			for (int k = n; k >= 0; k--)
+			{
+				int prefixW = prefixWidth(chain, 0, k, hgap);
+				int reserveMore = (k < n) ? moreW : 0;
+				if (prefixW + reserveMore <= avail)
+				{
+					best = k;
+					break;
+				}
+			}
+			while (best > 0 && chain.get(best - 1) instanceof JSeparator)
+			{
+				best--;
+			}
+			inlinePanel.removeAll();
+			overflowMenu.removeAll();
+			for (int i = 0; i < best; i++)
+			{
+				inlinePanel.add(chain.get(i));
+			}
+			if (best < n)
+			{
+				for (int i = best; i < n; i++)
+				{
+					JComponent c = chain.get(i);
+					if (c instanceof JButton)
+					{
+						JButton b = (JButton) c;
+						JMenuItem mi = new JMenuItem(b.getText());
+						String tt = b.getToolTipText();
+						if (tt != null && !tt.isBlank())
+						{
+							mi.setToolTipText(tt);
+						}
+						mi.addActionListener(ev -> b.doClick());
+						overflowMenu.add(mi);
+					}
+				}
+				inlinePanel.add(moreButton);
+			}
+			inlinePanel.revalidate();
+			inlinePanel.repaint();
+			revalidate();
+			repaint();
+		}
+
+		private static int prefixWidth(List<JComponent> chain, int from, int toExclusive, int hgap)
+		{
+			int w = 0;
+			for (int i = from; i < toExclusive; i++)
+			{
+				if (i > from)
+				{
+					w += hgap;
+				}
+				w += chain.get(i).getPreferredSize().width;
+			}
+			return w;
+		}
 	}
 
 	private static final class ReqChoice

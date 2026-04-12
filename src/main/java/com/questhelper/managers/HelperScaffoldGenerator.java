@@ -709,7 +709,7 @@ public class HelperScaffoldGenerator
 		return Character.toUpperCase(cleaned.charAt(0)) + cleaned.substring(1);
 	}
 
-	static String toVarName(String text, String fallback)
+	public static String toVarName(String text, String fallback)
 	{
 		if (text == null || text.isBlank())
 		{

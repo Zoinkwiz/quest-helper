@@ -3,6 +3,10 @@ package com.questhelper.managers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.questhelper.managers.taskstroute.TasksTrackerRouteDto;
+import com.questhelper.managers.taskstroute.TasksTrackerRouteExporter;
+import com.questhelper.managers.taskstroute.TasksTrackerRouteImporter;
+import com.questhelper.managers.taskstroute.TasksTrackerRouteValidation;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -2433,6 +2437,54 @@ public class HelperConstructManager
 			return ImportDraftResult.ok();
 		}
 		catch (JsonSyntaxException e)
+		{
+			return ImportDraftResult.failure(e.getMessage());
+		}
+	}
+
+	/**
+	 * Pretty JSON for Tasks Tracker "Import Route from Clipboard" (see osrs-reldo tasks-tracker wiki).
+	 */
+	public String exportTasksTrackerRouteJson()
+	{
+		ensureDraftLoaded();
+		reconcileVarbitRequirementsWithOrder();
+		TasksTrackerRouteDto dto = TasksTrackerRouteExporter.export(currentDraft);
+		return new GsonBuilder().setPrettyPrinting().create().toJson(dto);
+	}
+
+	/**
+	 * Replace the maker draft from a Tasks Tracker route JSON ({@code taskId} = struct id, plus {@code note}, {@code location}, optional {@code interact}).
+	 */
+	public ImportDraftResult importTasksTrackerRouteFromJson(String routeJson)
+	{
+		ensureDraftLoaded();
+		if (routeJson == null || routeJson.isBlank())
+		{
+			return ImportDraftResult.failure("Route JSON is empty");
+		}
+		try
+		{
+			TasksTrackerRouteDto route = gson.fromJson(routeJson.trim(), TasksTrackerRouteDto.class);
+			if (route == null)
+			{
+				return ImportDraftResult.failure("Could not parse route JSON");
+			}
+			String validationError = TasksTrackerRouteValidation.validateRoute(route);
+			if (validationError != null)
+			{
+				return ImportDraftResult.failure(validationError);
+			}
+			currentDraft = TasksTrackerRouteImporter.importRoute(route, null, symbolResolver);
+			reconcileVarbitRequirementsWithOrder();
+			saveDraftToConfig();
+			if (worldMapRoutePreviewEnabled)
+			{
+				rebuildWorldMapRoutePoints();
+			}
+			return ImportDraftResult.ok();
+		}
+		catch (JsonSyntaxException | IllegalArgumentException e)
 		{
 			return ImportDraftResult.failure(e.getMessage());
 		}

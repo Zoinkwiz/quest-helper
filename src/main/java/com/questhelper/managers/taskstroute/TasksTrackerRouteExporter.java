@@ -1,5 +1,6 @@
 package com.questhelper.managers.taskstroute;
 
+import com.questhelper.managers.HelperConstructManager;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
 import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteItemDto;
@@ -104,14 +105,12 @@ public final class TasksTrackerRouteExporter
 		RouteInteractDto inter = new RouteInteractDto();
 		if (def.getKind() == StepKind.NPC && def.getRawId() != 0)
 		{
-			List<Integer> npc = new ArrayList<>();
-			npc.add(def.getRawId());
+			List<Integer> npc = new ArrayList<>(HelperConstructManager.mergedStepOrRequirementIds(def.getRawId(), def.getAlternateRawIds()));
 			inter.setNpc(npc);
 		}
 		else if (def.getKind() == StepKind.OBJECT && def.getRawId() != 0)
 		{
-			List<Integer> obj = new ArrayList<>();
-			obj.add(def.getRawId());
+			List<Integer> obj = new ArrayList<>(HelperConstructManager.mergedStepOrRequirementIds(def.getRawId(), def.getAlternateRawIds()));
 			inter.setObject(obj);
 		}
 		if (inter.getNpc() == null && inter.getObject() == null)

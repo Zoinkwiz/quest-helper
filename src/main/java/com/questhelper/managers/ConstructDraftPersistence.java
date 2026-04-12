@@ -85,6 +85,10 @@ final class ConstructDraftPersistence
 				req.setRawId(reqState.rawId);
 				req.setResolvedSymbol(reqState.resolvedSymbol);
 				req.setDisplayName(reqState.displayName);
+				if (reqState.alternateRawIds != null && !reqState.alternateRawIds.isEmpty())
+				{
+					req.getAlternateRawIds().addAll(reqState.alternateRawIds);
+				}
 				loaded.getRequirements().add(req);
 			}
 		}
@@ -181,6 +185,10 @@ final class ConstructDraftPersistence
 				stepState.worldY = step.getWorldPoint().getY();
 				stepState.worldPlane = step.getWorldPoint().getPlane();
 			}
+			if (!step.getAlternateRawIds().isEmpty())
+			{
+				stepState.alternateRawIds = new ArrayList<>(step.getAlternateRawIds());
+			}
 			state.definitions.add(stepState);
 		}
 
@@ -203,6 +211,10 @@ final class ConstructDraftPersistence
 			reqState.rawId = req.getRawId();
 			reqState.resolvedSymbol = req.getResolvedSymbol();
 			reqState.displayName = req.getDisplayName();
+			if (!req.getAlternateRawIds().isEmpty())
+			{
+				reqState.alternateRawIds = new ArrayList<>(req.getAlternateRawIds());
+			}
 			state.requirements.add(reqState);
 		}
 
@@ -241,6 +253,10 @@ final class ConstructDraftPersistence
 		step.setSectionCondition(stepState.sectionCondition);
 		step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
 		step.setStructId(stepState.structId);
+		if (stepState.alternateRawIds != null && !stepState.alternateRawIds.isEmpty())
+		{
+			step.getAlternateRawIds().addAll(stepState.alternateRawIds);
+		}
 		if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
 		{
 			step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
@@ -352,6 +368,7 @@ final class ConstructDraftPersistence
 		Integer worldX;
 		Integer worldY;
 		Integer worldPlane;
+		List<Integer> alternateRawIds;
 		List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
 	}
 
@@ -382,5 +399,6 @@ final class ConstructDraftPersistence
 		int rawId;
 		String resolvedSymbol;
 		String displayName;
+		List<Integer> alternateRawIds;
 	}
 }

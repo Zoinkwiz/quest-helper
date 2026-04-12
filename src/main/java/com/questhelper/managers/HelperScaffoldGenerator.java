@@ -84,7 +84,11 @@ public class HelperScaffoldGenerator
 		Set<String> usedNames = new LinkedHashSet<>();
 		for (DraftRequirement requirement : requirements)
 		{
-			requirementVarNamesByRawId.put(requirement.getRawId(), toVarName(requirement.getDisplayName(), "itemReq"));
+			String var = toVarName(requirement.getDisplayName(), "itemReq");
+			for (int rid : HelperConstructManager.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()))
+			{
+				requirementVarNamesByRawId.put(rid, var);
+			}
 		}
 		for (DraftStep step : definitions)
 		{
@@ -137,14 +141,34 @@ public class HelperScaffoldGenerator
 		for (DraftRequirement requirement : requirements)
 		{
 			String varName = toVarName(requirement.getDisplayName(), "itemReq");
-			ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, requirement.getRawId());
-			if (resolved.isFallbackLiteral())
+			List<Integer> itemIds = HelperConstructManager.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
+			if (itemIds.size() == 1)
 			{
-				warnings.add("Unresolved item ID: " + requirement.getRawId());
+				ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, itemIds.get(0));
+				if (resolved.isFallbackLiteral())
+				{
+					warnings.add("Unresolved item ID: " + itemIds.get(0));
+				}
+				out.append("\t\t").append(varName).append(" = new ItemRequirement(\"")
+					.append(escape(requirement.getDisplayName())).append("\", ")
+					.append(resolved.getSymbol()).append(");\n");
 			}
-			out.append("\t\t").append(varName).append(" = new ItemRequirement(\"")
-				.append(escape(requirement.getDisplayName())).append("\", ")
-				.append(resolved.getSymbol()).append(");\n");
+			else
+			{
+				List<String> syms = new ArrayList<>();
+				for (int id : itemIds)
+				{
+					ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, id);
+					if (resolved.isFallbackLiteral())
+					{
+						warnings.add("Unresolved item ID: " + id);
+					}
+					syms.add(resolved.getSymbol());
+				}
+				out.append("\t\t").append(varName).append(" = new ItemRequirement(\"")
+					.append(escape(requirement.getDisplayName())).append("\", List.of(")
+					.append(String.join(", ", syms)).append("));\n");
+			}
 		}
 		out.append("\t}\n\n");
 
@@ -281,10 +305,58 @@ public class HelperScaffoldGenerator
 	void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
 	{
 		String point = worldPointLiteral(step);
-		String symbol = resolveSymbol(step, warnings);
-		out.append("\t\t").append(varName).append(" = new ").append(stepTypeFor(step.getKind())).append("(this, ")
-			.append(symbol).append(", ").append(point).append(", \"")
-			.append(escape(instruction)).append("\");\n");
+		List<Integer> ids = HelperConstructManager.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds());
+		IdType idType = step.getKind() == StepKind.NPC ? IdType.NPC : IdType.OBJECT;
+		List<String> symbols = new ArrayList<>();
+		for (int id : ids)
+		{
+			ResolutionResult result = symbolResolver.resolve(idType, id);
+			if (result.isFallbackLiteral())
+			{
+				warnings.add("Unresolved " + idType.name().toLowerCase(Locale.ROOT) + " ID: " + id);
+			}
+			else if (result.isAmbiguous())
+			{
+				warnings.add("Ambiguous " + idType.name().toLowerCase(Locale.ROOT) + " ID: " + id + " resolved to " + result.getSymbol());
+			}
+			symbols.add(result.getSymbol());
+		}
+		if (symbols.isEmpty())
+		{
+			symbols.add(resolveSymbol(step, warnings));
+		}
+		if (step.getKind() == StepKind.NPC)
+		{
+			if (symbols.size() == 1)
+			{
+				out.append("\t\t").append(varName).append(" = new NpcStep(this, ")
+					.append(symbols.get(0)).append(", ").append(point).append(", \"")
+					.append(escape(instruction)).append("\", true);\n");
+			}
+			else
+			{
+				out.append("\t\t").append(varName).append(" = new NpcStep(this, new int[]{")
+					.append(String.join(", ", symbols)).append("}, ").append(point).append(", \"")
+					.append(escape(instruction)).append("\", true);\n");
+			}
+		}
+		else
+		{
+			String lead = symbols.get(0);
+			out.append("\t\t").append(varName).append(" = new ObjectStep(this, ")
+				.append(lead).append(", ").append(point).append(", \"")
+				.append(escape(instruction)).append("\", true");
+			if (symbols.size() > 1)
+			{
+				out.append(").addAlternateObjects(")
+					.append(String.join(", ", symbols.subList(1, symbols.size())))
+					.append(");\n");
+			}
+			else
+			{
+				out.append(");\n");
+			}
+		}
 	}
 
 	void appendTextGenericDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction)

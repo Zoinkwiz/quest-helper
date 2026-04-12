@@ -7,6 +7,7 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -36,6 +37,17 @@ final class ConstructStepKindHandlers
 
 	private ConstructStepKindHandlers()
 	{
+	}
+
+	private static int[] mergedNpcObjectIds(DraftStep d)
+	{
+		List<Integer> merged = HelperConstructManager.mergedStepOrRequirementIds(d.getRawId(), d.getAlternateRawIds());
+		int[] out = new int[merged.size()];
+		for (int i = 0; i < merged.size(); i++)
+		{
+			out[i] = merged.get(i);
+		}
+		return out;
 	}
 
 	static ConstructStepKindHandler forStepKind(StepKind kind)
@@ -192,11 +204,9 @@ final class ConstructStepKindHandlers
 		public QuestStep buildPreviewQuestStep(ConstructPreviewStepParams p)
 		{
 			DraftStep d = p.draftStep();
-			if (d.getWorldPoint() != null)
-			{
-				return new NpcStep(p.questHelper(), d.getRawId(), d.getWorldPoint(), p.instruction(), p.extrasArr());
-			}
-			return new NpcStep(p.questHelper(), d.getRawId(), p.instruction(), p.extrasArr());
+			int[] ids = mergedNpcObjectIds(d);
+			WorldPoint wp = d.getWorldPoint();
+			return new NpcStep(p.questHelper(), ids, wp, p.instruction(), true, p.extrasArr());
 		}
 
 		@Override
@@ -218,11 +228,22 @@ final class ConstructStepKindHandlers
 		public QuestStep buildPreviewQuestStep(ConstructPreviewStepParams p)
 		{
 			DraftStep d = p.draftStep();
+			int[] ids = mergedNpcObjectIds(d);
 			if (d.getWorldPoint() != null)
 			{
-				return new ObjectStep(p.questHelper(), d.getRawId(), d.getWorldPoint(), p.instruction(), p.extrasArr());
+				ObjectStep s = new ObjectStep(p.questHelper(), ids[0], d.getWorldPoint(), p.instruction(), true, p.extrasArr());
+				for (int i = 1; i < ids.length; i++)
+				{
+					s.addAlternateObjects(ids[i]);
+				}
+				return s;
 			}
-			return new ObjectStep(p.questHelper(), d.getRawId(), p.instruction(), p.extrasArr());
+			ObjectStep s = new ObjectStep(p.questHelper(), ids[0], p.instruction(), true, p.extrasArr());
+			for (int i = 1; i < ids.length; i++)
+			{
+				s.addAlternateObjects(ids[i]);
+			}
+			return s;
 		}
 
 		@Override

@@ -97,6 +97,30 @@ class TasksTrackerRouteConverterTest
 	}
 
 	@Test
+	void importRoute_storesExtraNpcIdsAsAlternates()
+	{
+		int sid = 424250;
+		TasksTrackerRouteDto route = minimalRoute("MultiNpc");
+		RouteItemDto item = new RouteItemDto();
+		item.setTaskId(sid);
+		RouteInteractDto inter = new RouteInteractDto();
+		inter.setNpc(List.of(100, 101, 102));
+		item.setInteract(inter);
+		item.setNote("multi");
+		route.getSections().get(0).setItems(List.of(item));
+
+		DraftHelper draft = TasksTrackerRouteImporter.importRoute(route, null, SYMBOLS);
+		DraftStep step = firstStepDefinition(draft);
+		assertEquals(StepKind.NPC, step.getKind());
+		assertEquals(100, step.getRawId());
+		assertEquals(List.of(101, 102), step.getAlternateRawIds());
+
+		TasksTrackerRouteDto out = TasksTrackerRouteExporter.export(draft);
+		RouteItemDto outItem = out.getSections().get(0).getItems().get(0);
+		assertEquals(List.of(100, 101, 102), outItem.getInteract().getNpc());
+	}
+
+	@Test
 	void importRoute_mapsObjectInteract()
 	{
 		int sid = 424243;

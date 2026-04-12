@@ -61,6 +61,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -86,6 +87,11 @@ public class HelperConstructManager
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
 	/** Use in UI when forcing varbit-based routing for an order row (matches persisted sentinel). */
 	public static final int ORDER_REQUIREMENT_VARBIT_ONLY = ORDER_ROUTING_VARBIT_SENTINEL;
+
+	/** One quest-order "linked item" option: label and the raw item id used for routing / highlight. */
+	public record RequirementRoutingChoice(String label, int rawId)
+	{
+	}
 
 	/** Legacy config key; draft is now stored under {@link #constructDraftFile()}. Migrated once on load when the file is missing. */
 	private static final String CONSTRUCT_DRAFT_CONFIG_KEY = "constructDraftState";
@@ -564,6 +570,10 @@ public class HelperConstructManager
 			{
 				return requirement;
 			}
+			if (requirement.getAlternateRawIds().contains(normalizedItemId))
+			{
+				return requirement;
+			}
 		}
 
 		DraftRequirement requirement = new DraftRequirement();
@@ -918,7 +928,7 @@ public class HelperConstructManager
 			}
 			if (kind == StepKind.NPC || kind == StepKind.OBJECT)
 			{
-				out.add(String.valueOf(step.getRawId()));
+				out.add(formatCsvIds(mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds())));
 			}
 			else
 			{
@@ -955,6 +965,7 @@ public class HelperConstructManager
 		if (toSk == StepKind.TEXT)
 		{
 			step.setRawId(0);
+			step.getAlternateRawIds().clear();
 			step.setResolvedSymbol("");
 			step.setOption("");
 			step.setTargetText("");
@@ -963,6 +974,7 @@ public class HelperConstructManager
 		{
 			HelperConstructModels.IdType idType = toSk == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
 			step.setRawId(0);
+			step.getAlternateRawIds().clear();
 			step.setResolvedSymbol(symbolResolver.resolve(idType, 0).getSymbol());
 			if (step.getOption() == null)
 			{
@@ -1115,14 +1127,11 @@ public class HelperConstructManager
 
 	private String labelForCapturedRequirementRawId(int rawId)
 	{
-		List<Integer> ids = getRequirementRawIds();
 		List<String> labels = getRequirementSummaries();
-		for (int i = 0; i < ids.size(); i++)
+		int i = indexOfRequirementContainingItemId(rawId);
+		if (i >= 0)
 		{
-			if (ids.get(i) == rawId)
-			{
-				return i < labels.size() ? labels.get(i) : String.valueOf(rawId);
-			}
+			return i < labels.size() ? labels.get(i) : String.valueOf(rawId);
 		}
 		return String.valueOf(rawId);
 	}
@@ -1310,18 +1319,20 @@ public class HelperConstructManager
 		{
 			return false;
 		}
-		int parsed;
-		try
-		{
-			parsed = Integer.parseInt(rawIdText == null ? "" : rawIdText.trim());
-		}
-		catch (NumberFormatException ex)
+		List<Integer> parsed = parseCsvIntsStrict(rawIdText == null ? "" : rawIdText);
+		if (parsed == null || parsed.isEmpty())
 		{
 			return false;
 		}
+		List<Integer> ids = dedupeIntsPreserveOrder(parsed);
 		HelperConstructModels.IdType idType = kind == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
-		step.setRawId(parsed);
-		step.setResolvedSymbol(symbolResolver.resolve(idType, parsed).getSymbol());
+		step.setRawId(ids.get(0));
+		step.getAlternateRawIds().clear();
+		for (int i = 1; i < ids.size(); i++)
+		{
+			step.getAlternateRawIds().add(ids.get(i));
+		}
+		step.setResolvedSymbol(symbolResolver.resolve(idType, step.getRawId()).getSymbol());
 		saveDraftToConfig();
 		rebuildWorldMapRouteIfEnabled();
 		return true;
@@ -1446,6 +1457,146 @@ public class HelperConstructManager
 			}
 		}
 		return out;
+	}
+
+	/**
+	 * Quest-order combo: one entry per routable item id (primary and alternates each get a row when alternates exist).
+	 */
+	public List<RequirementRoutingChoice> getRequirementRoutingChoices()
+	{
+		ensureDraftLoaded();
+		List<RequirementRoutingChoice> out = new ArrayList<>();
+		List<DraftRequirement> reqs = currentDraft.getRequirements();
+		List<String> labels = getRequirementSummaries();
+		for (int i = 0; i < reqs.size(); i++)
+		{
+			DraftRequirement r = reqs.get(i);
+			String lab = i < labels.size() ? labels.get(i) : String.valueOf(r.getRawId());
+			List<Integer> itemIds = mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds());
+			if (itemIds.size() <= 1)
+			{
+				out.add(new RequirementRoutingChoice(lab, r.getRawId()));
+			}
+			else
+			{
+				for (Integer id : itemIds)
+				{
+					out.add(new RequirementRoutingChoice(lab + " [item " + id + "]", id));
+				}
+			}
+		}
+		return Collections.unmodifiableList(out);
+	}
+
+	public String labelForOrderLinkedRequirementRawId(Integer rawId)
+	{
+		if (rawId == null)
+		{
+			return "Default (varbit routing)";
+		}
+		if (Objects.equals(rawId, ORDER_REQUIREMENT_VARBIT_ONLY))
+		{
+			return "Varbit only";
+		}
+		for (RequirementRoutingChoice c : getRequirementRoutingChoices())
+		{
+			if (Objects.equals(c.rawId(), rawId))
+			{
+				return c.label();
+			}
+		}
+		return "Requirement id " + rawId;
+	}
+
+	private int indexOfRequirementContainingItemId(int itemId)
+	{
+		List<DraftRequirement> reqs = currentDraft.getRequirements();
+		for (int i = 0; i < reqs.size(); i++)
+		{
+			DraftRequirement r = reqs.get(i);
+			if (r.getRawId() == itemId)
+			{
+				return i;
+			}
+			if (r.getAlternateRawIds().contains(itemId))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private static List<Integer> parseCsvIntsStrict(String rawIdText)
+	{
+		List<Integer> out = new ArrayList<>();
+		if (rawIdText == null || rawIdText.trim().isEmpty())
+		{
+			return out;
+		}
+		for (String part : rawIdText.split(","))
+		{
+			String p = part.trim();
+			if (p.isEmpty())
+			{
+				continue;
+			}
+			try
+			{
+				out.add(Integer.parseInt(p));
+			}
+			catch (NumberFormatException e)
+			{
+				return null;
+			}
+		}
+		return out;
+	}
+
+	private static List<Integer> dedupeIntsPreserveOrder(List<Integer> in)
+	{
+		List<Integer> out = new ArrayList<>();
+		LinkedHashSet<Integer> seen = new LinkedHashSet<>();
+		for (Integer v : in)
+		{
+			if (v == null)
+			{
+				continue;
+			}
+			if (seen.add(v))
+			{
+				out.add(v);
+			}
+		}
+		return out;
+	}
+
+	static List<Integer> mergedStepOrRequirementIds(int primary, List<Integer> alternates)
+	{
+		List<Integer> merged = new ArrayList<>();
+		merged.add(primary);
+		if (alternates != null)
+		{
+			merged.addAll(alternates);
+		}
+		return dedupeIntsPreserveOrder(merged);
+	}
+
+	private static String formatCsvIds(List<Integer> ids)
+	{
+		if (ids.isEmpty())
+		{
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < ids.size(); i++)
+		{
+			if (i > 0)
+			{
+				sb.append(", ");
+			}
+			sb.append(ids.get(i));
+		}
+		return sb.toString();
 	}
 
 	public List<CombinedStepRow> getCombinedStepRows()
@@ -1885,13 +2036,25 @@ public class HelperConstructManager
 		ensureDraftLoaded();
 		reconcileVarbitRequirementsWithOrder();
 		List<StepAttachmentPickOption> out = new ArrayList<>();
-		List<Integer> ids = getRequirementRawIds();
+		List<DraftRequirement> reqs = currentDraft.getRequirements();
 		List<String> labels = getRequirementSummaries();
-		for (int i = 0; i < ids.size(); i++)
+		for (int i = 0; i < reqs.size(); i++)
 		{
-			String lab = i < labels.size() ? labels.get(i) : String.valueOf(ids.get(i));
+			DraftRequirement r = reqs.get(i);
+			String lab = i < labels.size() ? labels.get(i) : String.valueOf(r.getRawId());
 			String shortLab = lab.replaceFirst("^\\d+\\.\\s*", "").trim();
-			out.add(new StepAttachmentPickOption(shortLab, StepAttachmentEdit.item(ids.get(i))));
+			List<Integer> itemIds = mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds());
+			if (itemIds.size() <= 1)
+			{
+				out.add(new StepAttachmentPickOption(shortLab, StepAttachmentEdit.item(r.getRawId())));
+			}
+			else
+			{
+				for (Integer id : itemIds)
+				{
+					out.add(new StepAttachmentPickOption(shortLab + " [item " + id + "]", StepAttachmentEdit.item(id)));
+				}
+			}
 		}
 		for (VarbitSlotRow row : getVarbitSlotsInQuestOrderForEditor())
 		{
@@ -1967,7 +2130,7 @@ public class HelperConstructManager
 		List<String> out = new ArrayList<>();
 		for (DraftRequirement r : currentDraft.getRequirements())
 		{
-			out.add(String.valueOf(r.getRawId()));
+			out.add(formatCsvIds(mergedStepOrRequirementIds(r.getRawId(), r.getAlternateRawIds())));
 		}
 		return Collections.unmodifiableList(out);
 	}
@@ -1991,19 +2154,25 @@ public class HelperConstructManager
 		{
 			return false;
 		}
-		int parsed;
-		try
-		{
-			parsed = Integer.parseInt(rawIdText == null ? "" : rawIdText.trim());
-		}
-		catch (NumberFormatException ex)
+		List<Integer> parsed = parseCsvIntsStrict(rawIdText == null ? "" : rawIdText);
+		if (parsed == null || parsed.isEmpty())
 		{
 			return false;
 		}
-		int normalized = normalizeItemId(parsed);
+		List<Integer> normalized = new ArrayList<>(parsed.size());
+		for (Integer v : parsed)
+		{
+			normalized.add(normalizeItemId(v));
+		}
+		normalized = dedupeIntsPreserveOrder(normalized);
 		DraftRequirement r = currentDraft.getRequirements().get(index);
-		r.setRawId(normalized);
-		r.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, normalized).getSymbol());
+		r.setRawId(normalized.get(0));
+		r.getAlternateRawIds().clear();
+		for (int i = 1; i < normalized.size(); i++)
+		{
+			r.getAlternateRawIds().add(normalized.get(i));
+		}
+		r.setResolvedSymbol(symbolResolver.resolve(HelperConstructModels.IdType.ITEM, r.getRawId()).getSymbol());
 		saveDraftToConfig();
 		return true;
 	}
@@ -2859,7 +3028,15 @@ public class HelperConstructManager
 				String display = requirement.getDisplayName() == null || requirement.getDisplayName().isBlank()
 					? "Required item"
 					: requirement.getDisplayName();
-				previewRequirements.add(new ItemRequirement(display, requirement.getRawId()));
+				List<Integer> ids = mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
+				if (ids.size() <= 1)
+				{
+					previewRequirements.add(new ItemRequirement(display, requirement.getRawId()));
+				}
+				else
+				{
+					previewRequirements.add(new ItemRequirement(display, ids));
+				}
 			}
 		}
 
@@ -2872,7 +3049,10 @@ public class HelperConstructManager
 			Map<Integer, ItemRequirement> requirementById = new HashMap<>();
 			for (ItemRequirement req : previewRequirements)
 			{
-				requirementById.put(req.getId(), req);
+				for (int id : req.getAllIds())
+				{
+					requirementById.put(id, req);
+				}
 			}
 
 			List<ConditionalStep> sectionTasks = new ArrayList<>();

@@ -77,17 +77,17 @@ public final class HelperConstructModels
 
 	@Data
 	@NoArgsConstructor
-	@AllArgsConstructor
 	public static class DraftRequirement
 	{
 		private int rawId;
 		private String resolvedSymbol;
 		private String displayName;
+		/** Additional item ids (comma-separated in UI); first id is {@link #rawId}. */
+		private final List<Integer> alternateRawIds = new ArrayList<>();
 	}
 
 	@Data
 	@NoArgsConstructor
-	@AllArgsConstructor
 	public static class DraftStep
 	{
 		private String stepId;
@@ -108,6 +108,8 @@ public final class HelperConstructModels
 		private String sectionCondition;
 		private boolean skipWhenConditionMet;
 		private final List<DraftStepAttachedRequirement> attachedRequirements = new ArrayList<>();
+		/** Additional NPC/object ids (comma-separated in UI); first id is {@link #rawId}. */
+		private final List<Integer> alternateRawIds = new ArrayList<>();
 	}
 
 	/** Order row: section divider or ref to a definition. {@code linkedRequirementRawId}: {@code null} = varbit-based routing (item steps use definition raw id for highlight); {@code -1} = varbit only; else captured item requirement raw id. */

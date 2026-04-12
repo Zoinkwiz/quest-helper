@@ -1019,7 +1019,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				ok = helperConstructManager.updateRequirementRawIdAt(rowIndex, text);
 				if (ok)
 				{
-					rawIds.set(rowIndex, String.valueOf(helperConstructManager.getRequirementRawIds().get(rowIndex)));
+					rawIds.set(rowIndex, helperConstructManager.getRequirementRawIdStrings().get(rowIndex));
 				}
 			}
 			if (ok)
@@ -1175,7 +1175,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 			else if (columnIndex == 1)
 			{
-				rawIdTexts.set(rowIndex, text);
+				rawIdTexts.set(rowIndex, helperConstructManager.getStepRawIdTexts(kind).get(rowIndex));
 			}
 			else if (columnIndex == 2)
 			{
@@ -1363,12 +1363,9 @@ public final class HelperConstructEditorPanel extends JPanel
 		combo.removeAllItems();
 		combo.addItem(new ReqChoice("Default (varbit routing)", null));
 		combo.addItem(new ReqChoice("Varbit only", HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY));
-		List<Integer> ids = helperConstructManager.getRequirementRawIds();
-		List<String> labels = helperConstructManager.getRequirementSummaries();
-		for (int i = 0; i < ids.size(); i++)
+		for (HelperConstructManager.RequirementRoutingChoice c : helperConstructManager.getRequirementRoutingChoices())
 		{
-			String lab = i < labels.size() ? labels.get(i) : String.valueOf(ids.get(i));
-			combo.addItem(new ReqChoice(lab, ids.get(i)));
+			combo.addItem(new ReqChoice(c.label(), c.rawId()));
 		}
 		selectRequirementComboValue(combo, selectedRawId);
 	}
@@ -1387,24 +1384,7 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private String labelForOrderRequirementOverride(Integer v)
 	{
-		if (v == null)
-		{
-			return "Default (varbit routing)";
-		}
-		if (v.equals(HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY))
-		{
-			return "Varbit only";
-		}
-		List<Integer> ids = helperConstructManager.getRequirementRawIds();
-		List<String> labels = helperConstructManager.getRequirementSummaries();
-		for (int i = 0; i < ids.size(); i++)
-		{
-			if (ids.get(i).equals(v))
-			{
-				return i < labels.size() ? labels.get(i) : String.valueOf(v);
-			}
-		}
-		return "Requirement id " + v;
+		return helperConstructManager.labelForOrderLinkedRequirementRawId(v);
 	}
 
 	/**

@@ -166,7 +166,7 @@ public final class TasksTrackerRouteImporter
 			rawId = firstNpc;
 			if (firstObj != null)
 			{
-				// MVP: second interact id is not stored on DraftStep; user may re-export from route file.
+				// Object ids ignored when NPC list is present (same as before).
 			}
 		}
 		else if (firstObj != null)
@@ -196,6 +196,28 @@ public final class TasksTrackerRouteImporter
 		step.setSectionCondition("");
 		step.setSkipWhenConditionMet(false);
 		applyWorldPoint(step, item.getLocation(), hub);
+		if (inter != null && kind == StepKind.NPC && inter.getNpc() != null && inter.getNpc().size() > 1)
+		{
+			for (int i = 1; i < inter.getNpc().size(); i++)
+			{
+				Integer x = inter.getNpc().get(i);
+				if (x != null)
+				{
+					step.getAlternateRawIds().add(x);
+				}
+			}
+		}
+		else if (inter != null && kind == StepKind.OBJECT && inter.getObject() != null && inter.getObject().size() > 1)
+		{
+			for (int i = 1; i < inter.getObject().size(); i++)
+			{
+				Integer x = inter.getObject().get(i);
+				if (x != null)
+				{
+					step.getAlternateRawIds().add(x);
+				}
+			}
+		}
 		applyResolvedSymbol(step, symbolResolver);
 
 		draft.getStepDefinitions().add(step);

@@ -8,10 +8,15 @@ import net.runelite.client.util.SwingUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.RowFilter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
-import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -23,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -33,10 +39,10 @@ public final class HelperConstructEditorPanel extends JPanel
 {
 	private static final String USAGE_GUIDE = String.join("\n",
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
-		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column).",
-		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row.",
-		"4. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder.",
-		"5. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit-only routing — edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove at the bottom right deletes the selected row. Choosing a concrete item override on that order row removes the varbit row.",
+		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
+		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
+		"4. Quest order tab: add references to definitions, section dividers, and requirement overrides. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection. Search filters by var name, requirement label, section text, or instruction. Add Step dialog has a search field for the definition list.",
+		"5. Varbit reqs tab: one row per quest-order slot that uses Default or Varbit-only routing — edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove at the bottom right deletes the selected row. Choosing a concrete item override on that order row removes the varbit row. Search filters varbit rows.",
 		"6. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
 		"7. JSON export/import matches the maker draft file format. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / manual Save JSON).",
 		"8. Export Tasks route copies JSON for the Tasks Tracker plugin (Import Route from Clipboard); Import Tasks route replaces the draft from pasted route JSON (taskId = struct id, plus notes and locations on the route).");
@@ -190,7 +196,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		varbitScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
 		JPanel varbitPanel = new JPanel(new BorderLayout(0, 6));
 		varbitPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		varbitPanel.add(varbitScroll, BorderLayout.CENTER);
+		JPanel varbitCenter = new JPanel(new BorderLayout(0, 4));
+		varbitCenter.setOpaque(false);
+		JTextField varbitSearch = newMakerSearchField("Filter by var name, varbit id, value, operation, or display text.");
+		wireTableSearchField(varbitSearch, varbitReqsTable);
+		varbitCenter.add(varbitSearch, BorderLayout.NORTH);
+		varbitCenter.add(varbitScroll, BorderLayout.CENTER);
+		varbitPanel.add(varbitCenter, BorderLayout.CENTER);
 		JButton addVarbitSlotButton = new JButton("Add");
 		JButton removeVarbitSlotButton = new JButton("Remove");
 		applyMakerToolbarStyle(addVarbitSlotButton, removeVarbitSlotButton);
@@ -202,7 +214,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		addVarbitSlotButton.setToolTipText("Append a placeholder generic step, a quest-order row with default varbit routing, and a new varbit (0 / 0) named for routing.");
 		removeVarbitSlotButton.addActionListener(e ->
 		{
-			int r = varbitReqsTable.getSelectedRow();
+			int r = selectedModelRow(varbitReqsTable);
 			if (r < 0)
 			{
 				return;
@@ -447,6 +459,103 @@ public final class HelperConstructEditorPanel extends JPanel
 		tabs.setBackground(ColorScheme.DARK_GRAY_COLOR);
 	}
 
+	private JTextField newMakerSearchField(String tooltip)
+	{
+		JTextField f = new JTextField();
+		f.setForeground(Color.WHITE);
+		f.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		f.setCaretColor(Color.WHITE);
+		f.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR),
+			new EmptyBorder(2, 6, 2, 6)));
+		if (tooltip != null && !tooltip.isBlank())
+		{
+			f.setToolTipText(tooltip);
+		}
+		return f;
+	}
+
+	private static void wireTableSearchField(JTextField searchField, JTable table)
+	{
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+		sorter.setSortKeys(null);
+		for (int i = 0; i < table.getColumnCount(); i++)
+		{
+			sorter.setSortable(i, false);
+		}
+		table.setRowSorter(sorter);
+		Runnable applyFilter = () ->
+		{
+			String q = searchField.getText().trim().toLowerCase(Locale.ROOT);
+			if (q.isEmpty())
+			{
+				sorter.setRowFilter(null);
+				return;
+			}
+			sorter.setRowFilter(new RowFilter<>()
+			{
+				@Override
+				public boolean include(RowFilter.Entry<? extends TableModel, ? extends Integer> entry)
+				{
+					for (int i = 0; i < entry.getValueCount(); i++)
+					{
+						Object v = entry.getValue(i);
+						if (v != null && v.toString().toLowerCase(Locale.ROOT).contains(q))
+						{
+							return true;
+						}
+					}
+					return false;
+				}
+			});
+		};
+		DocumentListener dl = new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				applyFilter.run();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				applyFilter.run();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				applyFilter.run();
+			}
+		};
+		searchField.getDocument().addDocumentListener(dl);
+	}
+
+	private static int selectedModelRow(JTable table)
+	{
+		int v = table.getSelectedRow();
+		if (v < 0)
+		{
+			return -1;
+		}
+		return table.convertRowIndexToModel(v);
+	}
+
+	/**
+	 * @return model index at which to insert a new quest-order row so it appears directly under the current selection,
+	 *         or {@code -1} if nothing is selected (caller should append).
+	 */
+	private int questOrderInsertIndexBelowSelection()
+	{
+		int r = selectedModelRow(orderTable);
+		if (r < 0)
+		{
+			return -1;
+		}
+		return r + 1;
+	}
+
 	/** Maps persisted operation name to enum; unknown values become {@link Operation#EQUAL}. */
 	private static Operation operationFromPersistedName(String name)
 	{
@@ -473,9 +582,15 @@ public final class HelperConstructEditorPanel extends JPanel
 	{
 		JPanel panel = new JPanel(new BorderLayout(0, 6));
 		panel.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		panel.add(sectionLabel("Item requirements (quest order overrides and step attachments)"), BorderLayout.NORTH);
+		JPanel north = new JPanel(new BorderLayout(0, 6));
+		north.setOpaque(false);
+		north.add(sectionLabel("Item requirements (quest order overrides and step attachments)"), BorderLayout.NORTH);
 		requirementTable = new JTable(requirementLibraryModel);
 		wrapRequirementLibraryTable(requirementTable);
+		JTextField reqSearch = newMakerSearchField("Filter by name or item id (any column, case-insensitive).");
+		wireTableSearchField(reqSearch, requirementTable);
+		north.add(reqSearch, BorderLayout.SOUTH);
+		panel.add(north, BorderLayout.NORTH);
 		JScrollPane reqScroll = new JScrollPane(requirementTable);
 		reqScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		reqScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -490,7 +605,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		removeReqButton.addActionListener(e ->
 		{
-			int r = requirementTable.getSelectedRow();
+			int r = selectedModelRow(requirementTable);
 			if (r >= 0)
 			{
 				helperConstructManager.removeRequirementAt(r);
@@ -544,7 +659,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		removeStep.addActionListener(e ->
 		{
-			int r = table.getSelectedRow();
+			int r = selectedModelRow(table);
 			if (r >= 0)
 			{
 				helperConstructManager.removeStepAt(stepKind, r);
@@ -560,7 +675,7 @@ public final class HelperConstructEditorPanel extends JPanel
 					JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			int r = table.getSelectedRow();
+			int r = selectedModelRow(table);
 			if (r < 0)
 			{
 				JOptionPane.showMessageDialog(this, "Select a step row first.", "Convert step",
@@ -588,7 +703,26 @@ public final class HelperConstructEditorPanel extends JPanel
 		actions.add(Box.createHorizontalStrut(8));
 		actions.add(convertKindCombo);
 		actions.add(convertStep);
-		wrap.add(wrapStepLibraryTable(table, stepKind), BorderLayout.CENTER);
+		String searchHint;
+		switch (stepKind)
+		{
+			case NPC:
+				searchHint = "Filter NPC steps by var name, ids, world point, reqs, or instruction.";
+				break;
+			case OBJECT:
+				searchHint = "Filter object steps by var name, ids, world point, reqs, or instruction.";
+				break;
+			default:
+				searchHint = "Filter generic steps by var name, world point, reqs, or instruction.";
+				break;
+		}
+		JTextField stepSearch = newMakerSearchField(searchHint);
+		wireTableSearchField(stepSearch, table);
+		JPanel centerStack = new JPanel(new BorderLayout(0, 4));
+		centerStack.setOpaque(false);
+		centerStack.add(stepSearch, BorderLayout.NORTH);
+		centerStack.add(wrapStepLibraryTable(table, stepKind), BorderLayout.CENTER);
+		wrap.add(centerStack, BorderLayout.CENTER);
 		wrap.add(actions, BorderLayout.SOUTH);
 		return wrap;
 	}
@@ -655,7 +789,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				}
 				if (col == attachCol)
 				{
-					openStepRequirementsEditor(stepKind, row);
+					openStepRequirementsEditor(stepKind, table.convertRowIndexToModel(row));
 				}
 			}
 		});
@@ -802,7 +936,45 @@ public final class HelperConstructEditorPanel extends JPanel
 				JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		JList<HelperConstructManager.StepAttachmentPickOption> list = new JList<>(picks.toArray(new HelperConstructManager.StepAttachmentPickOption[0]));
+		List<HelperConstructManager.StepAttachmentPickOption> allPicks = new ArrayList<>(picks);
+		DefaultListModel<HelperConstructManager.StepAttachmentPickOption> listModel = new DefaultListModel<>();
+		JTextField pickSearch = newMakerSearchField("Filter by label (case-insensitive).");
+		Runnable refillPickList = () ->
+		{
+			String q = pickSearch.getText().trim().toLowerCase(Locale.ROOT);
+			listModel.clear();
+			for (HelperConstructManager.StepAttachmentPickOption o : allPicks)
+			{
+				String lab = o.getLabel() == null ? "" : o.getLabel();
+				if (q.isEmpty() || lab.toLowerCase(Locale.ROOT).contains(q))
+				{
+					listModel.addElement(o);
+				}
+			}
+		};
+		pickSearch.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				refillPickList.run();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				refillPickList.run();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				refillPickList.run();
+			}
+		});
+		refillPickList.run();
+
+		JList<HelperConstructManager.StepAttachmentPickOption> list = new JList<>(listModel);
 		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list.setVisibleRowCount(10);
 		list.setCellRenderer(new DefaultListCellRenderer()
@@ -816,9 +988,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		JPanel p = new JPanel(new BorderLayout(0, 6));
 		p.setOpaque(false);
-		p.add(new JLabel("Select one or more (Ctrl/Cmd+click):", SwingConstants.LEFT), BorderLayout.NORTH);
+		JPanel north = new JPanel(new BorderLayout(0, 4));
+		north.setOpaque(false);
+		north.add(new JLabel("Select one or more (Ctrl/Cmd+click):", SwingConstants.LEFT), BorderLayout.NORTH);
+		north.add(pickSearch, BorderLayout.SOUTH);
+		p.add(north, BorderLayout.NORTH);
 		p.add(new JScrollPane(list), BorderLayout.CENTER);
-		p.setPreferredSize(new Dimension(520, 320));
+		p.setPreferredSize(new Dimension(520, 360));
 		if (JOptionPane.showConfirmDialog(this, p, "Add attachment", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION)
 		{
 			return;
@@ -1230,18 +1406,19 @@ public final class HelperConstructEditorPanel extends JPanel
 			@Override
 			public TableCellEditor getCellEditor(int row, int column)
 			{
+				int mRow = convertRowIndexToModel(row);
 				if (column == 1)
 				{
-					var entry = stepOrderTableModel.getRow(row);
+					var entry = stepOrderTableModel.getRow(mRow);
 					if (entry != null && entry.isSectionDivider())
 					{
 						return new DefaultCellEditor(new JTextField());
 					}
-					return buildRequirementComboEditor(row);
+					return buildRequirementComboEditor(mRow);
 				}
 				if (column == 2)
 				{
-					var entry = stepOrderTableModel.getRow(row);
+					var entry = stepOrderTableModel.getRow(mRow);
 					if (entry != null && !entry.isSectionDivider())
 					{
 						return new DefaultCellEditor(new JTextField());
@@ -1263,7 +1440,8 @@ public final class HelperConstructEditorPanel extends JPanel
 			public Component getTableCellRendererComponent(JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column)
 			{
 				Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
-				var entry = stepOrderTableModel.getRow(row);
+				int mRow = t.convertRowIndexToModel(row);
+				var entry = stepOrderTableModel.getRow(mRow);
 				if (entry != null && entry.isSectionDivider())
 				{
 					if (!isSelected)
@@ -1293,7 +1471,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		JScrollPane tableScroll = new JScrollPane(orderTable);
 		tableScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		tableScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
-		ordered.add(tableScroll, BorderLayout.CENTER);
+		JTextField orderSearch = newMakerSearchField("Filter quest order by var name, requirement label, section condition, or instruction.");
+		wireTableSearchField(orderSearch, orderTable);
+		JPanel orderCenter = new JPanel(new BorderLayout(0, 4));
+		orderCenter.setOpaque(false);
+		orderCenter.add(orderSearch, BorderLayout.NORTH);
+		orderCenter.add(tableScroll, BorderLayout.CENTER);
+		ordered.add(orderCenter, BorderLayout.CENTER);
 
 		JButton removeSelectedButton = new JButton("Remove");
 		JButton addStepButton = new JButton("Add Step");
@@ -1301,7 +1485,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		applyMakerToolbarStyle(removeSelectedButton, addStepButton, addSectionButton);
 		removeSelectedButton.addActionListener(e ->
 		{
-			int selected = orderTable.getSelectedRow();
+			int selected = selectedModelRow(orderTable);
 			if (selected >= 0)
 			{
 				helperConstructManager.removeStepAt(selected);
@@ -1311,7 +1495,15 @@ public final class HelperConstructEditorPanel extends JPanel
 		addStepButton.addActionListener(e -> showAddStepDialog());
 		addSectionButton.addActionListener(e ->
 		{
-			helperConstructManager.addSectionDivider();
+			int ins = questOrderInsertIndexBelowSelection();
+			if (ins < 0)
+			{
+				helperConstructManager.addSectionDivider();
+			}
+			else
+			{
+				helperConstructManager.addSectionDivider(ins);
+			}
 			refresh();
 		});
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -1336,15 +1528,78 @@ public final class HelperConstructEditorPanel extends JPanel
 				JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		JList<HelperConstructManager.StepDefinitionPickOption> list = new JList<>(options.toArray(new HelperConstructManager.StepDefinitionPickOption[0]));
+		List<HelperConstructManager.StepDefinitionPickOption> allOptions = new ArrayList<>(options);
+		DefaultListModel<HelperConstructManager.StepDefinitionPickOption> listModel = new DefaultListModel<>();
+		JList<HelperConstructManager.StepDefinitionPickOption> list = new JList<>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setSelectedIndex(0);
+		JTextField stepPickSearch = newMakerSearchField("Filter by step label or id (case-insensitive).");
+		Runnable refillStepPickList = () ->
+		{
+			String q = stepPickSearch.getText().trim().toLowerCase(Locale.ROOT);
+			listModel.clear();
+			for (HelperConstructManager.StepDefinitionPickOption o : allOptions)
+			{
+				String lab = o.getLabel() == null ? "" : o.getLabel();
+				String sid = o.getStepId() == null ? "" : o.getStepId();
+				String hay = (lab + " " + sid).toLowerCase(Locale.ROOT);
+				if (q.isEmpty() || hay.contains(q))
+				{
+					listModel.addElement(o);
+				}
+			}
+			if (listModel.isEmpty())
+			{
+				list.clearSelection();
+			}
+			else
+			{
+				int si = list.getSelectedIndex();
+				if (si < 0 || si >= listModel.getSize())
+				{
+					list.setSelectedIndex(0);
+				}
+			}
+		};
+		stepPickSearch.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				refillStepPickList.run();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				refillStepPickList.run();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				refillStepPickList.run();
+			}
+		});
+		refillStepPickList.run();
 		JScrollPane sp = new JScrollPane(list);
 		sp.setPreferredSize(new Dimension(420, 240));
-		int r = JOptionPane.showConfirmDialog(this, sp, "Add Step to order", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
+		panel.setOpaque(false);
+		panel.add(stepPickSearch, BorderLayout.NORTH);
+		panel.add(sp, BorderLayout.CENTER);
+		panel.setPreferredSize(new Dimension(440, 300));
+		int r = JOptionPane.showConfirmDialog(this, panel, "Add Step to order", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r == JOptionPane.OK_OPTION && list.getSelectedValue() != null)
 		{
-			helperConstructManager.addOrderRef(list.getSelectedValue().getStepId());
+			int ins = questOrderInsertIndexBelowSelection();
+			if (ins < 0)
+			{
+				helperConstructManager.addOrderRef(list.getSelectedValue().getStepId());
+			}
+			else
+			{
+				helperConstructManager.addOrderRef(list.getSelectedValue().getStepId(), ins);
+			}
 			refresh();
 		}
 	}
@@ -1365,7 +1620,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		combo.addItem(new ReqChoice("Varbit only", HelperConstructManager.ORDER_REQUIREMENT_VARBIT_ONLY));
 		for (HelperConstructManager.RequirementRoutingChoice c : helperConstructManager.getRequirementRoutingChoices())
 		{
-			combo.addItem(new ReqChoice(c.label(), c.rawId()));
+			combo.addItem(new ReqChoice(c.getLabel(), c.getRawId()));
 		}
 		selectRequirementComboValue(combo, selectedRawId);
 	}
@@ -1929,7 +2184,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		private static final int REORDER_AUTOSCROLL_EDGE_PX = 28;
 
 		private final JTable table;
-		private int fromRow = -1;
+		private int fromModelRow = -1;
 		private Timer reorderAutoscrollTimer;
 		private long reorderDragStartNanos = -1L;
 		private int reorderAutoscrollEdgeTicks;
@@ -1942,11 +2197,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		@Override
 		protected Transferable createTransferable(JComponent c)
 		{
-			fromRow = table.getSelectedRow();
-			if (fromRow < 0)
+			int sel = table.getSelectedRow();
+			if (sel < 0)
 			{
+				fromModelRow = -1;
 				return null;
 			}
+			fromModelRow = table.convertRowIndexToModel(sel);
 			reorderDragStartNanos = System.nanoTime();
 			reorderAutoscrollEdgeTicks = 0;
 			if (reorderAutoscrollTimer == null)
@@ -1955,14 +2212,14 @@ public final class HelperConstructEditorPanel extends JPanel
 				reorderAutoscrollTimer.setRepeats(true);
 			}
 			reorderAutoscrollTimer.start();
-			return new StringSelection(String.valueOf(fromRow));
+			return new StringSelection(String.valueOf(fromModelRow));
 		}
 
 		@Override
 		public void exportDone(JComponent source, Transferable data, int action)
 		{
 			stopReorderDragAutoscroll();
-			fromRow = -1;
+			fromModelRow = -1;
 		}
 
 		private void stopReorderDragAutoscroll()
@@ -1977,7 +2234,7 @@ public final class HelperConstructEditorPanel extends JPanel
 
 		private void tickReorderDragAutoscroll()
 		{
-			if (reorderDragStartNanos < 0L || fromRow < 0 || GraphicsEnvironment.isHeadless())
+			if (reorderDragStartNanos < 0L || fromModelRow < 0 || GraphicsEnvironment.isHeadless())
 			{
 				return;
 			}
@@ -2048,14 +2305,24 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 
 			JTable.DropLocation dropLocation = (JTable.DropLocation) support.getDropLocation();
-			int toRow = dropLocation.getRow();
-			if (fromRow < 0 || toRow < 0)
+			int toView = dropLocation.getRow();
+			if (fromModelRow < 0 || toView < 0)
 			{
 				return false;
 			}
 
-			int targetIndex = toRow;
-			if (targetIndex > fromRow)
+			int toModel;
+			if (toView >= table.getRowCount())
+			{
+				toModel = stepOrderTableModel.getRowCount();
+			}
+			else
+			{
+				toModel = table.convertRowIndexToModel(toView);
+			}
+
+			int targetIndex = toModel;
+			if (targetIndex > fromModelRow)
 			{
 				targetIndex--;
 			}
@@ -2068,7 +2335,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				targetIndex = stepOrderTableModel.getRowCount() - 1;
 			}
 
-			boolean moved = helperConstructManager.moveStep(fromRow, targetIndex);
+			boolean moved = helperConstructManager.moveStep(fromModelRow, targetIndex);
 			if (moved)
 			{
 				setRowsAfterReorder();

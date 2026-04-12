@@ -89,8 +89,26 @@ public class HelperConstructManager
 	public static final int ORDER_REQUIREMENT_VARBIT_ONLY = ORDER_ROUTING_VARBIT_SENTINEL;
 
 	/** One quest-order "linked item" option: label and the raw item id used for routing / highlight. */
-	public record RequirementRoutingChoice(String label, int rawId)
+	public static final class RequirementRoutingChoice
 	{
+		private final String label;
+		private final int rawId;
+
+		public RequirementRoutingChoice(String label, int rawId)
+		{
+			this.label = label;
+			this.rawId = rawId;
+		}
+
+		public String getLabel()
+		{
+			return label;
+		}
+
+		public int getRawId()
+		{
+			return rawId;
+		}
 	}
 
 	/** Legacy config key; draft is now stored under {@link #constructDraftFile()}. Migrated once on load when the file is missing. */
@@ -1500,9 +1518,9 @@ public class HelperConstructManager
 		}
 		for (RequirementRoutingChoice c : getRequirementRoutingChoices())
 		{
-			if (Objects.equals(c.rawId(), rawId))
+			if (Objects.equals(c.getRawId(), rawId))
 			{
-				return c.label();
+				return c.getLabel();
 			}
 		}
 		return "Requirement id " + rawId;
@@ -1570,7 +1588,7 @@ public class HelperConstructManager
 		return out;
 	}
 
-	static List<Integer> mergedStepOrRequirementIds(int primary, List<Integer> alternates)
+	public static List<Integer> mergedStepOrRequirementIds(int primary, List<Integer> alternates)
 	{
 		List<Integer> merged = new ArrayList<>();
 		merged.add(primary);
@@ -1667,6 +1685,15 @@ public class HelperConstructManager
 
 	public void addSectionDivider()
 	{
+		addSectionDivider(-1);
+	}
+
+	/**
+	 * @param insertAt index in {@link DraftHelper#getOrder()} to insert at; {@code -1} or out of range appends at the end.
+	 *                 Use {@code selectedIndex + 1} to place a new row just below the selected order row.
+	 */
+	public void addSectionDivider(int insertAt)
+	{
 		ensureDraftLoaded();
 		DraftOrderLine line = new DraftOrderLine();
 		line.setLineId(UUID.randomUUID().toString());
@@ -1674,11 +1701,22 @@ public class HelperConstructManager
 		line.setSuggestedVarName(DEFAULT_SECTION_NAME);
 		line.setSectionCondition("");
 		line.setSkipWhenConditionMet(false);
-		currentDraft.getOrder().add(line);
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		int idx = insertAt < 0 ? order.size() : Math.min(Math.max(0, insertAt), order.size());
+		order.add(idx, line);
 		saveDraftToConfig();
 	}
 
 	public void addOrderRef(String stepId)
+	{
+		addOrderRef(stepId, -1);
+	}
+
+	/**
+	 * @param insertAt index in {@link DraftHelper#getOrder()} to insert at; {@code -1} or out of range appends at the end.
+	 *                 Use {@code selectedIndex + 1} to place a new row just below the selected order row.
+	 */
+	public void addOrderRef(String stepId, int insertAt)
 	{
 		ensureDraftLoaded();
 		if (stepId == null || stepId.isBlank() || findDefinitionByStepId(stepId) == null)
@@ -1690,7 +1728,9 @@ public class HelperConstructManager
 		line.setSectionDivider(false);
 		line.setRefStepId(stepId);
 		line.setLinkedRequirementRawId(null);
-		currentDraft.getOrder().add(line);
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		int idx = insertAt < 0 ? order.size() : Math.min(Math.max(0, insertAt), order.size());
+		order.add(idx, line);
 		ensureVarbitRecordForOrderLine(line);
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)

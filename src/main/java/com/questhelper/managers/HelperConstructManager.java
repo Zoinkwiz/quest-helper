@@ -345,15 +345,6 @@ public class HelperConstructManager
 				return fromObject;
 			}
 		}
-		if (sourceEntry.getTarget().contains("Gauntlet"))
-		{
-			System.out.println("Wow");
-			System.out.println(sourceEntry.getType());
-			System.out.println(sourceEntry.getTarget());
-			System.out.println(sourceEntry.getActor());
-			System.out.println(sourceEntry.getParam0());
-			System.out.println(sourceEntry.getParam1());
-		}
 
 		WorldPoint fromSceneTile = resolveSceneTileWorldPoint(event);
 		if (fromSceneTile != null)
@@ -936,6 +927,52 @@ public class HelperConstructManager
 	public boolean updateStepRawIdAt(ConstructStepKind kind, int index, String rawIdText)
 	{
 		return updateStepRawIdAt(kind.stepKind(), index, rawIdText);
+	}
+
+	/**
+	 * Changes a step definition's kind (e.g. generic TEXT to NPC/Object) while keeping {@link DraftStep#getStepId()}
+	 * so quest order and varbit rows stay linked.
+	 */
+	public boolean convertStepDefinitionKind(ConstructStepKind fromKind, int rowIndex, ConstructStepKind toKind)
+	{
+		ensureDraftLoaded();
+		if (fromKind == null || toKind == null || fromKind == toKind)
+		{
+			return fromKind == toKind;
+		}
+		StepKind fromSk = fromKind.stepKind();
+		StepKind toSk = toKind.stepKind();
+		DraftStep step = stepDefinitionAtKindIndexOrNull(fromSk, rowIndex);
+		if (step == null)
+		{
+			return false;
+		}
+		step.setKind(toSk);
+		if (toSk == StepKind.TEXT)
+		{
+			step.setRawId(0);
+			step.setResolvedSymbol("");
+			step.setOption("");
+			step.setTargetText("");
+		}
+		else if (toSk == StepKind.NPC || toSk == StepKind.OBJECT)
+		{
+			HelperConstructModels.IdType idType = toSk == StepKind.NPC ? HelperConstructModels.IdType.NPC : HelperConstructModels.IdType.OBJECT;
+			step.setRawId(0);
+			step.setResolvedSymbol(symbolResolver.resolve(idType, 0).getSymbol());
+			if (step.getOption() == null)
+			{
+				step.setOption("");
+			}
+			if (step.getTargetText() == null)
+			{
+				step.setTargetText("");
+			}
+		}
+		reconcileVarbitRequirementsWithOrder();
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return true;
 	}
 
 	public void addEmptyStepFromUi(ConstructStepKind kind)
@@ -1595,7 +1632,7 @@ public class HelperConstructManager
 				return;
 			}
 		}
-		currentDraft.getVarbitRequirements().add(new DraftVarbitRequirement(lid, 0, 1, "EQUAL", null));
+		currentDraft.getVarbitRequirements().add(new DraftVarbitRequirement(lid, 0, 1, "EQUAL", null, structIdForOrderLine(line)));
 	}
 
 	private void removeVarbitRecordForLineId(String lineId)
@@ -1631,6 +1668,46 @@ public class HelperConstructManager
 				ensureVarbitRecordForOrderLine(line);
 			}
 		}
+		syncVarbitStructIdsFromReferencedSteps();
+	}
+
+	/**
+	 * When the linked step has a {@link DraftStep#getStructId()}, copy it to the varbit row so they stay aligned.
+	 * If the step has none, any existing value on the varbit row is left unchanged (e.g. hand-edited JSON).
+	 */
+	private void syncVarbitStructIdsFromReferencedSteps()
+	{
+		for (DraftVarbitRequirement v : currentDraft.getVarbitRequirements())
+		{
+			if (v.getLineId() == null || v.getLineId().isBlank())
+			{
+				continue;
+			}
+			DraftOrderLine line = findOrderLineByLineId(v.getLineId());
+			if (line == null || line.isSectionDivider())
+			{
+				continue;
+			}
+			DraftStep def = findDefinitionByStepId(line.getRefStepId());
+			if (def == null)
+			{
+				continue;
+			}
+			if (def.getStructId() != null)
+			{
+				v.setStructId(def.getStructId());
+			}
+		}
+	}
+
+	private Integer structIdForOrderLine(DraftOrderLine line)
+	{
+		if (line == null || line.isSectionDivider())
+		{
+			return null;
+		}
+		DraftStep def = findDefinitionByStepId(line.getRefStepId());
+		return def == null ? null : def.getStructId();
 	}
 
 	private DraftOrderLine findOrderLineByLineId(String lineId)

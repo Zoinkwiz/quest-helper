@@ -102,7 +102,8 @@ final class ConstructDraftPersistence
 					vState.varbitId,
 					vState.requiredValue,
 					vState.operation == null || vState.operation.isBlank() ? "EQUAL" : vState.operation,
-					vState.displayText));
+					vState.displayText,
+					vState.structId));
 			}
 		}
 
@@ -161,6 +162,7 @@ final class ConstructDraftPersistence
 			stepState.panelName = step.getPanelName();
 			stepState.sectionCondition = step.getSectionCondition();
 			stepState.skipWhenConditionMet = step.isSkipWhenConditionMet();
+			stepState.structId = step.getStructId();
 			for (DraftStepAttachedRequirement a : step.getAttachedRequirements())
 			{
 				DraftStepAttachedRequirementState st = new DraftStepAttachedRequirementState();
@@ -216,6 +218,7 @@ final class ConstructDraftPersistence
 			vs.requiredValue = v.getRequiredValue();
 			vs.operation = v.getOperation();
 			vs.displayText = v.getDisplayText();
+			vs.structId = v.getStructId();
 			state.varbitRequirements.add(vs);
 		}
 
@@ -237,6 +240,7 @@ final class ConstructDraftPersistence
 		step.setPanelName(stepState.panelName);
 		step.setSectionCondition(stepState.sectionCondition);
 		step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
+		step.setStructId(stepState.structId);
 		if (stepState.worldX != null && stepState.worldY != null && stepState.worldPlane != null)
 		{
 			step.setWorldPoint(new WorldPoint(stepState.worldX, stepState.worldY, stepState.worldPlane));
@@ -326,6 +330,7 @@ final class ConstructDraftPersistence
 		int requiredValue;
 		String operation;
 		String displayText;
+		Integer structId;
 	}
 
 	static class DraftStepState
@@ -343,6 +348,7 @@ final class ConstructDraftPersistence
 		String panelName;
 		String sectionCondition;
 		boolean skipWhenConditionMet;
+		Integer structId;
 		Integer worldX;
 		Integer worldY;
 		Integer worldPlane;

@@ -1,7 +1,9 @@
 package com.questhelper.managers;
 
+import net.runelite.client.config.ConfigManager;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +12,14 @@ import java.util.List;
 import net.runelite.api.coords.WorldPoint;
 
 import static com.questhelper.managers.ConstructDraftTestUtil.addDefinitionAndRef;
+import static com.questhelper.managers.HelperConstructModels.IdType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class HelperConstructManagerTest
 {
@@ -203,5 +210,45 @@ class HelperConstructManagerTest
 		assertTrue(manager.importDraftFromJson(json).isSuccess());
 		assertEquals("X", manager.getCurrentDraft().getQuestName());
 		assertTrue(manager.getCurrentDraft().getRequirements().isEmpty());
+	}
+
+	@Test
+	void convertStepDefinitionKindPreservesStepIdAndOrderRef() throws Exception
+	{
+		HelperConstructManager manager = new HelperConstructManager();
+		GamevalSymbolResolver resolver = mock(GamevalSymbolResolver.class);
+		when(resolver.resolve(any(IdType.class), eq(0)))
+			.thenReturn(new GamevalSymbolResolver.ResolutionResult("SYM", false, false));
+		Field fr = HelperConstructManager.class.getDeclaredField("symbolResolver");
+		fr.setAccessible(true);
+		fr.set(manager, resolver);
+		ConfigManager cm = mock(ConfigManager.class);
+		Field fc = HelperConstructManager.class.getDeclaredField("configManager");
+		fc.setAccessible(true);
+		fc.set(manager, cm);
+
+		HelperConstructModels.DraftStep step = new HelperConstructModels.DraftStep();
+		step.setStepId("step-keep");
+		step.setKind(HelperConstructModels.StepKind.TEXT);
+		step.setRawId(0);
+		step.setResolvedSymbol("");
+		step.setInstructionText("do thing");
+		manager.getCurrentDraft().getStepDefinitions().add(step);
+		HelperConstructModels.DraftOrderLine line = new HelperConstructModels.DraftOrderLine();
+		line.setLineId("line-1");
+		line.setRefStepId("step-keep");
+		line.setSectionDivider(false);
+		manager.getCurrentDraft().getOrder().add(line);
+
+		Field loaded = HelperConstructManager.class.getDeclaredField("loadedFromConfig");
+		loaded.setAccessible(true);
+		loaded.set(manager, true);
+
+		assertTrue(manager.convertStepDefinitionKind(ConstructStepKind.TEXT, 0, ConstructStepKind.NPC));
+		assertEquals(HelperConstructModels.StepKind.NPC, manager.getCurrentDraft().getStepDefinitions().get(0).getKind());
+		assertEquals("step-keep", manager.getCurrentDraft().getStepDefinitions().get(0).getStepId());
+		assertEquals("step-keep", manager.getCurrentDraft().getOrder().get(0).getRefStepId());
+		assertEquals(0, manager.getCurrentDraft().getStepDefinitions().get(0).getRawId());
+		assertEquals("SYM", manager.getCurrentDraft().getStepDefinitions().get(0).getResolvedSymbol());
 	}
 }

@@ -418,7 +418,32 @@ public final class HelperConstructEditorPanel extends JPanel
 		wrap.setOpaque(false);
 		JButton addStep = new JButton("Add step");
 		JButton removeStep = new JButton("Remove");
-		applyMakerToolbarStyle(addStep, removeStep);
+		JComboBox<String> convertKindCombo = new JComboBox<>();
+		convertKindCombo.addItem(null);
+		if (stepKind != ConstructStepKind.NPC)
+		{
+			convertKindCombo.addItem("NPC");
+		}
+		if (stepKind != ConstructStepKind.OBJECT)
+		{
+			convertKindCombo.addItem("Object");
+		}
+		if (stepKind != ConstructStepKind.TEXT)
+		{
+			convertKindCombo.addItem("Generic");
+		}
+		convertKindCombo.setRenderer(new DefaultListCellRenderer()
+		{
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				String label = value == null ? "Convert to…" : String.valueOf(value);
+				return super.getListCellRendererComponent(list, label, index, isSelected, cellHasFocus);
+			}
+		});
+		JButton convertStep = new JButton("Convert");
+		applyMakerToolbarStyle(addStep, removeStep, convertStep);
+		convertStep.setToolTipText("Convert the selected row to another step type (step id is preserved for quest order).");
 		addStep.addActionListener(e ->
 		{
 			helperConstructManager.addEmptyStepFromUi(stepKind);
@@ -433,13 +458,61 @@ public final class HelperConstructEditorPanel extends JPanel
 				refresh();
 			}
 		});
+		convertStep.addActionListener(e ->
+		{
+			Object sel = convertKindCombo.getSelectedItem();
+			if (sel == null)
+			{
+				JOptionPane.showMessageDialog(this, "Choose a target type in the Convert dropdown.", "Convert step",
+					JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			int r = table.getSelectedRow();
+			if (r < 0)
+			{
+				JOptionPane.showMessageDialog(this, "Select a step row first.", "Convert step",
+					JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			ConstructStepKind toKind = convertStepKindLabelToEnum(String.valueOf(sel));
+			if (toKind == null)
+			{
+				return;
+			}
+			if (!helperConstructManager.convertStepDefinitionKind(stepKind, r, toKind))
+			{
+				JOptionPane.showMessageDialog(this, "Could not convert that step.", "Convert step",
+					JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			convertKindCombo.setSelectedIndex(0);
+			refresh();
+		});
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
 		actions.setOpaque(false);
 		actions.add(addStep);
 		actions.add(removeStep);
+		actions.add(Box.createHorizontalStrut(8));
+		actions.add(convertKindCombo);
+		actions.add(convertStep);
 		wrap.add(wrapStepLibraryTable(table, stepKind), BorderLayout.CENTER);
 		wrap.add(actions, BorderLayout.SOUTH);
 		return wrap;
+	}
+
+	private static ConstructStepKind convertStepKindLabelToEnum(String label)
+	{
+		switch (label)
+		{
+			case "NPC":
+				return ConstructStepKind.NPC;
+			case "Object":
+				return ConstructStepKind.OBJECT;
+			case "Generic":
+				return ConstructStepKind.TEXT;
+			default:
+				return null;
+		}
 	}
 
 	private static int stepLibIdColumn(ConstructStepKind k)
@@ -1085,6 +1158,8 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 		};
 		orderTable.setDragEnabled(true);
+		// Reorder drag uses StepReorderTransferHandler's edge autoscroll (ramps with drag time).
+		orderTable.setAutoscrolls(false);
 		orderTable.setDropMode(DropMode.INSERT_ROWS);
 		orderTable.setFillsViewportHeight(true);
 		orderTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -1669,8 +1744,14 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private final class StepReorderTransferHandler extends TransferHandler
 	{
+		private static final int REORDER_AUTOSCROLL_INTERVAL_MS = 40;
+		private static final int REORDER_AUTOSCROLL_EDGE_PX = 28;
+
 		private final JTable table;
 		private int fromRow = -1;
+		private Timer reorderAutoscrollTimer;
+		private long reorderDragStartNanos = -1L;
+		private int reorderAutoscrollEdgeTicks;
 
 		private StepReorderTransferHandler(JTable table)
 		{
@@ -1681,7 +1762,88 @@ public final class HelperConstructEditorPanel extends JPanel
 		protected Transferable createTransferable(JComponent c)
 		{
 			fromRow = table.getSelectedRow();
+			if (fromRow < 0)
+			{
+				return null;
+			}
+			reorderDragStartNanos = System.nanoTime();
+			reorderAutoscrollEdgeTicks = 0;
+			if (reorderAutoscrollTimer == null)
+			{
+				reorderAutoscrollTimer = new Timer(REORDER_AUTOSCROLL_INTERVAL_MS, e -> tickReorderDragAutoscroll());
+				reorderAutoscrollTimer.setRepeats(true);
+			}
+			reorderAutoscrollTimer.start();
 			return new StringSelection(String.valueOf(fromRow));
+		}
+
+		@Override
+		public void exportDone(JComponent source, Transferable data, int action)
+		{
+			stopReorderDragAutoscroll();
+			fromRow = -1;
+		}
+
+		private void stopReorderDragAutoscroll()
+		{
+			if (reorderAutoscrollTimer != null)
+			{
+				reorderAutoscrollTimer.stop();
+			}
+			reorderDragStartNanos = -1L;
+			reorderAutoscrollEdgeTicks = 0;
+		}
+
+		private void tickReorderDragAutoscroll()
+		{
+			if (reorderDragStartNanos < 0L || fromRow < 0 || GraphicsEnvironment.isHeadless())
+			{
+				return;
+			}
+			PointerInfo pi = MouseInfo.getPointerInfo();
+			if (pi == null)
+			{
+				return;
+			}
+			Point screen = pi.getLocation();
+			Point loc = new Point(screen);
+			SwingUtilities.convertPointFromScreen(loc, table);
+			Rectangle vis = table.getVisibleRect();
+			boolean inTop = loc.y < vis.y + REORDER_AUTOSCROLL_EDGE_PX;
+			boolean inBottom = loc.y > vis.y + vis.height - REORDER_AUTOSCROLL_EDGE_PX;
+
+			JScrollPane sp = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, table);
+			if (sp == null)
+			{
+				return;
+			}
+			JScrollBar bar = sp.getVerticalScrollBar();
+			if (!bar.isEnabled())
+			{
+				return;
+			}
+
+			if (inTop || inBottom)
+			{
+				reorderAutoscrollEdgeTicks++;
+				long elapsedMs = (System.nanoTime() - reorderDragStartNanos) / 1_000_000L;
+				int fromEdge = Math.min(48, reorderAutoscrollEdgeTicks * 3);
+				int fromDuration = (int) Math.min(40, elapsedMs / 100);
+				int amount = Math.min(96, 5 + fromEdge + fromDuration);
+				if (inTop)
+				{
+					bar.setValue(Math.max(bar.getMinimum(), bar.getValue() - amount));
+				}
+				else
+				{
+					int max = Math.max(bar.getMinimum(), bar.getMaximum() - bar.getVisibleAmount());
+					bar.setValue(Math.min(max, bar.getValue() + amount));
+				}
+			}
+			else
+			{
+				reorderAutoscrollEdgeTicks = 0;
+			}
 		}
 
 		@Override

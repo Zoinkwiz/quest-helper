@@ -93,6 +93,10 @@ final class HelperConstructModels
 		private String stepId;
 		private StepKind kind;
 		private boolean sectionDivider;
+		/**
+		 * Optional league / external struct id persisted in draft JSON only; not read by codegen or preview logic.
+		 */
+		private Integer structId;
 		private int rawId;
 		private String resolvedSymbol;
 		private WorldPoint worldPoint;
@@ -132,6 +136,10 @@ final class HelperConstructModels
 		/** {@link com.questhelper.requirements.util.Operation} name, e.g. EQUAL */
 		private String operation;
 		private String displayText;
+		/**
+		 * Optional league / external struct id (same meaning as {@link DraftStep#structId}); draft JSON only, not used by codegen.
+		 */
+		private Integer structId;
 	}
 
 	@Data

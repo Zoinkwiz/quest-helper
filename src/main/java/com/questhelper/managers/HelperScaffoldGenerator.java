@@ -510,7 +510,7 @@ public class HelperScaffoldGenerator
 			}
 			if (!has)
 			{
-				draft.getVarbitRequirements().add(new DraftVarbitRequirement(lineId, 0, 1, "EQUAL", null));
+				draft.getVarbitRequirements().add(new DraftVarbitRequirement(lineId, 0, 1, "EQUAL", null, null));
 			}
 		}
 	}

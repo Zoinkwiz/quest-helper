@@ -27,6 +27,36 @@ public final class DraftRoutingIds
 			{
 				continue;
 			}
+			int dash = p.indexOf('-');
+			if (dash > 0 && dash < p.length() - 1)
+			{
+				String left = p.substring(0, dash).trim();
+				String right = p.substring(dash + 1).trim();
+				try
+				{
+					int start = Integer.parseInt(left);
+					int end = Integer.parseInt(right);
+					if (start <= end)
+					{
+						for (int id = start; id <= end; id++)
+						{
+							out.add(id);
+						}
+					}
+					else
+					{
+						for (int id = start; id >= end; id--)
+						{
+							out.add(id);
+						}
+					}
+					continue;
+				}
+				catch (NumberFormatException e)
+				{
+					return null;
+				}
+			}
 			try
 			{
 				out.add(Integer.parseInt(p));

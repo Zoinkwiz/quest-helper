@@ -324,6 +324,18 @@ public class QuestManager
 	 */
 	public void shutDownQuest(boolean shouldUpdateList)
 	{
+		if (client.isClientThread())
+		{
+			doShutDownQuest(shouldUpdateList);
+		}
+		else
+		{
+			clientThread.invokeLater(() -> doShutDownQuest(shouldUpdateList));
+		}
+	}
+
+	private void doShutDownQuest(boolean shouldUpdateList)
+	{
 		if (selectedQuest != null)
 		{
 			selectedQuest.shutDown();

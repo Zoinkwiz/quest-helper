@@ -81,7 +81,10 @@ public class QuestOverviewPanel extends JPanel
 	private final QuestRewardsPanel questRewardsPanel;
 	private final JPanel questExternalResourcesList;
 
-	private final JPanel questStepsContainer = new JPanel();
+	private JPanel questStepsContainer;
+	private final CardLayout questStepsLayout = new CardLayout();
+	private final JPanel questStepsHost = new JPanel(questStepsLayout);
+	private final JPanel activeStepsCard = new JPanel(new BorderLayout());
 	private final JPanel actionsContainer = new JPanel();
 	private final JPanel configContainer = new JPanel();
 
@@ -90,6 +93,8 @@ public class QuestOverviewPanel extends JPanel
 	private final JLabel questNameLabel = JGenerator.makeJLabel();
 
 	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
+	private static final String ACTIVE_STEPS_CARD = "active";
+	private static final String EMPTY_STEPS_CARD = "empty";
 	private final List<AbstractQuestSection> allQuestStepPanelList = new CopyOnWriteArrayList<>();
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
@@ -197,11 +202,15 @@ public class QuestOverviewPanel extends JPanel
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
 		/* Container for quest steps */
-		questStepsContainer.setLayout(new BoxLayout(questStepsContainer, BoxLayout.Y_AXIS));
+		questStepsContainer = createQuestStepsContainer();
+		activeStepsCard.add(questStepsContainer, BorderLayout.CENTER);
+		questStepsHost.add(new JPanel(), EMPTY_STEPS_CARD);
+		questStepsHost.add(activeStepsCard, ACTIVE_STEPS_CARD);
+		questStepsLayout.show(questStepsHost, EMPTY_STEPS_CARD);
 		add(actionsContainer);
 		add(configContainer);
 		add(introPanel);
-		add(questStepsContainer);
+		add(questStepsHost);
 	}
 
 	private JComboBox<Enum> makeNewDropdown(Enum[] values, String key)
@@ -251,6 +260,10 @@ public class QuestOverviewPanel extends JPanel
 	{
 		currentQuest = quest;
 		allQuestStepPanelList.clear();
+		questStepsContainer = createQuestStepsContainer();
+		activeStepsCard.removeAll();
+		activeStepsCard.add(questStepsContainer, BorderLayout.CENTER);
+		questStepsLayout.show(questStepsHost, ACTIVE_STEPS_CARD);
 
 		List<PanelDetails> steps = quest.getPanels();
 		QuestStep currentStep;
@@ -324,7 +337,8 @@ public class QuestOverviewPanel extends JPanel
 		introPanel.setVisible(false);
 		configContainer.setVisible(false);
 		configContainer.removeAll();
-		questStepsContainer.removeAll();
+		questStepsLayout.show(questStepsHost, EMPTY_STEPS_CARD);
+		allQuestStepPanelList.clear();
 		questGeneralRequirementsPanel.setRequirements(null);
 		questGeneralRecommendedPanel.setRequirements(null);
 		questItemRequirementsPanel.setRequirements(null);
@@ -335,6 +349,13 @@ public class QuestOverviewPanel extends JPanel
 		questRewardsPanel.setRewards(null);
 		repaint();
 		revalidate();
+	}
+
+	private JPanel createQuestStepsContainer()
+	{
+		JPanel container = new JPanel();
+		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+		return container;
 	}
 
 	/// The quest helper's X is clicked

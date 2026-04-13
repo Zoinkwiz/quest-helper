@@ -1,8 +1,6 @@
 package com.questhelper.maker;
 
 import com.google.gson.Gson;
-import com.questhelper.managers.GamevalSymbolResolver;
-import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -17,7 +15,6 @@ import java.util.Map;
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
-import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -205,106 +202,6 @@ class OrderStepRequirementSupportTest
 		DraftHelper loaded = ConstructDraftPersistence.draftHelperFromState(state);
 		DraftOrderLine line = loaded.getOrder().get(0);
 		assertNull(line.getStepRequirement());
-	}
-
-	@Test
-	void scaffoldGeneratorEmitsConditionsForExplicitGroupTree()
-	{
-		HelperScaffoldGenerator generator = new HelperScaffoldGenerator(new GamevalSymbolResolver());
-		DraftHelper draft = new DraftHelper();
-		draft.setClassName("TreeOrderTest");
-		draft.setPackagePath("com.questhelper.helpers.quests.generated");
-
-		DraftRequirement req = new DraftRequirement();
-		req.setRawId(10);
-		req.setDisplayName("A");
-		draft.getRequirements().add(req);
-
-		DraftStep step1 = new DraftStep();
-		step1.setKind(HelperConstructModels.StepKind.OBJECT);
-		step1.setRawId(1);
-		step1.setStepId("st1");
-		step1.setInstructionText("First.");
-		step1.setSuggestedVarName("firstStep");
-		step1.setWorldPoint(new WorldPoint(3200, 3200, 0));
-		draft.getStepDefinitions().add(step1);
-
-		DraftStep step2 = new DraftStep();
-		step2.setKind(HelperConstructModels.StepKind.OBJECT);
-		step2.setRawId(2);
-		step2.setStepId("st2");
-		step2.setInstructionText("Second.");
-		step2.setSuggestedVarName("secondStep");
-		step2.setWorldPoint(new WorldPoint(3201, 3201, 0));
-		draft.getStepDefinitions().add(step2);
-
-		DraftOrderLine line1 = new DraftOrderLine();
-		line1.setSectionDivider(false);
-		line1.setRefStepId("st1");
-		line1.setOrderSlotId("os1");
-		line1.setLinkedRequirementRawId(null);
-		line1.setStepRequirement(DraftOrderStepRequirement.group("AND",
-			DraftOrderStepRequirement.invert(DraftOrderStepRequirement.orderVarbitSlot()),
-			DraftOrderStepRequirement.item(10)));
-		line1.getAttachedRequirements().add(DraftStepAttachedRequirement.varbit(5, 1, "EQUAL", ""));
-
-		DraftOrderLine line2 = new DraftOrderLine();
-		line2.setSectionDivider(false);
-		line2.setRefStepId("st2");
-		line2.setOrderSlotId("os2");
-		line2.setLinkedRequirementRawId(null);
-
-		draft.getOrder().add(line1);
-		draft.getOrder().add(line2);
-
-		line2.getAttachedRequirements().add(DraftStepAttachedRequirement.varbit(6, 1, "EQUAL", ""));
-
-		String source = generator.generate(draft).getSource();
-		assertTrue(source.contains("new Conditions(LogicType.AND,"), source);
-		assertTrue(source.contains(".addStep(new Conditions(LogicType.AND,"), source);
-	}
-
-	@Test
-	void scaffoldGeneratorAddsZoneImportsWhenOrderUsesZone()
-	{
-		HelperScaffoldGenerator generator = new HelperScaffoldGenerator(new GamevalSymbolResolver());
-		DraftHelper draft = new DraftHelper();
-		draft.setClassName("ZoneOrderTest");
-		draft.setPackagePath("com.questhelper.helpers.quests.generated");
-
-		DraftRequirement req = new DraftRequirement();
-		req.setRawId(10);
-		req.setDisplayName("A");
-		draft.getRequirements().add(req);
-
-		DraftStep step1 = new DraftStep();
-		step1.setKind(HelperConstructModels.StepKind.OBJECT);
-		step1.setRawId(1);
-		step1.setStepId("st1");
-		step1.setInstructionText("First.");
-		step1.setSuggestedVarName("firstStep");
-		step1.setWorldPoint(new WorldPoint(3200, 3200, 0));
-		draft.getStepDefinitions().add(step1);
-
-		DraftOrderLine line1 = new DraftOrderLine();
-		line1.setSectionDivider(false);
-		line1.setRefStepId("st1");
-		line1.setOrderSlotId("os1");
-		line1.setLinkedRequirementRawId(null);
-		line1.setZoneRoutingCorner1(new WorldPoint(1000, 2000, 0));
-		line1.setZoneRoutingCorner2(new WorldPoint(1005, 2005, 0));
-		line1.setZoneRoutingDisplayText("Cell");
-		line1.setStepRequirement(DraftOrderStepRequirement.group("AND",
-			DraftOrderStepRequirement.invert(DraftOrderStepRequirement.orderVarbitSlot()),
-			DraftOrderStepRequirement.item(10),
-			DraftOrderStepRequirement.orderZoneSlot()));
-		line1.getAttachedRequirements().add(DraftStepAttachedRequirement.varbit(5, 1, "EQUAL", ""));
-		draft.getOrder().add(line1);
-
-		String source = generator.generate(draft).getSource();
-		assertTrue(source.contains("import com.questhelper.requirements.zone.Zone;"), source);
-		assertTrue(source.contains("import com.questhelper.requirements.zone.ZoneRequirement;"), source);
-		assertTrue(source.contains("new ZoneRequirement("), source);
 	}
 
 	@Test

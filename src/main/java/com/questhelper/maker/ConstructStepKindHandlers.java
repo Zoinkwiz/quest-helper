@@ -1,7 +1,6 @@
 package com.questhelper.maker;
 
 import com.questhelper.maker.construct.DraftRoutingIds;
-import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;

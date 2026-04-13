@@ -54,6 +54,11 @@ public final class HelperConstructModels
 		/** When {@code kind} is {@link StepAttachmentKind#ITEM}: show {@link com.questhelper.requirements.item.ItemRequirement#highlighted()} in preview / codegen. */
 		private boolean attachmentHighlighted;
 		/**
+		 * When {@code kind} is {@link StepAttachmentKind#ITEM}: required stack count for preview / codegen ({@code >= 1}).
+		 * Ignored for other kinds; persisted as {@code 0} for varbit rows.
+		 */
+		private int itemQuantity;
+		/**
 		 * Legacy only: when {@code kind} is {@link StepAttachmentKind#VARBIT} and set, this was the routing varbit for the
 		 * quest-order slot with the same id; new drafts store routing varbits on {@link DraftOrderLine#getAttachedRequirements()}
 		 * instead. Load migrates these onto the matching order line. Inline (non-routing) varbits on a step definition use
@@ -68,21 +73,27 @@ public final class HelperConstructModels
 
 		public static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted)
 		{
-			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, attachmentHighlighted, null);
+			return item(rawId, attachmentHighlighted, 1);
+		}
+
+		public static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted, int itemQuantity)
+		{
+			int q = itemQuantity < 1 ? 1 : itemQuantity;
+			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, attachmentHighlighted, q, null);
 		}
 
 		/** Extra (non–order-slot) varbit requirement on the step. */
 		public static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, null);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 0, null);
 		}
 
 		/** Primary varbit routing row for one quest-order slot; matches {@link DraftOrderLine#getOrderSlotId()}. */
 		public static DraftStepAttachedRequirement routingVarbitForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, orderSlotId);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 0, orderSlotId);
 		}
 
 		public static DraftStepAttachedRequirement findRoutingVarbitForSlot(DraftStep step, String orderSlotId)

@@ -5,9 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.questhelper.maker.ConstructDraftPersistence;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteImporter;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteValidation;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteImporter;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteValidation;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;

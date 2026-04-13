@@ -1,11 +1,6 @@
-package com.questhelper.managers;
+package com.questhelper.maker;
 
-import com.questhelper.managers.GamevalSymbolResolver.ResolutionResult;
-
-import com.questhelper.maker.ConstructStepKindHandlers;
-import com.questhelper.maker.VarbitSpec;
 import com.questhelper.maker.construct.DraftRoutingIds;
-import com.questhelper.maker.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.Operation;
 
 import net.runelite.api.coords.WorldPoint;
@@ -28,19 +23,15 @@ import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
-import static com.questhelper.maker.HelperConstructModels.IdType;
 import static com.questhelper.maker.HelperConstructModels.ORDER_ROUTING_VARBIT_SENTINEL;
 import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 @Singleton
 public class HelperScaffoldGenerator
 {
-	private final GamevalSymbolResolver symbolResolver;
-
 	@Inject
-	public HelperScaffoldGenerator(GamevalSymbolResolver symbolResolver)
+	public HelperScaffoldGenerator()
 	{
-		this.symbolResolver = symbolResolver;
 	}
 
 	public GeneratedScaffold generate(DraftHelper draft)
@@ -184,30 +175,15 @@ public class HelperScaffoldGenerator
 			List<Integer> itemIds = DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
 			if (itemIds.size() == 1)
 			{
-				ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, itemIds.get(0));
-				if (resolved.isFallbackLiteral())
-				{
-					warnings.add("Unresolved item ID: " + itemIds.get(0));
-				}
 				out.append("\t\t").append(varName).append(" = new ItemRequirement(\"")
 					.append(escape(requirement.getDisplayName())).append("\", ")
-					.append(resolved.getSymbol()).append(");\n");
+					.append(itemIds.get(0)).append(");\n");
 			}
 			else
 			{
-				List<String> syms = new ArrayList<>();
-				for (int id : itemIds)
-				{
-					ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, id);
-					if (resolved.isFallbackLiteral())
-					{
-						warnings.add("Unresolved item ID: " + id);
-					}
-					syms.add(resolved.getSymbol());
-				}
 				out.append("\t\t").append(varName).append(" = new ItemRequirement(\"")
 					.append(escape(requirement.getDisplayName())).append("\", List.of(")
-					.append(String.join(", ", syms)).append("));\n");
+					.append(itemIds.stream().map(String::valueOf).collect(Collectors.joining(", "))).append("));\n");
 			}
 		}
 		out.append("\t}\n\n");
@@ -348,24 +324,10 @@ public class HelperScaffoldGenerator
 	{
 		String point = worldPointLiteral(step);
 		List<Integer> ids = DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds());
-		IdType idType = step.getKind() == StepKind.NPC ? IdType.NPC : IdType.OBJECT;
-		List<String> symbols = new ArrayList<>();
-		for (int id : ids)
-		{
-			ResolutionResult result = symbolResolver.resolve(idType, id);
-			if (result.isFallbackLiteral())
-			{
-				warnings.add("Unresolved " + idType.name().toLowerCase(Locale.ROOT) + " ID: " + id);
-			}
-			else if (result.isAmbiguous())
-			{
-				warnings.add("Ambiguous " + idType.name().toLowerCase(Locale.ROOT) + " ID: " + id + " resolved to " + result.getSymbol());
-			}
-			symbols.add(result.getSymbol());
-		}
+		List<String> symbols = ids.stream().map(String::valueOf).collect(Collectors.toList());
 		if (symbols.isEmpty())
 		{
-			symbols.add(resolveSymbol(step, warnings));
+			symbols.add(String.valueOf(step.getRawId()));
 		}
 		if (step.getKind() == StepKind.NPC)
 		{
@@ -416,21 +378,6 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	String resolveSymbol(DraftStep step, List<String> warnings)
-	{
-		IdType idType = step.getKind() == StepKind.NPC ? IdType.NPC : step.getKind() == StepKind.OBJECT ? IdType.OBJECT : IdType.ITEM;
-		ResolutionResult result = symbolResolver.resolve(idType, step.getRawId());
-		if (result.isFallbackLiteral())
-		{
-			warnings.add("Unresolved " + idType.name().toLowerCase(Locale.ROOT) + " ID: " + step.getRawId());
-		}
-		else if (result.isAmbiguous())
-		{
-			warnings.add("Ambiguous " + idType.name().toLowerCase(Locale.ROOT) + " ID: " + step.getRawId() + " resolved to " + result.getSymbol());
-		}
-		return result.getSymbol();
-	}
-
 	String worldPointLiteral(DraftStep step)
 	{
 		if (step.getWorldPoint() == null)
@@ -448,6 +395,21 @@ public class HelperScaffoldGenerator
 			return null;
 		}
 		return "new WorldPoint(" + step.getWorldPoint().getX() + ", " + step.getWorldPoint().getY() + ", " + step.getWorldPoint().getPlane() + ")";
+	}
+
+	private static int itemAttachmentQuantityForCodegen(DraftStepAttachedRequirement a)
+	{
+		if (a == null)
+		{
+			return 1;
+		}
+		String k = a.getKind() == null ? StepAttachmentKind.ITEM.name() : a.getKind();
+		if (!StepAttachmentKind.ITEM.name().equalsIgnoreCase(k))
+		{
+			return 1;
+		}
+		int q = a.getItemQuantity();
+		return q < 1 ? 1 : q;
 	}
 
 	void appendExtraStepRequirements(
@@ -503,17 +465,23 @@ public class HelperScaffoldGenerator
 				{
 					Integer orderLink = firstConcreteOrderItemLinkForStep(draft, step.getStepId());
 					boolean highlight = a.isAttachmentHighlighted() || (orderLink != null && orderLink.equals(rid));
-					out.append("\t\t").append(varName).append(".addRequirement(").append(reqVar)
-						.append(highlight ? ".highlighted()" : "").append(");\n");
+					int qty = itemAttachmentQuantityForCodegen(a);
+					out.append("\t\t").append(varName).append(".addRequirement(").append(reqVar);
+					if (qty > 1)
+					{
+						out.append(".quantity(").append(qty).append(")");
+					}
+					out.append(highlight ? ".highlighted()" : "").append(");\n");
 					continue;
 				}
-				ResolutionResult resolved = symbolResolver.resolve(IdType.ITEM, rid);
-				if (resolved.isFallbackLiteral())
-				{
-					warnings.add("Unresolved extra item ID on step: " + rid);
-				}
+				int qty = itemAttachmentQuantityForCodegen(a);
 				out.append("\t\t").append(varName).append(".addRequirement(new ItemRequirement(\"Item requirement\", ")
-					.append(resolved.getSymbol()).append(")").append(a.isAttachmentHighlighted() ? ".highlighted()" : "").append(");\n");
+					.append(rid).append(")");
+				if (qty > 1)
+				{
+					out.append(".quantity(").append(qty).append(")");
+				}
+				out.append(a.isAttachmentHighlighted() ? ".highlighted()" : "").append(");\n");
 				continue;
 			}
 			warnings.add("Unknown step attachment kind (skipped in scaffold): " + k);

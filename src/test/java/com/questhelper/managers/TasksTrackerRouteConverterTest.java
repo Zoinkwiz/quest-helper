@@ -1,15 +1,14 @@
 package com.questhelper.managers;
 
-import com.google.gson.Gson;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteItemDto;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteLocationDto;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteDto.RouteSectionDto;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteExporter;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteImporter;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteValidation;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteInteractDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteItemDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteLocationDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteSectionDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteExporter;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteImporter;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteValidation;
 import net.runelite.api.coords.WorldPoint;
 import org.junit.jupiter.api.Test;
 

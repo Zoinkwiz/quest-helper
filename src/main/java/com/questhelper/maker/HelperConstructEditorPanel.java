@@ -1,7 +1,29 @@
+/*
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.maker;
 
-import com.questhelper.maker.ConstructStepKind;
-import com.questhelper.maker.HelperConstructManager;
 import com.questhelper.panel.JGenerator;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.client.ui.ColorScheme;
@@ -32,7 +54,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -41,11 +62,12 @@ import java.awt.event.ComponentEvent;
 
 public final class HelperConstructEditorPanel extends JPanel
 {
+	// TODO: Review text
 	private static final String USAGE_GUIDE = String.join("\n",
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
 		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
-		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step dialog has a search field for the definition list.",
+		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
 		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add appends a placeholder generic step and order row with default corners. Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
 		"7. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
@@ -841,25 +863,32 @@ public final class HelperConstructEditorPanel extends JPanel
 		JCheckBox highlightCb = new JCheckBox("Highlight (item attachments only)");
 		highlightCb.setOpaque(false);
 		highlightCb.setForeground(Color.WHITE);
-		Runnable syncHighlightFromSelection = () ->
+		JLabel qtyLabel = new JLabel("Quantity (items):");
+		qtyLabel.setForeground(Color.WHITE);
+		JSpinner qtySpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		Runnable syncItemAttachmentOptionsFromSelection = () ->
 		{
 			HelperConstructManager.StepAttachmentEdit sel = list.getSelectedValue();
 			boolean item = sel != null && "ITEM".equalsIgnoreCase(sel.getKind());
 			highlightCb.setEnabled(item);
+			qtyLabel.setEnabled(item);
+			qtySpinner.setEnabled(item);
 			if (item)
 			{
 				highlightCb.setSelected(sel.isItemHighlighted());
+				qtySpinner.setValue(Math.max(1, sel.getItemQuantity()));
 			}
 			else
 			{
 				highlightCb.setSelected(false);
+				qtySpinner.setValue(1);
 			}
 		};
 		list.addListSelectionListener(e ->
 		{
 			if (!e.getValueIsAdjusting())
 			{
-				syncHighlightFromSelection.run();
+				syncItemAttachmentOptionsFromSelection.run();
 			}
 		});
 		highlightCb.addActionListener(ev ->
@@ -868,6 +897,16 @@ public final class HelperConstructEditorPanel extends JPanel
 			if (sel != null && "ITEM".equalsIgnoreCase(sel.getKind()))
 			{
 				sel.setItemHighlighted(highlightCb.isSelected());
+				list.repaint();
+			}
+		});
+		qtySpinner.addChangeListener(e ->
+		{
+			HelperConstructManager.StepAttachmentEdit sel = list.getSelectedValue();
+			if (sel != null && "ITEM".equalsIgnoreCase(sel.getKind()))
+			{
+				int q = ((Number) qtySpinner.getValue()).intValue();
+				sel.setItemQuantity(q < 1 ? 1 : q);
 				list.repaint();
 			}
 		});
@@ -882,7 +921,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			if (i >= 0)
 			{
 				model.remove(i);
-				syncHighlightFromSelection.run();
+				syncItemAttachmentOptionsFromSelection.run();
 			}
 		});
 
@@ -894,9 +933,15 @@ public final class HelperConstructEditorPanel extends JPanel
 		JLabel hint = new JLabel("<html>Choose from captured item requirements and varbit routing rows (same list as the Varbit reqs tab).<br>Preview and generated code use <code>QuestStep.addRequirement</code> where supported.");
 		hint.setForeground(Color.GRAY);
 
+		JPanel itemAttachOpts = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
+		itemAttachOpts.setOpaque(false);
+		itemAttachOpts.add(highlightCb);
+		itemAttachOpts.add(qtyLabel);
+		itemAttachOpts.add(qtySpinner);
+
 		JPanel south = new JPanel(new BorderLayout(0, 6));
 		south.setOpaque(false);
-		south.add(highlightCb, BorderLayout.NORTH);
+		south.add(itemAttachOpts, BorderLayout.NORTH);
 		south.add(hint, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel(new BorderLayout(8, 8));
@@ -909,7 +954,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		if (model.size() > 0)
 		{
 			list.setSelectedIndex(0);
-			syncHighlightFromSelection.run();
+			syncItemAttachmentOptionsFromSelection.run();
 		}
 
 		int r = JOptionPane.showConfirmDialog(this, panel, "Step attachments", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -1487,6 +1532,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		orderTable.setDragEnabled(true);
 		orderTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		// StepOrderTableModel uses fixed logical column indices in setValueAt; keep header order stable.
+		orderTable.getTableHeader().setReorderingAllowed(false);
 		// Reorder drag uses StepReorderTransferHandler's edge autoscroll (ramps with drag time).
 		orderTable.setAutoscrolls(false);
 		orderTable.setDropMode(DropMode.INSERT_ROWS);
@@ -1591,16 +1638,14 @@ public final class HelperConstructEditorPanel extends JPanel
 		DefaultListModel<HelperConstructManager.StepDefinitionPickOption> listModel = new DefaultListModel<>();
 		JList<HelperConstructManager.StepDefinitionPickOption> list = new JList<>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		JTextField stepPickSearch = newMakerSearchField("Filter by step label or id (case-insensitive).");
+		JTextField stepPickSearch = newMakerSearchField("Filter by instruction, name, target, option, or id (case-insensitive).");
 		Runnable refillStepPickList = () ->
 		{
 			String q = stepPickSearch.getText().trim().toLowerCase(Locale.ROOT);
 			listModel.clear();
 			for (HelperConstructManager.StepDefinitionPickOption o : allOptions)
 			{
-				String lab = o.getLabel() == null ? "" : o.getLabel();
-				String sid = o.getStepId() == null ? "" : o.getStepId();
-				String hay = (lab + " " + sid).toLowerCase(Locale.ROOT);
+				String hay = (o.getFilterText() == null ? "" : o.getFilterText()).toLowerCase(Locale.ROOT);
 				if (q.isEmpty() || hay.contains(q))
 				{
 					listModel.addElement(o);
@@ -1818,22 +1863,12 @@ public final class HelperConstructEditorPanel extends JPanel
 		StringBuilder sb = new StringBuilder(helperConstructManager.getCurrentDraftClassName());
 		for (ConstructStepKind k : ConstructStepKind.values())
 		{
-			String p;
-			switch (k)
+			String p = switch (k)
 			{
-				case NPC:
-					p = "N";
-					break;
-				case OBJECT:
-					p = "O";
-					break;
-				case TEXT:
-					p = "T";
-					break;
-				default:
-					p = "N";
-					break;
-			}
+				case NPC -> "N";
+				case OBJECT -> "O";
+				case TEXT -> "T";
+			};
 			sb.append('|').append(p).append('|').append(String.join("\n", helperConstructManager.getStepVarNames(k)));
 			sb.append('|').append(p).append('r').append('|').append(String.join("\n", helperConstructManager.getStepRawIdTexts(k)));
 			sb.append('|').append(p).append('w').append('|').append(String.join("\n", helperConstructManager.getStepWorldPointTexts(k)));
@@ -1965,21 +2000,22 @@ public final class HelperConstructEditorPanel extends JPanel
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
 		{
 			var row = rows.get(rowIndex);
+			String updatedVarName = aValue == null ? "" : String.valueOf(aValue);
 			if (columnIndex == 0)
 			{
-				helperConstructManager.updateStepVarName(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
+				helperConstructManager.updateStepVarName(row.getIndex(), updatedVarName);
 				setRows(helperConstructManager.getCombinedStepRows());
 				return;
 			}
 			if (columnIndex == 2 && !row.isSectionDivider())
 			{
-				helperConstructManager.updateOrderReferencedStepInstructionText(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
+				helperConstructManager.updateOrderReferencedStepInstructionText(row.getIndex(), updatedVarName);
 				setRows(helperConstructManager.getCombinedStepRows());
 				return;
 			}
 			if (columnIndex == 1 && row.isSectionDivider())
 			{
-				helperConstructManager.updateSectionCondition(row.getIndex(), aValue == null ? "" : String.valueOf(aValue));
+				helperConstructManager.updateSectionCondition(row.getIndex(), updatedVarName);
 				setRows(helperConstructManager.getCombinedStepRows());
 			}
 		}

@@ -13,6 +13,7 @@ import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
 import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 /**
@@ -130,6 +131,7 @@ public final class ConstructDraftPersistence
 				st.varbitOperation = a.getVarbitOperation();
 				st.varbitDisplayText = a.getVarbitDisplayText();
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
+				st.itemQuantity = a.getItemQuantity();
 				st.orderSlotId = a.getOrderSlotId();
 				stepState.attachedRequirements.add(st);
 			}
@@ -178,6 +180,7 @@ public final class ConstructDraftPersistence
 				st.varbitOperation = a.getVarbitOperation();
 				st.varbitDisplayText = a.getVarbitDisplayText();
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
+				st.itemQuantity = a.getItemQuantity();
 				st.orderSlotId = a.getOrderSlotId();
 				lineState.attachedRequirements.add(st);
 			}
@@ -227,6 +230,19 @@ public final class ConstructDraftPersistence
 		return step;
 	}
 
+	private static int normalizePersistedItemQuantity(String kind, Integer itemQuantity)
+	{
+		if (kind == null || !StepAttachmentKind.ITEM.name().equalsIgnoreCase(kind.trim()))
+		{
+			return 0;
+		}
+		if (itemQuantity == null || itemQuantity < 1)
+		{
+			return 1;
+		}
+		return itemQuantity;
+	}
+
 	private static void migrateStepStateAttachmentsToStep(DraftStepState stepState, DraftStep step)
 	{
 		if (stepState.attachedRequirements == null || stepState.attachedRequirements.isEmpty())
@@ -243,6 +259,7 @@ public final class ConstructDraftPersistence
 			d.setVarbitOperation(st.varbitOperation);
 			d.setVarbitDisplayText(st.varbitDisplayText);
 			d.setAttachmentHighlighted(st.attachmentHighlighted);
+			d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
 			d.setOrderSlotId(st.orderSlotId);
 			step.getAttachedRequirements().add(d);
 		}
@@ -297,6 +314,7 @@ public final class ConstructDraftPersistence
 				d.setVarbitOperation(st.varbitOperation);
 				d.setVarbitDisplayText(st.varbitDisplayText);
 				d.setAttachmentHighlighted(st.attachmentHighlighted);
+				d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
 				d.setOrderSlotId(st.orderSlotId);
 				line.getAttachedRequirements().add(d);
 			}
@@ -364,6 +382,8 @@ public final class ConstructDraftPersistence
 		public String varbitOperation;
 		public String varbitDisplayText;
 		public boolean attachmentHighlighted;
+		/** When {@code kind} is ITEM: required quantity ({@code >= 1}); omitted or {@code null} in old JSON defaults to 1. */
+		public Integer itemQuantity;
 		public String orderSlotId;
 	}
 

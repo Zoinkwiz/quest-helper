@@ -1,4 +1,4 @@
-package com.questhelper.managers.taskstroute;
+package com.questhelper.maker.taskstroute;
 
 import com.google.gson.annotations.SerializedName;
 import com.questhelper.maker.ConstructDraftPersistence;

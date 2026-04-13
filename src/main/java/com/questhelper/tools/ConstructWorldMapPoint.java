@@ -13,6 +13,7 @@ public class ConstructWorldMapPoint extends WorldMapPoint
 	{
 		super(WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint).getWorldPoint(), null);
 		setName(label);
+		setTooltip(label);
 		setSnapToEdge(false);
 		setJumpOnClick(false);
 		setImage(image);

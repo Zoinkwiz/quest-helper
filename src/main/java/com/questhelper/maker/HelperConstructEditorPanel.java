@@ -59,6 +59,8 @@ import java.util.function.Consumer;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public final class HelperConstructEditorPanel extends JPanel
 {
@@ -87,6 +89,10 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final ZoneRoutingTableModel zoneRoutingTableModel = new ZoneRoutingTableModel();
 	private final Runnable draftChangeListener;
 	private JButton worldMapRouteButton;
+	private JButton routeRevealButton;
+	private JDialog routeRevealDialog;
+	private JSlider routeRevealSlider;
+	private JLabel routeRevealValueLabel;
 	/** Maker header actions; reflows into a "More…" menu when the panel is too narrow. */
 	private OverflowingMakerToolbar makerToolbarRow;
 
@@ -120,19 +126,23 @@ public final class HelperConstructEditorPanel extends JPanel
 		JButton previewButton = new JButton("Preview");
 		JButton mapButton = new JButton("Route map");
 		worldMapRouteButton = new JButton("WorldMap");
+		routeRevealButton = new JButton("Route reveal");
 		JButton exportJsonButton = new JButton("Export route JSON");
 		JButton saveJsonButton = new JButton("Save JSON…");
 		JButton importJsonButton = new JButton("Import route JSON…");
-		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton,
-			exportJsonButton, saveJsonButton, importJsonButton);
+		JButton mergeOrderJsonButton = new JButton("Merge new order…");
+		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton, routeRevealButton,
+			exportJsonButton, saveJsonButton, importJsonButton, mergeOrderJsonButton);
 		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
 		resetButton.setToolTipText("Clear the draft and reset the auto-saved maker file (asks for confirmation).");
 		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
 		mapButton.setToolTipText("Save a PNG of step world positions connected as a route (needs 2+ points with coordinates).");
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
+		routeRevealButton.setToolTipText("Open/close a small slider to reveal ordered world map route steps progressively.");
 		exportJsonButton.setToolTipText("<html>Copy extended Tasks Tracker route JSON (pretty-printed): <code>sections</code>/<code>items</code> for the plugin wiki plus <code>questHelperMaker</code> with the full maker state.<br><a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">Tasks Tracker: Import Route from Clipboard</a>. Re-exporting from the plugin may drop <code>questHelperMaker</code>; keep a Quest Helper copy.</html>");
 		saveJsonButton.setToolTipText("Write the same extended route JSON document to a file.");
 		importJsonButton.setToolTipText("<html>Replace the draft from pasted JSON or a file: extended route with <code>questHelperMaker</code> or route-only (no maker blob). Convert old root-only drafts with <code>maker/scripts/convert_legacy_maker_draft.py</code>.<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a> for route fields.</html>");
+		mergeOrderJsonButton.setToolTipText("<html>Replace only quest order from imported <code>sections/items</code>, reusing existing steps when <code>taskId</code> or <code>customItem.id</code> matches. New ids create new steps.</html>");
 		syncWorldMapRouteButtonLabel();
 
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
@@ -157,9 +167,11 @@ public final class HelperConstructEditorPanel extends JPanel
 			helperConstructManager.toggleWorldMapRoutePreviewFromUi();
 			syncWorldMapRouteButtonLabel();
 		});
+		routeRevealButton.addActionListener(e -> toggleRouteRevealDialog());
 		exportJsonButton.addActionListener(e -> exportDraftJsonToClipboard());
 		saveJsonButton.addActionListener(e -> saveDraftJsonToFile());
 		importJsonButton.addActionListener(e -> showImportDraftJsonDialog());
+		mergeOrderJsonButton.addActionListener(e -> showMergeOrderJsonDialog());
 
 		List<JComponent> makerToolbarChain = new ArrayList<>();
 		makerToolbarChain.add(buildButton);
@@ -168,10 +180,12 @@ public final class HelperConstructEditorPanel extends JPanel
 		makerToolbarChain.add(newToolbarSeparator());
 		makerToolbarChain.add(mapButton);
 		makerToolbarChain.add(worldMapRouteButton);
+		makerToolbarChain.add(routeRevealButton);
 		makerToolbarChain.add(newToolbarSeparator());
 		makerToolbarChain.add(exportJsonButton);
 		makerToolbarChain.add(saveJsonButton);
 		makerToolbarChain.add(importJsonButton);
+		makerToolbarChain.add(mergeOrderJsonButton);
 		makerToolbarRow = new OverflowingMakerToolbar(makerToolbarChain, this::applyMakerToolbarStyle);
 		makerToolbarRow.setOpaque(false);
 		header.add(makerToolbarRow, BorderLayout.SOUTH);
@@ -412,6 +426,61 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
+	private void showMergeOrderJsonDialog()
+	{
+		int confirm = JOptionPane.showConfirmDialog(this,
+			"Replace current quest order from imported route items?\n"
+				+ "Existing step definitions are kept and reused by taskId/customItem.id where matched.\n"
+				+ "Matched steps are not modified; missing ids create new steps.",
+			"Merge new order",
+			JOptionPane.OK_CANCEL_OPTION,
+			JOptionPane.WARNING_MESSAGE);
+		if (confirm != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		JTextArea textArea = new JTextArea(14, 44);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		JButton browse = new JButton("Load from file…");
+		browse.addActionListener(ev ->
+		{
+			JFileChooser fc = new JFileChooser();
+			if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+			{
+				try
+				{
+					textArea.setText(new String(Files.readAllBytes(fc.getSelectedFile().toPath()), StandardCharsets.UTF_8));
+				}
+				catch (IOException ex)
+				{
+					JOptionPane.showMessageDialog(this, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
+		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+		panel.add(browse, BorderLayout.SOUTH);
+
+		int r = JOptionPane.showConfirmDialog(this, panel, "Paste route / draft JSON", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		HelperConstructManager.ImportDraftResult result = helperConstructManager.mergeOrderFromJson(textArea.getText());
+		if (result.isSuccess())
+		{
+			refresh();
+			JOptionPane.showMessageDialog(this, "Quest order merged and saved to the maker draft file.", "Merge new order", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(this, result.getErrorMessage(), "Merge failed", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	private void applyMakerToolbarStyle(JButton... buttons)
 	{
 		for (JButton b : buttons)
@@ -434,6 +503,119 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			makerToolbarRow.reconcile();
 		}
+	}
+
+	private void syncRouteRevealButtonLabel()
+	{
+		if (routeRevealButton == null)
+		{
+			return;
+		}
+		boolean open = routeRevealDialog != null && routeRevealDialog.isShowing();
+		routeRevealButton.setText(open ? "Route reveal (open)" : "Route reveal");
+		if (makerToolbarRow != null)
+		{
+			makerToolbarRow.reconcile();
+		}
+	}
+
+	private void toggleRouteRevealDialog()
+	{
+		if (routeRevealDialog != null && routeRevealDialog.isShowing())
+		{
+			routeRevealDialog.dispose();
+			return;
+		}
+		Window owner = SwingUtilities.getWindowAncestor(this);
+		if (owner == null)
+		{
+			return;
+		}
+		JDialog dialog = new JDialog(owner, "Route reveal", Dialog.ModalityType.MODELESS);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		dialog.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosed(WindowEvent e)
+			{
+				routeRevealDialog = null;
+				routeRevealSlider = null;
+				routeRevealValueLabel = null;
+				syncRouteRevealButtonLabel();
+			}
+		});
+
+		JSlider slider = new JSlider(0, 100, helperConstructManager.getWorldMapRouteRevealPercent());
+		slider.setOpaque(false);
+		slider.setPaintTicks(true);
+		slider.setMajorTickSpacing(25);
+		slider.setMinorTickSpacing(5);
+		JButton stepLeftButton = new JButton("<");
+		JButton stepRightButton = new JButton(">");
+		applyMakerToolbarStyle(stepLeftButton, stepRightButton);
+		stepLeftButton.setToolTipText("Show one fewer step.");
+		stepRightButton.setToolTipText("Show one more step.");
+		JLabel valueLabel = new JLabel();
+		valueLabel.setForeground(Color.WHITE);
+		JLabel hintLabel = new JLabel("Left shows earliest step only; right shows full route.");
+		hintLabel.setForeground(Color.GRAY);
+		updateRouteRevealDisplayState(slider, valueLabel);
+		slider.addChangeListener(e ->
+		{
+			helperConstructManager.setWorldMapRouteRevealPercent(slider.getValue());
+			updateRouteRevealDisplayState(slider, valueLabel);
+		});
+		stepLeftButton.addActionListener(e ->
+		{
+			helperConstructManager.stepWorldMapRouteRevealBy(-1);
+			slider.setValue(helperConstructManager.getWorldMapRouteRevealPercent());
+			updateRouteRevealDisplayState(slider, valueLabel);
+		});
+		stepRightButton.addActionListener(e ->
+		{
+			helperConstructManager.stepWorldMapRouteRevealBy(1);
+			slider.setValue(helperConstructManager.getWorldMapRouteRevealPercent());
+			updateRouteRevealDisplayState(slider, valueLabel);
+		});
+
+		JPanel sliderRow = new JPanel(new BorderLayout(6, 0));
+		sliderRow.setOpaque(false);
+		sliderRow.add(stepLeftButton, BorderLayout.WEST);
+		sliderRow.add(slider, BorderLayout.CENTER);
+		sliderRow.add(stepRightButton, BorderLayout.EAST);
+
+		JPanel content = new JPanel(new BorderLayout(0, 6));
+		content.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		content.setBorder(new EmptyBorder(8, 8, 8, 8));
+		content.add(valueLabel, BorderLayout.NORTH);
+		content.add(sliderRow, BorderLayout.CENTER);
+		content.add(hintLabel, BorderLayout.SOUTH);
+		dialog.setContentPane(content);
+		dialog.pack();
+		dialog.setLocationRelativeTo(this);
+		dialog.setVisible(true);
+
+		routeRevealDialog = dialog;
+		routeRevealSlider = slider;
+		routeRevealValueLabel = valueLabel;
+		syncRouteRevealButtonLabel();
+	}
+
+	private void updateRouteRevealDisplayState(JSlider slider, JLabel valueLabel)
+	{
+		int totalSteps = helperConstructManager.getOrderedRouteStepCountForPreview();
+		int percent = slider.getValue();
+		int visibleSteps;
+		if (totalSteps <= 0)
+		{
+			visibleSteps = 0;
+		}
+		else
+		{
+			visibleSteps = helperConstructManager.getVisibleRouteStepCountForPreview();
+		}
+		valueLabel.setText(String.format("Reveal: %d%% (%d/%d steps)", percent, visibleSteps, totalSteps));
+		slider.setEnabled(totalSteps > 0);
 	}
 
 	private static JComponent newToolbarSeparator()
@@ -1834,12 +2016,26 @@ public final class HelperConstructEditorPanel extends JPanel
 		varbitRoutingTableModel.reloadFromManager();
 		zoneRoutingTableModel.reloadFromManager();
 		syncWorldMapRouteButtonLabel();
+		syncRouteRevealButtonLabel();
+		if (routeRevealSlider != null && routeRevealValueLabel != null)
+		{
+			int managerPercent = helperConstructManager.getWorldMapRouteRevealPercent();
+			if (routeRevealSlider.getValue() != managerPercent)
+			{
+				routeRevealSlider.setValue(managerPercent);
+			}
+			updateRouteRevealDisplayState(routeRevealSlider, routeRevealValueLabel);
+		}
 		revalidate();
 		repaint();
 	}
 
 	public void shutDown()
 	{
+		if (routeRevealDialog != null)
+		{
+			routeRevealDialog.dispose();
+		}
 		helperConstructManager.removeDraftChangeListener(draftChangeListener);
 		helperConstructManager.disableWorldMapRoutePreview();
 	}

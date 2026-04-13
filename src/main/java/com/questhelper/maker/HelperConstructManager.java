@@ -3,7 +3,13 @@ package com.questhelper.maker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.questhelper.managers.QuestManager;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteItemDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteSectionDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteExporter;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteImporter;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteValidation;
 import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.maker.construct.ConstructMenuCapture;
@@ -139,6 +145,8 @@ public class HelperConstructManager
 	private final Gson prettyDraftGson = new GsonBuilder().setPrettyPrinting().create();
 	@Getter
 	private boolean worldMapRoutePreviewEnabled;
+	@Getter
+	private int worldMapRouteRevealPercent = 100;
 	private final List<Runnable> draftChangeListeners = new CopyOnWriteArrayList<>();
 
 	public void addDraftChangeListener(Runnable listener)
@@ -778,7 +786,8 @@ public class HelperConstructManager
 			return Collections.emptyList();
 		}
 		List<WorldPoint> points = new ArrayList<>();
-		for (DraftStep step : expandOrderToDefinitionsInOrder())
+		List<DraftStep> visibleSteps = getVisibleOrderedRouteSteps();
+		for (DraftStep step : visibleSteps)
 		{
 			WorldPoint wp = step.getWorldPoint();
 			if (wp != null && isWithinMapBounds(wp))
@@ -787,6 +796,47 @@ public class HelperConstructManager
 			}
 		}
 		return points;
+	}
+
+	public void setWorldMapRouteRevealPercent(int percent)
+	{
+		ensureDraftLoaded();
+		int clamped = clampWorldMapRouteRevealPercent(percent);
+		if (worldMapRouteRevealPercent == clamped)
+		{
+			return;
+		}
+		worldMapRouteRevealPercent = clamped;
+		rebuildWorldMapRouteIfEnabled();
+	}
+
+	public int getOrderedRouteStepCountForPreview()
+	{
+		ensureDraftLoaded();
+		return expandOrderToDefinitionsInOrder().size();
+	}
+
+	public int getVisibleRouteStepCountForPreview()
+	{
+		ensureDraftLoaded();
+		return visibleRouteStepCount(expandOrderToDefinitionsInOrder().size());
+	}
+
+	public void stepWorldMapRouteRevealBy(int stepDelta)
+	{
+		if (stepDelta == 0)
+		{
+			return;
+		}
+		ensureDraftLoaded();
+		int totalSteps = expandOrderToDefinitionsInOrder().size();
+		if (totalSteps <= 0)
+		{
+			return;
+		}
+		int currentVisible = visibleRouteStepCount(totalSteps);
+		int targetVisible = Math.max(1, Math.min(totalSteps, currentVisible + stepDelta));
+		setWorldMapRouteRevealPercent(percentForVisibleStepCount(targetVisible, totalSteps));
 	}
 
 	private List<String> validateDraft()
@@ -3126,6 +3176,138 @@ public class HelperConstructManager
 		return importDraftFromJson(routeJson);
 	}
 
+	/**
+	 * Merge imported route order into the current draft:
+	 * reuses existing steps by task/custom ids, creates missing ones, and replaces current quest order.
+	 */
+	public ImportDraftResult mergeOrderFromJson(String json)
+	{
+		ensureDraftLoaded();
+		MakerDraftJsonLoader.LoadOutcome outcome = MakerDraftJsonLoader.loadDraftFromJson(json, gson);
+		if (!outcome.isSuccess())
+		{
+			return ImportDraftResult.failure(outcome.getErrorMessage());
+		}
+		TasksTrackerRouteDto route;
+		try
+		{
+			route = gson.fromJson(json == null ? "" : json.trim(), TasksTrackerRouteDto.class);
+		}
+		catch (RuntimeException ex)
+		{
+			return ImportDraftResult.failure(ex.getMessage());
+		}
+		String validationError = TasksTrackerRouteValidation.validateRoute(route);
+		if (validationError != null)
+		{
+			return ImportDraftResult.failure(validationError);
+		}
+		mergeRouteOrderIntoCurrentDraft(route);
+		reconcileOrderSlotRoutingAttachments();
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return ImportDraftResult.ok();
+	}
+
+	private void mergeRouteOrderIntoCurrentDraft(TasksTrackerRouteDto route)
+	{
+		List<DraftOrderLine> mergedOrder = new ArrayList<>();
+		List<RouteSectionDto> sections = route == null || route.getSections() == null
+			? List.of()
+			: route.getSections();
+		for (int si = 0; si < sections.size(); si++)
+		{
+			RouteSectionDto sec = sections.get(si);
+			List<RouteItemDto> items = sec != null && sec.getItems() != null ? sec.getItems() : List.of();
+			if (si > 0 || items.isEmpty())
+			{
+				mergedOrder.add(TasksTrackerRouteImporter.newSectionDivider(sec == null ? null : sec.getName()));
+			}
+			for (RouteItemDto item : items)
+			{
+				if (item == null)
+				{
+					continue;
+				}
+				DraftStep step = findOrCreateMergeStep(item);
+				if (step == null || step.getStepId() == null || step.getStepId().isBlank())
+				{
+					continue;
+				}
+				String routingText = item.getTaskId() != null
+					? truncateForRouting(step.getInstructionText())
+					: truncateForRouting(customItemLabel(item.getCustomItem()));
+				mergedOrder.add(TasksTrackerRouteImporter.newOrderRefLine(step.getStepId(), routingText));
+			}
+		}
+		currentDraft.getOrder().clear();
+		currentDraft.getOrder().addAll(mergedOrder);
+	}
+
+	private DraftStep findOrCreateMergeStep(RouteItemDto item)
+	{
+		Integer taskId = item.getTaskId();
+		if (taskId != null)
+		{
+			DraftStep existing = findStepByTaskId(taskId);
+			if (existing != null)
+			{
+				return existing;
+			}
+			DraftStep created = TasksTrackerRouteImporter.newLeagueTaskStep(item, null);
+			currentDraft.getStepDefinitions().add(created);
+			return created;
+		}
+		RouteCustomItemDto customItem = item.getCustomItem();
+		if (customItem == null)
+		{
+			return null;
+		}
+		String customId = customItem.getId() == null ? "" : customItem.getId().trim();
+		if (customId.isBlank())
+		{
+			return null;
+		}
+		DraftStep existing = findDefinitionByStepId(customId);
+		if (existing != null)
+		{
+			return existing;
+		}
+		DraftStep created = TasksTrackerRouteImporter.newCustomItemStep(item, customId);
+		currentDraft.getStepDefinitions().add(created);
+		return created;
+	}
+
+	private DraftStep findStepByTaskId(int taskId)
+	{
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step != null && step.getStructId() != null && step.getStructId() == taskId)
+			{
+				return step;
+			}
+		}
+		return findDefinitionByStepId(String.valueOf(taskId));
+	}
+
+	private static String customItemLabel(RouteCustomItemDto customItem)
+	{
+		if (customItem == null || customItem.getLabel() == null)
+		{
+			return "";
+		}
+		return customItem.getLabel();
+	}
+
+	private static String truncateForRouting(String text)
+	{
+		if (text == null)
+		{
+			return "";
+		}
+		return text.length() <= 120 ? text : text.substring(0, 120);
+	}
+
 	private void saveDraftToConfig()
 	{
 		File file = MakerDraftFileStore.draftFileOrNull();
@@ -3376,7 +3558,7 @@ public class HelperConstructManager
 			return;
 		}
 		MakerPreviewRuntime.clearConstructWorldMapPoints(worldMapPointManager);
-		List<DraftStep> steps = expandOrderToDefinitionsInOrder();
+		List<DraftStep> steps = getVisibleOrderedRouteSteps();
 		for (int i = 0; i < steps.size(); i++)
 		{
 			DraftStep step = steps.get(i);
@@ -3385,10 +3567,63 @@ public class HelperConstructManager
 			{
 				continue;
 			}
-			String label = (i + 1) + ". " + displayStepName(step);
+			String label = "(" + (i + 1) + ") " + displayStepName(step);
 			ConstructWorldMapPoint point = new ConstructWorldMapPoint(wp, routePointIcon(i, steps.size()), label);
 			worldMapPointManager.add(point);
 		}
+	}
+
+	private List<DraftStep> getVisibleOrderedRouteSteps()
+	{
+		List<DraftStep> steps = expandOrderToDefinitionsInOrder();
+		int visibleCount = visibleRouteStepCount(steps.size());
+		if (visibleCount >= steps.size())
+		{
+			return steps;
+		}
+		return new ArrayList<>(steps.subList(0, visibleCount));
+	}
+
+	private int visibleRouteStepCount(int totalSteps)
+	{
+		if (totalSteps <= 0)
+		{
+			return 0;
+		}
+		int clampedPercent = clampWorldMapRouteRevealPercent(worldMapRouteRevealPercent);
+		if (clampedPercent >= 100)
+		{
+			return totalSteps;
+		}
+		if (clampedPercent <= 0)
+		{
+			return 1;
+		}
+		int roundedUp = (clampedPercent * totalSteps + 99) / 100;
+		return Math.max(1, Math.min(totalSteps, roundedUp));
+	}
+
+	private static int clampWorldMapRouteRevealPercent(int percent)
+	{
+		return Math.max(0, Math.min(100, percent));
+	}
+
+	private static int percentForVisibleStepCount(int visibleSteps, int totalSteps)
+	{
+		if (totalSteps <= 0)
+		{
+			return 0;
+		}
+		int clampedVisible = Math.max(1, Math.min(totalSteps, visibleSteps));
+		if (clampedVisible >= totalSteps)
+		{
+			return 100;
+		}
+		if (clampedVisible <= 1)
+		{
+			return 0;
+		}
+		return Math.max(0, Math.min(99, ((clampedVisible - 1) * 100) / totalSteps));
 	}
 
 	private void clearWorldMapRoutePoints()

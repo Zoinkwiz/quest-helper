@@ -51,27 +51,11 @@ public final class TasksTrackerRouteImporter
 			RouteSectionDto sec = sections.get(si);
 			if (si > 0)
 			{
-				DraftOrderLine div = new DraftOrderLine();
-				div.setOrderSlotId(UUID.randomUUID().toString());
-				div.setSectionDivider(true);
-				div.setSuggestedVarName(trimOrDefault(sec.getName(), "Section"));
-				div.setSectionCondition("");
-				div.setSkipWhenConditionMet(false);
-				div.setRefStepId(null);
-				div.setLinkedRequirementRawId(null);
-				draft.getOrder().add(div);
+				draft.getOrder().add(newSectionDivider(sec.getName()));
 			}
 			else if (sec.getItems() == null || sec.getItems().isEmpty())
 			{
-				DraftOrderLine div = new DraftOrderLine();
-				div.setOrderSlotId(UUID.randomUUID().toString());
-				div.setSectionDivider(true);
-				div.setSuggestedVarName(trimOrDefault(sec.getName(), "Section"));
-				div.setSectionCondition("");
-				div.setSkipWhenConditionMet(false);
-				div.setRefStepId(null);
-				div.setLinkedRequirementRawId(null);
-				draft.getOrder().add(div);
+				draft.getOrder().add(newSectionDivider(sec.getName()));
 			}
 
 			List<RouteItemDto> items = sec.getItems() != null ? sec.getItems() : List.of();
@@ -95,9 +79,38 @@ public final class TasksTrackerRouteImporter
 		RouteItemDto item,
 		Map<Integer, JsonObject> hubByStructId)
 	{
+		DraftStep step = newLeagueTaskStep(item, hubByStructId);
+		draft.getStepDefinitions().add(step);
+		draft.getOrder().add(newOrderRefLine(step.getStepId(), truncate(step.getInstructionText(), 120)));
+	}
+
+	private static void appendCustomItemRow(DraftHelper draft, RouteItemDto item)
+	{
+		RouteCustomItemDto c = item.getCustomItem();
+		DraftStep step = newCustomItemStep(item, c != null && c.getId() != null && !c.getId().isBlank()
+			? c.getId().trim()
+			: UUID.randomUUID().toString());
+		draft.getStepDefinitions().add(step);
+		draft.getOrder().add(newOrderRefLine(step.getStepId(), truncate(c == null ? "" : c.getLabel(), 120)));
+	}
+
+	public static DraftOrderLine newSectionDivider(String sectionName)
+	{
+		DraftOrderLine div = new DraftOrderLine();
+		div.setOrderSlotId(UUID.randomUUID().toString());
+		div.setSectionDivider(true);
+		div.setSuggestedVarName(trimOrDefault(sectionName, "Section"));
+		div.setSectionCondition("");
+		div.setSkipWhenConditionMet(false);
+		div.setRefStepId(null);
+		div.setLinkedRequirementRawId(null);
+		return div;
+	}
+
+	public static DraftStep newLeagueTaskStep(RouteItemDto item, Map<Integer, JsonObject> hubByStructId)
+	{
 		int structId = item.getTaskId();
 		JsonObject hub = hubByStructId != null ? hubByStructId.get(structId) : null;
-
 		int sortId = 0;
 		String name;
 		String desc = "";
@@ -175,32 +188,14 @@ public final class TasksTrackerRouteImporter
 				}
 			}
 		}
-		draft.getStepDefinitions().add(step);
-
-		String orderSlotId = UUID.randomUUID().toString();
-		DraftOrderLine ord = new DraftOrderLine();
-		ord.setOrderSlotId(orderSlotId);
-		ord.setSectionDivider(false);
-		ord.setSuggestedVarName(null);
-		ord.setSectionCondition("");
-		ord.setSkipWhenConditionMet(false);
-		ord.setRefStepId(stepId);
-		ord.setLinkedRequirementRawId(null);
-		draft.getOrder().add(ord);
-
-		DraftStepAttachedRequirement.setOrderLineRoutingVarbit(ord, DraftStepAttachedRequirement.varbit(
-			0,
-			0,
-			"EQUAL",
-			truncate(name, 120)));
+		return step;
 	}
 
-	private static void appendCustomItemRow(DraftHelper draft, RouteItemDto item)
+	public static DraftStep newCustomItemStep(RouteItemDto item, String stepId)
 	{
 		RouteCustomItemDto c = item.getCustomItem();
-		String stepId = UUID.randomUUID().toString();
 		DraftStep step = new DraftStep();
-		step.setStepId(stepId);
+		step.setStepId(stepId == null || stepId.isBlank() ? UUID.randomUUID().toString() : stepId.trim());
 		step.setKind(StepKind.TEXT);
 		step.setSectionDivider(false);
 		step.setStructId(null);
@@ -208,21 +203,21 @@ public final class TasksTrackerRouteImporter
 		step.setOption("");
 		step.setTargetText("");
 		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(
-			c.getLabel() != null ? c.getLabel() : "custom", "step"));
+			c != null && c.getLabel() != null ? c.getLabel() : "custom", "step"));
 		StringBuilder instr = new StringBuilder();
-		if (c.getLabel() != null && !c.getLabel().isBlank())
+		if (c != null && c.getLabel() != null && !c.getLabel().isBlank())
 		{
 			instr.append(c.getLabel().trim());
 		}
-		if (c.getDescription() != null && !c.getDescription().isBlank())
+		if (c != null && c.getDescription() != null && !c.getDescription().isBlank())
 		{
-			if (!instr.isEmpty())
+			if (instr.length() > 0)
 			{
 				instr.append("\n\n");
 			}
 			instr.append(c.getDescription().trim());
 		}
-		if (instr.isEmpty())
+		if (instr.length() == 0)
 		{
 			instr.append("Custom step");
 		}
@@ -240,24 +235,25 @@ public final class TasksTrackerRouteImporter
 		step.setSectionCondition("");
 		step.setSkipWhenConditionMet(false);
 		applyWorldPoint(step, item.getLocation(), null);
-		draft.getStepDefinitions().add(step);
+		return step;
+	}
 
-		String orderSlotId = UUID.randomUUID().toString();
+	public static DraftOrderLine newOrderRefLine(String stepId, String routingDisplayText)
+	{
 		DraftOrderLine ord = new DraftOrderLine();
-		ord.setOrderSlotId(orderSlotId);
+		ord.setOrderSlotId(UUID.randomUUID().toString());
 		ord.setSectionDivider(false);
 		ord.setSuggestedVarName(null);
 		ord.setSectionCondition("");
 		ord.setSkipWhenConditionMet(false);
 		ord.setRefStepId(stepId);
 		ord.setLinkedRequirementRawId(null);
-		draft.getOrder().add(ord);
-
 		DraftStepAttachedRequirement.setOrderLineRoutingVarbit(ord, DraftStepAttachedRequirement.varbit(
 			0,
 			0,
 			"EQUAL",
-			truncate(c.getLabel(), 120)));
+			truncate(routingDisplayText, 120)));
+		return ord;
 	}
 
 	private static Integer firstId(List<Integer> list)

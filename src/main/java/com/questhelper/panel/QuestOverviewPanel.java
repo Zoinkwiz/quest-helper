@@ -59,6 +59,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
@@ -348,6 +349,18 @@ public class QuestOverviewPanel extends JPanel
 		return allQuestStepPanelList.stream()
 			.filter(AbstractQuestSection::isCollapsed)
 			.count() == allQuestStepPanelList.size();
+	}
+
+	public void xd()
+	{
+		for (var panel : allQuestStepPanelList) {
+			if (!panel.isCollapsed()) {
+				if (panel instanceof QuestStepPanel) {
+					QuestStepPanel questStepPanel = (QuestStepPanel) panel;
+					System.out.printf("asd %s\n", questStepPanel.getLastHighlightedStep());
+				}
+			}
+		}
 	}
 
 	public void setupQuestRequirements(QuestHelper quest)

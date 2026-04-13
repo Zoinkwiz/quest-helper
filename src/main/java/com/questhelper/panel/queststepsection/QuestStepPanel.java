@@ -34,6 +34,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.BoardShipStep;
 import com.questhelper.steps.PortTaskStep;
 import com.questhelper.steps.QuestStep;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -48,6 +49,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class QuestStepPanel extends AbstractQuestSection implements MouseListener
@@ -55,11 +57,12 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	private static final int TITLE_PADDING = 5;
 
 	private final QuestHelperPlugin questHelperPlugin;
-	private final HashMap<QuestStep, JTextPane> steps = new HashMap<>();
+	private final HashMap<QuestStep, JTextPane> steps = new LinkedHashMap<>();
 	private final @Nullable QuestRequirementsPanel requiredItemsPanel;
 	private final @Nullable QuestRequirementsPanel recommendedItemsPanel;
 	private boolean stepAutoLocked;
 	private final QuestHelper questHelper;
+	@Getter
 	private QuestStep lastHighlightedStep = null;
 
 	public QuestStepPanel(PanelDetails panelDetails, QuestStep currentStep, QuestManager questManager, QuestHelperPlugin questHelperPlugin)
@@ -238,16 +241,22 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 
 	public boolean updateHighlightCheck(Client client, QuestStep newStep, QuestHelper currentQuest)
 	{
-		if (panelDetails.getHideCondition() == null || !panelDetails.getHideCondition().check(client))
+		var hideCondition = panelDetails.getHideCondition();
+		if (hideCondition == null || !hideCondition.check(client))
 		{
 			setVisible(true);
 			boolean highlighted = false;
 			setLockable(panelDetails.getLockingQuestSteps() != null &&
 				(panelDetails.getVars() == null || panelDetails.getVars().contains(currentQuest.getVar())));
 
-			for (QuestStep sidebarStep : getSteps())
+			var sidebarSteps = getSteps();
+
+			for (QuestStep sidebarStep : sidebarSteps)
 			{
-				if (sidebarStep.getConditionToHide() != null && sidebarStep.getConditionToHide().check(client)) continue;
+				if (sidebarStep.getConditionToHide() != null && sidebarStep.getConditionToHide().check(client))
+				{
+					continue;
+				}
 
 				if (sidebarStep.getFadeCondition() != null)
 				{

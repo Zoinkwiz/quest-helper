@@ -937,4 +937,8 @@ public class DetailedQuestStep extends QuestStep
 	{
 		highlightZones.add(zone);
 	}
+
+	public String toString() {
+		return String.format("%s", String.join("", this.getText()));
+	}
 }

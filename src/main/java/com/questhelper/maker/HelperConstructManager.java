@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.maker;
 
 import com.google.gson.Gson;
@@ -40,12 +64,10 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.TileObject;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -57,6 +79,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.Text;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -1139,7 +1162,7 @@ public class HelperConstructManager
 		{
 			Skill skill = parseSkillName(edit.getSkillName());
 			int level = edit.getSkillRequiredLevel() == null ? 1 : Math.max(1, edit.getSkillRequiredLevel());
-			String op = normalizeOperationName(edit.getSkillOperation(), Operation.GREATER_EQUAL).name();
+			String op = normalizeOperationName(edit.getSkillOperation()).name();
 			String base = level + " " + skill.getName() + " (" + op + ")";
 			if (edit.isSkillCanBeBoosted())
 			{
@@ -1229,11 +1252,11 @@ public class HelperConstructManager
 		}
 	}
 
-	private static Operation normalizeOperationName(String opName, Operation fallback)
+	private static Operation normalizeOperationName(String opName)
 	{
 		if (opName == null || opName.isBlank())
 		{
-			return fallback;
+			return Operation.GREATER_EQUAL;
 		}
 		try
 		{
@@ -1241,7 +1264,7 @@ public class HelperConstructManager
 		}
 		catch (IllegalArgumentException ex)
 		{
-			return fallback;
+			return Operation.GREATER_EQUAL;
 		}
 	}
 
@@ -1327,7 +1350,7 @@ public class HelperConstructManager
 			return StepAttachmentEdit.skill(skill.name(), level, a.getSkillOperation(), a.getSkillDisplayText(), a.isSkillCanBeBoosted());
 		}
 		int itemId = a.getItemRawId() == null ? 0 : a.getItemRawId();
-		int q = a.getItemQuantity() < 1 ? 1 : a.getItemQuantity();
+		int q = Math.max(a.getItemQuantity(), 1);
 		return StepAttachmentEdit.item(itemId, a.isAttachmentHighlighted(), q);
 	}
 
@@ -1363,7 +1386,7 @@ public class HelperConstructManager
 		{
 			Skill skill = parseSkillName(edit.getSkillName());
 			int level = edit.getSkillRequiredLevel() == null ? 1 : Math.max(1, edit.getSkillRequiredLevel());
-			Operation op = normalizeOperationName(edit.getSkillOperation(), Operation.GREATER_EQUAL);
+			Operation op = normalizeOperationName(edit.getSkillOperation());
 			return DraftStepAttachedRequirement.skill(
 				skill.name(),
 				level,
@@ -1839,35 +1862,60 @@ public class HelperConstructManager
 	}
 
 	/**
-	 * Appends a new empty generic step, a quest-order row, and placeholder zone corners on that order row
-	 * so the Zone reqs tab can edit them immediately.
+	 * Adds default zone corners and an {@code ORDER_ZONE} leaf to an existing quest-order step row — no new step
+	 * definition and no new order line. Use when the maker should only wire zone routing onto the row the author
+	 * already selected in Quest order.
+	 *
+	 * @return {@code false} when the index is invalid, the row is a section, the row already participates in zone
+	 *         routing for the editor, or the updated conditions tree fails validation.
 	 */
-	public void addEmptyZoneSlotFromUi()
+	public boolean addZoneSlotToOrderRowFromUi(int orderIndex)
 	{
 		ensureDraftLoaded();
-		addEmptyStepFromUi(ConstructStepKind.TEXT);
-		List<DraftStep> defs = currentDraft.getStepDefinitions();
-		DraftStep placeholder = defs.get(defs.size() - 1);
-		placeholder.setSuggestedVarName(HelperScaffoldGenerator.toVarName("zone", "step"));
-		addOrderRef(placeholder.getStepId());
 		List<DraftOrderLine> order = currentDraft.getOrder();
-		if (order.isEmpty())
+		if (orderIndex < 0 || orderIndex >= order.size())
 		{
-			return;
+			return false;
 		}
-		DraftOrderLine added = order.get(order.size() - 1);
-		if (added.isSectionDivider())
+		DraftOrderLine line = order.get(orderIndex);
+		if (line.isSectionDivider())
 		{
-			return;
+			return false;
 		}
-		ensureOrderSlotId(added);
-		if (added.getZoneRoutingCorner1() == null || added.getZoneRoutingCorner2() == null)
+		if (OrderStepRequirementSupport.orderLineUsesZoneRoutingForEditor(line))
 		{
-			added.setZoneRoutingCorner1(new WorldPoint(0, 0, 0));
-			added.setZoneRoutingCorner2(new WorldPoint(1, 1, 0));
-			added.setZoneRoutingDisplayText(null);
+			return false;
 		}
+		DraftOrderStepRequirement priorRoot = line.getStepRequirement();
+		DraftOrderStepRequirement priorClone = priorRoot == null
+			? null
+			: gson.fromJson(gson.toJson(priorRoot), DraftOrderStepRequirement.class);
+		WorldPoint prevC1 = line.getZoneRoutingCorner1();
+		WorldPoint prevC2 = line.getZoneRoutingCorner2();
+		String prevDisp = line.getZoneRoutingDisplayText();
+
+		ensureOrderSlotId(line);
+		line.setZoneRoutingCorner1(new WorldPoint(0, 0, 0));
+		line.setZoneRoutingCorner2(new WorldPoint(1, 1, 0));
+		line.setZoneRoutingDisplayText(null);
+
+		DraftOrderStepRequirement newRoot = priorClone == null
+			? DraftOrderStepRequirement.orderZoneSlot()
+			: DraftOrderStepRequirement.group("AND", priorClone, DraftOrderStepRequirement.orderZoneSlot());
+		line.setStepRequirement(newRoot);
+		String err = OrderStepRequirementSupport.prepareOrderStepTreeForPersistence(line, line.getStepRequirement());
+		if (err != null)
+		{
+			line.setStepRequirement(priorRoot);
+			line.setZoneRoutingCorner1(prevC1);
+			line.setZoneRoutingCorner2(prevC2);
+			line.setZoneRoutingDisplayText(prevDisp);
+			log.warn("Could not add zone slot to order row {}: {}", orderIndex, err);
+			return false;
+		}
+		OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
 		saveDraftToConfig();
+		return true;
 	}
 
 	/**
@@ -2097,9 +2145,8 @@ public class HelperConstructManager
 		reconcileOrderSlotZoneRouting();
 		List<VarbitSlotRow> out = new ArrayList<>();
 		List<DraftOrderLine> order = currentDraft.getOrder();
-		for (int ord = 0; ord < order.size(); ord++)
+		for (DraftOrderLine line : order)
 		{
-			DraftOrderLine line = order.get(ord);
 			if (line.isSectionDivider())
 			{
 				continue;
@@ -2220,6 +2267,7 @@ public class HelperConstructManager
 		return true;
 	}
 
+	@Getter
 	public static final class VarbitSlotRow
 	{
 		private final String orderSlotId;
@@ -2239,35 +2287,6 @@ public class HelperConstructManager
 			this.displayText = displayText;
 		}
 
-		public String getOrderSlotId()
-		{
-			return orderSlotId;
-		}
-
-		public String getVarName()
-		{
-			return varName;
-		}
-
-		public int getVarbitId()
-		{
-			return varbitId;
-		}
-
-		public int getRequiredValue()
-		{
-			return requiredValue;
-		}
-
-		public String getOperation()
-		{
-			return operation;
-		}
-
-		public String getDisplayText()
-		{
-			return displayText;
-		}
 	}
 
 	public List<ZoneSlotRow> getZoneSlotsInQuestOrderForEditor()
@@ -2388,6 +2407,7 @@ public class HelperConstructManager
 		return true;
 	}
 
+	@Getter
 	public static final class ZoneSlotRow
 	{
 		private final String orderSlotId;
@@ -2405,32 +2425,9 @@ public class HelperConstructManager
 			this.displayText = displayText == null ? "" : displayText;
 		}
 
-		public String getOrderSlotId()
-		{
-			return orderSlotId;
-		}
-
-		public String getVarName()
-		{
-			return varName;
-		}
-
-		public String getCorner1Text()
-		{
-			return corner1Text;
-		}
-
-		public String getCorner2Text()
-		{
-			return corner2Text;
-		}
-
-		public String getDisplayText()
-		{
-			return displayText;
-		}
 	}
 
+	@Getter
 	public static final class SkillReqRow
 	{
 		private final int index;
@@ -2450,35 +2447,6 @@ public class HelperConstructManager
 			this.operation = operation == null || operation.isBlank() ? Operation.GREATER_EQUAL.name() : operation;
 		}
 
-		public int getIndex()
-		{
-			return index;
-		}
-
-		public String getSkillName()
-		{
-			return skillName;
-		}
-
-		public int getRequiredLevel()
-		{
-			return requiredLevel;
-		}
-
-		public boolean isCanBeBoosted()
-		{
-			return canBeBoosted;
-		}
-
-		public String getDisplayText()
-		{
-			return displayText;
-		}
-
-		public String getOperation()
-		{
-			return operation;
-		}
 	}
 
 	public List<StepDefinitionPickOption> getStepDefinitionPickOptions()
@@ -2554,7 +2522,7 @@ public class HelperConstructManager
 				base += " [boost]";
 			}
 			String display = row.getDisplayText();
-			String label = display != null && !display.isBlank() ? display + " — " + base : base;
+			String label = !display.isBlank() ? display + " — " + base : base;
 			out.add(new StepAttachmentPickOption(label, StepAttachmentEdit.skill(
 				row.getSkillName(),
 				row.getRequiredLevel(),
@@ -2689,7 +2657,7 @@ public class HelperConstructManager
 			Skill skill = parseSkillName(s.getSkillName());
 			int requiredLevel = Math.max(1, s.getRequiredLevel());
 			String displayText = s.getDisplayText() == null ? "" : s.getDisplayText();
-			Operation operation = normalizeOperationName(s.getOperation(), Operation.GREATER_EQUAL);
+			Operation operation = normalizeOperationName(s.getOperation());
 			out.add(new SkillReqRow(i, skill.name(), requiredLevel, s.isCanBeBoosted(), displayText, operation.name()));
 		}
 		return Collections.unmodifiableList(out);
@@ -2722,7 +2690,7 @@ public class HelperConstructManager
 			return false;
 		}
 		Skill skill = parseSkillName(skillName);
-		Operation op = normalizeOperationName(operation, Operation.GREATER_EQUAL);
+		Operation op = normalizeOperationName(operation);
 		DraftSkillRequirement row = currentDraft.getSkillRequirements().get(index);
 		row.setSkillName(skill.name());
 		row.setRequiredLevel(Math.max(1, requiredLevel));
@@ -2739,13 +2707,13 @@ public class HelperConstructManager
 		Skill skill = parseSkillName(skillName);
 		int level = Math.max(1, requiredLevel);
 		String normalizedDisplay = displayText == null ? "" : displayText.trim();
-		Operation op = normalizeOperationName(operation, Operation.GREATER_EQUAL);
+		Operation op = normalizeOperationName(operation);
 		for (DraftSkillRequirement existing : currentDraft.getSkillRequirements())
 		{
 			Skill exSkill = parseSkillName(existing.getSkillName());
 			int exLevel = Math.max(1, existing.getRequiredLevel());
 			String exDisplay = existing.getDisplayText() == null ? "" : existing.getDisplayText().trim();
-			Operation exOp = normalizeOperationName(existing.getOperation(), Operation.GREATER_EQUAL);
+			Operation exOp = normalizeOperationName(existing.getOperation());
 			if (exSkill == skill
 				&& exLevel == level
 				&& existing.isCanBeBoosted() == canBeBoosted
@@ -2901,34 +2869,33 @@ public class HelperConstructManager
 		return true;
 	}
 
-	public boolean updateOrderReferencedStepInstructionText(int orderIndex, String instructionText)
+	public void updateOrderReferencedStepInstructionText(int orderIndex, String instructionText)
 	{
 		ensureDraftLoaded();
 		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
 		{
-			return false;
+			return;
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
 		if (line.isSectionDivider())
 		{
-			return false;
+			return;
 		}
 		DraftStep def = findDefinitionByStepId(line.getRefStepId());
 		if (def == null)
 		{
-			return false;
+			return;
 		}
 		def.setInstructionText(instructionText == null ? "" : instructionText);
 		saveDraftToConfig();
-		return true;
 	}
 
-	public boolean updateStepVarName(int index, String updatedVarName)
+	public void updateStepVarName(int index, String updatedVarName)
 	{
 		ensureDraftLoaded();
 		if (index < 0 || index >= currentDraft.getOrder().size())
 		{
-			return false;
+			return;
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(index);
 		String v = updatedVarName == null ? "" : String.valueOf(updatedVarName);
@@ -2941,7 +2908,7 @@ public class HelperConstructManager
 			DraftStep def = findDefinitionByStepId(line.getRefStepId());
 			if (def == null)
 			{
-				return false;
+				return;
 			}
 			def.setSuggestedVarName(v);
 		}
@@ -2950,41 +2917,22 @@ public class HelperConstructManager
 		{
 			rebuildWorldMapRoutePoints();
 		}
-		return true;
 	}
 
-	public boolean updateSectionCondition(int index, String condition)
+	public void updateSectionCondition(int index, String condition)
 	{
 		ensureDraftLoaded();
 		if (index < 0 || index >= currentDraft.getOrder().size())
 		{
-			return false;
+			return;
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(index);
 		if (!line.isSectionDivider())
 		{
-			return false;
+			return;
 		}
 		line.setSectionCondition(condition == null ? "" : condition);
 		saveDraftToConfig();
-		return true;
-	}
-
-	public boolean toggleSectionSkipMode(int index)
-	{
-		ensureDraftLoaded();
-		if (index < 0 || index >= currentDraft.getOrder().size())
-		{
-			return false;
-		}
-		DraftOrderLine line = currentDraft.getOrder().get(index);
-		if (!line.isSectionDivider())
-		{
-			return false;
-		}
-		line.setSkipWhenConditionMet(!line.isSkipWhenConditionMet());
-		saveDraftToConfig();
-		return true;
 	}
 
 	public List<String> getRequirementSummaries()
@@ -3012,20 +2960,9 @@ public class HelperConstructManager
 		return Collections.unmodifiableList(summaries);
 	}
 
-	public List<Integer> getRequirementRawIds()
-	{
-		ensureDraftLoaded();
-		List<Integer> ids = new ArrayList<>();
-		for (DraftRequirement r : currentDraft.getRequirements())
-		{
-			ids.add(r.getRawId());
-		}
-		return Collections.unmodifiableList(ids);
-	}
-
 	private boolean safeEquals(String left, String right)
 	{
-		return left == null ? right == null : left.equals(right);
+		return Objects.equals(left, right);
 	}
 
 	private void removeOrderLineAtIndexNoSave(int index)
@@ -3037,22 +2974,6 @@ public class HelperConstructManager
 		DraftOrderLine removed = currentDraft.getOrder().get(index);
 		removeRoutingVarbitForOrderSlot(removed.getOrderSlotId());
 		currentDraft.getOrder().remove(index);
-	}
-
-	public boolean removeStepAt(int index)
-	{
-		ensureDraftLoaded();
-		if (index < 0 || index >= currentDraft.getOrder().size())
-		{
-			return false;
-		}
-		removeOrderLineAtIndexNoSave(index);
-		saveDraftToConfig();
-		if (worldMapRoutePreviewEnabled)
-		{
-			rebuildWorldMapRoutePoints();
-		}
-		return true;
 	}
 
 	/**
@@ -3087,142 +3008,28 @@ public class HelperConstructManager
 		}
 	}
 
-	/**
-	 * When Quest Helper maker mode is enabled: for each OBJECT step with {@code rawId == 0}, a non-null saved world
-	 * point that matches this spawned scene object (same tile as {@link TileObject#getWorldLocation()} after
-	 * world-view normalization, or any tile inside a multi-tile {@link GameObject} footprint — same geometry as
-	 * {@link com.questhelper.steps.ObjectStep}), sets {@link DraftStep#setRawId(int)} from {@link TileObject#getId()}
-	 * and saves once if anything changed.
-	 */
-	public void tryFillPlaceholderObjectIdsFromTileObjectSpawn(TileObject tileObject)
-	{
-		if (!config.constructModeEnabled() || tileObject == null)
-		{
-			return;
-		}
-		int newId = tileObject.getId();
-		if (newId <= 0)
-		{
-			return;
-		}
-		ensureDraftLoaded();
-		boolean any = false;
-		for (DraftStep step : currentDraft.getStepDefinitions())
-		{
-			if (step.getKind() != StepKind.OBJECT || step.getRawId() != 0 || step.getWorldPoint() == null)
-			{
-				continue;
-			}
-			if (!tileObjectCoversDraftWorldPoint(tileObject, step.getWorldPoint()))
-			{
-				continue;
-			}
-			step.setRawId(newId);
-			any = true;
-		}
-		if (any)
-		{
-			saveDraftToConfig();
-			rebuildWorldMapRouteIfEnabled();
-		}
-	}
-
-	private boolean tileObjectCoversDraftWorldPoint(TileObject tileObject, WorldPoint target)
-	{
-		if (target == null || tileObject.getWorldView() == null)
-		{
-			return false;
-		}
-		if (tileObject instanceof GameObject)
-		{
-			GameObject go = (GameObject) tileObject;
-			WorldPoint bottomLeftCorner = QuestPerspective.getWorldPointConsideringWorldView(client, go.getWorldView(), go.getWorldLocation());
-			if (bottomLeftCorner == null)
-			{
-				return false;
-			}
-			int bottomX = bottomLeftCorner.getX() - ((go.sizeX() - 1) / 2);
-			int bottomY = bottomLeftCorner.getY() - ((go.sizeY() - 1) / 2);
-			int plane = bottomLeftCorner.getPlane();
-			if (plane != target.getPlane())
-			{
-				return false;
-			}
-			return target.getX() >= bottomX && target.getX() < bottomX + go.sizeX()
-				&& target.getY() >= bottomY && target.getY() < bottomY + go.sizeY();
-		}
-		WorldPoint anchor = QuestPerspective.getWorldPointConsideringWorldView(client, tileObject.getWorldView(), tileObject.getWorldLocation());
-		return anchor != null && anchor.equals(target);
-	}
-
-	/**
-	 * When maker mode is enabled: for each NPC draft step with {@code rawId == 0} and a saved world point equal to
-	 * this npc's position (same normalization as menu capture), sets {@code rawId} from {@link NPC#getId()}.
-	 * Best for static spawns; npcs that move away will no longer match the stored tile.
-	 */
-	public void tryFillPlaceholderNpcIdsFromNpcSpawn(NPC npc)
-	{
-		if (!config.constructModeEnabled() || npc == null)
-		{
-			return;
-		}
-		int newId = npc.getId();
-		if (newId <= 0)
-		{
-			return;
-		}
-		WorldPoint npcWp = npc.getLocalLocation() != null
-			? QuestPerspective.getWorldPointConsideringWorldView(client, npc.getLocalLocation())
-			: QuestPerspective.getWorldPointConsideringWorldView(client, npc.getWorldView(), npc.getWorldLocation());
-		if (npcWp == null)
-		{
-			return;
-		}
-		ensureDraftLoaded();
-		boolean any = false;
-		for (DraftStep step : currentDraft.getStepDefinitions())
-		{
-			if (step.getKind() != StepKind.NPC || step.getRawId() != 0 || step.getWorldPoint() == null)
-			{
-				continue;
-			}
-			if (!npcWp.equals(step.getWorldPoint()))
-			{
-				continue;
-			}
-			step.setRawId(newId);
-			any = true;
-		}
-		if (any)
-		{
-			saveDraftToConfig();
-			rebuildWorldMapRouteIfEnabled();
-		}
-	}
-
-	public boolean removeRequirementAt(int index)
+	public void removeRequirementAt(int index)
 	{
 		ensureDraftLoaded();
 		if (index < 0 || index >= currentDraft.getRequirements().size())
 		{
-			return false;
+			return;
 		}
 		currentDraft.getRequirements().remove(index);
 		saveDraftToConfig();
-		return true;
 	}
 
-	public boolean removeStepAt(ConstructStepKind kind, int index)
+	public void removeStepAt(ConstructStepKind kind, int index)
 	{
-		return removeStepByKindAt(kind.stepKind(), index);
+		removeStepByKindAt(kind.stepKind(), index);
 	}
 
-	private boolean removeStepByKindAt(StepKind kind, int index)
+	private void removeStepByKindAt(StepKind kind, int index)
 	{
 		ensureDraftLoaded();
 		if (index < 0)
 		{
-			return false;
+			return;
 		}
 
 		int filteredIndex = 0;
@@ -3241,11 +3048,10 @@ public class HelperConstructManager
 				{
 					rebuildWorldMapRoutePoints();
 				}
-				return true;
+				return;
 			}
 			filteredIndex++;
 		}
-		return false;
 	}
 
 	private void removeOrderRefsToStepId(String stepId)
@@ -3610,7 +3416,7 @@ public class HelperConstructManager
 				out.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1).toLowerCase(Locale.ROOT));
 			}
 		}
-		return out.length() == 0 ? "GeneratedQuest" : out.toString();
+		return out.isEmpty() ? "GeneratedQuest" : out.toString();
 	}
 
 	private void sendGameMessage(String message)
@@ -3633,18 +3439,18 @@ public class HelperConstructManager
 
 	private static final int STEP_PICK_LABEL_MAX_LEN = 96;
 
-	private static String truncatePickListLine(String s, int maxLen)
+	private static String truncatePickListLine(String s)
 	{
 		if (s == null)
 		{
 			return "";
 		}
 		String t = s.trim();
-		if (t.length() <= maxLen)
+		if (t.length() <= STEP_PICK_LABEL_MAX_LEN)
 		{
 			return t;
 		}
-		return t.substring(0, maxLen - 1) + "…";
+		return t.substring(0, STEP_PICK_LABEL_MAX_LEN - 1) + "…";
 	}
 
 	private void appendPickFilterChunk(StringBuilder sb, String chunk)
@@ -3654,7 +3460,7 @@ public class HelperConstructManager
 		{
 			return;
 		}
-		if (sb.length() > 0)
+		if (!sb.isEmpty())
 		{
 			sb.append(' ');
 		}
@@ -3673,14 +3479,14 @@ public class HelperConstructManager
 			String mode = step.isSkipWhenConditionMet() ? "skip when met" : "show when met";
 			if (condition.isEmpty())
 			{
-				return truncatePickListLine("Section: " + name + " (" + mode + ")", STEP_PICK_LABEL_MAX_LEN);
+				return truncatePickListLine("Section: " + name + " (" + mode + ")");
 			}
-			return truncatePickListLine("Section: " + name + " (" + mode + ") — " + condition, STEP_PICK_LABEL_MAX_LEN);
+			return truncatePickListLine("Section: " + name + " (" + mode + ") — " + condition);
 		}
 		String ins = normalizeText(step.getInstructionText());
 		if (!ins.isBlank())
 		{
-			return truncatePickListLine(ins.replace('\n', ' ').replace('\r', ' '), STEP_PICK_LABEL_MAX_LEN);
+			return truncatePickListLine(ins.replace('\n', ' ').replace('\r', ' '));
 		}
 		if (step.getKind() == StepKind.TEXT)
 		{
@@ -3695,7 +3501,7 @@ public class HelperConstructManager
 		}
 		if (!target.isBlank())
 		{
-			if (b.length() > 0)
+			if (!b.isEmpty())
 			{
 				b.append(' ');
 			}
@@ -3704,12 +3510,12 @@ public class HelperConstructManager
 		String ot = b.toString().trim();
 		if (!ot.isBlank())
 		{
-			return truncatePickListLine(ot, STEP_PICK_LABEL_MAX_LEN);
+			return truncatePickListLine(ot);
 		}
 		String var = normalizeText(step.getSuggestedVarName());
 		if (!var.isBlank())
 		{
-			return truncatePickListLine(var, STEP_PICK_LABEL_MAX_LEN);
+			return truncatePickListLine(var);
 		}
 		return "Step " + displayIndex;
 	}
@@ -3922,9 +3728,8 @@ public class HelperConstructManager
 
 			List<Point> plotted = new ArrayList<>();
 			int skipped = 0;
-			for (int i = 0; i < points.size(); i++)
+			for (WorldPoint wp : points)
 			{
-				WorldPoint wp = points.get(i);
 				if (wp.getX() < MAP_MIN_X || wp.getX() > MAP_MAX_X || wp.getY() < MAP_MIN_Y || wp.getY() > MAP_MAX_Y)
 				{
 					skipped++;
@@ -4037,7 +3842,7 @@ public class HelperConstructManager
 			return 1;
 		}
 		int q = a.getItemQuantity();
-		return q < 1 ? 1 : q;
+		return Math.max(q, 1);
 	}
 
 	private class PreviewQuestHelper extends ComplexStateQuestHelper
@@ -4248,7 +4053,7 @@ public class HelperConstructManager
 			}
 
 			@Override
-			public String getDisplayText()
+			public @NotNull String getDisplayText()
 			{
 				return "Section marked complete";
 			}
@@ -4277,7 +4082,7 @@ public class HelperConstructManager
 				{
 					Skill skill = parseSkillName(a.getSkillName());
 					int level = a.getSkillRequiredLevel() == null ? 1 : Math.max(1, a.getSkillRequiredLevel());
-					Operation op = normalizeOperationName(a.getSkillOperation(), Operation.GREATER_EQUAL);
+					Operation op = normalizeOperationName(a.getSkillOperation());
 					String display = a.getSkillDisplayText();
 					SkillRequirement sr;
 					if (op == Operation.GREATER_EQUAL)
@@ -4409,7 +4214,7 @@ public class HelperConstructManager
 
 		private void syncManualProgress()
 		{
-			Map<String, Boolean> persisted = ManualStepSkipStore.load(configManager, getDisplayedQuestName());
+			Map<String, Boolean> persisted = ManualStepSkipStore.load(configManager, gson, getDisplayedQuestName());
 			for (int i = 0; i < manualStepRequirements.size(); i++)
 			{
 				String pk = i < manualStepSkipPersistenceKeys.size() ? manualStepSkipPersistenceKeys.get(i) : "";
@@ -4428,26 +4233,24 @@ public class HelperConstructManager
 			return previewProgressIndex < manualStepRequirements.size();
 		}
 
-		private boolean stepLeft()
+		private void stepLeft()
 		{
 			if (!canStepLeft())
 			{
-				return false;
+				return;
 			}
 			previewProgressIndex--;
 			syncManualProgress();
-			return true;
 		}
 
-		private boolean stepRight()
+		private void stepRight()
 		{
 			if (!canStepRight())
 			{
-				return false;
+				return;
 			}
 			previewProgressIndex++;
 			syncManualProgress();
-			return true;
 		}
 
 		@Override
@@ -4507,6 +4310,7 @@ public class HelperConstructManager
 	}
 
 	/** One row in the unified step-attachment picker (items + varbit routing slots). */
+	@Getter
 	public static final class StepAttachmentPickOption
 	{
 		private final String label;
@@ -4516,16 +4320,6 @@ public class HelperConstructManager
 		{
 			this.label = label;
 			this.edit = edit;
-		}
-
-		public String getLabel()
-		{
-			return label;
-		}
-
-		public StepAttachmentEdit getEdit()
-		{
-			return edit;
 		}
 	}
 
@@ -4578,7 +4372,7 @@ public class HelperConstructManager
 			this.skillDisplayText = skillDisplayText;
 			this.skillCanBeBoosted = skillCanBeBoosted;
 			this.itemHighlighted = itemHighlighted;
-			this.itemQuantity = itemQuantity < 1 ? 1 : itemQuantity;
+			this.itemQuantity = Math.max(itemQuantity, 1);
 			this.orderSlotId = orderSlotId;
 		}
 
@@ -4619,7 +4413,7 @@ public class HelperConstructManager
 
 		public static StepAttachmentEdit item(int rawId, boolean highlighted, int quantity)
 		{
-			int q = quantity < 1 ? 1 : quantity;
+			int q = Math.max(quantity, 1);
 			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, highlighted, q, null);
 		}
 
@@ -4639,12 +4433,13 @@ public class HelperConstructManager
 		{
 			Skill skill = parseSkillName(skillName);
 			int level = requiredLevel == null ? 1 : Math.max(1, requiredLevel);
-			String op = normalizeOperationName(operation, Operation.GREATER_EQUAL).name();
+			String op = normalizeOperationName(operation).name();
 			return new StepAttachmentEdit(StepAttachmentKind.SKILL.name(), null, null, null, null, null,
 				skill.name(), level, op, displayText, canBeBoosted, false, 1, null);
 		}
 	}
 
+	@Getter
 	public static final class StepDefinitionPickOption
 	{
 		private final String stepId;
@@ -4657,21 +4452,6 @@ public class HelperConstructManager
 			this.stepId = stepId;
 			this.label = label == null ? "" : label;
 			this.filterText = filterText == null || filterText.isBlank() ? this.label : filterText;
-		}
-
-		public String getStepId()
-		{
-			return stepId;
-		}
-
-		public String getLabel()
-		{
-			return label;
-		}
-
-		public String getFilterText()
-		{
-			return filterText;
 		}
 
 		@Override

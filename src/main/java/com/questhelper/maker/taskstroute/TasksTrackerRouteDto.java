@@ -1,7 +1,32 @@
+/*
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.maker.taskstroute;
 
 import com.google.gson.annotations.SerializedName;
 import com.questhelper.maker.ConstructDraftPersistence;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +37,7 @@ import java.util.List;
  * Optional {@link RouteItemDto#interact} is a Quest Helper extension for NPC/object ids.
  * Optional {@link #questHelperMaker} holds the full Quest Helper maker draft snapshot ({@link ConstructDraftPersistence.DraftState}).
  */
-@SuppressWarnings("unused")
+@Data
 public final class TasksTrackerRouteDto
 {
 	private String id;
@@ -25,86 +50,12 @@ public final class TasksTrackerRouteDto
 	@SerializedName("questHelperMaker")
 	private ConstructDraftPersistence.DraftState questHelperMaker;
 
-	public String getId()
-	{
-		return id;
-	}
-
-	public void setId(String id)
-	{
-		this.id = id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	public String getTaskType()
-	{
-		return taskType;
-	}
-
-	public void setTaskType(String taskType)
-	{
-		this.taskType = taskType;
-	}
-
-	public String getAuthor()
-	{
-		return author;
-	}
-
-	public void setAuthor(String author)
-	{
-		this.author = author;
-	}
-
-	public String getDescription()
-	{
-		return description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-
-	public List<Object> getCompleted()
-	{
-		return completed;
-	}
-
-	public void setCompleted(List<Object> completed)
-	{
-		this.completed = completed;
-	}
-
-	public List<RouteSectionDto> getSections()
-	{
-		return sections;
-	}
-
 	public void setSections(List<RouteSectionDto> sections)
 	{
 		this.sections = sections != null ? sections : new ArrayList<>();
 	}
 
-	public ConstructDraftPersistence.DraftState getQuestHelperMaker()
-	{
-		return questHelperMaker;
-	}
-
-	public void setQuestHelperMaker(ConstructDraftPersistence.DraftState questHelperMaker)
-	{
-		this.questHelperMaker = questHelperMaker;
-	}
-
+	@Data
 	public static final class RouteSectionDto
 	{
 		private String id;
@@ -112,47 +63,13 @@ public final class TasksTrackerRouteDto
 		private String description;
 		private List<RouteItemDto> items = new ArrayList<>();
 
-		public String getId()
-		{
-			return id;
-		}
-
-		public void setId(String id)
-		{
-			this.id = id;
-		}
-
-		public String getName()
-		{
-			return name;
-		}
-
-		public void setName(String name)
-		{
-			this.name = name;
-		}
-
-		public String getDescription()
-		{
-			return description;
-		}
-
-		public void setDescription(String description)
-		{
-			this.description = description;
-		}
-
-		public List<RouteItemDto> getItems()
-		{
-			return items;
-		}
-
 		public void setItems(List<RouteItemDto> items)
 		{
 			this.items = items != null ? items : new ArrayList<>();
 		}
 	}
 
+	@Data
 	public static final class RouteItemDto
 	{
 		@SerializedName("taskId")
@@ -162,57 +79,9 @@ public final class TasksTrackerRouteDto
 		private RouteLocationDto location;
 		private RouteInteractDto interact;
 
-		public Integer getTaskId()
-		{
-			return taskId;
-		}
-
-		public void setTaskId(Integer taskId)
-		{
-			this.taskId = taskId;
-		}
-
-		public RouteCustomItemDto getCustomItem()
-		{
-			return customItem;
-		}
-
-		public void setCustomItem(RouteCustomItemDto customItem)
-		{
-			this.customItem = customItem;
-		}
-
-		public String getNote()
-		{
-			return note;
-		}
-
-		public void setNote(String note)
-		{
-			this.note = note;
-		}
-
-		public RouteLocationDto getLocation()
-		{
-			return location;
-		}
-
-		public void setLocation(RouteLocationDto location)
-		{
-			this.location = location;
-		}
-
-		public RouteInteractDto getInteract()
-		{
-			return interact;
-		}
-
-		public void setInteract(RouteInteractDto interact)
-		{
-			this.interact = interact;
-		}
 	}
 
+	@Data
 	public static final class RouteCustomItemDto
 	{
 		private String id;
@@ -220,107 +89,22 @@ public final class TasksTrackerRouteDto
 		private Integer icon;
 		private String description;
 
-		public String getId()
-		{
-			return id;
-		}
-
-		public void setId(String id)
-		{
-			this.id = id;
-		}
-
-		public String getLabel()
-		{
-			return label;
-		}
-
-		public void setLabel(String label)
-		{
-			this.label = label;
-		}
-
-		public Integer getIcon()
-		{
-			return icon;
-		}
-
-		public void setIcon(Integer icon)
-		{
-			this.icon = icon;
-		}
-
-		public String getDescription()
-		{
-			return description;
-		}
-
-		public void setDescription(String description)
-		{
-			this.description = description;
-		}
 	}
 
+	@Data
 	public static final class RouteLocationDto
 	{
 		private int x;
 		private int y;
 		private int plane;
 
-		public int getX()
-		{
-			return x;
-		}
-
-		public void setX(int x)
-		{
-			this.x = x;
-		}
-
-		public int getY()
-		{
-			return y;
-		}
-
-		public void setY(int y)
-		{
-			this.y = y;
-		}
-
-		public int getPlane()
-		{
-			return plane;
-		}
-
-		public void setPlane(int plane)
-		{
-			this.plane = plane;
-		}
 	}
 
+	@Data
 	public static final class RouteInteractDto
 	{
 		private List<Integer> npc;
 		private List<Integer> object;
 
-		public List<Integer> getNpc()
-		{
-			return npc;
-		}
-
-		public void setNpc(List<Integer> npc)
-		{
-			this.npc = npc;
-		}
-
-		public List<Integer> getObject()
-		{
-			return object;
-		}
-
-		public void setObject(List<Integer> object)
-		{
-			this.object = object;
-		}
 	}
 }

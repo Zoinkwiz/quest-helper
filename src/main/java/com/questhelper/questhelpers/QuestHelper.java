@@ -24,6 +24,7 @@
  */
 package com.questhelper.questhelpers;
 
+import com.google.gson.Gson;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
@@ -77,6 +78,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private Gson gson;
 
 	@Getter
 	private QuestStep currentStep;
@@ -153,7 +157,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		{
 			return;
 		}
-		ManualStepSkipStore.put(configManager, getDisplayedQuestName(), persistenceKey, skipped);
+		ManualStepSkipStore.put(configManager, gson, getDisplayedQuestName(), persistenceKey, skipped);
 		onManualSidebarSkipsPersistedChanged();
 	}
 

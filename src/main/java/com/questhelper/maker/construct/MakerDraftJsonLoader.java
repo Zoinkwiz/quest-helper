@@ -1,3 +1,27 @@
+/*
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.maker.construct;
 
 import com.google.gson.Gson;
@@ -8,28 +32,27 @@ import com.questhelper.maker.ConstructDraftPersistence;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteImporter;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteValidation;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 
 /**
  * Parses Quest Helper Maker JSON: extended Tasks Tracker route documents only
- * ({@code sections} at root). Use {@code maker/scripts/convert_legacy_maker_draft.py} for older shapes.
  */
 @Slf4j
 public final class MakerDraftJsonLoader
 {
-	private final Gson gson;
-
-	private MakerDraftJsonLoader(Gson gson)
-	{
-		this.gson = gson;
-	}
-
+	@Getter
 	public static final class LoadOutcome
 	{
 		private final boolean success;
 		private final String errorMessage;
+		/**
+		 * -- GETTER --
+		 * Non-null only when
+		 *  is true.
+		 */
 		private final DraftHelper draft;
 
 		private LoadOutcome(boolean success, String errorMessage, DraftHelper draft)
@@ -49,21 +72,6 @@ public final class MakerDraftJsonLoader
 			return new LoadOutcome(false, message == null ? "Unknown error" : message, null);
 		}
 
-		public boolean isSuccess()
-		{
-			return success;
-		}
-
-		public String getErrorMessage()
-		{
-			return errorMessage;
-		}
-
-		/** Non-null only when {@link #isSuccess()} is true. */
-		public DraftHelper getDraft()
-		{
-			return draft;
-		}
 	}
 
 	public static boolean jsonHasTopLevelRouteEnvelope(Gson gson, String json)
@@ -97,8 +105,7 @@ public final class MakerDraftJsonLoader
 		if (!jsonHasTopLevelRouteEnvelope(gson, trimmed))
 		{
 			return LoadOutcome.failure(
-				"Expected extended Tasks Tracker route JSON (top-level \"sections\" array). "
-					+ "Convert legacy maker files with: python maker/scripts/convert_legacy_maker_draft.py <file.json>");
+				"Expected extended Tasks Tracker route JSON (top-level \"sections\" array).");
 		}
 		try
 		{

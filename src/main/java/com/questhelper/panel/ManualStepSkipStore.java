@@ -14,7 +14,6 @@ import java.util.Map;
  */
 public final class ManualStepSkipStore
 {
-	private static final Gson GSON = new Gson();
 	private static final Type MAP_TYPE = new TypeToken<Map<String, Boolean>>()
 	{
 	}.getType();
@@ -42,7 +41,7 @@ public final class ManualStepSkipStore
 		return s.isEmpty() ? "helper" : s;
 	}
 
-	public static Map<String, Boolean> load(ConfigManager cm, String displayedQuestName)
+	public static Map<String, Boolean> load(ConfigManager cm, Gson gson, String displayedQuestName)
 	{
 		if (cm == null)
 		{
@@ -55,7 +54,7 @@ public final class ManualStepSkipStore
 		}
 		try
 		{
-			Map<String, Boolean> m = GSON.fromJson(raw, MAP_TYPE);
+			Map<String, Boolean> m = gson.fromJson(raw, MAP_TYPE);
 			return m != null ? new HashMap<>(m) : new HashMap<>();
 		}
 		catch (RuntimeException e)
@@ -64,14 +63,14 @@ public final class ManualStepSkipStore
 		}
 	}
 
-	public static void put(ConfigManager cm, String displayedQuestName, String slotKey, boolean skipped)
+	public static void put(ConfigManager cm, Gson gson, String displayedQuestName, String slotKey, boolean skipped)
 	{
 		if (cm == null || slotKey == null || slotKey.isBlank())
 		{
 			return;
 		}
 		String ck = configKeyForQuest(displayedQuestName);
-		Map<String, Boolean> map = load(cm, displayedQuestName);
+		Map<String, Boolean> map = load(cm, gson, displayedQuestName);
 		if (skipped)
 		{
 			map.put(slotKey, true);
@@ -86,7 +85,7 @@ public final class ManualStepSkipStore
 		}
 		else
 		{
-			cm.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck, GSON.toJson(map));
+			cm.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck, gson.toJson(map));
 		}
 	}
 }

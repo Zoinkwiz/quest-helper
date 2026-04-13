@@ -50,7 +50,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,32 +74,32 @@ public final class HelperConstructEditorPanel extends JPanel
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
 		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
-		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add appends a placeholder generic step and order row with default corners. Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
+		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add requires exactly one non-section row selected on Quest order and attaches default corners plus an order-zone leaf to that row (never creates a new step). You can also add zones only from Quest order → Conditions (Create new zone… / Add zone (slot)). Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
 		"7. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
-		"8. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON).",
-		"9. If you import a route into Tasks Tracker and re-export from the plugin, unknown keys may be dropped — keep backups in Quest Helper or version control. Older root-only maker JSON (no top-level `sections`) must be converted first: run `python maker/scripts/convert_legacy_maker_draft.py` (see `maker/scripts/README.md`).");
+		"8. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON)."
+	);
 
 	private final HelperConstructManager helperConstructManager;
 	/** Step library tabs in display order (NPC, Object, Generic); add a {@link ConstructStepKind} here to add a tab. */
 	private final List<StepLibraryTab> stepLibraryTabs = new ArrayList<>();
 	private final LibraryTableModel requirementLibraryModel = new LibraryTableModel();
 	private JTable requirementTable;
-	private JTable varbitReqsTable;
-	private JTable zoneReqsTable;
-	private JTable skillReqsTable;
+	private final JTable varbitReqsTable;
+	private final JTable zoneReqsTable;
+	private final JTable skillReqsTable;
 	private JTable orderTable;
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
 	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
 	private final ZoneRoutingTableModel zoneRoutingTableModel = new ZoneRoutingTableModel();
 	private final SkillRoutingTableModel skillRoutingTableModel = new SkillRoutingTableModel();
 	private final Runnable draftChangeListener;
-	private JButton worldMapRouteButton;
-	private JButton routeRevealButton;
+	private final JButton worldMapRouteButton;
+	private final JButton routeRevealButton;
 	private JDialog routeRevealDialog;
 	private JSlider routeRevealSlider;
 	private JLabel routeRevealValueLabel;
 	/** Maker header actions; reflows into a "More…" menu when the panel is too narrow. */
-	private OverflowingMakerToolbar makerToolbarRow;
+	private final OverflowingMakerToolbar makerToolbarRow;
 
 	public HelperConstructEditorPanel(HelperConstructManager helperConstructManager)
 	{
@@ -292,10 +291,27 @@ public final class HelperConstructEditorPanel extends JPanel
 		applyMakerToolbarStyle(addZoneSlotButton, removeZoneSlotButton);
 		addZoneSlotButton.addActionListener(e ->
 		{
-			helperConstructManager.addEmptyZoneSlotFromUi();
-			refresh();
+			int ord = selectedSingleQuestOrderStepOrderIndexOrNeg1();
+			if (ord < 0)
+			{
+				JOptionPane.showMessageDialog(this,
+					"",
+					"Zone reqs",
+					JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			if (helperConstructManager.addZoneSlotToOrderRowFromUi(ord))
+			{
+				refresh();
+				return;
+			}
+			JOptionPane.showMessageDialog(this,
+				"Could not add a zone slot to the selected row. It may already use a zone, or the conditions tree could not be updated.\n"
+					+ "Use Conditions on that row to add or edit zone logic.",
+				"Zone reqs",
+				JOptionPane.INFORMATION_MESSAGE);
 		});
-		addZoneSlotButton.setToolTipText("Append a placeholder generic step, a quest-order row, and default zone corners for the Zone reqs tab.");
+		addZoneSlotButton.setToolTipText("Requires exactly one non-section row selected on Quest order: adds default zone corners and an order-zone leaf to that row (no new step).");
 		removeZoneSlotButton.addActionListener(e ->
 		{
 			int r = selectedModelRow(zoneReqsTable);
@@ -427,7 +443,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		File f = fc.getSelectedFile();
 		try
 		{
-			Files.write(f.toPath(), helperConstructManager.exportDraftJson().getBytes(StandardCharsets.UTF_8));
+			Files.writeString(f.toPath(), helperConstructManager.exportDraftJson());
 			JOptionPane.showMessageDialog(this, "Saved to:\n" + f.getAbsolutePath(), "Save JSON", JOptionPane.INFORMATION_MESSAGE);
 		}
 		catch (IOException ex)
@@ -439,9 +455,7 @@ public final class HelperConstructEditorPanel extends JPanel
 	private void showImportDraftJsonDialog()
 	{
 		int confirm = JOptionPane.showConfirmDialog(this,
-			"Replace the current maker draft with imported JSON?\n"
-				+ "Accepts extended route JSON (questHelperMaker), route-only JSON, or legacy draft JSON.\n"
-				+ "Export or save first if you need a backup.",
+			"Replace the current maker draft with imported JSON?\nAccepts extended route JSON (questHelperMaker), route-only JSON, or legacy draft JSON.\nExport or save first if you need a backup.",
 			"Import route JSON",
 			JOptionPane.OK_CANCEL_OPTION,
 			JOptionPane.WARNING_MESSAGE);
@@ -461,7 +475,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				try
 				{
-					textArea.setText(new String(Files.readAllBytes(fc.getSelectedFile().toPath()), StandardCharsets.UTF_8));
+					textArea.setText(Files.readString(fc.getSelectedFile().toPath()));
 				}
 				catch (IOException ex)
 				{
@@ -516,7 +530,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				try
 				{
-					textArea.setText(new String(Files.readAllBytes(fc.getSelectedFile().toPath()), StandardCharsets.UTF_8));
+					textArea.setText(Files.readString(fc.getSelectedFile().toPath()));
 				}
 				catch (IOException ex)
 				{
@@ -830,6 +844,26 @@ public final class HelperConstructEditorPanel extends JPanel
 			return -1;
 		}
 		return maxModel + 1;
+	}
+
+	/**
+	 * @return persisted quest-order index when exactly one table row is selected and it is not a section divider;
+	 *         otherwise {@code -1}
+	 */
+	private int selectedSingleQuestOrderStepOrderIndexOrNeg1()
+	{
+		int[] viewRows = orderTable.getSelectedRows();
+		if (viewRows == null || viewRows.length != 1)
+		{
+			return -1;
+		}
+		int m = orderTable.convertRowIndexToModel(viewRows[0]);
+		var entry = stepOrderTableModel.getRow(m);
+		if (entry == null || entry.isSectionDivider())
+		{
+			return -1;
+		}
+		return entry.getIndex();
 	}
 
 	/** Maps persisted operation name to enum; unknown values become {@link Operation#EQUAL}. */
@@ -1153,8 +1187,7 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private void openStepRequirementsEditor(ConstructStepKind kind, int row)
 	{
-		List<HelperConstructManager.StepAttachmentEdit> initial = new ArrayList<>();
-		initial.addAll(helperConstructManager.getStepAttachmentsAt(kind, row));
+		List<HelperConstructManager.StepAttachmentEdit> initial = new ArrayList<>(helperConstructManager.getStepAttachmentsAt(kind, row));
 
 		DefaultListModel<HelperConstructManager.StepAttachmentEdit> model = new DefaultListModel<>();
 		for (HelperConstructManager.StepAttachmentEdit e : initial)
@@ -1225,29 +1258,12 @@ public final class HelperConstructEditorPanel extends JPanel
 			if (sel != null && "ITEM".equalsIgnoreCase(sel.getKind()))
 			{
 				int q = ((Number) qtySpinner.getValue()).intValue();
-				sel.setItemQuantity(q < 1 ? 1 : q);
+				sel.setItemQuantity(Math.max(q, 1));
 				list.repaint();
 			}
 		});
 
-		JButton addPickButton = new JButton("Add…");
-		addPickButton.addActionListener(ev -> appendRequirementPickToAttachmentModel(model));
-
-		JButton removeButton = new JButton("Remove selected");
-		removeButton.addActionListener(ev ->
-		{
-			int i = list.getSelectedIndex();
-			if (i >= 0)
-			{
-				model.remove(i);
-				syncItemAttachmentOptionsFromSelection.run();
-			}
-		});
-
-		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
-		toolbar.setOpaque(false);
-		toolbar.add(addPickButton);
-		toolbar.add(removeButton);
+		JPanel toolbar = getToolbar(model, list, syncItemAttachmentOptionsFromSelection);
 
 		JLabel hint = new JLabel("<html>Choose from captured item requirements and varbit routing rows (same list as the Varbit reqs tab).<br>Preview and generated code use <code>QuestStep.addRequirement</code> where supported.");
 		hint.setForeground(Color.GRAY);
@@ -1270,7 +1286,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		panel.add(south, BorderLayout.SOUTH);
 		panel.setPreferredSize(new Dimension(500, 420));
 
-		if (model.size() > 0)
+		if (!model.isEmpty())
 		{
 			list.setSelectedIndex(0);
 			syncItemAttachmentOptionsFromSelection.run();
@@ -1298,6 +1314,29 @@ public final class HelperConstructEditorPanel extends JPanel
 			return;
 		}
 		refresh();
+	}
+
+	private @NotNull JPanel getToolbar(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model, JList<HelperConstructManager.StepAttachmentEdit> list, Runnable syncItemAttachmentOptionsFromSelection)
+	{
+		JButton addPickButton = new JButton("Add…");
+		addPickButton.addActionListener(ev -> appendRequirementPickToAttachmentModel(model));
+
+		JButton removeButton = new JButton("Remove selected");
+		removeButton.addActionListener(ev ->
+		{
+			int i = list.getSelectedIndex();
+			if (i >= 0)
+			{
+				model.remove(i);
+				syncItemAttachmentOptionsFromSelection.run();
+			}
+		});
+
+		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+		toolbar.setOpaque(false);
+		toolbar.add(addPickButton);
+		toolbar.add(removeButton);
+		return toolbar;
 	}
 
 	private void appendRequirementPickToAttachmentModel(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
@@ -2045,13 +2084,11 @@ public final class HelperConstructEditorPanel extends JPanel
 		private final JPanel inlinePanel;
 		private final JButton moreButton;
 		private final JPopupMenu overflowMenu;
-		private final Consumer<JButton> styleMoreLikeToolbar;
 
 		OverflowingMakerToolbar(List<JComponent> chain, Consumer<JButton> styleMoreLikeToolbar)
 		{
 			super(new BorderLayout());
 			this.chain = List.copyOf(chain);
-			this.styleMoreLikeToolbar = styleMoreLikeToolbar;
 			setOpaque(false);
 			inlinePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
 			inlinePanel.setOpaque(false);

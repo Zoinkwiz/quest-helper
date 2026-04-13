@@ -1,8 +1,30 @@
+/*
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.questhelper.maker;
 
-import com.questhelper.maker.HelperConstructManager;
 import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
-import com.questhelper.maker.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Skill;
@@ -319,7 +341,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 					return pd;
 				}
 			}
-			return rootDto != null && isStructuralContainer(rootDto) ? rootDto : null;
+			return isStructuralContainer(rootDto) ? rootDto : null;
 		}
 		return null;
 	}
@@ -338,7 +360,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		if ("INVERT".equals(k))
 		{
 			ensureChildren(d);
-			return d.getChildren().size() < 1;
+			return d.getChildren().isEmpty();
 		}
 		return false;
 	}
@@ -466,7 +488,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		if (rows.isEmpty())
 		{
 			JOptionPane.showMessageDialog(this,
-				"No zone rows yet. Use \"Create new zone…\" or add rows on the Zone reqs tab first.",
+				"No zone rows yet. Use \"Create new zone…\" here, or select a quest-order step row and use Zone reqs → Add.",
 				"Add zone",
 				JOptionPane.INFORMATION_MESSAGE);
 			return;
@@ -552,11 +574,11 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 	}
 
-	private static Operation parseOperationOrDefault(String name, Operation fallback)
+	private static Operation parseOperation(String name)
 	{
 		if (name == null || name.isBlank())
 		{
-			return fallback;
+			return Operation.GREATER_EQUAL;
 		}
 		try
 		{
@@ -564,7 +586,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 		catch (IllegalArgumentException ex)
 		{
-			return fallback;
+			return Operation.GREATER_EQUAL;
 		}
 	}
 
@@ -577,7 +599,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		JSpinner levelSp = new JSpinner(new SpinnerNumberModel(level, 1, 255, 1));
 		JComboBox<Operation> op = new JComboBox<>(Operation.values());
 		op.setMaximumRowCount(Operation.values().length);
-		op.setSelectedItem(parseOperationOrDefault(opExisting, Operation.GREATER_EQUAL));
+		op.setSelectedItem(parseOperation(opExisting));
 		JCheckBox boost = new JCheckBox("Can be boosted", canBoostExisting == null || canBoostExisting);
 		JTextField disp = new JTextField(displayExisting == null ? "" : displayExisting, 24);
 
@@ -984,7 +1006,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		DefaultMutableTreeNode vn = selectedVisualNode();
 		if (sel == null)
 		{
-			if (vn != null && isRootMarker(vn))
+			if (isRootMarker(vn))
 			{
 				rootDto = null;
 				rebuildTree();
@@ -1182,7 +1204,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 					leaf.getSkillOperation());
 			}
 		}
-		if (rootDto != null && pendingVarbitRouting && OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(rootDto))
+		if (pendingVarbitRouting && OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(rootDto))
 		{
 			if (!manager.applyVarbitRoutingToOrderLineByIndex(
 				orderIndex,
@@ -1199,7 +1221,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				return;
 			}
 		}
-		if (rootDto != null && pendingZoneRouting && OrderStepRequirementSupport.treeContainsOrderZoneLeaf(rootDto))
+		if (pendingZoneRouting && OrderStepRequirementSupport.treeContainsOrderZoneLeaf(rootDto))
 		{
 			if (!manager.applyZoneRoutingToOrderLineByIndex(
 				orderIndex,

@@ -85,11 +85,10 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
 	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
 	private final ZoneRoutingTableModel zoneRoutingTableModel = new ZoneRoutingTableModel();
-	private final Timer refreshTimer;
+	private final Runnable draftChangeListener;
 	private JButton worldMapRouteButton;
 	/** Maker header actions; reflows into a "More…" menu when the panel is too narrow. */
 	private OverflowingMakerToolbar makerToolbarRow;
-	private String lastRenderSignature = "";
 
 	public HelperConstructEditorPanel(HelperConstructManager helperConstructManager)
 	{
@@ -303,11 +302,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		add(mainTabs, BorderLayout.CENTER);
 
 		refresh();
-
-		// Keep panel list in sync with right-click captures made outside this panel.
-		refreshTimer = new Timer(1000, e -> refreshIfChanged());
-		refreshTimer.setRepeats(true);
-		refreshTimer.start();
+		draftChangeListener = () -> SwingUtilities.invokeLater(this::refresh);
+		helperConstructManager.addDraftChangeListener(draftChangeListener);
 	}
 
 	private static @NotNull JComboBox<Operation> getOperationJComboBox()
@@ -1838,49 +1834,14 @@ public final class HelperConstructEditorPanel extends JPanel
 		varbitRoutingTableModel.reloadFromManager();
 		zoneRoutingTableModel.reloadFromManager();
 		syncWorldMapRouteButtonLabel();
-		lastRenderSignature = computeSignature();
 		revalidate();
 		repaint();
 	}
 
 	public void shutDown()
 	{
-		refreshTimer.stop();
+		helperConstructManager.removeDraftChangeListener(draftChangeListener);
 		helperConstructManager.disableWorldMapRoutePreview();
-	}
-
-	private void refreshIfChanged()
-	{
-		String currentSignature = computeSignature();
-		if (!currentSignature.equals(lastRenderSignature))
-		{
-			refresh();
-		}
-	}
-
-	private String computeSignature()
-	{
-		StringBuilder sb = new StringBuilder(helperConstructManager.getCurrentDraftClassName());
-		for (ConstructStepKind k : ConstructStepKind.values())
-		{
-			String p = switch (k)
-			{
-				case NPC -> "N";
-				case OBJECT -> "O";
-				case TEXT -> "T";
-			};
-			sb.append('|').append(p).append('|').append(String.join("\n", helperConstructManager.getStepVarNames(k)));
-			sb.append('|').append(p).append('r').append('|').append(String.join("\n", helperConstructManager.getStepRawIdTexts(k)));
-			sb.append('|').append(p).append('w').append('|').append(String.join("\n", helperConstructManager.getStepWorldPointTexts(k)));
-			sb.append('|').append(p).append("rq|").append(String.join("\n", helperConstructManager.getStepRequirementsDisplays(k)));
-			sb.append('|').append(p).append('i').append('|').append(String.join("\n", helperConstructManager.getStepInstructionTexts(k)));
-		}
-		sb.append("|A|").append(stepOrderTableModel.signature());
-		sb.append("|R|").append(String.join("\n", helperConstructManager.getRequirementDisplayNames()));
-		sb.append("|Rid|").append(String.join("\n", helperConstructManager.getRequirementRawIdStrings()));
-		sb.append("|V|").append(varbitRoutingTableModel.signature());
-		sb.append("|Z|").append(zoneRoutingTableModel.signature());
-		return sb.toString();
 	}
 
 	private static String stepLibraryTabTitle(ConstructStepKind kind)
@@ -2575,7 +2536,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		private void setRowsAfterReorder()
 		{
 			stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
-			lastRenderSignature = computeSignature();
 		}
 	}
 }

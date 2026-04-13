@@ -40,7 +40,6 @@ import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
-import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import com.questhelper.tools.Icon;
@@ -232,15 +231,6 @@ public class QuestHelperPlugin extends Plugin
 				GlobalFakeObjects.createNpcs(client, runeliteObjectManager, configManager, config);
 			}
 		});
-	}
-
-	public void openOrFocusHelperConstructFrame()
-	{
-		if (helperConstructFrame == null)
-		{
-			helperConstructFrame = new HelperConstructFrame(helperConstructManager);
-		}
-		helperConstructFrame.openWindow();
 	}
 
 	@Override
@@ -487,15 +477,13 @@ public class QuestHelperPlugin extends Plugin
 					return;
 				}
 				var container = args[1];
-				switch (container)
+				if (container.equals("keyring"))
 				{
-					case "keyring":
-						var keyringItems = QuestContainerManager.getKeyRingData().getItems();
-						for (var item : keyringItems)
-						{
-							log.debug("Key ring item: {}", item);
-						}
-						break;
+					var keyringItems = QuestContainerManager.getKeyRingData().getItems();
+					for (var item : keyringItems)
+					{
+						log.debug("Key ring item: {}", item);
+					}
 				}
 			}
 			else if (subCommand.equals("cheer"))
@@ -699,5 +687,14 @@ public class QuestHelperPlugin extends Plugin
 			saveSidebarOrder(currentQuest, updatedOrder);
 		}
 		questManager.startUpQuest(currentQuest, true);
+	}
+
+	public void openOrFocusHelperConstructFrame()
+	{
+		if (helperConstructFrame == null)
+		{
+			helperConstructFrame = new HelperConstructFrame(helperConstructManager);
+		}
+		helperConstructFrame.openWindow();
 	}
 }

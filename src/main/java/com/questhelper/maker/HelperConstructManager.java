@@ -2,10 +2,8 @@ package com.questhelper.maker;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.questhelper.managers.GamevalSymbolResolver;
-import com.questhelper.managers.HelperScaffoldGenerator;
 import com.questhelper.managers.QuestManager;
-import com.questhelper.managers.taskstroute.TasksTrackerRouteExporter;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteExporter;
 import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.maker.construct.ConstructMenuCapture;
@@ -34,10 +32,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.TileObject;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -66,6 +66,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -127,9 +128,6 @@ public class HelperConstructManager
 	private WorldMapPointManager worldMapPointManager;
 
 	@Inject
-	private GamevalSymbolResolver symbolResolver;
-
-	@Inject
 	private QuestManager questManager;
 
 	@Inject
@@ -141,6 +139,35 @@ public class HelperConstructManager
 	private final Gson prettyDraftGson = new GsonBuilder().setPrettyPrinting().create();
 	@Getter
 	private boolean worldMapRoutePreviewEnabled;
+	private final List<Runnable> draftChangeListeners = new CopyOnWriteArrayList<>();
+
+	public void addDraftChangeListener(Runnable listener)
+	{
+		if (listener != null)
+		{
+			draftChangeListeners.add(listener);
+		}
+	}
+
+	public void removeDraftChangeListener(Runnable listener)
+	{
+		draftChangeListeners.remove(listener);
+	}
+
+	private void notifyDraftChanged()
+	{
+		for (Runnable listener : draftChangeListeners)
+		{
+			try
+			{
+				listener.run();
+			}
+			catch (RuntimeException ex)
+			{
+				log.warn("Quest Helper Maker draft change listener failed.", ex);
+			}
+		}
+	}
 
 	/**
 	 * Result of {@link #importDraftFromJson(String)}.
@@ -202,11 +229,22 @@ public class HelperConstructManager
 
 		if (isNpcAction(sourceType))
 		{
-			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add NPC Step", target, () -> addStep(StepKind.NPC, sourceEntry.getNpc().getId(), option, target, clickedWorldPoint));
+			NPC npc = sourceEntry.getNpc();
+			if (npc != null)
+			{
+				int npcId = npc.getId();
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add NPC Step", target, () ->
+				{
+					addStep(StepKind.NPC, npcId, option, target, clickedWorldPoint);
+				});
+			}
 		}
 		else if (isObjectAction(sourceType))
 		{
-			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Object Step", target, () -> addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint));
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Object Step", target, () ->
+			{
+				addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint);
+			});
 		}
 		else if (isItemAction(sourceType))
 		{
@@ -220,7 +258,11 @@ public class HelperConstructManager
 		}
 		else if (isWalkHereMenu(sourceType, option) && clickedWorldPoint != null)
 		{
-			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (here)", target, () -> addGenericStepAtWorldPoint(clickedWorldPoint));
+			final WorldPoint tilePoint = clickedWorldPoint;
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (here)", target, () ->
+			{
+				addGenericStepAtWorldPoint(tilePoint);
+			});
 		}
 	}
 
@@ -1038,7 +1080,9 @@ public class HelperConstructManager
 			{
 				return "(unset)";
 			}
-			return requirementDisplayLabelForRawId(edit.getItemRawId());
+			String base = requirementDisplayLabelForRawId(edit.getItemRawId());
+			int q = edit.getItemQuantity();
+			return q > 1 ? base + " ×" + q : base;
 		}
 		String fk = edit.getKind();
 		return fk == null || fk.isBlank() ? "Attachment" : fk;
@@ -1171,7 +1215,8 @@ public class HelperConstructManager
 			return StepAttachmentEdit.varbit(vid, val, a.getVarbitOperation(), a.getVarbitDisplayText());
 		}
 		int itemId = a.getItemRawId() == null ? 0 : a.getItemRawId();
-		return StepAttachmentEdit.item(itemId, a.isAttachmentHighlighted());
+		int q = a.getItemQuantity() < 1 ? 1 : a.getItemQuantity();
+		return StepAttachmentEdit.item(itemId, a.isAttachmentHighlighted(), q);
 	}
 
 	private static DraftStepAttachedRequirement draftAttachedRequirementFromEdit(StepAttachmentEdit edit)
@@ -1206,7 +1251,8 @@ public class HelperConstructManager
 		{
 			return null;
 		}
-		return DraftStepAttachedRequirement.item(edit.getItemRawId(), edit.isItemHighlighted());
+		int q = edit.getItemQuantity() < 1 ? 1 : edit.getItemQuantity();
+		return DraftStepAttachedRequirement.item(edit.getItemRawId(), edit.isItemHighlighted(), q);
 	}
 
 	private DraftStep stepDefinitionAtKindIndexOrNull(StepKind kind, int filteredIndex)
@@ -2272,8 +2318,10 @@ public class HelperConstructManager
 			{
 				def.setStepId(UUID.randomUUID().toString());
 			}
-			String label = formatStepSummary(def, i++) + " [" + def.getKind() + "]";
-			out.add(new StepDefinitionPickOption(def.getStepId(), label));
+			String label = formatStepDefinitionPickLabel(def, i);
+			String filterText = formatStepDefinitionPickFilterText(def);
+			out.add(new StepDefinitionPickOption(def.getStepId(), label, filterText));
+			i++;
 		}
 		if (!out.isEmpty())
 		{
@@ -2762,6 +2810,119 @@ public class HelperConstructManager
 		}
 	}
 
+	/**
+	 * When Quest Helper maker mode is enabled: for each OBJECT step with {@code rawId == 0}, a non-null saved world
+	 * point that matches this spawned scene object (same tile as {@link TileObject#getWorldLocation()} after
+	 * world-view normalization, or any tile inside a multi-tile {@link GameObject} footprint — same geometry as
+	 * {@link com.questhelper.steps.ObjectStep}), sets {@link DraftStep#setRawId(int)} from {@link TileObject#getId()}
+	 * and saves once if anything changed.
+	 */
+	public void tryFillPlaceholderObjectIdsFromTileObjectSpawn(TileObject tileObject)
+	{
+		if (!config.constructModeEnabled() || tileObject == null)
+		{
+			return;
+		}
+		int newId = tileObject.getId();
+		if (newId <= 0)
+		{
+			return;
+		}
+		ensureDraftLoaded();
+		boolean any = false;
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step.getKind() != StepKind.OBJECT || step.getRawId() != 0 || step.getWorldPoint() == null)
+			{
+				continue;
+			}
+			if (!tileObjectCoversDraftWorldPoint(tileObject, step.getWorldPoint()))
+			{
+				continue;
+			}
+			step.setRawId(newId);
+			any = true;
+		}
+		if (any)
+		{
+			saveDraftToConfig();
+			rebuildWorldMapRouteIfEnabled();
+		}
+	}
+
+	private boolean tileObjectCoversDraftWorldPoint(TileObject tileObject, WorldPoint target)
+	{
+		if (target == null || tileObject.getWorldView() == null)
+		{
+			return false;
+		}
+		if (tileObject instanceof GameObject)
+		{
+			GameObject go = (GameObject) tileObject;
+			WorldPoint bottomLeftCorner = QuestPerspective.getWorldPointConsideringWorldView(client, go.getWorldView(), go.getWorldLocation());
+			if (bottomLeftCorner == null)
+			{
+				return false;
+			}
+			int bottomX = bottomLeftCorner.getX() - ((go.sizeX() - 1) / 2);
+			int bottomY = bottomLeftCorner.getY() - ((go.sizeY() - 1) / 2);
+			int plane = bottomLeftCorner.getPlane();
+			if (plane != target.getPlane())
+			{
+				return false;
+			}
+			return target.getX() >= bottomX && target.getX() < bottomX + go.sizeX()
+				&& target.getY() >= bottomY && target.getY() < bottomY + go.sizeY();
+		}
+		WorldPoint anchor = QuestPerspective.getWorldPointConsideringWorldView(client, tileObject.getWorldView(), tileObject.getWorldLocation());
+		return anchor != null && anchor.equals(target);
+	}
+
+	/**
+	 * When maker mode is enabled: for each NPC draft step with {@code rawId == 0} and a saved world point equal to
+	 * this npc's position (same normalization as menu capture), sets {@code rawId} from {@link NPC#getId()}.
+	 * Best for static spawns; npcs that move away will no longer match the stored tile.
+	 */
+	public void tryFillPlaceholderNpcIdsFromNpcSpawn(NPC npc)
+	{
+		if (!config.constructModeEnabled() || npc == null)
+		{
+			return;
+		}
+		int newId = npc.getId();
+		if (newId <= 0)
+		{
+			return;
+		}
+		WorldPoint npcWp = npc.getLocalLocation() != null
+			? QuestPerspective.getWorldPointConsideringWorldView(client, npc.getLocalLocation())
+			: QuestPerspective.getWorldPointConsideringWorldView(client, npc.getWorldView(), npc.getWorldLocation());
+		if (npcWp == null)
+		{
+			return;
+		}
+		ensureDraftLoaded();
+		boolean any = false;
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step.getKind() != StepKind.NPC || step.getRawId() != 0 || step.getWorldPoint() == null)
+			{
+				continue;
+			}
+			if (!npcWp.equals(step.getWorldPoint()))
+			{
+				continue;
+			}
+			step.setRawId(newId);
+			any = true;
+		}
+		if (any)
+		{
+			saveDraftToConfig();
+			rebuildWorldMapRouteIfEnabled();
+		}
+	}
+
 	public boolean removeRequirementAt(int index)
 	{
 		ensureDraftLoaded();
@@ -2977,6 +3138,7 @@ public class HelperConstructManager
 		{
 			reconcileOrderSlotRoutingAttachments();
 			MakerDraftFileStore.writeUtf8(file, gson.toJson(TasksTrackerRouteExporter.export(currentDraft)));
+			notifyDraftChanged();
 		}
 		catch (IOException e)
 		{
@@ -3058,6 +3220,110 @@ public class HelperConstructManager
 			return "(unknown)";
 		}
 		return "(" + point.getX() + ", " + point.getY() + ", " + point.getPlane() + ")";
+	}
+
+	private static final int STEP_PICK_LABEL_MAX_LEN = 96;
+
+	private static String truncatePickListLine(String s, int maxLen)
+	{
+		if (s == null)
+		{
+			return "";
+		}
+		String t = s.trim();
+		if (t.length() <= maxLen)
+		{
+			return t;
+		}
+		return t.substring(0, maxLen - 1) + "…";
+	}
+
+	private void appendPickFilterChunk(StringBuilder sb, String chunk)
+	{
+		String t = normalizeText(chunk);
+		if (t.isEmpty())
+		{
+			return;
+		}
+		if (sb.length() > 0)
+		{
+			sb.append(' ');
+		}
+		sb.append(t);
+	}
+
+	/** One-line label for the Add Step pick list: instruction and human-readable fields only (no ids, coords, or kind). */
+	private String formatStepDefinitionPickLabel(DraftStep step, int displayIndex)
+	{
+		if (step.isSectionDivider())
+		{
+			String name = step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank()
+				? DEFAULT_SECTION_NAME
+				: normalizeText(step.getSuggestedVarName());
+			String condition = step.getSectionCondition() == null ? "" : normalizeText(step.getSectionCondition());
+			String mode = step.isSkipWhenConditionMet() ? "skip when met" : "show when met";
+			if (condition.isEmpty())
+			{
+				return truncatePickListLine("Section: " + name + " (" + mode + ")", STEP_PICK_LABEL_MAX_LEN);
+			}
+			return truncatePickListLine("Section: " + name + " (" + mode + ") — " + condition, STEP_PICK_LABEL_MAX_LEN);
+		}
+		String ins = normalizeText(step.getInstructionText());
+		if (!ins.isBlank())
+		{
+			return truncatePickListLine(ins.replace('\n', ' ').replace('\r', ' '), STEP_PICK_LABEL_MAX_LEN);
+		}
+		if (step.getKind() == StepKind.TEXT)
+		{
+			return "Generic step";
+		}
+		String opt = normalizeText(step.getOption());
+		String target = normalizeText(step.getTargetText());
+		StringBuilder b = new StringBuilder();
+		if (!opt.isBlank())
+		{
+			b.append(opt);
+		}
+		if (!target.isBlank())
+		{
+			if (b.length() > 0)
+			{
+				b.append(' ');
+			}
+			b.append(target);
+		}
+		String ot = b.toString().trim();
+		if (!ot.isBlank())
+		{
+			return truncatePickListLine(ot, STEP_PICK_LABEL_MAX_LEN);
+		}
+		String var = normalizeText(step.getSuggestedVarName());
+		if (!var.isBlank())
+		{
+			return truncatePickListLine(var, STEP_PICK_LABEL_MAX_LEN);
+		}
+		return "Step " + displayIndex;
+	}
+
+	/** Text used to filter the Add Step list (includes ids for numeric search, but not shown in the list). */
+	private String formatStepDefinitionPickFilterText(DraftStep step)
+	{
+		StringBuilder sb = new StringBuilder();
+		appendPickFilterChunk(sb, step.getInstructionText());
+		appendPickFilterChunk(sb, step.getSuggestedVarName());
+		appendPickFilterChunk(sb, step.getTargetText());
+		appendPickFilterChunk(sb, step.getOption());
+		appendPickFilterChunk(sb, step.getSectionCondition());
+		if (step.getKind() != null)
+		{
+			appendPickFilterChunk(sb, step.getKind().name());
+		}
+		if (step.getKind() == StepKind.NPC || step.getKind() == StepKind.OBJECT)
+		{
+			String ids = DraftRoutingIds.formatCsvIds(DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds()));
+			appendPickFilterChunk(sb, ids);
+		}
+		return sb.toString().trim();
 	}
 
 	private String formatStepSummary(DraftStep step, int displayIndex)
@@ -3297,6 +3563,21 @@ public class HelperConstructManager
 		}
 	}
 
+	private static int itemAttachmentQuantityOrOne(DraftStepAttachedRequirement a)
+	{
+		if (a == null)
+		{
+			return 1;
+		}
+		String k = a.getKind() == null ? StepAttachmentKind.ITEM.name() : a.getKind();
+		if (!StepAttachmentKind.ITEM.name().equalsIgnoreCase(k))
+		{
+			return 1;
+		}
+		int q = a.getItemQuantity();
+		return q < 1 ? 1 : q;
+	}
+
 	private class PreviewQuestHelper extends ComplexStateQuestHelper
 	{
 		private final DraftHelper draft;
@@ -3504,7 +3785,9 @@ public class HelperConstructManager
 				}
 				ItemRequirement ir = requirementById.get(id);
 				ItemRequirement base = ir != null ? ir : new ItemRequirement("Item " + id, id);
-				reqs.add(a.isAttachmentHighlighted() ? base.highlighted() : base);
+				int q = itemAttachmentQuantityOrOne(a);
+				ItemRequirement withQty = q > 1 ? base.quantity(q) : base;
+				reqs.add(a.isAttachmentHighlighted() ? withQty.highlighted() : withQty);
 			}
 			return reqs;
 		}
@@ -3718,6 +4001,8 @@ public class HelperConstructManager
 		private final String varbitDisplayText;
 		@Setter
 		private boolean itemHighlighted;
+		@Setter
+		private int itemQuantity;
 		private final String orderSlotId;
 
 		private StepAttachmentEdit(
@@ -3728,6 +4013,7 @@ public class HelperConstructManager
 			String varbitOperation,
 			String varbitDisplayText,
 			boolean itemHighlighted,
+			int itemQuantity,
 			String orderSlotId)
 		{
 			this.kind = kind;
@@ -3737,6 +4023,7 @@ public class HelperConstructManager
 			this.varbitOperation = varbitOperation;
 			this.varbitDisplayText = varbitDisplayText;
 			this.itemHighlighted = itemHighlighted;
+			this.itemQuantity = itemQuantity < 1 ? 1 : itemQuantity;
 			this.orderSlotId = orderSlotId;
 		}
 
@@ -3758,7 +4045,7 @@ public class HelperConstructManager
 			{
 				return null;
 			}
-			return item(o.getItemRawId(), o.isItemHighlighted());
+			return item(o.getItemRawId(), o.isItemHighlighted(), o.getItemQuantity());
 		}
 
 		public static StepAttachmentEdit item(int rawId)
@@ -3768,19 +4055,25 @@ public class HelperConstructManager
 
 		public static StepAttachmentEdit item(int rawId, boolean highlighted)
 		{
-			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, highlighted, null);
+			return item(rawId, highlighted, 1);
+		}
+
+		public static StepAttachmentEdit item(int rawId, boolean highlighted, int quantity)
+		{
+			int q = quantity < 1 ? 1 : quantity;
+			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, highlighted, q, null);
 		}
 
 		public static StepAttachmentEdit varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, null);
+			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 1, null);
 		}
 
 		public static StepAttachmentEdit varbitForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, orderSlotId);
+			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 1, orderSlotId);
 		}
 	}
 
@@ -3788,11 +4081,14 @@ public class HelperConstructManager
 	{
 		private final String stepId;
 		private final String label;
+		/** Extra tokens for search (not shown in the list); may include numeric ids. */
+		private final String filterText;
 
-		public StepDefinitionPickOption(String stepId, String label)
+		public StepDefinitionPickOption(String stepId, String label, String filterText)
 		{
 			this.stepId = stepId;
-			this.label = label;
+			this.label = label == null ? "" : label;
+			this.filterText = filterText == null || filterText.isBlank() ? this.label : filterText;
 		}
 
 		public String getStepId()
@@ -3803,6 +4099,11 @@ public class HelperConstructManager
 		public String getLabel()
 		{
 			return label;
+		}
+
+		public String getFilterText()
+		{
+			return filterText;
 		}
 
 		@Override

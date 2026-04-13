@@ -11,6 +11,7 @@ import java.util.UUID;
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftSkillRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
@@ -91,6 +92,19 @@ public final class ConstructDraftPersistence
 				loaded.getRequirements().add(req);
 			}
 		}
+		if (state.skillRequirements != null)
+		{
+			for (DraftSkillRequirementState skillState : state.skillRequirements)
+			{
+				DraftSkillRequirement skill = new DraftSkillRequirement();
+				skill.setSkillName(skillState.skillName);
+				skill.setRequiredLevel(skillState.requiredLevel < 1 ? 1 : skillState.requiredLevel);
+				skill.setCanBeBoosted(skillState.canBeBoosted);
+				skill.setDisplayText(skillState.displayText);
+				skill.setOperation(skillState.operation == null || skillState.operation.isBlank() ? "GREATER_EQUAL" : skillState.operation.trim());
+				loaded.getSkillRequirements().add(skill);
+			}
+		}
 
 		OrderStepRequirementSupport.normalizeLoadedDraft(loaded);
 
@@ -130,6 +144,11 @@ public final class ConstructDraftPersistence
 				st.varbitRequiredValue = a.getVarbitRequiredValue();
 				st.varbitOperation = a.getVarbitOperation();
 				st.varbitDisplayText = a.getVarbitDisplayText();
+				st.skillName = a.getSkillName();
+				st.skillRequiredLevel = a.getSkillRequiredLevel();
+				st.skillOperation = a.getSkillOperation();
+				st.skillDisplayText = a.getSkillDisplayText();
+				st.skillCanBeBoosted = a.isSkillCanBeBoosted();
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
 				st.itemQuantity = a.getItemQuantity();
 				st.orderSlotId = a.getOrderSlotId();
@@ -179,6 +198,11 @@ public final class ConstructDraftPersistence
 				st.varbitRequiredValue = a.getVarbitRequiredValue();
 				st.varbitOperation = a.getVarbitOperation();
 				st.varbitDisplayText = a.getVarbitDisplayText();
+				st.skillName = a.getSkillName();
+				st.skillRequiredLevel = a.getSkillRequiredLevel();
+				st.skillOperation = a.getSkillOperation();
+				st.skillDisplayText = a.getSkillDisplayText();
+				st.skillCanBeBoosted = a.isSkillCanBeBoosted();
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
 				st.itemQuantity = a.getItemQuantity();
 				st.orderSlotId = a.getOrderSlotId();
@@ -197,6 +221,16 @@ public final class ConstructDraftPersistence
 				reqState.alternateRawIds = new ArrayList<>(req.getAlternateRawIds());
 			}
 			state.requirements.add(reqState);
+		}
+		for (DraftSkillRequirement skill : draft.getSkillRequirements())
+		{
+			DraftSkillRequirementState skillState = new DraftSkillRequirementState();
+			skillState.skillName = skill.getSkillName();
+			skillState.requiredLevel = skill.getRequiredLevel();
+			skillState.canBeBoosted = skill.isCanBeBoosted();
+			skillState.displayText = skill.getDisplayText();
+			skillState.operation = skill.getOperation();
+			state.skillRequirements.add(skillState);
 		}
 
 		return state;
@@ -258,6 +292,11 @@ public final class ConstructDraftPersistence
 			d.setVarbitRequiredValue(st.varbitRequiredValue);
 			d.setVarbitOperation(st.varbitOperation);
 			d.setVarbitDisplayText(st.varbitDisplayText);
+			d.setSkillName(st.skillName);
+			d.setSkillRequiredLevel(st.skillRequiredLevel);
+			d.setSkillOperation(st.skillOperation);
+			d.setSkillDisplayText(st.skillDisplayText);
+			d.setSkillCanBeBoosted(st.skillCanBeBoosted);
 			d.setAttachmentHighlighted(st.attachmentHighlighted);
 			d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
 			d.setOrderSlotId(st.orderSlotId);
@@ -313,6 +352,11 @@ public final class ConstructDraftPersistence
 				d.setVarbitRequiredValue(st.varbitRequiredValue);
 				d.setVarbitOperation(st.varbitOperation);
 				d.setVarbitDisplayText(st.varbitDisplayText);
+				d.setSkillName(st.skillName);
+				d.setSkillRequiredLevel(st.skillRequiredLevel);
+				d.setSkillOperation(st.skillOperation);
+				d.setSkillDisplayText(st.skillDisplayText);
+				d.setSkillCanBeBoosted(st.skillCanBeBoosted);
 				d.setAttachmentHighlighted(st.attachmentHighlighted);
 				d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
 				d.setOrderSlotId(st.orderSlotId);
@@ -341,6 +385,7 @@ public final class ConstructDraftPersistence
 		public List<DraftStepState> definitions = new ArrayList<>();
 		public List<DraftOrderLineState> order = new ArrayList<>();
 		public List<DraftRequirementState> requirements = new ArrayList<>();
+		public List<DraftSkillRequirementState> skillRequirements = new ArrayList<>();
 	}
 
 	/**
@@ -381,6 +426,11 @@ public final class ConstructDraftPersistence
 		public Integer varbitRequiredValue;
 		public String varbitOperation;
 		public String varbitDisplayText;
+		public String skillName;
+		public Integer skillRequiredLevel;
+		public String skillOperation;
+		public String skillDisplayText;
+		public boolean skillCanBeBoosted;
 		public boolean attachmentHighlighted;
 		/** When {@code kind} is ITEM: required quantity ({@code >= 1}); omitted or {@code null} in old JSON defaults to 1. */
 		public Integer itemQuantity;
@@ -408,5 +458,14 @@ public final class ConstructDraftPersistence
 		public int rawId;
 		public String displayName;
 		public List<Integer> alternateRawIds;
+	}
+
+	public static class DraftSkillRequirementState
+	{
+		public String skillName;
+		public int requiredLevel;
+		public boolean canBeBoosted;
+		public String displayText;
+		public String operation;
 	}
 }

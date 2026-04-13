@@ -5,6 +5,7 @@ import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import com.questhelper.maker.OrderStepRequirementSupport;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.ColorScheme;
 
@@ -98,6 +99,8 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		reqMenu.add(newAddVarbitFromExistingItem());
 		reqMenu.add(newCreateVarbitItem());
 		reqMenu.add(newCapturedItemItem());
+		reqMenu.add(newAddSkillFromExistingItem());
+		reqMenu.add(newCreateSkillItem());
 		reqMenu.add(newAddZoneFromExistingItem());
 		reqMenu.add(newCreateZoneItem());
 		reqMenu.add(newInvertItem());
@@ -189,6 +192,20 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	{
 		JMenuItem it = new JMenuItem("Create new zone…");
 		it.addActionListener(e -> addZoneCreateNewInteractive(false));
+		return it;
+	}
+
+	private JMenuItem newAddSkillFromExistingItem()
+	{
+		JMenuItem it = new JMenuItem("Add skill");
+		it.addActionListener(e -> addSkillFromExistingInteractive(false));
+		return it;
+	}
+
+	private JMenuItem newCreateSkillItem()
+	{
+		JMenuItem it = new JMenuItem("Create new skill…");
+		it.addActionListener(e -> addSkillCreateNewInteractive(false));
 		return it;
 	}
 
@@ -400,7 +417,11 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			combo.addItem(c.getLabel() + " (" + c.getRawId() + ")");
 		}
-		int r = JOptionPane.showConfirmDialog(this, combo, "Pick item requirement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		JCheckBox checkBank = new JCheckBox("Also check bank");
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
+		panel.add(combo, BorderLayout.NORTH);
+		panel.add(checkBank, BorderLayout.SOUTH);
+		int r = JOptionPane.showConfirmDialog(this, panel, "Pick item requirement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
 		{
 			return;
@@ -410,7 +431,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			return;
 		}
-		addLeaf(DraftOrderStepRequirement.item(choices.get(idx).getRawId()));
+		addLeaf(DraftOrderStepRequirement.item(choices.get(idx).getRawId(), checkBank.isSelected()));
 	}
 
 	private void clearPendingVarbitRouting()
@@ -515,6 +536,89 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		return disp != null && !disp.isBlank() ? disp + " — " + base : base;
 	}
 
+	private static Skill parseSkillNameOrDefault(String name)
+	{
+		if (name == null || name.isBlank())
+		{
+			return Skill.ATTACK;
+		}
+		try
+		{
+			return Skill.valueOf(name.trim().toUpperCase(Locale.ROOT));
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return Skill.ATTACK;
+		}
+	}
+
+	private static Operation parseOperationOrDefault(String name, Operation fallback)
+	{
+		if (name == null || name.isBlank())
+		{
+			return fallback;
+		}
+		try
+		{
+			return Operation.valueOf(name.trim().toUpperCase(Locale.ROOT));
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return fallback;
+		}
+	}
+
+	private SkillPick showSkillFormOrNull(String skillExisting, Integer levelExisting, String opExisting, String displayExisting, Boolean canBoostExisting)
+	{
+		JComboBox<Skill> skill = new JComboBox<>(Skill.values());
+		skill.setMaximumRowCount(Skill.values().length);
+		skill.setSelectedItem(parseSkillNameOrDefault(skillExisting));
+		int level = levelExisting == null ? 1 : Math.max(1, levelExisting);
+		JSpinner levelSp = new JSpinner(new SpinnerNumberModel(level, 1, 255, 1));
+		JComboBox<Operation> op = new JComboBox<>(Operation.values());
+		op.setMaximumRowCount(Operation.values().length);
+		op.setSelectedItem(parseOperationOrDefault(opExisting, Operation.GREATER_EQUAL));
+		JCheckBox boost = new JCheckBox("Can be boosted", canBoostExisting == null || canBoostExisting);
+		JTextField disp = new JTextField(displayExisting == null ? "" : displayExisting, 24);
+
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(labeled("Skill", skill));
+		p.add(labeled("Required level", levelSp));
+		p.add(labeled("Operation", op));
+		p.add(boost);
+		p.add(labeled("Display text (optional)", disp));
+		int r = JOptionPane.showConfirmDialog(this, p, "Skill requirement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return null;
+		}
+		Skill s = (Skill) skill.getSelectedItem();
+		if (s == null)
+		{
+			s = Skill.ATTACK;
+		}
+		Operation operation = (Operation) op.getSelectedItem();
+		if (operation == null)
+		{
+			operation = Operation.GREATER_EQUAL;
+		}
+		String dt = disp.getText().trim();
+		return new SkillPick(s, ((Number) levelSp.getValue()).intValue(), operation, dt.isEmpty() ? null : dt, boost.isSelected());
+	}
+
+	private static String formatSkillChoiceLabel(String skillName, int requiredLevel, String operation, String displayText, boolean canBoost)
+	{
+		Skill s = parseSkillNameOrDefault(skillName);
+		String op = operation == null || operation.isBlank() ? Operation.GREATER_EQUAL.name() : operation;
+		String base = requiredLevel + " " + s.getName() + " (" + op + ")";
+		if (canBoost)
+		{
+			base += " [boost]";
+		}
+		return displayText != null && !displayText.isBlank() ? displayText + " — " + base : base;
+	}
+
 	private void addZoneCreateNewInteractive(boolean forInvert)
 	{
 		ZonePick pick = showZoneFormOrNull(null, null, null);
@@ -530,6 +634,72 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		else
 		{
 			addLeaf(DraftOrderStepRequirement.orderZoneSlot());
+		}
+	}
+
+	private void addSkillFromExistingInteractive(boolean forInvert)
+	{
+		List<HelperConstructManager.SkillReqRow> rows = manager.getSkillRequirementsForEditor();
+		if (rows.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				"No skill rows yet. Use \"Create new skill…\" or add rows on the Skill reqs tab first.",
+				"Add skill",
+				JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		JComboBox<String> combo = new JComboBox<>();
+		for (HelperConstructManager.SkillReqRow row : rows)
+		{
+			combo.addItem(formatSkillChoiceLabel(row.getSkillName(), row.getRequiredLevel(), row.getOperation(), row.getDisplayText(), row.isCanBeBoosted()));
+		}
+		int r = JOptionPane.showConfirmDialog(this, combo, "Pick skill row", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+		int idx = combo.getSelectedIndex();
+		if (idx < 0)
+		{
+			return;
+		}
+		HelperConstructManager.SkillReqRow pick = rows.get(idx);
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.skill(
+			pick.getSkillName(),
+			pick.getRequiredLevel(),
+			pick.getOperation(),
+			pick.getDisplayText(),
+			pick.isCanBeBoosted());
+		if (forInvert)
+		{
+			addInvertWithInner(leaf);
+		}
+		else
+		{
+			addLeaf(leaf);
+		}
+	}
+
+	private void addSkillCreateNewInteractive(boolean forInvert)
+	{
+		SkillPick pick = showSkillFormOrNull(null, null, null, null, null);
+		if (pick == null)
+		{
+			return;
+		}
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.skill(
+			pick.skill.name(),
+			pick.requiredLevel,
+			pick.operation.name(),
+			pick.displayText,
+			pick.canBeBoosted);
+		if (forInvert)
+		{
+			addInvertWithInner(leaf);
+		}
+		else
+		{
+			addLeaf(leaf);
 		}
 	}
 
@@ -681,7 +851,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 
 	private void addInvertInteractive()
 	{
-		String[] options = { "Add varbit", "Create new varbit", "Item…", "Zone…" };
+		String[] options = { "Add varbit", "Create new varbit", "Item…", "Skill…", "Zone…" };
 		int c = JOptionPane.showOptionDialog(this,
 			"Choose the inner requirement for NOT:",
 			"NOT (invert)",
@@ -705,6 +875,27 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			return;
 		}
 		if (c == 3)
+		{
+			String[] sopts = { "From existing skill row", "New skill…" };
+			int s = JOptionPane.showOptionDialog(this,
+				"Choose how to add NOT(skill):",
+				"Skill",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				sopts,
+				sopts[0]);
+			if (s == 0)
+			{
+				addSkillFromExistingInteractive(true);
+			}
+			else if (s == 1)
+			{
+				addSkillCreateNewInteractive(true);
+			}
+			return;
+		}
+		if (c == 4)
 		{
 			String[] zopts = { "From existing zone row", "New zone…" };
 			int z = JOptionPane.showOptionDialog(this,
@@ -736,12 +927,16 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			combo.addItem(ch.getLabel() + " (" + ch.getRawId() + ")");
 		}
-		int r = JOptionPane.showConfirmDialog(this, combo, "Pick item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r != JOptionPane.OK_OPTION || combo.getSelectedIndex() < 0)
+		JCheckBox checkBank = new JCheckBox("Also check bank");
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
+		panel.add(combo, BorderLayout.NORTH);
+		panel.add(checkBank, BorderLayout.SOUTH);
+		if (JOptionPane.showConfirmDialog(this, panel, "Pick item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION
+			|| combo.getSelectedIndex() < 0)
 		{
 			return;
 		}
-		addInvertWithInner(DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId()));
+		addInvertWithInner(DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId(), checkBank.isSelected()));
 	}
 
 	private void addInvertWithInner(DraftOrderStepRequirement inner)
@@ -872,9 +1067,33 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 					"Zone",
 					JOptionPane.INFORMATION_MESSAGE);
 				break;
+			case "SKILL":
+				editSkill(d);
+				break;
 			default:
 				JOptionPane.showMessageDialog(this, "Nothing to edit for this node type.", "Edit", JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+
+	private void editSkill(DraftOrderStepRequirement d)
+	{
+		SkillPick pick = showSkillFormOrNull(
+			d.getSkillName(),
+			d.getSkillRequiredLevel(),
+			d.getSkillOperation(),
+			d.getSkillDisplayText(),
+			d.isSkillCanBeBoosted());
+		if (pick == null)
+		{
+			return;
+		}
+		d.setSkillName(pick.skill.name());
+		d.setSkillRequiredLevel(Math.max(1, pick.requiredLevel));
+		d.setSkillOperation(pick.operation.name());
+		d.setSkillDisplayText(pick.displayText);
+		d.setSkillCanBeBoosted(pick.canBeBoosted);
+		rebuildTree();
+		selectDto(d);
 	}
 
 	private void editGroup(DraftOrderStepRequirement d)
@@ -909,10 +1128,15 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			combo.addItem(c.getLabel() + " (" + c.getRawId() + ")");
 		}
 		combo.setSelectedIndex(sel);
-		int r = JOptionPane.showConfirmDialog(this, combo, "Captured item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		JCheckBox checkBank = new JCheckBox("Also check bank", d.isItemAlsoCheckBank());
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
+		panel.add(combo, BorderLayout.NORTH);
+		panel.add(checkBank, BorderLayout.SOUTH);
+		int r = JOptionPane.showConfirmDialog(this, panel, "Captured item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r == JOptionPane.OK_OPTION && combo.getSelectedIndex() >= 0)
 		{
 			d.setItemRawId(choices.get(combo.getSelectedIndex()).getRawId());
+			d.setItemAlsoCheckBank(checkBank.isSelected());
 			rebuildTree();
 			selectDto(d);
 		}
@@ -946,6 +1170,18 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 
 	private void onOk()
 	{
+		if (rootDto != null)
+		{
+			for (DraftOrderStepRequirement leaf : collectSkillLeaves(rootDto))
+			{
+				manager.ensureSkillRequirementForReuse(
+					leaf.getSkillName(),
+					leaf.getSkillRequiredLevel() == null ? 1 : leaf.getSkillRequiredLevel(),
+					leaf.isSkillCanBeBoosted(),
+					leaf.getSkillDisplayText(),
+					leaf.getSkillOperation());
+			}
+		}
 		if (rootDto != null && pendingVarbitRouting && OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(rootDto))
 		{
 			if (!manager.applyVarbitRoutingToOrderLineByIndex(
@@ -989,6 +1225,34 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		dispose();
 	}
 
+	private static List<DraftOrderStepRequirement> collectSkillLeaves(DraftOrderStepRequirement root)
+	{
+		List<DraftOrderStepRequirement> out = new ArrayList<>();
+		collectSkillLeavesRecursive(root, out);
+		return out;
+	}
+
+	private static void collectSkillLeavesRecursive(DraftOrderStepRequirement node, List<DraftOrderStepRequirement> out)
+	{
+		if (node == null)
+		{
+			return;
+		}
+		String kind = node.getKind() == null ? "" : node.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("SKILL".equals(kind))
+		{
+			out.add(node);
+			return;
+		}
+		if (node.getChildren() != null)
+		{
+			for (DraftOrderStepRequirement child : node.getChildren())
+			{
+				collectSkillLeavesRecursive(child, out);
+			}
+		}
+	}
+
 	private static final class ZonePick
 	{
 		final WorldPoint corner1;
@@ -1016,6 +1280,24 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			this.requiredValue = requiredValue;
 			this.operation = operation;
 			this.displayText = displayText;
+		}
+	}
+
+	private static final class SkillPick
+	{
+		final Skill skill;
+		final int requiredLevel;
+		final Operation operation;
+		final String displayText;
+		final boolean canBeBoosted;
+
+		SkillPick(Skill skill, int requiredLevel, Operation operation, String displayText, boolean canBeBoosted)
+		{
+			this.skill = skill;
+			this.requiredLevel = requiredLevel;
+			this.operation = operation;
+			this.displayText = displayText;
+			this.canBeBoosted = canBeBoosted;
 		}
 	}
 
@@ -1061,7 +1343,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				return "NOT (invert)";
 			case "ITEM":
 			case "CAPTURED_ITEM":
-				return "Item raw id " + d.getItemRawId();
+				return "Item raw id " + d.getItemRawId() + (d.isItemAlsoCheckBank() ? " [bank]" : "");
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
 				if (pendingVarbitRouting)
@@ -1080,6 +1362,13 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				return "Varbit " + d.getVarbitId() + " " + (d.getVarbitOperation() == null ? "" : d.getVarbitOperation()) + " " + d.getVarbitRequiredValue();
 			case "ZONE":
 				return "Zone (inline — save to migrate to tab)";
+			case "SKILL":
+				return formatSkillChoiceLabel(
+					d.getSkillName(),
+					d.getSkillRequiredLevel() == null ? 1 : d.getSkillRequiredLevel(),
+					d.getSkillOperation(),
+					d.getSkillDisplayText(),
+					d.isSkillCanBeBoosted());
 			default:
 				return d.getKind();
 		}

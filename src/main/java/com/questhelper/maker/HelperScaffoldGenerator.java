@@ -3,6 +3,7 @@ package com.questhelper.maker;
 import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.requirements.util.Operation;
 
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.inject.Inject;
@@ -50,6 +51,7 @@ public class HelperScaffoldGenerator
 		out.append("import com.questhelper.panel.PanelDetails;\n");
 		out.append("import com.questhelper.questhelpers.ComplexStateQuestHelper;\n");
 		out.append("import com.questhelper.requirements.item.ItemRequirement;\n");
+		out.append("import com.questhelper.requirements.player.SkillRequirement;\n");
 		out.append("import com.questhelper.requirements.conditional.Conditions;\n");
 		out.append("import static com.questhelper.requirements.util.LogicHelper.not;\n");
 		out.append("import static com.questhelper.requirements.util.LogicHelper.nor;\n");
@@ -65,6 +67,7 @@ public class HelperScaffoldGenerator
 		out.append("import java.util.ArrayList;\n");
 		out.append("import java.util.List;\n");
 		out.append("import net.runelite.api.coords.WorldPoint;\n");
+		out.append("import net.runelite.api.Skill;\n");
 		if (OrderStepRequirementSupport.draftUsesZoneRequirement(draft))
 		{
 			out.append("import com.questhelper.requirements.zone.Zone;\n");
@@ -482,6 +485,55 @@ public class HelperScaffoldGenerator
 					out.append(".quantity(").append(qty).append(")");
 				}
 				out.append(a.isAttachmentHighlighted() ? ".highlighted()" : "").append(");\n");
+				continue;
+			}
+			if (StepAttachmentKind.SKILL.name().equalsIgnoreCase(k))
+			{
+				String skillName = a.getSkillName() == null || a.getSkillName().isBlank() ? "ATTACK" : a.getSkillName().trim().toUpperCase(Locale.ROOT);
+				try
+				{
+					Skill.valueOf(skillName);
+				}
+				catch (IllegalArgumentException ex)
+				{
+					warnings.add("Unknown Skill on step attachment: " + a.getSkillName());
+					skillName = "ATTACK";
+				}
+				int level = a.getSkillRequiredLevel() == null ? 1 : Math.max(1, a.getSkillRequiredLevel());
+				String opName = a.getSkillOperation() == null || a.getSkillOperation().isBlank() ? "GREATER_EQUAL" : a.getSkillOperation().trim().toUpperCase(Locale.ROOT);
+				Operation op;
+				try
+				{
+					op = Operation.valueOf(opName);
+				}
+				catch (IllegalArgumentException ex)
+				{
+					warnings.add("Unknown skill Operation on step attachment: " + a.getSkillOperation());
+					op = Operation.GREATER_EQUAL;
+				}
+				out.append("\t\t{\n");
+				String display = a.getSkillDisplayText();
+				if (op == Operation.GREATER_EQUAL)
+				{
+					if (display != null && !display.isBlank())
+					{
+						out.append("\t\t\tSkillRequirement sr = new SkillRequirement(Skill.").append(skillName).append(", ")
+							.append(level).append(", ").append(a.isSkillCanBeBoosted()).append(", \"")
+							.append(escape(display)).append("\");\n");
+					}
+					else
+					{
+						out.append("\t\t\tSkillRequirement sr = new SkillRequirement(Skill.").append(skillName).append(", ")
+							.append(level).append(", ").append(a.isSkillCanBeBoosted()).append(");\n");
+					}
+				}
+				else
+				{
+					out.append("\t\t\tSkillRequirement sr = new SkillRequirement(Skill.").append(skillName).append(", ")
+						.append(level).append(", Operation.").append(op.name()).append(");\n");
+				}
+				out.append("\t\t\t").append(varName).append(".addRequirement(sr);\n");
+				out.append("\t\t}\n");
 				continue;
 			}
 			warnings.add("Unknown step attachment kind (skipped in scaffold): " + k);

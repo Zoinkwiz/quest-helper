@@ -3,12 +3,14 @@ package com.questhelper.maker;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.annotation.Nullable;
@@ -676,10 +678,16 @@ public final class OrderStepRequirementSupport
 		}
 		if (!Objects.equals(a.getLogic(), b.getLogic())
 			|| !Objects.equals(a.getItemRawId(), b.getItemRawId())
+			|| a.isItemAlsoCheckBank() != b.isItemAlsoCheckBank()
 			|| !Objects.equals(a.getVarbitId(), b.getVarbitId())
 			|| !Objects.equals(a.getVarbitRequiredValue(), b.getVarbitRequiredValue())
 			|| !Objects.equals(a.getVarbitOperation(), b.getVarbitOperation())
 			|| !Objects.equals(a.getVarbitDisplayText(), b.getVarbitDisplayText())
+			|| !Objects.equals(a.getSkillName(), b.getSkillName())
+			|| !Objects.equals(a.getSkillRequiredLevel(), b.getSkillRequiredLevel())
+			|| !Objects.equals(a.getSkillOperation(), b.getSkillOperation())
+			|| !Objects.equals(a.getSkillDisplayText(), b.getSkillDisplayText())
+			|| a.isSkillCanBeBoosted() != b.isSkillCanBeBoosted()
 			|| !worldPointsEqual(a.getZoneCorner1(), b.getZoneCorner1())
 			|| !worldPointsEqual(a.getZoneCorner2(), b.getZoneCorner2())
 			|| !Objects.equals(a.getZoneDisplayText(), b.getZoneDisplayText()))
@@ -764,7 +772,8 @@ public final class OrderStepRequirementSupport
 					return null;
 				}
 				ItemRequirement ir = requirementById.get(rid);
-				return ir != null ? ir : new ItemRequirement("Item " + rid, rid);
+				ItemRequirement out = ir != null ? ir : new ItemRequirement("Item " + rid, rid);
+				return node.isItemAlsoCheckBank() ? out.alsoCheckBank() : out;
 			}
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
@@ -802,6 +811,20 @@ public final class OrderStepRequirementSupport
 					disp = "In zone";
 				}
 				return new ZoneRequirement(disp, new Zone(c1, c2));
+			}
+			case "SKILL":
+			{
+				Skill skill = parseSkillOrDefault(node.getSkillName());
+				int level = node.getSkillRequiredLevel() == null ? 1 : Math.max(1, node.getSkillRequiredLevel());
+				Operation op = VarbitSpec.parseOperation(node.getSkillOperation(), Operation.GREATER_EQUAL);
+				String disp = node.getSkillDisplayText();
+				if (op == Operation.GREATER_EQUAL)
+				{
+					return (disp != null && !disp.isBlank())
+						? new SkillRequirement(skill, level, node.isSkillCanBeBoosted(), disp)
+						: new SkillRequirement(skill, level, node.isSkillCanBeBoosted());
+				}
+				return new SkillRequirement(skill, level, op);
 			}
 			default:
 				return null;
@@ -953,7 +976,7 @@ public final class OrderStepRequirementSupport
 					warnings.add("Missing item requirement var for tree leaf raw id " + rid);
 					return "new VarbitRequirement(0, Operation.EQUAL, 1, null)";
 				}
-				return v;
+				return node.isItemAlsoCheckBank() ? v + ".alsoCheckBank()" : v;
 			}
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
@@ -993,6 +1016,46 @@ public final class OrderStepRequirementSupport
 				String dispArg = "\"" + dispLit + "\"";
 				return "new ZoneRequirement(" + dispArg + ", new Zone("
 					+ worldPointJavaLiteral(c1) + ", " + worldPointJavaLiteral(c2) + "))";
+			}
+			case "SKILL":
+			{
+				String skillName = node.getSkillName() == null || node.getSkillName().isBlank()
+					? "ATTACK"
+					: node.getSkillName().trim().toUpperCase(Locale.ROOT);
+				try
+				{
+					Skill.valueOf(skillName);
+				}
+				catch (IllegalArgumentException ex)
+				{
+					warnings.add("Unknown SKILL name: " + node.getSkillName());
+					skillName = "ATTACK";
+				}
+				int level = node.getSkillRequiredLevel() == null ? 1 : Math.max(1, node.getSkillRequiredLevel());
+				String opName = node.getSkillOperation() == null || node.getSkillOperation().isBlank()
+					? "GREATER_EQUAL"
+					: node.getSkillOperation().trim().toUpperCase(Locale.ROOT);
+				Operation op;
+				try
+				{
+					op = Operation.valueOf(opName);
+				}
+				catch (IllegalArgumentException ex)
+				{
+					warnings.add("Unknown SKILL operation: " + node.getSkillOperation());
+					op = Operation.GREATER_EQUAL;
+				}
+				String disp = node.getSkillDisplayText();
+				if (op == Operation.GREATER_EQUAL)
+				{
+					if (disp != null && !disp.isBlank())
+					{
+						return "new SkillRequirement(Skill." + skillName + ", " + level + ", "
+							+ node.isSkillCanBeBoosted() + ", \"" + HelperScaffoldGenerator.escapeJavaLiteral(disp) + "\")";
+					}
+					return "new SkillRequirement(Skill." + skillName + ", " + level + ", " + node.isSkillCanBeBoosted() + ")";
+				}
+				return "new SkillRequirement(Skill." + skillName + ", " + level + ", Operation." + op.name() + ")";
 			}
 			default:
 				warnings.add("Unknown order step requirement kind: " + node.getKind());
@@ -1109,8 +1172,34 @@ public final class OrderStepRequirementSupport
 				return "Order conditions cannot use inline VARBIT nodes. Set the varbit on the Varbit reqs tab for this row, then use only \"Order varbit (slot)\" here (or save again to auto-migrate legacy drafts).";
 			case "ZONE":
 				return "Order conditions cannot use inline ZONE nodes. Set corners on the Zone reqs tab for this row, then use only \"Order zone (slot)\" here (or save again to auto-migrate).";
+			case "SKILL":
+				if (node.getSkillName() == null || node.getSkillName().isBlank())
+				{
+					return "SKILL needs skillName.";
+				}
+				if (node.getSkillRequiredLevel() == null || node.getSkillRequiredLevel() < 1)
+				{
+					return "SKILL needs required level >= 1.";
+				}
+				return null;
 			default:
 				return "Unknown kind: " + node.getKind();
+		}
+	}
+
+	private static Skill parseSkillOrDefault(String name)
+	{
+		if (name == null || name.isBlank())
+		{
+			return Skill.ATTACK;
+		}
+		try
+		{
+			return Skill.valueOf(name.trim().toUpperCase(Locale.ROOT));
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return Skill.ATTACK;
 		}
 	}
 

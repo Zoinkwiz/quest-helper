@@ -26,6 +26,7 @@ package com.questhelper.maker;
 
 import com.questhelper.panel.JGenerator;
 import com.questhelper.requirements.util.Operation;
+import net.runelite.api.Skill;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.SwingUtil;
 import org.jetbrains.annotations.NotNull;
@@ -83,10 +84,12 @@ public final class HelperConstructEditorPanel extends JPanel
 	private JTable requirementTable;
 	private JTable varbitReqsTable;
 	private JTable zoneReqsTable;
+	private JTable skillReqsTable;
 	private JTable orderTable;
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
 	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
 	private final ZoneRoutingTableModel zoneRoutingTableModel = new ZoneRoutingTableModel();
+	private final SkillRoutingTableModel skillRoutingTableModel = new SkillRoutingTableModel();
 	private final Runnable draftChangeListener;
 	private JButton worldMapRouteButton;
 	private JButton routeRevealButton;
@@ -309,6 +312,65 @@ public final class HelperConstructEditorPanel extends JPanel
 		zoneActions.add(removeZoneSlotButton);
 		zonePanel.add(zoneActions, BorderLayout.SOUTH);
 		mainTabs.addTab("Zone reqs", zonePanel);
+
+		skillReqsTable = new JTable(skillRoutingTableModel);
+		styleVarbitRoutingTable(skillReqsTable);
+		skillReqsTable.setRowHeight(24);
+		JComboBox<Skill> skillCombo = new JComboBox<>(Skill.values());
+		skillCombo.setMaximumRowCount(Skill.values().length);
+		skillReqsTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(skillCombo));
+		skillReqsTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
+		skillReqsTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+		skillReqsTable.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
+		JComboBox<Operation> skillOperationCombo = getOperationJComboBox();
+		skillReqsTable.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer()
+		{
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+			{
+				Object label = value instanceof Operation ? operationChoiceLabel((Operation) value) : value;
+				return super.getTableCellRendererComponent(table, label, isSelected, hasFocus, row, column);
+			}
+		});
+		skillReqsTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(skillOperationCombo));
+		JScrollPane skillScroll = new JScrollPane(skillReqsTable);
+		skillScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		skillScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
+		JPanel skillPanel = new JPanel(new BorderLayout(0, 6));
+		skillPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		JPanel skillCenter = new JPanel(new BorderLayout(0, 4));
+		skillCenter.setOpaque(false);
+		JTextField skillSearch = newMakerSearchField("Filter by skill, required level, boostable flag, display text, or operation.");
+		wireTableSearchField(skillSearch, skillReqsTable);
+		skillCenter.add(skillSearch, BorderLayout.NORTH);
+		skillCenter.add(skillScroll, BorderLayout.CENTER);
+		skillPanel.add(skillCenter, BorderLayout.CENTER);
+		JButton addSkillReqButton = new JButton("Add");
+		JButton removeSkillReqButton = new JButton("Remove");
+		applyMakerToolbarStyle(addSkillReqButton, removeSkillReqButton);
+		addSkillReqButton.addActionListener(e ->
+		{
+			helperConstructManager.addEmptySkillRequirementFromUi();
+			refresh();
+		});
+		removeSkillReqButton.addActionListener(e ->
+		{
+			int r = selectedModelRow(skillReqsTable);
+			if (r < 0)
+			{
+				return;
+			}
+			if (helperConstructManager.removeSkillRequirementAt(r))
+			{
+				refresh();
+			}
+		});
+		JPanel skillActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+		skillActions.setOpaque(false);
+		skillActions.add(addSkillReqButton);
+		skillActions.add(removeSkillReqButton);
+		skillPanel.add(skillActions, BorderLayout.SOUTH);
+		mainTabs.addTab("Skill reqs", skillPanel);
 
 		mainTabs.addTab("Quest order", orderedView);
 
@@ -2015,6 +2077,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
 		varbitRoutingTableModel.reloadFromManager();
 		zoneRoutingTableModel.reloadFromManager();
+		skillRoutingTableModel.reloadFromManager();
 		syncWorldMapRouteButtonLabel();
 		syncRouteRevealButtonLabel();
 		if (routeRevealSlider != null && routeRevealValueLabel != null)
@@ -2560,6 +2623,192 @@ public final class HelperConstructEditorPanel extends JPanel
 			private String getOrderSlotId()
 			{
 				return orderSlotId;
+			}
+		}
+	}
+
+	private final class SkillRoutingTableModel extends AbstractTableModel
+	{
+		private final String[] columns = {"Skill", "Required level", "Can boost", "Display text", "Operation"};
+		private final List<SkillRoutingRow> rows = new ArrayList<>();
+
+		void reloadFromManager()
+		{
+			rows.clear();
+			for (HelperConstructManager.SkillReqRow row : helperConstructManager.getSkillRequirementsForEditor())
+			{
+				rows.add(new SkillRoutingRow(
+					row.getIndex(),
+					row.getSkillName(),
+					row.getRequiredLevel(),
+					row.isCanBeBoosted(),
+					row.getDisplayText(),
+					row.getOperation()));
+			}
+			fireTableDataChanged();
+		}
+
+		@Override
+		public int getRowCount()
+		{
+			return rows.size();
+		}
+
+		@Override
+		public int getColumnCount()
+		{
+			return columns.length;
+		}
+
+		@Override
+		public String getColumnName(int column)
+		{
+			return columns[column];
+		}
+
+		@Override
+		public Class<?> getColumnClass(int columnIndex)
+		{
+			if (columnIndex == 1)
+			{
+				return Integer.class;
+			}
+			if (columnIndex == 2)
+			{
+				return Boolean.class;
+			}
+			if (columnIndex == 4)
+			{
+				return Operation.class;
+			}
+			return String.class;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+		{
+			SkillRoutingRow row = rows.get(rowIndex);
+			switch (columnIndex)
+			{
+				case 0:
+					return Skill.valueOf(row.skillName);
+				case 1:
+					return row.requiredLevel;
+				case 2:
+					return row.canBeBoosted;
+				case 3:
+					return row.displayText;
+				case 4:
+					return operationFromPersistedName(row.operation);
+				default:
+					return "";
+			}
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex)
+		{
+			return columnIndex >= 0;
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+		{
+			if (rowIndex < 0 || rowIndex >= rows.size())
+			{
+				return;
+			}
+			SkillRoutingRow row = rows.get(rowIndex);
+			String newSkillName = row.skillName;
+			int newRequiredLevel = row.requiredLevel;
+			boolean newCanBoost = row.canBeBoosted;
+			String newDisplayText = row.displayText;
+			String newOperation = row.operation;
+			switch (columnIndex)
+			{
+				case 0:
+					if (aValue instanceof Skill)
+					{
+						newSkillName = ((Skill) aValue).name();
+					}
+					else
+					{
+						try
+						{
+							newSkillName = Skill.valueOf(String.valueOf(aValue).trim().toUpperCase(Locale.ROOT)).name();
+						}
+						catch (IllegalArgumentException ex)
+						{
+							JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+								"Choose a valid skill.",
+								"Skill reqs",
+								JOptionPane.WARNING_MESSAGE);
+							reloadFromManager();
+							return;
+						}
+					}
+					break;
+				case 1:
+					try
+					{
+						newRequiredLevel = Integer.parseInt(String.valueOf(aValue).trim());
+					}
+					catch (NumberFormatException ex)
+					{
+						JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+							"Enter a valid integer for required level.",
+							"Skill reqs",
+							JOptionPane.WARNING_MESSAGE);
+						reloadFromManager();
+						return;
+					}
+					break;
+				case 2:
+					newCanBoost = Boolean.TRUE.equals(aValue);
+					break;
+				case 3:
+					newDisplayText = String.valueOf(aValue);
+					break;
+				case 4:
+					if (aValue instanceof Operation)
+					{
+						newOperation = ((Operation) aValue).name();
+					}
+					else
+					{
+						newOperation = operationFromPersistedName(String.valueOf(aValue)).name();
+					}
+					break;
+				default:
+					return;
+			}
+			if (!helperConstructManager.updateSkillRequirementAt(row.index, newSkillName, newRequiredLevel, newCanBoost, newDisplayText, newOperation))
+			{
+				JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
+					"Could not apply skill requirement settings.",
+					"Skill reqs",
+					JOptionPane.WARNING_MESSAGE);
+			}
+			reloadFromManager();
+		}
+
+		private final class SkillRoutingRow
+		{
+			private final int index;
+			private final String skillName;
+			private final int requiredLevel;
+			private final boolean canBeBoosted;
+			private final String displayText;
+			private final String operation;
+
+			private SkillRoutingRow(int index, String skillName, int requiredLevel, boolean canBeBoosted, String displayText, String operation)
+			{
+				this.index = index;
+				this.skillName = skillName == null ? Skill.ATTACK.name() : skillName;
+				this.requiredLevel = Math.max(requiredLevel, 1);
+				this.canBeBoosted = canBeBoosted;
+				this.displayText = displayText == null ? "" : displayText;
+				this.operation = operation == null || operation.isBlank() ? Operation.GREATER_EQUAL.name() : operation;
 			}
 		}
 	}

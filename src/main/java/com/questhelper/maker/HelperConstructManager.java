@@ -26,6 +26,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
@@ -49,6 +50,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -80,6 +82,7 @@ import javax.imageio.ImageIO;
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
 import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftSkillRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
@@ -1124,6 +1127,19 @@ public class HelperConstructManager
 			String op = edit.getVarbitOperation() == null ? "EQUAL" : edit.getVarbitOperation();
 			return vid + " " + op + " " + val;
 		}
+		if (StepAttachmentKind.SKILL.name().equalsIgnoreCase(edit.getKind()))
+		{
+			Skill skill = parseSkillName(edit.getSkillName());
+			int level = edit.getSkillRequiredLevel() == null ? 1 : Math.max(1, edit.getSkillRequiredLevel());
+			String op = normalizeOperationName(edit.getSkillOperation(), Operation.GREATER_EQUAL).name();
+			String base = level + " " + skill.getName() + " (" + op + ")";
+			if (edit.isSkillCanBeBoosted())
+			{
+				base += " [boost]";
+			}
+			String displayText = edit.getSkillDisplayText();
+			return displayText == null || displayText.isBlank() ? base : displayText + " — " + base;
+		}
 		if (StepAttachmentKind.ITEM.name().equalsIgnoreCase(edit.getKind()))
 		{
 			if (edit.getItemRawId() == null)
@@ -1187,6 +1203,38 @@ public class HelperConstructManager
 	{
 		String numbered = labelForCapturedRequirementRawId(rawId);
 		return numbered.replaceFirst("^\\d+\\.\\s*", "").trim();
+	}
+
+	private static Skill parseSkillName(String name)
+	{
+		if (name == null || name.isBlank())
+		{
+			return Skill.ATTACK;
+		}
+		try
+		{
+			return Skill.valueOf(name.trim().toUpperCase(Locale.ROOT));
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return Skill.ATTACK;
+		}
+	}
+
+	private static Operation normalizeOperationName(String opName, Operation fallback)
+	{
+		if (opName == null || opName.isBlank())
+		{
+			return fallback;
+		}
+		try
+		{
+			return Operation.valueOf(opName.trim().toUpperCase(Locale.ROOT));
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return fallback;
+		}
 	}
 
 	private List<StepAttachmentEdit> getStepAttachmentsAt(StepKind kind, int filteredIndex)
@@ -1264,6 +1312,12 @@ public class HelperConstructManager
 			}
 			return StepAttachmentEdit.varbit(vid, val, a.getVarbitOperation(), a.getVarbitDisplayText());
 		}
+		if (StepAttachmentKind.SKILL.name().equalsIgnoreCase(k))
+		{
+			Skill skill = parseSkillName(a.getSkillName());
+			int level = a.getSkillRequiredLevel() == null ? 1 : Math.max(1, a.getSkillRequiredLevel());
+			return StepAttachmentEdit.skill(skill.name(), level, a.getSkillOperation(), a.getSkillDisplayText(), a.isSkillCanBeBoosted());
+		}
 		int itemId = a.getItemRawId() == null ? 0 : a.getItemRawId();
 		int q = a.getItemQuantity() < 1 ? 1 : a.getItemQuantity();
 		return StepAttachmentEdit.item(itemId, a.isAttachmentHighlighted(), q);
@@ -1296,6 +1350,18 @@ public class HelperConstructManager
 				spec.getRequiredValue(),
 				spec.getOperation().name(),
 				spec.getDisplayText());
+		}
+		if (StepAttachmentKind.SKILL.name().equalsIgnoreCase(edit.getKind()))
+		{
+			Skill skill = parseSkillName(edit.getSkillName());
+			int level = edit.getSkillRequiredLevel() == null ? 1 : Math.max(1, edit.getSkillRequiredLevel());
+			Operation op = normalizeOperationName(edit.getSkillOperation(), Operation.GREATER_EQUAL);
+			return DraftStepAttachedRequirement.skill(
+				skill.name(),
+				level,
+				op.name(),
+				edit.getSkillDisplayText(),
+				edit.isSkillCanBeBoosted());
 		}
 		if (edit.getItemRawId() == null)
 		{
@@ -2357,6 +2423,56 @@ public class HelperConstructManager
 		}
 	}
 
+	public static final class SkillReqRow
+	{
+		private final int index;
+		private final String skillName;
+		private final int requiredLevel;
+		private final boolean canBeBoosted;
+		private final String displayText;
+		private final String operation;
+
+		public SkillReqRow(int index, String skillName, int requiredLevel, boolean canBeBoosted, String displayText, String operation)
+		{
+			this.index = index;
+			this.skillName = skillName == null ? Skill.ATTACK.name() : skillName;
+			this.requiredLevel = Math.max(1, requiredLevel);
+			this.canBeBoosted = canBeBoosted;
+			this.displayText = displayText == null ? "" : displayText;
+			this.operation = operation == null || operation.isBlank() ? Operation.GREATER_EQUAL.name() : operation;
+		}
+
+		public int getIndex()
+		{
+			return index;
+		}
+
+		public String getSkillName()
+		{
+			return skillName;
+		}
+
+		public int getRequiredLevel()
+		{
+			return requiredLevel;
+		}
+
+		public boolean isCanBeBoosted()
+		{
+			return canBeBoosted;
+		}
+
+		public String getDisplayText()
+		{
+			return displayText;
+		}
+
+		public String getOperation()
+		{
+			return operation;
+		}
+	}
+
 	public List<StepDefinitionPickOption> getStepDefinitionPickOptions()
 	{
 		ensureDraftLoaded();
@@ -2420,6 +2536,23 @@ public class HelperConstructManager
 				row.getRequiredValue(),
 				row.getOperation(),
 				disp)));
+		}
+		for (SkillReqRow row : getSkillRequirementsForEditor())
+		{
+			String base = row.getRequiredLevel() + " " + parseSkillName(row.getSkillName()).getName()
+				+ " (" + row.getOperation() + ")";
+			if (row.isCanBeBoosted())
+			{
+				base += " [boost]";
+			}
+			String display = row.getDisplayText();
+			String label = display != null && !display.isBlank() ? display + " — " + base : base;
+			out.add(new StepAttachmentPickOption(label, StepAttachmentEdit.skill(
+				row.getSkillName(),
+				row.getRequiredLevel(),
+				row.getOperation(),
+				row.getDisplayText(),
+				row.isCanBeBoosted())));
 		}
 		return Collections.unmodifiableList(out);
 	}
@@ -2535,6 +2668,92 @@ public class HelperConstructManager
 		ensureDraftLoaded();
 		currentDraft.getRequirements().add(RequirementDraftFactory.newPlaceholderItemRequirement());
 		saveDraftToConfig();
+	}
+
+	public List<SkillReqRow> getSkillRequirementsForEditor()
+	{
+		ensureDraftLoaded();
+		List<SkillReqRow> out = new ArrayList<>();
+		List<DraftSkillRequirement> skills = currentDraft.getSkillRequirements();
+		for (int i = 0; i < skills.size(); i++)
+		{
+			DraftSkillRequirement s = skills.get(i);
+			Skill skill = parseSkillName(s.getSkillName());
+			int requiredLevel = Math.max(1, s.getRequiredLevel());
+			String displayText = s.getDisplayText() == null ? "" : s.getDisplayText();
+			Operation operation = normalizeOperationName(s.getOperation(), Operation.GREATER_EQUAL);
+			out.add(new SkillReqRow(i, skill.name(), requiredLevel, s.isCanBeBoosted(), displayText, operation.name()));
+		}
+		return Collections.unmodifiableList(out);
+	}
+
+	public void addEmptySkillRequirementFromUi()
+	{
+		ensureDraftLoaded();
+		currentDraft.getSkillRequirements().add(RequirementDraftFactory.newPlaceholderSkillRequirement());
+		saveDraftToConfig();
+	}
+
+	public boolean removeSkillRequirementAt(int index)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getSkillRequirements().size())
+		{
+			return false;
+		}
+		currentDraft.getSkillRequirements().remove(index);
+		saveDraftToConfig();
+		return true;
+	}
+
+	public boolean updateSkillRequirementAt(int index, String skillName, int requiredLevel, boolean canBeBoosted, String displayText, String operation)
+	{
+		ensureDraftLoaded();
+		if (index < 0 || index >= currentDraft.getSkillRequirements().size())
+		{
+			return false;
+		}
+		Skill skill = parseSkillName(skillName);
+		Operation op = normalizeOperationName(operation, Operation.GREATER_EQUAL);
+		DraftSkillRequirement row = currentDraft.getSkillRequirements().get(index);
+		row.setSkillName(skill.name());
+		row.setRequiredLevel(Math.max(1, requiredLevel));
+		row.setCanBeBoosted(canBeBoosted);
+		row.setDisplayText(displayText == null ? "" : displayText.trim());
+		row.setOperation(op.name());
+		saveDraftToConfig();
+		return true;
+	}
+
+	public void ensureSkillRequirementForReuse(String skillName, int requiredLevel, boolean canBeBoosted, String displayText, String operation)
+	{
+		ensureDraftLoaded();
+		Skill skill = parseSkillName(skillName);
+		int level = Math.max(1, requiredLevel);
+		String normalizedDisplay = displayText == null ? "" : displayText.trim();
+		Operation op = normalizeOperationName(operation, Operation.GREATER_EQUAL);
+		for (DraftSkillRequirement existing : currentDraft.getSkillRequirements())
+		{
+			Skill exSkill = parseSkillName(existing.getSkillName());
+			int exLevel = Math.max(1, existing.getRequiredLevel());
+			String exDisplay = existing.getDisplayText() == null ? "" : existing.getDisplayText().trim();
+			Operation exOp = normalizeOperationName(existing.getOperation(), Operation.GREATER_EQUAL);
+			if (exSkill == skill
+				&& exLevel == level
+				&& existing.isCanBeBoosted() == canBeBoosted
+				&& exOp == op
+				&& Objects.equals(exDisplay, normalizedDisplay))
+			{
+				return;
+			}
+		}
+		DraftSkillRequirement add = new DraftSkillRequirement();
+		add.setSkillName(skill.name());
+		add.setRequiredLevel(level);
+		add.setCanBeBoosted(canBeBoosted);
+		add.setDisplayText(normalizedDisplay);
+		add.setOperation(op.name());
+		currentDraft.getSkillRequirements().add(add);
 	}
 
 	/**
@@ -4013,6 +4232,26 @@ public class HelperConstructManager
 					reqs.add(VarbitSpec.fromStepAttachment(a).toVarbitRequirement());
 					continue;
 				}
+				if (StepAttachmentKind.SKILL.name().equalsIgnoreCase(k))
+				{
+					Skill skill = parseSkillName(a.getSkillName());
+					int level = a.getSkillRequiredLevel() == null ? 1 : Math.max(1, a.getSkillRequiredLevel());
+					Operation op = normalizeOperationName(a.getSkillOperation(), Operation.GREATER_EQUAL);
+					String display = a.getSkillDisplayText();
+					SkillRequirement sr;
+					if (op == Operation.GREATER_EQUAL)
+					{
+						sr = (display != null && !display.isBlank())
+							? new SkillRequirement(skill, level, a.isSkillCanBeBoosted(), display)
+							: new SkillRequirement(skill, level, a.isSkillCanBeBoosted());
+					}
+					else
+					{
+						sr = new SkillRequirement(skill, level, op);
+					}
+					reqs.add(sr);
+					continue;
+				}
 				Integer id = a.getItemRawId();
 				if (id == null)
 				{
@@ -4234,6 +4473,11 @@ public class HelperConstructManager
 		private final Integer varbitRequiredValue;
 		private final String varbitOperation;
 		private final String varbitDisplayText;
+		private final String skillName;
+		private final Integer skillRequiredLevel;
+		private final String skillOperation;
+		private final String skillDisplayText;
+		private final boolean skillCanBeBoosted;
 		@Setter
 		private boolean itemHighlighted;
 		@Setter
@@ -4247,6 +4491,11 @@ public class HelperConstructManager
 			Integer varbitRequiredValue,
 			String varbitOperation,
 			String varbitDisplayText,
+			String skillName,
+			Integer skillRequiredLevel,
+			String skillOperation,
+			String skillDisplayText,
+			boolean skillCanBeBoosted,
 			boolean itemHighlighted,
 			int itemQuantity,
 			String orderSlotId)
@@ -4257,6 +4506,11 @@ public class HelperConstructManager
 			this.varbitRequiredValue = varbitRequiredValue;
 			this.varbitOperation = varbitOperation;
 			this.varbitDisplayText = varbitDisplayText;
+			this.skillName = skillName;
+			this.skillRequiredLevel = skillRequiredLevel;
+			this.skillOperation = skillOperation;
+			this.skillDisplayText = skillDisplayText;
+			this.skillCanBeBoosted = skillCanBeBoosted;
 			this.itemHighlighted = itemHighlighted;
 			this.itemQuantity = itemQuantity < 1 ? 1 : itemQuantity;
 			this.orderSlotId = orderSlotId;
@@ -4275,6 +4529,10 @@ public class HelperConstructManager
 					return varbitForOrderSlot(o.getOrderSlotId(), o.getVarbitId(), o.getVarbitRequiredValue(), o.getVarbitOperation(), o.getVarbitDisplayText());
 				}
 				return varbit(o.getVarbitId(), o.getVarbitRequiredValue(), o.getVarbitOperation(), o.getVarbitDisplayText());
+			}
+			if (StepAttachmentKind.SKILL.name().equalsIgnoreCase(o.getKind()))
+			{
+				return skill(o.getSkillName(), o.getSkillRequiredLevel(), o.getSkillOperation(), o.getSkillDisplayText(), o.isSkillCanBeBoosted());
 			}
 			if (o.getItemRawId() == null)
 			{
@@ -4296,19 +4554,28 @@ public class HelperConstructManager
 		public static StepAttachmentEdit item(int rawId, boolean highlighted, int quantity)
 		{
 			int q = quantity < 1 ? 1 : quantity;
-			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, highlighted, q, null);
+			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, highlighted, q, null);
 		}
 
 		public static StepAttachmentEdit varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 1, null);
+			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 1, null);
 		}
 
 		public static StepAttachmentEdit varbitForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 1, orderSlotId);
+			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 1, orderSlotId);
+		}
+
+		public static StepAttachmentEdit skill(String skillName, Integer requiredLevel, String operation, String displayText, boolean canBeBoosted)
+		{
+			Skill skill = parseSkillName(skillName);
+			int level = requiredLevel == null ? 1 : Math.max(1, requiredLevel);
+			String op = normalizeOperationName(operation, Operation.GREATER_EQUAL).name();
+			return new StepAttachmentEdit(StepAttachmentKind.SKILL.name(), null, null, null, null, null,
+				skill.name(), level, op, displayText, canBeBoosted, false, 1, null);
 		}
 	}
 

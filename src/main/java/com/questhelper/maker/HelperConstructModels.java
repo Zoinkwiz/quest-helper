@@ -51,6 +51,12 @@ public final class HelperConstructModels
 		/** {@link com.questhelper.requirements.util.Operation} name. */
 		private String varbitOperation;
 		private String varbitDisplayText;
+		/** When {@code kind} is {@code SKILL}: {@link net.runelite.api.Skill#name()}. */
+		private String skillName;
+		private Integer skillRequiredLevel;
+		private String skillOperation;
+		private String skillDisplayText;
+		private boolean skillCanBeBoosted;
 		/** When {@code kind} is {@link StepAttachmentKind#ITEM}: show {@link com.questhelper.requirements.item.ItemRequirement#highlighted()} in preview / codegen. */
 		private boolean attachmentHighlighted;
 		/**
@@ -79,21 +85,29 @@ public final class HelperConstructModels
 		public static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted, int itemQuantity)
 		{
 			int q = itemQuantity < 1 ? 1 : itemQuantity;
-			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, attachmentHighlighted, q, null);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, attachmentHighlighted, q, null);
 		}
 
 		/** Extra (non–order-slot) varbit requirement on the step. */
 		public static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 0, null);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, null);
+		}
+
+		public static DraftStepAttachedRequirement skill(String skillName, int requiredLevel, String operation, String displayText, boolean canBeBoosted)
+		{
+			String op = operation == null || operation.isBlank() ? "GREATER_EQUAL" : operation.trim();
+			int level = requiredLevel < 1 ? 1 : requiredLevel;
+			return new DraftStepAttachedRequirement(StepAttachmentKind.SKILL.name(), null, null, null, null, null,
+				skillName, level, op, displayText, canBeBoosted, false, 0, null);
 		}
 
 		/** Primary varbit routing row for one quest-order slot; matches {@link DraftOrderLine#getOrderSlotId()}. */
 		public static DraftStepAttachedRequirement routingVarbitForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, false, 0, orderSlotId);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, orderSlotId);
 		}
 
 		public static DraftStepAttachedRequirement findRoutingVarbitForSlot(DraftStep step, String orderSlotId)
@@ -169,7 +183,19 @@ public final class HelperConstructModels
 	public enum StepAttachmentKind
 	{
 		ITEM,
-		VARBIT
+		VARBIT,
+		SKILL
+	}
+
+	@Data
+	@NoArgsConstructor
+	public static class DraftSkillRequirement
+	{
+		private String skillName;
+		private int requiredLevel = 1;
+		private boolean canBeBoosted = true;
+		private String displayText;
+		private String operation = "GREATER_EQUAL";
 	}
 
 	@Data
@@ -224,10 +250,16 @@ public final class HelperConstructModels
 		/** Gson fills this; must remain mutable for deserialization. */
 		private List<DraftOrderStepRequirement> children = new ArrayList<>();
 		private Integer itemRawId;
+		private boolean itemAlsoCheckBank;
 		private Integer varbitId;
 		private Integer varbitRequiredValue;
 		private String varbitOperation;
 		private String varbitDisplayText;
+		private String skillName;
+		private Integer skillRequiredLevel;
+		private String skillOperation;
+		private String skillDisplayText;
+		private boolean skillCanBeBoosted;
 		/** When {@code kind} is {@code ZONE}: inclusive axis-aligned box (two opposite corners). */
 		private WorldPoint zoneCorner1;
 		private WorldPoint zoneCorner2;
@@ -278,9 +310,15 @@ public final class HelperConstructModels
 
 		public static DraftOrderStepRequirement item(int rawId)
 		{
+			return item(rawId, false);
+		}
+
+		public static DraftOrderStepRequirement item(int rawId, boolean alsoCheckBank)
+		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
 			n.setKind("ITEM");
 			n.setItemRawId(rawId);
+			n.setItemAlsoCheckBank(alsoCheckBank);
 			return n;
 		}
 
@@ -303,6 +341,18 @@ public final class HelperConstructModels
 			n.setZoneCorner1(corner1);
 			n.setZoneCorner2(corner2);
 			n.setZoneDisplayText(displayText);
+			return n;
+		}
+
+		public static DraftOrderStepRequirement skill(String skillName, int requiredLevel, String operation, String displayText, boolean canBeBoosted)
+		{
+			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
+			n.setKind("SKILL");
+			n.setSkillName(skillName);
+			n.setSkillRequiredLevel(requiredLevel < 1 ? 1 : requiredLevel);
+			n.setSkillOperation(operation == null || operation.isBlank() ? "GREATER_EQUAL" : operation.trim());
+			n.setSkillDisplayText(displayText);
+			n.setSkillCanBeBoosted(canBeBoosted);
 			return n;
 		}
 	}
@@ -346,6 +396,7 @@ public final class HelperConstructModels
 		private final List<DraftStep> stepDefinitions = new ArrayList<>();
 		private final List<DraftOrderLine> order = new ArrayList<>();
 		private final List<DraftRequirement> requirements = new ArrayList<>();
+		private final List<DraftSkillRequirement> skillRequirements = new ArrayList<>();
 	}
 
 	/** Sentinel for order line: use varbit (not item requirement) for routing on this slot. */

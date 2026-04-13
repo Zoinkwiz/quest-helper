@@ -90,7 +90,6 @@ import static com.questhelper.maker.HelperConstructModels.StepKind;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
-import static com.questhelper.requirements.util.LogicHelper.nor;
 
 @Singleton
 @Slf4j
@@ -4100,7 +4099,7 @@ public class HelperConstructManager
 			}
 
 			List<ConditionalStep> sectionTasks = new ArrayList<>();
-			List<List<Requirement>> sectionCompletionRequirements = new ArrayList<>();
+			List<Requirement> sectionCompletionRequirements = new ArrayList<>();
 			List<PreviewStepEntry> currentSectionEntries = new ArrayList<>();
 			String currentPanelName = "Captured Steps";
 
@@ -4111,7 +4110,7 @@ public class HelperConstructManager
 					ConditionalStep sectionTask = createSectionTask(currentSectionEntries);
 					if (sectionTask != null)
 					{
-						sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentSectionEntries));
+						sectionCompletionRequirements.add(buildSectionCompletionRequirement(currentSectionEntries, sectionTask));
 						addPanelWithLockingStep(currentPanelName, currentSectionEntries, sectionTask);
 						sectionTasks.add(sectionTask);
 					}
@@ -4135,7 +4134,7 @@ public class HelperConstructManager
 				ConditionalStep sectionTask = createSectionTask(currentSectionEntries);
 				if (sectionTask != null)
 				{
-					sectionCompletionRequirements.add(extractSectionCompletionRequirements(currentSectionEntries));
+					sectionCompletionRequirements.add(buildSectionCompletionRequirement(currentSectionEntries, sectionTask));
 					addPanelWithLockingStep(currentPanelName, currentSectionEntries, sectionTask);
 					sectionTasks.add(sectionTask);
 				}
@@ -4166,11 +4165,15 @@ public class HelperConstructManager
 			ConditionalStep allSections = new ConditionalStep(this, sectionTasks.get(lastSectionIndex));
 			allSections.setShouldPassthroughText(true);
 
-			List<Requirement> priorSectionRequirements = new ArrayList<>();
+			List<Requirement> priorSectionCompletionRequirements = new ArrayList<>();
 			for (int i = 0; i < lastSectionIndex; i++)
 			{
-				allSections.addStep(nor(priorSectionRequirements.toArray(new Requirement[0])), sectionTasks.get(i));
-				priorSectionRequirements.addAll(sectionCompletionRequirements.get(i));
+				Requirement currentSectionIncomplete = not(sectionCompletionRequirements.get(i));
+				Requirement sectionGate = priorSectionCompletionRequirements.isEmpty()
+					? currentSectionIncomplete
+					: and(and(priorSectionCompletionRequirements.toArray(new Requirement[0])), currentSectionIncomplete);
+				allSections.addStep(sectionGate, sectionTasks.get(i));
+				priorSectionCompletionRequirements.add(sectionCompletionRequirements.get(i));
 			}
 
 			return allSections;
@@ -4211,14 +4214,41 @@ public class HelperConstructManager
 			sectionEntries.clear();
 		}
 
-		private List<Requirement> extractSectionCompletionRequirements(List<PreviewStepEntry> sectionEntries)
+		private Requirement buildSectionCompletionRequirement(List<PreviewStepEntry> sectionEntries, QuestStep sectionTask)
 		{
 			LinkedHashSet<Requirement> requirements = new LinkedHashSet<>();
 			for (PreviewStepEntry entry : sectionEntries)
 			{
 				requirements.add(entry.completionRequirement);
 			}
-			return new ArrayList<>(requirements);
+			Requirement stepCompletion = and(requirements.toArray(new Requirement[0]));
+			if (sectionTask == null)
+			{
+				return stepCompletion;
+			}
+			return or(stepCompletion, new PreviewSectionLockedRequirement(sectionTask));
+		}
+
+		private class PreviewSectionLockedRequirement implements Requirement
+		{
+			private final QuestStep sectionTask;
+
+			private PreviewSectionLockedRequirement(QuestStep sectionTask)
+			{
+				this.sectionTask = sectionTask;
+			}
+
+			@Override
+			public boolean check(Client client)
+			{
+				return sectionTask.isLocked();
+			}
+
+			@Override
+			public String getDisplayText()
+			{
+				return "Section marked complete";
+			}
 		}
 
 		private List<Requirement> extraAttachedRequirementsForStep(DraftStep draftStep, Map<Integer, ItemRequirement> requirementById)

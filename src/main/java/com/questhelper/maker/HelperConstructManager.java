@@ -618,10 +618,18 @@ public class HelperConstructManager
 		{
 			return rawId;
 		}
-		var itemDefinition = client.getItemDefinition(rawId);
-		if (itemDefinition.getNote() >= 0)
+		try
 		{
-			return itemDefinition.getLinkedNoteId();
+			var itemDefinition = client.getItemDefinition(rawId);
+			if (itemDefinition.getNote() >= 0)
+			{
+				return itemDefinition.getLinkedNoteId();
+			}
+		}
+		catch (AssertionError ex)
+		{
+			// Some edit paths run on Swing thread (not client thread). In that case keep the raw id.
+			log.debug("Skipping item id normalization off client thread for rawId={}", rawId);
 		}
 		return rawId;
 	}

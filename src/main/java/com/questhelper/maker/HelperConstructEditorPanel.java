@@ -42,6 +42,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseAdapter;
@@ -62,13 +64,14 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.KeyboardFocusManager;
 
 public final class HelperConstructEditorPanel extends JPanel
 {
 	// TODO: Review text
 	private static final String USAGE_GUIDE = String.join("\n",
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
-		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
+		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Ctrl/Cmd+N and Ctrl/Cmd+O convert the selected row to an NPC or Object step when focus is not in the filter field. Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
 		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
@@ -893,6 +896,91 @@ public final class HelperConstructEditorPanel extends JPanel
 		return panel;
 	}
 
+	/**
+	 * Converts the selected step-library row; used by the Convert button and Ctrl/Cmd+N / Ctrl/Cmd+O.
+	 *
+	 * @return true if a row was converted successfully
+	 */
+	private boolean convertSelectedStepLibraryRowToKind(JTable table, ConstructStepKind fromKind, ConstructStepKind toKind)
+	{
+		if (fromKind == toKind)
+		{
+			return false;
+		}
+		int r = selectedModelRow(table);
+		if (r < 0)
+		{
+			JOptionPane.showMessageDialog(this, "Select a step row first.", "Convert step",
+				JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		if (!helperConstructManager.convertStepDefinitionKind(fromKind, r, toKind))
+		{
+			JOptionPane.showMessageDialog(this, "Could not convert that step.", "Convert step",
+				JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		refresh();
+		return true;
+	}
+
+	private static boolean isFocusWithinStepLibrarySearch(JTextField stepSearch)
+	{
+		Component fo = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+		return fo != null && (fo == stepSearch || SwingUtilities.isDescendingFrom(fo, stepSearch));
+	}
+
+	private void wireStepLibraryQuickConvertKeys(JPanel wrap, JTextField stepSearch, JTable table, ConstructStepKind stepKind)
+	{
+		int menuShortcutMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+		InputMap im = wrap.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		ActionMap am = wrap.getActionMap();
+		String toNpc = "makerStepLibConvertNpc_" + stepKind.name();
+		String toObj = "makerStepLibConvertObject_" + stepKind.name();
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, menuShortcutMask), toNpc);
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, menuShortcutMask), toObj);
+		am.put(toNpc, new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (isFocusWithinStepLibrarySearch(stepSearch) || stepKind == ConstructStepKind.NPC)
+				{
+					return;
+				}
+				if (table.isEditing())
+				{
+					TableCellEditor ce = table.getCellEditor();
+					if (ce != null)
+					{
+						ce.stopCellEditing();
+					}
+				}
+				convertSelectedStepLibraryRowToKind(table, stepKind, ConstructStepKind.NPC);
+			}
+		});
+		am.put(toObj, new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (isFocusWithinStepLibrarySearch(stepSearch) || stepKind == ConstructStepKind.OBJECT)
+				{
+					return;
+				}
+				if (table.isEditing())
+				{
+					TableCellEditor ce = table.getCellEditor();
+					if (ce != null)
+					{
+						ce.stopCellEditing();
+					}
+				}
+				convertSelectedStepLibraryRowToKind(table, stepKind, ConstructStepKind.OBJECT);
+			}
+		});
+	}
+
 	private JPanel wrapStepLibraryTableWithToolbar(JTable table, ConstructStepKind stepKind)
 	{
 		JPanel wrap = new JPanel(new BorderLayout(0, 6));
@@ -924,7 +1012,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		JButton convertStep = new JButton("Convert");
 		applyMakerToolbarStyle(addStep, removeStep, convertStep);
-		convertStep.setToolTipText("Convert the selected row to another step type (step id is preserved for quest order).");
+		convertStep.setToolTipText("Convert the selected row to another step type (step id is preserved for quest order). "
+			+ "Shortcuts: Ctrl/Cmd+N → NPC, Ctrl/Cmd+O → Object (disabled while the filter field above the table has focus).");
 		addStep.addActionListener(e ->
 		{
 			helperConstructManager.addEmptyStepFromUi(stepKind);
@@ -948,26 +1037,15 @@ public final class HelperConstructEditorPanel extends JPanel
 					JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			int r = selectedModelRow(table);
-			if (r < 0)
-			{
-				JOptionPane.showMessageDialog(this, "Select a step row first.", "Convert step",
-					JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}
 			ConstructStepKind toKind = convertStepKindLabelToEnum(String.valueOf(sel));
 			if (toKind == null)
 			{
 				return;
 			}
-			if (!helperConstructManager.convertStepDefinitionKind(stepKind, r, toKind))
+			if (convertSelectedStepLibraryRowToKind(table, stepKind, toKind))
 			{
-				JOptionPane.showMessageDialog(this, "Could not convert that step.", "Convert step",
-					JOptionPane.WARNING_MESSAGE);
-				return;
+				convertKindCombo.setSelectedIndex(0);
 			}
-			convertKindCombo.setSelectedIndex(0);
-			refresh();
 		});
 		JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
 		actions.setOpaque(false);
@@ -997,6 +1075,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		centerStack.add(wrapStepLibraryTable(table, stepKind), BorderLayout.CENTER);
 		wrap.add(centerStack, BorderLayout.CENTER);
 		wrap.add(actions, BorderLayout.SOUTH);
+		wireStepLibraryQuickConvertKeys(wrap, stepSearch, table, stepKind);
 		return wrap;
 	}
 

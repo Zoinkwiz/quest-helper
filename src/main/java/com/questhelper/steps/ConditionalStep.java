@@ -362,6 +362,21 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 	}
 
+	/**
+	 * Re-evaluates active child steps after an external requirement change (e.g. persisted manual skip).
+	 */
+	public void refreshAfterRequirementChangeDeep()
+	{
+		if (started)
+		{
+			updateSteps();
+		}
+		if (currentStep instanceof ConditionalStep)
+		{
+			((ConditionalStep) currentStep).refreshAfterRequirementChangeDeep();
+		}
+	}
+
 	protected void startUpStep(QuestStep step)
 	{
 		if (step.equals(currentStep)) return;

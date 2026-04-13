@@ -1038,7 +1038,8 @@ public class HelperScaffoldGenerator
 		{
 			return "";
 		}
-		return text.replace("\\", "\\\\").replace("\"", "\\\"");
+		String singleLine = text.replace('\r', ' ').replace('\n', ' ');
+		return singleLine.replace("\\", "\\\\").replace("\"", "\\\"");
 	}
 
 	public static final class GeneratedScaffold

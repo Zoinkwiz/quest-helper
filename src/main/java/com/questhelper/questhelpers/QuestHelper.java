@@ -30,6 +30,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.panel.ManualStepSkipStore;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
@@ -141,6 +142,26 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			return quest.getName();
 		}
 		return "Quest Helper";
+	}
+
+	/**
+	 * Persists a manual skip flag for one step (sidebar checkbox) and notifies the helper to refresh branch logic.
+	 */
+	public void notifyManualSidebarSkipChanged(String persistenceKey, boolean skipped)
+	{
+		if (persistenceKey == null || persistenceKey.isBlank())
+		{
+			return;
+		}
+		ManualStepSkipStore.put(configManager, getDisplayedQuestName(), persistenceKey, skipped);
+		onManualSidebarSkipsPersistedChanged();
+	}
+
+	/**
+	 * Hook for helpers that merge persisted skips with runtime state (e.g. maker preview).
+	 */
+	protected void onManualSidebarSkipsPersistedChanged()
+	{
 	}
 
 	public abstract boolean updateQuest();

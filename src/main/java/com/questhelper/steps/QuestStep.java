@@ -30,6 +30,7 @@ import com.google.inject.Module;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.choice.*;
@@ -43,6 +44,8 @@ import com.questhelper.tools.VisibilityHelper;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -159,6 +162,22 @@ public abstract class QuestStep implements Module
 	@Getter
 	@Setter
 	private boolean showInSidebar = true;
+
+	/**
+	 * When set, the Quest Helper sidebar can show a small skip control that toggles this requirement and persists per helper.
+	 */
+	@Nullable
+	@Getter
+	@Setter
+	private ManualRequirement sidebarManualSkipRequirement;
+
+	/**
+	 * Stable id for {@link #sidebarManualSkipRequirement} persistence (e.g. maker order slot id).
+	 */
+	@Nullable
+	@Getter
+	@Setter
+	private String sidebarManualSkipPersistenceKey;
 
 	protected String lastDialogSeen = "";
 

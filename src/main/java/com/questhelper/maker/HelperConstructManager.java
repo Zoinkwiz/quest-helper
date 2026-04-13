@@ -20,6 +20,7 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.panel.ManualStepSkipStore;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questhelpers.QuestHelper;
@@ -4045,6 +4046,7 @@ public class HelperConstructManager
 		private final List<ItemRequirement> previewRequirements = new ArrayList<>();
 		private final List<PanelDetails> previewPanels = new ArrayList<>();
 		private final List<ManualRequirement> manualStepRequirements = new ArrayList<>();
+		private final List<String> manualStepSkipPersistenceKeys = new ArrayList<>();
 		private int previewProgressIndex;
 
 		private PreviewQuestHelper(DraftHelper draft)
@@ -4089,6 +4091,7 @@ public class HelperConstructManager
 			initializeRequirements();
 			previewPanels.clear();
 			manualStepRequirements.clear();
+			manualStepSkipPersistenceKeys.clear();
 			Map<Integer, ItemRequirement> requirementById = new HashMap<>();
 			for (ItemRequirement req : previewRequirements)
 			{
@@ -4321,6 +4324,17 @@ public class HelperConstructManager
 
 			ManualRequirement manualOverride = defaultIncompleteRequirement();
 			manualStepRequirements.add(manualOverride);
+			ensureOrderSlotId(orderLine);
+			String persistKey = orderLine.getOrderSlotId();
+			if (persistKey == null || persistKey.isBlank())
+			{
+				persistKey = draftStep.getStepId() != null && !draftStep.getStepId().isBlank()
+					? draftStep.getStepId()
+					: UUID.randomUUID().toString();
+			}
+			manualStepSkipPersistenceKeys.add(persistKey);
+			step.setSidebarManualSkipRequirement(manualOverride);
+			step.setSidebarManualSkipPersistenceKey(persistKey);
 			Requirement completion;
 			Requirement branchRequirement;
 			DraftOrderStepRequirement tree = orderLine.getStepRequirement();
@@ -4395,9 +4409,12 @@ public class HelperConstructManager
 
 		private void syncManualProgress()
 		{
+			Map<String, Boolean> persisted = ManualStepSkipStore.load(configManager, getDisplayedQuestName());
 			for (int i = 0; i < manualStepRequirements.size(); i++)
 			{
-				manualStepRequirements.get(i).setShouldPass(i < previewProgressIndex);
+				String pk = i < manualStepSkipPersistenceKeys.size() ? manualStepSkipPersistenceKeys.get(i) : "";
+				boolean fromPersist = pk != null && !pk.isBlank() && Boolean.TRUE.equals(persisted.get(pk));
+				manualStepRequirements.get(i).setShouldPass(i < previewProgressIndex || fromPersist);
 			}
 		}
 
@@ -4461,6 +4478,17 @@ public class HelperConstructManager
 		public String toString()
 		{
 			return getDisplayedQuestName() + " (Preview)";
+		}
+
+		@Override
+		protected void onManualSidebarSkipsPersistedChanged()
+		{
+			syncManualProgress();
+			QuestStep cur = getCurrentStep();
+			if (cur instanceof ConditionalStep)
+			{
+				((ConditionalStep) cur).refreshAfterRequirementChangeDeep();
+			}
 		}
 	}
 

@@ -856,7 +856,11 @@ public final class OrderStepRequirementSupport
 		}
 		if (parts.size() == 1)
 		{
-			return parts.get(0);
+			if (lt == LogicType.AND || lt == LogicType.OR)
+			{
+				return parts.get(0);
+			}
+			return new Conditions(lt, parts.toArray(new Requirement[0]));
 		}
 		return new Conditions(lt, parts.toArray(new Requirement[0]));
 	}
@@ -1093,7 +1097,11 @@ public final class OrderStepRequirementSupport
 		}
 		if (parts.size() == 1)
 		{
-			return parts.get(0);
+			if (lt == LogicType.AND || lt == LogicType.OR)
+			{
+				return parts.get(0);
+			}
+			return "new Conditions(LogicType." + lt.name() + ", " + parts.get(0) + ")";
 		}
 		return "new Conditions(LogicType." + lt.name() + ", " + String.join(", ", parts) + ")";
 	}

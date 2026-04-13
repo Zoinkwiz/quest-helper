@@ -45,6 +45,8 @@ public interface QuestHelperConfig extends Config
 	String QUEST_HELPER_GROUP = "questhelper";
 	String QUEST_BACKGROUND_GROUP = "questhelpervars";
 	String QUEST_HELPER_SIDEBAR_ORDER_KEY_START = "quest-sidebar-order-";
+	/** Per-helper persisted manual step skips (JSON map of stable slot id to true). */
+	String QUEST_HELPER_MANUAL_SKIPS_KEY_PREFIX = "manual-step-skips-";
 
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{

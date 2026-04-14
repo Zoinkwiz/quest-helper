@@ -99,6 +99,18 @@ public final class HelperConstructModels
 		 * Ignored for other kinds; persisted as {@code 0} for varbit rows.
 		 */
 		private int itemQuantity;
+		/** When {@code kind} is {@link StepAttachmentKind#WIDGET}: interface group id. */
+		private Integer widgetGroupId;
+		/** When {@code kind} is {@link StepAttachmentKind#WIDGET}: interface child id. */
+		private Integer widgetChildId;
+		/** Optional third-level child for direct child-child targeting. */
+		private Integer widgetChildChildId;
+		/** Optional item id filter for widget highlight matching. */
+		private Integer widgetItemId;
+		/** Optional text filter for widget highlight matching. */
+		private String widgetDialogText;
+		/** When item/text filters are used: whether to search descendants. */
+		private boolean widgetCheckChildren;
 		/**
 		 * Legacy only: when {@code kind} is {@link StepAttachmentKind#VARBIT} and set, this was the routing varbit for the
 		 * quest-order slot with the same id; new drafts store routing varbits on {@link DraftOrderLine#getAttachedRequirements()}
@@ -120,14 +132,14 @@ public final class HelperConstructModels
 		public static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted, int itemQuantity)
 		{
 			int q = Math.max(itemQuantity, 1);
-			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, attachmentHighlighted, q, null);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, attachmentHighlighted, q, null, null, null, null, null, null, false);
 		}
 
 		/** Extra (non–order-slot) varbit requirement on the step. */
 		public static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, null);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, null, null, null, null, null, null, false);
 		}
 
 		public static DraftStepAttachedRequirement skill(String skillName, int requiredLevel, String operation, String displayText, boolean canBeBoosted)
@@ -135,14 +147,35 @@ public final class HelperConstructModels
 			String op = operation == null || operation.isBlank() ? "GREATER_EQUAL" : operation.trim();
 			int level = Math.max(requiredLevel, 1);
 			return new DraftStepAttachedRequirement(StepAttachmentKind.SKILL.name(), null, null, null, null, null,
-				skillName, level, op, displayText, canBeBoosted, false, 0, null);
+				skillName, level, op, displayText, canBeBoosted, false, 0, null, null, null, null, null, null, false);
 		}
 
 		/** Primary varbit routing row for one quest-order slot; matches {@link DraftOrderLine#getOrderSlotId()}. */
 		public static DraftStepAttachedRequirement routingVarbitForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, orderSlotId);
+			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, orderSlotId, null, null, null, null, null, false);
+		}
+
+		public static DraftStepAttachedRequirement widgetByGroupChild(int groupId, int childId, Integer childChildId)
+		{
+			return new DraftStepAttachedRequirement(
+				StepAttachmentKind.WIDGET.name(), null, null, null, null, null, null, null, null, null, false, false, 0, null,
+				groupId, childId, childChildId, null, null, false);
+		}
+
+		public static DraftStepAttachedRequirement widgetByItemId(int groupId, int childId, int itemId, boolean checkChildren)
+		{
+			return new DraftStepAttachedRequirement(
+				StepAttachmentKind.WIDGET.name(), null, null, null, null, null, null, null, null, null, false, false, 0, null,
+				groupId, childId, null, itemId, null, checkChildren);
+		}
+
+		public static DraftStepAttachedRequirement widgetByDialogText(int groupId, int childId, String requiredText, boolean checkChildren)
+		{
+			return new DraftStepAttachedRequirement(
+				StepAttachmentKind.WIDGET.name(), null, null, null, null, null, null, null, null, null, false, false, 0, null,
+				groupId, childId, null, null, requiredText == null ? null : requiredText.trim(), checkChildren);
 		}
 
 		public static DraftStepAttachedRequirement findRoutingVarbitForSlot(DraftStep step, String orderSlotId)
@@ -219,7 +252,8 @@ public final class HelperConstructModels
 	{
 		ITEM,
 		VARBIT,
-		SKILL
+		SKILL,
+		WIDGET
 	}
 
 	@Data

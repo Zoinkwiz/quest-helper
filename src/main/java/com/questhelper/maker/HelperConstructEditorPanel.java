@@ -1391,7 +1391,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 		});
 
-		JPanel toolbar = getToolbar(model, list, syncItemAttachmentOptionsFromSelection);
+		JPanel toolbar = getToolbar(kind, row, model, list, syncItemAttachmentOptionsFromSelection);
 
 		JLabel hint = new JLabel("<html>Choose from captured item requirements and varbit routing rows (same list as the Varbit reqs tab).<br>Preview and generated code use <code>QuestStep.addRequirement</code> where supported.");
 		hint.setForeground(Color.GRAY);
@@ -1444,10 +1444,17 @@ public final class HelperConstructEditorPanel extends JPanel
 		refresh();
 	}
 
-	private @NotNull JPanel getToolbar(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model, JList<HelperConstructManager.StepAttachmentEdit> list, Runnable syncItemAttachmentOptionsFromSelection)
+	private @NotNull JPanel getToolbar(
+		ConstructStepKind kind,
+		int row,
+		DefaultListModel<HelperConstructManager.StepAttachmentEdit> model,
+		JList<HelperConstructManager.StepAttachmentEdit> list,
+		Runnable syncItemAttachmentOptionsFromSelection)
 	{
 		JButton addPickButton = new JButton("Add…");
 		addPickButton.addActionListener(ev -> appendRequirementPickToAttachmentModel(model));
+		JButton addWidgetButton = new JButton("Widget…");
+		addWidgetButton.addActionListener(ev -> appendWidgetAttachmentToModel(kind, row, model));
 
 		JButton removeButton = new JButton("Remove selected");
 		removeButton.addActionListener(ev ->
@@ -1463,8 +1470,180 @@ public final class HelperConstructEditorPanel extends JPanel
 		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
 		toolbar.setOpaque(false);
 		toolbar.add(addPickButton);
+		toolbar.add(addWidgetButton);
 		toolbar.add(removeButton);
 		return toolbar;
+	}
+
+	private enum WidgetAttachmentMode
+	{
+		GROUP_CHILD,
+		ITEM_ID,
+		DIALOG_TEXT
+	}
+
+	private void appendWidgetAttachmentToModel(ConstructStepKind kind, int row, DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
+	{
+		HelperConstructManager.StepAttachmentEdit initial = null;
+		List<HelperConstructManager.StepAttachmentEdit> existing = helperConstructManager.getStepAttachmentsAt(kind, row);
+		for (HelperConstructManager.StepAttachmentEdit e : existing)
+		{
+			if (e != null && HelperConstructModels.StepAttachmentKind.WIDGET.name().equalsIgnoreCase(e.getKind()))
+			{
+				initial = e;
+				break;
+			}
+		}
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JRadioButton byGroupChild = new JRadioButton("Defined by group/child");
+		JRadioButton byItemId = new JRadioButton("Defined by itemID");
+		JRadioButton byDialogText = new JRadioButton("Defined by dialog text");
+		byGroupChild.setOpaque(false);
+		byItemId.setOpaque(false);
+		byDialogText.setOpaque(false);
+		byGroupChild.setForeground(Color.WHITE);
+		byItemId.setForeground(Color.WHITE);
+		byDialogText.setForeground(Color.WHITE);
+		ButtonGroup modeGroup = new ButtonGroup();
+		modeGroup.add(byGroupChild);
+		modeGroup.add(byItemId);
+		modeGroup.add(byDialogText);
+
+		JSpinner groupSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		JSpinner childSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		JSpinner childChildSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		JCheckBox useChildChildCb = new JCheckBox("Use childChild");
+		useChildChildCb.setOpaque(false);
+		useChildChildCb.setForeground(Color.WHITE);
+
+		JSpinner itemIdSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		JCheckBox checkChildrenItemCb = new JCheckBox("Check children");
+		checkChildrenItemCb.setOpaque(false);
+		checkChildrenItemCb.setForeground(Color.WHITE);
+
+		JTextField dialogTextField = new JTextField(24);
+		JCheckBox checkChildrenTextCb = new JCheckBox("Check children");
+		checkChildrenTextCb.setOpaque(false);
+		checkChildrenTextCb.setForeground(Color.WHITE);
+
+		if (initial != null)
+		{
+			if (initial.getWidgetGroupId() != null)
+			{
+				groupSp.setValue(initial.getWidgetGroupId());
+			}
+			if (initial.getWidgetChildId() != null)
+			{
+				childSp.setValue(initial.getWidgetChildId());
+			}
+			if (initial.getWidgetChildChildId() != null)
+			{
+				useChildChildCb.setSelected(true);
+				childChildSp.setValue(initial.getWidgetChildChildId());
+			}
+			if (initial.getWidgetItemId() != null)
+			{
+				byItemId.setSelected(true);
+				itemIdSp.setValue(initial.getWidgetItemId());
+				checkChildrenItemCb.setSelected(initial.isWidgetCheckChildren());
+			}
+			else if (initial.getWidgetDialogText() != null && !initial.getWidgetDialogText().isBlank())
+			{
+				byDialogText.setSelected(true);
+				dialogTextField.setText(initial.getWidgetDialogText());
+				checkChildrenTextCb.setSelected(initial.isWidgetCheckChildren());
+			}
+			else
+			{
+				byGroupChild.setSelected(true);
+			}
+		}
+		else
+		{
+			byGroupChild.setSelected(true);
+		}
+
+		JPanel modesPanel = new JPanel(new GridLayout(0, 1));
+		modesPanel.setOpaque(false);
+		modesPanel.add(byGroupChild);
+		modesPanel.add(byItemId);
+		modesPanel.add(byDialogText);
+		panel.add(modesPanel);
+		panel.add(Box.createVerticalStrut(8));
+		panel.add(labeled("Group", groupSp));
+		panel.add(labeled("Child", childSp));
+		panel.add(useChildChildCb);
+		panel.add(labeled("ChildChild", childChildSp));
+		panel.add(Box.createVerticalStrut(6));
+		panel.add(labeled("Item ID", itemIdSp));
+		panel.add(checkChildrenItemCb);
+		panel.add(Box.createVerticalStrut(6));
+		panel.add(labeled("Dialog text", dialogTextField));
+		panel.add(checkChildrenTextCb);
+
+		Runnable syncModeControls = () ->
+		{
+			WidgetAttachmentMode mode = byItemId.isSelected()
+				? WidgetAttachmentMode.ITEM_ID
+				: (byDialogText.isSelected() ? WidgetAttachmentMode.DIALOG_TEXT : WidgetAttachmentMode.GROUP_CHILD);
+			boolean groupMode = mode == WidgetAttachmentMode.GROUP_CHILD;
+			childChildSp.setEnabled(groupMode && useChildChildCb.isSelected());
+			useChildChildCb.setEnabled(groupMode);
+			itemIdSp.setEnabled(mode == WidgetAttachmentMode.ITEM_ID);
+			checkChildrenItemCb.setEnabled(mode == WidgetAttachmentMode.ITEM_ID);
+			dialogTextField.setEnabled(mode == WidgetAttachmentMode.DIALOG_TEXT);
+			checkChildrenTextCb.setEnabled(mode == WidgetAttachmentMode.DIALOG_TEXT);
+		};
+		useChildChildCb.addActionListener(e -> syncModeControls.run());
+		byGroupChild.addActionListener(e -> syncModeControls.run());
+		byItemId.addActionListener(e -> syncModeControls.run());
+		byDialogText.addActionListener(e -> syncModeControls.run());
+		syncModeControls.run();
+
+		int r = JOptionPane.showConfirmDialog(this, panel, "Add widget highlight", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		int group = ((Number) groupSp.getValue()).intValue();
+		int child = ((Number) childSp.getValue()).intValue();
+		HelperConstructManager.StepAttachmentEdit add;
+		if (byItemId.isSelected())
+		{
+			int itemId = ((Number) itemIdSp.getValue()).intValue();
+			add = HelperConstructManager.StepAttachmentEdit.widgetByItemId(group, child, itemId, checkChildrenItemCb.isSelected());
+		}
+		else if (byDialogText.isSelected())
+		{
+			String text = dialogTextField.getText() == null ? "" : dialogTextField.getText().trim();
+			if (text.isBlank())
+			{
+				JOptionPane.showMessageDialog(this, "Dialog text is required for text mode.", "Widget highlight", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			add = HelperConstructManager.StepAttachmentEdit.widgetByDialogText(group, child, text, checkChildrenTextCb.isSelected());
+		}
+		else
+		{
+			Integer childChild = useChildChildCb.isSelected() ? ((Number) childChildSp.getValue()).intValue() : null;
+			add = HelperConstructManager.StepAttachmentEdit.widgetByGroupChild(group, child, childChild);
+		}
+		model.addElement(add);
+	}
+
+	private static JPanel labeled(String title, JComponent field)
+	{
+		JPanel row = new JPanel(new BorderLayout(6, 0));
+		row.setOpaque(false);
+		JLabel label = new JLabel(title + ":");
+		label.setForeground(Color.WHITE);
+		row.add(label, BorderLayout.WEST);
+		row.add(field, BorderLayout.CENTER);
+		return row;
 	}
 
 	private void appendRequirementPickToAttachmentModel(DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)

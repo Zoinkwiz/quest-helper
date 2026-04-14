@@ -171,6 +171,12 @@ public final class ConstructDraftPersistence
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
 				st.itemQuantity = a.getItemQuantity();
 				st.orderSlotId = a.getOrderSlotId();
+				st.widgetGroupId = a.getWidgetGroupId();
+				st.widgetChildId = a.getWidgetChildId();
+				st.widgetChildChildId = a.getWidgetChildChildId();
+				st.widgetItemId = a.getWidgetItemId();
+				st.widgetDialogText = a.getWidgetDialogText();
+				st.widgetCheckChildren = a.isWidgetCheckChildren();
 				stepState.attachedRequirements.add(st);
 			}
 			if (step.getWorldPoint() != null)
@@ -225,6 +231,12 @@ public final class ConstructDraftPersistence
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
 				st.itemQuantity = a.getItemQuantity();
 				st.orderSlotId = a.getOrderSlotId();
+				st.widgetGroupId = a.getWidgetGroupId();
+				st.widgetChildId = a.getWidgetChildId();
+				st.widgetChildChildId = a.getWidgetChildChildId();
+				st.widgetItemId = a.getWidgetItemId();
+				st.widgetDialogText = a.getWidgetDialogText();
+				st.widgetCheckChildren = a.isWidgetCheckChildren();
 				lineState.attachedRequirements.add(st);
 			}
 			state.order.add(lineState);
@@ -319,6 +331,12 @@ public final class ConstructDraftPersistence
 			d.setAttachmentHighlighted(st.attachmentHighlighted);
 			d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
 			d.setOrderSlotId(st.orderSlotId);
+			d.setWidgetGroupId(st.widgetGroupId);
+			d.setWidgetChildId(st.widgetChildId);
+			d.setWidgetChildChildId(st.widgetChildChildId);
+			d.setWidgetItemId(st.widgetItemId);
+			d.setWidgetDialogText(st.widgetDialogText);
+			d.setWidgetCheckChildren(st.widgetCheckChildren);
 			step.getAttachedRequirements().add(d);
 		}
 	}
@@ -381,6 +399,12 @@ public final class ConstructDraftPersistence
 				d.setAttachmentHighlighted(st.attachmentHighlighted);
 				d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
 				d.setOrderSlotId(st.orderSlotId);
+				d.setWidgetGroupId(st.widgetGroupId);
+				d.setWidgetChildId(st.widgetChildId);
+				d.setWidgetChildChildId(st.widgetChildChildId);
+				d.setWidgetItemId(st.widgetItemId);
+				d.setWidgetDialogText(st.widgetDialogText);
+				d.setWidgetCheckChildren(st.widgetCheckChildren);
 				line.getAttachedRequirements().add(d);
 			}
 		}
@@ -456,6 +480,12 @@ public final class ConstructDraftPersistence
 		/** When {@code kind} is ITEM: required quantity ({@code >= 1}); omitted or {@code null} in old JSON defaults to 1. */
 		public Integer itemQuantity;
 		public String orderSlotId;
+		public Integer widgetGroupId;
+		public Integer widgetChildId;
+		public Integer widgetChildChildId;
+		public Integer widgetItemId;
+		public String widgetDialogText;
+		public boolean widgetCheckChildren;
 	}
 
 	public static class DraftOrderLineState

@@ -560,6 +560,42 @@ public class HelperScaffoldGenerator
 				out.append("\t\t}\n");
 				continue;
 			}
+			if (StepAttachmentKind.WIDGET.name().equalsIgnoreCase(k))
+			{
+				Integer groupId = a.getWidgetGroupId();
+				Integer childId = a.getWidgetChildId();
+				if (groupId == null || childId == null)
+				{
+					warnings.add("Widget attachment missing group/child; skipped.");
+					continue;
+				}
+				if (a.getWidgetItemId() != null)
+				{
+					out.append("\t\t").append(varName).append(".addWidgetHighlightWithItemIdRequirement(")
+						.append(groupId).append(", ").append(childId).append(", ")
+						.append(a.getWidgetItemId()).append(", ").append(a.isWidgetCheckChildren()).append(");\n");
+					continue;
+				}
+				if (a.getWidgetDialogText() != null && !a.getWidgetDialogText().isBlank())
+				{
+					out.append("\t\t").append(varName).append(".addWidgetHighlightWithTextRequirement(")
+						.append(groupId).append(", ").append(childId).append(", \"")
+						.append(escape(a.getWidgetDialogText())).append("\", ")
+						.append(a.isWidgetCheckChildren()).append(");\n");
+					continue;
+				}
+				if (a.getWidgetChildChildId() != null)
+				{
+					out.append("\t\t").append(varName).append(".addWidgetHighlight(")
+						.append(groupId).append(", ").append(childId).append(", ").append(a.getWidgetChildChildId()).append(");\n");
+				}
+				else
+				{
+					out.append("\t\t").append(varName).append(".addWidgetHighlight(")
+						.append(groupId).append(", ").append(childId).append(");\n");
+				}
+				continue;
+			}
 			warnings.add("Unknown step attachment kind (skipped in scaffold): " + k);
 		}
 	}

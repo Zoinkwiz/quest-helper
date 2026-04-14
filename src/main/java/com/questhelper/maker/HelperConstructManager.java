@@ -179,14 +179,33 @@ public class HelperConstructManager
 	@Getter
 	private int worldMapRouteRevealPercent = 100;
 	private boolean makerUiOpen;
+	private String selectedConstructMenuStepId;
 	private WorldPoint pendingZoneFirstCorner;
 	private WorldPoint selectedZoneOverlayCorner1;
 	private WorldPoint selectedZoneOverlayCorner2;
+	private boolean zoneSelectionOverlayEnabled;
 	private final List<Runnable> draftChangeListeners = new CopyOnWriteArrayList<>();
 
 	public void setMakerUiOpen(boolean makerUiOpen)
 	{
 		this.makerUiOpen = makerUiOpen;
+	}
+
+	public void setConstructMenuSelectedStep(ConstructStepKind kind, int filteredIndex)
+	{
+		ensureDraftLoaded();
+		if (kind == null || filteredIndex < 0)
+		{
+			selectedConstructMenuStepId = null;
+			return;
+		}
+		DraftStep step = stepDefinitionAtKindIndexOrNull(kind.stepKind(), filteredIndex);
+		selectedConstructMenuStepId = step == null ? null : step.getStepId();
+	}
+
+	public void clearConstructMenuSelectedStep()
+	{
+		selectedConstructMenuStepId = null;
 	}
 
 	public void addDraftChangeListener(Runnable listener)
@@ -305,6 +324,11 @@ public class HelperConstructManager
 				{
 					addStep(StepKind.NPC, npcId, option, target, clickedWorldPoint);
 				});
+				DraftStep selected = selectedConstructMenuStepOrNull();
+				if (selected != null && selected.getKind() == StepKind.NPC)
+				{
+					addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Update step ID", target, () -> updateSelectedStepIdFromMenu(npcId));
+				}
 			}
 		}
 		else if (isObjectAction(sourceType))
@@ -313,6 +337,11 @@ public class HelperConstructManager
 			{
 				addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint);
 			});
+			DraftStep selected = selectedConstructMenuStepOrNull();
+			if (selected != null && selected.getKind() == StepKind.OBJECT)
+			{
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Update step ID", target, () -> updateSelectedStepIdFromMenu(rawId));
+			}
 		}
 		else if (isItemAction(sourceType))
 		{
@@ -347,6 +376,58 @@ public class HelperConstructManager
 				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Stop making zone", target, this::stopZoneCreationFromUi);
 			}
 		}
+		DraftStep selected = selectedConstructMenuStepOrNull();
+		if (selected != null && clickedWorldPoint != null)
+		{
+			final WorldPoint point = clickedWorldPoint;
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Update step WP", target, () -> updateSelectedStepWorldPointFromMenu(point));
+		}
+	}
+
+	private DraftStep selectedConstructMenuStepOrNull()
+	{
+		if (selectedConstructMenuStepId == null || selectedConstructMenuStepId.isBlank())
+		{
+			return null;
+		}
+		DraftStep def = findDefinitionByStepId(selectedConstructMenuStepId);
+		if (def == null)
+		{
+			selectedConstructMenuStepId = null;
+		}
+		return def;
+	}
+
+	private void updateSelectedStepWorldPointFromMenu(WorldPoint worldPoint)
+	{
+		ensureDraftLoaded();
+		DraftStep selected = selectedConstructMenuStepOrNull();
+		if (selected == null || worldPoint == null)
+		{
+			return;
+		}
+		selected.setWorldPoint(worldPoint);
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		sendGameMessage("Quest Helper Construct: updated selected step world point to " + formatWorldPoint(worldPoint) + ".");
+	}
+
+	private void updateSelectedStepIdFromMenu(int rawId)
+	{
+		ensureDraftLoaded();
+		DraftStep selected = selectedConstructMenuStepOrNull();
+		if (selected == null || rawId <= 0)
+		{
+			return;
+		}
+		if (selected.getKind() != StepKind.NPC && selected.getKind() != StepKind.OBJECT)
+		{
+			return;
+		}
+		selected.setRawId(rawId);
+		selected.getAlternateRawIds().clear();
+		saveDraftToConfig();
+		sendGameMessage("Quest Helper Construct: updated selected step id to " + rawId + ".");
 	}
 
 	private void startZoneCreationAt(WorldPoint tilePoint)
@@ -388,7 +469,7 @@ public class HelperConstructManager
 			"");
 		if (ok)
 		{
-			setSelectedZoneOverlayByOrderSlotId(created.getOrderSlotId());
+			clearSelectedZoneOverlay();
 			sendGameMessage("Quest Helper Construct: created zone from " + formatWorldPoint(c1) + " to " + formatWorldPoint(tilePoint) + ".");
 		}
 		else
@@ -893,7 +974,13 @@ public class HelperConstructManager
 
 	public boolean hasZoneCreationOrSelectionOverlay()
 	{
-		return pendingZoneFirstCorner != null || (selectedZoneOverlayCorner1 != null && selectedZoneOverlayCorner2 != null);
+		return pendingZoneFirstCorner != null
+			|| (zoneSelectionOverlayEnabled && selectedZoneOverlayCorner1 != null && selectedZoneOverlayCorner2 != null);
+	}
+
+	public void setZoneSelectionOverlayEnabled(boolean enabled)
+	{
+		this.zoneSelectionOverlayEnabled = enabled;
 	}
 
 	public WorldPoint getPendingZoneFirstCorner()
@@ -2000,6 +2087,7 @@ public class HelperConstructManager
 		line.setSectionDivider(false);
 		line.setRefStepId(stepId);
 		line.setLinkedRequirementRawId(null);
+		line.setStepRequirementMode(OrderConditionMode.CONTINUE_WHEN_TRUE);
 		List<DraftOrderLine> order = currentDraft.getOrder();
 		int idx = insertAt < 0 ? order.size() : Math.min(insertAt, order.size());
 		order.add(idx, line);
@@ -2105,9 +2193,13 @@ public class HelperConstructManager
 		line.setZoneRoutingCorner2(new WorldPoint(1, 1, 0));
 		line.setZoneRoutingDisplayText(null);
 
+		DraftOrderStepRequirement zoneLeaf = DraftOrderStepRequirement.zone(
+			line.getZoneRoutingCorner1(),
+			line.getZoneRoutingCorner2(),
+			line.getZoneRoutingDisplayText());
 		DraftOrderStepRequirement newRoot = priorClone == null
-			? DraftOrderStepRequirement.orderZoneSlot()
-			: DraftOrderStepRequirement.group("AND", priorClone, DraftOrderStepRequirement.orderZoneSlot());
+			? zoneLeaf
+			: DraftOrderStepRequirement.group("AND", priorClone, zoneLeaf);
 		line.setStepRequirement(newRoot);
 		String err = OrderStepRequirementSupport.prepareOrderStepTreeForPersistence(line, line.getStepRequirement());
 		if (err != null)
@@ -2238,7 +2330,7 @@ public class HelperConstructManager
 		{
 			return "Not an order step row.";
 		}
-		line.setStepRequirementMode(mode == null ? OrderConditionMode.SHOW_WHEN_TRUE : mode);
+		line.setStepRequirementMode(mode == null ? OrderConditionMode.CONTINUE_WHEN_TRUE : mode);
 		saveDraftToConfig();
 		return null;
 	}
@@ -2264,7 +2356,7 @@ public class HelperConstructManager
 			line.setStepRequirement(null);
 			if (line.getStepRequirementMode() == null)
 			{
-				line.setStepRequirementMode(OrderConditionMode.SHOW_WHEN_TRUE);
+				line.setStepRequirementMode(OrderConditionMode.CONTINUE_WHEN_TRUE);
 			}
 			saveDraftToConfig();
 			return null;
@@ -2277,7 +2369,7 @@ public class HelperConstructManager
 		line.setStepRequirement(tree);
 		if (line.getStepRequirementMode() == null)
 		{
-			line.setStepRequirementMode(OrderConditionMode.SHOW_WHEN_TRUE);
+			line.setStepRequirementMode(OrderConditionMode.CONTINUE_WHEN_TRUE);
 		}
 		// Keep tree-based order conditions fully order-scoped; do not mirror into legacy linked item routing.
 		line.setLinkedRequirementRawId(null);
@@ -2375,14 +2467,14 @@ public class HelperConstructManager
 		}
 	}
 
-	/** True when the Varbit tab should keep routing data: conditions reference the slot or the row already has a tab attachment. */
+	/** True when this row has any varbit condition leaf or already has legacy routing data attached. */
 	private static boolean orderLineUsesVarbitRouting(DraftOrderLine line)
 	{
 		if (line == null || line.isSectionDivider())
 		{
 			return false;
 		}
-		return OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement())
+		return OrderStepRequirementSupport.treeContainsAnyVarbitLeaf(line.getStepRequirement())
 			|| DraftStepAttachedRequirement.findOrderRoutingVarbit(line) != null;
 	}
 

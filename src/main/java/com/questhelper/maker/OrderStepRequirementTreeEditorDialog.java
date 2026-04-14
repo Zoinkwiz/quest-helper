@@ -230,7 +230,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 
 	private JMenuItem newAddZoneFromExistingItem()
 	{
-		JMenuItem it = new JMenuItem("Add zone (slot)");
+		JMenuItem it = new JMenuItem("Add zone");
 		it.addActionListener(e -> addZoneFromExistingInteractive(false));
 		return it;
 	}
@@ -549,14 +549,14 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			JOptionPane.showMessageDialog(this, "Could not read zone corners from the selected row.", "Add zone", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		stashPendingZoneRouting(c1, c2, pick.getDisplayText());
+		DraftOrderStepRequirement zoneLeaf = DraftOrderStepRequirement.zone(c1, c2, pick.getDisplayText());
 		if (forInvert)
 		{
-			addInvertWithInner(DraftOrderStepRequirement.orderZoneSlot());
+			addInvertWithInner(zoneLeaf);
 		}
 		else
 		{
-			addLeaf(DraftOrderStepRequirement.orderZoneSlot());
+			addLeaf(zoneLeaf);
 		}
 	}
 
@@ -681,14 +681,17 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			return;
 		}
-		stashPendingZoneRouting(pick.corner1, pick.corner2, pick.displayText);
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.zone(
+			pick.corner1,
+			pick.corner2,
+			pick.displayText);
 		if (forInvert)
 		{
-			addInvertWithInner(DraftOrderStepRequirement.orderZoneSlot());
+			addInvertWithInner(leaf);
 		}
 		else
 		{
-			addLeaf(DraftOrderStepRequirement.orderZoneSlot());
+			addLeaf(leaf);
 		}
 	}
 
@@ -785,14 +788,18 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			return;
 		}
 		HelperConstructManager.VarbitSlotRow pick = rows.get(idx);
-		stashPendingVarbitRouting(pick.getVarbitId(), pick.getRequiredValue(), pick.getOperation(), pick.getDisplayText());
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.varbit(
+			pick.getVarbitId(),
+			pick.getRequiredValue(),
+			pick.getOperation(),
+			pick.getDisplayText());
 		if (forInvert)
 		{
-			addInvertWithInner(DraftOrderStepRequirement.orderVarbitSlot());
+			addInvertWithInner(leaf);
 		}
 		else
 		{
-			addLeaf(DraftOrderStepRequirement.orderVarbitSlot());
+			addLeaf(leaf);
 		}
 	}
 
@@ -810,14 +817,18 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			return;
 		}
-		stashPendingVarbitRouting(p.varbitId, p.requiredValue, p.operation, p.displayText);
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.varbit(
+			p.varbitId,
+			p.requiredValue,
+			p.operation,
+			p.displayText);
 		if (forInvert)
 		{
-			addInvertWithInner(DraftOrderStepRequirement.orderVarbitSlot());
+			addInvertWithInner(leaf);
 		}
 		else
 		{
-			addLeaf(DraftOrderStepRequirement.orderVarbitSlot());
+			addLeaf(leaf);
 		}
 	}
 
@@ -1126,7 +1137,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				break;
 			case "ZONE":
 				JOptionPane.showMessageDialog(this,
-					"Inline ZONE nodes are migrated when you save. Use the Zone reqs tab and \"Order zone (slot)\" in conditions.",
+					"Zone corners and display text are stored directly on this condition node.",
 					"Zone",
 					JOptionPane.INFORMATION_MESSAGE);
 				break;
@@ -1454,7 +1465,23 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			case "INLINE_VARBIT":
 				return "Varbit " + d.getVarbitId() + " " + (d.getVarbitOperation() == null ? "" : d.getVarbitOperation()) + " " + d.getVarbitRequiredValue();
 			case "ZONE":
-				return "Zone (inline — save to migrate to tab)";
+			{
+				WorldPoint c1 = d.getZoneCorner1();
+				WorldPoint c2 = d.getZoneCorner2();
+				String base;
+				if (c1 == null || c2 == null)
+				{
+					base = "Zone";
+				}
+				else
+				{
+					base = String.format("Zone (%d, %d, %d) -> (%d, %d, %d)",
+						c1.getX(), c1.getY(), c1.getPlane(),
+						c2.getX(), c2.getY(), c2.getPlane());
+				}
+				String disp = d.getZoneDisplayText();
+				return disp == null || disp.isBlank() ? base : disp + " — " + base;
+			}
 			case "SKILL":
 				return formatSkillChoiceLabel(
 					d.getSkillName(),

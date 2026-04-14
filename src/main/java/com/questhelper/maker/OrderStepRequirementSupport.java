@@ -92,7 +92,7 @@ public final class OrderStepRequirementSupport
 			if (line.getStepRequirement() != null)
 			{
 				upgradeLegacyKindsInTree(line.getStepRequirement());
-				migrateInlineVarbitLeavesToOrderRouting(line, line.getStepRequirement());
+				migrateLegacyOrderLeavesToInline(line, line.getStepRequirement());
 			}
 		}
 	}
@@ -107,10 +107,8 @@ public final class OrderStepRequirementSupport
 	}
 
 	/**
-	 * Upgrades legacy kinds, moves any inline {@code VARBIT} leaves onto this row's routing attachment, replaces those
-	 * leaves with {@code ORDER_VARBIT}, then validates. Call before persisting a conditions tree from the editor or JSON.
-	 *
-	 * @return {@code null} if the tree is OK to save, otherwise a short error for the UI.
+	 * Upgrades legacy kinds and migrates legacy row-slot leaves ({@code ORDER_VARBIT}/{@code ORDER_ZONE}) to inline
+	 * {@code VARBIT}/{@code ZONE} nodes, then validates.
 	 */
 	@Nullable
 	public static String prepareOrderStepTreeForPersistence(@Nullable DraftOrderLine line, @Nullable DraftOrderStepRequirement tree)
@@ -122,18 +120,76 @@ public final class OrderStepRequirementSupport
 		upgradeLegacyKindsInTree(tree);
 		if (line != null && !line.isSectionDivider())
 		{
-			String mig = migrateInlineVarbitLeavesToOrderRouting(line, tree);
+			String mig = migrateLegacyOrderLeavesToInline(line, tree);
 			if (mig != null)
 			{
 				return mig;
 			}
-			String zoneMig = migrateInlineZoneLeavesToOrderRouting(line, tree);
-			if (zoneMig != null)
-			{
-				return zoneMig;
-			}
 		}
 		return validateTreeOrError(tree);
+	}
+
+	@Nullable
+	private static String migrateLegacyOrderLeavesToInline(DraftOrderLine line, DraftOrderStepRequirement root)
+	{
+		if (line == null || line.isSectionDivider() || root == null)
+		{
+			return null;
+		}
+		return migrateLegacyOrderLeavesToInlineRecursive(line, root);
+	}
+
+	@Nullable
+	private static String migrateLegacyOrderLeavesToInlineRecursive(DraftOrderLine line, DraftOrderStepRequirement node)
+	{
+		if (node == null)
+		{
+			return null;
+		}
+		String k = node.getKind() == null ? "" : node.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("ORDER_VARBIT".equals(k) || "ROUTING_VARBIT".equals(k))
+		{
+			DraftStepAttachedRequirement cfg = DraftStepAttachedRequirement.findOrderRoutingVarbit(line);
+			if (cfg == null)
+			{
+				return "Order varbit leaf requires a varbit configured on this row.";
+			}
+			VarbitSpec spec = VarbitSpec.fromStepAttachment(cfg);
+			node.setKind("VARBIT");
+			node.setVarbitId(spec.getVarbitId());
+			node.setVarbitRequiredValue(spec.getRequiredValue());
+			node.setVarbitOperation(spec.getOperation().name());
+			node.setVarbitDisplayText(spec.getDisplayText());
+			node.setItemRawId(null);
+			node.setItemQuantity(null);
+			node.setItemAlsoCheckBank(false);
+		}
+		else if ("ORDER_ZONE".equals(k))
+		{
+			if (line.getZoneRoutingCorner1() == null || line.getZoneRoutingCorner2() == null)
+			{
+				return "Order zone leaf requires both zone corners on this row.";
+			}
+			node.setKind("ZONE");
+			node.setZoneCorner1(line.getZoneRoutingCorner1());
+			node.setZoneCorner2(line.getZoneRoutingCorner2());
+			node.setZoneDisplayText(line.getZoneRoutingDisplayText());
+			node.setItemRawId(null);
+			node.setItemQuantity(null);
+			node.setItemAlsoCheckBank(false);
+		}
+		if (node.getChildren() != null)
+		{
+			for (DraftOrderStepRequirement ch : node.getChildren())
+			{
+				String err = migrateLegacyOrderLeavesToInlineRecursive(line, ch);
+				if (err != null)
+				{
+					return err;
+				}
+			}
+		}
+		return null;
 	}
 
 	/** Renames persisted {@code kind} strings from older drafts to current names ({@code ITEM}, {@code ORDER_VARBIT}, {@code VARBIT}). */
@@ -228,7 +284,33 @@ public final class OrderStepRequirementSupport
 		{
 			return false;
 		}
-		return treeContainsOrderZoneLeaf(line.getStepRequirement()) || orderLineHasZoneRoutingCorners(line);
+		return treeContainsOrderZoneLeaf(line.getStepRequirement())
+			|| treeContainsZoneLeaf(line.getStepRequirement())
+			|| orderLineHasZoneRoutingCorners(line);
+	}
+
+	public static boolean treeContainsAnyVarbitLeaf(@Nullable DraftOrderStepRequirement root)
+	{
+		if (root == null)
+		{
+			return false;
+		}
+		String k = root.getKind() == null ? "" : root.getKind().trim().toUpperCase(Locale.ROOT);
+		if ("ORDER_VARBIT".equals(k) || "ROUTING_VARBIT".equals(k) || "VARBIT".equals(k) || "INLINE_VARBIT".equals(k))
+		{
+			return true;
+		}
+		if (root.getChildren() != null)
+		{
+			for (DraftOrderStepRequirement ch : root.getChildren())
+			{
+				if (treeContainsAnyVarbitLeaf(ch))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Clears orphan zone routing on order lines (e.g. before codegen). */
@@ -456,7 +538,7 @@ public final class OrderStepRequirementSupport
 		}
 		if (signatures.size() > 1)
 		{
-			return "This order row mixes different zone rectangles in the conditions tree. Use one zone per row, or split across multiple quest-order rows. Set corners on the Zone reqs tab and use only \"Order zone (slot)\" here.";
+			return "This order row mixes different zone rectangles in the conditions tree. Use one zone per row, or split across multiple quest-order rows.";
 		}
 		DraftOrderStepRequirement sample = leaves.get(0);
 		if (orderLineHasZoneRoutingCorners(line))
@@ -1225,7 +1307,11 @@ public final class OrderStepRequirementSupport
 			case "INLINE_VARBIT":
 				return "Order conditions cannot use inline VARBIT nodes. Set the varbit on the Varbit reqs tab for this row, then use only \"Order varbit (slot)\" here (or save again to auto-migrate legacy drafts).";
 			case "ZONE":
-				return "Order conditions cannot use inline ZONE nodes. Set corners on the Zone reqs tab for this row, then use only \"Order zone (slot)\" here (or save again to auto-migrate).";
+				if (node.getZoneCorner1() == null || node.getZoneCorner2() == null)
+				{
+					return "ZONE needs both corners.";
+				}
+				return null;
 			case "SKILL":
 				if (node.getSkillName() == null || node.getSkillName().isBlank())
 				{

@@ -75,7 +75,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
 		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT) and choose semantics (show when true vs continue when true). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
-		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add attaches default corners plus an order-zone leaf to the selected Quest order row; if no row is selected it creates a new generic step + order row with zone routing. You can also add zones from Quest order → Conditions (Create new zone… / Add zone (slot)). Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
+		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions contains zone requirements, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add attaches default corners plus a zone condition to the selected Quest order row; if no row is selected it creates a new generic step + order row with zone routing. You can also add zones from Quest order → Conditions (Create new zone… / Add zone). Remove clears zone routing and zone conditions for that row only. Search filters zone rows.",
 		"7. Build copies generated Java to the clipboard.",
 		"8. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON)."
 	);
@@ -88,6 +88,8 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final JTable varbitReqsTable;
 	private final JTable zoneReqsTable;
 	private final JTable skillReqsTable;
+	private final JTabbedPane mainTabs;
+	private int zoneTabIndex = -1;
 	private JTable orderTable;
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
 	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
@@ -186,13 +188,29 @@ public final class HelperConstructEditorPanel extends JPanel
 		header.add(makerToolbarRow, BorderLayout.SOUTH);
 
 		JPanel orderedView = buildOrderedView();
-		JTabbedPane mainTabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+		mainTabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 		mainTabs.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		styleConstructTabbedPane(mainTabs);
 		for (ConstructStepKind k : List.of(ConstructStepKind.NPC, ConstructStepKind.OBJECT, ConstructStepKind.TEXT))
 		{
 			StepLibraryTableModel model = new StepLibraryTableModel(k);
 			JTable table = new JTable(model);
+			table.getSelectionModel().addListSelectionListener(e ->
+			{
+				if (e.getValueIsAdjusting())
+				{
+					return;
+				}
+				int sel = selectedModelRow(table);
+				if (sel < 0)
+				{
+					helperConstructManager.clearConstructMenuSelectedStep();
+				}
+				else
+				{
+					helperConstructManager.setConstructMenuSelectedStep(k, sel);
+				}
+			});
 			mainTabs.addTab(stepLibraryTabTitle(k), wrapStepLibraryTableWithToolbar(table, k));
 			stepLibraryTabs.add(new StepLibraryTab(k, model, table));
 		}
@@ -275,6 +293,18 @@ public final class HelperConstructEditorPanel extends JPanel
 			String orderSlotId = zoneRoutingTableModel.getOrderSlotIdAt(r);
 			helperConstructManager.setSelectedZoneOverlayByOrderSlotId(orderSlotId);
 		});
+		zoneReqsTable.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (zoneReqsTable.rowAtPoint(e.getPoint()) < 0)
+				{
+					zoneReqsTable.clearSelection();
+					helperConstructManager.clearSelectedZoneOverlay();
+				}
+			}
+		});
 		zoneReqsTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()));
 		zoneReqsTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
 		zoneReqsTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
@@ -342,6 +372,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		zoneActions.add(removeZoneSlotButton);
 		zonePanel.add(zoneActions, BorderLayout.SOUTH);
 		mainTabs.addTab("Zone reqs", zonePanel);
+		zoneTabIndex = mainTabs.indexOfComponent(zonePanel);
 
 		skillReqsTable = new JTable(skillRoutingTableModel);
 		styleVarbitRoutingTable(skillReqsTable);
@@ -403,6 +434,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		mainTabs.addTab("Skill reqs", skillPanel);
 
 		mainTabs.addTab("Quest order", orderedView);
+		mainTabs.addChangeListener(e -> syncZoneOverlaySelectionState());
 
 		add(header, BorderLayout.NORTH);
 		add(mainTabs, BorderLayout.CENTER);
@@ -2461,6 +2493,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		stepOrderTableModel.setRows(helperConstructManager.getCombinedStepRows());
 		varbitRoutingTableModel.reloadFromManager();
 		zoneRoutingTableModel.reloadFromManager();
+		syncZoneOverlaySelectionState();
 		skillRoutingTableModel.reloadFromManager();
 		syncWorldMapRouteButtonLabel();
 		syncRouteRevealButtonLabel();
@@ -2486,7 +2519,28 @@ public final class HelperConstructEditorPanel extends JPanel
 		helperConstructManager.removeDraftChangeListener(draftChangeListener);
 		helperConstructManager.disableWorldMapRoutePreview();
 		helperConstructManager.clearSelectedZoneOverlay();
+		helperConstructManager.setZoneSelectionOverlayEnabled(false);
 		helperConstructManager.stopZoneCreationFromUi();
+		helperConstructManager.clearConstructMenuSelectedStep();
+	}
+
+	private void syncZoneOverlaySelectionState()
+	{
+		boolean zoneTabActive = zoneTabIndex >= 0 && mainTabs.getSelectedIndex() == zoneTabIndex;
+		helperConstructManager.setZoneSelectionOverlayEnabled(zoneTabActive);
+		if (!zoneTabActive)
+		{
+			helperConstructManager.clearSelectedZoneOverlay();
+			return;
+		}
+		int r = selectedModelRow(zoneReqsTable);
+		if (r < 0)
+		{
+			helperConstructManager.clearSelectedZoneOverlay();
+			return;
+		}
+		String orderSlotId = zoneRoutingTableModel.getOrderSlotIdAt(r);
+		helperConstructManager.setSelectedZoneOverlayByOrderSlotId(orderSlotId);
 	}
 
 	private static String stepLibraryTabTitle(ConstructStepKind kind)

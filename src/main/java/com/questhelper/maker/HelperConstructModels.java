@@ -132,50 +132,85 @@ public final class HelperConstructModels
 		public static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted, int itemQuantity)
 		{
 			int q = Math.max(itemQuantity, 1);
-			return new DraftStepAttachedRequirement(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, attachmentHighlighted, q, null, null, null, null, null, null, false);
+			DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+			d.setKind(StepAttachmentKind.ITEM.name());
+			d.setItemRawId(rawId);
+			d.setAttachmentHighlighted(attachmentHighlighted);
+			d.setItemQuantity(q);
+			return d;
 		}
 
 		/** Extra (non–order-slot) varbit requirement on the step. */
 		public static DraftStepAttachedRequirement varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, null, null, null, null, null, null, false);
+			DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+			d.setKind(StepAttachmentKind.VARBIT.name());
+			d.setVarbitId(varbitId);
+			d.setVarbitRequiredValue(requiredValue);
+			d.setVarbitOperation(op);
+			d.setVarbitDisplayText(displayText);
+			return d;
 		}
 
 		public static DraftStepAttachedRequirement skill(String skillName, int requiredLevel, String operation, String displayText, boolean canBeBoosted)
 		{
 			String op = operation == null || operation.isBlank() ? "GREATER_EQUAL" : operation.trim();
 			int level = Math.max(requiredLevel, 1);
-			return new DraftStepAttachedRequirement(StepAttachmentKind.SKILL.name(), null, null, null, null, null,
-				skillName, level, op, displayText, canBeBoosted, false, 0, null, null, null, null, null, null, false);
+			DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+			d.setKind(StepAttachmentKind.SKILL.name());
+			d.setSkillName(skillName);
+			d.setSkillRequiredLevel(level);
+			d.setSkillOperation(op);
+			d.setSkillDisplayText(displayText);
+			d.setSkillCanBeBoosted(canBeBoosted);
+			return d;
 		}
 
 		/** Primary varbit routing row for one quest-order slot; matches {@link DraftOrderLine#getOrderSlotId()}. */
 		public static DraftStepAttachedRequirement routingVarbitForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new DraftStepAttachedRequirement(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, false, 0, orderSlotId, null, null, null, null, null, false);
+			DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+			d.setKind(StepAttachmentKind.VARBIT.name());
+			d.setVarbitId(varbitId);
+			d.setVarbitRequiredValue(requiredValue);
+			d.setVarbitOperation(op);
+			d.setVarbitDisplayText(displayText);
+			d.setOrderSlotId(orderSlotId);
+			return d;
 		}
 
 		public static DraftStepAttachedRequirement widgetByGroupChild(int groupId, int childId, Integer childChildId)
 		{
-			return new DraftStepAttachedRequirement(
-				StepAttachmentKind.WIDGET.name(), null, null, null, null, null, null, null, null, null, false, false, 0, null,
-				groupId, childId, childChildId, null, null, false);
+			DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+			d.setKind(StepAttachmentKind.WIDGET.name());
+			d.setWidgetGroupId(groupId);
+			d.setWidgetChildId(childId);
+			d.setWidgetChildChildId(childChildId);
+			return d;
 		}
 
 		public static DraftStepAttachedRequirement widgetByItemId(int groupId, int childId, int itemId, boolean checkChildren)
 		{
-			return new DraftStepAttachedRequirement(
-				StepAttachmentKind.WIDGET.name(), null, null, null, null, null, null, null, null, null, false, false, 0, null,
-				groupId, childId, null, itemId, null, checkChildren);
+			DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+			d.setKind(StepAttachmentKind.WIDGET.name());
+			d.setWidgetGroupId(groupId);
+			d.setWidgetChildId(childId);
+			d.setWidgetItemId(itemId);
+			d.setWidgetCheckChildren(checkChildren);
+			return d;
 		}
 
 		public static DraftStepAttachedRequirement widgetByDialogText(int groupId, int childId, String requiredText, boolean checkChildren)
 		{
-			return new DraftStepAttachedRequirement(
-				StepAttachmentKind.WIDGET.name(), null, null, null, null, null, null, null, null, null, false, false, 0, null,
-				groupId, childId, null, null, requiredText == null ? null : requiredText.trim(), checkChildren);
+			DraftStepAttachedRequirement d = new DraftStepAttachedRequirement();
+			d.setKind(StepAttachmentKind.WIDGET.name());
+			d.setWidgetGroupId(groupId);
+			d.setWidgetChildId(childId);
+			d.setWidgetDialogText(requiredText == null ? null : requiredText.trim());
+			d.setWidgetCheckChildren(checkChildren);
+			return d;
 		}
 
 		public static DraftStepAttachedRequirement findRoutingVarbitForSlot(DraftStep step, String orderSlotId)

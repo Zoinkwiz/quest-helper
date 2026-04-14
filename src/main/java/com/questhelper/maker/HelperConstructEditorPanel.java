@@ -1420,28 +1420,43 @@ public final class HelperConstructEditorPanel extends JPanel
 			syncItemAttachmentOptionsFromSelection.run();
 		}
 
-		int r = JOptionPane.showConfirmDialog(this, panel, "Step attachments", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r != JOptionPane.OK_OPTION)
+		Window owner = SwingUtilities.getWindowAncestor(this);
+		JDialog dialog = new JDialog(owner, "Step attachments", Dialog.ModalityType.MODELESS);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		JPanel content = new JPanel(new BorderLayout(0, 8));
+		content.setBorder(new EmptyBorder(10, 10, 10, 10));
+		content.add(panel, BorderLayout.CENTER);
+		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(e -> dialog.dispose());
+		JButton save = new JButton("Save");
+		save.addActionListener(e ->
 		{
-			return;
-		}
+			List<HelperConstructManager.StepAttachmentEdit> out = new ArrayList<>();
+			for (int i = 0; i < model.size(); i++)
+			{
+				out.add(model.get(i));
+			}
 
-		List<HelperConstructManager.StepAttachmentEdit> out = new ArrayList<>();
-		for (int i = 0; i < model.size(); i++)
-		{
-			out.add(model.get(i));
-		}
-
-		boolean applied = helperConstructManager.applyStepAttachmentsAt(kind, row, out);
-		if (!applied)
-		{
-			JOptionPane.showMessageDialog(this,
-				"Could not save requirements (check varbit id/value and Operation name, e.g. EQUAL).",
-				"Step requirements",
-				JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-		refresh();
+			boolean applied = helperConstructManager.applyStepAttachmentsAt(kind, row, out);
+			if (!applied)
+			{
+				JOptionPane.showMessageDialog(dialog,
+					"Could not save requirements (check varbit id/value and Operation name, e.g. EQUAL).",
+					"Step requirements",
+					JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			refresh();
+			dialog.dispose();
+		});
+		buttons.add(cancel);
+		buttons.add(save);
+		content.add(buttons, BorderLayout.SOUTH);
+		dialog.setContentPane(content);
+		dialog.pack();
+		dialog.setLocationRelativeTo(owner);
+		dialog.setVisible(true);
 	}
 
 	private @NotNull JPanel getToolbar(
@@ -1454,7 +1469,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		JButton addPickButton = new JButton("Add…");
 		addPickButton.addActionListener(ev -> appendRequirementPickToAttachmentModel(model));
 		JButton addWidgetButton = new JButton("Widget…");
-		addWidgetButton.addActionListener(ev -> appendWidgetAttachmentToModel(kind, row, model));
+		addWidgetButton.addActionListener(ev -> appendWidgetAttachmentToModel(kind, row, model, addWidgetButton));
 
 		JButton removeButton = new JButton("Remove selected");
 		removeButton.addActionListener(ev ->
@@ -1482,7 +1497,11 @@ public final class HelperConstructEditorPanel extends JPanel
 		DIALOG_TEXT
 	}
 
-	private void appendWidgetAttachmentToModel(ConstructStepKind kind, int row, DefaultListModel<HelperConstructManager.StepAttachmentEdit> model)
+	private void appendWidgetAttachmentToModel(
+		ConstructStepKind kind,
+		int row,
+		DefaultListModel<HelperConstructManager.StepAttachmentEdit> model,
+		Component ownerComponent)
 	{
 		HelperConstructManager.StepAttachmentEdit initial = null;
 		List<HelperConstructManager.StepAttachmentEdit> existing = helperConstructManager.getStepAttachmentsAt(kind, row);
@@ -1515,6 +1534,17 @@ public final class HelperConstructEditorPanel extends JPanel
 		JSpinner groupSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 		JSpinner childSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 		JSpinner childChildSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		JButton pickWidgetButton = new JButton("Select visible widget…");
+		pickWidgetButton.addActionListener(e ->
+		{
+			HelperConstructManager.WidgetPickerRow pick = showWidgetPickerDialog();
+			if (pick == null)
+			{
+				return;
+			}
+			groupSp.setValue(pick.getGroupId());
+			childSp.setValue(pick.getChildId());
+		});
 		JCheckBox useChildChildCb = new JCheckBox("Use childChild");
 		useChildChildCb.setOpaque(false);
 		useChildChildCb.setForeground(Color.WHITE);
@@ -1575,6 +1605,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		panel.add(Box.createVerticalStrut(8));
 		panel.add(labeled("Group", groupSp));
 		panel.add(labeled("Child", childSp));
+		panel.add(pickWidgetButton);
 		panel.add(useChildChildCb);
 		panel.add(labeled("ChildChild", childChildSp));
 		panel.add(Box.createVerticalStrut(6));
@@ -1603,36 +1634,140 @@ public final class HelperConstructEditorPanel extends JPanel
 		byDialogText.addActionListener(e -> syncModeControls.run());
 		syncModeControls.run();
 
-		int r = JOptionPane.showConfirmDialog(this, panel, "Add widget highlight", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r != JOptionPane.OK_OPTION)
+		Window owner = ownerComponent == null ? null : SwingUtilities.getWindowAncestor(ownerComponent);
+		JDialog dialog = new JDialog(owner, "Add widget highlight", Dialog.ModalityType.MODELESS);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		if (owner != null)
 		{
-			return;
+			owner.setEnabled(false);
 		}
-
-		int group = ((Number) groupSp.getValue()).intValue();
-		int child = ((Number) childSp.getValue()).intValue();
-		HelperConstructManager.StepAttachmentEdit add;
-		if (byItemId.isSelected())
+		dialog.addWindowListener(new WindowAdapter()
 		{
-			int itemId = ((Number) itemIdSp.getValue()).intValue();
-			add = HelperConstructManager.StepAttachmentEdit.widgetByItemId(group, child, itemId, checkChildrenItemCb.isSelected());
-		}
-		else if (byDialogText.isSelected())
-		{
-			String text = dialogTextField.getText() == null ? "" : dialogTextField.getText().trim();
-			if (text.isBlank())
+			@Override
+			public void windowClosed(WindowEvent e)
 			{
-				JOptionPane.showMessageDialog(this, "Dialog text is required for text mode.", "Widget highlight", JOptionPane.WARNING_MESSAGE);
-				return;
+				if (owner != null)
+				{
+					owner.setEnabled(true);
+					owner.toFront();
+					owner.requestFocus();
+				}
 			}
-			add = HelperConstructManager.StepAttachmentEdit.widgetByDialogText(group, child, text, checkChildrenTextCb.isSelected());
-		}
-		else
+		});
+		JPanel content = new JPanel(new BorderLayout(0, 8));
+		content.setBorder(new EmptyBorder(10, 10, 10, 10));
+		content.add(panel, BorderLayout.CENTER);
+		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(e -> dialog.dispose());
+		JButton addBtn = new JButton("Add");
+		addBtn.addActionListener(e ->
 		{
-			Integer childChild = useChildChildCb.isSelected() ? ((Number) childChildSp.getValue()).intValue() : null;
-			add = HelperConstructManager.StepAttachmentEdit.widgetByGroupChild(group, child, childChild);
+			int group = ((Number) groupSp.getValue()).intValue();
+			int child = ((Number) childSp.getValue()).intValue();
+			HelperConstructManager.StepAttachmentEdit add;
+			if (byItemId.isSelected())
+			{
+				int itemId = ((Number) itemIdSp.getValue()).intValue();
+				add = HelperConstructManager.StepAttachmentEdit.widgetByItemId(group, child, itemId, checkChildrenItemCb.isSelected());
+			}
+			else if (byDialogText.isSelected())
+			{
+				String text = dialogTextField.getText() == null ? "" : dialogTextField.getText().trim();
+				if (text.isBlank())
+				{
+					JOptionPane.showMessageDialog(dialog, "Dialog text is required for text mode.", "Widget highlight", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				add = HelperConstructManager.StepAttachmentEdit.widgetByDialogText(group, child, text, checkChildrenTextCb.isSelected());
+			}
+			else
+			{
+				Integer childChild = useChildChildCb.isSelected() ? ((Number) childChildSp.getValue()).intValue() : null;
+				add = HelperConstructManager.StepAttachmentEdit.widgetByGroupChild(group, child, childChild);
+			}
+			model.addElement(add);
+			dialog.dispose();
+		});
+		buttons.add(cancel);
+		buttons.add(addBtn);
+		content.add(buttons, BorderLayout.SOUTH);
+		dialog.setContentPane(content);
+		dialog.pack();
+		dialog.setLocationRelativeTo(owner);
+		dialog.setVisible(true);
+	}
+
+	private HelperConstructManager.WidgetPickerRow showWidgetPickerDialog()
+	{
+		List<HelperConstructManager.WidgetPickerRow> picks = helperConstructManager.getVisibleWidgetPickerRows();
+		if (picks.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,
+				"No visible widgets found. Open the relevant interface first, or enter group/child manually.",
+				"Widget select",
+				JOptionPane.INFORMATION_MESSAGE);
+			return null;
 		}
-		model.addElement(add);
+		List<HelperConstructManager.WidgetPickerRow> allPicks = new ArrayList<>(picks);
+		DefaultListModel<HelperConstructManager.WidgetPickerRow> listModel = new DefaultListModel<>();
+		JTextField pickSearch = newMakerSearchField("Filter by group,child or label.");
+		Runnable refillPickList = () ->
+		{
+			String q = pickSearch.getText().trim().toLowerCase(Locale.ROOT);
+			listModel.clear();
+			for (HelperConstructManager.WidgetPickerRow o : allPicks)
+			{
+				String lab = o.getLabel() == null ? "" : o.getLabel();
+				if (q.isEmpty() || lab.toLowerCase(Locale.ROOT).contains(q))
+				{
+					listModel.addElement(o);
+				}
+			}
+		};
+		pickSearch.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				refillPickList.run();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				refillPickList.run();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				refillPickList.run();
+			}
+		});
+		refillPickList.run();
+		JList<HelperConstructManager.WidgetPickerRow> list = new JList<>(listModel);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setVisibleRowCount(12);
+		list.setCellRenderer(new DefaultListCellRenderer()
+		{
+			@Override
+			public Component getListCellRendererComponent(JList<?> jList, Object value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				HelperConstructManager.WidgetPickerRow o = (HelperConstructManager.WidgetPickerRow) value;
+				return super.getListCellRendererComponent(jList, o.getLabel(), index, isSelected, cellHasFocus);
+			}
+		});
+		JPanel p = new JPanel(new BorderLayout(0, 6));
+		p.setOpaque(false);
+		p.add(pickSearch, BorderLayout.NORTH);
+		p.add(new JScrollPane(list), BorderLayout.CENTER);
+		p.setPreferredSize(new Dimension(560, 420));
+		if (JOptionPane.showConfirmDialog(this, p, "Select visible widget", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION)
+		{
+			return null;
+		}
+		return list.getSelectedValue();
 	}
 
 	private static JPanel labeled(String title, JComponent field)

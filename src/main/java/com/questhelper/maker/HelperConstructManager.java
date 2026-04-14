@@ -73,6 +73,7 @@ import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -5087,6 +5088,69 @@ public class HelperConstructManager
 			this.label = label;
 			this.edit = edit;
 		}
+	}
+
+	@Getter
+	public static final class WidgetPickerRow
+	{
+		private final int groupId;
+		private final int childId;
+		private final String label;
+
+		public WidgetPickerRow(int groupId, int childId, String label)
+		{
+			this.groupId = groupId;
+			this.childId = childId;
+			this.label = label == null ? (groupId + "," + childId) : label;
+		}
+	}
+
+	public List<WidgetPickerRow> getVisibleWidgetPickerRows()
+	{
+		List<WidgetPickerRow> out = new ArrayList<>();
+		if (client == null)
+		{
+			return out;
+		}
+		LinkedHashSet<String> seen = new LinkedHashSet<>();
+		final int maxGroup = 2000;
+		final int maxChild = 200;
+		for (int group = 0; group <= maxGroup; group++)
+		{
+			for (int child = 0; child <= maxChild; child++)
+			{
+				Widget w = client.getWidget(group, child);
+				if (w == null || w.isHidden())
+				{
+					continue;
+				}
+				String key = group + ":" + child;
+				if (!seen.add(key))
+				{
+					continue;
+				}
+				String label = group + "," + child;
+				String text = Text.removeTags(w.getText());
+				if (text != null && !text.isBlank())
+				{
+					label += " — " + text.trim();
+				}
+				else
+				{
+					String name = Text.removeTags(w.getName());
+					if (name != null && !name.isBlank())
+					{
+						label += " — " + name.trim();
+					}
+					else if (w.getItemId() > 0)
+					{
+						label += " — item " + w.getItemId();
+					}
+				}
+				out.add(new WidgetPickerRow(group, child, label));
+			}
+		}
+		return Collections.unmodifiableList(out);
 	}
 
 	/** UI / API DTO for extra requirements on a step (items, varbits, extensible kinds). */

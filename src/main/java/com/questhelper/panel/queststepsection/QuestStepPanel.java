@@ -60,6 +60,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	private final Map<QuestStep, JTextPane> stepTextPanes = new HashMap<>();
 	private final Map<QuestStep, JPanel> stepRowPanels = new HashMap<>();
 	private final Map<QuestStep, JCheckBox> manualSkipBoxes = new HashMap<>();
+	private final List<QuestStep> orderedSidebarSteps = new ArrayList<>();
 	private boolean suppressManualSkipEvents;
 	private final @Nullable QuestRequirementsPanel requiredItemsPanel;
 	private final @Nullable QuestRequirementsPanel recommendedItemsPanel;
@@ -178,6 +179,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 
 	private void addStepRow(JPanel questStepsPanel, QuestStep step)
 	{
+		orderedSidebarSteps.add(step);
 		JPanel row = buildStepRow(step);
 		stepRowPanels.put(step, row);
 		questStepsPanel.add(row);
@@ -219,13 +221,13 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 				@Override
 				public void mousePressed(MouseEvent e)
 				{
-					maybeShowManualSkipContextMenu(skip, e);
+					maybeShowManualSkipContextMenu(step, skip, e);
 				}
 
 				@Override
 				public void mouseReleased(MouseEvent e)
 				{
-					maybeShowManualSkipContextMenu(skip, e);
+					maybeShowManualSkipContextMenu(step, skip, e);
 				}
 			});
 			row.add(skip, BorderLayout.EAST);
@@ -235,17 +237,61 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		return row;
 	}
 
-	private void maybeShowManualSkipContextMenu(JCheckBox source, MouseEvent e)
+	private void maybeShowManualSkipContextMenu(QuestStep clickedStep, JCheckBox source, MouseEvent e)
 	{
 		if (!e.isPopupTrigger())
 		{
 			return;
 		}
 		JPopupMenu menu = new JPopupMenu();
+		JMenuItem tickUpTo = new JMenuItem("Tick all up to this step");
+		tickUpTo.addActionListener(ev -> tickManualSkipCheckboxesUpTo(clickedStep));
+		menu.add(tickUpTo);
 		JMenuItem resetAll = new JMenuItem("Reset all tick boxes");
 		resetAll.addActionListener(ev -> resetAllManualSkipCheckboxes());
 		menu.add(resetAll);
 		menu.show(source, e.getX(), e.getY());
+	}
+
+	private void tickManualSkipCheckboxesUpTo(QuestStep clickedStep)
+	{
+		if (clickedStep == null || orderedSidebarSteps.isEmpty())
+		{
+			return;
+		}
+		int endIndex = orderedSidebarSteps.indexOf(clickedStep);
+		if (endIndex < 0)
+		{
+			return;
+		}
+		suppressManualSkipEvents = true;
+		try
+		{
+			for (int i = 0; i <= endIndex; i++)
+			{
+				QuestStep step = orderedSidebarSteps.get(i);
+				ManualRequirement m = step.getSidebarManualSkipRequirement();
+				String pk = step.getSidebarManualSkipPersistenceKey();
+				if (m == null || pk == null || pk.isBlank())
+				{
+					continue;
+				}
+				m.setShouldPass(true);
+				JCheckBox box = manualSkipBoxes.get(step);
+				if (box != null)
+				{
+					box.setSelected(true);
+				}
+				if (questHelper != null)
+				{
+					questHelper.notifyManualSidebarSkipChanged(pk, true);
+				}
+			}
+		}
+		finally
+		{
+			suppressManualSkipEvents = false;
+		}
 	}
 
 	private void resetAllManualSkipCheckboxes()

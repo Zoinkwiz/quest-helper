@@ -510,6 +510,27 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			return;
 		}
+
+		Object[] options = {"Paste JSON", "Load JSON file...", "Cancel"};
+		int sourceChoice = JOptionPane.showOptionDialog(
+			this,
+			"Choose import source:",
+			title,
+			JOptionPane.DEFAULT_OPTION,
+			JOptionPane.PLAIN_MESSAGE,
+			null,
+			options,
+			options[1]);
+		if (sourceChoice == 2 || sourceChoice == JOptionPane.CLOSED_OPTION)
+		{
+			return;
+		}
+		if (sourceChoice == 1)
+		{
+			importJsonFromFile(mode);
+			return;
+		}
+
 		JTextArea textArea = new JTextArea(14, 44);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -540,6 +561,30 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 
 		HelperConstructManager.ImportDraftResult result = helperConstructManager.importFromJson(textArea.getText(), mode);
+		showImportResult(result);
+	}
+
+	private void importJsonFromFile(HelperConstructManager.ImportMode mode)
+	{
+		JFileChooser fc = new JFileChooser();
+		if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+		{
+			return;
+		}
+		try
+		{
+			String json = Files.readString(fc.getSelectedFile().toPath());
+			HelperConstructManager.ImportDraftResult result = helperConstructManager.importFromJson(json, mode);
+			showImportResult(result);
+		}
+		catch (IOException ex)
+		{
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void showImportResult(HelperConstructManager.ImportDraftResult result)
+	{
 		if (result.isSuccess())
 		{
 			refresh();
@@ -1157,8 +1202,24 @@ public final class HelperConstructEditorPanel extends JPanel
 		table.addMouseListener(new MouseAdapter()
 		{
 			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				maybeShowStepLibraryContextMenu(table, stepKind, e);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				maybeShowStepLibraryContextMenu(table, stepKind, e);
+			}
+
+			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				if (e.isPopupTrigger() || SwingUtilities.isRightMouseButton(e))
+				{
+					return;
+				}
 				int row = table.rowAtPoint(e.getPoint());
 				int col = table.columnAtPoint(e.getPoint());
 				if (row < 0)
@@ -1887,8 +1948,18 @@ public final class HelperConstructEditorPanel extends JPanel
 		orderTable.addMouseListener(new MouseAdapter()
 		{
 			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				maybeShowOrderContextMenu(e);
+			}
+
+			@Override
 			public void mouseReleased(MouseEvent e)
 			{
+				if (maybeShowOrderContextMenu(e))
+				{
+					return;
+				}
 				int vRow = orderTable.rowAtPoint(e.getPoint());
 				int vCol = orderTable.columnAtPoint(e.getPoint());
 				if (vRow < 0 || vCol != 1)
@@ -1995,6 +2066,134 @@ public final class HelperConstructEditorPanel extends JPanel
 		actions.add(removeSelectedButton);
 		ordered.add(actions, BorderLayout.SOUTH);
 		return ordered;
+	}
+
+	private boolean maybeShowStepLibraryContextMenu(JTable table, ConstructStepKind stepKind, MouseEvent e)
+	{
+		if (!e.isPopupTrigger())
+		{
+			return false;
+		}
+		int viewRow = table.rowAtPoint(e.getPoint());
+		if (viewRow < 0)
+		{
+			return false;
+		}
+		table.setRowSelectionInterval(viewRow, viewRow);
+		int modelRow = table.convertRowIndexToModel(viewRow);
+		JPopupMenu menu = new JPopupMenu();
+		Integer currentStructId = helperConstructManager.getStepStructIdAt(stepKind, modelRow);
+		JMenuItem setItem = new JMenuItem(currentStructId == null ? "Set League task ID..." : "Edit League task ID...");
+		setItem.addActionListener(ev -> promptSetStepLibraryLeagueTaskId(stepKind, modelRow, currentStructId));
+		menu.add(setItem);
+		JMenuItem clearItem = new JMenuItem("Clear League task status");
+		clearItem.setEnabled(currentStructId != null);
+		clearItem.addActionListener(ev ->
+		{
+			helperConstructManager.updateStepStructIdAt(stepKind, modelRow, null);
+			refresh();
+		});
+		menu.add(clearItem);
+		menu.show(e.getComponent(), e.getX(), e.getY());
+		return true;
+	}
+
+	private boolean maybeShowOrderContextMenu(MouseEvent e)
+	{
+		if (!e.isPopupTrigger())
+		{
+			return false;
+		}
+		int viewRow = orderTable.rowAtPoint(e.getPoint());
+		if (viewRow < 0)
+		{
+			return false;
+		}
+		orderTable.setRowSelectionInterval(viewRow, viewRow);
+		int modelRow = orderTable.convertRowIndexToModel(viewRow);
+		HelperConstructManager.CombinedStepRow row = stepOrderTableModel.getRow(modelRow);
+		if (row == null || row.isSectionDivider())
+		{
+			return false;
+		}
+		Integer currentStructId = helperConstructManager.getOrderReferencedStepStructId(row.getIndex());
+		JPopupMenu menu = new JPopupMenu();
+		JMenuItem setItem = new JMenuItem(currentStructId == null ? "Set League task ID..." : "Edit League task ID...");
+		setItem.addActionListener(ev -> promptSetOrderLeagueTaskId(row.getIndex(), currentStructId));
+		menu.add(setItem);
+		JMenuItem clearItem = new JMenuItem("Clear League task status");
+		clearItem.setEnabled(currentStructId != null);
+		clearItem.addActionListener(ev ->
+		{
+			helperConstructManager.updateOrderReferencedStepStructId(row.getIndex(), null);
+			refresh();
+		});
+		menu.add(clearItem);
+		menu.show(e.getComponent(), e.getX(), e.getY());
+		return true;
+	}
+
+	private void promptSetStepLibraryLeagueTaskId(ConstructStepKind kind, int modelRow, Integer currentStructId)
+	{
+		Integer chosen = promptForLeagueTaskId(currentStructId);
+		if (chosen == null)
+		{
+			return;
+		}
+		if (helperConstructManager.updateStepStructIdAt(kind, modelRow, chosen))
+		{
+			refresh();
+		}
+	}
+
+	private void promptSetOrderLeagueTaskId(int orderIndex, Integer currentStructId)
+	{
+		Integer chosen = promptForLeagueTaskId(currentStructId);
+		if (chosen == null)
+		{
+			return;
+		}
+		if (helperConstructManager.updateOrderReferencedStepStructId(orderIndex, chosen))
+		{
+			refresh();
+		}
+	}
+
+	private Integer promptForLeagueTaskId(Integer currentStructId)
+	{
+		String initial = currentStructId == null ? "" : String.valueOf(currentStructId);
+		String input = (String) JOptionPane.showInputDialog(
+			this,
+			"Enter League task ID (taskId/structId):",
+			"Set League task ID",
+			JOptionPane.PLAIN_MESSAGE,
+			null,
+			null,
+			initial);
+		if (input == null)
+		{
+			return null;
+		}
+		String trimmed = input.trim();
+		if (trimmed.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this, "Task ID cannot be empty.", "Invalid task ID", JOptionPane.WARNING_MESSAGE);
+			return null;
+		}
+		try
+		{
+			int id = Integer.parseInt(trimmed);
+			if (id <= 0)
+			{
+				throw new NumberFormatException("Task ID must be positive");
+			}
+			return id;
+		}
+		catch (NumberFormatException ex)
+		{
+			JOptionPane.showMessageDialog(this, "Task ID must be a positive integer.", "Invalid task ID", JOptionPane.WARNING_MESSAGE);
+			return null;
+		}
 	}
 
 	private void showAddStepDialog()

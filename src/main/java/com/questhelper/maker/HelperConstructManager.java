@@ -1048,6 +1048,39 @@ public class HelperConstructManager
 		return updateStepRawIdAt(kind.stepKind(), index, rawIdText);
 	}
 
+	public Integer getStepStructIdAt(ConstructStepKind kind, int index)
+	{
+		ensureDraftLoaded();
+		DraftStep step = stepDefinitionAtKindIndexOrNull(kind.stepKind(), index);
+		if (step == null)
+		{
+			return null;
+		}
+		Integer structId = step.getStructId();
+		return structId != null && structId != 0 ? structId : null;
+	}
+
+	public boolean updateStepStructIdAt(ConstructStepKind kind, int index, Integer structId)
+	{
+		ensureDraftLoaded();
+		DraftStep step = stepDefinitionAtKindIndexOrNull(kind.stepKind(), index);
+		if (step == null)
+		{
+			return false;
+		}
+		if (structId == null || structId == 0)
+		{
+			step.setStructId(null);
+		}
+		else
+		{
+			step.setStructId(structId);
+		}
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return true;
+	}
+
 	/**
 	 * Changes a step definition's kind (e.g. generic TEXT to NPC/Object) while keeping {@link DraftStep#getStepId()}
 	 * so quest order and varbit rows stay linked.
@@ -2902,6 +2935,57 @@ public class HelperConstructManager
 		saveDraftToConfig();
 	}
 
+	public Integer getOrderReferencedStepStructId(int orderIndex)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return null;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return null;
+		}
+		DraftStep def = findDefinitionByStepId(line.getRefStepId());
+		if (def == null)
+		{
+			return null;
+		}
+		Integer structId = def.getStructId();
+		return structId != null && structId != 0 ? structId : null;
+	}
+
+	public boolean updateOrderReferencedStepStructId(int orderIndex, Integer structId)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return false;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return false;
+		}
+		DraftStep def = findDefinitionByStepId(line.getRefStepId());
+		if (def == null)
+		{
+			return false;
+		}
+		if (structId == null || structId == 0)
+		{
+			def.setStructId(null);
+		}
+		else
+		{
+			def.setStructId(structId);
+		}
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return true;
+	}
+
 	public void updateStepVarName(int index, String updatedVarName)
 	{
 		ensureDraftLoaded();
@@ -3173,8 +3257,7 @@ public class HelperConstructManager
 	}
 
 	/**
-	 * Pretty-printed extended Tasks Tracker route JSON (sections/items for the plugin plus {@code questHelperMaker}
-	 * with the full maker snapshot). Same shape as the auto-saved draft file.
+	 * Pretty-printed QH canonical JSON (questHelperMaker snapshot plus minimal metadata).
 	 */
 	public String exportDraftJson()
 	{
@@ -3185,8 +3268,11 @@ public class HelperConstructManager
 	{
 		ensureDraftLoaded();
 		reconcileOrderSlotRoutingAttachments();
-		boolean includeMakerSnapshot = format != ExportFormat.LEAGUE_ROUTE;
-		return prettyDraftGson.toJson(TasksTrackerRouteExporter.export(currentDraft, includeMakerSnapshot));
+		if (format == ExportFormat.LEAGUE_ROUTE)
+		{
+			return prettyDraftGson.toJson(TasksTrackerRouteExporter.export(currentDraft, false));
+		}
+		return prettyDraftGson.toJson(buildQhCanonicalDocument());
 	}
 
 	/**
@@ -3217,6 +3303,18 @@ public class HelperConstructManager
 	public ImportDraftResult importFromJson(String json, ImportMode mode)
 	{
 		ensureDraftLoaded();
+		if (mode == ImportMode.FULL_FRESH)
+		{
+			MakerDraftJsonLoader.LoadOutcome snapshotOutcome = MakerDraftJsonLoader.loadDraftFromJson(json, gson);
+			if (snapshotOutcome.isSuccess())
+			{
+				currentDraft = snapshotOutcome.getDraft();
+				reconcileOrderSlotRoutingAttachments();
+				saveDraftToConfig();
+				rebuildWorldMapRouteIfEnabled();
+				return ImportDraftResult.ok("Imported qh format (full fresh).");
+			}
+		}
 		AdaptedImport adapted = MakerImportFormatAdapter.adapt(json, gson);
 		if (!adapted.isSuccess())
 		{
@@ -3449,13 +3547,23 @@ public class HelperConstructManager
 		try
 		{
 			reconcileOrderSlotRoutingAttachments();
-			MakerDraftFileStore.writeUtf8(file, gson.toJson(TasksTrackerRouteExporter.export(currentDraft)));
+			MakerDraftFileStore.writeUtf8(file, gson.toJson(buildQhCanonicalDocument()));
 			notifyDraftChanged();
 		}
 		catch (IOException e)
 		{
 			log.warn("Could not save Quest Helper Maker draft to {}", file.getAbsolutePath(), e);
 		}
+	}
+
+	private JsonObject buildQhCanonicalDocument()
+	{
+		JsonObject root = new JsonObject();
+		root.addProperty("name", normalizeText(currentDraft.getQuestName()).isBlank() ? "Generated Quest" : currentDraft.getQuestName());
+		root.addProperty("taskType", "LEAGUE_5");
+		root.addProperty("author", "Quest Helper Maker");
+		root.add("questHelperMaker", gson.toJsonTree(ConstructDraftPersistence.toDraftState(currentDraft)));
+		return root;
 	}
 
 	private boolean isNpcAction(MenuAction menuAction)
@@ -3513,7 +3621,7 @@ public class HelperConstructManager
 				out.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1).toLowerCase(Locale.ROOT));
 			}
 		}
-		return out.isEmpty() ? "GeneratedQuest" : out.toString();
+		return out.length() == 0 ? "GeneratedQuest" : out.toString();
 	}
 
 	private void sendGameMessage(String message)
@@ -3557,7 +3665,7 @@ public class HelperConstructManager
 		{
 			return;
 		}
-		if (!sb.isEmpty())
+		if (sb.length() > 0)
 		{
 			sb.append(' ');
 		}
@@ -3598,7 +3706,7 @@ public class HelperConstructManager
 		}
 		if (!target.isBlank())
 		{
-			if (!b.isEmpty())
+			if (b.length() > 0)
 			{
 				b.append(' ');
 			}

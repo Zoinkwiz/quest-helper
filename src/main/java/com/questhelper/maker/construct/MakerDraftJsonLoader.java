@@ -38,7 +38,9 @@ import lombok.extern.slf4j.Slf4j;
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 
 /**
- * Parses Quest Helper Maker JSON: extended Tasks Tracker route documents only
+ * Parses Quest Helper Maker JSON:
+ * - QH canonical snapshot documents (questHelperMaker)
+ * - extended Tasks Tracker route documents (sections + optional questHelperMaker)
  */
 @Slf4j
 public final class MakerDraftJsonLoader
@@ -84,7 +86,9 @@ public final class MakerDraftJsonLoader
 				return false;
 			}
 			JsonObject o = el.getAsJsonObject();
-			return o.has("sections") && o.get("sections").isJsonArray();
+			boolean hasSections = o.has("sections") && o.get("sections").isJsonArray();
+			boolean hasMakerSnapshot = o.has("questHelperMaker") && o.get("questHelperMaker").isJsonObject();
+			return hasSections || hasMakerSnapshot;
 		}
 		catch (Exception e)
 		{
@@ -105,10 +109,25 @@ public final class MakerDraftJsonLoader
 		if (!jsonHasTopLevelRouteEnvelope(gson, trimmed))
 		{
 			return LoadOutcome.failure(
-				"Expected extended Tasks Tracker route JSON (top-level \"sections\" array).");
+				"Expected QH JSON (questHelperMaker) or route JSON (top-level \"sections\" array).");
 		}
 		try
 		{
+			JsonObject root = gson.fromJson(trimmed, JsonObject.class);
+			if (root != null && root.has("questHelperMaker") && root.get("questHelperMaker").isJsonObject())
+			{
+				ConstructDraftPersistence.DraftState snapshot =
+					gson.fromJson(root.get("questHelperMaker"), ConstructDraftPersistence.DraftState.class);
+				if (ConstructDraftPersistence.isSupportedMakerSnapshot(snapshot))
+				{
+					return LoadOutcome.ok(ConstructDraftPersistence.draftHelperFromState(snapshot));
+				}
+				if (!(root.has("sections") && root.get("sections").isJsonArray()))
+				{
+					return LoadOutcome.failure("questHelperMaker snapshot is malformed or unsupported formatVersion.");
+				}
+			}
+
 			TasksTrackerRouteDto route = gson.fromJson(trimmed, TasksTrackerRouteDto.class);
 			String validationError = TasksTrackerRouteValidation.validateRoute(route);
 			if (validationError != null)

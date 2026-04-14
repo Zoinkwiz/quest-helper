@@ -57,6 +57,17 @@ public final class HelperConstructModels
 	}
 
 	/**
+	 * Semantics for quest-order conditions:
+	 * SHOW_WHEN_TRUE -> selector true means this row should be active;
+	 * CONTINUE_WHEN_TRUE -> selector true means this row is considered done and flow should move forward.
+	 */
+	public enum OrderConditionMode
+	{
+		SHOW_WHEN_TRUE,
+		CONTINUE_WHEN_TRUE
+	}
+
+	/**
 	 * Extra requirements on a step definition (shown in preview / emitted on the step).
 	 * {@code kind} is extensible for future types (unknown kinds are skipped at runtime with a warning in codegen).
 	 */
@@ -402,6 +413,7 @@ public final class HelperConstructModels
 		private String refStepId;
 		private Integer linkedRequirementRawId;
 		private DraftOrderStepRequirement stepRequirement;
+		private OrderConditionMode stepRequirementMode;
 		private final List<DraftStepAttachedRequirement> attachedRequirements = new ArrayList<>();
 		/** When conditions use {@code ORDER_ZONE}: rectangle corners (Zone reqs tab). */
 		private WorldPoint zoneRoutingCorner1;

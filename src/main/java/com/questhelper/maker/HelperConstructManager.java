@@ -36,6 +36,7 @@ import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteSectionDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteExporter;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteImporter;
 import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
+import com.questhelper.maker.HelperConstructModels.OrderConditionMode;
 import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.maker.construct.ConstructMenuCapture;
 import com.questhelper.maker.construct.MakerDraftFileStore;
@@ -1765,6 +1766,7 @@ public class HelperConstructManager
 					null,
 					"",
 					false,
+					OrderConditionMode.SHOW_WHEN_TRUE,
 					false,
 					false));
 				continue;
@@ -1784,6 +1786,7 @@ public class HelperConstructManager
 					line.getLinkedRequirementRawId(),
 					"",
 					false,
+					effectiveOrderConditionMode(line),
 					isNonDefaultOrderStepRequirementTree(line, def),
 					line.getStepRequirement() != null));
 				continue;
@@ -1806,6 +1809,7 @@ public class HelperConstructManager
 				line.getLinkedRequirementRawId(),
 				instr == null ? "" : instr,
 				def.getStructId() != null && def.getStructId() != 0,
+				effectiveOrderConditionMode(line),
 				isNonDefaultOrderStepRequirementTree(line, def),
 				line.getStepRequirement() != null));
 		}
@@ -1909,6 +1913,33 @@ public class HelperConstructManager
 	}
 
 	/**
+	 * Appends a new empty generic step, a quest-order row, and wires default ORDER_ZONE routing on that order row
+	 * so the Zone reqs tab can edit it immediately.
+	 * @return {@code true} when the placeholder row was created and zone routing attached.
+	 */
+	public boolean addEmptyZoneSlotFromUi()
+	{
+		ensureDraftLoaded();
+		addEmptyStepFromUi(ConstructStepKind.TEXT);
+		List<DraftStep> defs = currentDraft.getStepDefinitions();
+		DraftStep placeholder = defs.get(defs.size() - 1);
+		placeholder.setSuggestedVarName(HelperScaffoldGenerator.toVarName("zone", "step"));
+		addOrderRef(placeholder.getStepId());
+		List<DraftOrderLine> order = currentDraft.getOrder();
+		if (order.isEmpty())
+		{
+			return false;
+		}
+		int addedIndex = order.size() - 1;
+		DraftOrderLine added = order.get(addedIndex);
+		if (added.isSectionDivider())
+		{
+			return false;
+		}
+		return addZoneSlotToOrderRowFromUi(addedIndex);
+	}
+
+	/**
 	 * Adds default zone corners and an {@code ORDER_ZONE} leaf to an existing quest-order step row — no new step
 	 * definition and no new order line. Use when the maker should only wire zone routing onto the row the author
 	 * already selected in Quest order.
@@ -1961,6 +1992,10 @@ public class HelperConstructManager
 			return false;
 		}
 		OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
+		if (line.getStepRequirement() != null)
+		{
+			line.setLinkedRequirementRawId(null);
+		}
 		saveDraftToConfig();
 		return true;
 	}
@@ -1997,6 +2032,10 @@ public class HelperConstructManager
 			}
 			line.setStepRequirement(parsed);
 			OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
+			if (line.getStepRequirement() != null)
+			{
+				line.setLinkedRequirementRawId(null);
+			}
 			saveDraftToConfig();
 			return null;
 		}
@@ -2048,6 +2087,34 @@ public class HelperConstructManager
 		return gson.fromJson(gson.toJson(t), DraftOrderStepRequirement.class);
 	}
 
+	public OrderConditionMode getOrderStepRequirementMode(int orderIndex)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return OrderConditionMode.SHOW_WHEN_TRUE;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		return effectiveOrderConditionMode(line);
+	}
+
+	public String applyOrderStepRequirementMode(int orderIndex, OrderConditionMode mode)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return "Invalid order row.";
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return "Not an order step row.";
+		}
+		line.setStepRequirementMode(mode == null ? OrderConditionMode.SHOW_WHEN_TRUE : mode);
+		saveDraftToConfig();
+		return null;
+	}
+
 	/**
 	 * Persists the branch tree from the GUI editor. Pass {@code null} to clear.
 	 * @return {@code null} on success, otherwise a short error message for the UI.
@@ -2067,6 +2134,10 @@ public class HelperConstructManager
 		if (tree == null)
 		{
 			line.setStepRequirement(null);
+			if (line.getStepRequirementMode() == null)
+			{
+				line.setStepRequirementMode(OrderConditionMode.SHOW_WHEN_TRUE);
+			}
 			saveDraftToConfig();
 			return null;
 		}
@@ -2076,9 +2147,23 @@ public class HelperConstructManager
 			return err;
 		}
 		line.setStepRequirement(tree);
-		OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
+		if (line.getStepRequirementMode() == null)
+		{
+			line.setStepRequirementMode(OrderConditionMode.SHOW_WHEN_TRUE);
+		}
+		// Keep tree-based order conditions fully order-scoped; do not mirror into legacy linked item routing.
+		line.setLinkedRequirementRawId(null);
 		saveDraftToConfig();
 		return null;
+	}
+
+	private static OrderConditionMode effectiveOrderConditionMode(DraftOrderLine line)
+	{
+		if (line == null || line.getStepRequirementMode() == null)
+		{
+			return OrderConditionMode.SHOW_WHEN_TRUE;
+		}
+		return line.getStepRequirementMode();
 	}
 
 	private void ensureOrderSlotId(DraftOrderLine line)
@@ -2801,7 +2886,7 @@ public class HelperConstructManager
 		{
 			DraftOrderStepRequirement pruned = OrderStepRequirementSupport.stripOrderVarbitLeaves(tree);
 			line.setStepRequirement(pruned);
-			OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
+			line.setLinkedRequirementRawId(null);
 		}
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)
@@ -2858,7 +2943,7 @@ public class HelperConstructManager
 		{
 			DraftOrderStepRequirement pruned = OrderStepRequirementSupport.stripOrderZoneLeaves(tree);
 			line.setStepRequirement(pruned);
-			OrderStepRequirementSupport.mirrorLinkedRawIdFromSimpleTree(line);
+			line.setLinkedRequirementRawId(null);
 		}
 		saveDraftToConfig();
 		if (worldMapRoutePreviewEnabled)
@@ -4352,6 +4437,7 @@ public class HelperConstructManager
 			Requirement completion;
 			Requirement branchRequirement;
 			DraftOrderStepRequirement tree = orderLine.getStepRequirement();
+			OrderConditionMode conditionMode = OrderStepRequirementSupport.effectiveConditionMode(orderLine);
 			if (tree != null)
 			{
 				Requirement selector = OrderStepRequirementSupport.buildRuntimeSelector(tree, orderLine, draftStep, requirementById);
@@ -4362,8 +4448,16 @@ public class HelperConstructManager
 				}
 				else
 				{
-					completion = or(not(selector), manualOverride);
-					branchRequirement = and(selector, not(manualOverride));
+					if (conditionMode == OrderConditionMode.CONTINUE_WHEN_TRUE)
+					{
+						completion = or(selector, manualOverride);
+						branchRequirement = and(not(selector), not(manualOverride));
+					}
+					else
+					{
+						completion = or(not(selector), manualOverride);
+						branchRequirement = and(selector, not(manualOverride));
+					}
 				}
 			}
 			else
@@ -4382,6 +4476,11 @@ public class HelperConstructManager
 		 */
 		private Requirement previewCompletionRequirement(DraftStep def, Map<Integer, ItemRequirement> requirementById, DraftOrderLine orderLine)
 		{
+			// When a conditions tree exists, it is the sole routing source for this order row.
+			if (orderLine.getStepRequirement() != null)
+			{
+				return null;
+			}
 			Integer rid = orderLine.getLinkedRequirementRawId();
 			if (rid != null && rid > 0)
 			{
@@ -4401,6 +4500,10 @@ public class HelperConstructManager
 			if (fromTree != null && fromTree > 0)
 			{
 				return fromTree;
+			}
+			if (orderLine.getStepRequirement() != null)
+			{
+				return null;
 			}
 			Integer orderLinkedOverride = orderLine.getLinkedRequirementRawId();
 			if (orderLinkedOverride != null && orderLinkedOverride > 0)
@@ -4688,10 +4791,11 @@ public class HelperConstructManager
 		 */
 		private final String instructionText;
 		private final boolean leagueStep;
+		private final OrderConditionMode orderConditionMode;
 		private final boolean customOrderStepRequirement;
 		private final boolean hasOrderStepRequirementTree;
 
-		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText, boolean leagueStep, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
+		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText, boolean leagueStep, OrderConditionMode orderConditionMode, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
 		{
 			this.index = index;
 			this.orderSlotId = orderSlotId == null ? "" : orderSlotId;
@@ -4704,6 +4808,7 @@ public class HelperConstructManager
 			this.orderLinkedRequirementRawId = orderLinkedRequirementRawId;
 			this.instructionText = instructionText == null ? "" : instructionText;
 			this.leagueStep = leagueStep;
+			this.orderConditionMode = orderConditionMode == null ? OrderConditionMode.SHOW_WHEN_TRUE : orderConditionMode;
 			this.customOrderStepRequirement = customOrderStepRequirement;
 			this.hasOrderStepRequirementTree = hasOrderStepRequirementTree;
 		}

@@ -376,15 +376,7 @@ public final class ConstructStepKindHandlers
 		public QuestStep buildPreviewQuestStep(ConstructPreviewStepParams p)
 		{
 			DraftStep d = p.draftStep();
-			List<Requirement> all = new ArrayList<>();
-			Integer highlightRawId = p.itemHighlightRawId();
-			if (highlightRawId != null)
-			{
-				ItemRequirement ir = p.requirementById().get(highlightRawId);
-				all.add(Objects.requireNonNullElseGet(ir, () -> new ItemRequirement("Item " + highlightRawId, highlightRawId)).highlighted());
-			}
-			all.addAll(Arrays.asList(p.extrasArr()));
-			Requirement[] arr = all.toArray(new Requirement[0]);
+			Requirement[] arr = p.extrasArr();
 			if (d.getWorldPoint() != null)
 			{
 				return new DetailedQuestStep(p.questHelper(), d.getWorldPoint(), p.instruction(), arr);

@@ -24,6 +24,7 @@
  */
 package com.questhelper.maker;
 
+import com.questhelper.maker.HelperConstructModels.OrderConditionMode;
 import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
@@ -81,6 +82,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	private final DefaultMutableTreeNode visualRoot = new DefaultMutableTreeNode(RootMarker.INSTANCE);
 	private final DefaultTreeModel treeModel;
 	private final JTree tree;
+	private final JComboBox<OrderConditionMode> modeCombo;
 	private boolean accepted;
 
 	private OrderStepRequirementTreeEditorDialog(
@@ -95,6 +97,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		this.orderIndex = orderIndex;
 		this.rootDto = initialClone;
 		clearPendingVarbitRouting();
+		OrderConditionMode initialMode = manager.getOrderStepRequirementMode(orderIndex);
 
 		treeModel = new DefaultTreeModel(visualRoot);
 		tree = new JTree(treeModel);
@@ -151,6 +154,28 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 
 		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 4));
 		toolbar.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		JLabel semanticsLabel = new JLabel("Semantics:");
+		semanticsLabel.setToolTipText("Choose how this row's condition tree is interpreted.");
+		toolbar.add(semanticsLabel);
+		modeCombo = new JComboBox<>(OrderConditionMode.values());
+		modeCombo.setRenderer(new DefaultListCellRenderer()
+		{
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				if (value instanceof OrderConditionMode)
+				{
+					OrderConditionMode mode = (OrderConditionMode) value;
+					setText(mode == OrderConditionMode.CONTINUE_WHEN_TRUE ? "Continue when true" : "Show when true");
+				}
+				return this;
+			}
+		});
+		modeCombo.setSelectedItem(initialMode == null ? OrderConditionMode.SHOW_WHEN_TRUE : initialMode);
+		updateSemanticsToolTip();
+		modeCombo.addActionListener(e -> updateSemanticsToolTip());
+		toolbar.add(modeCombo);
 		toolbar.add(addReq);
 		toolbar.add(addLogic);
 		toolbar.add(editBtn);
@@ -1243,8 +1268,28 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			JOptionPane.showMessageDialog(this, err, "Could not save", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		OrderConditionMode mode = (OrderConditionMode) modeCombo.getSelectedItem();
+		String modeErr = manager.applyOrderStepRequirementMode(orderIndex, mode);
+		if (modeErr != null)
+		{
+			JOptionPane.showMessageDialog(this, modeErr, "Could not save", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		accepted = true;
 		dispose();
+	}
+
+	private void updateSemanticsToolTip()
+	{
+		OrderConditionMode mode = (OrderConditionMode) modeCombo.getSelectedItem();
+		if (mode == OrderConditionMode.CONTINUE_WHEN_TRUE)
+		{
+			modeCombo.setToolTipText("Continue when true: condition true means this step is complete; show it while false.");
+		}
+		else
+		{
+			modeCombo.setToolTipText("Show when true: condition true means this step is active.");
+		}
 	}
 
 	private static List<DraftOrderStepRequirement> collectSkillLeaves(DraftOrderStepRequirement root)

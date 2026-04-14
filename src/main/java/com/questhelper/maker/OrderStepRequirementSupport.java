@@ -24,6 +24,7 @@
  */
 package com.questhelper.maker;
 
+import com.questhelper.maker.HelperConstructModels.OrderConditionMode;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -94,6 +95,15 @@ public final class OrderStepRequirementSupport
 				migrateInlineVarbitLeavesToOrderRouting(line, line.getStepRequirement());
 			}
 		}
+	}
+
+	public static OrderConditionMode effectiveConditionMode(@Nullable DraftOrderLine line)
+	{
+		if (line == null || line.getStepRequirementMode() == null)
+		{
+			return OrderConditionMode.SHOW_WHEN_TRUE;
+		}
+		return line.getStepRequirementMode();
 	}
 
 	/**

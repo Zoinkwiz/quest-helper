@@ -359,6 +359,8 @@ public final class ConstructDraftPersistence
 		if (s.stepRequirement != null)
 		{
 			line.setStepRequirement(s.stepRequirement);
+			// Conditions tree owns order routing; ignore legacy mirrored item link when tree exists.
+			line.setLinkedRequirementRawId(null);
 		}
 		if (s.attachedRequirements != null)
 		{

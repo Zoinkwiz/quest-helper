@@ -73,9 +73,9 @@ public final class HelperConstructEditorPanel extends JPanel
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
 		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select one or more rows and use Add step / Remove at the bottom right (no in-table remove column). Ctrl/Cmd+N and Ctrl/Cmd+O convert the selected row to an NPC or Object step when focus is not in the filter field. Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
-		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
+		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT) and choose semantics (show when true vs continue when true). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
-		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add requires exactly one non-section row selected on Quest order and attaches default corners plus an order-zone leaf to that row (never creates a new step). You can also add zones only from Quest order → Conditions (Create new zone… / Add zone (slot)). Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
+		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add attaches default corners plus an order-zone leaf to the selected Quest order row; if no row is selected it creates a new generic step + order row with zone routing. You can also add zones from Quest order → Conditions (Create new zone… / Add zone (slot)). Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
 		"7. Build copies generated Java to the clipboard.",
 		"8. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON)."
 	);
@@ -284,8 +284,14 @@ public final class HelperConstructEditorPanel extends JPanel
 			int ord = selectedSingleQuestOrderStepOrderIndexOrNeg1();
 			if (ord < 0)
 			{
+				if (helperConstructManager.addEmptyZoneSlotFromUi())
+				{
+					refresh();
+					return;
+				}
 				JOptionPane.showMessageDialog(this,
-					"",
+					"Could not create a new zone row.\n"
+						+ "Try adding a generic step first, then use Zone reqs Add on that order row.",
 					"Zone reqs",
 					JOptionPane.INFORMATION_MESSAGE);
 				return;
@@ -301,7 +307,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				"Zone reqs",
 				JOptionPane.INFORMATION_MESSAGE);
 		});
-		addZoneSlotButton.setToolTipText("Requires exactly one non-section row selected on Quest order: adds default zone corners and an order-zone leaf to that row (no new step).");
+		addZoneSlotButton.setToolTipText("Adds zone routing to the selected Quest order row; if none is selected, creates a new generic step + order row with default zone corners.");
 		removeZoneSlotButton.addActionListener(e ->
 		{
 			int r = selectedModelRow(zoneReqsTable);
@@ -2555,7 +2561,12 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 			if (row.hasOrderStepRequirementTree())
 			{
-				return row.isCustomOrderStepRequirement() ? "Conditions (custom)…" : "Conditions (set)…";
+				boolean continueMode = row.getOrderConditionMode() == HelperConstructModels.OrderConditionMode.CONTINUE_WHEN_TRUE;
+				if (row.isCustomOrderStepRequirement())
+				{
+					return continueMode ? "Conditions (custom, continue)…" : "Conditions (custom, show)…";
+				}
+				return continueMode ? "Conditions (continue)…" : "Conditions (show)…";
 			}
 			return "Conditions…";
 		}

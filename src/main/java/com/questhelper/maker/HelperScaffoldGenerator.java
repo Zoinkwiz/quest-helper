@@ -24,6 +24,7 @@
  */
 package com.questhelper.maker;
 
+import com.questhelper.maker.HelperConstructModels.OrderConditionMode;
 import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.requirements.util.Operation;
 
@@ -491,15 +492,13 @@ public class HelperScaffoldGenerator
 				String reqVar = requirementVarNamesByRawId != null ? requirementVarNamesByRawId.get(rid) : null;
 				if (reqVar != null)
 				{
-					Integer orderLink = firstConcreteOrderItemLinkForStep(draft, step.getStepId());
-					boolean highlight = a.isAttachmentHighlighted() || (orderLink != null && orderLink.equals(rid));
 					int qty = itemAttachmentQuantityForCodegen(a);
 					out.append("\t\t").append(varName).append(".addRequirement(").append(reqVar);
 					if (qty > 1)
 					{
 						out.append(".quantity(").append(qty).append(")");
 					}
-					out.append(highlight ? ".highlighted()" : "").append(");\n");
+					out.append(a.isAttachmentHighlighted() ? ".highlighted()" : "").append(");\n");
 					continue;
 				}
 				int qty = itemAttachmentQuantityForCodegen(a);
@@ -565,31 +564,6 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	static Integer firstConcreteOrderItemLinkForStep(DraftHelper draft, String stepId)
-	{
-		if (stepId == null || stepId.isBlank())
-		{
-			return null;
-		}
-		for (DraftOrderLine line : draft.getOrder())
-		{
-			if (line.isSectionDivider())
-			{
-				continue;
-			}
-			if (!stepId.equals(line.getRefStepId()))
-			{
-				continue;
-			}
-			Integer o = line.getLinkedRequirementRawId();
-			if (o != null && o != ORDER_ROUTING_VARBIT_SENTINEL)
-			{
-				return o;
-			}
-		}
-		return null;
-	}
-
 	private String requirementExpressionForSlot(
 		OrderedSlot slot,
 		Map<Integer, String> requirementVarNamesByRawId,
@@ -628,7 +602,7 @@ public class HelperScaffoldGenerator
 	{
 		if (slot.orderLine.getStepRequirement() != null)
 		{
-			return OrderStepRequirementSupport.emitSelectorJava(
+			String selectorExpr = OrderStepRequirementSupport.emitSelectorJava(
 				slot.orderLine.getStepRequirement(),
 				slot.orderLine,
 				slot.definition,
@@ -636,6 +610,9 @@ public class HelperScaffoldGenerator
 				varbitFieldByOrderSlotId,
 				zoneFieldByOrderSlotId,
 				warnings);
+			return OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE
+				? "not(" + selectorExpr + ")"
+				: selectorExpr;
 		}
 		return "not(" + requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings) + ")";
 	}
@@ -659,7 +636,9 @@ public class HelperScaffoldGenerator
 				varbitFieldByOrderSlotId,
 				zoneFieldByOrderSlotId,
 				warnings);
-			return "not(" + sel + ")";
+			return OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE
+				? sel
+				: "not(" + sel + ")";
 		}
 		return requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
 	}
@@ -850,7 +829,7 @@ public class HelperScaffoldGenerator
 				sb.append(c);
 			}
 		}
-		return !sb.isEmpty() ? sb.toString() : "slot";
+		return sb.length() != 0 ? sb.toString() : "slot";
 	}
 
 	private DraftStep findDefinition(DraftHelper draft, String stepId)

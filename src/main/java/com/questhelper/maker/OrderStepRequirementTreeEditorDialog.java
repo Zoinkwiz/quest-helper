@@ -489,6 +489,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			combo.addItem(c.getLabel() + " (" + c.getRawId() + ")");
 		}
 		JCheckBox checkBank = new JCheckBox("Also check bank");
+		JCheckBox equipped = new JCheckBox("Must be equipped");
 		JSpinner qty = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
 		JPanel qtyRow = new JPanel(new BorderLayout(6, 0));
 		qtyRow.add(new JLabel("Quantity:"), BorderLayout.WEST);
@@ -497,7 +498,10 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		panel.add(combo, BorderLayout.NORTH);
 		JPanel south = new JPanel(new BorderLayout(0, 6));
 		south.add(qtyRow, BorderLayout.NORTH);
-		south.add(checkBank, BorderLayout.SOUTH);
+		JPanel checks = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+		checks.add(checkBank);
+		checks.add(equipped);
+		south.add(checks, BorderLayout.SOUTH);
 		panel.add(south, BorderLayout.SOUTH);
 		int r = JOptionPane.showConfirmDialog(this, panel, "Pick item requirement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
@@ -510,7 +514,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			return;
 		}
 		int quantity = ((Number) qty.getValue()).intValue();
-		addLeaf(DraftOrderStepRequirement.item(choices.get(idx).getRawId(), checkBank.isSelected(), quantity));
+		addLeaf(DraftOrderStepRequirement.item(choices.get(idx).getRawId(), checkBank.isSelected(), quantity, equipped.isSelected()));
 	}
 
 	private void clearPendingVarbitRouting()
@@ -812,11 +816,12 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			return;
 		}
 		HelperConstructManager.VarbitSlotRow pick = rows.get(idx);
-		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.varbit(
+		stashPendingVarbitRouting(
 			pick.getVarbitId(),
 			pick.getRequiredValue(),
 			pick.getOperation(),
 			pick.getDisplayText());
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.orderVarbitSlot();
 		if (forInvert)
 		{
 			addInvertWithInner(leaf);
@@ -841,11 +846,12 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			return;
 		}
-		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.varbit(
+		stashPendingVarbitRouting(
 			p.varbitId,
 			p.requiredValue,
 			p.operation,
 			p.displayText);
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.orderVarbitSlot();
 		if (forInvert)
 		{
 			addInvertWithInner(leaf);
@@ -1018,6 +1024,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			combo.addItem(ch.getLabel() + " (" + ch.getRawId() + ")");
 		}
 		JCheckBox checkBank = new JCheckBox("Also check bank");
+		JCheckBox equipped = new JCheckBox("Must be equipped");
 		JSpinner qty = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
 		JPanel qtyRow = new JPanel(new BorderLayout(6, 0));
 		qtyRow.add(new JLabel("Quantity:"), BorderLayout.WEST);
@@ -1026,7 +1033,10 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		panel.add(combo, BorderLayout.NORTH);
 		JPanel south = new JPanel(new BorderLayout(0, 6));
 		south.add(qtyRow, BorderLayout.NORTH);
-		south.add(checkBank, BorderLayout.SOUTH);
+		JPanel checks = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+		checks.add(checkBank);
+		checks.add(equipped);
+		south.add(checks, BorderLayout.SOUTH);
 		panel.add(south, BorderLayout.SOUTH);
 		if (JOptionPane.showConfirmDialog(this, panel, "Pick item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION
 			|| combo.getSelectedIndex() < 0)
@@ -1034,7 +1044,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			return;
 		}
 		int quantity = ((Number) qty.getValue()).intValue();
-		addInvertWithInner(DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId(), checkBank.isSelected(), quantity));
+		addInvertWithInner(DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId(), checkBank.isSelected(), quantity, equipped.isSelected()));
 	}
 
 	private void addInvertWithInner(DraftOrderStepRequirement inner)
@@ -1361,6 +1371,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 		combo.setSelectedIndex(sel);
 		JCheckBox checkBank = new JCheckBox("Also check bank", d.isItemAlsoCheckBank());
+		JCheckBox equipped = new JCheckBox("Must be equipped", d.isItemMustBeEquipped());
 		int existingQty = d.getItemQuantity() == null ? 1 : Math.max(1, d.getItemQuantity());
 		JSpinner qty = new JSpinner(new SpinnerNumberModel(existingQty, 1, 100000, 1));
 		JPanel qtyRow = new JPanel(new BorderLayout(6, 0));
@@ -1370,7 +1381,10 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		panel.add(combo, BorderLayout.NORTH);
 		JPanel south = new JPanel(new BorderLayout(0, 6));
 		south.add(qtyRow, BorderLayout.NORTH);
-		south.add(checkBank, BorderLayout.SOUTH);
+		JPanel checks = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+		checks.add(checkBank);
+		checks.add(equipped);
+		south.add(checks, BorderLayout.SOUTH);
 		panel.add(south, BorderLayout.SOUTH);
 		int r = JOptionPane.showConfirmDialog(this, panel, "Captured item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r == JOptionPane.OK_OPTION && combo.getSelectedIndex() >= 0)
@@ -1378,6 +1392,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			d.setItemRawId(choices.get(combo.getSelectedIndex()).getRawId());
 			d.setItemQuantity(((Number) qty.getValue()).intValue());
 			d.setItemAlsoCheckBank(checkBank.isSelected());
+			d.setItemMustBeEquipped(equipped.isSelected());
 			rebuildTree();
 			selectDto(d);
 		}
@@ -1614,7 +1629,9 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			case "ITEM":
 			case "CAPTURED_ITEM":
 				int qty = d.getItemQuantity() == null ? 1 : Math.max(1, d.getItemQuantity());
-				return "Item raw id " + d.getItemRawId() + " x" + qty + (d.isItemAlsoCheckBank() ? " [bank]" : "");
+				return "Item raw id " + d.getItemRawId() + " x" + qty
+					+ (d.isItemAlsoCheckBank() ? " [bank]" : "")
+					+ (d.isItemMustBeEquipped() ? " [equipped]" : "");
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
 				if (pendingVarbitRouting)

@@ -507,6 +507,10 @@ public class HelperScaffoldGenerator
 					{
 						out.append(".quantity(").append(qty).append(")");
 					}
+					if (a.isItemMustBeEquipped())
+					{
+						out.append(".equipped()");
+					}
 					out.append(a.isAttachmentHighlighted() ? ".highlighted()" : "").append(");\n");
 					continue;
 				}
@@ -516,6 +520,10 @@ public class HelperScaffoldGenerator
 				if (qty > 1)
 				{
 					out.append(".quantity(").append(qty).append(")");
+				}
+				if (a.isItemMustBeEquipped())
+				{
+					out.append(".equipped()");
 				}
 				out.append(a.isAttachmentHighlighted() ? ".highlighted()" : "").append(");\n");
 				continue;

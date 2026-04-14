@@ -1398,6 +1398,9 @@ public final class HelperConstructEditorPanel extends JPanel
 		JCheckBox highlightCb = new JCheckBox("Highlight (item attachments only)");
 		highlightCb.setOpaque(false);
 		highlightCb.setForeground(Color.WHITE);
+		JCheckBox equippedCb = new JCheckBox("Equipped");
+		equippedCb.setOpaque(false);
+		equippedCb.setForeground(Color.WHITE);
 		JLabel qtyLabel = new JLabel("Quantity (items):");
 		qtyLabel.setForeground(Color.WHITE);
 		JSpinner qtySpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
@@ -1406,16 +1409,19 @@ public final class HelperConstructEditorPanel extends JPanel
 			HelperConstructManager.StepAttachmentEdit sel = list.getSelectedValue();
 			boolean item = sel != null && "ITEM".equalsIgnoreCase(sel.getKind());
 			highlightCb.setEnabled(item);
+			equippedCb.setEnabled(item);
 			qtyLabel.setEnabled(item);
 			qtySpinner.setEnabled(item);
 			if (item)
 			{
 				highlightCb.setSelected(sel.isItemHighlighted());
+				equippedCb.setSelected(sel.isItemMustBeEquipped());
 				qtySpinner.setValue(Math.max(1, sel.getItemQuantity()));
 			}
 			else
 			{
 				highlightCb.setSelected(false);
+				equippedCb.setSelected(false);
 				qtySpinner.setValue(1);
 			}
 		};
@@ -1432,6 +1438,15 @@ public final class HelperConstructEditorPanel extends JPanel
 			if (sel != null && "ITEM".equalsIgnoreCase(sel.getKind()))
 			{
 				sel.setItemHighlighted(highlightCb.isSelected());
+				list.repaint();
+			}
+		});
+		equippedCb.addActionListener(ev ->
+		{
+			HelperConstructManager.StepAttachmentEdit sel = list.getSelectedValue();
+			if (sel != null && "ITEM".equalsIgnoreCase(sel.getKind()))
+			{
+				sel.setItemMustBeEquipped(equippedCb.isSelected());
 				list.repaint();
 			}
 		});
@@ -1454,6 +1469,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		JPanel itemAttachOpts = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 0));
 		itemAttachOpts.setOpaque(false);
 		itemAttachOpts.add(highlightCb);
+		itemAttachOpts.add(equippedCb);
 		itemAttachOpts.add(qtyLabel);
 		itemAttachOpts.add(qtySpinner);
 

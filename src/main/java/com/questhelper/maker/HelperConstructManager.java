@@ -1550,7 +1550,8 @@ public class HelperConstructManager
 			}
 			String base = requirementDisplayLabelForRawId(edit.getItemRawId());
 			int q = edit.getItemQuantity();
-			return q > 1 ? base + " ×" + q : base;
+			String withQty = q > 1 ? base + " ×" + q : base;
+			return edit.isItemMustBeEquipped() ? withQty + " [equipped]" : withQty;
 		}
 		if (StepAttachmentKind.WIDGET.name().equalsIgnoreCase(edit.getKind()))
 		{
@@ -1764,7 +1765,7 @@ public class HelperConstructManager
 		}
 		int itemId = a.getItemRawId() == null ? 0 : a.getItemRawId();
 		int q = Math.max(a.getItemQuantity(), 1);
-		return StepAttachmentEdit.item(itemId, a.isAttachmentHighlighted(), q);
+		return StepAttachmentEdit.item(itemId, a.isAttachmentHighlighted(), q, a.isItemMustBeEquipped());
 	}
 
 	private static DraftStepAttachedRequirement draftAttachedRequirementFromEdit(StepAttachmentEdit edit)
@@ -1843,7 +1844,7 @@ public class HelperConstructManager
 			return null;
 		}
 		int q = edit.getItemQuantity() < 1 ? 1 : edit.getItemQuantity();
-		return DraftStepAttachedRequirement.item(edit.getItemRawId(), edit.isItemHighlighted(), q);
+		return DraftStepAttachedRequirement.item(edit.getItemRawId(), edit.isItemHighlighted(), q, edit.isItemMustBeEquipped());
 	}
 
 	private DraftStep stepDefinitionAtKindIndexOrNull(StepKind kind, int filteredIndex)
@@ -4914,7 +4915,8 @@ public class HelperConstructManager
 				ItemRequirement base = ir != null ? ir : new ItemRequirement("Item " + id, id);
 				int q = itemAttachmentQuantityOrOne(a);
 				ItemRequirement withQty = q > 1 ? base.quantity(q) : base;
-				reqs.add(a.isAttachmentHighlighted() ? withQty.highlighted() : withQty);
+				ItemRequirement equippedApplied = a.isItemMustBeEquipped() ? withQty.equipped() : withQty;
+				reqs.add(a.isAttachmentHighlighted() ? equippedApplied.highlighted() : equippedApplied);
 			}
 			return reqs;
 		}
@@ -5375,7 +5377,8 @@ public class HelperConstructManager
 				ItemRequirement base = ir != null ? ir : new ItemRequirement("Item " + id, id);
 				int q = itemAttachmentQuantityOrOne(a);
 				ItemRequirement withQty = q > 1 ? base.quantity(q) : base;
-				reqs.add(a.isAttachmentHighlighted() ? withQty.highlighted() : withQty);
+				ItemRequirement equippedApplied = a.isItemMustBeEquipped() ? withQty.equipped() : withQty;
+				reqs.add(a.isAttachmentHighlighted() ? equippedApplied.highlighted() : equippedApplied);
 			}
 			return reqs;
 		}
@@ -5634,6 +5637,8 @@ public class HelperConstructManager
 		private boolean itemHighlighted;
 		@Setter
 		private int itemQuantity;
+		@Setter
+		private boolean itemMustBeEquipped;
 		private final String orderSlotId;
 
 		private StepAttachmentEdit(
@@ -5656,6 +5661,7 @@ public class HelperConstructManager
 			boolean widgetCheckChildren,
 			boolean itemHighlighted,
 			int itemQuantity,
+			boolean itemMustBeEquipped,
 			String orderSlotId)
 		{
 			this.kind = kind;
@@ -5677,6 +5683,7 @@ public class HelperConstructManager
 			this.widgetCheckChildren = widgetCheckChildren;
 			this.itemHighlighted = itemHighlighted;
 			this.itemQuantity = Math.max(itemQuantity, 1);
+			this.itemMustBeEquipped = itemMustBeEquipped;
 			this.orderSlotId = orderSlotId;
 		}
 
@@ -5714,7 +5721,7 @@ public class HelperConstructManager
 			{
 				return null;
 			}
-			return item(o.getItemRawId(), o.isItemHighlighted(), o.getItemQuantity());
+			return item(o.getItemRawId(), o.isItemHighlighted(), o.getItemQuantity(), o.isItemMustBeEquipped());
 		}
 
 		public static StepAttachmentEdit item(int rawId)
@@ -5729,20 +5736,25 @@ public class HelperConstructManager
 
 		public static StepAttachmentEdit item(int rawId, boolean highlighted, int quantity)
 		{
+			return item(rawId, highlighted, quantity, false);
+		}
+
+		public static StepAttachmentEdit item(int rawId, boolean highlighted, int quantity, boolean mustBeEquipped)
+		{
 			int q = Math.max(quantity, 1);
-			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, null, null, null, null, null, false, highlighted, q, null);
+			return new StepAttachmentEdit(StepAttachmentKind.ITEM.name(), rawId, null, null, null, null, null, null, null, null, false, null, null, null, null, null, false, highlighted, q, mustBeEquipped, null);
 		}
 
 		public static StepAttachmentEdit varbit(int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, null, null, null, null, null, false, false, 1, null);
+			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, null, null, null, null, null, false, false, 1, false, null);
 		}
 
 		public static StepAttachmentEdit varbitForOrderSlot(String orderSlotId, int varbitId, int requiredValue, String operation, String displayText)
 		{
 			String op = operation == null || operation.isBlank() ? "EQUAL" : operation.trim();
-			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, null, null, null, null, null, false, false, 1, orderSlotId);
+			return new StepAttachmentEdit(StepAttachmentKind.VARBIT.name(), null, varbitId, requiredValue, op, displayText, null, null, null, null, false, null, null, null, null, null, false, false, 1, false, orderSlotId);
 		}
 
 		public static StepAttachmentEdit skill(String skillName, Integer requiredLevel, String operation, String displayText, boolean canBeBoosted)
@@ -5751,19 +5763,19 @@ public class HelperConstructManager
 			int level = requiredLevel == null ? 1 : Math.max(1, requiredLevel);
 			String op = normalizeOperationName(operation).name();
 			return new StepAttachmentEdit(StepAttachmentKind.SKILL.name(), null, null, null, null, null,
-				skill.name(), level, op, displayText, canBeBoosted, null, null, null, null, null, false, false, 1, null);
+				skill.name(), level, op, displayText, canBeBoosted, null, null, null, null, null, false, false, 1, false, null);
 		}
 
 		public static StepAttachmentEdit widgetByGroupChild(Integer groupId, Integer childId, Integer childChildId)
 		{
 			return new StepAttachmentEdit(StepAttachmentKind.WIDGET.name(), null, null, null, null, null,
-				null, null, null, null, false, groupId, childId, childChildId, null, null, false, false, 1, null);
+				null, null, null, null, false, groupId, childId, childChildId, null, null, false, false, 1, false, null);
 		}
 
 		public static StepAttachmentEdit widgetByItemId(Integer groupId, Integer childId, Integer itemId, boolean checkChildren)
 		{
 			return new StepAttachmentEdit(StepAttachmentKind.WIDGET.name(), null, null, null, null, null,
-				null, null, null, null, false, groupId, childId, null, itemId, null, checkChildren, false, 1, null);
+				null, null, null, null, false, groupId, childId, null, itemId, null, checkChildren, false, 1, false, null);
 		}
 
 		public static StepAttachmentEdit widgetByDialogText(Integer groupId, Integer childId, String requiredText, boolean checkChildren)
@@ -5773,7 +5785,7 @@ public class HelperConstructManager
 				null, null, null, null, false,
 				DialogChoiceStep.DIALOG_WIDGET_GROUP_ID,
 				DialogChoiceStep.DIALOG_WIDGET_CHILD_ID,
-				null, null, text, true, false, 1, null);
+				null, null, text, true, false, 1, false, null);
 		}
 	}
 

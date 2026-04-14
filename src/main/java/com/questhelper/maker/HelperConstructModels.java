@@ -99,6 +99,8 @@ public final class HelperConstructModels
 		 * Ignored for other kinds; persisted as {@code 0} for varbit rows.
 		 */
 		private int itemQuantity;
+		/** When {@code kind} is {@link StepAttachmentKind#ITEM}: whether item must be equipped. */
+		private boolean itemMustBeEquipped;
 		/** When {@code kind} is {@link StepAttachmentKind#WIDGET}: interface group id. */
 		private Integer widgetGroupId;
 		/** When {@code kind} is {@link StepAttachmentKind#WIDGET}: interface child id. */
@@ -137,6 +139,13 @@ public final class HelperConstructModels
 			d.setItemRawId(rawId);
 			d.setAttachmentHighlighted(attachmentHighlighted);
 			d.setItemQuantity(q);
+			return d;
+		}
+
+		public static DraftStepAttachedRequirement item(int rawId, boolean attachmentHighlighted, int itemQuantity, boolean itemMustBeEquipped)
+		{
+			DraftStepAttachedRequirement d = item(rawId, attachmentHighlighted, itemQuantity);
+			d.setItemMustBeEquipped(itemMustBeEquipped);
 			return d;
 		}
 
@@ -356,6 +365,7 @@ public final class HelperConstructModels
 		private Integer itemRawId;
 		private Integer itemQuantity;
 		private boolean itemAlsoCheckBank;
+		private boolean itemMustBeEquipped;
 		private Integer varbitId;
 		private Integer varbitRequiredValue;
 		private String varbitOperation;
@@ -425,11 +435,17 @@ public final class HelperConstructModels
 
 		public static DraftOrderStepRequirement item(int rawId, boolean alsoCheckBank, int quantity)
 		{
+			return item(rawId, alsoCheckBank, quantity, false);
+		}
+
+		public static DraftOrderStepRequirement item(int rawId, boolean alsoCheckBank, int quantity, boolean mustBeEquipped)
+		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
 			n.setKind("ITEM");
 			n.setItemRawId(rawId);
 			n.setItemQuantity(Math.max(1, quantity));
 			n.setItemAlsoCheckBank(alsoCheckBank);
+			n.setItemMustBeEquipped(mustBeEquipped);
 			return n;
 		}
 

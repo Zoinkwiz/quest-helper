@@ -170,6 +170,7 @@ public final class ConstructDraftPersistence
 				st.skillCanBeBoosted = a.isSkillCanBeBoosted();
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
 				st.itemQuantity = a.getItemQuantity();
+				st.itemMustBeEquipped = a.isItemMustBeEquipped();
 				st.orderSlotId = a.getOrderSlotId();
 				st.widgetGroupId = a.getWidgetGroupId();
 				st.widgetChildId = a.getWidgetChildId();
@@ -230,6 +231,7 @@ public final class ConstructDraftPersistence
 				st.skillCanBeBoosted = a.isSkillCanBeBoosted();
 				st.attachmentHighlighted = a.isAttachmentHighlighted();
 				st.itemQuantity = a.getItemQuantity();
+				st.itemMustBeEquipped = a.isItemMustBeEquipped();
 				st.orderSlotId = a.getOrderSlotId();
 				st.widgetGroupId = a.getWidgetGroupId();
 				st.widgetChildId = a.getWidgetChildId();
@@ -330,6 +332,7 @@ public final class ConstructDraftPersistence
 			d.setSkillCanBeBoosted(st.skillCanBeBoosted);
 			d.setAttachmentHighlighted(st.attachmentHighlighted);
 			d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
+			d.setItemMustBeEquipped(st.itemMustBeEquipped);
 			d.setOrderSlotId(st.orderSlotId);
 			d.setWidgetGroupId(st.widgetGroupId);
 			d.setWidgetChildId(st.widgetChildId);
@@ -398,6 +401,7 @@ public final class ConstructDraftPersistence
 				d.setSkillCanBeBoosted(st.skillCanBeBoosted);
 				d.setAttachmentHighlighted(st.attachmentHighlighted);
 				d.setItemQuantity(normalizePersistedItemQuantity(st.kind, st.itemQuantity));
+				d.setItemMustBeEquipped(st.itemMustBeEquipped);
 				d.setOrderSlotId(st.orderSlotId);
 				d.setWidgetGroupId(st.widgetGroupId);
 				d.setWidgetChildId(st.widgetChildId);
@@ -479,6 +483,7 @@ public final class ConstructDraftPersistence
 		public boolean attachmentHighlighted;
 		/** When {@code kind} is ITEM: required quantity ({@code >= 1}); omitted or {@code null} in old JSON defaults to 1. */
 		public Integer itemQuantity;
+		public boolean itemMustBeEquipped;
 		public String orderSlotId;
 		public Integer widgetGroupId;
 		public Integer widgetChildId;

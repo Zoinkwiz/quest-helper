@@ -895,6 +895,10 @@ public final class OrderStepRequirementSupport
 				{
 					out = out.quantity(qty);
 				}
+				if (node.isItemMustBeEquipped())
+				{
+					out = out.equipped();
+				}
 				return node.isItemAlsoCheckBank() ? out.alsoCheckBank() : out;
 			}
 			case "ORDER_VARBIT":
@@ -1104,6 +1108,10 @@ public final class OrderStepRequirementSupport
 				}
 				int qty = node.getItemQuantity() == null ? 1 : Math.max(1, node.getItemQuantity());
 				String expr = qty > 1 ? v + ".quantity(" + qty + ")" : v;
+				if (node.isItemMustBeEquipped())
+				{
+					expr = expr + ".equipped()";
+				}
 				return node.isItemAlsoCheckBank() ? expr + ".alsoCheckBank()" : expr;
 			}
 			case "ORDER_VARBIT":

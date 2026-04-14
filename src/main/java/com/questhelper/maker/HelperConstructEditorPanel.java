@@ -128,14 +128,16 @@ public final class HelperConstructEditorPanel extends JPanel
 		header.add(titleRow, BorderLayout.NORTH);
 
 		JButton buildButton = new JButton("Build code");
+		JButton previewButton = new JButton("Preview");
 		JButton resetButton = new JButton("Reset");
 		worldMapRouteButton = new JButton("WorldMap");
 		routeRevealButton = new JButton("Route reveal");
 		JButton exportJsonButton = new JButton("Export \u25be");
 		JButton importJsonButton = new JButton("Import \u25be");
-		applyMakerToolbarStyle(buildButton, resetButton, worldMapRouteButton, routeRevealButton,
+		applyMakerToolbarStyle(buildButton, previewButton, resetButton, worldMapRouteButton, routeRevealButton,
 			exportJsonButton, importJsonButton);
 		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
+		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
 		resetButton.setToolTipText("Clear the draft and reset the auto-saved maker file (asks for confirmation).");
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
 		routeRevealButton.setToolTipText("Open/close a small slider to reveal ordered world map route steps progressively.");
@@ -166,6 +168,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			syncWorldMapRouteButtonLabel();
 		});
 		routeRevealButton.addActionListener(e -> toggleRouteRevealDialog());
+		previewButton.addActionListener(e -> helperConstructManager.previewInSidebarFromUi());
 		exportJsonButton.addActionListener(e -> showExportMenu(exportJsonButton));
 		importJsonButton.addActionListener(e -> showImportMenu(importJsonButton));
 
@@ -174,6 +177,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		makerToolbarChain.add(exportJsonButton);
 		makerToolbarChain.add(newToolbarSeparator());
 		makerToolbarChain.add(buildButton);
+		makerToolbarChain.add(previewButton);
 		makerToolbarChain.add(resetButton);
 		makerToolbarChain.add(worldMapRouteButton);
 		makerToolbarChain.add(routeRevealButton);

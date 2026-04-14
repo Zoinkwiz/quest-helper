@@ -77,6 +77,29 @@ public final class ConstructStepKindHandlers
 		return out;
 	}
 
+	private static int[] positiveNpcObjectIds(DraftStep d)
+	{
+		int[] merged = mergedNpcObjectIds(d);
+		int count = 0;
+		for (int id : merged)
+		{
+			if (id > 0)
+			{
+				count++;
+			}
+		}
+		int[] out = new int[count];
+		int at = 0;
+		for (int id : merged)
+		{
+			if (id > 0)
+			{
+				out[at++] = id;
+			}
+		}
+		return out;
+	}
+
 	public static ConstructStepKindHandler forStepKind(StepKind kind)
 	{
 		return BY_KIND.get(kind);
@@ -236,8 +259,20 @@ public final class ConstructStepKindHandlers
 		public QuestStep buildPreviewQuestStep(ConstructPreviewStepParams p)
 		{
 			DraftStep d = p.draftStep();
-			int[] ids = mergedNpcObjectIds(d);
+			int[] ids = positiveNpcObjectIds(d);
 			WorldPoint wp = d.getWorldPoint();
+			if (ids.length == 0)
+			{
+				if (wp != null)
+				{
+					return new DetailedQuestStep(p.questHelper(), wp, p.instruction(), p.extrasArr());
+				}
+				if (p.extrasArr().length == 0)
+				{
+					return new DetailedQuestStep(p.questHelper(), p.instruction());
+				}
+				return new DetailedQuestStep(p.questHelper(), p.instruction(), p.extrasArr());
+			}
 			return new NpcStep(p.questHelper(), ids, wp, p.instruction(), true, p.extrasArr());
 		}
 
@@ -276,7 +311,19 @@ public final class ConstructStepKindHandlers
 		public QuestStep buildPreviewQuestStep(ConstructPreviewStepParams p)
 		{
 			DraftStep d = p.draftStep();
-			int[] ids = mergedNpcObjectIds(d);
+			int[] ids = positiveNpcObjectIds(d);
+			if (ids.length == 0)
+			{
+				if (d.getWorldPoint() != null)
+				{
+					return new DetailedQuestStep(p.questHelper(), d.getWorldPoint(), p.instruction(), p.extrasArr());
+				}
+				if (p.extrasArr().length == 0)
+				{
+					return new DetailedQuestStep(p.questHelper(), p.instruction());
+				}
+				return new DetailedQuestStep(p.questHelper(), p.instruction(), p.extrasArr());
+			}
 			if (d.getWorldPoint() != null)
 			{
 				ObjectStep s = new ObjectStep(p.questHelper(), ids[0], d.getWorldPoint(), p.instruction(), true, p.extrasArr());

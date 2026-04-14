@@ -2165,10 +2165,10 @@ public class HelperConstructManager
 					null,
 					"",
 					false,
-					OrderConditionMode.SHOW_WHEN_TRUE,
+					effectiveOrderConditionMode(line),
 					false,
-					false,
-					false));
+					isCustomSectionConditionTree(line),
+					line.getStepRequirement() != null));
 				continue;
 			}
 			DraftStep def = findDefinitionByStepId(line.getRefStepId());
@@ -2454,10 +2454,6 @@ public class HelperConstructManager
 			return "";
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
-		if (line.isSectionDivider())
-		{
-			return "";
-		}
 		DraftOrderStepRequirement t = line.getStepRequirement();
 		if (t == null)
 		{
@@ -2475,10 +2471,6 @@ public class HelperConstructManager
 			return null;
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
-		if (line.isSectionDivider())
-		{
-			return null;
-		}
 		DraftOrderStepRequirement t = line.getStepRequirement();
 		if (t == null)
 		{
@@ -2517,10 +2509,6 @@ public class HelperConstructManager
 			return "Invalid order row.";
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
-		if (line.isSectionDivider())
-		{
-			return "Not an order step row.";
-		}
 		line.setStepRequirementMode(mode == null ? OrderConditionMode.CONTINUE_WHEN_TRUE : mode);
 		saveDraftToConfig();
 		return null;
@@ -2555,10 +2543,6 @@ public class HelperConstructManager
 			return "Invalid order row.";
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
-		if (line.isSectionDivider())
-		{
-			return "Not an order step row.";
-		}
 		if (tree == null)
 		{
 			line.setStepRequirement(null);
@@ -2583,6 +2567,37 @@ public class HelperConstructManager
 		line.setLinkedRequirementRawId(null);
 		saveDraftToConfig();
 		return null;
+	}
+
+	public boolean isOrderRowSectionDivider(int orderIndex)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return false;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		return line != null && line.isSectionDivider();
+	}
+
+	private static boolean isCustomSectionConditionTree(DraftOrderLine line)
+	{
+		if (line == null || line.getStepRequirement() == null)
+		{
+			return false;
+		}
+		DraftOrderStepRequirement tree = line.getStepRequirement();
+		if (!"GROUP".equalsIgnoreCase(tree.getKind()))
+		{
+			return true;
+		}
+		String logic = tree.getLogic();
+		if (!"AND".equalsIgnoreCase(logic))
+		{
+			return true;
+		}
+		List<DraftOrderStepRequirement> children = tree.getChildren();
+		return children != null && !children.isEmpty();
 	}
 
 	private static OrderConditionMode effectiveOrderConditionMode(DraftOrderLine line)
@@ -4639,8 +4654,10 @@ public class HelperConstructManager
 
 			List<ConditionalStep> sectionTasks = new ArrayList<>();
 			List<Requirement> sectionCompletionRequirements = new ArrayList<>();
+			List<DraftOrderLine> sectionDividerLines = new ArrayList<>();
 			List<PreviewStepEntry> currentSectionEntries = new ArrayList<>();
 			String currentPanelName = "Captured Steps";
+			DraftOrderLine currentSectionDivider = null;
 
 			for (DraftOrderLine orderLine : draft.getOrder())
 			{
@@ -4650,11 +4667,13 @@ public class HelperConstructManager
 					if (sectionTask != null)
 					{
 						sectionCompletionRequirements.add(buildSectionCompletionRequirement(currentSectionEntries, sectionTask));
+						sectionDividerLines.add(currentSectionDivider);
 						addPanelWithLockingStep(currentPanelName, currentSectionEntries, sectionTask);
 						sectionTasks.add(sectionTask);
 					}
 					String sectionName = orderLine.getSuggestedVarName();
 					currentPanelName = (sectionName == null || sectionName.isBlank()) ? "Section" : sectionName;
+					currentSectionDivider = orderLine;
 					continue;
 				}
 
@@ -4674,6 +4693,7 @@ public class HelperConstructManager
 				if (sectionTask != null)
 				{
 					sectionCompletionRequirements.add(buildSectionCompletionRequirement(currentSectionEntries, sectionTask));
+					sectionDividerLines.add(currentSectionDivider);
 					addPanelWithLockingStep(currentPanelName, currentSectionEntries, sectionTask);
 					sectionTasks.add(sectionTask);
 				}
@@ -4707,12 +4727,16 @@ public class HelperConstructManager
 			List<Requirement> priorSectionCompletionRequirements = new ArrayList<>();
 			for (int i = 0; i < lastSectionIndex; i++)
 			{
-				Requirement currentSectionIncomplete = not(sectionCompletionRequirements.get(i));
+				Requirement sectionCompletion = sectionCompletionRequirements.get(i);
+				Requirement completionForProgression = sectionCompletionWithDividerCondition(sectionDividerLines.get(i), sectionCompletion, requirementById);
+				Requirement currentSectionIncomplete = not(completionForProgression);
+				Requirement dividerGate = sectionGateFromDividerCondition(sectionDividerLines.get(i), currentSectionIncomplete, requirementById);
+				Requirement currentSectionGate = dividerGate != null ? dividerGate : currentSectionIncomplete;
 				Requirement sectionGate = priorSectionCompletionRequirements.isEmpty()
-					? currentSectionIncomplete
-					: and(and(priorSectionCompletionRequirements.toArray(new Requirement[0])), currentSectionIncomplete);
+					? currentSectionGate
+					: and(and(priorSectionCompletionRequirements.toArray(new Requirement[0])), currentSectionGate);
 				allSections.addStep(sectionGate, sectionTasks.get(i));
-				priorSectionCompletionRequirements.add(sectionCompletionRequirements.get(i));
+				priorSectionCompletionRequirements.add(completionForProgression);
 			}
 
 			return allSections;
@@ -4766,6 +4790,58 @@ public class HelperConstructManager
 				return stepCompletion;
 			}
 			return or(stepCompletion, new PreviewSectionLockedRequirement(sectionTask));
+		}
+
+		private Requirement sectionGateFromDividerCondition(
+			DraftOrderLine dividerLine,
+			Requirement sectionIncomplete,
+			Map<Integer, ItemRequirement> requirementById)
+		{
+			if (dividerLine == null || dividerLine.getStepRequirement() == null || sectionIncomplete == null)
+			{
+				return null;
+			}
+			Requirement selector = OrderStepRequirementSupport.buildRuntimeSelector(
+				dividerLine.getStepRequirement(),
+				dividerLine,
+				null,
+				requirementById);
+			if (selector == null)
+			{
+				return null;
+			}
+			OrderConditionMode mode = OrderStepRequirementSupport.effectiveConditionMode(dividerLine);
+			if (mode == OrderConditionMode.CONTINUE_WHEN_TRUE)
+			{
+				return null;
+			}
+			return and(selector, sectionIncomplete);
+		}
+
+		private Requirement sectionCompletionWithDividerCondition(
+			DraftOrderLine dividerLine,
+			Requirement sectionCompletion,
+			Map<Integer, ItemRequirement> requirementById)
+		{
+			if (dividerLine == null || dividerLine.getStepRequirement() == null || sectionCompletion == null)
+			{
+				return sectionCompletion;
+			}
+			Requirement selector = OrderStepRequirementSupport.buildRuntimeSelector(
+				dividerLine.getStepRequirement(),
+				dividerLine,
+				null,
+				requirementById);
+			if (selector == null)
+			{
+				return sectionCompletion;
+			}
+			OrderConditionMode mode = OrderStepRequirementSupport.effectiveConditionMode(dividerLine);
+			if (mode == OrderConditionMode.CONTINUE_WHEN_TRUE)
+			{
+				return or(sectionCompletion, selector);
+			}
+			return sectionCompletion;
 		}
 
 		private class PreviewSectionLockedRequirement implements Requirement

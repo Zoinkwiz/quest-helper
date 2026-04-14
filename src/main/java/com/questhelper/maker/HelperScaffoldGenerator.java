@@ -275,10 +275,18 @@ public class HelperScaffoldGenerator
 			for (int i = 0; i < nonEmptySectionGroups.size() - 1; i++)
 			{
 				SectionGroup group = nonEmptySectionGroups.get(i);
-				String sectionRequirementExpression = group.slots.stream()
+				String sectionCompletionExpression = group.slots.stream()
 					.map(slot -> sectionNorCompletionExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, zoneFieldByOrderSlotId, manualFieldByOrderSlotId, warnings))
 					.collect(Collectors.joining(", "));
-				out.append("\t\tallSections.addStep(nor(").append(sectionRequirementExpression).append("), ")
+				String sectionIncompleteExpression = "nor(" + sectionCompletionExpression + ")";
+				String sectionGateExpr = sectionGateExpressionForGroup(
+					group,
+					sectionIncompleteExpression,
+					requirementVarNamesByRawId,
+					varbitFieldByOrderSlotId,
+					zoneFieldByOrderSlotId,
+					warnings);
+				out.append("\t\tallSections.addStep(").append(sectionGateExpr).append(", ")
 					.append(sectionTaskNames.get(group)).append(");\n");
 			}
 			out.append("\t\treturn allSections;\n");
@@ -679,6 +687,38 @@ public class HelperScaffoldGenerator
 				: "not(" + sel + ")";
 		}
 		return requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
+	}
+
+	private String sectionGateExpressionForGroup(
+		SectionGroup group,
+		String sectionIncompleteExpression,
+		Map<Integer, String> requirementVarNamesByRawId,
+		Map<String, String> varbitFieldByOrderSlotId,
+		Map<String, String> zoneFieldByOrderSlotId,
+		List<String> warnings)
+	{
+		if (group == null || group.divider == null || group.divider.getStepRequirement() == null)
+		{
+			return sectionIncompleteExpression;
+		}
+		String selector = OrderStepRequirementSupport.emitSelectorJava(
+			group.divider.getStepRequirement(),
+			group.divider,
+			null,
+			requirementVarNamesByRawId,
+			varbitFieldByOrderSlotId,
+			zoneFieldByOrderSlotId,
+			warnings);
+		if (selector == null || selector.isBlank())
+		{
+			return sectionIncompleteExpression;
+		}
+		OrderConditionMode mode = OrderStepRequirementSupport.effectiveConditionMode(group.divider);
+		if (mode == OrderConditionMode.CONTINUE_WHEN_TRUE)
+		{
+			return "and(not(" + selector + "), " + sectionIncompleteExpression + ")";
+		}
+		return "and(" + selector + ", " + sectionIncompleteExpression + ")";
 	}
 
 	public static String varbitFieldNameForOrderSlot(

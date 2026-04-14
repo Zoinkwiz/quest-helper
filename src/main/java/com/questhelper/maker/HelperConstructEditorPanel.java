@@ -2378,14 +2378,6 @@ public final class HelperConstructEditorPanel extends JPanel
 			public TableCellEditor getCellEditor(int row, int column)
 			{
 				int mRow = convertRowIndexToModel(row);
-				if (column == 1)
-				{
-					var entry = stepOrderTableModel.getRow(mRow);
-					if (entry != null && entry.isSectionDivider())
-					{
-						return new DefaultCellEditor(new JTextField());
-					}
-				}
 				if (column == 2)
 				{
 					var entry = stepOrderTableModel.getRow(mRow);
@@ -2426,7 +2418,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				}
 				int mRow = orderTable.convertRowIndexToModel(vRow);
 				var entry = stepOrderTableModel.getRow(mRow);
-				if (entry == null || entry.isSectionDivider())
+				if (entry == null)
 				{
 					return;
 				}
@@ -3145,7 +3137,16 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 			if (row.isSectionDivider())
 			{
-				return row.getSectionCondition() == null ? "" : row.getSectionCondition();
+				if (row.hasOrderStepRequirementTree())
+				{
+					boolean continueMode = row.getOrderConditionMode() == HelperConstructModels.OrderConditionMode.CONTINUE_WHEN_TRUE;
+					if (row.isCustomOrderStepRequirement())
+					{
+						return continueMode ? "Conditions (custom, continue)…" : "Conditions (custom, show)…";
+					}
+					return continueMode ? "Conditions (continue)…" : "Conditions (show)…";
+				}
+				return "Conditions…";
 			}
 			if (row.hasOrderStepRequirementTree())
 			{
@@ -3182,7 +3183,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			}
 			if (columnIndex == 1)
 			{
-				return row.isSectionDivider();
+				return false;
 			}
 			return false;
 		}
@@ -3204,11 +3205,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				setRows(helperConstructManager.getCombinedStepRows());
 				return;
 			}
-			if (columnIndex == 1 && row.isSectionDivider())
-			{
-				helperConstructManager.updateSectionCondition(row.getIndex(), updatedVarName);
-				setRows(helperConstructManager.getCombinedStepRows());
-			}
+			// Conditions are edited via the dedicated conditions editor dialog.
 		}
 
 		void setRows(List<HelperConstructManager.CombinedStepRow> updatedRows)

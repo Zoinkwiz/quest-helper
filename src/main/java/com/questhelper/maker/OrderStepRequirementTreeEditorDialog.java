@@ -87,6 +87,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	private final JTree tree;
 	private final JComboBox<OrderConditionMode> modeCombo;
 	private final JCheckBox passOnceCompletedCheck;
+	private final boolean sectionDividerRow;
 	private boolean accepted;
 
 	private OrderStepRequirementTreeEditorDialog(
@@ -99,6 +100,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		super(owner, "Order requirement — " + rowLabel, ModalityType.APPLICATION_MODAL);
 		this.manager = manager;
 		this.orderIndex = orderIndex;
+		this.sectionDividerRow = manager.isOrderRowSectionDivider(orderIndex);
 		this.rootDto = initialClone;
 		clearPendingVarbitRouting();
 		OrderConditionMode initialMode = manager.getOrderStepRequirementMode(orderIndex);
@@ -183,6 +185,12 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		passOnceCompletedCheck.setSelected(initialPassOnceCompleted);
 		passOnceCompletedCheck.setToolTipText("When this row is completed once, auto-tick its sidebar skip and keep it passed.");
 		passOnceCompletedCheck.setOpaque(false);
+		if (sectionDividerRow)
+		{
+			passOnceCompletedCheck.setSelected(false);
+			passOnceCompletedCheck.setEnabled(false);
+			passOnceCompletedCheck.setToolTipText("Not applicable to section rows.");
+		}
 
 		setOverflowHandler(addReq, anchor -> reqMenu.show(anchor, 0, anchor.getHeight()));
 		setOverflowHandler(addLogic, anchor -> logicMenu.show(anchor, 0, anchor.getHeight()));
@@ -1461,11 +1469,14 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			JOptionPane.showMessageDialog(this, modeErr, "Could not save", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		String passOnceErr = manager.applyOrderStepPassOnceCompletedOnce(orderIndex, passOnceCompletedCheck.isSelected());
-		if (passOnceErr != null)
+		if (!sectionDividerRow)
 		{
-			JOptionPane.showMessageDialog(this, passOnceErr, "Could not save", JOptionPane.ERROR_MESSAGE);
-			return;
+			String passOnceErr = manager.applyOrderStepPassOnceCompletedOnce(orderIndex, passOnceCompletedCheck.isSelected());
+			if (passOnceErr != null)
+			{
+				JOptionPane.showMessageDialog(this, passOnceErr, "Could not save", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 		accepted = true;
 		dispose();

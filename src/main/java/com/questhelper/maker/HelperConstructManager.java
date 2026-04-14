@@ -651,11 +651,6 @@ public class HelperConstructManager
 	private void addStep(StepKind kind, int rawId, String option, String target, WorldPoint clickedWorldPoint)
 	{
 		ensureDraftLoaded();
-		if (isDuplicateStep(kind, rawId, target, clickedWorldPoint))
-		{
-			sendGameMessage("Quest Helper Construct: skipped duplicate " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + ").");
-			return;
-		}
 
 		DraftStep step = new DraftStep();
 		step.setStepId(UUID.randomUUID().toString());

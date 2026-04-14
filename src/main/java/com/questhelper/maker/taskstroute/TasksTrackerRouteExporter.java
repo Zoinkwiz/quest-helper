@@ -51,6 +51,11 @@ public final class TasksTrackerRouteExporter
 {
 	public static TasksTrackerRouteDto export(DraftHelper draft)
 	{
+		return export(draft, true);
+	}
+
+	public static TasksTrackerRouteDto export(DraftHelper draft, boolean includeMakerSnapshot)
+	{
 		TasksTrackerRouteDto route = new TasksTrackerRouteDto();
 		route.setName(trimOrDefault(draft.getQuestName(), "Exported Route"));
 		route.setTaskType("LEAGUE_5");
@@ -103,7 +108,7 @@ public final class TasksTrackerRouteExporter
 		sections.add(current);
 
 		route.setSections(sections);
-		route.setQuestHelperMaker(ConstructDraftPersistence.toDraftState(draft));
+		route.setQuestHelperMaker(includeMakerSnapshot ? ConstructDraftPersistence.toDraftState(draft) : null);
 		return route;
 	}
 

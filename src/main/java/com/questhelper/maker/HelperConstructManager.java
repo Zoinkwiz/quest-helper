@@ -26,6 +26,7 @@ package com.questhelper.maker;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
@@ -33,11 +34,13 @@ import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteItemDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteSectionDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteExporter;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteImporter;
-import com.questhelper.maker.taskstroute.TasksTrackerRouteValidation;
 import com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.maker.construct.ConstructMenuCapture;
 import com.questhelper.maker.construct.MakerDraftFileStore;
+import com.questhelper.maker.construct.MakerImportFormatAdapter;
+import com.questhelper.maker.construct.MakerImportFormatAdapter.AdaptedImport;
+import com.questhelper.maker.construct.MakerImportFormatAdapter.ImportSourceFormat;
 import com.questhelper.maker.construct.MakerDraftJsonLoader;
 import com.questhelper.maker.construct.MakerPreviewRuntime;
 import com.google.inject.Binder;
@@ -101,7 +104,6 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
@@ -206,26 +208,46 @@ public class HelperConstructManager
 	/**
 	 * Result of {@link #importDraftFromJson(String)}.
 	 */
+	public enum ImportMode
+	{
+		FULL_FRESH,
+		ORDER_ONLY,
+		DATA_ONLY
+	}
+
+	public enum ExportFormat
+	{
+		QH_FORMAT,
+		LEAGUE_ROUTE
+	}
+
 	@Getter
 	public static final class ImportDraftResult
 	{
 		private final boolean success;
 		private final String errorMessage;
+		private final String infoMessage;
 
-		private ImportDraftResult(boolean success, String errorMessage)
+		private ImportDraftResult(boolean success, String errorMessage, String infoMessage)
 		{
 			this.success = success;
 			this.errorMessage = errorMessage;
+			this.infoMessage = infoMessage;
 		}
 
 		public static ImportDraftResult ok()
 		{
-			return new ImportDraftResult(true, null);
+			return new ImportDraftResult(true, null, null);
+		}
+
+		public static ImportDraftResult ok(String infoMessage)
+		{
+			return new ImportDraftResult(true, null, infoMessage);
 		}
 
 		public static ImportDraftResult failure(String message)
 		{
-			return new ImportDraftResult(false, message == null ? "Unknown error" : message);
+			return new ImportDraftResult(false, message == null ? "Unknown error" : message, null);
 		}
 
 	}
@@ -690,36 +712,6 @@ public class HelperConstructManager
 		buildToClipboard();
 	}
 
-	public void buildRouteMapImageFromUi()
-	{
-		ensureDraftLoaded();
-		List<WorldPoint> points = new ArrayList<>();
-		for (DraftStep step : expandOrderToDefinitionsInOrder())
-		{
-			if (step.getWorldPoint() != null)
-			{
-				points.add(step.getWorldPoint());
-			}
-		}
-
-		if (points.size() < 2)
-		{
-			sendGameMessage("Quest Helper Construct: need at least 2 steps with world points to generate route image.");
-			return;
-		}
-
-		try
-		{
-			RouteImageResult result = writeRouteImage(points);
-			sendGameMessage("Quest Helper Construct: route map image saved to " + result.file.getAbsolutePath()
-				+ " (drawn " + result.drawnCount + ", skipped " + result.skippedCount + ").");
-		}
-		catch (IOException ex)
-		{
-			sendGameMessage("Quest Helper Construct: failed to save route map image (" + ex.getMessage() + ").");
-		}
-	}
-
 	public void previewInSidebarFromUi()
 	{
 		ensureDraftLoaded();
@@ -924,6 +916,23 @@ public class HelperConstructManager
 	public List<String> getStepVarNames(ConstructStepKind kind)
 	{
 		return getStepVarNamesByKind(kind.stepKind());
+	}
+
+	public List<Boolean> getStepLeagueFlags(ConstructStepKind kind)
+	{
+		ensureDraftLoaded();
+		List<Boolean> out = new ArrayList<>();
+		StepKind targetKind = kind.stepKind();
+		for (DraftStep step : currentDraft.getStepDefinitions())
+		{
+			if (step.getKind() != targetKind)
+			{
+				continue;
+			}
+			Integer structId = step.getStructId();
+			out.add(structId != null && structId != 0);
+		}
+		return Collections.unmodifiableList(out);
 	}
 
 	private List<String> getStepVarNamesByKind(StepKind kind)
@@ -1721,6 +1730,7 @@ public class HelperConstructManager
 					null,
 					"",
 					false,
+					false,
 					false));
 				continue;
 			}
@@ -1738,6 +1748,7 @@ public class HelperConstructManager
 					false,
 					line.getLinkedRequirementRawId(),
 					"",
+					false,
 					isNonDefaultOrderStepRequirementTree(line, def),
 					line.getStepRequirement() != null));
 				continue;
@@ -1759,6 +1770,7 @@ public class HelperConstructManager
 				false,
 				line.getLinkedRequirementRawId(),
 				instr == null ? "" : instr,
+				def.getStructId() != null && def.getStructId() != 0,
 				isNonDefaultOrderStepRequirementTree(line, def),
 				line.getStepRequirement() != null));
 		}
@@ -3166,9 +3178,15 @@ public class HelperConstructManager
 	 */
 	public String exportDraftJson()
 	{
+		return exportDraftJson(ExportFormat.QH_FORMAT);
+	}
+
+	public String exportDraftJson(ExportFormat format)
+	{
 		ensureDraftLoaded();
 		reconcileOrderSlotRoutingAttachments();
-		return prettyDraftGson.toJson(TasksTrackerRouteExporter.export(currentDraft));
+		boolean includeMakerSnapshot = format != ExportFormat.LEAGUE_ROUTE;
+		return prettyDraftGson.toJson(TasksTrackerRouteExporter.export(currentDraft, includeMakerSnapshot));
 	}
 
 	/**
@@ -3176,20 +3194,7 @@ public class HelperConstructManager
 	 */
 	public ImportDraftResult importDraftFromJson(String json)
 	{
-		ensureDraftLoaded();
-		MakerDraftJsonLoader.LoadOutcome outcome = MakerDraftJsonLoader.loadDraftFromJson(json, gson);
-		if (!outcome.isSuccess())
-		{
-			return ImportDraftResult.failure(outcome.getErrorMessage());
-		}
-		currentDraft = outcome.getDraft();
-		reconcileOrderSlotRoutingAttachments();
-		saveDraftToConfig();
-		if (worldMapRoutePreviewEnabled)
-		{
-			rebuildWorldMapRoutePoints();
-		}
-		return ImportDraftResult.ok();
+		return importFromJson(json, ImportMode.FULL_FRESH);
 	}
 
 	/**
@@ -3197,7 +3202,7 @@ public class HelperConstructManager
 	 */
 	public String exportTasksTrackerRouteJson()
 	{
-		return exportDraftJson();
+		return exportDraftJson(ExportFormat.LEAGUE_ROUTE);
 	}
 
 	/**
@@ -3206,7 +3211,31 @@ public class HelperConstructManager
 	 */
 	public ImportDraftResult importTasksTrackerRouteFromJson(String routeJson)
 	{
-		return importDraftFromJson(routeJson);
+		return importFromJson(routeJson, ImportMode.FULL_FRESH);
+	}
+
+	public ImportDraftResult importFromJson(String json, ImportMode mode)
+	{
+		ensureDraftLoaded();
+		AdaptedImport adapted = MakerImportFormatAdapter.adapt(json, gson);
+		if (!adapted.isSuccess())
+		{
+			return ImportDraftResult.failure(adapted.getErrorMessage());
+		}
+		TasksTrackerRouteDto route = adapted.getRoute();
+		Map<Integer, JsonObject> hubByStructId = adapted.getHubByStructId();
+
+		switch (mode)
+		{
+			case FULL_FRESH:
+				return importFullFresh(json, adapted, route, hubByStructId);
+			case ORDER_ONLY:
+				return importOrderOnly(route, hubByStructId, adapted.getSourceFormat());
+			case DATA_ONLY:
+				return importDataOnly(route, hubByStructId, adapted.getSourceFormat());
+			default:
+				return ImportDraftResult.failure("Unsupported import mode");
+		}
 	}
 
 	/**
@@ -3215,35 +3244,64 @@ public class HelperConstructManager
 	 */
 	public ImportDraftResult mergeOrderFromJson(String json)
 	{
-		ensureDraftLoaded();
-		MakerDraftJsonLoader.LoadOutcome outcome = MakerDraftJsonLoader.loadDraftFromJson(json, gson);
-		if (!outcome.isSuccess())
+		return importFromJson(json, ImportMode.ORDER_ONLY);
+	}
+
+	private ImportDraftResult importFullFresh(
+		String rawJson,
+		AdaptedImport adapted,
+		TasksTrackerRouteDto route,
+		Map<Integer, JsonObject> hubByStructId)
+	{
+		DraftHelper nextDraft;
+		if (adapted.getSourceFormat() == ImportSourceFormat.QH_EXTENDED_ROUTE
+			&& ConstructDraftPersistence.isSupportedMakerSnapshot(route.getQuestHelperMaker()))
 		{
-			return ImportDraftResult.failure(outcome.getErrorMessage());
+			MakerDraftJsonLoader.LoadOutcome outcome = MakerDraftJsonLoader.loadDraftFromJson(rawJson, gson);
+			if (!outcome.isSuccess())
+			{
+				return ImportDraftResult.failure(outcome.getErrorMessage());
+			}
+			nextDraft = outcome.getDraft();
 		}
-		TasksTrackerRouteDto route;
-		try
+		else
 		{
-			route = gson.fromJson(json == null ? "" : json.trim(), TasksTrackerRouteDto.class);
+			nextDraft = TasksTrackerRouteImporter.importRoute(route, hubByStructId);
 		}
-		catch (RuntimeException ex)
-		{
-			return ImportDraftResult.failure(ex.getMessage());
-		}
-		String validationError = TasksTrackerRouteValidation.validateRoute(route);
-		if (validationError != null)
-		{
-			return ImportDraftResult.failure(validationError);
-		}
-		mergeRouteOrderIntoCurrentDraft(route);
+		currentDraft = nextDraft;
 		reconcileOrderSlotRoutingAttachments();
 		saveDraftToConfig();
 		rebuildWorldMapRouteIfEnabled();
-		return ImportDraftResult.ok();
+		return ImportDraftResult.ok("Imported " + adapted.getSourceFormat().name().toLowerCase(Locale.ROOT).replace('_', ' ') + " (full fresh).");
 	}
 
-	private void mergeRouteOrderIntoCurrentDraft(TasksTrackerRouteDto route)
+	private ImportDraftResult importOrderOnly(
+		TasksTrackerRouteDto route,
+		Map<Integer, JsonObject> hubByStructId,
+		ImportSourceFormat sourceFormat)
 	{
+		MergeStats stats = mergeRouteOrderIntoCurrentDraft(route, hubByStructId);
+		reconcileOrderSlotRoutingAttachments();
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return ImportDraftResult.ok(buildMergeMessage("Order import", sourceFormat, stats));
+	}
+
+	private ImportDraftResult importDataOnly(
+		TasksTrackerRouteDto route,
+		Map<Integer, JsonObject> hubByStructId,
+		ImportSourceFormat sourceFormat)
+	{
+		MergeStats stats = mergeRouteDataIntoCurrentDraft(route, hubByStructId);
+		reconcileOrderSlotRoutingAttachments();
+		saveDraftToConfig();
+		rebuildWorldMapRouteIfEnabled();
+		return ImportDraftResult.ok(buildMergeMessage("Data import", sourceFormat, stats));
+	}
+
+	private MergeStats mergeRouteOrderIntoCurrentDraft(TasksTrackerRouteDto route, Map<Integer, JsonObject> hubByStructId)
+	{
+		MergeStats stats = new MergeStats();
 		List<DraftOrderLine> mergedOrder = new ArrayList<>();
 		List<RouteSectionDto> sections = route == null || route.getSections() == null
 			? List.of()
@@ -3262,7 +3320,7 @@ public class HelperConstructManager
 				{
 					continue;
 				}
-				DraftStep step = findOrCreateMergeStep(item);
+				DraftStep step = findOrCreateMergeStep(item, hubByStructId, stats);
 				if (step == null || step.getStepId() == null || step.getStepId().isBlank())
 				{
 					continue;
@@ -3271,13 +3329,30 @@ public class HelperConstructManager
 					? truncateForRouting(step.getInstructionText())
 					: truncateForRouting(customItemLabel(item.getCustomItem()));
 				mergedOrder.add(TasksTrackerRouteImporter.newOrderRefLine(step.getStepId(), routingText));
+				stats.orderLines++;
 			}
 		}
 		currentDraft.getOrder().clear();
 		currentDraft.getOrder().addAll(mergedOrder);
+		return stats;
 	}
 
-	private DraftStep findOrCreateMergeStep(RouteItemDto item)
+	private MergeStats mergeRouteDataIntoCurrentDraft(TasksTrackerRouteDto route, Map<Integer, JsonObject> hubByStructId)
+	{
+		MergeStats stats = new MergeStats();
+		List<RouteSectionDto> sections = route == null || route.getSections() == null ? List.of() : route.getSections();
+		for (RouteSectionDto section : sections)
+		{
+			List<RouteItemDto> items = section != null && section.getItems() != null ? section.getItems() : List.of();
+			for (RouteItemDto item : items)
+			{
+				findOrCreateMergeStep(item, hubByStructId, stats);
+			}
+		}
+		return stats;
+	}
+
+	private DraftStep findOrCreateMergeStep(RouteItemDto item, Map<Integer, JsonObject> hubByStructId, MergeStats stats)
 	{
 		Integer taskId = item.getTaskId();
 		if (taskId != null)
@@ -3285,10 +3360,12 @@ public class HelperConstructManager
 			DraftStep existing = findStepByTaskId(taskId);
 			if (existing != null)
 			{
+				stats.reused++;
 				return existing;
 			}
-			DraftStep created = TasksTrackerRouteImporter.newLeagueTaskStep(item, null);
+			DraftStep created = TasksTrackerRouteImporter.newLeagueTaskStep(item, hubByStructId);
 			currentDraft.getStepDefinitions().add(created);
+			stats.added++;
 			return created;
 		}
 		RouteCustomItemDto customItem = item.getCustomItem();
@@ -3304,11 +3381,31 @@ public class HelperConstructManager
 		DraftStep existing = findDefinitionByStepId(customId);
 		if (existing != null)
 		{
+			stats.reused++;
 			return existing;
 		}
 		DraftStep created = TasksTrackerRouteImporter.newCustomItemStep(item, customId);
 		currentDraft.getStepDefinitions().add(created);
+		stats.added++;
 		return created;
+	}
+
+	private String buildMergeMessage(String label, ImportSourceFormat sourceFormat, MergeStats stats)
+	{
+		String source = sourceFormat == null ? "unknown source" : sourceFormat.name().toLowerCase(Locale.ROOT).replace('_', ' ');
+		return String.format("%s complete from %s. Added: %d, reused: %d, order lines: %d.",
+			label,
+			source,
+			stats.added,
+			stats.reused,
+			stats.orderLines);
+	}
+
+	private static final class MergeStats
+	{
+		private int added;
+		private int reused;
+		private int orderLines;
 	}
 
 	private DraftStep findStepByTaskId(int taskId)
@@ -3712,122 +3809,6 @@ public class HelperConstructManager
 	{
 		return worldPoint.getX() >= MAP_MIN_X && worldPoint.getX() <= MAP_MAX_X
 			&& worldPoint.getY() >= MAP_MIN_Y && worldPoint.getY() <= MAP_MAX_Y;
-	}
-
-	private RouteImageResult writeRouteImage(List<WorldPoint> points) throws IOException
-	{
-		BufferedImage mapImage = loadWorldMapImage();
-		int width = mapImage.getWidth();
-		int height = mapImage.getHeight();
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = image.createGraphics();
-		try
-		{
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.drawImage(mapImage, 0, 0, null);
-
-			List<Point> plotted = new ArrayList<>();
-			int skipped = 0;
-			for (WorldPoint wp : points)
-			{
-				if (wp.getX() < MAP_MIN_X || wp.getX() > MAP_MAX_X || wp.getY() < MAP_MIN_Y || wp.getY() > MAP_MAX_Y)
-				{
-					skipped++;
-					continue;
-				}
-				double nx = (double) (wp.getX() - MAP_MIN_X) / (MAP_MAX_X - MAP_MIN_X);
-				double ny = (double) (wp.getY() - MAP_MIN_Y) / (MAP_MAX_Y - MAP_MIN_Y);
-				int px = (int) Math.round(nx * (width - 1));
-				int py = height - 1 - (int) Math.round(ny * (height - 1));
-				plotted.add(new Point(px, py));
-			}
-
-			if (plotted.size() < 2)
-			{
-				throw new IOException("Not enough in-bounds route points to draw.");
-			}
-
-			g.setStroke(new BasicStroke(3f));
-			g.setColor(new Color(255, 193, 7));
-			for (int i = 0; i < plotted.size() - 1; i++)
-			{
-				Point a = plotted.get(i);
-				Point b = plotted.get(i + 1);
-				g.drawLine(a.x, a.y, b.x, b.y);
-			}
-
-			for (int i = 0; i < plotted.size(); i++)
-			{
-				Point p = plotted.get(i);
-				boolean isStart = i == 0;
-				boolean isEnd = i == plotted.size() - 1;
-				if (isStart)
-				{
-					g.setColor(new Color(40, 167, 69));
-				}
-				else if (isEnd)
-				{
-					g.setColor(new Color(220, 53, 69));
-				}
-				else
-				{
-					g.setColor(new Color(23, 162, 184));
-				}
-				g.fillOval(p.x - 6, p.y - 6, 12, 12);
-				g.setColor(Color.WHITE);
-				g.drawString(String.valueOf(i + 1), p.x + 8, p.y - 8);
-			}
-
-			g.setColor(Color.WHITE);
-			g.drawString("Quest Helper Construct Route", 12, 20);
-			g.drawString("Bounds: (" + MAP_MIN_X + ", " + MAP_MIN_Y + ") to (" + MAP_MAX_X + ", " + MAP_MAX_Y + ")", 12, 38);
-			g.drawString("Drawn: " + plotted.size() + "  Skipped: " + skipped, 12, 56);
-
-			File outputDir = new File(System.getProperty("java.io.tmpdir"), "quest-helper-construct");
-			if (!outputDir.exists() && !outputDir.mkdirs())
-			{
-				throw new IOException("Could not create output directory");
-			}
-			File outFile = new File(outputDir, "route-map-" + System.currentTimeMillis() + ".png");
-			ImageIO.write(image, "png", outFile);
-			return new RouteImageResult(outFile, plotted.size(), skipped);
-		}
-		finally
-		{
-			g.dispose();
-		}
-	}
-
-	private BufferedImage loadWorldMapImage() throws IOException
-	{
-		var stream = HelperConstructManager.class.getResourceAsStream("/world-map.png");
-		if (stream == null)
-		{
-			throw new IOException("world-map.png not found in resources");
-		}
-		try (stream)
-		{
-			BufferedImage image = ImageIO.read(stream);
-			if (image == null)
-			{
-				throw new IOException("world-map.png could not be decoded");
-			}
-			return image;
-		}
-	}
-
-	private static class RouteImageResult
-	{
-		final File file;
-		final int drawnCount;
-		final int skippedCount;
-
-		private RouteImageResult(File file, int drawnCount, int skippedCount)
-		{
-			this.file = file;
-			this.drawnCount = drawnCount;
-			this.skippedCount = skippedCount;
-		}
 	}
 
 	private static int itemAttachmentQuantityOrOne(DraftStepAttachedRequirement a)
@@ -4478,10 +4459,11 @@ public class HelperConstructManager
 		 * Player-facing step text used in generated helpers (empty for section rows).
 		 */
 		private final String instructionText;
+		private final boolean leagueStep;
 		private final boolean customOrderStepRequirement;
 		private final boolean hasOrderStepRequirementTree;
 
-		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
+		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText, boolean leagueStep, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
 		{
 			this.index = index;
 			this.orderSlotId = orderSlotId == null ? "" : orderSlotId;
@@ -4493,6 +4475,7 @@ public class HelperConstructManager
 			this.skipWhenConditionMet = skipWhenConditionMet;
 			this.orderLinkedRequirementRawId = orderLinkedRequirementRawId;
 			this.instructionText = instructionText == null ? "" : instructionText;
+			this.leagueStep = leagueStep;
 			this.customOrderStepRequirement = customOrderStepRequirement;
 			this.hasOrderStepRequirementTree = hasOrderStepRequirementTree;
 		}

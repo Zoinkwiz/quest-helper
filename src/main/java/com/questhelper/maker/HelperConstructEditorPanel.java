@@ -67,6 +67,7 @@ import java.awt.KeyboardFocusManager;
 
 public final class HelperConstructEditorPanel extends JPanel
 {
+	private static final Color LEAGUE_STEP_BACKGROUND = new Color(87, 52, 20);
 	// TODO: Review text
 	private static final String USAGE_GUIDE = String.join("\n",
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
@@ -75,7 +76,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
 		"6. Zone reqs tab: one row per quest-order slot that uses a zone (Conditions includes an order zone slot, or corners are already set on the order row). Edit Var name (on the referenced step), two corners as \"x, y, plane\", and optional display text. Add requires exactly one non-section row selected on Quest order and attaches default corners plus an order-zone leaf to that row (never creates a new step). You can also add zones only from Quest order → Conditions (Create new zone… / Add zone (slot)). Remove clears zone routing and order-zone conditions for that row only. Search filters zone rows.",
-		"7. Build copies generated Java to the clipboard. Preview loads the draft in the Quest Helper sidebar.",
+		"7. Build copies generated Java to the clipboard.",
 		"8. JSON export/import uses extended Tasks Tracker route JSON: `sections`/`items` for the plugin wiki schema, plus `questHelperMaker` with the full maker snapshot. The draft auto-saves to `quest-helper/construct-draft.json` under your RuneLite user folder (same shape as Export / Save JSON)."
 	);
 
@@ -126,28 +127,22 @@ public final class HelperConstructEditorPanel extends JPanel
 		titleRow.add(helpButton, BorderLayout.LINE_END);
 		header.add(titleRow, BorderLayout.NORTH);
 
-		JButton buildButton = new JButton("Build");
+		JButton buildButton = new JButton("Build code");
 		JButton resetButton = new JButton("Reset");
-		JButton previewButton = new JButton("Preview");
-		JButton mapButton = new JButton("Route map");
 		worldMapRouteButton = new JButton("WorldMap");
 		routeRevealButton = new JButton("Route reveal");
-		JButton exportJsonButton = new JButton("Export route JSON");
-		JButton saveJsonButton = new JButton("Save JSON…");
-		JButton importJsonButton = new JButton("Import route JSON…");
-		JButton mergeOrderJsonButton = new JButton("Merge new order…");
-		applyMakerToolbarStyle(buildButton, resetButton, mapButton, previewButton, worldMapRouteButton, routeRevealButton,
-			exportJsonButton, saveJsonButton, importJsonButton, mergeOrderJsonButton);
+		JButton exportJsonButton = new JButton("Export \u25be");
+		JButton importJsonButton = new JButton("Import \u25be");
+		applyMakerToolbarStyle(buildButton, resetButton, worldMapRouteButton, routeRevealButton,
+			exportJsonButton, importJsonButton);
 		buildButton.setToolTipText("Copy generated Java helper source to the clipboard.");
 		resetButton.setToolTipText("Clear the draft and reset the auto-saved maker file (asks for confirmation).");
-		previewButton.setToolTipText("Load this draft as a preview in the main Quest Helper sidebar.");
-		mapButton.setToolTipText("Save a PNG of step world positions connected as a route (needs 2+ points with coordinates).");
 		worldMapRouteButton.setToolTipText("Toggle in-game world map markers for the ordered route.");
 		routeRevealButton.setToolTipText("Open/close a small slider to reveal ordered world map route steps progressively.");
-		exportJsonButton.setToolTipText("<html>Copy extended Tasks Tracker route JSON (pretty-printed): <code>sections</code>/<code>items</code> for the plugin wiki plus <code>questHelperMaker</code> with the full maker state.<br><a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">Tasks Tracker: Import Route from Clipboard</a>. Re-exporting from the plugin may drop <code>questHelperMaker</code>; keep a Quest Helper copy.</html>");
-		saveJsonButton.setToolTipText("Write the same extended route JSON document to a file.");
-		importJsonButton.setToolTipText("<html>Replace the draft from pasted JSON or a file: extended route with <code>questHelperMaker</code> or route-only (no maker blob). Convert old root-only drafts with <code>maker/scripts/convert_legacy_maker_draft.py</code>.<br>See <a href=\"https://github.com/osrs-reldo/tasks-tracker-plugin/wiki/How-to-Export-Routes-to-Plugin\">wiki</a> for route fields.</html>");
-		mergeOrderJsonButton.setToolTipText("<html>Replace only quest order from imported <code>sections/items</code>, reusing existing steps when <code>taskId</code> or <code>customItem.id</code> matches. New ids create new steps.</html>");
+		exportJsonButton.setToolTipText("Export as Quest Helper format or League Route format.");
+		importJsonButton.setToolTipText("<html>Import from QH format, League Route, or leagues-full task data.<br>Modes: Full fresh, Just order, Just more data.</html>");
+		setOverflowHandler(importJsonButton, this::showImportMenu);
+		setOverflowHandler(exportJsonButton, this::showExportMenu);
 		syncWorldMapRouteButtonLabel();
 
 		buildButton.addActionListener(e -> helperConstructManager.buildToClipboardFromUi());
@@ -165,32 +160,23 @@ public final class HelperConstructEditorPanel extends JPanel
 			helperConstructManager.resetDraftAndClearSavedStateFromUi();
 			refresh();
 		});
-		mapButton.addActionListener(e -> helperConstructManager.buildRouteMapImageFromUi());
-		previewButton.addActionListener(e -> helperConstructManager.previewInSidebarFromUi());
 		worldMapRouteButton.addActionListener(e ->
 		{
 			helperConstructManager.toggleWorldMapRoutePreviewFromUi();
 			syncWorldMapRouteButtonLabel();
 		});
 		routeRevealButton.addActionListener(e -> toggleRouteRevealDialog());
-		exportJsonButton.addActionListener(e -> exportDraftJsonToClipboard());
-		saveJsonButton.addActionListener(e -> saveDraftJsonToFile());
-		importJsonButton.addActionListener(e -> showImportDraftJsonDialog());
-		mergeOrderJsonButton.addActionListener(e -> showMergeOrderJsonDialog());
+		exportJsonButton.addActionListener(e -> showExportMenu(exportJsonButton));
+		importJsonButton.addActionListener(e -> showImportMenu(importJsonButton));
 
 		List<JComponent> makerToolbarChain = new ArrayList<>();
+		makerToolbarChain.add(importJsonButton);
+		makerToolbarChain.add(exportJsonButton);
+		makerToolbarChain.add(newToolbarSeparator());
 		makerToolbarChain.add(buildButton);
 		makerToolbarChain.add(resetButton);
-		makerToolbarChain.add(previewButton);
-		makerToolbarChain.add(newToolbarSeparator());
-		makerToolbarChain.add(mapButton);
 		makerToolbarChain.add(worldMapRouteButton);
 		makerToolbarChain.add(routeRevealButton);
-		makerToolbarChain.add(newToolbarSeparator());
-		makerToolbarChain.add(exportJsonButton);
-		makerToolbarChain.add(saveJsonButton);
-		makerToolbarChain.add(importJsonButton);
-		makerToolbarChain.add(mergeOrderJsonButton);
 		makerToolbarRow = new OverflowingMakerToolbar(makerToolbarChain, this::applyMakerToolbarStyle);
 		makerToolbarRow.setOpaque(false);
 		header.add(makerToolbarRow, BorderLayout.SOUTH);
@@ -417,17 +403,57 @@ public final class HelperConstructEditorPanel extends JPanel
 		return varbitOperationCombo;
 	}
 
-	private void exportDraftJsonToClipboard()
+	private void showExportMenu(JButton anchor)
 	{
-		String json = helperConstructManager.exportDraftJson();
+		JPopupMenu menu = new JPopupMenu();
+		JMenuItem copyQh = new JMenuItem("Copy QH format to clipboard");
+		copyQh.addActionListener(e -> exportJsonToClipboard(HelperConstructManager.ExportFormat.QH_FORMAT));
+		JMenuItem saveQh = new JMenuItem("Save QH format to file...");
+		saveQh.addActionListener(e -> saveJsonToFile(HelperConstructManager.ExportFormat.QH_FORMAT));
+		JMenuItem copyRoute = new JMenuItem("Copy League Route to clipboard");
+		copyRoute.addActionListener(e -> exportJsonToClipboard(HelperConstructManager.ExportFormat.LEAGUE_ROUTE));
+		JMenuItem saveRoute = new JMenuItem("Save League Route to file...");
+		saveRoute.addActionListener(e -> saveJsonToFile(HelperConstructManager.ExportFormat.LEAGUE_ROUTE));
+		menu.add(copyQh);
+		menu.add(saveQh);
+		menu.addSeparator();
+		menu.add(copyRoute);
+		menu.add(saveRoute);
+		menu.show(anchor, 0, anchor.getHeight());
+	}
+
+	private void showImportMenu(JButton anchor)
+	{
+		JPopupMenu menu = new JPopupMenu();
+		JMenuItem fullFresh = new JMenuItem("Full fresh import...");
+		fullFresh.addActionListener(e -> showImportJsonDialog(HelperConstructManager.ImportMode.FULL_FRESH));
+		JMenuItem orderOnly = new JMenuItem("Just order import...");
+		orderOnly.addActionListener(e -> showImportJsonDialog(HelperConstructManager.ImportMode.ORDER_ONLY));
+		JMenuItem dataOnly = new JMenuItem("Just more data import...");
+		dataOnly.addActionListener(e -> showImportJsonDialog(HelperConstructManager.ImportMode.DATA_ONLY));
+		menu.add(fullFresh);
+		menu.add(orderOnly);
+		menu.add(dataOnly);
+		menu.show(anchor, 0, anchor.getHeight());
+	}
+
+	private static void setOverflowHandler(JButton button, Consumer<JButton> handler)
+	{
+		button.putClientProperty("makerOverflowHandler", handler);
+	}
+
+	private void exportJsonToClipboard(HelperConstructManager.ExportFormat format)
+	{
+		String json = helperConstructManager.exportDraftJson(format);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(json), null);
+		String label = format == HelperConstructManager.ExportFormat.QH_FORMAT ? "QH format" : "League Route format";
 		JOptionPane.showMessageDialog(this,
-			"Extended route JSON copied to clipboard (pretty-printed).\nIncludes questHelperMaker for full round-trip in Quest Helper.",
-			"Export route JSON",
+			label + " copied to clipboard.",
+			"Export",
 			JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	private void saveDraftJsonToFile()
+	private void saveJsonToFile(HelperConstructManager.ExportFormat format)
 	{
 		JFileChooser fc = new JFileChooser();
 		String base = helperConstructManager.getCurrentDraftClassName();
@@ -435,7 +461,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			base = "construct-draft";
 		}
-		fc.setSelectedFile(new File(base.replaceAll("[^a-zA-Z0-9_-]+", "_") + "-draft.json"));
+		String suffix = format == HelperConstructManager.ExportFormat.QH_FORMAT ? "-qh.json" : "-route.json";
+		fc.setSelectedFile(new File(base.replaceAll("[^a-zA-Z0-9_-]+", "_") + suffix));
 		if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION)
 		{
 			return;
@@ -443,7 +470,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		File f = fc.getSelectedFile();
 		try
 		{
-			Files.writeString(f.toPath(), helperConstructManager.exportDraftJson());
+			Files.writeString(f.toPath(), helperConstructManager.exportDraftJson(format));
 			JOptionPane.showMessageDialog(this, "Saved to:\n" + f.getAbsolutePath(), "Save JSON", JOptionPane.INFORMATION_MESSAGE);
 		}
 		catch (IOException ex)
@@ -452,22 +479,41 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 	}
 
-	private void showImportDraftJsonDialog()
+	private void showImportJsonDialog(HelperConstructManager.ImportMode mode)
 	{
-		int confirm = JOptionPane.showConfirmDialog(this,
-			"Replace the current maker draft with imported JSON?\nAccepts extended route JSON (questHelperMaker), route-only JSON, or legacy draft JSON.\nExport or save first if you need a backup.",
-			"Import route JSON",
-			JOptionPane.OK_CANCEL_OPTION,
-			JOptionPane.WARNING_MESSAGE);
+		String title;
+		String warning;
+		switch (mode)
+		{
+			case FULL_FRESH:
+				title = "Full fresh import";
+				warning = "Replace the current maker draft with imported JSON?\n"
+					+ "Accepts QH format, League Route, or leagues-full task data.";
+				break;
+			case ORDER_ONLY:
+				title = "Just order import";
+				warning = "Replace current quest order from imported JSON?\n"
+					+ "Existing steps are reused by ID where possible; missing IDs create new steps.";
+				break;
+			case DATA_ONLY:
+				title = "Just more data import";
+				warning = "Import additional missing step definitions from imported JSON?\n"
+					+ "Current quest order remains unchanged; dedupe is ID-only.";
+				break;
+			default:
+				title = "Import";
+				warning = "Run import?";
+				break;
+		}
+		int confirm = JOptionPane.showConfirmDialog(this, warning, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 		if (confirm != JOptionPane.OK_OPTION)
 		{
 			return;
 		}
-
 		JTextArea textArea = new JTextArea(14, 44);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		JButton browse = new JButton("Load from file…");
+		JButton browse = new JButton("Load from file...");
 		browse.addActionListener(ev ->
 		{
 			JFileChooser fc = new JFileChooser();
@@ -487,76 +533,22 @@ public final class HelperConstructEditorPanel extends JPanel
 		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
 		panel.add(browse, BorderLayout.SOUTH);
 
-		int r = JOptionPane.showConfirmDialog(this, panel, "Paste route / draft JSON", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int r = JOptionPane.showConfirmDialog(this, panel, "Paste JSON to import", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
 		{
 			return;
 		}
 
-		HelperConstructManager.ImportDraftResult result = helperConstructManager.importDraftFromJson(textArea.getText());
+		HelperConstructManager.ImportDraftResult result = helperConstructManager.importFromJson(textArea.getText(), mode);
 		if (result.isSuccess())
 		{
 			refresh();
-			JOptionPane.showMessageDialog(this, "Draft imported and saved to the maker draft file.", "Import", JOptionPane.INFORMATION_MESSAGE);
+			String info = result.getInfoMessage() == null ? "Import completed and saved to maker draft file." : result.getInfoMessage();
+			JOptionPane.showMessageDialog(this, info, "Import", JOptionPane.INFORMATION_MESSAGE);
 		}
 		else
 		{
 			JOptionPane.showMessageDialog(this, result.getErrorMessage(), "Import failed", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	private void showMergeOrderJsonDialog()
-	{
-		int confirm = JOptionPane.showConfirmDialog(this,
-			"Replace current quest order from imported route items?\n"
-				+ "Existing step definitions are kept and reused by taskId/customItem.id where matched.\n"
-				+ "Matched steps are not modified; missing ids create new steps.",
-			"Merge new order",
-			JOptionPane.OK_CANCEL_OPTION,
-			JOptionPane.WARNING_MESSAGE);
-		if (confirm != JOptionPane.OK_OPTION)
-		{
-			return;
-		}
-
-		JTextArea textArea = new JTextArea(14, 44);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		JButton browse = new JButton("Load from file…");
-		browse.addActionListener(ev ->
-		{
-			JFileChooser fc = new JFileChooser();
-			if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-			{
-				try
-				{
-					textArea.setText(Files.readString(fc.getSelectedFile().toPath()));
-				}
-				catch (IOException ex)
-				{
-					JOptionPane.showMessageDialog(this, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		JPanel panel = new JPanel(new BorderLayout(0, 6));
-		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-		panel.add(browse, BorderLayout.SOUTH);
-
-		int r = JOptionPane.showConfirmDialog(this, panel, "Paste route / draft JSON", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r != JOptionPane.OK_OPTION)
-		{
-			return;
-		}
-
-		HelperConstructManager.ImportDraftResult result = helperConstructManager.mergeOrderFromJson(textArea.getText());
-		if (result.isSuccess())
-		{
-			refresh();
-			JOptionPane.showMessageDialog(this, "Quest order merged and saved to the maker draft file.", "Merge new order", JOptionPane.INFORMATION_MESSAGE);
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(this, result.getErrorMessage(), "Merge failed", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -1449,7 +1441,11 @@ public final class HelperConstructEditorPanel extends JPanel
 				Component c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column);
 				if (!isSelected)
 				{
-					c.setBackground(ColorScheme.DARK_GRAY_COLOR);
+					int modelRow = t.convertRowIndexToModel(row);
+					boolean leagueStep = modelRow >= 0
+						&& t.getModel() instanceof StepLibraryTableModel
+						&& ((StepLibraryTableModel) t.getModel()).isLeagueRow(modelRow);
+					c.setBackground(leagueStep ? LEAGUE_STEP_BACKGROUND : ColorScheme.DARK_GRAY_COLOR);
 					c.setForeground(column == attachCol ? new Color(100, 180, 255) : Color.WHITE);
 				}
 				return c;
@@ -1656,6 +1652,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		private List<String> worldPoints = new ArrayList<>();
 		private List<String> requirementDisplays = new ArrayList<>();
 		private List<String> instructions = new ArrayList<>();
+		private List<Boolean> leagueFlags = new ArrayList<>();
 
 		private StepLibraryTableModel(ConstructStepKind kind)
 		{
@@ -1677,11 +1674,13 @@ public final class HelperConstructEditorPanel extends JPanel
 			worldPoints = new ArrayList<>(updatedWorldPoints);
 			requirementDisplays = new ArrayList<>(updatedRequirementDisplays);
 			instructions = new ArrayList<>(updatedInstructions);
+			leagueFlags = new ArrayList<>(helperConstructManager.getStepLeagueFlags(kind));
 			int n = summaries.size();
 			padToSize(rawIdTexts, n);
 			padToSize(worldPoints, n);
 			padToSize(requirementDisplays, n);
 			padToSize(instructions, n);
+			padToSize(leagueFlags, n, Boolean.FALSE);
 			fireTableDataChanged();
 		}
 
@@ -1695,6 +1694,23 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				list.subList(n, list.size()).clear();
 			}
+		}
+
+		private <T> void padToSize(List<T> list, int n, T defaultValue)
+		{
+			while (list.size() < n)
+			{
+				list.add(defaultValue);
+			}
+			if (list.size() > n)
+			{
+				list.subList(n, list.size()).clear();
+			}
+		}
+
+		boolean isLeagueRow(int rowIndex)
+		{
+			return rowIndex >= 0 && rowIndex < leagueFlags.size() && Boolean.TRUE.equals(leagueFlags.get(rowIndex));
 		}
 
 		@Override
@@ -1919,7 +1935,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				{
 					if (!isSelected)
 					{
-						c.setBackground(ColorScheme.DARK_GRAY_COLOR);
+						c.setBackground(entry != null && entry.isLeagueStep() ? LEAGUE_STEP_BACKGROUND : ColorScheme.DARK_GRAY_COLOR);
 						c.setForeground(Color.WHITE);
 					}
 					setFont(getFont().deriveFont(Font.PLAIN));
@@ -2154,7 +2170,20 @@ public final class HelperConstructEditorPanel extends JPanel
 						{
 							mi.setToolTipText(tt);
 						}
-						mi.addActionListener(ev -> b.doClick());
+						mi.addActionListener(ev ->
+						{
+							Object handler = b.getClientProperty("makerOverflowHandler");
+							if (handler instanceof Consumer)
+							{
+								@SuppressWarnings("unchecked")
+								Consumer<JButton> consumer = (Consumer<JButton>) handler;
+								consumer.accept(moreButton);
+							}
+							else
+							{
+								b.doClick();
+							}
+						});
 						overflowMenu.add(mi);
 					}
 				}

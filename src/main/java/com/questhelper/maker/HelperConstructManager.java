@@ -178,7 +178,16 @@ public class HelperConstructManager
 	private boolean worldMapRoutePreviewEnabled;
 	@Getter
 	private int worldMapRouteRevealPercent = 100;
+	private boolean makerUiOpen;
+	private WorldPoint pendingZoneFirstCorner;
+	private WorldPoint selectedZoneOverlayCorner1;
+	private WorldPoint selectedZoneOverlayCorner2;
 	private final List<Runnable> draftChangeListeners = new CopyOnWriteArrayList<>();
+
+	public void setMakerUiOpen(boolean makerUiOpen)
+	{
+		this.makerUiOpen = makerUiOpen;
+	}
 
 	public void addDraftChangeListener(Runnable listener)
 	{
@@ -264,7 +273,7 @@ public class HelperConstructManager
 	public void setupConstructMenuOptions(MenuEntryAdded event)
 	{
 		ensureDraftLoaded();
-		if (!config.constructModeEnabled())
+		if (!config.constructModeEnabled() || !makerUiOpen)
 		{
 			return;
 		}
@@ -322,7 +331,80 @@ public class HelperConstructManager
 			{
 				addGenericStepAtWorldPoint(tilePoint);
 			});
+			if (pendingZoneFirstCorner == null)
+			{
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Create new Zone", target, () ->
+				{
+					startZoneCreationAt(tilePoint);
+				});
+			}
+			else
+			{
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add second zone corner", target, () ->
+				{
+					finishZoneCreationAt(tilePoint);
+				});
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Stop making zone", target, this::stopZoneCreationFromUi);
+			}
 		}
+	}
+
+	private void startZoneCreationAt(WorldPoint tilePoint)
+	{
+		ensureDraftLoaded();
+		if (tilePoint == null)
+		{
+			return;
+		}
+		pendingZoneFirstCorner = tilePoint;
+		sendGameMessage("Quest Helper Construct: zone corner 1 saved at " + formatWorldPoint(tilePoint) + ". Right-click the next tile and choose 'Add second zone corner'.");
+	}
+
+	private void finishZoneCreationAt(WorldPoint tilePoint)
+	{
+		ensureDraftLoaded();
+		if (pendingZoneFirstCorner == null || tilePoint == null)
+		{
+			return;
+		}
+		WorldPoint c1 = pendingZoneFirstCorner;
+		pendingZoneFirstCorner = null;
+		if (!addEmptyZoneSlotFromUi())
+		{
+			sendGameMessage("Quest Helper Construct: could not create new zone row.");
+			return;
+		}
+		List<ZoneSlotRow> zones = getZoneSlotsInQuestOrderForEditor();
+		if (zones.isEmpty())
+		{
+			sendGameMessage("Quest Helper Construct: zone row created but corners could not be applied.");
+			return;
+		}
+		ZoneSlotRow created = zones.get(zones.size() - 1);
+		boolean ok = updateZoneSlotForOrderSlot(
+			created.getOrderSlotId(),
+			formatWorldPointForField(c1),
+			formatWorldPointForField(tilePoint),
+			"");
+		if (ok)
+		{
+			setSelectedZoneOverlayByOrderSlotId(created.getOrderSlotId());
+			sendGameMessage("Quest Helper Construct: created zone from " + formatWorldPoint(c1) + " to " + formatWorldPoint(tilePoint) + ".");
+		}
+		else
+		{
+			sendGameMessage("Quest Helper Construct: could not apply zone corners.");
+		}
+	}
+
+	public void stopZoneCreationFromUi()
+	{
+		if (pendingZoneFirstCorner == null)
+		{
+			return;
+		}
+		pendingZoneFirstCorner = null;
+		sendGameMessage("Quest Helper Construct: stopped making zone.");
 	}
 
 	private void addAction(MenuEntry[] menuEntries, String option, String target, Runnable callback)
@@ -346,6 +428,8 @@ public class HelperConstructManager
 		}
 		helper.setHelperType("ComplexStateQuestHelper");
 		currentDraft = helper;
+		pendingZoneFirstCorner = null;
+		clearSelectedZoneOverlay();
 		if (worldMapRoutePreviewEnabled)
 		{
 			rebuildWorldMapRoutePoints();
@@ -805,6 +889,50 @@ public class HelperConstructManager
 	{
 		worldMapRoutePreviewEnabled = false;
 		clearWorldMapRoutePoints();
+	}
+
+	public boolean hasZoneCreationOrSelectionOverlay()
+	{
+		return pendingZoneFirstCorner != null || (selectedZoneOverlayCorner1 != null && selectedZoneOverlayCorner2 != null);
+	}
+
+	public WorldPoint getPendingZoneFirstCorner()
+	{
+		return pendingZoneFirstCorner;
+	}
+
+	public WorldPoint getSelectedZoneOverlayCorner1()
+	{
+		return selectedZoneOverlayCorner1;
+	}
+
+	public WorldPoint getSelectedZoneOverlayCorner2()
+	{
+		return selectedZoneOverlayCorner2;
+	}
+
+	public void clearSelectedZoneOverlay()
+	{
+		selectedZoneOverlayCorner1 = null;
+		selectedZoneOverlayCorner2 = null;
+	}
+
+	public void setSelectedZoneOverlayByOrderSlotId(String orderSlotId)
+	{
+		ensureDraftLoaded();
+		if (orderSlotId == null || orderSlotId.isBlank())
+		{
+			clearSelectedZoneOverlay();
+			return;
+		}
+		DraftOrderLine line = findOrderLineByOrderSlotId(orderSlotId);
+		if (line == null || line.isSectionDivider())
+		{
+			clearSelectedZoneOverlay();
+			return;
+		}
+		selectedZoneOverlayCorner1 = line.getZoneRoutingCorner1();
+		selectedZoneOverlayCorner2 = line.getZoneRoutingCorner2();
 	}
 
 	public List<WorldPoint> getWorldMapRouteLinePoints()

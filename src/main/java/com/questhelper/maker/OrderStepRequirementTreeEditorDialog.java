@@ -465,9 +465,16 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			combo.addItem(c.getLabel() + " (" + c.getRawId() + ")");
 		}
 		JCheckBox checkBank = new JCheckBox("Also check bank");
+		JSpinner qty = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
+		JPanel qtyRow = new JPanel(new BorderLayout(6, 0));
+		qtyRow.add(new JLabel("Quantity:"), BorderLayout.WEST);
+		qtyRow.add(qty, BorderLayout.CENTER);
 		JPanel panel = new JPanel(new BorderLayout(0, 6));
 		panel.add(combo, BorderLayout.NORTH);
-		panel.add(checkBank, BorderLayout.SOUTH);
+		JPanel south = new JPanel(new BorderLayout(0, 6));
+		south.add(qtyRow, BorderLayout.NORTH);
+		south.add(checkBank, BorderLayout.SOUTH);
+		panel.add(south, BorderLayout.SOUTH);
 		int r = JOptionPane.showConfirmDialog(this, panel, "Pick item requirement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
 		{
@@ -478,7 +485,8 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			return;
 		}
-		addLeaf(DraftOrderStepRequirement.item(choices.get(idx).getRawId(), checkBank.isSelected()));
+		int quantity = ((Number) qty.getValue()).intValue();
+		addLeaf(DraftOrderStepRequirement.item(choices.get(idx).getRawId(), checkBank.isSelected(), quantity));
 	}
 
 	private void clearPendingVarbitRouting()
@@ -975,15 +983,23 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			combo.addItem(ch.getLabel() + " (" + ch.getRawId() + ")");
 		}
 		JCheckBox checkBank = new JCheckBox("Also check bank");
+		JSpinner qty = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
+		JPanel qtyRow = new JPanel(new BorderLayout(6, 0));
+		qtyRow.add(new JLabel("Quantity:"), BorderLayout.WEST);
+		qtyRow.add(qty, BorderLayout.CENTER);
 		JPanel panel = new JPanel(new BorderLayout(0, 6));
 		panel.add(combo, BorderLayout.NORTH);
-		panel.add(checkBank, BorderLayout.SOUTH);
+		JPanel south = new JPanel(new BorderLayout(0, 6));
+		south.add(qtyRow, BorderLayout.NORTH);
+		south.add(checkBank, BorderLayout.SOUTH);
+		panel.add(south, BorderLayout.SOUTH);
 		if (JOptionPane.showConfirmDialog(this, panel, "Pick item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION
 			|| combo.getSelectedIndex() < 0)
 		{
 			return;
 		}
-		addInvertWithInner(DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId(), checkBank.isSelected()));
+		int quantity = ((Number) qty.getValue()).intValue();
+		addInvertWithInner(DraftOrderStepRequirement.item(choices.get(combo.getSelectedIndex()).getRawId(), checkBank.isSelected(), quantity));
 	}
 
 	private void addInvertWithInner(DraftOrderStepRequirement inner)
@@ -1176,13 +1192,22 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 		combo.setSelectedIndex(sel);
 		JCheckBox checkBank = new JCheckBox("Also check bank", d.isItemAlsoCheckBank());
+		int existingQty = d.getItemQuantity() == null ? 1 : Math.max(1, d.getItemQuantity());
+		JSpinner qty = new JSpinner(new SpinnerNumberModel(existingQty, 1, 100000, 1));
+		JPanel qtyRow = new JPanel(new BorderLayout(6, 0));
+		qtyRow.add(new JLabel("Quantity:"), BorderLayout.WEST);
+		qtyRow.add(qty, BorderLayout.CENTER);
 		JPanel panel = new JPanel(new BorderLayout(0, 6));
 		panel.add(combo, BorderLayout.NORTH);
-		panel.add(checkBank, BorderLayout.SOUTH);
+		JPanel south = new JPanel(new BorderLayout(0, 6));
+		south.add(qtyRow, BorderLayout.NORTH);
+		south.add(checkBank, BorderLayout.SOUTH);
+		panel.add(south, BorderLayout.SOUTH);
 		int r = JOptionPane.showConfirmDialog(this, panel, "Captured item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r == JOptionPane.OK_OPTION && combo.getSelectedIndex() >= 0)
 		{
 			d.setItemRawId(choices.get(combo.getSelectedIndex()).getRawId());
+			d.setItemQuantity(((Number) qty.getValue()).intValue());
 			d.setItemAlsoCheckBank(checkBank.isSelected());
 			rebuildTree();
 			selectDto(d);
@@ -1410,7 +1435,8 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				return "NOT (invert)";
 			case "ITEM":
 			case "CAPTURED_ITEM":
-				return "Item raw id " + d.getItemRawId() + (d.isItemAlsoCheckBank() ? " [bank]" : "");
+				int qty = d.getItemQuantity() == null ? 1 : Math.max(1, d.getItemQuantity());
+				return "Item raw id " + d.getItemRawId() + " x" + qty + (d.isItemAlsoCheckBank() ? " [bank]" : "");
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
 				if (pendingVarbitRouting)

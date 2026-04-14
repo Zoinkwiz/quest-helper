@@ -27,7 +27,12 @@ package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.maker.HelperConstructManager;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.steps.tools.QuestPerspective;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -40,13 +45,15 @@ public class QuestHelperWorldOverlay extends Overlay
 	public static final int IMAGE_Z_OFFSET = 30;
 
 	private final QuestHelperPlugin plugin;
+	private final HelperConstructManager helperConstructManager;
 
 	@Inject
-	public QuestHelperWorldOverlay(QuestHelperPlugin plugin)
+	public QuestHelperWorldOverlay(QuestHelperPlugin plugin, HelperConstructManager helperConstructManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
+		this.helperConstructManager = helperConstructManager;
 	}
 
 	@Override
@@ -56,7 +63,8 @@ public class QuestHelperWorldOverlay extends Overlay
 			&& plugin.getConfig().highlightStyleGroundItems() == QuestHelperConfig.GroundItemHighlightStyle.NONE
 			&& plugin.getConfig().highlightStyleNpcs() == QuestHelperConfig.NpcHighlightStyle.NONE
 			&& plugin.getConfig().highlightStyleObjects() == QuestHelperConfig.ObjectHighlightStyle.NONE;
-		if (noOverlaysDrawn)
+		boolean showConstructZones = helperConstructManager.hasZoneCreationOrSelectionOverlay();
+		if (noOverlaysDrawn && !showConstructZones)
 		{
 			return null;
 		}
@@ -72,7 +80,33 @@ public class QuestHelperWorldOverlay extends Overlay
 		plugin.getBackgroundHelpers().forEach((name, questHelper) -> questHelper.getCurrentStep().makeWorldOverlayHint(graphics, plugin));
 
 		plugin.getRuneliteObjectManager().makeWorldOverlayHint(graphics);
+		renderConstructZoneOverlays(graphics);
 
 		return null;
+	}
+
+	private void renderConstructZoneOverlays(Graphics2D graphics)
+	{
+		WorldPoint pendingCorner = helperConstructManager.getPendingZoneFirstCorner();
+		if (pendingCorner != null)
+		{
+			renderZonePolygon(graphics, pendingCorner, pendingCorner, new Color(220, 64, 64));
+		}
+
+		WorldPoint c1 = helperConstructManager.getSelectedZoneOverlayCorner1();
+		WorldPoint c2 = helperConstructManager.getSelectedZoneOverlayCorner2();
+		if (c1 != null && c2 != null)
+		{
+			renderZonePolygon(graphics, c1, c2, plugin.getConfig().targetOverlayColor());
+		}
+	}
+
+	private void renderZonePolygon(Graphics2D graphics, WorldPoint c1, WorldPoint c2, Color color)
+	{
+		Polygon zonePoly = QuestPerspective.getZonePoly(plugin.getClient(), new Zone(c1, c2));
+		if (zonePoly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, zonePoly, color);
+		}
 	}
 }

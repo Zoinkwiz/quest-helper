@@ -285,6 +285,7 @@ public final class HelperConstructModels
 		/** Gson fills this; must remain mutable for deserialization. */
 		private List<DraftOrderStepRequirement> children = new ArrayList<>();
 		private Integer itemRawId;
+		private Integer itemQuantity;
 		private boolean itemAlsoCheckBank;
 		private Integer varbitId;
 		private Integer varbitRequiredValue;
@@ -345,14 +346,20 @@ public final class HelperConstructModels
 
 		public static DraftOrderStepRequirement item(int rawId)
 		{
-			return item(rawId, false);
+			return item(rawId, false, 1);
 		}
 
 		public static DraftOrderStepRequirement item(int rawId, boolean alsoCheckBank)
 		{
+			return item(rawId, alsoCheckBank, 1);
+		}
+
+		public static DraftOrderStepRequirement item(int rawId, boolean alsoCheckBank, int quantity)
+		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
 			n.setKind("ITEM");
 			n.setItemRawId(rawId);
+			n.setItemQuantity(Math.max(1, quantity));
 			n.setItemAlsoCheckBank(alsoCheckBank);
 			return n;
 		}

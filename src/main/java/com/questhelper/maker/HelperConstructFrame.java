@@ -26,24 +26,37 @@ package com.questhelper.maker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public final class HelperConstructFrame extends JFrame
 {
 	private final HelperConstructEditorPanel editor;
+	private final HelperConstructManager helperConstructManager;
 
 	public HelperConstructFrame(HelperConstructManager helperConstructManager)
 	{
 		super("Quest Helper Maker");
+		this.helperConstructManager = helperConstructManager;
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setMinimumSize(new Dimension(720, 480));
 		editor = new HelperConstructEditorPanel(helperConstructManager);
 		setContentPane(editor);
 		setSize(960, 640);
 		setLocationByPlatform(true);
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				helperConstructManager.setMakerUiOpen(false);
+			}
+		});
 	}
 
 	public void openWindow()
 	{
+		helperConstructManager.setMakerUiOpen(true);
 		setVisible(true);
 		setExtendedState(Frame.NORMAL);
 		toFront();
@@ -52,6 +65,7 @@ public final class HelperConstructFrame extends JFrame
 
 	public void disposeForShutdown()
 	{
+		helperConstructManager.setMakerUiOpen(false);
 		editor.shutDown();
 		dispose();
 	}

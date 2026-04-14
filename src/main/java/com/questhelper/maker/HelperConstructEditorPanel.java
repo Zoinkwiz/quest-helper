@@ -260,6 +260,21 @@ public final class HelperConstructEditorPanel extends JPanel
 		zoneReqsTable = new JTable(zoneRoutingTableModel);
 		styleZoneRoutingTable(zoneReqsTable);
 		zoneReqsTable.setRowHeight(24);
+		zoneReqsTable.getSelectionModel().addListSelectionListener(e ->
+		{
+			if (e.getValueIsAdjusting())
+			{
+				return;
+			}
+			int r = selectedModelRow(zoneReqsTable);
+			if (r < 0)
+			{
+				helperConstructManager.clearSelectedZoneOverlay();
+				return;
+			}
+			String orderSlotId = zoneRoutingTableModel.getOrderSlotIdAt(r);
+			helperConstructManager.setSelectedZoneOverlayByOrderSlotId(orderSlotId);
+		});
 		zoneReqsTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()));
 		zoneReqsTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
 		zoneReqsTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
@@ -2470,6 +2485,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 		helperConstructManager.removeDraftChangeListener(draftChangeListener);
 		helperConstructManager.disableWorldMapRoutePreview();
+		helperConstructManager.clearSelectedZoneOverlay();
+		helperConstructManager.stopZoneCreationFromUi();
 	}
 
 	private static String stepLibraryTabTitle(ConstructStepKind kind)

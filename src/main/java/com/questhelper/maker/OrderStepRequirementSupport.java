@@ -712,6 +712,7 @@ public final class OrderStepRequirementSupport
 		}
 		if (!Objects.equals(a.getLogic(), b.getLogic())
 			|| !Objects.equals(a.getItemRawId(), b.getItemRawId())
+			|| !Objects.equals(a.getItemQuantity(), b.getItemQuantity())
 			|| a.isItemAlsoCheckBank() != b.isItemAlsoCheckBank()
 			|| !Objects.equals(a.getVarbitId(), b.getVarbitId())
 			|| !Objects.equals(a.getVarbitRequiredValue(), b.getVarbitRequiredValue())
@@ -807,6 +808,11 @@ public final class OrderStepRequirementSupport
 				}
 				ItemRequirement ir = requirementById.get(rid);
 				ItemRequirement out = ir != null ? ir : new ItemRequirement("Item " + rid, rid);
+				int qty = node.getItemQuantity() == null ? 1 : Math.max(1, node.getItemQuantity());
+				if (qty > 1)
+				{
+					out = out.quantity(qty);
+				}
 				return node.isItemAlsoCheckBank() ? out.alsoCheckBank() : out;
 			}
 			case "ORDER_VARBIT":
@@ -1014,7 +1020,9 @@ public final class OrderStepRequirementSupport
 					warnings.add("Missing item requirement var for tree leaf raw id " + rid);
 					return "new VarbitRequirement(0, Operation.EQUAL, 1, null)";
 				}
-				return node.isItemAlsoCheckBank() ? v + ".alsoCheckBank()" : v;
+				int qty = node.getItemQuantity() == null ? 1 : Math.max(1, node.getItemQuantity());
+				String expr = qty > 1 ? v + ".quantity(" + qty + ")" : v;
+				return node.isItemAlsoCheckBank() ? expr + ".alsoCheckBank()" : expr;
 			}
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
@@ -1202,6 +1210,10 @@ public final class OrderStepRequirementSupport
 				if (node.getItemRawId() == null)
 				{
 					return "ITEM needs itemRawId.";
+				}
+				if (node.getItemQuantity() != null && node.getItemQuantity() < 1)
+				{
+					return "ITEM quantity must be >= 1.";
 				}
 				return null;
 			case "ORDER_VARBIT":

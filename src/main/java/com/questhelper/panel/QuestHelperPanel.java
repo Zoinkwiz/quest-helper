@@ -82,8 +82,6 @@ public class QuestHelperPanel extends PluginPanel
 	private JPanel statePanel;
 
 	private final JButton skillExpandButton = new JButton();
-	private JButton previewStepLeftBtn;
-	private JButton previewStepRightBtn;
 	private final IconTextField searchBar = new IconTextField();
 	private final FixedWidthPanel questListPanel = new FixedWidthPanel();
 	private final FixedWidthPanel questListWrapper = new FixedWidthPanel();
@@ -488,26 +486,6 @@ public class QuestHelperPanel extends PluginPanel
 
 			JPanel previewNavPanel = new JPanel(new GridLayout(2, 1, 0, 4));
 			previewNavPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
-			previewStepLeftBtn = new JButton("preview step left");
-			previewStepRightBtn = new JButton("preview step right");
-			SwingUtil.removeButtonDecorations(previewStepLeftBtn);
-			SwingUtil.removeButtonDecorations(previewStepRightBtn);
-			previewStepLeftBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			previewStepRightBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			previewStepLeftBtn.setForeground(Color.WHITE);
-			previewStepRightBtn.setForeground(Color.WHITE);
-			previewStepLeftBtn.addActionListener(ev ->
-			{
-				questHelperPlugin.stepConstructPreviewLeft();
-				updatePreviewNavButtons();
-			});
-			previewStepRightBtn.addActionListener(ev ->
-			{
-				questHelperPlugin.stepConstructPreviewRight();
-				updatePreviewNavButtons();
-			});
-			previewNavPanel.add(previewStepLeftBtn);
-			previewNavPanel.add(previewStepRightBtn);
 			devModePanel.add(previewNavPanel, BorderLayout.CENTER);
 
 			// State dropdown for BasicQuestHelper
@@ -706,7 +684,6 @@ public class QuestHelperPanel extends PluginPanel
 
 		questOverviewPanel.addQuest(quest, isActive);
 		updateStateDropdown(quest);
-		updatePreviewNavButtons();
 		questActive = true;
 
 		SwingUtilities.invokeLater(() -> {
@@ -721,7 +698,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateStepsTexts()
 	{
 		questOverviewPanel.updateStepsTexts();
-		updatePreviewNavButtons();
 	}
 
 	public void updateHighlight(Client client, QuestStep newStep)
@@ -744,7 +720,6 @@ public class QuestHelperPanel extends PluginPanel
 		activateQuestList();
 		showMatchingQuests(searchBar.getText() != null ? searchBar.getText() : "");
 		updateStateDropdown(null);
-		updatePreviewNavButtons();
 		scrollableContainer.getVerticalScrollBar().setValue(0);
 
 		repaint();
@@ -885,20 +860,6 @@ public class QuestHelperPanel extends PluginPanel
 	public void updateItemRequirements(Client client)
 	{
 		questOverviewPanel.updateRequirements(client);
-	}
-
-	private void updatePreviewNavButtons()
-	{
-		if (previewStepLeftBtn == null || previewStepRightBtn == null)
-		{
-			return;
-		}
-
-		boolean showPreviewNav = questActive && questHelperPlugin.isConstructPreviewSelected();
-		previewStepLeftBtn.setVisible(showPreviewNav);
-		previewStepRightBtn.setVisible(showPreviewNav);
-		previewStepLeftBtn.setEnabled(showPreviewNav && questHelperPlugin.canStepConstructPreviewLeft());
-		previewStepRightBtn.setEnabled(showPreviewNav && questHelperPlugin.canStepConstructPreviewRight());
 	}
 
 	/**

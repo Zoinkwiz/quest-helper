@@ -250,6 +250,10 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 
 	private void resetAllManualSkipCheckboxes()
 	{
+		if (questHelper != null)
+		{
+			questHelper.resetAllManualSidebarSkips();
+		}
 		if (manualSkipBoxes.isEmpty())
 		{
 			return;
@@ -270,10 +274,6 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 				if (box != null)
 				{
 					box.setSelected(false);
-				}
-				if (questHelper != null && pk != null && !pk.isBlank())
-				{
-					questHelper.notifyManualSidebarSkipChanged(pk, false);
 				}
 			}
 		}

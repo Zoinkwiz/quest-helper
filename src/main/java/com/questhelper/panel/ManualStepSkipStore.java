@@ -88,4 +88,13 @@ public final class ManualStepSkipStore
 			cm.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck, gson.toJson(map));
 		}
 	}
+
+	public static void clearAll(ConfigManager cm, String displayedQuestName)
+	{
+		if (cm == null)
+		{
+			return;
+		}
+		cm.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, configKeyForQuest(displayedQuestName));
+	}
 }

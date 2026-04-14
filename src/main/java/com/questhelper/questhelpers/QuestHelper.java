@@ -161,6 +161,12 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		onManualSidebarSkipsPersistedChanged();
 	}
 
+	public void resetAllManualSidebarSkips()
+	{
+		ManualStepSkipStore.clearAll(configManager, getDisplayedQuestName());
+		onManualSidebarSkipsPersistedChanged();
+	}
+
 	/**
 	 * Hook for helpers that merge persisted skips with runtime state (e.g. maker preview).
 	 */

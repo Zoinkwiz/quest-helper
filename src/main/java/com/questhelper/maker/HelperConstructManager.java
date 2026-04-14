@@ -27,6 +27,7 @@ package com.questhelper.maker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteCustomItemDto;
@@ -94,6 +95,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -3281,6 +3283,113 @@ public class HelperConstructManager
 	public ImportDraftResult importDraftFromJson(String json)
 	{
 		return importFromJson(json, ImportMode.FULL_FRESH);
+	}
+
+	public ImportDraftResult importItemRequirementsFromJson(String json)
+	{
+		ensureDraftLoaded();
+		if (json == null || json.isBlank())
+		{
+			return ImportDraftResult.failure("JSON is empty");
+		}
+		JsonObject root;
+		try
+		{
+			root = gson.fromJson(json.trim(), JsonObject.class);
+		}
+		catch (RuntimeException ex)
+		{
+			return ImportDraftResult.failure(ex.getMessage());
+		}
+		JsonElement maker = root == null ? null : root.get("questHelperMaker");
+		if (maker == null || !maker.isJsonObject())
+		{
+			return ImportDraftResult.failure("Item data import requires QH canonical JSON with questHelperMaker.");
+		}
+
+		MakerDraftJsonLoader.LoadOutcome outcome = MakerDraftJsonLoader.loadDraftFromJson(json, gson);
+		if (!outcome.isSuccess())
+		{
+			return ImportDraftResult.failure(outcome.getErrorMessage());
+		}
+		DraftHelper incoming = outcome.getDraft();
+		if (incoming == null)
+		{
+			return ImportDraftResult.failure("Could not parse incoming draft.");
+		}
+
+		int added = 0;
+		int reused = 0;
+		for (DraftRequirement req : incoming.getRequirements())
+		{
+			if (req == null)
+			{
+				continue;
+			}
+			List<Integer> ids = DraftRoutingIds.dedupeIntsPreserveOrder(DraftRoutingIds.mergedStepOrRequirementIds(req.getRawId(), req.getAlternateRawIds()));
+			if (ids.isEmpty())
+			{
+				continue;
+			}
+			String key = requirementKey(ids);
+			DraftRequirement existing = null;
+			for (DraftRequirement cur : currentDraft.getRequirements())
+			{
+				List<Integer> curIds = DraftRoutingIds.dedupeIntsPreserveOrder(DraftRoutingIds.mergedStepOrRequirementIds(cur.getRawId(), cur.getAlternateRawIds()));
+				if (requirementKey(curIds).equals(key))
+				{
+					existing = cur;
+					break;
+				}
+			}
+			if (existing != null)
+			{
+				reused++;
+				if ((existing.getDisplayName() == null || existing.getDisplayName().isBlank())
+					&& req.getDisplayName() != null && !req.getDisplayName().isBlank())
+				{
+					existing.setDisplayName(req.getDisplayName().trim());
+				}
+				continue;
+			}
+			DraftRequirement add = new DraftRequirement();
+			add.setRawId(ids.get(0));
+			add.setDisplayName(req.getDisplayName() == null ? "" : req.getDisplayName().trim());
+			add.getAlternateRawIds().clear();
+			for (int i = 1; i < ids.size(); i++)
+			{
+				add.getAlternateRawIds().add(ids.get(i));
+			}
+			currentDraft.getRequirements().add(add);
+			added++;
+		}
+
+		saveDraftToConfig();
+		return ImportDraftResult.ok(String.format("Item data import complete. Added: %d, reused: %d.", added, reused));
+	}
+
+	private static String requirementKey(List<Integer> ids)
+	{
+		if (ids == null || ids.isEmpty())
+		{
+			return "";
+		}
+		int[] arr = new int[ids.size()];
+		for (int i = 0; i < ids.size(); i++)
+		{
+			arr[i] = ids.get(i);
+		}
+		Arrays.sort(arr);
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < arr.length; i++)
+		{
+			if (i > 0)
+			{
+				sb.append(',');
+			}
+			sb.append(arr[i]);
+		}
+		return sb.toString();
 	}
 
 	/**

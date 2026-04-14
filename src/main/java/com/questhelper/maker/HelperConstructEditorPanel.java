@@ -435,9 +435,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		orderOnly.addActionListener(e -> showImportJsonDialog(HelperConstructManager.ImportMode.ORDER_ONLY));
 		JMenuItem dataOnly = new JMenuItem("Just more data import...");
 		dataOnly.addActionListener(e -> showImportJsonDialog(HelperConstructManager.ImportMode.DATA_ONLY));
+		JMenuItem itemData = new JMenuItem("Import item data (QH)...");
+		itemData.addActionListener(e -> showImportItemDataDialog());
 		menu.add(fullFresh);
 		menu.add(orderOnly);
 		menu.add(dataOnly);
+		menu.addSeparator();
+		menu.add(itemData);
 		menu.show(anchor, 0, anchor.getHeight());
 	}
 
@@ -560,6 +564,52 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			JOptionPane.showMessageDialog(this, result.getErrorMessage(), "Import failed", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private void showImportItemDataDialog()
+	{
+		int confirm = JOptionPane.showConfirmDialog(this,
+			"Import item requirement rows from QH canonical JSON (questHelperMaker) into Item reqs?\n"
+				+ "This merges missing rows and leaves steps/order untouched.",
+			"Import item data",
+			JOptionPane.OK_CANCEL_OPTION,
+			JOptionPane.WARNING_MESSAGE);
+		if (confirm != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		JTextArea textArea = new JTextArea(14, 44);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		JButton browse = new JButton("Load from file...");
+		browse.addActionListener(ev ->
+		{
+			JFileChooser fc = new JFileChooser();
+			if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+			{
+				try
+				{
+					textArea.setText(Files.readString(fc.getSelectedFile().toPath()));
+				}
+				catch (IOException ex)
+				{
+					JOptionPane.showMessageDialog(this, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		JPanel panel = new JPanel(new BorderLayout(0, 6));
+		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+		panel.add(browse, BorderLayout.SOUTH);
+
+		int r = JOptionPane.showConfirmDialog(this, panel, "Paste QH canonical JSON", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		if (r != JOptionPane.OK_OPTION)
+		{
+			return;
+		}
+
+		HelperConstructManager.ImportDraftResult result = helperConstructManager.importItemRequirementsFromJson(textArea.getText());
+		showImportResult(result);
 	}
 
 	private void applyMakerToolbarStyle(JButton... buttons)

@@ -26,6 +26,7 @@ package com.questhelper.maker;
 
 import com.questhelper.panel.JGenerator;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.steps.choice.DialogChoiceStep;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.SwingUtil;
@@ -1588,17 +1589,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		JSpinner groupSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 		JSpinner childSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 		JSpinner childChildSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-		JButton pickWidgetButton = new JButton("Select visible widget…");
-		pickWidgetButton.addActionListener(e ->
-		{
-			HelperConstructManager.WidgetPickerRow pick = showWidgetPickerDialog();
-			if (pick == null)
-			{
-				return;
-			}
-			groupSp.setValue(pick.getGroupId());
-			childSp.setValue(pick.getChildId());
-		});
+		JLabel pickerHint = new JLabel("<html><small>Use the in-game picker next to the compass to select widget IDs while this window is open.</small></html>");
+		pickerHint.setForeground(Color.LIGHT_GRAY);
 		JCheckBox useChildChildCb = new JCheckBox("Use childChild");
 		useChildChildCb.setOpaque(false);
 		useChildChildCb.setForeground(Color.WHITE);
@@ -1609,9 +1601,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		checkChildrenItemCb.setForeground(Color.WHITE);
 
 		JTextField dialogTextField = new JTextField(24);
-		JCheckBox checkChildrenTextCb = new JCheckBox("Check children");
-		checkChildrenTextCb.setOpaque(false);
-		checkChildrenTextCb.setForeground(Color.WHITE);
 
 		if (initial != null)
 		{
@@ -1638,7 +1627,6 @@ public final class HelperConstructEditorPanel extends JPanel
 			{
 				byDialogText.setSelected(true);
 				dialogTextField.setText(initial.getWidgetDialogText());
-				checkChildrenTextCb.setSelected(initial.isWidgetCheckChildren());
 			}
 			else
 			{
@@ -1659,7 +1647,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		panel.add(Box.createVerticalStrut(8));
 		panel.add(labeled("Group", groupSp));
 		panel.add(labeled("Child", childSp));
-		panel.add(pickWidgetButton);
+		panel.add(pickerHint);
 		panel.add(useChildChildCb);
 		panel.add(labeled("ChildChild", childChildSp));
 		panel.add(Box.createVerticalStrut(6));
@@ -1667,7 +1655,6 @@ public final class HelperConstructEditorPanel extends JPanel
 		panel.add(checkChildrenItemCb);
 		panel.add(Box.createVerticalStrut(6));
 		panel.add(labeled("Dialog text", dialogTextField));
-		panel.add(checkChildrenTextCb);
 
 		Runnable syncModeControls = () ->
 		{
@@ -1675,12 +1662,19 @@ public final class HelperConstructEditorPanel extends JPanel
 				? WidgetAttachmentMode.ITEM_ID
 				: (byDialogText.isSelected() ? WidgetAttachmentMode.DIALOG_TEXT : WidgetAttachmentMode.GROUP_CHILD);
 			boolean groupMode = mode == WidgetAttachmentMode.GROUP_CHILD;
+			boolean dialogMode = mode == WidgetAttachmentMode.DIALOG_TEXT;
+			if (dialogMode)
+			{
+				groupSp.setValue(DialogChoiceStep.DIALOG_WIDGET_GROUP_ID);
+				childSp.setValue(DialogChoiceStep.DIALOG_WIDGET_CHILD_ID);
+			}
+			groupSp.setEnabled(!dialogMode);
+			childSp.setEnabled(!dialogMode);
 			childChildSp.setEnabled(groupMode && useChildChildCb.isSelected());
 			useChildChildCb.setEnabled(groupMode);
 			itemIdSp.setEnabled(mode == WidgetAttachmentMode.ITEM_ID);
 			checkChildrenItemCb.setEnabled(mode == WidgetAttachmentMode.ITEM_ID);
 			dialogTextField.setEnabled(mode == WidgetAttachmentMode.DIALOG_TEXT);
-			checkChildrenTextCb.setEnabled(mode == WidgetAttachmentMode.DIALOG_TEXT);
 		};
 		useChildChildCb.addActionListener(e -> syncModeControls.run());
 		byGroupChild.addActionListener(e -> syncModeControls.run());
@@ -1700,6 +1694,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			@Override
 			public void windowClosed(WindowEvent e)
 			{
+				helperConstructManager.closeWidgetInspectorPick();
 				if (owner != null)
 				{
 					owner.setEnabled(true);
@@ -1733,7 +1728,11 @@ public final class HelperConstructEditorPanel extends JPanel
 					JOptionPane.showMessageDialog(dialog, "Dialog text is required for text mode.", "Widget highlight", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				add = HelperConstructManager.StepAttachmentEdit.widgetByDialogText(group, child, text, checkChildrenTextCb.isSelected());
+				add = HelperConstructManager.StepAttachmentEdit.widgetByDialogText(
+					DialogChoiceStep.DIALOG_WIDGET_GROUP_ID,
+					DialogChoiceStep.DIALOG_WIDGET_CHILD_ID,
+					text,
+					true);
 			}
 			else
 			{
@@ -1749,6 +1748,15 @@ public final class HelperConstructEditorPanel extends JPanel
 		dialog.setContentPane(content);
 		dialog.pack();
 		dialog.setLocationRelativeTo(owner);
+		helperConstructManager.openWidgetInspectorForPick(pick ->
+		{
+			groupSp.setValue(pick.getGroupId());
+			childSp.setValue(pick.getChildId());
+			if (byDialogText.isSelected() && pick.getText() != null && !pick.getText().isBlank())
+			{
+				dialogTextField.setText(pick.getText());
+			}
+		});
 		dialog.setVisible(true);
 	}
 
@@ -2163,8 +2171,8 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			this.kind = kind;
 			this.columns = kind == ConstructStepKind.TEXT
-				? new String[]{"Var name", "World (x, y, plane)", "Reqs", "Text"}
-				: new String[]{"Var name", "Id to use", "World (x, y, plane)", "Reqs", "Text"};
+				? new String[]{"Var name", "World (x, y, plane)", "Extras", "Text"}
+				: new String[]{"Var name", "Id to use", "World (x, y, plane)", "Extras", "Text"};
 		}
 
 		void setRows(

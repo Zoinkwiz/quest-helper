@@ -209,7 +209,7 @@ public final class HelperConstructModels
 			d.setWidgetGroupId(groupId);
 			d.setWidgetChildId(childId);
 			d.setWidgetDialogText(requiredText == null ? null : requiredText.trim());
-			d.setWidgetCheckChildren(checkChildren);
+			d.setWidgetCheckChildren(true);
 			return d;
 		}
 

@@ -27,6 +27,7 @@ package com.questhelper.maker;
 import com.questhelper.maker.HelperConstructModels.OrderConditionMode;
 import com.questhelper.maker.construct.DraftRoutingIds;
 import com.questhelper.requirements.util.Operation;
+import com.questhelper.steps.choice.DialogChoiceStep;
 
 import lombok.Getter;
 import net.runelite.api.Skill;
@@ -579,9 +580,10 @@ public class HelperScaffoldGenerator
 				if (a.getWidgetDialogText() != null && !a.getWidgetDialogText().isBlank())
 				{
 					out.append("\t\t").append(varName).append(".addWidgetHighlightWithTextRequirement(")
-						.append(groupId).append(", ").append(childId).append(", \"")
+						.append(DialogChoiceStep.DIALOG_WIDGET_GROUP_ID).append(", ")
+						.append(DialogChoiceStep.DIALOG_WIDGET_CHILD_ID).append(", \"")
 						.append(escape(a.getWidgetDialogText())).append("\", ")
-						.append(a.isWidgetCheckChildren()).append(");\n");
+						.append(true).append(");\n");
 					continue;
 				}
 				if (a.getWidgetChildChildId() != null)

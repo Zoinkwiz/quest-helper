@@ -61,6 +61,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.choice.DialogChoiceStep;
 import com.questhelper.steps.tools.QuestPerspective;
 import com.questhelper.tools.ConstructWorldMapPoint;
 import com.questhelper.util.worldmap.WorldPointMapper;
@@ -107,7 +108,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
@@ -169,6 +174,9 @@ public class HelperConstructManager
 
 	@Inject
 	private QuestManager questManager;
+
+	@Inject
+	private WidgetInspector widgetInspector;
 
 	@Inject
 	private Gson gson;
@@ -1806,12 +1814,12 @@ public class HelperConstructManager
 		}
 		if (StepAttachmentKind.WIDGET.name().equalsIgnoreCase(edit.getKind()))
 		{
-			if (edit.getWidgetGroupId() == null || edit.getWidgetChildId() == null)
-			{
-				return null;
-			}
 			if (edit.getWidgetItemId() != null)
 			{
+				if (edit.getWidgetGroupId() == null || edit.getWidgetChildId() == null)
+				{
+					return null;
+				}
 				return DraftStepAttachedRequirement.widgetByItemId(
 					edit.getWidgetGroupId(),
 					edit.getWidgetChildId(),
@@ -1821,10 +1829,14 @@ public class HelperConstructManager
 			if (edit.getWidgetDialogText() != null && !edit.getWidgetDialogText().isBlank())
 			{
 				return DraftStepAttachedRequirement.widgetByDialogText(
-					edit.getWidgetGroupId(),
-					edit.getWidgetChildId(),
+					DialogChoiceStep.DIALOG_WIDGET_GROUP_ID,
+					DialogChoiceStep.DIALOG_WIDGET_CHILD_ID,
 					edit.getWidgetDialogText(),
 					edit.isWidgetCheckChildren());
+			}
+			if (edit.getWidgetGroupId() == null || edit.getWidgetChildId() == null)
+			{
+				return null;
 			}
 			return DraftStepAttachedRequirement.widgetByGroupChild(
 				edit.getWidgetGroupId(),
@@ -4936,7 +4948,11 @@ public class HelperConstructManager
 				String requiredText = a.getWidgetDialogText();
 				if (requiredText != null && !requiredText.isBlank())
 				{
-					step.addWidgetHighlightWithTextRequirement(groupId, childId, requiredText, a.isWidgetCheckChildren());
+					step.addWidgetHighlightWithTextRequirement(
+						DialogChoiceStep.DIALOG_WIDGET_GROUP_ID,
+						DialogChoiceStep.DIALOG_WIDGET_CHILD_ID,
+						requiredText,
+						true);
 					continue;
 				}
 				Integer childChildId = a.getWidgetChildChildId();
@@ -5320,7 +5336,11 @@ public class HelperConstructManager
 				String requiredText = a.getWidgetDialogText();
 				if (requiredText != null && !requiredText.isBlank())
 				{
-					step.addWidgetHighlightWithTextRequirement(groupId, childId, requiredText, a.isWidgetCheckChildren());
+					step.addWidgetHighlightWithTextRequirement(
+						DialogChoiceStep.DIALOG_WIDGET_GROUP_ID,
+						DialogChoiceStep.DIALOG_WIDGET_CHILD_ID,
+						requiredText,
+						true);
 					continue;
 				}
 				Integer childChildId = a.getWidgetChildChildId();
@@ -5388,16 +5408,89 @@ public class HelperConstructManager
 		private final int groupId;
 		private final int childId;
 		private final String label;
+		private final String text;
 
 		public WidgetPickerRow(int groupId, int childId, String label)
+		{
+			this(groupId, childId, label, null);
+		}
+
+		public WidgetPickerRow(int groupId, int childId, String label, String text)
 		{
 			this.groupId = groupId;
 			this.childId = childId;
 			this.label = label == null ? (groupId + "," + childId) : label;
+			this.text = text;
 		}
 	}
 
 	public List<WidgetPickerRow> getVisibleWidgetPickerRows()
+	{
+		if (client == null || clientThread == null)
+		{
+			return Collections.emptyList();
+		}
+		if (client.isClientThread())
+		{
+			return getVisibleWidgetPickerRowsOnClientThread();
+		}
+		AtomicReference<List<WidgetPickerRow>> out = new AtomicReference<>(Collections.emptyList());
+		CountDownLatch latch = new CountDownLatch(1);
+		clientThread.invokeLater(() ->
+		{
+			try
+			{
+				out.set(getVisibleWidgetPickerRowsOnClientThread());
+			}
+			catch (RuntimeException ex)
+			{
+				log.debug("Widget picker scan failed on client thread.", ex);
+				out.set(Collections.emptyList());
+			}
+			finally
+			{
+				latch.countDown();
+			}
+		});
+		try
+		{
+			if (!latch.await(2, TimeUnit.SECONDS))
+			{
+				log.debug("Timed out waiting for widget picker scan on client thread.");
+			}
+		}
+		catch (InterruptedException ex)
+		{
+			Thread.currentThread().interrupt();
+		}
+		return out.get();
+	}
+
+	public void openWidgetInspectorForPick(Consumer<WidgetPickerRow> onPicked)
+	{
+		if (widgetInspector == null)
+		{
+			return;
+		}
+		widgetInspector.openForPick(pick ->
+		{
+			if (pick == null || onPicked == null)
+			{
+				return;
+			}
+			onPicked.accept(new WidgetPickerRow(pick.getGroupId(), pick.getChildId(), pick.getLabel(), pick.getText()));
+		}, true);
+	}
+
+	public void closeWidgetInspectorPick()
+	{
+		if (widgetInspector != null)
+		{
+			widgetInspector.close();
+		}
+	}
+
+	private List<WidgetPickerRow> getVisibleWidgetPickerRowsOnClientThread()
 	{
 		List<WidgetPickerRow> out = new ArrayList<>();
 		if (client == null)
@@ -5606,7 +5699,10 @@ public class HelperConstructManager
 		{
 			String text = requiredText == null ? null : requiredText.trim();
 			return new StepAttachmentEdit(StepAttachmentKind.WIDGET.name(), null, null, null, null, null,
-				null, null, null, null, false, groupId, childId, null, null, text, checkChildren, false, 1, null);
+				null, null, null, null, false,
+				DialogChoiceStep.DIALOG_WIDGET_GROUP_ID,
+				DialogChoiceStep.DIALOG_WIDGET_CHILD_ID,
+				null, null, text, true, false, 1, null);
 		}
 	}
 

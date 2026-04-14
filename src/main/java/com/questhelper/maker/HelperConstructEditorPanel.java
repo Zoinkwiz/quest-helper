@@ -511,26 +511,6 @@ public final class HelperConstructEditorPanel extends JPanel
 			return;
 		}
 
-		Object[] options = {"Paste JSON", "Load JSON file...", "Cancel"};
-		int sourceChoice = JOptionPane.showOptionDialog(
-			this,
-			"Choose import source:",
-			title,
-			JOptionPane.DEFAULT_OPTION,
-			JOptionPane.PLAIN_MESSAGE,
-			null,
-			options,
-			options[1]);
-		if (sourceChoice == 2 || sourceChoice == JOptionPane.CLOSED_OPTION)
-		{
-			return;
-		}
-		if (sourceChoice == 1)
-		{
-			importJsonFromFile(mode);
-			return;
-		}
-
 		JTextArea textArea = new JTextArea(14, 44);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -562,25 +542,6 @@ public final class HelperConstructEditorPanel extends JPanel
 
 		HelperConstructManager.ImportDraftResult result = helperConstructManager.importFromJson(textArea.getText(), mode);
 		showImportResult(result);
-	}
-
-	private void importJsonFromFile(HelperConstructManager.ImportMode mode)
-	{
-		JFileChooser fc = new JFileChooser();
-		if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
-		{
-			return;
-		}
-		try
-		{
-			String json = Files.readString(fc.getSelectedFile().toPath());
-			HelperConstructManager.ImportDraftResult result = helperConstructManager.importFromJson(json, mode);
-			showImportResult(result);
-		}
-		catch (IOException ex)
-		{
-			JOptionPane.showMessageDialog(this, ex.getMessage(), "Read failed", JOptionPane.ERROR_MESSAGE);
-		}
 	}
 
 	private void showImportResult(HelperConstructManager.ImportDraftResult result)

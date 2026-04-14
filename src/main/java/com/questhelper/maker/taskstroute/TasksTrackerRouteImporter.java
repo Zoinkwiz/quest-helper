@@ -229,19 +229,23 @@ public final class TasksTrackerRouteImporter
 		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(
 			c != null && c.getLabel() != null ? c.getLabel() : "custom", "step"));
 		StringBuilder instr = new StringBuilder();
-		if (c != null && c.getLabel() != null && !c.getLabel().isBlank())
+		String label = c != null && c.getLabel() != null ? c.getLabel().trim() : "";
+		String description = c != null && c.getDescription() != null ? c.getDescription().trim() : "";
+		// Avoid polluting step text with internal-style var labels (camelCase/no spaces) when we already have richer text.
+		boolean includeLabel = !label.isBlank() && (!looksLikeInternalVarLabel(label) || description.isBlank());
+		if (includeLabel)
 		{
-			instr.append(c.getLabel().trim());
+			instr.append(label);
 		}
-		if (c != null && c.getDescription() != null && !c.getDescription().isBlank())
+		if (!description.isBlank())
 		{
-			if (!instr.isEmpty())
+			if (instr.length() > 0)
 			{
 				instr.append("\n\n");
 			}
-			instr.append(c.getDescription().trim());
+			instr.append(description);
 		}
-		if (instr.isEmpty())
+		if (instr.length() == 0)
 		{
 			instr.append("Custom step");
 		}
@@ -260,6 +264,29 @@ public final class TasksTrackerRouteImporter
 		step.setSkipWhenConditionMet(false);
 		applyWorldPoint(step, item.getLocation(), null);
 		return step;
+	}
+
+	private static boolean looksLikeInternalVarLabel(String label)
+	{
+		if (label == null)
+		{
+			return false;
+		}
+		String trimmed = label.trim();
+		if (trimmed.isEmpty())
+		{
+			return false;
+		}
+		// Treat no-whitespace alphanumeric/underscore labels with mixed case as likely internal vars.
+		boolean hasWhitespace = trimmed.chars().anyMatch(Character::isWhitespace);
+		if (hasWhitespace)
+		{
+			return false;
+		}
+		boolean validChars = trimmed.matches("[A-Za-z0-9_]+");
+		boolean hasLower = trimmed.chars().anyMatch(Character::isLowerCase);
+		boolean hasUpper = trimmed.chars().anyMatch(Character::isUpperCase);
+		return validChars && hasLower && hasUpper;
 	}
 
 	public static DraftOrderLine newOrderRefLine(String stepId, String routingDisplayText)

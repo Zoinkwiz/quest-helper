@@ -4076,10 +4076,21 @@ public class HelperConstructManager
 				String display = requirement.getDisplayName() == null || requirement.getDisplayName().isBlank()
 					? "Required item"
 					: requirement.getDisplayName();
-				List<Integer> ids = DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds());
+				List<Integer> ids = new ArrayList<>();
+				for (Integer id : DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()))
+				{
+					if (id != null && id > 0)
+					{
+						ids.add(id);
+					}
+				}
+				if (ids.isEmpty())
+				{
+					continue;
+				}
 				if (ids.size() <= 1)
 				{
-					previewRequirements.add(new ItemRequirement(display, requirement.getRawId()));
+					previewRequirements.add(new ItemRequirement(display, ids.get(0)));
 				}
 				else
 				{
@@ -4297,7 +4308,7 @@ public class HelperConstructManager
 					continue;
 				}
 				Integer id = a.getItemRawId();
-				if (id == null)
+				if (id == null || id <= 0)
 				{
 					continue;
 				}
@@ -4387,7 +4398,7 @@ public class HelperConstructManager
 		private Integer itemHighlightRawIdForPreview(DraftStep def, DraftOrderLine orderLine)
 		{
 			Integer fromTree = OrderStepRequirementSupport.findFirstItemRawIdInTree(orderLine.getStepRequirement());
-			if (fromTree != null)
+			if (fromTree != null && fromTree > 0)
 			{
 				return fromTree;
 			}
@@ -4398,7 +4409,7 @@ public class HelperConstructManager
 			}
 			if (def.getKind() == StepKind.ITEM)
 			{
-				return def.getRawId();
+				return def.getRawId() > 0 ? def.getRawId() : null;
 			}
 			return null;
 		}

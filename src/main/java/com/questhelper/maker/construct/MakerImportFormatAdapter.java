@@ -9,10 +9,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.questhelper.maker.ConstructDraftPersistence;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteItemDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteLocationDto;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteDto.RouteSectionDto;
+import com.questhelper.maker.taskstroute.TasksTrackerRouteExporter;
 import com.questhelper.maker.taskstroute.TasksTrackerRouteValidation;
 import lombok.Getter;
 
@@ -108,9 +110,36 @@ public final class MakerImportFormatAdapter
 
 	private static AdaptedImport adaptRouteObject(JsonObject root, Gson gson)
 	{
-		if (!root.has("sections") || !root.get("sections").isJsonArray())
+		boolean hasSections = root.has("sections") && root.get("sections").isJsonArray();
+		boolean hasMakerSnapshot = root.has("questHelperMaker") && root.get("questHelperMaker").isJsonObject();
+		if (!hasSections && hasMakerSnapshot)
 		{
-			return AdaptedImport.failure("Expected route object with top-level \"sections\" array.");
+			try
+			{
+				ConstructDraftPersistence.DraftState snapshot =
+					gson.fromJson(root.get("questHelperMaker"), ConstructDraftPersistence.DraftState.class);
+				if (!ConstructDraftPersistence.isSupportedMakerSnapshot(snapshot))
+				{
+					return AdaptedImport.failure("questHelperMaker snapshot is malformed or unsupported formatVersion.");
+				}
+				TasksTrackerRouteDto route = TasksTrackerRouteExporter.export(
+					ConstructDraftPersistence.draftHelperFromState(snapshot),
+					false);
+				String validationError = TasksTrackerRouteValidation.validateRoute(route);
+				if (validationError != null)
+				{
+					return AdaptedImport.failure(validationError);
+				}
+				return AdaptedImport.ok(ImportSourceFormat.QH_EXTENDED_ROUTE, route, Map.of());
+			}
+			catch (RuntimeException ex)
+			{
+				return AdaptedImport.failure(ex.getMessage());
+			}
+		}
+		if (!hasSections)
+		{
+			return AdaptedImport.failure("Expected route object with top-level \"sections\" array or QH JSON with \"questHelperMaker\".");
 		}
 		TasksTrackerRouteDto route;
 		try

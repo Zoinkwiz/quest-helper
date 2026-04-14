@@ -71,7 +71,7 @@ public final class HelperConstructEditorPanel extends JPanel
 	// TODO: Review text
 	private static final String USAGE_GUIDE = String.join("\n",
 		"1. In-game: right-click NPCs, objects, items, or Walk here on a tile and use the Construct: menu entries to capture definitions.",
-		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select a row and use Add step / Remove at the bottom right (no in-table remove column). Ctrl/Cmd+N and Ctrl/Cmd+O convert the selected row to an NPC or Object step when focus is not in the filter field. Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
+		"2. NPC / Object / Generic tabs: edit Name/Var, id (NPC/object), world point, and instruction; click Attachments to pick requirements, toggle Highlight for item rows, and save. Select one or more rows and use Add step / Remove at the bottom right (no in-table remove column). Ctrl/Cmd+N and Ctrl/Cmd+O convert the selected row to an NPC or Object step when focus is not in the filter field. Use the search field above each table to filter rows by any column. In Step attachments → Add…, search filters the pick list.",
 		"3. Item reqs tab: Name and ID columns (editable); Add / Remove at the bottom right for empty rows or deleting the selected row. Search filters by name or id.",
 		"4. Quest order tab: add references to definitions, section dividers, and step text. Drag rows to reorder. With a row selected, Add Step / Add Section insert the new row directly under that selection (or the lowest selected row when several are selected). Select one or more rows and use Remove selected to delete them from quest order. Click Conditions in a row to edit branch requirements (logic groups, varbits, zones, captured items, NOT). Varbit values are edited on the Varbit reqs tab; zone corners on the Zone reqs tab — not on the order tree leaf nodes. Search filters by var name, section text, or instruction. Add Step lists each definition by instruction / readable text; its search matches those fields (and ids) but does not show internal step ids.",
 		"5. Varbit reqs tab: one row per quest-order slot that uses a varbit (Conditions includes an order varbit slot, or this tab already has a row for that slot). Values are stored on the order row (not the step definition). Edit Var name, varbit id, value, Operation (e.g. EQUAL), and optional display text. Add appends a placeholder generic step and order row with varbit id 0, required value 0, and a generic var name. Remove clears varbit routing and order-varbit conditions for that row only; it does not remove the step from quest order. Search filters varbit rows.",
@@ -1107,10 +1107,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		});
 		removeStep.addActionListener(e ->
 		{
-			int r = selectedModelRow(table);
-			if (r >= 0)
+			List<Integer> selected = selectedModelRowsDescending(table);
+			if (!selected.isEmpty())
 			{
-				helperConstructManager.removeStepAt(stepKind, r);
+				for (int r : selected)
+				{
+					helperConstructManager.removeStepAt(stepKind, r);
+				}
 				refresh();
 			}
 		});
@@ -1507,6 +1510,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		int attachCol = stepLibAttachmentsColumn(stepKind);
 		table.setFillsViewportHeight(true);
 		table.setRowHeight(24);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.setShowGrid(false);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer()

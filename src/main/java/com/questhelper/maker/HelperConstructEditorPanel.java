@@ -2217,6 +2217,7 @@ public final class HelperConstructEditorPanel extends JPanel
 
 	private void showAddStepDialog()
 	{
+		final int insertAt = questOrderInsertIndexBelowSelection();
 		var options = helperConstructManager.getStepDefinitionPickOptions();
 		if (options.isEmpty())
 		{
@@ -2287,14 +2288,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		int r = JOptionPane.showConfirmDialog(this, panel, "Add Step to order", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r == JOptionPane.OK_OPTION && list.getSelectedValue() != null)
 		{
-			int ins = questOrderInsertIndexBelowSelection();
-			if (ins < 0)
+			if (insertAt < 0)
 			{
 				helperConstructManager.addOrderRef(list.getSelectedValue().getStepId());
 			}
 			else
 			{
-				helperConstructManager.addOrderRef(list.getSelectedValue().getStepId(), ins);
+				helperConstructManager.addOrderRef(list.getSelectedValue().getStepId(), insertAt);
 			}
 			refresh();
 		}

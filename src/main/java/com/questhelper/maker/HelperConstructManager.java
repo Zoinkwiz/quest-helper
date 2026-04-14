@@ -1996,6 +1996,7 @@ public class HelperConstructManager
 					false,
 					OrderConditionMode.SHOW_WHEN_TRUE,
 					false,
+					false,
 					false));
 				continue;
 			}
@@ -2015,6 +2016,7 @@ public class HelperConstructManager
 					"",
 					false,
 					effectiveOrderConditionMode(line),
+					line.isPassOnceCompletedOnce(),
 					isNonDefaultOrderStepRequirementTree(line, def),
 					line.getStepRequirement() != null));
 				continue;
@@ -2038,6 +2040,7 @@ public class HelperConstructManager
 				instr == null ? "" : instr,
 				def.getStructId() != null && def.getStructId() != 0,
 				effectiveOrderConditionMode(line),
+				line.isPassOnceCompletedOnce(),
 				isNonDefaultOrderStepRequirementTree(line, def),
 				line.getStepRequirement() != null));
 		}
@@ -2318,10 +2321,21 @@ public class HelperConstructManager
 		ensureDraftLoaded();
 		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
 		{
-			return OrderConditionMode.SHOW_WHEN_TRUE;
+			return OrderConditionMode.CONTINUE_WHEN_TRUE;
 		}
 		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
 		return effectiveOrderConditionMode(line);
+	}
+
+	public boolean isOrderStepPassOnceCompletedOnce(int orderIndex)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return false;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		return !line.isSectionDivider() && line.isPassOnceCompletedOnce();
 	}
 
 	public String applyOrderStepRequirementMode(int orderIndex, OrderConditionMode mode)
@@ -2337,6 +2351,23 @@ public class HelperConstructManager
 			return "Not an order step row.";
 		}
 		line.setStepRequirementMode(mode == null ? OrderConditionMode.CONTINUE_WHEN_TRUE : mode);
+		saveDraftToConfig();
+		return null;
+	}
+
+	public String applyOrderStepPassOnceCompletedOnce(int orderIndex, boolean enabled)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			return "Invalid order row.";
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line.isSectionDivider())
+		{
+			return "Not an order step row.";
+		}
+		line.setPassOnceCompletedOnce(enabled);
 		saveDraftToConfig();
 		return null;
 	}
@@ -2387,7 +2418,7 @@ public class HelperConstructManager
 	{
 		if (line == null || line.getStepRequirementMode() == null)
 		{
-			return OrderConditionMode.SHOW_WHEN_TRUE;
+			return OrderConditionMode.CONTINUE_WHEN_TRUE;
 		}
 		return line.getStepRequirementMode();
 	}
@@ -2735,7 +2766,7 @@ public class HelperConstructManager
 		{
 			return false;
 		}
-		if (!applyZoneRoutingToOrderLine(line, c1, c2, displayText, true))
+		if (!applyZoneRoutingToOrderLine(line, c1, c2, displayText, false))
 		{
 			return false;
 		}
@@ -4676,6 +4707,10 @@ public class HelperConstructManager
 			if (tree != null)
 			{
 				Requirement selector = OrderStepRequirementSupport.buildRuntimeSelector(tree, orderLine, draftStep, requirementById);
+				if (selector != null && orderLine.isPassOnceCompletedOnce())
+				{
+					selector = selectorWithAutoPersistOnCompletion(selector, manualOverride, persistKey, conditionMode);
+				}
 				if (selector == null)
 				{
 					completion = manualOverride;
@@ -4701,8 +4736,80 @@ public class HelperConstructManager
 					? manualOverride
 					: or(originalCompletionRequirement, manualOverride);
 				branchRequirement = not(completion);
+				if (orderLine.isPassOnceCompletedOnce())
+				{
+					completion = autoPersistManualSkipOnFirstPass(completion, manualOverride, persistKey);
+				}
 			}
 			return new PreviewStepEntry(step, completion, branchRequirement);
+		}
+
+		private Requirement selectorWithAutoPersistOnCompletion(
+			Requirement selector,
+			ManualRequirement manualOverride,
+			String persistKey,
+			OrderConditionMode conditionMode)
+		{
+			return new Requirement()
+			{
+				@Override
+				public boolean check(Client client)
+				{
+					boolean selectorTrue = selector.check(client);
+					boolean completed = conditionMode == OrderConditionMode.CONTINUE_WHEN_TRUE
+						? selectorTrue
+						: !selectorTrue;
+					if (completed && !manualOverride.check(client))
+					{
+						manualOverride.setShouldPass(true);
+						if (persistKey != null && !persistKey.isBlank())
+						{
+							notifyManualSidebarSkipChanged(persistKey, true);
+						}
+					}
+					return selectorTrue;
+				}
+
+				@Override
+				public @NotNull String getDisplayText()
+				{
+					return selector.getDisplayText();
+				}
+			};
+		}
+
+		private Requirement autoPersistManualSkipOnFirstPass(
+			Requirement completion,
+			ManualRequirement manualOverride,
+			String persistKey)
+		{
+			if (completion == null)
+			{
+				return null;
+			}
+			return new Requirement()
+			{
+				@Override
+				public boolean check(Client client)
+				{
+					boolean passed = completion.check(client);
+					if (passed && !manualOverride.check(client))
+					{
+						manualOverride.setShouldPass(true);
+						if (persistKey != null && !persistKey.isBlank())
+						{
+							notifyManualSidebarSkipChanged(persistKey, true);
+						}
+					}
+					return passed;
+				}
+
+				@Override
+				public @NotNull String getDisplayText()
+				{
+					return completion.getDisplayText();
+				}
+			};
 		}
 
 		/**
@@ -5027,10 +5134,11 @@ public class HelperConstructManager
 		private final String instructionText;
 		private final boolean leagueStep;
 		private final OrderConditionMode orderConditionMode;
+		private final boolean passOnceCompletedOnce;
 		private final boolean customOrderStepRequirement;
 		private final boolean hasOrderStepRequirementTree;
 
-		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText, boolean leagueStep, OrderConditionMode orderConditionMode, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
+		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText, boolean leagueStep, OrderConditionMode orderConditionMode, boolean passOnceCompletedOnce, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
 		{
 			this.index = index;
 			this.orderSlotId = orderSlotId == null ? "" : orderSlotId;
@@ -5043,7 +5151,8 @@ public class HelperConstructManager
 			this.orderLinkedRequirementRawId = orderLinkedRequirementRawId;
 			this.instructionText = instructionText == null ? "" : instructionText;
 			this.leagueStep = leagueStep;
-			this.orderConditionMode = orderConditionMode == null ? OrderConditionMode.SHOW_WHEN_TRUE : orderConditionMode;
+			this.orderConditionMode = orderConditionMode == null ? OrderConditionMode.CONTINUE_WHEN_TRUE : orderConditionMode;
+			this.passOnceCompletedOnce = passOnceCompletedOnce;
 			this.customOrderStepRequirement = customOrderStepRequirement;
 			this.hasOrderStepRequirementTree = hasOrderStepRequirementTree;
 		}

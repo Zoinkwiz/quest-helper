@@ -2647,11 +2647,20 @@ public final class HelperConstructEditorPanel extends JPanel
 			if (row.hasOrderStepRequirementTree())
 			{
 				boolean continueMode = row.getOrderConditionMode() == HelperConstructModels.OrderConditionMode.CONTINUE_WHEN_TRUE;
+				boolean stickyComplete = row.isPassOnceCompletedOnce();
 				if (row.isCustomOrderStepRequirement())
 				{
-					return continueMode ? "Conditions (custom, continue)…" : "Conditions (custom, show)…";
+					if (continueMode)
+					{
+						return stickyComplete ? "Conditions (custom, continue, pass-once)…" : "Conditions (custom, continue)…";
+					}
+					return stickyComplete ? "Conditions (custom, show, pass-once)…" : "Conditions (custom, show)…";
 				}
-				return continueMode ? "Conditions (continue)…" : "Conditions (show)…";
+				if (continueMode)
+				{
+					return stickyComplete ? "Conditions (continue, pass-once)…" : "Conditions (continue)…";
+				}
+				return stickyComplete ? "Conditions (show, pass-once)…" : "Conditions (show)…";
 			}
 			return "Conditions…";
 		}

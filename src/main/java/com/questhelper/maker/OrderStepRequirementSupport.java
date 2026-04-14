@@ -101,7 +101,7 @@ public final class OrderStepRequirementSupport
 	{
 		if (line == null || line.getStepRequirementMode() == null)
 		{
-			return OrderConditionMode.SHOW_WHEN_TRUE;
+			return OrderConditionMode.CONTINUE_WHEN_TRUE;
 		}
 		return line.getStepRequirementMode();
 	}

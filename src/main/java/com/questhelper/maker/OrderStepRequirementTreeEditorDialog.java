@@ -43,9 +43,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 /**
  * Visual editor for {@link DraftOrderStepRequirement} on a quest-order row: logic groups (AND/OR/NOR/NAND),
@@ -83,6 +86,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	private final DefaultTreeModel treeModel;
 	private final JTree tree;
 	private final JComboBox<OrderConditionMode> modeCombo;
+	private final JCheckBox passOnceCompletedCheck;
 	private boolean accepted;
 
 	private OrderStepRequirementTreeEditorDialog(
@@ -98,6 +102,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		this.rootDto = initialClone;
 		clearPendingVarbitRouting();
 		OrderConditionMode initialMode = manager.getOrderStepRequirementMode(orderIndex);
+		boolean initialPassOnceCompleted = manager.isOrderStepPassOnceCompletedOnce(orderIndex);
 
 		treeModel = new DefaultTreeModel(visualRoot);
 		tree = new JTree(treeModel);
@@ -152,11 +157,10 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			rebuildTree();
 		});
 
-		JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 4));
+		JPanel toolbar = new JPanel(new BorderLayout());
 		toolbar.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		JLabel semanticsLabel = new JLabel("Semantics:");
 		semanticsLabel.setToolTipText("Choose how this row's condition tree is interpreted.");
-		toolbar.add(semanticsLabel);
 		modeCombo = new JComboBox<>(OrderConditionMode.values());
 		modeCombo.setRenderer(new DefaultListCellRenderer()
 		{
@@ -172,15 +176,27 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				return this;
 			}
 		});
-		modeCombo.setSelectedItem(initialMode == null ? OrderConditionMode.SHOW_WHEN_TRUE : initialMode);
+		modeCombo.setSelectedItem(initialMode == null ? OrderConditionMode.CONTINUE_WHEN_TRUE : initialMode);
 		updateSemanticsToolTip();
 		modeCombo.addActionListener(e -> updateSemanticsToolTip());
-		toolbar.add(modeCombo);
-		toolbar.add(addReq);
-		toolbar.add(addLogic);
-		toolbar.add(editBtn);
-		toolbar.add(removeBtn);
-		toolbar.add(clearBtn);
+		passOnceCompletedCheck = new JCheckBox("Pass once completed once");
+		passOnceCompletedCheck.setSelected(initialPassOnceCompleted);
+		passOnceCompletedCheck.setToolTipText("When this row is completed once, auto-tick its sidebar skip and keep it passed.");
+		passOnceCompletedCheck.setOpaque(false);
+
+		setOverflowHandler(addReq, anchor -> reqMenu.show(anchor, 0, anchor.getHeight()));
+		setOverflowHandler(addLogic, anchor -> logicMenu.show(anchor, 0, anchor.getHeight()));
+
+		List<JComponent> toolbarChain = List.of(
+			semanticsLabel,
+			modeCombo,
+			passOnceCompletedCheck,
+			addReq,
+			addLogic,
+			editBtn,
+			removeBtn,
+			clearBtn);
+		toolbar.add(new OverflowingDialogToolbar(toolbarChain), BorderLayout.CENTER);
 
 		JScrollPane scroll = new JScrollPane(tree);
 		scroll.setPreferredSize(new Dimension(520, 360));
@@ -1052,6 +1068,140 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		return row;
 	}
 
+	private static void setOverflowHandler(JButton button, Consumer<JButton> handler)
+	{
+		button.putClientProperty("orderConditionsOverflowHandler", handler);
+	}
+
+	private static final class OverflowingDialogToolbar extends JPanel
+	{
+		private final List<JComponent> chain;
+		private final JPanel inlinePanel;
+		private final JButton moreButton;
+		private final JPopupMenu overflowMenu;
+
+		OverflowingDialogToolbar(List<JComponent> chain)
+		{
+			super(new BorderLayout());
+			this.chain = List.copyOf(chain);
+			setOpaque(false);
+			inlinePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+			inlinePanel.setOpaque(false);
+			moreButton = new JButton("More...");
+			moreButton.setToolTipText("Additional order condition actions.");
+			overflowMenu = new JPopupMenu();
+			moreButton.addActionListener(e -> overflowMenu.show(moreButton, 0, moreButton.getHeight()));
+			add(inlinePanel, BorderLayout.CENTER);
+			addComponentListener(new ComponentAdapter()
+			{
+				@Override
+				public void componentResized(ComponentEvent e)
+				{
+					reconcile();
+				}
+			});
+			SwingUtilities.invokeLater(this::reconcile);
+		}
+
+		private void reconcile()
+		{
+			final int hgap = 6;
+			int avail = getWidth() - getInsets().left - getInsets().right;
+			if (avail <= 0)
+			{
+				return;
+			}
+			int n = chain.size();
+			int moreW = moreButton.getPreferredSize().width + hgap;
+			int best = 0;
+			for (int k = n; k >= 0; k--)
+			{
+				int prefixW = prefixWidth(chain, 0, k, hgap);
+				int reserveMore = (k < n) ? moreW : 0;
+				if (prefixW + reserveMore <= avail)
+				{
+					best = k;
+					break;
+				}
+			}
+			inlinePanel.removeAll();
+			overflowMenu.removeAll();
+			for (int i = 0; i < best; i++)
+			{
+				inlinePanel.add(chain.get(i));
+			}
+			if (best < n)
+			{
+				for (int i = best; i < n; i++)
+				{
+					JComponent c = chain.get(i);
+					if (c instanceof JCheckBox)
+					{
+						JCheckBox cb = (JCheckBox) c;
+						JCheckBoxMenuItem mi = new JCheckBoxMenuItem(cb.getText(), cb.isSelected());
+						String tt = cb.getToolTipText();
+						if (tt != null && !tt.isBlank())
+						{
+							mi.setToolTipText(tt);
+						}
+						mi.addActionListener(ev ->
+						{
+							cb.setSelected(mi.isSelected());
+							for (java.awt.event.ActionListener l : cb.getActionListeners())
+							{
+								l.actionPerformed(new java.awt.event.ActionEvent(cb, java.awt.event.ActionEvent.ACTION_PERFORMED, "overflow-toggle"));
+							}
+						});
+						overflowMenu.add(mi);
+						continue;
+					}
+					if (c instanceof JButton)
+					{
+						JButton b = (JButton) c;
+						JMenuItem mi = new JMenuItem(b.getText());
+						String tt = b.getToolTipText();
+						if (tt != null && !tt.isBlank())
+						{
+							mi.setToolTipText(tt);
+						}
+						mi.addActionListener(ev ->
+						{
+							Object handler = b.getClientProperty("orderConditionsOverflowHandler");
+							if (handler instanceof Consumer)
+							{
+								@SuppressWarnings("unchecked")
+								Consumer<JButton> consumer = (Consumer<JButton>) handler;
+								consumer.accept(moreButton);
+							}
+							else
+							{
+								b.doClick();
+							}
+						});
+						overflowMenu.add(mi);
+					}
+				}
+				inlinePanel.add(moreButton);
+			}
+			inlinePanel.revalidate();
+			inlinePanel.repaint();
+		}
+
+		private static int prefixWidth(List<JComponent> chain, int from, int toExclusive, int hgap)
+		{
+			int w = 0;
+			for (int i = from; i < toExclusive; i++)
+			{
+				if (i > from)
+				{
+					w += hgap;
+				}
+				w += chain.get(i).getPreferredSize().width;
+			}
+			return w;
+		}
+	}
+
 	private void removeSelected()
 	{
 		DraftOrderStepRequirement sel = selectedDto();
@@ -1309,6 +1459,12 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		if (modeErr != null)
 		{
 			JOptionPane.showMessageDialog(this, modeErr, "Could not save", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		String passOnceErr = manager.applyOrderStepPassOnceCompletedOnce(orderIndex, passOnceCompletedCheck.isSelected());
+		if (passOnceErr != null)
+		{
+			JOptionPane.showMessageDialog(this, passOnceErr, "Could not save", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		accepted = true;

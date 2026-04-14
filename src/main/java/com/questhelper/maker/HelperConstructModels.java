@@ -421,6 +421,11 @@ public final class HelperConstructModels
 		private Integer linkedRequirementRawId;
 		private DraftOrderStepRequirement stepRequirement;
 		private OrderConditionMode stepRequirementMode;
+		/**
+		 * When true, once this row's completion requirement passes at least once, the row is auto-marked as manually
+		 * skipped (persisted) so routing does not fall back even if the requirement later becomes false.
+		 */
+		private boolean passOnceCompletedOnce;
 		private final List<DraftStepAttachedRequirement> attachedRequirements = new ArrayList<>();
 		/** When conditions use {@code ORDER_ZONE}: rectangle corners (Zone reqs tab). */
 		private WorldPoint zoneRoutingCorner1;

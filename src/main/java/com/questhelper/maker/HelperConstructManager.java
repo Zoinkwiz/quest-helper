@@ -2142,29 +2142,22 @@ public class HelperConstructManager
 	}
 
 	/**
-	 * Appends a new empty generic step, a quest-order row, and wires default ORDER_ZONE routing on that order row
-	 * so the Zone reqs tab can edit it immediately.
+	 * Appends a new quest-order row dedicated to zone routing and wires default zone routing on it
+	 * so the Zone reqs tab can edit it immediately. No step definition is created.
 	 * @return {@code true} when the placeholder row was created and zone routing attached.
 	 */
 	public boolean addEmptyZoneSlotFromUi()
 	{
 		ensureDraftLoaded();
-		addEmptyStepFromUi(ConstructStepKind.TEXT);
-		List<DraftStep> defs = currentDraft.getStepDefinitions();
-		DraftStep placeholder = defs.get(defs.size() - 1);
-		placeholder.setSuggestedVarName(HelperScaffoldGenerator.toVarName("zone", "step"));
-		addOrderRef(placeholder.getStepId());
 		List<DraftOrderLine> order = currentDraft.getOrder();
-		if (order.isEmpty())
-		{
-			return false;
-		}
+		DraftOrderLine added = new DraftOrderLine();
+		added.setOrderSlotId(UUID.randomUUID().toString());
+		added.setSectionDivider(false);
+		added.setRefStepId(null);
+		added.setSuggestedVarName("zone");
+		added.setStepRequirementMode(OrderConditionMode.CONTINUE_WHEN_TRUE);
+		order.add(added);
 		int addedIndex = order.size() - 1;
-		DraftOrderLine added = order.get(addedIndex);
-		if (added.isSectionDivider())
-		{
-			return false;
-		}
 		return addZoneSlotToOrderRowFromUi(addedIndex);
 	}
 
@@ -2673,9 +2666,15 @@ public class HelperConstructManager
 			}
 			ensureOrderSlotId(line);
 			DraftStep def = findDefinitionByStepId(line.getRefStepId());
-			String varName = def == null
-				? "?"
-				: (def.getSuggestedVarName() == null || def.getSuggestedVarName().isBlank() ? "?" : def.getSuggestedVarName());
+			String varName;
+			if (def != null)
+			{
+				varName = (def.getSuggestedVarName() == null || def.getSuggestedVarName().isBlank()) ? "?" : def.getSuggestedVarName();
+			}
+			else
+			{
+				varName = (line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank()) ? "?" : line.getSuggestedVarName();
+			}
 			WorldPoint c1 = line.getZoneRoutingCorner1();
 			WorldPoint c2 = line.getZoneRoutingCorner2();
 			if (c1 == null || c2 == null)
@@ -2916,7 +2915,7 @@ public class HelperConstructManager
 		return true;
 	}
 
-	/** Updates {@link DraftStep#getSuggestedVarName()} for the step referenced by this quest-order line (varbit / order UI). */
+	/** Updates the var-name shown for this quest-order line (step definition when linked, otherwise line-local). */
 	public boolean updateStepVarNameForOrderSlotId(String orderSlotId, String varName)
 	{
 		ensureDraftLoaded();
@@ -2932,7 +2931,10 @@ public class HelperConstructManager
 		DraftStep def = findDefinitionByStepId(line.getRefStepId());
 		if (def == null)
 		{
-			return false;
+			line.setSuggestedVarName(varName == null ? "" : varName.trim());
+			saveDraftToConfig();
+			rebuildWorldMapRouteIfEnabled();
+			return true;
 		}
 		def.setSuggestedVarName(varName == null ? "" : varName.trim());
 		saveDraftToConfig();

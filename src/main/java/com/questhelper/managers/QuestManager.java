@@ -436,6 +436,56 @@ public class QuestManager
 		eventBus.unregister(questHelper);
 	}
 
+	public void startOrReplaceBackgroundHelper(String helperKey, QuestHelper helper)
+	{
+		if (helperKey == null || helperKey.isBlank() || helper == null)
+		{
+			return;
+		}
+		clientThread.invokeLater(() ->
+		{
+			QuestHelper existing = backgroundHelpers.get(helperKey);
+			if (existing == helper)
+			{
+				return;
+			}
+			if (existing != null && existing != selectedQuest)
+			{
+				existing.shutDown();
+				unregisterQuestFromEventBus(existing);
+			}
+			registerQuestToEventBus(helper);
+			helper.startUp(config);
+			if (helper.getCurrentStep() == null)
+			{
+				helper.shutDown();
+				unregisterQuestFromEventBus(helper);
+				backgroundHelpers.remove(helperKey);
+				return;
+			}
+			backgroundHelpers.put(helperKey, helper);
+		});
+	}
+
+	public void stopBackgroundHelperByKey(String helperKey)
+	{
+		if (helperKey == null || helperKey.isBlank())
+		{
+			return;
+		}
+		clientThread.invokeLater(() ->
+		{
+			QuestHelper helper = backgroundHelpers.get(helperKey);
+			if (helper == null || helper == selectedQuest)
+			{
+				return;
+			}
+			helper.shutDown();
+			unregisterQuestFromEventBus(helper);
+			backgroundHelpers.remove(helperKey);
+		});
+	}
+
 	/**
 	 * Shuts down a background quest.
 	 *

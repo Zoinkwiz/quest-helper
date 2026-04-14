@@ -69,6 +69,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -125,6 +126,7 @@ import static com.questhelper.requirements.util.LogicHelper.or;
 @Slf4j
 public class HelperConstructManager
 {
+	private static final String MAKER_SELECTED_STEP_RENDER_KEY = "__maker_selected_step_render__";
 	private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+>");
 	/** One quest-order "linked item" option: label and the raw item id used for routing / highlight. */
 	@Getter
@@ -181,6 +183,7 @@ public class HelperConstructManager
 	private int worldMapRouteRevealPercent = 100;
 	private boolean makerUiOpen;
 	private String selectedConstructMenuStepId;
+	private String selectedRenderedStepId;
 	private WorldPoint pendingZoneFirstCorner;
 	private WorldPoint selectedZoneOverlayCorner1;
 	private WorldPoint selectedZoneOverlayCorner2;
@@ -190,6 +193,7 @@ public class HelperConstructManager
 	public void setMakerUiOpen(boolean makerUiOpen)
 	{
 		this.makerUiOpen = makerUiOpen;
+		refreshSelectedStepRenderRuntime();
 	}
 
 	public void setConstructMenuSelectedStep(ConstructStepKind kind, int filteredIndex)
@@ -207,6 +211,70 @@ public class HelperConstructManager
 	public void clearConstructMenuSelectedStep()
 	{
 		selectedConstructMenuStepId = null;
+	}
+
+	public void setSelectedRenderedStepFromLibrary(ConstructStepKind kind, int filteredIndex)
+	{
+		ensureDraftLoaded();
+		if (kind == null || filteredIndex < 0)
+		{
+			selectedRenderedStepId = null;
+			refreshSelectedStepRenderRuntime();
+			return;
+		}
+		DraftStep step = stepDefinitionAtKindIndexOrNull(kind.stepKind(), filteredIndex);
+		selectedRenderedStepId = step == null ? null : step.getStepId();
+		refreshSelectedStepRenderRuntime();
+	}
+
+	public void setSelectedRenderedStepFromOrderRow(int orderIndex)
+	{
+		ensureDraftLoaded();
+		if (orderIndex < 0 || orderIndex >= currentDraft.getOrder().size())
+		{
+			selectedRenderedStepId = null;
+			refreshSelectedStepRenderRuntime();
+			return;
+		}
+		DraftOrderLine line = currentDraft.getOrder().get(orderIndex);
+		if (line == null || line.isSectionDivider())
+		{
+			selectedRenderedStepId = null;
+		}
+		else
+		{
+			selectedRenderedStepId = line.getRefStepId();
+		}
+		refreshSelectedStepRenderRuntime();
+	}
+
+	public void clearSelectedRenderedStep()
+	{
+		selectedRenderedStepId = null;
+		refreshSelectedStepRenderRuntime();
+	}
+
+	private void refreshSelectedStepRenderRuntime()
+	{
+		if (!makerUiOpen || !isClientLoggedIn() || selectedRenderedStepId == null || selectedRenderedStepId.isBlank())
+		{
+			questManager.stopBackgroundHelperByKey(MAKER_SELECTED_STEP_RENDER_KEY);
+			return;
+		}
+		DraftStep step = findDefinitionByStepId(selectedRenderedStepId);
+		if (step == null)
+		{
+			questManager.stopBackgroundHelperByKey(MAKER_SELECTED_STEP_RENDER_KEY);
+			return;
+		}
+		SelectedStepRenderHelper helper = new SelectedStepRenderHelper(step.getStepId());
+		wireQuestHelperForRuntimeUse(helper);
+		questManager.startOrReplaceBackgroundHelper(MAKER_SELECTED_STEP_RENDER_KEY, helper);
+	}
+
+	private boolean isClientLoggedIn()
+	{
+		return client != null && client.getGameState() == GameState.LOGGED_IN;
 	}
 
 	public void addDraftChangeListener(Runnable listener)
@@ -548,7 +616,9 @@ public class HelperConstructManager
 		helper.setHelperType("ComplexStateQuestHelper");
 		currentDraft = helper;
 		pendingZoneFirstCorner = null;
+		selectedRenderedStepId = null;
 		clearSelectedZoneOverlay();
+		refreshSelectedStepRenderRuntime();
 		if (worldMapRoutePreviewEnabled)
 		{
 			rebuildWorldMapRoutePoints();
@@ -5083,6 +5153,204 @@ public class HelperConstructManager
 			{
 				((ConditionalStep) cur).refreshAfterRequirementChangeDeep();
 			}
+		}
+	}
+
+	private class SelectedStepRenderHelper extends ComplexStateQuestHelper
+	{
+		private final String selectedStepId;
+		private final List<PanelDetails> panels = new ArrayList<>();
+
+		private SelectedStepRenderHelper(String selectedStepId)
+		{
+			this.selectedStepId = selectedStepId;
+			String display = currentDraft.getQuestName();
+			if (display == null || display.isBlank())
+			{
+				display = currentDraft.getClassName();
+			}
+			if (display == null || display.isBlank())
+			{
+				display = "Shared helper";
+			}
+			setPlayerFacingQuestName(display.trim() + " (selected step)");
+		}
+
+		@Override
+		protected void setupRequirements()
+		{
+		}
+
+		@Override
+		public QuestStep loadStep()
+		{
+			initializeRequirements();
+			panels.clear();
+			DraftStep draftStep = findDefinitionByStepId(selectedStepId);
+			if (draftStep == null)
+			{
+				QuestStep empty = new DetailedQuestStep(this, "Selected step could not be found.");
+				panels.add(new PanelDetails("Selected step", List.of(empty)));
+				return empty;
+			}
+			Map<Integer, ItemRequirement> requirementById = buildRequirementByIdForPreview();
+			String instruction = (draftStep.getInstructionText() == null || draftStep.getInstructionText().isBlank())
+				? "Complete step."
+				: draftStep.getInstructionText();
+			List<Requirement> extras = extraAttachedRequirementsForSelectedStep(draftStep, requirementById);
+			Requirement[] extrasArr = extras.toArray(new Requirement[0]);
+			ConstructStepKindHandlers.ConstructStepKindHandler handler = ConstructStepKindHandlers.forStepKind(draftStep.getKind());
+			QuestStep step = handler != null
+				? handler.buildPreviewQuestStep(new ConstructStepKindHandlers.ConstructPreviewStepParams(
+				this, draftStep, instruction, extrasArr, requirementById, null))
+				: new DetailedQuestStep(this, instruction);
+			applyWidgetHighlightsForSelectedStep(step, draftStep);
+			panels.add(new PanelDetails("Selected step", List.of(step)));
+			return step;
+		}
+
+		private Map<Integer, ItemRequirement> buildRequirementByIdForPreview()
+		{
+			Map<Integer, ItemRequirement> requirementById = new HashMap<>();
+			for (DraftRequirement requirement : currentDraft.getRequirements())
+			{
+				String display = requirement.getDisplayName() == null || requirement.getDisplayName().isBlank()
+					? "Required item"
+					: requirement.getDisplayName();
+				List<Integer> ids = new ArrayList<>();
+				for (Integer id : DraftRoutingIds.mergedStepOrRequirementIds(requirement.getRawId(), requirement.getAlternateRawIds()))
+				{
+					if (id != null && id > 0)
+					{
+						ids.add(id);
+					}
+				}
+				if (ids.isEmpty())
+				{
+					continue;
+				}
+				ItemRequirement req = ids.size() <= 1
+					? new ItemRequirement(display, ids.get(0))
+					: new ItemRequirement(display, ids);
+				for (int id : req.getAllIds())
+				{
+					requirementById.put(id, req);
+				}
+			}
+			return requirementById;
+		}
+
+		private List<Requirement> extraAttachedRequirementsForSelectedStep(DraftStep draftStep, Map<Integer, ItemRequirement> requirementById)
+		{
+			List<Requirement> reqs = new ArrayList<>();
+			if (draftStep.getAttachedRequirements() == null)
+			{
+				return reqs;
+			}
+			for (DraftStepAttachedRequirement a : draftStep.getAttachedRequirements())
+			{
+				String k = a.getKind() == null ? StepAttachmentKind.ITEM.name() : a.getKind();
+				if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(k))
+				{
+					if (a.getOrderSlotId() != null && !a.getOrderSlotId().isBlank())
+					{
+						continue;
+					}
+					reqs.add(VarbitSpec.fromStepAttachment(a).toVarbitRequirement());
+					continue;
+				}
+				if (StepAttachmentKind.SKILL.name().equalsIgnoreCase(k))
+				{
+					Skill skill = parseSkillName(a.getSkillName());
+					int level = a.getSkillRequiredLevel() == null ? 1 : Math.max(1, a.getSkillRequiredLevel());
+					Operation op = normalizeOperationName(a.getSkillOperation());
+					String display = a.getSkillDisplayText();
+					SkillRequirement sr;
+					if (op == Operation.GREATER_EQUAL)
+					{
+						sr = (display != null && !display.isBlank())
+							? new SkillRequirement(skill, level, a.isSkillCanBeBoosted(), display)
+							: new SkillRequirement(skill, level, a.isSkillCanBeBoosted());
+					}
+					else
+					{
+						sr = new SkillRequirement(skill, level, op);
+					}
+					reqs.add(sr);
+					continue;
+				}
+				Integer id = a.getItemRawId();
+				if (id == null || id <= 0)
+				{
+					continue;
+				}
+				ItemRequirement ir = requirementById.get(id);
+				ItemRequirement base = ir != null ? ir : new ItemRequirement("Item " + id, id);
+				int q = itemAttachmentQuantityOrOne(a);
+				ItemRequirement withQty = q > 1 ? base.quantity(q) : base;
+				reqs.add(a.isAttachmentHighlighted() ? withQty.highlighted() : withQty);
+			}
+			return reqs;
+		}
+
+		private void applyWidgetHighlightsForSelectedStep(QuestStep step, DraftStep draftStep)
+		{
+			if (step == null || draftStep == null || draftStep.getAttachedRequirements() == null)
+			{
+				return;
+			}
+			for (DraftStepAttachedRequirement a : draftStep.getAttachedRequirements())
+			{
+				String k = a.getKind() == null ? "" : a.getKind();
+				if (!StepAttachmentKind.WIDGET.name().equalsIgnoreCase(k))
+				{
+					continue;
+				}
+				Integer groupId = a.getWidgetGroupId();
+				Integer childId = a.getWidgetChildId();
+				if (groupId == null || childId == null)
+				{
+					continue;
+				}
+				if (a.getWidgetItemId() != null)
+				{
+					step.addWidgetHighlightWithItemIdRequirement(groupId, childId, a.getWidgetItemId(), a.isWidgetCheckChildren());
+					continue;
+				}
+				String requiredText = a.getWidgetDialogText();
+				if (requiredText != null && !requiredText.isBlank())
+				{
+					step.addWidgetHighlightWithTextRequirement(groupId, childId, requiredText, a.isWidgetCheckChildren());
+					continue;
+				}
+				Integer childChildId = a.getWidgetChildChildId();
+				if (childChildId != null)
+				{
+					step.addWidgetHighlight(groupId, childId, childChildId);
+				}
+				else
+				{
+					step.addWidgetHighlight(groupId, childId);
+				}
+			}
+		}
+
+		@Override
+		public List<PanelDetails> getPanels()
+		{
+			return panels;
+		}
+
+		@Override
+		public QuestState getState(Client client)
+		{
+			return QuestState.IN_PROGRESS;
+		}
+
+		@Override
+		public boolean hasQuestStateBecomeFinished()
+		{
+			return false;
 		}
 	}
 

@@ -90,6 +90,7 @@ public final class HelperConstructEditorPanel extends JPanel
 	private final JTable skillReqsTable;
 	private final JTabbedPane mainTabs;
 	private int zoneTabIndex = -1;
+	private int orderTabIndex = -1;
 	private JTable orderTable;
 	private final StepOrderTableModel stepOrderTableModel = new StepOrderTableModel();
 	private final VarbitRoutingTableModel varbitRoutingTableModel = new VarbitRoutingTableModel();
@@ -205,10 +206,12 @@ public final class HelperConstructEditorPanel extends JPanel
 				if (sel < 0)
 				{
 					helperConstructManager.clearConstructMenuSelectedStep();
+					helperConstructManager.clearSelectedRenderedStep();
 				}
 				else
 				{
 					helperConstructManager.setConstructMenuSelectedStep(k, sel);
+					helperConstructManager.setSelectedRenderedStepFromLibrary(k, sel);
 				}
 			});
 			mainTabs.addTab(stepLibraryTabTitle(k), wrapStepLibraryTableWithToolbar(table, k));
@@ -434,10 +437,13 @@ public final class HelperConstructEditorPanel extends JPanel
 		mainTabs.addTab("Skill reqs", skillPanel);
 
 		mainTabs.addTab("Quest order", orderedView);
+		orderTabIndex = mainTabs.indexOfComponent(orderedView);
 		mainTabs.addChangeListener(e ->
 		{
+			clearStepRenderSourceSelectionsOnTabSwitch();
 			syncZoneOverlaySelectionState();
 			syncConstructMenuSelectionState();
+			syncSelectedStepRenderSelectionState();
 		});
 
 		add(header, BorderLayout.NORTH);
@@ -1215,10 +1221,32 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 		JTextField stepSearch = newMakerSearchField(searchHint);
 		wireTableSearchField(stepSearch, table);
+		stepSearch.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				table.clearSelection();
+				helperConstructManager.clearConstructMenuSelectedStep();
+				helperConstructManager.clearSelectedRenderedStep();
+			}
+		});
 		JPanel centerStack = new JPanel(new BorderLayout(0, 4));
 		centerStack.setOpaque(false);
 		centerStack.add(stepSearch, BorderLayout.NORTH);
 		centerStack.add(wrapStepLibraryTable(table, stepKind), BorderLayout.CENTER);
+		MouseAdapter clearLibrarySelection = new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				table.clearSelection();
+				helperConstructManager.clearConstructMenuSelectedStep();
+				helperConstructManager.clearSelectedRenderedStep();
+			}
+		};
+		wrap.addMouseListener(clearLibrarySelection);
+		centerStack.addMouseListener(clearLibrarySelection);
 		wrap.add(centerStack, BorderLayout.CENTER);
 		wrap.add(actions, BorderLayout.SOUTH);
 		wireStepLibraryQuickConvertKeys(wrap, stepSearch, table, stepKind);
@@ -1297,8 +1325,11 @@ public final class HelperConstructEditorPanel extends JPanel
 				}
 				int row = table.rowAtPoint(e.getPoint());
 				int col = table.columnAtPoint(e.getPoint());
-				if (row < 0)
+				if (row < 0 || col < 0)
 				{
+					table.clearSelection();
+					helperConstructManager.clearConstructMenuSelectedStep();
+					helperConstructManager.clearSelectedRenderedStep();
 					return;
 				}
 				if (col == attachCol)
@@ -1310,6 +1341,29 @@ public final class HelperConstructEditorPanel extends JPanel
 		JScrollPane sp = new JScrollPane(table);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setBorder(new EmptyBorder(0, 0, 0, 0));
+		table.getTableHeader().addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				table.clearSelection();
+				helperConstructManager.clearConstructMenuSelectedStep();
+				helperConstructManager.clearSelectedRenderedStep();
+			}
+		});
+		sp.getViewport().addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (table.rowAtPoint(e.getPoint()) < 0 || table.columnAtPoint(e.getPoint()) < 0)
+				{
+					table.clearSelection();
+					helperConstructManager.clearConstructMenuSelectedStep();
+					helperConstructManager.clearSelectedRenderedStep();
+				}
+			}
+		});
 		return sp;
 	}
 
@@ -2352,7 +2406,13 @@ public final class HelperConstructEditorPanel extends JPanel
 				}
 				int vRow = orderTable.rowAtPoint(e.getPoint());
 				int vCol = orderTable.columnAtPoint(e.getPoint());
-				if (vRow < 0 || vCol != 1)
+				if (vRow < 0 || vCol < 0)
+				{
+					orderTable.clearSelection();
+					helperConstructManager.clearSelectedRenderedStep();
+					return;
+				}
+				if (vCol != 1)
 				{
 					return;
 				}
@@ -2408,16 +2468,77 @@ public final class HelperConstructEditorPanel extends JPanel
 		orderTable.getColumnModel().getColumn(1).setPreferredWidth(220);
 		orderTable.getColumnModel().getColumn(2).setPreferredWidth(260);
 		orderTable.setTransferHandler(new StepReorderTransferHandler(orderTable));
+		orderTable.getSelectionModel().addListSelectionListener(e ->
+		{
+			if (e.getValueIsAdjusting())
+			{
+				return;
+			}
+			int mRow = selectedModelRow(orderTable);
+			if (mRow < 0)
+			{
+				helperConstructManager.clearSelectedRenderedStep();
+				return;
+			}
+			HelperConstructManager.CombinedStepRow row = stepOrderTableModel.getRow(mRow);
+			if (row == null || row.isSectionDivider())
+			{
+				helperConstructManager.clearSelectedRenderedStep();
+				return;
+			}
+			helperConstructManager.setSelectedRenderedStepFromOrderRow(row.getIndex());
+		});
 
 		JScrollPane tableScroll = new JScrollPane(orderTable);
 		tableScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		tableScroll.setBorder(new EmptyBorder(0, 0, 0, 0));
+		orderTable.getTableHeader().addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				orderTable.clearSelection();
+				helperConstructManager.clearSelectedRenderedStep();
+			}
+		});
+		tableScroll.getViewport().addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (orderTable.rowAtPoint(e.getPoint()) < 0 || orderTable.columnAtPoint(e.getPoint()) < 0)
+				{
+					orderTable.clearSelection();
+					helperConstructManager.clearSelectedRenderedStep();
+				}
+			}
+		});
 		JTextField orderSearch = newMakerSearchField("Filter quest order by var name, requirement label, section condition, or instruction.");
 		wireTableSearchField(orderSearch, orderTable);
+		orderSearch.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				orderTable.clearSelection();
+				helperConstructManager.clearSelectedRenderedStep();
+			}
+		});
 		JPanel orderCenter = new JPanel(new BorderLayout(0, 4));
 		orderCenter.setOpaque(false);
 		orderCenter.add(orderSearch, BorderLayout.NORTH);
 		orderCenter.add(tableScroll, BorderLayout.CENTER);
+		MouseAdapter clearOrderSelection = new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				orderTable.clearSelection();
+				helperConstructManager.clearSelectedRenderedStep();
+			}
+		};
+		ordered.addMouseListener(clearOrderSelection);
+		orderCenter.addMouseListener(clearOrderSelection);
 		ordered.add(orderCenter, BorderLayout.CENTER);
 
 		JButton removeSelectedButton = new JButton("Remove selected");
@@ -2841,6 +2962,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		helperConstructManager.setZoneSelectionOverlayEnabled(false);
 		helperConstructManager.stopZoneCreationFromUi();
 		helperConstructManager.clearConstructMenuSelectedStep();
+		helperConstructManager.clearSelectedRenderedStep();
 	}
 
 	private void syncZoneOverlaySelectionState()
@@ -2869,6 +2991,65 @@ public final class HelperConstructEditorPanel extends JPanel
 		{
 			helperConstructManager.clearConstructMenuSelectedStep();
 		}
+	}
+
+	private void syncSelectedStepRenderSelectionState()
+	{
+		int tab = mainTabs.getSelectedIndex();
+		if (tab >= 0 && tab <= 2)
+		{
+			StepLibraryTab active = tab < stepLibraryTabs.size() ? stepLibraryTabs.get(tab) : null;
+			if (active == null)
+			{
+				helperConstructManager.clearSelectedRenderedStep();
+				return;
+			}
+			int sel = selectedModelRow(active.table);
+			if (sel < 0)
+			{
+				helperConstructManager.clearSelectedRenderedStep();
+				return;
+			}
+			helperConstructManager.setSelectedRenderedStepFromLibrary(active.kind, sel);
+			return;
+		}
+		if (orderTabIndex >= 0 && tab == orderTabIndex)
+		{
+			int mRow = selectedModelRow(orderTable);
+			if (mRow < 0)
+			{
+				helperConstructManager.clearSelectedRenderedStep();
+				return;
+			}
+			HelperConstructManager.CombinedStepRow row = stepOrderTableModel.getRow(mRow);
+			if (row == null || row.isSectionDivider())
+			{
+				helperConstructManager.clearSelectedRenderedStep();
+				return;
+			}
+			helperConstructManager.setSelectedRenderedStepFromOrderRow(row.getIndex());
+			return;
+		}
+		{
+			helperConstructManager.clearSelectedRenderedStep();
+		}
+	}
+
+	private void clearStepRenderSourceSelectionsOnTabSwitch()
+	{
+		if (orderTable != null)
+		{
+			orderTable.clearSelection();
+		}
+		for (StepLibraryTab tab : stepLibraryTabs)
+		{
+			if (tab != null && tab.table != null)
+			{
+				tab.table.clearSelection();
+			}
+		}
+		helperConstructManager.clearConstructMenuSelectedStep();
+		helperConstructManager.clearSelectedRenderedStep();
 	}
 
 	private static String stepLibraryTabTitle(ConstructStepKind kind)

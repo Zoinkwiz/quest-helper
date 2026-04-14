@@ -30,7 +30,7 @@ package com.questhelper.maker.construct;
  */
 public final class ConstructMenuCapture
 {
-	public static final String MENU_OPTION_PREFIX = "Construct:";
+	public static final String MENU_OPTION_PREFIX = "QHM:";
 
 	private ConstructMenuCapture()
 	{

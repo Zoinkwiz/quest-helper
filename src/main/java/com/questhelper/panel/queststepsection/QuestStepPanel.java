@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -213,11 +214,73 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 					questHelper.notifyManualSidebarSkipChanged(pk, sel);
 				}
 			});
+			skip.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mousePressed(MouseEvent e)
+				{
+					maybeShowManualSkipContextMenu(skip, e);
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e)
+				{
+					maybeShowManualSkipContextMenu(skip, e);
+				}
+			});
 			row.add(skip, BorderLayout.EAST);
 		}
 
 		row.setVisible(step.isShowInSidebar());
 		return row;
+	}
+
+	private void maybeShowManualSkipContextMenu(JCheckBox source, MouseEvent e)
+	{
+		if (!e.isPopupTrigger())
+		{
+			return;
+		}
+		JPopupMenu menu = new JPopupMenu();
+		JMenuItem resetAll = new JMenuItem("Reset all tick boxes");
+		resetAll.addActionListener(ev -> resetAllManualSkipCheckboxes());
+		menu.add(resetAll);
+		menu.show(source, e.getX(), e.getY());
+	}
+
+	private void resetAllManualSkipCheckboxes()
+	{
+		if (manualSkipBoxes.isEmpty())
+		{
+			return;
+		}
+		suppressManualSkipEvents = true;
+		try
+		{
+			for (Map.Entry<QuestStep, JCheckBox> e : manualSkipBoxes.entrySet())
+			{
+				QuestStep step = e.getKey();
+				JCheckBox box = e.getValue();
+				ManualRequirement m = step.getSidebarManualSkipRequirement();
+				String pk = step.getSidebarManualSkipPersistenceKey();
+				if (m != null)
+				{
+					m.setShouldPass(false);
+				}
+				if (box != null)
+				{
+					box.setSelected(false);
+				}
+				if (questHelper != null && pk != null && !pk.isBlank())
+				{
+					questHelper.notifyManualSidebarSkipChanged(pk, false);
+				}
+			}
+		}
+		finally
+		{
+			suppressManualSkipEvents = false;
+		}
 	}
 
 	private JTextPane createQuestStepTextPane(QuestStep step)

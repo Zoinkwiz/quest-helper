@@ -434,7 +434,11 @@ public final class HelperConstructEditorPanel extends JPanel
 		mainTabs.addTab("Skill reqs", skillPanel);
 
 		mainTabs.addTab("Quest order", orderedView);
-		mainTabs.addChangeListener(e -> syncZoneOverlaySelectionState());
+		mainTabs.addChangeListener(e ->
+		{
+			syncZoneOverlaySelectionState();
+			syncConstructMenuSelectionState();
+		});
 
 		add(header, BorderLayout.NORTH);
 		add(mainTabs, BorderLayout.CENTER);
@@ -2494,6 +2498,7 @@ public final class HelperConstructEditorPanel extends JPanel
 		varbitRoutingTableModel.reloadFromManager();
 		zoneRoutingTableModel.reloadFromManager();
 		syncZoneOverlaySelectionState();
+		syncConstructMenuSelectionState();
 		skillRoutingTableModel.reloadFromManager();
 		syncWorldMapRouteButtonLabel();
 		syncRouteRevealButtonLabel();
@@ -2541,6 +2546,15 @@ public final class HelperConstructEditorPanel extends JPanel
 		}
 		String orderSlotId = zoneRoutingTableModel.getOrderSlotIdAt(r);
 		helperConstructManager.setSelectedZoneOverlayByOrderSlotId(orderSlotId);
+	}
+
+	private void syncConstructMenuSelectionState()
+	{
+		// Step-library tabs are the first tabs (NPC/Object/Generic).
+		if (mainTabs.getSelectedIndex() > 2)
+		{
+			helperConstructManager.clearConstructMenuSelectedStep();
+		}
 	}
 
 	private static String stepLibraryTabTitle(ConstructStepKind kind)

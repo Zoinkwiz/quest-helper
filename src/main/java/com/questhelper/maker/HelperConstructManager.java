@@ -347,40 +347,51 @@ public class HelperConstructManager
 		{
 			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Item Requirement", target, () -> addRequirement(rawId, target));
 			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(rawId, target));
+			return;
 		}
 		else if (isInventoryItemAction(sourceType))
 		{
 			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Item Requirement", target, () -> addRequirement(itemID, target));
 			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (item)", target, () -> addGenericStepFromItem(itemID, target));
+			return;
 		}
 		else if (isWalkHereMenu(sourceType, option) && clickedWorldPoint != null)
 		{
 			final WorldPoint tilePoint = clickedWorldPoint;
-			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (here)", target, () ->
+			String tileTarget = "Tile";
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Generic Step (here)", tileTarget, () ->
 			{
 				addGenericStepAtWorldPoint(tilePoint);
 			});
 			if (pendingZoneFirstCorner == null)
 			{
-				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Create new Zone", target, () ->
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Create new Zone", tileTarget, () ->
 				{
 					startZoneCreationAt(tilePoint);
 				});
 			}
 			else
 			{
-				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add second zone corner", target, () ->
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add second zone corner", tileTarget, () ->
 				{
 					finishZoneCreationAt(tilePoint);
 				});
-				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Stop making zone", target, this::stopZoneCreationFromUi);
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Stop making zone", tileTarget, this::stopZoneCreationFromUi);
 			}
 		}
+		else
+		{
+			return;
+		}
+
 		DraftStep selected = selectedConstructMenuStepOrNull();
 		if (selected != null && clickedWorldPoint != null)
 		{
 			final WorldPoint point = clickedWorldPoint;
-			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Update step WP", target, () -> updateSelectedStepWorldPointFromMenu(point));
+			String wpTarget = isWalkHereMenu(sourceType, option)
+				? "Tile"
+				: target;
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Update step WP", wpTarget, () -> updateSelectedStepWorldPointFromMenu(point));
 		}
 	}
 
@@ -490,9 +501,11 @@ public class HelperConstructManager
 
 	private void addAction(MenuEntry[] menuEntries, String option, String target, Runnable callback)
 	{
+		String safeTarget = target == null ? "" : target.trim();
+		String decoratedTarget = safeTarget.isEmpty() ? "" : "<col=ff9040>" + safeTarget + "</col>";
 		client.getMenu().createMenuEntry(menuEntries.length - 1)
 			.setOption(option)
-			.setTarget("<col=ff9040>" + target + "</col>")
+			.setTarget(decoratedTarget)
 			.setType(MenuAction.RUNELITE)
 			.onClick((menuEntry) -> callback.run());
 	}

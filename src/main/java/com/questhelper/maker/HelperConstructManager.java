@@ -329,6 +329,7 @@ public class HelperConstructManager
 				if (selected != null && selected.getKind() == StepKind.NPC)
 				{
 					addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Update step ID", target, () -> updateSelectedStepIdFromMenu(npcId));
+					addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add alt step ID", target, () -> addAlternateSelectedStepIdFromMenu(npcId));
 				}
 			}
 		}
@@ -342,6 +343,7 @@ public class HelperConstructManager
 			if (selected != null && selected.getKind() == StepKind.OBJECT)
 			{
 				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Update step ID", target, () -> updateSelectedStepIdFromMenu(rawId));
+				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add alt step ID", target, () -> addAlternateSelectedStepIdFromMenu(rawId));
 			}
 		}
 		else if (isItemAction(sourceType))
@@ -440,6 +442,28 @@ public class HelperConstructManager
 		selected.getAlternateRawIds().clear();
 		saveDraftToConfig();
 		sendGameMessage("Quest Helper Construct: updated selected step id to " + rawId + ".");
+	}
+
+	private void addAlternateSelectedStepIdFromMenu(int rawId)
+	{
+		ensureDraftLoaded();
+		DraftStep selected = selectedConstructMenuStepOrNull();
+		if (selected == null || rawId <= 0)
+		{
+			return;
+		}
+		if (selected.getKind() != StepKind.NPC && selected.getKind() != StepKind.OBJECT)
+		{
+			return;
+		}
+		if (selected.getRawId() == rawId || selected.getAlternateRawIds().contains(rawId))
+		{
+			sendGameMessage("Quest Helper Construct: step already includes id " + rawId + ".");
+			return;
+		}
+		selected.getAlternateRawIds().add(rawId);
+		saveDraftToConfig();
+		sendGameMessage("Quest Helper Construct: added alt step id " + rawId + ".");
 	}
 
 	private void startZoneCreationAt(WorldPoint tilePoint)

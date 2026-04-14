@@ -37,6 +37,7 @@ public class OptimalQuestGuide
 {
 	@Getter
 	private static final List<QuestHelperQuest> questList = ImmutableList.of(
+		//QuestHelperQuest.LEARNING_THE_ROPES, - Quest we are unlikely to add a helper for.
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.MISTHALIN_MYSTERY,
@@ -80,6 +81,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.NATURE_SPIRIT,
 		QuestHelperQuest.GHOSTS_AHOY,
 		QuestHelperQuest.MAKING_HISTORY,
+		QuestHelperQuest.THE_IDES_OF_MILK,
 		QuestHelperQuest.THE_LOST_TRIBE,
 		QuestHelperQuest.DEATH_TO_THE_DORGESHUUN,
 		QuestHelperQuest.ELEMENTAL_WORKSHOP_I,
@@ -265,7 +267,6 @@ public class OptimalQuestGuide
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
-		QuestHelperQuest.THE_IDES_OF_MILK,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Quest Guide
 		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.BARBARIAN_TRAINING,

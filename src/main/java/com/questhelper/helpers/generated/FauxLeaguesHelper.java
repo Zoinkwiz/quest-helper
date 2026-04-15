@@ -1671,7 +1671,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section3Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 26, "Fill bucket of sand"), orderManual_9b1eca8dccbd42d2)), fillabucketwithsand);
 
 		section4Task = new ConditionalStep(this, givestewtooli);
-		section4Task.addStep(not(passOnceCompleted(orderManual_defad039d9094571, orderManual_defad039d9094571)), chartertocivitas);
+		var charterDone = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 11);
+		section4Task.addStep(not(passOnceCompleted(charterDone, orderManual_defad039d9094571)), chartertocivitas);
 		section4Task.addStep(not(passOnceCompleted(orderManual_be85462b242840cf, orderManual_be85462b242840cf)), buypineapples);
 		section4Task.addStep(not(passOnceCompleted(orderManual_e5d473eb18d64808, orderManual_e5d473eb18d64808)), depositpineapples);
 		section4Task.addStep(not(passOnceCompleted(ironMace, orderManual_52df5d410a9c4609)), buyironmace);

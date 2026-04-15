@@ -80,7 +80,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	private EventBus eventBus;
 
 	@Inject
-	private Gson gson;
+	public Gson gson;
 
 	@Getter
 	private QuestStep currentStep;

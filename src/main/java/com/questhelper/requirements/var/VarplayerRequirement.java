@@ -153,14 +153,6 @@ public class VarplayerRequirement extends AbstractRequirement
 		shouldCountForFilter = true;
 	}
 
-	public static VarplayerRequirement league6(Pair<Integer, Integer> data, String displayText)
-	{
-		var varp = data.getLeft();
-		var bitPosition = data.getRight();
-
-		return new VarplayerRequirement(varp, true, bitPosition, displayText);
-	}
-
 	@Override
 	public boolean check(Client client)
 	{

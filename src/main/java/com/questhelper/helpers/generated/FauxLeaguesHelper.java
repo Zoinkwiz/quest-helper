@@ -8,6 +8,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -122,6 +123,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	ItemRequirement glassblowingPipe;
 	ItemRequirement moltenGlass;
 	ItemRequirement sodaAsh;
+	ItemRequirement feathers;
+	ItemRequirement steelAxe;
 
 	// Captured steps
 	DetailedQuestStep openleaguesmenu;
@@ -158,8 +161,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	ObjectStep picksweetcorn;
 	ObjectStep pickandeatonion;
 	ObjectStep pickwheat;
-	ObjectStep fillhopper;
-	ObjectStep emptyflourbin;
+	ConditionalStep emptyflourbin;
 	ObjectStep pickpotato;
 	NpcStep tradeharminia;
 	ObjectStep rakeflowerpatch;
@@ -363,7 +365,6 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	ManualRequirement orderManual_68855f46f9bc41df;
 	ManualRequirement orderManual_03a02189ef2c41c9;
 	ManualRequirement orderManual_f959773416174f78;
-	ManualRequirement orderManual_20f2b6f2760b4291;
 	ManualRequirement orderManual_7e7d7d1aa70f4206;
 	ManualRequirement orderManual_956b7e8f1cba43e0;
 	ManualRequirement orderManual_397839f1b1f24846;
@@ -618,6 +619,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		bronzePickaxe = new ItemRequirement("Bronze pickaxe", 1265);
 		pinkSkirt = new ItemRequirement("Pink skirt", 1013);
 		copperOre = new ItemRequirement("Copper ore", 436);
+		feathers = new ItemRequirement("Feathers", ItemID.FEATHER);
+		steelAxe = new ItemRequirement("Steel axe", ItemID.STEEL_AXE);
 	}
 
 	private void setupSteps()
@@ -666,7 +669,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		fletchlog = new DetailedQuestStep(this, "Fletch a log into arrow shafts.", logs.highlighted(), knife.highlighted());
 		fletchlog.addWidgetHighlightWithItemIdRequirement(270, 15, ItemID.ARROW_SHAFT, true);
 		useeastcivitasbank = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit everything, withdraw coins, chisel, dramen staff (equipped), pot, and bucket of water.",
-			true, coins, chisel, dramenStaff, bucketOfWater);
+			true, coins, chisel, dramenStaff, pot, bucketOfWater);
 		tradeartima = new NpcStep(this, 13342, new WorldPoint(1767, 3103, 0), "Buy shears and a glassblowing pipe from Artima.", true);
 		tradeartima.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.SHEARS, true);
 		tradeartima.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.GLASSBLOWINGPIPE, true);
@@ -687,7 +690,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		usefurnace = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass on the furnace south of the docks.", true);
 		usefurnace2 = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass on the furnace south of the docks.", true);
 		depositmoltenglass = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit 10 molten glass into the bank.", true);
-		blowglassintooillanterns = new DetailedQuestStep(this, "Blow 10 molten glass into oil lamps.", moltenGlass.highlighted(), glassblowingPipe.highlighted());
+		blowglassintooillanterns = new DetailedQuestStep(this, "Blow 20 molten glass into oil lamps.", moltenGlass.highlighted(), glassblowingPipe.highlighted());
 		blowglassintooillanterns.addWidgetHighlightWithItemIdRequirement(270, 17, ItemID.OIL_LAMP_EMPTY, true);
 
 		depositoillanterns = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit the 10 oil lanterns.", true);
@@ -697,40 +700,68 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		attackchickenlevel1 = new NpcStep(this, new int[]{1174, 1173}, new WorldPoint(1740, 3053, 0), "Kill a chicken and pick up its bones.", true);
 		feedbonestomolossus = new NpcStep(this, 12993, new WorldPoint(1702, 3063, 0), "Feed some bones to Molossus.", true);
 		feedbonestomolossus.addRequirement(bones.highlighted());
+		feedbonestomolossus.addIcon(ItemID.BONES);
 		picksweetcorn = new ObjectStep(this, 51829, new WorldPoint(1717, 3051, 0), "Pick sweetcorn.", true).addAlternateObjects(51830);
-		pickandeatonion = new ObjectStep(this, 51837, new WorldPoint(1702, 3048, 0), "Pick an onion and eat it.", true).addAlternateObjects(51838);
+		pickandeatonion = new ObjectStep(this, 51837, new WorldPoint(1702, 3048, 0), "Pick an onion and eat it.", true, new ItemRequirement("Onion", ItemID.ONION).highlighted()).addAlternateObjects(51838);
+
+		// Each wheat, 20371 0 up to 6
 		pickwheat = new ObjectStep(this, 15506, new WorldPoint(1679, 3048, 0), "Pick 6 wheat.", true).addAlternateObjects(15507);
-		fillhopper = new ObjectStep(this, 52591, new WorldPoint(1653, 3046, 2), "Fill the hopper and use the controls until you are out of grain.", true).addAlternateObjects(52592);
-		fillhopper.addRequirement(grain.quantity(6).highlighted());
-		emptyflourbin = new ObjectStep(this, 52999, new WorldPoint(1655, 3045, 0), "Empty Flour bin.", true);
-		emptyflourbin.addRequirement(pot.highlighted());
+
+		var goUpToHopper = new ObjectStep(this, 52616, new WorldPoint(1655, 3043, 0), "Climb up the ladder in the windmill.");
+		var goUpToHopper2 = new ObjectStep(this, 52619, new WorldPoint(1655, 3043, 1), "Climb up the ladder in the windmill.");
+		var putInGrains = new ObjectStep(this, 52591, new WorldPoint(1653, 3046, 2), "Fill the hopper and use the controls until you are out of grain.", true, grain.highlighted());
+		putInGrains.addAlternateObjects(52592);
+		var fillhopper = new ObjectStep(this, 52591, new WorldPoint(1653, 3046, 2), "Fill the hopper and use the controls until you are out of grain.", true).addAlternateObjects(52592);
+		fillhopper.addRequirement(grain.highlighted());
+
+		var goDownGrain = new ObjectStep(this, 52621, new WorldPoint(1655, 3043, 2), "Climb downstairs.");
+		var goDownGrain2 = new ObjectStep(this, 52619, new WorldPoint(1655, 3043, 1), "Climb down the ladder in the windmill.");
+		var emptyFlour = new ObjectStep(this, 52999, new WorldPoint(1655, 3045, 0), "Empty Flour bin.", true, pot.highlighted());
+
+		var flourMade = new VarbitRequirement(VarbitID.MILL_FLOUR, 1);
+		var windmillf1 = new ZoneRequirement(new Zone(new WorldPoint(1652, 3042, 1), new WorldPoint(1659, 3049, 1)));
+		var windmillf2 = new ZoneRequirement(new Zone(new WorldPoint(1652, 3042, 2), new WorldPoint(1659, 3049, 2)));
+		emptyflourbin = new ConditionalStep(this, goUpToHopper, "Make flour in the windmill.");
+		emptyflourbin.addStep(and(flourMade, windmillf2), goDownGrain);
+		emptyflourbin.addStep(and(flourMade, windmillf1), goDownGrain2);
+		emptyflourbin.addStep(flourMade, emptyFlour);
+		emptyflourbin.addStep(windmillf2, putInGrains);
+		emptyflourbin.addStep(windmillf1, goUpToHopper2);
+
+		// 20373 0->6
 		pickpotato = new ObjectStep(this, 312, new WorldPoint(1595, 3080, 0), "Pick (and drop) 6 potatoes.", true);
-		tradeharminia = new NpcStep(this, 12766, new WorldPoint(1585, 3105, 0), "Buy a rake from Harminia.", true);
+		tradeharminia = new NpcStep(this, 12766, new WorldPoint(1585, 3105, 0), "Buy a rake from Harminia.", true, coins.quantity(5));
+		tradeharminia.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.RAKE, true);
 		rakeflowerpatch = new ObjectStep(this, 50693, new WorldPoint(1585, 3098, 0), "Rake Flower Patch.", true);
 		emptywaterbucket = new DetailedQuestStep(this, "Empty the bucket of water.");
 		emptywaterbucket.addRequirement(bucketOfWater.highlighted());
 		milkdairybuffalo = new ObjectStep(this, 52576, new WorldPoint(1588, 3119, 0), "Milk Dairy Buffalo.", true);
 		milkdairybuffalo2 = new ObjectStep(this, 52576, new WorldPoint(1588, 3119, 0), "Milk Dairy Buffalo.", true);
-		shearalpaca = new NpcStep(this, new int[]{12986, 12988}, new WorldPoint(1565, 3120, 0), "Shear Alpaca.", true);
+		shearalpaca = new NpcStep(this, new int[]{12986, 12988}, new WorldPoint(1565, 3120, 0), "Shear an Alpaca.", true, shears);
 		zanarisfairyring = new ObjectStep(this, 29495, new WorldPoint(1651, 3010, 0), "Take the Fairy Ring to Zanaris.", true);
-		zanarisfairyring.addRequirement(dramenStaff.highlighted());
+		zanarisfairyring.addRequirement(dramenStaff.highlighted().equipped());
 		attackcowlevel2 = new NpcStep(this, 5842, new WorldPoint(2432, 4446, 0), "Kill a Cow  (level-2), pick up the bones and cowhide.", true);
 		burybones = new DetailedQuestStep(this, "Bury the Bones.");
 		burybones.addRequirement(bones.highlighted());
 		aldarinfairyring = new ObjectStep(this, 29560, new WorldPoint(2412, 4434, 0), "Take the Fairy Ring to Aldarin (CKQ).", true);
 		aldarinfairyring.addRequirement(dramenStaff);
 		talktovineyardforeman = new NpcStep(this, 13908, new WorldPoint(1370, 2915, 0), "Talk-to Vineyard foreman.", true);
+		talktovineyardforeman.addDialogStep("Do you need any help in the vineyards?");
 		collectshimmeringgrapes = new DetailedQuestStep(this, "Collect 4 shimmering grapes from the nearby vineyards (Vineyard Helper plugin can help if you have trouble identifying the shimmering grapes).");
 		collectshimmeringgrapes.addRequirement(grapeBarrel);
 		returntovineyardforeman = new NpcStep(this, 13908, new WorldPoint(1370, 2915, 0), "Return to the Vineyard foreman with a filled grape barrel.", true);
 		returntovineyardforeman.addRequirement(grapeBarrel);
-		withdrawaldarinbanker = new NpcStep(this, 13225, new WorldPoint(1401, 2928, 0), "Deposit everything and withdraw coins and chisel.", true);
+		withdrawaldarinbanker = new NpcStep(this, 13225, new WorldPoint(1401, 2928, 0), "Deposit everything and withdraw coins and chisel.", true, chisel, coins);
 		withdrawaldarinbanker2 = new NpcStep(this, 13225, new WorldPoint(1401, 2928, 0), "Deposit everything and withdraw coins and chisel.", true);
 		tradetoci = new NpcStep(this, 13915, new WorldPoint(1428, 2975, 0), "Buy, cut, and sell gems until you have more than a 50k gp cash stack.", true);
 		cutextragems = new DetailedQuestStep(this, "Cut three extra of each gem and save them for later.");
 		attackseagulllevel2 = new NpcStep(this, 1338, new WorldPoint(1439, 2967, 0), "Kill a Seagull  (level-2).", true);
-		tradechartership = new NpcStep(this, new int[]{9358, 9322}, new WorldPoint(1454, 2969, 0), "Buy 5 raw rabbit, a tyras helm, and a bucket from the nearby Charter Ship.", true);
-		cookrabbitonoven = new ObjectStep(this, 52647, new WorldPoint(1433, 2962, 0), "Cook the rabbit on the oven until you burn one and cook one successfully.", true);
+		tradechartership = new NpcStep(this, new int[]{1329, 1332}, new WorldPoint(1454, 2969, 0), "Buy 5 raw rabbit, a tyras helm, and a bucket from the nearby Charter Ship.", true, rawRabbit.quantity(5), tyrasHelm, bucket);
+		tradechartership.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.SAIL_TYRAS_HELM, true);
+		tradechartership.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.RAW_RABBIT, true);
+		tradechartership.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BUCKET_EMPTY, true);
+
+		cookrabbitonoven = new ObjectStep(this, 52647, new WorldPoint(1433, 2962, 0), "Cook the rabbit on the oven until you burn one and cook one successfully with an apron equipped.", true, brownApron.equipped());
 		cookrabbitonoven.addRequirement(rawRabbit.quantity(5).highlighted());
 		eatcookedrabbit = new DetailedQuestStep(this, "Eat the Cooked rabbit.");
 		eatcookedrabbit.addRequirement(cookedRabbit.highlighted());
@@ -740,24 +771,31 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		talktoantonia2 = new NpcStep(this, 13985, new WorldPoint(1441, 2978, 0), "Travel with Antonia to the Sunset Coast.", true);
 		talktoantonia2.addRequirement(coins.quantity(20));
 		fillabucketwithsand = new ObjectStep(this, 50733, new WorldPoint(1520, 3001, 0), "Fill a bucket with sand on the Sunset Coast.", true);
+		fillabucketwithsand.addIcon(ItemID.BUCKET_SAND);
 		fillabucketwithsand.addRequirement(bucket.highlighted());
 		talktopicaria = new NpcStep(this, 13158, new WorldPoint(1560, 2962, 0), "Buy 1000 feathers and 1 big fishing net from the fishing store southeast of the Sunset Coast.", true);
 		talktopicaria.addRequirement(coins.quantity(2020));
 		// Section: Civitas illa Fortis [show when true: no condition]
-		chartertocivitas = new NpcStep(this, new int[]{9358, 9322}, new WorldPoint(1515, 2972, 0), "Charter a ship to Civitas illa Fortis.", true);
+		chartertocivitas = new NpcStep(this, new int[]{1332, 1329}, new WorldPoint(1515, 2972, 0), "Charter a ship to Civitas illa Fortis.", true);
+		chartertocivitas.addWidgetHighlight(72, 3, 27);
 		chartertocivitas.addRequirement(coins.quantity(250));
 		buyironmace = new NpcStep(this, 13333, new WorldPoint(1773, 3059, 0), "Purchase an iron mace from the Mace Shop southeast of Civitas illa Fortis.", true);
 		buyironmace.addRequirement(coins.quantity(81));
+		buyironmace.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.IRON_MACE, true);
 		equipironmace = new DetailedQuestStep(this, "Equip the Iron mace.");
-		equipironmace.addRequirement(ironMace);
+		equipironmace.addRequirement(ironMace.equipped().highlighted());
 		equipironmace2 = new DetailedQuestStep(this, "Equip the Iron mace.");
-		equipironmace2.addRequirement(ironMace);
+		equipironmace2.addRequirement(ironMace.equipped().highlighted());
 		castfishingspot = new NpcStep(this, 13329, new WorldPoint(1738, 3101, 0), "Fish at the fishing spot in the park until you have caught 1 casket, 1 boot, and 1 house key.", true);
 		castfishingspot.addRequirement(bigFishingNet.highlighted());
 		talktobartender = new NpcStep(this, 13344, new WorldPoint(1711, 3116, 0), "Buy 1 cup of tea, 1 Moon-lite, 1 stew, and 1 jug of wine from the nearby bar.", true);
 		talktobartender.addRequirement(coins.quantity(46));
+		talktobartender.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.CUP_OF_TEA, true);
+		talktobartender.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.MOONLITE, true);
+		talktobartender.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.STEW, true);
+		talktobartender.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.JUG_WINE, true);
 		drinkmoonlite = new DetailedQuestStep(this, "Drink the Moon-lite.");
-		drinkmoonlite.addRequirement(moonLite);
+		drinkmoonlite.addRequirement(moonLite.highlighted());
 		drinkjugofwine = new DetailedQuestStep(this, "Drink the Jug of wine.");
 		drinkjugofwine.addRequirement(jugOfWine);
 		pickpocketcitizenuntilsuccess = new NpcStep(this, new int[]{13179, 13185}, new WorldPoint(1707, 3110, 0), "Pickpocket a Citizen until you have been successful 10 times in a row without failure.", true);
@@ -767,29 +805,42 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		tradesilkmerchant.addRequirement(coins.quantity(15));
 		givestewtooli = new NpcStep(this, 13318, new WorldPoint(1653, 3105, 0), "Give some stew to Oli near the east Civitas illa Fortis bank.", true);
 		givestewtooli.addRequirement(stew.highlighted());
+		givestewtooli.addIcon(ItemID.STEW);
 		// Section: Auburnvale [show when true: no condition]
 		traveltoauburnvale = new NpcStep(this, 13350, new WorldPoint(1697, 3142, 0), "Travel with Renu to Auburnvale.", true);
-		depositinauburnvale = new NpcStep(this, 14671, new WorldPoint(1415, 3353, 0), "Deposit everything, withdraw coins, cowhide, wool, and bronze axe.", true);
-		tradesebamo = new NpcStep(this, 14658, new WorldPoint(1410, 3345, 0), "Buy an Air Staff from the staff shop.", true);
+		traveltoauburnvale.addWidgetHighlight(874, 12, 12);
+		depositinauburnvale = new NpcStep(this, 14671, new WorldPoint(1415, 3353, 0), "Deposit everything, withdraw coins, cowhide, wool, and bronze axe.", true, coins, cowhide, wool, bronzeAxe);
+		tradesebamo = new NpcStep(this, 14658, new WorldPoint(1410, 3345, 0), "Buy a Staff of Air from the staff shop. Also buy a Staff of Fire and equip it.", true, staffOfAir, staffOfFire.equipped().highlighted());
 		tradesebamo.addRequirement(coins.quantity(1500));
+		tradesebamo.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.STAFF_OF_AIR, true);
+		tradesebamo.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.STAFF_OF_FIRE, true);
 		tradelunami = new NpcStep(this, 14657, new WorldPoint(1402, 3344, 0), "Buy a Steel, Mith, and Adamant axe from the axe shop.", true);
+		tradelunami.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.STEEL_AXE, true);
+		tradelunami.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.MITHRIL_AXE, true);
+		tradelunami.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.ADAMANT_AXE, true);
 		tradelunami.addRequirement(coins.quantity(2000));
 		chopdowndeadtree = new ObjectStep(this, 1289, new WorldPoint(1406, 3331, 0), "Chop down a Dead tree from the river south of the Auburnvale bank.", true);
 		chopdowndeadtree.addRequirement(bronzeAxe);
 		makeplankatsawmill = new NpcStep(this, 14659, new WorldPoint(1395, 3369, 0), "Buy a normal plank from the Sawmill Operator.", true);
 		makeplankatsawmill.addRequirement(logs);
+		makeplankatsawmill.addWidgetHighlight(270, 15);
 		makeplankatsawmill.addRequirement(coins.quantity(100));
 		tanleatheratchouani = new NpcStep(this, 14662, new WorldPoint(1369, 3357, 0), "Talk-to Chouani to tan your cowhide into soft leather.", true);
 		tanleatheratchouani.addRequirement(cowhide);
+		tanleatheratchouani.addWidgetHighlight(324, 92);
 		tanleatheratchouani.addRequirement(coins.quantity(2));
 		tradeauburnvaleshopkeeper = new NpcStep(this, 14656, new WorldPoint(1379, 3352, 0), "Buy a needle and thread from the Auburnvale General Store.", true);
-		tradeauburnvaleshopkeeper.addRequirement(coins.quantity(2));
+		tradeauburnvaleshopkeeper.addWidgetHighlight(324, 92);
+		tradeauburnvaleshopkeeper.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.NEEDLE, true);
+		tradeauburnvaleshopkeeper.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.THREAD, true);
 		craftleatherchaps = new DetailedQuestStep(this, "Use Needle on Leather with Thread in your inventory to make Leather Chaps.");
+		craftleatherchaps.addWidgetHighlight(270, 20);
 		craftleatherchaps.addRequirement(leather.highlighted());
 		craftleatherchaps.addRequirement(needle.highlighted());
 		craftleatherchaps.addRequirement(thread);
 		admirebeautifullog = new ObjectStep(this, 57112, new WorldPoint(1382, 3348, 0), "Admire Beautiful log.", true);
 		steponenttrail = new ObjectStep(this, 57115, new WorldPoint(1395, 3340, 0), "Step on two nearby Ent Trails created behind a walking Ent.", true).addAlternateObjects(57116);
+		// 20370, 0->6 for flax
 		pickflax = new ObjectStep(this, 14896, new WorldPoint(1372, 3320, 0), "Pick 6 flax in the Nemus Retreat.", true);
 		spinflaxandwool = new ObjectStep(this, 55330, new WorldPoint(1373, 3314, 0), "Spin 1 ball of wool and 1 bowstring.", true);
 		spinflaxandwool.addRequirement(wool);
@@ -798,36 +849,46 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		returntocivitas = new DetailedQuestStep(this, "Exit Yama's Lair to Civitas illa Fortis.");
 		sitwithdogs = new EmoteStep(this, QuestEmote.SIT, new WorldPoint(1748, 3048, 0), "Use the Sit emote next to the cabbage being eaten by dogs.");
 		sitwithdogs.addIcon(QuestEmote.SIT.getSpriteId());
-		buytorch = new NpcStep(this, 13159, new WorldPoint(1515, 2984, 0), "Buy an unlit torch from the General Store Shopkeeper.", true);
+		buytorch = new NpcStep(this, 13159, new WorldPoint(1515, 2984, 0), "Buy an unlit torch and a tinderbox from the General Store Shopkeeper.", true, unlitTorch, tinderbox);
+		buytorch.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.TORCH_UNLIT, true);
+
 		lighttorch = new DetailedQuestStep(this, "Light the Unlit torch.");
-		lighttorch.addRequirement(unlitTorch);
-		lighttorch.addRequirement(tinderbox);
+		lighttorch.addRequirement(unlitTorch.highlighted());
+		lighttorch.addRequirement(tinderbox.highlighted());
 		buypineapples = new NpcStep(this, 12799, new WorldPoint(1741, 3136, 0), "Buy 15 pineapples from the Trader Crewmember.", true);
 		depositpineapples = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit the pineapples, lit torch, and tinderbox.", true);
-		drinkcupoftea = new DetailedQuestStep(this, "Drink the Cup of tea in Auburnvale.");
+		// TODO: Get varbit change?
+		drinkcupoftea = new DetailedQuestStep(this, new WorldPoint(1434, 3321, 0), "Drink the Cup of tea in the Auburn Valley south of Auburnvale.");
 		drinkcupoftea.addRequirement(cupOfTea);
-		talktofriendlyforester = new NpcStep(this, 11427, new WorldPoint(1352, 3298, 0), "Talk to the Friendly Forester to claim a Forestry Kit, then equip it.", true);
+		talktofriendlyforester = new NpcStep(this, 11427, new WorldPoint(1352, 3298, 0), "Talk to the Friendly Forester to claim a Forestry Kit, then equip it.", true, forestryKit.equipped().highlighted());
+		talktofriendlyforester.addWidgetHighlight(819, 34, 0);
 		// Section: Tal Teklan [show when true: no condition]
 		traveltotalteklan = new NpcStep(this, 14729, new WorldPoint(1398, 3247, 0), "Travel by canoe with Achilka to Tal Teklan.", true);
-		depositintalteklan = new NpcStep(this, 14778, new WorldPoint(1245, 3121, 0), "Deposit everything, withdraw coins, feathers, and your iron mace (fire staff should be equipped).", true);
+		depositintalteklan = new NpcStep(this, 14778, new WorldPoint(1245, 3121, 0),
+			"Deposit everything, withdraw coins, steel axe, feathers, and your iron mace (fire staff should be equipped).", true, coins, steelAxe, feathers, ironMace, staffOfFire.equipped());
 		tradeteicuh = new NpcStep(this, 14775, new WorldPoint(1211, 3118, 0), "At the mage shop buy 5 of each elemental rune pack, 5 cosmic runes, 75 nature runes, 5 mind packs, 1 chaos pack, and 1 death rune.", true);
-		tradexochitl = new NpcStep(this, 14774, new WorldPoint(1202, 3119, 0), "Purchase purple dye or red and blue dye to make purple dye.", true);
+		tradexochitl = new NpcStep(this, 14774, new WorldPoint(1202, 3119, 0), "Purchase purple dye.", true);
 		tradexochitl.addRequirement(coins.quantity(6));
 		dyecape = new DetailedQuestStep(this, "Use the purple dye on your Green Cape to dye it.");
-		dyecape.addRequirement(orangeDye.highlighted());
-		dyecape.addRequirement(redDye.highlighted());
-		dyecape.addRequirement(yellowDye.highlighted());
-		dyecape.addRequirement(blueDye.highlighted());
-		dyecape.addRequirement(purpleDye.highlighted());
 		dyecape.addRequirement(greenCape.highlighted());
-		dancenearabard = new DetailedQuestStep(this, new WorldPoint(1190, 3112, 0), "Use the Dance emote near a Bard.");
+		dyecape.addRequirement(purpleDye.highlighted());
+		dancenearabard = new EmoteStep(this, QuestEmote.DANCE, new WorldPoint(1190, 3112, 0), "Use the Dance emote near a Bard.");
+		dancenearabard.addIcon(QuestEmote.DANCE.getSpriteId());
 		tradearcuani = new NpcStep(this, 14776, new WorldPoint(1208, 3095, 0), "Buy a shortbow and 10+ iron arrows from Arcuani.", true);
+		tradearcuani.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.SHORTBOW, true);
+		tradearcuani.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.IRON_ARROW, true);
 		attackfroglevel5 = new NpcStep(this, 8702, new WorldPoint(1314, 3105, 0), "Attack Frog  (level-5) with you shortbow. Fire at least 6 iron arrows to complete that task.", true);
 		attackfroglevel5.addRequirement(shortbow);
 		attackfroglevel5.addRequirement(ironArrow.quantity(10));
-		chopdowndeadtreerainforest = new ObjectStep(this, 1286, new WorldPoint(1294, 3119, 0), "Chop down a Dead tree in the Tlati Rainforest.", true);
+		chopdowndeadtreerainforest = new ObjectStep(this, 1286, new WorldPoint(1294, 3119, 0), "Chop down a Dead tree in the Tlati Rainforest.", true, steelAxe);
 		traveltokastori = new NpcStep(this, 14728, new WorldPoint(1258, 3123, 0), "Travel by canoe with Achilka to Kastori.", true);
 		tradesulisal = new NpcStep(this, 14762, new WorldPoint(1375, 3038, 0), "Buy 50 bait, 1 small fishing net, 1 fishing rod, 1 fly fishing rod, 1 lobster pot, and 1 harpoon from the fishing shop.", true);
+		tradesulisal.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.FISHING_BAIT, true);
+		tradesulisal.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.NET, true);
+		tradesulisal.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.FISHING_ROD, true);
+		tradesulisal.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.FLY_FISHING_ROD, true);
+		tradesulisal.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.HARPOON, true);
+		tradesulisal.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.LOBSTER_POT, true);
 		sardinefishingspot = new NpcStep(this, 14524, new WorldPoint(1333, 3010, 0), "Use your fishing rod to catch sardines at the fishing spot southwest of Kastori. Fill your inventory.", true);
 		sardinefishingspot.addRequirement(fishingRod);
 		sardinefishingspot.addRequirement(fishingBait);
@@ -979,7 +1040,6 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		orderManual_68855f46f9bc41df = new ManualRequirement();
 		orderManual_03a02189ef2c41c9 = new ManualRequirement();
 		orderManual_f959773416174f78 = new ManualRequirement();
-		orderManual_20f2b6f2760b4291 = new ManualRequirement();
 		orderManual_7e7d7d1aa70f4206 = new ManualRequirement();
 		orderManual_956b7e8f1cba43e0 = new ManualRequirement();
 		orderManual_397839f1b1f24846 = new ManualRequirement();
@@ -1222,8 +1282,6 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		pickandeatonion.setSidebarManualSkipPersistenceKey("orderManual_03a02189ef2c41c9");
 		pickwheat.setSidebarManualSkipRequirement(orderManual_f959773416174f78);
 		pickwheat.setSidebarManualSkipPersistenceKey("orderManual_f959773416174f78");
-		fillhopper.setSidebarManualSkipRequirement(orderManual_20f2b6f2760b4291);
-		fillhopper.setSidebarManualSkipPersistenceKey("orderManual_20f2b6f2760b4291");
 		emptyflourbin.setSidebarManualSkipRequirement(orderManual_7e7d7d1aa70f4206);
 		emptyflourbin.setSidebarManualSkipPersistenceKey("orderManual_7e7d7d1aa70f4206");
 		pickpotato.setSidebarManualSkipRequirement(orderManual_956b7e8f1cba43e0);
@@ -1569,14 +1627,13 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section1Task.addStep(not(orderManual_4ed627e87870495c), blowglassintooillanterns);
 
 		section2Task = new ConditionalStep(this, eatcookedrabbit);
-		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes")), orderManual_925b2750606e45aa)), pickcabbage);
+		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), new VarbitRequirement(20372, 6)), orderManual_925b2750606e45aa)), pickcabbage);
 		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 25, "Defeat a Chicken"), bones), orderManual_e2187282abd14612)), attackchickenlevel1);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 7, "Sit near a stolen cabbage"), orderManual_804de90e08e84b59)), sitwithdogs);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 7, "Feed a dog some bones"), orderManual_7307d7a1545249c7)), feedbonestomolossus);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 3, "Pick some Sweetcorn from a Field"), orderManual_68855f46f9bc41df)), picksweetcorn);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 2, "Eat an Onion"), orderManual_03a02189ef2c41c9)), pickandeatonion);
-		section2Task.addStep(not(passOnceCompleted(grain.quantity(6).alsoCheckBank(), orderManual_f959773416174f78)), pickwheat);
-		section2Task.addStep(not(passOnceCompleted(orderManual_20f2b6f2760b4291, orderManual_20f2b6f2760b4291)), fillhopper);
+		section2Task.addStep(not(passOnceCompleted(new VarbitRequirement(20371, 6), orderManual_f959773416174f78)), pickwheat);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 26, "Make some Flour"), orderManual_7e7d7d1aa70f4206)), emptyflourbin);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), orderManual_956b7e8f1cba43e0)), pickpotato);
 		section2Task.addStep(not(passOnceCompleted(rake, orderManual_397839f1b1f24846)), tradeharminia);
@@ -1595,14 +1652,14 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section2Task.addStep(not(passOnceCompleted(coins.quantity(50001).alsoCheckBank(), orderManual_2a4533618e3843cc)), tradetoci);
 		section2Task.addStep(not(passOnceCompleted(orderManual_864a7b35392e4bb5, orderManual_864a7b35392e4bb5)), cutextragems);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 18, "Defeat a Seagull"), orderManual_b1d18d00302b44e1)), attackseagulllevel2);
-		section2Task.addStep(not(passOnceCompleted(orderManual_39b2b856b31b46a8, orderManual_39b2b856b31b46a8)), tradechartership);
+		section2Task.addStep(not(passOnceCompleted(and(tyrasHelm, bucket, rawRabbit.quantity(5)), orderManual_39b2b856b31b46a8)), tradechartership);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 21, "Cook something with an apron"), orderManual_bd0d9307875d4407)), cookrabbitonoven);
 
 		section3Task = new ConditionalStep(this, talktopicaria);
 		section3Task.addStep(not(passOnceCompleted(orderManual_eab67f10eb07403e, orderManual_eab67f10eb07403e)), talktoantonia);
-		section3Task.addStep(not(passOnceCompleted(unlitTorch, orderManual_f044d2ea29444c1d)), buytorch);
+		section3Task.addStep(not(passOnceCompleted(or(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), unlitTorch), orderManual_f044d2ea29444c1d)), buytorch);
 		section3Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), orderManual_f857afb94063482c)), lighttorch);
-		section3Task.addStep(not(passOnceCompleted(orderManual_9b1eca8dccbd42d2, orderManual_9b1eca8dccbd42d2)), fillabucketwithsand);
+		section3Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 26, "Fill bucket of sand"), orderManual_9b1eca8dccbd42d2)), fillabucketwithsand);
 
 		section4Task = new ConditionalStep(this, givestewtooli);
 		section4Task.addStep(not(passOnceCompleted(orderManual_defad039d9094571, orderManual_defad039d9094571)), chartertocivitas);
@@ -1624,26 +1681,29 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section5Task.addStep(not(passOnceCompleted(orderManual_fc2cc76a69004247, orderManual_fc2cc76a69004247)), depositinauburnvale);
 		section5Task.addStep(not(passOnceCompleted(orderManual_98baa1e71c7749f8, orderManual_98baa1e71c7749f8)), tradesebamo);
 		section5Task.addStep(not(passOnceCompleted(orderManual_4aa9260549cf41b7, orderManual_4aa9260549cf41b7)), tradelunami);
-		section5Task.addStep(not(passOnceCompleted(orderManual_dfe5b2e820144145, orderManual_dfe5b2e820144145)), chopdowndeadtree);
+		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 15, "Chop using steel axe"), orderManual_dfe5b2e820144145)), chopdowndeadtree);
 		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 7, "Turn any Logs Into a Plank"), orderManual_b30a9b21a43c4399)), makeplankatsawmill);
-		section5Task.addStep(not(passOnceCompleted(orderManual_558232d615c64c3e, orderManual_558232d615c64c3e)), tanleatheratchouani);
-		section5Task.addStep(not(passOnceCompleted(orderManual_b9bdb796f67b407a, orderManual_b9bdb796f67b407a)), tradeauburnvaleshopkeeper);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 22, "Craft Leather chaps"), orderManual_8bc30c12632a4f04)), craftleatherchaps);
+		var leathChapsMade = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 22, "Craft Leather chaps");
+		section5Task.addStep(not(passOnceCompleted(or(leathChapsMade, leather), orderManual_558232d615c64c3e)), tanleatheratchouani);
+		section5Task.addStep(not(passOnceCompleted(or(leathChapsMade, and(needle, thread)), orderManual_b9bdb796f67b407a)), tradeauburnvaleshopkeeper);
+		section5Task.addStep(not(passOnceCompleted(leathChapsMade, orderManual_8bc30c12632a4f04)), craftleatherchaps);
 		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 9, "Admire some beautiful scenery"), orderManual_18df7577e9814dd7)), admirebeautifullog);
 		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 8, "Step onto an Ent trail"), orderManual_6ec91f1a29aa464f)), steponenttrail);
 		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 20, "Pick 6 flax"), orderManual_d51c833717d64aae)), pickflax);
 		section5Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 3, "Spin a Ball of Wool")), orderManual_03d13e43583345cb)), spinflaxandwool);
 
+
 		section6Task = new ConditionalStep(this, buyfishfrompicaria);
-		section6Task.addStep(not(passOnceCompleted(orderManual_d788a0be7313479e, orderManual_d788a0be7313479e)), traveltotalteklan);
+		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 10, "Travel by canoe"), orderManual_d788a0be7313479e)), traveltotalteklan);
 		section6Task.addStep(not(passOnceCompleted(orderManual_01b9f9d76bc94c60, orderManual_01b9f9d76bc94c60)), depositintalteklan);
 		section6Task.addStep(not(passOnceCompleted(orderManual_1171a596083a4eaf, orderManual_1171a596083a4eaf)), tradeteicuh);
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, orangeDye, blueDye, yellowDye, redDye, purpleDye), orderManual_e4ec7a5e93f94c50)), tradexochitl);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 0, "Dye a cape Purple"), orderManual_a62e5ad5b779487c)), dyecape);
+		var dyedCapePurple = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 0, "Dye a cape Purple");
+		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, dyedCapePurple, purpleDye), orderManual_e4ec7a5e93f94c50)), tradexochitl);
+		section6Task.addStep(not(passOnceCompleted(dyedCapePurple, orderManual_a62e5ad5b779487c)), dyecape);
 		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 15, "Dance near a bard"), orderManual_cfbbc6296cf34f41)), dancenearabard);
 		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, shortbow, ironArrow.quantity(10)), orderManual_3775ef8059c3414d)), tradearcuani);
-		section6Task.addStep(not(passOnceCompleted(orderManual_37f5de97d3244bc3, orderManual_37f5de97d3244bc3)), attackfroglevel5);
-		section6Task.addStep(not(passOnceCompleted(orderManual_d2c3db388c6e488e, orderManual_d2c3db388c6e488e)), chopdowndeadtreerainforest);
+		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 26, "Kill frog"), orderManual_37f5de97d3244bc3)), attackfroglevel5);
+		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 12, "Tree in Tlati Rainforest"), orderManual_d2c3db388c6e488e)), chopdowndeadtreerainforest);
 		section6Task.addStep(not(passOnceCompleted(orderManual_144de147b4dd429f, orderManual_144de147b4dd429f)), traveltokastori);
 		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, smallFishingNet, fishingRod, fishingBait.quantity(50), lobsterPot, flyFishingRod, harpoon), orderManual_c9641ef94bed4e57)), tradesulisal);
 		section6Task.addStep(not(passOnceCompleted(orderManual_7ea35541def3437c, orderManual_7ea35541def3437c)), sardinefishingspot);
@@ -1652,11 +1712,14 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 20, "Cook Shrimp"), orderManual_fe6e163c06804219)), cookshrimpatoven);
 		section6Task.addStep(not(passOnceCompleted(new SkillRequirement(Skill.FISHING, 15, true), orderManual_4bd4c4ce6db44382)), herringfishingspot);
 		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 13, "Catch an Anchovy"), orderManual_7b3fbad760644c7e)), anchovyfishingspot);
-		section6Task.addStep(not(passOnceCompleted(orderManual_3ab921c32aa643b3, orderManual_3ab921c32aa643b3)), climbdownladder);
-		section6Task.addStep(not(passOnceCompleted(fiendishAshes, orderManual_4302669db12948af)), attackimplevel2);
-		section6Task.addStep(not(passOnceCompleted(orderManual_4177e886a0f0431a, orderManual_4177e886a0f0431a)), climbupladder);
+		var impBasement = new ZoneRequirement(new Zone(new WorldPoint(1375, 9449, 0), new WorldPoint(1387, 9457, 0)));
+		section6Task.addStep(not(passOnceCompleted(impBasement, orderManual_3ab921c32aa643b3)), climbdownladder);
+		var killedImpInBasement = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 21, "Killed basement imp");
+		var killedImpWithEarth = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 30, "Killed imp with earth spells");
+		section6Task.addStep(not(passOnceCompleted(and(fiendishAshes, killedImpWithEarth, killedImpInBasement), orderManual_4302669db12948af)), attackimplevel2);
+		section6Task.addStep(not(passOnceCompleted(not(impBasement), orderManual_4177e886a0f0431a)), climbupladder);
 		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 2, "Pet a Caique"), orderManual_7b8ba95ea0d64517)), petcaique);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 3, "Activate the Statue of Ates"), orderManual_ec5549b44450458a)), activatestatuekastori);
+		section6Task.addStep(not(passOnceCompleted(new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TLATI_FOUND, 1), orderManual_ec5549b44450458a)), activatestatuekastori);
 		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new SkillRequirement(Skill.ATTACK, 20, true), new SkillRequirement(Skill.MAGIC, 21, true), new SkillRequirement(Skill.DEFENCE, 5, true)), orderManual_8e45e36fcaaa417e)), attackgemstonecrablevel160);
 		section6Task.addStep(not(passOnceCompleted(orderManual_11db367c6081408e, orderManual_11db367c6081408e)), witnessthegemcrabsdefeat);
 		section6Task.addStep(not(passOnceCompleted(orderManual_040bffb8e5d14642, orderManual_040bffb8e5d14642)), travelgloomthorn);
@@ -1717,6 +1780,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 24, "Defeat a Dire Wolf"), orderManual_2a71162245c04190)), attackdirewolflevel88);
 		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_9, true, 0, "Defeat a Scorpion with a Mithril Spear"), orderManual_54e3a789deb14634)), attackscorpionlevel14);
 		section9Task.addStep(not(passOnceCompleted(copperOre, orderManual_1a5aa05798474bd7)), minecopperrocks);
+
 		section9Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 13, "Mine 5 Tin Ore"), new SkillRequirement(Skill.MINING, 15, true)), orderManual_09018eaa7a2c47bc)), minetinrocks);
 		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 25, null), orderManual_e9a6caeaeb86458e)), attackjaguarlevel67);
 		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 27, "Defeat a Hill Giant"), orderManual_5d1d9b7e25da42ec)), attackhillgiantlevel28);
@@ -1738,10 +1802,25 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 
 		ConditionalStep allSections = new ConditionalStep(this, section10Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 18, "Open the Leagues Menu"), orderManual_3af37088880c4e47), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 19, "Complete the Leagues Tutorial"), orderManual_29c81dc8336344ac), passOnceCompleted(orderManual_b4774b5043644e3d, orderManual_b4774b5043644e3d), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 8, "Turn off your run"), orderManual_e9f51a0871734a55), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 22, "Pickpocket a Citizen"), new SkillRequirement(Skill.THIEVING, 5, true)), orderManual_acbdd227965c4943), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 0, "Pet Renu"), orderManual_d2d9922879654882), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 10, "Bow near a quetzal"), orderManual_e1bd7473bf70454e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 12, "Travel using the Quetzal Transport System"), orderManual_3742c1b9593940d1), passOnceCompleted(orderManual_d874440fd5d64f29, orderManual_d874440fd5d64f29), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 27, "Fill something up from a water pump"), orderManual_3e3dee13c7f04f7e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 4, "Attack a dummy"), orderManual_114b66be530d46b0), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 14, "Cry near a child"), orderManual_19a411c69a9a454a), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 4, "Steal some bread"), cake.quantity(14).alsoCheckBank()), orderManual_561cc210c13940ac), passOnceCompleted(new Conditions(LogicType.AND, chisel.alsoCheckBank(), knife), orderManual_6231965cb7364873), passOnceCompleted(new Conditions(LogicType.AND, brownApron, greenCape), orderManual_ef2a1f04f2344ffa), passOnceCompleted(new Conditions(LogicType.AND, brownApron, greenCape), orderManual_62fd4ddcb8574922), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 28, "Defeat a Rat"), orderManual_78e2364d79f24bf0), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 4, "Salute next to a statue of Quoatlos"), orderManual_de139d6c81f54075), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 3, "Activate a prayer near an altar"), orderManual_b4f635703c864239), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 1, "Pet Xolo in Civitas"), orderManual_e9ba959f7cfe48c5), passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_36, true, 24, "150 Combat Achievements"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 23, "Drink from a bird bath")), orderManual_db130671c0de4eac), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 14, "Chop Some Logs"), logs.quantity(2).alsoCheckBank()), orderManual_3d13ecb7d4b94ca8), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 6, "Burn Some Normal Logs"), orderManual_bcef081ee50848c4), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 8, "Fletch Some Arrow Shafts"), orderManual_6691ac72f00a43ba), passOnceCompleted(orderManual_b6371840b279439e, orderManual_b6371840b279439e), orderManual_33caa0d56cbf4e3a, passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 9, "Talk to a Gladiator"), orderManual_0b5d40160f57421a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 6, "Talk to any Port master"), orderManual_38fb64dc8cff4589), passOnceCompleted(new Conditions(LogicType.AND, bucketOfSand.quantity(10).alsoCheckBank()), orderManual_23938df7e41444d2), orderManual_e3d64188fe2c4386, passOnceCompleted(orderManual_0643bdd0fc574df9, orderManual_0643bdd0fc574df9), passOnceCompleted(orderManual_b3170a80123940bc, orderManual_b3170a80123940bc), passOnceCompleted(orderManual_b4898e48afbc4790, orderManual_b4898e48afbc4790), orderManual_4ed627e87870495c, passOnceCompleted(orderManual_c6d823de02b04365, orderManual_c6d823de02b04365))), section1Task);
-		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes")), orderManual_925b2750606e45aa), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 25, "Defeat a Chicken"), bones), orderManual_e2187282abd14612), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 7, "Feed a dog some bones"), orderManual_7307d7a1545249c7), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 3, "Pick some Sweetcorn from a Field"), orderManual_68855f46f9bc41df), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 2, "Eat an Onion"), orderManual_03a02189ef2c41c9), passOnceCompleted(grain.quantity(6).alsoCheckBank(), orderManual_f959773416174f78), passOnceCompleted(orderManual_20f2b6f2760b4291, orderManual_20f2b6f2760b4291), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 26, "Make some Flour"), orderManual_7e7d7d1aa70f4206), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), orderManual_956b7e8f1cba43e0), passOnceCompleted(rake, orderManual_397839f1b1f24846), passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_22, true, 24, "200 Collection log slots"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 26, "Rake a Flower Patch")), orderManual_5caee225521442f9), passOnceCompleted(bucket, orderManual_00554878070f4f0e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 30, "Milk a Buffalo"), orderManual_4c110a72a4b748d1), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 6, "Shear an Alpaca"), orderManual_6fb5cb3f33894336), passOnceCompleted(orderManual_d30aa746056444c3, orderManual_d30aa746056444c3), passOnceCompleted(new Conditions(LogicType.AND, cowhide, bones), orderManual_c75f7a1c32ef4f3f), passOnceCompleted(orderManual_8842f3b65fdb4d05, orderManual_8842f3b65fdb4d05), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 11, "Travel to Aldarin via Fairy ring"), orderManual_0819bafed42f4b91), passOnceCompleted(orderManual_7060fc9ca3444a25, orderManual_7060fc9ca3444a25), passOnceCompleted(orderManual_b4066f8970574c8a, orderManual_b4066f8970574c8a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 9, "Fill a Grape Barrel for the Foreman"), orderManual_9c6304e17f074f11), passOnceCompleted(new Conditions(LogicType.AND, coins.quantity(100), chisel), orderManual_04453a244b8e4e28), passOnceCompleted(coins.quantity(50001).alsoCheckBank(), orderManual_2a4533618e3843cc), passOnceCompleted(orderManual_864a7b35392e4bb5, orderManual_864a7b35392e4bb5), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 18, "Defeat a Seagull"), orderManual_b1d18d00302b44e1), passOnceCompleted(orderManual_39b2b856b31b46a8, orderManual_39b2b856b31b46a8), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 21, "Cook something with an apron"), orderManual_bd0d9307875d4407), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 1, "Eat a Rabbit"), orderManual_74ede07d53494e31))), section2Task);
+		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes")), orderManual_925b2750606e45aa), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 25, "Defeat a Chicken"), bones), orderManual_e2187282abd14612), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 7, "Feed a dog some bones"), orderManual_7307d7a1545249c7), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 3, "Pick some Sweetcorn from a Field"), orderManual_68855f46f9bc41df), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 2, "Eat an Onion"), orderManual_03a02189ef2c41c9), passOnceCompleted(grain.quantity(6).alsoCheckBank(), orderManual_f959773416174f78), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 26, "Make some Flour"), orderManual_7e7d7d1aa70f4206), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), orderManual_956b7e8f1cba43e0), passOnceCompleted(rake, orderManual_397839f1b1f24846), passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_22, true, 24, "200 Collection log slots"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 26, "Rake a Flower Patch")), orderManual_5caee225521442f9), passOnceCompleted(bucket, orderManual_00554878070f4f0e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 30, "Milk a Buffalo"), orderManual_4c110a72a4b748d1), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 6, "Shear an Alpaca"), orderManual_6fb5cb3f33894336), passOnceCompleted(orderManual_d30aa746056444c3, orderManual_d30aa746056444c3), passOnceCompleted(new Conditions(LogicType.AND, cowhide, bones), orderManual_c75f7a1c32ef4f3f), passOnceCompleted(orderManual_8842f3b65fdb4d05, orderManual_8842f3b65fdb4d05), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 11, "Travel to Aldarin via Fairy ring"), orderManual_0819bafed42f4b91), passOnceCompleted(orderManual_7060fc9ca3444a25, orderManual_7060fc9ca3444a25), passOnceCompleted(orderManual_b4066f8970574c8a, orderManual_b4066f8970574c8a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 9, "Fill a Grape Barrel for the Foreman"), orderManual_9c6304e17f074f11), passOnceCompleted(new Conditions(LogicType.AND, coins.quantity(100), chisel), orderManual_04453a244b8e4e28), passOnceCompleted(coins.quantity(50001).alsoCheckBank(), orderManual_2a4533618e3843cc), passOnceCompleted(orderManual_864a7b35392e4bb5, orderManual_864a7b35392e4bb5), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 18, "Defeat a Seagull"), orderManual_b1d18d00302b44e1), passOnceCompleted(orderManual_39b2b856b31b46a8, orderManual_39b2b856b31b46a8), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 21, "Cook something with an apron"), orderManual_bd0d9307875d4407), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 1, "Eat a Rabbit"), orderManual_74ede07d53494e31))), section2Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_eab67f10eb07403e, orderManual_eab67f10eb07403e), passOnceCompleted(orderManual_9b1eca8dccbd42d2, orderManual_9b1eca8dccbd42d2), passOnceCompleted(new Conditions(LogicType.AND, bigFishingNet), orderManual_a695d187db0d426b))), section3Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_defad039d9094571, orderManual_defad039d9094571), passOnceCompleted(ironMace, orderManual_52df5d410a9c4609), passOnceCompleted(ironMace.equipped(), orderManual_71753357153f4aea), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 17, "Obtain a Casket from Fishing"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 3, "Obtain an old boot from a fishing spot"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 10, "Fish a House Key")), orderManual_7279930e175347d8), passOnceCompleted(new Conditions(LogicType.AND, jugOfWine, stew, moonLite, cupOfTea), orderManual_2d00f499fa504f2c), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 24, "Drink some moon-lite"), orderManual_69fff6adc2d94fa7), passOnceCompleted(orderManual_3a1994fd479f4789, orderManual_3a1994fd479f4789), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 29, "Successfully pickpocket a Citizen 10 times in a row"), orderManual_304f7ffb27f04f3a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 25, "Purchase a Player Owned House"), orderManual_67ac90c160da4e80), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 28, "Sell some silk to a silk trader"), orderManual_6d81d68a300a421e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 28, "Give Oli some Stew"), orderManual_d54c4bcf9b4a4242))), section4Task);
-		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_2db5a3f19d944160, orderManual_2db5a3f19d944160), passOnceCompleted(orderManual_fc2cc76a69004247, orderManual_fc2cc76a69004247), passOnceCompleted(orderManual_98baa1e71c7749f8, orderManual_98baa1e71c7749f8), passOnceCompleted(orderManual_4aa9260549cf41b7, orderManual_4aa9260549cf41b7), passOnceCompleted(orderManual_dfe5b2e820144145, orderManual_dfe5b2e820144145), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 7, "Turn any Logs Into a Plank"), orderManual_b30a9b21a43c4399), passOnceCompleted(orderManual_558232d615c64c3e, orderManual_558232d615c64c3e), passOnceCompleted(orderManual_b9bdb796f67b407a, orderManual_b9bdb796f67b407a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 22, "Craft Leather chaps"), orderManual_8bc30c12632a4f04), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 9, "Admire some beautiful scenery"), orderManual_18df7577e9814dd7), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 8, "Step onto an Ent trail"), orderManual_6ec91f1a29aa464f), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 20, "Pick 6 flax"), orderManual_d51c833717d64aae), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 3, "Spin a Ball of Wool")), orderManual_03d13e43583345cb), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 9, "Cast Home Teleport"), orderManual_a1a431788a17478e), passOnceCompleted(orderManual_e2c6f51feb6142eb, orderManual_e2c6f51feb6142eb), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 7, "Sit near a stolen cabbage"), orderManual_804de90e08e84b59), passOnceCompleted(unlitTorch, orderManual_f044d2ea29444c1d), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), orderManual_f857afb94063482c), passOnceCompleted(orderManual_be85462b242840cf, orderManual_be85462b242840cf), passOnceCompleted(orderManual_e5d473eb18d64808, orderManual_e5d473eb18d64808), passOnceCompleted(orderManual_4663556c4ad648bf, orderManual_4663556c4ad648bf), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_9, true, 22, "Equip the Forestry Basket"), orderManual_1a4549d428724f7b))), section5Task);
+		allSections.addStep(not(new Conditions(LogicType.AND,
+			passOnceCompleted(orderManual_2db5a3f19d944160, orderManual_2db5a3f19d944160),
+			passOnceCompleted(orderManual_4663556c4ad648bf, orderManual_4663556c4ad648bf),
+			passOnceCompleted(orderManual_fc2cc76a69004247, orderManual_fc2cc76a69004247),
+			passOnceCompleted(orderManual_98baa1e71c7749f8, orderManual_98baa1e71c7749f8),
+			passOnceCompleted(orderManual_4aa9260549cf41b7, orderManual_4aa9260549cf41b7),
+			passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 15, "Chop using steel axe"), orderManual_dfe5b2e820144145),
+			passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 7, "Turn any Logs Into a Plank"), orderManual_b30a9b21a43c4399),
+			passOnceCompleted(passOnceCompleted(or(leathChapsMade, leather), orderManual_558232d615c64c3e), orderManual_558232d615c64c3e),
+			passOnceCompleted(passOnceCompleted(or(leathChapsMade, and(needle, thread)), orderManual_b9bdb796f67b407a), orderManual_b9bdb796f67b407a),
+			passOnceCompleted(leathChapsMade, orderManual_8bc30c12632a4f04),
+			passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 9, "Admire some beautiful scenery"), orderManual_18df7577e9814dd7),
+			passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 8, "Step onto an Ent trail"), orderManual_6ec91f1a29aa464f),
+			passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 20, "Pick 6 flax"), orderManual_d51c833717d64aae),
+			passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 3, "Spin a Ball of Wool")), orderManual_03d13e43583345cb),
+			passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_9, true, 22, "Equip the Forestry Basket"), orderManual_1a4549d428724f7b))), section5Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_d788a0be7313479e, orderManual_d788a0be7313479e), passOnceCompleted(orderManual_01b9f9d76bc94c60, orderManual_01b9f9d76bc94c60), passOnceCompleted(orderManual_1171a596083a4eaf, orderManual_1171a596083a4eaf), passOnceCompleted(new Conditions(LogicType.OR, orangeDye, blueDye, yellowDye, redDye, purpleDye), orderManual_e4ec7a5e93f94c50), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 0, "Dye a cape Purple"), orderManual_a62e5ad5b779487c), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 15, "Dance near a bard"), orderManual_cfbbc6296cf34f41), passOnceCompleted(new Conditions(LogicType.AND, shortbow, ironArrow.quantity(10)), orderManual_3775ef8059c3414d), passOnceCompleted(orderManual_37f5de97d3244bc3, orderManual_37f5de97d3244bc3), passOnceCompleted(orderManual_d2c3db388c6e488e, orderManual_d2c3db388c6e488e), passOnceCompleted(orderManual_144de147b4dd429f, orderManual_144de147b4dd429f), passOnceCompleted(new Conditions(LogicType.AND, smallFishingNet, fishingRod, fishingBait.quantity(50), lobsterPot, flyFishingRod, harpoon), orderManual_c9641ef94bed4e57), passOnceCompleted(orderManual_7ea35541def3437c, orderManual_7ea35541def3437c), passOnceCompleted(orderManual_289f278fcdbc441c, orderManual_289f278fcdbc441c), passOnceCompleted(new Conditions(LogicType.AND, new SkillRequirement(Skill.FISHING, 10, true), rawShrimps, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 12, "Catch a Shrimp")), orderManual_d783206aa2684ec7), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 20, "Cook Shrimp"), orderManual_fe6e163c06804219), passOnceCompleted(new SkillRequirement(Skill.FISHING, 15, true), orderManual_4bd4c4ce6db44382), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 13, "Catch an Anchovy"), orderManual_7b3fbad760644c7e), passOnceCompleted(orderManual_3ab921c32aa643b3, orderManual_3ab921c32aa643b3), passOnceCompleted(fiendishAshes, orderManual_4302669db12948af), passOnceCompleted(orderManual_4177e886a0f0431a, orderManual_4177e886a0f0431a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 2, "Pet a Caique"), orderManual_7b8ba95ea0d64517), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 3, "Activate the Statue of Ates"), orderManual_ec5549b44450458a), passOnceCompleted(new Conditions(LogicType.AND, new SkillRequirement(Skill.ATTACK, 20, true), new SkillRequirement(Skill.MAGIC, 21, true), new SkillRequirement(Skill.DEFENCE, 5, true)), orderManual_8e45e36fcaaa417e), passOnceCompleted(orderManual_11db367c6081408e, orderManual_11db367c6081408e), passOnceCompleted(orderManual_040bffb8e5d14642, orderManual_040bffb8e5d14642), passOnceCompleted(orderManual_f4f064c3ad3f44eb, orderManual_f4f064c3ad3f44eb), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 20, "Defeat an Icefiend in Varlamore"), orderManual_f98483f36a484e18), passOnceCompleted(orderManual_84de0662250c4030, orderManual_84de0662250c4030), passOnceCompleted(ironMace.equipped(), orderManual_973a0e20125a4986), passOnceCompleted(orderManual_f679c2afb8924312, orderManual_f679c2afb8924312), passOnceCompleted(orderManual_4a6cc9352e4b414d, orderManual_4a6cc9352e4b414d), passOnceCompleted(orderManual_822d7bebf7814a0d, orderManual_822d7bebf7814a0d), passOnceCompleted(tyrasHelm.equipped(), orderManual_c7dfc0ff11a544e1), passOnceCompleted(new Conditions(LogicType.AND, chisel, coins), orderManual_4decff0f320c4771), passOnceCompleted(orderManual_dc1ebad629a3492e, orderManual_dc1ebad629a3492e), passOnceCompleted(orderManual_8a40feb623344dbe, orderManual_8a40feb623344dbe), passOnceCompleted(orderManual_78aae6dc2b1e4784, orderManual_78aae6dc2b1e4784), passOnceCompleted(new SkillRequirement(Skill.CRAFTING, 70, false), orderManual_e7b7eeb41929445f), passOnceCompleted(orderManual_aa9fdb2b71f245c6, orderManual_aa9fdb2b71f245c6), passOnceCompleted(orderManual_34bc6f2756944267, orderManual_34bc6f2756944267), passOnceCompleted(orderManual_c6e722989c7e437c, orderManual_c6e722989c7e437c))), section6Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_6399630404814616, orderManual_6399630404814616), passOnceCompleted(new Conditions(LogicType.AND, eyeOfNewtPack, waterFilledVialPack, pestleAndMortar), orderManual_49aa6ca9547f4410), passOnceCompleted(orderManual_796ca0c49092421f, orderManual_796ca0c49092421f), passOnceCompleted(orderManual_eb1a1275094e4580, orderManual_eb1a1275094e4580), passOnceCompleted(orderManual_e0c4fad1ef074063, orderManual_e0c4fad1ef074063), passOnceCompleted(orderManual_722758b4ebad4b90, orderManual_722758b4ebad4b90), passOnceCompleted(orderManual_47586e99ca544eea, orderManual_47586e99ca544eea), passOnceCompleted(bigFishingNet, orderManual_6403213cd38e4c6e), passOnceCompleted(orderManual_61db14d639b84b52, orderManual_61db14d639b84b52), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 6, "Equip an Iron dagger"), orderManual_0c35a9124ae1418b))), section7Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_784d7777d88d4b06, orderManual_784d7777d88d4b06), passOnceCompleted(new Conditions(LogicType.AND, adamantPlatebody, adamantPlatelegs, bronzePlatelegs, bronzePlatebody, mithrilSpear, steelPlatebody), orderManual_67d62b460afa4227), passOnceCompleted(mithrilSpear.equipped(), orderManual_b7fd267650684572), passOnceCompleted(orderManual_c72a5c4e0fe647cf, orderManual_c72a5c4e0fe647cf), passOnceCompleted(orderManual_3e2af9a8620347c0, orderManual_3e2af9a8620347c0), passOnceCompleted(orderManual_8eaf1a19c68e4ffb, orderManual_8eaf1a19c68e4ffb), passOnceCompleted(orderManual_31720dce1e1e4a80, orderManual_31720dce1e1e4a80), passOnceCompleted(orderManual_4869db8bb5384fdd, orderManual_4869db8bb5384fdd), passOnceCompleted(orderManual_1e67f54c3fe844bf, orderManual_1e67f54c3fe844bf), passOnceCompleted(orderManual_79d03c088a424308, orderManual_79d03c088a424308), passOnceCompleted(orderManual_46cfdc5a52f243de, orderManual_46cfdc5a52f243de))), section8Task);
@@ -1801,7 +1880,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section1Steps.setLockingStep(section1Task);
 		allSteps.add(section1Steps);
 
-		PanelDetails section2Steps = new PanelDetails("Outer Fortis", List.of(pickcabbage, attackchickenlevel1, sitwithdogs, feedbonestomolossus, picksweetcorn, pickandeatonion, pickwheat, fillhopper, emptyflourbin, pickpotato, tradeharminia, rakeflowerpatch, emptywaterbucket, milkdairybuffalo, shearalpaca, zanarisfairyring, attackcowlevel2, burybones, aldarinfairyring, talktovineyardforeman, collectshimmeringgrapes, returntovineyardforeman, withdrawaldarinbanker, tradetoci, cutextragems, attackseagulllevel2, tradechartership, cookrabbitonoven, eatcookedrabbit));
+		PanelDetails section2Steps = new PanelDetails("Outer Fortis", List.of(pickcabbage, attackchickenlevel1, sitwithdogs, feedbonestomolossus, picksweetcorn, pickandeatonion, pickwheat, emptyflourbin, pickpotato, tradeharminia, rakeflowerpatch, emptywaterbucket, milkdairybuffalo, shearalpaca, zanarisfairyring, attackcowlevel2, burybones, aldarinfairyring, talktovineyardforeman, collectshimmeringgrapes, returntovineyardforeman, withdrawaldarinbanker, tradetoci, cutextragems, attackseagulllevel2, tradechartership, cookrabbitonoven, eatcookedrabbit));
 		section2Steps.setLockingStep(section2Task);
 		allSteps.add(section2Steps);
 
@@ -1813,7 +1892,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section4Steps.setLockingStep(section4Task);
 		allSteps.add(section4Steps);
 
-		PanelDetails section5Steps = new PanelDetails("Auburnvale", List.of(traveltoauburnvale, drinkcupoftea, depositinauburnvale, tradesebamo, tradelunami, chopdowndeadtree, makeplankatsawmill, tanleatheratchouani, tradeauburnvaleshopkeeper, craftleatherchaps, admirebeautifullog, steponenttrail, talktofriendlyforester, pickflax, spinflaxandwool));
+		PanelDetails section5Steps = new PanelDetails("Auburnvale", List.of(traveltoauburnvale, drinkcupoftea, depositinauburnvale, tradesebamo, tradelunami, chopdowndeadtree, makeplankatsawmill, tanleatheratchouani, tradeauburnvaleshopkeeper, craftleatherchaps, admirebeautifullog, steponenttrail, pickflax, spinflaxandwool, talktofriendlyforester));
 		section5Steps.setLockingStep(section5Task);
 		allSteps.add(section5Steps);
 

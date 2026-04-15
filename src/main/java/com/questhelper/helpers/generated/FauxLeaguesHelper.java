@@ -1,6 +1,7 @@
 package com.questhelper.helpers.generated;
 
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.panel.ManualStepSkipStore;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -19,14 +20,18 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.Skill;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 
 public class FauxLeaguesHelper extends ComplexStateQuestHelper
 {
+
 	// Captured requirements
 	ItemRequirement uncutRuby;
 	ItemRequirement bigFishingNet;
@@ -138,7 +143,9 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	NpcStep useeastcivitasbank;
 	NpcStep talktogladiator;
 	NpcStep talktotradercrewmember;
+	NpcStep talktotradercrewmember2;
 	ObjectStep usefurnace;
+	ObjectStep usefurnace2;
 	DetailedQuestStep blowglassintooillanterns;
 	NpcStep depositmoltenglass;
 	NpcStep attackchickenlevel1;
@@ -151,6 +158,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	NpcStep tradeharminia;
 	ObjectStep rakeflowerpatch;
 	ObjectStep milkdairybuffalo;
+	ObjectStep milkdairybuffalo2;
 	NpcStep shearalpaca;
 	NpcStep tradeartima;
 	NpcStep travelwithrenu;
@@ -160,6 +168,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	NpcStep talktovineyardforeman;
 	NpcStep returntovineyardforeman;
 	NpcStep withdrawaldarinbanker;
+	NpcStep withdrawaldarinbanker2;
 	NpcStep tradetoci;
 	DetailedQuestStep cutextragems;
 	NpcStep travelbackwithrenu;
@@ -178,6 +187,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	ObjectStep cookrabbitonoven;
 	DetailedQuestStep eatcookedrabbit;
 	NpcStep talktoantonia;
+	NpcStep talktoantonia2;
 	ObjectStep fillabucketwithsand;
 	NpcStep talktopicaria;
 	NpcStep chartertocivitas;
@@ -195,6 +205,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	NpcStep tradelunami;
 	NpcStep depositinauburnvale;
 	DetailedQuestStep equipironmace;
+	DetailedQuestStep equipironmace2;
 	ObjectStep chopdowndeadtree;
 	NpcStep makeplankatsawmill;
 	NpcStep tradeauburnvaleshopkeeper;
@@ -639,7 +650,9 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		talktogladiator = new NpcStep(this, 12841, new WorldPoint(1802, 9523, 0), "Talk-to Gladiator.", true);
 		talktoportmaster = new NpcStep(this, 15470, new WorldPoint(1781, 3144, 0), "Talk-to Port master.", true);
 		talktotradercrewmember = new NpcStep(this, 9334, new WorldPoint(1743, 3135, 0), "Buy 10 buckets of sand, 10 soda ash.", true);
+		talktotradercrewmember2 = new NpcStep(this, 9334, new WorldPoint(1743, 3135, 0), "Buy 10 buckets of sand, 10 soda ash.", true);
 		usefurnace = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass.", true);
+		usefurnace2 = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass.", true);
 		depositmoltenglass = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit 10 molten glass into the bank.", true);
 		blowglassintooillanterns = new DetailedQuestStep(this, "Blow 10 molten glass into oil lanterns.");
 		depositoillanterns = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit the 10 oil lanterns.", true);
@@ -661,6 +674,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		emptywaterbucket = new DetailedQuestStep(this, "Empty the bucket of water.");
 		emptywaterbucket.addRequirement(bucketOfWater.highlighted());
 		milkdairybuffalo = new ObjectStep(this, 52576, new WorldPoint(1588, 3119, 0), "Milk Dairy Buffalo.", true);
+		milkdairybuffalo2 = new ObjectStep(this, 52576, new WorldPoint(1588, 3119, 0), "Milk Dairy Buffalo.", true);
 		shearalpaca = new NpcStep(this, new int[]{12986, 12988}, new WorldPoint(1565, 3120, 0), "Shear Alpaca.", true);
 		zanarisfairyring = new ObjectStep(this, 29495, new WorldPoint(1651, 3010, 0), "Take the Fairy Ring to Zanaris.", true);
 		zanarisfairyring.addRequirement(dramenStaff.highlighted());
@@ -675,6 +689,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		returntovineyardforeman = new NpcStep(this, 13908, new WorldPoint(1370, 2915, 0), "Return to the Vineyard foreman with a filled grape barrel.", true);
 		returntovineyardforeman.addRequirement(grapeBarrel);
 		withdrawaldarinbanker = new NpcStep(this, 13225, new WorldPoint(1401, 2928, 0), "Deposit everything and withdraw coins and chisel.", true);
+		withdrawaldarinbanker2 = new NpcStep(this, 13225, new WorldPoint(1401, 2928, 0), "Deposit everything and withdraw coins and chisel.", true);
 		tradetoci = new NpcStep(this, 13915, new WorldPoint(1428, 2975, 0), "Buy, cut, and sell gems until you have more than a 50k gp cash stack.", true);
 		cutextragems = new DetailedQuestStep(this, "Cut three extra of each gem and save them for later.");
 		attackseagulllevel2 = new NpcStep(this, 1338, new WorldPoint(1439, 2967, 0), "Kill a Seagull  (level-2).", true);
@@ -686,6 +701,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		// Section: Sunset Coast [show when true: no condition]
 		talktoantonia = new NpcStep(this, 13985, new WorldPoint(1441, 2978, 0), "Travel with Antonia to the Sunset Coast.", true);
 		talktoantonia.addRequirement(coins.quantity(20));
+		talktoantonia2 = new NpcStep(this, 13985, new WorldPoint(1441, 2978, 0), "Travel with Antonia to the Sunset Coast.", true);
+		talktoantonia2.addRequirement(coins.quantity(20));
 		fillabucketwithsand = new ObjectStep(this, 50733, new WorldPoint(1520, 3001, 0), "Fill a bucket with sand on the Sunset Coast.", true);
 		fillabucketwithsand.addRequirement(bucket.highlighted());
 		talktopicaria = new NpcStep(this, 13158, new WorldPoint(1560, 2962, 0), "Buy 1000 feathers and 1 big fishing net from the fishing store southeast of the Sunset Coast.", true);
@@ -697,6 +714,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		buyironmace.addRequirement(coins.quantity(81));
 		equipironmace = new DetailedQuestStep(this, "Equip the Iron mace.");
 		equipironmace.addRequirement(ironMace);
+		equipironmace2 = new DetailedQuestStep(this, "Equip the Iron mace.");
+		equipironmace2.addRequirement(ironMace);
 		castfishingspot = new NpcStep(this, 13329, new WorldPoint(1738, 3101, 0), "Fish at the fishing spot in the park until you have caught 1 casket, 1 boot, and 1 house key.", true);
 		castfishingspot.addRequirement(bigFishingNet.highlighted());
 		talktobartender = new NpcStep(this, 13344, new WorldPoint(1711, 3116, 0), "Buy 1 cup of tea, 1 Moon-lite, 1 stew, and 1 jug of wine from the nearby bar.", true);
@@ -1142,12 +1161,18 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		talktoportmaster.setSidebarManualSkipPersistenceKey("orderManual_38fb64dc8cff4589");
 		talktotradercrewmember.setSidebarManualSkipRequirement(orderManual_23938df7e41444d2);
 		talktotradercrewmember.setSidebarManualSkipPersistenceKey("orderManual_23938df7e41444d2");
+		talktotradercrewmember2.setSidebarManualSkipRequirement(orderManual_b3170a80123940bc);
+		talktotradercrewmember2.setSidebarManualSkipPersistenceKey("orderManual_b3170a80123940bc");
 		usefurnace.setSidebarManualSkipRequirement(orderManual_e3d64188fe2c4386);
 		usefurnace.setSidebarManualSkipPersistenceKey("orderManual_e3d64188fe2c4386");
+		usefurnace2.setSidebarManualSkipRequirement(orderManual_b4898e48afbc4790);
+		usefurnace2.setSidebarManualSkipPersistenceKey("orderManual_b4898e48afbc4790");
 		depositmoltenglass.setSidebarManualSkipRequirement(orderManual_0643bdd0fc574df9);
 		depositmoltenglass.setSidebarManualSkipPersistenceKey("orderManual_0643bdd0fc574df9");
 		blowglassintooillanterns.setSidebarManualSkipRequirement(orderManual_4ed627e87870495c);
 		blowglassintooillanterns.setSidebarManualSkipPersistenceKey("orderManual_4ed627e87870495c");
+
+		
 		pickcabbage.setSidebarManualSkipRequirement(orderManual_925b2750606e45aa);
 		pickcabbage.setSidebarManualSkipPersistenceKey("orderManual_925b2750606e45aa");
 		attackchickenlevel1.setSidebarManualSkipRequirement(orderManual_e2187282abd14612);
@@ -1174,6 +1199,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		emptywaterbucket.setSidebarManualSkipPersistenceKey("orderManual_00554878070f4f0e");
 		milkdairybuffalo.setSidebarManualSkipRequirement(orderManual_4c110a72a4b748d1);
 		milkdairybuffalo.setSidebarManualSkipPersistenceKey("orderManual_4c110a72a4b748d1");
+		milkdairybuffalo2.setSidebarManualSkipRequirement(orderManual_22e9386da6d3466c);
+		milkdairybuffalo2.setSidebarManualSkipPersistenceKey("orderManual_22e9386da6d3466c");
 		shearalpaca.setSidebarManualSkipRequirement(orderManual_6fb5cb3f33894336);
 		shearalpaca.setSidebarManualSkipPersistenceKey("orderManual_6fb5cb3f33894336");
 		zanarisfairyring.setSidebarManualSkipRequirement(orderManual_d30aa746056444c3);
@@ -1192,6 +1219,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		returntovineyardforeman.setSidebarManualSkipPersistenceKey("orderManual_9c6304e17f074f11");
 		withdrawaldarinbanker.setSidebarManualSkipRequirement(orderManual_04453a244b8e4e28);
 		withdrawaldarinbanker.setSidebarManualSkipPersistenceKey("orderManual_04453a244b8e4e28");
+		withdrawaldarinbanker2.setSidebarManualSkipRequirement(orderManual_4decff0f320c4771);
+		withdrawaldarinbanker2.setSidebarManualSkipPersistenceKey("orderManual_4decff0f320c4771");
 		tradetoci.setSidebarManualSkipRequirement(orderManual_2a4533618e3843cc);
 		tradetoci.setSidebarManualSkipPersistenceKey("orderManual_2a4533618e3843cc");
 		cutextragems.setSidebarManualSkipRequirement(orderManual_864a7b35392e4bb5);
@@ -1204,6 +1233,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		cookrabbitonoven.setSidebarManualSkipPersistenceKey("orderManual_bd0d9307875d4407");
 		talktoantonia.setSidebarManualSkipRequirement(orderManual_eab67f10eb07403e);
 		talktoantonia.setSidebarManualSkipPersistenceKey("orderManual_eab67f10eb07403e");
+		talktoantonia2.setSidebarManualSkipRequirement(orderManual_aa9fdb2b71f245c6);
+		talktoantonia2.setSidebarManualSkipPersistenceKey("orderManual_aa9fdb2b71f245c6");
 		fillabucketwithsand.setSidebarManualSkipRequirement(orderManual_9b1eca8dccbd42d2);
 		fillabucketwithsand.setSidebarManualSkipPersistenceKey("orderManual_9b1eca8dccbd42d2");
 		chartertocivitas.setSidebarManualSkipRequirement(orderManual_defad039d9094571);
@@ -1212,6 +1243,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		buyironmace.setSidebarManualSkipPersistenceKey("orderManual_52df5d410a9c4609");
 		equipironmace.setSidebarManualSkipRequirement(orderManual_71753357153f4aea);
 		equipironmace.setSidebarManualSkipPersistenceKey("orderManual_71753357153f4aea");
+		equipironmace2.setSidebarManualSkipRequirement(orderManual_973a0e20125a4986);
+		equipironmace2.setSidebarManualSkipPersistenceKey("orderManual_973a0e20125a4986");
 		castfishingspot.setSidebarManualSkipRequirement(orderManual_7279930e175347d8);
 		castfishingspot.setSidebarManualSkipPersistenceKey("orderManual_7279930e175347d8");
 		talktobartender.setSidebarManualSkipRequirement(orderManual_2d00f499fa504f2c);
@@ -1440,10 +1473,30 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		usepotterswheel.setSidebarManualSkipPersistenceKey("orderManual_0d0672e59f0e4bc9");
 		firepotteryoven.setSidebarManualSkipRequirement(orderManual_ffef209ef7614241);
 		firepotteryoven.setSidebarManualSkipPersistenceKey("orderManual_ffef209ef7614241");
+		depositoillanterns.setSidebarManualSkipRequirement(orderManual_c6d823de02b04365);
+		depositoillanterns.setSidebarManualSkipPersistenceKey("orderManual_c6d823de02b04365");
+		eatcookedrabbit.setSidebarManualSkipRequirement(orderManual_74ede07d53494e31);
+		eatcookedrabbit.setSidebarManualSkipPersistenceKey("orderManual_74ede07d53494e31");
+		talktopicaria.setSidebarManualSkipRequirement(orderManual_a695d187db0d426b);
+		talktopicaria.setSidebarManualSkipPersistenceKey("orderManual_a695d187db0d426b");
+		givestewtooli.setSidebarManualSkipRequirement(orderManual_d54c4bcf9b4a4242);
+		givestewtooli.setSidebarManualSkipPersistenceKey("orderManual_d54c4bcf9b4a4242");
+		talktofriendlyforester.setSidebarManualSkipRequirement(orderManual_1a4549d428724f7b);
+		talktofriendlyforester.setSidebarManualSkipPersistenceKey("orderManual_1a4549d428724f7b");
+		buyfishfrompicaria.setSidebarManualSkipRequirement(orderManual_c6e722989c7e437c);
+		buyfishfrompicaria.setSidebarManualSkipPersistenceKey("orderManual_c6e722989c7e437c");
+		tradecamtorumblacksmith.setSidebarManualSkipRequirement(orderManual_0c35a9124ae1418b);
+		tradecamtorumblacksmith.setSidebarManualSkipPersistenceKey("orderManual_0c35a9124ae1418b");
+		exitthiefsden.setSidebarManualSkipRequirement(orderManual_46cfdc5a52f243de);
+		exitthiefsden.setSidebarManualSkipPersistenceKey("orderManual_46cfdc5a52f243de");
+		attackoryxlevel15.setSidebarManualSkipRequirement(orderManual_683c9b9854ea4329);
+		attackoryxlevel15.setSidebarManualSkipPersistenceKey("orderManual_683c9b9854ea4329");
+		thankfaux.setSidebarManualSkipRequirement(orderManual_23f118b7853b499a);
+		thankfaux.setSidebarManualSkipPersistenceKey("orderManual_23f118b7853b499a");
 
 
 		section1Task = new ConditionalStep(this, depositoillanterns);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 18, "Open the Leagues Menu"), orderManual_3af37088880c4e47)), openleaguesmenu);
+		section1Task.addStep(not(passOnceCompleted(new VarbitRequirement(VarbitID.SETTINGS_SIDE_PANEL_TAB, 1), orderManual_3af37088880c4e47)), openleaguesmenu);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 19, "Complete the Leagues Tutorial"), orderManual_29c81dc8336344ac)), completeleaguestutorial);
 		section1Task.addStep(not(passOnceCompleted(orderManual_b4774b5043644e3d, orderManual_b4774b5043644e3d)), claimfirstrelic);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 8, "Turn off your run"), orderManual_e9f51a0871734a55)), togglerunenergy);
@@ -1474,8 +1527,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section1Task.addStep(not(orderManual_23938df7e41444d2), talktotradercrewmember);
 		section1Task.addStep(not(orderManual_e3d64188fe2c4386), usefurnace);
 		section1Task.addStep(not(passOnceCompleted(orderManual_0643bdd0fc574df9, orderManual_0643bdd0fc574df9)), depositmoltenglass);
-		section1Task.addStep(not(passOnceCompleted(orderManual_b3170a80123940bc, orderManual_b3170a80123940bc)), talktotradercrewmember);
-		section1Task.addStep(not(passOnceCompleted(orderManual_b4898e48afbc4790, orderManual_b4898e48afbc4790)), usefurnace);
+		section1Task.addStep(not(passOnceCompleted(orderManual_b3170a80123940bc, orderManual_b3170a80123940bc)), talktotradercrewmember2);
+		section1Task.addStep(not(passOnceCompleted(orderManual_b4898e48afbc4790, orderManual_b4898e48afbc4790)), usefurnace2);
 		section1Task.addStep(not(orderManual_4ed627e87870495c), blowglassintooillanterns);
 
 		section2Task = new ConditionalStep(this, eatcookedrabbit);
@@ -1514,7 +1567,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section4Task = new ConditionalStep(this, givestewtooli);
 		section4Task.addStep(not(passOnceCompleted(orderManual_defad039d9094571, orderManual_defad039d9094571)), chartertocivitas);
 		section4Task.addStep(not(passOnceCompleted(ironMace, orderManual_52df5d410a9c4609)), buyironmace);
-		section4Task.addStep(not(passOnceCompleted(ironMace.equipped(), orderManual_71753357153f4aea)), equipironmace);
+		section4Task.addStep(not(passOnceCompleted(ironMace.equipped(), orderManual_71753357153f4aea)), getEquipironmace());
 		section4Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 17, "Obtain a Casket from Fishing"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 3, "Obtain an old boot from a fishing spot"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 10, "Fish a House Key")), orderManual_7279930e175347d8)), castfishingspot);
 		section4Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, jugOfWine, stew, moonLite, cupOfTea), orderManual_2d00f499fa504f2c)), talktobartender);
 		section4Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 24, "Drink some moon-lite"), orderManual_69fff6adc2d94fa7)), drinkmoonlite);
@@ -1575,17 +1628,17 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section6Task.addStep(not(passOnceCompleted(orderManual_f4f064c3ad3f44eb, orderManual_f4f064c3ad3f44eb)), activatestatuenemus);
 		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 20, "Defeat an Icefiend in Varlamore"), orderManual_f98483f36a484e18)), attackicefiendlevel13);
 		section6Task.addStep(not(passOnceCompleted(orderManual_84de0662250c4030, orderManual_84de0662250c4030)), activatestatuedarkfrost);
-		section6Task.addStep(not(passOnceCompleted(ironMace.equipped(), orderManual_973a0e20125a4986)), equipironmace);
+		section6Task.addStep(not(passOnceCompleted(ironMace.equipped(), orderManual_973a0e20125a4986)), equipironmace2);
 		section6Task.addStep(not(passOnceCompleted(orderManual_f679c2afb8924312, orderManual_f679c2afb8924312)), attackrabbitlevel2);
 		section6Task.addStep(not(passOnceCompleted(orderManual_4a6cc9352e4b414d, orderManual_4a6cc9352e4b414d)), yamaagility);
 		section6Task.addStep(not(passOnceCompleted(orderManual_822d7bebf7814a0d, orderManual_822d7bebf7814a0d)), travelaldarin);
 		section6Task.addStep(not(passOnceCompleted(tyrasHelm.equipped(), orderManual_c7dfc0ff11a544e1)), withdrawtyrashelm);
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, chisel, coins), orderManual_4decff0f320c4771)), withdrawaldarinbanker);
+		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, chisel, coins), orderManual_4decff0f320c4771)), withdrawaldarinbanker2);
 		section6Task.addStep(not(passOnceCompleted(orderManual_dc1ebad629a3492e, orderManual_dc1ebad629a3492e)), enterportal);
 		section6Task.addStep(not(passOnceCompleted(orderManual_8a40feb623344dbe, orderManual_8a40feb623344dbe)), buildroom);
 		section6Task.addStep(not(passOnceCompleted(orderManual_78aae6dc2b1e4784, orderManual_78aae6dc2b1e4784)), exitportal);
 		section6Task.addStep(not(passOnceCompleted(new SkillRequirement(Skill.CRAFTING, 70, false), orderManual_e7b7eeb41929445f)), tradetociagain);
-		section6Task.addStep(not(passOnceCompleted(orderManual_aa9fdb2b71f245c6, orderManual_aa9fdb2b71f245c6)), talktoantonia);
+		section6Task.addStep(not(passOnceCompleted(orderManual_aa9fdb2b71f245c6, orderManual_aa9fdb2b71f245c6)), talktoantonia2);
 		section6Task.addStep(not(passOnceCompleted(orderManual_34bc6f2756944267, orderManual_34bc6f2756944267)), tradethurid);
 
 		section7Task = new ConditionalStep(this, tradecamtorumblacksmith);
@@ -1612,7 +1665,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section8Task.addStep(not(passOnceCompleted(orderManual_79d03c088a424308, orderManual_79d03c088a424308)), attackthieflevel16);
 
 		section9Task = new ConditionalStep(this, attackoryxlevel15);
-		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 30, "Milk a Buffalo"), orderManual_22e9386da6d3466c)), milkdairybuffalo);
+		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 30, "Milk a Buffalo"), orderManual_22e9386da6d3466c)), milkdairybuffalo2);
 		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 16, "Defeat a Buffalo"), orderManual_f9b27713c6744b66)), attackbuffalolevel9);
 		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 3, "Churn some butter"), orderManual_760c8503c8444407)), churndairychurn);
 		section9Task.addStep(not(passOnceCompleted(potato, orderManual_51b78fd1fdfc4e61)), pickpotato2);
@@ -1661,6 +1714,11 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		// TODO: refine per-step requirement logic for real route progression conditions.
 	}
 
+	private DetailedQuestStep getEquipironmace()
+	{
+		return equipironmace;
+	}
+
 	private Requirement passOnceCompleted(Requirement completion, ManualRequirement manualOverride)
 	{
 		if (completion == null || manualOverride == null)
@@ -1702,7 +1760,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails section1Steps = new PanelDetails("Civitas illa Fortis", List.of(openleaguesmenu, completeleaguestutorial, claimfirstrelic, togglerunenergy, pickpocketcitizen, petrenu, bownearrenu, travelwithrenu, travelbackwithrenu, usewaterpump, attackdummy, crynearachild, stealcakesfrombakersstall, tradeshopkeeper, tradefloria, equipapronandgreencape, attackratlevel1, salutequoatlos, useprayernearshrineofralos, petxolo, drinkfrombirdbath, chopdowntree, burnlog, fletchlog, useeastcivitasbank, tradeartima, talktogladiator, talktoportmaster, talktotradercrewmember, usefurnace, depositmoltenglass, talktotradercrewmember, usefurnace, blowglassintooillanterns, depositoillanterns));
+		PanelDetails section1Steps = new PanelDetails("Civitas illa Fortis", List.of(openleaguesmenu, completeleaguestutorial, claimfirstrelic, togglerunenergy, pickpocketcitizen, petrenu, bownearrenu, travelwithrenu, travelbackwithrenu, usewaterpump, attackdummy, crynearachild, stealcakesfrombakersstall, tradeshopkeeper, tradefloria, equipapronandgreencape, attackratlevel1, salutequoatlos, useprayernearshrineofralos, petxolo, drinkfrombirdbath, chopdowntree, burnlog, fletchlog, useeastcivitasbank, tradeartima, talktogladiator, talktoportmaster, talktotradercrewmember, usefurnace, depositmoltenglass, talktotradercrewmember2, usefurnace2, blowglassintooillanterns, depositoillanterns));
 		section1Steps.setLockingStep(section1Task);
 		allSteps.add(section1Steps);
 
@@ -1722,7 +1780,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section5Steps.setLockingStep(section5Task);
 		allSteps.add(section5Steps);
 
-		PanelDetails section6Steps = new PanelDetails("Tal Teklan", List.of(traveltotalteklan, depositintalteklan, tradeteicuh, tradexochitl, dyecape, dancenearabard, tradearcuani, attackfroglevel5, chopdowndeadtreerainforest, traveltokastori, tradesulisal, sardinefishingspot, cooksardinesatoven, shrimpfishingspot, cookshrimpatoven, herringfishingspot, anchovyfishingspot, climbdownladder, attackimplevel2, climbupladder, petcaique, activatestatuekastori, attackgemstonecrablevel160, witnessthegemcrabsdefeat, travelgloomthorn, activatestatuenemus, attackicefiendlevel13, activatestatuedarkfrost, equipironmace, attackrabbitlevel2, yamaagility, travelaldarin, withdrawtyrashelm, withdrawaldarinbanker, enterportal, buildroom, exitportal, tradetociagain, talktoantonia, tradethurid, buyfishfrompicaria));
+		PanelDetails section6Steps = new PanelDetails("Tal Teklan", List.of(traveltotalteklan, depositintalteklan, tradeteicuh, tradexochitl, dyecape, dancenearabard, tradearcuani, attackfroglevel5, chopdowndeadtreerainforest, traveltokastori, tradesulisal, sardinefishingspot, cooksardinesatoven, shrimpfishingspot, cookshrimpatoven, herringfishingspot, anchovyfishingspot, climbdownladder, attackimplevel2, climbupladder, petcaique, activatestatuekastori, attackgemstonecrablevel160, witnessthegemcrabsdefeat, travelgloomthorn, activatestatuenemus, attackicefiendlevel13, activatestatuedarkfrost, equipironmace2, attackrabbitlevel2, yamaagility, travelaldarin, withdrawtyrashelm, withdrawaldarinbanker2, enterportal, buildroom, exitportal, tradetociagain, talktoantonia2, tradethurid, buyfishfrompicaria));
 		section6Steps.setLockingStep(section6Task);
 		allSteps.add(section6Steps);
 
@@ -1734,7 +1792,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section8Steps.setLockingStep(section8Task);
 		allSteps.add(section8Steps);
 
-		PanelDetails section9Steps = new PanelDetails("Varlamore", List.of(milkdairybuffalo, attackbuffalolevel9, churndairychurn, pickpotato2, cookfarmingpatchoven, combinebutterwithpotato, fillcompostbin, pickpocketmasterfarmer, buyseeddibberharminia, rakeallotment, plantpotatoseeds, payprotectharminia, attackdirewolflevel88, attackscorpionlevel14, minecopperrocks, minetinrocks, attackjaguarlevel67, attackhillgiantlevel28, mineclayrocks, mineironrocks, minesilverrocks, minecoalrocks, minegoldrocks, minemoreiron, minemithrilrocks, bignetcoastfishingspot, bignetcoastfishingspotcod, attackoryxlevel15));
+		PanelDetails section9Steps = new PanelDetails("Varlamore", List.of(milkdairybuffalo2, attackbuffalolevel9, churndairychurn, pickpotato2, cookfarmingpatchoven, combinebutterwithpotato, fillcompostbin, pickpocketmasterfarmer, buyseeddibberharminia, rakeallotment, plantpotatoseeds, payprotectharminia, attackdirewolflevel88, attackscorpionlevel14, minecopperrocks, minetinrocks, attackjaguarlevel67, attackhillgiantlevel28, mineclayrocks, mineironrocks, minesilverrocks, minecoalrocks, minegoldrocks, minemoreiron, minemithrilrocks, bignetcoastfishingspot, bignetcoastfishingspotcod, attackoryxlevel15));
 		section9Steps.setLockingStep(section9Task);
 		allSteps.add(section9Steps);
 

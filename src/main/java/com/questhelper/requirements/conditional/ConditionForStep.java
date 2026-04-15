@@ -40,6 +40,7 @@ public abstract class ConditionForStep implements InitializableRequirement
 	@Getter
 	protected boolean hasPassed;
 	protected boolean onlyNeedToPassOnce;
+	@Getter
 	protected LogicType logicType;
 
 	@Getter

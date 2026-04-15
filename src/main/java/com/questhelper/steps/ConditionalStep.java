@@ -30,7 +30,9 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.InitializableRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
@@ -52,6 +54,7 @@ import java.util.List;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 /* Conditions are checked in the order they were added */
 public class ConditionalStep extends QuestStep implements OwnerStep
@@ -107,6 +110,23 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
 		this.id = id;
+	}
+
+	public void addStep(ConditionalStep step)
+	{
+		var newSet = new HashSet<>(step.steps.keySet());
+		newSet.remove(null);
+		addStep(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step, false);
+	}
+
+	private boolean isSingleNotRequirement(Requirement requirement)
+	{
+		if (!(requirement instanceof Conditions))
+		{
+			return false;
+		}
+		Conditions condition = (Conditions) requirement;
+		return condition.getLogicType() == LogicType.NOR && condition.getConditions().size() == 1;
 	}
 
 	public void addStep(Requirement requirement, QuestStep step)

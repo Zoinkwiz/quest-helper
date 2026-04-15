@@ -29,6 +29,7 @@ package com.questhelper.requirements.var;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import java.math.BigInteger;
@@ -150,6 +151,14 @@ public class VarplayerRequirement extends AbstractRequirement
 		this.bitIsSet = false;
 		this.bitShiftRight = bitShiftRight;
 		shouldCountForFilter = true;
+	}
+
+	public static VarplayerRequirement league6(Pair<Integer, Integer> data, String displayText)
+	{
+		var varp = data.getLeft();
+		var bitPosition = data.getRight();
+
+		return new VarplayerRequirement(varp, true, bitPosition, displayText);
 	}
 
 	@Override

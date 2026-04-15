@@ -38,6 +38,8 @@ import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftSkillRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftVarbitRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftZoneRequirement;
 import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
 import static com.questhelper.maker.HelperConstructModels.StepKind;
 
@@ -102,6 +104,7 @@ public final class ConstructDraftPersistence
 			for (DraftRequirementState reqState : state.requirements)
 			{
 				DraftRequirement req = new DraftRequirement();
+				req.setRequirementId(reqState.requirementId);
 				req.setRawId(reqState.rawId);
 				req.setDisplayName(reqState.displayName);
 				if (reqState.alternateRawIds != null && !reqState.alternateRawIds.isEmpty())
@@ -116,6 +119,7 @@ public final class ConstructDraftPersistence
 			for (DraftSkillRequirementState skillState : state.skillRequirements)
 			{
 				DraftSkillRequirement skill = new DraftSkillRequirement();
+				skill.setRequirementId(skillState.requirementId);
 				skill.setSkillName(skillState.skillName);
 				skill.setRequiredLevel(Math.max(skillState.requiredLevel, 1));
 				skill.setCanBeBoosted(skillState.canBeBoosted);
@@ -124,6 +128,52 @@ public final class ConstructDraftPersistence
 				loaded.getSkillRequirements().add(skill);
 			}
 		}
+		if (state.varbitRequirements != null)
+		{
+			for (DraftVarbitRequirementState varbitState : state.varbitRequirements)
+			{
+				DraftVarbitRequirement req = new DraftVarbitRequirement();
+				req.setRequirementId(varbitState.requirementId);
+				req.setOrderSlotId(varbitState.orderSlotId);
+				req.setVarbitId(varbitState.varbitId);
+				req.setRequiredValue(varbitState.requiredValue);
+				req.setOperation(varbitState.operation);
+				req.setDisplayText(varbitState.displayText);
+				loaded.getVarbitRequirements().add(req);
+			}
+		}
+		if (state.zoneRequirements != null)
+		{
+			for (DraftZoneRequirementState zoneState : state.zoneRequirements)
+			{
+				DraftZoneRequirement req = new DraftZoneRequirement();
+				req.setRequirementId(zoneState.requirementId);
+				req.setOrderSlotId(zoneState.orderSlotId);
+				req.setDisplayText(zoneState.displayText);
+				if (zoneState.corner1 != null)
+				{
+					req.setCorner1(new WorldPoint(zoneState.corner1.x, zoneState.corner1.y, zoneState.corner1.plane));
+				}
+				if (zoneState.corner2 != null)
+				{
+					req.setCorner2(new WorldPoint(zoneState.corner2.x, zoneState.corner2.y, zoneState.corner2.plane));
+				}
+				loaded.getZoneRequirements().add(req);
+			}
+		}
+		if (state.order != null && !state.order.isEmpty())
+		{
+			mergeLegacyRowVarbitsFromOrderState(loaded, state.order);
+		}
+		if (loaded.getVarbitRequirements().isEmpty())
+		{
+			OrderStepRequirementSupport.syncVarbitRegistryFromOrderTrees(loaded);
+		}
+		if (loaded.getZoneRequirements().isEmpty())
+		{
+			HelperConstructModels.DraftStepAttachedRequirement.syncHelperZoneRequirementsFromOrder(loaded);
+		}
+		HelperConstructModels.DraftStepAttachedRequirement.applyHelperZoneRequirementsToOrder(loaded);
 
 		OrderStepRequirementSupport.normalizeLoadedDraft(loaded);
 
@@ -132,6 +182,8 @@ public final class ConstructDraftPersistence
 
 	public static DraftState toDraftState(DraftHelper draft)
 	{
+		OrderStepRequirementSupport.syncVarbitRegistryFromOrderTrees(draft);
+		HelperConstructModels.DraftStepAttachedRequirement.syncHelperZoneRequirementsFromOrder(draft);
 		DraftState state = new DraftState();
 		state.formatVersion = DRAFT_FORMAT_VERSION;
 		state.questName = draft.getQuestName();
@@ -217,6 +269,10 @@ public final class ConstructDraftPersistence
 			lineState.zoneRoutingDisplayText = line.getZoneRoutingDisplayText();
 			for (DraftStepAttachedRequirement a : line.getAttachedRequirements())
 			{
+				if (StepAttachmentKind.VARBIT.name().equalsIgnoreCase(a.getKind()))
+				{
+					continue;
+				}
 				DraftStepAttachedRequirementState st = new DraftStepAttachedRequirementState();
 				st.kind = a.getKind();
 				st.itemRawId = a.getItemRawId();
@@ -247,6 +303,7 @@ public final class ConstructDraftPersistence
 		for (DraftRequirement req : draft.getRequirements())
 		{
 			DraftRequirementState reqState = new DraftRequirementState();
+			reqState.requirementId = req.getRequirementId();
 			reqState.rawId = req.getRawId();
 			reqState.displayName = req.getDisplayName();
 			if (!req.getAlternateRawIds().isEmpty())
@@ -258,12 +315,34 @@ public final class ConstructDraftPersistence
 		for (DraftSkillRequirement skill : draft.getSkillRequirements())
 		{
 			DraftSkillRequirementState skillState = new DraftSkillRequirementState();
+			skillState.requirementId = skill.getRequirementId();
 			skillState.skillName = skill.getSkillName();
 			skillState.requiredLevel = skill.getRequiredLevel();
 			skillState.canBeBoosted = skill.isCanBeBoosted();
 			skillState.displayText = skill.getDisplayText();
 			skillState.operation = skill.getOperation();
 			state.skillRequirements.add(skillState);
+		}
+		for (DraftVarbitRequirement varbit : draft.getVarbitRequirements())
+		{
+			DraftVarbitRequirementState varbitState = new DraftVarbitRequirementState();
+			varbitState.requirementId = varbit.getRequirementId();
+			varbitState.orderSlotId = varbit.getOrderSlotId();
+			varbitState.varbitId = varbit.getVarbitId();
+			varbitState.requiredValue = varbit.getRequiredValue();
+			varbitState.operation = varbit.getOperation();
+			varbitState.displayText = varbit.getDisplayText();
+			state.varbitRequirements.add(varbitState);
+		}
+		for (DraftZoneRequirement zone : draft.getZoneRequirements())
+		{
+			DraftZoneRequirementState zoneState = new DraftZoneRequirementState();
+			zoneState.requirementId = zone.getRequirementId();
+			zoneState.orderSlotId = zone.getOrderSlotId();
+			zoneState.displayText = zone.getDisplayText();
+			zoneState.corner1 = locationStateFromWorldPoint(zone.getCorner1());
+			zoneState.corner2 = locationStateFromWorldPoint(zone.getCorner2());
+			state.zoneRequirements.add(zoneState);
 		}
 
 		return state;
@@ -341,6 +420,46 @@ public final class ConstructDraftPersistence
 			d.setWidgetDialogText(st.widgetDialogText);
 			d.setWidgetCheckChildren(st.widgetCheckChildren);
 			step.getAttachedRequirements().add(d);
+		}
+	}
+
+	private static void mergeLegacyRowVarbitsFromOrderState(DraftHelper loaded, List<DraftOrderLineState> orderState)
+	{
+		if (loaded.getOrder() == null || orderState == null)
+		{
+			return;
+		}
+		int n = Math.min(loaded.getOrder().size(), orderState.size());
+		for (int i = 0; i < n; i++)
+		{
+			DraftOrderLine line = loaded.getOrder().get(i);
+			DraftOrderLineState ls = orderState.get(i);
+			if (line == null || line.isSectionDivider() || ls == null || ls.routingVarbitId == null)
+			{
+				continue;
+			}
+			String slot = line.getOrderSlotId();
+			if (slot == null || slot.isBlank())
+			{
+				continue;
+			}
+			if (OrderStepRequirementSupport.findVarbitRequirementByVarbitId(loaded, ls.routingVarbitId) != null)
+			{
+				continue;
+			}
+			DraftVarbitRequirement req = new DraftVarbitRequirement();
+			req.setRequirementId("varbit:" + ls.routingVarbitId);
+			req.setOrderSlotId(null);
+			req.setVarbitId(ls.routingVarbitId);
+			req.setRequiredValue(ls.routingVarbitRequiredValue == null ? 1 : ls.routingVarbitRequiredValue);
+			req.setOperation(ls.routingVarbitOperation == null || ls.routingVarbitOperation.isBlank()
+				? "EQUAL"
+				: ls.routingVarbitOperation.trim());
+			req.setDisplayText(ls.routingVarbitDisplayText);
+			req.setSuggestedVarName(OrderStepRequirementSupport.defaultVarbitSuggestedVarName(
+				ls.routingVarbitDisplayText,
+				ls.routingVarbitId));
+			loaded.getVarbitRequirements().add(req);
 		}
 	}
 
@@ -433,6 +552,8 @@ public final class ConstructDraftPersistence
 		public String helperType;
 		public List<DraftStepState> definitions = new ArrayList<>();
 		public List<DraftOrderLineState> order = new ArrayList<>();
+		public List<DraftVarbitRequirementState> varbitRequirements = new ArrayList<>();
+		public List<DraftZoneRequirementState> zoneRequirements = new ArrayList<>();
 		public List<DraftRequirementState> requirements = new ArrayList<>();
 		public List<DraftSkillRequirementState> skillRequirements = new ArrayList<>();
 	}
@@ -502,6 +623,10 @@ public final class ConstructDraftPersistence
 		public boolean skipWhenConditionMet;
 		public String refStepId;
 		public Integer linkedRequirementRawId;
+		public Integer routingVarbitId;
+		public Integer routingVarbitRequiredValue;
+		public String routingVarbitOperation;
+		public String routingVarbitDisplayText;
 		public DraftOrderStepRequirement stepRequirement;
 		public List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
 		public DraftLocationState zoneRoutingCorner1;
@@ -509,8 +634,28 @@ public final class ConstructDraftPersistence
 		public String zoneRoutingDisplayText;
 	}
 
+	public static class DraftVarbitRequirementState
+	{
+		public String requirementId;
+		public String orderSlotId;
+		public Integer varbitId;
+		public Integer requiredValue;
+		public String operation;
+		public String displayText;
+	}
+
+	public static class DraftZoneRequirementState
+	{
+		public String requirementId;
+		public String orderSlotId;
+		public DraftLocationState corner1;
+		public DraftLocationState corner2;
+		public String displayText;
+	}
+
 	public static class DraftRequirementState
 	{
+		public String requirementId;
 		public int rawId;
 		public String displayName;
 		public List<Integer> alternateRawIds;
@@ -518,6 +663,7 @@ public final class ConstructDraftPersistence
 
 	public static class DraftSkillRequirementState
 	{
+		public String requirementId;
 		public String skillName;
 		public int requiredLevel;
 		public boolean canBeBoosted;

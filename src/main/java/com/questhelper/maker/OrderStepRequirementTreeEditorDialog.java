@@ -32,7 +32,10 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.ColorScheme;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -40,9 +43,12 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -69,13 +75,6 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 	private final HelperConstructManager manager;
 	private final int orderIndex;
 	private DraftOrderStepRequirement rootDto;
-
-	/** Routing to apply to this order row when OK is pressed (if the tree still has an order varbit leaf). */
-	private boolean pendingVarbitRouting;
-	private int pendingVarbitId;
-	private int pendingVarbitRequiredValue;
-	private String pendingVarbitOperation;
-	private String pendingVarbitDisplayText;
 
 	private boolean pendingZoneRouting;
 	private WorldPoint pendingZoneC1;
@@ -519,20 +518,10 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 
 	private void clearPendingVarbitRouting()
 	{
-		pendingVarbitRouting = false;
 		pendingZoneRouting = false;
 		pendingZoneC1 = null;
 		pendingZoneC2 = null;
 		pendingZoneDisplayText = null;
-	}
-
-	private void stashPendingVarbitRouting(int varbitId, int requiredValue, String operationName, String displayText)
-	{
-		pendingVarbitRouting = true;
-		pendingVarbitId = varbitId;
-		pendingVarbitRequiredValue = requiredValue;
-		pendingVarbitOperation = operationName == null || operationName.isBlank() ? "EQUAL" : operationName.trim();
-		pendingVarbitDisplayText = displayText == null ? "" : displayText;
 	}
 
 	private void stashPendingZoneRouting(WorldPoint c1, WorldPoint c2, String displayText)
@@ -800,28 +789,16 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 				JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		JComboBox<String> combo = new JComboBox<>();
-		for (HelperConstructManager.VarbitSlotRow row : rows)
-		{
-			combo.addItem(formatVarbitSlotChoiceLabel(row));
-		}
-		int r = JOptionPane.showConfirmDialog(this, combo, "Pick varbit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		if (r != JOptionPane.OK_OPTION)
+		HelperConstructManager.VarbitSlotRow pick = showPickVarbitFromCatalogOrNull(rows);
+		if (pick == null)
 		{
 			return;
 		}
-		int idx = combo.getSelectedIndex();
-		if (idx < 0)
-		{
-			return;
-		}
-		HelperConstructManager.VarbitSlotRow pick = rows.get(idx);
-		stashPendingVarbitRouting(
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.varbit(
 			pick.getVarbitId(),
 			pick.getRequiredValue(),
 			pick.getOperation(),
 			pick.getDisplayText());
-		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.orderVarbitSlot();
 		if (forInvert)
 		{
 			addInvertWithInner(leaf);
@@ -830,6 +807,162 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			addLeaf(leaf);
 		}
+	}
+
+	@Nullable
+	private HelperConstructManager.VarbitSlotRow showPickVarbitFromCatalogOrNull(List<HelperConstructManager.VarbitSlotRow> rows)
+	{
+		JDialog dlg = new JDialog(this, "Pick varbit", Dialog.ModalityType.APPLICATION_MODAL);
+		dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+		JPanel root = new JPanel(new BorderLayout(8, 8));
+		root.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
+
+		JPanel north = new JPanel(new BorderLayout(6, 0));
+		north.add(new JLabel("Search:"), BorderLayout.WEST);
+		JTextField search = new JTextField();
+		search.setToolTipText("Filter by var name, varbit id, display text, operation, or required value (case-insensitive).");
+		north.add(search, BorderLayout.CENTER);
+		root.add(north, BorderLayout.NORTH);
+
+		DefaultListModel<HelperConstructManager.VarbitSlotRow> listModel = new DefaultListModel<>();
+		for (HelperConstructManager.VarbitSlotRow row : rows)
+		{
+			listModel.addElement(row);
+		}
+		JList<HelperConstructManager.VarbitSlotRow> list = new JList<>(listModel);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setCellRenderer(new DefaultListCellRenderer()
+		{
+			@Override
+			public Component getListCellRendererComponent(JList<?> lst, Object value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				super.getListCellRendererComponent(lst, value, index, isSelected, cellHasFocus);
+				if (value instanceof HelperConstructManager.VarbitSlotRow)
+				{
+					setText(formatVarbitSlotChoiceLabel((HelperConstructManager.VarbitSlotRow) value));
+				}
+				return this;
+			}
+		});
+		if (!rows.isEmpty())
+		{
+			list.setSelectedIndex(0);
+		}
+		JScrollPane sp = new JScrollPane(list);
+		sp.setPreferredSize(new Dimension(560, 320));
+		root.add(sp, BorderLayout.CENTER);
+
+		final HelperConstructManager.VarbitSlotRow[] chosen = { null };
+		JButton okBtn = new JButton("OK");
+		JButton cancelBtn = new JButton("Cancel");
+
+		Runnable applyFilter = () ->
+		{
+			String q = search.getText().toLowerCase(Locale.ROOT).trim();
+			HelperConstructManager.VarbitSlotRow prev = list.getSelectedValue();
+			listModel.clear();
+			for (HelperConstructManager.VarbitSlotRow row : rows)
+			{
+				if (varbitCatalogRowMatchesSearch(row, q))
+				{
+					listModel.addElement(row);
+				}
+			}
+			if (listModel.isEmpty())
+			{
+				okBtn.setEnabled(false);
+				return;
+			}
+			int pickIdx = 0;
+			if (prev != null)
+			{
+				for (int i = 0; i < listModel.getSize(); i++)
+				{
+					if (listModel.getElementAt(i).getVarbitId() == prev.getVarbitId())
+					{
+						pickIdx = i;
+						break;
+					}
+				}
+			}
+			list.setSelectedIndex(pickIdx);
+			okBtn.setEnabled(list.getSelectedValue() != null);
+		};
+
+		search.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				applyFilter.run();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				applyFilter.run();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				applyFilter.run();
+			}
+		});
+
+		list.addListSelectionListener(e -> okBtn.setEnabled(list.getSelectedValue() != null));
+		list.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getClickCount() == 2 && list.getSelectedValue() != null)
+				{
+					chosen[0] = list.getSelectedValue();
+					dlg.dispose();
+				}
+			}
+		});
+
+		okBtn.addActionListener(e ->
+		{
+			HelperConstructManager.VarbitSlotRow v = list.getSelectedValue();
+			if (v != null)
+			{
+				chosen[0] = v;
+			}
+			dlg.dispose();
+		});
+		cancelBtn.addActionListener(e -> dlg.dispose());
+
+		JPanel south = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+		south.add(cancelBtn);
+		south.add(okBtn);
+		root.add(south, BorderLayout.SOUTH);
+
+		dlg.setContentPane(root);
+		dlg.getRootPane().setDefaultButton(okBtn);
+		dlg.pack();
+		dlg.setLocationRelativeTo(this);
+		SwingUtilities.invokeLater(() -> search.requestFocusInWindow());
+		dlg.setVisible(true);
+		return chosen[0];
+	}
+
+	private static boolean varbitCatalogRowMatchesSearch(HelperConstructManager.VarbitSlotRow row, String q)
+	{
+		if (q.isEmpty())
+		{
+			return true;
+		}
+		String hay = String.valueOf(row.getVarbitId()) + " "
+			+ (row.getDisplayText() == null ? "" : row.getDisplayText()) + " "
+			+ (row.getVarName() == null ? "" : row.getVarName()) + " "
+			+ (row.getOperation() == null ? "" : row.getOperation()) + " "
+			+ row.getRequiredValue();
+		hay = hay.toLowerCase(Locale.ROOT);
+		return hay.contains(q);
 	}
 
 	private static String formatVarbitSlotChoiceLabel(HelperConstructManager.VarbitSlotRow row)
@@ -846,12 +979,11 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		{
 			return;
 		}
-		stashPendingVarbitRouting(
+		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.varbit(
 			p.varbitId,
 			p.requiredValue,
 			p.operation,
 			p.displayText);
-		DraftOrderStepRequirement leaf = DraftOrderStepRequirement.orderVarbitSlot();
 		if (forInvert)
 		{
 			addInvertWithInner(leaf);
@@ -862,24 +994,74 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 	}
 
+	private void editVarbitLeaf(DraftOrderStepRequirement d)
+	{
+		if (d == null)
+		{
+			return;
+		}
+		int existingId = d.getVarbitId() == null ? 0 : d.getVarbitId();
+		int existingVal = d.getVarbitRequiredValue() == null ? 1 : d.getVarbitRequiredValue();
+		String existingOp = d.getVarbitOperation() == null || d.getVarbitOperation().isBlank()
+			? Operation.EQUAL.name()
+			: d.getVarbitOperation().trim();
+		String dispExisting = d.getVarbitDisplayText() == null ? "" : d.getVarbitDisplayText();
+		VarbitRoutingPick p = showVarbitFormOrNull(existingId, existingVal, existingOp, dispExisting, "Edit varbit");
+		if (p == null)
+		{
+			return;
+		}
+		d.setKind("VARBIT");
+		d.setVarbitId(p.varbitId);
+		d.setVarbitRequiredValue(p.requiredValue);
+		d.setVarbitOperation(p.operation);
+		d.setVarbitDisplayText(p.displayText);
+		d.setRequirementRefId("varbit:" + p.varbitId);
+		if (d.getChildren() != null)
+		{
+			d.getChildren().clear();
+		}
+		rebuildTree();
+		selectDto(d);
+	}
+
 	private VarbitRoutingPick showCreateVarbitFormOrNull()
 	{
-		JSpinner idSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-		JSpinner valSp = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		return showVarbitFormOrNull(0, 0, Operation.EQUAL.name(), "", "Create new varbit");
+	}
+
+	private VarbitRoutingPick showVarbitFormOrNull(
+		int varbitId,
+		int requiredValue,
+		String operationName,
+		String displayExisting,
+		String title)
+	{
+		JSpinner idSp = new JSpinner(new SpinnerNumberModel(varbitId, 0, Integer.MAX_VALUE, 1));
+		JSpinner valSp = new JSpinner(new SpinnerNumberModel(requiredValue, 0, Integer.MAX_VALUE, 1));
 		JComboBox<String> op = new JComboBox<>();
 		for (Operation o : Operation.values())
 		{
 			op.addItem(o.name());
 		}
-		op.setSelectedItem(Operation.EQUAL.name());
-		JTextField disp = new JTextField(24);
+		String opPick = operationName == null || operationName.isBlank() ? Operation.EQUAL.name() : operationName.trim();
+		op.setSelectedItem(opPick);
+		for (int i = 0; i < op.getItemCount(); i++)
+		{
+			if (opPick.equals(op.getItemAt(i)))
+			{
+				op.setSelectedIndex(i);
+				break;
+			}
+		}
+		JTextField disp = new JTextField(displayExisting == null ? "" : displayExisting, 24);
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		p.add(labeled("Varbit id", idSp));
 		p.add(labeled("Required value", valSp));
 		p.add(labeled("Operation", op));
 		p.add(labeled("Display text (optional)", disp));
-		int r = JOptionPane.showConfirmDialog(this, p, "Create new varbit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int r = JOptionPane.showConfirmDialog(this, p, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (r != JOptionPane.OK_OPTION)
 		{
 			return null;
@@ -1292,10 +1474,7 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 			case "INLINE_VARBIT":
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
-				JOptionPane.showMessageDialog(this,
-					"Varbit id, value, and operation are edited on the Varbit reqs tab for this quest-order row.",
-					"Order varbit",
-					JOptionPane.INFORMATION_MESSAGE);
+				editVarbitLeaf(d);
 				break;
 			case "ORDER_ZONE":
 				JOptionPane.showMessageDialog(this,
@@ -1438,23 +1617,6 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 					leaf.getSkillOperation());
 			}
 		}
-		if (pendingVarbitRouting && OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(rootDto))
-		{
-			if (!manager.applyVarbitRoutingToOrderLineByIndex(
-				orderIndex,
-				pendingVarbitId,
-				pendingVarbitRequiredValue,
-				pendingVarbitOperation,
-				pendingVarbitDisplayText,
-				false))
-			{
-				JOptionPane.showMessageDialog(this,
-					"Invalid operation or could not apply varbit routing to this order row.",
-					"Could not save",
-					JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
 		if (pendingZoneRouting && OrderStepRequirementSupport.treeContainsOrderZoneLeaf(rootDto))
 		{
 			if (!manager.applyZoneRoutingToOrderLineByIndex(
@@ -1586,19 +1748,6 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 		}
 	}
 
-	private String formatPendingVarbitSummary()
-	{
-		String disp = pendingVarbitDisplayText == null || pendingVarbitDisplayText.isBlank()
-			? null
-			: pendingVarbitDisplayText;
-		String op = pendingVarbitOperation == null || pendingVarbitOperation.isBlank() ? "EQUAL" : pendingVarbitOperation;
-		if (disp != null)
-		{
-			return disp + " — vb " + pendingVarbitId + " " + op + " " + pendingVarbitRequiredValue;
-		}
-		return "Varbit " + pendingVarbitId + " " + op + " " + pendingVarbitRequiredValue;
-	}
-
 	private String formatPendingZoneSummary()
 	{
 		if (pendingZoneC1 == null || pendingZoneC2 == null)
@@ -1634,10 +1783,6 @@ public final class OrderStepRequirementTreeEditorDialog extends JDialog
 					+ (d.isItemMustBeEquipped() ? " [equipped]" : "");
 			case "ORDER_VARBIT":
 			case "ROUTING_VARBIT":
-				if (pendingVarbitRouting)
-				{
-					return formatPendingVarbitSummary();
-				}
 				return manager.formatOrderVarbitLeafSummaryForEditor(orderIndex);
 			case "ORDER_ZONE":
 				if (pendingZoneRouting)

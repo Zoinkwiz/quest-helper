@@ -51,7 +51,6 @@ import static com.questhelper.maker.HelperConstructModels.DraftRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
-import static com.questhelper.maker.HelperConstructModels.ORDER_ROUTING_VARBIT_SENTINEL;
 import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 @Singleton
@@ -64,6 +63,7 @@ public class HelperScaffoldGenerator
 
 	public GeneratedScaffold generate(DraftHelper draft)
 	{
+		OrderStepRequirementSupport.normalizeLoadedDraft(draft);
 		normalizeVarbitRoutingDraft(draft);
 		OrderStepRequirementSupport.normalizeZoneRoutingOnDraft(draft);
 		List<String> warnings = new ArrayList<>();
@@ -153,16 +153,6 @@ public class HelperScaffoldGenerator
 				continue;
 			}
 			String stepVar = stepVarNames.get(step);
-			if (OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
-			{
-				if (stepVar == null)
-				{
-					continue;
-				}
-				String fieldName = makeUnique(stepVar + "OrderVarbitReq", usedNames);
-				varbitFieldByOrderSlotId.put(sid, fieldName);
-				out.append("\tVarbitRequirement ").append(fieldName).append(";\n");
-			}
 			if (OrderStepRequirementSupport.treeContainsOrderZoneLeaf(line.getStepRequirement()))
 			{
 				if (stepVar == null)
@@ -235,7 +225,6 @@ public class HelperScaffoldGenerator
 			}
 			appendDefinitionSetup(out, draft, step, stepVarNames.get(step), requirementVarNamesByRawId, warnings);
 		}
-		appendOrderVarbitRequirementInits(out, draft, varbitFieldByOrderSlotId, warnings);
 		appendOrderZoneRequirementInits(out, draft, zoneFieldByOrderSlotId, warnings);
 		appendOrderManualRequirementInits(out, manualFieldByOrderSlotId);
 		out.append("\t}\n\n");
@@ -773,13 +762,13 @@ public class HelperScaffoldGenerator
 			}
 		}
 		LinkedHashSet<String> wantedSlots = new LinkedHashSet<>();
-		for (DraftOrderLine line : draft.getOrder())
+			for (DraftOrderLine line : draft.getOrder())
 		{
 			if (line.isSectionDivider())
 			{
 				continue;
 			}
-			if (OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
+			if (OrderStepRequirementSupport.treeContainsAnyVarbitLeaf(line.getStepRequirement()))
 			{
 				wantedSlots.add(line.getOrderSlotId());
 			}
@@ -790,7 +779,8 @@ public class HelperScaffoldGenerator
 			{
 				continue;
 			}
-			if (!OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
+			boolean want = OrderStepRequirementSupport.treeContainsAnyVarbitLeaf(line.getStepRequirement());
+			if (!want)
 			{
 				DraftStepAttachedRequirement.clearVarbitAttachmentsOnOrderLine(line);
 			}
@@ -805,52 +795,6 @@ public class HelperScaffoldGenerator
 				StepAttachmentKind.VARBIT.name().equalsIgnoreCase(a.getKind())
 					&& a.getOrderSlotId() != null && !a.getOrderSlotId().isBlank()
 					&& !wantedSlots.contains(a.getOrderSlotId()));
-		}
-	}
-
-	private void appendOrderVarbitRequirementInits(
-		StringBuilder out,
-		DraftHelper draft,
-		Map<String, String> varbitFieldByOrderSlotId,
-		List<String> warnings)
-	{
-		for (DraftOrderLine line : draft.getOrder())
-		{
-			if (line.isSectionDivider())
-			{
-				continue;
-			}
-			if (!OrderStepRequirementSupport.treeContainsOrderVarbitLeaf(line.getStepRequirement()))
-			{
-				continue;
-			}
-			String field = varbitFieldByOrderSlotId.get(line.getOrderSlotId());
-			if (field == null)
-			{
-				continue;
-			}
-			DraftStep def = findDefinition(draft, line.getRefStepId());
-			DraftStepAttachedRequirement cfg = DraftStepAttachedRequirement.findOrderRoutingVarbit(line);
-			if (cfg == null && def != null)
-			{
-				cfg = DraftStepAttachedRequirement.findRoutingVarbitForSlot(def, line.getOrderSlotId());
-			}
-			VarbitSpec spec = VarbitSpec.fromStepAttachment(cfg);
-			int varbitId = spec.getVarbitId();
-			int requiredValue = spec.getRequiredValue();
-			Operation op = spec.getOperation();
-			String displayArg;
-			if (spec.getDisplayText() == null || spec.getDisplayText().isBlank())
-			{
-				displayArg = "null";
-			}
-			else
-			{
-				displayArg = "\"" + escape(spec.getDisplayText()) + "\"";
-			}
-			out.append("\t\t").append(field).append(" = new VarbitRequirement(")
-				.append(varbitId).append(", Operation.").append(op.name()).append(", ")
-				.append(requiredValue).append(", ").append(displayArg).append(");\n");
 		}
 	}
 

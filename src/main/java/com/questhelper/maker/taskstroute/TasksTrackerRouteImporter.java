@@ -39,8 +39,8 @@ import java.util.UUID;
 
 import static com.questhelper.maker.HelperConstructModels.DraftHelper;
 import static com.questhelper.maker.HelperConstructModels.DraftOrderLine;
+import static com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStep;
-import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static com.questhelper.maker.HelperConstructModels.StepKind;
 
 /**
@@ -299,7 +299,7 @@ public final class TasksTrackerRouteImporter
 		ord.setSkipWhenConditionMet(false);
 		ord.setRefStepId(stepId);
 		ord.setLinkedRequirementRawId(null);
-		DraftStepAttachedRequirement.setOrderLineRoutingVarbit(ord, DraftStepAttachedRequirement.varbit(
+		ord.setStepRequirement(DraftOrderStepRequirement.varbit(
 			0,
 			0,
 			"EQUAL",

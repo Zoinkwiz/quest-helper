@@ -28,7 +28,9 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.util.Operation;
 import lombok.Getter;
 
+import static com.questhelper.maker.HelperConstructModels.DraftOrderStepRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
+import static com.questhelper.maker.HelperConstructModels.DraftVarbitRequirement;
 
 /**
  * Shared varbit id / value / operation / display for order-slot varbits and VARBIT step attachments.
@@ -79,6 +81,38 @@ public final class VarbitSpec
 			disp = null;
 		}
 		return new VarbitSpec(vid, val, parseOperation(a.getVarbitOperation(), Operation.EQUAL), disp);
+	}
+
+	public static VarbitSpec fromVarbitTreeNode(DraftOrderStepRequirement n)
+	{
+		if (n == null)
+		{
+			return new VarbitSpec(0, 1, Operation.EQUAL, null);
+		}
+		int vid = n.getVarbitId() == null ? 0 : n.getVarbitId();
+		int val = n.getVarbitRequiredValue() == null ? 1 : n.getVarbitRequiredValue();
+		String disp = n.getVarbitDisplayText();
+		if (disp != null && disp.isBlank())
+		{
+			disp = null;
+		}
+		return new VarbitSpec(vid, val, parseOperation(n.getVarbitOperation(), Operation.EQUAL), disp);
+	}
+
+	public static VarbitSpec fromDraftVarbitRequirement(DraftVarbitRequirement r)
+	{
+		if (r == null)
+		{
+			return new VarbitSpec(0, 1, Operation.EQUAL, null);
+		}
+		int vid = r.getVarbitId() == null ? 0 : r.getVarbitId();
+		int val = r.getRequiredValue() == null ? 1 : r.getRequiredValue();
+		String disp = r.getDisplayText();
+		if (disp != null && disp.isBlank())
+		{
+			disp = null;
+		}
+		return new VarbitSpec(vid, val, parseOperation(r.getOperation(), Operation.EQUAL), disp);
 	}
 
 	/** @return {@code null} when the operation name is not a valid {@link Operation} constant. */

@@ -55,6 +55,7 @@ public final class RequirementDraftFactory
 		r.setCanBeBoosted(true);
 		r.setDisplayText("");
 		r.setOperation("GREATER_EQUAL");
+		r.setRequirementId("skill:" + Skill.ATTACK.name() + ":1:GREATER_EQUAL:true:");
 		return r;
 	}
 }

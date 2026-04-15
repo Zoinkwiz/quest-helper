@@ -114,10 +114,9 @@ public final class HelperConstructModels
 		/** When item/text filters are used: whether to search descendants. */
 		private boolean widgetCheckChildren;
 		/**
-		 * Legacy only: when {@code kind} is {@link StepAttachmentKind#VARBIT} and set, this was the routing varbit for the
-		 * quest-order slot with the same id; new drafts store routing varbits on {@link DraftOrderLine#getAttachedRequirements()}
-		 * instead. Load migrates these onto the matching order line. Inline (non-routing) varbits on a step definition use
-		 * {@code null} here.
+		 * When {@code kind} is {@link StepAttachmentKind#VARBIT}: optional link to a quest-order {@link DraftOrderLine#getOrderSlotId()}
+		 * for step-definition attachments that mirror a slot (importer / legacy). Order conditions store varbits inline as
+		 * {@code VARBIT} tree nodes; the {@link DraftHelper#getVarbitRequirements()} registry is keyed by {@code orderSlotId}.
 		 */
 		private String orderSlotId;
 
@@ -252,7 +251,7 @@ public final class HelperConstructModels
 				StepAttachmentKind.VARBIT.name().equalsIgnoreCase(a.getKind()) && orderSlotId.equals(a.getOrderSlotId()));
 		}
 
-		/** First VARBIT attachment on this order row (routing config for {@code ORDER_VARBIT} in the conditions tree). */
+		/** First VARBIT attachment on this order row (legacy persistence only; prefer {@link DraftHelper#getVarbitRequirements()}). */
 		@Nullable
 		public static DraftStepAttachedRequirement findOrderRoutingVarbit(DraftOrderLine line)
 		{
@@ -279,16 +278,61 @@ public final class HelperConstructModels
 			line.getAttachedRequirements().removeIf(a -> StepAttachmentKind.VARBIT.name().equalsIgnoreCase(a.getKind()));
 		}
 
-		/** Replaces any VARBIT rows on {@code line} with {@code routing} (clears {@code orderSlotId} on the stored copy). */
-		public static void setOrderLineRoutingVarbit(DraftOrderLine line, DraftStepAttachedRequirement routing)
+		public static void syncHelperZoneRequirementsFromOrder(DraftHelper draft)
 		{
-			if (line == null || routing == null)
+			if (draft == null)
 			{
 				return;
 			}
-			clearVarbitAttachmentsOnOrderLine(line);
-			routing.setOrderSlotId(null);
-			line.getAttachedRequirements().add(0, routing);
+			draft.getZoneRequirements().clear();
+			if (draft.getOrder() == null)
+			{
+				return;
+			}
+			for (DraftOrderLine line : draft.getOrder())
+			{
+				if (line == null
+					|| line.getOrderSlotId() == null
+					|| line.getOrderSlotId().isBlank()
+					|| line.getZoneRoutingCorner1() == null
+					|| line.getZoneRoutingCorner2() == null)
+				{
+					continue;
+				}
+				DraftZoneRequirement req = new DraftZoneRequirement();
+				req.setRequirementId("zone:" + line.getOrderSlotId());
+				req.setOrderSlotId(line.getOrderSlotId());
+				req.setCorner1(line.getZoneRoutingCorner1());
+				req.setCorner2(line.getZoneRoutingCorner2());
+				req.setDisplayText(line.getZoneRoutingDisplayText());
+				draft.getZoneRequirements().add(req);
+			}
+		}
+
+		public static void applyHelperZoneRequirementsToOrder(DraftHelper draft)
+		{
+			if (draft == null || draft.getOrder() == null || draft.getZoneRequirements() == null)
+			{
+				return;
+			}
+			for (DraftOrderLine line : draft.getOrder())
+			{
+				if (line == null || line.getOrderSlotId() == null || line.getOrderSlotId().isBlank())
+				{
+					continue;
+				}
+				for (DraftZoneRequirement req : draft.getZoneRequirements())
+				{
+					if (req == null || req.getOrderSlotId() == null || !line.getOrderSlotId().equals(req.getOrderSlotId()))
+					{
+						continue;
+					}
+					line.setZoneRoutingCorner1(req.getCorner1());
+					line.setZoneRoutingCorner2(req.getCorner2());
+					line.setZoneRoutingDisplayText(req.getDisplayText());
+					break;
+				}
+			}
 		}
 	}
 
@@ -304,6 +348,7 @@ public final class HelperConstructModels
 	@NoArgsConstructor
 	public static class DraftSkillRequirement
 	{
+		private String requirementId;
 		private String skillName;
 		private int requiredLevel = 1;
 		private boolean canBeBoosted = true;
@@ -315,6 +360,7 @@ public final class HelperConstructModels
 	@NoArgsConstructor
 	public static class DraftRequirement
 	{
+		private String requirementId;
 		private int rawId;
 		private String displayName;
 		/** Additional item ids (comma-separated in UI); first id is {@link #rawId}. */
@@ -350,7 +396,7 @@ public final class HelperConstructModels
 	 * Recursive order-line requirement tree: branch requirement for {@link com.questhelper.steps.ConditionalStep#addStep}
 	 * (when {@link com.questhelper.requirements.Requirement#check} is true, that child step is active for routing).
 	 * <p>
-	 * {@link #kind}: {@code GROUP}, {@code INVERT}, {@code ITEM}, {@code ORDER_VARBIT}, {@code VARBIT}, {@code ZONE}.
+	 * {@link #kind}: {@code GROUP}, {@code INVERT}, {@code ITEM}, {@code VARBIT}, {@code ZONE} (legacy loads may still contain {@code ORDER_VARBIT} / {@code ORDER_ZONE} until migrated).
 	 * For {@code GROUP}, {@link #logic} is a {@link com.questhelper.requirements.util.LogicType} name ({@code AND}, {@code OR}, {@code NOR}, {@code NAND}).
 	 * {@code INVERT} uses a single entry in {@link #children}. Leaves have empty {@link #children}.
 	 */
@@ -359,6 +405,8 @@ public final class HelperConstructModels
 	public static class DraftOrderStepRequirement
 	{
 		private String kind;
+		/** Reference to a requirement entry (item/varbit/zone) by stable id. */
+		private String requirementRefId;
 		private String logic;
 		/** Gson fills this; must remain mutable for deserialization. */
 		private List<DraftOrderStepRequirement> children = new ArrayList<>();
@@ -407,14 +455,6 @@ public final class HelperConstructModels
 			return n;
 		}
 
-		/** Varbit from the referenced step’s routing attachment for this row’s {@link DraftOrderLine#getOrderSlotId()}. */
-		public static DraftOrderStepRequirement orderVarbitSlot()
-		{
-			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
-			n.setKind("ORDER_VARBIT");
-			return n;
-		}
-
 		/** Zone from this quest-order row’s {@link DraftOrderLine#getZoneRoutingCorner1()} / {@link DraftOrderLine#getZoneRoutingCorner2()} (Zone reqs tab). */
 		public static DraftOrderStepRequirement orderZoneSlot()
 		{
@@ -442,6 +482,7 @@ public final class HelperConstructModels
 		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
 			n.setKind("ITEM");
+			n.setRequirementRefId("item:" + rawId);
 			n.setItemRawId(rawId);
 			n.setItemQuantity(Math.max(1, quantity));
 			n.setItemAlsoCheckBank(alsoCheckBank);
@@ -453,6 +494,7 @@ public final class HelperConstructModels
 		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
 			n.setKind("VARBIT");
+			n.setRequirementRefId("varbit:" + varbitId);
 			n.setVarbitId(varbitId);
 			n.setVarbitRequiredValue(requiredValue);
 			n.setVarbitOperation(operation == null || operation.isBlank() ? "EQUAL" : operation.trim());
@@ -465,6 +507,9 @@ public final class HelperConstructModels
 		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
 			n.setKind("ZONE");
+			String idPart1 = corner1 == null ? "0_0_0" : corner1.getX() + "_" + corner1.getY() + "_" + corner1.getPlane();
+			String idPart2 = corner2 == null ? "0_0_0" : corner2.getX() + "_" + corner2.getY() + "_" + corner2.getPlane();
+			n.setRequirementRefId("zone:" + idPart1 + ":" + idPart2);
 			n.setZoneCorner1(corner1);
 			n.setZoneCorner2(corner2);
 			n.setZoneDisplayText(displayText);
@@ -475,9 +520,13 @@ public final class HelperConstructModels
 		{
 			DraftOrderStepRequirement n = new DraftOrderStepRequirement();
 			n.setKind("SKILL");
+			String op = operation == null || operation.isBlank() ? "GREATER_EQUAL" : operation.trim();
+			int lvl = Math.max(requiredLevel, 1);
+			String disp = displayText == null ? "" : displayText.trim();
+			n.setRequirementRefId("skill:" + (skillName == null ? "" : skillName.trim()) + ":" + lvl + ":" + op + ":" + canBeBoosted + ":" + disp);
 			n.setSkillName(skillName);
-			n.setSkillRequiredLevel(Math.max(requiredLevel, 1));
-			n.setSkillOperation(operation == null || operation.isBlank() ? "GREATER_EQUAL" : operation.trim());
+			n.setSkillRequiredLevel(lvl);
+			n.setSkillOperation(op);
 			n.setSkillDisplayText(displayText);
 			n.setSkillCanBeBoosted(canBeBoosted);
 			return n;
@@ -487,9 +536,9 @@ public final class HelperConstructModels
 	/**
 	 * Order row: section divider or ref to a definition.
 	 * {@code linkedRequirementRawId}: optional captured item raw id for highlight / legacy item routing when no tree is set; otherwise unused.
-	 * {@link #orderSlotId}: stable id for this slot (conditions tree {@code ORDER_VARBIT}, {@code ORDER_ZONE}, and persistence).
-	 * {@link #attachedRequirements}: order-scoped extras (e.g. VARBIT routing for this slot). Step definitions keep only
-	 * inline varbits and item attachments that apply to every use of the step.
+	 * {@link #orderSlotId}: stable id for this slot ({@code ORDER_ZONE}, {@link DraftHelper#getVarbitRequirements()}, persistence).
+	 * {@link #attachedRequirements}: order-scoped extras. Varbits in conditions use inline {@code VARBIT} nodes in {@link #stepRequirement}
+	 * and/or entries in {@link DraftHelper#getVarbitRequirements()}.
 	 * Zone corners for {@code ORDER_ZONE} are stored on the line ({@link #zoneRoutingCorner1} / {@link #zoneRoutingCorner2}), edited on the Zone reqs tab.
 	 * When {@link #stepRequirement} is set, preview and codegen use it as the game branch selector (see {@link DraftOrderStepRequirement}).
 	 */
@@ -528,10 +577,36 @@ public final class HelperConstructModels
 		private String helperType = "BasicQuestHelper";
 		private final List<DraftStep> stepDefinitions = new ArrayList<>();
 		private final List<DraftOrderLine> order = new ArrayList<>();
+		/** Centralized routing varbit entries keyed by orderSlotId. */
+		private final List<DraftVarbitRequirement> varbitRequirements = new ArrayList<>();
+		/** Centralized zone requirements keyed by requirementId. */
+		private final List<DraftZoneRequirement> zoneRequirements = new ArrayList<>();
 		private final List<DraftRequirement> requirements = new ArrayList<>();
 		private final List<DraftSkillRequirement> skillRequirements = new ArrayList<>();
 	}
 
-	/** Sentinel for order line: use varbit (not item requirement) for routing on this slot. */
-	public static final int ORDER_ROUTING_VARBIT_SENTINEL = -1;
+	@Data
+	@NoArgsConstructor
+	public static class DraftVarbitRequirement
+	{
+		private String requirementId;
+		private String orderSlotId;
+		private Integer varbitId;
+		private Integer requiredValue;
+		private String operation;
+		private String displayText;
+		/** Editor / labels; when blank, derived from {@link #displayText} on load and sync. */
+		private String suggestedVarName;
+	}
+
+	@Data
+	@NoArgsConstructor
+	public static class DraftZoneRequirement
+	{
+		private String requirementId;
+		private String orderSlotId;
+		private WorldPoint corner1;
+		private WorldPoint corner2;
+		private String displayText;
+	}
 }

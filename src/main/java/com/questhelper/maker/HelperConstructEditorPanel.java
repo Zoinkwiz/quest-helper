@@ -267,7 +267,10 @@ public final class HelperConstructEditorPanel extends JPanel
 				return;
 			}
 			String orderSlotId = varbitRoutingTableModel.getOrderSlotIdAt(r);
-			if (orderSlotId != null && helperConstructManager.clearVarbitRoutingForOrderSlotId(orderSlotId))
+			boolean ok = orderSlotId != null && !orderSlotId.isBlank()
+				? helperConstructManager.clearVarbitRoutingForOrderSlotId(orderSlotId)
+				: helperConstructManager.removeVarbitCatalogEntryByRequirementId(varbitRoutingTableModel.getRequirementIdAt(r));
+			if (ok)
 			{
 				refresh();
 			}
@@ -3265,12 +3268,22 @@ public final class HelperConstructEditorPanel extends JPanel
 			return rows.get(rowIndex).getOrderSlotId();
 		}
 
+		String getRequirementIdAt(int rowIndex)
+		{
+			if (rowIndex < 0 || rowIndex >= rows.size())
+			{
+				return null;
+			}
+			return rows.get(rowIndex).getRequirementId();
+		}
+
 		void reloadFromManager()
 		{
 			rows.clear();
 			for (HelperConstructManager.VarbitSlotRow slot : helperConstructManager.getVarbitSlotsInQuestOrderForEditor())
 			{
 				rows.add(new VarbitRoutingRow(
+					slot.getRequirementId(),
 					slot.getOrderSlotId(),
 					slot.getVarName(),
 					slot.getVarbitId(),
@@ -3286,7 +3299,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			List<String> parts = new ArrayList<>();
 			for (VarbitRoutingRow row : rows)
 			{
-				parts.add(row.getOrderSlotId() + "|" + row.varName + "|" + row.varbitId + "|" + row.requiredValue + "|" + row.operation + "|" + row.displayText);
+				parts.add(row.getRequirementId() + "|" + row.getOrderSlotId() + "|" + row.varName + "|" + row.varbitId + "|" + row.requiredValue + "|" + row.operation + "|" + row.displayText);
 			}
 			return String.join("\n", parts);
 		}
@@ -3360,7 +3373,11 @@ public final class HelperConstructEditorPanel extends JPanel
 			VarbitRoutingRow row = rows.get(rowIndex);
 			if (columnIndex == 0)
 			{
-				if (!helperConstructManager.updateStepVarNameForOrderSlotId(row.getOrderSlotId(), String.valueOf(aValue)))
+				String sid = row.getOrderSlotId();
+				boolean ok = sid != null && !sid.isBlank()
+					? helperConstructManager.updateStepVarNameForOrderSlotId(sid, String.valueOf(aValue))
+					: helperConstructManager.updateVarbitCatalogSuggestedVarName(row.getRequirementId(), String.valueOf(aValue));
+				if (!ok)
 				{
 					JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
 						"Could not update var name.",
@@ -3422,7 +3439,7 @@ public final class HelperConstructEditorPanel extends JPanel
 				default:
 					return;
 			}
-			if (!helperConstructManager.updateVarbitSlotForOrderSlot(row.getOrderSlotId(), newVarbit, newReq, newOp, newDisp))
+			if (!helperConstructManager.updateVarbitCatalogEntry(row.getRequirementId(), newVarbit, newReq, newOp, newDisp))
 			{
 				JOptionPane.showMessageDialog(HelperConstructEditorPanel.this,
 					"Could not apply varbit settings.",
@@ -3434,6 +3451,7 @@ public final class HelperConstructEditorPanel extends JPanel
 
 		private final class VarbitRoutingRow
 		{
+			private final String requirementId;
 			private final String orderSlotId;
 			private final String varName;
 			private final int varbitId;
@@ -3441,14 +3459,27 @@ public final class HelperConstructEditorPanel extends JPanel
 			private final String operation;
 			private final String displayText;
 
-			private VarbitRoutingRow(String orderSlotId, String varName, int varbitId, int requiredValue, String operation, String displayText)
+			private VarbitRoutingRow(
+				String requirementId,
+				String orderSlotId,
+				String varName,
+				int varbitId,
+				int requiredValue,
+				String operation,
+				String displayText)
 			{
+				this.requirementId = requirementId == null ? "" : requirementId;
 				this.orderSlotId = orderSlotId;
 				this.varName = varName == null ? "" : varName;
 				this.varbitId = varbitId;
 				this.requiredValue = requiredValue;
 				this.operation = operation;
 				this.displayText = displayText;
+			}
+
+			private String getRequirementId()
+			{
+				return requirementId;
 			}
 
 			private String getOrderSlotId()

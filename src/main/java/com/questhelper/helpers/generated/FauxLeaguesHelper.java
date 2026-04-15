@@ -692,6 +692,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 
 		depositoillanterns = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit the 10 oil lanterns.", true);
 		// Section: Outer Fortis [show when true: no condition]
+		// 20372 0->1->2...->6 for cabbages
 		pickcabbage = new ObjectStep(this, 1161, new WorldPoint(1742, 3059, 0), "Pick (and drop) 6 cabbages.", true);
 		attackchickenlevel1 = new NpcStep(this, new int[]{1174, 1173}, new WorldPoint(1740, 3053, 0), "Kill a chicken and pick up its bones.", true);
 		feedbonestomolossus = new NpcStep(this, 12993, new WorldPoint(1702, 3063, 0), "Feed some bones to Molossus.", true);
@@ -795,7 +796,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		spinflaxandwool.addRequirement(flax);
 		hometeleport = new DetailedQuestStep(this, "Use the Home Teleport spell.");
 		returntocivitas = new DetailedQuestStep(this, "Exit Yama's Lair to Civitas illa Fortis.");
-		sitwithdogs = new DetailedQuestStep(this, new WorldPoint(1748, 3048, 0), "Use the Sit emote next to the cabbage being eaten by dogs.");
+		sitwithdogs = new EmoteStep(this, QuestEmote.SIT, new WorldPoint(1748, 3048, 0), "Use the Sit emote next to the cabbage being eaten by dogs.");
+		sitwithdogs.addIcon(QuestEmote.SIT.getSpriteId());
 		buytorch = new NpcStep(this, 13159, new WorldPoint(1515, 2984, 0), "Buy an unlit torch from the General Store Shopkeeper.", true);
 		lighttorch = new DetailedQuestStep(this, "Light the Unlit torch.");
 		lighttorch.addRequirement(unlitTorch);

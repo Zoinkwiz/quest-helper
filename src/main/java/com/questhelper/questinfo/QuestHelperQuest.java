@@ -71,6 +71,7 @@ import com.questhelper.helpers.achievementdiaries.wilderness.WildernessEasy;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessElite;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessHard;
 import com.questhelper.helpers.achievementdiaries.wilderness.WildernessMedium;
+import com.questhelper.helpers.generated.FauxLeaguesHelper;
 import com.questhelper.helpers.miniquests.alfredgrimhandsbarcrawl.AlfredGrimhandsBarcrawl;
 import com.questhelper.helpers.miniquests.barbariantraining.BarbarianTraining;
 import com.questhelper.helpers.miniquests.curseoftheemptylord.CurseOfTheEmptyLord;
@@ -659,6 +660,8 @@ public enum QuestHelperQuest
 	WOODCUTTING(new Woodcutting(), "Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
 
 	MINING(new Mining(), "Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
+	FAUX_LEAGUES_HELPER(new FauxLeaguesHelper(), "Faux's Early Leagues", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC,
+		QuestDetails.Difficulty.GENERIC),
 
 	// Player Quests
 	BIKE_SHEDDER(new BikeShedder(), "Bike Shedder", PlayerQuests.BIKE_SHEDDER, 4, true);

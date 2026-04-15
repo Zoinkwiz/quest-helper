@@ -24,12 +24,14 @@
  */
 package com.questhelper.questhelpers;
 
+import com.google.gson.Gson;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.panel.ManualStepSkipStore;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
@@ -77,12 +79,23 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Inject
 	private EventBus eventBus;
 
+	@Inject
+	private Gson gson;
+
 	@Getter
 	private QuestStep currentStep;
 
 	@Getter
 	@Setter
 	private QuestHelperQuest quest;
+
+	/**
+	 * When set (e.g. construct preview / imported player guides), used for sidebar and step overlays
+	 * instead of {@link QuestHelperQuest#getName()} from {@link #quest}.
+	 */
+	@Getter
+	@Setter
+	private String playerFacingQuestName;
 
 	@Setter
 	private Injector injector;
@@ -116,6 +129,49 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	public void removeRuneliteObjects()
 	{
 		runeliteObjectManager.removeGroupAndSubgroups(toString());
+	}
+
+	/**
+	 * Human-readable quest title for UI (sidebar, overlays). Uses {@link #playerFacingQuestName} when set,
+	 * otherwise the linked {@link QuestHelperQuest} name, otherwise a generic label.
+	 */
+	public String getDisplayedQuestName()
+	{
+		if (playerFacingQuestName != null && !playerFacingQuestName.isBlank())
+		{
+			return playerFacingQuestName.trim();
+		}
+		if (quest != null)
+		{
+			return quest.getName();
+		}
+		return "Quest Helper";
+	}
+
+	/**
+	 * Persists a manual skip flag for one step (sidebar checkbox) and notifies the helper to refresh branch logic.
+	 */
+	public void notifyManualSidebarSkipChanged(String persistenceKey, boolean skipped)
+	{
+		if (persistenceKey == null || persistenceKey.isBlank())
+		{
+			return;
+		}
+		ManualStepSkipStore.put(configManager, gson, getDisplayedQuestName(), persistenceKey, skipped);
+		onManualSidebarSkipsPersistedChanged();
+	}
+
+	public void resetAllManualSidebarSkips()
+	{
+		ManualStepSkipStore.clearAll(configManager, getDisplayedQuestName());
+		onManualSidebarSkipsPersistedChanged();
+	}
+
+	/**
+	 * Hook for helpers that merge persisted skips with runtime state (e.g. maker preview).
+	 */
+	protected void onManualSidebarSkipsPersistedChanged()
+	{
 	}
 
 	public abstract boolean updateQuest();
@@ -218,9 +274,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			.build()
 		);
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getQuest().getName())
+			.left(getDisplayedQuestName())
 			.leftColor(getConfig().debugColor())
-			.right(getVar() + "")
+			.right(getQuest() != null ? String.valueOf(getVar()) : "—")
 			.rightColor(getConfig().debugColor())
 			.build()
 		);
@@ -228,6 +284,10 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	public int getVar()
 	{
+		if (quest == null)
+		{
+			return 0;
+		}
 		return quest.getVar(client);
 	}
 

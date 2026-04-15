@@ -781,7 +781,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		// Section: Civitas illa Fortis [show when true: no condition]
 		chartertocivitas = new NpcStep(this, new int[]{1332, 1329}, new WorldPoint(1515, 2972, 0), "Charter a ship to Civitas illa Fortis.", true);
 		chartertocivitas.addWidgetHighlight(72, 3, 27);
-		chartertocivitas.addRequirement(coins.quantity(250));
+		chartertocivitas.addRequirement(coins.quantity(500));
 		buyironmace = new NpcStep(this, 13333, new WorldPoint(1773, 3059, 0), "Purchase an iron mace from the Mace Shop southeast of Civitas illa Fortis.", true);
 		buyironmace.addRequirement(coins.quantity(81));
 		buyironmace.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.IRON_MACE, true);

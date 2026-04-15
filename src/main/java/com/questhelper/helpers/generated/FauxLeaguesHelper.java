@@ -1534,6 +1534,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section2Task = new ConditionalStep(this, eatcookedrabbit);
 		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes")), orderManual_925b2750606e45aa)), pickcabbage);
 		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 25, "Defeat a Chicken"), bones), orderManual_e2187282abd14612)), attackchickenlevel1);
+		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 7, "Sit near a stolen cabbage"), orderManual_804de90e08e84b59)), sitwithdogs);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 7, "Feed a dog some bones"), orderManual_7307d7a1545249c7)), feedbonestomolossus);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 3, "Pick some Sweetcorn from a Field"), orderManual_68855f46f9bc41df)), picksweetcorn);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 2, "Eat an Onion"), orderManual_03a02189ef2c41c9)), pickandeatonion);
@@ -1562,10 +1563,14 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 
 		section3Task = new ConditionalStep(this, talktopicaria);
 		section3Task.addStep(not(passOnceCompleted(orderManual_eab67f10eb07403e, orderManual_eab67f10eb07403e)), talktoantonia);
+		section3Task.addStep(not(passOnceCompleted(unlitTorch, orderManual_f044d2ea29444c1d)), buytorch);
+		section3Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), orderManual_f857afb94063482c)), lighttorch);
 		section3Task.addStep(not(passOnceCompleted(orderManual_9b1eca8dccbd42d2, orderManual_9b1eca8dccbd42d2)), fillabucketwithsand);
 
 		section4Task = new ConditionalStep(this, givestewtooli);
 		section4Task.addStep(not(passOnceCompleted(orderManual_defad039d9094571, orderManual_defad039d9094571)), chartertocivitas);
+		section4Task.addStep(not(passOnceCompleted(orderManual_be85462b242840cf, orderManual_be85462b242840cf)), buypineapples);
+		section4Task.addStep(not(passOnceCompleted(orderManual_e5d473eb18d64808, orderManual_e5d473eb18d64808)), depositpineapples);
 		section4Task.addStep(not(passOnceCompleted(ironMace, orderManual_52df5d410a9c4609)), buyironmace);
 		section4Task.addStep(not(passOnceCompleted(ironMace.equipped(), orderManual_71753357153f4aea)), getEquipironmace());
 		section4Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 17, "Obtain a Casket from Fishing"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 3, "Obtain an old boot from a fishing spot"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 10, "Fish a House Key")), orderManual_7279930e175347d8)), castfishingspot);
@@ -1578,6 +1583,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 
 		section5Task = new ConditionalStep(this, talktofriendlyforester);
 		section5Task.addStep(not(passOnceCompleted(orderManual_2db5a3f19d944160, orderManual_2db5a3f19d944160)), traveltoauburnvale);
+		section5Task.addStep(not(passOnceCompleted(orderManual_4663556c4ad648bf, orderManual_4663556c4ad648bf)), drinkcupoftea);
 		section5Task.addStep(not(passOnceCompleted(orderManual_fc2cc76a69004247, orderManual_fc2cc76a69004247)), depositinauburnvale);
 		section5Task.addStep(not(passOnceCompleted(orderManual_98baa1e71c7749f8, orderManual_98baa1e71c7749f8)), tradesebamo);
 		section5Task.addStep(not(passOnceCompleted(orderManual_4aa9260549cf41b7, orderManual_4aa9260549cf41b7)), tradelunami);
@@ -1590,14 +1596,6 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 8, "Step onto an Ent trail"), orderManual_6ec91f1a29aa464f)), steponenttrail);
 		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 20, "Pick 6 flax"), orderManual_d51c833717d64aae)), pickflax);
 		section5Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 3, "Spin a Ball of Wool")), orderManual_03d13e43583345cb)), spinflaxandwool);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 9, "Cast Home Teleport"), orderManual_a1a431788a17478e)), hometeleport);
-		section5Task.addStep(not(passOnceCompleted(orderManual_e2c6f51feb6142eb, orderManual_e2c6f51feb6142eb)), returntocivitas);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 7, "Sit near a stolen cabbage"), orderManual_804de90e08e84b59)), sitwithdogs);
-		section5Task.addStep(not(passOnceCompleted(unlitTorch, orderManual_f044d2ea29444c1d)), buytorch);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), orderManual_f857afb94063482c)), lighttorch);
-		section5Task.addStep(not(passOnceCompleted(orderManual_be85462b242840cf, orderManual_be85462b242840cf)), buypineapples);
-		section5Task.addStep(not(passOnceCompleted(orderManual_e5d473eb18d64808, orderManual_e5d473eb18d64808)), depositpineapples);
-		section5Task.addStep(not(passOnceCompleted(orderManual_4663556c4ad648bf, orderManual_4663556c4ad648bf)), drinkcupoftea);
 
 		section6Task = new ConditionalStep(this, buyfishfrompicaria);
 		section6Task.addStep(not(passOnceCompleted(orderManual_d788a0be7313479e, orderManual_d788a0be7313479e)), traveltotalteklan);
@@ -1630,7 +1628,9 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section6Task.addStep(not(passOnceCompleted(orderManual_84de0662250c4030, orderManual_84de0662250c4030)), activatestatuedarkfrost);
 		section6Task.addStep(not(passOnceCompleted(ironMace.equipped(), orderManual_973a0e20125a4986)), equipironmace2);
 		section6Task.addStep(not(passOnceCompleted(orderManual_f679c2afb8924312, orderManual_f679c2afb8924312)), attackrabbitlevel2);
+		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 9, "Cast Home Teleport"), orderManual_a1a431788a17478e)), hometeleport);
 		section6Task.addStep(not(passOnceCompleted(orderManual_4a6cc9352e4b414d, orderManual_4a6cc9352e4b414d)), yamaagility);
+		section6Task.addStep(not(passOnceCompleted(orderManual_e2c6f51feb6142eb, orderManual_e2c6f51feb6142eb)), returntocivitas);
 		section6Task.addStep(not(passOnceCompleted(orderManual_822d7bebf7814a0d, orderManual_822d7bebf7814a0d)), travelaldarin);
 		section6Task.addStep(not(passOnceCompleted(tyrasHelm.equipped(), orderManual_c7dfc0ff11a544e1)), withdrawtyrashelm);
 		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, chisel, coins), orderManual_4decff0f320c4771)), withdrawaldarinbanker2);
@@ -1764,23 +1764,23 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section1Steps.setLockingStep(section1Task);
 		allSteps.add(section1Steps);
 
-		PanelDetails section2Steps = new PanelDetails("Outer Fortis", List.of(pickcabbage, attackchickenlevel1, feedbonestomolossus, picksweetcorn, pickandeatonion, pickwheat, fillhopper, emptyflourbin, pickpotato, tradeharminia, rakeflowerpatch, emptywaterbucket, milkdairybuffalo, shearalpaca, zanarisfairyring, attackcowlevel2, burybones, aldarinfairyring, talktovineyardforeman, collectshimmeringgrapes, returntovineyardforeman, withdrawaldarinbanker, tradetoci, cutextragems, attackseagulllevel2, tradechartership, cookrabbitonoven, eatcookedrabbit));
+		PanelDetails section2Steps = new PanelDetails("Outer Fortis", List.of(pickcabbage, attackchickenlevel1, sitwithdogs, feedbonestomolossus, picksweetcorn, pickandeatonion, pickwheat, fillhopper, emptyflourbin, pickpotato, tradeharminia, rakeflowerpatch, emptywaterbucket, milkdairybuffalo, shearalpaca, zanarisfairyring, attackcowlevel2, burybones, aldarinfairyring, talktovineyardforeman, collectshimmeringgrapes, returntovineyardforeman, withdrawaldarinbanker, tradetoci, cutextragems, attackseagulllevel2, tradechartership, cookrabbitonoven, eatcookedrabbit));
 		section2Steps.setLockingStep(section2Task);
 		allSteps.add(section2Steps);
 
-		PanelDetails section3Steps = new PanelDetails("Sunset Coast", List.of(talktoantonia, fillabucketwithsand, talktopicaria));
+		PanelDetails section3Steps = new PanelDetails("Sunset Coast", List.of(talktoantonia, buytorch, lighttorch, fillabucketwithsand, talktopicaria));
 		section3Steps.setLockingStep(section3Task);
 		allSteps.add(section3Steps);
 
-		PanelDetails section4Steps = new PanelDetails("Civitas illa Fortis", List.of(chartertocivitas, buyironmace, equipironmace, castfishingspot, talktobartender, drinkmoonlite, drinkjugofwine, pickpocketcitizenuntilsuccess, buypoh, tradesilkmerchant, givestewtooli));
+		PanelDetails section4Steps = new PanelDetails("Civitas illa Fortis", List.of(chartertocivitas, buypineapples, depositpineapples, buyironmace, equipironmace, castfishingspot, talktobartender, drinkmoonlite, drinkjugofwine, pickpocketcitizenuntilsuccess, buypoh, tradesilkmerchant, givestewtooli));
 		section4Steps.setLockingStep(section4Task);
 		allSteps.add(section4Steps);
 
-		PanelDetails section5Steps = new PanelDetails("Auburnvale", List.of(traveltoauburnvale, depositinauburnvale, tradesebamo, tradelunami, chopdowndeadtree, makeplankatsawmill, tanleatheratchouani, tradeauburnvaleshopkeeper, craftleatherchaps, admirebeautifullog, steponenttrail, pickflax, spinflaxandwool, hometeleport, returntocivitas, sitwithdogs, buytorch, lighttorch, buypineapples, depositpineapples, drinkcupoftea, talktofriendlyforester));
+		PanelDetails section5Steps = new PanelDetails("Auburnvale", List.of(traveltoauburnvale, drinkcupoftea, depositinauburnvale, tradesebamo, tradelunami, chopdowndeadtree, makeplankatsawmill, tanleatheratchouani, tradeauburnvaleshopkeeper, craftleatherchaps, admirebeautifullog, steponenttrail, talktofriendlyforester, pickflax, spinflaxandwool));
 		section5Steps.setLockingStep(section5Task);
 		allSteps.add(section5Steps);
 
-		PanelDetails section6Steps = new PanelDetails("Tal Teklan", List.of(traveltotalteklan, depositintalteklan, tradeteicuh, tradexochitl, dyecape, dancenearabard, tradearcuani, attackfroglevel5, chopdowndeadtreerainforest, traveltokastori, tradesulisal, sardinefishingspot, cooksardinesatoven, shrimpfishingspot, cookshrimpatoven, herringfishingspot, anchovyfishingspot, climbdownladder, attackimplevel2, climbupladder, petcaique, activatestatuekastori, attackgemstonecrablevel160, witnessthegemcrabsdefeat, travelgloomthorn, activatestatuenemus, attackicefiendlevel13, activatestatuedarkfrost, equipironmace2, attackrabbitlevel2, yamaagility, travelaldarin, withdrawtyrashelm, withdrawaldarinbanker2, enterportal, buildroom, exitportal, tradetociagain, talktoantonia2, tradethurid, buyfishfrompicaria));
+		PanelDetails section6Steps = new PanelDetails("Tal Teklan", List.of(traveltotalteklan, depositintalteklan, tradeteicuh, tradexochitl, dyecape, dancenearabard, tradearcuani, attackfroglevel5, chopdowndeadtreerainforest, traveltokastori, tradesulisal, sardinefishingspot, cooksardinesatoven, shrimpfishingspot, cookshrimpatoven, herringfishingspot, anchovyfishingspot, climbdownladder, attackimplevel2, climbupladder, petcaique, activatestatuekastori, attackgemstonecrablevel160, witnessthegemcrabsdefeat, travelgloomthorn, activatestatuenemus, attackicefiendlevel13, activatestatuedarkfrost, equipironmace2, attackrabbitlevel2, hometeleport, yamaagility, returntocivitas, travelaldarin, withdrawtyrashelm, withdrawaldarinbanker2, enterportal, buildroom, exitportal, tradetociagain, talktoantonia2, tradethurid, buyfishfrompicaria));
 		section6Steps.setLockingStep(section6Task);
 		allSteps.add(section6Steps);
 

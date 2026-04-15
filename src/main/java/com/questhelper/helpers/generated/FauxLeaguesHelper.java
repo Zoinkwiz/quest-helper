@@ -939,8 +939,11 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		tradethurid.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.ADAMANT_FULL_HELM, true);
 		buyfishfrompicaria = new NpcStep(this, 13158, new WorldPoint(1559, 2959, 0), "Buy fish from the fishing store southeast of the Sunset Coast, cook them on the oven nearby, and drop them until you reach 50 cooked tuna and 100 cooked swordfish.", true);
 		// Section: Cam Torum [show when true: no condition]
-		entercamtorum = new ObjectStep(this, 51375, new WorldPoint(1435, 3129, 0), "Run North and enter Cam Torum.", true);
+		entercamtorum = new ObjectStep(this, 51375, new WorldPoint(1435, 3129, 0), "Run north and enter Cam Torum.", true);
 		tradehuito = new NpcStep(this, 13041, new WorldPoint(1437, 9551, 1), "Buy 1 water-filled vial pack, 1 pestle and mortar, and 1 eye of newt pack at the herb shop.", true);
+		tradehuito.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.PACK_VIAL_WATER, true);
+		tradehuito.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.PESTLE_AND_MORTAR, true);
+		tradehuito.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.PACK_EYE_NEWT, true);
 		tradetizoro = new NpcStep(this, 13037, new WorldPoint(1441, 9554, 1), "Buy a steel, mithril, adamant, and rune pickaxe from the mining shop. (For Barbarian Gatherer's, there are some steps requiring pickaxes. Not sure if they will count without the pickaxe.)", true);
 		haircutsonalo = new NpcStep(this, 13042, new WorldPoint(1452, 9555, 1), "Get a Maroon-colored Samurai haircut from the hairstylist to the east.", true);
 		shavesonalo = new NpcStep(this, 13042, new WorldPoint(1450, 9557, 1), "Trim your beard and select the clean shaven option from Sonalo.", true);
@@ -1690,7 +1693,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 
 		section5Task = new ConditionalStep(this, talktofriendlyforester);
 		section5Task.addStep(not(passOnceCompleted(orderManual_2db5a3f19d944160, orderManual_2db5a3f19d944160)), traveltoauburnvale);
-		section5Task.addStep(not(passOnceCompleted(orderManual_4663556c4ad648bf, orderManual_4663556c4ad648bf)), drinkcupoftea);
+		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 22), orderManual_4663556c4ad648bf)), drinkcupoftea);
 		section5Task.addStep(not(passOnceCompleted(orderManual_fc2cc76a69004247, orderManual_fc2cc76a69004247)), depositinauburnvale);
 		section5Task.addStep(not(passOnceCompleted(orderManual_98baa1e71c7749f8, orderManual_98baa1e71c7749f8)), tradesebamo);
 		section5Task.addStep(not(passOnceCompleted(orderManual_4aa9260549cf41b7, orderManual_4aa9260549cf41b7)), tradelunami);
@@ -1760,8 +1763,10 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section6Task.addStep(not(passOnceCompleted(and(new ItemRequirement("Bronze full helm", ItemID.BRONZE_FULL_HELM), new ItemRequirement("Adamant full helm", ItemID.ADAMANT_FULL_HELM)), orderManual_34bc6f2756944267)), tradethurid);
 
 		section7Task = new ConditionalStep(this, tradecamtorumblacksmith);
-		section7Task.addStep(not(passOnceCompleted(orderManual_6399630404814616, orderManual_6399630404814616)), entercamtorum);
-		section7Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, eyeOfNewtPack, waterFilledVialPack, pestleAndMortar), orderManual_49aa6ca9547f4410)), tradehuito);
+		section7Task.addStep(not(passOnceCompleted(new ZoneRequirement(new Zone(new WorldPoint(1378, 9502, 1), new WorldPoint(1524, 9600, 3))), orderManual_6399630404814616)), entercamtorum);
+		section7Task.addStep(not(passOnceCompleted(
+			new Conditions(LogicType.AND, new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT).quantity(100),
+				new ItemRequirement("Vial of water", ItemID.VIAL_WATER).quantity(100), pestleAndMortar), orderManual_49aa6ca9547f4410)), tradehuito);
 		section7Task.addStep(not(passOnceCompleted(orderManual_796ca0c49092421f, orderManual_796ca0c49092421f)), tradetizoro);
 		section7Task.addStep(not(passOnceCompleted(orderManual_eb1a1275094e4580, orderManual_eb1a1275094e4580)), haircutsonalo);
 		section7Task.addStep(not(passOnceCompleted(orderManual_e0c4fad1ef074063, orderManual_e0c4fad1ef074063)), shavesonalo);

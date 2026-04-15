@@ -1,31 +1,33 @@
 package com.questhelper.helpers.generated;
 
 import com.questhelper.panel.PanelDetails;
-import com.questhelper.panel.ManualStepSkipStore;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
-import static com.questhelper.requirements.util.LogicHelper.nor;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.EmoteStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
+import com.questhelper.steps.emote.QuestEmote;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -39,7 +41,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	ItemRequirement dramenStaff;
 	ItemRequirement knife;
 	ItemRequirement coins;
-	ItemRequirement whiteApron;
+	ItemRequirement brownApron;
 	ItemRequirement greenCape;
 	ItemRequirement bronzeAxe;
 	ItemRequirement ironMace;
@@ -116,6 +118,10 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	ItemRequirement bronzePickaxe;
 	ItemRequirement pinkSkirt;
 	ItemRequirement copperOre;
+	ItemRequirement shears;
+	ItemRequirement glassblowingPipe;
+	ItemRequirement moltenGlass;
+	ItemRequirement sodaAsh;
 
 	// Captured steps
 	DetailedQuestStep openleaguesmenu;
@@ -141,7 +147,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	DetailedQuestStep fletchlog;
 	ObjectStep attackdummy;
 	NpcStep useeastcivitasbank;
-	NpcStep talktogladiator;
+	ConditionalStep talktogladiator;
 	NpcStep talktotradercrewmember;
 	NpcStep talktotradercrewmember2;
 	ObjectStep usefurnace;
@@ -530,7 +536,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		dramenStaff = new ItemRequirement("Dramen Staff", 772);
 		knife = new ItemRequirement("Knife", 946);
 		coins = new ItemRequirement("Coins", 995);
-		whiteApron = new ItemRequirement("White apron", 1005);
+		brownApron = new ItemRequirement("Brown apron", 1757);
 		greenCape = new ItemRequirement("Green cape", 1027);
 		bronzeAxe = new ItemRequirement("Bronze axe", 1351);
 		ironMace = new ItemRequirement("Iron mace", 1420);
@@ -544,6 +550,10 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		cowhide = new ItemRequirement("Cowhide", 1739);
 		leather = new ItemRequirement("Leather", 1741);
 		chisel = new ItemRequirement("Chisel", 1755);
+		shears = new ItemRequirement("Shears", ItemID.SHEARS);
+		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWINGPIPE);
+		moltenGlass = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS);
+		sodaAsh = new ItemRequirement("Soda ash", ItemID.SODA_ASH);
 		flax = new ItemRequirement("Flax", 1779);
 		cake = new ItemRequirement("Cake", 1891);
 		bucket = new ItemRequirement("Bucket", 1925);
@@ -619,13 +629,17 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		togglerunenergy = new DetailedQuestStep(this, "Turn run energy off and then back on.");
 		pickpocketcitizen = new NpcStep(this, new int[]{13198, 13197, 13195}, new WorldPoint(1687, 3135, 0), "Pickpocket a citizen until level 5 thieving.", true);
 		petrenu = new NpcStep(this, 13350, new WorldPoint(1697, 3142, 0), "Run east and pet Renu.", true);
-		bownearrenu = new DetailedQuestStep(this, new WorldPoint(1697, 3140, 0), "Use the Bow emote near Renu.");
+		bownearrenu = new EmoteStep(this, QuestEmote.BOW, new WorldPoint(1697, 3140, 0), "Use the Bow emote near Renu.");
+		bownearrenu.addIcon(QuestEmote.BOW.getSpriteId());
 		travelwithrenu = new NpcStep(this, 13350, new WorldPoint(1697, 3142, 0), "Travel with Renu to the Sunset Coast.", true);
-		travelbackwithrenu = new NpcStep(this, 13350, new WorldPoint(1548, 2997, 0), "Travel with Renu back to Civitas illa Fortis.", true);
+		travelwithrenu.addWidgetHighlight(874, 12, 8);
+		travelbackwithrenu = new NpcStep(this, 14026, new WorldPoint(1389, 2899, 0), "Travel with Renu back to Civitas illa Fortis.", true);
+		travelbackwithrenu.addWidgetHighlight(874, 12, 0);
 		usewaterpump = new ObjectStep(this, 52646, new WorldPoint(1690, 3132, 0), "Fill a bucket at the water pump.", true);
 		usewaterpump.addRequirement(bucket.highlighted());
 		attackdummy = new ObjectStep(this, 52645, new WorldPoint(1659, 3148, 0), "Attack Dummy.", true);
 		crynearachild = new NpcStep(this, 13188, new WorldPoint(1674, 3109, 0), "Use the Cry emote near a child.", true);
+		crynearachild.addIcon(QuestEmote.CRY.getSpriteId());
 		stealcakesfrombakersstall = new ObjectStep(this, 51937, new WorldPoint(1688, 3111, 0), "Thieve 14+ cakes from the Cake Stall.", true);
 		{
 			SkillRequirement sr = new SkillRequirement(Skill.THIEVING, 5, true);
@@ -634,27 +648,48 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		tradeshopkeeper = new NpcStep(this, 13330, new WorldPoint(1670, 3123, 0), "Sell your cakes to the shopkeeper (sell 1 to maximize gp!). Buy 1 chisel and 1 knife.", true);
 		tradeshopkeeper.addRequirement(cake);
 		tradefloria = new NpcStep(this, 13340, new WorldPoint(1659, 3100, 0), "Buy 1 Pink Skirt, 1 Brown Apron, and 1 Green Cape.", true);
+		tradefloria.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.PINK_SKIRT, true);
+		tradefloria.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BROWN_APRON, true);
+		tradefloria.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.GREEN_CAPE, true);
 		equipapronandgreencape = new DetailedQuestStep(this, "Equip the items you purchased.");
 		equipapronandgreencape.addRequirement(greenCape.highlighted());
-		equipapronandgreencape.addRequirement(whiteApron.highlighted());
+		equipapronandgreencape.addRequirement(brownApron.highlighted());
 		attackratlevel1 = new NpcStep(this, 2854, new WorldPoint(1655, 3084, 0), "Kill a rat with a bow.", true);
-		salutequoatlos = new DetailedQuestStep(this, new WorldPoint(1699, 3083, 0), "Use the Salute emote near the statue of Quoatlos.");
+		salutequoatlos = new EmoteStep(this, QuestEmote.SALUTE, new WorldPoint(1699, 3083, 0), "Use the Salute emote near the statue of Quoatlos.");
+		salutequoatlos.addIcon(SpriteID.Emotes.SALUTE);
 		useprayernearshrineofralos = new ObjectStep(this, 52405, new WorldPoint(1701, 3085, 0), "Activate the Thick Skin prayer while standing next to the altar.", true);
 		petxolo = new NpcStep(this, 12996, new WorldPoint(1709, 3088, 0), "Pet Xolo.", true);
 		drinkfrombirdbath = new ObjectStep(this, 52394, new WorldPoint(1713, 3086, 0), "Drink-from Bird bath.", true);
-		chopdowntree = new ObjectStep(this, 52823, new WorldPoint(1707, 3090, 0), "Chop 2 logs from a nearby Tree.", true);
-		burnlog = new DetailedQuestStep(this, "Burn a log.");
-		fletchlog = new DetailedQuestStep(this, "Fletch a log into arrow shafts.");
-		useeastcivitasbank = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit everything, withdraw coins, chisel, dramen staff (equipped), pot, and bucket of water.", true);
+		drinkfrombirdbath.addDialogStep("Yes.");
+		chopdowntree = new ObjectStep(this, 52823, new WorldPoint(1707, 3090, 0), "Chop 2 logs from a nearby Tree. Make sure endless harvest is toggled off for banking.", true);
+		burnlog = new DetailedQuestStep(this, "Burn a log.", logs.highlighted(), tinderbox.highlighted());
+		fletchlog = new DetailedQuestStep(this, "Fletch a log into arrow shafts.", logs.highlighted(), knife.highlighted());
+		fletchlog.addWidgetHighlightWithItemIdRequirement(270, 15, ItemID.ARROW_SHAFT, true);
+		useeastcivitasbank = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit everything, withdraw coins, chisel, dramen staff (equipped), pot, and bucket of water.",
+			true, coins, chisel, dramenStaff, bucketOfWater);
 		tradeartima = new NpcStep(this, 13342, new WorldPoint(1767, 3103, 0), "Buy shears and a glassblowing pipe from Artima.", true);
-		talktogladiator = new NpcStep(this, 12841, new WorldPoint(1802, 9523, 0), "Talk-to Gladiator.", true);
+		tradeartima.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.SHEARS, true);
+		tradeartima.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.GLASSBLOWINGPIPE, true);
+
+		var inColloseum = new ZoneRequirement(new Zone(new WorldPoint(1795, 9480, 0), new WorldPoint(1880, 9547, 0)));
+		var talktogladiatorstep  = new NpcStep(this, 12841, new WorldPoint(1802, 9523, 0), "Talk-to Gladiator.", true);
+		var entergladiatorarea = new ObjectStep(this, 50749, new WorldPoint(1796, 3106, 0), "Enter the colloseum and talk to a Gladiator.");
+		talktogladiator = new ConditionalStep(this, entergladiatorarea, "Talk to a Gladiator in the Colloseum.");
+		talktogladiator.addStep(inColloseum, talktogladiatorstep);
+
 		talktoportmaster = new NpcStep(this, 15470, new WorldPoint(1781, 3144, 0), "Talk-to Port master.", true);
-		talktotradercrewmember = new NpcStep(this, 9334, new WorldPoint(1743, 3135, 0), "Buy 10 buckets of sand, 10 soda ash.", true);
-		talktotradercrewmember2 = new NpcStep(this, 9334, new WorldPoint(1743, 3135, 0), "Buy 10 buckets of sand, 10 soda ash.", true);
-		usefurnace = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass.", true);
-		usefurnace2 = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass.", true);
+		talktotradercrewmember = new NpcStep(this, 1330, new WorldPoint(1743, 3135, 0), "Buy 10 buckets of sand, 10 soda ash.", true);
+		talktotradercrewmember.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BUCKET_SAND, true);
+		talktotradercrewmember.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.SODA_ASH, true);
+		talktotradercrewmember2 = new NpcStep(this, 1330, new WorldPoint(1743, 3135, 0), "Buy 10 buckets of sand, 10 soda ash.", true);
+		talktotradercrewmember2.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.BUCKET_SAND, true);
+		talktotradercrewmember2.addWidgetHighlightWithItemIdRequirement(300, 16, ItemID.SODA_ASH, true);
+		usefurnace = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass on the furnace south of the docks.", true);
+		usefurnace2 = new ObjectStep(this, 50698, new WorldPoint(1769, 3111, 0), "Make 10 molten glass on the furnace south of the docks.", true);
 		depositmoltenglass = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit 10 molten glass into the bank.", true);
-		blowglassintooillanterns = new DetailedQuestStep(this, "Blow 10 molten glass into oil lanterns.");
+		blowglassintooillanterns = new DetailedQuestStep(this, "Blow 10 molten glass into oil lamps.", moltenGlass.highlighted(), glassblowingPipe.highlighted());
+		blowglassintooillanterns.addWidgetHighlightWithItemIdRequirement(270, 17, ItemID.OIL_LAMP_EMPTY, true);
+
 		depositoillanterns = new NpcStep(this, 13219, new WorldPoint(1779, 3092, 0), "Deposit the 10 oil lanterns.", true);
 		// Section: Outer Fortis [show when true: no condition]
 		pickcabbage = new ObjectStep(this, 1161, new WorldPoint(1742, 3059, 0), "Pick (and drop) 6 cabbages.", true);
@@ -1510,8 +1545,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 14, "Cry near a child"), orderManual_19a411c69a9a454a)), crynearachild);
 		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 4, "Steal some bread"), cake.quantity(14).alsoCheckBank()), orderManual_561cc210c13940ac)), stealcakesfrombakersstall);
 		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, chisel.alsoCheckBank(), knife), orderManual_6231965cb7364873)), tradeshopkeeper);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, whiteApron, greenCape), orderManual_ef2a1f04f2344ffa)), tradefloria);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, whiteApron, greenCape), orderManual_62fd4ddcb8574922)), equipapronandgreencape);
+		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, brownApron, greenCape), orderManual_ef2a1f04f2344ffa)), tradefloria);
+		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, brownApron.equipped(), greenCape.equipped()), orderManual_62fd4ddcb8574922)), equipapronandgreencape);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 28, "Defeat a Rat"), orderManual_78e2364d79f24bf0)), attackratlevel1);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 4, "Salute next to a statue of Quoatlos"), orderManual_de139d6c81f54075)), salutequoatlos);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 3, "Activate a prayer near an altar"), orderManual_b4f635703c864239)), useprayernearshrineofralos);
@@ -1521,14 +1556,14 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 6, "Burn Some Normal Logs"), orderManual_bcef081ee50848c4)), burnlog);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 8, "Fletch Some Arrow Shafts"), orderManual_6691ac72f00a43ba)), fletchlog);
 		section1Task.addStep(not(passOnceCompleted(orderManual_b6371840b279439e, orderManual_b6371840b279439e)), useeastcivitasbank);
-		section1Task.addStep(not(orderManual_33caa0d56cbf4e3a), tradeartima);
+		section1Task.addStep(not(passOnceCompleted(and(shears, glassblowingPipe), orderManual_33caa0d56cbf4e3a)), tradeartima);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 9, "Talk to a Gladiator"), orderManual_0b5d40160f57421a)), talktogladiator);
 		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 6, "Talk to any Port master"), orderManual_38fb64dc8cff4589)), talktoportmaster);
-		section1Task.addStep(not(orderManual_23938df7e41444d2), talktotradercrewmember);
-		section1Task.addStep(not(orderManual_e3d64188fe2c4386), usefurnace);
+		section1Task.addStep(not(passOnceCompleted(and(bucketOfSand.quantity(10), sodaAsh.quantity(10)), orderManual_23938df7e41444d2)), talktotradercrewmember);
+		section1Task.addStep(not(passOnceCompleted(moltenGlass.quantity(10), orderManual_e3d64188fe2c4386)), usefurnace);
 		section1Task.addStep(not(passOnceCompleted(orderManual_0643bdd0fc574df9, orderManual_0643bdd0fc574df9)), depositmoltenglass);
-		section1Task.addStep(not(passOnceCompleted(orderManual_b3170a80123940bc, orderManual_b3170a80123940bc)), talktotradercrewmember2);
-		section1Task.addStep(not(passOnceCompleted(orderManual_b4898e48afbc4790, orderManual_b4898e48afbc4790)), usefurnace2);
+		section1Task.addStep(not(passOnceCompleted(and(bucketOfSand.quantity(10), sodaAsh.quantity(10)), orderManual_b3170a80123940bc)), talktotradercrewmember2);
+		section1Task.addStep(not(passOnceCompleted(moltenGlass.quantity(10), orderManual_b4898e48afbc4790)), usefurnace2);
 		section1Task.addStep(not(orderManual_4ed627e87870495c), blowglassintooillanterns);
 
 		section2Task = new ConditionalStep(this, eatcookedrabbit);
@@ -1700,7 +1735,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section10Task.addStep(not(passOnceCompleted(orderManual_ffef209ef7614241, orderManual_ffef209ef7614241)), firepotteryoven);
 
 		ConditionalStep allSections = new ConditionalStep(this, section10Task);
-		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 18, "Open the Leagues Menu"), orderManual_3af37088880c4e47), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 19, "Complete the Leagues Tutorial"), orderManual_29c81dc8336344ac), passOnceCompleted(orderManual_b4774b5043644e3d, orderManual_b4774b5043644e3d), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 8, "Turn off your run"), orderManual_e9f51a0871734a55), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 22, "Pickpocket a Citizen"), new SkillRequirement(Skill.THIEVING, 5, true)), orderManual_acbdd227965c4943), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 0, "Pet Renu"), orderManual_d2d9922879654882), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 10, "Bow near a quetzal"), orderManual_e1bd7473bf70454e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 12, "Travel using the Quetzal Transport System"), orderManual_3742c1b9593940d1), passOnceCompleted(orderManual_d874440fd5d64f29, orderManual_d874440fd5d64f29), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 27, "Fill something up from a water pump"), orderManual_3e3dee13c7f04f7e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 4, "Attack a dummy"), orderManual_114b66be530d46b0), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 14, "Cry near a child"), orderManual_19a411c69a9a454a), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 4, "Steal some bread"), cake.quantity(14).alsoCheckBank()), orderManual_561cc210c13940ac), passOnceCompleted(new Conditions(LogicType.AND, chisel.alsoCheckBank(), knife), orderManual_6231965cb7364873), passOnceCompleted(new Conditions(LogicType.AND, whiteApron, greenCape), orderManual_ef2a1f04f2344ffa), passOnceCompleted(new Conditions(LogicType.AND, whiteApron, greenCape), orderManual_62fd4ddcb8574922), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 28, "Defeat a Rat"), orderManual_78e2364d79f24bf0), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 4, "Salute next to a statue of Quoatlos"), orderManual_de139d6c81f54075), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 3, "Activate a prayer near an altar"), orderManual_b4f635703c864239), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 1, "Pet Xolo in Civitas"), orderManual_e9ba959f7cfe48c5), passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_36, true, 24, "150 Combat Achievements"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 23, "Drink from a bird bath")), orderManual_db130671c0de4eac), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 14, "Chop Some Logs"), logs.quantity(2).alsoCheckBank()), orderManual_3d13ecb7d4b94ca8), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 6, "Burn Some Normal Logs"), orderManual_bcef081ee50848c4), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 8, "Fletch Some Arrow Shafts"), orderManual_6691ac72f00a43ba), passOnceCompleted(orderManual_b6371840b279439e, orderManual_b6371840b279439e), orderManual_33caa0d56cbf4e3a, passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 9, "Talk to a Gladiator"), orderManual_0b5d40160f57421a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 6, "Talk to any Port master"), orderManual_38fb64dc8cff4589), passOnceCompleted(new Conditions(LogicType.AND, bucketOfSand.quantity(10).alsoCheckBank()), orderManual_23938df7e41444d2), orderManual_e3d64188fe2c4386, passOnceCompleted(orderManual_0643bdd0fc574df9, orderManual_0643bdd0fc574df9), passOnceCompleted(orderManual_b3170a80123940bc, orderManual_b3170a80123940bc), passOnceCompleted(orderManual_b4898e48afbc4790, orderManual_b4898e48afbc4790), orderManual_4ed627e87870495c, passOnceCompleted(orderManual_c6d823de02b04365, orderManual_c6d823de02b04365))), section1Task);
+		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 18, "Open the Leagues Menu"), orderManual_3af37088880c4e47), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 19, "Complete the Leagues Tutorial"), orderManual_29c81dc8336344ac), passOnceCompleted(orderManual_b4774b5043644e3d, orderManual_b4774b5043644e3d), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 8, "Turn off your run"), orderManual_e9f51a0871734a55), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 22, "Pickpocket a Citizen"), new SkillRequirement(Skill.THIEVING, 5, true)), orderManual_acbdd227965c4943), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 0, "Pet Renu"), orderManual_d2d9922879654882), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 10, "Bow near a quetzal"), orderManual_e1bd7473bf70454e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 12, "Travel using the Quetzal Transport System"), orderManual_3742c1b9593940d1), passOnceCompleted(orderManual_d874440fd5d64f29, orderManual_d874440fd5d64f29), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 27, "Fill something up from a water pump"), orderManual_3e3dee13c7f04f7e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 4, "Attack a dummy"), orderManual_114b66be530d46b0), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 14, "Cry near a child"), orderManual_19a411c69a9a454a), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 4, "Steal some bread"), cake.quantity(14).alsoCheckBank()), orderManual_561cc210c13940ac), passOnceCompleted(new Conditions(LogicType.AND, chisel.alsoCheckBank(), knife), orderManual_6231965cb7364873), passOnceCompleted(new Conditions(LogicType.AND, brownApron, greenCape), orderManual_ef2a1f04f2344ffa), passOnceCompleted(new Conditions(LogicType.AND, brownApron, greenCape), orderManual_62fd4ddcb8574922), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 28, "Defeat a Rat"), orderManual_78e2364d79f24bf0), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 4, "Salute next to a statue of Quoatlos"), orderManual_de139d6c81f54075), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 3, "Activate a prayer near an altar"), orderManual_b4f635703c864239), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 1, "Pet Xolo in Civitas"), orderManual_e9ba959f7cfe48c5), passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_36, true, 24, "150 Combat Achievements"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 23, "Drink from a bird bath")), orderManual_db130671c0de4eac), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 14, "Chop Some Logs"), logs.quantity(2).alsoCheckBank()), orderManual_3d13ecb7d4b94ca8), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 6, "Burn Some Normal Logs"), orderManual_bcef081ee50848c4), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 8, "Fletch Some Arrow Shafts"), orderManual_6691ac72f00a43ba), passOnceCompleted(orderManual_b6371840b279439e, orderManual_b6371840b279439e), orderManual_33caa0d56cbf4e3a, passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 9, "Talk to a Gladiator"), orderManual_0b5d40160f57421a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 6, "Talk to any Port master"), orderManual_38fb64dc8cff4589), passOnceCompleted(new Conditions(LogicType.AND, bucketOfSand.quantity(10).alsoCheckBank()), orderManual_23938df7e41444d2), orderManual_e3d64188fe2c4386, passOnceCompleted(orderManual_0643bdd0fc574df9, orderManual_0643bdd0fc574df9), passOnceCompleted(orderManual_b3170a80123940bc, orderManual_b3170a80123940bc), passOnceCompleted(orderManual_b4898e48afbc4790, orderManual_b4898e48afbc4790), orderManual_4ed627e87870495c, passOnceCompleted(orderManual_c6d823de02b04365, orderManual_c6d823de02b04365))), section1Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes")), orderManual_925b2750606e45aa), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 25, "Defeat a Chicken"), bones), orderManual_e2187282abd14612), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 7, "Feed a dog some bones"), orderManual_7307d7a1545249c7), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 3, "Pick some Sweetcorn from a Field"), orderManual_68855f46f9bc41df), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 2, "Eat an Onion"), orderManual_03a02189ef2c41c9), passOnceCompleted(grain.quantity(6).alsoCheckBank(), orderManual_f959773416174f78), passOnceCompleted(orderManual_20f2b6f2760b4291, orderManual_20f2b6f2760b4291), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 26, "Make some Flour"), orderManual_7e7d7d1aa70f4206), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), orderManual_956b7e8f1cba43e0), passOnceCompleted(rake, orderManual_397839f1b1f24846), passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_22, true, 24, "200 Collection log slots"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 26, "Rake a Flower Patch")), orderManual_5caee225521442f9), passOnceCompleted(bucket, orderManual_00554878070f4f0e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 30, "Milk a Buffalo"), orderManual_4c110a72a4b748d1), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 6, "Shear an Alpaca"), orderManual_6fb5cb3f33894336), passOnceCompleted(orderManual_d30aa746056444c3, orderManual_d30aa746056444c3), passOnceCompleted(new Conditions(LogicType.AND, cowhide, bones), orderManual_c75f7a1c32ef4f3f), passOnceCompleted(orderManual_8842f3b65fdb4d05, orderManual_8842f3b65fdb4d05), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 11, "Travel to Aldarin via Fairy ring"), orderManual_0819bafed42f4b91), passOnceCompleted(orderManual_7060fc9ca3444a25, orderManual_7060fc9ca3444a25), passOnceCompleted(orderManual_b4066f8970574c8a, orderManual_b4066f8970574c8a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 9, "Fill a Grape Barrel for the Foreman"), orderManual_9c6304e17f074f11), passOnceCompleted(new Conditions(LogicType.AND, coins.quantity(100), chisel), orderManual_04453a244b8e4e28), passOnceCompleted(coins.quantity(50001).alsoCheckBank(), orderManual_2a4533618e3843cc), passOnceCompleted(orderManual_864a7b35392e4bb5, orderManual_864a7b35392e4bb5), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 18, "Defeat a Seagull"), orderManual_b1d18d00302b44e1), passOnceCompleted(orderManual_39b2b856b31b46a8, orderManual_39b2b856b31b46a8), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 21, "Cook something with an apron"), orderManual_bd0d9307875d4407), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 1, "Eat a Rabbit"), orderManual_74ede07d53494e31))), section2Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_eab67f10eb07403e, orderManual_eab67f10eb07403e), passOnceCompleted(orderManual_9b1eca8dccbd42d2, orderManual_9b1eca8dccbd42d2), passOnceCompleted(new Conditions(LogicType.AND, bigFishingNet), orderManual_a695d187db0d426b))), section3Task);
 		allSections.addStep(not(new Conditions(LogicType.AND, passOnceCompleted(orderManual_defad039d9094571, orderManual_defad039d9094571), passOnceCompleted(ironMace, orderManual_52df5d410a9c4609), passOnceCompleted(ironMace.equipped(), orderManual_71753357153f4aea), passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 17, "Obtain a Casket from Fishing"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 3, "Obtain an old boot from a fishing spot"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 10, "Fish a House Key")), orderManual_7279930e175347d8), passOnceCompleted(new Conditions(LogicType.AND, jugOfWine, stew, moonLite, cupOfTea), orderManual_2d00f499fa504f2c), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 24, "Drink some moon-lite"), orderManual_69fff6adc2d94fa7), passOnceCompleted(orderManual_3a1994fd479f4789, orderManual_3a1994fd479f4789), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 29, "Successfully pickpocket a Citizen 10 times in a row"), orderManual_304f7ffb27f04f3a), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 25, "Purchase a Player Owned House"), orderManual_67ac90c160da4e80), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 28, "Sell some silk to a silk trader"), orderManual_6d81d68a300a421e), passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 28, "Give Oli some Stew"), orderManual_d54c4bcf9b4a4242))), section4Task);
@@ -1752,7 +1787,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return List.of(uncutRuby, bigFishingNet, bones, dramenStaff, knife, coins, whiteApron, greenCape, bronzeAxe, ironMace, logs, ruby, emerald, sapphire, needle, thread, wool, cowhide, leather, chisel, flax, cake, bucket, bucketOfWater, pot, grain, jugOfWine, stew, rawRabbit, cookedRabbit, moonLite, grapeBarrel, rake, orangeDye, blueDye, yellowDye, redDye, purpleDye, shortbow, smallFishingNet, rawSardine, fishingRod, fishingBait, rawShrimps, ironArrow, fiendishAshes, spade, birdSnare, unlitTorch, tinderbox, tyrasHelm, litTorch, bucketOfSand, pineapple, cupOfTea, staffOfAir, staffOfFire, forestryKit, harpoon, lobsterPot, flyFishingRod, eyeOfNewtPack, waterFilledVialPack, pestleAndMortar, adamantPlatebody, adamantPlatelegs, bronzePlatelegs, bronzePlatebody, mithrilSpear, steelPlatebody, ironDagger, bucketOfMilk, patOfButter, potato, bakedPotato, potatoWithButter, potatoSeed, rake, seedDibber, compost, softClay, bronzePickaxe, pinkSkirt, copperOre);
+		return List.of(uncutRuby, bigFishingNet, bones, dramenStaff, knife, coins, brownApron, greenCape, bronzeAxe, ironMace, logs, ruby, emerald, sapphire, needle, thread, wool, cowhide, leather, chisel, flax, cake, bucket, bucketOfWater, pot, grain, jugOfWine, stew, rawRabbit, cookedRabbit, moonLite, grapeBarrel, rake, orangeDye, blueDye, yellowDye, redDye, purpleDye, shortbow, smallFishingNet, rawSardine, fishingRod, fishingBait, rawShrimps, ironArrow, fiendishAshes, spade, birdSnare, unlitTorch, tinderbox, tyrasHelm, litTorch, bucketOfSand, pineapple, cupOfTea, staffOfAir, staffOfFire, forestryKit, harpoon, lobsterPot, flyFishingRod, eyeOfNewtPack, waterFilledVialPack, pestleAndMortar, adamantPlatebody, adamantPlatelegs, bronzePlatelegs, bronzePlatebody, mithrilSpear, steelPlatebody, ironDagger, bucketOfMilk, patOfButter, potato, bakedPotato, potatoWithButter, potatoSeed, rake, seedDibber, compost, softClay, bronzePickaxe, pinkSkirt, copperOre);
 	}
 
 	@Override

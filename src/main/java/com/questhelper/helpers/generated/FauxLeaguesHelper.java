@@ -1672,6 +1672,9 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 			@Override
 			public boolean check(Client client)
 			{
+				if (manualOverride.check(client)) {
+					return true;
+				}
 				boolean passed = completion.check(client);
 				if (passed && !manualOverride.check(client))
 				{

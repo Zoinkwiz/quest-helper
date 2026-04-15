@@ -29,7 +29,6 @@ package com.questhelper.requirements.var;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import net.runelite.api.Client;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import java.math.BigInteger;

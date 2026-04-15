@@ -27,6 +27,7 @@ package com.questhelper.panel.queststepsection;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.panel.JGenerator;
+import com.questhelper.panel.ManualStepSkipStore;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.QuestRequirementsPanel;
 import com.questhelper.questhelpers.QuestHelper;
@@ -60,6 +61,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 	private final Map<QuestStep, JTextPane> stepTextPanes = new HashMap<>();
 	private final Map<QuestStep, JPanel> stepRowPanels = new HashMap<>();
 	private final Map<QuestStep, JCheckBox> manualSkipBoxes = new HashMap<>();
+	private final Map<String, Boolean> persistedManualSkips;
 	private final List<QuestStep> orderedSidebarSteps = new ArrayList<>();
 	private boolean suppressManualSkipEvents;
 	private final @Nullable QuestRequirementsPanel requiredItemsPanel;
@@ -73,6 +75,18 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		this.panelDetails = panelDetails;
 		this.questHelperPlugin = questHelperPlugin;
 		this.questHelper = questManager.getSelectedQuest();
+		if (this.questHelper != null)
+		{
+			this.persistedManualSkips = ManualStepSkipStore.load(
+				this.questHelper.getConfigManager(),
+				this.questHelper.gson,
+				this.questHelper.getDisplayedQuestName()
+			);
+		}
+		else
+		{
+			this.persistedManualSkips = new HashMap<>();
+		}
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -198,6 +212,12 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		String pk = step.getSidebarManualSkipPersistenceKey();
 		if (m != null && pk != null && !pk.isBlank())
 		{
+			boolean persistedSkipped = Boolean.TRUE.equals(persistedManualSkips.get(pk));
+			if (persistedSkipped)
+			{
+				m.setShouldPass(true);
+			}
+
 			JCheckBox skip = new JCheckBox();
 			skip.setToolTipText("Skip step");
 			skip.setOpaque(true);
@@ -211,6 +231,14 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 				}
 				boolean sel = skip.isSelected();
 				m.setShouldPass(sel);
+				if (sel)
+				{
+					persistedManualSkips.put(pk, true);
+				}
+				else
+				{
+					persistedManualSkips.remove(pk);
+				}
 				if (questHelper != null)
 				{
 					questHelper.notifyManualSidebarSkipChanged(pk, sel);
@@ -277,6 +305,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 					continue;
 				}
 				m.setShouldPass(true);
+				persistedManualSkips.put(pk, true);
 				JCheckBox box = manualSkipBoxes.get(step);
 				if (box != null)
 				{
@@ -316,6 +345,10 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 				if (m != null)
 				{
 					m.setShouldPass(false);
+				}
+				if (pk != null && !pk.isBlank())
+				{
+					persistedManualSkips.remove(pk);
 				}
 				if (box != null)
 				{

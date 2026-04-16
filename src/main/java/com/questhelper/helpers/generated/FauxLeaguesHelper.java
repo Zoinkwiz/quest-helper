@@ -1961,7 +1961,8 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 			@Override
 			public boolean check(Client client)
 			{
-				if (manualOverride.check(client)) {
+				if (manualOverride.check(client))
+				{
 					return true;
 				}
 				boolean passed = completion.check(client);
@@ -1978,12 +1979,6 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 				return completion.getDisplayText();
 			}
 		};
-	}
-
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return List.of(uncutRuby, bigFishingNet, bones, dramenStaff, knife, coins, brownApron, redCape, bronzeAxe, ironMace, logs, ruby, emerald, sapphire, needle, thread, wool, cowhide, leather, chisel, flax, cake, bucket, bucketOfWater, pot, grain, jugOfWine, stew, rawRabbit, cookedRabbit, moonLite, grapeBarrel, rake, orangeDye, blueDye, yellowDye, redDye, purpleDye, shortbow, smallFishingNet, rawSardine, fishingRod, fishingBait, rawShrimps, ironArrow, fiendishAshes, spade, birdSnare, unlitTorch, tinderbox, tyrasHelm, litTorch, bucketOfSand, pineapple, cupOfTea, staffOfAir, staffOfFire, forestryKit, harpoon, lobsterPot, flyFishingRod, eyeOfNewtPack, waterFilledVialPack, pestleAndMortar, adamantPlatebody, adamantPlatelegs, bronzePlatelegs, bronzePlatebody, mithrilSpear, steelPlatebody, ironDagger, bucketOfMilk, patOfButter, potato, bakedPotato, potatoWithButter, potatoSeed, rake, seedDibber, compost, softClay, bronzePickaxe, pinkSkirt, copperOre);
 	}
 
 	@Override

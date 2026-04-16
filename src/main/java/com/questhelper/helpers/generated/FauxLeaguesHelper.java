@@ -139,7 +139,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	ObjectStep usewaterpump;
 	NpcStep talktoportmaster;
 	ObjectStep zanarisfairyring;
-	NpcStep crynearachild;
+	EmoteStep crynearachild;
 	ObjectStep stealcakesfrombakersstall;
 	NpcStep tradeshopkeeper;
 	NpcStep attackratlevel1;
@@ -644,7 +644,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		usewaterpump = new ObjectStep(this, 52646, new WorldPoint(1690, 3132, 0), "Fill a bucket at the water pump.", true);
 		usewaterpump.addRequirement(bucket.highlighted());
 		attackdummy = new ObjectStep(this, 52645, new WorldPoint(1659, 3148, 0), "Attack Dummy.", true);
-		crynearachild = new NpcStep(this, 13188, new WorldPoint(1674, 3109, 0), "Use the Cry emote near a child.", true);
+		crynearachild = new EmoteStep(this, QuestEmote.CRY, new WorldPoint(1674, 3109, 0), "Use the Cry emote near a child.");
 		crynearachild.addIcon(QuestEmote.CRY.getSpriteId());
 		stealcakesfrombakersstall = new ObjectStep(this, 51937, new WorldPoint(1688, 3111, 0), "Thieve 14+ cakes from the Cake Stall.", true);
 		{
@@ -1063,7 +1063,6 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		usepotterswheel.addRequirement(softClay);
 		firepotteryoven = new ObjectStep(this, 11601, new WorldPoint(1764, 3094, 0), "Fire the unfired pottery at the Pottery Oven.");
 		thankfaux = new DetailedQuestStep(this, "Say thank you to Faux at twitch.tv/Faux. There's additional steps on his guide, but this is as far as we can take you. Good luck!");
-
 
 		orderManual_3af37088880c4e47 = new ManualRequirement();
 		orderManual_29c81dc8336344ac = new ManualRequirement();

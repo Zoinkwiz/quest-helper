@@ -1710,9 +1710,10 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, cowhide, bones), orderManual_c75f7a1c32ef4f3f)), attackcowlevel2);
 		section2Task.addStep(not(passOnceCompleted(orderManual_8842f3b65fdb4d05, orderManual_8842f3b65fdb4d05)), burybones);
 		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 11, "Travel to Aldarin via Fairy ring"), orderManual_0819bafed42f4b91)), aldarinfairyring);
-		section2Task.addStep(not(passOnceCompleted(new ItemRequirement("Barrel", 30037), orderManual_7060fc9ca3444a25)), talktovineyardforeman);
-		section2Task.addStep(not(passOnceCompleted(new ChatMessageRequirement("<col=06600c>Your grape barrel is now full. You should return it to the Vineyard foreman.</col>"), orderManual_b4066f8970574c8a)), collectshimmeringgrapes);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 9, "Fill a Grape Barrel for the Foreman"), orderManual_9c6304e17f074f11)), returntovineyardforeman);
+		var grapeDone = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 9, "Fill a Grape Barrel for the Foreman");
+		section2Task.addStep(not(passOnceCompleted(or(grapeDone, new ItemRequirement("Barrel", 30037)), orderManual_7060fc9ca3444a25)), talktovineyardforeman);
+		section2Task.addStep(not(passOnceCompleted(or(grapeDone, new ChatMessageRequirement("<col=06600c>Your grape barrel is now full. You should return it to the Vineyard foreman.</col>")), orderManual_b4066f8970574c8a)), collectshimmeringgrapes);
+		section2Task.addStep(not(passOnceCompleted(grapeDone, orderManual_9c6304e17f074f11)), returntovineyardforeman);
 		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, coins.quantity(100), chisel), orderManual_04453a244b8e4e28)), withdrawaldarinbanker);
 		section2Task.addStep(not(passOnceCompleted(coins.quantity(50001).alsoCheckBank(), orderManual_2a4533618e3843cc)), tradetoci);
 		section2Task.addStep(not(passOnceCompleted(orderManual_864a7b35392e4bb5, orderManual_864a7b35392e4bb5)), cutextragems);

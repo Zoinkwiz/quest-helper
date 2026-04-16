@@ -1806,7 +1806,7 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		var killed5ThingsWithMace = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 30, "Killed 5 with mace");
 		section6Task.addStep(not(passOnceCompleted(and(killed5Bunnies, killed5ThingsWithMace), orderManual_f679c2afb8924312)), attackrabbitlevel2);
 		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 9, "Cast Home Teleport"), orderManual_a1a431788a17478e)), hometeleport);
-		var agility666 = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 30, "666 jumps");
+		var agility666 = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 14, "666 jumps");
 		section6Task.addStep(not(passOnceCompleted(agility666, orderManual_4a6cc9352e4b414d)), yamaagility);
 		section6Task.addStep(not(passOnceCompleted(not(new ZoneRequirement(new Zone(new WorldPoint(1463, 5566, 0), new WorldPoint(1546, 5644, 0)))), orderManual_e2c6f51feb6142eb)), returntocivitas);
 		section6Task.addStep(not(passOnceCompleted(new ZoneRequirement(new Zone(new WorldPoint(1277, 2834, 0), new WorldPoint(1492, 3002, 0))), orderManual_822d7bebf7814a0d)), travelaldarin);

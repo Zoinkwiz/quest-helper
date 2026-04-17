@@ -642,6 +642,45 @@ public abstract class QuestStep implements Module
 		return client.getWidget(InterfaceID.Inventory.ITEMS);
 	}
 
+	protected Widget getBankWidget()
+	{
+		return client.getWidget(InterfaceID.Bankmain.ITEMS);
+	}
+
+	protected void renderBank(Graphics2D graphics, List<Requirement> passedRequirements)
+	{
+		Widget bankWidget = getBankWidget();
+		if (bankWidget == null || bankWidget.isHidden())
+		{
+			return;
+		}
+		Color baseColor = questHelper.getConfig().targetOverlayColor();
+
+		if (bankWidget.getDynamicChildren() == null) return;
+
+
+		for (Widget item : bankWidget.getDynamicChildren())
+		{
+			for (Requirement requirement : passedRequirements)
+			{
+				if (isValidRequirementForRenderInBank(requirement, item))
+				{
+					highlightItem(item, baseColor, graphics);
+				}
+			}
+		}
+	}
+
+	private boolean isValidRequirementForRenderInBank(Requirement requirement, Widget item)
+	{
+		return requirement instanceof ItemRequirement && isValidRenderRequirementInBank((ItemRequirement) requirement, item);
+	}
+
+	protected boolean isValidRenderRequirementInBank(ItemRequirement requirement, Widget item)
+	{
+		return (requirement.getAllIds().contains(item.getItemId()));
+	}
+
 	protected void renderInventory(Graphics2D graphics, DefinedPoint definedPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)
 	{
 		Widget inventoryWidget = getInventoryWidget();
@@ -668,13 +707,13 @@ public abstract class QuestStep implements Module
 
 				if (isValidRequirementForRenderInInventory(requirement, item))
 				{
-					highlightInventoryItem(item, baseColor, graphics);
+					highlightItem(item, baseColor, graphics);
 				}
 			}
 		}
 	}
 
-	private void highlightInventoryItem(Widget item, Color color, Graphics2D graphics)
+	private void highlightItem(Widget item, Color color, Graphics2D graphics)
 	{
 		Rectangle slotBounds = item.getBounds();
 		switch (questHelper.getConfig().highlightStyleInventoryItems())

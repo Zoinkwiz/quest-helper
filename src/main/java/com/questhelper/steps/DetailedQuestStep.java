@@ -468,6 +468,13 @@ public class DetailedQuestStep extends QuestStep
 				.collect(Collectors.toList());
 		renderInventory(graphics, definedPoint, itemRequirements, false);
 		renderInventory(graphics, definedPoint, teleportRequirements, true);
+
+		// TODO: Add a config to turn off as well?
+		if (!questHelper.getQuestHelperPlugin().isBankTabOpen())
+		{
+			renderBank(graphics, requirements);
+		}
+
 		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
 		{
 			widgetHighlights.highlightChoices(graphics, client, plugin);

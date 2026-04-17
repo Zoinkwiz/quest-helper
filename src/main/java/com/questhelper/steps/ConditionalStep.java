@@ -461,6 +461,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 				.map(ItemRequirement.class::cast)
 				.collect(Collectors.toList());
 		renderInventory(graphics, activeDp, itemRequirements, false);
+		renderBank(graphics, requirements);
 		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
 		{
 			widgetHighlights.highlightChoices(graphics, client, plugin);

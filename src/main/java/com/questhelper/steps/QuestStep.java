@@ -798,4 +798,14 @@ public abstract class QuestStep implements Module
 	{
 		return new PuzzleWrapperStep(getQuestHelper(), this).withNoHelpHiddenInSidebar(hiddenInSidebar);
 	}
+
+	public void withPersistedManualSkip(String persistenceKey) {
+		setSidebarManualSkipWithPersistenceKey(new ManualRequirement(), persistenceKey);
+	}
+
+	public void setSidebarManualSkipWithPersistenceKey(ManualRequirement requirement, String persistenceKey)
+	{
+		setSidebarManualSkipRequirement(requirement);
+		setSidebarManualSkipPersistenceKey(persistenceKey);
+	}
 }

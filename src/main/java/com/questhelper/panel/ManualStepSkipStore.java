@@ -44,7 +44,7 @@ public final class ManualStepSkipStore
 
 	public static Map<String, Boolean> load(ConfigManager cm, Gson gson, String displayedQuestName)
 	{
-		if (cm == null)
+		if (cm == null || cm.getRSProfileKey() == null)
 		{
 			return new HashMap<>();
 		}

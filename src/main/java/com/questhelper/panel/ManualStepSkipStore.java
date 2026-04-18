@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Persists per-quest manual step skips under {@link QuestHelperConfig#QUEST_HELPER_GROUP} using one key per displayed helper name.
+ * Persists per-RuneScape-profile manual step skips under {@link QuestHelperConfig#QUEST_HELPER_GROUP},
+ * one JSON map key per displayed helper name (same grouping as sidebar order).
  */
 public final class ManualStepSkipStore
 {
@@ -47,7 +48,18 @@ public final class ManualStepSkipStore
 		{
 			return new HashMap<>();
 		}
-		String raw = cm.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, configKeyForQuest(displayedQuestName));
+		String ck = configKeyForQuest(displayedQuestName);
+		String raw = cm.getRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck);
+		if ((raw == null || raw.isBlank()) && cm.getRSProfileKey() != null)
+		{
+			String legacy = cm.getConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck);
+			if (legacy != null && !legacy.isBlank())
+			{
+				cm.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck, legacy);
+				cm.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck);
+				raw = legacy;
+			}
+		}
 		if (raw == null || raw.isBlank())
 		{
 			return new HashMap<>();
@@ -65,7 +77,7 @@ public final class ManualStepSkipStore
 
 	public static void put(ConfigManager cm, Gson gson, String displayedQuestName, String slotKey, boolean skipped)
 	{
-		if (cm == null || slotKey == null || slotKey.isBlank())
+		if (cm == null || cm.getRSProfileKey() == null || slotKey == null || slotKey.isBlank())
 		{
 			return;
 		}
@@ -81,20 +93,20 @@ public final class ManualStepSkipStore
 		}
 		if (map.isEmpty())
 		{
-			cm.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck);
+			cm.unsetRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck);
 		}
 		else
 		{
-			cm.setConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck, gson.toJson(map));
+			cm.setRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, ck, gson.toJson(map));
 		}
 	}
 
 	public static void clearAll(ConfigManager cm, String displayedQuestName)
 	{
-		if (cm == null)
+		if (cm == null || cm.getRSProfileKey() == null)
 		{
 			return;
 		}
-		cm.unsetConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, configKeyForQuest(displayedQuestName));
+		cm.unsetRSProfileConfiguration(QuestHelperConfig.QUEST_HELPER_GROUP, configKeyForQuest(displayedQuestName));
 	}
 }

@@ -181,18 +181,13 @@ public class LeagueQuestRegions
 	{
 		QUEST_REGIONS.put(quest, EnumSet.of(regions[0], regions));
 	}
-
-	public static EnumSet<LeagueRegion> getRequiredRegions(QuestHelperQuest quest)
-	{
-		return QUEST_REGIONS.get(quest);
-	}
-
+	
 	public static boolean isCompletableWith(QuestHelperQuest quest, EnumSet<LeagueRegion> playerRegions)
 	{
 		EnumSet<LeagueRegion> required = QUEST_REGIONS.get(quest);
 		if (required == null)
 		{
-			return true;
+			return false;
 		}
 		return playerRegions.containsAll(required);
 	}

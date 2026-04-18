@@ -44,11 +44,6 @@ public class LeagueFiltering
 		selectedRegions = (regions == null || regions.isEmpty()) ? null : regions;
 	}
 
-	public static EnumSet<LeagueRegion> getSelectedRegions()
-	{
-		return selectedRegions;
-	}
-
 	public static boolean passesLeagueFilter(QuestHelper questHelper)
 	{
 		if (selectedRegions == null)

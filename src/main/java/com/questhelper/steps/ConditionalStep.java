@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -41,6 +42,7 @@ import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import lombok.NonNull;
 import lombok.Setter;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
@@ -48,6 +50,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
@@ -116,22 +119,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		var newSet = new HashSet<>(step.steps.keySet());
 		newSet.remove(null);
-		addStep(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step, false);
-	}
-
-	private boolean isSingleNotRequirement(Requirement requirement)
-	{
-		if (!(requirement instanceof Conditions))
-		{
-			return false;
-		}
-		Conditions condition = (Conditions) requirement;
-		return condition.getLogicType() == LogicType.NOR && condition.getConditions().size() == 1;
+		addStep(passOnceCompleted(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step), step, false);
 	}
 
 	public void addStep(Requirement requirement, QuestStep step)
 	{
-		addStep(requirement, step, false);
+		addStep(passOnceCompleted(requirement, step), step, false);
 	}
 
 	// Each addStep can have an ID. When you add an ID, it keeps a separate ID to Steps OrderedHashSet.
@@ -141,9 +134,42 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	public void addStep(Requirement requirement, QuestStep step, boolean isLockable)
 	{
 		step.setLockable(isLockable);
-		this.steps.put(requirement, step);
+		this.steps.put(passOnceCompleted(requirement, step), step);
 
 		checkForConditions(requirement);
+	}
+
+	private Requirement passOnceCompleted(Requirement completion, QuestStep step)
+	{
+		var manualOverride = step.getSidebarManualSkipRequirement();
+		if (completion == null || manualOverride == null)
+		{
+
+			return completion;
+		}
+		return new Requirement()
+		{
+			@Override
+			public boolean check(Client client)
+			{
+				if (manualOverride.check(client))
+				{
+					return true;
+				}
+				boolean passed = completion.check(client);
+				if (passed && !manualOverride.check(client))
+				{
+					manualOverride.setShouldPass(true);
+				}
+				return passed;
+			}
+
+			@Override
+			public @NotNull String getDisplayText()
+			{
+				return completion.getDisplayText();
+			}
+		};
 	}
 
 	private void checkForConditions(Requirement requirement)

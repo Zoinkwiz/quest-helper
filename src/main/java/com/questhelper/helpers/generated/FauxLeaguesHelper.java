@@ -1077,266 +1077,266 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 
 
 		section1Task = new ConditionalStep(this, depositoillanterns);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 18), openleaguesmenu.getSidebarManualSkipRequirement())), openleaguesmenu);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 19, "Complete the Leagues Tutorial"), completeleaguestutorial.getSidebarManualSkipRequirement())), completeleaguestutorial);
-		section1Task.addStep(not(passOnceCompleted(claimfirstrelic.getSidebarManualSkipRequirement(), claimfirstrelic.getSidebarManualSkipRequirement())), claimfirstrelic);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 8, "Turn off your run"), togglerunenergy.getSidebarManualSkipRequirement())), togglerunenergy);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 22, "Pickpocket a Citizen"), new SkillRequirement(Skill.THIEVING, 5, true)), pickpocketcitizen.getSidebarManualSkipRequirement())), pickpocketcitizen);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 0, "Pet Renu"), petrenu.getSidebarManualSkipRequirement())), petrenu);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 10, "Bow near a quetzal"), bownearrenu.getSidebarManualSkipRequirement())), bownearrenu);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 12, "Travel using the Quetzal Transport System"), travelwithrenu.getSidebarManualSkipRequirement())), travelwithrenu);
-		section1Task.addStep(not(passOnceCompleted(travelbackwithrenu.getSidebarManualSkipRequirement(), travelbackwithrenu.getSidebarManualSkipRequirement())), travelbackwithrenu);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 27, "Fill something up from a water pump"), usewaterpump.getSidebarManualSkipRequirement())), usewaterpump);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 4, "Attack a dummy"), attackdummy.getSidebarManualSkipRequirement())), attackdummy);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 14, "Cry near a child"), crynearachild.getSidebarManualSkipRequirement())), crynearachild);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 4, "Steal some bread"), cake.quantity(14).alsoCheckBank()), stealcakesfrombakersstall.getSidebarManualSkipRequirement())), stealcakesfrombakersstall);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, chisel.alsoCheckBank(), knife), tradeshopkeeper.getSidebarManualSkipRequirement())), tradeshopkeeper);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, brownApron, redCape), tradefloria.getSidebarManualSkipRequirement())), tradefloria);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, brownApron.equipped(), redCape.equipped()), equipapronandredcape.getSidebarManualSkipRequirement())), equipapronandredcape);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 28, "Defeat a Rat"), attackratlevel1.getSidebarManualSkipRequirement())), attackratlevel1);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 4, "Salute next to a statue of Quoatlos"), salutequoatlos.getSidebarManualSkipRequirement())), salutequoatlos);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 3, "Activate a prayer near an altar"), useprayernearshrineofralos.getSidebarManualSkipRequirement())), useprayernearshrineofralos);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 1, "Pet Xolo in Civitas"), petxolo.getSidebarManualSkipRequirement())), petxolo);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_36, true, 24, "150 Combat Achievements"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 23, "Drink from a bird bath")), drinkfrombirdbath.getSidebarManualSkipRequirement())), drinkfrombirdbath);
-		section1Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 14, "Chop Some Logs"), logs.quantity(2).alsoCheckBank()), chopdowntree.getSidebarManualSkipRequirement())), chopdowntree);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 6, "Burn Some Normal Logs"), burnlog.getSidebarManualSkipRequirement())), burnlog);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 8, "Fletch Some Arrow Shafts"), fletchlog.getSidebarManualSkipRequirement())), fletchlog);
-		section1Task.addStep(not(passOnceCompleted(useeastcivitasbank.getSidebarManualSkipRequirement(), useeastcivitasbank.getSidebarManualSkipRequirement())), useeastcivitasbank);
-		section1Task.addStep(not(passOnceCompleted(and(shears.alsoCheckBank(), glassblowingPipe.alsoCheckBank()), tradeartima.getSidebarManualSkipRequirement())), tradeartima);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 9, "Talk to a Gladiator"), talktogladiator.getSidebarManualSkipRequirement())), talktogladiator);
-		section1Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 6, "Talk to any Port master"), talktoportmaster.getSidebarManualSkipRequirement())), talktoportmaster);
-		section1Task.addStep(not(passOnceCompleted(and(bucketOfSand.quantity(10), sodaAsh.quantity(10)), talktotradercrewmember.getSidebarManualSkipRequirement())), talktotradercrewmember);
-		section1Task.addStep(not(passOnceCompleted(moltenGlass.quantity(10), usefurnace.getSidebarManualSkipRequirement())), usefurnace);
-		section1Task.addStep(not(passOnceCompleted(and(moltenGlass.quantity(10).alsoCheckBank(), not(moltenGlass.quantity(1))), depositmoltenglass.getSidebarManualSkipRequirement())), depositmoltenglass);
-		section1Task.addStep(not(passOnceCompleted(and(bucketOfSand.quantity(10).alsoCheckBank(), sodaAsh.quantity(10).alsoCheckBank(), moltenGlass.quantity(10).alsoCheckBank()), talktotradercrewmember2.getSidebarManualSkipRequirement())), talktotradercrewmember2);
-		section1Task.addStep(not(passOnceCompleted(moltenGlass.quantity(20).alsoCheckBank(), usefurnace2.getSidebarManualSkipRequirement())), usefurnace2);
-		section1Task.addStep(not(passOnceCompleted(new SkillRequirement(Skill.CRAFTING, 20, true), blowglassintooillanterns.getSidebarManualSkipRequirement())), blowglassintooillanterns);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 18)), openleaguesmenu);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 19, "Complete the Leagues Tutorial")), completeleaguestutorial);
+		section1Task.addStep(not(claimfirstrelic.getSidebarManualSkipRequirement()), claimfirstrelic);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 8, "Turn off your run")), togglerunenergy);
+		section1Task.addStep(not(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 22, "Pickpocket a Citizen"), new SkillRequirement(Skill.THIEVING, 5, true))), pickpocketcitizen);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 0, "Pet Renu")), petrenu);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 10, "Bow near a quetzal")), bownearrenu);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 12, "Travel using the Quetzal Transport System")), travelwithrenu);
+		section1Task.addStep(not(travelbackwithrenu.getSidebarManualSkipRequirement()), travelbackwithrenu);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 27, "Fill something up from a water pump")), usewaterpump);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 4, "Attack a dummy")), attackdummy);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 14, "Cry near a child")), crynearachild);
+		section1Task.addStep(not(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 4, "Steal some bread"), cake.quantity(14).alsoCheckBank())), stealcakesfrombakersstall);
+		section1Task.addStep(not(new Conditions(LogicType.AND, chisel.alsoCheckBank(), knife)), tradeshopkeeper);
+		section1Task.addStep(not(new Conditions(LogicType.AND, brownApron, redCape)), tradefloria);
+		section1Task.addStep(not(new Conditions(LogicType.AND, brownApron.equipped(), redCape.equipped())), equipapronandredcape);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 28, "Defeat a Rat")), attackratlevel1);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 4, "Salute next to a statue of Quoatlos")), salutequoatlos);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 3, "Activate a prayer near an altar")), useprayernearshrineofralos);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 1, "Pet Xolo in Civitas")), petxolo);
+		section1Task.addStep(not(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_36, true, 24, "150 Combat Achievements"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 23, "Drink from a bird bath"))), drinkfrombirdbath);
+		section1Task.addStep(not(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 14, "Chop Some Logs"), logs.quantity(2).alsoCheckBank())), chopdowntree);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 6, "Burn Some Normal Logs")), burnlog);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 8, "Fletch Some Arrow Shafts")), fletchlog);
+		section1Task.addStep(not(useeastcivitasbank.getSidebarManualSkipRequirement()), useeastcivitasbank);
+		section1Task.addStep(not(and(shears.alsoCheckBank(), glassblowingPipe.alsoCheckBank())), tradeartima);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 9, "Talk to a Gladiator")), talktogladiator);
+		section1Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 6, "Talk to any Port master")), talktoportmaster);
+		section1Task.addStep(not(and(bucketOfSand.quantity(10), sodaAsh.quantity(10))), talktotradercrewmember);
+		section1Task.addStep(not(moltenGlass.quantity(10)), usefurnace);
+		section1Task.addStep(not(and(moltenGlass.quantity(10).alsoCheckBank(), not(moltenGlass.quantity(1)))), depositmoltenglass);
+		section1Task.addStep(not(and(bucketOfSand.quantity(10).alsoCheckBank(), sodaAsh.quantity(10).alsoCheckBank(), moltenGlass.quantity(10).alsoCheckBank())), talktotradercrewmember2);
+		section1Task.addStep(not(moltenGlass.quantity(20).alsoCheckBank()), usefurnace2);
+		section1Task.addStep(not(new SkillRequirement(Skill.CRAFTING, 20, true)), blowglassintooillanterns);
 
 		section2Task = new ConditionalStep(this, eatcookedrabbit);
-		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), new VarbitRequirement(20372, 6)), pickcabbage.getSidebarManualSkipRequirement())), pickcabbage);
-		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 25, "Defeat a Chicken"), bones), attackchickenlevel1.getSidebarManualSkipRequirement())), attackchickenlevel1);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 7, "Sit near a stolen cabbage"), sitwithdogs.getSidebarManualSkipRequirement())), sitwithdogs);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 7, "Feed a dog some bones"), feedbonestomolossus.getSidebarManualSkipRequirement())), feedbonestomolossus);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 3, "Pick some Sweetcorn from a Field"), picksweetcorn.getSidebarManualSkipRequirement())), picksweetcorn);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 2, "Eat an Onion"), pickandeatonion.getSidebarManualSkipRequirement())), pickandeatonion);
-		section2Task.addStep(not(passOnceCompleted(new VarbitRequirement(20371, 6), pickwheat.getSidebarManualSkipRequirement())), pickwheat);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 26, "Make some Flour"), emptyflourbin.getSidebarManualSkipRequirement())), emptyflourbin);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), pickpotato.getSidebarManualSkipRequirement())), pickpotato);
-		section2Task.addStep(not(passOnceCompleted(rake, tradeharminia.getSidebarManualSkipRequirement())), tradeharminia);
-		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_22, true, 24, "200 Collection log slots"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 26, "Rake a Flower Patch")), rakeflowerpatch.getSidebarManualSkipRequirement())), rakeflowerpatch);
-		section2Task.addStep(not(passOnceCompleted(bucket, emptywaterbucket.getSidebarManualSkipRequirement())), emptywaterbucket);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 30, "Milk a Buffalo"), milkdairybuffalo.getSidebarManualSkipRequirement())), milkdairybuffalo);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 6, "Shear an Alpaca"), shearalpaca.getSidebarManualSkipRequirement())), shearalpaca);
-		section2Task.addStep(not(passOnceCompleted(zanarisfairyring.getSidebarManualSkipRequirement(), zanarisfairyring.getSidebarManualSkipRequirement())), zanarisfairyring);
-		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, cowhide, bones), attackcowlevel2.getSidebarManualSkipRequirement())), attackcowlevel2);
-		section2Task.addStep(not(passOnceCompleted(burybones.getSidebarManualSkipRequirement(), burybones.getSidebarManualSkipRequirement())), burybones);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 11, "Travel to Aldarin via Fairy ring"), aldarinfairyring.getSidebarManualSkipRequirement())), aldarinfairyring);
+		section2Task.addStep(not(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes"), new VarbitRequirement(20372, 6))), pickcabbage);
+		section2Task.addStep(not(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 25, "Defeat a Chicken"), bones)), attackchickenlevel1);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 7, "Sit near a stolen cabbage")), sitwithdogs);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 7, "Feed a dog some bones")), feedbonestomolossus);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 3, "Pick some Sweetcorn from a Field")), picksweetcorn);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 2, "Eat an Onion")), pickandeatonion);
+		section2Task.addStep(not(new VarbitRequirement(20371, 6)), pickwheat);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 26, "Make some Flour")), emptyflourbin);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 21, "Pick 6 wheat, 6 cabbages and 6 potatoes")), pickpotato);
+		section2Task.addStep(not(rake), tradeharminia);
+		section2Task.addStep(not(new Conditions(LogicType.OR, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_22, true, 24, "200 Collection log slots"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 26, "Rake a Flower Patch"))), rakeflowerpatch);
+		section2Task.addStep(not(bucket), emptywaterbucket);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 30, "Milk a Buffalo")), milkdairybuffalo);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 6, "Shear an Alpaca")), shearalpaca);
+		section2Task.addStep(not(zanarisfairyring.getSidebarManualSkipRequirement()), zanarisfairyring);
+		section2Task.addStep(not(new Conditions(LogicType.AND, cowhide, bones)), attackcowlevel2);
+		section2Task.addStep(not(burybones.getSidebarManualSkipRequirement()), burybones);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 11, "Travel to Aldarin via Fairy ring")), aldarinfairyring);
 		var grapeDone = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 9, "Fill a Grape Barrel for the Foreman");
-		section2Task.addStep(not(passOnceCompleted(or(grapeDone, new ItemRequirement("Barrel", 30037)), talktovineyardforeman.getSidebarManualSkipRequirement())), talktovineyardforeman);
-		section2Task.addStep(not(passOnceCompleted(or(grapeDone, new ChatMessageRequirement("<col=06600c>Your grape barrel is now full. You should return it to the Vineyard foreman.</col>")), collectshimmeringgrapes.getSidebarManualSkipRequirement())), collectshimmeringgrapes);
-		section2Task.addStep(not(passOnceCompleted(grapeDone, returntovineyardforeman.getSidebarManualSkipRequirement())), returntovineyardforeman);
-		section2Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, coins.quantity(100), chisel), withdrawaldarinbanker.getSidebarManualSkipRequirement())), withdrawaldarinbanker);
-		section2Task.addStep(not(passOnceCompleted(coins.quantity(50001).alsoCheckBank(), tradetoci.getSidebarManualSkipRequirement())), tradetoci);
-		section2Task.addStep(not(passOnceCompleted(cutextragems.getSidebarManualSkipRequirement(), cutextragems.getSidebarManualSkipRequirement())), cutextragems);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 18, "Defeat a Seagull"), attackseagulllevel2.getSidebarManualSkipRequirement())), attackseagulllevel2);
-		section2Task.addStep(not(passOnceCompleted(and(tyrasHelm, bucket, rawRabbit.quantity(5)), tradechartership.getSidebarManualSkipRequirement())), tradechartership);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 21, "Cook something with an apron"), cookrabbitonoven.getSidebarManualSkipRequirement())), cookrabbitonoven);
-		section2Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 1), eatcookedrabbit.getSidebarManualSkipRequirement())), eatcookedrabbit);
+		section2Task.addStep(not(or(grapeDone, new ItemRequirement("Barrel", 30037))), talktovineyardforeman);
+		section2Task.addStep(not(or(grapeDone, new ChatMessageRequirement("<col=06600c>Your grape barrel is now full. You should return it to the Vineyard foreman.</col>"))), collectshimmeringgrapes);
+		section2Task.addStep(not(grapeDone), returntovineyardforeman);
+		section2Task.addStep(not(new Conditions(LogicType.AND, coins.quantity(100), chisel)), withdrawaldarinbanker);
+		section2Task.addStep(not(coins.quantity(50001).alsoCheckBank()), tradetoci);
+		section2Task.addStep(not(cutextragems.getSidebarManualSkipRequirement()), cutextragems);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 18, "Defeat a Seagull")), attackseagulllevel2);
+		section2Task.addStep(not(and(tyrasHelm, bucket, rawRabbit.quantity(5))), tradechartership);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 21, "Cook something with an apron")), cookrabbitonoven);
+		section2Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 1)), eatcookedrabbit);
 
 
 		section3Task = new ConditionalStep(this, talktopicaria);
-		section3Task.addStep(not(passOnceCompleted(talktoantonia.getSidebarManualSkipRequirement(), talktoantonia.getSidebarManualSkipRequirement())), talktoantonia);
-		section3Task.addStep(not(passOnceCompleted(or(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), unlitTorch), buytorch.getSidebarManualSkipRequirement())), buytorch);
-		section3Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), lighttorch.getSidebarManualSkipRequirement())), lighttorch);
-		section3Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 26, "Fill bucket of sand"), fillabucketwithsand.getSidebarManualSkipRequirement())), fillabucketwithsand);
-		section3Task.addStep(not(passOnceCompleted(and(feathers.quantity(1000), bigFishingNet), talktopicaria.getSidebarManualSkipRequirement())), talktopicaria);
+		section3Task.addStep(not(talktoantonia.getSidebarManualSkipRequirement()), talktoantonia);
+		section3Task.addStep(not(or(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch"), unlitTorch)), buytorch);
+		section3Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 11, "Light a Torch")), lighttorch);
+		section3Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 26, "Fill bucket of sand")), fillabucketwithsand);
+		section3Task.addStep(not(and(feathers.quantity(1000), bigFishingNet)), talktopicaria);
 
 		section4Task = new ConditionalStep(this, givestewtooli);
 		var charterDone = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 11);
-		section4Task.addStep(not(passOnceCompleted(charterDone, chartertocivitas.getSidebarManualSkipRequirement())), chartertocivitas);
-		section4Task.addStep(not(passOnceCompleted(buypineapples.getSidebarManualSkipRequirement(), buypineapples.getSidebarManualSkipRequirement())), buypineapples);
-		section4Task.addStep(not(passOnceCompleted(depositpineapples.getSidebarManualSkipRequirement(), depositpineapples.getSidebarManualSkipRequirement())), depositpineapples);
-		section4Task.addStep(not(passOnceCompleted(ironMace, buyironmace.getSidebarManualSkipRequirement())), buyironmace);
-		section4Task.addStep(not(passOnceCompleted(ironMace.equipped(), equipironmace.getSidebarManualSkipRequirement())), getEquipironmace());
-		section4Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 17, "Obtain a Casket from Fishing"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 3, "Obtain an old boot from a fishing spot"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 10, "Fish a House Key")), castfishingspot.getSidebarManualSkipRequirement())), castfishingspot);
-		section4Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, jugOfWine, stew, moonLite, cupOfTea), talktobartender.getSidebarManualSkipRequirement())), talktobartender);
-		section4Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 24, "Drink some moon-lite"), drinkmoonlite.getSidebarManualSkipRequirement())), drinkmoonlite);
-		section4Task.addStep(not(passOnceCompleted(drinkjugofwine.getSidebarManualSkipRequirement(), drinkjugofwine.getSidebarManualSkipRequirement())), drinkjugofwine);
-		section4Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 29, "Successfully pickpocket a Citizen 10 times in a row"), pickpocketcitizenuntilsuccess.getSidebarManualSkipRequirement())), pickpocketcitizenuntilsuccess);
-		section4Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 25, "Purchase a Player Owned House"), buypoh.getSidebarManualSkipRequirement())), buypoh);
-		section4Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 28, "Sell some silk to a silk trader"), tradesilkmerchant.getSidebarManualSkipRequirement())), tradesilkmerchant);
-		section4Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 28), givestewtooli.getSidebarManualSkipRequirement())), givestewtooli);
+		section4Task.addStep(not(charterDone), chartertocivitas);
+		section4Task.addStep(not(buypineapples.getSidebarManualSkipRequirement()), buypineapples);
+		section4Task.addStep(not(depositpineapples.getSidebarManualSkipRequirement()), depositpineapples);
+		section4Task.addStep(not(ironMace), buyironmace);
+		section4Task.addStep(not(ironMace.equipped()), getEquipironmace());
+		section4Task.addStep(not(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 17, "Obtain a Casket from Fishing"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 3, "Obtain an old boot from a fishing spot"), new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 10, "Fish a House Key"))), castfishingspot);
+		section4Task.addStep(not(new Conditions(LogicType.AND, jugOfWine, stew, moonLite, cupOfTea)), talktobartender);
+		section4Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 24, "Drink some moon-lite")), drinkmoonlite);
+		section4Task.addStep(not(drinkjugofwine.getSidebarManualSkipRequirement()), drinkjugofwine);
+		section4Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_11, true, 29, "Successfully pickpocket a Citizen 10 times in a row")), pickpocketcitizenuntilsuccess);
+		section4Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 25, "Purchase a Player Owned House")), buypoh);
+		section4Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 28, "Sell some silk to a silk trader")), tradesilkmerchant);
+		section4Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 28)), givestewtooli);
 
 		section5Task = new ConditionalStep(this, talktofriendlyforester);
-		section5Task.addStep(not(passOnceCompleted(traveltoauburnvale.getSidebarManualSkipRequirement(), traveltoauburnvale.getSidebarManualSkipRequirement())), traveltoauburnvale);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 22), drinkcupoftea.getSidebarManualSkipRequirement())), drinkcupoftea);
-		section5Task.addStep(not(passOnceCompleted(depositinauburnvale.getSidebarManualSkipRequirement(), depositinauburnvale.getSidebarManualSkipRequirement())), depositinauburnvale);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 5), tradesebamo.getSidebarManualSkipRequirement())), tradesebamo);
-		section5Task.addStep(not(passOnceCompleted(tradelunami.getSidebarManualSkipRequirement(), tradelunami.getSidebarManualSkipRequirement())), tradelunami);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 15, "Chop using steel axe"), chopdowndeadtree.getSidebarManualSkipRequirement())), chopdowndeadtree);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 7, "Turn any Logs Into a Plank"), makeplankatsawmill.getSidebarManualSkipRequirement())), makeplankatsawmill);
+		section5Task.addStep(not(traveltoauburnvale.getSidebarManualSkipRequirement()), traveltoauburnvale);
+		section5Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 22)), drinkcupoftea);
+		section5Task.addStep(not(depositinauburnvale.getSidebarManualSkipRequirement()), depositinauburnvale);
+		section5Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 5)), tradesebamo);
+		section5Task.addStep(not(tradelunami.getSidebarManualSkipRequirement()), tradelunami);
+		section5Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 15, "Chop using steel axe")), chopdowndeadtree);
+		section5Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 7, "Turn any Logs Into a Plank")), makeplankatsawmill);
 		var leathChapsMade = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 22, "Craft Leather chaps");
-		section5Task.addStep(not(passOnceCompleted(or(leathChapsMade, leather), tanleatheratchouani.getSidebarManualSkipRequirement())), tanleatheratchouani);
-		section5Task.addStep(not(passOnceCompleted(or(leathChapsMade, and(needle, thread)), tradeauburnvaleshopkeeper.getSidebarManualSkipRequirement())), tradeauburnvaleshopkeeper);
-		section5Task.addStep(not(passOnceCompleted(leathChapsMade, craftleatherchaps.getSidebarManualSkipRequirement())), craftleatherchaps);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 9, "Admire some beautiful scenery"), admirebeautifullog.getSidebarManualSkipRequirement())), admirebeautifullog);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 8, "Step onto an Ent trail"), steponenttrail.getSidebarManualSkipRequirement())), steponenttrail);
-		section5Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 20, "Pick 6 flax"), pickflax.getSidebarManualSkipRequirement())), pickflax);
-		section5Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND,
+		section5Task.addStep(not(or(leathChapsMade, leather)), tanleatheratchouani);
+		section5Task.addStep(not(or(leathChapsMade, and(needle, thread))), tradeauburnvaleshopkeeper);
+		section5Task.addStep(not(leathChapsMade), craftleatherchaps);
+		section5Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 9, "Admire some beautiful scenery")), admirebeautifullog);
+		section5Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 8, "Step onto an Ent trail")), steponenttrail);
+		section5Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 20, "Pick 6 flax")), pickflax);
+		section5Task.addStep(not(new Conditions(LogicType.AND,
 			new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 3, "Spin a Ball of Wool"),
 			new ItemRequirement("Bowstring", ItemID.BOW_STRING)
-		), spinflaxandwool.getSidebarManualSkipRequirement())), spinflaxandwool);
-		section5Task.addStep(not(passOnceCompleted(forestryKit.equipped(), talktofriendlyforester.getSidebarManualSkipRequirement())), talktofriendlyforester);
+		)), spinflaxandwool);
+		section5Task.addStep(not(forestryKit.equipped()), talktofriendlyforester);
 
 
 		section6Task = new ConditionalStep(this, buyfishfrompicaria);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 10, "Travel by canoe"), traveltotalteklan.getSidebarManualSkipRequirement())), traveltotalteklan);
-		section6Task.addStep(not(passOnceCompleted(depositintalteklan.getSidebarManualSkipRequirement(), depositintalteklan.getSidebarManualSkipRequirement())), depositintalteklan);
-		section6Task.addStep(not(passOnceCompleted(tradeteicuh.getSidebarManualSkipRequirement(), tradeteicuh.getSidebarManualSkipRequirement())), tradeteicuh);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 10, "Travel by canoe")), traveltotalteklan);
+		section6Task.addStep(not(depositintalteklan.getSidebarManualSkipRequirement()), depositintalteklan);
+		section6Task.addStep(not(tradeteicuh.getSidebarManualSkipRequirement()), tradeteicuh);
 		var dyedCapePurple = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 0, "Dye a cape Purple");
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.OR, dyedCapePurple, purpleDye), tradexochitl.getSidebarManualSkipRequirement())), tradexochitl);
-		section6Task.addStep(not(passOnceCompleted(dyedCapePurple, dyecape.getSidebarManualSkipRequirement())), dyecape);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 15, "Dance near a bard"), dancenearabard.getSidebarManualSkipRequirement())), dancenearabard);
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, shortbow, ironArrow.quantity(10)), tradearcuani.getSidebarManualSkipRequirement())), tradearcuani);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 26, "Kill frog"), attackfroglevel5.getSidebarManualSkipRequirement())), attackfroglevel5);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 12, "Tree in Tlati Rainforest"), chopdowndeadtreerainforest.getSidebarManualSkipRequirement())), chopdowndeadtreerainforest);
-		section6Task.addStep(not(passOnceCompleted(traveltokastori.getSidebarManualSkipRequirement(), traveltokastori.getSidebarManualSkipRequirement())), traveltokastori);
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, smallFishingNet, fishingRod, fishingBait.quantity(50), lobsterPot, flyFishingRod, harpoon), tradesulisal.getSidebarManualSkipRequirement())), tradesulisal);
-		section6Task.addStep(not(passOnceCompleted(sardinefishingspot.getSidebarManualSkipRequirement(), sardinefishingspot.getSidebarManualSkipRequirement())), sardinefishingspot);
-		section6Task.addStep(not(passOnceCompleted(cooksardinesatoven.getSidebarManualSkipRequirement(), cooksardinesatoven.getSidebarManualSkipRequirement())), cooksardinesatoven);
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new SkillRequirement(Skill.FISHING, 10, true), rawShrimps, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 12, "Catch a Shrimp")), shrimpfishingspot.getSidebarManualSkipRequirement())), shrimpfishingspot);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 20, "Cook Shrimp"), cookshrimpatoven.getSidebarManualSkipRequirement())), cookshrimpatoven);
-		section6Task.addStep(not(passOnceCompleted(new SkillRequirement(Skill.FISHING, 15, true), herringfishingspot.getSidebarManualSkipRequirement())), herringfishingspot);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 13, "Catch an Anchovy"), anchovyfishingspot.getSidebarManualSkipRequirement())), anchovyfishingspot);
+		section6Task.addStep(not(new Conditions(LogicType.OR, dyedCapePurple, purpleDye)), tradexochitl);
+		section6Task.addStep(not(dyedCapePurple), dyecape);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 15, "Dance near a bard")), dancenearabard);
+		section6Task.addStep(not(new Conditions(LogicType.AND, shortbow, ironArrow.quantity(10))), tradearcuani);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 26, "Kill frog")), attackfroglevel5);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 12, "Tree in Tlati Rainforest")), chopdowndeadtreerainforest);
+		section6Task.addStep(not(traveltokastori.getSidebarManualSkipRequirement()), traveltokastori);
+		section6Task.addStep(not(new Conditions(LogicType.AND, smallFishingNet, fishingRod, fishingBait.quantity(50), lobsterPot, flyFishingRod, harpoon)), tradesulisal);
+		section6Task.addStep(not(sardinefishingspot.getSidebarManualSkipRequirement()), sardinefishingspot);
+		section6Task.addStep(not(cooksardinesatoven.getSidebarManualSkipRequirement()), cooksardinesatoven);
+		section6Task.addStep(not(new Conditions(LogicType.AND, new SkillRequirement(Skill.FISHING, 10, true), rawShrimps, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 12, "Catch a Shrimp"))), shrimpfishingspot);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 20, "Cook Shrimp")), cookshrimpatoven);
+		section6Task.addStep(not(new SkillRequirement(Skill.FISHING, 15, true)), herringfishingspot);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 13, "Catch an Anchovy")), anchovyfishingspot);
 		var impBasement = new ZoneRequirement(new Zone(new WorldPoint(1375, 9449, 0), new WorldPoint(1387, 9457, 0)));
-		section6Task.addStep(not(passOnceCompleted(impBasement, climbdownladder.getSidebarManualSkipRequirement())), climbdownladder);
+		section6Task.addStep(not(impBasement), climbdownladder);
 		var killedImpInBasement = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 21, "Killed basement imp");
 		var killedImpWithEarth = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 30, "Killed imp with earth spells");
-		section6Task.addStep(not(passOnceCompleted(and(fiendishAshes, killedImpWithEarth, killedImpInBasement), attackimplevel2.getSidebarManualSkipRequirement())), attackimplevel2);
-		section6Task.addStep(not(passOnceCompleted(not(impBasement), climbupladder.getSidebarManualSkipRequirement())), climbupladder);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 2, "Pet a Caique"), petcaique.getSidebarManualSkipRequirement())), petcaique);
-		section6Task.addStep(not(passOnceCompleted(new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TLATI_FOUND, 1), activatestatuekastori.getSidebarManualSkipRequirement())), activatestatuekastori);
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new SkillRequirement(Skill.ATTACK, 20, false), new SkillRequirement(Skill.MAGIC, 21, false), new SkillRequirement(Skill.DEFENCE, 5, false)), attackgemstonecrablevel160.getSidebarManualSkipRequirement())), attackgemstonecrablevel160);
+		section6Task.addStep(not(and(fiendishAshes, killedImpWithEarth, killedImpInBasement)), attackimplevel2);
+		section6Task.addStep(not(not(impBasement)), climbupladder);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 2, "Pet a Caique")), petcaique);
+		section6Task.addStep(not(new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TLATI_FOUND, 1)), activatestatuekastori);
+		section6Task.addStep(not(new Conditions(LogicType.AND, new SkillRequirement(Skill.ATTACK, 20, false), new SkillRequirement(Skill.MAGIC, 21, false), new SkillRequirement(Skill.DEFENCE, 5, false))), attackgemstonecrablevel160);
 		var witnessCrabDie = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 14, "See gemstone crab burrow");
-		section6Task.addStep(not(passOnceCompleted(witnessCrabDie, witnessthegemcrabsdefeat.getSidebarManualSkipRequirement())), witnessthegemcrabsdefeat);
-		section6Task.addStep(not(passOnceCompleted(travelgloomthorn.getSidebarManualSkipRequirement(), travelgloomthorn.getSidebarManualSkipRequirement())), travelgloomthorn);
-		section6Task.addStep(not(passOnceCompleted(new VarbitRequirement(VarbitID.PENDANT_OF_ATES_AUBURN_FOUND, 1), activatestatuenemus.getSidebarManualSkipRequirement())), activatestatuenemus);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 20, "Defeat an Icefiend in Varlamore"), attackicefiendlevel13.getSidebarManualSkipRequirement())), attackicefiendlevel13);
-		section6Task.addStep(not(passOnceCompleted(new VarbitRequirement(VarbitID.PENDANT_OF_ATES_DARKFROST_FOUND, 1), activatestatuedarkfrost.getSidebarManualSkipRequirement())), activatestatuedarkfrost);
-		section6Task.addStep(not(passOnceCompleted(ironMace.equipped(), equipironmace2.getSidebarManualSkipRequirement())), equipironmace2);
+		section6Task.addStep(not(witnessCrabDie), witnessthegemcrabsdefeat);
+		section6Task.addStep(not(travelgloomthorn.getSidebarManualSkipRequirement()), travelgloomthorn);
+		section6Task.addStep(not(new VarbitRequirement(VarbitID.PENDANT_OF_ATES_AUBURN_FOUND, 1)), activatestatuenemus);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 20, "Defeat an Icefiend in Varlamore")), attackicefiendlevel13);
+		section6Task.addStep(not(new VarbitRequirement(VarbitID.PENDANT_OF_ATES_DARKFROST_FOUND, 1)), activatestatuedarkfrost);
+		section6Task.addStep(not(ironMace.equipped()), equipironmace2);
 		var killed5Bunnies = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 29, "Killed 5 bunnies");
 		var killed5ThingsWithMace = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 30, "Killed 5 with mace");
-		section6Task.addStep(not(passOnceCompleted(and(killed5Bunnies, killed5ThingsWithMace), attackrabbitlevel2.getSidebarManualSkipRequirement())), attackrabbitlevel2);
-		section6Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 9, "Cast Home Teleport"), hometeleport.getSidebarManualSkipRequirement())), hometeleport);
+		section6Task.addStep(not(and(killed5Bunnies, killed5ThingsWithMace)), attackrabbitlevel2);
+		section6Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 9, "Cast Home Teleport")), hometeleport);
 		var agility666 = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 14, "666 jumps");
-		section6Task.addStep(not(passOnceCompleted(agility666, yamaagility.getSidebarManualSkipRequirement())), yamaagility);
-		section6Task.addStep(not(passOnceCompleted(not(new ZoneRequirement(new Zone(new WorldPoint(1463, 5566, 0), new WorldPoint(1546, 5644, 0)))), returntocivitas.getSidebarManualSkipRequirement())), returntocivitas);
-		section6Task.addStep(not(passOnceCompleted(new ZoneRequirement(new Zone(new WorldPoint(1277, 2834, 0), new WorldPoint(1492, 3002, 0))), travelaldarin.getSidebarManualSkipRequirement())), travelaldarin);
-		section6Task.addStep(not(passOnceCompleted(tyrasHelm.equipped(), withdrawtyrashelm.getSidebarManualSkipRequirement())), withdrawtyrashelm);
-		section6Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, chisel, coins), withdrawaldarinbanker2.getSidebarManualSkipRequirement())), withdrawaldarinbanker2);
-		section6Task.addStep(not(passOnceCompleted(new ObjectCondition(15314) /* Door make object */, enterportal.getSidebarManualSkipRequirement())), enterportal);
+		section6Task.addStep(not(agility666), yamaagility);
+		section6Task.addStep(not(not(new ZoneRequirement(new Zone(new WorldPoint(1463, 5566, 0), new WorldPoint(1546, 5644, 0))))), returntocivitas);
+		section6Task.addStep(not(new ZoneRequirement(new Zone(new WorldPoint(1277, 2834, 0), new WorldPoint(1492, 3002, 0)))), travelaldarin);
+		section6Task.addStep(not(tyrasHelm.equipped()), withdrawtyrashelm);
+		section6Task.addStep(not(new Conditions(LogicType.AND, chisel, coins)), withdrawaldarinbanker2);
+		section6Task.addStep(not(new ObjectCondition(15314) /* Door make object */), enterportal);
 		var builtRoom = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_7, true, 10);
-		section6Task.addStep(not(passOnceCompleted(builtRoom, buildroom.getSidebarManualSkipRequirement())), buildroom);
-		section6Task.addStep(not(passOnceCompleted(not(new ObjectCondition(15314)) /* Door make object */, exitportal.getSidebarManualSkipRequirement())), exitportal);
-		section6Task.addStep(not(passOnceCompleted(new SkillRequirement(Skill.CRAFTING, 70, false), tradetociagain.getSidebarManualSkipRequirement())), tradetociagain);
-		section6Task.addStep(not(passOnceCompleted(not(new ZoneRequirement(new Zone(new WorldPoint(1277, 2834, 0), new WorldPoint(1492, 3002, 0)))), talktoantonia2.getSidebarManualSkipRequirement())), talktoantonia2);
-		section6Task.addStep(not(passOnceCompleted(and(new ItemRequirement("Bronze full helm", ItemID.BRONZE_FULL_HELM), new ItemRequirement("Adamant full helm", ItemID.ADAMANT_FULL_HELM)), tradethurid.getSidebarManualSkipRequirement())), tradethurid);
-		section6Task.addStep(not(passOnceCompleted(and(
+		section6Task.addStep(not(builtRoom), buildroom);
+		section6Task.addStep(not(not(new ObjectCondition(15314)) /* Door make object */), exitportal);
+		section6Task.addStep(not(new SkillRequirement(Skill.CRAFTING, 70, false)), tradetociagain);
+		section6Task.addStep(not(not(new ZoneRequirement(new Zone(new WorldPoint(1277, 2834, 0), new WorldPoint(1492, 3002, 0))))), talktoantonia2);
+		section6Task.addStep(not(and(new ItemRequirement("Bronze full helm", ItemID.BRONZE_FULL_HELM), new ItemRequirement("Adamant full helm", ItemID.ADAMANT_FULL_HELM))), tradethurid);
+		section6Task.addStep(not(and(
 			new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 20), /*sworfish*/
 			new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 21) /*tuna*/
-		), buyfishfrompicaria.getSidebarManualSkipRequirement())), buyfishfrompicaria);
+		)), buyfishfrompicaria);
 
 		var inCamTorum = new ZoneRequirement(new Zone(new WorldPoint(1378, 9502, 1), new WorldPoint(1524, 9600, 3)));
 		section7Task = new ConditionalStep(this, tradecamtorumblacksmith);
-		section7Task.addStep(not(passOnceCompleted(inCamTorum, entercamtorum.getSidebarManualSkipRequirement())), entercamtorum);
-		section7Task.addStep(not(passOnceCompleted(
+		section7Task.addStep(not(inCamTorum), entercamtorum);
+		section7Task.addStep(not(
 			new Conditions(LogicType.AND, new ItemRequirement("Eye of newt", 222).quantity(100),
-				new ItemRequirement("Vial of water", 228).quantity(100), pestleAndMortar), tradehuito.getSidebarManualSkipRequirement())), tradehuito);
+				new ItemRequirement("Vial of water", 228).quantity(100), pestleAndMortar)), tradehuito);
 		var steelPick = new ItemRequirement("Steel pickaxe", ItemID.STEEL_PICKAXE);
 		var mithPick = new ItemRequirement("Mithril pickaxe", ItemID.MITHRIL_PICKAXE);
 		var addyPick = new ItemRequirement("Adamant pickaxe", ItemID.ADAMANT_PICKAXE);
 		var runePick = new ItemRequirement("Rune pickaxe", ItemID.RUNE_PICKAXE);
-		section7Task.addStep(not(passOnceCompleted(and(steelPick, mithPick, addyPick, runePick), tradetizoro.getSidebarManualSkipRequirement())), tradetizoro);
+		section7Task.addStep(not(and(steelPick, mithPick, addyPick, runePick)), tradetizoro);
 		var hadHaircut = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 10);
-		section7Task.addStep(not(passOnceCompleted(hadHaircut, haircutsonalo.getSidebarManualSkipRequirement())), haircutsonalo);
+		section7Task.addStep(not(hadHaircut), haircutsonalo);
 		var hadBeardTrimmed = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_3, true, 13);
-		section7Task.addStep(not(passOnceCompleted(hadBeardTrimmed, shavesonalo.getSidebarManualSkipRequirement())), shavesonalo);
+		section7Task.addStep(not(hadBeardTrimmed), shavesonalo);
 		var lawRunes = new ItemRequirement("Law runes", ItemID.LAWRUNE);
 		var natureRunes = new ItemRequirement("Nature runes", ItemID.NATURERUNE);
 		var deathRunes = new ItemRequirement("Death runes", ItemID.DEATHRUNE);
 		var gotRunes = and(lawRunes.quantity(50), natureRunes.quantity(500), deathRunes.quantity(100));
-		section7Task.addStep(not(passOnceCompleted(gotRunes, tradenahta.getSidebarManualSkipRequirement())), tradenahta);
+		section7Task.addStep(not(gotRunes), tradenahta);
 		var castLowAlch = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_7, true, 17);
-		section7Task.addStep(not(passOnceCompleted(castLowAlch, lowalchrunes.getSidebarManualSkipRequirement())), lowalchrunes);
-		section7Task.addStep(not(passOnceCompleted(bigFishingNet, depositcamtorumbanker.getSidebarManualSkipRequirement())), depositcamtorumbanker);
-		section7Task.addStep(not(passOnceCompleted(jugOfWine.quantity(5), tradecamtorumbartender.getSidebarManualSkipRequirement())), tradecamtorumbartender);
+		section7Task.addStep(not(castLowAlch), lowalchrunes);
+		section7Task.addStep(not(bigFishingNet), depositcamtorumbanker);
+		section7Task.addStep(not(jugOfWine.quantity(5)), tradecamtorumbartender);
 		var equipIronDagger = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 6);
-		section7Task.addStep(not(passOnceCompleted(equipIronDagger, tradecamtorumblacksmith.getSidebarManualSkipRequirement())), tradecamtorumblacksmith);
+		section7Task.addStep(not(equipIronDagger), tradecamtorumblacksmith);
 
 		section8Task = new ConditionalStep(this, exitthiefsden);
-		section8Task.addStep(not(passOnceCompleted(not(inCamTorum), leaguemenuteleport.getSidebarManualSkipRequirement())), leaguemenuteleport);
+		section8Task.addStep(not(not(inCamTorum)), leaguemenuteleport);
 		var equippedMithWeapon = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_9, true, 8);
-		section8Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, adamantPlatebody, adamantPlatelegs, bronzePlatelegs, bronzePlatebody, mithrilSpear, steelPlatebody), tradefortisblacksmith.getSidebarManualSkipRequirement())), tradefortisblacksmith);
-		section8Task.addStep(not(passOnceCompleted(equippedMithWeapon, equipmithrilspear.getSidebarManualSkipRequirement())), equipmithrilspear);
+		section8Task.addStep(not(new Conditions(LogicType.AND, adamantPlatebody, adamantPlatelegs, bronzePlatelegs, bronzePlatebody, mithrilSpear, steelPlatebody)), tradefortisblacksmith);
+		section8Task.addStep(not(equippedMithWeapon), equipmithrilspear);
 		var lowAlched500gp = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 19);
-		section8Task.addStep(not(passOnceCompleted(lowAlched500gp, lowalchsteelplatebody.getSidebarManualSkipRequirement())), lowalchsteelplatebody);
-		section8Task.addStep(not(passOnceCompleted(depositfortiswestbank.getSidebarManualSkipRequirement(), depositfortiswestbank.getSidebarManualSkipRequirement())), depositfortiswestbank);
+		section8Task.addStep(not(lowAlched500gp), lowalchsteelplatebody);
+		section8Task.addStep(not(depositfortiswestbank.getSidebarManualSkipRequirement()), depositfortiswestbank);
 		var inGuardBasement = new ZoneRequirement(new Zone(new WorldPoint(1616, 9556, 0), new WorldPoint(1667, 9587, 0)));
 		var killedGuard = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 17);
-		section8Task.addStep(not(passOnceCompleted(or(inGuardBasement, killedGuard), enterguardbunker.getSidebarManualSkipRequirement())), enterguardbunker);
-		section8Task.addStep(not(passOnceCompleted(killedGuard, attackguardlevel21.getSidebarManualSkipRequirement())), attackguardlevel21);
-		section8Task.addStep(not(passOnceCompleted(not(inGuardBasement), exitguardbunker.getSidebarManualSkipRequirement())), exitguardbunker);
+		section8Task.addStep(not(or(inGuardBasement, killedGuard)), enterguardbunker);
+		section8Task.addStep(not(killedGuard), attackguardlevel21);
+		section8Task.addStep(not(not(inGuardBasement)), exitguardbunker);
 		var inThiefDen = new ZoneRequirement(new Zone(new WorldPoint(1608, 9560, 0), new WorldPoint(1625, 9579, 0)));
 		var killedThief = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 19);
 		var exitDen = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 25);
-		section8Task.addStep(not(passOnceCompleted(or(inThiefDen, and(killedThief, exitDen)), enterthiefsden.getSidebarManualSkipRequirement())), enterthiefsden);
-		section8Task.addStep(not(passOnceCompleted(killedThief, attackthieflevel16.getSidebarManualSkipRequirement())), attackthieflevel16);
-		section8Task.addStep(not(passOnceCompleted(exitDen, exitthiefsden.getSidebarManualSkipRequirement())), exitthiefsden);
+		section8Task.addStep(not(or(inThiefDen, and(killedThief, exitDen))), enterthiefsden);
+		section8Task.addStep(not(killedThief), attackthieflevel16);
+		section8Task.addStep(not(exitDen), exitthiefsden);
 
 		section9Task = new ConditionalStep(this, attackoryxlevel15);
 		var churnedButter = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_8, true, 3, "Churn some butter");
-		section9Task.addStep(not(passOnceCompleted(or(bucketOfMilk, churnedButter), milkdairybuffalo2.getSidebarManualSkipRequirement())), milkdairybuffalo2);
-		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 16, "Defeat a Buffalo"), attackbuffalolevel9.getSidebarManualSkipRequirement())), attackbuffalolevel9);
-		section9Task.addStep(not(passOnceCompleted(churnedButter, churndairychurn.getSidebarManualSkipRequirement())), churndairychurn);
+		section9Task.addStep(not(or(bucketOfMilk, churnedButter)), milkdairybuffalo2);
+		section9Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 16, "Defeat a Buffalo")), attackbuffalolevel9);
+		section9Task.addStep(not(churnedButter), churndairychurn);
 		var madeButterPotato = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_7, true, 16, "Butter a potato");
-		section9Task.addStep(not(passOnceCompleted(or(potato, madeButterPotato), pickpotato2.getSidebarManualSkipRequirement())), pickpotato2);
-		section9Task.addStep(not(passOnceCompleted(or(bakedPotato, madeButterPotato), cookfarmingpatchoven.getSidebarManualSkipRequirement())), cookfarmingpatchoven);
-		section9Task.addStep(not(passOnceCompleted(madeButterPotato, combinebutterwithpotato.getSidebarManualSkipRequirement())), combinebutterwithpotato);
+		section9Task.addStep(not(or(potato, madeButterPotato)), pickpotato2);
+		section9Task.addStep(not(or(bakedPotato, madeButterPotato)), cookfarmingpatchoven);
+		section9Task.addStep(not(madeButterPotato), combinebutterwithpotato);
 		var compostFull = new VarbitRequirement(VarbitID.FARMING_TRANSMIT_E2, 5, Operation.GREATER_EQUAL);
-		section9Task.addStep(not(passOnceCompleted(compostFull, fillcompostbin.getSidebarManualSkipRequirement())), fillcompostbin);
+		section9Task.addStep(not(compostFull), fillcompostbin);
 		var plantedPotatoSeeds = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 23, "Plant Seeds in an Allotment Patch");
-		section9Task.addStep(not(passOnceCompleted(or(plantedPotatoSeeds, potatoSeed.quantity(3)), pickpocketmasterfarmer.getSidebarManualSkipRequirement())), pickpocketmasterfarmer);
+		section9Task.addStep(not(or(plantedPotatoSeeds, potatoSeed.quantity(3))), pickpocketmasterfarmer);
 		var protectedCrops = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 24, "Protect Your Crops");
-		section9Task.addStep(not(passOnceCompleted(or(protectedCrops, new Conditions(LogicType.AND, rake, seedDibber, compost.quantity(2))), buyseeddibberharminia.getSidebarManualSkipRequirement())), buyseeddibberharminia);
-		section9Task.addStep(not(passOnceCompleted(or(new VarbitRequirement(VarbitID.FARMING_TRANSMIT_B1, 3, Operation.GREATER_EQUAL), plantedPotatoSeeds), rakeallotment.getSidebarManualSkipRequirement())), rakeallotment);
-		section9Task.addStep(not(passOnceCompleted(plantedPotatoSeeds, plantpotatoseeds.getSidebarManualSkipRequirement())), plantpotatoseeds);
-		section9Task.addStep(not(passOnceCompleted(protectedCrops, payprotectharminia.getSidebarManualSkipRequirement())), payprotectharminia);
-		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 24, "Defeat a Dire Wolf"), attackdirewolflevel88.getSidebarManualSkipRequirement())), attackdirewolflevel88);
-		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_9, true, 0, "Defeat a Scorpion with a Mithril Spear"), attackscorpionlevel14.getSidebarManualSkipRequirement())), attackscorpionlevel14);
-		section9Task.addStep(not(passOnceCompleted(copperOre, minecopperrocks.getSidebarManualSkipRequirement())), minecopperrocks);
+		section9Task.addStep(not(or(protectedCrops, new Conditions(LogicType.AND, rake, seedDibber, compost.quantity(2)))), buyseeddibberharminia);
+		section9Task.addStep(not(or(new VarbitRequirement(VarbitID.FARMING_TRANSMIT_B1, 3, Operation.GREATER_EQUAL), plantedPotatoSeeds)), rakeallotment);
+		section9Task.addStep(not(plantedPotatoSeeds), plantpotatoseeds);
+		section9Task.addStep(not(protectedCrops), payprotectharminia);
+		section9Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 24, "Defeat a Dire Wolf")), attackdirewolflevel88);
+		section9Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_9, true, 0, "Defeat a Scorpion with a Mithril Spear")), attackscorpionlevel14);
+		section9Task.addStep(not(copperOre), minecopperrocks);
 
-		section9Task.addStep(not(passOnceCompleted(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 13, "Mine 5 Tin Ore"), new SkillRequirement(Skill.MINING, 15, true)), minetinrocks.getSidebarManualSkipRequirement())), minetinrocks);
-		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 25, null), attackjaguarlevel67.getSidebarManualSkipRequirement())), attackjaguarlevel67);
-		section9Task.addStep(not(passOnceCompleted(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 27, "Defeat a Hill Giant"), attackhillgiantlevel28.getSidebarManualSkipRequirement())), attackhillgiantlevel28);
+		section9Task.addStep(not(new Conditions(LogicType.AND, new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 13, "Mine 5 Tin Ore"), new SkillRequirement(Skill.MINING, 15, true))), minetinrocks);
+		section9Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 25, null)), attackjaguarlevel67);
+		section9Task.addStep(not(new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_0, true, 27, "Defeat a Hill Giant")), attackhillgiantlevel28);
 		var minedClay = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_1, true, 14);
-		section9Task.addStep(not(passOnceCompleted(minedClay, mineclayrocks.getSidebarManualSkipRequirement())), mineclayrocks);
+		section9Task.addStep(not(minedClay), mineclayrocks);
 		var minedIron = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 28);
-		section9Task.addStep(not(passOnceCompleted(minedIron, mineironrocks.getSidebarManualSkipRequirement())), mineironrocks);
+		section9Task.addStep(not(minedIron), mineironrocks);
 		var mineSilver = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 27);
-		section9Task.addStep(not(passOnceCompleted(mineSilver, minesilverrocks.getSidebarManualSkipRequirement())), minesilverrocks);
+		section9Task.addStep(not(mineSilver), minesilverrocks);
 		var minedCoal = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_2, true, 31);
-		section9Task.addStep(not(passOnceCompleted(minedCoal, minecoalrocks.getSidebarManualSkipRequirement())), minecoalrocks);
-		section9Task.addStep(not(passOnceCompleted(minegoldrocks.getSidebarManualSkipRequirement(), minegoldrocks.getSidebarManualSkipRequirement())), minegoldrocks);
-		section9Task.addStep(not(passOnceCompleted(new SkillRequirement(Skill.MINING, 55), minemoreiron.getSidebarManualSkipRequirement())), minemoreiron);
+		section9Task.addStep(not(minedCoal), minecoalrocks);
+		section9Task.addStep(not(minegoldrocks.getSidebarManualSkipRequirement()), minegoldrocks);
+		section9Task.addStep(not(new SkillRequirement(Skill.MINING, 55)), minemoreiron);
 		var minedMithril = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_10, true, 29);
-		section9Task.addStep(not(passOnceCompleted(minedMithril, minemithrilrocks.getSidebarManualSkipRequirement())), minemithrilrocks);
+		section9Task.addStep(not(minedMithril), minemithrilrocks);
 		var fishedMackrel = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_7, true, 22);
-		section9Task.addStep(not(passOnceCompleted(fishedMackrel, bignetcoastfishingspot.getSidebarManualSkipRequirement())), bignetcoastfishingspot);
+		section9Task.addStep(not(fishedMackrel), bignetcoastfishingspot);
 		var fishedCod = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_7, true, 19);
-		section9Task.addStep(not(passOnceCompleted(fishedCod, bignetcoastfishingspotcod.getSidebarManualSkipRequirement())), bignetcoastfishingspotcod);
+		section9Task.addStep(not(fishedCod), bignetcoastfishingspotcod);
 
 		var killedOryx = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_12, true, 26);
-		section9Task.addStep(not(passOnceCompleted(killedOryx, attackoryxlevel15.getSidebarManualSkipRequirement())), attackoryxlevel15);
+		section9Task.addStep(not(killedOryx), attackoryxlevel15);
 
 
 		var tiaraMould = new ItemRequirement("Tiara mould", ItemID.TIARA_MOULD);
@@ -1344,12 +1344,12 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 		var amuletMould = new ItemRequirement("Amulet mould", ItemID.AMULET_MOULD);
 		section10Task = new ConditionalStep(this, thankfaux);
 		var madePottery = new VarplayerRequirement(VarPlayerID.LEAGUE_TASK_COMPLETED_13, true, 28);
-		section10Task.addStep(not(passOnceCompleted(or(madePottery, and(tiaraMould.alsoCheckBank(), ringMould.alsoCheckBank(), amuletMould.alsoCheckBank())), buymouldsartima.getSidebarManualSkipRequirement())), buymouldsartima);
-		section10Task.addStep(not(passOnceCompleted(or(madePottery, softClay), softclayspawn.getSidebarManualSkipRequirement())), softclayspawn);
+		section10Task.addStep(not(or(madePottery, and(tiaraMould.alsoCheckBank(), ringMould.alsoCheckBank(), amuletMould.alsoCheckBank()))), buymouldsartima);
+		section10Task.addStep(not(or(madePottery, softClay)), softclayspawn);
 		var unfiredItem = new ItemRequirement("Unfired item", ItemID.BOWL_UNFIRED);
 		unfiredItem.addAlternates(ItemID.CUP_UNFIRED, ItemID.PIEDISH_UNFIRED, ItemID.POT_UNFIRED, ItemID.PLANTPOT_UNFIRED);
-		section10Task.addStep(not(passOnceCompleted(or(unfiredItem, madePottery), usepotterswheel.getSidebarManualSkipRequirement())), usepotterswheel);
-		section10Task.addStep(not(passOnceCompleted(madePottery, firepotteryoven.getSidebarManualSkipRequirement())), firepotteryoven);
+		section10Task.addStep(not(or(unfiredItem, madePottery)), usepotterswheel);
+		section10Task.addStep(not(madePottery), firepotteryoven);
 
 		ConditionalStep allSections = new ConditionalStep(this, section10Task);
 		allSections.addStep(section1Task);
@@ -1370,37 +1370,6 @@ public class FauxLeaguesHelper extends ComplexStateQuestHelper
 	private DetailedQuestStep getEquipironmace()
 	{
 		return equipironmace;
-	}
-
-	private Requirement passOnceCompleted(Requirement completion, ManualRequirement manualOverride)
-	{
-		if (completion == null || manualOverride == null)
-		{
-			return completion;
-		}
-		return new Requirement()
-		{
-			@Override
-			public boolean check(Client client)
-			{
-				if (manualOverride.check(client))
-				{
-					return true;
-				}
-				boolean passed = completion.check(client);
-				if (passed && !manualOverride.check(client))
-				{
-					manualOverride.setShouldPass(true);
-				}
-				return passed;
-			}
-
-			@Override
-			public String getDisplayText()
-			{
-				return completion.getDisplayText();
-			}
-		};
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -118,12 +119,12 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	{
 		var newSet = new HashSet<>(step.steps.keySet());
 		newSet.remove(null);
-		addStep(passOnceCompleted(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step), step, false);
+		addStep(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step, false);
 	}
 
 	public void addStep(Requirement requirement, QuestStep step)
 	{
-		addStep(passOnceCompleted(requirement, step), step, false);
+		addStep(requirement, step, false);
 	}
 
 	// Each addStep can have an ID. When you add an ID, it keeps a separate ID to Steps OrderedHashSet.
@@ -138,42 +139,50 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		checkForConditions(requirement);
 	}
 
+	/// Active while the completion requirement is false (after merging sidebar manual skip on the step, if any).
+	public void addStepWithConditionToContinue(Requirement completion, QuestStep step)
+	{
+		addStepWithConditionToContinue(completion, step, false);
+	}
+
+	public void addStepWithConditionToContinue(Requirement completion, QuestStep step, boolean isLockable)
+	{
+		step.setLockable(isLockable);
+		Requirement key = not(passOnceCompleted(completion, step));
+		this.steps.put(key, step);
+		checkForConditions(completion);
+	}
+
 	private Requirement passOnceCompleted(Requirement completion, QuestStep step)
 	{
-		return completion;
-//		var manualOverride = step.getSidebarManualSkipRequirement();
-//		if (completion == null || manualOverride == null)
-//		{
-//			return completion;
-//		}
-//		// Only auto-tick the sidebar when completion becomes true (rising edge). If we setShouldPass every
-//		// tick while the game still reports the step complete, an explicit untick is overwritten immediately.
-//		final boolean[] completionWasPassingLastCheck = { false };
-//		return not(new Requirement()
-//		{
-//			@Override
-//			public boolean check(Client client)
-//			{
-//				if (manualOverride.check(client))
-//				{
-//					completionWasPassingLastCheck[0] = true;
-//					return true;
-//				}
-//				boolean passed = completion.check(client);
-//				if (passed && !completionWasPassingLastCheck[0])
-//				{
-//					manualOverride.setShouldPass(true);
-//				}
-//				completionWasPassingLastCheck[0] = passed;
-//				return passed;
-//			}
-//
-//			@Override
-//			public @NotNull String getDisplayText()
-//			{
-//				return completion.getDisplayText();
-//			}
-//		});
+		ManualRequirement manualOverride = step.getSidebarManualSkipRequirement();
+		if (completion == null || manualOverride == null)
+		{
+			return completion;
+		}
+		return new Requirement()
+		{
+			@Override
+			public boolean check(Client client)
+			{
+				if (manualOverride.check(client))
+				{
+					return true;
+				}
+				boolean passed = completion.check(client);
+				if (passed && !manualOverride.check(client))
+				{
+					manualOverride.setShouldPass(true);
+				}
+				return passed;
+			}
+
+			@Override
+			public @NotNull String getDisplayText()
+			{
+				return completion.getDisplayText();
+			}
+		};
 	}
 
 	private void checkForConditions(Requirement requirement)
@@ -560,7 +569,10 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		}
 		getConditions().stream()
 			.filter(Objects::nonNull)
-			.forEach(conditions -> newStep.addStep(conditions, steps.get(conditions)));
+			.forEach(condition -> {
+				newStep.steps.put(condition, steps.get(condition));
+				newStep.checkForConditions(condition);
+			});
 		return newStep;
 	}
 

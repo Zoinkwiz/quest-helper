@@ -678,7 +678,7 @@ public abstract class QuestStep implements Module
 
 	protected boolean isValidRenderRequirementInBank(ItemRequirement requirement, Widget item)
 	{
-		return (item.getItemId() > 0 && requirement.getAllIds().contains(item.getItemId()));
+		return (item.getItemId() > 0 && !item.isHidden() && requirement.getAllIds().contains(item.getItemId()));
 	}
 
 	protected void renderInventory(Graphics2D graphics, DefinedPoint definedPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)

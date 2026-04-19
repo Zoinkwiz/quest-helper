@@ -390,10 +390,17 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		{
 			for (Map.Entry<QuestStep, JCheckBox> e : manualSkipBoxes.entrySet())
 			{
-				ManualRequirement m = e.getKey().getSidebarManualSkipRequirement();
+				QuestStep step = e.getKey();
+				ManualRequirement m = step.getSidebarManualSkipRequirement();
+				String pk = step.getSidebarManualSkipPersistenceKey();
 				if (m != null)
 				{
-					e.getValue().setSelected(client != null && m.check(client));
+					boolean sel = client != null && m.check(client);
+					e.getValue().setSelected(sel);
+					if (sel && pk != null && !pk.isBlank())
+					{
+						persistedManualSkips.put(pk, true);
+					}
 				}
 			}
 		}

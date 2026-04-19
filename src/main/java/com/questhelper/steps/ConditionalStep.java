@@ -170,9 +170,18 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 					return true;
 				}
 				boolean passed = completion.check(client);
-				if (passed && !manualOverride.check(client))
+				if (passed)
 				{
 					manualOverride.setShouldPass(true);
+					String pk = step.getSidebarManualSkipPersistenceKey();
+					if (pk != null && !pk.isBlank())
+					{
+						QuestHelper qh = step.getQuestHelper();
+						if (qh != null)
+						{
+							qh.notifyManualSidebarSkipChanged(pk, true);
+						}
+					}
 				}
 				return passed;
 			}

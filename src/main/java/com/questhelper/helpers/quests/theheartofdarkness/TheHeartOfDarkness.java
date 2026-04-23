@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.theheartofdarkness;
 import com.google.common.collect.Lists;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.domain.QuetzalDestination;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -542,15 +543,11 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     {
         talkToItzlaAtTeomat = new NpcStep(this, NpcID.VMQ2_ITZLA_VIS, new WorldPoint(1454, 3173, 0), "Talk to Prince Itzla Arkan at the Teomat. You" +
                 " can travel here using Renu the quetzal.");
-        WidgetHighlight teomatWidget = new WidgetHighlight(874, 15, true);
-        teomatWidget.setModelIdRequirement(51205);
-        talkToItzlaAtTeomat.addWidgetHighlight(teomatWidget);
+        talkToItzlaAtTeomat.addWidgetHighlight(WidgetHighlight.createQuetzalHighlight(QuetzalDestination.THE_TEOMAT));
         talkToItzlaAtTeomat.addDialogStep("Yes.");
         travelToGorge = new NpcStep(this, NpcID.QUETZAL_CHILD_GREEN_NOOP, new WorldPoint(1437, 3169, 0), "Travel on Renu to the Quetzacalli Gorge.");
         ((NpcStep) travelToGorge).addAlternateNpcs(NpcID.QUETZAL_CHILD_GREEN_FEED, NpcID.QUETZAL_CHILD_GREEN, NpcID.QUETZAL_CHILD_ORANGE, NpcID.QUETZAL_CHILD_BLUE, NpcID.QUETZAL_CHILD_CYAN, NpcID.QUETZAL_CHILD_GREEN_ORANGE);
-        WidgetHighlight gorgeWidget = new WidgetHighlight(874, 15, true);
-        gorgeWidget.setModelIdRequirement(54539);
-        travelToGorge.addWidgetHighlight(gorgeWidget);
+        travelToGorge.addWidgetHighlight(WidgetHighlight.createQuetzalHighlight(QuetzalDestination.QUETZACALLI_GORGE));
         talkToBartender = new NpcStep(this, NpcID.QUETZACALLI_BARTENDER, new WorldPoint(1499, 3224, 0), "Talk to the Bartender in the pub in the Gorge.",
                 coins.quantity(30));
         // Told about ground room, 11123 1->0

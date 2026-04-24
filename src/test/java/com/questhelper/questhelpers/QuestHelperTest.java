@@ -372,6 +372,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.HOLY_GRAIL,
 			QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 			QuestHelperQuest.PRIEST_IN_PERIL,
+			QuestHelperQuest.THE_HEART_OF_DARKNESS,
 			QuestHelperQuest.THE_LOST_TRIBE,
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,

@@ -967,6 +967,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         talkToServius = new NpcStep(this, NpcID.VMQ3_SERVIUS_VIS, new WorldPoint(1681, 3168, 0), "Talk to Servius, Teokan of Ralos in the palace" +
                 " in Civitas illa Fortis to complete the quest.");
+        talkToServius.addWidgetHighlight(WidgetHighlight.createQuetzalHighlight(QuetzalDestination.CIVITAS_ILLA_FORTIS));
         talkToServius.addTeleport(civitasIllaFortisTeleport);
     }
 

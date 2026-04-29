@@ -84,7 +84,7 @@ public final class ConstructDraftPersistence
 			{
 				for (DraftStepState stepState : state.definitions)
 				{
-					loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
+					loaded.getStepDefinitions().add(draftStepFromState(stepState));
 				}
 			}
 			for (DraftOrderLineState lineState : state.order)
@@ -96,7 +96,7 @@ public final class ConstructDraftPersistence
 		{
 			for (DraftStepState stepState : state.definitions)
 			{
-				loaded.getStepDefinitions().add(draftStepFromState(stepState, false));
+				loaded.getStepDefinitions().add(draftStepFromState(stepState));
 			}
 		}
 
@@ -197,15 +197,12 @@ public final class ConstructDraftPersistence
 			DraftStepState stepState = new DraftStepState();
 			stepState.stepId = step.getStepId();
 			stepState.kind = step.getKind();
-			stepState.sectionDivider = false;
 			stepState.rawId = step.getRawId();
 			stepState.option = step.getOption();
 			stepState.targetText = step.getTargetText();
 			stepState.suggestedVarName = step.getSuggestedVarName();
 			stepState.note = step.getInstructionText();
 			stepState.panelName = step.getPanelName();
-			stepState.sectionCondition = step.getSectionCondition();
-			stepState.skipWhenConditionMet = step.isSkipWhenConditionMet();
 			stepState.structId = step.getStructId();
 			for (DraftStepAttachedRequirement a : step.getAttachedRequirements())
 			{
@@ -254,8 +251,6 @@ public final class ConstructDraftPersistence
 			lineState.orderSlotId = line.getOrderSlotId();
 			lineState.sectionDivider = line.isSectionDivider();
 			lineState.suggestedVarName = line.getSuggestedVarName();
-			lineState.sectionCondition = line.getSectionCondition();
-			lineState.skipWhenConditionMet = line.isSkipWhenConditionMet();
 			lineState.refStepId = line.getRefStepId();
 			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
 			lineState.stepRequirement = line.getStepRequirement();
@@ -351,20 +346,17 @@ public final class ConstructDraftPersistence
 		return state;
 	}
 
-	private static DraftStep draftStepFromState(DraftStepState stepState, boolean keepSectionDivider)
+	private static DraftStep draftStepFromState(DraftStepState stepState)
 	{
 		DraftStep step = new DraftStep();
 		step.setStepId(stepState.stepId == null || stepState.stepId.isBlank() ? UUID.randomUUID().toString() : stepState.stepId);
 		step.setKind(stepState.kind);
-		step.setSectionDivider(keepSectionDivider && stepState.sectionDivider);
 		step.setRawId(stepState.rawId);
 		step.setOption(stepState.option);
 		step.setTargetText(stepState.targetText);
 		step.setSuggestedVarName(stepState.suggestedVarName);
 		step.setInstructionText(stepState.note == null ? "" : stepState.note);
 		step.setPanelName(stepState.panelName);
-		step.setSectionCondition(stepState.sectionCondition);
-		step.setSkipWhenConditionMet(stepState.skipWhenConditionMet);
 		step.setStructId(stepState.structId);
 		if (stepState.alternateRawIds != null && !stepState.alternateRawIds.isEmpty())
 		{
@@ -495,8 +487,6 @@ public final class ConstructDraftPersistence
 		line.setOrderSlotId(slot == null || slot.isBlank() ? UUID.randomUUID().toString() : slot);
 		line.setSectionDivider(s.sectionDivider);
 		line.setSuggestedVarName(s.suggestedVarName);
-		line.setSectionCondition(s.sectionCondition);
-		line.setSkipWhenConditionMet(s.skipWhenConditionMet);
 		line.setRefStepId(s.refStepId);
 		line.setLinkedRequirementRawId(s.linkedRequirementRawId);
 		if (s.stepRequirement != null)
@@ -577,7 +567,6 @@ public final class ConstructDraftPersistence
 	{
 		public String stepId;
 		public StepKind kind;
-		public boolean sectionDivider;
 		public int rawId;
 		public String option;
 		public String targetText;
@@ -585,8 +574,6 @@ public final class ConstructDraftPersistence
 		/** Same role as Tasks Tracker route {@code note}. */
 		public String note;
 		public String panelName;
-		public String sectionCondition;
-		public boolean skipWhenConditionMet;
 		public Integer structId;
 		public DraftLocationState location;
 		public List<Integer> alternateRawIds;
@@ -624,8 +611,6 @@ public final class ConstructDraftPersistence
 		public String orderSlotId;
 		public boolean sectionDivider;
 		public String suggestedVarName;
-		public String sectionCondition;
-		public boolean skipWhenConditionMet;
 		public String refStepId;
 		public Integer linkedRequirementRawId;
 		public Integer routingVarbitId;

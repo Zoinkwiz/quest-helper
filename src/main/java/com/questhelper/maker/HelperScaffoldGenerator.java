@@ -80,11 +80,14 @@ public class HelperScaffoldGenerator
 		out.append("import com.questhelper.requirements.item.ItemRequirement;\n");
 		out.append("import com.questhelper.requirements.player.SkillRequirement;\n");
 		out.append("import com.questhelper.requirements.conditional.Conditions;\n");
+		out.append("import static com.questhelper.requirements.util.LogicHelper.and;\n");
 		out.append("import static com.questhelper.requirements.util.LogicHelper.not;\n");
 		out.append("import static com.questhelper.requirements.util.LogicHelper.nor;\n");
+		out.append("import static com.questhelper.requirements.util.LogicHelper.or;\n");
 		out.append("import com.questhelper.requirements.util.LogicType;\n");
 		out.append("import com.questhelper.requirements.util.Operation;\n");
 		out.append("import com.questhelper.requirements.ManualRequirement;\n");
+		out.append("import com.questhelper.requirements.LatchingManualRequirement;\n");
 		out.append("import com.questhelper.requirements.var.VarbitRequirement;\n");
 		out.append("import com.questhelper.steps.ConditionalStep;\n");
 		out.append("import com.questhelper.steps.DetailedQuestStep;\n");
@@ -172,6 +175,14 @@ public class HelperScaffoldGenerator
 					manualFieldByOrderSlotId.put(sid, mf);
 					out.append("\tManualRequirement ").append(mf).append(";\n");
 				}
+			}
+			// Pass-once-completed rows need a ManualRequirement to latch into, even when the row is tree-routed
+			// or item-linked (those paths skip the allocation above).
+			if (line.isPassOnceCompletedOnce() && !manualFieldByOrderSlotId.containsKey(sid))
+			{
+				String mf = makeUnique("orderManual_" + shortSlotSuffixForJava(sid), usedNames);
+				manualFieldByOrderSlotId.put(sid, mf);
+				out.append("\tManualRequirement ").append(mf).append(";\n");
 			}
 		}
 		for (int i = 0; i < sectionGroups.size(); i++)
@@ -319,12 +330,13 @@ public class HelperScaffoldGenerator
 	private void appendSectionSetupComment(StringBuilder out, DraftOrderLine line)
 	{
 		String sectionName = line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? "Unnamed Section" : line.getSuggestedVarName();
-		String sectionCondition = line.getSectionCondition() == null || line.getSectionCondition().isBlank()
-			? "no condition"
-			: line.getSectionCondition();
-		String mode = line.isSkipWhenConditionMet() ? "skip when true" : "show when true";
-		out.append("\t\t// Section: ").append(escape(sectionName)).append(" [").append(mode).append(": ")
-			.append(escape(sectionCondition)).append("]\n");
+		out.append("\t\t// Section: ").append(escape(sectionName));
+		if (line.getStepRequirement() != null)
+		{
+			boolean continueMode = OrderStepRequirementSupport.effectiveConditionMode(line) == OrderConditionMode.CONTINUE_WHEN_TRUE;
+			out.append(" [gate: ").append(continueMode ? "continue when true" : "show when true").append("]");
+		}
+		out.append("\n");
 	}
 
 	private void appendDefinitionSetup(
@@ -643,6 +655,8 @@ public class HelperScaffoldGenerator
 		Map<String, String> manualFieldByOrderSlotId,
 		List<String> warnings)
 	{
+		boolean passOnce = slot.orderLine.isPassOnceCompletedOnce();
+		String manualField = passOnce ? manualFieldByOrderSlotId.get(slot.orderLine.getOrderSlotId()) : null;
 		if (slot.orderLine.getStepRequirement() != null)
 		{
 			String selectorExpr = OrderStepRequirementSupport.emitSelectorJava(
@@ -653,9 +667,27 @@ public class HelperScaffoldGenerator
 				varbitFieldByOrderSlotId,
 				zoneFieldByOrderSlotId,
 				warnings);
-			return OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE
+			boolean continueMode = OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE;
+			if (passOnce && manualField != null)
+			{
+				String latched = "new LatchingManualRequirement(" + selectorExpr + ", " + manualField + ", " + continueMode + ")";
+				return continueMode
+					? "and(not(" + latched + "), not(" + manualField + "))"
+					: "and(" + latched + ", not(" + manualField + "))";
+			}
+			return continueMode
 				? "not(" + selectorExpr + ")"
 				: selectorExpr;
+		}
+		Integer linkedReqId = slot.orderLine.getLinkedRequirementRawId();
+		if (passOnce && manualField != null && linkedReqId != null && linkedReqId > 0)
+		{
+			String linkedVar = requirementVarNamesByRawId.get(linkedReqId);
+			if (linkedVar != null)
+			{
+				String latched = "new LatchingManualRequirement(" + linkedVar + ", " + manualField + ", true)";
+				return "and(not(" + latched + "), not(" + manualField + "))";
+			}
 		}
 		return "not(" + requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings) + ")";
 	}
@@ -669,6 +701,8 @@ public class HelperScaffoldGenerator
 		Map<String, String> manualFieldByOrderSlotId,
 		List<String> warnings)
 	{
+		boolean passOnce = slot.orderLine.isPassOnceCompletedOnce();
+		String manualField = passOnce ? manualFieldByOrderSlotId.get(slot.orderLine.getOrderSlotId()) : null;
 		if (slot.orderLine.getStepRequirement() != null)
 		{
 			String sel = OrderStepRequirementSupport.emitSelectorJava(
@@ -679,11 +713,19 @@ public class HelperScaffoldGenerator
 				varbitFieldByOrderSlotId,
 				zoneFieldByOrderSlotId,
 				warnings);
-			return OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE
+			String completion = OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE
 				? sel
 				: "not(" + sel + ")";
+			return (passOnce && manualField != null)
+				? "or(" + completion + ", " + manualField + ")"
+				: completion;
 		}
-		return requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
+		String base = requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
+		if (passOnce && manualField != null && !manualField.equals(base))
+		{
+			return "or(" + base + ", " + manualField + ")";
+		}
+		return base;
 	}
 
 	private String sectionGateExpressionForGroup(
@@ -911,11 +953,6 @@ public class HelperScaffoldGenerator
 				out.append(stepVarNames.get(group.slots.get(j).definition));
 			}
 			out.append("));\n");
-			if (group.divider != null && group.divider.getSectionCondition() != null && !group.divider.getSectionCondition().isBlank())
-			{
-				out.append("\t\t// TODO: evaluate section condition: ")
-					.append(escape(group.divider.getSectionCondition())).append("\n");
-			}
 			out.append("\t\t").append(panelVar).append(".setLockingStep(").append(sectionTaskNames.get(group)).append(");\n");
 			out.append("\t\tallSteps.add(").append(panelVar).append(");\n\n");
 		}

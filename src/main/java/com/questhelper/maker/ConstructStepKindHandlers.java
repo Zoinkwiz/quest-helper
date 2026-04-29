@@ -293,7 +293,6 @@ public final class ConstructStepKindHandlers
 			step.setPanelName("Captured Steps");
 			step.setWorldPoint(null);
 			step.setOption("");
-			step.setSectionDivider(false);
 			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("npc step", "step"));
 			return step;
 		}
@@ -358,7 +357,6 @@ public final class ConstructStepKindHandlers
 			step.setPanelName("Captured Steps");
 			step.setWorldPoint(null);
 			step.setOption("");
-			step.setSectionDivider(false);
 			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("object step", "step"));
 			return step;
 		}
@@ -405,7 +403,6 @@ public final class ConstructStepKindHandlers
 			step.setPanelName("Captured Steps");
 			step.setWorldPoint(null);
 			step.setOption("");
-			step.setSectionDivider(false);
 			step.setSuggestedVarName(HelperScaffoldGenerator.toVarName("generic step", "step"));
 			return step;
 		}

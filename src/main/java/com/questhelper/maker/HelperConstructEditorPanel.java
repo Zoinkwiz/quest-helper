@@ -3247,7 +3247,7 @@ public final class HelperConstructEditorPanel extends JPanel
 			List<String> parts = new ArrayList<>();
 			for (HelperConstructManager.CombinedStepRow row : rows)
 			{
-				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getSectionCondition() + "|" + row.getOrderLinkedRequirementRawId()
+				parts.add(row.getVarName() + "|" + row.getSummary() + "|" + row.getOrderLinkedRequirementRawId()
 					+ "|" + row.getInstructionText() + "|" + row.isCustomOrderStepRequirement() + "|" + row.hasOrderStepRequirementTree());
 			}
 			return String.join("\n", parts);

@@ -2174,8 +2174,6 @@ public class HelperConstructManager
 					line.getSuggestedVarName(),
 					formatSectionLineSummary(line, i + 1),
 					true,
-					line.getSectionCondition(),
-					line.isSkipWhenConditionMet(),
 					null,
 					"",
 					false,
@@ -2194,8 +2192,6 @@ public class HelperConstructManager
 					line.getRefStepId() == null ? "" : line.getRefStepId(),
 					"?",
 					"(missing step definition)",
-					false,
-					"",
 					false,
 					line.getLinkedRequirementRawId(),
 					"",
@@ -2218,8 +2214,6 @@ public class HelperConstructManager
 				def.getStepId(),
 				def.getSuggestedVarName(),
 				formatStepSummary(def, i + 1),
-				false,
-				"",
 				false,
 				line.getLinkedRequirementRawId(),
 				instr == null ? "" : instr,
@@ -2259,8 +2253,6 @@ public class HelperConstructManager
 		line.setOrderSlotId(UUID.randomUUID().toString());
 		line.setSectionDivider(true);
 		line.setSuggestedVarName(DEFAULT_SECTION_NAME);
-		line.setSectionCondition("");
-		line.setSkipWhenConditionMet(false);
 		List<DraftOrderLine> order = currentDraft.getOrder();
 		int idx = insertAt < 0 ? order.size() : Math.min(insertAt, order.size());
 		order.add(idx, line);
@@ -3841,22 +3833,6 @@ public class HelperConstructManager
 		}
 	}
 
-	public void updateSectionCondition(int index, String condition)
-	{
-		ensureDraftLoaded();
-		if (index < 0 || index >= currentDraft.getOrder().size())
-		{
-			return;
-		}
-		DraftOrderLine line = currentDraft.getOrder().get(index);
-		if (!line.isSectionDivider())
-		{
-			return;
-		}
-		line.setSectionCondition(condition == null ? "" : condition);
-		saveDraftToConfig();
-	}
-
 	public List<String> getRequirementSummaries()
 	{
 		ensureDraftLoaded();
@@ -4033,13 +4009,13 @@ public class HelperConstructManager
 
 	private String formatSectionLineSummary(DraftOrderLine line, int displayIndex)
 	{
-		String mode = line.isSkipWhenConditionMet() ? "skip when true" : "show when true";
-		String condition = line.getSectionCondition() == null || line.getSectionCondition().isBlank() ? "no condition" : line.getSectionCondition();
-		return String.format("SECTION %d. %s [%s: %s]",
-			displayIndex,
-			line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? DEFAULT_SECTION_NAME : line.getSuggestedVarName(),
-			mode,
-			condition);
+		String name = line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? DEFAULT_SECTION_NAME : line.getSuggestedVarName();
+		if (line.getStepRequirement() == null)
+		{
+			return String.format("SECTION %d. %s", displayIndex, name);
+		}
+		String mode = effectiveOrderConditionMode(line) == OrderConditionMode.CONTINUE_WHEN_TRUE ? "continue when true" : "show when true";
+		return String.format("SECTION %d. %s [gate: %s]", displayIndex, name, mode);
 	}
 
 	private void ensureDraftLoaded()
@@ -4609,19 +4585,6 @@ public class HelperConstructManager
 	/** One-line label for the Add Step pick list: instruction and human-readable fields only (no ids, coords, or kind). */
 	private String formatStepDefinitionPickLabel(DraftStep step, int displayIndex)
 	{
-		if (step.isSectionDivider())
-		{
-			String name = step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank()
-				? DEFAULT_SECTION_NAME
-				: normalizeText(step.getSuggestedVarName());
-			String condition = step.getSectionCondition() == null ? "" : normalizeText(step.getSectionCondition());
-			String mode = step.isSkipWhenConditionMet() ? "skip when met" : "show when met";
-			if (condition.isEmpty())
-			{
-				return truncatePickListLine("Section: " + name + " (" + mode + ")");
-			}
-			return truncatePickListLine("Section: " + name + " (" + mode + ") — " + condition);
-		}
 		String ins = normalizeText(step.getInstructionText());
 		if (!ins.isBlank())
 		{
@@ -4667,7 +4630,6 @@ public class HelperConstructManager
 		appendPickFilterChunk(sb, step.getSuggestedVarName());
 		appendPickFilterChunk(sb, step.getTargetText());
 		appendPickFilterChunk(sb, step.getOption());
-		appendPickFilterChunk(sb, step.getSectionCondition());
 		if (step.getKind() != null)
 		{
 			appendPickFilterChunk(sb, step.getKind().name());
@@ -4682,16 +4644,6 @@ public class HelperConstructManager
 
 	private String formatStepSummary(DraftStep step, int displayIndex)
 	{
-		if (step.isSectionDivider())
-		{
-			String mode = step.isSkipWhenConditionMet() ? "skip when true" : "show when true";
-			String condition = step.getSectionCondition() == null || step.getSectionCondition().isBlank() ? "no condition" : step.getSectionCondition();
-			return String.format("SECTION %d. %s [%s: %s]",
-				displayIndex,
-				step.getSuggestedVarName() == null || step.getSuggestedVarName().isBlank() ? DEFAULT_SECTION_NAME : step.getSuggestedVarName(),
-				mode,
-				condition);
-		}
 		String displayName;
 		if (step.getKind() == StepKind.TEXT)
 		{
@@ -6109,8 +6061,6 @@ public class HelperConstructManager
 		private final String varName;
 		private final String summary;
 		private final boolean sectionDivider;
-		private final String sectionCondition;
-		private final boolean skipWhenConditionMet;
 		private final Integer orderLinkedRequirementRawId;
 		/**
 		 * -- GETTER --
@@ -6123,7 +6073,7 @@ public class HelperConstructManager
 		private final boolean customOrderStepRequirement;
 		private final boolean hasOrderStepRequirementTree;
 
-		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, String sectionCondition, boolean skipWhenConditionMet, Integer orderLinkedRequirementRawId, String instructionText, boolean leagueStep, OrderConditionMode orderConditionMode, boolean passOnceCompletedOnce, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
+		public CombinedStepRow(int index, String orderSlotId, String stepId, String varName, String summary, boolean sectionDivider, Integer orderLinkedRequirementRawId, String instructionText, boolean leagueStep, OrderConditionMode orderConditionMode, boolean passOnceCompletedOnce, boolean customOrderStepRequirement, boolean hasOrderStepRequirementTree)
 		{
 			this.index = index;
 			this.orderSlotId = orderSlotId == null ? "" : orderSlotId;
@@ -6131,8 +6081,6 @@ public class HelperConstructManager
 			this.varName = varName;
 			this.summary = summary;
 			this.sectionDivider = sectionDivider;
-			this.sectionCondition = sectionCondition;
-			this.skipWhenConditionMet = skipWhenConditionMet;
 			this.orderLinkedRequirementRawId = orderLinkedRequirementRawId;
 			this.instructionText = instructionText == null ? "" : instructionText;
 			this.leagueStep = leagueStep;

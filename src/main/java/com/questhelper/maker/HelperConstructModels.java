@@ -373,7 +373,6 @@ public final class HelperConstructModels
 	{
 		private String stepId;
 		private StepKind kind;
-		private boolean sectionDivider;
 		/**
 		 * Optional league / external struct id persisted in draft JSON only; not read by codegen or preview logic.
 		 */
@@ -385,8 +384,6 @@ public final class HelperConstructModels
 		private String suggestedVarName;
 		private String instructionText;
 		private String panelName;
-		private String sectionCondition;
-		private boolean skipWhenConditionMet;
 		private final List<DraftStepAttachedRequirement> attachedRequirements = new ArrayList<>();
 		/** Additional NPC/object ids (comma-separated in UI); first id is {@link #rawId}. */
 		private final List<Integer> alternateRawIds = new ArrayList<>();
@@ -549,8 +546,6 @@ public final class HelperConstructModels
 		private boolean sectionDivider;
 		private String orderSlotId;
 		private String suggestedVarName;
-		private String sectionCondition;
-		private boolean skipWhenConditionMet;
 		private String refStepId;
 		private Integer linkedRequirementRawId;
 		private DraftOrderStepRequirement stepRequirement;

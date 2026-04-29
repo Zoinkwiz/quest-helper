@@ -124,8 +124,6 @@ public final class TasksTrackerRouteImporter
 		div.setOrderSlotId(UUID.randomUUID().toString());
 		div.setSectionDivider(true);
 		div.setSuggestedVarName(trimOrDefault(sectionName, "Section"));
-		div.setSectionCondition("");
-		div.setSkipWhenConditionMet(false);
 		div.setRefStepId(null);
 		div.setLinkedRequirementRawId(null);
 		return div;
@@ -178,7 +176,6 @@ public final class TasksTrackerRouteImporter
 		DraftStep step = new DraftStep();
 		step.setStepId(stepId);
 		step.setKind(kind);
-		step.setSectionDivider(false);
 		step.setStructId(structId);
 		step.setRawId(rawId);
 		step.setOption("");
@@ -187,8 +184,6 @@ public final class TasksTrackerRouteImporter
 		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(name, "task") + varSuffix);
 		step.setInstructionText(instructionFromNoteOrHub(item.getNote(), name, desc));
 		step.setPanelName("League tasks");
-		step.setSectionCondition("");
-		step.setSkipWhenConditionMet(false);
 		applyWorldPoint(step, item.getLocation(), hub);
 		if (inter != null && kind == StepKind.NPC && inter.getNpc() != null && inter.getNpc().size() > 1)
 		{
@@ -221,7 +216,6 @@ public final class TasksTrackerRouteImporter
 		DraftStep step = new DraftStep();
 		step.setStepId(stepId == null || stepId.isBlank() ? UUID.randomUUID().toString() : stepId.trim());
 		step.setKind(StepKind.TEXT);
-		step.setSectionDivider(false);
 		step.setStructId(null);
 		step.setRawId(0);
 		step.setOption("");
@@ -260,8 +254,6 @@ public final class TasksTrackerRouteImporter
 		}
 		step.setInstructionText(instr.toString());
 		step.setPanelName("League tasks");
-		step.setSectionCondition("");
-		step.setSkipWhenConditionMet(false);
 		applyWorldPoint(step, item.getLocation(), null);
 		return step;
 	}
@@ -295,8 +287,6 @@ public final class TasksTrackerRouteImporter
 		ord.setOrderSlotId(UUID.randomUUID().toString());
 		ord.setSectionDivider(false);
 		ord.setSuggestedVarName(null);
-		ord.setSectionCondition("");
-		ord.setSkipWhenConditionMet(false);
 		ord.setRefStepId(stepId);
 		ord.setLinkedRequirementRawId(null);
 		ord.setStepRequirement(DraftOrderStepRequirement.varbit(

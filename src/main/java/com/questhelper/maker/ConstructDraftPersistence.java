@@ -40,6 +40,7 @@ import static com.questhelper.maker.HelperConstructModels.DraftStep;
 import static com.questhelper.maker.HelperConstructModels.DraftStepAttachedRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftVarbitRequirement;
 import static com.questhelper.maker.HelperConstructModels.DraftZoneRequirement;
+import static com.questhelper.maker.HelperConstructModels.OrderConditionMode;
 import static com.questhelper.maker.HelperConstructModels.StepAttachmentKind;
 import static com.questhelper.maker.HelperConstructModels.StepKind;
 
@@ -258,6 +259,8 @@ public final class ConstructDraftPersistence
 			lineState.refStepId = line.getRefStepId();
 			lineState.linkedRequirementRawId = line.getLinkedRequirementRawId();
 			lineState.stepRequirement = line.getStepRequirement();
+			lineState.stepRequirementMode = line.getStepRequirementMode();
+			lineState.passOnceCompletedOnce = line.isPassOnceCompletedOnce();
 			if (line.getZoneRoutingCorner1() != null)
 			{
 				lineState.zoneRoutingCorner1 = locationStateFromWorldPoint(line.getZoneRoutingCorner1());
@@ -502,6 +505,8 @@ public final class ConstructDraftPersistence
 			// Conditions tree owns order routing; ignore legacy mirrored item link when tree exists.
 			line.setLinkedRequirementRawId(null);
 		}
+		line.setStepRequirementMode(s.stepRequirementMode);
+		line.setPassOnceCompletedOnce(s.passOnceCompletedOnce);
 		if (s.attachedRequirements != null)
 		{
 			for (DraftStepAttachedRequirementState st : s.attachedRequirements)
@@ -628,6 +633,8 @@ public final class ConstructDraftPersistence
 		public String routingVarbitOperation;
 		public String routingVarbitDisplayText;
 		public DraftOrderStepRequirement stepRequirement;
+		public OrderConditionMode stepRequirementMode;
+		public boolean passOnceCompletedOnce;
 		public List<DraftStepAttachedRequirementState> attachedRequirements = new ArrayList<>();
 		public DraftLocationState zoneRoutingCorner1;
 		public DraftLocationState zoneRoutingCorner2;

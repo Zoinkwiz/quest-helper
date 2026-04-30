@@ -91,6 +91,8 @@ public final class OrderStepRequirementSupport
 				if (syn != null)
 				{
 					line.setStepRequirement(syn);
+					// Tree now owns routing; drop the legacy mirror so the next save is stable.
+					line.setLinkedRequirementRawId(null);
 				}
 			}
 			if (line.getStepRequirement() != null)

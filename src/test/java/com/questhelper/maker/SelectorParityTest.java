@@ -100,6 +100,51 @@ class SelectorParityTest
 		assertParity(tree, varbits(VARBIT_A, 1, VARBIT_B, 1));
 	}
 
+	@Test
+	void orGroupAgrees() throws Exception
+	{
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.group("OR",
+			DraftOrderStepRequirement.varbit(VARBIT_A, 1, "EQUAL", "a"),
+			DraftOrderStepRequirement.varbit(VARBIT_B, 1, "EQUAL", "b"));
+		assertParity(tree, varbits(VARBIT_A, 0, VARBIT_B, 0));
+		assertParity(tree, varbits(VARBIT_A, 1, VARBIT_B, 0));
+		assertParity(tree, varbits(VARBIT_A, 0, VARBIT_B, 1));
+		assertParity(tree, varbits(VARBIT_A, 1, VARBIT_B, 1));
+	}
+
+	@Test
+	void norGroupAgrees() throws Exception
+	{
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.group("NOR",
+			DraftOrderStepRequirement.varbit(VARBIT_A, 1, "EQUAL", "a"),
+			DraftOrderStepRequirement.varbit(VARBIT_B, 1, "EQUAL", "b"));
+		assertParity(tree, varbits(VARBIT_A, 0, VARBIT_B, 0));
+		assertParity(tree, varbits(VARBIT_A, 1, VARBIT_B, 0));
+		assertParity(tree, varbits(VARBIT_A, 0, VARBIT_B, 1));
+		assertParity(tree, varbits(VARBIT_A, 1, VARBIT_B, 1));
+	}
+
+	@Test
+	void invertedAndGroupAgrees() throws Exception
+	{
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.invert(
+			DraftOrderStepRequirement.group("AND",
+				DraftOrderStepRequirement.varbit(VARBIT_A, 1, "EQUAL", "a"),
+				DraftOrderStepRequirement.varbit(VARBIT_B, 1, "EQUAL", "b")));
+		assertParity(tree, varbits(VARBIT_A, 0, VARBIT_B, 0));
+		assertParity(tree, varbits(VARBIT_A, 1, VARBIT_B, 1));
+	}
+
+	@Test
+	void varbitNotEqualOperationAgrees() throws Exception
+	{
+		// Different operation than EQUAL — guards against operator-name drift between paths.
+		DraftOrderStepRequirement tree = DraftOrderStepRequirement.varbit(VARBIT_A, 0, "GREATER", "above zero");
+		assertParity(tree, varbits(VARBIT_A, 0));
+		assertParity(tree, varbits(VARBIT_A, 1));
+		assertParity(tree, varbits(VARBIT_A, 5));
+	}
+
 	private static void assertParity(DraftOrderStepRequirement tree, Map<Integer, Integer> varbits) throws Exception
 	{
 		Client client = mock(Client.class);

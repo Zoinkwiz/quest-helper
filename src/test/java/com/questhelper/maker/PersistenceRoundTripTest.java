@@ -95,6 +95,55 @@ class PersistenceRoundTripTest
 	}
 
 	@Test
+	void comprehensiveDraftRoundTrip()
+	{
+		DraftHelper original = MakerFixtures.comprehensiveDraft();
+		DraftHelper reloaded = roundTrip(original);
+
+		assertEquals(original.getQuestName(), reloaded.getQuestName());
+		assertEquals(original.getStepDefinitions().size(), reloaded.getStepDefinitions().size());
+		assertEquals(original.getOrder().size(), reloaded.getOrder().size());
+
+		// Helper-level requirements survive (including alternate ids and skill reqs).
+		assertEquals(original.getRequirements().size(), reloaded.getRequirements().size());
+		assertEquals(original.getRequirements().get(0).getAlternateRawIds(),
+			reloaded.getRequirements().get(0).getAlternateRawIds(),
+			"alternate item ids must round-trip");
+		assertEquals(original.getSkillRequirements().size(), reloaded.getSkillRequirements().size(),
+			"helper-level skill requirements must round-trip");
+
+		// Step attachments round-trip (skill + non-routing varbit on the NPC step).
+		DraftStep originalNpc = original.getStepDefinitions().get(0);
+		DraftStep reloadedNpc = reloaded.getStepDefinitions().get(0);
+		assertEquals(originalNpc.getAttachedRequirements().size(), reloadedNpc.getAttachedRequirements().size(),
+			"per-step attachments must round-trip");
+
+		// Section dividers stay dividers; row order is preserved.
+		// Body-level routing fields (stepRequirement / linkedRequirementRawId) intentionally migrate on load —
+		// {@code OrderStepRequirementSupport.normalizeLoadedDraft} synthesises a tree from legacy
+		// linkedRequirementRawId. See the stability test below for the invariant that matters.
+		for (int i = 0; i < original.getOrder().size(); i++)
+		{
+			DraftOrderLine o = original.getOrder().get(i);
+			DraftOrderLine r = reloaded.getOrder().get(i);
+			assertEquals(o.getOrderSlotId(), r.getOrderSlotId());
+			assertEquals(o.isSectionDivider(), r.isSectionDivider());
+		}
+	}
+
+	@Test
+	void comprehensiveDraftIsStableAfterFirstLoad()
+	{
+		// First round-trip migrates legacy fields (linkedRequirementRawId → synthesised tree). After that,
+		// every subsequent save/load must be byte-identical — otherwise legacy migration is unstable.
+		Gson gson = new Gson();
+		DraftHelper migrated = roundTrip(MakerFixtures.comprehensiveDraft());
+		String firstJson = gson.toJson(ConstructDraftPersistence.toDraftState(migrated));
+		String secondJson = gson.toJson(ConstructDraftPersistence.toDraftState(roundTrip(migrated)));
+		assertEquals(firstJson, secondJson, "JSON must stabilise after legacy migration on first load");
+	}
+
+	@Test
 	void smallDraftJsonRoundTripIsStable()
 	{
 		Gson gson = new Gson();

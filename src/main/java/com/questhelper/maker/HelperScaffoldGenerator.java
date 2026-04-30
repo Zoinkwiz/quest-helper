@@ -70,7 +70,6 @@ public class HelperScaffoldGenerator
 		StringBuilder out = new StringBuilder();
 		String className = sanitizeClassName(draft.getClassName());
 		String packageName = draft.getPackagePath();
-		List<DraftStep> definitions = draft.getStepDefinitions();
 		List<DraftRequirement> requirements = draft.getRequirements();
 		List<SectionGroup> sectionGroups = buildSectionGroups(draft);
 
@@ -116,7 +115,10 @@ public class HelperScaffoldGenerator
 		}
 
 		out.append("\n\t// Captured steps\n");
-		Map<DraftStep, String> stepVarNames = new LinkedHashMap<>();
+		// Each non-section order row gets its own step field — same DraftStep referenced from multiple rows
+		// produces multiple instances (matches the maker preview, where per-row sidebar checkboxes can latch
+		// independently).
+		Map<String, String> slotVarNames = new LinkedHashMap<>();
 		Map<Integer, String> requirementVarNamesByRawId = new LinkedHashMap<>();
 		Map<SectionGroup, String> sectionTaskNames = new LinkedHashMap<>();
 		Set<String> usedNames = new LinkedHashSet<>();
@@ -127,14 +129,6 @@ public class HelperScaffoldGenerator
 			{
 				requirementVarNamesByRawId.put(rid, var);
 			}
-		}
-		for (DraftStep step : definitions)
-		{
-			String stepType = stepTypeFor(step.getKind());
-			String candidate = toVarName(step.getSuggestedVarName(), "step");
-			String unique = makeUnique(candidate, usedNames);
-			stepVarNames.put(step, unique);
-			out.append("\t").append(stepType).append(" ").append(unique).append(";\n");
 		}
 		Map<String, String> varbitFieldByOrderSlotId = new LinkedHashMap<>();
 		Map<String, String> zoneFieldByOrderSlotId = new LinkedHashMap<>();
@@ -155,35 +149,21 @@ public class HelperScaffoldGenerator
 			{
 				continue;
 			}
-			String stepVar = stepVarNames.get(step);
+			String stepCandidate = toVarName(step.getSuggestedVarName(), "step");
+			String stepVar = makeUnique(stepCandidate, usedNames);
+			slotVarNames.put(sid, stepVar);
+			out.append("\t").append(stepTypeFor(step.getKind())).append(" ").append(stepVar).append(";\n");
 			if (OrderStepRequirementSupport.treeContainsOrderZoneLeaf(line.getStepRequirement()))
 			{
-				if (stepVar == null)
-				{
-					continue;
-				}
 				String zoneField = makeUnique(stepVar + "OrderZoneReq", usedNames);
 				zoneFieldByOrderSlotId.put(sid, zoneField);
 				out.append("\tZoneRequirement ").append(zoneField).append(";\n");
 			}
-			if (line.getStepRequirement() == null)
-			{
-				Integer lk = line.getLinkedRequirementRawId();
-				if (lk == null || lk <= 0)
-				{
-					String mf = makeUnique("orderManual_" + shortSlotSuffixForJava(sid), usedNames);
-					manualFieldByOrderSlotId.put(sid, mf);
-					out.append("\tManualRequirement ").append(mf).append(";\n");
-				}
-			}
-			// Pass-once-completed rows need a ManualRequirement to latch into, even when the row is tree-routed
-			// or item-linked (those paths skip the allocation above).
-			if (line.isPassOnceCompletedOnce() && !manualFieldByOrderSlotId.containsKey(sid))
-			{
-				String mf = makeUnique("orderManual_" + shortSlotSuffixForJava(sid), usedNames);
-				manualFieldByOrderSlotId.put(sid, mf);
-				out.append("\tManualRequirement ").append(mf).append(";\n");
-			}
+			// Every non-section row gets a ManualRequirement so the sidebar can render a per-step
+			// "skip step" checkbox and persist it (matches the maker preview's PR #2693 wiring).
+			String mf = makeUnique("orderManual_" + shortSlotSuffixForJava(sid), usedNames);
+			manualFieldByOrderSlotId.put(sid, mf);
+			out.append("\tManualRequirement ").append(mf).append(";\n");
 		}
 		for (int i = 0; i < sectionGroups.size(); i++)
 		{
@@ -221,7 +201,6 @@ public class HelperScaffoldGenerator
 
 		out.append("\tprivate void setupSteps()\n");
 		out.append("\t{\n");
-		Set<String> emittedDefinitionIds = new LinkedHashSet<>();
 		for (DraftOrderLine line : draft.getOrder())
 		{
 			if (line.isSectionDivider())
@@ -229,15 +208,21 @@ public class HelperScaffoldGenerator
 				appendSectionSetupComment(out, line);
 				continue;
 			}
-			DraftStep step = findDefinition(draft, line.getRefStepId());
-			if (step == null || step.getStepId() == null || !emittedDefinitionIds.add(step.getStepId()))
+			String slotVar = slotVarNames.get(line.getOrderSlotId());
+			if (slotVar == null)
 			{
 				continue;
 			}
-			appendDefinitionSetup(out, draft, step, stepVarNames.get(step), requirementVarNamesByRawId, warnings);
+			DraftStep step = findDefinition(draft, line.getRefStepId());
+			if (step == null)
+			{
+				continue;
+			}
+			appendDefinitionSetup(out, draft, step, slotVar, requirementVarNamesByRawId, warnings);
 		}
 		appendOrderZoneRequirementInits(out, draft, zoneFieldByOrderSlotId, warnings);
 		appendOrderManualRequirementInits(out, manualFieldByOrderSlotId);
+		appendSidebarManualSkipWiring(out, draft, slotVarNames, manualFieldByOrderSlotId);
 		out.append("\t}\n\n");
 
 		out.append("\t@Override\n");
@@ -253,7 +238,7 @@ public class HelperScaffoldGenerator
 				String sectionTask = sectionTaskNames.get(group);
 				int initIndex = group.slots.size() - 1;
 				OrderedSlot initSlot = group.slots.get(initIndex);
-				String initStepVar = stepVarNames.get(initSlot.definition);
+				String initStepVar = slotVarNames.get(initSlot.orderLine.getOrderSlotId());
 				out.append("\t\t").append(sectionTask).append(" = new ConditionalStep(this, ").append(initStepVar).append(");\n");
 				for (int i = 0; i < group.slots.size(); i++)
 				{
@@ -262,7 +247,7 @@ public class HelperScaffoldGenerator
 						continue;
 					}
 					OrderedSlot slot = group.slots.get(i);
-					String stepVar = stepVarNames.get(slot.definition);
+					String stepVar = slotVarNames.get(slot.orderLine.getOrderSlotId());
 					String branchExpr = branchRequirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, zoneFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
 					out.append("\t\t").append(sectionTask).append(".addStep(").append(branchExpr).append(", ").append(stepVar).append(");\n");
 				}
@@ -315,11 +300,23 @@ public class HelperScaffoldGenerator
 		}
 		out.append("\t}\n");
 
+		// When the user toggles a per-step sidebar skip (or one is loaded from config), refresh the active branch
+		// so the displayed step updates immediately. Mirrors the maker preview's behaviour from PR #2693.
+		out.append("\n\t@Override\n");
+		out.append("\tprotected void onManualSidebarSkipsPersistedChanged()\n");
+		out.append("\t{\n");
+		out.append("\t\tQuestStep cur = getCurrentStep();\n");
+		out.append("\t\tif (cur instanceof ConditionalStep)\n");
+		out.append("\t\t{\n");
+		out.append("\t\t\t((ConditionalStep) cur).refreshAfterRequirementChangeDeep();\n");
+		out.append("\t\t}\n");
+		out.append("\t}\n");
+
 		out.append("\n\t@Override\n");
 		out.append("\tpublic List<PanelDetails> getPanels()\n");
 		out.append("\t{\n");
 		out.append("\t\tList<PanelDetails> allSteps = new ArrayList<>();\n\n");
-		appendPanelsFromSections(out, sectionGroups, stepVarNames, sectionTaskNames);
+		appendPanelsFromSections(out, sectionGroups, slotVarNames, sectionTaskNames);
 		out.append("\t\treturn allSteps;\n");
 		out.append("\t}\n");
 		out.append("}\n");
@@ -656,7 +653,7 @@ public class HelperScaffoldGenerator
 		List<String> warnings)
 	{
 		boolean passOnce = slot.orderLine.isPassOnceCompletedOnce();
-		String manualField = passOnce ? manualFieldByOrderSlotId.get(slot.orderLine.getOrderSlotId()) : null;
+		String manualField = manualFieldByOrderSlotId.get(slot.orderLine.getOrderSlotId());
 		if (slot.orderLine.getStepRequirement() != null)
 		{
 			String selectorExpr = OrderStepRequirementSupport.emitSelectorJava(
@@ -668,24 +665,26 @@ public class HelperScaffoldGenerator
 				zoneFieldByOrderSlotId,
 				warnings);
 			boolean continueMode = OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE;
-			if (passOnce && manualField != null)
+			String latched = (passOnce && manualField != null)
+				? "new LatchingManualRequirement(" + selectorExpr + ", " + manualField + ", " + continueMode + ")"
+				: selectorExpr;
+			if (manualField == null)
 			{
-				String latched = "new LatchingManualRequirement(" + selectorExpr + ", " + manualField + ", " + continueMode + ")";
-				return continueMode
-					? "and(not(" + latched + "), not(" + manualField + "))"
-					: "and(" + latched + ", not(" + manualField + "))";
+				return continueMode ? "not(" + latched + ")" : latched;
 			}
 			return continueMode
-				? "not(" + selectorExpr + ")"
-				: selectorExpr;
+				? "and(not(" + latched + "), not(" + manualField + "))"
+				: "and(" + latched + ", not(" + manualField + "))";
 		}
 		Integer linkedReqId = slot.orderLine.getLinkedRequirementRawId();
-		if (passOnce && manualField != null && linkedReqId != null && linkedReqId > 0)
+		if (linkedReqId != null && linkedReqId > 0)
 		{
 			String linkedVar = requirementVarNamesByRawId.get(linkedReqId);
-			if (linkedVar != null)
+			if (linkedVar != null && manualField != null)
 			{
-				String latched = "new LatchingManualRequirement(" + linkedVar + ", " + manualField + ", true)";
+				String latched = passOnce
+					? "new LatchingManualRequirement(" + linkedVar + ", " + manualField + ", true)"
+					: linkedVar;
 				return "and(not(" + latched + "), not(" + manualField + "))";
 			}
 		}
@@ -701,8 +700,7 @@ public class HelperScaffoldGenerator
 		Map<String, String> manualFieldByOrderSlotId,
 		List<String> warnings)
 	{
-		boolean passOnce = slot.orderLine.isPassOnceCompletedOnce();
-		String manualField = passOnce ? manualFieldByOrderSlotId.get(slot.orderLine.getOrderSlotId()) : null;
+		String manualField = manualFieldByOrderSlotId.get(slot.orderLine.getOrderSlotId());
 		if (slot.orderLine.getStepRequirement() != null)
 		{
 			String sel = OrderStepRequirementSupport.emitSelectorJava(
@@ -716,16 +714,16 @@ public class HelperScaffoldGenerator
 			String completion = OrderStepRequirementSupport.effectiveConditionMode(slot.orderLine) == OrderConditionMode.CONTINUE_WHEN_TRUE
 				? sel
 				: "not(" + sel + ")";
-			return (passOnce && manualField != null)
-				? "or(" + completion + ", " + manualField + ")"
-				: completion;
+			return manualField == null
+				? completion
+				: "or(" + completion + ", " + manualField + ")";
 		}
 		String base = requirementExpressionForSlot(slot, requirementVarNamesByRawId, varbitFieldByOrderSlotId, manualFieldByOrderSlotId, warnings);
-		if (passOnce && manualField != null && !manualField.equals(base))
+		if (manualField == null || manualField.equals(base))
 		{
-			return "or(" + base + ", " + manualField + ")";
+			return base;
 		}
-		return base;
+		return "or(" + base + ", " + manualField + ")";
 	}
 
 	private String sectionGateExpressionForGroup(
@@ -886,6 +884,37 @@ public class HelperScaffoldGenerator
 		}
 	}
 
+	/**
+	 * For each non-section order row, wires the row's {@link com.questhelper.requirements.ManualRequirement} as the
+	 * step's sidebar skip requirement and uses the slot id as the persistence key. Lets the standalone helper plugin
+	 * render a per-step "skip step" checkbox that persists across reloads, matching the maker preview's behaviour.
+	 * If the same {@link com.questhelper.maker.HelperConstructModels.DraftStep} backs multiple rows, the last call
+	 * wins — same as the preview.
+	 */
+	private void appendSidebarManualSkipWiring(
+		StringBuilder out,
+		DraftHelper draft,
+		Map<String, String> slotVarNames,
+		Map<String, String> manualFieldByOrderSlotId)
+	{
+		for (DraftOrderLine line : draft.getOrder())
+		{
+			if (line.isSectionDivider())
+			{
+				continue;
+			}
+			String sid = line.getOrderSlotId();
+			String manualField = sid == null ? null : manualFieldByOrderSlotId.get(sid);
+			String stepVar = sid == null ? null : slotVarNames.get(sid);
+			if (manualField == null || stepVar == null)
+			{
+				continue;
+			}
+			out.append("\t\t").append(stepVar).append(".setSidebarManualSkipRequirement(").append(manualField).append(");\n");
+			out.append("\t\t").append(stepVar).append(".setSidebarManualSkipPersistenceKey(\"").append(escapeJavaLiteral(sid)).append("\");\n");
+		}
+	}
+
 	static String shortSlotSuffixForJava(String orderSlotId)
 	{
 		if (orderSlotId == null || orderSlotId.isBlank())
@@ -923,7 +952,7 @@ public class HelperScaffoldGenerator
 	private void appendPanelsFromSections(
 		StringBuilder out,
 		List<SectionGroup> sectionGroups,
-		Map<DraftStep, String> stepVarNames,
+		Map<String, String> slotVarNames,
 		Map<SectionGroup, String> sectionTaskNames)
 	{
 		if (sectionGroups.isEmpty())
@@ -950,7 +979,7 @@ public class HelperScaffoldGenerator
 				{
 					out.append(", ");
 				}
-				out.append(stepVarNames.get(group.slots.get(j).definition));
+				out.append(slotVarNames.get(group.slots.get(j).orderLine.getOrderSlotId()));
 			}
 			out.append("));\n");
 			out.append("\t\t").append(panelVar).append(".setLockingStep(").append(sectionTaskNames.get(group)).append(");\n");

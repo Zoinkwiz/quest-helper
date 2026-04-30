@@ -40,6 +40,7 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -56,11 +57,55 @@ class ScaffoldCompileTest
 	@Test
 	void smallDraftScaffoldCompiles() throws IOException
 	{
+		assertScaffoldCompiles(MakerFixtures.smallDraft(), "TestGeneratedHelper");
+	}
+
+	@Test
+	void comprehensiveDraftScaffoldCompiles() throws IOException
+	{
+		assertScaffoldCompiles(MakerFixtures.comprehensiveDraft(), "ComprehensiveGeneratedHelper");
+	}
+
+	@Test
+	void scaffoldWiresSidebarManualSkipForEveryRow()
+	{
+		// Every non-section row should get its ManualRequirement wired as the step's sidebar skip requirement
+		// and its slot id as the persistence key. Catches regressions if the PR #2693 alignment is removed.
+		String src = new HelperScaffoldGenerator().generate(MakerFixtures.comprehensiveDraft()).getSource();
+		assertTrue(src.contains(".setSidebarManualSkipRequirement(orderManual_"),
+			"generated helper must wire sidebarManualSkipRequirement on order steps");
+		assertTrue(src.contains(".setSidebarManualSkipPersistenceKey(\"slot-item-tree\")"),
+			"generated helper must use the row's orderSlotId as the persistence key");
+		assertTrue(src.contains("protected void onManualSidebarSkipsPersistedChanged()"),
+			"generated helper must override onManualSidebarSkipsPersistedChanged so manual flips refresh the active branch");
+		assertTrue(src.contains("refreshAfterRequirementChangeDeep()"),
+			"override must call refreshAfterRequirementChangeDeep on the active ConditionalStep");
+	}
+
+	@Test
+	void sharedStepDraftEmitsPerRowInstances() throws IOException
+	{
+		// Two rows share one DraftStep. Each must get its own field, its own constructor call, and its own
+		// sidebar wiring — otherwise sidebar checkboxes alias and the user can't latch each occurrence.
 		HelperScaffoldGenerator.GeneratedScaffold scaffold = new HelperScaffoldGenerator()
-			.generate(MakerFixtures.smallDraft());
+			.generate(MakerFixtures.sharedStepDraft());
+		String src = scaffold.getSource();
+		assertTrue(src.contains("ObjectStep usefurnace;") && src.contains("ObjectStep usefurnace2;"),
+			"both rows referencing the same DraftStep must get distinct field names");
+		long ctorCount = src.lines().filter(l -> l.contains("= new ObjectStep(this, 17385")).count();
+		assertEquals(2L, ctorCount, "each row needs its own ObjectStep instantiation");
+		assertTrue(src.contains("usefurnace.setSidebarManualSkipPersistenceKey(\"slot-furnace-first\")")
+				&& src.contains("usefurnace2.setSidebarManualSkipPersistenceKey(\"slot-furnace-second\")"),
+			"each row's persistence key must be wired to its own step instance");
+		assertScaffoldCompiles(MakerFixtures.sharedStepDraft(), "SharedStepHelper");
+	}
+
+	private static void assertScaffoldCompiles(HelperConstructModels.DraftHelper draft, String expectedClassName) throws IOException
+	{
+		HelperScaffoldGenerator.GeneratedScaffold scaffold = new HelperScaffoldGenerator().generate(draft);
 
 		assertNotNull(scaffold.getSource(), "scaffold should produce source");
-		assertTrue(scaffold.getSource().contains("class TestGeneratedHelper"),
+		assertTrue(scaffold.getSource().contains("class " + expectedClassName),
 			"generated class name should match draft");
 
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -75,7 +120,7 @@ class ScaffoldCompileTest
 				fileManager.setLocation(javax.tools.StandardLocation.CLASS_OUTPUT, Collections.singletonList(outDir.toFile()));
 
 				List<JavaFileObject> sources = Collections.singletonList(
-					new InMemorySource("TestGeneratedHelper", scaffold.getSource()));
+					new InMemorySource(expectedClassName, scaffold.getSource()));
 				List<String> options = Arrays.asList("-classpath", System.getProperty("java.class.path"),
 					"-proc:none", // skip annotation processing — Lombok runs on the maker source, not on emitted code
 					"-Xlint:none");

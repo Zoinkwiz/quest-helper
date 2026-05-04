@@ -41,7 +41,6 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfileType;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
@@ -60,13 +59,7 @@ public class PlayerStateManager
 	ConfigManager configManager;
 
 	@Inject
-	EventBus eventBus;
-
-	@Inject
 	QuestCompletedWidget playerQuestCompleteWidget;
-
-	@Inject
-	BarbarianTrainingStateTracker barbarianTrainingStateTracker;
 
 	WorldPoint lastPlayerPos = null;
 
@@ -83,12 +76,10 @@ public class PlayerStateManager
 	public void startUp()
 	{
 		AchievementDiaryStepManager.setup(configManager);
-		barbarianTrainingStateTracker.startUp(configManager, eventBus);
 	}
 
 	public void shutDown()
 	{
-		barbarianTrainingStateTracker.shutDown(eventBus);
 	}
 
 	@Subscribe

@@ -26,31 +26,22 @@ package com.questhelper.helpers.miniquests.barbariantraining;
 
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.config.ConfigKeys;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.runelite.RuneliteRequirement;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -101,11 +92,7 @@ public class BarbarianTraining extends BasicQuestHelper
 	QuestRequirement druidicRitual;
 	QuestRequirement taiBwoWannaiTrio;
 
-	Requirement taskedWithPyre;
-
 	Requirement chewedBonesNearby;
-
-	Requirement sacrificedRemains;
 
 	DetailedQuestStep talkToOttoAboutFishing;
 	DetailedQuestStep searchBed;
@@ -161,8 +148,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	ConditionalStep spearAndHastaeSteps;
 	ConditionalStep herbloreSteps;
 
-	Requirement finishedPyre;
-
 	Zone ancientCavernF0;
 	Zone ancientCavernF1;
 	Zone ancientCavernArrivalRoom;
@@ -202,6 +187,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	VarbitRequirement taskedWithHastae;
 	VarbitRequirement madeHasta;
 	VarbitRequirement finishedHasta;
+
+	VarbitRequirement taskedWithPyre;
+	VarbitRequirement sacrificedRemains;
+	VarbitRequirement finishedPyre;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -402,45 +391,16 @@ public class BarbarianTraining extends BasicQuestHelper
 		madeHasta = barbHasta.eq(2);
 		finishedHasta = barbHasta.eq(3);
 		finishedHasta.setDisplayText("Finished Barbarian Hastae Smithing");
+
+		var barbPyre = new VarbitBuilder(VarbitID.BRUT_CRAFT_SHIP);
+		taskedWithPyre = barbPyre.eq(1);
+		sacrificedRemains = barbPyre.eq(2);
+		finishedPyre = barbPyre.eq(3);
+		finishedPyre.setDisplayText("Finished Barbarian Pyremaking");
 	}
 
 	public void setupConditions()
 	{
-		// Started tasks
-		taskedWithPyre = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_PYREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Dive into the whirlpool in the lake to the east. The spirits will use their abilities to ensure you arrive in the correct location. Be warned, their influence fades, so you must find y"),
-				new DialogRequirement("I will repeat myself fully, since this is quite complex. Listen well."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
-			)
-		);
-
-		// Finished tasks
-		finishedPyre = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_PYREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("On this great day you have my eternal thanks. May you find riches while rescuing my spiritual ancestors in the caverns for many moons to come."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a pyre ship!")
-			),
-			"Finished Barbarian Pyremaking"
-		);
-
-		// Mid-conditions
-		sacrificedRemains = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_PYRE_MADE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("The ancient barbarian is laid to rest."),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
-			)
-		);
-
-		// For harpooning,
-		// You catch a tuna.
-
 		ancientCavernArrivalRoom = new Zone(new WorldPoint(1762, 5364, 1), new WorldPoint(1769, 5359, 1));
 		ancientCavernF0 = new Zone(new WorldPoint(1734, 5318, 0), new WorldPoint(1800, 5400, 0));
 		ancientCavernF1 = new Zone(new WorldPoint(1734, 5318, 1), new WorldPoint(1800, 5400, 1));
@@ -500,9 +460,9 @@ public class BarbarianTraining extends BasicQuestHelper
 		pickupChewedBones = new ItemStep(this, "Pick up the chewed bones.", chewedBones);
 		useLogOnPyre = new ObjectStep(this, ObjectID.BRUT_BURNED_GROUND, new WorldPoint(2506, 3518, 0),
 			"Construct a pyre on the lake near Otto.", logs, chewedBones, tinderbox, axe);
-		useLogOnPyre.addDialogStep("I've created a pyre ship!");
 		talkToOttoAfterPyre = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto and tell him about the succesful pyre-making.");
+		talkToOttoAfterPyre.addDialogStep("I've created a pyre ship!");
 
 		// Barbarian Farming
 		talkToOttoAboutFarming = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),

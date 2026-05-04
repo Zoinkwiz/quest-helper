@@ -34,7 +34,6 @@ public enum ConfigKeys
 	BARBARIAN_TRAINING_STARTED_POT_SMASHING("barbariantrainingstartedpotsmashing"),
 	BARBARIAN_TRAINING_STARTED_FIREMAKING("barbariantrainingstartedfiremaking"),
 	BARBARIAN_TRAINING_STARTED_PYREMAKING("barbariantrainingstartedpyremaking"),
-	BARBARIAN_TRAINING_STARTED_HERBLORE("barbariantrainingstartedherblore"),
 	BARBARIAN_TRAINING_STARTED_SPEAR("barbariantrainingstartedspear"),
 	BARBARIAN_TRAINING_STARTED_HASTA("barbariantrainingstartedhasta"),
 
@@ -46,7 +45,6 @@ public enum ConfigKeys
 	BARBARIAN_TRAINING_FINISHED_PYREMAKING("barbariantrainingfinishedpyremaking"),
 	BARBARIAN_TRAINING_FINISHED_SPEAR("barbariantrainingfinishedspear"),
 	BARBARIAN_TRAINING_FINISHED_HASTA("barbariantrainingfinishedhasta"),
-	BARBARIAN_TRAINING_FINISHED_HERBLORE("barbariantrainingfinishedherblore"),
 
 	// Mid-conditions
 	BARBARIAN_TRAINING_PLANTED_SEED("barbariantrainingplantedseed"),
@@ -54,7 +52,6 @@ public enum ConfigKeys
 	BARBARIAN_TRAINING_BOW_FIRE("barbariantrainingbowfire"),
 	BARBARIAN_TRAINING_PYRE_MADE("barbariantrainingpyremade"),
 	BARBARIAN_TRAINING_HARPOONED_FISH("barbariantrainingharpoonedfish"),
-	BARBARIAN_TRAINING_MADE_POTION("barbariantrainingmadepotion"),
 	BARBARIAN_TRAINING_MADE_SPEAR("barbariantrainingmadespear"),
 	BARBARIAN_TRAINING_MADE_HASTA("barbariantrainingmadehasta");
 

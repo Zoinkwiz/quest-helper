@@ -52,13 +52,11 @@ public class BarbarianTrainingStateTracker
 	Requirement taskedWithPotSmashing;
 	Requirement taskedWithSpears;
 	Requirement taskedWithHastae;
-	Requirement taskedWithHerblore;
 	Requirement plantedSeed;
 	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
 	Requirement caughtFishWithoutHarpoon;
-	Requirement madePotion;
 	Requirement madeSpear;
 	Requirement madeHasta;
 	Requirement finishedHarpoon;
@@ -68,7 +66,6 @@ public class BarbarianTrainingStateTracker
 	Requirement finishedPyre;
 	Requirement finishedSpear;
 	Requirement finishedHasta;
-	Requirement finishedHerblore;
 
 	RequirementValidator reqs;
 
@@ -117,15 +114,6 @@ public class BarbarianTrainingStateTracker
 				new DialogRequirement("Dive into the whirlpool in the lake to the east. The spirits will use their abilities to ensure you arrive in the correct location. Be warned, their influence fades, so you must find y"),
 				new DialogRequirement("I will repeat myself fully, since this is quite complex. Listen well."),
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
-			)
-		);
-
-		taskedWithHerblore = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_HERBLORE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Have I become so predictable? But yes, I do indeed require a potion. It is of the highest importance that you bring me a lesser attack potion combined with fish roe."),
-				new DialogRequirement("Do you have my potion?"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to make a <col=800000>new type")
 			)
 		);
 
@@ -211,15 +199,6 @@ public class BarbarianTrainingStateTracker
 			"Finished Barbarian Hasta Smithing"
 		);
 
-		finishedHerblore = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_HERBLORE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("I will take that off your hands now. I will say no more than that I am eternally grateful."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a new potion!")
-			),
-			"Finished Barbarian Herblore"
-		);
-
 		// Mid-conditions
 		plantedSeed = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_PLANTED_SEED.getKey(),
@@ -277,17 +256,6 @@ public class BarbarianTrainingStateTracker
 			)
 		);
 
-		madePotion = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_MADE_POTION.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You combine your potion with the fish eggs."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
-			)
-		);
-
 		madeSpear = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_MADE_SPEAR.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -322,13 +290,11 @@ public class BarbarianTrainingStateTracker
 			taskedWithPotSmashing,
 			taskedWithSpears,
 			taskedWithHastae,
-			taskedWithHerblore,
 			plantedSeed,
 			smashedPot,
 			litFireWithBow,
 			sacrificedRemains,
 			caughtFishWithoutHarpoon,
-			madePotion,
 			madeSpear,
 			madeHasta,
 			finishedHarpoon,
@@ -337,8 +303,7 @@ public class BarbarianTrainingStateTracker
 			finishedFiremaking,
 			finishedPyre,
 			finishedSpear,
-			finishedHasta,
-			finishedHerblore
+			finishedHasta
 		);
 
 		eventBus.register(reqs);

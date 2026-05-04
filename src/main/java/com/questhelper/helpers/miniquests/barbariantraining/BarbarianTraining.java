@@ -109,7 +109,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	Requirement taskedWithPotSmashing;
 	Requirement taskedWithSpears;
 	Requirement taskedWithHastae;
-	Requirement taskedWithHerblore;
 
 	Requirement chewedBonesNearby;
 
@@ -118,7 +117,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
 	Requirement caughtFishWithoutHarpoon;
-	Requirement madePotion;
 	Requirement madeSpear;
 	Requirement madeHasta;
 
@@ -183,7 +181,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	Requirement finishedPyre;
 	Requirement finishedSpear;
 	Requirement finishedHasta;
-	Requirement finishedHerblore;
 
 	Zone ancientCavernF0;
 	Zone ancientCavernF1;
@@ -196,6 +193,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	VarbitRequirement taskedWithFishing;
 	VarbitRequirement caughtBarbarianFish;
 	VarbitRequirement finishedFishing;
+
+	VarbitRequirement taskedWithHerblore;
+	VarbitRequirement madePotion;
+	VarbitRequirement finishedHerblore;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -354,6 +355,12 @@ public class BarbarianTraining extends BasicQuestHelper
 		caughtBarbarianFish = barbFishing.eq(2);
 		finishedFishing = barbFishing.eq(3);
 		finishedFishing.setDisplayText("Finished Barbarian Fishing");
+
+		var barbHerblore = new VarbitBuilder(VarbitID.BRUT_HERB_POTION);
+		taskedWithHerblore = barbHerblore.eq(1);
+		madePotion = barbHerblore.eq(2);
+		finishedHerblore = barbHerblore.eq(3);
+		finishedHerblore.setDisplayText("Finished Barbarian Herblore");
 	}
 
 	public void setupConditions()
@@ -402,15 +409,6 @@ public class BarbarianTraining extends BasicQuestHelper
 				new DialogRequirement("Dive into the whirlpool in the lake to the east. The spirits will use their abilities to ensure you arrive in the correct location. Be warned, their influence fades, so you must find y"),
 				new DialogRequirement("I will repeat myself fully, since this is quite complex. Listen well."),
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
-			)
-		);
-
-		taskedWithHerblore = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_HERBLORE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Have I become so predictable? But yes, I do indeed require a potion. It is of the highest importance that you bring me a lesser attack potion combined with fish roe."),
-				new DialogRequirement("Do you have my potion?"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to make a <col=800000>new type")
 			)
 		);
 
@@ -496,15 +494,6 @@ public class BarbarianTraining extends BasicQuestHelper
 			"Finished Barbarian Hasta Smithing"
 		);
 
-		finishedHerblore = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HERBLORE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("I will take that off your hands now. I will say no more than that I am eternally grateful."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a new potion!")
-			),
-			"Finished Barbarian Herblore"
-		);
-
 		// Mid-conditions
 		plantedSeed = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_PLANTED_SEED.getKey(),
@@ -559,17 +548,6 @@ public class BarbarianTraining extends BasicQuestHelper
 					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
-			)
-		);
-
-		madePotion = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_MADE_POTION.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You combine your potion with the fish eggs."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
 			)
 		);
 

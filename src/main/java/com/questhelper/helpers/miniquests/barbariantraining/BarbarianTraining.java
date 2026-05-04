@@ -31,7 +31,6 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.MesBoxRequirement;
 import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
@@ -103,14 +102,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	QuestRequirement taiBwoWannaiTrio;
 
 	Requirement taskedWithPyre;
-	Requirement taskedWithSpears;
-	Requirement taskedWithHastae;
 
 	Requirement chewedBonesNearby;
 
 	Requirement sacrificedRemains;
-	Requirement madeSpear;
-	Requirement madeHasta;
 
 	DetailedQuestStep talkToOttoAboutFishing;
 	DetailedQuestStep searchBed;
@@ -167,8 +162,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	ConditionalStep herbloreSteps;
 
 	Requirement finishedPyre;
-	Requirement finishedSpear;
-	Requirement finishedHasta;
 
 	Zone ancientCavernF0;
 	Zone ancientCavernF1;
@@ -201,6 +194,14 @@ public class BarbarianTraining extends BasicQuestHelper
 	VarbitRequirement taskedWithBowFiremaking;
 	VarbitRequirement litFireWithBow;
 	VarbitRequirement finishedFiremaking;
+
+	VarbitRequirement taskedWithSpears;
+	VarbitRequirement madeSpear;
+	VarbitRequirement finishedSpear;
+
+	VarbitRequirement taskedWithHastae;
+	VarbitRequirement madeHasta;
+	VarbitRequirement finishedHasta;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -389,6 +390,18 @@ public class BarbarianTraining extends BasicQuestHelper
 		litFireWithBow = barbFiremaking.eq(2);
 		finishedFiremaking = barbFiremaking.eq(3);
 		finishedFiremaking.setDisplayText("Finished Barbarian Firemaking");
+
+		var barbSpear = new VarbitBuilder(VarbitID.BRUT_SMITH_SPEAR);
+		taskedWithSpears = barbSpear.eq(1);
+		madeSpear = barbSpear.eq(2);
+		finishedSpear = barbSpear.eq(3);
+		finishedSpear.setDisplayText("Finished Barbarian Spear Smithing");
+
+		var barbHasta = new VarbitBuilder(VarbitID.BRUT_SMITH_HASTA);
+		taskedWithHastae = barbHasta.eq(1);
+		madeHasta = barbHasta.eq(2);
+		finishedHasta = barbHasta.eq(3);
+		finishedHasta.setDisplayText("Finished Barbarian Hastae Smithing");
 	}
 
 	public void setupConditions()
@@ -403,24 +416,6 @@ public class BarbarianTraining extends BasicQuestHelper
 			)
 		);
 
-		taskedWithSpears = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Note well that you will require wood for the spear shafts. The quality of wood must be similar to that of the metal involved."),
-				new DialogRequirement("You do not exude the presence of one who has poured his soul into manufacturing spears."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
-			)
-		);
-
-		taskedWithHastae = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
-				new DialogRequirement("Take some wood and metal and make a spear upon the<br>nearby anvil, then you may return to me. As an<br>example, you may use bronze bars with normal logs or<br>iron bars with oak logs."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, " has tasked me with learning how to <col=800000>smith a hasta")
-			)
-		);
-
 		// Finished tasks
 		finishedPyre = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_PYREMAKING.getKey(),
@@ -429,24 +424,6 @@ public class BarbarianTraining extends BasicQuestHelper
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a pyre ship!")
 			),
 			"Finished Barbarian Pyremaking"
-		);
-
-		finishedSpear = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("The manufacture of spears is now yours as a speciality. Use your skill well."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to smith a spear!")
-			),
-			"Finished Barbarian Spear Smithing"
-		);
-
-		finishedHasta = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("To live life to it's fullest of course - that you may be a peaceful spirit when your time ends."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a hasta!")
-			),
-			"Finished Barbarian Hasta Smithing"
 		);
 
 		// Mid-conditions
@@ -458,30 +435,6 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
-			)
-		);
-
-		madeSpear = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_MADE_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You make a "),
-					new ChatMessageRequirement(" spear."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a spear<col=000080>!")
-			)
-		);
-
-		madeHasta = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_MADE_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You make a "),
-					new ChatMessageRequirement(" hasta."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
 			)
 		);
 

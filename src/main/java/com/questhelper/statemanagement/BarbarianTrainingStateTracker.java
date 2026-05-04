@@ -46,14 +46,8 @@ public class BarbarianTrainingStateTracker
 	Client client;
 
 	Requirement taskedWithPyre;
-	Requirement taskedWithSpears;
-	Requirement taskedWithHastae;
 	Requirement sacrificedRemains;
-	Requirement madeSpear;
-	Requirement madeHasta;
 	Requirement finishedPyre;
-	Requirement finishedSpear;
-	Requirement finishedHasta;
 
 	RequirementValidator reqs;
 
@@ -69,24 +63,6 @@ public class BarbarianTrainingStateTracker
 			)
 		);
 
-		taskedWithSpears = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Note well that you will require wood for the spear shafts. The quality of wood must be similar to that of the metal involved."),
-				new DialogRequirement("You do not exude the presence of one who has poured his soul into manufacturing spears."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
-			)
-		);
-
-		taskedWithHastae = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
-				new DialogRequirement("Take some wood and metal and make a spear upon the<br>nearby anvil, then you may return to me. As an<br>example, you may use bronze bars with normal logs or<br>iron bars with oak logs."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, " has tasked me with learning how to <col=800000>smith a hasta")
-			)
-		);
-
 		// Finished tasks
 		finishedPyre = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_PYREMAKING.getKey(),
@@ -95,24 +71,6 @@ public class BarbarianTrainingStateTracker
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a pyre ship!")
 			),
 			"Finished Barbarian Pyremaking"
-		);
-
-		finishedSpear = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("The manufacture of spears is now yours as a speciality. Use your skill well."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to smith a spear!")
-			),
-			"Finished Barbarian Spear Smithing"
-		);
-
-		finishedHasta = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("To live life to it's fullest of course - that you may be a peaceful spirit when your time ends."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a hasta!")
-			),
-			"Finished Barbarian Hasta Smithing"
 		);
 
 		// Mid-conditions
@@ -127,42 +85,12 @@ public class BarbarianTrainingStateTracker
 			)
 		);
 
-		madeSpear = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_MADE_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You make a "),
-					new ChatMessageRequirement(" spear."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a spear<col=000080>!")
-			)
-		);
-
-		madeHasta = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_MADE_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You make a "),
-					new ChatMessageRequirement(" hasta."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
-			)
-		);
-
 
 		reqs = new RequirementValidator(client,
 			eventBus,
 			taskedWithPyre,
-			taskedWithSpears,
-			taskedWithHastae,
 			sacrificedRemains,
-			madeSpear,
-			madeHasta,
-			finishedPyre,
-			finishedSpear,
-			finishedHasta
+			finishedPyre
 		);
 
 		eventBus.register(reqs);

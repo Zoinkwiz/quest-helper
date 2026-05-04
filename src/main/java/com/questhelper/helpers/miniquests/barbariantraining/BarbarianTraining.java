@@ -61,49 +61,137 @@ import static com.questhelper.requirements.util.LogicHelper.*;
 public class BarbarianTraining extends BasicQuestHelper
 {
 	// Items Required
-	ItemRequirement barbFishingRod, tinderbox, bow, knife, fish, combatGear, antifireShield, chewedBones, bronzeBar, logs, hammer,
-		roe, attackPotion, sapling, seed, spade, oakLogs, axe, feathers, barbarianAttackPotion;
+	ItemRequirement barbFishingRod;
+	ItemRequirement tinderbox;
+	ItemRequirement bow;
+	ItemRequirement knife;
+	ItemRequirement fish;
+	ItemRequirement combatGear;
+	ItemRequirement antifireShield;
+	ItemRequirement chewedBones;
+	ItemRequirement bronzeBar;
+	ItemRequirement logs;
+	ItemRequirement hammer;
+	ItemRequirement roe;
+	ItemRequirement attackPotion;
+	ItemRequirement sapling;
+	ItemRequirement seed;
+	ItemRequirement spade;
+	ItemRequirement oakLogs;
+	ItemRequirement axe;
+	ItemRequirement feathers;
+	ItemRequirement barbarianAttackPotion;
 
 	// Items recommended
-	ItemRequirement gamesNecklace, catherbyTeleport;
+	ItemRequirement gamesNecklace;
+	ItemRequirement catherbyTeleport;
 
-	Requirement fishing48, agility15, strength15, fishing55, strength35, firemaking35, crafting11, farming15, smithing5;
+	Requirement fishing48;
+	Requirement agility15;
+	Requirement strength15;
+	Requirement fishing55;
+	Requirement strength35;
+	Requirement firemaking35;
+	Requirement crafting11;
+	Requirement farming15;
+	Requirement smithing5;
 
-	QuestRequirement druidicRitual, taiBwoWannaiTrio;
+	QuestRequirement druidicRitual;
+	QuestRequirement taiBwoWannaiTrio;
 
-	Requirement taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
-		taskedWithSpears, taskedWithHastae, taskedWithHerblore;
+	Requirement taskedWithFishing;
+	Requirement taskedWithFarming;
+	Requirement taskedWithHarpooning;
+	Requirement taskedWithBowFiremaking;
+	Requirement taskedWithPyre;
+	Requirement taskedWithPotSmashing;
+	Requirement taskedWithSpears;
+	Requirement taskedWithHastae;
+	Requirement taskedWithHerblore;
 
 	Requirement chewedBonesNearby;
 
-	Requirement plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
-		caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta;
+	Requirement plantedSeed;
+	Requirement smashedPot;
+	Requirement litFireWithBow;
+	Requirement sacrificedRemains;
+	Requirement caughtBarbarianFish;
+	Requirement caughtFishWithoutHarpoon;
+	Requirement madePotion;
+	Requirement madeSpear;
+	Requirement madeHasta;
 
-	DetailedQuestStep talkToOttoAboutFishing, searchBed, catchFish, talkToOttoAfterFish;
+	DetailedQuestStep talkToOttoAboutFishing;
+	DetailedQuestStep searchBed;
+	DetailedQuestStep catchFish;
+	DetailedQuestStep talkToOttoAfterFish;
 
-	DetailedQuestStep talkToOttoAboutBarehanded, fishHarpoon, talkToOttoAfterHarpoon;
+	DetailedQuestStep talkToOttoAboutBarehanded;
+	DetailedQuestStep fishHarpoon;
+	DetailedQuestStep talkToOttoAfterHarpoon;
 
-	DetailedQuestStep talkToOttoAboutBow, lightLogWithBow, talkToOttoAfterBow;
+	DetailedQuestStep talkToOttoAboutBow;
+	DetailedQuestStep lightLogWithBow;
+	DetailedQuestStep talkToOttoAfterBow;
 
-	DetailedQuestStep talkToOttoAboutPyre, enterWhirlpool, goDownToBrutalGreen, goUpToMithrilDragons, killMithrilDragons,
-		pickupChewedBones, useLogOnPyre, talkToOttoAfterPyre;
+	DetailedQuestStep talkToOttoAboutPyre;
+	DetailedQuestStep enterWhirlpool;
+	DetailedQuestStep goDownToBrutalGreen;
+	DetailedQuestStep goUpToMithrilDragons;
+	DetailedQuestStep killMithrilDragons;
+	DetailedQuestStep pickupChewedBones;
+	DetailedQuestStep useLogOnPyre;
+	DetailedQuestStep talkToOttoAfterPyre;
 
-	DetailedQuestStep talkToOttoAboutFarming, plantSeed, talkToOttoAfterPlantingSeed;
+	DetailedQuestStep talkToOttoAboutFarming;
+	DetailedQuestStep plantSeed;
+	DetailedQuestStep talkToOttoAfterPlantingSeed;
 
-	DetailedQuestStep talkToOttoAboutPots, plantSapling, talkToOttoAfterSmashingPot;
+	DetailedQuestStep talkToOttoAboutPots;
+	DetailedQuestStep plantSapling;
+	DetailedQuestStep talkToOttoAfterSmashingPot;
 
-	DetailedQuestStep talkToOttoAboutSpears, makeBronzeSpear, talkToOttoAfterBronzeSpear, talkToOttoAboutHastae, makeBronzeHasta, talkToOttoAfterMakingHasta;
+	DetailedQuestStep talkToOttoAboutSpears;
+	DetailedQuestStep makeBronzeSpear;
+	DetailedQuestStep talkToOttoAfterBronzeSpear;
+	DetailedQuestStep talkToOttoAboutHastae;
+	DetailedQuestStep makeBronzeHasta;
+	DetailedQuestStep talkToOttoAfterMakingHasta;
 
-	DetailedQuestStep talkToOttoAboutHerblore, getBarbRodForHerblore, fishForHerblore, dissectFish, useRoeOnAttackPotion, talkToOttoAfterPotion;
+	DetailedQuestStep talkToOttoAboutHerblore;
+	DetailedQuestStep getBarbRodForHerblore;
+	DetailedQuestStep fishForHerblore;
+	DetailedQuestStep dissectFish;
+	DetailedQuestStep useRoeOnAttackPotion;
+	DetailedQuestStep talkToOttoAfterPotion;
 
-	ConditionalStep fishingSteps, harpoonSteps, seedSteps, potSmashingSteps, firemakingSteps, pyreSteps, spearSteps,
-		spearAndHastaeSteps, herbloreSteps;
+	ConditionalStep fishingSteps;
+	ConditionalStep harpoonSteps;
+	ConditionalStep seedSteps;
+	ConditionalStep potSmashingSteps;
+	ConditionalStep firemakingSteps;
+	ConditionalStep pyreSteps;
+	ConditionalStep spearSteps;
+	ConditionalStep spearAndHastaeSteps;
+	ConditionalStep herbloreSteps;
 
-	Requirement finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing, finishedFiremaking, finishedPyre, finishedSpear, finishedHasta, finishedHerblore;
+	Requirement finishedFishing;
+	Requirement finishedHarpoon;
+	Requirement finishedSeedPlanting;
+	Requirement finishedPotSmashing;
+	Requirement finishedFiremaking;
+	Requirement finishedPyre;
+	Requirement finishedSpear;
+	Requirement finishedHasta;
+	Requirement finishedHerblore;
 
-	Zone ancientCavernF0, ancientCavernF1, ancientCavernArrivalRoom;
+	Zone ancientCavernF0;
+	Zone ancientCavernF1;
+	Zone ancientCavernArrivalRoom;
 
-	ZoneRequirement inAncientCavernF0, inAncientCavernF1, inAncientCavernArrivalRoom;
+	ZoneRequirement inAncientCavernF0;
+	ZoneRequirement inAncientCavernF1;
+	ZoneRequirement inAncientCavernArrivalRoom;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -189,13 +277,10 @@ public class BarbarianTraining extends BasicQuestHelper
 		allSteps.addDialogSteps("Let's talk about my training.", "I seek more knowledge.");
 		allSteps.setCheckAllChildStepsOnListenerCall(true);
 
-
-		// Started, 9613
+		// Controlled by VarbitID.BRUT_MINIQUEST, specifying the number of miniquests completed
 		steps.put(0, allSteps);
 		steps.put(1, allSteps);
-		// Increments after doing a task
 		steps.put(2, allSteps);
-		// 9610, 0->1 at some point??? Probably for pot smashing, or for whirlpool?
 		steps.put(3, allSteps);
 		steps.put(4, allSteps);
 		steps.put(5, allSteps);

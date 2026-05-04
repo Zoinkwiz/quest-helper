@@ -45,10 +45,33 @@ public class BarbarianTrainingStateTracker
 	@Inject
 	Client client;
 
-	Requirement taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
-		taskedWithSpears, taskedWithHastae, taskedWithHerblore, plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
-		caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta, finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing,
-		finishedFiremaking, finishedPyre, finishedSpear, finishedHasta, finishedHerblore;
+	Requirement taskedWithFishing;
+	Requirement taskedWithHarpooning;
+	Requirement taskedWithFarming;
+	Requirement taskedWithBowFiremaking;
+	Requirement taskedWithPyre;
+	Requirement taskedWithPotSmashing;
+	Requirement taskedWithSpears;
+	Requirement taskedWithHastae;
+	Requirement taskedWithHerblore;
+	Requirement plantedSeed;
+	Requirement smashedPot;
+	Requirement litFireWithBow;
+	Requirement sacrificedRemains;
+	Requirement caughtBarbarianFish;
+	Requirement caughtFishWithoutHarpoon;
+	Requirement madePotion;
+	Requirement madeSpear;
+	Requirement madeHasta;
+	Requirement finishedFishing;
+	Requirement finishedHarpoon;
+	Requirement finishedSeedPlanting;
+	Requirement finishedPotSmashing;
+	Requirement finishedFiremaking;
+	Requirement finishedPyre;
+	Requirement finishedSpear;
+	Requirement finishedHasta;
+	Requirement finishedHerblore;
 
 	RequirementValidator reqs;
 
@@ -322,11 +345,35 @@ public class BarbarianTrainingStateTracker
 		);
 
 
-		reqs = new RequirementValidator(client, eventBus,
-			taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
-			taskedWithSpears, taskedWithHastae, taskedWithHerblore, plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
-			caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta, finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing,
-			finishedFiremaking, finishedPyre, finishedSpear, finishedHasta, finishedHerblore
+		reqs = new RequirementValidator(client,
+			eventBus,
+			taskedWithFishing,
+			taskedWithHarpooning,
+			taskedWithFarming,
+			taskedWithBowFiremaking,
+			taskedWithPyre,
+			taskedWithPotSmashing,
+			taskedWithSpears,
+			taskedWithHastae,
+			taskedWithHerblore,
+			plantedSeed,
+			smashedPot,
+			litFireWithBow,
+			sacrificedRemains,
+			caughtBarbarianFish,
+			caughtFishWithoutHarpoon,
+			madePotion,
+			madeSpear,
+			madeHasta,
+			finishedFishing,
+			finishedHarpoon,
+			finishedSeedPlanting,
+			finishedPotSmashing,
+			finishedFiremaking,
+			finishedPyre,
+			finishedSpear,
+			finishedHasta,
+			finishedHerblore
 		);
 
 		eventBus.register(reqs);

@@ -102,7 +102,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	QuestRequirement druidicRitual;
 	QuestRequirement taiBwoWannaiTrio;
 
-	Requirement taskedWithFarming;
 	Requirement taskedWithBowFiremaking;
 	Requirement taskedWithPyre;
 	Requirement taskedWithPotSmashing;
@@ -111,7 +110,6 @@ public class BarbarianTraining extends BasicQuestHelper
 
 	Requirement chewedBonesNearby;
 
-	Requirement plantedSeed;
 	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
@@ -172,7 +170,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	ConditionalStep spearAndHastaeSteps;
 	ConditionalStep herbloreSteps;
 
-	Requirement finishedSeedPlanting;
 	Requirement finishedPotSmashing;
 	Requirement finishedFiremaking;
 	Requirement finishedPyre;
@@ -198,6 +195,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	VarbitRequirement taskedWithHarpooning;
 	VarbitRequirement caughtFishWithoutHarpoon;
 	VarbitRequirement finishedHarpoon;
+
+	VarbitRequirement taskedWithFarming;
+	VarbitRequirement plantedSeed;
+	VarbitRequirement finishedSeedPlanting;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -368,20 +369,17 @@ public class BarbarianTraining extends BasicQuestHelper
 		caughtFishWithoutHarpoon = barbHarpooning.eq(2);
 		finishedHarpoon = barbHarpooning.eq(3);
 		finishedHarpoon.setDisplayText("Finished Barbarian Harpooning");
+
+		var barbPlanting = new VarbitBuilder(VarbitID.BRUT_FARMING_PLANTING);
+		taskedWithFarming = barbPlanting.eq(1);
+		plantedSeed = barbPlanting.eq(2);
+		finishedSeedPlanting = barbPlanting.eq(3);
+		finishedSeedPlanting.setDisplayText("Finished Barbarian Planting");
 	}
 
 	public void setupConditions()
 	{
 		// Started tasks
-
-		taskedWithFarming = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_SEED_PLANTING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Remember to be calm, and good luck."),
-				new DialogRequirement("I see you have yet to be successful in planting a seed with your fists."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "plant a seed with")
-			)
-		);
 
 		taskedWithPotSmashing = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_POT_SMASHING.getKey(),
@@ -429,15 +427,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Finished tasks
-		finishedSeedPlanting = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("No child, but we all have potential to improve our strength."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to plant a seed with my fists!")
-			),
-			"Finished Barbarian Seed Planting"
-		);
-
 		finishedPotSmashing = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_POT_SMASHING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -484,17 +473,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Mid-conditions
-		plantedSeed = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_PLANTED_SEED.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You plant "),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
-			)
-		);
-
 		smashedPot = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_SMASHED_POT.getKey(),
 			new Conditions(true, LogicType.OR,

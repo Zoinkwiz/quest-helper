@@ -45,19 +45,16 @@ public class BarbarianTrainingStateTracker
 	@Inject
 	Client client;
 
-	Requirement taskedWithFarming;
 	Requirement taskedWithBowFiremaking;
 	Requirement taskedWithPyre;
 	Requirement taskedWithPotSmashing;
 	Requirement taskedWithSpears;
 	Requirement taskedWithHastae;
-	Requirement plantedSeed;
 	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
 	Requirement madeSpear;
 	Requirement madeHasta;
-	Requirement finishedSeedPlanting;
 	Requirement finishedPotSmashing;
 	Requirement finishedFiremaking;
 	Requirement finishedPyre;
@@ -69,15 +66,6 @@ public class BarbarianTrainingStateTracker
 
 	public void startUp(ConfigManager configManager, EventBus eventBus)
 	{
-		taskedWithFarming = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_SEED_PLANTING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Remember to be calm, and good luck."),
-				new DialogRequirement("I see you have yet to be successful in planting a seed with your fists."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "plant a seed with")
-			)
-		);
-
 		taskedWithPotSmashing = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_POT_SMASHING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -124,15 +112,6 @@ public class BarbarianTrainingStateTracker
 		);
 
 		// Finished tasks
-		finishedSeedPlanting = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("No child, but we all have potential to improve our strength."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to plant a seed with my fists!")
-			),
-			"Finished Barbarian Seed Planting"
-		);
-
 		finishedPotSmashing = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_POT_SMASHING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -179,17 +158,6 @@ public class BarbarianTrainingStateTracker
 		);
 
 		// Mid-conditions
-		plantedSeed = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_PLANTED_SEED.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You plant "),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
-			)
-		);
-
 		smashedPot = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_SMASHED_POT.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -251,19 +219,16 @@ public class BarbarianTrainingStateTracker
 
 		reqs = new RequirementValidator(client,
 			eventBus,
-			taskedWithFarming,
 			taskedWithBowFiremaking,
 			taskedWithPyre,
 			taskedWithPotSmashing,
 			taskedWithSpears,
 			taskedWithHastae,
-			plantedSeed,
 			smashedPot,
 			litFireWithBow,
 			sacrificedRemains,
 			madeSpear,
 			madeHasta,
-			finishedSeedPlanting,
 			finishedPotSmashing,
 			finishedFiremaking,
 			finishedPyre,

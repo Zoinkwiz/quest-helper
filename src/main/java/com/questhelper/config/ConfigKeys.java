@@ -29,7 +29,6 @@ import lombok.Getter;
 public enum ConfigKeys
 {
 	// Barbarian Training Enums
-	BARBARIAN_TRAINING_STARTED_FISHING("barbariantrainingstartedfishing"),
 	BARBARIAN_TRAINING_STARTED_HARPOON("barbariantrainingstartedharpoon"),
 	BARBARIAN_TRAINING_STARTED_SEED_PLANTING("barbariantrainingstartedseedplanting"),
 	BARBARIAN_TRAINING_STARTED_POT_SMASHING("barbariantrainingstartedpotsmashing"),
@@ -40,7 +39,6 @@ public enum ConfigKeys
 	BARBARIAN_TRAINING_STARTED_HASTA("barbariantrainingstartedhasta"),
 
 	// Finished Barbarian Training Enums
-	BARBARIAN_TRAINING_FINISHED_FISHING("barbariantrainingfinishedfishing"),
 	BARBARIAN_TRAINING_FINISHED_HARPOON("barbariantrainingfinishedharpoon"),
 	BARBARIAN_TRAINING_FINISHED_SEED_PLANTING("barbariantrainingfinishedseedplanting"),
 	BARBARIAN_TRAINING_FINISHED_POT_SMASHING("barbariantrainingfinishedpotsmashing"),
@@ -55,7 +53,6 @@ public enum ConfigKeys
 	BARBARIAN_TRAINING_SMASHED_POT("barbariantrainingsmashedpot"),
 	BARBARIAN_TRAINING_BOW_FIRE("barbariantrainingbowfire"),
 	BARBARIAN_TRAINING_PYRE_MADE("barbariantrainingpyremade"),
-	BARBARIAN_TRAINING_BARBFISHED("barbariantrainingbarbfished"),
 	BARBARIAN_TRAINING_HARPOONED_FISH("barbariantrainingharpoonedfish"),
 	BARBARIAN_TRAINING_MADE_POTION("barbariantrainingmadepotion"),
 	BARBARIAN_TRAINING_MADE_SPEAR("barbariantrainingmadespear"),

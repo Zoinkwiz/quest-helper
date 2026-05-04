@@ -42,6 +42,8 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitBuilder;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -53,6 +55,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -99,7 +102,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	QuestRequirement druidicRitual;
 	QuestRequirement taiBwoWannaiTrio;
 
-	Requirement taskedWithFishing;
 	Requirement taskedWithFarming;
 	Requirement taskedWithHarpooning;
 	Requirement taskedWithBowFiremaking;
@@ -115,7 +117,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
-	Requirement caughtBarbarianFish;
 	Requirement caughtFishWithoutHarpoon;
 	Requirement madePotion;
 	Requirement madeSpear;
@@ -175,7 +176,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	ConditionalStep spearAndHastaeSteps;
 	ConditionalStep herbloreSteps;
 
-	Requirement finishedFishing;
 	Requirement finishedHarpoon;
 	Requirement finishedSeedPlanting;
 	Requirement finishedPotSmashing;
@@ -192,6 +192,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	ZoneRequirement inAncientCavernF0;
 	ZoneRequirement inAncientCavernF1;
 	ZoneRequirement inAncientCavernArrivalRoom;
+
+	VarbitRequirement taskedWithFishing;
+	VarbitRequirement caughtBarbarianFish;
+	VarbitRequirement finishedFishing;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -344,20 +348,17 @@ public class BarbarianTraining extends BasicQuestHelper
 		crafting11 = new SkillRequirement(Skill.CRAFTING, 11);
 		farming15 = new SkillRequirement(Skill.FARMING, 15, true);
 		smithing5 = new SkillRequirement(Skill.SMITHING, 5, true);
+
+		var barbFishing = new VarbitBuilder(VarbitID.BRUT_FISHING_R);
+		taskedWithFishing = barbFishing.eq(1);
+		caughtBarbarianFish = barbFishing.eq(2);
+		finishedFishing = barbFishing.eq(3);
+		finishedFishing.setDisplayText("Finished Barbarian Fishing");
 	}
 
 	public void setupConditions()
 	{
 		// Started tasks
-
-		taskedWithFishing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_FISHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Certainly. Take the rod from under my bed and fish in the lake. When you have caught a few fish, I am sure you will be ready to talk more with me."),
-				new DialogRequirement("Alas, I do not sense that you have been successful in your fishing yet. The look in your eyes is not that of the osprey."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "fish with a new")
-			)
-		);
 
 		taskedWithHarpooning = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_HARPOON.getKey(),
@@ -432,15 +433,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Finished tasks
-		finishedFishing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FISHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Patience young one. These are fish which are fat with eggs rather than fat of flesh. It is these eggs that are the thing to make use of."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to catch a fish with the new rod!")
-			),
-			"Finished Barbarian Fishing"
-		);
-
 		finishedHarpoon = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HARPOON.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -556,17 +548,6 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
-			)
-		);
-
-		caughtBarbarianFish = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_BARBFISHED.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You catch a leaping trout.", "You catch a leaping salmon.", "You catch a leaping sturgeon."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
 			)
 		);
 

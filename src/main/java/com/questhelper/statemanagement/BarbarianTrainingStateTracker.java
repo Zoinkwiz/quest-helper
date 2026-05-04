@@ -45,7 +45,6 @@ public class BarbarianTrainingStateTracker
 	@Inject
 	Client client;
 
-	Requirement taskedWithFishing;
 	Requirement taskedWithHarpooning;
 	Requirement taskedWithFarming;
 	Requirement taskedWithBowFiremaking;
@@ -58,12 +57,10 @@ public class BarbarianTrainingStateTracker
 	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
-	Requirement caughtBarbarianFish;
 	Requirement caughtFishWithoutHarpoon;
 	Requirement madePotion;
 	Requirement madeSpear;
 	Requirement madeHasta;
-	Requirement finishedFishing;
 	Requirement finishedHarpoon;
 	Requirement finishedSeedPlanting;
 	Requirement finishedPotSmashing;
@@ -78,15 +75,6 @@ public class BarbarianTrainingStateTracker
 
 	public void startUp(ConfigManager configManager, EventBus eventBus)
 	{
-		taskedWithFishing = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_FISHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Certainly. Take the rod from under my bed and fish in the lake. When you have caught a few fish, I am sure you will be ready to talk more with me."),
-				new DialogRequirement("Alas, I do not sense that you have been successful in your fishing yet. The look in your eyes is not that of the osprey."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "fish with a new")
-			)
-		);
-
 		taskedWithHarpooning = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_HARPOON.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -160,15 +148,6 @@ public class BarbarianTrainingStateTracker
 		);
 
 		// Finished tasks
-		finishedFishing = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_FISHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Patience young one. These are fish which are fat with eggs rather than fat of flesh. It is these eggs that are the thing to make use of."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to catch a fish with the new rod!")
-			),
-			"Finished Barbarian Fishing"
-		);
-
 		finishedHarpoon = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_HARPOON.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -287,17 +266,6 @@ public class BarbarianTrainingStateTracker
 			)
 		);
 
-		caughtBarbarianFish = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_BARBFISHED.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You catch a leaping trout.", "You catch a leaping salmon.", "You catch a leaping sturgeon."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
-			)
-		);
-
 		caughtFishWithoutHarpoon = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_HARPOONED_FISH.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -347,7 +315,6 @@ public class BarbarianTrainingStateTracker
 
 		reqs = new RequirementValidator(client,
 			eventBus,
-			taskedWithFishing,
 			taskedWithHarpooning,
 			taskedWithFarming,
 			taskedWithBowFiremaking,
@@ -360,12 +327,10 @@ public class BarbarianTrainingStateTracker
 			smashedPot,
 			litFireWithBow,
 			sacrificedRemains,
-			caughtBarbarianFish,
 			caughtFishWithoutHarpoon,
 			madePotion,
 			madeSpear,
 			madeHasta,
-			finishedFishing,
 			finishedHarpoon,
 			finishedSeedPlanting,
 			finishedPotSmashing,

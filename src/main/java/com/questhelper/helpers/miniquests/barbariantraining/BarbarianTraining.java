@@ -104,13 +104,11 @@ public class BarbarianTraining extends BasicQuestHelper
 
 	Requirement taskedWithBowFiremaking;
 	Requirement taskedWithPyre;
-	Requirement taskedWithPotSmashing;
 	Requirement taskedWithSpears;
 	Requirement taskedWithHastae;
 
 	Requirement chewedBonesNearby;
 
-	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
 	Requirement madeSpear;
@@ -170,7 +168,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	ConditionalStep spearAndHastaeSteps;
 	ConditionalStep herbloreSteps;
 
-	Requirement finishedPotSmashing;
 	Requirement finishedFiremaking;
 	Requirement finishedPyre;
 	Requirement finishedSpear;
@@ -199,6 +196,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	VarbitRequirement taskedWithFarming;
 	VarbitRequirement plantedSeed;
 	VarbitRequirement finishedSeedPlanting;
+
+	VarbitRequirement taskedWithPotSmashing;
+	VarbitRequirement smashedPot;
+	VarbitRequirement finishedPotSmashing;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -375,21 +376,17 @@ public class BarbarianTraining extends BasicQuestHelper
 		plantedSeed = barbPlanting.eq(2);
 		finishedSeedPlanting = barbPlanting.eq(3);
 		finishedSeedPlanting.setDisplayText("Finished Barbarian Planting");
+
+		var barbPotSmashing = new VarbitBuilder(VarbitID.BRUT_FARMING_SMASHING);
+		taskedWithPotSmashing = barbPotSmashing.eq(1);
+		smashedPot = barbPotSmashing.eq(2);
+		finishedPotSmashing = barbPotSmashing.eq(3);
+		finishedPotSmashing.setDisplayText("Finished Barbarian Pot Smashing");
 	}
 
 	public void setupConditions()
 	{
 		// Started tasks
-
-		taskedWithPotSmashing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_POT_SMASHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("May the spirits guide you into success."),
-				new DialogRequirement("You have not yet attempted to plant a tree. Why not?"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smash pots after")
-			)
-		);
-
 		taskedWithBowFiremaking = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_FIREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -427,15 +424,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Finished tasks
-		finishedPotSmashing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_POT_SMASHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("It will become more natural with practice."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to smash a plant pot without littering!")
-			),
-			"Finished Barbarian Pot Smashing"
-		);
-
 		finishedFiremaking = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FIREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -473,18 +461,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Mid-conditions
-		smashedPot = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_SMASHED_POT.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You plant "),
-					new ChatMessageRequirement(" sapling"),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
-			)
-		);
-
 		litFireWithBow = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_BOW_FIRE.getKey(),
 			new Conditions(true, LogicType.OR,

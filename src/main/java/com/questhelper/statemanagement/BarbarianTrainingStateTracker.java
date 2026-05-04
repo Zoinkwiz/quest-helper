@@ -47,15 +47,12 @@ public class BarbarianTrainingStateTracker
 
 	Requirement taskedWithBowFiremaking;
 	Requirement taskedWithPyre;
-	Requirement taskedWithPotSmashing;
 	Requirement taskedWithSpears;
 	Requirement taskedWithHastae;
-	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
 	Requirement madeSpear;
 	Requirement madeHasta;
-	Requirement finishedPotSmashing;
 	Requirement finishedFiremaking;
 	Requirement finishedPyre;
 	Requirement finishedSpear;
@@ -66,15 +63,6 @@ public class BarbarianTrainingStateTracker
 
 	public void startUp(ConfigManager configManager, EventBus eventBus)
 	{
-		taskedWithPotSmashing = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_POT_SMASHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("May the spirits guide you into success."),
-				new DialogRequirement("You have not yet attempted to plant a tree. Why not?"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smash pots after")
-			)
-		);
-
 		taskedWithBowFiremaking = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_STARTED_FIREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -112,15 +100,6 @@ public class BarbarianTrainingStateTracker
 		);
 
 		// Finished tasks
-		finishedPotSmashing = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_POT_SMASHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("It will become more natural with practice."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to smash a plant pot without littering!")
-			),
-			"Finished Barbarian Pot Smashing"
-		);
-
 		finishedFiremaking = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_FIREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -158,18 +137,6 @@ public class BarbarianTrainingStateTracker
 		);
 
 		// Mid-conditions
-		smashedPot = new RuneliteRequirement(
-			configManager, ConfigKeys.BARBARIAN_TRAINING_SMASHED_POT.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You plant "),
-					new ChatMessageRequirement(" sapling"),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
-			)
-		);
-
 		litFireWithBow = new RuneliteRequirement(
 			configManager, ConfigKeys.BARBARIAN_TRAINING_BOW_FIRE.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -221,15 +188,12 @@ public class BarbarianTrainingStateTracker
 			eventBus,
 			taskedWithBowFiremaking,
 			taskedWithPyre,
-			taskedWithPotSmashing,
 			taskedWithSpears,
 			taskedWithHastae,
-			smashedPot,
 			litFireWithBow,
 			sacrificedRemains,
 			madeSpear,
 			madeHasta,
-			finishedPotSmashing,
 			finishedFiremaking,
 			finishedPyre,
 			finishedSpear,

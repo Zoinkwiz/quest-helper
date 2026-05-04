@@ -102,14 +102,12 @@ public class BarbarianTraining extends BasicQuestHelper
 	QuestRequirement druidicRitual;
 	QuestRequirement taiBwoWannaiTrio;
 
-	Requirement taskedWithBowFiremaking;
 	Requirement taskedWithPyre;
 	Requirement taskedWithSpears;
 	Requirement taskedWithHastae;
 
 	Requirement chewedBonesNearby;
 
-	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
 	Requirement madeSpear;
 	Requirement madeHasta;
@@ -168,7 +166,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	ConditionalStep spearAndHastaeSteps;
 	ConditionalStep herbloreSteps;
 
-	Requirement finishedFiremaking;
 	Requirement finishedPyre;
 	Requirement finishedSpear;
 	Requirement finishedHasta;
@@ -200,6 +197,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	VarbitRequirement taskedWithPotSmashing;
 	VarbitRequirement smashedPot;
 	VarbitRequirement finishedPotSmashing;
+
+	VarbitRequirement taskedWithBowFiremaking;
+	VarbitRequirement litFireWithBow;
+	VarbitRequirement finishedFiremaking;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -382,20 +383,17 @@ public class BarbarianTraining extends BasicQuestHelper
 		smashedPot = barbPotSmashing.eq(2);
 		finishedPotSmashing = barbPotSmashing.eq(3);
 		finishedPotSmashing.setDisplayText("Finished Barbarian Pot Smashing");
+
+		var barbFiremaking = new VarbitBuilder(VarbitID.BRUT_FIRE);
+		taskedWithBowFiremaking = barbFiremaking.eq(1);
+		litFireWithBow = barbFiremaking.eq(2);
+		finishedFiremaking = barbFiremaking.eq(3);
+		finishedFiremaking.setDisplayText("Finished Barbarian Firemaking");
 	}
 
 	public void setupConditions()
 	{
 		// Started tasks
-		taskedWithBowFiremaking = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_FIREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("The spirits will aid you. The power they supply will guide your hands. Go and benefit from their guidance upon oak logs."),
-				new DialogRequirement("By now you know my response."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "light a fire with")
-			)
-		);
-
 		taskedWithPyre = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_PYREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -424,15 +422,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Finished tasks
-		finishedFiremaking = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FIREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Fine news indeed!"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to light a fire with a bow!")
-			),
-			"Finished Barbarian Firemaking"
-		);
-
 		finishedPyre = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_PYREMAKING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -461,17 +450,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Mid-conditions
-		litFireWithBow = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_BOW_FIRE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("The fire catches and the logs begin to burn."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>light a fire with a bow<col=000080>!")
-			)
-		);
-
 		sacrificedRemains = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_PYRE_MADE.getKey(),
 			new Conditions(true, LogicType.OR,

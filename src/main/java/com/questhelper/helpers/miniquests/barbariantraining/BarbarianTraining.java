@@ -103,7 +103,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	QuestRequirement taiBwoWannaiTrio;
 
 	Requirement taskedWithFarming;
-	Requirement taskedWithHarpooning;
 	Requirement taskedWithBowFiremaking;
 	Requirement taskedWithPyre;
 	Requirement taskedWithPotSmashing;
@@ -116,7 +115,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	Requirement smashedPot;
 	Requirement litFireWithBow;
 	Requirement sacrificedRemains;
-	Requirement caughtFishWithoutHarpoon;
 	Requirement madeSpear;
 	Requirement madeHasta;
 
@@ -174,7 +172,6 @@ public class BarbarianTraining extends BasicQuestHelper
 	ConditionalStep spearAndHastaeSteps;
 	ConditionalStep herbloreSteps;
 
-	Requirement finishedHarpoon;
 	Requirement finishedSeedPlanting;
 	Requirement finishedPotSmashing;
 	Requirement finishedFiremaking;
@@ -197,6 +194,10 @@ public class BarbarianTraining extends BasicQuestHelper
 	VarbitRequirement taskedWithHerblore;
 	VarbitRequirement madePotion;
 	VarbitRequirement finishedHerblore;
+
+	VarbitRequirement taskedWithHarpooning;
+	VarbitRequirement caughtFishWithoutHarpoon;
+	VarbitRequirement finishedHarpoon;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -361,20 +362,17 @@ public class BarbarianTraining extends BasicQuestHelper
 		madePotion = barbHerblore.eq(2);
 		finishedHerblore = barbHerblore.eq(3);
 		finishedHerblore.setDisplayText("Finished Barbarian Herblore");
+
+		var barbHarpooning = new VarbitBuilder(VarbitID.BRUT_FISHING_S);
+		taskedWithHarpooning = barbHarpooning.eq(1);
+		caughtFishWithoutHarpoon = barbHarpooning.eq(2);
+		finishedHarpoon = barbHarpooning.eq(3);
+		finishedHarpoon.setDisplayText("Finished Barbarian Harpooning");
 	}
 
 	public void setupConditions()
 	{
 		// Started tasks
-
-		taskedWithHarpooning = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_HARPOON.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("... and I thought fishing was a safe way to pass the time."),
-				new DialogRequirement("I see you need encouragement in learning the ways of fishing without a harpoon."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "fish with my")
-			)
-		);
 
 		taskedWithFarming = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_SEED_PLANTING.getKey(),
@@ -431,15 +429,6 @@ public class BarbarianTraining extends BasicQuestHelper
 		);
 
 		// Finished tasks
-		finishedHarpoon = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HARPOON.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("I mean that when you eventually die and find peace, at least the spirits you encounter will be your friends. Alas for you adventurous sort, the natural ways of passing are close to imp"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to fish with my hands!")
-			),
-			"Finished Barbarian Harpooning"
-		);
-
 		finishedSeedPlanting = new RuneliteRequirement(
 			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey(),
 			new Conditions(true, LogicType.OR,
@@ -537,17 +526,6 @@ public class BarbarianTraining extends BasicQuestHelper
 					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
 				),
 				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
-			)
-		);
-
-		caughtFishWithoutHarpoon = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_HARPOONED_FISH.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You catch a raw tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
 			)
 		);
 

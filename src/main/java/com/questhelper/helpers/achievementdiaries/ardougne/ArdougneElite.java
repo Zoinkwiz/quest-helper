@@ -119,11 +119,11 @@ public class ArdougneElite extends ComplexStateQuestHelper
 		doElite.addStep(notPickHero, pickHeroTask);
 
 		runeCrossbowTask = new ConditionalStep(this, spinString);
-		runeCrossbowTask.addStep(new Conditions(madeString, crossbowString), moveToYan);
-		runeCrossbowTask.addStep(new Conditions(inYanille, madeString, crossbowString), smithLimbs);
-		runeCrossbowTask.addStep(new Conditions(inYanille, madeLimbs, crossbowString, runeLimbs), fletchStock);
-		runeCrossbowTask.addStep(new Conditions(inYanille, madeStock, crossbowString, runeLimbs, yewStock), makeUnstrungCross);
 		runeCrossbowTask.addStep(new Conditions(inYanille, madeCrossU, runeCrossbowU, crossbowString), runeCrossbow);
+		runeCrossbowTask.addStep(new Conditions(inYanille, madeStock, crossbowString, runeLimbs, yewStock), makeUnstrungCross);
+		runeCrossbowTask.addStep(new Conditions(inYanille, madeLimbs, crossbowString, runeLimbs), fletchStock);
+		runeCrossbowTask.addStep(new Conditions(inYanille, madeString, crossbowString), smithLimbs);
+		runeCrossbowTask.addStep(new Conditions(madeString, crossbowString), moveToYan);
 		doElite.addStep(notRuneCrossbow, runeCrossbowTask);
 
 		return doElite;

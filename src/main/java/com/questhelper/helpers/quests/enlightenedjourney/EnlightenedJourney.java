@@ -196,7 +196,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 			"Bowl.");
 
 		talkToAugusteWithBranches = new ObjectStep(this, ObjectID.ZEP_MULTI_BASKET_ENTRANA, new WorldPoint(2807, 3356, 0),
-			"Get 12 willow branches and use them to make the basket.", willowBranches12.highlighted());
+			"Get 12 willow branches and use them on the platform next to Auguste to make the basket.", willowBranches12.highlighted());
 		talkToAugusteWithBranches.addIcon(ItemID.WILLOW_BRANCH);
 
 		talkToAugusteWithLogsAndTinderbox = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0),

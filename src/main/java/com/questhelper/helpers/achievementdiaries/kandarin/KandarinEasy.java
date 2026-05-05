@@ -40,6 +40,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.rewards.ItemReward;
@@ -53,11 +54,14 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 
 public class KandarinEasy extends ComplexStateQuestHelper
 {
@@ -174,7 +178,8 @@ public class KandarinEasy extends ComplexStateQuestHelper
         seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
         juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
         rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(notPlantJute).isNotConsumed();
-        seedDibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(notPlantJute).isNotConsumed();
+        var needSeedDibber = not(new VarbitRequirement(VarbitID.BRUT_FARMING_PLANTING, 3));
+        seedDibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).showConditioned(and(notPlantJute, needSeedDibber)).isNotConsumed();
         spade = new ItemRequirement("Spade (if existing plant in hops patch)", ItemID.SPADE).showConditioned(notPlantJute).isNotConsumed();
 
 		batteredKey = new KeyringRequirement("Battered Key", KeyringCollection.BATTERED_KEY).showConditioned(notKillEle).isNotConsumed();

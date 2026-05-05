@@ -43,6 +43,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ServerNpcLoot;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -142,6 +143,8 @@ public class PlayerStateManager
 				}
 			}
 			lastPlayerPos = newPos;
+
+			AchievementDiaryStepManager.check(client);
 		}
 	}
 
@@ -217,5 +220,11 @@ public class PlayerStateManager
 	public void setUnknownInitialState()
 	{
 		loggedInStateKnown = false;
+	}
+
+	@Subscribe
+	public void onServerNpcLoot(ServerNpcLoot event)
+	{
+		AchievementDiaryStepManager.onServerNpcLoot(event);
 	}
 }

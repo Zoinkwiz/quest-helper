@@ -370,6 +370,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.SCORPION_CATCHER,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.HOLY_GRAIL,
+			QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 			QuestHelperQuest.PRIEST_IN_PERIL,
 			QuestHelperQuest.THE_LOST_TRIBE,
 			QuestHelperQuest.NATURE_SPIRIT,

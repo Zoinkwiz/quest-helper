@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.monksfriend;
 
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -93,11 +94,7 @@ public class MonksFriend extends BasicQuestHelper
 		jugOfWater = new ItemRequirement("Jug of Water", ItemID.JUG_WATER);
 		jugOfWater.setTooltip("You can find one in the Yanille cooking shop");
 		blanket = new ItemRequirement("Child's blanket", ItemID.CHILDS_BLANKET);
-		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemID.CERT_ARRAVCERTIFICATE).isNotConsumed();
-	}
-
-	public void setupConditions()
-	{
+		ardougneCloak = new ItemRequirement("Ardougne cloak 1 or higher for teleports to the monastery", ItemCollections.ARDOUGNE_CLOAK).isNotConsumed();
 	}
 
 	public void setupSteps()

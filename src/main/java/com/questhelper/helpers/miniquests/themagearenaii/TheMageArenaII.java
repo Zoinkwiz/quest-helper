@@ -272,7 +272,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Upgrading the God Cape", Arrays.asList(enterCavern,
-			talkToKolodion, locateAndKillMinions), knife, saradominStaff, guthixStaff, zamorakStaff, unlockedSaradominStrike, unlockedClawsOfGuthix, unlockedFlamesOfZamorak, runesForCasts));
+			talkToKolodion, locateAndKillMinions, useGodCapeOnKolidion), knife, saradominStaff, guthixStaff, zamorakStaff, unlockedSaradominStrike, unlockedClawsOfGuthix, unlockedFlamesOfZamorak, runesForCasts));
 		return allSteps;
 	}
 }

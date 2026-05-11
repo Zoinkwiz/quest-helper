@@ -35,7 +35,9 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.UnlockReward;
@@ -46,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
@@ -56,6 +59,10 @@ public class TheMageArenaII extends BasicQuestHelper
 		, food, recoils, enchantedSymbol, justicarsHand, demonsHeart, entRoots, godCape;
 
 	Requirement inCavern, givenHand, givenHeart, givenRoots;
+
+	VarplayerRequirement unlockedSaradominStrike;
+	VarplayerRequirement unlockedClawsOfGuthix;
+	VarplayerRequirement unlockedFlamesOfZamorak;
 
 	QuestStep enterCavern, talkToKolodion, locateFollowerSara, locateFollowerGuthix, locateFollowerZammy,
 		enterCavernWithHand, enterCavernWithHeart, enterCavernWithRoots, giveKolodionHeart, giveKolodionHand,
@@ -130,6 +137,13 @@ public class TheMageArenaII extends BasicQuestHelper
 		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE).isNotConsumed();
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
 		godCape.setHighlightInInventory(true);
+
+		unlockedSaradominStrike = new VarplayerRequirement(VarPlayerID.SARAMAGE, 100, Operation.GREATER_EQUAL, "Unlocked Saradomin Strike");
+		unlockedSaradominStrike.setTooltip("Unlocked by casting the Saradomin Strike 100 times within the mage arena");
+		unlockedClawsOfGuthix = new VarplayerRequirement(VarPlayerID.GUTHMAGE, 100, Operation.GREATER_EQUAL, "Unlocked Claws of Guthix");
+		unlockedClawsOfGuthix.setTooltip("Unlocked by casting the Claws of Guthix 100 times within the mage arena");
+		unlockedFlamesOfZamorak = new VarplayerRequirement(VarPlayerID.ZAMOMAGE, 100, Operation.GREATER_EQUAL, "Unlocked Flames of Zamorak");
+		unlockedFlamesOfZamorak.setTooltip("Unlocked by casting the Flames of Zamorak 100 times within the mage arena");
 	}
 
 	@Override
@@ -237,7 +251,9 @@ public class TheMageArenaII extends BasicQuestHelper
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.MAGIC, 75));
 		reqs.add(new QuestRequirement(QuestHelperQuest.THE_MAGE_ARENA, QuestState.FINISHED));
-		reqs.add(new ItemRequirement("Unlocked all 3 god spells", -1, -1));
+		reqs.add(unlockedSaradominStrike);
+		reqs.add(unlockedClawsOfGuthix);
+		reqs.add(unlockedFlamesOfZamorak);
 		return reqs;
 	}
 
@@ -252,7 +268,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Upgrading the God Cape", Arrays.asList(enterCavern,
-			talkToKolodion, locateAndKillMinions), knife, saradominStaff, guthixStaff, zamorakStaff, runesForCasts));
+			talkToKolodion, locateAndKillMinions), knife, saradominStaff, guthixStaff, zamorakStaff, unlockedSaradominStrike, unlockedClawsOfGuthix, unlockedFlamesOfZamorak, runesForCasts));
 		return allSteps;
 	}
 }

@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.miniquests.themagearenai;
 
+import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -86,7 +87,7 @@ public class TheMageArenaI extends BasicQuestHelper
 	{
 		runesForCasts = new ItemRequirement("Runes for fighting Kolodion", -1, -1);
 		runesForCasts.setDisplayItemId(ItemID.DEATHRUNE);
-		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
+		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemCollections.SLASH_WEB_KNIFE).isNotConsumed();
 		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE).isNotConsumed();
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
 	}

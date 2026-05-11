@@ -58,7 +58,10 @@ public class TheMageArenaII extends BasicQuestHelper
 	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, runesForCasts, magicCombatGear, knife, brews, restores
 		, food, recoils, enchantedSymbol, justicarsHand, demonsHeart, entRoots, godCape;
 
-	Requirement inCavern, givenHand, givenHeart, givenRoots;
+	Requirement inCavern;
+	VarbitRequirement givenHand;
+	VarbitRequirement givenHeart;
+	VarbitRequirement givenRoots;
 
 	VarplayerRequirement unlockedSaradominStrike;
 	VarplayerRequirement unlockedClawsOfGuthix;
@@ -175,14 +178,15 @@ public class TheMageArenaII extends BasicQuestHelper
 
 		locateFollowerSara = new MageArenaBossStep(this, saradominStaff, "Saradomin", "If he fires a blue wave at " +
 			"you, move off your tile to avoid it. If you don't, he will pull you into melee distance.",
-			enchantedSymbol, food);
+			givenHand, givenRoots, givenHeart, enchantedSymbol, food);
 		locateFollowerSara.addDialogStep("Saradomin");
 		locateFollowerGuthix = new MageArenaBossStep(this, guthixStaff, "Guthix", "If he spawns green orbs, destroy " +
-			"them to stop them healing him.",	enchantedSymbol, food);
+			"them to stop them healing him.",
+			givenHand, givenRoots, givenHeart, enchantedSymbol, food);
 		locateFollowerGuthix.addDialogStep("Guthix");
 		locateFollowerZammy = new MageArenaBossStep(this, zamorakStaff, "Zamorak", "If he fires an energy ball at " +
 			"you, move away away from the boss to reduce the damage you take.",
-			enchantedSymbol, food);
+			givenHand, givenRoots, givenHeart, enchantedSymbol, food);
 		locateFollowerZammy.addDialogStep("Zamorak");
 
 		enterCavernWithHand = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Return with" +

@@ -31,6 +31,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.tools.DefinedPoint;
@@ -55,6 +56,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -63,6 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class MageArenaBossStep extends DetailedQuestStep
@@ -105,8 +108,21 @@ public class MageArenaBossStep extends DetailedQuestStep
 	// We need this as a player can press multiple keys in the options dialog, but only the first press counts
 	boolean keyPressedOnce;
 
+	/// If set, will be used when "Activate" is clicked to figure out whether it's the last option available (only a thing during MA2)
+	private final @Nullable VarbitRequirement finishedSaradomin;
+
+	/// If set, will be used when "Activate" is clicked to figure out whether it's the last option available (only a thing during MA2)
+	private final @Nullable VarbitRequirement finishedGuthix;
+
+	/// If set, will be used when "Activate" is clicked to figure out whether it's the last option available (only a thing during MA2)
+	private final @Nullable VarbitRequirement finishedZamorak;
+
 	public MageArenaBossStep(QuestHelper questHelper, ItemRequirement staff, String bossName,
-							 String abilityDetail, ItemRequirement... requirements)
+							 String abilityDetail,
+							 VarbitRequirement finishedSaradomin,
+							 VarbitRequirement finishedGuthix,
+							 VarbitRequirement finishedZamorak,
+							 ItemRequirement... requirements)
 	{
 		super(questHelper, originalTextStart + bossName + originalTextEnd, requirements);
 		this.bossName = bossName;
@@ -114,6 +130,10 @@ public class MageArenaBossStep extends DetailedQuestStep
 		this.staff = staff;
 		this.baseRequirements = requirements;
 		this.godToFind = God.getByName(bossName);
+
+		this.finishedSaradomin = finishedSaradomin;
+		this.finishedGuthix = finishedGuthix;
+		this.finishedZamorak = finishedZamorak;
 	}
 
 	public MageArenaBossStep(QuestHelper questHelper, ItemRequirement staff,
@@ -126,6 +146,10 @@ public class MageArenaBossStep extends DetailedQuestStep
 		this.baseRequirements = requirements;
 		this.allowChangingBoss = true;
 		this.godToFind = God.SARADOMIN;
+
+		this.finishedSaradomin = null;
+		this.finishedGuthix = null;
+		this.finishedZamorak = null;
 	}
 
 	@Override
@@ -279,20 +303,44 @@ public class MageArenaBossStep extends DetailedQuestStep
 
 	public void addListeners()
 	{
-		final var SARADOMIN_POS = 1;
-		final var GUTHIX_POS = 2;
-		final var ZAMORAK_POS = 3;
+		final AtomicInteger SARADOMIN_KC = new AtomicInteger(-1);
+		final AtomicInteger GUTHIX_KC = new AtomicInteger(-1);
+		final AtomicInteger ZAMORAK_KC = new AtomicInteger(-1);
 		var chatMenu = client.getWidget(InterfaceID.Chatmenu.OPTIONS);
 		if (chatMenu == null || chatMenu.isHidden()) return;
 		if (chatMenu.getChildren() == null || chatMenu.getChildren().length < 4) return;
 
-		var saradominButton = chatMenu.getChildren()[SARADOMIN_POS];
-		var guthixButton = chatMenu.getChildren()[GUTHIX_POS];
-		var zamorakButton = chatMenu.getChildren()[ZAMORAK_POS];
-		if (saradominButton == null || guthixButton == null || zamorakButton == null) return;
-		saradominButton.setOnClickListener((JavaScriptCallback) ev -> { handleBossButtonClick(God.SARADOMIN); });
-		guthixButton.setOnClickListener((JavaScriptCallback) ev -> {handleBossButtonClick(God.GUTHIX);});
-		zamorakButton.setOnClickListener((JavaScriptCallback) ev -> { handleBossButtonClick(God.ZAMORAK); });
+		for (var i = 1; i < 4; ++i)
+		{
+			var button = chatMenu.getChild(i);
+			if (button == null)
+			{
+				return;
+			}
+			var buttonText = button.getText();
+			var buttonIndex = button.getIndex();
+			if ("Saradomin".equals(buttonText))
+			{
+				button.setOnClickListener((JavaScriptCallback) ev -> { handleBossButtonClick(God.SARADOMIN); });
+				if (buttonIndex == 1) SARADOMIN_KC.set(KeyCode.KC_1);
+				else if (buttonIndex == 2) SARADOMIN_KC.set(KeyCode.KC_2);
+				else if (buttonIndex == 3) SARADOMIN_KC.set(KeyCode.KC_3);
+			}
+			else if ("Guthix".equals(buttonText))
+			{
+				button.setOnClickListener((JavaScriptCallback) ev -> {handleBossButtonClick(God.GUTHIX);});
+				if (buttonIndex == 1) GUTHIX_KC.set(KeyCode.KC_1);
+				else if (buttonIndex == 2) GUTHIX_KC.set(KeyCode.KC_2);
+				else if (buttonIndex == 3) GUTHIX_KC.set(KeyCode.KC_3);
+			}
+			else if ("Zamorak".equals(buttonText))
+			{
+				button.setOnClickListener((JavaScriptCallback) ev -> { handleBossButtonClick(God.ZAMORAK); });
+				if (buttonIndex == 1) ZAMORAK_KC.set(KeyCode.KC_1);
+				else if (buttonIndex == 2) ZAMORAK_KC.set(KeyCode.KC_2);
+				else if (buttonIndex == 3) ZAMORAK_KC.set(KeyCode.KC_3);
+			}
+		}
 
 		keyPressedOnce = false;
 
@@ -300,9 +348,12 @@ public class MageArenaBossStep extends DetailedQuestStep
 		chatMenu.setOnKeyListener((JavaScriptCallback) ev -> {
 			if (keyPressedOnce) return;
 			keyPressedOnce = true;
-			if (ev.getTypedKeyCode() == KeyCode.KC_1) handleBossButtonClick(God.SARADOMIN);
-			if (ev.getTypedKeyCode() == KeyCode.KC_2) handleBossButtonClick(God.GUTHIX);
-			if (ev.getTypedKeyCode() == KeyCode.KC_3) handleBossButtonClick(God.ZAMORAK);
+			var saradominKc = SARADOMIN_KC.get();
+			var guthixKc = GUTHIX_KC.get();
+			var zamorakKc = ZAMORAK_KC.get();
+			if (saradominKc != -1 && ev.getTypedKeyCode() == saradominKc) handleBossButtonClick(God.SARADOMIN);
+			if (guthixKc != -1 && ev.getTypedKeyCode() == guthixKc) handleBossButtonClick(God.GUTHIX);
+			if (zamorakKc != -1 && ev.getTypedKeyCode() == zamorakKc) handleBossButtonClick(God.ZAMORAK);
 		});
 		chatMenu.revalidate();
 	}
@@ -312,6 +363,33 @@ public class MageArenaBossStep extends DetailedQuestStep
 	{
 		if (e.getItemId() == ItemID.MA2_SYMBOL && "Activate".equals(e.getMenuOption()))
 		{
+			if (finishedSaradomin != null && finishedGuthix != null && finishedZamorak != null) {
+				var finishedSaradomin = this.finishedSaradomin.check(client);
+				var finishedGuthix = this.finishedGuthix.check(client);
+				var finishedZamorak = this.finishedZamorak.check(client);
+
+				if (finishedSaradomin && finishedGuthix && !finishedZamorak)
+				{
+					// User only has Zamorak left
+					handleBossButtonClick(God.ZAMORAK);
+					return;
+				}
+
+				if (finishedSaradomin && !finishedGuthix && finishedZamorak)
+				{
+					// User only has Guthix left
+					handleBossButtonClick(God.GUTHIX);
+					return;
+				}
+
+				if (!finishedSaradomin && finishedGuthix && finishedZamorak)
+				{
+					// User only has Saradomin left
+					handleBossButtonClick(God.SARADOMIN);
+					return;
+				}
+			}
+
 			clickedActivateOnSymbol = true;
 		}
 	}

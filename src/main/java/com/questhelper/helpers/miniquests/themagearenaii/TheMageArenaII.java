@@ -115,7 +115,7 @@ public class TheMageArenaII extends BasicQuestHelper
 			new ItemRequirement("Fire runes", ItemID.FIRERUNE, -1));
 		magicCombatGear = new ItemRequirement("Magic combat gear", -1, 1).isNotConsumed();
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
-		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
+		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemCollections.SLASH_WEB_KNIFE).isNotConsumed();
 		brews =  new ItemRequirement("Saradomin brews", ItemCollections.SARADOMIN_BREWS, -1);
 		restores = new ItemRequirement("Super restores", ItemCollections.SUPER_RESTORE_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);

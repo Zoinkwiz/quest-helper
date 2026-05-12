@@ -69,7 +69,7 @@ public class AchievementDiaryStepManager
 
 	public static void check(Client client)
 	{
-		if (inWorkshop.getMatchedZoneLastCheck() != false && !inWorkshop.check(client))
+		if (!Boolean.FALSE.equals(inWorkshop.getMatchedZoneLastCheck()) && !inWorkshop.check(client))
 		{
 			killedFire.setConfigValue("false");
 			killedEarth.setConfigValue("false");

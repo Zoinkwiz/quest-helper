@@ -141,7 +141,7 @@ public class SeaSlug extends BasicQuestHelper
 		goDownLadder = new ObjectStep(this, ObjectID.SEASLUG_LADDER_TOP, new WorldPoint(2784, 3286, 1), "Go back down the ladder.");
 		goToIsland = new NpcStep(this, NpcID.HOLGARTPLATFORM, new WorldPoint(2781, 3274, 0), "Travel with Holgart to a nearby island.");
 		goToIslandFromMainland = new NpcStep(this, NpcID.HOLGARTLANDTRAVEL, new WorldPoint(2717, 3303, 0), "Travel with Holgart north of Witchaven to find Kent.");
-		goToIsland.addSubSteps(goToIsland);
+		goToIsland.addSubSteps(goToIslandFromMainland);
 
 		talkToKent = new NpcStep(this, NpcID.KENT, new WorldPoint(2794, 3322, 0), "Talk to Kent on the island.");
 		returnFromIsland = new NpcStep(this, NpcID.HOLGARTSUNKBOAT, new WorldPoint(2801, 3320, 0), "Return to the platform with Holgart.");

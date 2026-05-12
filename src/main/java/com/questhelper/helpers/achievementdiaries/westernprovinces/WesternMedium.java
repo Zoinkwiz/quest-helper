@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class WesternMedium extends ComplexStateQuestHelper
 {
@@ -136,8 +137,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notApeBass, apeBassTask);
 
 		apeTeakTask = new ConditionalStep(this, moveToApeTeak);
+		apeTeakTask.addStep(and(inApeAtoll, teakLogs, choppedLogs), apeTeakBurn);
 		apeTeakTask.addStep(inApeAtoll, apeTeakChop);
-		apeTeakTask.addStep(new Conditions(inApeAtoll, teakLogs, choppedLogs), apeTeakBurn);
 		doMedium.addStep(notApeTeak, apeTeakTask);
 
 		interPestTask = new ConditionalStep(this, moveToPest);

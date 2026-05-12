@@ -221,6 +221,7 @@ public class ReleaseDate
 		QuestHelperQuest.THE_FINAL_DAWN,
 		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
 		QuestHelperQuest.SCRAMBLED,
+		//QuestHelperQuest.LEARNING_THE_ROPES, - Quest we are unlikely to add a helper for.
 		QuestHelperQuest.PANDEMONIUM,
 		QuestHelperQuest.PRYING_TIMES,
 		QuestHelperQuest.CURRENT_AFFAIRS,

@@ -27,109 +27,85 @@ package com.questhelper.helpers.quests.seaslug;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
-import java.util.*;
-
 public class SeaSlug extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement swampPaste, glass, dampSticks, torch, litTorch, drySticks;
+	// Required items
+	ItemRequirement swampPaste;
 
-	Requirement onPlatformGroundFloor, onPlatformFirstFloor, onPlatform, onIsland;
+	// Mid-quest requirements
+	ItemRequirement glass;
+	ItemRequirement dampSticks;
+	ItemRequirement torch;
+	ItemRequirement litTorch;
+	ItemRequirement drySticks;
 
-	QuestStep talkToCaroline, talkToHolgart, talkToHolgartWithSwampPaste, travelWithHolgart, pickupGlass, pickupDampSticks,
-		climbLadder, talkToKennith, goDownLadder, goToIsland, goToIslandFromMainland, talkToKent, returnFromIsland, talkToBaileyForTorch, useGlassOnDampSticks,
-		rubSticks, goBackUpLadder, talkToKennithAgain, kickWall, talkToKennithAfterKicking, activateCrane, goDownLadderAgain,
-		returnWithHolgart, finishQuest, travelWithHolgartFreeingKennith;
+	// Zones
+	Zone platformFirstFloor;
+	Zone platformGroundFloor;
+	Zone island;
 
-	//Zones
-	Zone platformFirstFloor, platformGroundFloor, island;
+	// Miscellaneous requirements
+	ZoneRequirement onPlatformGroundFloor;
+	ZoneRequirement onPlatformFirstFloor;
+	ZoneRequirement onPlatform;
+	ZoneRequirement onIsland;
+
+	// Steps
+	NpcStep talkToCaroline;
+	NpcStep talkToHolgart;
+	NpcStep talkToHolgartWithSwampPaste;
+	NpcStep travelWithHolgart;
+	DetailedQuestStep pickupGlass;
+	DetailedQuestStep pickupDampSticks;
+	ObjectStep climbLadder;
+	NpcStep talkToKennith;
+	ObjectStep goDownLadder;
+	NpcStep goToIsland;
+	NpcStep goToIslandFromMainland;
+	NpcStep talkToKent;
+	NpcStep returnFromIsland;
+	NpcStep talkToBaileyForTorch;
+	DetailedQuestStep useGlassOnDampSticks;
+	DetailedQuestStep rubSticks;
+	ObjectStep goBackUpLadder;
+	NpcStep talkToKennithAgain;
+	ObjectStep kickWall;
+	NpcStep talkToKennithAfterKicking;
+	ObjectStep activateCrane;
+	ObjectStep goDownLadderAgain;
+	NpcStep returnWithHolgart;
+	NpcStep finishQuest;
+	NpcStep travelWithHolgartFreeingKennith;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToCaroline);
-
-		steps.put(1, talkToHolgart);
-
-		steps.put(2, talkToHolgartWithSwampPaste);
-
-		ConditionalStep investigateThePlatform = new ConditionalStep(this, travelWithHolgart);
-		investigateThePlatform.addStep(onPlatformFirstFloor, talkToKennith);
-		investigateThePlatform.addStep(onPlatformGroundFloor, climbLadder);
-
-		steps.put(3, investigateThePlatform);
-
-		ConditionalStep goFindKent = new ConditionalStep(this, travelWithHolgart);
-		goFindKent.addStep(onPlatformGroundFloor, goToIsland);
-		goFindKent.addStep(onPlatformFirstFloor, goDownLadder);
-
-		steps.put(4, goFindKent);
-
-		ConditionalStep talkWithKent = new ConditionalStep(this, goToIslandFromMainland);
-		talkWithKent.addStep(onIsland, talkToKent);
-
-		steps.put(5, talkWithKent);
-
-		ConditionalStep goToFirstFloor = new ConditionalStep(this, travelWithHolgartFreeingKennith);
-		goToFirstFloor.addStep(new Conditions(litTorch), goBackUpLadder);
-		goToFirstFloor.addStep(new Conditions(torch, drySticks), rubSticks);
-		goToFirstFloor.addStep(new Conditions(torch, glass, dampSticks), useGlassOnDampSticks);
-		goToFirstFloor.addStep(new Conditions(torch, glass), pickupDampSticks);
-		goToFirstFloor.addStep(new Conditions(torch), pickupGlass);
-		goToFirstFloor.addStep(onPlatform, talkToBaileyForTorch);
-
-		ConditionalStep lightTheTorch = new ConditionalStep(this, goToFirstFloor);
-		lightTheTorch.addStep(onIsland, returnFromIsland);
-
-		steps.put(6, lightTheTorch);
-
-		ConditionalStep freeKennith = new ConditionalStep(this, goToFirstFloor);
-		freeKennith.addStep(onPlatformFirstFloor, talkToKennithAgain);
-
-		steps.put(7, freeKennith);
-
-		ConditionalStep breakWall = new ConditionalStep(this, goToFirstFloor);
-		breakWall.addStep(onPlatformFirstFloor, kickWall);
-
-		steps.put(8, breakWall);
-
-		ConditionalStep tellKennethYouBrokeWall = new ConditionalStep(this, goToFirstFloor);
-		tellKennethYouBrokeWall.addStep(onPlatformFirstFloor, talkToKennithAfterKicking);
-
-		steps.put(9, tellKennethYouBrokeWall);
-
-		ConditionalStep turnTheCrane = new ConditionalStep(this, goToFirstFloor);
-		turnTheCrane.addStep(onPlatformFirstFloor, activateCrane);
-
-		steps.put(10, turnTheCrane);
-
-		ConditionalStep finishUp = new ConditionalStep(this, finishQuest);
-		finishUp.addStep(onPlatformGroundFloor, returnWithHolgart);
-		finishUp.addStep(onPlatformFirstFloor, goDownLadderAgain);
-
-		steps.put(11, finishUp);
-
-		return steps;
+		platformGroundFloor = new Zone(new WorldPoint(2760, 3271, 0), new WorldPoint(2795, 3293, 0));
+		platformFirstFloor = new Zone(new WorldPoint(2760, 3271, 1), new WorldPoint(2795, 3293, 1));
+		island = new Zone(new WorldPoint(2787, 3312, 0), new WorldPoint(2802, 3327, 0));
 	}
 
 	@Override
@@ -145,18 +121,6 @@ public class SeaSlug extends BasicQuestHelper
 		glass = new ItemRequirement("Broken glass", ItemID.BROKEN_GLASS);
 		glass.setHighlightInInventory(true);
 
-	}
-
-	@Override
-	protected void setupZones()
-	{
-		platformGroundFloor = new Zone(new WorldPoint(2760, 3271, 0), new WorldPoint(2795, 3293, 0));
-		platformFirstFloor = new Zone(new WorldPoint(2760, 3271, 1), new WorldPoint(2795, 3293, 1));
-		island = new Zone(new WorldPoint(2787, 3312, 0), new WorldPoint(2802, 3327, 0));
-	}
-
-	public void setupConditions()
-	{
 		onPlatformFirstFloor = new ZoneRequirement(platformFirstFloor);
 		onPlatformGroundFloor = new ZoneRequirement(platformGroundFloor);
 		onPlatform = new ZoneRequirement(platformFirstFloor, platformGroundFloor);
@@ -201,17 +165,100 @@ public class SeaSlug extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(swampPaste);
-		return reqs;
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToCaroline);
+
+		steps.put(1, talkToHolgart);
+
+		steps.put(2, talkToHolgartWithSwampPaste);
+
+		var investigateThePlatform = new ConditionalStep(this, travelWithHolgart);
+		investigateThePlatform.addStep(onPlatformFirstFloor, talkToKennith);
+		investigateThePlatform.addStep(onPlatformGroundFloor, climbLadder);
+
+		steps.put(3, investigateThePlatform);
+
+		var goFindKent = new ConditionalStep(this, travelWithHolgart);
+		goFindKent.addStep(onPlatformGroundFloor, goToIsland);
+		goFindKent.addStep(onPlatformFirstFloor, goDownLadder);
+
+		steps.put(4, goFindKent);
+
+		var talkWithKent = new ConditionalStep(this, goToIslandFromMainland);
+		talkWithKent.addStep(onIsland, talkToKent);
+
+		steps.put(5, talkWithKent);
+
+		var goToFirstFloor = new ConditionalStep(this, travelWithHolgartFreeingKennith);
+		goToFirstFloor.addStep(litTorch, goBackUpLadder);
+		goToFirstFloor.addStep(and(torch, drySticks), rubSticks);
+		goToFirstFloor.addStep(and(torch, glass, dampSticks), useGlassOnDampSticks);
+		goToFirstFloor.addStep(and(torch, glass), pickupDampSticks);
+		goToFirstFloor.addStep(torch, pickupGlass);
+		goToFirstFloor.addStep(onPlatform, talkToBaileyForTorch);
+
+		var lightTheTorch = new ConditionalStep(this, goToFirstFloor);
+		lightTheTorch.addStep(onIsland, returnFromIsland);
+
+		steps.put(6, lightTheTorch);
+
+		var freeKennith = new ConditionalStep(this, goToFirstFloor);
+		freeKennith.addStep(onPlatformFirstFloor, talkToKennithAgain);
+
+		steps.put(7, freeKennith);
+
+		var breakWall = new ConditionalStep(this, goToFirstFloor);
+		breakWall.addStep(onPlatformFirstFloor, kickWall);
+
+		steps.put(8, breakWall);
+
+		var tellKennethYouBrokeWall = new ConditionalStep(this, goToFirstFloor);
+		tellKennethYouBrokeWall.addStep(onPlatformFirstFloor, talkToKennithAfterKicking);
+
+		steps.put(9, tellKennethYouBrokeWall);
+
+		var turnTheCrane = new ConditionalStep(this, goToFirstFloor);
+		turnTheCrane.addStep(onPlatformFirstFloor, activateCrane);
+
+		steps.put(10, turnTheCrane);
+
+		var finishUp = new ConditionalStep(this, finishQuest);
+		finishUp.addStep(onPlatformGroundFloor, returnWithHolgart);
+		finishUp.addStep(onPlatformFirstFloor, goDownLadderAgain);
+
+		steps.put(11, finishUp);
+
+		return steps;
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		return Collections.singletonList(new SkillRequirement(Skill.FIREMAKING, 30, true));
+		return List.of(
+			new SkillRequirement(Skill.FIREMAKING, 30, true)
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return List.of(
+			swampPaste
+		);
+	}
+
+	@Override
+	public List<String> getNotes()
+	{
+		return List.of(
+			"You can complete an Ardougne Medium Diary task by fishing from the fishing platform using a fishing rod or small fishing net (these can be bought from the fishing shop near quest start in Witchaven)."
+		);
 	}
 
 	@Override
@@ -223,35 +270,60 @@ public class SeaSlug extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.FISHING, 7125));
+		return List.of(
+			new ExperienceReward(Skill.FISHING, 7125)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Access to the Fishing Platform"));
+		return List.of(
+			new UnlockReward("Access to the Fishing Platform")
+		);
 	}
-	
+
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(talkToCaroline),
-			swampPaste));
-		allSteps.add(new PanelDetails("Investigation", Arrays.asList(talkToHolgart, travelWithHolgart,
-			climbLadder, talkToKennith, goDownLadder, goToIsland)));
-		allSteps.add(new PanelDetails("Talking with Kent", Arrays.asList(talkToKent, returnFromIsland)));
-		allSteps.add(new PanelDetails("Saving Kennith",
-			Arrays.asList(talkToBaileyForTorch, pickupGlass, pickupDampSticks, useGlassOnDampSticks, rubSticks, goBackUpLadder,
-				talkToKennithAgain, kickWall, talkToKennithAfterKicking, activateCrane, goDownLadderAgain, returnWithHolgart,
-				finishQuest)));
+		var sections = new ArrayList<PanelDetails>();
 
-		return allSteps;
-	}
+		sections.add(new PanelDetails("Starting off", List.of(
+			talkToCaroline
+		), List.of(
+			swampPaste
+		)));
 
-	@Override
-	public List<String> getNotes()
-	{
-		return Collections.singletonList("You can complete an Ardougne Medium Diary task by fishing from the fishing platform using a fishing rod or small fishing net (these can be bought from the fishing shop near quest start in Witchaven).");
+		sections.add(new PanelDetails("Investigation", List.of(
+			talkToHolgart,
+			travelWithHolgart,
+			climbLadder,
+			talkToKennith,
+			goDownLadder,
+			goToIsland
+		)));
+
+		sections.add(new PanelDetails("Talking with Kent", List.of(
+			talkToKent,
+			returnFromIsland
+		)));
+
+		sections.add(new PanelDetails("Saving Kennith", List.of(
+			talkToBaileyForTorch,
+			pickupGlass,
+			pickupDampSticks,
+			useGlassOnDampSticks,
+			rubSticks,
+			goBackUpLadder,
+			talkToKennithAgain,
+			kickWall,
+			talkToKennithAfterKicking,
+			activateCrane,
+			goDownLadderAgain,
+			returnWithHolgart,
+			finishQuest
+		)));
+
+		return sections;
 	}
 }

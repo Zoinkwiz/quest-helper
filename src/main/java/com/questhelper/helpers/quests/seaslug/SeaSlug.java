@@ -153,7 +153,7 @@ public class SeaSlug extends BasicQuestHelper
 		pickupGlass = new DetailedQuestStep(this, "Pick up the broken glass in the room.", glass);
 		pickupDampSticks = new DetailedQuestStep(this, new WorldPoint(2784, 3289, 0), "Pick up the damp sticks in the north east corner of the platform.", dampSticks);
 		useGlassOnDampSticks = new DetailedQuestStep(this, "Use the broken glass on damp sticks to dry them.", glass, dampSticks);
-		rubSticks = new DetailedQuestStep(this, "Rub the dry sticks to light the unlit torch.");
+		rubSticks = new DetailedQuestStep(this, "Rub the dry sticks to light the unlit torch.", drySticks.highlighted());
 		goBackUpLadder = new ObjectStep(this, ObjectID.SEASLUG_LADDER, new WorldPoint(2784, 3286, 0), "Go up the ladder in the north east corner of the platform.");
 		talkToKennithAgain = new NpcStep(this, NpcID.KENNITH_PLATFORM, new WorldPoint(2765, 3289, 1), "Talk to Kennith to the west.");
 		kickWall = new ObjectStep(this, ObjectID.SLUG_BREAKABLE_PANEL, new WorldPoint(2768, 3289, 1), "Kick in the badly repaired wall east of Kennith.");

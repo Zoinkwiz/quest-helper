@@ -271,7 +271,7 @@ public class SeaSlug extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return List.of(
-			new ExperienceReward(Skill.FISHING, 7125)
+			new ExperienceReward(Skill.FISHING, 7175)
 		);
 	}
 

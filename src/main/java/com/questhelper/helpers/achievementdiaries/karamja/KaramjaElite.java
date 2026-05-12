@@ -206,17 +206,17 @@ public class KaramjaElite extends ComplexStateQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 
-		PanelDetails palmSteps = new PanelDetails("Check Palm Tree Health", Collections.singletonList(checkPalm),
-			new SkillRequirement(Skill.FARMING, 68, true), palmTreeSapling, rake, spade);
-		palmSteps.setDisplayCondition(notCheckedPalm);
-		palmSteps.setLockingStep(checkedPalmTask);
-		allSteps.add(palmSteps);
-
 		PanelDetails calquatSteps = new PanelDetails("Check Calquat Tree Health",
 			Collections.singletonList(checkCalquat), farming72, calquatSapling, rake, spade);
 		calquatSteps.setDisplayCondition(notCheckedCalquat);
 		calquatSteps.setLockingStep(checkedCalquatTask);
 		allSteps.add(calquatSteps);
+
+		PanelDetails palmSteps = new PanelDetails("Check Palm Tree Health", Collections.singletonList(checkPalm),
+			new SkillRequirement(Skill.FARMING, 68, true), palmTreeSapling, rake, spade);
+		palmSteps.setDisplayCondition(notCheckedPalm);
+		palmSteps.setLockingStep(checkedPalmTask);
+		allSteps.add(palmSteps);
 
 		PanelDetails equipCapeSteps = new PanelDetails("Equip Fire / Infernal Cape",
 			Collections.singletonList(equipCape), fireCapeOrInfernal);

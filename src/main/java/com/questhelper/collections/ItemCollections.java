@@ -2244,6 +2244,15 @@ public enum ItemCollections
 		ItemID.WILDBLOOD_HOP_SEED
 	)),
 
+	/// Things you can slash webs with that are safe to bring to wildy
+	SLASH_WEB_KNIFE(ImmutableList.of(
+		ItemID.KNIFE,
+		ItemID.WILDERNESS_SWORD_ELITE,
+		ItemID.WILDERNESS_SWORD_HARD,
+		ItemID.WILDERNESS_SWORD_MEDIUM,
+		ItemID.WILDERNESS_SWORD_EASY
+	)),
+
 	BUSH_SEEDS(ImmutableList.of(
 		ItemID.REDBERRY_BUSH_SEED,
 		ItemID.CADAVABERRY_BUSH_SEED,

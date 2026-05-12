@@ -59,6 +59,7 @@ public class TheWarpedDepths
 		sewer1Ladder.addRecommended(quest.earmuffsOrSlayerHelmet);
 		sewer2Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_LADDER_TOP, new WorldPoint(1529, 4236, 1),
 			"Climb down the ladder to the east.");
+		sewer2Ladder.setForceClickboxHighlight(true);
 		sewer2Ladder.addRecommended(quest.protectMissiles);
 		sewer2Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		sewer3Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_PIPE_SIDE_LADDER, new WorldPoint(1529, 4253, 0),
@@ -67,6 +68,7 @@ public class TheWarpedDepths
 		sewer3Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		sewer4Ladder = new ObjectStep(quest, ObjectID.POG_SEWER_LADDER_TOP, new WorldPoint(1486, 4282, 1),
 			"Climb down the ladder to the north-west. Re-activate your run if you step in any puddles.");
+		sewer4Ladder.setForceClickboxHighlight(true);
 		sewer4Ladder.addRecommended(quest.protectMissiles);
 		sewer4Ladder.addRecommended(quest.earmuffsOrSlayerHelmetEquipped);
 		sewer4Ladder.setLinePoints(List.of(

@@ -33,6 +33,7 @@ import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -272,6 +273,14 @@ public class SeaSlug extends BasicQuestHelper
 	{
 		return List.of(
 			new ExperienceReward(Skill.FISHING, 7175)
+		);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return List.of(
+			new ItemReward("Oyster pearls", ItemID.BIGOYSTERPEARLS, 1)
 		);
 	}
 

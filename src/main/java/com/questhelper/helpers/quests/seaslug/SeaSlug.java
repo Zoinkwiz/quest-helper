@@ -130,7 +130,7 @@ public class SeaSlug extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToCaroline = new NpcStep(this, NpcID.CAROLINE, new WorldPoint(2717, 3303, 0), "Talk to Caroline just north of Witchaven, east of East Ardougne.");
-		talkToCaroline.addDialogStep("I suppose so, how do I get there?");
+		talkToCaroline.addDialogStep("Yes.");
 		talkToHolgart = new NpcStep(this, NpcID.HOLGARTLANDNOTRAVEL, new WorldPoint(2717, 3303, 0), "Talk to Holgart nearby and give him some swamp paste.", swampPaste);
 		talkToHolgartWithSwampPaste = new NpcStep(this, NpcID.HOLGARTLANDNOTRAVEL, new WorldPoint(2717, 3303, 0), "Give Holgart some swamp paste.", swampPaste);
 		talkToHolgart.addSubSteps(talkToHolgartWithSwampPaste);

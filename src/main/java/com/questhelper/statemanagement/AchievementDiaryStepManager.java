@@ -36,6 +36,7 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
+import net.runelite.client.events.ServerNpcLoot;
 
 import javax.inject.Singleton;
 
@@ -46,7 +47,7 @@ public class AchievementDiaryStepManager
 	static Zone workshop;
 
 	@Getter
-	static Requirement inWorkshop;
+	static ZoneRequirement inWorkshop;
 
 	@Getter
 	static RuneliteRequirement killedFire, killedEarth, killedWater, killedAir;
@@ -68,7 +69,7 @@ public class AchievementDiaryStepManager
 
 	public static void check(Client client)
 	{
-		if (!inWorkshop.check(client))
+		if (inWorkshop.getMatchedZoneLastCheck() != false && !inWorkshop.check(client))
 		{
 			killedFire.setConfigValue("false");
 			killedEarth.setConfigValue("false");
@@ -78,14 +79,27 @@ public class AchievementDiaryStepManager
 	}
 
 	@Subscribe
-	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	public static void onServerNpcLoot(final ServerNpcLoot npcLootReceived)
 	{
-		final NPC npc = npcLootReceived.getNpc();
+		final var npc = npcLootReceived.getComposition();
 
-		final int id = npc.getId();
-		if (id == NpcID.ELEMENTAL_FIRE) killedFire.setConfigValue("true");
-		if (id == NpcID.ELEMENTAL_EARTH) killedEarth.setConfigValue("true");
-		if (id == NpcID.ELEMENTAL_WATER) killedWater.setConfigValue("true");
-		if (id == NpcID.ELEMENTAL_AIR) killedAir.setConfigValue("true");
+		switch (npc.getId())
+		{
+			case NpcID.ELEMENTAL_FIRE:
+				killedFire.setConfigValue("true");
+				break;
+
+			case NpcID.ELEMENTAL_EARTH:
+				killedEarth.setConfigValue("true");
+				break;
+
+			case NpcID.ELEMENTAL_WATER:
+				killedWater.setConfigValue("true");
+				break;
+
+			case NpcID.ELEMENTAL_AIR:
+				killedAir.setConfigValue("true");
+				break;
+		}
 	}
 }

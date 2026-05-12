@@ -246,7 +246,6 @@ public class PuzzleSolver
 	{
 
 		private final WidgetDetails pieceInfo;
-		private final Widget piece;
 		private final int correctOrientation, selectedVBit, targetX, targetY;
 
 		public PipeSolverSolution(WidgetDetails piece, int targetX, int targetY, int correctOrientation, int selectedVBit)
@@ -257,13 +256,18 @@ public class PuzzleSolver
 		public PipeSolverSolution(WidgetDetails pieceDetails, int targetX, int targetY, int correctOrientation, int selectedVBit, Function<Widget, Integer> getPieceX, Function<Widget, Integer> getPieceY)
 		{
 			this.pieceInfo = pieceDetails;
-			this.piece = PuzzleSolver.this.getWidget(pieceInfo);
-			if (this.piece == null)
-				throw new WidgetNotFoundException();
 			this.targetX = targetX;
 			this.targetY = targetY;
 			this.correctOrientation = correctOrientation;
 			this.selectedVBit = selectedVBit;
+		}
+
+		private Widget getPiece()
+		{
+			Widget widget = PuzzleSolver.this.getWidget(pieceInfo);
+			if (widget == null)
+				throw new WidgetNotFoundException();
+			return widget;
 		}
 
 		public boolean isSolved()
@@ -278,27 +282,27 @@ public class PuzzleSolver
 
 		public boolean isLeft()
 		{
-			return piece.getOriginalX() < targetX - 4;
+			return getPiece().getOriginalX() < targetX - 4;
 		}
 
 		public boolean isRight()
 		{
-			return piece.getOriginalX() > targetX + 4;
+			return getPiece().getOriginalX() > targetX + 4;
 		}
 
 		public boolean isAbove()
 		{
-			return piece.getOriginalY() < targetY - 4;
+			return getPiece().getOriginalY() < targetY - 4;
 		}
 
 		public boolean isBelow()
 		{
-			return piece.getOriginalY() > targetY + 4;
+			return getPiece().getOriginalY() > targetY + 4;
 		}
 
 		public boolean isOriented()
 		{
-			return piece.getModelId() == correctOrientation;
+			return getPiece().getModelId() == correctOrientation;
 		}
 
 	}

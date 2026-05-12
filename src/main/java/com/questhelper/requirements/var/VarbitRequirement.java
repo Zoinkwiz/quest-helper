@@ -53,7 +53,8 @@ public class VarbitRequirement extends AbstractRequirement
 	@Setter
 	private int requiredValue;
 	private final Operation operation;
-	private final String displayText;
+	@Setter
+	private String displayText;
 
 	// bit positions
 	private boolean bitIsSet = false;

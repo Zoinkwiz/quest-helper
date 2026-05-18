@@ -598,12 +598,6 @@ public class QuestHelperPlugin extends Plugin implements QuestHelperApi
 		});
 	}
 
-	// --- QuestHelperApi ------------------------------------------------------
-	//
-	// Stable surface for other RuneLite plugins. See com.questhelper.api for
-	// the contract. Keep signatures stable — they're called reflectively from
-	// plugin-hub plugins whose classloader does not share types with us.
-
 	@Override
 	public List<QuestSummary> getQuests()
 	{
@@ -651,8 +645,6 @@ public class QuestHelperPlugin extends Plugin implements QuestHelperApi
 	{
 		displayPanel();
 	}
-
-	// --- /QuestHelperApi -----------------------------------------------------
 
 	private void scanAndInstantiate()
 	{

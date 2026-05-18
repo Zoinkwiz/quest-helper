@@ -29,6 +29,8 @@ import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.questhelper.api.QuestHelperApi;
+import com.questhelper.api.QuestSummary;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.bank.banktab.QuestBankTabInterface;
@@ -85,7 +87,7 @@ import java.util.stream.Collectors;
 	tags = { "quest", "helper", "overlay" }
 )
 @Slf4j
-public class QuestHelperPlugin extends Plugin
+public class QuestHelperPlugin extends Plugin implements QuestHelperApi
 {
 	@Getter
 	@Inject
@@ -595,6 +597,62 @@ public class QuestHelperPlugin extends Plugin
 			clientToolbar.openPanel(navButton);
 		});
 	}
+
+	// --- QuestHelperApi ------------------------------------------------------
+	//
+	// Stable surface for other RuneLite plugins. See com.questhelper.api for
+	// the contract. Keep signatures stable — they're called reflectively from
+	// plugin-hub plugins whose classloader does not share types with us.
+
+	@Override
+	public List<QuestSummary> getQuests()
+	{
+		List<QuestSummary> out = new ArrayList<>(QuestHelperQuest.values().length);
+		for (QuestHelperQuest qhq : QuestHelperQuest.values())
+		{
+			out.add(new QuestSummary(
+				qhq.name(),
+				qhq.getName(),
+				qhq.getQuestType() != null ? qhq.getQuestType().name() : null,
+				qhq.getDifficulty() != null ? qhq.getDifficulty().name() : null,
+				qhq.isDeveloperQuest()
+			));
+		}
+		out.sort(Comparator.comparing(QuestSummary::getDisplayName, String.CASE_INSENSITIVE_ORDER));
+		return Collections.unmodifiableList(out);
+	}
+
+	@Override
+	public boolean openQuest(String questName)
+	{
+		if (questName == null) return false;
+		QuestHelperQuest match = null;
+		for (QuestHelperQuest qhq : QuestHelperQuest.values())
+		{
+			if (qhq.name().equals(questName))
+			{
+				match = qhq;
+				break;
+			}
+		}
+		if (match == null) return false;
+		QuestHelper helper = match.getQuestHelper();
+		if (helper == null) return false;
+
+		// Always show the panel — bypass the autoOpenSidebar config since the
+		// caller is explicitly requesting a quest to be opened.
+		displayPanel();
+		questManager.startUpQuest(helper, false);
+		return true;
+	}
+
+	@Override
+	public void openPanel()
+	{
+		displayPanel();
+	}
+
+	// --- /QuestHelperApi -----------------------------------------------------
 
 	private void scanAndInstantiate()
 	{

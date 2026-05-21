@@ -461,14 +461,6 @@ public class TheRedReef extends BasicQuestHelper
 	}
 
 	@Override
-	public List<String> getNotes()
-	{
-		return List.of(
-			"This is a note to appear in the sidebar"
-		);
-	}
-
-	@Override
 	public QuestPointReward getQuestPointReward()
 	{
 		return new QuestPointReward(2);

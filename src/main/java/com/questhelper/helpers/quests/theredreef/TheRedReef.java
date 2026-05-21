@@ -31,6 +31,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.npc.NoFollowerRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
@@ -95,6 +96,7 @@ public class TheRedReef extends BasicQuestHelper
 	NpcRequirement giantLobsterAround;
 	VarbitRequirement onBoat;
 	FreeInventorySlotRequirement freeInv2;
+	NoFollowerRequirement noFollower;
 
 	// Steps
 	// 0 + 2
@@ -233,6 +235,7 @@ public class TheRedReef extends BasicQuestHelper
 		giantLobsterAround = new NpcRequirement(NpcID.TRR_GIANT_LOBSTER);
 		onBoat = new VarbitRequirement(VarbitID.SAILING_BOARDED_BOAT, 1);
 		freeInv2 = new FreeInventorySlotRequirement(2);
+		noFollower = new NoFollowerRequirement("No pet following you");
 	}
 
 	void setupSteps()
@@ -299,7 +302,7 @@ public class TheRedReef extends BasicQuestHelper
 
 		talkToSpencerBrentwood = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_VIS, new WorldPoint(2878, 2505, 0), "Talk to Spencer Brentwood aboard the Zenith.", combatGearLobster);
 		equipDivingGearAndDive = new DetailedQuestStep(this, "Equip the deep sea diving gear and dive down to the bottom of the sea.", combatGearLobster, divingHelmetEquipped, divingApparatusEquipped);
-		dive = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_VIS, "Talk to Spencer Brentwood again with the deep sea diving gear equipped to dive down to the bottom of the sea.", combatGearLobster, divingHelmetEquipped, divingApparatusEquipped);
+		dive = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_VIS, "Talk to Spencer Brentwood again with the deep sea diving gear equipped to dive down to the bottom of the sea.", combatGearLobster, divingHelmetEquipped, divingApparatusEquipped, noFollower);
 		dive.addDialogStep("Let's go.");
 		dive.addSubSteps(equipDivingGearAndDive);
 		listenToSpencer = new DetailedQuestStep(this, "Listen to Spencer Brentwood's instructions.");

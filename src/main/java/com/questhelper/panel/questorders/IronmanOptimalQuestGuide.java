@@ -261,6 +261,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.THE_IDES_OF_MILK,
+		QuestHelperQuest.THE_RED_REEF,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Ironman Quest Guide
 		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,

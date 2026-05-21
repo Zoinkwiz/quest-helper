@@ -345,6 +345,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.SHEEP_HERDER,
 			QuestHelperQuest.RUNE_MYSTERIES,
 			QuestHelperQuest.BELOW_ICE_MOUNTAIN,
+			QuestHelperQuest.THE_RED_REEF,
 			QuestHelperQuest.HAZEEL_CULT,
 			QuestHelperQuest.FIGHT_ARENA,
 			QuestHelperQuest.DEATH_ON_THE_ISLE,

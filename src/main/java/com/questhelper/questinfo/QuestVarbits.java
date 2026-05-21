@@ -128,7 +128,8 @@ public enum QuestVarbits
 	QUEST_PANDEMONIUM(VarbitID.SAILING_INTRO),
 	QUEST_PRYING_TIMES(VarbitID.QUEST_PRY),
 	QUEST_CURRENT_AFFAIRS(VarbitID.CURRENT_AFFAIRS),
-  QUEST_TROUBLED_TORTUGANS(VarbitID.TT),
+	QUEST_TROUBLED_TORTUGANS(VarbitID.TT),
+	QUEST_THE_RED_REEF(VarbitID.TRR),
 	/**
 	 * mini-quest varbits, these don't hold the completion value.
 	 */

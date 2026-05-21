@@ -72,6 +72,7 @@ public class TheRedReef extends BasicQuestHelper
 
 	// Recommended items
 	ItemRequirement food;
+	ItemRequirement prayerPotions;
 	ItemRequirement repairKits;
 
 	// Mid-quest item requirements
@@ -194,6 +195,7 @@ public class TheRedReef extends BasicQuestHelper
 		combatGearLobster.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		repairKits = new ItemRequirement("Boat repair kits", ItemCollections.BOAT_REPAIR_KITS, 5);
 
 		divingHelmet = new ItemRequirement("Deep sea helmet", ItemID.TRR_DIVING_HELMET);
@@ -268,7 +270,7 @@ public class TheRedReef extends BasicQuestHelper
 
 		// TODO: add all pirate npc ids
 		sinkBlackEyeBethelBoats = new NpcStep(this, NpcID.TRR_PIRATE_1, new WorldPoint(2834, 2357, 0), "Get ready for boat combat, then sail south towards Last Light and deal with Black Eye Bethel. Protect from Missiles to avoid most damage. Repair your ship. Combat is over when all boats are sunk or all pirates are killed.", rangedCombatGearOrShipWithCannons, combatGearBethel);
-		sinkBlackEyeBethelBoats.setRecommended(List.of(food, repairKits));
+		sinkBlackEyeBethelBoats.setRecommended(List.of(food, prayerPotions, repairKits));
 
 		disembarkAtLastLight = new ObjectStep(this, ObjectID.SAILING_MOORING_DISEMBARK, new WorldPoint(2849, 2327, 0), "Disembark at Last Light.");
 
@@ -445,6 +447,7 @@ public class TheRedReef extends BasicQuestHelper
 	{
 		return List.of(
 			food,
+			prayerPotions,
 			repairKits
 		);
 	}
@@ -521,6 +524,7 @@ public class TheRedReef extends BasicQuestHelper
 			combatGearBethel
 		), List.of(
 			food,
+			prayerPotions,
 			repairKits
 		)));
 

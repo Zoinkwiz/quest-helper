@@ -207,6 +207,19 @@ public class NpcStep extends DetailedQuestStep
 		{
 			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
 		}
+
+		/* TODO: Configurable boolean per NpcStep for whether to consider all world views
+		    This is as you're likely to want to only highlight stuff on your own ship, not on others'
+		*/
+		for (WorldView worldView : client.getTopLevelWorldView().worldViews())
+		{
+			if (worldView == playerWorldView) continue;
+
+			for (NPC npc : worldView.npcs())
+			{
+				addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
+			}
+		}
 	}
 
 	public NpcStep addAlternateNpcs(Integer... alternateNpcIDs)

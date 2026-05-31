@@ -26,8 +26,13 @@ package com.questhelper.steps.tools;
 
 import com.questhelper.requirements.zone.Zone;
 import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameObject;
+import net.runelite.api.GroundObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.WallObject;
 import net.runelite.api.WorldView;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
@@ -37,6 +42,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.util.*;
 import java.util.List;
 
@@ -79,8 +85,7 @@ public class QuestPerspective
 			}
 
 			var mainLocal = worldEntity.transformToMainWorld(localPoint);
-			return WorldPoint.fromLocal(client.getTopLevelWorldView(),
-				mainLocal.getX(), mainLocal.getY(), client.getTopLevelWorldView().getPlane());
+			return WorldPoint.fromLocalInstance(client, mainLocal, client.getTopLevelWorldView().getPlane());
 		}
 		else
 		{
@@ -125,8 +130,7 @@ public class QuestPerspective
 			}
 
 			var mainLocal = worldEntity.transformToMainWorld(localPoint);
-			return WorldPoint.fromLocal(client.getTopLevelWorldView(),
-				mainLocal.getX(), mainLocal.getY(), client.getTopLevelWorldView().getPlane());
+			return WorldPoint.fromLocalInstance(client, mainLocal, client.getTopLevelWorldView().getPlane());
 		}
 		else
 		{
@@ -359,6 +363,73 @@ public class QuestPerspective
 				areaPoly.addPoint(poly.xpoints[point], poly.ypoints[point]);
 			}
 		}
+	}
+
+	public static Shape getAreaFromWorldView(Client client, WorldView view)
+	{
+		if (view == null || view.getScene() == null)
+		{
+			return null;
+		}
+
+		Tile[][][] tiles = view.getScene().getTiles();
+
+		Area area = new Area();
+		for (Tile[][] planeTiles : tiles)
+		{
+			if (planeTiles == null) continue;
+			for (Tile[] column : planeTiles)
+			{
+				if (column == null) continue;
+				for (Tile tile : column)
+				{
+					if (tile == null) continue;
+					addTileHulls(area, client, tile);
+				}
+			}
+		}
+
+		return area.isEmpty() ? null : area;
+	}
+
+	private static void addTileHulls(Area area, Client client, Tile tile)
+	{
+		GameObject[] gameObjects = tile.getGameObjects();
+		if (gameObjects != null)
+		{
+			for (GameObject go : gameObjects)
+			{
+				if (go == null || !isUnnamedScenery(client, go.getId())) continue;
+				addHull(area, go.getConvexHull());
+			}
+		}
+
+		WallObject wall = tile.getWallObject();
+		if (wall != null && isUnnamedScenery(client, wall.getId()))
+		{
+			addHull(area, wall.getConvexHull());
+			addHull(area, wall.getConvexHull2());
+		}
+
+		GroundObject ground = tile.getGroundObject();
+		if (ground != null && isUnnamedScenery(client, ground.getId()))
+		{
+			addHull(area, ground.getConvexHull());
+		}
+	}
+
+	private static void addHull(Area target, Shape hull)
+	{
+		if (hull != null)
+		{
+			target.add(new Area(hull));
+		}
+	}
+
+	private static boolean isUnnamedScenery(Client client, int objectId)
+	{
+		var def = client.getObjectDefinition(objectId);
+		return def != null && Objects.equals(def.getName(), "null");
 	}
 
 	/**

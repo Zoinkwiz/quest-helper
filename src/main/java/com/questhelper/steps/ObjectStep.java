@@ -151,11 +151,9 @@ public class ObjectStep extends DetailedQuestStep
 	{
 		// TODO: This needs to be tested in Shadow of the Storm's Demon Room
 		objects.clear();
-		loadObjectsInWorldView(client.getTopLevelWorldView());
-		var playerWorldView = client.getLocalPlayer().getWorldView();
-		if (playerWorldView != client.getTopLevelWorldView())
+		for (WorldView worldView : client.getTopLevelWorldView().worldViews())
 		{
-			loadObjectsInWorldView(client.getLocalPlayer().getWorldView());
+			loadObjectsInWorldView(worldView);
 		}
 	}
 
@@ -470,12 +468,6 @@ public class ObjectStep extends DetailedQuestStep
 	protected void handleObjects(TileObject object)
 	{
 		if (object == null)
-		{
-			return;
-		}
-
-		var worldViewsToConsider = List.of(client.getTopLevelWorldView(), client.getLocalPlayer().getWorldView());
-		if (!worldViewsToConsider.contains(object.getWorldView()))
 		{
 			return;
 		}

@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.questhelper.steps.WorldEntityStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -146,7 +147,7 @@ public class TheRedReef extends BasicQuestHelper
 	ConditionalStep cReturnToTheodorePaxton;
 
 	// 28
-	ObjectStep sailToZenith;
+	WorldEntityStep sailToZenith;
 
 	// 30
 	NpcStep talkToSpencerBrentwood;
@@ -272,7 +273,9 @@ public class TheRedReef extends BasicQuestHelper
 		talkToTheodorePaxton = new NpcStep(this, NpcID.TRR_THEODORE_PAXTON, new WorldPoint(2795, 2517, 0), "Talk to Theodore Paxton.");
 
 		// TODO: add all pirate npc ids
-		sinkBlackEyeBethelBoats = new NpcStep(this, NpcID.TRR_PIRATE_1, new WorldPoint(2834, 2357, 0), "Get ready for boat combat, then sail south towards Last Light and deal with Black Eye Bethel. Protect from Missiles to avoid most damage. Repair your ship. Combat is over when all boats are sunk or all pirates are killed.", rangedCombatGearOrShipWithCannons, combatGearBethel);
+		sinkBlackEyeBethelBoats = new NpcStep(this, new int[]{NpcID.TRR_PIRATE_1, NpcID.TRR_PIRATE_2, NpcID.TRR_PIRATE_3, NpcID.TRR_PIRATE_4}, new WorldPoint(2834, 2357, 0),
+			"Get ready for boat combat, then sail south towards Last Light and deal with Black Eye Bethel. Protect from Missiles to avoid most damage. Repair your ship. " +
+				"Combat is over when all boats are sunk or all pirates are killed.", rangedCombatGearOrShipWithCannons, combatGearBethel);
 		sinkBlackEyeBethelBoats.setRecommended(List.of(food, prayerPotions, repairKits));
 
 		disembarkAtLastLight = new ObjectStep(this, ObjectID.SAILING_MOORING_DISEMBARK, new WorldPoint(2849, 2327, 0), "Disembark at Last Light.");
@@ -298,21 +301,21 @@ public class TheRedReef extends BasicQuestHelper
 		cReturnToTheodorePaxton.addStep(onLastLightF1, climbDownToF0);
 		cReturnToTheodorePaxton.addStep(onLastLightF0, boardYourShip);
 
-		sailToZenith = new ObjectStep(this, ObjectID.CHAIR, new WorldPoint(2874, 2506, 0), "Sail to and board the Zenith, east of Red Rock. If you don't see the Zenith there, try hopping to a different world.", combatGearLobster);
-
+		sailToZenith = new WorldEntityStep(this, 9, new WorldPoint(2874, 2506, 0),
+			"Sail to and board the Zenith, east of Red Rock. If you don't see the Zenith there, try hopping to a different world.", combatGearLobster);
 		talkToSpencerBrentwood = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_VIS, new WorldPoint(2878, 2505, 0), "Talk to Spencer Brentwood aboard the Zenith.", combatGearLobster);
 		equipDivingGearAndDive = new DetailedQuestStep(this, "Equip the deep sea diving gear and dive down to the bottom of the sea.", combatGearLobster, divingHelmetEquipped, divingApparatusEquipped);
 		dive = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_VIS, "Talk to Spencer Brentwood again with the deep sea diving gear equipped to dive down to the bottom of the sea.", combatGearLobster, divingHelmetEquipped, divingApparatusEquipped, noFollower);
 		dive.addDialogStep("Let's go.");
 		dive.addSubSteps(equipDivingGearAndDive);
-		listenToSpencer = new DetailedQuestStep(this, "Listen to Spencer Brentwood's instructions.");
+		listenToSpencer = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_DIVING_A, new WorldPoint(2836, 8922, 1), "Listen to Spencer Brentwood's instructions.");
 
 		repairCoralDredger = new ObjectStep(this, ObjectID.TRR_CORAL_DREDGER_BROKEN_OP, new WorldPoint(2844, 8942, 1), "Head north and repair the Coral dredger, ready to fight a Giant lobster.", combatGearLobster);
 		fightTheGiantLobster = new NpcStep(this, NpcID.TRR_GIANT_LOBSTER, "Kill the Giant lobster. Avoid the blue particles on the floor.");
 
 		repairCoralDredger2 = new ObjectStep(this, ObjectID.TRR_CORAL_DREDGER_BROKEN_OP, new WorldPoint(2844, 8942, 1), "Repair the Coral dredger.");
 
-		talkToSpencerNearEastCoralDredger = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_DIVING_VIS, "Talk to Spencer Brentwood near the eastern coral dredger.");
+		talkToSpencerNearEastCoralDredger = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_DIVING_VIS, new WorldPoint(2857, 8915, 1), "Talk to Spencer Brentwood near the eastern coral dredger.");
 
 		talkToSpencerAboutFuturePlans = new NpcStep(this, NpcID.TRR_SPENCER_BRENTWOOD_VIS, new WorldPoint(2878, 2505, 0), "Talk to Spencer Brentwood aboard the Zenith after repairing the coral dredgers.");
 
@@ -374,13 +377,12 @@ public class TheRedReef extends BasicQuestHelper
 
 		steps.put(26, cReturnToTheodorePaxton);
 
-		steps.put(28, sailToZenith);
-
 		var cInitialDive = new ConditionalStep(this, sailToZenith);
 		cInitialDive.addStep(diving, listenToSpencer);
 		cInitialDive.addStep(and(onZenith, divingApparatusEquipped, divingHelmetEquipped), dive);
 		cInitialDive.addStep(and(onZenith, divingApparatus, divingHelmet), equipDivingGearAndDive);
 		cInitialDive.addStep(onZenith, talkToSpencerBrentwood);
+		steps.put(28, cInitialDive);
 		steps.put(30, cInitialDive);
 
 		var cFightLobster = new ConditionalStep(this, sailToZenith);

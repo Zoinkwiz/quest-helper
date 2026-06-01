@@ -339,6 +339,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.BIOHAZARD,
 			QuestHelperQuest.THE_GOLEM,
 			QuestHelperQuest.DRUIDIC_RITUAL,
+			QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS,
 			QuestHelperQuest.MURDER_MYSTERY,
 			QuestHelperQuest.PLAGUE_CITY,
 			QuestHelperQuest.CLOCK_TOWER,

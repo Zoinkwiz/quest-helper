@@ -43,7 +43,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.util.Text;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;

@@ -41,22 +41,18 @@ import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import lombok.NonNull;
 import lombok.Setter;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import static com.questhelper.requirements.util.LogicHelper.not;
 
 /* Conditions are checked in the order they were added */
 public class ConditionalStep extends QuestStep implements OwnerStep

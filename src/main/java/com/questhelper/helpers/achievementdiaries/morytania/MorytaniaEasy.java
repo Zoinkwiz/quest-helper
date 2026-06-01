@@ -29,6 +29,7 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
@@ -291,15 +292,16 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 
 		if (questHelperPlugin.getPlayerStateManager().getAccountType().isAnyIronman())
 		{
-			// 47 Farming is required to get a Watermelon for the scarecrow step
-			reqs.add(new SkillRequirement(Skill.FARMING, 47, true));
+			// 47 Farming or completion of Troubled Tortugans is required to get a Watermelon for the scarecrow step
+			reqs.add(new ComplexRequirement(LogicType.OR, "47 Farming OR Finished Troubled Tortugans for a watermelon",
+				new QuestRequirement(QuestHelperQuest.TROUBLED_TORTUGANS, QuestState.FINISHED),
+				new SkillRequirement(Skill.FARMING, 47, true)));
 		}
 		else
 		{
 			reqs.add(new SkillRequirement(Skill.FARMING, 23, true));
 		}
 
-		reqs.add(ghostsAhoy);
 		reqs.add(natureSpirit);
 
 		return reqs;

@@ -39,6 +39,7 @@ import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -86,7 +87,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		isTime, isWind, inPeerEntrance, inPeerUpstairs, inPeerExit, hasSolvedDoor, trapDoorOpen, hasUsedDisk, muralHasDisks,
 		hasAnyBucket, hasAnyJug, cupboardOpen, chestOpen, syncedPeer, noRockAskeladdenNearby;
 
-	QuestStep talkToBrundt, talkToOlaf, pickVeg, chopSwayingTree, fletchLyre, talkToLalli,
+	QuestStep talkToBrundt, talkToOlaf, pickVeg, chopSwayingTree, killForLyre, fletchLyre, talkToLalli,
 		talkToAskeladdenForRock, useCabbage, useOnion, usePotato, useRock, talkToLaliAfterStew, spinWool,
 		makeLyre, enchantLyre, performMusic, talkToManni, pickUpBeer, getAlcoholFreeBeer, getStrangeObject,
 		prepareToUseStrangeObject, useStrangeObject, useStrangeObjectOnPipe, cheatInBeerDrinking, getKegOfBeer,
@@ -117,12 +118,19 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		steps.put(0, talkToBrundt);
 
+		Requirement lacksLyreSkills = new Conditions(LogicType.OR,
+			new SkillRequirement(Skill.FLETCHING, 25, Operation.LESS),
+			new SkillRequirement(Skill.WOODCUTTING, 40, Operation.LESS),
+			new SkillRequirement(Skill.CRAFTING, 40, Operation.LESS)
+		);
+
 		olafTask = new ConditionalStep(this, talkToOlaf);
 		olafTask.addStep(enchantedLyre.alsoCheckBank(), performMusic);
 		olafTask.addStep(new Conditions(hasStartedOlaf, lyre.alsoCheckBank()), enchantLyre);
 		olafTask.addStep(new Conditions(goldenWool, lyreUnstrung), makeLyre);
 		olafTask.addStep(new Conditions(goldenFleece, lyreUnstrung), spinWool);
 		olafTask.addStep(new Conditions(goldenFleece, branch), fletchLyre);
+		olafTask.addStep(new Conditions(goldenFleece, lacksLyreSkills), killForLyre);
 		olafTask.addStep(goldenFleece, chopSwayingTree);
 		olafTask.addStep(new Conditions(gottenRock, stewReady), talkToLaliAfterStew);
 		olafTask.addStep(new Conditions(gottenRock, onionInCauldron, cabbageInCauldron, potatoInCauldron), useRock);
@@ -292,13 +300,16 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
+		axe.setTooltip("Only needed if making the lyre yourself. The lyre can also be obtained as a drop from Lanzig, Borrokar, Lensa, or Freidir.");
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
+		knife.setTooltip("Only needed if making the lyre yourself. The lyre can also be obtained as a drop from Lanzig, Borrokar, Lensa, or Freidir.");
 		potato = new ItemRequirement("Potato", ItemID.POTATO);
 		onion = new ItemRequirement("Onion", ItemID.ONION);
 		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE);
 		branch = new ItemRequirement("Branch", ItemID.VIKING_MUSICAL_TREE_BRANCH);
 		lyreUnstrung = new ItemRequirement("Unstrung lyre", ItemID.VIKING_UNSTRUNG_LYRE);
 		lyre = new ItemRequirement("Lyre", ItemID.VIKING_STRUNG_LYRE);
+		lyre.setTooltip("Obtainable as a 1/17 drop from Lanzig, Borrokar, Lensa, or Freidir (level 48) in Rellekka, or by crafting one yourself.");
 		petRock = new ItemRequirement("Pet rock", ItemID.VT_USELESS_ROCK).isNotConsumed();
 		petRock.setTooltip("You can get another from Askeladden");
 
@@ -664,10 +675,13 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		/* Olaf Task */
 		talkToOlaf = new NpcStep(this, NpcID.VIKING_OLAF, new WorldPoint(2673, 3683, 0),
-			"Talk to Olaf the Bard north east of the longhall.");
+			"Talk to Olaf the Bard north east of the longhall. You will need a lyre, which can be crafted or obtained as a 1/17 drop from Lanzig, Borrokar, Lensa, or Freidir.");
 		talkToOlaf.addDialogStep("Ask about becoming a Fremennik");
 		talkToOlaf.addDialogStep("Yes");
-		chopSwayingTree = new ObjectStep(this, ObjectID.VIKING_MUSICAL_TREE, new WorldPoint(2739, 3639, 0), "Go south east of Rellekka and cut a branch from the swaying tree", axe, knife);
+		chopSwayingTree = new ObjectStep(this, ObjectID.VIKING_MUSICAL_TREE, new WorldPoint(2739, 3639, 0), "Go south east of Rellekka and cut a branch from the swaying tree.\nIf you don't have the Woodcutting, Fletching, and Crafting requirements, you can instead kill Lanzig, Borrokar, Lensa, or Freidir in Rellekka for a 1/17 lyre drop.", axe, knife);
+		
+		killForLyre = new NpcStep(this, new int[]{3940, 3939, 3943, 3938}, new WorldPoint(2664, 3650, 0), "Kill Lanzig, Borrokar, Lensa, or Freidir in Rellekka for a 1/17 lyre drop. It's recommended to hop worlds to skip their respawn timers.", true);
+		
 		fletchLyre = new DetailedQuestStep(this, "Use a knife on the branch to make an unstrung lyre", knife.highlighted(), branch.highlighted());
 		talkToLalli = new NpcStep(this, NpcID.VIKING_LALLI_TROLL, new WorldPoint(2771, 3621, 0), "Talk to Lalli to the south east of Rellekka.");
 		talkToLalli.addDialogStep("Other human?");
@@ -956,9 +970,12 @@ public class TheFremennikTrials extends BasicQuestHelper
 	public List<Requirement> getGeneralRequirements()
 	{
 		ArrayList<Requirement> reqs = new ArrayList<>();
-		reqs.add(new SkillRequirement(Skill.FLETCHING, 25, true));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 40, true));
-		reqs.add(new SkillRequirement(Skill.CRAFTING, 40, true));
+		reqs.add(new SkillRequirement(Skill.FLETCHING, 25, true,
+			"25 Fletching (not required if obtaining the lyre as a drop)"));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 40, true,
+			"40 Woodcutting (not required if obtaining the lyre as a drop)"));
+		reqs.add(new SkillRequirement(Skill.CRAFTING, 40, true,
+			"40 Crafting (not required if obtaining the lyre as a drop)"));
 
 		return reqs;
 	}
@@ -970,8 +987,8 @@ public class TheFremennikTrials extends BasicQuestHelper
 		reqs.add(coins);
 		reqs.add(rawShark);
 		reqs.add(tinderbox);
-		reqs.add(knife);
 		reqs.add(axe);
+		reqs.add(knife);
 		return reqs;
 	}
 
@@ -1000,6 +1017,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Koschei the deathless");
 		reqs.add("Draugen (level 69)");
+		reqs.add("Lanzig, Borrokar, Lensa, or Freidir (level 48) - optional, multiple times for lyre drop");
 		return reqs;
 	}
 
@@ -1042,7 +1060,7 @@ public class TheFremennikTrials extends BasicQuestHelper
 
 		PanelDetails olafPanel = new PanelDetails("Olaf's task",
 			Arrays.asList(talkToOlaf, talkToLalli, talkToAskeladdenForRock, useOnion, talkToLaliAfterStew, chopSwayingTree,
-				fletchLyre, spinWool, makeLyre, enchantLyre, performMusic), axe, knife, rawShark, emptySlot4);
+				killForLyre, fletchLyre, spinWool, makeLyre, enchantLyre, performMusic), axe, knife, rawShark, emptySlot4);
 		olafPanel.setLockingStep(olafTask);
 		olafPanel.setVars(1, 2, 3, 4, 5, 6, 7);
 

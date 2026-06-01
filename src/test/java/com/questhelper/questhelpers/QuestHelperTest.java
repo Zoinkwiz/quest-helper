@@ -369,6 +369,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.ONE_SMALL_FAVOUR,
 			QuestHelperQuest.SCORPION_CATCHER,
 			QuestHelperQuest.CURRENT_AFFAIRS,
+			QuestHelperQuest.SEA_SLUG,
 			QuestHelperQuest.HOLY_GRAIL,
 			QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
 			QuestHelperQuest.PRIEST_IN_PERIL,

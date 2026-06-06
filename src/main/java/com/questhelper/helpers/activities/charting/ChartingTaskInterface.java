@@ -31,4 +31,6 @@ public interface ChartingTaskInterface
 	void setupRequiredAndRecommended(ChartingTaskDefinition definition);
 	Requirement getIncompleteRequirement();
 	Requirement getCanDoRequirement();
+	String getOcean();
+	void addOceanFilterHideCondition(Requirement oceanFilterHideCondition);
 }

@@ -28,12 +28,13 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.helpers.activities.charting.ChartingTaskInterface;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.QuestStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
 import net.runelite.api.gameval.ItemID;
@@ -47,6 +48,8 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 {
 	private Requirement incompleteRequirement;
 	private Requirement canDoRequirement;
+	private Requirement completedRequirement;
+	private final String ocean;
 
 	// Steps
 	private ChartingTaskNpcStep talkToNpcStep;
@@ -60,6 +63,8 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 	public ChartingWeatherStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
 		super(questHelper, new DetailedQuestStep(questHelper, "Loading weather charting task..."));
+
+		this.ocean = definition.getOcean();
 
 		setupRequirements();
 		setupSteps(questHelper, definition, requirements);
@@ -115,7 +120,7 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 	private void setupSidebarRequirements(ChartingTaskDefinition definition)
 	{
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
-		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
+		this.completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
 		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
 
@@ -130,5 +135,12 @@ public class ChartingWeatherStep extends ConditionalStep implements ChartingTask
 	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
 	{
 		// Should've been implemented in substeps. Needed if we used any reqs for blocking
+	}
+
+	@Override
+	public void addOceanFilterHideCondition(Requirement oceanFilterHideCondition)
+	{
+		// Hide if completed OR doesn't match ocean filter
+		conditionToHideInSidebar(new Conditions(LogicType.OR, completedRequirement, oceanFilterHideCondition));
 	}
 }

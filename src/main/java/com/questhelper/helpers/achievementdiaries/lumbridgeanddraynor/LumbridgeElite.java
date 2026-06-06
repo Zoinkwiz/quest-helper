@@ -65,23 +65,23 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	// Items required
 	ItemRequirement lockpick, crossbow, mithgrap, lightsource, axe, addyBar, hammer, essence, waterAccessOrAbyss, qcCape;
 
-	// Items recommended
-	ItemRequirement ringOfDueling, dorgSphere;
+	// Recommended teleport items
+	ItemRequirement ringOfDueling, dorgSphere, dramenStaff;
 
-	Requirement notRichChest, notMovario, notChopMagic, notAddyPlatebody, notWaterRunes, notQCEmote, allQuests,
+	Requirement notRichChest, notGrapplePylon, notChopMagic, notAddyPlatebody, notWaterRunes, notQCEmote, allQuests,
 		deathToDorg, templeOfIkov;
 
-	QuestStep claimReward, richChest, movario, chopMagic, addyPlatebody, waterRunes, qcEmote, moveToWater,
-		dorgStairsChest, dorgStairsMovario, moveToOldman, moveToUndergroundChest,
-		moveToUndergroundMovario, moveToDorgAgi;
+	QuestStep claimReward, richChest, grapplePylon, chopMagic, addyPlatebody, waterRunes, qcEmote, moveToWater,
+		dorgStairsChest, dorgStairsPylon, moveToOldman, moveToUndergroundChest,
+		moveToUndergroundPylon, moveToDorgAgi, dorgLadderToAgi;
 
-	ObjectStep moveToDraySewer, moveToDorgChest, moveToDorgMovario;
+	ObjectStep moveToDraySewer, moveToDorgChest, moveToDorgPylon;
 
-	Zone underground, dorg1, dorg2, draySewer, oldman, waterAltar, dorgAgi;
+	Zone underground, dorg1, dorg2, draySewer, oldman, waterAltar, dorgAgi, lowerDorgAgi;
 
-	ZoneRequirement inUnderground, inDorg1, inDorg2, inDraySewer, inOldman, inWaterAltar, inDorgAgi;
+	ZoneRequirement inUnderground, inDorg1, inDorg2, inDraySewer, inOldman, inWaterAltar, inDorgAgi, inLowerDorgAgi;
 
-	ConditionalStep richChestTask, movarioTask, chopMagicTask, addyPlatebodyTask, waterRunesTask, qcEmoteTask;
+	ConditionalStep richChestTask, grapplePylonTask, moveToDorgAgiCourse, chopMagicTask, addyPlatebodyTask, waterRunesTask, qcEmoteTask;
 
 	@Override
 	public QuestStep loadStep()
@@ -105,12 +105,10 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		richChestTask.addStep(inDorg2, richChest);
 		doElite.addStep(notRichChest, richChestTask);
 
-		movarioTask = new ConditionalStep(this, moveToUndergroundMovario);
-		movarioTask.addStep(inUnderground, moveToDorgMovario);
-		movarioTask.addStep(inDorg1, dorgStairsMovario);
-		movarioTask.addStep(inDorg2, moveToDorgAgi);
-		movarioTask.addStep(inDorgAgi, movario);
-		doElite.addStep(notMovario, movarioTask);
+		grapplePylonTask = new ConditionalStep(this, moveToDorgAgiCourse);
+		grapplePylonTask.addStep(inDorgAgi, grapplePylon);
+		doElite.addStep(notGrapplePylon, grapplePylonTask);
+
 
 		waterRunesTask = new ConditionalStep(this, moveToWater);
 		waterRunesTask.addStep(inWaterAltar, waterRunes);
@@ -126,7 +124,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	protected void setupRequirements()
 	{
 		notRichChest = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 4);
-		notMovario = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 5);
+		notGrapplePylon = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 5);
 		notChopMagic = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 6);
 		notAddyPlatebody = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 7);
 		notWaterRunes = new VarplayerRequirement(VarPlayerID.LUMB_DRAY_ACHIEVEMENT_DIARY2, false, 8);
@@ -135,9 +133,9 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allQuests = new VarComparisonRequirement(VarType.VARP, VarPlayerID.QP, VarType.VARBIT, VarbitID.QP_MAX, Operation.EQUAL, "All quests completed");
 
 		lockpick = new ItemRequirement("Lockpick", ItemID.LOCKPICK).showConditioned(notRichChest).isNotConsumed();
-		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notMovario).isNotConsumed();
-		mithgrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notMovario).isNotConsumed();
-		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).showConditioned(notMovario).isNotConsumed();
+		crossbow = new ItemRequirement("Crossbow", ItemCollections.CROSSBOWS).showConditioned(notGrapplePylon).isNotConsumed();
+		mithgrap = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notGrapplePylon).isNotConsumed();
+		lightsource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).showConditioned(notGrapplePylon).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopMagic).isNotConsumed();
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR).showConditioned(notAddyPlatebody);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyPlatebody).isNotConsumed();
@@ -146,9 +144,11 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		waterAccessOrAbyss.setTooltip("Water Tiara, Elemental Tiara, RC-skill cape or via Abyss");
 		qcCape = new ItemRequirement("Quest cape", ItemCollections.QUEST_CAPE).showConditioned(notQCEmote).isNotConsumed();
 		dorgSphere = new ItemRequirement("Dorgesh-kaan Sphere", ItemID.DORGESH_TELEPORT_ARTIFACT)
-			.showConditioned(new Conditions(notMovario, notRichChest));
-		ringOfDueling = new ItemRequirement("Ring of dueling", ItemCollections.RING_OF_DUELINGS)
+			.showConditioned(new Conditions(LogicType.OR, notGrapplePylon, notRichChest));
+		ringOfDueling = new ItemRequirement("Ring of dueling to Emir's Arena", ItemCollections.RING_OF_DUELINGS)
 			.showConditioned(notChopMagic);
+		dramenStaff = new ItemRequirement("Dramen or Lunar staff to AJQ", ItemCollections.FAIRY_STAFF).isNotConsumed()
+			.showConditioned(notGrapplePylon);
 
 		inUnderground = new ZoneRequirement(underground);
 		inDorg1 = new ZoneRequirement(dorg1);
@@ -157,6 +157,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		inWaterAltar = new ZoneRequirement(waterAltar);
 		inOldman = new ZoneRequirement(oldman);
 		inDorgAgi = new ZoneRequirement(dorgAgi);
+		inLowerDorgAgi = new ZoneRequirement(lowerDorgAgi);
 
 		deathToDorg = new QuestRequirement(QuestHelperQuest.DEATH_TO_THE_DORGESHUUN, QuestState.FINISHED);
 		templeOfIkov = new QuestRequirement(QuestHelperQuest.TEMPLE_OF_IKOV, QuestState.FINISHED);
@@ -171,7 +172,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		dorg1 = new Zone(new WorldPoint(2688, 5377, 0), new WorldPoint(2751, 5251, 0));
 		dorg2 = new Zone(new WorldPoint(2688, 5377, 1), new WorldPoint(2751, 5251, 1));
 		oldman = new Zone(new WorldPoint(3087, 3255, 0), new WorldPoint(3094, 3251, 0));
-		dorgAgi = new Zone(new WorldPoint(2688, 5247, 0), new WorldPoint(2752, 5183, 3));
+		dorgAgi = new Zone(new WorldPoint(2688, 5249, 3), new WorldPoint(2752, 5183, 3));
+		lowerDorgAgi = new Zone(new WorldPoint(2688, 5249, 0), new WorldPoint(2752, 5183, 0));
 	}
 
 	public void setupSteps()
@@ -192,29 +194,37 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		waterRunes = new ObjectStep(this, ObjectID.WATER_ALTAR, new WorldPoint(2716, 4836, 0),
 			"Craft water runes.", essence.quantity(28));
 
-		moveToUndergroundMovario = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
-			"Climb down the trapdoor in the Lumbridge Castle.", mithgrap, crossbow, lightsource);
+		moveToUndergroundPylon = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
+			"Either enter the trapdoor in the Lumbridge Castle or use a fairy ring to AJQ.", mithgrap, crossbow, lightsource);
 		moveToUndergroundChest = new ObjectStep(this, ObjectID.QIP_COOK_TRAPDOOR_OPEN, new WorldPoint(3209, 3216, 0),
 			"Climb down the trapdoor in the Lumbridge Castle.", lockpick, lightsource);
 
 		moveToDorgChest = new ObjectStep(this, ObjectID.CAVE_GOBLIN_CITY_DOORR, new WorldPoint(3317, 9601, 0),
 			"Go through the doors to Dorgesh-Kaan.", true, lockpick, lightsource);
 		moveToDorgChest.addAlternateObjects(ObjectID.CAVE_GOBLIN_CITY_DOORL);
-		moveToDorgMovario = new ObjectStep(this, ObjectID.CAVE_GOBLIN_CITY_DOORR, new WorldPoint(3317, 9601, 0),
+		moveToDorgPylon = new ObjectStep(this, ObjectID.CAVE_GOBLIN_CITY_DOORR, new WorldPoint(3317, 9601, 0),
 			"Go through the doors to Dorgesh-Kaan.", true, mithgrap, crossbow, lightsource);
-		moveToDorgMovario.addAlternateObjects(ObjectID.CAVE_GOBLIN_CITY_DOORL);
+		moveToDorgPylon.addAlternateObjects(ObjectID.CAVE_GOBLIN_CITY_DOORL);
 
-		dorgStairsMovario = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH, new WorldPoint(2721, 5360, 0),
+		dorgStairsPylon = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH, new WorldPoint(2721, 5360, 0),
 			"Climb the stairs to the second level of Dorgesh-Kaan.", mithgrap, crossbow, lightsource);
 		dorgStairsChest = new ObjectStep(this, ObjectID.DORGESH_1STAIRS_POSH, new WorldPoint(2721, 5360, 0),
 			"Climb the stairs to the second level of Dorgesh-Kaan.", lockpick);
+		moveToDorgAgi = new ObjectStep(this, ObjectID.DORGESH_2STAIRS_POSH, new WorldPoint(2723, 5253, 1),
+			"Climb the stairs to enter the Dorgesh-Kaan agility course.", mithgrap, crossbow, lightsource);
+		dorgLadderToAgi = new ObjectStep(this, ObjectID.DORGESH_CAVEWALL_SLOPE_STEPS, new WorldPoint(2716, 5241, 0),
+			"Climb the ladder to enter the Dorgesh-Kaan agility course.", mithgrap, crossbow, lightsource);
+
+		moveToDorgAgiCourse = new ConditionalStep(this, moveToUndergroundPylon, "Travel to the Dorgesh-Kaan agility course.");
+		moveToDorgAgiCourse.addStep(inUnderground, moveToDorgPylon);
+		moveToDorgAgiCourse.addStep(inDorg1, dorgStairsPylon);
+		moveToDorgAgiCourse.addStep(inDorg2, moveToDorgAgi);
+		moveToDorgAgiCourse.addStep(inLowerDorgAgi, dorgLadderToAgi);
 
 		richChest = new ObjectStep(this, ObjectID.DORGESH_RICH_CHEST_CLOSED, new WorldPoint(2703, 5348, 1),
 			"Lockpick the chest.", lockpick);
-		moveToDorgAgi = new ObjectStep(this, ObjectID.DORGESH_2STAIRS_POSH, new WorldPoint(2723, 5253, 1),
-			"Climb the stairs to enter the Dorgesh-Kaan agility course.");
-		movario = new NpcStep(this, NpcID.DORGESH_DARK_WIZARD_THERE, new WorldPoint(2706, 5237, 3),
-			"Pickpocket Movario near the end of the agility course.");
+		grapplePylon = new ObjectStep(this, ObjectID.DORGESH_PYLON_GRAPPLE_BASE, new WorldPoint(2714, 5242, 3),
+			"Grapple a pylon near the start of the grapple route in the agility course.", mithgrap, crossbow, lightsource);
 
 		chopMagic = new ObjectStep(this, ObjectID.MAGICTREE, new WorldPoint(3357, 3312, 0),
 			"Chop some magic logs near the Magic Training Arena.", axe);
@@ -234,7 +244,7 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(ringOfDueling, dorgSphere);
+		return Arrays.asList(ringOfDueling, dorgSphere, dramenStaff);
 	}
 
 	@Override
@@ -301,19 +311,19 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allSteps.add(questCapeEmoteSteps);
 
 		PanelDetails richChestSteps = new PanelDetails("Dorgesh-Kaan Rich Chest", Arrays.asList(moveToUndergroundChest,
-			moveToDorgChest, dorgStairsChest, richChest), new SkillRequirement(Skill.THIEVING, 78, true), deathToDorg,
-			lightsource, lockpick);
+			moveToDorgChest, dorgStairsChest, richChest), Arrays.asList(new SkillRequirement(Skill.THIEVING, 78, true), deathToDorg,
+			lightsource, lockpick), Collections.singletonList(dorgSphere));
 		richChestSteps.setDisplayCondition(notRichChest);
 		richChestSteps.setLockingStep(richChestTask);
 		allSteps.add(richChestSteps);
 
-		PanelDetails movarioSteps = new PanelDetails("Movario", Arrays.asList(moveToUndergroundMovario, moveToDorgMovario,
-			dorgStairsMovario, moveToDorgAgi, movario), new SkillRequirement(Skill.THIEVING, 42, true),
+		PanelDetails pylonSteps = new PanelDetails("Grapple Dorgesh-Kaan Pylon", Arrays.asList(moveToDorgAgiCourse, grapplePylon), Arrays.asList(
 			new SkillRequirement(Skill.AGILITY, 70, true), new SkillRequirement(Skill.RANGED, 70, true),
-			new SkillRequirement(Skill.STRENGTH, 70, true), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource);
-		movarioSteps.setDisplayCondition(notMovario);
-		movarioSteps.setLockingStep(movarioTask);
-		allSteps.add(movarioSteps);
+			new SkillRequirement(Skill.STRENGTH, 70, true), deathToDorg, templeOfIkov, mithgrap, crossbow, lightsource),
+			Arrays.asList(dramenStaff, dorgSphere));
+		pylonSteps.setDisplayCondition(notGrapplePylon);
+		pylonSteps.setLockingStep(grapplePylonTask);
+		allSteps.add(pylonSteps);
 
 		PanelDetails waterRunesSteps = new PanelDetails("140 Water Runes", Arrays.asList(moveToWater, waterRunes),
 			new SkillRequirement(Skill.RUNECRAFT, 76, true), essence.quantity(28), waterAccessOrAbyss);
@@ -322,7 +332,8 @@ public class LumbridgeElite extends ComplexStateQuestHelper
 		allSteps.add(waterRunesSteps);
 
 		PanelDetails chopMagicsSteps = new PanelDetails("Chop Magics", Collections.singletonList(chopMagic),
-			new SkillRequirement(Skill.WOODCUTTING, 75, true), axe);
+			Arrays.asList(new SkillRequirement(Skill.WOODCUTTING, 75, true), axe),
+			Collections.singletonList(ringOfDueling));
 		chopMagicsSteps.setDisplayCondition(notChopMagic);
 		chopMagicsSteps.setLockingStep(chopMagicTask);
 		allSteps.add(chopMagicsSteps);

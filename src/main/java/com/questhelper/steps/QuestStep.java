@@ -128,9 +128,7 @@ public abstract class QuestStep implements Module
 	@Setter
 	private Requirement lockingCondition;
 
-	private int currentCutsceneStatus = 0;
-	protected boolean inCutscene;
-
+	@Getter
 	@Setter
 	protected boolean allowInCutscene = false;
 
@@ -267,19 +265,6 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (!allowInCutscene)
-		{
-			int newCutsceneStatus = client.getVarbitValue(VarbitID.CUTSCENE_STATUS);
-			if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
-			{
-				enteredCutscene();
-			}
-			else if (currentCutsceneStatus == 1 && newCutsceneStatus == 0)
-			{
-				leftCutscene();
-			}
-			currentCutsceneStatus = newCutsceneStatus;
-		}
 	}
 
 	@Subscribe
@@ -307,16 +292,6 @@ public abstract class QuestStep implements Module
 		}
 
 		text.add(newLine);
-	}
-
-	public void enteredCutscene()
-	{
-		inCutscene = true;
-	}
-
-	public void leftCutscene()
-	{
-		inCutscene = false;
 	}
 
 	public void highlightChoice()

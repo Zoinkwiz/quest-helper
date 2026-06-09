@@ -68,10 +68,6 @@ public class WorldEntityStep extends DetailedQuestStep
 		super.makeWorldOverlayHint(graphics, plugin);
 
 		lastFrameStructure = null;
-		if (inCutscene)
-		{
-			return;
-		}
 
 		WorldEntity worldEntity = findWorldEntity();
 		if (worldEntity == null) return;

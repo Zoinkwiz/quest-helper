@@ -49,6 +49,11 @@ public class QuestHelperWorldArrowOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (plugin.isInCutscene())
+		{
+			return null;
+		}
+
 		QuestHelper quest = plugin.getSelectedQuest();
 
 		if (quest != null && quest.getCurrentStep() != null)

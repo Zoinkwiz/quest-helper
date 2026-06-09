@@ -50,6 +50,7 @@ import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -179,6 +180,9 @@ public class QuestHelperPlugin extends Plugin
 
 	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
+
+	@Getter
+	private boolean inCutscene = false;
 
 	@Provides
 	QuestHelperConfig getConfig(ConfigManager configManager)
@@ -352,6 +356,11 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
+		if (event.getVarbitId() == VarbitID.CUTSCENE_STATUS)
+		{
+			this.inCutscene = event.getValue() == 1;
+		}
+
 		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
 			return;

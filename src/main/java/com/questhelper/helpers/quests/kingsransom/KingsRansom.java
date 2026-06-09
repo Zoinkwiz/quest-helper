@@ -312,6 +312,7 @@ public class KingsRansom extends BasicQuestHelper
 		returnToGuard.addDialogSteps("I have proof that the Sinclairs have left.", "I have proof that links the Sinclairs to Camelot.", "I have proof of foul play.");
 
 		talkToGossipAgain = new NpcStep(this, NpcID.GOSSIPY_MAN, new WorldPoint(2741, 3557, 0), "Ask Gossip all 3 chat options.");
+		// We do not highlight the dialog step options here because all 3 need to be used, and no varbit is available to figure out which the user has already explored.
 
 		talkToAnna = new NpcStep(this, NpcID.KR_ANNA_SINCLAIR, new WorldPoint(2737, 3466, 0), "Talk to Anna in the Seers' Village Court House.");
 		talkToAnna.addDialogStep("Okay, I guess I don't have much of a choice.");
@@ -620,6 +621,7 @@ public class KingsRansom extends BasicQuestHelper
 			blackKnightLeg,
 			granite,
 			animateRock
+			// TODO: add holy grail
 		)));
 
 		return sections;

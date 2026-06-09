@@ -304,11 +304,6 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (inCutscene)
-		{
-			return;
-		}
-
 		if (!markedTiles.isEmpty())
 		{
 			for (QuestTile location : markedTiles)
@@ -359,11 +354,6 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (inCutscene)
-		{
-			return;
-		}
-
 		if (currentRender < (MAX_RENDER_SIZE / 2))
 		{
 			renderArrow(graphics);
@@ -374,11 +364,6 @@ public class DetailedQuestStep extends QuestStep
 	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		if (client.getLocalPlayer() == null)
-		{
-			return;
-		}
-
-		if (inCutscene)
 		{
 			return;
 		}
@@ -501,11 +486,6 @@ public class DetailedQuestStep extends QuestStep
 				return;
 			}
 
-			if (inCutscene)
-			{
-				return;
-			}
-
 			WorldPoint point = mapPoint.getWorldPoint();
 
 			if (currentRender < MAX_RENDER_SIZE / 2 || !getQuestHelper().getConfig().haveMinimapArrowFlash())
@@ -566,7 +546,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText, new ArrayList<>());
 
-		if (inCutscene || hideRequirements)
+		if (hideRequirements)
 		{
 			return;
 		}
@@ -695,10 +675,6 @@ public class DetailedQuestStep extends QuestStep
 
 	private void checkAllTilesForItemHighlighting(Tile tile, Collection<Integer> ids, Graphics2D graphics)
 	{
-		if (inCutscene)
-		{
-			return;
-		}
 		Player player = client.getLocalPlayer();
 
 		if (player == null)

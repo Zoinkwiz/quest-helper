@@ -300,11 +300,6 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return questStateEnteredFinished;
 	}
 
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-
-	}
-
 	protected void setupZones()
 	{
 

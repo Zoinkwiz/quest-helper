@@ -54,6 +54,11 @@ public class QuestHelperWorldLineOverlay extends Overlay
 			return null;
 		}
 
+		if (plugin.isInCutscene())
+		{
+			return null;
+		}
+
 		QuestHelper quest = plugin.getSelectedQuest();
 
 		if (quest != null && quest.getCurrentStep() != null)

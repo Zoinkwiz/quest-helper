@@ -310,11 +310,6 @@ public class ObjectStep extends DetailedQuestStep
 			return;
 		}
 
-		if (inCutscene)
-		{
-			return;
-		}
-
 		Point mousePosition = client.getMouseCanvasPosition();
 
 		if (client.getLocalPlayer() == null)
@@ -392,7 +387,7 @@ public class ObjectStep extends DetailedQuestStep
 		if (iconItemID != -1 && closestObject != null && questHelper.getConfig().showSymbolOverlay())
 		{
 			Shape clickbox = closestObject.getClickbox();
-			if (clickbox != null && !inCutscene)
+			if (clickbox != null)
 			{
 				Rectangle2D boundingBox = clickbox.getBounds2D();
 				graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15, (int) boundingBox.getCenterY() - 10,

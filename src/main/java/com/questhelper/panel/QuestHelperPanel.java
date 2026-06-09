@@ -41,6 +41,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -499,8 +501,33 @@ public class QuestHelperPanel extends PluginPanel
 				}
 			});
 
+			var toggleCutsceneStatus = new JMenuItem(new AbstractAction("toggle cutscene status")
+			{
+				@Override
+				public void actionPerformed(ActionEvent actionEvent)
+				{
+					questHelperPlugin.getClientThread().invoke(() -> {
+						// from RuneLite core's devtools ::setvarb
+						var varbit = VarbitID.CUTSCENE_STATUS;
+						var client = questHelperPlugin.getClient();
+
+						var currentStatus = client.getVarbitValue(VarbitID.CUTSCENE_STATUS);
+						var varbitComposition = client.getVarbit(varbit);
+						var value = currentStatus == 0 ? 1 : 0;
+
+						client.setVarbitValue(client.getVarps(), varbit, value);
+						client.queueChangedVarp(varbitComposition.getIndex());
+						var varbitChanged = new VarbitChanged();
+						varbitChanged.setVarbitId(varbit);
+						varbitChanged.setValue(value);
+						questHelperPlugin.getEventBus().post(varbitChanged); // fake event
+					});
+				}
+			});
+
 			var menu = new JPopupMenu("Menu");
 			menu.add(togglePuzzleHelper);
+			menu.add(toggleCutsceneStatus);
 
 			var reloadQuest = new JButton("reload quest");
 			reloadQuest.addMouseListener(new MouseAdapter()

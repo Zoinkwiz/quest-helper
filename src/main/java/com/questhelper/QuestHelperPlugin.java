@@ -103,6 +103,7 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Getter
 	@Inject
 	private EventBus eventBus;
 

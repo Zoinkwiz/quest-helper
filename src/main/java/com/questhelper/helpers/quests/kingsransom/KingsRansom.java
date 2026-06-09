@@ -371,13 +371,14 @@ public class KingsRansom extends BasicQuestHelper
 		solvePuzzle = new PuzzleWrapperStep(this, new LockpickPuzzle(this), "Pick the door's lock.");
 		openMetalDoor = new ObjectStep(this, ObjectID.KR_UNDERGROUND_JAIL_BARS_GATE, new WorldPoint(1904, 4273, 0), "Go through the cell door.");
 		enterStatueForGrail = new ObjectStep(this, ObjectID.KR_CAMELOT_KNIGHT_STATUE, new WorldPoint(2780, 3508, 0), "Search the statue east of Camelot.");
+		enterStatue.addSubSteps(enterStatueForGrail);
 
 		climbF0ToF1 = new ObjectStep(this, ObjectID.KR_STAIRS, new WorldPoint(1696, 4260, 0), "Climb to the top of the keep.");
 		climbF1ToF2 = new ObjectStep(this, ObjectID.KR_STAIRS, new WorldPoint(1696, 4254, 1), "Climb to the top of the keep.");
 		climbF0ToF1.addSubSteps(climbF1ToF2);
 		searchTable = new ObjectStep(this, ObjectID.KR_JEWELRY_BOX_TABLE, new WorldPoint(1696, 4259, 2), "Search the table and take the purple round box.");
 		selectPurpleBox = new WidgetStep(this, "Take the purple round box.", 390, 16);
-		searchTable.addSubSteps(selectPurpleBox);
+		searchTable.addSubSteps(selectPurpleBox, openMetalDoor);
 
 		talkToCromperty = new NpcStep(this, NpcID.CROMPERTY_PRE_DIARY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Cromperty in East Ardougne.");
 		talkToCromperty.addAlternateNpcs(NpcID.CROMPERTY_POST_DIARY);

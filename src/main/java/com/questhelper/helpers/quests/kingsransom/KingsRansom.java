@@ -316,45 +316,57 @@ public class KingsRansom extends BasicQuestHelper
 
 		talkToAnna = new NpcStep(this, NpcID.KR_ANNA_SINCLAIR, new WorldPoint(2737, 3466, 0), "Talk to Anna in the Seers' Village Court House.");
 		talkToAnna.addDialogStep("Okay, I guess I don't have much of a choice.");
-		talkToAnna.setAllowInCutscene(true);
 
 		goIntoTrial = new ObjectStep(this, ObjectID.KR_COURTHOUSE_STAIRS_TOP, new WorldPoint(2738, 3470, 0), "Go down the stairs to the court room.");
 		goIntoTrial.addDialogStep("Yes, I'm ready.");
-		goIntoTrial.setAllowInCutscene(true);
 
 		callHandlerAboutPoison = new ObjectStep(this, ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Talk to the judge to call the Dog Handler and ask them about the poison.");
 		callHandlerAboutPoison.addDialogSteps("Dog handler", "Previous page");
+		// This step can require the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callHandlerAboutPoison.setAllowInCutscene(true);
+
 		talkToHandlerAboutPoison = new NpcStep(this, NpcID.PIERRE_THE_FAMILY_DOG_HANDLER, "Ask Pierre about the poison.");
 		talkToHandlerAboutPoison.addDialogStep("Ask about the poison");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		talkToHandlerAboutPoison.setAllowInCutscene(true);
 		callHandlerAboutPoison.addSubSteps(talkToHandlerAboutPoison);
 
 		callButlerAboutDagger = new ObjectStep(this, ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Talk to the judge to call the Butler and ask them about the dagger.");
 		callButlerAboutDagger.addDialogSteps("Butler", "Previous page");
+		// This step can require the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callButlerAboutDagger.setAllowInCutscene(true);
+
 		talkToButlerAboutDagger = new NpcStep(this, NpcID.HOBBES_THE_BUTLER, "Ask Hobbes about the dagger.");
 		talkToButlerAboutDagger.addDialogStep("Ask about the dagger");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		talkToButlerAboutDagger.setAllowInCutscene(true);
 		callButlerAboutDagger.addSubSteps(talkToButlerAboutDagger);
 
 		callMaidAboutNight = new ObjectStep(this, ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Talk to the judge to call the Maid and ask them about the night of the murder.");
 		callMaidAboutNight.addDialogSteps("Maid", "Next page");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callMaidAboutNight.setAllowInCutscene(true);
+
 		talkToMaidAboutNight = new NpcStep(this, NpcID.MARY_THE_MAID, "Ask Mary about the night of the murder.");
 		talkToMaidAboutNight.addDialogStep("Ask about the night of the murder");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		talkToMaidAboutNight.setAllowInCutscene(true);
 		callMaidAboutNight.addSubSteps(talkToMaidAboutNight);
 
 		callAboutThread = new NpcStep(this, NpcID.MARY_THE_MAID, "Ask anyone about the thread.");
 		callAboutThread.addDialogStep("Ask about the thread");
 		callAboutThread.addAlternateNpcs(NpcID.HOBBES_THE_BUTLER, NpcID.PIERRE_THE_FAMILY_DOG_HANDLER, NpcID.DONOVAN_THE_FAMILY_HANDYMAN, NpcID.LOUISA_THE_COOK, NpcID.STANFORD_THE_GARDENER);
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callAboutThread.setAllowInCutscene(true);
 
-		waitForVerdict = new DetailedQuestStep(this, "Wait for the jury to reach their verdict.");
+		waitForVerdict = new ObjectStep(this,ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Wait for the jury to reach their verdict.");
+		// This step can require the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
+		waitForVerdict.setAllowInCutscene(true);
 		callAboutThread.addSubSteps(waitForVerdict);
 
 		leaveCourt = new ObjectStep(this, ObjectID.KR_COURT_FENCE_DOOR, new WorldPoint(1820, 4268, 0), "Leave the court room.");
+		// This step requires the user to click the fence while the user is technically "in a cutscene", so we force allow the overlay to render.
+		leaveCourt.setAllowInCutscene(true);
 
 		talkToAnnaAfterTrial = new NpcStep(this, NpcID.KR_ANNA_SINCLAIR, new WorldPoint(2737, 3466, 0), "Talk to Anna in the Seers' Village Court House.");
 

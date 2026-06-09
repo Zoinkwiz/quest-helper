@@ -343,6 +343,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.PLAGUE_CITY,
 			QuestHelperQuest.CLOCK_TOWER,
 			QuestHelperQuest.SHEEP_HERDER,
+			QuestHelperQuest.KINGS_RANSOM,
 			QuestHelperQuest.RUNE_MYSTERIES,
 			QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 			QuestHelperQuest.THE_RED_REEF,

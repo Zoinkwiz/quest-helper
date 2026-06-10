@@ -31,6 +31,7 @@ import com.questhelper.panel.QuestOverviewPanel;
 import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.Fonts;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -85,7 +86,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 		addMouseListener(this);
 
 		headerLabel.setText(panelDetails.getHeader());
-		headerLabel.setFont(FontManager.getRunescapeBoldFont());
+		headerLabel.setFont(FontManager.getRunescapeBoldFont().deriveFont((float) Fonts.getOriginalFont().getSize()));
 
 		headerLabel.setMinimumSize(new Dimension(1, headerLabel.getPreferredSize().height));
 

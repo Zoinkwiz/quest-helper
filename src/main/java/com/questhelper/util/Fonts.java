@@ -33,17 +33,41 @@ import java.util.HashMap;
 
 public class Fonts
 {
+	// Note: offset 3 is skipped for LARGE as it produces a glyph-hinting artifact on the system font (e.g. "0" renders poorly at that size).
+	private static final Font baseFont;
+
 	@Getter
-	private static final Font originalFont;
+	private static final float defaultSize;
+
 	@Getter
-	private static final Font underlinedFont;
+	private static Font originalFont;
+	@Getter
+	private static Font underlinedFont;
 
 	static
 	{
 		var label = JGenerator.makeJTextArea();
-		originalFont = label.getFont();
-		var attributes = new HashMap<TextAttribute, Object>(originalFont.getAttributes());
+		baseFont = label.getFont();
+		defaultSize = baseFont.getSize2D();
+		originalFont = baseFont;
+		var attributes = new HashMap<TextAttribute, Object>(baseFont.getAttributes());
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		underlinedFont = originalFont.deriveFont(attributes);
+		underlinedFont = baseFont.deriveFont(attributes);
+	}
+
+	/**
+	 * Update the global font size used by the sidebar panel.
+	 * Call this when the config changes.
+	 */
+	public static void setSize(int size)
+	{
+		var baseAttributes = new HashMap<TextAttribute, Object>(baseFont.getAttributes());
+		baseAttributes.put(TextAttribute.SIZE, (float) size);
+		baseAttributes.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
+		originalFont = baseFont.deriveFont(baseAttributes);
+
+		var underlineAttributes = new HashMap<TextAttribute, Object>(originalFont.getAttributes());
+		underlineAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		underlinedFont = originalFont.deriveFont(underlineAttributes);
 	}
 }

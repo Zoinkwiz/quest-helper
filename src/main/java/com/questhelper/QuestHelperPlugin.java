@@ -43,6 +43,7 @@ import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import com.questhelper.tools.Icon;
+import com.questhelper.util.Fonts;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -194,6 +195,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
+		Fonts.setSize(config.fontSize().getSize());
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
 		QuestContainerManager.getGroupStorageData().setSpecialMethodToObtainItems(() -> questBankManager.getGroupBankItems().toArray(new Item[0]));
@@ -400,6 +402,15 @@ public class QuestHelperPlugin extends Plugin
 		{
 			boolean isLeague = client.getWorldType().contains(WorldType.SEASONAL);
 			SwingUtilities.invokeLater(() -> panel.updateRegionFilterVisibility(isLeague));
+		}
+
+		if ("fontSize".equals(event.getKey()))
+		{
+			Fonts.setSize(config.fontSize().getSize());
+			if (questManager.getSelectedQuest() != null)
+			{
+				questManager.startUpQuest(questManager.getSelectedQuest(), false);
+			}
 		}
 
 		if (configEvents.contains(event.getKey()) || event.getKey().contains("skillfilter"))

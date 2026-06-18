@@ -272,10 +272,10 @@ public class QuestPerspective
 			return null;
 		}
 
-		final int angle = client.getCameraYawTarget() & 0x7FF;
+		final int angle = client.getCameraYawTarget() & 0x3FFF;
 
-		final int sin = Perspective.SINE[angle];
-		final int cos = Perspective.COSINE[angle];
+		final int sin = Perspective.SINE14[angle];
+		final int cos = Perspective.COSINE14[angle];
 
 		final int xx = y * sin + cos * x >> 16;
 		final int yy = sin * x - y * cos >> 16;

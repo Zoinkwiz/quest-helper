@@ -89,6 +89,7 @@ import com.questhelper.helpers.miniquests.themagearenaii.MA2Locator;
 import com.questhelper.helpers.miniquests.themagearenaii.TheMageArenaII;
 import com.questhelper.helpers.miniquests.valetotems.ValeTotems;
 import com.questhelper.helpers.mischelpers.allneededitems.AllNeededItems;
+import com.questhelper.helpers.mischelpers.cracktheclue.CrackTheClue;
 import com.questhelper.helpers.mischelpers.knightswaves.KnightWaves;
 import com.questhelper.helpers.mischelpers.strongholdofsecurity.StrongholdOfSecurity;
 import com.questhelper.helpers.mischelpers.farmruns.HerbRun;
@@ -655,6 +656,7 @@ public enum QuestHelperQuest
 	STRONGHOLD_OF_SECURITY(new StrongholdOfSecurity(), "Stronghold of Security", QuestVarbits.STRONGHOLD_OF_SECURITY, 1,
 		QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	SEA_CHARTING(new ChartingHelper(), "Sea charting", QuestVarbits.CHARTING, 1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
+	CRACK_THE_CLUE(new CrackTheClue(), "Crack the Clue", QuestVarbits.CUTSCENE, -1, QuestDetails.Type.GENERIC, QuestDetails.Difficulty.GENERIC),
 	// Skill
 	AGILITY(new Agility(), "Agility", Skill.AGILITY, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),
 	WOODCUTTING_MEMBER(new WoodcuttingMember(), "Woodcutting - Member", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_P2P, QuestDetails.Difficulty.SKILL),

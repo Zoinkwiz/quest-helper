@@ -10,17 +10,18 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.npc.FollowerRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
+import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.nor;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -31,25 +32,19 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.steps.WidgetStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarPlayerID;
-import net.runelite.api.gameval.VarbitID;
-import static com.questhelper.requirements.util.LogicHelper.and;
-import static com.questhelper.requirements.util.LogicHelper.nand;
-import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.not;
 
 /**
  * The quest guide for the "The Blood Moon Rises" OSRS quest
@@ -59,146 +54,151 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 public class TheBloodMoonRises extends BasicQuestHelper
 {
 	// Required items
-	ItemRequirement sampleRequirement;
+	ItemRequirement blisterwoodFlail;
+	ItemRequirement vyreNobleOutfit;
 
 	// Recommended items
+	ItemRequirement combatGear;
+	ItemRequirement food;
+	ItemRequirement prayerPotions;
 	ItemRequirement energyRestorePotion;
-	ItemRequirement drakanMedallion;
+	ItemRequirement drakansMedallion;
+	ItemRequirement anyPickaxe;
+	FreeInventorySlotRequirement freeInvSlots6;
 
 	// Mid-quest item requirements
-	ItemRequirement itemAcquiredDuringQuest;
+	ItemRequirement squiresJournal;
+	ItemRequirement essiandarsNotes;
+	ItemRequirement scruffyNotebook;
+	ItemRequirement sarlsJournal;
+	ItemRequirement theLifeOfFriar;
+	ItemRequirement piousProceedings;
+	ItemRequirement fromMisthalinToMorytania;
+	ItemRequirement ivandisWritings;
 
 	// Zones
-	Zone sampleZone;
+	ZoneRequirement inMyrequeHideoutOldManRal;
+	ZoneRequirement atCastleDrakanCourtyard;
+	ZoneRequirement inSlepeChurchDungeon;
+	ZoneRequirement inCrombwickManor;
+	ZoneRequirement inPaterdomusTempleDungeon;
+	ZoneRequirement inPaterdomusTempleF0;
+	ZoneRequirement inPaterdomusTempleF1;
+	ZoneRequirement inIvandisTomb;
+	ZoneRequirement inCastleDrakanMines;
+	ZoneRequirement inCastleDrakanDaeyaltProcessingArea;
+	ZoneRequirement inCastleDrakanCellar;
+	ZoneRequirement inCastleDrakanLobby;
 
 	// Miscellaneous requirements
-	VarbitRequirement hasFinishedCertainTask;
+	VarplayerRequirement followedByIvan;
+	VarbitRequirement canReceivePickaxeFromIvan;
+	VarbitRequirement needTeleportUnlock;
 
 	// Steps
 	// TODO: Remove
 	DetailedQuestStep todo;
 
-
-	/// 0
+	/// 0 + 2
 	NpcStep startQuest;
+
+	/// 4
+	ConditionalStep cLookForIvan;
+
+	/// 6 + 8
+	ObjectStep inspectShrine;
+
+	/// 10
+	NpcStep talkToIvanGoingToDarkmeyer1;
+
+	/// 12
+	DetailedQuestStep defendIvanFromVyres;
+
+	/// 14
+	NpcStep talkToIvanAfterEscaping;
+
+	/// 16
+	NpcStep talkToIvanOutsideSlepeChurch;
+
+	/// 18
+	NpcStep askRoyAboutVeliaf;
+
+	/// 20
+	ConditionalStep cLookIntoCommotionAtCrombwickManor;
+
+	/// 22
+	NpcStep killVampyresWithVeliaf;
+
+	/// 24
+	NpcStep talkToVeliafInCrombwickManor;
+
+	/// 26
+	NpcStep talkToIvanPaterdomus1;
+
+	/// 28
+	DetailedQuestStep readSquiresJournal;
+
+	/// 30
+	NpcStep talkToIvanPaterdomus2;
+
+	/// 32 + 34
+	NpcStep killMonksOfZamorak;
+
+	/// 36
+	NpcStep talkToIvanInPaterdomusTempleF1;
+
+	/// 38
+	ConditionalStep cFindTheWritings;
+	PuzzleWrapperStep cFindTheWritingsPW;
+
+	/// 40
+	NpcStep talkToIvanAfterFindingTheWritings;
+
+	/// 42
+	DetailedQuestStep readIvandisWritings;
+
+	/// 44
+	NpcStep talkToIvanAfterReadingIvandisWritings;
+
+	/// 46 + 48
+	NpcStep talkToIvanInPaterdomus;
+
+	/// 50
+	DetailedQuestStep getToIvandisTomb;
+	ObjectStep investigateHole;
+
+	/// 52
+	ObjectStep mineHole;
+
+	/// 54
+	ObjectStep headThroughHole;
+
+	/// 56
+	ObjectStep enterDaeyaltProcessingRoom;
+
+	/// 58
+	NpcStep killVampsInDaeyaltRoom;
+
+	/// 60
+	NpcStep talkToIvanAfterKillingVamps;
+
+	/// 62
+	ObjectStep enterCastleDrakanCellar;
+
+	/// 64
+	ObjectStep climbUpToCastleDrakanLobby;
+
+	/// 66
+	ObjectStep prayAtShrine;
 
 	@Override
 	protected void setupZones()
 	{
-		sampleZone = new Zone(new WorldPoint(10, 10, 0), new WorldPoint(20, 20, 0));
-	}
+		var myrequeHideoutOldManRal = new Zone(new WorldPoint(3588, 9609, 0), new WorldPoint(3606, 9619, 0));
+		inMyrequeHideoutOldManRal = new ZoneRequirement(myrequeHideoutOldManRal);
 
-	@Override
-	protected void setupRequirements()
-	{
-		sampleRequirement = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
-
-		energyRestorePotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS);
-
-		drakanMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION);
-
-		itemAcquiredDuringQuest = new ItemRequirement("Book of Lore", ItemID.BOOK_OF_ASTROLOGY);
-
-		hasFinishedCertainTask = new VarbitRequirement(VarbitID.MYQ5, 2);
-	}
-
-	void setupSteps()
-	{
-		todo = new DetailedQuestStep(this, "todo");
-
-		startQuest = new NpcStep(this, 15839, new WorldPoint(3697, 3184, 0), "Talk to Sarius Guile in the Icyene Graveyard to start the quest.");
-		startQuest.addDialogStep("Yes.");
-	}
-
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		initializeRequirements();
-		setupSteps();
-
-		var steps = new HashMap<Integer, QuestStep>();
-
-		// TODO: Remove
-		for (var i = 0; i < 2000; ++i) {
-			steps.put(i, todo);
-		}
-
-		steps.put(0, startQuest);
-		steps.put(2, startQuest);
-
-		var blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
-		blisterwoodFlail.setTooltip("You can get another Blisterwood Flail from Ivan in the Myreque Hideout in Old" +
-			" Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard(?)");
-
-		var newBase = new Zone(new WorldPoint(3588, 9609, 0), new WorldPoint(3606, 9619, 0));
-		var inNewBase = new ZoneRequirement(newBase);
-		var talkToIvan = new NpcStep(this, 1,  new WorldPoint(3599, 9612, 0),"Look for Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
-		var goDownToIvan = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "Look for Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch.", blisterwoodFlail);
-		goDownToIvan.addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
-		// goDownToIvan.addDialogStep("Meiyerditch.");
-		var cTalkToIvan = new ConditionalStep(this, goDownToIvan);
-		cTalkToIvan.addStep(inNewBase, talkToIvan);
-		steps.put(4, cTalkToIvan);
-
-		var inspectShrine = new ObjectStep(this, 61177, new WorldPoint(3601, 9614, 0), "Inspect the makeshift shrine");
-		var cLookAround = new ConditionalStep(this, goDownToIvan);
-		cLookAround.addStep(inNewBase, inspectShrine);
-
-		steps.put(6, cLookAround);
-		steps.put(8, cLookAround);
-
-		var vyrewatchOutfit = new ItemRequirements("Vyre noble outfit",
-			new ItemRequirement("Vyre noble top", ItemID.VYRELORD_TORSO),
-			new ItemRequirement("Vyre noble legs", ItemID.VYRELORD_LEGS),
-			new ItemRequirement("Vyre noble shoes", ItemID.VYRELORD_SHOES));
-		vyrewatchOutfit.setHighlightInInventory(true);
-		vyrewatchOutfit.setMustBeEquipped(true);
-		vyrewatchOutfit.setTooltip("Can be obtained from the chest next to Ivan");
-
-
-		var actuallyTalkToIvan = new NpcStep(this, 9532,  new WorldPoint(3599, 9612, 0),"Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch while wearing the vyre noble outfit.", vyrewatchOutfit);
-		actuallyTalkToIvan.addDialogStep("Are you ready to go to Darkmeyer?");
-		actuallyTalkToIvan.addDialogStep("I'm ready.");
-		var cActuallyTalkToIvanInBase = new ConditionalStep(this, goDownToIvan);
-		cActuallyTalkToIvanInBase.addStep(and(inNewBase, vyrewatchOutfit), actuallyTalkToIvan);
-		cActuallyTalkToIvanInBase.addStep(inNewBase, actuallyTalkToIvan);
-
-		steps.put(10, cActuallyTalkToIvanInBase);
-
-		var atCastleDrakan = new ZoneRequirement(new Zone(new WorldPoint(3589, 3347, 0), new WorldPoint(3561, 3367, 0)));
-		var fightOffVyreWatches = new DetailedQuestStep(this, "Defend Ivan Strom safe. Kill the approaching acidic bloodvelds with a ranged weapon. TODO: Bring lots of food and some prayer potions.");
-		var talkToIvanToReturnToCastleDrakan = new NpcStep(this, 9532,  new WorldPoint(3599, 9612, 0),"Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch to return to Castle Drakan.", blisterwoodFlail);
-		talkToIvanToReturnToCastleDrakan.addDialogStep("We'd better get back to Darkmeyer.");
-		talkToIvanToReturnToCastleDrakan.addDialogStep("I'm ready.");
-		var cEscapeCastleDrakan = new ConditionalStep(this, goDownToIvan);
-		// cEscapeCastleDrakan.addStep(and(inNewBase, vyrewatchOutfit), actuallyTalkToIvan);
-		cEscapeCastleDrakan.addStep(atCastleDrakan, fightOffVyreWatches);
-		cEscapeCastleDrakan.addStep(inNewBase, talkToIvanToReturnToCastleDrakan);
-		steps.put(12, cEscapeCastleDrakan);
-
-		var talkToIvanAfterEscaping = new NpcStep(this, 15835,  new WorldPoint(3599, 9612, 0),"Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch after escaping.");
-		talkToIvanAfterEscaping.addDialogStep("We'd better get back to Darkmeyer.");
-		talkToIvanAfterEscaping.addDialogStep("I'm ready.");
-		var cTalkToIvanAfterEscaping = new ConditionalStep(this, goDownToIvan);
-		cTalkToIvanAfterEscaping.addStep(inNewBase, talkToIvanAfterEscaping);
-		steps.put(14, cTalkToIvanAfterEscaping);
-
-		var talkToIvanOutsideSlepeChurch = new NpcStep(this, 15855, new WorldPoint(3727, 3310, 0), "Talk to Ivan Strom in the graveyard outside the Slepe church.");
-		steps.put(16, talkToIvanOutsideSlepeChurch);
-
-		var followedByIvan = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 15854 /* myq6_ivan_follower */, 16);
-
-		var coins99 = new ItemRequirement("Coins for a drink", ItemID.COINS, 99);
-		var askRoyAboutVeriaf = new NpcStep(this, NpcID.SLEPE_BARTENDER_ROY, "Talk to Roy the bartender in Slepe and ask him about Veriaf's whereabouts.");
-		// askRoyAboutVeriaf.addDialogStepWithExclusion("One Bloody Bracer please.", "What happened to Carl?");
-		// askRoyAboutVeriaf.addDialogStep("What happened to Carl?");
-		// askRoyAboutVeriaf.addDialogStep("Here you go.");
-		askRoyAboutVeriaf.addDialogStep("We're looking for a friend of ours.");
-		// NOTE: This costs 99 coins
-
-		var cAskRoyAboutVeriaf = new ConditionalStep(this, talkToIvanOutsideSlepeChurch);
-		cAskRoyAboutVeriaf.addStep(followedByIvan, askRoyAboutVeriaf);
-		steps.put(18, cAskRoyAboutVeriaf);
+		var castleDrakanCourtyard = new Zone(new WorldPoint(3589, 3347, 0), new WorldPoint(3561, 3367, 0));
+		atCastleDrakanCourtyard = new ZoneRequirement(castleDrakanCourtyard);
 
 		var slepeChurchDungeon1 = new Zone(14999);
 		var slepeChurchDungeon2 = new Zone(15000);
@@ -209,116 +209,105 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var slepeChurchDungeon7 = new Zone(15511);
 		var slepeChurchDungeon8 = new Zone(15512);
 		var slepeChurchDungeon9 = new Zone(15513);
-		var inSlepeChurchDungeon = new ZoneRequirement(slepeChurchDungeon1, slepeChurchDungeon2, slepeChurchDungeon3, slepeChurchDungeon4, slepeChurchDungeon5, slepeChurchDungeon6, slepeChurchDungeon7, slepeChurchDungeon8, slepeChurchDungeon9);
-
-		var lookIntoCommotion = new ObjectStep(this, ObjectID.SLP_CHURCH_CRYPT_SOUTH_LADDER_DOWN, new WorldPoint(3727, 3301, 0), "Head to the Crombwick Manor through the church dungeon.");
-		var climbUpToCrombwickManor = new ObjectStep(this, ObjectID.SLP_BASEMENT_MANOR_EXIT, new WorldPoint(3726, 9756, 1), "Head to the Crombwick Manor through the church dungeon.");
-		var cLookIntoCommotionAtCrombwickManor = new ConditionalStep(this, talkToIvanOutsideSlepeChurch);
-		cLookIntoCommotionAtCrombwickManor.addStep(and(followedByIvan, inSlepeChurchDungeon), climbUpToCrombwickManor);
-		cLookIntoCommotionAtCrombwickManor.addStep(followedByIvan, lookIntoCommotion);
-		steps.put(20, cLookIntoCommotionAtCrombwickManor);
+		inSlepeChurchDungeon = new ZoneRequirement(slepeChurchDungeon1, slepeChurchDungeon2, slepeChurchDungeon3, slepeChurchDungeon4, slepeChurchDungeon5, slepeChurchDungeon6, slepeChurchDungeon7, slepeChurchDungeon8, slepeChurchDungeon9);
 
 		var crombwickManor1 = new Zone(new WorldPoint(3714, 3361, 0), new WorldPoint(3737, 3355, 0));
 		var crombwickManor2 = new Zone(new WorldPoint(3721, 3366, 0), new WorldPoint(3725, 3361, 0));
 		var crombwickManor3 = new Zone(new WorldPoint(3727, 3362, 0), new WorldPoint(3732, 3359, 0));
 		var crombwickManor4 = new Zone(new WorldPoint(3721, 3354, 0), new WorldPoint(3729, 3351, 0));
-		var inCrombwickManor = new ZoneRequirement(crombwickManor1, crombwickManor2, crombwickManor3, crombwickManor4);
+		inCrombwickManor = new ZoneRequirement(crombwickManor1, crombwickManor2, crombwickManor3, crombwickManor4);
 
-		var killVampyresWithVeliaf = new NpcStep(this, new int[]{16127, 16128, 16129, 16125}, new WorldPoint(3725, 3357, 0), "Help Veliaf kill the vampyres in Crombwick Manor.", blisterwoodFlail);
-		killVampyresWithVeliaf.setAllowMultipleHighlights(true);
-		var cLookIntoCommotionAtCrombwickManor2 = new ConditionalStep(this, lookIntoCommotion);
-		cLookIntoCommotionAtCrombwickManor2.addStep(and(inCrombwickManor), killVampyresWithVeliaf);
-		cLookIntoCommotionAtCrombwickManor2.addStep(and(inSlepeChurchDungeon), climbUpToCrombwickManor);
-		steps.put(22, cLookIntoCommotionAtCrombwickManor2);
+		var paterdomusTempleDungeon1 = new Zone(13466);
+		var paterdomusTempleDungeon2 = new Zone(13722);
+		inPaterdomusTempleDungeon = new ZoneRequirement(paterdomusTempleDungeon1, paterdomusTempleDungeon2);
 
-		// TODO: Confirm npc ID, although you can technically speak to Ivan too
-		var talkToVeliaf = new NpcStep(this, 15885, new WorldPoint(3731, 3359, 0), "Talk to Veliaf after helping him kill the vampyres in Crombwick Manor.");
+		var paterdomusTempleF0P1 = new Zone(new WorldPoint(3409, 3483, 0), new WorldPoint(3411, 3494, 0));
+		var paterdomusTempleF0P2 = new Zone(new WorldPoint(3408, 3485, 0), new WorldPoint(3408, 3486, 0));
+		var paterdomusTempleF0P3 = new Zone(new WorldPoint(3408, 3491, 0), new WorldPoint(3408, 3492, 0));
+		var paterdomusTempleF0P4 = new Zone(new WorldPoint(3412, 3484, 0), new WorldPoint(3415, 3493, 0));
+		var paterdomusTempleF0P5 = new Zone(new WorldPoint(3416, 3483, 0), new WorldPoint(3417, 3494, 0));
+		var paterdomusTempleF0P6 = new Zone(new WorldPoint(3418, 3484, 0), new WorldPoint(3418, 3493, 0));
+		inPaterdomusTempleF0 = new ZoneRequirement(paterdomusTempleF0P1, paterdomusTempleF0P2, paterdomusTempleF0P3, paterdomusTempleF0P4, paterdomusTempleF0P5, paterdomusTempleF0P6);
 
-		var cLookIntoCommotionAtCrombwickManor3 = new ConditionalStep(this, lookIntoCommotion);
-		cLookIntoCommotionAtCrombwickManor3.addStep(and(inCrombwickManor), talkToVeliaf);
-		cLookIntoCommotionAtCrombwickManor3.addStep(and(inSlepeChurchDungeon), climbUpToCrombwickManor);
-		steps.put(24, cLookIntoCommotionAtCrombwickManor3);
+		var paterdomusTempleF1 = new Zone(new WorldPoint(3408, 3483, 1), new WorldPoint(3419, 3494, 1));
+		inPaterdomusTempleF1 = new ZoneRequirement(paterdomusTempleF1);
 
-		var paterdormusDungeon1 = new Zone(13466);
-		var paterdormusDungeon2 = new Zone(13722);
-		var inPaterdormusDungeon = new ZoneRequirement(paterdormusDungeon1, paterdormusDungeon2);
+		var ivandisTomb = new Zone(new WorldPoint(3485, 9879, 0), new WorldPoint(3516, 9853, 0));
+		inIvandisTomb = new ZoneRequirement(ivandisTomb);
 
-		var enterPaterdormus = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR_OPEN, new WorldPoint(3422, 3485, 0), "Enter Paterdormus and talk with Ivan");
-		enterPaterdormus.addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR);
-		var talkToIvanPaterdormus1 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan in the Paterdormus dungeon.");
-		var cHeadToPaterdormus = new ConditionalStep(this, enterPaterdormus);
-		cHeadToPaterdormus.addStep(inPaterdormusDungeon, talkToIvanPaterdormus1);
-		steps.put(26, cHeadToPaterdormus);
+		var castleDrakanMines = new Zone(new WorldPoint(3119, 7479, 2), new WorldPoint(3088, 7433, 2));
+		inCastleDrakanMines = new ZoneRequirement(castleDrakanMines);
 
-		var book = new ItemRequirement("Squire's journal", 33701);
-		var readBook = new DetailedQuestStep(this, "Read the Squire's journal Ivan just gave you.", book.highlighted());
-		var cReadBook = new ConditionalStep(this, cHeadToPaterdormus);
-		cReadBook.addStep(book, readBook);
+		var castleDrakanDaeyaltProcessingArea = new Zone(new WorldPoint(3196, 7447, 0), new WorldPoint(3164, 7469, 0));
+		inCastleDrakanDaeyaltProcessingArea = new ZoneRequirement(castleDrakanDaeyaltProcessingArea);
 
-		steps.put(28, cReadBook);
+		var castleDrakanCellar = new Zone(new WorldPoint(3142, 7595, 0), new WorldPoint(3187, 7569, 0));
+		inCastleDrakanCellar = new ZoneRequirement(castleDrakanCellar);
 
-		var talkToIvanPaterdormus2 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan again after reading the Squire's journal.");
-		var cTalkToIvanAfterReadingTheBook = new ConditionalStep(this, enterPaterdormus);
-		cTalkToIvanAfterReadingTheBook.addStep(inPaterdormusDungeon, talkToIvanPaterdormus2);
-		steps.put(30, cTalkToIvanAfterReadingTheBook);
+		var castleDrakanLobby = new Zone(new WorldPoint(3172, 7724, 0), new WorldPoint(3146, 7699, 0));
+		inCastleDrakanLobby = new ZoneRequirement(castleDrakanLobby);
+	}
 
-		var temple1 = new Zone(new WorldPoint(3409, 3483, 0), new WorldPoint(3411, 3494, 0));
-		var temple2 = new Zone(new WorldPoint(3408, 3485, 0), new WorldPoint(3408, 3486, 0));
-		var temple3 = new Zone(new WorldPoint(3408, 3491, 0), new WorldPoint(3408, 3492, 0));
-		var temple4 = new Zone(new WorldPoint(3412, 3484, 0), new WorldPoint(3415, 3493, 0));
-		var temple5 = new Zone(new WorldPoint(3416, 3483, 0), new WorldPoint(3417, 3494, 0));
-		var temple6 = new Zone(new WorldPoint(3418, 3484, 0), new WorldPoint(3418, 3493, 0));
-		var inZamarokianTempleF1 = new ZoneRequirement(temple1, temple2, temple3, temple4, temple5, temple6);
+	@Override
+	protected void setupRequirements()
+	{
+		// Required items
+		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
+		blisterwoodFlail.setTooltip("You can buy another Blisterwood Flail from Ivan in the Myreque Hideout in Old Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard(?)");
 
-		var templeFloorMiddle = new Zone(new WorldPoint(3408, 3483, 1), new WorldPoint(3419, 3494, 1));
-		var inZamarokianTempleF2 = new ZoneRequirement(templeFloorMiddle);
+		vyreNobleOutfit = new ItemRequirements("Vyre noble outfit",
+			new ItemRequirement("Vyre noble top", ItemID.VYRELORD_TORSO),
+			new ItemRequirement("Vyre noble legs", ItemID.VYRELORD_LEGS),
+			new ItemRequirement("Vyre noble shoes", ItemID.VYRELORD_SHOES)).isNotConsumed();
+		vyreNobleOutfit.setHighlightInInventory(true);
+		vyreNobleOutfit.setMustBeEquipped(true);
+		// vyreNobleOutfit.canBeObtainedDuringQuest();
+		vyreNobleOutfit.setTooltip("Can be obtained during the quest in the chest next to Ivan");
 
-		var killZamarokianMonks = new NpcStep(this, new int[]{16155, 16156, 16154,16156}, "Kill the monks.");
-		killZamarokianMonks.setAllowMultipleHighlights(true);
-		var cKillZamarokianMonks = new ConditionalStep(this, cTalkToIvanAfterReadingTheBook);
-		var headToZamarokianChurch1 = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3405, 9907, 0), "Climb up from the Paterdormus dungeon.");
-		var headToZamarokianChurch2 = new ObjectStep(this, ObjectID.PRIESTPERILTEMPLEDOORL, new WorldPoint(3408, 3489, 0),"Enter the Zamarokian temple.");
-		cKillZamarokianMonks.addStep(and(inPaterdormusDungeon, followedByIvan), headToZamarokianChurch1);
-		cKillZamarokianMonks.addStep(and(followedByIvan, inZamarokianTempleF1), killZamarokianMonks);
-		cKillZamarokianMonks.addStep(and(followedByIvan), headToZamarokianChurch2);
-		steps.put(32, cKillZamarokianMonks);
+		// Recommended items
+		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
+		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		food = new ItemRequirement("Good healing food", ItemCollections.GOOD_EATING_FOOD, -1);
+		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
+		// TODO: Are staminas actually necessary?
+		energyRestorePotion = new ItemRequirement("Stamina potion", ItemCollections.STAMINA_POTIONS);
 
-		var cKillZamarokianMonks2 = new ConditionalStep(this, headToZamarokianChurch2);
-		cKillZamarokianMonks2.addStep(and(inZamarokianTempleF1), killZamarokianMonks);
-		steps.put(34, cKillZamarokianMonks2);
+		drakansMedallion = new ItemRequirement("Drakan's medallion", ItemID.DRAKANS_MEDALLION).isNotConsumed();
 
-		// TODO(FUTURE ADVENTURERS): See if this staircase is highlighted correctly right after killing the monks.
-		var climbUpTemple1 = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Talk to Ivan Storm upstairs in the zamarokian temple.");
+		anyPickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).canBeObtainedDuringQuest();
 
-		var cReadBooksMaybe = new ConditionalStep(this, climbUpTemple1);
-		var talkToIvanTemple = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Storm upstairs in the zamarokian temple.");
-		cReadBooksMaybe.addStep(inZamarokianTempleF2, talkToIvanTemple);
-		steps.put(36, cReadBooksMaybe);
+		freeInvSlots6 = new FreeInventorySlotRequirement(6);
 
-		var climbUpTempleForWritings = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Climb up the zamarokian temple and solve the puzzle.");
+		// Mid-quest item requirements
+		squiresJournal = new ItemRequirement("Squire's journal", 33701);
+		essiandarsNotes = new ItemRequirement("Essiandar's notes", 33707);
+		scruffyNotebook = new ItemRequirement("Scruffy notebook", 33704);
+		sarlsJournal = new ItemRequirement("Sarl's journal", 33703);
+		theLifeOfFriar = new ItemRequirement("The Life of Friar", 33706);
+		piousProceedings = new ItemRequirement("Pious proceedings", 33705);
+		fromMisthalinToMorytania = new ItemRequirement("Misthalin to Morytania", 33702);
+		ivandisWritings = new ItemRequirement("Ivandis' writings", 33708);
 
-		// step 38 is just the puzzle, the squire's journal is not actually necessary
-		var findTheWritings = new ConditionalStep(this, climbUpTempleForWritings, "Find the writings for Ivan.");
+		// Miscellaneous requirements
+		followedByIvan = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 15854 /* myq6_ivan_follower */, 16);
+		canReceivePickaxeFromIvan = new VarbitRequirement(15469, 0);
+		needTeleportUnlock = new VarbitRequirement(15470, 0);
+	}
 
-		var sarlsJournal = new ItemRequirement("Sarl's journal", 33703);
-		var theLifeOfFriar = new ItemRequirement("The Life of Friar", 33706);
-		var getSarlsJournalAndTheLifeOfFriar = new ObjectStep(this, 61304, new WorldPoint(3414, 3491, 1), "Get Sarl's journal and The Life of Friar from the bookcase.", sarlsJournal, theLifeOfFriar);
-		getSarlsJournalAndTheLifeOfFriar.addDialogStep("Both.");
-		getSarlsJournalAndTheLifeOfFriar.addDialogStep("Yes.");
+	void setupSteps()
+	{
+		todo = new DetailedQuestStep(this, "todo");
 
-		var piousProceedings = new ItemRequirement("Pious proceedings", 33705);
-		var getPiousProceedings = new ObjectStep(this, 61305, new WorldPoint(3411, 3491, 1), "Get Pious proceedings from the bookcase.", piousProceedings);
-		getPiousProceedings.addDialogStep("Yes.");
+		startQuest = new NpcStep(this, 15839, new WorldPoint(3697, 3184, 0), "Talk to Sarius Guile in the Icyene Graveyard to start the quest.");
+		startQuest.addDialogStep("Yes.");
 
-		var fromMisthalinToMorytania = new ItemRequirement("Misthalin to Morytania", 33702);
-		var getFromMisthalinToMorytania = new ObjectStep(this, 61302, new WorldPoint(3411, 3492, 1), "Get Misthalin to Morytania from the bookcase.", fromMisthalinToMorytania);
-		getFromMisthalinToMorytania.addDialogStep("Yes.");
-
-		var scruffyNotebook = new ItemRequirement("Scruffy notebook", 33704);
-		var essiandarsNotes = new ItemRequirement("Essiandar's notes", 33707);
-		var getScruffyNotebookAndEssiandarsNotes = new ObjectStep(this, 61306, new WorldPoint(3409, 3488, 1), "Get the scruffy notebook and Essiandar's notes from the bookcase.");
-		getScruffyNotebookAndEssiandarsNotes.addDialogStep("Both.");
-		getScruffyNotebookAndEssiandarsNotes.addDialogStep("Yes.");
+		/// 32
+		var plinth1Pos = new WorldPoint(3409, 3483, 1);
+		var plinth2Pos = new WorldPoint(3408, 3485, 1);
+		var plinth3Pos = new WorldPoint(3409, 3487, 1);
+		var plinth4Pos = new WorldPoint(3409, 3490, 1);
+		var plinth5Pos = new WorldPoint(3408, 3492, 1);
+		var plinth6Pos = new WorldPoint(3409, 3494, 1);
 
 		var essiandarsNotesPlinthID = 61301;
 		var essiandarsNotesName = "Essiandar's notes";
@@ -337,13 +326,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var piousProceedingsPlinthID = 61299;
 		var piousProceedingsName = "Pious proceedings";
-
-		var plinth1Pos = new WorldPoint(3409, 3483, 1);
-		var plinth2Pos = new WorldPoint(3408, 3485, 1);
-		var plinth3Pos = new WorldPoint(3409, 3487, 1);
-		var plinth4Pos = new WorldPoint(3409, 3490, 1);
-		var plinth5Pos = new WorldPoint(3408, 3492, 1);
-		var plinth6Pos = new WorldPoint(3409, 3494, 1);
 
 		var plinth1VB = new VarbitBuilder(15496);
 		var essiandarsNotesS1 = plinth1VB.eq(6);
@@ -429,163 +411,298 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var piousProceedingsS6 = plinth6VB.eq(4);
 		var piousProceedingsS6Put = bookPut(plinth6Pos, piousProceedingsName, piousProceedings.highlighted());
 
-		var wowYouAreDone = new DetailedQuestStep(this, "You have placed all the books correctly, continue in the dialog to proceed.");
+		var climbUpTempleForWritings = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Climb up the temple and solve the puzzle.");
+		cFindTheWritings = new ConditionalStep(this, climbUpTempleForWritings, "Find the writings on the first floor of the Paterdomus temple for Ivan Strom.");
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, and(essiandarsNotesS1, sarlsJournalS2, fromMisthalinToMorytaniaS3, scruffyNotebookS4, theLifeOfFriarS5, piousProceedingsS6)), wowYouAreDone);
+		var getSarlsJournalAndTheLifeOfFriar = new ObjectStep(this, 61304, new WorldPoint(3414, 3491, 1), "Get Sarl's journal and The Life of Friar from the bookcase.", sarlsJournal, theLifeOfFriar);
+		getSarlsJournalAndTheLifeOfFriar.addDialogStep("Both.");
+		getSarlsJournalAndTheLifeOfFriar.addDialogStep("Yes.");
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, essiandarsNotesS2), essiandarsNotesS2Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, essiandarsNotesS3), essiandarsNotesS3Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, essiandarsNotesS4), essiandarsNotesS4Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, essiandarsNotesS5), essiandarsNotesS5Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, essiandarsNotesS6), essiandarsNotesS6Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, sarlsJournalS1), sarlsJournalS1Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, sarlsJournalS3), sarlsJournalS3Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, sarlsJournalS4), sarlsJournalS4Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, sarlsJournalS5), sarlsJournalS5Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, sarlsJournalS6), sarlsJournalS6Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, fromMisthalinToMorytaniaS1), fromMisthalinToMorytaniaS1Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, fromMisthalinToMorytaniaS2), fromMisthalinToMorytaniaS2Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, fromMisthalinToMorytaniaS4), fromMisthalinToMorytaniaS4Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, fromMisthalinToMorytaniaS5), fromMisthalinToMorytaniaS5Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, fromMisthalinToMorytaniaS6), fromMisthalinToMorytaniaS6Take);
+		var getPiousProceedings = new ObjectStep(this, 61305, new WorldPoint(3411, 3491, 1), "Get Pious proceedings from the bookcase.", piousProceedings);
+		getPiousProceedings.addDialogStep("Yes.");
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, scruffyNotebookS1), scruffyNotebookS1Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, scruffyNotebookS2), scruffyNotebookS2Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, scruffyNotebookS3), scruffyNotebookS3Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, scruffyNotebookS5), scruffyNotebookS5Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, scruffyNotebookS6), scruffyNotebookS6Take);
+		var getFromMisthalinToMorytania = new ObjectStep(this, 61302, new WorldPoint(3411, 3492, 1), "Get Misthalin to Morytania from the bookcase.", fromMisthalinToMorytania);
+		getFromMisthalinToMorytania.addDialogStep("Yes.");
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, theLifeOfFriarS1), theLifeOfFriarS1Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, theLifeOfFriarS2), theLifeOfFriarS2Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, theLifeOfFriarS3), theLifeOfFriarS3Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, theLifeOfFriarS4), theLifeOfFriarS4Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, theLifeOfFriarS6), theLifeOfFriarS6Take);
+		var getScruffyNotebookAndEssiandarsNotes = new ObjectStep(this, 61306, new WorldPoint(3409, 3488, 1), "Get the scruffy notebook and Essiandar's notes from the bookcase.");
+		getScruffyNotebookAndEssiandarsNotes.addDialogStep("Both.");
+		getScruffyNotebookAndEssiandarsNotes.addDialogStep("Yes.");
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, piousProceedingsS1), piousProceedingsS1Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, piousProceedingsS2), piousProceedingsS2Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, piousProceedingsS3), piousProceedingsS3Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, piousProceedingsS4), piousProceedingsS4Take);
-		findTheWritings.addStep(and(inZamarokianTempleF2, piousProceedingsS5), piousProceedingsS5Take);
+		var doneWithPuzzleStepNowReadTheDialog = new DetailedQuestStep(this, "You have placed all the books correctly, continue in the dialog to proceed.");
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, nor(essiandarsNotes, essiandarsNotesS1)), getScruffyNotebookAndEssiandarsNotes);
-		findTheWritings.addStep(and(inZamarokianTempleF2, not(essiandarsNotesS1)), essiandarsNotesS1Put);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, and(essiandarsNotesS1, sarlsJournalS2, fromMisthalinToMorytaniaS3, scruffyNotebookS4, theLifeOfFriarS5, piousProceedingsS6)), doneWithPuzzleStepNowReadTheDialog);
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, nor(scruffyNotebook, scruffyNotebookS4)), getScruffyNotebookAndEssiandarsNotes);
-		findTheWritings.addStep(and(inZamarokianTempleF2, not(scruffyNotebookS4)), scruffyNotebookS4Put);
+		// Remove any book that is on the wrong plinth
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, essiandarsNotesS2), essiandarsNotesS2Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, essiandarsNotesS3), essiandarsNotesS3Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, essiandarsNotesS4), essiandarsNotesS4Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, essiandarsNotesS5), essiandarsNotesS5Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, essiandarsNotesS6), essiandarsNotesS6Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, sarlsJournalS1), sarlsJournalS1Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, sarlsJournalS3), sarlsJournalS3Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, sarlsJournalS4), sarlsJournalS4Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, sarlsJournalS5), sarlsJournalS5Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, sarlsJournalS6), sarlsJournalS6Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, fromMisthalinToMorytaniaS1), fromMisthalinToMorytaniaS1Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, fromMisthalinToMorytaniaS2), fromMisthalinToMorytaniaS2Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, fromMisthalinToMorytaniaS4), fromMisthalinToMorytaniaS4Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, fromMisthalinToMorytaniaS5), fromMisthalinToMorytaniaS5Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, fromMisthalinToMorytaniaS6), fromMisthalinToMorytaniaS6Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, scruffyNotebookS1), scruffyNotebookS1Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, scruffyNotebookS2), scruffyNotebookS2Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, scruffyNotebookS3), scruffyNotebookS3Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, scruffyNotebookS5), scruffyNotebookS5Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, scruffyNotebookS6), scruffyNotebookS6Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, theLifeOfFriarS1), theLifeOfFriarS1Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, theLifeOfFriarS2), theLifeOfFriarS2Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, theLifeOfFriarS3), theLifeOfFriarS3Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, theLifeOfFriarS4), theLifeOfFriarS4Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, theLifeOfFriarS6), theLifeOfFriarS6Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, piousProceedingsS1), piousProceedingsS1Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, piousProceedingsS2), piousProceedingsS2Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, piousProceedingsS3), piousProceedingsS3Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, piousProceedingsS4), piousProceedingsS4Take);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, piousProceedingsS5), piousProceedingsS5Take);
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, nor(sarlsJournal, sarlsJournalS2)), getSarlsJournalAndTheLifeOfFriar);
-		findTheWritings.addStep(and(inZamarokianTempleF2, not(sarlsJournalS2)), sarlsJournalS2Put);
+		// Place Essiandar's notes on the first plinth from the south
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, nor(essiandarsNotes, essiandarsNotesS1)), getScruffyNotebookAndEssiandarsNotes);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, not(essiandarsNotesS1)), essiandarsNotesS1Put);
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, nor(theLifeOfFriar, theLifeOfFriarS5)), getSarlsJournalAndTheLifeOfFriar);
-		findTheWritings.addStep(and(inZamarokianTempleF2, not(theLifeOfFriarS5)), theLifeOfFriarS5Put);
+		// Place scruffy notebook on the fourth plinth from the south
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, nor(scruffyNotebook, scruffyNotebookS4)), getScruffyNotebookAndEssiandarsNotes);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, not(scruffyNotebookS4)), scruffyNotebookS4Put);
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, nor(fromMisthalinToMorytania, fromMisthalinToMorytaniaS3)), getFromMisthalinToMorytania);
-		findTheWritings.addStep(and(inZamarokianTempleF2, not(fromMisthalinToMorytaniaS3)), fromMisthalinToMorytaniaS3Put);
+		// Place Sarl's journal on the second plinth from the south
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, nor(sarlsJournal, sarlsJournalS2)), getSarlsJournalAndTheLifeOfFriar);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, not(sarlsJournalS2)), sarlsJournalS2Put);
 
-		findTheWritings.addStep(and(inZamarokianTempleF2, nor(piousProceedings, piousProceedingsS6)), getPiousProceedings);
-		findTheWritings.addStep(and(inZamarokianTempleF2, not(piousProceedingsS6)), piousProceedingsS6Put);
+		// Place The Life of Friar on the fifth plinth from the south
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, nor(theLifeOfFriar, theLifeOfFriarS5)), getSarlsJournalAndTheLifeOfFriar);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, not(theLifeOfFriarS5)), theLifeOfFriarS5Put);
 
-		steps.put(38, findTheWritings.puzzleWrapStep());
+		// Place From Misthalin to Morytania on the third plinth from the south
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, nor(fromMisthalinToMorytania, fromMisthalinToMorytaniaS3)), getFromMisthalinToMorytania);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, not(fromMisthalinToMorytaniaS3)), fromMisthalinToMorytaniaS3Put);
 
-		var talkToIvanAfterBookPuzzle = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan after solving the puzzle.");
-		var cTalkToIvanTempleAfterBookPuzzle = new ConditionalStep(this, climbUpTemple1);
-		cTalkToIvanTempleAfterBookPuzzle.addStep(inZamarokianTempleF2, talkToIvanAfterBookPuzzle);
+		// Place Pious proceedings on the sixth plinth from the south
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, nor(piousProceedings, piousProceedingsS6)), getPiousProceedings);
+		cFindTheWritings.addStep(and(inPaterdomusTempleF1, not(piousProceedingsS6)), piousProceedingsS6Put);
+
+		cFindTheWritingsPW = cFindTheWritings.puzzleWrapStepWithDefaultText("Find the writings on the first floor of the Paterdomus temple for Ivan Strom.");
+	}
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+
+		// TODO: Remove
+		for (var i = 0; i < 2000; ++i)
+		{
+			steps.put(i, todo);
+		}
+
+		steps.put(0, startQuest);
+		steps.put(2, startQuest);
+
+		var talkToIvan = new NpcStep(this, 1, new WorldPoint(3599, 9612, 0), "");
+		var goDownToIvan = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "", blisterwoodFlail);
+		goDownToIvan.addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
+		cLookForIvan = new ConditionalStep(this, goDownToIvan, "Look for Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
+		cLookForIvan.addStep(inMyrequeHideoutOldManRal, talkToIvan);
+		steps.put(4, cLookForIvan);
+
+		inspectShrine = new ObjectStep(this, 61177, new WorldPoint(3601, 9614, 0), "Inspect the makeshift shrine in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
+		var cInspectShrine = new ConditionalStep(this, goDownToIvan);
+		cInspectShrine.addStep(inMyrequeHideoutOldManRal, inspectShrine);
+		steps.put(6, cInspectShrine);
+		steps.put(8, cInspectShrine);
+
+		talkToIvanGoingToDarkmeyer1 = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch while wearing the vyre noble outfit, ready for a fight.", vyreNobleOutfit, blisterwoodFlail, combatGear, food, prayerPotions);
+		talkToIvanGoingToDarkmeyer1.addDialogStep("Are you ready to go to Darkmeyer?");
+		talkToIvanGoingToDarkmeyer1.addDialogStep("I'm ready.");
+		var cTalkToIVanGoingToDarkmeyer = new ConditionalStep(this, goDownToIvan);
+		cTalkToIVanGoingToDarkmeyer.addStep(and(inMyrequeHideoutOldManRal, vyreNobleOutfit), talkToIvanGoingToDarkmeyer1);
+		cTalkToIVanGoingToDarkmeyer.addStep(inMyrequeHideoutOldManRal, talkToIvanGoingToDarkmeyer1);
+		steps.put(10, cTalkToIVanGoingToDarkmeyer);
+
+		var talkToIvanToReturnToCastleDrakan = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch to return to the Castle Drakan courtyard.", blisterwoodFlail, combatGear, food, prayerPotions);
+		talkToIvanToReturnToCastleDrakan.addDialogStep("We'd better get back to Darkmeyer.");
+		talkToIvanToReturnToCastleDrakan.addDialogStep("I'm ready.");
+		talkToIvanGoingToDarkmeyer1.addSubSteps(talkToIvanToReturnToCastleDrakan);
+		defendIvanFromVyres = new DetailedQuestStep(this, "Kill the vyrewatches and defend Ivan Strom until he can teleport you both out. Kill the approaching acidic bloodvelds with a ranged weapon. Prioritize the Vyrewatch Sentinels first.", blisterwoodFlail, combatGear, food, prayerPotions);
+		var cEscapeCastleDrakan = new ConditionalStep(this, goDownToIvan);
+		cEscapeCastleDrakan.addStep(atCastleDrakanCourtyard, defendIvanFromVyres);
+		cEscapeCastleDrakan.addStep(inMyrequeHideoutOldManRal, talkToIvanToReturnToCastleDrakan);
+		steps.put(12, cEscapeCastleDrakan);
+
+		talkToIvanAfterEscaping = new NpcStep(this, 15835, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch after escaping.");
+		talkToIvanAfterEscaping.addDialogStep("We'd better get back to Darkmeyer.");
+		talkToIvanAfterEscaping.addDialogStep("I'm ready.");
+		var cTalkToIvanAfterEscaping = new ConditionalStep(this, goDownToIvan);
+		cTalkToIvanAfterEscaping.addStep(inMyrequeHideoutOldManRal, talkToIvanAfterEscaping);
+		steps.put(14, cTalkToIvanAfterEscaping);
+
+		talkToIvanOutsideSlepeChurch = new NpcStep(this, 15855, new WorldPoint(3727, 3310, 0), "Talk to Ivan Strom in the graveyard outside the Slepe church.");
+		steps.put(16, talkToIvanOutsideSlepeChurch);
+
+		askRoyAboutVeliaf = new NpcStep(this, NpcID.SLEPE_BARTENDER_ROY, "Talk to Roy the bartender in Slepe and ask him about Veliaf's whereabouts.");
+		askRoyAboutVeliaf.addDialogStep("We're looking for a friend of ours.");
+
+		var cAskRoyAboutVeliaf = new ConditionalStep(this, talkToIvanOutsideSlepeChurch);
+		cAskRoyAboutVeliaf.addStep(followedByIvan, askRoyAboutVeliaf);
+		steps.put(18, cAskRoyAboutVeliaf);
+
+		var lookIntoCommotion = new ObjectStep(this, ObjectID.SLP_CHURCH_CRYPT_SOUTH_LADDER_DOWN, new WorldPoint(3727, 3301, 0), "");
+		var climbUpToCrombwickManor = new ObjectStep(this, ObjectID.SLP_BASEMENT_MANOR_EXIT, new WorldPoint(3726, 9756, 1), "");
+		cLookIntoCommotionAtCrombwickManor = new ConditionalStep(this, talkToIvanOutsideSlepeChurch, "Head to the Crombwick Manor through the church dungeon.", blisterwoodFlail, combatGear, food, prayerPotions);
+		cLookIntoCommotionAtCrombwickManor.addStep(and(followedByIvan, inSlepeChurchDungeon), climbUpToCrombwickManor);
+		cLookIntoCommotionAtCrombwickManor.addStep(followedByIvan, lookIntoCommotion);
+		steps.put(20, cLookIntoCommotionAtCrombwickManor);
+
+		killVampyresWithVeliaf = new NpcStep(this, new int[]{16127, 16128, 16129, 16125}, new WorldPoint(3725, 3357, 0), "Help Veliaf kill the vampyres in Crombwick Manor.", blisterwoodFlail, combatGear, food, prayerPotions);
+		killVampyresWithVeliaf.setAllowMultipleHighlights(true);
+		var cLookIntoCommotionAtCrombwickManor2 = new ConditionalStep(this, lookIntoCommotion);
+		cLookIntoCommotionAtCrombwickManor2.addStep(and(inCrombwickManor), killVampyresWithVeliaf);
+		cLookIntoCommotionAtCrombwickManor2.addStep(and(inSlepeChurchDungeon), climbUpToCrombwickManor);
+		steps.put(22, cLookIntoCommotionAtCrombwickManor2);
+
+		// TODO: Confirm npc ID, although you can technically speak to Ivan too
+		talkToVeliafInCrombwickManor = new NpcStep(this, 15885, new WorldPoint(3731, 3359, 0), "Talk to Veliaf after helping him kill the vampyres in Crombwick Manor.");
+
+		var cLookIntoCommotionAtCrombwickManor3 = new ConditionalStep(this, lookIntoCommotion);
+		cLookIntoCommotionAtCrombwickManor3.addStep(and(inCrombwickManor), talkToVeliafInCrombwickManor);
+		cLookIntoCommotionAtCrombwickManor3.addStep(and(inSlepeChurchDungeon), climbUpToCrombwickManor);
+		steps.put(24, cLookIntoCommotionAtCrombwickManor3);
+
+		var enterPaterdomus = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR_OPEN, new WorldPoint(3422, 3485, 0), "Talk with Ivan Strom in the Paterdomus dungeon.");
+		enterPaterdomus.addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR);
+		talkToIvanPaterdomus1 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan in the Paterdomus dungeon.");
+		talkToIvanPaterdomus1.addSubSteps(enterPaterdomus);
+		var cHeadToPaterdomus = new ConditionalStep(this, enterPaterdomus);
+		cHeadToPaterdomus.addStep(inPaterdomusTempleDungeon, talkToIvanPaterdomus1);
+		steps.put(26, cHeadToPaterdomus);
+
+		readSquiresJournal = new DetailedQuestStep(this, "Read the Squire's journal Ivan just gave you.", squiresJournal.highlighted());
+		var cReadBook = new ConditionalStep(this, cHeadToPaterdomus);
+		cReadBook.addStep(squiresJournal, readSquiresJournal);
+
+		steps.put(28, cReadBook);
+
+		talkToIvanPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan again after reading the Squire's journal.");
+		var cTalkToIvanAfterReadingTheBook = new ConditionalStep(this, enterPaterdomus);
+		cTalkToIvanAfterReadingTheBook.addStep(inPaterdomusTempleDungeon, talkToIvanPaterdomus2);
+		steps.put(30, cTalkToIvanAfterReadingTheBook);
+
+		killMonksOfZamorak = new NpcStep(this, new int[]{16155, 16156, 16154, 16156}, "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
+		killMonksOfZamorak.setAllowMultipleHighlights(true);
+		var climbUpFromPaterdomusTempleDungeon = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3405, 9907, 0), "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
+		var headToPaterdomusTempleF0 = new ObjectStep(this, ObjectID.PRIESTPERILTEMPLEDOORL, new WorldPoint(3408, 3489, 0), "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
+		killMonksOfZamorak.addSubSteps(climbUpFromPaterdomusTempleDungeon, headToPaterdomusTempleF0);
+		var cKillMonksOfZamorak = new ConditionalStep(this, cTalkToIvanAfterReadingTheBook);
+		cKillMonksOfZamorak.addStep(and(inPaterdomusTempleDungeon, followedByIvan), climbUpFromPaterdomusTempleDungeon);
+		cKillMonksOfZamorak.addStep(and(followedByIvan, inPaterdomusTempleF0), killMonksOfZamorak);
+		cKillMonksOfZamorak.addStep(and(followedByIvan), headToPaterdomusTempleF0);
+		steps.put(32, cKillMonksOfZamorak);
+
+		var cKillMonksOfZamorak2 = new ConditionalStep(this, headToPaterdomusTempleF0);
+		cKillMonksOfZamorak2.addStep(and(inPaterdomusTempleF0), killMonksOfZamorak);
+		steps.put(34, cKillMonksOfZamorak2);
+
+		var climbUpToPaterdomusTempleF1 = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
+
+		var cReadBooksMaybe = new ConditionalStep(this, climbUpToPaterdomusTempleF1);
+		talkToIvanInPaterdomusTempleF1 = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
+		talkToIvanInPaterdomusTempleF1.addSubSteps(climbUpToPaterdomusTempleF1);
+		cReadBooksMaybe.addStep(inPaterdomusTempleF1, talkToIvanInPaterdomusTempleF1);
+		steps.put(36, cReadBooksMaybe);
+
+		steps.put(38, cFindTheWritingsPW);
+
+		talkToIvanAfterFindingTheWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after solving the puzzle.");
+		var cTalkToIvanTempleAfterBookPuzzle = new ConditionalStep(this, climbUpToPaterdomusTempleF1);
+		cTalkToIvanTempleAfterBookPuzzle.addStep(inPaterdomusTempleF1, talkToIvanAfterFindingTheWritings);
 		steps.put(40, cTalkToIvanTempleAfterBookPuzzle);
 
-		var ivandisWritings = new ItemRequirement("Ivandis' writings", 33708);
-		var readIvandisWritings = new DetailedQuestStep(this, "Read Ivandis' writings.", ivandisWritings.highlighted());
+		readIvandisWritings = new DetailedQuestStep(this, "Read Ivandis' writings.", ivandisWritings.highlighted());
 		var cReadIvandisWritings = new ConditionalStep(this, cTalkToIvanTempleAfterBookPuzzle);
 		cReadIvandisWritings.addStep(ivandisWritings, readIvandisWritings);
 		steps.put(42, cReadIvandisWritings);
 
-		var talkToIvanAfterReadingIvandisWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan after reading Ivandis' writings.");
-		var cTalkToIvanAfterReadingIvandisWritings = new ConditionalStep(this, climbUpTemple1);
-		cTalkToIvanAfterReadingIvandisWritings.addStep(inZamarokianTempleF2, talkToIvanAfterReadingIvandisWritings);
+		talkToIvanAfterReadingIvandisWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after reading Ivandis' writings.");
+		var cTalkToIvanAfterReadingIvandisWritings = new ConditionalStep(this, climbUpToPaterdomusTempleF1);
+		cTalkToIvanAfterReadingIvandisWritings.addStep(inPaterdomusTempleF1, talkToIvanAfterReadingIvandisWritings);
 		steps.put(44, cTalkToIvanAfterReadingIvandisWritings);
 
-		var talkToIvanInPaterdomus = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Talk to Ivan Strom in the Paterdomus dungeon.");
+		talkToIvanInPaterdomus = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.");
 		var cTalkToIvanInPaterdomus = new ConditionalStep(this, talkToIvanInPaterdomus);
 		steps.put(46, cTalkToIvanInPaterdomus);
 
-		var combatGear = new ItemRequirement("Combat gear + food", -1, -1).isNotConsumed();
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
-		var prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
-
-		// 48 = get there yourself or have him lead the way?
-		var talkToIvanInPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head back to the Myreque hideout with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
+		// TODO: 48 = get there yourself or have him lead the way? What if a user selects "i will take my own route!!!"?
+		var talkToIvanInPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
 		talkToIvanInPaterdomus2.addDialogStep("Lead the way.");
+		talkToIvanInPaterdomus.addSubSteps(talkToIvanInPaterdomus2);
 		var cTalkToIvanInPaterdomus2 = new ConditionalStep(this, talkToIvanInPaterdomus2);
 		steps.put(48, cTalkToIvanInPaterdomus2);
 
-		// TODO: on step 50: do you have to finish talking with veliaf until you say "let's have a look around and see what we can find"? this sets varb 15487 from 0 to 1
-		var getToMyrequeHideout = new DetailedQuestStep(this, new WorldPoint(3500, 9864, 0), "Get to the Myreque hideout");
-		var myrequeHideout = new Zone(new WorldPoint(3485, 9879, 0), new WorldPoint(3516, 9853, 0));
-		var inMyrequeHideout = new ZoneRequirement(myrequeHideout);
-		var anyPickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES);
-		var investigateHole = new ObjectStep(this, 61193, new WorldPoint(3505, 9857, 0), "Investigate the blockage to the south of the hideout.");
-		var cInvestigateHole = new ConditionalStep(this, getToMyrequeHideout);
-		cInvestigateHole.addStep(inMyrequeHideout, investigateHole);
+		// TODO: on step 50: do you have to finish talking with Veliaf until you say "let's have a look around and see what we can find"? this sets varbit 15487 from 0 to 1
+		getToIvandisTomb = new DetailedQuestStep(this, new WorldPoint(3500, 9864, 0), "Get to the Myreque hideout");
+		investigateHole = new ObjectStep(this, 61193, new WorldPoint(3505, 9857, 0), "Investigate the blockage to the south of the hideout.");
+		var cInvestigateHole = new ConditionalStep(this, getToIvandisTomb);
+		cInvestigateHole.addStep(inIvandisTomb, investigateHole);
 		steps.put(50, cInvestigateHole);
 
 		// 15486 = has talked about pickaxe
 		// 15469 = has received pickaxe
-		var canReceivePickaxeFromIvan = new VarbitRequirement(15469, 0);
 		var getPickaxe = new NpcStep(this, 15855, new WorldPoint(3505, 9861, 0), "Ask Ivan Strom for a pickaxe", anyPickaxe);
-		var mineHole = new ObjectStep(this, 61194, new WorldPoint(3505, 9857, 0), "Mine the blockage to the south of the hideout.", anyPickaxe);
-		var cMineHole = new ConditionalStep(this, getToMyrequeHideout);
-		cMineHole.addStep(and(inMyrequeHideout, anyPickaxe), mineHole);
-		cMineHole.addStep(and(inMyrequeHideout, canReceivePickaxeFromIvan), getPickaxe);
-		cMineHole.addStep(and(inMyrequeHideout), mineHole);
+		mineHole = new ObjectStep(this, 61194, new WorldPoint(3505, 9857, 0), "Mine the blockage to the south of the hideout.", anyPickaxe);
+		mineHole.addSubSteps(getPickaxe);
+		var cMineHole = new ConditionalStep(this, getToIvandisTomb);
+		cMineHole.addStep(and(inIvandisTomb, anyPickaxe), mineHole);
+		cMineHole.addStep(and(inIvandisTomb, canReceivePickaxeFromIvan), getPickaxe);
+		cMineHole.addStep(and(inIvandisTomb), mineHole);
 		steps.put(52, cMineHole);
 
-		var headThroughHole = new ObjectStep(this, 61195, new WorldPoint(3505, 9857, 0), "Head through the cave entrance to the south of the hideout, ready for a fight.", combatGear, blisterwoodFlail, prayerPotions);
-		var cHeadThroughHole = new ConditionalStep(this, getToMyrequeHideout);
-		cHeadThroughHole.addStep(inMyrequeHideout, headThroughHole);
+		headThroughHole = new ObjectStep(this, 61195, new WorldPoint(3505, 9857, 0), "Head through the cave entrance to the south of the hideout, ready for a fight.", blisterwoodFlail, combatGear, food, prayerPotions);
+		var cHeadThroughHole = new ConditionalStep(this, getToIvandisTomb);
+		cHeadThroughHole.addStep(inIvandisTomb, headThroughHole);
 		steps.put(54, cHeadThroughHole);
 
-		var castleMines = new Zone(new WorldPoint(3119, 7479, 2), new WorldPoint(3088, 7433, 2));
-		var inCastleMines = new ZoneRequirement(castleMines);
-		var enterTunnel1 = new ObjectStep(this, 61197, new WorldPoint(3117, 7472, 2), "Continue through the tunnel to the north-east.");
+		enterDaeyaltProcessingRoom = new ObjectStep(this, 61197, new WorldPoint(3117, 7472, 2), "Head into the daeyalt processing room through the tunnel to the north-east.", blisterwoodFlail, combatGear, food, prayerPotions);
 		var cWalkThroughCastle = new ConditionalStep(this, cHeadThroughHole);
-		cWalkThroughCastle.addStep(inCastleMines, enterTunnel1);
+		cWalkThroughCastle.addStep(inCastleDrakanMines, enterDaeyaltProcessingRoom);
 		steps.put(56, cWalkThroughCastle);
 
-		var vampZone = new Zone(new WorldPoint(3196, 7447, 0), new WorldPoint(3164, 7469, 0));
-		var inVampZone = new ZoneRequirement(vampZone);
-		var killVampsAgain = new NpcStep(this, new int[]{16125, 16126, 16137, 16136, 16137}, "Kill vampyres. Focus on the Vyrewatch Sentinels. Avoid the Blood orb. Lure Vyrewatches into the Blood orbs to deal massive damage to them.", combatGear, prayerPotions, blisterwoodFlail);
-		killVampsAgain.setAllowMultipleHighlights(true);
+		killVampsInDaeyaltRoom = new NpcStep(this, new int[]{16125, 16126, 16137, 16136, 16137}, "Kill vampyres. Focus on the Vyrewatch Sentinels. Avoid the Blood orb. Lure Vyrewatches into the Blood orbs to deal massive damage to them.", blisterwoodFlail, combatGear, food, prayerPotions);
+		killVampsInDaeyaltRoom.setAllowMultipleHighlights(true);
 		var cWalkThroughCastle2 = new ConditionalStep(this, cWalkThroughCastle);
-		cWalkThroughCastle2.addStep(inVampZone, killVampsAgain);
+		cWalkThroughCastle2.addStep(inCastleDrakanDaeyaltProcessingArea, killVampsInDaeyaltRoom);
 		steps.put(58, cWalkThroughCastle2);
 
-		var talkToIvanAfterKillingVamps = new NpcStep(this, 15864, new WorldPoint(3178, 7459, 0), "Talk to Ivan after killing the vampyres.");
+		// TODO: who do we actually talk to here. is this a "free the slave" step instead?
+		talkToIvanAfterKillingVamps = new NpcStep(this, 15864, new WorldPoint(3178, 7459, 0), "Talk to Ivan after killing the vampyres.");
 		var cWalkThroughCastle3 = new ConditionalStep(this, cWalkThroughCastle);
-		cWalkThroughCastle3.addStep(inVampZone, talkToIvanAfterKillingVamps);
+		cWalkThroughCastle3.addStep(inCastleDrakanDaeyaltProcessingArea, talkToIvanAfterKillingVamps);
 		steps.put(60, cWalkThroughCastle3);
 
-		var enterEntryXD = new ObjectStep(this, 61205, new WorldPoint(3182, 7470, 0), "Continue through the tunnels.");
+		enterCastleDrakanCellar = new ObjectStep(this, 61205, new WorldPoint(3182, 7470, 0), "Enter the Castle Drakan cellars through the entry to the east (TODO CHECK CARDINAL DIRECTION).");
 		var cWalkThroughCastle4 = new ConditionalStep(this, cWalkThroughCastle3);
-		cWalkThroughCastle4.addStep(inVampZone, enterEntryXD);
+		cWalkThroughCastle4.addStep(inCastleDrakanDaeyaltProcessingArea, enterCastleDrakanCellar);
 		steps.put(62, cWalkThroughCastle4);
 
-		var afterVampZone = new Zone(new WorldPoint(3142, 7595, 0), new WorldPoint(3187, 7569, 0));
-		var inafterVampZone = new ZoneRequirement(afterVampZone);
-
-		var climbUpStairs = new ObjectStep(this, 61207, new WorldPoint(3147, 7578, 0), "climb up the stairs");
+		climbUpToCastleDrakanLobby = new ObjectStep(this, 61207, new WorldPoint(3147, 7578, 0), "Climb up the stairs to the Castle Drakan lobby.");
 		var cWalkThroughCastle5 = new ConditionalStep(this, cWalkThroughCastle4);
-		cWalkThroughCastle5.addStep(inafterVampZone, climbUpStairs);
+		cWalkThroughCastle5.addStep(inCastleDrakanCellar, climbUpToCastleDrakanLobby);
 		steps.put(64, cWalkThroughCastle5);
 
-		var castleEntrance = new Zone(new WorldPoint(3172, 7724, 0), new WorldPoint(3146, 7699, 0));
-		var inCastleEntrance = new ZoneRequirement(castleEntrance);
-
 		// TODO(FOR FUTURE ADVENTURERS): Do you _need_ to bring the medallion for this?
-		var prayAtShrine = new ObjectStep(this, 61226, new WorldPoint(3168, 7707, 0), "Pray at the shrine to let your Drakan's Medallion teleport you here.", drakanMedallion);
-		var needTeleportUnlock = new VarbitRequirement(15470, 0);
-		var doSomethingElkse = new DetailedQuestStep(this, "continue!!");
+		prayAtShrine = new ObjectStep(this, 61226, new WorldPoint(3168, 7707, 0), "Pray at the shrine to let your Drakan's Medallion teleport you here.", drakansMedallion);
 		var cWalkThroughCastle6 = new ConditionalStep(this, cWalkThroughCastle4);
-		cWalkThroughCastle6.addStep(and(inCastleEntrance, needTeleportUnlock), prayAtShrine);
-		cWalkThroughCastle6.addStep(and(inCastleEntrance), doSomethingElkse);
+		cWalkThroughCastle6.addStep(and(inCastleDrakanLobby, needTeleportUnlock), prayAtShrine);
+		cWalkThroughCastle6.addStep(and(inCastleDrakanLobby), todo);
 		steps.put(66, cWalkThroughCastle6);
 
 		return steps;
@@ -635,7 +752,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
-			sampleRequirement
+			blisterwoodFlail,
+			vyreNobleOutfit
 		);
 	}
 
@@ -643,8 +761,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
+			combatGear,
 			energyRestorePotion,
-			drakanMedallion
+			drakansMedallion
 		);
 	}
 
@@ -703,15 +822,76 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var sections = new ArrayList<PanelDetails>();
 
 		sections.add(new PanelDetails("Starting off", List.of(
-			startQuest
+			startQuest,
+			cLookForIvan,
+			inspectShrine,
+			talkToIvanGoingToDarkmeyer1,
+			defendIvanFromVyres,
+			talkToIvanAfterEscaping
 		), List.of(
-			// sampleRequirement
+			blisterwoodFlail,
+			combatGear,
+			food,
+			prayerPotions,
+			vyreNobleOutfit
+		)));
+
+		sections.add(new PanelDetails("Finding Veliaf", List.of(
+			talkToIvanOutsideSlepeChurch,
+			askRoyAboutVeliaf,
+			cLookIntoCommotionAtCrombwickManor,
+			killVampyresWithVeliaf,
+			talkToVeliafInCrombwickManor
+		), List.of(
+			blisterwoodFlail,
+			combatGear,
+			food,
+			prayerPotions
+		)));
+
+		sections.add(new PanelDetails("The Writings", List.of(
+			talkToIvanPaterdomus1,
+			readSquiresJournal,
+			talkToIvanPaterdomus2,
+			killMonksOfZamorak,
+			talkToIvanInPaterdomusTempleF1,
+			cFindTheWritingsPW,
+			talkToIvanAfterFindingTheWritings,
+			readIvandisWritings,
+			talkToIvanAfterReadingIvandisWritings
+		), List.of(
+			combatGear,
+			food
+		), List.of(
+			freeInvSlots6
+		)));
+
+		sections.add(new PanelDetails("Infiltrating Castle Drakan", List.of(
+			talkToIvanInPaterdomus,
+			getToIvandisTomb,
+			investigateHole,
+			mineHole,
+			headThroughHole,
+			enterDaeyaltProcessingRoom,
+			killVampsInDaeyaltRoom,
+			talkToIvanAfterKillingVamps,
+			enterCastleDrakanCellar,
+			climbUpToCastleDrakanLobby,
+			prayAtShrine
+		), List.of(
+			blisterwoodFlail,
+			combatGear,
+			food,
+			prayerPotions,
+			anyPickaxe,
+			drakansMedallion
+		), List.of(
+			freeInvSlots6
 		)));
 
 		sections.add(new PanelDetails("TODO", List.of(
 			todo
 		), List.of(
-			// sampleRequirement
 		)));
 
 		return sections;

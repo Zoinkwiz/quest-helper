@@ -53,7 +53,9 @@ import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.api.ChatMessageType;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -611,9 +613,14 @@ public class QuestHelperPlugin extends Plugin
 	 * quests. Post a message with namespace "questhelper", name "start", and
 	 * a "quest" entry in the data map containing the helper's display name:
 	 * </p>
+	 * The data map must also carry a "source" entry with the requesting
+	 * plugin's display name; the start is announced in the player's chat so
+	 * it is always visible which plugin triggered it.
 	 * <pre>{@code
-	 * eventBus.post(new PluginMessage("questhelper", "start", Map.of("quest", "Dragon Slayer I")));
-	 * eventBus.post(new PluginMessage("questhelper", "start", Map.of("quest", "Ardougne Elite Diary")));
+	 * eventBus.post(new PluginMessage("questhelper", "start",
+	 * 	Map.of("quest", "Dragon Slayer I", "source", "My Plugin")));
+	 * eventBus.post(new PluginMessage("questhelper", "start",
+	 * 	Map.of("quest", "Ardougne Elite Diary", "source", "My Plugin")));
 	 * }</pre>
 	 *
 	 * @param event The plugin message posted by another plugin.
@@ -627,13 +634,21 @@ public class QuestHelperPlugin extends Plugin
 		}
 
 		Object quest = event.getData().get("quest");
-		if (!(quest instanceof String))
+		Object source = event.getData().get("source");
+		if (!(quest instanceof String) || !(source instanceof String))
 		{
-			log.debug("Ignoring quest helper start plugin message with invalid quest payload: {}", quest);
+			log.debug("Ignoring quest helper start plugin message with invalid quest or source payload: {} (source {})", quest, source);
 			return;
 		}
 
-		clientThread.invokeLater(() -> questMenuHandler.startUpQuest((String) quest));
+		clientThread.invokeLater(() ->
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.GAMEMESSAGE)
+				.runeLiteFormattedMessage("Quest Helper for " + quest + " started, requested by " + source + ".")
+				.build());
+			questMenuHandler.startUpQuest((String) quest);
+		});
 	}
 
 	public void displayPanel()

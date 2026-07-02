@@ -618,9 +618,13 @@ public class QuestHelperPlugin extends Plugin
 	 * it is always visible which plugin triggered it.
 	 * <pre>{@code
 	 * eventBus.post(new PluginMessage("questhelper", "start",
-	 * 	Map.of("quest", "Dragon Slayer I", "source", "My Plugin")));
+	 * 	Map.of("quest", "Dragon Slayer I", "source", "<My Plugin>")));
 	 * eventBus.post(new PluginMessage("questhelper", "start",
-	 * 	Map.of("quest", "Ardougne Elite Diary", "source", "My Plugin")));
+	 * 	Map.of("quest", "Ardougne Elite Diary", "source", "<My Plugin>")));
+	 * eventBus.post(new PluginMessage("questhelper", "start",
+	 * 	Map.of("quest", "Herb run", "source", "<My Plugin>")));
+	 * eventBus.post(new PluginMessage("questhelper", "start",
+	 * 	Map.of("quest", "Agility", "source", "<My Plugin>")));
 	 * }</pre>
 	 *
 	 * @param event The plugin message posted by another plugin.

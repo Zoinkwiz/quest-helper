@@ -59,6 +59,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
@@ -597,6 +598,42 @@ public class QuestHelperPlugin extends Plugin
 				questMenuHandler.startUpQuest(questName);
 			}
 		}
+	}
+
+	/**
+	 * Allows other plugins to start ANY helper via a {@link PluginMessage},
+	 * mirroring the plugin message convention Quest Helper already uses to
+	 * integrate with other plugins (e.g. Shortest Path).
+	 * <p>
+	 * The lookup goes through the same generic path as the sidebar and quest
+	 * list, so every registered helper type works: quests, miniquests,
+	 * achievement diaries, skill helpers, generic helpers, and player-made
+	 * quests. Post a message with namespace "questhelper", name "start", and
+	 * a "quest" entry in the data map containing the helper's display name:
+	 * </p>
+	 * <pre>{@code
+	 * eventBus.post(new PluginMessage("questhelper", "start", Map.of("quest", "Dragon Slayer I")));
+	 * eventBus.post(new PluginMessage("questhelper", "start", Map.of("quest", "Ardougne Elite Diary")));
+	 * }</pre>
+	 *
+	 * @param event The plugin message posted by another plugin.
+	 */
+	@Subscribe
+	public void onPluginMessage(PluginMessage event)
+	{
+		if (!"questhelper".equals(event.getNamespace()) || !"start".equals(event.getName()))
+		{
+			return;
+		}
+
+		Object quest = event.getData().get("quest");
+		if (!(quest instanceof String))
+		{
+			log.debug("Ignoring quest helper start plugin message with invalid quest payload: {}", quest);
+			return;
+		}
+
+		clientThread.invokeLater(() -> questMenuHandler.startUpQuest((String) quest));
 	}
 
 	public void displayPanel()

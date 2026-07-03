@@ -324,7 +324,7 @@ public class HelperScaffoldGenerator
 		return new GeneratedScaffold(out.toString(), warnings);
 	}
 
-	private void appendSectionSetupComment(StringBuilder out, DraftOrderLine line)
+	private static void appendSectionSetupComment(StringBuilder out, DraftOrderLine line)
 	{
 		String sectionName = line.getSuggestedVarName() == null || line.getSuggestedVarName().isBlank() ? "Unnamed Section" : line.getSuggestedVarName();
 		out.append("\t\t// Section: ").append(escape(sectionName));
@@ -356,7 +356,7 @@ public class HelperScaffoldGenerator
 		appendExtraStepRequirements(out, draft, varName, step, requirementVarNamesByRawId, warnings);
 	}
 
-	public void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
+	public static void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
 	{
 		String point = worldPointLiteral(step);
 		List<Integer> ids = DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds());
@@ -399,7 +399,7 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	public void appendTextGenericDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction)
+	public static void appendTextGenericDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction)
 	{
 		if (step.getWorldPoint() != null)
 		{
@@ -414,7 +414,7 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	String worldPointLiteral(DraftStep step)
+	static String worldPointLiteral(DraftStep step)
 	{
 		if (step.getWorldPoint() == null)
 		{
@@ -448,7 +448,7 @@ public class HelperScaffoldGenerator
 		return Math.max(q, 1);
 	}
 
-	void appendExtraStepRequirements(
+	static void appendExtraStepRequirements(
 		StringBuilder out,
 		DraftHelper draft,
 		String varName,
@@ -838,7 +838,7 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	private void appendOrderZoneRequirementInits(
+	private static void appendOrderZoneRequirementInits(
 		StringBuilder out,
 		DraftHelper draft,
 		Map<String, String> zoneFieldByOrderSlotId,
@@ -949,7 +949,7 @@ public class HelperScaffoldGenerator
 		return null;
 	}
 
-	private void appendPanelsFromSections(
+	private static void appendPanelsFromSections(
 		StringBuilder out,
 		List<SectionGroup> sectionGroups,
 		Map<String, String> slotVarNames,
@@ -1127,7 +1127,7 @@ public class HelperScaffoldGenerator
 		}
 	}
 
-	String escape(String text)
+	static String escape(String text)
 	{
 		return escapeJavaLiteral(text);
 	}

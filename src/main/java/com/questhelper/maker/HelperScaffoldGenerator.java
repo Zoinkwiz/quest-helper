@@ -33,6 +33,7 @@ import lombok.Getter;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
@@ -356,7 +357,7 @@ public class HelperScaffoldGenerator
 		appendExtraStepRequirements(out, draft, varName, step, requirementVarNamesByRawId, warnings);
 	}
 
-	public static void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, String varName, String instruction, List<String> warnings)
+	public static void appendNpcObjectDefinitionSetup(StringBuilder out, DraftStep step, @Nullable String varName, String instruction, List<String> warnings)
 	{
 		String point = worldPointLiteral(step);
 		List<Integer> ids = DraftRoutingIds.mergedStepOrRequirementIds(step.getRawId(), step.getAlternateRawIds());
@@ -365,17 +366,23 @@ public class HelperScaffoldGenerator
 		{
 			symbols.add(String.valueOf(step.getRawId()));
 		}
+
+		if (varName != null)
+		{
+			out.append("\t\t").append(varName).append(" = ");
+		}
+
 		if (step.getKind() == StepKind.NPC)
 		{
 			if (symbols.size() == 1)
 			{
-				out.append("\t\t").append(varName).append(" = new NpcStep(this, ")
+				out.append("new NpcStep(this, ")
 					.append(symbols.get(0)).append(", ").append(point).append(", \"")
 					.append(escape(instruction)).append("\", true);\n");
 			}
 			else
 			{
-				out.append("\t\t").append(varName).append(" = new NpcStep(this, new int[]{")
+				out.append("new NpcStep(this, new int[]{")
 					.append(String.join(", ", symbols)).append("}, ").append(point).append(", \"")
 					.append(escape(instruction)).append("\", true);\n");
 			}
@@ -383,7 +390,7 @@ public class HelperScaffoldGenerator
 		else
 		{
 			String lead = symbols.get(0);
-			out.append("\t\t").append(varName).append(" = new ObjectStep(this, ")
+			out.append("new ObjectStep(this, ")
 				.append(lead).append(", ").append(point).append(", \"")
 				.append(escape(instruction)).append("\", true");
 			if (symbols.size() > 1)

@@ -243,6 +243,12 @@ public interface QuestHelperConfig extends Config
 		CLIPBOARD
 	}
 
+	enum QuestHelperMakerMenuVisibility
+	{
+		SHOW_IF_UI_OPEN,
+		SHOW_ALWAYS
+	}
+
 	@ConfigItem(
 		keyName = "autostartQuests",
 		name = "Auto start helper",
@@ -741,6 +747,18 @@ public interface QuestHelperConfig extends Config
 	default QuestHelperMakerMode constructModeMode()
 	{
 		return QuestHelperMakerMode.FULL;
+	}
+
+	@ConfigItem(
+		keyName = "constructModeMenuVisibility",
+		name = "Menu entry visibility",
+		description = "Decides when the right-click menu entries on objects and npcs will be visible",
+		position = 1,
+		section = questHelperMakerSection
+	)
+	default QuestHelperMakerMenuVisibility constructModeMenuVisibility()
+	{
+		return QuestHelperMakerMenuVisibility.SHOW_IF_UI_OPEN;
 	}
 
 	@ConfigSection(

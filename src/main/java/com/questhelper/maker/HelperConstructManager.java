@@ -372,7 +372,12 @@ public class HelperConstructManager
 	public void setupConstructMenuOptions(MenuEntryAdded event)
 	{
 		ensureDraftLoaded();
-		if (!config.constructModeEnabled() || !makerUiOpen)
+		if (!config.constructModeEnabled())
+		{
+			return;
+		}
+
+		if (!makerUiOpen && config.constructModeMenuVisibility() == QuestHelperConfig.QuestHelperMakerMenuVisibility.SHOW_IF_UI_OPEN)
 		{
 			return;
 		}

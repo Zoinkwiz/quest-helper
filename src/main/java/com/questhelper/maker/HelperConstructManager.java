@@ -472,6 +472,15 @@ public class HelperConstructManager
 				});
 				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Stop making zone", tileTarget, this::stopZoneCreationFromUi);
 			}
+
+			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Copy WorldPoint", tileTarget, () ->
+			{
+				String stepString = "new WorldPoint" +
+					formatWorldPoint(tilePoint) +
+					"";
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(stepString), null);
+				sendGameMessage("Quest Helper Construct: copied WorldPoint to clipboard.");
+			});
 		}
 		else
 		{

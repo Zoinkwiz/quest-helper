@@ -6,6 +6,7 @@ package com.questhelper.helpers.quests.thebloodmoonrises;
 
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
@@ -26,6 +27,7 @@ import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -782,6 +784,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var inStorageRoom = castleDrakanRoom.eq(6);
 		var inStudy = castleDrakanRoom.eq(7);
 		var inHallwayWestOfDiningRoom = castleDrakanRoom.eq(8);
+		var inEmblemGallery = castleDrakanRoom.eq(13);
+		var inWestChapelHallway = castleDrakanRoom.eq(15);
+		var inNorthChapelHallway = castleDrakanRoom.eq(17);
 
 		// FIRST FLOOR
 		var inVanesculasStudy = castleDrakanRoom.eq(23);
@@ -792,6 +797,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var inLobbyF1 = and(onF1, inLobby);
 		var inHallwayNorthOfLobby = castleDrakanRoom.eq(34);
 		var inVanesculasHallway = castleDrakanRoom.eq(35);
+		var inRanisHallway = castleDrakanRoom.eq(36);
+		var inRanisParlour = castleDrakanRoom.eq(26);
 		var inVenatorRoom = castleDrakanRoom.eq(37);
 
 		var enterThroneRoomFromDiningRoom = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 0), "Enter the throne room.");
@@ -890,6 +897,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		anyEmblem.addAlternates(33732, 33733);
 		var anyEmblem2 = new ItemRequirement("Drakan emblem", 33731, 2).highlighted();
 		anyEmblem2.addAlternates(33732, 33733);
+		var anyEmblem3 = anyEmblem2.quantity(3);
 
 		var exitEmblemRoom1 = new ObjectStep(this, 61572, new WorldPoint(2455, 7381, 0), "Return to the explosive room.", explosiveBarrel, tinderbox, drakanEmblem1);
 		var exitEastExplosiveRoom = new ObjectStep(this, 61572, new WorldPoint(2444, 7386, 0), "Exit the explosive room through the east door.", explosiveBarrel, tinderbox, drakanEmblem1);
@@ -1037,8 +1045,61 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var cmkLeaveVanesculasChamber = new ObjectStep(this, 61573, new WorldPoint(2483, 7368, 0), "Leave Vanescula's room.", drakanEmblem3);
 		var cmkTakeEmblemFromVanesculasStudy = new ObjectStep(this, 61639, new WorldPoint(2476, 7367, 0), "Take emblem from vanescula's study", drakanEmblem3);
 		var cmkLeaveVanesculasStudy = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Leave vanescula's study", anyEmblem2);
+		var cmkRetrieveThirdEmblem = new ObjectStep(this, 61634, new WorldPoint(2469, 7408, 0), "Remove the third emblem from the receptacle.");
+		var cmkPutEmblemInEastDoor = new ObjectStep(this, 61636, new WorldPoint(2476, 7410, 0), "Place an emblem in the empty receptacle by the east wall.", anyEmblem3);
+		var cmkEnterEastDoor = new ObjectStep(this, 61572, new WorldPoint(2477, 7409, 0), "Enter the door to Ranis' hallway.", anyEmblem2);
+		var cmkPutEmblemInRanisHallwayNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Place an emblem in the empty receptacle at the north door.", anyEmblem2);
+		var cmkEnterRanisParlour = new ObjectStep(this, 61576, new WorldPoint(2485, 7405, 0), "Enter Ranis' parlour");
+		var ornateSkull = new ItemRequirement("Ornate skull", 33741);
+		var cmkGetSkull = new DetailedQuestStep(this, new WorldPoint(2471, 7384, 0), "Get the ornate skull from the table in the room.", ornateSkull);
+		var cmkLeaveRanisParlourRoom = new ObjectStep(this, 61577, new WorldPoint(2475, 7379, 0), "Leave Ranis' parlour room", ornateSkull);
+		var cmkRemoveEmblemRanisNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Remove emblem from the receptacle.", ornateSkull);
+		var cmkClimbDownStairsRanisHallway = new ObjectStep(this, 61604, new WorldPoint(2491, 7402, 0), "Climb-down Stairs.", ornateSkull, anyEmblem2);
+		var cmkPlaceEmblemDownstairs = new ObjectStep(this, 61632, new WorldPoint(2371, 7410, 0), "Place an emblem in the receptacle to the west, avoiding the traps on the floor.", ornateSkull, anyEmblem2);
+		cmkPlaceEmblemDownstairs.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
+			new WorldPoint(2378, 7411, 0),
+			new WorldPoint(2379, 7411, 0),
+			new WorldPoint(2379, 7412, 0),
+			new WorldPoint(2378, 7412, 0)
+		);
+		var cmkEnterWestChapelHallway = new ObjectStep(this, 61572, new WorldPoint(2372, 7409, 0), "Enter the west chapel hallway.", ornateSkull, anyEmblem);
+		var cmkPutEmblemInWestChapelHallway = new ObjectStep(this, 61631, new WorldPoint(2370, 7383, 0), "Place an emblem in the empty receptacle by the western door.", anyEmblem);
+		var cmkEnterEmblemGallery = new ObjectStep(this, 61572, new WorldPoint(2369, 7384, 0), "Enter the emblem gallery.");
+		var cmkTalkToVeliaf = new NpcStep(this, 15878, new WorldPoint(2379, 7367, 0), "Talk-to Veliaf Hurtz.");
+		var cmkOpenEmblemGalleryChest = new ObjectStep(this, 61681, new WorldPoint(2379, 7372, 0), "Search Chest.");
+		var inArrowPuzzle = new WidgetTextRequirement(810, 15, 9, "Confirm");
+		// TODO: puzzle wrap?
+		var cmkArrowChestPuzzleStep = new ArrowChestPuzzleStep(this);
+		cmkArrowChestPuzzleStep.setSolution(1,2,1,3,3);
+		var cmkGetTheKeyFromTheChest = new ObjectStep(this, 61681, new WorldPoint(2379, 7372, 0), "Search the chest in the emblem gallery in Castle Drakan where you first spoke with Veliaf for the Crescent moon key. You will need 3 emblems to get all the way there again.");
+
+		var anyEmblemInVanesculasHallwayEast = new VarbitRequirement(15506, 1, Operation.GREATER_EQUAL);
+		var anyEmblemInRanisHallwayNorth = new VarbitRequirement(15505, 1, Operation.GREATER_EQUAL);
+		var noEmblemInRanisHallwayNorth = new VarbitRequirement(15505, 0);
+		var anyEmblemInNorthChapelHallway = new VarbitRequirement(15502, 1, Operation.GREATER_EQUAL);
+		var anyEmblemInWestChapelHallway = new VarbitRequirement(15501, 1, Operation.GREATER_EQUAL);
+		var cmkHasSpokenWithVeliaf = new VarbitRequirement(15464, 74, Operation.GREATER_EQUAL);
+		var cmkSolvedChestPuzzle = new VarbitRequirement(15512, 1);
+		var crescentMoonKey = new ItemRequirement("Crescent moon key", 33726);
 
 		var getCrescentMoonKey = new ConditionalStep(this, todo3, "Get the Crescent Moon Key.");
+		getCrescentMoonKey.addStep(cmkSolvedChestPuzzle, cmkGetTheKeyFromTheChest);
+		getCrescentMoonKey.addStep(and(inEmblemGallery, cmkHasSpokenWithVeliaf, inArrowPuzzle), cmkArrowChestPuzzleStep);
+		getCrescentMoonKey.addStep(and(inEmblemGallery, cmkHasSpokenWithVeliaf), cmkOpenEmblemGalleryChest);
+		getCrescentMoonKey.addStep(and(inEmblemGallery), cmkTalkToVeliaf);
+		getCrescentMoonKey.addStep(and(inWestChapelHallway, anyEmblemInWestChapelHallway), cmkEnterEmblemGallery);
+		getCrescentMoonKey.addStep(and(inWestChapelHallway), cmkPutEmblemInWestChapelHallway);
+		getCrescentMoonKey.addStep(and(inNorthChapelHallway, anyEmblemInNorthChapelHallway), cmkEnterWestChapelHallway);
+		getCrescentMoonKey.addStep(and(inNorthChapelHallway), cmkPlaceEmblemDownstairs);
+		getCrescentMoonKey.addStep(and(inRanisHallway, noEmblemInRanisHallwayNorth, ornateSkull, anyEmblem2), cmkClimbDownStairsRanisHallway);
+		getCrescentMoonKey.addStep(and(inRanisHallway, anyEmblemInRanisHallwayNorth, ornateSkull), cmkRemoveEmblemRanisNorth);
+		getCrescentMoonKey.addStep(and(inRanisParlour, ornateSkull), cmkLeaveRanisParlourRoom);
+		getCrescentMoonKey.addStep(and(inRanisParlour), cmkGetSkull);
+		getCrescentMoonKey.addStep(and(inRanisHallway, anyEmblemInRanisHallwayNorth), cmkEnterRanisParlour);
+		getCrescentMoonKey.addStep(and(inRanisHallway), cmkPutEmblemInRanisHallwayNorth);
+		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyEmblemInVanesculasHallwayEast), cmkEnterEastDoor);
+		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyEmblem3), cmkPutEmblemInEastDoor);
+		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyEmblem2), cmkRetrieveThirdEmblem);
 		getCrescentMoonKey.addStep(and(inVanesculasStudy, anyEmblem2), cmkLeaveVanesculasStudy);
 		getCrescentMoonKey.addStep(and(inVanesculasStudy, drakanEmblem3), cmkTakeEmblemFromVanesculasStudy);
 		getCrescentMoonKey.addStep(and(inVanesculasChamber, drakanEmblem3), cmkLeaveVanesculasChamber);
@@ -1055,6 +1116,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		getCrescentMoonKey.addStep(inLobbyF0, cmkToLobbyF1);
 		getCrescentMoonKey.addStep(inDiningRoom, cmkToLobby);
 
+		var getNewMoonKey = new ConditionalStep(this, todo3, "Get the new moon key.");
+		// TODO: Get the new moon key
+
+		cVampyrium2.addStep(crescentMoonKey, getNewMoonKey);
 		cVampyrium2.addStep(hasGottenDrakanEmblemFromFireplace, getCrescentMoonKey);
 
 		cVampyrium2.addStep(and(inVampyriumVarbit, not(smallClockHand), smallClockHandNeedsReplacing), getSmallClockHand);
@@ -1067,6 +1132,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cVampyrium2.addStep(inVampyriumVarbit, todoVampyriumPuzzle);
 
 		steps.put(72, cVampyrium2);
+		// 72 -> 74 after talking to Veliaf in the emblem gallery
+		steps.put(74, cVampyrium2);
 
 		return steps;
 	}

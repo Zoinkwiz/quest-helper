@@ -378,7 +378,7 @@ public class HelperScaffoldGenerator
 			{
 				out.append("new NpcStep(this, ")
 					.append(symbols.get(0)).append(", ").append(point).append(", \"")
-					.append(escape(instruction)).append("\", true);\n");
+					.append(escape(instruction)).append("\");\n");
 			}
 			else
 			{
@@ -392,7 +392,7 @@ public class HelperScaffoldGenerator
 			String lead = symbols.get(0);
 			out.append("new ObjectStep(this, ")
 				.append(lead).append(", ").append(point).append(", \"")
-				.append(escape(instruction)).append("\", true");
+				.append(escape(instruction)).append("\"");
 			if (symbols.size() > 1)
 			{
 				out.append(").addAlternateObjects(")

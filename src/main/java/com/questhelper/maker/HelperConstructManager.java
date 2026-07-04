@@ -407,7 +407,14 @@ public class HelperConstructManager
 				int npcId = npc.getId();
 				addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add NPC Step", target, () ->
 				{
-					addStep(StepKind.NPC, npcId, option, target, clickedWorldPoint);
+					if (config.constructModeMode() == QuestHelperConfig.QuestHelperMakerMode.FULL)
+					{
+						addStep(StepKind.NPC, npcId, option, target, clickedWorldPoint);
+					}
+					else
+					{
+						copyStep(StepKind.NPC, npcId, option, target, clickedWorldPoint);
+					}
 				});
 				DraftStep selected = selectedConstructMenuStepOrNull();
 				if (selected != null && selected.getKind() == StepKind.NPC)

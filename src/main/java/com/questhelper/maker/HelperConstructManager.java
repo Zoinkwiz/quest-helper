@@ -852,9 +852,20 @@ public class HelperConstructManager
 		requirement.setRequirementId("item:" + idToUse);
 		requirement.setRawId(idToUse);
 		requirement.setDisplayName(normalizeText(target).isBlank() ? "Captured Item" : normalizeText(target));
-		currentDraft.getRequirements().add(requirement);
-		saveDraftToConfig();
-		sendGameMessage("Quest Helper Construct: added item requirement (" + idToUse + ").");
+
+		if (config.constructModeMode() == QuestHelperConfig.QuestHelperMakerMode.FULL)
+		{
+			currentDraft.getRequirements().add(requirement);
+			saveDraftToConfig();
+			sendGameMessage("Quest Helper Construct: added item requirement (" + idToUse + ").");
+		}
+		else
+		{
+			String stepString = "new ItemRequirement(\"" +
+				requirement.getDisplayName() + "\", " + idToUse + ")";
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(stepString), null);
+			sendGameMessage("Quest Helper Construct: copied ItemRequirement to clipboard.");
+		}
 	}
 
 	private void addGenericStepFromItem(int rawId, String target)

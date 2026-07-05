@@ -10,8 +10,9 @@ import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.CombatLevelRequirement;
@@ -22,6 +23,7 @@ import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nand;
 import static com.questhelper.requirements.util.LogicHelper.nor;
 import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitBuilder;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -46,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.questhelper.steps.WidgetStep;
-import com.questhelper.tools.QuestTile;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -66,15 +67,18 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	// Required items
 	ItemRequirement blisterwoodFlail;
 	ItemRequirement vyreNobleOutfit;
+	ItemRequirement tinderbox;
 
 	// Recommended items
 	ItemRequirement combatGear;
+	ItemRequirement combatGearMelee;
 	ItemRequirement food;
 	ItemRequirement prayerPotions;
 	ItemRequirement energyRestorePotion;
 	ItemRequirement drakansMedallion;
 	ItemRequirement anyPickaxe;
 	FreeInventorySlotRequirement freeInvSlots6;
+	ItemRequirement drakansMedallionToCastleDrakan;
 
 	// Mid-quest item requirements
 	ItemRequirement squiresJournal;
@@ -85,6 +89,18 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	ItemRequirement piousProceedings;
 	ItemRequirement fromMisthalinToMorytania;
 	ItemRequirement ivandisWritings;
+
+	ItemRequirement halfMoonKey;
+	ItemRequirement smallClockHand;
+	ItemRequirement largeClockHand;
+	ItemRequirement drakanEmblem1;
+	ItemRequirement drakanEmblem2;
+	ItemRequirement drakanEmblem3;
+	ItemRequirement anyOneEmblem;
+	ItemRequirement anyOneEmblemHighlighted;
+	ItemRequirement anyTwoEmblemHighlighted;
+	ItemRequirement anyThreeEmblemHighlighted;
+	ItemRequirement explosiveBarrel;
 
 	// Zones
 	ZoneRequirement inMyrequeHideoutOldManRal;
@@ -99,29 +115,76 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	ZoneRequirement inCastleDrakanDaeyaltProcessingArea;
 	ZoneRequirement inCastleDrakanCellar;
 	ZoneRequirement inCastleDrakanLobby;
+	ZoneRequirement inVampyriumCastleDrakanLobbyCutscene;
 
 	// Miscellaneous requirements
 	VarplayerRequirement followedByIvan;
 	VarbitRequirement canReceivePickaxeFromIvan;
 	VarbitRequirement needTeleportUnlock;
+	VarbitRequirement onF0;
+	VarbitRequirement onF1;
+	VarbitRequirement onF2;
+
+	// GROUND FLOOR
+	Conditions inLobbyF0;
+	VarbitRequirement inDiningRoom;
+	VarbitRequirement inThroneRoom;
+	VarbitRequirement inRoomSouthOfThroneRoom;
+	VarbitRequirement inStorageRoom;
+	VarbitRequirement inStudy;
+	VarbitRequirement inHallwayWestOfDiningRoom;
+	VarbitRequirement inEmblemGallery;
+	VarbitRequirement inWestChapelHallway;
+	VarbitRequirement inNorthChapelHallway;
+
+	// FIRST FLOOR
+	VarbitRequirement inVanesculasStudy;
+	VarbitRequirement inVanesculasChamber;
+	VarbitRequirement inDrakanEmblemRoomSouthOfExplosiveRoom;
+	VarbitRequirement inExplosiveRoom;
+	VarbitRequirement inHallwayEastOfExplosiveRoom;
+	Conditions inLobbyF1;
+	VarbitRequirement inHallwayNorthOfLobby;
+	VarbitRequirement inVanesculasHallway;
+	VarbitRequirement inRanisHallway;
+	VarbitRequirement inRanisParlour;
+	VarbitRequirement inVenatorRoom;
+
+	VarbitRequirement needToStartThroneRoomPuzzle;
+	VarbitRequirement needToPullBusts;
+	VarbitRequirement needToGetKey;
+	VarbitRequirement doneWithThroneRoomPuzzle;
+	VarbitRequirement needToPullBust3;
+	VarbitRequirement needToPullBust4;
+	VarbitRequirement needToPullBust1;
+
+	VarbitRequirement placedEmblemInVanesculasHallway;
+	VarbitRequirement placedEmblemInVanesculasStudy;
 
 	// Steps
 	// TODO: Remove
 	DetailedQuestStep todo;
+	DetailedQuestStep todo1;
+	DetailedQuestStep todo2;
+	DetailedQuestStep todo3;
+	DetailedQuestStep todo4;
+	DetailedQuestStep todoVampyriumPuzzle;
 
 	/// 0 + 2
 	NpcStep startQuest;
 
 	/// 4
+	ObjectStep goDownToIvan;
 	ConditionalStep cLookForIvan;
 
 	/// 6 + 8
 	ObjectStep inspectShrine;
 
 	/// 10
-	NpcStep talkToIvanGoingToDarkmeyer1;
+	NpcStep talkToIvanGoingToDarkmeyer;
 
 	/// 12
+	NpcStep talkToIvanToReturnToCastleDrakan;
 	DetailedQuestStep defendIvanFromVyres;
 
 	/// 14
@@ -134,6 +197,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	NpcStep askRoyAboutVeliaf;
 
 	/// 20
+	ObjectStep lookIntoCommotion;
+	ObjectStep climbUpToCrombwickManor;
 	ConditionalStep cLookIntoCommotionAtCrombwickManor;
 
 	/// 22
@@ -144,17 +209,22 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 	/// 26
 	NpcStep talkToIvanPaterdomus1;
+	ConditionalStep cHeadToPaterdomus;
 
 	/// 28
 	DetailedQuestStep readSquiresJournal;
 
 	/// 30
 	NpcStep talkToIvanPaterdomus2;
+	ConditionalStep cTalkToIvanAfterReadingTheBook;
 
 	/// 32 + 34
+	ObjectStep climbUpFromPaterdomusTempleDungeon;
+	ObjectStep headToPaterdomusTempleF0;
 	NpcStep killMonksOfZamorak;
 
 	/// 36
+	ObjectStep climbUpToPaterdomusTempleF1;
 	NpcStep talkToIvanInPaterdomusTempleF1;
 
 	/// 38
@@ -172,12 +242,14 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 	/// 46 + 48
 	NpcStep talkToIvanInPaterdomus;
+	NpcStep talkToIvanInPaterdomus2;
 
 	/// 50
 	DetailedQuestStep getToIvandisTomb;
 	ObjectStep investigateHole;
 
 	/// 52
+	NpcStep getPickaxe;
 	ObjectStep mineHole;
 
 	/// 54
@@ -198,8 +270,19 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	/// 64
 	ObjectStep climbUpToCastleDrakanLobby;
 
-	/// 66
+	/// 66 + 68 + 70
 	ObjectStep prayAtShrine;
+	ObjectStep enterPortalInCastleDrakanLobby;
+
+	/// 70
+	DetailedQuestStep youAreInVampyrium;
+
+	/// 72 (Start of Vampyrium Castle Drakan puzzles)
+	/// 74 (Vampyrium Castle Drakan puzzles after finding and talking to Veliaf)
+	// Half moon key
+	ConditionalStep cGetHalfMoonKey;
+	PuzzleWrapperStep cGetHalfMoonKeyPW;
+	ObjectStep getKeyFromThroneRoom;
 
 	@Override
 	protected void setupZones()
@@ -256,6 +339,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var castleDrakanLobby = new Zone(new WorldPoint(3172, 7724, 0), new WorldPoint(3146, 7699, 0));
 		inCastleDrakanLobby = new ZoneRequirement(castleDrakanLobby);
+
+		var vampyriumCastleDrakanLobbyCutscene = new Zone(new WorldPoint(2216, 7262, 0), new WorldPoint(2429, 7475, 0));
+		inVampyriumCastleDrakanLobbyCutscene = new ZoneRequirement(vampyriumCastleDrakanLobbyCutscene);
 	}
 
 	@Override
@@ -273,10 +359,14 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		vyreNobleOutfit.setMustBeEquipped(true);
 		// vyreNobleOutfit.canBeObtainedDuringQuest();
 		vyreNobleOutfit.setTooltip("Can be obtained during the quest in the chest next to Ivan");
+		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).canBeObtainedDuringQuest();
+		tinderbox.appendToTooltip("You can get another one from the storage room (south-west on floor 1)");
 
 		// Recommended items
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		combatGearMelee = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
+		combatGearMelee.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
 		food = new ItemRequirement("Good healing food", ItemCollections.GOOD_EATING_FOOD, -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		// TODO: Are staminas actually necessary?
@@ -288,6 +378,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		freeInvSlots6 = new FreeInventorySlotRequirement(6);
 
+		drakansMedallionToCastleDrakan = new ItemRequirement("Drakan's medallion to Castle Drakan", ItemID.DRAKANS_MEDALLION).isNotConsumed().highlighted();
+
 		// Mid-quest item requirements
 		squiresJournal = new ItemRequirement("Squire's journal", 33701);
 		essiandarsNotes = new ItemRequirement("Essiandar's notes", 33707);
@@ -298,20 +390,170 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		fromMisthalinToMorytania = new ItemRequirement("Misthalin to Morytania", 33702);
 		ivandisWritings = new ItemRequirement("Ivandis' writings", 33708);
 
+		// Vampyrium Castle Drakan items
+		halfMoonKey = new ItemRequirement("Half moon key", 33725);
+		smallClockHand = new ItemRequirement("Small clock hand", 33744);
+		largeClockHand = new ItemRequirement("Large clock hand", 33745);
+		drakanEmblem1 = new ItemRequirement("Drakan emblem", 33731);
+		drakanEmblem2 = new ItemRequirement("Drakan emblem", 33732);
+		drakanEmblem3 = new ItemRequirement("Drakan emblem", 33733);
+		anyOneEmblem = new ItemRequirement("Drakan emblem", 33731);
+		anyOneEmblem.addAlternates(33732, 33733);
+		anyOneEmblemHighlighted = anyOneEmblem.highlighted();
+		anyTwoEmblemHighlighted = anyOneEmblemHighlighted.quantity(2);
+		anyThreeEmblemHighlighted = anyOneEmblemHighlighted.quantity(3);
+		explosiveBarrel = new ItemRequirement("Explosive barrel", 33743);
+		explosiveBarrel.setTooltip("You can get another one from the room above the storage room (south-west on floor 2)");
+
 		// Miscellaneous requirements
 		followedByIvan = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 15854 /* myq6_ivan_follower */, 16);
 		canReceivePickaxeFromIvan = new VarbitRequirement(15469, 0);
 		needTeleportUnlock = new VarbitRequirement(15470, 0);
+
+		// Vampyrium Castle Drakan requirements
+		var castleDrakanFloor = new VarbitBuilder(15489);
+		var castleDrakanRoom = new VarbitBuilder(15499);
+
+		onF0 = castleDrakanFloor.eq(1);
+		onF1 = castleDrakanFloor.eq(2);
+		onF2 = castleDrakanFloor.eq(3);
+
+		// unspecific
+		var inLobby = castleDrakanRoom.eq(1);
+
+		// GROUND FLOOR
+		inLobbyF0 = and(onF0, inLobby);
+		inDiningRoom = castleDrakanRoom.eq(2);
+		inThroneRoom = castleDrakanRoom.eq(3);
+		inRoomSouthOfThroneRoom = castleDrakanRoom.eq(4);
+		inStorageRoom = castleDrakanRoom.eq(6);
+		inStudy = castleDrakanRoom.eq(7);
+		inHallwayWestOfDiningRoom = castleDrakanRoom.eq(8);
+		inEmblemGallery = castleDrakanRoom.eq(13);
+		inWestChapelHallway = castleDrakanRoom.eq(15);
+		inNorthChapelHallway = castleDrakanRoom.eq(17);
+
+		// FIRST FLOOR
+		inVanesculasStudy = castleDrakanRoom.eq(23);
+		inVanesculasChamber = castleDrakanRoom.eq(24);
+		inDrakanEmblemRoomSouthOfExplosiveRoom =  castleDrakanRoom.eq(25);
+		inExplosiveRoom = castleDrakanRoom.eq(28);
+		inHallwayEastOfExplosiveRoom =  castleDrakanRoom.eq(31);
+		inLobbyF1 = and(onF1, inLobby);
+		inHallwayNorthOfLobby = castleDrakanRoom.eq(34);
+		inVanesculasHallway = castleDrakanRoom.eq(35);
+		inRanisHallway = castleDrakanRoom.eq(36);
+		inRanisParlour = castleDrakanRoom.eq(26);
+		inVenatorRoom = castleDrakanRoom.eq(37);
+
+		var throneRoomPuzzleB = new VarbitBuilder(15508);
+		needToStartThroneRoomPuzzle = throneRoomPuzzleB.eq(0);
+		needToPullBusts = throneRoomPuzzleB.eq(1);
+		needToGetKey = throneRoomPuzzleB.eq(2);
+		doneWithThroneRoomPuzzle = throneRoomPuzzleB.eq(3);
+
+		needToPullBust3 = new VarbitRequirement(15541, 1);
+		needToPullBust4 = new VarbitRequirement(15542, 1);
+		needToPullBust1 = new VarbitRequirement(15539, 1);
+
+		placedEmblemInVanesculasHallway = new VarbitRequirement(15504, 0, Operation.GREATER);
+		placedEmblemInVanesculasStudy = new VarbitRequirement(15503, 0, Operation.GREATER);
 	}
 
 	void setupSteps()
 	{
+		// TODO: Remove
 		todo = new DetailedQuestStep(this, "todo");
+		todo1 = new DetailedQuestStep(this, "todo1");
+		todo2 = new DetailedQuestStep(this, "todo2");
+		todo3 = new DetailedQuestStep(this, "todo3");
+		todo4 = new DetailedQuestStep(this, "todo4");
+		todoVampyriumPuzzle = new DetailedQuestStep(this, "todo do some vampyrium puzzle");
 
+		/// 0 + 2
 		startQuest = new NpcStep(this, 15839, new WorldPoint(3697, 3184, 0), "Talk to Sarius Guile in the Icyene Graveyard to start the quest.");
 		startQuest.addDialogStep("Yes.");
 
-		/// 32
+		/// 4
+		var talkToIvan = new NpcStep(this, 1 /* TODO */, new WorldPoint(3599, 9612, 0), "");
+		goDownToIvan = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "", blisterwoodFlail);
+		goDownToIvan.addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
+		cLookForIvan = new ConditionalStep(this, goDownToIvan, "Look for Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
+		cLookForIvan.addStep(inMyrequeHideoutOldManRal, talkToIvan);
+
+		/// 6 + 8
+		inspectShrine = new ObjectStep(this, 61177, new WorldPoint(3601, 9614, 0), "Inspect the makeshift shrine in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
+
+		/// 10
+		talkToIvanGoingToDarkmeyer = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch while wearing the vyre noble outfit, ready for a fight.", vyreNobleOutfit, blisterwoodFlail, combatGear, food, prayerPotions);
+		talkToIvanGoingToDarkmeyer.addDialogStep("Are you ready to go to Darkmeyer?");
+		talkToIvanGoingToDarkmeyer.addDialogStep("I'm ready.");
+
+		/// 12
+		// Return-step in case the user died / left / teleported out
+		talkToIvanToReturnToCastleDrakan = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch to return to the Castle Drakan courtyard.", blisterwoodFlail, combatGear, food, prayerPotions);
+		talkToIvanToReturnToCastleDrakan.addDialogStep("We'd better get back to Darkmeyer.");
+		talkToIvanToReturnToCastleDrakan.addDialogStep("I'm ready.");
+		talkToIvanGoingToDarkmeyer.addSubSteps(talkToIvanToReturnToCastleDrakan);
+
+		defendIvanFromVyres = new DetailedQuestStep(this, "Kill the vyrewatches and defend Ivan Strom until he can teleport you both out. Kill the approaching acidic bloodvelds with a ranged weapon. Prioritize the Vyrewatch Sentinels first.", blisterwoodFlail, combatGear, food, prayerPotions);
+
+		/// 14
+		talkToIvanAfterEscaping = new NpcStep(this, 15835, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch after escaping.");
+		talkToIvanAfterEscaping.addDialogStep("We'd better get back to Darkmeyer.");
+		talkToIvanAfterEscaping.addDialogStep("I'm ready.");
+
+		/// 16
+		talkToIvanOutsideSlepeChurch = new NpcStep(this, 15855, new WorldPoint(3727, 3310, 0), "Talk to Ivan Strom in the graveyard outside the Slepe church.");
+
+		/// 18
+		askRoyAboutVeliaf = new NpcStep(this, NpcID.SLEPE_BARTENDER_ROY, "Talk to Roy the bartender in Slepe and ask him about Veliaf's whereabouts.");
+		askRoyAboutVeliaf.addDialogStep("We're looking for a friend of ours.");
+
+		/// 20
+		lookIntoCommotion = new ObjectStep(this, ObjectID.SLP_CHURCH_CRYPT_SOUTH_LADDER_DOWN, new WorldPoint(3727, 3301, 0), "Head to the Crombwick Manor through the church dungeon.", blisterwoodFlail, combatGear, food, prayerPotions);
+		climbUpToCrombwickManor = new ObjectStep(this, ObjectID.SLP_BASEMENT_MANOR_EXIT, new WorldPoint(3726, 9756, 1), "Head to the Crombwick Manor through the church dungeon.", blisterwoodFlail, combatGear, food, prayerPotions);
+		cLookIntoCommotionAtCrombwickManor = new ConditionalStep(this, talkToIvanOutsideSlepeChurch);
+		cLookIntoCommotionAtCrombwickManor.addStep(and(followedByIvan, inSlepeChurchDungeon), climbUpToCrombwickManor);
+		cLookIntoCommotionAtCrombwickManor.addStep(followedByIvan, lookIntoCommotion);
+
+		/// 22
+		killVampyresWithVeliaf = new NpcStep(this, new int[]{16127, 16128, 16129, 16125}, new WorldPoint(3725, 3357, 0), "Help Veliaf kill the vampyres in Crombwick Manor.", blisterwoodFlail, combatGear, food, prayerPotions);
+		killVampyresWithVeliaf.setAllowMultipleHighlights(true);
+
+		/// 24
+		// TODO: Confirm npc ID, although you can technically speak to Ivan too
+		talkToVeliafInCrombwickManor = new NpcStep(this, 15885, new WorldPoint(3731, 3359, 0), "Talk to Veliaf after helping him kill the vampyres in Crombwick Manor.");
+
+		/// 26
+		var enterPaterdomus = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR_OPEN, new WorldPoint(3422, 3485, 0), "Talk with Ivan Strom in the Paterdomus dungeon.");
+		talkToIvanPaterdomus1 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan in the Paterdomus dungeon.");
+		talkToIvanPaterdomus1.addSubSteps(enterPaterdomus);
+		enterPaterdomus.addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR);
+		cHeadToPaterdomus = new ConditionalStep(this, enterPaterdomus);
+		cHeadToPaterdomus.addStep(inPaterdomusTempleDungeon, talkToIvanPaterdomus1);
+
+		/// 28
+		readSquiresJournal = new DetailedQuestStep(this, "Read the Squire's journal Ivan just gave you.", squiresJournal.highlighted());
+
+		/// 30
+		talkToIvanPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan again after reading the Squire's journal.");
+		cTalkToIvanAfterReadingTheBook = new ConditionalStep(this, enterPaterdomus);
+		cTalkToIvanAfterReadingTheBook.addStep(inPaterdomusTempleDungeon, talkToIvanPaterdomus2);
+
+		/// 32 + 34
+		climbUpFromPaterdomusTempleDungeon = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3405, 9907, 0), "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
+		headToPaterdomusTempleF0 = new ObjectStep(this, ObjectID.PRIESTPERILTEMPLEDOORL, new WorldPoint(3408, 3489, 0), "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
+		killMonksOfZamorak = new NpcStep(this, new int[]{16155, 16156, 16154, 16156}, "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
+		killMonksOfZamorak.setAllowMultipleHighlights(true);
+		killMonksOfZamorak.addSubSteps(climbUpFromPaterdomusTempleDungeon, headToPaterdomusTempleF0);
+
+		/// 36
+		climbUpToPaterdomusTempleF1 = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
+		talkToIvanInPaterdomusTempleF1 = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
+		talkToIvanInPaterdomusTempleF1.addSubSteps(climbUpToPaterdomusTempleF1);
+
+		/// 38
 		var plinth1Pos = new WorldPoint(3409, 3483, 1);
 		var plinth2Pos = new WorldPoint(3408, 3485, 1);
 		var plinth3Pos = new WorldPoint(3409, 3487, 1);
@@ -499,6 +741,93 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cFindTheWritings.addStep(and(inPaterdomusTempleF1, not(piousProceedingsS6)), piousProceedingsS6Put);
 
 		cFindTheWritingsPW = cFindTheWritings.puzzleWrapStepWithDefaultText("Find the writings on the first floor of the Paterdomus temple for Ivan Strom.");
+
+		/// 40
+		talkToIvanAfterFindingTheWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after solving the puzzle.");
+
+		/// 42
+		readIvandisWritings = new DetailedQuestStep(this, "Read Ivandis' writings.", ivandisWritings.highlighted());
+
+		/// 44
+		talkToIvanAfterReadingIvandisWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after reading Ivandis' writings.");
+
+		/// 46
+		talkToIvanInPaterdomus = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.");
+
+		/// 48
+		talkToIvanInPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
+		talkToIvanInPaterdomus2.addDialogStep("Lead the way.");
+		talkToIvanInPaterdomus.addSubSteps(talkToIvanInPaterdomus2);
+
+		/// 50
+		getToIvandisTomb = new DetailedQuestStep(this, new WorldPoint(3500, 9864, 0), "Get to the Myreque hideout");
+		investigateHole = new ObjectStep(this, 61193, new WorldPoint(3505, 9857, 0), "Investigate the blockage to the south of the hideout.");
+
+		/// 52
+		getPickaxe = new NpcStep(this, 15855, new WorldPoint(3505, 9861, 0), "Ask Ivan Strom for a pickaxe", anyPickaxe);
+		mineHole = new ObjectStep(this, 61194, new WorldPoint(3505, 9857, 0), "Mine the blockage to the south of the hideout.", anyPickaxe);
+		mineHole.addSubSteps(getPickaxe);
+
+		/// 54
+		headThroughHole = new ObjectStep(this, 61195, new WorldPoint(3505, 9857, 0), "Head through the cave entrance to the south of the hideout, ready for a fight.", blisterwoodFlail, combatGear, food, prayerPotions);
+
+		/// 56
+		enterDaeyaltProcessingRoom = new ObjectStep(this, 61197, new WorldPoint(3117, 7472, 2), "Head into the daeyalt processing room through the tunnel to the north-east.", blisterwoodFlail, combatGear, food, prayerPotions);
+
+		/// 58
+		killVampsInDaeyaltRoom = new NpcStep(this, new int[]{16125, 16126, 16137, 16136, 16137}, "Kill vampyres. Focus on the Vyrewatch Sentinels. Avoid the Blood orb. Lure Vyrewatches into the Blood orbs to deal massive damage to them.", blisterwoodFlail, combatGear, food, prayerPotions);
+		killVampsInDaeyaltRoom.setAllowMultipleHighlights(true);
+
+		/// 60
+		// TODO: who do we actually talk to here. is this a "free the slave" step instead?
+		talkToIvanAfterKillingVamps = new NpcStep(this, 15864, new WorldPoint(3178, 7459, 0), "Talk to Ivan after killing the vampyres.");
+
+		/// 62
+		enterCastleDrakanCellar = new ObjectStep(this, 61205, new WorldPoint(3182, 7470, 0), "Enter the Castle Drakan cellars through the entry to the east (TODO CHECK CARDINAL DIRECTION).");
+
+		/// 64
+		climbUpToCastleDrakanLobby = new ObjectStep(this, 61207, new WorldPoint(3147, 7578, 0), "Climb up the stairs to the Castle Drakan lobby.");
+
+		/// 66 + 68
+		// TODO(FOR FUTURE ADVENTURERS): Do you _need_ to bring the medallion for this?
+		prayAtShrine = new ObjectStep(this, 61226, new WorldPoint(3168, 7707, 0), "Pray at the shrine to let your Drakan's Medallion teleport you here.", drakansMedallion);
+
+		enterPortalInCastleDrakanLobby = new ObjectStep(this, 61216, new WorldPoint(3161, 7710, 0), "Click the ominous red portal in the Castle Drakan lobby.", blisterwoodFlail, combatGearMelee);
+		enterPortalInCastleDrakanLobby.addDialogStep("Yes.");
+		enterPortalInCastleDrakanLobby.addTeleport(drakansMedallionToCastleDrakan);
+
+		/// 70
+		youAreInVampyrium = new DetailedQuestStep(this, "Watch the cutscene.");
+		enterPortalInCastleDrakanLobby.addSubSteps(youAreInVampyrium);
+
+		var enterThroneRoomFromDiningRoom = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 0), "Enter the throne room.");
+		var enterThroneRoomFromStudy = new ObjectStep(this, 61576, new WorldPoint(2358, 7380, 0), "Enter the throne room.");
+
+		var cHmkEnterThroneRoom = new ConditionalStep(this, enterThroneRoomFromDiningRoom);
+		cHmkEnterThroneRoom.addStep(inDiningRoom, enterThroneRoomFromDiningRoom);
+		cHmkEnterThroneRoom.addStep(inStudy, enterThroneRoomFromStudy);
+
+		var investigateThrone = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Investigate the throne again.");
+		var investigateThroneAgain = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Investigate the throne again.");
+
+		var pullBust1 = new ObjectStep(this, 61645, new WorldPoint(2317, 7393, 0), "Pull the northern-most bust.");
+		var pullBust2 = new ObjectStep(this, 61648, new WorldPoint(2317, 7392, 0), "Pull the second northern-most bust.");
+		var pullBust3 = new ObjectStep(this, 61651, new WorldPoint(2317, 7391, 0), "Pull the second southern-most bust.");
+		var pullBust4 = new ObjectStep(this, 61654, new WorldPoint(2317, 7390, 0), "Pull the southern-most bust.");
+
+		var pullBusts = new ConditionalStep(this, pullBust2);
+		pullBusts.addStep(needToPullBust3, pullBust3);
+		pullBusts.addStep(needToPullBust4, pullBust4);
+		pullBusts.addStep(needToPullBust1, pullBust1);
+
+		getKeyFromThroneRoom = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Head back to the throne room and search the throne for a half moon key.");
+
+		cGetHalfMoonKey = new ConditionalStep(this, cHmkEnterThroneRoom, "\nFind the half moon key.");
+		cGetHalfMoonKey.addStep(and(inThroneRoom, needToStartThroneRoomPuzzle), investigateThrone);
+		cGetHalfMoonKey.addStep(and(inThroneRoom, needToPullBusts), pullBusts);
+		cGetHalfMoonKey.addStep(and(inThroneRoom, needToGetKey), investigateThroneAgain);
+		cGetHalfMoonKey.addSubSteps(getKeyFromThroneRoom);
+		cGetHalfMoonKeyPW = cGetHalfMoonKey.puzzleWrapStep("Find the half moon key.");
 	}
 
 	@Override
@@ -514,109 +843,56 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		{
 			steps.put(i, todo);
 		}
-		var todo1 = new DetailedQuestStep(this, "todo1");
-		var todo2 = new DetailedQuestStep(this, "todo2");
-		var todo3 = new DetailedQuestStep(this, "todo3");
-		var todo4 = new DetailedQuestStep(this, "todo4");
-		var todoVampyriumPuzzle = new DetailedQuestStep(this, "todo do some vampyrium puzzle");
 
 		steps.put(0, startQuest);
 		steps.put(2, startQuest);
 
-		var talkToIvan = new NpcStep(this, 1, new WorldPoint(3599, 9612, 0), "");
-		var goDownToIvan = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "", blisterwoodFlail);
-		goDownToIvan.addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
-		cLookForIvan = new ConditionalStep(this, goDownToIvan, "Look for Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
-		cLookForIvan.addStep(inMyrequeHideoutOldManRal, talkToIvan);
 		steps.put(4, cLookForIvan);
 
-		inspectShrine = new ObjectStep(this, 61177, new WorldPoint(3601, 9614, 0), "Inspect the makeshift shrine in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
 		var cInspectShrine = new ConditionalStep(this, goDownToIvan);
 		cInspectShrine.addStep(inMyrequeHideoutOldManRal, inspectShrine);
 		steps.put(6, cInspectShrine);
 		steps.put(8, cInspectShrine);
 
-		talkToIvanGoingToDarkmeyer1 = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch while wearing the vyre noble outfit, ready for a fight.", vyreNobleOutfit, blisterwoodFlail, combatGear, food, prayerPotions);
-		talkToIvanGoingToDarkmeyer1.addDialogStep("Are you ready to go to Darkmeyer?");
-		talkToIvanGoingToDarkmeyer1.addDialogStep("I'm ready.");
 		var cTalkToIVanGoingToDarkmeyer = new ConditionalStep(this, goDownToIvan);
-		cTalkToIVanGoingToDarkmeyer.addStep(and(inMyrequeHideoutOldManRal, vyreNobleOutfit), talkToIvanGoingToDarkmeyer1);
-		cTalkToIVanGoingToDarkmeyer.addStep(inMyrequeHideoutOldManRal, talkToIvanGoingToDarkmeyer1);
+		cTalkToIVanGoingToDarkmeyer.addStep(inMyrequeHideoutOldManRal, talkToIvanGoingToDarkmeyer);
 		steps.put(10, cTalkToIVanGoingToDarkmeyer);
 
-		var talkToIvanToReturnToCastleDrakan = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch to return to the Castle Drakan courtyard.", blisterwoodFlail, combatGear, food, prayerPotions);
-		talkToIvanToReturnToCastleDrakan.addDialogStep("We'd better get back to Darkmeyer.");
-		talkToIvanToReturnToCastleDrakan.addDialogStep("I'm ready.");
-		talkToIvanGoingToDarkmeyer1.addSubSteps(talkToIvanToReturnToCastleDrakan);
-		defendIvanFromVyres = new DetailedQuestStep(this, "Kill the vyrewatches and defend Ivan Strom until he can teleport you both out. Kill the approaching acidic bloodvelds with a ranged weapon. Prioritize the Vyrewatch Sentinels first.", blisterwoodFlail, combatGear, food, prayerPotions);
 		var cEscapeCastleDrakan = new ConditionalStep(this, goDownToIvan);
 		cEscapeCastleDrakan.addStep(atCastleDrakanCourtyard, defendIvanFromVyres);
 		cEscapeCastleDrakan.addStep(inMyrequeHideoutOldManRal, talkToIvanToReturnToCastleDrakan);
 		steps.put(12, cEscapeCastleDrakan);
 
-		talkToIvanAfterEscaping = new NpcStep(this, 15835, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch after escaping.");
-		talkToIvanAfterEscaping.addDialogStep("We'd better get back to Darkmeyer.");
-		talkToIvanAfterEscaping.addDialogStep("I'm ready.");
 		var cTalkToIvanAfterEscaping = new ConditionalStep(this, goDownToIvan);
 		cTalkToIvanAfterEscaping.addStep(inMyrequeHideoutOldManRal, talkToIvanAfterEscaping);
 		steps.put(14, cTalkToIvanAfterEscaping);
 
-		talkToIvanOutsideSlepeChurch = new NpcStep(this, 15855, new WorldPoint(3727, 3310, 0), "Talk to Ivan Strom in the graveyard outside the Slepe church.");
 		steps.put(16, talkToIvanOutsideSlepeChurch);
-
-		askRoyAboutVeliaf = new NpcStep(this, NpcID.SLEPE_BARTENDER_ROY, "Talk to Roy the bartender in Slepe and ask him about Veliaf's whereabouts.");
-		askRoyAboutVeliaf.addDialogStep("We're looking for a friend of ours.");
 
 		var cAskRoyAboutVeliaf = new ConditionalStep(this, talkToIvanOutsideSlepeChurch);
 		cAskRoyAboutVeliaf.addStep(followedByIvan, askRoyAboutVeliaf);
 		steps.put(18, cAskRoyAboutVeliaf);
 
-		var lookIntoCommotion = new ObjectStep(this, ObjectID.SLP_CHURCH_CRYPT_SOUTH_LADDER_DOWN, new WorldPoint(3727, 3301, 0), "");
-		var climbUpToCrombwickManor = new ObjectStep(this, ObjectID.SLP_BASEMENT_MANOR_EXIT, new WorldPoint(3726, 9756, 1), "");
-		cLookIntoCommotionAtCrombwickManor = new ConditionalStep(this, talkToIvanOutsideSlepeChurch, "Head to the Crombwick Manor through the church dungeon.", blisterwoodFlail, combatGear, food, prayerPotions);
-		cLookIntoCommotionAtCrombwickManor.addStep(and(followedByIvan, inSlepeChurchDungeon), climbUpToCrombwickManor);
-		cLookIntoCommotionAtCrombwickManor.addStep(followedByIvan, lookIntoCommotion);
 		steps.put(20, cLookIntoCommotionAtCrombwickManor);
 
-		killVampyresWithVeliaf = new NpcStep(this, new int[]{16127, 16128, 16129, 16125}, new WorldPoint(3725, 3357, 0), "Help Veliaf kill the vampyres in Crombwick Manor.", blisterwoodFlail, combatGear, food, prayerPotions);
-		killVampyresWithVeliaf.setAllowMultipleHighlights(true);
 		var cLookIntoCommotionAtCrombwickManor2 = new ConditionalStep(this, lookIntoCommotion);
 		cLookIntoCommotionAtCrombwickManor2.addStep(and(inCrombwickManor), killVampyresWithVeliaf);
 		cLookIntoCommotionAtCrombwickManor2.addStep(and(inSlepeChurchDungeon), climbUpToCrombwickManor);
 		steps.put(22, cLookIntoCommotionAtCrombwickManor2);
-
-		// TODO: Confirm npc ID, although you can technically speak to Ivan too
-		talkToVeliafInCrombwickManor = new NpcStep(this, 15885, new WorldPoint(3731, 3359, 0), "Talk to Veliaf after helping him kill the vampyres in Crombwick Manor.");
 
 		var cLookIntoCommotionAtCrombwickManor3 = new ConditionalStep(this, lookIntoCommotion);
 		cLookIntoCommotionAtCrombwickManor3.addStep(and(inCrombwickManor), talkToVeliafInCrombwickManor);
 		cLookIntoCommotionAtCrombwickManor3.addStep(and(inSlepeChurchDungeon), climbUpToCrombwickManor);
 		steps.put(24, cLookIntoCommotionAtCrombwickManor3);
 
-		var enterPaterdomus = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR_OPEN, new WorldPoint(3422, 3485, 0), "Talk with Ivan Strom in the Paterdomus dungeon.");
-		enterPaterdomus.addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR);
-		talkToIvanPaterdomus1 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan in the Paterdomus dungeon.");
-		talkToIvanPaterdomus1.addSubSteps(enterPaterdomus);
-		var cHeadToPaterdomus = new ConditionalStep(this, enterPaterdomus);
-		cHeadToPaterdomus.addStep(inPaterdomusTempleDungeon, talkToIvanPaterdomus1);
 		steps.put(26, cHeadToPaterdomus);
 
-		readSquiresJournal = new DetailedQuestStep(this, "Read the Squire's journal Ivan just gave you.", squiresJournal.highlighted());
 		var cReadBook = new ConditionalStep(this, cHeadToPaterdomus);
 		cReadBook.addStep(squiresJournal, readSquiresJournal);
-
 		steps.put(28, cReadBook);
 
-		talkToIvanPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan again after reading the Squire's journal.");
-		var cTalkToIvanAfterReadingTheBook = new ConditionalStep(this, enterPaterdomus);
-		cTalkToIvanAfterReadingTheBook.addStep(inPaterdomusTempleDungeon, talkToIvanPaterdomus2);
 		steps.put(30, cTalkToIvanAfterReadingTheBook);
 
-		killMonksOfZamorak = new NpcStep(this, new int[]{16155, 16156, 16154, 16156}, "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
-		killMonksOfZamorak.setAllowMultipleHighlights(true);
-		var climbUpFromPaterdomusTempleDungeon = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(3405, 9907, 0), "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
-		var headToPaterdomusTempleF0 = new ObjectStep(this, ObjectID.PRIESTPERILTEMPLEDOORL, new WorldPoint(3408, 3489, 0), "Kill the monks of zamorak on the ground floor of the Paterdomus temple.", combatGear, food);
-		killMonksOfZamorak.addSubSteps(climbUpFromPaterdomusTempleDungeon, headToPaterdomusTempleF0);
 		var cKillMonksOfZamorak = new ConditionalStep(this, cTalkToIvanAfterReadingTheBook);
 		cKillMonksOfZamorak.addStep(and(inPaterdomusTempleDungeon, followedByIvan), climbUpFromPaterdomusTempleDungeon);
 		cKillMonksOfZamorak.addStep(and(followedByIvan, inPaterdomusTempleF0), killMonksOfZamorak);
@@ -627,101 +903,68 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cKillMonksOfZamorak2.addStep(and(inPaterdomusTempleF0), killMonksOfZamorak);
 		steps.put(34, cKillMonksOfZamorak2);
 
-		var climbUpToPaterdomusTempleF1 = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
-
-		var cReadBooksMaybe = new ConditionalStep(this, climbUpToPaterdomusTempleF1);
-		talkToIvanInPaterdomusTempleF1 = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
-		talkToIvanInPaterdomusTempleF1.addSubSteps(climbUpToPaterdomusTempleF1);
-		cReadBooksMaybe.addStep(inPaterdomusTempleF1, talkToIvanInPaterdomusTempleF1);
-		steps.put(36, cReadBooksMaybe);
+		var cTalkToIvanAfterKillingMonks = new ConditionalStep(this, climbUpToPaterdomusTempleF1);
+		cTalkToIvanAfterKillingMonks.addStep(inPaterdomusTempleF1, talkToIvanInPaterdomusTempleF1);
+		steps.put(36, cTalkToIvanAfterKillingMonks);
 
 		steps.put(38, cFindTheWritingsPW);
 
-		talkToIvanAfterFindingTheWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after solving the puzzle.");
 		var cTalkToIvanTempleAfterBookPuzzle = new ConditionalStep(this, climbUpToPaterdomusTempleF1);
 		cTalkToIvanTempleAfterBookPuzzle.addStep(inPaterdomusTempleF1, talkToIvanAfterFindingTheWritings);
 		steps.put(40, cTalkToIvanTempleAfterBookPuzzle);
 
-		readIvandisWritings = new DetailedQuestStep(this, "Read Ivandis' writings.", ivandisWritings.highlighted());
 		var cReadIvandisWritings = new ConditionalStep(this, cTalkToIvanTempleAfterBookPuzzle);
 		cReadIvandisWritings.addStep(ivandisWritings, readIvandisWritings);
 		steps.put(42, cReadIvandisWritings);
 
-		talkToIvanAfterReadingIvandisWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after reading Ivandis' writings.");
 		var cTalkToIvanAfterReadingIvandisWritings = new ConditionalStep(this, climbUpToPaterdomusTempleF1);
 		cTalkToIvanAfterReadingIvandisWritings.addStep(inPaterdomusTempleF1, talkToIvanAfterReadingIvandisWritings);
 		steps.put(44, cTalkToIvanAfterReadingIvandisWritings);
 
-		talkToIvanInPaterdomus = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.");
 		var cTalkToIvanInPaterdomus = new ConditionalStep(this, talkToIvanInPaterdomus);
 		steps.put(46, cTalkToIvanInPaterdomus);
 
 		// TODO: 48 = get there yourself or have him lead the way? What if a user selects "i will take my own route!!!"?
-		var talkToIvanInPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
-		talkToIvanInPaterdomus2.addDialogStep("Lead the way.");
-		talkToIvanInPaterdomus.addSubSteps(talkToIvanInPaterdomus2);
 		var cTalkToIvanInPaterdomus2 = new ConditionalStep(this, talkToIvanInPaterdomus2);
 		steps.put(48, cTalkToIvanInPaterdomus2);
 
 		// TODO: on step 50: do you have to finish talking with Veliaf until you say "let's have a look around and see what we can find"? this sets varbit 15487 from 0 to 1
-		getToIvandisTomb = new DetailedQuestStep(this, new WorldPoint(3500, 9864, 0), "Get to the Myreque hideout");
-		investigateHole = new ObjectStep(this, 61193, new WorldPoint(3505, 9857, 0), "Investigate the blockage to the south of the hideout.");
 		var cInvestigateHole = new ConditionalStep(this, getToIvandisTomb);
 		cInvestigateHole.addStep(inIvandisTomb, investigateHole);
 		steps.put(50, cInvestigateHole);
 
 		// 15486 = has talked about pickaxe
 		// 15469 = has received pickaxe
-		var getPickaxe = new NpcStep(this, 15855, new WorldPoint(3505, 9861, 0), "Ask Ivan Strom for a pickaxe", anyPickaxe);
-		mineHole = new ObjectStep(this, 61194, new WorldPoint(3505, 9857, 0), "Mine the blockage to the south of the hideout.", anyPickaxe);
-		mineHole.addSubSteps(getPickaxe);
 		var cMineHole = new ConditionalStep(this, getToIvandisTomb);
 		cMineHole.addStep(and(inIvandisTomb, anyPickaxe), mineHole);
 		cMineHole.addStep(and(inIvandisTomb, canReceivePickaxeFromIvan), getPickaxe);
 		cMineHole.addStep(and(inIvandisTomb), mineHole);
 		steps.put(52, cMineHole);
 
-		headThroughHole = new ObjectStep(this, 61195, new WorldPoint(3505, 9857, 0), "Head through the cave entrance to the south of the hideout, ready for a fight.", blisterwoodFlail, combatGear, food, prayerPotions);
 		var cHeadThroughHole = new ConditionalStep(this, getToIvandisTomb);
 		cHeadThroughHole.addStep(inIvandisTomb, headThroughHole);
 		steps.put(54, cHeadThroughHole);
 
-		enterDaeyaltProcessingRoom = new ObjectStep(this, 61197, new WorldPoint(3117, 7472, 2), "Head into the daeyalt processing room through the tunnel to the north-east.", blisterwoodFlail, combatGear, food, prayerPotions);
 		var cWalkThroughCastle = new ConditionalStep(this, cHeadThroughHole);
 		cWalkThroughCastle.addStep(inCastleDrakanMines, enterDaeyaltProcessingRoom);
 		steps.put(56, cWalkThroughCastle);
 
-		killVampsInDaeyaltRoom = new NpcStep(this, new int[]{16125, 16126, 16137, 16136, 16137}, "Kill vampyres. Focus on the Vyrewatch Sentinels. Avoid the Blood orb. Lure Vyrewatches into the Blood orbs to deal massive damage to them.", blisterwoodFlail, combatGear, food, prayerPotions);
-		killVampsInDaeyaltRoom.setAllowMultipleHighlights(true);
 		var cWalkThroughCastle2 = new ConditionalStep(this, cWalkThroughCastle);
 		cWalkThroughCastle2.addStep(inCastleDrakanDaeyaltProcessingArea, killVampsInDaeyaltRoom);
 		steps.put(58, cWalkThroughCastle2);
 
-		// TODO: who do we actually talk to here. is this a "free the slave" step instead?
-		talkToIvanAfterKillingVamps = new NpcStep(this, 15864, new WorldPoint(3178, 7459, 0), "Talk to Ivan after killing the vampyres.");
 		var cWalkThroughCastle3 = new ConditionalStep(this, cWalkThroughCastle);
 		cWalkThroughCastle3.addStep(inCastleDrakanDaeyaltProcessingArea, talkToIvanAfterKillingVamps);
 		steps.put(60, cWalkThroughCastle3);
 
-		enterCastleDrakanCellar = new ObjectStep(this, 61205, new WorldPoint(3182, 7470, 0), "Enter the Castle Drakan cellars through the entry to the east (TODO CHECK CARDINAL DIRECTION).");
 		var cWalkThroughCastle4 = new ConditionalStep(this, cWalkThroughCastle3);
 		cWalkThroughCastle4.addStep(inCastleDrakanDaeyaltProcessingArea, enterCastleDrakanCellar);
 		steps.put(62, cWalkThroughCastle4);
 
-		climbUpToCastleDrakanLobby = new ObjectStep(this, 61207, new WorldPoint(3147, 7578, 0), "Climb up the stairs to the Castle Drakan lobby.");
 		var cWalkThroughCastle5 = new ConditionalStep(this, cWalkThroughCastle4);
 		cWalkThroughCastle5.addStep(inCastleDrakanCellar, climbUpToCastleDrakanLobby);
 		steps.put(64, cWalkThroughCastle5);
 
-		// TODO(FOR FUTURE ADVENTURERS): Do you _need_ to bring the medallion for this?
-		prayAtShrine = new ObjectStep(this, 61226, new WorldPoint(3168, 7707, 0), "Pray at the shrine to let your Drakan's Medallion teleport you here.", drakansMedallion);
-
-		var combatGearMelee = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
-		combatGearMelee.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
-		var drakansMedallionToCastleDrakan = new ItemRequirement("Drakan's medallion to Castle Drakan", ItemID.DRAKANS_MEDALLION).isNotConsumed().highlighted();
-		var enterPortalInCastleDrakanLobby = new ObjectStep(this, 61216, new WorldPoint(3161, 7710, 0), "Click the ominous red portal in the Castle Drakan lobby.", blisterwoodFlail, combatGearMelee);
-		enterPortalInCastleDrakanLobby.addDialogStep("Yes.");
-		enterPortalInCastleDrakanLobby.addTeleport(drakansMedallionToCastleDrakan);
 		var cWalkThroughCastle6 = new ConditionalStep(this, cWalkThroughCastle4);
 		cWalkThroughCastle6.addStep(and(inCastleDrakanLobby, needTeleportUnlock), prayAtShrine);
 		cWalkThroughCastle6.addStep(and(inCastleDrakanLobby), enterPortalInCastleDrakanLobby);
@@ -732,14 +975,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cWalkThroughCastle7.addStep(needTeleportUnlock, prayAtShrine);
 		steps.put(68, cWalkThroughCastle7);
 
-		var vampLobby1 = new Zone(new WorldPoint(2216, 7262, 0), new WorldPoint(2429, 7475, 0));
-		var inVampyrium = new ZoneRequirement(vampLobby1);
-
-		var youAreInVampyrium = new DetailedQuestStep(this, "Watch the cutscene.");
-
-		var cVampyrium1 = new ConditionalStep(this, enterPortalInCastleDrakanLobby);
-		cVampyrium1.addStep(inVampyrium, youAreInVampyrium);
-		steps.put(70, cVampyrium1);
+		var cVampyriumCutscene = new ConditionalStep(this, enterPortalInCastleDrakanLobby);
+		cVampyriumCutscene.addStep(inVampyriumCastleDrakanLobbyCutscene, youAreInVampyrium);
+		steps.put(70, cVampyriumCutscene);
 
 		// [2026-07-01T11:54:30Z 2956] varp CASTLE_DRAKAN_ROOM_STATUS_1 (5632) 0 -> 1
 		// [2026-07-01T11:54:30Z 2956] varp CASTLE_DRAKAN_ROOM_STATUS_1 (5632) 1 -> 5
@@ -761,102 +999,24 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// [2026-07-01T11:56:27Z 3151] varp CASTLE_DRAKAN_ROOM_STATUS_1 (5632) 5 -> 6
 		// [2026-07-01T11:56:27Z 3151] varbit CASTLE_DRAKAN_WORLDMAP_NOTIFICATION (15566) 0 -> 1
 
-
 		// TODO: Instruct the user to pick up supplies as they walk along
 
 		var vanesculasChamberWallDestroyed = new VarbitRequirement(15511, 1);
 
-		var castleDrakanFloor = new VarbitBuilder(15489);
-		var castleDrakanRoom = new VarbitBuilder(15499);
-
-		var onF0 = castleDrakanFloor.eq(1);
-		var onF1 = castleDrakanFloor.eq(2);
-		var onF2 = castleDrakanFloor.eq(3);
-
-		// unspecific
-		var inLobby = castleDrakanRoom.eq(1);
-
-		// GROUND FLOOR
-		var inLobbyF0 = and(onF0, inLobby);
-		var inDiningRoom = castleDrakanRoom.eq(2);
-		var inThroneRoom = castleDrakanRoom.eq(3);
-		var inRoomSouthOfThroneRoom = castleDrakanRoom.eq(4);
-		var inStorageRoom = castleDrakanRoom.eq(6);
-		var inStudy = castleDrakanRoom.eq(7);
-		var inHallwayWestOfDiningRoom = castleDrakanRoom.eq(8);
-		var inEmblemGallery = castleDrakanRoom.eq(13);
-		var inWestChapelHallway = castleDrakanRoom.eq(15);
-		var inNorthChapelHallway = castleDrakanRoom.eq(17);
-
-		// FIRST FLOOR
-		var inVanesculasStudy = castleDrakanRoom.eq(23);
-		var inVanesculasChamber = castleDrakanRoom.eq(24);
-		var inDrakanEmblemRoomSouthOfExplosiveRoom =  castleDrakanRoom.eq(25);
-		var inExplosiveRoom = castleDrakanRoom.eq(28);
-		var inHallwayEastOfExplosiveRoom =  castleDrakanRoom.eq(31);
-		var inLobbyF1 = and(onF1, inLobby);
-		var inHallwayNorthOfLobby = castleDrakanRoom.eq(34);
-		var inVanesculasHallway = castleDrakanRoom.eq(35);
-		var inRanisHallway = castleDrakanRoom.eq(36);
-		var inRanisParlour = castleDrakanRoom.eq(26);
-		var inVenatorRoom = castleDrakanRoom.eq(37);
-
-		var enterThroneRoomFromDiningRoom = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 0), "Enter the throne room.");
-		var enterThroneRoomFromStudy = new ObjectStep(this, 61576, new WorldPoint(2358, 7380, 0), "Enter the throne room.");
-		var investigateThrone = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Investigate the throne again.");
-		var investigateThroneAgain = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Investigate the throne again.");
-		var throneRoomPuzzleB = new VarbitBuilder(15508);
-		var needToStartThroneRoomPuzzle = throneRoomPuzzleB.eq(0);
-		var needToPullBusts = throneRoomPuzzleB.eq(1);
-		var needToGetKey = throneRoomPuzzleB.eq(2);
-		var gotKey = throneRoomPuzzleB.eq(3);
-		var notDoneWithThroneRoom = not(throneRoomPuzzleB.eq(3));
-
 		var inVampyriumVarbit = new VarbitRequirement(15482, 1);
 
-		var trEnter = new ConditionalStep(this, enterThroneRoomFromDiningRoom);
-		trEnter.addStep(inDiningRoom, enterThroneRoomFromDiningRoom);
-		trEnter.addStep(inStudy, enterThroneRoomFromStudy);
-
-		var needToPullBust3 = new VarbitRequirement(15541, 1);
-		var needToPullBust4 = new VarbitRequirement(15542, 1);
-		var needToPullBust1 = new VarbitRequirement(15539, 1);
-
-		var pullBust1 = new ObjectStep(this, 61645, new WorldPoint(2317, 7393, 0), "Pull the northern-most bust.");
-		var pullBust2 = new ObjectStep(this, 61648, new WorldPoint(2317, 7392, 0), "Pull the second northern-most bust.");
-		var pullBust3 = new ObjectStep(this, 61651, new WorldPoint(2317, 7391, 0), "Pull the second southern-most bust.");
-		var pullBust4 = new ObjectStep(this, 61654, new WorldPoint(2317, 7390, 0), "Pull the southern-most bust.");
-
-		var pullBusts = new ConditionalStep(this, pullBust2);
-		pullBusts.addStep(needToPullBust3, pullBust3);
-		pullBusts.addStep(needToPullBust4, pullBust4);
-		pullBusts.addStep(needToPullBust1, pullBust1);
-
-		var trPuzzle = new ConditionalStep(this, trEnter);
-		trPuzzle.addStep(and(inThroneRoom, needToStartThroneRoomPuzzle), investigateThrone);
-		trPuzzle.addStep(and(inThroneRoom, needToPullBusts), pullBusts);
-		trPuzzle.addStep(and(inThroneRoom, needToGetKey), investigateThroneAgain);
-
-		var halfMoonKey = new ItemRequirement("Half moon key", 33725);
 
 		// This could _technically_ be a conditional step guiding the user from _any_ room back to the throne room,
 		// but they should only ever get to this step if they've manually destroyed the key. Their punishment
 		// is that they need to read the text to get back to the throne room.
-		var getKeyFromThroneRoom = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Head back to the throne room and search the throne for a half moon key.");
 
-		var cVampyrium2 = new ConditionalStep(this, enterPortalInCastleDrakanLobby, "Solve the puzzles inside Vampyrium's Castle Drakan. You can pick up supplies you find on the ground or in sparkling containers.");
+		var cVampyriumCastleDrakan = new ConditionalStep(this, enterPortalInCastleDrakanLobby, "Solve the puzzles inside Vampyrium's Castle Drakan. Supplies are littered around the castle.");
 
-		cVampyrium2.addStep(and(inVampyriumVarbit, notDoneWithThroneRoom), trPuzzle);
-		cVampyrium2.addStep(and(inVampyriumVarbit, gotKey, not(halfMoonKey)), getKeyFromThroneRoom);
-
-		var smallClockHand = new ItemRequirement("Small clock hand", 33744);
 		var searchShelvesForSmallClockHand = new ObjectStep(this, 61752, new WorldPoint(2323, 7387, 0), "Search the shelves for a small clock hand in the room south of the throne room.");
 		var enterRoomSouthOfThroneRoom = new ObjectStep(this, 61587, new WorldPoint(2310, 7386, 0), "Enter the room south of the throne room.");
 
 		var getSmallClockHand = new ConditionalStep(this, searchShelvesForSmallClockHand);
 		getSmallClockHand.addStep(and(inVampyriumVarbit, inThroneRoom), enterRoomSouthOfThroneRoom);
-
-		var largeClockHand = new ItemRequirement("Large clock hand", 33745);
 
 		var enterThroneRoomFromRoomSouthOfThroneRoom = new ObjectStep(this, 61587, new WorldPoint(2327, 7391, 0), "Enter the throne room.");
 		var enterDiningRoomFromThroneRoom = new ObjectStep(this, 61572, new WorldPoint(2304, 7391, 0), "Enter the dining room.");
@@ -875,29 +1035,13 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var pickUpTinderbox = new ObjectStep(this, 61691, new WorldPoint(2344, 7387, 0), "Search the sparkling chest for a tinderbox.");
 
-		var tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX);
-		tinderbox.setTooltip("You can get another one from the storage room (south-west on floor 1)");
-
 		var goUpFromStorageRoom = new ObjectStep(this, 61602, new WorldPoint(2340, 7384, 0), "Climb up the stairs.", tinderbox);
 
-		var explosiveBarrel = new ItemRequirement("Explosive barrel", 33743);
-		explosiveBarrel.setTooltip("You can get another one from the room above the storage room (south-west on floor 2)");
 		var pickUpExplosiveBarrel = new ItemStep(this, new WorldPoint(2439, 7388, 0), "Pick up the explosive barrel", explosiveBarrel, tinderbox);
 
 		var enterSouthDoorFromExplosiveRoom = new ObjectStep(this, 61573, new WorldPoint(2439, 7384, 0), "Enter the room south of where you picked up the explosive barrel.", explosiveBarrel, tinderbox);
 
 		var searchCrateForDrakanEmblem1 = new ObjectStep(this, 61751, new WorldPoint(2454, 7378, 0), "Search the crate for a drakan emblem");
-
-		// from somewhere
-		var drakanEmblem1 = new ItemRequirement("Drakan emblem", 33731);
-		// from clock puzzle
-		var drakanEmblem2 = new ItemRequirement("Drakan emblem", 33732);
-		var drakanEmblem3 = new ItemRequirement("Drakan emblem", 33733);
-		var anyEmblem = new ItemRequirement("Drakan emblem", 33731).highlighted();
-		anyEmblem.addAlternates(33732, 33733);
-		var anyEmblem2 = new ItemRequirement("Drakan emblem", 33731, 2).highlighted();
-		anyEmblem2.addAlternates(33732, 33733);
-		var anyEmblem3 = anyEmblem2.quantity(3);
 
 		var exitEmblemRoom1 = new ObjectStep(this, 61572, new WorldPoint(2455, 7381, 0), "Return to the explosive room.", explosiveBarrel, tinderbox, drakanEmblem1);
 		var exitEastExplosiveRoom = new ObjectStep(this, 61572, new WorldPoint(2444, 7386, 0), "Exit the explosive room through the east door.", explosiveBarrel, tinderbox, drakanEmblem1);
@@ -914,7 +1058,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var enterUnmarkedNorthDoor = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Enter the northern unmarked door.", explosiveBarrel, tinderbox, drakanEmblem1);
 
-		var placeEmblem1OnReceptacle = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the drakan emblem on the empty receptacle next to the southern door down the hall, avoiding traps on the way.", explosiveBarrel, tinderbox, anyEmblem);
+		var placeEmblem1OnReceptacle = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the drakan emblem on the empty receptacle next to the southern door down the hall, avoiding traps on the way.", explosiveBarrel, tinderbox, anyOneEmblemHighlighted);
 		placeEmblem1OnReceptacle.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
 			new WorldPoint(2457, 7410, 0),
@@ -925,9 +1069,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7408, 0),
 			new WorldPoint(2460, 7409, 0)
 		);
-
-		var placedEmblemInVanesculasHallway = new VarbitRequirement(15504, 0, Operation.GREATER);
-		var placedEmblemInVanesculasStudy = new VarbitRequirement(15503, 0, Operation.GREATER);
 
 		var enterVanesculasStudy = new ObjectStep(this, 61576, new WorldPoint(2468, 7407, 0), "Enter Vanescula's study.", explosiveBarrel, tinderbox);
 
@@ -1035,8 +1176,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7408, 0),
 			new WorldPoint(2460, 7409, 0)
 		);
-		var cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyEmblem);
-		var cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, 61638, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study", anyEmblem);
+		var cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyOneEmblemHighlighted);
+		var cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, 61638, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study", anyOneEmblemHighlighted);
 		var cmkToVanesculasChamber = new ObjectStep(this, 61572, new WorldPoint(2477, 7366, 0), "Enter Vanescula's chamber.");
 		var cmkBlowUpWallInVanesculasChamber = new ObjectStep(this, 61613, new WorldPoint(2492, 7364, 0), "Place the explosive barrel on the cracked wall in Vanescula's chamber.", explosiveBarrel.highlighted(), tinderbox);
 		var cmkEnterThroughHole = new ObjectStep(this, 61614, new WorldPoint(2492, 7364, 0), "Enter hole in the wall.");
@@ -1044,26 +1185,26 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var cmkLeaveVenatorRoom = new ObjectStep(this, 61614, new WorldPoint(2482, 7412, 0), "Leave the venator room through the hole in the wall.");
 		var cmkLeaveVanesculasChamber = new ObjectStep(this, 61573, new WorldPoint(2483, 7368, 0), "Leave Vanescula's room.", drakanEmblem3);
 		var cmkTakeEmblemFromVanesculasStudy = new ObjectStep(this, 61639, new WorldPoint(2476, 7367, 0), "Take emblem from vanescula's study", drakanEmblem3);
-		var cmkLeaveVanesculasStudy = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Leave vanescula's study", anyEmblem2);
+		var cmkLeaveVanesculasStudy = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Leave vanescula's study", anyTwoEmblemHighlighted);
 		var cmkRetrieveThirdEmblem = new ObjectStep(this, 61634, new WorldPoint(2469, 7408, 0), "Remove the third emblem from the receptacle.");
-		var cmkPutEmblemInEastDoor = new ObjectStep(this, 61636, new WorldPoint(2476, 7410, 0), "Place an emblem in the empty receptacle by the east wall.", anyEmblem3);
-		var cmkEnterEastDoor = new ObjectStep(this, 61572, new WorldPoint(2477, 7409, 0), "Enter the door to Ranis' hallway.", anyEmblem2);
-		var cmkPutEmblemInRanisHallwayNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Place an emblem in the empty receptacle at the north door.", anyEmblem2);
+		var cmkPutEmblemInEastDoor = new ObjectStep(this, 61636, new WorldPoint(2476, 7410, 0), "Place an emblem in the empty receptacle by the east wall.", anyThreeEmblemHighlighted);
+		var cmkEnterEastDoor = new ObjectStep(this, 61572, new WorldPoint(2477, 7409, 0), "Enter the door to Ranis' hallway.", anyTwoEmblemHighlighted);
+		var cmkPutEmblemInRanisHallwayNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Place an emblem in the empty receptacle at the north door.", anyTwoEmblemHighlighted);
 		var cmkEnterRanisParlour = new ObjectStep(this, 61576, new WorldPoint(2485, 7405, 0), "Enter Ranis' parlour");
 		var ornateSkull = new ItemRequirement("Ornate skull", 33741);
 		var cmkGetSkull = new DetailedQuestStep(this, new WorldPoint(2471, 7384, 0), "Get the ornate skull from the table in the room.", ornateSkull);
 		var cmkLeaveRanisParlourRoom = new ObjectStep(this, 61577, new WorldPoint(2475, 7379, 0), "Leave Ranis' parlour room", ornateSkull);
 		var cmkRemoveEmblemRanisNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Remove emblem from the receptacle.", ornateSkull);
-		var cmkClimbDownStairsRanisHallway = new ObjectStep(this, 61604, new WorldPoint(2491, 7402, 0), "Climb-down Stairs.", ornateSkull, anyEmblem2);
-		var cmkPlaceEmblemDownstairs = new ObjectStep(this, 61632, new WorldPoint(2371, 7410, 0), "Place an emblem in the receptacle to the west, avoiding the traps on the floor.", ornateSkull, anyEmblem2);
+		var cmkClimbDownStairsRanisHallway = new ObjectStep(this, 61604, new WorldPoint(2491, 7402, 0), "Climb-down Stairs.", ornateSkull, anyTwoEmblemHighlighted);
+		var cmkPlaceEmblemDownstairs = new ObjectStep(this, 61632, new WorldPoint(2371, 7410, 0), "Place an emblem in the receptacle to the west, avoiding the traps on the floor.", ornateSkull, anyTwoEmblemHighlighted);
 		cmkPlaceEmblemDownstairs.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2378, 7411, 0),
 			new WorldPoint(2379, 7411, 0),
 			new WorldPoint(2379, 7412, 0),
 			new WorldPoint(2378, 7412, 0)
 		);
-		var cmkEnterWestChapelHallway = new ObjectStep(this, 61572, new WorldPoint(2372, 7409, 0), "Enter the west chapel hallway.", ornateSkull, anyEmblem);
-		var cmkPutEmblemInWestChapelHallway = new ObjectStep(this, 61631, new WorldPoint(2370, 7383, 0), "Place an emblem in the empty receptacle by the western door.", anyEmblem);
+		var cmkEnterWestChapelHallway = new ObjectStep(this, 61572, new WorldPoint(2372, 7409, 0), "Enter the west chapel hallway.", ornateSkull, anyOneEmblemHighlighted);
+		var cmkPutEmblemInWestChapelHallway = new ObjectStep(this, 61631, new WorldPoint(2370, 7383, 0), "Place an emblem in the empty receptacle by the western door.", anyOneEmblemHighlighted);
 		var cmkEnterEmblemGallery = new ObjectStep(this, 61572, new WorldPoint(2369, 7384, 0), "Enter the emblem gallery.");
 		var cmkTalkToVeliaf = new NpcStep(this, 15878, new WorldPoint(2379, 7367, 0), "Talk-to Veliaf Hurtz.");
 		var cmkOpenEmblemGalleryChest = new ObjectStep(this, 61681, new WorldPoint(2379, 7372, 0), "Search Chest.");
@@ -1081,6 +1222,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var cmkHasSpokenWithVeliaf = new VarbitRequirement(15464, 74, Operation.GREATER_EQUAL);
 		var cmkSolvedChestPuzzle = new VarbitRequirement(15512, 1);
 		var crescentMoonKey = new ItemRequirement("Crescent moon key", 33726);
+		var newMoonKey = new ItemRequirement("New moon key", 33728);
 
 		var getCrescentMoonKey = new ConditionalStep(this, todo3, "Get the Crescent Moon Key.");
 		getCrescentMoonKey.addStep(cmkSolvedChestPuzzle, cmkGetTheKeyFromTheChest);
@@ -1091,16 +1233,16 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		getCrescentMoonKey.addStep(and(inWestChapelHallway), cmkPutEmblemInWestChapelHallway);
 		getCrescentMoonKey.addStep(and(inNorthChapelHallway, anyEmblemInNorthChapelHallway), cmkEnterWestChapelHallway);
 		getCrescentMoonKey.addStep(and(inNorthChapelHallway), cmkPlaceEmblemDownstairs);
-		getCrescentMoonKey.addStep(and(inRanisHallway, noEmblemInRanisHallwayNorth, ornateSkull, anyEmblem2), cmkClimbDownStairsRanisHallway);
+		getCrescentMoonKey.addStep(and(inRanisHallway, noEmblemInRanisHallwayNorth, ornateSkull, anyTwoEmblemHighlighted), cmkClimbDownStairsRanisHallway);
 		getCrescentMoonKey.addStep(and(inRanisHallway, anyEmblemInRanisHallwayNorth, ornateSkull), cmkRemoveEmblemRanisNorth);
 		getCrescentMoonKey.addStep(and(inRanisParlour, ornateSkull), cmkLeaveRanisParlourRoom);
 		getCrescentMoonKey.addStep(and(inRanisParlour), cmkGetSkull);
 		getCrescentMoonKey.addStep(and(inRanisHallway, anyEmblemInRanisHallwayNorth), cmkEnterRanisParlour);
 		getCrescentMoonKey.addStep(and(inRanisHallway), cmkPutEmblemInRanisHallwayNorth);
 		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyEmblemInVanesculasHallwayEast), cmkEnterEastDoor);
-		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyEmblem3), cmkPutEmblemInEastDoor);
-		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyEmblem2), cmkRetrieveThirdEmblem);
-		getCrescentMoonKey.addStep(and(inVanesculasStudy, anyEmblem2), cmkLeaveVanesculasStudy);
+		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyThreeEmblemHighlighted), cmkPutEmblemInEastDoor);
+		getCrescentMoonKey.addStep(and(inVanesculasHallway, anyTwoEmblemHighlighted), cmkRetrieveThirdEmblem);
+		getCrescentMoonKey.addStep(and(inVanesculasStudy, anyTwoEmblemHighlighted), cmkLeaveVanesculasStudy);
 		getCrescentMoonKey.addStep(and(inVanesculasStudy, drakanEmblem3), cmkTakeEmblemFromVanesculasStudy);
 		getCrescentMoonKey.addStep(and(inVanesculasChamber, drakanEmblem3), cmkLeaveVanesculasChamber);
 		getCrescentMoonKey.addStep(and(inVenatorRoom, drakanEmblem3), cmkLeaveVenatorRoom);
@@ -1116,24 +1258,190 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		getCrescentMoonKey.addStep(inLobbyF0, cmkToLobbyF1);
 		getCrescentMoonKey.addStep(inDiningRoom, cmkToLobby);
 
-		var getNewMoonKey = new ConditionalStep(this, todo3, "Get the new moon key.");
+		var castleDrakanRoomTemporary = new VarbitBuilder(15499);
+		var inKitchen = castleDrakanRoomTemporary.eq(11);
+		var inLarder = castleDrakanRoomTemporary.eq(10);
+		var inEmblemGalleryHallway = castleDrakanRoomTemporary.eq(12);
+		var inLobbyBasementHallway =  castleDrakanRoomTemporary.eq(48);
+		var inLobbyBasementVenator =  castleDrakanRoomTemporary.eq(49);
+
+		var syringeBarrel = new ItemRequirement("Syringe barrel", 33752);
+		var venatorStomach = new ItemRequirement("Venator stomach", 33756);
+		var sinkPlug = new ItemRequirement("Sink plug", 33747);
+		var brokenPipe = new ItemRequirement("Broken pipe", 33748);
+		var sharpKitchenKnife = new ItemRequirement("Sharp knife", 33749);
+		var syringePlunger = new ItemRequirement("Syringe plunger", 33753);
+		var tongs = new ItemRequirement("Tongs", 33750);
+		var syringeNeedle = new ItemRequirement("Syringe needle", 33751);
+		var emptySyringe = new ItemRequirement("Empty syringe", 33754);
+		var fullSyringe = new ItemRequirement("Full syringe", 33755);
+
+		var leftHalfOfCrest = new ItemRequirement("Left crest half", 33734);
+		var rightHalfOfCrest = new ItemRequirement("Right crest half", 33735);
+		var fullCrest = new ItemRequirement("Full crest", 33736);
+
+		var enterEmblemGalleryHallway = new ObjectStep(this, 61593, new WorldPoint(2370, 7370, 0), "Leave the emblem gallery using the western door.");
+		var enterRoomBehindLobby = new ObjectStep(this, 61593, new WorldPoint(2325, 7403, 0), "Enter the south-west room, ready to kill a few bugs.");
+		var killBugsAndTakeSyringeBarrel = new DetailedQuestStep(this, new WorldPoint(2315, 7418, 0), "Kill the bugs and take the Syringe barrel.", syringeBarrel);
+		var searchCrateForVenatorStomach = new ObjectStep(this, 61751, new WorldPoint(2315, 7408, 0), "Search the create in the south-east corner for a venator stomach.", syringeBarrel);
+		var inspectSink = new ObjectStep(this, 61719, new WorldPoint(2308, 7411, 0), "Inspect the sink to the west.", syringeBarrel, venatorStomach);
+		inspectSink.addDialogStep("Remove the plug.");
+		var enterLarder = new ObjectStep(this, 61576, new WorldPoint(2309, 7421, 0), "Enter the larder through the north-west door.");
+		var useSinkPlugOnSinkInLarder = new ObjectStep(this, 61722, new WorldPoint(2356, 7400, 0), "Put the sink plug into the sink.", sinkPlug.highlighted());
+		var turnSinkTapOn = new ObjectStep(this, 61722, new WorldPoint(2356, 7400, 0), "Turn the tap on in the sink.");
+		turnSinkTapOn.addDialogStep("Turn the tap on.");
+		var takePipe = new ObjectStep(this, 61722, new WorldPoint(2356, 7400, 0), "Take the pipe from the now-broken sink.");
+		takePipe.addDialogStep("Yes.");
+		var reachBehindCabinetWithPipe = new ObjectStep(this, 61726, new WorldPoint(2360, 7403, 0), "Use the broken pipe on the cabinet to reach behind it.", brokenPipe.highlighted());
+		var searchLarderCrateForSyringePlunger = new ObjectStep(this, 61751, new WorldPoint(2358, 7397, 0), "Search the crate for a syringe plunger.");
+		var leaveLarder = new ObjectStep(this, 61577, new WorldPoint(2361, 7393, 0), "Return to the Kitchen.");
+		var useSharpKnifeOnVenatorCorpse = new ObjectStep(this, 61727, new WorldPoint(2311, 7417, 0), "Use the sharp kitchen knife on the venator corpse.", sharpKitchenKnife.highlighted());
+		var getTongsFromVenatorCorpse = new ObjectStep(this, 61727, new WorldPoint(2311, 7417, 0), "Search the venator corpse for tongs.");
+		useSharpKnifeOnVenatorCorpse.addSubSteps(getTongsFromVenatorCorpse);
+		var getNeedleFromSink = new ObjectStep(this, 61719, new WorldPoint(2308, 7411, 0), "Use the tongs on the sink to get a syringe needle.", tongs.highlighted());
+		var assembleSyringe = new DetailedQuestStep(this, "Combine the syringe parts to assemble a syringe.", syringeBarrel.highlighted(), syringePlunger.highlighted(), syringeNeedle.highlighted());
+		var drawBloodFromVenatorStomach = new DetailedQuestStep(this, "Use the empty syringe on the venator stomach in your inventory to draw blood from it.", emptySyringe.highlighted(), venatorStomach.highlighted());
+		var useSyringeOnChest = new ObjectStep(this, 61683, new WorldPoint(2308, 7415, 0), "Use the full syringe on the chest to receive the left crest half.", fullSyringe.highlighted());
+		var getLeftCrestHalfFromKitchenChest = new ObjectStep(this, 61683, new WorldPoint(2308, 7415, 0), "Search the chest in the kitchen for the left crest half.");
+		getLeftCrestHalfFromKitchenChest.addDialogStep("Yes.");
+		useSyringeOnChest.addSubSteps(getLeftCrestHalfFromKitchenChest);
+
+		var larderSinkNeedsPlugging = new VarbitRequirement(15537, 0);
+		var larderSinkPlugged = new VarbitRequirement(15537, 1);
+		var larderSinkCollapsed = new VarbitRequirement(15537, 2);
+
+		var hasCutVenatorStomachUp = new VarbitRequirement(15538, 1);
+
+		var unlockedKitchenChest = new VarbitRequirement(15518, 1);
+
+
+
+		var leaveKitchen = new ObjectStep(this, 61592, new WorldPoint(2314, 7421, 0), "Leave the kitchen and head to the lobby.", leftHalfOfCrest);
+		var enterLobbyFromEmblemGalleryHallway = new ObjectStep(this, 61577, new WorldPoint(2330, 7407, 0), "Enter the lobby.", leftHalfOfCrest);
+		var climbDownstairsToLobbyBasement = new ObjectStep(this, 61606, new WorldPoint(2311, 7373, 0), "Climb down to the basement.", leftHalfOfCrest);
+		var enterAnotherVenatorRoom = new ObjectStep(this, 61593, new WorldPoint(2570, 7365, 0), "Enter Crescent moon door to your east, ready to kill another Venator. Turn off your protection prayer when it's about to screech.", leftHalfOfCrest);
+		// i could technically use this varp to see if the venator in that room is dead
+		// [2026-07-05T13:27:48Z 5913] varp CASTLE_DRAKAN_ENEMY_STATUS_2 (5641) 32830 -> 98366
+		var venatorAlive = new NpcCondition(16217);
+		var killVenator = new NpcStep(this, 16217, new WorldPoint(2569, 7384, 0), "Kill the Venator. Remove your protection prayer when it's about to screech.");
+		var battleAxe = new ItemRequirement("Battleaxe", 33759);
+		var searchWeaponRackForOneAxe = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for one battleaxe.");
+		searchWeaponRackForOneAxe.addDialogStep("Take a battleaxe.");
+		var placeBattleAxeOnStatue = new ObjectStep(this, 61743, new WorldPoint(2577, 7380, 0), "Place the battleaxe on the east-most empty statue.", battleAxe.highlighted());
+		var needToPutAxeOnStatue = new VarbitRequirement(15546, 0);
+		var getMace1 = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for a mace.");
+		getMace1.addDialogStep("Take a mace.");
+		var getMace2 = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for two maces.");
+		getMace2.addDialogStep("Take a mace.");
+		var getSword = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for a sword.");
+		getSword.addDialogStep("Take a sword.");
+
+		var mace = new ItemRequirement("Mace", 33760);
+		var mace2 = mace.quantity(2);
+
+		var sword = new ItemRequirement("Sword", 33757);
+
+		var placeMaceOnStatueN = new ObjectStep(this, 61746, new WorldPoint(2569, 7386, 0), "Place a mace on the second pair of statues from the west.", mace.highlighted());
+		var placeMaceOnStatueS = new ObjectStep(this, 61746, new WorldPoint(2569, 7380, 0), "Place a mace on the second pair of statues from the west.", mace.highlighted());
+
+		var needToPutMaceOnStatue1 = new VarbitRequirement(15548, 0);
+		var needToPutMaceOnStatue2 = new VarbitRequirement(15547, 0);
+
+		var needToPutSwordOnStatue = new VarbitRequirement(15545, 0);
+
+		var placeSwordOnStatue = new ObjectStep(this, 61746, new WorldPoint(2565, 7386, 0), "Place a mace on the western empty statue.", sword.highlighted());
+
+		var getNewMoonKey = new ConditionalStep(this, todo2, "\nGet the new moon key.");
+
+		var doneWithWeaponPuzzle = and(new VarbitRequirement(15545, 1), new VarbitRequirement(15546, 1), new VarbitRequirement(15547, 1), new VarbitRequirement(15548, 1));
+
+		var openWeaponPuzzleChest = new ObjectStep(this, 61685, new WorldPoint(2570, 7380, 0), "Search the chest for an item.");
+
+		var combineCrests = new DetailedQuestStep(this, "Combine the two pieces of crests in your inventory.", leftHalfOfCrest.highlighted(), rightHalfOfCrest.highlighted());
+
+		var leaveWithFullCrest1 = new ObjectStep(this, 61592, new WorldPoint(2566, 7387, 0), "Head to the study, north of the throne room.", fullCrest);
+		var leaveWithFullCrest2 = new ObjectStep(this, 61600, new WorldPoint(2564, 7362, 0), "Head to the study, north of the throne room.", fullCrest);
+		var leaveWithFullCrest3 = new ObjectStep(this, 61577, new WorldPoint(2327, 7360, 0), "Head to the study, north of the throne room.", fullCrest);
+		var leaveWithFullCrest4 = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 0), "Head to the study, north of the throne room.", fullCrest);
+		var leaveWithFullCrest5 = new ObjectStep(this, 61576, new WorldPoint(2309, 7397, 0), "Head to the study, north of the throne room.", fullCrest);
+		var putFullCrestOnFireplaceInStudy = new ObjectStep(this, 61665, new WorldPoint(2358, 7386, 0), "Place the full crest on the fireplace in the study, north of the throne room.", fullCrest.highlighted());
+
+		var fullCrestInStudy = new VarbitRequirement(15535, 1);
+
+		var getNewMoonKeyFromFireplace = new ObjectStep(this, 61665, new WorldPoint(2358, 7386, 0), "Search the fireplace for the new moon key in the study, north of the throne room.");
+		getNewMoonKeyFromFireplace.addDialogStep("Yes.");
+
+		getNewMoonKey.addStep(fullCrestInStudy, getNewMoonKeyFromFireplace);
+		getNewMoonKey.addStep(and(inStudy, fullCrest), putFullCrestOnFireplaceInStudy);
+		getNewMoonKey.addStep(and(inThroneRoom, fullCrest), leaveWithFullCrest5);
+		getNewMoonKey.addStep(and(inDiningRoom, fullCrest), leaveWithFullCrest4);
+		getNewMoonKey.addStep(and(inLobbyF0, fullCrest), leaveWithFullCrest3);
+		getNewMoonKey.addStep(and(inLobbyBasementHallway, fullCrest), leaveWithFullCrest2);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, fullCrest), leaveWithFullCrest1);
+
+		getNewMoonKey.addStep(and(leftHalfOfCrest, rightHalfOfCrest), combineCrests);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, venatorAlive), killVenator);
+
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, doneWithWeaponPuzzle), openWeaponPuzzleChest);
+
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutAxeOnStatue, battleAxe), placeBattleAxeOnStatue);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutAxeOnStatue), searchWeaponRackForOneAxe);
+
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutMaceOnStatue1, needToPutMaceOnStatue2, mace2), placeMaceOnStatueN);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutMaceOnStatue1, needToPutMaceOnStatue2, mace), getMace2);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutMaceOnStatue1, needToPutMaceOnStatue2), getMace2);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutMaceOnStatue2, mace), placeMaceOnStatueN);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutMaceOnStatue1, mace), placeMaceOnStatueS);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, or(needToPutMaceOnStatue1, needToPutMaceOnStatue2)), getMace1);
+
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutSwordOnStatue, sword), placeSwordOnStatue);
+		getNewMoonKey.addStep(and(inLobbyBasementVenator, leftHalfOfCrest, needToPutSwordOnStatue), getSword);
+
+		getNewMoonKey.addStep(and(inLobbyBasementHallway, leftHalfOfCrest), enterAnotherVenatorRoom);
+		getNewMoonKey.addStep(and(inLobbyF0, leftHalfOfCrest), climbDownstairsToLobbyBasement);
+		getNewMoonKey.addStep(and(inEmblemGalleryHallway, leftHalfOfCrest), enterLobbyFromEmblemGalleryHallway);
+
+		getNewMoonKey.addStep(and(inKitchen, leftHalfOfCrest), leaveKitchen);
+		getNewMoonKey.addStep(and(inKitchen, unlockedKitchenChest), getLeftCrestHalfFromKitchenChest);
+		getNewMoonKey.addStep(and(inKitchen, fullSyringe), useSyringeOnChest);
+		getNewMoonKey.addStep(and(inKitchen, venatorStomach, emptySyringe), drawBloodFromVenatorStomach);
+		getNewMoonKey.addStep(and(inKitchen, syringeBarrel, venatorStomach, syringePlunger, syringeNeedle), assembleSyringe);
+		getNewMoonKey.addStep(and(inKitchen, syringeBarrel, venatorStomach, syringePlunger, tongs), getNeedleFromSink);
+		getNewMoonKey.addStep(and(inKitchen, syringeBarrel, venatorStomach, syringePlunger, hasCutVenatorStomachUp), getTongsFromVenatorCorpse);
+		getNewMoonKey.addStep(and(inKitchen, syringeBarrel, venatorStomach, sharpKitchenKnife, syringePlunger), useSharpKnifeOnVenatorCorpse);
+		getNewMoonKey.addStep(and(inLarder, sharpKitchenKnife, syringePlunger), leaveLarder);
+		getNewMoonKey.addStep(and(inLarder, sharpKitchenKnife), searchLarderCrateForSyringePlunger);
+		getNewMoonKey.addStep(and(inLarder, brokenPipe), reachBehindCabinetWithPipe);
+		getNewMoonKey.addStep(and(inLarder, larderSinkCollapsed), takePipe);
+		getNewMoonKey.addStep(and(inLarder, larderSinkPlugged), turnSinkTapOn);
+		getNewMoonKey.addStep(and(inLarder, larderSinkNeedsPlugging), useSinkPlugOnSinkInLarder);
+		getNewMoonKey.addStep(and(inKitchen, syringeBarrel, venatorStomach, sinkPlug), enterLarder);
+		getNewMoonKey.addStep(and(inKitchen, syringeBarrel, venatorStomach), inspectSink);
+		getNewMoonKey.addStep(and(inKitchen, syringeBarrel), searchCrateForVenatorStomach);
+		getNewMoonKey.addStep(inKitchen, killBugsAndTakeSyringeBarrel);
+		getNewMoonKey.addStep(inEmblemGalleryHallway, enterRoomBehindLobby);
+		getNewMoonKey.addStep(inEmblemGallery, enterEmblemGalleryHallway);
 		// TODO: Get the new moon key
 
-		cVampyrium2.addStep(crescentMoonKey, getNewMoonKey);
-		cVampyrium2.addStep(hasGottenDrakanEmblemFromFireplace, getCrescentMoonKey);
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, doneWithThroneRoomPuzzle, not(halfMoonKey)), getKeyFromThroneRoom);
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, not(doneWithThroneRoomPuzzle)), cGetHalfMoonKey);
 
-		cVampyrium2.addStep(and(inVampyriumVarbit, not(smallClockHand), smallClockHandNeedsReplacing), getSmallClockHand);
-		cVampyrium2.addStep(and(inVampyriumVarbit, not(largeClockHand), largeClockHandNeedsReplacing), getLargeClockHand);
-		cVampyrium2.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle, not(inDiningRoom)), getBackToDiningRoom);
-		cVampyrium2.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle), solveClockPuzzle);
+		cVampyriumCastleDrakan.addStep(and(crescentMoonKey, newMoonKey), todo4);
+		cVampyriumCastleDrakan.addStep(crescentMoonKey, getNewMoonKey);
+		cVampyriumCastleDrakan.addStep(hasGottenDrakanEmblemFromFireplace, getCrescentMoonKey);
+
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, not(smallClockHand), smallClockHandNeedsReplacing), getSmallClockHand);
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, not(largeClockHand), largeClockHandNeedsReplacing), getLargeClockHand);
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle, not(inDiningRoom)), getBackToDiningRoom);
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle), solveClockPuzzle);
 
 		// TODO: do we need to prompt the user to pick up the poem scroll?
 
-		cVampyrium2.addStep(inVampyriumVarbit, todoVampyriumPuzzle);
+		cVampyriumCastleDrakan.addStep(inVampyriumVarbit, todoVampyriumPuzzle);
 
-		steps.put(72, cVampyrium2);
+		steps.put(72, cVampyriumCastleDrakan);
 		// 72 -> 74 after talking to Veliaf in the emblem gallery
-		steps.put(74, cVampyrium2);
+		steps.put(74, cVampyriumCastleDrakan);
 
 		return steps;
 	}
@@ -1255,7 +1563,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			startQuest,
 			cLookForIvan,
 			inspectShrine,
-			talkToIvanGoingToDarkmeyer1,
+			talkToIvanGoingToDarkmeyer,
 			defendIvanFromVyres,
 			talkToIvanAfterEscaping
 		), List.of(
@@ -1307,7 +1615,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			talkToIvanAfterKillingVamps,
 			enterCastleDrakanCellar,
 			climbUpToCastleDrakanLobby,
-			prayAtShrine
+			prayAtShrine,
+			enterPortalInCastleDrakanLobby
 		), List.of(
 			blisterwoodFlail,
 			combatGear,
@@ -1317,6 +1626,16 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			drakansMedallion
 		), List.of(
 			freeInvSlots6
+		)));
+
+		sections.add(new PanelDetails("Escaping Castle Drakan", List.of(
+			cGetHalfMoonKeyPW
+		), List.of(
+			blisterwoodFlail,
+			combatGear,
+			food,
+			prayerPotions,
+			drakansMedallion
 		)));
 
 		sections.add(new PanelDetails("TODO", List.of(

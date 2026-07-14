@@ -85,7 +85,7 @@ public class QuestOverviewPanel extends JPanel
 	private final CardLayout questStepsLayout = new CardLayout();
 	private final JPanel questStepsHost = new JPanel(questStepsLayout);
 	private final JPanel activeStepsCard = new JPanel(new BorderLayout());
-	private final JPanel actionsContainer = new JPanel();
+	final JPanel actionsContainer = new JPanel();
 	private final JPanel configContainer = new JPanel();
 
 	private final JPanel introPanel = new JPanel();
@@ -207,7 +207,6 @@ public class QuestOverviewPanel extends JPanel
 		questStepsHost.add(new JPanel(), EMPTY_STEPS_CARD);
 		questStepsHost.add(activeStepsCard, ACTIVE_STEPS_CARD);
 		questStepsLayout.show(questStepsHost, EMPTY_STEPS_CARD);
-		add(actionsContainer);
 		add(configContainer);
 		add(introPanel);
 		add(questStepsHost);

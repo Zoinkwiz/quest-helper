@@ -41,6 +41,7 @@ import com.questhelper.steps.widget.Spell;
 import com.questhelper.steps.widget.SpellWidgetHighlight;
 import com.questhelper.steps.widget.WidgetHighlight;
 import com.questhelper.tools.VisibilityHelper;
+import com.questhelper.util.QuestStepIcon;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -134,6 +135,9 @@ public abstract class QuestStep implements Module
 
 	protected int iconItemID = -1;
 	protected BufferedImage icon;
+
+	/// List of custom icons that can be used instead of icon
+	@NonNull protected final List<QuestStepIcon> customIcons = new ArrayList<>();
 
 	@Getter
 	protected final QuestHelper questHelper;
@@ -507,6 +511,11 @@ public abstract class QuestStep implements Module
 			.build());
 	}
 
+	public void addCustomIcon(QuestStepIcon questStepIcon)
+	{
+		customIcons.add(questStepIcon);
+	}
+
 	public QuestStep addIcon(int iconItemID)
 	{
 		this.iconItemID = iconItemID;
@@ -578,6 +587,11 @@ public abstract class QuestStep implements Module
 		else if (icon == null)
 		{
 			icon = getQuestImage();
+		}
+
+		for (var customIcon : customIcons)
+		{
+			customIcon.setup(itemManager);
 		}
 	}
 

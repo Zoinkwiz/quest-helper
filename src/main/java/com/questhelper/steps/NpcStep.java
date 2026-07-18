@@ -363,10 +363,22 @@ public class NpcStep extends DetailedQuestStep
 					? IMAGE_Z_OFFSET
 					: (npc.getLogicalHeight() / 2);
 
-				Point imageLocation = npc.getCanvasImageLocation(icon, zOffset);
+				var iconToUse = this.icon;
+
+				// Find best icon for this NPC
+				for (var customIcon : customIcons)
+				{
+					if (customIcon.getTargetId() == npc.getId())
+					{
+						iconToUse = customIcon.getIcon();
+						break;
+					}
+				}
+
+				Point imageLocation = npc.getCanvasImageLocation(iconToUse, zOffset);
 				if (imageLocation != null)
 				{
-					OverlayUtil.renderImageLocation(graphics, imageLocation, icon);
+					OverlayUtil.renderImageLocation(graphics, imageLocation, iconToUse);
 				}
 			}
 		}

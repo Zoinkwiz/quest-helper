@@ -25,6 +25,7 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
+import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -58,6 +59,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.questhelper.steps.WidgetStep;
+import com.questhelper.util.QuestStepIcon;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.Direction;
@@ -2325,9 +2327,21 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var inSotfa4 = new ZoneRequirement(new Zone(new WorldPoint(2986, 7844, 0), new WorldPoint(3006, 7867, 0)));
 		var sotfa4 = new ObjectStep(this, 61995, new WorldPoint(2993, 7866, 0), "Continue through the cave.");
 
+		// nylocas room
+		var inSotfa5 = new ZoneRequirement(new Zone(new WorldPoint(2903, 7829, 0), new WorldPoint(2927, 7855, 0)));
+		var anyNearbyNylocas = or(new NpcRequirement(16236), new NpcRequirement(16237));
+		var killNylocas = new NpcStep(this, 16236, "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage.", true);
+		killNylocas.addAlternateNpcs(16237);
+		killNylocas.addCustomIcon(new QuestStepIcon(ItemID.DRAGON_SCIMITAR, 16236, 0.75));
+		killNylocas.addCustomIcon(new QuestStepIcon(ItemID.SOTFA_FOREST_TALON, 16237, 0.75));
+		// TODO: For some reason, the npc condition failed to detect more npcs at some point. Not sure what happened, but a few ticks later the npcs were highlighted.
+		var sotfa5 = new ConditionalStep(this, killNylocas);
+		var sotfa5Leave = new ObjectStep(this, 61047, new WorldPoint(2912, 7852, 0), "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage. When all are dead, leave through the trees.");
+		sotfa5.addStep(not(anyNearbyNylocas), sotfa5Leave);
 
 
 		var cFlee2 = new ConditionalStep(this, todo3);
+		cFlee2.addStep(and(inSotfa5), sotfa5);
 		cFlee2.addStep(and(inSotfa4), sotfa4);
 		cFlee2.addStep(and(inSotfa3), sotfa3);
 		cFlee2.addStep(and(inSotfa2), sotfa2);

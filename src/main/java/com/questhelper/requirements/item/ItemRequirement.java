@@ -99,6 +99,11 @@ public class ItemRequirement extends AbstractRequirement
 		return this.mustBeEquipped;
 	}
 
+	/// Indicates whether the item must be unequipped.
+	/// If set to true, the requirement will have the extra text "(unequipped)" added at the end, which is only green if the item
+	/// is in your inventory.
+	@Setter
+	protected boolean mustBeUnequipped;
 
 	/**
 	 * Whether the item should be highlighted in the inventory.
@@ -502,6 +507,7 @@ public class ItemRequirement extends AbstractRequirement
 		newItem.setName(name);
 		newItem.setId(id);
 		newItem.setMustBeEquipped(mustBeEquipped);
+		newItem.setMustBeUnequipped(mustBeUnequipped);
 		newItem.setQuantity(quantity);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(displayItemId);
@@ -919,6 +925,18 @@ public class ItemRequirement extends AbstractRequirement
 					.leftColor(equipColor)
 					.build());
 		}
+		else if (this.mustBeUnequipped)
+		{
+			String extraText = "(unequipped)";
+			if (!checkContainers(QuestContainerManager.getInventoryData()))
+			{
+				equipColor = config.failColour();
+			}
+			lines.add(LineComponent.builder()
+				.left(extraText)
+				.leftColor(equipColor)
+				.build());
+		}
 
 		if (includeTooltip && this.getTooltip() != null && !check(client))
 		{
@@ -948,7 +966,10 @@ public class ItemRequirement extends AbstractRequirement
 		}
 
 		List<ItemAndLastUpdated> containers = new ArrayList<>();
-		containers.add(QuestContainerManager.getEquippedData());
+		if (!mustBeUnequipped)
+		{
+			containers.add(QuestContainerManager.getEquippedData());
+		}
 
 		if (!mustBeEquipped)
 		{

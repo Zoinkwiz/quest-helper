@@ -51,6 +51,18 @@ public class ItemReward implements Reward
 		return name;
 	}
 
+	/** Returns the concrete item used to render this reward. */
+	public int getItemID()
+	{
+		return itemID;
+	}
+
+	/** Returns the number of items granted by this reward. */
+	public int getQuantity()
+	{
+		return quantity;
+	}
+
 	@Nonnull
 	@Override
 	public RewardType rewardType()

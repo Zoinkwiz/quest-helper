@@ -32,6 +32,7 @@ import com.google.inject.Provides;
 import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.bank.banktab.QuestBankTabInterface;
+import com.questhelper.bridge.QuestJournalBridge;
 import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
@@ -140,6 +141,9 @@ public class QuestHelperPlugin extends Plugin
 	private QuestManager questManager;
 
 	@Inject
+	private QuestJournalBridge questJournalBridge;
+
+	@Inject
 	private WorldMapAreaManager worldMapAreaManager;
 
 	@Inject
@@ -222,6 +226,7 @@ public class QuestHelperPlugin extends Plugin
 
 		panel = new QuestHelperPanel(this, questManager, configManager);
 		questManager.startUp(panel);
+		questJournalBridge.startUp();
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)
@@ -244,6 +249,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		questJournalBridge.shutDown();
 		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(playerStateManager);
@@ -272,6 +278,7 @@ public class QuestHelperPlugin extends Plugin
 		questBankManager.loadInitialStateFromConfig(client);
 		playerStateManager.loadInitialStateFromConfig();
 		questManager.updateQuestState();
+		questJournalBridge.publishIfChanged();
 	}
 
 	@Subscribe

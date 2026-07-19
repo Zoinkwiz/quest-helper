@@ -19,6 +19,7 @@ import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeType;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
@@ -59,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.questhelper.steps.WidgetStep;
+import com.questhelper.steps.widget.WidgetHighlight;
 import com.questhelper.util.QuestStepIcon;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -2382,8 +2384,367 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// 98 -> 100: after meeting & finishing speaking with Sugadinti
 
-		var cHelpWithPreparations = new ConditionalStep(this, todo3);
+		var startTalkingToEfaritay = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow in the west room to help her with her son.");
+
+		var cHelpWithPreparations = new ConditionalStep(this, startTalkingToEfaritay);
 		steps.put(100, cHelpWithPreparations);
+
+		// 100 -> 102: spoke with Efaritay, and she told me to bring her herbs
+
+		var palace1 = new Zone(new WorldPoint(3155, 7823, 1), new WorldPoint(3181, 7843, 1));
+		var palace2 = new Zone(new WorldPoint(3177, 7863, 1), new WorldPoint(3159, 7844, 1));
+		var inPalace = new ZoneRequirement(palace1, palace2);
+		var palaceDungeon1 = new Zone(new WorldPoint(3155, 7823, 0), new WorldPoint(3181, 7843, 0));
+		var palaceDungeon2 = new Zone(new WorldPoint(3177, 7863, 0), new WorldPoint(3159, 7844, 0));
+		var inPalaceDungeon = new ZoneRequirement(palaceDungeon1, palaceDungeon2);
+
+		var outsidePalace1 = new Zone(new WorldPoint(2989, 7690, 0), new WorldPoint(2963, 7673, 0));
+		var isOutsidePalace = new ZoneRequirement(outsidePalace1);
+
+		var amitireLeaves = new ItemRequirement("Amitire leaves", 33796);
+		var bowl = new ItemRequirement("Bowl", 1923);
+		var bowlOfWater = new ItemRequirement("Bowl of water", ItemID.BOWL_WATER);
+		var potato = new ItemRequirement("Potato", 1942);
+		var rawMeat = new ItemRequirement("Raw impaler meat", 33821);
+		var cookedMeat = new ItemRequirement("Cooked meat", 2142);
+		var incompleteStew = new ItemRequirement("Incomplete stew", 1997);
+		var uncookedStew = new ItemRequirement("Uncooked stew", 2001);
+		var stew = new ItemRequirement("Stew", 2003);
+		var amitireStew = new ItemRequirement("Amitire stew", 33797);
+		var leavePalace1 = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Pick some amitire leaves from the amitire plant outside the palace.");
+		var pickFromAmitirePlant = new ObjectStep(this, 62135, new WorldPoint(2982, 7679, 0), "Pick some amitire leaves from the amitire plant outside the palace.");
+
+		var enterPalace1 = new ObjectStep(this, 62144, new WorldPoint(2974, 7677, 0), "Enter the palace with the amitire leaves.", amitireLeaves);
+
+		var searchShelvesForBowl = new ObjectStep(this, 62070, new WorldPoint(3159, 7824, 1), "Search the shelves next to the sink for a bowl.", amitireLeaves);
+
+		var fillBowlWithWater = new ObjectStep(this, 62097, new WorldPoint(3157, 7825, 1), "Fill the bowl with water", amitireLeaves, bowl.highlighted());
+
+		var getPotatoFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take a potato from the cupboard.", amitireLeaves, bowlOfWater);
+		getPotatoFromCupboard.addDialogStep("Potato.");
+
+		var getRawMeatFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take some raw meat the cupboard.", amitireLeaves, incompleteStew);
+		getRawMeatFromCupboard.addDialogStep("Raw meat.");
+
+		var cookMeatOnRange = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the raw meat on the range.", amitireLeaves, incompleteStew, rawMeat.highlighted());
+		cookMeatOnRange.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Cooked meat"));
+
+		var combineStew = new DetailedQuestStep(this, "Put the potato in the bowl of water.", amitireLeaves, bowlOfWater.highlighted(), potato.highlighted());
+		var combineStew2 = new DetailedQuestStep(this, "Put the cooked meat in the incomplete stew.", amitireLeaves, incompleteStew.highlighted(), cookedMeat.highlighted());
+		var cookStew = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the stew on the range.", uncookedStew.highlighted());
+		cookStew.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Stew"));
+		var combineStew3 = new DetailedQuestStep(this, "Put the amitire leaves into the stew.", amitireLeaves.highlighted(), stew.highlighted());
+		// var talkToEfaritayWithStew = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Return to Efaritay Hallow with the amitire stew.", amitireStew);
+		// TODO: Confirm you can do this without speaking to Efaritay first
+		var giveStewToSafalaan = new NpcStep(this, 15895, "Give the amitire stew to Safalaan Hallow.", amitireStew.highlighted());
+
+		var cPickUpHerbs = new ConditionalStep(this, todo2);
+		cPickUpHerbs.addStep(and(amitireStew), giveStewToSafalaan);
+		cPickUpHerbs.addStep(and(stew, amitireLeaves), combineStew3);
+		cPickUpHerbs.addStep(and(uncookedStew), cookStew);
+		cPickUpHerbs.addStep(and(inPalace, amitireLeaves, incompleteStew, cookedMeat), combineStew2);
+		cPickUpHerbs.addStep(and(inPalace, amitireLeaves, incompleteStew, rawMeat), cookMeatOnRange);
+		cPickUpHerbs.addStep(and(inPalace, amitireLeaves, incompleteStew), getRawMeatFromCupboard);
+		cPickUpHerbs.addStep(and(inPalace, amitireLeaves, bowlOfWater, potato), combineStew);
+		cPickUpHerbs.addStep(and(inPalace, amitireLeaves, bowlOfWater), getPotatoFromCupboard);
+		cPickUpHerbs.addStep(and(inPalace, amitireLeaves, bowl), fillBowlWithWater);
+		cPickUpHerbs.addStep(and(inPalace, amitireLeaves), searchShelvesForBowl);
+		cPickUpHerbs.addStep(and(isOutsidePalace, amitireLeaves), enterPalace1);
+		cPickUpHerbs.addStep(isOutsidePalace, pickFromAmitirePlant);
+		cPickUpHerbs.addStep(inPalace, leavePalace1);
+		steps.put(102, cPickUpHerbs);
+		// 102 -> 104 when you make the stew for the first time
+		steps.put(104, cPickUpHerbs);
+		// 104 -> 106 when you gave the amitire stew to Safalaan
+		var talkToSafalaan = new NpcStep(this, 15893, new WorldPoint(3157, 7841, 1), "Talk-to Safalaan Hallow.");
+		var cTalkToSafalaan = new ConditionalStep(this, talkToSafalaan);
+		steps.put(106, cTalkToSafalaan);
+		// 106 -> 108 after speaking 2 words to Safalaan
+		var cTalkToEfaritay = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk-to Efaritay Hallow.");
+		steps.put(108, cTalkToEfaritay);
+		// 108 -> 110 after speaking to Efaritay about getting my weapon upgraded
+
+		var hallowedMarks = new ItemRequirement("Hallowed marks", 33798);
+		var hammer = new ItemRequirement("Hammer", 2347);
+		var chisel = new ItemRequirement("Chisel", 1755);
+		var knife = new ItemRequirement("Knife", 946);
+		var blisterwoodLogs = new ItemRequirement("Blisterwood logs", 24691);
+		var blessedSilverSickle = new ItemRequirement("Silver sickle (b)", 2963);
+		var diamond = new ItemRequirement("Diamond", 1601);
+		var diamondTablet = new ItemRequirement("Enchant diamond", 8019);
+		var diamondSickleB = new ItemRequirement("Diamond sickle (b)", 33709);
+		var enchantedDiamondSickle = new ItemRequirement("Enchanted diamond sickle (b)", 33711);
+		var enhancedBlisterwoodSickle = new ItemRequirement("Blisterwood sickle (e)", 33713);
+		var blisterwoodFlailUnequipped = blisterwoodFlail.copy();
+		blisterwoodFlailUnequipped.setMustBeUnequipped(true);
+
+		var searchWorkbenchForHammer = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a hammer.", blisterwoodFlail);
+		searchWorkbenchForHammer.addDialogStep("Hammer.");
+		var searchWorkbenchForChisel = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a chisel.", blisterwoodFlail, hammer);
+		searchWorkbenchForChisel.addDialogStep("Chisel.");
+		var searchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a knife.", blisterwoodFlail, hammer, chisel);
+		searchWorkbenchForKnife.addDialogStep("Knife.");
+		var searchCrateForBlisterwoodLogs = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs.", blisterwoodFlail, hammer, chisel, knife);
+		searchCrateForBlisterwoodLogs.addWidgetHighlight(InterfaceID.Skillmulti.A);
+		var searchCrateForBlessedSilverSickle = new ObjectStep(this, 62077, new WorldPoint(3181, 7841, 1), "Search the eastern-most crate for a blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs);
+		var searchChestForDiamond = new ObjectStep(this, 62074, new WorldPoint(3181, 7835, 1), "Search the eastern-most chest for a diamond.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle);
+		var putDiamondInSickle = new DetailedQuestStep(this, "Put the unenchanted diamond on the blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle.highlighted(), diamond.highlighted());
+		putDiamondInSickle.addDialogStep("Yes.");
+		var useEnchantDiamondTabletOnSickle = new DetailedQuestStep(this, "Enchant the diamond sickle with the enchant diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB.highlighted(), diamondTablet.highlighted());
+		useEnchantDiamondTabletOnSickle.addDialogStep("Yes.");
+		var searchChestForDiamondTablet2 = new ObjectStep(this, 62075, new WorldPoint(3175, 7836, 1), "Search the western-most chest for a diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB);
+		var createEnhancedBlisterwoodSickle = new DetailedQuestStep(this, "Combine the blisterwood logs with your newly created enchanted diamond sickle to create an enhanced blisterwood sickle.", blisterwoodFlail, hammer, knife, blisterwoodLogs.highlighted(), enchantedDiamondSickle.highlighted());
+		createEnhancedBlisterwoodSickle.addDialogStep("Yes.");
+		var createHallowedFlail = new ObjectStep(this, 2097, new WorldPoint(3179, 7842, 1), "Create a hallowed flail at the anvil.", blisterwoodFlailUnequipped, hammer, enhancedBlisterwoodSickle, hallowedMarks);
+		createHallowedFlail.addDialogStep("Yes.");
+
+		// TODO: Can a user make it here without their blisterwood flail?
+		// TODO: Could we convert a conditional step into a graph program where a developer can click each requirement whether it
+		// should pass or not, and show which step would be active?
+		var cUpgradeWeapon = new ConditionalStep(this, cTalkToEfaritay);
+		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, enhancedBlisterwoodSickle), createHallowedFlail);
+		cUpgradeWeapon.addStep(and(hallowedMarks, enhancedBlisterwoodSickle), searchWorkbenchForHammer);
+		cUpgradeWeapon.addStep(and(hallowedMarks, chisel, blessedSilverSickle, diamond), putDiamondInSickle);
+		cUpgradeWeapon.addStep(and(hallowedMarks, diamondSickleB, diamondTablet), useEnchantDiamondTabletOnSickle);
+		cUpgradeWeapon.addStep(and(hallowedMarks, knife, blisterwoodLogs, enchantedDiamondSickle), createEnhancedBlisterwoodSickle);
+
+		cUpgradeWeapon.addStep(and(hallowedMarks, nor(hammer)), searchWorkbenchForHammer);
+		cUpgradeWeapon.addStep(and(hallowedMarks, nor(chisel, diamondSickleB, enchantedDiamondSickle, enhancedBlisterwoodSickle)), searchWorkbenchForChisel);
+
+		cUpgradeWeapon.addStep(and(hallowedMarks, not(knife)), searchWorkbenchForKnife);
+		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife, blisterwoodLogs, diamondSickleB), searchChestForDiamondTablet2);
+		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife, blisterwoodLogs, blessedSilverSickle), searchChestForDiamond);
+		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife, blisterwoodLogs), searchCrateForBlessedSilverSickle);
+		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife), searchCrateForBlisterwoodLogs);
+		steps.put(110, cUpgradeWeapon);
+
+		var hallowedFlail = new ItemRequirement("Hallowed flail", 33718);
+
+		var ivanProgress = new VarbitBuilder(VarbitID.MYQ6_IVAN_HIDEOUT_PROGRESS);
+		var canStartIvan = ivanProgress.eq(1);
+		var hasCraftedStakes = ivanProgress.eq(2);
+		var ivanProgressDone = ivanProgress.eq(3);
+
+		var veliafProgress = new VarbitBuilder(VarbitID.MYQ6_VELIAF_HIDEOUT_PROGRESS);
+		var spokeWithVeliaf = veliafProgress.eq(1);
+		var spokeWithVanescula = veliafProgress.eq(2);
+		var veliafProgressDone = veliafProgress.eq(3);
+
+		var ivanSearchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench for a knife.");
+		ivanSearchWorkbenchForKnife.addDialogStep("Knife.");
+		var getLogsForStakes = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs to craft stakes.");
+		getLogsForStakes.addWidgetHighlight(InterfaceID.Skillmulti.A);
+		var fletchStakes = new DetailedQuestStep(this, "Fletch the logs into stakes.", blisterwoodLogs.highlighted(), knife.highlighted());
+
+		var returnToIvan = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Return to  Ivan Strom after crafting some stakes. You can craft more before continuing if you want to use them during the upcoming fights.");
+
+		var climbDownstairs = new ObjectStep(this, 62152, new WorldPoint(3171, 7823, 1), "Talk to Veliaf in the dungeon downstairs.");
+		var talkToVeliafInDungeon = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon.");
+		var talkToVeliafInDungeonAgain = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon again.");
+
+		var talkToVanescula = new NpcStep(this, 15910, new WorldPoint(3168, 7844, 0), "Talk-to Vanescula Drakan.");
+
+		var climbUpstairs = new ObjectStep(this, 62151, new WorldPoint(3164, 7823, 0), "Climb upstairs and talk to Sugadinti.");
+
+		var talkToSugadintiAfterHelpingAllies = new NpcStep(this, 15960, new WorldPoint(3168, 7828, 1), "Talk-to Sugadinti Vitur after helping out Ivan and Veliaf.");
+
+		// 110 -> 112 after creating the hallowed flail
+		// [2026-07-19T12:18:53Z 317] varbit MYQ6_ARANEI_WATCHER_CHAT (15477) 0 -> 1
+		// after speaking to the random Aranei outside the palace
+		var speakToIvanWithHallowedFlail = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Talk-to Ivan Strom.");
+		var cAfterUpgradingWeapon = new ConditionalStep(this, speakToIvanWithHallowedFlail);
+		cAfterUpgradingWeapon.addStep(and(veliafProgressDone, inPalaceDungeon), climbUpstairs);
+
+		cAfterUpgradingWeapon.addStep(and(veliafProgressDone, ivanProgressDone), talkToSugadintiAfterHelpingAllies);
+		cAfterUpgradingWeapon.addStep(and(spokeWithVanescula, inPalaceDungeon), talkToVeliafInDungeonAgain);
+		cAfterUpgradingWeapon.addStep(and(spokeWithVeliaf, inPalaceDungeon), talkToVanescula);
+		cAfterUpgradingWeapon.addStep(and(ivanProgressDone, inPalaceDungeon), talkToVeliafInDungeon);
+		cAfterUpgradingWeapon.addStep(ivanProgressDone, climbDownstairs);
+		cAfterUpgradingWeapon.addStep(hasCraftedStakes, returnToIvan);
+		cAfterUpgradingWeapon.addStep(and(canStartIvan, knife, blisterwoodLogs), fletchStakes);
+		cAfterUpgradingWeapon.addStep(and(canStartIvan, knife), getLogsForStakes);
+		cAfterUpgradingWeapon.addStep(canStartIvan, ivanSearchWorkbenchForKnife);
+		steps.put(112, cAfterUpgradingWeapon);
+
+		// 112 -> 114 after speaking to sugadinti and helping ivan & veliaf.
+
+		var leavePalaceForCombat = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Get ready for combat. Resupply at the supply table in the kitchen if needed. Speak to the Aranei next to the table if you want to deposit any items into your bank. Then leave the palace.");
+		var cGetReadyForCombat = new ConditionalStep(this, leavePalaceForCombat);
+		cGetReadyForCombat.addStep(inCutscene, watchTheCutscene);
+		steps.put(114, cGetReadyForCombat);
+
+		var attackPortals =new NpcStep(this, 16251, "Attack the portals in the sky.", true);
+
+		// 114 -> 116 after watching cutscene, and now you have to defend!!!
+		steps.put(116, attackPortals);
+
+		// 116 -> 118 after helping
+		var leaveDoors = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Enter Doors.");
+		var cAfterHelpingWithPortals = new ConditionalStep(this, leaveDoors);
+		cAfterHelpingWithPortals.addStep(inCutscene, watchTheCutscene);
+		steps.put(118, cAfterHelpingWithPortals);
+
+		// TODO: we _could_ highlight anything that's broken
+		var healPpl = new DetailedQuestStep(this, "Heal fallen Aranei, repair damaged windows, and repair damaged pillars.");
+
+		// FALLEN: new NpcStep(this, 16266, new WorldPoint(3173, 7855, 1), "Heal Aranei.");
+		// DAMAGED PILLAR: new ObjectStep(this, 62155, new WorldPoint(3174, 7855, 1), "Repair Damaged pillar.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3176, 7858, 1), "Repair Damaged window.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3174, 7858, 1), "Repair Damaged window.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3162, 7858, 1), "Repair Damaged window.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3164, 7858, 1), "Repair Damaged window.");
+		// DAMAGED PILLAR: new ObjectStep(this, 62155, new WorldPoint(3162, 7855, 1), "Repair Damaged pillar.");
+
+		var passThroughBarricadeToHelp = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass-through Barricade.");
+		var inPalaceSouthernPart = new ZoneRequirement(palace1);
+		var cFinishedPortalsCutscene = new ConditionalStep(this, healPpl, "Help Efaritay Hallow and the Aranei defend the palace.");
+		cFinishedPortalsCutscene.addStep(inCutscene, watchTheCutscene);
+		cFinishedPortalsCutscene.addStep(inPalaceSouthernPart, passThroughBarricadeToHelp);
+		steps.put(120, cFinishedPortalsCutscene);
+
+		// 120 -> 122 after drakan breaks in
+		// NOTE: For this step, and many others, if IN_VAMPYRIUM is 0 we need to guide the user back to vampyrium
+		// Pulling back spear = Stand to his left or right
+		var passThroughBarricadeToFightDrakan = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass through the barricade, ready to fight Drakan. You can resupply at the supply table in the kitchen.");
+		var fightDrakan2 = new NpcStep(this, 16210, new WorldPoint(3168, 7853, 1), "Fight Drakan. TODO ADD HELP, especially in sidebar.");
+		var cDrakanFight2 = new ConditionalStep(this, fightDrakan2);
+		cDrakanFight2.addStep(inPalaceSouthernPart, passThroughBarricadeToFightDrakan);
+		steps.put(122, cDrakanFight2);
+
+		// 122 -> 124: faught off drakan
+
+		var cFinishedDrakan2 = new ConditionalStep(this, todo2);
+		cFinishedDrakan2.addStep(inCutscene, watchTheCutscene);
+		steps.put(124, cFinishedDrakan2);
+
+		// 124 -> 126: watched cutscene in palace
+		var talkToIvanAfterLeavingPalace = new NpcStep(this, 15855, new WorldPoint(3606, 3416, 0), "Talk-to Ivan Strom.");
+		var cFinishedDrakan3 = new ConditionalStep(this, talkToIvanAfterLeavingPalace);
+		cFinishedDrakan3.addStep(inCutscene, watchTheCutscene);
+		steps.put(126, cFinishedDrakan3);
+
+		// 126 -> 128: talked to Ivan after getting teleported
+		var talkToVeliafAfterLeavingPalace = new NpcStep(this, 15878, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in Burgh de Rott.");
+		var cFinishedDrakan4 = new ConditionalStep(this, talkToVeliafAfterLeavingPalace);
+		cFinishedDrakan4.addStep(inCutscene, watchTheCutscene);
+		steps.put(128, cFinishedDrakan4);
+
+		// 128 -> 130: talked to Veliaf in Burgh de Rott
+		var talkToSugadintiToTeleport = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur to teleport to Ver Sinhaza.");
+		steps.put(130, talkToSugadintiToTeleport);
+
+		var getToTob = new NpcStep(this, 15962, new WorldPoint(3668, 3220, 0), "Gear up for theatre of blood. Bring melee gear with a range and mage switch, some food & potions, then talk to Sugadinti Vitur in front of the theatre of blood.");
+		getToTob.addDialogStep("I'm ready.");
+		var cGetToTob = new ConditionalStep(this, getToTob);
+		cGetToTob.addStep(inCutscene, watchTheCutscene);
+		steps.put(132, cGetToTob);
+		steps.put(134, cGetToTob);
+
+		// 134 -> 136: entering tob with sugadinti
+		var cEnsureNothingBothersSugadinti = new ConditionalStep(this, todo3, "Kill Nylocas with the correct fighting style. Fight the Maiden of Sugadinti, killing healers when they spawn. Avoid blood puddles on the ground.");
+		steps.put(136, cEnsureNothingBothersSugadinti);
+
+		// 136 -> 138: after fighting all the bosses
+		var talkToSugadintiAfterFinsihingTob = new NpcStep(this, 15962, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
+		var cDoneWithTobFights = new ConditionalStep(this, talkToSugadintiAfterFinsihingTob);
+		cDoneWithTobFights.addStep(inCutscene, watchTheCutscene);
+		steps.put(138, cDoneWithTobFights);
+
+		// 138 -> 140: after talking to sugadinti after tob bosses
+		var headtoBarrowsL = new NpcStep(this, 15878, new WorldPoint(3540, 3256, 0), "Head to the abandoned building north-east of Burgh de Rott and talk to Veliaf.");
+		var cDealWithVanescula = new ConditionalStep(this, headtoBarrowsL, combatGear, hallowedFlail, food, prayerPotions);
+		steps.put(140, cDealWithVanescula);
+		var headDownToVanescula = new ObjectStep(this, 61254, new WorldPoint(3543, 3257, 0), "Head to the abandoned building north-east of Burgh de Rott and enter the entry.");
+		var cDealWithVanescula2 = new ConditionalStep(this, headDownToVanescula, combatGear, hallowedFlail, food, prayerPotions);
+		cDealWithVanescula2.addStep(inCutscene, watchTheCutscene);
+		steps.put(142, cDealWithVanescula2);
+
+		var inWyrdFight = new ZoneRequirement(new Zone(11892));
+
+		var cDealWithVanescula3 = new ConditionalStep(this, headDownToVanescula, combatGear, hallowedFlail, food, prayerPotions);
+		var fightTheWyrd = new NpcStep(this, 16212, "Fight the Wyrd. TODO ADD SOME INSTRUCTIONS HERE :)");
+		cDealWithVanescula3.addStep(inWyrdFight, fightTheWyrd);
+		steps.put(144, cDealWithVanescula3);
+
+		// 144 -> 146: dealt with Wyrd
+		var cDealtWithWyrd = new ConditionalStep(this, headDownToVanescula);
+		cDealtWithWyrd.addStep(inCutscene, watchTheCutscene);
+		steps.put(146, cDealtWithWyrd);
+
+		// 146 -> 148: finished Wyrd cutscene
+		var findWyrd = new ObjectStep(this, 61268, new WorldPoint(3562, 3323, 0), "Inspect the fence north of barrows.");
+		var cDealtWithWyrd2 = new ConditionalStep(this, findWyrd);
+		cDealtWithWyrd.addStep(inCutscene, watchTheCutscene);
+		steps.put(148, cDealtWithWyrd2);
+
+		// 148 -> 150: inspected fence
+		var speakWithVeliafAfterInspectingFence = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz in the Burgh de Rott hideout.");
+		var cInspectedFence = new ConditionalStep(this, speakWithVeliafAfterInspectingFence);
+		steps.put(150, cInspectedFence);
+
+		var prepareFightDrakan3 = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		prepareFightDrakan3.addDialogStep("I'm ready.");
+		// 150 -> 152: spoke with veliaf and co under burgh de rott after inspecting fence
+		var inBurghDeRottDungeon = new ZoneRequirement(new Zone(new WorldPoint(3489, 9632, 0), new WorldPoint(3500, 9622, 0)));
+		var enterBurghDeRottDungeon = new ObjectStep(this, 12743, new WorldPoint(3490, 3232, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		var cDoSomething = new ConditionalStep(this, enterBurghDeRottDungeon, combatGear, hallowedFlail, food, prayerPotions);
+		cDoSomething.addStep(inBurghDeRottDungeon, prepareFightDrakan3);
+		cDoSomething.addStep(inCutscene, watchTheCutscene);
+		steps.put(152, cDoSomething);
+
+		var fightDrakanAgainLol = new NpcStep(this, 16209, "Attack Lowerniel Drakan  (level-927).");
+		steps.put(154, fightDrakanAgainLol);
+
+		// 154 -> 156 after beating drakan
+		var talkToVeliaf = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
+		talkToVeliaf.addDialogStep("I'll go now.");
+		var justBeatDrakanSecondToLastTime = new ConditionalStep(this, talkToVeliaf);
+		justBeatDrakanSecondToLastTime.addStep(inCutscene, watchTheCutscene);
+		steps.put(156, justBeatDrakanSecondToLastTime);
+
+		// 156 -> 158: after watching the cutscene
+		var talkToIvanInsideCastlaDrakan = new NpcStep(this, 15855, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
+		steps.put(158, talkToIvanInsideCastlaDrakan);
+
+		// 158 -> 160: after talking to Ivan,m and sugadinti enters castle drakan
+		var talkToSugadintiInsideCastleDrakan = new NpcStep(this, 15960, new WorldPoint(2846, 7389, 0), "Talk-to Sugadinti Vitur inside Castle Drakan.");
+		steps.put(160, talkToSugadintiInsideCastleDrakan);
+		// 160 -> 162: ivan & veliaf left
+		steps.put(162, talkToSugadintiInsideCastleDrakan);
+		// 162 -> 164: finished speaking with sugadinti
+		var talkToEfaritayOnIcyene = new NpcStep(this, 15942, new WorldPoint(3701, 3186, 0), "Talk-to Efaritay Hallow in Icyene Graveyard.");
+		steps.put(164, talkToEfaritayOnIcyene);
+		// 164 -> 166: after efaritay opens portal to vampyrium
+		var enterVampyriumForTheLastTime = new ObjectStep(this, 61215, new WorldPoint(3703, 3185, 0), "Enter the portal in Icyene Graveyard to get to Vampyrium.", hallowedFlail, combatGearMelee);
+		var cEnterVampyriumForTheLastTime = new ConditionalStep(this, enterVampyriumForTheLastTime);
+		cEnterVampyriumForTheLastTime.addStep(inCutscene, watchTheCutscene);
+		steps.put(166, cEnterVampyriumForTheLastTime);
+		// 166 -> 168: after efaritay and safalaan left
+		var goToFightDrakan4 = new ObjectStep(this, 61628, new WorldPoint(2506, 7387, 0), "Enter the door, ready to fight Drakan. You can get supplies and deposit items at the chest next to the door.", hallowedFlail, combatGearMelee);
+		var cXD = new ConditionalStep(this, enterVampyriumForTheLastTime);
+		cXD.addStep(inCutscene, watchTheCutscene);
+		cXD.addStep(inVampyriumVarbit, goToFightDrakan4);
+		steps.put(168, cXD);
+
+		var inCastleDrakanFight = new ZoneRequirement(new Zone(new WorldPoint(2514, 7853, 3), new WorldPoint(2495, 7823, 3)));
+		// TODO: some minor instructions + maybe a wiki link?
+		var fightDrakan4 = new NpcStep(this, 16204, "Fight Lowerniel Drakan.");
+
+		var cFightDrakanLastTime = new ConditionalStep(this, enterVampyriumForTheLastTime);
+		cFightDrakanLastTime.addStep(inCastleDrakanFight, fightDrakan4);
+		cFightDrakanLastTime.addStep(inVampyriumVarbit, goToFightDrakan4);
+		steps.put(170, cFightDrakanLastTime);
+
+		// 170 -> 172: death cutscene
+		steps.put(172, watchTheCutscene);
+		// 172 -> 174: he fell down, now we're with efaritay
+		var talkToEfaritayAfterKillingDrakan = new NpcStep(this, 15941, new WorldPoint(3702, 3182, 0), "Talk-to Efaritay Hallow in the icyene graveyard.");
+		var cTalkToEfaritayAfterKillingDrakan = new ConditionalStep(this, talkToEfaritayAfterKillingDrakan);
+		cTalkToEfaritayAfterKillingDrakan.addStep(inCutscene, watchTheCutscene);
+		steps.put(174, cTalkToEfaritayAfterKillingDrakan);
+		var youHaveFinishedTheQuest = new DetailedQuestStep(this, "Congratulations on finishing the quest!");
+		steps.put(176, youHaveFinishedTheQuest);
+		steps.put(178, youHaveFinishedTheQuest);
 
 		return steps;
 	}
@@ -2407,16 +2768,16 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		return List.of(
 			new QuestRequirement(QuestHelperQuest.A_NIGHT_AT_THE_THEATRE, QuestState.FINISHED),
 			new QuestRequirement(QuestHelperQuest.SINS_OF_THE_FATHER, QuestState.FINISHED),
-			new SkillRequirement(Skill.SLAYER, 74, false /* ?? */),
-			new SkillRequirement(Skill.WOODCUTTING, 74, false /* ?? */),
-			new SkillRequirement(Skill.SMITHING, 72, false /* ?? */),
-			new SkillRequirement(Skill.COOKING, 72, false /* ?? */),
-			new SkillRequirement(Skill.FLETCHING, 70, false /* ?? */),
-			new SkillRequirement(Skill.MINING, 66, false /* ?? */),
-			new SkillRequirement(Skill.HUNTER, 65, false /* ?? */),
-			new SkillRequirement(Skill.CRAFTING, 64, false /* ?? */),
-			new SkillRequirement(Skill.HERBLORE, 64, false /* ?? */),
-			new SkillRequirement(Skill.MAGIC, 57, false /* ?? */)
+			new SkillRequirement(Skill.SLAYER, 74, false),
+			new SkillRequirement(Skill.WOODCUTTING, 74, false),
+			new SkillRequirement(Skill.SMITHING, 72, false),
+			new SkillRequirement(Skill.COOKING, 72, false),
+			new SkillRequirement(Skill.FLETCHING, 70, false),
+			new SkillRequirement(Skill.MINING, 66, false /* Not confirmed if boostable or not */),
+			new SkillRequirement(Skill.HUNTER, 65, false /* Not confirmed if boostable or not */),
+			new SkillRequirement(Skill.CRAFTING, 64, false /* Not confirmed if boostable or not */),
+			new SkillRequirement(Skill.HERBLORE, 64, false /* Not confirmed if boostable or not */),
+			new SkillRequirement(Skill.MAGIC, 57, false /* Not confirmed if boostable or not */)
 		);
 	}
 
@@ -2481,9 +2842,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(
-			new ItemReward("30,000 Experience Tomes (Any skill above 70)", ItemID.THOSF_REWARD_LAMP /* TODO */, 6),
-			new ItemReward("The Flail Upgrade", ItemID.THOSF_REWARD_LAMP /* TODO */),
-			new ItemReward("The New Spec Weapon", ItemID.THOSF_REWARD_LAMP /* TODO */)
+			new ItemReward("30,000 Experience Tomes (Any skill above 70)", 33715, 6),
+			new ItemReward("Sunspear", 33722)
 		);
 	}
 
@@ -2492,7 +2852,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	{
 		return List.of(
 			new UnlockReward("Access to Vampyrium"),
-			new UnlockReward("Access to the Maggot King boss")
+			new UnlockReward("Access to Veliaf's pub in Burgh de Rott"),
+			new UnlockReward("Vyres of morytania are now friendly to you without wearing a vyre noble outfit")
 		);
 	}
 

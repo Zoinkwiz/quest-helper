@@ -86,6 +86,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected List<Requirement> requirements = new ArrayList<>();
 
+	public List<Requirement> getRequirements()
+	{
+		return Collections.unmodifiableList(requirements);
+	}
+
 	public ConditionalStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
 	{
 		this(questHelper, step, "", requirements);

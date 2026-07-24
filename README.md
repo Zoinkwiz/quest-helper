@@ -7,7 +7,7 @@ This plugin is intended to assist in completing quests, from showing you quest s
 
 Firstly, download the Quest Helper from the Runelite Plugin Hub.
 
-You should then see the quest helper icon appear in the Runelite sidebar. You can click it to see a list of all quests which you've yet to complete. Select the icon quest you're wanting to do, and the helper for that quest will start up.
+You should then see the quest helper icon appear in the Runelite sidebar. You can click it to see a list of all quests which you've yet to complete. Select the quest you're wanting to do, and the helper for that quest will start up.
 
 ![](https://user-images.githubusercontent.com/41973452/234351938-0db43249-7f0c-4e7c-8bb3-8ca2fa294f04.png)
 
@@ -16,6 +16,16 @@ Once the quest is started, the sidebar will change to show the requirements for 
 ![](https://user-images.githubusercontent.com/41973452/234352011-145fa8b9-d978-4dd7-a88f-28f1e21e13f8.png)
 
 At this stage, simply follow the steps until you've completed the quest!
+
+## Quest Journal
+
+Quest Helper includes an in-game Quest Journal for browsing and organizing quests in an interface designed to match Old School RuneScape. Open it from the movable button beside the minimap, or assign a hotkey in the Quest Helper settings.
+
+![Quest Journal button beside the minimap](./images/quest-journal-02.png)
+
+Search and filter the quest list, bookmark quests with stars for later, and browse any quest without changing the one you are currently following. The Quest Journal can also replace the original in-game quest journal.
+
+![Quest Journal interface](./images/quest-journal-01.png)
 
 ## Other plugins
 

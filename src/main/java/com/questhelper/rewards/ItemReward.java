@@ -51,6 +51,16 @@ public class ItemReward implements Reward
 		return name;
 	}
 
+	public int getItemID()
+	{
+		return itemID;
+	}
+
+	public int getQuantity()
+	{
+		return quantity;
+	}
+
 	@Nonnull
 	@Override
 	public RewardType rewardType()

@@ -105,59 +105,40 @@ public class QuestMenuHandler
 	 */
 	public void startUpQuest(String questName)
 	{
-		if ("Shield of Arrav".equals(questName))
-		{
-			handleShieldOfArrav();
-		}
-		else if ("Recipe for Disaster".equals(questName))
-		{
-			handleRecipeForDisaster();
-		}
-		else
-		{
-			handleGenericQuest(questName);
-		}
-	}
-
-	/**
-	 * Handles the special case for starting up the "Shield of Arrav" quest.
-	 */
-	private void handleShieldOfArrav()
-	{
-		Player player = client.getLocalPlayer();
-		if (player == null)
-		{
-			return;
-		}
-
-		WorldPoint location = player.getWorldLocation();
-		QuestHelperQuest questToStart = PHOENIX_START_ZONE.contains(location) ?
-			QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG :
-			QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG;
-
-		questManager.startUpQuest(QuestHelperQuest.getByName(questToStart.getName()), true);
-	}
-
-	/**
-	 * Handles the special case for starting up the "Recipe for Disaster" quest.
-	 */
-	private void handleRecipeForDisaster()
-	{
-		questManager.startUpQuest(QuestHelperQuest.getByName(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()), true);
-	}
-
-	/**
-	 * Handles the general case for starting up a quest.
-	 *
-	 * @param questName The name of the quest to start.
-	 */
-	private void handleGenericQuest(String questName)
-	{
-		QuestHelper questHelper = QuestHelperQuest.getByName(questName);
+		QuestHelper questHelper = resolveQuestHelper(questName);
 		if (questHelper != null)
 		{
 			questManager.startUpQuest(questHelper, true);
 		}
+	}
+
+	/**
+	 * Resolves the quest helper for a quest-list entry without starting it.
+	 *
+	 * @param questName The name of the quest to resolve.
+	 * @return The matching quest helper, or {@code null} when it cannot be resolved.
+	 */
+	public QuestHelper resolveQuestHelper(String questName)
+	{
+		if ("Shield of Arrav".equals(questName))
+		{
+			Player player = client.getLocalPlayer();
+			if (player == null)
+			{
+				return null;
+			}
+
+			WorldPoint location = player.getWorldLocation();
+			QuestHelperQuest questToStart = PHOENIX_START_ZONE.contains(location) ?
+				QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG :
+				QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG;
+			return QuestHelperQuest.getByName(questToStart.getName());
+		}
+		if ("Recipe for Disaster".equals(questName))
+		{
+			return QuestHelperQuest.getByName(QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName());
+		}
+		return QuestHelperQuest.getByName(questName);
 	}
 
 	/**

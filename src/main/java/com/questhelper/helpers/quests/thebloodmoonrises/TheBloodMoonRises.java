@@ -2339,8 +2339,26 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var sotfa5Leave = new ObjectStep(this, 61047, new WorldPoint(2912, 7852, 0), "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage. When all are dead, leave through the trees.");
 		sotfa5.addStep(not(anyNearbyNylocas), sotfa5Leave);
 
+		var deadSnake3 = new ItemRequirement("Dead blood serpent", 33791, 3);
+
+		var inSotfa6 = new ZoneRequirement(new Zone(new WorldPoint(3018, 7926, 0), new WorldPoint(3055, 7884, 0)));
+		var wrangleSnakes = new NpcStep(this, 16238, "Wrangle the snakes, then combine them into one long snake. You must stand behind the snake when attempting to wrangle it.", true, deadSnake3);
+		var sotfa6 = new ConditionalStep(this, wrangleSnakes, "sotfa6 xd");
+		var combineSnakes = new DetailedQuestStep(this, "Combine the snakes into one long snake.", deadSnake3.highlighted());
+		var serpentRope = new ItemRequirement("Serpent rope", 33792);
+		var useRopeOnLongBranchedTree = new ObjectStep(this, 61951, new WorldPoint(3042, 7895, 0), "Use the serpent rope on the long branched tree.", serpentRope.highlighted());
+		var ropedTree = new ObjectCondition(61949, new WorldPoint(3040, 7895, 0));
+		var swingLikeTarzan = new ObjectStep(this, 61949, new WorldPoint(3040, 7894, 0), "Swing-across Long branched tree.");
+		var acrossSotfa6Pond = new ZoneRequirement(new Zone(new WorldPoint(3047, 7892, 0), new WorldPoint(3033, 7885, 0)));
+		var leaveSotfa6 = new ObjectStep(this, 61047, new WorldPoint(3041, 7885, 0), "Enter Darkwood trees.");
+		sotfa6.addStep(acrossSotfa6Pond, leaveSotfa6);
+		sotfa6.addStep(ropedTree, swingLikeTarzan);
+		sotfa6.addStep(serpentRope, useRopeOnLongBranchedTree);
+		sotfa6.addStep(deadSnake3, combineSnakes);
+
 
 		var cFlee2 = new ConditionalStep(this, todo3);
+		cFlee2.addStep(and(inSotfa6), sotfa6);
 		cFlee2.addStep(and(inSotfa5), sotfa5);
 		cFlee2.addStep(and(inSotfa4), sotfa4);
 		cFlee2.addStep(and(inSotfa3), sotfa3);

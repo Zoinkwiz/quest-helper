@@ -421,7 +421,14 @@ public class HelperConstructManager
 		{
 			addAction(menuEntries, ConstructMenuCapture.MENU_OPTION_PREFIX + " Add Object Step", target, () ->
 			{
-				addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint);
+				if (config.constructModeMode() == QuestHelperConfig.QuestHelperMakerMode.FULL)
+				{
+					addStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint);
+				}
+				else
+				{
+					copyStep(StepKind.OBJECT, rawId, option, target, clickedWorldPoint);
+				}
 			});
 			DraftStep selected = selectedConstructMenuStepOrNull();
 			if (selected != null && selected.getKind() == StepKind.OBJECT)
@@ -673,6 +680,28 @@ public class HelperConstructManager
 		currentDraft.getStepDefinitions().add(step);
 		saveDraftToConfig();
 		sendGameMessage("Quest Helper Construct: added " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + ") at " + formatWorldPoint(clickedWorldPoint) + ". Use Add Step in Order View to place it in the quest order.");
+	}
+
+	private void copyStep(StepKind kind, int rawId, String option, String target, WorldPoint clickedWorldPoint)
+	{
+		ensureDraftLoaded();
+
+		DraftStep step = new DraftStep();
+		step.setStepId(UUID.randomUUID().toString());
+		step.setKind(kind);
+		step.setRawId(rawId);
+		step.setOption(option);
+		step.setTargetText(target);
+		step.setInstructionText(instructionText(option, target));
+		step.setPanelName("Captured Steps");
+		step.setSuggestedVarName(HelperScaffoldGenerator.toVarName(option + " " + target, "step"));
+		step.setWorldPoint(clickedWorldPoint);
+
+		StringBuilder stepString = new StringBuilder();
+		HelperScaffoldGenerator.appendNpcObjectDefinitionSetup(stepString, step, null, step.getInstructionText(), List.of());
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(stepString.toString()), null);
+
+		sendGameMessage("Quest Helper Construct: copied " + kind.name().toLowerCase(Locale.ROOT) + " step (" + rawId + ") at " + formatWorldPoint(clickedWorldPoint) + ".");
 	}
 
 	private boolean isDuplicateStep(StepKind kind, int rawId, String targetText, WorldPoint worldPoint)

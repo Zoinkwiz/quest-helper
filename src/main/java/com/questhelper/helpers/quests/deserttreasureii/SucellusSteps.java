@@ -435,7 +435,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2975, 6360, 2),
 			new WorldPoint(2975, 6348, 2)
 		));
-		unlockChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "214013", 5, 2, 1, 4, 0, 1, 3),
+		unlockChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "chest", "214013", 5, 2, 1, 4, 0, 1, 3),
 			"Enter the correct code for the chest.");
 
 		unlockChest = new PuzzleWrapperStep(getQuestHelper(), unlockChestRealStep, unlockChestFakeStep).withNoHelpHiddenInSidebar(true);
@@ -501,7 +501,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2912, 6395, 2)
 		));
 		goToAdminRoom = new PuzzleWrapperStep(getQuestHelper(), goToAdminRoomRealStep, goToAdminRoomHiddenStep);
-		unlockChest2 = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "LIES", 10, 0, 4, 1, 5),
+		unlockChest2 = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "chest", "LIES", 10, 0, 4, 1, 5),
 			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
 		goToAdminRoom.addSubSteps(unlockChest2);
 
@@ -560,7 +560,7 @@ public class SucellusSteps extends ConditionalStep
 			new WorldPoint(2884, 6374, 2),
 			new WorldPoint(2889, 6375, 2)
 		));
-		openDiamondChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "WRATH", 10, 2, 3, 5, 9, 5),
+		openDiamondChestStep = new PuzzleWrapperStep(getQuestHelper(), new ChestCodeStep(getQuestHelper(), "chest", "WRATH", 10, 2, 3, 5, 9, 5),
 			"Enter the correct code for the chest.").withNoHelpHiddenInSidebar(true);
 
 		openDiamondChest = new PuzzleWrapperStep(getQuestHelper(), openDiamondChestRealStep, openDiamondChestFakeStep);

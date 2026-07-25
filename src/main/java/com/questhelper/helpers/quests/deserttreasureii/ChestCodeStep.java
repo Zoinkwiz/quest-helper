@@ -48,9 +48,9 @@ public class ChestCodeStep extends QuestStep
 
 	private boolean SHOULD_PRESS_CONFIRM;
 
-	public ChestCodeStep(QuestHelper questHelper, String answer, int sizeOfLoop, int... targets)
+	public ChestCodeStep(QuestHelper questHelper, String objectName, String answer, int sizeOfLoop, int... targets)
 	{
-		super(questHelper, "Open the chest using the code " + answer + ".");
+		super(questHelper, "Open the " + objectName + " using the code " + answer + ".");
 		SIZE_OF_LOOP = sizeOfLoop;
 		NUMBER_OF_DIALS = targets.length;
 		buttonToPress = new int[NUMBER_OF_DIALS];

@@ -598,26 +598,41 @@ public class HelperConstructManager
 			sendGameMessage("Quest Helper Construct: could not create new zone row.");
 			return;
 		}
-		List<ZoneSlotRow> zones = getZoneSlotsInQuestOrderForEditor();
-		if (zones.isEmpty())
+
+		if (config.constructModeMode() == QuestHelperConfig.QuestHelperMakerMode.FULL)
 		{
-			sendGameMessage("Quest Helper Construct: zone row created but corners could not be applied.");
-			return;
-		}
-		ZoneSlotRow created = zones.get(zones.size() - 1);
-		boolean ok = updateZoneSlotForOrderSlot(
-			created.getOrderSlotId(),
-			formatWorldPointForField(c1),
-			formatWorldPointForField(tilePoint),
-			"");
-		if (ok)
-		{
-			clearSelectedZoneOverlay();
-			sendGameMessage("Quest Helper Construct: created zone from " + formatWorldPoint(c1) + " to " + formatWorldPoint(tilePoint) + ".");
+			List<ZoneSlotRow> zones = getZoneSlotsInQuestOrderForEditor();
+			if (zones.isEmpty())
+			{
+				sendGameMessage("Quest Helper Construct: zone row created but corners could not be applied.");
+				return;
+			}
+			ZoneSlotRow created = zones.get(zones.size() - 1);
+			boolean ok = updateZoneSlotForOrderSlot(
+				created.getOrderSlotId(),
+				formatWorldPointForField(c1),
+				formatWorldPointForField(tilePoint),
+				"");
+			if (ok)
+			{
+				clearSelectedZoneOverlay();
+				sendGameMessage("Quest Helper Construct: created zone from " + formatWorldPoint(c1) + " to " + formatWorldPoint(tilePoint) + ".");
+			}
+			else
+			{
+				sendGameMessage("Quest Helper Construct: could not apply zone corners.");
+			}
 		}
 		else
 		{
-			sendGameMessage("Quest Helper Construct: could not apply zone corners.");
+			clearSelectedZoneOverlay();
+			String stepString = "new Zone(new WorldPoint" +
+				formatWorldPoint(c1) +
+				", new WorldPoint" +
+				formatWorldPoint(tilePoint) +
+				");";
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(stepString), null);
+			sendGameMessage("Quest Helper Construct: copied zone to clipboard.");
 		}
 	}
 

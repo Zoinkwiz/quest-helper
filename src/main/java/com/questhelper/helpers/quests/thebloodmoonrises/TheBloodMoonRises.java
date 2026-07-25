@@ -2207,6 +2207,23 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cFlee1.addStep(inResupplyZone, resupplyIfNeeded);
 		steps.put(92, cFlee1);
 
+		var inSotfa1 = new ZoneRequirement(new Zone(new WorldPoint(2950, 7846, 0), new WorldPoint(2971, 7867, 0)));
+		// TODO: instruct on their swapping
+		var anyNearbyFeralVyres1 = new NpcCondition(16229);
+		var anyNearbyFeralVyres2 = new NpcCondition(16230);
+		var anyNearbyFeralVyres3 = new NpcCondition(16231);
+		var anyNearbyFeralVyres4 = new NpcCondition(16232);
+		var anyNearbyFeralVyres = or( anyNearbyFeralVyres1, anyNearbyFeralVyres2, anyNearbyFeralVyres3, anyNearbyFeralVyres4 );
+		var sotfa1 = new NpcStep(this, new int[]{16229, 16230, 16231, 16232}, new WorldPoint(2961, 7851, 0), "Kill the ancient feral vyres. They swap positions and heal, so try to focus one at a time.", true);
+		var sotfa1Done = new ObjectStep(this, 61047, new WorldPoint(2960, 7864, 0), "Enter Darkwood trees to continue.");
+
+		var cFlee2 = new ConditionalStep(this, todo3);
+		cFlee2.addStep(and(inSotfa1, anyNearbyFeralVyres), sotfa1);
+		cFlee2.addStep(and(inSotfa1), sotfa1Done);
+		cFlee2.addStep(inCutscene, watchTheCutscene);
+		cFlee2.addStep(inResupplyZone, resupplyIfNeeded2);
+		steps.put(94, cFlee2);
+
 		return steps;
 	}
 

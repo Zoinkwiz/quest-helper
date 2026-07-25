@@ -2313,7 +2313,19 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		sotfa2.addStep(ts2Zone, ts2);
 		sotfa2.addStep(ts1Zone, ts1);
 
+		var inSotfa3 = new ZoneRequirement(new Zone(new WorldPoint(2899, 7924, 0), new WorldPoint(2932, 7886, 0)));
+		// NOTE: This is a _dangerous_ step. Hardcore ironmen should be careful. If we add an indicator for dangerous steps in the future, this one should be marked.
+		var avoidAnimals = new NpcStep(this, 16233, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.", true);
+		// avoidAnimals.addTileMarkers(SpriteID.LOAD, new WorldPoint(2914, 7920, 0));
+		var sotfa3 = new ConditionalStep(this, avoidAnimals, "sotfa3");
+		var nearSotfa3Exit = new ZoneRequirement(new Zone(new WorldPoint(2924, 7895, 0), new WorldPoint(2929, 7889, 0)));
+		var leaveSotfa3 = new ObjectStep(this, 61992, new WorldPoint(2928, 7892, 0), "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
+		sotfa3.addStep(nearSotfa3Exit, leaveSotfa3);
+
+
+
 		var cFlee2 = new ConditionalStep(this, todo3);
+		cFlee2.addStep(and(inSotfa3), sotfa3);
 		cFlee2.addStep(and(inSotfa2), sotfa2);
 		cFlee2.addStep(and(inSotfa1, anyNearbyFeralVyres), sotfa1);
 		cFlee2.addStep(and(inSotfa1), sotfa1Done);

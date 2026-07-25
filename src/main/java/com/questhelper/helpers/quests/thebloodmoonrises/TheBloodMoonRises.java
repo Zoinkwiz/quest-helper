@@ -2322,9 +2322,13 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var leaveSotfa3 = new ObjectStep(this, 61992, new WorldPoint(2928, 7892, 0), "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
 		sotfa3.addStep(nearSotfa3Exit, leaveSotfa3);
 
+		var inSotfa4 = new ZoneRequirement(new Zone(new WorldPoint(2986, 7844, 0), new WorldPoint(3006, 7867, 0)));
+		var sotfa4 = new ObjectStep(this, 61995, new WorldPoint(2993, 7866, 0), "Continue through the cave.");
+
 
 
 		var cFlee2 = new ConditionalStep(this, todo3);
+		cFlee2.addStep(and(inSotfa4), sotfa4);
 		cFlee2.addStep(and(inSotfa3), sotfa3);
 		cFlee2.addStep(and(inSotfa2), sotfa2);
 		cFlee2.addStep(and(inSotfa1, anyNearbyFeralVyres), sotfa1);

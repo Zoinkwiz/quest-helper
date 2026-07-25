@@ -8,12 +8,21 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.quests.deserttreasureii.ChestCodeStep;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver5;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver4;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver1;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver6;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver3;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver2;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeType;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
+import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.CombatLevelRequirement;
@@ -51,6 +60,7 @@ import java.util.Map;
 import com.questhelper.steps.WidgetStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
@@ -2217,7 +2227,94 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var sotfa1 = new NpcStep(this, new int[]{16229, 16230, 16231, 16232}, new WorldPoint(2961, 7851, 0), "Kill the ancient feral vyres. They swap positions and heal, so try to focus one at a time.", true);
 		var sotfa1Done = new ObjectStep(this, 61047, new WorldPoint(2960, 7864, 0), "Enter Darkwood trees to continue.");
 
+		var inSotfa2 = new ZoneRequirement(new Zone(new WorldPoint(2997, 7927, 0), new WorldPoint(2953, 7876, 0)));
+
+		var anyAxe = new ItemRequirement("Any axe", ItemCollections.AXES);
+
+		var takeAxe = new ObjectStep(this, 61961, new WorldPoint(2960, 7890, 0), "Take-axe Stump.");
+
+		// [2026-07-12T13:54:14Z 14140] varbit SOTFA_FOREST_ENCOUNTER_COMPLETED (15605) 0 -> 1 = feral vyres
+
+		// TODO: Mention that if your inventory is full, you won't get ticks in your inventory.
+		// If you get ticks in your inventory, you have to throw them away to stop taking damage.
+		var ts1Zone = new ZoneRequirement(new Zone(new WorldPoint(2955, 7896, 0), new WorldPoint(2968, 7879, 0)));
+		var ts1 = new TreeSolver1(this);
+		var ts2Zone = new ZoneRequirement(new Zone(new WorldPoint(2968, 7900, 0), new WorldPoint(2965, 7897, 0)));
+		var ts2 = new TreeSolver2(this);
+		var ts3Zone = new ZoneRequirement(new Zone(new WorldPoint(2965, 7900, 0), new WorldPoint(2960, 7903, 0)), new Zone(new WorldPoint(2966, 7903, 0), new WorldPoint(2977, 7901, 0)), new Zone(new WorldPoint(2976, 7900, 0), new WorldPoint(2970, 7897, 0)));
+		var ts3 = new TreeSolver3(this);
+		var ts4Zone = new ZoneRequirement(new Zone(new WorldPoint(2965, 7904, 0), new WorldPoint(2973, 7911, 0)), new Zone(new WorldPoint(2974, 7907, 0), new WorldPoint(2997, 7904, 0)), new Zone(new WorldPoint(2980, 7903, 0), new WorldPoint(2994, 7886, 0)), new Zone(new WorldPoint(2969, 7893, 0), new WorldPoint(2983, 7884, 0)));
+		var ts4 = new TreeSolver4(this);
+		var ts5Zone = new ZoneRequirement(new Zone(new WorldPoint(2975, 7908, 0), new WorldPoint(2980, 7910, 0)));
+		var ts5 = new TreeSolver5(this);
+		var ts6Zone = new ZoneRequirement(new Zone(new WorldPoint(2981, 7909, 0), new WorldPoint(2982, 7912, 0)), new Zone(new WorldPoint(2981, 7912, 0), new WorldPoint(2980, 7912, 0)), new Zone(new WorldPoint(2978, 7911, 0), new WorldPoint(2981, 7915, 0)));
+		var ts6 = new TreeSolver6(this);
+		var ts7ZoneSouth = new ZoneRequirement(new WorldPoint(2982, 7914, 0));
+		var ts7ZoneWest = new ZoneRequirement(new Zone(new WorldPoint(2981, 7916, 0), new WorldPoint(2981, 7915, 0)));
+		var ts8ZoneSouth = new ZoneRequirement(new Zone(new WorldPoint(2982, 7916, 0), new WorldPoint(2984, 7916, 0)));
+		var ts8ZoneWest = new ZoneRequirement(new Zone(new WorldPoint(2982, 7917, 0), new WorldPoint(2983, 7917, 0)), new Zone(new WorldPoint(2982, 7915, 0)));
+		// Climb over tree 6 from west
+		var ts7_01 = TreeSolver.createStep(this, 2980, 7914, TreeType.Stump, Direction.WEST);
+		// Cut tree 7 from south
+		var ts7_02 = TreeSolver.createStep(this, 2982, 7915, TreeType.Untouched, Direction.SOUTH);
+		// Climb back over tree 6 from east
+		var ts7_03 = TreeSolver.createStep(this, 2981, 7914, TreeType.Stump, Direction.EAST);
+		// Climb over tree 6 from south
+		var ts7_04 = TreeSolver.createStep(this, 2981, 7913, TreeType.Stump, Direction.SOUTH);
+		// Cut tree 7 from west
+		var ts7_05 = TreeSolver.createStep(this, 2982, 7916, TreeType.PartiallyChopped, Direction.WEST);
+		// Climb over tree 7 from west
+		var ts7_06 = TreeSolver.createStep(this, 2982, 7916, TreeType.Stump, Direction.WEST);
+		// Cut tree 8 from south
+		var ts7_07 = TreeSolver.createStep(this, 2984, 7917, TreeType.Untouched, Direction.SOUTH);
+		// Climb back over tree 7 from east
+		var ts7_08 = TreeSolver.createStep(this, 2983, 7916, TreeType.Stump, Direction.EAST);
+		// Climb back over tree 6 from north
+		var ts7_09 = TreeSolver.createStep(this, 2981, 7914, TreeType.Stump, Direction.NORTH);
+		// Climb over tree 6 from west
+		var ts7_10 = TreeSolver.createStep(this, 2980, 7914, TreeType.Stump, Direction.WEST);
+		// Climb over tree 7 from south
+		var ts7_11 = TreeSolver.createStep(this, 2982, 7915, TreeType.Stump, Direction.SOUTH);
+		// Cut tree 8 from west
+		var ts7_12 = TreeSolver.createStep(this, 2984, 7917, TreeType.PartiallyChopped, Direction.WEST);
+		// Climb over tree 8 from west
+		var ts7_13 = TreeSolver.createStep(this, 2984, 7917, TreeType.Stump, Direction.WEST);
+
+		var tsFinalStep = new ObjectStep(this, 61047, new WorldPoint(2993, 7924, 0), "Turn off run before continuing.");
+
+		var sotfa2 = new ConditionalStep(this, tsFinalStep, "Make your way through the tangle of trees to the darkwood trees in the north-east, chopping down and climbing over trees on the way. Trees can only be chopped once per direction.");
+		sotfa2.addStep(not(anyAxe), takeAxe);
+
+		var tree6ChoppedDown = new ObjectCondition(61954, new WorldPoint(2980, 7913, 0));
+		var tree7Untouched = new ObjectCondition(61955, new WorldPoint(2982, 7915, 0));
+		var tree7SlightlyChopped = new ObjectCondition(61956, new WorldPoint(2982, 7915, 0));
+		var tree7Chopped = new ObjectCondition(61957, new WorldPoint(2982, 7915, 0));
+		var tree8Untouched = new ObjectCondition(61955, new WorldPoint(2984, 7917, 0));
+		var tree8SlightlyChopped = new ObjectCondition(61956, new WorldPoint(2984, 7917, 0));
+		var tree8Chopped = new ObjectCondition(61957, new WorldPoint(2984, 7917, 0));
+
+		sotfa2.addStep(and(ts8ZoneWest, tree8Chopped), ts7_13);
+		sotfa2.addStep(and(ts8ZoneWest, tree8SlightlyChopped), ts7_12);
+		sotfa2.addStep(and(ts7ZoneSouth, or(tree8Chopped, tree8SlightlyChopped)), ts7_11);
+		sotfa2.addStep(and(ts6Zone, tree8SlightlyChopped), ts7_10);
+		sotfa2.addStep(and(ts7ZoneWest, tree8SlightlyChopped), ts7_09);
+		sotfa2.addStep(and(ts8ZoneSouth, tree8SlightlyChopped), ts7_08);
+		sotfa2.addStep(and(ts8ZoneSouth, tree8Untouched), ts7_07);
+		sotfa2.addStep(and(ts7ZoneWest, tree6ChoppedDown, tree7Chopped), ts7_06);
+		sotfa2.addStep(and(ts7ZoneWest, tree6ChoppedDown, tree7SlightlyChopped), ts7_05);
+		sotfa2.addStep(and(ts6Zone, tree6ChoppedDown, tree7SlightlyChopped), ts7_04);
+		sotfa2.addStep(and(ts7ZoneSouth, tree6ChoppedDown, tree7SlightlyChopped), ts7_03);
+		sotfa2.addStep(and(ts7ZoneSouth, tree6ChoppedDown, tree7Untouched), ts7_02);
+		sotfa2.addStep(and(ts6Zone, tree6ChoppedDown, tree7Untouched), ts7_01);
+		sotfa2.addStep(ts6Zone, ts6);
+		sotfa2.addStep(ts5Zone, ts5);
+		sotfa2.addStep(ts4Zone, ts4); // ts4 is also used as the fallback since it has the biggest "free zone"
+		sotfa2.addStep(ts3Zone, ts3);
+		sotfa2.addStep(ts2Zone, ts2);
+		sotfa2.addStep(ts1Zone, ts1);
+
 		var cFlee2 = new ConditionalStep(this, todo3);
+		cFlee2.addStep(and(inSotfa2), sotfa2);
 		cFlee2.addStep(and(inSotfa1, anyNearbyFeralVyres), sotfa1);
 		cFlee2.addStep(and(inSotfa1), sotfa1Done);
 		cFlee2.addStep(inCutscene, watchTheCutscene);

@@ -9,12 +9,12 @@ import com.questhelper.collections.ItemCollections;
 import com.questhelper.helpers.quests.deserttreasureii.ChestCodeStep;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver;
-import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver5;
-import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver4;
 import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver1;
-import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver6;
-import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver3;
 import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver2;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver3;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver4;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver5;
+import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeSolver6;
 import com.questhelper.helpers.quests.thebloodmoonrises.treesolvers.TreeType;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -54,13 +54,13 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetStep;
+import com.questhelper.steps.widget.WidgetHighlight;
+import com.questhelper.util.QuestStepIcon;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.questhelper.steps.WidgetStep;
-import com.questhelper.steps.widget.WidgetHighlight;
-import com.questhelper.util.QuestStepIcon;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.Direction;
@@ -180,11 +180,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	// Steps
 	// TODO: Remove
 	DetailedQuestStep todo;
-	DetailedQuestStep todo1;
-	DetailedQuestStep todo2;
-	DetailedQuestStep todo3;
-	DetailedQuestStep todo4;
-	DetailedQuestStep todoVampyriumPuzzle;
 
 	/// 0 + 2
 	NpcStep startQuest;
@@ -300,7 +295,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	PuzzleWrapperStep cGetHalfMoonKeyPW;
 	ObjectStep getKeyFromThroneRoom;
 
-	// aaaaaaa
 	DetailedQuestStep pickupCrankWheel;
 	DetailedQuestStep pickupCrankWheelFromWhereYouDied;
 
@@ -457,9 +451,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// FIRST FLOOR
 		inVanesculasStudy = castleDrakanRoom.eq(23);
 		inVanesculasChamber = castleDrakanRoom.eq(24);
-		inDrakanEmblemRoomSouthOfExplosiveRoom =  castleDrakanRoom.eq(25);
+		inDrakanEmblemRoomSouthOfExplosiveRoom = castleDrakanRoom.eq(25);
 		inExplosiveRoom = castleDrakanRoom.eq(28);
-		inHallwayEastOfExplosiveRoom =  castleDrakanRoom.eq(31);
+		inHallwayEastOfExplosiveRoom = castleDrakanRoom.eq(31);
 		inLobbyF1 = and(onF1, inLobby);
 		inHallwayNorthOfLobby = castleDrakanRoom.eq(34);
 		inVanesculasHallway = castleDrakanRoom.eq(35);
@@ -484,12 +478,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	void setupSteps()
 	{
 		// TODO: Remove
-		todo = new DetailedQuestStep(this, "todo");
-		todo1 = new DetailedQuestStep(this, "todo1");
-		todo2 = new DetailedQuestStep(this, "todo2");
-		todo3 = new DetailedQuestStep(this, "todo3");
-		todo4 = new DetailedQuestStep(this, "todo4");
-		todoVampyriumPuzzle = new DetailedQuestStep(this, "todo do some vampyrium puzzle");
+		todo = new DetailedQuestStep(this, "This step should be unreachable. Please report this with a screenshot in the Quest Helper discord. If you're not sure what to do, you can use the excellent OSRS wiki guide until Quest Helper comes back.");
 
 		/// 0 + 2
 		startQuest = new NpcStep(this, 15839, new WorldPoint(3697, 3184, 0), "Talk to Sarius Guile in the Icyene Graveyard to start the quest.");
@@ -859,12 +848,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var steps = new HashMap<Integer, QuestStep>();
 
-		// TODO: Remove
-		for (var i = 0; i < 2000; ++i)
-		{
-			steps.put(i, todo);
-		}
-
 		steps.put(0, startQuest);
 		steps.put(2, startQuest);
 
@@ -1053,7 +1036,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2327, 7394, 0),
 			new WorldPoint(2328, 7395, 0),
 			new WorldPoint(2327, 7395, 0)
-			);
+		);
 
 		var pickUpTinderbox = new ObjectStep(this, 61691, new WorldPoint(2344, 7387, 0), "Search the sparkling chest for a tinderbox.");
 
@@ -1096,7 +1079,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var searchCrateInVanesculasStudyForLargeClockHand = new ObjectStep(this, 61751, new WorldPoint(2466, 7370, 0), "Search the crate in the north-west corner of Vanescula's study for a large clock hand.", explosiveBarrel, tinderbox);
 
-		var getLargeClockHand = new ConditionalStep(this, todo1);
+		var getLargeClockHand = new ConditionalStep(this, searchCrateInVanesculasStudyForLargeClockHand);
 		getLargeClockHand.addStep(inVanesculasStudy, searchCrateInVanesculasStudyForLargeClockHand);
 		getLargeClockHand.addStep(and(inVanesculasHallway, placedEmblemInVanesculasHallway), enterVanesculasStudy);
 		getLargeClockHand.addStep(inVanesculasHallway, placeEmblem1OnReceptacle);
@@ -1184,9 +1167,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var needToFinishClockPuzzle = nand(westernClockNeedsFixing, easternClockNeedsFixing);
 
 		var cmkToLobby = new ObjectStep(this, 61573, new WorldPoint(2342, 7373, 0), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
-		var cmkToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0),"Head to Vanescula's study.", explosiveBarrel, tinderbox );
-		var cmkToHallway1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1),"Head to Vanescula's study.", explosiveBarrel, tinderbox);
-		var cmkToVanesculasHallwayFromHallwayNorthOfLobby = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0),"Head to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToHallway1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToVanesculasHallwayFromHallwayNorthOfLobby = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
 		var cmkToVanesculasStudy = new ObjectStep(this, 61576, new WorldPoint(2468, 7407, 0), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
 		cmkToVanesculasStudy.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
@@ -1233,7 +1216,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var inArrowPuzzle = new WidgetTextRequirement(810, 15, 9, "Confirm");
 		// TODO: puzzle wrap?
 		var cmkArrowChestPuzzleStep = new ArrowChestPuzzleStep(this);
-		cmkArrowChestPuzzleStep.setSolution(1,2,1,3,3);
+		cmkArrowChestPuzzleStep.setSolution(1, 2, 1, 3, 3);
 		var cmkGetTheKeyFromTheChest = new ObjectStep(this, 61681, new WorldPoint(2379, 7372, 0), "Search the chest in the emblem gallery in Castle Drakan where you first spoke with Veliaf for the Crescent moon key. You will need 3 emblems to get all the way there again.");
 
 		var anyEmblemInVanesculasHallwayEast = new VarbitRequirement(15506, 1, Operation.GREATER_EQUAL);
@@ -1246,7 +1229,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var crescentMoonKey = new ItemRequirement("Crescent moon key", 33726);
 		var newMoonKey = new ItemRequirement("New moon key", 33728);
 
-		var getCrescentMoonKey = new ConditionalStep(this, todo2, "Get the Crescent Moon Key.");
+		var getCrescentMoonKey = new ConditionalStep(this, cmkGetTheKeyFromTheChest, "Get the Crescent Moon Key.");
 		getCrescentMoonKey.addStep(cmkSolvedChestPuzzle, cmkGetTheKeyFromTheChest);
 		getCrescentMoonKey.addStep(and(inEmblemGallery, cmkHasSpokenWithVeliaf, inArrowPuzzle), cmkArrowChestPuzzleStep);
 		getCrescentMoonKey.addStep(and(inEmblemGallery, cmkHasSpokenWithVeliaf), cmkOpenEmblemGalleryChest);
@@ -1284,9 +1267,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var inKitchen = castleDrakanRoomTemporary.eq(11);
 		var inLarder = castleDrakanRoomTemporary.eq(10);
 		var inEmblemGalleryHallway = castleDrakanRoomTemporary.eq(12);
-		var inLobbyBasementHallway =  castleDrakanRoomTemporary.eq(48);
-		var inLobbyBasementVenator =  castleDrakanRoomTemporary.eq(49);
-		var inBasementPrison =  castleDrakanRoomTemporary.eq(51);
+		var inLobbyBasementHallway = castleDrakanRoomTemporary.eq(48);
+		var inLobbyBasementVenator = castleDrakanRoomTemporary.eq(49);
+		var inBasementPrison = castleDrakanRoomTemporary.eq(51);
 
 		var syringeBarrel = new ItemRequirement("Syringe barrel", 33752);
 		var venatorStomach = new ItemRequirement("Venator stomach", 33756);
@@ -1338,12 +1321,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var unlockedKitchenChest = new VarbitRequirement(15518, 1);
 
 
-
 		var leaveKitchen = new ObjectStep(this, 61592, new WorldPoint(2314, 7421, 0), "Leave the kitchen and head to the lobby.", leftHalfOfCrest);
 		var enterLobbyFromEmblemGalleryHallway = new ObjectStep(this, 61577, new WorldPoint(2330, 7407, 0), "Enter the lobby.", leftHalfOfCrest);
 		var climbDownstairsToLobbyBasement = new ObjectStep(this, 61606, new WorldPoint(2311, 7373, 0), "Climb down to the basement.", leftHalfOfCrest);
 		var enterAnotherVenatorRoom = new ObjectStep(this, 61593, new WorldPoint(2570, 7365, 0), "Enter Crescent moon door to your east, ready to kill another Venator. Turn off your protection prayer when it's about to screech.", leftHalfOfCrest);
-		// i could technically use this varp to see if the venator in that room is dead
+		// I could technically use this varp to see if the venator in that room is dead
 		// [2026-07-05T13:27:48Z 5913] varp CASTLE_DRAKAN_ENEMY_STATUS_2 (5641) 32830 -> 98366
 		var venatorAlive = new NpcCondition(16217);
 		var killVenator = new NpcStep(this, 16217, new WorldPoint(2569, 7384, 0), "Kill the Venator. Remove your protection prayer when it's about to screech.");
@@ -1374,7 +1356,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var placeSwordOnStatue = new ObjectStep(this, 61746, new WorldPoint(2565, 7386, 0), "Place a mace on the western empty statue.", sword.highlighted());
 
-		var getNewMoonKey = new ConditionalStep(this, todo2, "\nGet the new moon key.");
 
 		var doneWithWeaponPuzzle = and(new VarbitRequirement(15545, 1), new VarbitRequirement(15546, 1), new VarbitRequirement(15547, 1), new VarbitRequirement(15548, 1));
 
@@ -1394,6 +1375,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var getNewMoonKeyFromFireplace = new ObjectStep(this, 61665, new WorldPoint(2358, 7386, 0), "Search the fireplace for the new moon key in the study, north of the throne room.");
 		getNewMoonKeyFromFireplace.addDialogStep("Yes.");
 
+		var getNewMoonKey = new ConditionalStep(this, getNewMoonKeyFromFireplace, "\nGet the new moon key.");
 		getNewMoonKey.addStep(fullCrestInStudy, getNewMoonKeyFromFireplace);
 		getNewMoonKey.addStep(and(inStudy, fullCrest), putFullCrestOnFireplaceInStudy);
 		getNewMoonKey.addStep(and(inThroneRoom, fullCrest), leaveWithFullCrest5);
@@ -1446,7 +1428,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		getNewMoonKey.addStep(inEmblemGallery, enterEmblemGalleryHallway);
 		// TODO: Get the new moon key
 
-		var getGildedAndGibbousKeys = new ConditionalStep(this, todo2, "\nGet the gilded and gibbous keys.");
 
 		var ggkGoToThroneRoom = new ObjectStep(this, 61576, new WorldPoint(2358, 7380, 0), "Head to the basement.");
 		var ggkGoToDiningRoom = new ObjectStep(this, 61573, new WorldPoint(2304, 7392, 0), "Head to the basement.");
@@ -1459,9 +1440,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var ggkReturnToLobbyF0 = new ObjectStep(this, 61600, new WorldPoint(2564, 7369, 0), "Climb-up Stairs.");
 		var ggkClimbUpToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2315, 7370, 0), "Climb-up Stairs.");
 		var ggkEnterLobbyF1GibbousMoonDoor = new ObjectStep(this, 61588, new WorldPoint(2327, 7360, 1), "Enter Gibbous moon door.");
-		var inDiningRoomF1 =  and(inDiningRoom, onF1);
+		var inDiningRoomF1 = and(inDiningRoom, onF1);
 		var ggkEnterEastDoor = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 1), "Enter Door.");
-		var inThroneRoomF1 =  and(inThroneRoom, onF1);
+		var inThroneRoomF1 = and(inThroneRoom, onF1);
 		var ggkEnterSouthDoor = new ObjectStep(this, 61572, new WorldPoint(2306, 7386, 1), "Enter Door.");
 		var inHallway5 = castleDrakanRoomTemporary.eq(18);
 		var ggkEnterSouthEastDoor = new ObjectStep(this, 61572, new WorldPoint(2442, 7361, 0), "Enter the south-east door, avoiding the traps on the floor.");
@@ -1488,8 +1469,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var ggkEnterRoomWithVenator = new ObjectStep(this, 61588, new WorldPoint(2510, 7370, 0), "Enter Gibbous moon door, ready to fight another Venator.");
 		var ggkKillVenator = new NpcStep(this, 16217, new WorldPoint(2522, 7368, 0), "Kill the Venator.");
 
-		var inVenatorPuzzleroom = castleDrakanRoomTemporary.eq(39);
-		var inVenatorPuzzleroomLibrary = castleDrakanRoomTemporary.eq(44);
+		var inVenatorPuzzleRoom = castleDrakanRoomTemporary.eq(39);
+		var inVenatorPuzzleRoomLibrary = castleDrakanRoomTemporary.eq(44);
 
 		var ggkpLightFireplace = new ObjectStep(this, 61730, new WorldPoint(2521, 7371, 0), "Light Fireplace.", tinderbox);
 		var isFireplaceLit = new VarbitRequirement(15543, 1);
@@ -1536,12 +1517,12 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var ggkpLeavePuzzleRoom = new ObjectStep(this, 61589, new WorldPoint(2515, 7367, 0), "Enter Gibbous moon door.", ornateHourglass);
 
-		ggkSolvePuzzle.addStep(and(inVenatorPuzzleroom, ornateHourglass), ggkpLeavePuzzleRoom);
+		ggkSolvePuzzle.addStep(and(inVenatorPuzzleRoom, ornateHourglass), ggkpLeavePuzzleRoom);
 		ggkSolvePuzzle.addStep(venatorHeadBothEyePlaced, ggkpSearchVenatorHead);
-		ggkSolvePuzzle.addStep(and(fancyGem2, inVenatorPuzzleroom), ggkpPlaceFancyGemInHead2);
-		ggkSolvePuzzle.addStep(and(fancyGem2, inVenatorPuzzleroomLibrary), ggkpLeaveLibrary);
+		ggkSolvePuzzle.addStep(and(fancyGem2, inVenatorPuzzleRoom), ggkpPlaceFancyGemInHead2);
+		ggkSolvePuzzle.addStep(and(fancyGem2, inVenatorPuzzleRoomLibrary), ggkpLeaveLibrary);
 		ggkSolvePuzzle.addStep(mysteriousBook, ggkpOpenMysteriousBook);
-		ggkSolvePuzzle.addStep(and(doorPuzzleSolved, inVenatorPuzzleroomLibrary), ggkpSearchBookcaseForBook);
+		ggkSolvePuzzle.addStep(and(doorPuzzleSolved, inVenatorPuzzleRoomLibrary), ggkpSearchBookcaseForBook);
 		ggkSolvePuzzle.addStep(and(playerNextToDoorPuzzle, combinationLockWidgetOpen), ggkpSolveDoorPuzzle);
 		ggkSolvePuzzle.addStep(venatorHeadOneEyePlaced, ggkpEnterSouthWestDoor);
 		ggkSolvePuzzle.addStep(fancyGem1, ggkpPlaceFancyGemInHead);
@@ -1568,11 +1549,12 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var ggkSearchDisplayCaseForGildedKey = new ObjectStep(this, 61672, new WorldPoint(2497, 7374, 0), "Search the display case for the gilded key.");
 		ggkSearchDisplayCaseForGildedKey.addDialogStep("Yes.");
 
+		var getGildedAndGibbousKeys = new ConditionalStep(this, ggkSearchDisplayCaseForGildedKey, "\nGet the gilded and gibbous keys.");
 		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, inRoomOutsideGuestChamberStoreroom, allItemsPlacedInDisplayCase), ggkSearchDisplayCaseForGildedKey);
 		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, inRoomOutsideGuestChamberStoreroom, venatorHeadBothEyePlaced), ggkPlaceItemsOnDisplayCase);
 		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, inRoomOutsideGuestChamberStoreroom), ggkEnterRoomWithVenator);
-		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, inVenatorPuzzleroom, venatorAlive), ggkKillVenator);
-		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, or(inVenatorPuzzleroom, inVenatorPuzzleroomLibrary)), ggkSolvePuzzle);
+		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, inVenatorPuzzleRoom, venatorAlive), ggkKillVenator);
+		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, or(inVenatorPuzzleRoom, inVenatorPuzzleRoomLibrary)), ggkSolvePuzzle);
 		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, inRoomOutsideGuestChamberStoreroom), ggkEnterRoomWithVenator);
 		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, inGuestChamberStoreroom), ggkLeaveGuestChamberStoreroom);
 		getGildedAndGibbousKeys.addStep(and(gibbousMoonKey, ornateKnife, inOrnateKnifeRoom, pulledUpperStoreroomLever), ggkEnterUpperStoreroomPortal);
@@ -1634,7 +1616,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var fmkTakeFullMoonKey = new DetailedQuestStep(this, new WorldPoint(2433, 7416, 0), "Take the full moon key from the table.", fullMoonKey.highlighted());
 
-		var getFullMoonKey = new ConditionalStep(this, todo2, "\nGet the full moon key.");
+		var getFullMoonKey = new ConditionalStep(this, fmkTakeFullMoonKey, "\nGet the full moon key.");
 		getFullMoonKey.addStep(and(inSecretRoom, fmkIvanFollowingYou), fmkTakeFullMoonKey);
 		getFullMoonKey.addStep(and(inRoomWithIvanAndVenator, fmkIvanFollowingYou, finishedLibraryPuzzle), fmkEnterSecretPassage);
 		getFullMoonKey.addStep(and(inRoomWithIvanAndVenator, fmkVenatorAlive), fmkKillVenator);
@@ -1691,7 +1673,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var skGetColdBluishWhitePotion = new ObjectStep(this, 61706, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
 		skGetColdBluishWhitePotion.addDialogStep("Take a cold bluish-white potion.");
 
-		var smokeBasin = new ObjectStep(this, 61702,new WorldPoint(2380, 7385, 0), "Pour the cloudy grey potion into the south-west basin.", cloudyGreyPotion.highlighted());
+		var smokeBasin = new ObjectStep(this, 61702, new WorldPoint(2380, 7385, 0), "Pour the cloudy grey potion into the south-west basin.", cloudyGreyPotion.highlighted());
 		var iceBasin = new ObjectStep(this, 61705, new WorldPoint(2387, 7384, 0), "Pour the cold bluish-white potion into the south-east basin.", coldBlueishWhitePotion.highlighted());
 		var shadowBasin = new ObjectStep(this, 61703, new WorldPoint(2387, 7389, 0), "Pour the weightless black potion into the north-east basin.", weightlessBlackPotion.highlighted());
 		var bloodBasin = new ObjectStep(this, 61704, new WorldPoint(2380, 7389, 0), "Pour the thick red potion into the north-west basin.", thickRedPotion.highlighted());
@@ -1701,7 +1683,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var solvedBloodBasin = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CHAPEL_BLOOD_BASIN, 1);
 		var solvedIceBasin = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CHAPEL_ICE_BASIN, 1);
 
-		var getSolidKey = new ConditionalStep(this, todo3, "\nGet the solid key.");
 
 		// Intent is:
 		// Ask the user to get all 4 potions
@@ -1774,9 +1755,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var solidKey = new ItemRequirement("Solid key", 33730);
 
+		var getSolidKey = new ConditionalStep(this, skGetSolidKey, "\nGet the solid key.");
 		getSolidKey.addStep(and(inSolidKeyRoom, hasMountedShield), skGetSolidKey);
 		getSolidKey.addStep(and(inSolidKeyRoom, shieldWithSymbol), skUseShieldOnEmptyMount);
-		getSolidKey.addStep(and(inVenatorPuzzleroom, or(shieldWithSymbol, hasMountedShield)), skEnterFullMoonDoor);
+		getSolidKey.addStep(and(inVenatorPuzzleRoom, or(shieldWithSymbol, hasMountedShield)), skEnterFullMoonDoor);
 		getSolidKey.addStep(and(inRoomOutsideGuestChamberStoreroom, shieldWithSymbol), skEnterGibbousMoonDoor);
 		getSolidKey.addStep(and(inLobbyF1, shieldWithSymbol), skLeaveLobbyF1Again);
 		getSolidKey.addStep(and(inDiningRoomF1, shieldWithSymbol), skLeaveDiningRoomF1Again);
@@ -1827,7 +1809,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var dtsOpenSolidDoor = new ObjectStep(this, 61575, new WorldPoint(2503, 7400, 0), "Enter Solid door.");
 
-		var usedSolidKey =  new VarplayerRequirement(5639, true, 5);
+		var usedSolidKey = new VarplayerRequirement(5639, true, 5);
 
 		var inLaboratory = castleDrakanRoomTemporary.eq(42);
 
@@ -1896,7 +1878,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		dtsLaboratoryStep.addStep(not(vialsOfBlood3), dtsSearchShelvesForSuppliesBlood);
 		dtsLaboratoryStep.addStep(not(pureEssence3), dtsSearchShelvesForSuppliesEssence);
 
-		var destroyingTheStockpile = new ConditionalStep(this, todo4, "\nFind and destroy the stockpile.");
 
 		var finishedLabPuzzle = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_LAB_BASIN, 53);
 
@@ -1906,12 +1887,13 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var inLaboratoryStorageRoom = castleDrakanRoomTemporary.eq(43);
 
+		var destroyingTheStockpile = new ConditionalStep(this, dtsDestroyBloodStockpile, "\nFind and destroy the stockpile.");
 		destroyingTheStockpile.addStep(inLaboratoryStorageRoom, dtsDestroyBloodStockpile);
 		destroyingTheStockpile.addStep(and(inLaboratory, finishedLabPuzzle), dtsLeaveLaboratory);
 		destroyingTheStockpile.addStep(inLaboratory, dtsLaboratoryStep);
 		destroyingTheStockpile.addStep(inSolidDoorHallway, dtsOpenSolidDoor);
 		destroyingTheStockpile.addStep(inRoomOutsideGuestChamberStoreroom, dtsLeaveDisplayCaseRoom);
-		destroyingTheStockpile.addStep(inVenatorPuzzleroom, dtsLeavePuzzleRoom);
+		destroyingTheStockpile.addStep(inVenatorPuzzleRoom, dtsLeavePuzzleRoom);
 		destroyingTheStockpile.addStep(inSolidKeyRoom, dtsLeaveSolidKeyRoom);
 
 		cVampyriumCastleDrakan.addStep(and(or(solidKey, usedSolidKey), or(fullMoonKey, hasUsedFullMoonKey)), destroyingTheStockpile);
@@ -1929,10 +1911,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, not(largeClockHand), largeClockHandNeedsReplacing), getLargeClockHand);
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle, not(inDiningRoom)), getBackToDiningRoom);
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle), solveClockPuzzle);
-
-		// TODO: do we need to prompt the user to pick up the poem scroll?
-
-		cVampyriumCastleDrakan.addStep(inVampyriumVarbit, todoVampyriumPuzzle);
 
 		steps.put(72, cVampyriumCastleDrakan);
 		// 72 -> 74 after talking to Veliaf in the emblem gallery
@@ -2027,7 +2005,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		trapdoorKey.setConditionToHide(unlockedTrapdoor);
 
 		// TODO: This should potentially have a "get back to vampyrium" step
-		var cCog = new ConditionalStep(this, todo2, "Find the old cog for the drawbridge.");
 
 		var pickupViturKeyFromWhereYouDied = new DetailedQuestStep(this, "Pick up the vitur key from where you died lol!", viturKey);
 		pickupViturKeyFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
@@ -2062,6 +2039,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var oldCogInOriginalPosition = new VarbitRequirement(VarbitID.SANGVESTI_HINT_BLACKSMITH, 1);
 
+		var cCog = new ConditionalStep(this, todo, "Find the old cog for the drawbridge.");
 		cCog.addStep(and(hasDeathPos, not(oldCogInOriginalPosition), not(oldCog)), pickupOldCogFromWhereYouDied);
 		cCog.addStep(and(hasDeathPos, needBoltCutters, not(boltCutters)), pickupBoltCuttersFromWhereYouDied);
 		cCog.addStep(and(hasDeathPos, needViturKey, not(viturKey)), pickupViturKeyFromWhereYouDied);
@@ -2094,7 +2072,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var useBucketOfWaterOnNorthernBarrel = new ObjectStep(this, 61811, new WorldPoint(2592, 7833, 0), "Use the bucket of water on the northern barrel", bucketOfWater.highlighted());
 
 		var shadumKey = new ItemRequirement("Shadum key", 33784);
-		var unlockedTrapdoorHouse =  new VarbitRequirement(VarbitID.SANGVESTI_FANCY_HOUSE_1_DOOR, 1);
+		var unlockedTrapdoorHouse = new VarbitRequirement(VarbitID.SANGVESTI_FANCY_HOUSE_1_DOOR, 1);
 		var shadumKeyForTrapdoorHouse = shadumKey.hideConditioned(unlockedTrapdoorHouse);
 
 		var enterShadumDoor = new ObjectStep(this, 61832, new WorldPoint(2614, 7814, 0), "Enter the shadum door south-west of the drawbridge and pick up the trapdoor key.", shadumKeyForTrapdoorHouse);
@@ -2143,10 +2121,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var needToTalkToIvanForSupplies = and(foundTheCog, xd2);
 
 		var returnToVanesculaReadyToLeave = new NpcStep(this, 15909, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east when you're ready to leave. Drakan will chase you through the woods. Dodge his attacks, protect from melee.", oldCog);
-
-		// oldCog.setConditionToHide(foundTheCog);
-
-		// cCog.addStep(foundTheCog, returnToVanescula);
 
 		cCog.addStep(and(oldCog, not(needToTalkToIvanForSupplies)), returnToVanesculaReadyToLeave);
 		cCog.addStep(and(oldCog, needToTalkToIvanForSupplies), talkToIvanForSupplies);
@@ -2197,13 +2171,13 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(86, cCog);
 		var watchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
 
-		var repairedBridge = new ConditionalStep(this, todo3, "you have repaired the bridge!");
+		// TODO: If the user cancels out of this cutscene (if they can), is there an NPC or Object they can interact with to continue?
+		var repairedBridge = new ConditionalStep(this, todo, "you have repaired the bridge!");
 		repairedBridge.addStep(inCutscene, watchTheCutscene);
 
 		steps.put(88, repairedBridge);
 
-		// TODO: add doge instructions
-		var fightDrakan1 = new NpcStep(this, 16211, new WorldPoint(2711, 7847, 0), "Attack Lowerniel Drakan  (level-927).");
+		var fightDrakan1 = new NpcStep(this, 16211, new WorldPoint(2711, 7847, 0), "Learn to fight Drakan. Protect from melee and dodge his attacks. During this tutorial segment, there will be glimmering sparks that attempt to show you where to click to doge his attacks.");
 
 		var resupplyZone = new Zone(new WorldPoint(2853, 7640, 0), new WorldPoint(2837, 7655, 0));
 		var resupplyZone2 = new Zone(new WorldPoint(2950, 7831, 0), new WorldPoint(2973, 7813, 0));
@@ -2215,9 +2189,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var resupplyIfNeeded2 = new ObjectStep(this, 61047, new WorldPoint(2951, 7821, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees to continue.");
 		// resupplyIfNeeded2.addAlternateObjects(61047);
 
-		var cFlee1 = new ConditionalStep(this, todo3);
+		var cFlee1 = new ConditionalStep(this, resupplyIfNeeded);
 		cFlee1.addStep(inCutscene, watchTheCutscene);
-		cFlee1.addStep(inResupplyZone, resupplyIfNeeded);
 		steps.put(92, cFlee1);
 
 		var inSotfa1 = new ZoneRequirement(new Zone(new WorldPoint(2950, 7846, 0), new WorldPoint(2971, 7867, 0)));
@@ -2226,7 +2199,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var anyNearbyFeralVyres2 = new NpcCondition(16230);
 		var anyNearbyFeralVyres3 = new NpcCondition(16231);
 		var anyNearbyFeralVyres4 = new NpcCondition(16232);
-		var anyNearbyFeralVyres = or( anyNearbyFeralVyres1, anyNearbyFeralVyres2, anyNearbyFeralVyres3, anyNearbyFeralVyres4 );
+		var anyNearbyFeralVyres = or(anyNearbyFeralVyres1, anyNearbyFeralVyres2, anyNearbyFeralVyres3, anyNearbyFeralVyres4);
 		var sotfa1 = new NpcStep(this, new int[]{16229, 16230, 16231, 16232}, new WorldPoint(2961, 7851, 0), "Kill the ancient feral vyres. They swap positions and heal, so try to focus one at a time.", true);
 		var sotfa1Done = new ObjectStep(this, 61047, new WorldPoint(2960, 7864, 0), "Enter Darkwood trees to continue.");
 
@@ -2358,7 +2331,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		sotfa6.addStep(deadSnake3, combineSnakes);
 
 
-		var cFlee2 = new ConditionalStep(this, todo3);
+		var cFlee2 = new ConditionalStep(this, resupplyIfNeeded2);
 		cFlee2.addStep(and(inSotfa6), sotfa6);
 		cFlee2.addStep(and(inSotfa5), sotfa5);
 		cFlee2.addStep(and(inSotfa4), sotfa4);
@@ -2367,7 +2340,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cFlee2.addStep(and(inSotfa1, anyNearbyFeralVyres), sotfa1);
 		cFlee2.addStep(and(inSotfa1), sotfa1Done);
 		cFlee2.addStep(inCutscene, watchTheCutscene);
-		cFlee2.addStep(inResupplyZone, resupplyIfNeeded2);
 		steps.put(94, cFlee2);
 
 		// 94 -> 96: done with all the "running through forest" puzzles
@@ -2433,11 +2405,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var cookStew = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the stew on the range.", uncookedStew.highlighted());
 		cookStew.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Stew"));
 		var combineStew3 = new DetailedQuestStep(this, "Put the amitire leaves into the stew.", amitireLeaves.highlighted(), stew.highlighted());
-		// var talkToEfaritayWithStew = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Return to Efaritay Hallow with the amitire stew.", amitireStew);
 		// TODO: Confirm you can do this without speaking to Efaritay first
 		var giveStewToSafalaan = new NpcStep(this, 15895, "Give the amitire stew to Safalaan Hallow.", amitireStew.highlighted());
 
-		var cPickUpHerbs = new ConditionalStep(this, todo2);
+		var cPickUpHerbs = new ConditionalStep(this, giveStewToSafalaan);
 		cPickUpHerbs.addStep(and(amitireStew), giveStewToSafalaan);
 		cPickUpHerbs.addStep(and(stew, amitireLeaves), combineStew3);
 		cPickUpHerbs.addStep(and(uncookedStew), cookStew);
@@ -2572,7 +2543,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetReadyForCombat.addStep(inCutscene, watchTheCutscene);
 		steps.put(114, cGetReadyForCombat);
 
-		var attackPortals =new NpcStep(this, 16251, "Attack the portals in the sky.", true);
+		var attackPortals = new NpcStep(this, 16251, "Attack the portals in the sky.", true);
 
 		// 114 -> 116 after watching cutscene, and now you have to defend!!!
 		steps.put(116, attackPortals);
@@ -2610,11 +2581,12 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cDrakanFight2.addStep(inPalaceSouthernPart, passThroughBarricadeToFightDrakan);
 		steps.put(122, cDrakanFight2);
 
-		// 122 -> 124: faught off drakan
+		// 122 -> 124: fought off drakan
 
-		var cFinishedDrakan2 = new ConditionalStep(this, todo2);
+		// TODO: What happens if you cancel out of this cutscene - is there an NPC or Object you can interact with to go back to the cutscene?
+		var cFinishedDrakan2 = new ConditionalStep(this, todo);
 		cFinishedDrakan2.addStep(inCutscene, watchTheCutscene);
-		steps.put(124, cFinishedDrakan2);
+		steps.put(124, watchTheCutscene);
 
 		// 124 -> 126: watched cutscene in palace
 		var talkToIvanAfterLeavingPalace = new NpcStep(this, 15855, new WorldPoint(3606, 3416, 0), "Talk-to Ivan Strom.");
@@ -2640,18 +2612,19 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(134, cGetToTob);
 
 		// 134 -> 136: entering tob with sugadinti
-		var cEnsureNothingBothersSugadinti = new ConditionalStep(this, todo3, "Kill Nylocas with the correct fighting style. Fight the Maiden of Sugadinti, killing healers when they spawn. Avoid blood puddles on the ground.");
-		steps.put(136, cEnsureNothingBothersSugadinti);
+		// TODO: This text could probably be improved
+		var ensureNothingBothersSugadinti = new DetailedQuestStep(this, "Kill Nylocas with the correct fighting style. Fight the Maiden of Sugadinti, killing healers when they spawn. Avoid blood puddles on the ground.");
+		steps.put(136, ensureNothingBothersSugadinti);
 
 		// 136 -> 138: after fighting all the bosses
-		var talkToSugadintiAfterFinsihingTob = new NpcStep(this, 15962, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
-		var cDoneWithTobFights = new ConditionalStep(this, talkToSugadintiAfterFinsihingTob);
+		var talkToSugadintiAfterFinishingTob = new NpcStep(this, 15962, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
+		var cDoneWithTobFights = new ConditionalStep(this, talkToSugadintiAfterFinishingTob);
 		cDoneWithTobFights.addStep(inCutscene, watchTheCutscene);
 		steps.put(138, cDoneWithTobFights);
 
 		// 138 -> 140: after talking to sugadinti after tob bosses
-		var headtoBarrowsL = new NpcStep(this, 15878, new WorldPoint(3540, 3256, 0), "Head to the abandoned building north-east of Burgh de Rott and talk to Veliaf.");
-		var cDealWithVanescula = new ConditionalStep(this, headtoBarrowsL, combatGear, hallowedFlail, food, prayerPotions);
+		var headToBarrowsL = new NpcStep(this, 15878, new WorldPoint(3540, 3256, 0), "Head to the abandoned building north-east of Burgh de Rott and talk to Veliaf.");
+		var cDealWithVanescula = new ConditionalStep(this, headToBarrowsL, combatGear, hallowedFlail, food, prayerPotions);
 		steps.put(140, cDealWithVanescula);
 		var headDownToVanescula = new ObjectStep(this, 61254, new WorldPoint(3543, 3257, 0), "Head to the abandoned building north-east of Burgh de Rott and enter the entry.");
 		var cDealWithVanescula2 = new ConditionalStep(this, headDownToVanescula, combatGear, hallowedFlail, food, prayerPotions);
@@ -2683,7 +2656,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var prepareFightDrakan3 = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
 		prepareFightDrakan3.addDialogStep("I'm ready.");
-		// 150 -> 152: spoke with veliaf and co under burgh de rott after inspecting fence
+		// 150 -> 152: spoke with veliaf and co under Burgh de Rott after inspecting fence
 		var inBurghDeRottDungeon = new ZoneRequirement(new Zone(new WorldPoint(3489, 9632, 0), new WorldPoint(3500, 9622, 0)));
 		var enterBurghDeRottDungeon = new ObjectStep(this, 12743, new WorldPoint(3490, 3232, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
 		var cDoSomething = new ConditionalStep(this, enterBurghDeRottDungeon, combatGear, hallowedFlail, food, prayerPotions);
@@ -2702,8 +2675,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(156, justBeatDrakanSecondToLastTime);
 
 		// 156 -> 158: after watching the cutscene
-		var talkToIvanInsideCastlaDrakan = new NpcStep(this, 15855, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
-		steps.put(158, talkToIvanInsideCastlaDrakan);
+		var talkToIvanInsideCastleDrakan = new NpcStep(this, 15855, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
+		steps.put(158, talkToIvanInsideCastleDrakan);
 
 		// 158 -> 160: after talking to Ivan,m and sugadinti enters castle drakan
 		var talkToSugadintiInsideCastleDrakan = new NpcStep(this, 15960, new WorldPoint(2846, 7389, 0), "Talk-to Sugadinti Vitur inside Castle Drakan.");
@@ -2713,12 +2686,12 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// 162 -> 164: finished speaking with sugadinti
 		var talkToEfaritayOnIcyene = new NpcStep(this, 15942, new WorldPoint(3701, 3186, 0), "Talk-to Efaritay Hallow in Icyene Graveyard.");
 		steps.put(164, talkToEfaritayOnIcyene);
-		// 164 -> 166: after efaritay opens portal to vampyrium
+		// 164 -> 166: after Efaritay opens portal to vampyrium
 		var enterVampyriumForTheLastTime = new ObjectStep(this, 61215, new WorldPoint(3703, 3185, 0), "Enter the portal in Icyene Graveyard to get to Vampyrium.", hallowedFlail, combatGearMelee);
 		var cEnterVampyriumForTheLastTime = new ConditionalStep(this, enterVampyriumForTheLastTime);
 		cEnterVampyriumForTheLastTime.addStep(inCutscene, watchTheCutscene);
 		steps.put(166, cEnterVampyriumForTheLastTime);
-		// 166 -> 168: after efaritay and safalaan left
+		// 166 -> 168: after Efaritay and Safalaan left
 		var goToFightDrakan4 = new ObjectStep(this, 61628, new WorldPoint(2506, 7387, 0), "Enter the door, ready to fight Drakan. You can get supplies and deposit items at the chest next to the door.", hallowedFlail, combatGearMelee);
 		var cXD = new ConditionalStep(this, enterVampyriumForTheLastTime);
 		cXD.addStep(inCutscene, watchTheCutscene);
@@ -2736,7 +2709,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// 170 -> 172: death cutscene
 		steps.put(172, watchTheCutscene);
-		// 172 -> 174: he fell down, now we're with efaritay
+		// 172 -> 174: he fell down, now we're with Efaritay
 		var talkToEfaritayAfterKillingDrakan = new NpcStep(this, 15941, new WorldPoint(3702, 3182, 0), "Talk-to Efaritay Hallow in the icyene graveyard.");
 		var cTalkToEfaritayAfterKillingDrakan = new ConditionalStep(this, talkToEfaritayAfterKillingDrakan);
 		cTalkToEfaritayAfterKillingDrakan.addStep(inCutscene, watchTheCutscene);
@@ -2812,14 +2785,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	{
 		return List.of(
 			"Lowerniel Drakan (lvl ???)"
-		);
-	}
-
-	@Override
-	public List<String> getNotes()
-	{
-		return List.of(
-			"This is a note to appear in the sidebar"
 		);
 	}
 

@@ -237,6 +237,12 @@ public interface QuestHelperConfig extends Config
 		FILLED_OUTLINE
 	}
 
+	enum QuestHelperMakerMode
+	{
+		FULL,
+		CLIPBOARD
+	}
+
 	@ConfigItem(
 		keyName = "autostartQuests",
 		name = "Auto start helper",
@@ -723,6 +729,18 @@ public interface QuestHelperConfig extends Config
 	default boolean constructModeEnabled()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "constructModeMode",
+		name = "Quest Helper Maker Mode",
+		description = "full mode (default) or clipboard only (only copy step asap to clipboard)",
+		position = 1,
+		section = questHelperMakerSection
+	)
+	default QuestHelperMakerMode constructModeMode()
+	{
+		return QuestHelperMakerMode.FULL;
 	}
 
 	@ConfigSection(

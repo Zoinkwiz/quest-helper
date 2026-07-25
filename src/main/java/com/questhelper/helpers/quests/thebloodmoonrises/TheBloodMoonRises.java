@@ -287,6 +287,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	PuzzleWrapperStep cGetHalfMoonKeyPW;
 	ObjectStep getKeyFromThroneRoom;
 
+	// aaaaaaa
+	DetailedQuestStep pickupCrankWheel;
+	DetailedQuestStep pickupCrankWheelFromWhereYouDied;
+
+
 	@Override
 	protected void setupZones()
 	{
@@ -1939,8 +1944,250 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cLeaveCastleDrakan.addStep(inCutscene, watchLeaveCastleDrakanCutscene);
 		steps.put(82, cLeaveCastleDrakan);
 
-		var findCog = new DetailedQuestStep(this, "find cog for bridge");
-		steps.put(84, findCog);
+		var hasDeathPos = new VarplayerRequirement(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS, 0, Operation.GREATER_EQUAL);
+
+		var crankWheel = new ItemRequirement("Crank wheel", 33788);
+		// TODO: I changed this _after_ I tested it.
+		var crankedTheWheel = new VarbitRequirement(VarbitID.SANGVESTI_FANCY_HOUSE_3_DOOR, 1);
+		var crankedTheWheelInTheBank = new VarbitRequirement(VarbitID.SANGVESTI_INTERIOR_BANK_DOOR, 1);
+		var needCrankWheel = nand(crankedTheWheel, crankedTheWheelInTheBank);
+		var crankWheelForBank = crankWheel.hideConditioned(crankedTheWheelInTheBank);
+
+		pickupCrankWheel = new DetailedQuestStep(this, new WorldPoint(2603, 7847, 0), "Pick up the crank wheel from the house east of the altar, north-west of where you started after the cutscene.", crankWheel);
+		pickupCrankWheelFromWhereYouDied = new DetailedQuestStep(this, "Pick up the crank wheel from where you died lol!", crankWheel);
+		pickupCrankWheelFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
+		var crankWheel1 = new ObjectStep(this, 61852, new WorldPoint(2588, 7855, 0), "Spam click the crank base. Drakan will start chasing you - feel free to run away if he gets too close.", crankWheel);
+		var enterHouseNextToCrankWheel = new ObjectStep(this, 61844, new WorldPoint(2587, 7857, 0), "Enter the door north of the crank base.");
+
+
+		var jovkaiKey = new ItemRequirement("Jovkai key", 33780);
+		var unlockedSmith = new VarbitRequirement(VarbitID.SANGVESTI_BLACKSMITH_DOOR, 1);
+		jovkaiKey.setConditionToHide(unlockedSmith);
+		var needJovkaiKey = nand(unlockedSmith);
+		var jovkaiKeyInOriginalPosition = new VarbitRequirement(VarbitID.SANGVESTI_HINT_CHAPEL, 1);
+
+		var pickupJovkaiKeyFromWhereYouDied = new DetailedQuestStep(this, "Pick up the jovkai key from where you died lol!", jovkaiKey);
+		pickupJovkaiKeyFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
+
+		var houseNorthOfCrankBase = new Zone(new WorldPoint(2589, 7864, 0), new WorldPoint(2585, 7857, 0));
+		var inHouseNorthOfCrankBase = new ZoneRequirement(houseNorthOfCrankBase);
+		var searchBookCase = new ObjectStep(this, 61818, new WorldPoint(2585, 7861, 0), "Search the bookshelf for a dusty book.");
+		var dustyBook = new ItemRequirement("Dusty book", 33789);
+		var readDustyBook = new DetailedQuestStep(this, "Read the dusty book and retrieve the vitur key.", dustyBook.highlighted());
+
+		var viturKey = new ItemRequirement("Vitur key", 33785);
+
+		// Important vitur key use:
+		var unlockedBoltCutterHouse = new VarbitRequirement(VarbitID.SANGVESTI_VITUR_MANOR_DOOR, 1);
+		var viturKeyForBoltCutterHouse = viturKey.hideConditioned(unlockedBoltCutterHouse);
+		var viturKeyOrUnlockedBoltCutterHouse = or(viturKey, unlockedBoltCutterHouse);
+
+		// Important vitur key use:
+		var unlockedToothHalfOfKeyHouse = new VarbitRequirement(VarbitID.SANGVESTI_FOOD_SHOP_DOOR, 1);
+		var viturKeyForToothHalfOfKeyHouse = viturKey.hideConditioned(unlockedToothHalfOfKeyHouse);
+		var viturKeyOrUnlockedToothHalfOfKeyHouse = or(viturKey, unlockedToothHalfOfKeyHouse);
+
+		var needViturKey = nand(unlockedBoltCutterHouse, unlockedToothHalfOfKeyHouse);
+
+		var leaveBookcaseHouse = new ObjectStep(this, 61844, new WorldPoint(2587, 7857, 0), "Leave the house and enter the vitur manor to the east.", viturKeyForBoltCutterHouse);
+		var openViturDoorEastOfBookcaseHouse = new ObjectStep(this, 61834, new WorldPoint(2612, 7853, 0), "Enter the vitur manor to the east.", viturKeyForBoltCutterHouse);
+
+		var needBoltCutters = new VarbitRequirement(VarbitID.SANGVESTI_CLOTHES_SHOP_DOOR, 0);
+		var hasUsedBoltCutters = new VarbitRequirement(VarbitID.SANGVESTI_CLOTHES_SHOP_DOOR, 1);
+		var boltCutters = new ItemRequirement("Bolt cutters", 33787);
+		boltCutters.setConditionToHide(hasUsedBoltCutters);
+
+		var oldCog = new ItemRequirement("Old cog", 33779);
+
+		var boltCutterHouse1 = new Zone(new WorldPoint(2609, 7860, 0), new WorldPoint(2615, 7856, 0));
+		var boltCutterHouse2 = new Zone(new WorldPoint(2612, 7855, 0), new WorldPoint(2619, 7850, 0));
+		var boltCutterHouse3 = new Zone(new WorldPoint(2621, 7859, 0), new WorldPoint(2616, 7855, 0));
+		var inBoltCutterHouse = new ZoneRequirement(boltCutterHouse1, boltCutterHouse2, boltCutterHouse3);
+		var searchShedBoltCutter = new ObjectStep(this, 61858, new WorldPoint(2616, 7855, 0), "Search the shed in the north-eastern room for a pair of bolt cutters.");
+		var boltCutterShedCombinationLock = new ChestCodeStep(this, "shed", "TOOLS", 10, 8, 2, 9, 1, 2);
+		var leaveBoltCutterHouse = new ObjectStep(this, 61835, new WorldPoint(2612, 7852, 0), "Enter the building east of the altar and pick up the tooth half of key from the table.", boltCutters, viturKeyForToothHalfOfKeyHouse);
+		var enterToothHalfOfKeyHouse = new ObjectStep(this, 61838, new WorldPoint(2598, 7843, 0), "Enter the building east of the altar and pick up the tooth half of key from the table.", viturKeyForToothHalfOfKeyHouse);
+
+		var unlockedTrapdoor = new VarbitRequirement(VarbitID.SANGVESTI_TRAPDOOR, 1);
+
+		var trapdoorKey = new ItemRequirement("Trapdoor key", 33786);
+		trapdoorKey.setConditionToHide(unlockedTrapdoor);
+
+		// TODO: This should potentially have a "get back to vampyrium" step
+		var cCog = new ConditionalStep(this, todo2, "Find the old cog for the drawbridge.");
+
+		var pickupViturKeyFromWhereYouDied = new DetailedQuestStep(this, "Pick up the vitur key from where you died lol!", viturKey);
+		pickupViturKeyFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
+
+		var pickupBoltCuttersFromWhereYouDied = new DetailedQuestStep(this, "Pick up the bolt cutters from where you died lol!", boltCutters);
+		pickupBoltCuttersFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
+
+		var pickupOldCogFromWhereYouDied = new DetailedQuestStep(this, "Pick up the old cog from where you died lol!", oldCog);
+		pickupOldCogFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
+
+		var pickupTrapdoorKeyFromWhereYouDied = new DetailedQuestStep(this, "Pick up the trapdoor key from where you died lol!", trapdoorKey);
+		pickupTrapdoorKeyFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
+
+		var toothHalfOfKeyHouse = new Zone(new WorldPoint(2596, 7849, 0), new WorldPoint(2600, 7843, 0));
+		var inToothHalfOfKeyHouse = new ZoneRequirement(toothHalfOfKeyHouse);
+
+		var toothHalfOfKey = new ItemRequirement("Tooth half of key", 33782);
+		var pickupToothHalfOfKey = new DetailedQuestStep(this, new WorldPoint(2600, 7845, 0), "Pick up the tooth half of key from the table.", toothHalfOfKey);
+
+		var loopHalfOfKey = new ItemRequirement("Loop half of key", 33781);
+		var pickupLoopHalfOfKey = new DetailedQuestStep(this, new WorldPoint(2588, 7816, 0), "Pick up the loop half of key", loopHalfOfKey);
+
+		var openChainedDoor = new ObjectStep(this, 61840, new WorldPoint(2590, 7818, 0), "Open the chained door south of the well.", boltCutters, toothHalfOfKey);
+		var clothery = new Zone(new WorldPoint(2592, 7812, 0), new WorldPoint(2588, 7818, 0));
+		var inClothery = new ZoneRequirement(clothery);
+
+		var isCrankWheelInOriginalPosition = new VarbitRequirement(VarbitID.SANGVESTI_HINT_BASIC_HOUSE_3, 1);
+
+		var needTrapdoorKey = nand(unlockedTrapdoor);
+
+		var pickupOldCog = new DetailedQuestStep(this, new WorldPoint(2582, 7817, 0), "Pick up the old cog from the table in the smithy.", oldCog);
+
+		var oldCogInOriginalPosition = new VarbitRequirement(VarbitID.SANGVESTI_HINT_BLACKSMITH, 1);
+
+		cCog.addStep(and(hasDeathPos, not(oldCogInOriginalPosition), not(oldCog)), pickupOldCogFromWhereYouDied);
+		cCog.addStep(and(hasDeathPos, needBoltCutters, not(boltCutters)), pickupBoltCuttersFromWhereYouDied);
+		cCog.addStep(and(hasDeathPos, needViturKey, not(viturKey)), pickupViturKeyFromWhereYouDied);
+		cCog.addStep(and(hasDeathPos, not(isCrankWheelInOriginalPosition), needCrankWheel, not(crankWheel)), pickupCrankWheelFromWhereYouDied);
+		cCog.addStep(and(needCrankWheel, not(crankWheel)), pickupCrankWheel);
+		cCog.addStep(and(hasDeathPos, not(jovkaiKeyInOriginalPosition), needJovkaiKey), pickupJovkaiKeyFromWhereYouDied);
+
+		var makeMyrmelKey = new DetailedQuestStep(this, "Combine the loop and tooth half of key into the myrmel key.", loopHalfOfKey.highlighted(), toothHalfOfKey.highlighted());
+		var myrmelKey = new ItemRequirement("Myrmel key", 33783);
+
+		var unlockedBucketHouse = new VarbitRequirement(VarbitID.SANGVESTI_PUB_DOOR, 1);
+		var myrmelKeyForBucketHouse = myrmelKey.hideConditioned(unlockedBucketHouse);
+
+		var unlockedBank = new VarbitRequirement(VarbitID.SANGVESTI_BANK_DOOR, 1);
+		var myrmelKeyForBank = myrmelKey.hideConditioned(unlockedBank);
+
+		var needMyrmelKey = nand(unlockedBucketHouse, unlockedBank);
+
+		var bucketOfWater = new ItemRequirement("Bucket of water", 1929);
+
+		var bucketHouse1 = new Zone(new WorldPoint(2592, 7834, 0), new WorldPoint(2606, 7830, 0));
+		var bucketHouse2 = new Zone(new WorldPoint(2596, 7834, 0), new WorldPoint(2602, 7826, 0));
+		var inBucketHouse = new ZoneRequirement(bucketHouse1, bucketHouse2);
+		var bucket = new ItemRequirement("Bucket", 1925);
+		var enterBucketHouse = new ObjectStep(this, 61825, new WorldPoint(2599, 7826, 0), "Open Myrmel door.", myrmelKeyForBucketHouse);
+		var enterBucketHouseAgain = new ObjectStep(this, 61825, new WorldPoint(2599, 7826, 0), "Enter the pub with the bucket of water.", bucketOfWater);
+
+		var pickupBucket = new DetailedQuestStep(this, new WorldPoint(2596, 7833, 0), "Pick up the bucket.", bucket);
+		var useBucketOnWell = new ObjectStep(this, 60892, new WorldPoint(2592, 7825, 0), "Use the bucket on the well outside the house.", bucket.highlighted());
+		var useBucketOfWaterOnNorthernBarrel = new ObjectStep(this, 61811, new WorldPoint(2592, 7833, 0), "Use the bucket of water on the northern barrel", bucketOfWater.highlighted());
+
+		var shadumKey = new ItemRequirement("Shadum key", 33784);
+		var unlockedTrapdoorHouse =  new VarbitRequirement(VarbitID.SANGVESTI_FANCY_HOUSE_1_DOOR, 1);
+		var shadumKeyForTrapdoorHouse = shadumKey.hideConditioned(unlockedTrapdoorHouse);
+
+		var enterShadumDoor = new ObjectStep(this, 61832, new WorldPoint(2614, 7814, 0), "Enter the shadum door south-west of the drawbridge and pick up the trapdoor key.", shadumKeyForTrapdoorHouse);
+		var pickupTrapdoorKey = new DetailedQuestStep(this, new WorldPoint(2619, 7812, 0), "Pick up the trapdoor key.", trapdoorKey);
+
+		// TODO
+		var needShadumKey = nand(unlockedTrapdoorHouse);
+
+		var trapdoorHouse = new Zone(new WorldPoint(2620, 7816, 0), new WorldPoint(2614, 7812, 0));
+		var inTrapdoorHouse = new ZoneRequirement(trapdoorHouse);
+
+		var bank = new Zone(new WorldPoint(2582, 7835, 0), new WorldPoint(2578, 7829, 0));
+		var inBank = new ZoneRequirement(bank);
+
+		var enterBank = new ObjectStep(this, 61829, new WorldPoint(2580, 7835, 0), "Enter the bank.", myrmelKeyForBank, trapdoorKey, crankWheelForBank);
+
+		var operateBankCrank = new ObjectStep(this, 61853, new WorldPoint(2582, 7834, 0), "Spam click the crank base.", trapdoorKey, crankWheelForBank);
+
+		var enterTrapdoor = new ObjectStep(this, 61848, new WorldPoint(2579, 7830, 0), "Enter the trapdoor.", trapdoorKey);
+
+		var altarHouse1 = new Zone(new WorldPoint(2575, 7850, 0), new WorldPoint(2578, 7846, 0));
+		var altarHouse2 = new Zone(new WorldPoint(2579, 7850, 0), new WorldPoint(2583, 7842, 0));
+		var altarHouse3 = new Zone(new WorldPoint(2584, 7850, 0), new WorldPoint(2592, 7844, 0));
+		var inAltarHouse = new ZoneRequirement(altarHouse1, altarHouse2, altarHouse3);
+
+		var searchAltarChest = new ObjectStep(this, 61807, new WorldPoint(2576, 7846, 0), "Search the chest in the western room of the altar house.");
+		var enterAltarHouseThroughDoor = new ObjectStep(this, 61847, new WorldPoint(2581, 7842, 0), "Search the chest in the western room of the altar house.");
+
+		var solveAltarChestLock = new ChestCodeStep(this, "altar chest", "35158", 10, 3, 5, 1, 5, 8);
+
+		var leaveAltarThroughDoor = new ObjectStep(this, 61847, new WorldPoint(2581, 7842, 0), "Leave the altar room, then head to the smithy to the south.", jovkaiKey);
+		var enterSmith = new ObjectStep(this, 61821, new WorldPoint(2580, 7812, 0), "Enter the smithy to the south.", jovkaiKey);
+
+		var smithy = new Zone(new WorldPoint(2578, 7818, 0), new WorldPoint(2582, 7812, 0));
+		var inSmithy = new ZoneRequirement(smithy);
+
+		var returnToVanescula = new NpcStep(this, 15909, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east. Drakan will chase you when you leave the smithy.", oldCog);
+
+		var foundTheCog = new VarbitRequirement(VarbitID.MYQ6_VANESCULA_DRAKAN_FOUND_THE_COG, 1);
+
+		var talkToIvanForSupplies = new NpcStep(this, 15856, new WorldPoint(2636, 7825, 0), "Talk-to Ivan Strom for some supplies. You can drop the bucket.");
+		talkToIvanForSupplies.addDialogStep("Could I have those supplies you found?");
+
+		var xd2 = new VarbitRequirement(VarbitID.MYQ6_SANGVESTI_SUPPLY_WARNING, 0);
+
+		var needToTalkToIvanForSupplies = and(foundTheCog, xd2);
+
+		var returnToVanesculaReadyToLeave = new NpcStep(this, 15909, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east when you're ready to leave. Drakan will chase you through the woods. Dodge his attacks, protect from melee.", oldCog);
+
+		// oldCog.setConditionToHide(foundTheCog);
+
+		// cCog.addStep(foundTheCog, returnToVanescula);
+
+		cCog.addStep(and(oldCog, not(needToTalkToIvanForSupplies)), returnToVanesculaReadyToLeave);
+		cCog.addStep(and(oldCog, needToTalkToIvanForSupplies), talkToIvanForSupplies);
+		cCog.addStep(and(oldCog), returnToVanescula);
+
+		var unlockedAltarHouse = new VarbitRequirement(VarbitID.SANGVESTI_CHAPEL_BACK_DOOR_2, 1);
+		cCog.addStep(and(not(oldCog), inSmithy), pickupOldCog);
+		cCog.addStep(and(not(oldCog), inAltarHouse, or(jovkaiKey, unlockedSmith), not(unlockedAltarHouse)), leaveAltarThroughDoor);
+		cCog.addStep(and(not(oldCog), or(jovkaiKey, unlockedSmith)), enterSmith);
+
+		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, inAltarHouse, not(jovkaiKey), unlockedAltarHouse), searchAltarChest);
+		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, not(jovkaiKey), unlockedAltarHouse), enterAltarHouseThroughDoor);
+		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, inAltarHouse, combinationLockWidgetOpen), solveAltarChestLock);
+		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, or(crankWheel, crankedTheWheelInTheBank), or(trapdoorKey, unlockedTrapdoor), inBank, crankedTheWheelInTheBank), enterTrapdoor);
+		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, or(crankWheel, crankedTheWheelInTheBank), or(trapdoorKey, unlockedTrapdoor), inBank), operateBankCrank);
+		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, or(crankWheel, crankedTheWheelInTheBank), or(trapdoorKey, unlockedTrapdoor), or(myrmelKey, unlockedBank)), enterBank);
+
+		cCog.addStep(and(needTrapdoorKey, not(trapdoorKey), inTrapdoorHouse), pickupTrapdoorKey);
+
+		cCog.addStep(and(needTrapdoorKey, not(trapdoorKey), inTrapdoorHouse), pickupTrapdoorKey);
+		cCog.addStep(and(needTrapdoorKey, not(trapdoorKey), or(shadumKey, unlockedTrapdoorHouse)), enterShadumDoor);
+
+		// get shadum key
+		cCog.addStep(and(needShadumKey, not(shadumKey), or(myrmelKey, unlockedBucketHouse), inBucketHouse, bucketOfWater), useBucketOfWaterOnNorthernBarrel);
+		cCog.addStep(and(needShadumKey, not(shadumKey), or(myrmelKey, unlockedBucketHouse), bucketOfWater), enterBucketHouseAgain);
+		cCog.addStep(and(needShadumKey, not(shadumKey), or(myrmelKey, unlockedBucketHouse), bucket), useBucketOnWell);
+		cCog.addStep(and(needShadumKey, not(shadumKey), or(myrmelKey, unlockedBucketHouse), inBucketHouse), pickupBucket);
+		cCog.addStep(and(needShadumKey, not(shadumKey), or(myrmelKey, unlockedBucketHouse)), enterBucketHouse);
+
+		cCog.addStep(and(loopHalfOfKey, toothHalfOfKey), makeMyrmelKey);
+		cCog.addStep(and(needMyrmelKey, inClothery, not(loopHalfOfKey), not(myrmelKey)), pickupLoopHalfOfKey);
+		cCog.addStep(and(needMyrmelKey, or(boltCutters, hasUsedBoltCutters), toothHalfOfKey), openChainedDoor);
+
+		cCog.addStep(and(needMyrmelKey, viturKeyOrUnlockedToothHalfOfKeyHouse, or(boltCutters, hasUsedBoltCutters), inToothHalfOfKeyHouse, not(myrmelKey)), pickupToothHalfOfKey);
+		cCog.addStep(and(needMyrmelKey, viturKeyOrUnlockedToothHalfOfKeyHouse, or(boltCutters, hasUsedBoltCutters), not(myrmelKey)), enterToothHalfOfKeyHouse);
+		cCog.addStep(and(needMyrmelKey, inBoltCutterHouse, or(boltCutters, hasUsedBoltCutters)), leaveBoltCutterHouse);
+		cCog.addStep(and(needMyrmelKey, inBoltCutterHouse, combinationLockWidgetOpen), boltCutterShedCombinationLock);
+		cCog.addStep(and(needBoltCutters, inBoltCutterHouse), searchShedBoltCutter);
+		cCog.addStep(and(needBoltCutters, not(boltCutters), viturKey, inHouseNorthOfCrankBase), leaveBookcaseHouse);
+		cCog.addStep(and(needBoltCutters, not(boltCutters), viturKeyOrUnlockedBoltCutterHouse), openViturDoorEastOfBookcaseHouse);
+		cCog.addStep(dustyBook, readDustyBook);
+		cCog.addStep(and(needViturKey, crankWheel, crankedTheWheel, inHouseNorthOfCrankBase), searchBookCase);
+		cCog.addStep(and(needViturKey, crankWheel, crankedTheWheel), enterHouseNextToCrankWheel);
+		cCog.addStep(and(crankWheel, not(crankedTheWheel)), crankWheel1);
+
+		// TODO: In the sidebar here, we need to mention
+		steps.put(84, cCog);
+		steps.put(86, cCog);
+		var watchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
+
+		var repairedBridge = new ConditionalStep(this, todo3, "you have repaired the bridge!");
+		repairedBridge.addStep(inCutscene, watchTheCutscene);
+
+		steps.put(88, repairedBridge);
 
 		return steps;
 	}

@@ -2189,6 +2189,24 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		steps.put(88, repairedBridge);
 
+		// TODO: add doge instructions
+		var fightDrakan1 = new NpcStep(this, 16211, new WorldPoint(2711, 7847, 0), "Attack Lowerniel Drakan  (level-927).");
+
+		var resupplyZone = new Zone(new WorldPoint(2853, 7640, 0), new WorldPoint(2837, 7655, 0));
+		var resupplyZone2 = new Zone(new WorldPoint(2950, 7831, 0), new WorldPoint(2973, 7813, 0));
+		var inResupplyZone = new ZoneRequirement(resupplyZone, resupplyZone2);
+
+		steps.put(90, fightDrakan1);
+
+		var resupplyIfNeeded = new ObjectStep(this, 61941, new WorldPoint(2843, 7646, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees around you to continue.");
+		var resupplyIfNeeded2 = new ObjectStep(this, 61047, new WorldPoint(2951, 7821, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees to continue.");
+		// resupplyIfNeeded2.addAlternateObjects(61047);
+
+		var cFlee1 = new ConditionalStep(this, todo3);
+		cFlee1.addStep(inCutscene, watchTheCutscene);
+		cFlee1.addStep(inResupplyZone, resupplyIfNeeded);
+		steps.put(92, cFlee1);
+
 		return steps;
 	}
 

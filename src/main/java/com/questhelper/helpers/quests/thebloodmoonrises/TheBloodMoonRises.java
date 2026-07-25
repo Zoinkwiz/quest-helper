@@ -2369,6 +2369,22 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cFlee2.addStep(inResupplyZone, resupplyIfNeeded2);
 		steps.put(94, cFlee2);
 
+		// 94 -> 96: done with all the "running through forest" puzzles
+
+		var cFlee3 = new ConditionalStep(this, watchTheCutscene);
+		cFlee3.addStep(inResupplyZone, resupplyIfNeeded2);
+		steps.put(96, cFlee3);
+
+		var talkToMysteriousWoman1 = new NpcStep(this, 15953, new WorldPoint(2975, 7704, 0), "Talk-to Mysterious Woman.");
+		var cMysteriousWoman = new ConditionalStep(this, talkToMysteriousWoman1);
+		cMysteriousWoman.addStep(inCutscene, watchTheCutscene);
+		steps.put(98, cMysteriousWoman);
+
+		// 98 -> 100: after meeting & finishing speaking with Sugadinti
+
+		var cHelpWithPreparations = new ConditionalStep(this, todo3);
+		steps.put(100, cHelpWithPreparations);
+
 		return steps;
 	}
 

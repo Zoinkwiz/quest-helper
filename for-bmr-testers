@@ -1,0 +1,19 @@
+When talking to ivan after solving the puzzle in the paterdomus temple, what happens if you select "i'll get there
+myself.". can we guide the user better somehow?
+
+When in Ivanids Tomb, do you have to finish talking to Veliaf until you say "let's have a look around" before you can
+examine/destroy the blockage? controlled by varbit 15487
+
+## Vampyrium's Castle Drakan
+
+In the "thick red potion" section inside vampyrium's castle drakan, the order should be:
+1. get all 4 potions
+2. pour thick red potion in NW basin
+3. pour cloudy grey potion in SW basin
+4. pour cold bluish-white potion in SE basin
+5. pour weightless black potion in NE basin
+6. get chest which is closest to NE basin
+
+## Vampyrium drawbridge
+
+varbit 88: When the user has turned in the cog (i.e. repaired the drawbridge), what happens if they cancel out of the cutscene? Can they?

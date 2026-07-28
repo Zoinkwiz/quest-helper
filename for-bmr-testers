@@ -4,7 +4,29 @@ myself.". can we guide the user better somehow?
 When in Ivanids Tomb, do you have to finish talking to Veliaf until you say "let's have a look around" before you can
 examine/destroy the blockage? controlled by varbit 15487
 
+On the step "Talk to IVan after killing the vampyres", can you talk to the slave there instead? What's the slave's NPC
+ID & coordinates?
+
+When praying at the shrine to unlock the Drakan medallion teleport, try not having the medallion in your inventory and
+see if that works.
+
 ## Vampyrium's Castle Drakan
+
+In the "pull busts" room for the half moon key, try the puzzle wrapper and make sure it works as expected.
+
+After picking up the large clock hand, confirm that the steps & sidebar steps for leading you back to the dining room
+are correct all the way until you've finished the clock puzzle.
+
+When doing the "place weapons on statues" steps, please confirm the sidebar steps are correct.
+
+After combining the two crest halves, is the sidebar step order 
+
+When facing the third(?) venator, when getting the gilded and gibbous keys, are you correctly prompted to kill the
+Venator and is it correctly highlighted?
+
+FOR ZOINKWIZ OR HAVARD:
+When getting the solid key and you're entering the door to the east that has an emblem next to it already, add a step
+where if you remove the emblem accidentally it properly guides you to put the emblem back.
 
 In the "thick red potion" section inside vampyrium's castle drakan, the order should be:
 1. get all 4 potions

@@ -24,7 +24,7 @@ public class GildedBookPuzzle extends QuestStep
 
 	public GildedBookPuzzle(QuestHelper questHelper)
 	{
-		super(questHelper, "Drag to swap the highlighted tiles.");
+		super(questHelper, "Rearrange the books to the correct order.");
 	}
 
 	@Override

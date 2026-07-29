@@ -36,6 +36,9 @@ In the "thick red potion" section inside vampyrium's castle drakan, the order sh
 5. pour weightless black potion in NE basin
 6. get chest which is closest to NE basin
 
+When starting the destroy the stockpile alchemy/basin puzzle, try destroying all keys in your inventory and confirm it
+still guides you as expected.
+
 ## Vampyrium drawbridge
 
 varbit 88: When the user has turned in the cog (i.e. repaired the drawbridge), what happens if they cancel out of the cutscene? Can they?

@@ -249,6 +249,8 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.THE_CURSE_OF_ARRAV,
 		QuestHelperQuest.MAKING_FRIENDS_WITH_MY_ARM,
 		QuestHelperQuest.TROUBLED_TORTUGANS,
+		QuestHelperQuest.THE_RED_REEF,
+		QuestHelperQuest.FALLEN_FROM_GRACE,
 		QuestHelperQuest.MONKEY_MADNESS_II,
 		QuestHelperQuest.FREMENNIK_MEDIUM,
 		QuestHelperQuest.A_NIGHT_AT_THE_THEATRE,
@@ -261,7 +263,6 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
 		QuestHelperQuest.HOPESPEARS_WILL,
 		QuestHelperQuest.THE_IDES_OF_MILK,
-		QuestHelperQuest.THE_RED_REEF,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Ironman Quest Guide
 		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.BALLOON_TRANSPORT_GRAND_TREE,

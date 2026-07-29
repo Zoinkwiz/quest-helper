@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-	def runeLiteVersion = "latest." + (project.hasProperty("use.snapshot") ? "integration" : "release")
+	def runeLiteVersion = "latest.integration"
 
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
 

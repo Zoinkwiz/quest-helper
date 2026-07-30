@@ -54,6 +54,7 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.UnreachableStep;
 import com.questhelper.steps.WidgetStep;
 import com.questhelper.steps.widget.WidgetHighlight;
 import com.questhelper.util.QuestStepIcon;
@@ -446,7 +447,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 	// Steps
 	// TODO: Remove
-	DetailedQuestStep todo;
+	UnreachableStep todo;
 
 	/// 0 + 2
 	NpcStep startQuest;
@@ -1521,7 +1522,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	void setupSteps()
 	{
 		// TODO: Remove
-		todo = new DetailedQuestStep(this, "This step should be unreachable. Please report this with a screenshot in the Quest Helper discord. If you're not sure what to do, you can use the excellent OSRS wiki guide until Quest Helper comes back.");
+		todo = new UnreachableStep(this);
 
 		/// 0 + 2
 		startQuest = new NpcStep(this, 15839, new WorldPoint(3697, 3184, 0), "Talk to Sarius Guile in the Icyene Graveyard to start the quest.");
@@ -1982,8 +1983,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		climbDownstairsToLobbyF0 = new ObjectStep(this, 61608, new WorldPoint(2315, 7371, 1), "Return to the dining room.");
 		enterDiningRoomFromLobby = new ObjectStep(this, 61577, new WorldPoint(2327, 7360, 0), "Return to the dining room.");
 
-		cGetBackToDiningRoom = new ConditionalStep(this, todo);
-		cGetBackToDiningRoom.addStep(inLobbyF0, enterDiningRoomFromLobby);
+		cGetBackToDiningRoom = new ConditionalStep(this, enterDiningRoomFromLobby);
 		cGetBackToDiningRoom.addStep(inLobbyF1, climbDownstairsToLobbyF0);
 		cGetBackToDiningRoom.addStep(inHallwayNorthOfLobby, returnToLobbyF1);
 		cGetBackToDiningRoom.addStep(inVanesculasHallway, returnToHallwayNorthOfLobbyF1);
@@ -4103,11 +4103,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		), List.of(
 			hallowedFlail,
 			combatGear
-		)));
-
-		sections.add(new PanelDetails("TODO", List.of(
-			todo
-		), List.of(
 		)));
 
 		return sections;

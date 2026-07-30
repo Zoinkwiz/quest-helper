@@ -961,4 +961,12 @@ public class DetailedQuestStep extends QuestStep
 			setWorldPoint(WorldPoint.fromCoord(varpValue));
 		}
 	}
+
+	/// Create a "Watch the cutscene." step that's added to this step's substeps
+	public DetailedQuestStep cutscene()
+	{
+		var cutsceneStep = new DetailedQuestStep(getQuestHelper(), "Watch the cutscene.");
+		addSubSteps(cutsceneStep);
+		return cutsceneStep;
+	}
 }

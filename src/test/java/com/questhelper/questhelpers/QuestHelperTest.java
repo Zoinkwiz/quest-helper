@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import com.questhelper.steps.UnreachableStep;
 import net.runelite.api.Skill;
 import net.runelite.api.gameval.VarbitID;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -222,6 +223,12 @@ public class QuestHelperTest extends MockedTest
 	void checkSteps(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, Set<QuestStep> checkedSteps, QuestStep step)
 	{
 		assertNotNull(step);
+
+		if (step instanceof UnreachableStep)
+		{
+			// We allow unreachable steps to be unreachable
+			return;
+		}
 
 		if (step instanceof QuestSyncStep)
 		{

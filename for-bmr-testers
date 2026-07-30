@@ -41,4 +41,16 @@ still guides you as expected.
 
 ## Vampyrium drawbridge
 
-varbit 88: When the user has turned in the cog (i.e. repaired the drawbridge), what happens if they cancel out of the cutscene? Can they?
+varbit 88: When the user has turned in the cog (i.e. repaired the drawbridge), what happens if they cancel out of the
+cutscene? Are they guided to talk to Ivan and get supplies, and does that work?
+
+## Escaping the forest
+Are you correctly guided to grab the axe?
+
+## Guarding the palace
+
+If you cancel out of the cutscene after "beating" Drakan - what npc or object do you have to talk to to continue?
+
+## Safalaan's fate
+
+After fighting the wyrd, what happens if you cancel out of the cutscene? Do you end up just above the stairs and then you just walk down to continue the cutscene?

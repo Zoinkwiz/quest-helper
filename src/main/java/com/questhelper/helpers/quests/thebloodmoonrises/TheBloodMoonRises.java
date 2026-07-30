@@ -434,6 +434,12 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	NpcCondition venatorAlive;
 	Conditions anyVenatorAlive;
 	NpcCondition fmkVenatorAlive;
+	VarbitRequirement canStartIvan;
+	VarbitRequirement hasCraftedStakes;
+	VarbitRequirement ivanProgressDone;
+	VarbitRequirement spokeWithVeliaf;
+	VarbitRequirement spokeWithVanescula;
+	VarbitRequirement veliafProgressDone;
 
 	// Crossing the drawbridge (82-88)
 	VarplayerRequirement hasDeathPos;
@@ -454,6 +460,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 	/// 10
 	NpcStep talkToIvanGoingToDarkmeyer;
+	DetailedQuestStep watchCutsceneGoingToDarkmeyer;
 
 	/// 12
 	NpcStep talkToIvanToReturnToCastleDrakan;
@@ -844,6 +851,115 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	private NpcStep talkToIvanForSupplies;
 	private NpcStep returnToVanesculaReadyToLeave;
 	private DetailedQuestStep pickupJovkaiKeyFromWhereYouDied;
+	private DetailedQuestStep watchCutsceneRepairedBridge;
+	private NpcStep fightDrakan1;
+	private DetailedQuestStep flee1WatchTheCutscene;
+	private ObjectStep resupplyIfNeeded;
+	private ObjectStep resupplyIfNeeded2;
+	private NpcStep sotfa1;
+	private ObjectStep sotfa1Exit;
+	private ConditionalStep sotfa2;
+	private ConditionalStep cSotfa3;
+	private NpcStep sotfa3AvoidAnimals;
+	private ObjectStep sotfa3Exit;
+	private ObjectStep sotfa4;
+	private ConditionalStep cSotfa5;
+	private NpcStep sotfa5;
+	private ObjectStep sotfa5Exit;
+	private ConditionalStep cSotfa6;
+	private NpcStep sotfa6WrangleSnakes;
+	private DetailedQuestStep sotfa6CombineSnakes;
+	private ObjectStep sotfa6UseRopeOnBranch;
+	private ObjectStep sotfa6SwingAcrossWater;
+	private ObjectStep sotfa6Exit;
+	private DetailedQuestStep sotfaWatchTheCutscene;
+	private DetailedQuestStep mysteriousWomanWatchTheCutscene;
+	private NpcStep talkToMysteriousWoman1;
+	private NpcStep startTalkingToEfaritay;
+	private ObjectStep leavePalace1;
+	private ObjectStep pickFromAmitirePlant;
+	private ObjectStep enterPalace1;
+	private ObjectStep searchShelvesForBowl;
+	private ObjectStep fillBowlWithWater;
+	private ObjectStep getPotatoFromCupboard;
+	private ObjectStep getRawMeatFromCupboard;
+	private ObjectStep cookMeatOnRange;
+	private DetailedQuestStep combineStew;
+	private DetailedQuestStep combineStew2;
+	private ObjectStep cookStew;
+	private DetailedQuestStep combineStew3;
+	private NpcStep giveStewToSafalaan;
+	private NpcStep talkToSafalaanAfterFeedingHimStew;
+	private NpcStep talkToEfaritayAfterFeedingStewToSafalaan;
+	private ObjectStep searchWorkbenchForHammer;
+	private ObjectStep searchWorkbenchForChisel;
+	private ObjectStep searchWorkbenchForKnife;
+	private ObjectStep searchCrateForBlisterwoodLogs;
+	private ObjectStep searchCrateForBlessedSilverSickle;
+	private ObjectStep searchChestForDiamond;
+	private DetailedQuestStep putDiamondInSickle;
+	private DetailedQuestStep useEnchantDiamondTabletOnSickle;
+	private ObjectStep searchChestForDiamondTablet2;
+	private DetailedQuestStep createEnhancedBlisterwoodSickle;
+	private ObjectStep createHallowedFlail;
+	private ObjectStep ivanSearchWorkbenchForKnife;
+	private ObjectStep getLogsForStakes;
+	private DetailedQuestStep fletchStakes;
+	private NpcStep returnToIvan;
+	private ObjectStep climbDownstairs;
+	private NpcStep talkToVeliafInDungeon;
+	private NpcStep talkToVeliafInDungeonAgain;
+	private NpcStep talkToVanescula;
+	private ObjectStep climbUpstairs;
+	private NpcStep talkToSugadintiAfterHelpingAllies;
+	private NpcStep speakToIvanWithHallowedFlail;
+	private ObjectStep leavePalaceForCombat;
+	private DetailedQuestStep getReadyForCombatWatchTheCutscene;
+	private NpcStep attackPortals;
+	private DetailedQuestStep leaveDoorsCutscene;
+	private ObjectStep leaveDoors;
+	private DetailedQuestStep guardThePalace;
+	private DetailedQuestStep barricadeCutscene;
+	private ObjectStep passThroughBarricadeToHelp;
+	private ObjectStep passThroughBarricadeToFightDrakan;
+	private NpcStep fightDrakan2;
+	private DetailedQuestStep finishedDrakan2Cutscene;
+	private NpcStep talkToIvanInHauntedWoods;
+	private DetailedQuestStep leavingPalaceCutscene;
+	private DetailedQuestStep talkToVeliafAfterLeavingPalaceCutscene;
+	private NpcStep talkToVeliafAfterLeavingPalace;
+	private NpcStep talkToSugadintiInBurghDeRott;
+	private NpcStep getToTob;
+	private DetailedQuestStep getToTobCutscene;
+	private DetailedQuestStep ensureNothingBothersSugadinti;
+	private DetailedQuestStep talkToSugadintiAfterFinishingTobCutscene;
+	private NpcStep talkToSugadintiAfterFinishingTob;
+	private NpcStep headToBarrowsL;
+	private DetailedQuestStep headDownToVanesculaCutscene;
+	private ObjectStep headDownToVanescula;
+	private NpcStep fightTheWyrd;
+	private DetailedQuestStep dealtWithWyrdCutscene;
+	private DetailedQuestStep findWyrdCutscene;
+	private ObjectStep findWyrd;
+	private NpcStep speakWithVeliafAfterInspectingFence;
+	private NpcStep prepareFightDrakan3;
+	private ObjectStep enterBurghDeRottDungeon;
+	private NpcStep fightDrakan3;
+	private NpcStep talkToVeliaf;
+	private NpcStep talkToIvanInsideCastleDrakan;
+	private NpcStep talkToSugadintiInsideCastleDrakan;
+	private NpcStep talkToEfaritayOnIcyene;
+	private ObjectStep enterVampyriumForTheLastTime;
+	private DetailedQuestStep talkWithVeliafInBurghDeRottCutscene;
+	private DetailedQuestStep talkToVeliafCutscene;
+	private DetailedQuestStep enterVampyriumForTheLastTimeCutscene;
+	private ObjectStep goToFightDrakan4;
+	private DetailedQuestStep goToFightDrakan4Cutscene;
+	private NpcStep fightDrakan4;
+	private DetailedQuestStep fightDrakan4Cutscene;
+	private NpcStep talkToEfaritayAfterKillingDrakan;
+	private DetailedQuestStep finalQuestCutscene;
+	private DetailedQuestStep youHaveFinishedTheQuest;
 
 	/// 82 (Vampyrium Castle Drakan after attempting to leave through the portal)
 
@@ -1003,6 +1119,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	{
 		// Required items
 		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
+		// TODO: Add Hallowed Flail as the preferred alternative in terms of item IDs actually
 		blisterwoodFlail.setTooltip("You can buy another Blisterwood Flail from Ivan in the Myreque Hideout in Old Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard(?)");
 
 		vyreNobleOutfit = new ItemRequirements("Vyre noble outfit",
@@ -1401,6 +1518,16 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// could also use [2026-07-11T11:49:32Z 9968] varp CASTLE_DRAKAN_ENEMY_STATUS_1 (5640) 1238587111 -> 1507022567
 		fmkVenatorAlive = new NpcCondition(16213);
+
+		var ivanProgress = new VarbitBuilder(VarbitID.MYQ6_IVAN_HIDEOUT_PROGRESS);
+		canStartIvan = ivanProgress.eq(1);
+		hasCraftedStakes = ivanProgress.eq(2);
+		ivanProgressDone = ivanProgress.eq(3);
+
+		var veliafProgress = new VarbitBuilder(VarbitID.MYQ6_VELIAF_HIDEOUT_PROGRESS);
+		spokeWithVeliaf = veliafProgress.eq(1);
+		spokeWithVanescula = veliafProgress.eq(2);
+		veliafProgressDone = veliafProgress.eq(3);
 	}
 
 	void setupSteps()
@@ -1426,6 +1553,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		talkToIvanGoingToDarkmeyer = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch while wearing the vyre noble outfit, ready for a fight.", vyreNobleOutfit, blisterwoodFlail, combatGear, food, prayerPotions);
 		talkToIvanGoingToDarkmeyer.addDialogStep("Are you ready to go to Darkmeyer?");
 		talkToIvanGoingToDarkmeyer.addDialogStep("I'm ready.");
+		watchCutsceneGoingToDarkmeyer = new DetailedQuestStep(this, "Watch the cutscene. a");
+		talkToIvanGoingToDarkmeyer.addSubSteps(watchCutsceneGoingToDarkmeyer);
 
 		/// 12
 		// Return-step in case the user died / left / teleported out
@@ -1733,7 +1862,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		enterPortalInCastleDrakanLobby.addTeleport(drakansMedallionToCastleDrakan);
 
 		/// 70
-		youAreInVampyrium = new DetailedQuestStep(this, "Watch the cutscene.");
+		youAreInVampyrium = new DetailedQuestStep(this, "Watch the cutscene. a");
 		enterPortalInCastleDrakanLobby.addSubSteps(youAreInVampyrium);
 
 		enterThroneRoomFromDiningRoom = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 0), "Enter the throne room.");
@@ -1902,10 +2031,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cSolveClockPuzzle.addStep(and(playerAtEasternClock, clockWidgetOpen), closeEasternClock);
 		cSolveClockPuzzle.addStep(easternClockNeedsFixing, clickEasternClock);
 
-		cmkToLobby = new ObjectStep(this, 61573, new WorldPoint(2342, 7373, 0), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
-		cmkToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
-		cmkToHallway1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
-		cmkToVanesculasHallwayFromHallwayNorthOfLobby = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Head to Vanescula's study.", explosiveBarrel, tinderbox);
+		cmkToLobby = new ObjectStep(this, 61573, new WorldPoint(2342, 7373, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		cmkToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		cmkToHallway1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		cmkToVanesculasHallwayFromHallwayNorthOfLobby = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
 		cmkToVanesculasStudy = new ObjectStep(this, 61576, new WorldPoint(2468, 7407, 0), "Enter the door to Vanescula's study, avoiding the traps on the floor.", explosiveBarrel, tinderbox);
 		cmkToVanesculasStudy.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
@@ -1918,6 +2047,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7409, 0)
 		);
 		cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyOneEmblemHighlighted);
+		cmkToVanesculasHallwayFromHallwayNorthOfLobby.addSubSteps(cmkToLobby, cmkToLobbyF1, cmkToHallway1, cmkToVanesculasStudy, cmkPlaceEmblemInVanesculasHallway);
 		cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, 61638, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study", anyOneEmblemHighlighted);
 		cmkToVanesculasChamber = new ObjectStep(this, 61572, new WorldPoint(2477, 7366, 0), "Enter Vanescula's chamber.", explosiveBarrel, tinderbox);
 		cmkBlowUpWallInVanesculasChamber = new ObjectStep(this, 61613, new WorldPoint(2492, 7364, 0), "Place the explosive barrel on the cracked wall in Vanescula's chamber.", explosiveBarrel.highlighted(), tinderbox);
@@ -2113,7 +2243,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		ggkGoToBasement = new ObjectStep(this, 61606, new WorldPoint(2311, 7366, 0), "Return to the basement.");
 		ggkGoToBasement.addSubSteps(ggkGoToThroneRoom, ggkGoToDiningRoom, ggkGoToLobby1);
 		ggkEnterBasementNorthRoom = new ObjectStep(this, 61584, new WorldPoint(2570, 7369, 0), "Enter through the new moon door to the north to free Safalaan and Vanescula.");
-		ggkWatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
+		ggkWatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene. b");
 		ggkEnterBasementNorthRoom.addSubSteps(ggkWatchTheCutscene);
 		ggkTakeGibbousMoonKey = new DetailedQuestStep(this, new WorldPoint(2573, 7395, 0), "Take the gibbous moon key from the bench.", gibbousMoonKey);
 		ggkReturnToBasementHallway = new ObjectStep(this, 61585, new WorldPoint(2566, 7394, 0), "Leave the prison.");
@@ -2471,7 +2601,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		dtsLeaveLaboratory = new ObjectStep(this, 61572, new WorldPoint(2523, 7389, 0), "Enter the now-unlocked door to the north-east..");
 
 		dtsDestroyBloodStockpile = new ObjectStep(this, 61711, new WorldPoint(2535, 7385, 0), "Destroy the blood stockpile.");
-		dtsWatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
+		dtsWatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene. c");
 		dtsDestroyBloodStockpile.addSubSteps(dtsWatchTheCutscene);
 
 		cDestroyingTheStockpile = new ConditionalStep(this, dtsDestroyBloodStockpile, "\nFind and destroy the stockpile.");
@@ -2486,13 +2616,13 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		/// 80
 		tryToLeave = new ObjectStep(this, 61221, new WorldPoint(2323, 7370, 0), "");
-		vampyriumCastleDrakanDestroyedBloodStockpile = new DetailedQuestStep(this, "Watch the cutscene.");
+		vampyriumCastleDrakanDestroyedBloodStockpile = new DetailedQuestStep(this, "Watch the cutscene. d");
 		cVampyriumCastleDrakanDestroyedBloodStockpile = new ConditionalStep(this, tryToLeave, "Try to leave Castle Drakan through the portal.");
 		cVampyriumCastleDrakanDestroyedBloodStockpile.addStep(inCutscene, vampyriumCastleDrakanDestroyedBloodStockpile);
 
 		/// 82
 		leaveCastleDrakan = new ObjectStep(this, 61595, new WorldPoint(2332, 7370, 0), "Leave Castle Drakan.");
-		watchLeaveCastleDrakanCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
+		watchLeaveCastleDrakanCutscene = new DetailedQuestStep(this, "Watch the cutscene. e");
 		leaveCastleDrakan.addSubSteps(watchLeaveCastleDrakanCutscene);
 
 
@@ -2501,7 +2631,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		pickupCrankWheelFromWhereYouDied = new DetailedQuestStep(this, "Pick up the crank wheel from where you died!", crankWheel);
 		pickupCrankWheelFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
 		pickupCrankWheel.addSubSteps(pickupCrankWheelFromWhereYouDied);
-		crankWheel1 = new ObjectStep(this, 61852, new WorldPoint(2588, 7855, 0), "Spam click the crank base outside the house to the north west. Drakan will start chasing you - feel free to run away if he gets too close.", crankWheel);
+		crankWheel1 = new ObjectStep(this, 61852, new WorldPoint(2588, 7855, 0), "Spam click the crank base outside the house to the north west. Drakan will start chasing you. Run away if he gets too close.", crankWheel);
 		enterHouseNextToCrankWheel = new ObjectStep(this, 61844, new WorldPoint(2587, 7857, 0), "Enter the house north of the crank base.");
 
 		searchBookCase = new ObjectStep(this, 61818, new WorldPoint(2585, 7861, 0), "Search the bookshelf in the house north of the crank base for a dusty book, then read it to retrieve the vitur key.");
@@ -2581,7 +2711,350 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		talkToIvanForSupplies.addDialogStep("Could I have those supplies you found?");
 
 		returnToVanesculaReadyToLeave = new NpcStep(this, 15909, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east when you're ready to leave. Drakan will chase you through the woods. Dodge his attacks, protect from melee.", oldCog);
-		returnToVanesculaReadyToLeave.addSubSteps(talkToIvanForSupplies);
+
+		/// 88
+		watchCutsceneRepairedBridge = new DetailedQuestStep(this, "Watch the cutscene. TODO REPAIRED BRIDGE");
+		returnToVanesculaReadyToLeave.addSubSteps(talkToIvanForSupplies, watchCutsceneRepairedBridge);
+
+		/// 90
+		fightDrakan1 = new NpcStep(this, 16211, new WorldPoint(2711, 7847, 0), "Learn to fight Drakan. Protect from melee and dodge his attacks. During this tutorial segment, there will be glimmering sparks that attempt to show you where to click to dodge his attacks.");
+
+		/// 92
+		flee1WatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene. b");
+		resupplyIfNeeded = new ObjectStep(this, 61941, new WorldPoint(2843, 7646, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees around you to continue.");
+		fightDrakan1.addSubSteps(flee1WatchTheCutscene, resupplyIfNeeded);
+
+		/// 94
+		resupplyIfNeeded2 = new ObjectStep(this, 61047, new WorldPoint(2951, 7821, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees to continue.");
+
+		// TODO: instruct on their swapping
+		sotfa1 = new NpcStep(this, new int[]{16229, 16230, 16231, 16232}, new WorldPoint(2961, 7851, 0), "Kill the ancient feral vyres. They swap positions and heal, so try to focus one at a time.", true);
+		sotfa1Exit = new ObjectStep(this, 61047, new WorldPoint(2960, 7864, 0), "Enter Darkwood trees to continue.");
+
+		var takeAxe = new ObjectStep(this, 61961, new WorldPoint(2960, 7890, 0), "Take the axe from the stump at the beginning.");
+
+		// [2026-07-12T13:54:14Z 14140] varbit SOTFA_FOREST_ENCOUNTER_COMPLETED (15605) 0 -> 1 = feral vyres
+
+		// TODO: Mention that if your inventory is full, you won't get ticks in your inventory.
+		// If you get ticks in your inventory, you have to throw them away to stop taking damage.
+		var ts1 = new TreeSolver1(this);
+		var ts2 = new TreeSolver2(this);
+		var ts3 = new TreeSolver3(this);
+		var ts4 = new TreeSolver4(this);
+		var ts5 = new TreeSolver5(this);
+		var ts6 = new TreeSolver6(this);
+		// Climb over tree 6 from west
+		var ts7_01 = TreeSolver.createStep(this, 2980, 7914, TreeType.Stump, Direction.WEST);
+		// Cut tree 7 from south
+		var ts7_02 = TreeSolver.createStep(this, 2982, 7915, TreeType.Untouched, Direction.SOUTH);
+		// Climb back over tree 6 from east
+		var ts7_03 = TreeSolver.createStep(this, 2981, 7914, TreeType.Stump, Direction.EAST);
+		// Climb over tree 6 from south
+		var ts7_04 = TreeSolver.createStep(this, 2981, 7913, TreeType.Stump, Direction.SOUTH);
+		// Cut tree 7 from west
+		var ts7_05 = TreeSolver.createStep(this, 2982, 7916, TreeType.PartiallyChopped, Direction.WEST);
+		// Climb over tree 7 from west
+		var ts7_06 = TreeSolver.createStep(this, 2982, 7916, TreeType.Stump, Direction.WEST);
+		// Cut tree 8 from south
+		var ts7_07 = TreeSolver.createStep(this, 2984, 7917, TreeType.Untouched, Direction.SOUTH);
+		// Climb back over tree 7 from east
+		var ts7_08 = TreeSolver.createStep(this, 2983, 7916, TreeType.Stump, Direction.EAST);
+		// Climb back over tree 6 from north
+		var ts7_09 = TreeSolver.createStep(this, 2981, 7914, TreeType.Stump, Direction.NORTH);
+		// Climb over tree 6 from west
+		var ts7_10 = TreeSolver.createStep(this, 2980, 7914, TreeType.Stump, Direction.WEST);
+		// Climb over tree 7 from south
+		var ts7_11 = TreeSolver.createStep(this, 2982, 7915, TreeType.Stump, Direction.SOUTH);
+		// Cut tree 8 from west
+		var ts7_12 = TreeSolver.createStep(this, 2984, 7917, TreeType.PartiallyChopped, Direction.WEST);
+		// Climb over tree 8 from west
+		var ts7_13 = TreeSolver.createStep(this, 2984, 7917, TreeType.Stump, Direction.WEST);
+
+		var tsFinalStep = new ObjectStep(this, 61047, new WorldPoint(2993, 7924, 0), "Turn off run before continuing.");
+
+		sotfa2 = new ConditionalStep(this, tsFinalStep, "Make your way through the tangle of trees to the darkwood trees in the north-east, chopping down and climbing over trees on the way. Trees can only be chopped once per direction.");
+		sotfa2.addStep(and(ts1Zone, not(anyAxe)), takeAxe);
+
+		sotfa2.addStep(and(ts8ZoneWest, tree8Chopped), ts7_13);
+		sotfa2.addStep(and(ts8ZoneWest, tree8SlightlyChopped), ts7_12);
+		sotfa2.addStep(and(ts7ZoneSouth, or(tree8Chopped, tree8SlightlyChopped)), ts7_11);
+		sotfa2.addStep(and(ts6Zone, tree8SlightlyChopped), ts7_10);
+		sotfa2.addStep(and(ts7ZoneWest, tree8SlightlyChopped), ts7_09);
+		sotfa2.addStep(and(ts8ZoneSouth, tree8SlightlyChopped), ts7_08);
+		sotfa2.addStep(and(ts8ZoneSouth, tree8Untouched), ts7_07);
+		sotfa2.addStep(and(ts7ZoneWest, tree6ChoppedDown, tree7Chopped), ts7_06);
+		sotfa2.addStep(and(ts7ZoneWest, tree6ChoppedDown, tree7SlightlyChopped), ts7_05);
+		sotfa2.addStep(and(ts6Zone, tree6ChoppedDown, tree7SlightlyChopped), ts7_04);
+		sotfa2.addStep(and(ts7ZoneSouth, tree6ChoppedDown, tree7SlightlyChopped), ts7_03);
+		sotfa2.addStep(and(ts7ZoneSouth, tree6ChoppedDown, tree7Untouched), ts7_02);
+		sotfa2.addStep(and(ts6Zone, tree6ChoppedDown, tree7Untouched), ts7_01);
+		sotfa2.addStep(ts6Zone, ts6);
+		sotfa2.addStep(ts5Zone, ts5);
+		sotfa2.addStep(ts4Zone, ts4); // ts4 is also used as the fallback since it has the biggest "free zone"
+		sotfa2.addStep(ts3Zone, ts3);
+		sotfa2.addStep(ts2Zone, ts2);
+		sotfa2.addStep(ts1Zone, ts1);
+
+		// NOTE: This is a _dangerous_ step. Hardcore ironmen should be careful. If we add an indicator for dangerous steps in the future, this one should be marked.
+		// TODO: I'd love to maybe add a custom icon on each, or number.
+		sotfa3AvoidAnimals = new NpcStep(this, 16233, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.", true);
+		// avoidAnimals.addTileMarkers(SpriteID.LOAD, new WorldPoint(2914, 7920, 0));
+		sotfa3Exit = new ObjectStep(this, 61992, new WorldPoint(2928, 7892, 0), "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
+		cSotfa3 = new ConditionalStep(this, sotfa3AvoidAnimals);
+		cSotfa3.addStep(nearSotfa3Exit, sotfa3Exit);
+
+		sotfa4 = new ObjectStep(this, 61995, new WorldPoint(2993, 7866, 0), "Continue through the cave.");
+
+		// nylocas room
+		// TODO: Because it takes a little bit for the Nylocas to spawn, we immediately direct the user to the exit while they can't actually leave.
+		// Is it possible to solve this? There's no varbit that denotes success
+		sotfa5 = new NpcStep(this, 16236, "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage.", true);
+		sotfa5.addAlternateNpcs(16237);
+		sotfa5.addCustomIcon(new QuestStepIcon(ItemID.DRAGON_SCIMITAR, 16236, 0.75));
+		sotfa5.addCustomIcon(new QuestStepIcon(ItemID.SOTFA_FOREST_TALON, 16237, 0.75));
+		// TODO: For some reason, the npc condition failed to detect more npcs at some point. Not sure what happened, but a few ticks later the npcs were highlighted.
+		sotfa5Exit = new ObjectStep(this, 61047, new WorldPoint(2912, 7852, 0), "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage. When all are dead, leave through the trees.");
+		cSotfa5 = new ConditionalStep(this, sotfa5);
+		cSotfa5.addStep(not(anyNearbyNylocas), sotfa5Exit);
+
+
+		sotfa6WrangleSnakes = new NpcStep(this, 16238, "Wrangle the snakes, then combine them into one long snake. You must stand behind the snake when attempting to wrangle it.", true, deadSnake3);
+		sotfa6CombineSnakes = new DetailedQuestStep(this, "Combine the snakes into one long snake.", deadSnake3.highlighted());
+		sotfa6UseRopeOnBranch = new ObjectStep(this, 61951, new WorldPoint(3042, 7895, 0), "Use the serpent rope on the long branched tree.", serpentRope.highlighted());
+		sotfa6SwingAcrossWater = new ObjectStep(this, 61949, new WorldPoint(3040, 7894, 0), "Swing across the water with your newly created swing.");
+		sotfa6Exit = new ObjectStep(this, 61047, new WorldPoint(3041, 7885, 0), "Leave through the trees.");
+		sotfaWatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene. c");
+		sotfa6Exit.addSubSteps(sotfaWatchTheCutscene);
+		cSotfa6 = new ConditionalStep(this, sotfa6WrangleSnakes);
+		cSotfa6.addStep(acrossSotfa6Pond, sotfa6Exit);
+		cSotfa6.addStep(ropedTree, sotfa6SwingAcrossWater);
+		cSotfa6.addStep(serpentRope, sotfa6UseRopeOnBranch);
+		cSotfa6.addStep(deadSnake3, sotfa6CombineSnakes);
+
+		/// 98
+		talkToMysteriousWoman1 = new NpcStep(this, 15953, new WorldPoint(2975, 7704, 0), "Talk-to Mysterious Woman.");
+		mysteriousWomanWatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene. d");
+		talkToMysteriousWoman1.addSubSteps(mysteriousWomanWatchTheCutscene);
+
+		/// 100
+		startTalkingToEfaritay = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow in the west room to help her with her son.");
+
+		/// 102 + 104 + 106 + 108
+		leavePalace1 = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Pick some amitire leaves from the amitire plant outside the palace.");
+		pickFromAmitirePlant = new ObjectStep(this, 62135, new WorldPoint(2982, 7679, 0), "Pick some amitire leaves from the amitire plant outside the palace.");
+		pickFromAmitirePlant.addSubSteps(leavePalace1);
+
+		enterPalace1 = new ObjectStep(this, 62144, new WorldPoint(2974, 7677, 0), "Enter the palace with the amitire leaves.", amitireLeaves);
+
+		searchShelvesForBowl = new ObjectStep(this, 62070, new WorldPoint(3159, 7824, 1), "Search the shelves next to the sink for a bowl.", amitireLeaves);
+		searchShelvesForBowl.addSubSteps(enterPalace1);
+
+		fillBowlWithWater = new ObjectStep(this, 62097, new WorldPoint(3157, 7825, 1), "Fill the bowl with water", amitireLeaves, bowl.highlighted());
+
+		getPotatoFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take a potato from the cupboard.", amitireLeaves, bowlOfWater);
+		getPotatoFromCupboard.addDialogStep("Potato.");
+
+		combineStew = new DetailedQuestStep(this, "Put the potato in the bowl of water.", amitireLeaves, bowlOfWater.highlighted(), potato.highlighted());
+
+		getRawMeatFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take some raw meat the cupboard.", amitireLeaves, incompleteStew);
+		getRawMeatFromCupboard.addDialogStep("Raw meat.");
+
+		cookMeatOnRange = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the raw meat on the range.", amitireLeaves, incompleteStew, rawMeat.highlighted());
+		cookMeatOnRange.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Cooked meat"));
+
+		combineStew2 = new DetailedQuestStep(this, "Put the cooked meat in the incomplete stew.", amitireLeaves, incompleteStew.highlighted(), cookedMeat.highlighted());
+		cookStew = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the stew on the range.", uncookedStew.highlighted());
+		cookStew.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Stew"));
+		combineStew3 = new DetailedQuestStep(this, "Put the amitire leaves into the stew.", amitireLeaves.highlighted(), stew.highlighted());
+		giveStewToSafalaan = new NpcStep(this, 15895, "Give the amitire stew to Safalaan Hallow.", amitireStew.highlighted());
+
+		talkToSafalaanAfterFeedingHimStew = new NpcStep(this, 15893, new WorldPoint(3157, 7841, 1), "Talk to Safalaan Hallow after feeding him the stew.");
+
+		talkToEfaritayAfterFeedingStewToSafalaan = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow after feeding Safalaan the stew.");
+
+
+		/// 110
+		searchWorkbenchForHammer = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a hammer.", blisterwoodFlail);
+		searchWorkbenchForHammer.addDialogStep("Hammer.");
+		searchWorkbenchForChisel = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a chisel.", blisterwoodFlail, hammer);
+		searchWorkbenchForChisel.addDialogStep("Chisel.");
+		searchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a knife.", blisterwoodFlail, hammer, chisel);
+		searchWorkbenchForKnife.addDialogStep("Knife.");
+		searchCrateForBlisterwoodLogs = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs.", blisterwoodFlail, hammer, chisel, knife);
+		searchCrateForBlisterwoodLogs.addWidgetHighlight(InterfaceID.Skillmulti.A);
+		searchCrateForBlessedSilverSickle = new ObjectStep(this, 62077, new WorldPoint(3181, 7841, 1), "Search the eastern-most crate for a blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs);
+		searchChestForDiamond = new ObjectStep(this, 62074, new WorldPoint(3181, 7835, 1), "Search the eastern-most chest for a diamond.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle);
+		putDiamondInSickle = new DetailedQuestStep(this, "Put the unenchanted diamond on the blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle.highlighted(), diamond.highlighted());
+		putDiamondInSickle.addDialogStep("Yes.");
+		searchChestForDiamondTablet2 = new ObjectStep(this, 62075, new WorldPoint(3175, 7836, 1), "Search the western-most chest for a diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB);
+		useEnchantDiamondTabletOnSickle = new DetailedQuestStep(this, "Enchant the diamond sickle with the enchant diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB.highlighted(), diamondTablet.highlighted());
+		useEnchantDiamondTabletOnSickle.addDialogStep("Yes.");
+		createEnhancedBlisterwoodSickle = new DetailedQuestStep(this, "Combine the blisterwood logs with your newly created enchanted diamond sickle to create an enhanced blisterwood sickle.", blisterwoodFlail, hammer, knife, blisterwoodLogs.highlighted(), enchantedDiamondSickle.highlighted());
+		createEnhancedBlisterwoodSickle.addDialogStep("Yes.");
+		createHallowedFlail = new ObjectStep(this, 2097, new WorldPoint(3179, 7842, 1), "Smith a hallowed flail at the anvil.", blisterwoodFlailUnequipped, hammer, enhancedBlisterwoodSickle, hallowedMarks);
+		createHallowedFlail.addDialogStep("Yes.");
+
+		// 110 -> 112 after creating the hallowed flail
+		// [2026-07-19T12:18:53Z 317] varbit MYQ6_ARANEI_WATCHER_CHAT (15477) 0 -> 1
+		// after speaking to the random Aranei outside the palace
+		speakToIvanWithHallowedFlail = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Talk to Ivan Strom after smithing the hallowed flail.");
+
+		ivanSearchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench for a knife.");
+		ivanSearchWorkbenchForKnife.addDialogStep("Knife.");
+		getLogsForStakes = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs to craft stakes.");
+		getLogsForStakes.addWidgetHighlight(InterfaceID.Skillmulti.A);
+		fletchStakes = new DetailedQuestStep(this, "Fletch the logs into stakes.", blisterwoodLogs.highlighted(), knife.highlighted());
+
+		returnToIvan = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Return to  Ivan Strom after crafting some stakes. You can craft more before continuing if you want to use them during the upcoming fights.");
+
+		climbDownstairs = new ObjectStep(this, 62152, new WorldPoint(3171, 7823, 1), "Talk to Veliaf in the dungeon downstairs.");
+		talkToVeliafInDungeon = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon.");
+		talkToVeliafInDungeon.addSubSteps(climbDownstairs);
+
+		talkToVanescula = new NpcStep(this, 15910, new WorldPoint(3168, 7844, 0), "Talk-to Vanescula Drakan.");
+
+		talkToVeliafInDungeonAgain = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon again.");
+
+		climbUpstairs = new ObjectStep(this, 62151, new WorldPoint(3164, 7823, 0), "Climb upstairs and talk to Sugadinti.");
+		talkToSugadintiAfterHelpingAllies = new NpcStep(this, 15960, new WorldPoint(3168, 7828, 1), "Talk to Sugadinti Vitur after helping out Ivan and Veliaf.");
+		talkToSugadintiAfterHelpingAllies.addSubSteps(climbUpstairs);
+
+		/// 114
+		leavePalaceForCombat = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Get ready for combat. Resupply at the supply table in the kitchen if needed. Speak to the Aranei next to the table if you want to deposit any items into your bank. Then leave the palace.");
+		getReadyForCombatWatchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene. TODO MAKE TO ITS OWN STEP");
+		leavePalaceForCombat.addSubSteps(getReadyForCombatWatchTheCutscene);
+
+		/// 116
+		attackPortals = new NpcStep(this, 16251, "Attack the portals in the sky.", true);
+
+		/// 118
+		leaveDoorsCutscene = new DetailedQuestStep(this, "Watch the cutscene. TODO MAKE TO ITS OWN STEP");
+		leaveDoors = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Leave the palace.");
+		leaveDoors.addSubSteps(leaveDoorsCutscene);
+
+		/// 120
+
+		// TODO: we _could_ highlight anything that's broken
+
+		// FALLEN: new NpcStep(this, 16266, new WorldPoint(3173, 7855, 1), "Heal Aranei.");
+		// DAMAGED PILLAR: new ObjectStep(this, 62155, new WorldPoint(3174, 7855, 1), "Repair Damaged pillar.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3176, 7858, 1), "Repair Damaged window.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3174, 7858, 1), "Repair Damaged window.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3162, 7858, 1), "Repair Damaged window.");
+		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3164, 7858, 1), "Repair Damaged window.");
+		// DAMAGED PILLAR: new ObjectStep(this, 62155, new WorldPoint(3162, 7855, 1), "Repair Damaged pillar.");
+		guardThePalace = new DetailedQuestStep(this, "Heal fallen Aranei, repair damaged windows, and repair damaged pillars.");
+
+		barricadeCutscene = new DetailedQuestStep(this, "Watch the cutscene. e");
+		passThroughBarricadeToHelp = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass through barricade to return to the guarding step.");
+		guardThePalace.addSubSteps(passThroughBarricadeToHelp, barricadeCutscene);
+
+		/// 122
+		passThroughBarricadeToFightDrakan = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass through the barricade, ready to fight Drakan. You can resupply at the supply table in the kitchen.");
+		fightDrakan2 = new NpcStep(this, 16210, new WorldPoint(3168, 7853, 1), "Fight Drakan. Protect from melee. Dodge attacks.");
+		fightDrakan2.addSubSteps(passThroughBarricadeToFightDrakan);
+
+		/// 124
+		finishedDrakan2Cutscene = new DetailedQuestStep(this, "Watch the cutscene. f");
+
+		/// 126
+		leavingPalaceCutscene = new DetailedQuestStep(this, "Watch the cutscene. g");
+		talkToIvanInHauntedWoods = new NpcStep(this, 15855, new WorldPoint(3606, 3416, 0), "Talk to Ivan Strom in the haunted woods.");
+		talkToIvanInHauntedWoods.addSubSteps(leavingPalaceCutscene);
+
+		/// 128
+		talkToVeliafAfterLeavingPalaceCutscene = new DetailedQuestStep(this, "Watch the cutscene. h");
+		talkToVeliafAfterLeavingPalace = new NpcStep(this, 15878, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in Burgh de Rott.");
+		talkToVeliafAfterLeavingPalace.addSubSteps(talkToVeliafAfterLeavingPalaceCutscene);
+
+		/// 130
+		talkToSugadintiInBurghDeRott = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in Burgh de Rott.");
+
+		/// 132 + 134 + 136 + 138 (theatre of blood)
+		getToTobCutscene = new DetailedQuestStep(this, "Watch the cutscene. 11");
+		getToTob = new NpcStep(this, 15962, new WorldPoint(3668, 3220, 0), "Gear up for theatre of blood. Bring melee gear with a range and mage switch, some food & potions, then talk to Sugadinti Vitur in front of the theatre of blood.", combatGear, food, prayerPotions);
+		getToTob.addDialogStep("I'm ready.");
+		getToTob.addSubSteps(getToTobCutscene);
+
+		// TODO: This text could probably be improved
+		ensureNothingBothersSugadinti = new DetailedQuestStep(this, "Kill Nylocas with the correct fighting style. Fight the Maiden of Sugadinti, killing healers when they spawn. Avoid blood puddles on the ground.");
+
+		talkToSugadintiAfterFinishingTobCutscene = new DetailedQuestStep(this, "Watch the cutscene. 12");
+		talkToSugadintiAfterFinishingTob = new NpcStep(this, 15962, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
+		talkToSugadintiAfterFinishingTob.addSubSteps(talkToSugadintiAfterFinishingTobCutscene);
+
+		/// 140
+		headToBarrowsL = new NpcStep(this, 15878, new WorldPoint(3540, 3256, 0), "Head to the abandoned building north-east of Burgh de Rott and talk to Veliaf.", combatGear, hallowedFlail, food, prayerPotions);
+
+		/// 142
+		headDownToVanesculaCutscene = new DetailedQuestStep(this, "Watch the cutscene. 13");
+		headDownToVanescula = new ObjectStep(this, 61254, new WorldPoint(3543, 3257, 0), "Head to the abandoned building north-east of Burgh de Rott and enter the entry.");
+		headDownToVanescula.addSubSteps(headDownToVanesculaCutscene);
+
+		/// 144
+		fightTheWyrd = new NpcStep(this, 16212, "Fight the Wyrd. TODO ADD SOME INSTRUCTIONS HERE :)");
+
+		/// 146
+		dealtWithWyrdCutscene = new DetailedQuestStep(this, "Watch the cutscene. TODO MAKE TO ITS OWN STEP");
+		fightTheWyrd.addSubSteps(dealtWithWyrdCutscene);
+
+		/// 148
+		findWyrdCutscene = new DetailedQuestStep(this, "Watch the cutscene. 14");
+		findWyrd = new ObjectStep(this, 61268, new WorldPoint(3562, 3323, 0), "Search for the escaped wyrd. Inspect the fence north of barrows.");
+		findWyrd.addSubSteps(findWyrdCutscene);
+
+		/// 150
+		speakWithVeliafAfterInspectingFence = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in the Burgh de Rott hideout.");
+		talkWithVeliafInBurghDeRottCutscene = new DetailedQuestStep(this, "Watch the cutscene. 15");
+		speakWithVeliafAfterInspectingFence.addSubSteps(talkWithVeliafInBurghDeRottCutscene);
+
+		/// 152
+		prepareFightDrakan3 = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		prepareFightDrakan3.addDialogStep("I'm ready.");
+		enterBurghDeRottDungeon = new ObjectStep(this, 12743, new WorldPoint(3490, 3232, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		prepareFightDrakan3.addSubSteps(enterBurghDeRottDungeon);
+
+		/// 154
+		fightDrakan3 = new NpcStep(this, 16209, "Fight Lowerniel Drakan. Protect from melee. Dodge his attacks.");
+
+		/// 156
+		talkToVeliaf = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
+		talkToVeliaf.addDialogStep("I'll go now.");
+		talkToVeliafCutscene = new DetailedQuestStep(this, "Watch the cutscene. 16");
+		talkToVeliaf.addSubSteps(talkToVeliafCutscene);
+
+		/// 158
+		talkToIvanInsideCastleDrakan = new NpcStep(this, 15855, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
+
+		/// 160 + 162
+		talkToSugadintiInsideCastleDrakan = new NpcStep(this, 15960, new WorldPoint(2846, 7389, 0), "Talk to Sugadinti Vitur inside Castle Drakan.");
+
+		/// 164
+		talkToEfaritayOnIcyene = new NpcStep(this, 15942, new WorldPoint(3701, 3186, 0), "Talk to Efaritay Hallow in Icyene Graveyard.");
+
+		/// 166
+		enterVampyriumForTheLastTime = new ObjectStep(this, 61215, new WorldPoint(3703, 3185, 0), "Enter the portal in Icyene Graveyard to get to Vampyrium, ready for the final confrontation.", hallowedFlail, combatGearMelee);
+		enterVampyriumForTheLastTimeCutscene = new DetailedQuestStep(this, "Watch the cutscene. 17");
+		enterVampyriumForTheLastTime.addSubSteps(enterVampyriumForTheLastTimeCutscene);
+
+		/// 168
+		goToFightDrakan4 = new ObjectStep(this, 61628, new WorldPoint(2506, 7387, 0), "Enter the door, ready to fight Drakan. You can get supplies and deposit items at the chest next to the door.", hallowedFlail, combatGearMelee);
+		goToFightDrakan4Cutscene = new DetailedQuestStep(this, "Watch the cutscene. 18");
+		goToFightDrakan4.addSubSteps(goToFightDrakan4Cutscene);
+
+		/// 170 + 172
+		// TODO: some minor instructions + maybe a wiki link?
+		fightDrakan4 = new NpcStep(this, 16204, "Fight Lowerniel Drakan.");
+		fightDrakan4Cutscene = new DetailedQuestStep(this, "Watch the cutscene. 19");
+		fightDrakan4.addSubSteps(fightDrakan4Cutscene);
+
+		/// 174
+		talkToEfaritayAfterKillingDrakan = new NpcStep(this, 15941, new WorldPoint(3702, 3182, 0), "Talk-to Efaritay Hallow in the icyene graveyard.");
+		finalQuestCutscene = new DetailedQuestStep(this, "Watch the cutscene. TODO MAKE TO ITS OWN STEP");
+		talkToEfaritayAfterKillingDrakan.addSubSteps(finalQuestCutscene);
+
+		/// 176 + 178
+		youHaveFinishedTheQuest = new DetailedQuestStep(this, "Congratulations on finishing the quest!");
 	}
 
 	@Override
@@ -2607,8 +3080,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(10, cTalkToIVanGoingToDarkmeyer);
 
 		var cEscapeCastleDrakan = new ConditionalStep(this, goDownToIvan);
-		var watchCutscene12 = new DetailedQuestStep(this, "Watch the cutscene.");
-		cEscapeCastleDrakan.addStep(inCutscene, watchCutscene12);
+		cEscapeCastleDrakan.addStep(inCutscene, watchCutsceneGoingToDarkmeyer);
 		cEscapeCastleDrakan.addStep(atCastleDrakanCourtyard, defendIvanFromVyres);
 		cEscapeCastleDrakan.addStep(inMyrequeHideoutOldManRal, talkToIvanToReturnToCastleDrakan);
 		steps.put(12, cEscapeCastleDrakan);
@@ -2855,187 +3327,45 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(84, cCog);
 		steps.put(86, cCog);
 
-		// TODO: Should we make a "Watch the cutscene." step?
-		var watchTheCutscene = new DetailedQuestStep(this, "Watch the cutscene.");
-
 		// TODO: If the user cancels out of this cutscene (if they can), is there an NPC or Object they can interact with to continue?
-		var repairedBridge = new ConditionalStep(this, todo, "you have repaired the bridge!");
-		repairedBridge.addStep(inCutscene, watchTheCutscene);
+		var cRepairedBridge = new ConditionalStep(this, todo, "You have successfully repaired the bridge!");
+		cRepairedBridge.addStep(inCutscene, watchCutsceneRepairedBridge);
+		steps.put(88, cRepairedBridge);
 
-		steps.put(88, repairedBridge);
-
-		var fightDrakan1 = new NpcStep(this, 16211, new WorldPoint(2711, 7847, 0), "Learn to fight Drakan. Protect from melee and dodge his attacks. During this tutorial segment, there will be glimmering sparks that attempt to show you where to click to doge his attacks.");
 
 		steps.put(90, fightDrakan1);
 
-		var resupplyIfNeeded = new ObjectStep(this, 61941, new WorldPoint(2843, 7646, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees around you to continue.");
-		var resupplyIfNeeded2 = new ObjectStep(this, 61047, new WorldPoint(2951, 7821, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees to continue.");
-		// resupplyIfNeeded2.addAlternateObjects(61047);
-
 		var cFlee1 = new ConditionalStep(this, resupplyIfNeeded);
-		cFlee1.addStep(inCutscene, watchTheCutscene);
+		cFlee1.addStep(inCutscene, flee1WatchTheCutscene);
 		steps.put(92, cFlee1);
 
-		// TODO: instruct on their swapping
-		var sotfa1 = new NpcStep(this, new int[]{16229, 16230, 16231, 16232}, new WorldPoint(2961, 7851, 0), "Kill the ancient feral vyres. They swap positions and heal, so try to focus one at a time.", true);
-		var sotfa1Done = new ObjectStep(this, 61047, new WorldPoint(2960, 7864, 0), "Enter Darkwood trees to continue.");
-
-
-
-		var takeAxe = new ObjectStep(this, 61961, new WorldPoint(2960, 7890, 0), "Take-axe Stump.");
-
-		// [2026-07-12T13:54:14Z 14140] varbit SOTFA_FOREST_ENCOUNTER_COMPLETED (15605) 0 -> 1 = feral vyres
-
-		// TODO: Mention that if your inventory is full, you won't get ticks in your inventory.
-		// If you get ticks in your inventory, you have to throw them away to stop taking damage.
-		var ts1 = new TreeSolver1(this);
-		var ts2 = new TreeSolver2(this);
-		var ts3 = new TreeSolver3(this);
-		var ts4 = new TreeSolver4(this);
-		var ts5 = new TreeSolver5(this);
-		var ts6 = new TreeSolver6(this);
-		// Climb over tree 6 from west
-		var ts7_01 = TreeSolver.createStep(this, 2980, 7914, TreeType.Stump, Direction.WEST);
-		// Cut tree 7 from south
-		var ts7_02 = TreeSolver.createStep(this, 2982, 7915, TreeType.Untouched, Direction.SOUTH);
-		// Climb back over tree 6 from east
-		var ts7_03 = TreeSolver.createStep(this, 2981, 7914, TreeType.Stump, Direction.EAST);
-		// Climb over tree 6 from south
-		var ts7_04 = TreeSolver.createStep(this, 2981, 7913, TreeType.Stump, Direction.SOUTH);
-		// Cut tree 7 from west
-		var ts7_05 = TreeSolver.createStep(this, 2982, 7916, TreeType.PartiallyChopped, Direction.WEST);
-		// Climb over tree 7 from west
-		var ts7_06 = TreeSolver.createStep(this, 2982, 7916, TreeType.Stump, Direction.WEST);
-		// Cut tree 8 from south
-		var ts7_07 = TreeSolver.createStep(this, 2984, 7917, TreeType.Untouched, Direction.SOUTH);
-		// Climb back over tree 7 from east
-		var ts7_08 = TreeSolver.createStep(this, 2983, 7916, TreeType.Stump, Direction.EAST);
-		// Climb back over tree 6 from north
-		var ts7_09 = TreeSolver.createStep(this, 2981, 7914, TreeType.Stump, Direction.NORTH);
-		// Climb over tree 6 from west
-		var ts7_10 = TreeSolver.createStep(this, 2980, 7914, TreeType.Stump, Direction.WEST);
-		// Climb over tree 7 from south
-		var ts7_11 = TreeSolver.createStep(this, 2982, 7915, TreeType.Stump, Direction.SOUTH);
-		// Cut tree 8 from west
-		var ts7_12 = TreeSolver.createStep(this, 2984, 7917, TreeType.PartiallyChopped, Direction.WEST);
-		// Climb over tree 8 from west
-		var ts7_13 = TreeSolver.createStep(this, 2984, 7917, TreeType.Stump, Direction.WEST);
-
-		var tsFinalStep = new ObjectStep(this, 61047, new WorldPoint(2993, 7924, 0), "Turn off run before continuing.");
-
-		var sotfa2 = new ConditionalStep(this, tsFinalStep, "Make your way through the tangle of trees to the darkwood trees in the north-east, chopping down and climbing over trees on the way. Trees can only be chopped once per direction.");
-		sotfa2.addStep(not(anyAxe), takeAxe);
-
-		sotfa2.addStep(and(ts8ZoneWest, tree8Chopped), ts7_13);
-		sotfa2.addStep(and(ts8ZoneWest, tree8SlightlyChopped), ts7_12);
-		sotfa2.addStep(and(ts7ZoneSouth, or(tree8Chopped, tree8SlightlyChopped)), ts7_11);
-		sotfa2.addStep(and(ts6Zone, tree8SlightlyChopped), ts7_10);
-		sotfa2.addStep(and(ts7ZoneWest, tree8SlightlyChopped), ts7_09);
-		sotfa2.addStep(and(ts8ZoneSouth, tree8SlightlyChopped), ts7_08);
-		sotfa2.addStep(and(ts8ZoneSouth, tree8Untouched), ts7_07);
-		sotfa2.addStep(and(ts7ZoneWest, tree6ChoppedDown, tree7Chopped), ts7_06);
-		sotfa2.addStep(and(ts7ZoneWest, tree6ChoppedDown, tree7SlightlyChopped), ts7_05);
-		sotfa2.addStep(and(ts6Zone, tree6ChoppedDown, tree7SlightlyChopped), ts7_04);
-		sotfa2.addStep(and(ts7ZoneSouth, tree6ChoppedDown, tree7SlightlyChopped), ts7_03);
-		sotfa2.addStep(and(ts7ZoneSouth, tree6ChoppedDown, tree7Untouched), ts7_02);
-		sotfa2.addStep(and(ts6Zone, tree6ChoppedDown, tree7Untouched), ts7_01);
-		sotfa2.addStep(ts6Zone, ts6);
-		sotfa2.addStep(ts5Zone, ts5);
-		sotfa2.addStep(ts4Zone, ts4); // ts4 is also used as the fallback since it has the biggest "free zone"
-		sotfa2.addStep(ts3Zone, ts3);
-		sotfa2.addStep(ts2Zone, ts2);
-		sotfa2.addStep(ts1Zone, ts1);
-
-		// NOTE: This is a _dangerous_ step. Hardcore ironmen should be careful. If we add an indicator for dangerous steps in the future, this one should be marked.
-		var avoidAnimals = new NpcStep(this, 16233, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.", true);
-		// avoidAnimals.addTileMarkers(SpriteID.LOAD, new WorldPoint(2914, 7920, 0));
-		var sotfa3 = new ConditionalStep(this, avoidAnimals, "sotfa3");
-		var leaveSotfa3 = new ObjectStep(this, 61992, new WorldPoint(2928, 7892, 0), "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
-		sotfa3.addStep(nearSotfa3Exit, leaveSotfa3);
-
-		var sotfa4 = new ObjectStep(this, 61995, new WorldPoint(2993, 7866, 0), "Continue through the cave.");
-
-		// nylocas room
-		var killNylocas = new NpcStep(this, 16236, "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage.", true);
-		killNylocas.addAlternateNpcs(16237);
-		killNylocas.addCustomIcon(new QuestStepIcon(ItemID.DRAGON_SCIMITAR, 16236, 0.75));
-		killNylocas.addCustomIcon(new QuestStepIcon(ItemID.SOTFA_FOREST_TALON, 16237, 0.75));
-		// TODO: For some reason, the npc condition failed to detect more npcs at some point. Not sure what happened, but a few ticks later the npcs were highlighted.
-		var sotfa5 = new ConditionalStep(this, killNylocas);
-		var sotfa5Leave = new ObjectStep(this, 61047, new WorldPoint(2912, 7852, 0), "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage. When all are dead, leave through the trees.");
-		sotfa5.addStep(not(anyNearbyNylocas), sotfa5Leave);
-
-
-		var wrangleSnakes = new NpcStep(this, 16238, "Wrangle the snakes, then combine them into one long snake. You must stand behind the snake when attempting to wrangle it.", true, deadSnake3);
-		var sotfa6 = new ConditionalStep(this, wrangleSnakes, "sotfa6 xd");
-		var combineSnakes = new DetailedQuestStep(this, "Combine the snakes into one long snake.", deadSnake3.highlighted());
-		var useRopeOnLongBranchedTree = new ObjectStep(this, 61951, new WorldPoint(3042, 7895, 0), "Use the serpent rope on the long branched tree.", serpentRope.highlighted());
-		var swingLikeTarzan = new ObjectStep(this, 61949, new WorldPoint(3040, 7894, 0), "Swing-across Long branched tree.");
-		var leaveSotfa6 = new ObjectStep(this, 61047, new WorldPoint(3041, 7885, 0), "Enter Darkwood trees.");
-		sotfa6.addStep(acrossSotfa6Pond, leaveSotfa6);
-		sotfa6.addStep(ropedTree, swingLikeTarzan);
-		sotfa6.addStep(serpentRope, useRopeOnLongBranchedTree);
-		sotfa6.addStep(deadSnake3, combineSnakes);
-
-
 		var cFlee2 = new ConditionalStep(this, resupplyIfNeeded2);
-		cFlee2.addStep(and(inSotfa6), sotfa6);
-		cFlee2.addStep(and(inSotfa5), sotfa5);
+		cFlee2.addStep(and(inSotfa6), cSotfa6);
+		cFlee2.addStep(and(inSotfa5), cSotfa5);
 		cFlee2.addStep(and(inSotfa4), sotfa4);
-		cFlee2.addStep(and(inSotfa3), sotfa3);
+		cFlee2.addStep(and(inSotfa3), cSotfa3);
 		cFlee2.addStep(and(inSotfa2), sotfa2);
 		cFlee2.addStep(and(inSotfa1, anyNearbyFeralVyres), sotfa1);
-		cFlee2.addStep(and(inSotfa1), sotfa1Done);
-		cFlee2.addStep(inCutscene, watchTheCutscene);
+		cFlee2.addStep(and(inSotfa1), sotfa1Exit);
+		cFlee2.addStep(inCutscene, sotfaWatchTheCutscene);
 		steps.put(94, cFlee2);
 
 		// 94 -> 96: done with all the "running through forest" puzzles
 
-		var cFlee3 = new ConditionalStep(this, watchTheCutscene);
+		var cFlee3 = new ConditionalStep(this, sotfaWatchTheCutscene);
 		cFlee3.addStep(inResupplyZone, resupplyIfNeeded2);
 		steps.put(96, cFlee3);
 
-		var talkToMysteriousWoman1 = new NpcStep(this, 15953, new WorldPoint(2975, 7704, 0), "Talk-to Mysterious Woman.");
 		var cMysteriousWoman = new ConditionalStep(this, talkToMysteriousWoman1);
-		cMysteriousWoman.addStep(inCutscene, watchTheCutscene);
+		cMysteriousWoman.addStep(inCutscene, mysteriousWomanWatchTheCutscene);
 		steps.put(98, cMysteriousWoman);
 
 		// 98 -> 100: after meeting & finishing speaking with Sugadinti
 
-		var startTalkingToEfaritay = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow in the west room to help her with her son.");
-
-		var cHelpWithPreparations = new ConditionalStep(this, startTalkingToEfaritay);
-		steps.put(100, cHelpWithPreparations);
+		steps.put(100, startTalkingToEfaritay);
 
 		// 100 -> 102: spoke with Efaritay, and she told me to bring her herbs
 
-
-
-		var leavePalace1 = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Pick some amitire leaves from the amitire plant outside the palace.");
-		var pickFromAmitirePlant = new ObjectStep(this, 62135, new WorldPoint(2982, 7679, 0), "Pick some amitire leaves from the amitire plant outside the palace.");
-
-		var enterPalace1 = new ObjectStep(this, 62144, new WorldPoint(2974, 7677, 0), "Enter the palace with the amitire leaves.", amitireLeaves);
-
-		var searchShelvesForBowl = new ObjectStep(this, 62070, new WorldPoint(3159, 7824, 1), "Search the shelves next to the sink for a bowl.", amitireLeaves);
-
-		var fillBowlWithWater = new ObjectStep(this, 62097, new WorldPoint(3157, 7825, 1), "Fill the bowl with water", amitireLeaves, bowl.highlighted());
-
-		var getPotatoFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take a potato from the cupboard.", amitireLeaves, bowlOfWater);
-		getPotatoFromCupboard.addDialogStep("Potato.");
-
-		var getRawMeatFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take some raw meat the cupboard.", amitireLeaves, incompleteStew);
-		getRawMeatFromCupboard.addDialogStep("Raw meat.");
-
-		var cookMeatOnRange = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the raw meat on the range.", amitireLeaves, incompleteStew, rawMeat.highlighted());
-		cookMeatOnRange.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Cooked meat"));
-
-		var combineStew = new DetailedQuestStep(this, "Put the potato in the bowl of water.", amitireLeaves, bowlOfWater.highlighted(), potato.highlighted());
-		var combineStew2 = new DetailedQuestStep(this, "Put the cooked meat in the incomplete stew.", amitireLeaves, incompleteStew.highlighted(), cookedMeat.highlighted());
-		var cookStew = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the stew on the range.", uncookedStew.highlighted());
-		cookStew.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Stew"));
-		var combineStew3 = new DetailedQuestStep(this, "Put the amitire leaves into the stew.", amitireLeaves.highlighted(), stew.highlighted());
-		// TODO: Confirm you can do this without speaking to Efaritay first
-		var giveStewToSafalaan = new NpcStep(this, 15895, "Give the amitire stew to Safalaan Hallow.", amitireStew.highlighted());
 
 		var cPickUpHerbs = new ConditionalStep(this, giveStewToSafalaan);
 		cPickUpHerbs.addStep(and(amitireStew), giveStewToSafalaan);
@@ -3055,39 +3385,15 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// 102 -> 104 when you make the stew for the first time
 		steps.put(104, cPickUpHerbs);
 		// 104 -> 106 when you gave the amitire stew to Safalaan
-		var talkToSafalaan = new NpcStep(this, 15893, new WorldPoint(3157, 7841, 1), "Talk-to Safalaan Hallow.");
-		var cTalkToSafalaan = new ConditionalStep(this, talkToSafalaan);
-		steps.put(106, cTalkToSafalaan);
+		steps.put(106, talkToSafalaanAfterFeedingHimStew);
 		// 106 -> 108 after speaking 2 words to Safalaan
-		var cTalkToEfaritay = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk-to Efaritay Hallow.");
-		steps.put(108, cTalkToEfaritay);
+		steps.put(108, talkToEfaritayAfterFeedingStewToSafalaan);
 		// 108 -> 110 after speaking to Efaritay about getting my weapon upgraded
-
-
-		var searchWorkbenchForHammer = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a hammer.", blisterwoodFlail);
-		searchWorkbenchForHammer.addDialogStep("Hammer.");
-		var searchWorkbenchForChisel = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a chisel.", blisterwoodFlail, hammer);
-		searchWorkbenchForChisel.addDialogStep("Chisel.");
-		var searchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a knife.", blisterwoodFlail, hammer, chisel);
-		searchWorkbenchForKnife.addDialogStep("Knife.");
-		var searchCrateForBlisterwoodLogs = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs.", blisterwoodFlail, hammer, chisel, knife);
-		searchCrateForBlisterwoodLogs.addWidgetHighlight(InterfaceID.Skillmulti.A);
-		var searchCrateForBlessedSilverSickle = new ObjectStep(this, 62077, new WorldPoint(3181, 7841, 1), "Search the eastern-most crate for a blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs);
-		var searchChestForDiamond = new ObjectStep(this, 62074, new WorldPoint(3181, 7835, 1), "Search the eastern-most chest for a diamond.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle);
-		var putDiamondInSickle = new DetailedQuestStep(this, "Put the unenchanted diamond on the blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle.highlighted(), diamond.highlighted());
-		putDiamondInSickle.addDialogStep("Yes.");
-		var useEnchantDiamondTabletOnSickle = new DetailedQuestStep(this, "Enchant the diamond sickle with the enchant diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB.highlighted(), diamondTablet.highlighted());
-		useEnchantDiamondTabletOnSickle.addDialogStep("Yes.");
-		var searchChestForDiamondTablet2 = new ObjectStep(this, 62075, new WorldPoint(3175, 7836, 1), "Search the western-most chest for a diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB);
-		var createEnhancedBlisterwoodSickle = new DetailedQuestStep(this, "Combine the blisterwood logs with your newly created enchanted diamond sickle to create an enhanced blisterwood sickle.", blisterwoodFlail, hammer, knife, blisterwoodLogs.highlighted(), enchantedDiamondSickle.highlighted());
-		createEnhancedBlisterwoodSickle.addDialogStep("Yes.");
-		var createHallowedFlail = new ObjectStep(this, 2097, new WorldPoint(3179, 7842, 1), "Create a hallowed flail at the anvil.", blisterwoodFlailUnequipped, hammer, enhancedBlisterwoodSickle, hallowedMarks);
-		createHallowedFlail.addDialogStep("Yes.");
 
 		// TODO: Can a user make it here without their blisterwood flail?
 		// TODO: Could we convert a conditional step into a graph program where a developer can click each requirement whether it
 		// should pass or not, and show which step would be active?
-		var cUpgradeWeapon = new ConditionalStep(this, cTalkToEfaritay);
+		var cUpgradeWeapon = new ConditionalStep(this, talkToEfaritayAfterFeedingStewToSafalaan);
 		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, enhancedBlisterwoodSickle), createHallowedFlail);
 		cUpgradeWeapon.addStep(and(hallowedMarks, enhancedBlisterwoodSickle), searchWorkbenchForHammer);
 		cUpgradeWeapon.addStep(and(hallowedMarks, chisel, blessedSilverSickle, diamond), putDiamondInSickle);
@@ -3104,39 +3410,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife), searchCrateForBlisterwoodLogs);
 		steps.put(110, cUpgradeWeapon);
 
-
-		var ivanProgress = new VarbitBuilder(VarbitID.MYQ6_IVAN_HIDEOUT_PROGRESS);
-		var canStartIvan = ivanProgress.eq(1);
-		var hasCraftedStakes = ivanProgress.eq(2);
-		var ivanProgressDone = ivanProgress.eq(3);
-
-		var veliafProgress = new VarbitBuilder(VarbitID.MYQ6_VELIAF_HIDEOUT_PROGRESS);
-		var spokeWithVeliaf = veliafProgress.eq(1);
-		var spokeWithVanescula = veliafProgress.eq(2);
-		var veliafProgressDone = veliafProgress.eq(3);
-
-		var ivanSearchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench for a knife.");
-		ivanSearchWorkbenchForKnife.addDialogStep("Knife.");
-		var getLogsForStakes = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs to craft stakes.");
-		getLogsForStakes.addWidgetHighlight(InterfaceID.Skillmulti.A);
-		var fletchStakes = new DetailedQuestStep(this, "Fletch the logs into stakes.", blisterwoodLogs.highlighted(), knife.highlighted());
-
-		var returnToIvan = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Return to  Ivan Strom after crafting some stakes. You can craft more before continuing if you want to use them during the upcoming fights.");
-
-		var climbDownstairs = new ObjectStep(this, 62152, new WorldPoint(3171, 7823, 1), "Talk to Veliaf in the dungeon downstairs.");
-		var talkToVeliafInDungeon = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon.");
-		var talkToVeliafInDungeonAgain = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon again.");
-
-		var talkToVanescula = new NpcStep(this, 15910, new WorldPoint(3168, 7844, 0), "Talk-to Vanescula Drakan.");
-
-		var climbUpstairs = new ObjectStep(this, 62151, new WorldPoint(3164, 7823, 0), "Climb upstairs and talk to Sugadinti.");
-
-		var talkToSugadintiAfterHelpingAllies = new NpcStep(this, 15960, new WorldPoint(3168, 7828, 1), "Talk-to Sugadinti Vitur after helping out Ivan and Veliaf.");
-
-		// 110 -> 112 after creating the hallowed flail
-		// [2026-07-19T12:18:53Z 317] varbit MYQ6_ARANEI_WATCHER_CHAT (15477) 0 -> 1
-		// after speaking to the random Aranei outside the palace
-		var speakToIvanWithHallowedFlail = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Talk-to Ivan Strom.");
 		var cAfterUpgradingWeapon = new ConditionalStep(this, speakToIvanWithHallowedFlail);
 		cAfterUpgradingWeapon.addStep(and(veliafProgressDone, inPalaceDungeon), climbUpstairs);
 
@@ -3153,165 +3426,126 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// 112 -> 114 after speaking to sugadinti and helping ivan & veliaf.
 
-		var leavePalaceForCombat = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Get ready for combat. Resupply at the supply table in the kitchen if needed. Speak to the Aranei next to the table if you want to deposit any items into your bank. Then leave the palace.");
 		var cGetReadyForCombat = new ConditionalStep(this, leavePalaceForCombat);
-		cGetReadyForCombat.addStep(inCutscene, watchTheCutscene);
+		cGetReadyForCombat.addStep(inCutscene, getReadyForCombatWatchTheCutscene);
 		steps.put(114, cGetReadyForCombat);
-
-		var attackPortals = new NpcStep(this, 16251, "Attack the portals in the sky.", true);
 
 		// 114 -> 116 after watching cutscene, and now you have to defend!!!
 		steps.put(116, attackPortals);
 
 		// 116 -> 118 after helping
-		var leaveDoors = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Enter Doors.");
 		var cAfterHelpingWithPortals = new ConditionalStep(this, leaveDoors);
-		cAfterHelpingWithPortals.addStep(inCutscene, watchTheCutscene);
+		cAfterHelpingWithPortals.addStep(inCutscene, leaveDoorsCutscene);
 		steps.put(118, cAfterHelpingWithPortals);
 
-		// TODO: we _could_ highlight anything that's broken
-		var healPpl = new DetailedQuestStep(this, "Heal fallen Aranei, repair damaged windows, and repair damaged pillars.");
-
-		// FALLEN: new NpcStep(this, 16266, new WorldPoint(3173, 7855, 1), "Heal Aranei.");
-		// DAMAGED PILLAR: new ObjectStep(this, 62155, new WorldPoint(3174, 7855, 1), "Repair Damaged pillar.");
-		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3176, 7858, 1), "Repair Damaged window.");
-		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3174, 7858, 1), "Repair Damaged window.");
-		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3162, 7858, 1), "Repair Damaged window.");
-		// DAMAGED WINDOW: new ObjectStep(this, 62158, new WorldPoint(3164, 7858, 1), "Repair Damaged window.");
-		// DAMAGED PILLAR: new ObjectStep(this, 62155, new WorldPoint(3162, 7855, 1), "Repair Damaged pillar.");
-
-		var passThroughBarricadeToHelp = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass-through Barricade.");
-		var cFinishedPortalsCutscene = new ConditionalStep(this, healPpl, "Help Efaritay Hallow and the Aranei defend the palace.");
-		cFinishedPortalsCutscene.addStep(inCutscene, watchTheCutscene);
+		var cFinishedPortalsCutscene = new ConditionalStep(this, guardThePalace, "Help Efaritay Hallow and the Aranei defend the palace.");
+		cFinishedPortalsCutscene.addStep(inCutscene, barricadeCutscene);
 		cFinishedPortalsCutscene.addStep(inPalaceSouthernPart, passThroughBarricadeToHelp);
 		steps.put(120, cFinishedPortalsCutscene);
 
 		// 120 -> 122 after drakan breaks in
 		// NOTE: For this step, and many others, if IN_VAMPYRIUM is 0 we need to guide the user back to vampyrium
 		// Pulling back spear = Stand to his left or right
-		var passThroughBarricadeToFightDrakan = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass through the barricade, ready to fight Drakan. You can resupply at the supply table in the kitchen.");
-		var fightDrakan2 = new NpcStep(this, 16210, new WorldPoint(3168, 7853, 1), "Fight Drakan. TODO ADD HELP, especially in sidebar.");
 		var cDrakanFight2 = new ConditionalStep(this, fightDrakan2);
 		cDrakanFight2.addStep(inPalaceSouthernPart, passThroughBarricadeToFightDrakan);
 		steps.put(122, cDrakanFight2);
 
 		// 122 -> 124: fought off drakan
 
+
 		// TODO: What happens if you cancel out of this cutscene - is there an NPC or Object you can interact with to go back to the cutscene?
 		var cFinishedDrakan2 = new ConditionalStep(this, todo);
-		cFinishedDrakan2.addStep(inCutscene, watchTheCutscene);
-		steps.put(124, watchTheCutscene);
+		cFinishedDrakan2.addStep(inCutscene, finishedDrakan2Cutscene);
+		steps.put(124, cFinishedDrakan2);
 
 		// 124 -> 126: watched cutscene in palace
-		var talkToIvanAfterLeavingPalace = new NpcStep(this, 15855, new WorldPoint(3606, 3416, 0), "Talk-to Ivan Strom.");
-		var cFinishedDrakan3 = new ConditionalStep(this, talkToIvanAfterLeavingPalace);
-		cFinishedDrakan3.addStep(inCutscene, watchTheCutscene);
+		var cFinishedDrakan3 = new ConditionalStep(this, talkToIvanInHauntedWoods);
+		cFinishedDrakan3.addStep(inCutscene, leavingPalaceCutscene);
 		steps.put(126, cFinishedDrakan3);
 
 		// 126 -> 128: talked to Ivan after getting teleported
-		var talkToVeliafAfterLeavingPalace = new NpcStep(this, 15878, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in Burgh de Rott.");
 		var cFinishedDrakan4 = new ConditionalStep(this, talkToVeliafAfterLeavingPalace);
-		cFinishedDrakan4.addStep(inCutscene, watchTheCutscene);
+		cFinishedDrakan4.addStep(inCutscene, talkToVeliafAfterLeavingPalaceCutscene);
 		steps.put(128, cFinishedDrakan4);
 
 		// 128 -> 130: talked to Veliaf in Burgh de Rott
-		var talkToSugadintiToTeleport = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur to teleport to Ver Sinhaza.");
-		steps.put(130, talkToSugadintiToTeleport);
+		steps.put(130, talkToSugadintiInBurghDeRott);
 
-		var getToTob = new NpcStep(this, 15962, new WorldPoint(3668, 3220, 0), "Gear up for theatre of blood. Bring melee gear with a range and mage switch, some food & potions, then talk to Sugadinti Vitur in front of the theatre of blood.");
-		getToTob.addDialogStep("I'm ready.");
 		var cGetToTob = new ConditionalStep(this, getToTob);
-		cGetToTob.addStep(inCutscene, watchTheCutscene);
+		cGetToTob.addStep(inCutscene, getToTobCutscene);
 		steps.put(132, cGetToTob);
 		steps.put(134, cGetToTob);
 
 		// 134 -> 136: entering tob with sugadinti
-		// TODO: This text could probably be improved
-		var ensureNothingBothersSugadinti = new DetailedQuestStep(this, "Kill Nylocas with the correct fighting style. Fight the Maiden of Sugadinti, killing healers when they spawn. Avoid blood puddles on the ground.");
 		steps.put(136, ensureNothingBothersSugadinti);
 
 		// 136 -> 138: after fighting all the bosses
-		var talkToSugadintiAfterFinishingTob = new NpcStep(this, 15962, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
 		var cDoneWithTobFights = new ConditionalStep(this, talkToSugadintiAfterFinishingTob);
-		cDoneWithTobFights.addStep(inCutscene, watchTheCutscene);
+		cDoneWithTobFights.addStep(inCutscene, talkToSugadintiAfterFinishingTobCutscene);
 		steps.put(138, cDoneWithTobFights);
 
 		// 138 -> 140: after talking to sugadinti after tob bosses
-		var headToBarrowsL = new NpcStep(this, 15878, new WorldPoint(3540, 3256, 0), "Head to the abandoned building north-east of Burgh de Rott and talk to Veliaf.");
-		var cDealWithVanescula = new ConditionalStep(this, headToBarrowsL, combatGear, hallowedFlail, food, prayerPotions);
-		steps.put(140, cDealWithVanescula);
-		var headDownToVanescula = new ObjectStep(this, 61254, new WorldPoint(3543, 3257, 0), "Head to the abandoned building north-east of Burgh de Rott and enter the entry.");
+		steps.put(140, headToBarrowsL);
+
+		// 140 -> 142: ?
 		var cDealWithVanescula2 = new ConditionalStep(this, headDownToVanescula, combatGear, hallowedFlail, food, prayerPotions);
-		cDealWithVanescula2.addStep(inCutscene, watchTheCutscene);
+		cDealWithVanescula2.addStep(inCutscene, headDownToVanesculaCutscene);
 		steps.put(142, cDealWithVanescula2);
 
-
 		var cDealWithVanescula3 = new ConditionalStep(this, headDownToVanescula, combatGear, hallowedFlail, food, prayerPotions);
-		var fightTheWyrd = new NpcStep(this, 16212, "Fight the Wyrd. TODO ADD SOME INSTRUCTIONS HERE :)");
 		cDealWithVanescula3.addStep(inWyrdFight, fightTheWyrd);
 		steps.put(144, cDealWithVanescula3);
 
 		// 144 -> 146: dealt with Wyrd
+		// TODO: What happens if you cancel out of this?
 		var cDealtWithWyrd = new ConditionalStep(this, headDownToVanescula);
-		cDealtWithWyrd.addStep(inCutscene, watchTheCutscene);
+		cDealtWithWyrd.addStep(inCutscene, dealtWithWyrdCutscene);
 		steps.put(146, cDealtWithWyrd);
 
 		// 146 -> 148: finished Wyrd cutscene
-		var findWyrd = new ObjectStep(this, 61268, new WorldPoint(3562, 3323, 0), "Inspect the fence north of barrows.");
 		var cDealtWithWyrd2 = new ConditionalStep(this, findWyrd);
-		cDealtWithWyrd.addStep(inCutscene, watchTheCutscene);
+		cDealtWithWyrd.addStep(inCutscene, findWyrdCutscene);
 		steps.put(148, cDealtWithWyrd2);
 
 		// 148 -> 150: inspected fence
-		var speakWithVeliafAfterInspectingFence = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz in the Burgh de Rott hideout.");
-		var cInspectedFence = new ConditionalStep(this, speakWithVeliafAfterInspectingFence);
-		steps.put(150, cInspectedFence);
+		steps.put(150, speakWithVeliafAfterInspectingFence);
 
-		var prepareFightDrakan3 = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
-		prepareFightDrakan3.addDialogStep("I'm ready.");
 		// 150 -> 152: spoke with veliaf and co under Burgh de Rott after inspecting fence
-		var enterBurghDeRottDungeon = new ObjectStep(this, 12743, new WorldPoint(3490, 3232, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
 		var cDoSomething = new ConditionalStep(this, enterBurghDeRottDungeon, combatGear, hallowedFlail, food, prayerPotions);
 		cDoSomething.addStep(inBurghDeRottDungeon, prepareFightDrakan3);
-		cDoSomething.addStep(inCutscene, watchTheCutscene);
+		cDoSomething.addStep(inCutscene, talkWithVeliafInBurghDeRottCutscene);
 		steps.put(152, cDoSomething);
 
-		var fightDrakanAgainLol = new NpcStep(this, 16209, "Attack Lowerniel Drakan  (level-927).");
-		steps.put(154, fightDrakanAgainLol);
+		// 152 -> 154: ?
+		steps.put(154, fightDrakan3);
 
-		// 154 -> 156 after beating drakan
-		var talkToVeliaf = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
-		talkToVeliaf.addDialogStep("I'll go now.");
+		// 154 -> 156: beat drakan for the third time
 		var justBeatDrakanSecondToLastTime = new ConditionalStep(this, talkToVeliaf);
-		justBeatDrakanSecondToLastTime.addStep(inCutscene, watchTheCutscene);
+		justBeatDrakanSecondToLastTime.addStep(inCutscene, talkToVeliafCutscene);
 		steps.put(156, justBeatDrakanSecondToLastTime);
 
-		// 156 -> 158: after watching the cutscene
-		var talkToIvanInsideCastleDrakan = new NpcStep(this, 15855, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
+		// 156 -> 158: watched the cutscene after beating drakan for the third time
 		steps.put(158, talkToIvanInsideCastleDrakan);
 
 		// 158 -> 160: after talking to Ivan,m and sugadinti enters castle drakan
-		var talkToSugadintiInsideCastleDrakan = new NpcStep(this, 15960, new WorldPoint(2846, 7389, 0), "Talk-to Sugadinti Vitur inside Castle Drakan.");
 		steps.put(160, talkToSugadintiInsideCastleDrakan);
+
 		// 160 -> 162: ivan & veliaf left
 		steps.put(162, talkToSugadintiInsideCastleDrakan);
-		// 162 -> 164: finished speaking with sugadinti
-		var talkToEfaritayOnIcyene = new NpcStep(this, 15942, new WorldPoint(3701, 3186, 0), "Talk-to Efaritay Hallow in Icyene Graveyard.");
-		steps.put(164, talkToEfaritayOnIcyene);
-		// 164 -> 166: after Efaritay opens portal to vampyrium
-		var enterVampyriumForTheLastTime = new ObjectStep(this, 61215, new WorldPoint(3703, 3185, 0), "Enter the portal in Icyene Graveyard to get to Vampyrium.", hallowedFlail, combatGearMelee);
-		var cEnterVampyriumForTheLastTime = new ConditionalStep(this, enterVampyriumForTheLastTime);
-		cEnterVampyriumForTheLastTime.addStep(inCutscene, watchTheCutscene);
-		steps.put(166, cEnterVampyriumForTheLastTime);
-		// 166 -> 168: after Efaritay and Safalaan left
-		var goToFightDrakan4 = new ObjectStep(this, 61628, new WorldPoint(2506, 7387, 0), "Enter the door, ready to fight Drakan. You can get supplies and deposit items at the chest next to the door.", hallowedFlail, combatGearMelee);
-		var cXD = new ConditionalStep(this, enterVampyriumForTheLastTime);
-		cXD.addStep(inCutscene, watchTheCutscene);
-		cXD.addStep(inVampyriumVarbit, goToFightDrakan4);
-		steps.put(168, cXD);
 
-		// TODO: some minor instructions + maybe a wiki link?
-		var fightDrakan4 = new NpcStep(this, 16204, "Fight Lowerniel Drakan.");
+		// 162 -> 164: finished speaking with sugadinti
+		steps.put(164, talkToEfaritayOnIcyene);
+
+		// 164 -> 166: after Efaritay opens portal to vampyrium
+		var cEnterVampyriumForTheLastTime = new ConditionalStep(this, enterVampyriumForTheLastTime);
+		cEnterVampyriumForTheLastTime.addStep(inCutscene, enterVampyriumForTheLastTimeCutscene);
+		steps.put(166, cEnterVampyriumForTheLastTime);
+
+		// 166 -> 168: after Efaritay and Safalaan left
+		var cGoToFightDrakan4 = new ConditionalStep(this, enterVampyriumForTheLastTime);
+		cGoToFightDrakan4.addStep(inCutscene, goToFightDrakan4Cutscene);
+		cGoToFightDrakan4.addStep(inVampyriumVarbit, goToFightDrakan4);
+		steps.put(168, cGoToFightDrakan4);
 
 		var cFightDrakanLastTime = new ConditionalStep(this, enterVampyriumForTheLastTime);
 		cFightDrakanLastTime.addStep(inCastleDrakanFight, fightDrakan4);
@@ -3319,13 +3553,15 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(170, cFightDrakanLastTime);
 
 		// 170 -> 172: death cutscene
-		steps.put(172, watchTheCutscene);
+		steps.put(172, fightDrakan4Cutscene);
+
+		// TODO: Should we make a "Watch the cutscene." step?
+
 		// 172 -> 174: he fell down, now we're with Efaritay
-		var talkToEfaritayAfterKillingDrakan = new NpcStep(this, 15941, new WorldPoint(3702, 3182, 0), "Talk-to Efaritay Hallow in the icyene graveyard.");
 		var cTalkToEfaritayAfterKillingDrakan = new ConditionalStep(this, talkToEfaritayAfterKillingDrakan);
-		cTalkToEfaritayAfterKillingDrakan.addStep(inCutscene, watchTheCutscene);
+		cTalkToEfaritayAfterKillingDrakan.addStep(inCutscene, finalQuestCutscene);
 		steps.put(174, cTalkToEfaritayAfterKillingDrakan);
-		var youHaveFinishedTheQuest = new DetailedQuestStep(this, "Congratulations on finishing the quest!");
+
 		steps.put(176, youHaveFinishedTheQuest);
 		steps.put(178, youHaveFinishedTheQuest);
 
@@ -3557,11 +3793,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Escaping Castle Drakan - Crescent moon key", List.of(
-			cmkToLobby,
-			cmkToLobbyF1,
 			cmkToVanesculasHallwayFromHallwayNorthOfLobby,
-			cmkPlaceEmblemInVanesculasHallway,
-			cmkToVanesculasStudy,
 			cmkPlaceEmblemInVanesculasStudy,
 			cmkToVanesculasChamber,
 			cmkBlowUpWallInVanesculasChamber,
@@ -3752,6 +3984,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			leaveCastleDrakan,
 			pickupCrankWheel,
 			crankWheel1,
+			enterHouseNextToCrankWheel,
 			searchBookCase,
 			readDustyBook,
 			searchShedBoltCutter,
@@ -3780,11 +4013,132 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Escaping the forest", List.of(
-			todo
+			fightDrakan1,
+			resupplyIfNeeded2,
+			sotfa1,
+			sotfa1Exit,
+			sotfa2,
+			sotfa3AvoidAnimals,
+			sotfa3Exit,
+			sotfa4,
+			sotfa5,
+			sotfa5Exit,
+			sotfa6WrangleSnakes,
+			sotfa6CombineSnakes,
+			sotfa6UseRopeOnBranch,
+			sotfa6SwingAcrossWater,
+			sotfa6Exit,
+			talkToMysteriousWoman1
 		), List.of(
 			blisterwoodFlail,
 			combatGear,
 			drakansMedallion
+		)));
+
+		sections.add(new PanelDetails("Curing Safalaan", List.of(
+			startTalkingToEfaritay,
+			pickFromAmitirePlant,
+			searchShelvesForBowl,
+			fillBowlWithWater,
+			getPotatoFromCupboard,
+			combineStew,
+			getRawMeatFromCupboard,
+			cookMeatOnRange,
+			combineStew2,
+			cookStew,
+			combineStew3,
+			giveStewToSafalaan,
+			talkToSafalaanAfterFeedingHimStew,
+			talkToEfaritayAfterFeedingStewToSafalaan
+		), List.of(
+			blisterwoodFlail,
+			combatGear,
+			drakansMedallion
+		)));
+
+		sections.add(new PanelDetails("Gearing up", List.of(
+			searchWorkbenchForHammer,
+			searchWorkbenchForChisel,
+			searchWorkbenchForKnife,
+			searchCrateForBlisterwoodLogs,
+			searchCrateForBlessedSilverSickle,
+			searchChestForDiamond,
+			putDiamondInSickle,
+			searchChestForDiamondTablet2,
+			useEnchantDiamondTabletOnSickle,
+			createEnhancedBlisterwoodSickle,
+			createHallowedFlail,
+			speakToIvanWithHallowedFlail,
+			ivanSearchWorkbenchForKnife,
+			getLogsForStakes,
+			fletchStakes,
+			returnToIvan,
+			talkToVeliafInDungeon,
+			talkToVanescula,
+			talkToVeliafInDungeonAgain,
+			talkToSugadintiAfterHelpingAllies
+		), List.of(
+			blisterwoodFlail,
+			combatGear,
+			drakansMedallion
+		)));
+
+		sections.add(new PanelDetails("Guarding the palace", List.of(
+			leavePalaceForCombat,
+			attackPortals,
+			leaveDoors,
+			guardThePalace,
+			fightDrakan2,
+			finishedDrakan2Cutscene
+		), List.of(
+			blisterwoodFlail,
+			combatGear,
+			drakansMedallion
+		)));
+
+		sections.add(new PanelDetails("Night at the theatre", List.of(
+			talkToIvanInHauntedWoods,
+			talkToVeliafAfterLeavingPalace,
+			talkToSugadintiInBurghDeRott,
+			getToTob,
+			ensureNothingBothersSugadinti,
+			talkToSugadintiAfterFinishingTob
+		), List.of(
+			combatGear,
+			food,
+			prayerPotions,
+			drakansMedallion
+		)));
+
+		sections.add(new PanelDetails("Safalaan's fate", List.of(
+			headToBarrowsL,
+			headDownToVanescula,
+			fightTheWyrd,
+			findWyrd,
+			speakWithVeliafAfterInspectingFence
+		), List.of(
+			hallowedFlail,
+			combatGear,
+			food,
+			prayerPotions,
+			drakansMedallion
+		)));
+
+		sections.add(new PanelDetails("Night of the blood moon", List.of(
+			prepareFightDrakan3,
+			fightDrakan3,
+			talkToVeliaf,
+			talkToIvanInsideCastleDrakan,
+			talkToSugadintiInsideCastleDrakan,
+			talkToEfaritayOnIcyene,
+			enterVampyriumForTheLastTime,
+			goToFightDrakan4,
+			fightDrakan4,
+			talkToEfaritayAfterKillingDrakan,
+			youHaveFinishedTheQuest
+		), List.of(
+			hallowedFlail,
+			combatGear
 		)));
 
 		sections.add(new PanelDetails("TODO", List.of(

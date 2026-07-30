@@ -387,7 +387,6 @@ public class QuestHelperTest extends MockedTest
 
 		// If you add a quest to this list, then this unit test will *only* test this quest
 		Set<QuestHelperQuest> exclusiveQuests = Set.of(
-			QuestHelperQuest.THE_BLOOD_MOON_RISES
 		);
 
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);

@@ -2966,7 +2966,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		headDownToVanesculaCutscene = headDownToVanescula.cutscene();
 
 		/// 144
-		fightTheWyrd = new NpcStep(this, 16212, "Fight the Wyrd. TODO ADD SOME INSTRUCTIONS HERE :)");
+		fightTheWyrd = new NpcStep(this, 16212, "Fight the Wyrd. Protect from melee against the normal attacks, and turn it off when it screeches similar to a Venator. Learn and avoid its slam patterns.");
 
 		/// 146
 		dealtWithWyrdCutscene = fightTheWyrd.cutscene();

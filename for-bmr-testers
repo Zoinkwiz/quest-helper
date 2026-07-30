@@ -1,3 +1,5 @@
+When first talking to Ivan Strom, what's his NPC ID?
+
 When talking to ivan after solving the puzzle in the paterdomus temple, what happens if you select "i'll get there
 myself.". can we guide the user better somehow?
 
@@ -12,6 +14,10 @@ see if that works.
 
 ## Vampyrium's Castle Drakan
 
+I have not tested what happens if you teleport out. I have somewhat tested what happens if a user drops items, but it's
+impossible to test all scenarios a user can do. This section is very complicated already, so preferably it should be
+treated as if the user should not be dropping items unless told otherwise.
+
 In the "pull busts" room for the half moon key, try the puzzle wrapper and make sure it works as expected.
 
 After picking up the large clock hand, confirm that the steps & sidebar steps for leading you back to the dining room
@@ -19,14 +25,12 @@ are correct all the way until you've finished the clock puzzle.
 
 When doing the "place weapons on statues" steps, please confirm the sidebar steps are correct.
 
-After combining the two crest halves, is the sidebar step order 
+After combining the two crest halves, is the sidebar step order correct?
 
 When facing the third(?) venator, when getting the gilded and gibbous keys, are you correctly prompted to kill the
 Venator and is it correctly highlighted?
 
-FOR ZOINKWIZ OR HAVARD:
-When getting the solid key and you're entering the door to the east that has an emblem next to it already, add a step
-where if you remove the emblem accidentally it properly guides you to put the emblem back.
+EXPERT: When getting the solid key and you're entering the door to the east that has an emblem next to it already, add a step where if you remove the emblem accidentally it properly guides you to put the emblem back.
 
 In the "thick red potion" section inside vampyrium's castle drakan, the order should be:
 1. get all 4 potions
@@ -41,15 +45,16 @@ still guides you as expected.
 
 ## Vampyrium drawbridge
 
-varbit 88: When the user has turned in the cog (i.e. repaired the drawbridge), what happens if they cancel out of the
-cutscene? Are they guided to talk to Ivan and get supplies, and does that work?
+EXPERT: If a user teleports out at any point during the cog step, add a step to guide them back. This should probably replace the default `todo` step in that `ConditionalStep`.
+
+EXPERT: varbit 88: When the user has turned in the cog (i.e. repaired the drawbridge), what happens if they cancel out of the cutscene? Are they guided to talk to Ivan and get supplies, and does that work? Maybe make a "recovery" step there.
 
 ## Escaping the forest
 Are you correctly guided to grab the axe?
 
 ## Guarding the palace
 
-If you cancel out of the cutscene after "beating" Drakan - what npc or object do you have to talk to to continue?
+EXPERT: varbit 124: If you cancel out of the cutscene after "beating" Drakan - what npc or object do you have to talk to to continue? Maybe make a step to guide the user back to the cutscene.
 
 ## Safalaan's fate
 

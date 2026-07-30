@@ -563,7 +563,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	// Half moon key
 	private ObjectStep enterThroneRoomFromDiningRoom;
 	private ObjectStep investigateThrone;
-	private ConditionalStep hmkPullBusts;
 	private PuzzleWrapperStep hmkPullBustsPW;
 	private ObjectStep investigateThroneAgain;
 	ConditionalStep cGetHalfMoonKey;
@@ -578,50 +577,41 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	DetailedQuestStep vampyriumCastleDrakanDestroyedBloodStockpile;
 	ConditionalStep cVampyriumCastleDrakanDestroyedBloodStockpile;
 
-
-	private ObjectStep searchShelvesForSmallClockHand;
-	private ObjectStep enterRoomSouthOfThroneRoom;
-	private ConditionalStep cGetSmallClockHand;
-	private ObjectStep enterThroneRoomFromRoomSouthOfThroneRoom;
-	private ObjectStep enterDiningRoomFromThroneRoom;
-	private ObjectStep enterHallwayWestOfDiningRoom;
-	private ObjectStep enterWestRoomFromHallwayWestOfDiningRoom;
-	private ObjectStep pickUpTinderbox;
-	private ObjectStep goUpFromStorageRoom;
-	private ItemStep pickUpExplosiveBarrel;
-	private ObjectStep enterSouthDoorFromExplosiveRoom;
-	private ObjectStep searchCrateForDrakanEmblem1;
-	private ObjectStep exitEmblemRoom1;
-	private ObjectStep exitEastExplosiveRoom;
-	private ObjectStep enterNorthDoorInHallwayNextToExplosiveRoom;
-	private ObjectStep enterIntoHallwayNorthOfLobbyF1;
-	private ObjectStep climbUpToLobbyF1;
-	private ObjectStep enterUnmarkedNorthDoor;
-	private ObjectStep placeEmblem1OnReceptacle;
-	private ObjectStep enterVanesculasStudy;
-	private ObjectStep searchCrateInVanesculasStudyForLargeClockHand;
-	private ConditionalStep cGetLargeClockHand;
-	private ObjectStep returnToVanesculasHallway;
-	private ObjectStep returnToHallwayNorthOfLobbyF1;
-	private ObjectStep returnToLobbyF1;
-	private ObjectStep climbDownstairsToLobbyF0;
-	private ObjectStep enterDiningRoomFromLobby;
-	private ConditionalStep cGetBackToDiningRoom;
-	private ObjectStep placeSmallClockHandOnWesternClock;
-	private DrakanClockSolver solveWesternClock;
-	private ObjectStep clickWesternClock;
-	private ObjectStep placeLargeClockHandOnEasternClock;
-	private DrakanClockSolver solveEasternClock;
-	private ObjectStep clickEasternClock;
-	private WidgetStep closeClock;
-	private ObjectStep getEmblem2FromFireplace;
-	private ConditionalStep cSolveClockPuzzle;
-	private ObjectStep cmkToLobby;
-	private ObjectStep cmkToLobbyF1;
-	private ObjectStep cmkToHallway1;
+	ConditionalStep cGetSmallClockHand;
+	ObjectStep enterThroneRoomFromRoomSouthOfThroneRoom;
+	ObjectStep enterDiningRoomFromThroneRoom;
+	ObjectStep enterHallwayWestOfDiningRoom;
+	ObjectStep enterWestRoomFromHallwayWestOfDiningRoom;
+	ObjectStep pickUpTinderbox;
+	ObjectStep goUpFromStorageRoom;
+	ItemStep pickUpExplosiveBarrel;
+	ObjectStep enterSouthDoorFromExplosiveRoom;
+	ObjectStep searchCrateForDrakanEmblem1;
+	ObjectStep exitEmblemRoom1;
+	ObjectStep exitEastExplosiveRoom;
+	ObjectStep enterNorthDoorInHallwayNextToExplosiveRoom;
+	ObjectStep enterIntoHallwayNorthOfLobbyF1;
+	ObjectStep enterUnmarkedNorthDoor;
+	ObjectStep placeEmblem1OnReceptacle;
+	ObjectStep enterVanesculasStudy;
+	ObjectStep searchCrateInVanesculasStudyForLargeClockHand;
+	ConditionalStep cGetLargeClockHand;
+	ObjectStep returnToVanesculasHallway;
+	ObjectStep returnToHallwayNorthOfLobbyF1;
+	ObjectStep returnToLobbyF1;
+	ObjectStep climbDownstairsToLobbyF0;
+	ObjectStep enterDiningRoomFromLobby;
+	ConditionalStep cGetBackToDiningRoom;
+	ObjectStep placeSmallClockHandOnWesternClock;
+	PuzzleWrapperStep solveWesternClockPW;
+	ObjectStep clickWesternClock;
+	ObjectStep placeLargeClockHandOnEasternClock;
+	PuzzleWrapperStep solveEasternClockPW;
+	ObjectStep clickEasternClock;
+	WidgetStep closeClock;
+	ObjectStep getEmblem2FromFireplace;
+	ConditionalStep cSolveClockPuzzle;
 	private ObjectStep cmkToVanesculasHallwayFromHallwayNorthOfLobby;
-	private ObjectStep cmkToVanesculasStudy;
-	private ObjectStep cmkPlaceEmblemInVanesculasHallway;
 	private ObjectStep cmkPlaceEmblemInVanesculasStudy;
 	private ObjectStep cmkToVanesculasChamber;
 	private ObjectStep cmkBlowUpWallInVanesculasChamber;
@@ -803,9 +793,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	private ConditionalStep cDestroyingTheStockpile;
 	private ObjectStep leaveCastleDrakan;
 	private DetailedQuestStep watchLeaveCastleDrakanCutscene;
-	private PuzzleWrapperStep solveWesternClockPW;
 	private WidgetStep closeEasternClock;
-	private PuzzleWrapperStep solveEasternClockPW;
 	private PuzzleWrapperStep cmkArrowChestPuzzleStepPW;
 	private DetailedQuestStep ggkWatchTheCutscene;
 	private PuzzleWrapperStep ggkpSolveLockboxPuzzlePW;
@@ -1881,7 +1869,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var pullBust3 = new ObjectStep(this, 61651, new WorldPoint(2317, 7391, 0), "Pull the second southern-most bust.");
 		var pullBust4 = new ObjectStep(this, 61654, new WorldPoint(2317, 7390, 0), "Pull the southern-most bust.");
 
-		hmkPullBusts = new ConditionalStep(this, pullBust2, "Pull the busts in the right order.");
+		var hmkPullBusts = new ConditionalStep(this, pullBust2, "Pull the busts in the right order.");
 		hmkPullBusts.addStep(needToPullBust3, pullBust3);
 		hmkPullBusts.addStep(needToPullBust4, pullBust4);
 		hmkPullBusts.addStep(needToPullBust1, pullBust1);
@@ -1896,8 +1884,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetHalfMoonKey.addStep(and(inThroneRoom, needToGetKey), investigateThroneAgain);
 
 		/// UNCATEGORIZED
-		searchShelvesForSmallClockHand = new ObjectStep(this, 61752, new WorldPoint(2323, 7387, 0), "Search the shelves for a small clock hand in the room south of the throne room.");
-		enterRoomSouthOfThroneRoom = new ObjectStep(this, 61587, new WorldPoint(2310, 7386, 0), "Enter the room south of the throne room.");
+		var searchShelvesForSmallClockHand = new ObjectStep(this, 61752, new WorldPoint(2323, 7387, 0), "Search the shelves for a small clock hand in the room south of the throne room.");
+		var enterRoomSouthOfThroneRoom = new ObjectStep(this, 61587, new WorldPoint(2310, 7386, 0), "Enter the room south of the throne room.");
 		cGetSmallClockHand = new ConditionalStep(this, searchShelvesForSmallClockHand, "Find the small clock hand.");
 		cGetSmallClockHand.addStep(and(inVampyriumVarbit, inThroneRoom), enterRoomSouthOfThroneRoom);
 
@@ -1936,7 +1924,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2472, 7396, 0)
 		);
 		enterIntoHallwayNorthOfLobbyF1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Enter the room to the north.", explosiveBarrel, tinderbox, drakanEmblem1);
-		climbUpToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Climb up the stairs.");
+		var climbUpToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Climb up the stairs.");
 		enterIntoHallwayNorthOfLobbyF1.addSubSteps(climbUpToLobbyF1);
 
 		enterUnmarkedNorthDoor = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Enter the northern unmarked door.", explosiveBarrel, tinderbox, drakanEmblem1);
@@ -2006,13 +1994,13 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		placeSmallClockHandOnWesternClock = new ObjectStep(this, 61661, new WorldPoint(2344, 7372, 0), "Place the small clock hand on the western Grandfather clock.", smallClockHand.highlighted());
 
 
-		solveWesternClock = new DrakanClockSolver(this, 15514, 11, 15513, 9);
+		var solveWesternClock = new DrakanClockSolver(this, 15514, 11, 15513, 9);
 		solveWesternClockPW = solveWesternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
 		clickWesternClock = new ObjectStep(this, 61658, new WorldPoint(2344, 7372, 0), "Click the western clock");
 
 		placeLargeClockHandOnEasternClock = new ObjectStep(this, 61660, new WorldPoint(2350, 7372, 0), "Place the large clock hand on the eastern Grandfather clock.", largeClockHand.highlighted());
 
-		solveEasternClock = new DrakanClockSolver(this, 15517, 0, 15515, 4);
+		var solveEasternClock = new DrakanClockSolver(this, 15517, 0, 15515, 4);
 		solveEasternClockPW = solveEasternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
 		clickEasternClock = new ObjectStep(this, 61658, new WorldPoint(2350, 7372, 0), "Click the eastern clock");
 
@@ -2031,11 +2019,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cSolveClockPuzzle.addStep(and(playerAtEasternClock, clockWidgetOpen), closeEasternClock);
 		cSolveClockPuzzle.addStep(easternClockNeedsFixing, clickEasternClock);
 
-		cmkToLobby = new ObjectStep(this, 61573, new WorldPoint(2342, 7373, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
-		cmkToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
-		cmkToHallway1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToLobby = new ObjectStep(this, 61573, new WorldPoint(2342, 7373, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToHallway1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
 		cmkToVanesculasHallwayFromHallwayNorthOfLobby = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
-		cmkToVanesculasStudy = new ObjectStep(this, 61576, new WorldPoint(2468, 7407, 0), "Enter the door to Vanescula's study, avoiding the traps on the floor.", explosiveBarrel, tinderbox);
+		var cmkToVanesculasStudy = new ObjectStep(this, 61576, new WorldPoint(2468, 7407, 0), "Enter the door to Vanescula's study, avoiding the traps on the floor.", explosiveBarrel, tinderbox);
 		cmkToVanesculasStudy.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
 			new WorldPoint(2457, 7410, 0),
@@ -2046,7 +2034,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7408, 0),
 			new WorldPoint(2460, 7409, 0)
 		);
-		cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyOneEmblemHighlighted);
+		var cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyOneEmblemHighlighted);
 		cmkToVanesculasHallwayFromHallwayNorthOfLobby.addSubSteps(cmkToLobby, cmkToLobbyF1, cmkToHallway1, cmkToVanesculasStudy, cmkPlaceEmblemInVanesculasHallway);
 		cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, 61638, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study", anyOneEmblemHighlighted);
 		cmkToVanesculasChamber = new ObjectStep(this, 61572, new WorldPoint(2477, 7366, 0), "Enter Vanescula's chamber.", explosiveBarrel, tinderbox);

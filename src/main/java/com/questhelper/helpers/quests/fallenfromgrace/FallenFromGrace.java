@@ -36,7 +36,7 @@ import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -56,6 +56,7 @@ import com.questhelper.steps.SailStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -99,7 +100,7 @@ public class FallenFromGrace extends BasicQuestHelper
 	ZoneRequirement inWyrmscraigCavern;
 	VarbitRequirement haveRepairedGolem;
 	VarbitRequirement killedTrolls;
-	WidgetTextRequirement inArrowPuzzle;
+	WidgetPresenceRequirement inArrowPuzzle;
 	VarbitRequirement staircaseUnlocked;
 	ZoneRequirement nearBoss;
 
@@ -179,7 +180,7 @@ public class FallenFromGrace extends BasicQuestHelper
 
 		haveRepairedGolem = new VarbitRequirement(VarbitID.FFG, 15, Operation.GREATER_EQUAL);
 		killedTrolls = new VarbitRequirement(VarbitID.FFG_TROLLS_KILLED, 1);
-		inArrowPuzzle = new WidgetTextRequirement(810, 15, 9, "Confirm");
+		inArrowPuzzle = new WidgetPresenceRequirement(InterfaceID.DIRECTIONAL_LOCK);
 	}
 
 

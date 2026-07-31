@@ -4060,7 +4060,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			fightDrakan2,
 			finishedDrakan2Cutscene
 		), List.of(
-			blisterwoodFlail,
+			hallowedFlail,
 			combatGear,
 			drakansMedallion
 		)));

@@ -3219,6 +3219,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, not(largeClockHand), largeClockHandNeedsReplacing), cGetLargeClockHand);
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle, not(inDiningRoom)), cGetBackToDiningRoom);
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, needToFinishClockPuzzle), cSolveClockPuzzle);
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, not(hasGottenDrakanEmblemFromFireplace)), getEmblem2FromFireplace);
 
 		steps.put(72, cVampyriumCastleDrakan);
 		// 72 -> 74 after talking to Veliaf in the emblem gallery

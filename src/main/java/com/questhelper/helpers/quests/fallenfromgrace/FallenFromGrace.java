@@ -207,7 +207,7 @@ public class FallenFromGrace extends BasicQuestHelper
 		inspectSunstone = new ObjectStep(this, ObjectID.WYRMSCRAIG_SUNSTONE01, new WorldPoint(2598, 2247, 0), "Inspect the sunstone monolith on the coast south east of Muriel.");
 
 		mineSunstone = new ObjectStep(this, ObjectID.WYRMSCRAIG_SUNSTONE01, new WorldPoint(2598, 2247, 0), "Mine a sunstone fragment off the sunstone monolith.", pickaxe);
-		chiselSunstoneFragment = new DetailedQuestStep(this, "Use a chisel on the sunstone fragment.");
+		chiselSunstoneFragment = new DetailedQuestStep(this, "Use a chisel on the sunstone fragment.", sunstone.highlighted(), chisel.highlighted());
 		investigateHat = new DetailedQuestStep(this, new WorldPoint(2556, 2198, 0), "Investigate the large hat on a basalt column on the south west corner of the island.", largeHat);
 
 		returnToCormac = new NpcStep(this, NpcID.CORMAC, new WorldPoint(2576, 2255, 0), "Return to Cormac in Auchrie village on Wyrmscraig island.");

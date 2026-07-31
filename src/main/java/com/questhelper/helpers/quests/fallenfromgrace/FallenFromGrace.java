@@ -126,9 +126,9 @@ public class FallenFromGrace extends BasicQuestHelper
 	NpcStep investigateGolem;
 	NpcStep repairGolem;
 	ArrowChestPuzzleStep arrowChestPuzzleStep;
-	PuzzleWrapperStep openArrowChestStep;
+	PuzzleWrapperStep arrowChestPuzzleStepPW;
 	ObjectStep openChest;
-	PuzzleWrapperStep openArrowChest;
+	PuzzleWrapperStep openChestPW;
 	DetailedQuestStep destroySunstoneCore;
 	ObjectStep climbStaircase;
 	NpcStep killBoss;
@@ -228,13 +228,12 @@ public class FallenFromGrace extends BasicQuestHelper
 
 		arrowChestPuzzleStep = new ArrowChestPuzzleStep(this);
 		arrowChestPuzzleStep.setSolution(1, 3, 2, 2);
-		openArrowChestStep = new PuzzleWrapperStep(this, arrowChestPuzzleStep, "Work out how to unlock the chest in the north west of the northern room.")
-			.withNoHelpHiddenInSidebar(true);
+		arrowChestPuzzleStepPW = arrowChestPuzzleStep.puzzleWrapStep("Work out how to unlock the chest in the north west of the northern room.");
 
 		openChest = new ObjectStep(this, ObjectID.FFG_CATHEDRAL_CHEST, new WorldPoint(2567, 8660, 0), "Unlock the chest in the north west of the northern room. The code is 'RIGHT, LEFT, DOWN, DOWN'.");
-		openArrowChest = new PuzzleWrapperStep(this, openChest,
-			"Work out how to unlock the chest in the north west of the northern room.");
-		openArrowChest.addSubSteps(openArrowChestStep);
+		openChest.addSubSteps(arrowChestPuzzleStep);
+		openChestPW = openChest.puzzleWrapStep("Work out how to unlock the chest in the north west of the northern room.");
+		openChestPW.addSubSteps(arrowChestPuzzleStepPW);
 
 		destroySunstoneCore = new DetailedQuestStep(this, "Right-click destroy the ancient sunstone core.", ancientSunstoneCore.highlighted());
 
@@ -325,8 +324,8 @@ public class FallenFromGrace extends BasicQuestHelper
 		ConditionalStep goClimbStairs = new ConditionalStep(this, sailToCavern);
 		goClimbStairs.addStep(and(staircaseKey, inWyrmscraigCavern), climbStaircase);
 		goClimbStairs.addStep(and(ancientSunstoneCore), destroySunstoneCore);
-		goClimbStairs.addStep(and(inArrowPuzzle, inWyrmscraigCavern), arrowChestPuzzleStep);
-		goClimbStairs.addStep(inWyrmscraigCavern, openArrowChest);
+		goClimbStairs.addStep(and(inArrowPuzzle, inWyrmscraigCavern), arrowChestPuzzleStepPW);
+		goClimbStairs.addStep(inWyrmscraigCavern, openChestPW);
 
 		steps.put(15, goClimbStairs);
 
@@ -431,7 +430,7 @@ public class FallenFromGrace extends BasicQuestHelper
 			talkToMortimerAgain,
 			investigateGolem,
 			repairGolem,
-			openArrowChest,
+			openChestPW,
 			destroySunstoneCore,
 			climbStaircase,
 			killBossSidebar,

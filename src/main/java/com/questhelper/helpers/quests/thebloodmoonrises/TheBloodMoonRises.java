@@ -3201,7 +3201,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, or(solidKey, usedSolidKey), or(fullMoonKey, hasUsedFullMoonKey)), cDestroyingTheStockpile);
 
 		// TODO: It would be nice to have an "has used half moon key" to be sure we don't accidentally guide the user back here when they don't need the key anymore
-		// cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, doneWithThroneRoomPuzzle, not(halfMoonKey)), getKeyFromThroneRoom);
+		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, doneWithThroneRoomPuzzle, not(halfMoonKey)), getKeyFromThroneRoom);
 
 		// TODO: It would be nice to have an "has used half moon key" to be sure we don't accidentally guide the user back here when they don't need the key anymore
 		cVampyriumCastleDrakan.addStep(and(inVampyriumVarbit, not(doneWithThroneRoomPuzzle)), cGetHalfMoonKey);

@@ -1995,12 +1995,14 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var solveWesternClock = new DrakanClockSolver(this, 15514, 11, 15513, 9);
 		solveWesternClockPW = solveWesternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
 		clickWesternClock = new ObjectStep(this, 61658, new WorldPoint(2344, 7372, 0), "Click the western clock.");
+		clickWesternClock.addDialogStep("Yes.");
 
 		placeLargeClockHandOnEasternClock = new ObjectStep(this, 61660, new WorldPoint(2350, 7372, 0), "Place the large clock hand on the eastern Grandfather clock.", largeClockHand.highlighted());
 
 		var solveEasternClock = new DrakanClockSolver(this, 15517, 0, 15515, 4);
 		solveEasternClockPW = solveEasternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
 		clickEasternClock = new ObjectStep(this, 61658, new WorldPoint(2350, 7372, 0), "Click the eastern clock.");
+		clickEasternClock.addDialogStep("Yes.");
 
 		closeClock = new WidgetStep(this, "Close the clock.", 963, 16);
 		closeEasternClock = new WidgetStep(this, "Close the clock.", 963, 16);

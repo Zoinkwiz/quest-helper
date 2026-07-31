@@ -2007,7 +2007,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		closeClock = new WidgetStep(this, "Close the clock.", 963, 16);
 		closeEasternClock = new WidgetStep(this, "Close the clock.", 963, 16);
 
-		getEmblem2FromFireplace = new ObjectStep(this, 61662, new WorldPoint(2347, 7372, 0), "Get the emblem from the Fireplace in the dining room.");
+		getEmblem2FromFireplace = new ObjectStep(this, 61662, new WorldPoint(2347, 7372, 0), "Get the emblem from the fireplace in the dining room.");
 		getEmblem2FromFireplace.addDialogStep("Search the fireplace.");
 		cSolveClockPuzzle = new ConditionalStep(this, getEmblem2FromFireplace, "Solve the clock puzzle.");
 		cSolveClockPuzzle.addStep(smallClockHandNeedsReplacing, placeSmallClockHandOnWesternClock);

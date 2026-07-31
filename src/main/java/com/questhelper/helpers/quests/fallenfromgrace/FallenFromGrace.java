@@ -180,7 +180,7 @@ public class FallenFromGrace extends BasicQuestHelper
 
 		haveRepairedGolem = new VarbitRequirement(VarbitID.FFG, 15, Operation.GREATER_EQUAL);
 		killedTrolls = new VarbitRequirement(VarbitID.FFG_TROLLS_KILLED, 1);
-		inArrowPuzzle = new WidgetPresenceRequirement(InterfaceID.DIRECTIONAL_LOCK);
+		inArrowPuzzle = new WidgetPresenceRequirement(InterfaceID.DirectionalLock.CONTENTS);
 	}
 
 

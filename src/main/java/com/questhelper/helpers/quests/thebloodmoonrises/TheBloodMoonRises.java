@@ -1967,7 +1967,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// TODO: is this the correct hand?
 
 		returnToVanesculasHallway = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Return to the dining room.");
-		returnToHallwayNorthOfLobbyF1 = new ObjectStep(this, 61573, new WorldPoint(2450, 7402, 0), "Return to the dining room, avoiding the traps on the floor.");
+		returnToHallwayNorthOfLobbyF1 = new ObjectStep(this, 61573, new WorldPoint(2452, 7403, 0), "Return to the dining room, avoiding the traps on the floor.");
 		returnToHallwayNorthOfLobbyF1.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
 			new WorldPoint(2457, 7410, 0),

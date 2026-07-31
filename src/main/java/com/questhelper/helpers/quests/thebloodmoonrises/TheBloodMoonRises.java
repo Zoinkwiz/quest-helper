@@ -1813,11 +1813,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		talkToIvanInPaterdomus.addSubSteps(talkToIvanInPaterdomus2);
 
 		/// 50
-		getToIvandisTomb = new DetailedQuestStep(this, new WorldPoint(3500, 9864, 0), "Get to the Myreque hideout");
+		getToIvandisTomb = new DetailedQuestStep(this, new WorldPoint(3500, 9864, 0), "Get to the Myreque hideout.");
 		investigateHole = new ObjectStep(this, 61193, new WorldPoint(3505, 9857, 0), "Investigate the blockage to the south of the hideout.");
 
 		/// 52
-		getPickaxe = new NpcStep(this, 15855, new WorldPoint(3505, 9861, 0), "Ask Ivan Strom for a pickaxe", anyPickaxe);
+		getPickaxe = new NpcStep(this, 15855, new WorldPoint(3505, 9861, 0), "Ask Ivan Strom for a pickaxe.", anyPickaxe);
 		mineHole = new ObjectStep(this, 61194, new WorldPoint(3505, 9857, 0), "Mine the blockage to the south of the hideout.", anyPickaxe);
 		mineHole.addSubSteps(getPickaxe);
 
@@ -1907,11 +1907,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		goUpFromStorageRoom = new ObjectStep(this, 61602, new WorldPoint(2340, 7384, 0), "Climb up the stairs.", tinderbox);
 
-		pickUpExplosiveBarrel = new ItemStep(this, new WorldPoint(2439, 7388, 0), "Pick up the explosive barrel", explosiveBarrel, tinderbox);
+		pickUpExplosiveBarrel = new ItemStep(this, new WorldPoint(2439, 7388, 0), "Pick up the explosive barrel.", explosiveBarrel, tinderbox);
 
 		enterSouthDoorFromExplosiveRoom = new ObjectStep(this, 61573, new WorldPoint(2439, 7384, 0), "Enter the room south of where you picked up the explosive barrel.", explosiveBarrel, tinderbox);
 
-		searchCrateForDrakanEmblem1 = new ObjectStep(this, 61751, new WorldPoint(2454, 7378, 0), "Search the crate for a drakan emblem");
+		searchCrateForDrakanEmblem1 = new ObjectStep(this, 61751, new WorldPoint(2454, 7378, 0), "Search the crate for a drakan emblem.");
 
 		exitEmblemRoom1 = new ObjectStep(this, 61572, new WorldPoint(2455, 7381, 0), "Return to the explosive room.", explosiveBarrel, tinderbox, drakanEmblem1);
 		exitEastExplosiveRoom = new ObjectStep(this, 61572, new WorldPoint(2444, 7386, 0), "Exit the explosive room through the east door.", explosiveBarrel, tinderbox, drakanEmblem1);
@@ -1994,20 +1994,20 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		var solveWesternClock = new DrakanClockSolver(this, 15514, 11, 15513, 9);
 		solveWesternClockPW = solveWesternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
-		clickWesternClock = new ObjectStep(this, 61658, new WorldPoint(2344, 7372, 0), "Click the western clock");
+		clickWesternClock = new ObjectStep(this, 61658, new WorldPoint(2344, 7372, 0), "Click the western clock.");
 
 		placeLargeClockHandOnEasternClock = new ObjectStep(this, 61660, new WorldPoint(2350, 7372, 0), "Place the large clock hand on the eastern Grandfather clock.", largeClockHand.highlighted());
 
 		var solveEasternClock = new DrakanClockSolver(this, 15517, 0, 15515, 4);
 		solveEasternClockPW = solveEasternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
-		clickEasternClock = new ObjectStep(this, 61658, new WorldPoint(2350, 7372, 0), "Click the eastern clock");
+		clickEasternClock = new ObjectStep(this, 61658, new WorldPoint(2350, 7372, 0), "Click the eastern clock.");
 
 		closeClock = new WidgetStep(this, "Close the clock.", 963, 16);
 		closeEasternClock = new WidgetStep(this, "Close the clock.", 963, 16);
 
 		getEmblem2FromFireplace = new ObjectStep(this, 61662, new WorldPoint(2347, 7372, 0), "Get the emblem from the Fireplace in the dining room.");
 		getEmblem2FromFireplace.addDialogStep("Search the fireplace.");
-		cSolveClockPuzzle = new ConditionalStep(this, getEmblem2FromFireplace, "Solve the clock puzzle");
+		cSolveClockPuzzle = new ConditionalStep(this, getEmblem2FromFireplace, "Solve the clock puzzle.");
 		cSolveClockPuzzle.addStep(smallClockHandNeedsReplacing, placeSmallClockHandOnWesternClock);
 		cSolveClockPuzzle.addStep(and(westernClockNeedsFixing, playerAtWesternClock, clockWidgetOpen), solveWesternClock);
 		cSolveClockPuzzle.addStep(and(playerAtWesternClock, clockWidgetOpen), closeClock);
@@ -2034,22 +2034,22 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		);
 		var cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyOneEmblemHighlighted);
 		cmkToVanesculasHallwayFromHallwayNorthOfLobby.addSubSteps(cmkToLobby, cmkToLobbyF1, cmkToHallway1, cmkToVanesculasStudy, cmkPlaceEmblemInVanesculasHallway);
-		cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, 61638, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study", anyOneEmblemHighlighted);
+		cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, 61638, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study.", anyOneEmblemHighlighted);
 		cmkToVanesculasChamber = new ObjectStep(this, 61572, new WorldPoint(2477, 7366, 0), "Enter Vanescula's chamber.", explosiveBarrel, tinderbox);
 		cmkBlowUpWallInVanesculasChamber = new ObjectStep(this, 61613, new WorldPoint(2492, 7364, 0), "Place the explosive barrel on the cracked wall in Vanescula's chamber.", explosiveBarrel.highlighted(), tinderbox);
 		cmkEnterThroughHole = new ObjectStep(this, 61614, new WorldPoint(2492, 7364, 0), "Enter hole in the wall.");
 		cmkTakeEmblem3 = new ObjectStep(this, 61639, new WorldPoint(2486, 7421, 0), "Remove the emblem from the room with the Venator.");
 		cmkLeaveVenatorRoom = new ObjectStep(this, 61614, new WorldPoint(2482, 7412, 0), "Leave the venator room through the hole in the wall.");
 		cmkLeaveVanesculasChamber = new ObjectStep(this, 61573, new WorldPoint(2483, 7368, 0), "Leave Vanescula's chamber.", drakanEmblem3);
-		cmkTakeEmblemFromVanesculasStudy = new ObjectStep(this, 61639, new WorldPoint(2476, 7367, 0), "Take emblem from vanescula's study", drakanEmblem3);
-		cmkLeaveVanesculasStudy = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Leave vanescula's study", anyTwoEmblemHighlighted);
+		cmkTakeEmblemFromVanesculasStudy = new ObjectStep(this, 61639, new WorldPoint(2476, 7367, 0), "Take emblem from vanescula's study.", drakanEmblem3);
+		cmkLeaveVanesculasStudy = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Leave vanescula's study.", anyTwoEmblemHighlighted);
 		cmkRetrieveThirdEmblem = new ObjectStep(this, 61634, new WorldPoint(2469, 7408, 0), "Remove the third emblem from the receptacle.");
 		cmkPutEmblemInEastDoor = new ObjectStep(this, 61636, new WorldPoint(2476, 7410, 0), "Place an emblem in the empty receptacle by the east wall.", anyThreeEmblemHighlighted);
 		cmkEnterEastDoor = new ObjectStep(this, 61572, new WorldPoint(2477, 7409, 0), "Enter the door to Ranis' hallway.", anyTwoEmblemHighlighted);
 		cmkPutEmblemInRanisHallwayNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Place an emblem in the empty receptacle at the north door.", anyTwoEmblemHighlighted);
-		cmkEnterRanisParlour = new ObjectStep(this, 61576, new WorldPoint(2485, 7405, 0), "Enter Ranis' parlour");
+		cmkEnterRanisParlour = new ObjectStep(this, 61576, new WorldPoint(2485, 7405, 0), "Enter Ranis' parlour.");
 		cmkGetSkull = new DetailedQuestStep(this, new WorldPoint(2471, 7384, 0), "Get the ornate skull from the table in the room.", ornateSkull);
-		cmkLeaveRanisParlourRoom = new ObjectStep(this, 61577, new WorldPoint(2475, 7379, 0), "Leave Ranis' parlour room", ornateSkull);
+		cmkLeaveRanisParlourRoom = new ObjectStep(this, 61577, new WorldPoint(2475, 7379, 0), "Leave Ranis' parlour room.", ornateSkull);
 		cmkRemoveEmblemRanisNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Remove emblem from the receptacle.", ornateSkull);
 		cmkClimbDownStairsRanisHallway = new ObjectStep(this, 61604, new WorldPoint(2491, 7402, 0), "Climb down the stairs in Ranis' hallway.", ornateSkull, anyTwoEmblemHighlighted);
 		cmkPlaceEmblemDownstairs = new ObjectStep(this, 61632, new WorldPoint(2371, 7410, 0), "Place an emblem in the receptacle to the west, avoiding the traps on the floor.", ornateSkull, anyTwoEmblemHighlighted);
@@ -2260,7 +2260,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		ggkpLightFireplace = new ObjectStep(this, 61730, new WorldPoint(2521, 7371, 0), "Light the fireplace.", tinderbox);
 		ggkpSearchChest = new ObjectStep(this, 61734, new WorldPoint(2526, 7371, 0), "Search the chest.");
 
-		ggkpTryOpenLockbox = new DetailedQuestStep(this, "Open the small lockbox", smallLockbox.highlighted());
+		ggkpTryOpenLockbox = new DetailedQuestStep(this, "Open the small lockbox.", smallLockbox.highlighted());
 
 		ggkpSolveLockboxPuzzle = new ChestCodeStep(this, "small lockbox", "⠿ ᴟ ⁘", 10, 2, 3, 7);
 		ggkpSolveLockboxPuzzlePW = ggkpSolveLockboxPuzzle.puzzleWrapStepWithDefaultText("Solve the lockbox puzzle.");
@@ -2312,7 +2312,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// Varbit went to 0b111 after placing skull
 
 
-		ggkPlaceItemsOnDisplayCase = new ObjectStep(this, 61672, new WorldPoint(2497, 7374, 0), "Place the items on the display case", ornateHourglass.highlighted(), ornateKnife.highlighted(), ornateSkull.highlighted());
+		ggkPlaceItemsOnDisplayCase = new ObjectStep(this, 61672, new WorldPoint(2497, 7374, 0), "Place the items on the display case.", ornateHourglass.highlighted(), ornateKnife.highlighted(), ornateSkull.highlighted());
 
 		ggkSearchDisplayCaseForGildedKey = new ObjectStep(this, 61672, new WorldPoint(2497, 7374, 0), "Search the display case for the gilded key.");
 		ggkSearchDisplayCaseForGildedKey.addDialogStep("Yes.");
@@ -2559,7 +2559,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		makeFourthVialEssence = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", pureEssence.highlighted());
 		makeFourthVialWater = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", vialOfWater.highlighted());
 
-		pourAllVialsIntoTheBasin = new ObjectStep(this, 61707, new WorldPoint(2518, 7389, 0), "Pour all the chemical vials into the basin", chemicalVial.highlighted());
+		pourAllVialsIntoTheBasin = new ObjectStep(this, 61707, new WorldPoint(2518, 7389, 0), "Pour all the chemical vials into the basin.", chemicalVial.highlighted());
 
 
 		cDestroyingTheStockpileLaboratoryStep = new ConditionalStep(this, dtsSearchShelvesForSupplies, "\nFill the basin to the north until it reads 53. If something has gone wrong, overfill the basin and start over.");
@@ -2583,7 +2583,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		cDestroyingTheStockpileLaboratoryStepPW = cDestroyingTheStockpileLaboratoryStep.puzzleWrapStepWithDefaultText("Solve the puzzle in this room.");
 
-		dtsLeaveLaboratory = new ObjectStep(this, 61572, new WorldPoint(2523, 7389, 0), "Enter the now-unlocked door to the north-east..");
+		dtsLeaveLaboratory = new ObjectStep(this, 61572, new WorldPoint(2523, 7389, 0), "Enter the now-unlocked door to the north-east.");
 
 		dtsDestroyBloodStockpile = new ObjectStep(this, 61711, new WorldPoint(2535, 7385, 0), "Destroy the blood stockpile.");
 		dtsWatchTheCutscene = dtsDestroyBloodStockpile.cutscene();
@@ -2782,7 +2782,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// TODO: I'd love to maybe add a custom icon on each, or number.
 		sotfa3AvoidAnimals = new NpcStep(this, 16233, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.", true);
 		// avoidAnimals.addTileMarkers(SpriteID.LOAD, new WorldPoint(2914, 7920, 0));
-		sotfa3Exit = new ObjectStep(this, 61992, new WorldPoint(2928, 7892, 0), "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
+		sotfa3Exit = new ObjectStep(this, 61992, new WorldPoint(2928, 7892, 0), "Leave through the cave in the south-east.");
+		sotfa3Exit.setOverlayText("Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
 		cSotfa3 = new ConditionalStep(this, sotfa3AvoidAnimals);
 		cSotfa3.addStep(nearSotfa3Exit, sotfa3Exit);
 
@@ -2796,7 +2797,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		sotfa5.addCustomIcon(new QuestStepIcon(ItemID.DRAGON_SCIMITAR, 16236, 0.75));
 		sotfa5.addCustomIcon(new QuestStepIcon(ItemID.SOTFA_FOREST_TALON, 16237, 0.75));
 		// TODO: For some reason, the npc condition failed to detect more npcs at some point. Not sure what happened, but a few ticks later the npcs were highlighted.
-		sotfa5Exit = new ObjectStep(this, 61047, new WorldPoint(2912, 7852, 0), "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage. When all are dead, leave through the trees.");
+		sotfa5Exit = new ObjectStep(this, 61047, new WorldPoint(2912, 7852, 0), "When all nylocas are dead, leave through the trees.");
+		sotfa5Exit.setOverlayText("Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage. When all are dead, leave through the trees.");
 		cSotfa5 = new ConditionalStep(this, sotfa5);
 		cSotfa5.addStep(not(anyNearbyNylocas), sotfa5Exit);
 
@@ -2814,7 +2816,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cSotfa6.addStep(deadSnake3, sotfa6CombineSnakes);
 
 		/// 98
-		talkToMysteriousWoman1 = new NpcStep(this, 15953, new WorldPoint(2975, 7704, 0), "Talk-to Mysterious Woman.");
+		talkToMysteriousWoman1 = new NpcStep(this, 15953, new WorldPoint(2975, 7704, 0), "Talk to the Mysterious Woman.");
 		mysteriousWomanWatchTheCutscene = talkToMysteriousWoman1.cutscene();
 
 		/// 100
@@ -2830,7 +2832,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		searchShelvesForBowl = new ObjectStep(this, 62070, new WorldPoint(3159, 7824, 1), "Search the shelves next to the sink for a bowl.", amitireLeaves);
 		searchShelvesForBowl.addSubSteps(enterPalace1);
 
-		fillBowlWithWater = new ObjectStep(this, 62097, new WorldPoint(3157, 7825, 1), "Fill the bowl with water", amitireLeaves, bowl.highlighted());
+		fillBowlWithWater = new ObjectStep(this, 62097, new WorldPoint(3157, 7825, 1), "Fill the bowl with water.", amitireLeaves, bowl.highlighted());
 
 		getPotatoFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take a potato from the cupboard.", amitireLeaves, bowlOfWater);
 		getPotatoFromCupboard.addDialogStep("Potato.");

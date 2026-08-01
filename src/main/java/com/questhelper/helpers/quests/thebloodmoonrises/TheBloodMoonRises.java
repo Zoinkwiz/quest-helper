@@ -1141,28 +1141,28 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		drakansMedallionToCastleDrakan = new ItemRequirement("Drakan's medallion to Castle Drakan", ItemID.DRAKANS_MEDALLION).isNotConsumed().highlighted();
 
 		// Mid-quest item requirements
-		squiresJournal = new ItemRequirement("Squire's journal", 33701);
-		essiandarsNotes = new ItemRequirement("Essiandar's notes", 33707);
-		scruffyNotebook = new ItemRequirement("Scruffy notebook", 33704);
-		sarlsJournal = new ItemRequirement("Sarl's journal", 33703);
-		theLifeOfFriar = new ItemRequirement("The Life of Friar", 33706);
-		piousProceedings = new ItemRequirement("Pious proceedings", 33705);
-		fromMisthalinToMorytania = new ItemRequirement("Misthalin to Morytania", 33702);
-		ivandisWritings = new ItemRequirement("Ivandis' writings", 33708);
+		squiresJournal = new ItemRequirement("Squire's journal", ItemID.MYQ6_SQUIRE_JOURNAL);
+		essiandarsNotes = new ItemRequirement("Essiandar's notes", ItemID.MYQ6_ESSIANDAR_JOURNAL);
+		scruffyNotebook = new ItemRequirement("Scruffy notebook", ItemID.MYQ6_DERYGULL_JOURNAL);
+		sarlsJournal = new ItemRequirement("Sarl's journal", ItemID.MYQ6_SARL_JOURNAL);
+		theLifeOfFriar = new ItemRequirement("The Life of Friar", ItemID.MYQ6_FRIAR_JOURNAL);
+		piousProceedings = new ItemRequirement("Pious proceedings", ItemID.MYQ6_ERYSAIL_JOURNAL);
+		fromMisthalinToMorytania = new ItemRequirement("Misthalin to Morytania", ItemID.MYQ6_IRIANDUL_JOURNAL);
+		ivandisWritings = new ItemRequirement("Ivandis' writings", ItemID.MYQ6_IVANDIS_WRITINGS);
 
 		// Vampyrium Castle Drakan items
-		halfMoonKey = new ItemRequirement("Half moon key", 33725);
-		smallClockHand = new ItemRequirement("Small clock hand", 33744);
-		largeClockHand = new ItemRequirement("Large clock hand", 33745);
-		drakanEmblem1 = new ItemRequirement("Drakan emblem", 33731);
-		drakanEmblem2 = new ItemRequirement("Drakan emblem", 33732);
-		drakanEmblem3 = new ItemRequirement("Drakan emblem", 33733);
-		anyOneEmblem = new ItemRequirement("Drakan emblem", 33731);
-		anyOneEmblem.addAlternates(33732, 33733);
+		halfMoonKey = new ItemRequirement("Half moon key", ItemID.CASTLE_DRAKAN_HALF_MOON_KEY);
+		smallClockHand = new ItemRequirement("Small clock hand", ItemID.CASTLE_DRAKAN_SMALL_CLOCK_HAND);
+		largeClockHand = new ItemRequirement("Large clock hand", ItemID.CASTLE_DRAKAN_LARGE_CLOCK_HAND);
+		drakanEmblem1 = new ItemRequirement("Drakan emblem", ItemID.CASTLE_DRAKAN_DRAKAN_EMBLEM_1);
+		drakanEmblem2 = new ItemRequirement("Drakan emblem", ItemID.CASTLE_DRAKAN_DRAKAN_EMBLEM_2);
+		drakanEmblem3 = new ItemRequirement("Drakan emblem", ItemID.CASTLE_DRAKAN_DRAKAN_EMBLEM_3);
+		anyOneEmblem = new ItemRequirement("Drakan emblem", ItemID.CASTLE_DRAKAN_DRAKAN_EMBLEM_1);
+		anyOneEmblem.addAlternates(ItemID.CASTLE_DRAKAN_DRAKAN_EMBLEM_2, ItemID.CASTLE_DRAKAN_DRAKAN_EMBLEM_3);
 		anyOneEmblemHighlighted = anyOneEmblem.highlighted();
 		anyTwoEmblemHighlighted = anyOneEmblemHighlighted.quantity(2);
 		anyThreeEmblemHighlighted = anyOneEmblemHighlighted.quantity(3);
-		explosiveBarrel = new ItemRequirement("Explosive barrel", 33743);
+		explosiveBarrel = new ItemRequirement("Explosive barrel", ItemID.CASTLE_DRAKAN_POTENT_BARREL);
 		explosiveBarrel.setTooltip("You can get another one from the room above the storage room (south-west on floor 2)");
 
 		// Miscellaneous requirements
@@ -1170,12 +1170,12 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		inCutscene = new VarbitRequirement(VarbitID.CUTSCENE_STATUS, 1);
 		// TODO: Should this be it's own "FollowerNPCRequirement"?
 		followedByIvan = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 15854 /* myq6_ivan_follower */, 16);
-		canReceivePickaxeFromIvan = new VarbitRequirement(15469, 0);
-		needTeleportUnlock = new VarbitRequirement(15470, 0);
+		canReceivePickaxeFromIvan = new VarbitRequirement(VarbitID.MYQ6_IVAN_GIVEN_PICKAXE, 0);
+		needTeleportUnlock = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_TELEPORT, 0);
 
 		// Vampyrium Castle Drakan room requirements
-		var castleDrakanFloor = new VarbitBuilder(15489);
-		var castleDrakanRoom = new VarbitBuilder(15499);
+		var castleDrakanFloor = new VarbitBuilder(VarbitID.CASTLE_DRAKAN_WORLD_MAP_FLOOR);
+		var castleDrakanRoom = new VarbitBuilder(VarbitID.CASTLE_DRAKAN_LAST_ROOM);
 
 		var onF0 = castleDrakanFloor.eq(1);
 		var onF1 = castleDrakanFloor.eq(2);
@@ -1231,118 +1231,118 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		inLaboratory = castleDrakanRoom.eq(42);
 		inLaboratoryStorageRoom = castleDrakanRoom.eq(43);
 
-		var throneRoomPuzzleB = new VarbitBuilder(15508);
+		var throneRoomPuzzleB = new VarbitBuilder(VarbitID.CASTLE_DRAKAN_PUZZLE_THRONE_ROOM);
 		needToStartThroneRoomPuzzle = throneRoomPuzzleB.eq(0);
 		needToPullBusts = throneRoomPuzzleB.eq(1);
 		needToGetKey = throneRoomPuzzleB.eq(2);
 		doneWithThroneRoomPuzzle = throneRoomPuzzleB.eq(3);
 
-		needToPullBust3 = new VarbitRequirement(15541, 1);
-		needToPullBust4 = new VarbitRequirement(15542, 1);
-		needToPullBust1 = new VarbitRequirement(15539, 1);
+		needToPullBust3 = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_THRONE_ROOM_LEVER_3, 1);
+		needToPullBust4 = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_THRONE_ROOM_LEVER_4, 1);
+		needToPullBust1 = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_THRONE_ROOM_LEVER_1, 1);
 
-		placedEmblemInVanesculasHallway = new VarbitRequirement(15504, 0, Operation.GREATER);
-		placedEmblemInVanesculasStudy = new VarbitRequirement(15503, 0, Operation.GREATER);
+		placedEmblemInVanesculasHallway = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_EMBLEM_VANESCULAS_HALLWAY_TO_VANESCULAS_STUDY, 0, Operation.GREATER);
+		placedEmblemInVanesculasStudy = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_EMBLEM_VANESCULAS_STUDY_TO_VANESCULAS_CHAMBER, 0, Operation.GREATER);
 
-		inVampyriumVarbit = new VarbitRequirement(15482, 1);
-		vanesculasChamberWallDestroyed = new VarbitRequirement(15511, 1);
-		smallClockHandNeedsReplacing = new VarbitRequirement(15509, 0);
-		largeClockHandNeedsReplacing = new VarbitRequirement(15510, 0);
-		var westernClockLargeHandCorrect = new VarbitRequirement(15514, 11);
-		var westernClockSmallHandCorrect = new VarbitRequirement(15513, 9);
+		inVampyriumVarbit = new VarbitRequirement(VarbitID.IN_VAMPYRIUM, 1);
+		vanesculasChamberWallDestroyed = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_WALL_DESTROYED, 1);
+		smallClockHandNeedsReplacing = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CLOCK_1_HAND_REPLACED, 0);
+		largeClockHandNeedsReplacing = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CLOCK_2_HAND_REPLACED, 0);
+		var westernClockLargeHandCorrect = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CLOCK_1_LARGE_HAND_TIME, 11);
+		var westernClockSmallHandCorrect = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CLOCK_1_SMALL_HAND_TIME, 9);
 		westernClockNeedsFixing = not(and(westernClockLargeHandCorrect, westernClockSmallHandCorrect));
 		clockWidgetOpen = new WidgetPresenceRequirement(963, 0);
-		var easternClockLargeHandCorrect = new VarbitRequirement(15517, 0);
-		var easternClockSmallHandCorrect = new VarbitRequirement(15515, 4);
+		var easternClockLargeHandCorrect = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CLOCK_2_LARGE_HAND_TIME, 0);
+		var easternClockSmallHandCorrect = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CLOCK_2_SMALL_HAND_TIME, 4);
 		easternClockNeedsFixing = not(and(easternClockLargeHandCorrect, easternClockSmallHandCorrect));
-		hasGottenDrakanEmblemFromFireplace = new VarplayerRequirement(5632, true, 3);
+		hasGottenDrakanEmblemFromFireplace = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_ROOM_STATUS_1, true, 3);
 		needToFinishClockPuzzle = or(westernClockNeedsFixing, easternClockNeedsFixing);
-		ornateSkull = new ItemRequirement("Ornate skull", 33741);
+		ornateSkull = new ItemRequirement("Ornate skull", ItemID.CASTLE_DRAKAN_ORNATE_SKULL);
 		inArrowPuzzle = new WidgetTextRequirement(810, 15, 9, "Confirm");
 
-		anyEmblemInVanesculasHallwayEast = new VarbitRequirement(15506, 1, Operation.GREATER_EQUAL);
-		anyEmblemInRanisHallwayNorth = new VarbitRequirement(15505, 1, Operation.GREATER_EQUAL);
-		noEmblemInRanisHallwayNorth = new VarbitRequirement(15505, 0);
-		anyEmblemInNorthChapelHallway = new VarbitRequirement(15502, 1, Operation.GREATER_EQUAL);
-		anyEmblemInWestChapelHallway = new VarbitRequirement(15501, 1, Operation.GREATER_EQUAL);
-		cmkHasSpokenWithVeliaf = new VarbitRequirement(15464, 74, Operation.GREATER_EQUAL);
-		cmkSolvedChestPuzzle = new VarbitRequirement(15512, 1);
-		crescentMoonKey = new ItemRequirement("Crescent moon key", 33726);
-		newMoonKey = new ItemRequirement("New moon key", 33728);
+		anyEmblemInVanesculasHallwayEast = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_EMBLEM_VANESCULAS_HALLWAY_TO_RANIS_HALLWAY, 1, Operation.GREATER_EQUAL);
+		anyEmblemInRanisHallwayNorth = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_EMBLEM_RANIS_HALLWAY_TO_RANIS_PARLOUR, 1, Operation.GREATER_EQUAL);
+		noEmblemInRanisHallwayNorth = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_EMBLEM_RANIS_HALLWAY_TO_RANIS_PARLOUR, 0);
+		anyEmblemInNorthChapelHallway = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_EMBLEM_WEST_CHAPEL_HALLWAY_TO_NORTH_CHAPEL_HALLWAY, 1, Operation.GREATER_EQUAL);
+		anyEmblemInWestChapelHallway = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_EMBLEM_GALLERY_TO_WEST_CHAPEL_HALLWAY, 1, Operation.GREATER_EQUAL);
+		cmkHasSpokenWithVeliaf = new VarbitRequirement(VarbitID.MYQ6, 74, Operation.GREATER_EQUAL);
+		cmkSolvedChestPuzzle = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_GALLERY_CHEST, 1);
+		crescentMoonKey = new ItemRequirement("Crescent moon key", ItemID.CASTLE_DRAKAN_CRESCENT_MOON_KEY);
+		newMoonKey = new ItemRequirement("New moon key", ItemID.CASTLE_DRAKAN_NEW_MOON_KEY);
 
-		syringeBarrel = new ItemRequirement("Syringe barrel", 33752);
-		venatorStomach = new ItemRequirement("Venator stomach", 33756);
-		sinkPlug = new ItemRequirement("Sink plug", 33747);
-		brokenPipe = new ItemRequirement("Broken pipe", 33748);
-		sharpKitchenKnife = new ItemRequirement("Sharp knife", 33749);
-		syringePlunger = new ItemRequirement("Syringe plunger", 33753);
-		tongs = new ItemRequirement("Tongs", 33750);
-		syringeNeedle = new ItemRequirement("Syringe needle", 33751);
-		emptySyringe = new ItemRequirement("Empty syringe", 33754);
-		fullSyringe = new ItemRequirement("Full syringe", 33755);
+		syringeBarrel = new ItemRequirement("Syringe barrel", ItemID.CASTLE_DRAKAN_SYRINGE_BARREL);
+		venatorStomach = new ItemRequirement("Venator stomach", ItemID.CASTLE_DRAKAN_VENATOR_STOMACH);
+		sinkPlug = new ItemRequirement("Sink plug", ItemID.CASTLE_DRAKAN_SINK_PLUG);
+		brokenPipe = new ItemRequirement("Broken pipe", ItemID.CASTLE_DRAKAN_BROKEN_PIPE);
+		sharpKitchenKnife = new ItemRequirement("Sharp knife", ItemID.CASTLE_DRAKAN_SHARP_KNIFE);
+		syringePlunger = new ItemRequirement("Syringe plunger", ItemID.CASTLE_DRAKAN_SYRINGE_PLUNGER);
+		tongs = new ItemRequirement("Tongs", ItemID.CASTLE_DRAKAN_TONGS);
+		syringeNeedle = new ItemRequirement("Syringe needle", ItemID.CASTLE_DRAKAN_SYRINGE_NEEDLE);
+		emptySyringe = new ItemRequirement("Empty syringe", ItemID.CASTLE_DRAKAN_EMPTY_SYRINGE);
+		fullSyringe = new ItemRequirement("Full syringe", ItemID.CASTLE_DRAKAN_FULL_SYRINGE);
 
-		leftHalfOfCrest = new ItemRequirement("Left crest half", 33734);
-		rightHalfOfCrest = new ItemRequirement("Right crest half", 33735);
-		fullCrest = new ItemRequirement("Full crest", 33736);
+		leftHalfOfCrest = new ItemRequirement("Left crest half", ItemID.CASTLE_DRAKAN_LEFT_CREST_HALF);
+		rightHalfOfCrest = new ItemRequirement("Right crest half", ItemID.CASTLE_DRAKAN_RIGHT_CREST_HALF);
+		fullCrest = new ItemRequirement("Full crest", ItemID.CASTLE_DRAKAN_FULL_CREST);
 
-		larderSinkNeedsPlugging = new VarbitRequirement(15537, 0);
-		larderSinkPlugged = new VarbitRequirement(15537, 1);
-		larderSinkCollapsed = new VarbitRequirement(15537, 2);
+		larderSinkNeedsPlugging = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_LARDER_SINK_COLLAPSED, 0);
+		larderSinkPlugged = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_LARDER_SINK_COLLAPSED, 1);
+		larderSinkCollapsed = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_LARDER_SINK_COLLAPSED, 2);
 
-		hasCutVenatorStomachUp = new VarbitRequirement(15538, 1);
+		hasCutVenatorStomachUp = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_KITCHEN_VENATOR_OPENED, 1);
 
-		unlockedKitchenChest = new VarbitRequirement(15518, 1);
+		unlockedKitchenChest = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_KITCHEN_CHEST, 1);
 
-		battleAxe = new ItemRequirement("Battleaxe", 33759);
-		needToPutAxeOnStatue = new VarbitRequirement(15546, 0);
+		battleAxe = new ItemRequirement("Battleaxe", ItemID.CASTLE_DRAKAN_OLD_BATTLEAXE);
+		needToPutAxeOnStatue = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_2, 0);
 
-		mace = new ItemRequirement("Mace", 33760);
+		mace = new ItemRequirement("Mace", ItemID.CASTLE_DRAKAN_OLD_MACE);
 		mace2 = mace.quantity(2);
 
-		sword = new ItemRequirement("Sword", 33757);
+		sword = new ItemRequirement("Sword", ItemID.CASTLE_DRAKAN_OLD_SWORD);
 
-		needToPutMaceOnStatue1 = new VarbitRequirement(15548, 0);
-		needToPutMaceOnStatue2 = new VarbitRequirement(15547, 0);
+		needToPutMaceOnStatue1 = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_4, 0);
+		needToPutMaceOnStatue2 = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_3, 0);
 
-		needToPutSwordOnStatue = new VarbitRequirement(15545, 0);
-		doneWithWeaponPuzzle = and(new VarbitRequirement(15545, 1), new VarbitRequirement(15546, 1), new VarbitRequirement(15547, 1), new VarbitRequirement(15548, 1));
+		needToPutSwordOnStatue = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_1, 0);
+		doneWithWeaponPuzzle = and(new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_1, 1), new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_2, 1), new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_3, 1), new VarbitRequirement(VarbitID.CASTLE_DRAKAN_ARMOURY_STATUE_4, 1));
 
-		fullCrestInStudy = new VarbitRequirement(15535, 1);
-		gibbousMoonKey = new ItemRequirement("Gibbous moon key", 33727);
-		ornateKnife = new ItemRequirement("Ornate knife", 33740);
-		pulledUpperStoreroomLever = new VarbitRequirement(15532, 1);
-		isFireplaceLit = new VarbitRequirement(15543, 1);
-		smallLockbox = new ItemRequirement("Lockbox", 33761);
+		fullCrestInStudy = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PARLOUR_FIREPLACE, 1);
+		gibbousMoonKey = new ItemRequirement("Gibbous moon key", ItemID.CASTLE_DRAKAN_GIBBOUS_MOON_KEY);
+		ornateKnife = new ItemRequirement("Ornate knife", ItemID.CASTLE_DRAKAN_ORNATE_KNIFE);
+		pulledUpperStoreroomLever = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_TELEPORTER_UPPER_STOREROOM_TO_GUEST_CHAMBER_STOREROOM, 1);
+		isFireplaceLit = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_LOWERNIEL_FIREPLACE_LIT, 1);
+		smallLockbox = new ItemRequirement("Lockbox", ItemID.CASTLE_DRAKAN_LOCKBOX);
 		combinationLockWidgetOpen = new WidgetPresenceRequirement(InterfaceID.CombinationLock.CONTENTS);
-		fancyGem1 = new ItemRequirement("Fancy gem", 33765);
-		fancyGem2 = new ItemRequirement("Fancy gem", 33766);
-		venatorHeadOneEyePlaced = new VarbitRequirement(15523, 1);
-		doorPuzzleSolved = new VarbitRequirement(15519, 1);
-		mysteriousBook = new ItemRequirement("Mysterious book", 33764);
-		venatorHeadBothEyePlaced = new VarbitRequirement(15523, 3);
-		ornateHourglass = new ItemRequirement("Ornate hourglass", 33742);
+		fancyGem1 = new ItemRequirement("Fancy gem", ItemID.CASTLE_DRAKAN_FANCY_GEM_1);
+		fancyGem2 = new ItemRequirement("Fancy gem", ItemID.CASTLE_DRAKAN_FANCY_GEM_2);
+		venatorHeadOneEyePlaced = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_VENATOR_HEAD, 1);
+		doorPuzzleSolved = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_LOWERNIEL_LIBRARY_DOOR_UNLOCKED, 1);
+		mysteriousBook = new ItemRequirement("Mysterious book", ItemID.CASTLE_DRAKAN_MYSTERIOUS_BOOK);
+		venatorHeadBothEyePlaced = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_VENATOR_HEAD, 3);
+		ornateHourglass = new ItemRequirement("Ornate hourglass", ItemID.CASTLE_DRAKAN_ORNATE_HOURGLASS);
 		ornateHourglass.setTooltip("You can return to the puzzle room with the venator and search the venator head to get a new one");
 		// This is in an attempt to hide the requirement if it's already been placed in the display case
-		ornateSkull.setConditionToHide(new VarbitRequirement(15563, true, 0));
-		ornateKnife.setConditionToHide(new VarbitRequirement(15563, true, 1));
-		ornateHourglass.setConditionToHide(new VarbitRequirement(15563, true, 2));
-		allItemsPlacedInDisplayCase = new VarbitRequirement(15563, 7);
-		gildedKey = new ItemRequirement("Gilded key", 33729);
-		hasUsedGildedKey = new VarplayerRequirement(5638, true, 3);
+		ornateSkull.setConditionToHide(new VarbitRequirement(VarbitID.CASTLE_DRAKAN_GALLERY_DISPLAY_CASE, true, 0));
+		ornateKnife.setConditionToHide(new VarbitRequirement(VarbitID.CASTLE_DRAKAN_GALLERY_DISPLAY_CASE, true, 1));
+		ornateHourglass.setConditionToHide(new VarbitRequirement(VarbitID.CASTLE_DRAKAN_GALLERY_DISPLAY_CASE, true, 2));
+		allItemsPlacedInDisplayCase = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_GALLERY_DISPLAY_CASE, 7);
+		gildedKey = new ItemRequirement("Gilded key", ItemID.CASTLE_DRAKAN_GILDED_KEY);
+		hasUsedGildedKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, true, 3);
 		gildedKey.setConditionToHide(hasUsedGildedKey);
 		fmkIvanFollowingYou = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 15854 /* myq6_ivan_follower */, 16);
 		gildedBookPuzzleOpen = new WidgetPresenceRequirement(InterfaceID.CastleDrakanBookcase.CONTENTS);
-		gildedBook = new ItemRequirement("Gilded book", 33767);
+		gildedBook = new ItemRequirement("Gilded book", ItemID.CASTLE_DRAKAN_GILDED_BOOK);
 
-		startedLibraryPuzzle = new VarbitRequirement(15525, 1);
-		finishedLibraryPuzzle = new VarbitRequirement(15525, 2);
+		startedLibraryPuzzle = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_LIBRARY, 1);
+		finishedLibraryPuzzle = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_LIBRARY, 2);
 
-		fullMoonKey = new ItemRequirement("Full moon key", 33724);
+		fullMoonKey = new ItemRequirement("Full moon key", ItemID.CASTLE_DRAKAN_FULL_MOON_KEY);
 
-		cloudyGreyPotion = new ItemRequirement("Cloudy grey potion", 33769);
-		weightlessBlackPotion = new ItemRequirement("Weightless black potion", 33770);
-		thickRedPotion = new ItemRequirement("Thick red potion", 33771);
-		coldBlueishWhitePotion = new ItemRequirement("Cold bluish-white potion", 33772);
+		cloudyGreyPotion = new ItemRequirement("Cloudy grey potion", ItemID.CASTLE_DRAKAN_CLOUDY_GREY_POTION);
+		weightlessBlackPotion = new ItemRequirement("Weightless black potion", ItemID.CASTLE_DRAKAN_WEIGHTLESS_BLACK_POTION);
+		thickRedPotion = new ItemRequirement("Thick red potion", ItemID.CASTLE_DRAKAN_THICK_RED_POTION);
+		coldBlueishWhitePotion = new ItemRequirement("Cold bluish-white potion", ItemID.CASTLE_DRAKAN_COLD_WHITE_POTION);
 
 		solvedSmokeBasin = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CHAPEL_SMOKE_BASIN, 1);
 		solvedShadowBasin = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CHAPEL_SHADOW_BASIN, 1);
@@ -1350,25 +1350,25 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		solvedIceBasin = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_PUZZLE_CHAPEL_ICE_BASIN, 1);
 		solvedAllBasins = and(solvedBloodBasin, solvedShadowBasin, solvedIceBasin, solvedSmokeBasin);
 
-		ancientSymbol = new ItemRequirement("Ancient symbol", 33737);
-		openedPortalFromChapelLibraryToServantsQuarters = new VarbitRequirement(15533, 1);
-		ancientShield = new ItemRequirement("Ancient shield", 33738);
-		shieldWithSymbol = new ItemRequirement("Shield with symbol", 33739);
-		hasMountedShield = new VarbitRequirement(15526, 1);
-		solidKey = new ItemRequirement("Solid key", 33730);
+		ancientSymbol = new ItemRequirement("Ancient symbol", ItemID.CASTLE_DRAKAN_ANCIENT_SYMBOL);
+		openedPortalFromChapelLibraryToServantsQuarters = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_TELEPORTER_SERVANTS_QUARTERS_TO_CHAPEL_LIBRARY, 1);
+		ancientShield = new ItemRequirement("Ancient shield", ItemID.CASTLE_DRAKAN_ANCIENT_SHIELD);
+		shieldWithSymbol = new ItemRequirement("Shield with symbol", ItemID.CASTLE_DRAKAN_SHIELD_WITH_SYMBOL);
+		hasMountedShield = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_SHIELD_MOUNT, 1);
+		solidKey = new ItemRequirement("Solid key", ItemID.CASTLE_DRAKAN_LAB_KEY);
 
-		hasUsedNewMoonKey = new VarplayerRequirement(5638, true, 1);
-		hasUsedFullMoonKey = new VarplayerRequirement(5638, true, 29);
-		usedSolidKey = new VarplayerRequirement(5639, true, 5);
+		hasUsedNewMoonKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, true, 1);
+		hasUsedFullMoonKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, true, 29);
+		usedSolidKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4, true, 5);
 
-		vialOfWater = new ItemRequirement("Vial of water", 33774);
+		vialOfWater = new ItemRequirement("Vial of water", ItemID.CASTLE_DRAKAN_VIAL_OF_WATER);
 		vialsOfWater2 = vialOfWater.quantity(2);
-		vialOfBlood = new ItemRequirement("Vial of blood", 33775);
+		vialOfBlood = new ItemRequirement("Vial of blood", ItemID.CASTLE_DRAKAN_VIAL_OF_BLOOD);
 		vialsOfBlood3 = vialOfBlood.quantity(3);
-		pureEssence = new ItemRequirement("Pure essence", 33776);
+		pureEssence = new ItemRequirement("Pure essence", ItemID.CASTLE_DRAKAN_PURE_ESSENCE);
 		pureEssence3 = pureEssence.quantity(3);
 
-		chemicalVial = new ItemRequirement("Chemical vial", 33778);
+		chemicalVial = new ItemRequirement("Chemical vial", ItemID.CASTLE_DRAKAN_CHEMICAL_VIAL);
 		chemicalVial2 = chemicalVial.quantity(2);
 		chemicalVial3 = chemicalVial.quantity(3);
 		chemicalVial4 = chemicalVial.quantity(4);
@@ -1384,18 +1384,18 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// Crossing the drawbridge (82-88)
 		hasDeathPos = new VarplayerRequirement(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS, 0, Operation.GREATER_EQUAL);
-		crankWheel = new ItemRequirement("Crank wheel", 33788);
+		crankWheel = new ItemRequirement("Crank wheel", ItemID.SANGVESTI_CRANK_WHEEL);
 		crankedTheWheel = new VarbitRequirement(VarbitID.SANGVESTI_FANCY_HOUSE_3_DOOR, 1);
 		crankedTheWheelInTheBank = new VarbitRequirement(VarbitID.SANGVESTI_INTERIOR_BANK_DOOR, 1);
 		needCrankWheel = nand(crankedTheWheel, crankedTheWheelInTheBank);
 		crankWheelForBank = crankWheel.hideConditioned(crankedTheWheelInTheBank);
-		jovkaiKey = new ItemRequirement("Jovkai key", 33780);
+		jovkaiKey = new ItemRequirement("Jovkai key", ItemID.SANGVESTI_JOVKAI_KEY);
 		unlockedSmith = new VarbitRequirement(VarbitID.SANGVESTI_BLACKSMITH_DOOR, 1);
 		jovkaiKey.setConditionToHide(unlockedSmith);
 		needJovkaiKey = nand(unlockedSmith);
 		jovkaiKeyInOriginalPosition = new VarbitRequirement(VarbitID.SANGVESTI_HINT_CHAPEL, 1);
-		dustyBook = new ItemRequirement("Dusty book", 33789);
-		viturKey = new ItemRequirement("Vitur key", 33785);
+		dustyBook = new ItemRequirement("Dusty book", ItemID.SANGVESTI_VITUR_KEY_BOOK);
+		viturKey = new ItemRequirement("Vitur key", ItemID.SANGVESTI_VITUR_KEY);
 		// Important vitur key use:
 		unlockedBoltCutterHouse = new VarbitRequirement(VarbitID.SANGVESTI_VITUR_MANOR_DOOR, 1);
 		viturKeyForBoltCutterHouse = viturKey.hideConditioned(unlockedBoltCutterHouse);
@@ -1407,17 +1407,17 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		needViturKey = nand(unlockedBoltCutterHouse, unlockedToothHalfOfKeyHouse);
 		needBoltCutters = new VarbitRequirement(VarbitID.SANGVESTI_CLOTHES_SHOP_DOOR, 0);
 		hasUsedBoltCutters = new VarbitRequirement(VarbitID.SANGVESTI_CLOTHES_SHOP_DOOR, 1);
-		boltCutters = new ItemRequirement("Bolt cutters", 33787);
+		boltCutters = new ItemRequirement("Bolt cutters", ItemID.SANGVESTI_BOLT_CUTTERS);
 		boltCutters.setConditionToHide(hasUsedBoltCutters);
-		oldCog = new ItemRequirement("Old cog", 33779);
+		oldCog = new ItemRequirement("Old cog", ItemID.SANGVESTI_COG);
 
 		unlockedTrapdoor = new VarbitRequirement(VarbitID.SANGVESTI_TRAPDOOR, 1);
 
-		trapdoorKey = new ItemRequirement("Trapdoor key", 33786);
+		trapdoorKey = new ItemRequirement("Trapdoor key", ItemID.SANGVESTI_TRAPDOOR_KEY);
 		trapdoorKey.setConditionToHide(unlockedTrapdoor);
 
-		toothHalfOfKey = new ItemRequirement("Tooth half of key", 33782);
-		loopHalfOfKey = new ItemRequirement("Loop half of key", 33781);
+		toothHalfOfKey = new ItemRequirement("Tooth half of key", ItemID.SANGVESTI_MYRMEL_KEY_TOOTH);
+		loopHalfOfKey = new ItemRequirement("Loop half of key", ItemID.SANGVESTI_MYRMEL_KEY_LOOP);
 
 		isCrankWheelInOriginalPosition = new VarbitRequirement(VarbitID.SANGVESTI_HINT_BASIC_HOUSE_3, 1);
 
@@ -1425,18 +1425,18 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		oldCogInOriginalPosition = new VarbitRequirement(VarbitID.SANGVESTI_HINT_BLACKSMITH, 1);
 
-		myrmelKey = new ItemRequirement("Myrmel key", 33783);
+		myrmelKey = new ItemRequirement("Myrmel key", ItemID.SANGVESTI_MYRMEL_KEY);
 
 		unlockedBucketHouse = new VarbitRequirement(VarbitID.SANGVESTI_PUB_DOOR, 1);
 		myrmelKeyForBucketHouse = myrmelKey.hideConditioned(unlockedBucketHouse);
 		unlockedBank = new VarbitRequirement(VarbitID.SANGVESTI_BANK_DOOR, 1);
 		myrmelKeyForBank = myrmelKey.hideConditioned(unlockedBank);
 		needMyrmelKey = nand(unlockedBucketHouse, unlockedBank);
-		bucketOfWater = new ItemRequirement("Bucket of water", 1929);
+		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
 
-		bucket = new ItemRequirement("Bucket", 1925);
+		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 
-		shadumKey = new ItemRequirement("Shadum key", 33784);
+		shadumKey = new ItemRequirement("Shadum key", ItemID.SANGVESTI_SHADUM_KEY);
 		unlockedTrapdoorHouse = new VarbitRequirement(VarbitID.SANGVESTI_FANCY_HOUSE_1_DOOR, 1);
 		shadumKeyForTrapdoorHouse = shadumKey.hideConditioned(unlockedTrapdoorHouse);
 		// TODO (what is this todo for)
@@ -1452,34 +1452,34 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		anyNearbyNylocas = or(new NpcRequirement(16236), new NpcRequirement(16237));
 
-		deadSnake3 = new ItemRequirement("Dead blood serpent", 33791, 3);
-		serpentRope = new ItemRequirement("Serpent rope", 33792);
+		deadSnake3 = new ItemRequirement("Dead blood serpent", ItemID.SOTFA_FOREST_DEAD_BLOOD_SERPENT, 3);
+		serpentRope = new ItemRequirement("Serpent rope", ItemID.SOTFA_FOREST_ROPE);
 
-		amitireLeaves = new ItemRequirement("Amitire leaves", 33796);
-		bowl = new ItemRequirement("Bowl", 1923);
+		amitireLeaves = new ItemRequirement("Amitire leaves", ItemID.MYQ6_LEAVES);
+		bowl = new ItemRequirement("Bowl", ItemID.BOWL_EMPTY);
 		bowlOfWater = new ItemRequirement("Bowl of water", ItemID.BOWL_WATER);
-		potato = new ItemRequirement("Potato", 1942);
-		rawMeat = new ItemRequirement("Raw impaler meat", 33821);
-		cookedMeat = new ItemRequirement("Cooked meat", 2142);
-		incompleteStew = new ItemRequirement("Incomplete stew", 1997);
-		uncookedStew = new ItemRequirement("Uncooked stew", 2001);
-		stew = new ItemRequirement("Stew", 2003);
-		amitireStew = new ItemRequirement("Amitire stew", 33797);
+		potato = new ItemRequirement("Potato", ItemID.POTATO);
+		rawMeat = new ItemRequirement("Raw impaler meat", ItemID.RAW_IMPALER_MEAT);
+		cookedMeat = new ItemRequirement("Cooked meat", ItemID.COOKED_MEAT);
+		incompleteStew = new ItemRequirement("Incomplete stew", ItemID.STEW1);
+		uncookedStew = new ItemRequirement("Uncooked stew", ItemID.UNCOOKED_STEW);
+		stew = new ItemRequirement("Stew", ItemID.STEW);
+		amitireStew = new ItemRequirement("Amitire stew", ItemID.MYQ6_STEW);
 
-		hallowedMarks = new ItemRequirement("Hallowed marks", 33798);
-		hammer = new ItemRequirement("Hammer", 2347);
-		chisel = new ItemRequirement("Chisel", 1755);
-		knife = new ItemRequirement("Knife", 946);
-		blisterwoodLogs = new ItemRequirement("Blisterwood logs", 24691);
-		blessedSilverSickle = new ItemRequirement("Silver sickle (b)", 2963);
-		diamond = new ItemRequirement("Diamond", 1601);
-		diamondTablet = new ItemRequirement("Enchant diamond", 8019);
-		diamondSickleB = new ItemRequirement("Diamond sickle (b)", 33709);
-		enchantedDiamondSickle = new ItemRequirement("Enchanted diamond sickle (b)", 33711);
-		enhancedBlisterwoodSickle = new ItemRequirement("Blisterwood sickle (e)", 33713);
+		hallowedMarks = new ItemRequirement("Hallowed marks", ItemID.MYQ6_HALLOWED_MARKS);
+		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
+		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		knife = new ItemRequirement("Knife", ItemID.KNIFE);
+		blisterwoodLogs = new ItemRequirement("Blisterwood logs", ItemID.BLISTERWOOD_LOGS);
+		blessedSilverSickle = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_BLESSED);
+		diamond = new ItemRequirement("Diamond", ItemID.DIAMOND);
+		diamondTablet = new ItemRequirement("Enchant diamond", ItemID.POH_TABLET_ENCHANTDIAMOND);
+		diamondSickleB = new ItemRequirement("Diamond sickle (b)", ItemID.SILVER_SICKLE_DIAMOND);
+		enchantedDiamondSickle = new ItemRequirement("Enchanted diamond sickle (b)", ItemID.SILVER_SICKLE_DIAMOND_ENCHANTED);
+		enhancedBlisterwoodSickle = new ItemRequirement("Blisterwood sickle (e)", ItemID.BLISTERWOOD_SICKLE_ENHANCED);
 		blisterwoodFlailUnequipped = blisterwoodFlail.copy();
 		blisterwoodFlailUnequipped.setMustBeUnequipped(true);
-		hallowedFlail = new ItemRequirement("Hallowed flail", 33718);
+		hallowedFlail = new ItemRequirement("Hallowed flail", ItemID.HALLOWED_FLAIL);
 
 		anyNearbyFeralVyres1 = new NpcCondition(16229);
 		anyNearbyFeralVyres2 = new NpcCondition(16230);
@@ -1525,7 +1525,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		todo = new UnreachableStep(this);
 
 		/// 0 + 2
-		startQuest = new NpcStep(this, 15839, new WorldPoint(3697, 3184, 0), "Talk to Sarius Guile in the Icyene Graveyard to start the quest.");
+		startQuest = new NpcStep(this, NpcID.MYQ6_SARIUS_GUILE_VIS, new WorldPoint(3697, 3184, 0), "Talk to Sarius Guile in the Icyene Graveyard to start the quest.");
 		startQuest.addDialogStep("Yes.");
 
 		/// 4
@@ -1536,7 +1536,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cLookForIvan.addStep(inMyrequeHideoutOldManRal, talkToIvan);
 
 		/// 6 + 8
-		inspectShrine = new ObjectStep(this, 61177, new WorldPoint(3601, 9614, 0), "Inspect the makeshift shrine in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
+		inspectShrine = new ObjectStep(this, ObjectID.MYQ6_HIDEOUT_SHRINE_VIS, new WorldPoint(3601, 9614, 0), "Inspect the makeshift shrine in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
 
 		/// 10
 		talkToIvanGoingToDarkmeyer = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_TRADE, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch while wearing the vyre noble outfit, ready for a fight.", vyreNobleOutfit, blisterwoodFlail, combatGear, food, prayerPotions);
@@ -1554,10 +1554,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		defendIvanFromVyres = new DetailedQuestStep(this, "Kill the vyrewatches and defend Ivan Strom until he can teleport you both out. Kill the approaching acidic bloodvelds with a ranged weapon. Prioritize the Vyrewatch Sentinels.", blisterwoodFlail, combatGear, food, prayerPotions);
 
 		/// 14
-		talkToIvanAfterEscaping = new NpcStep(this, 15835, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch after escaping.");
+		talkToIvanAfterEscaping = new NpcStep(this, NpcID.MYQ5_IVAN_CHILD_BLISTERWOOD_ALT, new WorldPoint(3599, 9612, 0), "Talk to Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch after escaping.");
 
 		/// 16
-		talkToIvanOutsideSlepeChurch = new NpcStep(this, 15855, new WorldPoint(3727, 3310, 0), "Talk to Ivan Strom in the graveyard outside the Slepe church.");
+		talkToIvanOutsideSlepeChurch = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3727, 3310, 0), "Talk to Ivan Strom in the graveyard outside the Slepe church.");
 
 		/// 18
 		askRoyAboutVeliaf = new NpcStep(this, NpcID.SLEPE_BARTENDER_ROY, new WorldPoint(3750, 3296, 0), "Talk to Roy the bartender in Slepe and ask him about Veliaf's whereabouts.");
@@ -1576,11 +1576,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		killVampyresWithVeliaf.setAllowMultipleHighlights(true);
 
 		/// 24
-		talkToVeliafInCrombwickManor = new NpcStep(this, 15885, new WorldPoint(3731, 3359, 0), "Talk to Veliaf after helping him kill the vampyres in Crombwick Manor.");
+		talkToVeliafInCrombwickManor = new NpcStep(this, NpcID.MYQ6_VELIAF_MANOR_COMBAT_DONE, new WorldPoint(3731, 3359, 0), "Talk to Veliaf after helping him kill the vampyres in Crombwick Manor.");
 
 		/// 26
 		var enterPaterdomus = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR_OPEN, new WorldPoint(3422, 3485, 0), "Talk with Ivan Strom in the Paterdomus dungeon.");
-		talkToIvanPaterdomus1 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan in the Paterdomus dungeon.");
+		talkToIvanPaterdomus1 = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3441, 9897, 0), "Talk with Ivan in the Paterdomus dungeon.");
 		talkToIvanPaterdomus1.addSubSteps(enterPaterdomus);
 		enterPaterdomus.addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR);
 		cHeadToPaterdomus = new ConditionalStep(this, enterPaterdomus);
@@ -1590,7 +1590,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		readSquiresJournal = new DetailedQuestStep(this, "Read the Squire's journal Ivan just gave you.", squiresJournal.highlighted());
 
 		/// 30
-		talkToIvanPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3441, 9897, 0), "Talk with Ivan again after reading the Squire's journal.");
+		talkToIvanPaterdomus2 = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3441, 9897, 0), "Talk with Ivan again after reading the Squire's journal.");
 		cTalkToIvanAfterReadingTheBook = new ConditionalStep(this, enterPaterdomus);
 		cTalkToIvanAfterReadingTheBook.addStep(inPaterdomusTempleDungeon, talkToIvanPaterdomus2);
 
@@ -1602,8 +1602,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		killMonksOfZamorak.addSubSteps(climbUpFromPaterdomusTempleDungeon, headToPaterdomusTempleF0);
 
 		/// 36
-		climbUpToPaterdomusTempleF1 = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
-		talkToIvanInPaterdomusTempleF1 = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
+		climbUpToPaterdomusTempleF1 = new ObjectStep(this, ObjectID.PATERDOMUS_SPIRALSTAIRS, new WorldPoint(3417, 3492, 0), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
+		talkToIvanInPaterdomusTempleF1 = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3417, 3487, 1), "Talk to Ivan Storm on the first floor of the Paterdomus temple.");
 		talkToIvanInPaterdomusTempleF1.addSubSteps(climbUpToPaterdomusTempleF1);
 
 		/// 38
@@ -1614,25 +1614,27 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var plinth5Pos = new WorldPoint(3408, 3492, 1);
 		var plinth6Pos = new WorldPoint(3409, 3494, 1);
 
-		var essiandarsNotesPlinthID = 61301;
+		var xd123 = new ObjectStep(this, 61301, "lol");
+
+		var essiandarsNotesPlinthID = ObjectID.MYQ6_PLINTH_BOOK_ESSIANDAR;
 		var essiandarsNotesName = "Essiandar's notes";
 
-		var sarlsJournalPlinthID = 61297;
+		var sarlsJournalPlinthID = ObjectID.MYQ6_PLINTH_BOOK_SARL;
 		var sarlsJournalName = "Sarl's journal";
 
-		var fromMisthalinToMorytaniaPlinthID = 61296;
+		var fromMisthalinToMorytaniaPlinthID = ObjectID.MYQ6_PLINTH_BOOK_IRIANDUL;
 		var fromMisthalinToMorytaniaName = "From Misthalin to Morytania";
 
-		var scruffyNotebookPlinthID = 61298;
+		var scruffyNotebookPlinthID = ObjectID.MYQ6_PLINTH_BOOK_DERYGULL;
 		var scruffyNotebookName = "scruffy notebook";
 
-		var theLifeOfFriarPlinthID = 61300;
+		var theLifeOfFriarPlinthID = ObjectID.MYQ6_PLINTH_BOOK_FRIAR;
 		var theLifeOfFriarName = "The Life of Friar";
 
-		var piousProceedingsPlinthID = 61299;
+		var piousProceedingsPlinthID = ObjectID.MYQ6_PLINTH_BOOK_ERYSAIL;
 		var piousProceedingsName = "Pious proceedings";
 
-		var plinth1VB = new VarbitBuilder(15496);
+		var plinth1VB = new VarbitBuilder(VarbitID.MYQ6_PLINTH_CONTENTS_ESSIANDAR);
 		var essiandarsNotesS1 = plinth1VB.eq(6);
 		var essiandarsNotesS1Put = bookPut(plinth1Pos, essiandarsNotesName, essiandarsNotes.highlighted());
 		var sarlsJournalS1 = plinth1VB.eq(2);
@@ -1646,7 +1648,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var piousProceedingsS1 = plinth1VB.eq(4);
 		var piousProceedingsS1Take = bookTake(plinth1Pos, piousProceedingsName, piousProceedingsPlinthID);
 
-		var plinth2VB = new VarbitBuilder(15492);
+		var plinth2VB = new VarbitBuilder(VarbitID.MYQ6_PLINTH_CONTENTS_SARL);
 		var essiandarsNotesS2 = plinth2VB.eq(6);
 		var essiandarsNotesS2Take = bookTake(plinth2Pos, essiandarsNotesName, essiandarsNotesPlinthID);
 		var sarlsJournalS2 = plinth2VB.eq(2);
@@ -1660,7 +1662,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var piousProceedingsS2 = plinth2VB.eq(4);
 		var piousProceedingsS2Take = bookTake(plinth2Pos, piousProceedingsName, piousProceedingsPlinthID);
 
-		var plinth3VB = new VarbitBuilder(15491);
+		var plinth3VB = new VarbitBuilder(VarbitID.MYQ6_PLINTH_CONTENTS_IRIANDUL);
 		var essiandarsNotesS3 = plinth3VB.eq(6);
 		var essiandarsNotesS3Take = bookTake(plinth3Pos, essiandarsNotesName, essiandarsNotesPlinthID);
 		var sarlsJournalS3 = plinth3VB.eq(2);
@@ -1674,7 +1676,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var piousProceedingsS3 = plinth3VB.eq(4);
 		var piousProceedingsS3Take = bookTake(plinth3Pos, piousProceedingsName, piousProceedingsPlinthID);
 
-		var plinth4VB = new VarbitBuilder(15493);
+		var plinth4VB = new VarbitBuilder(VarbitID.MYQ6_PLINTH_CONTENTS_DERYGULL);
 		var essiandarsNotesS4 = plinth4VB.eq(6);
 		var essiandarsNotesS4Take = bookTake(plinth4Pos, essiandarsNotesName, essiandarsNotesPlinthID);
 		var sarlsJournalS4 = plinth4VB.eq(2);
@@ -1688,7 +1690,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var piousProceedingsS4 = plinth4VB.eq(4);
 		var piousProceedingsS4Take = bookTake(plinth4Pos, piousProceedingsName, piousProceedingsPlinthID);
 
-		var plinth5VB = new VarbitBuilder(15495);
+		var plinth5VB = new VarbitBuilder(VarbitID.MYQ6_PLINTH_CONTENTS_FRIAR);
 		var essiandarsNotesS5 = plinth5VB.eq(6);
 		var essiandarsNotesS5Take = bookTake(plinth5Pos, essiandarsNotesName, essiandarsNotesPlinthID);
 		var sarlsJournalS5 = plinth5VB.eq(2);
@@ -1702,7 +1704,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var piousProceedingsS5 = plinth5VB.eq(4);
 		var piousProceedingsS5Take = bookTake(plinth5Pos, piousProceedingsName, piousProceedingsPlinthID);
 
-		var plinth6VB = new VarbitBuilder(15494);
+		var plinth6VB = new VarbitBuilder(VarbitID.MYQ6_PLINTH_CONTENTS_ERYSAIL);
 		var essiandarsNotesS6 = plinth6VB.eq(6);
 		var essiandarsNotesS6Take = bookTake(plinth6Pos, essiandarsNotesName, essiandarsNotesPlinthID);
 		var sarlsJournalS6 = plinth6VB.eq(2);
@@ -1716,20 +1718,20 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var piousProceedingsS6 = plinth6VB.eq(4);
 		var piousProceedingsS6Put = bookPut(plinth6Pos, piousProceedingsName, piousProceedings.highlighted());
 
-		var climbUpTempleForWritings = new ObjectStep(this, 61189, new WorldPoint(3417, 3492, 0), "Climb up the temple and solve the puzzle.");
+		var climbUpTempleForWritings = new ObjectStep(this, ObjectID.PATERDOMUS_SPIRALSTAIRS, new WorldPoint(3417, 3492, 0), "Climb up the temple and solve the puzzle.");
 		cFindTheWritings = new ConditionalStep(this, climbUpTempleForWritings, "Find the writings on the first floor of the Paterdomus temple for Ivan Strom.");
 
-		var getSarlsJournalAndTheLifeOfFriar = new ObjectStep(this, 61304, new WorldPoint(3414, 3491, 1), "Get Sarl's journal and The Life of Friar from the bookcase.", sarlsJournal, theLifeOfFriar);
+		var getSarlsJournalAndTheLifeOfFriar = new ObjectStep(this, ObjectID.MYQ6_BOOKCASE_PATERDOMUS_3, new WorldPoint(3414, 3491, 1), "Get Sarl's journal and The Life of Friar from the bookcase.", sarlsJournal, theLifeOfFriar);
 		getSarlsJournalAndTheLifeOfFriar.addDialogStep("Both.");
 		getSarlsJournalAndTheLifeOfFriar.addDialogStep("Yes.");
 
-		var getPiousProceedings = new ObjectStep(this, 61305, new WorldPoint(3411, 3491, 1), "Get Pious proceedings from the bookcase.", piousProceedings);
+		var getPiousProceedings = new ObjectStep(this, ObjectID.MYQ6_BOOKCASE_PATERDOMUS_4, new WorldPoint(3411, 3491, 1), "Get Pious proceedings from the bookcase.", piousProceedings);
 		getPiousProceedings.addDialogStep("Yes.");
 
-		var getFromMisthalinToMorytania = new ObjectStep(this, 61302, new WorldPoint(3411, 3492, 1), "Get Misthalin to Morytania from the bookcase.", fromMisthalinToMorytania);
+		var getFromMisthalinToMorytania = new ObjectStep(this, ObjectID.MYQ6_BOOKCASE_PATERDOMUS_1, new WorldPoint(3411, 3492, 1), "Get Misthalin to Morytania from the bookcase.", fromMisthalinToMorytania);
 		getFromMisthalinToMorytania.addDialogStep("Yes.");
 
-		var getScruffyNotebookAndEssiandarsNotes = new ObjectStep(this, 61306, new WorldPoint(3409, 3488, 1), "Get the scruffy notebook and Essiandar's notes from the bookcase.");
+		var getScruffyNotebookAndEssiandarsNotes = new ObjectStep(this, ObjectID.MYQ6_BOOKCASE_PATERDOMUS_5, new WorldPoint(3409, 3488, 1), "Get the scruffy notebook and Essiandar's notes from the bookcase.");
 		getScruffyNotebookAndEssiandarsNotes.addDialogStep("Both.");
 		getScruffyNotebookAndEssiandarsNotes.addDialogStep("Yes.");
 
@@ -1796,36 +1798,36 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cFindTheWritingsPW = cFindTheWritings.puzzleWrapStepWithDefaultText("Find the writings on the first floor of the Paterdomus temple for Ivan Strom.");
 
 		/// 40
-		talkToIvanAfterFindingTheWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after solving the puzzle.");
+		talkToIvanAfterFindingTheWritings = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after solving the puzzle.");
 
 		/// 42
 		readIvandisWritings = new DetailedQuestStep(this, "Read Ivandis' writings.", ivandisWritings.highlighted());
 
 		/// 44
-		talkToIvanAfterReadingIvandisWritings = new NpcStep(this, 15855, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after reading Ivandis' writings.");
+		talkToIvanAfterReadingIvandisWritings = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3417, 3487, 1), "Talk to Ivan Strom after reading Ivandis' writings.");
 
 		/// 46
-		talkToIvanInPaterdomus = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
+		talkToIvanInPaterdomus = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
 
 		/// 48
-		talkToIvanInPaterdomus2 = new NpcStep(this, 15855, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
+		talkToIvanInPaterdomus2 = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3442, 9898, 0), "Stock up on combat gear and supplies, then head to Ivandis' tomb with Ivan Strom.", blisterwoodFlail, combatGear, prayerPotions);
 		talkToIvanInPaterdomus2.addDialogStep("Lead the way.");
 		talkToIvanInPaterdomus.addSubSteps(talkToIvanInPaterdomus2);
 
 		/// 50
 		getToIvandisTomb = new DetailedQuestStep(this, new WorldPoint(3500, 9864, 0), "Get to the Myreque hideout.");
-		investigateHole = new ObjectStep(this, 61193, new WorldPoint(3505, 9857, 0), "Investigate the blockage to the south of the hideout.");
+		investigateHole = new ObjectStep(this, ObjectID.MYQ6_IVANDIS_TOMB_TUNNEL_BLOCKED_INVESTIGATE, new WorldPoint(3505, 9857, 0), "Investigate the blockage to the south of the hideout.");
 
 		/// 52
-		getPickaxe = new NpcStep(this, 15855, new WorldPoint(3505, 9861, 0), "Ask Ivan Strom for a pickaxe.", anyPickaxe);
-		mineHole = new ObjectStep(this, 61194, new WorldPoint(3505, 9857, 0), "Mine the blockage to the south of the hideout.", anyPickaxe);
+		getPickaxe = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3505, 9861, 0), "Ask Ivan Strom for a pickaxe.", anyPickaxe);
+		mineHole = new ObjectStep(this, ObjectID.MYQ6_IVANDIS_TOMB_TUNNEL_BLOCKED_MINE, new WorldPoint(3505, 9857, 0), "Mine the blockage to the south of the hideout.", anyPickaxe);
 		mineHole.addSubSteps(getPickaxe);
 
 		/// 54
-		headThroughHole = new ObjectStep(this, 61195, new WorldPoint(3505, 9857, 0), "Head through the cave entrance to the south of the hideout, ready for a fight.", blisterwoodFlail, combatGear, food, prayerPotions);
+		headThroughHole = new ObjectStep(this, ObjectID.MYQ6_IVANDIS_TOMB_TUNNEL_UNBLOCKED, new WorldPoint(3505, 9857, 0), "Head through the cave entrance to the south of the hideout, ready for a fight.", blisterwoodFlail, combatGear, food, prayerPotions);
 
 		/// 56
-		enterDaeyaltProcessingRoom = new ObjectStep(this, 61197, new WorldPoint(3117, 7472, 2), "Head into the daeyalt processing room through the tunnel to the north-east.", blisterwoodFlail, combatGear, food, prayerPotions);
+		enterDaeyaltProcessingRoom = new ObjectStep(this, ObjectID.MYQ6_MINE_CART_TUNNEL, new WorldPoint(3117, 7472, 2), "Head into the daeyalt processing room through the tunnel to the north-east.", blisterwoodFlail, combatGear, food, prayerPotions);
 
 		/// 58
 		killVampsInDaeyaltRoom = new NpcStep(this, new int[]{16125, 16126, 16137, 16136, 16137}, "Kill vampyres. Focus on the Vyrewatch Sentinels. Avoid the Blood orb. Lure Vyrewatches into the Blood orbs to deal massive damage to them.", blisterwoodFlail, combatGear, food, prayerPotions);
@@ -1833,40 +1835,40 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		/// 60
 		// TODO: who do we actually talk to here. is this a "free the slave" step instead?
-		talkToIvanAfterKillingVamps = new NpcStep(this, 15864, new WorldPoint(3178, 7459, 0), "Talk to Ivan after killing the vampyres.");
+		talkToIvanAfterKillingVamps = new NpcStep(this, NpcID.MYQ6_IVAN_COMBAT_DONE, new WorldPoint(3178, 7459, 0), "Talk to Ivan after killing the vampyres.");
 
 		/// 62
-		enterCastleDrakanCellar = new ObjectStep(this, 61205, new WorldPoint(3182, 7470, 0), "Enter the Castle Drakan cellars through the entry to the north.");
+		enterCastleDrakanCellar = new ObjectStep(this, ObjectID.MYQ6_VAMPYRIFICATION_LAB_CASTLE_EXIT_OP, new WorldPoint(3182, 7470, 0), "Enter the Castle Drakan cellars through the entry to the north.");
 
 		/// 64
-		climbUpToCastleDrakanLobby = new ObjectStep(this, 61207, new WorldPoint(3147, 7578, 0), "Climb up the stairs to the Castle Drakan lobby.");
+		climbUpToCastleDrakanLobby = new ObjectStep(this, ObjectID.MYQ6_CASTLE_DRAKAN_DUNGEON_STAIRS_SOUTH, new WorldPoint(3147, 7578, 0), "Climb up the stairs to the Castle Drakan lobby.");
 
 		/// 66 + 68
 		// TODO(FOR FUTURE ADVENTURERS): Do you _need_ to bring the medallion for this?
-		prayAtShrine = new ObjectStep(this, 61226, new WorldPoint(3168, 7707, 0), "Pray at the shrine to let your Drakan's Medallion teleport you here.", drakansMedallion);
+		prayAtShrine = new ObjectStep(this, ObjectID.MYQ6_CASTLE_DRAKAN_SHRINE_OP, new WorldPoint(3168, 7707, 0), "Pray at the shrine to let your Drakan's Medallion teleport you here.", drakansMedallion);
 
-		enterPortalInCastleDrakanLobby = new ObjectStep(this, 61216, new WorldPoint(3161, 7710, 0), "Click the ominous red portal in the Castle Drakan lobby.", blisterwoodFlail, combatGearMelee);
+		enterPortalInCastleDrakanLobby = new ObjectStep(this, ObjectID.MYQ6_VAMPYRIUM_PORTAL_VIS, new WorldPoint(3161, 7710, 0), "Click the ominous red portal in the Castle Drakan lobby.", blisterwoodFlail, combatGearMelee);
 		enterPortalInCastleDrakanLobby.addDialogStep("Yes.");
 		enterPortalInCastleDrakanLobby.addTeleport(drakansMedallionToCastleDrakan);
 
 		/// 70
 		youAreInVampyrium = enterPortalInCastleDrakanLobby.cutscene();
 
-		enterThroneRoomFromDiningRoom = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 0), "Enter the throne room.");
-		var enterThroneRoomFromStudy = new ObjectStep(this, 61576, new WorldPoint(2358, 7380, 0), "Enter the throne room.");
+		enterThroneRoomFromDiningRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2358, 7366, 0), "Enter the throne room.");
+		var enterThroneRoomFromStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2358, 7380, 0), "Enter the throne room.");
 		enterThroneRoomFromDiningRoom.addSubSteps(enterThroneRoomFromStudy);
 
 		var cHmkEnterThroneRoom = new ConditionalStep(this, enterThroneRoomFromDiningRoom);
 		cHmkEnterThroneRoom.addStep(inDiningRoom, enterThroneRoomFromDiningRoom);
 		cHmkEnterThroneRoom.addStep(inStudy, enterThroneRoomFromStudy);
 
-		investigateThrone = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Investigate the throne.");
-		investigateThroneAgain = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Investigate the throne again.");
+		investigateThrone = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_THRONE, new WorldPoint(2313, 7392, 0), "Investigate the throne.");
+		investigateThroneAgain = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_THRONE, new WorldPoint(2313, 7392, 0), "Investigate the throne again.");
 
-		var pullBust1 = new ObjectStep(this, 61645, new WorldPoint(2317, 7393, 0), "Pull the northern-most bust.");
-		var pullBust2 = new ObjectStep(this, 61648, new WorldPoint(2317, 7392, 0), "Pull the second northern-most bust.");
-		var pullBust3 = new ObjectStep(this, 61651, new WorldPoint(2317, 7391, 0), "Pull the second southern-most bust.");
-		var pullBust4 = new ObjectStep(this, 61654, new WorldPoint(2317, 7390, 0), "Pull the southern-most bust.");
+		var pullBust1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_BUST01_LEVER_DOWN, new WorldPoint(2317, 7393, 0), "Pull the northern-most bust.");
+		var pullBust2 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_BUST02_LEVER_DOWN, new WorldPoint(2317, 7392, 0), "Pull the second northern-most bust.");
+		var pullBust3 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_BUST03_LEVER_DOWN, new WorldPoint(2317, 7391, 0), "Pull the second southern-most bust.");
+		var pullBust4 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_BUST04_LEVER_DOWN, new WorldPoint(2317, 7390, 0), "Pull the southern-most bust.");
 
 		var hmkPullBusts = new ConditionalStep(this, pullBust2, "Pull the busts in the right order.");
 		hmkPullBusts.addStep(needToPullBust3, pullBust3);
@@ -1874,7 +1876,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		hmkPullBusts.addStep(needToPullBust1, pullBust1);
 		hmkPullBustsPW = hmkPullBusts.puzzleWrapStepWithDefaultText("Solve the puzzle in the room.");
 
-		getKeyFromThroneRoom = new ObjectStep(this, 61630, new WorldPoint(2313, 7392, 0), "Head back to the throne room and search the throne for a half moon key.");
+		getKeyFromThroneRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_THRONE, new WorldPoint(2313, 7392, 0), "Head back to the throne room and search the throne for a half moon key.");
 		investigateThroneAgain.addSubSteps(getKeyFromThroneRoom);
 
 		cGetHalfMoonKey = new ConditionalStep(this, cHmkEnterThroneRoom, "\nFind the half moon key.");
@@ -1883,15 +1885,15 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetHalfMoonKey.addStep(and(inThroneRoom, needToGetKey), investigateThroneAgain);
 
 		/// UNCATEGORIZED
-		var searchShelvesForSmallClockHand = new ObjectStep(this, 61752, new WorldPoint(2323, 7387, 0), "Search the shelves for a small clock hand in the room south of the throne room.");
-		var enterRoomSouthOfThroneRoom = new ObjectStep(this, 61587, new WorldPoint(2310, 7386, 0), "Enter the room south of the throne room.");
+		var searchShelvesForSmallClockHand = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_SHELVES, new WorldPoint(2323, 7387, 0), "Search the shelves for a small clock hand in the room south of the throne room.");
+		var enterRoomSouthOfThroneRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_HALF_M, new WorldPoint(2310, 7386, 0), "Enter the room south of the throne room.");
 		cGetSmallClockHand = new ConditionalStep(this, searchShelvesForSmallClockHand, "Find the small clock hand.");
 		cGetSmallClockHand.addStep(and(inVampyriumVarbit, inThroneRoom), enterRoomSouthOfThroneRoom);
 
-		enterThroneRoomFromRoomSouthOfThroneRoom = new ObjectStep(this, 61587, new WorldPoint(2327, 7391, 0), "Enter the throne room.");
-		enterDiningRoomFromThroneRoom = new ObjectStep(this, 61572, new WorldPoint(2304, 7391, 0), "Enter the dining room.");
-		enterHallwayWestOfDiningRoom = new ObjectStep(this, 61586, new WorldPoint(2336, 7370, 0), "Enter the hallway west of the dining room.");
-		enterWestRoomFromHallwayWestOfDiningRoom = new ObjectStep(this, 61572, new WorldPoint(2323, 7395, 0), "Enter the door to the west of the hallway, avoiding the traps on the floor.");
+		enterThroneRoomFromRoomSouthOfThroneRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_HALF_M, new WorldPoint(2327, 7391, 0), "Enter the throne room.");
+		enterDiningRoomFromThroneRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2304, 7391, 0), "Enter the dining room.");
+		enterHallwayWestOfDiningRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_HALF, new WorldPoint(2336, 7370, 0), "Enter the hallway west of the dining room.");
+		enterWestRoomFromHallwayWestOfDiningRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2323, 7395, 0), "Enter the door to the west of the hallway, avoiding the traps on the floor.");
 		enterWestRoomFromHallwayWestOfDiningRoom.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2335, 7396, 0),
 			new WorldPoint(2334, 7396, 0),
@@ -1903,32 +1905,32 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2327, 7395, 0)
 		);
 
-		pickUpTinderbox = new ObjectStep(this, 61691, new WorldPoint(2344, 7387, 0), "Search the sparkling chest for a tinderbox.");
+		pickUpTinderbox = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_TINDERBOX_CRATE, new WorldPoint(2344, 7387, 0), "Search the sparkling chest for a tinderbox.");
 
-		goUpFromStorageRoom = new ObjectStep(this, 61602, new WorldPoint(2340, 7384, 0), "Climb up the stairs.", tinderbox);
+		goUpFromStorageRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SPIRAL_STAIRS_UP, new WorldPoint(2340, 7384, 0), "Climb up the stairs.", tinderbox);
 
 		pickUpExplosiveBarrel = new ItemStep(this, new WorldPoint(2439, 7388, 0), "Pick up the explosive barrel.", explosiveBarrel, tinderbox);
 
-		enterSouthDoorFromExplosiveRoom = new ObjectStep(this, 61573, new WorldPoint(2439, 7384, 0), "Enter the room south of where you picked up the explosive barrel.", explosiveBarrel, tinderbox);
+		enterSouthDoorFromExplosiveRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2439, 7384, 0), "Enter the room south of where you picked up the explosive barrel.", explosiveBarrel, tinderbox);
 
-		searchCrateForDrakanEmblem1 = new ObjectStep(this, 61751, new WorldPoint(2454, 7378, 0), "Search the crate for a drakan emblem.");
+		searchCrateForDrakanEmblem1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_CRATE, new WorldPoint(2454, 7378, 0), "Search the crate for a drakan emblem.");
 
-		exitEmblemRoom1 = new ObjectStep(this, 61572, new WorldPoint(2455, 7381, 0), "Return to the explosive room.", explosiveBarrel, tinderbox, drakanEmblem1);
-		exitEastExplosiveRoom = new ObjectStep(this, 61572, new WorldPoint(2444, 7386, 0), "Exit the explosive room through the east door.", explosiveBarrel, tinderbox, drakanEmblem1);
-		enterNorthDoorInHallwayNextToExplosiveRoom = new ObjectStep(this, 61572, new WorldPoint(2474, 7398, 0), "Enter the northern door in the hallway, avoiding traps on the floor.", explosiveBarrel, tinderbox, drakanEmblem1);
+		exitEmblemRoom1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2455, 7381, 0), "Return to the explosive room.", explosiveBarrel, tinderbox, drakanEmblem1);
+		exitEastExplosiveRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2444, 7386, 0), "Exit the explosive room through the east door.", explosiveBarrel, tinderbox, drakanEmblem1);
+		enterNorthDoorInHallwayNextToExplosiveRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2474, 7398, 0), "Enter the northern door in the hallway, avoiding traps on the floor.", explosiveBarrel, tinderbox, drakanEmblem1);
 		enterNorthDoorInHallwayNextToExplosiveRoom.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2471, 7397, 0),
 			new WorldPoint(2472, 7397, 0),
 			new WorldPoint(2471, 7396, 0),
 			new WorldPoint(2472, 7396, 0)
 		);
-		enterIntoHallwayNorthOfLobbyF1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Enter the room to the north.", explosiveBarrel, tinderbox, drakanEmblem1);
-		var climbUpToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Climb up the stairs.");
+		enterIntoHallwayNorthOfLobbyF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2314, 7382, 1), "Enter the room to the north.", explosiveBarrel, tinderbox, drakanEmblem1);
+		var climbUpToLobbyF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_UP, new WorldPoint(2318, 7371, 0), "Climb up the stairs.");
 		enterIntoHallwayNorthOfLobbyF1.addSubSteps(climbUpToLobbyF1);
 
-		enterUnmarkedNorthDoor = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Enter the northern unmarked door.", explosiveBarrel, tinderbox, drakanEmblem1);
+		enterUnmarkedNorthDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2466, 7422, 0), "Enter the northern unmarked door.", explosiveBarrel, tinderbox, drakanEmblem1);
 
-		placeEmblem1OnReceptacle = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the drakan emblem on the empty receptacle next to the southern door down the hall, avoiding traps on the way.", explosiveBarrel, tinderbox, anyOneEmblemHighlighted);
+		placeEmblem1OnReceptacle = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_EMPTY, new WorldPoint(2469, 7408, 0), "Place the drakan emblem on the empty receptacle next to the southern door down the hall, avoiding traps on the way.", explosiveBarrel, tinderbox, anyOneEmblemHighlighted);
 		placeEmblem1OnReceptacle.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
 			new WorldPoint(2457, 7410, 0),
@@ -1940,9 +1942,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7409, 0)
 		);
 
-		enterVanesculasStudy = new ObjectStep(this, 61576, new WorldPoint(2468, 7407, 0), "Enter Vanescula's study.", explosiveBarrel, tinderbox);
+		enterVanesculasStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2468, 7407, 0), "Enter Vanescula's study.", explosiveBarrel, tinderbox);
 
-		searchCrateInVanesculasStudyForLargeClockHand = new ObjectStep(this, 61751, new WorldPoint(2466, 7370, 0), "Search the crate in the north-west corner of Vanescula's study for a large clock hand.", explosiveBarrel, tinderbox);
+		searchCrateInVanesculasStudyForLargeClockHand = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_CRATE, new WorldPoint(2466, 7370, 0), "Search the crate in the north-west corner of Vanescula's study for a large clock hand.", explosiveBarrel, tinderbox);
 
 		cGetLargeClockHand = new ConditionalStep(this, searchCrateInVanesculasStudyForLargeClockHand);
 		cGetLargeClockHand.addStep(inVanesculasStudy, searchCrateInVanesculasStudyForLargeClockHand);
@@ -1966,8 +1968,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// TODO: is this the correct hand?
 
-		returnToVanesculasHallway = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Return to the dining room.");
-		returnToHallwayNorthOfLobbyF1 = new ObjectStep(this, 61573, new WorldPoint(2452, 7403, 0), "Return to the dining room, avoiding the traps on the floor.");
+		returnToVanesculasHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2474, 7372, 0), "Return to the dining room.");
+		returnToHallwayNorthOfLobbyF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2452, 7403, 0), "Return to the dining room, avoiding the traps on the floor.");
 		returnToHallwayNorthOfLobbyF1.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
 			new WorldPoint(2457, 7410, 0),
@@ -1979,9 +1981,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7409, 0)
 		);
 
-		returnToLobbyF1 = new ObjectStep(this, 61576, new WorldPoint(2457, 7417, 0), "Return to the dining room.");
-		climbDownstairsToLobbyF0 = new ObjectStep(this, 61608, new WorldPoint(2315, 7371, 1), "Return to the dining room.");
-		enterDiningRoomFromLobby = new ObjectStep(this, 61577, new WorldPoint(2327, 7360, 0), "Return to the dining room.");
+		returnToLobbyF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2457, 7417, 0), "Return to the dining room.");
+		climbDownstairsToLobbyF0 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_DOWN_INVISIBLE, new WorldPoint(2315, 7371, 1), "Return to the dining room.");
+		enterDiningRoomFromLobby = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, new WorldPoint(2327, 7360, 0), "Return to the dining room.");
 
 		cGetBackToDiningRoom = new ConditionalStep(this, enterDiningRoomFromLobby);
 		cGetBackToDiningRoom.addStep(inLobbyF1, climbDownstairsToLobbyF0);
@@ -1989,25 +1991,25 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetBackToDiningRoom.addStep(inVanesculasHallway, returnToHallwayNorthOfLobbyF1);
 		cGetBackToDiningRoom.addStep(inVanesculasStudy, returnToVanesculasHallway);
 
-		placeSmallClockHandOnWesternClock = new ObjectStep(this, 61661, new WorldPoint(2344, 7372, 0), "Place the small clock hand on the western Grandfather clock.", smallClockHand.highlighted());
+		placeSmallClockHandOnWesternClock = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CLOCK_BIG_HAND, new WorldPoint(2344, 7372, 0), "Place the small clock hand on the western Grandfather clock.", smallClockHand.highlighted());
 
 
 		var solveWesternClock = new DrakanClockSolver(this, 15514, 11, 15513, 9);
 		solveWesternClockPW = solveWesternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
-		clickWesternClock = new ObjectStep(this, 61658, new WorldPoint(2344, 7372, 0), "Click the western clock.");
+		clickWesternClock = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CLOCK_BOTH_HANDS, new WorldPoint(2344, 7372, 0), "Click the western clock.");
 		clickWesternClock.addDialogStep("Yes.");
 
-		placeLargeClockHandOnEasternClock = new ObjectStep(this, 61660, new WorldPoint(2350, 7372, 0), "Place the large clock hand on the eastern Grandfather clock.", largeClockHand.highlighted());
+		placeLargeClockHandOnEasternClock = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CLOCK_SMALL_HAND, new WorldPoint(2350, 7372, 0), "Place the large clock hand on the eastern Grandfather clock.", largeClockHand.highlighted());
 
 		var solveEasternClock = new DrakanClockSolver(this, 15517, 0, 15515, 4);
 		solveEasternClockPW = solveEasternClock.puzzleWrapStepWithDefaultText("Put the clock hands in the right orientation.");
-		clickEasternClock = new ObjectStep(this, 61658, new WorldPoint(2350, 7372, 0), "Click the eastern clock.");
+		clickEasternClock = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CLOCK_BOTH_HANDS, new WorldPoint(2350, 7372, 0), "Click the eastern clock.");
 		clickEasternClock.addDialogStep("Yes.");
 
 		closeClock = new WidgetStep(this, "Close the clock.", 963, 16);
 		closeEasternClock = new WidgetStep(this, "Close the clock.", 963, 16);
 
-		getEmblem2FromFireplace = new ObjectStep(this, 61662, new WorldPoint(2347, 7372, 0), "Get the emblem from the fireplace in the dining room.");
+		getEmblem2FromFireplace = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DINING_ROOM_FIREPLACE, new WorldPoint(2347, 7372, 0), "Get the emblem from the fireplace in the dining room.");
 		getEmblem2FromFireplace.addDialogStep("Search the fireplace.");
 		cSolveClockPuzzle = new ConditionalStep(this, getEmblem2FromFireplace, "Solve the clock puzzle.");
 		cSolveClockPuzzle.addStep(smallClockHandNeedsReplacing, placeSmallClockHandOnWesternClock);
@@ -2019,11 +2021,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cSolveClockPuzzle.addStep(and(playerAtEasternClock, clockWidgetOpen), closeEasternClock);
 		cSolveClockPuzzle.addStep(easternClockNeedsFixing, clickEasternClock);
 
-		var cmkToLobby = new ObjectStep(this, 61573, new WorldPoint(2342, 7373, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
-		var cmkToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2318, 7371, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
-		var cmkToHallway1 = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
-		cmkToVanesculasHallwayFromHallwayNorthOfLobby = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
-		var cmkToVanesculasStudy = new ObjectStep(this, 61576, new WorldPoint(2468, 7407, 0), "Enter the door to Vanescula's study, avoiding the traps on the floor.", explosiveBarrel, tinderbox);
+		var cmkToLobby = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2342, 7373, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToLobbyF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_UP, new WorldPoint(2318, 7371, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToHallway1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2314, 7382, 1), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		cmkToVanesculasHallwayFromHallwayNorthOfLobby = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2466, 7422, 0), "Head back to Vanescula's study.", explosiveBarrel, tinderbox);
+		var cmkToVanesculasStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2468, 7407, 0), "Enter the door to Vanescula's study, avoiding the traps on the floor.", explosiveBarrel, tinderbox);
 		cmkToVanesculasStudy.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
 			new WorldPoint(2457, 7410, 0),
@@ -2034,43 +2036,43 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7408, 0),
 			new WorldPoint(2460, 7409, 0)
 		);
-		var cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, 61638, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyOneEmblemHighlighted);
+		var cmkPlaceEmblemInVanesculasHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_EMPTY, new WorldPoint(2469, 7408, 0), "Place the emblem in the receptacle in Vanescula's hallway.", anyOneEmblemHighlighted);
 		cmkToVanesculasHallwayFromHallwayNorthOfLobby.addSubSteps(cmkToLobby, cmkToLobbyF1, cmkToHallway1, cmkToVanesculasStudy, cmkPlaceEmblemInVanesculasHallway);
-		cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, 61638, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study.", anyOneEmblemHighlighted);
-		cmkToVanesculasChamber = new ObjectStep(this, 61572, new WorldPoint(2477, 7366, 0), "Enter Vanescula's chamber.", explosiveBarrel, tinderbox);
-		cmkBlowUpWallInVanesculasChamber = new ObjectStep(this, 61613, new WorldPoint(2492, 7364, 0), "Place the explosive barrel on the cracked wall in Vanescula's chamber.", explosiveBarrel.highlighted(), tinderbox);
-		cmkEnterThroughHole = new ObjectStep(this, 61614, new WorldPoint(2492, 7364, 0), "Enter hole in the wall.");
-		cmkTakeEmblem3 = new ObjectStep(this, 61639, new WorldPoint(2486, 7421, 0), "Remove the emblem from the room with the Venator.");
-		cmkLeaveVenatorRoom = new ObjectStep(this, 61614, new WorldPoint(2482, 7412, 0), "Leave the venator room through the hole in the wall.");
-		cmkLeaveVanesculasChamber = new ObjectStep(this, 61573, new WorldPoint(2483, 7368, 0), "Leave Vanescula's chamber.", drakanEmblem3);
-		cmkTakeEmblemFromVanesculasStudy = new ObjectStep(this, 61639, new WorldPoint(2476, 7367, 0), "Take emblem from vanescula's study.", drakanEmblem3);
-		cmkLeaveVanesculasStudy = new ObjectStep(this, 61573, new WorldPoint(2474, 7372, 0), "Leave vanescula's study.", anyTwoEmblemHighlighted);
-		cmkRetrieveThirdEmblem = new ObjectStep(this, 61634, new WorldPoint(2469, 7408, 0), "Remove the third emblem from the receptacle.");
-		cmkPutEmblemInEastDoor = new ObjectStep(this, 61636, new WorldPoint(2476, 7410, 0), "Place an emblem in the empty receptacle by the east wall.", anyThreeEmblemHighlighted);
-		cmkEnterEastDoor = new ObjectStep(this, 61572, new WorldPoint(2477, 7409, 0), "Enter the door to Ranis' hallway.", anyTwoEmblemHighlighted);
-		cmkPutEmblemInRanisHallwayNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Place an emblem in the empty receptacle at the north door.", anyTwoEmblemHighlighted);
-		cmkEnterRanisParlour = new ObjectStep(this, 61576, new WorldPoint(2485, 7405, 0), "Enter Ranis' parlour.");
+		cmkPlaceEmblemInVanesculasStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_EMPTY, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study.", anyOneEmblemHighlighted);
+		cmkToVanesculasChamber = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2477, 7366, 0), "Enter Vanescula's chamber.", explosiveBarrel, tinderbox);
+		cmkBlowUpWallInVanesculasChamber = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_WALL_CRACKED, new WorldPoint(2492, 7364, 0), "Place the explosive barrel on the cracked wall in Vanescula's chamber.", explosiveBarrel.highlighted(), tinderbox);
+		cmkEnterThroughHole = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_WALL_DESTROYED, new WorldPoint(2492, 7364, 0), "Enter hole in the wall.");
+		cmkTakeEmblem3 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_FILLED, new WorldPoint(2486, 7421, 0), "Remove the emblem from the room with the Venator.");
+		cmkLeaveVenatorRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_WALL_DESTROYED, new WorldPoint(2482, 7412, 0), "Leave the venator room through the hole in the wall.");
+		cmkLeaveVanesculasChamber = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2483, 7368, 0), "Leave Vanescula's chamber.", drakanEmblem3);
+		cmkTakeEmblemFromVanesculasStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_FILLED, new WorldPoint(2476, 7367, 0), "Take emblem from vanescula's study.", drakanEmblem3);
+		cmkLeaveVanesculasStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2474, 7372, 0), "Leave vanescula's study.", anyTwoEmblemHighlighted);
+		cmkRetrieveThirdEmblem = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_VANESCULAS_HALLWAY_TO_VANESCULAS_STUDY, new WorldPoint(2469, 7408, 0), "Remove the third emblem from the receptacle.");
+		cmkPutEmblemInEastDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_VANESCULAS_HALLWAY_TO_RANIS_HALLWAY, new WorldPoint(2476, 7410, 0), "Place an emblem in the empty receptacle by the east wall.", anyThreeEmblemHighlighted);
+		cmkEnterEastDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2477, 7409, 0), "Enter the door to Ranis' hallway.", anyTwoEmblemHighlighted);
+		cmkPutEmblemInRanisHallwayNorth = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_RANIS_HALLWAY_TO_RANIS_PARLOUR, new WorldPoint(2486, 7404, 0), "Place an emblem in the empty receptacle at the north door.", anyTwoEmblemHighlighted);
+		cmkEnterRanisParlour = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2485, 7405, 0), "Enter Ranis' parlour.");
 		cmkGetSkull = new DetailedQuestStep(this, new WorldPoint(2471, 7384, 0), "Get the ornate skull from the table in the room.", ornateSkull);
-		cmkLeaveRanisParlourRoom = new ObjectStep(this, 61577, new WorldPoint(2475, 7379, 0), "Leave Ranis' parlour room.", ornateSkull);
-		cmkRemoveEmblemRanisNorth = new ObjectStep(this, 61635, new WorldPoint(2486, 7404, 0), "Remove emblem from the receptacle.", ornateSkull);
-		cmkClimbDownStairsRanisHallway = new ObjectStep(this, 61604, new WorldPoint(2491, 7402, 0), "Climb down the stairs in Ranis' hallway.", ornateSkull, anyTwoEmblemHighlighted);
-		cmkPlaceEmblemDownstairs = new ObjectStep(this, 61632, new WorldPoint(2371, 7410, 0), "Place an emblem in the receptacle to the west, avoiding the traps on the floor.", ornateSkull, anyTwoEmblemHighlighted);
+		cmkLeaveRanisParlourRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, new WorldPoint(2475, 7379, 0), "Leave Ranis' parlour room.", ornateSkull);
+		cmkRemoveEmblemRanisNorth = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_RANIS_HALLWAY_TO_RANIS_PARLOUR, new WorldPoint(2486, 7404, 0), "Remove emblem from the receptacle.", ornateSkull);
+		cmkClimbDownStairsRanisHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SPIRAL_STAIRS_DOWN, new WorldPoint(2491, 7402, 0), "Climb down the stairs in Ranis' hallway.", ornateSkull, anyTwoEmblemHighlighted);
+		cmkPlaceEmblemDownstairs = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_WEST_CHAPEL_HALLWAY_TO_NORTH_CHAPEL_HALLWAY, new WorldPoint(2371, 7410, 0), "Place an emblem in the receptacle to the west, avoiding the traps on the floor.", ornateSkull, anyTwoEmblemHighlighted);
 		cmkPlaceEmblemDownstairs.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2378, 7411, 0),
 			new WorldPoint(2379, 7411, 0),
 			new WorldPoint(2379, 7412, 0),
 			new WorldPoint(2378, 7412, 0)
 		);
-		cmkEnterWestChapelHallway = new ObjectStep(this, 61572, new WorldPoint(2372, 7409, 0), "Enter the west chapel hallway.", ornateSkull, anyOneEmblemHighlighted);
-		cmkPutEmblemInWestChapelHallway = new ObjectStep(this, 61631, new WorldPoint(2370, 7383, 0), "Place an emblem in the empty receptacle by the western door.", anyOneEmblemHighlighted);
-		cmkEnterEmblemGallery = new ObjectStep(this, 61572, new WorldPoint(2369, 7384, 0), "Enter the emblem gallery.");
-		cmkTalkToVeliaf = new NpcStep(this, 15878, new WorldPoint(2379, 7367, 0), "Talk to Veliaf Hurtz in the emblem gallery.");
-		cmkOpenEmblemGalleryChest = new ObjectStep(this, 61681, new WorldPoint(2379, 7372, 0), "Search the chest in the northern part of the emblem gallery where you talked to Veliaf Hurtz.");
+		cmkEnterWestChapelHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2372, 7409, 0), "Enter the west chapel hallway.", ornateSkull, anyOneEmblemHighlighted);
+		cmkPutEmblemInWestChapelHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_EMBLEM_GALLERY_TO_WEST_CHAPEL_HALLWAY, new WorldPoint(2370, 7383, 0), "Place an emblem in the empty receptacle by the western door.", anyOneEmblemHighlighted);
+		cmkEnterEmblemGallery = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2369, 7384, 0), "Enter the emblem gallery.");
+		cmkTalkToVeliaf = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(2379, 7367, 0), "Talk to Veliaf Hurtz in the emblem gallery.");
+		cmkOpenEmblemGalleryChest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GALLERY_CHEST, new WorldPoint(2379, 7372, 0), "Search the chest in the northern part of the emblem gallery where you talked to Veliaf Hurtz.");
 		// TODO: puzzle wrap?
 		cmkArrowChestPuzzleStep = new ArrowChestPuzzleStep(this);
 		cmkArrowChestPuzzleStep.setSolution(1, 2, 1, 3, 3);
 		cmkArrowChestPuzzleStepPW = cmkArrowChestPuzzleStep.puzzleWrapStepWithDefaultText("Solve the chest puzzle.");
-		cmkGetTheKeyFromTheChest = new ObjectStep(this, 61681, new WorldPoint(2379, 7372, 0), "Search the chest in the emblem gallery in Castle Drakan where you first spoke with Veliaf for the Crescent moon key. You will need 3 emblems to get all the way there again.");
+		cmkGetTheKeyFromTheChest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GALLERY_CHEST, new WorldPoint(2379, 7372, 0), "Search the chest in the emblem gallery in Castle Drakan where you first spoke with Veliaf for the Crescent moon key. You will need 3 emblems to get all the way there again.");
 
 		cGetCrescentMoonKey = new ConditionalStep(this, cmkGetTheKeyFromTheChest, "\nGet the Crescent Moon Key.");
 		cGetCrescentMoonKey.addStep(cmkSolvedChestPuzzle, cmkGetTheKeyFromTheChest);
@@ -2107,69 +2109,69 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetCrescentMoonKey.addStep(inDiningRoom, cmkToLobby);
 
 
-		enterEmblemGalleryHallway = new ObjectStep(this, 61593, new WorldPoint(2370, 7370, 0), "Leave the emblem gallery using the western door.");
-		enterRoomBehindLobby = new ObjectStep(this, 61593, new WorldPoint(2325, 7403, 0), "Enter the south-west room, ready to kill a few bugs.");
+		enterEmblemGalleryHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_CRESCENT_M, new WorldPoint(2370, 7370, 0), "Leave the emblem gallery using the western door.");
+		enterRoomBehindLobby = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_CRESCENT_M, new WorldPoint(2325, 7403, 0), "Enter the south-west room, ready to kill a few bugs.");
 		killBugsAndTakeSyringeBarrel = new DetailedQuestStep(this, new WorldPoint(2315, 7418, 0), "Kill the bugs and take the Syringe barrel.", syringeBarrel);
-		searchCrateForVenatorStomach = new ObjectStep(this, 61751, new WorldPoint(2315, 7408, 0), "Search the create in the south-east corner for a venator stomach.", syringeBarrel);
-		retrievePlugFromTheSinkToTheWest = new ObjectStep(this, 61719, new WorldPoint(2308, 7411, 0), "Retrieve the plug from the sink to the west.", syringeBarrel, venatorStomach);
+		searchCrateForVenatorStomach = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_CRATE, new WorldPoint(2315, 7408, 0), "Search the create in the south-east corner for a venator stomach.", syringeBarrel);
+		retrievePlugFromTheSinkToTheWest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_KITCHEN_SINK, new WorldPoint(2308, 7411, 0), "Retrieve the plug from the sink to the west.", syringeBarrel, venatorStomach);
 		retrievePlugFromTheSinkToTheWest.addDialogStep("Remove the plug.");
-		enterLarder = new ObjectStep(this, 61576, new WorldPoint(2309, 7421, 0), "Enter the larder through the north-west door.");
-		useSinkPlugOnSinkInLarder = new ObjectStep(this, 61722, new WorldPoint(2356, 7400, 0), "Put the sink plug into the sink.", sinkPlug.highlighted());
-		turnSinkTapOn = new ObjectStep(this, 61722, new WorldPoint(2356, 7400, 0), "Turn the tap on in the sink.");
+		enterLarder = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2309, 7421, 0), "Enter the larder through the north-west door.");
+		useSinkPlugOnSinkInLarder = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LARDER_SINK, new WorldPoint(2356, 7400, 0), "Put the sink plug into the sink.", sinkPlug.highlighted());
+		turnSinkTapOn = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LARDER_SINK, new WorldPoint(2356, 7400, 0), "Turn the tap on in the sink.");
 		turnSinkTapOn.addDialogStep("Turn the tap on.");
-		takePipe = new ObjectStep(this, 61722, new WorldPoint(2356, 7400, 0), "Take the pipe from the now-broken sink.");
+		takePipe = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LARDER_SINK, new WorldPoint(2356, 7400, 0), "Take the pipe from the now-broken sink.");
 		takePipe.addDialogStep("Yes.");
-		reachBehindCabinetWithPipe = new ObjectStep(this, 61726, new WorldPoint(2360, 7403, 0), "Use the broken pipe on the cabinet to reach behind it.", brokenPipe.highlighted());
-		searchLarderCrateForSyringePlunger = new ObjectStep(this, 61751, new WorldPoint(2358, 7397, 0), "Search the crate for a syringe plunger.");
-		leaveLarder = new ObjectStep(this, 61577, new WorldPoint(2361, 7393, 0), "Return to the Kitchen.");
-		useSharpKnifeOnVenatorCorpse = new ObjectStep(this, 61727, new WorldPoint(2311, 7417, 0), "Use the sharp kitchen knife on the venator corpse.", sharpKitchenKnife.highlighted());
-		getTongsFromVenatorCorpse = new ObjectStep(this, 61727, new WorldPoint(2311, 7417, 0), "Search the venator corpse for tongs.");
-		getNeedleFromSink = new ObjectStep(this, 61719, new WorldPoint(2308, 7411, 0), "Use the tongs on the sink to get a syringe needle.", tongs.highlighted());
+		reachBehindCabinetWithPipe = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LARDER_CABINET, new WorldPoint(2360, 7403, 0), "Use the broken pipe on the cabinet to reach behind it.", brokenPipe.highlighted());
+		searchLarderCrateForSyringePlunger = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_CRATE, new WorldPoint(2358, 7397, 0), "Search the crate for a syringe plunger.");
+		leaveLarder = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, new WorldPoint(2361, 7393, 0), "Return to the Kitchen.");
+		useSharpKnifeOnVenatorCorpse = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_KITCHEN_VENATOR, new WorldPoint(2311, 7417, 0), "Use the sharp kitchen knife on the venator corpse.", sharpKitchenKnife.highlighted());
+		getTongsFromVenatorCorpse = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_KITCHEN_VENATOR, new WorldPoint(2311, 7417, 0), "Search the venator corpse for tongs.");
+		getNeedleFromSink = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_KITCHEN_SINK, new WorldPoint(2308, 7411, 0), "Use the tongs on the sink to get a syringe needle.", tongs.highlighted());
 		assembleSyringe = new DetailedQuestStep(this, "Combine the syringe parts to assemble a syringe.", syringeBarrel.highlighted(), syringePlunger.highlighted(), syringeNeedle.highlighted());
 		drawBloodFromVenatorStomach = new DetailedQuestStep(this, "Use the empty syringe on the venator stomach in your inventory to draw blood from it.", emptySyringe.highlighted(), venatorStomach.highlighted());
-		useSyringeOnChest = new ObjectStep(this, 61683, new WorldPoint(2308, 7415, 0), "Use the full syringe on the chest to receive the left crest half.", fullSyringe.highlighted());
-		getLeftCrestHalfFromKitchenChest = new ObjectStep(this, 61683, new WorldPoint(2308, 7415, 0), "Search the chest in the kitchen for the left crest half.");
+		useSyringeOnChest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_KITCHEN_CHEST, new WorldPoint(2308, 7415, 0), "Use the full syringe on the chest to receive the left crest half.", fullSyringe.highlighted());
+		getLeftCrestHalfFromKitchenChest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_KITCHEN_CHEST, new WorldPoint(2308, 7415, 0), "Search the chest in the kitchen for the left crest half.");
 		getLeftCrestHalfFromKitchenChest.addDialogStep("Yes.");
 
-		leaveKitchen = new ObjectStep(this, 61592, new WorldPoint(2314, 7421, 0), "Leave the kitchen and head to the lobby.", leftHalfOfCrest);
-		enterLobbyFromEmblemGalleryHallway = new ObjectStep(this, 61577, new WorldPoint(2330, 7407, 0), "Enter the lobby.", leftHalfOfCrest);
-		climbDownstairsToLobbyBasement = new ObjectStep(this, 61606, new WorldPoint(2311, 7373, 0), "Climb down to the basement.", leftHalfOfCrest);
-		enterAnotherVenatorRoom = new ObjectStep(this, 61593, new WorldPoint(2570, 7365, 0), "Enter Crescent moon door to your east, ready to kill another Venator. Turn off your protection prayer when it's about to screech.", leftHalfOfCrest);
+		leaveKitchen = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_CRESCENT, new WorldPoint(2314, 7421, 0), "Leave the kitchen and head to the lobby.", leftHalfOfCrest);
+		enterLobbyFromEmblemGalleryHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, new WorldPoint(2330, 7407, 0), "Enter the lobby.", leftHalfOfCrest);
+		climbDownstairsToLobbyBasement = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_DOWN, new WorldPoint(2311, 7373, 0), "Climb down to the basement.", leftHalfOfCrest);
+		enterAnotherVenatorRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_CRESCENT_M, new WorldPoint(2570, 7365, 0), "Enter Crescent moon door to your east, ready to kill another Venator. Turn off your protection prayer when it's about to screech.", leftHalfOfCrest);
 		// I could technically use this varp to see if the venator in that room is dead
 		// [2026-07-05T13:27:48Z 5913] varp CASTLE_DRAKAN_ENEMY_STATUS_2 (5641) 32830 -> 98366
-		killVenator = new NpcStep(this, 16217, new WorldPoint(2569, 7384, 0), "Kill the Venator. Remove your protection prayer when it's about to screech.");
+		killVenator = new NpcStep(this, NpcID.CASTLE_DRAKAN_VENATOR_5, new WorldPoint(2569, 7384, 0), "Kill the Venator. Remove your protection prayer when it's about to screech.");
 
 		// NOTE: This would be very annoying to puzzlewrap, so I'm not doing it. Feel free to change it in a future PR!
-		searchWeaponRackForOneAxe = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for one battleaxe.");
+		searchWeaponRackForOneAxe = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_ARMOURY_WEAPON_CASE, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for one battleaxe.");
 		searchWeaponRackForOneAxe.addDialogStep("Take a battleaxe.");
-		placeBattleAxeOnStatue = new ObjectStep(this, 61743, new WorldPoint(2577, 7380, 0), "Place the battleaxe on the east-most empty statue.", battleAxe.highlighted());
-		getMace1 = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for a mace.");
+		placeBattleAxeOnStatue = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_ARMOURY_STATUE_2, new WorldPoint(2577, 7380, 0), "Place the battleaxe on the east-most empty statue.", battleAxe.highlighted());
+		getMace1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_ARMOURY_WEAPON_CASE, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for a mace.");
 		getMace1.addDialogStep("Take a mace.");
-		getMace2 = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for two maces.");
+		getMace2 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_ARMOURY_WEAPON_CASE, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for two maces.");
 		getMace2.addDialogStep("Take a mace.");
 		getMace2.addSubSteps(getMace1);
-		getSword = new ObjectStep(this, 61741, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for a sword.");
+		getSword = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_ARMOURY_WEAPON_CASE, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for a sword.");
 		getSword.addDialogStep("Take a sword.");
 
-		placeMaceOnStatueN = new ObjectStep(this, 61746, new WorldPoint(2569, 7386, 0), "Place a mace on the second pair of statues from the west.", mace.highlighted());
-		placeMaceOnStatueS = new ObjectStep(this, 61746, new WorldPoint(2569, 7380, 0), "Place a mace on the second pair of statues from the west.", mace.highlighted());
+		placeMaceOnStatueN = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STATUE_UNARMED, new WorldPoint(2569, 7386, 0), "Place a mace on the second pair of statues from the west.", mace.highlighted());
+		placeMaceOnStatueS = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STATUE_UNARMED, new WorldPoint(2569, 7380, 0), "Place a mace on the second pair of statues from the west.", mace.highlighted());
 
-		placeSwordOnStatue = new ObjectStep(this, 61746, new WorldPoint(2565, 7386, 0), "Place a sword on the western empty statue.", sword.highlighted());
+		placeSwordOnStatue = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STATUE_UNARMED, new WorldPoint(2565, 7386, 0), "Place a sword on the western empty statue.", sword.highlighted());
 
 
-		openWeaponPuzzleChest = new ObjectStep(this, 61685, new WorldPoint(2570, 7380, 0), "Search the chest for the right half of a crest.");
+		openWeaponPuzzleChest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_ARMOURY_CHEST, new WorldPoint(2570, 7380, 0), "Search the chest for the right half of a crest.");
 
 		combineCrests = new DetailedQuestStep(this, "Combine the two pieces of crests in your inventory.", leftHalfOfCrest.highlighted(), rightHalfOfCrest.highlighted());
 
-		leaveWithFullCrest1 = new ObjectStep(this, 61592, new WorldPoint(2566, 7387, 0), "Head to the study, north of the throne room.", fullCrest);
-		leaveWithFullCrest2 = new ObjectStep(this, 61600, new WorldPoint(2564, 7362, 0), "Head to the study, north of the throne room.", fullCrest);
-		leaveWithFullCrest3 = new ObjectStep(this, 61577, new WorldPoint(2327, 7360, 0), "Head to the study, north of the throne room.", fullCrest);
-		leaveWithFullCrest4 = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 0), "Head to the study, north of the throne room.", fullCrest);
-		leaveWithFullCrest5 = new ObjectStep(this, 61576, new WorldPoint(2309, 7397, 0), "Head to the study, north of the throne room.", fullCrest);
+		leaveWithFullCrest1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_CRESCENT, new WorldPoint(2566, 7387, 0), "Head to the study, north of the throne room.", fullCrest);
+		leaveWithFullCrest2 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_UP_NORUG, new WorldPoint(2564, 7362, 0), "Head to the study, north of the throne room.", fullCrest);
+		leaveWithFullCrest3 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, new WorldPoint(2327, 7360, 0), "Head to the study, north of the throne room.", fullCrest);
+		leaveWithFullCrest4 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2358, 7366, 0), "Head to the study, north of the throne room.", fullCrest);
+		leaveWithFullCrest5 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2309, 7397, 0), "Head to the study, north of the throne room.", fullCrest);
 		leaveWithFullCrest5.addSubSteps(leaveWithFullCrest1, leaveWithFullCrest2, leaveWithFullCrest3, leaveWithFullCrest4);
-		putFullCrestOnFireplaceInStudy = new ObjectStep(this, 61665, new WorldPoint(2358, 7386, 0), "Place the full crest on the fireplace in the study, north of the throne room.", fullCrest.highlighted());
+		putFullCrestOnFireplaceInStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_PARLOUR_FIREPLACE, new WorldPoint(2358, 7386, 0), "Place the full crest on the fireplace in the study, north of the throne room.", fullCrest.highlighted());
 
-		getNewMoonKeyFromFireplace = new ObjectStep(this, 61665, new WorldPoint(2358, 7386, 0), "Search the fireplace for the new moon key in the study, north of the throne room.");
+		getNewMoonKeyFromFireplace = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_PARLOUR_FIREPLACE, new WorldPoint(2358, 7386, 0), "Search the fireplace for the new moon key in the study, north of the throne room.");
 		getNewMoonKeyFromFireplace.addDialogStep("Yes.");
 
 		cGetNewMoonKey = new ConditionalStep(this, getNewMoonKeyFromFireplace, "\nGet the new moon key.");
@@ -2225,42 +2227,42 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetNewMoonKey.addStep(inEmblemGallery, enterEmblemGalleryHallway);
 
 
-		ggkGoToThroneRoom = new ObjectStep(this, 61576, new WorldPoint(2358, 7380, 0), "Return to the basement.");
-		ggkGoToDiningRoom = new ObjectStep(this, 61573, new WorldPoint(2304, 7392, 0), "Return to the basement.");
-		ggkGoToLobby1 = new ObjectStep(this, 61573, new WorldPoint(2342, 7373, 0), "Return to the basement.");
-		ggkGoToBasement = new ObjectStep(this, 61606, new WorldPoint(2311, 7366, 0), "Return to the basement.");
+		ggkGoToThroneRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2358, 7380, 0), "Return to the basement.");
+		ggkGoToDiningRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2304, 7392, 0), "Return to the basement.");
+		ggkGoToLobby1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2342, 7373, 0), "Return to the basement.");
+		ggkGoToBasement = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_DOWN, new WorldPoint(2311, 7366, 0), "Return to the basement.");
 		ggkGoToBasement.addSubSteps(ggkGoToThroneRoom, ggkGoToDiningRoom, ggkGoToLobby1);
-		ggkEnterBasementNorthRoom = new ObjectStep(this, 61584, new WorldPoint(2570, 7369, 0), "Enter through the new moon door to the north to free Safalaan and Vanescula.");
+		ggkEnterBasementNorthRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_NEW, new WorldPoint(2570, 7369, 0), "Enter through the new moon door to the north to free Safalaan and Vanescula.");
 		ggkWatchTheCutscene = ggkEnterBasementNorthRoom.cutscene();
 		ggkTakeGibbousMoonKey = new DetailedQuestStep(this, new WorldPoint(2573, 7395, 0), "Take the gibbous moon key from the bench.", gibbousMoonKey);
-		ggkReturnToBasementHallway = new ObjectStep(this, 61585, new WorldPoint(2566, 7394, 0), "Leave the prison.");
-		ggkReturnToLobbyF0 = new ObjectStep(this, 61600, new WorldPoint(2564, 7369, 0), "Climb up the stairs to the ground floor lobby.");
-		ggkClimbUpToLobbyF1 = new ObjectStep(this, 61599, new WorldPoint(2315, 7370, 0), "Climb up the stairs to the first floor of the lobby.");
-		ggkEnterLobbyF1GibbousMoonDoor = new ObjectStep(this, 61588, new WorldPoint(2327, 7360, 1), "Enter the gibbous moon door to the south-east.");
-		ggkEnterEastDoor = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 1), "Enter the door to the east.");
-		ggkEnterSouthDoor = new ObjectStep(this, 61572, new WorldPoint(2306, 7386, 1), "Enter the door to the south.");
-		ggkEnterSouthEastDoor = new ObjectStep(this, 61572, new WorldPoint(2442, 7361, 0), "Enter the south-east door, avoiding the traps on the floor.");
+		ggkReturnToBasementHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_NEW_M, new WorldPoint(2566, 7394, 0), "Leave the prison.");
+		ggkReturnToLobbyF0 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_UP_NORUG, new WorldPoint(2564, 7369, 0), "Climb up the stairs to the ground floor lobby.");
+		ggkClimbUpToLobbyF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_UP, new WorldPoint(2315, 7370, 0), "Climb up the stairs to the first floor of the lobby.");
+		ggkEnterLobbyF1GibbousMoonDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS, new WorldPoint(2327, 7360, 1), "Enter the gibbous moon door to the south-east.");
+		ggkEnterEastDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2358, 7366, 1), "Enter the door to the east.");
+		ggkEnterSouthDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2306, 7386, 1), "Enter the door to the south.");
+		ggkEnterSouthEastDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2442, 7361, 0), "Enter the south-east door, avoiding the traps on the floor.");
 		ggkEnterSouthEastDoor.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2438, 7363, 0),
 			new WorldPoint(2438, 7364, 0),
 			new WorldPoint(2439, 7363, 0),
 			new WorldPoint(2439, 7364, 0)
 		);
-		ggkGetOrnateKnife = new ObjectStep(this, 61751, new WorldPoint(2454, 7372, 0), "Search the eastern crate for an ornate knife.");
-		ggkPullLeverInOrnateKnifeRoom = new ObjectStep(this, 61776, new WorldPoint(2449, 7371, 0), "Pull the lever to the west.");
+		ggkGetOrnateKnife = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_CRATE, new WorldPoint(2454, 7372, 0), "Search the eastern crate for an ornate knife.");
+		ggkPullLeverInOrnateKnifeRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_TELEPORT_LEVER_GUEST_CHAMBER_STOREROOM, new WorldPoint(2449, 7371, 0), "Pull the lever to the west.");
 
 
-		ggkEnterUpperStoreroomPortal = new ObjectStep(this, 61771, new WorldPoint(2450, 7372, 0), "Enter the portal to the guest chamber storeroom.");
+		ggkEnterUpperStoreroomPortal = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_TELEPORTER_GUEST_CHAMBER_STOREROOM_TO_UPPER_STOREROOM, new WorldPoint(2450, 7372, 0), "Enter the portal to the guest chamber storeroom.");
 
 
-		ggkLeaveGuestChamberStoreroom = new ObjectStep(this, 61589, new WorldPoint(2522, 7397, 0), "Leave the guest chamber storeroom.");
+		ggkLeaveGuestChamberStoreroom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS_M, new WorldPoint(2522, 7397, 0), "Leave the guest chamber storeroom.");
 
-		ggkEnterRoomWithVenator = new ObjectStep(this, 61588, new WorldPoint(2510, 7370, 0), "Enter Gibbous moon door, ready to fight another Venator.");
+		ggkEnterRoomWithVenator = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS, new WorldPoint(2510, 7370, 0), "Enter Gibbous moon door, ready to fight another Venator.");
 		ggkKillVenator = new NpcStep(this, new int[]{NpcID.CASTLE_DRAKAN_VENATOR, NpcID.CASTLE_DRAKAN_VENATOR_2, NpcID.CASTLE_DRAKAN_VENATOR_3, NpcID.CASTLE_DRAKAN_VENATOR_4, NpcID.CASTLE_DRAKAN_VENATOR_5}, new WorldPoint(2522, 7368, 0), "Kill the Venator.");
 
 
-		ggkpLightFireplace = new ObjectStep(this, 61730, new WorldPoint(2521, 7371, 0), "Light the fireplace.", tinderbox);
-		ggkpSearchChest = new ObjectStep(this, 61734, new WorldPoint(2526, 7371, 0), "Search the chest.");
+		ggkpLightFireplace = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LOWERNIEL_FIREPLACE, new WorldPoint(2521, 7371, 0), "Light the fireplace.", tinderbox);
+		ggkpSearchChest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LOWERNIEL_CHEST, new WorldPoint(2526, 7371, 0), "Search the chest.");
 
 		ggkpTryOpenLockbox = new DetailedQuestStep(this, "Open the small lockbox.", smallLockbox.highlighted());
 
@@ -2268,31 +2270,31 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		ggkpSolveLockboxPuzzlePW = ggkpSolveLockboxPuzzle.puzzleWrapStepWithDefaultText("Solve the lockbox puzzle.");
 
 
-		ggkpPlaceFancyGemInHead = new ObjectStep(this, 61687, new WorldPoint(2531, 7367, 0), "Place the fancy gem on the venator head.", fancyGem1.highlighted());
+		ggkpPlaceFancyGemInHead = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_VENATOR_HEAD, new WorldPoint(2531, 7367, 0), "Place the fancy gem on the venator head.", fancyGem1.highlighted());
 
 		ggkpSolveDoorPuzzle = new ChestCodeStep(this, "door", "SPEAR", 10, 1, 1, 1, 3, 0);
 		ggkpSolveDoorPuzzlePW = ggkpSolveDoorPuzzle.puzzleWrapStepWithDefaultText("Solve the door puzzle.");
 
-		ggkpEnterSouthWestDoor = new ObjectStep(this, 61625, new WorldPoint(2519, 7363, 0), "Enter the south-west door.");
+		ggkpEnterSouthWestDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LOWERNIEL_LIBRARY_DOOR, new WorldPoint(2519, 7363, 0), "Enter the south-west door.");
 
 		ggkSolvePuzzle = new ConditionalStep(this, ggkpLightFireplace, "\nSolve the room puzzle.", ornateSkull, ornateKnife);
 
 
-		ggkpSearchBookcaseForBook = new ObjectStep(this, 61757, new WorldPoint(2549, 7381, 0), "Search the south-western bookcase.");
+		ggkpSearchBookcaseForBook = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_BOOKCASE_4, new WorldPoint(2549, 7381, 0), "Search the south-western bookcase.");
 
 
 		ggkpOpenMysteriousBook = new DetailedQuestStep(this, "Open the mysterious book.", mysteriousBook.highlighted());
 
-		ggkpLeaveLibrary = new ObjectStep(this, 61577, new WorldPoint(2551, 7387, 0), "Leave the library.", fancyGem2);
+		ggkpLeaveLibrary = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, new WorldPoint(2551, 7387, 0), "Leave the library.", fancyGem2);
 
-		ggkpPlaceFancyGemInHead2 = new ObjectStep(this, 61687, new WorldPoint(2531, 7367, 0), "Place the fancy gem on the venator head.", fancyGem2.highlighted());
+		ggkpPlaceFancyGemInHead2 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_VENATOR_HEAD, new WorldPoint(2531, 7367, 0), "Place the fancy gem on the venator head.", fancyGem2.highlighted());
 
 
-		ggkpSearchVenatorHead = new ObjectStep(this, 61687, new WorldPoint(2531, 7367, 0), "Search the venator head for the ornate hourglass.");
+		ggkpSearchVenatorHead = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_VENATOR_HEAD, new WorldPoint(2531, 7367, 0), "Search the venator head for the ornate hourglass.");
 		ggkpSearchVenatorHead.addDialogStep("Yes.");
 
 
-		ggkpLeavePuzzleRoom = new ObjectStep(this, 61589, new WorldPoint(2515, 7367, 0), "Leave via the western gibbous moon door.", ornateHourglass);
+		ggkpLeavePuzzleRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS_M, new WorldPoint(2515, 7367, 0), "Leave via the western gibbous moon door.", ornateHourglass);
 
 		ggkSolvePuzzle.addStep(and(inVenatorPuzzleRoom, ornateHourglass), ggkpLeavePuzzleRoom);
 		ggkSolvePuzzle.addStep(venatorHeadBothEyePlaced, ggkpSearchVenatorHead);
@@ -2314,9 +2316,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// Varbit went to 0b111 after placing skull
 
 
-		ggkPlaceItemsOnDisplayCase = new ObjectStep(this, 61672, new WorldPoint(2497, 7374, 0), "Place the items on the display case.", ornateHourglass.highlighted(), ornateKnife.highlighted(), ornateSkull.highlighted());
+		ggkPlaceItemsOnDisplayCase = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GALLERY_DISPLAY_CASE, new WorldPoint(2497, 7374, 0), "Place the items on the display case.", ornateHourglass.highlighted(), ornateKnife.highlighted(), ornateSkull.highlighted());
 
-		ggkSearchDisplayCaseForGildedKey = new ObjectStep(this, 61672, new WorldPoint(2497, 7374, 0), "Search the display case for the gilded key.");
+		ggkSearchDisplayCaseForGildedKey = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GALLERY_DISPLAY_CASE, new WorldPoint(2497, 7374, 0), "Search the display case for the gilded key.");
 		ggkSearchDisplayCaseForGildedKey.addDialogStep("Yes.");
 
 		cGetGildedAndGibbousKeys = new ConditionalStep(this, ggkSearchDisplayCaseForGildedKey, "\nGet the gilded and gibbous keys.");
@@ -2346,29 +2348,29 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetGildedAndGibbousKeys.addStep(inStudy, ggkGoToThroneRoom);
 
 
-		fmkClimbDownstairsFromDisplayCase = new ObjectStep(this, 61609, new WorldPoint(2503, 7369, 0), "Climb down the stairs to the first floor of the lobby.");
-		fmkGoThroughLobbyF1NorthDoor = new ObjectStep(this, 61572, new WorldPoint(2314, 7382, 1), "Enter the northern door.");
-		fmkEnterGildedDoorToWest = new ObjectStep(this, 61627, new WorldPoint(2452, 7420, 0), "Enter the gilded door to your west - avoid the bugs.");
-		fmkNorthWest = new ObjectStep(this, 61573, new WorldPoint(2441, 7417, 0), "Enter the north-western door, ready to kill another Venator.");
+		fmkClimbDownstairsFromDisplayCase = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_DOWN_INVISIBLE_1X3, new WorldPoint(2503, 7369, 0), "Climb down the stairs to the first floor of the lobby.");
+		fmkGoThroughLobbyF1NorthDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2314, 7382, 1), "Enter the northern door.");
+		fmkEnterGildedDoorToWest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GILDED_LIBRARY_DOOR_M, new WorldPoint(2452, 7420, 0), "Enter the gilded door to your west - avoid the bugs.");
+		fmkNorthWest = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_M, new WorldPoint(2441, 7417, 0), "Enter the north-western door, ready to kill another Venator.");
 
 
-		fmkKillVenator = new NpcStep(this, 16213, new WorldPoint(2456, 7392, 0), "Kill the Venator.");
+		fmkKillVenator = new NpcStep(this, NpcID.CASTLE_DRAKAN_VENATOR, new WorldPoint(2456, 7392, 0), "Kill the Venator.");
 
-		fmkTalkToIvan1 = new NpcStep(this, 15855, new WorldPoint(2455, 7388, 0), "Talk to Ivan Strom after killing the Venator.");
+		fmkTalkToIvan1 = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(2455, 7388, 0), "Talk to Ivan Strom after killing the Venator.");
 
 
 		fmkGildedBookPuzzle = new GildedBookPuzzle(this);
 		fmkGildedBookPuzzlePW = fmkGildedBookPuzzle.puzzleWrapStepWithDefaultText("Rearrange the books to the correct order.");
 
-		fmkGetGildedBook = new ObjectStep(this, 61756, new WorldPoint(2455, 7395, 0), "Search the northern bookcase for the gilded book.");
+		fmkGetGildedBook = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_BOOKCASE_3, new WorldPoint(2455, 7395, 0), "Search the northern bookcase for the gilded book.");
 
-		fmkUseGildedBookOnWesternGildedBookcase = new ObjectStep(this, 61692, new WorldPoint(2451, 7391, 0), "Inspect the western bookcase.", gildedBook.highlighted());
+		fmkUseGildedBookOnWesternGildedBookcase = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GILDED_BOOKCASE, new WorldPoint(2451, 7391, 0), "Inspect the western bookcase.", gildedBook.highlighted());
 
 
-		fmkClickGildedBookcase = new ObjectStep(this, 61692, new WorldPoint(2451, 7391, 0), "Click the gilded bookcase to start rearranging the books.");
+		fmkClickGildedBookcase = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GILDED_BOOKCASE, new WorldPoint(2451, 7391, 0), "Click the gilded bookcase to start rearranging the books.");
 		fmkClickGildedBookcase.addDialogStep("Yes.");
 
-		fmkEnterSecretPassage = new ObjectStep(this, 61615, new WorldPoint(2455, 7386, 0), "Enter the secret passage to the south.");
+		fmkEnterSecretPassage = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LIBRARY_PASSAGE, new WorldPoint(2455, 7386, 0), "Enter the secret passage to the south.");
 
 
 		fmkTakeFullMoonKey = new DetailedQuestStep(this, new WorldPoint(2433, 7416, 0), "Take the full moon key from the table.", fullMoonKey.highlighted());
@@ -2388,11 +2390,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cGetFullMoonKey.addStep(inRoomOutsideGuestChamberStoreroom, fmkClimbDownstairsFromDisplayCase);
 
 
-		skLeaveEastDoor = new ObjectStep(this, 61572, new WorldPoint(2438, 7419, 0), "Leave the secret room through the eastern door.");
-		skLeaveGildedDoor = new ObjectStep(this, 61626, new WorldPoint(2445, 7418, 0), "Enter the north-western gilded door.");
-		skEnterScratchedDoor = new ObjectStep(this, 61576, new WorldPoint(2466, 7422, 0), "Enter the scratched door on the northern wall to your east.");
+		skLeaveEastDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2438, 7419, 0), "Leave the secret room through the eastern door.");
+		skLeaveGildedDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_GILDED_LIBRARY_DOOR, new WorldPoint(2445, 7418, 0), "Enter the north-western gilded door.");
+		skEnterScratchedDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT, new WorldPoint(2466, 7422, 0), "Enter the scratched door on the northern wall to your east.");
 
-		skEnterEasternDoor = new ObjectStep(this, 61572, new WorldPoint(2477, 7409, 0), "Enter the eastern door, avoiding the traps on the floor.");
+		skEnterEasternDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2477, 7409, 0), "Enter the eastern door, avoiding the traps on the floor.");
 		skEnterEasternDoor.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2457, 7409, 0),
 			new WorldPoint(2457, 7410, 0),
@@ -2404,83 +2406,83 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			new WorldPoint(2460, 7409, 0)
 		);
 
-		skClimbDownStairs = new ObjectStep(this, 61604, new WorldPoint(2491, 7402, 0), "Climb down the stairs in Ranis' hallway.");
-		skEnterWesternDoor = new ObjectStep(this, 61572, new WorldPoint(2372, 7409, 0), "Enter the western door, avoiding the traps on the floor.");
+		skClimbDownStairs = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SPIRAL_STAIRS_DOWN, new WorldPoint(2491, 7402, 0), "Climb down the stairs in Ranis' hallway.");
+		skEnterWesternDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2372, 7409, 0), "Enter the western door, avoiding the traps on the floor.");
 		skEnterWesternDoor.addTileMarkers(SpriteID.PvpwIcons.DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING,
 			new WorldPoint(2378, 7411, 0),
 			new WorldPoint(2379, 7411, 0),
 			new WorldPoint(2379, 7412, 0),
 			new WorldPoint(2378, 7412, 0)
 		);
-		skEnterEastFullMoonDoor = new ObjectStep(this, 61591, new WorldPoint(2373, 7392, 0), "Enter the full moon door to your east.");
+		skEnterEastFullMoonDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_FULL_M, new WorldPoint(2373, 7392, 0), "Enter the full moon door to your east.");
 
 
 		// TODO: Should this use a puzzle wrapper step? Probably, but it will require re-organizing these steps into a conditional step which is _scary_
 		// requires 4 inv slots
-		skGetCloudyGreyPotion = new ObjectStep(this, 61706, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
+		skGetCloudyGreyPotion = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_SHELVES, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
 		skGetCloudyGreyPotion.addDialogStep("Take a cloudy grey potion.");
-		skGetWeightlessBlackPotion = new ObjectStep(this, 61706, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
+		skGetWeightlessBlackPotion = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_SHELVES, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
 		skGetWeightlessBlackPotion.addDialogStep("Take a weightless black potion.");
-		skGetThickRedPotion = new ObjectStep(this, 61706, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
+		skGetThickRedPotion = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_SHELVES, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
 		skGetThickRedPotion.addDialogStep("Take a thick red potion.");
-		skGetColdBluishWhitePotion = new ObjectStep(this, 61706, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
+		skGetColdBluishWhitePotion = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_SHELVES, new WorldPoint(2380, 7396, 0), "Search Shelves, taking one of each bottle.");
 		skGetColdBluishWhitePotion.addDialogStep("Take a cold bluish-white potion.");
 		skGetCloudyGreyPotion.addSubSteps(skGetWeightlessBlackPotion, skGetThickRedPotion, skGetColdBluishWhitePotion);
 
-		smokeBasin = new ObjectStep(this, 61702, new WorldPoint(2380, 7385, 0), "Pour the cloudy grey potion into the south-west basin.", cloudyGreyPotion.highlighted());
-		iceBasin = new ObjectStep(this, 61705, new WorldPoint(2387, 7384, 0), "Pour the cold bluish-white potion into the south-east basin.", coldBlueishWhitePotion.highlighted());
-		shadowBasin = new ObjectStep(this, 61703, new WorldPoint(2387, 7389, 0), "Pour the weightless black potion into the north-east basin.", weightlessBlackPotion.highlighted());
-		bloodBasin = new ObjectStep(this, 61704, new WorldPoint(2380, 7389, 0), "Pour the thick red potion into the north-west basin.", thickRedPotion.highlighted());
+		smokeBasin = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_SMOKE_BASIN, new WorldPoint(2380, 7385, 0), "Pour the cloudy grey potion into the south-west basin.", cloudyGreyPotion.highlighted());
+		iceBasin = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_ICE_BASIN, new WorldPoint(2387, 7384, 0), "Pour the cold bluish-white potion into the south-east basin.", coldBlueishWhitePotion.highlighted());
+		shadowBasin = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_SHADOW_BASIN, new WorldPoint(2387, 7389, 0), "Pour the weightless black potion into the north-east basin.", weightlessBlackPotion.highlighted());
+		bloodBasin = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_BLOOD_BASIN, new WorldPoint(2380, 7389, 0), "Pour the thick red potion into the north-west basin.", thickRedPotion.highlighted());
 
 
-		skSearchAltarForAncientSymbol = new ObjectStep(this, 61701, new WorldPoint(2382, 7393, 0), "Search the altar for an ancient symbol.");
+		skSearchAltarForAncientSymbol = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_CHAPEL_ALTAR, new WorldPoint(2382, 7393, 0), "Search the altar for an ancient symbol.");
 
-		skEnterEastDoorFromBottleRoom = new ObjectStep(this, 61590, new WorldPoint(2388, 7383, 0), "Enter the south-east door.");
-
-
-		skPullLever = new ObjectStep(this, 61778, new WorldPoint(2393, 7372, 0), "Pull the lever.");
+		skEnterEastDoorFromBottleRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_FULL, new WorldPoint(2388, 7383, 0), "Enter the south-east door.");
 
 
-		skEnterPortal = new ObjectStep(this, 61773, new WorldPoint(2393, 7370, 0), "Enter the portal to the servants quarters.");
+		skPullLever = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_TELEPORT_LEVER_CHAPEL_LIBRARY, new WorldPoint(2393, 7372, 0), "Pull the lever.");
 
 
-		skLeaveServantsQuarters = new ObjectStep(this, 61585, new WorldPoint(2438, 7394, 0), "Leave the servants quarters.");
-
-		skLeaveExplosiveRoom = new ObjectStep(this, 61572, new WorldPoint(2444, 7386, 0), "Enter the eastern door.");
-
-		skLeaveExplosiveRoomHallway = new ObjectStep(this, 61572, new WorldPoint(2474, 7398, 0), "Enter northern door to the first floor of the lobby.");
-
-		skLeaveLobbyF1 = new ObjectStep(this, 61588, new WorldPoint(2327, 7360, 1), "Enter the gibbous moon door to the south-east.");
-
-		skLeaveDiningRoomF1 = new ObjectStep(this, 61572, new WorldPoint(2358, 7366, 1), "Enter the eastern door.");
-
-		skLeaveThroneRoomF1 = new ObjectStep(this, 61590, new WorldPoint(2306, 7397, 1), "Enter the northern full moon door.");
+		skEnterPortal = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_TELEPORTER_CHAPEL_LIBRARY_TO_SERVANTS_QUARTERS, new WorldPoint(2393, 7370, 0), "Enter the portal to the servants quarters.");
 
 
-		skGetAncientShield = new ObjectStep(this, 61751, new WorldPoint(2439, 7378, 0), "Search the crate to the north for the ancient shield.");
+		skLeaveServantsQuarters = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_NEW_M, new WorldPoint(2438, 7394, 0), "Leave the servants quarters.");
+
+		skLeaveExplosiveRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2444, 7386, 0), "Enter the eastern door.");
+
+		skLeaveExplosiveRoomHallway = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2474, 7398, 0), "Enter northern door to the first floor of the lobby.");
+
+		skLeaveLobbyF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS, new WorldPoint(2327, 7360, 1), "Enter the gibbous moon door to the south-east.");
+
+		skLeaveDiningRoomF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2358, 7366, 1), "Enter the eastern door.");
+
+		skLeaveThroneRoomF1 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_FULL, new WorldPoint(2306, 7397, 1), "Enter the northern full moon door.");
+
+
+		skGetAncientShield = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SEARCHABLE_CRATE, new WorldPoint(2439, 7378, 0), "Search the crate to the north for the ancient shield.");
 
 
 		skCombineAncientShieldAndAncientSymbol = new DetailedQuestStep(this, "Combine the ancient shield and ancient symbol.", ancientShield.highlighted(), ancientSymbol.highlighted());
 
 
-		skLeaveStudy = new ObjectStep(this, 61591, new WorldPoint(2434, 7372, 0), "Leave the study.");
+		skLeaveStudy = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_FULL_M, new WorldPoint(2434, 7372, 0), "Leave the study.");
 
-		skLeaveThroneRoomF1Again = new ObjectStep(this, 61577, new WorldPoint(2304, 7392, 1), "Return to the first floor of the lobby.");
+		skLeaveThroneRoomF1Again = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, new WorldPoint(2304, 7392, 1), "Return to the first floor of the lobby.");
 
-		skLeaveDiningRoomF1Again = new ObjectStep(this, 61588, new WorldPoint(2342, 7373, 1), "Return to the first floor of the lobby.");
+		skLeaveDiningRoomF1Again = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS, new WorldPoint(2342, 7373, 1), "Return to the first floor of the lobby.");
 		skLeaveThroneRoomF1Again.addSubSteps(skLeaveDiningRoomF1Again);
 
-		skLeaveLobbyF1Again = new ObjectStep(this, 61599, new WorldPoint(2308, 7365, 1), "Climb up to the display case room.");
+		skLeaveLobbyF1Again = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_STAIRS_UP, new WorldPoint(2308, 7365, 1), "Climb up to the display case room.");
 
-		skEnterGibbousMoonDoor = new ObjectStep(this, 61588, new WorldPoint(2510, 7370, 0), "Enter the eastern gibbous moon door.");
+		skEnterGibbousMoonDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS, new WorldPoint(2510, 7370, 0), "Enter the eastern gibbous moon door.");
 
-		skEnterFullMoonDoor = new ObjectStep(this, 61590, new WorldPoint(2525, 7363, 0), "Enter the south-eastern full moon door.");
-
-
-		skUseShieldOnEmptyMount = new ObjectStep(this, 61698, new WorldPoint(2543, 7361, 0), "Use the shield with symbol on the empty mount on the southern wall.", shieldWithSymbol.highlighted());
+		skEnterFullMoonDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_FULL, new WorldPoint(2525, 7363, 0), "Enter the south-eastern full moon door.");
 
 
-		skGetSolidKey = new ObjectStep(this, 61698, new WorldPoint(2543, 7361, 0), "Search the mounted shield for the solid key.");
+		skUseShieldOnEmptyMount = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SHIELD_MOUNT, new WorldPoint(2543, 7361, 0), "Use the shield with symbol on the empty mount on the southern wall.", shieldWithSymbol.highlighted());
+
+
+		skGetSolidKey = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_SHIELD_MOUNT, new WorldPoint(2543, 7361, 0), "Search the mounted shield for the solid key.");
 		skGetSolidKey.addDialogStep("Yes.");
 
 
@@ -2528,15 +2530,15 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 
 		// if you follow the guide, this is the last position you'll use the key
-		dtsLeaveSolidKeyRoom = new ObjectStep(this, 61590, new WorldPoint(2541, 7374, 0), "Leave the room through the full moon door to the north.");
-		dtsLeavePuzzleRoom = new ObjectStep(this, 61589, new WorldPoint(2515, 7367, 0), "Leave the room through the gibbous door to the west.");
-		dtsLeaveDisplayCaseRoom = new ObjectStep(this, 61590, new WorldPoint(2510, 7379, 0), "Enter the full moon door to the north-east.");
+		dtsLeaveSolidKeyRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_FULL, new WorldPoint(2541, 7374, 0), "Leave the room through the full moon door to the north.");
+		dtsLeavePuzzleRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS_M, new WorldPoint(2515, 7367, 0), "Leave the room through the gibbous door to the west.");
+		dtsLeaveDisplayCaseRoom = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_MOON_FULL, new WorldPoint(2510, 7379, 0), "Enter the full moon door to the north-east.");
 
 
-		dtsOpenSolidDoor = new ObjectStep(this, 61575, new WorldPoint(2503, 7400, 0), "Enter the solid door to the east.");
+		dtsOpenSolidDoor = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_SOLID_M, new WorldPoint(2503, 7400, 0), "Enter the solid door to the east.");
 
 
-		dtsSearchShelvesForSupplies = new ObjectStep(this, 61708, new WorldPoint(2513, 7387, 0), "Search the shelves for 2 vials of water, 3 vials of blood, and 3 pure essence. You can destroy all keys, the tinderbox, and the pickaxe to make room in your inventory.", vialsOfWater2, vialsOfBlood3, pureEssence3);
+		dtsSearchShelvesForSupplies = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_SHELVES, new WorldPoint(2513, 7387, 0), "Search the shelves for 2 vials of water, 3 vials of blood, and 3 pure essence. You can destroy all keys, the tinderbox, and the pickaxe to make room in your inventory.", vialsOfWater2, vialsOfBlood3, pureEssence3);
 		dtsSearchShelvesForSuppliesWater = dtsSearchShelvesForSupplies.copy();
 		dtsSearchShelvesForSuppliesWater.addDialogStep("Take a vial of water.");
 		dtsSearchShelvesForSuppliesBlood = dtsSearchShelvesForSupplies.copy();
@@ -2545,23 +2547,23 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		dtsSearchShelvesForSuppliesEssence.addDialogStep("Take a piece of pure essence.");
 
 
-		makeFirstVial = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the first vial.", vialOfBlood.highlighted(), pureEssence.highlighted());
-		makeFirstVialEssence = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the first vial.", pureEssence.highlighted());
-		makeFirstVialBlood = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the first vial.", vialOfBlood.highlighted());
+		makeFirstVial = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the first vial.", vialOfBlood.highlighted(), pureEssence.highlighted());
+		makeFirstVialEssence = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the first vial.", pureEssence.highlighted());
+		makeFirstVialBlood = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the first vial.", vialOfBlood.highlighted());
 
-		makeSecondVial = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the second vial.", vialOfBlood.highlighted(), pureEssence.highlighted());
-		makeSecondVialEssence = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the second vial.", pureEssence.highlighted());
-		makeSecondVialBlood = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the second vial.", vialOfBlood.highlighted());
+		makeSecondVial = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the second vial.", vialOfBlood.highlighted(), pureEssence.highlighted());
+		makeSecondVialEssence = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the second vial.", pureEssence.highlighted());
+		makeSecondVialBlood = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and pure essence on the refiner to make the second vial.", vialOfBlood.highlighted());
 
-		makeThirdVial = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and vial of water on the refiner to make the third vial.", vialOfBlood.highlighted(), vialOfWater.highlighted());
-		makeThirdVialBlood = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and vial of water on the refiner to make the third vial.", vialOfBlood.highlighted());
-		makeThirdVialWater = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and vial of water on the refiner to make the third vial.", vialOfWater.highlighted());
+		makeThirdVial = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and vial of water on the refiner to make the third vial.", vialOfBlood.highlighted(), vialOfWater.highlighted());
+		makeThirdVialBlood = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and vial of water on the refiner to make the third vial.", vialOfBlood.highlighted());
+		makeThirdVialWater = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a vial of blood and vial of water on the refiner to make the third vial.", vialOfWater.highlighted());
 
-		makeFourthVial = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", pureEssence.highlighted(), vialOfWater.highlighted());
-		makeFourthVialEssence = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", pureEssence.highlighted());
-		makeFourthVialWater = new ObjectStep(this, 61709, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", vialOfWater.highlighted());
+		makeFourthVial = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", pureEssence.highlighted(), vialOfWater.highlighted());
+		makeFourthVialEssence = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", pureEssence.highlighted());
+		makeFourthVialWater = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_REFINER, new WorldPoint(2520, 7385, 0), "Combine a pure essence and vial of water on the refiner to make the fourth vial.", vialOfWater.highlighted());
 
-		pourAllVialsIntoTheBasin = new ObjectStep(this, 61707, new WorldPoint(2518, 7389, 0), "Pour all the chemical vials into the basin.", chemicalVial.highlighted());
+		pourAllVialsIntoTheBasin = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_LAB_BASIN, new WorldPoint(2518, 7389, 0), "Pour all the chemical vials into the basin.", chemicalVial.highlighted());
 
 
 		cDestroyingTheStockpileLaboratoryStep = new ConditionalStep(this, dtsSearchShelvesForSupplies, "\nFill the basin to the north until it reads 53. If something has gone wrong, overfill the basin and start over.");
@@ -2585,9 +2587,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		cDestroyingTheStockpileLaboratoryStepPW = cDestroyingTheStockpileLaboratoryStep.puzzleWrapStepWithDefaultText("Solve the puzzle in this room.");
 
-		dtsLeaveLaboratory = new ObjectStep(this, 61572, new WorldPoint(2523, 7389, 0), "Enter the now-unlocked door to the north-east.");
+		dtsLeaveLaboratory = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR, new WorldPoint(2523, 7389, 0), "Enter the now-unlocked door to the north-east.");
 
-		dtsDestroyBloodStockpile = new ObjectStep(this, 61711, new WorldPoint(2535, 7385, 0), "Destroy the blood stockpile.");
+		dtsDestroyBloodStockpile = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_BLOOD_STOCKPILE, new WorldPoint(2535, 7385, 0), "Destroy the blood stockpile.");
 		dtsWatchTheCutscene = dtsDestroyBloodStockpile.cutscene();
 
 		cDestroyingTheStockpile = new ConditionalStep(this, dtsDestroyBloodStockpile, "\nFind and destroy the stockpile.");
@@ -2601,13 +2603,13 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cDestroyingTheStockpile.addStep(inSolidKeyRoom, dtsLeaveSolidKeyRoom);
 
 		/// 80
-		tryToLeave = new ObjectStep(this, 61221, new WorldPoint(2323, 7370, 0), "");
+		tryToLeave = new ObjectStep(this, ObjectID.MYQ6_VAMPYRIUM_RETURN_PORTAL, new WorldPoint(2323, 7370, 0), "");
 		vampyriumCastleDrakanDestroyedBloodStockpile = new DetailedQuestStep(this, "Watch the cutscene.");
 		cVampyriumCastleDrakanDestroyedBloodStockpile = new ConditionalStep(this, tryToLeave, "Try to leave Castle Drakan through the portal.");
 		cVampyriumCastleDrakanDestroyedBloodStockpile.addStep(inCutscene, vampyriumCastleDrakanDestroyedBloodStockpile);
 
 		/// 82
-		leaveCastleDrakan = new ObjectStep(this, 61595, new WorldPoint(2332, 7370, 0), "Leave Castle Drakan.");
+		leaveCastleDrakan = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_DOOR_TO_OUTSIDE_OPEN, new WorldPoint(2332, 7370, 0), "Leave Castle Drakan.");
 		watchLeaveCastleDrakanCutscene = leaveCastleDrakan.cutscene();
 
 
@@ -2616,73 +2618,73 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		pickupCrankWheelFromWhereYouDied = new DetailedQuestStep(this, "Pick up the crank wheel from where you died!", crankWheel);
 		pickupCrankWheelFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
 		pickupCrankWheel.addSubSteps(pickupCrankWheelFromWhereYouDied);
-		crankWheel1 = new ObjectStep(this, 61852, new WorldPoint(2588, 7855, 0), "Spam click the crank base outside the house to the north west. Drakan will start chasing you. Run away if he gets too close.", crankWheel);
-		enterHouseNextToCrankWheel = new ObjectStep(this, 61844, new WorldPoint(2587, 7857, 0), "Enter the house north of the crank base.");
+		crankWheel1 = new ObjectStep(this, ObjectID.SANGVESTI_FANCY_HOUSE_CRANK_BASE, new WorldPoint(2588, 7855, 0), "Spam click the crank base outside the house to the north west. Drakan will start chasing you. Run away if he gets too close.", crankWheel);
+		enterHouseNextToCrankWheel = new ObjectStep(this, ObjectID.SANGVESTI_FANCY_HOUSE_3_DOOR, new WorldPoint(2587, 7857, 0), "Enter the house north of the crank base.");
 
-		searchBookCase = new ObjectStep(this, 61818, new WorldPoint(2585, 7861, 0), "Search the bookshelf in the house north of the crank base for a dusty book, then read it to retrieve the vitur key.");
+		searchBookCase = new ObjectStep(this, ObjectID.SANGVESTI_BOOKSHELF_2, new WorldPoint(2585, 7861, 0), "Search the bookshelf in the house north of the crank base for a dusty book, then read it to retrieve the vitur key.");
 		readDustyBook = new DetailedQuestStep(this, "Read the dusty book and retrieve the vitur key.", dustyBook.highlighted());
 		pickupViturKeyFromWhereYouDied = new DetailedQuestStep(this, "Pick up the vitur key from where you died!", viturKey);
 		pickupViturKeyFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
 		searchBookCase.addSubSteps(pickupViturKeyFromWhereYouDied);
 
-		leaveBookcaseHouse = new ObjectStep(this, 61844, new WorldPoint(2587, 7857, 0), "Leave the bookcase house and enter the north-eastern vitur manor.", viturKeyForBoltCutterHouse);
-		openViturDoorEastOfBookcaseHouse = new ObjectStep(this, 61834, new WorldPoint(2612, 7853, 0), "Enter the north-eastern vitur manor.", viturKeyForBoltCutterHouse);
+		leaveBookcaseHouse = new ObjectStep(this, ObjectID.SANGVESTI_FANCY_HOUSE_3_DOOR, new WorldPoint(2587, 7857, 0), "Leave the bookcase house and enter the north-eastern vitur manor.", viturKeyForBoltCutterHouse);
+		openViturDoorEastOfBookcaseHouse = new ObjectStep(this, ObjectID.SANGVESTI_VITUR_MANOR_DOOR, new WorldPoint(2612, 7853, 0), "Enter the north-eastern vitur manor.", viturKeyForBoltCutterHouse);
 
 		pickupBoltCuttersFromWhereYouDied = new DetailedQuestStep(this, "Pick up the bolt cutters from where you died!", boltCutters);
 		pickupBoltCuttersFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
-		searchShedBoltCutter = new ObjectStep(this, 61858, new WorldPoint(2616, 7855, 0), "Enter the north-eastern vitur manor and search the shed in the north-eastern room for a pair of bolt cutters.");
+		searchShedBoltCutter = new ObjectStep(this, ObjectID.SANGVESTI_SHED, new WorldPoint(2616, 7855, 0), "Enter the north-eastern vitur manor and search the shed in the north-eastern room for a pair of bolt cutters.");
 		searchShedBoltCutter.addSubSteps(leaveBookcaseHouse, openViturDoorEastOfBookcaseHouse, pickupBoltCuttersFromWhereYouDied);
 		var boltCutterShedCombinationLock = new ChestCodeStep(this, "shed", "TOOLS", 10, 8, 2, 9, 1, 2);
 		boltCutterShedCombinationLockPW = boltCutterShedCombinationLock.puzzleWrapStepWithDefaultText("Solve the shed puzzle.");
 
-		leaveBoltCutterHouse = new ObjectStep(this, 61835, new WorldPoint(2612, 7852, 0), "Enter the building east of the altar and pick up the tooth half of key from the table.", boltCutters, viturKeyForToothHalfOfKeyHouse);
-		enterToothHalfOfKeyHouse = new ObjectStep(this, 61838, new WorldPoint(2598, 7843, 0), "Enter the building east of the altar and pick up the tooth half of key from the table.", viturKeyForToothHalfOfKeyHouse);
+		leaveBoltCutterHouse = new ObjectStep(this, ObjectID.SANGVESTI_VITUR_MANOR_DOOR_M, new WorldPoint(2612, 7852, 0), "Enter the building east of the altar and pick up the tooth half of key from the table.", boltCutters, viturKeyForToothHalfOfKeyHouse);
+		enterToothHalfOfKeyHouse = new ObjectStep(this, ObjectID.SANGVESTI_FOOD_SHOP_DOOR, new WorldPoint(2598, 7843, 0), "Enter the building east of the altar and pick up the tooth half of key from the table.", viturKeyForToothHalfOfKeyHouse);
 		// TODO: I do not have a "pick up tooth half of key from where you died" step.
 		pickupToothHalfOfKey = new DetailedQuestStep(this, new WorldPoint(2600, 7845, 0), "Enter the building east of the altar and pick up the tooth half of key from the table.", toothHalfOfKey);
 		pickupToothHalfOfKey.addSubSteps(leaveBoltCutterHouse, enterToothHalfOfKeyHouse);
 
-		openChainedDoor = new ObjectStep(this, 61840, new WorldPoint(2590, 7818, 0), "Enter the house with the chained door, south of the well, and pick up the loop half of key from the table.", boltCutters, toothHalfOfKey);
+		openChainedDoor = new ObjectStep(this, ObjectID.SANGVESTI_CLOTHES_SHOP_DOOR, new WorldPoint(2590, 7818, 0), "Enter the house with the chained door, south of the well, and pick up the loop half of key from the table.", boltCutters, toothHalfOfKey);
 		// TODO: I do not have a "pick up loop half of key from where you died" step.
 		pickupLoopHalfOfKey = new DetailedQuestStep(this, new WorldPoint(2588, 7816, 0), "Enter the house with the chained door, south of the well, and pick up the loop half of key from the table.", loopHalfOfKey);
 		pickupLoopHalfOfKey.addSubSteps(openChainedDoor);
 
 		makeMyrmelKey = new DetailedQuestStep(this, "Combine the loop and tooth half of key into the myrmel key.", loopHalfOfKey.highlighted(), toothHalfOfKey.highlighted());
 
-		enterBucketHouse = new ObjectStep(this, 61825, new WorldPoint(2599, 7826, 0), "Pick up the bucket from the house with the myrmel door, east of the well.", myrmelKeyForBucketHouse);
+		enterBucketHouse = new ObjectStep(this, ObjectID.SANGVESTI_PUB_DOOR, new WorldPoint(2599, 7826, 0), "Pick up the bucket from the house with the myrmel door, east of the well.", myrmelKeyForBucketHouse);
 		pickupBucket = new DetailedQuestStep(this, new WorldPoint(2596, 7833, 0), "Pick up the bucket from the house with the myrmel door, east of the well.", bucket);
 		pickupBucket.addSubSteps(enterBucketHouse);
 
-		useBucketOnWell = new ObjectStep(this, 60892, new WorldPoint(2592, 7825, 0), "Use the bucket on the well outside the house.", bucket.highlighted());
-		enterBucketHouseAgain = new ObjectStep(this, 61825, new WorldPoint(2599, 7826, 0), "Return to the myrmel house with the bucket of water.", bucketOfWater);
+		useBucketOnWell = new ObjectStep(this, ObjectID.WELL_DRAKAN01_RUINED01, new WorldPoint(2592, 7825, 0), "Use the bucket on the well outside the house.", bucket.highlighted());
+		enterBucketHouseAgain = new ObjectStep(this, ObjectID.SANGVESTI_PUB_DOOR, new WorldPoint(2599, 7826, 0), "Return to the myrmel house with the bucket of water.", bucketOfWater);
 
 		// NOTE: After doing this step, there is a tick where it goes back to being confused, because the dialog is slow
 		// TODO: There's no "pick up shadum key from where you died" step.
-		useBucketOfWaterOnNorthernBarrel = new ObjectStep(this, 61811, new WorldPoint(2592, 7833, 0), "Use the bucket of water on the northern barrel to retrieve the shadum key.", bucketOfWater.highlighted());
+		useBucketOfWaterOnNorthernBarrel = new ObjectStep(this, ObjectID.SANGVESTI_PUB_BARREL_3, new WorldPoint(2592, 7833, 0), "Use the bucket of water on the northern barrel to retrieve the shadum key.", bucketOfWater.highlighted());
 
 		pickupTrapdoorKeyFromWhereYouDied = new DetailedQuestStep(this, "Pick up the trapdoor key from where you died!", trapdoorKey);
 		pickupTrapdoorKeyFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
-		enterShadumDoor = new ObjectStep(this, 61832, new WorldPoint(2614, 7814, 0), "Enter the shadum door south-west of the drawbridge and pick up the trapdoor key.", shadumKeyForTrapdoorHouse);
+		enterShadumDoor = new ObjectStep(this, ObjectID.SANGVESTI_FANCY_HOUSE_1_DOOR, new WorldPoint(2614, 7814, 0), "Enter the shadum door south-west of the drawbridge and pick up the trapdoor key.", shadumKeyForTrapdoorHouse);
 		pickupTrapdoorKey = new DetailedQuestStep(this, new WorldPoint(2619, 7812, 0), "Pick up the trapdoor key from the shadum house south-west of the drawbridge.", trapdoorKey);
 		pickupTrapdoorKey.addSubSteps(enterShadumDoor, pickupTrapdoorKeyFromWhereYouDied);
 
-		enterBank = new ObjectStep(this, 61829, new WorldPoint(2580, 7835, 0), "Enter the bank north-west of the well.", myrmelKeyForBank, trapdoorKey, crankWheelForBank);
+		enterBank = new ObjectStep(this, ObjectID.SANGVESTI_BANK_DOOR, new WorldPoint(2580, 7835, 0), "Enter the bank north-west of the well.", myrmelKeyForBank, trapdoorKey, crankWheelForBank);
 
-		operateBankCrank = new ObjectStep(this, 61853, new WorldPoint(2582, 7834, 0), "Spam click the crank base in the bank.", trapdoorKey, crankWheelForBank);
+		operateBankCrank = new ObjectStep(this, ObjectID.SANGVESTI_BANK_CRANK_BASE, new WorldPoint(2582, 7834, 0), "Spam click the crank base in the bank.", trapdoorKey, crankWheelForBank);
 
-		enterTrapdoor = new ObjectStep(this, 61848, new WorldPoint(2579, 7830, 0), "Enter the trapdoor.", trapdoorKey);
+		enterTrapdoor = new ObjectStep(this, ObjectID.SANGVESTI_TRAPDOOR, new WorldPoint(2579, 7830, 0), "Enter the trapdoor.", trapdoorKey);
 
 
 		pickupJovkaiKeyFromWhereYouDied = new DetailedQuestStep(this, "Pick up the jovkai key from where you died!", jovkaiKey);
 		pickupJovkaiKeyFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
-		searchAltarChest = new ObjectStep(this, 61807, new WorldPoint(2576, 7846, 0), "Search the chest in the western room of the altar house.");
-		enterAltarHouseThroughDoor = new ObjectStep(this, 61847, new WorldPoint(2581, 7842, 0), "Search the chest in the western room of the altar house.");
+		searchAltarChest = new ObjectStep(this, ObjectID.SANGVESTI_CHAPEL_CHEST, new WorldPoint(2576, 7846, 0), "Search the chest in the western room of the altar house.");
+		enterAltarHouseThroughDoor = new ObjectStep(this, ObjectID.SANGVESTI_CHAPEL_BACK_DOOR_2, new WorldPoint(2581, 7842, 0), "Search the chest in the western room of the altar house.");
 		searchAltarChest.addSubSteps(enterAltarHouseThroughDoor, pickupJovkaiKeyFromWhereYouDied);
 
 		var solveAltarChestLock = new ChestCodeStep(this, "altar chest", "35158", 10, 3, 5, 1, 5, 8);
 		solveAltarChestLockPW = solveAltarChestLock.puzzleWrapStepWithDefaultText("Solve the chest puzzle.");
 
-		leaveAltarThroughDoor = new ObjectStep(this, 61847, new WorldPoint(2581, 7842, 0), "Leave the altar room, then head to the smithy in the south-west.", jovkaiKey);
-		enterSmith = new ObjectStep(this, 61821, new WorldPoint(2580, 7812, 0), "Enter the smithy in the south-west.", jovkaiKey);
+		leaveAltarThroughDoor = new ObjectStep(this, ObjectID.SANGVESTI_CHAPEL_BACK_DOOR_2, new WorldPoint(2581, 7842, 0), "Leave the altar room, then head to the smithy in the south-west.", jovkaiKey);
+		enterSmith = new ObjectStep(this, ObjectID.SANGVESTI_BLACKSMITH_DOOR, new WorldPoint(2580, 7812, 0), "Enter the smithy in the south-west.", jovkaiKey);
 
 		pickupOldCogFromWhereYouDied = new DetailedQuestStep(this, "Pick up the old cog from where you died!", oldCog);
 		pickupOldCogFromWhereYouDied.setWorldPointVarp(VarPlayerID.SANGVESTI_PLAYER_LAST_DEATH_POS);
@@ -2690,33 +2692,33 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		pickupOldCog = new DetailedQuestStep(this, new WorldPoint(2582, 7817, 0), "Pick up the old cog from the table in the smithy in the south-west.", oldCog);
 		pickupOldCog.addSubSteps(enterSmith, pickupOldCogFromWhereYouDied);
 
-		returnToVanescula = new NpcStep(this, 15909, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east. Drakan will chase you when you leave the smithy.", oldCog);
+		returnToVanescula = new NpcStep(this, NpcID.MYQ6_VANESCULA_VIS, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east. Drakan will chase you when you leave the smithy.", oldCog);
 
-		talkToIvanForSupplies = new NpcStep(this, 15856, new WorldPoint(2636, 7825, 0), "Return to Vanescula by the drawbridge and talk to Ivan Strom for some supplies. You can drop the bucket.");
+		talkToIvanForSupplies = new NpcStep(this, NpcID.MYQ6_IVAN_DEPOSIT, new WorldPoint(2636, 7825, 0), "Return to Vanescula by the drawbridge and talk to Ivan Strom for some supplies. You can drop the bucket.");
 		talkToIvanForSupplies.addDialogStep("Could I have those supplies you found?");
 
-		returnToVanesculaReadyToLeave = new NpcStep(this, 15909, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east when you're ready to leave. Drakan will chase you through the woods. Dodge his attacks, protect from melee.", oldCog);
+		returnToVanesculaReadyToLeave = new NpcStep(this, NpcID.MYQ6_VANESCULA_VIS, new WorldPoint(2633, 7830, 0), "Return to Vanescula by the drawbridge to the south-east when you're ready to leave. Drakan will chase you through the woods. Dodge his attacks, protect from melee.", oldCog);
 		returnToVanesculaReadyToLeave.addSubSteps(talkToIvanForSupplies);
 
 		/// 88
 		watchCutsceneRepairedBridge = returnToVanesculaReadyToLeave.cutscene();
 
 		/// 90
-		fightDrakan1 = new NpcStep(this, 16211, new WorldPoint(2711, 7847, 0), "Learn to fight Drakan. Protect from melee and dodge his attacks. During this tutorial segment, there will be glimmering sparks that attempt to show you where to click to dodge his attacks.");
+		fightDrakan1 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_1, new WorldPoint(2711, 7847, 0), "Learn to fight Drakan. Protect from melee and dodge his attacks. During this tutorial segment, there will be glimmering sparks that attempt to show you where to click to dodge his attacks.");
 
 		/// 92
 		flee1WatchTheCutscene = fightDrakan1.cutscene();
-		resupplyIfNeeded = new ObjectStep(this, 61941, new WorldPoint(2843, 7646, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees around you to continue.");
+		resupplyIfNeeded = new ObjectStep(this, ObjectID.MYQ6_SOTFA_FOREST_RESUPPLY_SHELTER, new WorldPoint(2843, 7646, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees around you to continue.");
 		fightDrakan1.addSubSteps(resupplyIfNeeded);
 
 		/// 94
-		resupplyIfNeeded2 = new ObjectStep(this, 61047, new WorldPoint(2951, 7821, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees to continue.");
+		resupplyIfNeeded2 = new ObjectStep(this, ObjectID.DARKWOOD_TREE_DOORWAY01, new WorldPoint(2951, 7821, 0), "Resupply at the shelter remains in the middle. When you've resupplied, click the trees to continue.");
 
 		// TODO: instruct on their swapping
 		sotfa1 = new NpcStep(this, new int[]{16229, 16230, 16231, 16232}, new WorldPoint(2961, 7851, 0), "Kill the ancient feral vyres. They swap positions and heal, so try to focus one at a time.", true);
-		sotfa1Exit = new ObjectStep(this, 61047, new WorldPoint(2960, 7864, 0), "Enter Darkwood trees to continue.");
+		sotfa1Exit = new ObjectStep(this, ObjectID.DARKWOOD_TREE_DOORWAY01, new WorldPoint(2960, 7864, 0), "Enter Darkwood trees to continue.");
 
-		var takeAxe = new ObjectStep(this, 61961, new WorldPoint(2960, 7890, 0), "Take the axe from the stump at the beginning.");
+		var takeAxe = new ObjectStep(this, ObjectID.DARKWOOD_TREE_STUMP_AXE01, new WorldPoint(2960, 7890, 0), "Take the axe from the stump at the beginning.");
 
 		// [2026-07-12T13:54:14Z 14140] varbit SOTFA_FOREST_ENCOUNTER_COMPLETED (15605) 0 -> 1 = feral vyres
 
@@ -2755,7 +2757,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// Climb over tree 8 from west
 		var ts7_13 = TreeSolver.createStep(this, 2984, 7917, TreeType.Stump, Direction.WEST);
 
-		var tsFinalStep = new ObjectStep(this, 61047, new WorldPoint(2993, 7924, 0), "Turn off run before continuing.");
+		var tsFinalStep = new ObjectStep(this, ObjectID.DARKWOOD_TREE_DOORWAY01, new WorldPoint(2993, 7924, 0), "Turn off run before continuing.");
 
 		sotfa2 = new ConditionalStep(this, tsFinalStep, "Make your way through the tangle of trees to the darkwood trees in the north-east, chopping down and climbing over trees on the way. Trees can only be chopped once per direction.");
 		sotfa2.addStep(and(ts1Zone, not(anyAxe)), takeAxe);
@@ -2782,34 +2784,34 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// NOTE: This is a _dangerous_ step. Hardcore ironmen should be careful. If we add an indicator for dangerous steps in the future, this one should be marked.
 		// TODO: I'd love to maybe add a custom icon on each, or number.
-		sotfa3AvoidAnimals = new NpcStep(this, 16233, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.", true);
+		sotfa3AvoidAnimals = new NpcStep(this, NpcID.SOTFA_FOREST_MAXILLA_BEAST, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.", true);
 		// avoidAnimals.addTileMarkers(SpriteID.LOAD, new WorldPoint(2914, 7920, 0));
-		sotfa3Exit = new ObjectStep(this, 61992, new WorldPoint(2928, 7892, 0), "Leave through the cave in the south-east.");
+		sotfa3Exit = new ObjectStep(this, ObjectID.SOTFA_CAVE_ENTRANCE_OP, new WorldPoint(2928, 7892, 0), "Leave through the cave in the south-east.");
 		sotfa3Exit.setOverlayText("Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
 		cSotfa3 = new ConditionalStep(this, sotfa3AvoidAnimals);
 		cSotfa3.addStep(nearSotfa3Exit, sotfa3Exit);
 
-		sotfa4 = new ObjectStep(this, 61995, new WorldPoint(2993, 7866, 0), "Continue through the cave.");
+		sotfa4 = new ObjectStep(this, ObjectID.SOTFA_CAVE_EXIT_OP, new WorldPoint(2993, 7866, 0), "Continue through the cave.");
 
 		// nylocas room
 		// TODO: Because it takes a little bit for the Nylocas to spawn, we immediately direct the user to the exit while they can't actually leave.
 		// Is it possible to solve this? There's no varbit that denotes success
-		sotfa5 = new NpcStep(this, 16236, "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage.", true);
+		sotfa5 = new NpcStep(this, NpcID.SOTFA_FOREST_NYLOCAS_FIGHTING_MELEE, "Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage.", true);
 		sotfa5.addAlternateNpcs(16237);
 		sotfa5.addCustomIcon(new QuestStepIcon(ItemID.DRAGON_SCIMITAR, 16236, 0.75));
 		sotfa5.addCustomIcon(new QuestStepIcon(ItemID.SOTFA_FOREST_TALON, 16237, 0.75));
 		// TODO: For some reason, the npc condition failed to detect more npcs at some point. Not sure what happened, but a few ticks later the npcs were highlighted.
-		sotfa5Exit = new ObjectStep(this, 61047, new WorldPoint(2912, 7852, 0), "When all nylocas are dead, leave through the trees.");
+		sotfa5Exit = new ObjectStep(this, ObjectID.DARKWOOD_TREE_DOORWAY01, new WorldPoint(2912, 7852, 0), "When all nylocas are dead, leave through the trees.");
 		sotfa5Exit.setOverlayText("Kill the nylocas. Gray ones with melee, yellow ones with a ranged weapon. You can pick up the Spine near the Venator corpse to use as darts. If you do not kill them fast enough, they explode dealing 15 damage. When all are dead, leave through the trees.");
 		cSotfa5 = new ConditionalStep(this, sotfa5);
 		cSotfa5.addStep(not(anyNearbyNylocas), sotfa5Exit);
 
 
-		sotfa6WrangleSnakes = new NpcStep(this, 16238, "Wrangle the snakes, then combine them into one long snake. You must stand behind the snake when attempting to wrangle it.", true, deadSnake3);
+		sotfa6WrangleSnakes = new NpcStep(this, NpcID.SOTFA_FOREST_BLOOD_SERPENT, "Wrangle the snakes, then combine them into one long snake. You must stand behind the snake when attempting to wrangle it.", true, deadSnake3);
 		sotfa6CombineSnakes = new DetailedQuestStep(this, "Combine the snakes into one long snake.", deadSnake3.highlighted());
-		sotfa6UseRopeOnBranch = new ObjectStep(this, 61951, new WorldPoint(3042, 7895, 0), "Use the serpent rope on the long branched tree.", serpentRope.highlighted());
-		sotfa6SwingAcrossWater = new ObjectStep(this, 61949, new WorldPoint(3040, 7894, 0), "Swing across the water with your newly created swing.");
-		sotfa6Exit = new ObjectStep(this, 61047, new WorldPoint(3041, 7885, 0), "Leave through the trees.");
+		sotfa6UseRopeOnBranch = new ObjectStep(this, ObjectID.SOTFA_FOREST_ROPESWING_TREE_BODY, new WorldPoint(3042, 7895, 0), "Use the serpent rope on the long branched tree.", serpentRope.highlighted());
+		sotfa6SwingAcrossWater = new ObjectStep(this, ObjectID.SOTFA_FOREST_ROPESWING_TREE, new WorldPoint(3040, 7894, 0), "Swing across the water with your newly created swing.");
+		sotfa6Exit = new ObjectStep(this, ObjectID.DARKWOOD_TREE_DOORWAY01, new WorldPoint(3041, 7885, 0), "Leave through the trees.");
 		sotfaWatchTheCutscene = sotfa6Exit.cutscene();
 		cSotfa6 = new ConditionalStep(this, sotfa6WrangleSnakes);
 		cSotfa6.addStep(acrossSotfa6Pond, sotfa6Exit);
@@ -2818,101 +2820,101 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cSotfa6.addStep(deadSnake3, sotfa6CombineSnakes);
 
 		/// 98
-		talkToMysteriousWoman1 = new NpcStep(this, 15953, new WorldPoint(2975, 7704, 0), "Talk to the Mysterious Woman.");
+		talkToMysteriousWoman1 = new NpcStep(this, NpcID.MYQ6_EFARITAY_SUGADINTI_BRIDGE, new WorldPoint(2975, 7704, 0), "Talk to the Mysterious Woman.");
 		mysteriousWomanWatchTheCutscene = talkToMysteriousWoman1.cutscene();
 
 		/// 100
-		startTalkingToEfaritay = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow in the west room to help her with her son.");
+		startTalkingToEfaritay = new NpcStep(this, NpcID.MYQ6_EFARITAY_VIS, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow in the west room to help her with her son.");
 
 		/// 102 + 104 + 106 + 108
-		leavePalace1 = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Pick some amitire leaves from the amitire plant outside the palace.");
-		pickFromAmitirePlant = new ObjectStep(this, 62135, new WorldPoint(2982, 7679, 0), "Pick some amitire leaves from the amitire plant outside the palace.");
+		leavePalace1 = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_EXIT, new WorldPoint(3167, 7860, 1), "Pick some amitire leaves from the amitire plant outside the palace.");
+		pickFromAmitirePlant = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_VINES, new WorldPoint(2982, 7679, 0), "Pick some amitire leaves from the amitire plant outside the palace.");
 		pickFromAmitirePlant.addSubSteps(leavePalace1);
 
-		enterPalace1 = new ObjectStep(this, 62144, new WorldPoint(2974, 7677, 0), "Enter the palace with the amitire leaves.", amitireLeaves);
+		enterPalace1 = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_ENTRY, new WorldPoint(2974, 7677, 0), "Enter the palace with the amitire leaves.", amitireLeaves);
 
-		searchShelvesForBowl = new ObjectStep(this, 62070, new WorldPoint(3159, 7824, 1), "Search the shelves next to the sink for a bowl.", amitireLeaves);
+		searchShelvesForBowl = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_SHELVES, new WorldPoint(3159, 7824, 1), "Search the shelves next to the sink for a bowl.", amitireLeaves);
 		searchShelvesForBowl.addSubSteps(enterPalace1);
 
-		fillBowlWithWater = new ObjectStep(this, 62097, new WorldPoint(3157, 7825, 1), "Fill the bowl with water.", amitireLeaves, bowl.highlighted());
+		fillBowlWithWater = new ObjectStep(this, ObjectID.MYQ6_KITCHEN01_SINK01, new WorldPoint(3157, 7825, 1), "Fill the bowl with water.", amitireLeaves, bowl.highlighted());
 
-		getPotatoFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take a potato from the cupboard.", amitireLeaves, bowlOfWater);
+		getPotatoFromCupboard = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_CUPBOARD, new WorldPoint(3155, 7832, 1), "Take a potato from the cupboard.", amitireLeaves, bowlOfWater);
 		getPotatoFromCupboard.addDialogStep("Potato.");
 
 		combineStew = new DetailedQuestStep(this, "Put the potato in the bowl of water.", amitireLeaves, bowlOfWater.highlighted(), potato.highlighted());
 
-		getRawMeatFromCupboard = new ObjectStep(this, 62072, new WorldPoint(3155, 7832, 1), "Take some raw meat the cupboard.", amitireLeaves, incompleteStew);
+		getRawMeatFromCupboard = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_CUPBOARD, new WorldPoint(3155, 7832, 1), "Take some raw meat the cupboard.", amitireLeaves, incompleteStew);
 		getRawMeatFromCupboard.addDialogStep("Raw meat.");
 
-		cookMeatOnRange = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the raw meat on the range.", amitireLeaves, incompleteStew, rawMeat.highlighted());
+		cookMeatOnRange = new ObjectStep(this, ObjectID.DARKM_POOR_RANGE, new WorldPoint(3160, 7826, 1), "Cook the raw meat on the range.", amitireLeaves, incompleteStew, rawMeat.highlighted());
 		cookMeatOnRange.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Cooked meat"));
 
 		combineStew2 = new DetailedQuestStep(this, "Put the cooked meat in the incomplete stew.", amitireLeaves, incompleteStew.highlighted(), cookedMeat.highlighted());
-		cookStew = new ObjectStep(this, 39391, new WorldPoint(3160, 7826, 1), "Cook the stew on the range.", uncookedStew.highlighted());
+		cookStew = new ObjectStep(this, ObjectID.DARKM_POOR_RANGE, new WorldPoint(3160, 7826, 1), "Cook the stew on the range.", uncookedStew.highlighted());
 		cookStew.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Stew"));
 		combineStew3 = new DetailedQuestStep(this, "Put the amitire leaves into the stew.", amitireLeaves.highlighted(), stew.highlighted());
-		giveStewToSafalaan = new NpcStep(this, 15895, "Give the amitire stew to Safalaan Hallow.", amitireStew.highlighted());
+		giveStewToSafalaan = new NpcStep(this, NpcID.MYQ6_SAFALAAN_VIS_NOOP, "Give the amitire stew to Safalaan Hallow.", amitireStew.highlighted());
 
-		talkToSafalaanAfterFeedingHimStew = new NpcStep(this, 15893, new WorldPoint(3157, 7841, 1), "Talk to Safalaan Hallow after feeding him the stew.");
+		talkToSafalaanAfterFeedingHimStew = new NpcStep(this, NpcID.MYQ6_SAFALAAN_VIS, new WorldPoint(3157, 7841, 1), "Talk to Safalaan Hallow after feeding him the stew.");
 
-		talkToEfaritayAfterFeedingStewToSafalaan = new NpcStep(this, 15941, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow after feeding Safalaan the stew.");
+		talkToEfaritayAfterFeedingStewToSafalaan = new NpcStep(this, NpcID.MYQ6_EFARITAY_VIS, new WorldPoint(3157, 7839, 1), "Talk to Efaritay Hallow after feeding Safalaan the stew.");
 
 
 		/// 110
-		searchWorkbenchForHammer = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a hammer.", blisterwoodFlail);
+		searchWorkbenchForHammer = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_WORKBENCH, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a hammer.", blisterwoodFlail);
 		searchWorkbenchForHammer.addDialogStep("Hammer.");
-		searchWorkbenchForChisel = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a chisel.", blisterwoodFlail, hammer);
+		searchWorkbenchForChisel = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_WORKBENCH, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a chisel.", blisterwoodFlail, hammer);
 		searchWorkbenchForChisel.addDialogStep("Chisel.");
-		searchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a knife.", blisterwoodFlail, hammer, chisel);
+		searchWorkbenchForKnife = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_WORKBENCH, new WorldPoint(3176, 7841, 1), "Search the workbench in the east room for a knife.", blisterwoodFlail, hammer, chisel);
 		searchWorkbenchForKnife.addDialogStep("Knife.");
-		searchCrateForBlisterwoodLogs = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs.", blisterwoodFlail, hammer, chisel, knife);
+		searchCrateForBlisterwoodLogs = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_BLISTERWOOD_CRATE, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs.", blisterwoodFlail, hammer, chisel, knife);
 		searchCrateForBlisterwoodLogs.addWidgetHighlight(InterfaceID.Skillmulti.A);
-		searchCrateForBlessedSilverSickle = new ObjectStep(this, 62077, new WorldPoint(3181, 7841, 1), "Search the eastern-most crate for a blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs);
-		searchChestForDiamond = new ObjectStep(this, 62074, new WorldPoint(3181, 7835, 1), "Search the eastern-most chest for a diamond.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle);
+		searchCrateForBlessedSilverSickle = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_SICKLE_CRATE, new WorldPoint(3181, 7841, 1), "Search the eastern-most crate for a blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs);
+		searchChestForDiamond = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_DIAMOND_CHEST, new WorldPoint(3181, 7835, 1), "Search the eastern-most chest for a diamond.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle);
 		putDiamondInSickle = new DetailedQuestStep(this, "Put the unenchanted diamond on the blessed silver sickle.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, blessedSilverSickle.highlighted(), diamond.highlighted());
 		putDiamondInSickle.addDialogStep("Yes.");
-		searchChestForDiamondTablet2 = new ObjectStep(this, 62075, new WorldPoint(3175, 7836, 1), "Search the western-most chest for a diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB);
+		searchChestForDiamondTablet2 = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_TABLET_CHEST, new WorldPoint(3175, 7836, 1), "Search the western-most chest for a diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB);
 		useEnchantDiamondTabletOnSickle = new DetailedQuestStep(this, "Enchant the diamond sickle with the enchant diamond tablet.", blisterwoodFlail, hammer, chisel, knife, blisterwoodLogs, diamondSickleB.highlighted(), diamondTablet.highlighted());
 		useEnchantDiamondTabletOnSickle.addDialogStep("Yes.");
 		createEnhancedBlisterwoodSickle = new DetailedQuestStep(this, "Combine the blisterwood logs with your newly created enchanted diamond sickle to create an enhanced blisterwood sickle.", blisterwoodFlail, hammer, knife, blisterwoodLogs.highlighted(), enchantedDiamondSickle.highlighted());
 		createEnhancedBlisterwoodSickle.addDialogStep("Yes.");
-		createHallowedFlail = new ObjectStep(this, 2097, new WorldPoint(3179, 7842, 1), "Smith a hallowed flail at the anvil.", blisterwoodFlailUnequipped, hammer, enhancedBlisterwoodSickle, hallowedMarks);
+		createHallowedFlail = new ObjectStep(this, ObjectID.ANVIL, new WorldPoint(3179, 7842, 1), "Smith a hallowed flail at the anvil.", blisterwoodFlailUnequipped, hammer, enhancedBlisterwoodSickle, hallowedMarks);
 		createHallowedFlail.addDialogStep("Yes.");
 
 		// 110 -> 112 after creating the hallowed flail
 		// [2026-07-19T12:18:53Z 317] varbit MYQ6_ARANEI_WATCHER_CHAT (15477) 0 -> 1
 		// after speaking to the random Aranei outside the palace
-		speakToIvanWithHallowedFlail = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Talk to Ivan Strom after smithing the hallowed flail.");
+		speakToIvanWithHallowedFlail = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3175, 7834, 1), "Talk to Ivan Strom after smithing the hallowed flail.");
 
-		ivanSearchWorkbenchForKnife = new ObjectStep(this, 62073, new WorldPoint(3176, 7841, 1), "Search the workbench for a knife.");
+		ivanSearchWorkbenchForKnife = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_WORKBENCH, new WorldPoint(3176, 7841, 1), "Search the workbench for a knife.");
 		ivanSearchWorkbenchForKnife.addDialogStep("Knife.");
-		getLogsForStakes = new ObjectStep(this, 62076, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs to craft stakes.");
+		getLogsForStakes = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_BLISTERWOOD_CRATE, new WorldPoint(3177, 7843, 1), "Search the northern-most crate for some blisterwood logs to craft stakes.");
 		getLogsForStakes.addWidgetHighlight(InterfaceID.Skillmulti.A);
 		fletchStakes = new DetailedQuestStep(this, "Fletch the logs into stakes.", blisterwoodLogs.highlighted(), knife.highlighted());
 
-		returnToIvan = new NpcStep(this, 15855, new WorldPoint(3175, 7834, 1), "Return to  Ivan Strom after crafting some stakes. You can craft more before continuing if you want to use them during the upcoming fights.");
+		returnToIvan = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3175, 7834, 1), "Return to  Ivan Strom after crafting some stakes. You can craft more before continuing if you want to use them during the upcoming fights.");
 
-		climbDownstairs = new ObjectStep(this, 62152, new WorldPoint(3171, 7823, 1), "Talk to Veliaf in the dungeon downstairs.");
-		talkToVeliafInDungeon = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon.");
+		climbDownstairs = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_STAIRS_DOWN, new WorldPoint(3171, 7823, 1), "Talk to Veliaf in the dungeon downstairs.");
+		talkToVeliafInDungeon = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon.");
 		talkToVeliafInDungeon.addSubSteps(climbDownstairs);
 
-		talkToVanescula = new NpcStep(this, 15910, new WorldPoint(3168, 7844, 0), "Talk-to Vanescula Drakan.");
+		talkToVanescula = new NpcStep(this, NpcID.MYQ6_VANESCULA_HIDEOUT_TRAPPED_VIS, new WorldPoint(3168, 7844, 0), "Talk-to Vanescula Drakan.");
 
-		talkToVeliafInDungeonAgain = new NpcStep(this, 15878, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon again.");
+		talkToVeliafInDungeonAgain = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon again.");
 
-		climbUpstairs = new ObjectStep(this, 62151, new WorldPoint(3164, 7823, 0), "Climb upstairs and talk to Sugadinti.");
-		talkToSugadintiAfterHelpingAllies = new NpcStep(this, 15960, new WorldPoint(3168, 7828, 1), "Talk to Sugadinti Vitur after helping out Ivan and Veliaf.");
+		climbUpstairs = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_STAIRS_M, new WorldPoint(3164, 7823, 0), "Climb upstairs and talk to Sugadinti.");
+		talkToSugadintiAfterHelpingAllies = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3168, 7828, 1), "Talk to Sugadinti Vitur after helping out Ivan and Veliaf.");
 		talkToSugadintiAfterHelpingAllies.addSubSteps(climbUpstairs);
 
 		/// 114
-		leavePalaceForCombat = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Get ready for combat. Resupply at the supply table in the kitchen if needed. Speak to the Aranei next to the table if you want to deposit any items into your bank. Then leave the palace.");
+		leavePalaceForCombat = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_EXIT, new WorldPoint(3167, 7860, 1), "Get ready for combat. Resupply at the supply table in the kitchen if needed. Speak to the Aranei next to the table if you want to deposit any items into your bank. Then leave the palace.");
 		getReadyForCombatWatchTheCutscene = leavePalaceForCombat.cutscene();
 
 		/// 116
-		attackPortals = new NpcStep(this, 16251, "Attack the portals in the sky.", true);
+		attackPortals = new NpcStep(this, NpcID.MYQ6_BRIDGE_DEFENCE_PORTAL, "Attack the portals in the sky.", true);
 
 		/// 118
-		leaveDoors = new ObjectStep(this, 62147, new WorldPoint(3167, 7860, 1), "Leave the palace.");
+		leaveDoors = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_EXIT, new WorldPoint(3167, 7860, 1), "Leave the palace.");
 		leaveDoorsCutscene = leaveDoors.cutscene();
 
 		/// 120
@@ -2929,98 +2931,98 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		guardThePalace = new DetailedQuestStep(this, "Heal fallen Aranei, repair damaged windows, and repair damaged pillars.");
 
 		barricadeCutscene = guardThePalace.cutscene();
-		passThroughBarricadeToHelp = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass through barricade to return to the guarding step.");
+		passThroughBarricadeToHelp = new ObjectStep(this, ObjectID.MYQ6_ENTRY_HALL_BARRICADE_OP, new WorldPoint(3167, 7844, 1), "Pass through barricade to return to the guarding step.");
 		guardThePalace.addSubSteps(passThroughBarricadeToHelp);
 
 		/// 122
-		passThroughBarricadeToFightDrakan = new ObjectStep(this, 62163, new WorldPoint(3167, 7844, 1), "Pass through the barricade, ready to fight Drakan. You can resupply at the supply table in the kitchen.");
-		fightDrakan2 = new NpcStep(this, 16210, new WorldPoint(3168, 7853, 1), "Fight Drakan. Protect from melee. Dodge attacks.");
+		passThroughBarricadeToFightDrakan = new ObjectStep(this, ObjectID.MYQ6_ENTRY_HALL_BARRICADE_OP, new WorldPoint(3167, 7844, 1), "Pass through the barricade, ready to fight Drakan. You can resupply at the supply table in the kitchen.");
+		fightDrakan2 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_2, new WorldPoint(3168, 7853, 1), "Fight Drakan. Protect from melee. Dodge attacks.");
 		fightDrakan2.addSubSteps(passThroughBarricadeToFightDrakan);
 
 		/// 124
 		finishedDrakan2Cutscene = new DetailedQuestStep(this, "Watch the cutscene.");
 
 		/// 126
-		talkToIvanInHauntedWoods = new NpcStep(this, 15855, new WorldPoint(3606, 3416, 0), "Talk to Ivan Strom in the haunted woods.");
+		talkToIvanInHauntedWoods = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(3606, 3416, 0), "Talk to Ivan Strom in the haunted woods.");
 		leavingPalaceCutscene = talkToIvanInHauntedWoods.cutscene();
 
 		/// 128
-		talkToVeliafAfterLeavingPalace = new NpcStep(this, 15878, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in Burgh de Rott.");
+		talkToVeliafAfterLeavingPalace = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in Burgh de Rott.");
 		talkToVeliafAfterLeavingPalaceCutscene = talkToVeliafAfterLeavingPalace.cutscene();
 
 		/// 130
-		talkToSugadintiInBurghDeRott = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in Burgh de Rott.");
+		talkToSugadintiInBurghDeRott = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in Burgh de Rott.");
 
 		/// 132 + 134 + 136 + 138 (theatre of blood)
-		getToTob = new NpcStep(this, 15962, new WorldPoint(3668, 3220, 0), "Gear up for theatre of blood. Bring melee gear with a range and mage switch, some food & potions, then talk to Sugadinti Vitur in front of the theatre of blood.", combatGear, food, prayerPotions);
+		getToTob = new NpcStep(this, NpcID.MYQ6_SUGADINTI_HUMAN_VIS, new WorldPoint(3668, 3220, 0), "Gear up for theatre of blood. Bring melee gear with a range and mage switch, some food & potions, then talk to Sugadinti Vitur in front of the theatre of blood.", combatGear, food, prayerPotions);
 		getToTob.addDialogStep("I'm ready.");
 		getToTobCutscene = getToTob.cutscene();
 
 		// TODO: This text could probably be improved
 		ensureNothingBothersSugadinti = new DetailedQuestStep(this, "Kill Nylocas with the correct fighting style. Fight the Maiden of Sugadinti, killing healers when they spawn. Avoid blood puddles on the ground.");
 
-		talkToSugadintiAfterFinishingTob = new NpcStep(this, 15962, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
+		talkToSugadintiAfterFinishingTob = new NpcStep(this, NpcID.MYQ6_SUGADINTI_HUMAN_VIS, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
 		talkToSugadintiAfterFinishingTobCutscene = talkToSugadintiAfterFinishingTob.cutscene();
 
 		/// 140
-		headToBarrowsL = new NpcStep(this, 15878, new WorldPoint(3540, 3256, 0), "Head to the abandoned building north-east of Burgh de Rott and talk to Veliaf.", combatGear, hallowedFlail, food, prayerPotions);
+		headToBarrowsL = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3540, 3256, 0), "Head to the abandoned building north-east of Burgh de Rott and talk to Veliaf.", combatGear, hallowedFlail, food, prayerPotions);
 
 		/// 142
-		headDownToVanescula = new ObjectStep(this, 61254, new WorldPoint(3543, 3257, 0), "Head to the abandoned building north-east of Burgh de Rott and enter the entry.");
+		headDownToVanescula = new ObjectStep(this, ObjectID.MYQ6_OLD_LAB_ENTRY, new WorldPoint(3543, 3257, 0), "Head to the abandoned building north-east of Burgh de Rott and enter the entry.");
 		headDownToVanesculaCutscene = headDownToVanescula.cutscene();
 
 		/// 144
-		fightTheWyrd = new NpcStep(this, 16212, "Fight the Wyrd. Protect from melee against the normal attacks, and turn it off when it screeches similar to a Venator. Learn and avoid its slam patterns.");
+		fightTheWyrd = new NpcStep(this, NpcID.SAFALAAN_WYRD, "Fight the Wyrd. Protect from melee against the normal attacks, and turn it off when it screeches similar to a Venator. Learn and avoid its slam patterns.");
 
 		/// 146
 		dealtWithWyrdCutscene = fightTheWyrd.cutscene();
 
 		/// 148
-		findWyrd = new ObjectStep(this, 61268, new WorldPoint(3562, 3323, 0), "Search for the escaped wyrd. Inspect the fence north of barrows.");
+		findWyrd = new ObjectStep(this, ObjectID.MYQ6_BROKEN_FENCE_M, new WorldPoint(3562, 3323, 0), "Search for the escaped wyrd. Inspect the fence north of barrows.");
 		findWyrdCutscene = findWyrd.cutscene();
 
 		/// 150
-		speakWithVeliafAfterInspectingFence = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in the Burgh de Rott hideout.");
+		speakWithVeliafAfterInspectingFence = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in the Burgh de Rott hideout.");
 		talkWithVeliafInBurghDeRottCutscene = speakWithVeliafAfterInspectingFence.cutscene();
 
 		/// 152
-		prepareFightDrakan3 = new NpcStep(this, 15960, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		prepareFightDrakan3 = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
 		prepareFightDrakan3.addDialogStep("I'm ready.");
-		enterBurghDeRottDungeon = new ObjectStep(this, 12743, new WorldPoint(3490, 3232, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		enterBurghDeRottDungeon = new ObjectStep(this, ObjectID.BURGH_INN_TRAPDOOR_MULTILOC, new WorldPoint(3490, 3232, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
 		prepareFightDrakan3.addSubSteps(enterBurghDeRottDungeon);
 
 		/// 154
-		fightDrakan3 = new NpcStep(this, 16209, "Fight Lowerniel Drakan. Protect from melee. Dodge his attacks.");
+		fightDrakan3 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_3, "Fight Lowerniel Drakan. Protect from melee. Dodge his attacks.");
 
 		/// 156
-		talkToVeliaf = new NpcStep(this, 15880, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
+		talkToVeliaf = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
 		talkToVeliaf.addDialogStep("I'll go now.");
 		talkToVeliafCutscene = talkToVeliaf.cutscene();
 
 		/// 158
-		talkToIvanInsideCastleDrakan = new NpcStep(this, 15855, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
+		talkToIvanInsideCastleDrakan = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
 
 		/// 160 + 162
-		talkToSugadintiInsideCastleDrakan = new NpcStep(this, 15960, new WorldPoint(2846, 7389, 0), "Talk to Sugadinti Vitur inside Castle Drakan.");
+		talkToSugadintiInsideCastleDrakan = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(2846, 7389, 0), "Talk to Sugadinti Vitur inside Castle Drakan.");
 
 		/// 164
-		talkToEfaritayOnIcyene = new NpcStep(this, 15942, new WorldPoint(3701, 3186, 0), "Talk to Efaritay Hallow in Icyene Graveyard.");
+		talkToEfaritayOnIcyene = new NpcStep(this, NpcID.MYQ6_EFARITAY_WEAPON_VIS, new WorldPoint(3701, 3186, 0), "Talk to Efaritay Hallow in Icyene Graveyard.");
 
 		/// 166
-		enterVampyriumForTheLastTime = new ObjectStep(this, 61215, new WorldPoint(3703, 3185, 0), "Enter the portal in Icyene Graveyard to get to Vampyrium, ready for the final confrontation.", hallowedFlail, combatGearMelee);
+		enterVampyriumForTheLastTime = new ObjectStep(this, ObjectID.MYQ6_VAMPYRIUM_GRAVEYARD_PORTAL, new WorldPoint(3703, 3185, 0), "Enter the portal in Icyene Graveyard to get to Vampyrium, ready for the final confrontation.", hallowedFlail, combatGearMelee);
 		enterVampyriumForTheLastTimeCutscene = enterVampyriumForTheLastTime.cutscene();
 
 		/// 168
-		goToFightDrakan4 = new ObjectStep(this, 61628, new WorldPoint(2506, 7387, 0), "Enter the door, ready to fight Drakan. You can get supplies and deposit items at the chest next to the door.", hallowedFlail, combatGearMelee);
+		goToFightDrakan4 = new ObjectStep(this, ObjectID.CASTLE_DRAKAN_ROOF_DOOR, new WorldPoint(2506, 7387, 0), "Enter the door, ready to fight Drakan. You can get supplies and deposit items at the chest next to the door.", hallowedFlail, combatGearMelee);
 		goToFightDrakan4Cutscene = goToFightDrakan4.cutscene();
 
 		/// 170 + 172
 		// TODO: some minor instructions + maybe a wiki link?
-		fightDrakan4 = new NpcStep(this, 16204, "Fight Lowerniel Drakan.");
+		fightDrakan4 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_FINAL_COMBAT, "Fight Lowerniel Drakan.");
 		fightDrakan4Cutscene = fightDrakan4.cutscene();
 
 		/// 174
-		talkToEfaritayAfterKillingDrakan = new NpcStep(this, 15941, new WorldPoint(3702, 3182, 0), "Talk-to Efaritay Hallow in the icyene graveyard.");
+		talkToEfaritayAfterKillingDrakan = new NpcStep(this, NpcID.MYQ6_EFARITAY_VIS, new WorldPoint(3702, 3182, 0), "Talk-to Efaritay Hallow in the icyene graveyard.");
 		finalQuestCutscene = talkToEfaritayAfterKillingDrakan.cutscene();
 
 		/// 176 + 178
@@ -3547,7 +3549,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 	private ObjectStep bookPut(WorldPoint plinthPosition, String bookName, Requirement requirement)
 	{
-		return new ObjectStep(this, 61295, plinthPosition, "Place " + bookName + " on the plinth.", requirement);
+		return new ObjectStep(this, ObjectID.MYQ6_PLINTH_EMPTY, plinthPosition, "Place " + bookName + " on the plinth.", requirement);
 	}
 
 	@Override

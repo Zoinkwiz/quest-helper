@@ -327,6 +327,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.A_PORCINE_OF_INTEREST,
 			QuestHelperQuest.SHADOW_OF_THE_STORM,
 			QuestHelperQuest.PANDEMONIUM,
+			QuestHelperQuest.FALLEN_FROM_GRACE,
 			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,

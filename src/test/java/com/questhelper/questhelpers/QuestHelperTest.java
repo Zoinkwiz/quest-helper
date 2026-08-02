@@ -355,6 +355,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.MONKS_FRIEND,
 			QuestHelperQuest.DADDYS_HOME,
 			QuestHelperQuest.GOBLIN_DIPLOMACY,
+			QuestHelperQuest.PRYING_TIMES,
 			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.THE_KNIGHTS_SWORD,

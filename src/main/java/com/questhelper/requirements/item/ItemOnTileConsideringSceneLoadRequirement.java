@@ -11,6 +11,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,9 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 	private boolean playerHasBeenInRegionThisLoad;
 
 	private TileIsLoadedRequirement tileLoadedReq;
+
+	@Nullable
+	private volatile Boolean debugOverride;
 
 	public ItemOnTileConsideringSceneLoadRequirement(ItemRequirement item, WorldPoint worldPoint)
 	{
@@ -48,8 +52,30 @@ public class ItemOnTileConsideringSceneLoadRequirement implements InitializableR
 		tileLoadedReq = new TileIsLoadedRequirement(definedPoint);
 	}
 
+	@Nullable
+	public final Boolean getDebugOverride()
+	{
+		return debugOverride;
+	}
 
-	public boolean check(Client client)
+	public final void setDebugOverride(@Nullable Boolean debugOverride)
+	{
+		this.debugOverride = debugOverride;
+	}
+
+	/// Returns the passing state of this requirement.
+	///
+	/// This respects the debugOverride flag that can be set in developer mode
+	@Override
+	public final boolean check(Client client)
+	{
+		var debugOverride = this.debugOverride;
+
+		return debugOverride != null ? debugOverride : checkInternal(client);
+	}
+
+	@Override
+	public boolean checkInternal(Client client)
 	{
 		// Scenario 1:
 		// Player has entered region, key hasn't loaded in but tile has

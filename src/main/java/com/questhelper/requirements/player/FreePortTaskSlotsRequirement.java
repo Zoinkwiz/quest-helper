@@ -53,7 +53,7 @@ public class FreePortTaskSlotsRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		int freeSlots = client.getVarbitValue(VarbitID.PORT_TASK_SLOT_0_ID) == 0 ? 1 : 0;
 		int extraSlotsUnlocked = client.getVarbitValue(VarbitID.PORT_TASK_EXTRA_SLOTS_UNLOCKED);

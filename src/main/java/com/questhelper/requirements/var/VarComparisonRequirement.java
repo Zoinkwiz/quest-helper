@@ -76,7 +76,7 @@ public class VarComparisonRequirement extends AbstractRequirement
     }
 
     @Override
-    public boolean check(Client client)
+    public boolean checkInternal(Client client)
     {
         try {
             int v1Value = v1Type.getValue(client, v1Id);

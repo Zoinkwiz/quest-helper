@@ -41,7 +41,7 @@ public class NoFollowerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return client.getVarpValue(VarPlayerID.FOLLOWER_NPC) == -1;
 	}

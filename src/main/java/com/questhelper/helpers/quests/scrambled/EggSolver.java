@@ -221,7 +221,7 @@ public class EggSolver extends DetailedOwnerStep
 		}
 
 		@Override
-		public boolean check(Client client)
+		public boolean checkInternal(Client client)
 		{
 			var w = EggSolver.findWidgetByModelID(client, InterfaceID.Jigsaw.PIECES, modelID);
 			return w != null;

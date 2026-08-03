@@ -78,7 +78,7 @@ public class DialogRequirement extends SimpleRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return hasSeenDialog;
 	}

@@ -38,7 +38,7 @@ public class StepIsActiveRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return questStep.isStarted();
 	}

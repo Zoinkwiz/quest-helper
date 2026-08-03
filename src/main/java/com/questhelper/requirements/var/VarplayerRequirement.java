@@ -153,7 +153,7 @@ public class VarplayerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		int varpValue = client.getVarpValue(varPlayerID);
 		if (bitPosition >= 0)

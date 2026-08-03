@@ -33,6 +33,7 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.tools.Icon;
 import lombok.extern.slf4j.Slf4j;
@@ -83,6 +84,7 @@ public class QuestHelperPanel extends PluginPanel
 	private final JComboBox<Enum> filterDropdown, difficultyDropdown, orderDropdown;
 	private final JComboBox<String> stateDropdown = new JComboBox<>();
 	private JPanel statePanel;
+	private JPanel debuggableRequirementsPanel;
 
 	private final JButton skillExpandButton = new JButton();
 	private JPanel regionsFilterSection;
@@ -550,7 +552,17 @@ public class QuestHelperPanel extends PluginPanel
 				}
 				setSelectedQuest(questHelperPlugin.getSelectedQuest());
 			});
-			devModePanel.add(reloadQuest, BorderLayout.SOUTH);
+			debuggableRequirementsPanel = new JPanel();
+			debuggableRequirementsPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+			debuggableRequirementsPanel.setLayout(new BoxLayout(debuggableRequirementsPanel, BoxLayout.Y_AXIS));
+			debuggableRequirementsPanel.setVisible(false);
+
+			JPanel devControlsPanel = new JPanel();
+			devControlsPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+			devControlsPanel.setLayout(new BoxLayout(devControlsPanel, BoxLayout.Y_AXIS));
+			devControlsPanel.add(reloadQuest);
+			devControlsPanel.add(debuggableRequirementsPanel);
+			devModePanel.add(devControlsPanel, BorderLayout.SOUTH);
 
 			JPanel previewNavPanel = new JPanel(new GridLayout(2, 1, 0, 4));
 			previewNavPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -740,6 +752,7 @@ public class QuestHelperPanel extends PluginPanel
 
 		questOverviewPanel.addQuest(quest, isActive);
 		updateStateDropdown(quest);
+		updateDebuggableRequirements(quest);
 		questActive = true;
 
 		SwingUtilities.invokeLater(() -> {
@@ -776,6 +789,7 @@ public class QuestHelperPanel extends PluginPanel
 		activateQuestList();
 		showMatchingQuests(searchBar.getText() != null ? searchBar.getText() : "");
 		updateStateDropdown(null);
+		updateDebuggableRequirements(null);
 		scrollableContainer.getVerticalScrollBar().setValue(0);
 
 		repaint();
@@ -883,6 +897,91 @@ public class QuestHelperPanel extends PluginPanel
 		for (ItemListener listener : listeners)
 		{
 			stateDropdown.addItemListener(listener);
+		}
+	}
+
+	private void updateDebuggableRequirements(QuestHelper questHelper)
+	{
+		if (!questHelperPlugin.isDeveloperMode() || debuggableRequirementsPanel == null)
+		{
+			return;
+		}
+
+		debuggableRequirementsPanel.removeAll();
+		List<Requirement> requirements = questHelper == null ? null : questHelper.getDebuggableRequirements();
+		if (requirements == null || requirements.isEmpty())
+		{
+			debuggableRequirementsPanel.setVisible(false);
+			return;
+		}
+
+		JLabel heading = JGenerator.makeJLabel("Debug conditions:");
+		heading.setForeground(Color.WHITE);
+		debuggableRequirementsPanel.add(heading);
+
+		for (int index = 0; index < requirements.size(); index++)
+		{
+			Requirement requirement = requirements.get(index);
+			if (requirement == null)
+			{
+				continue;
+			}
+			String displayText = requirement.getDisplayText();
+			if (displayText == null || displayText.isBlank())
+			{
+				displayText = "Condition " + (index + 1);
+			}
+			debuggableRequirementsPanel.add(new DebugRequirementCheckBox(requirement, displayText));
+		}
+
+		debuggableRequirementsPanel.setVisible(debuggableRequirementsPanel.getComponentCount() > 1);
+		debuggableRequirementsPanel.revalidate();
+		debuggableRequirementsPanel.repaint();
+	}
+
+	private class DebugRequirementCheckBox extends JCheckBox
+	{
+		private final Requirement requirement;
+		private final String displayText;
+		private Boolean override;
+
+		private DebugRequirementCheckBox(Requirement requirement, String displayText)
+		{
+			this.requirement = requirement;
+			this.displayText = displayText;
+			this.override = requirement.getDebugOverride();
+			setBackground(ColorScheme.DARK_GRAY_COLOR);
+			setFocusable(false);
+			setHorizontalAlignment(SwingConstants.LEFT);
+			updateDisplay();
+			setToolTipText("Click to cycle: leave as-is, should pass, should not pass");
+			addActionListener(event -> {
+				override = override == null ? Boolean.TRUE : (override ? Boolean.FALSE : null);
+				updateDisplay();
+				questHelperPlugin.getClientThread().invokeLater(() -> requirement.setDebugOverride(override));
+			});
+		}
+
+		private void updateDisplay()
+		{
+			if (override == null)
+			{
+				setSelected(false);
+				setForeground(Color.LIGHT_GRAY);
+				setText("[as-is] " + displayText);
+			}
+			else if (override)
+			{
+				setSelected(true);
+				setForeground(questHelperPlugin.getConfig().passColour());
+				setText("[should pass] " + displayText);
+			}
+			else
+			{
+				setSelected(false);
+				setForeground(questHelperPlugin.getConfig().failColour());
+				setText("[should not pass] " + displayText);
+			}
 		}
 	}
 

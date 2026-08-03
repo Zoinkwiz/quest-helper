@@ -44,7 +44,7 @@ public class SpecialAttackRequirement extends AbstractRequirement
     }
 
     @Override
-    public boolean check(Client client)
+    public boolean checkInternal(Client client)
     {
         return specialAttack.check(client, SPECIALATTACK_VARP);
     }

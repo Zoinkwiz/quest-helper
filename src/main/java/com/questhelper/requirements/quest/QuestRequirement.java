@@ -106,7 +106,7 @@ public class QuestRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		if (minimumVarValue != null)
 		{

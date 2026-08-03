@@ -54,7 +54,7 @@ public class PrayerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		int currentPrayer = client.getVarbitValue(prayer.getVarbit());
 		return currentPrayer == 1;

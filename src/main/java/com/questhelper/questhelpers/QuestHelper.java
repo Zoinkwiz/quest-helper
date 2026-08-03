@@ -372,6 +372,14 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		return null;
 	}
 
+	/// Requirements that should be shown in the developer sidebar.
+	///
+	/// These requirements can be manually overridden to pass or not pass by the user.
+	public List<Requirement> getDebuggableRequirements()
+	{
+		return null;
+	}
+
 	public List<String> getCombatRequirements()
 	{
 		return null;

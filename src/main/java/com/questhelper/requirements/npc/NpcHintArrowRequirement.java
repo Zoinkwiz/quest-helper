@@ -57,7 +57,7 @@ public class NpcHintArrowRequirement extends SimpleRequirement
 		this.zone = zone;
 	}
 
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		NPC currentNPC = client.getHintArrowNpc();
 		if (currentNPC == null)

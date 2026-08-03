@@ -35,7 +35,7 @@ import java.awt.*;
 public abstract class SimpleRequirement extends AbstractRequirement
 {
 	@Override
-	public abstract boolean check(Client client);
+	public abstract boolean checkInternal(Client client);
 
 	@Nonnull
 	@Override

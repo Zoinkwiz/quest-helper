@@ -60,7 +60,7 @@ public class HasBoatResistanceRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		if (client == null || client.getGameState() != GameState.LOGGED_IN)
 		{

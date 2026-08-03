@@ -71,7 +71,7 @@ public class ShipInPortRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		lastDock = client.getVarbitValue(VarbitID.SAILING_BOARDED_BOAT_LAST_DOCK);
 		allDocks = new int[]{

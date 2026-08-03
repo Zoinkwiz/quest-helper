@@ -129,7 +129,7 @@ public class NpcRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		var localPlayer = client.getLocalPlayer();
 		if (localPlayer == null)

@@ -505,22 +505,22 @@ class CastleDrakan
 		hasUsedNewMoonKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, true, 1);
 		usedSolidKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4, true, 5);
 
-		openedLobbyHalfMoonDoor = openedDoor(3);
-		openedDiningHalfMoonDoor = openedDoor(21);
-		openedThroneHalfMoonDoor = openedDoor(27);
-		openedGalleryCrescentDoor = openedDoor(45);
-		openedKitchenCrescentDoor = openedDoor(43);
-		openedBasementCrescentDoor = openedDoor(105);
-		openedDiningGibbousDoor = openedDoor(9);
-		openedVenatorPuzzleGibbousDoor = openedDoor(91);
-		openedGuestStoreroomGibbousDoor = openedDoor(87);
-		openedExplosiveHallwayGibbousDoor = openedDoor(23);
-		openedCrescentDoorRoomDoor = openedDoor(69);
-		openedBottleRoomFullMoonDoor = openedDoor(51);
-		openedRoomAboveStudyFullMoonDoor = openedDoor(29);
-		openedSolidKeyRoomFullMoonDoor = openedDoor(97);
-		openedStockpileFullMoonDoor = openedDoor(93);
-		openedBedroomFullMoonDoor = openedDoor(55);
+		openedLobbyHalfMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, 3);
+		openedDiningHalfMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, 21);
+		openedThroneHalfMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, 27);
+		openedGalleryCrescentDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 13);
+		openedKitchenCrescentDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 11);
+		openedBasementCrescentDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4, 9);
+		openedDiningGibbousDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, 9);
+		openedVenatorPuzzleGibbousDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, 27);
+		openedGuestStoreroomGibbousDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, 23);
+		openedExplosiveHallwayGibbousDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, 23);
+		openedCrescentDoorRoomDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, 5);
+		openedBottleRoomFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 19);
+		openedRoomAboveStudyFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, 29);
+		openedSolidKeyRoomFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4, 1);
+		openedStockpileFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, 29);
+		openedBedroomFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 23);
 
 		/// All three half moon doors are open, so the key has served its purpose and need not be fetched.
 		usedUpHalfMoonKey = and(openedLobbyHalfMoonDoor, openedDiningHalfMoonDoor, openedThroneHalfMoonDoor);
@@ -1778,12 +1778,9 @@ class CastleDrakan
 		return castleDrakanRoomNetwork.addRoom(key, name, location);
 	}
 
-	private Requirement openedDoor(int doorBit)
+	private Requirement openedDoor(int doorStatusVarPlayer, int doorBit)
 	{
-		var block = new int[]{
-			VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2,
-			VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4};
-		return new VarplayerRequirement(block[doorBit / 32], true, doorBit % 32);
+		return new VarplayerRequirement(doorStatusVarPlayer, true, doorBit);
 	}
 
 	private CastleDrakanActionStep castleRecovery(RoomKey destination, QuestStep action, String routeText,

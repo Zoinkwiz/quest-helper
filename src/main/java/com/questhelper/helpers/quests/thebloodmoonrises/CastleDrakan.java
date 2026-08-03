@@ -211,7 +211,7 @@ class CastleDrakan
 	VarbitRequirement hasMountedShield;
 	ItemRequirement solidKey;
 	VarplayerRequirement hasUsedNewMoonKey;
-	Requirement hasUsedFullMoonKey;
+	Requirement usedUpFullMoonKey;
 	VarplayerRequirement usedSolidKey;
 	Requirement openedGalleryCrescentDoor;
 	Requirement usedUpHalfMoonKey;
@@ -232,6 +232,8 @@ class CastleDrakan
 	Requirement openedSolidKeyRoomFullMoonDoor;
 	Requirement openedStockpileFullMoonDoor;
 	Requirement openedBedroomFullMoonDoor;
+	Requirement openedChapelLibraryFullMoonDoor;
+	Requirement openedNorthChapelFullMoonDoor;
 	ItemRequirement vialOfWater;
 	ItemRequirement vialsOfWater2;
 	ItemRequirement vialOfBlood;
@@ -521,17 +523,16 @@ class CastleDrakan
 		openedSolidKeyRoomFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4, 1);
 		openedStockpileFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, 29);
 		openedBedroomFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 23);
-
-		/// All three half moon doors are open, so the key has served its purpose and need not be fetched.
+		openedChapelLibraryFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 21);
+		openedNorthChapelFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 17);
+		
 		usedUpHalfMoonKey = and(openedLobbyHalfMoonDoor, openedDiningHalfMoonDoor, openedThroneHalfMoonDoor);
-		/// The gibbous moon key breaks in the lock on its fourth door, so all four being open means it
-		/// is gone for good and must not be asked for again.
 		usedUpGibbousMoonKey = and(openedDiningGibbousDoor, openedExplosiveHallwayGibbousDoor,
 			openedGuestStoreroomGibbousDoor, openedVenatorPuzzleGibbousDoor);
 		openedAHalfMoonDoor = or(openedLobbyHalfMoonDoor, openedDiningHalfMoonDoor, openedThroneHalfMoonDoor);
-		/// Any full moon door opened, which is how the section router tells the key has been spent.
-		hasUsedFullMoonKey = or(openedBottleRoomFullMoonDoor, openedRoomAboveStudyFullMoonDoor,
-			openedSolidKeyRoomFullMoonDoor, openedStockpileFullMoonDoor, openedBedroomFullMoonDoor);
+		usedUpFullMoonKey = and(openedBottleRoomFullMoonDoor, openedRoomAboveStudyFullMoonDoor,
+			openedSolidKeyRoomFullMoonDoor, openedStockpileFullMoonDoor, openedBedroomFullMoonDoor,
+			openedChapelLibraryFullMoonDoor, openedNorthChapelFullMoonDoor);
 
 		vialOfWater = new ItemRequirement("Vial of water", ItemID.CASTLE_DRAKAN_VIAL_OF_WATER);
 		vialsOfWater2 = vialOfWater.quantity(2);
@@ -1819,13 +1820,13 @@ class CastleDrakan
 		// TODO: Can I add a note on the sidebar or something, saying: DO NOT DROP AN ITEM UNLESS INSTRUCTED. EVERYTHING YOU ARE TOLD TO GET IS IMPORTANT!!!
 		var cVampyriumCastleDrakan = new ConditionalStep(quest, quest.enterPortalInCastleDrakanLobby, "Solve the puzzles inside Vampyrium's Castle Drakan. Supplies are littered around the castle.");
 
-		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, or(solidKey, usedSolidKey), or(fullMoonKey, hasUsedFullMoonKey)), cDestroyingTheStockpileGoal);
+		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, or(solidKey, usedSolidKey), or(fullMoonKey, usedUpFullMoonKey)), cDestroyingTheStockpileGoal);
 
 		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, not(or(halfMoonKey, usedUpHalfMoonKey))), cGetHalfMoonKeyGoal);
 
 		// TODO: It would be nice to have an "has used gibbous moon key" to be sure we don't accidentally guide the user back here when they don't need the key anymore
 		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, or(newMoonKey, hasUsedNewMoonKey), or(gibbousMoonKey, usedUpGibbousMoonKey),
-			or(fullMoonKey, hasUsedFullMoonKey)), cGetSolidKey);
+			or(fullMoonKey, usedUpFullMoonKey)), cGetSolidKey);
 
 		// TODO: It would be nice to have an "has used crescent moon key" to be sure we don't accidentally guide the user back here when they don't need the key anymore
 		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, crescentMoonKey, newMoonKey, or(gildedKey, hasUsedGildedKey),

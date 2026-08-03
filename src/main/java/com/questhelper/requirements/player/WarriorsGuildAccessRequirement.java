@@ -38,7 +38,7 @@ public class WarriorsGuildAccessRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		int attLevel = client.getRealSkillLevel(Skill.ATTACK);
 		int strLevel = client.getRealSkillLevel(Skill.STRENGTH);

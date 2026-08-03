@@ -65,7 +65,7 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		ItemContainer container = client.getItemContainer(getInventoryID());
 

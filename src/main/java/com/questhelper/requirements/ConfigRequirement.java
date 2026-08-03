@@ -42,7 +42,7 @@ public class ConfigRequirement extends SimpleRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return booleanSupplier.getAsBoolean();
 	}

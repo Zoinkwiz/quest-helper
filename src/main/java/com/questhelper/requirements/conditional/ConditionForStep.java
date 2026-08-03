@@ -29,6 +29,7 @@ import com.questhelper.requirements.util.LogicType;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -46,8 +47,33 @@ public abstract class ConditionForStep implements InitializableRequirement
 	@Getter
 	protected List<Requirement> conditions = new ArrayList<>();
 
+	@Nullable
+	private volatile Boolean debugOverride;
+
+	@Nullable
+	public final Boolean getDebugOverride()
+	{
+		return debugOverride;
+	}
+
+	public final void setDebugOverride(@Nullable Boolean debugOverride)
+	{
+		this.debugOverride = debugOverride;
+	}
+
+	/// Returns the passing state of this requirement.
+	///
+	/// This respects the debugOverride flag that can be set in developer mode
 	@Override
-	abstract public boolean check(Client client);
+	public final boolean check(Client client)
+	{
+		var debugOverride = this.debugOverride;
+
+		return debugOverride != null ? debugOverride : checkInternal(client);
+	}
+
+	@Override
+	abstract public boolean checkInternal(Client client);
 
 	@Override
 	public void initialize(Client client)

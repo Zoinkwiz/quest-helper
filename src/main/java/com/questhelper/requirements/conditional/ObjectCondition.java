@@ -81,7 +81,7 @@ public class ObjectCondition extends ConditionForStep
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		Tile[][] tiles;
 		if (client.getScene() == null) return false;

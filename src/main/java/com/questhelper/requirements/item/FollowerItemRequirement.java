@@ -65,7 +65,7 @@ public class FollowerItemRequirement extends ItemRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		boolean match = client.getTopLevelWorldView().npcs().stream()
 			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
@@ -77,6 +77,6 @@ public class FollowerItemRequirement extends ItemRequirement
 			return true;
 		}
 
-		return super.check(client);
+		return super.checkInternal(client);
 	}
 }

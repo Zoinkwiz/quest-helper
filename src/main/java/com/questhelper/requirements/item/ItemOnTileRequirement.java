@@ -75,7 +75,7 @@ public class ItemOnTileRequirement extends ConditionForStep
 	}
 
 
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return checkAllTiles(client);
 	}

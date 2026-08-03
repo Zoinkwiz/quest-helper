@@ -48,6 +48,7 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.SpriteID;
+import org.jetbrains.annotations.Nullable;
 
 class CastleDrakanRoomNetwork
 {
@@ -206,8 +207,22 @@ class CastleDrakanRoomNetwork
 	{
 		return new Requirement()
 		{
+			private volatile Boolean debugOverride;
+
 			@Override
-			public boolean check(Client client)
+			public @Nullable Boolean getDebugOverride()
+			{
+				return debugOverride;
+			}
+
+			@Override
+			public void setDebugOverride(@Nullable Boolean debugOverride)
+			{
+				this.debugOverride = debugOverride;
+			}
+
+			@Override
+			public boolean checkInternal(Client client)
 			{
 				return getRoom(key).location.check(client);
 			}

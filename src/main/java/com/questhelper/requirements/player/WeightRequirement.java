@@ -66,7 +66,7 @@ public class WeightRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return operation.check(client.getWeight(), weight);
 	}

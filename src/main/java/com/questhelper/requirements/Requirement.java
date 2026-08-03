@@ -46,10 +46,37 @@ public interface Requirement
 {
 	/**
 	 * Check the {@link Client} that it meets this requirement.
+	 * <p>
+	 * If debug override (developer mode option) is set, use that value instead.
+	 *
 	 * @param client client to check
 	 * @return true if the client meets this requirement
 	 */
-	boolean check(Client client);
+	default boolean check(Client client)
+	{
+		var debugOverride = getDebugOverride();
+		return debugOverride != null ? debugOverride : checkInternal(client);
+	}
+
+	/**
+	 * Performs this requirement's normal evaluation, without considering debug overrides.
+	 */
+	boolean checkInternal(Client client);
+
+	/// Return the debug override boolean
+	///
+	/// null = don't consider it (default)
+	/// true = always pass check
+	/// false = always fail check
+	@Nullable
+	Boolean getDebugOverride();
+
+	/// Set the debug override value
+	///
+	/// null = don't consider it (default)
+	/// true = always pass check
+	/// false = always fail check
+	void setDebugOverride(@Nullable Boolean debugOverride);
 
 	default boolean checkWithConfigChange(Client client, ConfigManager configManager, String configName, String value)
 	{

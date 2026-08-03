@@ -77,7 +77,7 @@ public class MultiChatMessageRequirement extends ChatMessageRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return hasReceivedChatMessage;
 	}

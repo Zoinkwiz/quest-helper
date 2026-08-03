@@ -110,7 +110,7 @@ public class ZoneRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		Player player = client.getLocalPlayer();
 		if (player != null && zones != null)

@@ -957,7 +957,7 @@ public class ItemRequirement extends AbstractRequirement
 	 * @return {@code true} if the requirement is met, {@code false} otherwise
 	 */
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		// If additional options are present and pass, then the requirement is met.
 		if (additionalOptions != null && additionalOptions.check(client))

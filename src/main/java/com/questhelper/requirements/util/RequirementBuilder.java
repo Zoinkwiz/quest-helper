@@ -28,6 +28,7 @@ package com.questhelper.requirements.util;
 
 import com.questhelper.requirements.Requirement;
 import net.runelite.api.Client;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;
@@ -97,8 +98,22 @@ public final class RequirementBuilder
 	{
 		return new Requirement()
 		{
+			private volatile Boolean debugOverride;
+
 			@Override
-			public boolean check(Client client)
+			public @Nullable Boolean getDebugOverride()
+			{
+				return debugOverride;
+			}
+
+			@Override
+			public void setDebugOverride(@Nullable Boolean debugOverride)
+			{
+				this.debugOverride = debugOverride;
+			}
+
+			@Override
+			public boolean checkInternal(Client client)
 			{
 				return requirementPredicate.test(client);
 			}

@@ -43,7 +43,32 @@ public abstract class AbstractRequirement implements Requirement
 
 	protected boolean shouldCountForFilter = false;
 
-	abstract public boolean check(Client client);
+	@Nullable
+	private volatile Boolean debugOverride;
+
+	/// Returns the passing state of this requirement.
+	///
+	/// This respects the debugOverride flag that can be set in developer mode
+	@Override
+	public final boolean check(Client client)
+	{
+		var debugOverride = this.debugOverride;
+
+		return debugOverride != null ? debugOverride : checkInternal(client);
+	}
+
+	abstract public boolean checkInternal(Client client);
+
+	@Nullable
+	public final Boolean getDebugOverride()
+	{
+		return debugOverride;
+	}
+
+	public final void setDebugOverride(@Nullable Boolean debugOverride)
+	{
+		this.debugOverride = debugOverride;
+	}
 
 	@Override
 	public boolean shouldConsiderForFilter()

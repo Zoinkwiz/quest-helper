@@ -141,7 +141,7 @@ public class Conditions extends ConditionForStep
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		if (onlyNeedToPassOnce && hasPassed)
 		{

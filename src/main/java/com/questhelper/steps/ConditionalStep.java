@@ -148,7 +148,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 //		return not(new Requirement()
 //		{
 //			@Override
-//			public boolean check(Client client)
+//			public boolean checkInternal(Client client)
 //			{
 //				if (manualOverride.check(client))
 //				{

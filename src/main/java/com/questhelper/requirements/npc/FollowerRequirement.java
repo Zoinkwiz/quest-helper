@@ -57,7 +57,7 @@ public class FollowerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return client.getTopLevelWorldView().npcs()
 			.stream()

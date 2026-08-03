@@ -57,8 +57,10 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
@@ -213,13 +215,29 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	protected void instantiateSteps(Collection<QuestStep> steps)
 	{
+		instantiateSteps(steps, new HashSet<>());
+	}
+
+	private void instantiateSteps(Collection<QuestStep> steps, Set<QuestStep> visited)
+	{
+		if (steps == null)
+		{
+			return;
+		}
+
 		for (QuestStep step : steps)
 		{
+			if (step == null || !visited.add(step))
+			{
+				continue;
+			}
+
 			instantiateStep(step);
 			if (step instanceof OwnerStep)
 			{
-				instantiateSteps(((OwnerStep) step).getSteps());
+				instantiateSteps(((OwnerStep) step).getSteps(), visited);
 			}
+			instantiateSteps(step.getSubsteps(), visited);
 		}
 	}
 

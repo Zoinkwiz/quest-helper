@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-	def runeLiteVersion = "latest.integration"
+	def runeLiteVersion = "latest.release"
 
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
 

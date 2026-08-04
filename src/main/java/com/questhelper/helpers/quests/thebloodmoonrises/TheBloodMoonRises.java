@@ -27,6 +27,7 @@ import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import static com.questhelper.helpers.quests.thebloodmoonrises.CastleDrakanRoomNetwork.door;
@@ -154,6 +155,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	ZoneRequirement inPalaceDungeon;
 	ZoneRequirement isOutsidePalace;
 
+	ZoneRequirement inTob;
 	ZoneRequirement inWyrdFight;
 	ZoneRequirement inBurghDeRottDungeon;
 
@@ -256,8 +258,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	VarplayerRequirement hasDeathPos;
 
 	// Steps
-	// TODO: Remove
-	UnreachableStep todo;
 
 	/// 0 + 2
 	NpcStep startQuest;
@@ -493,6 +493,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	private DetailedQuestStep finishedDrakan2Cutscene;
 	private NpcStep talkToIvanInHauntedWoods;
 	private DetailedQuestStep leavingPalaceCutscene;
+	private ObjectStep goDownToTalkToVeliafAfterLeavingPalace;
 	private DetailedQuestStep talkToVeliafAfterLeavingPalaceCutscene;
 	private NpcStep talkToVeliafAfterLeavingPalace;
 	private NpcStep talkToSugadintiInBurghDeRott;
@@ -511,6 +512,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	private NpcStep speakWithVeliafAfterInspectingFence;
 	private NpcStep prepareFightDrakan3;
 	private ObjectStep enterBurghDeRottDungeon;
+	private NpcStep talkToVeliafToReturnToDrakan3;
 	private NpcStep fightDrakan3;
 	private NpcStep talkToVeliaf;
 	private NpcStep talkToIvanInsideCastleDrakan;
@@ -668,6 +670,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		inBurghDeRottDungeon = new ZoneRequirement(
 			new Zone(new WorldPoint(3489, 9632, 0), new WorldPoint(3500, 9622, 0)));
 
+		Zone tobArea = new Zone(new WorldPoint(3155, 7980, 0), new WorldPoint(3180, 7960, 0));
+		inTob = new ZoneRequirement(tobArea);
+
 		inCastleDrakanFight = new ZoneRequirement(
 			new Zone(new WorldPoint(2514, 7853, 3), new WorldPoint(2495, 7823, 3)));
 	}
@@ -677,8 +682,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	{
 		// Required items
 		blisterwoodFlail = new ItemRequirement("Blisterwood flail", ItemID.BLISTERWOOD_FLAIL);
+		blisterwoodFlail.addAlternates(ItemID.HALLOWED_FLAIL);
 		// TODO: Add Hallowed Flail as the preferred alternative in terms of item IDs actually
-		blisterwoodFlail.setTooltip("You can buy another Blisterwood Flail from Ivan in the Myreque Hideout in Old Man Ral's basement or Veliaf Hurtz at the Icyene Graveyard(?)");
+		blisterwoodFlail.setTooltip("You can buy another Blisterwood Flail from Ivan in the Myreque Hideout in Old Man Ral's basement, or during the quest from Old Man Ral just outside the hideout");
 
 		vyreNobleOutfit = new ItemRequirements("Vyre noble outfit",
 			new ItemRequirement("Vyre noble top", ItemID.VYRELORD_TORSO),
@@ -755,7 +761,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		hasUsedBoltCutters = new VarbitRequirement(VarbitID.SANGVESTI_CLOTHES_SHOP_DOOR, 1);
 		boltCutters = new ItemRequirement("Bolt cutters", ItemID.SANGVESTI_BOLT_CUTTERS);
 		boltCutters.setConditionToHide(hasUsedBoltCutters);
-		oldCog = new ItemRequirement("Old cog", ItemID.SANGVESTI_COG);
+
+		var questVB = new VarbitBuilder(VarbitID.MYQ4);
+		oldCog = new ItemRequirement("Old cog", ItemID.SANGVESTI_COG).hideConditioned(questVB.ge(88));
 
 		unlockedTrapdoor = new VarbitRequirement(VarbitID.SANGVESTI_TRAPDOOR, 1);
 
@@ -858,8 +866,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 	void setupSteps()
 	{
-		// TODO: Remove
-		todo = new UnreachableStep(this);
 		setupStepsBeforeCastleDrakan();
 		castleDrakan.setupSteps();
 		setupStepsAfterCastleDrakan();
@@ -1047,10 +1053,12 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// NOTE: This is a _dangerous_ step. Hardcore ironmen should be careful. If we add an indicator for dangerous steps in the future, this one should be marked.
 		// TODO: I'd love to maybe add a custom icon on each, or number.
-		sotfa3AvoidAnimals = new NpcStep(this, NpcID.SOTFA_FOREST_MAXILLA_BEAST, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.", true);
-		// avoidAnimals.addTileMarkers(SpriteID.LOAD, new WorldPoint(2914, 7920, 0));
+		sotfa3AvoidAnimals = new NpcStep(this, NpcID.SOTFA_FOREST_MAXILLA_BEAST, "Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.", true);
+		sotfa3AvoidAnimals.addText("The first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
+		sotfa3AvoidAnimals.addTileMarkers(SpriteID.LOAD, new WorldPoint(2914, 7920, 0), new WorldPoint(2925, 7907, 0), new WorldPoint(2900, 7893, 0), new WorldPoint(2913, 7897, 0));
 		sotfa3Exit = new ObjectStep(this, ObjectID.SOTFA_CAVE_ENTRANCE_OP, new WorldPoint(2928, 7892, 0), "Leave through the cave in the south-east.");
-		sotfa3Exit.setOverlayText("Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.\\nThe first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
+		sotfa3Exit.setOverlayText("Turn off run. Avoid the Maxilla beasts. Running nearby, walking within 2 tiles, or standing on the maxilla beast will cause them to attack you and probably kill you.");
+		sotfa3Exit.addText("The first and third follow predetermined paths, while the second one moves randomly. Be extra careful when passing it.");
 		cSotfa3 = new ConditionalStep(this, sotfa3AvoidAnimals);
 		cSotfa3.addStep(nearSotfa3Exit, sotfa3Exit);
 
@@ -1072,6 +1080,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		sotfa6WrangleSnakes = new NpcStep(this, NpcID.SOTFA_FOREST_BLOOD_SERPENT, "Wrangle the snakes, then combine them into one long snake. You must stand behind the snake when attempting to wrangle it.", true, deadSnake3);
 		sotfa6CombineSnakes = new DetailedQuestStep(this, "Combine the snakes into one long snake.", deadSnake3.highlighted());
 		sotfa6UseRopeOnBranch = new ObjectStep(this, ObjectID.SOTFA_FOREST_ROPESWING_TREE_BODY, new WorldPoint(3042, 7895, 0), "Use the serpent rope on the long branched tree.", serpentRope.highlighted());
+		sotfa6UseRopeOnBranch.addIcon(ItemID.SOTFA_FOREST_ROPE);
 		sotfa6SwingAcrossWater = new ObjectStep(this, ObjectID.SOTFA_FOREST_ROPESWING_TREE, new WorldPoint(3040, 7894, 0), "Swing across the water with your newly created swing.");
 		sotfa6Exit = new ObjectStep(this, ObjectID.DARKWOOD_TREE_DOORWAY01, new WorldPoint(3041, 7885, 0), "Leave through the trees.");
 		sotfaWatchTheCutscene = sotfa6Exit.cutscene();
@@ -1116,6 +1125,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cookStew.addWidgetHighlight(WidgetHighlight.createMultiskillByName("Stew"));
 		combineStew3 = new DetailedQuestStep(this, "Put the amitire leaves into the stew.", amitireLeaves.highlighted(), stew.highlighted());
 		giveStewToSafalaan = new NpcStep(this, NpcID.MYQ6_SAFALAAN_VIS_NOOP, "Give the amitire stew to Safalaan Hallow.", amitireStew.highlighted());
+		giveStewToSafalaan.addIcon(ItemID.MYQ6_STEW);
 
 		talkToSafalaanAfterFeedingHimStew = new NpcStep(this, NpcID.MYQ6_SAFALAAN_VIS, new WorldPoint(3157, 7841, 1), "Talk to Safalaan Hallow after feeding him the stew.");
 
@@ -1163,7 +1173,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		talkToVeliafInDungeonAgain = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon again.");
 
-		climbUpstairs = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_STAIRS_M, new WorldPoint(3164, 7823, 0), "Climb upstairs and talk to Sugadinti.");
+		climbUpstairs = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_STAIRS_M, new WorldPoint(3164, 7823, 0), "Climb upstairs.");
 		talkToSugadintiAfterHelpingAllies = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3168, 7828, 1), "Talk to Sugadinti Vitur after helping out Ivan and Veliaf.");
 		talkToSugadintiAfterHelpingAllies.addSubSteps(climbUpstairs);
 
@@ -1208,8 +1218,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		leavingPalaceCutscene = talkToIvanInHauntedWoods.cutscene();
 
 		/// 128
-		talkToVeliafAfterLeavingPalace = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in Burgh de Rott.");
+		goDownToTalkToVeliafAfterLeavingPalace = new ObjectStep(this, ObjectID.BURGH_INN_TRAPDOOR_MULTILOC, new WorldPoint(3490, 3232, 0), "Enter the Burgh de Rott Myreque base.");
+
+		talkToVeliafAfterLeavingPalace = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz in the Burgh de Rott Myreque base.");
 		talkToVeliafAfterLeavingPalaceCutscene = talkToVeliafAfterLeavingPalace.cutscene();
+		talkToVeliafAfterLeavingPalace.addSubSteps(goDownToTalkToVeliafAfterLeavingPalace);
 
 		/// 130
 		talkToSugadintiInBurghDeRott = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in Burgh de Rott.");
@@ -1253,7 +1266,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		prepareFightDrakan3.addSubSteps(enterBurghDeRottDungeon);
 
 		/// 154
+		talkToVeliafToReturnToDrakan3 = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
+		talkToVeliafToReturnToDrakan3.addDialogStep("I'll go now.");
 		fightDrakan3 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_3, "Fight Lowerniel Drakan. Protect from melee. Dodge his attacks.");
+		fightDrakan3.addSubSteps(talkToVeliafToReturnToDrakan3);
 
 		/// 156
 		talkToVeliaf = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
@@ -1619,7 +1635,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// TODO(FOR FUTURE ADVENTURERS): Do you _need_ to bring the medallion for this?
 		prayAtShrine = new ObjectStep(this, ObjectID.MYQ6_CASTLE_DRAKAN_SHRINE_OP, new WorldPoint(3168, 7707, 0), "Pray at the shrine to let your Drakan's Medallion teleport you here.", drakansMedallion);
 
-		enterPortalInCastleDrakanLobby = new ObjectStep(this, ObjectID.MYQ6_VAMPYRIUM_PORTAL_VIS, new WorldPoint(3161, 7710, 0), "Click the ominous red portal in the Castle Drakan lobby.", blisterwoodFlail, combatGearMelee);
+		enterPortalInCastleDrakanLobby = new ObjectStep(this, ObjectID.MYQ6_VAMPYRIUM_PORTAL_VIS, new WorldPoint(3161, 7710, 0), "Enter the ominous red portal in the Castle Drakan lobby.", blisterwoodFlail, combatGearMelee);
 		enterPortalInCastleDrakanLobby.addDialogStep("Yes.");
 		enterPortalInCastleDrakanLobby.addTeleport(drakansMedallionToCastleDrakan);
 
@@ -1831,8 +1847,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// 82 -> 84 after leaving Vampyrium's castle drakan
 
-		// TODO: Get rid of base todo step - should this be "get back to vampyrium?"
-		var cCog = new ConditionalStep(this, todo, "Find the old cog for the drawbridge.");
+		var returnToVampyrium = enterPortalInCastleDrakanLobby.copy();
+		leaveCastleDrakan.addSubSteps(returnToVampyrium);
+		var cCog = new ConditionalStep(this, returnToVampyrium, "Find the old cog for the drawbridge.");
 		cCog.addStep(and(hasDeathPos, not(oldCogInOriginalPosition), not(oldCog)), pickupOldCogFromWhereYouDied);
 		cCog.addStep(and(hasDeathPos, needBoltCutters, not(boltCutters)), pickupBoltCuttersFromWhereYouDied);
 		cCog.addStep(and(hasDeathPos, needViturKey, not(viturKey)), pickupViturKeyFromWhereYouDied);
@@ -1845,11 +1862,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cCog.addStep(and(oldCog), returnToVanesculaReadyToLeave);
 
 		cCog.addStep(and(not(oldCog), inSmithy), pickupOldCog);
-		// TODO: Not sure if we need the "not unlocked altar house" req here
 		cCog.addStep(and(not(oldCog), inAltarHouse, or(jovkaiKey, unlockedSmith), not(unlockedAltarHouse)), leaveAltarThroughDoor);
 		cCog.addStep(and(not(oldCog), or(jovkaiKey, unlockedSmith)), enterSmith);
 
-		// TODO: Not 100% sure if step order is correct here
 		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, inAltarHouse, combinationLockWidgetOpen), solveAltarChestLockPW);
 		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, inAltarHouse, not(jovkaiKey)), searchAltarChest);
 		cCog.addStep(and(jovkaiKeyInOriginalPosition, needJovkaiKey, not(jovkaiKey), unlockedAltarHouse), enterAltarHouseThroughDoor);
@@ -1889,9 +1904,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(84, cCog);
 		steps.put(86, cCog);
 
-		// TODO: If the user cancels out of this cutscene (if they can), is there an NPC or Object they can interact with to continue?
-		var cRepairedBridge = new ConditionalStep(this, todo, "You have successfully repaired the bridge!");
+		var cRepairedBridge = new ConditionalStep(this, returnToVampyrium, "You have successfully repaired the bridge!");
 		cRepairedBridge.addStep(inCutscene, watchCutsceneRepairedBridge);
+		cRepairedBridge.addStep(inVampyriumVarbit, returnToVanesculaReadyToLeave);
 		steps.put(88, cRepairedBridge);
 
 		steps.put(90, fightDrakan1);
@@ -1900,7 +1915,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cFlee1.addStep(inCutscene, flee1WatchTheCutscene);
 		steps.put(92, cFlee1);
 
-		var cFlee2 = new ConditionalStep(this, resupplyIfNeeded2);
+		var returnToVampyriumFlee2 = returnToVampyrium.copy();
+		resupplyIfNeeded2.addSubSteps(returnToVampyriumFlee2);
+
+		var cFlee2 = new ConditionalStep(this, returnToVampyriumFlee2);
 		cFlee2.addStep(and(inSotfa6), cSotfa6);
 		cFlee2.addStep(and(inSotfa5), cSotfa5);
 		cFlee2.addStep(and(inSotfa4), sotfa4);
@@ -1909,16 +1927,19 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cFlee2.addStep(and(inSotfa1, anyNearbyFeralVyres), sotfa1);
 		cFlee2.addStep(and(inSotfa1), sotfa1Exit);
 		cFlee2.addStep(inCutscene, sotfaWatchTheCutscene);
+		cFlee2.addStep(inVampyriumVarbit, resupplyIfNeeded2);
 		steps.put(94, cFlee2);
 
 		// 94 -> 96: done with all the "running through forest" puzzles
 
-		var cFlee3 = new ConditionalStep(this, sotfaWatchTheCutscene);
+		var cFlee3 = new ConditionalStep(this, returnToVampyriumFlee2);
 		cFlee3.addStep(inResupplyZone, resupplyIfNeeded2);
+		cFlee3.addStep(inVampyriumVarbit, sotfaWatchTheCutscene);
 		steps.put(96, cFlee3);
 
-		var cMysteriousWoman = new ConditionalStep(this, talkToMysteriousWoman1);
+		var cMysteriousWoman = new ConditionalStep(this, returnToVampyriumFlee2);
 		cMysteriousWoman.addStep(inCutscene, mysteriousWomanWatchTheCutscene);
+		cMysteriousWoman.addStep(inVampyriumVarbit, talkToMysteriousWoman1);
 		steps.put(98, cMysteriousWoman);
 
 		// 98 -> 100: after meeting & finishing speaking with Sugadinti
@@ -1927,7 +1948,17 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		// 100 -> 102: spoke with Efaritay, and she told me to bring her herbs
 
-		var cPickUpHerbs = new ConditionalStep(this, giveStewToSafalaan);
+		// Progress has this happen third, but technically can be done at any time
+		var veliafSteps = new ConditionalStep(this, talkToVeliafInDungeon);
+		veliafSteps.addStep(veliafProgressDone, climbUpstairs);
+		veliafSteps.addStep(spokeWithVanescula, talkToVeliafInDungeonAgain);
+		veliafSteps.addStep(spokeWithVeliaf, talkToVanescula);
+
+		var returnToVampyrium3 = returnToVampyrium.copy();
+		startTalkingToEfaritay.addSubSteps(returnToVampyrium3);
+
+		var cPickUpHerbs = new ConditionalStep(this, returnToVampyrium3);
+		cPickUpHerbs.addStep(inPalaceDungeon, veliafSteps);
 		cPickUpHerbs.addStep(and(amitireStew), giveStewToSafalaan);
 		cPickUpHerbs.addStep(and(stew, amitireLeaves), combineStew3);
 		cPickUpHerbs.addStep(and(uncookedStew), cookStew);
@@ -1950,10 +1981,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(108, talkToEfaritayAfterFeedingStewToSafalaan);
 		// 108 -> 110 after speaking to Efaritay about getting my weapon upgraded
 
-		// TODO: Can a user make it here without their blisterwood flail?
-		// TODO: Could we convert a conditional step into a graph program where a developer can click each requirement whether it
-		// should pass or not, and show which step would be active?
-		var cUpgradeWeapon = new ConditionalStep(this, talkToEfaritayAfterFeedingStewToSafalaan);
+		var cUpgradeWeapon = new ConditionalStep(this, returnToVampyrium3);
+		cUpgradeWeapon.addStep(inPalaceDungeon, veliafSteps);
 		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, enhancedBlisterwoodSickle), createHallowedFlail);
 		cUpgradeWeapon.addStep(and(hallowedMarks, enhancedBlisterwoodSickle), searchWorkbenchForHammer);
 		cUpgradeWeapon.addStep(and(hallowedMarks, chisel, blessedSilverSickle, diamond), putDiamondInSickle);
@@ -1968,53 +1997,59 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife, blisterwoodLogs, blessedSilverSickle), searchChestForDiamond);
 		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife, blisterwoodLogs), searchCrateForBlessedSilverSickle);
 		cUpgradeWeapon.addStep(and(hallowedMarks, hammer, knife), searchCrateForBlisterwoodLogs);
+		cUpgradeWeapon.addStep(inVampyriumVarbit, talkToEfaritayAfterFeedingStewToSafalaan);
 		steps.put(110, cUpgradeWeapon);
 
-		var cAfterUpgradingWeapon = new ConditionalStep(this, speakToIvanWithHallowedFlail);
-		cAfterUpgradingWeapon.addStep(and(veliafProgressDone, inPalaceDungeon), climbUpstairs);
-
+		// veliafSteps can happen whenever, so long as you're downstairs
+		var cAfterUpgradingWeapon = new ConditionalStep(this, returnToVampyrium3);
 		cAfterUpgradingWeapon.addStep(and(veliafProgressDone, ivanProgressDone), talkToSugadintiAfterHelpingAllies);
-		cAfterUpgradingWeapon.addStep(and(spokeWithVanescula, inPalaceDungeon), talkToVeliafInDungeonAgain);
-		cAfterUpgradingWeapon.addStep(and(spokeWithVeliaf, inPalaceDungeon), talkToVanescula);
-		cAfterUpgradingWeapon.addStep(and(ivanProgressDone, inPalaceDungeon), talkToVeliafInDungeon);
+		cAfterUpgradingWeapon.addStep(inPalaceDungeon, veliafSteps);
 		cAfterUpgradingWeapon.addStep(ivanProgressDone, climbDownstairs);
 		cAfterUpgradingWeapon.addStep(hasCraftedStakes, returnToIvan);
 		cAfterUpgradingWeapon.addStep(and(canStartIvan, knife, blisterwoodLogs), fletchStakes);
 		cAfterUpgradingWeapon.addStep(and(canStartIvan, knife), getLogsForStakes);
 		cAfterUpgradingWeapon.addStep(canStartIvan, ivanSearchWorkbenchForKnife);
+		cAfterUpgradingWeapon.addStep(inVampyriumVarbit, speakToIvanWithHallowedFlail);
 		steps.put(112, cAfterUpgradingWeapon);
 
 		// 112 -> 114 after speaking to sugadinti and helping ivan & veliaf.
 
+		var returnToVampyrium4 = returnToVampyrium.copy();
+		leavePalaceForCombat.addSubSteps(returnToVampyrium4);
+
 		var cGetReadyForCombat = new ConditionalStep(this, leavePalaceForCombat);
 		cGetReadyForCombat.addStep(inCutscene, getReadyForCombatWatchTheCutscene);
+		cGetReadyForCombat.addStep(inVampyriumVarbit, leavePalaceForCombat);
 		steps.put(114, cGetReadyForCombat);
 
-		// 114 -> 116 after watching cutscene, and now you have to defend!!!
-		steps.put(116, attackPortals);
+		var cAttackPortals = new ConditionalStep(this, returnToVampyrium4);
+		cAttackPortals.addStep(inVampyriumVarbit, attackPortals);
+		steps.put(116, cAttackPortals);
 
 		// 116 -> 118 after helping
-		var cAfterHelpingWithPortals = new ConditionalStep(this, leaveDoors);
+		var cAfterHelpingWithPortals = new ConditionalStep(this, returnToVampyrium4);
 		cAfterHelpingWithPortals.addStep(inCutscene, leaveDoorsCutscene);
+		cAfterHelpingWithPortals.addStep(inVampyriumVarbit, leaveDoors);
 		steps.put(118, cAfterHelpingWithPortals);
 
-		var cFinishedPortalsCutscene = new ConditionalStep(this, guardThePalace, "Help Efaritay Hallow and the Aranei defend the palace.");
+		var cFinishedPortalsCutscene = new ConditionalStep(this, returnToVampyrium4, "Help Efaritay Hallow and the Aranei defend the palace.");
 		cFinishedPortalsCutscene.addStep(inCutscene, barricadeCutscene);
 		cFinishedPortalsCutscene.addStep(inPalaceSouthernPart, passThroughBarricadeToHelp);
+		cFinishedPortalsCutscene.addStep(inVampyriumVarbit, guardThePalace);
 		steps.put(120, cFinishedPortalsCutscene);
 
 		// 120 -> 122 after drakan breaks in
 		// NOTE: For this step, and many others, if IN_VAMPYRIUM is 0 we need to guide the user back to vampyrium
 		// Pulling back spear = Stand to his left or right
-		var cDrakanFight2 = new ConditionalStep(this, fightDrakan2);
+		var cDrakanFight2 = new ConditionalStep(this, returnToVampyrium4);
 		cDrakanFight2.addStep(inPalaceSouthernPart, passThroughBarricadeToFightDrakan);
+		cDrakanFight2.addStep(inVampyriumVarbit, fightDrakan2);
 		steps.put(122, cDrakanFight2);
 
 		// 122 -> 124: fought off drakan
-
-		// TODO: What happens if you cancel out of this cutscene - is there an NPC or Object you can interact with to go back to the cutscene?
-		var cFinishedDrakan2 = new ConditionalStep(this, todo);
+		var cFinishedDrakan2 = new ConditionalStep(this, returnToVampyrium4);
 		cFinishedDrakan2.addStep(inCutscene, finishedDrakan2Cutscene);
+		cFinishedDrakan2.addStep(inPalaceSouthernPart, passThroughBarricadeToFightDrakan);
 		steps.put(124, cFinishedDrakan2);
 
 		// 124 -> 126: watched cutscene in palace
@@ -2023,12 +2058,15 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(126, cFinishedDrakan3);
 
 		// 126 -> 128: talked to Ivan after getting teleported
-		var cFinishedDrakan4 = new ConditionalStep(this, talkToVeliafAfterLeavingPalace);
+		var cFinishedDrakan4 = new ConditionalStep(this, goDownToTalkToVeliafAfterLeavingPalace);
 		cFinishedDrakan4.addStep(inCutscene, talkToVeliafAfterLeavingPalaceCutscene);
+		cFinishedDrakan4.addStep(inBurghDeRottDungeon, talkToVeliafAfterLeavingPalace);
 		steps.put(128, cFinishedDrakan4);
 
 		// 128 -> 130: talked to Veliaf in Burgh de Rott
-		steps.put(130, talkToSugadintiInBurghDeRott);
+		var cFinishedDrakan5 = new ConditionalStep(this, goDownToTalkToVeliafAfterLeavingPalace);
+		cFinishedDrakan5.addStep(inBurghDeRottDungeon, talkToSugadintiInBurghDeRott);
+		steps.put(130, cFinishedDrakan5);
 
 		var cGetToTob = new ConditionalStep(this, getToTob);
 		cGetToTob.addStep(inCutscene, getToTobCutscene);
@@ -2036,7 +2074,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(134, cGetToTob);
 
 		// 134 -> 136: entering tob with sugadinti
-		steps.put(136, ensureNothingBothersSugadinti);
+		var cEnsureNothingBothersSugadinti = new ConditionalStep(this, getToTob);
+		cEnsureNothingBothersSugadinti.addStep(inTob, ensureNothingBothersSugadinti);
+		steps.put(136, cEnsureNothingBothersSugadinti);
 
 		// 136 -> 138: after fighting all the bosses
 		var cDoneWithTobFights = new ConditionalStep(this, talkToSugadintiAfterFinishingTob);
@@ -2067,7 +2107,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(148, cDealtWithWyrd2);
 
 		// 148 -> 150: inspected fence
-		steps.put(150, speakWithVeliafAfterInspectingFence);
+		var enterBurghBasement2 = goDownToTalkToVeliafAfterLeavingPalace.copy();
+		speakWithVeliafAfterInspectingFence.addSubSteps(enterBurghBasement2);
+		var cSpeakWithVeliafAfterInspectingFence = new ConditionalStep(this, enterBurghBasement2);
+		cSpeakWithVeliafAfterInspectingFence.addStep(inBurghDeRottDungeon, speakWithVeliafAfterInspectingFence);
+		steps.put(150, cSpeakWithVeliafAfterInspectingFence);
 
 		// 150 -> 152: spoke with veliaf and co under Burgh de Rott after inspecting fence
 		var cDoSomething = new ConditionalStep(this, enterBurghDeRottDungeon, combatGear, hallowedFlail, food, prayerPotions);
@@ -2076,6 +2120,10 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		steps.put(152, cDoSomething);
 
 		// 152 -> 154: ?
+		var cDoSomething2 = new ConditionalStep(this, enterBurghDeRottDungeon, combatGear, hallowedFlail, food, prayerPotions);
+		cDoSomething2.addStep(inBurghDeRottDungeon, talkToVeliafToReturnToDrakan3);
+		cDoSomething2.addStep(inCutscene, talkWithVeliafInBurghDeRottCutscene);
+		cDoSomething2.addStep(and(new InInstanceRequirement(), new ZoneRequirement(new Zone(15858))), fightDrakan3);
 		steps.put(154, fightDrakan3);
 
 		// 154 -> 156: beat drakan for the third time

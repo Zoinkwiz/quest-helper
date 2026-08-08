@@ -55,6 +55,7 @@ import com.questhelper.steps.widget.NormalSpells;
 import java.util.Set;
 
 import com.questhelper.steps.widget.WidgetHighlight;
+import com.sun.source.tree.Tree;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -172,8 +173,11 @@ public class TreeRun extends ComplexStateQuestHelper
 	// Farming Set
 	ItemRequirement farmingHat, farmingTop, farmingLegs, farmingBoots, farmersOutfit;
 
+	// Toggles
+	Requirement treesEnabled, fruitTreesEnabled, hardwoodEnabled, calquatEnabled;
+
 	// Access Requirements
-	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToLletya, accessToFossilIsland,
+	Requirement accessToFarmingGuildTreePatch, accessToFarmingGuildFruitTreePatch, accessToCalquatFarming, accessToLletya, accessToFossilIsland,
 		accessToSavannah, accessToVarlamore, accessToAnglersRetreat, accessToGreatConch;
 
 	Requirement payingForRemoval, payingForProtection, usingCompostorNothing;
@@ -287,7 +291,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		strongholdTreeStep.addStep(gnomeStrongholdTreeStates.getIsStump(), gnomeStrongholdTreePatchDig);
 		strongholdTreeStep.addStep(nor(usingCompostorNothing, gnomeStrongholdTreeStates.getIsProtected()), strongholdTreeProtect);
 		strongholdStep.addStep(not(gnomeStrongholdTreeStates.getIsGrowing()), strongholdTreeStep);
-		steps.addStep(nand(gnomeStrongholdFruitStates.getIsGrowing(), gnomeStrongholdTreeStates.getIsGrowing()), strongholdStep.withId(5));
+		steps.addStep(or(not(gnomeStrongholdFruitStates.getIsGrowing()), not(gnomeStrongholdTreeStates.getIsGrowing())), strongholdStep.withId(5));
 
 		villageStep = new ConditionalStep(this, gnomeVillageFruitTreePatchCheckHealth);
 		villageStep.addStep(gnomeVillageStates.getIsUnchecked(), gnomeVillageFruitTreePatchCheckHealth);
@@ -317,16 +321,16 @@ public class TreeRun extends ComplexStateQuestHelper
 		karamjaStep = new ReorderableConditionalStep(this, new DetailedQuestStep(this, "Unreachable."));
 		karamjaStep.addStep(not(brimhavenStates.getIsGrowing()), brimhavenStep);
 
-		taiBwoWannaiStep = (ConditionalStep) new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth).withId(82);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsUnchecked(), taiBwoWannaiCalquatPatchCheckHealth);
-		taiBwoWannaiStep.addStep(and(taiBwoWannaiStates.getIsHarvestable(), not(payingForRemoval)), taiBwoWannaiCalquatPatchRemove);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsEmpty(), taiBwoWannaiCalquatPatchPlant);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsHarvestable(), taiBwoWannaiCalquatPatchClear);
-		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsStump(), taiBwoWannaiCalquatPatchDig);
-		taiBwoWannaiStep.addStep(nor(usingCompostorNothing, taiBwoWannaiStates.getIsProtected()),
+		taiBwoWannaiStep = (ConditionalStep) new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth, accessToCalquatFarming).withId(82);
+		taiBwoWannaiStep.addStep(and(accessToCalquatFarming, taiBwoWannaiStates.getIsUnchecked()), taiBwoWannaiCalquatPatchCheckHealth);
+		taiBwoWannaiStep.addStep(and(accessToCalquatFarming, taiBwoWannaiStates.getIsHarvestable(), not(payingForRemoval)), taiBwoWannaiCalquatPatchRemove);
+		taiBwoWannaiStep.addStep(and(accessToCalquatFarming, taiBwoWannaiStates.getIsEmpty()), taiBwoWannaiCalquatPatchPlant);
+		taiBwoWannaiStep.addStep(and(accessToCalquatFarming, taiBwoWannaiStates.getIsHarvestable()), taiBwoWannaiCalquatPatchClear);
+		taiBwoWannaiStep.addStep(and(accessToCalquatFarming, taiBwoWannaiStates.getIsStump()), taiBwoWannaiCalquatPatchDig);
+		taiBwoWannaiStep.addStep(and(accessToCalquatFarming, nor(usingCompostorNothing, taiBwoWannaiStates.getIsProtected())),
 			taiBwoWannaiCalquatProtect);
-		karamjaStep.addStep(not(taiBwoWannaiStates.getIsGrowing()), taiBwoWannaiStep);
-		steps.addStep(nand(brimhavenStates.getIsGrowing(), taiBwoWannaiStates.getIsGrowing()), karamjaStep.withId(8));
+		karamjaStep.addStep(and(accessToCalquatFarming, not(taiBwoWannaiStates.getIsGrowing())), taiBwoWannaiStep);
+		steps.addStep(or(not(brimhavenStates.getIsGrowing()), not(taiBwoWannaiStates.getIsGrowing())), karamjaStep.withId(8));
 
 		lletyaStep = new ConditionalStep(this, lletyaFruitTreePatchCheckHealth);
 		lletyaStep.addStep(lletyaStates.getIsUnchecked(), lletyaFruitTreePatchCheckHealth);
@@ -363,7 +367,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		fossilIslandWestStep.addStep(westHardwoodStates.getIsStump(), westHardwoodTreePatchDig);
 		fossilIslandWestStep.addStep(nor(usingCompostorNothing, westHardwoodStates.getIsProtected()), westHardwoodProtect);
 		fossilIslandStep.addStep(not(westHardwoodStates.getIsGrowing()), fossilIslandWestStep);
-		steps.addStep(and(accessToFossilIsland, nand(eastHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing(), westHardwoodStates.getIsGrowing())), fossilIslandStep.withId(10));
+		steps.addStep(and(accessToFossilIsland, or(not(eastHardwoodStates.getIsGrowing()), not(middleHardwoodStates.getIsGrowing()), not(westHardwoodStates.getIsGrowing()))), fossilIslandStep.withId(10));
 
 		savannahStep = new ConditionalStep(this, savannahCheckHealth);
 		savannahStep.addStep(savannahStates.getIsUnchecked(), savannahCheckHealth);
@@ -391,19 +395,19 @@ public class TreeRun extends ComplexStateQuestHelper
 		kastoriFruitStep.addStep(kastoriFruitStates.getIsStump(), kastoriFruitTreePatchDig);
 		kastoriFruitStep.addStep(nor(usingCompostorNothing, kastoriFruitStates.getIsProtected()), kastoriFruitProtect);
 
-		kastoriCalquatStep = (ConditionalStep) new ConditionalStep(this, kastoriCalquatPatchCheckHealth).withId(132);
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsUnchecked(), kastoriCalquatPatchCheckHealth);
-		kastoriCalquatStep.addStep(and(kastoriCalquatStates.getIsHarvestable(), not(payingForRemoval)), kastoriCalquatPatchRemove);
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsEmpty(), kastoriCalquatPatchPlant);
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsHarvestable(), kastoriCalquatPatchClear);
-		kastoriCalquatStep.addStep(kastoriCalquatStates.getIsStump(), kastoriCalquatPatchDig);
-		kastoriCalquatStep.addStep(nor(usingCompostorNothing, kastoriCalquatStates.getIsProtected()), kastoriCalquatProtect);
+		kastoriCalquatStep = (ConditionalStep) new ConditionalStep(this, kastoriCalquatPatchCheckHealth, accessToCalquatFarming).withId(132);
+		kastoriCalquatStep.addStep(and(accessToCalquatFarming, kastoriCalquatStates.getIsUnchecked()), kastoriCalquatPatchCheckHealth);
+		kastoriCalquatStep.addStep(and(accessToCalquatFarming, kastoriCalquatStates.getIsHarvestable(), not(payingForRemoval)), kastoriCalquatPatchRemove);
+		kastoriCalquatStep.addStep(and(accessToCalquatFarming, kastoriCalquatStates.getIsEmpty()), kastoriCalquatPatchPlant);
+		kastoriCalquatStep.addStep(and(accessToCalquatFarming, kastoriCalquatStates.getIsHarvestable()), kastoriCalquatPatchClear);
+		kastoriCalquatStep.addStep(and(accessToCalquatFarming, kastoriCalquatStates.getIsStump()), kastoriCalquatPatchDig);
+		kastoriCalquatStep.addStep(and(accessToCalquatFarming, nor(usingCompostorNothing, kastoriCalquatStates.getIsProtected())), kastoriCalquatProtect);
 
 
 		kastoriStep = new ReorderableConditionalStep(this, new DetailedQuestStep(this, "Unreachable."));
 		kastoriStep.addStep(not(kastoriFruitStates.getIsGrowing()), kastoriFruitStep);
-		kastoriStep.addStep(not(kastoriCalquatStates.getIsGrowing()), kastoriCalquatStep);
-		steps.addStep(and(accessToVarlamore, nand(kastoriFruitStates.getIsGrowing(), kastoriCalquatStates.getIsGrowing())), kastoriStep.withId(13));
+		kastoriStep.addStep(and(accessToCalquatFarming, not(kastoriCalquatStates.getIsGrowing())), kastoriCalquatStep);
+		steps.addStep(and(accessToVarlamore, or(not(kastoriFruitStates.getIsGrowing()), not(kastoriCalquatStates.getIsGrowing()))), kastoriStep.withId(13));
 
 		anglersRetreatStep = new ConditionalStep(this, anglersCheckHealth);
 		anglersRetreatStep.addStep(anglersRetreatStates.getIsUnchecked(), anglersCheckHealth);
@@ -414,14 +418,14 @@ public class TreeRun extends ComplexStateQuestHelper
 		anglersRetreatStep.addStep(nor(usingCompostorNothing, anglersRetreatStates.getIsProtected()), anglersProtect);
 		steps.addStep(and(accessToAnglersRetreat, not(anglersRetreatStates.getIsGrowing())), anglersRetreatStep.withId(14));
 
-		greatConchStep = new ConditionalStep(this, greatConchCalquatPatchCheckHealth);
-		greatConchStep.addStep(greatConchStates.getIsUnchecked(), greatConchCalquatPatchCheckHealth);
-		greatConchStep.addStep(and(greatConchStates.getIsHarvestable(), not(payingForRemoval)), greatConchCalquatPatchRemove);
-		greatConchStep.addStep(greatConchStates.getIsEmpty(), greatConchCalquatPatchPlant);
-		greatConchStep.addStep(greatConchStates.getIsHarvestable(), greatConchCalquatPatchClear);
-		greatConchStep.addStep(greatConchStates.getIsStump(), greatConchCalquatPatchDig);
-		greatConchStep.addStep(nor(usingCompostorNothing, greatConchStates.getIsProtected()), greatConchCalquatProtect);
-		steps.addStep(and(accessToGreatConch, not(greatConchStates.getIsGrowing())), greatConchStep.withId(15));
+		greatConchStep = new ConditionalStep(this, greatConchCalquatPatchCheckHealth, accessToCalquatFarming);
+		greatConchStep.addStep(and(accessToCalquatFarming, greatConchStates.getIsUnchecked()), greatConchCalquatPatchCheckHealth);
+		greatConchStep.addStep(and(accessToCalquatFarming, greatConchStates.getIsHarvestable(), not(payingForRemoval)), greatConchCalquatPatchRemove);
+		greatConchStep.addStep(and(accessToCalquatFarming, greatConchStates.getIsEmpty()), greatConchCalquatPatchPlant);
+		greatConchStep.addStep(and(accessToCalquatFarming, greatConchStates.getIsHarvestable()), greatConchCalquatPatchClear);
+		greatConchStep.addStep(and(accessToCalquatFarming, greatConchStates.getIsStump()), greatConchCalquatPatchDig);
+		greatConchStep.addStep(and(accessToCalquatFarming, nor(usingCompostorNothing, greatConchStates.getIsProtected())), greatConchCalquatProtect);
+		steps.addStep(and(accessToCalquatFarming, accessToGreatConch, not(greatConchStates.getIsGrowing())), greatConchStep.withId(15));
 
 		return steps;
 	}
@@ -429,6 +433,12 @@ public class TreeRun extends ComplexStateQuestHelper
 	private void setupConditions()
 	{
 		// Tree Patch Ready Requirements
+
+		// Toggle Requirements
+		treesEnabled = not(new Conditions(new RuneliteRequirement(configManager, TREE_SAPLING, TreeSapling.NONE.name())));
+		fruitTreesEnabled = not(new Conditions(new RuneliteRequirement(configManager, FRUIT_TREE_SAPLING, FruitTreeSapling.NONE.name())));
+		hardwoodEnabled = not(new Conditions(new RuneliteRequirement(configManager, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.NONE.name())));
+		calquatEnabled = not(new Conditions(new RuneliteRequirement(configManager, CALQUAT_TREE_SAPLING, CalquatTreeSapling.NONE.name())));
 
 		// Access Requirements
 		// ME1 partial completion required only, however much easier to access when finished.
@@ -440,6 +450,9 @@ public class TreeRun extends ComplexStateQuestHelper
 		accessToFarmingGuildFruitTreePatch = new Conditions(
 			new SkillRequirement(Skill.FARMING, 85)
 		);
+		accessToCalquatFarming = new Conditions(
+			new SkillRequirement(Skill.FARMING, 72, false)
+		);
 		accessToSavannah = new QuestRequirement(QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE, QuestState.FINISHED);
 		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
 
@@ -450,46 +463,68 @@ public class TreeRun extends ComplexStateQuestHelper
 		accessToGreatConch = new QuestRequirement(QuestHelperQuest.TROUBLED_TORTUGANS, QuestState.FINISHED);
 
 		// Trees
-		lumbridgeStates = new PatchStates("Lumbridge");
-		faladorStates = new PatchStates("Falador");
-		taverleyStates = new PatchStates("Taverley");
-		varrockStates = new PatchStates("Varrock");
-		gnomeStrongholdTreeStates = new PatchStates("Gnome Stronghold");
-		farmingGuildTreeStates = new PatchStates("Farming Guild", accessToFarmingGuildTreePatch);
-		auburnvaleStates = new PatchStates("Auburnvale", accessToVarlamore);
+		lumbridgeStates = new PatchStates("Lumbridge", treesEnabled);
+		faladorStates = new PatchStates("Falador", treesEnabled);
+		taverleyStates = new PatchStates("Taverley", treesEnabled);
+		varrockStates = new PatchStates("Varrock", treesEnabled);
+		gnomeStrongholdTreeStates = new PatchStates("Gnome Stronghold", treesEnabled);
+		farmingGuildTreeStates = new PatchStates("Farming Guild", and(accessToFarmingGuildTreePatch, treesEnabled));
+		auburnvaleStates = new PatchStates("Auburnvale", and(accessToVarlamore, treesEnabled));
 
 		// Fruit trees
-		catherbyStates = new PatchStates("Catherby");
-		brimhavenStates = new PatchStates("Brimhaven");
-		taiBwoWannaiStates = new PatchStates("Tai Bwo Wannai");
-		gnomeVillageStates = new PatchStates("Tree Gnome Village");
-		gnomeStrongholdFruitStates = new PatchStates("Gnome Stronghold");
-		lletyaStates = new PatchStates("Lletya", accessToLletya);
-		farmingGuildFruitStates = new PatchStates("Farming Guild", accessToFarmingGuildFruitTreePatch);
-		kastoriFruitStates = new PatchStates("Kastori", accessToVarlamore);
-		kastoriCalquatStates = new PatchStates("Kastori", accessToVarlamore);
-		greatConchStates = new PatchStates("Great Conch", accessToGreatConch);
+		catherbyStates = new PatchStates("Catherby", fruitTreesEnabled);
+		brimhavenStates = new PatchStates("Brimhaven", fruitTreesEnabled);
+		taiBwoWannaiStates = new PatchStates("Tai Bwo Wannai", and(accessToCalquatFarming, fruitTreesEnabled));
+		gnomeVillageStates = new PatchStates("Tree Gnome Village", fruitTreesEnabled);
+		gnomeStrongholdFruitStates = new PatchStates("Gnome Stronghold", fruitTreesEnabled);
+		lletyaStates = new PatchStates("Lletya", and(accessToLletya, fruitTreesEnabled));
+		farmingGuildFruitStates = new PatchStates("Farming Guild", and(accessToFarmingGuildFruitTreePatch, fruitTreesEnabled));
+		kastoriFruitStates = new PatchStates("Kastori", and(accessToVarlamore, fruitTreesEnabled));
+		kastoriCalquatStates = new PatchStates("Kastori", and(accessToVarlamore, accessToCalquatFarming, fruitTreesEnabled));
+		greatConchStates = new PatchStates("Great Conch", and(accessToGreatConch, accessToCalquatFarming, fruitTreesEnabled));
 
 		westHardwoodStates = new PatchStates("Fossil Island", "West");
 		middleHardwoodStates = new PatchStates("Fossil Island", "Middle");
 		eastHardwoodStates = new PatchStates("Fossil Island", "East");
-		savannahStates = new PatchStates("Avium Savannah", accessToSavannah);
-		anglersRetreatStates = new PatchStates("Anglers' Retreat", accessToAnglersRetreat);
+		savannahStates = new PatchStates("Avium Savannah", and(accessToSavannah, hardwoodEnabled));
+		anglersRetreatStates = new PatchStates("Anglers' Retreat", and(accessToAnglersRetreat, hardwoodEnabled));
 
-		allGrowing = and(lumbridgeStates.getIsGrowing(), faladorStates.getIsGrowing(), taverleyStates.getIsGrowing(),
-			varrockStates.getIsGrowing(), gnomeStrongholdTreeStates.getIsGrowing(), catherbyStates.getIsGrowing(),
-			brimhavenStates.getIsGrowing(), taiBwoWannaiStates.getIsGrowing(), gnomeVillageStates.getIsGrowing(),
-			gnomeStrongholdFruitStates.getIsGrowing(),
-			or(not(accessToLletya), lletyaStates.getIsGrowing()),
-			or(not(accessToVarlamore), auburnvaleStates.getIsGrowing()),
-			or(not(accessToVarlamore), kastoriFruitStates.getIsGrowing()),
-			or(not(accessToVarlamore), kastoriCalquatStates.getIsGrowing()),
-			or(not(accessToFarmingGuildTreePatch), farmingGuildTreeStates.getIsGrowing()),
-			or(not(accessToFarmingGuildFruitTreePatch), farmingGuildFruitStates.getIsGrowing()),
-			or(not(accessToFossilIsland), and(westHardwoodStates.getIsGrowing(), middleHardwoodStates.getIsGrowing(), eastHardwoodStates.getIsGrowing())),
-			or(not(accessToSavannah), savannahStates.getIsGrowing()),
-			or(not(accessToAnglersRetreat), anglersRetreatStates.getIsGrowing()),
-			or(not(accessToGreatConch), greatConchStates.getIsGrowing())
+		allGrowing = and(
+			// Tree patches
+			or(not(treesEnabled),
+				and(lumbridgeStates.getIsGrowing(),
+					faladorStates.getIsGrowing(),
+					taverleyStates.getIsGrowing(),
+					varrockStates.getIsGrowing(),
+					gnomeStrongholdTreeStates.getIsGrowing(),
+					or(not(accessToFarmingGuildTreePatch), farmingGuildTreeStates.getIsGrowing()),
+					or(not(accessToVarlamore), auburnvaleStates.getIsGrowing()))),
+
+			// Fruit tree patches
+			or(not(fruitTreesEnabled),
+				and(catherbyStates.getIsGrowing(),
+					brimhavenStates.getIsGrowing(),
+					gnomeVillageStates.getIsGrowing(),
+					gnomeStrongholdFruitStates.getIsGrowing(),
+					or(not(accessToLletya), lletyaStates.getIsGrowing()),
+					or(not(accessToVarlamore), kastoriFruitStates.getIsGrowing()),
+					or(not(accessToFarmingGuildFruitTreePatch), farmingGuildFruitStates.getIsGrowing()))),
+
+			// Hard wood patches
+			or(not(hardwoodEnabled),
+				and(or(not(accessToFossilIsland),
+					and(westHardwoodStates.getIsGrowing(),
+						middleHardwoodStates.getIsGrowing(),
+						eastHardwoodStates.getIsGrowing())),
+					or(not(accessToSavannah), savannahStates.getIsGrowing()),
+					or(not(accessToAnglersRetreat), anglersRetreatStates.getIsGrowing()))),
+
+			// Calquat patches
+			or(not(calquatEnabled),
+				not(accessToCalquatFarming),
+				and(taiBwoWannaiStates.getIsGrowing(),
+					or(not(accessToVarlamore), kastoriCalquatStates.getIsGrowing()),
+					or(not(accessToGreatConch), greatConchStates.getIsGrowing())))
 		);
 
 		payingForRemoval = new RuneliteRequirement(configManager, PAY_OR_CUT, PayOrCut.PAY.name());
@@ -510,40 +545,49 @@ public class TreeRun extends ComplexStateQuestHelper
 			.showConditioned(payingForRemoval);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed().showConditioned(not(payingForRemoval));
 
+		treesEnabled = not(new RuneliteRequirement(configManager, TREE_SAPLING, TreeSapling.NONE.name()));
+		fruitTreesEnabled = not(new RuneliteRequirement(configManager, FRUIT_TREE_SAPLING, FruitTreeSapling.NONE.name()));
+		hardwoodEnabled = not(new RuneliteRequirement(configManager, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.NONE.name()));
+		calquatEnabled = not(new RuneliteRequirement(configManager, CALQUAT_TREE_SAPLING, CalquatTreeSapling.NONE.name()));
+
 		TreeSapling treeSaplingEnum = (TreeSapling) FarmingUtils.getEnumFromConfig(configManager, TreeSapling.MAGIC);
-		treeSapling = treeSaplingEnum.getPlantableItemRequirement(itemManager);
+		treeSapling = treeSaplingEnum.getPlantableItemRequirement(itemManager).showConditioned(not(treesEnabled));
 		treeSapling.setHighlightInInventory(true);
 		allTreeSaplings = treeSapling.copy();
 
-		protectionItemTree = treeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		protectionItemTree = treeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(
+			and(payingForProtection, treesEnabled));
 		protectionItemTree.addAlternates(protectionItemTree.getId() + 1);
 		allProtectionItemTree = protectionItemTree.copy();
 
 		FruitTreeSapling fruitTreeSaplingEnum = (FruitTreeSapling) FarmingUtils.getEnumFromConfig(configManager, FruitTreeSapling.APPLE);
-		fruitTreeSapling = fruitTreeSaplingEnum.getPlantableItemRequirement(itemManager);
+		fruitTreeSapling = fruitTreeSaplingEnum.getPlantableItemRequirement(itemManager).showConditioned(fruitTreesEnabled);
 		fruitTreeSapling.setHighlightInInventory(true);
 		allFruitSaplings = fruitTreeSapling.copy();
 
-		protectionItemFruitTree = fruitTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		protectionItemFruitTree = fruitTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(
+			and(payingForProtection, fruitTreesEnabled));
 		protectionItemFruitTree.addAlternates(protectionItemFruitTree.getId() + 1);
 		allProtectionItemFruitTree = protectionItemFruitTree.copy();
 
 		HardwoodTreeSapling hardwoodTreeSaplingEnum = (HardwoodTreeSapling) FarmingUtils.getEnumFromConfig(configManager, HardwoodTreeSapling.TEAK);
-		hardwoodSapling = hardwoodTreeSaplingEnum.getPlantableItemRequirement(itemManager);
+		hardwoodSapling = hardwoodTreeSaplingEnum.getPlantableItemRequirement(itemManager).showConditioned(hardwoodEnabled);
 		hardwoodSapling.setHighlightInInventory(true);
 		allHardwoodSaplings = hardwoodSapling.copy();
 
-		protectionItemHardwood = hardwoodTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		protectionItemHardwood = hardwoodTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(
+			and(payingForProtection, hardwoodEnabled));
 		protectionItemHardwood.addAlternates(protectionItemHardwood.getId() + 1);
 		allProtectionItemHardwood = protectionItemHardwood.copy();
 
 		CalquatTreeSapling calquatTreeSaplingEnum = (CalquatTreeSapling) FarmingUtils.getEnumFromConfig(configManager,
 			CalquatTreeSapling.CALQUAT);
-		calquatSapling = calquatTreeSaplingEnum.getPlantableItemRequirement(itemManager);
+		calquatSapling = calquatTreeSaplingEnum.getPlantableItemRequirement(itemManager).showConditioned(calquatEnabled);
 		calquatSapling.setHighlightInInventory(true);
 		allCalquatSaplings = calquatSapling.copy();
 
-		protectionItemCalquat = calquatTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(payingForProtection);
+		protectionItemCalquat = calquatTreeSaplingEnum.getProtectionItemRequirement(itemManager).showConditioned(
+			and(payingForProtection, calquatEnabled));
 		protectionItemCalquat.addAlternates(protectionItemCalquat.getId() + 1);
 		allProtectionItemCalquat = protectionItemCalquat.copy();
 
@@ -621,72 +665,72 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		lumbridgeTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to clear the patch.");
-		lumbridgeTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		lumbridgeTreePatchClear.conditionToHideInSidebar(or(not(treesEnabled), not(payingForRemoval)));
 		lumbridgeTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		faladorTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_2, new WorldPoint(3004, 3373, 0),
 			"Speak to Heskel to clear the patch.");
-		faladorTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		faladorTreePatchClear.conditionToHideInSidebar(or(not(treesEnabled), not(payingForRemoval)));
 		faladorTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		taverleyTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_1, new WorldPoint(2936, 3438, 0),
 			"Speak to Alain to clear the patch.");
-		taverleyTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		taverleyTreePatchClear.conditionToHideInSidebar(or(not(treesEnabled), not(payingForRemoval)));
 		taverleyTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		varrockTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_3_02, new WorldPoint(3229, 3459, 0),
 			"Speak to Treznor to clear the patch.");
-		varrockTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		varrockTreePatchClear.conditionToHideInSidebar(or(not(treesEnabled), not(payingForRemoval)));
 		varrockTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		gnomeStrongholdTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to clear the patch.");
-		gnomeStrongholdTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		gnomeStrongholdTreePatchClear.conditionToHideInSidebar(or(not(treesEnabled), not(payingForRemoval)));
 		gnomeStrongholdTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		farmingGuildTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T2, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to clear the patch.");
-		farmingGuildTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		farmingGuildTreePatchClear.conditionToHideInSidebar(or(not(treesEnabled), not(payingForRemoval)));
 		farmingGuildTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		auburnvaleTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
 			"Speak to Aub to clear the patch.");
-		auburnvaleTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		auburnvaleTreePatchClear.conditionToHideInSidebar(or(not(treesEnabled), not(payingForRemoval)));
 		auburnvaleTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		lumbridgeTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to protect the patch.");
-		lumbridgeTreeProtect.conditionToHideInSidebar(not(payingForProtection));
+		lumbridgeTreeProtect.conditionToHideInSidebar(or(not(treesEnabled), not(payingForProtection)));
 		lumbridgeTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		faladorTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_2, new WorldPoint(3004, 3373, 0),
 			"Speak to Heskel to protect the patch.");
-		faladorTreeProtect.conditionToHideInSidebar(not(payingForProtection));
+		faladorTreeProtect.conditionToHideInSidebar(or(not(treesEnabled), not(payingForProtection)));
 		faladorTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		taverleyTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_1, new WorldPoint(2936, 3438, 0),
 			"Speak to Alain to protect the patch.");
-		taverleyTreeProtect.conditionToHideInSidebar(not(payingForProtection));
+		taverleyTreeProtect.conditionToHideInSidebar(or(not(treesEnabled), not(payingForProtection)));
 		taverleyTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		varrockTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_3_02, new WorldPoint(3229, 3459, 0),
 			"Speak to Treznor to protect the patch.");
-		varrockTreeProtect.conditionToHideInSidebar(not(payingForProtection));
+		varrockTreeProtect.conditionToHideInSidebar(or(not(treesEnabled), not(payingForProtection)));
 		varrockTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		strongholdTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to protect the patch.");
-		strongholdTreeProtect.conditionToHideInSidebar(not(payingForProtection));
+		strongholdTreeProtect.conditionToHideInSidebar(or(not(treesEnabled), not(payingForProtection)));
 		strongholdTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		farmingGuildTreePayForProtection = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T2, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to protect the patch.");
-		farmingGuildTreePayForProtection.conditionToHideInSidebar(not(payingForProtection));
+		farmingGuildTreePayForProtection.conditionToHideInSidebar(or(not(treesEnabled), not(payingForProtection)));
 		farmingGuildTreePayForProtection.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		auburnvaleTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
 			"Speak to Aub to protect the patch.");
-		auburnvaleTreeProtect.conditionToHideInSidebar(not(payingForProtection));
+		auburnvaleTreeProtect.conditionToHideInSidebar(or(not(treesEnabled), not(payingForProtection)));
 		auburnvaleTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		// Tree Patch Steps
@@ -695,64 +739,75 @@ public class TreeRun extends ComplexStateQuestHelper
 		lumbridgeTreePatchCheckHealth.addTeleport(lumbridgeTeleport);
 		lumbridgeTreePatchCheckHealth.addSpellHighlight(NormalSpells.LUMBRIDGE_TELEPORT);
 		lumbridgeTreePatchCheckHealth.addSpellHighlight(NormalSpells.LUMBRIDGE_HOME_TELEPORT);
+		lumbridgeTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
+
 		faladorTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
 			"Check the health of the tree planted in Falador.");
 		faladorTreePatchCheckHealth.addTeleport(faladorTeleport);
 		faladorTreePatchCheckHealth.addSpellHighlight(NormalSpells.FALADOR_TELEPORT);
+		faladorTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
+
 		taverleyTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
 			"Check the health of the tree planted in Taverley.");
+		taverleyTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
+
 		varrockTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
 			"Check the health of the tree planted in Varrock.");
 		varrockTreePatchCheckHealth.addTeleport(varrockTeleport);
 		varrockTreePatchCheckHealth.addSpellHighlight(NormalSpells.VARROCK_TELEPORT);
+		varrockTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
+
 		gnomeStrongholdTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
 			"Check the health of the tree planted in the Tree Gnome Stronghold.");
+		gnomeStrongholdTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
+
 		farmingGuildTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Check the health of the tree planted in the Farming Guild.");
-		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
+		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(not(accessToFarmingGuildTreePatch));
 		farmingGuildTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
+		farmingGuildTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
 
 		auburnvaleTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
 			"Check the health of the tree planted at Auburnvale");
-		auburnvaleTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		auburnvaleTreePatchCheckHealth.conditionToHideInSidebar(or(not(accessToVarlamore), not(treesEnabled)));
 		auburnvaleTreePatchCheckHealth.addTeleport(auburnvaleTeleport);
 
 		// Tree Cut Down Steps
 		farmingGuildTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Cut down the tree planted in the Farming Guild.", axe);
-		farmingGuildTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.OR, new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch), payingForRemoval));
+		farmingGuildTreePatchCutDown.conditionToHideInSidebar(or(not(treesEnabled), not(accessToFarmingGuildTreePatch), payingForRemoval));
 		farmingGuildTreePatchCutDown.addTeleport(farmingGuildTeleport);
 
 		lumbridgeTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
 			"Cut down the tree planted in Lumbridge.", axe);
-		lumbridgeTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		lumbridgeTreePatchCutDown.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		lumbridgeTreePatchCutDown.addTeleport(lumbridgeTeleport);
 		lumbridgeTreePatchCutDown.addSpellHighlight(NormalSpells.LUMBRIDGE_TELEPORT);
 		lumbridgeTreePatchCutDown.addSpellHighlight(NormalSpells.LUMBRIDGE_HOME_TELEPORT);
 
 		faladorTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
 			"Cut down the tree planted in Falador.", axe);
-		faladorTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		faladorTreePatchCutDown.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		faladorTreePatchCutDown.addTeleport(faladorTeleport);
 		faladorTreePatchCutDown.addSpellHighlight(NormalSpells.FALADOR_TELEPORT);
 
 		taverleyTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
 			"Cut down the tree planted in Taverley.", axe);
-		taverleyTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		taverleyTreePatchCutDown.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 
 		varrockTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
 			"Cut down the tree planted in Varrock.", axe);
-		varrockTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		varrockTreePatchCutDown.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		varrockTreePatchCutDown.addTeleport(varrockTeleport);
 		varrockTreePatchCutDown.addSpellHighlight(NormalSpells.VARROCK_TELEPORT);
 
 		gnomeStrongholdTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
 			"Cut down the tree planted in the Tree Gnome Stronghold.", axe);
-		gnomeStrongholdTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		gnomeStrongholdTreePatchCutDown.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 
 		auburnvaleTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
 			"Cut down the tree planted at Auburnvale.", axe);
-		auburnvaleTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.OR, new Conditions(LogicType.NOR, accessToVarlamore), payingForRemoval));
+		auburnvaleTreePatchCutDown.conditionToHideInSidebar(or(not(treesEnabled), not(accessToVarlamore), payingForRemoval));
 		auburnvaleTreePatchCutDown.addTeleport(auburnvaleTeleport);
 
 		// Tree Plant Steps
@@ -760,61 +815,66 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Plant your sapling in the Lumbridge patch.", treeSapling);
 		lumbridgeTreePatchPlant.addIcon(treeSapling.getId());
 		lumbridgeTreePatchCheckHealth.addSubSteps(lumbridgeTreePatchPlant);
+		lumbridgeTreePatchPlant.conditionToHideInSidebar(not(treesEnabled));
 
 		faladorTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
 			"Plant your sapling in the Falador patch.", treeSapling);
 		faladorTreePatchPlant.addIcon(treeSapling.getId());
 		faladorTreePatchCheckHealth.addSubSteps(faladorTreePatchPlant);
+		faladorTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
 
 		taverleyTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
 			"Plant your sapling in the Taverley patch.", treeSapling);
 		taverleyTreePatchPlant.addIcon(treeSapling.getId());
 		taverleyTreePatchCheckHealth.addSubSteps(taverleyTreePatchPlant);
+		taverleyTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
 
 		varrockTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
 			"Plant your sapling in the Varrock patch.", treeSapling);
 		varrockTreePatchPlant.addIcon(treeSapling.getId());
 		varrockTreePatchCheckHealth.addSubSteps(varrockTreePatchPlant);
+		varrockTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
 
 		gnomeStrongholdTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
 			"Plant your sapling in the Gnome Stronghold patch.", treeSapling);
 		gnomeStrongholdTreePatchPlant.addIcon(treeSapling.getId());
 		gnomeStrongholdTreePatchCheckHealth.addSubSteps(gnomeStrongholdTreePatchPlant);
+		gnomeStrongholdTreePatchCheckHealth.conditionToHideInSidebar(not(treesEnabled));
 
 		farmingGuildTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Plant your sapling in the Farming Guild tree patch.", treeSapling);
-		farmingGuildTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildTreePatch));
+		farmingGuildTreePatchPlant.conditionToHideInSidebar(or(not(treesEnabled), not(accessToFarmingGuildTreePatch)));
 		farmingGuildTreePatchPlant.addIcon(treeSapling.getId());
 		farmingGuildTreePatchCheckHealth.addSubSteps(farmingGuildTreePatchPlant);
 
 		auburnvaleTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
 			"Plant your sapling in the Auburnvale tree patch.", treeSapling);
-		auburnvaleTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		auburnvaleTreePatchPlant.conditionToHideInSidebar(or(not(treesEnabled), not(accessToVarlamore)));
 		auburnvaleTreePatchPlant.addIcon(treeSapling.getId());
 		auburnvaleTreePatchCheckHealth.addSubSteps(auburnvaleTreePatchPlant);
 
 		// Dig
 		lumbridgeTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
 			"Dig up the tree stump in Lumbridge.");
-		lumbridgeTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		lumbridgeTreePatchDig.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		faladorTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_2, new WorldPoint(3004, 3373, 0),
 			"Dig up the tree stump in Falador.");
-		faladorTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		faladorTreePatchDig.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		taverleyTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_1, new WorldPoint(2936, 3438, 0),
 			"Dig up the tree stump in Taverley.");
-		taverleyTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		taverleyTreePatchDig.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		varrockTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_3, new WorldPoint(3229, 3459, 0),
 			"Dig up the tree stump in Varrock.");
-		varrockTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		varrockTreePatchDig.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		gnomeStrongholdTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_5, new WorldPoint(2436, 3415, 0),
 			"Dig up the tree stump in the Tree Gnome Stronghold.");
-		gnomeStrongholdTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		gnomeStrongholdTreePatchDig.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval));
 		farmingGuildTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_6, new WorldPoint(1232, 3736, 0),
 			"Dig up the tree stump in the Farming Guild tree patch.");
-		farmingGuildTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		farmingGuildTreePatchDig.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval, not(accessToFarmingGuildTreePatch)));
 		auburnvaleTreePatchDig = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_7, new WorldPoint(1367, 3322, 0),
 			"Dig up the tree stump in the Auburnvale tree patch.");
-		auburnvaleTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		auburnvaleTreePatchDig.conditionToHideInSidebar(or(not(treesEnabled), payingForRemoval, not(accessToVarlamore)));
 
 		faladorTreePatchClear.addSubSteps(faladorTreePatchDig);
 		taverleyTreePatchClear.addSubSteps(taverleyTreePatchDig);
@@ -830,46 +890,51 @@ public class TreeRun extends ComplexStateQuestHelper
 		gnomeStrongholdFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
 			"Plant your sapling in the Tree Gnome Stronghold patch.", fruitTreeSapling);
 		gnomeStrongholdFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		gnomeStrongholdFruitTreePatchPlant.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		gnomeVillageFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Plant your sapling in the Tree Gnome Village patch. Follow Elkoy to get out quickly.", fruitTreeSapling);
 		gnomeVillageFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		gnomeVillageFruitTreePatchPlant.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		brimhavenFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Plant your sapling in the Brimhaven patch.", fruitTreeSapling);
 		brimhavenFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		brimhavenFruitTreePatchPlant.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		catherbyFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
 			"Plant your sapling in the Catherby patch.", fruitTreeSapling);
 		catherbyFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
+		catherbyFruitTreePatchPlant.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		lletyaFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
 			"Plant your sapling in the Lletya patch.", fruitTreeSapling);
-		lletyaFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
+		lletyaFruitTreePatchPlant.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToLletya)));
 		lletyaFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 
 		farmingGuildFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
 			"Plant your sapling in the Farming Guild patch.", fruitTreeSapling);
-		farmingGuildFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
+		farmingGuildFruitTreePatchPlant.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToFarmingGuildFruitTreePatch)));
 		farmingGuildFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 
 		kastoriFruitTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_7, new WorldPoint(1350, 3057, 0),
 			"Plant your sapling in the Kastori patch.", fruitTreeSapling);
-		kastoriFruitTreePatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriFruitTreePatchPlant.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToVarlamore)));
 		kastoriFruitTreePatchPlant.addIcon(fruitTreeSapling.getId());
 
 		taiBwoWannaiCalquatPatchPlant = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH, new WorldPoint(2795, 3102, 0),
 			"Plant your sapling in the Tai Bwo Wannai patch.", calquatSapling);
+		taiBwoWannaiCalquatPatchPlant.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToCalquatFarming)));
 		taiBwoWannaiCalquatPatchPlant.addIcon(calquatSapling.getId());
 
 		kastoriCalquatPatchPlant = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_2, new WorldPoint(1366, 3033, 0),
 			"Plant your sapling in the Kastori Calquat patch.", calquatSapling);
-		kastoriCalquatPatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriCalquatPatchPlant.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToVarlamore), not(accessToCalquatFarming)));
 		kastoriCalquatPatchPlant.addIcon(calquatSapling.getId());
 
 		greatConchCalquatPatchPlant = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
 			"Plant your sapling in the Great Conch patch.", calquatSapling);
-		greatConchCalquatPatchPlant.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToGreatConch));
+		greatConchCalquatPatchPlant.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToGreatConch), not(accessToCalquatFarming)));
 		greatConchCalquatPatchPlant.addIcon(calquatSapling.getId());
 
 		// Fruit Tree Check Health Steps
@@ -877,11 +942,13 @@ public class TreeRun extends ComplexStateQuestHelper
 			"Check the health of the fruit tree planted in the Tree Gnome Stronghold.");
 		gnomeStrongholdFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Gnome Stronghold", true);
 		gnomeStrongholdFruitTreePatchCheckHealth.addSubSteps(gnomeStrongholdFruitTreePatchPlant);
+		gnomeStrongholdFruitTreePatchCheckHealth.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		gnomeVillageFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Check the health of the fruit tree planted outside the Tree Gnome Village. Follow Elkoy to get out quickly.");
 		gnomeVillageFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Tree Gnome Village", true);
 		gnomeVillageFruitTreePatchCheckHealth.addSubSteps(gnomeVillageFruitTreePatchPlant);
+		gnomeVillageFruitTreePatchCheckHealth.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		brimhavenFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Check the health of the fruit tree planted in Brimhaven.");
@@ -889,6 +956,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		brimhavenFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(InterfaceID.CHARTERING_MENU_SIDE, InterfaceID.CharteringMenuSide.LIST_CONTENT & 0xFFFF, "Brimhaven", true);
 		brimhavenFruitTreePatchCheckHealth.addWidgetHighlight(new WidgetHighlight(InterfaceID.SAILING_MENU, InterfaceID.SailingMenu.CONTENT & 0xFFFF, 2));
 		brimhavenFruitTreePatchCheckHealth.addSubSteps(brimhavenFruitTreePatchPlant);
+		brimhavenFruitTreePatchCheckHealth.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		catherbyFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
 			"Check the health of the fruit tree planted in Catherby.");
@@ -896,23 +964,24 @@ public class TreeRun extends ComplexStateQuestHelper
 		catherbyFruitTreePatchCheckHealth.addSpellHighlight(NormalSpells.CAMELOT_TELEPORT);
 		catherbyFruitTreePatchCheckHealth.addSpellHighlight(LunarSpells.CATHERBY_TELEPORT);
 		catherbyFruitTreePatchCheckHealth.addSubSteps(catherbyFruitTreePatchPlant);
+		catherbyFruitTreePatchCheckHealth.conditionToHideInSidebar(not(fruitTreesEnabled));
 
 		lletyaFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
 			"Check the health of the fruit tree planted in Lletya.");
-		lletyaFruitTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToLletya));
+		lletyaFruitTreePatchCheckHealth.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToLletya)));
 		lletyaFruitTreePatchCheckHealth.addTeleport(crystalTeleport);
 		lletyaFruitTreePatchCheckHealth.addSubSteps(lletyaFruitTreePatchPlant);
 
 		farmingGuildFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
 			"Check the health of the fruit tree planted in the Farming Guild.");
-		farmingGuildFruitTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch));
+		farmingGuildFruitTreePatchCheckHealth.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToFarmingGuildFruitTreePatch)));
 		farmingGuildFruitTreePatchCheckHealth.addTeleport(farmingGuildTeleport);
 		farmingGuildFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Farming Guild", true);
 		farmingGuildFruitTreePatchCheckHealth.addSubSteps(farmingGuildFruitTreePatchPlant);
 
 		kastoriFruitTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_7, new WorldPoint(1350, 3057, 0),
 			"Check the health of the fruit tree planted in Kastori.");
-		kastoriFruitTreePatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriFruitTreePatchCheckHealth.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToVarlamore)));
 		kastoriFruitTreePatchCheckHealth.addTeleport(kastoriTeleport);
 		kastoriFruitTreePatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Kastori", true);
 		kastoriFruitTreePatchCheckHealth.addSubSteps(kastoriFruitTreePatchPlant);
@@ -920,196 +989,197 @@ public class TreeRun extends ComplexStateQuestHelper
 		taiBwoWannaiCalquatPatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH, new WorldPoint(2795, 3102, 0),
 			"Check the health of the calquat tree planted in Tai Bwo Wannai.", calquatSapling);
 		taiBwoWannaiCalquatPatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Tai Bwo Wannai", true);
+		taiBwoWannaiCalquatPatchCheckHealth.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToCalquatFarming)));
 		taiBwoWannaiCalquatPatchCheckHealth.addSubSteps(taiBwoWannaiCalquatPatchPlant);
 
 		kastoriCalquatPatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_2, new WorldPoint(1366, 3033, 0),
 			"Check the health of the calquat tree planted in Kastori.");
-		kastoriCalquatPatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToVarlamore));
+		kastoriCalquatPatchCheckHealth.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToVarlamore), not(accessToCalquatFarming)));
 		kastoriCalquatPatchCheckHealth.addTeleport(kastoriTeleport);
 		kastoriCalquatPatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Kastori", true);
 		kastoriCalquatPatchCheckHealth.addSubSteps(kastoriCalquatPatchPlant);
 
 		greatConchCalquatPatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
 			"Check the health of the calquat tree planted in Great Conch.", calquatSapling);
-		greatConchCalquatPatchCheckHealth.conditionToHideInSidebar(new Conditions(LogicType.NOR, accessToGreatConch));
+		greatConchCalquatPatchCheckHealth.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToGreatConch), not(accessToCalquatFarming)));
 		greatConchCalquatPatchCheckHealth.addWidgetHighlightWithTextRequirement(187, 3, "Great Conch", true);
 		greatConchCalquatPatchCheckHealth.addSubSteps(greatConchCalquatPatchPlant);
 
 		// Fruit Tree Cut Down Steps
 		gnomeStrongholdFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
 			"Cut down the fruit tree planted in the Tree Gnome Stronghold.", axe);
-		gnomeStrongholdFruitTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		gnomeStrongholdFruitTreePatchCutDown.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		gnomeStrongholdFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Gnome Stronghold", true);
 
 		gnomeVillageFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Cut down the fruit tree planted outside the Tree Gnome Village.", axe);
-		gnomeVillageFruitTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		gnomeVillageFruitTreePatchCutDown.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		gnomeVillageFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Tree Gnome Village", true);
 
 		brimhavenFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Cut down the fruit tree planted in Brimhaven.", axe);
-		brimhavenFruitTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		brimhavenFruitTreePatchCutDown.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		brimhavenFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(InterfaceID.MENU, InterfaceID.Menu.LJ_LAYER1 & 0xFFFF, "Brimhaven", true);
 		brimhavenFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(InterfaceID.CHARTERING_MENU_SIDE, InterfaceID.CharteringMenuSide.LIST_CONTENT & 0xFFFF, "Brimhaven", true);
 		brimhavenFruitTreePatchCutDown.addWidgetHighlight(new WidgetHighlight(InterfaceID.SAILING_MENU, InterfaceID.SailingMenu.CONTENT & 0xFFFF, 2));
 
 		catherbyFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
 			"Cut down the fruit tree planted in Catherby.", axe);
-		catherbyFruitTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		catherbyFruitTreePatchCutDown.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		catherbyFruitTreePatchCutDown.addTeleport(catherbyTeleport);
 		catherbyFruitTreePatchCutDown.addSpellHighlight(NormalSpells.CAMELOT_TELEPORT);
 		catherbyFruitTreePatchCutDown.addSpellHighlight(LunarSpells.CATHERBY_TELEPORT);
 
 		lletyaFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
 			"Cut down the fruit tree planted in Lletya.", axe);
-		lletyaFruitTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.OR, new Conditions(LogicType.NOR, accessToLletya), payingForRemoval));
+		lletyaFruitTreePatchCutDown.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToLletya), payingForRemoval));
 		lletyaFruitTreePatchCutDown.addTeleport(crystalTeleport);
 
 		farmingGuildFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
 			"Cut down the fruit tree planted in the Farming Guild.", axe);
-		farmingGuildFruitTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.OR, new Conditions(LogicType.NOR, accessToFarmingGuildFruitTreePatch), payingForRemoval));
+		farmingGuildFruitTreePatchCutDown.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToFarmingGuildFruitTreePatch), payingForRemoval));
 		farmingGuildFruitTreePatchCutDown.addTeleport(farmingGuildTeleport);
 		farmingGuildFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Farming Guild", true);
 
 		kastoriFruitTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_7, new WorldPoint(1350, 3057, 0),
 			"Cut down the fruit tree planted in Kastori.", axe);
-		kastoriFruitTreePatchCutDown.conditionToHideInSidebar(new Conditions(LogicType.OR, new Conditions(LogicType.NOR, accessToVarlamore), payingForRemoval));
+		kastoriFruitTreePatchCutDown.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(accessToVarlamore), payingForRemoval));
 		kastoriFruitTreePatchCutDown.addTeleport(kastoriTeleport);
 		kastoriFruitTreePatchCutDown.addWidgetHighlightWithTextRequirement(187, 3, "Kastori", true);
 
 		taiBwoWannaiCalquatPatchRemove = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH, new WorldPoint(2795, 3102, 0),
 			"Pick the fruit off the calquat and clear the patch in Tai Bwo Wannai.");
-		taiBwoWannaiCalquatPatchRemove.conditionToHideInSidebar(payingForRemoval);
+		taiBwoWannaiCalquatPatchRemove.conditionToHideInSidebar(or(not(calquatEnabled), payingForRemoval, not(accessToCalquatFarming)));
 		taiBwoWannaiCalquatPatchRemove.addWidgetHighlightWithTextRequirement(187, 3, "Tai Bwo Wannai", true);
 
 		kastoriCalquatPatchRemove = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_2, new WorldPoint(1366, 3033, 0),
 			"Pick the fruit off the calquat and clear the patch in Kastori.");
-		kastoriCalquatPatchRemove.conditionToHideInSidebar(new Conditions(LogicType.OR, new Conditions(LogicType.NOR, accessToVarlamore), payingForRemoval));
+		kastoriCalquatPatchRemove.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToVarlamore), not(accessToCalquatFarming), payingForRemoval));
 		kastoriCalquatPatchRemove.addTeleport(kastoriTeleport);
 		kastoriCalquatPatchRemove.addWidgetHighlightWithTextRequirement(187, 3, "Kastori", true);
 
 		greatConchCalquatPatchRemove = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
 			"Pick the fruit off the calquat and clear the patch in Great Conch.");
-		greatConchCalquatPatchRemove.conditionToHideInSidebar(new Conditions(LogicType.OR, new Conditions(LogicType.NOR, accessToGreatConch), payingForRemoval));
+		greatConchCalquatPatchRemove.conditionToHideInSidebar(or(not(calquatEnabled), not(accessToGreatConch), not(accessToCalquatFarming), payingForRemoval));
 		greatConchCalquatPatchRemove.addWidgetHighlightWithTextRequirement(187, 3, "Great Conch", true);
 
 		// Clear
 		gnomeStrongholdFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		gnomeStrongholdFruitTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		gnomeStrongholdFruitTreePatchClear.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForRemoval)));
 		gnomeStrongholdFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		gnomeVillageFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_2, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		gnomeVillageFruitTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		gnomeVillageFruitTreePatchClear.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForRemoval)));
 		gnomeVillageFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		brimhavenFruitTreePatchClear = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		brimhavenFruitTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		brimhavenFruitTreePatchClear.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForRemoval)));
 		brimhavenFruitTreePatchClear.addWidgetHighlightWithTextRequirement(InterfaceID.MENU, InterfaceID.Menu.LJ_LAYER1 & 0xFFFF, "Brimhaven", true);
 		brimhavenFruitTreePatchClear.addWidgetHighlightWithTextRequirement(InterfaceID.CHARTERING_MENU_SIDE, InterfaceID.CharteringMenuSide.LIST_CONTENT & 0xFFFF, "Brimhaven", true);
 		brimhavenFruitTreePatchClear.addWidgetHighlight(new WidgetHighlight(InterfaceID.SAILING_MENU, InterfaceID.SailingMenu.CONTENT & 0xFFFF, 2));
 		brimhavenFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		catherbyFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_4, new WorldPoint(2860, 3433, 0),
 			"Pay Ellena 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		catherbyFruitTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		catherbyFruitTreePatchClear.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForRemoval)));
 		catherbyFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		lletyaFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_TREE_5, new WorldPoint(2347, 3162, 0),
 			"Pay Liliwen 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		lletyaFruitTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		lletyaFruitTreePatchClear.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForRemoval)));
 		lletyaFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		farmingGuildFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T3, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		farmingGuildFruitTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		farmingGuildFruitTreePatchClear.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForRemoval)));
 		farmingGuildFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		kastoriFruitTreePatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_7, new WorldPoint(1350, 3057, 0),
 			"Pay Ehecatl 200 coins to clear the fruit tree, or pick all the fruit and cut it down.");
-		kastoriFruitTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		kastoriFruitTreePatchClear.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForRemoval)));
 		kastoriFruitTreePatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		taiBwoWannaiCalquatPatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT, new WorldPoint(2795, 3102, 0),
 			"Pay Imiago 200 coins to clear the calquat tree, or pick all the fruit and cut it down.");
-		taiBwoWannaiCalquatPatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		taiBwoWannaiCalquatPatchClear.conditionToHideInSidebar(or(not(calquatEnabled), not(payingForRemoval), not(accessToCalquatFarming)));
 		taiBwoWannaiCalquatPatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		kastoriCalquatPatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_2, new WorldPoint(1366, 3033, 0),
 			"Pay Tziuhtla 200 coins to clear the calquat tree, or pick all the fruit and cut it down.");
-		kastoriCalquatPatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		kastoriCalquatPatchClear.conditionToHideInSidebar(or(not(calquatEnabled), not(payingForRemoval), not(accessToCalquatFarming)));
 		kastoriCalquatPatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 		greatConchCalquatPatchClear = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_3, new WorldPoint(3129, 2406, 0),
 			"Pay Guppa 200 coins to clear the calquat tree, or pick all the fruit and cut it down.");
-		greatConchCalquatPatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		greatConchCalquatPatchClear.conditionToHideInSidebar(or(not(calquatEnabled), not(payingForRemoval), not(accessToCalquatFarming)));
 		greatConchCalquatPatchClear.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
 
 		strongholdFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo to protect the patch.");
-		strongholdFruitProtect.conditionToHideInSidebar(not(payingForProtection));
+		strongholdFruitProtect.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForProtection)));
 		strongholdFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		villageFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_2, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth to protect the patch.");
-		villageFruitProtect.conditionToHideInSidebar(not(payingForProtection));
+		villageFruitProtect.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForProtection)));
 		villageFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		brimhavenFruitProtect = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth to protect the patch.");
-		brimhavenFruitProtect.conditionToHideInSidebar(not(payingForProtection));
+		brimhavenFruitProtect.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForProtection)));
 		brimhavenFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		catherbyFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_4, new WorldPoint(2860, 3433, 0),
 			"Pay Ellena to protect the patch.");
-		catherbyFruitProtect.conditionToHideInSidebar(not(payingForProtection));
+		catherbyFruitProtect.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForProtection)));
 		catherbyFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		lletyaFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_TREE_5, new WorldPoint(2347, 3162, 0),
 			"Pay Liliwen to protect the patch.");
-		lletyaFruitProtect.conditionToHideInSidebar(not(payingForProtection));
+		lletyaFruitProtect.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForProtection)));
 		lletyaFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		guildFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T3, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie to protect the patch.");
-		guildFruitProtect.conditionToHideInSidebar(not(payingForProtection));
+		guildFruitProtect.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForProtection)));
 		guildFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		kastoriFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_7, new WorldPoint(1350, 3057, 0),
 			"Pay Ehecatl to protect the patch.");
-		kastoriFruitProtect.conditionToHideInSidebar(not(payingForProtection));
+		kastoriFruitProtect.conditionToHideInSidebar(or(not(fruitTreesEnabled), not(payingForProtection)));
 		kastoriFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		taiBwoWannaiCalquatProtect = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT, new WorldPoint(2795, 3102, 0),
 			"Pay Imiago to protect the patch.");
-		taiBwoWannaiCalquatProtect.conditionToHideInSidebar(not(payingForProtection));
+		taiBwoWannaiCalquatProtect.conditionToHideInSidebar(or(not(calquatEnabled), not(payingForProtection), not(accessToCalquatFarming)));
 		taiBwoWannaiCalquatProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		kastoriCalquatProtect = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_2, new WorldPoint(1366, 3033, 0),
 			"Pay Tziuhtla to protect the patch.");
-		kastoriCalquatProtect.conditionToHideInSidebar(not(payingForProtection));
+		kastoriCalquatProtect.conditionToHideInSidebar(or(not(calquatEnabled), not(payingForProtection), not(accessToCalquatFarming)));
 		kastoriCalquatProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		greatConchCalquatProtect = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_3, new WorldPoint(3129, 2406, 0),
 			"Pay Guppa to protect the patch.");
-		greatConchCalquatProtect.conditionToHideInSidebar(not(payingForProtection));
+		greatConchCalquatProtect.conditionToHideInSidebar(or(not(calquatEnabled), not(payingForProtection), not(accessToCalquatFarming)));
 		greatConchCalquatProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		// Dig Fruit Tree Steps
 		gnomeStrongholdFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
 			"Dig up the fruit tree's stump in the Tree Gnome Stronghold.");
-		gnomeStrongholdFruitTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		gnomeStrongholdFruitTreePatchDig.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		gnomeVillageFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Dig up the fruit tree's stump outside the Tree Gnome Village.");
-		gnomeVillageFruitTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		gnomeVillageFruitTreePatchDig.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		brimhavenFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_3, new WorldPoint(2765, 3213, 0),
 			"Dig up the fruit tree's stump in Brimhaven.");
-		brimhavenFruitTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		brimhavenFruitTreePatchDig.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		catherbyFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_4, new WorldPoint(2860, 3433, 0),
 			"Check the health of the fruit tree planted in Catherby");
-		catherbyFruitTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		catherbyFruitTreePatchDig.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval));
 		lletyaFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_5, new WorldPoint(2347, 3162, 0),
 			"Dig up the fruit tree's stump in Lletya.");
-		lletyaFruitTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		lletyaFruitTreePatchDig.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval, not(accessToLletya)));
 		farmingGuildFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_6, new WorldPoint(1242, 3758, 0),
 			"Dig up the fruit tree's stump in the Farming Guild.");
-		farmingGuildFruitTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		farmingGuildFruitTreePatchDig.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval, not(accessToFarmingGuildFruitTreePatch)));
 		kastoriFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_7, new WorldPoint(1350, 3057, 0),
 			"Dig up the fruit tree's stump in Kastori.");
-		kastoriFruitTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		kastoriFruitTreePatchDig.conditionToHideInSidebar(or(not(fruitTreesEnabled), payingForRemoval, not(accessToVarlamore)));
 		taiBwoWannaiCalquatPatchDig = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH, new WorldPoint(2795, 3102, 0),
 			"Dig up the calquat tree's stump in Tai Bwo Wannai.");
-		taiBwoWannaiCalquatPatchDig.conditionToHideInSidebar(payingForRemoval);
+		taiBwoWannaiCalquatPatchDig.conditionToHideInSidebar(or(not(calquatEnabled), payingForRemoval, not(accessToCalquatFarming)));
 		kastoriCalquatPatchDig = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_2, new WorldPoint(1366, 3033, 0),
 			"Dig up the calquat tree's stump in Kastori.");
-		kastoriCalquatPatchDig.conditionToHideInSidebar(payingForRemoval);
+		kastoriCalquatPatchDig.conditionToHideInSidebar(or(not(calquatEnabled), payingForRemoval, not(accessToVarlamore), not(accessToCalquatFarming)));
 		greatConchCalquatPatchDig = new ObjectStep(this, ObjectID.FARMING_CALQUAT_TREE_PATCH_3, new WorldPoint(3129, 2406, 0),
 			"Dig up the calquat tree's stump in Great Conch.");
-		greatConchCalquatPatchDig.conditionToHideInSidebar(payingForRemoval);
+		greatConchCalquatPatchDig.conditionToHideInSidebar(or(not(calquatEnabled), payingForRemoval, not(accessToGreatConch), not(accessToCalquatFarming)));
 
 		gnomeStrongholdFruitTreePatchClear.addSubSteps(gnomeStrongholdFruitTreePatchDig);
 		gnomeVillageFruitTreePatchClear.addSubSteps(gnomeVillageFruitTreePatchDig);
@@ -1125,121 +1195,135 @@ public class TreeRun extends ComplexStateQuestHelper
 		// Hardwood Tree Steps
 		westHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Check the health of the western hardwood tree on Fossil Island.");
+		westHardwoodTreePatchCheckHealth.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToFossilIsland)));
 		middleHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Check the health of the centre hardwood tree on Fossil Island.");
+		middleHardwoodTreePatchCheckHealth.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToFossilIsland)));
 		eastHardwoodTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Check the health of the eastern hardwood tree on Fossil Island.");
+		eastHardwoodTreePatchCheckHealth.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToFossilIsland)));
 		savannahCheckHealth  = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Check the health of the hardwood tree in the Avium Savannah.");
+		savannahCheckHealth.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToSavannah)));
 		anglersCheckHealth = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_5, new WorldPoint(2470, 2704, 0),
 			"Check the health of the hardwood tree in the Anglers' Retreat.");
+		anglersCheckHealth.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToAnglersRetreat)));
 
 		// Hardwood Tree Plant Steps
 		westHardwoodTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Plant your sapling on the western hardwood tree patch on Fossil Island.", hardwoodSapling);
 		westHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
+		westHardwoodTreePatchPlant.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToFossilIsland)));
 		westHardwoodTreePatchCheckHealth.addSubSteps(westHardwoodTreePatchPlant);
 
 		middleHardwoodTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Plant your sapling on the centre hardwood tree patch on Fossil Island.", hardwoodSapling);
 		middleHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
+		middleHardwoodTreePatchPlant.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToFossilIsland)));
 		middleHardwoodTreePatchCheckHealth.addSubSteps(middleHardwoodTreePatchPlant);
 
 		eastHardwoodTreePatchPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Plant your sapling on the eastern hardwood tree patch on Fossil Island.", hardwoodSapling);
 		eastHardwoodTreePatchPlant.addIcon(hardwoodSapling.getId());
+		eastHardwoodTreePatchPlant.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToFossilIsland)));
 		eastHardwoodTreePatchCheckHealth.addSubSteps(eastHardwoodTreePatchPlant);
 
 		savannahPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Plant your sapling on the hardwood tree patch in the Avium Savannah.", hardwoodSapling);
+		savannahPlant.addIcon(hardwoodSapling.getId());
+		savannahPlant.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToSavannah)));
+		savannahCheckHealth.addSubSteps(savannahPlant);
 
 		anglersPlant = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_5, new WorldPoint(2470, 2704, 0),
 			"Plant your sapling on the hardwood tree patch on Anglers' Retreat.", hardwoodSapling);
+		anglersPlant.addIcon(hardwoodSapling.getId());
+		anglersPlant.conditionToHideInSidebar(or(not(hardwoodEnabled), not(accessToAnglersRetreat)));
+		anglersCheckHealth.addSubSteps(anglersPlant);
 
 		// Hardwood Tree Cut Down Steps
 		eastHardwoodTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Cut down the hardwood tree planted on the eastern hardwood tree patch on Fossil Island.", axe);
-		eastHardwoodTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		eastHardwoodTreePatchCutDown.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToFossilIsland)));
 
 		middleHardwoodTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Cut down the hardwood tree planted on the centre hardwood tree patch on Fossil Island.", axe);
-		middleHardwoodTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		middleHardwoodTreePatchCutDown.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToFossilIsland)));
 
 		westHardwoodTreePatchCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Cut down the hardwood tree planted on the western hardwood tree patch on Fossil Island.", axe);
-		westHardwoodTreePatchCutDown.conditionToHideInSidebar(payingForRemoval);
+		westHardwoodTreePatchCutDown.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToFossilIsland)));
 
 		savannahCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Cut down the hardwood tree planted in the Avium Savannah.", axe);
-		savannahCutDown.conditionToHideInSidebar(payingForRemoval);
+		savannahCutDown.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToSavannah)));
 
 		anglersCutDown = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_5, new WorldPoint(2470, 2704, 0),
 			"Cut down the hardwood tree planted in the Anglers' Retreat.", axe);
-		anglersCutDown.conditionToHideInSidebar(payingForRemoval);
+		anglersCutDown.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToAnglersRetreat)));
 
 		westHardwoodTreePatchClear = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER3, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to remove the west tree.");
-		westHardwoodTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		westHardwoodTreePatchClear.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForRemoval), not(accessToFossilIsland)));
 		westHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 				"Coins - chop my tree down please.", "Yes.");
 		middleHardwoodTreePatchClear = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER2, new WorldPoint(3702, 3837, 0),
 			"Pay the black squirrel to remove the middle tree.");
-		middleHardwoodTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		middleHardwoodTreePatchClear.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForRemoval), not(accessToFossilIsland)));
 		middleHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 				"Coins - chop my tree down please.", "Yes.");
 		eastHardwoodTreePatchClear = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER1, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to remove the east tree.");
-		eastHardwoodTreePatchClear.conditionToHideInSidebar(not(payingForRemoval));
+		eastHardwoodTreePatchClear.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForRemoval), not(accessToFossilIsland)));
 		eastHardwoodTreePatchClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 				"Coins - chop my tree down please.", "Yes.");
 
 		savannahClear = new NpcStep(this, NpcID.FROG_QUEST_MARCELLUS_FARMER, new WorldPoint(1687, 2972, 0),
 			"Pay Marcellus to clear the tree.");
-		savannahClear.conditionToHideInSidebar(not(payingForRemoval));
+		savannahClear.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForRemoval), not(accessToSavannah)));
 		savannahClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 			"Coins - chop my tree down please.", "Yes.");
 
 		anglersClear = new NpcStep(this, NpcID.FARMING_GARDENER_HARDWOOD_TREE_5, new WorldPoint(2470, 2704, 0),
 			"Pay Argo to clear the tree.");
-		anglersClear.conditionToHideInSidebar(not(payingForRemoval));
+		anglersClear.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForRemoval), not(accessToAnglersRetreat)));
 		anglersClear.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 " +
 			"Coins - chop my tree down please.", "Yes.");
 
 		westHardwoodTreePatchDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_3, new WorldPoint(3702, 3837, 0),
 			"Dig up the western hardwood tree's stump on Fossil Island.");
-		westHardwoodTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		westHardwoodTreePatchDig.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToFossilIsland)));
 		middleHardwoodTreePatchDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_2, new WorldPoint(3708, 3833, 0),
 			"Dig up the centre hardwood tree's stump on Fossil Island.");
-		middleHardwoodTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		middleHardwoodTreePatchDig.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToFossilIsland)));
 		eastHardwoodTreePatchDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_1, new WorldPoint(3715, 3835, 0),
 			"Dig up the eastern hardwood tree's stump on Fossil Island.");
-		eastHardwoodTreePatchDig.conditionToHideInSidebar(payingForRemoval);
+		eastHardwoodTreePatchDig.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToFossilIsland)));
 		savannahDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_4, new WorldPoint(1687, 2972, 0),
 			"Dig up the Savannah hardwood tree's stump.");
-		savannahDig.conditionToHideInSidebar(payingForRemoval);
+		savannahDig.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToSavannah)));
 		anglersDig = new ObjectStep(this, ObjectID.FARMING_HARDWOOD_TREE_PATCH_5, new WorldPoint(2470,2704, 0),
 			"Dig up the Anglers' Retreat hardwood tree's stump.");
-		anglersDig.conditionToHideInSidebar(payingForRemoval);
+		anglersDig.conditionToHideInSidebar(or(not(hardwoodEnabled), payingForRemoval, not(accessToAnglersRetreat)));
 
 		westHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER3, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to protect the west tree.");
-		westHardwoodProtect.conditionToHideInSidebar(not(payingForProtection));
+		westHardwoodProtect.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForProtection), not(accessToFossilIsland)));
 		westHardwoodProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		middleHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER2, new WorldPoint(3702, 3837, 0),
 			"Pay the black squirrel to protect the middle tree.");
-		middleHardwoodProtect.conditionToHideInSidebar(not(payingForProtection));
+		middleHardwoodProtect.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForProtection), not(accessToFossilIsland)));
 		middleHardwoodProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		eastHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER1, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to protect the east tree.");
-		eastHardwoodProtect.conditionToHideInSidebar(not(payingForProtection));
+		eastHardwoodProtect.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForProtection), not(accessToFossilIsland)));
 		eastHardwoodProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		savannahProtect = new NpcStep(this, NpcID.FROG_QUEST_MARCELLUS_FARMER, new WorldPoint(1687, 2972, 0),
 			"Pay Marcellus to protect the hardwood tree.");
-		savannahProtect.conditionToHideInSidebar(not(payingForProtection));
+		savannahProtect.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForProtection), not(accessToSavannah)));
 		savannahProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		anglersProtect = new NpcStep(this, NpcID.FARMING_GARDENER_HARDWOOD_TREE_5, new WorldPoint(2470, 2704, 0),
 			"Pay Argo to protect the hardwood tree.");
-		anglersProtect.conditionToHideInSidebar(not(payingForProtection));
+		anglersProtect.conditionToHideInSidebar(or(not(hardwoodEnabled), not(payingForProtection), not(accessToAnglersRetreat)));
 		anglersProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		westHardwoodTreePatchClear.addSubSteps(westHardwoodTreePatchDig);
@@ -1253,6 +1337,11 @@ public class TreeRun extends ComplexStateQuestHelper
 	public void onGameTick(GameTick event)
 	{
 		coins.setQuantity(0);
+		treesEnabled = not(new RuneliteRequirement(configManager, TREE_SAPLING, TreeSapling.NONE.name()));
+		fruitTreesEnabled = not(new RuneliteRequirement(configManager, FRUIT_TREE_SAPLING, FruitTreeSapling.NONE.name()));
+		hardwoodEnabled = not(new RuneliteRequirement(configManager, HARDWOOD_TREE_SAPLING, HardwoodTreeSapling.NONE.name()));
+		calquatEnabled = not(new RuneliteRequirement(configManager, CALQUAT_TREE_SAPLING, CalquatTreeSapling.NONE.name()));
+
 		allProtectionItemTree.setQuantity(protectionItemTree.getQuantity());
 		allProtectionItemFruitTree.setQuantity(protectionItemFruitTree.getQuantity());
 		allProtectionItemHardwood.setQuantity(protectionItemHardwood.getQuantity());
@@ -1386,93 +1475,129 @@ public class TreeRun extends ComplexStateQuestHelper
 		PanelDetails farmingGuildTreePanel = new PanelDetails("Tree Patch",
 			Arrays.asList(farmingGuildTreePatchCheckHealth, farmingGuildTreePatchCutDown, farmingGuildTreePatchDig, farmingGuildTreePatchClear, farmingGuildTreePatchPlant, farmingGuildTreePayForProtection)).withId(-1);
 		farmingGuildTreePanel.setLockingStep(farmingGuildTreeStep);
+		farmingGuildTreePanel.setHideCondition(or(not(treesEnabled), not(accessToFarmingGuildTreePatch)));
 		PanelDetails farmingGuildFruitPanel = new PanelDetails("Fruit Tree Patch",
 			Arrays.asList(farmingGuildFruitTreePatchCheckHealth, farmingGuildFruitTreePatchCutDown, farmingGuildFruitTreePatchDig, farmingGuildFruitTreePatchClear, farmingGuildFruitTreePatchPlant, guildFruitProtect)).withId(-2);
 		farmingGuildFruitPanel.setLockingStep((farmingGuildFruitStep));
+		farmingGuildFruitPanel.setHideCondition(or(not(fruitTreesEnabled), not(accessToFarmingGuildFruitTreePatch)));
 		var farmingGuildPanel = new TopLevelPanelDetails("Farming Guild",
 			farmingGuildTreePanel, farmingGuildFruitPanel).withId(0);
 		farmingGuildPanel.setLockingStep(farmingGuildStep);
+		farmingGuildPanel.setHideCondition(or(
+			and(not(accessToFarmingGuildTreePatch), not(accessToFarmingGuildFruitTreePatch)),
+			and(not(treesEnabled), not(fruitTreesEnabled))));
 
 		PanelDetails lumbridgePanel = new PanelDetails("Lumbridge", Arrays.asList(lumbridgeTreePatchCheckHealth, lumbridgeTreePatchCutDown, lumbridgeTreePatchDig, lumbridgeTreePatchClear, lumbridgeTreePatchPlant, lumbridgeTreeProtect)).withId(1);
 		lumbridgePanel.setLockingStep(lumbridgeStep);
+		lumbridgePanel.setHideCondition(not(treesEnabled));
 
 		PanelDetails faladorPanel = new PanelDetails("Falador", Arrays.asList(faladorTreePatchCheckHealth, faladorTreePatchCutDown, faladorTreePatchDig, faladorTreePatchClear, faladorTreePatchPlant, faladorTreeProtect)).withId(2);
 		faladorPanel.setLockingStep(faladorStep);
+		faladorPanel.setHideCondition(not(treesEnabled));
 
 		PanelDetails taverleyPanel = new PanelDetails("Taverley", Arrays.asList(taverleyTreePatchCheckHealth, taverleyTreePatchCutDown, taverleyTreePatchDig, taverleyTreePatchClear, taverleyTreePatchPlant, taverleyTreeProtect)).withId(3);
 		taverleyPanel.setLockingStep(taverleyStep);
+		taverleyPanel.setHideCondition(not(treesEnabled));
 
 		PanelDetails varrockPanel = new PanelDetails("Varrock", Arrays.asList(varrockTreePatchCheckHealth, varrockTreePatchCutDown, varrockTreePatchDig, varrockTreePatchClear, varrockTreePatchPlant, varrockTreeProtect)).withId(4);
 		varrockPanel.setLockingStep(varrockStep);
+		varrockPanel.setHideCondition(not(treesEnabled));
 
 		PanelDetails gnomeStrongholdFruitPanel = new PanelDetails("Fruit Tree Patch",
 			Arrays.asList(gnomeStrongholdFruitTreePatchCheckHealth, gnomeStrongholdFruitTreePatchCutDown, gnomeStrongholdFruitTreePatchDig, gnomeStrongholdFruitTreePatchClear, gnomeStrongholdFruitTreePatchPlant, strongholdFruitProtect)).withId(51);
 		gnomeStrongholdFruitPanel.setLockingStep(strongholdFruitStep);
+		gnomeStrongholdFruitPanel.setHideCondition(not(fruitTreesEnabled));
+
 		PanelDetails gnomeStrongholdTreePanel = new PanelDetails("Tree Patch",
 			Arrays.asList(gnomeStrongholdTreePatchCheckHealth, gnomeStrongholdTreePatchCutDown, gnomeStrongholdTreePatchDig, gnomeStrongholdTreePatchClear, gnomeStrongholdTreePatchPlant, strongholdTreeProtect)).withId(52);
 		gnomeStrongholdTreePanel.setLockingStep(strongholdTreeStep);
+		gnomeStrongholdTreePanel.setHideCondition(not(treesEnabled));
+
 		var gnomeStrongholdPanel = new TopLevelPanelDetails("Gnome Stronghold",
 			gnomeStrongholdFruitPanel, gnomeStrongholdTreePanel).withId(5);
 		gnomeStrongholdPanel.setLockingStep(strongholdStep);
+		gnomeStrongholdPanel.setHideCondition(and(not(treesEnabled), not(fruitTreesEnabled)));
 
 		PanelDetails villagePanel = new PanelDetails("Tree Gnome Village", Arrays.asList(gnomeVillageFruitTreePatchCheckHealth,
 				gnomeVillageFruitTreePatchCutDown, gnomeVillageFruitTreePatchDig, gnomeVillageFruitTreePatchClear, gnomeVillageFruitTreePatchPlant, villageFruitProtect)).withId(6);
 		villagePanel.setLockingStep(villageStep);
+		villagePanel.setHideCondition(not(fruitTreesEnabled));
 
 		PanelDetails catherbyPanel = new PanelDetails("Catherby", Arrays.asList(catherbyFruitTreePatchCheckHealth, catherbyFruitTreePatchCutDown, catherbyFruitTreePatchDig, catherbyFruitTreePatchClear, catherbyFruitTreePatchPlant, catherbyFruitProtect)).withId(7);
 		catherbyPanel.setLockingStep(catherbyStep);
+		catherbyPanel.setHideCondition(not(fruitTreesEnabled));
 
 		PanelDetails brimhavenPanel = new PanelDetails("Brimhaven", Arrays.asList(brimhavenFruitTreePatchCheckHealth, brimhavenFruitTreePatchCutDown, brimhavenFruitTreePatchDig, brimhavenFruitTreePatchClear, brimhavenFruitTreePatchPlant, brimhavenFruitProtect)).withId(81);
 		brimhavenPanel.setLockingStep(brimhavenStep);
+		brimhavenPanel.setHideCondition(not(fruitTreesEnabled));
+
 		PanelDetails taiBwoWannaiPanel = new PanelDetails("Tai Bwo Wannai", Arrays.asList(taiBwoWannaiCalquatPatchCheckHealth, taiBwoWannaiCalquatPatchRemove, taiBwoWannaiCalquatPatchDig, taiBwoWannaiCalquatPatchClear, taiBwoWannaiCalquatPatchPlant, taiBwoWannaiCalquatProtect)).withId(82);
 		taiBwoWannaiPanel.setLockingStep(taiBwoWannaiStep);
+		taiBwoWannaiPanel.setHideCondition(or(not(accessToCalquatFarming), not(calquatEnabled)));
+
 		var karamjaPanel = new TopLevelPanelDetails("Karamja", brimhavenPanel, taiBwoWannaiPanel).withId(8);
 		karamjaPanel.setLockingStep(karamjaStep);
+		karamjaPanel.setHideCondition(and(not(fruitTreesEnabled), not(calquatEnabled)));
 
 		PanelDetails lletyaPanel = new PanelDetails("Lletya", Arrays.asList(lletyaFruitTreePatchCheckHealth, lletyaFruitTreePatchCutDown, lletyaFruitTreePatchDig, lletyaFruitTreePatchClear, lletyaFruitTreePatchPlant, lletyaFruitProtect)).withId(9);
 		lletyaPanel.setLockingStep(lletyaStep);
+		lletyaPanel.setHideCondition(or(not(accessToLletya), not(fruitTreesEnabled)));
 
 		PanelDetails fossilIslandEastPanel = new PanelDetails("East Hardwood Patch",
 			Arrays.asList(eastHardwoodTreePatchCheckHealth, eastHardwoodTreePatchCutDown, eastHardwoodTreePatchDig, eastHardwoodTreePatchClear, eastHardwoodTreePatchPlant, eastHardwoodProtect)
 		).withId(101);
 		fossilIslandEastPanel.setLockingStep(fossilIslandEastStep);
+		fossilIslandEastPanel.setHideCondition(or(not(accessToFossilIsland), not(hardwoodEnabled)));
 		PanelDetails fossilIslandMiddlePanel = new PanelDetails("Middle Hardwood Patch",
 			Arrays.asList(middleHardwoodTreePatchCheckHealth, middleHardwoodTreePatchCutDown, middleHardwoodTreePatchDig, middleHardwoodTreePatchClear, middleHardwoodTreePatchPlant, middleHardwoodProtect)
 		).withId(102);
 		fossilIslandMiddlePanel.setLockingStep(fossilIslandMiddleStep);
+		fossilIslandMiddlePanel.setHideCondition(or(not(accessToFossilIsland), not(hardwoodEnabled)));
 		PanelDetails fossilIslandWestPanel = new PanelDetails("West Hardwood Patch",
 			Arrays.asList(westHardwoodTreePatchCheckHealth, westHardwoodTreePatchCutDown, westHardwoodTreePatchDig, westHardwoodTreePatchClear, westHardwoodTreePatchPlant, westHardwoodProtect)
 		).withId(103);
 		fossilIslandWestPanel.setLockingStep(fossilIslandWestStep);
+		fossilIslandWestPanel.setHideCondition(or(not(accessToFossilIsland), not(hardwoodEnabled)));
 		var fossilIslandPanel = new TopLevelPanelDetails("Fossil Island",
 			fossilIslandEastPanel, fossilIslandMiddlePanel, fossilIslandWestPanel).withId(10);
 		fossilIslandPanel.setLockingStep(fossilIslandStep);
+		fossilIslandPanel.setHideCondition(or(not(accessToFossilIsland), not(hardwoodEnabled)));
 
 		PanelDetails savannahPanel = new PanelDetails("Avium Savannah", Arrays.asList(savannahCheckHealth, savannahCutDown, savannahDig, savannahClear, savannahPlant, savannahProtect)).withId(11);
 		savannahPanel.setLockingStep(savannahStep);
+		savannahPanel.setHideCondition(or(not(accessToSavannah), not(hardwoodEnabled)));
 
 		PanelDetails auburnvalePanel = new PanelDetails("Auburnvale", Arrays.asList(auburnvaleTreePatchCheckHealth, auburnvaleTreePatchCutDown, auburnvaleTreePatchDig, auburnvaleTreePatchClear, auburnvaleTreePatchPlant, auburnvaleTreeProtect)).withId(12);
 		auburnvalePanel.setLockingStep(auburnvaleStep);
+		auburnvalePanel.setHideCondition(or(not(accessToVarlamore), not(hardwoodEnabled)));
 
 		PanelDetails kastoriFruitPanel = new PanelDetails("Fruit Tree Patch", Arrays.asList(kastoriFruitTreePatchCheckHealth, kastoriFruitTreePatchCutDown, kastoriFruitTreePatchDig, kastoriFruitTreePatchClear, kastoriFruitTreePatchPlant, kastoriFruitProtect)).withId(131);
 		kastoriFruitPanel.setLockingStep(kastoriFruitStep);
+		kastoriFruitPanel.setHideCondition(or(not(accessToVarlamore), not(fruitTreesEnabled)));
+
 		PanelDetails kastoriCalquatPanel = new PanelDetails("Calquat Patch", Arrays.asList(kastoriCalquatPatchCheckHealth, kastoriCalquatPatchRemove, kastoriCalquatPatchDig, kastoriCalquatPatchClear, kastoriCalquatPatchPlant, kastoriCalquatProtect)).withId(132);
 		kastoriCalquatPanel.setLockingStep(kastoriCalquatStep);
+		kastoriCalquatPanel.setHideCondition(or(not(accessToVarlamore), not(accessToCalquatFarming), not(calquatEnabled)));
+
 		var kastoriPanel = new TopLevelPanelDetails("Kastori", kastoriFruitPanel, kastoriCalquatPanel).withId(13);
 		kastoriPanel.setLockingStep(kastoriStep);
+		kastoriPanel.setHideCondition(or(not(accessToVarlamore), and(not(fruitTreesEnabled), not(calquatEnabled))));
 
 		PanelDetails anglersPanel = new PanelDetails("Anglers' Retreat", Arrays.asList(anglersCheckHealth,
 			anglersCutDown, anglersDig, anglersClear, anglersPlant, anglersProtect)).withId(14);
 		anglersPanel.setLockingStep(anglersRetreatStep);
+		anglersPanel.setHideCondition(or(not(accessToAnglersRetreat), not(hardwoodEnabled)));
 
 		PanelDetails greatConchPanel = new PanelDetails("Great Conch",
 			Arrays.asList(greatConchCalquatPatchCheckHealth, greatConchCalquatPatchRemove, greatConchCalquatPatchDig, greatConchCalquatPatchClear,
 				greatConchCalquatPatchPlant, greatConchCalquatProtect)).withId(15);
 		greatConchPanel.setLockingStep(greatConchStep);
+		greatConchPanel.setHideCondition(or(not(accessToCalquatFarming), not(accessToGreatConch), not(calquatEnabled)));
 
 		var farmRunSidebar = new TopLevelPanelDetails("Tree Run", farmingGuildPanel, lumbridgePanel, faladorPanel, taverleyPanel,
 			varrockPanel, gnomeStrongholdPanel, villagePanel, catherbyPanel, karamjaPanel, lletyaPanel, fossilIslandPanel, savannahPanel, auburnvalePanel,
 			kastoriPanel, anglersPanel, greatConchPanel);
+		farmRunSidebar.setHideCondition(and(not(treesEnabled), not(fruitTreesEnabled), not(hardwoodEnabled), not(calquatEnabled)));
 		allSteps.add(farmRunSidebar);
 
 		return allSteps;

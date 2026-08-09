@@ -34,21 +34,21 @@ import com.questhelper.steps.QuestStep;
 class CastleDrakanActionStep extends ConditionalStep
 {
 	CastleDrakanActionStep(QuestHelper questHelper, CastleDrakanRoomNetwork network,
-		CastleDrakanRoomNetwork.RoomKey destination, QuestStep action, String routeText)
+	                       CastleDrakanRoomNetwork.RoomKey destination, QuestStep action, String routeText)
 	{
 		this(questHelper, network, destination, network.inRoom(destination), action, routeText);
 	}
 
 	CastleDrakanActionStep(QuestHelper questHelper, CastleDrakanRoomNetwork network,
-		CastleDrakanRoomNetwork.RoomKey destination, Requirement actionLocation, QuestStep action,
-		String routeText)
+	                       CastleDrakanRoomNetwork.RoomKey destination, Requirement actionLocation, QuestStep action,
+	                       String routeText)
 	{
 		this(questHelper, action, new CastleDrakanRoomStep(questHelper, network, destination, routeText),
 			actionLocation);
 	}
 
 	private CastleDrakanActionStep(QuestHelper questHelper, QuestStep action,
-		CastleDrakanRoomStep route, Requirement actionLocation)
+	                               CastleDrakanRoomStep route, Requirement actionLocation)
 	{
 		super(questHelper, route);
 		setShouldPassthroughText(true);

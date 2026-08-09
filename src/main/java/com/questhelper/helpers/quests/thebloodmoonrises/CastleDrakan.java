@@ -209,29 +209,29 @@ class CastleDrakan
 	VarbitRequirement hasMountedShield;
 	ItemRequirement solidKey;
 	VarplayerRequirement hasUsedNewMoonKey;
-	Requirement usedUpFullMoonKey;
+	Conditions usedUpFullMoonKey;
 	VarplayerRequirement usedSolidKey;
-	Requirement openedGalleryCrescentDoor;
-	Requirement usedUpHalfMoonKey;
-	Requirement usedUpGibbousMoonKey;
-	Requirement openedAHalfMoonDoor;
-	Requirement openedLobbyHalfMoonDoor;
-	Requirement openedDiningHalfMoonDoor;
-	Requirement openedThroneHalfMoonDoor;
-	Requirement openedKitchenCrescentDoor;
-	Requirement openedBasementCrescentDoor;
-	Requirement openedDiningGibbousDoor;
-	Requirement openedVenatorPuzzleGibbousDoor;
-	Requirement openedGuestStoreroomGibbousDoor;
-	Requirement openedExplosiveHallwayGibbousDoor;
-	Requirement openedCrescentDoorRoomDoor;
-	Requirement openedBottleRoomFullMoonDoor;
-	Requirement openedRoomAboveStudyFullMoonDoor;
-	Requirement openedSolidKeyRoomFullMoonDoor;
-	Requirement openedStockpileFullMoonDoor;
-	Requirement openedBedroomFullMoonDoor;
-	Requirement openedChapelLibraryFullMoonDoor;
-	Requirement openedNorthChapelFullMoonDoor;
+	VarplayerRequirement openedGalleryCrescentDoor;
+	Conditions usedUpHalfMoonKey;
+	Conditions usedUpGibbousMoonKey;
+	Conditions openedAHalfMoonDoor;
+	VarplayerRequirement openedLobbyHalfMoonDoor;
+	VarplayerRequirement openedDiningHalfMoonDoor;
+	VarplayerRequirement openedThroneHalfMoonDoor;
+	VarplayerRequirement openedKitchenCrescentDoor;
+	VarplayerRequirement openedBasementCrescentDoor;
+	VarplayerRequirement openedDiningGibbousDoor;
+	VarplayerRequirement openedVenatorPuzzleGibbousDoor;
+	VarplayerRequirement openedGuestStoreroomGibbousDoor;
+	VarplayerRequirement openedExplosiveHallwayGibbousDoor;
+	VarplayerRequirement openedCrescentDoorRoomDoor;
+	VarplayerRequirement openedBottleRoomFullMoonDoor;
+	VarplayerRequirement openedRoomAboveStudyFullMoonDoor;
+	VarplayerRequirement openedSolidKeyRoomFullMoonDoor;
+	VarplayerRequirement openedStockpileFullMoonDoor;
+	VarplayerRequirement openedBedroomFullMoonDoor;
+	VarplayerRequirement openedChapelLibraryFullMoonDoor;
+	VarplayerRequirement openedNorthChapelFullMoonDoor;
 	ItemRequirement vialOfWater;
 	ItemRequirement vialsOfWater2;
 	ItemRequirement vialOfBlood;
@@ -1777,7 +1777,7 @@ class CastleDrakan
 		return castleDrakanRoomNetwork.addRoom(key, name, location);
 	}
 
-	private Requirement openedDoor(int doorStatusVarPlayer, int doorBit)
+	private VarplayerRequirement openedDoor(int doorStatusVarPlayer, int doorBit)
 	{
 		return new VarplayerRequirement(doorStatusVarPlayer, true, doorBit);
 	}

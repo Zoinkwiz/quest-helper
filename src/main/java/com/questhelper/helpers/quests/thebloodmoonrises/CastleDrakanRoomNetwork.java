@@ -51,6 +51,146 @@ import net.runelite.api.gameval.SpriteID;
 
 class CastleDrakanRoomNetwork
 {
+	private final QuestHelper questHelper;
+	private final Map<RoomKey, Room> rooms = new LinkedHashMap<>();
+	private final Map<Room, List<Edge>> edges = new LinkedHashMap<>();
+
+	CastleDrakanRoomNetwork(QuestHelper questHelper)
+	{
+		this.questHelper = questHelper;
+	}
+
+	static Door door(int objectId, int x, int y, int plane, String text)
+	{
+		return new Door(objectId, new WorldPoint(x, y, plane), text);
+	}
+
+	private static int walkAcross(Edge arrivedBy, Edge leavingBy)
+	{
+		return leavingBy.location == null
+			? 0
+			: arrivedBy.landsAt.distanceTo2D(leavingBy.location);
+	}
+
+	Room addRoom(RoomKey key, String name, Requirement location)
+	{
+		var room = new Room(key, name, location);
+		if (rooms.put(key, room) != null)
+		{
+			throw new IllegalArgumentException("Duplicate Castle Drakan room: " + key);
+		}
+		edges.put(room, new ArrayList<>());
+		return room;
+	}
+
+	Room getRoom(RoomKey key)
+	{
+		return Objects.requireNonNull(rooms.get(key), "Unregistered Castle Drakan room: " + key);
+	}
+
+	void connect(Room a, Room b, Requirement available, @NonNull Door aToB, @NonNull Door bToA,
+	             WorldPoint... traps)
+	{
+		link(a, b, available, aToB, bToA, traps);
+		link(b, a, available, bToA, aToB, traps);
+	}
+
+	private void link(Room from, Room to, Requirement available, Door door, Door back,
+	                  WorldPoint... traps)
+	{
+		var landsAt = back.location != null ? back.location : door.location;
+		edges.get(from).add(new Edge(from, to, door.createStep(questHelper, traps), available,
+			door.location, landsAt));
+	}
+
+	Requirement inRoom(RoomKey key)
+	{
+		return new Requirement()
+		{
+			@Override
+			public boolean check(Client client)
+			{
+				return getRoom(key).location.check(client);
+			}
+
+			@Override
+			public @Nonnull String getDisplayText()
+			{
+				return "In the Castle Drakan " + key.name().toLowerCase().replace('_', ' ');
+			}
+		};
+	}
+
+	Collection<Room> getRooms()
+	{
+		return Collections.unmodifiableCollection(rooms.values());
+	}
+
+	Collection<Edge> getEdges()
+	{
+		var allEdges = new ArrayList<Edge>();
+		edges.values().forEach(allEdges::addAll);
+		return Collections.unmodifiableCollection(allEdges);
+	}
+
+	List<QuestStep> getDoorSteps()
+	{
+		return getEdges().stream().map(Edge::getStep).collect(Collectors.toList());
+	}
+
+	Optional<Room> currentRoom(Client client)
+	{
+		return rooms.values().stream().filter(room -> room.location.check(client)).findFirst();
+	}
+
+	Optional<Edge> nextEdge(Client client, Room start, Room destination)
+	{
+		var open = search(start, destination, edge -> edge.isAvailable(client));
+		return open.isPresent() ? open : search(start, destination, edge -> true);
+	}
+
+	private Optional<Edge> search(Room start, Room destination, Predicate<Edge> usable)
+	{
+		if (start == destination)
+		{
+			return Optional.empty();
+		}
+
+		var settled = new HashSet<Edge>();
+		var queue = new PriorityQueue<Route>();
+		for (Edge edge : edges.getOrDefault(start, List.of()))
+		{
+			if (usable.test(edge))
+			{
+				queue.add(new Route(edge, edge, 1, 0));
+			}
+		}
+
+		while (!queue.isEmpty())
+		{
+			var route = queue.remove();
+			if (!settled.add(route.arrivedBy))
+			{
+				continue;
+			}
+			if (route.arrivedBy.to == destination)
+			{
+				return Optional.of(route.firstEdge);
+			}
+
+			for (Edge next : edges.getOrDefault(route.arrivedBy.to, List.of()))
+			{
+				if (usable.test(next))
+				{
+					queue.add(new Route(route.firstEdge, next, route.crossings + 1,
+						route.walked + walkAcross(route.arrivedBy, next)));
+				}
+			}
+		}
+
+		return Optional.empty();
+	}
+
 	enum RoomKey
 	{
 		LOBBY_F0,
@@ -155,146 +295,6 @@ class CastleDrakanRoomNetwork
 			}
 			return step;
 		}
-	}
-
-	static Door door(int objectId, int x, int y, int plane, String text)
-	{
-		return new Door(objectId, new WorldPoint(x, y, plane), text);
-	}
-
-	private final QuestHelper questHelper;
-	private final Map<RoomKey, Room> rooms = new LinkedHashMap<>();
-	private final Map<Room, List<Edge>> edges = new LinkedHashMap<>();
-
-	CastleDrakanRoomNetwork(QuestHelper questHelper)
-	{
-		this.questHelper = questHelper;
-	}
-
-	Room addRoom(RoomKey key, String name, Requirement location)
-	{
-		var room = new Room(key, name, location);
-		if (rooms.put(key, room) != null)
-		{
-			throw new IllegalArgumentException("Duplicate Castle Drakan room: " + key);
-		}
-		edges.put(room, new ArrayList<>());
-		return room;
-	}
-
-	Room getRoom(RoomKey key)
-	{
-		return Objects.requireNonNull(rooms.get(key), "Unregistered Castle Drakan room: " + key);
-	}
-
-	void connect(Room a, Room b, Requirement available, @NonNull Door aToB, @NonNull Door bToA,
-		WorldPoint... traps)
-	{
-		link(a, b, available, aToB, bToA, traps);
-		link(b, a, available, bToA, aToB, traps);
-	}
-
-	private void link(Room from, Room to, Requirement available, Door door, Door back,
-		WorldPoint... traps)
-	{
-		var landsAt = back.location != null ? back.location : door.location;
-		edges.get(from).add(new Edge(from, to, door.createStep(questHelper, traps), available,
-			door.location, landsAt));
-	}
-
-	Requirement inRoom(RoomKey key)
-	{
-		return new Requirement()
-		{
-			@Override
-			public boolean check(Client client)
-			{
-				return getRoom(key).location.check(client);
-			}
-
-			@Override
-			public @Nonnull String getDisplayText()
-			{
-				return "In the Castle Drakan " + key.name().toLowerCase().replace('_', ' ');
-			}
-		};
-	}
-
-	Collection<Room> getRooms()
-	{
-		return Collections.unmodifiableCollection(rooms.values());
-	}
-
-	Collection<Edge> getEdges()
-	{
-		var allEdges = new ArrayList<Edge>();
-		edges.values().forEach(allEdges::addAll);
-		return Collections.unmodifiableCollection(allEdges);
-	}
-
-	List<QuestStep> getDoorSteps()
-	{
-		return getEdges().stream().map(Edge::getStep).collect(Collectors.toList());
-	}
-
-	Optional<Room> currentRoom(Client client)
-	{
-		return rooms.values().stream().filter(room -> room.location.check(client)).findFirst();
-	}
-
-	Optional<Edge> nextEdge(Client client, Room start, Room destination)
-	{
-		var open = search(start, destination, edge -> edge.isAvailable(client));
-		return open.isPresent() ? open : search(start, destination, edge -> true);
-	}
-
-	private Optional<Edge> search(Room start, Room destination, Predicate<Edge> usable)
-	{
-		if (start == destination)
-		{
-			return Optional.empty();
-		}
-
-		var settled = new HashSet<Edge>();
-		var queue = new PriorityQueue<Route>();
-		for (Edge edge : edges.getOrDefault(start, List.of()))
-		{
-			if (usable.test(edge))
-			{
-				queue.add(new Route(edge, edge, 1, 0));
-			}
-		}
-
-		while (!queue.isEmpty())
-		{
-			var route = queue.remove();
-			if (!settled.add(route.arrivedBy))
-			{
-				continue;
-			}
-			if (route.arrivedBy.to == destination)
-			{
-				return Optional.of(route.firstEdge);
-			}
-
-			for (Edge next : edges.getOrDefault(route.arrivedBy.to, List.of()))
-			{
-				if (usable.test(next))
-				{
-					queue.add(new Route(route.firstEdge, next, route.crossings + 1,
-						route.walked + walkAcross(route.arrivedBy, next)));
-				}
-			}
-		}
-
-		return Optional.empty();
-	}
-
-	private static int walkAcross(Edge arrivedBy, Edge leavingBy)
-	{
-		return leavingBy.location == null
-			? 0
-			: arrivedBy.landsAt.distanceTo2D(leavingBy.location);
 	}
 
 	private static final class Route implements Comparable<Route>

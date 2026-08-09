@@ -595,7 +595,7 @@ class CastleDrakan
 		hmkPullBusts.addStep(needToPullBust1, pullBust1);
 		hmkPullBustsPW = hmkPullBusts.puzzleWrapStepWithDefaultText("Solve the puzzle in the room.");
 
-		var getKeyFromThroneRoom = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_THRONE, new WorldPoint(2313, 7392, 0), "Head back to the throne room and search the throne for a half moon key.");
+		var getKeyFromThroneRoom = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_THRONE, new WorldPoint(2313, 7392, 0), "Search the throne in the throne room for the half moon key.");
 		investigateThroneAgain.addSubSteps(getKeyFromThroneRoom);
 
 		var solveThronePuzzle = new ConditionalStep(quest, investigateThrone, "Solve the throne-room puzzle.");

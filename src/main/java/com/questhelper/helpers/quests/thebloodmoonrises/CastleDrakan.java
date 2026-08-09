@@ -7,12 +7,12 @@ package com.questhelper.helpers.quests.thebloodmoonrises;
 import com.questhelper.helpers.quests.deserttreasureii.ChestCodeStep;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.helpers.quests.thebloodmoonrises.CastleDrakanRoomNetwork.RoomKey;
+import static com.questhelper.helpers.quests.thebloodmoonrises.CastleDrakanRoomNetwork.door;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
-import static com.questhelper.helpers.quests.thebloodmoonrises.CastleDrakanRoomNetwork.door;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
@@ -43,9 +43,36 @@ import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 
-/** The Vampyrium Castle Drakan section: its requirements, its room graph and its steps. */
+/**
+ * The Vampyrium Castle Drakan section: its requirements, its room graph and its steps.
+ */
 class CastleDrakan
 {
+	/// Trap tiles are a property of the corridor, so connect() marks them on both directions.
+	private static final WorldPoint[] WEST_DINING_HALLWAY_TRAPS = {
+		new WorldPoint(2335, 7396, 0), new WorldPoint(2334, 7396, 0),
+		new WorldPoint(2335, 7397, 0), new WorldPoint(2334, 7397, 0),
+		new WorldPoint(2328, 7394, 0), new WorldPoint(2327, 7394, 0),
+		new WorldPoint(2328, 7395, 0), new WorldPoint(2327, 7395, 0),
+	};
+	private static final WorldPoint[] EXPLOSIVE_HALLWAY_TRAPS = {
+		new WorldPoint(2471, 7397, 0), new WorldPoint(2472, 7397, 0),
+		new WorldPoint(2471, 7396, 0), new WorldPoint(2472, 7396, 0),
+	};
+	private static final WorldPoint[] VANESCULAS_HALLWAY_TRAPS = {
+		new WorldPoint(2457, 7409, 0), new WorldPoint(2457, 7410, 0),
+		new WorldPoint(2456, 7409, 0), new WorldPoint(2456, 7410, 0),
+		new WorldPoint(2461, 7408, 0), new WorldPoint(2461, 7409, 0),
+		new WorldPoint(2460, 7408, 0), new WorldPoint(2460, 7409, 0),
+	};
+	private static final WorldPoint[] NORTH_CHAPEL_HALLWAY_TRAPS = {
+		new WorldPoint(2378, 7411, 0), new WorldPoint(2379, 7411, 0),
+		new WorldPoint(2379, 7412, 0), new WorldPoint(2378, 7412, 0),
+	};
+	private static final WorldPoint[] UPPER_SOUTHERN_HALLWAY_TRAPS = {
+		new WorldPoint(2438, 7363, 0), new WorldPoint(2438, 7364, 0),
+		new WorldPoint(2439, 7363, 0), new WorldPoint(2439, 7364, 0),
+	};
 	private final TheBloodMoonRises quest;
 
 	ItemRequirement tinderbox;
@@ -250,7 +277,6 @@ class CastleDrakan
 	NpcCondition venatorAlive;
 	Conditions anyVenatorAlive;
 	NpcCondition fmkVenatorAlive;
-	private PuzzleWrapperStep hmkPullBustsPW;
 	ConditionalStep cGetHalfMoonKey;
 	CastleDrakanGoalStep cGetHalfMoonKeyGoal;
 	ConditionalStep cGetSmallClockHand;
@@ -258,23 +284,24 @@ class CastleDrakan
 	CastleDrakanGoalStep cGetCrescentMoonKey;
 	CastleDrakanGoalStep cGetNewMoonKey;
 	CastleDrakanGoalStep cGetGildedAndGibbousKeys;
-	private CastleDrakanGoalStep cGetFullMoonKey;
-	private CastleDrakanGoalStep cGetSolidKey;
-	private ObjectStep dtsSearchShelvesForSuppliesWater;
-	private ObjectStep dtsSearchShelvesForSuppliesBlood;
-	private ObjectStep dtsSearchShelvesForSuppliesEssence;
-	private CastleDrakanGoalStep cDestroyingTheStockpileGoal;
-	private PuzzleWrapperStep cmkArrowChestPuzzleStepPW;
-	private DetailedQuestStep ggkWatchTheCutscene;
-	private PuzzleWrapperStep ggkpSolveLockboxPuzzlePW;
-	private PuzzleWrapperStep ggkpSolveDoorPuzzlePW;
-	private PuzzleWrapperStep fmkGildedBookPuzzlePW;
-	private PuzzleWrapperStep cDestroyingTheStockpileLaboratoryStepPW;
 	CastleDrakanRoomNetwork castleDrakanRoomNetwork;
 	ObjectStep pickUpTinderbox;
 	ItemStep pickUpExplosiveBarrel;
 	ObjectStep searchCrateForDrakanEmblem1;
-	private DetailedQuestStep dtsWatchTheCutscene;
+	PuzzleWrapperStep hmkPullBustsPW;
+	CastleDrakanGoalStep cGetFullMoonKey;
+	CastleDrakanGoalStep cGetSolidKey;
+	ObjectStep dtsSearchShelvesForSuppliesWater;
+	ObjectStep dtsSearchShelvesForSuppliesBlood;
+	ObjectStep dtsSearchShelvesForSuppliesEssence;
+	CastleDrakanGoalStep cDestroyingTheStockpileGoal;
+	PuzzleWrapperStep cmkArrowChestPuzzleStepPW;
+	DetailedQuestStep ggkWatchTheCutscene;
+	PuzzleWrapperStep ggkpSolveLockboxPuzzlePW;
+	PuzzleWrapperStep ggkpSolveDoorPuzzlePW;
+	PuzzleWrapperStep fmkGildedBookPuzzlePW;
+	PuzzleWrapperStep cDestroyingTheStockpileLaboratoryStepPW;
+	DetailedQuestStep dtsWatchTheCutscene;
 
 	CastleDrakan(TheBloodMoonRises quest)
 	{
@@ -523,7 +550,7 @@ class CastleDrakan
 		openedBedroomFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 23);
 		openedChapelLibraryFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 21);
 		openedNorthChapelFullMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_2, 17);
-		
+
 		usedUpHalfMoonKey = and(openedLobbyHalfMoonDoor, openedDiningHalfMoonDoor, openedThroneHalfMoonDoor);
 		usedUpGibbousMoonKey = and(openedDiningGibbousDoor, openedExplosiveHallwayGibbousDoor,
 			openedGuestStoreroomGibbousDoor, openedVenatorPuzzleGibbousDoor);
@@ -1564,7 +1591,7 @@ class CastleDrakan
 				"Go back through the door to the upper southern hallway."));
 
 		connect(eastStaircaseF1, eastStaircaseF0, null,
-			door(ObjectID.CASTLE_DRAKAN_SPIRAL_STAIRS_DOWN,2359, 7371, 0,
+			door(ObjectID.CASTLE_DRAKAN_SPIRAL_STAIRS_DOWN, 2359, 7371, 0,
 				"Climb down the east staircase."),
 			door(ObjectID.CASTLE_DRAKAN_SPIRAL_STAIRS_UP, 2363, 7369, 0,
 				"Climb up the east staircase."));
@@ -1720,36 +1747,6 @@ class CastleDrakan
 				"Enter the south-west door."));
 	}
 
-	/// Trap tiles are a property of the corridor, so connect() marks them on both directions.
-	private static final WorldPoint[] WEST_DINING_HALLWAY_TRAPS = {
-		new WorldPoint(2335, 7396, 0), new WorldPoint(2334, 7396, 0),
-		new WorldPoint(2335, 7397, 0), new WorldPoint(2334, 7397, 0),
-		new WorldPoint(2328, 7394, 0), new WorldPoint(2327, 7394, 0),
-		new WorldPoint(2328, 7395, 0), new WorldPoint(2327, 7395, 0),
-	};
-
-	private static final WorldPoint[] EXPLOSIVE_HALLWAY_TRAPS = {
-		new WorldPoint(2471, 7397, 0), new WorldPoint(2472, 7397, 0),
-		new WorldPoint(2471, 7396, 0), new WorldPoint(2472, 7396, 0),
-	};
-
-	private static final WorldPoint[] VANESCULAS_HALLWAY_TRAPS = {
-		new WorldPoint(2457, 7409, 0), new WorldPoint(2457, 7410, 0),
-		new WorldPoint(2456, 7409, 0), new WorldPoint(2456, 7410, 0),
-		new WorldPoint(2461, 7408, 0), new WorldPoint(2461, 7409, 0),
-		new WorldPoint(2460, 7408, 0), new WorldPoint(2460, 7409, 0),
-	};
-
-	private static final WorldPoint[] NORTH_CHAPEL_HALLWAY_TRAPS = {
-		new WorldPoint(2378, 7411, 0), new WorldPoint(2379, 7411, 0),
-		new WorldPoint(2379, 7412, 0), new WorldPoint(2378, 7412, 0),
-	};
-
-	private static final WorldPoint[] UPPER_SOUTHERN_HALLWAY_TRAPS = {
-		new WorldPoint(2438, 7363, 0), new WorldPoint(2438, 7364, 0),
-		new WorldPoint(2439, 7363, 0), new WorldPoint(2439, 7364, 0),
-	};
-
 	/**
 	 * All three emblem doors have to stand open at once, so one emblem is needed per door still
 	 * shut. The Ranis hallway emblem counts as supply, since it is taken back once the skull is out.
@@ -1783,7 +1780,7 @@ class CastleDrakan
 	}
 
 	private CastleDrakanActionStep castleRecovery(RoomKey destination, QuestStep action, String routeText,
-		Requirement needed)
+	                                              Requirement needed)
 	{
 		var recovery = castleAction(destination, action, routeText);
 		recovery.conditionToHideInSidebar(not(needed));
@@ -1796,15 +1793,15 @@ class CastleDrakan
 	}
 
 	private CastleDrakanActionStep castleAction(RoomKey destination, Requirement actionLocation,
-		QuestStep action, String routeText)
+	                                            QuestStep action, String routeText)
 	{
 		return new CastleDrakanActionStep(quest, castleDrakanRoomNetwork, destination, actionLocation,
 			action, routeText);
 	}
 
 	private void connect(CastleDrakanRoomNetwork.Room a, CastleDrakanRoomNetwork.Room b,
-		Requirement available, CastleDrakanRoomNetwork.Door aToB, CastleDrakanRoomNetwork.Door bToA,
-		WorldPoint... traps)
+	                     Requirement available, CastleDrakanRoomNetwork.Door aToB, CastleDrakanRoomNetwork.Door bToA,
+	                     WorldPoint... traps)
 	{
 		castleDrakanRoomNetwork.connect(a, b, available, aToB, bToA, traps);
 	}

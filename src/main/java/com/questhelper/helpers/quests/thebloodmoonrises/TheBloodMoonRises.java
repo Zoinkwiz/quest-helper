@@ -971,7 +971,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		watchCutsceneRepairedBridge = returnToVanesculaReadyToLeave.cutscene();
 
 		/// 90
-		fightDrakan1 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_1, new WorldPoint(2711, 7847, 0), "Learn to fight Drakan. Protect from melee and dodge his attacks. During this tutorial segment, there will be glimmering sparks that attempt to show you where to click to dodge his attacks.");
+		fightDrakan1 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_1, new WorldPoint(2711, 7847, 0), "Learn to fight Lowerniel Drakan. Protect from melee and dodge his attacks.\n\nDuring this tutorial segment, there will be glimmering sparks that attempt to show you where to click to dodge his attacks.");
+		fightDrakan1.setOverlayText("Learn to fight Lowerniel Drakan. Protect from melee and dodge his attacks. More info in sidebar.");
 
 		/// 92
 		flee1WatchTheCutscene = fightDrakan1.cutscene();
@@ -1204,8 +1205,9 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		guardThePalace.addSubSteps(passThroughBarricadeToHelp);
 
 		/// 122
-		passThroughBarricadeToFightDrakan = new ObjectStep(this, ObjectID.MYQ6_ENTRY_HALL_BARRICADE_OP, new WorldPoint(3167, 7844, 1), "Pass through the barricade, ready to fight Drakan. You can resupply at the supply table in the kitchen.");
-		fightDrakan2 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_2, new WorldPoint(3168, 7853, 1), "Fight Drakan. Protect from melee. Dodge attacks.");
+		passThroughBarricadeToFightDrakan = new ObjectStep(this, ObjectID.MYQ6_ENTRY_HALL_BARRICADE_OP, new WorldPoint(3167, 7844, 1), "Pass through the barricade, ready to fight Lowerniel Drakan. You can resupply at the supply table in the kitchen.");
+		fightDrakan2 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_2, new WorldPoint(3168, 7853, 1), "Fight Lowerniel Drakan. Protect from melee and dodge his attacks.\n\nDodge at least one tile opposite of the telegraphed motion.\n\nWhen he holds his spear back, step to his side.");
+		fightDrakan2.setOverlayText("Fight Lowerniel Drakan. Protect from melee and dodge his attacks. More info in sidebar.");
 		fightDrakan2.addSubSteps(passThroughBarricadeToFightDrakan);
 
 		/// 124
@@ -1244,7 +1246,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		headDownToVanesculaCutscene = headDownToVanescula.cutscene();
 
 		/// 144
-		fightTheWyrd = new NpcStep(this, NpcID.SAFALAAN_WYRD, "Fight the Wyrd. Protect from melee against the normal attacks, and turn it off when it screeches similar to a Venator. Learn and avoid its slam patterns.");
+		fightTheWyrd = new NpcStep(this, NpcID.SAFALAAN_WYRD, "Fight the Wyrd. Protect from melee against the normal attacks, and turn it off when it screeches similar to a Venator.\n\nFirst phase:\nHe will punch twice, then unleash a screech attack. After screeching twice, he will smash the ground matching which hand he hit you with the two most recent punches.\n\nSecond phase:\nInstead of the screech attach, he will use a lightning attack that spawns blood pools around you. These pools disappear over time. Turn off your protection prayer and leave his area, avoiding any pools.");
+		fightTheWyrd.setOverlayText("Fight the Wyrd. Protect from melee against the normal attacks, and turn it off when it screeches similar to a Venator. More info in sidebar.");
 
 		/// 146
 		dealtWithWyrdCutscene = fightTheWyrd.cutscene();
@@ -1266,7 +1269,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		/// 154
 		talkToVeliafToReturnToDrakan3 = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
 		talkToVeliafToReturnToDrakan3.addDialogStep("I'll go now.");
-		fightDrakan3 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_3, "Fight Lowerniel Drakan. Protect from melee. Dodge his attacks.");
+		fightDrakan3 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_3, "Fight Lowerniel Drakan. Protect from melee and dodge his attacks.\n\nDodge at least one tile opposite of the telegraphed motion.\n\nWhen he holds his spear back, step to his side.");
+		fightDrakan3.setOverlayText("Fight Lowerniel Drakan. More info in sidebar.");
 		fightDrakan3.addSubSteps(talkToVeliafToReturnToDrakan3);
 
 		/// 156
@@ -1293,7 +1297,8 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		/// 170 + 172
 		// TODO: some minor instructions + maybe a wiki link?
-		fightDrakan4 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_FINAL_COMBAT, "Fight Lowerniel Drakan.");
+		fightDrakan4 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_FINAL_COMBAT, "Fight Lowerniel Drakan. Protect from melee and dodge his attacks.\n\nDodge at least one tile opposite of the telegraphed motion.\n\nWhen he holds his spear back, step to his side.\n\nDodge over the blood waves.\n\nProtect from magic when he shoots his blood spears.\n\nAvoid shadows and blood pools on the ground.\n\nStep behind him when he raises his spear above his shoulder.\n\nWhen he rushes around you, dodge in the direction of his first cloud.");
+		fightDrakan4.setOverlayText("Fight Lowerniel Drakan. More info in sidebar.");
 		fightDrakan4Cutscene = fightDrakan4.cutscene();
 
 		/// 174

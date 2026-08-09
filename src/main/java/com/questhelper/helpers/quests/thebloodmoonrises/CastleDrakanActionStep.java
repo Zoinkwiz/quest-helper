@@ -31,6 +31,7 @@ import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
 
+/// ConditionalStep that guides the user to a specific room in Castle Drakan, with a specific action step once they arrive
 class CastleDrakanActionStep extends ConditionalStep
 {
 	@Getter

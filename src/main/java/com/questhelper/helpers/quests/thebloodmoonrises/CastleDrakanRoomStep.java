@@ -48,7 +48,7 @@ class CastleDrakanRoomStep extends DetailedOwnerStep
 	private final QuestStep unknownRoomStep;
 
 	CastleDrakanRoomStep(QuestHelper questHelper, CastleDrakanRoomNetwork network,
-		CastleDrakanRoomNetwork.RoomKey destination, String sidebarText)
+	                     CastleDrakanRoomNetwork.RoomKey destination, String sidebarText)
 	{
 		super(questHelper, sidebarText);
 		this.network = network;
@@ -107,13 +107,19 @@ class CastleDrakanRoomStep extends DetailedOwnerStep
 	@Override
 	public boolean containsSteps(QuestStep questStep, Set<QuestStep> checkedSteps)
 	{
-		if (super.containsSteps(questStep, checkedSteps)) return true;
+		if (super.containsSteps(questStep, checkedSteps))
+		{
+			return true;
+		}
 
 		var stepSet = new HashSet<>(getSteps());
 		stepSet.removeAll(checkedSteps);
 		for (QuestStep child : stepSet)
 		{
-			if (child.containsSteps(questStep, checkedSteps)) return true;
+			if (child.containsSteps(questStep, checkedSteps))
+			{
+				return true;
+			}
 		}
 
 		return false;

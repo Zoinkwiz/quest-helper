@@ -735,7 +735,7 @@ class CastleDrakan
 		var cmkPlaceEmblemInVanesculasStudy = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_EMPTY, new WorldPoint(2476, 7367, 0), "Place the emblem in Vanescula's study.", anyOneEmblemHighlighted);
 		var cmkBlowUpWallInVanesculasChamber = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_WALL_CRACKED, new WorldPoint(2492, 7364, 0), "Place the explosive barrel on the cracked wall in Vanescula's chamber.", explosiveBarrel.highlighted(), tinderbox);
 		cmkBlowUpWallInVanesculasChamber.addIcon(ItemID.CASTLE_DRAKAN_POTENT_BARREL);
-		var cmkTakeEmblem3 = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_FILLED, new WorldPoint(2486, 7421, 0), "Remove the emblem from the room with the Venator.");
+		var cmkTakeEmblem3 = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_FILLED, new WorldPoint(2486, 7421, 0), "Remove the emblem from the room with the Venator.\n\nProtect from ranged or melee depending on if you're in melee range or not.\n\nTurn off your protection prayer when it shrieks.");
 		var cmkTakeEmblemFromVanesculasStudy = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_EMBLEM_HOLDER_FILLED, new WorldPoint(2476, 7367, 0), "Take emblem from vanescula's study.");
 		var cmkRetrieveThirdEmblem = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_EMBLEM_VANESCULAS_HALLWAY_TO_VANESCULAS_STUDY, new WorldPoint(2469, 7408, 0), "Remove the third emblem from the receptacle.");
 		var cmkPutEmblemInEastDoor = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_EMBLEM_VANESCULAS_HALLWAY_TO_RANIS_HALLWAY, new WorldPoint(2476, 7410, 0), "Place an emblem in the empty receptacle by the east wall.", anyOneEmblemHighlighted);
@@ -869,7 +869,7 @@ class CastleDrakan
 
 		// I could technically use this varp to see if the venator in that room is dead
 		// [2026-07-05T13:27:48Z 5913] varp CASTLE_DRAKAN_ENEMY_STATUS_2 (5641) 32830 -> 98366
-		var killVenator = new NpcStep(quest, NpcID.CASTLE_DRAKAN_VENATOR_5, new WorldPoint(2569, 7384, 0), "Kill the Venator. Remove your protection prayer when it's about to screech.");
+		var killVenator = new NpcStep(quest, NpcID.CASTLE_DRAKAN_VENATOR_5, new WorldPoint(2569, 7384, 0), "Kill the Venator.\n\nProtect from ranged or melee depending on if you're in melee range or not.\n\nTurn off your protection prayer when it shrieks.");
 
 		// NOTE: This would be very annoying to puzzlewrap, so I'm not doing it. Feel free to change it in a future PR!
 		var searchWeaponRackForOneAxe = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_ARMOURY_WEAPON_CASE, new WorldPoint(2579, 7382, 0), "Search the weapons rack to the east for one battleaxe.");
@@ -992,7 +992,7 @@ class CastleDrakan
 		var ggkGetOrnateKnife = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_SEARCHABLE_CRATE, new WorldPoint(2454, 7372, 0), "Search the eastern crate for an ornate knife.");
 		var ggkPullLeverInOrnateKnifeRoom = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_TELEPORT_LEVER_GUEST_CHAMBER_STOREROOM, new WorldPoint(2449, 7371, 0), "Pull the lever to the west.");
 
-		var ggkKillVenator = new NpcStep(quest, new int[]{NpcID.CASTLE_DRAKAN_VENATOR, NpcID.CASTLE_DRAKAN_VENATOR_2, NpcID.CASTLE_DRAKAN_VENATOR_3, NpcID.CASTLE_DRAKAN_VENATOR_4, NpcID.CASTLE_DRAKAN_VENATOR_5}, new WorldPoint(2522, 7368, 0), "Kill the Venator.");
+		var ggkKillVenator = new NpcStep(quest, new int[]{NpcID.CASTLE_DRAKAN_VENATOR, NpcID.CASTLE_DRAKAN_VENATOR_2, NpcID.CASTLE_DRAKAN_VENATOR_3, NpcID.CASTLE_DRAKAN_VENATOR_4, NpcID.CASTLE_DRAKAN_VENATOR_5}, new WorldPoint(2522, 7368, 0), "Kill the Venator.\n\nProtect from ranged or melee depending on if you're in melee range or not.\n\nTurn off your protection prayer when it shrieks.");
 
 		var ggkpLightFireplace = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_LOWERNIEL_FIREPLACE, new WorldPoint(2521, 7371, 0), "Light the fireplace.", tinderbox);
 		var ggkpSearchChest = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_LOWERNIEL_CHEST, new WorldPoint(2526, 7371, 0), "Search the chest.");

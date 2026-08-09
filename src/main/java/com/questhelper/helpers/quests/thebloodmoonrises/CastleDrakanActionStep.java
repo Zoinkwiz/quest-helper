@@ -29,14 +29,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
-import lombok.Getter;
 
 /// ConditionalStep that guides the user to a specific room in Castle Drakan, with a specific action step once they arrive
 class CastleDrakanActionStep extends ConditionalStep
 {
-	@Getter
-	private final QuestStep action;
-
 	CastleDrakanActionStep(QuestHelper questHelper, CastleDrakanRoomNetwork network,
 		CastleDrakanRoomNetwork.RoomKey destination, QuestStep action, String routeText)
 	{
@@ -55,7 +51,6 @@ class CastleDrakanActionStep extends ConditionalStep
 		CastleDrakanRoomStep route, Requirement actionLocation)
 	{
 		super(questHelper, route);
-		this.action = action;
 		setShouldPassthroughText(true);
 		if (action instanceof ConditionalStep && !(action instanceof PuzzleWrapperStep))
 		{

@@ -60,8 +60,6 @@ class CastleDrakan
 	ZoneRequirement playerAtEasternClock;
 	ZoneRequirement playerNextToDoorPuzzle;
 	Conditions inLobbyF0;
-	VarbitRequirement inDiningRoom;
-	VarbitRequirement inThroneRoom;
 	Conditions inDiningRoomF0;
 	Conditions inThroneRoomF0;
 	VarbitRequirement inRoomSouthOfThroneRoom;
@@ -311,10 +309,10 @@ class CastleDrakan
 		var onF1 = castleDrakanFloor.eq(2);
 
 		var inLobby = castleDrakanRoom.eq(1);
+		var inDiningRoom = castleDrakanRoom.eq(2);
+		var inThroneRoom = castleDrakanRoom.eq(3);
 
 		inLobbyF0 = and(onF0, inLobby);
-		inDiningRoom = castleDrakanRoom.eq(2);
-		inThroneRoom = castleDrakanRoom.eq(3);
 		inDiningRoomF0 = and(onF0, inDiningRoom);
 		inThroneRoomF0 = and(onF0, inThroneRoom);
 		inRoomSouthOfThroneRoom = castleDrakanRoom.eq(4);

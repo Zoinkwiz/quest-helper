@@ -144,6 +144,7 @@ import com.questhelper.helpers.quests.ernestthechicken.ErnestTheChicken;
 import com.questhelper.helpers.quests.ethicallyacquiredantiquities.EthicallyAcquiredAntiquities;
 import com.questhelper.helpers.quests.fairytalei.FairytaleI;
 import com.questhelper.helpers.quests.fairytaleii.FairytaleII;
+import com.questhelper.helpers.quests.fallenfromgrace.FallenFromGrace;
 import com.questhelper.helpers.quests.familycrest.FamilyCrest;
 import com.questhelper.helpers.quests.fightarena.FightArena;
 import com.questhelper.helpers.quests.fishingcontest.FishingContest;
@@ -486,6 +487,7 @@ public enum QuestHelperQuest
 	CURRENT_AFFAIRS(new CurrentAffairs(), Quest.CURRENT_AFFAIRS, QuestVarbits.QUEST_CURRENT_AFFAIRS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	TROUBLED_TORTUGANS(new TroubledTortugans(), Quest.TROUBLED_TORTUGANS, QuestVarbits.QUEST_TROUBLED_TORTUGANS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_RED_REEF(new TheRedReef(), Quest.THE_RED_REEF, QuestVarbits.QUEST_THE_RED_REEF, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	FALLEN_FROM_GRACE(new FallenFromGrace(), Quest.FALLEN_FROM_GRACE, QuestVarbits.QUEST_FALLEN_FROM_GRACE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

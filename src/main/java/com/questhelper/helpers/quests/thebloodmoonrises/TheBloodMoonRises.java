@@ -2496,4 +2496,85 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		return sections;
 	}
+
+	@Override
+	public List<Requirement> getDebuggableRequirements()
+	{
+		return List.of(
+			inVampyriumVarbit,
+
+			// Escaping Castle Drakan - Half moon key
+			castleDrakan.needToStartThroneRoomPuzzle,
+			castleDrakan.needToPullBusts,
+			castleDrakan.needToGetKey,
+			castleDrakan.doneWithThroneRoomPuzzle,
+			castleDrakan.halfMoonKey,
+			castleDrakan.usedUpHalfMoonKey,
+
+			castleDrakan.openedAHalfMoonDoor,
+			castleDrakan.openedBasementCrescentDoor,
+			castleDrakan.openedBottleRoomFullMoonDoor,
+
+			// Escaping Castle Drakan - Destroying the stockpile
+			castleDrakan.solidKey,
+			castleDrakan.usedSolidKey,
+			castleDrakan.fullMoonKey,
+			castleDrakan.usedUpFullMoonKey,
+
+			// Castle Drakan rooms
+			castleDrakan.inLobbyF0,
+			castleDrakan.inDiningRoomF0,
+			castleDrakan.inThroneRoomF0,
+			castleDrakan.inRoomSouthOfThroneRoom,
+			castleDrakan.inStorageRoom,
+			castleDrakan.inStudy,
+			castleDrakan.inHallwayWestOfDiningRoom,
+			castleDrakan.inEmblemGallery,
+			castleDrakan.inWestChapelHallway,
+			castleDrakan.inNorthChapelHallway,
+			castleDrakan.inDiningRoomF1,
+			castleDrakan.inThroneRoomF1,
+			castleDrakan.inVanesculasStudy,
+			castleDrakan.inVanesculasChamber,
+			castleDrakan.inDrakanEmblemRoomSouthOfExplosiveRoom,
+			castleDrakan.inExplosiveRoom,
+			castleDrakan.inHallwayEastOfExplosiveRoom,
+			castleDrakan.inLobbyF1,
+			castleDrakan.inHallwayNorthOfLobby,
+			castleDrakan.inVanesculasHallway,
+			castleDrakan.inRanisHallway,
+			castleDrakan.inRanisParlour,
+			castleDrakan.inVenatorRoom,
+			castleDrakan.inKitchen,
+			castleDrakan.inLarder,
+			castleDrakan.inEmblemGalleryHallway,
+			castleDrakan.inLobbyBasementHallway,
+			castleDrakan.inLobbyBasementVenator,
+			castleDrakan.inBasementPrison,
+			castleDrakan.inHallway5,
+			castleDrakan.inBedroomAboveThroneRoom,
+			castleDrakan.inFirstFloorEastStaircase,
+			castleDrakan.inGroundFloorEastStaircase,
+			castleDrakan.inThroneRoomStorageRoom,
+			castleDrakan.inCrescentDoorRoom,
+			castleDrakan.inSolidDoorStoreRoom,
+			castleDrakan.inBasementStoreRoom,
+			castleDrakan.inOrnateKnifeRoom,
+			castleDrakan.inGuestChamberStoreroom,
+			castleDrakan.inRoomOutsideGuestChamberStoreroom,
+			castleDrakan.inVenatorPuzzleRoom,
+			castleDrakan.inVenatorPuzzleRoomLibrary,
+			castleDrakan.inSmallHallway,
+			castleDrakan.inRoomWithIvanAndVenator,
+			castleDrakan.inSecretRoom,
+			castleDrakan.inBottleRoom,
+			castleDrakan.inChapelLibrary,
+			castleDrakan.inServantsQuarters,
+			castleDrakan.inRoomAboveStudy,
+			castleDrakan.inSolidKeyRoom,
+			castleDrakan.inSolidDoorHallway,
+			castleDrakan.inLaboratory,
+			castleDrakan.inLaboratoryStorageRoom
+		);
+	}
 }

@@ -37,6 +37,7 @@ import java.util.Set;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 
+/// Given the current room in Castle Drakan, guide the user to the destination room
 class CastleDrakanRoomStep extends DetailedOwnerStep
 {
 	private final CastleDrakanRoomNetwork network;

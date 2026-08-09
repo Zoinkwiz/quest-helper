@@ -732,6 +732,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		needTeleportUnlock = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_TELEPORT, 0);
 
 		inVampyriumVarbit = new VarbitRequirement(VarbitID.IN_VAMPYRIUM, 1);
+		inVampyriumVarbit.setDisplayText("In Vampyrium");
 		combinationLockWidgetOpen = new WidgetPresenceRequirement(InterfaceID.CombinationLock.CONTENTS);
 
 		// Crossing the drawbridge (82-88)

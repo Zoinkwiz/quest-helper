@@ -31,6 +31,7 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.util.Utils;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.WorldEntity;
@@ -46,6 +47,7 @@ public class ZoneRequirement extends AbstractRequirement
 	@Getter
 	private final List<Zone> zones;
 	private final boolean checkInZone;
+	@Setter
 	private String displayText;
 
 	/// Contains the value of the most recent successful zone check.
@@ -110,7 +112,7 @@ public class ZoneRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		Player player = client.getLocalPlayer();
 		if (player != null && zones != null)

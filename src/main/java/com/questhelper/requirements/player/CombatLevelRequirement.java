@@ -67,7 +67,7 @@ public class CombatLevelRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		Player player = client.getLocalPlayer();
 		return player != null && operation.check(player.getCombatLevel(), requiredLevel);

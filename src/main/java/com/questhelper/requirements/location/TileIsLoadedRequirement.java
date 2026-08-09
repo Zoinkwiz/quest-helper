@@ -59,7 +59,7 @@ public class TileIsLoadedRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		List<LocalPoint> localPoints = definedPoint.resolveLocalPoints(client);
 		for (LocalPoint localPoint : localPoints)

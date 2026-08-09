@@ -33,7 +33,7 @@ public class ManualRequirement extends SimpleRequirement
 	boolean shouldPass;
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return shouldPass;
 	}

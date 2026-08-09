@@ -30,7 +30,7 @@ import net.runelite.api.Client;
 public class CyrisusBankConditional extends SimpleRequirement
 {
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 
 		return CyrisusArmourSet.isReady(client);

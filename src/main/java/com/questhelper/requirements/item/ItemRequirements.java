@@ -176,7 +176,7 @@ public class ItemRequirements extends ItemRequirement
 	 * @return {@code true} if the requirements are met based on the {@link LogicType}, {@code false} otherwise.
 	 */
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		Predicate<ItemRequirement> predicate = r -> r.check(client);
 		int successes = (int) itemRequirements.stream()

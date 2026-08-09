@@ -30,6 +30,7 @@ import com.questhelper.collections.KeyringCollection;
 import com.questhelper.collections.TeleportCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.KeyringRequirement;
@@ -54,6 +55,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class BikeShedder extends BasicQuestHelper
@@ -107,6 +109,9 @@ public class BikeShedder extends BasicQuestHelper
 	private ItemRequirement dustyKeyItem;
 	private KeyringRequirement dustyKeyKeyRing;
 	private DetailedQuestStep keyringStep;
+	private DetailedQuestStep putCoinsInInventory;
+	private DetailedQuestStep youHaveCoinsInInventory;
+	private ZoneRequirement atCraftingGuildBank;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -183,7 +188,6 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(new ZoneRequirement(new WorldPoint(2655, 3286, 0)), keyringStep);
 
 		steps.addStep(byStaircaseInSunrisePalace, goDownstairsInSunrisePalace);
-		steps.addStep(outsideLumbridge, moveToLumbridge);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3218, 0)), haveRunes);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3222, 3218, 0)), equipLightbearer);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3223, 3218, 0)), useLogOnBush);
@@ -192,6 +196,16 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3216, 0)), getCoins);
 		steps.addStep(conditionalRequirementZoneRequirement, conditionalRequirementLookAtCoins);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3221, 0)), lookAtCooksAssistant);
+
+		// Crafting guild coin
+		{
+			putCoinsInInventory = new DetailedQuestStep(this, "Put coins in your inventory.", oneCoin);
+			youHaveCoinsInInventory = new DetailedQuestStep(this, "You have coins in your inventory!", oneCoin);
+			steps.addStep(and(atCraftingGuildBank, oneCoin), youHaveCoinsInInventory);
+			steps.addStep(and(atCraftingGuildBank), putCoinsInInventory);
+		}
+
+		steps.addStep(outsideLumbridge, moveToLumbridge);
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(-1, steps)
@@ -339,6 +353,10 @@ public class BikeShedder extends BasicQuestHelper
 		dustyKeyItem = new ItemRequirement("Dusty key (ItemReq)", ItemID.DUSTY_KEY);
 		dustyKeyKeyRing = new KeyringRequirement("Dusty key (KeyRingReq)", KeyringCollection.DUSTY_KEY);
 		keyringStep = new DetailedQuestStep(this, "We need the dusty key", dustyKeyItem, dustyKeyKeyRing);
+
+		// Crafting guild coins
+		atCraftingGuildBank = new ZoneRequirement(new WorldPoint(2935, 3280, 0));
+		atCraftingGuildBank.setDisplayText("In front of crafting guild bank");
 	}
 
 	@Override
@@ -362,7 +380,18 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Ensure staircase upstairs in Sunrise Palace is highlighted", List.of(goDownstairsInSunrisePalace), List.of()));
 		panels.add(new PanelDetails("Sailing", List.of(talkToNpcOnBoat, talkToKlarenceFromShip, useSalvagingHook, useObjectOffBoat), List.of()));
 		panels.add(new PanelDetails("Key ring", List.of(keyringStep), List.of(dustyKeyItem, dustyKeyKeyRing)));
+		panels.add(new PanelDetails("Coins in inventory (crafting build)", List.of(putCoinsInInventory, youHaveCoinsInInventory), List.of(atCraftingGuildBank, oneCoin)));
 
 		return panels;
+	}
+
+	@Override
+	public List<Requirement> getDebuggableRequirements()
+	{
+		return List.of(
+			oneCoin,
+			manyCoins,
+			atCraftingGuildBank
+		);
 	}
 }

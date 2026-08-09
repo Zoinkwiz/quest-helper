@@ -60,7 +60,7 @@ public class PlayerQuestStateRequirement extends RuneliteRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		String value = getConfigValue();
 		if (operation == null) return expectedValue.equals(value);

@@ -33,7 +33,7 @@ import net.runelite.api.Client;
 public class InInstanceRequirement extends SimpleRequirement
 {
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return client.isInInstancedRegion();
 	}

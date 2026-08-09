@@ -28,6 +28,7 @@ package com.questhelper.requirements.var;
 
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
+import lombok.Setter;
 import net.runelite.api.Client;
 
 import javax.annotation.Nonnull;
@@ -41,7 +42,8 @@ public class VarplayerRequirement extends AbstractRequirement
 	private final int varPlayerID;
 	private final List<Integer> values;
 	private final Operation operation;
-	private final String displayText;
+	@Setter
+	private String displayText;
 
 	private final int bitPosition;
 	private final boolean bitIsSet;
@@ -153,7 +155,7 @@ public class VarplayerRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		int varpValue = client.getVarpValue(varPlayerID);
 		if (bitPosition >= 0)

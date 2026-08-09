@@ -154,7 +154,7 @@ public class VarbitRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		try {
 			var varbitValue = client.getVarbitValue(varbitID);

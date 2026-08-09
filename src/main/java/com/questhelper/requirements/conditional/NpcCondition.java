@@ -78,7 +78,7 @@ public class NpcCondition extends ConditionForStep
 		}
 	}
 
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		if (zone != null)
 		{

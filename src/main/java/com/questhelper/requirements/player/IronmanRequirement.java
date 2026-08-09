@@ -40,7 +40,7 @@ public class IronmanRequirement extends AbstractRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		return client.getLocalPlayer() != null &&
 			Utils.getAccountType(client).isAnyIronman() == shouldBeIronman;

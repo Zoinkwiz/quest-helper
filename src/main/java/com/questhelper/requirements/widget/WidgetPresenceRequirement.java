@@ -69,7 +69,7 @@ public class WidgetPresenceRequirement extends SimpleRequirement
 	}
 
 	@Override
-	public boolean check(Client client)
+	public boolean checkInternal(Client client)
 	{
 		if (onlyNeedToPassOnce && hasPassed)
 		{

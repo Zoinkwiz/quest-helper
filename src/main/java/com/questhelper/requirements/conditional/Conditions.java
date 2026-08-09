@@ -46,6 +46,12 @@ public class Conditions extends ConditionForStep
 	@Setter
 	protected String text;
 
+	/// Alias for `setText` to match other requirements which use `displayText`
+	public void setDisplayText(String displayText)
+	{
+		this.text = displayText;
+	}
+
 	/**
 	 * @param conditions list of requirements that must all be met
 	 */

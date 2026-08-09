@@ -1401,8 +1401,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var plinth5Pos = new WorldPoint(3408, 3492, 1);
 		var plinth6Pos = new WorldPoint(3409, 3494, 1);
 
-		var xd123 = new ObjectStep(this, 61301, "lol");
-
 		var essiandarsNotesPlinthID = ObjectID.MYQ6_PLINTH_BOOK_ESSIANDAR;
 		var essiandarsNotesName = "Essiandar's notes";
 

@@ -2230,7 +2230,17 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return List.of(
-			"Lowerniel Drakan (lvl ???)"
+			"Vyrewatch (lvl 103)",
+			"Vyrewatch Sentinel (lvl 151)",
+			"Monk of Zamorak (lvl 34)",
+			"Sanguidae (lvl 106)",
+			"Venator (lvl 195)",
+			"Ancient feral vyre (lvl 89)",
+			"Nylocas (lvl 46, 82, 104)",
+			"The Maiden of Sugadinti (lvl 340)",
+			"Nylocas Vasilias (lvl 323)",
+			"Wyrd (lvl 564)",
+			"Lowerniel Drakan (lvl 927, 1063)"
 		);
 	}
 

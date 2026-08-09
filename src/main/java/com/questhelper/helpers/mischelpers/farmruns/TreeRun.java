@@ -551,7 +551,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		calquatEnabled = not(new RuneliteRequirement(configManager, CALQUAT_TREE_SAPLING, CalquatTreeSapling.NONE.name()));
 
 		TreeSapling treeSaplingEnum = (TreeSapling) FarmingUtils.getEnumFromConfig(configManager, TreeSapling.MAGIC);
-		treeSapling = treeSaplingEnum.getPlantableItemRequirement(itemManager).showConditioned(not(treesEnabled));
+		treeSapling = treeSaplingEnum.getPlantableItemRequirement(itemManager).showConditioned(treesEnabled);
 		treeSapling.setHighlightInInventory(true);
 		allTreeSaplings = treeSapling.copy();
 

@@ -2180,9 +2180,11 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		return step;
 	}
 
-	private ObjectStep bookPut(WorldPoint plinthPosition, String bookName, Requirement requirement)
+	private ObjectStep bookPut(WorldPoint plinthPosition, String bookName, ItemRequirement requirement)
 	{
-		return new ObjectStep(this, ObjectID.MYQ6_PLINTH_EMPTY, plinthPosition, "Place " + bookName + " on the plinth.", requirement);
+		var step = new ObjectStep(this, ObjectID.MYQ6_PLINTH_EMPTY, plinthPosition, "Place " + bookName + " on the plinth.", requirement);
+		step.addIcon(requirement.getId());
+		return step;
 	}
 
 	@Override

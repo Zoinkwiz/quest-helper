@@ -1168,7 +1168,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		talkToVeliafInDungeon = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon.");
 		talkToVeliafInDungeon.addSubSteps(climbDownstairs);
 
-		talkToVanescula = new NpcStep(this, NpcID.MYQ6_VANESCULA_HIDEOUT_TRAPPED_VIS, new WorldPoint(3168, 7844, 0), "Talk-to Vanescula Drakan.");
+		talkToVanescula = new NpcStep(this, NpcID.MYQ6_VANESCULA_HIDEOUT_TRAPPED_VIS, new WorldPoint(3168, 7844, 0), "Talk to Vanescula Drakan.");
 
 		talkToVeliafInDungeonAgain = new NpcStep(this, NpcID.MYQ6_VELIAF_VIS, new WorldPoint(3168, 7842, 0), "Talk to Veliaf in the dungeon again.");
 
@@ -1225,7 +1225,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		talkToVeliafAfterLeavingPalace.addSubSteps(goDownToTalkToVeliafAfterLeavingPalace);
 
 		/// 130
-		talkToSugadintiInBurghDeRott = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in Burgh de Rott.");
+		talkToSugadintiInBurghDeRott = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3494, 9627, 0), "Talk to Sugadinti Vitur in Burgh de Rott.");
 
 		/// 132 + 134 + 136 + 138 (theatre of blood)
 		getToTob = new NpcStep(this, NpcID.MYQ6_SUGADINTI_HUMAN_VIS, new WorldPoint(3668, 3220, 0), "Gear up for theatre of blood. Bring melee gear with a range and mage switch, some food & potions, then talk to Sugadinti Vitur in front of the theatre of blood.", combatGear, food, prayerPotions);
@@ -1235,7 +1235,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		// TODO: This text could probably be improved
 		ensureNothingBothersSugadinti = new DetailedQuestStep(this, "Kill Nylocas with the correct fighting style. Fight the Maiden of Sugadinti, killing healers when they spawn. Avoid blood puddles on the ground.");
 
-		talkToSugadintiAfterFinishingTob = new NpcStep(this, NpcID.MYQ6_SUGADINTI_HUMAN_VIS, new WorldPoint(3667, 3218, 0), "Talk-to Sugadinti Vitur.");
+		talkToSugadintiAfterFinishingTob = new NpcStep(this, NpcID.MYQ6_SUGADINTI_HUMAN_VIS, new WorldPoint(3667, 3218, 0), "Talk to Sugadinti Vitur.");
 		talkToSugadintiAfterFinishingTobCutscene = talkToSugadintiAfterFinishingTob.cutscene();
 
 		/// 140
@@ -1261,25 +1261,25 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		talkWithVeliafInBurghDeRottCutscene = speakWithVeliafAfterInspectingFence.cutscene();
 
 		/// 152
-		prepareFightDrakan3 = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3494, 9627, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		prepareFightDrakan3 = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(3494, 9627, 0), "Talk to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
 		prepareFightDrakan3.addDialogStep("I'm ready.");
-		enterBurghDeRottDungeon = new ObjectStep(this, ObjectID.BURGH_INN_TRAPDOOR_MULTILOC, new WorldPoint(3490, 3232, 0), "Talk-to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
+		enterBurghDeRottDungeon = new ObjectStep(this, ObjectID.BURGH_INN_TRAPDOOR_MULTILOC, new WorldPoint(3490, 3232, 0), "Talk to Sugadinti Vitur in the Burgh de Rott hideout, ready for another fight against Drakan.");
 		prepareFightDrakan3.addSubSteps(enterBurghDeRottDungeon);
 
 		/// 154
-		talkToVeliafToReturnToDrakan3 = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
+		talkToVeliafToReturnToDrakan3 = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz.");
 		talkToVeliafToReturnToDrakan3.addDialogStep("I'll go now.");
 		fightDrakan3 = new NpcStep(this, NpcID.MYQ6_LOWERNIEL_COMBAT_3, "Fight Lowerniel Drakan. Protect from melee and dodge his attacks.\n\nDodge at least one tile opposite of the telegraphed motion.\n\nWhen he holds his spear back, step to his side.");
 		fightDrakan3.setOverlayText("Fight Lowerniel Drakan. More info in sidebar.");
 		fightDrakan3.addSubSteps(talkToVeliafToReturnToDrakan3);
 
 		/// 156
-		talkToVeliaf = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk-to Veliaf Hurtz.");
+		talkToVeliaf = new NpcStep(this, NpcID.MYQ6_VELIAF_INJURED_VIS, new WorldPoint(3493, 9628, 0), "Talk to Veliaf Hurtz.");
 		talkToVeliaf.addDialogStep("I'll go now.");
 		talkToVeliafCutscene = talkToVeliaf.cutscene();
 
 		/// 158
-		talkToIvanInsideCastleDrakan = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(2845, 7387, 0), "Talk-to Ivan Strom inside Castle Drakan.");
+		talkToIvanInsideCastleDrakan = new NpcStep(this, NpcID.MYQ6_IVAN_VIS, new WorldPoint(2845, 7387, 0), "Talk to Ivan Strom inside Castle Drakan.");
 
 		/// 160 + 162
 		talkToSugadintiInsideCastleDrakan = new NpcStep(this, NpcID.MYQ6_SUGADINTI_VIS, new WorldPoint(2846, 7389, 0), "Talk to Sugadinti Vitur inside Castle Drakan.");
@@ -1302,7 +1302,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		fightDrakan4Cutscene = fightDrakan4.cutscene();
 
 		/// 174
-		talkToEfaritayAfterKillingDrakan = new NpcStep(this, NpcID.MYQ6_EFARITAY_VIS, new WorldPoint(3702, 3182, 0), "Talk-to Efaritay Hallow in the icyene graveyard.");
+		talkToEfaritayAfterKillingDrakan = new NpcStep(this, NpcID.MYQ6_EFARITAY_VIS, new WorldPoint(3702, 3182, 0), "Talk to Efaritay Hallow in the icyene graveyard.");
 		finalQuestCutscene = talkToEfaritayAfterKillingDrakan.cutscene();
 
 		/// 176 + 178

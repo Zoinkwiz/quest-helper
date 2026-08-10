@@ -2125,7 +2125,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		cDoSomething2.addStep(inBurghDeRottDungeon, talkToVeliafToReturnToDrakan3);
 		cDoSomething2.addStep(inCutscene, talkWithVeliafInBurghDeRottCutscene);
 		cDoSomething2.addStep(and(new InInstanceRequirement(), new ZoneRequirement(new Zone(15858))), fightDrakan3);
-		steps.put(154, fightDrakan3);
+		steps.put(154, cDoSomething2);
 
 		// 154 -> 156: beat drakan for the third time
 		var justBeatDrakanSecondToLastTime = new ConditionalStep(this, talkToVeliaf);

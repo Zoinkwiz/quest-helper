@@ -73,6 +73,10 @@ class CastleDrakan
 		new WorldPoint(2438, 7363, 0), new WorldPoint(2438, 7364, 0),
 		new WorldPoint(2439, 7363, 0), new WorldPoint(2439, 7364, 0),
 	};
+	private static final WorldPoint[] UNNAMED_HALLWAY_TRAPS = {
+		new WorldPoint(2478, 7395, 0), new WorldPoint(2479, 7395, 0),
+		new WorldPoint(2478, 7394, 0), new WorldPoint(2479, 7394, 0),
+	};
 	private final TheBloodMoonRises quest;
 
 	ItemRequirement tinderbox;
@@ -1654,7 +1658,9 @@ class CastleDrakan
 			door(ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS, 2336, 7370, 1,
 				"Enter the gibbous moon door to the hallway east of the explosive room."),
 			door(ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS_M, 2483, 7395, 0,
-				"Go back through the gibbous moon door to the first-floor dining room."));
+				"Go back through the gibbous moon door to the first-floor dining room, avoiding the traps."),
+			UNNAMED_HALLWAY_TRAPS
+		);
 
 		connect(displayRoom, venatorPuzzle, or(gibbousMoonKey, openedVenatorPuzzleGibbousDoor),
 			door(ObjectID.CASTLE_DRAKAN_DOOR_MOON_GIBBOUS, 2510, 7370, 0,

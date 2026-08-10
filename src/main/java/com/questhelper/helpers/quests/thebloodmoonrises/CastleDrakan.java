@@ -1098,7 +1098,7 @@ class CastleDrakan
 
 	private void setupFullMoonKeySteps()
 	{
-		var fmkKillVenator = new NpcStep(quest, NpcID.CASTLE_DRAKAN_VENATOR, new WorldPoint(2456, 7392, 0), "Kill the Venator.");
+		var fmkKillVenator = new NpcStep(quest, NpcID.CASTLE_DRAKAN_VENATOR, new WorldPoint(2456, 7392, 0), "Kill the Venator.\n\nProtect from ranged or melee depending on if you're in melee range or not.\n\nTurn off your protection prayer when it shrieks.");
 
 		var fmkTalkToIvan1 = new NpcStep(quest, NpcID.MYQ6_IVAN_VIS, new WorldPoint(2455, 7388, 0), "Talk to Ivan Strom after killing the Venator.");
 

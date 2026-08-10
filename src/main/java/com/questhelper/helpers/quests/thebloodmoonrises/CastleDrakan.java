@@ -1458,6 +1458,7 @@ class CastleDrakan
 				"Enter the eastern door."),
 			door(ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, 2467, 7395, 0,
 				"Go through the west door to the explosive barrel room."));
+		// TODO: EXPLOSIVE_HALLWAY_TRAPS?
 
 		connect(lobbyF0, lobbyF1, null,
 			door(ObjectID.CASTLE_DRAKAN_STAIRS_UP, 2318, 7371, 0,
@@ -1756,6 +1757,7 @@ class CastleDrakan
 				"Enter the northern door, avoiding the floor traps."),
 			door(ObjectID.CASTLE_DRAKAN_DOOR_M, 2314, 7360, 1,
 				"Enter the south-west door."));
+		// TODO: add trap highlights
 	}
 
 	/**

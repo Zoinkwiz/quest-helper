@@ -2369,7 +2369,6 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		sections.addAll(castleDrakan.getPanels());
 
-		// continue at bmr-mrchintickle.mkv 00:36:19
 		sections.add(new PanelDetails("Let the hunt begin", List.of(
 			leaveCastleDrakan,
 			pickupCrankWheel,

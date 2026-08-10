@@ -1148,9 +1148,13 @@ class CastleDrakan
 		skGetCloudyGreyPotion.addSubSteps(skGetWeightlessBlackPotion, skGetThickRedPotion, skGetColdBluishWhitePotion);
 
 		var smokeBasin = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_CHAPEL_SMOKE_BASIN, new WorldPoint(2380, 7385, 0), "Pour the cloudy grey potion into the south-west basin.", cloudyGreyPotion.highlighted());
+		smokeBasin.addIcon(ItemID.CASTLE_DRAKAN_CLOUDY_GREY_POTION);
 		var iceBasin = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_CHAPEL_ICE_BASIN, new WorldPoint(2387, 7384, 0), "Pour the cold bluish-white potion into the south-east basin.", coldBlueishWhitePotion.highlighted());
+		iceBasin.addIcon(ItemID.CASTLE_DRAKAN_COLD_WHITE_POTION);
 		var shadowBasin = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_CHAPEL_SHADOW_BASIN, new WorldPoint(2387, 7389, 0), "Pour the weightless black potion into the north-east basin.", weightlessBlackPotion.highlighted());
+		shadowBasin.addIcon(ItemID.CASTLE_DRAKAN_WEIGHTLESS_BLACK_POTION);
 		var bloodBasin = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_CHAPEL_BLOOD_BASIN, new WorldPoint(2380, 7389, 0), "Pour the thick red potion into the north-west basin.", thickRedPotion.highlighted());
+		bloodBasin.addIcon(ItemID.CASTLE_DRAKAN_THICK_RED_POTION);
 
 		var skSearchAltarForAncientSymbol = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_CHAPEL_ALTAR, new WorldPoint(2382, 7393, 0), "Search the altar for an ancient symbol.");
 

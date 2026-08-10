@@ -2369,6 +2369,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		sections.addAll(castleDrakan.getPanels());
 
+		// TODO: Could we get the tech to highlight Lowerniel as he chases you here?
 		sections.add(new PanelDetails("Let the hunt begin", List.of(
 			leaveCastleDrakan,
 			pickupCrankWheel,

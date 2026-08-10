@@ -92,6 +92,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	ItemRequirement drakansMedallion;
 	ItemRequirement anyPickaxe;
 	FreeInventorySlotRequirement freeInvSlots6;
+	ItemRequirement drakansMedallionToVerSinhaza;
 	ItemRequirement drakansMedallionToCastleDrakan;
 
 	// Mid-quest item requirements
@@ -709,6 +710,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		freeInvSlots6 = new FreeInventorySlotRequirement(6);
 
+		drakansMedallionToVerSinhaza = new ItemRequirement("Drakan's medallion to Ver Sinhaza", ItemID.DRAKANS_MEDALLION).isNotConsumed().highlighted();
 		drakansMedallionToCastleDrakan = new ItemRequirement("Drakan's medallion to Castle Drakan", ItemID.DRAKANS_MEDALLION).isNotConsumed().highlighted();
 
 		// Mid-quest item requirements
@@ -1324,6 +1326,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		var talkToIvan = new NpcStep(this, 1 /* TODO */, new WorldPoint(3599, 9612, 0), "");
 		goDownToIvan = new ObjectStep(this, ObjectID.MYQ4_HIDEOUT_TRAPDOOR_OPEN, new WorldPoint(3605, 3215, 0), "", blisterwoodFlail);
 		goDownToIvan.addAlternateObjects(ObjectID.MYQ4_HIDEOUT_TRAPDOOR);
+		goDownToIvan.addTeleport(drakansMedallionToVerSinhaza);
 		cLookForIvan = new ConditionalStep(this, goDownToIvan, "Look for Ivan in the Myreque Hideout below Old Man Ral's home in Meiyerditch.");
 		cLookForIvan.addStep(inMyrequeHideoutOldManRal, talkToIvan);
 

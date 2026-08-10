@@ -1552,6 +1552,7 @@ class CastleDrakan
 			door(ObjectID.CASTLE_DRAKAN_DOOR_ALT_M, 2361, 7393, 0,
 				"Return to the kitchen."));
 
+		// TODO: highlight both stairs?
 		connect(lobbyF0, basementHall, null,
 			door(ObjectID.CASTLE_DRAKAN_STAIRS_DOWN, 2311, 7366, 0,
 				"Climb down to the basement."),

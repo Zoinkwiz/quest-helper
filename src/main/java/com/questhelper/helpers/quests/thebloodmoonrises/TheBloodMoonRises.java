@@ -1181,7 +1181,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		getReadyForCombatWatchTheCutscene = leavePalaceForCombat.cutscene();
 
 		/// 116
-		attackPortals = new NpcStep(this, NpcID.MYQ6_BRIDGE_DEFENCE_PORTAL, "Attack the portals in the sky.", true);
+		attackPortals = new NpcStep(this, NpcID.MYQ6_BRIDGE_DEFENCE_PORTAL, "Protect the palace.\nAttack the portals in the sky.", true);
 
 		/// 118
 		leaveDoors = new ObjectStep(this, ObjectID.MYQ6_SUGADINTI_HIDEOUT_EXIT, new WorldPoint(3167, 7860, 1), "Leave the palace.");

@@ -850,6 +850,7 @@ class CastleDrakan
 		useSinkPlugOnSinkInLarder.addIcon(ItemID.CASTLE_DRAKAN_SINK_PLUG);
 		var turnSinkTapOn = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_LARDER_SINK, new WorldPoint(2356, 7400, 0), "Turn the tap on in the sink.");
 		turnSinkTapOn.addDialogStep("Turn the tap on.");
+		turnSinkTapOn.addDialogStep("Yes.");
 		var takePipe = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_LARDER_SINK, new WorldPoint(2356, 7400, 0), "Take the pipe from the now-broken sink.");
 		takePipe.addDialogStep("Yes.");
 		var reachBehindCabinetWithPipe = new ObjectStep(quest, ObjectID.CASTLE_DRAKAN_LARDER_CABINET, new WorldPoint(2360, 7403, 0), "Use the broken pipe on the cabinet to reach behind it.", brokenPipe.highlighted());

@@ -2480,8 +2480,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 			headToBarrowsL,
 			headDownToVanescula,
 			fightTheWyrd,
-			findWyrd,
-			speakWithVeliafAfterInspectingFence
+			findWyrd
 		), List.of(
 			hallowedFlail,
 			combatGear,
@@ -2491,6 +2490,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Night of the blood moon", List.of(
+			speakWithVeliafAfterInspectingFence,
 			prepareFightDrakan3,
 			fightDrakan3,
 			talkToVeliaf,

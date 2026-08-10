@@ -86,6 +86,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 	// Recommended items
 	ItemRequirement combatGear;
 	ItemRequirement combatGearMelee;
+	ItemRequirement fastRangedWeapon;
 	ItemRequirement food;
 	ItemRequirement prayerPotions;
 	ItemRequirement energyRestorePotion;
@@ -699,6 +700,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		combatGearMelee = new ItemRequirement("Melee combat gear", -1, -1).isNotConsumed();
 		combatGearMelee.setDisplayItemId(BankSlotIcons.getMeleeCombatGear());
+		fastRangedWeapon = new ItemRequirement("Fast ranged weapon", ItemCollections.DARTS, -1).isNotConsumed();
 		food = new ItemRequirement("Good healing food", ItemCollections.GOOD_EATING_FOOD, -1);
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, -1);
 		// TODO: Are staminas actually necessary?
@@ -2306,6 +2308,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 		), List.of(
 			blisterwoodFlail,
 			combatGear,
+			fastRangedWeapon,
 			food,
 			prayerPotions,
 			vyreNobleOutfit

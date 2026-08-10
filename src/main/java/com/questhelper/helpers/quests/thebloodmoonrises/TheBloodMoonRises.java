@@ -1290,6 +1290,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		/// 164
 		talkToEfaritayOnIcyene = new NpcStep(this, NpcID.MYQ6_EFARITAY_WEAPON_VIS, new WorldPoint(3701, 3186, 0), "Talk to Efaritay Hallow in Icyene Graveyard.");
+		talkToEfaritayOnIcyene.addDialogStep("Icyene Graveyard.");
 
 		/// 166
 		enterVampyriumForTheLastTime = new ObjectStep(this, ObjectID.MYQ6_VAMPYRIUM_GRAVEYARD_PORTAL, new WorldPoint(3703, 3185, 0), "Enter the portal in Icyene Graveyard to get to Vampyrium, ready for the final confrontation.", hallowedFlail, combatGearMelee);

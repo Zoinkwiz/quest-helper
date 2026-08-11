@@ -40,7 +40,7 @@ dependencies {
 }
 
 group = 'com.questhelper'
-version = '4.16.1'
+version = '4.17.0'
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'

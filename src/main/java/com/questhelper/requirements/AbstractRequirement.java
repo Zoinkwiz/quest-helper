@@ -103,7 +103,7 @@ public abstract class AbstractRequirement implements Requirement
 	public void appendToTooltip(String text)
 	{
 		StringBuilder builder = new StringBuilder();
-		String currentTooltip = getTooltip();
+		String currentTooltip = this.tooltip;
 		if (currentTooltip != null)
 		{
 			builder.append(currentTooltip);

@@ -5,8 +5,10 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.player.ShipInPortRequirement;
 import com.questhelper.requirements.util.Port;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class PortTaskStep extends ConditionalStep
 		this(questHelper, fromPort, toPort, -1, requirements);
 	}
 
+	/// NOTE: This step is _not_ generic - it is built to only work for Prying Times right now. Needs polishing to work with other ports, although it's only ever user in Prying Times.
 	public PortTaskStep(QuestHelper questHelper, Port fromPort, Port toPort, int portTaskId, Requirement... requirements)
 	{
 		super(questHelper, new SailStep(questHelper, fromPort), requirements);
@@ -62,7 +65,8 @@ public class PortTaskStep extends ConditionalStep
 		ObjectStep pickupCargoFromHold = new ObjectStep(questHelper, ObjectID.SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT, "Pickup the cargo from the cargo hold of your ship.");
 		pickupCargoFromHold.addAlternateObjects(cargoHoldIds);
 		DetailedQuestStep deliverCargo = new ObjectStep(questHelper, ObjectID.DOCK_LOADING_BAY_LEDGER_TABLE_DEPOSIT, toPort.getLedgerTableLocation(), "Deliver the cargo to the ledger table on the docks of " + toPort.getName() + ".");
-		super.addStep(and(toPortReq, cargoForTaskTaken, holdingCargo), deliverCargo);
+		var portSarimDock = new ZoneRequirement(new Zone(new WorldPoint(3071, 3005, 0), new WorldPoint(3050, 2972, 0)));
+		super.addStep(and(or(toPortReq, portSarimDock), cargoForTaskTaken, holdingCargo), deliverCargo);
 		super.addStep(and(toPortReq, notHoldingCargo, cargoForTaskTaken), pickupCargoFromHold);
 		super.addStep(and(fromPortReq, notHoldingCargo, cargoForTaskTaken), sailToToPort);
 		super.addStep(and(fromPortReq, cargoForTaskTaken, holdingCargo, onShip), placeCargoInHold);

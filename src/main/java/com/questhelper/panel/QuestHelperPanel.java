@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	  list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	  this list of conditions and the following disclaimer in the documentation
+ *	  and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -464,18 +464,20 @@ public class QuestHelperPanel extends PluginPanel
 		scrollableContainer.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 
-		// Finishing off head panel
+
+		questOverviewPanel = new QuestOverviewPanel(questHelperPlugin, questManager);
+
+		// Head panel: title + search panel + quest title/actions
 		JPanel introDetailsPanel = new JPanel();
-		introDetailsPanel.setLayout(new BorderLayout());
-		introDetailsPanel.add(titlePanel, BorderLayout.NORTH);
-		introDetailsPanel.add(searchQuestsPanel, BorderLayout.SOUTH);
+		introDetailsPanel.setLayout(new BoxLayout(introDetailsPanel, BoxLayout.Y_AXIS));
+		introDetailsPanel.add(titlePanel);
+		introDetailsPanel.add(searchQuestsPanel);
+		introDetailsPanel.add(questOverviewPanel.actionsContainer);
 
 		add(introDetailsPanel, BorderLayout.NORTH);
 		add(scrollableContainer, BorderLayout.CENTER);
 
 		/* Layout */
-		questOverviewPanel = new QuestOverviewPanel(questHelperPlugin, questManager);
-
 		questOverviewWrapper.setLayout(new BorderLayout());
 		questOverviewWrapper.add(questOverviewPanel, BorderLayout.NORTH);
 		viewportContent.add(questListWrapper, VIEW_QUEST_LIST);
@@ -831,6 +833,9 @@ public class QuestHelperPanel extends PluginPanel
 
 		viewportLayout.show(viewportContent, viewName);
 		activeView = viewName;
+
+		// Conditionall hide `questOverviewPanel` depending on whether a quest is selected.
+		questOverviewPanel.actionsContainer.setVisible(questActive);
 	}
 
 	private void updateStateDropdown(QuestHelper questHelper)

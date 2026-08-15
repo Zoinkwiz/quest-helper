@@ -852,7 +852,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		giveBonesOrMeatToDog = giveBonesOrMeatToDogNoPuzzleWrap.puzzleWrapStep("Work out how to calm down the dog.");
 		enterDoorCode = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_PUZZLE_DOOR, new WorldPoint(1649, 3093, 0), "Pet the dog to see the code for the door." +
 				" Open the door using the code 'GUS'.").puzzleWrapStep("Work out the door code.");
-		openDoorWithGusCode = new ChestCodeStep(this, "GUS", 10, 0, 4, 0).puzzleWrapStep(true);
+		openDoorWithGusCode = new ChestCodeStep(this, "door", "GUS", 10, 0, 4, 0).puzzleWrapStep(true);
 		enterDoorCode.addSubSteps(openDoorWithGusCode);
 		takePotato = new ItemStep(this, "Pick up the sack of potatoes (3).", potatoes).puzzleWrapStep("Work out how to make a way to trap Janus and how to " +
 				"knock him out.");

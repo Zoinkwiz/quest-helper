@@ -589,7 +589,7 @@ public class TaiBwoWannaiTrio extends BasicQuestHelper
 			smallFishingNet, pestleAndMortar, spear, agilityPotion4, rangedOrMagic, tinderbox, slicedBananaOrKnife, logsForFire));
 		allSteps.add(new PanelDetails("Gathering quest materials", Arrays.asList(fishKarambwaji, goToLubufu,
 			getMoreVessel, fillVessel, getRum, sliceBanana, makeBananaRum), smallFishingNet, slicedBananaOrKnife));
-		allSteps.add(new PanelDetails("Helping Tiadechel", talkToTiadeche1, giveVessel, askAboutResearch));
+		allSteps.add(new PanelDetails("Helping Tiadeche", talkToTiadeche1, giveVessel, askAboutResearch));
 		allSteps.add(new PanelDetails("Collecting final items", Arrays.asList(pickupSeaweed, getJogreBones,
 			burnBones, pickupBurntBones, makeKarambwanjiPaste, usePasteOnBones, getPoisonKarambwan, cookBones, cookKarambwan,
 			usePestleOnKarambwan, usePasteOnSpear), tinderbox, karambwanji, pestleAndMortar));

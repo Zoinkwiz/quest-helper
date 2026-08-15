@@ -144,6 +144,7 @@ import com.questhelper.helpers.quests.ernestthechicken.ErnestTheChicken;
 import com.questhelper.helpers.quests.ethicallyacquiredantiquities.EthicallyAcquiredAntiquities;
 import com.questhelper.helpers.quests.fairytalei.FairytaleI;
 import com.questhelper.helpers.quests.fairytaleii.FairytaleII;
+import com.questhelper.helpers.quests.fallenfromgrace.FallenFromGrace;
 import com.questhelper.helpers.quests.familycrest.FamilyCrest;
 import com.questhelper.helpers.quests.fightarena.FightArena;
 import com.questhelper.helpers.quests.fishingcontest.FishingContest;
@@ -228,6 +229,7 @@ import com.questhelper.helpers.quests.tearsofguthix.TearsOfGuthix;
 import com.questhelper.helpers.quests.templeofikov.TempleOfIkov;
 import com.questhelper.helpers.quests.templeoftheeye.TempleOfTheEye;
 import com.questhelper.helpers.quests.theascentofarceuus.TheAscentOfArceuus;
+import com.questhelper.helpers.quests.thebloodmoonrises.TheBloodMoonRises;
 import com.questhelper.helpers.quests.thecorsaircurse.TheCorsairCurse;
 import com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav;
 import com.questhelper.helpers.quests.thedepthsofdespair.TheDepthsOfDespair;
@@ -251,6 +253,7 @@ import com.questhelper.helpers.quests.theknightssword.TheKnightsSword;
 import com.questhelper.helpers.quests.thelosttribe.TheLostTribe;
 import com.questhelper.helpers.quests.thepathofglouphrie.ThePathOfGlouphrie;
 import com.questhelper.helpers.quests.thequeenofthieves.TheQueenOfThieves;
+import com.questhelper.helpers.quests.theredreef.TheRedReef;
 import com.questhelper.helpers.quests.therestlessghost.TheRestlessGhost;
 import com.questhelper.helpers.quests.theribbitingtaleofalilypadlabourdispute.TheRibbitingTaleOfALilyPadLabourDispute;
 import com.questhelper.helpers.quests.theslugmenace.TheSlugMenace;
@@ -484,6 +487,9 @@ public enum QuestHelperQuest
 	PRYING_TIMES(new PryingTimes(), Quest.PRYING_TIMES, QuestVarbits.QUEST_PRYING_TIMES, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	CURRENT_AFFAIRS(new CurrentAffairs(), Quest.CURRENT_AFFAIRS, QuestVarbits.QUEST_CURRENT_AFFAIRS, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	TROUBLED_TORTUGANS(new TroubledTortugans(), Quest.TROUBLED_TORTUGANS, QuestVarbits.QUEST_TROUBLED_TORTUGANS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_RED_REEF(new TheRedReef(), Quest.THE_RED_REEF, QuestVarbits.QUEST_THE_RED_REEF, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	THE_BLOOD_MOON_RISES(new TheBloodMoonRises(), Quest.THE_BLOOD_MOON_RISES, QuestVarbits.QUEST_THE_BLOOD_MOON_RISES, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
+	FALLEN_FROM_GRACE(new FallenFromGrace(), Quest.FALLEN_FROM_GRACE, QuestVarbits.QUEST_FALLEN_FROM_GRACE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
@@ -659,7 +665,6 @@ public enum QuestHelperQuest
 	WOODCUTTING(new Woodcutting(), "Woodcutting", Skill.WOODCUTTING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
 
 	MINING(new Mining(), "Mining", Skill.MINING, 99, QuestDetails.Type.SKILL_F2P, QuestDetails.Difficulty.SKILL),
-
 	// Player Quests
 	BIKE_SHEDDER(new BikeShedder(), "Bike Shedder", PlayerQuests.BIKE_SHEDDER, 4, true);
 

@@ -202,7 +202,7 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 		talkToPhileas.addDialogStep("Yes.");
 		talkToPhileas.addDialogStep("What do you need?");
 		teleportToArchive = new NpcStep(this, NpcID.RAIDQUEST_LIBRARY_ARCHIVE_GUARDIAN, new WorldPoint(1625, 3808, 0), "Bring a melee weapon, " +
-			"ranged weapon, and runes for magic attacks and teleport with Archeio in the Arceuus Library.", rangedWeapon, runesForCombat);
+			"ranged weapon, and runes for magic attacks and talk to Archeio in the Arceuus Library.", rangedWeapon, runesForCombat);
 		teleportToArchive.addDialogStep("Yes please!");
 		talkToPagida = new NpcStep(this, NpcID.RAIDQUEST_LIBRARY_TRAPHUNTER, new WorldPoint(1553, 10223, 0),
 			"Talk to Pagida in the Library Historical Archive.");

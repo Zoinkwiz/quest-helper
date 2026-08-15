@@ -396,7 +396,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		askAboutToads = new NpcStep(this, NpcID.MOURNER_HIDEOUT_GNOME_HEAD, new WorldPoint(2035, 4630, 0), "Ask the gnome about ammo.");
 
 		getToads = new DetailedQuestStep(this, new WorldPoint(2599, 2966, 0),
-			"You need to make some dyed toads. Go to Feldip Hills, use a dye on your empty bellows, then use the " +
+			"You need to make some dyed toads. Go to Feldip Hills (AKS), use a dye on your empty bellows, then use the " +
 				"bellows to inflate a toad. Get at least one toad of each colour.", redToad, yellowToad, greenToad, blueToad);
 
 		loadGreenToad = new DetailedQuestStep(this, "Add a green toad to the fixed device.", greenToad.highlighted(),

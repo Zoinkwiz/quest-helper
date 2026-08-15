@@ -30,6 +30,7 @@ import com.google.inject.Module;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questhelpers.QuestUtil;
+import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.choice.*;
@@ -40,6 +41,7 @@ import com.questhelper.steps.widget.Spell;
 import com.questhelper.steps.widget.SpellWidgetHighlight;
 import com.questhelper.steps.widget.WidgetHighlight;
 import com.questhelper.tools.VisibilityHelper;
+import com.questhelper.util.QuestStepIcon;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -65,6 +67,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -126,14 +129,15 @@ public abstract class QuestStep implements Module
 	@Setter
 	private Requirement lockingCondition;
 
-	private int currentCutsceneStatus = 0;
-	protected boolean inCutscene;
-
+	@Getter
 	@Setter
 	protected boolean allowInCutscene = false;
 
 	protected int iconItemID = -1;
 	protected BufferedImage icon;
+
+	/// List of custom icons that can be used instead of icon
+	@NonNull protected final List<QuestStepIcon> customIcons = new ArrayList<>();
 
 	@Getter
 	protected final QuestHelper questHelper;
@@ -159,6 +163,24 @@ public abstract class QuestStep implements Module
 	@Getter
 	@Setter
 	private boolean showInSidebar = true;
+
+	/**
+	 * When set, the Quest Helper sidebar can show a small skip control that toggles this requirement and persists per helper.
+	 */
+	@Nullable
+	@Getter
+	@Setter
+	private ManualRequirement sidebarManualSkipRequirement;
+
+	/**
+	 * Stable id for {@link #sidebarManualSkipRequirement} persistence (e.g. maker order slot id).
+	 */
+	@Nullable
+	@Getter
+	@Setter
+	private String sidebarManualSkipPersistenceKey;
+
+
 
 	protected String lastDialogSeen = "";
 
@@ -247,19 +269,6 @@ public abstract class QuestStep implements Module
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (!allowInCutscene)
-		{
-			int newCutsceneStatus = client.getVarbitValue(VarbitID.CUTSCENE_STATUS);
-			if (currentCutsceneStatus == 0 && newCutsceneStatus == 1)
-			{
-				enteredCutscene();
-			}
-			else if (currentCutsceneStatus == 1 && newCutsceneStatus == 0)
-			{
-				leftCutscene();
-			}
-			currentCutsceneStatus = newCutsceneStatus;
-		}
 	}
 
 	@Subscribe
@@ -287,16 +296,6 @@ public abstract class QuestStep implements Module
 		}
 
 		text.add(newLine);
-	}
-
-	public void enteredCutscene()
-	{
-		inCutscene = true;
-	}
-
-	public void leftCutscene()
-	{
-		inCutscene = false;
 	}
 
 	public void highlightChoice()
@@ -512,6 +511,11 @@ public abstract class QuestStep implements Module
 			.build());
 	}
 
+	public void addCustomIcon(QuestStepIcon questStepIcon)
+	{
+		customIcons.add(questStepIcon);
+	}
+
 	public QuestStep addIcon(int iconItemID)
 	{
 		this.iconItemID = iconItemID;
@@ -584,6 +588,11 @@ public abstract class QuestStep implements Module
 		{
 			icon = getQuestImage();
 		}
+
+		for (var customIcon : customIcons)
+		{
+			customIcon.setup(itemManager);
+		}
 	}
 
 	public void conditionToHideInSidebar(Requirement hideCondition)
@@ -622,6 +631,45 @@ public abstract class QuestStep implements Module
 		return client.getWidget(InterfaceID.Inventory.ITEMS);
 	}
 
+	protected Widget getBankWidget()
+	{
+		return client.getWidget(InterfaceID.Bankmain.ITEMS);
+	}
+
+	protected void renderBank(Graphics2D graphics, List<Requirement> passedRequirements)
+	{
+		Widget bankWidget = getBankWidget();
+		if (bankWidget == null || bankWidget.isHidden())
+		{
+			return;
+		}
+		Color baseColor = questHelper.getConfig().targetOverlayColor();
+
+		if (bankWidget.getDynamicChildren() == null) return;
+
+
+		for (Widget item : bankWidget.getDynamicChildren())
+		{
+			for (Requirement requirement : passedRequirements)
+			{
+				if (isValidRequirementForRenderInBank(requirement, item))
+				{
+					highlightItem(item, baseColor, graphics);
+				}
+			}
+		}
+	}
+
+	private boolean isValidRequirementForRenderInBank(Requirement requirement, Widget item)
+	{
+		return requirement instanceof ItemRequirement && isValidRenderRequirementInBank((ItemRequirement) requirement, item);
+	}
+
+	protected boolean isValidRenderRequirementInBank(ItemRequirement requirement, Widget item)
+	{
+		return (item.getItemId() > 0 && !item.isHidden() && requirement.getAllIds().contains(item.getItemId()));
+	}
+
 	protected void renderInventory(Graphics2D graphics, DefinedPoint definedPoint, List<ItemRequirement> passedRequirements, boolean distanceLimit)
 	{
 		Widget inventoryWidget = getInventoryWidget();
@@ -648,13 +696,13 @@ public abstract class QuestStep implements Module
 
 				if (isValidRequirementForRenderInInventory(requirement, item))
 				{
-					highlightInventoryItem(item, baseColor, graphics);
+					highlightItem(item, baseColor, graphics);
 				}
 			}
 		}
 	}
 
-	private void highlightInventoryItem(Widget item, Color color, Graphics2D graphics)
+	private void highlightItem(Widget item, Color color, Graphics2D graphics)
 	{
 		Rectangle slotBounds = item.getBounds();
 		switch (questHelper.getConfig().highlightStyleInventoryItems())
@@ -738,5 +786,15 @@ public abstract class QuestStep implements Module
 	public PuzzleWrapperStep puzzleWrapStep(boolean hiddenInSidebar)
 	{
 		return new PuzzleWrapperStep(getQuestHelper(), this).withNoHelpHiddenInSidebar(hiddenInSidebar);
+	}
+
+	public void withPersistedManualSkip(String persistenceKey) {
+		setSidebarManualSkipWithPersistenceKey(new ManualRequirement(), persistenceKey);
+	}
+
+	public void setSidebarManualSkipWithPersistenceKey(ManualRequirement requirement, String persistenceKey)
+	{
+		setSidebarManualSkipRequirement(requirement);
+		setSidebarManualSkipPersistenceKey(persistenceKey);
 	}
 }

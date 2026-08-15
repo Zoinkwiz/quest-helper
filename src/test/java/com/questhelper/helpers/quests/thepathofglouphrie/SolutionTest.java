@@ -48,6 +48,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SolutionTest extends MockedTest
 {
+	// run i haven't added tests for:
+	// partial solution:
+	// 1: orange circle, green square
+	// 2: blue triangle
+	//
+	// i have 1 orange pentagon, 1 yellow square, 3 green triangle, 2 green square, 1 violet triangle, 1 blue pentagon
+	//
+	// was told to exchange 1 blue pentagon until an indigo triangle appears
+	//
+	// got indigo triangle, now i need to exchange 1 orange pentagon for a yellow circle/red triangle or yellow square/green triangle
+	// solved:
+	// 1: orange circle, green square (indigo triangle i exchanged for)
+	// 2: blue triangle (red triangle + green triangle)
+
 	/**
 	 * ItemID to ItemRequirement map
 	 */

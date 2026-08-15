@@ -96,11 +96,6 @@ public class DigStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (inCutscene)
-		{
-			return;
-		}
-
 		LocalPoint localLocation = definedPoint.resolveLocalPoint(client);
 
 		if (localLocation == null)

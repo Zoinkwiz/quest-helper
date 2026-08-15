@@ -479,16 +479,7 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 		reqs.add(reputationItems);
 		return reqs;
 	}
-
-	@Override
-	public List<String> getNotes()
-	{
-		ArrayList<String> reqs = new ArrayList<>();
-		reqs.add("Currently this helper only shows you how to marry Astrid. If you'd like to be friends with her or choose to be with Brand, " +
-			"you can either follow an external guide for now, or simply talk to King Vargas after the quest to change.");
-		return reqs;
-	}
-
+	
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{

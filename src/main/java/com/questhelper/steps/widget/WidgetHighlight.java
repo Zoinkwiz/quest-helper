@@ -25,6 +25,7 @@
 package com.questhelper.steps.widget;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.domain.QuetzalDestination;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -137,6 +138,18 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 		return w;
 	}
 
+	/**
+	 * Create a widget highlight that highlights the given destination in the quetzal interface
+	 * @param quetzalDestination The quetzal destination to highlight
+	 * @return a fully built WidgetHighlight
+	 */
+	public static WidgetHighlight createQuetzalHighlight(QuetzalDestination quetzalDestination)
+	{
+		var w = new WidgetHighlight(InterfaceID.QuetzalMenu.ICONS, true);
+		w.modelIdRequirement = quetzalDestination.modelID;
+		return w;
+	}
+
 	@Override
 	public void highlightChoices(Graphics2D graphics, Client client, QuestHelperPlugin questHelper)
 	{
@@ -153,6 +166,7 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 
 		Widget[] widgets = parentWidget.getChildren();
 		Widget[] staticWidgets = parentWidget.getStaticChildren();
+		var dynamicWidgets = parentWidget.getDynamicChildren();
 
 		if (childChildId != -1 && widgets != null)
 		{
@@ -167,6 +181,10 @@ public class WidgetHighlight extends AbstractWidgetHighlight
 				highlightChoices(widget, graphics, questHelper);
 			}
 			for (Widget widget : staticWidgets)
+			{
+				highlightChoices(widget, graphics, questHelper);
+			}
+			for (var widget : dynamicWidgets)
 			{
 				highlightChoices(widget, graphics, questHelper);
 			}

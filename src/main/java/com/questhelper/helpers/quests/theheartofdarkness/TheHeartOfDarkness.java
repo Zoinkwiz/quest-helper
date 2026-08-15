@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.theheartofdarkness;
 import com.google.common.collect.Lists;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
+import com.questhelper.domain.QuetzalDestination;
 import com.questhelper.helpers.quests.secretsofthenorth.ArrowChestPuzzleStep;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
@@ -37,6 +38,7 @@ import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.npc.DialogRequirement;
+import com.questhelper.requirements.npc.NoFollowerRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
@@ -92,6 +94,8 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     // Quest items
     ItemRequirement towerKey, book, poem, scrapOfPaper1, scrapOfPaper2, scrapOfPaper3, completedNote, emissaryHood, emissaryTop, emissaryBottom,
             emissaryBoots, emissaryRobesEquipped, emissaryRobes, airIcon, waterIcon, earthIcon, fireIcon;
+
+    NoFollowerRequirement noFollower;
 
     Requirement atTeomat, builtLandingInOverlook, talkedToSergius, talkedToCaritta, talkedToFelius, princeIsFollowing, inFirstTrialRoom,
             inSecondTrialRoom, southEastGateUnlocked, southWestChestOpened, hasReadPoem, knowAboutDirections, inArrowPuzzle, combatStarted,
@@ -406,6 +410,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         fireIcon = new ItemRequirement("Fire icon", ItemID.VMQ3_RUINS_FIRE_STATUE_REPAIR);
 
 
+        noFollower = new NoFollowerRequirement("No pet following you");
     }
 
     private void setupConditions()
@@ -542,15 +547,11 @@ public class TheHeartOfDarkness extends BasicQuestHelper
     {
         talkToItzlaAtTeomat = new NpcStep(this, NpcID.VMQ2_ITZLA_VIS, new WorldPoint(1454, 3173, 0), "Talk to Prince Itzla Arkan at the Teomat. You" +
                 " can travel here using Renu the quetzal.");
-        WidgetHighlight teomatWidget = new WidgetHighlight(874, 15, true);
-        teomatWidget.setModelIdRequirement(51205);
-        talkToItzlaAtTeomat.addWidgetHighlight(teomatWidget);
+        talkToItzlaAtTeomat.addWidgetHighlight(WidgetHighlight.createQuetzalHighlight(QuetzalDestination.THE_TEOMAT));
         talkToItzlaAtTeomat.addDialogStep("Yes.");
         travelToGorge = new NpcStep(this, NpcID.QUETZAL_CHILD_GREEN_NOOP, new WorldPoint(1437, 3169, 0), "Travel on Renu to the Quetzacalli Gorge.");
         ((NpcStep) travelToGorge).addAlternateNpcs(NpcID.QUETZAL_CHILD_GREEN_FEED, NpcID.QUETZAL_CHILD_GREEN, NpcID.QUETZAL_CHILD_ORANGE, NpcID.QUETZAL_CHILD_BLUE, NpcID.QUETZAL_CHILD_CYAN, NpcID.QUETZAL_CHILD_GREEN_ORANGE);
-        WidgetHighlight gorgeWidget = new WidgetHighlight(874, 15, true);
-        gorgeWidget.setModelIdRequirement(54539);
-        travelToGorge.addWidgetHighlight(gorgeWidget);
+        travelToGorge.addWidgetHighlight(WidgetHighlight.createQuetzalHighlight(QuetzalDestination.QUETZACALLI_GORGE));
         talkToBartender = new NpcStep(this, NpcID.QUETZACALLI_BARTENDER, new WorldPoint(1499, 3224, 0), "Talk to the Bartender in the pub in the Gorge.",
                 coins.quantity(30));
         // Told about ground room, 11123 1->0
@@ -635,7 +636,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         talkToFelius = new NpcStep(this, NpcID.VMQ3_RECRUIT_1_VIS, new WorldPoint(1659, 3224, 0), "Talk to Felius outside the tower.");
         talkToCaritta = new NpcStep(this, NpcID.VMQ3_RECRUIT_2_VIS, new WorldPoint(1659, 3224, 0), "Talk to Caritta outside the tower.");
         talkToPrinceAfterRecruits = new NpcStep(this, NpcID.VMQ3_ITZLA_VIS_CITIZEN, new WorldPoint(1656, 3219, 0), "Talk to the prince at the Tower " +
-                "of Ascension to the south-east of the salvager overlook again.");
+                "of Ascension to the south-east of the salvager overlook again.", noFollower);
         talkToPrinceAfterRecruits.addDialogStep("Could you remind me what Ximoua is?");
         talkToJanus = new NpcStep(this, NpcID.VMQ3_FOREBEARER_JANUS_VIS, new WorldPoint(1638, 3224, 0), "Talk to Forebearer Janus inside the tower.");
 
@@ -966,6 +967,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
 
         talkToServius = new NpcStep(this, NpcID.VMQ3_SERVIUS_VIS, new WorldPoint(1681, 3168, 0), "Talk to Servius, Teokan of Ralos in the palace" +
                 " in Civitas illa Fortis to complete the quest.");
+        talkToServius.addWidgetHighlight(WidgetHighlight.createQuetzalHighlight(QuetzalDestination.CIVITAS_ILLA_FORTIS));
         talkToServius.addTeleport(civitasIllaFortisTeleport);
     }
 
@@ -1154,7 +1156,7 @@ public class TheHeartOfDarkness extends BasicQuestHelper
         allSteps.add(new PanelDetails("Final Trial", List.of(fightPrinceSidebar, talkToJanusAfterPrinceFight)));
         allSteps.add(new PanelDetails("Cult", List.of(talkToJanusAfterAllTrials, searchChestForEmissaryRobes, talkToItzlaToFollow, enterTemple, talkToItzlaAfterSermon, talkToFides)));
         allSteps.add(new PanelDetails("The Old Ones", List.of(enterRuins, takePickaxe, mineRocks, pullFirstLever, climbDownLedge, slideAlongIceLedge, pullSecondLever, jumpOverFrozenPlatforms, pullThirdLever,
-                pullFourthLever, pullChain, inspectAirMarkings, inspectEarthMarkings, searchAirUrn, searchEarthUrn, inspectWaterMarkings, inspectFireMarkings,
+                pullFourthLever, pullChain, climbDownIceShortcut, inspectAirMarkings, inspectEarthMarkings, searchAirUrn, searchEarthUrn, inspectWaterMarkings, inspectFireMarkings,
                 searchFireUrn, searchWaterUrn, fixWaterStatue, fixFireStatue, fixEarthStatue, fixAirStatue, activateFirstStatue, activateSecondStatue,
                 activateThirdStatue, activateFourthStatue, enterFinalBossRoom, defeatAmoxliatlSidebar, talkToServius), List.of(combatGear, freeInvSlots4),
                 List.of(food,

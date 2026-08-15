@@ -501,6 +501,7 @@ public class DeathOnTheIsle extends BasicQuestHelper
 		accuseAdala.addDialogStep("Accuse Adala.");
 
 		fightAdala = new NpcStep(this, NpcID.DOTI_ADALA_MASK_INSIDE, new WorldPoint(1446, 2933, 2), "Fight Adala. You cannot lose this fight.");
+		fightAdala.addAlternateNpcs(NpcID.DOTI_ADALA_BOSS);
 		accuseAdala.addSubSteps(fightAdala);
 
 		speakToSuspects = new ConditionalStep(this, accuseAdala);

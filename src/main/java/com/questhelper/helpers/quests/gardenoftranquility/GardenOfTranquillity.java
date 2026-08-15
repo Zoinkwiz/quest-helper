@@ -457,7 +457,7 @@ public class GardenOfTranquillity extends BasicQuestHelper
 			wateringCan.highlighted());
 
 		talkToAlthric = new NpcStep(this, NpcID.BROTHER_ALTHRIC, new WorldPoint(3052, 3502, 0),
-			"Talk to Brother Altheric in the Edgeville Monastery.", ringOfCharosA.equipped());
+			"Talk to Brother Althric in the Edgeville Monastery.", ringOfCharosA.equipped());
 		talkToAlthric.addDialogSteps("[Charm] These are the most beautiful rosebushes I've ever seen.");
 		useCharosOnWell = new ObjectStep(this, ObjectID.WELL, new WorldPoint(3085, 3503, 0),
 			"Use the Ring of charos(a) on the well in Edgeville.", ringOfCharosA.highlighted());

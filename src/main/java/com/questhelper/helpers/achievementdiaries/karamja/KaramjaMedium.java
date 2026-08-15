@@ -289,9 +289,12 @@ public class KaramjaMedium extends BasicQuestHelper
 		travelToKhazard.addSubSteps(climbUpToBoat);
 		cutTeak = new ObjectStep(this, ObjectID.TEAKTREE, new WorldPoint(2822, 3078, 0), "Chop a teak tree down either in" +
 			" the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe, tradingSticks.quantity(100));
+		((ObjectStep) cutTeak).addAlternateObjects(ObjectID.TEAKTREE_UPDATE);
+		cutTeak.addDialogStep("Okay, I'll pay 100 trading sticks to enter.");
 		cutMahogany = new ObjectStep(this, ObjectID.MAHOGANYTREE, new WorldPoint(2820, 3080, 0), "Chop a mahogany tree " +
 			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe,
 			tradingSticks.quantity(100));
+		cutMahogany.addDialogStep("Okay, I'll pay 100 trading sticks to enter.");
 		catchKarambwanji = new NpcStep(this, NpcID._0_43_47_KARAMBWANJI, new WorldPoint(2791,3019,0),
 			"Using your small fishing net, catch some raw karambwanji just south of Tai Bwo Wannai, or buy some from the GE.", smallFishingNet);
 		catchKarambwan = new NpcStep(this, NpcID._0_45_48_KARAMBWAN, new WorldPoint(2899, 3119, 0),

@@ -66,8 +66,9 @@ public enum Port
 	NEITIZNOT(-1, "Neitiznot", ObjectID.SAILING_DOCKING_BUOY_NEITIZNOT, new WorldPoint(2304, 3786, 0), new Zone( new WorldPoint(2298, 3771, 0), new WorldPoint(2307, 3789, 0)), new WorldPoint(2309, 3782, 0), new WorldPoint(2308, 3775, 0), -1, null),
 	PRIFDDINAS(-1, "Prifddinas", ObjectID.SAILING_DOCKING_BUOY_PRIFDDINAS, new WorldPoint(2165, 3321, 0), new Zone( new WorldPoint(2165, 3307, 0), new WorldPoint(2141, 3325, 0)), new WorldPoint(2158, 3324, 0), new WorldPoint(2170, 3328, 0), ObjectID.PORT_TASK_BOARD_PRIFDDINAS, new WorldPoint(2163, 3326, 0)),
 	PISCATORIS(-1, "Piscatoris", ObjectID.SAILING_DOCKING_BUOY_PISCATORIS, new WorldPoint(2304, 3696, 0), new Zone( new WorldPoint(2293, 3682, 0), new WorldPoint(2306, 3700, 0)), new WorldPoint(2304, 3689, 0), new WorldPoint(2313, 3693, 0), -1, null),
-	LUNAR_ISLE(-1, "Lunar Isle", ObjectID.SAILING_DOCKING_BUOY_LUNAR_ISLE, new WorldPoint(2154, 3886, 0), new Zone( new WorldPoint(2151, 3875, 0), new WorldPoint(2163, 3887, 0)), new WorldPoint(2152, 3881, 0), new WorldPoint(2146, 3879, 0), ObjectID.PORT_TASK_BOARD_LUNAR_ISLE, new WorldPoint(2139, 3884, 0));;
-
+	LUNAR_ISLE(-1, "Lunar Isle", ObjectID.SAILING_DOCKING_BUOY_LUNAR_ISLE, new WorldPoint(2154, 3886, 0), new Zone( new WorldPoint(2151, 3875, 0), new WorldPoint(2163, 3887, 0)), new WorldPoint(2152, 3881, 0), new WorldPoint(2146, 3879, 0), ObjectID.PORT_TASK_BOARD_LUNAR_ISLE, new WorldPoint(2139, 3884, 0)),
+	WYRMSCRAIG(-1, "Wyrmscraig", ObjectID.SAILING_DOCKING_BUOY_WYRMSCRAIG, new WorldPoint(2569, 2298, 0), new Zone(new WorldPoint(2557, 2284, 0), new WorldPoint(2577, 2306, 0)),  new WorldPoint(2568, 2295, 0), null, -1, null),
+;
 
 	private final int id;
 	private final String name;

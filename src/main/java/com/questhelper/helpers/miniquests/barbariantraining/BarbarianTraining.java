@@ -26,33 +26,26 @@ package com.questhelper.helpers.miniquests.barbariantraining;
 
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.config.ConfigKeys;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.MesBoxRequirement;
-import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.runelite.RuneliteRequirement;
-import com.questhelper.requirements.util.LogicType;
-import com.questhelper.requirements.widget.WidgetTextRequirement;
+import com.questhelper.requirements.var.VarbitBuilder;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -61,49 +54,143 @@ import static com.questhelper.requirements.util.LogicHelper.*;
 public class BarbarianTraining extends BasicQuestHelper
 {
 	// Items Required
-	ItemRequirement barbFishingRod, tinderbox, bow, knife, fish, combatGear, antifireShield, chewedBones, bronzeBar, logs, hammer,
-		roe, attackPotion, sapling, seed, spade, oakLogs, axe, feathers, barbarianAttackPotion;
+	ItemRequirement barbFishingRod;
+	ItemRequirement tinderbox;
+	ItemRequirement bow;
+	ItemRequirement knife;
+	ItemRequirement fish;
+	ItemRequirement combatGear;
+	ItemRequirement antifireShield;
+	ItemRequirement chewedBones;
+	ItemRequirement bronzeBar;
+	ItemRequirement logs;
+	ItemRequirement hammer;
+	ItemRequirement roe;
+	ItemRequirement attackPotion;
+	ItemRequirement sapling;
+	ItemRequirement seed;
+	ItemRequirement spade;
+	ItemRequirement oakLogs;
+	ItemRequirement axe;
+	ItemRequirement feathers;
+	ItemRequirement barbarianAttackPotion;
 
 	// Items recommended
-	ItemRequirement gamesNecklace, catherbyTeleport;
+	ItemRequirement gamesNecklace;
+	ItemRequirement catherbyTeleport;
 
-	Requirement fishing48, agility15, strength15, fishing55, strength35, firemaking35, crafting11, farming15, smithing5;
+	Requirement fishing48;
+	Requirement agility15;
+	Requirement strength15;
+	Requirement fishing55;
+	Requirement strength35;
+	Requirement firemaking35;
+	Requirement crafting11;
+	Requirement farming15;
+	Requirement smithing5;
 
-	QuestRequirement druidicRitual, taiBwoWannaiTrio;
-
-	Requirement taskedWithFishing, taskedWithHarpooning, taskedWithFarming, taskedWithBowFiremaking, taskedWithPyre, taskedWithPotSmashing,
-		taskedWithSpears, taskedWithHastae, taskedWithHerblore;
+	QuestRequirement druidicRitual;
+	QuestRequirement taiBwoWannaiTrio;
 
 	Requirement chewedBonesNearby;
 
-	Requirement plantedSeed, smashedPot, litFireWithBow, sacrificedRemains, caughtBarbarianFish,
-		caughtFishWithoutHarpoon, madePotion, madeSpear, madeHasta;
+	DetailedQuestStep talkToOttoAboutFishing;
+	DetailedQuestStep searchBed;
+	DetailedQuestStep catchFish;
+	DetailedQuestStep talkToOttoAfterFish;
 
-	DetailedQuestStep talkToOttoAboutFishing, searchBed, catchFish, talkToOttoAfterFish;
+	DetailedQuestStep talkToOttoAboutBarehanded;
+	DetailedQuestStep fishHarpoon;
+	DetailedQuestStep talkToOttoAfterHarpoon;
 
-	DetailedQuestStep talkToOttoAboutBarehanded, fishHarpoon, talkToOttoAfterHarpoon;
+	DetailedQuestStep talkToOttoAboutBow;
+	DetailedQuestStep lightLogWithBow;
+	DetailedQuestStep talkToOttoAfterBow;
 
-	DetailedQuestStep talkToOttoAboutBow, lightLogWithBow, talkToOttoAfterBow;
+	DetailedQuestStep talkToOttoAboutPyre;
+	DetailedQuestStep enterWhirlpool;
+	DetailedQuestStep goDownToBrutalGreen;
+	DetailedQuestStep goUpToMithrilDragons;
+	DetailedQuestStep killMithrilDragons;
+	DetailedQuestStep pickupChewedBones;
+	DetailedQuestStep useLogOnPyre;
+	DetailedQuestStep talkToOttoAfterPyre;
 
-	DetailedQuestStep talkToOttoAboutPyre, enterWhirlpool, goDownToBrutalGreen, goUpToMithrilDragons, killMithrilDragons,
-		pickupChewedBones, useLogOnPyre, talkToOttoAfterPyre;
+	DetailedQuestStep talkToOttoAboutFarming;
+	DetailedQuestStep plantSeed;
+	DetailedQuestStep talkToOttoAfterPlantingSeed;
 
-	DetailedQuestStep talkToOttoAboutFarming, plantSeed, talkToOttoAfterPlantingSeed;
+	DetailedQuestStep talkToOttoAboutPots;
+	DetailedQuestStep plantSapling;
+	DetailedQuestStep talkToOttoAfterSmashingPot;
 
-	DetailedQuestStep talkToOttoAboutPots, plantSapling, talkToOttoAfterSmashingPot;
+	DetailedQuestStep talkToOttoAboutSpears;
+	DetailedQuestStep makeBronzeSpear;
+	DetailedQuestStep talkToOttoAfterBronzeSpear;
+	DetailedQuestStep talkToOttoAboutHastae;
+	DetailedQuestStep makeBronzeHasta;
+	DetailedQuestStep talkToOttoAfterMakingHasta;
 
-	DetailedQuestStep talkToOttoAboutSpears, makeBronzeSpear, talkToOttoAfterBronzeSpear, talkToOttoAboutHastae, makeBronzeHasta, talkToOttoAfterMakingHasta;
+	DetailedQuestStep talkToOttoAboutHerblore;
+	DetailedQuestStep getBarbRodForHerblore;
+	DetailedQuestStep fishForHerblore;
+	DetailedQuestStep dissectFish;
+	DetailedQuestStep useRoeOnAttackPotion;
+	DetailedQuestStep talkToOttoAfterPotion;
 
-	DetailedQuestStep talkToOttoAboutHerblore, getBarbRodForHerblore, fishForHerblore, dissectFish, useRoeOnAttackPotion, talkToOttoAfterPotion;
+	ConditionalStep fishingSteps;
+	ConditionalStep harpoonSteps;
+	ConditionalStep seedSteps;
+	ConditionalStep potSmashingSteps;
+	ConditionalStep firemakingSteps;
+	ConditionalStep pyreSteps;
+	ConditionalStep spearSteps;
+	ConditionalStep spearAndHastaeSteps;
+	ConditionalStep herbloreSteps;
 
-	ConditionalStep fishingSteps, harpoonSteps, seedSteps, potSmashingSteps, firemakingSteps, pyreSteps, spearSteps,
-		spearAndHastaeSteps, herbloreSteps;
+	Zone ancientCavernF0;
+	Zone ancientCavernF1;
+	Zone ancientCavernArrivalRoom;
 
-	Requirement finishedFishing, finishedHarpoon, finishedSeedPlanting, finishedPotSmashing, finishedFiremaking, finishedPyre, finishedSpear, finishedHasta, finishedHerblore;
+	ZoneRequirement inAncientCavernF0;
+	ZoneRequirement inAncientCavernF1;
+	ZoneRequirement inAncientCavernArrivalRoom;
 
-	Zone ancientCavernF0, ancientCavernF1, ancientCavernArrivalRoom;
+	VarbitRequirement taskedWithFishing;
+	VarbitRequirement caughtBarbarianFish;
+	VarbitRequirement finishedFishing;
 
-	ZoneRequirement inAncientCavernF0, inAncientCavernF1, inAncientCavernArrivalRoom;
+	VarbitRequirement taskedWithHerblore;
+	VarbitRequirement madePotion;
+	VarbitRequirement finishedHerblore;
+
+	VarbitRequirement taskedWithHarpooning;
+	VarbitRequirement caughtFishWithoutHarpoon;
+	VarbitRequirement finishedHarpoon;
+
+	VarbitRequirement taskedWithFarming;
+	VarbitRequirement plantedSeed;
+	VarbitRequirement finishedSeedPlanting;
+
+	VarbitRequirement taskedWithPotSmashing;
+	VarbitRequirement smashedPot;
+	VarbitRequirement finishedPotSmashing;
+
+	VarbitRequirement taskedWithBowFiremaking;
+	VarbitRequirement litFireWithBow;
+	VarbitRequirement finishedFiremaking;
+
+	VarbitRequirement taskedWithSpears;
+	VarbitRequirement madeSpear;
+	VarbitRequirement finishedSpear;
+
+	VarbitRequirement taskedWithHastae;
+	VarbitRequirement madeHasta;
+	VarbitRequirement finishedHasta;
+
+	VarbitRequirement taskedWithPyre;
+	VarbitRequirement sacrificedRemains;
+	VarbitRequirement finishedPyre;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -189,13 +276,10 @@ public class BarbarianTraining extends BasicQuestHelper
 		allSteps.addDialogSteps("Let's talk about my training.", "I seek more knowledge.");
 		allSteps.setCheckAllChildStepsOnListenerCall(true);
 
-
-		// Started, 9613
+		// Controlled by VarbitID.BRUT_MINIQUEST, specifying the number of miniquests completed
 		steps.put(0, allSteps);
 		steps.put(1, allSteps);
-		// Increments after doing a task
 		steps.put(2, allSteps);
-		// 9610, 0->1 at some point??? Probably for pot smashing, or for whirlpool?
 		steps.put(3, allSteps);
 		steps.put(4, allSteps);
 		steps.put(5, allSteps);
@@ -259,281 +343,64 @@ public class BarbarianTraining extends BasicQuestHelper
 		crafting11 = new SkillRequirement(Skill.CRAFTING, 11);
 		farming15 = new SkillRequirement(Skill.FARMING, 15, true);
 		smithing5 = new SkillRequirement(Skill.SMITHING, 5, true);
+
+		var barbFishing = new VarbitBuilder(VarbitID.BRUT_FISHING_R);
+		taskedWithFishing = barbFishing.eq(1);
+		caughtBarbarianFish = barbFishing.eq(2);
+		finishedFishing = barbFishing.eq(3);
+		finishedFishing.setDisplayText("Finished Barbarian Fishing");
+
+		var barbHerblore = new VarbitBuilder(VarbitID.BRUT_HERB_POTION);
+		taskedWithHerblore = barbHerblore.eq(1);
+		madePotion = barbHerblore.eq(2);
+		finishedHerblore = barbHerblore.eq(3);
+		finishedHerblore.setDisplayText("Finished Barbarian Herblore");
+
+		var barbHarpooning = new VarbitBuilder(VarbitID.BRUT_FISHING_S);
+		taskedWithHarpooning = barbHarpooning.eq(1);
+		caughtFishWithoutHarpoon = barbHarpooning.eq(2);
+		finishedHarpoon = barbHarpooning.eq(3);
+		finishedHarpoon.setDisplayText("Finished Barbarian Harpooning");
+
+		var barbPlanting = new VarbitBuilder(VarbitID.BRUT_FARMING_PLANTING);
+		taskedWithFarming = barbPlanting.eq(1);
+		plantedSeed = barbPlanting.eq(2);
+		finishedSeedPlanting = barbPlanting.eq(3);
+		finishedSeedPlanting.setDisplayText("Finished Barbarian Planting");
+
+		var barbPotSmashing = new VarbitBuilder(VarbitID.BRUT_FARMING_SMASHING);
+		taskedWithPotSmashing = barbPotSmashing.eq(1);
+		smashedPot = barbPotSmashing.eq(2);
+		finishedPotSmashing = barbPotSmashing.eq(3);
+		finishedPotSmashing.setDisplayText("Finished Barbarian Pot Smashing");
+
+		var barbFiremaking = new VarbitBuilder(VarbitID.BRUT_FIRE);
+		taskedWithBowFiremaking = barbFiremaking.eq(1);
+		litFireWithBow = barbFiremaking.eq(2);
+		finishedFiremaking = barbFiremaking.eq(3);
+		finishedFiremaking.setDisplayText("Finished Barbarian Firemaking");
+
+		var barbSpear = new VarbitBuilder(VarbitID.BRUT_SMITH_SPEAR);
+		taskedWithSpears = barbSpear.eq(1);
+		madeSpear = barbSpear.eq(2);
+		finishedSpear = barbSpear.eq(3);
+		finishedSpear.setDisplayText("Finished Barbarian Spear Smithing");
+
+		var barbHasta = new VarbitBuilder(VarbitID.BRUT_SMITH_HASTA);
+		taskedWithHastae = barbHasta.eq(1);
+		madeHasta = barbHasta.eq(2);
+		finishedHasta = barbHasta.eq(3);
+		finishedHasta.setDisplayText("Finished Barbarian Hastae Smithing");
+
+		var barbPyre = new VarbitBuilder(VarbitID.BRUT_CRAFT_SHIP);
+		taskedWithPyre = barbPyre.eq(1);
+		sacrificedRemains = barbPyre.eq(2);
+		finishedPyre = barbPyre.eq(3);
+		finishedPyre.setDisplayText("Finished Barbarian Pyremaking");
 	}
 
 	public void setupConditions()
 	{
-		// Started tasks
-
-		taskedWithFishing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_FISHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Certainly. Take the rod from under my bed and fish in the lake. When you have caught a few fish, I am sure you will be ready to talk more with me."),
-				new DialogRequirement("Alas, I do not sense that you have been successful in your fishing yet. The look in your eyes is not that of the osprey."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "fish with a new")
-			)
-		);
-
-		taskedWithHarpooning = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_HARPOON.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("... and I thought fishing was a safe way to pass the time."),
-				new DialogRequirement("I see you need encouragement in learning the ways of fishing without a harpoon."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "fish with my")
-			)
-		);
-
-		taskedWithFarming = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_SEED_PLANTING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Remember to be calm, and good luck."),
-				new DialogRequirement("I see you have yet to be successful in planting a seed with your fists."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "plant a seed with")
-			)
-		);
-
-		taskedWithPotSmashing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_POT_SMASHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("May the spirits guide you into success."),
-				new DialogRequirement("You have not yet attempted to plant a tree. Why not?"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smash pots after")
-			)
-		);
-
-		taskedWithBowFiremaking = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_FIREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("The spirits will aid you. The power they supply will guide your hands. Go and benefit from their guidance upon oak logs."),
-				new DialogRequirement("By now you know my response."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "light a fire with")
-			)
-		);
-
-		taskedWithPyre = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_PYREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Dive into the whirlpool in the lake to the east. The spirits will use their abilities to ensure you arrive in the correct location. Be warned, their influence fades, so you must find y"),
-				new DialogRequirement("I will repeat myself fully, since this is quite complex. Listen well."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>create pyre ships")
-			)
-		);
-
-		taskedWithHerblore = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_HERBLORE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Have I become so predictable? But yes, I do indeed require a potion. It is of the highest importance that you bring me a lesser attack potion combined with fish roe."),
-				new DialogRequirement("Do you have my potion?"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to make a <col=800000>new type")
-			)
-		);
-
-		taskedWithSpears = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Note well that you will require wood for the spear shafts. The quality of wood must be similar to that of the metal involved."),
-				new DialogRequirement("You do not exude the presence of one who has poured his soul into manufacturing spears."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "Otto<col=000080> has tasked me with learning how to <col=800000>smith spears")
-			)
-		);
-
-		taskedWithHastae = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_STARTED_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Indeed. You may use our special anvil for this spear type too. The ways of black and dragon hastae are beyond our knowledge, however."),
-				new DialogRequirement("Take some wood and metal and make a spear upon the<br>nearby anvil, then you may return to me. As an<br>example, you may use bronze bars with normal logs or<br>iron bars with oak logs."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, " has tasked me with learning how to <col=800000>smith a hasta")
-			)
-		);
-
-		// Finished tasks
-		finishedFishing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FISHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Patience young one. These are fish which are fat with eggs rather than fat of flesh. It is these eggs that are the thing to make use of."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to catch a fish with the new rod!")
-			),
-			"Finished Barbarian Fishing"
-		);
-
-		finishedHarpoon = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HARPOON.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("I mean that when you eventually die and find peace, at least the spirits you encounter will be your friends. Alas for you adventurous sort, the natural ways of passing are close to imp"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to fish with my hands!")
-			),
-			"Finished Barbarian Harpooning"
-		);
-
-		finishedSeedPlanting = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("No child, but we all have potential to improve our strength."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to plant a seed with my fists!")
-			),
-			"Finished Barbarian Seed Planting"
-		);
-
-		finishedPotSmashing = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_POT_SMASHING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("It will become more natural with practice."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I managed to smash a plant pot without littering!")
-			),
-			"Finished Barbarian Pot Smashing"
-		);
-
-		finishedFiremaking = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_FIREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("Fine news indeed!"),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to light a fire with a bow!")
-			),
-			"Finished Barbarian Firemaking"
-		);
-
-		finishedPyre = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_PYREMAKING.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("On this great day you have my eternal thanks. May you find riches while rescuing my spiritual ancestors in the caverns for many moons to come."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a pyre ship!")
-			),
-			"Finished Barbarian Pyremaking"
-		);
-
-		finishedSpear = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("The manufacture of spears is now yours as a speciality. Use your skill well."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to smith a spear!")
-			),
-			"Finished Barbarian Spear Smithing"
-		);
-
-		finishedHasta = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("To live life to it's fullest of course - that you may be a peaceful spirit when your time ends."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a hasta!")
-			),
-			"Finished Barbarian Hasta Smithing"
-		);
-
-		finishedHerblore = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_FINISHED_HERBLORE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new DialogRequirement("I will take that off your hands now. I will say no more than that I am eternally grateful."),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I managed to create a new potion!")
-			),
-			"Finished Barbarian Herblore"
-		);
-
-		// Mid-conditions
-		plantedSeed = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_PLANTED_SEED.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You plant "),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>plant a seed with my fists<col=000080>!")
-			)
-		);
-
-		smashedPot = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_SMASHED_POT.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You plant "),
-					new ChatMessageRequirement(" sapling"),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smash a pot without littering<col=000080>!")
-			)
-		);
-
-		litFireWithBow = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_BOW_FIRE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("The fire catches and the logs begin to burn."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>light a fire with a bow<col=000080>!")
-			)
-		);
-
-		sacrificedRemains = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_PYRE_MADE.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("The ancient barbarian is laid to rest."),
-					new ChatMessageRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>create a pyre ship<col=000080>! I should let")
-			)
-		);
-
-		caughtBarbarianFish = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_BARBFISHED.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You catch a leaping trout.", "You catch a leaping salmon.", "You catch a leaping sturgeon."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to catch a <col=800000>fish with the new rod<col=000080>! I should let")
-			)
-		);
-
-		caughtFishWithoutHarpoon = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_HARPOONED_FISH.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You catch a raw tuna.", "You catch a swordfish.", "You catch a shark.", "You catch a shark!"),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>fish with my hands<col=000080>! I should let <col=800000>Otto <col=000080>know")
-			)
-		);
-
-		madePotion = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_MADE_POTION.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You combine your potion with the fish eggs."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to make a <col=800000>new type of potion<col=000080>! I should let")
-			)
-		);
-
-		madeSpear = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_MADE_SPEAR.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You make a "),
-					new ChatMessageRequirement(" spear."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a spear<col=000080>!")
-			)
-		);
-
-		madeHasta = new RuneliteRequirement(
-			getConfigManager(), ConfigKeys.BARBARIAN_TRAINING_MADE_HASTA.getKey(),
-			new Conditions(true, LogicType.OR,
-				new MultiChatMessageRequirement(
-					new ChatMessageRequirement("You make a "),
-					new ChatMessageRequirement(" hasta."),
-					new MesBoxRequirement("You feel you have learned more of barbarian ways. Otto might wish to talk to you more.")
-				),
-				new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I've managed to <col=800000>smith a hasta<col=000080>!")
-			)
-		);
-
-		// For harpooning,
-		// You catch a tuna.
-
 		ancientCavernArrivalRoom = new Zone(new WorldPoint(1762, 5364, 1), new WorldPoint(1769, 5359, 1));
 		ancientCavernF0 = new Zone(new WorldPoint(1734, 5318, 0), new WorldPoint(1800, 5400, 0));
 		ancientCavernF1 = new Zone(new WorldPoint(1734, 5318, 1), new WorldPoint(1800, 5400, 1));
@@ -593,9 +460,9 @@ public class BarbarianTraining extends BasicQuestHelper
 		pickupChewedBones = new ItemStep(this, "Pick up the chewed bones.", chewedBones);
 		useLogOnPyre = new ObjectStep(this, ObjectID.BRUT_BURNED_GROUND, new WorldPoint(2506, 3518, 0),
 			"Construct a pyre on the lake near Otto.", logs, chewedBones, tinderbox, axe);
-		useLogOnPyre.addDialogStep("I've created a pyre ship!");
 		talkToOttoAfterPyre = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),
 			"Return to Otto and tell him about the succesful pyre-making.");
+		talkToOttoAfterPyre.addDialogStep("I've created a pyre ship!");
 
 		// Barbarian Farming
 		talkToOttoAboutFarming = new NpcStep(this, NpcID.BRUT_OTTO, new WorldPoint(2500, 3488, 0),

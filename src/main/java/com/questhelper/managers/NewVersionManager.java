@@ -44,7 +44,7 @@ public class NewVersionManager
 
 	private final String LAST_VERSION_SEEN_CONFIG_KEY = "lastversionchecked";
 
-	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.12.1! This improves the default order for Sea Charting, and adds a proximity mode you can toggle at the top of it!";
+	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.17.0! <col=FF2400>The Blood Moon Rises</col> (ty pajlada!) and <col=123456>Fallen From Grace</col> are now both added!";
 
 	public void updateChatWithNotificationIfNewVersion()
 	{

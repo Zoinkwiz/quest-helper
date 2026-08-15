@@ -77,6 +77,8 @@ import static com.questhelper.requirements.util.LogicHelper.*;
 * */
 public class TreeRun extends ComplexStateQuestHelper
 {
+	private static final String TREE_PROTECTION_DIALOG = "Would you look after my crops for me?";
+
 	@Inject
 	private FarmingWorld farmingWorld;
 
@@ -312,7 +314,8 @@ public class TreeRun extends ComplexStateQuestHelper
 		brimhavenStep.addStep(brimhavenStates.getIsHarvestable(), brimhavenFruitTreePatchClear);
 		brimhavenStep.addStep(brimhavenStates.getIsStump(), brimhavenFruitTreePatchDig);
 		brimhavenStep.addStep(nor(usingCompostorNothing, brimhavenStates.getIsProtected()), brimhavenFruitProtect);
-		karamjaStep = new ReorderableConditionalStep(this, brimhavenStep, not(brimhavenStates.getIsGrowing()));
+		karamjaStep = new ReorderableConditionalStep(this, new DetailedQuestStep(this, "Unreachable."));
+		karamjaStep.addStep(not(brimhavenStates.getIsGrowing()), brimhavenStep);
 
 		taiBwoWannaiStep = (ConditionalStep) new ConditionalStep(this, taiBwoWannaiCalquatPatchCheckHealth).withId(82);
 		taiBwoWannaiStep.addStep(taiBwoWannaiStates.getIsUnchecked(), taiBwoWannaiCalquatPatchCheckHealth);
@@ -654,37 +657,37 @@ public class TreeRun extends ComplexStateQuestHelper
 		lumbridgeTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_4, new WorldPoint(3193, 3231, 0),
 			"Speak to Fayeth to protect the patch.");
 		lumbridgeTreeProtect.conditionToHideInSidebar(not(payingForProtection));
-		lumbridgeTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		lumbridgeTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		faladorTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_2, new WorldPoint(3004, 3373, 0),
 			"Speak to Heskel to protect the patch.");
 		faladorTreeProtect.conditionToHideInSidebar(not(payingForProtection));
-		faladorTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		faladorTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		taverleyTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_1, new WorldPoint(2936, 3438, 0),
 			"Speak to Alain to protect the patch.");
 		taverleyTreeProtect.conditionToHideInSidebar(not(payingForProtection));
-		taverleyTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		taverleyTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		varrockTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_3_02, new WorldPoint(3229, 3459, 0),
 			"Speak to Treznor to protect the patch.");
 		varrockTreeProtect.conditionToHideInSidebar(not(payingForProtection));
-		varrockTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		varrockTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		strongholdTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_GNOME, new WorldPoint(2436, 3415, 0),
 			"Speak to Prissy Scilla to protect the patch.");
 		strongholdTreeProtect.conditionToHideInSidebar(not(payingForProtection));
-		strongholdTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		strongholdTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		farmingGuildTreePayForProtection = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T2, new WorldPoint(1232, 3736, 0),
 			"Speak to Rosie to protect the patch.");
 		farmingGuildTreePayForProtection.conditionToHideInSidebar(not(payingForProtection));
-		farmingGuildTreePayForProtection.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		farmingGuildTreePayForProtection.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		auburnvaleTreeProtect = new NpcStep(this, NpcID.FARMING_GARDENER_TREE_7, new WorldPoint(1367, 3322, 0),
 			"Speak to Aub to protect the patch.");
 		auburnvaleTreeProtect.conditionToHideInSidebar(not(payingForProtection));
-		auburnvaleTreeProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		auburnvaleTreeProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		// Tree Patch Steps
 		lumbridgeTreePatchCheckHealth = new ObjectStep(this, ObjectID.FARMING_TREE_PATCH_4, new WorldPoint(3193, 3231, 0),
@@ -1038,45 +1041,43 @@ public class TreeRun extends ComplexStateQuestHelper
 		strongholdFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_1, new WorldPoint(2476, 3446, 0),
 			"Pay Bolongo to protect the patch.");
 		strongholdFruitProtect.conditionToHideInSidebar(not(payingForProtection));
-		strongholdFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		strongholdFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		villageFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_2, new WorldPoint(2490, 3180, 0),
 			"Pay Gileth to protect the patch.");
 		villageFruitProtect.conditionToHideInSidebar(not(payingForProtection));
-		villageFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		villageFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		brimhavenFruitProtect = new NpcStep(this, NpcID.GARTH, new WorldPoint(2765, 3213, 0),
 			"Pay Garth to protect the patch.");
 		brimhavenFruitProtect.conditionToHideInSidebar(not(payingForProtection));
-		brimhavenFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		brimhavenFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		catherbyFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_4, new WorldPoint(2860, 3433, 0),
 			"Pay Ellena to protect the patch.");
 		catherbyFruitProtect.conditionToHideInSidebar(not(payingForProtection));
-		catherbyFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		catherbyFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		lletyaFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_TREE_5, new WorldPoint(2347, 3162, 0),
 			"Pay Liliwen to protect the patch.");
 		lletyaFruitProtect.conditionToHideInSidebar(not(payingForProtection));
-		lletyaFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
-				"chop my tree down please.", "Yes.");
+		lletyaFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		guildFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FARMGUILD_T3, new WorldPoint(1243, 3760, 0),
 			"Pay Nikkie to protect the patch.");
 		guildFruitProtect.conditionToHideInSidebar(not(payingForProtection));
-		guildFruitProtect.addDialogSteps("Would you chop my tree down for me?", "I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - " +
-				"chop my tree down please.", "Yes.");
+		guildFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		kastoriFruitProtect = new NpcStep(this, NpcID.FARMING_GARDENER_FRUIT_7, new WorldPoint(1350, 3057, 0),
 			"Pay Ehecatl to protect the patch.");
 		kastoriFruitProtect.conditionToHideInSidebar(not(payingForProtection));
-		kastoriFruitProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		kastoriFruitProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		taiBwoWannaiCalquatProtect = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT, new WorldPoint(2795, 3102, 0),
 			"Pay Imiago to protect the patch.");
 		taiBwoWannaiCalquatProtect.conditionToHideInSidebar(not(payingForProtection));
-		taiBwoWannaiCalquatProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		taiBwoWannaiCalquatProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		kastoriCalquatProtect = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_2, new WorldPoint(1366, 3033, 0),
 			"Pay Tziuhtla to protect the patch.");
 		kastoriCalquatProtect.conditionToHideInSidebar(not(payingForProtection));
-		kastoriCalquatProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		kastoriCalquatProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		greatConchCalquatProtect = new NpcStep(this, NpcID.FARMING_GARDENER_CALQUAT_3, new WorldPoint(3129, 2406, 0),
 			"Pay Guppa to protect the patch.");
 		greatConchCalquatProtect.conditionToHideInSidebar(not(payingForProtection));
-		greatConchCalquatProtect.addDialogSteps("Would you chop my tree down for me?","I can't be bothered - I'd rather pay you to do it.", "Here's 200 Coins - chop my tree down please.", "Yes.");
+		greatConchCalquatProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		// Dig Fruit Tree Steps
 		gnomeStrongholdFruitTreePatchDig = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_1, new WorldPoint(2476, 3446, 0),
@@ -1223,18 +1224,23 @@ public class TreeRun extends ComplexStateQuestHelper
 		westHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER3, new WorldPoint(3702, 3837, 0),
 			"Pay the brown squirrel to protect the west tree.");
 		westHardwoodProtect.conditionToHideInSidebar(not(payingForProtection));
+		westHardwoodProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		middleHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER2, new WorldPoint(3702, 3837, 0),
 			"Pay the black squirrel to protect the middle tree.");
 		middleHardwoodProtect.conditionToHideInSidebar(not(payingForProtection));
+		middleHardwoodProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		eastHardwoodProtect = new NpcStep(this, NpcID.FOSSIL_SQUIRREL_GARDENER1, new WorldPoint(3702, 3837, 0),
 			"Pay the grey squirrel to protect the east tree.");
 		eastHardwoodProtect.conditionToHideInSidebar(not(payingForProtection));
+		eastHardwoodProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		savannahProtect = new NpcStep(this, NpcID.FROG_QUEST_MARCELLUS_FARMER, new WorldPoint(1687, 2972, 0),
 			"Pay Marcellus to protect the hardwood tree.");
 		savannahProtect.conditionToHideInSidebar(not(payingForProtection));
+		savannahProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 		anglersProtect = new NpcStep(this, NpcID.FARMING_GARDENER_HARDWOOD_TREE_5, new WorldPoint(2470, 2704, 0),
 			"Pay Argo to protect the hardwood tree.");
 		anglersProtect.conditionToHideInSidebar(not(payingForProtection));
+		anglersProtect.addDialogSteps(TREE_PROTECTION_DIALOG);
 
 		westHardwoodTreePatchClear.addSubSteps(westHardwoodTreePatchDig);
 		middleHardwoodTreePatchClear.addSubSteps(middleHardwoodTreePatchDig);
@@ -1281,8 +1287,9 @@ public class TreeRun extends ComplexStateQuestHelper
 			boolean isUnchecked = state == CropState.UNCHECKED; // 'Check health'
 			boolean isHarvestable = state == CropState.HARVESTABLE; // 'Chop'
 			boolean isStump = state == CropState.STUMP; // 'Clear'
-			boolean isProtected = paymentTracker.getProtectedState(patch);
 			boolean isGrowing = state == CropState.GROWING;
+			boolean isProtected = paymentTracker.getProtectedState(patch);
+			boolean needsProtection = !isProtected && payingForProtection.check(client);
 
 			if (state != CropState.GROWING)
 			{
@@ -1302,7 +1309,7 @@ public class TreeRun extends ComplexStateQuestHelper
 				region.getIsUnchecked().setShouldPass(isUnchecked);
 				region.getIsStump().setShouldPass(isStump);
 				region.getIsProtected().setShouldPass(isProtected);
-				region.getIsGrowing().setShouldPass(isGrowing);
+				region.getIsGrowing().setShouldPass(isGrowing && !needsProtection);
 				if (!region.canAccess(client))
 				{
 					numberOfSaplings--;

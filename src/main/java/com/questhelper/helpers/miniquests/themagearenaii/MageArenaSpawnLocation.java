@@ -48,13 +48,12 @@ public enum MageArenaSpawnLocation
 	NORTH_EAST_LAVA_DRAGON_4(new WorldPoint(3247, 3862, 0), "North east of the Lava Dragon Isle."),
 	WEST_LAVA_DRAGON(new WorldPoint(3146, 3895, 0), "West of the Lava Dragon Isle."),
 	WEST_LAVA_DRAGON_2(new WorldPoint(3163, 3833, 0), "West of the Lava Dragon Isle."),
-	WEST_DEMONIC_RUINS(new WorldPoint(3314, 3876, 0), "West of the Demonic Ruins."),
+	EAST_DEMONIC_RUINS(new WorldPoint(3314, 3876, 0), "East of the Demonic Ruins."),
 	EAST_LAVA_DRAGON_ISLE(new WorldPoint(3246, 3834, 0), "East of the Lava Dragon Isle."),
 	EAST_LAVA_DRAGON_ISLE_2(new WorldPoint(3279, 3823, 0), "East of the Lava Dragon Isle."),
 	SOUTH_EAST_LAVA_DRAGON_ISLE(new WorldPoint(3266, 3814, 0), "South east of the Lava Dragon Isle."),
 	EAST_ROGUE(new WorldPoint(3306, 3936, 0), "East of the Rogues' Castle."),
-	// TODO: This one isn't a precise position
-	EAST_ROGUE_2(new WorldPoint(3343, 3911, 0), "East of the Rogues' Castle."),
+	EAST_ROGUE_2(new WorldPoint(3335, 3902, 0), "East of the Rogues' Castle."),
 	WEST_ROGUE(new WorldPoint(3261, 3909, 0), "West of the Rogues' Castle.");
 
 	private final WorldPoint worldPoint;

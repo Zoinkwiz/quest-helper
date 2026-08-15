@@ -52,6 +52,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.eventbus.EventBus;
@@ -77,6 +78,10 @@ public class DetailedQuestStep extends QuestStep
 
 	@Inject
 	EventBus eventBus;
+
+	/// Use this to update the step's world point to the value from the given world point
+	@Setter
+	protected Integer worldPointVarp = null;
 
 	@Getter
 	protected DefinedPoint definedPoint;
@@ -176,6 +181,12 @@ public class DetailedQuestStep extends QuestStep
 	public void startUp()
 	{
 		super.startUp();
+
+		if (worldPointVarp != null)
+		{
+			updateWorldPointFromVarpValue(client.getVarpValue(worldPointVarp));
+		}
+
 		if (definedPoint != null)
 		{
 			if (questHelper.getConfig().showWorldMapPoint())
@@ -254,6 +265,15 @@ public class DetailedQuestStep extends QuestStep
 	}
 
 	@Subscribe
+	public void onVarbitChanged(final VarbitChanged event)
+	{
+		if (worldPointVarp != null && event.getVarpId() == worldPointVarp)
+		{
+			updateWorldPointFromVarpValue(event.getValue());
+		}
+	}
+
+	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -300,11 +320,6 @@ public class DetailedQuestStep extends QuestStep
 	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		if (client.getLocalPlayer() == null)
-		{
-			return;
-		}
-
-		if (inCutscene)
 		{
 			return;
 		}
@@ -359,11 +374,6 @@ public class DetailedQuestStep extends QuestStep
 			return;
 		}
 
-		if (inCutscene)
-		{
-			return;
-		}
-
 		if (currentRender < (MAX_RENDER_SIZE / 2))
 		{
 			renderArrow(graphics);
@@ -374,11 +384,6 @@ public class DetailedQuestStep extends QuestStep
 	public void makeWorldLineOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
 	{
 		if (client.getLocalPlayer() == null)
-		{
-			return;
-		}
-
-		if (inCutscene)
 		{
 			return;
 		}
@@ -468,6 +473,13 @@ public class DetailedQuestStep extends QuestStep
 				.collect(Collectors.toList());
 		renderInventory(graphics, definedPoint, itemRequirements, false);
 		renderInventory(graphics, definedPoint, teleportRequirements, true);
+
+		// TODO: Add a config to turn off as well?
+		if (!questHelper.getQuestHelperPlugin().isBankTabOpen())
+		{
+			renderBank(graphics, requirements);
+		}
+
 		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
 		{
 			widgetHighlights.highlightChoices(graphics, client, plugin);
@@ -490,11 +502,6 @@ public class DetailedQuestStep extends QuestStep
 		if (questHelper.getConfig().showMiniMapArrow())
 		{
 			if (mapPoint == null)
-			{
-				return;
-			}
-
-			if (inCutscene)
 			{
 				return;
 			}
@@ -559,7 +566,7 @@ public class DetailedQuestStep extends QuestStep
 	{
 		super.makeOverlayHint(panelComponent, plugin, additionalText, new ArrayList<>());
 
-		if (inCutscene || hideRequirements)
+		if (hideRequirements)
 		{
 			return;
 		}
@@ -688,10 +695,6 @@ public class DetailedQuestStep extends QuestStep
 
 	private void checkAllTilesForItemHighlighting(Tile tile, Collection<Integer> ids, Graphics2D graphics)
 	{
-		if (inCutscene)
-		{
-			return;
-		}
 		Player player = client.getLocalPlayer();
 
 		if (player == null)
@@ -881,7 +884,14 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		var playerWp = client.getLocalPlayer().getWorldLocation();
+
+		var localPlayer = client.getLocalPlayer();
+		if (localPlayer == null)
+		{
+			return;
+		}
+
+		var playerWp = localPlayer.getWorldLocation();
 		if (playerWp == null)
 		{
 			return;
@@ -936,5 +946,27 @@ public class DetailedQuestStep extends QuestStep
 	public void addHighlightZone(Zone zone)
 	{
 		highlightZones.add(zone);
+	}
+
+	/// Given a value produced by a VarPlayer, update the world point.
+	/// The value is either -1 to denote (no value), or a "Coord" that RuneLite can convert for us.
+	private void updateWorldPointFromVarpValue(int varpValue)
+	{
+		if (varpValue == -1)
+		{
+			setWorldPoint((DefinedPoint) null);
+		}
+		else
+		{
+			setWorldPoint(WorldPoint.fromCoord(varpValue));
+		}
+	}
+
+	/// Create a "Watch the cutscene." step that's added to this step's substeps
+	public DetailedQuestStep cutscene()
+	{
+		var cutsceneStep = new DetailedQuestStep(getQuestHelper(), "Watch the cutscene.");
+		addSubSteps(cutsceneStep);
+		return cutsceneStep;
 	}
 }

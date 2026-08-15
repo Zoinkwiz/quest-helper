@@ -124,7 +124,7 @@ public class TheIdesOfMilk extends BasicQuestHelper
 	{
 		talkToCassius = new NpcStep(this, NpcID.COWBOSS_FARMER,
 			new WorldPoint(3171, 3277, 0),
-			"Speak to Cassius by the lake north-west of Lumbridge to start the quest.", true);
+			"Speak to Cassius by the pond north-west of Lumbridge to start the quest.", true);
 		talkToCassius.addDialogStep("Yes.");
 
 		talkToGillie = new NpcStep(this, NpcID.GILLIE_THE_MILKMAID,

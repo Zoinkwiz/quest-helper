@@ -223,18 +223,30 @@ public class DesertTreasure extends BasicQuestHelper
 		spice = new ItemRequirement("Spice", ItemID.SPICESPOT);
 		spice.setHighlightInInventory(true);
 
-		sweetTreat = new ItemRequirement("Sweet Treat, e.g. Cake", List.of(
-			ItemID.CAKE,
-			ItemID.PARTIAL_CAKE,
-			ItemID.CAKE_SLICE,
-			ItemID.CHOCOLATE_CAKE,
-			ItemID.PARTIAL_CHOCOLATE_CAKE,
-			ItemID.CHOCOLATE_SLICE,
-			ItemID.CHOCOLATE_BAR,
-			ItemID.COOKING_APPLE,
-			ItemID.PINEAPPLE_PIZZA));
-		sweetTreat.setDisplayMatchedItemName(true);
-		sweetTreat.setHighlightInInventory(true);
+		cake = new ItemRequirement("Sweet Treat, e.g. Cake", ItemID.CAKE);
+		cake.addAlternates(ItemID.PARTIAL_CAKE);
+		cake.addAlternates(ItemID.CAKE_SLICE);
+		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
+		cake.addAlternates(ItemID.PARTIAL_CHOCOLATE_CAKE);
+		cake.addAlternates(ItemID.CHOCOLATE_SLICE);
+		cake.addAlternates(ItemID.APPLE_PIE);
+		cake.addAlternates(ItemID.HALF_AN_APPLE_PIE);
+		cake.addAlternates(ItemID.BANANA);
+		cake.addAlternates(ItemID.CHOCOLATE_BAR);
+		cake.addAlternates(ItemID.CHOCOLATY_MILK);
+		cake.addAlternates(ItemID.COOKING_APPLE);
+		cake.addAlternates(ItemID.ORANGE);
+		cake.addAlternates(ItemID.ORANGE_CHUNKS);
+		cake.addAlternates(ItemID.ORANGE_SLICES);
+		cake.addAlternates(ItemID.PINEAPPLE_CHUNKS);
+		cake.addAlternates(ItemID.PINEAPPLE_RING);
+		cake.addAlternates(ItemID.PINEAPPLE_PIZZA);
+		cake.addAlternates(ItemID.HALF_PINEAPPLE_PIZZA);
+		cake.addAlternates(ItemID.REDBERRIES);
+		cake.addAlternates(ItemID.REDBERRY_PIE);
+		cake.addAlternates(ItemID.HALF_A_REDBERRY_PIE);
+		cake.setDisplayMatchedItemName(true);
+		cake.setHighlightInInventory(true);
 
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.DEATH_SPIKEDBOOTS).isNotConsumed();
 		spikedBoots.setTooltip("Bring Dunstan in Burthorpe climbing boots and an iron bar to make these");

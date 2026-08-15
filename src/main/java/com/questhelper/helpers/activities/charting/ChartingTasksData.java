@@ -368,7 +368,7 @@ public final class ChartingTasksData
 		)),
 		new ChartingSeaSection(27, "Mythic Sea", List.of(
 			new ChartingTaskDefinition(ChartingType.CRATE, "Find a Sealed crate west of the Void Knights' Outpost and sample the contents.", new WorldPoint(2556, 2664, 0), "Shrouded Ocean", 12, VarbitID.SAILING_CHARTING_DRINK_CRATE_MYTHS_MIXER_COMPLETE, ItemID.SAILING_CHARTING_DRINK_CRATE_MYTHS_MIXER),
-			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an abandoned camp on Anglers' Retreat. Watch out for Fetid waters!", new WorldPoint(2476, 2707, 0), "Shrouded Ocean", 1, VarbitID.SAILING_CHARTING_GENERIC_ABANDONED_CAMP_COMPLETE),
+			new ChartingTaskDefinition(ChartingType.GENERIC, "Find an abandoned camp on Anglers' Retreat. Watch out for Fetid waters!", new WorldPoint(2476, 2707, 0), "Shrouded Ocean", 51, VarbitID.SAILING_CHARTING_GENERIC_ABANDONED_CAMP_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.CURRENT, "Test the currents east of Anglers' Retreat. Watch out for Fetid waters!", new WorldPoint(2495, 2708, 0), new WorldPoint(2533, 2736, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_CURRENT_DUCK_MYTHIC_SEA_COMPLETE),
 			new ChartingTaskDefinition(ChartingType.DIVING, "With help from a mermaid guide, document the water depth south of the Myths' Guild. Watch out for Fetid waters!", new WorldPoint(2446, 2784, 0), "Shrouded Ocean", 40, VarbitID.SAILING_CHARTING_MERMAID_GUIDE_MYTHIC_SEA_COMPLETE, "The answer is 'Cabbage', 'Onion', 'Tomato'.", List.of(ItemID.CABBAGE, ItemID.ONION, ItemID.TOMATO))
 		)),

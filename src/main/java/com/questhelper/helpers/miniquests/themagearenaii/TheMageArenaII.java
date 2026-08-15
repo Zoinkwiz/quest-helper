@@ -35,7 +35,9 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.UnlockReward;
@@ -46,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
@@ -55,7 +58,14 @@ public class TheMageArenaII extends BasicQuestHelper
 	ItemRequirement zamorakStaff, guthixStaff, saradominStaff, runesForCasts, magicCombatGear, knife, brews, restores
 		, food, recoils, enchantedSymbol, justicarsHand, demonsHeart, entRoots, godCape;
 
-	Requirement inCavern, givenHand, givenHeart, givenRoots;
+	Requirement inCavern;
+	VarbitRequirement givenHand;
+	VarbitRequirement givenHeart;
+	VarbitRequirement givenRoots;
+
+	VarplayerRequirement unlockedSaradominStrike;
+	VarplayerRequirement unlockedClawsOfGuthix;
+	VarplayerRequirement unlockedFlamesOfZamorak;
 
 	QuestStep enterCavern, talkToKolodion, locateFollowerSara, locateFollowerGuthix, locateFollowerZammy,
 		enterCavernWithHand, enterCavernWithHeart, enterCavernWithRoots, giveKolodionHeart, giveKolodionHand,
@@ -115,7 +125,7 @@ public class TheMageArenaII extends BasicQuestHelper
 			new ItemRequirement("Fire runes", ItemID.FIRERUNE, -1));
 		magicCombatGear = new ItemRequirement("Magic combat gear", -1, 1).isNotConsumed();
 		magicCombatGear.setDisplayItemId(BankSlotIcons.getMagicCombatGear());
-		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemID.KNIFE).isNotConsumed();
+		knife = new ItemRequirement("Knife or sharp weapon to cut through a web", ItemCollections.SLASH_WEB_KNIFE).isNotConsumed();
 		brews =  new ItemRequirement("Saradomin brews", ItemCollections.SARADOMIN_BREWS, -1);
 		restores = new ItemRequirement("Super restores", ItemCollections.SUPER_RESTORE_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
@@ -130,6 +140,13 @@ public class TheMageArenaII extends BasicQuestHelper
 		godCape = new ItemRequirement("God cape", ItemID.ZAMORAK_CAPE).isNotConsumed();
 		godCape.addAlternates(ItemID.GUTHIX_CAPE, ItemID.SARADOMIN_CAPE);
 		godCape.setHighlightInInventory(true);
+
+		unlockedSaradominStrike = new VarplayerRequirement(VarPlayerID.SARAMAGE, 100, Operation.GREATER_EQUAL, "Unlocked Saradomin Strike");
+		unlockedSaradominStrike.setTooltip("Unlocked by casting the Saradomin Strike 100 times within the mage arena");
+		unlockedClawsOfGuthix = new VarplayerRequirement(VarPlayerID.GUTHMAGE, 100, Operation.GREATER_EQUAL, "Unlocked Claws of Guthix");
+		unlockedClawsOfGuthix.setTooltip("Unlocked by casting the Claws of Guthix 100 times within the mage arena");
+		unlockedFlamesOfZamorak = new VarplayerRequirement(VarPlayerID.ZAMOMAGE, 100, Operation.GREATER_EQUAL, "Unlocked Flames of Zamorak");
+		unlockedFlamesOfZamorak.setTooltip("Unlocked by casting the Flames of Zamorak 100 times within the mage arena");
 	}
 
 	@Override
@@ -161,14 +178,15 @@ public class TheMageArenaII extends BasicQuestHelper
 
 		locateFollowerSara = new MageArenaBossStep(this, saradominStaff, "Saradomin", "If he fires a blue wave at " +
 			"you, move off your tile to avoid it. If you don't, he will pull you into melee distance.",
-			enchantedSymbol, food);
+			givenHand, givenRoots, givenHeart, enchantedSymbol, food);
 		locateFollowerSara.addDialogStep("Saradomin");
 		locateFollowerGuthix = new MageArenaBossStep(this, guthixStaff, "Guthix", "If he spawns green orbs, destroy " +
-			"them to stop them healing him.",	enchantedSymbol, food);
+			"them to stop them healing him.",
+			givenHand, givenRoots, givenHeart, enchantedSymbol, food);
 		locateFollowerGuthix.addDialogStep("Guthix");
 		locateFollowerZammy = new MageArenaBossStep(this, zamorakStaff, "Zamorak", "If he fires an energy ball at " +
 			"you, move away away from the boss to reduce the damage you take.",
-			enchantedSymbol, food);
+			givenHand, givenRoots, givenHeart, enchantedSymbol, food);
 		locateFollowerZammy.addDialogStep("Zamorak");
 
 		enterCavernWithHand = new ObjectStep(this, ObjectID.MAGEARENA_LEVER_TO_CELLAR, new WorldPoint(3090, 3956, 0), "Return with" +
@@ -237,7 +255,9 @@ public class TheMageArenaII extends BasicQuestHelper
 		ArrayList<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.MAGIC, 75));
 		reqs.add(new QuestRequirement(QuestHelperQuest.THE_MAGE_ARENA, QuestState.FINISHED));
-		reqs.add(new ItemRequirement("Unlocked all 3 god spells", -1, -1));
+		reqs.add(unlockedSaradominStrike);
+		reqs.add(unlockedClawsOfGuthix);
+		reqs.add(unlockedFlamesOfZamorak);
 		return reqs;
 	}
 
@@ -252,7 +272,7 @@ public class TheMageArenaII extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Upgrading the God Cape", Arrays.asList(enterCavern,
-			talkToKolodion, locateAndKillMinions), knife, saradominStaff, guthixStaff, zamorakStaff, runesForCasts));
+			talkToKolodion, locateAndKillMinions, useGodCapeOnKolidion), knife, saradominStaff, guthixStaff, zamorakStaff, unlockedSaradominStrike, unlockedClawsOfGuthix, unlockedFlamesOfZamorak, runesForCasts));
 		return allSteps;
 	}
 }

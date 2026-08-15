@@ -63,15 +63,24 @@ public class QuestHelperWorldOverlay extends Overlay
 
 		QuestHelper quest = plugin.getSelectedQuest();
 
-		if (quest != null && quest.getCurrentStep() != null)
+		if (quest != null)
 		{
-			quest.makeWorldOverlayHint(graphics, plugin);
-			quest.getCurrentStep().makeWorldOverlayHint(graphics, plugin);
+			var currentStep = quest.getCurrentStep();
+			if (currentStep != null)
+			{
+				if (!plugin.isInCutscene() || currentStep.getActiveStep().isAllowInCutscene())
+				{
+					currentStep.makeWorldOverlayHint(graphics, plugin);
+				}
+			}
 		}
 
-		plugin.getBackgroundHelpers().forEach((name, questHelper) -> questHelper.getCurrentStep().makeWorldOverlayHint(graphics, plugin));
+		if (!plugin.isInCutscene())
+		{
+			plugin.getBackgroundHelpers().forEach((name, questHelper) -> questHelper.getCurrentStep().makeWorldOverlayHint(graphics, plugin));
 
-		plugin.getRuneliteObjectManager().makeWorldOverlayHint(graphics);
+			plugin.getRuneliteObjectManager().makeWorldOverlayHint(graphics);
+		}
 
 		return null;
 	}

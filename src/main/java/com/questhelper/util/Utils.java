@@ -36,7 +36,6 @@ import net.runelite.api.annotations.Component;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.util.ColorUtil;
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -52,7 +51,7 @@ public class Utils
 	 * @return {@link AccountType}
 	 * @apiNote This function should only be called from the client thread.
 	 */
-	public AccountType getAccountType(@NotNull Client client)
+	public AccountType getAccountType(@Nonnull Client client)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{

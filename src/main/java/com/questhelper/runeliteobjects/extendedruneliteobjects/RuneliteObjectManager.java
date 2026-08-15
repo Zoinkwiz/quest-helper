@@ -817,6 +817,13 @@ public class RuneliteObjectManager
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
+		var localPlayer = client.getLocalPlayer();
+
+		if (localPlayer == null)
+		{
+			return;
+		}
+
 		bufferRedClickAnimation = Math.floorMod(bufferRedClickAnimation + 1, ANIMATION_PERIOD);
 		if (bufferRedClickAnimation == 0)
 		{

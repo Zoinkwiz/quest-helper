@@ -33,8 +33,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
@@ -193,7 +193,7 @@ public class DirectionArrow
 		drawMinimapArrow(graphics, line, color);
 	}
 
-	@NotNull
+	@Nonnull
 	private static Line2D.Double getLine(Point playerPosOnMinimap, Point destinationPosOnMinimap)
 	{
 		double xDiff = playerPosOnMinimap.getX() - destinationPosOnMinimap.getX();

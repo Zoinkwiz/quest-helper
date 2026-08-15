@@ -26,7 +26,6 @@ package com.questhelper.helpers.mischelpers.farmruns;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.collections.ItemCollections;
-import com.questhelper.config.ConfigKeys;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
@@ -40,6 +39,7 @@ import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
@@ -111,7 +111,7 @@ public class HerbRun extends ComplexStateQuestHelper
 	SkillRequirement accessToFarmingGuildPatch;
 	QuestRequirement accessToVarlamore;
 	QuestRequirement accessToMorytania;
-	RuneliteRequirement unlockedBarbarianPlanting;
+	VarbitRequirement unlockedBarbarianPlanting;
 
 	ManualRequirement ardougneEmpty;
 	ManualRequirement catherbyEmpty;
@@ -224,7 +224,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		accessToVarlamore = new QuestRequirement(QuestHelperQuest.CHILDREN_OF_THE_SUN, QuestState.FINISHED);
 		accessToMorytania = new QuestRequirement(QuestHelperQuest.PRIEST_IN_PERIL, QuestState.FINISHED);
 
-		unlockedBarbarianPlanting = new RuneliteRequirement(configManager, ConfigKeys.BARBARIAN_TRAINING_FINISHED_SEED_PLANTING.getKey());
+		unlockedBarbarianPlanting = new VarbitRequirement(VarbitID.BRUT_FARMING_PLANTING, Operation.EQUAL, 3, "Unlocked Barbarian Planting");
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		dibber = new ItemRequirement("Seed dibber", ItemID.DIBBER).hideConditioned(unlockedBarbarianPlanting);

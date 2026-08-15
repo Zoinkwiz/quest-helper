@@ -44,7 +44,9 @@ public enum QuestEmote
 	STAMP("Stamp", SpriteID.Emotes.STAMP),
 	FLAP("Flap", SpriteID.Emotes.FLAP),
 	SLAP_HEAD("Slap Head", SpriteID.Emotes.SLAP_HEAD),
-	SPIN("Spin", SpriteID.Emotes.SPIN);
+	SALUTE("Salute", SpriteID.Emotes.SALUTE),
+	SPIN("Spin", SpriteID.Emotes.SPIN),
+	SIT("Sit", 5248);
 
 	private String name;
 	private int spriteId;

@@ -207,6 +207,19 @@ public class NpcStep extends DetailedQuestStep
 		{
 			addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
 		}
+
+		/* TODO: Configurable boolean per NpcStep for whether to consider all world views
+		    This is as you're likely to want to only highlight stuff on your own ship, not on others'
+		*/
+		for (WorldView worldView : client.getTopLevelWorldView().worldViews())
+		{
+			if (worldView == playerWorldView) continue;
+
+			for (NPC npc : worldView.npcs())
+			{
+				addNpcToListGivenMatchingID(npc, this::npcPassesChecks, npcs);
+			}
+		}
 	}
 
 	public NpcStep addAlternateNpcs(Integer... alternateNpcIDs)
@@ -350,10 +363,22 @@ public class NpcStep extends DetailedQuestStep
 					? IMAGE_Z_OFFSET
 					: (npc.getLogicalHeight() / 2);
 
-				Point imageLocation = npc.getCanvasImageLocation(icon, zOffset);
+				var iconToUse = this.icon;
+
+				// Find best icon for this NPC
+				for (var customIcon : customIcons)
+				{
+					if (customIcon.getTargetId() == npc.getId())
+					{
+						iconToUse = customIcon.getIcon();
+						break;
+					}
+				}
+
+				Point imageLocation = npc.getCanvasImageLocation(iconToUse, zOffset);
 				if (imageLocation != null)
 				{
-					OverlayUtil.renderImageLocation(graphics, imageLocation, icon);
+					OverlayUtil.renderImageLocation(graphics, imageLocation, iconToUse);
 				}
 			}
 		}

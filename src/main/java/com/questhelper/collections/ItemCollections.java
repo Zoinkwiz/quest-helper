@@ -2245,6 +2245,25 @@ public enum ItemCollections
 		ItemID.WILDBLOOD_HOP_SEED
 	)),
 
+	/// Things you can slash webs with that are safe to bring to wildy
+	SLASH_WEB_KNIFE(ImmutableList.of(
+		ItemID.KNIFE,
+		ItemID.WILDERNESS_SWORD_ELITE,
+		ItemID.WILDERNESS_SWORD_HARD,
+		ItemID.WILDERNESS_SWORD_MEDIUM,
+		ItemID.WILDERNESS_SWORD_EASY
+	)),
+
+	BOAT_REPAIR_KITS(ImmutableList.of(
+		ItemID.BOAT_REPAIR_KIT_ROSEWOOD,
+		ItemID.BOAT_REPAIR_KIT_IRONWOOD,
+		ItemID.BOAT_REPAIR_KIT_CAMPHOR,
+		ItemID.BOAT_REPAIR_KIT_MAHOGANY,
+		ItemID.BOAT_REPAIR_KIT_TEAK,
+		ItemID.BOAT_REPAIR_KIT_OAK,
+		ItemID.BOAT_REPAIR_KIT
+	)),
+
 	BUSH_SEEDS(ImmutableList.of(
 		ItemID.REDBERRY_BUSH_SEED,
 		ItemID.CADAVABERRY_BUSH_SEED,
@@ -2284,6 +2303,13 @@ public enum ItemCollections
 		ItemID.CA_OFFHAND_HARD,
 		ItemID.CA_OFFHAND_MEDIUM,
 		ItemID.CA_OFFHAND_EASY
+	)),
+
+	ARDOUGNE_CLOAK(ImmutableList.of(
+		ItemID.ARDY_CAPE_EASY,
+		ItemID.ARDY_CAPE_MEDIUM,
+		ItemID.ARDY_CAPE_HARD,
+		ItemID.ARDY_CAPE_ELITE
 	)),
 
 	PROSPECTOR_HELMET(ImmutableList.of(

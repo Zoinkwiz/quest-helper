@@ -353,8 +353,8 @@ public class ShiloVillage extends BasicQuestHelper
 		goGetItems.addStep(and(tatteredScroll, crumpledScroll, zadimusCorpse), buryCorpse);
 		goGetItems.addStep(and(inCavern2, tatteredScroll, crumpledScroll), searchForCorpse);
 		goGetItems.addStep(and(inCavern2, tatteredScroll), searchForCrumpledScroll);
-		goGetItems.addStep(and(inCavern2), searchForTatteredScroll);
-		goGetItems.addStep(and(inCavern1), enterDeeperCave);
+		goGetItems.addStep(inCavern2, searchForTatteredScroll);
+		goGetItems.addStep(inCavern1, enterDeeperCave);
 		goGetItems.addStep(moundNearby, lookAtMound);
 		steps.put(6, goGetItems);
 		steps.put(7, goGetItems);

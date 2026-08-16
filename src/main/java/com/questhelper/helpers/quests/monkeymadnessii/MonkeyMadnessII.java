@@ -258,8 +258,8 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		lightSource = new ItemRequirement("A lightsource", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 		hammerSidebar = new ItemRequirement("Hammer (obtainable in quest)", ItemCollections.HAMMER).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
-		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
+		chiselSidebar = new ItemRequirement("Chisel (obtainable in quest)", ItemCollections.CHISEL).isNotConsumed();
 		mspeakAmulet = new ItemRequirement("M'speak amulet", ItemID.MM_AMULET_OF_MONKEY_SPEAK).isNotConsumed();
 		mspeakAmuletEquipped = new ItemRequirement("M'speak amulet", ItemID.MM_AMULET_OF_MONKEY_SPEAK, 1, true).isNotConsumed();
 
@@ -319,7 +319,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		coins20 = new ItemRequirement("Coins", ItemCollections.COINS, 20);
 
-		chiselHighlighted = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chiselHighlighted = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		chiselHighlighted.setHighlightInInventory(true);
 		deconstructedOnyx = new ItemRequirement("Deconstructed onyx", ItemID.MM2_DECONSTRUCTED_ONYX);
 		deconstructedOnyx.setHighlightInInventory(true);

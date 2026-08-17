@@ -37,6 +37,11 @@ public abstract class ComplexStateQuestHelper extends QuestHelper
 	protected QuestStep step;
 	protected int var;
 
+	public QuestStep getStep()
+	{
+		return step;
+	}
+
 	@Override
 	public void init()
 	{

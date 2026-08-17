@@ -34,6 +34,7 @@ import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.bank.banktab.QuestBankTabInterface;
 import com.questhelper.managers.*;
 import com.questhelper.panel.QuestHelperPanel;
+import com.questhelper.questjournal.QuestJournalManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -140,6 +141,9 @@ public class QuestHelperPlugin extends Plugin
 	private QuestManager questManager;
 
 	@Inject
+	private QuestJournalManager questJournalManager;
+
+	@Inject
 	private WorldMapAreaManager worldMapAreaManager;
 
 	@Inject
@@ -192,6 +196,12 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Override
+	public void resetConfiguration()
+	{
+		questJournalManager.resetConfiguration();
+	}
+
+	@Override
 	protected void startUp() throws IOException
 	{
 		questBankManager.startUp(injector, eventBus);
@@ -222,6 +232,7 @@ public class QuestHelperPlugin extends Plugin
 
 		panel = new QuestHelperPanel(this, questManager, configManager);
 		questManager.startUp(panel);
+		questJournalManager.startUp();
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)
@@ -244,6 +255,7 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		questJournalManager.shutDown();
 		runeliteObjectManager.shutDown();
 
 		eventBus.unregister(playerStateManager);
@@ -327,6 +339,7 @@ public class QuestHelperPlugin extends Plugin
 			questBankManager.emptyState();
 			playerStateManager.emptyState();
 			questManager.shutDownQuest(true);
+			questManager.clearQuestListState();
 			profileChanged = true;
 		}
 
@@ -351,6 +364,7 @@ public class QuestHelperPlugin extends Plugin
 	@Subscribe
 	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
 	{
+		questManager.clearQuestListState();
 		profileChanged = true;
 	}
 

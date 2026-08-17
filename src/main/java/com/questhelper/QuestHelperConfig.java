@@ -47,6 +47,7 @@ public interface QuestHelperConfig extends Config
 	String QUEST_HELPER_SIDEBAR_ORDER_KEY_START = "quest-sidebar-order-";
 	/** Per-helper persisted manual step skips (JSON map of stable slot id to true). */
 	String QUEST_HELPER_MANUAL_SKIPS_KEY_PREFIX = "manual-step-skips-";
+	String JOURNAL_SECTION = "journalSection";
 
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{
@@ -706,6 +707,110 @@ public interface QuestHelperConfig extends Config
 
 	@ConfigSection(
 		position = 5,
+		name = "Quest Journal",
+		description = "Options that configure the floating Quest Journal",
+		closedByDefault = true
+	)
+	String journalSection = JOURNAL_SECTION;
+
+	@ConfigItem(
+		keyName = "enableQuestJournal",
+		name = "Enable Quest Journal",
+		description = "Enable the floating Quest Journal feature",
+		position = 0,
+		section = JOURNAL_SECTION
+	)
+	default boolean enableQuestJournal()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "journalShowButton",
+		name = "Show quest button",
+		description = "Show the movable Quest Journal button near the minimap",
+		position = 1,
+		section = JOURNAL_SECTION
+	)
+	default boolean journalShowButton()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "journalReplaceNativeQuestJournal",
+		name = "Replace old quest journal",
+		description = "Open the floating Quest Journal instead of the in-game quest popup when selecting a supported quest",
+		position = 2,
+		section = JOURNAL_SECTION
+	)
+	default boolean journalReplaceNativeQuestJournal()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "journalChooseActiveQuestManually",
+		name = "Choose active quest manually",
+		description = "Keep browsing separate from the quest being actively guided by Quest Helper",
+		position = 3,
+		section = JOURNAL_SECTION
+	)
+	default boolean journalChooseActiveQuestManually()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "journalExpandChecklistsOnDemand",
+		name = "Expand checklists on demand",
+		description = "Keep section checklists collapsed until opened",
+		position = 4,
+		section = JOURNAL_SECTION
+	)
+	default boolean journalExpandChecklistsOnDemand()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "journalOpenMissingItemWikiLinks",
+		name = "Missing item wiki links",
+		description = "Allow missing item requirements to open their OSRS Wiki item-sources page when clicked",
+		position = 5,
+		section = JOURNAL_SECTION
+	)
+	default boolean journalOpenMissingItemWikiLinks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "journalKeepWithinGameArea",
+		name = "Keep within game area",
+		description = "Keep journal movement, resizing, and maximizing within the game content area",
+		position = 6,
+		section = JOURNAL_SECTION
+	)
+	default boolean journalKeepWithinGameArea()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "journalOpenHotkey",
+		name = "Open journal",
+		description = "Optional hotkey used to open or close the Quest Journal",
+		position = 7,
+		section = JOURNAL_SECTION
+	)
+	default Keybind journalOpenHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigSection(
+		position = 6,
 		name = "Development",
 		description = "Options that configure the quest helper development experience",
 		closedByDefault = true

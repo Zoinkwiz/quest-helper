@@ -237,6 +237,18 @@ public interface QuestHelperConfig extends Config
 		FILLED_OUTLINE
 	}
 
+	enum QuestHelperMakerMode
+	{
+		FULL,
+		CLIPBOARD
+	}
+
+	enum QuestHelperMakerMenuVisibility
+	{
+		SHOW_IF_UI_OPEN,
+		SHOW_ALWAYS
+	}
+
 	@ConfigItem(
 		keyName = "autostartQuests",
 		name = "Auto start helper",
@@ -706,6 +718,51 @@ public interface QuestHelperConfig extends Config
 
 	@ConfigSection(
 		position = 5,
+		name = "Quest Helper Maker",
+		description = "Build quest helpers from in-game captures and export generated Java.",
+		closedByDefault = true
+	)
+	String questHelperMakerSection = "questHelperMakerSection";
+
+	@ConfigItem(
+		keyName = "constructModeEnabled",
+		name = "Quest Helper Maker",
+		description = "When enabled, adds a QH Maker button above the quest list filters, in-game Construct: right-click menu entries to capture steps, and access to the maker window for ordering and code export."
+			+ " Turn off to hide maker UI and context menus.",
+		position = 0,
+		section = questHelperMakerSection
+	)
+	default boolean constructModeEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "constructModeMode",
+		name = "Quest Helper Maker Mode",
+		description = "full mode (default) or clipboard only (only copy step asap to clipboard)",
+		position = 1,
+		section = questHelperMakerSection
+	)
+	default QuestHelperMakerMode constructModeMode()
+	{
+		return QuestHelperMakerMode.FULL;
+	}
+
+	@ConfigItem(
+		keyName = "constructModeMenuVisibility",
+		name = "Menu entry visibility",
+		description = "Decides when the right-click menu entries on objects and npcs will be visible",
+		position = 1,
+		section = questHelperMakerSection
+	)
+	default QuestHelperMakerMenuVisibility constructModeMenuVisibility()
+	{
+		return QuestHelperMakerMenuVisibility.SHOW_IF_UI_OPEN;
+	}
+
+	@ConfigSection(
+		position = 6,
 		name = "Development",
 		description = "Options that configure the quest helper development experience",
 		closedByDefault = true

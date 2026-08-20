@@ -324,61 +324,61 @@ public class Biohazard extends BasicQuestHelper
 		steps.put(1, talkToJerico);
 
 		var prepareADistraction = new ConditionalStep(this, investigateWatchtower)
-			.then(not(birdFeed), getBirdFeed)
-			.then(not(birdCage), getPigeonCage);
+			.addStep(not(birdFeed), getBirdFeed)
+			.addStep(not(birdCage), getPigeonCage);
 		steps.put(2, prepareADistraction);
 
 		var causeADistraction = new ConditionalStep(this, getPigeonCage)
-			.then(birdCage, clickPigeonCage);
+			.addStep(birdCage, clickPigeonCage);
 		steps.put(3, causeADistraction);
 
 		steps.put(4, talkToOmartToEnterWestArdougne);
 
 		var poisonFood = new ConditionalStep(this, talkToOmartToEnterWestArdougne)
-			.then(and(inMournerBackyard, rottenApple), useRottenAppleOnCauldron)
-			.then(inMournerBackyard, pickupRottenApple)
-			.then(inWestArdougne, enterBackyardOfHeadquarters);
+			.addStep(and(inMournerBackyard, rottenApple), useRottenAppleOnCauldron)
+			.addStep(inMournerBackyard, pickupRottenApple)
+			.addStep(inWestArdougne, enterBackyardOfHeadquarters);
 
 		steps.put(5, poisonFood);
 
 		var infiltrateMourners = new ConditionalStep(this, talkToOmartToEnterWestArdougne)
-			.then(inMournerBackyard, exitBackyardOfHeadquarters)
-			.then(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
-			.then(upstairsInMournerBuilding, killMourner)
-			.then(inMournerBuilding, goUpstairsInMournerBuilding)
-			.then(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
-			.then(inWestArdougne, searchSarahsCupboard);
+			.addStep(inMournerBackyard, exitBackyardOfHeadquarters)
+			.addStep(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
+			.addStep(upstairsInMournerBuilding, killMourner)
+			.addStep(inMournerBuilding, goUpstairsInMournerBuilding)
+			.addStep(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
+			.addStep(inWestArdougne, searchSarahsCupboard);
 
 		steps.put(6, infiltrateMourners);
 
 		var returnToElenaWithDistillator = new ConditionalStep(this, talkToOmartToEnterWestArdougne)
-			.then(and(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters)
-			.then(and(distillator, inWestArdougne), talkToKilron)
-			.then(distillator, talkToElenaWithDistillator)
-			.then(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
-			.then(upstairsInMournerBuilding, killMourner)
-			.then(inMournerBuilding, goUpstairsInMournerBuilding)
-			.then(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
-			.then(inWestArdougne, searchSarahsCupboard);
+			.addStep(and(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters)
+			.addStep(and(distillator, inWestArdougne), talkToKilron)
+			.addStep(distillator, talkToElenaWithDistillator)
+			.addStep(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
+			.addStep(upstairsInMournerBuilding, killMourner)
+			.addStep(inMournerBuilding, goUpstairsInMournerBuilding)
+			.addStep(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
+			.addStep(inWestArdougne, searchSarahsCupboard);
 
 		steps.put(7, returnToElenaWithDistillator);
 
 		steps.put(10, talkToTheChemist);
 
 		var smuggleInChemicals = new ConditionalStep(this, goToVarrock)
-			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasPriestSet), talkToGuidor)
-			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasNotReceivedFreePriestGownSet), talkToAsyff)
-			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyffBuy)
-			.then(and(inVarrockSouthEast, liquidHoney, ethenea), hopsVarrock)
-			.then(and(inVarrockSouthEast, liquidHoney), vinciVarrock)
-			.then(inVarrockSouthEast, chancyVarrock)
-			.then(hasChemicals, giveChemicals);
+			.addStep(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasPriestSet), talkToGuidor)
+			.addStep(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasNotReceivedFreePriestGownSet), talkToAsyff)
+			.addStep(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyffBuy)
+			.addStep(and(inVarrockSouthEast, liquidHoney, ethenea), hopsVarrock)
+			.addStep(and(inVarrockSouthEast, liquidHoney), vinciVarrock)
+			.addStep(inVarrockSouthEast, chancyVarrock)
+			.addStep(hasChemicals, giveChemicals);
 		steps.put(12, smuggleInChemicals);
 
 		steps.put(14, returnToElenaAfterSampling);
 
 		var talkToTheKing = new ConditionalStep(this, informTheKingGoUpstairs)
-			.then(isUpstairsArdougneCastle, informTheKing);
+			.addStep(isUpstairsArdougneCastle, informTheKing);
 
 		steps.put(15, talkToTheKing);
 

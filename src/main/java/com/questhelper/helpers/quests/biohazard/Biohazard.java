@@ -52,7 +52,6 @@ import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.widget.WidgetHighlight;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.QuestState;
@@ -62,7 +61,6 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
-import org.jetbrains.annotations.NotNull;
 
 public class Biohazard extends BasicQuestHelper
 {

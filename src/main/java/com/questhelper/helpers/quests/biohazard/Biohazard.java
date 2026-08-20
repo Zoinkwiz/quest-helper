@@ -34,6 +34,7 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicHelper;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -323,8 +324,8 @@ public class Biohazard extends BasicQuestHelper
 		steps.put(1, talkToJerico);
 
 		var prepareADistraction = new ConditionalStep(this, investigateWatchtower)
-			.then(LogicHelper.not(birdFeed), getBirdFeed)
-			.then(LogicHelper.not(birdCage), getPigeonCage);
+			.then(not(birdFeed), getBirdFeed)
+			.then(not(birdCage), getPigeonCage);
 		steps.put(2, prepareADistraction);
 
 		var causeADistraction = new ConditionalStep(this, getPigeonCage)

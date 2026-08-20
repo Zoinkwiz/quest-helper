@@ -208,7 +208,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToEagle = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
+		moveToEagle = new ObjectStep(this, ObjectID.EAGLEPEAK_ENTRANCE_CAVE_MULTI, new WorldPoint(2329, 3495, 0),
 			"Enter the cave at the top of Eagles' Peak. You can use a fairy ring to (AKQ), then head " +
 				"south to get there easily.");
 		eagleTravel = new NpcStep(this, NpcID.EAGLEPEAK_EAGLE_TODESERT, new WorldPoint(2027, 4964, 3),
@@ -240,7 +240,7 @@ public class DesertMedium extends ComplexStateQuestHelper
 
 		visitGenie = new NpcStep(this, NpcID.ELID_GENIE, new WorldPoint(3371, 9320, 0),
 			"Visit the genie.");
-		moveToGenie = new ObjectStep(this, 10478, new WorldPoint(3374, 2904, 0),
+		moveToGenie = new ObjectStep(this, ObjectID.ELID_FALLOFF_5, new WorldPoint(3374, 2904, 0),
 			"Climb down the crevice west of Nardah.", rope, lightSource);
 
 		talkToSimon = new NpcStep(this, NpcID.AGILITY_PYRAMID_SIMON, new WorldPoint(3346, 2827, 0),

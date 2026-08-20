@@ -82,7 +82,7 @@ public class TheDepthsOfDespair extends BasicQuestHelper
 		steps.put(2, talkToGalana);
 
 		ConditionalStep findAndReadTheVarlamoreEnvoy = new ConditionalStep(this, findTheVarlamoreEnvoy);
-		findAndReadTheVarlamoreEnvoy.addStep(varlamoreEnvoy.alsoCheckBank(questBank), readTheVarlamoreEnvoy);
+		findAndReadTheVarlamoreEnvoy.addStep(varlamoreEnvoy.alsoCheckBank(), readTheVarlamoreEnvoy);
 		steps.put(3, findAndReadTheVarlamoreEnvoy);
 
 		steps.put(4, enterCrabclawCaves);

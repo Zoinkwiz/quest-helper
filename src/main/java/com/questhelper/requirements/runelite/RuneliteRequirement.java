@@ -58,6 +58,11 @@ public class RuneliteRequirement extends AbstractRequirement
 		this(configManager, id, "false", expectedValue, text, requirements);
 	}
 
+	public RuneliteRequirement(ConfigManager configManager, String id)
+	{
+		this(configManager, id, "true", new HashMap<>());
+	}
+
 	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue)
 	{
 		this(configManager, id, expectedValue, new HashMap<>());

@@ -510,14 +510,13 @@ public class TheFinalDawn extends BasicQuestHelper
 				new WorldPoint(1286, 9438, 1),
 				new WorldPoint(1289, 9435, 1),
 				new WorldPoint(1296, 9435, 1)
-
 		);
 
 		int total = 0;
 
 		for (WorldPoint wp : wps)
 		{
-			List<LocalPoint> localPoints = QuestPerspective.getInstanceLocalPointFromReal(client, wp);
+			List<LocalPoint> localPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), wp);
 
 			if (localPoints.isEmpty()) return -1;
 
@@ -613,9 +612,12 @@ public class TheFinalDawn extends BasicQuestHelper
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
+		// Technically only applies for the cultist fight to have these foods available, but as they're recommended last
+		// It shouldn't impact any existing suggestions for players
+		food.addAlternates(ItemID.COOKED_LIZARD, ItemID.BREAM_FISH_COOKED);
 		food.setUrlSuffix("Food");
-
 		prayerPotions = new ItemRequirement("Prayer potions", ItemCollections.PRAYER_POTIONS, 3);
+		prayerPotions.addAlternates(ItemID._4DOSEMOONLIGHTPOTION, ItemID._3DOSEMOONLIGHTPOTION, ItemID._2DOSEMOONLIGHTPOTION, ItemID._1DOSEMOONLIGHTPOTION);
 
 		whistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_BASIC);
 		whistle.addAlternates(ItemID.HG_QUETZALWHISTLE_ENHANCED, ItemID.HG_QUETZALWHISTLE_PERFECTED);
@@ -743,7 +745,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		notInspectedSkeleton = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_TABLET_INSPECT, 1));
 		notInspectedDoor = not(new VarbitRequirement(VarbitID.VMQ4_FINAL_CHAMBER_DOOR_INSPECT, 1));
 		quetzalMadeSalvagerOverlook = new VarbitRequirement(VarbitID.QUETZAL_SALVAGEROVERLOOK, 1);
-		hasAtesAndActivatedTeleport = and(pendant.alsoCheckBank(questBank), new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TWILIGHT_FOUND, 1, Operation.GREATER_EQUAL));
+		hasAtesAndActivatedTeleport = and(pendant.alsoCheckBank(), new VarbitRequirement(VarbitID.PENDANT_OF_ATES_TWILIGHT_FOUND, 1, Operation.GREATER_EQUAL));
 	}
 
 	public void setupSteps()
@@ -826,7 +828,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		enterPassage.addDialogSteps("Enter the passage.");
 		pickBlueChest = new ObjectStep(this, ObjectID.TWILIGHT_TEMPLE_METZLI_CHAMBER_CHEST_CLOSED, new WorldPoint(1723, 9709, 0), "Picklock the chest in the " +
 				"hidden room. Be ready for a fight afterwards.");
-		fightEnforcer = new NpcStep(this, NpcID.VMQ4_TEMPLE_GUARD_BOSS_FIGHT, new WorldPoint(1712, 9706, 0), "Defeat the enforcer. You cannot use prayers" +
+		fightEnforcer = new NpcStep(this, NpcID.VMQ4_TEMPLE_GUARD_BOSS_FIGHT, new WorldPoint(1712, 9706, 0), "Defeat the enforcer. You cannot use prayers, or teleport out" +
 				". Step away each time he goes to attack, and step behind him or sideways if he says 'Traitor!' or 'Thief!'.");
 		pickUpEmissaryScroll = new ItemStep(this, "Pick up the emissary scroll.", emissaryScroll);
 		readEmissaryScroll = new DetailedQuestStep(this, "Read the emissary scroll.", emissaryScroll.highlighted());
@@ -850,7 +852,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		giveBonesOrMeatToDog = giveBonesOrMeatToDogNoPuzzleWrap.puzzleWrapStep("Work out how to calm down the dog.");
 		enterDoorCode = new ObjectStep(this, ObjectID.VMQ4_JANUS_HOUSE_PUZZLE_DOOR, new WorldPoint(1649, 3093, 0), "Pet the dog to see the code for the door." +
 				" Open the door using the code 'GUS'.").puzzleWrapStep("Work out the door code.");
-		openDoorWithGusCode = new ChestCodeStep(this, "GUS", 10, 0, 4, 0).puzzleWrapStep(true);
+		openDoorWithGusCode = new ChestCodeStep(this, "door", "GUS", 10, 0, 4, 0).puzzleWrapStep(true);
 		enterDoorCode.addSubSteps(openDoorWithGusCode);
 		takePotato = new ItemStep(this, "Pick up the sack of potatoes (3).", potatoes).puzzleWrapStep("Work out how to make a way to trap Janus and how to " +
 				"knock him out.");
@@ -885,7 +887,7 @@ public class TheFinalDawn extends BasicQuestHelper
 		showSackToVibia = showSackToVibiaNotPuzzleWrapped.puzzleWrapStep(true);
 		showSackToVibiaNotPuzzleWrapped.addSubSteps(goF2ToF1HideoutEnd, goToF0HideoutEnd);
 
-		takePotato.addSubSteps(removePotatoesFromSack, takeKnife, takeCoinPurse, goToF1Hideout, goDownFromF2Hideout, goF1ToF2Hideout, useKnifeOnPottedFan,
+		takePotato.addSubSteps(takeKnife, takeCoinPurse, goToF1Hideout, goDownFromF2Hideout, goF1ToF2Hideout, useKnifeOnPottedFan,
 				fillCoinPurse, emptyCoinPurse, useBranchOnCoinPurse, goToF0Hideout, goToF0HideoutEnd, goF2ToF1HideoutEnd, showSackToVibia);
 
 		searchBodyForKey = new NpcStep(this, NpcID.VMQ4_JANUS_HOUSE_JANUS_UNCONSCIOUS, new WorldPoint(1647, 3093, 0), "Search Janus.");
@@ -1243,7 +1245,7 @@ public class TheFinalDawn extends BasicQuestHelper
 			civitasTeleport
 		)));
 		panels.add(new PanelDetails("The hideout", List.of(talkToQueen, talkToCaptainVibia, inspectWindow, giveBonesOrMeatToDog, enterDoorCode, takePotato,
-				takeKnife, goToF1Hideout, takeCoinPurse, goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia,
+				removePotatoesFromSack, takeKnife, goToF1Hideout, takeCoinPurse, goF1ToF2Hideout, useKnifeOnPottedFan, fillCoinPurse, useBranchOnCoinPurse, showSackToVibia,
 				searchBodyForKey, enterTrapdoor, talkToQueenToGoCamTorum),
 				List.of(bone),
 				List.of()));

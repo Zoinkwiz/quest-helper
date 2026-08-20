@@ -140,9 +140,9 @@ public class SongOfTheElves extends BasicQuestHelper
 	ConditionalStep finalBattle;
 
 	//Zones
-	Zone ardougneCastleF1, passF1, passF0, wellEntrance, ibanRoom, ardyPrison, hideout, westArdyInstance, mournerBasement, eastArdy, llyetaF1,
+	Zone ardougneCastleF1, passF1, passF0, wellEntrance, ibanRoom, ardyPrison, hideout, westArdyInstance, mournerBasement, eastArdy, lletyaF1,
 		hudonIsland, deadTreeIsland, ledge, falls, baxThroneRoom, valley, traRoom, lightPuzzleRoom, libraryF0, libraryF1, libraryF2, iorwerthCave,
-		llyetaF0Battle, llyetaF1Battle, llyetaF1Damaged, bossArea;
+		lletyaF0Battle, lletyaF1Battle, lletyaF1Damaged, bossArea;
 
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
@@ -654,7 +654,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		inMournerBaseHQInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(mournerBasement));
 		inEastArdyInstance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(eastArdy));
 		inArdougneCastleF1Instance = new Conditions(new InInstanceRequirement(), new ZoneRequirement(ardougneCastleF1));
-		inLletyaF1 = new ZoneRequirement(llyetaF1);
+		inLletyaF1 = new ZoneRequirement(lletyaF1);
 		inValley = new ZoneRequirement(valley);
 		inTraRoom = new ZoneRequirement(traRoom);
 		inLightPuzzle = new ZoneRequirement(lightPuzzleRoom);
@@ -669,9 +669,9 @@ public class SongOfTheElves extends BasicQuestHelper
 		inBaxThroneRoom = new ZoneRequirement(baxThroneRoom);
 
 		inIorwerthCave = new ZoneRequirement(iorwerthCave);
-		inLletyaF0Battle = new Conditions(new ZoneRequirement(llyetaF0Battle));
-		inLletyaF1Battle = new Conditions(new ZoneRequirement(llyetaF1Battle));
-		inLletyaF1Damaged = new ZoneRequirement(llyetaF1Damaged);
+		inLletyaF0Battle = new Conditions(new ZoneRequirement(lletyaF0Battle));
+		inLletyaF1Battle = new Conditions(new ZoneRequirement(lletyaF1Battle));
+		inLletyaF1Damaged = new ZoneRequirement(lletyaF1Damaged);
 
 		inPassF0 = new ZoneRequirement(passF0);
 		inPassF1 = new ZoneRequirement(passF1);
@@ -679,29 +679,29 @@ public class SongOfTheElves extends BasicQuestHelper
 		inIbanRoom = new ZoneRequirement(ibanRoom);
 		inBossArea = new ZoneRequirement(bossArea);
 
-		burnedGrain1 = new VarbitRequirement(9058, 1);
-		burnedGrain2 = new VarbitRequirement(9059, 1);
-		burnedGrain3 = new VarbitRequirement(9060, 1);
-		talkedToPriest1 = new VarbitRequirement(9079, 1);
-		talkedToSarah = new VarbitRequirement(9063, 1);
-		talkedToChadwell = new VarbitRequirement(9065, 1);
+		burnedGrain1 = new VarbitRequirement(VarbitID.SOTE_WEST_FOOD1, 1);
+		burnedGrain2 = new VarbitRequirement(VarbitID.SOTE_WEST_FOOD2, 1);
+		burnedGrain3 = new VarbitRequirement(VarbitID.SOTE_WEST_FOOD3, 1);
+		talkedToPriest1 = new VarbitRequirement(VarbitID.SOTE_WEST_CHURCH, 1);
+		talkedToSarah = new VarbitRequirement(VarbitID.SOTE_WEST_NURSE, 1);
+		talkedToChadwell = new VarbitRequirement(VarbitID.SOTE_WEST_GENERAL_STORE, 1);
 		talkedToWestArdougne = new Conditions(burnedGrain1, burnedGrain2, burnedGrain3, talkedToPriest1, talkedToSarah, talkedToChadwell);
-		talkedToSilverMerchant = new VarbitRequirement(9074, 1);
-		talkedToBaker1 = new VarbitRequirement(9081, 1); // East baker
-		talkedToBaker2 = new VarbitRequirement(9073, 1); // West baker
-		talkedToGemMerchant = new VarbitRequirement(9072, 1);
-		talkedToFurTrader = new VarbitRequirement(9071, 1);
-		talkedToSpiceSeller = new VarbitRequirement(9070, 1);
-		talkedToSilkMerchant = new VarbitRequirement(9069, 1);
+		talkedToSilverMerchant = new VarbitRequirement(VarbitID.SOTE_EAST_SILVER_STORE, 1);
+		talkedToBaker1 = new VarbitRequirement(VarbitID.SOTE_EAST_BAKER_STORE2, 1); // East baker
+		talkedToBaker2 = new VarbitRequirement(VarbitID.SOTE_EAST_BAKER_STORE, 1); // West baker
+		talkedToGemMerchant = new VarbitRequirement(VarbitID.SOTE_EAST_GEM_STORE, 1);
+		talkedToFurTrader = new VarbitRequirement(VarbitID.SOTE_EAST_FUR_STORE, 1);
+		talkedToSpiceSeller = new VarbitRequirement(VarbitID.SOTE_EAST_SPICE_STORE, 1);
+		talkedToSilkMerchant = new VarbitRequirement(VarbitID.SOTE_EAST_SILK_STORE, 1);
 		talkedToMarketStalls = new Conditions(talkedToSilverMerchant, talkedToBaker1, talkedToBaker2, talkedToGemMerchant, talkedToFurTrader,
 			talkedToSpiceSeller, talkedToSilkMerchant);
-		talkedToTownCrier = new VarbitRequirement(9075, 1);
-		talkedToZenesha = new VarbitRequirement(9068, 1);
-		talkedToEstateAgent = new VarbitRequirement(9080, 1);
-		talkedToProbita = new VarbitRequirement(9067, 1);
-		talkedToAemad = new VarbitRequirement(9066, 1);
-		talkedToPriest2 = new VarbitRequirement(9078, 1);
-		talkedToOrbon = new VarbitRequirement(9064, 1);
+		talkedToTownCrier = new VarbitRequirement(VarbitID.SOTE_EAST_TOWN_CRIER, 1);
+		talkedToZenesha = new VarbitRequirement(VarbitID.SOTE_EAST_ARMOUR_STORE, 1);
+		talkedToEstateAgent = new VarbitRequirement(VarbitID.SOTE_EAST_ESTATE_AGENT, 1);
+		talkedToProbita = new VarbitRequirement(VarbitID.SOTE_EAST_PET_STORE, 1);
+		talkedToAemad = new VarbitRequirement(VarbitID.SOTE_EAST_GENERAL_STORE, 1);
+		talkedToPriest2 = new VarbitRequirement(VarbitID.SOTE_EAST_CHURCH, 1);
+		talkedToOrbon = new VarbitRequirement(VarbitID.SOTE_EAST_DOCTOR, 1);
 
 		// 9017 0->1 talked to guard in prison
 
@@ -732,23 +732,23 @@ public class SongOfTheElves extends BasicQuestHelper
 		askedAboutHefin = new VarbitRequirement(VarbitID.SOTE_HEFIN, 1, Operation.GREATER_EQUAL);
 		foundHefin = new VarbitRequirement(VarbitID.SOTE_HEFIN, 3, Operation.GREATER_EQUAL);
 
-		tracked1 = new VarbitRequirement(9028, 1);
-		tracked2 = new VarbitRequirement(9029, 1);
-		tracked3 = new VarbitRequirement(9030, 1);
-		tracked4 = new VarbitRequirement(9031, 1);
-		tracked5 = new VarbitRequirement(9032, 1);
+		tracked1 = new VarbitRequirement(VarbitID.SOTE_HUNTING_TRAIL_2, 1);
+		tracked2 = new VarbitRequirement(VarbitID.SOTE_HUNTING_TRAIL_3, 1);
+		tracked3 = new VarbitRequirement(VarbitID.SOTE_HUNTING_TRAIL_4, 1);
+		tracked4 = new VarbitRequirement(VarbitID.SOTE_HUNTING_TRAIL_5, 1);
+		tracked5 = new VarbitRequirement(VarbitID.SOTE_HUNTING_TRAIL_6, 1);
 
-		foundEoin = new VarbitRequirement(9033, 1);
+		foundEoin = new VarbitRequirement(VarbitID.SOTE_LLETYA_EOIN_FOUND, 1);
 		// foundIona, 9034 = 1
 
 		askedAboutIthell = new VarbitRequirement(VarbitID.SOTE_ITHELL, 1, Operation.GREATER_EQUAL);
 		askedAboutMeilyr = new VarbitRequirement(VarbitID.SOTE_MEILYR, 1, Operation.GREATER_EQUAL);
 
-		checkedSymbol1 = new VarbitRequirement(9041, 2);
-		checkedSymbol2 = new VarbitRequirement(9039, 2);
-		checkedSymbol3 = new VarbitRequirement(9040, 2);
-		checkedSymbol4 = new VarbitRequirement(9038, 2);
-		checkedSymbol5 = new VarbitRequirement(9037, 2);
+		checkedSymbol1 = new VarbitRequirement(VarbitID.SOTE_SYMBOL_5, 2);
+		checkedSymbol2 = new VarbitRequirement(VarbitID.SOTE_SYMBOL_3, 2);
+		checkedSymbol3 = new VarbitRequirement(VarbitID.SOTE_SYMBOL_4, 2);
+		checkedSymbol4 = new VarbitRequirement(VarbitID.SOTE_SYMBOL_2, 2);
+		checkedSymbol5 = new VarbitRequirement(VarbitID.SOTE_SYMBOL_1, 2);
 
 		learnedHowToMakeStatue = new VarbitRequirement(VarbitID.SOTE_ITHELL, 2, Operation.GREATER_EQUAL);
 		builtStatue = new VarbitRequirement(VarbitID.SOTE_ITHELL, 3, Operation.GREATER_EQUAL);
@@ -761,13 +761,13 @@ public class SongOfTheElves extends BasicQuestHelper
 		// 9037->9041 marks
 
 		// 9042->49 0->1 for holes
-		filledHole1 = new VarbitRequirement(9042, 2);
-		filledHole2 = new VarbitRequirement(9043, 2);
-		filledHole3 = new VarbitRequirement(9044, 2);
-		filledHole4 = new VarbitRequirement(9045, 2);
-		filledHole5 = new VarbitRequirement(9047, 2);
-		filledHole6 = new VarbitRequirement(9048, 2);
-		filledHole7 = new VarbitRequirement(9049, 2);
+		filledHole1 = new VarbitRequirement(VarbitID.SOTE_UPASS_HOLE_1, 2);
+		filledHole2 = new VarbitRequirement(VarbitID.SOTE_UPASS_HOLE_2, 2);
+		filledHole3 = new VarbitRequirement(VarbitID.SOTE_UPASS_HOLE_3, 2);
+		filledHole4 = new VarbitRequirement(VarbitID.SOTE_UPASS_HOLE_4, 2);
+		filledHole5 = new VarbitRequirement(VarbitID.SOTE_UPASS_HOLE_5, 2);
+		filledHole6 = new VarbitRequirement(VarbitID.SOTE_UPASS_HOLE_6, 2);
+		filledHole7 = new VarbitRequirement(VarbitID.SOTE_UPASS_HOLE_7, 2);
 
 	}
 
@@ -780,10 +780,10 @@ public class SongOfTheElves extends BasicQuestHelper
 		westArdyInstance = new Zone(new WorldPoint(2509, 3263, 0), new WorldPoint(2558, 3334, 0));
 		eastArdy = new Zone(new WorldPoint(2559, 3256, 0), new WorldPoint(2696, 3343, 0));
 		mournerBasement = new Zone(new WorldPoint(2034, 4628, 0), new WorldPoint(2045, 4651, 0));
-		llyetaF0Battle = new Zone(new WorldPoint(2882, 6157, 0), new WorldPoint(2940, 6194, 0));
-		llyetaF1Battle = new Zone(new WorldPoint(2882, 6157, 1), new WorldPoint(2940, 6194, 1));
-		llyetaF1Damaged = new Zone(new WorldPoint(2750, 6070, 1), new WorldPoint(2810, 6140, 1));
-		llyetaF1 = new Zone(new WorldPoint(2331, 3154, 1), new WorldPoint(2358, 3189, 1));
+		lletyaF0Battle = new Zone(new WorldPoint(2882, 6157, 0), new WorldPoint(2940, 6194, 0));
+		lletyaF1Battle = new Zone(new WorldPoint(2882, 6157, 1), new WorldPoint(2940, 6194, 1));
+		lletyaF1Damaged = new Zone(new WorldPoint(2750, 6070, 1), new WorldPoint(2810, 6140, 1));
+		lletyaF1 = new Zone(new WorldPoint(2331, 3154, 1), new WorldPoint(2358, 3189, 1));
 
 		hudonIsland = new Zone(new WorldPoint(2510, 3476, 0), new WorldPoint(2515, 3482, 0));
 		deadTreeIsland = new Zone(new WorldPoint(2512, 3465, 0), new WorldPoint(2513, 3475, 0));
@@ -1006,7 +1006,7 @@ public class SongOfTheElves extends BasicQuestHelper
 		talkToElunedWithSeed = new NpcStep(this, NpcID.ROVING_FEMALE_WOODELF_2OP, new WorldPoint(2322, 3160, 0), "Talk to Eluned in" +
 			" Lletya.");
 		talkToElunedWithSeed.addDialogStep("I have a seed from Baxtorian that I think needs enchanting.");
-		rubCrystal = new DetailedQuestStep(this, "Rub the teleport crystal to teleport.", crystalSeed);
+		rubCrystal = new DetailedQuestStep(this, "Rub the crystal seed to teleport.", crystalSeed);
 		talkToFigure = new NpcStep(this, NpcID.SOTE_LORD_AMLODD_VIS_UNKNOWN, new WorldPoint(3051, 4486, 0),
 			"Talk to the Mysterious Figure.");
 		talkToBaxAfterValley = new NpcStep(this, NpcID.SOTE_BAXTORIAN_VIS, new WorldPoint(2352, 3170, 0),

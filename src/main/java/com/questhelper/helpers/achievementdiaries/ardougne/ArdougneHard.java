@@ -129,13 +129,13 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		doHard.addStep(notDragSquare, dragSquareTask);
 
 		deathRuneTask = new ConditionalStep(this, enterMournerHQ);
-		deathRuneTask.addStep(inMournerHQ, enterMournerBasement);
+		deathRuneTask.addStep(new Conditions(redAtAltar, inDeath02), deathAltar);
+		deathRuneTask.addStep(new Conditions(redAtDoor, inDeath02), turnKeyMirror);
+		deathRuneTask.addStep(new Conditions(inDeath), deathRune);
 		deathRuneTask.addStep(inDeath0, deathMoveUp1);
+		deathRuneTask.addStep(inDeath12, deathMoveDown0);
 		deathRuneTask.addStep(inDeath1, deathMoveUp2);
 		deathRuneTask.addStep(inDeath2, deathMoveDown1);
-		deathRuneTask.addStep(inDeath12, deathMoveDown0);
-		deathRuneTask.addStep(new Conditions(redAtDoor, inDeath02), turnKeyMirror);
-		deathRuneTask.addStep(new Conditions(redAtAltar, inDeath02), deathRune);
 		doHard.addStep(notDeathRune, deathRuneTask);
 
 		return doHard;
@@ -158,9 +158,9 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		notDeathRune = new VarplayerRequirement(VarPlayerID.ARDOUNGE_ACHIEVEMENT_DIARY2, false, 5);
 
 		notYanHouse = new VarbitRequirement(VarbitID.POH_HOUSE_LOCATION, 6, Operation.NOT_EQUAL);
-		notYanHouse2 = new VarbitRequirement(2187, 6);
-		redAtDoor = new VarbitRequirement(1249, 1);
-		redAtAltar = new VarbitRequirement(1250, 1);
+		notYanHouse2 = new VarbitRequirement(VarbitID.POH_HOUSE_LOCATION, 6);
+		redAtDoor = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_B_EAST, 1);
+		redAtAltar = new VarbitRequirement(VarbitID.MOURNING_LIGHT_TEMPLE_1_B_WEST, 1);
 
 		earthRune = new ItemRequirement("Earth rune", ItemID.EARTHRUNE).showConditioned(notTPWatchtower);
 		lawRune = new ItemRequirement("Law runes", ItemID.LAWRUNE).showConditioned(notTPWatchtower);
@@ -184,16 +184,20 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		crystalTrink = new ItemRequirement("Crystal Trinket", ItemID.MOURNING_CRYSTAL_TRINKET).showConditioned(notDeathRune).isNotConsumed();
 		highEss = new ItemRequirement("Pure or Daeyalt essence", ItemCollections.ESSENCE_HIGH)
 			.showConditioned(notDeathRune);
-		newKey = new KeyringRequirement("New key", configManager, KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed();
+
+		var hasCompletedSOTE = new QuestRequirement(QuestHelperQuest.SONG_OF_THE_ELVES, QuestState.FINISHED);
+
+		newKey = new KeyringRequirement("New key", KeyringCollection.NEW_KEY).showConditioned(notDeathRune).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		newKey.setTooltip("Another can be found on the desk in the south-east room of the Mourner HQ basement.");
-		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS).isNotConsumed();
-		gasMask = new ItemRequirement("Gas mask", ItemID.GASMASK).isNotConsumed();
-		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNING_MOURNER_GLOVES).isNotConsumed();
-		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNING_MOURNER_CLOAK).isNotConsumed();
-		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNING_MOURNER_TOP).isNotConsumed();
-		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNING_MOURNER_LEGS).isNotConsumed();
+
+		mournerBoots = new ItemRequirement("Mourner boots", ItemID.MOURNING_MOURNER_BOOTS).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		gasMask = new ItemRequirement("Gas mask", ItemID.GASMASK).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerGloves = new ItemRequirement("Mourner gloves", ItemID.MOURNING_MOURNER_GLOVES).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerCloak = new ItemRequirement("Mourner cloak", ItemID.MOURNING_MOURNER_CLOAK).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerTop = new ItemRequirement("Mourner top", ItemID.MOURNING_MOURNER_TOP).isNotConsumed().hideConditioned(hasCompletedSOTE);
+		mournerTrousers = new ItemRequirement("Mourner trousers", ItemID.MOURNING_MOURNER_LEGS).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		mournersOutfit = new ItemRequirements("Full mourners' outfit", gasMask, mournerTop, mournerTrousers,
-			mournerCloak, mournerBoots, mournerGloves).showConditioned(notDeathRune).isNotConsumed();
+			mournerCloak, mournerBoots, mournerGloves).showConditioned(notDeathRune).isNotConsumed().hideConditioned(hasCompletedSOTE);
 		mournersOutfit.setTooltip("Another set can be obtained at the north entrance to Arandar.");
 		rake = new ItemRequirement("Rake", ItemID.RAKE)
 			.showConditioned(new Conditions(LogicType.OR, notPalmTree, notPoisonIvy)).isNotConsumed();
@@ -244,7 +248,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		moveHouse = new NpcStep(this, NpcID.POH_ESTATE_AGENT, new WorldPoint(2638, 3293, 0),
 			"Talk to an Estate agent and relocate your house to Yanille.", coins.quantity(25000));
 		moveHouse.addDialogStep("Can you move my house please?");
-		yanPOH = new ObjectStep(this, 15482, new WorldPoint(2544, 3098, 0),
+		yanPOH = new ObjectStep(this, ObjectID.POH_YANILLE_PORTAL, new WorldPoint(2544, 3098, 0),
 			"Enter your house from the portal in Yanille.");
 
 		magicGuild = new ObjectStep(this, ObjectID.MAGICGUILD_DOOR_L, new WorldPoint(2584, 3088, 0),
@@ -257,7 +261,7 @@ public class ArdougneHard extends ComplexStateQuestHelper
 		redSally = new ObjectStep(this, ObjectID.HUNTING_SAPLING_UP_RED, new WorldPoint(2474, 3239, 0),
 			"Catch a Red Salamander.", true, rope, smallFishingNet);
 
-		recharge = new ObjectStep(this, 2638, new WorldPoint(2729, 3378, 0),
+		recharge = new ObjectStep(this, ObjectID.LG_TOTEM_POLE_LEGENDS, new WorldPoint(2729, 3378, 0),
 			"Recharge some jewellery at the Totem pole in the Legends' Guild.", rechargableJewelry);
 
 		monkeyCage = new NpcStep(this, NpcID.MM_MONKEY_MINDER, new WorldPoint(2607, 3277, 0),
@@ -287,19 +291,19 @@ public class ArdougneHard extends ComplexStateQuestHelper
 			"Go down to the ground floor.", deathAccess, highEss, crystalTrink);
 		turnKeyMirror = new ObjectStep(this, ObjectID.MOURNING_TEMPLE_PILLAR_1_B, new WorldPoint(1881, 4639, 0),
 			"Enter the central area, and turn the pillar's mirror west.");
-		deathAltar = new ObjectStep(this, 34823, new WorldPoint(1860, 4639, 0),
-			"Enter the Death altar.", deathAccess, highEss, crystalTrink);
+		deathAltar = new ObjectStep(this, ObjectID.DEATHTEMPLE_RUINED, new WorldPoint(1860, 4639, 0),
+			"Enter the Death altar.", deathAccess.highlighted(), highEss, crystalTrink);
 		deathAltar.addIcon(ItemID.DEATH_TALISMAN);
 		deathRune = new ObjectStep(this, ObjectID.DEATH_ALTAR, new WorldPoint(2205, 4836, 0),
 			"Craft some death runes from essence."
 				+ "TURN THE MIDDLE PILLAR TO POINT BACK EAST OR YOU'LL HAVE TO RETURN VIA THE UNDERGROUND PASS.", highEss);
 
-		poisonIvy = new ObjectStep(this, 7580, new WorldPoint(2618, 3226, 0),
+		poisonIvy = new ObjectStep(this, ObjectID.FARMING_BUSH_PATCH_4, new WorldPoint(2618, 3226, 0),
 			"Plant and harvest poison ivy in the Ardougne Monastery bush patch. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			rake, seedDib, poisonIvySeed);
 
-		palmTree = new ObjectStep(this, 7963, new WorldPoint(2490, 3180, 0),
+		palmTree = new ObjectStep(this, ObjectID.FARMING_FRUIT_TREE_PATCH_2, new WorldPoint(2490, 3180, 0),
 			"Check the health of a palm tree near Tree Gnome Village. " +
 				"If you're waiting for it to grow and want to complete further tasks, use the tick box on panel.",
 			spade, rake, palmSap);

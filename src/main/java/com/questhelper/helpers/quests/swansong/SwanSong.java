@@ -214,18 +214,18 @@ public class SwanSong extends BasicQuestHelper
 		inBasement = new ZoneRequirement(basement);
 		// 2111 is number of trolls killed
 
-		talkedToFranklin = new VarbitRequirement(2099, 1);
-		addedLog = new VarbitRequirement(2099, 2);
-		litLog = new VarbitRequirement(2099, 3);
-		wall1Fixed = new VarbitRequirement(2100, 1);
-		wall2Fixed = new VarbitRequirement(2101, 1);
-		wall3Fixed = new VarbitRequirement(2102, 1);
-		wall4Fixed = new VarbitRequirement(2103, 1);
-		wall5Fixed = new VarbitRequirement(2104, 1);
+		talkedToFranklin = new VarbitRequirement(VarbitID.SWANSONG_FRANKLIN, 1);
+		addedLog = new VarbitRequirement(VarbitID.SWANSONG_FRANKLIN, 2);
+		litLog = new VarbitRequirement(VarbitID.SWANSONG_FRANKLIN, 3);
+		wall1Fixed = new VarbitRequirement(VarbitID.SWANSONG_WALL_1, 1);
+		wall2Fixed = new VarbitRequirement(VarbitID.SWANSONG_WALL_2, 1);
+		wall3Fixed = new VarbitRequirement(VarbitID.SWANSONG_WALL_3, 1);
+		wall4Fixed = new VarbitRequirement(VarbitID.SWANSONG_WALL_4, 1);
+		wall5Fixed = new VarbitRequirement(VarbitID.SWANSONG_WALL_5, 1);
 		wallsFixed = new Conditions(wall1Fixed, wall2Fixed, wall3Fixed, wall4Fixed, wall5Fixed);
 
 		talkedToArnold = new VarbitRequirement(VarbitID.SWANSONG_ARNOLD, 1, Operation.GREATER_EQUAL);
-		finishedFranklin = new VarbitRequirement(2099, 4);
+		finishedFranklin = new VarbitRequirement(VarbitID.SWANSONG_FRANKLIN, 4);
 		queenNearby = new NpcCondition(NpcID.SWAN_SEATROLL_QUEEN);
 
 		// 2108 = number of bones given to Mort

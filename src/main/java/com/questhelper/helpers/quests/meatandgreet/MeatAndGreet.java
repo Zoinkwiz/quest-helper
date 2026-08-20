@@ -218,7 +218,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		// enterWolfDenAndKillTheDireWolfAlpha
 		killDireWolfAlpha = new NpcStep(this, NpcID.MAG_DIREWOLF, "Kill the Dire Wolf Alpha. Use Protect from Melee to avoid most damage. His pups deal ranged damage.", combatGear, food);
 		// killed wolf: 11184 2->3
-		var needToKillWolf = new VarbitRequirement(11184, 2);
+		var needToKillWolf = new VarbitRequirement(VarbitID.MAG_MEAT, 2);
 		var exitWolfDen = new ObjectStep(this, ObjectID.DIREWOLF_CAVE_EXIT_INSTANCE, new WorldPoint(1488, 9502, 1), "Exit the wolf den, then head back to Alba in the farmhouse west of Civitas illa Fortis.");
 		// 13092 0->100
 		// 13093 0->100
@@ -226,7 +226,7 @@ public class MeatAndGreet extends BasicQuestHelper
 		// 13095 0->100
 		returnToAlba = new NpcStep(this, NpcID.MAG_ALBA, new WorldPoint(1587, 3126, 0), "Return to Alba in the farmhouse west of Civitas illa Fortis to tell them about the Dire Wolf Alpha's demise.");
 		returnToAlba.addSubSteps(exitWolfDen);
-		var needToReturnToAlba = new VarbitRequirement(11184, 3);
+		var needToReturnToAlba = new VarbitRequirement(VarbitID.MAG_MEAT, 3);
 		// 11184 3->4 after returning to alba
 		solveSupplyChainIssues = new ConditionalStep(this, returnToAlba);
 		solveSupplyChainIssues.addStep(pinPadOpen, enterCodeWrapper);
@@ -309,9 +309,9 @@ public class MeatAndGreet extends BasicQuestHelper
 			"Adjust number of spice portions to:"
 		);
 		var meatCorrect = new VarbitRequirement(VarbitID.MAG_PORTIONS_MEAT, 4, Operation.EQUAL);
-		var saladCorrect = new VarbitRequirement(11186, 2);
-		var spiceCorrect = new VarbitRequirement(11187, 1);
-		var sauceCorrect = new VarbitRequirement(11188, 3);
+		var saladCorrect = new VarbitRequirement(VarbitID.MAG_PORTIONS_SALAD, 2);
+		var spiceCorrect = new VarbitRequirement(VarbitID.MAG_PORTIONS_SPICE, 1);
+		var sauceCorrect = new VarbitRequirement(VarbitID.MAG_PORTIONS_SAUCE, 3);
 		var recipeStep = new ConditionalStep(this, adjustRecipe, "Configure the kebab recipe with Emelio.");
 		// 11189 0->1 = received test kebab
 		var giveExperimentalKebabToRenata = new NpcStep(this, NpcID.MAG_RENATA_VIS, new WorldPoint(1750, 3072, 0), "Talk to Renata to have them test your test kebab.", experimentalKebab);

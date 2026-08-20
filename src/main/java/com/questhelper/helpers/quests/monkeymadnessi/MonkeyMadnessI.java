@@ -52,7 +52,6 @@ import com.questhelper.steps.*;
 import com.questhelper.util.QHObjectID;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.*;
 
@@ -171,13 +170,13 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeAmulet.addStep(inHangar, talkToWaydarForAmuletMake);
 		makeAmulet.addStep(inFloor1, talkToDaeroForAmuletMake);
 		makeAmulet.addStep(inZooknockDungeon, leaveToPrepareForAmulet);
-		makeAmulet.setLockingCondition(amulet.alsoCheckBank(questBank));
+		makeAmulet.setLockingCondition(amulet.alsoCheckBank());
 
 		getTalisman = new ConditionalStep(this, talkToMonkeyChild);
 		getTalisman.addStep(inTempleDungeon, leaveTempleDungeon);
 		getTalisman.setLockingCondition(hasTalisman);
 
-		ItemRequirement talismans4 = anyTalisman.quantity(4).alsoCheckBank(questBank);
+		ItemRequirement talismans4 = anyTalisman.quantity(4).alsoCheckBank();
 		getBones = new ConditionalStep(this, talkToChildFor4Talismans);
 		getBones.addStep(and(talismans4, ninjaBones, gorillaBones, inTempleDungeon), killZombie);
 		getBones.addStep(and(talismans4, ninjaBones, gorillaBones), goDownToZombie);
@@ -196,14 +195,14 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		makeKaramjanGreeGree.addStep(inTempleDungeon, leaveToPrepareForTalismanRun);
 		makeKaramjanGreeGree.addStep(inMouldRoom, leaveToPrepareForTalismanRun);
 		makeKaramjanGreeGree.addStep(onApeAtollNorth, leaveToPrepareForTalismanRun);
-		makeKaramjanGreeGree.setLockingCondition(karamjanGreegree.alsoCheckBank(questBank));
+		makeKaramjanGreeGree.setLockingCondition(karamjanGreegree.alsoCheckBank());
 
 		ConditionalStep infiltratingTheMonkeys = new ConditionalStep(this, getAmuletParts);
-		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, talismans4, zombieBones.alsoCheckBank(questBank),
-			gorillaBones.alsoCheckBank(questBank),
-			ninjaBones.alsoCheckBank(questBank)), makeKaramjanGreeGree);
-		infiltratingTheMonkeys.addStep(and(talkedToGarkor, amulet.alsoCheckBank(questBank), talisman.alsoCheckBank(questBank)), getBones);
-		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, amulet.alsoCheckBank(questBank)), getTalisman);
+		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, talismans4, zombieBones.alsoCheckBank(),
+			gorillaBones.alsoCheckBank(),
+			ninjaBones.alsoCheckBank()), makeKaramjanGreeGree);
+		infiltratingTheMonkeys.addStep(and(talkedToGarkor, amulet.alsoCheckBank(), talisman.alsoCheckBank()), getBones);
+		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, amulet.alsoCheckBank()), getTalisman);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadEnchantedBar), makeAmulet);
 		infiltratingTheMonkeys.addStep(new Conditions(talkedToGarkor, hadDenturesAndMould), makeBar);
 
@@ -420,9 +419,9 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		inThroneRoom = new ZoneRequirement(throne1, throne2, throne3, throne4);
 		inJungleDemonRoom = new ZoneRequirement(jungleDemonRoom);
 
-		talkedToCaranock = new VarbitRequirement(122, 3);
+		talkedToCaranock = new VarbitRequirement(VarbitID.MM_CARANOCK, 3);
 
-		reportedBackToNarnode = new VarbitRequirement(121, 7);
+		reportedBackToNarnode = new VarbitRequirement(VarbitID.MM_NARNODE, 7);
 
 		talkedToDaero = new VarbitRequirement(VarbitID.MM_DAERO, 1, Operation.GREATER_EQUAL);
 
@@ -581,11 +580,11 @@ public class MonkeyMadnessI extends BasicQuestHelper
 
 		searchForDentures = new ObjectStep(this, ObjectID.MM_DENTURE_CRATE, new WorldPoint(2767, 2769, 0),
 			"DO NOT WALK ON THE LIGHT FLOOR. Search the stacked crates for monkey dentures.");
-		searchForDentures.addTileMarker(new WorldPoint(2767, 2768, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2766, 2768, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2767, 2767, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2766, 2767, 0), SpriteID.PLAYER_KILLER_SKULL);
-		searchForDentures.addTileMarker(new WorldPoint(2766, 2769, 0), SpriteID.PLAYER_KILLER_SKULL);
+		searchForDentures.addTileMarker(new WorldPoint(2767, 2768, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2766, 2768, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2767, 2767, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2766, 2767, 0), SpriteID.HEADICONS_PK);
+		searchForDentures.addTileMarker(new WorldPoint(2766, 2769, 0), SpriteID.HEADICONS_PK);
 		searchForDentures.addTileMarkers(new WorldPoint(2768, 2769, 0));
 		searchForDentures.addDialogStep("Yes");
 
@@ -769,7 +768,7 @@ public class MonkeyMadnessI extends BasicQuestHelper
 		));
 		killZombie = new NpcStep(this, NpcID.MM_TRANSMOGRIFICATION_SMALL_ZOMBIE_MONKEY, new WorldPoint(2808, 9201, 0), "Kill a zombie monkey for their bones.",
 			true, zombieBones);
-		killGorilla = new NpcStep(this, NpcID.MM_RELIGIOUS_GUARD, new WorldPoint(2801, 2785, 0), "Kill a gorilla in the temple for their bones.",
+		killGorilla = new NpcStep(this, NpcID.MM_RELIGIOUS_GUARD, new WorldPoint(2801, 2785, 0), "Kill a gorilla in the temple for their bones. If they can attack you they will heal on hit, so it's recommended to safespot or flinch one.",
 			true, gorillaBones);
 		((NpcStep) killGorilla).addAlternateNpcs(NpcID.MM_RELIGIOUS_TRAPDOOR_GUARD);
 		killGorilla.setLinePoints(Arrays.asList(

@@ -84,16 +84,15 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		roseTintedLens, enrichedSnapdragonSeed, enrichedSnapdragon, truthSerum, superTruthSerum, sketch, eliteHelm, eliteBody, eliteLegs, eliteBlackKnightOrSquallOutfit, cellKey,
 		silifTeleorb, strangeTeleorb, darkSquallHood, darkSquallBody, darkSquallLegs, fireOrb, waterOrb, airOrb, earthOrb, airBlock, waterBlock, earthBlock, fireBlock;
 
-	ItemRequirement toadflax, toadsLegs, guamLeaf, eyeOfNewt, iritLeaf, harralander, redSpidersEggs, garlic, silverDust, goatHorn, ranarrWeed, whiteBerries, cadantine, avantoe, moryMyreFungus,
-		chocolateDust, snapeGrass, kebbitTeethdust, lantadyme, potatoCactus, dwarfWeed, wineOfZamorak, snapdragon, tarromin, limpwurt, kwuarm, emptyDruidPouch, fullDruidPouch, silverSickleB;
+	ItemRequirement emptyDruidPouch;
+	ItemRequirement fullDruidPouch;
+	ItemRequirement silverSickleB;
 
 	FreeInventorySlotRequirement emptySlots9, emptySlots16;
 
 	Requirement doorNeedsEarthRune, doorNeedsMindRune, doorNeedsAirRune, doorNeedsFireRune, doorNeedsWaterRune, isElectricBookcase1, isElectricBookcase2, isElectricBookcase3, isElectricBookcase4,
 		isElectricBookcase5, isElectricBookcase6, isElectricBookcase7;
 
-	Requirement hadToadflax, hadToadsLegs, hadGuamLeaf, hadEyeOfNewt, hadIritLeaf, hadHarralander, hadRedSpidersEggs, hadGarlic, hadSilverDust, hadGoatHorn, hadRanarrWeed, hadWhiteBerries, hadCadantine, hadAvantoeForHunterPotion, hadMortMyreFungus,
-		hadChocolateDust, hadSnapeGrass, hadKebbitTeethdustForHunterPotion, hadLantadyme, hadPotatoCactus, hadDwarfWeed, hadWineOfZamorak, hadSnapdragon, hadTarromin, hadLimpwurt, hadKwuarm, hadEmptyDruidPouch, hadFullDruidPouch, hadSilverSickleB;
 	Requirement isUpstairsNearThaerisk, assassinsNearby, paidLaunderer, talkedToLaunderer, trapSetUp, trapBaited, broavTrapped, broavNearby, isNearTable, claimedRunes,
 		hasBroav, inMovarioFirstRoom, inMovarioDoorRoom, inLibrary, isNextToSpiralStaircase, disarmedStaircase, inMovarioBaseF1, inMovarioBaseF2,
 		hadRubyKey, searchedBedForTraps, pulledPaintingLever, inWeightRoom, teleportedToDraynor, inPortSarim, inDoorway, purchasedSnapdragon, teleportedToPortSarim, talkedToThaeriskWithSeed,
@@ -182,16 +181,16 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		steps.put(4, goGetBroav);
 
 		ConditionalStep goTrapBroav = new ConditionalStep(this, setupTrap);
-		goTrapBroav.addStep(unconsciousBroav.alsoCheckBank(questBank), returnBroavToHuntingExpert);
+		goTrapBroav.addStep(unconsciousBroav.alsoCheckBank(), returnBroavToHuntingExpert);
 		goTrapBroav.addStep(broavTrapped, retrieveBroav);
 		goTrapBroav.addStep(trapBaited, waitForBroavToGetTrapped);
 		goTrapBroav.addStep(trapSetUp, useFungusOnTrap);
 		steps.put(5, goTrapBroav);
 
 		ConditionalStep goTrackMovario = new ConditionalStep(this, goTrapBroav);
-		goTrackMovario.addStep(and(broavNearby, dirtyShirt.alsoCheckBank(questBank), isNearTable), useDirtyShirtOnBroav);
-		goTrackMovario.addStep(and(hasBroav, dirtyShirt.alsoCheckBank(questBank), isNearTable), dropBroav);
-		goTrackMovario.addStep(and(hasBroav, dirtyShirt.alsoCheckBank(questBank)), goToBrokenTable);
+		goTrackMovario.addStep(and(broavNearby, dirtyShirt.alsoCheckBank(), isNearTable), useDirtyShirtOnBroav);
+		goTrackMovario.addStep(and(hasBroav, dirtyShirt.alsoCheckBank(), isNearTable), dropBroav);
+		goTrackMovario.addStep(and(hasBroav, dirtyShirt.alsoCheckBank()), goToBrokenTable);
 		goTrackMovario.addStep(hasBroav, talkToLaunderer);
 		steps.put(6, goTrackMovario);
 		steps.put(7, goTrackMovario);
@@ -721,8 +720,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		broav = new ItemRequirement("Broav", ItemID.WGS_BROAV);
 		movariosNotesV1 = new ItemRequirement("Movario's notes (volume 1)", ItemID.WGS_RESEARCHNOTES_1);
 		movariosNotesV2 = new ItemRequirement("Movario's notes (volume 2)", ItemID.WGS_RESEARCHNOTES_2);
-		movariosNotesV1InBank = new ItemRequirement("Movario's notes (volume 1)", ItemID.WGS_RESEARCHNOTES_1).alsoCheckBank(questBank);
-		movariosNotesV2InBank = new ItemRequirement("Movario's notes (volume 2)", ItemID.WGS_RESEARCHNOTES_2).alsoCheckBank(questBank);
+		movariosNotesV1InBank = new ItemRequirement("Movario's notes (volume 1)", ItemID.WGS_RESEARCHNOTES_1).alsoCheckBank();
+		movariosNotesV2InBank = new ItemRequirement("Movario's notes (volume 2)", ItemID.WGS_RESEARCHNOTES_2).alsoCheckBank();
 		wastePaperBasket = new ItemRequirement("Waste-paper basket", ItemID.WGS_WASTEPAPERBASKET_INV);
 		rubyKey = new ItemRequirement("Ruby key", ItemID.WGS_KEY_RUBY);
 		teleorb = new ItemRequirement("Teleorb", ItemID.WGS_COM_TELE_ORB);
@@ -773,64 +772,6 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		fireBlock = new ItemRequirement("Fire block", ItemID.WGS_GUTHIX_TEMPLE_ELEMENTAL_KEY_FIRE);
 		fireBlock.setTooltip("You can get another by searching the recess near the middle cavity");
 
-		toadflax = new ItemRequirement("Toadflax", ItemID.TOADFLAX);
-		toadsLegs = new ItemRequirement("Toad's legs", ItemID.TOADS_LEGS);
-		guamLeaf = new ItemRequirement("Guam leaf", ItemID.GUAM_LEAF);
-		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
-		iritLeaf = new ItemRequirement("Irit leaf", ItemID.IRIT_LEAF);
-		harralander = new ItemRequirement("Harralander", ItemID.HARRALANDER);
-		redSpidersEggs = new ItemRequirement("Red spider's eggs", ItemID.RED_SPIDERS_EGGS);
-		garlic = new ItemRequirement("Garlic", ItemID.GARLIC);
-		silverDust = new ItemRequirement("Silver dust", ItemID.SILVER_DUST);
-		goatHorn = new ItemRequirement("Goat horn dust", ItemID.GROUND_DESERT_GOAT_HORN);
-		ranarrWeed = new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED);
-		whiteBerries = new ItemRequirement("White berries", ItemID.WHITE_BERRIES);
-		cadantine = new ItemRequirement("Cadantine", ItemID.CADANTINE);
-		avantoe = new ItemRequirement("Avantoe", ItemID.AVANTOE);
-		moryMyreFungus = new ItemRequirement("Mory myre fungus", ItemID.MORTMYREMUSHROOM);
-		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
-		snapeGrass = new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS);
-		kebbitTeethdust = new ItemRequirement("Kebbit teeth dust", ItemID.HUNTINGBEAST_SABRETEETH_DUST);
-		lantadyme = new ItemRequirement("Lantadyme", ItemID.LANTADYME);
-		potatoCactus = new ItemRequirement("Potato cactus", ItemID.CACTUS_POTATO);
-		dwarfWeed = new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED);
-		wineOfZamorak = new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK);
-		snapdragon = new ItemRequirement("Snapdragon", ItemID.SNAPDRAGON);
-		tarromin = new ItemRequirement("Tarromin", ItemID.TARROMIN);
-		limpwurt = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT);
-		kwuarm = new ItemRequirement("Kwuarm", ItemID.KWUARM);
-
-		// None used!
-		hadToadflax = or(toadflax, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadToadsLegs = or(toadsLegs, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadGuamLeaf = or(guamLeaf, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadEyeOfNewt = or(eyeOfNewt, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadIritLeaf = or(iritLeaf, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadHarralander = or(harralander, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadRedSpidersEggs = or(redSpidersEggs, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadGarlic = or(garlic, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSilverDust = or(silverDust, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadGoatHorn = or(goatHorn, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadRanarrWeed = or(ranarrWeed, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadWhiteBerries = or(whiteBerries, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadCadantine = or(cadantine, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadAvantoeForHunterPotion = or(avantoe, new VarbitRequirement(10924, 1), new VarbitRequirement(10924, 3));
-		hadMortMyreFungus = or(mortMyreFungus, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadChocolateDust = or(chocolateDust, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSnapeGrass = or(snapeGrass, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadKebbitTeethdustForHunterPotion = or(kebbitTeethdust, new VarbitRequirement(10924, 2), new VarbitRequirement(10924, 3));
-		hadLantadyme = or(lantadyme, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadPotatoCactus = or(potatoCactus, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadDwarfWeed = or(dwarfWeed, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadWineOfZamorak = or(wineOfZamorak, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSnapdragon = or(snapdragon, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadTarromin = or(tarromin, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadLimpwurt = or(limpwurt, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadKwuarm = or(kwuarm, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadEmptyDruidPouch = or(emptyDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadFullDruidPouch = or(fullDruidPouch, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-		hadSilverSickleB = or(silverSickleB, new VarbitRequirement(0, 1), new VarbitRequirement(0, 1));
-
 		// Requirements
 		upstairsNearThaeriskZone = new Zone(new WorldPoint(2898, 3448, 1), new WorldPoint(2917, 3452, 1));
 		isUpstairsNearThaerisk = new ZoneRequirement(upstairsNearThaeriskZone);
@@ -841,8 +782,8 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		trapSetUp = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 1);
 		trapBaited = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 2, Operation.GREATER_EQUAL);
 		broavTrapped = new VarbitRequirement(VarbitID.WGS_PIT_TRAP_BROAV, 4);
-		broavNearby = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.WGS_BROAV, 13516), 16);
-		hasBroav = or(broavNearby, broav.alsoCheckBank(questBank));
+		broavNearby = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.WGS_BROAV, NpcID.WGS_WASHERMAN), 16);
+		hasBroav = or(broavNearby, broav.alsoCheckBank());
 
 		nearTable = new Zone(new WorldPoint(2516, 3246, 0), new WorldPoint(2522, 3252, 0));
 		isNearTable = new ZoneRequirement(nearTable);
@@ -864,18 +805,18 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		library = new Zone(new WorldPoint(4166, 4946, 0), new WorldPoint(4190, 4968, 0));
 		inLibrary = new ZoneRequirement(library);
 
-		isElectricBookcase1 = new VarbitRequirement(10763, 1);
-		isElectricBookcase2 = new VarbitRequirement(10764, 1);
-		isElectricBookcase3 = new VarbitRequirement(10765, 1);
-		isElectricBookcase4 = new VarbitRequirement(10766, 1);
-		isElectricBookcase5 = new VarbitRequirement(10767, 1);
-		isElectricBookcase6 = new VarbitRequirement(10768, 1);
-		isElectricBookcase7 = new VarbitRequirement(10769, 1);
+		isElectricBookcase1 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_1, 1);
+		isElectricBookcase2 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_2, 1);
+		isElectricBookcase3 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_3, 1);
+		isElectricBookcase4 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_4, 1);
+		isElectricBookcase5 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_5, 1);
+		isElectricBookcase6 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_6, 1);
+		isElectricBookcase7 = new VarbitRequirement(VarbitID.WGS_WIRE_FLOOR_SECTION_7, 1);
 
 		nextToSpiralStaircase = new Zone(new WorldPoint(4180, 4949, 0), new WorldPoint(4183, 4952, 0));
 		isNextToSpiralStaircase = new ZoneRequirement(nextToSpiralStaircase);
 
-		disarmedStaircase = new VarbitRequirement(10799, 1);
+		disarmedStaircase = new VarbitRequirement(VarbitID.WGS_STAIR_TRAP_DEAD, 1);
 
 		movarioBaseF1 = new Zone(new WorldPoint(4169, 4942, 1), new WorldPoint(4189, 4962, 1));
 		inMovarioBaseF1 = new ZoneRequirement(movarioBaseF1);
@@ -884,9 +825,9 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		inMovarioBaseF2 = new ZoneRequirement(movarioBaseF2);
 
 		hadRubyKey = or(rubyKey, new VarbitRequirement(VarbitID.WGS, 19, Operation.GREATER_EQUAL));
-		searchedBedForTraps = new VarbitRequirement(10798, 1);
+		searchedBedForTraps = new VarbitRequirement(VarbitID.WGS_BEDCHEST_TRAP_DISABLED, 1);
 
-		pulledPaintingLever = new VarbitRequirement(10758, 1);
+		pulledPaintingLever = new VarbitRequirement(VarbitID.WGS_MOVED_PAINTING, 1);
 
 		weightRoom = new Zone(new WorldPoint(4177, 4944, 1), new WorldPoint(4181, 4947, 1));
 		inWeightRoom = new ZoneRequirement(weightRoom);
@@ -913,13 +854,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		onLunarSpellbook = new SpellbookRequirement(Spellbook.LUNAR);
 
-		notContactedTurael = new VarbitRequirement(10785, 0);
-		notContactedDuradel = new VarbitRequirement(10786, 0);
-		notContactedMazchna = new VarbitRequirement(10787, 0);
-		notRecruitedGhommal = new VarbitRequirement(10788, 0);
-		notRecruitedHarrallak = new VarbitRequirement(10789, 0);
-		notRecruitedSloane = new VarbitRequirement(10790, 0);
-		notContactedCyrisus = new VarbitRequirement(10791, 0);
+		notContactedTurael = new VarbitRequirement(VarbitID.WGS_TURAEL_RECRUIT, 0);
+		notContactedDuradel = new VarbitRequirement(VarbitID.WGS_DURADEL_RECRUIT, 0);
+		notContactedMazchna = new VarbitRequirement(VarbitID.WGS_MAZCHNA_RECRUIT, 0);
+		notRecruitedGhommal = new VarbitRequirement(VarbitID.WGS_GHOMMAL_RECRUIT, 0);
+		notRecruitedHarrallak = new VarbitRequirement(VarbitID.WGS_HARRALLAK_RECRUIT, 0);
+		notRecruitedSloane = new VarbitRequirement(VarbitID.WGS_SLOANE_RECRUIT, 0);
+		notContactedCyrisus = new VarbitRequirement(VarbitID.WGS_CYRISUS_RECRUIT, 0);
 
 		f1WarriorsGuild = new Zone(new WorldPoint(2835, 3531, 1), new WorldPoint(3878, 3558, 1));
 		onF1WarriorsGuild = new ZoneRequirement(f1WarriorsGuild);
@@ -978,7 +919,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 10780 2->3 represents state of Silif
 		givenArmourToSilif = new VarbitRequirement(VarbitID.WGS, 550, Operation.GREATER_EQUAL);
 
-		silifIsFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 13522, 16);
+		silifIsFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, NpcID.WGS_SILIF_FOLLOWER_ARMOUR, 16);
 		seenMap = new VarbitRequirement(VarbitID.WGS, 580, Operation.GREATER_EQUAL);
 
 		squallFightRoom = new Zone(new WorldPoint(4126, 4840, 2), new WorldPoint(4151, 4861, 2));
@@ -1043,7 +984,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		placedEarthBlock = new VarbitRequirement(VarbitID.WGS_EARTH_KEY_USED, 1);
 		notPlacedFireBlock = new VarbitRequirement(VarbitID.WGS_FIRE_KEY_USED, 0);
 
-		noWeaponOrShieldEquipped = new ComplexRequirement("No weapon or shield equipped", new NoItemRequirement("", ItemSlots.WEAPON), new NoItemRequirement("", ItemSlots.SHIELD));
+		noWeaponOrShieldEquipped = new NoItemRequirement("Nothing equipped in your hands", ItemSlots.EMPTY_HANDS);
 
 		airCavity = new Zone(new WorldPoint(4107, 5095, 0), new WorldPoint(4119, 5116, 0));
 		inAirCavity = new ZoneRequirement(airCavity);
@@ -1096,7 +1037,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 		// 3->4 told to go to hunter expert
 
 		talkToHuntingExpert = new NpcStep(this, NpcID.HUNTING_JUNGLE_INFORMATION, new WorldPoint(2525, 2916, 0),
-			"Talk to the Hunting Expert in his hut in the middle of the Feldip Hills hunting area.", knife, logs);
+			"Talk to the Hunting Expert in her hut in the middle of the Feldip Hills hunting area.", knife, logs);
 		talkToHuntingExpert.addTeleport(feldipHillsTeleport);
 		talkToHuntingExpert.addDialogSteps("Do you think you could help me with broavs?", "A creature to help track down a person.");
 
@@ -1111,7 +1052,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		goToBrokenTable = new DetailedQuestStep(this, new WorldPoint(2519, 3248, 0), "Go to the broken table in the middle of the Khazard side of the Khazard-Gnome battlefield.", broav);
 		goToBrokenTable.addTeleport(khazardTeleport);
-		goToBrokenTable.setHighlightZone(nearTable);
+		goToBrokenTable.addHighlightZone(nearTable);
 
 		dropBroav = new DetailedQuestStep(this, "Drop your broav.", broav.highlighted());
 
@@ -1122,8 +1063,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		enterMovarioBase = new ObjectStep(this, ObjectID.WGS_BF_TABLE_BROKEN2_OPEN, new WorldPoint(2519, 3249, 0), "Enter Movario's base under the broken table in the Khazard Battlefield.");
 
-		// TODO: Update hardcoded 54117 to CHEST_54117
-		claimRunes = new ObjectStep(this, 54117, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
+		claimRunes = new ObjectStep(this, ObjectID.WGS_MOVARIO_RUNE_CHEST, new WorldPoint(4124, 4984, 0), "Search the open chest in the far north of the area for some runes.");
 
 		// 4066 122878 -> 385022
 		// 15064 0->100
@@ -1371,13 +1311,13 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		talkToAkrisaeAfterRecruitment = new NpcStep(this, NpcID.WGS_AKRISAE, new WorldPoint(2989, 3342, 0),
 			"Return to Akrisae in the White Knights' Castle, on the ground floor on the east side.", normalSpellbook, emptySlots9,
-			ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)),
-			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank(questBank)), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
+			ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank()), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank()),
+			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank()), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
 		// 10838 0->1
 		// 10826 0->1
 		enterBlackKnightFortress = new ObjectStep(this, ObjectID.BKFORTRESSDOOR1, new WorldPoint(3016, 3514, 0), "Enter the Black Knights' Fortress. Akrisae will give you a one-off teleport there.",
-			normalSpellbook, emptySlots9, ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank(questBank)),
-			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank(questBank)), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
+			normalSpellbook, emptySlots9, ironChainbody.equipped().hideConditioned(squallOutfit.alsoCheckBank()), bronzeMedHelm.equipped().hideConditioned(squallOutfit.alsoCheckBank()),
+			squallOutfit.equipped().showConditioned(squallOutfit.alsoCheckBank()), unpoweredOrb.hideConditioned(hasCastChargeOrb), chargeOrbSpell.hideConditioned(hasCastChargeOrb));
 		// 10962 0->1 when teleported
 		enterBlackKnightFortress.addDialogStep("Yes.");
 		pushHiddenWall = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Push the wall to enter a secret room.");

@@ -79,7 +79,7 @@ public class BearYourSoul extends BasicQuestHelper
 	{
 		dustyKeyOr70AgilOrKeyMasterTeleport =
 		new KeyringRequirement("Dusty key, or another way to get into the deep Taverley Dungeon",
-			configManager, KeyringCollection.DUSTY_KEY).isNotConsumed();
+			KeyringCollection.DUSTY_KEY).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		damagedSoulBearer = new ItemRequirement("Damaged soul bearer", ItemID.ARCEUUS_SOULBEARER_DAMAGED);
 	}

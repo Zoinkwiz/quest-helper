@@ -163,6 +163,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 		piety = new PrayerRequirement("Piety", Prayer.PIETY);
 
 		barbRod = new ItemRequirement("Barbarian fishing rod", ItemID.BRUT_FISHING_ROD).showConditioned(notCatchSturgeon).isNotConsumed();
+		barbRod.addAlternates(ItemID.FISHINGROD_PEARL_BRUT);
 		feather = new ItemRequirement("Feathers", ItemID.FEATHER).showConditioned(notCatchSturgeon);
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notYewLong).isNotConsumed();
 		bowString = new ItemRequirement("Bow string", ItemID.BOW_STRING).showConditioned(notYewLong);
@@ -173,7 +174,7 @@ public class KandarinHard extends ComplexStateQuestHelper
 
 		Conditions not70Agility = new Conditions(LogicType.NOR, new SkillRequirement(Skill.AGILITY, 70, true));
 
-		dustyKey = new KeyringRequirement("Dusty Key", configManager, KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
+		dustyKey = new KeyringRequirement("Dusty Key", KeyringCollection.DUSTY_KEY).showConditioned(new Conditions(not70Agility,
 			notWaterOrb)).isNotConsumed();
 		dustyKey.setTooltip("You can get this by killing the Jailer in the Black Knights Base in Taverley Dungeon and" +
 			" using the key he drops to enter the jail cell there to talk to Velrak for the dusty key");

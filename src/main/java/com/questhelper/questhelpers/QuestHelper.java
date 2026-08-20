@@ -24,13 +24,14 @@
  */
 package com.questhelper.questhelpers;
 
+import com.google.gson.Gson;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
-import com.questhelper.bank.QuestBank;
+import com.questhelper.panel.ManualStepSkipStore;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
@@ -39,6 +40,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.rewards.*;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
+import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
@@ -55,8 +57,10 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
@@ -70,9 +74,6 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Inject
 	protected RuneliteObjectManager runeliteObjectManager;
 
-	@Inject
-	protected QuestBank questBank;
-
 	@Getter
 	@Setter
 	protected QuestHelperConfig config;
@@ -80,12 +81,23 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Inject
 	private EventBus eventBus;
 
+	@Inject
+	public Gson gson;
+
 	@Getter
 	private QuestStep currentStep;
 
 	@Getter
 	@Setter
 	private QuestHelperQuest quest;
+
+	/**
+	 * When set (e.g. construct preview / imported player guides), used for sidebar and step overlays
+	 * instead of {@link QuestHelperQuest#getName()} from {@link #quest}.
+	 */
+	@Getter
+	@Setter
+	private String playerFacingQuestName;
 
 	@Setter
 	private Injector injector;
@@ -99,6 +111,8 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Getter
 	@Setter
 	protected List<Integer> sidebarOrder;
+
+	protected QuestState lastQuestState;
 
 	@Override
 	public void configure(Binder binder)
@@ -119,6 +133,49 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		runeliteObjectManager.removeGroupAndSubgroups(toString());
 	}
 
+	/**
+	 * Human-readable quest title for UI (sidebar, overlays). Uses {@link #playerFacingQuestName} when set,
+	 * otherwise the linked {@link QuestHelperQuest} name, otherwise a generic label.
+	 */
+	public String getDisplayedQuestName()
+	{
+		if (playerFacingQuestName != null && !playerFacingQuestName.isBlank())
+		{
+			return playerFacingQuestName.trim();
+		}
+		if (quest != null)
+		{
+			return quest.getName();
+		}
+		return "Quest Helper";
+	}
+
+	/**
+	 * Persists a manual skip flag for one step (sidebar checkbox) and notifies the helper to refresh branch logic.
+	 */
+	public void notifyManualSidebarSkipChanged(String persistenceKey, boolean skipped)
+	{
+		if (persistenceKey == null || persistenceKey.isBlank())
+		{
+			return;
+		}
+		ManualStepSkipStore.put(configManager, gson, getDisplayedQuestName(), persistenceKey, skipped);
+		onManualSidebarSkipsPersistedChanged();
+	}
+
+	public void resetAllManualSidebarSkips()
+	{
+		ManualStepSkipStore.clearAll(configManager, getDisplayedQuestName());
+		onManualSidebarSkipsPersistedChanged();
+	}
+
+	/**
+	 * Hook for helpers that merge persisted skips with runtime state (e.g. maker preview).
+	 */
+	protected void onManualSidebarSkipsPersistedChanged()
+	{
+	}
+
 	public abstract boolean updateQuest();
 
 	public void debugStartup(QuestHelperConfig config)
@@ -130,6 +187,13 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		if (step != null)
 		{
 			currentStep = step;
+			currentStep.startUp();
+			eventBus.register(currentStep);
+		}
+		else if (!hasQuestStateBecomeFinished() && getState(client) == QuestState.FINISHED)
+		{
+			currentStep = new DetailedQuestStep(this, "Quest completed!");
+			instantiateStep(currentStep);
 			currentStep.startUp();
 			eventBus.register(currentStep);
 		}
@@ -151,13 +215,29 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	protected void instantiateSteps(Collection<QuestStep> steps)
 	{
+		instantiateSteps(steps, new HashSet<>());
+	}
+
+	private void instantiateSteps(Collection<QuestStep> steps, Set<QuestStep> visited)
+	{
+		if (steps == null)
+		{
+			return;
+		}
+
 		for (QuestStep step : steps)
 		{
+			if (step == null || !visited.add(step))
+			{
+				continue;
+			}
+
 			instantiateStep(step);
 			if (step instanceof OwnerStep)
 			{
-				instantiateSteps(((OwnerStep) step).getSteps());
+				instantiateSteps(((OwnerStep) step).getSteps(), visited);
 			}
+			instantiateSteps(step.getSubsteps(), visited);
 		}
 	}
 
@@ -212,9 +292,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 			.build()
 		);
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getQuest().getName())
+			.left(getDisplayedQuestName())
 			.leftColor(getConfig().debugColor())
-			.right(getVar() + "")
+			.right(getQuest() != null ? String.valueOf(getVar()) : "—")
 			.rightColor(getConfig().debugColor())
 			.build()
 		);
@@ -222,12 +302,20 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	public int getVar()
 	{
+		if (quest == null)
+		{
+			return 0;
+		}
 		return quest.getVar(client);
 	}
 
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	public boolean hasQuestStateBecomeFinished()
 	{
-
+		var currentQuestState = getState(client);
+		if (lastQuestState == null) lastQuestState = currentQuestState;
+		boolean questStateEnteredFinished = currentQuestState == QuestState.FINISHED && lastQuestState != QuestState.FINISHED;
+		lastQuestState = currentQuestState;
+		return questStateEnteredFinished;
 	}
 
 	protected void setupZones()

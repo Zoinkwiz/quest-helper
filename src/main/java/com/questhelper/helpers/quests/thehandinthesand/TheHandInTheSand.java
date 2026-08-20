@@ -43,6 +43,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -186,12 +187,12 @@ public class TheHandInTheSand extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		notTeleportedToSarim = new VarbitRequirement(1531, 0);
+		notTeleportedToSarim = new VarbitRequirement(VarbitID.HANDSAND_TELE, 0);
 		inYanille = new ZoneRequirement(yanille);
 		inLightSpot = new ZoneRequirement(lightSpot);
-		receivedBottledWater = new VarbitRequirement(1532, 1);
-		vialPlaced = new VarbitRequirement(1537, 1);
-		madeTruthSerum = new VarbitRequirement(1532, 5);
+		receivedBottledWater = new VarbitRequirement(VarbitID.HANDSAND_SERUM, 1);
+		vialPlaced = new VarbitRequirement(VarbitID.HANDSAND_COUNTER_MULTI, 1);
+		madeTruthSerum = new VarbitRequirement(VarbitID.HANDSAND_SERUM, 5);
 	}
 
 	public void setupSteps()

@@ -26,23 +26,13 @@
 package com.questhelper.helpers.quests.recruitmentdrive;
 
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.ObjectStep;
-import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.NpcStep;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MsHynnAnswerDialogQuizStep extends ConditionalStep
+public class MsHynnAnswerDialogQuizStep extends NpcStep
 {
-	private QuestStep leaveRoom, talkToMsHynnTerprett;
-
-	private final int VARBIT_FINISHED_ROOM = 665;
-	private final int VARBIT_PUZZLE_SOLUTION = 667;
-
 	String[] answers = {
 		"unknown",
 		"10",
@@ -52,56 +42,46 @@ public class MsHynnAnswerDialogQuizStep extends ConditionalStep
 		"zero"
 	};
 
-	public MsHynnAnswerDialogQuizStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
+	public MsHynnAnswerDialogQuizStep(QuestHelper questHelper)
 	{
-		super(questHelper, step, requirements);
+		super(questHelper, NpcID.RD_OBSERVER_ROOM_7, "Talk to Ms Hynn Terprett and answer the riddle.");
 
-		talkToMsHynnTerprett = step;
-		talkToMsHynnTerprett.addDialogSteps(
+		this.addDialogSteps(
 			"The wolves.",
 			"Bucket A (32 degrees)",
 			"The number of false statements here is three.",
-			"Zero.");
-		addSteps();
+			"Zero."
+		);
+	}
+
+	private void updateAnswer(int answerID)
+	{
+		if (answerID == 0 || answerID > answers.length)
+		{
+			this.setText("Talk to Ms Hynn Terprett and answer the riddle.");
+			return;
+		}
+		var answer = "The answer is " + answers[answerID] + ".";
+		this.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
 	}
 
 	@Override
 	public void startUp()
 	{
 		super.startUp();
-		int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
-		if (answerID == 0)
-		{
-			return;
-		}
-		String answer = "The answer is " + answers[answerID] + ".";
-		talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
+		this.updateAnswer(client.getVarbitValue(VarbitID.RD_TEMPLOCK_2));
 	}
 
 	@Override
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	public void onVarbitChanged(VarbitChanged event)
 	{
-		int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
-		if (answerID == 0)
+		super.onVarbitChanged(event);
+
+		if (event.getVarbitId() != VarbitID.RD_TEMPLOCK_2)
 		{
 			return;
 		}
-		String answer = "The answer is " + answers[answerID] + ".";
-		talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
-	}
 
-	private void addSteps()
-	{
-		VarbitRequirement finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
-		leaveRoom = new ObjectStep(questHelper, 7354, "Leave through the door to enter the portal and continue.");
-
-		addStep(finishedRoomCondition, leaveRoom);
-	}
-
-	public List<QuestStep> getPanelSteps()
-	{
-		List<QuestStep> steps = new ArrayList<>();
-		steps.add(leaveRoom);
-		return steps;
+		this.updateAnswer(event.getValue());
 	}
 }

@@ -29,10 +29,11 @@ package com.questhelper.requirements.player;
 
 import com.questhelper.requirements.AbstractRequirement;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.gameval.InventoryID;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -45,19 +46,21 @@ import java.util.Locale;
 public class FreeInventorySlotRequirement extends AbstractRequirement
 {
 	private final int NUM_INVENTORY_SLOTS_TOTAL = 28;
-	private InventoryID inventoryID;
+
+	private final int inventoryID;
+
+	@Setter
 	private int numSlotsFree;
 
 	/**
 	 * Checks if the player has a required number of slots free in a given
 	 * {@link InventoryID}
 	 *
-	 * @param inventoryID the inventory to check
 	 * @param numSlotsFree the required number of slots free
 	 */
 	public FreeInventorySlotRequirement(int numSlotsFree)
 	{
-		this.inventoryID = InventoryID.INVENTORY;
+		this.inventoryID = InventoryID.INV;
 		this.numSlotsFree = numSlotsFree;
 	}
 
@@ -82,6 +85,6 @@ public class FreeInventorySlotRequirement extends AbstractRequirement
 	@Override
 	public String getDisplayText()
 	{
-		return getNumSlotsFree() + " free " + getInventoryID().name().toLowerCase(Locale.ROOT).replaceAll("_", " ") + " slots";
+		return getNumSlotsFree() + " free inventory slots";
 	}
 }

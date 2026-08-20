@@ -258,13 +258,13 @@ public class SinsOfTheFather extends BasicQuestHelper
 		steps.put(110, valveStep);
 
 		ConditionalStep getLogs = new ConditionalStep(this, cutLogs);
-		getLogs.addStep(blisterwood8.alsoCheckBank(questBank), bringVanesculaLogs);
+		getLogs.addStep(blisterwood8.alsoCheckBank(), bringVanesculaLogs);
 
 		steps.put(112, getLogs);
 
 		ConditionalStep bringItemsToVertida = new ConditionalStep(this, cutLogs);
 		bringItemsToVertida.addStep(new Conditions(inNewBase, blisterwood8), bringVertidaLogs);
-		bringItemsToVertida.addStep(blisterwood8.alsoCheckBank(questBank), goDownToVerditaWithLogs);
+		bringItemsToVertida.addStep(blisterwood8.alsoCheckBank(), goDownToVerditaWithLogs);
 		steps.put(114, bringItemsToVertida);
 
 		steps.put(116, talkToVertidaForFlail);
@@ -347,11 +347,11 @@ public class SinsOfTheFather extends BasicQuestHelper
 
 		inPuzzleInterface = new WidgetTextRequirement(665, 7, "1");
 
-		talkedToKael = new VarbitRequirement(10347, 1);
-		talkedToVertida = new VarbitRequirement(10348, 1);
-		talkedToPolmafi = new VarbitRequirement(10350, 2);
-		talkedToRadigad = new VarbitRequirement(10351, 1);
-		talkedToIvan = new VarbitRequirement(10349, 1);
+		talkedToKael = new VarbitRequirement(VarbitID.MYQ5_KAEL_CONVINCED, 1);
+		talkedToVertida = new VarbitRequirement(VarbitID.MYQ5_VERTIDA_CONVINCED, 1);
+		talkedToPolmafi = new VarbitRequirement(VarbitID.MYQ5_POLMAFI_CONVINCED, 2);
+		talkedToRadigad = new VarbitRequirement(VarbitID.MYQ5_RADIGAD_CONVINCED, 1);
+		talkedToIvan = new VarbitRequirement(VarbitID.MYQ5_IVAN_CONVINCED, 1);
 	}
 
 	@Override
@@ -656,7 +656,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		talkToPolmafi = new NpcStep(this, NpcID.MYQ5_POLMAFI_CHILD, new WorldPoint(3599, 9612, 0),
 			"Bring a Vyrewatch disguise to Polmafi in the Meiyerditch hideout in Old Man Ral's basement.", vyreTop, vyreLegs, vyreShoes);
 		talkToPolmafi.addDialogStep("Here you go.");
-		talkToPolmafiMore = new NpcStep(this, 9554, new WorldPoint(3599, 9612, 0),
+		talkToPolmafiMore = new NpcStep(this, NpcID.MYQ5_POLMAFI_CHILD, new WorldPoint(3599, 9612, 0),
 			"Finish speaking to Polmafi in the Meiyerditch hideout.");
 		talkToPolmafiMore.addDialogStep("Here you go.");
 		talkToPolmafi.addSubSteps(talkToPolmafiMore, goDownToPolmafi, goDownToPolmafiNoItems);

@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -167,15 +168,15 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		notBalloon = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 27);
 		notVarrAgi = new VarplayerRequirement(VarPlayerID.VARROCK_ACHIEVEMENT_DIARY, false, 28);
 
-		notFlap = new VarbitRequirement(2309, 1);
-		notSlap = new VarbitRequirement(2310, 1);
-		notIdea = new VarbitRequirement(2311, 1);
-		notStamp = new VarbitRequirement(2312, 1);
+		notFlap = new VarbitRequirement(VarbitID.SOS_EMOTE_FLAP, 1);
+		notSlap = new VarbitRequirement(VarbitID.SOS_EMOTE_DOH, 1);
+		notIdea = new VarbitRequirement(VarbitID.SOS_EMOTE_IDEA, 1);
+		notStamp = new VarbitRequirement(VarbitID.SOS_EMOTE_STAMP, 1);
 
 		normalBook = new SpellbookRequirement(Spellbook.NORMAL);
 
-		notVarrBalloon = new VarbitRequirement(2872, 0);
-		notVarrBalloon2 = new VarbitRequirement(2872, 1);
+		notVarrBalloon = new VarbitRequirement(VarbitID.ZEP_MULTI_VARR, 0);
+		notVarrBalloon2 = new VarbitRequirement(VarbitID.ZEP_MULTI_VARR, 1);
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR, notApothStr, notCatColour, notMaho20));
 		limpRoot = new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).showConditioned(notApothStr);
@@ -233,7 +234,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 			"Check your bank if you own a cat/kitten and either store them in the POH Menagerie or shoo them. Then speak with Gertrude for a new kitten.",
 			coins.quantity(100), ringOfCharos.equipped());
 		colourCat.addDialogSteps("Do you have any more kittens?", "[Charm] I'm quite fussy over cats - can I pick my own?");
-		geSpirit = new ObjectStep(this, 1295, new WorldPoint(3185, 3510, 0),
+		geSpirit = new ObjectStep(this, ObjectID.SPIRITTREE_SMALL, new WorldPoint(3185, 3510, 0),
 			"Use the spirit tree in the Grand Exchange.");
 
 		moveToStronghold = new ObjectStep(this, ObjectID.SOS_DUNG_ENT_OPEN, new WorldPoint(3081, 3420, 0),
@@ -259,7 +260,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		//TODO find a better way to check for slayer task
 		vannaka = new NpcStep(this, NpcID.SLAYER_MASTER_3, new WorldPoint(3146, 9913, 0),
 			"Get a task from Vannaka.");
-		tolna = new ObjectStep(this, 13968, new WorldPoint(3310, 3452, 0),
+		tolna = new ObjectStep(this, ObjectID.SOULBANE_FALLOFF2_ROPE_MULTI, new WorldPoint(3310, 3452, 0),
 			"Enter the Tolna dungeon.");
 
 		tpDigsite = new DetailedQuestStep(this, "Rub the digsite pendant and select the 'Digsite' teleport.",
@@ -268,7 +269,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		maho20 = new NpcStep(this, NpcID.POH_SAWMILL_OPP, new WorldPoint(3302, 3492, 0),
 			"Make 20 mahogany planks at the sawmill in ONE run.", mahoLog.quantity(20), coins.quantity(30000));
 
-		balloon = new ObjectStep(this, 19143, new WorldPoint(3297, 3482, 0),
+		balloon = new ObjectStep(this, ObjectID.ZEP_MULTI_BASKET_VARR, new WorldPoint(3297, 3482, 0),
 			"Use the basket east of Varrock to fly to any available destination.", willowLog1);
 		moveToEntrana = new NpcStep(this, NpcID.SHIPMONK1_C, new WorldPoint(3048, 3236, 0),
 			"Speak with a monk to travel to Entrana.", true, willowLog11);
@@ -276,7 +277,7 @@ public class VarrockMedium extends ComplexStateQuestHelper
 		talkToAug = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2810, 3356, 0),
 			"Speak with Augustine and travel to Varrock.", willowLog11);
 
-		whiteFruit = new ObjectStep(this, 9209, new WorldPoint(3230, 3475, 0),
+		whiteFruit = new ObjectStep(this, ObjectID.GARDEN_WHITE_TREE_PATCH, new WorldPoint(3230, 3475, 0),
 			"Pick a white tree fruit at Varrock Castle.");
 		varrAgi = new ObjectStep(this, ObjectID.ROOFTOPS_VARROCK_WALLCLIMB, new WorldPoint(3221, 3414, 0),
 			"Complete a lap of the Varrock rooftop course.");

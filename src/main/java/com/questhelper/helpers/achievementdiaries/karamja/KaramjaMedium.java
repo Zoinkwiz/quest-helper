@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -72,7 +73,7 @@ public class KaramjaMedium extends BasicQuestHelper
 
 	Requirement grandTree, taiBwoWannaiTrio, dragonSlayerI, shiloVillage, junglePotion;
 
-	QuestStep enterAgilityArena, tag2Pillars, enterVolcano, returnThroughWall, useCart, doCleanup, makeSpiderStick, cookSpider,
+	QuestStep enterAgilityArena, tagPillar, enterVolcano, returnThroughWall, useCart, doCleanup, makeSpiderStick, cookSpider,
 		climbUpToBoat, travelToKhazard, cutTeak, cutMahogany, catchKarambwanji, catchKarambwan, getMachete, flyToKaramja, growFruitTree,
 		trapGraahk, chopVines, crossLava, climbBrimhavenStaircase, charterFromShipyard, mineRedTopaz, enterCrandor,
 		enterBrimDungeonVine, enterBrimDungeonLava, enterBrimDungeonStairs, claimReward;
@@ -107,7 +108,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		doMedium.addStep(notEnteredCrandor, enteredCrandorTask);
 
 		claimedTicketTask = new ConditionalStep(this, enterAgilityArena);
-		claimedTicketTask.addStep(inAgilityArena, tag2Pillars);
+		claimedTicketTask.addStep(inAgilityArena, tagPillar);
 		doMedium.addStep(notClaimedTicket, claimedTicketTask);
 
 		usedCartTask = new ConditionalStep(this, useCart);
@@ -123,7 +124,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		doMedium.addStep(notUsedGlider, usedGliderTask);
 
 		caughtKarambwanTask = new ConditionalStep(this, catchKarambwanji);
-		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(questBank), catchKarambwan);
+		caughtKarambwanTask.addStep(rawKarambwanji.alsoCheckBank(), catchKarambwan);
 		doMedium.addStep(notCaughtKarambwan, caughtKarambwanTask);
 
 		charteredFromShipyardTask = new ConditionalStep(this, charterFromShipyard);
@@ -168,25 +169,25 @@ public class KaramjaMedium extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		notClaimedTicket = new VarbitRequirement(3579, 0);
-		notEnteredWall = new VarbitRequirement(3580, 0);
-		notEnteredCrandor = new VarbitRequirement(3581, 0);
-		notUsedCart = new VarbitRequirement(3582, 0);
-		notEarned100 = new VarbitRequirement(3583, 0);
-		notCookedSpider = new VarbitRequirement(3584, 0);
-		notMinedRedRopaz = new VarbitRequirement(3585, 0);
-		notCutTeak = new VarbitRequirement(3586, 0);
-		notCutMahog = new VarbitRequirement(3587, 0);
-		notCaughtKarambwan = new VarbitRequirement(3588, 0);
-		notExchangedGems = new VarbitRequirement(3589, 0);
-		notUsedGlider = new VarbitRequirement(3590, 0);
-		notGrownFruitTree = new VarbitRequirement(3591, 0);
-		notTrappedGraahk = new VarbitRequirement(3592, 0);
-		notCutVine = new VarbitRequirement(3593, 0);
-		notCrossedLava = new VarbitRequirement(3594, 0);
-		notClimbedStairs = new VarbitRequirement(3595, 0);
-		notTraveledToKhazard = new VarbitRequirement(3596, 0);
-		notCharteredFromShipyard = new VarbitRequirement(3597, 0);
+		notClaimedTicket = new VarbitRequirement(VarbitID.ATJUN_MED_AGILITY, 0);
+		notEnteredWall = new VarbitRequirement(VarbitID.ATJUN_MED_VOLCANO, 0);
+		notEnteredCrandor = new VarbitRequirement(VarbitID.ATJUN_MED_CRANDOR, 0);
+		notUsedCart = new VarbitRequirement(VarbitID.ATJUN_MED_CART, 0);
+		notEarned100 = new VarbitRequirement(VarbitID.ATJUN_MED_CLEANUP, 0);
+		notCookedSpider = new VarbitRequirement(VarbitID.ATJUN_MED_SPIDER, 0);
+		notMinedRedRopaz = new VarbitRequirement(VarbitID.ATJUN_MED_TOPAZ, 0);
+		notCutTeak = new VarbitRequirement(VarbitID.ATJUN_MED_TEAK, 0);
+		notCutMahog = new VarbitRequirement(VarbitID.ATJUN_MED_MAHOGANY, 0);
+		notCaughtKarambwan = new VarbitRequirement(VarbitID.ATJUN_MED_KARAMBWAN, 0);
+		notExchangedGems = new VarbitRequirement(VarbitID.ATJUN_MED_MACHETTE, 0);
+		notUsedGlider = new VarbitRequirement(VarbitID.ATJUN_MED_GLIDER, 0);
+		notGrownFruitTree = new VarbitRequirement(VarbitID.ATJUN_MED_FARMING, 0);
+		notTrappedGraahk = new VarbitRequirement(VarbitID.ATJUN_MED_GRAAHK, 0);
+		notCutVine = new VarbitRequirement(VarbitID.ATJUN_MED_SHILO_VINES, 0);
+		notCrossedLava = new VarbitRequirement(VarbitID.ATJUN_MED_SHILO_LAVA, 0);
+		notClimbedStairs = new VarbitRequirement(VarbitID.ATJUN_MED_SHILO_STAIRS, 0);
+		notTraveledToKhazard = new VarbitRequirement(VarbitID.ATJUN_MED_KHAZARD, 0);
+		notCharteredFromShipyard = new VarbitRequirement(VarbitID.ATJUN_MED_CHARTER, 0);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
 			.showConditioned(new Conditions(LogicType.OR, notMinedRedRopaz, notEarned100)).isNotConsumed();
@@ -268,7 +269,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		enterAgilityArena = new ObjectStep(this, ObjectID.AGILITYARENA_LADDERDOWN, new WorldPoint(2809, 3194, 0), "Pay Cap'n Izzy" +
 			" No Beard 200 coins and enter the Agility Arena in Brimhaven.",
 			coins.quantity(200));
-		tag2Pillars = new DetailedQuestStep(this, "Tag 2 marked pillars in a row.");
+		tagPillar = new DetailedQuestStep(this, "Tag a marked pillar.");
 		enterVolcano = new ObjectStep(this, ObjectID.VOLCANO_ENTRANCE, new WorldPoint(2857, 3169, 0),
 			"Enter the Karamja Volcano.");
 		returnThroughWall = new ObjectStep(this, ObjectID.DRAGONSECRETDOOR, new WorldPoint(2836, 9600, 0), "Return back through the shortcut.");
@@ -288,9 +289,12 @@ public class KaramjaMedium extends BasicQuestHelper
 		travelToKhazard.addSubSteps(climbUpToBoat);
 		cutTeak = new ObjectStep(this, ObjectID.TEAKTREE, new WorldPoint(2822, 3078, 0), "Chop a teak tree down either in" +
 			" the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe, tradingSticks.quantity(100));
+		((ObjectStep) cutTeak).addAlternateObjects(ObjectID.TEAKTREE_UPDATE);
+		cutTeak.addDialogStep("Okay, I'll pay 100 trading sticks to enter.");
 		cutMahogany = new ObjectStep(this, ObjectID.MAHOGANYTREE, new WorldPoint(2820, 3080, 0), "Chop a mahogany tree " +
 			"down either in the Hardwood Grove in Tai Bwo Wannai or in the Kharazi Jungle (requires Legends' Quest started).", axe,
 			tradingSticks.quantity(100));
+		cutMahogany.addDialogStep("Okay, I'll pay 100 trading sticks to enter.");
 		catchKarambwanji = new NpcStep(this, NpcID._0_43_47_KARAMBWANJI, new WorldPoint(2791,3019,0),
 			"Using your small fishing net, catch some raw karambwanji just south of Tai Bwo Wannai, or buy some from the GE.", smallFishingNet);
 		catchKarambwan = new NpcStep(this, NpcID._0_45_48_KARAMBWAN, new WorldPoint(2899, 3119, 0),
@@ -412,7 +416,7 @@ public class KaramjaMedium extends BasicQuestHelper
 		allSteps.add(enteredCrandorSteps);
 
 		PanelDetails enterAgiSteps = new PanelDetails("Claim a ticket in The Agility Arena",
-			Arrays.asList(enterAgilityArena, tag2Pillars), coins.quantity(200));
+			Arrays.asList(enterAgilityArena, tagPillar), coins.quantity(200));
 		enterAgiSteps.setDisplayCondition(notClaimedTicket);
 		enterAgiSteps.setLockingStep(claimedTicketTask);
 		allSteps.add(enterAgiSteps);

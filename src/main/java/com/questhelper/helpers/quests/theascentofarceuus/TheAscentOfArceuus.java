@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -158,11 +159,11 @@ public class TheAscentOfArceuus extends BasicQuestHelper
 		inCastle = new ZoneRequirement(castle);
 		inKaruulm = new ZoneRequirement(karuulm);
 
-		foundTrack1 = new VarbitRequirement(7860, 1);
-		foundTrack2 = new VarbitRequirement(7861, 1);
-		foundTrack3 = new VarbitRequirement(7862, 1);
-		foundTrack4 = new VarbitRequirement(7863, 1);
-		foundTrack5 = new VarbitRequirement(7864, 1);
+		foundTrack1 = new VarbitRequirement(VarbitID.ARCQUEST_HUNTING_TRAIL_2, 1);
+		foundTrack2 = new VarbitRequirement(VarbitID.ARCQUEST_HUNTING_TRAIL_3, 1);
+		foundTrack3 = new VarbitRequirement(VarbitID.ARCQUEST_HUNTING_TRAIL_4, 1);
+		foundTrack4 = new VarbitRequirement(VarbitID.ARCQUEST_HUNTING_TRAIL_5, 1);
+		foundTrack5 = new VarbitRequirement(VarbitID.ARCQUEST_HUNTING_TRAIL_6, 1);
 
 		trappedSoulNearby = new NpcHintArrowRequirement(NpcID.ARCQUEST_SOUL);
 		// Inspected grave:

@@ -56,8 +56,11 @@ public class QuestContainerManager
     @Getter
     private final static ItemAndLastUpdated runePouchData = new ItemAndLastUpdated(TrackedContainers.RUNE_POUCH);
 
+	@Getter
+	private final static ItemAndLastUpdated keyRingData = new ItemAndLastUpdated(TrackedContainers.KEY_RING);
+
     @Getter
-    private final static List<ItemAndLastUpdated> orderedListOfContainers = List.of(equippedData, inventoryData, bankData, runePouchData, potionData, groupStorageData);
+    private final static List<ItemAndLastUpdated> orderedListOfContainers = List.of(equippedData, inventoryData, bankData, runePouchData, potionData, groupStorageData, keyRingData);
 
     static Set<Integer> RUNE_POUCHES = Set.of(ItemID.BH_RUNE_POUCH, ItemID.BH_RUNE_POUCH_TROUVER, ItemID.DIVINE_RUNE_POUCH, ItemID.DIVINE_RUNE_POUCH_TROUVER);
     private static final int NUM_SLOTS = 6;

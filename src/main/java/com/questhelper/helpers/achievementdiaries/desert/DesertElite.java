@@ -133,7 +133,7 @@ public class DesertElite extends ComplexStateQuestHelper
 		dragonDartTip = new ItemRequirement("Dragon dart tip", ItemID.DRAGON_DART_TIP).showConditioned(notDragonDarts);
 		feather = new ItemRequirement("Feather", ItemID.FEATHER).showConditioned(notDragonDarts);
 		mahoganyPlank = new ItemRequirement("Mahogany plank", ItemID.PLANK_MAHOGANY).showConditioned(notTalkKQHead);
-		goldLeaves = new ItemRequirement("Gold leaf", ItemID.ICS_GOLDLEAF).showConditioned(notTalkKQHead);
+		goldLeaves = new ItemRequirement("Gold leaf", ItemID.GOLD_LEAF).showConditioned(notTalkKQHead);
 		saw = new ItemRequirement("Saw", ItemID.POH_SAW).showConditioned(notTalkKQHead).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notTalkKQHead).isNotConsumed();
 		kqHead = new ItemRequirement("Stuffed KQ head", ItemCollections.STUFFED_KQ_HEAD).showConditioned(notTalkKQHead);
@@ -171,7 +171,7 @@ public class DesertElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		moveToPyramidPlunder = new ObjectStep(this, 26622, new WorldPoint(3289, 2800, 0),
+		moveToPyramidPlunder = new ObjectStep(this, ObjectID.NTK_PYRAMID_DOOR_NORTH_MULTI, new WorldPoint(3289, 2800, 0),
 			"Enter the Pyramid plunder minigame. If you don't see a Guardian mummy exit and try a different " +
 				"entrance.", true);
 		((ObjectStep) moveToPyramidPlunder).addAlternateObjects(ObjectID.NTK_PYRAMID_DOOR_EAST_MULTI, ObjectID.NTK_PYRAMID_DOOR_SOUTH_MULTI,
@@ -180,7 +180,7 @@ public class DesertElite extends ComplexStateQuestHelper
 			"Talk to the guardian mummy to start the minigame.");
 		startPyramidPlunder.addDialogStep("I know what I'm doing - let's get on with it.");
 
-		traversePyramid = new ObjectStep(this, 26618, new WorldPoint(1951, 4452, 0),
+		traversePyramid = new ObjectStep(this, ObjectID.NTK_TOMB_DOOR1, new WorldPoint(1951, 4452, 0),
 			"Go through each of the pyramid rooms until the final room.", true);
 		((ObjectStep) traversePyramid).setMaxObjectDistance(40);
 		((ObjectStep) traversePyramid).setMaxRenderDistance(10);
@@ -225,7 +225,7 @@ public class DesertElite extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(rawPie, waterRune.quantity(6), bloodRune.quantity(2), deathRune.quantity(4),
 			dragonDartTip, feather, kqHead, mahoganyPlank.quantity(2), goldLeaves.quantity(2), coins.quantity(50000), saw,
-			hammer, kqHead);
+			hammer);
 	}
 
 	@Override

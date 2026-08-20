@@ -61,7 +61,7 @@ import java.util.*;
 public class GhostsAhoy extends BasicQuestHelper
 {
 	//Required Items
-	ItemRequirement ghostspeak, coins400, milk, silk, dyes, spade, oakLongbow, knife, needle, thread, bucketOfSlime, nettleTea, ectoToken2, ectoToken4, chestKey,
+	ItemRequirement ghostspeak, coins400, milk, silk, dyes, spade, oakLongbow, knife, needle, thread, needleThread, costumeNeedle, needleThreadOrCostumeNeedle, bucketOfSlime, nettleTea, ectoToken2, ectoToken4, chestKey,
 		nettleTeaHighlighted, milkHighlighted, milkyTea, cup, cupWithMilkyTea, cupWithTea, modelShip, repairedShip, ectoToken12, ectoToken27, charos, map, signedOakBow,
 		ectoToken10, ectoToken25, ectoSheets, bedsheet, petition, boneKey, boneKeyHighlighted, robes, book, manual, mapPiece1, mapPiece2, mapPiece3, silkHighlighted,
 		ectoTokensCharos, ectoTokensNoCharos, ectoSheetsEquipped, enchantedGhostspeakEquipped;
@@ -228,6 +228,10 @@ public class GhostsAhoy extends BasicQuestHelper
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
+		needleThread = new ItemRequirements(needle, thread);
+		costumeNeedle = new ItemRequirement("Costume needle", ItemID.COSTUMENEEDLE);
+		needleThreadOrCostumeNeedle = new ItemRequirements(LogicType.OR, "Needle/Thread or Costume needle", needleThread, costumeNeedle);
+		needleThreadOrCostumeNeedle.setDisplayMatchedItemName(true);
 		bucketOfSlime = new ItemRequirement("Bucket of slime", ItemID.BUCKET_ECTOPLASM);
 		bucketOfSlime.setTooltip("You can buy one from the Charter Ship crew");
 		bucketOfSlime.setHighlightInInventory(true);
@@ -285,30 +289,30 @@ public class GhostsAhoy extends BasicQuestHelper
 		onRocks = new ZoneRequirement(rocks);
 		onDragontooth = new ZoneRequirement(dragontooth);
 
-		hasCupOfMilkyTea = cupWithMilkyTea.alsoCheckBank(questBank);
-		hasCupOfTea = cupWithTea.alsoCheckBank(questBank);
-		hasMap = map.alsoCheckBank(questBank);
-		hasPiece1 = mapPiece1.alsoCheckBank(questBank);
-		hasPiece2 = mapPiece2.alsoCheckBank(questBank);
-		hasPiece3 = mapPiece3.alsoCheckBank(questBank);
-		hasModelShip = modelShip.alsoCheckBank(questBank);
-		hasRepairedShip = repairedShip.alsoCheckBank(questBank);
-		hasCup = cup.alsoCheckBank(questBank);
-		hasBook = new Conditions(LogicType.OR, new VarbitRequirement(208, 1), book.alsoCheckBank(questBank));
-		hasManual = new Conditions(LogicType.OR, new VarbitRequirement(206, 1), new VarbitRequirement(212, 8));
-		hasSheet = bedsheet.alsoCheckBank(questBank);
-		hasEctoSheet = ectoSheets.alsoCheckBank(questBank);
-		hasMysticalRobes = new Conditions(LogicType.OR, new VarbitRequirement(207, 1), robes.alsoCheckBank(questBank));
-		hasSignedOakBow = signedOakBow.alsoCheckBank(questBank);
-		hasPetition = petition.alsoCheckBank(questBank);
+		hasCupOfMilkyTea = cupWithMilkyTea.alsoCheckBank();
+		hasCupOfTea = cupWithTea.alsoCheckBank();
+		hasMap = map.alsoCheckBank();
+		hasPiece1 = mapPiece1.alsoCheckBank();
+		hasPiece2 = mapPiece2.alsoCheckBank();
+		hasPiece3 = mapPiece3.alsoCheckBank();
+		hasModelShip = modelShip.alsoCheckBank();
+		hasRepairedShip = repairedShip.alsoCheckBank();
+		hasCup = cup.alsoCheckBank();
+		hasBook = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.AHOY_GIVEN_BOOK, 1), book.alsoCheckBank());
+		hasManual = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.AHOY_GIVEN_MANUAL, 1), new VarbitRequirement(VarbitID.AHOY_SUBQUEST_BOW, 8));
+		hasSheet = bedsheet.alsoCheckBank();
+		hasEctoSheet = ectoSheets.alsoCheckBank();
+		hasMysticalRobes = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.AHOY_GIVEN_ROBES, 1), robes.alsoCheckBank());
+		hasSignedOakBow = signedOakBow.alsoCheckBank();
+		hasPetition = petition.alsoCheckBank();
 		hasSignatures = new VarbitRequirement(VarbitID.AHOY_SIGNATURECOUNTER, 11, Operation.GREATER_EQUAL);
 		givenPetitionToNecro = new VarbitRequirement(VarbitID.AHOY_SIGNATURECOUNTER, 31, Operation.GREATER_EQUAL);
 		hadChestKey = new Conditions(LogicType.OR, chestKey, new VarbitRequirement(VarbitID.AHOY_SUBQUEST_TOYBOAT, 2, Operation.GREATER_EQUAL));
 		unlockedChest2 = new VarbitRequirement(VarbitID.AHOY_SUBQUEST_TOYBOAT, 3, Operation.GREATER_EQUAL);
-		doorUnlocked = new VarbitRequirement(213, 1);
+		doorUnlocked = new VarbitRequirement(VarbitID.AHOY_TEMPLEDOOR_UNLOCKED, 1);
 
 		lobsterNearby = new NpcCondition(NpcID.GIANT_LOBSTER);
-		killedLobster = new VarbitRequirement(215, 1);
+		killedLobster = new VarbitRequirement(VarbitID.AHOY_KILLED_LOBSTER, 1);
 
 		boneKeyNearby = new ItemOnTileRequirement(boneKey);
 		hasBoneKey = new Conditions(LogicType.OR, boneKey, doorUnlocked);
@@ -423,11 +427,11 @@ public class GhostsAhoy extends BasicQuestHelper
 	{
 		if (canUseCharos)
 		{
-			return Arrays.asList(ghostspeak, charos, ectoTokensCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime);
+			return Arrays.asList(ghostspeak, charos, ectoTokensCharos, coins400, nettleTea, milk, silk, knife, needleThreadOrCostumeNeedle, dyes, spade, oakLongbow, bucketOfSlime);
 		}
 		else
 		{
-			return Arrays.asList(ghostspeak, ectoTokensNoCharos, coins400, nettleTea, milk, silk, knife, needle, thread, dyes, spade, oakLongbow, bucketOfSlime);
+			return Arrays.asList(ghostspeak, ectoTokensNoCharos, coins400, nettleTea, milk, silk, knife, needleThreadOrCostumeNeedle, dyes, spade, oakLongbow, bucketOfSlime);
 		}
 	}
 

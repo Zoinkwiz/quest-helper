@@ -67,7 +67,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	ItemRequirement camelotTeleport, digsiteTeleport;
 
 	ItemRequirement elementalOre, elementalBar, mindBar, primedBar, beatenBook, scroll, key, craneSchematic, claw,
-		smallCog, mediumCog, largeCog, pipe;
+		smallCog, mediumCog, largeCog, pipe, slashedBook;
 
 	Requirement magic20;
 
@@ -256,7 +256,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		coal = new ItemRequirement("Coal", ItemID.COAL, 8);
-		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY);
+		batteredKey = new KeyringRequirement("Battered Key", KeyringCollection.BATTERED_KEY);
 		batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the elemental " +
 			"workshop's entrance");
 
@@ -266,9 +266,9 @@ public class ElementalWorkshopII extends BasicQuestHelper
 
 		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_WORKSHOP_ORE);
 		elementalOre.addAlternates(ItemID.ELEMENTAL_WORKSHOP_BAR);
-		elementalBar = new ItemRequirement("Elemental metal", ItemID.ELEMENTAL_WORKSHOP_BAR);
+		elementalBar = new ItemRequirement("Elemental metal. Bring an additional elemental metal if you want to smith a mind shield after this quest", ItemID.ELEMENTAL_WORKSHOP_BAR);
 		mindBar = new ItemRequirement("Primed mind bar", ItemID.ELEM_MIND_BAR);
-		primedBar = new ItemRequirement("Primed bar", ItemID.ELEM_PRIMED_BAR);
+		primedBar = new ItemRequirement("Primed bar. Bring an additional primed bar if you want to smith a mind shield after this quest", ItemID.ELEM_PRIMED_BAR);
 
 		beatenBook = new ItemRequirement("Beaten book", ItemID.ELEMENTAL_WORKSHOP_HELM_BOOK);
 		beatenBook.setTooltip("You can get another from a bookcase in the Exam Center");
@@ -287,6 +287,10 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		pipe = new ItemRequirement("Pipe", ItemID.ELEM2_SPARE_PIPE);
 
 		magic20 = new SkillRequirement(Skill.MAGIC, 20, true);
+
+		slashedBook = new ItemRequirement("Slashed book if you want to smith a mind shield after this quest", ItemID.ELEMENTAL_WORKSHOP_SHIELD_BOOK_SLASHED);
+		slashedBook.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
+			"the odd wall");
 	}
 
 	@Override
@@ -324,41 +328,41 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		inPipePuzzle = new WidgetModelRequirement(262, 37, 18794);
 		sortedPipes = new Conditions(
 			new Conditions(LogicType.OR,
-				new VarbitRequirement(2646, 5),
-				new VarbitRequirement(2647, 5),
-				new VarbitRequirement(2648, 5)
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_1_STATE, 5),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_2_STATE, 5),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_3_STATE, 5)
 			),
 			new Conditions(LogicType.OR,
-				new VarbitRequirement(2646, 6),
-				new VarbitRequirement(2647, 6),
-				new VarbitRequirement(2648, 6)
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_1_STATE, 6),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_2_STATE, 6),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_3_STATE, 6)
 			),
 			new Conditions(LogicType.OR,
-				new VarbitRequirement(2646, 13),
-				new VarbitRequirement(2647, 13),
-				new VarbitRequirement(2648, 13)
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_1_STATE, 13),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_2_STATE, 13),
+				new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_EARTH_PIPE_3_STATE, 13)
 			)
 		);
 
-		repairedPipe = new VarbitRequirement(2650, 1);
+		repairedPipe = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_STATE, 1);
 
 		hasSmallCog = new Conditions(LogicType.OR,
 			smallCog,
-			new VarbitRequirement(2655, 1),
-			new VarbitRequirement(2656, 1),
-			new VarbitRequirement(2657, 1)
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 1),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 1),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 1)
 		);
 		hasMediumCog = new Conditions(LogicType.OR,
 			mediumCog,
-			new VarbitRequirement(2655, 2),
-			new VarbitRequirement(2656, 2),
-			new VarbitRequirement(2657, 2)
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 2),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 2),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 2)
 		);
 		hasLargeCog = new Conditions(LogicType.OR,
 			largeCog,
-			new VarbitRequirement(2655, 3),
-			new VarbitRequirement(2656, 3),
-			new VarbitRequirement(2657, 3)
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 3),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 3),
+			new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 3)
 		);
 		hasPipe = new Conditions(LogicType.OR,
 			repairedPipe,
@@ -367,9 +371,9 @@ public class ElementalWorkshopII extends BasicQuestHelper
 
 		hasCogsAndPipe = new Conditions(hasSmallCog, hasMediumCog, hasLargeCog, hasPipe);
 
-		smallCogPlaced = new VarbitRequirement(2655, 1);
-		mediumCogPlaced = new VarbitRequirement(2656, 2);
-		largeCogPlaced = new VarbitRequirement(2657, 3);
+		smallCogPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG1, 1);
+		mediumCogPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG2, 2);
+		largeCogPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_COG3, 3);
 
 		// This potentially relates to varbit 2664
 		// Small cog in crate 18614
@@ -377,41 +381,41 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		// Medium cog in crate 18616
 		// Pipe in crate 18617
 
-		placedBar = new VarbitRequirement(2643, 1);
-		barHotOnJig = new VarbitRequirement(2643, 2);
-		flatHotBarOnJig = new VarbitRequirement(2643, 3);
-		coolFlatBarOnJig = new VarbitRequirement(2643, 4);
-		airCoolFlatBarOnJig = new VarbitRequirement(2643, 5);
-		craneLowered = new VarbitRequirement(2645, 1);
-		craneRaised = new VarbitRequirement(2645, 0);
-		craneHoldingBar = new VarbitRequirement(2644, 2);
-		craneAboveLava = new VarbitRequirement(2645, 2);
-		craneInLava = new VarbitRequirement(2645, 3);
-		barOutsideLava = new VarbitRequirement(2642, 0);
-		barUnderPress = new VarbitRequirement(2642, 1);
-		barOutsideTank = new VarbitRequirement(2642, 2);
-		barInTunnel = new VarbitRequirement(2642, 3);
-		craneHoldingHotBar = new VarbitRequirement(2644, 3);
+		placedBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 1);
+		barHotOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 2);
+		flatHotBarOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 3);
+		coolFlatBarOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 4);
+		airCoolFlatBarOnJig = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_STATE, 5);
+		craneLowered = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 1);
+		craneRaised = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 0);
+		craneHoldingBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_STATE, 2);
+		craneAboveLava = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 2);
+		craneInLava = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_POS, 3);
+		barOutsideLava = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 0);
+		barUnderPress = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 1);
+		barOutsideTank = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 2);
+		barInTunnel = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_JIG_POS, 3);
+		craneHoldingHotBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_FIRE_STATE, 3);
 
-		tankClosed = new VarbitRequirement(2653, 0);
-		tankOpen = new VarbitRequirement(2653, 1);
-		grabberOut = new VarbitRequirement(2653, 2);
-		grabberInWithHotFlatBarDoorOpen = new VarbitRequirement(2653, 4);
-		grabberInWithHotFlatBarDoorClosed = new VarbitRequirement(2653, 3);
-		grabberOutWithHotFlatBarDoorOpen = new VarbitRequirement(2653, 5);
-		grabberInWithCoolFlatBarDoorClosed = new VarbitRequirement(2653, 6);
-		grabberInWithCoolFlatBarDoorOpened = new VarbitRequirement(2653, 7);
-		grabberOutWithCoolFlatBar = new VarbitRequirement(2653, 8);
-		waterInOpen = new VarbitRequirement(2651, 1);
-		waterInClosed = new VarbitRequirement(2651, 0);
-		waterOutClosed = new VarbitRequirement(2652, 0);
-		waterOutOpen = new VarbitRequirement(2652, 1);
-		waterInTank = new VarbitRequirement(2654, 1);
-		fanOff = new VarbitRequirement(2660, 0);
-		fanOn = new VarbitRequirement(2660, 1);
+		tankClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 0);
+		tankOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 1);
+		grabberOut = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 2);
+		grabberInWithHotFlatBarDoorOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 4);
+		grabberInWithHotFlatBarDoorClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 3);
+		grabberOutWithHotFlatBarDoorOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 5);
+		grabberInWithCoolFlatBarDoorClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 6);
+		grabberInWithCoolFlatBarDoorOpened = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 7);
+		grabberOutWithCoolFlatBar = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_DOOR, 8);
+		waterInOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_1, 1);
+		waterInClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_1, 0);
+		waterOutClosed = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_2, 0);
+		waterOutOpen = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_VALVE_2, 1);
+		waterInTank = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_WATER_LEVEL, 1);
+		fanOff = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_FAN_STATE, 0);
+		fanOn = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_AIR_FAN_STATE, 1);
 
-		primedBarPlaced = new VarbitRequirement(2662, 1);
-		mindBarPlaced = new VarbitRequirement(2662, 2);
+		primedBarPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_MIND_JIG, 1);
+		mindBarPlaced = new VarbitRequirement(VarbitID.ELEMENTAL_QUEST_2_MIND_JIG, 2);
 	}
 
 	public void setupSteps()
@@ -424,7 +428,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		readScroll = new DetailedQuestStep(this, "Read the scroll.", scroll.highlighted());
 
 		enterWorkshop = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_SPIRALSTAIRSTOP, new WorldPoint(2711, 3498, 0),
-			"Enter the elemental workshop.", batteredKey, beatenBook);
+			"Enter the elemental workshop.", Arrays.asList(batteredKey, beatenBook), Collections.singletonList(slashedBook));
 
 		searchMachinery = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_2_BOILER_MULTI, new WorldPoint(2715, 9903, 0),
 			"");
@@ -444,6 +448,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		mineRock = new NpcStep(this, NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION_ROCK, new WorldPoint(2703, 9894, 0),
 			"You need 2 elemental bars. Mine one of the elemental rocks in the west room, ready to fight a level 35.",
 			true, pickaxe);
+		mineRock.addText("If you want to smith a mind shield after this quest, get a third elemental ore and also smelt it into a bar.");
 		killRock = new NpcStep(this, NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION, new WorldPoint(2703, 9897, 0),
 			"Kill the rock elemental that appeared.");
 		pickUpOre = new ItemStep(this, "Pick up the elemental ore.", elementalOre);
@@ -482,7 +487,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		connectPipes = new ConnectPipes(this);
 
 		getCogsAndPipe = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_1,
-			"Search the various marked crates on the catwalk and below for 3 cogs and a pipe.",
+			"Search the marked crates on the catwalk AND DOWN THE STAIRS for 3 cogs and a pipe.",
 			smallCog, mediumCog, largeCog, pipe);
 		((ObjectStep) getCogsAndPipe).addAlternateObjects(ObjectID.ELEMENTAL_WORKSHOP_2_BOX_2, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_3,
 			ObjectID.ELEMENTAL_WORKSHOP_2_BOX_4, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_5, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_6, ObjectID.ELEMENTAL_WORKSHOP_2_BOX_7,
@@ -520,7 +525,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		raiseCraneFromBar = new ObjectStep(this, ObjectID.ELEM2_FIRE_LEVER_2, new WorldPoint(1953, 5148, 2),
 			"Pull the south west lever to raise the claw once more.");
 		pullLeverToMoveToPress = new ObjectStep(this, ObjectID.ELEM2_LEVER_3WAY, new WorldPoint(1953, 5151, 2),
-			"Pull the central lever to move the jig to the press.");
+			"Pull the central lever to activate the press.");
 		lowerPress = new ObjectStep(this, ObjectID.ELEM2_EARTH_LEVER_1, new WorldPoint(1950, 5153, 2),
 			"Pull the west lever to move the jig to the press.");
 		pullLeverToMoveToTank = new ObjectStep(this, ObjectID.ELEM2_LEVER_3WAY, new WorldPoint(1953, 5151, 2),
@@ -558,6 +563,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		pullLeverToMoveToLava = new ObjectStep(this, ObjectID.ELEM2_LEVER_3WAY, new WorldPoint(1953, 5151, 2),
 			"Pull the central lever to move the jig back to the start.");
 		pickUpBar = new NpcStep(this, NpcID.ELEM2_CART_NPC_FLAT_BAR_DRY, new WorldPoint(1954, 5147, 2), "Pick up the primed bar.");
+		pickUpBar.addText("If you want to smith a mind shield after this quest, repeat this process one more time.");
 
 		goDownToBasement = new ObjectStep(this, ObjectID.ELEM2_STAIRS_DOOR_OPEN_NO_HATCH, new WorldPoint(1949, 5159, 2),
 			"Go down from the priming room.");
@@ -568,11 +574,13 @@ public class ElementalWorkshopII extends BasicQuestHelper
 			"Sit in the extractor chair.", magic20);
 		takeMindBar = new ObjectStep(this, ObjectID.ELEM_EXTRACTOR_GUN, new WorldPoint(1962, 5148, 0),
 			"Take the mind bar.");
+		takeMindBar.addText("If you want to smith a mind shield after this quest, repeat this process one more time.");
 		goUpFromBasement = new ObjectStep(this, ObjectID.ELEM2_STAIRS2, new WorldPoint(1949, 5160, 0),
 			"Go up the stairs.");
 		makeMindHelmet = new ObjectStep(this, ObjectID.ELEMENTAL_WORKSHOP_WORKBENCH, new WorldPoint(2717, 9888, 0),
-			"Use the mind bar on one of the workbenches in the central room.", mindBar.highlighted(), hammer,
+			"Use the mind bar on one of the workbenches in the central room with the beaten book in your inventory.", mindBar.highlighted(), hammer,
 			beatenBook);
+		makeMindHelmet.addText("If you want to smith a mind shield after this quest, use the remaining mind bar on one of the workbenches with the slashed book in your inventory.");
 		makeMindHelmet.addIcon(ItemID.ELEM_MIND_BAR);
 
 		goToWorkshopTopFloor = new ConditionalStep(this, enterWorkshop);
@@ -605,7 +613,7 @@ public class ElementalWorkshopII extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(digsiteTeleport, camelotTeleport);
+		return Arrays.asList(digsiteTeleport, camelotTeleport, slashedBook);
 	}
 
 	@Override
@@ -656,8 +664,8 @@ public class ElementalWorkshopII extends BasicQuestHelper
 		ArrayList<PanelDetails> allSteps = new ArrayList<>();
 
 		allSteps.add(new PanelDetails("Starting off", Arrays.asList(searchBookcase, readBook, readScroll)));
-		allSteps.add(new PanelDetails("Unlocking the Hatch", Arrays.asList(getKey, unlockHatch), batteredKey, pickaxe,
-			coal.quantity(8), hammer));
+		allSteps.add(new PanelDetails("Unlocking the Hatch", Arrays.asList(getKey, unlockHatch), Arrays.asList(batteredKey, pickaxe,
+			coal.quantity(8), hammer, beatenBook), Collections.singletonList(slashedBook)));
 		allSteps.add(new PanelDetails("Repairing the crane", Arrays.asList(takeSchematics, goMakeClaw, goRepairCrane)));
 		allSteps.add(new PanelDetails("Repairing the workshop", Arrays.asList(goSortTubes, getCogsAndPipe,
 			goRepairPipe, goPlaceCogs)));
@@ -666,10 +674,10 @@ public class ElementalWorkshopII extends BasicQuestHelper
 			pullLeverToMoveToPress, lowerPress, pullLeverToMoveToTank, pullLeverToOpenTankDoor, turnCorkscrew, turnCorkscrewAgain,
 			pullLeverToCloseTankDoor, turnWestValve, turnEastValve, turnEastValveAgain, turnWestValveAgain, pullLeverToOpenTankDoorAgain,
 			turnCorkscrewToRetrieve, turnCorkscrewToRetrieveAgain, pullLeverToCloseTankDoorAgain, pullLeverToMoveToFan, pullFanLever,
-			pullFanLeverAgain, pullLeverToMoveToLava, pickUpBar), elementalBar));
+			pullFanLeverAgain, pullLeverToMoveToLava, pickUpBar), Collections.singletonList(elementalBar)));
 
 		allSteps.add(new PanelDetails("Making a Mind Helm", Arrays.asList(goDownToBasement, useBarOnGun, operateHat,
-			takeMindBar, goMakeMindHelmet), primedBar, hammer, beatenBook));
+			takeMindBar, goMakeMindHelmet), Arrays.asList(primedBar, hammer, beatenBook), Collections.singletonList(slashedBook)));
 		return allSteps;
 	}
 }

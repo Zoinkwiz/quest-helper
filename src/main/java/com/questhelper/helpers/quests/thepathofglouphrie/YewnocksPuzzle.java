@@ -30,14 +30,16 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.widget.WidgetPresenceRequirement;
 import com.questhelper.steps.*;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.eventbus.Subscribe;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -54,12 +56,6 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 * Region ID of the storeroom this puzzle takes place in
 	 */
 	private static final int STOREROOM_REGION = 11074;
-	private static final int PUZZLE1_INSERTED_DISC_VARP_ID = 3994;
-	private static final int PUZZLE2_UPPER_INSERTED_DISC_VARP_ID = 3995;
-	private static final int PUZZLE2_LOWER_INSERTED_DISC_VARP_ID = 3996;
-	private static final int PUZZLE1_LEFT_VARP_ID = 3997;
-	private static final int PUZZLE1_RIGHT_VARP_ID = 3998;
-	private static final int PUZZLE2_VARP_ID = 3999;
 	/**
 	 * ItemID to ItemRequirement map
 	 */
@@ -366,9 +362,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	@Override
 	public void startUp()
 	{
-		puzzle1LeftItemID = client.getVarpValue(PUZZLE1_LEFT_VARP_ID);
-		puzzle1RightItemID = client.getVarpValue(PUZZLE1_RIGHT_VARP_ID);
-		puzzle2ItemID = client.getVarpValue(PUZZLE2_VARP_ID);
+		puzzle1LeftItemID = client.getVarpValue(VarPlayerID.POG_COIN_TARGET1_1_OBJ);
+		puzzle1RightItemID = client.getVarpValue(VarPlayerID.POG_COIN_TARGET1_2_OBJ);
+		puzzle2ItemID = client.getVarpValue(VarPlayerID.POG_COIN_TARGET2_OBJ);
 
 		updateSteps();
 	}
@@ -379,11 +375,11 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		getMoreDiscs = new ObjectStep(getQuestHelper(), ObjectID.POG_CHEST_CLOSED, regionPoint(34, 31), "Get more discs from the chests outside. You can drop discs before you get more. You can also use the exchanger next to Yewnock's machine.", true);
 
 		useExchanger = new ObjectStep(getQuestHelper(), ObjectID.POG_GNOME_MACHINE_03, regionPoint(22, 33), "A solution has been calculated, exit the machine interface & click Yewnock's exchanger.");
-		useExchanger.addWidgetHighlight(848, 27); // TODO: Verify that this is the "exit" button in the Machine widget
+		useExchanger.addWidgetHighlight(InterfaceID.PogCoinMachine.CLOSE);
 
 		clickMachine = new ObjectStep(getQuestHelper(), ObjectID.POG_GNOME_MACHINE_02, regionPoint(22, 32),
 			"A solution has been found, click Yewnock's machine and insert the discs as prompted.");
-		clickMachine.addWidgetHighlight(849, 41);
+		clickMachine.addWidgetHighlight(InterfaceID.PogCoinExchanger.CLOSE);
 
 		clickMachineOnce = new ObjectStep(getQuestHelper(), ObjectID.POG_GNOME_MACHINE_02, regionPoint(22, 32), "Operate Yewnock's machine to calculate a solution.");
 
@@ -396,14 +392,14 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			848, 26);
 
 		exchangerInsertDisc = new DiscInsertionStep(getQuestHelper(), "Insert the highlighted disc into the highlighted slot.");
-		exchangerExchange = new WidgetStep(getQuestHelper(), "", 849, 40);
+		exchangerExchange = new WidgetStep(getQuestHelper(), "", InterfaceID.PogCoinExchanger.EXCHANGE);
 		exchangerConfirm = new DetailedQuestStep(getQuestHelper(), "Click the confirm button.");
-		exchangerConfirm.addWidgetHighlight(849, 36);
+		exchangerConfirm.addWidgetHighlight(InterfaceID.PogCoinExchanger.SUBMIT);
 		exchangerReset = new WidgetStep(getQuestHelper(), "Found unexpected disc(s) in the exchange input, reset & follow the instructions.");
-		exchangerReset.addWidgetHighlight(849, 34);
+		exchangerReset.addWidgetHighlight(InterfaceID.PogCoinExchanger.RESET);
 
-		machineOpen = new WidgetPresenceRequirement(848, 0);
-		exchangerOpen = new WidgetPresenceRequirement(849, 0);
+		machineOpen = new WidgetPresenceRequirement(InterfaceID.PogCoinMachine.UNIVERSE);
+		exchangerOpen = new WidgetPresenceRequirement(InterfaceID.PogCoinExchanger.UNIVERSE);
 	}
 
 	@Override
@@ -411,15 +407,15 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	{
 		if (varbitChanged.getVarbitId() == -1)
 		{
-			if (varbitChanged.getVarpId() == PUZZLE1_LEFT_VARP_ID)
+			if (varbitChanged.getVarpId() == VarPlayerID.POG_COIN_TARGET1_1_OBJ)
 			{
 				puzzle1LeftItemID = varbitChanged.getValue();
 			}
-			else if (varbitChanged.getVarpId() == PUZZLE1_RIGHT_VARP_ID)
+			else if (varbitChanged.getVarpId() == VarPlayerID.POG_COIN_TARGET1_2_OBJ)
 			{
 				puzzle1RightItemID = varbitChanged.getValue();
 			}
-			else if (varbitChanged.getVarpId() == PUZZLE2_VARP_ID)
+			else if (varbitChanged.getVarpId() == VarPlayerID.POG_COIN_TARGET2_OBJ)
 			{
 				puzzle2ItemID = varbitChanged.getValue();
 			}
@@ -458,9 +454,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 		solution.reset();
 	}
 
-	private int getWidgetItemId(int groupId, int childId)
+	private int getWidgetItemId(int widgetId)
 	{
-		var widget = client.getWidget(groupId, childId);
+		var widget = client.getWidget(widgetId);
 		if (widget == null)
 		{
 			return -1;
@@ -472,32 +468,32 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	/**
 	 * This function will add a widget highlight to the slot where it finds a good exchange, if any
 	 *
-	 * @return a pair of widget group + child IDs if there is an exchange we're looking for in one of the slots
+	 * @return a widget ID if there is an exchange we're looking for in one of the slots
 	 */
-	private Optional<Pair<Integer, Integer>> findGoodExchange()
+	private Optional<Integer> findGoodExchange()
 	{
-		var exchangeResultTL = getWidgetItemId(849, 21);
-		var exchangeResultTR = getWidgetItemId(849, 24);
-		var exchangeResultBL = getWidgetItemId(849, 27);
-		var exchangeResultBR = getWidgetItemId(849, 30);
+		var exchangeResultTL = getWidgetItemId(InterfaceID.PogCoinExchanger.OUTPUT_1_MODEL);
+		var exchangeResultTR = getWidgetItemId(InterfaceID.PogCoinExchanger.OUTPUT_2_MODEL);
+		var exchangeResultBL = getWidgetItemId(InterfaceID.PogCoinExchanger.OUTPUT_3_MODEL);
+		var exchangeResultBR = getWidgetItemId(InterfaceID.PogCoinExchanger.OUTPUT_4_MODEL);
 
 		for (var puzzleNeed : solution.puzzleNeeds)
 		{
 			if (puzzleNeed.getAllIds().contains(exchangeResultTL))
 			{
-				return Optional.of(Pair.of(849, 21));
+				return Optional.of(InterfaceID.PogCoinExchanger.OUTPUT_1_MODEL);
 			}
 			if (puzzleNeed.getAllIds().contains(exchangeResultTR))
 			{
-				return Optional.of(Pair.of(849, 24));
+				return Optional.of(InterfaceID.PogCoinExchanger.OUTPUT_2_MODEL);
 			}
 			if (puzzleNeed.getAllIds().contains(exchangeResultBL))
 			{
-				return Optional.of(Pair.of(849, 27));
+				return Optional.of(InterfaceID.PogCoinExchanger.OUTPUT_3_MODEL);
 			}
 			if (puzzleNeed.getAllIds().contains(exchangeResultBR))
 			{
-				return Optional.of(Pair.of(849, 30));
+				return Optional.of(InterfaceID.PogCoinExchanger.OUTPUT_4_MODEL);
 			}
 		}
 
@@ -517,7 +513,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 	 * @return a list of discs as Items, or an empty list if inventory wasn't found
 	 */
 	@Nonnull
-	private List<Item> getDiscs(InventoryID inventoryId)
+	private List<Item> getDiscs(int inventoryId)
 	{
 		var itemContainer = client.getItemContainer(inventoryId);
 		if (itemContainer == null)
@@ -557,7 +553,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			return;
 		}
 
-		var items = getDiscs(InventoryID.INVENTORY);
+		var items = getDiscs(InventoryID.INV);
 
 		var puzzle1SolutionValue = puzzle1SolutionValue1 + puzzle1SolutionValue2;
 		// Try to figure out a solution
@@ -568,7 +564,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 	protected void updateSteps()
 	{
-		var numDiscs = getDiscs(InventoryID.INVENTORY).stream().mapToInt(Item::getQuantity).sum();
+		var numDiscs = getDiscs(InventoryID.INV).stream().mapToInt(Item::getQuantity).sum();
 		if (numDiscs < 3)
 		{
 			// Player has fewer than 3 discs, no solution is possible
@@ -601,9 +597,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 				return;
 			}
 
-			var puzzle1InsertedDisc = client.getVarpValue(PUZZLE1_INSERTED_DISC_VARP_ID);
-			var puzzle2UpperInsertedDisc = client.getVarpValue(PUZZLE2_UPPER_INSERTED_DISC_VARP_ID);
-			var puzzle2LowerInsertedDisc = client.getVarpValue(PUZZLE2_LOWER_INSERTED_DISC_VARP_ID);
+			var puzzle1InsertedDisc = client.getVarpValue(VarPlayerID.POG_COIN_DISPLAY1_OBJ);
+			var puzzle2UpperInsertedDisc = client.getVarpValue(VarPlayerID.POG_COIN_DISPLAY2_1_OBJ);
+			var puzzle2LowerInsertedDisc = client.getVarpValue(VarPlayerID.POG_COIN_DISPLAY2_2_OBJ);
 
 			if (!solution.puzzle1Requirement.getAllIds().contains(puzzle1InsertedDisc))
 			{
@@ -694,9 +690,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 				exchangerConfirm.clearWidgetHighlights();
 				// Highlight the confirm button
-				exchangerConfirm.addWidgetHighlight(849, 36);
+				exchangerConfirm.addWidgetHighlight(InterfaceID.PogCoinExchanger.SUBMIT);
 				// Highlight the widget with the good exchange
-				exchangerConfirm.addWidgetHighlight(goodExchangeWidget.getLeft(), goodExchangeWidget.getRight());
+				exchangerConfirm.addWidgetHighlight(goodExchangeWidget);
 				startUpStep(exchangerConfirm);
 				return;
 			}
@@ -704,9 +700,9 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 			exchangerInsertDisc.setRequirements(solution.toExchange);
 
 			// Exchanger widget is open
-			var exchangeInput1 = getWidgetItemId(849, 8);
-			var exchangeInput2 = getWidgetItemId(849, 13);
-			var exchangeInput3 = getWidgetItemId(849, 18);
+			var exchangeInput1 = getWidgetItemId(InterfaceID.PogCoinExchanger.INPUT_1_MODEL);
+			var exchangeInput2 = getWidgetItemId(InterfaceID.PogCoinExchanger.INPUT_2_MODEL);
+			var exchangeInput3 = getWidgetItemId(InterfaceID.PogCoinExchanger.INPUT_3_MODEL);
 			List<Integer> exchangeInputs = Stream.of(exchangeInput1, exchangeInput2, exchangeInput3).filter(itemId -> itemId > 0).collect(Collectors.toUnmodifiableList());
 
 			// TODO: Validate that the correct disc is in one of the 3 exchange slots (need their widget IDs or varbits)
@@ -718,7 +714,7 @@ public class YewnocksPuzzle extends DetailedOwnerStep
 
 				// Highlight the first exchanger input
 				exchangerInsertDisc.clearWidgetHighlights();
-				exchangerInsertDisc.addWidgetHighlight(849, 8);
+				exchangerInsertDisc.addWidgetHighlight(InterfaceID.PogCoinExchanger.INPUT_1_MODEL);
 				startUpStep(exchangerInsertDisc);
 				return;
 			}

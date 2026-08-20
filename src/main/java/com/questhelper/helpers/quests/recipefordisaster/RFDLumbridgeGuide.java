@@ -49,6 +49,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -88,7 +89,7 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 
 		ConditionalStep saveGuide = new ConditionalStep(this, mixIngredients);
 		saveGuide.addStep(new Conditions(guidanceCake, inDiningRoom), useCakeOnLumbridgeGuide);
-		saveGuide.addStep(guidanceCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		saveGuide.addStep(guidanceCake.alsoCheckBank(), enterDiningRoomAgain);
 		saveGuide.addStep(rawGuidanceCake, cookCake);
 		steps.put(3, saveGuide);
 		steps.put(4, saveGuide);
@@ -241,6 +242,6 @@ public class RFDLumbridgeGuide extends BasicQuestHelper
 	@Override
 	public boolean isCompleted()
 	{
-		return (client.getVarbitValue(1896) >= 5 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
+		return (client.getVarbitValue(VarbitID._100GUIDE_PROG) >= 5 || client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 3);
 	}
 }

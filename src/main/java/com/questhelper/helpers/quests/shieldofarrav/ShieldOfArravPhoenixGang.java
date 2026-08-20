@@ -78,18 +78,18 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 
 		ConditionalStep goToKillJonny = new ConditionalStep(this, killJonny);
 		goToKillJonny.addStep(new Conditions(intelReport, inPhoenixEntry), talkToStravenAgain);
-		goToKillJonny.addStep(intelReport.alsoCheckBank(questBank), returnDownLadder);
+		goToKillJonny.addStep(intelReport.alsoCheckBank(), returnDownLadder);
 		goToKillJonny.addStep(intelReportNearby, pickupIntelReport);
 		goToKillJonny.addStep(inPhoenixEntry, goUpFromPhoenixGang);
 
 		steps.put(8, goToKillJonny);
 
 		ConditionalStep completeQuest = new ConditionalStep(this, returnDownLadder);
-		completeQuest.addStep(certificate.alsoCheckBank(questBank), talkToRoald);
-		completeQuest.addStep(new Conditions(certificateHalf.alsoCheckBank(questBank), blackArmCertificateHalf.alsoCheckBank(questBank)), combineCertificate);
-		completeQuest.addStep(certificateHalf.alsoCheckBank(questBank), tradeCertificateHalf);
-		completeQuest.addStep(new Conditions(inPhoenixBase, shieldHalf.alsoCheckBank(questBank)), leaveAfterGettingShieldHalf);
-		completeQuest.addStep(shieldHalf.alsoCheckBank(questBank), talkToHaig);
+		completeQuest.addStep(certificate.alsoCheckBank(), talkToRoald);
+		completeQuest.addStep(new Conditions(certificateHalf.alsoCheckBank(), blackArmCertificateHalf.alsoCheckBank()), combineCertificate);
+		completeQuest.addStep(certificateHalf.alsoCheckBank(), tradeCertificateHalf);
+		completeQuest.addStep(new Conditions(inPhoenixBase, shieldHalf.alsoCheckBank()), leaveAfterGettingShieldHalf);
+		completeQuest.addStep(shieldHalf.alsoCheckBank(), talkToHaig);
 		completeQuest.addStep(new Conditions(inPhoenixBase, chestOpen), getShieldHalf1);
 		completeQuest.addStep(inPhoenixBase, getShieldHalf);
 
@@ -147,7 +147,7 @@ public class ShieldOfArravPhoenixGang extends BasicQuestHelper
 
 		goUpFromPhoenixGang = new ObjectStep(this, ObjectID.PHOENIXLADDER, new WorldPoint(3244, 9783, 0),
 			"Go back up to the surface.");
-		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD_1OP, new WorldPoint(3222, 3395, 0),
+		killJonny = new NpcStep(this, NpcID.JONNY_THE_BEARD_2OP, new WorldPoint(3222, 3395, 0),
 			"Kill Jonny the Beard in the Blue Moon Inn in Varrock.");
 		pickupIntelReport = new DetailedQuestStep(this, "Pick up the Intel Report.", intelReport);
 		returnDownLadder = new ObjectStep(this, ObjectID.FAI_VARROCK_LADDER_DEEP, new WorldPoint(3244, 3383, 0),

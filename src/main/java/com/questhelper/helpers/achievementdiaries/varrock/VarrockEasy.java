@@ -236,10 +236,10 @@ public class VarrockEasy extends ComplexStateQuestHelper
 			"Get more kudos from either quests, miniquests, or turning in fossils.");
 		kudos = new NpcStep(this, NpcID.CURATOR, new WorldPoint(3258, 3449, 0),
 			"Speak to Curator Haig Halen.", notMoreKudos);
-		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
+		moveToEarthRune = new ObjectStep(this, ObjectID.EARTHTEMPLE_RUINED, new WorldPoint(3306, 3474, 0),
 			"Travel to the earth altar or go through the abyss.", earthTali.highlighted(), essence);
 		moveToEarthRune.addIcon(ItemID.EARTH_TALISMAN);
-		earthRune = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
+		earthRune = new ObjectStep(this, ObjectID.EARTH_ALTAR, new WorldPoint(2658, 4841, 0),
 			"Craft an earth rune.", essence);
 		trout = new NpcStep(this, NpcID._0_48_53_FRESHFISH, new WorldPoint(3106, 3428, 0),
 			"Fish a trout in the River Lum at Barbarian Village.", flyRod, feathers);

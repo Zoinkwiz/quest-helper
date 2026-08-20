@@ -47,11 +47,11 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 {
 	// Items required
 	ItemRequirement combatGear, magicRedwoodPyreLogs, shadeRemains, tinderbox, earthRune, astralRune, natureRune,
-		blackLeather, needle, thread, barrowsSet, ahrimSet, karilSet, guthanSet, veracSet, dharokSet, toragSet;
+		blackLeather, needle, thread, needleThread, costumeNeedle, needleThreadOrCostumeNeedle, barrowsSet, ahrimSet, karilSet, guthanSet, veracSet, dharokSet, toragSet;
 
 	// Items recommended
 	ItemRequirement food, barrowsTab, slayerRing, ectophial, mortTP, spade;
@@ -140,7 +140,10 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		blackLeather = new ItemRequirement("Black dragon leather", ItemID.DRAGON_LEATHER_BLACK).showConditioned(notCraftBlackDhideBody);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).showConditioned(notCraftBlackDhideBody);
 		thread = new ItemRequirement("Thread", ItemID.THREAD).showConditioned(notCraftBlackDhideBody);
-
+		needleThread = new ItemRequirements(needle, thread);
+		costumeNeedle = new ItemRequirement("Costume needle", ItemID.COSTUMENEEDLE);
+		needleThreadOrCostumeNeedle = new ItemRequirements(LogicType.OR, "Needle/Thread or Costume needle", needleThread, costumeNeedle);
+		needleThreadOrCostumeNeedle.setDisplayMatchedItemName(true);
 
 		ahrimSet = new ItemRequirements("Ahrim Set", new ItemRequirement("Hood", ItemCollections.AHRIM_HOOD),
 			new ItemRequirement("Staff", ItemCollections.AHRIM_STAFF), new ItemRequirement("Top",
@@ -208,7 +211,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 			"Dig at the top of the mounds and search the Sarcophagi until you find the hidden tunnel. A spade can " +
 				"be found in a shed at the entrance.", spade, barrowsSet, food);
 		// equipped doesn't work, it's highlighted as long as it's in inventory.
-		barrowsChest = new ObjectStep(this, 20973, new WorldPoint(3552, 9696, 0),
+		barrowsChest = new ObjectStep(this, ObjectID.BARROWS_STONE_CHEST, new WorldPoint(3552, 9696, 0),
 			"Loot the chest wearing a complete set of barrows gear.", barrowsSet.equipped());
 
 		cremateShade = new ObjectStep(this, ObjectID.TEMPLE_PYRE, new WorldPoint(3500, 3266, 0),
@@ -219,7 +222,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		bareHandShark = new NpcStep(this, NpcID._0_54_49_MEMBERFISH, new WorldPoint(3479, 3189, 0),
 			"Bare hand fish a shark in Burgh de Rott.");
 
-		moveToSlayer2 = new ObjectStep(this, 2114, new WorldPoint(3436, 3538, 0),
+		moveToSlayer2 = new ObjectStep(this, ObjectID.SLAYER_STAIRS_LV1, new WorldPoint(3436, 3538, 0),
 			"Climb the stairs or the Spikey chains in the Slayer tower to ascend to the higher level.", combatGear,
 			food);
 		moveToSlayer3 = new ObjectStep(this, ObjectID.SLAYER_STAIRS_LV2, new WorldPoint(3415, 3541, 1),
@@ -231,12 +234,12 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 		moveToCanifisBank = new DetailedQuestStep(this, new WorldPoint(3511, 3480, 0),
 			"Move to the bank in Canifis.", blackLeather.quantity(3).highlighted(), needle.highlighted(), thread);
 		craftBlackDhideBody = new DetailedQuestStep(this, "Craft a black dragon hide body.",
-			blackLeather.quantity(3).highlighted(), needle.highlighted(), thread);
+			blackLeather.quantity(3).highlighted(), needle.highlighted(), needleThreadOrCostumeNeedle);
 
-		fertilizeHerb = new ObjectStep(this, 8153, new WorldPoint(3606, 3530, 0),
+		fertilizeHerb = new ObjectStep(this, ObjectID.FARMING_HERB_PATCH_4, new WorldPoint(3606, 3530, 0),
 			"Cast Fertile Soil on the herb patch in Morytania.", lunarBook, earthRune.quantity(15),
 			astralRune.quantity(3), natureRune.quantity(2));
-		fertilizeHerb.addIcon(SpriteID.SPELL_FERTILE_SOIL);
+		fertilizeHerb.addIcon(SpriteID.LunarMagicOn.FERTILE_SOIL);
 
 		claimReward = new NpcStep(this, NpcID.LESABRE_MORT_DIARY, new WorldPoint(3464, 3480, 0),
 			"Talk to Le-Sabre near Canifis to claim your reward!");
@@ -248,7 +251,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 	{
 		return Arrays.asList(combatGear, magicRedwoodPyreLogs, shadeRemains, tinderbox, barrowsSet,
 			blackLeather.quantity(3),
-			needle, thread, earthRune.quantity(15), astralRune.quantity(3), natureRune.quantity(2));
+			needleThreadOrCostumeNeedle.quantity(1), earthRune.quantity(15), astralRune.quantity(3), natureRune.quantity(2));
 	}
 
 	@Override
@@ -342,7 +345,7 @@ public class MorytaniaElite extends ComplexStateQuestHelper
 
 		PanelDetails craftSteps = new PanelDetails("Craft Black D'hide Body", Arrays.asList(moveToCanifisBank,
 			craftBlackDhideBody), new SkillRequirement(Skill.CRAFTING, 84, true),
-			blackLeather.quantity(3), needle, thread);
+			blackLeather.quantity(3), needleThreadOrCostumeNeedle.quantity(1));
 		craftSteps.setDisplayCondition(notCraftBlackDhideBody);
 		craftSteps.setLockingStep(craftBlackDhideBodyTask);
 		allSteps.add(craftSteps);

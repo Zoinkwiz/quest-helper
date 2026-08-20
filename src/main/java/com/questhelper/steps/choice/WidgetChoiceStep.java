@@ -25,6 +25,7 @@
 package com.questhelper.steps.choice;
 
 import com.questhelper.QuestHelperConfig;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -58,6 +59,10 @@ public class WidgetChoiceStep
 	protected final int groupId;
 	protected final int childId;
 
+	protected final int varbitId;
+	protected int varbitValue = -1;
+	protected final Map<Integer, String> varbitValueToAnswer;
+
 	protected boolean shouldNumber = false;
 
 	@Setter
@@ -73,6 +78,8 @@ public class WidgetChoiceStep
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
 		this.pattern = null;
+		this.varbitId = -1;
+		this.varbitValueToAnswer = null;
 	}
 
 	public WidgetChoiceStep(QuestHelperConfig config, int groupId, int childId)
@@ -84,6 +91,8 @@ public class WidgetChoiceStep
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
 		this.pattern = null;
+		this.varbitId = -1;
+		this.varbitValueToAnswer = null;
 	}
 
 	public WidgetChoiceStep(QuestHelperConfig config, Pattern pattern, int groupId, int childId)
@@ -95,6 +104,8 @@ public class WidgetChoiceStep
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
 		this.pattern = pattern;
+		this.varbitId = -1;
+		this.varbitValueToAnswer = null;
 	}
 
 	public WidgetChoiceStep(QuestHelperConfig config, int choiceId, int groupId, int childId)
@@ -105,6 +116,8 @@ public class WidgetChoiceStep
 		this.groupId = groupId;
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
+		this.varbitId = -1;
+		this.varbitValueToAnswer = null;
 	}
 
 	public WidgetChoiceStep(QuestHelperConfig config, int choiceId, String choice, int groupId, int childId)
@@ -115,6 +128,8 @@ public class WidgetChoiceStep
 		this.groupId = groupId;
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
+		this.varbitId = -1;
+		this.varbitValueToAnswer = null;
 	}
 
 	public WidgetChoiceStep(QuestHelperConfig config, int choiceId, Pattern pattern, int groupId, int childId)
@@ -126,6 +141,21 @@ public class WidgetChoiceStep
 		this.groupIdForChecking = groupId;
 		this.childId = childId;
 		this.pattern = pattern;
+		this.varbitId = -1;
+		this.varbitValueToAnswer = null;
+	}
+
+	public WidgetChoiceStep(QuestHelperConfig config, int groupId, int childId, int varbitId, Map<Integer, String> varbitValueToAnswer)
+	{
+		this.config = config;
+		this.choice = null;
+		this.choiceById = -1;
+		this.groupId = groupId;
+		this.groupIdForChecking = groupId;
+		this.childId = childId;
+		this.pattern = null;
+		this.varbitId = varbitId;
+		this.varbitValueToAnswer = varbitValueToAnswer;
 	}
 
 	public void addExclusion(int excludedGroupId, int excludedChildId, String excludedString)
@@ -168,6 +198,9 @@ public class WidgetChoiceStep
 		{
 			return;
 		}
+		if(varbitId != -1){
+			varbitValue = client.getVarbitValue(varbitId);
+		}
 
 		Widget[] choices = dialogChoice.getChildren();
 		checkWidgets(choices);
@@ -186,6 +219,18 @@ public class WidgetChoiceStep
 					(choice == null && pattern == null))
 				{
 					highlightText(choices[choiceById], choiceById);
+				}
+			}
+			else if (varbitId != -1 && varbitValue != -1 && varbitValueToAnswer != null)
+			{
+				String choice = varbitValueToAnswer.get(varbitValue);
+				for (int i = 0; i < choices.length; i++)
+				{
+					if (choices[i].getText().equals(choice))
+					{
+						highlightText(choices[i], i);
+						return;
+					}
 				}
 			}
 			else

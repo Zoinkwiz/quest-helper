@@ -26,6 +26,7 @@ package com.questhelper.helpers.quests.templeoftheeye;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.tools.DefinedPoint;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -114,7 +115,7 @@ public class RuneEnergyStep extends ObjectStep
 		alternateObjectIDs.clear();
 
 		alternateObjectIDs.add(useList[currentPos].id);
-		worldPoint = useList[currentPos].wp;
+		definedPoint = DefinedPoint.of(useList[currentPos].wp);
 
 		loadObjects();
 	}

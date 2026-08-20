@@ -6,13 +6,17 @@ repositories {
 	mavenLocal()
 	maven {
 		url = 'https://repo.runelite.net'
+		content {
+			includeGroupByRegex("net\\.runelite.*")
+		}
 	}
 	mavenCentral()
 }
 
-dependencies {
-	def runeLiteVersion = "latest." + (project.hasProperty("use.snapshot") ? "integration" : "release")
+def runeLiteVersion = "latest." + (project.hasProperty("use.snapshot") ? "integration" : "release")
+def pluginMainClass = 'com.questhelper.QuestHelperPluginTest'
 
+dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
 
 	compileOnly 'org.projectlombok:lombok:1.18.30'
@@ -36,19 +40,19 @@ dependencies {
 }
 
 group = 'com.questhelper'
-version = '4.9.4'
-sourceCompatibility = "11"
+version = '4.17.0'
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
+	options.release.set(11)
 }
 
 tasks.withType(Test).configureEach {
-	maxHeapSize = "1g" 
-	minHeapSize = "256m"
+	maxHeapSize = "3g"
+	minHeapSize = "512m"
 	jvmArgs = [
-			"-XX:ReservedCodeCacheSize=256m",
-			"-XX:MaxMetaspaceSize=512m"
+			"-XX:ReservedCodeCacheSize=512m",
+			"-XX:MaxMetaspaceSize=1g"
 	]
 	testLogging.showStandardStreams = true
 }
@@ -56,12 +60,19 @@ tasks.withType(Test).configureEach {
 tasks.test {
 	useJUnitPlatform()
 }
-targetCompatibility = JavaVersion.VERSION_11
+
+tasks.register("run", JavaExec) {
+	classpath = sourceSets.test.runtimeClasspath
+	mainClass = pluginMainClass
+
+	jvmArgs "-ea"
+	args "--developer-mode", "--debug"
+}
 
 tasks.register("shadowJar", Jar) {
 	dependsOn configurations.testRuntimeClasspath
 	manifest {
-		attributes("Main-Class": "com.questhelper.QuestHelperPluginTest")
+		attributes("Main-Class": pluginMainClass, "Multi-Release": true)
 	}
 
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE

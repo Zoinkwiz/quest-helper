@@ -39,13 +39,15 @@ import com.questhelper.steps.*;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarbitID;
+
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.*;
@@ -129,7 +131,7 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 		inKrukRoom = new ZoneRequirement(krukRoom);
 
 		hasBronzeKey = bronzeKey;
-		openedShortcut = new VarbitRequirement(5029, 1);
+		openedShortcut = new VarbitRequirement(VarbitID.MM2_MAZE_RETURN, 1);
 
 		path1SouthIsWrongChat = new ChatMessageRequirement(
 			new ZoneRequirement(new Zone(new WorldPoint(2512, 9141, 1), new WorldPoint(2515, 9135, 1))),
@@ -273,8 +275,8 @@ public class AgilityDungeonSteps extends DetailedOwnerStep
 
 		fightKruk = new NpcStep(getQuestHelper(), NpcID.MM2_KRUK_COMBAT, new WorldPoint(2535, 9213, 1),
 			"Kill Kruk. He can be flinched on a corner in the room by keeping him on a north east tile to you.");
-		fightKruk.addTileMarker(new WorldPoint(2528, 9220, 1), SpriteID.RS2_SWORD_POINTED_LEFT);
-		fightKruk.addTileMarker(new WorldPoint(2529, 9221, 1), SpriteID.EQUIPMENT_SLOT_SHIELD);
+		fightKruk.addTileMarker(new WorldPoint(2528, 9220, 1), SpriteID.Sworddecor.LEFT);
+		fightKruk.addTileMarker(new WorldPoint(2529, 9221, 1), SpriteID.Wornicons.SHIELD);
 	}
 
 	private void updateSection1Route()

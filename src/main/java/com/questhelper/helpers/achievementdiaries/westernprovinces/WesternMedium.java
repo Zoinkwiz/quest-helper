@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class WesternMedium extends ComplexStateQuestHelper
 {
@@ -136,8 +137,8 @@ public class WesternMedium extends ComplexStateQuestHelper
 		doMedium.addStep(notApeBass, apeBassTask);
 
 		apeTeakTask = new ConditionalStep(this, moveToApeTeak);
+		apeTeakTask.addStep(and(inApeAtoll, teakLogs, choppedLogs), apeTeakBurn);
 		apeTeakTask.addStep(inApeAtoll, apeTeakChop);
-		apeTeakTask.addStep(new Conditions(inApeAtoll, teakLogs, choppedLogs), apeTeakBurn);
 		doMedium.addStep(notApeTeak, apeTeakTask);
 
 		interPestTask = new ConditionalStep(this, moveToPest);
@@ -279,7 +280,7 @@ public class WesternMedium extends ComplexStateQuestHelper
 		agiShortcut = new ObjectStep(this, ObjectID.GNOME_STRONGHOLD_SC_ROCK_TOP, new WorldPoint(2487, 3515, 0),
 			"Take the agility shortcut from the Grand Tree to Otto's Grotto.");
 
-		moveToEagle = new ObjectStep(this, 19790, new WorldPoint(2329, 3495, 0),
+		moveToEagle = new ObjectStep(this, ObjectID.EAGLEPEAK_ENTRANCE_CAVE_MULTI, new WorldPoint(2329, 3495, 0),
 			"Enter the cave at the top of Eagles' Peak. " +
 				"You can use a fairy ring to (AKQ), then head south to get there easily.", rope);
 		eagleFeldip = new NpcStep(this, NpcID.EAGLEPEAK_EAGLE_TOJUNGLE, new WorldPoint(2027, 4964, 3),

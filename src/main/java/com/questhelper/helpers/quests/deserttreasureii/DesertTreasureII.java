@@ -27,6 +27,7 @@ package com.questhelper.helpers.quests.deserttreasureii;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.panel.TopLevelPanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.questinfo.QuestVarbits;
@@ -64,10 +65,13 @@ import net.runelite.api.gameval.VarbitID;
 import java.util.*;
 
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
 
 public class DesertTreasureII extends BasicQuestHelper
 {
+	List<PanelDetails> allSteps = new ArrayList<>();
+
 	DetailedQuestStep attemptToEnterVaultDoor, attemptToEnterVaultDoor2, talkToAsgarnia,
 		inspectStatueSE, inspectStatueSW, inspectStatueNE, inspectStatueNW, inspectPlaque,
 		talkToAsgarniaAgain, talkToBalando, operateWinch, talkToBanikan, getPickaxe, mineRocks,
@@ -126,6 +130,8 @@ public class DesertTreasureII extends BasicQuestHelper
 		initializeRequirements();
 		setupConditions();
 		setupSteps();
+		prepopulateSidebarPanels();
+
 		Map<Integer, QuestStep> steps = new HashMap<>();
 		steps.put(0, attemptToEnterVaultDoor);
 		steps.put(2, attemptToEnterVaultDoor);
@@ -232,10 +238,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		sucellusSteps.setLockingCondition(finishedSucellus);
 		perseriyaSteps.setLockingCondition(finishedPerseriya);
 
-		ConditionalStep findingTheFour = new ConditionalStep(this, vardorvisSteps);
-		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya, finishedSucellus), whispererSteps);
-		findingTheFour.addStep(and(finishedVardorvis, finishedPerseriya), sucellusSteps);
-		findingTheFour.addStep(finishedVardorvis, perseriyaSteps);
+		ReorderableConditionalStep  findingTheFour = new ReorderableConditionalStep(this, whispererSteps);
+		findingTheFour.addStep(not(finishedVardorvis), vardorvisSteps);
+		findingTheFour.addStep(not(finishedPerseriya), perseriyaSteps);
+		findingTheFour.addStep(not(finishedSucellus), sucellusSteps);
 		steps.put(42, findingTheFour);
 		/* Entered stranglewood */
 		steps.put(44, findingTheFour);
@@ -427,28 +433,28 @@ public class DesertTreasureII extends BasicQuestHelper
 		inGolemRoom = new ZoneRequirement(golemRoom);
 		inFinalRoom = new ZoneRequirement(finalRoom);
 
-		inspectedPlaque = new VarbitRequirement(15105, 1);
-		inspectedStatueNE = new VarbitRequirement(15106, 1);
-		inspectedStatueSE = new VarbitRequirement(15107, 1);
-		inspectedStatueSW = new VarbitRequirement(15108, 1);
-		inspectedStatueNW = new VarbitRequirement(15109, 1);
+		inspectedPlaque = new VarbitRequirement(VarbitID.DT2_VAULT_PLAQUE, 1);
+		inspectedStatueNE = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_VARDORVIS, 1);
+		inspectedStatueSE = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_PERSERIYA, 1);
+		inspectedStatueSW = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_SUCELLUS, 1);
+		inspectedStatueNW = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_WHISPERER, 1);
 		// 12139 0->1 (cutscene specific ID)
 		// VarPlayer 3575 3840 -> 7936
 
 		inspectedGolem = new VarbitRequirement(QuestVarbits.QUEST_DESERT_TREASURE_II.getId(), 30,
 			Operation.GREATER_EQUAL);
 		// TODO: FIX CHECK FOR INSPECTED ALTAR, THOUGHT IT WAS 15111 BUT IT WASN'T
-		inspectedAltar = new VarbitRequirement(15109, 1);
+		inspectedAltar = new VarbitRequirement(VarbitID.DT2_VAULT_STATUE_WHISPERER, 1);
 
 		// CAST BLOOD BARRAGE
 		// 15116 0->4
 		// 15119 0->1
-		smokeBeenCast = new VarbitRequirement(15117, 1);
-		shadowBeenCast = new VarbitRequirement(15118, 1);
-		bloodBeenCast = new VarbitRequirement(15119, 1);
-		iceBeenCast = new VarbitRequirement(15120, 1);
+		smokeBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_SMOKE_TOTEM, 1);
+		shadowBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_SHADOW_TOTEM, 1);
+		bloodBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_BLOOD_TOTEM, 1);
+		iceBeenCast = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_ICE_TOTEM, 1);
 
-		castAllSpells = new VarbitRequirement(15116, 15);
+		castAllSpells = new VarbitRequirement(VarbitID.DT2_WAR_ROOM_ALTAR, 15);
 
 		inPuzzle = new WidgetTextRequirement(838, 10, "One cell per row!");
 
@@ -521,10 +527,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		// 14862 86->88
 		// 15129 0->1
 
-		cellUnlocked = new VarbitRequirement(15124, 1);
+		cellUnlocked = new VarbitRequirement(VarbitID.DT2_HIDEOUT_GATE_UNLOCKED, 1);
 		// Left cell, 88->90
 
-		itemsRetrieved = new VarbitRequirement(14283, 0);
+		itemsRetrieved = new VarbitRequirement(VarbitID.HOLDING_INVENTORY_LOCATION, 0);
 		// Stranger cutscene
 		// 4606 0->3
 		// 12139 0->1
@@ -717,10 +723,10 @@ public class DesertTreasureII extends BasicQuestHelper
 		talkToElissa.addDialogStep("I hear you visited Lovakengj recently.");
 		talkToElissa.addTeleport(senntistenTeleport);
 
-		vardorvisSteps = new VardorvisSteps(this, talkToElissa, questBank);
+		vardorvisSteps = new VardorvisSteps(this, talkToElissa);
 		perseriyaSteps = new PerseriyaSteps(this, new DetailedQuestStep(this, "Do Perseriya steps."));
 		sucellusSteps = new SucellusSteps(this, new DetailedQuestStep(this, "Do Sucellus steps."));
-		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."), questBank);
+		whispererSteps = new WhispererSteps(this, new DetailedQuestStep(this, "Do Whisperer steps."));
 
 		returnToDesertWithFinalMedallion = new ObjectStep(this, ObjectID.DT2_DESERT_VAULT_DOOR,
 			new WorldPoint(3511, 2971, 0),
@@ -847,10 +853,10 @@ public class DesertTreasureII extends BasicQuestHelper
 			new UnlockReward("Access to four new bosses"));
 	}
 
-	@Override
-	public List<PanelDetails> getPanels()
+	private void prepopulateSidebarPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
+		allSteps.clear();
+
 		allSteps.add(new PanelDetails("The Vault",
 			Arrays.asList(attemptToEnterVaultDoor, talkToAsgarnia, inspectPlaque, inspectStatueNE,
 				inspectStatueNW, inspectStatueSW, inspectStatueSE, talkToAsgarniaAgain),
@@ -869,50 +875,57 @@ public class DesertTreasureII extends BasicQuestHelper
 		PanelDetails vardorvisPanel = new PanelDetails("Vardorvis",
 			vardorvisSteps.getDisplaySteps(),
 			Collections.singletonList(combatGear),
-			Arrays.asList(xericTalisman, freezes));
+			Arrays.asList(xericTalisman, freezes)).withId(0);
 		vardorvisPanel.setLockingStep(vardorvisSteps);
-		allSteps.add(vardorvisPanel);
+		vardorvisSteps.withId(0);
 
-		PanelDetails perseriyaPanel = new PanelDetails("Perseriya",
+		PanelDetails perseriyaPanel = new PanelDetails("Perseriya - The Abyss",
 			perseriyaSteps.getStartSteps(),
 			Arrays.asList(combatGear, facemask),
 			Arrays.asList(eyeTeleport, staminaPotions, arclight));
-		perseriyaPanel.setLockingStep(perseriyaSteps);
-		allSteps.add(perseriyaPanel);
-		allSteps.add(new PanelDetails("Perseriya - Room 1",
+		PanelDetails perseriyaPanel2 = new PanelDetails("Perseriya - Room 1",
 			perseriyaSteps.getRoom1Steps(),
 			Collections.singletonList(facemask),
-			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
-		allSteps.add(new PanelDetails("Perseriya - Room 2",
+			Arrays.asList(eyeTeleport, staminaPotions, arclight));
+		PanelDetails perseriyaPanel3 = new PanelDetails("Perseriya - Room 2",
 			perseriyaSteps.getRoom2Steps(),
 			List.of(facemask),
-			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
-		allSteps.add(new PanelDetails("Perseriya - Room 3",
+			Arrays.asList(eyeTeleport, staminaPotions, arclight));
+		PanelDetails perseriyaPanel4 = new PanelDetails("Perseriya - Room 3",
 			perseriyaSteps.getRoom3Steps(),
 			List.of(facemask),
-			Arrays.asList(eyeTeleport, staminaPotions, arclight)));
-		allSteps.add(new PanelDetails("Perseriya - The battle",
+			Arrays.asList(eyeTeleport, staminaPotions, arclight));
+		PanelDetails perseriyaPanel5 = new PanelDetails("Perseriya - The battle",
 			perseriyaSteps.getBattleSteps(),
 			Arrays.asList(rangedCombatGear, shadowBurstRunes),
-			Arrays.asList(eyeTeleport, staminaPotions, food, prayerPotions)));
+			Arrays.asList(eyeTeleport, staminaPotions, food, prayerPotions));
 
+		var perseriyaPanels = new TopLevelPanelDetails("Perseriya", perseriyaPanel, perseriyaPanel2, perseriyaPanel3, perseriyaPanel4, perseriyaPanel5).withId(1);
+		perseriyaPanels.setLockingStep(perseriyaSteps);
+		perseriyaSteps.withId(1);
 		PanelDetails sucellusPanel = new PanelDetails("Sucellus",
 			sucellusSteps.getDisplaySteps(),
 			Arrays.asList(meleeCombatGear, food),
-			Arrays.asList(prayerPotions, staminaPotions, icyBasalt));
+			Arrays.asList(prayerPotions, staminaPotions, icyBasalt)).withId(2);
+		sucellusSteps.withId(2);
 		sucellusPanel.setLockingStep(sucellusSteps);
-		allSteps.add(sucellusPanel);
 
-		PanelDetails whispererPanel = new PanelDetails("The Whisperer",
+		PanelDetails whispererPanel = new PanelDetails("The Whisperer - The Unknown",
 			whispererSteps.getDisplaySteps(),
 			Arrays.asList(magicCombatGear, ringOfVisibility, food),
 			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport));
-		whispererPanel.setLockingStep(whispererSteps);
-		allSteps.add(whispererPanel);
-		allSteps.add(new PanelDetails("The Whisperer - Choir",
+
+		var whispererPanel2 = new PanelDetails("The Whisperer - Choir",
 			whispererSteps.getDisplayStepsSilentChoir(),
 			Arrays.asList(magicCombatGear, ringOfVisibility, food),
-			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport)));
+			Arrays.asList(prayerPotions, staminaPotions, lassarTeleport));
+
+		var whispererPanels = new TopLevelPanelDetails("The Whisperer", whispererPanel, whispererPanel2).withId(3);
+		whispererPanels.setLockingStep(whispererSteps);
+		whispererSteps.withId(3);
+
+		var theForgottenFourSections = new TopLevelPanelDetails("The Forgotten Four", vardorvisPanel, perseriyaPanels, sucellusPanel, whispererPanels);
+		allSteps.add(theForgottenFourSections);
 
 		allSteps.add(new PanelDetails("Secrets",
 			Arrays.asList(returnToDesertWithFinalMedallion, searchBedForHairClip, unlockCell,
@@ -921,6 +934,12 @@ public class DesertTreasureII extends BasicQuestHelper
 				talkToAzzanandra),
 			Arrays.asList(meleeCombatGear, rangedCombatGear, food, prayerPotions),
 			Arrays.asList(nardahTeleport, staminaPotions)));
+
+	}
+
+	@Override
+	public List<PanelDetails> getPanels()
+	{
 		return allSteps;
 	}
 

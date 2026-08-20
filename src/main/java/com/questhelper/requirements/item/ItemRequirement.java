@@ -27,7 +27,6 @@
 package com.questhelper.requirements.item;
 
 import com.questhelper.QuestHelperConfig;
-import com.questhelper.bank.QuestBank;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.collections.ItemWithCharge;
 import com.questhelper.managers.ItemAndLastUpdated;
@@ -44,8 +43,9 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.util.Text;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
@@ -92,9 +92,18 @@ public class ItemRequirement extends AbstractRequirement
 	/**
 	 * Indicates whether the item must be equipped.
 	 */
-	@Getter
 	@Setter
-	protected boolean equip;
+	protected boolean mustBeEquipped;
+
+	public boolean mustBeEquipped() {
+		return this.mustBeEquipped;
+	}
+
+	/// Indicates whether the item must be unequipped.
+	/// If set to true, the requirement will have the extra text "(unequipped)" added at the end, which is only green if the item
+	/// is in your inventory.
+	@Setter
+	protected boolean mustBeUnequipped;
 
 	/**
 	 * Whether the item should be highlighted in the inventory.
@@ -121,13 +130,6 @@ public class ItemRequirement extends AbstractRequirement
 	@Setter
 	@Getter
 	protected Requirement conditionToHide = new ManualRequirement();
-
-	/**
-	 * The quest bank used for additional bank checks.
-	 */
-	@Setter
-	@Getter
-	private QuestBank questBank;
 
 	/**
 	 * Flag to indicate whether the bank should be checked.
@@ -195,7 +197,7 @@ public class ItemRequirement extends AbstractRequirement
 		this.id = id;
 		this.quantity = quantity;
 		this.name = name;
-		equip = false;
+		mustBeEquipped = false;
 	}
 
 	/**
@@ -204,12 +206,12 @@ public class ItemRequirement extends AbstractRequirement
 	 * @param name     the display name of the item requirement
 	 * @param id       the primary item id for the requirement
 	 * @param quantity the required quantity of the item
-	 * @param equip    {@code true} if the item must be equipped, {@code false} otherwise
+	 * @param mustBeEquipped    {@code true} if the item must be equipped, {@code false} otherwise
 	 */
-	public ItemRequirement(String name, int id, int quantity, boolean equip)
+	public ItemRequirement(String name, int id, int quantity, boolean mustBeEquipped)
 	{
 		this(name, id, quantity);
-		this.equip = equip;
+		this.mustBeEquipped = mustBeEquipped;
 	}
 
 	/**
@@ -263,14 +265,14 @@ public class ItemRequirement extends AbstractRequirement
 	 * @param name     the display name of the item requirement
 	 * @param items    the list of item ids, where the first element is the primary id
 	 * @param quantity the required quantity of the item
-	 * @param equip    {@code true} if the item must be equipped, {@code false} otherwise
+	 * @param mustBeEquipped    {@code true} if the item must be equipped, {@code false} otherwise
 	 * @throws AssertionError if any item in the list is {@code null}
 	 */
-	public ItemRequirement(String name, List<Integer> items, int quantity, boolean equip)
+	public ItemRequirement(String name, List<Integer> items, int quantity, boolean mustBeEquipped)
 	{
 		this(name, items.get(0), quantity);
 		assert (items.stream().noneMatch(Objects::isNull));
-		this.equip = equip;
+		this.mustBeEquipped = mustBeEquipped;
 		this.addAlternates(items.subList(1, items.size()));
 	}
 
@@ -313,13 +315,13 @@ public class ItemRequirement extends AbstractRequirement
 	 * @param name           the display name of the item requirement
 	 * @param itemCollection the {@link ItemCollections} containing item ids and wiki term information
 	 * @param quantity       the required quantity of the item
-	 * @param equip          {@code true} if the item must be equipped, {@code false} otherwise
+	 * @param mustBeEquipped          {@code true} if the item must be equipped, {@code false} otherwise
 	 */
-	public ItemRequirement(String name, ItemCollections itemCollection, int quantity, boolean equip)
+	public ItemRequirement(String name, ItemCollections itemCollection, int quantity, boolean mustBeEquipped)
 	{
 		this(name, itemCollection.getItems().get(0), quantity);
 		this.setUrlSuffix(itemCollection.getWikiTerm());
-		this.equip = equip;
+		this.mustBeEquipped = mustBeEquipped;
 		this.addAlternates(itemCollection.getItems().subList(1, itemCollection.getItems().size()));
 	}
 
@@ -376,26 +378,15 @@ public class ItemRequirement extends AbstractRequirement
 	}
 
 	/**
-	 * Configures this requirement to check the specified quest bank. Needs to not need {@link QuestBank} in the future as it no longer uses it.
+	 * Returns a copy of this requirement that includes bank containers in its checks.
 	 *
-	 * @param questBank the {@link QuestBank} to use for bank checks; if {@code null}, bank checks are disabled
-	 */
-	public void useQuestBank(QuestBank questBank)
-	{
-		this.shouldCheckBank = questBank != null;
-		this.questBank = questBank;
-	}
-
-	/**
-	 * Returns a copy of this requirement that also checks the specified quest bank. Needs to not need {@link QuestBank} in the future as it no longer uses it.
-	 *
-	 * @param questBank the {@link QuestBank} to use for additional bank checks
 	 * @return a new {@link ItemRequirement} instance configured to check the bank
 	 */
-	public ItemRequirement alsoCheckBank(QuestBank questBank)
+	@CheckReturnValue
+	public ItemRequirement alsoCheckBank()
 	{
 		ItemRequirement newItem = copy();
-		newItem.useQuestBank(questBank);
+		newItem.setShouldCheckBank(true);
 		return newItem;
 	}
 
@@ -420,7 +411,7 @@ public class ItemRequirement extends AbstractRequirement
 	public ItemRequirement equipped()
 	{
 		ItemRequirement newItem = copy();
-		newItem.setEquip(true);
+		newItem.setMustBeEquipped(true);
 		return newItem;
 	}
 
@@ -502,7 +493,7 @@ public class ItemRequirement extends AbstractRequirement
 		{
 			throw new UnsupportedOperationException("Subclasses must override copy()");
 		}
-		return new ItemRequirement(name, id, quantity, equip);
+		return new ItemRequirement(name, id, quantity, mustBeEquipped);
 	}
 
 	/**
@@ -515,14 +506,14 @@ public class ItemRequirement extends AbstractRequirement
 		ItemRequirement newItem = copyOfClass();
 		newItem.setName(name);
 		newItem.setId(id);
-		newItem.setEquip(equip);
+		newItem.setMustBeEquipped(mustBeEquipped);
+		newItem.setMustBeUnequipped(mustBeUnequipped);
 		newItem.setQuantity(quantity);
 		newItem.addAlternates(alternateItems);
 		newItem.setDisplayItemId(displayItemId);
 		newItem.setHighlightInInventory(highlightInInventory);
 		newItem.setDisplayMatchedItemName(displayMatchedItemName);
 		newItem.setConditionToHide(conditionToHide);
-		newItem.questBank = questBank;
 		newItem.isConsumedItem = isConsumedItem;
 		newItem.shouldAggregate = shouldAggregate;
 		// Need to get actual tooltip or we get the appended containers info
@@ -661,11 +652,11 @@ public class ItemRequirement extends AbstractRequirement
 	public String getWikiUrl()
 	{
 		if (getUrlSuffix() != null) {
-			return "https://oldschool.runescape.wiki/w/" + getUrlSuffix();
+			return "https://oldschool.runescape.wiki/w/" + getUrlSuffix() + "#Item_sources";
 		}
 
 		if (getId() != -1) {
-			return "https://oldschool.runescape.wiki/w/Special:Lookup?type=item&id=" + getId();
+			return "https://oldschool.runescape.wiki/w/Special:Lookup?type=item&id=" + getId() + "#Item_sources";
 		}
 
 		return null;
@@ -694,24 +685,27 @@ public class ItemRequirement extends AbstractRequirement
 	@Override
 	public Color getColor(Client client, QuestHelperConfig config)
 	{
-		Color color = config.failColour();
 		if (!this.isActualItem())
 		{
-			color = Color.GRAY;
+			return Color.GRAY;
 		}
-		else if (additionalOptions != null && additionalOptions.check(client))
+
+		if (additionalOptions != null && additionalOptions.check(client))
 		{
-			color = config.passColour();
+			return config.passColour();
 		}
-		else if (this.checkContainersOnPlayer(client))
+
+		if (this.checkContainersOnPlayer(client))
 		{
-			color = config.passColour();
+			return config.passColour();
 		}
-		else if (this.checkWithAllContainers())
+
+		if (this.checkWithAllContainers())
 		{
-			color = config.partialSuccessColour();
+			return config.partialSuccessColour();
 		}
-		return color;
+
+		return config.failColour();
 	}
 
 	/**
@@ -919,7 +913,7 @@ public class ItemRequirement extends AbstractRequirement
 		Color equipColor = config.passColour();
 		ArrayList<LineComponent> lines = new ArrayList<>();
 
-		if (this.isEquip())
+		if (this.mustBeEquipped())
 		{
 			String equipText = "(equipped)";
 			if (!checkContainers(QuestContainerManager.getEquippedData()))
@@ -930,6 +924,18 @@ public class ItemRequirement extends AbstractRequirement
 					.left(equipText)
 					.leftColor(equipColor)
 					.build());
+		}
+		else if (this.mustBeUnequipped)
+		{
+			String extraText = "(unequipped)";
+			if (!checkContainers(QuestContainerManager.getInventoryData()))
+			{
+				equipColor = config.failColour();
+			}
+			lines.add(LineComponent.builder()
+				.left(extraText)
+				.leftColor(equipColor)
+				.build());
 		}
 
 		if (includeTooltip && this.getTooltip() != null && !check(client))
@@ -960,9 +966,12 @@ public class ItemRequirement extends AbstractRequirement
 		}
 
 		List<ItemAndLastUpdated> containers = new ArrayList<>();
-		containers.add(QuestContainerManager.getEquippedData());
+		if (!mustBeUnequipped)
+		{
+			containers.add(QuestContainerManager.getEquippedData());
+		}
 
-		if (!equip)
+		if (!mustBeEquipped)
 		{
 			containers.add(QuestContainerManager.getInventoryData());
 		}

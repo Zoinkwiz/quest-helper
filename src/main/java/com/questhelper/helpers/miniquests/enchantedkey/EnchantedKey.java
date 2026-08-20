@@ -70,7 +70,7 @@ public class EnchantedKey extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
-		key = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);
+		key = new KeyringRequirement("Enchanted key", KeyringCollection.ENCHANTED_KEY);
 		varrockTeleports = new ItemRequirement("Varrock teleports", ItemID.POH_TABLET_VARROCKTELEPORT);
 		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.POH_TABLET_ARDOUGNETELEPORT);
 		rellekkaTeleports = new ItemRequirement("Rellekka teleport", ItemID.NZONE_TELETAB_RELLEKKA);

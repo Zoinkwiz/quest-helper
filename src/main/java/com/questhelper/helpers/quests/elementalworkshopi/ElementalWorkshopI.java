@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -137,8 +138,9 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		knife.setHighlightInInventory(true);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
-		needle.setTooltip("You can obtain this during the quest");
+		needle.setTooltip("Costume needle cannot be used as a substitute. You can obtain this during the quest");
 		thread = new ItemRequirement("Thread", ItemID.THREAD);
+		thread.setTooltip("Costume needle cannot be used as a substitute.");
 		leather = new ItemRequirement("Leather", ItemID.LEATHER);
 		leather.setTooltip("You can obtain this during the quest");
 
@@ -152,7 +154,7 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		slashedBook = new ItemRequirement("Slashed book", ItemID.ELEMENTAL_WORKSHOP_SHIELD_BOOK_SLASHED);
 		slashedBook.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
-		batteredKey = new KeyringRequirement("Battered Key", configManager, KeyringCollection.BATTERED_KEY);
+		batteredKey = new KeyringRequirement("Battered Key", KeyringCollection.BATTERED_KEY);
 		batteredKey.setTooltip("If you've lost it you can get another by searching the bookcase in the building south of " +
 			"the odd wall");
 		elementalOre = new ItemRequirement("Elemental ore", ItemID.ELEMENTAL_WORKSHOP_ORE);
@@ -220,19 +222,19 @@ public class ElementalWorkshopI extends ComplexStateQuestHelper
 		inStairwell = new ZoneRequirement(stairwell);
 		inWorkshop = new ZoneRequirement(workshop);
 
-		hasSlashedBook = new VarbitRequirement(2057, 1);
+		hasSlashedBook = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_KEY, 1);
 		hasReadBook = new VarplayerRequirement(VarPlayerID.ELEMENTAL_WORKSHOP_BITS, true, 1);
 		enteredWall = new VarplayerRequirement(VarPlayerID.ELEMENTAL_WORKSHOP_BITS, true, 15);
-		foundLeather = new VarbitRequirement(2066, 1);
-		turnedValve1 = new VarbitRequirement(2059, 1);
-		turnedValve2 = new VarbitRequirement(2058, 1);
-		solvedWater = new VarbitRequirement(2060, 1);
+		foundLeather = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_LEATHER, 1);
+		turnedValve1 = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_GATE2, 1);
+		turnedValve2 = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_GATE1, 1);
+		solvedWater = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_SWITCH, 1);
 
 		hasLeatherOrSearched = new Conditions(LogicType.OR, foundLeather, leather);
-		solvedAir = new VarbitRequirement(2063, 1);
-		fixedBellow = new VarbitRequirement(2061, 1);
+		solvedAir = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_BELLOWS_SWITCH, 1);
+		fixedBellow = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_BELLOWS, 1);
 
-		solvedFire = new VarbitRequirement(2062, 1);
+		solvedFire = new VarbitRequirement(VarbitID.ELEMENTAL_WORKSHOP_FIRE, 1);
 
 		elementalOreNearby = new ItemOnTileRequirement(elementalOre);
 		earthNearby = new NpcCondition(NpcID.ELEM1_QIP_EARTH_ELEMENTAL_ROCK_VERSION);

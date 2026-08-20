@@ -61,7 +61,7 @@ import java.util.*;
 public class AnotherSliceOfHam extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement lightSource, tinderbox, combatGearRangedMagic, combatGear;
+	ItemRequirement lightSource, tinderbox, combatGearRangedMagic, combatGear, ropeForEntrance;
 
 	ItemRequirement lumbridgeTeleports;
 
@@ -69,6 +69,8 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		armourShard, axeHead, helmetFragment, shieldFragment, swordFragment, mace, ancientMace;
 
 	FollowerRequirement zanikFollower;
+
+	VarbitRequirement addedRopeToHole;
 
 	Requirement inBasement, inTunnels, inMines, inCityF0, inCityF1, inRailway, inTower, inGoblinVillage, inSwamp,
 		inBase, atCrate, inFinalRoom;
@@ -143,12 +145,16 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
+		addedRopeToHole = new VarbitRequirement(VarbitID.SWAMP_CAVES_ROPED_ENTRANCE, 1);
+
 		lightSource = new ItemRequirement("A light source", ItemCollections.LIGHT_SOURCES).isNotConsumed();
 
 		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.POH_TABLET_LUMBRIDGETELEPORT, 3);
 
 		zanikFollower = new FollowerRequirement("Zanik following you. If she's not, retrieve her from the " +
 			"Dorgesh-Kaan railway", NpcID.SLICE_ZANIK_FOLLOWER);
+
+		ropeForEntrance = new ItemRequirement("Rope", ItemID.ROPE).highlighted().hideConditioned(addedRopeToHole);
 
 		tinderbox = new ItemRequirement("Tinderbox", ItemID.TINDERBOX).isNotConsumed();
 
@@ -220,12 +226,12 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		dug5 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_5, 1, Operation.GREATER_EQUAL);
 		dug6 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_6, 1, Operation.GREATER_EQUAL);
 
-		handedIn1 = new VarbitRequirement(3551, 2);
-		handedIn2 = new VarbitRequirement(3552, 2);
-		handedIn3 = new VarbitRequirement(3553, 2);
-		handedIn4 = new VarbitRequirement(3554, 2);
-		handedIn5 = new VarbitRequirement(3555, 2);
-		handedIn6 = new VarbitRequirement(3556, 2);
+		handedIn1 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_1, 2);
+		handedIn2 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_2, 2);
+		handedIn3 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_3, 2);
+		handedIn4 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_4, 2);
+		handedIn5 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_5, 2);
+		handedIn6 = new VarbitRequirement(VarbitID.SLICE_ARTIFACT_6, 2);
 
 		cleaned1 = new Conditions(LogicType.OR, handedIn1, armourShard);
 		cleaned2 = new Conditions(LogicType.OR, handedIn2, shieldFragment);
@@ -236,12 +242,12 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 
 		cleanedAll = new Conditions(cleaned1, cleaned2, cleaned3, cleaned4, cleaned5, cleaned6);
 
-		zanikFollowing = new Conditions(LogicType.OR, new VarbitRequirement(3557, 0),
+		zanikFollowing = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.SLICE_ZANIK_AT_DIG, 0),
 			new NpcInteractingRequirement(NpcID.SLICE_ZANIK_FOLLOWER));
 
 		// 3564 = 1, searjents etc
 
-		atCrate = new VarbitRequirement(3558, 1);
+		atCrate = new VarbitRequirement(VarbitID.SLICE_HIDING, 1);
 		guardsPassed = new NpcCondition(NpcID.SLICE_HAM_GUARD, new WorldPoint(2397, 5551, 0));
 		guardEngaged = new Conditions(LogicType.OR,
 			new NpcInteractingWithNpcRequirement(NpcID.SLICE_SERGEANT_MOSSFISTS, "Guard"),
@@ -330,7 +336,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 			"Talk to the Sergeants in Lumbridge Swamp.", combatGear, ancientMace, lightSource);
 
 		enterSwamp = new ObjectStep(this, ObjectID.GOBLIN_CAVE_ENTRANCE, new WorldPoint(3169, 3172, 0),
-			"Enter the Lumbridge Swamp Caves.", combatGear, ancientMace, lightSource);
+			"Enter the Lumbridge Swamp Caves.", combatGear, ancientMace, lightSource, ropeForEntrance);
 
 		climbEnterHamBase = new ObjectStep(this, ObjectID.SLICE_LADDER_SWAMP, new WorldPoint(3171, 9568, 0),
 			"Climb down the ladder to the secret H.A.M. base.");
@@ -409,7 +415,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(lightSource, tinderbox, combatGearRangedMagic);
+		return Arrays.asList(lightSource, tinderbox, combatGearRangedMagic, ropeForEntrance);
 	}
 
 	@Override
@@ -461,7 +467,7 @@ public class AnotherSliceOfHam extends BasicQuestHelper
 		allSteps.add(new PanelDetails("To Goblin Village", Arrays.asList(goTalkToOldak, talkToGenerals, goUpLadder,
 			killHamMageAndArcher, talkToGeneralsAgain), combatGearRangedMagic));
 		allSteps.add(new PanelDetails("Saving Zanik", Arrays.asList(talkToSergeant, enterSwamp, climbEnterHamBase,
-			goToCrate, lureHamMember, enterFinalFight, useSpecial, untieZanik), combatGear, ancientMace, lightSource));
+			goToCrate, lureHamMember, enterFinalFight, useSpecial, untieZanik), combatGear, ancientMace, lightSource, ropeForEntrance));
 		return allSteps;
 	}
 

@@ -53,7 +53,6 @@ import com.questhelper.steps.*;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -244,7 +243,7 @@ public class TheFremennikExiles extends BasicQuestHelper
 
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.LUNAR_SEAL_OF_PASSAGE).isNotConsumed();
 		sealOfPassageOrEliteDiary = ComplexRequirementBuilder.or("Seal of Passage")
-			.with(new VarbitRequirement(Varbits.DIARY_FREMENNIK_ELITE, 1))
+			.with(new VarbitRequirement(VarbitID.FREMENNIK_DIARY_ELITE_COMPLETE, 1))
 			.with(sealOfPassage)
 			.build();
 
@@ -281,17 +280,17 @@ public class TheFremennikExiles extends BasicQuestHelper
 		// Quest events
 		younglingNearby = new NpcCondition(NpcID.VIKINGEXILE_YOUNGLING);
 		letterNearby = new ItemOnTileRequirement(letter);
-		killedYoungling = new VarbitRequirement(9460, 1);
-		hasReadLetter = new VarbitRequirement(9461, 1);
+		killedYoungling = new VarbitRequirement(VarbitID.VIKINGEXILE_YOUNGLING_KILLED, 1);
+		hasReadLetter = new VarbitRequirement(VarbitID.VIKINGEXILE_LETTER_READ, 1);
 		// 9468 = 1, youngling popped out first time
 		askedAboutShield = new VarbitRequirement(VarbitID.VIKINGEXILE_SHIELD_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutGlass = new VarbitRequirement(VarbitID.VIKINGEXILE_GLASS_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutRock = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutSigil = new VarbitRequirement(VarbitID.VIKINGEXILE_SIGIL_INFO, 1, Operation.GREATER_EQUAL);
 		askedAboutAllShieldParts = new Conditions(askedAboutShield, askedAboutGlass, askedAboutRock, askedAboutSigil);
-		triedToThrowRockIntoGeyser = new VarbitRequirement(9464, 2);
-		talkedToPeer = new VarbitRequirement(9464, 3);
-		rockInGeyser = new VarbitRequirement(9470, 1);
+		triedToThrowRockIntoGeyser = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_INFO, 2);
+		talkedToPeer = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_INFO, 3);
+		rockInGeyser = new VarbitRequirement(VarbitID.VIKINGEXILE_ROCK_GONE, 1);
 		// been given shield, 9471 = 1
 		// Fighting basilisks, 9466 0-30 for 0-100%
 		// Zone checks

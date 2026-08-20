@@ -30,9 +30,13 @@ import com.questhelper.QuestHelperPlugin;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.JagexColors;
@@ -80,17 +84,26 @@ public class QuestGrandExchangeInterface
 
 		parent = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
 
+		if (notAtGE())
+		{
+			if (questHelper.getConfig().solvePuzzles() && questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon() != null)
+			{
+				onceOffActivateTab(parent);
+			}
+			return;
+		}
+
 		int QUEST_BUTTON_SIZE = 20;
 		int QUEST_BUTTON_X = 480;
 		int QUEST_BUTTON_Y = 0;
-		questBackgroundWidget = createGraphic("quest helper", SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL,
+		questBackgroundWidget = createGraphic("quest helper", SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL,
 			QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_SIZE,
 			QUEST_BUTTON_X, QUEST_BUTTON_Y);
 		questBackgroundWidget.setAction(1, VIEW_TAB);
 		questBackgroundWidget.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 
-		questIconWidget = createGraphic("", SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
+		questIconWidget = createGraphic("", SpriteID.AchievementDiaryIcons.BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
 			QUEST_BUTTON_SIZE - 6,
 			QUEST_BUTTON_X + 3, QUEST_BUTTON_Y + 3);
 
@@ -129,6 +142,13 @@ public class QuestGrandExchangeInterface
 		active = false;
 	}
 
+	public boolean notAtGE()
+	{
+		// Only show button if we're at GE
+		var playerLocation = client.getLocalPlayer().getWorldLocation();
+		return playerLocation.distanceTo(new WorldPoint(3164, 3489, 0)) > 20;
+	}
+
 	public boolean isHidden()
 	{
 		Widget widget = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
@@ -154,14 +174,14 @@ public class QuestGrandExchangeInterface
 		active = false;
 		if (questBackgroundWidget != null)
 		{
-			questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL);
+			questBackgroundWidget.setSpriteId(SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL);
 			questBackgroundWidget.revalidate();
 		}
 
 		grandExchangeTitle.setHidden(true);
 
-		client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
-		client.setVarcIntValue(VarClientInt.INPUT_TYPE, 14);
+		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "");
+		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
 
 		clientThread.invokeLater(() -> updateSearchInterface(false));
 	}
@@ -173,12 +193,22 @@ public class QuestGrandExchangeInterface
 			return;
 		}
 
-		questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
+		questBackgroundWidget.setSpriteId(SpriteID.Miscgraphics3.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
 		questBackgroundWidget.revalidate();
 		grandExchangeTitle.setHidden(false);
 		active = true;
-		client.setVarcStrValue(VarClientStr.INPUT_TEXT, "quest-helper");
-		client.setVarcIntValue(VarClientInt.INPUT_TYPE, 14);
+		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "quest-helper");
+		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
+
+		clientThread.invokeLater(() -> updateSearchInterface(true));
+	}
+
+	// Used for non-ge ge interfaces
+	public void onceOffActivateTab(Widget parent)
+	{
+		createTitleStepNeededItem(parent);
+		client.setVarcStrValue(VarClientID.MESLAYERINPUT, "quest-helper");
+		client.setVarcIntValue(VarClientID.MESLAYERMODE, 14);
 
 		clientThread.invokeLater(() -> updateSearchInterface(true));
 	}
@@ -238,8 +268,8 @@ public class QuestGrandExchangeInterface
 		widget.setOriginalX(0);
 		widget.setOriginalY(0);
 		widget.setTextShadowed(false);
-		widget.setXTextAlignment(1);
-		widget.setYTextAlignment(1);
+		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
+		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
 
 		widget.setText("<col=b40000>" + questHelper.getSelectedQuest().getQuest().getName() + "</col> required items");
 		widget.setFontId(FontID.BOLD_12);
@@ -249,6 +279,33 @@ public class QuestGrandExchangeInterface
 		{
 			widget.setHidden(true);
 		}
+
+		widget.revalidate();
+
+		return widget;
+	}
+
+	private Widget createTitleStepNeededItem(Widget container)
+	{
+		Widget chatbox = client.getWidget(InterfaceID.Chatbox.MES_TEXT2);
+
+		Widget widget = container.createChild(-1, WidgetType.TEXT);
+		if (chatbox == null)
+		{
+			return widget;
+		}
+
+		widget.setOriginalWidth(chatbox.getWidth());
+		widget.setOriginalHeight(chatbox.getHeight());
+		widget.setOriginalX(0);
+		widget.setOriginalY(0);
+		widget.setTextShadowed(false);
+		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
+		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
+
+		widget.setText("<col=b40000>Quest Helper</col> Items");
+		widget.setFontId(FontID.BOLD_12);
+		widget.setTextColor(JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND.getRGB());
 
 		widget.revalidate();
 

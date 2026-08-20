@@ -24,7 +24,6 @@
  */
 package com.questhelper.helpers.quests.ragandboneman;
 
-import com.questhelper.bank.QuestBank;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -35,6 +34,7 @@ import com.questhelper.requirements.widget.WidgetTextRequirement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.util.Text;
 
@@ -87,7 +87,7 @@ public enum RagBoneState
 	VULTURE_WING("Vulture", 34),
 	JACKAL_BONE("Jackal", 35);
 
-	private final int START_BONE_ID = 7809;
+	private final int START_BONE_ID = ItemID.SOULBANE_ANGER_SPEARQ;
 
 	private final int boneID;
 
@@ -116,46 +116,46 @@ public enum RagBoneState
 		boneCleanedItem = new ItemRequirement(Text.titleCase(this), boneID + 2);
 
 		VarbitRequirement boneAddedToBoiler = new VarbitRequirement(VarbitID.RAG_BOILER, 2, Operation.GREATER_EQUAL);
-		boneIsBeingCleaned = new Conditions(boneAddedToBoiler, new VarbitRequirement(2043, pos));
+		boneIsBeingCleaned = new Conditions(boneAddedToBoiler, new VarbitRequirement(VarbitID.RAG_POTBOILER, pos));
 
 		// Mark always true once obtained as no way to identify if a bone has been handed in easily
 		WidgetTextRequirement hadFromWidgetsCheck = new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>" + nameInList);
 		hadFromWidgets = new Conditions(true, hadFromWidgetsCheck);
 	}
 
-	public Requirement hadBoneItem(QuestBank questBank)
+	public Requirement hadBoneItem()
 	{
 		if (hadBoneItem == null)
 		{
 			hadBoneItem = new Conditions(LogicType.OR,
-				hadBoneInVinegarItem(questBank),
-				boneItem.alsoCheckBank(questBank)
+				hadBoneInVinegarItem(),
+				boneItem.alsoCheckBank()
 			);
 		}
 
 		return hadBoneItem;
 	}
 
-	public Requirement hadBoneInVinegarItem(QuestBank questBank)
+	public Requirement hadBoneInVinegarItem()
 	{
 		if (hadBoneInVinegar == null)
 		{
 			hadBoneInVinegar = new Conditions(LogicType.OR,
-				boneProcessed(questBank),
+				boneProcessed(),
 				boneIsBeingCleaned,
-				boneInVinegarItem.alsoCheckBank(questBank)
+				boneInVinegarItem.alsoCheckBank()
 			);
 		}
 
 		return hadBoneInVinegar;
 	}
 
-	public Requirement boneProcessed(QuestBank questBank)
+	public Requirement boneProcessed()
 	{
 		if (hadBoneProcessed == null)
 		{
 			hadBoneProcessed = new Conditions(LogicType.OR,
-				boneCleanedItem.alsoCheckBank(questBank),
+				boneCleanedItem.alsoCheckBank(),
 				handedInBone()
 			);
 		}

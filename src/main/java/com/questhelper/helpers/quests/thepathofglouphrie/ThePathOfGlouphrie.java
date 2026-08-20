@@ -53,8 +53,10 @@ import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -225,13 +227,12 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		nearLongramble = new ZoneRequirement(longrambleZone);
 
 		inCutscene = new Conditions(LogicType.OR,
-			new VarbitRequirement(4606, 3),
-			new VarbitRequirement(12139, 1)
+			new VarbitRequirement(VarbitID.FOV_CLAMP, 3),
+			new VarbitRequirement(VarbitID.GRAVESTONE_TLI_HIDE, 1)
 		);
 
-		learnedAboutChapter1 = new VarbitRequirement(15291, 1);
-		learnedAboutChapter2 = new VarbitRequirement(15292, 1);
-		// learnedAboutChapter3 = new VarbitRequirement(15293, 1);
+		learnedAboutChapter1 = new VarbitRequirement(VarbitID.POG_BOLRIE_DIARY_1, 1);
+		learnedAboutChapter2 = new VarbitRequirement(VarbitID.POG_BOLRIE_DIARY_2, 1);
 
 		inSewer1 = new ZoneRequirement(sewer1);
 		inSewer2 = new ZoneRequirement(sewer2);
@@ -241,7 +242,7 @@ public class ThePathOfGlouphrie extends BasicQuestHelper
 		inSewer6 = new Conditions(LogicType.OR, new ZoneRequirement(sewer6Section1), new ZoneRequirement(sewer6Section2));
 		inBossRoom = new ZoneRequirement(bossRoom);
 
-		lecternWidgetActive = new WidgetTextRequirement(854, 5, "Chapter 1. Bad advice");
+		lecternWidgetActive = new WidgetTextRequirement(InterfaceID.PogBolriesDiary.CHAPTER1, "Chapter 1. Bad advice");
 		protectMissiles = new PrayerRequirement("Protect from Missiles to reduce damage taken by the Terrorbirds", Prayer.PROTECT_FROM_MISSILES);
 	}
 

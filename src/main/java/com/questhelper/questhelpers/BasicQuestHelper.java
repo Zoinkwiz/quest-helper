@@ -27,6 +27,7 @@ package com.questhelper.questhelpers;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.steps.QuestStep;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,18 @@ public abstract class BasicQuestHelper extends QuestHelper
 	protected Map<Integer, QuestStep> steps;
 	protected int var;
 
-	public Map<Integer, QuestStep> getStepList() {
+	@Getter
+	protected Integer selectedStateOverride = null;
+
+	public Map<Integer, QuestStep> getStepList()
+	{
 		return this.steps;
+	}
+
+	public void setSelectedStateOverride(Integer state)
+	{
+		this.selectedStateOverride = state;
+		questHelperPlugin.getClientThread().invokeLater(this::updateQuest);
 	}
 
 	/**
@@ -82,9 +93,10 @@ public abstract class BasicQuestHelper extends QuestHelper
 	@Override
 	public boolean updateQuest()
 	{
-		if (var != getVar())
+		int targetVar = selectedStateOverride != null ? selectedStateOverride : getVar();
+		if (var != targetVar)
 		{
-			var = getVar();
+			var = targetVar;
 			shutDownStep();
 			startUpStep(steps.get(var));
 			return true;

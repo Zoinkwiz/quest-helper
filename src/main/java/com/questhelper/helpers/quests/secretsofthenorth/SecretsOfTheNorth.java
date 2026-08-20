@@ -282,25 +282,25 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		notGoneUpstairs = new VarbitRequirement(VarbitID.SOTN, 4, Operation.GREATER_EQUAL);
 		notInspectedCrimeScene = new VarbitRequirement(VarbitID.SOTN, 6, Operation.GREATER_EQUAL);
 
-		notInspectWall = new VarbitRequirement(14726, 0);
-		notInspectCeril = new VarbitRequirement(14727, 0);
-		notInspectWindow = new VarbitRequirement(14728, 0);
-		notInspectChest = new VarbitRequirement(14729, 0);
+		notInspectWall = new VarbitRequirement(VarbitID.SOTN_INSPECTED_WALL, 0);
+		notInspectCeril = new VarbitRequirement(VarbitID.SOTN_INSPECTED_BODY, 0);
+		notInspectWindow = new VarbitRequirement(VarbitID.SOTN_INSPECTED_WINDOW, 0);
+		notInspectChest = new VarbitRequirement(VarbitID.SOTN_INSPECTED_CHEST, 0);
 
 		inspectedCrimeScene = new VarbitRequirement(VarbitID.SOTN, 8, Operation.GREATER_EQUAL);
 
-		toldWindow = new VarbitRequirement(14731, 1);
-		toldCeril = new VarbitRequirement(14730, 1);
-		toldWall = new VarbitRequirement(14732, 1);
+		toldWindow = new VarbitRequirement(VarbitID.SOTN_EXPLAINED_WINDOW, 1);
+		toldCeril = new VarbitRequirement(VarbitID.SOTN_EXPLAINED_BODY, 1);
+		toldWall = new VarbitRequirement(VarbitID.SOTN_EXPLAINED_CHEST, 1);
 
 		onTheTrail = new VarbitRequirement(VarbitID.SOTN, 20, Operation.GREATER_EQUAL);
 
-		checkedBarrel = new VarbitRequirement(14733, 1);
-		checkedBoulder = new VarbitRequirement(14734, 1);
-		checkedBush = new VarbitRequirement(14735, 1);
-		checkedStump = new VarbitRequirement(14736, 1);
-		checkedBoulder2 = new VarbitRequirement(14737, 1);
-		checkedBush2 = new VarbitRequirement(14738, 1);
+		checkedBarrel = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_1, 1);
+		checkedBoulder = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_2, 1);
+		checkedBush = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_3, 1);
+		checkedStump = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_4, 1);
+		checkedBoulder2 = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_5, 1);
+		checkedBush2 = new VarbitRequirement(VarbitID.SOTN_HUNTING_TRAIL_6, 1);
 
 		evelotDefeated = new VarbitRequirement(VarbitID.SOTN, 28, Operation.GREATER_EQUAL);
 		talkedToAlomoneOrClivet = new VarbitRequirement(VarbitID.SOTN, 32, Operation.GREATER_EQUAL);
@@ -419,17 +419,17 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		speakToBarman = new NpcStep(this, NpcID.KHAZARD_BARMAN, new WorldPoint(2566, 3140, 0),
 			"Head to the Fight Arena Bar and talk to the Khazard Barman.", coins, combatGear);
 		speakToBarman.addDialogStep("Do you know anyone called Evelot?");
-		inspectBarrel = new ObjectStep(this, 46873, new WorldPoint(2568, 3152, 0),
+		inspectBarrel = new ObjectStep(this, ObjectID.SOTN_HUNTING_BARREL, new WorldPoint(2568, 3152, 0),
 			"Inspect the barrels outside the Fight Arena Bar entrance.",  combatGear);
-		inspectBoulder = new ObjectStep(this, 46874, new WorldPoint(2573, 3180, 0),
+		inspectBoulder = new ObjectStep(this, ObjectID.SOTN_HUNTING_BOULDER1, new WorldPoint(2573, 3180, 0),
 			"Inspect the boulder to the north.", combatGear);
-		inspectBush = new ObjectStep(this, 46878, new WorldPoint(2567, 3202, 0),
+		inspectBush = new ObjectStep(this, ObjectID.SOTN_HUNTING_BUSH, new WorldPoint(2567, 3202, 0),
 			"Continue north and inspect the bush there.", combatGear);
-		inspectStump = new ObjectStep(this, 46877, new WorldPoint(2584, 3197, 0),
+		inspectStump = new ObjectStep(this, ObjectID.SOTN_HUNTING_TREESTUMP, new WorldPoint(2584, 3197, 0),
 			"Inspect the stump to the east.", combatGear);
-		inspectBoulder2 = new ObjectStep(this, 46875, new WorldPoint(2605, 3188, 0),
+		inspectBoulder2 = new ObjectStep(this, ObjectID.SOTN_HUNTING_BOULDER2, new WorldPoint(2605, 3188, 0),
 			"Inspect the boulder to the south east.", combatGear);
-		inspectBush2 = new ObjectStep(this, 46878, new WorldPoint(2621, 3193, 0),
+		inspectBush2 = new ObjectStep(this, ObjectID.SOTN_HUNTING_BUSH, new WorldPoint(2621, 3193, 0),
 			"Inspect the bush to the east.", combatGear);
 		fightEvelot = new NpcStep(this, NpcID.SOTN_EVELOT_VIS, new WorldPoint(2643, 3202, 0),
 			"Approach Evelot to the east to start the fight.\n\n" +
@@ -461,10 +461,10 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		examineShelves = new ObjectStep(this, ObjectID.SOTN_SHELVES_BUTTON, new WorldPoint(2540, 9694, 0),
 			"Search the cooking shelves for a button.");
 		examineShelves.addDialogStep("Yes.");
-		examineWall = new ObjectStep(this, 46897, new WorldPoint(2544, 9698, 0),
+		examineWall = new ObjectStep(this, ObjectID.SOTN_HIDDEN_DOOR_1, new WorldPoint(2544, 9698, 0),
 			"Inspect the wall next to the noticeboard.");
 		examineWall.addDialogStep("Enter the passage.");
-		lockpickChest = new ObjectStep(this, 46899, new WorldPoint(2535, 9621, 0),
+		lockpickChest = new ObjectStep(this, ObjectID.SOTN_HIDDEN_CHEST_CLOSED, new WorldPoint(2535, 9621, 0),
 			"Picklock the chest.", lockpick);
 		lockpickChest.addText("Green means it's the right number and position.");
 		lockpickChest.addText("Blue means it's the right position but wrong number.");
@@ -495,7 +495,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		talkToSnowflake.addDialogStep("Have you seen anything odd around here recently?");
 		moveToWeissCave = new ObjectStep(this, ObjectID.MY2ARM_THRONEROOM_STAIRSDOWN, new WorldPoint(2867, 3940, 0),
 			"Prepare for a fight and climb down the stairs in the middle of Weiss.", combatGear, antipoison);
-		enterWeissCave = new ObjectStep(this, 46905, new WorldPoint(2846, 10332, 0),
+		enterWeissCave = new ObjectStep(this, ObjectID.MY2ARM_MINE_WALL_CAVE_EXIT_02, new WorldPoint(2846, 10332, 0),
 			"Enter the cave to the south.", combatGear, antipoison);
 		enterWeissCave.addDialogStep("Yes.");
 		fightAssassin = new NpcStep(this, NpcID.AKD_SETTLEMENT_RUINS_ASSASSIN, new WorldPoint(2927, 10348, 0), "Defeat the assassin.");
@@ -558,7 +558,7 @@ public class SecretsOfTheNorth extends BasicQuestHelper
 		((NpcStep) defeatMuspah).addAlternateNpcs(NpcID.MUSPAH_QUEST, NpcID.SOTN_MUSPAH_CUTSCENE, NpcID.MUSPAH_SOULSPLIT_QUEST, NpcID.MUSPAH_SOULSPLIT_QUEST);
 		moveToWeissCaveEnd = new ObjectStep(this, ObjectID.MY2ARM_THRONEROOM_STAIRSDOWN, new WorldPoint(2867, 3940, 0),
 		"Speak to Jhallan in the Muspah room.");
-		enterWeissCaveEnd = new ObjectStep(this, 46905, new WorldPoint(2846, 10332, 0),
+		enterWeissCaveEnd = new ObjectStep(this, ObjectID.MY2ARM_MINE_WALL_CAVE_EXIT_02, new WorldPoint(2846, 10332, 0),
 			"Speak to Jhallan in the Muspah room.");
 		enterCreviceEnd = new ObjectStep(this, ObjectID.GHORROCK_DUNGEON_CAVE_ENTRY, new WorldPoint(2908, 10317, 0),
 			"Speak to Jhallan in the Muspah room.");

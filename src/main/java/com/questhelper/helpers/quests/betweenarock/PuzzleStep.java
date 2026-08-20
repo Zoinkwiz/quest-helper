@@ -211,7 +211,7 @@ public class PuzzleStep extends DetailedQuestStep
 			Widget widget = client.getWidget(InterfaceID.DWARF_ROCK_SCHEMATICS_CONTROL, entry.getKey());
 			if (widget != null)
 			{
-				if (widget.getId() == 7471130)
+				if (widget.getId() == InterfaceID.DwarfRockSchematicsControl.DR_SELECT3)
 				{
 					widget.setOriginalWidth(15);
 					widget.setOriginalHeight(15);

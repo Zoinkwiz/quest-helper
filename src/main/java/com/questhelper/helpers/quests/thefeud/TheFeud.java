@@ -191,12 +191,12 @@ public class TheFeud extends BasicQuestHelper
 		//318 Drunk Ali beer count 0->1->2->3
 
 		// 315 -> 2 Talked to thug -> 3 Talked to bandit
-		talkedToThug = new VarbitRequirement(315, 2);
-		talkedToBandit = new VarbitRequirement(315, 3);
+		talkedToThug = new VarbitRequirement(VarbitID.FEUD_VAR_TALK_GANGS, 2);
+		talkedToBandit = new VarbitRequirement(VarbitID.FEUD_VAR_TALK_GANGS, 3);
 
 		talkedToBanditReturn = new VarbitRequirement(VarbitID.FEUD_VAR_COMP_GANGS, true, 0); // Might have missed?
 		// 340 -> 1 when pickpocket villager
-		doorOpen = new VarbitRequirement(320, 1);
+		doorOpen = new VarbitRequirement(VarbitID.FEUD_VAR_MAYORSDOOR, 1);
 
 		//Varbit 325 keeps track of correctly entered safe values
 		//UPDATE: 325 keeps track of amount of numbers input. Even if they are incorrect
@@ -204,26 +204,26 @@ public class TheFeud extends BasicQuestHelper
 		//TODO: Overlay for safe cracking.
 
 		// Varbit 342 when found Traitor
-		traitorFound = new VarbitRequirement(342, 1);
+		traitorFound = new VarbitRequirement(VarbitID.FEUD_FOUND_TRAIT, 1);
 
 		// Varbit 321 when talked to bar man
-		talkedToBarman = new VarbitRequirement(321, 1);
+		talkedToBarman = new VarbitRequirement(VarbitID.FEUD_VAR_DRINK_FOUND, 1);
 
 		// 345 and 328 when talking to hag
-		talkedToAliTheHag = new VarbitRequirement(328, 1);
-		givenPoisonToHag = new VarbitRequirement(328, 2);
+		talkedToAliTheHag = new VarbitRequirement(VarbitID.FEUD_HAG_LIST, 1);
+		givenPoisonToHag = new VarbitRequirement(VarbitID.FEUD_HAG_LIST, 2);
 
 		// 335 = Poisoned drink
 
 		//322 Menaphite
-		menaphiteThugAlive = new VarbitRequirement(322, 1);
+		menaphiteThugAlive = new VarbitRequirement(VarbitID.FEUD_VAR_MENABOSS, 1);
 
 		// Talked to villager about Menaphite 343, 338
-		talkedToVillagerAboutMenaphite = new VarbitRequirement(343, 1);
-		banditChampionSpawned = new VarbitRequirement(323, 1);
+		talkedToVillagerAboutMenaphite = new VarbitRequirement(VarbitID.FEUD_TALK_VILLAGER, 1);
+		banditChampionSpawned = new VarbitRequirement(VarbitID.FEUD_VAR_BANDITBOSS, 1);
 
 		// 343 -> Mayor spawned
-		mayorSpawned = new VarbitRequirement(343, 2);
+		mayorSpawned = new VarbitRequirement(VarbitID.FEUD_TALK_VILLAGER, 2);
 	}
 
 	@Override
@@ -288,7 +288,7 @@ public class TheFeud extends BasicQuestHelper
 		hasDisguiseComponents = new Conditions(fakeBeard, headPiece);
 		doesNotHaveDisguise = new Conditions(LogicType.NAND, desertDisguise);
 		doesNotHaveDisguiseComponents = new Conditions(LogicType.NAND, fakeBeard, headPiece);
-		hasDisguise = new Conditions(desertDisguise.alsoCheckBank(questBank));
+		hasDisguise = new Conditions(desertDisguise.alsoCheckBank());
 
 		//a
 		notThroughShantayGate = new Conditions(LogicType.NAND, inShantayDesertSide);
@@ -381,13 +381,13 @@ public class TheFeud extends BasicQuestHelper
 
 		//Step 14
 		//Open the Door
-		openTheDoor = new ObjectStep(this, 6238, "Open the door.", doorKeys);
+		openTheDoor = new ObjectStep(this, ObjectID.FEUD_CLOSED_DOOR_LEFT, "Open the door.", doorKeys);
 		openTheDoor.addAlternateObjects(6240);
 		openTheDoor.addIcon(ItemID.FEUD_MAYORS_HOUSE_KEYS);
 
 		goUpStairs = new ObjectStep(this, ObjectID.FEUD_INSIDESTAIRS_BASE, "Go up the stairs.");
 
-		crackTheSafe = new ObjectStep(this, 6276, "Search the painting to reveal the safe. Enter the code 1, 1, 2, 3, 5, 8.");
+		crackTheSafe = new ObjectStep(this, ObjectID.FEUD_MAYORS_PICTURE, "Search the painting to reveal the safe. Enter the code 1, 1, 2, 3, 5, 8.");
 
 		//Step 15
 		//Return the Jewels

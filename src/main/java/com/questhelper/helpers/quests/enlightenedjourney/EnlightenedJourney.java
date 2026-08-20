@@ -47,6 +47,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -153,7 +154,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 		onEntrana = new ZoneRequirement(entrana);
 
 		hasSandbags = new Conditions(LogicType.OR,
-			new VarbitRequirement(2875, 1),
+			new VarbitRequirement(VarbitID.ZEP_SANDBAGS, 1),
 			sandbag8);
 
 		flying = new WidgetTextRequirement(471, 1, "Balloon Controls");
@@ -195,7 +196,7 @@ public class EnlightenedJourney extends BasicQuestHelper
 			"Bowl.");
 
 		talkToAugusteWithBranches = new ObjectStep(this, ObjectID.ZEP_MULTI_BASKET_ENTRANA, new WorldPoint(2807, 3356, 0),
-			"Get 12 willow branches and use them to make the basket.", willowBranches12.highlighted());
+			"Get 12 willow branches and use them on the platform next to Auguste to make the basket.", willowBranches12.highlighted());
 		talkToAugusteWithBranches.addIcon(ItemID.WILLOW_BRANCH);
 
 		talkToAugusteWithLogsAndTinderbox = new NpcStep(this, NpcID.ZEP_PICCARD, new WorldPoint(2809, 3354, 0),

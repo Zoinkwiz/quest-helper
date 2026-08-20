@@ -63,7 +63,7 @@ public class RFDStart extends BasicQuestHelper
 		steps.put(0, talkToCook);
 
 		ConditionalStep goGiveCookItems = new ConditionalStep(this, useAshesOnFruitBlast);
-		goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(questBank), talkToCookAgain);
+		goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(), talkToCookAgain);
 		steps.put(1, goGiveCookItems);
 
 		steps.put(2, enterDiningRoom);
@@ -97,7 +97,7 @@ public class RFDStart extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToCook = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0),
+		talkToCook = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook.", eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
 		talkToCook.addDialogStep("Do you have any other quests for me?");
 		talkToCook.addDialogSteps("Angry! It makes me angry!", "I don't really care to be honest.");
@@ -106,7 +106,7 @@ public class RFDStart extends BasicQuestHelper
 
 		useAshesOnFruitBlast = new DetailedQuestStep(this, "Use ashes on the fruit blast.", ashesHighlighted, fruitBlastHighlighted);
 
-		talkToCookAgain = new NpcStep(this, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0),
+		talkToCookAgain = new NpcStep(this, NpcID.COOK, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook with the required items.", eyeOfNewt, greenmansAle, rottenTomato, dirtyBlast);
 		talkToCookAgain.addDialogStep("About those ingredients you wanted for the banquet...");
 

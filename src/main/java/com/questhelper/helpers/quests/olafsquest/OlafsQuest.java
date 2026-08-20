@@ -188,13 +188,13 @@ public class OlafsQuest extends BasicQuestHelper
 		puzzleOpen = new WidgetModelRequirement(253, 0, 24126);
 		hasBarrel3Ropes = new Conditions(rottenBarrel, ropes3);
 		has2Barrels6Ropes = new Conditions(rottenBarrels2, ropes6);
-		placedBarrel1 = new VarbitRequirement(3547, 1);
-		placedBarrel2 = new VarbitRequirement(3548, 1);
+		placedBarrel1 = new VarbitRequirement(VarbitID.OLAF2_WALKWAY_1, 1);
+		placedBarrel2 = new VarbitRequirement(VarbitID.OLAF2_WALKWAY_2, 1);
 		keyInterfaceOpen = new WidgetModelRequirement(252, 0, 24124);
 
 		ulfricNearby = new NpcCondition(NpcID.OLAF2_ULFRIC);
 
-		killedUlfric = new VarbitRequirement(3539, 1);
+		killedUlfric = new VarbitRequirement(VarbitID.OLAF2_KILLED_ULFRIC, 1);
 	}
 
 	@Override

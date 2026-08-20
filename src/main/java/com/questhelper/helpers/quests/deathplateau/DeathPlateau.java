@@ -121,8 +121,8 @@ public class DeathPlateau extends BasicQuestHelper
 		finalSteps.addStep(new Conditions(isFarEnough, inBarUpstairs), goToHaroldDoor3);
 		finalSteps.addStep(new Conditions(isFarEnough), goToHaroldDoor3);
 		finalSteps.addStep(new Conditions(secretMap), goNorth);
-		finalSteps.addStep(new Conditions(spikedBoots.alsoCheckBank(questBank)), talkToTenzing2);
-		finalSteps.addStep(new Conditions(climbingBoots, certificate.alsoCheckBank(questBank)), talkToDunstan2);
+		finalSteps.addStep(new Conditions(spikedBoots.alsoCheckBank()), talkToTenzing2);
+		finalSteps.addStep(new Conditions(climbingBoots, certificate.alsoCheckBank()), talkToDunstan2);
 		finalSteps.addStep(new Conditions(climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
 		finalSteps.addStep(new Conditions(climbingBoots), talkToDunstan1);
 		finalSteps.addStep(new Conditions(talkedToSaba, inSabaCave), leaveSabaCave);
@@ -278,7 +278,7 @@ public class DeathPlateau extends BasicQuestHelper
 
 		talkToTenzing2 = new NpcStep(this, NpcID.DEATH_SHERPA, new WorldPoint(2820, 3555, 0), "Bring the spiked boots, along with (unnoted) 10 bread and 10 trout to Tenzing.", spikedBoots, bread, trout);
 
-		goNorth = new DetailedQuestStep(this, new WorldPoint(2865, 3609, 0), "Exit Tenzing's house through the north door, and go north, past the Death Plateau warning, and around to the east until you stop and say you've gone far enough.", secretMap);
+		goNorth = new DetailedQuestStep(this, new WorldPoint(2865, 3609, 0), "Exit Tenzing's house into the backyard THROUGH THE NORTH DOOR and OVER THE STILE. Continue north past the Death Plateau warning, and around to the east until you stop and say you've gone far enough.", secretMap);
 
 		goToHaroldStairs3 = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(2915, 3540, 0), "If you lost the Combination, retrieve it from Harold.");
 		goToHaroldDoor3 = new ObjectStep(this, ObjectID.DEATH_HAROLD_DOOR, new WorldPoint(2906, 3543, 1), "If you lost the Combination, retrieve it from Harold.");

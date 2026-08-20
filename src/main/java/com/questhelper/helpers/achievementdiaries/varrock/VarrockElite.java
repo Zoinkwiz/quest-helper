@@ -180,7 +180,7 @@ public class VarrockElite extends ComplexStateQuestHelper
 			"Move to the west Varrock bank.");
 		superCombat = new ItemStep(this, "Create a super combat potion.", sAtk4.highlighted(), sStr4.highlighted(),
 			sDef4.highlighted(), torstol.highlighted());
-		moveToLumb = new ObjectStep(this, 2618, new WorldPoint(3308, 3492, 0),
+		moveToLumb = new ObjectStep(this, ObjectID.GERTRUDEFENCE, new WorldPoint(3308, 3492, 0),
 			"Climb the fence to enter the lumber yard.", natureRune.quantity(20), astralRune.quantity(40),
 			earthRune.quantity(300), coins.quantity(21000), mahoganyLog.quantity(20));
 		plankMake = new DetailedQuestStep(this, "Cast plank make until you've made 20 mahogany planks.",
@@ -189,9 +189,9 @@ public class VarrockElite extends ComplexStateQuestHelper
 			"Enter the cooking guild.", cookingGuild.equipped());
 		summerPie = new ObjectStep(this, ObjectID.FAI_VARROCK_RANGE, new WorldPoint(3146, 3453, 0),
 			"Cook the summer pie.", rawPie);
-		moveToEarthRune = new ObjectStep(this, 34816, new WorldPoint(3306, 3474, 0),
+		moveToEarthRune = new ObjectStep(this, ObjectID.EARTHTEMPLE_RUINED, new WorldPoint(3306, 3474, 0),
 			"Travel to the earth altar or go through the abyss.", earthTali, essence.quantity(25));
-		earthRune100 = new ObjectStep(this, 34763, new WorldPoint(2658, 4841, 0),
+		earthRune100 = new ObjectStep(this, ObjectID.EARTH_ALTAR, new WorldPoint(2658, 4841, 0),
 			"Craft the earth runes.", essence.quantity(25));
 		moveToAnvil = new DetailedQuestStep(this, new WorldPoint(3188, 3426, 0),
 			"Go to the anvil beside the west Varrock bank.", runeBar, feather, hammer);

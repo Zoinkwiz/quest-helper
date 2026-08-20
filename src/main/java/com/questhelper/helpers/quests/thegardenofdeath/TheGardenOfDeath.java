@@ -152,8 +152,8 @@ public class TheGardenOfDeath extends BasicQuestHelper
 		steps.put(48, t4);
 
 		ConditionalStep finalStep = new ConditionalStep(this, enterMorraHole);
-		finalStep.addStep(warningNote.alsoCheckBank(questBank), readWarningNote);
-		finalStep.addStep(stoneTablet4.alsoCheckBank(questBank), readTabletFinal);
+		finalStep.addStep(warningNote.alsoCheckBank(), readWarningNote);
+		finalStep.addStep(stoneTablet4.alsoCheckBank(), readTabletFinal);
 		finalStep.addStep(inMorraHole, searchForTablet4);
 		steps.put(50, finalStep);
 		steps.put(52, finalStep);

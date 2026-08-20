@@ -35,28 +35,36 @@ import java.awt.*;
 import java.util.Objects;
 
 /**
- * Requirement that checks if a player has no item in a specified {@link ItemSlots}.
+ * Requirement that checks if a player has no item in all specified {@link ItemSlots}.
  */
 public class NoItemRequirement extends ItemRequirement
 {
-	private final ItemSlots slot;
+	private final ItemSlots[] slots;
 
 	/**
-	 * Checks if a player has no items in a given {@link ItemSlots}
+	 * Checks if a player has no items in all given {@link ItemSlots}
 	 *
-	 * @param text display text
-	 * @param slot the slot to check
+	 * @param text  display text
+	 * @param slots the slots to check
 	 */
-	public NoItemRequirement(String text, @Nonnull ItemSlots slot)
+	public NoItemRequirement(String text, @Nonnull ItemSlots... slots)
 	{
 		super(text, -1, -1);
-		this.slot = slot;
+		this.slots = slots;
 	}
 
 	@Override
 	public boolean check(Client client)
 	{
-		return slot.checkInventory(client, Objects::isNull);
+		for (ItemSlots slot : slots)
+		{
+			boolean isEmpty = slot.checkInventory(client, Objects::isNull);
+			if (!isEmpty)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -69,12 +77,29 @@ public class NoItemRequirement extends ItemRequirement
 	@Override
 	public String getDisplayText()
 	{
-		return "Nothing in your " + slot.getName();
+
+		String displayString = "Nothing in your ";
+		for (int i = 0; i < slots.length; i++)
+		{
+			if (i == slots.length - 1 && "Nothing in your ".equals(displayString))
+			{
+				displayString += slots[i].getName();
+			}
+			else if (i == slots.length - 1)
+			{
+				displayString += " or " + slots[i].getName();
+			}
+			else
+			{
+				displayString += ", " + slots[i].getName();
+			}
+		}
+		return displayString;
 	}
 
 	@Override
 	protected NoItemRequirement copyOfClass()
 	{
-		return new NoItemRequirement(getName(), slot);
+		return new NoItemRequirement(getName(), slots);
 	}
 }

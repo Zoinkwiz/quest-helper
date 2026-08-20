@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -89,10 +90,9 @@ public class DoorPuzzleStep extends QuestStep
 
 	private void updateSolvedPositionState()
 	{
-		int START_VARBIT_ID = 420;
 		for (int i = 0; i < 20; i++)
 		{
-			currentState[i] = (1 + client.getVarbitValue(START_VARBIT_ID + i)) % 2;
+			currentState[i] = (1 + client.getVarbitValue(VarbitID.ICS_TILE1 + i)) % 2;
 		}
 
 		if (Arrays.equals(currentState, lastState))

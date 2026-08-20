@@ -136,10 +136,10 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		steps.put(20, returnAfterPeep);
 
 		ConditionalStep goGetBook = new ConditionalStep(this, searchBookcase);
-		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(questBank), hasReadPrayerBook, inHarmony),
+		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(), hasReadPrayerBook, inHarmony),
 			recitePrayer);
-		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(questBank), hasReadPrayerBook), returnToTranquility);
-		goGetBook.addStep(prayerBook.alsoCheckBank(questBank), readBook);
+		goGetBook.addStep(new Conditions(prayerBook.alsoCheckBank(), hasReadPrayerBook), returnToTranquility);
+		goGetBook.addStep(prayerBook.alsoCheckBank(), readBook);
 		steps.put(30, goGetBook);
 		steps.put(40, goGetBook);
 
@@ -301,8 +301,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		// Pulling statue, 3401 =1, statue pulled, 3401 = 2
 		// 3384, 0->1, entered statue
 
-		repairedStairs = new VarbitRequirement(3385, 1);
-		hasReadPrayerBook = new VarbitRequirement(3386, 1);
+		repairedStairs = new VarbitRequirement(VarbitID.BRAIN_BROKEN_STEPS, 1);
+		hasReadPrayerBook = new VarbitRequirement(VarbitID.BRAIN_READ_PRAYERS, 1);
 
 		// 3387 = 1, talked a bit to Tranq in Mos Le after getting the Prayer book
 		// 3388 = 1, part way through Fenk convo
@@ -315,7 +315,7 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		addedCats = new VarbitRequirement(VarbitID.BRAIN_CRATE, 4, Operation.GREATER_EQUAL);
 		fenkInCrate = new VarbitRequirement(VarbitID.BRAIN_CRATE, 5, Operation.GREATER_EQUAL);
 
-		addedCatsOrHas10 = new Conditions(LogicType.OR, addedCats, woodenCats.quantity(10).alsoCheckBank(questBank));
+		addedCatsOrHas10 = new Conditions(LogicType.OR, addedCats, woodenCats.quantity(10).alsoCheckBank());
 
 		// 3392 0->10, added wooden cats
 
@@ -329,18 +329,18 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 		hasFuse = new Conditions(LogicType.OR, fuse, addedFuse);
 		hasTinderbox = new Conditions(LogicType.OR, tinderbox, litFuse);
 
-		givenClamp = new VarbitRequirement(3396, 1);
-		givenTongs = new VarbitRequirement(3397, 1);
-		givenHammer = new VarbitRequirement(3398, 1);
-		givenBells = new VarbitRequirement(3399, 3);
-		givenStaples = new VarbitRequirement(3400, 30);
+		givenClamp = new VarbitRequirement(VarbitID.BRAIN_CLAMP_GIVEN, 1);
+		givenTongs = new VarbitRequirement(VarbitID.BRAIN_TONGS_GIVEN, 1);
+		givenHammer = new VarbitRequirement(VarbitID.BRAIN_HAMMER_GIVEN, 1);
+		givenBells = new VarbitRequirement(VarbitID.BRAIN_JARS_GIVEN, 3);
+		givenStaples = new VarbitRequirement(VarbitID.BRAIN_STAPLES_GIVEN, 30);
 
 		hadClamp = new Conditions(LogicType.OR, givenClamp, cranialClamp);
 		hadStaples = new Conditions(LogicType.OR, givenStaples, neededStaples);
 		hadBells = new Conditions(LogicType.OR, givenBells, neededJars);
 		hadTongs = new Conditions(LogicType.OR, givenTongs, brainTongs);
 
-		barrelchestAppeared = new VarbitRequirement(3410, 1);
+		barrelchestAppeared = new VarbitRequirement(VarbitID.BRAIN_SEEN_WALLBREAKER, 1);
 		// received blessing, 3411 = 1
 	}
 
@@ -349,8 +349,8 @@ public class TheGreatBrainRobbery extends BasicQuestHelper
 	{
 		int staplesNeeded = 30;
 		int bellsNeeded = 3;
-		neededStaples.quantity(staplesNeeded - client.getVarbitValue(3400));
-		neededJars.quantity(bellsNeeded - client.getVarbitValue(3399));
+		neededStaples.quantity(staplesNeeded - client.getVarbitValue(VarbitID.BRAIN_STAPLES_GIVEN));
+		neededJars.quantity(bellsNeeded - client.getVarbitValue(VarbitID.BRAIN_JARS_GIVEN));
 	}
 
 	public void setupSteps()

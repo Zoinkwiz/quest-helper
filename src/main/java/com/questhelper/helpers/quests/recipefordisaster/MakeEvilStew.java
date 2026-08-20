@@ -33,7 +33,6 @@ import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.*;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
@@ -73,21 +72,6 @@ public class MakeEvilStew extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		int redNeeded = client.getVarbitValue(1883);
-		int yellowNeeded = client.getVarbitValue(1884);
-		int brownNeeded = client.getVarbitValue(1885);
-		int orangeNeeded = client.getVarbitValue(1886);
-
-		int redInStew = client.getVarbitValue(Varbits.SPICY_STEW_RED_SPICES);
-		int yellowInStew = client.getVarbitValue(Varbits.SPICY_STEW_YELLOW_SPICES);
-		int brownInStew = client.getVarbitValue(Varbits.SPICY_STEW_BROWN_SPICES);
-		int orangeInStew = client.getVarbitValue(Varbits.SPICY_STEW_ORANGE_SPICES);
-
-		int numRedStillNeeded = redNeeded - redInStew;
-		int numOrangeStillNeeded = orangeNeeded - orangeInStew;
-		int numBrownStillNeeded = brownNeeded - brownInStew;
-		int numYellowStillNeeded = yellowNeeded - yellowInStew;
-
 		if (!inEvilDaveRoom.check(client))
 		{
 			startUpStep(enterBasement);

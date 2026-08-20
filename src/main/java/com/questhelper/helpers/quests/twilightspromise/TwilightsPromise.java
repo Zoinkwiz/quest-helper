@@ -140,7 +140,7 @@ public class TwilightsPromise extends BasicQuestHelper
 		findPubKnights.addStep(pubKnightFollowing, takePubKnightsToFountain);
 
 		ConditionalStep findBazaarKnight = new ConditionalStep(this, talkToBazaarKnight);
-		findBazaarKnight.addStep(stolenAmulet.alsoCheckBank(questBank), returnAmulet);
+		findBazaarKnight.addStep(stolenAmulet.alsoCheckBank(), returnAmulet);
 		findBazaarKnight.addStep(talkedToBazaarKnight, pickpocketCitizen);
 
 		ConditionalStep findKnights = new ConditionalStep(this, findColosseumKnight);
@@ -159,7 +159,7 @@ public class TwilightsPromise extends BasicQuestHelper
 
 
 		ConditionalStep goReadLetter = new ConditionalStep(this, goUpHQ);
-		goReadLetter.addStep(incriminatingLetter.alsoCheckBank(questBank), readLetter);
+		goReadLetter.addStep(incriminatingLetter.alsoCheckBank(), readLetter);
 		goReadLetter.addStep(inHQ2, searchHQChest);
 		goReadLetter.addStep(inHQ1, goUpHQ2);
 		steps.put(24, goReadLetter);
@@ -221,7 +221,7 @@ public class TwilightsPromise extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		beenToVarlamore = new VarbitRequirement(9650, 1);
+		beenToVarlamore = new VarbitRequirement(VarbitID.VARLAMORE_VISITED, 1);
 		inCrypt = new ZoneRequirement(crypt);
 		inColosseumUnderground = new ZoneRequirement(colosseumUnderground);
 		inColosseum = new ZoneRequirement(colosseum);

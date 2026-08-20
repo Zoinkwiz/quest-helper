@@ -37,7 +37,7 @@ import java.util.*;
 public class PanelDetails
 {
 	@Getter
-	int id;
+	int id = Integer.MIN_VALUE;
 
 	@Getter
 	String header;
@@ -95,12 +95,32 @@ public class PanelDetails
 	public PanelDetails withId(int id)
 	{
 		this.id = id;
+		for (QuestStep step : steps)
+		{
+			step.withId(id);
+		}
 		return this;
+	}
+
+	public static PanelDetails lockedPanel(String header, Requirement displayCondition, QuestStep lockingStep, List<QuestStep> steps, Requirement... requirements)
+	{
+		var section = new PanelDetails(header, steps, requirements);
+
+		section.setDisplayCondition(displayCondition);
+		section.setLockingStep(lockingStep);
+
+		return section;
 	}
 
 	public void setDisplayCondition(Requirement req)
 	{
 		setHideCondition(new Conditions(LogicType.NOR, req));
+	}
+
+	public PanelDetails withHideCondition(Requirement requirement)
+	{
+		setHideCondition(requirement);
+		return this;
 	}
 
 	/* Set the states of the quest the steps in the sidebar should be active */
@@ -117,6 +137,11 @@ public class PanelDetails
 	public void addSteps(QuestStep... steps)
 	{
 		this.steps.addAll(Arrays.asList(steps));
+	}
+
+	public void addSteps(Collection<QuestStep> steps)
+	{
+		this.steps.addAll(steps);
 	}
 
 	public boolean contains(QuestStep currentStep)

@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -150,7 +151,9 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		silverBar = new ItemRequirement("Silver bar", ItemID.SILVER_BAR);
 		bronzeWire = new ItemRequirement("Bronze wire", ItemID.BRONZECRAFTWIRE, 3);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
+		needle.setTooltip("Costume needle cannot be used as a substitute");
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 5);
+		thread.setTooltip("Costume needle cannot be used as a substitute");
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		coins = new ItemRequirement("Coins at least", ItemCollections.COINS, 100);
 		pickledBrain = new ItemRequirement("Pickled Brain", ItemID.FENK_BRAIN);
@@ -198,15 +201,15 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 		inCanifisBar = new ZoneRequirement(barZone);
 		inCastleFloor0 = new ZoneRequirement(castleZoneFloor0);
 		inCastleFloor1 = new ZoneRequirement(castleZoneFloor1);
-		putStarOnGrave = new VarbitRequirement(192, 1);
+		putStarOnGrave = new VarbitRequirement(VarbitID.FENK_COFFIN, 1);
 		hasMarbleAmulet = new Conditions(LogicType.OR, marbleAmulet, putStarOnGrave);
 		hasObsidianAmulet = new Conditions(LogicType.OR, obsidianAmulet, putStarOnGrave);
 		hasStarAmulet = new Conditions(LogicType.OR, starAmulet, putStarOnGrave);
-		followingGardenerForHead = new VarbitRequirement(185, 1);
+		followingGardenerForHead = new VarbitRequirement(VarbitID.FENK_GARDENER_DIRECTIONS, 1);
 
 		hasDecapitatedHeadWithBrain = new Conditions(LogicType.OR,
 			decapitatedHeadWithBrain,
-			new VarbitRequirement(189, 1)
+			new VarbitRequirement(VarbitID.FENK_HEAD, 1)
 		);
 
 		inExperiementCave = new ZoneRequirement(experimentCave);
@@ -214,29 +217,29 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 
 		hasCavernKey = new Conditions(LogicType.OR,
 			cavernKey,
-			new VarbitRequirement(199, 1)
+			new VarbitRequirement(VarbitID.FENK_UNLOCKED_CAVERN, 1)
 		);
 		keyNearby = new ItemOnTileRequirement(cavernKey);
 		hasTorso = new Conditions(LogicType.OR,
 			torso,
-			new VarbitRequirement(188, 1)
+			new VarbitRequirement(VarbitID.FENK_TORSO, 1)
 		);
 		hasLegs = new Conditions(LogicType.OR,
 			legs,
-			new VarbitRequirement(187, 1)
+			new VarbitRequirement(VarbitID.FENK_LEGS, 1)
 		);
 		hasArm = new Conditions(LogicType.OR,
 			arms,
-			new VarbitRequirement(186, 1)
+			new VarbitRequirement(VarbitID.FENK_ARMS, 1)
 		);
 
 		// Needle given, 190 = 1
 		// Thread given, 191 0->5
 
-		usedShedKey = new VarbitRequirement(200, 1);
+		usedShedKey = new VarbitRequirement(VarbitID.FENK_UNLOCKED_SHED, 1);
 		inCastleTower = new ZoneRequirement(castleTower);
 
-		usedTowerKey = new VarbitRequirement(198, 1);
+		usedTowerKey = new VarbitRequirement(VarbitID.FENK_UNLOCKED_TOWER, 1);
 		inMonsterTower = new ZoneRequirement(monsterTower);
 	}
 
@@ -267,11 +270,11 @@ public class CreatureOfFenkenstrain extends BasicQuestHelper
 			marbleAmulet.highlighted(),
 			obsidianAmulet.highlighted());
 
-		goDownstairsForStar = new ObjectStep(this, ObjectID.FENK_STAIRS_LV1_TOP, new WorldPoint(3573, 3553, 1),
+		goDownstairsForStar = new ObjectStep(this, ObjectID.FENK_STAIRS_LV1_TOP, new WorldPoint(3537, 3553, 1),
 			"Go back to the ground floor.");
 
 		talkToGardenerForHead = new NpcStep(this, NpcID.FENK_GARDENER, new WorldPoint(3548, 3562, 0),
-			"Talk to the Gardener Ghost.", ghostSpeakAmulet.equipped());
+			"Talk to the Gardener Ghost while wearing your Ghostspeak amulet.", ghostSpeakAmulet.equipped());
 		talkToGardenerForHead.addDialogStep("What happened to your head?");
 
 		goToHeadGrave = new DigStep(this, new WorldPoint(3608, 3490, 0),

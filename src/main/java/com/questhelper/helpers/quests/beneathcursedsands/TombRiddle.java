@@ -14,6 +14,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -93,10 +94,10 @@ public class TombRiddle extends DetailedOwnerStep
 			return;
 		}
 
-		int currentNorthernEmblem = client.getVarbitValue(13862);
-		int currentCentreNorthEmblem = client.getVarbitValue(13861);
-		int currentCentreSouthEmblem = client.getVarbitValue(13860);
-		int currentSouthernEmblem = client.getVarbitValue(13859);
+		int currentNorthernEmblem = client.getVarbitValue(VarbitID.BCS_URN_4);
+		int currentCentreNorthEmblem = client.getVarbitValue(VarbitID.BCS_URN_3);
+		int currentCentreSouthEmblem = client.getVarbitValue(VarbitID.BCS_URN_2);
+		int currentSouthernEmblem = client.getVarbitValue(VarbitID.BCS_URN_1);
 
 		if (currentNorthernEmblem != northernEmblem)
 		{

@@ -157,7 +157,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
 		//Required
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY).showConditioned(notFilledWater).isNotConsumed();
-		tiara = new ItemRequirement("Silver Tiara", ItemID.TIARA).showConditioned(notMindTiara);
+		tiara = new ItemRequirement("Tiara", ItemID.TIARA).showConditioned(notMindTiara);
 		mindTalisman = new ItemRequirement("Mind Talisman", ItemID.MIND_TALISMAN).showConditioned(notMindTiara);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(new Conditions(LogicType.OR, notMotherloadMine, notBluriteLimbs)).isNotConsumed();
 		pickaxe = new ItemRequirement("Any Pickaxe", ItemCollections.PICKAXES)
@@ -175,8 +175,8 @@ public class FaladorEasy extends ComplexStateQuestHelper
 		explorersRing = new TeleportItemRequirement("Explorers Ring (2) or above.", ItemID.LUMBRIDGE_RING_MEDIUM).isNotConsumed();
 		explorersRing.addAlternates(ItemID.LUMBRIDGE_RING_HARD, ItemID.LUMBRIDGE_RING_ELITE);
 
-		hasBluriteOre = bluriteOre.alsoCheckBank(questBank);
-		hasBluriteBar = bluriteBar.alsoCheckBank(questBank);
+		hasBluriteOre = bluriteOre.alsoCheckBank();
+		hasBluriteBar = bluriteBar.alsoCheckBank();
 
 		inMindAltar = new ZoneRequirement(mindAltar);
 		inBluriteDungeon = new ZoneRequirement(bluriteDungeon);

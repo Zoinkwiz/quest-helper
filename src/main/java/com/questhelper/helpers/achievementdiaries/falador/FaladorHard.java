@@ -135,8 +135,8 @@ public class FaladorHard extends ComplexStateQuestHelper
 		doHard.addStep(notCraftedMindRunes, craftedMindRunesTask);
 
 		praySarimAltarProsyTask = new ConditionalStep(this, getProsySet);
-		praySarimAltarProsyTask.addStep(new Conditions(notPraySarimAltarProsy, prosyHelm.alsoCheckBank(questBank),
-			prosyLegs.alsoCheckBank(questBank), prosyChest.alsoCheckBank(questBank)), prayAtAltarSarim);
+		praySarimAltarProsyTask.addStep(new Conditions(notPraySarimAltarProsy, prosyHelm.alsoCheckBank(),
+			prosyLegs.alsoCheckBank(), prosyChest.alsoCheckBank()), prayAtAltarSarim);
 		doHard.addStep(notPraySarimAltarProsy, praySarimAltarProsyTask);
 
 		killedWyvernTask = new ConditionalStep(this, goToIceDungeon);
@@ -289,7 +289,7 @@ public class FaladorHard extends ComplexStateQuestHelper
 			"Equip your Proselyte armor and pray at the altar in Port Sarim.", prosyHelm, prosyChest, prosyLegs);
 
 		//Warriors Guild
-		enterWarriorsGuild = new ObjectStep(this, ObjectID.WARGUILD_DOOR_FRONT, new WorldPoint(2896, 3510, 0),
+		enterWarriorsGuild = new ObjectStep(this, ObjectID.WARGUILD_DOOR_FRONT, new WorldPoint(2877, 3546, 0),
 			"Enter the Warriors Guild, in Burthorpe. You can get here faster by teleporting with a combat bracelet or a games necklace.");
 
 		//Dwarven Helm

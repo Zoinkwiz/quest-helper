@@ -267,7 +267,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 
 		moveToUpstairs = new ObjectStep(this, ObjectID.SLAYERTOWER_SC_CHAINBOTTOM, new WorldPoint(3422, 3550, 0),
 			"Climb up the chain to get to the second floor of the slayer tower.");
-		advancedSpikes = new ObjectStep(this, 16537, new WorldPoint(3447, 3576, 1),
+		advancedSpikes = new ObjectStep(this, ObjectID.SLAYERTOWER_SC_CHAINBOTTOM, new WorldPoint(3447, 3576, 1),
 			"Climb the advanced spike chain. Go down and back up if you rip your hands as you climb.");
 
 		moveToCaptHorror = new ObjectStep(this, ObjectID.FEVER_GANGPLANK, new WorldPoint(3710, 3496, 0),
@@ -289,7 +289,7 @@ public class MorytaniaHard extends ComplexStateQuestHelper
 		moveToIsland = new ObjectStep(this, ObjectID.HARMLESS_BLACK_SPIRAL_STAIRS, new WorldPoint(3830, 9463, 0),
 			"Climb the staircase in the north east of the Cave Horror dungeon.");
 		burnMaho = new ItemStep(this, "Burn mahogany logs on the island.", tinderbox.highlighted(), mahoLogs.highlighted());
-		chopMaho = new ObjectStep(this, 9034, new WorldPoint(3826, 3056, 0),
+		chopMaho = new ObjectStep(this, ObjectID.MAHOGANYTREE, new WorldPoint(3826, 3056, 0),
 			"Chop mahogany logs on the island.", axe, tinderbox);
 
 		moveToCaptMelon = new ObjectStep(this, ObjectID.FEVER_GANGPLANK, new WorldPoint(3710, 3496, 0),

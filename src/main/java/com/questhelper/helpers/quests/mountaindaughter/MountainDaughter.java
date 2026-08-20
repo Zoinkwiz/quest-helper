@@ -43,11 +43,11 @@ import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
@@ -104,8 +104,8 @@ public class MountainDaughter extends BasicQuestHelper
 		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, finishedFood), returnToHamalAboutDiplomacy);
 
 		// Get fruit
-		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearlSeed.alsoCheckBank(questBank)), returnToHamalAboutFood);
-		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearl.alsoCheckBank(questBank)), eatFruit);
+		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearlSeed.alsoCheckBank()), returnToHamalAboutFood);
+		helpTheCamp.addStep(new Conditions(givenGuaranteeToSvidi, whitePearl.alsoCheckBank()), eatFruit);
 		helpTheCamp.addStep(givenGuaranteeToSvidi, getFruit);
 
 		// Fremennik friendship
@@ -133,15 +133,15 @@ public class MountainDaughter extends BasicQuestHelper
 		steps.put(40, killKendalStep);
 
 		ConditionalStep returnTheCorpse = new ConditionalStep(this, enterCave);
-		returnTheCorpse.addStep(corpse.alsoCheckBank(questBank), bringCorpseToHamal);
+		returnTheCorpse.addStep(corpse.alsoCheckBank(), bringCorpseToHamal);
 		returnTheCorpse.addStep(inKendalCave, grabCorpse);
 
 		steps.put(50, returnTheCorpse);
 
 		ConditionalStep buryCorpse = new ConditionalStep(this, enterCampOverRocks);
 		buryCorpse.addStep(hasBuried, createCairn);
-		buryCorpse.addStep(necklace.alsoCheckBank(questBank), buryCorpseOnIsland);
-		buryCorpse.addStep(muddyRocks5.alsoCheckBank(questBank), speakRagnar);
+		buryCorpse.addStep(necklace.alsoCheckBank(), buryCorpseOnIsland);
+		buryCorpse.addStep(muddyRocks5.alsoCheckBank(), speakRagnar);
 		buryCorpse.addStep(inTheCamp, collectRocks);
 
 		steps.put(60, buryCorpse);
@@ -214,23 +214,23 @@ public class MountainDaughter extends BasicQuestHelper
 		onIsland3 = new Conditions(new ZoneRequirement(LAKE_ISLAND_3));
 
 		inTheCamp = new Conditions(new ZoneRequirement(CAMP_ZONE_1, CAMP_ZONE_2, CAMP_ZONE_3));
-		askedAboutDiplomacy = new Conditions(new VarbitRequirement(262, 10));
-		rubbedMudIntoTree = new Conditions(new VarbitRequirement(261, 1));
+		askedAboutDiplomacy = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 10));
+		rubbedMudIntoTree = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_MUD_VAR, 1));
 
 		VarbitRequirement askedAboutFood = new VarbitRequirement(VarbitID.MDAUGHTER_FOOD_VAR, 10, Operation.GREATER_EQUAL);
-		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(262, 10), askedAboutFood);
-		spokenToSvidi = new Conditions(new VarbitRequirement(262, 20), askedAboutFood);
-		spokenToBrundt = new Conditions(new VarbitRequirement(262, 30), askedAboutFood);
-		minedRock = new Conditions(new VarbitRequirement(262, 40), askedAboutFood);
-		gottenGuarantee = new Conditions(new VarbitRequirement(262, 50), askedAboutFood);
-		givenGuaranteeToSvidi = new Conditions(new VarbitRequirement(262, 60), askedAboutFood);
-		finishedDiplomacy = new Conditions(new VarbitRequirement(266, 1));
-		finishedFood = new VarbitRequirement(263, 20);
+		askedAboutFoodAndDiplomacy = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 10), askedAboutFood);
+		spokenToSvidi = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 20), askedAboutFood);
+		spokenToBrundt = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 30), askedAboutFood);
+		minedRock = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 40), askedAboutFood);
+		gottenGuarantee = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 50), askedAboutFood);
+		givenGuaranteeToSvidi = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_RELATIONS_VAR, 60), askedAboutFood);
+		finishedDiplomacy = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_HAMAL_RELATIONS_DONE, 1));
+		finishedFood = new VarbitRequirement(VarbitID.MDAUGHTER_FOOD_VAR, 20);
 		finishedFoodAndDiplomacy = new Conditions(finishedDiplomacy, finishedFood);
 		inKendalCave = new Conditions(new ZoneRequirement(KENDAL_CAVE));
 		fightableKendalNearby = new Conditions(new NpcHintArrowRequirement(NpcID.MDAUGHTER_BEARMAN_FIGHTER));
 
-		hasBuried = new Conditions(new VarbitRequirement(273, 1));
+		hasBuried = new Conditions(new VarbitRequirement(VarbitID.MDAUGHTER_BURIAL_STATE, 1));
 	}
 
 	private void loadQuestSteps()
@@ -343,8 +343,8 @@ public class MountainDaughter extends BasicQuestHelper
 		enterCave = new ObjectStep(this, ObjectID.MDAUGHTER_CAVEENTRANCE, new WorldPoint(2809, 3703, 0),
 			"Cut through the trees north east of the lake and enter the cave there. Bring combat gear.",
 			axe);
-		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2802, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
-		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2807, 3703, 0), SpriteID.COMBAT_STYLE_AXE_CHOP);
+		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2802, 3703, 0), SpriteID.Combaticons.AXE_CHOP);
+		((ObjectStep) enterCave).addTileMarker(new WorldPoint(2807, 3703, 0), SpriteID.Combaticons.AXE_CHOP);
 
 		talkToKendal = new NpcStep(this, NpcID.MDAUGHTER_BEARMAN, new WorldPoint(2788, 10081, 0),
 			"Speak to the Kendal, then kill him.");

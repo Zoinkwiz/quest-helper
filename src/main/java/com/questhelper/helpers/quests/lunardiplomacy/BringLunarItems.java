@@ -9,6 +9,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 
 public class BringLunarItems extends NpcStep
 {
@@ -41,14 +42,14 @@ public class BringLunarItems extends NpcStep
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.LUNAR_SEAL_OF_PASSAGE);
 		sealOfPassage.setTooltip("You can get another from Brundt");
 
-		handedInHelm = new VarbitRequirement(2436, 1);
-		handedInCape = new VarbitRequirement(2437, 1);
-		handedInAmulet = new VarbitRequirement(2438, 1);
-		handedInTorso = new VarbitRequirement(2439, 1);
-		handedInGloves = new VarbitRequirement(2441, 1);
-		handedInBoots = new VarbitRequirement(2440, 1);
-		handedInLegs = new VarbitRequirement(2442, 1);
-		handedInRing = new VarbitRequirement(2443, 1);
+		handedInHelm = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_HELM, 1);
+		handedInCape = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_CAPE, 1);
+		handedInAmulet = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_AMULET, 1);
+		handedInTorso = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_TORSO, 1);
+		handedInGloves = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_BOOTS, 1);
+		handedInBoots = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_GLOVES, 1);
+		handedInLegs = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_TROUSERS, 1);
+		handedInRing = new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_RING, 1);
 	}
 
 	@Override

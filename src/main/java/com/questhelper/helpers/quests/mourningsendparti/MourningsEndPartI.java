@@ -114,8 +114,8 @@ public class MourningsEndPartI extends BasicQuestHelper
 		enterMournerHQ.addStep(inMournerHQ, enterBasement);
 
 		ConditionalStep prepareItems = new ConditionalStep(this, getItems);
-		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(questBank), mournerLegs.alsoCheckBank(questBank)), enterMournerHQ);
-		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(questBank)), repairTrousersSteps);
+		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank(), mournerLegs.alsoCheckBank()), enterMournerHQ);
+		prepareItems.addStep(new Conditions(hasAllMournerItems, mournerBody.alsoCheckBank()), repairTrousersSteps);
 		prepareItems.addStep(new Conditions(hasAllMournerItems), cleanTopSteps);
 
 		steps.put(3, prepareItems);
@@ -156,11 +156,11 @@ public class MourningsEndPartI extends BasicQuestHelper
 		takeAppleToElena.addStep(new Conditions(twoPoisoned, inMournerHQ), enterMournerBasementAfterPoison);
 		takeAppleToElena.addStep(twoPoisoned, enterMournerBaseAfterPoison);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, poisoned1), usePowderOnFood2);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicPowder.alsoCheckBank(questBank)), usePowderOnFood1);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicPowder.alsoCheckBank()), usePowderOnFood1);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, toxicNaphtha), cookNaphtha);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, naphthaAppleMix), useSieveOnBarrel);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank), naphtha), useNaphthaOnBarrel);
-		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(questBank)), getNaphtha);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank(), naphtha), useNaphthaOnBarrel);
+		takeAppleToElena.addStep(new Conditions(receivedSieve, appleBarrel.alsoCheckBank()), getNaphtha);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, barrelOfRottenApples), useApplesOnPress);
 		takeAppleToElena.addStep(new Conditions(receivedSieve, emptyBarrel), useBarrelOnPile);
 		takeAppleToElena.addStep(receivedSieve, pickUpBarrel);
@@ -294,16 +294,16 @@ public class MourningsEndPartI extends BasicQuestHelper
 		releasedGnome = new VarbitRequirement(VarbitID.MOURNING_GNOME, 7, Operation.GREATER_EQUAL);
 		repairedDevice = new VarbitRequirement(VarbitID.MOURNING_GNOME, 9, Operation.GREATER_EQUAL);
 
-		learntAboutToads = new VarbitRequirement(9155, 1);
-		redToadLoaded = new VarbitRequirement(804, 1);
-		greenToadLoaded = new VarbitRequirement(804, 2);
-		blueToadLoaded = new VarbitRequirement(804, 3);
-		yellowToadLoaded = new VarbitRequirement(804, 4);
+		learntAboutToads = new VarbitRequirement(VarbitID.MOURNING_DYE_CHAT, 1);
+		redToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 1);
+		greenToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 2);
+		blueToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 3);
+		yellowToadLoaded = new VarbitRequirement(VarbitID.MOURNING_GUN_AMMO, 4);
 
-		greenDyed = new VarbitRequirement(803, 1);
-		redDyed = new VarbitRequirement(801, 1);
-		yellowDyed = new VarbitRequirement(802, 1);
-		blueDyed = new VarbitRequirement(800, 1);
+		greenDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_GREEN, 1);
+		redDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_RED, 1);
+		yellowDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_YELLOW, 1);
+		blueDyed = new VarbitRequirement(VarbitID.MOURNING_SHEEP_BLUE, 1);
 
 		greenToadGot = new Conditions(LogicType.OR, greenToadLoaded, greenToad, greenDyed);
 		redToadGot = new Conditions(LogicType.OR, redToadLoaded, redToad, redDyed);
@@ -315,9 +315,9 @@ public class MourningsEndPartI extends BasicQuestHelper
 		givenRottenApple = new VarbitRequirement(VarbitID.MOURNING_ELENA, 2, Operation.GREATER_EQUAL);
 		receivedSieve = new VarbitRequirement(VarbitID.MOURNING_ELENA, 4, Operation.GREATER_EQUAL);
 
-		poisoned1 = new VarbitRequirement(806, 1);
-		poisoned2 = new VarbitRequirement(807, 1);
-		poisoned3 = new VarbitRequirement(808, 1);
+		poisoned1 = new VarbitRequirement(VarbitID.MOURNING_FOOD_POISON1, 1);
+		poisoned2 = new VarbitRequirement(VarbitID.MOURNING_FOOD_POISON2, 1);
+		poisoned3 = new VarbitRequirement(VarbitID.MOURNING_FOOD_POISON3, 1);
 
 		twoPoisoned = new Conditions(LogicType.OR, new Conditions(poisoned1, poisoned2), new Conditions(poisoned1, poisoned3), new Conditions(poisoned2, poisoned3));
 	}
@@ -396,7 +396,7 @@ public class MourningsEndPartI extends BasicQuestHelper
 		askAboutToads = new NpcStep(this, NpcID.MOURNER_HIDEOUT_GNOME_HEAD, new WorldPoint(2035, 4630, 0), "Ask the gnome about ammo.");
 
 		getToads = new DetailedQuestStep(this, new WorldPoint(2599, 2966, 0),
-			"You need to make some dyed toads. Go to Feldip Hills, use a dye on your empty bellows, then use the " +
+			"You need to make some dyed toads. Go to Feldip Hills (AKS), use a dye on your empty bellows, then use the " +
 				"bellows to inflate a toad. Get at least one toad of each colour.", redToad, yellowToad, greenToad, blueToad);
 
 		loadGreenToad = new DetailedQuestStep(this, "Add a green toad to the fixed device.", greenToad.highlighted(),

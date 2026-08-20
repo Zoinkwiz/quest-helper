@@ -35,6 +35,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.Arrays;
@@ -60,11 +61,11 @@ public class FixWall extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		int wall1Fixed = client.getVarbitValue(2100);
-		int wall2Fixed = client.getVarbitValue(2101);
-		int wall3Fixed = client.getVarbitValue(2102);
-		int wall4Fixed = client.getVarbitValue(2103);
-		int wall5Fixed = client.getVarbitValue(2104);
+		int wall1Fixed = client.getVarbitValue(VarbitID.SWANSONG_WALL_1);
+		int wall2Fixed = client.getVarbitValue(VarbitID.SWANSONG_WALL_2);
+		int wall3Fixed = client.getVarbitValue(VarbitID.SWANSONG_WALL_3);
+		int wall4Fixed = client.getVarbitValue(VarbitID.SWANSONG_WALL_4);
+		int wall5Fixed = client.getVarbitValue(VarbitID.SWANSONG_WALL_5);
 
 		int wallsToRepair = 5 - (wall1Fixed + wall2Fixed + wall3Fixed + wall4Fixed + wall5Fixed);
 

@@ -30,6 +30,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.tools.DefinedPoint;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Player;
@@ -38,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -85,7 +87,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 				.left("Possible locations:")
 				.build());
 		}
-		else if (digLocations.size() < 1)
+		else if (digLocations.isEmpty())
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Unable to establish dig location")
@@ -119,8 +121,8 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 
 	public void resetState()
 	{
-		setWorldPoint(null);
-		int locationStates = client.getVarbitValue(1391);
+		setWorldPoint(DefinedPoint.of(null));
+		int locationStates = client.getVarbitValue(VarbitID.MAKINGHISTORY_LOCSTATUS);
 		Set<EnchantedKeyDigLocation> locations = Arrays.stream(EnchantedKeyDigLocation.values()).filter(p -> ((locationStates >> p.getBit()) & 1) == 0)
 			.collect(Collectors.toSet());
 		if (enchantedKeySolver != null)
@@ -138,12 +140,12 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (worldPoint == null)
+		if (definedPoint == null)
 		{
 			return;
 		}
 
-		LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint localLocation = LocalPoint.fromWorld(client, definedPoint.getWorldPoint());
 
 		if (localLocation == null)
 		{
@@ -199,7 +201,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 		}
 		else
 		{
-			this.setWorldPoint(null);
+			this.setWorldPoint(DefinedPoint.of(null));
 		}
 
 		return true;
@@ -223,7 +225,7 @@ public class EnchantedKeyDigStep extends DetailedQuestStep
 	public void shutDown()
 	{
 		super.shutDown();
-		this.setWorldPoint(null);
+		this.setWorldPoint(DefinedPoint.of(null));
 	}
 
 	private BufferedImage getSpadeImage()

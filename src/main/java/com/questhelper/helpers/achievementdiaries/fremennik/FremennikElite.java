@@ -50,11 +50,11 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.Prayer;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -264,9 +264,9 @@ public class FremennikElite extends ComplexStateQuestHelper
 
 	public void setupSteps()
 	{
-		rellRooftop = new ObjectStep(this, 14946, new WorldPoint(2625, 3677, 0),
+		rellRooftop = new ObjectStep(this, ObjectID.ROOFTOPS_RELLEKKA_WALLCLIMB, new WorldPoint(2625, 3677, 0),
 			"Complete a lap of the Rellekka Rooftop course.");
-		dragonAmulet = new ObjectStep(this, 21303, new WorldPoint(2344, 3811, 0),
+		dragonAmulet = new ObjectStep(this, ObjectID.IZNOT_CLAY_FORGE, new WorldPoint(2344, 3811, 0),
 			"Smelt a dragonstone amulet on the clay forge.");
 		dragonAmulet.addIcon(ItemID.UNSTRUNG_DRAGONSTONE_AMULET);
 		moveToPirates = new NpcStep(this, NpcID.LUNAR_FREMENNIK_PIRATE_BY_PIRATESHIP, new WorldPoint(2620, 3693, 0),
@@ -287,9 +287,9 @@ public class FremennikElite extends ComplexStateQuestHelper
 			"Speak with Maria Gunnars to travel to Neitiznot.");
 
 
-		moveToGodWarsSM = new ObjectStep(this, 26419, new WorldPoint(2919, 3747, 0),
+		moveToGodWarsSM = new ObjectStep(this, ObjectID.GODWARS_ENTRANCE_MULTI, new WorldPoint(2919, 3747, 0),
 			"Go down the hole. Bring a rope if this is your first time entering.", combatGear, food);
-		moveToGodWarsGWD = new ObjectStep(this, 26419, new WorldPoint(2919, 3747, 0),
+		moveToGodWarsGWD = new ObjectStep(this, ObjectID.GODWARS_ENTRANCE_MULTI, new WorldPoint(2919, 3747, 0),
 			"Go down the hole. Bring a rope if this is your first time entering.", combatGear, food);
 		godwarsGenerals = new NpcStep(this, NpcID.GODWARS_ARMADYL_AVATAR, new WorldPoint(2832, 5301, 2),
 			"Get kills for a faction then kill its respective general.", true);
@@ -308,17 +308,17 @@ public class FremennikElite extends ComplexStateQuestHelper
 		moveToWaterbirth.addDialogStep("What Jarvald is doing.");
 		moveToWaterbirth.addDialogStep("Can I come?");
 		moveToWaterbirth.addDialogStep("YES");
-		moveToDagCave = new ObjectStep(this, 8929, new WorldPoint(2521, 3740, 0),
+		moveToDagCave = new ObjectStep(this, ObjectID.DAGANNOTH_CAVEENTRANCE_ROCK, new WorldPoint(2521, 3740, 0),
 			"Enter cave and pray melee. Make sure you are full stam and prayer before entering.", protectMelee);
-		dropPetRock = new ObjectStep(this, 8965, new WorldPoint(2490, 10162, 0),
+		dropPetRock = new ObjectStep(this, ObjectID.DAGANNOTH_PRESSURE_PAD_2, new WorldPoint(2490, 10162, 0),
 			"Drop your pet rock on one pressure pad then stand on the other pad to open the gate.", petRock);// item on tile req?
 		dropPetRock.addIcon(ItemID.VT_USELESS_ROCK);
-		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.SKILL_AGILITY);
-		moveToAxeSpot = new ObjectStep(this, 8945, new WorldPoint(2545, 10146, 0),
+		dropPetRock.addTileMarker(new WorldPoint(2490, 10164, 0), SpriteID.Staticons.AGILITY);
+		moveToAxeSpot = new ObjectStep(this, ObjectID.DAGANNOTH_DUGUPSOIL_2, new WorldPoint(2545, 10146, 0),
 			"Continue onwards until you reach the barrier.");
-		throwAxe = new NpcStep(this, 2253, new WorldPoint(2543, 10143, 0),
+		throwAxe = new NpcStep(this, NpcID.DAGANNOTH_WEAK_DOOR_WEST, new WorldPoint(2543, 10143, 0),
 			"Attack the Door-Support with a rune thrownaxe special attack. If done correctly the axe should ricochet and lower all 3 barriers.", thrownaxe.equipped(), specialAttackEnabled);
-		moveToDagCave1 = new ObjectStep(this, 10177, new WorldPoint(2546, 10143, 0),
+		moveToDagCave1 = new ObjectStep(this, ObjectID.DAGANNOTH_LADDER_BASE_EXT2, new WorldPoint(2546, 10143, 0),
 			"Enable magic protection then climb down the ladder.", protectMagic);
 		moveToDagCave1.addDialogSteps("Climb Down.");
 		moveToDagCave2 = new ObjectStep(this, ObjectID.DAGEXP_LADDER1, new WorldPoint(1808, 4405, 3),
@@ -345,7 +345,7 @@ public class FremennikElite extends ComplexStateQuestHelper
 			"Continue through the cave.", protectMelee);
 		moveToDagCave13 = new ObjectStep(this, ObjectID.DAGEXP_LADDER23, new WorldPoint(1957, 4371, 0),
 			"Continue through the cave.", protectMelee);
-		moveToDagKings = new ObjectStep(this, 3831, new WorldPoint(1911, 4367, 0),
+		moveToDagKings = new ObjectStep(this, ObjectID.DAGEXP_BOSSROOMLADDER_DOWN, new WorldPoint(1911, 4367, 0),
 			"Enter the Kings' lair.", protectMelee);
 		dagKings = new NpcStep(this, NpcID.DAGCAVE_MELEE_BOSS, new WorldPoint(2913, 4449, 0),
 			"Kill each of the Dagannoth Kings.", true, combatGear);

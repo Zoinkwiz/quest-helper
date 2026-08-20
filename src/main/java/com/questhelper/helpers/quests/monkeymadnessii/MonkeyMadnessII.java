@@ -354,7 +354,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		foundHandkerchief = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.MM2_FOUND_HANDKERCHIEF, 2, Operation.GREATER_EQUAL), handkerchief);
 		talkedToAnita = new VarbitRequirement(VarbitID.MM2_ANTIAS_CLUE, 1, Operation.GREATER_EQUAL);
 		openedCupboard = new Conditions(true, LogicType.OR, new WidgetTextRequirement(229, 1, "You turn the statue and hear a clicking sound in the room."), new ChatMessageRequirement("You have already activated the statue."));
-		foundNote = new VarbitRequirement(5028, 1);
+		foundNote = new VarbitRequirement(VarbitID.MM2_FOUND_NOTE, 1);
 		hasBrush = new Conditions(LogicType.OR, grapeBrush, brush);
 
 		// Read note:
@@ -369,15 +369,15 @@ public class MonkeyMadnessII extends BasicQuestHelper
 
 		kob2Nearby = new NpcCondition(NpcID.MM2_GENERAL_KOB_COMBAT);
 		keef2Nearby = new NpcCondition(NpcID.MM2_CHIEFTAN_KEEF_COMBAT);
-		defeatedKob = new VarbitRequirement(5035, 1);
-		defeatedKeef = new VarbitRequirement(5034, 1);
+		defeatedKob = new VarbitRequirement(VarbitID.MM2_TROLL_DEFEATED, 1);
+		defeatedKeef = new VarbitRequirement(VarbitID.MM2_OGRE_DEFEATED, 1);
 
 		// Killed Kruk, 5036 0->2
 
-		smithInLocation1 = new VarbitRequirement(5040, 1); // TODO: Get location
-		smithInLocation2 = new VarbitRequirement(5040, 2); // TODO: Get location
-		smithInLocation3 = new VarbitRequirement(5040, 3); // TODO: Get location
-		smithInLocation4 = new VarbitRequirement(5040, 4); // Smith near rune store
+		smithInLocation1 = new VarbitRequirement(VarbitID.MM2_LE_SMITH_POS, 1); // TODO: Get location
+		smithInLocation2 = new VarbitRequirement(VarbitID.MM2_LE_SMITH_POS, 2); // TODO: Get location
+		smithInLocation3 = new VarbitRequirement(VarbitID.MM2_LE_SMITH_POS, 3); // TODO: Get location
+		smithInLocation4 = new VarbitRequirement(VarbitID.MM2_LE_SMITH_POS, 4); // Smith near rune store
 
 		smithNearby = new NpcCondition(NpcID.MM2_LE_SMITH);
 
@@ -395,7 +395,7 @@ public class MonkeyMadnessII extends BasicQuestHelper
 		// 5068 0->1
 		// 5069 1->2
 
-		killedGorillas = new VarbitRequirement(5068, 3);
+		killedGorillas = new VarbitRequirement(VarbitID.MM2_BREACH_KC, 3);
 
 		nieveFollowing = new NpcInteractingRequirement(NpcID.MM2_NIEVE_FOLLOWER);
 	}

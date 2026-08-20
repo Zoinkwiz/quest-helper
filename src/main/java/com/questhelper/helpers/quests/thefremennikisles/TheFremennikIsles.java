@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -63,7 +64,8 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 public class TheFremennikIsles extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement tuna, mithrilOre, coal, tinOre, jesterHat, jesterTights, jesterTop, jesterBoots, arcticLogs8, splitLogs8,
+	ItemRequirement tuna, mithrilOre, coal, tinOre, jesterHat, jesterTights, jesterTop, jesterBoots, equipJesterHat,
+		equipJesterTights, equipJesterTop, equipJesterBoots, arcticLogs8, splitLogs8,
 		knife, rope8, rope4, splitLogs4, yakTop, yakBottom, royalDecree, roundShield, yakTopWorn, yakBottomWorn,
 		shieldWorn, meleeWeapon, food, head, needle, thread, coins15, bronzeNail, hammer, rope, axe, rope9;
 
@@ -312,10 +314,14 @@ public class TheFremennikIsles extends BasicQuestHelper
 		tinOre = new ItemRequirement("Tin ore", ItemID.TIN_ORE, 8).showConditioned(useTin);
 		tinOre.setTooltip("You can mine some in the underground mine north west of Jatizso.");
 
-		jesterHat = new ItemRequirement("Silly jester hat", ItemID.FRISD_JESTER_HAT, 1, true);
-		jesterTop = new ItemRequirement("Silly jester body", ItemID.FRISD_JESTER_TOP, 1, true);
-		jesterTights = new ItemRequirement("Silly jester tights", ItemID.FRISD_JESTER_LEGS, 1, true);
-		jesterBoots = new ItemRequirement("Silly jester boots", ItemID.FRISD_JESTER_BOOTS, 1, true);
+		jesterHat = new ItemRequirement("Silly jester hat", ItemID.FRISD_JESTER_HAT);
+		jesterTop = new ItemRequirement("Silly jester body", ItemID.FRISD_JESTER_TOP);
+		jesterTights = new ItemRequirement("Silly jester tights", ItemID.FRISD_JESTER_LEGS);
+		jesterBoots = new ItemRequirement("Silly jester boots", ItemID.FRISD_JESTER_BOOTS);
+		equipJesterHat = jesterHat.equipped();
+		equipJesterTop = jesterTop.equipped();
+		equipJesterTights = jesterTights.equipped();
+		equipJesterBoots = jesterBoots.equipped();
 		arcticLogs8 = new ItemRequirement("Arctic pine logs", ItemID.ARCTIC_PINE_LOG, 8);
 		splitLogs8 = new ItemRequirement("Split log", ItemID.ARCTIC_PINE_SPLIT, 8);
 		splitLogs4 = new ItemRequirement("Split log", ItemID.ARCTIC_PINE_SPLIT, 4);
@@ -397,18 +403,18 @@ public class TheFremennikIsles extends BasicQuestHelper
 		inTrollCave = new ZoneRequirement(trollCave);
 		inKingCave = new ZoneRequirement(kingCave);
 		hasJesterOutfit = new ItemRequirements(jesterBoots, jesterHat, jesterTights, jesterTop);
-		jestering1 = new VarbitRequirement(6719, 2);
-		repairedBridge1 = new VarbitRequirement(3313, 1);
-		repairedBridge2 = new VarbitRequirement(3314, 1);
+		jestering1 = new VarbitRequirement(VarbitID.MINIMAP_STATE, 2);
+		repairedBridge1 = new VarbitRequirement(VarbitID.FRIS_M_B3, 1);
+		repairedBridge2 = new VarbitRequirement(VarbitID.FRIS_M_B4, 1);
 
-		collectedHring = new VarbitRequirement(3321, 1);
-		collectedSkuli = new VarbitRequirement(3320, 1);
-		collectedValigga = new VarbitRequirement(3324, 1);
-		collectedKeepa = new VarbitRequirement(3325, 1);
-		collectedRaum = new VarbitRequirement(3323, 1);
-		collectedFlosi = new VarbitRequirement(3322, 1);
+		collectedHring = new VarbitRequirement(VarbitID.FRISD_OREMERCHANT_TAXCOLLECTED, 1);
+		collectedSkuli = new VarbitRequirement(VarbitID.FRISD_WEAPONMERCHANT_TAXCOLLECTED, 1);
+		collectedValigga = new VarbitRequirement(VarbitID.FRISD_PUB_TAXCOLLECTED, 1);
+		collectedKeepa = new VarbitRequirement(VarbitID.FRISD_COOK_TAXCOLLECTED, 1);
+		collectedRaum = new VarbitRequirement(VarbitID.FRISD_ARMOURMERCHANT_TAXCOLLECTED, 1);
+		collectedFlosi = new VarbitRequirement(VarbitID.FRISD_FISHMONGER_TAXCOLLECTED, 1);
 
-		killedTrolls = new VarbitRequirement(3312, 0);
+		killedTrolls = new VarbitRequirement(VarbitID.FRIS_TASK, 0);
 	}
 
 	public void setupSteps()
@@ -430,7 +436,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		returnToRellekkaFromJatizso = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizso.addDialogStep("Can you ferry me to Rellekka?");
 
-		talkToSlug = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		talkToSlug = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", equipJesterHat, equipJesterTop, equipJesterTights, equipJesterBoots);
 		talkToSlug.addSubSteps(returnToRellekkaFromJatizso, travelToNeitiznot);
 		talkToSlug.addDialogStep("Free stuff please.");
 		talkToSlug.addDialogStep("I am ready.");
@@ -442,7 +448,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		getJesterOutfit.addDialogStep("Take the jester's boots.");
 
 		performForMawnis = new DetailedQuestStep(this, "Perform the actions that Mawnis requests of you.");
-		goSpyOnMawnis = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis in Neitiznot to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		goSpyOnMawnis = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis in Neitiznot to start spying on him.", equipJesterHat, equipJesterTop, equipJesterTights, equipJesterBoots);
 		goSpyOnMawnis.addSubSteps(performForMawnis);
 
 		tellSlugReport1 = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Report back to Slug Hemligssen.");
@@ -501,12 +507,12 @@ public class TheFremennikIsles extends BasicQuestHelper
 		travelToNeitiznotToSpyAgain = new NpcStep(this, NpcID.FRIS_R_FERRY_RELLIKKA, new WorldPoint(2644, 3710, 0), "Travel to Neitiznot with Maria Gunnars.");
 		returnToRellekkaFromJatizsoToSpyAgain = new NpcStep(this, NpcID.FRIS_R_FERRYMAN_IZSO, new WorldPoint(2420, 3781, 0), "Return to Rellekka with Mord.");
 		returnToRellekkaFromJatizsoToSpyAgain.addDialogStep("Can you ferry me to Rellekka?");
-		talkToSlugToSpyAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		talkToSlugToSpyAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Talk to Slug Hemligssen wearing nothing but your Silly Jester outfit.", equipJesterHat, equipJesterTop, equipJesterTights, equipJesterBoots);
 		talkToSlugToSpyAgain.addSubSteps(travelToNeitiznotToSpyAgain, returnToRellekkaFromJatizsoToSpyAgain);
 
 		performForMawnisAgain = new DetailedQuestStep(this, "Perform the actions that Mawnis requests of you.");
 
-		goSpyOnMawnisAgain = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to start spying on him.", jesterHat, jesterTop, jesterTights, jesterBoots);
+		goSpyOnMawnisAgain = new NpcStep(this, NpcID.FRIS_R_BURGHER_CROWN, new WorldPoint(2335, 3800, 0), "Talk to Mawnis to start spying on him.", equipJesterHat, equipJesterTop, equipJesterTights, equipJesterBoots);
 		goSpyOnMawnisAgain.addSubSteps(performForMawnisAgain);
 
 		reportBackToSlugAgain = new NpcStep(this, NpcID.FRIS_SPYMASTER, new WorldPoint(2335, 3811, 0), "Report to Slug Hemligssen.");
@@ -626,7 +632,7 @@ public class TheFremennikIsles extends BasicQuestHelper
 		allSteps.add(new PanelDetails("Collecting beard tax", Arrays.asList(collectFromHringAgain, collectFromRaum, collectFromSkuliAgain, collectFromKeepaAgain, collectFromFlosi, talkToGjukiAfterCollection2)));
 		allSteps.add(new PanelDetails("Spy on Mawnis again", Arrays.asList(talkToSlugToSpyAgain, goSpyOnMawnisAgain, reportBackToSlugAgain, talkToGjukiAfterSpy2, talkToMawnisWithDecree)));
 		allSteps.add(prepareForCombatPanel);
-		allSteps.add(new PanelDetails("Killing the king", Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest), yakBottom, yakTop, roundShield, meleeWeapon, food));
+		allSteps.add(new PanelDetails("Killing the king", Arrays.asList(enterCave, killTrolls, enterKingRoom, killKing, decapitateKing, finishQuest), roundShield, meleeWeapon, food));
 
 		return allSteps;
 	}

@@ -31,8 +31,11 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.util.Utils;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.WorldEntity;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.annotation.Nonnull;
@@ -44,13 +47,21 @@ public class ZoneRequirement extends AbstractRequirement
 	@Getter
 	private final List<Zone> zones;
 	private final boolean checkInZone;
+	@Setter
 	private String displayText;
+
+	/// Contains the value of the most recent successful zone check.
+	/// null = no check has succeeded
+	/// true = the last check was deemed a success (check returned true)
+	/// false = the last check was deemed a failure (check returned false)
+	@Getter
+	private Boolean matchedZoneLastCheck = null;
 
 	/**
 	 * Check if the player is either in the specified zone.
 	 *
 	 * @param displayText display text
-	 * @param zone the zone to check
+	 * @param zone        the zone to check
 	 */
 	public ZoneRequirement(String displayText, Zone zone)
 	{
@@ -60,9 +71,9 @@ public class ZoneRequirement extends AbstractRequirement
 	/**
 	 * Check if the player is either in, or not in, the specified zone.
 	 *
-	 * @param displayText display text
+	 * @param displayText    display text
 	 * @param checkNotInZone true to negate this requirement check (i.e. it will check if the player is NOT in the zone)
-	 * @param zone the zone to check
+	 * @param zone           the zone to check
 	 */
 	public ZoneRequirement(String displayText, boolean checkNotInZone, Zone zone)
 	{
@@ -106,9 +117,9 @@ public class ZoneRequirement extends AbstractRequirement
 		Player player = client.getLocalPlayer();
 		if (player != null && zones != null)
 		{
-			WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
-			boolean inZone = zones.stream().anyMatch(z -> z.contains(location));
-			return inZone == checkInZone;
+			boolean inZone = zones.stream().anyMatch(z -> z.contains(client, player.getLocalLocation()));
+			matchedZoneLastCheck = inZone == checkInZone;
+			return matchedZoneLastCheck;
 		}
 		return false;
 	}

@@ -48,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.*;
@@ -286,7 +287,7 @@ public class DragonSlayer extends BasicQuestHelper
 		askedAboutShip = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, false, 14);
 		askedAboutShield = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, false, 15);
 		askedAllQuestions = new Conditions(askedAboutShip, askedAboutShield, askedAboutMelzar, askedAboutThalzar, askedAboutLozar);
-		askedOracleAboutMap = new VarbitRequirement(1832, 1);
+		askedOracleAboutMap = new VarbitRequirement(VarbitID.DRAGONSLAYER_SECRET_TOLD, 1);
 		inDwarvenMines = new ZoneRequirement(dwarvenMines);
 		silkUsed = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, true, 17);
 		unfiredBowlUsed = new VarplayerRequirement(VarPlayerID.DRAGONQUESTVAR, true, 18);
@@ -319,11 +320,11 @@ public class DragonSlayer extends BasicQuestHelper
 
 		onShipDeck = new ZoneRequirement(shipDeck);
 		inShipHull = new ZoneRequirement(shipHull);
-		hasBoughtBoat = new VarplayerRequirement(176, 3);
+		hasBoughtBoat = new VarplayerRequirement(VarPlayerID.DRAGONQUEST, 3);
 
-		hasRepairedHullOnce = new VarbitRequirement(1835, 1);
-		hasRepairedHullTwice = new VarbitRequirement(1836, 1);
-		fullyRepairedHull = new VarbitRequirement(1837, 1);
+		hasRepairedHullOnce = new VarbitRequirement(VarbitID.DRAGONSLAYER_SHIP_ONETHIRD_FIXED, 1);
+		hasRepairedHullTwice = new VarbitRequirement(VarbitID.DRAGONSLAYER_SHIP_TWOTHIRD_FIXED, 1);
+		fullyRepairedHull = new VarbitRequirement(VarbitID.DRAGONSLAYER_SHIP_FULLYFIXED, 1);
 
 		onCrandorSurface = new ZoneRequirement(crandorSurface);
 		inCrandorUnderground = new ZoneRequirement(crandorUnderground);

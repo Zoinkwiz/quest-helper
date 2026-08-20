@@ -47,6 +47,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -115,7 +116,7 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 
 		ConditionalStep creviceSteps = new ConditionalStep(this, takeShoes);
 		creviceSteps.addStep(insideCrevice, talkToGenie);
-		creviceSteps.addStep(soles.alsoCheckBank(questBank), enterCrevice);
+		creviceSteps.addStep(soles.alsoCheckBank(), enterCrevice);
 		creviceSteps.addStep(new Conditions(shoes, notAwusahHouse), cutShoes);
 		creviceSteps.addStep(new Conditions(shoes), leaveAwusah);
 		steps.put(40, creviceSteps);
@@ -133,7 +134,9 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		lawRune = new ItemRequirement("Law Rune", ItemID.LAWRUNE, 1);
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE, 1).isNotConsumed();
 		needle.setHighlightInInventory(true);
+		needle.setTooltip("Costume needle cannot be used as a substitute.");
 		thread = new ItemRequirement("Thread", ItemID.THREAD, 2);
+		thread.setTooltip("Costume needle cannot be used as a substitute.");
 		crushWep = new ItemRequirement("Crush Weapon Style", -1, 1).isNotConsumed();
 		crushWep.setDisplayItemId(ItemID.RUNE_MACE);
 		stabWep = new ItemRequirement("Stab Weapon Style", -1, 1).isNotConsumed();
@@ -207,12 +210,12 @@ public class SpiritsOfTheElid extends BasicQuestHelper
 		notAwusahHouse = new ZoneRequirement(outsideAwusahHouse);
 		insideCrevice = new ZoneRequirement(creviceOutsideNardah);
 
-		whiteGolem = new VarbitRequirement(1447, 1);
-		greyGolem = new VarbitRequirement(1448, 1);
-		blackGolem = new VarbitRequirement(1446, 1);
-		stabChannel = new VarbitRequirement(1450, 1);
-		slashChannel = new VarbitRequirement(1449, 1);
-		crushChannel = new VarbitRequirement(1451, 1);
+		whiteGolem = new VarbitRequirement(VarbitID.ELID_WHITEGOLEM, 1);
+		greyGolem = new VarbitRequirement(VarbitID.ELID_GREYGOLEM, 1);
+		blackGolem = new VarbitRequirement(VarbitID.ELID_BLACKGOLEM, 1);
+		stabChannel = new VarbitRequirement(VarbitID.ELID_THIEVINGCHANNEL, 1);
+		slashChannel = new VarbitRequirement(VarbitID.ELID_MININGCHANNEL, 1);
+		crushChannel = new VarbitRequirement(VarbitID.ELID_RANGINGCHANNEL, 1);
 	}
 
 	public void setupSteps()

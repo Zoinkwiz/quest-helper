@@ -26,10 +26,11 @@ package com.questhelper.helpers.quests.lunardiplomacy;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedQuestStep;
-import com.questhelper.steps.tools.QuestPerspective;
+import com.questhelper.steps.tools.DefinedPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class MemoryChallenge extends DetailedQuestStep
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (wps.size() == 0)
+		if (wps.isEmpty())
 		{
 			return;
 		}
@@ -81,7 +82,7 @@ public class MemoryChallenge extends DetailedQuestStep
 		}
 
 		// If start of path, check first point in legit path
-		if (currentPath.size() == 0)
+		if (currentPath.isEmpty())
 		{
 			checkNextTile(0);
 			return;
@@ -104,15 +105,11 @@ public class MemoryChallenge extends DetailedQuestStep
 
 	public void checkNextTile(int wpsPos)
 	{
-		WorldPoint instanceWp = QuestPerspective.getInstanceWorldPointFromReal(client, wps.get(wpsPos));
-		if (instanceWp == null)
-		{
-			return;
-		}
-
+		var definedPoint = DefinedPoint.of(wps.get(wpsPos));
 		// If on same tiles as wpsPos
 		if (client.getLocalPlayer() != null &&
-			client.getLocalPlayer().getWorldLocation().distanceTo(instanceWp) == 0)
+			definedPoint != null &&
+			definedPoint.distanceTo(client, client.getLocalPlayer().getLocalLocation()) == 0)
 		{
 			currentPath.add(wps.get(wpsPos));
 			lastPos = wpsPos;
@@ -122,10 +119,10 @@ public class MemoryChallenge extends DetailedQuestStep
 
 	private void setupPaths()
 	{
-		int current1 = client.getVarbitValue(2412);
-		int current2 = client.getVarbitValue(2413);
-		int current3 = client.getVarbitValue(2414);
-		int current4 = client.getVarbitValue(2415);
+		int current1 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_A);
+		int current2 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_B);
+		int current3 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_C);
+		int current4 = client.getVarbitValue(VarbitID.LUNAR_FLOOR_COL_D);
 
 		if (current1 == column1 &&
 			current2 == column2 &&

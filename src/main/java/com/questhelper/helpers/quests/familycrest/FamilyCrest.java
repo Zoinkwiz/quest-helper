@@ -95,11 +95,11 @@ public class FamilyCrest extends BasicQuestHelper
 		steps.put(6, goTalkToBoot);
 
 		ConditionalStep getGold = new ConditionalStep(this, enterWitchavenDungeon);
-		getGold.addStep(new Conditions(perfectNecklace.alsoCheckBank(questBank), perfectRing.alsoCheckBank(questBank)), returnToMan);
-		getGold.addStep(perfectNecklace.alsoCheckBank(questBank), makeRing);
-		getGold.addStep(new Conditions(gold.alsoCheckBank(questBank), goldBar.alsoCheckBank(questBank)), smeltGold);
-		getGold.addStep(goldBar.alsoCheckBank(questBank), makeNecklace);
-		getGold.addStep(gold2.alsoCheckBank(questBank), smeltGold);
+		getGold.addStep(new Conditions(perfectNecklace.alsoCheckBank(), perfectRing.alsoCheckBank()), returnToMan);
+		getGold.addStep(perfectNecklace.alsoCheckBank(), makeRing);
+		getGold.addStep(new Conditions(gold.alsoCheckBank(), goldBar.alsoCheckBank()), smeltGold);
+		getGold.addStep(goldBar.alsoCheckBank(), makeNecklace);
+		getGold.addStep(gold2.alsoCheckBank(), smeltGold);
 		getGold.addStep(new Conditions(northRoomUp, southRoomDown), mineGold);
 		getGold.addStep(new Conditions(northRoomUp, northWallUp), pullSouthRoomLever2);
 		getGold.addStep(new Conditions(northRoomUp, northWallDown), pullNorthLever3);
@@ -122,8 +122,8 @@ public class FamilyCrest extends BasicQuestHelper
 		steps.put(9, goGiveAntipoisonToJohnathon);
 
 		ConditionalStep goKillChronizon = new ConditionalStep(this, goDownToChronizon);
-		goKillChronizon.addStep(crest.alsoCheckBank(questBank), returnCrest);
-		goKillChronizon.addStep(crestPiece3.alsoCheckBank(questBank), repairCrest);
+		goKillChronizon.addStep(crest.alsoCheckBank(), returnCrest);
+		goKillChronizon.addStep(crestPiece3.alsoCheckBank(), repairCrest);
 		goKillChronizon.addStep(crest3Nearby, pickUpCrest3);
 		goKillChronizon.addStep(inEdgevilleDungeon, killChronizon);
 

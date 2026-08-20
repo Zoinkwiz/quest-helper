@@ -52,6 +52,7 @@ import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
+import com.questhelper.steps.choice.DialogChoiceStep;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -64,7 +65,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 {
 	Requirement noPet;
 	ItemRequirement lightSource, toadflaxPotionUnf, goblinMail, yellowDye, blueDye, orangeDye, purpleDye, blackDye, fishingRod, rawSlimyEel, coins, combatGear;
-	ItemRequirement tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing, salveAmulet;
+	ItemRequirement tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing;
 	CombatLevelRequirement recommendedCombatLevel;
 	ItemRequirement pharmakosBerryHighlight, toadflaxUnfHighlight, goblinPotion, goblinPotionHighlight, noEquippedItems,
 		dorgeshKaanSphere, blackGoblinMail, huzamogaarbKey, hemensterWhitefish, pestleAndMortar, vial,
@@ -134,7 +135,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		becomeGoblin.addStep(new Conditions(inFrontOfGuardsWithGoblinPotion, blackMushroom), makeBlackDye);
 		becomeGoblin.addStep(inFrontOfGuardsWithGoblinPotion, pickBlackMushrooms);
 		becomeGoblin.addStep(inGoblinCaveWithGoblinPotion, goToGuards);
-		becomeGoblin.addStep(goblinPotion.alsoCheckBank(questBank), goBackToGoblinCave);
+		becomeGoblin.addStep(goblinPotion.alsoCheckBank(), goBackToGoblinCave);
 		becomeGoblin.addStep(pharmakosBerryHighlight, mixGoblinPotion);
 
 		steps.put(16, becomeGoblin);
@@ -333,13 +334,13 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		inGoblinCaveWithZanik = new Conditions(LogicType.AND, inGoblinCave, zanikFollowing);
 		unlockedDoor = new VarbitRequirement(QuestHelperQuest.LAND_OF_THE_GOBLINS.getId(), 36, Operation.GREATER_EQUAL);
 
-		saragorgakKey = new ItemRequirement("Saragorgak key", ItemID.LOTG_KEY_WHITE).alsoCheckBank(questBank);
-		yurkolgokhKey = new ItemRequirement("Yurkolgokh key", ItemID.LOTG_KEY_YELLOW).alsoCheckBank(questBank);
-		ekeleshuunKey = new ItemRequirement("Ekeleshuun key", ItemID.LOTG_KEY_BLUE).alsoCheckBank(questBank);
-		nargoshuunKey = new ItemRequirement("Narogoshuun key", ItemID.LOTG_KEY_ORANGE).alsoCheckBank(questBank);
-		horogothgarKey = new ItemRequirement("Horogothgar key", ItemID.LOTG_KEY_PURPLE).alsoCheckBank(questBank);
+		saragorgakKey = new ItemRequirement("Saragorgak key", ItemID.LOTG_KEY_WHITE).alsoCheckBank();
+		yurkolgokhKey = new ItemRequirement("Yurkolgokh key", ItemID.LOTG_KEY_YELLOW).alsoCheckBank();
+		ekeleshuunKey = new ItemRequirement("Ekeleshuun key", ItemID.LOTG_KEY_BLUE).alsoCheckBank();
+		nargoshuunKey = new ItemRequirement("Narogoshuun key", ItemID.LOTG_KEY_ORANGE).alsoCheckBank();
+		horogothgarKey = new ItemRequirement("Horogothgar key", ItemID.LOTG_KEY_PURPLE).alsoCheckBank();
 
-		huzamogaarbKey = new ItemRequirement("Huzamogaarb key", ItemID.LOTG_KEY_BLACK).alsoCheckBank(questBank);
+		huzamogaarbKey = new ItemRequirement("Huzamogaarb key", ItemID.LOTG_KEY_BLACK).alsoCheckBank();
 
 		// ItemRequirements
 		lightSource = new ItemRequirement("Light source", ItemCollections.LIGHT_SOURCES);
@@ -378,17 +379,16 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		draynorTeleport = new ItemRequirement("Draynor Village teleport", ItemCollections.AMULET_OF_GLORIES, 2);
 		draynorTeleport.setChargedItem(true);
 		explorersRing = new ItemRequirement("Explorer's ring 3 or 4", Arrays.asList(ItemID.LUMBRIDGE_RING_HARD, ItemID.LUMBRIDGE_RING_ELITE));
-		salveAmulet = new ItemRequirement("Salve amulet or Salve amulet (e)", ItemCollections.SALVE_AMULET);
 
 		pharmakosBerryHighlight = new ItemRequirement("Pharmakos berries", ItemID.LOTG_PHARMAKOS_BERRY);
 		pharmakosBerryHighlight.setHighlightInInventory(true);
 		toadflaxUnfHighlight = new ItemRequirement("Toadflax potion (unf)", ItemID.TOADFLAXVIAL);
 		toadflaxUnfHighlight.setHighlightInInventory(true);
-		goblinPotion = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.LOTG_1DOSEGOBLIN, ItemID.LOTG_2DOSEGOBLIN, ItemID.LOTG_3DOSEGOBLIN));
+		goblinPotion = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.LOTG_1DOSEGOBLIN, ItemID.LOTG_2DOSEGOBLIN, ItemID.LOTG_3DOSEGOBLIN, ItemID.LOTG_4DOSEGOBLIN));
 		goblinPotion.setTooltip("You can make another with a toadflax potion (unf) and some pharmakos berries from the bush outside the Makeover Mage's house");
 		inGoblinCaveWithGoblinPotion = new Conditions(LogicType.AND, inGoblinCave, goblinPotion);
 		inFrontOfGuardsWithGoblinPotion = new Conditions(LogicType.AND, new ZoneRequirement(guardArea), goblinPotion);
-		goblinPotionHighlight = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.LOTG_1DOSEGOBLIN, ItemID.LOTG_2DOSEGOBLIN, ItemID.LOTG_3DOSEGOBLIN));
+		goblinPotionHighlight = new ItemRequirement("Goblin potion", Arrays.asList(ItemID.LOTG_1DOSEGOBLIN, ItemID.LOTG_2DOSEGOBLIN, ItemID.LOTG_3DOSEGOBLIN, ItemID.LOTG_4DOSEGOBLIN));
 		goblinPotionHighlight.setHighlightInInventory(true);
 		goblinSelectionActive = new WidgetPresenceRequirement(InterfaceID.LotgMakeover.CONFIRM);
 		hasBlackMushroomsOrDye = new Conditions(LogicType.OR, blackMushroom, blackDye);
@@ -506,12 +506,15 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToZanikInCell = new NpcStep(this, NpcID.LOTG_ZANIK, new WorldPoint(3751, 4343, 0), "Talk to Zanik in the cell.", dorgeshKaanSphere);
 		leaveNorthEastRoom = new NpcStep(this, NpcID.LOTG_GOBLIN_GUARD_BLACK, new WorldPoint(3753, 4329, 0), "Pass by the guard to leave the northeastern room.");
 		talkToPriestInTemple = new NpcStep(this, NpcID.LOTG_GOBLIN_HIGH_PRIEST, new WorldPoint(3744, 4328, 0), "Talk to High Priest Bighead. When prompted, answer in this order: True, False, False.");
-		talkToPriestInTemple.addDialogConsideringLastLineCondition("True or false: Those who do not believe in Big High War God, whether they goblins or other races, must die.",
-			"True.");
-		talkToPriestInTemple.addDialogConsideringLastLineCondition("Second question. True or false: Big High War God chose goblins to be his race because goblins mighty warriors.",
-			"False.");
-		talkToPriestInTemple.addDialogConsideringLastLineCondition("Third question. True or false: Goblin leaders should be good at planning in order to win battles.",
-			"False.");
+		var q1 = new DialogChoiceStep(config, "True.");
+		q1.setExpectedPreviousLine("True or false: Those who do not believe in Big High War God, whether they goblins or other races, must die.");
+		talkToPriestInTemple.addDialogStep(q1);
+		var q2 = new DialogChoiceStep(config, "False.");
+		q2.setExpectedPreviousLine("Second question. True or false: Big High War God chose goblins to be his race because goblins mighty warriors.");
+		talkToPriestInTemple.addDialogStep(q2);
+		var q3 = new DialogChoiceStep(config, "False.");
+		q3.setExpectedPreviousLine("Third question. True or false: Goblin leaders should be good at planning in order to win battles.");
+		talkToPriestInTemple.addDialogStep(q3);
 		talkToPriestInTemple.addDialogStep("Yes.");
 		talkToPriestInTemple.addDialogStep("I understand Big High War God.");
 		talkToPriestInTemple.addDialogStep("Big High War God commands it.");
@@ -547,7 +550,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 		talkToAggieWithFish = new NpcStep(this, NpcID.AGGIE, new WorldPoint(3086, 3258, 0), "Bring the whitefish and black goblin mail to Aggie.", coins, hemensterWhitefish, blackGoblinMail);
 		((NpcStep) talkToAggieWithFish).addAlternateNpcs(NpcID.AGGIE_1OP);
 		((NpcStep) talkToAggieWithFish).addTeleport(draynorTeleport.quantity(1).named("Amulet of glory (Draynor Village [3])"));
-		talkToAggieWithFish.addDialogSteps("Draynor Village", "Can you make dyes for me please?", "Could you remove the dye from this goblin mail?");
+		talkToAggieWithFish.addDialogSteps("Draynor Village", "Can you make dyes for me, please?", "Could you remove the dye from this goblin mail?");
 		goToTempleWithDyes = new ObjectStep(this, ObjectID.MCANNONCAVE, new WorldPoint(2624, 3393, 0),
 			"", whiteGoblinMail, goblinPotion, huzamogaarbKey, yellowDye, blueDye, orangeDye, purpleDye, noEquippedItems, combatGear);
 		((ObjectStep) goToTempleWithDyes).addTeleport(skillsNecklace.quantity(1).named("Skills necklace (Fishing Guild [1])"));
@@ -675,7 +678,7 @@ public class LandOfTheGoblins extends BasicQuestHelper
 	@Override
 	public ArrayList<ItemRequirement> getItemRecommended()
 	{
-		return new ArrayList<>(Arrays.asList(tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing, salveAmulet));
+		return new ArrayList<>(Arrays.asList(tinderbox, dorgeshKaanSphereRec, dramenStaff, skillsNecklace, combatBracelet, lumbridgeTeleport, draynorTeleport, explorersRing));
 	}
 
 	@Override

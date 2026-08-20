@@ -25,8 +25,8 @@
 package com.questhelper.tools;
 
 import lombok.Getter;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.SpriteID;
 
 public class QuestTile
 {
@@ -38,7 +38,7 @@ public class QuestTile
 	public QuestTile(WorldPoint worldPoint)
 	{
 		this.worldPoint = worldPoint;
-		this.iconID = SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS;
+		this.iconID = SpriteID.AchievementDiaryIcons.BLUE_QUESTS;
 	}
 
 	public QuestTile(WorldPoint worldPoint, int iconID)

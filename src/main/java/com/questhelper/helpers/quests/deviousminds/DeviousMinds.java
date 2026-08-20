@@ -83,16 +83,16 @@ public class DeviousMinds extends BasicQuestHelper
 		steps.put(0, talkToMonk);
 
 		ConditionalStep makeEntireBowSword = new ConditionalStep(this, makeBlade);
-		makeEntireBowSword.addStep(bowSword.alsoCheckBank(questBank), talkToMonk2);
-		makeEntireBowSword.addStep(slenderBlade.alsoCheckBank(questBank), makeBowSword);
+		makeEntireBowSword.addStep(bowSword.alsoCheckBank(), talkToMonk2);
+		makeEntireBowSword.addStep(slenderBlade.alsoCheckBank(), makeBowSword);
 		steps.put(10, makeEntireBowSword);
 		steps.put(20, talkToMonk2);   //Finished talking
 
 		ConditionalStep entranaAltarPouch = new ConditionalStep(this, makeIllumPouch);
-		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), onEntrana), usePouchOnAltar);
-		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), inLawAlter), leaveLawAltar);
-		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(questBank), inAbyss), enterLawRift);
-		entranaAltarPouch.addStep(illumPouch.alsoCheckBank(questBank), teleToAbyss);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(), onEntrana), usePouchOnAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(), inLawAlter), leaveLawAltar);
+		entranaAltarPouch.addStep(new Conditions(illumPouch.alsoCheckBank(), inAbyss), enterLawRift);
+		entranaAltarPouch.addStep(illumPouch.alsoCheckBank(), teleToAbyss);
 		steps.put(30, entranaAltarPouch);
 		steps.put(40, entranaAltarPouch);   //Cutscene finished
 
@@ -170,10 +170,9 @@ public class DeviousMinds extends BasicQuestHelper
 		talkToMonk2 = new NpcStep(this, NpcID.DEVIOUS_MONK_HOODED_VISABLE, new WorldPoint(3406, 3494, 0),
 			"Return to the monk near the Paterdomus temple with the bow-sword.", bowSword);
 		talkToMonk2.addDialogStep("Yep, got it right here for you.");
-		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large/Colossal Pouch.", orb, largePouch);
-
+		makeIllumPouch = new DetailedQuestStep(this, "Use the Orb on the Large/Colossal Pouch. You will also be going to Entrana via the Abyss, so you must bank all combat gear.", orb, largePouch);
 		teleToAbyss = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1B, new WorldPoint(3106, 3556, 0),
-			"Teleport with the Mage of Zamorak IN THE WILDERNESS to the Abyss. You will be attacked by " +
+			"Teleport with the Mage of Zamorak IN THE WILDERNESS (other players can attack you here) to the Abyss. You will be attacked by " +
 				"monsters upon entering, and your prayer drained to 0!", illumPouch, noEquipment);
 		enterLawRift = new ObjectStep(this, ObjectID.ABYSS_EXIT_TO_LAW, new WorldPoint(3049, 4839, 0),
 			"Enter the central area through a gap/passage/eyes. Enter the Law Rift.", illumPouch, noEquipment);

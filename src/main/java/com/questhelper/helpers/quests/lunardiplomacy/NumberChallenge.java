@@ -8,6 +8,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,7 +61,7 @@ public class NumberChallenge extends DetailedOwnerStep
 	@Override
 	protected void updateSteps()
 	{
-		switch (client.getVarbitValue(2417))
+		switch (client.getVarbitValue(VarbitID.LUNAR_NUM_CURSEQ))
 		{
 			case 0:
 				setupStepFromState(press7, press9);
@@ -114,7 +115,7 @@ public class NumberChallenge extends DetailedOwnerStep
 
 	private void setupStepFromState(QuestStep choice1, QuestStep choice2)
 	{
-		if (client.getVarbitValue(2421) == 0)
+		if (client.getVarbitValue(VarbitID.LUNAR_PT3_NUM_SEQ_N) == 0)
 		{
 			startUpStep(choice1);
 		}

@@ -143,7 +143,7 @@ public class TheRibbitingTaleOfALilyPadLabourDispute extends BasicQuestHelper
 			"Search the chest in the building next to Marcellus. The code is 'NALIA'.");
 		chestStep.addAlternateObjects(ObjectID.FROG_QUEST_CHEST_OPEN);
 		openChest = new PuzzleWrapperStep(this, chestStep, "Work out how to open the chest in Marcellus' house.");
-		enterCode = new PuzzleWrapperStep(this, new ChestCodeStep(this, "NALIA", 10,
+		enterCode = new PuzzleWrapperStep(this, new ChestCodeStep(this, "chest", "NALIA", 10,
 			3, 3, 4, 4, 9), "Work out how to open the chest in Marcellus' house.");
 		openChest.addSubSteps(enterCode);
 		plantPlushy = new ObjectStep(this, ObjectID.FROG_QUEST_POO, new WorldPoint(1694, 2976, 0),

@@ -227,7 +227,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		steps.put(78, returnToZahur);
 		steps.put(80, talkToZahur);
 
-		ConditionalStep chemistryPuzzle = new ConditionalStep(this, warmUpChemistryEquipment);
+		ConditionalStep chemistryPuzzle = new ConditionalStep(this, warmUpChemistryEquipment, "Warm up Zahur's Chemistry Equipment.");
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, new Conditions(LogicType.NAND, chemistryValveMiddleAtMaximum)), chemistryValveIncreaseMiddle);
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, new Conditions(LogicType.NAND, chemistryValveRightAtMaximum)), chemistryValveIncreaseRight);
 		chemistryPuzzle.addStep(new Conditions(inChemistryPuzzle, chemistryValveLeftStepZero, chemistryValveMiddleAtMaximum, chemistryValveRightAtMaximum), chemistryValveDecreaseRight);
@@ -273,8 +273,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		waterskins.addAlternates(ItemID.WATER_SKIN3, ItemID.WATER_SKIN2, ItemID.WATER_SKIN1);
 		waterskins.setTooltip("Used for protection against the desert heat");
 		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
-		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemID.DRAMEN_STAFF).isNotConsumed();
-		accessToFairyRings.addAlternates(ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF);
+		accessToFairyRings = new ItemRequirement("Access to Fairy Rings", ItemCollections.FAIRY_STAFF).isNotConsumed();
 		pharaohsSceptre = new ItemRequirement("Pharaoh's sceptre", ItemCollections.PHAROAH_SCEPTRE).isNotConsumed();
 		pharaohsSceptre.setTooltip("When visiting Necropolis during the quest, you can unlock the direct teleport by using 'Commune' on the Obelisk.");
 		food = new ItemRequirement("Food", -1, -1);
@@ -295,7 +294,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		stoneTablet.setHighlightInInventory(true);
 		chest = new ItemRequirement("Chest", ItemID.BCS_CHEST);
 		chest.setHighlightInInventory(true);
-		chest.alsoCheckBank(questBank);
+		chest.alsoCheckBank();
 		scarabMould = new ItemRequirement("Scarab mould", ItemID.BCS_EMBLEM_MOULD);
 		scarabEmblem = new ItemRequirement("Scarab emblem", ItemID.BCS_EMBLEM);
 		scarabEmblem.setHighlightInInventory(true);
@@ -343,7 +342,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 		hasReadStoneTablet = new VarbitRequirement(VarbitID.BCS_FOUND_MOULD, 2, Operation.GREATER_EQUAL);
 
 		isRotatingScarab = new WidgetModelRequirement(750, 3, -1);
-		scarabRotatedDownwards = new VarbitRequirement(13849, 15);
+		scarabRotatedDownwards = new VarbitRequirement(VarbitID.BCS_EMBLEM_ROTATION, 15);
 		scarabRotationQuickestRight = new VarbitRequirement(VarbitID.BCS_EMBLEM_ROTATION, 15, Operation.GREATER_EQUAL);
 
 		firstLeverPulled = new ObjectCondition(ObjectID.BCS_TOMB_LEVER_ON, new WorldPoint(3439, 9225, 0));
@@ -352,14 +351,14 @@ public class BeneathCursedSands extends BasicQuestHelper
 		shouldDestroyShadowRift = new NpcCondition(NpcID.BCS_CHAMPION_RIFT);
 
 		inChemistryPuzzle = new WidgetModelRequirement(751, 3, -1);
-		chemistryValveLeftStepZero = new VarbitRequirement(13863, 0);
-		chemistryValveLeftStepOne = new VarbitRequirement(13863, 3);
-		chemistryValveLeftStepTwo = new VarbitRequirement(13863, 6);
-		chemistryValveLeftStepThree = new VarbitRequirement(13863, 9);
-		chemistryValveMiddleAtMaximum = new VarbitRequirement(13864, 45);
-		chemistryValveMiddleNearMax = new VarbitRequirement(13864, 42);
-		chemistryValveRightAtMaximum = new VarbitRequirement(13865, 45);
-		chemistryValveRightNearMax = new VarbitRequirement(13865, 42);
+		chemistryValveLeftStepZero = new VarbitRequirement(VarbitID.BCS_BURNER_1, 0);
+		chemistryValveLeftStepOne = new VarbitRequirement(VarbitID.BCS_BURNER_1, 3);
+		chemistryValveLeftStepTwo = new VarbitRequirement(VarbitID.BCS_BURNER_1, 6);
+		chemistryValveLeftStepThree = new VarbitRequirement(VarbitID.BCS_BURNER_1, 9);
+		chemistryValveMiddleAtMaximum = new VarbitRequirement(VarbitID.BCS_BURNER_2, 45);
+		chemistryValveMiddleNearMax = new VarbitRequirement(VarbitID.BCS_BURNER_2, 42);
+		chemistryValveRightAtMaximum = new VarbitRequirement(VarbitID.BCS_BURNER_3, 45);
+		chemistryValveRightNearMax = new VarbitRequirement(VarbitID.BCS_BURNER_3, 42);
 
 		shouldFightMenaphiteShadow = new NpcCondition(NpcID.BCS_MENAPHITE_AKH_SHADOW);
 	}
@@ -600,7 +599,7 @@ public class BeneathCursedSands extends BasicQuestHelper
 			Collections.singletonList(meleeCombatGear), Arrays.asList(waterskins, food)));
 		allSteps.add(new PanelDetails("The Ruins of Ullek", Arrays.asList(talkToMaisaExploreCliffs, goFromCampsiteToRuinsOfUllek, inspectFurnace, useCoalOnFurnace, useTinderboxOnFurnace, searchWell, readStoneTablet, digForChest, openChest, craftEmblem, useEmblemOnPillar, confirmScarabRotation, enterDungeonToFightScarabMages, fightScarabMages, climbDownStairsAgain, pullLever, pullSecondLever, enterRiddleDoor), Arrays.asList(meleeCombatGear, coal, tinderbox, spade, ironBar), Arrays.asList(food, antipoison, waterskins)));
 		allSteps.add(new PanelDetails("Riddle of the Tomb", Arrays.asList(solveTombRiddle, enterTombDoor, talkToSpirit, takeRustyKey)));
-		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey)));
+		allSteps.add(new PanelDetails("The Champion of Scabaras", Arrays.asList(unlockBossDoor, fightChampionOfScabaras, talkToScabarasHighPriest), Arrays.asList(rangedCombatGear, food, rustyKey), Collections.singletonList(antipoison)));
 		allSteps.add(new PanelDetails("Cure for the Pox", Arrays.asList(talkToMaisaInNardah, purchaseBeef, attemptSteppingStones, pickLilyOfElid, takeLilyToZahur, talkToZahur, chemistryPuzzleWrapped, bringCureToPriest), Arrays.asList(meat, waterskins)));
 		allSteps.add(new PanelDetails("Fight with the Menaphite Akh", Arrays.asList(prepareFightMenaphiteAkh, defeatMenaphiteAkh, finishQuest), Arrays.asList(meleeCombatGear, waterskins)));
 

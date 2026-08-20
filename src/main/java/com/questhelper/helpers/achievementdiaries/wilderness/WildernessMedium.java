@@ -35,8 +35,10 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -74,7 +76,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 	Requirement betweenARock;
 
 	Requirement notMineMith, notEntYew, notWildyGodWars, notWildyAgi, notKillGreenDrag, notKillAnkou,
-		notWildyGWBloodveld, notEmblemTrader, notGoldHelm, notMuddyChest, notEarthOrb;
+		notWildyGWBloodveld, notEmblemTrader, notGoldHelm, notMuddyChest, standardSpellbook, notEarthOrb;
 
 	QuestStep claimReward, mineMith, wildyAgi, killAnkou, wildyGWBloodveld, emblemTrader, goldHelm, muddyChest,
 		earthOrb, moveToResource, moveToGodWars1, moveToGodWars2, mineGoldOre, smeltGoldOre, moveToEdge, moveToSlayer1,
@@ -132,7 +134,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 
 		// TODO: IF in bank, step to drop
 		goldHelmTask = new ConditionalStep(this, moveToResource);
-		goldHelmTask.addStep(new Conditions(inResource, goldBar.quantity(3).alsoCheckBank(questBank)), goldHelm);
+		goldHelmTask.addStep(new Conditions(inResource, goldBar.quantity(3).alsoCheckBank()), goldHelm);
 		goldHelmTask.addStep(new Conditions(inResource, goldOre.quantity(3)), smeltGoldOre);
 		goldHelmTask.addStep(inResource, mineGoldOre);
 		doMedium.addStep(notGoldHelm, goldHelmTask);
@@ -157,6 +159,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		notEmblemTrader = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 22);
 		notGoldHelm = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 23);
 		notMuddyChest = new VarplayerRequirement(VarPlayerID.WILDERNESS_ACHIEVEMENT_DIARY, false, 24);
+
+		standardSpellbook = new SpellbookRequirement(Spellbook.NORMAL);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1);
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -293,7 +297,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		reqs.add(new SkillRequirement(Skill.MINING, 55, true));
 		reqs.add(new SkillRequirement(Skill.SLAYER, 50, true));
 		reqs.add(new SkillRequirement(Skill.SMITHING, 50, true));
-		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 61, true));
+		reqs.add(new SkillRequirement(Skill.WOODCUTTING, 61, false));
 
 		reqs.add(betweenARock);
 
@@ -337,7 +341,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 
 		PanelDetails entSteps = new PanelDetails("Ent Yew", Collections.singletonList(entYew),
-			new SkillRequirement(Skill.WOODCUTTING, 61, true), combatGear, food, runeAxe);
+			new SkillRequirement(Skill.WOODCUTTING, 61, false), combatGear, food, runeAxe);
 		entSteps.setDisplayCondition(notEntYew);
 		entSteps.setLockingStep(entYewTask);
 		allSteps.add(entSteps);
@@ -373,7 +377,7 @@ public class WildernessMedium extends ComplexStateQuestHelper
 		allSteps.add(emblemSteps);
 
 		PanelDetails earthOrbSteps = new PanelDetails("Earth Orb", Arrays.asList(moveToEdge, earthOrb),
-			new SkillRequirement(Skill.MAGIC, 60, true), unpoweredOrb, earthRune.quantity(30), cosmicRune.quantity(3));
+			new SkillRequirement(Skill.MAGIC, 60, true), unpoweredOrb, standardSpellbook, earthRune.quantity(30), cosmicRune.quantity(3));
 		earthOrbSteps.setDisplayCondition(notEarthOrb);
 		earthOrbSteps.setLockingStep(earthOrbTask);
 		allSteps.add(earthOrbSteps);

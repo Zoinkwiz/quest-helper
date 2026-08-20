@@ -27,6 +27,7 @@ package com.questhelper.managers;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.config.LeagueFiltering;
 import com.questhelper.config.SkillFiltering;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
@@ -194,7 +195,7 @@ public class QuestManager
 		}
 
 		clientThread.invokeLater(() -> {
-			if ((selectedQuest != null) && selectedQuest.isCompleted())
+			if (selectedQuest != null && selectedQuest.hasQuestStateBecomeFinished())
 			{
 				shutDownQuest(true);
 			}
@@ -208,7 +209,7 @@ public class QuestManager
 	public void handleConfigChanged()
 	{
 		clientThread.invokeLater(() -> {
-			if ((selectedQuest != null) && selectedQuest.isCompleted())
+			if (selectedQuest != null && selectedQuest.hasQuestStateBecomeFinished())
 			{
 				shutDownQuest(true);
 			}
@@ -229,6 +230,7 @@ public class QuestManager
 				.filter(config.difficulty())
 				.filter(QuestDetails::showCompletedQuests)
 				.filter(SkillFiltering::passesSkillFilter)
+				.filter(LeagueFiltering::passesLeagueFilter)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers(isDeveloperMode())
@@ -264,9 +266,12 @@ public class QuestManager
 	 */
 	public void startUpQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
 	{
-		if (client.isClientThread()) {
+		if (client.isClientThread())
+		{
 			this.doStartUpQuest(questHelper, shouldOpenSidebarIfConfig);
-		} else {
+		}
+		else
+		{
 			clientThread.invokeLater(() -> {
 				this.doStartUpQuest(questHelper, shouldOpenSidebarIfConfig);
 			});
@@ -275,44 +280,37 @@ public class QuestManager
 
 	private void initializeNewQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)
 	{
-		if (!questHelper.isCompleted())
+		if (backgroundHelpers.containsValue(questHelper))
 		{
-			if (backgroundHelpers.containsValue(questHelper))
-			{
-				shutDownBackgroundQuest(questHelper);
-			}
-
-			if (shouldOpenSidebarIfConfig && config.autoOpenSidebar())
-			{
-				questHelperPlugin.displayPanel();
-			}
-			selectedQuest = questHelper;
-			registerQuestToEventBus(selectedQuest);
-			if (isDeveloperMode())
-			{
-				selectedQuest.debugStartup(config);
-			}
-			selectedQuest.startUp(config);
-			if (selectedQuest.getCurrentStep() == null)
-			{
-				shutDownQuest(false);
-				return;
-			}
-			questBankManager.startUpQuest();
-			SwingUtilities.invokeLater(() ->
-			{
-				panel.removeQuest();
-				panel.addQuest(questHelper, true);
-
-				// Force an extra update immediately after starting a quest
-				clientThread.invokeLater(() -> panel.updateItemRequirements(client));
-			});
+			shutDownBackgroundQuest(questHelper);
 		}
-		else
+
+		if (shouldOpenSidebarIfConfig && config.autoOpenSidebar())
+		{
+			questHelperPlugin.displayPanel();
+		}
+		selectedQuest = questHelper;
+		registerQuestToEventBus(selectedQuest);
+		if (isDeveloperMode())
+		{
+			selectedQuest.debugStartup(config);
+		}
+		selectedQuest.startUp(config);
+
+		if (selectedQuest.getCurrentStep() == null)
+		{
+			shutDownQuest(false);
+			return;
+		}
+		questBankManager.startUpQuest();
+		SwingUtilities.invokeLater(() ->
 		{
 			panel.removeQuest();
-			selectedQuest = null;
-		}
+			panel.addQuest(questHelper, true);
+
+			// Force an extra update immediately after starting a quest
+			clientThread.invokeLater(() -> panel.updateItemRequirements(client));
+		});
 	}
 
 	private void shutDownPreviousQuest()
@@ -480,6 +478,7 @@ public class QuestManager
 				.stream()
 				.filter(pred)
 				.filter(QuestDetails::isNotCompleted)
+				.filter(LeagueFiltering::passesLeagueFilter)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
 

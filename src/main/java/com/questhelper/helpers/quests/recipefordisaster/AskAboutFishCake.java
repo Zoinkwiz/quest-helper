@@ -30,13 +30,14 @@ import com.questhelper.steps.choice.DialogChoiceSteps;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 public class AskAboutFishCake extends NpcStep
 {
 	public AskAboutFishCake(QuestHelper questHelper)
 	{
-		super(questHelper, NpcID.POH_SERVANT_COOK_WOMAN, new WorldPoint(3209, 3215, 0),
+		super(questHelper, NpcID.COOK, new WorldPoint(3209, 3215, 0),
 			"Talk to the Lumbridge Cook and ask him all the options about Pirate Pete.");
 	}
 
@@ -48,10 +49,10 @@ public class AskAboutFishCake extends NpcStep
 
 	private void updateCorrectChoice()
 	{
-		boolean askedAboutKelp = client.getVarbitValue(1873) == 1; // And 1874 = 1
-		boolean askedAboutCrab = client.getVarbitValue(1874) == 1;
-		boolean askedAboutBread = client.getVarbitValue(1876) == 1;
-		boolean askedAboutCod = client.getVarbitValue(1877) == 1;
+		boolean askedAboutKelp = client.getVarbitValue(VarbitID.HUNDRED_PIRATE_MEAT_INTRO) == 1; // And 1874 = 1
+		boolean askedAboutCrab = client.getVarbitValue(VarbitID.HUNDRED_PIRATE_KELP_INTRO) == 1;
+		boolean askedAboutBread = client.getVarbitValue(VarbitID.HUNDRED_PIRATE_CRUMB_INTRO) == 1;
+		boolean askedAboutCod = client.getVarbitValue(VarbitID.HUNDRED_PIRATE_COD_INTRO) == 1;
 
 		choices = new DialogChoiceSteps();
 		addDialogStep("Protecting the Pirate");

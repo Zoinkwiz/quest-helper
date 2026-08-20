@@ -54,6 +54,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -188,22 +189,22 @@ public class HorrorFromTheDeep extends BasicQuestHelper
 		inBasement = new ZoneRequirement(basement);
 		inDagCave = new ZoneRequirement(dagCave);
 
-		repairedBridge1 = new VarbitRequirement(36, 1);
-		repairedBridge2 = new VarbitRequirement(37, 1);
-		gotKey = new VarbitRequirement(38, 1);
+		repairedBridge1 = new VarbitRequirement(VarbitID.HORRORBRIDGELEFT, 1);
+		repairedBridge2 = new VarbitRequirement(VarbitID.HORRORBRIDGERIGHT, 1);
+		gotKey = new VarbitRequirement(VarbitID.HORRORAGILITYKEY, 1);
 
-		usedTar = new VarbitRequirement(46, 1);
-		usedTinderbox = new VarbitRequirement(48, 1);
-		usedGlass = new VarbitRequirement(47, 1);
+		usedTar = new VarbitRequirement(VarbitID.HORRORTAR, 1);
+		usedTinderbox = new VarbitRequirement(VarbitID.HORRORLIGHT, 1);
+		usedGlass = new VarbitRequirement(VarbitID.HORRORGLASS, 1);
 
-		notUsedAirRune = new Conditions(LogicType.NOR, new VarbitRequirement(43, 1));
-		notUsedWaterRune = new Conditions(LogicType.NOR, new VarbitRequirement(41, 1));
-		notUsedEarthRune = new Conditions(LogicType.NOR, new VarbitRequirement(42, 1));
-		notUsedFireRune = new Conditions(LogicType.NOR, new VarbitRequirement(40, 1));
-		notUsedSword = new Conditions(LogicType.NOR, new VarbitRequirement(44, 1));
-		notUsedArrow = new Conditions(LogicType.NOR, new VarbitRequirement(45, 1));
+		notUsedAirRune = new Conditions(LogicType.NOR, new VarbitRequirement(VarbitID.HORRORAIR, 1));
+		notUsedWaterRune = new Conditions(LogicType.NOR, new VarbitRequirement(VarbitID.HORRORWATER, 1));
+		notUsedEarthRune = new Conditions(LogicType.NOR, new VarbitRequirement(VarbitID.HORROREARTH, 1));
+		notUsedFireRune = new Conditions(LogicType.NOR, new VarbitRequirement(VarbitID.HORRORFIRE, 1));
+		notUsedSword = new Conditions(LogicType.NOR, new VarbitRequirement(VarbitID.HORRORSWORD, 1));
+		notUsedArrow = new Conditions(LogicType.NOR, new VarbitRequirement(VarbitID.HORRORARROW, 1));
 
-		doorUnlocked = new VarbitRequirement(35, 1);
+		doorUnlocked = new VarbitRequirement(VarbitID.HORRORDOOR, 1);
 		dagannothNearby = new NpcHintArrowRequirement(NpcID.HORROR_DAGANNOTH_JR4);
 		motherNearby = new NpcHintArrowRequirement(NpcID.HORROR_DAGGANOTH_AIRA, NpcID.HORROR_DAGGANOTH_AIRB,
 			NpcID.HORROR_DAGGANOTH_AIRC, NpcID.HORROR_DAGGANOTH_AIR, NpcID.HORROR_DAGGANOTH_WATER,

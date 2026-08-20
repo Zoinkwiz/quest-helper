@@ -75,7 +75,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
 		ConditionalStep goReadDiary = new ConditionalStep(this, searchShelf);
-		goReadDiary.addStep(diary.alsoCheckBank(questBank), readDiary);
+		goReadDiary.addStep(diary.alsoCheckBank(), readDiary);
 		steps.put(0, goReadDiary);
 
 		steps.put(5, addAshes);
@@ -112,7 +112,7 @@ public class ShadesOfMortton extends BasicQuestHelper
 		steps.put(60, makeSacredOil);
 
 		ConditionalStep saveRemains = new ConditionalStep(this, repairTemple);
-		saveRemains.addStep(new Conditions(serum208.alsoCheckBank(questBank), sacredOilHighlighted), useOilOnLog);
+		saveRemains.addStep(new Conditions(serum208.alsoCheckBank(), sacredOilHighlighted), useOilOnLog);
 		saveRemains.addStep(new Conditions(litFire, has20Sanctity, sacredOilHighlighted), use207OnFlame);
 		saveRemains.addStep(new Conditions(litFire, has20Sanctity), useOilOnFlame);
 		saveRemains.addStep(litFire, repairTo20Sanctity);
@@ -200,14 +200,12 @@ public class ShadesOfMortton extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		has20Sanctity = new VarplayerRequirement(341, 20);
-
 		razmirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 3);
 		curedRazmire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 6); //64
 		ulsquirePartlyCured = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 1);
 		curedUlsquire = new VarplayerRequirement(VarPlayerID.MORTTONMULTI, true, 5);
 
-		repairedTemple = new VarplayerRequirement(343, 100);
+		repairedTemple = new VarplayerRequirement(VarPlayerID.TEMPLE_REPAIRED_P, 100);
 		has20Sanctity = new VarplayerRequirement(VarPlayerID.TEMPLE_SANCTITY_P, 20, Operation.GREATER_EQUAL);
 		litFire = new ObjectCondition(ObjectID.TEMPLEFIRE_ALTAR, new WorldPoint(3506, 3316, 0));
 	}

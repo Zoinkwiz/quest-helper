@@ -32,10 +32,10 @@ import com.questhelper.requirements.util.LogicType;
 import com.questhelper.steps.*;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
@@ -89,7 +89,7 @@ public abstract class RubbleSolver extends DetailedOwnerStep {
                 break;
         }
         var posWp = new WorldPoint(offsetX, offsetY, 0);
-        step.addTileMarker(posWp, SpriteID.SKILL_MINING);
+        step.addTileMarker(posWp, SpriteID.Staticons.MINING);
         for (var alternateIDs : validObjectIDs) {
             // todo this adds the first object again xd
             step.addAlternateObjects(alternateIDs);

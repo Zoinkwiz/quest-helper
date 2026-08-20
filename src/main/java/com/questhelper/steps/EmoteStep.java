@@ -98,23 +98,29 @@ public class EmoteStep extends DetailedQuestStep
 
 	void scrollToWidget(Widget widget)
 	{
-		final Widget parent = client.getWidget(InterfaceID.Emote.CONTENTS);
+		final Widget parent = client.getWidget(InterfaceID.Emote.SCROLLABLE);
 
 		if (widget == null || parent == null)
 		{
 			return;
 		}
 
+		int averageCentralY = 0;
+		int nonnullCount = 0;
+		averageCentralY += widget.getRelativeY() + widget.getHeight() / 2;
+		nonnullCount += 1;
+		averageCentralY /= nonnullCount;
 		final int newScroll = Math.max(0, Math.min(parent.getScrollHeight(),
-			(widget.getRelativeY() + widget.getHeight() / 2) - parent.getHeight() / 2));
+			averageCentralY - parent.getHeight() / 2));
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-				InterfaceID.Emote.SCROLLBAR,
-				InterfaceID.Emote.CONTENTS,
+			InterfaceID.Emote.SCROLLBAR,
+			InterfaceID.Emote.SCROLLABLE,
 			newScroll
 		);
 	}
+
 
 	@Override
 	protected void setupIcon()

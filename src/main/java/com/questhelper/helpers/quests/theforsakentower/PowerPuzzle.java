@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -70,14 +71,14 @@ public class PowerPuzzle extends QuestStep
 	{
 		for (int i=0; i < 36; i++)
 		{
-			int currentPos = client.getVarbitValue(7811+i);
+			int currentPos = client.getVarbitValue(VarbitID.LOVAQUEST_POWER_GRID_A1 + i);
 			if (solvedPositions[i] == 4)
 			{
 				currentPositionCorrect[i] = currentPos == 0 || currentPos == 2;
 			}
 			else
 			{
-				currentPositionCorrect[i] = client.getVarbitValue(7811 + i) == solvedPositions[i];
+				currentPositionCorrect[i] = client.getVarbitValue(VarbitID.LOVAQUEST_POWER_GRID_A1 + i) == solvedPositions[i];
 			}
 		}
 	}

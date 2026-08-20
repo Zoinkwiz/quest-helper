@@ -49,6 +49,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -411,38 +412,38 @@ public class CabinFever extends BasicQuestHelper
 		onEnemySail = new ZoneRequirement(enemySail);
 		onEnemyBoat = new ZoneRequirement(enemyBoatF0, enemyBoatF1, enemyBoatF2, enemySail);
 
-		hasSetSail = new VarbitRequirement(1741, 1);
+		hasSetSail = new VarbitRequirement(VarbitID.FEVER_CANNON, 1);
 
-		addedFuse = new VarbitRequirement(1756, 2);
+		addedFuse = new VarbitRequirement(VarbitID.FEVER_GUNPOWDER_BARREL, 2);
 		hasFuseOrAdded = new Conditions(LogicType.OR, fuse1, addedFuse);
 
-		explodedBarrel = new VarbitRequirement(1756, 1);
+		explodedBarrel = new VarbitRequirement(VarbitID.FEVER_GUNPOWDER_BARREL, 1);
 		// 1740 1 if swinging
 
-		planked1 = new VarbitRequirement(1751, 1);
-		planked2 = new VarbitRequirement(1757, 1);
-		planked3 = new VarbitRequirement(1758, 1);
-		pasted1 = new VarbitRequirement(1751, 2);
-		pasted2 = new VarbitRequirement(1757, 2);
-		pasted3 = new VarbitRequirement(1758, 2);
+		planked1 = new VarbitRequirement(VarbitID.FEVER_HOLE_1, 1);
+		planked2 = new VarbitRequirement(VarbitID.FEVER_HOLE_2, 1);
+		planked3 = new VarbitRequirement(VarbitID.FEVER_HOLE_3, 1);
+		pasted1 = new VarbitRequirement(VarbitID.FEVER_HOLE_1, 2);
+		pasted2 = new VarbitRequirement(VarbitID.FEVER_HOLE_2, 2);
+		pasted3 = new VarbitRequirement(VarbitID.FEVER_HOLE_3, 2);
 
-		hasPlanked1 = new VarbitRequirement(1759, 1);
-		hasPlanked2 = new VarbitRequirement(1759, 2);
-		hasPlanked3 = new VarbitRequirement(1759, 3);
+		hasPlanked1 = new VarbitRequirement(VarbitID.FEVER_HOLES_PATCHED, 1);
+		hasPlanked2 = new VarbitRequirement(VarbitID.FEVER_HOLES_PATCHED, 2);
+		hasPlanked3 = new VarbitRequirement(VarbitID.FEVER_HOLES_PATCHED, 3);
 
-		hasRepaired1 = new VarbitRequirement(1760, 1);
-		hasRepaired2 = new VarbitRequirement(1760, 2);
-		hasRepaired3 = new VarbitRequirement(1760, 3);
+		hasRepaired1 = new VarbitRequirement(VarbitID.FEVER_HOLES_PROOFED, 1);
+		hasRepaired2 = new VarbitRequirement(VarbitID.FEVER_HOLES_PROOFED, 2);
+		hasRepaired3 = new VarbitRequirement(VarbitID.FEVER_HOLES_PROOFED, 3);
 
-		lootedAll = new Conditions(new VarbitRequirement(1753, 1), new VarbitRequirement(1754, 1), new VarbitRequirement(1755, 1));
+		lootedAll = new Conditions(new VarbitRequirement(VarbitID.FEVER_CRATE, 1), new VarbitRequirement(VarbitID.FEVER_CHEST, 1), new VarbitRequirement(VarbitID.FEVER_BARREL, 1));
 
-		cannonBroken = new VarbitRequirement(1741, 1);
-		addedPowder = new VarbitRequirement(1742, 1);
-		usedRamrod = new VarbitRequirement(1743, 1);
-		usedCanister = new VarbitRequirement(1744, 2);
-		usedBalls = new VarbitRequirement(1744, 1);
-		usedFuse = new VarbitRequirement(1741, 3);
-		firedCannon = new VarbitRequirement(1746, 1);
+		cannonBroken = new VarbitRequirement(VarbitID.FEVER_CANNON, 1);
+		addedPowder = new VarbitRequirement(VarbitID.FEVER_CANNON_POWDER, 1);
+		usedRamrod = new VarbitRequirement(VarbitID.FEVER_CANNON_TAMP, 1);
+		usedCanister = new VarbitRequirement(VarbitID.FEVER_CANNON_AMMO, 2);
+		usedBalls = new VarbitRequirement(VarbitID.FEVER_CANNON_AMMO, 1);
+		usedFuse = new VarbitRequirement(VarbitID.FEVER_CANNON, 3);
+		firedCannon = new VarbitRequirement(VarbitID.FEVER_CANNON_CLEAN, 1);
 
 
 		// SHOTS CAN FAIL
@@ -452,7 +453,7 @@ public class CabinFever extends BasicQuestHelper
 		// Third succesful shot:
 		// 1750 2->3
 
-		canisterInWrong = new VarbitRequirement(1747, 1);
+		canisterInWrong = new VarbitRequirement(VarbitID.FEVER_CANNON_GONNA_BLOW, 1);
 
 		// 1752 = num plunder stashed
 	}
@@ -544,7 +545,7 @@ public class CabinFever extends BasicQuestHelper
 		useRopeOnSailToLoot = new ObjectStep(this, ObjectID.FEVER_SAIL1_HOISTEDL_CLIMB, new WorldPoint(1817, 4830, 2), "Use a rope on the hoisted sail.", ropeHighlight);
 		useRopeOnSailToLoot.addIcon(ItemID.ROPE);
 
-		lootEnemyShip = new ObjectStep(this, ObjectID.FEVER_MULTI_CHEST, "Plunder the chest, loot the crate and ransack the barrel for 10 plunder.", loot10);
+		lootEnemyShip = new ObjectStep(this, ObjectID.FEVER_MULTI_CHEST, "Plunder the chest, loot the crate and ransack the barrel for 10 plunder. Switch world after looting to make plunder respawn instantly.", loot10);
 		lootEnemyShip.addAlternateObjects(ObjectID.FEVER_MULTI_CRATE, ObjectID.FEVER_MULTI_BARREL);
 
 		hopWorld = new DetailedQuestStep(this, "Hop worlds so that the chest resets.");

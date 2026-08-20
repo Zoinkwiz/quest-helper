@@ -25,10 +25,10 @@
 package com.questhelper.runeliteobjects.extendedruneliteobjects;
 
 import com.questhelper.runeliteobjects.RuneliteConfigSetter;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.callback.ClientThread;
 
 public class FakeItem extends ExtendedRuneliteObject
@@ -52,7 +52,7 @@ public class FakeItem extends ExtendedRuneliteObject
 				if (player.getWorldLocation().distanceTo(getWorldPoint()) <= 1)
 				{
 					runeliteObjectManager.createChatboxMessage(actionText);
-					player.setAnimation(AnimationID.BURYING_BONES);
+					player.setAnimation(AnimationID.HUMAN_PICKUPFLOOR);
 					player.setAnimationFrame(0);
 
 					// Set variable

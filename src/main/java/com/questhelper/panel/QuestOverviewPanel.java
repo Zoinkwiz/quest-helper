@@ -27,6 +27,9 @@ package com.questhelper.panel;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.managers.QuestManager;
+import com.questhelper.panel.queststepsection.AbstractQuestSection;
+import com.questhelper.panel.queststepsection.QuestSectionSection;
+import com.questhelper.panel.queststepsection.QuestStepPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.ExternalQuestResources;
 import com.questhelper.questinfo.HelperConfig;
@@ -51,9 +54,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -81,7 +81,10 @@ public class QuestOverviewPanel extends JPanel
 	private final QuestRewardsPanel questRewardsPanel;
 	private final JPanel questExternalResourcesList;
 
-	private final JPanel questStepsContainer = new JPanel();
+	private JPanel questStepsContainer;
+	private final CardLayout questStepsLayout = new CardLayout();
+	private final JPanel questStepsHost = new JPanel(questStepsLayout);
+	private final JPanel activeStepsCard = new JPanel(new BorderLayout());
 	private final JPanel actionsContainer = new JPanel();
 	private final JPanel configContainer = new JPanel();
 
@@ -90,11 +93,9 @@ public class QuestOverviewPanel extends JPanel
 	private final JLabel questNameLabel = JGenerator.makeJLabel();
 
 	private static final ImageIcon CLOSE_ICON = Icon.CLOSE.getIcon();
-
-	private final List<QuestStepPanel> questStepPanelList = new CopyOnWriteArrayList<>();
-
-	private QuestStepPanel draggingPanel = null;
-
+	private static final String ACTIVE_STEPS_CARD = "active";
+	private static final String EMPTY_STEPS_CARD = "empty";
+	private final List<AbstractQuestSection> allQuestStepPanelList = new CopyOnWriteArrayList<>();
 
 	public QuestOverviewPanel(QuestHelperPlugin questHelperPlugin, QuestManager questManager)
 	{
@@ -113,7 +114,7 @@ public class QuestOverviewPanel extends JPanel
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
+		final JPanel viewControls = new JPanel(new GridLayout(1, 1, 6, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JButton closeBtn = new JButton();
@@ -201,11 +202,15 @@ public class QuestOverviewPanel extends JPanel
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
 
 		/* Container for quest steps */
-		questStepsContainer.setLayout(new BoxLayout(questStepsContainer, BoxLayout.Y_AXIS));
+		questStepsContainer = createQuestStepsContainer();
+		activeStepsCard.add(questStepsContainer, BorderLayout.CENTER);
+		questStepsHost.add(new JPanel(), EMPTY_STEPS_CARD);
+		questStepsHost.add(activeStepsCard, ACTIVE_STEPS_CARD);
+		questStepsLayout.show(questStepsHost, EMPTY_STEPS_CARD);
 		add(actionsContainer);
 		add(configContainer);
 		add(introPanel);
-		add(questStepsContainer);
+		add(questStepsHost);
 	}
 
 	private JComboBox<Enum> makeNewDropdown(Enum[] values, String key)
@@ -243,6 +248,7 @@ public class QuestOverviewPanel extends JPanel
 
 		JPanel filtersPanel = new JPanel();
 		filtersPanel.setLayout(new BorderLayout());
+		filtersPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
 		filtersPanel.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 		filtersPanel.add(filterName, BorderLayout.CENTER);
 		filtersPanel.add(dropdown, BorderLayout.EAST);
@@ -253,7 +259,11 @@ public class QuestOverviewPanel extends JPanel
 	public void addQuest(QuestHelper quest, boolean isActive)
 	{
 		currentQuest = quest;
-		questStepPanelList.clear();
+		allQuestStepPanelList.clear();
+		questStepsContainer = createQuestStepsContainer();
+		activeStepsCard.removeAll();
+		activeStepsCard.add(questStepsContainer, BorderLayout.CENTER);
+		questStepsLayout.show(questStepsHost, ACTIVE_STEPS_CARD);
 
 		List<PanelDetails> steps = quest.getPanels();
 		QuestStep currentStep;
@@ -278,66 +288,37 @@ public class QuestOverviewPanel extends JPanel
 
 			setupQuestRequirements(quest);
 			introPanel.setVisible(true);
-			boolean draggable = steps.stream().anyMatch((panelDetails -> panelDetails.id != 0));
-			List<Integer> order = questHelperPlugin.loadSidebarOrder(currentQuest);
-			if (draggable && order != null)
-			{
-				Map<Integer, Integer> idx = new HashMap<>();
-				for (int i = 0; i < order.size(); i++)
-					idx.put(order.get(i), i);
-
-				steps.sort(Comparator.comparingInt(
-						pd -> idx.getOrDefault(pd.id, Integer.MAX_VALUE)
-				));
-			}
 
 			for (PanelDetails panelDetail : steps)
 			{
-				var newStep = new QuestStepPanel(panelDetail, currentStep, questManager, questHelperPlugin);
-				if (draggable) makeDraggable(newStep);
-
-				if (panelDetail.getLockingQuestSteps() != null &&
-					(panelDetail.getVars() == null
-						|| panelDetail.getVars().contains(currentQuest.getVar())))
+				if (panelDetail instanceof TopLevelPanelDetails)
 				{
-					newStep.setLockable(true);
+					TopLevelPanelDetails topLevelPanelDetails = ((TopLevelPanelDetails) panelDetail);
+					QuestSectionSection questStepPanel = new QuestSectionSection(this, topLevelPanelDetails, currentStep, questManager, questHelperPlugin);
+					questStepsContainer.add(questStepPanel);
+					allQuestStepPanelList.add(questStepPanel);
 				}
-				questStepPanelList.add(newStep);
-				questStepsContainer.add(newStep);
-				repaint();
-				revalidate();
+				else
+				{
+					QuestStepPanel questStepPanel = new QuestStepPanel(panelDetail, currentStep, questManager, questHelperPlugin);
+					questStepsContainer.add(questStepPanel);
+					allQuestStepPanelList.add(questStepPanel);
+				}
 			}
+			questStepsContainer.revalidate();
+			questStepsContainer.repaint();
 		}
 	}
 
 	public void updateStepsTexts()
 	{
-		questStepPanelList.forEach(panel -> {
-			for (QuestStep step : panel.getSteps())
-			{
-				JTextPane label = panel.getStepsLabels().get(step);
-				if (label != null)
-				{
-					var newText = panel.generateText(step);
-					var oldText = label.getText();
-					if (newText == null)
-					{
-						continue;
-					}
-
-					if (!newText.equals(oldText))
-					{
-						label.setText(panel.generateText(step));
-					}
-				}
-			}
-		});
+		allQuestStepPanelList.forEach(AbstractQuestSection::updateAllText);
 	}
 
 	public void updateHighlight(Client client, QuestStep newStep)
 	{
 		if (currentQuest == null) return;
-		questStepPanelList.forEach(panel -> {
+		allQuestStepPanelList.forEach(panel -> {
 			panel.updateHighlightCheck(client, newStep, currentQuest);
 		});
 
@@ -347,7 +328,7 @@ public class QuestOverviewPanel extends JPanel
 
 	public void updateLocks()
 	{
-		questStepPanelList.forEach(QuestStepPanel::updateLock);
+		allQuestStepPanelList.forEach(AbstractQuestSection::updateLock);
 	}
 
 	public void removeQuest()
@@ -356,7 +337,8 @@ public class QuestOverviewPanel extends JPanel
 		introPanel.setVisible(false);
 		configContainer.setVisible(false);
 		configContainer.removeAll();
-		questStepsContainer.removeAll();
+		questStepsLayout.show(questStepsHost, EMPTY_STEPS_CARD);
+		allQuestStepPanelList.clear();
 		questGeneralRequirementsPanel.setRequirements(null);
 		questGeneralRecommendedPanel.setRequirements(null);
 		questItemRequirementsPanel.setRequirements(null);
@@ -369,6 +351,13 @@ public class QuestOverviewPanel extends JPanel
 		revalidate();
 	}
 
+	private JPanel createQuestStepsContainer()
+	{
+		JPanel container = new JPanel();
+		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+		return container;
+	}
+
 	/// The quest helper's X is clicked
 	private void closeHelper()
 	{
@@ -377,9 +366,9 @@ public class QuestOverviewPanel extends JPanel
 
 	public boolean isAllCollapsed()
 	{
-		return questStepPanelList.stream()
-			.filter(QuestStepPanel::isCollapsed)
-			.count() == questStepPanelList.size();
+		return allQuestStepPanelList.stream()
+			.filter(AbstractQuestSection::isCollapsed)
+			.count() == allQuestStepPanelList.size();
 	}
 
 	public void setupQuestRequirements(QuestHelper quest)
@@ -447,6 +436,10 @@ public class QuestOverviewPanel extends JPanel
 
 	private static void collectRequirements(QuestHelper quest, List<Requirement> allRequirements, Set<String> processedQuestIds)
 	{
+		if (quest.getQuest() == null)
+		{
+			return;
+		}
 		if (quest.getQuest().getQuestHelper().getGeneralRequirements() == null) return;
 
 		List<Requirement> generalRequirements = quest.getQuest().getQuestHelper().getGeneralRequirements();
@@ -556,6 +549,11 @@ public class QuestOverviewPanel extends JPanel
 	private void updateExternalResourcesPanel(QuestHelper quest)
 	{
 		List<String> externalResourcesList;
+		if (quest.getQuest() == null)
+		{
+			questExternalResourcesList.removeAll();
+			return;
+		}
 		try
 		{
 			externalResourcesList = Collections.singletonList(ExternalQuestResources.valueOf(quest.getQuest().name().toUpperCase()).getWikiURL());
@@ -642,111 +640,19 @@ public class QuestOverviewPanel extends JPanel
 		questItemRequirementsPanel.update(client, questHelperPlugin);
 		questItemRecommendedPanel.update(client, questHelperPlugin);
 
-		questStepPanelList.forEach((questStepPanel) -> {
+		allQuestStepPanelList.forEach((questStepPanel) -> {
 			questStepPanel.updateRequirements(client);
 		});
 		revalidate();
 	}
 
-	private void makeDraggable(QuestStepPanel newStep)
+	public void saveSidebar()
 	{
-		JLabel grip = new JLabel("\u2630");
-		grip.setBorder(new EmptyBorder(0, 0, 3, 0));
-		grip.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+		List<Integer> newOrderIds = allQuestStepPanelList.stream()
+			.map(AbstractQuestSection::getIds)
+			.flatMap(Collection::stream)
+			.collect(Collectors.toList());
 
-		GripDragListener listener = new GripDragListener(newStep);
-		grip.addMouseListener(listener);
-		grip.addMouseMotionListener(listener);
-
-		newStep.getLeftTitleContainer().add(grip, java.awt.BorderLayout.WEST);
-	}
-
-	private void swapPanels(QuestStepPanel a, QuestStepPanel b)
-	{
-		List<QuestStepPanel> list = questStepPanelList;
-		int ia = list.indexOf(a);
-		int ib = list.indexOf(b);
-		if (ia < 0 || ib < 0) return;
-
-		Collections.swap(list, ia, ib);
-
-		// Create again in new order
-		questStepsContainer.removeAll();
-		for (QuestStepPanel p : list)
-		{
-			questStepsContainer.add(p);
-		}
-		questStepsContainer.revalidate();
-		questStepsContainer.repaint();
-	}
-
-	private class GripDragListener extends MouseAdapter implements MouseMotionListener
-	{
-		private final QuestStepPanel panel;
-		private int startY;
-
-		GripDragListener(QuestStepPanel panel)
-		{
-			this.panel = panel;
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e)
-		{
-			if (e.getButton() != MouseEvent.BUTTON1)
-			{
-				return;
-			}
-			draggingPanel = panel;
-			startY = e.getYOnScreen();
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e)
-		{
-			if (draggingPanel == null) return;
-
-			int currentY = e.getYOnScreen();
-			// We only need the absolute screen‐Y to compare midpoints:
-			for (QuestStepPanel other : questStepPanelList)
-			{
-				if (other == draggingPanel) continue;
-
-				Rectangle r = other.getBounds();
-				int midY = other.getLocationOnScreen().y + r.height / 2;
-
-				int fromIndex = questStepPanelList.indexOf(draggingPanel);
-				int toIndex   = questStepPanelList.indexOf(other);
-
-				// dragged down
-				if (fromIndex < toIndex && currentY > midY)
-				{
-					swapPanels(draggingPanel, other);
-					break;
-				}
-				// dragged up
-				else if (fromIndex > toIndex && currentY < midY)
-				{
-					swapPanels(draggingPanel, other);
-					break;
-				}
-			}
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e)
-		{
-			if (e.getButton() != MouseEvent.BUTTON1)
-			{
-				return;
-			}
-			draggingPanel = null;
-			 List<Integer> newOrderIds = questStepPanelList.stream()
-			     .map(p -> p.getPanelDetails().getId())
-			     .collect(Collectors.toList());
-			 questHelperPlugin.saveSidebarOrder(currentQuest, newOrderIds);
-		}
-
-		@Override public void mouseMoved(MouseEvent e) { }
+		questHelperPlugin.saveSidebarOrder(currentQuest, newOrderIds);
 	}
 }

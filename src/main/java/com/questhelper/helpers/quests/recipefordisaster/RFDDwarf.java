@@ -100,7 +100,7 @@ public class RFDDwarf extends BasicQuestHelper
 
 		ConditionalStep giveCakeToDwarf = new ConditionalStep(this, pickUpRockCake);
 		giveCakeToDwarf.addStep(new Conditions(rockCake, inDiningRoom), useRockCakeOnDwarf);
-		giveCakeToDwarf.addStep(rockCake.alsoCheckBank(questBank), enterDiningRoomAgain);
+		giveCakeToDwarf.addStep(rockCake.alsoCheckBank(), enterDiningRoomAgain);
 		giveCakeToDwarf.addStep(rockCakeHot, coolRockCake);
 		steps.put(50, giveCakeToDwarf);
 
@@ -144,7 +144,7 @@ public class RFDDwarf extends BasicQuestHelper
 		asgoldianAle4 = new ItemRequirement("Asgoldian ale", ItemID.HUNDRED_DWARF_ASGARNIAN_ALE, 4);
 
 		// Recommended
-		taverleyTeleport = new ItemRequirement("Teleport to taverley", ItemID.NZONE_TELETAB_TAVERLEY);
+		taverleyTeleport = new ItemRequirement("Teleport to Taverley", ItemID.NZONE_TELETAB_TAVERLEY);
 		taverleyTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
 		teleportFalador = new ItemRequirement("Teleport to Falador", ItemID.POH_TABLET_FALADORTELEPORT);
 		teleportLumbridge = new ItemRequirement("Teleport to Lumbridge", ItemID.POH_TABLET_LUMBRIDGETELEPORT);
@@ -162,8 +162,8 @@ public class RFDDwarf extends BasicQuestHelper
 		inDiningRoom = new ZoneRequirement(diningRoom);
 		inTunnel = new ZoneRequirement(tunnel);
 
-		learnedHowToMakeAle = new VarbitRequirement(1891, 1);
-		givenAle = new VarbitRequirement(1893, 1);
+		learnedHowToMakeAle = new VarbitRequirement(VarbitID.HUNDRED_DWARF_BEER, 1);
+		givenAle = new VarbitRequirement(VarbitID.HUNDRED_DWARF_DRUNK, 1);
 		has4AleOrGivenAle = new Conditions(LogicType.OR, asgoldianAle4, givenAle);
 	}
 

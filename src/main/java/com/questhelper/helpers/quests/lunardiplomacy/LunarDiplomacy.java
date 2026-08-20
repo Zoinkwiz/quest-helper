@@ -498,31 +498,31 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		inFightArena = new ZoneRequirement(fightArena);
 
-		revealedPillar = new VarbitRequirement(2431, 2);
-		revealedCannon = new VarbitRequirement(2432, 2);
-		revealedCrate = new VarbitRequirement(2433, 2);
-		revealedChart = new VarbitRequirement(2434, 2);
-		revealedChest = new VarbitRequirement(2435, 2);
+		revealedPillar = new VarbitRequirement(VarbitID.LUNAR_QUEST_SYMBOLPRES1, 2);
+		revealedCannon = new VarbitRequirement(VarbitID.LUNAR_QUEST_SYMBOLPRES2, 2);
+		revealedCrate = new VarbitRequirement(VarbitID.LUNAR_QUEST_SYMBOLPRES3, 2);
+		revealedChart = new VarbitRequirement(VarbitID.LUNAR_QUEST_SYMBOLPRES4, 2);
+		revealedChest = new VarbitRequirement(VarbitID.LUNAR_QUEST_SYMBOLPRES5, 2);
 
 		toothNearby = new ItemOnTileRequirement(suqahTooth);
 
-		talkedToSelene = new VarbitRequirement(2445, 1);
-		talkedToMeteora = new VarbitRequirement(2446, 1);
-		talkedToRimae = new VarbitRequirement(2447, 1);
+		talkedToSelene = new VarbitRequirement(VarbitID.LUNAR_MONK_RING_INTRO, 1);
+		talkedToMeteora = new VarbitRequirement(VarbitID.LUNAR_MONK_AMULET_INTRO, 1);
+		talkedToRimae = new VarbitRequirement(VarbitID.LUNAR_MONK_TANCLOTHES_INTRO, 1);
 
 		tiaraNearby = new ItemOnTileRequirement(tiara);
 
-		hadHelm = new Conditions(LogicType.OR, helm.alsoCheckBank(questBank), new VarbitRequirement(2436, 1));
-		hadCape = new Conditions(LogicType.OR, cape.alsoCheckBank(questBank), new VarbitRequirement(2437, 1));
-		hadAmulet = new Conditions(LogicType.OR, amulet.alsoCheckBank(questBank), new VarbitRequirement(2438, 1));
-		hadTorso = new Conditions(LogicType.OR, torso.alsoCheckBank(questBank), new VarbitRequirement(2439, 1));
-		hadGloves = new Conditions(LogicType.OR, gloves.alsoCheckBank(questBank), new VarbitRequirement(2441, 1));
-		hadBoots = new Conditions(LogicType.OR, boots.alsoCheckBank(questBank), new VarbitRequirement(2440, 1));
-		hadLegs = new Conditions(LogicType.OR, legs.alsoCheckBank(questBank), new VarbitRequirement(2442, 1));
-		hadRing = new Conditions(LogicType.OR, ring.alsoCheckBank(questBank), new VarbitRequirement(2443, 1));
+		hadHelm = new Conditions(LogicType.OR, helm.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_HELM, 1));
+		hadCape = new Conditions(LogicType.OR, cape.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_CAPE, 1));
+		hadAmulet = new Conditions(LogicType.OR, amulet.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_AMULET, 1));
+		hadTorso = new Conditions(LogicType.OR, torso.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_TORSO, 1));
+		hadGloves = new Conditions(LogicType.OR, gloves.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_BOOTS, 1));
+		hadBoots = new Conditions(LogicType.OR, boots.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_GLOVES, 1));
+		hadLegs = new Conditions(LogicType.OR, legs.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_TROUSERS, 1));
+		hadRing = new Conditions(LogicType.OR, ring.alsoCheckBank(), new VarbitRequirement(VarbitID.LUNAR_PT2_ONEIRO_GIVEN_RING, 1));
 		hadClothes = new Conditions(hadBoots, hadTorso, hadGloves, hadLegs);
 
-		litBrazier = new VarbitRequirement(2430, 1);
+		litBrazier = new VarbitRequirement(VarbitID.LUNAR_BRAZIER_LIT, 1);
 
 		inCentreOfDream = new ZoneRequirement(centreOfDream);
 		inChanceDream = new ZoneRequirement(chanceDream);
@@ -532,12 +532,12 @@ public class LunarDiplomacy extends BasicQuestHelper
 		inRaceDream = new ZoneRequirement(raceDream);
 		inMimicDream = new ZoneRequirement(mimicDream);
 
-		doingTreeChallenge = new VarbitRequirement(3184, 1);
-		startedRaceChallenge = new VarbitRequirement(2424, 1);
+		doingTreeChallenge = new VarbitRequirement(VarbitID.LUNAR_TREE_PLAYING, 1);
+		startedRaceChallenge = new VarbitRequirement(VarbitID.LUNAR_SKILL_INTRO, 1);
 
-		startedNumberChallenge = new VarbitRequirement(2416, 1);
+		startedNumberChallenge = new VarbitRequirement(VarbitID.LUNAR_NUM_INTRO, 1);
 
-		needToTalkAtMiddle = new VarbitRequirement(2429, 1);
+		needToTalkAtMiddle = new VarbitRequirement(VarbitID.LUNAR_SPOKEN_CENTRE, 1);
 
 		finishedMimic = new VarbitRequirement(VarbitID.LUNAR_EMOTE_PROG, 5, Operation.GREATER_EQUAL);
 		finishedNumbers = new VarbitRequirement(VarbitID.LUNAR_NUM_PROG, 6, Operation.GREATER_EQUAL);

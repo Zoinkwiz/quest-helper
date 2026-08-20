@@ -255,18 +255,17 @@ public class DefenderOfVarrock extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		// TODO: Reported value is 12754, but uncertain why this'd be the case. Perhaps to do with different version of him?
-		eliasFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.ELIAS_WHITE_VIS, NpcID.ELIAS_WHITE_CUTSCENE, 12754), 16);
+		eliasFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, List.of(NpcID.ELIAS_WHITE_VIS, NpcID.ELIAS_WHITE_CUTSCENE, NpcID.DOV_ELIAS_WHITE_FOLLOWER), 16);
 
 		// 9655 4->6
 		// 9659 0->1
-		inspectedPlant1 = new VarbitRequirement(9659, 1);
-		inspectedRock1 = new VarbitRequirement(9660, 1);
-		inspectedPlant2 = new VarbitRequirement(9661, 1);
-		inspectedBush1 = new VarbitRequirement(9662, 1);
-		inspectedBush2 = new VarbitRequirement(9663, 1);
-		inspectedBush3 = new VarbitRequirement(9664, 1);
-		inspectedTrapdoor = new VarbitRequirement(9665, 1);
+		inspectedPlant1 = new VarbitRequirement(VarbitID.DOV_HUNTING_TRAIL_1, 1);
+		inspectedRock1 = new VarbitRequirement(VarbitID.DOV_HUNTING_TRAIL_2, 1);
+		inspectedPlant2 = new VarbitRequirement(VarbitID.DOV_HUNTING_TRAIL_3, 1);
+		inspectedBush1 = new VarbitRequirement(VarbitID.DOV_HUNTING_TRAIL_4, 1);
+		inspectedBush2 = new VarbitRequirement(VarbitID.DOV_HUNTING_TRAIL_5, 1);
+		inspectedBush3 = new VarbitRequirement(VarbitID.DOV_HUNTING_TRAIL_6, 1);
+		inspectedTrapdoor = new VarbitRequirement(VarbitID.SETTINGS_DISABLE_TOOLTIP_IN_INTERFACE, 1);
 		inDungeon = new ZoneRequirement(new Zone(14151));
 
 		redMistNearby = new ObjectCondition(ObjectID.DOV_RED_MIST);
@@ -278,13 +277,13 @@ public class DefenderOfVarrock extends BasicQuestHelper
 		inCastleF1Invasion = new ZoneRequirement(castleF1Invasion);
 		inCastleF2Invasion = new ZoneRequirement(castleF2Invasion);
 
-		talkedToRoald = new VarbitRequirement(9669, 1);
-		talkedToAeonisig = new VarbitRequirement(9670, 1);
-		talkedToPrysin = new VarbitRequirement(9671, 1);
-		talkedToHorvik = new VarbitRequirement(9672, 1);
-		talkedToRomeo = new VarbitRequirement(9673, 1);
+		talkedToRoald = new VarbitRequirement(VarbitID.DOV_SHIELD_ROALD, 1);
+		talkedToAeonisig = new VarbitRequirement(VarbitID.DOV_SHIELD_AEONISIG, 1);
+		talkedToPrysin = new VarbitRequirement(VarbitID.DOV_SHIELD_PRYSIN, 1);
+		talkedToHorvik = new VarbitRequirement(VarbitID.DOV_SHIELD_HORVIK, 1);
+		talkedToRomeo = new VarbitRequirement(VarbitID.DOV_SHIELD_ROMEO, 1);
 		// NOTE: Missing 74/75?
-		talkedToHalen = new VarbitRequirement(9676, 1);
+		talkedToHalen = new VarbitRequirement(VarbitID.DOV_SHIELD_HAIG, 1);
 
 		givenShield = new VarbitRequirement(VarbitID.DOV, 50, Operation.GREATER_EQUAL);
 	}

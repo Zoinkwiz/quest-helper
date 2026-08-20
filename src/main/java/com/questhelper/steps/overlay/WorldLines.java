@@ -74,8 +74,8 @@ public class WorldLines
 				continue;
 			}
 
-			List<LocalPoint> startPoints = QuestPerspective.getInstanceLocalPointFromReal(client, currentPoint);
-			List<LocalPoint> destinationPoints = QuestPerspective.getInstanceLocalPointFromReal(client, nextPoint);
+			List<LocalPoint> startPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), currentPoint);
+			List<LocalPoint> destinationPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), nextPoint);
 			if (startPoints.isEmpty() || destinationPoints.isEmpty()) continue;
 			LocalPoint startPoint = startPoints.get(0);
 			LocalPoint destinationPoint = destinationPoints.get(0);
@@ -170,8 +170,8 @@ public class WorldLines
 			if (startWp.equals(new WorldPoint(0, 0, 0))) continue;
 			if (endWp.equals(new WorldPoint(0, 0, 0))) continue;
 			if (startWp.getPlane() != endWp.getPlane()) continue;
-			List<LocalPoint> startPoints = QuestPerspective.getInstanceLocalPointFromReal(client, startWp);
-			List<LocalPoint> destinationPoints = QuestPerspective.getInstanceLocalPointFromReal(client, endWp);
+			List<LocalPoint> startPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), startWp);
+			List<LocalPoint> destinationPoints = QuestPerspective.getLocalPointsFromWorldPointInInstance(client.getTopLevelWorldView(), endWp);
 			if (startPoints.isEmpty() || destinationPoints.isEmpty()) continue;
 			LocalPoint startPoint = startPoints.get(0);
 			LocalPoint destinationPoint = destinationPoints.get(0);

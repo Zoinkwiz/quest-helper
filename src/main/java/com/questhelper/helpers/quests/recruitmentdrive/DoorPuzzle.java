@@ -28,42 +28,24 @@ package com.questhelper.helpers.quests.recruitmentdrive;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-
 public class DoorPuzzle extends QuestStep
 {
+	private final HashMap<Integer, Integer> highlightButtons = new HashMap<>();
+	private final HashMap<Integer, Integer> distance = new HashMap<>();
 
 	private Character ENTRY_ONE;
 	private Character ENTRY_TWO;
 	private Character ENTRY_THREE;
 	private Character ENTRY_FOUR;
-
-	private final int SLOT_ONE = 43;
-	private final int SLOT_TWO = 44;
-	private final int SLOT_THREE = 45;
-	private final int SLOT_FOUR = 46;
-
-	private final int ARROW_ONE_LEFT = 47;
-	private final int ARROW_ONE_RIGHT = 48;
-	private final int ARROW_TWO_LEFT = 49;
-	private final int ARROW_TWO_RIGHT = 50;
-	private final int ARROW_THREE_LEFT = 51;
-	private final int ARROW_THREE_RIGHT = 52;
-	private final int ARROW_FOUR_LEFT = 53;
-	private final int ARROW_FOUR_RIGHT = 54;
-
-	private final int COMPLETE = 56;
-
-	private final HashMap<Integer, Integer> highlightButtons = new HashMap<>();
-	private final HashMap<Integer, Integer> distance = new HashMap<>();
 
 	public DoorPuzzle(QuestHelper questHelper, String word)
 	{
@@ -73,10 +55,10 @@ public class DoorPuzzle extends QuestStep
 		ENTRY_THREE = word.charAt(2);
 		ENTRY_FOUR = word.charAt(3);
 
-		highlightButtons.put(1, ARROW_ONE_RIGHT);
-		highlightButtons.put(2, ARROW_TWO_RIGHT);
-		highlightButtons.put(3, ARROW_THREE_RIGHT);
-		highlightButtons.put(4, ARROW_FOUR_RIGHT);
+		highlightButtons.put(1, InterfaceID.RdCombolock.RDA_RIGHT);
+		highlightButtons.put(2, InterfaceID.RdCombolock.RDB_RIGHT);
+		highlightButtons.put(3, InterfaceID.RdCombolock.RDC_RIGHT);
+		highlightButtons.put(4, InterfaceID.RdCombolock.RDD_RIGHT);
 
 		distance.put(1, 0);
 		distance.put(2, 0);
@@ -84,13 +66,23 @@ public class DoorPuzzle extends QuestStep
 		distance.put(4, 0);
 	}
 
+	@Override
+	public void startUp()
+	{
+		super.startUp();
+
+		// Recalculate once when the step starts up to ensure highlights aren't wrong for a tick
+		updateSolvedPositionState();
+	}
+
 	public void updateWord(String word)
 	{
 		ENTRY_ONE = word.charAt(0);
 		ENTRY_TWO = word.charAt(1);
-		ENTRY_THREE =  word.charAt(2);
-		ENTRY_FOUR =  word.charAt(3);
+		ENTRY_THREE = word.charAt(2);
+		ENTRY_FOUR = word.charAt(3);
 		setText("Click the highlighted arrows to move the slots to the solution. The answer is " + word + ".");
+		updateSolvedPositionState();
 	}
 
 	@Subscribe
@@ -101,19 +93,20 @@ public class DoorPuzzle extends QuestStep
 
 	private void updateSolvedPositionState()
 	{
-		highlightButtons.replace(1, matchStateToSolution(SLOT_ONE, ENTRY_ONE, ARROW_ONE_RIGHT, ARROW_ONE_LEFT));
-		highlightButtons.replace(2, matchStateToSolution(SLOT_TWO, ENTRY_TWO, ARROW_TWO_RIGHT, ARROW_TWO_LEFT));
-		highlightButtons.replace(3, matchStateToSolution(SLOT_THREE, ENTRY_THREE, ARROW_THREE_RIGHT, ARROW_THREE_LEFT));
-		highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR, ARROW_FOUR_RIGHT, ARROW_FOUR_LEFT));
 
-		distance.replace(1, matchStateToDistance(SLOT_ONE, ENTRY_ONE));
-		distance.replace(2, matchStateToDistance(SLOT_TWO, ENTRY_TWO));
-		distance.replace(3, matchStateToDistance(SLOT_THREE, ENTRY_THREE));
-		distance.replace(4, matchStateToDistance(SLOT_FOUR, ENTRY_FOUR));
+		highlightButtons.replace(1, matchStateToSolution(InterfaceID.RdCombolock.RDA, ENTRY_ONE, InterfaceID.RdCombolock.RDA_RIGHT, InterfaceID.RdCombolock.RDA_LEFT));
+		highlightButtons.replace(2, matchStateToSolution(InterfaceID.RdCombolock.RDB, ENTRY_TWO, InterfaceID.RdCombolock.RDB_RIGHT, InterfaceID.RdCombolock.RDB_LEFT));
+		highlightButtons.replace(3, matchStateToSolution(InterfaceID.RdCombolock.RDC, ENTRY_THREE, InterfaceID.RdCombolock.RDC_RIGHT, InterfaceID.RdCombolock.RDC_LEFT));
+		highlightButtons.replace(4, matchStateToSolution(InterfaceID.RdCombolock.RDD, ENTRY_FOUR, InterfaceID.RdCombolock.RDD_RIGHT, InterfaceID.RdCombolock.RDD_LEFT));
+
+		distance.replace(1, matchStateToDistance(InterfaceID.RdCombolock.RDA, ENTRY_ONE));
+		distance.replace(2, matchStateToDistance(InterfaceID.RdCombolock.RDB, ENTRY_TWO));
+		distance.replace(3, matchStateToDistance(InterfaceID.RdCombolock.RDC, ENTRY_THREE));
+		distance.replace(4, matchStateToDistance(InterfaceID.RdCombolock.RDD, ENTRY_FOUR));
 
 		if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0)
 		{
-			highlightButtons.put(5, COMPLETE);
+			highlightButtons.put(5, InterfaceID.RdCombolock.RDENTER);
 		}
 		else
 		{
@@ -123,19 +116,28 @@ public class DoorPuzzle extends QuestStep
 
 	private int matchStateToSolution(int slot, Character target, int arrowRightId, int arrowLeftId)
 	{
-		Widget widget = client.getWidget(InterfaceID.RD_COMBOLOCK, slot);
-		if (widget == null) return 0;
+		Widget widget = client.getWidget(slot);
+		if (widget == null)
+		{
+			return 0;
+		}
 		char current = widget.getText().charAt(0);
 		int currentPos = (int) current - (int) 'A';
 		int id = Math.floorMod(currentPos - target, 26) < Math.floorMod(target - currentPos, 26) ? arrowRightId : arrowLeftId;
-		if (current != target) return id;
+		if (current != target)
+		{
+			return id;
+		}
 		return 0;
 	}
 
 	private int matchStateToDistance(int slot, Character target)
 	{
-		Widget widget = client.getWidget(InterfaceID.RD_COMBOLOCK, slot);
-		if (widget == null) return 0;
+		Widget widget = client.getWidget(slot);
+		if (widget == null)
+		{
+			return 0;
+		}
 		char current = widget.getText().charAt(0);
 		return Math.min(Math.floorMod(current - target, 26), Math.floorMod(target - current, 26));
 	}
@@ -151,7 +153,7 @@ public class DoorPuzzle extends QuestStep
 				continue;
 			}
 
-			Widget widget = client.getWidget(InterfaceID.RD_COMBOLOCK, entry.getValue());
+			Widget widget = client.getWidget(entry.getValue());
 			if (widget != null)
 			{
 				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),

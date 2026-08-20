@@ -30,17 +30,20 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
 import com.questhelper.requirements.MultiChatMessageRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.InitializableRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
+import com.questhelper.steps.tools.DefinedPoint;
 import com.questhelper.steps.widget.AbstractWidgetHighlight;
 import lombok.NonNull;
 import lombok.Setter;
 import net.runelite.api.GameState;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -59,7 +62,10 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 	protected boolean started = false;
 
-	/** 
+	/// Controls whether the sidebar step text should use the current step / child step / fallback step instead of the ConditionalStep's text.
+	protected boolean passthroughText = false;
+
+	/**
 	 * Controls whether the sidebar highlight should consider child steps when determining what to highlight.
 	 * When true, the sidebar will highlight the most specific active step in the step hierarchy.
 	 * When false, the sidebar will only highlight this ConditionalStep itself, ignoring any active child steps.
@@ -71,7 +77,6 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	protected boolean checkAllChildStepsOnListenerCall = false;
 
 	protected LinkedHashMap<Requirement, QuestStep> steps;
-	protected final HashMap<Integer, QuestStep> orderedSteps;
 	protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();
 	protected final List<NpcCondition> npcConditions = new ArrayList<>();
 	protected final List<DialogRequirement> dialogConditions = new ArrayList<>();
@@ -102,17 +107,19 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		this.requirements.addAll(Arrays.asList(requirements));
 		this.steps = new LinkedHashMap<>();
 		this.steps.put(null, step);
-		this.orderedSteps = new LinkedHashMap<>();
-		if (id != null)
-		{
-			this.orderedSteps.put(id, step);
-		}
 		this.id = id;
+	}
+
+	public void addStep(ConditionalStep step)
+	{
+		var newSet = new HashSet<>(step.steps.keySet());
+		newSet.remove(null);
+		addStep(passOnceCompleted(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step), step, false);
 	}
 
 	public void addStep(Requirement requirement, QuestStep step)
 	{
-		addStep(requirement, step, false);
+		addStep(passOnceCompleted(requirement, step), step, false);
 	}
 
 	public ConditionalStep then(Requirement requirement, QuestStep step) {
@@ -126,7 +133,7 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 	public void addStep(Requirement requirement, QuestStep step, boolean isLockable)
 	{
 		step.setLockable(isLockable);
-		this.steps.put(requirement, step);
+		this.steps.put(passOnceCompleted(requirement, step), step);
 
 		checkForConditions(requirement);
 	}
@@ -138,6 +145,44 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 
 		checkForConditions(requirement);
 		return this;
+	}
+
+	private Requirement passOnceCompleted(Requirement completion, QuestStep step)
+	{
+		return completion;
+//		var manualOverride = step.getSidebarManualSkipRequirement();
+//		if (completion == null || manualOverride == null)
+//		{
+//			return completion;
+//		}
+//		// Only auto-tick the sidebar when completion becomes true (rising edge). If we setShouldPass every
+//		// tick while the game still reports the step complete, an explicit untick is overwritten immediately.
+//		final boolean[] completionWasPassingLastCheck = { false };
+//		return not(new Requirement()
+//		{
+//			@Override
+//			public boolean check(Client client)
+//			{
+//				if (manualOverride.check(client))
+//				{
+//					completionWasPassingLastCheck[0] = true;
+//					return true;
+//				}
+//				boolean passed = completion.check(client);
+//				if (passed && !completionWasPassingLastCheck[0])
+//				{
+//					manualOverride.setShouldPass(true);
+//				}
+//				completionWasPassingLastCheck[0] = passed;
+//				return passed;
+//			}
+//
+//			@Override
+//			public @NotNull String getDisplayText()
+//			{
+//				return completion.getDisplayText();
+//			}
+//		});
 	}
 
 	private void checkForConditions(Requirement requirement)
@@ -283,6 +328,17 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		dialogConditions.forEach(requirement -> requirement.validateCondition(chatMessage));
 
 		handleChildRequirementValidation(step -> step.handleChatMessage(chatMessage, parentDefinedRecursion), parentDefinedRecursion);
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed event)
+	{
+		final var DIALOG_GROUP_IDS = List.of(InterfaceID.CHAT_LEFT, InterfaceID.CHAT_RIGHT, InterfaceID.OBJECTBOX);
+		if (!DIALOG_GROUP_IDS.contains(event.getGroupId())) return;
+
+		clientThread.invokeAtTickEnd(() -> {
+			dialogConditions.forEach(requirement -> requirement.validateActiveWidget(client));
+		});
 	}
 
 	@Subscribe
@@ -438,12 +494,13 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		{
 			currentStep.makeWidgetOverlayHint(graphics, plugin);
 		}
-		WorldPoint activeWp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).getWorldPoint() : null;
+		DefinedPoint activeDp = (currentStep instanceof DetailedQuestStep) ? ((DetailedQuestStep) currentStep).getDefinedPoint(): null;
 		List<ItemRequirement> itemRequirements = requirements.stream()
 				.filter(ItemRequirement.class::isInstance)
 				.map(ItemRequirement.class::cast)
 				.collect(Collectors.toList());
-		renderInventory(graphics, activeWp, itemRequirements, false);
+		renderInventory(graphics, activeDp, itemRequirements, false);
+		renderBank(graphics, requirements);
 		for (AbstractWidgetHighlight widgetHighlights : widgetsToHighlight)
 		{
 			widgetHighlights.highlightChoices(graphics, client, plugin);
@@ -498,6 +555,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		return steps.values();
 	}
 
+	public HashMap<Requirement, QuestStep> getStepsMap()
+	{
+		return steps;
+	}
+
 	public ConditionalStep copy()
 	{
 		ConditionalStep newStep = new ConditionalStep(getQuestHelper(), steps.get(null));
@@ -509,5 +571,27 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 			.filter(Objects::nonNull)
 			.forEach(conditions -> newStep.addStep(conditions, steps.get(conditions)));
 		return newStep;
+	}
+
+	/// Set to true if this conditional step should pass through the current step's text in the sidebar
+	public void setShouldPassthroughText(boolean newPassthroughText)
+	{
+		this.passthroughText = newPassthroughText;
+	}
+
+	@Override
+	public List<String> getText()
+	{
+		if (passthroughText)
+		{
+			if (currentStep != null)
+			{
+				return currentStep.getText();
+			}
+
+			return steps.get(null).getText();
+		}
+
+		return super.getText();
 	}
 }

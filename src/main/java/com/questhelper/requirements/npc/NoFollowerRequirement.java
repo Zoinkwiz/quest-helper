@@ -27,9 +27,9 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.AbstractRequirement;
-import net.runelite.api.Client;
-
 import javax.annotation.Nonnull;
+import net.runelite.api.Client;
+import net.runelite.api.gameval.VarPlayerID;
 
 public class NoFollowerRequirement extends AbstractRequirement
 {
@@ -43,7 +43,7 @@ public class NoFollowerRequirement extends AbstractRequirement
 	@Override
 	public boolean check(Client client)
 	{
-		return client.getVarpValue(447) == -1;
+		return client.getVarpValue(VarPlayerID.FOLLOWER_NPC) == -1;
 	}
 
 	@Nonnull

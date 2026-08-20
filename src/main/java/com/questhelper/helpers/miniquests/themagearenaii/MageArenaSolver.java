@@ -49,7 +49,9 @@ public class MageArenaSolver
 {
 	@Setter
 	private Set<MageArenaSpawnLocation> possibleLocations;
+
 	@Nullable
+	@Setter
 	private WorldPoint lastWorldPoint;
 
 	public MageArenaSolver(Set<MageArenaSpawnLocation> possibleLocations)

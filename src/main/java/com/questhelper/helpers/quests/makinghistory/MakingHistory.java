@@ -150,7 +150,7 @@ public class MakingHistory extends BasicQuestHelper
 		portPhasmatysEntry.setTooltip(ectoTokens.getTooltip());
 
 		ringOfDueling = new ItemRequirement("Ring of Dueling", ItemCollections.RING_OF_DUELINGS);
-		enchantedKey = new KeyringRequirement("Enchanted key", configManager, KeyringCollection.ENCHANTED_KEY);
+		enchantedKey = new KeyringRequirement("Enchanted key", KeyringCollection.ENCHANTED_KEY);
 		enchantedKey.setTooltip("You can get another from the silver merchant in East Ardougne's market");
 
 		enchantedKeyHighlighted = new ItemRequirement("Enchanted key", ItemID.MAKINGHISTORY_KEY);
@@ -183,18 +183,18 @@ public class MakingHistory extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		talkedtoBlanin = new Conditions(LogicType.OR, new VarbitRequirement(1385, 1), new VarbitRequirement(1385, 2));
+		talkedtoBlanin = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.MAKINGHISTORY_WARR_PROG, 1), new VarbitRequirement(VarbitID.MAKINGHISTORY_WARR_PROG, 2));
 		talkedToDron = new VarbitRequirement(VarbitID.MAKINGHISTORY_WARR_PROG, 3, Operation.GREATER_EQUAL);
 
-		talkedToDroalak = new Conditions(LogicType.OR, new VarbitRequirement(1386, 2), new VarbitRequirement(1386, 1));
-		talkedToMelina = new Conditions(LogicType.OR, new VarbitRequirement(1386, 4), new VarbitRequirement(1386, 3));
-		gotScroll = new VarbitRequirement(1386, 5);
-		handedInScroll = new VarbitRequirement(1386, 6);
+		talkedToDroalak = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.MAKINGHISTORY_GHOST_PROG, 2), new VarbitRequirement(VarbitID.MAKINGHISTORY_GHOST_PROG, 1));
+		talkedToMelina = new Conditions(LogicType.OR, new VarbitRequirement(VarbitID.MAKINGHISTORY_GHOST_PROG, 4), new VarbitRequirement(VarbitID.MAKINGHISTORY_GHOST_PROG, 3));
+		gotScroll = new VarbitRequirement(VarbitID.MAKINGHISTORY_GHOST_PROG, 5);
+		handedInScroll = new VarbitRequirement(VarbitID.MAKINGHISTORY_GHOST_PROG, 6);
 
 		inCastle = new ZoneRequirement(castle);
 		gotKey = new VarbitRequirement(VarbitID.MAKINGHISTORY_TRADER_PROG, 1, Operation.GREATER_EQUAL);
 		gotChest = new VarbitRequirement(VarbitID.MAKINGHISTORY_TRADER_PROG, 2, Operation.GREATER_EQUAL);
-		handedInJournal = new VarbitRequirement(1384, 4);
+		handedInJournal = new VarbitRequirement(VarbitID.MAKINGHISTORY_TRADER_PROG, 4);
 		handedInEverything = new Conditions(handedInJournal, handedInScroll, talkedToDron);
 		finishedFrem = talkedToDron;
 		finishedGhost = new Conditions(LogicType.OR, handedInScroll, gotScroll);

@@ -35,6 +35,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import java.util.Arrays;
@@ -92,9 +93,9 @@ public class BalloonFlightStep extends DetailedOwnerStep
 			return;
 		}
 
-		int section = client.getVarbitValue(2884);
-		int xPos = client.getVarbitValue(2882);
-		int yPos = client.getVarbitValue(2883);
+		int section = client.getVarbitValue(VarbitID.ZEP_IF_CURRENT_MAP);
+		int xPos = client.getVarbitValue(VarbitID.ZEP_IF_SCREEN_DIST);
+		int yPos = client.getVarbitValue(VarbitID.ZEP_IF_BALLOON_HEIGHT);
 
 		if (sections.get(section) == null) return;
 		// If we've gone to next section before updating the pos, return

@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
@@ -47,9 +48,9 @@ public class ChestCodeStep extends QuestStep
 
 	private boolean SHOULD_PRESS_CONFIRM;
 
-	public ChestCodeStep(QuestHelper questHelper, String answer, int sizeOfLoop, int... targets)
+	public ChestCodeStep(QuestHelper questHelper, String objectName, String answer, int sizeOfLoop, int... targets)
 	{
-		super(questHelper, "Open the chest using the code " + answer + ".");
+		super(questHelper, "Open the " + objectName + " using the code " + answer + ".");
 		SIZE_OF_LOOP = sizeOfLoop;
 		NUMBER_OF_DIALS = targets.length;
 		buttonToPress = new int[NUMBER_OF_DIALS];
@@ -74,7 +75,7 @@ public class ChestCodeStep extends QuestStep
 	{
 		for (int i = 0; i < NUMBER_OF_DIALS; i++)
 		{
-			int START_VARCLIENTINT_POS = 1113;
+			int START_VARCLIENTINT_POS = VarClientID.COMBINATION_LOCK_VALUE_0;
 			int varcIntID = START_VARCLIENTINT_POS + i;
 			int START_DOWN_ARROW = 3;
 			int ARROW_INTERVAL = 7;

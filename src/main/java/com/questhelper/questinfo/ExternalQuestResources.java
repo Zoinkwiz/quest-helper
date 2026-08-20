@@ -28,6 +28,7 @@ public enum ExternalQuestResources
 	SHEEP_SHEARER("https://oldschool.runescape.wiki/w/Sheep_Shearer"),
 	SHIELD_OF_ARRAV_PHOENIX_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
 	SHIELD_OF_ARRAV_BLACK_ARM_GANG("https://oldschool.runescape.wiki/w/Shield_of_Arrav"),
+	THE_IDES_OF_MILK("https://oldschool.runescape.wiki/w/The_Ides_of_Milk"),
 	VAMPYRE_SLAYER("https://oldschool.runescape.wiki/w/Vampyre_Slayer"),
 	WITCHS_POTION("https://oldschool.runescape.wiki/w/Witch%27s_Potion"),
 	X_MARKS_THE_SPOT("https://oldschool.runescape.wiki/w/X_Marks_the_Spot"),
@@ -188,6 +189,12 @@ public enum ExternalQuestResources
 	THE_FINAL_DAWN("https://oldschool.runescape.wiki/w/The_Final_Dawn"),
 	SHADOWS_OF_CUSTODIA("https://oldschool.runescape.wiki/w/Shadows_of_Custodia"),
 	SCRAMBLED("https://oldschool.runescape.wiki/w/Scrambled!"),
+	PANDEMONIUM("https://oldschool.runescape.wiki/w/Pandemonium"),
+	PRYING_TIMES("https://oldschool.runescape.wiki/w/Prying_Times"),
+	CURRENT_AFFAIRS("https://oldschool.runescape.wiki/w/Current_Affairs"),
+	TROUBLED_TORTUGANS("https://oldschool.runescape.wiki/w/Troubled_Tortugans"),
+	THE_RED_REEF("https://oldschool.runescape.wiki/w/The_Red_Reef"),
+	THE_BLOOD_MOON_RISES("https://oldschool.runescape.wiki/w/The_Blood_Moon_Rises"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),
@@ -300,7 +307,9 @@ public enum ExternalQuestResources
 	// Skills
 	AGILITY("https://oldschool.runescape.wiki/w/Agility_training"),
 	WOODCUTTING_MEMBER("https://oldschool.runescape.wiki/w/Pay-to-play_Woodcutting_training"),
-	WOODCUTTING("https://oldschool.runescape.wiki/w/Free-to-play_Woodcutting_training");
+	WOODCUTTING("https://oldschool.runescape.wiki/w/Free-to-play_Woodcutting_training"),
+	SEA_CHARTING("https://oldschool.runescape.wiki/w/Sea_charting")
+	;
 
 	ExternalQuestResources()
 	{

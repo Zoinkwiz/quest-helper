@@ -76,7 +76,7 @@ public class DigStep extends DetailedQuestStep
 		{
 			return;
 		}
-		WorldPoint targetLocation = worldPoint;
+		WorldPoint targetLocation = definedPoint.getWorldPoint();
 		boolean shouldHighlightSpade = false;
 		switch (this.whenToHighlight)
 		{
@@ -96,12 +96,7 @@ public class DigStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (inCutscene)
-		{
-			return;
-		}
-
-		LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint localLocation = definedPoint.resolveLocalPoint(client);
 
 		if (localLocation == null)
 		{

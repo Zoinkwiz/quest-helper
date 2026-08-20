@@ -51,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -253,7 +254,7 @@ public class UndergroundPass extends BasicQuestHelper
 
 	private void setupConditions()
 	{
-		clothInBag = new VarbitRequirement(9138, 1);
+		clothInBag = new VarbitRequirement(VarbitID.UPASS_KOFTIK_OUTSIDE, 1);
 
 		inCastleFloor2 = new ZoneRequirement(castleFloor2);
 		inWestArdougne = new ZoneRequirement(westArdougne);
@@ -273,10 +274,10 @@ public class UndergroundPass extends BasicQuestHelper
 		isBeforeTrap3 = new ZoneRequirement(beforeTrap3);
 		isBeforeTrap4 = new ZoneRequirement(beforeTrap4);
 		isBeforeTrap5 = new ZoneRequirement(beforeTrap5);
-		usedOrb1 = new VarbitRequirement(9122, 1);
-		usedOrb2 = new VarbitRequirement(9121, 1);
-		usedOrb3 = new VarbitRequirement(9120, 1);
-		usedOrb4 = new VarbitRequirement(9119, 1);
+		usedOrb1 = new VarbitRequirement(VarbitID.UPASS_CAVEORB_4, 1);
+		usedOrb2 = new VarbitRequirement(VarbitID.UPASS_CAVEORB_3, 1);
+		usedOrb3 = new VarbitRequirement(VarbitID.UPASS_CAVEORB_2, 1);
+		usedOrb4 = new VarbitRequirement(VarbitID.UPASS_CAVEORB_1, 1);
 		destroyedAllOrbs = new Conditions(usedOrb1, usedOrb2, usedOrb3, usedOrb4);
 
 		haveOrb1 = new Conditions(LogicType.OR, usedOrb1, orb1);
@@ -295,13 +296,13 @@ public class UndergroundPass extends BasicQuestHelper
 		isAfterMaze = new ZoneRequirement(afterMaze, afterMazeShortcut);
 		isInUnicornArea = new ZoneRequirement(inUnicornArea);
 		isInUnicornArea2 = new ZoneRequirement(inUnicornArea2);
-		usedHorn = new VarbitRequirement(9136, 1);
+		usedHorn = new VarbitRequirement(VarbitID.UPASS_CAVE_UNICORN, 1);
 		haveUnicornHorn = new Conditions(LogicType.OR, unicornHorn, usedHorn);
 		isInKnightsArea = new ZoneRequirement(inKnightsArea1, inKnightsArea2, inKnightsArea3);
 
-		usedBadgeJerro = new VarbitRequirement(9128, 1);
-		usedBadgeCarl = new VarbitRequirement(9129, 1);
-		usedBadgeHarry = new VarbitRequirement(9130, 1);
+		usedBadgeJerro = new VarbitRequirement(VarbitID.UPASS_PALADINBADGE_1, 1);
+		usedBadgeCarl = new VarbitRequirement(VarbitID.UPASS_PALADINBADGE_2, 1);
+		usedBadgeHarry = new VarbitRequirement(VarbitID.UPASS_PALADINBADGE_3, 1);
 
 		haveBadgeCarl = new Conditions(LogicType.OR, badgeCarl, usedBadgeCarl);
 		haveBadgeHarry = new Conditions(LogicType.OR, badgeHarry, usedBadgeHarry);
@@ -310,12 +311,12 @@ public class UndergroundPass extends BasicQuestHelper
 		isInFinalArea = new ZoneRequirement(inFinalArea);
 		isInDwarfCavern = new ZoneRequirement(inDwarfCavern);
 		haveKlanksGauntlets = klanksGauntlets;
-		givenWitchCat = new VarbitRequirement(9123, 1);
-		dollImbued = new VarbitRequirement(9118, 1);
-		pouredBrew = new VarbitRequirement(9134, 1);
-		dollAshed = new VarbitRequirement(9117, 1);
-		kalragKilled = new VarbitRequirement(9115, 1);
-		doveSmeared = new VarbitRequirement(9116, 1);
+		givenWitchCat = new VarbitRequirement(VarbitID.UPASS_GAVECAT, 1);
+		dollImbued = new VarbitRequirement(VarbitID.UPASS_SHADOW_ON_DOLL, 1);
+		pouredBrew = new VarbitRequirement(VarbitID.UPASS_BREW_TOMB, 1);
+		dollAshed = new VarbitRequirement(VarbitID.UPASS_ASHES_ON_DOLL, 1);
+		kalragKilled = new VarbitRequirement(VarbitID.UPASS_VENOM_ON_DOLL, 1);
+		doveSmeared = new VarbitRequirement(VarbitID.UPASS_DOVE_ON_DOLL, 1);
 		isInTemple = new ZoneRequirement(inTemple);
 		isInPostIbanArea = new ZoneRequirement(inPostIbanArea);
 	}

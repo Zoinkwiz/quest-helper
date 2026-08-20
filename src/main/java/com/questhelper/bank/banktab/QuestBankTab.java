@@ -37,6 +37,8 @@ import net.runelite.api.events.*;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -77,12 +79,12 @@ public class QuestBankTab
 	private static final int LINE_VERTICAL_SPACING = 5;
 	private static final int LINE_HEIGHT = 2;
 	private static final int TEXT_HEIGHT = 15;
-	private static final int EMPTY_BANK_SLOT_ID = 6512;
+	private static final int EMPTY_BANK_SLOT_ID = ItemID.BLANKOBJECT;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
-	private static final int CROSS_SPRITE_ID = 1216;
-	private static final int TICK_SPRITE_ID = 1217;
+	private static final int CROSS_SPRITE_ID = SpriteID.Checkbox.CROSSED;
+	private static final int TICK_SPRITE_ID = SpriteID.Checkbox.CHECKED;
 
 	private final ArrayList<Widget> addedWidgets = new ArrayList<>();
 
@@ -154,7 +156,7 @@ public class QuestBankTab
 	@Subscribe
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
-		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 		String QUEST_BANK_TAG = "quest-helper";
 
 		if (!input.equals(QUEST_BANK_TAG) || questHelper.getSelectedQuest() == null)
@@ -162,7 +164,27 @@ public class QuestBankTab
 			return;
 		}
 		event.consume();
-		updateGrandExchangeResults();
+
+		var itemsToTag = questHelper.getSelectedQuest().getCurrentStep().getActiveStep().getGeInterfaceIcon();
+		if (geButtonWidget.notAtGE())
+		{
+			if (itemsToTag != null)
+			{
+				updateGrandExchangeUiForSpecificItem(itemsToTag);
+			}
+		}
+		else
+		{
+			updateGrandExchangeResults();
+		}
+	}
+
+	public void updateGrandExchangeUiForSpecificItem(List<Integer> itemToTag)
+	{
+		client.setGeSearchResultIndex(0);
+		client.setGeSearchResultCount(itemToTag.size());
+
+		client.setGeSearchResultIds(Shorts.toArray(itemToTag));
 	}
 
 	public void updateGrandExchangeResults()
@@ -277,18 +299,12 @@ public class QuestBankTab
 					return;
 				}
 
-				idx = potionStorage.find(w.getItemId());
-				if (idx == VIAL_IDX)
+				idx = potionStorage.getIdx(w.getItemId());
+				if (idx > -1)
 				{
 					potionStorage.prepareWidgets();
 					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
-					menu.setParam0(VIAL_IDX);
-				}
-				else if (idx > -1)
-				{
-					potionStorage.prepareWidgets();
-					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
-					menu.setParam0(idx * COMPONENTS_PER_POTION);
+					menu.setParam0(idx);
 				}
 			}
 		}
@@ -400,7 +416,7 @@ public class QuestBankTab
 		List<Integer> itemList = new ArrayList<>();
 		for (Widget itemWidget : containerChildren)
 		{
-			if (itemWidget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
+			if (itemWidget.getSpriteId() == SpriteID.TRADEBACKING_DARK
 				|| itemWidget.getText().contains("Tab"))
 			{
 				itemWidget.setHidden(true);
@@ -508,7 +524,7 @@ public class QuestBankTab
 			// ~bankmain_drawitem uses 6512 for empty item slots
 			if (!widget.isSelfHidden() &&
 					(widget.getItemId() > -1 && widget.getItemId() != ItemID.BLANKOBJECT) ||
-					(widget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND || widget.getText().contains("Tab"))
+					(widget.getSpriteId() == SpriteID.TRADEBACKING_DARK || widget.getText().contains("Tab"))
 			)
 			{
 				widget.setHidden(true);
@@ -578,41 +594,31 @@ public class QuestBankTab
 						break;
 				}
 				// ~script669
-				int opIdx = 0;
-				c.setAction(opIdx++, "Withdraw-" + suffix);
+				c.setAction(0, "Withdraw-" + suffix);
 				if (quantityType != 0)
 				{
-					c.setAction(opIdx++, "Withdraw-1");
+					c.setAction(1, "Withdraw-1");
 				}
-				if (quantityType != 1)
+				c.setAction(2, "Withdraw-5");
+				c.setAction(3, "Withdraw-10");
+				if (requestQty > 0)
 				{
-					c.setAction(opIdx++, "Withdraw-5");
+					c.setAction(4, "Withdraw-" + requestQty);
 				}
-				if (quantityType != 2)
-				{
-					c.setAction(opIdx++, "Withdraw-10");
-				}
-				if (quantityType != 3 && requestQty > 0)
-				{
-					c.setAction(opIdx++, "Withdraw-" + requestQty);
-				}
-				c.setAction(opIdx++, "Withdraw-X");
-				if (quantityType != 4)
-				{
-					c.setAction(opIdx++, "Withdraw-All");
-				}
-				c.setAction(opIdx++, "Withdraw-All-but-1");
+				c.setAction(5, "Withdraw-X");
+				c.setAction(6, "Withdraw-All");
+				c.setAction(7, "Withdraw-All-but-1");
 				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1 && def.getIntValue(ParamID.BANK_AUTOCHARGE) != -1)
 				{
-					c.setAction(opIdx++, "Configure-Charges");
+					c.setAction(8, "Configure-Charges");
 				}
 				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
 				{
-					c.setAction(opIdx++, "Placeholder");
+					c.setAction(9, "Placeholder");
 				}
 				if (!isPotStorage)
 				{
-					c.setAction(9, "Examine");
+					c.setAction(10, "Examine");
 				}
 				c.setOpacity(0);
 			}
@@ -757,7 +763,7 @@ public class QuestBankTab
 
 	private int addSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)
 	{
-		addedWidgets.add(createGraphic(itemContainer, SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND, ITEM_ROW_START, totalSectionsHeight));
+		addedWidgets.add(createGraphic(itemContainer, SpriteID.TRADEBACKING_DARK, ITEM_ROW_START, totalSectionsHeight));
 		addedWidgets.add(createText(itemContainer, title, new Color(228, 216, 162).getRGB(), (ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING) + ITEM_ROW_START
 			, TEXT_HEIGHT, ITEM_ROW_START, totalSectionsHeight + LINE_VERTICAL_SPACING));
 

@@ -53,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.gameval.VarPlayerID;
 
 import java.util.ArrayList;
@@ -149,9 +150,9 @@ public class FaladorElite extends ComplexStateQuestHelper
 
 		faladorTeleport = new TeleportItemRequirement("Multiple Teleports to Falador", ItemID.POH_TABLET_FALADORTELEPORT, -1);
 
-		magicTreeNearbyNotCheckedVar = new VarbitRequirement(4471, 60);
-		magicTreeNearbyCheckedVar = new VarbitRequirement(4471, 61);
-		stumpNearbyVar = new VarbitRequirement(4471, 62);
+		magicTreeNearbyNotCheckedVar = new VarbitRequirement(VarbitID.WESTERN_DIARY_EASY_COMPLETE, 60);
+		magicTreeNearbyCheckedVar = new VarbitRequirement(VarbitID.WESTERN_DIARY_EASY_COMPLETE, 61);
+		stumpNearbyVar = new VarbitRequirement(VarbitID.WESTERN_DIARY_EASY_COMPLETE, 62);
 
 		inAirAltar = new ZoneRequirement(airAltar);
 		inFaladorCastle1 = new ZoneRequirement(faladorCastle1);

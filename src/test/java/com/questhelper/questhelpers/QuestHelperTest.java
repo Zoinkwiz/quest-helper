@@ -10,17 +10,19 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.statemanagement.AchievementDiaryStepManager;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
+import com.questhelper.steps.QuestSyncStep;
+import com.questhelper.steps.ReorderableConditionalStep;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import com.questhelper.steps.UnreachableStep;
+import net.runelite.api.Skill;
+import net.runelite.api.gameval.VarbitID;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -180,13 +182,26 @@ public class QuestHelperTest extends MockedTest
 		}
 	}
 
-	void checkStep(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, QuestStep step) {
-		when(helper.getCurrentStep()).thenReturn(step);
-
+	void checkStep(QuestHelper helper, QuestOverviewPanel questOverviewPanel, boolean shouldError, QuestStep step)
+	{
 		var rawText = step.getText();
 		var text = rawText == null ? "" : String.join("\n", rawText);
 
 		questOverviewPanel.updateHighlight(this.client, step); // getactivestep?
+
+		var isAllCollapsed = questOverviewPanel.isAllCollapsed();
+		if (isAllCollapsed)
+		{
+			// Before failing this step, try again but with the puzzle helper disabled.
+			// This can be useful for steps that want to show the non-solving step standalone if all the solving steps are hidden.
+			when(questHelperConfig.solvePuzzles()).thenReturn(false);
+
+			questOverviewPanel.updateHighlight(this.client, step);
+			System.out.format("Step %s failed initially when puzzle solver was enabled. Try again without puzzle solver\n", text);
+			isAllCollapsed = questOverviewPanel.isAllCollapsed();
+
+			when(questHelperConfig.solvePuzzles()).thenReturn(true);
+		}
 
 		// All steps must have at least one category/step that's erected
 		// If all panels are collapsed, it means the step this fails on needs to be either:
@@ -194,11 +209,11 @@ public class QuestHelperTest extends MockedTest
 		// 2. Added as a panel step
 		if (shouldError)
 		{
-			assertFalse(questOverviewPanel.isAllCollapsed(), String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
+			assertFalse(isAllCollapsed, String.format("Quest(%s) step(%s) is missing a side panel step", helper.getQuest().getName(), text));
 		}
 		else
 		{
-			if (questOverviewPanel.isAllCollapsed())
+			if (isAllCollapsed)
 			{
 				System.out.format("For quest %s, step '%s' is missing sub steps or should be added to panel\n", helper.getQuest(), text);
 			}
@@ -209,14 +224,52 @@ public class QuestHelperTest extends MockedTest
 	{
 		assertNotNull(step);
 
-		if (step instanceof OwnerStep)
+		if (step instanceof UnreachableStep)
+		{
+			// We allow unreachable steps to be unreachable
+			return;
+		}
+
+		if (step instanceof QuestSyncStep)
+		{
+			// We allow the quest sync steps to miss a sidebar step
+			return;
+		}
+
+		if (step instanceof ReorderableConditionalStep)
 		{
 			helper.startUpStep(step);
-			for (var innerStep : ((OwnerStep) step).getSteps())
+			for (var e : ((ReorderableConditionalStep) step).getStepsMap().entrySet())
 			{
-				if (checkedSteps.contains(innerStep)) continue;
+				var req = e.getKey();
+				var innerStep = e.getValue();
+				if (checkedSteps.contains(innerStep))
+				{
+					continue;
+				}
 				checkedSteps.add(innerStep);
+				helper.startUpStep(innerStep);
+				// For reorderable steps, we _always_ allow the default-state to not have a sidebar step
+				var shouldActuallyError = req != null && shouldError;
+				checkSteps(helper, questOverviewPanel, shouldActuallyError, checkedSteps, innerStep);
+				helper.shutDownStep();
+			}
+			helper.shutDownStep();
+		}
+		else if (step instanceof OwnerStep)
+		{
+			helper.startUpStep(step);
+			var steps = ((OwnerStep) step).getSteps();
+			for (var innerStep : steps)
+			{
+				if (checkedSteps.contains(innerStep))
+				{
+					continue;
+				}
+				checkedSteps.add(innerStep);
+				helper.startUpStep(innerStep);
 				checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, innerStep);
+				helper.shutDownStep();
 			}
 			helper.shutDownStep();
 		}
@@ -275,16 +328,80 @@ public class QuestHelperTest extends MockedTest
 	{
 		var optedInQuests = Set.of(
 			QuestHelperQuest.STRONGHOLD_OF_SECURITY,
+			QuestHelperQuest.DWARF_CANNON,
+			QuestHelperQuest.MERLINS_CRYSTAL,
+			QuestHelperQuest.X_MARKS_THE_SPOT,
+			QuestHelperQuest.A_PORCINE_OF_INTEREST,
+			QuestHelperQuest.SHADOW_OF_THE_STORM,
+			QuestHelperQuest.PANDEMONIUM,
+			QuestHelperQuest.FALLEN_FROM_GRACE,
+			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
+			QuestHelperQuest.WATERFALL_QUEST,
+			QuestHelperQuest.THE_DIG_SITE,
+			QuestHelperQuest.ROMEO__JULIET,
+			QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 			QuestHelperQuest.SHEEP_SHEARER,
+			QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
+			QuestHelperQuest.LOST_CITY,
+			QuestHelperQuest.BIOHAZARD,
+			QuestHelperQuest.THE_GOLEM,
+			QuestHelperQuest.DRUIDIC_RITUAL,
+			QuestHelperQuest.MURDER_MYSTERY,
+			QuestHelperQuest.PLAGUE_CITY,
+			QuestHelperQuest.CLOCK_TOWER,
+			QuestHelperQuest.SHEEP_HERDER,
+			QuestHelperQuest.RUNE_MYSTERIES,
+			QuestHelperQuest.BELOW_ICE_MOUNTAIN,
+			QuestHelperQuest.THE_RED_REEF,
+			QuestHelperQuest.HAZEEL_CULT,
+			QuestHelperQuest.FIGHT_ARENA,
+			QuestHelperQuest.DEATH_ON_THE_ISLE,
+			QuestHelperQuest.TREE_GNOME_VILLAGE,
+			QuestHelperQuest.SHILO_VILLAGE,
+			QuestHelperQuest.GERTRUDES_CAT,
+			QuestHelperQuest.MONKS_FRIEND,
+			QuestHelperQuest.DADDYS_HOME,
+			QuestHelperQuest.GOBLIN_DIPLOMACY,
+			QuestHelperQuest.PRYING_TIMES,
+			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
-			QuestHelperQuest.PRINCE_ALI_RESCUE
+			QuestHelperQuest.THE_KNIGHTS_SWORD,
+			QuestHelperQuest.CLIENT_OF_KOUREND,
+			QuestHelperQuest.JUNGLE_POTION,
+			QuestHelperQuest.ARDOUGNE_EASY,
+			QuestHelperQuest.TROUBLED_TORTUGANS,
+			QuestHelperQuest.CHILDREN_OF_THE_SUN,
+			QuestHelperQuest.DEMON_SLAYER,
+			QuestHelperQuest.DORICS_QUEST,
+			QuestHelperQuest.RECRUITMENT_DRIVE,
+			QuestHelperQuest.MISTHALIN_MYSTERY,
+			QuestHelperQuest.ONE_SMALL_FAVOUR,
+			QuestHelperQuest.SCORPION_CATCHER,
+			QuestHelperQuest.CURRENT_AFFAIRS,
+			QuestHelperQuest.SEA_SLUG,
+			QuestHelperQuest.HOLY_GRAIL,
+			QuestHelperQuest.THE_PATH_OF_GLOUPHRIE,
+			QuestHelperQuest.PRIEST_IN_PERIL,
+			QuestHelperQuest.THE_HEART_OF_DARKNESS,
+			QuestHelperQuest.THE_LOST_TRIBE,
+			QuestHelperQuest.NATURE_SPIRIT,
+			QuestHelperQuest.PRINCE_ALI_RESCUE,
+			QuestHelperQuest.THE_BLOOD_MOON_RISES,
+			QuestHelperQuest.VAMPYRE_SLAYER,
+			QuestHelperQuest.HERB_RUN,
+			QuestHelperQuest.THE_IDES_OF_MILK
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest
-		Set<QuestHelperQuest> exclusiveQuests = Set.of();
+		Set<QuestHelperQuest> exclusiveQuests = Set.of(
+		);
 
 		when(questHelperConfig.solvePuzzles()).thenReturn(true);
+
+		when(client.getRealSkillLevel(Skill.FARMING)).thenReturn(99);
+		when(client.getIntStack()).thenReturn(new int[]{2});
+		when(client.getVarbitValue(VarbitID.MORYTANIA_ELITE_REWARD)).thenReturn(1);
 
 		AchievementDiaryStepManager.setup(configManager);
 
@@ -299,28 +416,28 @@ public class QuestHelperTest extends MockedTest
 				}
 			}
 
-			var helper = Mockito.spy(quest.getQuestHelper());
+			var helper = quest.getQuestHelper();
 			helper.setQuest(quest);
 			if (quest.getPlayerQuests() != null)
 			{
 				continue;
 			}
 
-			this.injector.injectMembers(helper);
-			helper.setInjector(this.injector);
-			helper.setQuestHelperPlugin(questHelperPlugin);
-			helper.setConfig(questHelperConfig);
-			helper.init();
-			helper.startUp(questHelperConfig);
-
 			var shouldError = optedInQuests.contains(quest);
 
 			when(this.questHelperPlugin.getSelectedQuest()).thenReturn(helper);
 
-			var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
-
 			if (helper instanceof BasicQuestHelper)
 			{
+				this.injector.injectMembers(helper);
+				helper.setInjector(this.injector);
+				helper.setQuestHelperPlugin(questHelperPlugin);
+				helper.setConfig(questHelperConfig);
+				helper.init();
+				helper.startUp(questHelperConfig);
+
+				var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
 				questOverviewPanel.addQuest(helper, false);
 				var basicHelper = (BasicQuestHelper) helper;
 				var steps = basicHelper.getStepList();
@@ -328,7 +445,10 @@ public class QuestHelperTest extends MockedTest
 				for (var e : sortedSteps)
 				{
 					var step = e.getValue();
-					if (checkedSteps.contains(step)) continue;
+					if (checkedSteps.contains(step))
+					{
+						continue;
+					}
 					checkedSteps.add(step);
 					helper.startUpStep(step);
 
@@ -339,7 +459,18 @@ public class QuestHelperTest extends MockedTest
 			}
 			else if (helper instanceof ComplexStateQuestHelper)
 			{
-				// currently unsupported helper type
+				this.injector.injectMembers(helper);
+				helper.setInjector(this.injector);
+				helper.setQuestHelperPlugin(questHelperPlugin);
+				helper.setConfig(questHelperConfig);
+				helper.init();
+				helper.startUp(questHelperConfig);
+
+				var questOverviewPanel = new QuestOverviewPanel(this.questHelperPlugin, this.questHelperPlugin.getQuestManager());
+
+				questOverviewPanel.addQuest(helper, false);
+				var complexHelper = (ComplexStateQuestHelper) helper;
+				checkSteps(helper, questOverviewPanel, shouldError, checkedSteps, complexHelper.getCurrentStep());
 			}
 			else
 			{

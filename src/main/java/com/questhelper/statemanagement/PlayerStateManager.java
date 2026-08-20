@@ -26,29 +26,33 @@ package com.questhelper.statemanagement;
 
 import com.questhelper.collections.KeyringCollection;
 import com.questhelper.domain.AccountType;
-import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.managers.QuestContainerManager;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.QuestCompletedWidget;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ServerNpcLoot;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
+import java.util.ArrayList;
 
 @Singleton
 public class PlayerStateManager
 {
+	private final KeyringCollection[] keyringKeys = KeyringCollection.values();
+
 	@Inject
 	Client client;
 
@@ -56,17 +60,12 @@ public class PlayerStateManager
 	ConfigManager configManager;
 
 	@Inject
-	EventBus eventBus;
-
-	@Inject
 	QuestCompletedWidget playerQuestCompleteWidget;
 
-	@Inject
-	BarbarianTrainingStateTracker barbarianTrainingStateTracker;
-
-	List<KeyringRequirement> keyringKeys;
-
 	WorldPoint lastPlayerPos = null;
+
+	private boolean loggedInStateKnown = false;
+	private RuneScapeProfileType worldType;
 
 	/**
 	 * The type of the logged in account (e.g. ironman, hardcore ironman)
@@ -77,42 +76,44 @@ public class PlayerStateManager
 
 	public void startUp()
 	{
-		keyringKeys = KeyringCollection.allKeyRequirements(configManager);
 		AchievementDiaryStepManager.setup(configManager);
-		barbarianTrainingStateTracker.startUp(configManager, eventBus);
 	}
 
 	public void shutDown()
 	{
-		barbarianTrainingStateTracker.shutDown(eventBus);
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (keyringKeys == null || chatMessage.getType() != ChatMessageType.GAMEMESSAGE) return;
+		if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE) return;
 		if (chatMessage.getMessage().contains("to your key ring."))
 		{
-			for (KeyringRequirement keyringKey : keyringKeys)
+			for (var keyringKey : keyringKeys)
 			{
 				if (chatMessage.getMessage().contains("You add the " + keyringKey.chatboxText()))
 				{
-					keyringKey.setConfigValue("true");
+					keyringKey.setHasKeyOnKeyRing(configManager, true);
+
+					QuestContainerManager.getKeyRingData().add(client.getTickCount(), keyringKey.getItemID(), 1);
+					break;
 				}
 			}
 		}
-		if (chatMessage.getMessage().contains("from your key ring."))
+		else if (chatMessage.getMessage().contains("from your key ring."))
 		{
-			for (KeyringRequirement keyringKey : keyringKeys)
+			for (var keyringKey : keyringKeys)
 			{
 				if (chatMessage.getMessage().contains("You remove the " + keyringKey.chatboxText()))
 				{
-					keyringKey.setConfigValue("false");
+					keyringKey.setHasKeyOnKeyRing(configManager, false);
+
+					QuestContainerManager.getKeyRingData().removeByItemID(client.getTickCount(), keyringKey.getItemID());
+					break;
 				}
 			}
 		}
-
-		if (chatMessage.getMessage().contains("Achievement Diary Stage Task - "))
+		else if (chatMessage.getMessage().contains("Achievement Diary Stage Task - "))
 		{
 			AchievementDiaryStepManager.check(client);
 		}
@@ -133,13 +134,15 @@ public class PlayerStateManager
 				}
 			}
 			lastPlayerPos = newPos;
+
+			AchievementDiaryStepManager.check(client);
 		}
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.ACCOUNT_TYPE) {
+		if (event.getVarbitId() == VarbitID.IRONMAN) {
 			var newAccountType = AccountType.get(event.getValue());
 			if (newAccountType == null) {
 				// The account type value is invalid, leave previous account type as is
@@ -150,6 +153,7 @@ public class PlayerStateManager
 		}
 	}
 
+
 	public String getPlayerName()
 	{
 		if (client.getLocalPlayer() == null)
@@ -157,5 +161,61 @@ public class PlayerStateManager
 			return null;
 		}
 		return client.getLocalPlayer().getName();
+	}
+
+	public void loadInitialStateFromConfig()
+	{
+		if (loggedInStateKnown)
+		{
+			return;
+		}
+
+		var localPlayer = client.getLocalPlayer();
+		if (localPlayer != null && localPlayer.getName() != null)
+		{
+			loggedInStateKnown = true;
+			loadState();
+		}
+	}
+
+	private void loadState()
+	{
+		// Only re-load from config if loading from a new profile
+		if (!RuneScapeProfileType.getCurrent(client).equals(worldType))
+		{
+			// Load key ring state from config
+			loadKeyRingFromConfig();
+		}
+	}
+
+	private void loadKeyRingFromConfig()
+	{
+		var keys = new ArrayList<Item>();
+
+		for (var keyringKey : keyringKeys)
+		{
+			if (keyringKey.hasKeyOnKeyRing(configManager))
+			{
+				keys.add(new Item(keyringKey.getItemID(), 1));
+			}
+		}
+
+		QuestContainerManager.getKeyRingData().update(client.getTickCount(), keys.toArray(new Item[0]));
+	}
+
+	public void emptyState()
+	{
+		worldType = null;
+	}
+
+	public void setUnknownInitialState()
+	{
+		loggedInStateKnown = false;
+	}
+
+	@Subscribe
+	public void onServerNpcLoot(ServerNpcLoot event)
+	{
+		AchievementDiaryStepManager.onServerNpcLoot(event);
 	}
 }

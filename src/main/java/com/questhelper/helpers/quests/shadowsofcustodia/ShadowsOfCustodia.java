@@ -256,7 +256,7 @@ public class ShadowsOfCustodia extends BasicQuestHelper
 		enterCave2 = enterCave.copy();
 		enterCave2.addSubSteps(climbDownstairs);
 
-		var killCreatures = new NpcStep(this, NpcID.SOC_QUEST_JUVENILE, new WorldPoint(1337, 9753, 0), "Kill the strange creatures. Protect from Melee works to avoid all damage.", true);
+		var killCreatures = new NpcStep(this, NpcID.SOC_QUEST_JUVENILE, new WorldPoint(1337, 9753, 0), "Kill the strange creatures. Protect from Melee works to avoid most damage.", true);
 
 		talkToAntos = new NpcStep(this, NpcID.SOC_ANTOS, new WorldPoint(1337, 9753, 0), "Talk to Antos in the eastern part of the cave, ready to fight three Strange creatures. Protect from Melee works to avoid all damage.");
 		talkToAntos.addSubSteps(killCreatures);

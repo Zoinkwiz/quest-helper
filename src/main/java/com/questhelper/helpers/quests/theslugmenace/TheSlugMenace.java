@@ -50,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -167,7 +168,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		pageFragment3 = new ItemRequirement("Fragment 3", ItemID.SLUG2_PAGE4C);
 		pageFragment3.setHighlightInInventory(true);
 
-		receivedFragments = new VarbitRequirement(2619, 1);
+		receivedFragments = new VarbitRequirement(VarbitID.SLUG2_TORNPAGES, 1);
 		glue = new ItemRequirement("Sea slug glue", ItemID.SLUG2_SLUG_PASTE);
 		glue.setHighlightInInventory(true);
 
@@ -179,11 +180,11 @@ public class TheSlugMenace extends BasicQuestHelper
 
 		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
 
-		usedAirRune = new VarbitRequirement(2623, 1);
-		usedEarthRune = new VarbitRequirement(2622, 1);
-		usedWaterRune = new VarbitRequirement(2625, 1);
-		usedFireRune = new VarbitRequirement(2624, 1);
-		usedMindRune = new VarbitRequirement(2626, 1);
+		usedAirRune = new VarbitRequirement(VarbitID.SLUG2_USED_AIR_RUNE, 1);
+		usedEarthRune = new VarbitRequirement(VarbitID.SLUG2_USED_EARTH_RUNE, 1);
+		usedWaterRune = new VarbitRequirement(VarbitID.SLUG2_USED_WATER_RUNE, 1);
+		usedFireRune = new VarbitRequirement(VarbitID.SLUG2_USED_FIRE_RUNE, 1);
+		usedMindRune = new VarbitRequirement(VarbitID.SLUG2_USED_MIND_RUNE, 1);
 
 		airRune = new ItemRequirement("Air rune", ItemID.SLUG2_RUNE_AIR).hideConditioned(usedAirRune);
 		earthRune = new ItemRequirement("Earth rune", ItemID.SLUG2_RUNE_EARTH).hideConditioned(usedEarthRune);
@@ -272,31 +273,31 @@ public class TheSlugMenace extends BasicQuestHelper
 
 	public void setupConditions()
 	{
-		talkedToHolgart = new VarbitRequirement(2614, 1);
-		talkedToHobb = new VarbitRequirement(2615, 1);
-		talkedToMaledict = new VarbitRequirement(2616, 1);
-		talkedToAllImportantPeople = new VarbitRequirement(2617, 7);
+		talkedToHolgart = new VarbitRequirement(VarbitID.SLUG2_NPC_TRACK1, 1);
+		talkedToHobb = new VarbitRequirement(VarbitID.SLUG2_NPC_TRACK2, 1);
+		talkedToMaledict = new VarbitRequirement(VarbitID.SLUG2_NPC_TRACK3, 1);
+		talkedToAllImportantPeople = new VarbitRequirement(VarbitID.SLUG2_NPC_ALLTRACK, 7);
 		inHobgoblinDungeon = new ZoneRequirement(hobgoblinDungeon);
 		inSeaSlugDungeon = new ZoneRequirement(seaSlugDungeon);
-		openedWall = new VarbitRequirement(2618, 1);
+		openedWall = new VarbitRequirement(VarbitID.SLUG2_DOORBIT, 1);
 
 		onPlatform = new ZoneRequirement(platform);
 
 		puzzleUp = new WidgetPresenceRequirement(460, 8);
 
-		repairedPage = new VarbitRequirement(2611, 1);
+		repairedPage = new VarbitRequirement(VarbitID.SLUG2_FIXED_PAGE, 1);
 
-		pickedUpSlug = new VarbitRequirement(2631, 1);
+		pickedUpSlug = new VarbitRequirement(VarbitID.SLUG2_HAVESLUG, 1);
 
-		hasOrUsedAirRune = new Conditions(LogicType.OR, airRune.alsoCheckBank(questBank), usedAirRune);
-		hasOrUsedWaterRune = new Conditions(LogicType.OR, waterRune.alsoCheckBank(questBank), usedWaterRune);
-		hasOrUsedEarthRune = new Conditions(LogicType.OR, earthRune.alsoCheckBank(questBank), usedEarthRune);
-		hasOrUsedFireRune = new Conditions(LogicType.OR, fireRune.alsoCheckBank(questBank), usedFireRune);
-		hasOrUsedMindRune = new Conditions(LogicType.OR, mindRune.alsoCheckBank(questBank), usedMindRune);
+		hasOrUsedAirRune = new Conditions(LogicType.OR, airRune.alsoCheckBank(), usedAirRune);
+		hasOrUsedWaterRune = new Conditions(LogicType.OR, waterRune.alsoCheckBank(), usedWaterRune);
+		hasOrUsedEarthRune = new Conditions(LogicType.OR, earthRune.alsoCheckBank(), usedEarthRune);
+		hasOrUsedFireRune = new Conditions(LogicType.OR, fireRune.alsoCheckBank(), usedFireRune);
+		hasOrUsedMindRune = new Conditions(LogicType.OR, mindRune.alsoCheckBank(), usedMindRune);
 
 		hasAllRunes = new Conditions(hasOrUsedAirRune, hasOrUsedEarthRune, hasOrUsedFireRune, hasOrUsedMindRune, hasOrUsedWaterRune);
 
-		usedAllRunes = new VarbitRequirement(2627, 31);
+		usedAllRunes = new VarbitRequirement(VarbitID.SLUG2_USED_RUNES, 31);
 	}
 
 	public void setupSteps()

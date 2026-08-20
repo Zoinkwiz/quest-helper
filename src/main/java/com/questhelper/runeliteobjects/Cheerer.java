@@ -30,6 +30,7 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectMan
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 
@@ -51,9 +52,10 @@ public class Cheerer
 
 	private static void createWOM(RuneliteObjectManager runeliteObjectManager, Client client)
 	{
-		WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
-		WorldPoint pointAbovePlayer = new WorldPoint(playerPos.getX(), playerPos.getY() + 1, playerPos.getPlane());
-		FakeNpc wiseOldMan = runeliteObjectManager.createFakeNpc("global", wiseOldManOutfit(client), pointAbovePlayer, 862);
+		// Spawn the initial NPC in lumbridge.
+		// When the NPC is activated from the player completing a quest, we will always update the position anyway.
+		var spawnPos = new WorldPoint(3223, 3218, 0);
+		FakeNpc wiseOldMan = runeliteObjectManager.createFakeNpc("global", wiseOldManOutfit(client), spawnPos, AnimationID.EMOTE_CHEER);
 		wiseOldMan.setName("Wise Old Man");
 		wiseOldMan.setExamine("Loves questing.");
 		wiseOldMan.addExamineAction(runeliteObjectManager);
@@ -82,9 +84,10 @@ public class Cheerer
 
 	private static void createZoinkwiz(RuneliteObjectManager runeliteObjectManager, Client client)
 	{
-		WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
-		WorldPoint pointAbovePlayer = new WorldPoint(playerPos.getX(), playerPos.getY() + 1, playerPos.getPlane());
-		FakeNpc zoinkwiz = runeliteObjectManager.createFakeNpc("global", zoinkwizOutfit(client), pointAbovePlayer, 862);
+		// Spawn the initial NPC in lumbridge.
+		// When the NPC is activated from the player completing a quest, we will always update the position anyway.
+		var spawnPos = new WorldPoint(3223, 3218, 0);
+		FakeNpc zoinkwiz = runeliteObjectManager.createFakeNpc("global", zoinkwizOutfit(client), spawnPos, AnimationID.EMOTE_CHEER);
 		zoinkwiz.setName("Zoinkwiz");
 		zoinkwiz.setExamine("Loves questing.");
 		zoinkwiz.addExamineAction(runeliteObjectManager);

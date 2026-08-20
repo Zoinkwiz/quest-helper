@@ -42,11 +42,11 @@ import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import net.runelite.api.Prayer;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 
 import java.util.Arrays;
@@ -267,10 +267,10 @@ public class TarnRoute extends ConditionalStep
 		searchWall2Room6 = new ObjectStep(questHelper, ObjectID.LOTR_TRAP_SPEAR_WALL_LVL1, new WorldPoint(3154, 4605, 1), "Follow the path to the east.");
 
 		goThroughRoom6 = new ObjectStep(questHelper, ObjectID.LOTR_RUINS_DOOR_28A, new WorldPoint(3176, 4598, 1), "Follow the path to the east. Avoid the walls which will occasionally stick out and knock you down, marked with a skull.");
-		goThroughRoom6.addTileMarker(new WorldPoint(3162, 4600, 1), SpriteID.PLAYER_KILLER_SKULL);
-		goThroughRoom6.addTileMarker(new WorldPoint(3164, 4600, 1), SpriteID.PLAYER_KILLER_SKULL);
-		goThroughRoom6.addTileMarker(new WorldPoint(3171, 4600, 1), SpriteID.PLAYER_KILLER_SKULL);
-		goThroughRoom6.addTileMarker(new WorldPoint(3173, 4600, 1), SpriteID.PLAYER_KILLER_SKULL);
+		goThroughRoom6.addTileMarker(new WorldPoint(3162, 4600, 1), SpriteID.HEADICONS_PK);
+		goThroughRoom6.addTileMarker(new WorldPoint(3164, 4600, 1), SpriteID.HEADICONS_PK);
+		goThroughRoom6.addTileMarker(new WorldPoint(3171, 4600, 1), SpriteID.HEADICONS_PK);
+		goThroughRoom6.addTileMarker(new WorldPoint(3173, 4600, 1), SpriteID.HEADICONS_PK);
 		goThroughRoom6.addSubSteps(searchWallRoom6, searchWall2Room6);
 
 		goThroughRoom7 = new ObjectStep(questHelper, ObjectID.LOTR_RUINS_STAIRS_LVL1, new WorldPoint(3193, 4598, 1), "Activate Protect from Magic and jump across the pillars. Go down the stairs.", protectFromMagic);

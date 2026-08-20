@@ -147,7 +147,7 @@ public class HisFaithfulServants extends BasicQuestHelper
 		finishingTheRun.addStep(new Conditions(isDharokTunnel, inDharok), enterDharokSarc);
 
 		ConditionalStep doingBarrows = new ConditionalStep(this, enterVerac);
-		doingBarrows.addStep(strangeIcon.alsoCheckBank(questBank), finishQuest);
+		doingBarrows.addStep(strangeIcon.alsoCheckBank(), finishQuest);
 		doingBarrows.addStep(doneWithAll, finishingTheRun);
 		// Top condition is for catching 1 remains to point to tomb to raid
 		doingBarrows.addStep(new Conditions(doneWithDharok, inDharok), leaveDharok);

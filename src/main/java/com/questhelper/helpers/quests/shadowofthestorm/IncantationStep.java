@@ -31,11 +31,9 @@ import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
-
-import java.util.Collections;
 
 public class IncantationStep extends DetailedQuestStep
 {
@@ -44,31 +42,31 @@ public class IncantationStep extends DetailedQuestStep
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_1 = 1373;
+	private static final @Varbit int INCANTATION_WORD_1 = VarbitID.AGRITH_INCANTATION_1;
 	/**
 	 * The index of the second word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_2 = 1374;
+	private static final @Varbit int INCANTATION_WORD_2 = VarbitID.AGRITH_INCANTATION_2;
 	/**
 	 * The index of the third word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_3 = 1375;
+	private static final @Varbit int INCANTATION_WORD_3 = VarbitID.AGRITH_INCANTATION_3;
 	/**
 	 * The index of the fourth word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_4 = 1376;
+	private static final @Varbit int INCANTATION_WORD_4 = VarbitID.AGRITH_INCANTATION_4;
 	/**
 	 * The index of the fifth word in the incantation, as per the order of the Demonic tome (reverse of the order Denath gives you).
 	 * The order of the words received by Denath is reverse.
 	 * The value of this varbit maps to the {@link IncantationStep#WORDS} array.
 	 */
-	private static final @Varbit int INCANTATION_WORD_5 = 1377;
+	private static final @Varbit int INCANTATION_WORD_5 = VarbitID.AGRITH_INCANTATION_5;
 
 	/**
 	 * The possible words that that can be used the incantation
@@ -86,12 +84,9 @@ public class IncantationStep extends DetailedQuestStep
 	private String[] incantationOrder;
 	private int incantationPosition = 0;
 
-	public IncantationStep(QuestHelper questHelper, boolean reverse)
+	public IncantationStep(QuestHelper questHelper, boolean reverse, ItemRequirement sigilHighlighted)
 	{
-		super(questHelper, "Click the demonic sigil and read the incantation.");
-		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.AGRITH_SIGIL);
-		sigilHighlighted.setHighlightInInventory(true);
-		this.addItemRequirements(Collections.singletonList(sigilHighlighted));
+		super(questHelper, "Click the demonic sigil and read the incantation.", sigilHighlighted);
 		this.reverse = reverse;
 	}
 
@@ -99,6 +94,7 @@ public class IncantationStep extends DetailedQuestStep
 	public void startUp()
 	{
 		super.startUp();
+		incantationPosition = 0;
 		updateHints();
 	}
 
@@ -122,11 +118,12 @@ public class IncantationStep extends DetailedQuestStep
 	{
 		var widget = event.getWidget();
 
-		if (widget == null) {
+		if (widget == null)
+		{
 			return;
 		}
 
-		if (widget.getId() != InterfaceID.INVENTORY)
+		if (widget.getId() != InterfaceID.Inventory.ITEMS)
 		{
 			return;
 		}
@@ -189,7 +186,8 @@ public class IncantationStep extends DetailedQuestStep
 			return;
 		}
 
-		if (reverse) {
+		if (reverse)
+		{
 			incantationOrder = new String[]{
 				WORDS[client.getVarbitValue(INCANTATION_WORD_5)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_4)],
@@ -197,7 +195,9 @@ public class IncantationStep extends DetailedQuestStep
 				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
 			};
-		} else {
+		}
+		else
+		{
 			incantationOrder = new String[]{
 				WORDS[client.getVarbitValue(INCANTATION_WORD_1)],
 				WORDS[client.getVarbitValue(INCANTATION_WORD_2)],
@@ -210,5 +210,6 @@ public class IncantationStep extends DetailedQuestStep
 
 		setText("Click the demonic sigil and read the incantation.");
 		addText(incantString);
+		addText("If the highlight feels wrong, click the demonic sigil again.");
 	}
 }

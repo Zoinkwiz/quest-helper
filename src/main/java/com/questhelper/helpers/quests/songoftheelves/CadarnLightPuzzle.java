@@ -40,6 +40,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.List;
 
@@ -149,13 +150,13 @@ public class CadarnLightPuzzle extends ConditionalStep
 		int MAGENTA = 4;
 		int BLUE = 3;
 
-		r1 = new VarbitRequirement(8971, MAGENTA);
-		r2 = new VarbitRequirement(8586, MAGENTA);
-		r3 = new VarbitRequirement(8858, MAGENTA);
-		r4 = new VarbitRequirement(8854, BLUE);
-		r5 = new VarbitRequirement(8853, BLUE);
-		r6 = new VarbitRequirement(8844, MAGENTA);
-		r7 = new VarbitRequirement(8845, MAGENTA);
+		r1 = new VarbitRequirement(VarbitID.SOTE_LIGHT_1_D_5_TO_1_E_5, MAGENTA);
+		r2 = new VarbitRequirement(VarbitID.SOTE_PILLAR_0_E_5_TO_1_E_5, MAGENTA);
+		r3 = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_E_4_TO_0_E_5, MAGENTA);
+		r4 = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_D_3_TO_0_E_3, BLUE);
+		r5 = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_D_2_TO_0_D_3, BLUE);
+		r6 = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_D_1_TO_0_D_2, MAGENTA);
+		r7 = new VarbitRequirement(VarbitID.SOTE_LIGHT_0_D_1_TO_0_E_1, MAGENTA);
 	}
 
 	public List<QuestStep> getDisplaySteps()

@@ -52,6 +52,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 import java.util.*;
 
@@ -237,21 +238,21 @@ public class TempleOfTheEye extends BasicQuestHelper
 		inTempleOfTheEye = new ZoneRequirement(templeOfTheEye);
 		inTempleOfTheEyeTutorial = new ZoneRequirement(templeOfTheEye2, mindAltar);
 
-		canTeleportFromHerbert = new VarbitRequirement(13740, 0);
+		canTeleportFromHerbert = new VarbitRequirement(VarbitID.TOTE_ABYSS_TELEPORT_USED, 0);
 		thrownBucket = new VarbitRequirement(QuestVarbits.QUEST_TEMPLE_OF_THE_EYE.getId(), 30, Operation.GREATER_EQUAL);
 		givenAmuletBack = new VarbitRequirement(QuestVarbits.QUEST_TEMPLE_OF_THE_EYE.getId(), 55, Operation.GREATER_EQUAL);
-		canTeleportFromPersten = new VarbitRequirement(13753, 0);
+		canTeleportFromPersten = new VarbitRequirement(VarbitID.TOTE_TOWER_TELEPORT_USED, 0);
 
-		felixPuzzleNotSeen = new VarbitRequirement(13743, 0);
-		tamaraPuzzleNotSeen = new VarbitRequirement(13742, 0);
-		cordeliaPuzzleNotSeen = new VarbitRequirement(13744, 0);
+		felixPuzzleNotSeen = new VarbitRequirement(VarbitID.TOTE_SPOKEN_TO_FELIX, 0);
+		tamaraPuzzleNotSeen = new VarbitRequirement(VarbitID.TOTE_SPOKEN_TO_TAMARA, 0);
+		cordeliaPuzzleNotSeen = new VarbitRequirement(VarbitID.TOTE_SPOKEN_TO_CORDELIA, 0);
 
-		felixRiftTalk = new VarbitRequirement(13755, 0);
-		tamaraRiftTalk = new VarbitRequirement(13754, 0);
-		cordeliaRiftTalk = new VarbitRequirement(13756, 0);
+		felixRiftTalk = new VarbitRequirement(VarbitID.TOTE_TEMPLE_FELIX, 0);
+		tamaraRiftTalk = new VarbitRequirement(VarbitID.TOTE_TEMPLE_TAMARA, 0);
+		cordeliaRiftTalk = new VarbitRequirement(VarbitID.TOTE_TEMPLE_CORDELIA, 0);
 
 		// TODO: Seems to be generally done for cutscenes? Happens in Enahkra's Lament
-		mysteriousVisionSeen = new VarbitRequirement(12139, 1);
+		mysteriousVisionSeen = new VarbitRequirement(VarbitID.GRAVESTONE_TLI_HIDE, 1);
 	}
 
 	@Override

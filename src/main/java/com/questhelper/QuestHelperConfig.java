@@ -45,6 +45,8 @@ public interface QuestHelperConfig extends Config
 	String QUEST_HELPER_GROUP = "questhelper";
 	String QUEST_BACKGROUND_GROUP = "questhelpervars";
 	String QUEST_HELPER_SIDEBAR_ORDER_KEY_START = "quest-sidebar-order-";
+	/** Per-helper persisted manual step skips (JSON map of stable slot id to true). */
+	String QUEST_HELPER_MANUAL_SKIPS_KEY_PREFIX = "manual-step-skips-";
 
 	enum QuestOrdering implements Comparator<QuestHelper>
 	{
@@ -283,16 +285,6 @@ public interface QuestHelperConfig extends Config
 	default boolean showFan()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "showRuneliteObjects",
-		name = "Show player-made quest rewards",
-		description = "Choose whether changes from player-made quests are displayed"
-	)
-	default boolean showRuneliteObjects()
-	{
-		return true;
 	}
 
 	@ConfigSection(
@@ -689,6 +681,45 @@ public interface QuestHelperConfig extends Config
 		section = filterSection
 	)
 	default boolean showCompletedQuests()
+	{
+		return false;
+	}
+
+	enum RegionFilterVisibility
+	{
+		AUTO,
+		SHOW,
+		HIDE
+	}
+
+	@ConfigItem(
+		keyName = "regionFilterVisibility",
+		name = "Region filtering",
+		description = "Controls when the league region filter is shown. Auto shows it only on league worlds.",
+		position = 5,
+		section = filterSection
+	)
+	default RegionFilterVisibility regionFilterVisibility()
+	{
+		return RegionFilterVisibility.AUTO;
+	}
+
+	@ConfigSection(
+		position = 5,
+		name = "Development",
+		description = "Options that configure the quest helper development experience",
+		closedByDefault = true
+	)
+	String developmentSection = "developmentSection";
+
+	@ConfigItem(
+		keyName = "devShowOverlayOnLaunch",
+		name = "Show overlay on launch",
+		description = "Show the dev overlay (::questhelperdebug) on launch",
+		position = 4,
+		section = developmentSection
+	)
+	default boolean devShowOverlayOnLaunch()
 	{
 		return false;
 	}

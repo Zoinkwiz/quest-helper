@@ -146,7 +146,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		steps.put(5, goTalkToEssyllt);
 
 		ConditionalStep getCrystal = new ConditionalStep(this, enterMournerHQ);
-		getCrystal.addStep(blackenedCrystal.alsoCheckBank(questBank), bringCrystalToArianwyn);
+		getCrystal.addStep(blackenedCrystal.alsoCheckBank(), bringCrystalToArianwyn);
 		getCrystal.addStep(inNorthF2, useChisel);
 		getCrystal.addStep(inTempleStairSquare, goUpFromMiddleToNorth);
 		getCrystal.addStep(inSouthF2, goToMiddleFromSouth);
@@ -425,17 +425,17 @@ public class MourningsEndPartII extends BasicQuestHelper
 			ItemCollections.PRAYER_POTIONS, -1);
 		food = new ItemRequirement("Food", ItemCollections.GOOD_EATING_FOOD, -1);
 
-		newKey = new KeyringRequirement("New Key", configManager, KeyringCollection.NEW_KEY);
+		newKey = new KeyringRequirement("New Key", KeyringCollection.NEW_KEY);
 		newKey.setTooltip("You can get another from Essyllt's desk");
 
 		edernsJournal = new ItemRequirement("Edern's journal", ItemID.MOURNING_EDERNS_JOURNAL);
 		blackenedCrystal = new ItemRequirement("Blackened crystal", ItemID.MOURNING_CRYSTAL_SAMPLE);
 
 		newlyMadeCrystal = new ItemRequirement("Newly made crystal", ItemID.MOURNING_CRYSTAL_NEW_SAMPLE);
-		newlyMadeCrystal.setTooltip("You can get another from Arianwyn in Llyeta");
+		newlyMadeCrystal.setTooltip("You can get another from Arianwyn in Lletya");
 
 		newlyMadeCrystalHighlight = new ItemRequirement("Newly made crystal", ItemID.MOURNING_CRYSTAL_NEW_SAMPLE);
-		newlyMadeCrystalHighlight.setTooltip("You can get another from Arianwyn in Llyeta");
+		newlyMadeCrystalHighlight.setTooltip("You can get another from Arianwyn in Lletya");
 		newlyMadeCrystalHighlight.setHighlightInInventory(true);
 
 		newlyIfOneTrip = new ItemRequirement("Newly made crystal (if already have death talisman)", ItemID.MOURNING_CRYSTAL_NEW_SAMPLE);
@@ -499,24 +499,24 @@ public class MourningsEndPartII extends BasicQuestHelper
 
 		inDeathAltar = new ZoneRequirement(deathAltar);
 
-		dispenserEmpty = new VarbitRequirement(1106, 0);
+		dispenserEmpty = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_MIRRORS_RESET_TRAY, 0);
 
 		// 1108 yellow crystal in dispenser
 		// 1107, blue crystal in dispenser
 
-		usedRope = new VarbitRequirement(1328, 1);
+		usedRope = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_ROPE, 1);
 
-		knowToUseCrystal = new VarbitRequirement(1104, 1);
+		knowToUseCrystal = new VarbitRequirement(VarbitID.MOURNING_ARIANWYN_TOLD, 1);
 
-		solvedPuzzle1 = new VarbitRequirement(1113, 1);
-		solvedPuzzle2 = new VarbitRequirement(1114, 1);
-		solvedPuzzle3 = new VarbitRequirement(1116, 1);
-		solvedPuzzle4 = new VarbitRequirement(1115, 1);
-		solvedPuzzle5 = new VarbitRequirement(1117, 1);
+		solvedPuzzle1 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_2, 1);
+		solvedPuzzle2 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_3, 1);
+		solvedPuzzle3 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_5, 1);
+		solvedPuzzle4 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_4, 1);
+		solvedPuzzle5 = new VarbitRequirement(VarbitID.MOURNING_TEMPLE_PARTS_6, 1);
 
-		enteredDeathArea = new VarbitRequirement(1330, 1);
+		enteredDeathArea = new VarbitRequirement(VarbitID.MOURNING_LIGHT_DOOR_1_C_FIRST_TIME, 1);
 
-		receivedList = new VarbitRequirement(1327, 1);
+		receivedList = new VarbitRequirement(VarbitID.MOURNING_DWARF_STARTEDTASK, 1);
 
 		final int RED = 1;
 		final int YELLOW = 2;

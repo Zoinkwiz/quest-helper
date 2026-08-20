@@ -110,11 +110,11 @@ public class ConditionalStep extends QuestStep implements OwnerStep
 		this.id = id;
 	}
 
-	public void addStep(ConditionalStep step)
+	public ConditionalStep addStep(ConditionalStep step)
 	{
 		var newSet = new HashSet<>(step.steps.keySet());
 		newSet.remove(null);
-		addStep(passOnceCompleted(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step), step, false);
+		return addStep(passOnceCompleted(new Conditions(LogicType.OR, new ArrayList<>(newSet)), step), step, false);
 	}
 
 	public ConditionalStep addStep(Requirement requirement, QuestStep step)

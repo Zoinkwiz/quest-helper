@@ -34,9 +34,9 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
-import com.questhelper.requirements.util.LogicHelper;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -335,7 +335,7 @@ public class Biohazard extends BasicQuestHelper
 		steps.put(4, talkToOmartToEnterWestArdougne);
 
 		var poisonFood = new ConditionalStep(this, talkToOmartToEnterWestArdougne)
-			.then(LogicHelper.and(inMournerBackyard, rottenApple), useRottenAppleOnCauldron)
+			.then(and(inMournerBackyard, rottenApple), useRottenAppleOnCauldron)
 			.then(inMournerBackyard, pickupRottenApple)
 			.then(inWestArdougne, enterBackyardOfHeadquarters);
 
@@ -343,22 +343,22 @@ public class Biohazard extends BasicQuestHelper
 
 		var infiltrateMourners = new ConditionalStep(this, talkToOmartToEnterWestArdougne)
 			.then(inMournerBackyard, exitBackyardOfHeadquarters)
-			.then(LogicHelper.and(key, upstairsInMournerBuilding), searchCrateForDistillator)
+			.then(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
 			.then(upstairsInMournerBuilding, killMourner)
 			.then(inMournerBuilding, goUpstairsInMournerBuilding)
-			.then(LogicHelper.and(inWestArdougne, medicalGown), enterMournerHeadquarters)
+			.then(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
 			.then(inWestArdougne, searchSarahsCupboard);
 
 		steps.put(6, infiltrateMourners);
 
 		var returnToElenaWithDistillator = new ConditionalStep(this, talkToOmartToEnterWestArdougne)
-			.then(LogicHelper.and(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters)
-			.then(LogicHelper.and(distillator, inWestArdougne), talkToKilron)
+			.then(and(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters)
+			.then(and(distillator, inWestArdougne), talkToKilron)
 			.then(distillator, talkToElenaWithDistillator)
-			.then(LogicHelper.and(key, upstairsInMournerBuilding), searchCrateForDistillator)
+			.then(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
 			.then(upstairsInMournerBuilding, killMourner)
 			.then(inMournerBuilding, goUpstairsInMournerBuilding)
-			.then(LogicHelper.and(inWestArdougne, medicalGown), enterMournerHeadquarters)
+			.then(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
 			.then(inWestArdougne, searchSarahsCupboard);
 
 		steps.put(7, returnToElenaWithDistillator);
@@ -366,11 +366,11 @@ public class Biohazard extends BasicQuestHelper
 		steps.put(10, talkToTheChemist);
 
 		var smuggleInChemicals = new ConditionalStep(this, goToVarrock)
-			.then(LogicHelper.and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasPriestSet), talkToGuidor)
-			.then(LogicHelper.and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasNotReceivedFreePriestGownSet), talkToAsyff)
-			.then(LogicHelper.and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyffBuy)
-			.then(LogicHelper.and(inVarrockSouthEast, liquidHoney, ethenea), hopsVarrock)
-			.then(LogicHelper.and(inVarrockSouthEast, liquidHoney), vinciVarrock)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasPriestSet), talkToGuidor)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasNotReceivedFreePriestGownSet), talkToAsyff)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyffBuy)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea), hopsVarrock)
+			.then(and(inVarrockSouthEast, liquidHoney), vinciVarrock)
 			.then(inVarrockSouthEast, chancyVarrock)
 			.then(hasChemicals, giveChemicals);
 		steps.put(12, smuggleInChemicals);

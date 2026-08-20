@@ -31,7 +31,6 @@ import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.quest.QuestRequirement;
@@ -63,6 +62,7 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
+import org.jetbrains.annotations.NotNull;
 
 public class Biohazard extends BasicQuestHelper
 {
@@ -316,7 +316,6 @@ public class Biohazard extends BasicQuestHelper
 	public Map<Integer, QuestStep> loadSteps()
 	{
 		initializeRequirements();
-		setupConditions();
 		setupSteps();
 
 		return Map.ofEntries(
@@ -324,7 +323,7 @@ public class Biohazard extends BasicQuestHelper
 			Map.entry(1, talkToJerico),
 			Map.entry(2, prepareADistraction()),
 			Map.entry(3, causeADistraction()),
-			Map.entry(4, talkToOmartAgain),
+			Map.entry(4, talkToOmartToEnterWestArdougne),
 			Map.entry(5, poisonFood()),
 			Map.entry(6, infiltrateMourners()),
 			Map.entry(7, returnToElenaWithDistillator()),
@@ -332,43 +331,13 @@ public class Biohazard extends BasicQuestHelper
 			Map.entry(12, smuggleInChemicals()),
 			Map.entry(14, returnToElenaAfterSampling),
 			Map.entry(15, talkToTheKing()));
-		// Finishing gives: 72: 0->17, 71: 0->4117, 70: 0->1
 	}
 
-	private ConditionalStep talkToTheKing()
+	private ConditionalStep prepareADistraction()
 	{
-		return new ConditionalStep(this, informTheKingGoUpstairs)
-			.then(isUpstairsArdougneCastle, informTheKing);
-	}
-
-	private ConditionalStep smuggleInChemicals()
-	{
-		return new ConditionalStep(this, goToVarrock)
-			.then(new Conditions(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasPriestSet), talkToGuidor)
-			.then(new Conditions(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyff)
-			.then(new Conditions(inVarrockSouthEast, liquidHoney, ethenea), hopsVarrock)
-			.then(new Conditions(inVarrockSouthEast, liquidHoney), vinciVarrock)
-			.then(inVarrockSouthEast, chancyVarrock)
-			.then(hasChemicals, giveChemicals);
-	}
-
-	private ConditionalStep infiltrateMourners()
-	{
-		return new ConditionalStep(this, talkToOmartToReturnToWest)
-			.then(new Conditions(key, upstairsInMournerBuilding), searchCrateForDistillator)
-			.then(upstairsInMournerBuilding, killMourner)
-			.then(inMournerBuilding, goUpstairsInMournerBuilding)
-			.then(new Conditions(inWestArdougne, medicalGown), enterMournerHeadquarters)
-			.then(new Conditions(inWestArdougne, new ObjectCondition(ObjectID.BIONURSESCUPBOARDOPEN)), searchSarahsCupboard2)
-			.then(inWestArdougne, searchSarahsCupboard);
-	}
-
-	private ConditionalStep poisonFood()
-	{
-		return new ConditionalStep(this, talkToOmartToReturnToWest)
-			.then(new Conditions(inMournerBackyard, rottenApple), useRottenAppleOnCauldron)
-			.then(inMournerBackyard, pickupRottenApple)
-			.then(inWestArdougne, enterBackyardOfHeadquarters);
+		return new ConditionalStep(this, investigateWatchtower)
+			.then(not(birdFeed), getBirdFeed)
+			.then(not(birdCage), getPigeonCage);
 	}
 
 	private ConditionalStep causeADistraction()
@@ -377,27 +346,54 @@ public class Biohazard extends BasicQuestHelper
 			.then(birdCage, clickPigeonCage);
 	}
 
-	private ConditionalStep prepareADistraction()
+	private ConditionalStep poisonFood()
 	{
-		return new ConditionalStep(this, getBirdFeed)
-			.then(new Conditions(birdCage, birdFeed), investigateWatchtower)
-			.then(birdFeed, getPigeonCage)
-			.then(new ObjectCondition(ObjectID.JERICOSCUPBOARDOPEN), getBirdFeed2);
+		return new ConditionalStep(this, talkToOmartToEnterWestArdougne)
+			.then(and(inMournerBackyard, rottenApple), useRottenAppleOnCauldron)
+			.then(inMournerBackyard, pickupRottenApple)
+			.then(inWestArdougne, enterBackyardOfHeadquarters);
+	}
+
+	private ConditionalStep infiltrateMourners()
+	{
+		return new ConditionalStep(this, talkToOmartToEnterWestArdougne)
+			.then(inMournerBackyard, exitBackyardOfHeadquarters)
+			.then(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
+			.then(upstairsInMournerBuilding, killMourner)
+			.then(inMournerBuilding, goUpstairsInMournerBuilding)
+			.then(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
+			.then(inWestArdougne, searchSarahsCupboard);
 	}
 
 	private ConditionalStep returnToElenaWithDistillator()
 	{
-		return new ConditionalStep(this, talkToOmartToReturnToWest)
-			.then(new Conditions(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters)
-			.then(new Conditions(distillator, inWestArdougne), talkToKilron)
+		return new ConditionalStep(this, talkToOmartToEnterWestArdougne)
+			.then(and(upstairsInMournerBuilding, distillator), goBackDownstairsInMournersHeadquarters)
+			.then(and(distillator, inWestArdougne), talkToKilron)
 			.then(distillator, talkToElenaWithDistillator)
-
-			.then(new Conditions(key, upstairsInMournerBuilding), searchCrateForDistillator)
+			.then(and(key, upstairsInMournerBuilding), searchCrateForDistillator)
 			.then(upstairsInMournerBuilding, killMourner)
 			.then(inMournerBuilding, goUpstairsInMournerBuilding)
-			.then(new Conditions(inWestArdougne, medicalGown), enterMournerHeadquarters)
-			.then(new Conditions(inWestArdougne, new ObjectCondition(ObjectID.BIONURSESCUPBOARDOPEN)), searchSarahsCupboard2)
+			.then(and(inWestArdougne, medicalGown), enterMournerHeadquarters)
 			.then(inWestArdougne, searchSarahsCupboard);
+	}
+
+	private ConditionalStep smuggleInChemicals()
+	{
+		return new ConditionalStep(this, goToVarrock)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasPriestSet), talkToGuidor)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline, hasNotReceivedFreePriestGownSet), talkToAsyff)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea, sulphuricBroline), talkToAsyffBuy)
+			.then(and(inVarrockSouthEast, liquidHoney, ethenea), hopsVarrock)
+			.then(and(inVarrockSouthEast, liquidHoney), vinciVarrock)
+			.then(inVarrockSouthEast, chancyVarrock)
+			.then(hasChemicals, giveChemicals);
+	}
+
+	private ConditionalStep talkToTheKing()
+	{
+		return new ConditionalStep(this, informTheKingGoUpstairs)
+			.then(isUpstairsArdougneCastle, informTheKing);
 	}
 
 	@Override

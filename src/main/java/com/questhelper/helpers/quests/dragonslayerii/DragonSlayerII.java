@@ -426,7 +426,7 @@ public class DragonSlayerII extends BasicQuestHelper
 		dragonstone = new ItemRequirement("Dragonstone", ItemID.DRAGONSTONE);
 		moltenGlass2 = new ItemRequirement("Molten glass", ItemID.MOLTEN_GLASS, 2);
 		glassblowingPipe = new ItemRequirement("Glassblowing pipe", ItemID.GLASSBLOWINGPIPE).isNotConsumed();
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		spade = new ItemRequirement("Spade", ItemID.SPADE).isNotConsumed();
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRALRUNE);
 		sealOfPassage = new ItemRequirement("Seal of passage", ItemID.LUNAR_SEAL_OF_PASSAGE);

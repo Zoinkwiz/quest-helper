@@ -167,6 +167,11 @@ public enum ItemCollections
 		ItemID.IMCANDO_HAMMER_OFFHAND
 	)),
 
+	CHISEL("Chisel", ImmutableList.of(
+		ItemID.CHISEL,
+		ItemID.JEWELLERS_CHISEL
+	)),
+
 	SAW("Saw", ImmutableList.of(
 		ItemID.POH_SAW,
 		ItemID.WEARABLE_SAW,

@@ -211,7 +211,7 @@ public class TempleOfTheEye extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL);
 		chisel.canBeObtainedDuringQuest();
 		pickaxe = new ItemRequirement("Pickaxe", ItemCollections.PICKAXES);
 		pickaxe.canBeObtainedDuringQuest();

@@ -159,7 +159,7 @@ public class MorytaniaEasy extends ComplexStateQuestHelper
 		notKillWerewolf = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 10);
 		notRestorePrayer = new VarplayerRequirement(VarPlayerID.MORYTANIA_ACHIEVEMENT_DIARY, false, 11);
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).showConditioned(notCraftSnelm).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).showConditioned(notCraftSnelm).isNotConsumed();
 		snailShell = new ItemRequirement("Blamish snail shell", ItemCollections.SNAIL_SHELLS)
 			.showConditioned(notCraftSnelm);
 		thinSnail = new ItemRequirement("Thin snail", ItemID.SNAIL_CORPSE1).showConditioned(notCookSnail);

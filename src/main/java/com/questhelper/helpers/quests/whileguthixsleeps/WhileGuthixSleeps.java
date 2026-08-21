@@ -703,7 +703,7 @@ public class WhileGuthixSleeps extends BasicQuestHelper
 
 		spade = new ItemRequirement("Spade", ItemID.SPADE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL);
 
 		emptyDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH_EMPTY);
 		fullDruidPouch = new ItemRequirement("Druid pouch", ItemID.DRUID_POUCH);

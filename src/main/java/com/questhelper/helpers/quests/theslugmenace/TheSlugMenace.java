@@ -178,7 +178,7 @@ public class TheSlugMenace extends BasicQuestHelper
 		blankFire = new ItemRequirement("Blank fire rune", ItemID.SLUG2_RUNE_FIRE_BLANK);
 		blankMind = new ItemRequirement("Blank mind rune", ItemID.SLUG2_RUNE_MIND_BLANK);
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 
 		usedAirRune = new VarbitRequirement(VarbitID.SLUG2_USED_AIR_RUNE, 1);
 		usedEarthRune = new VarbitRequirement(VarbitID.SLUG2_USED_EARTH_RUNE, 1);

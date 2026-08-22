@@ -167,6 +167,11 @@ public enum ItemCollections
 		ItemID.IMCANDO_HAMMER_OFFHAND
 	)),
 
+	CHISEL("Chisel", ImmutableList.of(
+		ItemID.CHISEL,
+		ItemID.JEWELLERS_CHISEL
+	)),
+
 	SAW("Saw", ImmutableList.of(
 		ItemID.POH_SAW,
 		ItemID.WEARABLE_SAW,
@@ -389,9 +394,9 @@ public enum ItemCollections
 	)),
 
 	WATER_STAFF(ImmutableList.of(
-		ItemID.FIRE_BATTLESTAFF,
-		ItemID.MYSTIC_FIRE_STAFF,
-		ItemID.STAFF_OF_FIRE,
+		ItemID.WATER_BATTLESTAFF,
+		ItemID.MYSTIC_WATER_STAFF,
+		ItemID.STAFF_OF_WATER,
 		ItemID.MUD_BATTLESTAFF,
 		ItemID.MYSTIC_MUD_STAFF,
 		ItemID.MIST_BATTLESTAFF,

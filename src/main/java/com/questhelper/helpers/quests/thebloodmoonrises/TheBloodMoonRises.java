@@ -824,7 +824,7 @@ public class TheBloodMoonRises extends BasicQuestHelper
 
 		hallowedMarks = new ItemRequirement("Hallowed marks", ItemID.MYQ6_HALLOWED_MARKS);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE);
 		blisterwoodLogs = new ItemRequirement("Blisterwood logs", ItemID.BLISTERWOOD_LOGS);
 		blessedSilverSickle = new ItemRequirement("Silver sickle (b)", ItemID.SILVER_SICKLE_BLESSED);

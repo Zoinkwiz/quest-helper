@@ -238,7 +238,7 @@ public class ATasteOfHope extends BasicQuestHelper
 		emerald = new ItemRequirement("Emerald", ItemID.EMERALD);
 		emeraldHighlighted = new ItemRequirement("Emerald", ItemID.EMERALD);
 		emeraldHighlighted.setHighlightInInventory(true);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		airRune3 = new ItemRequirement("Air rune", ItemCollections.AIR_RUNE, 3);
 		airStaff = new ItemRequirement("Air staff", ItemCollections.AIR_STAFF).isNotConsumed();
 		cosmicRune = new ItemRequirement("Cosmic rune", ItemID.COSMICRUNE);

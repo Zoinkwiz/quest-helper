@@ -176,7 +176,7 @@ public class ShiloVillage extends BasicQuestHelper
 		torchOrCandle.setTooltip("You will NOT get this item back");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		bronzeWire = new ItemRequirement("Bronze wire", ItemID.BRONZECRAFTWIRE);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		bones3 = new ItemRequirement("Bones", ItemID.BONES, 3);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();

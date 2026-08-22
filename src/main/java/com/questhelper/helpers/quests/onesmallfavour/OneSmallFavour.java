@@ -373,7 +373,7 @@ public class OneSmallFavour extends BasicQuestHelper
 		steelBar = new ItemRequirement("Steel bar", ItemID.STEEL_BAR);
 		softClay = new ItemRequirement("Soft clay", ItemID.SOFTCLAY);
 		softClay.setHighlightInInventory(true);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		chisel.setHighlightInInventory(true);
 		bronzeBar = new ItemRequirement("Bronze bar", ItemID.BRONZE_BAR);
 		ironBar = new ItemRequirement("Iron bar", ItemID.IRON_BAR);

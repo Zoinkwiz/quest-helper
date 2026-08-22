@@ -242,7 +242,7 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		adamantChainbody = new ItemRequirement("Adamant chainbody", ItemID.ADAMANT_CHAINBODY);
 		adamantChainbody.setHighlightInInventory(true);
 
-		wineOfZamorak = new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK);
+		wineOfZamorak = new ItemRequirement("Wine of Zamorak", ItemID.WINE_OF_ZAMORAK);
 
 		ItemRequirement zamorakBrew1 = new ItemRequirement("Zamorak brew(1)", ItemID._1DOSEPOTIONOFZAMORAK);
 		ItemRequirement zamorakBrew2 = new ItemRequirement("Zamorak brew(2)", ItemID._2DOSEPOTIONOFZAMORAK);
@@ -252,7 +252,7 @@ public class BaxtorianPuzzle extends DetailedOwnerStep
 		zamorakBrew = new ItemRequirements("Zamorak brew", zamorakBrew1, zamorakBrew2, zamorakBrew3, zamorakBrew4);
 		zamorakBrew.setDisplayMatchedItemName(true);
 
-		wineOfZamorakOrZamorakBrew = new ItemRequirements(LogicType.OR, "Wine of zamorak or Zamorak brew", wineOfZamorak, zamorakBrew);
+		wineOfZamorakOrZamorakBrew = new ItemRequirements(LogicType.OR, "Wine of Zamorak or Zamorak brew", wineOfZamorak, zamorakBrew);
 		wineOfZamorakOrZamorakBrew.setHighlightInInventory(true);
 
 		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE);

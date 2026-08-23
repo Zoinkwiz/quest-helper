@@ -49,6 +49,7 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
 import java.util.*;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class BigChompyBirdHunting extends BasicQuestHelper
 {
@@ -82,7 +83,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 
 		ConditionalStep makeArrows = new ConditionalStep(this, getLogs);
 		makeArrows.addStep(ogreArrows6Highlighted, useArrowsOnRantz);
-		makeArrows.addStep(new Conditions(flightedArrowsHighlighted, tipsHighlighted), useTipsOnShafts);
+		makeArrows.addStep(and(flightedArrowsHighlighted, tipsHighlighted), useTipsOnShafts);
 		makeArrows.addStep(flightedArrowsHighlighted, useChiselOnBones);
 		makeArrows.addStep(shaftsHighlighted, useFeathersOnShafts);
 		makeArrows.addStep(acheyLogs, makeShafts);
@@ -96,7 +97,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		steps.put(15, goGetBellows);
 
 		ConditionalStep goInflateToad = new ConditionalStep(this, fillBellows);
-		goInflateToad.addStep(new Conditions(inCave, bellow), leaveCave);
+		goInflateToad.addStep(and(inCave, bellow), leaveCave);
 		goInflateToad.addStep(inCave, getBellow);
 		goInflateToad.addStep(bloatedToad, talkToRantzWithToad);
 		goInflateToad.addStep(fullBellow, inflateToad);
@@ -118,16 +119,16 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		steps.put(50, bringChompyToRantz);
 
 		ConditionalStep seasonChompy = new ConditionalStep(this, talkToRantzWithChompy)
-			.addStep(new Conditions(knowWhatFycieWants, knowWhatBugsWants, inCave), leaveCave)
-			.addStep(new Conditions(hasFycieItem, hasBugsItem, hasRantzItem), cookChompy)
-			.addStep(new Conditions(fycieWantsTomato, hasBugsItem, hasRantzItem), getTomato)
-			.addStep(new Conditions(fycieWantsDoogle, hasBugsItem, hasRantzItem), getDoogle)
-			.addStep(new Conditions(knowWhatFycieWants, bugsWantsCabbage, hasRantzItem), getCabbage)
-			.addStep(new Conditions(knowWhatFycieWants, bugsWantsEqua, hasRantzItem), getEqua)
-			.addStep(new Conditions(knowWhatFycieWants, knowWhatBugsWants, rantzWantsOnion), getOnion)
-			.addStep(new Conditions(knowWhatFycieWants, knowWhatBugsWants, rantzWantsPotato), getPotato)
-			.addStep(new Conditions(knowWhatBugsWants, inCave), talkToFycie)
-			.addStep(new Conditions(inCave), talkToBugs)
+			.addStep(and(knowWhatFycieWants, knowWhatBugsWants, inCave), leaveCave)
+			.addStep(and(hasFycieItem, hasBugsItem, hasRantzItem), cookChompy)
+			.addStep(and(fycieWantsTomato, hasBugsItem, hasRantzItem), getTomato)
+			.addStep(and(fycieWantsDoogle, hasBugsItem, hasRantzItem), getDoogle)
+			.addStep(and(knowWhatFycieWants, bugsWantsCabbage, hasRantzItem), getCabbage)
+			.addStep(and(knowWhatFycieWants, bugsWantsEqua, hasRantzItem), getEqua)
+			.addStep(and(knowWhatFycieWants, knowWhatBugsWants, rantzWantsOnion), getOnion)
+			.addStep(and(knowWhatFycieWants, knowWhatBugsWants, rantzWantsPotato), getPotato)
+			.addStep(and(knowWhatBugsWants, inCave), talkToFycie)
+			.addStep(and(inCave), talkToBugs)
 			.addStep(knowWhatRantzWants, enterCaveAgain);
 
 		steps.put(55, seasonChompy);

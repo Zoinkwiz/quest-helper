@@ -185,7 +185,7 @@ public class SleepingGiants extends BasicQuestHelper
 		hammer.canBeObtainedDuringQuest();
 		hammer.setTooltip("Imcando hammer also works");
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL);
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL);
 
 		iceGloves = new ItemRequirement("Ice Gloves", ItemID.ICE_GLOVES);
 		iceGloves.setTooltip("Allows you to skip filling and using a bucket of water.");

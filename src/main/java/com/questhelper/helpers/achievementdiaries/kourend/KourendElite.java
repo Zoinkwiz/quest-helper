@@ -153,7 +153,7 @@ public class KourendElite extends ComplexStateQuestHelper
 		// Items required
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES)
 			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport)).isNotConsumed();
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL)
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL)
 			.showConditioned(new Conditions(LogicType.OR, notCraftBloodRune, notCreateTeleport)).isNotConsumed();
 		chisel.setTooltip("One can be found in the Arceuus essence mine.");
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notChopRedwood).isNotConsumed();

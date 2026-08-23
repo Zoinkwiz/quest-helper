@@ -153,7 +153,7 @@ public class FallenFromGrace extends BasicQuestHelper
 	{
 		raftOrSkiff = new ItemRequirement("A raft or a skiff", -1);
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed().canBeObtainedDuringQuest();
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed().canBeObtainedDuringQuest();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed().canBeObtainedDuringQuest();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed().canBeObtainedDuringQuest();
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 

@@ -219,7 +219,27 @@ public class DesertTreasure extends BasicQuestHelper
 		spice.setHighlightInInventory(true);
 
 		cake = new ItemRequirement("Cake", ItemID.CAKE);
+		cake.addAlternates(ItemID.PARTIAL_CAKE);
+		cake.addAlternates(ItemID.CAKE_SLICE);
 		cake.addAlternates(ItemID.CHOCOLATE_CAKE);
+		cake.addAlternates(ItemID.PARTIAL_CHOCOLATE_CAKE);
+		cake.addAlternates(ItemID.CHOCOLATE_SLICE);
+		cake.addAlternates(ItemID.APPLE_PIE);
+		cake.addAlternates(ItemID.HALF_AN_APPLE_PIE);
+		cake.addAlternates(ItemID.BANANA);
+		cake.addAlternates(ItemID.CHOCOLATE_BAR);
+		cake.addAlternates(ItemID.CHOCOLATY_MILK);
+		cake.addAlternates(ItemID.COOKING_APPLE);
+		cake.addAlternates(ItemID.ORANGE);
+		cake.addAlternates(ItemID.ORANGE_CHUNKS);
+		cake.addAlternates(ItemID.ORANGE_SLICES);
+		cake.addAlternates(ItemID.PINEAPPLE_CHUNKS);
+		cake.addAlternates(ItemID.PINEAPPLE_RING);
+		cake.addAlternates(ItemID.PINEAPPLE_PIZZA);
+		cake.addAlternates(ItemID.HALF_PINEAPPLE_PIZZA);
+		cake.addAlternates(ItemID.REDBERRIES);
+		cake.addAlternates(ItemID.REDBERRY_PIE);
+		cake.addAlternates(ItemID.HALF_A_REDBERRY_PIE);
 		cake.setDisplayMatchedItemName(true);
 		cake.setHighlightInInventory(true);
 

@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import com.questhelper.steps.UnreachableStep;
 import net.runelite.api.Skill;
 import net.runelite.api.gameval.VarbitID;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -223,6 +224,12 @@ public class QuestHelperTest extends MockedTest
 	{
 		assertNotNull(step);
 
+		if (step instanceof UnreachableStep)
+		{
+			// We allow unreachable steps to be unreachable
+			return;
+		}
+
 		if (step instanceof QuestSyncStep)
 		{
 			// We allow the quest sync steps to miss a sidebar step
@@ -327,6 +334,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.A_PORCINE_OF_INTEREST,
 			QuestHelperQuest.SHADOW_OF_THE_STORM,
 			QuestHelperQuest.PANDEMONIUM,
+			QuestHelperQuest.FALLEN_FROM_GRACE,
 			QuestHelperQuest.OBSERVATORY_QUEST,
 			QuestHelperQuest.COOKS_ASSISTANT,
 			QuestHelperQuest.WATERFALL_QUEST,
@@ -355,6 +363,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.MONKS_FRIEND,
 			QuestHelperQuest.DADDYS_HOME,
 			QuestHelperQuest.GOBLIN_DIPLOMACY,
+			QuestHelperQuest.PRYING_TIMES,
 			QuestHelperQuest.WITCHS_HOUSE,
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.THE_KNIGHTS_SWORD,
@@ -378,6 +387,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.THE_LOST_TRIBE,
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,
+			QuestHelperQuest.THE_BLOOD_MOON_RISES,
 			QuestHelperQuest.VAMPYRE_SLAYER,
 			QuestHelperQuest.HERB_RUN,
 			QuestHelperQuest.THE_IDES_OF_MILK

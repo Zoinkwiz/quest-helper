@@ -419,7 +419,7 @@ public class MourningsEndPartII extends BasicQuestHelper
 		ropeHighlight = new ItemRequirement("Rope", ItemID.ROPE);
 		ropeHighlight.setHighlightInInventory(true);
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		staminaPotions = new ItemRequirement("Stamina potions", ItemCollections.STAMINA_POTIONS);
 		prayerPotions = new ItemRequirement("Prayer potions for Protect from Melee",
 			ItemCollections.PRAYER_POTIONS, -1);

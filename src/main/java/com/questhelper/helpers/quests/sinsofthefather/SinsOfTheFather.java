@@ -360,7 +360,7 @@ public class SinsOfTheFather extends BasicQuestHelper
 		haemBook = new ItemRequirement("Haemalchemy volume 2", ItemID.MYQ5_HAEMALCHEMY_VOL_2);
 		haemBook.setTooltip("If you lost the book, search the bookshelf in the room west of Safalaan to get it back");
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 
 		vyreTop = new ItemRequirement("Vyrewatch top", ItemID.VYRE_TORSO);
 		vyreTop.setTooltip("You can get this from Trader Sven in southern Meiyerditch near Old Man Ral's house for 650gp");

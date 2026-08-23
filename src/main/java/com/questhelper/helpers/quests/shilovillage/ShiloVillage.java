@@ -93,7 +93,6 @@ public class ShiloVillage extends BasicQuestHelper
 
 	// Mid-quest item requirements
 	ItemRequirement belt;
-	ItemRequirement stonePlaque;
 	ItemRequirement tatteredScroll;
 	ItemRequirement crumpledScroll;
 	ItemRequirement zadimusCorpse;
@@ -118,7 +117,6 @@ public class ShiloVillage extends BasicQuestHelper
 	ZoneRequirement inCavern2;
 	ZoneRequirement inCavern3;
 	ZoneRequirement inCavern4;
-	Conditions shownStone;
 	Conditions shownCorpse;
 	Conditions hasReadTattered;
 	Conditions hasReadCrumpled;
@@ -136,13 +134,11 @@ public class ShiloVillage extends BasicQuestHelper
 	ObjectStep useRopeOnFissure;
 	ObjectStep lookAtMound;
 	ObjectStep searchFissure;
-	ObjectStep useChiselOnStone;
 	ObjectStep enterDeeperCave;
 	ObjectStep searchForTatteredScroll;
 	ObjectStep searchForCrumpledScroll;
 	ObjectStep searchForCorpse;
 	NpcStep useCorpseOnTrufitus;
-	NpcStep useStonePlaqueOnTrufitus;
 	DetailedQuestStep readTattered;
 	DetailedQuestStep readCrumpled;
 	DetailedQuestStep buryCorpse;
@@ -180,7 +176,7 @@ public class ShiloVillage extends BasicQuestHelper
 		torchOrCandle.setTooltip("You will NOT get this item back");
 		rope = new ItemRequirement("Rope", ItemID.ROPE);
 		bronzeWire = new ItemRequirement("Bronze wire", ItemID.BRONZECRAFTWIRE);
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		bones3 = new ItemRequirement("Bones", ItemID.BONES, 3);
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
@@ -198,7 +194,6 @@ public class ShiloVillage extends BasicQuestHelper
 		freeInvSlot2 = new FreeInventorySlotRequirement(2);
 
 		belt = new ItemRequirement("Wampum belt", ItemID.MOSOL_WAMPUM_BELT);
-		stonePlaque = new ItemRequirement("Stone-plaque", ItemID.ZQPLAQUE);
 		tatteredScroll = new ItemRequirement("Tattered scroll", ItemID.ZQBERVIRIUSSCROLL);
 		crumpledScroll = new ItemRequirement("Crumpled scroll", ItemID.ZQRASHILIYIASCROLL);
 		zadimusCorpse = new ItemRequirement("Zadimus corpse", ItemID.ZQZADIMUSBONES);
@@ -221,11 +216,6 @@ public class ShiloVillage extends BasicQuestHelper
 		shownCorpse = new Conditions(true, LogicType.OR,
 			new DialogRequirement("The ground in the centre of the village"),
 			boneShard
-		);
-
-		shownStone = new Conditions(true, LogicType.OR,
-			new DialogRequirement("If you have found anything else that you need help with, please just let me know."),
-			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>Trufitus identified the plaque")
 		);
 
 		hasReadTattered = new Conditions(true, LogicType.OR,
@@ -275,8 +265,6 @@ public class ShiloVillage extends BasicQuestHelper
 		useRopeOnFissure.addIcon(ItemID.ROPE);
 		searchFissure = new ObjectStep(this, ObjectID.AHZARHOON_ENTRANCE_FISSURE_WITHROPE, new WorldPoint(2922, 3000, 0), "Right-click search the fissure.");
 		searchFissure.addDialogStep("Yes, I'll give it a go!");
-		useChiselOnStone = new ObjectStep(this, ObjectID.ZQSECRETSTONE, new WorldPoint(2901, 9379, 0), "Use a chisel on the strange looking stone to the south.", chisel.highlighted());
-		useChiselOnStone.addIcon(ItemID.CHISEL);
 		enterDeeperCave = new ObjectStep(this, ObjectID.SECRETRUBBLE, new WorldPoint(2888, 9373, 0), "Search the nearby cave-in to go deeper in the caverns.");
 		enterDeeperCave.addDialogStep("Yes, I'll wriggle through.");
 		searchForTatteredScroll = new ObjectStep(this, ObjectID.SECRETRUBBLEBOOK, new WorldPoint(2885, 9318, 0), "Search the loose rocks to the north for a tattered scroll.");
@@ -288,9 +276,6 @@ public class ShiloVillage extends BasicQuestHelper
 		useCorpseOnTrufitus = new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0), "Use Zadimus's corpse on Trufitus.", zadimusCorpse.highlighted());
 		useCorpseOnTrufitus.addDialogStep("Is there any sacred ground around here?");
 		useCorpseOnTrufitus.addIcon(ItemID.ZQZADIMUSBONES);
-
-		useStonePlaqueOnTrufitus = new NpcStep(this, NpcID.TRUFITUS, new WorldPoint(2809, 3085, 0), "Use the stone-plaque on Trufitus.", stonePlaque.highlighted());
-		useStonePlaqueOnTrufitus.addIcon(ItemID.ZQPLAQUE);
 
 		readTattered = new DetailedQuestStep(this, "Read the tattered scroll.", tatteredScroll.highlighted());
 		readTattered.addDialogSteps("Yes please.");
@@ -362,19 +347,14 @@ public class ShiloVillage extends BasicQuestHelper
 		goGetItems.addStep(beads, useWireOnBeads);
 		goGetItems.addStep(pommel, useChiselOnPommel);
 		goGetItems.addStep(inCavern3, searchDolmen);
-		// Stone-plaque may be useless?
-		// Don't need to show Trufitus bone shard
-		// Reading tattered unlocks access to the island cavern
-		// Reading crumpled lets you use bronze wire on beads
-		goGetItems.addStep(and(stonePlaque, hasReadTattered, hasReadCrumpled, boneShard), searchRocksOnCairn);
-		goGetItems.addStep(and(stonePlaque, hasReadTattered, crumpledScroll, boneShard), readCrumpled);
-		goGetItems.addStep(and(stonePlaque, tatteredScroll, crumpledScroll, boneShard), readTattered);
-		goGetItems.addStep(and(stonePlaque, tatteredScroll, crumpledScroll, zadimusCorpse), buryCorpse);
-		goGetItems.addStep(and(inCavern2, stonePlaque, tatteredScroll, crumpledScroll), searchForCorpse);
-		goGetItems.addStep(and(inCavern2, stonePlaque, tatteredScroll), searchForCrumpledScroll);
-		goGetItems.addStep(and(inCavern2, stonePlaque), searchForTatteredScroll);
-		goGetItems.addStep(and(inCavern1, stonePlaque), enterDeeperCave);
-		goGetItems.addStep(inCavern1, useChiselOnStone);
+		goGetItems.addStep(and(hasReadTattered, hasReadCrumpled, boneShard), searchRocksOnCairn);
+		goGetItems.addStep(and(hasReadTattered, crumpledScroll, boneShard), readCrumpled);
+		goGetItems.addStep(and(tatteredScroll, crumpledScroll, boneShard), readTattered);
+		goGetItems.addStep(and(tatteredScroll, crumpledScroll, zadimusCorpse), buryCorpse);
+		goGetItems.addStep(and(inCavern2, tatteredScroll, crumpledScroll), searchForCorpse);
+		goGetItems.addStep(and(inCavern2, tatteredScroll), searchForCrumpledScroll);
+		goGetItems.addStep(inCavern2, searchForTatteredScroll);
+		goGetItems.addStep(inCavern1, enterDeeperCave);
 		goGetItems.addStep(moundNearby, lookAtMound);
 		steps.put(6, goGetItems);
 		steps.put(7, goGetItems);
@@ -481,7 +461,6 @@ public class ShiloVillage extends BasicQuestHelper
 			useTorchOnFissure,
 			useRopeOnFissure,
 			searchFissure,
-			useChiselOnStone,
 			enterDeeperCave,
 			searchForTatteredScroll,
 			searchForCrumpledScroll,

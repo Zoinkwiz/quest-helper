@@ -166,7 +166,7 @@ public class HauntedMine extends BasicQuestHelper
 		zealotsKeyHighlighted = new ItemRequirement("Zealot's key", ItemID.HAUNTEDMINE_LIFT_KEY);
 		zealotsKeyHighlighted.setHighlightInInventory(true);
 
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		glowingFungus = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight = new ItemRequirement("Glowing fungus", ItemID.GLOWING_FUNGUS);
 		glowingFungusHighlight.setHighlightInInventory(true);

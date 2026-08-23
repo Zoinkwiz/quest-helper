@@ -149,7 +149,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 100);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
-		chisel = new ItemRequirement("Chisel", ItemID.CHISEL).isNotConsumed();
+		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		chisel.setHighlightInInventory(true);
 		wolfBones4 = new ItemRequirement("Wolf bones", ItemID.WOLF_BONES, 4);
 		wolfBones4.setTooltip("You can kill wolves (level 64) around Feldip for bones");

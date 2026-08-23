@@ -437,7 +437,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 			}
 		}
 
-		return text.toString();
+		return text.toString().trim();
 	}
 
 	public List<QuestStep> getSteps()

@@ -234,7 +234,7 @@ public class WesternHard extends ComplexStateQuestHelper
 		swanSong = new QuestRequirement(QuestHelperQuest.SWAN_SONG, QuestState.FINISHED);
 		regicide = new QuestRequirement(QuestHelperQuest.REGICIDE, QuestState.IN_PROGRESS);
 		mourningsEndPartI = new QuestRequirement(QuestHelperQuest.MOURNINGS_END_PART_I, QuestState.IN_PROGRESS);
-		bigChompy = new QuestRequirement(QuestHelperQuest.TAI_BWO_WANNAI_TRIO, QuestState.FINISHED);
+		bigChompy = new QuestRequirement(QuestHelperQuest.BIG_CHOMPY_BIRD_HUNTING, QuestState.FINISHED);
 		awowogeiRFD = new QuestRequirement(QuestHelperQuest.RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR, QuestState.FINISHED);
 		treeGnomeVillage = new QuestRequirement(QuestHelperQuest.TREE_GNOME_VILLAGE, QuestState.FINISHED);
 	}

@@ -37,6 +37,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DetailedOwnerStep extends QuestStep implements OwnerStep
@@ -44,6 +45,11 @@ public class DetailedOwnerStep extends QuestStep implements OwnerStep
 	protected QuestStep currentStep;
 
 	protected List<Requirement> requirements = new ArrayList<>();
+
+	public List<Requirement> getRequirements()
+	{
+		return Collections.unmodifiableList(requirements);
+	}
 
 	@Inject
 	protected EventBus eventBus;

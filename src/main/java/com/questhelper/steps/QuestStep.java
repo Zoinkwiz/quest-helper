@@ -558,6 +558,18 @@ public abstract class QuestStep implements Module
 		return locked;
 	}
 
+	/**
+	 * Evaluates the current lock state without retaining an automatic lock.
+	 *
+	 * @param evaluationClient client used to evaluate an automatic lock when this
+	 *                         step has only been loaded for a read-only preview
+	 */
+	public boolean isLockedWithoutUpdate(Client evaluationClient)
+	{
+		return locked || lockingCondition != null
+			&& lockingCondition.check(Objects.requireNonNull(evaluationClient));
+	}
+
 	public QuestStep getActiveStep()
 	{
 		return this;

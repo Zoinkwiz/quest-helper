@@ -100,10 +100,31 @@ public class QuestManager
 	private boolean loadQuestList = false;
 	private QuestHelperPanel panel;
 	private QuestStep lastStep = null;
+	private volatile Map<QuestHelper, QuestState> questStates = Collections.emptyMap();
+	private long selectedQuestRevision;
 
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
+
+	/**
+	 * Returns the latest immutable quest-state pass for features which need the
+	 * complete catalog without evaluating every helper again.
+	 */
+	public Map<QuestHelper, QuestState> getQuestListState()
+	{
+		return questStates;
+	}
+
+	public long getSelectedQuestRevision()
+	{
+		return selectedQuestRevision;
+	}
+
+	public void clearQuestListState()
+	{
+		questStates = Collections.emptyMap();
+	}
 
 	/**
 	 * Initializes the QuestManager with the given QuestHelperPanel.
@@ -119,6 +140,7 @@ public class QuestManager
 	{
 		shutDownQuest(false);
 		this.panel = null;
+		clearQuestListState();
 	}
 
 	public void setupOnLogin()
@@ -224,23 +246,35 @@ public class QuestManager
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			List<QuestHelper> filteredQuests = QuestHelperQuest.getQuestHelpers(isDeveloperMode())
+			List<QuestHelper> allQuests = QuestHelperQuest.getQuestHelpers(isDeveloperMode());
+			Map<QuestHelperQuest, QuestState> completedQuests = new EnumMap<>(QuestHelperQuest.class);
+			Map<QuestHelper, QuestState> currentStates = new LinkedHashMap<>();
+			for (QuestHelper quest : allQuests)
+			{
+				QuestState state = quest.getState(client);
+				completedQuests.put(quest.getQuest(), state);
+				currentStates.put(quest, state);
+			}
+			questStates = Collections.unmodifiableMap(currentStates);
+			List<QuestHelper> filteredQuests = allQuests
 				.stream()
 				.filter(config.filterListBy())
 				.filter(config.difficulty())
-				.filter(QuestDetails::showCompletedQuests)
+				.filter(quest -> config.showCompletedQuests()
+					|| currentStates.get(quest) != QuestState.FINISHED)
 				.filter(SkillFiltering::passesSkillFilter)
 				.filter(LeagueFiltering::passesLeagueFilter)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());
-			Map<QuestHelperQuest, QuestState> completedQuests = QuestHelperQuest.getQuestHelpers(isDeveloperMode())
-				.stream()
-				.collect(Collectors.toMap(QuestHelper::getQuest, q -> q.getState(client)));
 			SwingUtilities.invokeLater(() -> {
 				if (panel != null) {
 					panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections());
 				}
 			});
+		}
+		else
+		{
+			clearQuestListState();
 		}
 	}
 
@@ -290,6 +324,7 @@ public class QuestManager
 			questHelperPlugin.displayPanel();
 		}
 		selectedQuest = questHelper;
+		selectedQuestRevision++;
 		registerQuestToEventBus(selectedQuest);
 		if (isDeveloperMode())
 		{
@@ -348,6 +383,7 @@ public class QuestManager
 			{
 				selectedQuest = null;
 			}
+			selectedQuestRevision++;
 		}
 
 		this.lastStep = null;

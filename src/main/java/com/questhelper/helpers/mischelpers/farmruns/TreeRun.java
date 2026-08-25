@@ -202,7 +202,7 @@ public class TreeRun extends ComplexStateQuestHelper
 		TreeRunTeleports teleports = new TreeRunTeleports();
 		TreeRunItems items = new TreeRunItems(treeRunConfig);
 
-		fruitTreeFactory = new FruitTreeFactory(this, teleports, treeRunConfig, items, itemManager);
+		fruitTreeFactory = FruitTreeFactory.getInstance(this, teleports, treeRunConfig, items, itemManager);
 
 		initializeRequirements();
 		setupSteps();

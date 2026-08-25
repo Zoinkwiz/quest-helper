@@ -23,6 +23,7 @@ import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
 import com.questhelper.steps.widget.WidgetHighlight;
 import lombok.Getter;
+import lombok.Singular;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -94,9 +95,37 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 	private ConditionalStep kastoriStep;
 	private PatchStates kastoriStates;
 
-	public FruitTreeFactory(TreeRun treeRun, TreeRunTeleports teleports, TreeRunConfig config, TreeRunItems items, ItemManager itemManager)
+	private static FruitTreeFactory instance;
+
+	private FruitTreeFactory(
+		TreeRun treeRun,
+		TreeRunTeleports teleports,
+		TreeRunConfig config,
+		TreeRunItems items,
+		ItemManager itemManager)
 	{
 		super(treeRun, teleports, config, items, itemManager);
+	}
+
+	public static FruitTreeFactory getInstance(
+		TreeRun treeRun,
+		TreeRunTeleports teleports,
+		TreeRunConfig config,
+		TreeRunItems items,
+		ItemManager itemManager)
+	{
+		if (instance == null)
+		{
+			instance = new FruitTreeFactory(
+				treeRun,
+				teleports,
+				config,
+				items,
+				itemManager
+			);
+		}
+
+		return instance;
 	}
 
 	@Override

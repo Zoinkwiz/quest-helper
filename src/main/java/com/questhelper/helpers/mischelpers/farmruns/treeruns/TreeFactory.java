@@ -26,6 +26,13 @@ import static com.questhelper.requirements.util.LogicHelper.not;
 
 public abstract class TreeFactory<T extends FarmingUtils.PlantableItem>
 {
+	public enum MultiLevelPanel {
+		FARMING_GUILD,
+		GNOME_STRONGHOLD,
+		KARAMJA,
+		KASTORI
+	}
+
 	protected final TreeRun treeRun;
 	protected final TreeRunTeleports teleports;
 	protected final TreeRunConfig config;

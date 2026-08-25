@@ -23,7 +23,6 @@ import com.questhelper.steps.widget.LunarSpells;
 import com.questhelper.steps.widget.NormalSpells;
 import com.questhelper.steps.widget.WidgetHighlight;
 import lombok.Getter;
-import lombok.Singular;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -34,8 +33,11 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.Tab;
+import org.apache.commons.lang3.tuple.Pair;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import static com.questhelper.helpers.mischelpers.farmruns.treeruns.TreeRunConfig.FRUIT_TREE_SAPLING;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
@@ -556,7 +558,26 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return new HelperConfig("Fruit Trees", FRUIT_TREE_SAPLING, FarmingUtils.FruitTreeSapling.values());
 	}
 
-	public PanelDetails getFarmingGuildPanel()
+	public List<PanelDetails> getPanelDetails()
+	{
+		return List.of(
+			getGnomeVillagePanel(),
+			getCatherbyPanel(),
+			getLletyaPanel()
+		);
+	}
+
+	public Map<MultiLevelPanel, Pair<PanelDetails, Supplier<Conditions>>> getSubPanelDetails()
+	{
+		return Map.of(
+			MultiLevelPanel.FARMING_GUILD, Pair.of(getFarmingGuildPanel(), this::shouldHideTopLevelFarmingGuildPanel),
+			MultiLevelPanel.GNOME_STRONGHOLD, Pair.of(getGnomeStrongholdPanel(), this::shouldHideTopLevelGnomeStrongholdPanel),
+			MultiLevelPanel.KARAMJA, Pair.of(getBrimhavenPanel(), this::shouldHideTopLevelBrimhavenPanel),
+			MultiLevelPanel.KASTORI, Pair.of(getKastoriPanel(), this::shouldHideTopLevelKastoriPanel)
+		);
+	}
+
+	private PanelDetails getFarmingGuildPanel()
 	{
 		PanelDetails panel = new PanelDetails(
 			"Fruit Tree Patch",
@@ -581,7 +602,7 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return panel;
 	}
 
-	public PanelDetails getGnomeStrongholdPanel()
+	private PanelDetails getGnomeStrongholdPanel()
 	{
 
 		PanelDetails panel = new PanelDetails("Fruit Tree Patch",
@@ -599,7 +620,7 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return panel;
 	}
 
-	public PanelDetails getGnomeVillagePanel()
+	private PanelDetails getGnomeVillagePanel()
 	{
 		PanelDetails panel = new PanelDetails(
 			"Tree Gnome Village",
@@ -619,7 +640,7 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return panel;
 	}
 
-	public PanelDetails getCatherbyPanel()
+	private PanelDetails getCatherbyPanel()
 	{
 		PanelDetails panel = new PanelDetails(
 			"Catherby",
@@ -639,7 +660,7 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return panel;
 	}
 
-	public PanelDetails getBrimhavenPanel()
+	private PanelDetails getBrimhavenPanel()
 	{
 		PanelDetails panel = new PanelDetails(
 			"Brimhaven",
@@ -659,7 +680,7 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return panel;
 	}
 
-	public PanelDetails getLletyaPanel()
+	private PanelDetails getLletyaPanel()
 	{
 		PanelDetails panel = new PanelDetails(
 			"Lletya",
@@ -684,7 +705,7 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return panel;
 	}
 
-	public PanelDetails getKastoriPanel()
+	private PanelDetails getKastoriPanel()
 	{
 		PanelDetails panel = new PanelDetails(
 			"Fruit Tree Patch",
@@ -709,22 +730,22 @@ public class FruitTreeFactory extends TreeFactory<FarmingUtils.FruitTreeSapling>
 		return panel;
 	}
 
-	public Conditions shouldHideTopLevelFarmingGuildPanel()
+	private Conditions shouldHideTopLevelFarmingGuildPanel()
 	{
 		return or(not(config.getFruitTreesEnabled()), not(accessToFarmingGuild));
 	}
 
-	public Conditions shouldHideTopLevelGnomeStrongholdPanel()
+	private Conditions shouldHideTopLevelGnomeStrongholdPanel()
 	{
 		return not(config.getFruitTreesEnabled());
 	}
 
-	public Conditions shouldHideTopLevelBrimhavenPanel()
+	private Conditions shouldHideTopLevelBrimhavenPanel()
 	{
 		return not(config.getFruitTreesEnabled());
 	}
 
-	public Conditions shouldHideTopLevelKastoriPanel()
+	private Conditions shouldHideTopLevelKastoriPanel()
 	{
 		return or(not(config.getFruitTreesEnabled()), not(accessToVarlamore));
 	}

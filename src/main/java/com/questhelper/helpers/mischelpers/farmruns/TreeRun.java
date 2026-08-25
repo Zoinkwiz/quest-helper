@@ -36,6 +36,7 @@ import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.CalquatTreeSapl
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.PayOrCut;
 import com.questhelper.helpers.mischelpers.farmruns.FarmingUtils.PayOrCompost;
 import com.questhelper.helpers.mischelpers.farmruns.treeruns.FruitTreeFactory;
+import com.questhelper.helpers.mischelpers.farmruns.treeruns.TreeFactory;
 import com.questhelper.helpers.mischelpers.farmruns.treeruns.TreeRunConfig;
 import com.questhelper.helpers.mischelpers.farmruns.treeruns.TreeRunItems;
 import com.questhelper.helpers.mischelpers.farmruns.treeruns.TreeRunTeleports;
@@ -59,6 +60,7 @@ import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import com.questhelper.steps.ReorderableConditionalStep;
 import com.questhelper.steps.widget.NormalSpells;
+import java.util.Map;
 import java.util.Set;
 
 import net.runelite.api.QuestState;
@@ -70,9 +72,11 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.Tab;
+import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.questhelper.requirements.util.LogicHelper.*;
 
@@ -1170,7 +1174,9 @@ public class TreeRun extends ComplexStateQuestHelper
 	{
 		// IDEA: Can add ID to each step. onLoad and onConfigChanged it checks id ordering.
 		List<PanelDetails> allSteps = new ArrayList<>();
-		
+		Map<TreeFactory.MultiLevelPanel, Pair<PanelDetails, Supplier<Conditions>>> fruitTreeFactorySubPanelDetails =
+			fruitTreeFactory.getSubPanelDetails();
+
 		allSteps.add(new PanelDetails("Wait for Trees", waitForTree).withHideCondition(nor(allGrowing)));
 
 		PanelDetails farmingGuildTreePanel = new PanelDetails("Tree Patch",
@@ -1178,11 +1184,11 @@ public class TreeRun extends ComplexStateQuestHelper
 		farmingGuildTreePanel.setLockingStep(farmingGuildTreeStep);
 		farmingGuildTreePanel.setHideCondition(or(not(treesEnabled), not(accessToFarmingGuildTreePatch)));
 		var farmingGuildPanel = new TopLevelPanelDetails("Farming Guild",
-			farmingGuildTreePanel, fruitTreeFactory.getFarmingGuildPanel()).withId(0);
+			farmingGuildTreePanel, fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.FARMING_GUILD).getLeft()).withId(0);
 		farmingGuildPanel.setLockingStep(farmingGuildStep);
 		farmingGuildPanel.setHideCondition(and(
 			or(not(treesEnabled), not(accessToFarmingGuildTreePatch)),
-			fruitTreeFactory.shouldHideTopLevelFarmingGuildPanel()
+			fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.FARMING_GUILD).getRight().get()
 		));
 
 		PanelDetails lumbridgePanel = new PanelDetails("Lumbridge", Arrays.asList(lumbridgeTreePatchCheckHealth, lumbridgeTreePatchCutDown, lumbridgeTreePatchDig, lumbridgeTreePatchClear, lumbridgeTreePatchPlant, lumbridgeTreeProtect)).withId(1);
@@ -1207,18 +1213,18 @@ public class TreeRun extends ComplexStateQuestHelper
 		gnomeStrongholdTreePanel.setHideCondition(not(treesEnabled));
 
 		var gnomeStrongholdPanel = new TopLevelPanelDetails("Gnome Stronghold",
-			fruitTreeFactory.getGnomeStrongholdPanel(),
+			fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.GNOME_STRONGHOLD).getLeft(),
 			gnomeStrongholdTreePanel).withId(5);
 		gnomeStrongholdPanel.setLockingStep(strongholdStep);
-		gnomeStrongholdPanel.setHideCondition(and(not(treesEnabled), fruitTreeFactory.shouldHideTopLevelGnomeStrongholdPanel()));
+		gnomeStrongholdPanel.setHideCondition(and(not(treesEnabled), fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.GNOME_STRONGHOLD).getRight().get()));
 
 		PanelDetails taiBwoWannaiPanel = new PanelDetails("Tai Bwo Wannai", Arrays.asList(taiBwoWannaiCalquatPatchCheckHealth, taiBwoWannaiCalquatPatchRemove, taiBwoWannaiCalquatPatchDig, taiBwoWannaiCalquatPatchClear, taiBwoWannaiCalquatPatchPlant, taiBwoWannaiCalquatProtect)).withId(82);
 		taiBwoWannaiPanel.setLockingStep(taiBwoWannaiStep);
 		taiBwoWannaiPanel.setHideCondition(or(not(accessToCalquatFarming), not(calquatEnabled)));
 
-		var karamjaPanel = new TopLevelPanelDetails("Karamja", fruitTreeFactory.getBrimhavenPanel(), taiBwoWannaiPanel).withId(8);
+		var karamjaPanel = new TopLevelPanelDetails("Karamja", fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.KARAMJA).getLeft(), taiBwoWannaiPanel).withId(8);
 		karamjaPanel.setLockingStep(karamjaStep);
-		karamjaPanel.setHideCondition(and(fruitTreeFactory.shouldHideTopLevelBrimhavenPanel(), not(calquatEnabled)));
+		karamjaPanel.setHideCondition(and(fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.KARAMJA).getRight().get(), not(calquatEnabled)));
 
 		PanelDetails fossilIslandEastPanel = new PanelDetails("East Hardwood Patch",
 			Arrays.asList(eastHardwoodTreePatchCheckHealth, eastHardwoodTreePatchCutDown, eastHardwoodTreePatchDig, eastHardwoodTreePatchClear, eastHardwoodTreePatchPlant, eastHardwoodProtect)
@@ -1252,9 +1258,9 @@ public class TreeRun extends ComplexStateQuestHelper
 		kastoriCalquatPanel.setLockingStep(kastoriCalquatStep);
 		kastoriCalquatPanel.setHideCondition(or(not(accessToVarlamore), not(accessToCalquatFarming), not(calquatEnabled)));
 
-		var kastoriPanel = new TopLevelPanelDetails("Kastori", fruitTreeFactory.getKastoriPanel(), kastoriCalquatPanel).withId(13);
+		var kastoriPanel = new TopLevelPanelDetails("Kastori", fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.KASTORI).getLeft(), kastoriCalquatPanel).withId(13);
 		kastoriPanel.setLockingStep(kastoriStep);
-		kastoriPanel.setHideCondition(and(fruitTreeFactory.shouldHideTopLevelKastoriPanel(), or(not(accessToVarlamore), not(calquatEnabled))));
+		kastoriPanel.setHideCondition(and(fruitTreeFactorySubPanelDetails.get(TreeFactory.MultiLevelPanel.KASTORI).getRight().get(), or(not(accessToVarlamore), not(calquatEnabled))));
 
 		PanelDetails anglersPanel = new PanelDetails("Anglers' Retreat", Arrays.asList(anglersCheckHealth,
 			anglersCutDown, anglersDig, anglersClear, anglersPlant, anglersProtect)).withId(14);
@@ -1267,10 +1273,14 @@ public class TreeRun extends ComplexStateQuestHelper
 		greatConchPanel.setLockingStep(greatConchStep);
 		greatConchPanel.setHideCondition(or(not(accessToCalquatFarming), not(accessToGreatConch), not(calquatEnabled)));
 
-		var farmRunSidebar = new TopLevelPanelDetails("Tree Run", farmingGuildPanel, lumbridgePanel, faladorPanel, taverleyPanel,
-			varrockPanel, gnomeStrongholdPanel, fruitTreeFactory.getGnomeVillagePanel(), fruitTreeFactory.getCatherbyPanel(), karamjaPanel, fruitTreeFactory.getLletyaPanel(), fossilIslandPanel, savannahPanel, auburnvalePanel,
-			kastoriPanel, anglersPanel, greatConchPanel);
-		farmRunSidebar.setHideCondition(and(not(treesEnabled), /*not(fruitTreesEnabled), */not(hardwoodEnabled), not(calquatEnabled)));
+		List<PanelDetails> allPanelDetails = new ArrayList<>(List.of(
+			farmingGuildPanel, lumbridgePanel, faladorPanel, taverleyPanel, varrockPanel, gnomeStrongholdPanel, karamjaPanel, fossilIslandPanel,
+			savannahPanel, auburnvalePanel, kastoriPanel, anglersPanel, greatConchPanel
+		));
+		allPanelDetails.addAll(fruitTreeFactory.getPanelDetails());
+
+		var farmRunSidebar = new TopLevelPanelDetails("Tree Run", allPanelDetails.toArray(PanelDetails[]::new));
+		farmRunSidebar.setHideCondition(and(not(treesEnabled), not(hardwoodEnabled), not(calquatEnabled)));
 		allSteps.add(farmRunSidebar);
 
 		return allSteps;

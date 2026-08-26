@@ -271,7 +271,7 @@ public class TroubledTortugans extends BasicQuestHelper
 
 		// 30
 		// TODO: Confirm this Npc ID is correct
-		fightGryphon = new NpcStep(this, NpcID.TT_CONCH_GRYPHON, "Defeat the Gryphon. It hits with melee, and does a special attack if your worn weight is less than 45kg.", combatGear, food, prayer);
+		fightGryphon = new NpcStep(this, NpcID.TT_CONCH_GRYPHON, "Defeat the Gryphon. It hits with melee, and does a special attack if your worn weight is less than 40kg.", combatGear, food, prayer);
 		cFightGryphon = new ConditionalStep(this, enterGryphonCave);
 		cFightGryphon.addStep(inGryphonCave, fightGryphon);
 
@@ -287,7 +287,7 @@ public class TroubledTortugans extends BasicQuestHelper
 		boardBoatAtConch = new ObjectStep(this, ObjectID.SAILING_GANGPLANK_EMBARK, new WorldPoint(3174, 2367, 0), "Sail to Little Pearl island, south-east of The Great Conch, to confront the Shellbane gryphon.", combatGear, food, prayer, tortuganShield);
 		sailToLittlePearl = new ObjectStep(this, ObjectID.SAILING_MOORING_DISEMBARK, new WorldPoint(3354, 2216, 0), "Sail to Little Pearl island, south-east of The Great Conch, to confront the Shellbane gryphon.", combatGear, food, prayer, tortuganShield.equipped());
 		sailToLittlePearl.addSubSteps(boardBoatAtConch);
-		fightShellbane = new NpcStep(this, NpcID.TT_PEARL_GRYPHON, "Defeat the Shellbane gryphon. Have your worn weight be at least 45kg to avoid some damage. Protect from ranged if you're ranging it, and protect from melee when in melee range. Avoid tornadoes. Move when it spits a slow blob at you.", combatGear, food, prayer, tortuganShield.equipped());
+		fightShellbane = new NpcStep(this, NpcID.TT_PEARL_GRYPHON, "Defeat the Shellbane gryphon. Have your worn weight be at least 40kg to avoid some damage. Protect from ranged if you're ranging it, and protect from melee when in melee range. Avoid tornadoes. Move when it spits a slow blob at you.", combatGear, food, prayer, tortuganShield.equipped());
 		cGetToTheLittlePearl = new ConditionalStep(this, boardBoatAtConch);
 		cGetToTheLittlePearl.addStep(not(tortuganShield), getShield);
 		cGetToTheLittlePearl.addStep(onBoat, sailToLittlePearl);

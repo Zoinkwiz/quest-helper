@@ -28,7 +28,9 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.helpers.activities.charting.ChartingTaskInterface;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
@@ -38,6 +40,7 @@ import static com.questhelper.requirements.util.LogicHelper.nor;
 public class ChartingPuzzleWrapStep extends PuzzleWrapperStep implements ChartingTaskInterface
 {
 	private final ChartingTaskInterface questStep;
+	private final Requirement completedRequirement;
 
 	public ChartingPuzzleWrapStep(QuestHelper questHelper, QuestStep questStep, QuestStep noAnswerStep, ChartingTaskDefinition definition)
 	{
@@ -47,8 +50,8 @@ public class ChartingPuzzleWrapStep extends PuzzleWrapperStep implements Chartin
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
 		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
-		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
-		
+		this.completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
+
 		conditionToHideInSidebar(completedRequirement);
 		conditionToFadeInSidebar(levelNotMet);
 	}
@@ -69,5 +72,18 @@ public class ChartingPuzzleWrapStep extends PuzzleWrapperStep implements Chartin
 	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
 	{
 		// Hopefully implemented in the wrapped step?
+	}
+
+	@Override
+	public String getOcean()
+	{
+		return questStep.getOcean();
+	}
+
+	@Override
+	public void addOceanFilterHideCondition(Requirement oceanFilterHideCondition)
+	{
+		// Hide if completed OR doesn't match ocean filter
+		conditionToHideInSidebar(new Conditions(LogicType.OR, completedRequirement, oceanFilterHideCondition));
 	}
 }

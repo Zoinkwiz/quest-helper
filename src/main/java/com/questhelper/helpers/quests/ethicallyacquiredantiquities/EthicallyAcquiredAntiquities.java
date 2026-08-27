@@ -261,12 +261,6 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Collections.emptyList();
-	}
-
-	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return Arrays.asList(coinsForCharter, varrockTeleport, civitasIllaFortisTeleport.quantity(2), staminaPotion);

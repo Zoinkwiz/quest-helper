@@ -188,7 +188,7 @@ public class TheRedReef extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		rangedCombatGearOrShipWithCannons = new ItemRequirement("Ranged/Mage combat gear to skip boat combat, or a boat with cannons to deal with pirates", -1, -1).isNotConsumed();
+		rangedCombatGearOrShipWithCannons = new ItemRequirement("Ranged/Mage combat gear to skip boat combat, or a boat with cannons to deal with pirates. An upgraded keel helps with survival. (Mithril is more than enough)", -1, -1).isNotConsumed();
 		rangedCombatGearOrShipWithCannons.setDisplayItemId(BankSlotIcons.getRangedCombatGear());
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getRangedCombatGear());

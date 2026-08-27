@@ -182,7 +182,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 
 		returnToCrewmember.addDialogStep("So, about that man with the case.");
 		talkToTraderStan = new NpcStep(this, NpcID.SAILING_TRANSPORT_TRADER_STAN_BASE, new WorldPoint(3036, 3194, 0), "Head to Port Sarim and speak to Trader Stan or any Trader " +
-				"Crewmember on the southern deck. You can charter a ship from Civitas illa Fortis to Port Sarim for 3000 coins.", true);
+				"Crewmember on the southern deck. To get to Port Sarim quickly, you can charter a ship.");
 		((NpcStep) talkToTraderStan).addRecommended(coinsForCharter);
 		talkToTraderStan.addDialogSteps("Port Sarim (wily cats)", "Have you seen a grey-haired man with a case?");
 		((NpcStep) talkToTraderStan).addAlternateNpcs(NpcID.SAILING_TRANSPORT_TRADER_STAN_BRIMHAVEN, NpcID.SAILING_TRANSPORT_TRADER_STAN_CATHERBY, NpcID.SAILING_TRANSPORT_TRADER_STAN_MOSLEHARMLESS, NpcID.SAILING_TRANSPORT_TRADER_STAN_MUSAPOINT,

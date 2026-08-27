@@ -301,7 +301,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Grand Museum", Arrays.asList(inspectEmptyDisplayCase, talkToCuratorHerminius, investigateToolsBehindDisplayCase, investigateCaseAgain, talkToAcademic, talkToTourist, talkToCitizen), Arrays.asList(civitasIllaFortisTeleport)));
 
-		allSteps.add(new PanelDetails("Done with museum visit", Arrays.asList(talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes), Collections.emptyList(), Arrays.asList(coinsForCharter)));
+		allSteps.add(new PanelDetails("Done with museum visit", Arrays.asList(talkToRegulus, talkToCrewmember, talkToArtima, returnToCrewmember, talkToTraderStan, talkToBetty, readBettysNotes), Arrays.asList(coinsForCharter)));
 
 		allSteps.add(new PanelDetails("Nevermind, another one", Arrays.asList(talkToCuratorHaigHalen, pickpocketCuratorHaig, searchStoreroomCrate, talkToCuratorBeforeShaming,
 				shameCuratorHaigHalen, talkToCuratorBeforeCutscene, watchCutscene, returnToCuratorHerminius), Arrays.asList(varrockTeleport, civitasIllaFortisTeleport)));

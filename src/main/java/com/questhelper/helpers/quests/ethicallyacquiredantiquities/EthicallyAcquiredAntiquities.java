@@ -124,6 +124,7 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 		varrockTeleport.addAlternates(ItemID.CHRONICLE);
 		civitasIllaFortisTeleport = new TeleportItemRequirement("Civitas Illa Fortis Teleport", ItemID.POH_TABLET_FORTISTELEPORT);
 		coinsForCharter = new ItemRequirement("Coins", ItemID.COINS, 3000);
+		coinsForCharter.setTooltip("Only needed if you charter a ship from Civitas illa Fortis to Port Sarim.");
 		staminaPotion = new ItemRequirement("Stamina potion", ItemID._4DOSESTAMINA);
 
 		// Quest items
@@ -180,12 +181,15 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 		((NpcStep) returnToCrewmember).addAlternateNpcs(getCrewMembers());
 
 		returnToCrewmember.addDialogStep("So, about that man with the case.");
-		talkToTraderStan = new NpcStep(this, NpcID.SAILING_TRANSPORT_TRADER_STAN_BASE, new WorldPoint(3036, 3194, 0), "Head to Port Sarim and speak to Trader Stan on the southern " +
-				"deck. Charter at a cost of 3000 coins.", coinsForCharter);
+		talkToTraderStan = new NpcStep(this, NpcID.SAILING_TRANSPORT_TRADER_STAN_BASE, new WorldPoint(3036, 3194, 0), "Head to Port Sarim and speak to Trader Stan or any Trader " +
+				"Crewmember on the southern deck. To get to Port Sarim quickly, you can charter a ship.");
+		((NpcStep) talkToTraderStan).addRecommended(coinsForCharter);
 		talkToTraderStan.addDialogSteps("Port Sarim (wily cats)", "Have you seen a grey-haired man with a case?");
 		((NpcStep) talkToTraderStan).addAlternateNpcs(NpcID.SAILING_TRANSPORT_TRADER_STAN_BRIMHAVEN, NpcID.SAILING_TRANSPORT_TRADER_STAN_CATHERBY, NpcID.SAILING_TRANSPORT_TRADER_STAN_MOSLEHARMLESS, NpcID.SAILING_TRANSPORT_TRADER_STAN_MUSAPOINT,
 				NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTKHAZARD, NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTPHASMATYS, NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTSARIM, NpcID.SAILING_TRANSPORT_TRADER_STAN_SHIPYARD, NpcID.SAILING_TRANSPORT_TRADER_STAN_CORSAIRCOVE, NpcID.SAILING_TRANSPORT_TRADER_STAN_PRIFDDINAS
 				, NpcID.SAILING_TRANSPORT_TRADER_STAN_PORTTYRAS);
+		((NpcStep) talkToTraderStan).addAlternateNpcs(getCrewMembers());
+
 		talkToBetty = new NpcStep(this, NpcID.SARIM_BETTY, new WorldPoint(3011, 3260, 0), "Head to the Rune Shop in north western Port Sarim and speak to Betty" +
 				".");
 		talkToBetty.addDialogStep("Have you seen a grey-haired man with a case?");
@@ -257,15 +261,9 @@ public class EthicallyAcquiredAntiquities extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Arrays.asList(coinsForCharter);
-	}
-
-	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Arrays.asList(varrockTeleport, civitasIllaFortisTeleport.quantity(2), staminaPotion);
+		return Arrays.asList(coinsForCharter, varrockTeleport, civitasIllaFortisTeleport.quantity(2), staminaPotion);
 	}
 
 	@Override

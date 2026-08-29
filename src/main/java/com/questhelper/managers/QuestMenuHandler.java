@@ -28,15 +28,14 @@ package com.questhelper.managers;
 import com.google.common.primitives.Ints;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
-import com.questhelper.requirements.zone.Zone;
 import com.questhelper.tools.QuestWidgets;
 import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Random;
 
 /**
  * Manages the quest menu options within the game. This class is responsible for
@@ -75,7 +74,7 @@ public class QuestMenuHandler
 			QuestHelperQuest.RECIPE_FOR_DISASTER_START.getName()
 		};
 
-	private static final Zone PHOENIX_START_ZONE = new Zone(new WorldPoint(3204, 3488, 0), new WorldPoint(3221, 3501, 0));
+	private static final Random RANDOM = new Random();
 
 	private static final int[] ACHIEVEMENTLIST_WIDGET_IDS = new int[]
 		{
@@ -124,14 +123,7 @@ public class QuestMenuHandler
 	 */
 	private void handleShieldOfArrav()
 	{
-		Player player = client.getLocalPlayer();
-		if (player == null)
-		{
-			return;
-		}
-
-		WorldPoint location = player.getWorldLocation();
-		QuestHelperQuest questToStart = PHOENIX_START_ZONE.contains(location) ?
+		QuestHelperQuest questToStart = RANDOM.nextBoolean() ?
 			QuestHelperQuest.SHIELD_OF_ARRAV_PHOENIX_GANG :
 			QuestHelperQuest.SHIELD_OF_ARRAV_BLACK_ARM_GANG;
 

@@ -49,11 +49,12 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 
 import java.util.*;
+import static com.questhelper.requirements.util.LogicHelper.and;
 
 public class BigChompyBirdHunting extends BasicQuestHelper
 {
 	//Items Required
-	ItemRequirement axe, feathers, knife, hammer, chisel, wolfBones4, acheyLogs, chompy, bloatedToad, knifeHighlighted, feathersHighlighted,
+	ItemRequirement axe, feathers, knife, chisel, wolfBones4, acheyLogs, chompy, bloatedToad, knifeHighlighted, feathersHighlighted,
 		shaftsHighlighted, wolfBonesHighlighted, tipsHighlighted, flightedArrowsHighlighted, emptyBellow, fullBellow, ogreArrows6Highlighted,
 		ogreArrows, ogreBow, ogreBowInventory, onion, tomato, potato, doogle, equa, cabbage, chompyHighlighted, seasonedChompy,
 		seasonedChompyHighlighted, bellow;
@@ -82,7 +83,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 
 		ConditionalStep makeArrows = new ConditionalStep(this, getLogs);
 		makeArrows.addStep(ogreArrows6Highlighted, useArrowsOnRantz);
-		makeArrows.addStep(new Conditions(flightedArrowsHighlighted, tipsHighlighted), useTipsOnShafts);
+		makeArrows.addStep(and(flightedArrowsHighlighted, tipsHighlighted), useTipsOnShafts);
 		makeArrows.addStep(flightedArrowsHighlighted, useChiselOnBones);
 		makeArrows.addStep(shaftsHighlighted, useFeathersOnShafts);
 		makeArrows.addStep(acheyLogs, makeShafts);
@@ -96,7 +97,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		steps.put(15, goGetBellows);
 
 		ConditionalStep goInflateToad = new ConditionalStep(this, fillBellows);
-		goInflateToad.addStep(new Conditions(inCave, bellow), leaveCave);
+		goInflateToad.addStep(and(inCave, bellow), leaveCave);
 		goInflateToad.addStep(inCave, getBellow);
 		goInflateToad.addStep(bloatedToad, talkToRantzWithToad);
 		goInflateToad.addStep(fullBellow, inflateToad);
@@ -109,31 +110,26 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 
 		steps.put(40, talkToRantzForBow);
 
-		ConditionalStep getChompy = new ConditionalStep(this, placeAnotherToad);
-		getChompy.addStep(chompyNearby, killChompy);
+		ConditionalStep getChompy = new ConditionalStep(this, placeAnotherToad)
+			.addStep(chompyNearby, killChompy);
 		steps.put(45, getChompy);
 
-		ConditionalStep bringChompyToRantz = new ConditionalStep(this, talkToRantzWithChompy);
-		bringChompyToRantz.addStep(deadChompyNearby, pluckCarcass);
+		ConditionalStep bringChompyToRantz = new ConditionalStep(this, talkToRantzWithChompy)
+			.addStep(deadChompyNearby, pluckCarcass);
 		steps.put(50, bringChompyToRantz);
 
-		ConditionalStep seasonChompy = new ConditionalStep(this, talkToRantzWithChompy);
-		seasonChompy.addStep(new Conditions(knowWhatFycieWants, knowWhatBugsWants, inCave), leaveCave);
-
-		seasonChompy.addStep(new Conditions(hasFycieItem, hasBugsItem, hasRantzItem), cookChompy);
-
-		seasonChompy.addStep(new Conditions(fycieWantsTomato, hasBugsItem, hasRantzItem), getTomato);
-		seasonChompy.addStep(new Conditions(fycieWantsDoogle, hasBugsItem, hasRantzItem), getDoogle);
-
-		seasonChompy.addStep(new Conditions(knowWhatFycieWants, bugsWantsCabbage, hasRantzItem), getCabbage);
-		seasonChompy.addStep(new Conditions(knowWhatFycieWants, bugsWantsEqua, hasRantzItem), getEqua);
-
-		seasonChompy.addStep(new Conditions(knowWhatFycieWants, knowWhatBugsWants, rantzWantsOnion), getOnion);
-		seasonChompy.addStep(new Conditions(knowWhatFycieWants, knowWhatBugsWants, rantzWantsPotato), getPotato);
-
-		seasonChompy.addStep(new Conditions(knowWhatBugsWants, inCave), talkToFycie);
-		seasonChompy.addStep(new Conditions(inCave), talkToBugs);
-		seasonChompy.addStep(knowWhatRantzWants, enterCaveAgain);
+		ConditionalStep seasonChompy = new ConditionalStep(this, talkToRantzWithChompy)
+			.addStep(and(knowWhatFycieWants, knowWhatBugsWants, inCave), leaveCave)
+			.addStep(and(hasFycieItem, hasBugsItem, hasRantzItem), cookChompy)
+			.addStep(and(fycieWantsTomato, hasBugsItem, hasRantzItem), getTomato)
+			.addStep(and(fycieWantsDoogle, hasBugsItem, hasRantzItem), getDoogle)
+			.addStep(and(knowWhatFycieWants, bugsWantsCabbage, hasRantzItem), getCabbage)
+			.addStep(and(knowWhatFycieWants, bugsWantsEqua, hasRantzItem), getEqua)
+			.addStep(and(knowWhatFycieWants, knowWhatBugsWants, rantzWantsOnion), getOnion)
+			.addStep(and(knowWhatFycieWants, knowWhatBugsWants, rantzWantsPotato), getPotato)
+			.addStep(and(knowWhatBugsWants, inCave), talkToFycie)
+			.addStep(and(inCave), talkToBugs)
+			.addStep(knowWhatRantzWants, enterCaveAgain);
 
 		steps.put(55, seasonChompy);
 
@@ -148,7 +144,6 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).isNotConsumed();
 		feathers = new ItemRequirement("Feathers", ItemID.FEATHER, 100);
 		knife = new ItemRequirement("Knife", ItemID.KNIFE).isNotConsumed();
-		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		chisel = new ItemRequirement("Chisel", ItemCollections.CHISEL).isNotConsumed();
 		chisel.setHighlightInInventory(true);
 		wolfBones4 = new ItemRequirement("Wolf bones", ItemID.WOLF_BONES, 4);
@@ -189,12 +184,12 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		bellow = new ItemRequirement("Ogre bellows", ItemID.EMPTY_OGRE_BELLOWS);
 		bellow.addAlternates(ItemID.FILLED_OGRE_BELLOW1, ItemID.FILLED_OGRE_BELLOW2, ItemID.FILLED_OGRE_BELLOW3);
 
-		onion = new ItemRequirement("Onion", ItemID.ONION);
-		tomato = new ItemRequirement("Tomato", ItemID.TOMATO);
-		potato = new ItemRequirement("Potato", ItemID.POTATO);
-		doogle = new ItemRequirement("Doogle leaves", ItemID.DOOGLELEAVES);
-		equa = new ItemRequirement("Equa leaves", ItemID.EQUA_LEAVES);
-		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE);
+		onion = new ItemRequirement("Onion", ItemID.ONION).canBeObtainedDuringQuest();
+		tomato = new ItemRequirement("Tomato", ItemID.TOMATO).canBeObtainedDuringQuest();
+		potato = new ItemRequirement("Potato", ItemID.POTATO).canBeObtainedDuringQuest();
+		doogle = new ItemRequirement("Doogle leaves", ItemID.DOOGLELEAVES).canBeObtainedDuringQuest();
+		equa = new ItemRequirement("Equa leaves", ItemID.EQUA_LEAVES).canBeObtainedDuringQuest();
+		cabbage = new ItemRequirement("Cabbage", ItemID.CABBAGE).canBeObtainedDuringQuest();
 
 		seasonedChompy = new ItemRequirement("Seasoned chompy", ItemID.COOKED_S_CHOMPY);
 		seasonedChompyHighlighted = new ItemRequirement("Seasoned chompy", ItemID.COOKED_S_CHOMPY);
@@ -249,7 +244,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		getLogs = new ObjectStep(this, ObjectID.ACHEY_TREE, new WorldPoint(2627, 2975, 0), "Get some achey tree logs near Rantz.", axe);
 		makeShafts = new DetailedQuestStep(this, "Use your knife on the achey logs to make arrow shafts.", knifeHighlighted, acheyLogs);
 		useFeathersOnShafts = new DetailedQuestStep(this, "Use the feathers on the arrow shafts.", feathersHighlighted, shaftsHighlighted);
-		useChiselOnBones = new DetailedQuestStep(this, "Use a chisel on some wolf bones.", chisel, wolfBonesHighlighted, hammer);
+		useChiselOnBones = new DetailedQuestStep(this, "Use a chisel on some wolf bones.", chisel, wolfBonesHighlighted);
 		useTipsOnShafts = new DetailedQuestStep(this, "Add the bone arrow tips to the flighted ogre arrows.", tipsHighlighted, flightedArrowsHighlighted);
 		useArrowsOnRantz = new NpcStep(this, NpcID.RANTZ, new WorldPoint(2631, 2982, 0), "Use at least 6 ogre arrows on Rantz.", ogreArrows6Highlighted);
 		useArrowsOnRantz.addIcon(ItemID.OGRE_ARROW);
@@ -295,7 +290,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(axe, feathers, knife, hammer, chisel, wolfBones4);
+		return Arrays.asList(axe, feathers, knife, chisel, wolfBones4, cabbage, tomato, onion, potato, equa, doogle);
 	}
 
 	@Override
@@ -339,7 +334,7 @@ public class BigChompyBirdHunting extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Getting Rantz Arrows",
 			Arrays.asList(talkToRantz, getLogs, makeShafts, useFeathersOnShafts, useChiselOnBones,
-				useTipsOnShafts, useArrowsOnRantz), axe, knife, feathers, chisel, hammer, wolfBones4));
+				useTipsOnShafts, useArrowsOnRantz), axe, knife, feathers, chisel, wolfBones4));
 		allSteps.add(new PanelDetails("Making Bloated Toads",
 			Arrays.asList(askRantzQuestions, enterCave, getBellow, leaveCave, fillBellows, inflateToad, talkToRantzWithToad)));
 		allSteps.add(new PanelDetails("Hunting Chompy",

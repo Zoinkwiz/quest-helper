@@ -38,7 +38,7 @@ public enum DolmenType
 	STRENGTH(ObjectID.LUC2_HERB_STATUE_STRENGTH, new ItemRequirement("Tarromin", ItemID.TARROMIN).highlighted(), new ItemRequirement("Limpwurt root", ItemID.LIMPWURT_ROOT).highlighted()),
 	DEFENCE(ObjectID.LUC2_HERB_STATUE_DEFENCE, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("White berries", ItemID.WHITE_BERRIES).highlighted()),
 	COMBAT(ObjectID.LUC2_HERB_STATUE_COMBAT, new ItemRequirement("Harralander", ItemID.HARRALANDER).highlighted(), new ItemRequirement("Goat horn dust", ItemID.GROUND_DESERT_GOAT_HORN).highlighted()),
-	RANGED(ObjectID.LUC2_HERB_STATUE_RANGED, new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED).highlighted(), new ItemRequirement("Wine of zamorak", ItemID.WINE_OF_ZAMORAK).highlighted()),
+	RANGED(ObjectID.LUC2_HERB_STATUE_RANGED, new ItemRequirement("Dwarf weed", ItemID.DWARF_WEED).highlighted(), new ItemRequirement("Wine of Zamorak", ItemID.WINE_OF_ZAMORAK).highlighted()),
 	PRAYER(ObjectID.LUC2_HERB_STATUE_PRAYER, new ItemRequirement("Ranarr weed", ItemID.RANARR_WEED).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),
 	HUNTER(ObjectID.LUC2_HERB_STATUE_HUNTING, 3, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Kebbit teeth dust", ItemID.HUNTINGBEAST_SABRETEETH_DUST).highlighted()),
 	FISHING(ObjectID.LUC2_HERB_STATUE_FISHING, new ItemRequirement("Avantoe", ItemID.AVANTOE).highlighted(), new ItemRequirement("Snape grass", ItemID.SNAPE_GRASS).highlighted()),

@@ -32,7 +32,7 @@ import net.runelite.api.annotations.Varbit;
 
 @Getter
 @ToString(onlyExplicitlyIncluded = true)
-class FarmingPatch
+public class FarmingPatch
 {
 	@Setter(AccessLevel.PACKAGE)
 	@ToString.Include

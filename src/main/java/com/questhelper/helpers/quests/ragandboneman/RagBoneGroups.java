@@ -29,82 +29,82 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.LogicType;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RagBoneGroups
 {
 	public static List<RagBoneState> getRagBoneIStates()
 	{
-		return Arrays.asList(RagBoneState.GIANT_RAT_BONE, RagBoneState.UNICORN_BONE,
-			RagBoneState.BEAR_RIBS, RagBoneState.RAM_SKULL, RagBoneState.GOBLIN_SKULL, RagBoneState.BIG_FROG_LEG,
-			RagBoneState.MONKEY_PAW, RagBoneState.GIANT_BAT_WING);
+		return List.of(
+			RagBoneState.GIANT_RAT_BONE,
+			RagBoneState.UNICORN_BONE,
+			RagBoneState.BEAR_RIBS,
+			RagBoneState.RAM_SKULL,
+			RagBoneState.GOBLIN_SKULL,
+			RagBoneState.BIG_FROG_LEG,
+			RagBoneState.MONKEY_PAW,
+			RagBoneState.GIANT_BAT_WING
+		);
 	}
 
 	public static List<RagBoneState> getRagBoneIIStates()
 	{
-		return Arrays.asList(RagBoneState.BAT_WING, RagBoneState.UNDEAD_COW_RIBS,
-			RagBoneState.EXPERIMENT_BONE, RagBoneState.WEREWOLF_BONE, RagBoneState.GHOUL_BONE,
-			RagBoneState.ZOMBIE_BONE, RagBoneState.RAT_BONE, RagBoneState.MOSS_GIANT_BONE,
-			RagBoneState.CAVE_GOBLIN_SKULL, RagBoneState.JACKAL_BONE, RagBoneState.SNAKE_SPINE,
-			RagBoneState.DESERT_LIZARD_BONE, RagBoneState.VULTURE_WING, RagBoneState.SEAGULL_WING,
-			RagBoneState.ICE_GIANT_RIBS, RagBoneState.MOGRE_BONE, RagBoneState.JOGRE_BONE,
-			RagBoneState.BABY_DRAGON_BONE, RagBoneState.TROLL_BONE, RagBoneState.RABBIT_BONE,
-			RagBoneState.BASILISK_BONE, RagBoneState.DAGANNOTH_RIBS, RagBoneState.FIRE_GIANT_BONE,
-			RagBoneState.TERRORBIRD_WING, RagBoneState.WOLF_BONE, RagBoneState.OGRE_RIBS,
-			RagBoneState.ZOGRE_BONE);
+		return List.of(
+			RagBoneState.BAT_WING,
+			RagBoneState.UNDEAD_COW_RIBS,
+			RagBoneState.EXPERIMENT_BONE,
+			RagBoneState.WEREWOLF_BONE,
+			RagBoneState.GHOUL_BONE,
+			RagBoneState.ZOMBIE_BONE,
+			RagBoneState.RAT_BONE,
+			RagBoneState.MOSS_GIANT_BONE,
+			RagBoneState.CAVE_GOBLIN_SKULL,
+			RagBoneState.JACKAL_BONE,
+			RagBoneState.SNAKE_SPINE,
+			RagBoneState.DESERT_LIZARD_BONE,
+			RagBoneState.VULTURE_WING,
+			RagBoneState.SEAGULL_WING,
+			RagBoneState.ICE_GIANT_RIBS,
+			RagBoneState.MOGRE_BONE,
+			RagBoneState.JOGRE_BONE,
+			RagBoneState.BABY_DRAGON_BONE,
+			RagBoneState.TROLL_BONE,
+			RagBoneState.RABBIT_BONE,
+			RagBoneState.BASILISK_BONE,
+			RagBoneState.DAGANNOTH_RIBS,
+			RagBoneState.FIRE_GIANT_BONE,
+			RagBoneState.TERRORBIRD_WING,
+			RagBoneState.WOLF_BONE,
+			RagBoneState.OGRE_RIBS,
+			RagBoneState.ZOGRE_BONE
+		);
 	}
 
 	public static List<ItemRequirement> getBones(List<RagBoneState> states)
 	{
-		List<ItemRequirement> bones = new ArrayList<>();
-		for (RagBoneState ragBoneState : states)
-		{
-			bones.add(ragBoneState.getBoneItem());
-		}
-		return bones;
+		return states.stream().map(RagBoneState::getBoneItem).collect(Collectors.toList());
 	}
 
 	public static List<Requirement> getBonesOnFloor(List<ItemRequirement> bones)
 	{
-		List<Requirement> bonesOnFloor = new ArrayList<>();
-		for (ItemRequirement bone : bones)
-		{
-			bonesOnFloor.add(new ItemOnTileRequirement(bone));
-		}
-		return bonesOnFloor;
+		return bones.stream().map(ItemOnTileRequirement::new).collect(Collectors.toList());
 	}
 
 	public static List<Requirement> allBonesObtained(List<RagBoneState> states)
 	{
-		List<Requirement> boneReq = new ArrayList<>();
-		for (RagBoneState ragBoneIState : states)
-		{
-			boneReq.add(ragBoneIState.hadBoneItem());
-		}
-		return boneReq;
+		return states.stream().map(RagBoneState::hadBoneItem).collect(Collectors.toList());
 	}
 
 	public static List<Requirement> allBonesAddedToVinegar(List<RagBoneState> states)
 	{
-		List<Requirement> boneReq = new ArrayList<>();
-		for (RagBoneState ragBoneIState : states)
-		{
-			boneReq.add(ragBoneIState.hadBoneInVinegarItem());
-		}
-		return boneReq;
+		return states.stream().map(RagBoneState::hadBoneInVinegarItem).collect(Collectors.toList());
 	}
 
 	public static List<Requirement> allBonesPolished(List<RagBoneState> states)
 	{
-		List<Requirement> boneReq = new ArrayList<>();
-		for (RagBoneState ragBoneIState : states)
-		{
-			boneReq.add(ragBoneIState.boneProcessed());
-		}
-		return boneReq;
+		return states.stream().map(RagBoneState::boneProcessed).collect(Collectors.toList());
 	}
 
 	public static List<ItemRequirement> pickupBones(List<RagBoneState> states)

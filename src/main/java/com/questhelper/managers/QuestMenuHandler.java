@@ -298,7 +298,8 @@ public class QuestMenuHandler
 		if (questHelper != null && !questHelper.isCompleted())
 		{
 			String menuOption;
-			if (questManager.getSelectedQuest() != null && questManager.getSelectedQuest().getQuest().getName().equals(helperName))
+			if (questManager.getSelectedQuest() != null && questManager.getSelectedQuest().getQuest() != null
+				&& questManager.getSelectedQuest().getQuest().getName().equals(helperName))
 			{
 				menuOption = "Stop " + entryName;
 			}

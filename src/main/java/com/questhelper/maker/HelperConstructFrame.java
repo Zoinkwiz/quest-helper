@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.maker;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Client;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class ManualRequirement extends SimpleRequirement
+public final class HelperConstructFrame extends JFrame
 {
-	@Getter
-	@Setter
-	boolean shouldPass;
+	private final HelperConstructEditorPanel editor;
+	private final HelperConstructManager helperConstructManager;
 
-	@Override
-	public boolean check(Client client)
+	public HelperConstructFrame(HelperConstructManager helperConstructManager)
 	{
-		return shouldPass;
+		super("Quest Helper Maker");
+		this.helperConstructManager = helperConstructManager;
+		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+		setMinimumSize(new Dimension(720, 480));
+		editor = new HelperConstructEditorPanel(helperConstructManager);
+		setContentPane(editor);
+		setSize(960, 640);
+		setLocationByPlatform(true);
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				helperConstructManager.setMakerUiOpen(false);
+			}
+		});
+	}
+
+	public void openWindow()
+	{
+		helperConstructManager.setMakerUiOpen(true);
+		setVisible(true);
+		setExtendedState(Frame.NORMAL);
+		toFront();
+		requestFocus();
+	}
+
+	public void disposeForShutdown()
+	{
+		helperConstructManager.setMakerUiOpen(false);
+		editor.shutDown();
+		dispose();
 	}
 }

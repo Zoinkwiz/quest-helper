@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.maker.construct;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Client;
+import com.questhelper.tools.ConstructWorldMapPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 
-public class ManualRequirement extends SimpleRequirement
+/**
+ * World map markers for the maker route preview.
+ */
+public final class MakerPreviewRuntime
 {
-	@Getter
-	@Setter
-	boolean shouldPass;
-
-	@Override
-	public boolean check(Client client)
+	private MakerPreviewRuntime()
 	{
-		return shouldPass;
+	}
+
+	public static void clearConstructWorldMapPoints(WorldMapPointManager worldMapPointManager)
+	{
+		if (worldMapPointManager != null)
+		{
+			worldMapPointManager.removeIf(ConstructWorldMapPoint.class::isInstance);
+		}
 	}
 }

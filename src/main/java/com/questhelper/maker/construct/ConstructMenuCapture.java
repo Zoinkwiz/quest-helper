@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.maker.construct;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Client;
-
-public class ManualRequirement extends SimpleRequirement
+/**
+ * Quest Helper Maker in-game menu capture. Option prefix for right-click entries; orchestration remains on
+ * {@link com.questhelper.maker.HelperConstructManager}.
+ */
+public final class ConstructMenuCapture
 {
-	@Getter
-	@Setter
-	boolean shouldPass;
+	public static final String MENU_OPTION_PREFIX = "QHM:";
 
-	@Override
-	public boolean check(Client client)
+	private ConstructMenuCapture()
 	{
-		return shouldPass;
 	}
 }

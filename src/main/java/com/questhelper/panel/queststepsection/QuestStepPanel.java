@@ -35,6 +35,7 @@ import com.questhelper.requirements.ManualRequirement;
 import com.questhelper.steps.BoardShipStep;
 import com.questhelper.steps.PortTaskStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.Fonts;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -97,7 +98,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 		addMouseListener(this);
 
 		headerLabel.setText(panelDetails.getHeader());
-		headerLabel.setFont(FontManager.getRunescapeBoldFont());
+		headerLabel.setFont(FontManager.getRunescapeBoldFont().deriveFont((float) Fonts.getOriginalFont().getSize()));
 
 		headerLabel.setMinimumSize(new Dimension(1, headerLabel.getPreferredSize().height));
 
@@ -374,6 +375,7 @@ public class QuestStepPanel extends AbstractQuestSection implements MouseListene
 			BorderFactory.createEmptyBorder(5, 5, 10, 0)
 		));
 		questStepLabel.setText(generateText(step));
+		questStepLabel.setFont(Fonts.getOriginalFont());
 		questStepLabel.setOpaque(true);
 		questStepLabel.setVisible(true);
 		return questStepLabel;

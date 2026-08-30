@@ -76,10 +76,13 @@ public class QuestOverviewPanel extends JPanel
 	private final QuestRequirementsPanel questItemRequirementsPanel;
 	private final QuestRequirementsPanel questItemRecommendedPanel;
 	private final JPanel questCombatRequirementsListPanel;
+	private final JTextArea questCombatRequirementsHeader;
 	private final JPanel questNotesPanel;
 	private final JPanel questNotesList;
+	private final JTextArea questNotesHeader;
 	private final QuestRewardsPanel questRewardsPanel;
 	private final JPanel questExternalResourcesList;
+	private final JTextArea questExternalResourcesHeader;
 
 	private JPanel questStepsContainer;
 	private final CardLayout questStepsLayout = new CardLayout();
@@ -184,19 +187,22 @@ public class QuestOverviewPanel extends JPanel
 		overviewPanel.add(questItemRecommendedPanel);
 
 		var combatRequirements = QuestRequirementsPanel.createGenericGroup("Enemies to defeat:");
-		questCombatRequirementsListPanel = combatRequirements.getRight();
+		questCombatRequirementsListPanel = combatRequirements.getMiddle();
+		questCombatRequirementsHeader = combatRequirements.getRight();
 		overviewPanel.add(combatRequirements.getLeft());
 
 		var notes = QuestRequirementsPanel.createGenericGroup("Notes:");
 		questNotesPanel = notes.getLeft();
-		questNotesList = notes.getRight();
+		questNotesList = notes.getMiddle();
+		questNotesHeader = notes.getRight();
 		overviewPanel.add(questNotesPanel);
 
 		questRewardsPanel = new QuestRewardsPanel();
 		overviewPanel.add(questRewardsPanel);
 
 		var externalResources = QuestRequirementsPanel.createGenericGroup("External Resources:");
-		questExternalResourcesList = externalResources.getRight();
+		questExternalResourcesList = externalResources.getMiddle();
+		questExternalResourcesHeader = externalResources.getRight();
 		overviewPanel.add(externalResources.getLeft());
 
 		introPanel.add(overviewPanel, BorderLayout.NORTH);
@@ -279,6 +285,7 @@ public class QuestOverviewPanel extends JPanel
 		if (quest.getCurrentStep() != null)
 		{
 			questNameLabel.setText(quest.getQuest().getName());
+			questNameLabel.setFont(Fonts.getOriginalFont());
 			actionsContainer.setVisible(true);
 
 			if (quest.getConfigs() != null)
@@ -371,8 +378,27 @@ public class QuestOverviewPanel extends JPanel
 			.count() == allQuestStepPanelList.size();
 	}
 
+	private void refreshGenericHeaderFonts()
+	{
+		Font font = Fonts.getOriginalFont();
+		if (questCombatRequirementsHeader != null)
+		{
+			questCombatRequirementsHeader.setFont(font);
+		}
+		if (questNotesHeader != null)
+		{
+			questNotesHeader.setFont(font);
+		}
+		if (questExternalResourcesHeader != null)
+		{
+			questExternalResourcesHeader.setFont(font);
+		}
+	}
+
 	public void setupQuestRequirements(QuestHelper quest)
 	{
+		refreshGenericHeaderFonts();
+
 		/* Config setup */
 		if (quest.getConfigs() != null)
 		{
@@ -522,6 +548,7 @@ public class QuestOverviewPanel extends JPanel
 	private void updateCombatRequirementsPanels(List<String> combatRequirementList)
 	{
 		JTextArea combatLabel = JGenerator.makeJTextArea();
+		combatLabel.setFont(Fonts.getOriginalFont());
 		combatLabel.setForeground(Color.GRAY);
 		StringBuilder textCombat = new StringBuilder();
 		if (combatRequirementList == null)
@@ -615,6 +642,7 @@ public class QuestOverviewPanel extends JPanel
 				first = false;
 			}
 			var overviewLabel = JGenerator.makeJTextArea();
+			overviewLabel.setFont(Fonts.getOriginalFont());
 			overviewLabel.setForeground(Color.GRAY);
 			overviewLabel.setText(textNote.toString());
 

@@ -605,7 +605,7 @@ public class DesertTreasureII extends BasicQuestHelper
 			new WorldPoint(3932, 9631, 1), "Talk to Asgarnia Smith inside the Vault.");
 
 		talkToBalando = new NpcStep(this, NpcID.ARCHAEOLOGICAL_EXPERT, new WorldPoint(3359, 3334, 0),
-			"Talk to the Terry Balando in the Exam Centre found south-east of Varrock, " +
+			"Talk to Terry Balando in the Exam Centre found south-east of Varrock, " +
 				"directly south of the Digsite.");
 		talkToBalando.addTeleport(senntistenTeleport);
 

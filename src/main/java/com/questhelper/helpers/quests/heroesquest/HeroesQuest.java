@@ -423,7 +423,7 @@ public class HeroesQuest extends BasicQuestHelper
 		takeLadder2Up = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2824, 9907, 0), "Follow the tunnel south, then go up the ladder there.");
 		takeLadder3Down = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2827, 3510, 0), "Take the east ladder down.");
 		takeLadder4Up = new ObjectStep(this, ObjectID.LADDER_FROM_CELLAR, new WorldPoint(2857, 9917, 0), "Follow the path around until you reach a ladder, then climb it.");
-		takeLadder5Down = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2859, 3519, 0), "Take the south ladder down.");
+		takeLadder5Down = new ObjectStep(this, ObjectID.LADDER_OUTSIDE_TO_UNDERGROUND, new WorldPoint(2859, 3519, 0), "Take the north ladder down.");
 		killIceQueen = new NpcStep(this, NpcID.ICE_QUEEN, new WorldPoint(2865, 9948, 0), "Kill the Ice Queen for ice gloves.");
 		pickupIceGloves = new DetailedQuestStep(this, "Pick up the ice gloves.", iceGloves);
 		killIceQueen.addSubSteps(pickupIceGloves);
@@ -442,6 +442,7 @@ public class HeroesQuest extends BasicQuestHelper
 	{
 		ArrayList<String> reqs = new ArrayList<>();
 		reqs.add("Ice Queen (level 111) for ice gloves");
+		reqs.add("Entrana firebird (level 2)");
 		if (!inBlackArmGang.check(client))
 		{
 			reqs.add("Grip (level 26)");

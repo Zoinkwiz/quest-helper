@@ -239,7 +239,14 @@ class CastleDrakan
 	ItemRequirement shieldWithSymbol;
 	VarbitRequirement hasMountedShield;
 	ItemRequirement solidKey;
-	VarplayerRequirement hasUsedNewMoonKey;
+	/// Player has opened the new moon door in the basement, leading to the prison/dungeon where you free Safalaan and Vanescula.
+	/// Part of the start of the "Escaping Castle Drakan - Gilded and gibbous keys" section.
+	VarplayerRequirement openedDungeonToFreeSafalaanNewMoonDoor;
+	/// Player has opened the servants quarter door after going through the portal.
+	/// Part of the "Escaping Castle Drakan - Solid key" section.
+	VarplayerRequirement openedServantsQuarterNewMoonDoor;
+	/// Player has opened up the doors that we deem important for the new moon key.
+	Conditions usedUpNewMoonKey;
 	Conditions usedUpFullMoonKey;
 	VarplayerRequirement usedSolidKey;
 	VarplayerRequirement openedGalleryCrescentDoor;
@@ -533,7 +540,10 @@ class CastleDrakan
 		hasMountedShield = new VarbitRequirement(VarbitID.CASTLE_DRAKAN_SHIELD_MOUNT, 1);
 		solidKey = new ItemRequirement("Solid key", ItemID.CASTLE_DRAKAN_LAB_KEY);
 
-		hasUsedNewMoonKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, true, 1);
+		openedDungeonToFreeSafalaanNewMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4, 13);
+		openedServantsQuarterNewMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_3, 1);
+		usedUpNewMoonKey = and(openedDungeonToFreeSafalaanNewMoonDoor, openedServantsQuarterNewMoonDoor);
+
 		usedSolidKey = new VarplayerRequirement(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_4, true, 5);
 
 		openedLobbyHalfMoonDoor = openedDoor(VarPlayerID.CASTLE_DRAKAN_DOOR_STATUS_1, 3);
@@ -955,33 +965,33 @@ class CastleDrakan
 			"Search the study fireplace for the new moon key.");
 
 		var needsLeftCrestHalf = not(leftHalfOfCrest);
+
 		cGetNewMoonKey = new CastleDrakanGoalStep(quest, takeSyringeBarrel, "Get the new moon key.");
 		cGetNewMoonKey.addStep(fullCrestInStudy, takeNewMoonKey);
 		cGetNewMoonKey.addStep(fullCrest, placeFullCrest);
 		cGetNewMoonKey.addStep(and(leftHalfOfCrest, rightHalfOfCrest), combineCrests);
 		cGetNewMoonKey.addStep(and(leftHalfOfCrest, not(rightHalfOfCrest)), getRightCrestHalf);
-		var needsSyringePlunger = and(needsLeftCrestHalf, not(syringePlunger), not(emptySyringe),
-			not(fullSyringe), not(unlockedKitchenChest));
+
+		var needsSyringePlunger = and(needsLeftCrestHalf, not(syringePlunger), not(emptySyringe), not(fullSyringe), not(unlockedKitchenChest));
 		cGetNewMoonKey.addStep(and(needsSyringePlunger, sharpKitchenKnife), getSyringePlunger);
+		// TODO: This should check: "needsToCutOpenVenatorStomach" instead of "needsSyringePlunger".
+		// If a user picks up the syringe plunger first, the step to get the knife will be skipped.
 		cGetNewMoonKey.addStep(and(needsSyringePlunger, brokenPipe), reachBehindLarderCabinet);
-		cGetNewMoonKey.addStep(and(needsSyringePlunger, not(sharpKitchenKnife), larderSinkCollapsed),
-			takeBrokenPipe);
+		cGetNewMoonKey.addStep(and(needsSyringePlunger, not(sharpKitchenKnife), larderSinkCollapsed), takeBrokenPipe);
 		cGetNewMoonKey.addStep(and(needsSyringePlunger, larderSinkPlugged), turnOnLarderTap);
 		cGetNewMoonKey.addStep(and(needsSyringePlunger, sinkPlug), plugLarderSink);
+
 		// the kitchen chain, most-progressed first
 		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, unlockedKitchenChest), takeLeftCrestHalf);
 		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, fullSyringe), fillSyringeAtChest);
 		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, venatorStomach, emptySyringe), drawBloodFromVenatorStomach);
-		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, syringePlunger,
-			syringeNeedle), assembleSyringe);
-		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, syringePlunger, tongs),
-			getSyringeNeedle);
-		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, syringePlunger,
-			hasCutVenatorStomachUp), getTongs);
-		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, sharpKitchenKnife,
-			syringePlunger), cutOpenVenatorCorpse);
+		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, syringePlunger, syringeNeedle), assembleSyringe);
+		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, syringePlunger, tongs), getSyringeNeedle);
+		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, syringePlunger, hasCutVenatorStomachUp), getTongs);
+		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach, sharpKitchenKnife, syringePlunger), cutOpenVenatorCorpse);
 		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel, venatorStomach), takeSinkPlug);
 		cGetNewMoonKey.addStep(and(needsLeftCrestHalf, syringeBarrel), getVenatorStomach);
+
 		cGetNewMoonKey.orderSidebar(takeSyringeBarrel, getVenatorStomach, takeSinkPlug, plugLarderSink,
 			turnOnLarderTap, takeBrokenPipe, reachBehindLarderCabinet, getSyringePlunger,
 			cutOpenVenatorCorpse, getTongs, getSyringeNeedle, assembleSyringe, drawBloodFromVenatorStomach,
@@ -1716,7 +1726,7 @@ class CastleDrakan
 			door(ObjectID.CASTLE_DRAKAN_TELEPORTER_SERVANTS_QUARTERS_TO_CHAPEL_LIBRARY, 2440, 7400, 0,
 				"Enter the portal back to the chapel library."));
 
-		connect(servantsQuarters, explosiveRoom, or(newMoonKey, hasUsedNewMoonKey),
+		connect(servantsQuarters, explosiveRoom, or(newMoonKey, openedServantsQuarterNewMoonDoor),
 			door(ObjectID.CASTLE_DRAKAN_DOOR_MOON_NEW_M, 2438, 7394, 0,
 				"Leave the servants' quarters."),
 			door(ObjectID.CASTLE_DRAKAN_DOOR_MOON_NEW, 2441, 7389, 0,
@@ -1834,13 +1844,13 @@ class CastleDrakan
 		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, not(or(halfMoonKey, usedUpHalfMoonKey))), cGetHalfMoonKeyGoal);
 
 		// TODO: It would be nice to have an "has used gibbous moon key" to be sure we don't accidentally guide the user back here when they don't need the key anymore
-		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, or(newMoonKey, hasUsedNewMoonKey), or(gibbousMoonKey, usedUpGibbousMoonKey),
+		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, or(newMoonKey, openedServantsQuarterNewMoonDoor), or(gibbousMoonKey, usedUpGibbousMoonKey),
 			or(fullMoonKey, usedUpFullMoonKey)), cGetSolidKey);
 
 		// TODO: It would be nice to have an "has used crescent moon key" to be sure we don't accidentally guide the user back here when they don't need the key anymore
-		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, crescentMoonKey, newMoonKey, or(gildedKey, hasUsedGildedKey),
+		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, crescentMoonKey, or(newMoonKey, openedDungeonToFreeSafalaanNewMoonDoor), or(gildedKey, hasUsedGildedKey),
 			or(gibbousMoonKey, usedUpGibbousMoonKey)), cGetFullMoonKey);
-		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, crescentMoonKey, newMoonKey), cGetGildedAndGibbousKeys);
+		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, crescentMoonKey, or(newMoonKey, openedDungeonToFreeSafalaanNewMoonDoor)), cGetGildedAndGibbousKeys);
 		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, crescentMoonKey), cGetNewMoonKey);
 		cVampyriumCastleDrakan.addStep(and(quest.inVampyriumVarbit, hasGottenDrakanEmblemFromFireplace), cGetCrescentMoonKey);
 

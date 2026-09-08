@@ -47,9 +47,7 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 
 /**
- * The quest guide for the "A Ruff Situation" OSRS quest
- * <p>
- * <a href="https://oldschool.runescape.wiki/w/A_Ruff_Situation">The OSRS wiki guide</a> was referenced for this guide
+ * The OSRS wiki was referenced for this guide: https://oldschool.runescape.wiki/w/A_Ruff_Situation
  */
 public class ARuffSituation extends BasicQuestHelper
 {

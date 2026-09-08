@@ -28,13 +28,11 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.NpcCondition;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -48,29 +46,13 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 
-import static com.questhelper.requirements.util.LogicHelper.or;
-
+/**
+ * The quest guide for the "A Ruff Situation" OSRS quest
+ * <p>
+ * <a href="https://oldschool.runescape.wiki/w/A_Ruff_Situation">The OSRS wiki guide</a> was referenced for this guide
+ */
 public class ARuffSituation extends BasicQuestHelper
 {
-	private static final int TALIA = 16486;
-	private static final int PICKLENOSE = 16523;
-	private static final int STRAY_DOG = 16504;
-	private static final int STRAY_DOG_FOLLOWING = 16505;
-	private static final int OUTLAW_LEVEL_22 = 16528;
-	private static final int OUTLAW_LEVEL_23 = 16527;
-	private static final int STUFFED_DOG = 34602;
-	/*
-	 * The den objects are multilocs: the scene holds the parent id, which transforms into the
-	 * Inspect-able child once the quest varbit reaches 25. Match on both, so the step does not
-	 * depend on impostor resolution.
-	 */
-	private static final int ROUGH_BEDDING = 62483;
-	private static final int ROUGH_BEDDING_INSPECTABLE = 62485;
-	private static final int TORN_NEWSPAPER = 62486;
-	private static final int TORN_NEWSPAPER_INSPECTABLE = 62488;
-	private static final int CHEWED_BOX = 62489;
-	private static final int CHEWED_BOX_INSPECTABLE = 62491;
-
 	// Required items
 	ItemRequirement needleOrCostumeNeedle;
 	ItemRequirement thread;
@@ -83,9 +65,6 @@ public class ARuffSituation extends BasicQuestHelper
 
 	// Mid-quest item requirements
 	ItemRequirement stuffedDog;
-
-	// Miscellaneous requirements
-	Requirement outlawNearby;
 
 	// Steps
 	NpcStep talkToTalia;
@@ -113,12 +92,12 @@ public class ARuffSituation extends BasicQuestHelper
 
 		// The quest only accepts item 6814, 'Fur'. Note that the constant RuneLite names FUR is bear fur.
 		fur = new ItemRequirement("Fur", ItemID.WEREWOLVE_FUR);
-		fur.setTooltip("The item called 'Fur'. Bear fur and grey wolf fur will not work. Dropped by werewolves in " +
+		fur.setTooltip("Bear fur and grey wolf fur will not work. Dropped by werewolves in " +
 			"Canifis, or bought from Baraek in Varrock Square for 12 coins.");
 
 		grain = new ItemRequirement("Grain", ItemID.GRAIN);
 
-		stuffedDog = new ItemRequirement("Stuffed dog", STUFFED_DOG);
+		stuffedDog = new ItemRequirement("Stuffed dog", 34602);
 		stuffedDog.canBeObtainedDuringQuest();
 		stuffedDog.setTooltip("You can make another from grain and fur with a needle and thread.");
 
@@ -127,13 +106,11 @@ public class ARuffSituation extends BasicQuestHelper
 
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
-
-		outlawNearby = or(new NpcCondition(OUTLAW_LEVEL_22), new NpcCondition(OUTLAW_LEVEL_23));
 	}
 
 	public void setupSteps()
 	{
-		talkToTalia = new NpcStep(this, TALIA, new WorldPoint(3041, 3462, 0),
+		talkToTalia = new NpcStep(this, 16486, new WorldPoint(3041, 3462, 0),
 			"Talk to Talia at the dog shelter south-west of the Edgeville Monastery.");
 		talkToTalia.addDialogStep("Yes.");
 
@@ -142,27 +119,26 @@ public class ARuffSituation extends BasicQuestHelper
 		talkToGertrude.addAlternateNpcs(NpcID.GERTRUDE_QUEST);
 		talkToGertrude.addDialogStep("Ask about lost dogs.");
 
-		interactWithStrayDog = new NpcStep(this, STRAY_DOG, new WorldPoint(3181, 3428, 0),
+		interactWithStrayDog = new NpcStep(this, 16504, new WorldPoint(3181, 3428, 0),
 			"Interact with the stray dog barking at a guard, just south of the western Varrock bank.");
 
-		followStrayDogToDen = new NpcStep(this, STRAY_DOG, new WorldPoint(3195, 3414, 0),
+		followStrayDogToDen = new NpcStep(this, 16504, new WorldPoint(3195, 3414, 0),
 			"Follow the stray dog to the house just west of Thessalia's Fine Clothes.");
-		followStrayDogToDen.addAlternateNpcs(STRAY_DOG_FOLLOWING);
+		followStrayDogToDen.addAlternateNpcs(16505);
 
-		inspectDen = new ObjectStep(this, TORN_NEWSPAPER, new WorldPoint(3195, 3414, 0),
+		inspectDen = new ObjectStep(this, 62486, new WorldPoint(3195, 3414, 0),
 			"Inspect the torn newspaper, the chewed box and the rough bedding in the dog's den.", true);
-		inspectDen.addAlternateObjects(CHEWED_BOX, ROUGH_BEDDING,
-			TORN_NEWSPAPER_INSPECTABLE, CHEWED_BOX_INSPECTABLE, ROUGH_BEDDING_INSPECTABLE);
+		inspectDen.addAlternateObjects(62489, 62483, 62488, 62491, 62485);
 
-		interactWithStrayDogInDen = new NpcStep(this, STRAY_DOG, new WorldPoint(3195, 3414, 0),
+		interactWithStrayDogInDen = new NpcStep(this, 16504, new WorldPoint(3195, 3414, 0),
 			"Interact with the stray dog again to have her pick up the puppies' scent.");
-		interactWithStrayDogInDen.addAlternateNpcs(STRAY_DOG_FOLLOWING);
+		interactWithStrayDogInDen.addAlternateNpcs(16505);
 
-		followStrayDogToCooksGuild = new NpcStep(this, STRAY_DOG, new WorldPoint(3144, 3452, 0),
+		followStrayDogToCooksGuild = new NpcStep(this, 16504, new WorldPoint(3144, 3452, 0),
 			"Follow the stray dog until a cutscene triggers just north of the Cooks' Guild.");
-		followStrayDogToCooksGuild.addAlternateNpcs(STRAY_DOG_FOLLOWING);
+		followStrayDogToCooksGuild.addAlternateNpcs(16505);
 
-		talkToPicklenose = new NpcStep(this, PICKLENOSE, new WorldPoint(3130, 3436, 0),
+		talkToPicklenose = new NpcStep(this, 16523, new WorldPoint(3130, 3436, 0),
 			"Talk to Picklenose south-west of the Cooks' Guild. The stray dog must be following you, " +
 				"so dismiss any pet you have out first.");
 
@@ -171,17 +147,17 @@ public class ARuffSituation extends BasicQuestHelper
 			grain.highlighted(), fur.highlighted(), needleOrCostumeNeedle, thread);
 		makeStuffedDog.addDialogStep("Yes.");
 
-		talkToPicklenoseAgain = new NpcStep(this, PICKLENOSE, new WorldPoint(3130, 3436, 0),
+		talkToPicklenoseAgain = new NpcStep(this, 16523, new WorldPoint(3130, 3436, 0),
 			"Talk to Picklenose again to trade the stuffed dog for the puppy.", stuffedDog);
 
-		followStrayDogToWall = new NpcStep(this, STRAY_DOG, new WorldPoint(3145, 3462, 0),
+		followStrayDogToWall = new NpcStep(this, 16504, new WorldPoint(3145, 3462, 0),
 			"Interact with the stray dog and follow her until a cutscene triggers by the gap in the wall " +
 				"north of the Cooks' Guild.");
-		followStrayDogToWall.addAlternateNpcs(STRAY_DOG_FOLLOWING);
+		followStrayDogToWall.addAlternateNpcs(16505);
 
-		killOutlaws = new NpcStep(this, OUTLAW_LEVEL_22, new WorldPoint(3145, 3462, 0),
+		killOutlaws = new NpcStep(this, 16528, new WorldPoint(3145, 3462, 0),
 			"Kill both outlaws (level 22 and level 23), then watch the cutscene.", true, combatGear, food);
-		killOutlaws.addAlternateNpcs(OUTLAW_LEVEL_23);
+		killOutlaws.addAlternateNpcs(16527);
 	}
 
 	@Override
@@ -192,40 +168,20 @@ public class ARuffSituation extends BasicQuestHelper
 
 		var steps = new HashMap<Integer, QuestStep>();
 
-		/*
-		 * The quest varbit counts up to 120 in small increments, and only some of the values line up
-		 * with a change of instruction. Each step is mapped across the whole range it is believed to
-		 * cover so that the sidebar never falls blank on an unmapped value.
-		 */
 		steps.put(0, talkToTalia);
-		putRange(steps, 1, 14, talkToGertrude);
-		putRange(steps, 15, 19, interactWithStrayDog);
-		putRange(steps, 20, 24, followStrayDogToDen);
+		steps.put(10, talkToGertrude);
+		steps.put(15, interactWithStrayDog);
+		steps.put(20, followStrayDogToDen);
 		steps.put(25, inspectDen);
-		putRange(steps, 26, 30, interactWithStrayDogInDen);
-		putRange(steps, 31, 44, followStrayDogToCooksGuild);
-
-		// The goblins spawn on 45 for the cutscene, but the first conversation only ends on 60.
-		putRange(steps, 45, 59, talkToPicklenose);
-
-		var cTradeStuffedDog = new ConditionalStep(this, makeStuffedDog);
-		cTradeStuffedDog.addStep(stuffedDog, talkToPicklenoseAgain);
-		putRange(steps, 60, 65, cTradeStuffedDog);
-
-		var cFindLastPuppy = new ConditionalStep(this, followStrayDogToWall);
-		cFindLastPuppy.addStep(outlawNearby, killOutlaws);
-		// The quest completes on 120, so there is no step to show for it.
-		putRange(steps, 66, 119, cFindLastPuppy);
+		steps.put(30, interactWithStrayDogInDen);
+		steps.put(35, followStrayDogToCooksGuild);
+		steps.put(55, talkToPicklenose);
+		steps.put(60, makeStuffedDog);
+		steps.put(65, talkToPicklenoseAgain);
+		steps.put(80, followStrayDogToWall);
+		steps.put(90, killOutlaws);
 
 		return steps;
-	}
-
-	private static void putRange(Map<Integer, QuestStep> steps, int fromInclusive, int toInclusive, QuestStep step)
-	{
-		for (int i = fromInclusive; i <= toInclusive; i++)
-		{
-			steps.put(i, step);
-		}
 	}
 
 	@Override
@@ -272,8 +228,7 @@ public class ARuffSituation extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
-			new UnlockReward("Access to puppies, which can be grown into dogs"),
-			new UnlockReward("Puppies can be adopted from Chase at the dog shelter for 200 coins")
+			new UnlockReward("Access to puppies, which can be grown into dogs")
 		);
 	}
 

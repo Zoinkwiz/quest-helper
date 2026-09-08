@@ -151,7 +151,11 @@ public class ObjectStep extends DetailedQuestStep
 	{
 		// TODO: This needs to be tested in Shadow of the Storm's Demon Room
 		objects.clear();
-		for (WorldView worldView : client.getTopLevelWorldView().worldViews())
+		var topLevelWorldView = client.getTopLevelWorldView();
+		// worldViews() only returns the views belonging to world entities, so the top level view has to
+		// be scanned separately or objects in ordinary scenes are never found.
+		loadObjectsInWorldView(topLevelWorldView);
+		for (WorldView worldView : topLevelWorldView.worldViews())
 		{
 			loadObjectsInWorldView(worldView);
 		}

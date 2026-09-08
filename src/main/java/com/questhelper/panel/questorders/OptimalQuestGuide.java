@@ -87,6 +87,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.ICTHLARINS_LITTLE_HELPER,
 		QuestHelperQuest.THE_GOLEM,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
+		QuestHelperQuest.A_RUFF_SITUATION,
 		QuestHelperQuest.LOST_CITY,
 		QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_START,

@@ -73,6 +73,7 @@ public class IronmanOptimalQuestGuide
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
 		QuestHelperQuest.BLACK_KNIGHTS_FORTRESS,
 		QuestHelperQuest.PIRATES_TREASURE,
+		QuestHelperQuest.A_RUFF_SITUATION,
 		QuestHelperQuest.THE_IDES_OF_MILK,
 		QuestHelperQuest.OBSERVATORY_QUEST,
 		QuestHelperQuest.PRIEST_IN_PERIL,

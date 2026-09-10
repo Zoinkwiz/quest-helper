@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Zoinkwiz <https://github.com/Zoinkwiz>
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.requirements;
+package com.questhelper.maker;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Client;
+import com.questhelper.maker.HelperConstructModels.DraftRequirement;
+import com.questhelper.maker.HelperConstructModels.DraftSkillRequirement;
+import net.runelite.api.Skill;
 
-public class ManualRequirement extends SimpleRequirement
+/**
+ * Default {@link DraftRequirement} rows for the Quest Helper Maker (item library tab).
+ */
+public final class RequirementDraftFactory
 {
-	@Getter
-	@Setter
-	boolean shouldPass;
-
-	@Override
-	public boolean check(Client client)
+	private RequirementDraftFactory()
 	{
-		return shouldPass;
+	}
+
+	/** Blank item requirement row from Add on the Item reqs tab. */
+	public static DraftRequirement newPlaceholderItemRequirement()
+	{
+		DraftRequirement r = new DraftRequirement();
+		r.setRawId(0);
+		r.setDisplayName("Item");
+		return r;
+	}
+
+	/** Blank skill requirement row from Add on the Skill reqs tab. */
+	public static DraftSkillRequirement newPlaceholderSkillRequirement()
+	{
+		DraftSkillRequirement r = new DraftSkillRequirement();
+		r.setSkillName(Skill.ATTACK.name());
+		r.setRequiredLevel(1);
+		r.setCanBeBoosted(true);
+		r.setDisplayText("");
+		r.setOperation("GREATER_EQUAL");
+		r.setRequirementId("skill:" + Skill.ATTACK.name() + ":1:GREATER_EQUAL:true:");
+		return r;
 	}
 }

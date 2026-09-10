@@ -33,13 +33,14 @@ import com.questhelper.bank.banktab.BankTabItems;
 import com.questhelper.bank.banktab.PotionStorage;
 import com.questhelper.bank.banktab.QuestBankTabInterface;
 import com.questhelper.managers.*;
+import com.questhelper.maker.HelperConstructFrame;
+import com.questhelper.maker.HelperConstructManager;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.runeliteobjects.Cheerer;
 import com.questhelper.runeliteobjects.GlobalFakeObjects;
-import com.questhelper.runeliteobjects.RuneliteConfigSetter;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import com.questhelper.tools.Icon;
@@ -146,6 +147,9 @@ public class QuestHelperPlugin extends Plugin
 	private QuestMenuHandler questMenuHandler;
 
 	@Inject
+	private HelperConstructManager helperConstructManager;
+
+	@Inject
 	private NewVersionManager newVersionManager;
 
 	@Getter
@@ -174,12 +178,14 @@ public class QuestHelperPlugin extends Plugin
 
 
 	private QuestHelperPanel panel;
+	private HelperConstructFrame helperConstructFrame;
 
 	private NavigationButton navButton;
 
 	boolean profileChanged;
 
-	private final Collection<String> configEvents = Arrays.asList("orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests");
+	private final Collection<String> configEvents = Arrays.asList(
+		"orderListBy", "filterListBy", "questDifficulty", "showCompletedQuests", "constructModeEnabled");
 	private final Collection<String> configItemEvents = Arrays.asList("highlightNeededQuestItems", "highlightNeededMiniquestItems", "highlightNeededAchievementDiaryItems");
 
 	@Getter
@@ -258,6 +264,11 @@ public class QuestHelperPlugin extends Plugin
 		playerStateManager.shutDown();
 
 		clientToolbar.removeNavigation(navButton);
+		if (helperConstructFrame != null)
+		{
+			helperConstructFrame.disposeForShutdown();
+			helperConstructFrame = null;
+		}
 		questManager.shutDown();
 		questBankManager.shutDown(eventBus);
 
@@ -537,6 +548,31 @@ public class QuestHelperPlugin extends Plugin
 		return questManager.getSelectedQuest();
 	}
 
+	public boolean isConstructPreviewSelected()
+	{
+		return helperConstructManager.isSelectedConstructPreview();
+	}
+
+	public boolean canStepConstructPreviewLeft()
+	{
+		return helperConstructManager.canStepConstructPreviewLeft();
+	}
+
+	public boolean canStepConstructPreviewRight()
+	{
+		return helperConstructManager.canStepConstructPreviewRight();
+	}
+
+	public void stepConstructPreviewLeft()
+	{
+		helperConstructManager.stepConstructPreviewLeftFromUi();
+	}
+
+	public void stepConstructPreviewRight()
+	{
+		helperConstructManager.stepConstructPreviewRightFromUi();
+	}
+
 	public Map<String, QuestHelper> getBackgroundHelpers()
 	{
 		return questManager.backgroundHelpers;
@@ -575,6 +611,7 @@ public class QuestHelperPlugin extends Plugin
 		String target = Text.removeTags(event.getTarget());
 
 		questMenuHandler.setupQuestMenuOptions(menuEntries, widgetIndex, widgetID, target, option);
+		helperConstructManager.setupConstructMenuOptions(event);
 	}
 
 	@Subscribe
@@ -684,5 +721,14 @@ public class QuestHelperPlugin extends Plugin
 			saveSidebarOrder(currentQuest, updatedOrder);
 		}
 		questManager.startUpQuest(currentQuest, true);
+	}
+
+	public void openOrFocusHelperConstructFrame()
+	{
+		if (helperConstructFrame == null)
+		{
+			helperConstructFrame = new HelperConstructFrame(helperConstructManager);
+		}
+		helperConstructFrame.openWindow();
 	}
 }

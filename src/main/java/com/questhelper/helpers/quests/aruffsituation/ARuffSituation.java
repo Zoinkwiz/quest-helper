@@ -108,7 +108,7 @@ public class ARuffSituation extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToTalia = new NpcStep(this, 16486, new WorldPoint(3041, 3462, 0),
+		talkToTalia = new NpcStep(this, 16486, new WorldPoint(3037, 3457, 0),
 			"Talk to Talia at the dog shelter south-west of the Edgeville Monastery.");
 		talkToTalia.addDialogStep("Yes.");
 
@@ -117,22 +117,22 @@ public class ARuffSituation extends BasicQuestHelper
 		talkToGertrude.addAlternateNpcs(NpcID.GERTRUDE_QUEST);
 		talkToGertrude.addDialogStep("Ask about lost dogs.");
 
-		interactWithStrayDog = new NpcStep(this, 16504, new WorldPoint(3181, 3428, 0),
+		interactWithStrayDog = new NpcStep(this, 16504, new WorldPoint(3180, 3425, 0),
 			"Interact with the stray dog barking at a guard, just south of the western Varrock bank.");
 
 		followStrayDogToDen = new NpcStep(this, 16504, new WorldPoint(3195, 3414, 0),
 			"Follow the stray dog to the house just west of Thessalia's Fine Clothes.");
 		followStrayDogToDen.addAlternateNpcs(16505);
 
-		inspectDen = new ObjectStep(this, 62486, new WorldPoint(3195, 3414, 0),
+		inspectDen = new ObjectStep(this, 62486, new WorldPoint(3196, 3414, 0),
 			"Inspect the torn newspaper, the chewed box and the rough bedding in the dog's den.", true);
 		inspectDen.addAlternateObjects(62489, 62483, 62488, 62491, 62485);
 
-		interactWithStrayDogInDen = new NpcStep(this, 16504, new WorldPoint(3195, 3414, 0),
+		interactWithStrayDogInDen = new NpcStep(this, 16504, new WorldPoint(3196, 3414, 0),
 			"Interact with the stray dog again to have her pick up the puppies' scent.");
 		interactWithStrayDogInDen.addAlternateNpcs(16505);
 
-		followStrayDogToCooksGuild = new NpcStep(this, 16504, new WorldPoint(3144, 3452, 0),
+		followStrayDogToCooksGuild = new NpcStep(this, 16504, new WorldPoint(3146, 3456, 0),
 			"Follow the stray dog until a cutscene triggers just north of the Cooks' Guild.");
 		followStrayDogToCooksGuild.addAlternateNpcs(16505);
 
@@ -148,12 +148,12 @@ public class ARuffSituation extends BasicQuestHelper
 		talkToPicklenoseAgain = new NpcStep(this, 16523, new WorldPoint(3130, 3436, 0),
 			"Talk to Picklenose again to trade the stuffed dog for the puppy.", stuffedDog);
 
-		followStrayDogToWall = new NpcStep(this, 16504, new WorldPoint(3145, 3462, 0),
+		followStrayDogToWall = new NpcStep(this, 16504, new WorldPoint(3136, 3467, 0),
 			"Interact with the stray dog and follow her until a cutscene triggers by the gap in the wall " +
 				"north of the Cooks' Guild.");
 		followStrayDogToWall.addAlternateNpcs(16505);
 
-		killOutlaws = new NpcStep(this, 16528, new WorldPoint(3145, 3462, 0),
+		killOutlaws = new NpcStep(this, 16528, new WorldPoint(3135, 3475, 0),
 			"Kill both outlaws (level 22 and level 23), then watch the cutscene.", true, combatGear, food);
 		killOutlaws.addAlternateNpcs(16527);
 	}
@@ -167,6 +167,7 @@ public class ARuffSituation extends BasicQuestHelper
 		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToTalia);
+		steps.put(5, talkToGertrude);
 		steps.put(10, talkToGertrude);
 		steps.put(15, interactWithStrayDog);
 		steps.put(20, followStrayDogToDen);

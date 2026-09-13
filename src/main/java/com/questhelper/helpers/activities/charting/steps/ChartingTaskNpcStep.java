@@ -28,20 +28,23 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.helpers.activities.charting.ChartingTaskInterface;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.NpcStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
-import static com.questhelper.requirements.util.LogicHelper.or;
 
 @Getter
 public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterface
 {
 	private Requirement incompleteRequirement;
 	private Requirement canDoRequirement;
+	private Requirement completedRequirement;
+	private String ocean;
 
 	ChartingTaskNpcStep(QuestHelper questHelper, int npcID, ChartingTaskDefinition definition, Requirement... requirements)
 	{
@@ -68,13 +71,15 @@ public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterfac
 			setHideMinimapLines(true);
 		}
 
+		this.ocean = definition.getOcean();
+
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
 		addRequirement(sailingRequirement);
 
 		// Additional reqs and recc
 		setupRequiredAndRecommended(definition);
 
-		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
+		this.completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
 		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
 		conditionToHideInSidebar(completedRequirement);
@@ -96,5 +101,12 @@ public class ChartingTaskNpcStep extends NpcStep implements ChartingTaskInterfac
 		{
 			addRecommended(definition.getAdditionalRequirements());
 		}
+	}
+
+	@Override
+	public void addOceanFilterHideCondition(Requirement oceanFilterHideCondition)
+	{
+		// Hide if completed OR doesn't match ocean filter
+		conditionToHideInSidebar(new Conditions(LogicType.OR, completedRequirement, oceanFilterHideCondition));
 	}
 }

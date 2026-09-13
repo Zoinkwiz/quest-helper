@@ -28,12 +28,13 @@ import com.questhelper.helpers.activities.charting.ChartingTaskDefinition;
 import com.questhelper.helpers.activities.charting.ChartingTaskInterface;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import lombok.Getter;
 import net.runelite.api.Skill;
@@ -47,6 +48,8 @@ public class ChartingCaveTelescopeStep extends ConditionalStep implements Charti
 {
 	private Requirement incompleteRequirement;
 	private Requirement canDoRequirement;
+	private Requirement completedRequirement;
+	private final String ocean;
 
 	public ChartingCaveTelescopeStep(QuestHelper questHelper, ChartingTaskDefinition definition, Requirement... requirements)
 	{
@@ -55,6 +58,8 @@ public class ChartingCaveTelescopeStep extends ConditionalStep implements Charti
 			"Enter the cave on the Pandemonium island."),
 			"[" + definition.getType().getDisplayName() + "] " + definition.getDescription()
 			);
+
+		this.ocean = definition.getOcean();
 
 		ZoneRequirement inCaveZone = new ZoneRequirement(new Zone(12178));
 		var useTelescopeStep = new ChartingTelescopeStep(questHelper, definition, requirements);
@@ -67,7 +72,7 @@ public class ChartingCaveTelescopeStep extends ConditionalStep implements Charti
 	private void setupSidebarRequirements(ChartingTaskDefinition definition)
 	{
 		var sailingRequirement = new SkillRequirement(Skill.SAILING, Math.max(1, definition.getLevel()));
-		var completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
+		this.completedRequirement = new VarbitRequirement(definition.getVarbitId(), 1);
 		var levelNotMet = nor(sailingRequirement);
 		levelNotMet.setText("You need to meet level " + sailingRequirement.getRequiredLevel() + " Sailing.");
 
@@ -82,6 +87,13 @@ public class ChartingCaveTelescopeStep extends ConditionalStep implements Charti
 	public void setupRequiredAndRecommended(ChartingTaskDefinition definition)
 	{
 		// Not implemented in ConditionalStep. Not needed for this so won't bother
+	}
+
+	@Override
+	public void addOceanFilterHideCondition(Requirement oceanFilterHideCondition)
+	{
+		// Hide if completed OR doesn't match ocean filter
+		conditionToHideInSidebar(new Conditions(LogicType.OR, completedRequirement, oceanFilterHideCondition));
 	}
 }
 

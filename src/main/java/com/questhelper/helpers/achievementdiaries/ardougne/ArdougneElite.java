@@ -182,45 +182,45 @@ public class ArdougneElite extends ComplexStateQuestHelper
 
 		madeString = new ChatMessageRequirement(
 			inWitchaven,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) madeString).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inWitchaven),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 
 		madeLimbs = new ChatMessageRequirement(
 			inYanille,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 2.</col>"
+			"Achievement Diary Stage Task - Current stage: 2."
 		);
 		((ChatMessageRequirement) madeLimbs).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inYanille),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 2.</col>"
+				"Achievement Diary Stage Task - Current stage: 2."
 			)
 		);
 
 		madeStock = new ChatMessageRequirement(
 			inYanille,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 3.</col>"
+			"Achievement Diary Stage Task - Current stage: 3."
 		);
 		((ChatMessageRequirement) madeStock).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inYanille),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 3.</col>"
+				"Achievement Diary Stage Task - Current stage: 3."
 			)
 		);
 
 		madeCrossU = new ChatMessageRequirement(
 			inYanille,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 4.</col>"
+			"Achievement Diary Stage Task - Current stage: 4."
 		);
 		((ChatMessageRequirement) madeCrossU).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inYanille),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 4.</col>"
+				"Achievement Diary Stage Task - Current stage: 4."
 			)
 		);
 

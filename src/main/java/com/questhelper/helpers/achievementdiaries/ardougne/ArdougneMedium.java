@@ -211,12 +211,12 @@ public class ArdougneMedium extends ComplexStateQuestHelper
 
 		grapUp = new ChatMessageRequirement(
 			inWall,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) grapUp).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inWall),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 

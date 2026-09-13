@@ -180,12 +180,12 @@ public class KandarinElite extends ComplexStateQuestHelper
 
 		fishedSharks = new ChatMessageRequirement(
 			inCatherby,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 5 caught, 0 cooked.</col>"
+			"Achievement Diary Stage Task - Current stage: 5 caught, 0 cooked."
 		);
 		((ChatMessageRequirement) fishedSharks).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inCatherby),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 5 caught, 0 cooked.</col>"
+				"Achievement Diary Stage Task - Current stage: 5 caught, 0 cooked."
 			)
 		);
 	}

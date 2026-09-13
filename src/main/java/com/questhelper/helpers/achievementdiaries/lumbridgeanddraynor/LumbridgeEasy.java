@@ -186,12 +186,12 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		inLumby = new ZoneRequirement(lumby);
 
 		choppedLogs = new ChatMessageRequirement(
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) choppedLogs).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inLumby),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 

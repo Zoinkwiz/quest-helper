@@ -181,12 +181,12 @@ public class VarrockEasy extends ComplexStateQuestHelper
 
 		madeBowl = new ChatMessageRequirement(
 			inPotteryRoom,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) madeBowl).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inPotteryRoom),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 	}

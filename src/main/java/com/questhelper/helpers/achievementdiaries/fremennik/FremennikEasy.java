@@ -176,16 +176,16 @@ public class FremennikEasy extends ComplexStateQuestHelper
 		deathPlateau = new QuestRequirement(QuestHelperQuest.DEATH_PLATEAU, QuestState.FINISHED);
 
 		choppedLogs = new ChatMessageRequirement(
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 
 		minedSilver = new ChatMessageRequirement(
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) minedSilver).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inMine),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 	}

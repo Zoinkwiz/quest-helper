@@ -109,7 +109,8 @@ public class ARuffSituation extends BasicQuestHelper
 	public void setupSteps()
 	{
 		talkToTalia = new NpcStep(this, 16486, new WorldPoint(3037, 3457, 0),
-			"Talk to Talia at the dog shelter south-west of the Edgeville Monastery.");
+			"Talk to Talia at the dog shelter south-west of the Edgeville Monastery. " +
+				"Be sure to complete the dialog.");
 		talkToTalia.addDialogStep("Yes.");
 
 		talkToGertrude = new NpcStep(this, NpcID.GERTRUDE_POST, new WorldPoint(3151, 3413, 0),
@@ -167,7 +168,7 @@ public class ARuffSituation extends BasicQuestHelper
 		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToTalia);
-		steps.put(5, talkToGertrude);
+		steps.put(5, talkToTalia);
 		steps.put(10, talkToGertrude);
 		steps.put(15, interactWithStrayDog);
 		steps.put(20, followStrayDogToDen);

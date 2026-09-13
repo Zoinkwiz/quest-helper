@@ -247,11 +247,11 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 
 	public boolean updateStepVisibility(Client client)
 	{
-		boolean visibilityChanged = false;
+		boolean stepVisibilityChanged = false;
 
-		for (AbstractQuestSection subPanel : subPanels)
+		for (AbstractQuestSection questSectionPanel : subPanels)
 		{
-			visibilityChanged |= subPanel.updateStepVisibility(client);
+			stepVisibilityChanged |= questSectionPanel.updateStepVisibility(client);
 		}
 
 		boolean shouldBeVisible = panelDetails.getHideCondition() == null
@@ -259,7 +259,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 
 		boolean sectionVisibilityChanged = isVisible() != shouldBeVisible;
 
-		if (visibilityChanged || sectionVisibilityChanged)
+		if (stepVisibilityChanged || sectionVisibilityChanged)
 		{
 			updateHighlightCheck(
 				client,
@@ -268,7 +268,7 @@ public class QuestSectionSection extends AbstractQuestSection implements MouseLi
 			);
 		}
 
-		return visibilityChanged || sectionVisibilityChanged;
+		return stepVisibilityChanged || sectionVisibilityChanged;
 	}
 
 	protected QuestStep currentlyActiveQuestSidebarStep()

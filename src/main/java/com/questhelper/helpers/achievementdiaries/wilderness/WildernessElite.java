@@ -166,45 +166,45 @@ public class WildernessElite extends ComplexStateQuestHelper
 
 		gatheredLogs = new ChatMessageRequirement(
 			inResource,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) gatheredLogs).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inResource),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 
 		caughtCrab = new ChatMessageRequirement(
 			inResource,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) caughtCrab).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inResource),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 
 		barsSmelted = new ChatMessageRequirement(
 			inResource,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 4.</col>"
+			"Achievement Diary Stage Task - Current stage: 4."
 		);
 		((ChatMessageRequirement) caughtCrab).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inResource),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 4.</col>"
+				"Achievement Diary Stage Task - Current stage: 4."
 			)
 		);
 
 		runiteFromGolems = new ChatMessageRequirement(
 			inResource,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 2.</col>"
+			"Achievement Diary Stage Task - Current stage: 2."
 		);
 		((ChatMessageRequirement) caughtCrab).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inResource),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 2.</col>"
+				"Achievement Diary Stage Task - Current stage: 2."
 			)
 		);
 

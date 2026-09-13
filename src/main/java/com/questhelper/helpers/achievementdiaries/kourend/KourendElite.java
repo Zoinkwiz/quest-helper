@@ -208,23 +208,23 @@ public class KourendElite extends ComplexStateQuestHelper
 
 		anglerCaught = new ChatMessageRequirement(
 			inFish,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) anglerCaught).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inFish),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 
 		barkHarvested = new ChatMessageRequirement(
 			inFarming,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 3.</col>"
+			"Achievement Diary Stage Task - Current stage: 3."
 		);
 		((ChatMessageRequirement) barkHarvested).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inFarming),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 3.</col>"
+				"Achievement Diary Stage Task - Current stage: 3."
 			)
 		);
 

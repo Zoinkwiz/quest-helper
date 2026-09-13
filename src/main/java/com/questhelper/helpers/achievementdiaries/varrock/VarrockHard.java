@@ -250,24 +250,24 @@ public class VarrockHard extends ComplexStateQuestHelper
 		);
 		boughtSpotterCape = new ChatMessageRequirement(
 			inAsyffShop,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) boughtSpotterCape).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inAsyffShop),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 
 		inYewZone = new ZoneRequirement(new Zone(new WorldPoint(3225, 3456, 0), new WorldPoint(3254, 3478, 0)));
 		cutYewTree = new ChatMessageRequirement(
 			inYewZone,
-			"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+			"Achievement Diary Stage Task - Current stage: 1."
 		);
 		((ChatMessageRequirement) cutYewTree).setInvalidateRequirement(
 			new ChatMessageRequirement(
 				new Conditions(LogicType.NOR, inYewZone),
-				"<col=0040ff>Achievement Diary Stage Task - Current stage: 1.</col>"
+				"Achievement Diary Stage Task - Current stage: 1."
 			)
 		);
 	}

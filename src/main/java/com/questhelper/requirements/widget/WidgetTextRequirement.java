@@ -156,17 +156,24 @@ public class WidgetTextRequirement extends SimpleRequirement
 			}
 			if (widget != null)
 			{
+				if (widget.isHidden())
+				{
+					return false;
+				}
+
+				var widgetText = client.macroExpand(widget.getText());
+
 				for (String textOption : text)
 				{
 					if (checkChildren)
 					{
-						if (getChildren(widget, textOption) && !widget.isHidden())
+						if (getChildren(client, widget, textOption))
 						{
 							return true;
 						}
 					}
 
-					if (widget.getText().contains(textOption) && !widget.isHidden())
+					if (widgetText.contains(textOption))
 					{
 						return true;
 					}
@@ -176,7 +183,7 @@ public class WidgetTextRequirement extends SimpleRequirement
 		return false;
 	}
 
-	private boolean getChildren(Widget parentWidget, String textOption)
+	private boolean getChildren(Client client, Widget parentWidget, String textOption)
 	{
 		Widget[] children = parentWidget.getStaticChildren();
 		if (children.length == 0)
@@ -202,25 +209,21 @@ public class WidgetTextRequirement extends SimpleRequirement
 			Widget currentWidget = parentWidget.getStaticChildren()[i];
 			if (currentWidget.getNestedChildren() != null)
 			{
-				if (currentWidget.getText().contains(textOption))
+				var widgetText = client.macroExpand(currentWidget.getText());
+				if (widgetText.contains(textOption))
 				{
 					return true;
 				}
 			}
 			else
 			{
-				if (getChildren(currentWidget, textOption))
+				if (getChildren(client, currentWidget, textOption))
 				{
 					return true;
 				}
 			}
 		}
 		return false;
-	}
-
-	public void checkWidgetText(Client client)
-	{
-		hasPassed = hasPassed || checkWidget(client);
 	}
 
 	@Nonnull

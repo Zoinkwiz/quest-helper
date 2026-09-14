@@ -47,7 +47,7 @@ public class PaymentTracker
 		return fp.configKey() + "." + TimeTrackingConfig.PROTECTED;
 	}
 
-	boolean getProtectedState(FarmingPatch fp)
+	public boolean getProtectedState(FarmingPatch fp)
 	{
 		return Boolean.TRUE.equals(configManager.getRSProfileConfiguration(
 				TimeTrackingConfig.CONFIG_GROUP,

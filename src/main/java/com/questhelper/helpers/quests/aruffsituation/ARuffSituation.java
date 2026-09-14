@@ -30,9 +30,11 @@ import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
+import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -64,12 +66,17 @@ public class ARuffSituation extends BasicQuestHelper
 	// Mid-quest item requirements
 	ItemRequirement stuffedDog;
 
+	// Miscellaneous requirements
+	VarbitRequirement needsToInspectRoughBedding;
+	VarbitRequirement needsToInspectChewedBox;
+	VarbitRequirement needsToInspectTornNewspaper;
+
 	// Steps
 	NpcStep talkToTalia;
 	NpcStep talkToGertrude;
 	NpcStep interactWithStrayDog;
 	NpcStep followStrayDogToDen;
-	ObjectStep inspectDen;
+	ConditionalStep cInspectDen;
 	NpcStep interactWithStrayDogInDen;
 	NpcStep followStrayDogToCooksGuild;
 	NpcStep talkToPicklenose;
@@ -104,6 +111,10 @@ public class ARuffSituation extends BasicQuestHelper
 
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
+
+		needsToInspectRoughBedding = new VarbitRequirement(15890, 0);
+		needsToInspectChewedBox = new VarbitRequirement(15893, 0);
+		needsToInspectTornNewspaper = new VarbitRequirement(15891, 0);
 	}
 
 	public void setupSteps()
@@ -124,13 +135,19 @@ public class ARuffSituation extends BasicQuestHelper
 			"Follow the stray dog to the house just west of Thessalia's Fine Clothes.");
 		followStrayDogToDen.addAlternateNpcs(16505);
 
-		inspectDen = new ObjectStep(this, 62486, new WorldPoint(3196, 3414, 0),
-			"Inspect the torn newspaper, the chewed box and the rough bedding in the dog's den.", true);
-		inspectDen.addAlternateObjects(62489, 62483, 62488, 62491, 62485);
+		var inspectRoughBedding = new ObjectStep(this, 62485, new WorldPoint(3195, 3416, 0), "");
+		var inspectChewedBox = new ObjectStep(this, 62491, new WorldPoint(3195, 3413, 0), "");
+		var inspectTornNewspaper = new ObjectStep(this, 62488, new WorldPoint(3197, 3413, 0), "");
 
 		interactWithStrayDogInDen = new NpcStep(this, 16504, new WorldPoint(3196, 3414, 0),
 			"Interact with the stray dog again to have her pick up the puppies' scent.");
 		interactWithStrayDogInDen.addAlternateNpcs(16505);
+
+		cInspectDen = new ConditionalStep(this, interactWithStrayDogInDen,
+			"Inspect the chewed box, the torn newspaper and the rough bedding in the dog's den.");
+		cInspectDen.addStep(needsToInspectChewedBox, inspectChewedBox);
+		cInspectDen.addStep(needsToInspectTornNewspaper, inspectTornNewspaper);
+		cInspectDen.addStep(needsToInspectRoughBedding, inspectRoughBedding);
 
 		followStrayDogToCooksGuild = new NpcStep(this, 16504, new WorldPoint(3146, 3456, 0),
 			"Follow the stray dog until a cutscene triggers just north of the Cooks' Guild.");
@@ -171,7 +188,7 @@ public class ARuffSituation extends BasicQuestHelper
 		steps.put(10, talkToGertrude);
 		steps.put(15, interactWithStrayDog);
 		steps.put(20, followStrayDogToDen);
-		steps.put(25, inspectDen);
+		steps.put(25, cInspectDen);
 		steps.put(30, interactWithStrayDogInDen);
 		steps.put(35, followStrayDogToCooksGuild);
 		steps.put(55, talkToPicklenose);
@@ -244,7 +261,7 @@ public class ARuffSituation extends BasicQuestHelper
 		sections.add(new PanelDetails("Following the stray dog", List.of(
 			interactWithStrayDog,
 			followStrayDogToDen,
-			inspectDen,
+			cInspectDen,
 			interactWithStrayDogInDen,
 			followStrayDogToCooksGuild
 		)));

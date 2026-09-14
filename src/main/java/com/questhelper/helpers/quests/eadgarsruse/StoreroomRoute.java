@@ -39,7 +39,7 @@ public final class StoreroomRoute
 	};
 
 	public static final WorldPoint START_TILE = new WorldPoint(2861, 10092, 0);
-	public static final WorldPoint SAFE_SPOT_1 = new WorldPoint(2856, 10084, 0);
+	public static final WorldPoint SAFE_SPOT_1 = new WorldPoint(2857, 10084, 0);
 	public static final WorldPoint SAFE_SPOT_2 = new WorldPoint(2859, 10084, 0);
 	public static final WorldPoint CRATE_APPROACH_TILE = new WorldPoint(2858, 10074, 0);
 

@@ -357,7 +357,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		inStoreroom = new ZoneRequirement(storeroom);
 		atStartTile = new ZoneRequirement(StoreroomRoute.START_TILE);
 		atCrateApproach = new ZoneRequirement(StoreroomRoute.CRATE_APPROACH_TILE);
-		nearCrates = new ZoneRequirement(new Zone(StoreroomRoute.SAFE_SPOT_2), StoreroomRoute.CRATE_SIDE);
+		nearCrates = new ZoneRequirement(StoreroomRoute.CRATE_SIDE);
 		inNorthRoom = new ZoneRequirement(StoreroomRoute.NORTH_ROOM);
 		inRoom = new ZoneRequirement(StoreroomRoute.ROOM);
 	}

@@ -48,7 +48,10 @@ public final class StoreroomRoute
 		new Zone(new WorldPoint(2850, 10087, 0), new WorldPoint(2860, 10092, 0)),
 	};
 
-	public static final Zone CRATE_SIDE = new Zone(new WorldPoint(2850, 10074, 0), new WorldPoint(2864, 10082, 0));
+	public static final Zone[] CRATE_SIDE = {
+		new Zone(new WorldPoint(2850, 10074, 0), new WorldPoint(2864, 10083, 0)),
+		new Zone(SAFE_SPOT_2),
+	};
 
 	public static final Zone NORTH_ROOM = new Zone(new WorldPoint(2850, 10086, 0), new WorldPoint(2859, 10092, 0));
 

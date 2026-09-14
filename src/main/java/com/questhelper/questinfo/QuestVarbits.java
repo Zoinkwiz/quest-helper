@@ -24,6 +24,7 @@ public enum QuestVarbits
 	/**
 	 * member Quest varbits, these don't hold the completion value.
 	 */
+	QUEST_A_RUFF_SITUATION(15889),
 	QUEST_ANIMAL_MAGNETISM(VarbitID.ANMA_MAIN),
 	QUEST_BENEATH_CURSED_SANDS(VarbitID.BCS),
 	QUEST_BETWEEN_A_ROCK(VarbitID.DWARFROCK_QUEST),

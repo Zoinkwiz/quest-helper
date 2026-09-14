@@ -390,7 +390,8 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.THE_BLOOD_MOON_RISES,
 			QuestHelperQuest.VAMPYRE_SLAYER,
 			QuestHelperQuest.HERB_RUN,
-			QuestHelperQuest.THE_IDES_OF_MILK
+			QuestHelperQuest.THE_IDES_OF_MILK,
+			QuestHelperQuest.A_RUFF_SITUATION
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest

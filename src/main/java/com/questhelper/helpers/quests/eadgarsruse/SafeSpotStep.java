@@ -1,0 +1,105 @@
+/*
+ * Copyright (c) 2026, Zoinkwiz <https://github.com/Zoinkwiz>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package com.questhelper.helpers.quests.eadgarsruse;
+
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.steps.DetailedQuestStep;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.util.ColorUtil;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Stroke;
+
+/**
+ * Marks a tile the player should run to, and colours it by a live condition: green while it is
+ * safe to set off, red while it is not.
+ *
+ * <p>The colours come from {@link Requirement#getColor}, which resolves to the user's configured
+ * "passed check" and "failed check" colours, so this honours the same palette as the rest of the
+ * plugin rather than hard-coding green and red.</p>
+ *
+ * <p>The condition is evaluated per rendered frame. That matches how requirements are already
+ * drawn on overlays elsewhere in the plugin, and keeps the tile responsive within the tick rather
+ * than lagging a tick behind the guards.</p>
+ */
+public class SafeSpotStep extends DetailedQuestStep
+{
+	/** Alpha of the tile fill. The outline is drawn fully opaque on top of it. */
+	private static final int FILL_ALPHA = 60;
+
+	private static final Stroke OUTLINE_STROKE = new BasicStroke(2);
+
+	private final Requirement safeToRun;
+
+	/**
+	 * @param worldPoint the tile to run to
+	 * @param safeToRun  passes while it is safe to start running to {@code worldPoint}. This must
+	 *                   account for how long the run itself takes, not just whether the tile is
+	 *                   clear right now — see {@link StoreroomRoute} for how that is expressed.
+	 */
+	public SafeSpotStep(QuestHelper questHelper, WorldPoint worldPoint, Requirement safeToRun,
+						String text, Requirement... requirements)
+	{
+		super(questHelper, worldPoint, text, requirements);
+		this.safeToRun = safeToRun;
+	}
+
+	@Override
+	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
+	{
+		super.makeWorldOverlayHint(graphics, plugin);
+
+		if (definedPoint == null || client.getLocalPlayer() == null)
+		{
+			return;
+		}
+
+		Color color = safeToRun.getColor(client, questHelper.getConfig());
+
+		for (LocalPoint localPoint : definedPoint.resolveLocalPoints(client))
+		{
+			Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
+			if (poly == null)
+			{
+				continue;
+			}
+
+			Stroke originalStroke = graphics.getStroke();
+			graphics.setColor(ColorUtil.colorWithAlpha(color, FILL_ALPHA));
+			graphics.fill(poly);
+			graphics.setColor(color);
+			graphics.setStroke(OUTLINE_STROKE);
+			graphics.draw(poly);
+			graphics.setStroke(originalStroke);
+		}
+	}
+}

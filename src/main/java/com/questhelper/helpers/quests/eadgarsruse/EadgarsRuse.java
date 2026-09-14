@@ -65,7 +65,8 @@ public class EadgarsRuse extends BasicQuestHelper
 	ItemRequirement taverleyTeleport, ardougneTeleport, burthorpeTeleport;
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
-		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom;
+		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom,
+		atSafeSpot1, atSafeSpot2, atCrateApproach;
 
 	DetailedQuestStep goUpToSanfew, talkToSanfew, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterSecretEntrance, freeEadgar, goUpStairsPrison,
 		getBerryKey, goUpToTopFloorStronghold, exitStronghold, enterEadgarsCave, talkToEadgar, leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, goUpToTopFloorStrongholdFromCook,
@@ -74,9 +75,12 @@ public class EadgarsRuse extends BasicQuestHelper
 		talkToEadgarWithItems, leaveEadgarsCaveForThistle, pickThistle, lightFire, useThistleOnFire, useThistleOnTrollFire, grindThistle, useGroundThistleOnRanarr, enterEadgarsCaveWithTrollPotion, giveTrollPotionToEadgar,
 		enterPrisonForParrot, enterStrongholdForParrot, goDownNorthStairsForParrot, goDownToPrisonForParrot, getParrotFromRack, leaveEadgarsCaveForParrot, leavePrisonWithParrot, goUpToTopFloorWithParrot, leaveStrongholdWithParrot,
 		enterEadgarCaveWithTrainedParrot, talkToEadgarWithTrainedParrot, leaveEadgarsCaveWithScarecrow, enterStrongholdWithScarecrow, goDownSouthStairsWithScarecrow, talkToCookWithScarecrow, talkToBurntmeat, goDownToStoreroom,
-		enterStoreroomDoor, getGoutweed, returnUpToSanfew, returnToSanfew;
+		enterStoreroomDoor, getGoutweed, returnUpToSanfew, returnToSanfew, runToSafeSpot1, runToSafeSpot2, runToCrate;
 
 	ObjectStep searchDrawers;
+
+	/** Either the plain 'search the crates' step, or the guard-timed route through the storeroom. */
+	QuestStep navigateStoreroom;
 
 	PanelDetails travelToEadgarPanel;
 
@@ -223,7 +227,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		ConditionalStep getTheGoutweed = new ConditionalStep(this, talkToBurntmeat);
 		getTheGoutweed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);
 		getTheGoutweed.addStep(goutweed, returnUpToSanfew);
-		getTheGoutweed.addStep(new Conditions(inStoreroom, storeroomKey), getGoutweed);
+		getTheGoutweed.addStep(new Conditions(inStoreroom, storeroomKey), navigateStoreroom);
 		getTheGoutweed.addStep(storeroomKey, goDownToStoreroom);
 		getTheGoutweed.addStep(foundOutAboutKey, searchDrawers);
 
@@ -232,7 +236,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		ConditionalStep returnGoutWeed = new ConditionalStep(this, goDownToStoreroom);
 		returnGoutWeed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);
 		returnGoutWeed.addStep(goutweed, returnUpToSanfew);
-		returnGoutWeed.addStep(inStoreroom, getGoutweed);
+		returnGoutWeed.addStep(inStoreroom, navigateStoreroom);
 
 		steps.put(100, returnGoutWeed);
 
@@ -352,6 +356,13 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		foundOutAboutKey = new Conditions(true, new DialogRequirement("That's some well-guarded secret alright"));
 		inStoreroom = new ZoneRequirement(storeroom);
+
+		if (StoreroomRoute.isConfigured())
+		{
+			atSafeSpot1 = new ZoneRequirement(StoreroomRoute.SAFE_SPOT_1);
+			atSafeSpot2 = new ZoneRequirement(StoreroomRoute.SAFE_SPOT_2);
+			atCrateApproach = new ZoneRequirement(StoreroomRoute.CRATE_APPROACH_TILE);
+		}
 	}
 
 	public void setupSteps()
@@ -524,6 +535,31 @@ public class EadgarsRuse extends BasicQuestHelper
 		enterStoreroomDoor = new ObjectStep(this, ObjectID.EADGAR_STOREROOMDOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
 
 		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the goutweed crates for goutweed. You'll need to avoid the troll guards or you'll be kicked out and take damage.");
+
+		// Without a filled-in route we keep the original single step, so the helper behaves exactly
+		// as it did before. See StoreroomRoute for what has to be supplied to switch this on.
+		navigateStoreroom = getGoutweed;
+
+		if (StoreroomRoute.isConfigured())
+		{
+			runToSafeSpot1 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_1, StoreroomRoute.clearOf(StoreroomRoute.LEG_1_LANES),
+				"Wait by the entrance until the marked tile turns green, then run to it.");
+			runToSafeSpot2 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_2, StoreroomRoute.clearOf(StoreroomRoute.LEG_2_LANES),
+				"Wait until the marked tile turns green, then run to it.");
+			runToCrate = new SafeSpotStep(this, StoreroomRoute.CRATE_APPROACH_TILE, StoreroomRoute.clearOf(StoreroomRoute.LEG_3_LANES),
+				"Wait until the marked tile turns green, then run to it. Don't click the crate itself, or you'll be pathed into a guard.");
+
+			// Falls back to the first leg whenever the player is in the storeroom but not on a safe
+			// spot, which is also what happens after being caught and thrown back to the entrance.
+			ConditionalStep runTheStoreroom = new ConditionalStep(this, runToSafeSpot1,
+				"Follow the marked tiles to the goutweed crates, setting off for each one only while it is green.");
+			runTheStoreroom.addStep(atCrateApproach, getGoutweed);
+			runTheStoreroom.addStep(atSafeSpot2, runToCrate);
+			runTheStoreroom.addStep(atSafeSpot1, runToSafeSpot2);
+			navigateStoreroom = runTheStoreroom;
+
+			getGoutweed.addSubSteps(runToSafeSpot1, runToSafeSpot2, runToCrate);
+		}
 
 		returnUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);

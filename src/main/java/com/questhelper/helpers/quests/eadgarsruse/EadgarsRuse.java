@@ -66,7 +66,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom,
-		atStartTile, atSafeSpot1, atSafeSpot2, atCrateApproach, inRoom, inLeg3Corridor;
+		atStartTile, atCrateApproach, nearCrates, inRoom;
 
 	DetailedQuestStep goUpToSanfew, talkToSanfew, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterSecretEntrance, freeEadgar, goUpStairsPrison,
 		getBerryKey, goUpToTopFloorStronghold, exitStronghold, enterEadgarsCave, talkToEadgar, leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, goUpToTopFloorStrongholdFromCook,
@@ -356,11 +356,9 @@ public class EadgarsRuse extends BasicQuestHelper
 		foundOutAboutKey = new Conditions(true, new DialogRequirement("That's some well-guarded secret alright"));
 		inStoreroom = new ZoneRequirement(storeroom);
 		atStartTile = new ZoneRequirement(StoreroomRoute.START_TILE);
-		atSafeSpot1 = new ZoneRequirement(StoreroomRoute.SAFE_SPOT_1);
-		atSafeSpot2 = new ZoneRequirement(StoreroomRoute.SAFE_SPOT_2);
 		atCrateApproach = new ZoneRequirement(StoreroomRoute.CRATE_APPROACH_TILE);
+		nearCrates = new ZoneRequirement(new Zone(StoreroomRoute.SAFE_SPOT_2), StoreroomRoute.CRATE_SIDE);
 		inRoom = new ZoneRequirement(StoreroomRoute.ROOM);
-		inLeg3Corridor = new ZoneRequirement(StoreroomRoute.LEG_3_CORRIDOR);
 	}
 
 	public void setupSteps()
@@ -547,11 +545,9 @@ public class EadgarsRuse extends BasicQuestHelper
 		navigateStoreroom = new ConditionalStep(this, goToStartTile,
 			"Follow the marked tiles to the goutweed crates, setting off for each one only while it is green.");
 		navigateStoreroom.addStep(atCrateApproach, getGoutweed);
-		navigateStoreroom.addStep(inLeg3Corridor, runToCrate);
-		navigateStoreroom.addStep(atSafeSpot2, runToCrate);
-		navigateStoreroom.addStep(atSafeSpot1, runToSafeSpot2);
+		navigateStoreroom.addStep(nearCrates, runToCrate);
+		navigateStoreroom.addStep(inRoom, runToSafeSpot2);
 		navigateStoreroom.addStep(atStartTile, runToSafeSpot1);
-		navigateStoreroom.addStep(inRoom, runToSafeSpot1);
 
 		getGoutweed.addSubSteps(goToStartTile, runToSafeSpot1, runToSafeSpot2, runToCrate);
 

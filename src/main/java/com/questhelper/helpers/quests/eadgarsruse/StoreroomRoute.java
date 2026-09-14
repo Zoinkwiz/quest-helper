@@ -48,7 +48,7 @@ public final class StoreroomRoute
 		new Zone(new WorldPoint(2850, 10087, 0), new WorldPoint(2860, 10092, 0)),
 	};
 
-	public static final Zone LEG_3_CORRIDOR = new Zone(new WorldPoint(2856, 10074, 0), new WorldPoint(2860, 10083, 0));
+	public static final Zone CRATE_SIDE = new Zone(new WorldPoint(2850, 10074, 0), new WorldPoint(2864, 10082, 0));
 
 	public static final Zone[] LEG_1_LANES = {
 		new Zone(new WorldPoint(2859, 10086, 0), new WorldPoint(2859, 10089, 0)),

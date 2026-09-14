@@ -66,7 +66,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom,
-		atStartTile, atCrateApproach, nearCrates, inRoom;
+		atStartTile, atCrateApproach, nearCrates, inNorthRoom, inRoom;
 
 	DetailedQuestStep goUpToSanfew, talkToSanfew, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterSecretEntrance, freeEadgar, goUpStairsPrison,
 		getBerryKey, goUpToTopFloorStronghold, exitStronghold, enterEadgarsCave, talkToEadgar, leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, goUpToTopFloorStrongholdFromCook,
@@ -358,6 +358,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		atStartTile = new ZoneRequirement(StoreroomRoute.START_TILE);
 		atCrateApproach = new ZoneRequirement(StoreroomRoute.CRATE_APPROACH_TILE);
 		nearCrates = new ZoneRequirement(new Zone(StoreroomRoute.SAFE_SPOT_2), StoreroomRoute.CRATE_SIDE);
+		inNorthRoom = new ZoneRequirement(StoreroomRoute.NORTH_ROOM);
 		inRoom = new ZoneRequirement(StoreroomRoute.ROOM);
 	}
 
@@ -546,6 +547,7 @@ public class EadgarsRuse extends BasicQuestHelper
 			"Follow the marked tiles to the goutweed crates, setting off for each one only while it is green.");
 		navigateStoreroom.addStep(atCrateApproach, getGoutweed);
 		navigateStoreroom.addStep(nearCrates, runToCrate);
+		navigateStoreroom.addStep(inNorthRoom, runToSafeSpot1);
 		navigateStoreroom.addStep(inRoom, runToSafeSpot2);
 		navigateStoreroom.addStep(atStartTile, runToSafeSpot1);
 

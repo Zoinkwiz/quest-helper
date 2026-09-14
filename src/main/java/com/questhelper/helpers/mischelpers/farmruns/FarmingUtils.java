@@ -151,19 +151,41 @@ public class FarmingUtils
 
 	public interface PlantableItem extends ConfigEnum
 	{
+		/**
+		 * Item id used by the {@code NONE} option of each sapling enum, meaning the player does not want to
+		 * farm that patch type at all.
+		 */
+		int NONE_ITEM_ID = -1;
+
 		int getPlantableItemId();
 
 		int getProtectionItemId();
 
 		int getProtectionItemQuantity();
 
+		/**
+		 * @return true if this option represents "don't farm this patch type" rather than an actual sapling
+		 */
+		default boolean isNone()
+		{
+			return getPlantableItemId() == NONE_ITEM_ID;
+		}
+
 		default ItemRequirement getPlantableItemRequirement(ItemManager itemManager)
 		{
+			if (isNone())
+			{
+				return new ItemRequirement("None", NONE_ITEM_ID, 0);
+			}
 			return new ItemRequirement(itemManager.getItemComposition(getPlantableItemId()).getName(), getPlantableItemId());
 		}
 
 		default ItemRequirement getProtectionItemRequirement(ItemManager itemManager)
 		{
+			if (isNone())
+			{
+				return new ItemRequirement("None", NONE_ITEM_ID, 0);
+			}
 			return new ItemRequirement(itemManager.getItemComposition(getProtectionItemId()).getName(), getProtectionItemId(), getProtectionItemQuantity());
 		}
 	}
@@ -174,7 +196,8 @@ public class FarmingUtils
 		WILLOW(ItemID.PLANTPOT_WILLOW_SAPLING, ItemID.BASKET_APPLE_5, 1),
 		MAPLE(ItemID.PLANTPOT_MAPLE_SAPLING, ItemID.BASKET_ORANGE_5, 1),
 		YEW(ItemID.PLANTPOT_YEW_SAPLING, ItemID.CACTUS_SPINE, 10),
-		MAGIC(ItemID.PLANTPOT_MAGIC_TREE_SAPLING, ItemID.COCONUT, 25);
+		MAGIC(ItemID.PLANTPOT_MAGIC_TREE_SAPLING, ItemID.COCONUT, 25),
+		NONE(NONE_ITEM_ID, NONE_ITEM_ID, 0);
 
 		final int treeSaplingID;
 		final int protectionItemId;
@@ -227,7 +250,8 @@ public class FarmingUtils
 		PINEAPPLE(ItemID.PLANTPOT_PINEAPPLE_SAPLING, ItemID.WATERMELON, 10),
 		PAPAYA(ItemID.PLANTPOT_PAPAYA_SAPLING, ItemID.PINEAPPLE, 10),
 		PALM(ItemID.PLANTPOT_PALM_SAPLING, ItemID.PAPAYA, 15),
-		DRAGONFRUIT(ItemID.PLANTPOT_DRAGONFRUIT_SAPLING, ItemID.COCONUT, 15);
+		DRAGONFRUIT(ItemID.PLANTPOT_DRAGONFRUIT_SAPLING, ItemID.COCONUT, 15),
+		NONE(NONE_ITEM_ID, NONE_ITEM_ID, 0);
 
 		final int fruitTreeSaplingId;
 		final int protectionItemId;
@@ -277,7 +301,8 @@ public class FarmingUtils
 		MAHOGANY(ItemID.PLANTPOT_MAHOGANY_SAPLING, ItemID.YANILLIAN_HOPS, 25),
 		CAMPHOR(ItemID.PLANTPOT_CAMPHOR_SAPLING, ItemID.WHITE_BERRIES, 10),
 		IRONWOOD(ItemID.PLANTPOT_IRONWOOD_SAPLING, ItemID.CURRY, 10),
-		ROSEWOOD(ItemID.PLANTPOT_ROSEWOOD_SAPLING, ItemID.DRAGONFRUIT, 8);
+		ROSEWOOD(ItemID.PLANTPOT_ROSEWOOD_SAPLING, ItemID.DRAGONFRUIT, 8),
+		NONE(NONE_ITEM_ID, NONE_ITEM_ID, 0);
 
 		final int hardwoodTreeSaplingId;
 		final int protectionItemId;
@@ -323,7 +348,8 @@ public class FarmingUtils
 
 	public enum CalquatTreeSapling implements PlantableItem
 	{
-		CALQUAT(ItemID.PLANTPOT_CALQUAT_SAPLING, ItemID.POISONIVY_BERRIES, 8);
+		CALQUAT(ItemID.PLANTPOT_CALQUAT_SAPLING, ItemID.POISONIVY_BERRIES, 8),
+		NONE(NONE_ITEM_ID, NONE_ITEM_ID, 0);
 
 		final int calquatTreeSaplingId;
 		final int protectionItemId;

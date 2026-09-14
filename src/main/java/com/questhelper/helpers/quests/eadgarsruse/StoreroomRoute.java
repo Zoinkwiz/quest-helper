@@ -21,115 +21,65 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-package com.questhelper.helpers.quests.eadgarsruse;
+ */package com.questhelper.helpers.quests.eadgarsruse;
 
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.zone.Zone;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
 
-/**
- * Route data for the Troll Stronghold goutweed storeroom.
- *
- * <p>The guards walk fixed, scripted loops, so "is it safe to start running?" is just a question
- * about where they are standing right now. Each leg of the route names the stretches of floor
- * ("lanes") that must be free of guards before the player sets off; when they all are, the
- * destination tile turns green.</p>
- *
- * <h2>Filling this in</h2>
- * <ol>
- *     <li>Turn on RuneLite's developer tools. The NPC overlay gives you guard IDs, and the tile
- *     indicators give you world coordinates.</li>
- *     <li>Set {@link #GUARD_ID}. If the guards share one ID that is all you need — the lane checks
- *     ask "is <i>any</i> guard standing here", which is equivalent to naming individual guards as
- *     long as only one guard can ever reach a given lane.</li>
- *     <li>Set the three destination tiles.</li>
- *     <li>For each leg, add the lanes that have to be clear. <b>Size these to cover the run
- *     itself, not just the instant you click.</b> A lane should extend far enough back along the
- *     guard's approach that a guard entering it during your run is still caught by the check —
- *     otherwise the tile goes green just as a guard is about to walk into you.</li>
- * </ol>
- *
- * <p>Until every field is filled in, {@link #isConfigured()} returns false and Eadgar's Ruse falls
- * back to the plain "search the crates and avoid the guards" step, exactly as it behaved before.</p>
- */
 public final class StoreroomRoute
 {
-	private static final int UNSET_ID = -1;
-	private static final WorldPoint UNSET_TILE = new WorldPoint(0, 0, 0);
+	public static final int[] GUARD_IDS = {
+		NpcID.EADGAR_STOREROOM_GUARD,
+		NpcID.TROLL_SGUARD1, NpcID.TROLL_SGUARD2, NpcID.TROLL_SGUARD3, NpcID.TROLL_SGUARD4,
+		NpcID.TROLL_SGUARD5, NpcID.TROLL_SGUARD6, NpcID.TROLL_SGUARD7, NpcID.TROLL_SGUARD8,
+	};
+
+	public static final WorldPoint START_TILE = new WorldPoint(2861, 10092, 0);
+	public static final WorldPoint SAFE_SPOT_1 = new WorldPoint(2856, 10084, 0);
+	public static final WorldPoint SAFE_SPOT_2 = new WorldPoint(2859, 10084, 0);
+	public static final WorldPoint CRATE_APPROACH_TILE = new WorldPoint(2858, 10074, 0);
+
+	public static final Zone[] ROOM = {
+		new Zone(new WorldPoint(2850, 10074, 0), new WorldPoint(2864, 10086, 0)),
+		new Zone(new WorldPoint(2850, 10087, 0), new WorldPoint(2860, 10092, 0)),
+	};
+
+	public static final Zone LEG_3_CORRIDOR = new Zone(new WorldPoint(2856, 10074, 0), new WorldPoint(2860, 10083, 0));
+
+	public static final Zone[] LEG_1_LANES = {
+		new Zone(new WorldPoint(2859, 10086, 0), new WorldPoint(2859, 10089, 0)),
+		new Zone(new WorldPoint(2855, 10086, 0), new WorldPoint(2859, 10086, 0)),
+		new Zone(new WorldPoint(2850, 10092, 0), new WorldPoint(2859, 10092, 0)),
+		new Zone(new WorldPoint(2855, 10086, 0), new WorldPoint(2855, 10088, 0)),
+	};
+
+	public static final Zone[] LEG_2_LANES = {
+		new Zone(new WorldPoint(2855, 10086, 0), new WorldPoint(2855, 10089, 0)),
+		new Zone(new WorldPoint(2861, 10085, 0), new WorldPoint(2864, 10085, 0)),
+		new Zone(new WorldPoint(2860, 10077, 0), new WorldPoint(2864, 10080, 0)),
+	};
+
+	public static final Zone[] LEG_3_LANES = {
+		new Zone(new WorldPoint(2855, 10076, 0), new WorldPoint(2855, 10079, 0)),
+		new Zone(new WorldPoint(2856, 10076, 0), new WorldPoint(2858, 10076, 0)),
+		new Zone(new WorldPoint(2858, 10077, 0), new WorldPoint(2858, 10081, 0)),
+	};
 
 	private StoreroomRoute()
 	{
 	}
 
-	// ------------------------------------------------------------------
-	// 1. The guards
-	// ------------------------------------------------------------------
-
-	/** TODO: the patrolling guards' NPC ID. */
-	public static final int GUARD_ID = UNSET_ID;
-
-	// ------------------------------------------------------------------
-	// 2. The route: two safe spots, then the crates
-	// ------------------------------------------------------------------
-
-	/** TODO: first safe spot, reached from the storeroom entrance. */
-	public static final WorldPoint SAFE_SPOT_1 = UNSET_TILE;
-
-	/** TODO: second safe spot. */
-	public static final WorldPoint SAFE_SPOT_2 = UNSET_TILE;
-
-	/**
-	 * TODO: the tile to stand on to search the crates.
-	 *
-	 * <p>Run to this tile rather than clicking the crate directly — clicking the crate lets the
-	 * client path you into a guard.</p>
-	 */
-	public static final WorldPoint CRATE_APPROACH_TILE = UNSET_TILE;
-
-	// ------------------------------------------------------------------
-	// 3. The lanes that must be clear before each leg
-	// ------------------------------------------------------------------
-
-	/** TODO: lanes that must be clear before leaving the entrance for {@link #SAFE_SPOT_1}. */
-	public static final Zone[] LEG_1_LANES = {};
-
-	/** TODO: lanes that must be clear before leaving {@link #SAFE_SPOT_1} for {@link #SAFE_SPOT_2}. */
-	public static final Zone[] LEG_2_LANES = {};
-
-	/** TODO: lanes that must be clear before leaving {@link #SAFE_SPOT_2} for the crates. */
-	public static final Zone[] LEG_3_LANES = {};
-
-	// ------------------------------------------------------------------
-
-	/**
-	 * @return a requirement that passes while no guard stands in any of {@code lanes}
-	 */
 	public static Requirement clearOf(Zone... lanes)
 	{
 		Requirement[] checks = new Requirement[lanes.length];
 		for (int i = 0; i < lanes.length; i++)
 		{
-			checks[i] = new GuardInZoneRequirement(GUARD_ID, lanes[i], true);
+			checks[i] = new GuardInZoneRequirement(lanes[i], true, GUARD_IDS);
 		}
 		return new Conditions(LogicType.AND, checks);
-	}
-
-	/**
-	 * @return true once the route above has actually been filled in. While this is false the quest
-	 * helper keeps its original single-step behaviour, so a half-finished route can never show the
-	 * player a permanently green tile.
-	 */
-	public static boolean isConfigured()
-	{
-		return GUARD_ID != UNSET_ID
-			&& !UNSET_TILE.equals(SAFE_SPOT_1)
-			&& !UNSET_TILE.equals(SAFE_SPOT_2)
-			&& !UNSET_TILE.equals(CRATE_APPROACH_TILE)
-			&& LEG_1_LANES.length > 0
-			&& LEG_2_LANES.length > 0
-			&& LEG_3_LANES.length > 0;
 	}
 }

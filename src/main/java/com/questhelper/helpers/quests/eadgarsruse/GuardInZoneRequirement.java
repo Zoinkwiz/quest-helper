@@ -21,8 +21,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-package com.questhelper.helpers.quests.eadgarsruse;
+ */package com.questhelper.helpers.quests.eadgarsruse;
 
 import com.questhelper.requirements.SimpleRequirement;
 import com.questhelper.requirements.zone.Zone;
@@ -30,34 +29,21 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 
-/**
- * Passes when <i>any</i> NPC with the given ID is inside (or, inverted, outside) a {@link Zone}.
- *
- * <p>The existing {@link com.questhelper.requirements.npc.NpcRequirement} cannot be used for this:
- * its zone check returns on the first matching NPC it finds rather than considering them all, so
- * with several identically-IDed guards in the scene it only ever consults whichever one the world
- * view happens to list first. The storeroom guards all share an ID, so we need a true "any" test.</p>
- */
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class GuardInZoneRequirement extends SimpleRequirement
 {
-	private final int npcId;
+	private final Set<Integer> npcIds;
 	private final Zone zone;
 	private final boolean checkNotInZone;
 
-	public GuardInZoneRequirement(int npcId, Zone zone)
-	{
-		this(npcId, zone, false);
-	}
-
-	/**
-	 * @param npcId          the guard's NPC ID
-	 * @param zone           the area to test against
-	 * @param checkNotInZone when true, this passes only while no matching guard is in the zone
-	 */
-	public GuardInZoneRequirement(int npcId, Zone zone, boolean checkNotInZone)
+	public GuardInZoneRequirement(Zone zone, boolean checkNotInZone, int... npcIds)
 	{
 		assert (zone != null);
-		this.npcId = npcId;
+		assert (npcIds.length > 0);
+		this.npcIds = Arrays.stream(npcIds).boxed().collect(Collectors.toSet());
 		this.zone = zone;
 		this.checkNotInZone = checkNotInZone;
 	}
@@ -69,12 +55,11 @@ public class GuardInZoneRequirement extends SimpleRequirement
 
 		for (NPC npc : client.getTopLevelWorldView().npcs())
 		{
-			if (npc.getId() != npcId)
+			if (!npcIds.contains(npc.getId()))
 			{
 				continue;
 			}
 
-			// The storeroom is not instanced, so the NPC's world location needs no translation.
 			WorldPoint location = npc.getWorldLocation();
 			if (location != null && zone.contains(location))
 			{

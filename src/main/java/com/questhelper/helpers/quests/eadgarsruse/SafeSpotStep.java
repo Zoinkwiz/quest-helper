@@ -21,8 +21,7 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-package com.questhelper.helpers.quests.eadgarsruse;
+ */package com.questhelper.helpers.quests.eadgarsruse;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
@@ -39,33 +38,14 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Stroke;
 
-/**
- * Marks a tile the player should run to, and colours it by a live condition: green while it is
- * safe to set off, red while it is not.
- *
- * <p>The colours come from {@link Requirement#getColor}, which resolves to the user's configured
- * "passed check" and "failed check" colours, so this honours the same palette as the rest of the
- * plugin rather than hard-coding green and red.</p>
- *
- * <p>The condition is evaluated per rendered frame. That matches how requirements are already
- * drawn on overlays elsewhere in the plugin, and keeps the tile responsive within the tick rather
- * than lagging a tick behind the guards.</p>
- */
 public class SafeSpotStep extends DetailedQuestStep
 {
-	/** Alpha of the tile fill. The outline is drawn fully opaque on top of it. */
 	private static final int FILL_ALPHA = 60;
 
 	private static final Stroke OUTLINE_STROKE = new BasicStroke(2);
 
 	private final Requirement safeToRun;
 
-	/**
-	 * @param worldPoint the tile to run to
-	 * @param safeToRun  passes while it is safe to start running to {@code worldPoint}. This must
-	 *                   account for how long the run itself takes, not just whether the tile is
-	 *                   clear right now — see {@link StoreroomRoute} for how that is expressed.
-	 */
 	public SafeSpotStep(QuestHelper questHelper, WorldPoint worldPoint, Requirement safeToRun,
 						String text, Requirement... requirements)
 	{

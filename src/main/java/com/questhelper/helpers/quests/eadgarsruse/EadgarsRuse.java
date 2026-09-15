@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.StepIsActiveRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -65,7 +66,8 @@ public class EadgarsRuse extends BasicQuestHelper
 	ItemRequirement taverleyTeleport, ardougneTeleport, burthorpeTeleport;
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
-		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom;
+		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom,
+		pastStoreroomDoor, atSafeSpot1, onLeg2Path, atCrateApproach, nearCrates;
 
 	DetailedQuestStep goUpToSanfew, talkToSanfew, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterSecretEntrance, freeEadgar, goUpStairsPrison,
 		getBerryKey, goUpToTopFloorStronghold, exitStronghold, enterEadgarsCave, talkToEadgar, leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, goUpToTopFloorStrongholdFromCook,
@@ -74,9 +76,13 @@ public class EadgarsRuse extends BasicQuestHelper
 		talkToEadgarWithItems, leaveEadgarsCaveForThistle, pickThistle, lightFire, useThistleOnFire, useThistleOnTrollFire, grindThistle, useGroundThistleOnRanarr, enterEadgarsCaveWithTrollPotion, giveTrollPotionToEadgar,
 		enterPrisonForParrot, enterStrongholdForParrot, goDownNorthStairsForParrot, goDownToPrisonForParrot, getParrotFromRack, leaveEadgarsCaveForParrot, leavePrisonWithParrot, goUpToTopFloorWithParrot, leaveStrongholdWithParrot,
 		enterEadgarCaveWithTrainedParrot, talkToEadgarWithTrainedParrot, leaveEadgarsCaveWithScarecrow, enterStrongholdWithScarecrow, goDownSouthStairsWithScarecrow, talkToCookWithScarecrow, talkToBurntmeat, goDownToStoreroom,
-		enterStoreroomDoor, getGoutweed, returnUpToSanfew, returnToSanfew;
+		enterStoreroomDoor, getGoutweed, returnUpToSanfew, returnToSanfew, runToSafeSpot1, runToSafeSpot2, runToCrate;
 
 	ObjectStep searchDrawers;
+
+	ConditionalStep navigateStoreroom;
+
+	PuzzleWrapperStep solveStoreroom;
 
 	PanelDetails travelToEadgarPanel;
 
@@ -223,7 +229,8 @@ public class EadgarsRuse extends BasicQuestHelper
 		ConditionalStep getTheGoutweed = new ConditionalStep(this, talkToBurntmeat);
 		getTheGoutweed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);
 		getTheGoutweed.addStep(goutweed, returnUpToSanfew);
-		getTheGoutweed.addStep(new Conditions(inStoreroom, storeroomKey), getGoutweed);
+		getTheGoutweed.addStep(new Conditions(pastStoreroomDoor, storeroomKey), solveStoreroom);
+		getTheGoutweed.addStep(new Conditions(inStoreroom, storeroomKey), enterStoreroomDoor);
 		getTheGoutweed.addStep(storeroomKey, goDownToStoreroom);
 		getTheGoutweed.addStep(foundOutAboutKey, searchDrawers);
 
@@ -232,7 +239,8 @@ public class EadgarsRuse extends BasicQuestHelper
 		ConditionalStep returnGoutWeed = new ConditionalStep(this, goDownToStoreroom);
 		returnGoutWeed.addStep(new Conditions(inSanfewRoom, goutweed), returnToSanfew);
 		returnGoutWeed.addStep(goutweed, returnUpToSanfew);
-		returnGoutWeed.addStep(inStoreroom, getGoutweed);
+		returnGoutWeed.addStep(pastStoreroomDoor, solveStoreroom);
+		returnGoutWeed.addStep(inStoreroom, enterStoreroomDoor);
 
 		steps.put(100, returnGoutWeed);
 
@@ -352,6 +360,11 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		foundOutAboutKey = new Conditions(true, new DialogRequirement("That's some well-guarded secret alright"));
 		inStoreroom = new ZoneRequirement(storeroom);
+		pastStoreroomDoor = new ZoneRequirement(StoreroomRoute.PAST_DOOR);
+		atSafeSpot1 = new ZoneRequirement(StoreroomRoute.SAFE_SPOT_1);
+		onLeg2Path = new ZoneRequirement(StoreroomRoute.LEG_2_PATH);
+		atCrateApproach = new ZoneRequirement(StoreroomRoute.CRATE_APPROACH_TILE);
+		nearCrates = new ZoneRequirement(StoreroomRoute.CRATE_SIDE);
 	}
 
 	public void setupSteps()
@@ -523,7 +536,27 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		enterStoreroomDoor = new ObjectStep(this, ObjectID.EADGAR_STOREROOMDOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
 
-		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the goutweed crates for goutweed. You'll need to avoid the troll guards or you'll be kicked out and take damage.");
+		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the crates for goutweed, avoiding the guards.");
+
+		runToSafeSpot1 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_1,
+			"Run to the highlighted tile once the highlighted guards have passed. It's safe to wait there.",
+			StoreroomRoute.LEG_1_GUARDS);
+		runToSafeSpot2 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_2,
+			"Run to the highlighted tile once the highlighted guards have passed. It's safe to wait there.",
+			StoreroomRoute.LEG_2_GUARDS);
+		runToCrate = new SafeSpotStep(this, StoreroomRoute.CRATE_APPROACH_TILE,
+			"Run to the highlighted tile once the highlighted guard has passed. Click the tile, not the crates.",
+			StoreroomRoute.LEG_3_GUARDS);
+
+		navigateStoreroom = new ConditionalStep(this, runToSafeSpot1,
+			"Follow the highlighted tiles to the goutweed crates.");
+		navigateStoreroom.addStep(atCrateApproach, getGoutweed);
+		navigateStoreroom.addStep(nearCrates, runToCrate);
+		Requirement headingToSafeSpot2 = new Conditions(LogicType.OR, atSafeSpot1,
+			new Conditions(onLeg2Path, new StepIsActiveRequirement(runToSafeSpot2)));
+		navigateStoreroom.addStep(headingToSafeSpot2, runToSafeSpot2);
+
+		solveStoreroom = new PuzzleWrapperStep(this, navigateStoreroom, getGoutweed);
 
 		returnUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
@@ -597,7 +630,7 @@ public class EadgarsRuse extends BasicQuestHelper
 			leaveStrongholdWithParrot), climbingBoots, logs2, tinderbox, pestleAndMortar, grain10, rawChicken5, ranarrPotionUnf));
 
 		allSteps.add(new PanelDetails("Get the Goutweed", Arrays.asList(enterStrongholdWithScarecrow, searchDrawers,
-			goDownToStoreroom, enterStoreroomDoor, getGoutweed, returnToSanfew)));
+			goDownToStoreroom, enterStoreroomDoor, solveStoreroom, returnToSanfew)));
 		return allSteps;
 	}
 

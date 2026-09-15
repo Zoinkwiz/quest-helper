@@ -21,15 +21,19 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */package com.questhelper.helpers.quests.eadgarsruse;
+ */
+package com.questhelper.helpers.quests.eadgarsruse;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
 
 import java.awt.BasicStroke;
@@ -37,20 +41,32 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Stroke;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+/**
+ * Marks a tile which is safe to stand on, and highlights the guards whose patrols can catch the
+ * player on the way to it.
+ * <p>
+ * Both highlights are static. The step says where to go and which guards to watch; it deliberately
+ * does not work out when to set off, so the player keeps the timing decision.
+ */
 public class SafeSpotStep extends DetailedQuestStep
 {
-	private static final int FILL_ALPHA = 60;
+	private static final int SAFE_SPOT_FILL_ALPHA = 60;
 
-	private static final Stroke OUTLINE_STROKE = new BasicStroke(2);
+	private static final int GUARD_HULL_FILL_ALPHA = 20;
 
-	private final Requirement safeToRun;
+	private static final Stroke SAFE_SPOT_STROKE = new BasicStroke(2);
 
-	public SafeSpotStep(QuestHelper questHelper, WorldPoint worldPoint, Requirement safeToRun,
-						String text, Requirement... requirements)
+	private final Set<Integer> guardIds;
+
+	public SafeSpotStep(QuestHelper questHelper, WorldPoint worldPoint, String text, int[] guardIds,
+						Requirement... requirements)
 	{
 		super(questHelper, worldPoint, text, requirements);
-		this.safeToRun = safeToRun;
+		this.guardIds = Arrays.stream(guardIds).boxed().collect(Collectors.toSet());
 	}
 
 	@Override
@@ -58,12 +74,23 @@ public class SafeSpotStep extends DetailedQuestStep
 	{
 		super.makeWorldOverlayHint(graphics, plugin);
 
-		if (definedPoint == null || client.getLocalPlayer() == null)
+		if (client.getLocalPlayer() == null)
 		{
 			return;
 		}
 
-		Color color = safeToRun.getColor(client, questHelper.getConfig());
+		renderSafeSpot(graphics);
+		renderGuards(graphics);
+	}
+
+	private void renderSafeSpot(Graphics2D graphics)
+	{
+		if (definedPoint == null)
+		{
+			return;
+		}
+
+		Color color = questHelper.getConfig().targetOverlayColor();
 
 		for (LocalPoint localPoint : definedPoint.resolveLocalPoints(client))
 		{
@@ -74,12 +101,59 @@ public class SafeSpotStep extends DetailedQuestStep
 			}
 
 			Stroke originalStroke = graphics.getStroke();
-			graphics.setColor(ColorUtil.colorWithAlpha(color, FILL_ALPHA));
+			graphics.setColor(ColorUtil.colorWithAlpha(color, SAFE_SPOT_FILL_ALPHA));
 			graphics.fill(poly);
 			graphics.setColor(color);
-			graphics.setStroke(OUTLINE_STROKE);
+			graphics.setStroke(SAFE_SPOT_STROKE);
 			graphics.draw(poly);
 			graphics.setStroke(originalStroke);
+		}
+	}
+
+	private void renderGuards(Graphics2D graphics)
+	{
+		if (guardIds.isEmpty())
+		{
+			return;
+		}
+
+		QuestHelperConfig config = questHelper.getConfig();
+		Color color = config.failColour();
+
+		for (NPC npc : client.getTopLevelWorldView().npcs())
+		{
+			if (!guardIds.contains(npc.getId()))
+			{
+				continue;
+			}
+
+			switch (config.highlightStyleNpcs())
+			{
+				case CONVEX_HULL:
+					OverlayUtil.renderHoverableArea(
+						graphics,
+						npc.getConvexHull(),
+						client.getMouseCanvasPosition(),
+						ColorUtil.colorWithAlpha(color, GUARD_HULL_FILL_ALPHA),
+						color.darker(),
+						color);
+					break;
+				case OUTLINE:
+					modelOutlineRenderer.drawOutline(
+						npc,
+						config.outlineThickness(),
+						color,
+						config.outlineFeathering());
+					break;
+				case TILE:
+					Polygon poly = npc.getCanvasTilePoly();
+					if (poly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, poly, color);
+					}
+					break;
+				default:
+			}
 		}
 	}
 }

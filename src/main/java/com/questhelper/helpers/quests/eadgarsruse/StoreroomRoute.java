@@ -21,26 +21,56 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */package com.questhelper.helpers.quests.eadgarsruse;
+ */
+package com.questhelper.helpers.quests.eadgarsruse;
 
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
-import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.zone.Zone;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.NpcID;
 
+/**
+ * The tiles, rooms and guards which make up the run through the goutweed storeroom.
+ * <p>
+ * The route is broken into legs, each ending on a tile the player can stand on indefinitely without
+ * being spotted. Every guard in the room is a separate NPC ID with its own fixed patrol, so the
+ * handful of guards that can actually intercept a given leg are listed per leg below. Which leg the
+ * player is on is decided purely by where they are standing; nothing here reads guard positions, so
+ * the helper never tries to tell the player when to move.
+ */
 public final class StoreroomRoute
 {
-	public static final int[] GUARD_IDS = {
+	/** For a leg with nothing to watch out for, such as standing still on the staging tile. */
+	public static final int[] NO_GUARDS = {};
+
+	/** Every guard patrolling the storeroom. */
+	public static final int[] ALL_GUARDS = {
 		NpcID.EADGAR_STOREROOM_GUARD,
 		NpcID.TROLL_SGUARD1, NpcID.TROLL_SGUARD2, NpcID.TROLL_SGUARD3, NpcID.TROLL_SGUARD4,
 		NpcID.TROLL_SGUARD5, NpcID.TROLL_SGUARD6, NpcID.TROLL_SGUARD7, NpcID.TROLL_SGUARD8,
 	};
 
+	/**
+	 * Guards which can catch the run from the staging tile to the first safe spot.
+	 * <p>
+	 * Set to every guard in the room until the ones that actually matter for this leg have been
+	 * confirmed in game. Narrowing it to that subset is a one-line edit here, and is what keeps the
+	 * player watching two or three guards rather than all nine.
+	 */
+	public static final int[] LEG_1_GUARDS = ALL_GUARDS;
+
+	/** Guards which can catch the run from the first safe spot to the second. See {@link #LEG_1_GUARDS}. */
+	public static final int[] LEG_2_GUARDS = ALL_GUARDS;
+
+	/** Guards which can catch the run from the second safe spot to the crates. See {@link #LEG_1_GUARDS}. */
+	public static final int[] LEG_3_GUARDS = ALL_GUARDS;
+
+	/** Where to gather after coming down the stairs, before starting the first leg. */
 	public static final WorldPoint START_TILE = new WorldPoint(2861, 10092, 0);
+
 	public static final WorldPoint SAFE_SPOT_1 = new WorldPoint(2857, 10084, 0);
 	public static final WorldPoint SAFE_SPOT_2 = new WorldPoint(2859, 10084, 0);
+
+	/** The tile to run to alongside the crates, rather than clicking the crates from range. */
 	public static final WorldPoint CRATE_APPROACH_TILE = new WorldPoint(2858, 10074, 0);
 
 	public static final Zone[] ROOM = {
@@ -55,37 +85,7 @@ public final class StoreroomRoute
 
 	public static final Zone NORTH_ROOM = new Zone(new WorldPoint(2850, 10086, 0), new WorldPoint(2859, 10092, 0));
 
-	public static final Zone[] LEG_1_LANES = {
-		new Zone(new WorldPoint(2855, 10089, 0), new WorldPoint(2857, 10089, 0)),
-		new Zone(new WorldPoint(2859, 10086, 0), new WorldPoint(2859, 10089, 0)),
-		new Zone(new WorldPoint(2855, 10086, 0), new WorldPoint(2859, 10086, 0)),
-		new Zone(new WorldPoint(2850, 10092, 0), new WorldPoint(2859, 10092, 0)),
-		new Zone(new WorldPoint(2855, 10086, 0), new WorldPoint(2855, 10088, 0)),
-	};
-
-	public static final Zone[] LEG_2_LANES = {
-		new Zone(new WorldPoint(2855, 10086, 0), new WorldPoint(2855, 10089, 0)),
-		new Zone(new WorldPoint(2861, 10085, 0), new WorldPoint(2864, 10085, 0)),
-		new Zone(new WorldPoint(2860, 10077, 0), new WorldPoint(2864, 10080, 0)),
-	};
-
-	public static final Zone[] LEG_3_LANES = {
-		new Zone(new WorldPoint(2855, 10076, 0), new WorldPoint(2855, 10079, 0)),
-		new Zone(new WorldPoint(2856, 10076, 0), new WorldPoint(2858, 10076, 0)),
-		new Zone(new WorldPoint(2858, 10077, 0), new WorldPoint(2858, 10081, 0)),
-	};
-
 	private StoreroomRoute()
 	{
-	}
-
-	public static Requirement clearOf(Zone... lanes)
-	{
-		Requirement[] checks = new Requirement[lanes.length];
-		for (int i = 0; i < lanes.length; i++)
-		{
-			checks[i] = new GuardInZoneRequirement(lanes[i], true, GUARD_IDS);
-		}
-		return new Conditions(LogicType.AND, checks);
 	}
 }

@@ -533,18 +533,20 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the goutweed crates for goutweed. You'll need to avoid the troll guards or you'll be kicked out and take damage.");
 
-		goToStartTile = new DetailedQuestStep(this, StoreroomRoute.START_TILE, "Stand on the marked tile and wait there.");
-		goToStartTile.addHighlightZone(new Zone(StoreroomRoute.START_TILE));
+		goToStartTile = new SafeSpotStep(this, StoreroomRoute.START_TILE, "Stand on the highlighted tile. You're safe here, so take your time working out the guards' patrols before setting off.", StoreroomRoute.NO_GUARDS);
 
-		runToSafeSpot1 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_1, StoreroomRoute.clearOf(StoreroomRoute.LEG_1_LANES),
-			"Wait until the marked tile turns green, then run to it.");
-		runToSafeSpot2 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_2, StoreroomRoute.clearOf(StoreroomRoute.LEG_2_LANES),
-			"Wait until the marked tile turns green, then run to it.");
-		runToCrate = new SafeSpotStep(this, StoreroomRoute.CRATE_APPROACH_TILE, StoreroomRoute.clearOf(StoreroomRoute.LEG_3_LANES),
-			"Wait until the marked tile turns green, then run to it. Don't click the crate itself, or you'll be pathed into a guard.");
+		runToSafeSpot1 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_1,
+			"Run to the highlighted tile once the highlighted guards are clear. You're safe standing on it.",
+			StoreroomRoute.LEG_1_GUARDS);
+		runToSafeSpot2 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_2,
+			"Run to the highlighted tile once the highlighted guards are clear. You're safe standing on it.",
+			StoreroomRoute.LEG_2_GUARDS);
+		runToCrate = new SafeSpotStep(this, StoreroomRoute.CRATE_APPROACH_TILE,
+			"Run to the highlighted tile once the highlighted guards are clear. Run to the tile rather than clicking the crates, or you'll be pathed into a guard.",
+			StoreroomRoute.LEG_3_GUARDS);
 
 		navigateStoreroom = new ConditionalStep(this, goToStartTile,
-			"Follow the marked tiles to the goutweed crates, setting off for each one only while it is green.");
+			"Make your way to the goutweed crates one highlighted tile at a time, running to each only once the highlighted guards are clear.");
 		navigateStoreroom.addStep(atCrateApproach, getGoutweed);
 		navigateStoreroom.addStep(nearCrates, runToCrate);
 		navigateStoreroom.addStep(inNorthRoom, runToSafeSpot1);

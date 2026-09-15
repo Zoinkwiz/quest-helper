@@ -66,7 +66,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom,
-		atStartTile, atCrateApproach, nearCrates, inNorthRoom, inRoom;
+		atSafeSpot1, atCrateApproach, nearCrates;
 
 	DetailedQuestStep goUpToSanfew, talkToSanfew, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterSecretEntrance, freeEadgar, goUpStairsPrison,
 		getBerryKey, goUpToTopFloorStronghold, exitStronghold, enterEadgarsCave, talkToEadgar, leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, goUpToTopFloorStrongholdFromCook,
@@ -75,7 +75,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		talkToEadgarWithItems, leaveEadgarsCaveForThistle, pickThistle, lightFire, useThistleOnFire, useThistleOnTrollFire, grindThistle, useGroundThistleOnRanarr, enterEadgarsCaveWithTrollPotion, giveTrollPotionToEadgar,
 		enterPrisonForParrot, enterStrongholdForParrot, goDownNorthStairsForParrot, goDownToPrisonForParrot, getParrotFromRack, leaveEadgarsCaveForParrot, leavePrisonWithParrot, goUpToTopFloorWithParrot, leaveStrongholdWithParrot,
 		enterEadgarCaveWithTrainedParrot, talkToEadgarWithTrainedParrot, leaveEadgarsCaveWithScarecrow, enterStrongholdWithScarecrow, goDownSouthStairsWithScarecrow, talkToCookWithScarecrow, talkToBurntmeat, goDownToStoreroom,
-		enterStoreroomDoor, getGoutweed, returnUpToSanfew, returnToSanfew, goToStartTile, runToSafeSpot1, runToSafeSpot2, runToCrate;
+		enterStoreroomDoor, getGoutweed, returnUpToSanfew, returnToSanfew, runToSafeSpot1, runToSafeSpot2, runToCrate;
 
 	ObjectStep searchDrawers;
 
@@ -355,11 +355,9 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		foundOutAboutKey = new Conditions(true, new DialogRequirement("That's some well-guarded secret alright"));
 		inStoreroom = new ZoneRequirement(storeroom);
-		atStartTile = new ZoneRequirement(StoreroomRoute.START_TILE);
+		atSafeSpot1 = new ZoneRequirement(StoreroomRoute.SAFE_SPOT_1);
 		atCrateApproach = new ZoneRequirement(StoreroomRoute.CRATE_APPROACH_TILE);
 		nearCrates = new ZoneRequirement(StoreroomRoute.CRATE_SIDE);
-		inNorthRoom = new ZoneRequirement(StoreroomRoute.NORTH_ROOM);
-		inRoom = new ZoneRequirement(StoreroomRoute.ROOM);
 	}
 
 	public void setupSteps()
@@ -531,29 +529,25 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		enterStoreroomDoor = new ObjectStep(this, ObjectID.EADGAR_STOREROOMDOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
 
-		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the goutweed crates for goutweed. You'll need to avoid the troll guards or you'll be kicked out and take damage.");
-
-		goToStartTile = new SafeSpotStep(this, StoreroomRoute.START_TILE, "Stand on the highlighted tile. You're safe here, so take your time working out the guards' patrols before setting off.", StoreroomRoute.NO_GUARDS);
+		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the crates for goutweed, avoiding the guards.");
 
 		runToSafeSpot1 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_1,
-			"Run to the highlighted tile once the highlighted guards are clear. You're safe standing on it.",
+			"Run to the highlighted tile once the highlighted guards have passed. It's safe to wait there.",
 			StoreroomRoute.LEG_1_GUARDS);
 		runToSafeSpot2 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_2,
-			"Run to the highlighted tile once the highlighted guards are clear. You're safe standing on it.",
+			"Run to the highlighted tile once the highlighted guards have passed. It's safe to wait there.",
 			StoreroomRoute.LEG_2_GUARDS);
 		runToCrate = new SafeSpotStep(this, StoreroomRoute.CRATE_APPROACH_TILE,
-			"Run to the highlighted tile once the highlighted guards are clear. Run to the tile rather than clicking the crates, or you'll be pathed into a guard.",
+			"Run to the highlighted tile once the highlighted guard has passed. Click the tile, not the crates.",
 			StoreroomRoute.LEG_3_GUARDS);
 
-		navigateStoreroom = new ConditionalStep(this, goToStartTile,
-			"Make your way to the goutweed crates one highlighted tile at a time, running to each only once the highlighted guards are clear.");
+		navigateStoreroom = new ConditionalStep(this, runToSafeSpot1,
+			"Follow the highlighted tiles to the goutweed crates.");
 		navigateStoreroom.addStep(atCrateApproach, getGoutweed);
 		navigateStoreroom.addStep(nearCrates, runToCrate);
-		navigateStoreroom.addStep(inNorthRoom, runToSafeSpot1);
-		navigateStoreroom.addStep(inRoom, runToSafeSpot2);
-		navigateStoreroom.addStep(atStartTile, runToSafeSpot1);
+		navigateStoreroom.addStep(atSafeSpot1, runToSafeSpot2);
 
-		getGoutweed.addSubSteps(goToStartTile, runToSafeSpot1, runToSafeSpot2, runToCrate);
+		getGoutweed.addSubSteps(runToSafeSpot1, runToSafeSpot2, runToCrate);
 
 		returnUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);

@@ -45,13 +45,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Marks a tile which is safe to stand on, and highlights the guards whose patrols can catch the
- * player on the way to it.
- * <p>
- * Both highlights are static. The step says where to go and which guards to watch; it deliberately
- * does not work out when to set off, so the player keeps the timing decision.
- */
+/** Marks a tile which is safe to stand on, and highlights the guards which can catch the run to it. */
 public class SafeSpotStep extends DetailedQuestStep
 {
 	private static final int SAFE_SPOT_FILL_ALPHA = 60;

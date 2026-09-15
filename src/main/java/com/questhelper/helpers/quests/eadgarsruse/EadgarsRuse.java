@@ -76,7 +76,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		talkToEadgarWithItems, leaveEadgarsCaveForThistle, pickThistle, lightFire, useThistleOnFire, useThistleOnTrollFire, grindThistle, useGroundThistleOnRanarr, enterEadgarsCaveWithTrollPotion, giveTrollPotionToEadgar,
 		enterPrisonForParrot, enterStrongholdForParrot, goDownNorthStairsForParrot, goDownToPrisonForParrot, getParrotFromRack, leaveEadgarsCaveForParrot, leavePrisonWithParrot, goUpToTopFloorWithParrot, leaveStrongholdWithParrot,
 		enterEadgarCaveWithTrainedParrot, talkToEadgarWithTrainedParrot, leaveEadgarsCaveWithScarecrow, enterStrongholdWithScarecrow, goDownSouthStairsWithScarecrow, talkToCookWithScarecrow, talkToBurntmeat, goDownToStoreroom,
-		enterStoreroomDoor, getGoutweed, searchCrates, returnUpToSanfew, returnToSanfew, runToSafeSpot1, runToSafeSpot2, runToCrate;
+		enterStoreroomDoor, getGoutweed, returnUpToSanfew, returnToSanfew, runToSafeSpot1, runToSafeSpot2, runToCrate;
 
 	ObjectStep searchDrawers;
 
@@ -536,9 +536,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		enterStoreroomDoor = new ObjectStep(this, ObjectID.EADGAR_STOREROOMDOOR, new WorldPoint(2869, 10085, 0), "Enter the storeroom.", storeroomKey);
 
-		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the crates for goutweed.");
-
-		searchCrates = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the crates for goutweed, avoiding the guards.");
+		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the crates for goutweed, avoiding the guards.");
 
 		runToSafeSpot1 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_1,
 			"Run to the highlighted tile once the highlighted guards have passed. It's safe to wait there.",
@@ -558,7 +556,7 @@ public class EadgarsRuse extends BasicQuestHelper
 			new Conditions(onLeg2Path, new StepIsActiveRequirement(runToSafeSpot2)));
 		navigateStoreroom.addStep(headingToSafeSpot2, runToSafeSpot2);
 
-		solveStoreroom = new PuzzleWrapperStep(this, navigateStoreroom, searchCrates);
+		solveStoreroom = new PuzzleWrapperStep(this, navigateStoreroom, getGoutweed);
 
 		returnUpToSanfew = new ObjectStep(this, ObjectID.SPIRALSTAIRS, new WorldPoint(2899, 3429, 0), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);
 		returnToSanfew = new NpcStep(this, NpcID.SANFEW, new WorldPoint(2899, 3429, 1), "If you wish to do Dream Mentor or Dragon Slayer II, grab two more goutweed. Afterwards, return to Sanfew upstairs in the Taverley herblore store.", goutweed);

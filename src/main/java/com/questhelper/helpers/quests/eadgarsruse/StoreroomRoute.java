@@ -46,6 +46,9 @@ public final class StoreroomRoute
 	/** The tile to run to alongside the crates, rather than clicking the crates from range. */
 	public static final WorldPoint CRATE_APPROACH_TILE = new WorldPoint(2858, 10074, 0);
 
+	/** The tiles walked between the two safe spots. */
+	public static final Zone LEG_2_PATH = new Zone(new WorldPoint(2857, 10084, 0), new WorldPoint(2862, 10086, 0));
+
 	/** Inside the storeroom door, where the guard route starts. */
 	public static final Zone[] PAST_DOOR = {
 		new Zone(new WorldPoint(2850, 10074, 0), new WorldPoint(2864, 10086, 0)),

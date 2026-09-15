@@ -67,7 +67,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 	Requirement inSanfewRoom, inTenzingHut, hasClimbingBoots, hasCoins, onMountainPath, inTrollArea1, inPrison, freedEadgar, hasCellKey2, inStrongholdFloor1, inStrongholdFloor2,
 		inEadgarsCave, inTrollheimArea, askedAboutAlcohol, askedAboutPineapple, fireNearby, foundOutAboutKey, inStoreroom,
-		pastStoreroomDoor, atSafeSpot1, atCrateApproach, nearCrates;
+		pastStoreroomDoor, atSafeSpot1, onLeg2Path, atCrateApproach, nearCrates;
 
 	DetailedQuestStep goUpToSanfew, talkToSanfew, buyClimbingBoots, travelToTenzing, getCoinsOrBoots, climbOverStile, climbOverRocks, enterSecretEntrance, freeEadgar, goUpStairsPrison,
 		getBerryKey, goUpToTopFloorStronghold, exitStronghold, enterEadgarsCave, talkToEadgar, leaveEadgarsCave, enterStronghold, goDownSouthStairs, talkToCook, goUpToTopFloorStrongholdFromCook,
@@ -362,6 +362,7 @@ public class EadgarsRuse extends BasicQuestHelper
 		inStoreroom = new ZoneRequirement(storeroom);
 		pastStoreroomDoor = new ZoneRequirement(StoreroomRoute.PAST_DOOR);
 		atSafeSpot1 = new ZoneRequirement(StoreroomRoute.SAFE_SPOT_1);
+		onLeg2Path = new ZoneRequirement(StoreroomRoute.LEG_2_PATH);
 		atCrateApproach = new ZoneRequirement(StoreroomRoute.CRATE_APPROACH_TILE);
 		nearCrates = new ZoneRequirement(StoreroomRoute.CRATE_SIDE);
 	}
@@ -537,8 +538,7 @@ public class EadgarsRuse extends BasicQuestHelper
 
 		getGoutweed = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the crates for goutweed.");
 
-		searchCrates = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0),
-			"Search the crates for goutweed, avoiding the guards. Enable 'Show Puzzle Solutions' for a safe route.");
+		searchCrates = new ObjectStep(this, ObjectID.EADGAR_CRATE_GOUTWEED, new WorldPoint(2857, 10074, 0), "Search the crates for goutweed, avoiding the guards.");
 
 		runToSafeSpot1 = new SafeSpotStep(this, StoreroomRoute.SAFE_SPOT_1,
 			"Run to the highlighted tile once the highlighted guards have passed. It's safe to wait there.",
@@ -554,7 +554,9 @@ public class EadgarsRuse extends BasicQuestHelper
 			"Follow the highlighted tiles to the goutweed crates.");
 		navigateStoreroom.addStep(atCrateApproach, getGoutweed);
 		navigateStoreroom.addStep(nearCrates, runToCrate);
-		navigateStoreroom.addStep(new Conditions(LogicType.OR, atSafeSpot1, new StepIsActiveRequirement(runToSafeSpot2)), runToSafeSpot2);
+		Requirement headingToSafeSpot2 = new Conditions(LogicType.OR, atSafeSpot1,
+			new Conditions(onLeg2Path, new StepIsActiveRequirement(runToSafeSpot2)));
+		navigateStoreroom.addStep(headingToSafeSpot2, runToSafeSpot2);
 
 		solveStoreroom = new PuzzleWrapperStep(this, navigateStoreroom, searchCrates);
 

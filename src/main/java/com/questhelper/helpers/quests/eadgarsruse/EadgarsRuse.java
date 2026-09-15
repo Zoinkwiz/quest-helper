@@ -29,6 +29,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.StepIsActiveRequirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.ObjectCondition;
 import com.questhelper.requirements.item.ItemRequirement;
@@ -545,7 +546,7 @@ public class EadgarsRuse extends BasicQuestHelper
 			"Follow the highlighted tiles to the goutweed crates.");
 		navigateStoreroom.addStep(atCrateApproach, getGoutweed);
 		navigateStoreroom.addStep(nearCrates, runToCrate);
-		navigateStoreroom.addStep(atSafeSpot1, runToSafeSpot2);
+		navigateStoreroom.addStep(new Conditions(LogicType.OR, atSafeSpot1, new StepIsActiveRequirement(runToSafeSpot2)), runToSafeSpot2);
 
 		getGoutweed.addSubSteps(runToSafeSpot1, runToSafeSpot2, runToCrate);
 

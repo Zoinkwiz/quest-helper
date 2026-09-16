@@ -163,7 +163,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
 			.showConditioned(notSprirtualWarrior).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notAddyScim).isNotConsumed();
-		coins = new ItemRequirement("Coins", ItemCollections.COINS, 6000).showConditioned(notAddyScim);
+		coins = new ItemRequirement("Coins (or 7500 if rewards from medium tasks have not been claimed)", ItemCollections.COINS, 6000).showConditioned(notAddyScim);
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR, 2).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim).isNotConsumed();
@@ -361,7 +361,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		allSteps.add(trollSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Adamant Scimitar in Resource Area", Arrays.asList(moveToResource,
-			addyScim), new SkillRequirement(Skill.SMITHING, 75, true), barsOrPick, hammer);
+			addyScim), new SkillRequirement(Skill.SMITHING, 75, true), barsOrPick, hammer, coins);
 		scimSteps.setDisplayCondition(notAddyScim);
 		scimSteps.setLockingStep(addyScimTask);
 		allSteps.add(scimSteps);

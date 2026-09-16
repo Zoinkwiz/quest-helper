@@ -252,7 +252,7 @@ public class FaladorEasy extends ComplexStateQuestHelper
 
 		//Claim a security book from the Security Guard at Port Sarim Jail.
 		climbLadderPortSarimJail = new ObjectStep(this, ObjectID.PRISON_LADDER_UP, new WorldPoint(3010, 3184, 0),
-			"Climb in the Port Sarim Jail to speak to the Security Guard.");
+			"Climb up the ladder in the Port Sarim Jail to speak to the Security Guard.");
 		getSecurityBook = new NpcStep(this, NpcID.SOS_GUARD, new WorldPoint(3013, 3192, 1),
 			"Speak to the Security Guard in the Port Sarim Jail to get a Security Book.");
 		getSecurityBook.addDialogStep("If you're a security guard, let's talk about security.");

@@ -1,6 +1,7 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2018 Abex
+ * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,63 +24,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.overlays;
+package com.questhelper.maker;
 
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.maker.HelperConstructManager;
-import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.steps.overlay.WorldLines;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-import javax.inject.Inject;
-import java.awt.*;
-
-public class QuestHelperWorldLineOverlay extends Overlay
+@Singleton
+public class WidgetInspectorOverlay extends Overlay
 {
-	private final QuestHelperPlugin plugin;
-	private final HelperConstructManager helperConstructManager;
+	private final Client client;
+	private final WidgetInspector inspector;
 
 	@Inject
-	public QuestHelperWorldLineOverlay(QuestHelperPlugin plugin, HelperConstructManager helperConstructManager)
+	public WidgetInspectorOverlay(
+		Client client,
+		WidgetInspector inspector
+	)
 	{
+		this.client = client;
+		this.inspector = inspector;
+
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		this.plugin = plugin;
-		this.helperConstructManager = helperConstructManager;
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPriority(PRIORITY_HIGHEST);
+		drawAfterInterface(InterfaceID.TOPLEVEL_DISPLAY);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D g)
 	{
-		boolean showQuestWorldLines = plugin.getConfig().showWorldLines();
-		boolean showConstructPreview = helperConstructManager.isWorldMapRoutePreviewEnabled();
-		if (!showQuestWorldLines && !showConstructPreview)
+		if (!inspector.isPickerSelected())
 		{
 			return null;
 		}
-
-		if (plugin.isInCutscene())
+		boolean menuOpen = client.isMenuOpen();
+		MenuEntry[] entries = client.getMenuEntries();
+		for (int i = menuOpen ? 0 : entries.length - 1; i < entries.length; i++)
 		{
-			return null;
-		}
-
-		QuestHelper quest = plugin.getSelectedQuest();
-
-		if (showQuestWorldLines && quest != null && quest.getCurrentStep() != null)
-		{
-			quest.getCurrentStep().makeWorldLineOverlayHint(graphics, plugin);
-		}
-		if (showConstructPreview)
-		{
-			WorldLines.createWorldMapLines(
-				graphics,
-				plugin.getClient(),
-				helperConstructManager.getWorldMapRouteLinePoints(),
-				plugin.getConfig().targetOverlayColor());
+			MenuEntry e = entries[i];
+			Widget w = inspector.getWidgetForMenuOption(e.getType(), e.getParam0(), e.getParam1());
+			if (w == null)
+			{
+				continue;
+			}
+			Color color = inspector.colorForWidget(i, entries.length);
+			renderWidget(g, w, color);
 		}
 
 		return null;
+	}
+
+	private void renderWidget(Graphics2D g, Widget w, Color color)
+	{
+		g.setColor(color);
+		g.draw(w.getBounds());
 	}
 }

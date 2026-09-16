@@ -143,7 +143,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE).showConditioned(notTPGhorrock);
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).showConditioned(notDarkCrab).isNotConsumed();
 		darkFishingBait = new ItemRequirement("Dark fish bait", ItemID.WILDERNESS_FISHING_BAIT).showConditioned(notDarkCrab);
-		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
+		coins = new ItemRequirement("Coins (7500 if no wildy diary rewards claimed, 6000 if med claimed, 3750 if hard claimed)", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
 			notDarkCrab, notMagicLogs, notRuneScim));
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notRuneScim).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notMagicLogs).isNotConsumed();
@@ -229,7 +229,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 			magicLog.highlighted());
 
 		moveToResource2 = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
-			"Enter the Wilderness Resource Area.", coins.quantity(6000), combatGear, food, pickaxe, coal.quantity(16), hammer);
+			"Enter the Wilderness Resource Area.", coins.quantity(3750), combatGear, food, pickaxe, coal.quantity(16), hammer);
 		runiteGolem = new NpcStep(this, NpcID.WILDERNESS_RUNE_GOLEM, new WorldPoint(3189, 3938, 0),
 			"Kill and mine the Runite Golems in the Resource Area.", true, combatGear, food,
 			pickaxe, coal.quantity(16), hammer);
@@ -240,7 +240,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 			"Smith a runite scimitar in the Resource Area.", hammer, runeBar.quantity(2));
 
 		moveToResource3 = new ObjectStep(this, ObjectID.WILDERNESS_RESOURCE_GATE, new WorldPoint(3184, 3944, 0),
-			"Enter the Wilderness Resource Area.", coins.quantity(6000), lobsterPot, darkFishingBait);
+			"Enter the Wilderness Resource Area.", coins.quantity(3750), lobsterPot, darkFishingBait);
 		darkCrab = new NpcStep(this, NpcID._49_61_CRABS, new WorldPoint(3187, 3927, 0),
 			"Fish a dark crab in the Resource Area.", lobsterPot, darkFishingBait);
 		cookDarkCrab = new ObjectStep(this, ObjectID.FIRE, new WorldPoint(3188, 3930, 0),

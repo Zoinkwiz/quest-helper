@@ -163,7 +163,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
 			.showConditioned(notSprirtualWarrior).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notAddyScim).isNotConsumed();
-		coins = new ItemRequirement("Coins (or 7500 if rewards from medium tasks have not been claimed)", ItemCollections.COINS, 6000).showConditioned(notAddyScim);
+		coins = new ItemRequirement("Coins (7500 if reward from wildy med tasks are not claimed)", ItemCollections.COINS, 6000).showConditioned(notAddyScim);
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR, 2).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim).isNotConsumed();

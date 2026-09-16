@@ -143,7 +143,7 @@ public class WildernessElite extends ComplexStateQuestHelper
 		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE).showConditioned(notTPGhorrock);
 		lobsterPot = new ItemRequirement("Lobster pot", ItemID.LOBSTER_POT).showConditioned(notDarkCrab).isNotConsumed();
 		darkFishingBait = new ItemRequirement("Dark fish bait", ItemID.WILDERNESS_FISHING_BAIT).showConditioned(notDarkCrab);
-		coins = new ItemRequirement("Coins", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
+		coins = new ItemRequirement("Coins (7500 if no wildy diary rewards claimed, 6000 if med claimed, 3750 if hard claimed)", ItemCollections.COINS).showConditioned(new Conditions(LogicType.OR,
 			notDarkCrab, notMagicLogs, notRuneScim));
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notRuneScim).isNotConsumed();
 		axe = new ItemRequirement("Any axe", ItemCollections.AXES).showConditioned(notMagicLogs).isNotConsumed();

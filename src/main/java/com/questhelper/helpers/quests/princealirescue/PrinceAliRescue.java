@@ -184,7 +184,7 @@ public class PrinceAliRescue extends BasicQuestHelper
 		talkToHassan.addDialogSteps("Is there anything I can help you with?", "Yes.");
 		talkToOsman = new NpcStep(this, NpcID.OSMAN, new WorldPoint(3286, 3180, 0), "Talk to Osman north of the Al Kharid Palace.");
 
-		talkToNed = new NpcStep(this, NpcID.NED, new WorldPoint(3097, 3257, 0), "Have Ned in Draynor Village make you a wig from 3 balls of wool. He can also sell you a rope for 15 coins or 4 balls of wool.", ballsOfWool3);
+		talkToNed = new NpcStep(this, NpcID.NED, new WorldPoint(3097, 3257, 0), "Have Ned in Draynor Village make you a wig from 3 balls of wool. He can also sell you a rope for 15 coins via dialogue (or bought from his shop for 18 coins) or 4 balls of wool.", ballsOfWool3);
 		talkToNed.addDialogStep("Could you make other things apart from rope?");
 		talkToNed.addDialogStep("How about some sort of wig?");
 		talkToNed.addDialogStep("I have them here. Please make me a wig.");

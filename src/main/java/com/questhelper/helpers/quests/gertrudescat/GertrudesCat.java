@@ -113,6 +113,7 @@ public class GertrudesCat extends BasicQuestHelper
 		hasGivenFluffsMilkAndSardine = new QuestRequirement(QuestHelperQuest.GERTRUDES_CAT, 4);
 
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK).hideConditioned(hasGivenFluffsMilkAndSardine);
+		bucketOfMilk.addAlternates(ItemID.BOTTOMLESS_MILK_BUCKET_FILLED);
 		bucketOfMilkHighlighted = bucketOfMilk.highlighted();
 
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 100);

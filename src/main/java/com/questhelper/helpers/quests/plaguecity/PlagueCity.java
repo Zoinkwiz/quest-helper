@@ -174,6 +174,7 @@ public class PlagueCity extends BasicQuestHelper
 		bucketOfWater = fourBucketsOfWater.quantity(1);
 
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
+		bucketOfMilk.addAlternates(ItemID.BOTTOMLESS_MILK_BUCKET_FILLED);
 		bucketOfMilk.setHighlightInInventory(true);
 		chocolateDust = new ItemRequirement("Chocolate dust", ItemID.CHOCOLATE_DUST);
 		chocolateDust.setHighlightInInventory(true);

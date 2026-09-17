@@ -71,6 +71,7 @@ public class SkippyAndTheMogres extends BasicQuestHelper
 	protected void setupRequirements()
 	{
 		bucketOfMilk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
+		bucketOfMilk.addAlternates(ItemID.BOTTOMLESS_MILK_BUCKET_FILLED);
 		bucketOfMilk.setHighlightInInventory(true);
 		bucketOfWater = new ItemRequirement("Bucket of water", ItemID.BUCKET_WATER);
 		bucketOfWater.setHighlightInInventory(true);

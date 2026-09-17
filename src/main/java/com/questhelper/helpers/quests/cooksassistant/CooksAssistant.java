@@ -116,6 +116,7 @@ public class CooksAssistant extends BasicQuestHelper
 		egg.setConditionToHide(or(hasTurnedInEgg, hasTurnedInEverything));
 		egg.canBeObtainedDuringQuest();
 		milk = new ItemRequirement("Bucket of milk", ItemID.BUCKET_MILK);
+		milk.addAlternates(ItemID.BOTTOMLESS_MILK_BUCKET_FILLED);
 		milk.setConditionToHide(or(hasTurnedInMilk, hasTurnedInEverything));
 		milk.canBeObtainedDuringQuest();
 		flour = new ItemRequirement("Pot of flour", ItemID.POT_FLOUR);

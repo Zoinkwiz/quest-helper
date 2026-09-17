@@ -224,6 +224,7 @@ public class QuestHelperPlugin extends Plugin
 
 		panel = new QuestHelperPanel(this, questManager, configManager);
 		questManager.startUp(panel);
+		eventBus.register(questManager);
 		navButton = NavigationButton.builder()
 			.tooltip("Quest Helper")
 			.icon(icon)
@@ -248,6 +249,7 @@ public class QuestHelperPlugin extends Plugin
 	{
 		runeliteObjectManager.shutDown();
 
+		eventBus.unregister(questManager);
 		eventBus.unregister(playerStateManager);
 		eventBus.unregister(runeliteObjectManager);
 		eventBus.unregister(worldMapAreaManager);

@@ -43,6 +43,8 @@ import net.runelite.api.QuestState;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.plugins.PluginManager;
 
 import javax.annotation.Nullable;
@@ -276,6 +278,57 @@ public class QuestManager
 				this.doStartUpQuest(questHelper, shouldOpenSidebarIfConfig);
 			});
 		}
+	}
+
+	/**
+	 * Lets any other plugin ask Quest Helper to start a named quest by posting a
+	 * {@link PluginMessage} on the shared {@link EventBus}, without reflecting into this
+	 * plugin's internals.
+	 * <p>
+	 * Mirrors this plugin's own outbound message to Shortest Path
+	 * ({@link com.questhelper.steps.DetailedQuestStep#setShortestPath()} posts
+	 * {@code new PluginMessage("shortestpath", "path", data)}): the expected shape here is
+	 * {@code new PluginMessage("questhelper", "start", Map.of("quest", <display name>))}, where
+	 * {@code <display name>} is a value {@link com.questhelper.questinfo.QuestHelperQuest#getByName(String)}
+	 * resolves. Namespace and event name are ours to rename if a maintainer prefers different ones.
+	 * <p>
+	 * A message from any other namespace, a missing or non-{@code String} {@code "quest"} value, or a
+	 * quest name that does not resolve is ignored -- no side effects, never throws.
+	 *
+	 * @param event the posted message
+	 */
+	@Subscribe
+	public void onPluginMessage(PluginMessage event)
+	{
+		if (!"questhelper".equals(event.getNamespace()))
+		{
+			return;
+		}
+
+		if (!"start".equals(event.getName()))
+		{
+			return;
+		}
+
+		Map<String, Object> data = event.getData();
+		if (data == null)
+		{
+			return;
+		}
+
+		Object questName = data.get("quest");
+		if (!(questName instanceof String))
+		{
+			return;
+		}
+
+		QuestHelper questHelper = QuestHelperQuest.getByName((String) questName);
+		if (questHelper == null)
+		{
+			return;
+		}
+
+		startUpQuest(questHelper, true);
 	}
 
 	private void initializeNewQuest(QuestHelper questHelper, boolean shouldOpenSidebarIfConfig)

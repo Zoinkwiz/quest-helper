@@ -494,8 +494,7 @@ public class TreeRun extends ComplexStateQuestHelper
 
 		payingForRemoval = new RuneliteRequirement(configManager, PAY_OR_CUT, PayOrCut.PAY.name());
 		payingForProtection = new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.PAY.name());
-		usingCompostorNothing = or(new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.COMPOST.name()),
-			new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.NEITHER.name()));
+		usingCompostorNothing = new RuneliteRequirement(configManager, PAY_OR_COMPOST, PayOrCompost.COMPOST.name());
 	}
 
 	@Override

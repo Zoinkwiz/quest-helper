@@ -97,20 +97,20 @@ public class MetalDoorSolver extends DetailedOwnerStep
 		},
 	};
 
-	private static final @Interface int PUZZLE_GROUP_ID = 903;
+	private static final @Interface int PUZZLE_GROUP_ID = InterfaceID.COA_DECODER_PANEL;
 	private static final int PUZZLE_BTN_UP_CHILD_ID = 21;
 	private static final int PUZZLE_BTN_DOWN_CHILD_ID = 22;
 
-	private static final int PUZZLE_NUMBER_0_MODEL_ID = 50567;
-	private static final int PUZZLE_NUMBER_1_MODEL_ID = 50542;
-	private static final int PUZZLE_NUMBER_2_MODEL_ID = 50540;
-	private static final int PUZZLE_NUMBER_3_MODEL_ID = 50557;
-	private static final int PUZZLE_NUMBER_4_MODEL_ID = 50562;
-	private static final int PUZZLE_NUMBER_5_MODEL_ID = 50555;
-	private static final int PUZZLE_NUMBER_6_MODEL_ID = 50568;
-	private static final int PUZZLE_NUMBER_7_MODEL_ID = 50566;
-	private static final int PUZZLE_NUMBER_8_MODEL_ID = 50575;
-	private static final int PUZZLE_NUMBER_9_MODEL_ID = 50553;
+	private static final int PUZZLE_NUMBER_0_MODEL_ID = ObjectID.MAH3_SEWER_WALL1;
+	private static final int PUZZLE_NUMBER_1_MODEL_ID = ObjectID.MAH3_BASE_PIPE_JUNCTION;
+	private static final int PUZZLE_NUMBER_2_MODEL_ID = ObjectID.MAH3_BASE_PEDESTAL_NO_HEART;
+	private static final int PUZZLE_NUMBER_3_MODEL_ID = ObjectID.MAH3_BASE_WALL_STEPS3;
+	private static final int PUZZLE_NUMBER_4_MODEL_ID = ObjectID.MAH3_BASE_SHELVES;
+	private static final int PUZZLE_NUMBER_5_MODEL_ID = ObjectID.MAH3_BASE_WALL_STEPS2;
+	private static final int PUZZLE_NUMBER_6_MODEL_ID = ObjectID.MAH3_SEWER_WALL2;
+	private static final int PUZZLE_NUMBER_7_MODEL_ID = ObjectID.MAH3_BASE_PIPE_STRAIGHT;
+	private static final int PUZZLE_NUMBER_8_MODEL_ID = ObjectID.MAH3_SEWER_WALL_GRATE_EDGE_MIRROR;
+	private static final int PUZZLE_NUMBER_9_MODEL_ID = ObjectID.MAH3_BASE_WALL_STEPS1;
 	private static final int[] PUZZLE_NUMBERS = new int[]{PUZZLE_NUMBER_0_MODEL_ID, PUZZLE_NUMBER_1_MODEL_ID, PUZZLE_NUMBER_2_MODEL_ID, PUZZLE_NUMBER_3_MODEL_ID, PUZZLE_NUMBER_4_MODEL_ID, PUZZLE_NUMBER_5_MODEL_ID, PUZZLE_NUMBER_6_MODEL_ID, PUZZLE_NUMBER_7_MODEL_ID, PUZZLE_NUMBER_8_MODEL_ID, PUZZLE_NUMBER_9_MODEL_ID};
 
 	private static final int PUZZLE_ENTER_CHILD_ID = 23;

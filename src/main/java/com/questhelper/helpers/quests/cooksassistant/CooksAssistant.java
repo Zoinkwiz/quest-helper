@@ -25,9 +25,14 @@
  */
 package com.questhelper.helpers.quests.cooksassistant;
 
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.HelperConfig;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.nor;
@@ -50,14 +55,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 
 public class CooksAssistant extends BasicQuestHelper
 {
+	QuestHelper baseHelper = this;
+	static String QUEST_TYPES = "quest-types";
+
 	// Required items
 	ItemRequirement egg;
 	ItemRequirement milk;
@@ -72,9 +83,9 @@ public class CooksAssistant extends BasicQuestHelper
 	Zone millThird;
 
 	// Miscellaneous requirements
-	DialogRequirement hasTurnedInMilk;
-	DialogRequirement hasTurnedInFlour;
-	DialogRequirement hasTurnedInEgg;
+	Conditions hasMilk;
+	Conditions hasFlour;
+	Conditions hasEgg;
 	DialogRequirement hasTurnedInEverything;
 
 	VarbitRequirement controlsUsed;
@@ -97,6 +108,8 @@ public class CooksAssistant extends BasicQuestHelper
 	ObjectStep climbLadderTwoDown;
 	NpcStep finishQuest;
 
+	ConditionalStep getFlour;
+
 	@Override
 	protected void setupZones()
 	{
@@ -107,9 +120,9 @@ public class CooksAssistant extends BasicQuestHelper
 	@Override
 	protected void setupRequirements()
 	{
-		hasTurnedInMilk = new DialogRequirement("Here's a bucket of milk.");
-		hasTurnedInFlour = new DialogRequirement("Here's a pot of flour.");
-		hasTurnedInEgg = new DialogRequirement("Here's a fresh egg.");
+		var hasTurnedInMilk = new DialogRequirement("Here's a bucket of milk.");
+		var hasTurnedInFlour = new DialogRequirement("Here's a pot of flour.");
+		var hasTurnedInEgg = new DialogRequirement("Here's a fresh egg.");
 		hasTurnedInEverything = new DialogRequirement("You've brought me everything I need! I am saved!");
 
 		egg = new ItemRequirement("Egg", ItemID.EGG);
@@ -127,6 +140,9 @@ public class CooksAssistant extends BasicQuestHelper
 		coins.setTooltip("Necessary if you do not have a pot / bucket");
 		grain = new ItemRequirement("Grain", ItemID.GRAIN);
 
+		hasMilk = or(milk, hasTurnedInMilk);
+		hasFlour = or(flour, hasTurnedInFlour);
+		hasEgg = or(egg, hasTurnedInEgg);
 		controlsUsed = new VarbitRequirement(VarbitID.MILL_FLOUR, 1);
 
 		inMillSecond = new ZoneRequirement(millSecond);
@@ -140,46 +156,45 @@ public class CooksAssistant extends BasicQuestHelper
 			NpcID.GENERALASSISTANT1,
 		};
 
-		getBucket = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
+		getBucket = new NpcStep(baseHelper, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
 			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(2));
 		getBucket.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.BUCKET_EMPTY));
 
-		getPot = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
+		getPot = new NpcStep(baseHelper, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
 			"Purchase a pot from the Lumbridge General Store.", coins.quantity(1));
 		getPot.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.POT_EMPTY));
 
-		getEgg = new ItemStep(this, new WorldPoint(3177, 3296, 0),
+		getEgg = new ItemStep(baseHelper, new WorldPoint(3185, 3278, 0),
 			"Grab an egg from the farm north of Lumbridge.", egg);
-		getWheat = new ObjectStep(this, ObjectID.FAI_VARROCK_WHEAT_CORNER, new WorldPoint(3161, 3292, 0),
+		getWheat = new ObjectStep(baseHelper, ObjectID.FAI_VARROCK_WHEAT_CORNER, new WorldPoint(3161, 3292, 0),
 			"Pick some wheat north of Lumbridge.");
-		climbLadderOne = new ObjectStep(this, ObjectID.QIP_COOK_LADDER, new WorldPoint(3164, 3307, 0),
+		climbLadderOne = new ObjectStep(baseHelper, ObjectID.QIP_COOK_LADDER, new WorldPoint(3164, 3307, 0),
 			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
-		climbLadderTwoUp = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
+		climbLadderTwoUp = new ObjectStep(baseHelper, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
 			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
 		climbLadderTwoUp.addDialogStep("Climb Up.");
 		climbLadderOne.addSubSteps(climbLadderTwoUp);
-		fillHopper = new ObjectStep(this, ObjectID.HOPPER1, new WorldPoint(3166, 3307, 2),
+		fillHopper = new ObjectStep(baseHelper, ObjectID.HOPPER1, new WorldPoint(3166, 3307, 2),
 			"Fill the hopper with your grain.", pot, grain.highlighted());
 		fillHopper.addIcon(ItemID.GRAIN);
-		operateControls = new ObjectStep(this, ObjectID.HOPPERLEVERS1, new WorldPoint(3166, 3305, 2),
+		operateControls = new ObjectStep(baseHelper, ObjectID.HOPPERLEVERS1, new WorldPoint(3166, 3305, 2),
 			"Operate the hopper controls.", pot);
-		climbLadderThree = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_TOP, new WorldPoint(3164, 3307, 2),
+		climbLadderThree = new ObjectStep(baseHelper, ObjectID.QIP_COOK_LADDER_TOP, new WorldPoint(3164, 3307, 2),
 			"Climb down the ladder in the Mill to the ground floor.", pot);
-		climbLadderTwoDown = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
+		climbLadderTwoDown = new ObjectStep(baseHelper, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
 			"Climb down the ladder in the Mill to the ground floor.", pot);
 		climbLadderTwoDown.addDialogStep("Climb Down.");
 		climbLadderThree.addSubSteps(climbLadderTwoDown);
-		collectFlour = new ObjectStep(this, ObjectID.MILLBASE_FLOUR, new WorldPoint(3166, 3306, 0),
+		collectFlour = new ObjectStep(baseHelper, ObjectID.MILLBASE_FLOUR, new WorldPoint(3166, 3306, 0),
 			"Collect the flour in the bin.", pot.highlighted());
 		collectFlour.addIcon(ItemID.POT_EMPTY);
 
-		milkCow = new ObjectStep(this, ObjectID.FAT_COW, new WorldPoint(3172, 3317, 0),
+		milkCow = new ObjectStep(baseHelper, ObjectID.FAT_COW, new WorldPoint(3172, 3317, 0),
 			"Milk the dairy cow north of Lumbridge.", bucket);
 
-		finishQuest = new NpcStep(this, NpcID.COOK, new WorldPoint(3206, 3214, 0),
+		finishQuest = new NpcStep(baseHelper, NpcID.COOK, new WorldPoint(3206, 3214, 0),
 			"Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest.",
 			egg, milk, flour);
-		finishQuest.addAlternateNpcs(NpcID.COOK);
 		finishQuest.addDialogSteps("What's wrong?", "Can I help?", "Yes.");
 	}
 
@@ -191,8 +206,7 @@ public class CooksAssistant extends BasicQuestHelper
 
 		var steps = new HashMap<Integer, QuestStep>();
 
-
-		var getFlour = new ConditionalStep(this, getPot);
+		getFlour = new ConditionalStep(baseHelper, getPot);
 		getFlour.addStep(and(pot, controlsUsed, inMillThird), climbLadderThree);
 		getFlour.addStep(and(pot, controlsUsed, inMillSecond), climbLadderTwoDown);
 		getFlour.addStep(and(pot, controlsUsed), collectFlour);
@@ -202,13 +216,13 @@ public class CooksAssistant extends BasicQuestHelper
 		getFlour.addStep(and(pot, grain), climbLadderOne);
 		getFlour.addStep(and(pot), getWheat);
 
-		var doQuest = new ConditionalStep(this, finishQuest);
+		var doQuest = new ConditionalStep(baseHelper, finishQuest);
 		doQuest.addStep(hasTurnedInEverything, finishQuest);
-		doQuest.addStep(nor(milk, bucket, hasTurnedInMilk), getBucket);
-		doQuest.addStep(nor(flour, pot, hasTurnedInFlour), getPot);
-		doQuest.addStep(nor(egg, hasTurnedInEgg), getEgg);
-		doQuest.addStep(nor(flour, hasTurnedInFlour), getFlour);
-		doQuest.addStep(nor(milk, hasTurnedInMilk), milkCow);
+		doQuest.addStep(nor(bucket, hasMilk), getBucket);
+		doQuest.addStep(nor(pot, hasFlour), getPot);
+		doQuest.addStep(nor(hasEgg), getEgg);
+		doQuest.addStep(nor(hasFlour), getFlour);
+		doQuest.addStep(nor(hasMilk), milkCow);
 
 		steps.put(0, doQuest);
 		steps.put(1, doQuest);
@@ -216,6 +230,52 @@ public class CooksAssistant extends BasicQuestHelper
 		return steps;
 	}
 
+	@Override
+	public boolean updateQuest()
+	{
+		var response = super.updateQuest();
+		// Start up speedrun helper if on speedrun world and speedrun option is selected
+		var worldTypes = client.getWorldType();
+		if (worldTypes != null && worldTypes.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			var helperType = configManager.getRSProfileConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, QUEST_TYPES);
+			if (HelperTypes.SPEEDRUN.name().equals(helperType))
+			{
+				questHelperPlugin.getQuestManager().startUpQuest(QuestHelperQuest.COOKS_ASSISTANT.getAltHelpers().get(0), true);
+			}
+		}
+		return response;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(QuestHelperConfig.QUEST_BACKGROUND_GROUP))
+		{
+			return;
+		}
+
+		if (event.getKey().equals(QUEST_TYPES))
+		{
+			if (HelperTypes.SPEEDRUN.name().equals(event.getNewValue()))
+			{
+				questHelperPlugin.getQuestManager().startUpQuest(QuestHelperQuest.COOKS_ASSISTANT.getAltHelpers().get(0), true);
+			}
+		}
+	}
+
+	@Override
+	public List<HelperConfig> getConfigs()
+	{
+		var worldTypes = client.getWorldType();
+		if (worldTypes == null || !worldTypes.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			return null;
+		}
+
+		HelperConfig helperTypeConfig = new HelperConfig("Helper Type", QUEST_TYPES, HelperTypes.values());
+		return List.of(helperTypeConfig);
+	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
@@ -299,5 +359,12 @@ public class CooksAssistant extends BasicQuestHelper
 		)));
 
 		return steps;
+	}
+
+	enum HelperTypes
+	{
+		NORMAL(),
+		SPEEDRUN();
+
 	}
 }

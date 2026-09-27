@@ -146,7 +146,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 		goDownInWizardsTower.addDialogStep("Wizard's Tower");
 		talkToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0),
 			"Teleport to the essence mine with Sedridor in the Wizard Tower's basement.", scryingOrb);
-		((NpcStep) talkToSedridor).addAlternateNpcs(5034);
+		((NpcStep) talkToSedridor).addAlternateNpcs(NpcID.HEAD_WIZARD);
 		talkToSedridor.addDialogStep("Can you teleport me to the Rune Essence Mine?");
 		talkToSedridor.addSubSteps(goDownInWizardsTower);
 

@@ -34,7 +34,12 @@ import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
@@ -47,15 +52,18 @@ import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.PuzzleWrapperStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
 
 public class DeathPlateau extends BasicQuestHelper
 {
@@ -106,9 +114,11 @@ public class DeathPlateau extends BasicQuestHelper
 	Requirement isPinkStoneDone;
 	Requirement isGreenStoneDone;
 	Requirement inSabaCave;
+	Conditions hasSynced;
 	Requirement isFarEnough;
 	Requirement talkedToSaba;
 	Requirement talkedToDunstan;
+	Requirement givenCertificate;
 
 	// Steps
 	NpcStep talkToDenulth1;
@@ -132,6 +142,7 @@ public class DeathPlateau extends BasicQuestHelper
 	PuzzleWrapperStep placePinkStone;
 	PuzzleWrapperStep placeGreenStone;
 	DetailedQuestStep placeStones;
+	QuestSyncStep syncStep;
 	ObjectStep enterSabaCave;
 	NpcStep talkToSaba;
 	ObjectStep leaveSabaCave;
@@ -142,9 +153,6 @@ public class DeathPlateau extends BasicQuestHelper
 	NpcStep talkToTenzing2;
 	DetailedQuestStep goNorth;
 	NpcStep talkToDenulth3;
-	ObjectStep goToHaroldStairs3;
-	ObjectStep goToHaroldDoor3;
-	NpcStep talkToHarold3;
 
 	@Override
 	protected void setupZones()
@@ -187,6 +195,7 @@ public class DeathPlateau extends BasicQuestHelper
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.DEATH_SPIKEDBOOTS);
 		secretMap = new ItemRequirement("Secret way map", ItemID.DEATH_SECRETWAYMAP);
+		secretMap.setTooltip("You can get another by talking to Tenzing");
 		combination = new ItemRequirement("Combination", ItemID.DEATH_COMBINATION);
 		combination.setTooltip("You can get another by talking to Harold upstairs in Burthorpe's Pub");
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
@@ -203,14 +212,32 @@ public class DeathPlateau extends BasicQuestHelper
 		isPinkStoneDone = new ItemOnTileRequirement(pinkStone, new WorldPoint(2895, 3563, 0));
 		isGreenStoneDone = new ItemOnTileRequirement(greenStone, new WorldPoint(2895, 3564, 0));
 		inSabaCave = new ZoneRequirement(sabaCave);
-		isFarEnough = new ChatMessageRequirement("You should go and speak to Denulth.");
+		isFarEnough = new Conditions(true, LogicType.OR,
+			new ChatMessageRequirement("You should go and speak to Denulth."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I should go and tell <col=800000>Denulth<col=000080> I've completed my mission.")
+		);
 		talkedToSaba = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Before the trolls came there used to be a nettlesome"),
-			new DialogRequirement("Have you got rid of those pesky trolls yet?")
+			new DialogRequirement("Have you got rid of those pesky trolls yet?"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=800000>Saba<col=000080> says that there is a <col=800000>sherpa<col=000080> living"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I found the sherpa's house")
 		);
 		talkedToDunstan = new Conditions(true, LogicType.OR,
 			new DialogRequirement("My son has just turned 16"),
-			new DialogRequirement("Have you managed to get my son")
+			new DialogRequirement("Have you managed to get my son"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=800000>Dunstan<col=000080> will help me if I get his <col=800000>son signed up<col=000080> for the <col=800000>Imperial")
+		);
+		givenCertificate = new Conditions(true, LogicType.OR,
+			givenHaroldBlurberry = new ChatMessageRequirement("You give Dunstan the certificate."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have given Dunstan the certificate to prove that his son has")
+		);
+
+		certificate.setConditionToHide(givenCertificate);
+
+		var startedQuestThisSession = new Conditions(true, new VarplayerRequirement(VarPlayerID.DEATH_EQUIPROOM, 60, Operation.LESS_EQUAL));
+		hasSynced = new Conditions(true, LogicType.OR,
+			startedQuestThisSession,
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "Death Plateau")
 		);
 	}
 
@@ -268,6 +295,8 @@ public class DeathPlateau extends BasicQuestHelper
 		placeStones = new DetailedQuestStep(this, new WorldPoint(2896, 3563, 0), "Go back to Burthorpe castle, and place the coloured stone balls in the correct spots on the mechanism.");
 		placeStones.addSubSteps(placeRedStone, placeBlueStone, placeYellowStone, placePinkStone, placeGreenStone);
 
+		syncStep = new QuestSyncStep(this, getQuest(), "Open the quest's journal to sync your current quest state.");
+
 		enterSabaCave = new ObjectStep(this, ObjectID.DEATH_HERMITCAVE_ENTRANCE, new WorldPoint(2858, 3579, 0), "Enter the cave north west of Burthorpe.");
 
 		talkToSaba = new NpcStep(this, NpcID.DEATH_HERMIT, new WorldPoint(2270, 4757, 0), "Talk to Saba.");
@@ -276,7 +305,7 @@ public class DeathPlateau extends BasicQuestHelper
 		leaveSabaCave = new ObjectStep(this, ObjectID.DEATH_HERMITCAVE_EXIT, new WorldPoint(2269, 4751, 0), "Leave Saba's cave.");
 
 		talkToTenzing1 = new NpcStep(this, NpcID.DEATH_SHERPA, new WorldPoint(2820, 3555, 0), "Go northwest of Burthorpe, then south at the fork, and talk to Tenzing.");
-		talkToTenzing1.addDialogStep(1, "OK, I'll get those for you.");
+		talkToTenzing1.addDialogStep("OK, I'll get those for you.");
 		talkToTenzing1.addSubSteps(leaveSabaCave);
 
 		talkToDenulthForDunstan = new NpcStep(this, NpcID.DEATH_IG_COMMANDER, new WorldPoint(2896, 3529, 0), "Ask Denulth about Dunstan's son.");
@@ -288,11 +317,7 @@ public class DeathPlateau extends BasicQuestHelper
 
 		goNorth = new DetailedQuestStep(this, new WorldPoint(2865, 3609, 0), "Exit Tenzing's house into the backyard THROUGH THE NORTH DOOR and OVER THE STILE. Continue north past the Death Plateau warning, and around to the east until you stop and say you've gone far enough.", secretMap);
 
-		goToHaroldStairs3 = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(2915, 3540, 0), "If you lost the Combination, retrieve it from Harold.");
-		goToHaroldDoor3 = new ObjectStep(this, ObjectID.DEATH_HAROLD_DOOR, new WorldPoint(2906, 3543, 1), "If you lost the Combination, retrieve it from Harold.");
-		talkToHarold3 = new NpcStep(this, NpcID.DEATH_GUARD_EQUIPROOM, new WorldPoint(2906, 3540, 1), "If you lost the Combination, retrieve it from Harold.");
 		talkToDenulth3 = new NpcStep(this, NpcID.DEATH_IG_COMMANDER, new WorldPoint(2896, 3529, 0), "Go back and talk to Denulth, giving him the secret map and Combination.", secretMap, combination);
-		talkToDenulth3.addSubSteps(goToHaroldStairs3, goToHaroldDoor3, talkToHarold3);
 	}
 
 	@Override
@@ -338,15 +363,13 @@ public class DeathPlateau extends BasicQuestHelper
 		steps.put(60, stoneSteps);
 
 		var finalSteps = new ConditionalStep(this, enterSabaCave);
-		finalSteps.addStep(and(isFarEnough, combination), talkToDenulth3);
-		finalSteps.addStep(and(isFarEnough, inHaroldsRoom), talkToHarold3);
-		finalSteps.addStep(and(isFarEnough, inBarUpstairs), goToHaroldDoor3);
-		finalSteps.addStep(isFarEnough, goToHaroldDoor3);
+		finalSteps.addStep(not(hasSynced), syncStep);
+		finalSteps.addStep(isFarEnough, talkToDenulth3);
 		finalSteps.addStep(secretMap, goNorth);
-		finalSteps.addStep(spikedBoots.alsoCheckBank(), talkToTenzing2);
-		finalSteps.addStep(and(climbingBoots, certificate.alsoCheckBank()), talkToDunstan2);
-		finalSteps.addStep(and(climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
-		finalSteps.addStep(climbingBoots, talkToDunstan1);
+		finalSteps.addStep(and(talkedToSaba, spikedBoots.alsoCheckBank()), talkToTenzing2);
+		finalSteps.addStep(and(talkedToSaba, climbingBoots, or(certificate.alsoCheckBank(), givenCertificate)), talkToDunstan2);
+		finalSteps.addStep(and(talkedToSaba, climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
+		finalSteps.addStep(and(talkedToSaba, climbingBoots), talkToDunstan1);
 		finalSteps.addStep(and(talkedToSaba, inSabaCave), leaveSabaCave);
 		finalSteps.addStep(talkedToSaba, talkToTenzing1);
 		finalSteps.addStep(inSabaCave, talkToSaba);
@@ -430,6 +453,7 @@ public class DeathPlateau extends BasicQuestHelper
 		)));
 
 		sections.add(new PanelDetails("Get spiked boots", List.of(
+			syncStep,
 			enterSabaCave,
 			talkToSaba,
 			talkToTenzing1,
@@ -444,6 +468,7 @@ public class DeathPlateau extends BasicQuestHelper
 			goNorth,
 			talkToDenulth3
 		), List.of(
+			spikedBoots,
 			bread,
 			trout
 		)));

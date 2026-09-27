@@ -29,10 +29,10 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.FreeInventorySlotRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
@@ -43,6 +43,10 @@ import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -51,45 +55,44 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class EnterTheAbyss extends BasicQuestHelper
 {
-	// Recommended
-	ItemRequirement varrockTeleport, ardougneTeleport, edgevilleTeleport, passageTeleport;
+	// Recommended items
+	ItemRequirement varrockTeleport;
+	ItemRequirement ardougneTeleport;
+	ItemRequirement edgevilleTeleport;
+	ItemRequirement passageTeleport;
 
-	// Items during quest
-	ItemRequirement scryingOrb, scryingOrbCharged;
+	// Mid-quest item requirements
+	ItemRequirement scryingOrb;
+	ItemRequirement scryingOrbCharged;
 
-	Requirement inWizardBasement, teleportedFromVarrock, teleportedFromArdougne, teleportedFromWizardsTower,
-		teleportedFromGnome, teleportedFromDistentor, freeInventorySpace;
-
-	QuestStep talkToMageInWildy, talkToMageInVarrock, talkToAubury, goDownInWizardsTower, talkToSedridor,
-		talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish;
-
+	// Zones
 	Zone wizardBasement;
 
+	// Miscellaneous requirements
+	Requirement inWizardBasement;
+	Requirement teleportedFromVarrock;
+	Requirement teleportedFromArdougne;
+	Requirement teleportedFromWizardsTower;
+	Requirement teleportedFromGnome;
+	Requirement teleportedFromDistentor;
+	Requirement freeInventorySpace;
+
+	// Steps
+	NpcStep talkToMageInWildy;
+	NpcStep talkToMageInVarrock;
+	NpcStep talkToAubury;
+	ObjectStep goDownInWizardsTower;
+	NpcStep talkToSedridor;
+	NpcStep talkToCromperty;
+	NpcStep talkToMageAfterTeleports;
+	NpcStep talkToMageToFinish;
+
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToMageInWildy);
-		steps.put(1, talkToMageInVarrock);
-
-		ConditionalStep locateEssenceMine = new ConditionalStep(this, talkToAubury);
-		locateEssenceMine.addStep(new Conditions(scryingOrbCharged), talkToMageAfterTeleports);
-		locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, teleportedFromWizardsTower), talkToCromperty);
-		locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, inWizardBasement), talkToSedridor);
-		locateEssenceMine.addStep(teleportedFromVarrock, goDownInWizardsTower);
-		steps.put(2, locateEssenceMine);
-
-		steps.put(3, talkToMageToFinish);
-
-		return steps;
+		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
 	}
 
 	@Override
@@ -107,16 +110,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 		scryingOrbCharged.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
 
 		freeInventorySpace = new FreeInventorySlotRequirement(1);
-	}
 
-	@Override
-	protected void setupZones()
-	{
-		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
-	}
-
-	public void setupConditions()
-	{
 		inWizardBasement = new ZoneRequirement(wizardBasement);
 
 		teleportedFromWizardsTower = new VarbitRequirement(VarbitID.RCU_ESSENCESPOT_WIZARDSTOWER, 1);
@@ -146,7 +140,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 		goDownInWizardsTower.addDialogStep("Wizard's Tower");
 		talkToSedridor = new NpcStep(this, NpcID.HEAD_WIZARD_1OP, new WorldPoint(3104, 9571, 0),
 			"Teleport to the essence mine with Sedridor in the Wizard Tower's basement.", scryingOrb);
-		((NpcStep) talkToSedridor).addAlternateNpcs(NpcID.HEAD_WIZARD);
+		talkToSedridor.addAlternateNpcs(NpcID.HEAD_WIZARD);
 		talkToSedridor.addDialogStep("Can you teleport me to the Rune Essence Mine?");
 		talkToSedridor.addSubSteps(goDownInWizardsTower);
 
@@ -161,52 +155,95 @@ public class EnterTheAbyss extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRecommended()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		return Arrays.asList(edgevilleTeleport, varrockTeleport, passageTeleport, ardougneTeleport);
-	}
+		initializeRequirements();
+		setupSteps();
 
-	@Override
-	public List<String> getNotes()
-	{
-		return Collections.singletonList("The start of this miniquest is in the Wilderness. Other players can " +
-			"attack you there, so make sure to not bring anything there!");
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToMageInWildy);
+		steps.put(1, talkToMageInVarrock);
+
+		var locateEssenceMine = new ConditionalStep(this, talkToAubury);
+		locateEssenceMine.addStep(scryingOrbCharged, talkToMageAfterTeleports);
+		locateEssenceMine.addStep(and(teleportedFromVarrock, teleportedFromWizardsTower), talkToCromperty);
+		locateEssenceMine.addStep(and(teleportedFromVarrock, inWizardBasement), talkToSedridor);
+		locateEssenceMine.addStep(teleportedFromVarrock, goDownInWizardsTower);
+		steps.put(2, locateEssenceMine);
+
+		steps.put(3, talkToMageToFinish);
+
+		return steps;
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
-		return req;
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED)
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of(
+			edgevilleTeleport,
+			varrockTeleport,
+			passageTeleport,
+			ardougneTeleport
+		);
+	}
+
+	@Override
+	public List<String> getNotes()
+	{
+		return List.of(
+			"The start of this miniquest is in the Wilderness. Other players can " +
+				"attack you there, so make sure to not bring anything there!"
+		);
 	}
 
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.RUNECRAFT, 1000));
+		return List.of(
+			new ExperienceReward(Skill.RUNECRAFT, 1000)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("A small rune pouch", ItemID.RCU_POUCH_SMALL, 1));
+		return List.of(
+			new ItemReward("A small rune pouch", ItemID.RCU_POUCH_SMALL, 1)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Collections.singletonList(new UnlockReward("Ability to enter The Abyss"));
+		return List.of(
+			new UnlockReward("Ability to enter The Abyss")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Helping the Zamorakians",
-			Arrays.asList(talkToMageInWildy, talkToMageInVarrock, talkToAubury, talkToSedridor,
-				talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish)));
+		var sections = new ArrayList<PanelDetails>();
 
-		return allSteps;
+		sections.add(new PanelDetails("Helping the Zamorakians", List.of(
+			talkToMageInWildy,
+			talkToMageInVarrock,
+			talkToAubury,
+			talkToSedridor,
+			talkToCromperty,
+			talkToMageAfterTeleports,
+			talkToMageToFinish
+		)));
+
+		return sections;
 	}
 }

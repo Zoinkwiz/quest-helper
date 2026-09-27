@@ -151,7 +151,8 @@ public class EnterTheAbyss extends BasicQuestHelper
 		talkToMageAfterTeleports = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3259, 3383, 0),
 			"Talk to the Mage of Zamorak in south east Varrock.", scryingOrbCharged);
 		talkToMageToFinish = new NpcStep(this, NpcID.RCU_ZAMMY_MAGE1_EDGEB, new WorldPoint(3259, 3383, 0),
-			"Talk to the Mage of Zamorak again.");
+			"Talk to the Mage of Zamorak in south east Varrock.");
+		talkToMageAfterTeleports.addSubSteps(talkToMageToFinish);
 	}
 
 	@Override
@@ -240,8 +241,7 @@ public class EnterTheAbyss extends BasicQuestHelper
 			talkToAubury,
 			talkToSedridor,
 			talkToCromperty,
-			talkToMageAfterTeleports,
-			talkToMageToFinish
+			talkToMageAfterTeleports
 		)));
 
 		return sections;

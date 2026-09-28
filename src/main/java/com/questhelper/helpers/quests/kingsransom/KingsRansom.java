@@ -42,7 +42,17 @@ import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.WidgetStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -51,130 +61,150 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
-import java.util.*;
-
 public class KingsRansom extends BasicQuestHelper
 {
-	//Items Required
-	ItemRequirement scrapPaper, addressForm, blackHelm, criminalsThread, hairclip, lawRune, airRune, bronzeMed, ironChain, bronzeMedWorn, ironChainWorn,
-		blackKnightLeg, blackKnightLegWorn, blackKnightBody, blackKnightBodyWorn, blackKnightHelm, blackKnightHelmWorn, animateRock, lockpick, grabOrLockpick,
-		hairclipOrLockpick, holyGrail, granite, telegrab;
+	// Required items
+	ItemRequirements telegrab;
+	ItemRequirement lockpick;
+	ItemRequirements grabOrLockpick;
+	ItemRequirement granite;
+	ItemRequirement blackKnightHelm;
+	ItemRequirement blackKnightBody;
+	ItemRequirement blackKnightLeg;
+	ItemRequirement bronzeMed;
+	ItemRequirement ironChain;
+	ItemRequirement animateRock;
 
-	//Items Recommended
-	ItemRequirement ardougneTeleport, camelotTeleport, monasteryOrEdgevilleTeleport;
+	// Recommended items
+	ItemRequirement ardougneTeleport;
+	ItemRequirement camelotTeleport;
+	ItemRequirement monasteryOrEdgevilleTeleport;
 
-	Requirement hasBlackHelm, hasScrapPaper, hasForm, inUpstairsManor, inDownstairsManor, inTrialRoom, handlerInRoom, butlerInRoom,
-		maidInRoom, askedAboutThread, askedAboutDagger, askedAboutNight, askedAboutPoison, inPrison, inBasement, inPuzzle, hasTelegrabItems,
-		inBoxWidget, inKeepF0, inKeepF1, inKeepF2, inFortressEntrance, inSecretRoom;
+	// Mid-quest item requirements
+	ItemRequirement blackKnightHelmWorn;
+	ItemRequirement blackKnightBodyWorn;
+	ItemRequirement blackKnightLegWorn;
+	ItemRequirement bronzeMedWorn;
+	ItemRequirement ironChainWorn;
+	ItemRequirement scrapPaper;
+	ItemRequirement addressForm;
+	ItemRequirement blackHelm;
+	ItemRequirement criminalsThread;
+	ItemRequirement hairclip;
+	ItemRequirement lawRune;
+	ItemRequirement airRune;
+	ItemRequirement hairclipOrLockpick;
+	ItemRequirement holyGrail;
 
-	QuestStep talkToGossip, talkToGuard, breakWindow, grabPaper, goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, goDownstairsForPaper,
-		leaveWindow, returnToGuard, talkToGossipAgain, talkToAnna, goIntoTrial, callHandlerAboutPoison, callButlerAboutDagger, callMaidAboutNight,
-		talkToHandlerAboutPoison, talkToButlerAboutDagger, talkToMaidAboutNight, waitForVerdict, leaveCourt, talkToAnnaAfterTrial, enterStatue,
-		talkToMerlin, reachForVent, useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, climbF1ToF2, searchTable, selectPurpleBox,
-		goDownToArthur, getLockpickOrRunes, openMetalDoor, enterStatueForGrail, enterFortress, enterWallInFortress, freeArthur, talkToArthur,
-		talkToArthurInCamelot, enterFortressAfterFreeing, enterWallInFortressAfterFreeing, enterBasementAfterFreeing;
+	// Zones
+	Zone upstairsManor;
+	Zone downstairsManor;
+	Zone downstairsManor2;
+	Zone trialRoom;
+	Zone prison;
+	Zone basement;
+	Zone keepF0;
+	Zone keepF1;
+	Zone keepF2;
+	Zone secretRoomFloor0;
+	Zone mainEntrance1;
+	Zone mainEntrance2;
+	Zone mainEntrance3;
+	Zone mainEntrance4;
+	Zone secretBasement;
 
-	NpcStep callAboutThread, talkToCromperty;
+	// Miscellaneous requirements
+	Conditions hasBlackHelm;
+	Conditions hasScrapPaper;
+	Conditions hasForm;
+	ZoneRequirement inUpstairsManor;
+	ZoneRequirement inDownstairsManor;
+	ZoneRequirement inTrialRoom;
+	VarbitRequirement handlerInRoom;
+	VarbitRequirement butlerInRoom;
+	VarbitRequirement maidInRoom;
+	VarbitRequirement askedAboutThread;
+	VarbitRequirement askedAboutDagger;
+	VarbitRequirement askedAboutNight;
+	VarbitRequirement askedAboutPoison;
+	ZoneRequirement inPrison;
+	ZoneRequirement inBasement;
+	WidgetModelRequirement inPuzzle;
+	Conditions hasTelegrabItems;
+	WidgetModelRequirement inBoxWidget;
+	ZoneRequirement inKeepF0;
+	ZoneRequirement inKeepF1;
+	ZoneRequirement inKeepF2;
+	ZoneRequirement inFortressEntrance;
+	ZoneRequirement inSecretRoom;
 
-	//Zones
-	Zone upstairsManor, downstairsManor, downstairsManor2, trialRoom, prison, basement, keepF0, keepF1, keepF2, secretRoomFloor0, mainEntrance1, mainEntrance2,
-		mainEntrance3, mainEntrance4, secretBasement;
+	// Steps
+	NpcStep talkToGossip;
+	NpcStep talkToGuard;
+	ObjectStep breakWindow;
+	DetailedQuestStep grabPaper;
+	ObjectStep goDownstairsForPaper;
+	ObjectStep goUpstairsManor;
+	DetailedQuestStep takeForm;
+	ObjectStep searchBookcase;
+	ObjectStep goDownstairsManor;
+	ObjectStep leaveWindow;
+	NpcStep returnToGuard;
+	NpcStep talkToGossipAgain;
+	NpcStep talkToAnna;
+	ObjectStep goIntoTrial;
+	ObjectStep callHandlerAboutPoison;
+	NpcStep talkToHandlerAboutPoison;
+	ObjectStep callButlerAboutDagger;
+	NpcStep talkToButlerAboutDagger;
+	ObjectStep callMaidAboutNight;
+	NpcStep talkToMaidAboutNight;
+	NpcStep callAboutThread;
+	DetailedQuestStep waitForVerdict;
+	ObjectStep leaveCourt;
+	NpcStep talkToAnnaAfterTrial;
+	ObjectStep enterStatue;
+	NpcStep talkToMerlin;
+	ObjectStep reachForVent;
+	NpcStep useGrabOnGuard;
+	DetailedQuestStep getLockpickOrRunes;
+	ObjectStep useHairClipOnOnDoor;
+	PuzzleWrapperStep solvePuzzle;
+	ObjectStep openMetalDoor;
+	ObjectStep enterStatueForGrail;
+	ObjectStep climbF0ToF1;
+	ObjectStep climbF1ToF2;
+	ObjectStep searchTable;
+	WidgetStep selectPurpleBox;
+	NpcStep talkToCromperty;
+	ObjectStep enterFortress;
+	ObjectStep enterWallInFortress;
+	ObjectStep goDownToArthur;
+	ObjectStep freeArthur;
+	ObjectStep enterFortressAfterFreeing;
+	ObjectStep enterWallInFortressAfterFreeing;
+	ObjectStep enterBasementAfterFreeing;
+	NpcStep talkToArthur;
+	NpcStep talkToArthurInCamelot;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, talkToGossip);
-		steps.put(5, talkToGuard);
-
-		ConditionalStep collectItems = new ConditionalStep(this, breakWindow);
-		collectItems.addStep(new Conditions(inDownstairsManor, hasScrapPaper, hasForm, hasBlackHelm), leaveWindow);
-		collectItems.addStep(new Conditions(inUpstairsManor, hasScrapPaper, hasForm, hasBlackHelm), goDownstairsManor);
-		collectItems.addStep(new Conditions(hasScrapPaper, hasForm, hasBlackHelm), returnToGuard);
-		collectItems.addStep(new Conditions(inUpstairsManor, hasScrapPaper, hasForm), searchBookcase);
-		collectItems.addStep(new Conditions(inUpstairsManor, hasScrapPaper), takeForm);
-		collectItems.addStep(inUpstairsManor, goDownstairsForPaper);
-		collectItems.addStep(new Conditions(inDownstairsManor, hasScrapPaper), goUpstairsManor);
-		collectItems.addStep(inDownstairsManor, grabPaper);
-
-		steps.put(10, collectItems);
-
-		steps.put(15, talkToGossipAgain);
-		steps.put(20, talkToGossipAgain);
-
-		steps.put(25, talkToAnna);
-
-		ConditionalStep trialsSteps = new ConditionalStep(this, talkToAnna);
-		trialsSteps.addStep(new Conditions(askedAboutPoison, askedAboutDagger, askedAboutNight, askedAboutThread), waitForVerdict);
-		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger, askedAboutNight), callAboutThread);
-		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger, maidInRoom), talkToMaidAboutNight);
-		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger), callMaidAboutNight);
-		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, butlerInRoom), talkToButlerAboutDagger);
-		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison), callButlerAboutDagger);
-		trialsSteps.addStep(new Conditions(criminalsThread, handlerInRoom), talkToHandlerAboutPoison);
-		trialsSteps.addStep(new Conditions(criminalsThread, inTrialRoom), callHandlerAboutPoison);
-		trialsSteps.addStep(criminalsThread, goIntoTrial);
-
-		steps.put(30, trialsSteps);
-
-		ConditionalStep talkToAnnaAfterTrialSteps = new ConditionalStep(this, talkToAnnaAfterTrial);
-		talkToAnnaAfterTrialSteps.addStep(inTrialRoom, leaveCourt);
-
-		steps.put(35, talkToAnnaAfterTrialSteps);
-
-		steps.put(40, enterStatue);
-
-		ConditionalStep goTalkToMerlin = new ConditionalStep(this, enterStatue);
-		goTalkToMerlin.addStep(inPrison, talkToMerlin);
-
-		steps.put(45, goTalkToMerlin);
-
-		ConditionalStep findMerlinEscape = new ConditionalStep(this, enterStatue);
-		findMerlinEscape.addStep(inPrison, reachForVent);
-
-		steps.put(50, findMerlinEscape);
-
-		ConditionalStep freeKnights = new ConditionalStep(this, enterStatue);
-		freeKnights.addStep(inPuzzle, solvePuzzle);
-		freeKnights.addStep(new Conditions(inPrison, hairclipOrLockpick), useHairClipOnOnDoor);
-		freeKnights.addStep(new Conditions(inPrison, hasTelegrabItems), useGrabOnGuard);
-		freeKnights.addStep(inPrison, getLockpickOrRunes);
-
-		steps.put(55, freeKnights);
-		steps.put(60, freeKnights);
-
-		ConditionalStep getGrail = new ConditionalStep(this, enterStatueForGrail);
-		getGrail.addStep(inBoxWidget, selectPurpleBox);
-		getGrail.addStep(inKeepF2, searchTable);
-		getGrail.addStep(inKeepF1, climbF1ToF2);
-		getGrail.addStep(inKeepF0, climbF0ToF1);
-		getGrail.addStep(inPrison, openMetalDoor);
-
-		steps.put(65, getGrail);
-
-		steps.put(70, talkToCromperty);
-
-		ConditionalStep goFreeArthur = new ConditionalStep(this, enterFortress);
-		goFreeArthur.addStep(inBasement, freeArthur);
-		goFreeArthur.addStep(inSecretRoom, goDownToArthur);
-		goFreeArthur.addStep(inFortressEntrance, enterWallInFortress);
-
-		steps.put(75, goFreeArthur);
-
-		ConditionalStep talkToArthurInBasement = new ConditionalStep(this, enterFortressAfterFreeing);
-		talkToArthurInBasement.addStep(inBasement, talkToArthur);
-		talkToArthurInBasement.addStep(inSecretRoom, enterBasementAfterFreeing);
-		talkToArthurInBasement.addStep(inFortressEntrance, enterWallInFortressAfterFreeing);
-
-		steps.put(80, talkToArthurInBasement);
-
-		steps.put(85, talkToArthurInCamelot);
-
-		return steps;
+		upstairsManor = new Zone(new WorldPoint(2729, 3572, 1), new WorldPoint(2749, 3584, 1));
+		downstairsManor = new Zone(new WorldPoint(2733, 3574, 0), new WorldPoint(2747, 3582, 0));
+		downstairsManor2 = new Zone(new WorldPoint(2739, 3573, 0), new WorldPoint(2742, 3573, 0));
+		trialRoom = new Zone(new WorldPoint(1815, 4260, 0), new WorldPoint(1825, 4276, 0));
+		prison = new Zone(new WorldPoint(1690, 4250, 0), new WorldPoint(1909, 4283, 0));
+		keepF0 = new Zone(new WorldPoint(1689, 4250, 0), new WorldPoint(1701, 4264, 0));
+		keepF1 = new Zone(new WorldPoint(1689, 4250, 1), new WorldPoint(1701, 4264, 1));
+		keepF2 = new Zone(new WorldPoint(1689, 4250, 2), new WorldPoint(1701, 4264, 2));
+		basement = new Zone(new WorldPoint(1862, 4231, 0), new WorldPoint(1871, 4246, 0));
+		secretRoomFloor0 = new Zone(new WorldPoint(3015, 3517, 0), new WorldPoint(3016, 3519, 0));
+		secretBasement = new Zone(new WorldPoint(1862, 4264, 0), new WorldPoint(1873, 4229, 0));
+		mainEntrance1 = new Zone(new WorldPoint(3008, 3513, 0), new WorldPoint(3012, 3518, 0));
+		mainEntrance2 = new Zone(new WorldPoint(3012, 3514, 0), new WorldPoint(3014, 3516, 0));
+		mainEntrance3 = new Zone(new WorldPoint(3015, 3515, 0), new WorldPoint(3019, 3516, 0));
+		mainEntrance4 = new Zone(new WorldPoint(3019, 3513, 0), new WorldPoint(3019, 3517, 0));
 	}
 
 	@Override
@@ -230,30 +260,7 @@ public class KingsRansom extends BasicQuestHelper
 		camelotTeleport = new ItemRequirement("Camelot teleport", ItemID.POH_TABLET_CAMELOTTELEPORT, 3);
 		monasteryOrEdgevilleTeleport = new ItemRequirement("Monastery with Combat Bracelet or Edgeville glory teleport", ItemCollections.AMULET_OF_GLORIES);
 		monasteryOrEdgevilleTeleport.addAlternates(ItemCollections.COMBAT_BRACELETS);
-	}
 
-	@Override
-	protected void setupZones()
-	{
-		upstairsManor = new Zone(new WorldPoint(2729, 3572, 1), new WorldPoint(2749, 3584, 1));
-		downstairsManor = new Zone(new WorldPoint(2733, 3574, 0), new WorldPoint(2747, 3582, 0));
-		downstairsManor2 = new Zone(new WorldPoint(2739, 3573, 0), new WorldPoint(2742, 3573, 0));
-		trialRoom = new Zone(new WorldPoint(1815, 4260, 0), new WorldPoint(1825, 4276, 0));
-		prison = new Zone(new WorldPoint(1690, 4250, 0), new WorldPoint(1909, 4283, 0));
-		keepF0 = new Zone(new WorldPoint(1689, 4250, 0), new WorldPoint(1701, 4264, 0));
-		keepF1 = new Zone(new WorldPoint(1689, 4250, 1), new WorldPoint(1701, 4264, 1));
-		keepF2 = new Zone(new WorldPoint(1689, 4250, 2), new WorldPoint(1701, 4264, 2));
-		basement = new Zone(new WorldPoint(1862, 4231, 0), new WorldPoint(1871, 4246, 0));
-		secretRoomFloor0 = new Zone(new WorldPoint(3015, 3517, 0), new WorldPoint(3016, 3519, 0));
-		secretBasement = new Zone(new WorldPoint(1862, 4264, 0), new WorldPoint(1873, 4229, 0));
-		mainEntrance1 = new Zone(new WorldPoint(3008, 3513, 0), new WorldPoint(3012, 3518, 0));
-		mainEntrance2 = new Zone(new WorldPoint(3012, 3514, 0), new WorldPoint(3014, 3516, 0));
-		mainEntrance3 = new Zone(new WorldPoint(3015, 3515, 0), new WorldPoint(3019, 3516, 0));
-		mainEntrance4 = new Zone(new WorldPoint(3019, 3513, 0), new WorldPoint(3019, 3517, 0));
-	}
-
-	public void setupConditions()
-	{
 		hasForm = new Conditions(LogicType.OR, addressForm, new VarbitRequirement(VarbitID.KR_CLUE_FORM, 1));
 		hasScrapPaper = new Conditions(LogicType.OR, scrapPaper, new VarbitRequirement(VarbitID.KR_CLUE_NOTE, 1));
 		hasBlackHelm = new Conditions(LogicType.OR, blackHelm, new VarbitRequirement(VarbitID.KR_CLUE_ARMOUR, 1));
@@ -278,13 +285,13 @@ public class KingsRansom extends BasicQuestHelper
 		askedAboutNight = new VarbitRequirement(VarbitID.KR_COURT_MAID_PROOF, 1);
 
 		inPuzzle = new WidgetModelRequirement(588, 1, 27214);
-		
+
 		hasTelegrabItems = new Conditions(airRune, lawRune);
 
 		inBoxWidget = new WidgetModelRequirement(390, 0, 27488);
 	}
 
-	public void setupSteps()
+	void setupSteps()
 	{
 		talkToGossip = new NpcStep(this, NpcID.GOSSIPY_MAN, new WorldPoint(2741, 3557, 0), "Talk to Gossip, just south of the Sinclair Mansion.");
 		talkToGossip.addDialogStep("Yes.");
@@ -292,12 +299,11 @@ public class KingsRansom extends BasicQuestHelper
 		talkToGuard = new NpcStep(this, NpcID.MURDERGUARD, new WorldPoint(2741, 3561, 0), "Talk to the Guard in the Sinclair Manor.");
 
 		breakWindow = new ObjectStep(this, ObjectID.MURDERWINDOW, new WorldPoint(2748, 3577, 0), "Right-click break the east window of the mansion, and enter it.");
-		goUpstairsManor = new ObjectStep(this, ObjectID.MURDER_QIP_SPIRALSTAIRS, new WorldPoint(2737, 3582, 0), "Go upstairs.");
-
 		goDownstairsForPaper = new ObjectStep(this, ObjectID.MURDER_QIP_SPIRALSTAIRSTOP, new WorldPoint(2736, 3581, 1), "Pick up the scrap paper downstairs.");
 		grabPaper = new DetailedQuestStep(this, new WorldPoint(2746, 3580, 0), "Pick up the scrap paper.", scrapPaper);
 		grabPaper.addSubSteps(goDownstairsForPaper);
 
+		goUpstairsManor = new ObjectStep(this, ObjectID.MURDER_QIP_SPIRALSTAIRS, new WorldPoint(2737, 3582, 0), "Go upstairs.");
 		takeForm = new DetailedQuestStep(this, new WorldPoint(2739, 3581, 1), "Pick up the address form.", addressForm);
 		searchBookcase = new ObjectStep(this, ObjectID.KR_SIN_BOOKCASE3A, new WorldPoint(2738, 3580, 1), "Search the west bookcase for a black knight helm.");
 		goDownstairsManor = new ObjectStep(this, ObjectID.MURDER_QIP_SPIRALSTAIRSTOP, new WorldPoint(2736, 3581, 1), "Go down the staircase.");
@@ -306,51 +312,61 @@ public class KingsRansom extends BasicQuestHelper
 		returnToGuard.addDialogSteps("I have proof that the Sinclairs have left.", "I have proof that links the Sinclairs to Camelot.", "I have proof of foul play.");
 
 		talkToGossipAgain = new NpcStep(this, NpcID.GOSSIPY_MAN, new WorldPoint(2741, 3557, 0), "Ask Gossip all 3 chat options.");
+		// We do not highlight the dialog step options here because all 3 need to be used, and no varbit is available to figure out which the user has already explored.
 
 		talkToAnna = new NpcStep(this, NpcID.KR_ANNA_SINCLAIR, new WorldPoint(2737, 3466, 0), "Talk to Anna in the Seers' Village Court House.");
 		talkToAnna.addDialogStep("Okay, I guess I don't have much of a choice.");
-		talkToAnna.setAllowInCutscene(true);
 
 		goIntoTrial = new ObjectStep(this, ObjectID.KR_COURTHOUSE_STAIRS_TOP, new WorldPoint(2738, 3470, 0), "Go down the stairs to the court room.");
 		goIntoTrial.addDialogStep("Yes, I'm ready.");
-		goIntoTrial.setAllowInCutscene(true);
 
 		callHandlerAboutPoison = new ObjectStep(this, ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Talk to the judge to call the Dog Handler and ask them about the poison.");
 		callHandlerAboutPoison.addDialogSteps("Dog handler", "Previous page");
+		// This step can require the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callHandlerAboutPoison.setAllowInCutscene(true);
 
 		talkToHandlerAboutPoison = new NpcStep(this, NpcID.PIERRE_THE_FAMILY_DOG_HANDLER, "Ask Pierre about the poison.");
 		talkToHandlerAboutPoison.addDialogStep("Ask about the poison");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		talkToHandlerAboutPoison.setAllowInCutscene(true);
 		callHandlerAboutPoison.addSubSteps(talkToHandlerAboutPoison);
 
 		callButlerAboutDagger = new ObjectStep(this, ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Talk to the judge to call the Butler and ask them about the dagger.");
 		callButlerAboutDagger.addDialogSteps("Butler", "Previous page");
+		// This step can require the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callButlerAboutDagger.setAllowInCutscene(true);
 
 		talkToButlerAboutDagger = new NpcStep(this, NpcID.HOBBES_THE_BUTLER, "Ask Hobbes about the dagger.");
 		talkToButlerAboutDagger.addDialogStep("Ask about the dagger");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		talkToButlerAboutDagger.setAllowInCutscene(true);
 		callButlerAboutDagger.addSubSteps(talkToButlerAboutDagger);
 
 		callMaidAboutNight = new ObjectStep(this, ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Talk to the judge to call the Maid and ask them about the night of the murder.");
 		callMaidAboutNight.addDialogSteps("Maid", "Next page");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callMaidAboutNight.setAllowInCutscene(true);
 
 		talkToMaidAboutNight = new NpcStep(this, NpcID.MARY_THE_MAID, "Ask Mary about the night of the murder.");
 		talkToMaidAboutNight.addDialogStep("Ask about the night of the murder");
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		talkToMaidAboutNight.setAllowInCutscene(true);
 		callMaidAboutNight.addSubSteps(talkToMaidAboutNight);
 
 		callAboutThread = new NpcStep(this, NpcID.MARY_THE_MAID, "Ask anyone about the thread.");
 		callAboutThread.addDialogStep("Ask about the thread");
 		callAboutThread.addAlternateNpcs(NpcID.HOBBES_THE_BUTLER, NpcID.PIERRE_THE_FAMILY_DOG_HANDLER, NpcID.DONOVAN_THE_FAMILY_HANDYMAN, NpcID.LOUISA_THE_COOK, NpcID.STANFORD_THE_GARDENER);
+		// This step requires the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
 		callAboutThread.setAllowInCutscene(true);
 
-		waitForVerdict = new DetailedQuestStep(this, "Wait for the jury to reach their verdict.");
+		waitForVerdict = new ObjectStep(this,ObjectID.KR_JUDGE, new WorldPoint(1820, 4276, 0), "Wait for the jury to reach their verdict.");
+		// This step can require the user to click the NPC while the user is technically "in a cutscene", so we force allow the overlay to render.
+		waitForVerdict.setAllowInCutscene(true);
 		callAboutThread.addSubSteps(waitForVerdict);
 
 		leaveCourt = new ObjectStep(this, ObjectID.KR_COURT_FENCE_DOOR, new WorldPoint(1820, 4268, 0), "Leave the court room.");
+		// This step requires the user to click the fence while the user is technically "in a cutscene", so we force allow the overlay to render.
+		leaveCourt.setAllowInCutscene(true);
 
 		talkToAnnaAfterTrial = new NpcStep(this, NpcID.KR_ANNA_SINCLAIR, new WorldPoint(2737, 3466, 0), "Talk to Anna in the Seers' Village Court House.");
 
@@ -359,36 +375,34 @@ public class KingsRansom extends BasicQuestHelper
 		talkToMerlin = new NpcStep(this, NpcID.MERLIN, new WorldPoint(1907, 4281, 0), "Talk to Merlin.");
 		talkToMerlin.addDialogStep("What do we do now?");
 		reachForVent = new ObjectStep(this, ObjectID.KR_UNDERGROUND_JAIL_CELL_WALL_BOTTOM_WITH_VENT, new WorldPoint(1904, 4283, 0), "Reach for the vent on the north wall.");
-		useGrabOnGuard = new NpcStep(this, NpcID.KR_KEEP_GUARD_HAIR, new WorldPoint(1906, 4270, 0), "Use telekinetic grab on the guard grooming their hair.", lawRune, airRune);
-		useHairClipOnOnDoor = new ObjectStep(this, ObjectID.KR_UNDERGROUND_JAIL_BARS_GATE, new WorldPoint(1904, 4273, 0), "Attempt to open the cell door.", hairclipOrLockpick);
 
+		useGrabOnGuard = new NpcStep(this, NpcID.KR_KEEP_GUARD_HAIR, new WorldPoint(1906, 4270, 0), "Use telekinetic grab on the guard grooming their hair.", lawRune, airRune);
 		getLockpickOrRunes = new DetailedQuestStep(this, "Get a lockpick or runes for telegrab. Talking to the knights in the room can give you a lockpick.");
 		useGrabOnGuard.addSubSteps(getLockpickOrRunes);
-
-		goDownToArthur = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDERTOP, new WorldPoint(3016, 3519, 0), "Enter the Black Knight Fortress basement.");
+		useHairClipOnOnDoor = new ObjectStep(this, ObjectID.KR_UNDERGROUND_JAIL_BARS_GATE, new WorldPoint(1904, 4273, 0), "Attempt to open the cell door.", hairclipOrLockpick);
 
 		solvePuzzle = new PuzzleWrapperStep(this, new LockpickPuzzle(this), "Pick the door's lock.");
-
-		enterStatueForGrail = new ObjectStep(this, ObjectID.KR_CAMELOT_KNIGHT_STATUE, new WorldPoint(2780, 3508, 0), "Search the statue east of Camelot.");
-
 		openMetalDoor = new ObjectStep(this, ObjectID.KR_UNDERGROUND_JAIL_BARS_GATE, new WorldPoint(1904, 4273, 0), "Go through the cell door.");
+		enterStatueForGrail = new ObjectStep(this, ObjectID.KR_CAMELOT_KNIGHT_STATUE, new WorldPoint(2780, 3508, 0), "Search the statue east of Camelot.");
+		enterStatue.addSubSteps(enterStatueForGrail);
 
 		climbF0ToF1 = new ObjectStep(this, ObjectID.KR_STAIRS, new WorldPoint(1696, 4260, 0), "Climb to the top of the keep.");
 		climbF1ToF2 = new ObjectStep(this, ObjectID.KR_STAIRS, new WorldPoint(1696, 4254, 1), "Climb to the top of the keep.");
 		climbF0ToF1.addSubSteps(climbF1ToF2);
 		searchTable = new ObjectStep(this, ObjectID.KR_JEWELRY_BOX_TABLE, new WorldPoint(1696, 4259, 2), "Search the table and take the purple round box.");
 		selectPurpleBox = new WidgetStep(this, "Take the purple round box.", 390, 16);
-		searchTable.addSubSteps(selectPurpleBox);
+		searchTable.addSubSteps(selectPurpleBox, openMetalDoor);
 
 		talkToCromperty = new NpcStep(this, NpcID.CROMPERTY_PRE_DIARY, new WorldPoint(2684, 3323, 0), "Talk to Wizard Cromperty in East Ardougne.");
 		talkToCromperty.addAlternateNpcs(NpcID.CROMPERTY_POST_DIARY);
 		talkToCromperty.addDialogSteps("Chat.");
 
 		enterFortress = new ObjectStep(this, ObjectID.BKFORTRESSDOOR1, new WorldPoint(3016, 3514, 0),
-				"Enter the Black Knight Fortress wearing the bronze med helm and iron chainbody.",
+			"Enter the Black Knight Fortress wearing the bronze med helm and iron chainbody.",
 			bronzeMedWorn, ironChainWorn, blackKnightHelm, blackKnightBody, blackKnightLeg, animateRock, holyGrail, granite);
 		enterWallInFortress = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Enter the secret room wearing the black knight armour.",
-				blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, animateRock, holyGrail, granite);
+			blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, animateRock, holyGrail, granite);
+		goDownToArthur = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDERTOP, new WorldPoint(3016, 3519, 0), "Enter the Black Knight Fortress basement.");
 		freeArthur = new ObjectStep(this, ObjectID.KR_ARTHUR_STATUE_MULTI, new WorldPoint(1867, 4233, 0), "Free King Arthur " +
 			"by using the animate rock scroll.", animateRock.highlighted(), holyGrail, granite);
 
@@ -396,37 +410,145 @@ public class KingsRansom extends BasicQuestHelper
 			bronzeMedWorn, ironChainWorn, blackKnightHelm, blackKnightBody, blackKnightLeg);
 		enterWallInFortressAfterFreeing = new ObjectStep(this, ObjectID.BKSECRETDOOR, new WorldPoint(3016, 3517, 0), "Enter the secret room.",
 			blackKnightHelmWorn, blackKnightBodyWorn, blackKnightLegWorn, bronzeMed, ironChain);
-
 		enterBasementAfterFreeing = new ObjectStep(this, ObjectID.KR_BKF_BASEMENT_LADDERTOP, new WorldPoint(3016, 3519, 0), "Enter the Black Knight Fortress basement.");
 		talkToArthur = new NpcStep(this, NpcID.KING_ARTHUR, new WorldPoint(1867, 4235, 0), "Talk to King Arthur in the basement.", bronzeMed, ironChain);
 		talkToArthur.addSubSteps(enterBasementAfterFreeing, enterFortressAfterFreeing, enterWallInFortressAfterFreeing);
-
 		talkToArthurInCamelot = new NpcStep(this, NpcID.KING_ARTHUR, new WorldPoint(2763, 3512, 0), "Talk to King Arthur in Camelot to finish the quest.");
 	}
 
 	@Override
-	public List<ItemRequirement> getItemRequirements()
+	public Map<Integer, QuestStep> loadSteps()
 	{
-		return Arrays.asList(grabOrLockpick, granite, blackKnightHelm, blackKnightBody, blackKnightLeg, bronzeMed, ironChain, animateRock);
-	}
+		initializeRequirements();
+		setupSteps();
 
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return Arrays.asList(ardougneTeleport, camelotTeleport, monasteryOrEdgevilleTeleport);
+		var steps = new HashMap<Integer, QuestStep>();
+
+		steps.put(0, talkToGossip);
+		steps.put(5, talkToGuard);
+
+		var collectItems = new ConditionalStep(this, breakWindow);
+		collectItems.addStep(new Conditions(inDownstairsManor, hasScrapPaper, hasForm, hasBlackHelm), leaveWindow);
+		collectItems.addStep(new Conditions(inUpstairsManor, hasScrapPaper, hasForm, hasBlackHelm), goDownstairsManor);
+		collectItems.addStep(new Conditions(hasScrapPaper, hasForm, hasBlackHelm), returnToGuard);
+		collectItems.addStep(new Conditions(inUpstairsManor, hasScrapPaper, hasForm), searchBookcase);
+		collectItems.addStep(new Conditions(inUpstairsManor, hasScrapPaper), takeForm);
+		collectItems.addStep(inUpstairsManor, goDownstairsForPaper);
+		collectItems.addStep(new Conditions(inDownstairsManor, hasScrapPaper), goUpstairsManor);
+		collectItems.addStep(inDownstairsManor, grabPaper);
+
+		steps.put(10, collectItems);
+
+		steps.put(15, talkToGossipAgain);
+		steps.put(20, talkToGossipAgain);
+
+		steps.put(25, talkToAnna);
+
+		var trialsSteps = new ConditionalStep(this, talkToAnna);
+		trialsSteps.addStep(new Conditions(askedAboutPoison, askedAboutDagger, askedAboutNight, askedAboutThread), waitForVerdict);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger, askedAboutNight), callAboutThread);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger, maidInRoom), talkToMaidAboutNight);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, askedAboutDagger), callMaidAboutNight);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison, butlerInRoom), talkToButlerAboutDagger);
+		trialsSteps.addStep(new Conditions(criminalsThread, askedAboutPoison), callButlerAboutDagger);
+		trialsSteps.addStep(new Conditions(criminalsThread, handlerInRoom), talkToHandlerAboutPoison);
+		trialsSteps.addStep(new Conditions(criminalsThread, inTrialRoom), callHandlerAboutPoison);
+		trialsSteps.addStep(criminalsThread, goIntoTrial);
+
+		steps.put(30, trialsSteps);
+
+		var talkToAnnaAfterTrialSteps = new ConditionalStep(this, talkToAnnaAfterTrial);
+		talkToAnnaAfterTrialSteps.addStep(inTrialRoom, leaveCourt);
+
+		steps.put(35, talkToAnnaAfterTrialSteps);
+
+		steps.put(40, enterStatue);
+
+		var goTalkToMerlin = new ConditionalStep(this, enterStatue);
+		goTalkToMerlin.addStep(inPrison, talkToMerlin);
+
+		steps.put(45, goTalkToMerlin);
+
+		var findMerlinEscape = new ConditionalStep(this, enterStatue);
+		findMerlinEscape.addStep(inPrison, reachForVent);
+
+		steps.put(50, findMerlinEscape);
+
+		var freeKnights = new ConditionalStep(this, enterStatue);
+		freeKnights.addStep(inPuzzle, solvePuzzle);
+		freeKnights.addStep(new Conditions(inPrison, hairclipOrLockpick), useHairClipOnOnDoor);
+		freeKnights.addStep(new Conditions(inPrison, hasTelegrabItems), useGrabOnGuard);
+		freeKnights.addStep(inPrison, getLockpickOrRunes);
+
+		steps.put(55, freeKnights);
+		steps.put(60, freeKnights);
+
+		var getGrail = new ConditionalStep(this, enterStatueForGrail);
+		getGrail.addStep(inBoxWidget, selectPurpleBox);
+		getGrail.addStep(inKeepF2, searchTable);
+		getGrail.addStep(inKeepF1, climbF1ToF2);
+		getGrail.addStep(inKeepF0, climbF0ToF1);
+		getGrail.addStep(inPrison, openMetalDoor);
+
+		steps.put(65, getGrail);
+
+		steps.put(70, talkToCromperty);
+
+		var goFreeArthur = new ConditionalStep(this, enterFortress);
+		goFreeArthur.addStep(inBasement, freeArthur);
+		goFreeArthur.addStep(inSecretRoom, goDownToArthur);
+		goFreeArthur.addStep(inFortressEntrance, enterWallInFortress);
+
+		steps.put(75, goFreeArthur);
+
+		var talkToArthurInBasement = new ConditionalStep(this, enterFortressAfterFreeing);
+		talkToArthurInBasement.addStep(inBasement, talkToArthur);
+		talkToArthurInBasement.addStep(inSecretRoom, enterBasementAfterFreeing);
+		talkToArthurInBasement.addStep(inFortressEntrance, enterWallInFortressAfterFreeing);
+
+		steps.put(80, talkToArthurInBasement);
+
+		steps.put(85, talkToArthurInCamelot);
+
+		return steps;
 	}
 
 	@Override
 	public List<Requirement> getGeneralRequirements()
 	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.HOLY_GRAIL, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.MURDER_MYSTERY, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.ONE_SMALL_FAVOUR, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.MAGIC, 45));
-		req.add(new SkillRequirement(Skill.DEFENCE, 65));
-		return req;
+		return List.of(
+			new QuestRequirement(QuestHelperQuest.BLACK_KNIGHTS_FORTRESS, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.HOLY_GRAIL, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.MURDER_MYSTERY, QuestState.FINISHED),
+			new QuestRequirement(QuestHelperQuest.ONE_SMALL_FAVOUR, QuestState.FINISHED),
+			new SkillRequirement(Skill.MAGIC, 45),
+			new SkillRequirement(Skill.DEFENCE, 65)
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRequirements()
+	{
+		return List.of(
+			grabOrLockpick,
+			granite,
+			blackKnightHelm,
+			blackKnightBody,
+			blackKnightLeg,
+			bronzeMed,
+			ironChain,
+			animateRock
+		);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return List.of(
+			ardougneTeleport,
+			camelotTeleport,
+			monasteryOrEdgevilleTeleport
+		);
 	}
 
 	@Override
@@ -438,32 +560,82 @@ public class KingsRansom extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Arrays.asList(
-				new ExperienceReward(Skill.DEFENCE, 33000),
-				new ExperienceReward(Skill.MAGIC, 5000));
+		return List.of(
+			new ExperienceReward(Skill.DEFENCE, 33000),
+			new ExperienceReward(Skill.MAGIC, 5000)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("5,000 Experience Lamp (any skill over 50).", ItemID.THOSF_REWARD_LAMP, 1)); //4447 is Placeholder
+		return List.of(
+			new ItemReward("5,000 Experience Lamp (any skill over 50).", ItemID.THOSF_REWARD_LAMP, 1)
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("Investigating", Arrays.asList(talkToGossip, talkToGuard, breakWindow, grabPaper,
-			goUpstairsManor, takeForm, searchBookcase, goDownstairsManor, leaveWindow, returnToGuard, talkToGossipAgain)));
-		allSteps.add(new PanelDetails("Freeing Anna", Arrays.asList(talkToAnna, goIntoTrial, callHandlerAboutPoison,
-			callButlerAboutDagger, callMaidAboutNight, callAboutThread, leaveCourt, talkToAnnaAfterTrial)));
-		allSteps.add(new PanelDetails("Saving Merlin and Knights", Arrays.asList(enterStatue, talkToMerlin, reachForVent,
-			useGrabOnGuard, useHairClipOnOnDoor, solvePuzzle, climbF0ToF1, searchTable, talkToCromperty),
-			grabOrLockpick));
-		allSteps.add(new PanelDetails("Saving Arthur", Arrays.asList(enterFortress, enterWallInFortress, goDownToArthur,
-			freeArthur, talkToArthur, talkToArthurInCamelot), bronzeMed, ironChain, blackKnightHelm, blackKnightBody,
-			blackKnightLeg, granite, animateRock));
+		var sections = new ArrayList<PanelDetails>();
 
-		return allSteps;
+		sections.add(new PanelDetails("Investigating", List.of(
+			talkToGossip,
+			talkToGuard,
+			breakWindow,
+			grabPaper,
+			goUpstairsManor,
+			takeForm,
+			searchBookcase,
+			goDownstairsManor,
+			leaveWindow,
+			returnToGuard,
+			talkToGossipAgain
+		)));
+
+		sections.add(new PanelDetails("Freeing Anna", List.of(
+			talkToAnna,
+			goIntoTrial,
+			callHandlerAboutPoison,
+			callButlerAboutDagger,
+			callMaidAboutNight,
+			callAboutThread,
+			leaveCourt,
+			talkToAnnaAfterTrial
+		)));
+
+		sections.add(new PanelDetails("Saving Merlin and Knights", List.of(
+			enterStatue,
+			talkToMerlin,
+			reachForVent,
+			useGrabOnGuard,
+			useHairClipOnOnDoor,
+			solvePuzzle,
+			climbF0ToF1,
+			searchTable,
+			talkToCromperty
+		), List.of(
+			grabOrLockpick
+		)));
+
+		sections.add(new PanelDetails("Saving Arthur", List.of(
+			enterFortress,
+			enterWallInFortress,
+			goDownToArthur,
+			freeArthur,
+			talkToArthur,
+			talkToArthurInCamelot
+		), List.of(
+			bronzeMed,
+			ironChain,
+			blackKnightHelm,
+			blackKnightBody,
+			blackKnightLeg,
+			granite,
+			animateRock
+			// TODO: add holy grail
+		)));
+
+		return sections;
 	}
 }

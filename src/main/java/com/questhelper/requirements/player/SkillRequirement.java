@@ -32,6 +32,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Operation;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
@@ -50,10 +51,10 @@ public class SkillRequirement extends AbstractRequirement
 	private final Skill skill;
 	private final int requiredLevel;
 	private final Operation operation;
+	@Setter
 	private boolean canBeBoosted;
+	@Setter
 	private String displayText;
-	private QuestHelperPlugin questHelperPlugin;
-
 	/**
 	 * Check if a player has a certain skill level
 	 *

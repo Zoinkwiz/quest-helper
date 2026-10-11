@@ -1,6 +1,7 @@
 package com.questhelper.questinfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.gameval.VarPlayerID;
 
 /**
  * Server controlled "content-developer" integers.
@@ -43,7 +44,7 @@ public enum QuestVarPlayer
 	QUEST_CABIN_FEVER(655),
 	QUEST_CLOCK_TOWER(10),
 	QUEST_CREATURE_OF_FENKENSTRAIN(399),
-	QUEST_DEATH_PLATEAU(314),
+	QUEST_DEATH_PLATEAU(VarPlayerID.DEATH_EQUIPROOM),
 	QUEST_THE_DIG_SITE(131),
 	QUEST_DRUIDIC_RITUAL(80),
 	QUEST_DWARF_CANNON(0),

@@ -379,6 +379,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.ONE_SMALL_FAVOUR,
 			QuestHelperQuest.SCORPION_CATCHER,
+			QuestHelperQuest.DEATH_PLATEAU,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.SEA_SLUG,
 			QuestHelperQuest.HOLY_GRAIL,

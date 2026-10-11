@@ -374,7 +374,7 @@ public class RFDSirAmikVarze extends BasicQuestHelper
 		allSteps.add(tokenAndEggPanel);
 		allSteps.add(new PanelDetails("Making the brulee", Arrays.asList(useMilkOnCream, useCornflourOnMilky, addPodToCornflourMixture,
 			useEggOnBrulee, grindBranch, useCinnamonOnBrulee, rubToken, useBruleeOnVarze),
-			Arrays.asList(bucketOfMilk, potOfCream, cornflourMixture, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token, iceGloves),
+			Arrays.asList(bucketOfMilk, potOfCream, cornflour, pestleAndMortar, dramenBranch, vanillaPod, evilEgg, token, iceGloves),
 			Arrays.asList(lumbridgeTele)));
 
 		return allSteps;

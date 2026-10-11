@@ -62,7 +62,7 @@ public class RFDAwowogei extends BasicQuestHelper
 	//Items Required
 	ItemRequirement cookedSnake, cookedSnakeHighlighted, mAmulet, gorillaGreegree, ninjaGreegree, zombieGreegree, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted,
 		knife, pestleAndMortar, tchikiNuts, tchikiNutsHighlighted, redBanana, redBananaHighlighted, snakeCorpse, snakeCorpseHighlighted,
-		rawStuffedSnake, rawStuffedSnakeHighlighted, slicedRedBanana, greegreeEquipped, paste, combatGear;
+		rawStuffedSnake, rawStuffedSnakeHighlighted, slicedRedBanana, greegreeEquipped, paste, combatGear, antipoison;
 
 	Requirement protectMelee;
 
@@ -168,6 +168,7 @@ public class RFDAwowogei extends BasicQuestHelper
 
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+		antipoison = new ItemRequirement("Antipoison", ItemCollections.ANTIPOISONS);
 
 		protectMelee = new PrayerRequirement("Protect from Melee", Prayer.PROTECT_FROM_MELEE);
 	}
@@ -227,10 +228,10 @@ public class RFDAwowogei extends BasicQuestHelper
 		useRopeOnTree.addIcon(ItemID.ROPE);
 
 		enterNutHole = new ObjectStep(this, ObjectID._100_ILM_VINE_HOLE, new WorldPoint(2758, 2729, 0), "Go around the monkey agility course until you reach a hole, and go down it.", ninjaGreegree);
-		takeNuts = new ObjectStep(this, ObjectID._100_ILM_MONKEY_NUT_BUSH_01, new WorldPoint(3021, 5458, 0), "Take a nut from the bush. Take a few in case you burn the final meal.");
+		takeNuts = new ObjectStep(this, ObjectID._100_ILM_MONKEY_NUT_BUSH_01, new WorldPoint(3021, 5458, 0), "Take a nut from the bush.");
 
-		grindNuts = new DetailedQuestStep(this, "Use a pestle and mortar on the tchiki nuts.", pestleAndMortar, tchikiNutsHighlighted);
-		sliceBanana = new DetailedQuestStep(this, "Use a knife/slash weapon on the red banana.", knife, redBananaHighlighted);
+		grindNuts = new DetailedQuestStep(this, "Use a pestle and mortar on the tchiki nuts. Get more tchiki nut paste as desired in case you burn the final meal.", pestleAndMortar, tchikiNutsHighlighted);
+		sliceBanana = new DetailedQuestStep(this, "Use a knife/slash weapon on the red banana. Get more sliced red bananas as desired in case you burn the final meal.", knife, redBananaHighlighted);
 
 		stuffSnake = new DetailedQuestStep(this, "Use the paste on the snake to stuff it.", paste, slicedRedBanana, snakeCorpseHighlighted);
 
@@ -250,6 +251,12 @@ public class RFDAwowogei extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(mAmulet, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted, knife, pestleAndMortar, gorillaGreegree, ninjaGreegree, zombieGreegree);
+	}
+
+	@Override
+	public List<ItemRequirement> getItemRecommended()
+	{
+		return Arrays.asList(combatGear, antipoison);
 	}
 
 	@Override
@@ -304,8 +311,9 @@ public class RFDAwowogei extends BasicQuestHelper
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off", Collections.singletonList(inspectAwowogei)));
 		allSteps.add(new PanelDetails("Saving Awowogei", Arrays.asList(talkToAwowogei, talkToWiseMonkeys, useBananaOnWiseMonkeys, useNutsOnWiseMonkeys, goToCrashIsland, enterCrashHole, killSnake, leaveSnakeHole,
-			returnToApeAtoll, useRopeOnTree, enterNutHole, takeNuts, grindNuts, sliceBanana, stuffSnake, enterZombieDungeon, enterCookingHole, cookSnake, useSnakeOnAwowogei),
-			mAmulet, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted, knife, pestleAndMortar, zombieGreegree, ninjaGreegree, gorillaGreegree));
+			returnToApeAtoll, useRopeOnTree, sliceBanana, enterNutHole, takeNuts, grindNuts, stuffSnake, enterZombieDungeon, enterCookingHole, cookSnake, useSnakeOnAwowogei),
+			Arrays.asList(mAmulet, bananaHighlighted, monkeyNutsHighlighted, ropeHighlighted, knife, pestleAndMortar, zombieGreegree, ninjaGreegree, gorillaGreegree),
+			Arrays.asList(combatGear, antipoison)));
 		return allSteps;
 	}
 

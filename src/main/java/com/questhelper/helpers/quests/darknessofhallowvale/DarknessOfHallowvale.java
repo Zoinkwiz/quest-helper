@@ -68,13 +68,13 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	Requirement normalSpellbook;
 
-	Requirement inTrapdoorRoom, inNewBase, inTemple, inMeiyditch, inMyrequeBase, inMine, inNorthMeiy, inRandomRoom, atBarricade, pushedBoat, onEntryWall, onSecondWall, onThirdWall,
+	Requirement inTrapdoorRoom, inNewBase, inTemple, inMeiyditch, inMyrequeBase, inMine, inNorthMeiy, inRandomRoom, atBarricade, pastBarricade, pushedBoat, onEntryWall, inEntryPassage, onSecondWall, onThirdWall,
 		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, pathDoorOpen, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
 		cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab;
 
 	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat;
 
-	DetailedQuestStep kickBoard, climbDownBoard, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug;
+	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug;
 
 	DetailedQuestStep talkToVertida;
 
@@ -82,7 +82,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	DetailedQuestStep goToMines, mineDaeyaltThenLeave, returnToMeiyBase;
 
-	DetailedQuestStep goDownFromRandomRoom, climbUpFloor, climbDownWallLadder, searchRockySurface, goThroughBarricade, climbLadderSecondWall, climbDownFromThirdWall,
+	DetailedQuestStep goDownFromRandomRoom, climbBackOverRubble, climbUpFloor, climbDownWallLadder, searchRockySurface, goThroughBarricade, climbUpWallLadder, climbLadderSecondWall, climbDownFromThirdWall,
 		climbUpDrakanWalls, talkToSafalaan, drawNorthWall, drawWestWall,
 		drawSouthWall, tankVanstrom, finishSouthSketch, talkToSarius, talkToSafalaanInBase;
 
@@ -94,7 +94,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		goOpenFireplace, returnToSafalaanInBase, returnToSafalaanInBaseNoSketches, goUnlockLab, getHaemBook, bringSafalaanBook, bringMessageToVeliafToFinish;
 
 	//Zones
-	Zone trapdoorRoom, newBase, temple, entryWall, entryWall2, meiyerditch, myrequeBase, mine, northMeiy, randomRoom, barricade1, barricade2, barricade3, secondWall, secondWall2, thirdWall,
+	Zone trapdoorRoom, newBase, temple, entryWall, entryWall2, entryPassage, meiyerditch, myrequeBase, mine, northMeiy, randomRoom, barricade1, barricade2, barricade3, barricade4, secondWall, secondWall2, thirdWall,
 		fourthWall, fourthWall2, drakanWalls, drakanWalls2, lab;
 
 	@Override
@@ -118,6 +118,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		ConditionalStep infiltrateMeiyer = new ConditionalStep(this, pushBoat);
 		infiltrateMeiyer.addStep(new Conditions(onEntryWall, knockedDownBoard), climbDownBoard);
 		infiltrateMeiyer.addStep(onEntryWall, kickBoard);
+		infiltrateMeiyer.addStep(inEntryPassage, climbOverRubble);
 		infiltrateMeiyer.addStep(inMeiyditch, talkToCitizen);
 		infiltrateMeiyer.addStep(pushedBoat, boardBoat);
 		steps.put(30, infiltrateMeiyer);
@@ -128,6 +129,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		ConditionalStep goTalkToRal = new ConditionalStep(this, pushBoat);
 		goTalkToRal.addStep(onEntryWall, climbDownBoard);
+		goTalkToRal.addStep(inEntryPassage, climbOverRubble);
 		goTalkToRal.addStep(inMeiyditch, talkToRal);
 		goTalkToRal.addStep(pushedBoat, boardBoat);
 		steps.put(60, goTalkToRal);
@@ -231,14 +233,16 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		temple = new Zone(new WorldPoint(3402, 9880, 0), new WorldPoint(3443, 9907, 0));
 		entryWall = new Zone(new WorldPoint(3586, 3160, 1), new WorldPoint(3611, 3192, 1));
 		entryWall2 = new Zone(new WorldPoint(3587, 3193, 1), new WorldPoint(3592, 3212, 1));
+		entryPassage = new Zone(new WorldPoint(3587, 3173, 0), new WorldPoint(3589, 3183, 0));
 		meiyerditch = new Zone(new WorldPoint(3586, 3157, 0), new WorldPoint(3643, 3330, 3));
 		myrequeBase = new Zone(new WorldPoint(3616, 9616, 0), new WorldPoint(3640, 9647, 0));
 		mine = new Zone(new WorldPoint(2376, 4616, 2), new WorldPoint(2399, 4638, 2));
 		northMeiy = new Zone(new WorldPoint(3595, 3240, 0), new WorldPoint(3644, 3328, 2));
 		randomRoom = new Zone(new WorldPoint(3594, 3198, 1), new WorldPoint(3608, 3216, 1));
-		barricade1 = new Zone(new WorldPoint(3588, 3205, 0), new WorldPoint(3590, 3233, 0));
+		barricade1 = new Zone(new WorldPoint(3588, 3205, 0), new WorldPoint(3590, 3214, 0));
 		barricade2 = new Zone(new WorldPoint(3591, 3230, 0), new WorldPoint(3593, 3234, 0));
-		barricade3 = new Zone(new WorldPoint(3591, 3211, 0), new WorldPoint(3591, 3216, 0));
+		barricade3 = new Zone(new WorldPoint(3591, 3211, 0), new WorldPoint(3591, 3214, 0));
+		barricade4 = new Zone(new WorldPoint(3588, 3215, 0), new WorldPoint(3590, 3233, 0));
 		secondWall = new Zone(new WorldPoint(3585, 3215, 1), new WorldPoint(3592, 3257, 1));
 		secondWall2 = new Zone(new WorldPoint(3593, 3229, 1), new WorldPoint(3613, 3243, 1));
 		thirdWall = new Zone(new WorldPoint(3587, 3252, 2), new WorldPoint(3588, 3259, 2));
@@ -255,12 +259,14 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		inNewBase = new ZoneRequirement(newBase);
 		inTemple = new ZoneRequirement(temple);
 		onEntryWall = new ZoneRequirement(entryWall, entryWall2);
+		inEntryPassage = new ZoneRequirement(entryPassage);
 		inMeiyditch = new ZoneRequirement(meiyerditch, drakanWalls, drakanWalls2);
 		inMyrequeBase = new ZoneRequirement(myrequeBase);
 		inMine = new ZoneRequirement(mine);
 		inNorthMeiy = new ZoneRequirement(northMeiy);
 		inRandomRoom = new ZoneRequirement(randomRoom);
-		atBarricade = new ZoneRequirement(barricade1, barricade2, barricade3);
+		atBarricade = new ZoneRequirement(barricade1, barricade3);
+		pastBarricade = new ZoneRequirement(barricade2, barricade4);
 		onSecondWall = new ZoneRequirement(secondWall, secondWall2);
 		onThirdWall = new ZoneRequirement(thirdWall);
 		onFourthWall = new ZoneRequirement(fourthWall, fourthWall2);
@@ -276,7 +282,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		fixedLadder = new VarbitRequirement(VarbitID.MYQ3_AGIL_LADDERTOP_WALL, 2);
 		wallPressed = new VarbitRequirement(VarbitID.MYQ3_HIDEOUT_TRAPDOOR, 1, Operation.GREATER_EQUAL);
 
-		searchedRockySurface = new Conditions(true, new WidgetTextRequirement(229, 1, "a mechanical click."));
+		searchedRockySurface = new Conditions(true, WidgetTextRequirement.messageBox("a mechanical click."));
 
 		hasSketches = new ItemRequirements(sketch1, sketch2, sketch3);
 
@@ -327,6 +333,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		kickBoard = new ObjectStep(this, ObjectID.MEIYERDITCH_WALL_FLOORBOARDS_MULTI_LOC, new WorldPoint(3589, 3173, 1), "Climb up the walls and search the marked floor.");
 		kickBoard.addDialogStep("Yes.");
 		climbDownBoard = new ObjectStep(this, ObjectID.MEIYERDITCH_WALL_FLOORBOARDS_MULTI_LOC, new WorldPoint(3589, 3173, 1), "Climb down the floorboard.");
+		climbOverRubble = new ObjectStep(this, ObjectID.MYQ3_RUBBLE_WEST_WALL, new WorldPoint(3589, 3180, 0), "Climb over the wall rubble to the north.");
 
 		talkToCitizen = new NpcStep(this, NpcID.MYQ3_CITIZEN_MALE_OLD_1, new WorldPoint(3601, 3189, 0), "Talk to a Meiyerditch citizen.", true);
 		talkToCitizen.addDialogSteps("(whisper) Do you know about the Myreque?", "(whisper) I really need to meet the Myreque.", "How can Old Man Ral help me?");
@@ -543,10 +550,12 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		returnToMeiyBase.setLinePoints(pathFromMineToBase);
 
 		goDownFromRandomRoom = new ObjectStep(this, ObjectID.AREA_SANGUINE_GHETTO_LADDER_DOWN, new WorldPoint(3595, 3204, 1), "Climb down the ladder.");
-		climbUpFloor = new ObjectStep(this, ObjectID.MIEYERDITCH_WALL_UNDERBOARDS_MULTI_LOC, new WorldPoint(3589, 3173, 0), "Climb up to the floor in the wall to the south west.");
+		climbBackOverRubble = new ObjectStep(this, ObjectID.MYQ3_RUBBLE_EAST_WALL, new WorldPoint(3591, 3180, 0), "Climb over the wall rubble to the south.");
+		climbUpFloor = new ObjectStep(this, ObjectID.MIEYERDITCH_WALL_UNDERBOARDS_MULTI_LOC, new WorldPoint(3589, 3173, 0), "Climb up to the floor in the wall to the south.");
 		climbDownWallLadder = new ObjectStep(this, ObjectID.MYQ3_LADDER_DOWN, new WorldPoint(3588, 3210, 1), "Climb down the ladder to the north.");
 		searchRockySurface = new ObjectStep(this, ObjectID.MYQ3_SECRET_ROCK_BARRICADE_UNLOCK, new WorldPoint(3592, 3211, 0), "Search the rocky surface nearby.");
-		goThroughBarricade = new ObjectStep(this, ObjectID.MYQ3_LADDER_UP, new WorldPoint(3593, 3230, 0), "Go through the barricade and up the ladder to the north.");
+		goThroughBarricade = new ObjectStep(this, ObjectID.MYQ3_GHETTO_BARICADE_WALL_SECRETPASS, new WorldPoint(3589, 3215, 0), "Open the barricade to the north.");
+		climbUpWallLadder = new ObjectStep(this, ObjectID.MYQ3_LADDER_UP, new WorldPoint(3593, 3230, 0), "Climb up the ladder to the north.");
 		climbLadderSecondWall = new ObjectStep(this, ObjectID.MYQ3_LADDER_UP_2, new WorldPoint(3588, 3251, 1), "Climb up the ladder to the north.");
 
 		climbDownFromThirdWall = new ObjectStep(this, ObjectID.MYQ3_LADDER_DOWN_2, new WorldPoint(3588, 3259, 2), "Climb down the ladder to the north.");
@@ -671,14 +680,17 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		navigateWalls.addStep(onFourthWall, climbUpDrakanWalls);
 		navigateWalls.addStep(onThirdWall, climbDownFromThirdWall);
 		navigateWalls.addStep(onSecondWall, climbLadderSecondWall);
+		navigateWalls.addStep(pastBarricade, climbUpWallLadder);
 		navigateWalls.addStep(new Conditions(atBarricade, searchedRockySurface), goThroughBarricade);
 		navigateWalls.addStep(atBarricade, searchRockySurface);
 		navigateWalls.addStep(inRandomRoom, goDownFromRandomRoom);
 		navigateWalls.addStep(onEntryWall, climbDownWallLadder);
-		navigateWalls.addStep(inMeiyditch, climbUpFloor);
+		navigateWalls.addStep(inEntryPassage, climbUpFloor);
+		navigateWalls.addStep(inMeiyditch, climbBackOverRubble);
 
 		goToSafalaan = new ConditionalStep(this, navigateWalls, "Climb along the western wall until you reach Safalaan.");
 		goToSafalaan.addStep(onDrakanWalls, talkToSafalaan);
+		goToSafalaan.addStep(inMyrequeBase, talkToVertida);
 		goToSafalaan.addDialogStep("Okay, lead the way.");
 
 		goSketchNorth = new ConditionalStep(this, navigateWalls, "Sketch the north side of Castle Drakan by using the charcoal on some papyrus.", papyrus, charcoal);
@@ -800,7 +812,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Infiltrating Meiyerditch", Arrays.asList(startQuest, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat,
-			boardBoat, kickBoard, climbDownBoard, talkToCitizen, talkToRal, goTravelToMyrequeBase, pressDecoratedWall, enterRug, talkToVertida, talkToVeliafAfterContact), hammer, planks2, nails8, knife));
+			boardBoat, kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, goTravelToMyrequeBase, pressDecoratedWall, enterRug, talkToVertida, talkToVeliafAfterContact), hammer, planks2, nails8, knife));
 
 		allSteps.add(new PanelDetails("Murder at Paterdomus", Arrays.asList(talkToDrezelAfterVeliaf, searchBushes, talkToDrezelAfterBushes, talkToRoald,
 			talkToVeliafAfterDrezel)));

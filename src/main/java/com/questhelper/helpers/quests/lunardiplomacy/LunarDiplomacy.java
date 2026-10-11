@@ -33,6 +33,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
@@ -62,10 +63,10 @@ public class LunarDiplomacy extends BasicQuestHelper
 		bullseyeLanternHighlighted, tinderboxHighlighted, emeraldLensHighlighted, emeraldLanternLitHighlighted, suqahTooth,
 		groundTooth, marrentilPotion, guamPotion, guamMarrentilPotion, guamMarrentilPotionHighlighted, sleepPotion, specialVial,
 		specialVialHighlighted, waterVial, guam, marrentill, pestle, airTalisman, waterTalisman, earthTalisman, fireTalisman,
-		dramenStaff, dramenStaffHighlighted, lunarStaffP1, lunarStaffP1Highlighted, lunarStaffP2, lunarStaffP2Highlighted,
-		lunarStaffP3, lunarStaffP3Highlighted, lunarStaff, pickaxe, hammer, needle, thread, coins400, spade, lunarOre,
-		lunarBar, tiara, helm, amulet, ring, cape, torso, gloves, boots, legs, suqahHide4, kindling, helmEquipped, bodyEquipped,
-		legsEquipped, bootsEquipped, glovesEquipped, cloakEquipped, amuletEquipped, ringEquipped, lunarStaffEquipped, soakedKindling,
+		dramenStaff, dramenStaffHighlighted, lunarStaffP1, lunarStaffP1Highlighted, lunarStaffP2, lunarStaffP2Highlighted, lunarStaffP3,
+		lunarStaffP3Highlighted, lunarStaff, pickaxe, hammer, needle, thread, costumeNeedle, threadNeedle, threadNeedleOrCostumeNeedle,
+		coins400, spade, lunarOre, lunarBar, tiara, helm, amulet, ring, cape, torso, gloves, boots, legs, suqahHide4, kindling, helmEquipped,
+		bodyEquipped, legsEquipped, bootsEquipped, glovesEquipped, cloakEquipped, amuletEquipped, ringEquipped, lunarStaffEquipped, soakedKindling,
 		sleepPotionHighlighted, soakedKindlingHighlighted, sealOfPassageEquipped;
 
 	//Items Recommended
@@ -395,7 +396,11 @@ public class LunarDiplomacy extends BasicQuestHelper
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).isNotConsumed();
 		hammer = new ItemRequirement("Hammer", ItemCollections.HAMMER).isNotConsumed();
 		needle = new ItemRequirement("Needle", ItemID.NEEDLE).isNotConsumed();
-		thread = new ItemRequirement("Thread", ItemID.THREAD).isNotConsumed();
+		thread = new ItemRequirement("Thread", ItemID.THREAD, 2).isNotConsumed();
+		costumeNeedle = new ItemRequirement("Costume needle", ItemID.COSTUMENEEDLE);
+		threadNeedle = new ItemRequirements(LogicType.AND, "2 x Thread & a Needle", thread, needle);
+		threadNeedleOrCostumeNeedle = new ItemRequirements(LogicType.OR, "2 x Thread & a Needle (or Costume needle)", threadNeedle, costumeNeedle);
+
 		combatGear = new ItemRequirement("Combat gear", -1, -1).isNotConsumed();
 		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 		coins400 = new ItemRequirement("Coins", ItemCollections.COINS, 400);
@@ -733,10 +738,10 @@ public class LunarDiplomacy extends BasicQuestHelper
 
 		digForRing = new DigStep(this, new WorldPoint(2078, 3863, 0), "Dig in the south west of Lunar Isle for the ring.");
 		talkToRimae = new NpcStep(this, NpcID.LUNAR_MOONCLAN_MONK5, new WorldPoint(2104, 3909, 0),
-			"Talk to Rimae in the east of Lunar Isle's town.", sealOfPassage, suqahHide4, coins400, needle, thread);
+			"Talk to Rimae in the east of Lunar Isle's town.", sealOfPassage, suqahHide4, coins400, threadNeedleOrCostumeNeedle);
 		talkToRimae.addDialogStep("You know the ceremonial clothes?");
 		makeClothes = new NpcStep(this, NpcID.LUNAR_MOONCLAN_MONK5, new WorldPoint(2104, 3909, 0),
-			"Have Rimae in the east of Lunar Isle's town tan 4 suqah hides, and craft them into the torso, gloves, boots and legs.", sealOfPassage, suqahHide4, coins400, needle, thread);
+			"Have Rimae in the east of Lunar Isle's town tan 4 suqah hides, and craft them into the torso, gloves, boots and legs.", sealOfPassage, suqahHide4, coins400, threadNeedleOrCostumeNeedle);
 		makeClothes.addDialogSteps("You know the ceremonial clothes?", "That seems like a fair deal.");
 
 		bringItemsToOneiromancer = new BringLunarItems(this);
@@ -854,8 +859,8 @@ public class LunarDiplomacy extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(bullseyeLantern, tinderboxHighlighted, guam, marrentill, dramenStaff, airTalisman, earthTalisman,
-			fireTalisman, waterTalisman, pickaxe, pestle, hammer, thread, needle, spade);
+		return Arrays.asList(bullseyeLantern, coins400, tinderboxHighlighted, guam, marrentill, dramenStaff, airTalisman, earthTalisman,
+			fireTalisman, waterTalisman, pickaxe, pestle, hammer, threadNeedleOrCostumeNeedle, spade);
 	}
 
 	@Override
@@ -957,7 +962,7 @@ public class LunarDiplomacy extends BasicQuestHelper
 		allSteps.add(gettingRingPanel);
 
 		PanelDetails gettingClothingPanel = new PanelDetails("Making the clothing", Collections.singletonList(
-			makeClothes), coins400, needle, thread, suqahHide4);
+			makeClothes), coins400, threadNeedleOrCostumeNeedle, suqahHide4);
 		gettingClothingPanel.setLockingStep(gettingClothes);
 		allSteps.add(gettingClothingPanel);
 

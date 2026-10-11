@@ -426,8 +426,8 @@ public class DesertTreasure extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		talkToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0), "Talk to the " +
-			"Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
+		talkToArchaeologist = new NpcStep(this, NpcID.FOURDIAMONDS_INDIANA_VIS, new WorldPoint(3177, 3043, 0), "WARNING - IMPORTANT NOTE: At any point a Diamond of Azzanadra is in your inventory, a level 95 Stranger may appear and attack you with a poisoned dragon dagger.\n\n"+
+										  "Talk to the Archaeologist in the Bedabin Camp. You can use the flying carpet service from the Shantay Pass to get here.");
 		talkToArchaeologist.addDialogStep("Do you have any quests?");
 		talkToArchaeologist.addDialogStep("Yes.");
 		talkToArchaeologist.addDialogStep("Yes, I'll help you.");
@@ -491,7 +491,7 @@ public class DesertTreasure extends BasicQuestHelper
 		enterFareedRoom = new ObjectStep(this, ObjectID.FD_FW_METALGATECLOSED_R, new WorldPoint(3305, 9376, 0),
 			"Enter the gate in the east of the dungeon. Be prepared to fight Fareed. If you aren't wearing ice gloves he'll unequip your weapon.", iceGloves, waterSpellOrMelee);
 		useWarmKey.addSubSteps(enterFareedRoom);
-		killFareed = new NpcStep(this, NpcID.FIREDIAMOND_FIREWARRIOR, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells.", iceGloves, waterSpellOrMelee);
+		killFareed = new NpcStep(this, NpcID.FIREDIAMOND_FIREWARRIOR, new WorldPoint(3315, 9375, 0), "Kill Fareed. Either use melee with ice gloves, or water spells. Recall that the mysterious stranger can appear and attack you whilst you're holding the diamond.", iceGloves, waterSpellOrMelee);
 
 		talkToRasolo = new NpcStep(this, NpcID.SHADOW_WARRIOR_RASOOL, new WorldPoint(2531, 3420, 0), "Talk to Rasolo south of Baxtorian Falls.");
 		talkToRasolo.addDialogStepWithExclusion("Yes", "Ask about the Diamonds of Azzanadra");
@@ -520,7 +520,7 @@ public class DesertTreasure extends BasicQuestHelper
 		killDamis2 = new NpcStep(this, NpcID.FD_DAMIS_TOUGHER, new WorldPoint(2745, 5115, 0), "Kill both phases of Damis. You can safespot him by attacking a bat and keeping the bat between the two of you.");
 		killDamis1.addSubSteps(killDamis2);
 
-		pickUpShadowDiamond = new DetailedQuestStep(this, "Pick up the shadow diamond.", shadowDiamond);
+		pickUpShadowDiamond = new DetailedQuestStep(this, "Pick up the shadow diamond. Recall that the mysterious stranger can appear and attack you whilst you're holding the diamond.", shadowDiamond);
 
 		enterSewer = new ObjectStep(this, ObjectID.VAMPIRE_TRAP1, new WorldPoint(3084, 3272, 0), "Bring a silver bar to Ruantun in Draynor Sewer.", silverBar);
 		enterSewer.addAlternateObjects(ObjectID.VAMPIRE_TRAP2);
@@ -542,7 +542,7 @@ public class DesertTreasure extends BasicQuestHelper
 		usePotOnGrave.addIcon(ItemID.FD_SILVER_POT_BLOOD_GARLIC_SPICED_BLESSED);
 		killDessous = new NpcStep(this, NpcID.BLOODDIAMOND_VAMPIREWARRIOR, new WorldPoint(3570, 3403, 0), "Kill Dessous.");
 
-		talkToMalakForDiamond = new NpcStep(this, NpcID.FOURDIAMONDS_VAMPIRE_LORD, new WorldPoint(3496, 3479, 0), "Return to Malak in Canifis to get the Blood Diamond.");
+		talkToMalakForDiamond = new NpcStep(this, NpcID.FOURDIAMONDS_VAMPIRE_LORD, new WorldPoint(3496, 3479, 0), "Return to Malak in Canifis to get the Blood Diamond. Recall that the mysterious stranger can appear and attack you whilst you're holding the diamond.");
 		talkToMalakForDiamond.addTeleport(canifisTeleport);
 		giveCakeToTroll = new NpcStep(this, NpcID.FOURDIAMONDS_TROLL_CHILD_CRYING, new WorldPoint(2835, 3740, 0),
 			"Use a cake on the Troll Child north of Trollheim.", cake, climbingBoots.equipped(), spikedBoots);
@@ -570,7 +570,7 @@ public class DesertTreasure extends BasicQuestHelper
 		talkToTrolls = new NpcStep(this, NpcID.FD_TROLL_MUM, new WorldPoint(2826, 3812, 2),
 			"Talk to the troll parents at the end of the Ice Path.");
 		talkToChildTrollAfterFreeing = new NpcStep(this, NpcID.FOURDIAMONDS_TROLL_CHILD_OKAY, new WorldPoint(2835, 3740, 0),
-			"Talk to the Troll Child north of Trollheim to get the ice diamond.");
+			"Talk to the Troll Child north of Trollheim to get the ice diamond. Recall that the mysterious stranger can appear and attack you whilst you're holding the diamond.");
 
 		placeBlood = new ObjectStep(this, ObjectID.DESERT_TREASURE_OBLIX1, new WorldPoint(3221, 2910, 0),
 			"Place all the diamonds in the obelisks around the pyramid south east of the Bandit Camp. Note a " +

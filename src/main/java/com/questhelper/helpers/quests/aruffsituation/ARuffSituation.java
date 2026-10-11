@@ -30,6 +30,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.player.InInstanceRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.var.VarbitRequirement;
@@ -77,6 +78,7 @@ public class ARuffSituation extends BasicQuestHelper
 	VarbitRequirement needsToInspectTornNewspaper;
 	VarplayerRequirement strayDogFollowing;
 	VarbitRequirement inCutscene;
+	InInstanceRequirement inInstance;
 	ItemRequirement puppy1;
 	ItemRequirement puppy2;
 	ItemRequirement puppy3;
@@ -94,8 +96,11 @@ public class ARuffSituation extends BasicQuestHelper
 	ConditionalStep cTalkToPicklenose;
 	NpcStep talkToPicklenose;
 	DetailedQuestStep makeStuffedDog;
+	NpcStep talkToStrayDogAtGoblins;
 	NpcStep talkToPicklenoseAgain;
+	ConditionalStep cTalkToPicklenoseAgain;
 	NpcStep talkToPicklenoseAgainAfterHandingHimTheStuffedDog;
+	ConditionalStep cTalkToPicklenoseAgainAfterHandingHimTheStuffedDog;
 	NpcStep pickUpStrayPuppy2;
 	NpcStep talkToStrayDogOutsideCooksGuild;
 	NpcStep followStrayDogToWall;
@@ -103,7 +108,10 @@ public class ARuffSituation extends BasicQuestHelper
 	ConditionalStep cFollowStrayDogToWallWatchCutscene;
 
 	// 90 + 95 + 100
+	NpcStep talkToDogToFight;
 	NpcStep killOutlaws;
+	ConditionalStep cTalkToDogAndKillOutlaws;
+	NpcStep talkToDogAfterFight;
 	ConditionalStep cKillOutlaws;
 
 	// 105
@@ -130,10 +138,8 @@ public class ARuffSituation extends BasicQuestHelper
 		thread = new ItemRequirement("Thread", List.of(ItemID.THREAD, ItemID.COSTUMENEEDLE));
 		thread.setTooltip("Not needed if you are using a costume needle.");
 
-		// The quest only accepts item 6814, 'Fur'. Note that the constant RuneLite names FUR is bear fur.
 		fur = new ItemRequirement("Fur", ItemID.WEREWOLVE_FUR);
-		fur.setTooltip("Bear fur and grey wolf fur will not work. Dropped by werewolves in " +
-			"Canifis, or bought from Baraek in Varrock Square for 12 coins.");
+		fur.addAlternates(ItemID.FUR, ItemID.GREY_WOLF_FUR, ItemID.HUNTING_FENNECFOX_FUR, ItemID.VARLAMORE_JAGUAR_FUR);
 
 		grain = new ItemRequirement("Grain", ItemID.GRAIN);
 
@@ -157,6 +163,7 @@ public class ARuffSituation extends BasicQuestHelper
 
 		strayDogFollowing = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, 16505, 16);
 		inCutscene = new VarbitRequirement(VarbitID.CUTSCENE_STATUS, 1);
+		inInstance = new InInstanceRequirement();
 	}
 
 	public void setupSteps()
@@ -173,8 +180,9 @@ public class ARuffSituation extends BasicQuestHelper
 		interactWithStrayDog = new NpcStep(this, 16504, new WorldPoint(3180, 3425, 0),
 			"Interact with the stray dog barking at a guard, just south of the western Varrock bank.");
 
-		followStrayDogToDen = new NpcStep(this, 16504, new WorldPoint(3195, 3414, 0),
-			"Follow the stray dog to the house just west of Thessalia's Fine Clothes.");
+		followStrayDogToDen = new NpcStep(this, 16504, new WorldPoint(3180, 3425, 0),
+			"Follow the stray dog to the house just west of Thessalia's Fine Clothes. " +
+				"If she isn't there, return to the guard just south of the western Varrock bank.");
 		followStrayDogToDen.addAlternateNpcs(16505);
 
 		var inspectRoughBedding = new ObjectStep(this, 62485, new WorldPoint(3195, 3416, 0), "");
@@ -185,8 +193,9 @@ public class ARuffSituation extends BasicQuestHelper
 			"Interact with the stray dog again to have her pick up the puppies' scent.");
 		interactWithStrayDogInDen.addAlternateNpcs(16505);
 
-		cInspectDen = new ConditionalStep(this, interactWithStrayDogInDen,
-			"Inspect the chewed box, the torn newspaper and the rough bedding in the dog's den.");
+		cInspectDen = new ConditionalStep(this, inspectRoughBedding,
+			"Inspect the chewed box, the torn newspaper and the rough bedding in the dog's den. " +
+				"Finish the dialogue after each inspection.");
 		cInspectDen.addStep(needsToInspectChewedBox, inspectChewedBox);
 		cInspectDen.addStep(needsToInspectTornNewspaper, inspectTornNewspaper);
 		cInspectDen.addStep(needsToInspectRoughBedding, inspectRoughBedding);
@@ -219,10 +228,20 @@ public class ARuffSituation extends BasicQuestHelper
 			grain.highlighted(), fur.highlighted(), needleOrCostumeNeedle, thread);
 		makeStuffedDog.addDialogStep("Yes.");
 
+		talkToStrayDogAtGoblins = new NpcStep(this, NpcID.DOGQ_DOG_STRAY, new WorldPoint(3131, 3437, 0),
+			"Talk to the stray dog next to the goblins south-west of the Cooks' Guild.");
+
 		talkToPicklenoseAgain = new NpcStep(this, 16523, new WorldPoint(3130, 3436, 0),
 			"Talk to Picklenose again to trade the stuffed dog for the puppy.", stuffedDog);
 		talkToPicklenoseAgainAfterHandingHimTheStuffedDog = new NpcStep(this, 16523, new WorldPoint(3130, 3436, 0), "Talk to Picklenose south-west of the cook's guild after handing him the stuffed dog.");
-		talkToPicklenoseAgain.addSubSteps(talkToPicklenoseAgainAfterHandingHimTheStuffedDog);
+		talkToPicklenoseAgain.addSubSteps(talkToStrayDogAtGoblins, talkToPicklenoseAgainAfterHandingHimTheStuffedDog);
+
+		cTalkToPicklenoseAgain = new ConditionalStep(this, talkToStrayDogAtGoblins);
+		cTalkToPicklenoseAgain.addStep(not(stuffedDog), makeStuffedDog);
+		cTalkToPicklenoseAgain.addStep(strayDogFollowing, talkToPicklenoseAgain);
+
+		cTalkToPicklenoseAgainAfterHandingHimTheStuffedDog = new ConditionalStep(this, talkToStrayDogAtGoblins);
+		cTalkToPicklenoseAgainAfterHandingHimTheStuffedDog.addStep(strayDogFollowing, talkToPicklenoseAgainAfterHandingHimTheStuffedDog);
 
 		pickUpStrayPuppy2 = new NpcStep(this, NpcID.DOGQ_PUPPY_TWO, new WorldPoint(3131, 3435, 0), "Pick up the stray puppy south-west of the cook's guild.");
 
@@ -239,10 +258,23 @@ public class ARuffSituation extends BasicQuestHelper
 		killOutlaws = new NpcStep(this, 16528, new WorldPoint(3135, 3475, 0), "Kill both outlaws (level 22 and level 23), then watch the cutscene.", true, combatGear, food);
 		killOutlaws.addAlternateNpcs(16527);
 
+		talkToDogToFight = new NpcStep(this, NpcID.DOGQ_DOG_STRAY, new WorldPoint(3136, 3467, 0),
+			"Talk to the stray dog near the bandits' camp, ready to fight.");
+		talkToDogToFight.addDialogStep("Yes.");
+		cTalkToDogAndKillOutlaws = new ConditionalStep(this, talkToDogToFight);
+		cTalkToDogAndKillOutlaws.addStep(inInstance, killOutlaws);
+
 		cFollowStrayDogToWallWatchCutscene = new ConditionalStep(this, followStrayDogToWall);
 		cFollowStrayDogToWallWatchCutscene.addStep(inCutscene, followStrayDogToWallWatchCutscene);
-		cKillOutlaws = new ConditionalStep(this, followStrayDogToWall);
+
+		talkToDogAfterFight = new NpcStep(this, NpcID.DOGQ_DOG_STRAY, new WorldPoint(3136, 3467, 0),
+			"Talk to the stray dog near the bandits' camp for a cutscene.");
+		talkToDogAfterFight.addDialogStep("Yes.");
+		killOutlaws.addSubSteps(talkToDogToFight, talkToDogAfterFight);
+
+		cKillOutlaws = new ConditionalStep(this, talkToDogAfterFight);
 		cKillOutlaws.addStep(inCutscene, killOutlaws.cutscene());
+
 		pickupPuppy1FromDen = new NpcStep(this, NpcID.DOGQ_PUPPY_ONE, new WorldPoint(3195, 3415, 0), "Pick up the puppy labrador from the den west of the Varrock apothecary.");
 		pickupPuppy2FromDen = new NpcStep(this, NpcID.DOGQ_PUPPY_TWO, new WorldPoint(3196, 3416, 0), "Pick up the puppy pug from the den west of the Varrock apothecary.");
 		pickupPuppy3FromDen = new NpcStep(this, NpcID.DOGQ_PUPPY_THREE, new WorldPoint(3196, 3413, 0), "Pick up the puppy spaniel from the den west of the Varrock apothecary.");
@@ -281,13 +313,13 @@ public class ARuffSituation extends BasicQuestHelper
 		steps.put(50, talkToStrayDog);
 		steps.put(55, cTalkToPicklenose);
 		steps.put(60, makeStuffedDog);
-		steps.put(65, talkToPicklenoseAgain);
-		steps.put(66, talkToPicklenoseAgainAfterHandingHimTheStuffedDog);
+		steps.put(65, cTalkToPicklenoseAgain);
+		steps.put(66, cTalkToPicklenoseAgainAfterHandingHimTheStuffedDog);
 		steps.put(70, pickUpStrayPuppy2);
 		steps.put(75, talkToStrayDogOutsideCooksGuild);
 		steps.put(80, followStrayDogToWall);
 		steps.put(85, cFollowStrayDogToWallWatchCutscene);
-		steps.put(90, killOutlaws);
+		steps.put(90, cTalkToDogAndKillOutlaws);
 		steps.put(95, cKillOutlaws);
 		steps.put(100, cKillOutlaws);
 		steps.put(105, talkToStrayDogAfterCollectingLastPuppy);

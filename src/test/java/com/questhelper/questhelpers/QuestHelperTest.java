@@ -370,6 +370,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.JUNGLE_POTION,
 			QuestHelperQuest.ARDOUGNE_EASY,
+			QuestHelperQuest.ENTER_THE_ABYSS,
 			QuestHelperQuest.TROUBLED_TORTUGANS,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.DEMON_SLAYER,

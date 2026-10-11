@@ -116,7 +116,7 @@ public class CrabQuest extends BasicQuestHelper
 
 		seaSoakedBowstring = new ItemRequirement("Sea-soaked Bowstring", ItemID.CRAB_BOWSTRING);
 		batteredBarrel = new ItemRequirement("Battered Barrel", ItemID.CRAB_BARREL);
-		weatheredRosewoodPlank = new ItemRequirement("Weathered Rosewood Plank", ItemID.CRAB_PLANK);
+		weatheredRosewoodPlank = new ItemRequirement("Weathered rosewood plank", ItemID.CRAB_PLANK);
 
 		instrument = new ItemRequirement("Instrument", ItemID.CRAB_BASS);
 
@@ -159,10 +159,10 @@ public class CrabQuest extends BasicQuestHelper
 		crabElevenRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_11, 1);
 		sufficientBandmatesRecruited = new VarbitRequirement(VarbitID.CRAB_PARTIAL_COMPLETE, 1);
 
-		nearCrabOne = new ZoneRequirement(true, crabOneZone);
-		nearCrabSix = new ZoneRequirement(true, crabSixZone);
-		nearCrabNine = new ZoneRequirement(true, crabNineZone);
-		nearCrabTen = new ZoneRequirement(true, crabTenZone);
+		nearCrabOne = new ZoneRequirement("Stand near the highlighted plant", crabOneZone);
+		nearCrabSix = new ZoneRequirement("Stand near the highlighted plant", crabSixZone);
+		nearCrabNine = new ZoneRequirement("Stand near the highlighted plant", crabNineZone);
+		nearCrabTen = new ZoneRequirement("Stand near the highlighted plant", crabTenZone);
 	}
 
 	public void setupSteps()

@@ -45,6 +45,7 @@ import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
@@ -62,6 +63,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+@Slf4j
 public abstract class QuestHelper implements Module, QuestDebugRenderer
 {
 	@Inject
@@ -252,7 +254,7 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 		}
 		catch (CreationException ex)
 		{
-			ex.printStackTrace();
+			log.error("Error instantiating step", ex);
 		}
 	}
 

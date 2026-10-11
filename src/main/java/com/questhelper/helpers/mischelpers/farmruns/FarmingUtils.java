@@ -374,17 +374,41 @@ public class FarmingUtils
 		FARMING();
 	}
 
-	public enum PayOrCut
+	public enum PayOrCut implements ConfigEnum
 	{
 		PAY(),
 		DIG();
+
+		@Override
+		public String getConfigKey()
+		{
+			return "payOrCutTree";
+		}
+
+		@Override
+		public PayOrCut getDefault()
+		{
+			return PayOrCut.PAY;
+		}
 	}
 
-	public enum PayOrCompost
+	public enum PayOrCompost implements ConfigEnum
 	{
 		PAY(),
 		COMPOST(),
 		NEITHER();
+
+		@Override
+		public String getConfigKey()
+		{
+			return "payOrCompostTree";
+		}
+
+		@Override
+		public PayOrCompost getDefault()
+		{
+			return PayOrCompost.PAY;
+		}
 	}
 }
 

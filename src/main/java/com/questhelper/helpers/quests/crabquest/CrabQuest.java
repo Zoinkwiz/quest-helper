@@ -11,17 +11,20 @@ import com.questhelper.requirements.player.SkillRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.not;
 import static com.questhelper.requirements.util.LogicHelper.or;
-import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.requirements.zone.Zone;
+import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.EmoteStep;
 import com.questhelper.steps.ItemStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.emote.QuestEmote;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,29 +45,50 @@ public class CrabQuest extends BasicQuestHelper
 	ItemRequirement bigFishingNet;
 	FreeInventorySlotRequirement nineSlots, fourSlots, threeSlots, twoSlots, oneSlot;
 
+	// Zones
+	Zone crabOneZone, crabSixZone, crabNineZone, crabTenZone;
+
 	// Quest Reqs
 	ItemRequirement shellOne, shellTwo, shellThree, shellFour, shellFive, shellSix, shellSeven;
 	ItemRequirement seaSoakedBowstring, batteredBarrel, weatheredRosewoodPlank;
 	ItemRequirement instrument;
-	VarbitRequirement inQuestInstance, beforeFishing, pastFishing, penguinKicked, sufficientBandmatesRecruited;
+	VarbitRequirement inQuestInstance, penguinKicked, sufficientBandmatesRecruited;
 	Requirement shellOneObtained, shellTwoObtained, shellThreeObtained, shellFourObtained, shellFiveObtained,
-		shellSixObtained, shellSevenObtained, shellsObtained;
+		shellSixObtained, shellSevenObtained;
 	Conditions floatsamPresent;
-	NpcCondition penguinPresent;
+	NpcCondition shyFemaleCrab, crabOne, crabTwo, crabThree, crabFour, crabFive, crabSix, crabSeven, crabEight,
+		crabNine, crabTen, crabEleven, penguin;
+	VarbitRequirement crabShy, crabOneRecruited, crabTwoRecruited, crabThreeRecruited, crabFourRecruited, crabFiveRecruited,
+		crabSixRecruited, crabSevenRecruited, crabEightRecruited, crabNineRecruited, crabTenRecruited,
+		crabElevenRecruited;
+	ZoneRequirement nearCrabOne, nearCrabSix, nearCrabNine, nearCrabTen;
 
 	// Steps
 	ObjectStep drinkFromBottle;
-	NpcStep talkToCrab, talkToCrabButHesShy;
+	NpcStep talkToCrab;
 	ItemStep pickUpShellOne, pickUpShellTwo, pickUpShellThree, pickUpShellFour, pickUpShellFive, pickUpShellSix,
 		pickUpShellSeven;
 	DetailedQuestStep pickUpShells;
 	NpcStep turnInShells;
 	ItemStep pickUpBigFishingNet;
 	NpcStep resetFloatsam, fishSeaSoakedBowstring, fishBatteredBarrel, fishWeatheredRosewoodPlank;
-	ItemStep assembleInstrument;
-	NpcStep turnInInstrument;
-	ObjectStep findPenguin, findCrabs;
-	NpcStep kickPenguin, returnToTheBeach;
+	ItemStep combineInstrument;
+	NpcStep turnInInstrument, talkToCrabAfterInstrument;
+	ObjectStep findShyCrab, findCrabOne, findCrabTwo, findCrabThree, findCrabFour, findCrabFive, findCrabSix,
+		findPenguin, findCrabEight, findCrabNine, findCrabTen, findCrabEleven;
+	EmoteStep sitForCrabOne, sitForCrabSix, sitForCrabNine, sitForCrabTen;
+	NpcStep kickPenguin, talkToShyCrab, talkToCrabOne, talkToCrabTwo, talkToCrabThree, talkToCrabFour, talkToCrabFive,
+		talkToCrabSix, talkToCrabSeven, talkToCrabEight, talkToCrabNine, talkToCrabTen, talkToCrabEleven,
+		returnToTheBeach;
+
+	@Override
+	protected void setupZones()
+	{
+		crabOneZone = new Zone(new WorldPoint(3041, 2638, 0), new WorldPoint(3043, 2636, 0));
+		crabSixZone = new Zone(new WorldPoint(3042, 2642, 0), new WorldPoint(3045, 2639, 0));
+		crabNineZone = new Zone(new WorldPoint(3035, 2646, 0), new WorldPoint(3038, 2643, 0));
+		crabTenZone = new Zone(new WorldPoint(3045, 2658, 0), new WorldPoint(3048, 2655, 0));
+	}
 
 	@Override
 	protected void setupRequirements()
@@ -93,8 +117,6 @@ public class CrabQuest extends BasicQuestHelper
 		seaSoakedBowstring = new ItemRequirement("Sea-soaked Bowstring", ItemID.CRAB_BOWSTRING);
 		batteredBarrel = new ItemRequirement("Battered Barrel", ItemID.CRAB_BARREL);
 		weatheredRosewoodPlank = new ItemRequirement("Weathered Rosewood Plank", ItemID.CRAB_PLANK);
-		beforeFishing = new VarbitRequirement(VarbitID.CRAB_MAIN, 35, Operation.LESS);
-		pastFishing = new VarbitRequirement(VarbitID.CRAB_MAIN, 40, Operation.GREATER);
 
 		instrument = new ItemRequirement("Instrument", ItemID.CRAB_BASS);
 
@@ -105,17 +127,42 @@ public class CrabQuest extends BasicQuestHelper
 		shellFiveObtained = or(shellFive, new VarbitRequirement(VarbitID.CRAB_SEASHELL_5, 1));
 		shellSixObtained = or(shellSix, new VarbitRequirement(VarbitID.CRAB_SEASHELL_6, 1));
 		shellSevenObtained = or(shellSeven, new VarbitRequirement(VarbitID.CRAB_SEASHELL_7, 1));
-		shellsObtained = or(and(
-				shellOneObtained, shellTwoObtained, shellThreeObtained, shellFourObtained,
-				shellFiveObtained, shellSixObtained, shellSevenObtained
-			),
-			new VarbitRequirement(VarbitID.CRAB_SEASHELLS, 127));
 
 		floatsamPresent = not(new VarbitRequirement(VarbitID.CRAB_FLOATSAM_HIDDEN, 3));
 
-		penguinPresent = new NpcCondition(NpcID.CRAB_PENGUIN, new WorldPoint(3049, 2658, 0));
+		shyFemaleCrab = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3045, 2653, 0));
+		crabOne = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3041, 2637, 0));
+		crabTwo = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3056, 2640, 0));
+		crabThree = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3041, 2649, 0));
+		crabFour = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3053, 2656, 0));
+		crabFive = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3037, 2646, 0));
+		crabSix = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3042, 2639, 0));
+		crabSeven = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3049, 2657, 0));
+		crabEight = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3051, 2636, 0));
+		crabNine = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3038, 2644, 0));
+		crabTen = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3047, 2655, 0));
+		crabEleven = new NpcCondition(NpcID.CRAB_BANDCRAB, new WorldPoint(3040, 2647, 0));
+		penguin = new NpcCondition(NpcID.CRAB_PENGUIN, new WorldPoint(3049, 2658, 0));
+
 		penguinKicked = new VarbitRequirement(VarbitID.CRAB_KICKED_PENGUIN, 1);
+		crabShy = new VarbitRequirement(VarbitID.CRAB_SHY, 2);
+		crabOneRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_1, 1);
+		crabTwoRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_2, 1);
+		crabThreeRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_3, 1);
+		crabFourRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_4, 1);
+		crabFiveRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_5, 1);
+		crabSixRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_6, 1);
+		crabSevenRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_7, 1);
+		crabEightRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_8, 1);
+		crabNineRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_9, 1);
+		crabTenRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_10, 1);
+		crabElevenRecruited = new VarbitRequirement(VarbitID.CRAB_RECRUITED_BANDMATE_11, 1);
 		sufficientBandmatesRecruited = new VarbitRequirement(VarbitID.CRAB_PARTIAL_COMPLETE, 1);
+
+		nearCrabOne = new ZoneRequirement(true, crabOneZone);
+		nearCrabSix = new ZoneRequirement(true, crabSixZone);
+		nearCrabNine = new ZoneRequirement(true, crabNineZone);
+		nearCrabTen = new ZoneRequirement(true, crabTenZone);
 	}
 
 	public void setupSteps()
@@ -130,10 +177,7 @@ public class CrabQuest extends BasicQuestHelper
 		talkToCrab = new NpcStep(this,
 			NpcID.CRAB_MAINCRAB_START,
 			"Talk to the crab.");
-
-		talkToCrabButHesShy = new NpcStep(this,
-			NpcID.CRAB_MAINCRAB_BLUSHING,
-			"Talk to the crab while he's blushing.");
+		talkToCrab.addAlternateNpcs(NpcID.CRAB_MAINCRAB_BLUSHING);
 
 		pickUpShellThree = new ItemStep(this,
 			new WorldPoint(3051, 2634, 0),
@@ -187,7 +231,6 @@ public class CrabQuest extends BasicQuestHelper
 
 		fishSeaSoakedBowstring = new NpcStep(this,
 			NpcID.CRAB_FLOATSAM_1,
-			/* new WorldPoint(3048, 2632, 0), */
 			"Fish a Sea-soaked bowstring from the nearby Floatsam.",
 			bigFishingNet, threeSlots);
 		fishSeaSoakedBowstring.addAlternateNpcs(NpcID.CRAB_FLOATSAM_2, NpcID.CRAB_FLOATSAM_3);
@@ -208,8 +251,8 @@ public class CrabQuest extends BasicQuestHelper
 			NpcID.CRAB_MAINCRAB,
 			"Speak to the crab to reset the floatsam.");
 
-		assembleInstrument = new ItemStep(this,
-			"Assemble the instrument using the items in your inventory.",
+		combineInstrument = new ItemStep(this,
+			"Combine the instrument using the items in your inventory.",
 			seaSoakedBowstring.highlighted(),
 			batteredBarrel.highlighted(),
 			weatheredRosewoodPlank.highlighted());
@@ -218,31 +261,106 @@ public class CrabQuest extends BasicQuestHelper
 			NpcID.CRAB_MAINCRAB_START,
 			"Show the instrument to the crab.",
 			instrument);
-		turnInInstrument.addDialogStep("A disaster.");
-		turnInInstrument.addDialogStep("Let me show you!");
 
-		findPenguin = new ObjectStep(this, ObjectID.CRAB_PALM_UPDATE01,
-			new WorldPoint(3048, 2658, 0),
-			"Check the northernmost palm to find a 'crab'.");
+		talkToCrabAfterInstrument = new NpcStep(this,
+			NpcID.CRAB_MAINCRAB_START,
+			"Speak to the crab about the instrument.");
+		talkToCrabAfterInstrument.addDialogStep("A disaster.");
+		talkToCrabAfterInstrument.addDialogStep("Let me show you!");
+
+		sitForCrabOne = new EmoteStep(this, QuestEmote.SIT, new WorldPoint(3041, 2638, 0),
+			"Perform the sit emote on loop until the crab appears. " +
+				"You must interact with the plant before emoting.", nearCrabOne);
+		sitForCrabSix = new EmoteStep(this, QuestEmote.SIT, new WorldPoint(3042, 2640, 0),
+			"Perform the sit emote on loop until the crab appears. " +
+				"You must interact with the plant before emoting.", nearCrabSix);
+		sitForCrabNine = new EmoteStep(this, QuestEmote.SIT, new WorldPoint(3038, 2644, 0),
+			"Perform the sit emote on loop until the crab appears. " +
+				"You must interact with the plant before emoting.", nearCrabNine);
+		sitForCrabTen = new EmoteStep(this, QuestEmote.SIT, new WorldPoint(3046, 2655, 0),
+			"Perform the sit emote on loop until the crab appears. " +
+				"You must interact with the plant before emoting.", nearCrabTen);
 
 		kickPenguin = new NpcStep(this, NpcID.CRAB_PENGUIN, new WorldPoint(3049, 2658, 0),
 			"Speak to the 'crab'.");
+		findShyCrab = new ObjectStep(this, ObjectID.CRAB_PALM_UPDATE03,
+			new WorldPoint(3044, 2653, 0),
+			"Check the palm near the center of the island, north of the bottle.");
+		talkToShyCrab = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3045, 2653, 0),
+			"Talk to the shy female crab about the crab on the beach.");
+		talkToShyCrab.setMaxRoamRange(1);
 
-		findCrabs = new ObjectStep(this, ObjectID.CRAB_ENAKH_LEAFLESSBUSH,
+		findCrabOne = new ObjectStep(this, ObjectID.CRAB_PALM_UPDATE01,
+			new WorldPoint(3042, 2637, 0),
+			"Check the palm south of the magic tree.");
+		findCrabTwo = new ObjectStep(this, ObjectID.CRAB_ENAKH_LEAFLESSBUSH,
+			new WorldPoint(3057, 2640, 0),
+			"Check the leafless bush closest to the bottle.");
+		findCrabThree = new ObjectStep(this, ObjectID.CRAB_PALM_UPDATE01,
+			new WorldPoint(3040, 2649, 0),
+			"Check the palm northwest of the bottle.");
+		findCrabFour = new ObjectStep(this, ObjectID.CRAB_GROUNDCOVER_PLANT4_WITHERED,
+			new WorldPoint(3054, 2656, 0),
+			"Check the eastern-most plant on the north of the island.");
+		findCrabFive = new ObjectStep(this, ObjectID.CRAB_PALM_UPDATE02,
+			new WorldPoint(3037, 2647, 0),
+			"Check the northern-most plant along the western coast of the island.");
+		findCrabSix = new ObjectStep(this, ObjectID.CRAB_MAGICTREE,
+			new WorldPoint(3043, 2640, 0),
+			"Check the magic tree.");
+		findPenguin = new ObjectStep(this, ObjectID.CRAB_PALM_UPDATE01,
+			new WorldPoint(3048, 2658, 0),
+			"Check the northernmost palm.");
+		findCrabEight = new ObjectStep(this, ObjectID.CRAB_ENAKH_LEAFLESSBUSH,
 			new WorldPoint(3050, 2636, 0),
-			"Interact with the nearby plants to find crabs. " +
-				"Speak with the crabs to recruit them to join the band. " +
-				"If you are prompted that the crabs might be scared, perform the Sit emote for a short time " +
-				"until a crab appears.",
-			true);
-		findCrabs.addAlternateObjects(ObjectID.CRAB_AVIUM_TREE_1, ObjectID.CRAB_AVIUM_TREE_2,
-			ObjectID.CRAB_GROUNDCOVER_PLANT4_WITHERED, ObjectID.CRAB_MAGICTREE, ObjectID.CRAB_PALM_UPDATE01,
-			ObjectID.CRAB_PALM_UPDATE02, ObjectID.CRAB_PALM_UPDATE03);
-		findCrabs.setHideWorldArrow(true);
-		findCrabs.addDialogStep("1, 2, 3, 10, 11, 12, 13, 20, 21, 22, 23...");
-		findCrabs.addDialogStep("Every 100 years.");
-		findCrabs.addDialogStep("On the beach.");
-		findCrabs.addDialogStep("You can't possibly expect me to know that!");
+			"Check the leafless bush southwest of the bottle.");
+		findCrabNine = new ObjectStep(this, ObjectID.CRAB_AVIUM_TREE_1,
+			new WorldPoint(3037, 2644, 0),
+			"Check the avium tree on the western coast of the island.");
+		findCrabTen = new ObjectStep(this, ObjectID.CRAB_AVIUM_TREE_1,
+			new WorldPoint(3047, 2656, 0),
+			"Check the avium tree west of the northernmost palm.");
+		findCrabEleven = new ObjectStep(this, ObjectID.CRAB_PALM_UPDATE03,
+			new WorldPoint(3039, 2647, 0),
+			"Check the palm east of the westernmost palm.");
+
+		talkToCrabOne = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3041, 2637, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabOne.setMaxRoamRange(1);
+		talkToCrabTwo = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3056, 2640, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabTwo.setMaxRoamRange(1);
+		talkToCrabThree = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3041, 2649, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabThree.setMaxRoamRange(1);
+		talkToCrabFour = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3053, 2656, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabFour.setMaxRoamRange(1);
+		talkToCrabFive = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3037, 2646, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabFive.setMaxRoamRange(1);
+		talkToCrabSix = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3042, 2639, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabSix.setMaxRoamRange(1);
+		talkToCrabSeven = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3049, 2657, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabSeven.setMaxRoamRange(1);
+		talkToCrabEight = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3051, 2636, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabEight.setMaxRoamRange(1);
+		talkToCrabNine = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3038, 2644, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabNine.setMaxRoamRange(1);
+		talkToCrabNine.addDialogStep("1, 2, 3, 10, 11, 12, 13, 20, 21, 22, 23...");
+		talkToCrabNine.addDialogStep("Every 100 years.");
+		talkToCrabNine.addDialogStep("On the beach.");
+		talkToCrabNine.addDialogStep("You can't possibly expect me to know that!");
+		talkToCrabTen = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3047, 2655, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabTen.setMaxRoamRange(1);
+		talkToCrabEleven = new NpcStep(this, NpcID.CRAB_BANDCRAB, new WorldPoint(3040, 2647, 0),
+			"Talk to the crab to recruit a bandmember.");
+		talkToCrabEleven.setMaxRoamRange(1);
 
 		returnToTheBeach = new NpcStep(this,
 			NpcID.CRAB_MAINCRAB_END,
@@ -267,7 +385,7 @@ public class CrabQuest extends BasicQuestHelper
 			.addStep(not(inQuestInstance), drinkFromBottle));
 		steps.put(15, new ConditionalStep(this, talkToCrab)
 			.addStep(not(inQuestInstance), drinkFromBottle));
-		steps.put(20, new ConditionalStep(this, talkToCrabButHesShy)
+		steps.put(20, new ConditionalStep(this, talkToCrab)
 			.addStep(not(inQuestInstance), drinkFromBottle));
 
 		var cShells = new ConditionalStep(this, turnInShells);
@@ -288,9 +406,9 @@ public class CrabQuest extends BasicQuestHelper
 		cShells.addStep(not(shellTwoObtained), pickUpShellTwo);
 		cShells.addStep(not(shellFiveObtained), pickUpShellFive);
 		steps.put(25, cShells);
-		steps.put(30, turnInShells);
+		steps.put(30, new ConditionalStep(this, turnInShells).addStep(not(inQuestInstance), drinkFromBottle));
 
-		var cInstrument = new ConditionalStep(this, assembleInstrument, seaSoakedBowstring, batteredBarrel,
+		var cInstrument = new ConditionalStep(this, combineInstrument, seaSoakedBowstring, batteredBarrel,
 			weatheredRosewoodPlank);
 		cInstrument.addStep(not(inQuestInstance), drinkFromBottle);
 		cInstrument.addStep(and(not(and(seaSoakedBowstring, batteredBarrel, weatheredRosewoodPlank)),
@@ -315,17 +433,45 @@ public class CrabQuest extends BasicQuestHelper
 		cInstrumentSafety.addStep(and(not(instrument), not(batteredBarrel)), fishBatteredBarrel);
 		cInstrumentSafety.addStep(and(not(instrument), not(weatheredRosewoodPlank)), fishWeatheredRosewoodPlank);
 		cInstrumentSafety.addStep(and(not(instrument), seaSoakedBowstring, batteredBarrel, weatheredRosewoodPlank),
-			assembleInstrument);
+			combineInstrument);
 		steps.put(40, cInstrumentSafety);
 
-		steps.put(45, new ConditionalStep(this, turnInInstrument)
+		steps.put(45, new ConditionalStep(this, talkToCrabAfterInstrument)
 			.addStep(not(inQuestInstance), drinkFromBottle));
 
 		var cRustacean = new ConditionalStep(this, returnToTheBeach);
 		cRustacean.addStep(not(inQuestInstance), drinkFromBottle);
-		cRustacean.addStep(and(not(penguinPresent), not(penguinKicked)), findPenguin);
+		cRustacean.addStep(sufficientBandmatesRecruited, returnToTheBeach);
+		cRustacean.addStep(and(not(crabShy), not(shyFemaleCrab)), findShyCrab);
+		cRustacean.addStep(not(crabShy), talkToShyCrab);
+		cRustacean.addStep(and(not(penguin), not(penguinKicked)), findPenguin);
 		cRustacean.addStep(not(penguinKicked), kickPenguin);
-		cRustacean.addStep(not(sufficientBandmatesRecruited), findCrabs);
+		cRustacean.addStep(and(not(crabSeven), not(crabSevenRecruited)), findPenguin);
+		cRustacean.addStep(not(crabSevenRecruited), talkToCrabSeven);
+		cRustacean.addStep(and(not(crabFour), not(crabFourRecruited)), findCrabFour);
+		cRustacean.addStep(not(crabFourRecruited), talkToCrabFour);
+		cRustacean.addStep(and(not(crabTen), not(crabTenRecruited), not(nearCrabTen)), findCrabTen);
+		cRustacean.addStep(and(not(crabTen), not(crabTenRecruited)), sitForCrabTen);
+		cRustacean.addStep(not(crabTenRecruited), talkToCrabTen);
+		cRustacean.addStep(and(not(crabThree), not(crabThreeRecruited)), findCrabThree);
+		cRustacean.addStep(not(crabThreeRecruited), talkToCrabThree);
+		cRustacean.addStep(and(not(crabEleven), not(crabElevenRecruited)), findCrabEleven);
+		cRustacean.addStep(not(crabElevenRecruited), talkToCrabEleven);
+		cRustacean.addStep(and(not(crabFive), not(crabFiveRecruited)), findCrabFive);
+		cRustacean.addStep(not(crabFiveRecruited), talkToCrabFive);
+		cRustacean.addStep(and(not(crabNine), not(crabNineRecruited), not(nearCrabNine)), findCrabNine);
+		cRustacean.addStep(and(not(crabNine), not(crabNineRecruited)), sitForCrabNine);
+		cRustacean.addStep(not(crabNineRecruited), talkToCrabNine);
+		cRustacean.addStep(and(not(crabOne), not(crabOneRecruited), not(nearCrabOne)), findCrabOne);
+		cRustacean.addStep(and(not(crabOne), not(crabOneRecruited)), sitForCrabOne);
+		cRustacean.addStep(not(crabOneRecruited), talkToCrabOne);
+		cRustacean.addStep(and(not(crabSix), not(crabSixRecruited), not(nearCrabSix)), findCrabSix);
+		cRustacean.addStep(and(not(crabSix), not(crabSixRecruited)), sitForCrabSix);
+		cRustacean.addStep(not(crabSixRecruited), talkToCrabSix);
+		cRustacean.addStep(and(not(crabEight), not(crabEightRecruited)), findCrabEight);
+		cRustacean.addStep(not(crabEightRecruited), talkToCrabEight);
+		cRustacean.addStep(and(not(crabTwo), not(crabTwoRecruited)), findCrabTwo);
+		cRustacean.addStep(not(crabTwoRecruited), talkToCrabTwo);
 		steps.put(47, cRustacean);
 
 		steps.put(50, new ConditionalStep(this, returnToTheBeach)
@@ -396,7 +542,6 @@ public class CrabQuest extends BasicQuestHelper
 		sections.add(new PanelDetails("Starting off", List.of(
 			drinkFromBottle,
 			talkToCrab,
-			talkToCrabButHesShy,
 			pickUpShells
 		), oneSlot));
 
@@ -406,12 +551,24 @@ public class CrabQuest extends BasicQuestHelper
 			fishSeaSoakedBowstring,
 			fishBatteredBarrel,
 			fishWeatheredRosewoodPlank,
-			assembleInstrument,
-			turnInInstrument
+			combineInstrument,
+			turnInInstrument,
+			talkToCrabAfterInstrument
 		), bigFishingNet, threeSlots));
 
 		sections.add(new PanelDetails("Recruit some band members", List.of(
-			findPenguin, kickPenguin, findCrabs
+			findShyCrab, talkToShyCrab,
+			findPenguin, kickPenguin, talkToCrabSeven,
+			findCrabFour, talkToCrabFour,
+			findCrabTen, sitForCrabTen, talkToCrabTen,
+			findCrabThree, talkToCrabThree,
+			findCrabEleven, talkToCrabEleven,
+			findCrabFive, talkToCrabFive,
+			findCrabNine, sitForCrabNine, talkToCrabNine,
+			findCrabOne, sitForCrabOne, talkToCrabOne,
+			findCrabSix, sitForCrabSix, talkToCrabSix,
+			findCrabEight, talkToCrabEight,
+			findCrabTwo, talkToCrabTwo
 		)));
 
 		sections.add(new PanelDetails("Attend the concert", List.of(

@@ -33,106 +33,137 @@ import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemOnTileRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.DialogRequirement;
+import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
+import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
+import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.requirements.widget.WidgetTextRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
-import com.questhelper.steps.*;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.DetailedQuestStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.PuzzleWrapperStep;
+import com.questhelper.steps.QuestStep;
+import com.questhelper.steps.QuestSyncStep;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
-
-import java.util.*;
+import net.runelite.api.gameval.VarPlayerID;
 
 public class DeathPlateau extends BasicQuestHelper
 {
-	//Items Recommended
+	// Required items
+	ItemRequirement coins;
+	ItemRequirement premadeBlurb;
+	ItemRequirement ironBar;
+	ItemRequirement bread;
+	ItemRequirement trout;
+
+	// Recommended items
 	ItemRequirement gamesNecklace;
 
-	//Items Required
-	ItemRequirement asgarnianAle, premadeBlurb, coins, bread, trout, ironBar, iou, iouHighlight, redStone, blueStone,
-		yellowStone, pinkStone, greenStone, certificate, climbingBoots, spikedBoots, secretMap, combination;
+	// Mid-quest item requirements
+	ItemRequirement asgarnianAle;
+	ItemRequirement iou;
+	ItemRequirement iouHighlight;
+	ItemRequirement redStone;
+	ItemRequirement blueStone;
+	ItemRequirement yellowStone;
+	ItemRequirement pinkStone;
+	ItemRequirement greenStone;
+	ItemRequirement certificate;
+	ItemRequirement climbingBoots;
+	ItemRequirement spikedBoots;
+	ItemRequirement secretMap;
+	ItemRequirement combination;
 
-	Requirement inCastleDownstairs, inCastleUpstairs, inBarDownstairs, inBarUpstairs, inHaroldsRoom,
-		givenHaroldBlurberry, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone,
-		isGreenStoneDone, inSabaCave, isFarEnough, talkedToSaba, talkedToDunstan;
+	// Zones
+	Zone castleDownstairs;
+	Zone castleUpstairs;
+	Zone barDownstairs;
+	Zone barUpstairs;
+	Zone haroldsRoom1;
+	Zone haroldsRoom2;
+	Zone sabaCave;
 
-	QuestStep talkToDenulth1, goToEohric1, talkToEohric1, goToHaroldStairs1, goToHaroldDoor1, talkToHarold1,
-		goToEohric2, talkToEohric2, takeAsgarnianAle, goToHaroldStairs2, goToHaroldDoor2, talkToHarold2,
-		giveHaroldBlurberry, gambleWithHarold, readIou, placeRedStone, placeBlueStone, placeYellowStone,
-		placePinkStone, placeGreenStone, placeStones, enterSabaCave, talkToSaba, leaveSabaCave,
-		talkToTenzing1, talkToDunstan1, talkToDenulthForDunstan, talkToDunstan2, talkToTenzing2,
-		goNorth, talkToDenulth3, goToHaroldStairs3, goToHaroldDoor3, talkToHarold3;
+	// Miscellaneous requirements
+	Requirement inCastleDownstairs;
+	Requirement inCastleUpstairs;
+	Requirement inBarDownstairs;
+	Requirement inBarUpstairs;
+	Requirement inHaroldsRoom;
+	Requirement givenHaroldBlurberry;
+	Requirement isRedStoneDone;
+	Requirement isBlueStoneDone;
+	Requirement isYellowStoneDone;
+	Requirement isPinkStoneDone;
+	Requirement isGreenStoneDone;
+	Requirement inSabaCave;
+	Conditions hasSynced;
+	Requirement isFarEnough;
+	Requirement talkedToSaba;
+	Requirement talkedToDunstan;
+	Requirement givenCertificate;
 
-	//Zones
-	Zone castleDownstairs, castleUpstairs, barDownstairs, barUpstairs, haroldsRoom1, haroldsRoom2, sabaCave;
+	// Steps
+	NpcStep talkToDenulth1;
+	ObjectStep goToEohric1;
+	NpcStep talkToEohric1;
+	ObjectStep goToHaroldStairs1;
+	ObjectStep goToHaroldDoor1;
+	NpcStep talkToHarold1;
+	ObjectStep goToEohric2;
+	NpcStep talkToEohric2;
+	DetailedQuestStep takeAsgarnianAle;
+	ObjectStep goToHaroldStairs2;
+	ObjectStep goToHaroldDoor2;
+	NpcStep talkToHarold2;
+	NpcStep giveHaroldBlurberry;
+	NpcStep gambleWithHarold;
+	DetailedQuestStep readIou;
+	PuzzleWrapperStep placeRedStone;
+	PuzzleWrapperStep placeBlueStone;
+	PuzzleWrapperStep placeYellowStone;
+	PuzzleWrapperStep placePinkStone;
+	PuzzleWrapperStep placeGreenStone;
+	DetailedQuestStep placeStones;
+	QuestSyncStep syncStep;
+	ObjectStep enterSabaCave;
+	NpcStep talkToSaba;
+	ObjectStep leaveSabaCave;
+	NpcStep talkToTenzing1;
+	NpcStep talkToDunstan1;
+	NpcStep talkToDenulthForDunstan;
+	NpcStep talkToDunstan2;
+	NpcStep talkToTenzing2;
+	DetailedQuestStep goNorth;
+	NpcStep talkToDenulth3;
 
 	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	protected void setupZones()
 	{
-		initializeRequirements();
-		setupConditions();
-		setupSteps();
-
-		Map<Integer, QuestStep> steps = new HashMap<>();
-		steps.put(0, talkToDenulth1);
-
-		ConditionalStep talkToEohricSteps1 = new ConditionalStep(this, goToEohric1);
-		talkToEohricSteps1.addStep(inCastleUpstairs, talkToEohric1);
-		steps.put(10, talkToEohricSteps1);
-
-		ConditionalStep talkToHaroldSteps1 = new ConditionalStep(this, goToHaroldStairs1);
-		talkToHaroldSteps1.addStep(inHaroldsRoom, talkToHarold1);
-		talkToHaroldSteps1.addStep(inBarUpstairs, goToHaroldDoor1);
-		steps.put(20, talkToHaroldSteps1);
-
-		ConditionalStep talkToEohricSteps2 = new ConditionalStep(this, goToEohric2);
-		talkToEohricSteps2.addStep(inCastleUpstairs, talkToEohric2);
-		steps.put(30, talkToEohricSteps2);
-
-		ConditionalStep talkToHaroldSteps2 = new ConditionalStep(this, takeAsgarnianAle);
-		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle, inHaroldsRoom), talkToHarold2);
-		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle, inBarUpstairs), goToHaroldDoor2);
-		talkToHaroldSteps2.addStep(new Conditions(asgarnianAle), goToHaroldStairs2);
-		steps.put(40, talkToHaroldSteps2);
-
-		ConditionalStep gambleSteps = new ConditionalStep(this, giveHaroldBlurberry);
-		gambleSteps.addStep(givenHaroldBlurberry, gambleWithHarold);
-		steps.put(50, gambleSteps);
-
-		steps.put(55, readIou);
-
-		ConditionalStep stoneSteps = new ConditionalStep(this, placeStones);
-		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone), placeGreenStone);
-		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone, isBlueStoneDone, isYellowStoneDone), placePinkStone);
-		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone, isBlueStoneDone), placeYellowStone);
-		stoneSteps.addStep(new Conditions(inCastleDownstairs, isRedStoneDone), placeBlueStone);
-		stoneSteps.addStep(new Conditions(inCastleDownstairs), placeRedStone);
-		steps.put(60, stoneSteps);
-
-		ConditionalStep finalSteps = new ConditionalStep(this, enterSabaCave);
-		finalSteps.addStep(new Conditions(isFarEnough, combination), talkToDenulth3);
-		finalSteps.addStep(new Conditions(isFarEnough, inHaroldsRoom), talkToHarold3);
-		finalSteps.addStep(new Conditions(isFarEnough, inBarUpstairs), goToHaroldDoor3);
-		finalSteps.addStep(new Conditions(isFarEnough), goToHaroldDoor3);
-		finalSteps.addStep(new Conditions(secretMap), goNorth);
-		finalSteps.addStep(new Conditions(spikedBoots.alsoCheckBank()), talkToTenzing2);
-		finalSteps.addStep(new Conditions(climbingBoots, certificate.alsoCheckBank()), talkToDunstan2);
-		finalSteps.addStep(new Conditions(climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
-		finalSteps.addStep(new Conditions(climbingBoots), talkToDunstan1);
-		finalSteps.addStep(new Conditions(talkedToSaba, inSabaCave), leaveSabaCave);
-		finalSteps.addStep(talkedToSaba, talkToTenzing1);
-		finalSteps.addStep(inSabaCave, talkToSaba);
-		steps.put(70, finalSteps);
-
-		// 261 varp = 7, 262 = 7
-
-		return steps;
+		castleDownstairs = new Zone(new WorldPoint(2893, 3558, 0), new WorldPoint(2904, 3569, 0));
+		castleUpstairs = new Zone(new WorldPoint(2891, 3556, 1), new WorldPoint(2906, 3571, 1));
+		barDownstairs = new Zone(new WorldPoint(2905, 3536, 0), new WorldPoint(2915, 3543, 0));
+		barUpstairs = new Zone(new WorldPoint(2905, 3536, 1), new WorldPoint(2915, 3544, 1));
+		haroldsRoom1 = new Zone(new WorldPoint(2905, 3536, 1), new WorldPoint(2906, 3542, 1));
+		haroldsRoom2 = new Zone(new WorldPoint(2907, 3542, 1), new WorldPoint(2907, 3542, 1));
+		sabaCave = new Zone(new WorldPoint(2266, 4752, 0), new WorldPoint(2273, 4762, 0));
 	}
 
 	@Override
@@ -164,25 +195,11 @@ public class DeathPlateau extends BasicQuestHelper
 		climbingBoots = new ItemRequirement("Climbing boots", ItemCollections.CLIMBING_BOOTS);
 		spikedBoots = new ItemRequirement("Spiked boots", ItemID.DEATH_SPIKEDBOOTS);
 		secretMap = new ItemRequirement("Secret way map", ItemID.DEATH_SECRETWAYMAP);
+		secretMap.setTooltip("You can get another by talking to Tenzing");
 		combination = new ItemRequirement("Combination", ItemID.DEATH_COMBINATION);
 		combination.setTooltip("You can get another by talking to Harold upstairs in Burthorpe's Pub");
 		gamesNecklace = new ItemRequirement("Games necklace", ItemCollections.GAMES_NECKLACES);
-	}
 
-	@Override
-	protected void setupZones()
-	{
-		castleDownstairs = new Zone(new WorldPoint(2893, 3558, 0), new WorldPoint(2904, 3569, 0));
-		castleUpstairs = new Zone(new WorldPoint(2891, 3556, 1), new WorldPoint(2906, 3571, 1));
-		barDownstairs = new Zone(new WorldPoint(2905, 3536, 0), new WorldPoint(2915, 3543, 0));
-		barUpstairs = new Zone(new WorldPoint(2905, 3536, 1), new WorldPoint(2915, 3544, 1));
-		haroldsRoom1 = new Zone(new WorldPoint(2905, 3536, 1), new WorldPoint(2906, 3542, 1));
-		haroldsRoom2 = new Zone(new WorldPoint(2907, 3542, 1), new WorldPoint(2907, 3542, 1));
-		sabaCave = new Zone(new WorldPoint(2266, 4752, 0), new WorldPoint(2273, 4762, 0));
-	}
-
-	public void setupConditions()
-	{
 		inCastleDownstairs = new ZoneRequirement(castleDownstairs);
 		inCastleUpstairs = new ZoneRequirement(castleUpstairs);
 		inBarDownstairs = new ZoneRequirement(barDownstairs);
@@ -195,14 +212,32 @@ public class DeathPlateau extends BasicQuestHelper
 		isPinkStoneDone = new ItemOnTileRequirement(pinkStone, new WorldPoint(2895, 3563, 0));
 		isGreenStoneDone = new ItemOnTileRequirement(greenStone, new WorldPoint(2895, 3564, 0));
 		inSabaCave = new ZoneRequirement(sabaCave);
-		isFarEnough = new ChatMessageRequirement("You should go and speak to Denulth.");
+		isFarEnough = new Conditions(true, LogicType.OR,
+			new ChatMessageRequirement("You should go and speak to Denulth."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=000080>I should go and tell <col=800000>Denulth<col=000080> I've completed my mission.")
+		);
 		talkedToSaba = new Conditions(true, LogicType.OR,
 			new DialogRequirement("Before the trolls came there used to be a nettlesome"),
-			new DialogRequirement("Have you got rid of those pesky trolls yet?")
+			new DialogRequirement("Have you got rid of those pesky trolls yet?"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=800000>Saba<col=000080> says that there is a <col=800000>sherpa<col=000080> living"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "I found the sherpa's house")
 		);
 		talkedToDunstan = new Conditions(true, LogicType.OR,
 			new DialogRequirement("My son has just turned 16"),
-			new DialogRequirement("Have you managed to get my son")
+			new DialogRequirement("Have you managed to get my son"),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=800000>Dunstan<col=000080> will help me if I get his <col=800000>son signed up<col=000080> for the <col=800000>Imperial")
+		);
+		givenCertificate = new Conditions(true, LogicType.OR,
+			givenHaroldBlurberry = new ChatMessageRequirement("You give Dunstan the certificate."),
+			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have given Dunstan the certificate to prove that his son has")
+		);
+
+		certificate.setConditionToHide(givenCertificate);
+
+		var startedQuestThisSession = new Conditions(true, new VarplayerRequirement(VarPlayerID.DEATH_EQUIPROOM, 60, Operation.LESS_EQUAL));
+		hasSynced = new Conditions(true, LogicType.OR,
+			startedQuestThisSession,
+			new WidgetTextRequirement(InterfaceID.Questjournal.TITLE, "Death Plateau")
 		);
 	}
 
@@ -260,6 +295,8 @@ public class DeathPlateau extends BasicQuestHelper
 		placeStones = new DetailedQuestStep(this, new WorldPoint(2896, 3563, 0), "Go back to Burthorpe castle, and place the coloured stone balls in the correct spots on the mechanism.");
 		placeStones.addSubSteps(placeRedStone, placeBlueStone, placeYellowStone, placePinkStone, placeGreenStone);
 
+		syncStep = new QuestSyncStep(this, getQuest(), "Open the quest's journal to sync your current quest state.");
+
 		enterSabaCave = new ObjectStep(this, ObjectID.DEATH_HERMITCAVE_ENTRANCE, new WorldPoint(2858, 3579, 0), "Enter the cave north west of Burthorpe.");
 
 		talkToSaba = new NpcStep(this, NpcID.DEATH_HERMIT, new WorldPoint(2270, 4757, 0), "Talk to Saba.");
@@ -268,7 +305,7 @@ public class DeathPlateau extends BasicQuestHelper
 		leaveSabaCave = new ObjectStep(this, ObjectID.DEATH_HERMITCAVE_EXIT, new WorldPoint(2269, 4751, 0), "Leave Saba's cave.");
 
 		talkToTenzing1 = new NpcStep(this, NpcID.DEATH_SHERPA, new WorldPoint(2820, 3555, 0), "Go northwest of Burthorpe, then south at the fork, and talk to Tenzing.");
-		talkToTenzing1.addDialogStep(1, "OK, I'll get those for you.");
+		talkToTenzing1.addDialogStep("OK, I'll get those for you.");
 		talkToTenzing1.addSubSteps(leaveSabaCave);
 
 		talkToDenulthForDunstan = new NpcStep(this, NpcID.DEATH_IG_COMMANDER, new WorldPoint(2896, 3529, 0), "Ask Denulth about Dunstan's son.");
@@ -280,23 +317,87 @@ public class DeathPlateau extends BasicQuestHelper
 
 		goNorth = new DetailedQuestStep(this, new WorldPoint(2865, 3609, 0), "Exit Tenzing's house into the backyard THROUGH THE NORTH DOOR and OVER THE STILE. Continue north past the Death Plateau warning, and around to the east until you stop and say you've gone far enough.", secretMap);
 
-		goToHaroldStairs3 = new ObjectStep(this, ObjectID.STAIRS, new WorldPoint(2915, 3540, 0), "If you lost the Combination, retrieve it from Harold.");
-		goToHaroldDoor3 = new ObjectStep(this, ObjectID.DEATH_HAROLD_DOOR, new WorldPoint(2906, 3543, 1), "If you lost the Combination, retrieve it from Harold.");
-		talkToHarold3 = new NpcStep(this, NpcID.DEATH_GUARD_EQUIPROOM, new WorldPoint(2906, 3540, 1), "If you lost the Combination, retrieve it from Harold.");
 		talkToDenulth3 = new NpcStep(this, NpcID.DEATH_IG_COMMANDER, new WorldPoint(2896, 3529, 0), "Go back and talk to Denulth, giving him the secret map and Combination.", secretMap, combination);
-		talkToDenulth3.addSubSteps(goToHaroldStairs3, goToHaroldDoor3, talkToHarold3);
+	}
+
+	@Override
+	public Map<Integer, QuestStep> loadSteps()
+	{
+		initializeRequirements();
+		setupSteps();
+
+		var steps = new HashMap<Integer, QuestStep>();
+		steps.put(0, talkToDenulth1);
+
+		var talkToEohricSteps1 = new ConditionalStep(this, goToEohric1);
+		talkToEohricSteps1.addStep(inCastleUpstairs, talkToEohric1);
+		steps.put(10, talkToEohricSteps1);
+
+		var talkToHaroldSteps1 = new ConditionalStep(this, goToHaroldStairs1);
+		talkToHaroldSteps1.addStep(inHaroldsRoom, talkToHarold1);
+		talkToHaroldSteps1.addStep(inBarUpstairs, goToHaroldDoor1);
+		steps.put(20, talkToHaroldSteps1);
+
+		var talkToEohricSteps2 = new ConditionalStep(this, goToEohric2);
+		talkToEohricSteps2.addStep(inCastleUpstairs, talkToEohric2);
+		steps.put(30, talkToEohricSteps2);
+
+		var talkToHaroldSteps2 = new ConditionalStep(this, takeAsgarnianAle);
+		talkToHaroldSteps2.addStep(and(asgarnianAle, inHaroldsRoom), talkToHarold2);
+		talkToHaroldSteps2.addStep(and(asgarnianAle, inBarUpstairs), goToHaroldDoor2);
+		talkToHaroldSteps2.addStep(asgarnianAle, goToHaroldStairs2);
+		steps.put(40, talkToHaroldSteps2);
+
+		var gambleSteps = new ConditionalStep(this, giveHaroldBlurberry);
+		gambleSteps.addStep(givenHaroldBlurberry, gambleWithHarold);
+		steps.put(50, gambleSteps);
+
+		steps.put(55, readIou);
+
+		var stoneSteps = new ConditionalStep(this, placeStones);
+		stoneSteps.addStep(and(inCastleDownstairs, isRedStoneDone, isBlueStoneDone, isYellowStoneDone, isPinkStoneDone), placeGreenStone);
+		stoneSteps.addStep(and(inCastleDownstairs, isRedStoneDone, isBlueStoneDone, isYellowStoneDone), placePinkStone);
+		stoneSteps.addStep(and(inCastleDownstairs, isRedStoneDone, isBlueStoneDone), placeYellowStone);
+		stoneSteps.addStep(and(inCastleDownstairs, isRedStoneDone), placeBlueStone);
+		stoneSteps.addStep(inCastleDownstairs, placeRedStone);
+		steps.put(60, stoneSteps);
+
+		var finalSteps = new ConditionalStep(this, enterSabaCave);
+		finalSteps.addStep(not(hasSynced), syncStep);
+		finalSteps.addStep(isFarEnough, talkToDenulth3);
+		finalSteps.addStep(secretMap, goNorth);
+		finalSteps.addStep(and(talkedToSaba, spikedBoots.alsoCheckBank()), talkToTenzing2);
+		finalSteps.addStep(and(talkedToSaba, climbingBoots, or(certificate.alsoCheckBank(), givenCertificate)), talkToDunstan2);
+		finalSteps.addStep(and(talkedToSaba, climbingBoots, talkedToDunstan), talkToDenulthForDunstan);
+		finalSteps.addStep(and(talkedToSaba, climbingBoots), talkToDunstan1);
+		finalSteps.addStep(and(talkedToSaba, inSabaCave), leaveSabaCave);
+		finalSteps.addStep(talkedToSaba, talkToTenzing1);
+		finalSteps.addStep(inSabaCave, talkToSaba);
+		steps.put(70, finalSteps);
+
+		// 261 varp = 7, 262 = 7
+
+		return steps;
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(coins, premadeBlurb, ironBar, bread, trout);
+		return List.of(
+			coins,
+			premadeBlurb,
+			ironBar,
+			bread,
+			trout
+		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
 	{
-		return Collections.singletonList(gamesNecklace);
+		return List.of(
+			gamesNecklace
+		);
 	}
 
 	@Override
@@ -308,30 +409,70 @@ public class DeathPlateau extends BasicQuestHelper
 	@Override
 	public List<ExperienceReward> getExperienceRewards()
 	{
-		return Collections.singletonList(new ExperienceReward(Skill.ATTACK, 3000));
+		return List.of(
+			new ExperienceReward(Skill.ATTACK, 3000)
+		);
 	}
 
 	@Override
 	public List<ItemReward> getItemRewards()
 	{
-		return Collections.singletonList(new ItemReward("A pair of Steel Claws", ItemID.STEEL_CLAWS, 1));
+		return List.of(
+			new ItemReward("A pair of Steel Claws", ItemID.STEEL_CLAWS, 1)
+		);
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
-		return Arrays.asList(
-				new UnlockReward("The ability to craft claws."),
-				new UnlockReward("The ability to purchase and equip Climbing Boots."));
+		return List.of(
+			new UnlockReward("The ability to craft claws."),
+			new UnlockReward("The ability to purchase and equip Climbing Boots.")
+		);
 	}
 
 	@Override
 	public List<PanelDetails> getPanels()
 	{
-		List<PanelDetails> allSteps = new ArrayList<>();
-		allSteps.add(new PanelDetails("The equipment room", Arrays.asList(talkToDenulth1, talkToEohric1, talkToHarold1, talkToEohric2, takeAsgarnianAle, talkToHarold2, giveHaroldBlurberry, gambleWithHarold, readIou, placeStones), coins, premadeBlurb));
-		allSteps.add(new PanelDetails("Get spiked boots", Arrays.asList(enterSabaCave, talkToSaba, talkToTenzing1, talkToDunstan1, talkToDunstan2), ironBar));
-		allSteps.add(new PanelDetails("The secret path", Arrays.asList(talkToTenzing2, goNorth, talkToDenulth3), bread, trout));
-		return allSteps;
+		var sections = new ArrayList<PanelDetails>();
+
+		sections.add(new PanelDetails("The equipment room", List.of(
+			talkToDenulth1,
+			talkToEohric1,
+			talkToHarold1,
+			talkToEohric2,
+			takeAsgarnianAle,
+			talkToHarold2,
+			giveHaroldBlurberry,
+			gambleWithHarold,
+			readIou,
+			placeStones
+		), List.of(
+			coins,
+			premadeBlurb
+		)));
+
+		sections.add(new PanelDetails("Get spiked boots", List.of(
+			syncStep,
+			enterSabaCave,
+			talkToSaba,
+			talkToTenzing1,
+			talkToDunstan1,
+			talkToDunstan2
+		), List.of(
+			ironBar
+		)));
+
+		sections.add(new PanelDetails("The secret path", List.of(
+			talkToTenzing2,
+			goNorth,
+			talkToDenulth3
+		), List.of(
+			spikedBoots,
+			bread,
+			trout
+		)));
+
+		return sections;
 	}
 }

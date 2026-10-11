@@ -163,7 +163,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		godEquip = new ItemRequirement("Various god equipment (1 of each god suggested)", -1, -1)
 			.showConditioned(notSprirtualWarrior).isNotConsumed();
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notAddyScim).isNotConsumed();
-		coins = new ItemRequirement("Coins", ItemCollections.COINS, 6000).showConditioned(notAddyScim);
+		coins = new ItemRequirement("Coins (7500 if reward from wildy med tasks are not claimed)", ItemCollections.COINS, 6000).showConditioned(notAddyScim);
 		addyBar = new ItemRequirement("Adamantite bar", ItemID.ADAMANTITE_BAR, 2).showConditioned(notAddyScim);
 		addyOre = new ItemRequirement("Adamantite ore", ItemID.ADAMANTITE_ORE);
 		hammer = new ItemRequirement("Hammer", ItemID.HAMMER).showConditioned(notAddyScim).isNotConsumed();
@@ -305,8 +305,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		return Arrays.asList(
 			new UnlockReward("One free teleport to the Fountain of Rune daily on the Wilderness Sword 3"),
 			new UnlockReward("50% more lava shards per lava scale"),
-			new UnlockReward("Access to a shortcut to the Lava Dragon Isle (requires Agility 74 )"),
-			new UnlockReward("Access to a shortcut to the Lava Maze (requires Agility 82 )"),
+			new UnlockReward("Access to Artio, Spindel, and Calvar'ion"),
 			new UnlockReward("Can have 5 ecumenical keys at a time"),
 			new UnlockReward("120 random free runes from Lundail once per day"),
 			new UnlockReward("Able to choose your destination when teleporting through the Ancient Obelisks"),
@@ -361,7 +360,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		allSteps.add(trollSteps);
 
 		PanelDetails scimSteps = new PanelDetails("Adamant Scimitar in Resource Area", Arrays.asList(moveToResource,
-			addyScim), new SkillRequirement(Skill.SMITHING, 75, true), barsOrPick, hammer);
+			addyScim), new SkillRequirement(Skill.SMITHING, 75, true), barsOrPick, hammer, coins);
 		scimSteps.setDisplayCondition(notAddyScim);
 		scimSteps.setLockingStep(addyScimTask);
 		allSteps.add(scimSteps);

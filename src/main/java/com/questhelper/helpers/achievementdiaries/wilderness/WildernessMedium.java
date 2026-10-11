@@ -329,8 +329,8 @@ public class WildernessMedium extends ComplexStateQuestHelper
 			new UnlockReward("Can have 4 ecumenical keys at a time"),
 			new UnlockReward("80 random free runes from Lundail once per day"),
 			new UnlockReward("Access to shortcut in Deep Wilderness Dungeon"),
-			new UnlockReward("Access to Spindel, Artio and Calvar'ion"),
-			new UnlockReward("Players will receive standard quantity of loot from rogues' chests (rather than -25%)"),
+			new UnlockReward("Access to Callisto, Venenatis, and Vet'ion without requiring a Slayer task"),
+			new UnlockReward("Ability to obtain loot from chests in the Rogues' Castle"),
 			new UnlockReward("Players will roll on Zombie pirate drop table 50% of the time (rather than 15%)")
 		);
 	}

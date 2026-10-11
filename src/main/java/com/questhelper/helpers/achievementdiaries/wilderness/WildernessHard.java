@@ -305,8 +305,7 @@ public class WildernessHard extends ComplexStateQuestHelper
 		return Arrays.asList(
 			new UnlockReward("One free teleport to the Fountain of Rune daily on the Wilderness Sword 3"),
 			new UnlockReward("50% more lava shards per lava scale"),
-			new UnlockReward("Access to a shortcut to the Lava Dragon Isle (requires Agility 74 )"),
-			new UnlockReward("Access to a shortcut to the Lava Maze (requires Agility 82 )"),
+			new UnlockReward("Access to Artio, Spindel, and Calvar'ion"),
 			new UnlockReward("Can have 5 ecumenical keys at a time"),
 			new UnlockReward("120 random free runes from Lundail once per day"),
 			new UnlockReward("Able to choose your destination when teleporting through the Ancient Obelisks"),

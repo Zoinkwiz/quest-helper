@@ -265,6 +265,7 @@ public class CrabQuest extends BasicQuestHelper
 		talkToCrabAfterInstrument = new NpcStep(this,
 			NpcID.CRAB_MAINCRAB_START,
 			"Speak to the crab about the instrument.");
+		talkToCrabAfterInstrument.addAlternateNpcs(NpcID.CRAB_MAINCRAB_START_NOMOVE);
 		talkToCrabAfterInstrument.addDialogStep("A disaster.");
 		talkToCrabAfterInstrument.addDialogStep("Let me show you!");
 

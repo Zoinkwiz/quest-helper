@@ -4,8 +4,10 @@ on:
   pull_request_target:
     branches:
       - master
-      - ci/auto-optimal-quest-order
     types: closed
+  push:
+    branches:
+      - ci/auto-optimal-quest-order
 
 permissions:
   contents: write

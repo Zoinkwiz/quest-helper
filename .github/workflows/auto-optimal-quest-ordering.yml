@@ -5,12 +5,10 @@ on:
     branches:
       - master
     types: closed
-  push:
-    branches:
-      - ci/auto-optimal-quest-order
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: update-optimal-quest-orders
@@ -18,15 +16,13 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event_name == 'push' || github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    env:
-      TARGET_BRANCH: ${{ github.event_name == 'push' && github.ref_name || 'master' }}
     steps:
       - name: Check out Quest Helper
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.TARGET_BRANCH }}
+          ref: master
           fetch-depth: 0
 
       - name: Check out osrs-wiki-parser
@@ -68,7 +64,7 @@ jobs:
               /^[[:space:]]*);/!d
             }' src/main/java/com/questhelper/panel/questorders/IronmanOptimalQuestGuide.java
 
-      - name: Update optimal ironman quest list
+      - name: Update by release quest list
         run: |
           BY_RELEASE_QUEST_LIST=$(uv run --directory workspace --no-sync main.py quests-by-release-date)
           printf '\t\t%s\n' "$BY_RELEASE_QUEST_LIST" |
@@ -84,22 +80,23 @@ jobs:
           distribution: temurin
           java-version: "11"
 
-      - name: Validate and commit changes
+      - name: Validate java
         run: |
-          git add -- \
-            src/main/java/com/questhelper/panel/questorders/OptimalQuestGuide.java \
-            src/main/java/com/questhelper/panel/questorders/IronmanOptimalQuestGuide.java \
-            src/main/java/com/questhelper/panel/questorders/ReleaseDate.java
-          
-          if git diff --cached --quiet; then
-            echo "No quest ordering changes."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git commit -m "Update quest orderings from Wiki"
-          git pull --rebase origin "$TARGET_BRANCH"
+          git diff --check
           ./gradlew compileJava --no-daemon
-          git push origin "HEAD:$TARGET_BRANCH"
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m')" >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: update optimal quest lists (${{ steps.date.outputs.date }})"
+          title: "chore: update optimal quest lists (${{ steps.date.outputs.date }})"
+          branch: automated/chore/update-optimal-lists
+          reviewers: pajlada
+          add-paths: |
+            src/main/java/com/questhelper/panel/questorders/ReleaseDate.java
+            src/main/java/com/questhelper/panel/questorders/IronmanOptimalQuestGuide.java
+            src/main/java/com/questhelper/panel/questorders/OptimalQuestGuide.java

@@ -44,7 +44,7 @@ public class NewVersionManager
 
 	private final String LAST_VERSION_SEEN_CONFIG_KEY = "lastversionchecked";
 
-	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.17.0! <col=FF2400>The Blood Moon Rises</col> (ty pajlada!) and <col=123456>Fallen From Grace</col> are now both added!";
+	private final String UPDATE_CHAT_TEXT = "Quest Helper has been updated to 4.18.0! <col=FF2400>Crab Quest</col> (ty maskarauder!) and <col=123456>A Ruff Situation</col> (ty leafyboat and pajlada!) are now both added!";
 
 	public void updateChatWithNotificationIfNewVersion()
 	{

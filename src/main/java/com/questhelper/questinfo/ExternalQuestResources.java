@@ -36,6 +36,7 @@ public enum ExternalQuestResources
 	//Members' Quests
 	A_KINGDOM_DIVIDED("https://oldschool.runescape.wiki/w/A_Kingdom_Divided"),
 	A_NIGHT_AT_THE_THEATRE("https://oldschool.runescape.wiki/w/A_Night_at_the_Theatre"),
+	A_RUFF_SITUATION("https://oldschool.runescape.wiki/w/A_Ruff_Situation"),
 	ANIMAL_MAGNETISM("https://oldschool.runescape.wiki/w/Animal_Magnetism"),
 	ANOTHER_SLICE_OF_HAM("https://oldschool.runescape.wiki/w/Another_Slice_of_H.A.M."),
 	THE_ASCENT_OF_ARCEUUS("https://oldschool.runescape.wiki/w/The_Ascent_of_Arceuus"),
@@ -49,6 +50,7 @@ public enum ExternalQuestResources
 	CLOCK_TOWER("https://oldschool.runescape.wiki/w/Clock_Tower"),
 	COLD_WAR("https://oldschool.runescape.wiki/w/Cold_War"),
 	CONTACT("https://oldschool.runescape.wiki/w/Contact!"),
+	CRAB_QUEST("https://oldschool.runescape.wiki/w/Crab_Quest"),
 	CREATURE_OF_FENKENSTRAIN("https://oldschool.runescape.wiki/w/Creature_of_Fenkenstrain"),
 	DARKNESS_OF_HALLOWVALE("https://oldschool.runescape.wiki/w/Darkness_of_Hallowvale"),
 	DEATH_PLATEAU("https://oldschool.runescape.wiki/w/Death_Plateau"),

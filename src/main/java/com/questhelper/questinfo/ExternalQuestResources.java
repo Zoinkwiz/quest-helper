@@ -50,6 +50,7 @@ public enum ExternalQuestResources
 	CLOCK_TOWER("https://oldschool.runescape.wiki/w/Clock_Tower"),
 	COLD_WAR("https://oldschool.runescape.wiki/w/Cold_War"),
 	CONTACT("https://oldschool.runescape.wiki/w/Contact!"),
+	CRAB_QUEST("https://oldschool.runescape.wiki/w/Crab_Quest"),
 	CREATURE_OF_FENKENSTRAIN("https://oldschool.runescape.wiki/w/Creature_of_Fenkenstrain"),
 	DARKNESS_OF_HALLOWVALE("https://oldschool.runescape.wiki/w/Darkness_of_Hallowvale"),
 	DEATH_PLATEAU("https://oldschool.runescape.wiki/w/Death_Plateau"),

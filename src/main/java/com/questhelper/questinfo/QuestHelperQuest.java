@@ -117,6 +117,7 @@ import com.questhelper.helpers.quests.clocktower.ClockTower;
 import com.questhelper.helpers.quests.coldwar.ColdWar;
 import com.questhelper.helpers.quests.contact.Contact;
 import com.questhelper.helpers.quests.cooksassistant.CooksAssistant;
+import com.questhelper.helpers.quests.crabquest.CrabQuest;
 import com.questhelper.helpers.quests.creatureoffenkenstrain.CreatureOfFenkenstrain;
 import com.questhelper.helpers.quests.currentaffairs.CurrentAffairs;
 import com.questhelper.helpers.quests.darknessofhallowvale.DarknessOfHallowvale;
@@ -334,6 +335,7 @@ public enum QuestHelperQuest
 	CLOCK_TOWER(new ClockTower(), Quest.CLOCK_TOWER, QuestVarPlayer.QUEST_CLOCK_TOWER, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	COLD_WAR(new ColdWar(), Quest.COLD_WAR, QuestVarbits.QUEST_COLD_WAR, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	CONTACT(new Contact(), Quest.CONTACT, QuestVarbits.QUEST_CONTACT, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	CRAB_QUEST(new CrabQuest(), Quest.CRAB_QUEST, QuestVarbits.QUEST_CRAB_QUEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	CREATURE_OF_FENKENSTRAIN(new CreatureOfFenkenstrain(), Quest.CREATURE_OF_FENKENSTRAIN, QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	DARKNESS_OF_HALLOWVALE(new DarknessOfHallowvale(), Quest.DARKNESS_OF_HALLOWVALE, QuestVarbits.QUEST_DARKNESS_OF_HALLOWVALE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	DEATH_PLATEAU(new DeathPlateau(), Quest.DEATH_PLATEAU, QuestVarPlayer.QUEST_DEATH_PLATEAU, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),

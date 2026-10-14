@@ -18,13 +18,15 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: ${{ github.event_name == 'push' && github.ref_name || 'master' }}
     steps:
       - name: Check out Quest Helper
         uses: actions/checkout@v4
         with:
-          ref: master
+          ref: ${{ env.TARGET_BRANCH }}
           fetch-depth: 0
 
       - name: Check out osrs-wiki-parser
@@ -98,6 +100,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git commit -m "Update quest orderings from Wiki"
-          git pull --rebase origin master
+          git pull --rebase origin "$TARGET_BRANCH"
           ./gradlew compileJava --no-daemon
-          git push origin HEAD:master
+          git push origin "HEAD:$TARGET_BRANCH"

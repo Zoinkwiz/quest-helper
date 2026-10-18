@@ -112,6 +112,9 @@ public class BikeShedder extends BasicQuestHelper
 	private KeyringRequirement dustyKeyKeyRing;
 	private DetailedQuestStep keyringStep;
 
+	// Shortest Path
+	private DetailedQuestStep linePointsStep;
+
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
@@ -199,6 +202,7 @@ public class BikeShedder extends BasicQuestHelper
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3216, 0)), getCoins);
 		steps.addStep(conditionalRequirementZoneRequirement, conditionalRequirementLookAtCoins);
 		steps.addStep(new ZoneRequirement(new WorldPoint(3224, 3221, 0)), lookAtCooksAssistant);
+		steps.addStep(new ZoneRequirement(new WorldPoint(3225, 3218, 0)), linePointsStep);
 
 		return new ImmutableMap.Builder<Integer, QuestStep>()
 			.put(-1, steps)
@@ -352,6 +356,15 @@ public class BikeShedder extends BasicQuestHelper
 		dustyKeyItem = new ItemRequirement("Dusty key (ItemReq)", ItemID.DUSTY_KEY);
 		dustyKeyKeyRing = new KeyringRequirement("Dusty key (KeyRingReq)", KeyringCollection.DUSTY_KEY);
 		keyringStep = new DetailedQuestStep(this, "We need the dusty key", dustyKeyItem, dustyKeyKeyRing);
+
+		// Shortest Path
+		linePointsStep = new DetailedQuestStep(this, new WorldPoint(3219, 3192, 0), "Follow the drawn line out of Lumbridge Castle. Shortest Path should route to the start of the line.");
+		linePointsStep.setLinePoints(List.of(
+			new WorldPoint(3222, 3207, 0),
+			new WorldPoint(3222, 3200, 0),
+			new WorldPoint(3219, 3197, 0),
+			new WorldPoint(3219, 3192, 0)
+		));
 	}
 
 	@Override
@@ -377,6 +390,7 @@ public class BikeShedder extends BasicQuestHelper
 		panels.add(new PanelDetails("Ensure staircase upstairs in Sunrise Palace is highlighted", List.of(goDownstairsInSunrisePalace), List.of()));
 		panels.add(new PanelDetails("Sailing", List.of(talkToNpcOnBoat, talkToKlarenceFromShip, useSalvagingHook, useObjectOffBoat), List.of()));
 		panels.add(new PanelDetails("Key ring", List.of(keyringStep), List.of(dustyKeyItem, dustyKeyKeyRing)));
+		panels.add(new PanelDetails("Shortest Path line points", List.of(linePointsStep)));
 
 		return panels;
 	}

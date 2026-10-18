@@ -1,42 +1,47 @@
-name: Update optimal quest orderings from Wiki
+---
+name: Update Quest Orders
 
 on:
-  pull_request_target:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
+  push:
     branches:
       - master
-    types: closed
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 concurrency:
-  group: update-optimal-quest-orders
+  group: update-quest-orders
   cancel-in-progress: true
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - name: Check out Quest Helper
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: master
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Check out osrs-wiki-parser
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: pajlads/osrs-wiki-parser
           ref: master
-          path: 'workspace'
+          path: "workspace"
           persist-credentials: false
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
-          python-version: "3.12"
+          python-version: "3.14"
 
       - name: Install dependencies
         run: uv sync --directory workspace --frozen --no-dev
@@ -75,7 +80,7 @@ jobs:
             }' src/main/java/com/questhelper/panel/questorders/ReleaseDate.java
 
       - name: Set up Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: "11"
@@ -90,7 +95,7 @@ jobs:
         run: echo "date=$(date +'%Y-%m')" >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           commit-message: "chore: update optimal quest lists (${{ steps.date.outputs.date }})"
           title: "chore: update optimal quest lists (${{ steps.date.outputs.date }})"

@@ -37,6 +37,7 @@ public class OptimalQuestGuide
 {
 	@Getter
 	private static final List<QuestHelperQuest> questList = ImmutableList.of(
+		//QuestHelperQuest.LEARNING_THE_ROPES, - Quest we are unlikely to add a helper for.
 		QuestHelperQuest.COOKS_ASSISTANT,
 		QuestHelperQuest.SHEEP_SHEARER,
 		QuestHelperQuest.MISTHALIN_MYSTERY,
@@ -75,6 +76,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.MURDER_MYSTERY,
 		QuestHelperQuest.THE_GRAND_TREE,
 		QuestHelperQuest.ARDOUGNE_EASY,
+		QuestHelperQuest.A_RUFF_SITUATION,
 		QuestHelperQuest.RAG_AND_BONE_MAN_I,
 		QuestHelperQuest.PRIEST_IN_PERIL,
 		QuestHelperQuest.NATURE_SPIRIT,
@@ -87,7 +89,6 @@ public class OptimalQuestGuide
 		QuestHelperQuest.ICTHLARINS_LITTLE_HELPER,
 		QuestHelperQuest.THE_GOLEM,
 		QuestHelperQuest.THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE,
-		QuestHelperQuest.A_RUFF_SITUATION,
 		QuestHelperQuest.LOST_CITY,
 		QuestHelperQuest.FAIRYTALE_I__GROWING_PAINS,
 		QuestHelperQuest.RECIPE_FOR_DISASTER_START,
@@ -185,6 +186,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.MY_ARMS_BIG_ADVENTURE,
 		QuestHelperQuest.THE_GARDEN_OF_DEATH,
 		QuestHelperQuest.RAG_AND_BONE_MAN_II,
+		QuestHelperQuest.CRAB_QUEST,
 		QuestHelperQuest.RUM_DEAL,
 		QuestHelperQuest.CABIN_FEVER,
 		QuestHelperQuest.MEAT_AND_GREET,

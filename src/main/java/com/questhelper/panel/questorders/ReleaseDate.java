@@ -221,6 +221,7 @@ public class ReleaseDate
 		QuestHelperQuest.THE_FINAL_DAWN,
 		QuestHelperQuest.SHADOWS_OF_CUSTODIA,
 		QuestHelperQuest.SCRAMBLED,
+		//QuestHelperQuest.LEARNING_THE_ROPES, - Quest we are unlikely to add a helper for.
 		QuestHelperQuest.PANDEMONIUM,
 		QuestHelperQuest.PRYING_TIMES,
 		QuestHelperQuest.CURRENT_AFFAIRS,
@@ -230,6 +231,7 @@ public class ReleaseDate
 		QuestHelperQuest.THE_BLOOD_MOON_RISES,
 		QuestHelperQuest.FALLEN_FROM_GRACE,
 		QuestHelperQuest.A_RUFF_SITUATION,
+		QuestHelperQuest.CRAB_QUEST,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

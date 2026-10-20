@@ -24,11 +24,13 @@
  */
 package com.questhelper.requirements;
 
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 
 public class ManualRequirement extends SimpleRequirement
 {
+	@Getter
 	@Setter
 	boolean shouldPass;
 

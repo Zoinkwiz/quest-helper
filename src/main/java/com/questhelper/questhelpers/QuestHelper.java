@@ -43,6 +43,7 @@ import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectMan
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.OwnerStep;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.TranslationService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -55,11 +56,13 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -72,6 +75,9 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Inject
 	@Getter
 	protected ConfigManager configManager;
+
+	@Inject
+	protected TranslationService translationService;
 
 	@Inject
 	protected RuneliteObjectManager runeliteObjectManager;
@@ -119,6 +125,16 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 	@Override
 	public void configure(Binder binder)
 	{
+	}
+
+	/**
+	 * Translates a user-facing string using this quest's messages file.
+	 * Never used for quest names, game entity names or dialog choices.
+	 */
+	public String t(@Nonnull String text)
+	{
+		String namespace = quest != null ? quest.name().toLowerCase(Locale.ROOT) : null;
+		return translationService.t(namespace, text);
 	}
 
 	public abstract void init();

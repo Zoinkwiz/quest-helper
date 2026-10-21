@@ -27,6 +27,7 @@ package com.questhelper;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.util.Language;
 import lombok.Getter;
 import net.runelite.client.config.*;
 import net.runelite.client.util.Text;
@@ -722,5 +723,25 @@ public interface QuestHelperConfig extends Config
 	default boolean devShowOverlayOnLaunch()
 	{
 		return false;
+	}
+
+	@ConfigSection(
+		position = 6,
+		name = "Language",
+		description = "Configure the language used by the Quest Helper plugin",
+		closedByDefault = false
+	)
+	String languageSection = "languageSection";
+
+	@ConfigItem(
+		keyName = "language",
+		name = "Language",
+		description = "Select the language for the Quest Helper plugin interface",
+		position = 1,
+		section = languageSection
+	)
+	default Language language()
+	{
+		return Language.ENGLISH;
 	}
 }

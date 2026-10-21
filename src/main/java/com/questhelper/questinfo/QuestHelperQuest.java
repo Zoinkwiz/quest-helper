@@ -97,6 +97,7 @@ import com.questhelper.helpers.quests.anightatthetheatre.ANightAtTheTheatre;
 import com.questhelper.helpers.quests.animalmagnetism.AnimalMagnetism;
 import com.questhelper.helpers.quests.anothersliceofham.AnotherSliceOfHam;
 import com.questhelper.helpers.quests.aporcineofinterest.APorcineOfInterest;
+import com.questhelper.helpers.quests.aruffsituation.ARuffSituation;
 import com.questhelper.helpers.quests.asoulsbane.ASoulsBane;
 import com.questhelper.helpers.quests.atailoftwocats.ATailOfTwoCats;
 import com.questhelper.helpers.quests.atasteofhope.ATasteOfHope;
@@ -116,6 +117,7 @@ import com.questhelper.helpers.quests.clocktower.ClockTower;
 import com.questhelper.helpers.quests.coldwar.ColdWar;
 import com.questhelper.helpers.quests.contact.Contact;
 import com.questhelper.helpers.quests.cooksassistant.CooksAssistant;
+import com.questhelper.helpers.quests.crabquest.CrabQuest;
 import com.questhelper.helpers.quests.creatureoffenkenstrain.CreatureOfFenkenstrain;
 import com.questhelper.helpers.quests.currentaffairs.CurrentAffairs;
 import com.questhelper.helpers.quests.darknessofhallowvale.DarknessOfHallowvale;
@@ -333,6 +335,7 @@ public enum QuestHelperQuest
 	CLOCK_TOWER(new ClockTower(), Quest.CLOCK_TOWER, QuestVarPlayer.QUEST_CLOCK_TOWER, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	COLD_WAR(new ColdWar(), Quest.COLD_WAR, QuestVarbits.QUEST_COLD_WAR, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	CONTACT(new Contact(), Quest.CONTACT, QuestVarbits.QUEST_CONTACT, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	CRAB_QUEST(new CrabQuest(), Quest.CRAB_QUEST, QuestVarbits.QUEST_CRAB_QUEST, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	CREATURE_OF_FENKENSTRAIN(new CreatureOfFenkenstrain(), Quest.CREATURE_OF_FENKENSTRAIN, QuestVarPlayer.QUEST_CREATURE_OF_FENKENSTRAIN, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	DARKNESS_OF_HALLOWVALE(new DarknessOfHallowvale(), Quest.DARKNESS_OF_HALLOWVALE, QuestVarbits.QUEST_DARKNESS_OF_HALLOWVALE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	DEATH_PLATEAU(new DeathPlateau(), Quest.DEATH_PLATEAU, QuestVarPlayer.QUEST_DEATH_PLATEAU, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
@@ -410,12 +413,12 @@ public enum QuestHelperQuest
 	RAG_AND_BONE_MAN_II(new RagAndBoneManII(), Quest.RAG_AND_BONE_MAN_II, QuestVarPlayer.QUEST_RAG_AND_BONE_MAN_II, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	RATCATCHERS(new RatCatchers(), Quest.RATCATCHERS, QuestVarbits.QUEST_RATCATCHERS, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	RECIPE_FOR_DISASTER_START(new RFDStart(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Start", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
-	RECIPE_FOR_DISASTER_DWARF(new RFDDwarf(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Dwarf", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
+	RECIPE_FOR_DISASTER_DWARF(new RFDDwarf(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Mountain Dwarf", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_DWARF, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE(new RFDGoblins(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Wartface & Bentnoze", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_WARTFACE_AND_BENTNOZE, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	RECIPE_FOR_DISASTER_PIRATE_PETE(new RFDPiratePete(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Pirate Pete", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_PIRATE_PETE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE(new RFDLumbridgeGuide(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Lumbridge Guide", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_LUMBRIDGE_GUIDE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	RECIPE_FOR_DISASTER_EVIL_DAVE(new RFDEvilDave(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Evil Dave", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_EVIL_DAVE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
-	RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR(new RFDAwowogei(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Monkey Ambassador", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR(new RFDAwowogei(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - King Awowogei", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_MONKEY_AMBASSADOR, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	RECIPE_FOR_DISASTER_SIR_AMIK_VARZE(new RFDSirAmikVarze(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Sir Amik Varze", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SIR_AMIK_VARZE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE(new RFDSkrachUglogwee(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Skrach Uglogwee", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER_SKRACH_UGLOGWEE, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	RECIPE_FOR_DISASTER_FINALE(new RFDFinal(), Quest.RECIPE_FOR_DISASTER.getId(), "RFD - Finale", Arrays.asList("recipe", "for", "disaster"), QuestVarbits.QUEST_RECIPE_FOR_DISASTER, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
@@ -466,6 +469,7 @@ public enum QuestHelperQuest
 	A_PORCINE_OF_INTEREST(new APorcineOfInterest(), Quest.A_PORCINE_OF_INTEREST, QuestVarbits.QUEST_A_PORCINE_OF_INTEREST, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	A_KINGDOM_DIVIDED(new AKingdomDivided(), Quest.A_KINGDOM_DIVIDED, QuestVarbits.QUEST_A_KINGDOM_DIVIDED, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	A_NIGHT_AT_THE_THEATRE(new ANightAtTheTheatre(), Quest.A_NIGHT_AT_THE_THEATRE, QuestVarbits.QUEST_A_NIGHT_AT_THE_THEATRE, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	A_RUFF_SITUATION(new ARuffSituation(), "A Ruff Situation", QuestVarbits.QUEST_A_RUFF_SITUATION, 120, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	THE_GARDEN_OF_DEATH(new TheGardenOfDeath(), Quest.THE_GARDEN_OF_DEATH, QuestVarbits.QUEST_THE_GARDEN_OF_DEATH, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	SECRETS_OF_THE_NORTH(new SecretsOfTheNorth(), Quest.SECRETS_OF_THE_NORTH, QuestVarbits.QUEST_SECRETS_OF_THE_NORTH, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	CHILDREN_OF_THE_SUN(new ChildrenOfTheSun(), Quest.CHILDREN_OF_THE_SUN, QuestVarbits.QUEST_CHILDREN_OF_THE_SUN, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),

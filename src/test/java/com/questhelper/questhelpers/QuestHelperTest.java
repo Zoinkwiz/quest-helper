@@ -370,6 +370,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.CLIENT_OF_KOUREND,
 			QuestHelperQuest.JUNGLE_POTION,
 			QuestHelperQuest.ARDOUGNE_EASY,
+			QuestHelperQuest.ENTER_THE_ABYSS,
 			QuestHelperQuest.TROUBLED_TORTUGANS,
 			QuestHelperQuest.CHILDREN_OF_THE_SUN,
 			QuestHelperQuest.DEMON_SLAYER,
@@ -378,6 +379,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.MISTHALIN_MYSTERY,
 			QuestHelperQuest.ONE_SMALL_FAVOUR,
 			QuestHelperQuest.SCORPION_CATCHER,
+			QuestHelperQuest.DEATH_PLATEAU,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.SEA_SLUG,
 			QuestHelperQuest.HOLY_GRAIL,
@@ -390,7 +392,9 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.THE_BLOOD_MOON_RISES,
 			QuestHelperQuest.VAMPYRE_SLAYER,
 			QuestHelperQuest.HERB_RUN,
-			QuestHelperQuest.THE_IDES_OF_MILK
+			QuestHelperQuest.THE_IDES_OF_MILK,
+			QuestHelperQuest.CRAB_QUEST,
+			QuestHelperQuest.A_RUFF_SITUATION
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest

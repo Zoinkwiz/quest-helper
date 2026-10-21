@@ -1,0 +1,107 @@
+---
+name: Update Quest Orders
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
+  push:
+    branches:
+      - master
+
+permissions: {}
+
+concurrency:
+  group: update-quest-orders
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Check out Quest Helper
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: master
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check out osrs-wiki-parser
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: pajlads/osrs-wiki-parser
+          ref: master
+          path: "workspace"
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: uv sync --directory workspace --frozen --no-dev
+
+      - name: Refresh Wiki data
+        run: uv run --directory workspace --no-sync data/update.py
+
+      - name: Update optimal quest list
+        run: |
+          OPTIMAL_QUEST_LIST=$(uv run --directory workspace --no-sync main.py quests-by-optimal-order)
+          printf '\t\t%s\n' "$OPTIMAL_QUEST_LIST" |
+            sed -i '/questList = ImmutableList\.of(/,/^[[:space:]]*);/{
+              /questList =/r /dev/stdin
+              /questList =/b
+              /^[[:space:]]*);/!d
+            }' src/main/java/com/questhelper/panel/questorders/OptimalQuestGuide.java
+
+      - name: Update optimal ironman quest list
+        run: |
+          OPTIMAL_IRONMAN_QUEST_LIST=$(uv run --directory workspace --no-sync main.py ironman-quests-by-optimal-order)
+          printf '\t\t%s\n' "$OPTIMAL_IRONMAN_QUEST_LIST" |
+            sed -i '/questList = ImmutableList\.of(/,/^[[:space:]]*);/{
+              /questList =/r /dev/stdin
+              /questList =/b
+              /^[[:space:]]*);/!d
+            }' src/main/java/com/questhelper/panel/questorders/IronmanOptimalQuestGuide.java
+
+      - name: Update by release quest list
+        run: |
+          BY_RELEASE_QUEST_LIST=$(uv run --directory workspace --no-sync main.py quests-by-release-date)
+          printf '\t\t%s\n' "$BY_RELEASE_QUEST_LIST" |
+            sed -i '/questList = ImmutableList\.of(/,/^[[:space:]]*);/{
+              /questList =/r /dev/stdin
+              /questList =/b
+              /^[[:space:]]*);/!d
+            }' src/main/java/com/questhelper/panel/questorders/ReleaseDate.java
+
+      - name: Set up Java
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: "11"
+
+      - name: Validate java
+        run: |
+          git diff --check
+          ./gradlew compileJava --no-daemon
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m')" >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          commit-message: "chore: update optimal quest lists (${{ steps.date.outputs.date }})"
+          title: "chore: update optimal quest lists (${{ steps.date.outputs.date }})"
+          branch: automated/chore/update-optimal-lists
+          reviewers: pajlada
+          add-paths: |
+            src/main/java/com/questhelper/panel/questorders/ReleaseDate.java
+            src/main/java/com/questhelper/panel/questorders/IronmanOptimalQuestGuide.java
+            src/main/java/com/questhelper/panel/questorders/OptimalQuestGuide.java

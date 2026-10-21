@@ -26,6 +26,7 @@ package com.questhelper.panel;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.config.RewardFiltering;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.panel.regionfiltering.RegionFilterPanel;
 import com.questhelper.panel.skillfiltering.SkillFilterPanel;
@@ -364,7 +365,7 @@ public class QuestHelperPanel extends PluginPanel
 
 		JPanel skillExpandBar = new JPanel();
 		skillExpandBar.setLayout(new BorderLayout());
-		skillExpandBar.setToolTipText("Choose skills to hide quests which would require them or reward experience in them");
+		skillExpandBar.setToolTipText("Choose skills to hide quests which would require them or reward experience in them, or to only show quests which reward experience in them");
 		skillExpandBar.add(filterName, BorderLayout.CENTER);
 		skillExpandBar.add(skillExpandButton, BorderLayout.EAST);
 
@@ -925,7 +926,8 @@ public class QuestHelperPanel extends PluginPanel
 		var numFilteredSkills = 0;
 		for (var skill : Skill.values())
 		{
-			var isFiltered = "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skill.getName()));
+			var isFiltered = "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skill.getName()))
+				|| "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, RewardFiltering.CONFIG_KEY_PREFIX + skill.getName()));
 			if (isFiltered)
 			{
 				numFilteredSkills += 1;

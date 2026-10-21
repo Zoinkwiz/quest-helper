@@ -28,6 +28,7 @@ package com.questhelper.managers;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.config.LeagueFiltering;
+import com.questhelper.config.RewardFiltering;
 import com.questhelper.config.SkillFiltering;
 import com.questhelper.panel.QuestHelperPanel;
 import com.questhelper.questhelpers.QuestDetails;
@@ -230,6 +231,7 @@ public class QuestManager
 				.filter(config.difficulty())
 				.filter(QuestDetails::showCompletedQuests)
 				.filter(SkillFiltering::passesSkillFilter)
+				.filter(RewardFiltering::passesRewardFilter)
 				.filter(LeagueFiltering::passesLeagueFilter)
 				.sorted(config.orderListBy())
 				.collect(Collectors.toList());

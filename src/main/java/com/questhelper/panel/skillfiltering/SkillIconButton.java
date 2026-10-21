@@ -39,9 +39,17 @@ public class SkillIconButton extends JButton
 	private static final Border ICON_BORDER = BorderFactory
 		.createEmptyBorder(5, 10, 5, 10);
 
-	final Color FILTERED_COLOR = Color.RED.darker();
 	final Color NOT_FILTERED_COLOR = ColorScheme.DARKER_GRAY_COLOR;
+
 	public SkillIconButton(ImageIcon icon, ConfigManager configManager, String skillName)
+	{
+		this(icon, configManager, "skillfilter" + skillName, Color.RED.darker(),
+			"Hide quests that'd require or reward experience in " + skillName,
+			"Show quests that'd require or reward experience in " + skillName);
+	}
+
+	public SkillIconButton(ImageIcon icon, ConfigManager configManager, String configKey, Color filteredColor,
+						   String enableTooltip, String disableTooltip)
 	{
 		super();
 		setIcon(icon);
@@ -49,16 +57,15 @@ public class SkillIconButton extends JButton
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setBorder(ICON_BORDER);
-		setToolTipText("Hide quests that'd require or reward experience in " + skillName);
 
-		if (isFiltered(configManager, skillName))
+		if (isFiltered(configManager, configKey))
 		{
-			setToolTipText("Show quests that'd require or reward experience in " + skillName);
-			setBackground(FILTERED_COLOR);
+			setToolTipText(disableTooltip);
+			setBackground(filteredColor);
 		}
 		else
 		{
-			setToolTipText("Hide quests that'd require or reward experience in " + skillName);
+			setToolTipText(enableTooltip);
 			setBackground(NOT_FILTERED_COLOR);
 		}
 
@@ -70,19 +77,19 @@ public class SkillIconButton extends JButton
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 
-				if (isFiltered(configManager, skillName))
+				if (isFiltered(configManager, configKey))
 				{
 					currentColor = NOT_FILTERED_COLOR;
 					setBackground(currentColor);
-					configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skillName, "false");
-					setToolTipText("Hide quests that'd require or reward experience in " + skillName);
+					configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, configKey, "false");
+					setToolTipText(enableTooltip);
 				}
 				else
 				{
-					currentColor = FILTERED_COLOR;
+					currentColor = filteredColor;
 					setBackground(currentColor);
-					configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skillName, "true");
-					setToolTipText("Show quests that'd require or reward experience in " + skillName);
+					configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, configKey, "true");
+					setToolTipText(disableTooltip);
 				}
 			}
 
@@ -100,9 +107,9 @@ public class SkillIconButton extends JButton
 		});
 	}
 
-	public boolean isFiltered(ConfigManager configManager, String skillName)
+	public boolean isFiltered(ConfigManager configManager, String configKey)
 	{
-		String isFiltered = configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skillName);
+		String isFiltered = configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, configKey);
 		return "true".equals(isFiltered);
 	}
 }

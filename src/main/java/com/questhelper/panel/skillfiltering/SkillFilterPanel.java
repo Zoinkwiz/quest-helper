@@ -33,6 +33,7 @@ import net.runelite.client.game.SkillIconManager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.function.BiFunction;
 
 @Singleton
 public class SkillFilterPanel extends JPanel
@@ -40,14 +41,19 @@ public class SkillFilterPanel extends JPanel
 	private final SkillIconManager iconManager;
 	private final SkillTabGroup tabGroup;
 
-	private final ConfigManager configManager;
+	private final BiFunction<Skill, ImageIcon, SkillIconButton> buttonFactory;
 
 	public SkillFilterPanel(SkillIconManager iconManager, ConfigManager configManager)
+	{
+		this(iconManager, (skill, icon) -> new SkillIconButton(icon, configManager, skill.getName()));
+	}
+
+	public SkillFilterPanel(SkillIconManager iconManager, BiFunction<Skill, ImageIcon, SkillIconButton> buttonFactory)
 	{
 		super();
 
 		this.iconManager = iconManager;
-		this.configManager = configManager;
+		this.buttonFactory = buttonFactory;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setLayout(new GridBagLayout());
@@ -72,7 +78,7 @@ public class SkillFilterPanel extends JPanel
 		for (Skill skill : Skill.values())
 		{
 			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(skill, true));
-			SkillIconButton tab = new SkillIconButton(icon, configManager, skill.getName());
+			SkillIconButton tab = buttonFactory.apply(skill, icon);
 
 			tabGroup.addTab(tab);
 		}

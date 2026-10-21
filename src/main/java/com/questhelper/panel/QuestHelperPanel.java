@@ -26,9 +26,11 @@ package com.questhelper.panel;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.config.RewardFiltering;
 import com.questhelper.managers.QuestManager;
 import com.questhelper.panel.regionfiltering.RegionFilterPanel;
 import com.questhelper.panel.skillfiltering.SkillFilterPanel;
+import com.questhelper.panel.skillfiltering.SkillIconButton;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
@@ -85,6 +87,7 @@ public class QuestHelperPanel extends PluginPanel
 	private JPanel statePanel;
 
 	private final JButton skillExpandButton = new JButton();
+	private final JButton rewardExpandButton = new JButton();
 	private JPanel regionsFilterSection;
 	private RegionFilterPanel regionFilterPanel;
 	private final IconTextField searchBar = new IconTextField();
@@ -337,58 +340,19 @@ public class QuestHelperPanel extends PluginPanel
 
 		// Skill filtering
 		SkillFilterPanel skillFilterPanel = new SkillFilterPanel(questHelperPlugin.skillIconManager, questHelperPlugin.getConfigManager());
-		skillFilterPanel.setVisible(false);
+		JPanel skillsFilterPanel = makeSkillFilterSection("Skill filtering",
+			"Choose skills to hide quests which would require them or reward experience in them",
+			skillFilterPanel, skillExpandButton);
 
-		JLabel filterName = JGenerator.makeJLabel("Skill filtering");
-		filterName.setForeground(Color.WHITE);
-		skillExpandButton.setForeground(Color.GRAY);
-		skillExpandButton.setIcon(COLLAPSED_ICON);
-		skillExpandButton.setHorizontalTextPosition(SwingConstants.LEFT);
-		skillExpandButton.setIconTextGap(10);
-		skillExpandButton.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				skillFilterPanel.setVisible(!skillFilterPanel.isVisible());
-				if (skillFilterPanel.isVisible())
-				{
-					skillExpandButton.setIcon(EXPANDED_ICON);
-				}
-				else
-				{
-					skillExpandButton.setIcon(COLLAPSED_ICON);
-				}
-			}
-		});
-
-		JPanel skillExpandBar = new JPanel();
-		skillExpandBar.setLayout(new BorderLayout());
-		skillExpandBar.setToolTipText("Choose skills to hide quests which would require them or reward experience in them");
-		skillExpandBar.add(filterName, BorderLayout.CENTER);
-		skillExpandBar.add(skillExpandButton, BorderLayout.EAST);
-
-		JPanel skillsFilterPanel = new JPanel();
-		skillsFilterPanel.setLayout(new BorderLayout());
-		skillsFilterPanel.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
-		skillsFilterPanel.add(skillExpandBar, BorderLayout.CENTER);
-		skillsFilterPanel.add(skillFilterPanel, BorderLayout.SOUTH);
-		skillExpandBar.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				skillFilterPanel.setVisible(!skillFilterPanel.isVisible());
-				if (skillFilterPanel.isVisible())
-				{
-					skillExpandButton.setIcon(EXPANDED_ICON);
-				}
-				else
-				{
-					skillExpandButton.setIcon(COLLAPSED_ICON);
-				}
-			}
-		});
+		// Reward filtering
+		SkillFilterPanel rewardFilterPanel = new SkillFilterPanel(questHelperPlugin.skillIconManager,
+			(skill, icon) -> new SkillIconButton(icon, configManager, RewardFiltering.CONFIG_KEY_PREFIX + skill.getName(),
+				Color.GREEN.darker().darker(),
+				"Only show quests that reward experience in " + skill.getName(),
+				"Stop requiring an experience reward in " + skill.getName()));
+		JPanel rewardsFilterPanel = makeSkillFilterSection("Reward filtering",
+			"Choose skills to only show quests which reward experience in at least one of them",
+			rewardFilterPanel, rewardExpandButton);
 
 		// Region filtering
 		JButton regionExpandButton = new JButton();
@@ -444,6 +408,7 @@ public class QuestHelperPanel extends PluginPanel
 		allDropdownSections.add(difficultyPanel);
 		allDropdownSections.add(orderPanel);
 		allDropdownSections.add(skillsFilterPanel);
+		allDropdownSections.add(rewardsFilterPanel);
 		allDropdownSections.add(regionsFilterSection);
 
 		// Set initial visibility based on config and current world type
@@ -917,15 +882,58 @@ public class QuestHelperPanel extends PluginPanel
 		questOverviewPanel.updateRequirements(client);
 	}
 
+	private JPanel makeSkillFilterSection(String title, String tooltip, SkillFilterPanel skillFilterPanel, JButton expandButton)
+	{
+		skillFilterPanel.setVisible(false);
+
+		JLabel filterName = JGenerator.makeJLabel(title);
+		filterName.setForeground(Color.WHITE);
+		expandButton.setForeground(Color.GRAY);
+		expandButton.setIcon(COLLAPSED_ICON);
+		expandButton.setHorizontalTextPosition(SwingConstants.LEFT);
+		expandButton.setIconTextGap(10);
+
+		MouseAdapter expandListener = new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				skillFilterPanel.setVisible(!skillFilterPanel.isVisible());
+				expandButton.setIcon(skillFilterPanel.isVisible() ? EXPANDED_ICON : COLLAPSED_ICON);
+			}
+		};
+		expandButton.addMouseListener(expandListener);
+
+		JPanel expandBar = new JPanel();
+		expandBar.setLayout(new BorderLayout());
+		expandBar.setToolTipText(tooltip);
+		expandBar.add(filterName, BorderLayout.CENTER);
+		expandBar.add(expandButton, BorderLayout.EAST);
+		expandBar.addMouseListener(expandListener);
+
+		JPanel section = new JPanel();
+		section.setLayout(new BorderLayout());
+		section.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+		section.add(expandBar, BorderLayout.CENTER);
+		section.add(skillFilterPanel, BorderLayout.SOUTH);
+		return section;
+	}
+
 	/**
-	 * Refreshes the label showing the active skill filters
+	 * Refreshes the labels showing the active skill and reward filters
 	 */
 	public void refreshSkillFiltering()
+	{
+		updateActiveFilterCount(skillExpandButton, "skillfilter");
+		updateActiveFilterCount(rewardExpandButton, RewardFiltering.CONFIG_KEY_PREFIX);
+	}
+
+	private void updateActiveFilterCount(JButton expandButton, String configKeyPrefix)
 	{
 		var numFilteredSkills = 0;
 		for (var skill : Skill.values())
 		{
-			var isFiltered = "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skill.getName()));
+			var isFiltered = "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, configKeyPrefix + skill.getName()));
 			if (isFiltered)
 			{
 				numFilteredSkills += 1;
@@ -934,11 +942,11 @@ public class QuestHelperPanel extends PluginPanel
 
 		if (numFilteredSkills == 0)
 		{
-			skillExpandButton.setText("");
+			expandButton.setText("");
 		}
 		else
 		{
-			skillExpandButton.setText(String.format("%d active", numFilteredSkills));
+			expandButton.setText(String.format("%d active", numFilteredSkills));
 		}
 	}
 

@@ -228,7 +228,7 @@ public class DeathPlateau extends BasicQuestHelper
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<col=800000>Dunstan<col=000080> will help me if I get his <col=800000>son signed up<col=000080> for the <col=800000>Imperial")
 		);
 		givenCertificate = new Conditions(true, LogicType.OR,
-			givenHaroldBlurberry = new ChatMessageRequirement("You give Dunstan the certificate."),
+			new ChatMessageRequirement("You give Dunstan the certificate."),
 			new WidgetTextRequirement(InterfaceID.Questjournal.TEXTLAYER, true, "<str>I have given Dunstan the certificate to prove that his son has")
 		);
 

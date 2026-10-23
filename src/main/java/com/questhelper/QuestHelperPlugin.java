@@ -42,6 +42,7 @@ import com.questhelper.runeliteobjects.GlobalFakeObjects;
 import com.questhelper.runeliteobjects.extendedruneliteobjects.RuneliteObjectManager;
 import com.questhelper.statemanagement.PlayerStateManager;
 import com.questhelper.tools.Icon;
+import com.questhelper.util.TranslationService;
 import com.questhelper.util.worldmap.WorldMapAreaManager;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -158,6 +159,9 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	ConfigManager configManager;
 
+	@Inject
+	private TranslationService translationService;
+
 	@Getter
 	@Inject
 	PlayerStateManager playerStateManager;
@@ -196,6 +200,8 @@ public class QuestHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws IOException
 	{
+		translationService.setLanguage(config.language());
+
 		questBankManager.startUp(injector, eventBus);
 		QuestContainerManager.getBankData().setSpecialMethodToObtainItems(() -> questBankManager.getBankItems().toArray(new Item[0]));
 		QuestContainerManager.getGroupStorageData().setSpecialMethodToObtainItems(() -> questBankManager.getGroupBankItems().toArray(new Item[0]));
@@ -395,6 +401,17 @@ public class QuestHelperPlugin extends Plugin
 
 		if (!event.getGroup().equals(QuestHelperConfig.QUEST_HELPER_GROUP))
 		{
+			return;
+		}
+
+		if ("language".equals(event.getKey()))
+		{
+			translationService.setLanguage(config.language());
+			QuestHelper currentQuest = questManager.getSelectedQuest();
+			if (currentQuest != null)
+			{
+				questManager.startUpQuest(currentQuest, false);
+			}
 			return;
 		}
 

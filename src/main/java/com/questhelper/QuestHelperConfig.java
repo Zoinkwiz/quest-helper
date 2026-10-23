@@ -727,7 +727,7 @@ public interface QuestHelperConfig extends Config
 
 	@ConfigSection(
 		position = 6,
-		name = "Language",
+		name = "Translation",
 		description = "Configure the language used by the Quest Helper plugin",
 		closedByDefault = false
 	)

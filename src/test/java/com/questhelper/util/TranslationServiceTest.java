@@ -66,15 +66,6 @@ public class TranslationServiceTest
 			service.t("dragon_slayer_i", "Some string of a quest not yet translated"));
 	}
 
-	// Null namespace returns the native string even in Spanish mode.
-	@Test
-	public void nullNamespaceReturnsNativeString()
-	{
-		var service = new TranslationService();
-		service.setLanguage(Language.SPANISH);
-		assertEquals("Cook's Assistant", service.t(null, "Cook's Assistant"));
-	}
-
 	// Null text is a programming error, caught by the assert.
 	@Test
 	public void nullTextThrows()

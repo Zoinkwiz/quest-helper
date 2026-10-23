@@ -24,6 +24,8 @@
  */
 package com.questhelper.util;
 
+import lombok.Getter;
+
 /**
  * Languages supported by the Quest Helper plugin.
  */
@@ -33,21 +35,18 @@ public enum Language
 	SPANISH("Español", "es");
 
 	private final String displayName;
+
+	/**
+	 * Folder under {@code translations/} holding this language's per-quest files,
+	 * or {@code null} for the native language, which reads no files at all.
+	 */
+	@Getter
 	private final String messagesFolder;
 
 	Language(String displayName, String messagesFolder)
 	{
 		this.displayName = displayName;
 		this.messagesFolder = messagesFolder;
-	}
-
-	/**
-	 * Folder under {@code translations/} holding this language's per-quest files,
-	 * or {@code null} for the native language, which reads no files at all.
-	 */
-	public String getMessagesFolder()
-	{
-		return messagesFolder;
 	}
 
 	@Override

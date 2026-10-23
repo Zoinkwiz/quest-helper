@@ -28,7 +28,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,12 +40,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Resolves quest string translations using the English-as-key pattern: the
- * English text lives in the code and translations live per quest in
- * {@code translations/<lang>/<quest>.properties}, loaded on first use.
- * <p>
- * Never translate quest names, game entity names (items, NPCs, locations) or
- * dialog choices that match live game text.
+ * Resolves quest string translations using the English-as-key pattern.
+ * The English text lives in the code and translations live per quest in
+ * {@code translations/<lang>/<quest>.properties}.
  */
 @Slf4j
 @Singleton
@@ -60,27 +56,27 @@ public class TranslationService
 	public void setLanguage(Language language)
 	{
 		this.language = language;
+		clear();
+	}
+
+	/**
+	 * Clears cached translations, e.g. when the active quest is stopped.
+	 */
+	public void clear()
+	{
 		loadedMessages.clear();
 	}
 
 	/**
-	 * Returns the translation of {@code text} from the messages file for
-	 * {@code namespace}, or {@code text} itself when the language is native,
-	 * the file does not exist, or the file has no entry for {@code text}.
-	 * <p>
-	 * Keys may contain {@code =} (write it as {@code \=}) and newlines
-	 * (write them as {@code \n}), so any English string can be a key.
-	 *
-	 * @param namespace per-quest file name under {@code translations/<lang>/},
-	 *                  or {@code null} to get the native string
-	 * @param text      the English string as it appears in the code
+	 * Returns the translation of {@code text} for {@code namespace}, or
+	 * {@code text} if there is no translation.
 	 */
-	public String t(@Nullable String namespace, @Nonnull String text)
+	public String t(@Nonnull String namespace, @Nonnull String text)
 	{
 		assert text != null;
 
 		String folder = language.getMessagesFolder();
-		if (folder == null || namespace == null)
+		if (folder == null)
 		{
 			return text;
 		}

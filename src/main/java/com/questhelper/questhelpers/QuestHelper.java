@@ -129,12 +129,15 @@ public abstract class QuestHelper implements Module, QuestDebugRenderer
 
 	/**
 	 * Translates a user-facing string using this quest's messages file.
-	 * Never used for quest names, game entity names or dialog choices.
 	 */
 	public String t(@Nonnull String text)
 	{
-		String namespace = quest != null ? quest.name().toLowerCase(Locale.ROOT) : null;
-		return translationService.t(namespace, text);
+		if (quest == null)
+		{
+			return text;
+		}
+
+		return translationService.t(quest.name().toLowerCase(Locale.ROOT), text);
 	}
 
 	public abstract void init();

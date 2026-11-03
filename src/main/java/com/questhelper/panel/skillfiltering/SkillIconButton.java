@@ -25,6 +25,7 @@
 package com.questhelper.panel.skillfiltering;
 
 import com.questhelper.QuestHelperConfig;
+import com.questhelper.config.RewardFiltering;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 
@@ -40,50 +41,45 @@ public class SkillIconButton extends JButton
 		.createEmptyBorder(5, 10, 5, 10);
 
 	final Color FILTERED_COLOR = Color.RED.darker();
+	final Color REWARD_FILTERED_COLOR = Color.GREEN.darker().darker();
 	final Color NOT_FILTERED_COLOR = ColorScheme.DARKER_GRAY_COLOR;
+
+	private final ConfigManager configManager;
+	private final String skillName;
+	private Color currentColor;
+
 	public SkillIconButton(ImageIcon icon, ConfigManager configManager, String skillName)
 	{
 		super();
+		this.configManager = configManager;
+		this.skillName = skillName;
 		setIcon(icon);
 		setOpaque(true);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setBorder(ICON_BORDER);
-		setToolTipText("Hide quests that'd require or reward experience in " + skillName);
-
-		if (isFiltered(configManager, skillName))
-		{
-			setToolTipText("Show quests that'd require or reward experience in " + skillName);
-			setBackground(FILTERED_COLOR);
-		}
-		else
-		{
-			setToolTipText("Hide quests that'd require or reward experience in " + skillName);
-			setBackground(NOT_FILTERED_COLOR);
-		}
+		updateAppearance();
 
 		addMouseListener(new MouseAdapter()
 		{
-			private Color currentColor = getBackground();
-
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-
-				if (isFiltered(configManager, skillName))
+				if (isEnabled("skillfilter"))
 				{
-					currentColor = NOT_FILTERED_COLOR;
-					setBackground(currentColor);
-					configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skillName, "false");
-					setToolTipText("Hide quests that'd require or reward experience in " + skillName);
+					setConfig("skillfilter", false);
+					setConfig(RewardFiltering.CONFIG_KEY_PREFIX, true);
+				}
+				else if (isEnabled(RewardFiltering.CONFIG_KEY_PREFIX))
+				{
+					setConfig(RewardFiltering.CONFIG_KEY_PREFIX, false);
 				}
 				else
 				{
-					currentColor = FILTERED_COLOR;
-					setBackground(currentColor);
-					configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skillName, "true");
-					setToolTipText("Show quests that'd require or reward experience in " + skillName);
+					setConfig("skillfilter", true);
 				}
+				updateAppearance();
+				setBackground(currentColor.brighter());
 			}
 
 			@Override
@@ -100,9 +96,33 @@ public class SkillIconButton extends JButton
 		});
 	}
 
-	public boolean isFiltered(ConfigManager configManager, String skillName)
+	private void updateAppearance()
 	{
-		String isFiltered = configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, "skillfilter" + skillName);
-		return "true".equals(isFiltered);
+		if (isEnabled("skillfilter"))
+		{
+			currentColor = FILTERED_COLOR;
+			setToolTipText("Only show quests that reward experience in " + skillName);
+		}
+		else if (isEnabled(RewardFiltering.CONFIG_KEY_PREFIX))
+		{
+			currentColor = REWARD_FILTERED_COLOR;
+			setToolTipText("Stop filtering by " + skillName);
+		}
+		else
+		{
+			currentColor = NOT_FILTERED_COLOR;
+			setToolTipText("Hide quests that'd require or reward experience in " + skillName);
+		}
+		setBackground(currentColor);
+	}
+
+	private boolean isEnabled(String configKeyPrefix)
+	{
+		return "true".equals(configManager.getConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, configKeyPrefix + skillName));
+	}
+
+	private void setConfig(String configKeyPrefix, boolean enabled)
+	{
+		configManager.setConfiguration(QuestHelperConfig.QUEST_BACKGROUND_GROUP, configKeyPrefix + skillName, String.valueOf(enabled));
 	}
 }

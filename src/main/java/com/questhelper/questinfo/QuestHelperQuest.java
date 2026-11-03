@@ -82,6 +82,7 @@ import com.questhelper.helpers.miniquests.hisfaithfulservants.HisFaithfulServant
 import com.questhelper.helpers.miniquests.hopespearswill.HopespearsWill;
 import com.questhelper.helpers.miniquests.lairoftarnrazorlor.LairOfTarnRazorlor;
 import com.questhelper.helpers.miniquests.skippyandthemogres.SkippyAndTheMogres;
+import com.questhelper.helpers.miniquests.thefracturedarchive.TheFracturedArchive;
 import com.questhelper.helpers.miniquests.thegeneralsshadow.TheGeneralsShadow;
 import com.questhelper.helpers.miniquests.themagearenai.TheMageArenaI;
 import com.questhelper.helpers.miniquests.themagearenaii.MA2Locator;
@@ -512,6 +513,7 @@ public enum QuestHelperQuest
 	HIS_FAITHFUL_SERVANTS(new HisFaithfulServants(), Quest.HIS_FAITHFUL_SERVANTS, QuestVarbits.HIS_FAITHFUL_SERVANTS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BARBARIAN_TRAINING(new BarbarianTraining(), Quest.BARBARIAN_TRAINING, QuestVarbits.BARBARIAN_TRAINING, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	VALE_TOTEMS(new ValeTotems(), Quest.VALE_TOTEMS, QuestVarbits.QUEST_VALE_TOTEMS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
+	THE_FRACTURED_ARCHIVE(new TheFracturedArchive(), Quest.THE_FRACTURED_ARCHIVE, QuestVarbits.QUEST_THE_FRACTURED_ARCHIVE, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS(new KnightWaves(), "Knight Waves Training Grounds", QuestVarbits.KNIGHT_WAVES_TRAINING_GROUNDS, 8,

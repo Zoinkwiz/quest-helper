@@ -217,6 +217,7 @@ public enum ExternalQuestResources
 	HOPESPEARS_WILL("https://oldschool.runescape.wiki/w/Hopespear%27s_Will"),
 	THE_CURSE_OF_ARRAV("https://oldschool.runescape.wiki/w/The_Curse_of_Arrav"),
 	VALE_TOTEMS("https://oldschool.runescape.wiki/w/Vale_Totems_(miniquest)"),
+	THE_FRACTURED_ARCHIVE("https://oldschool.runescape.wiki/w/The_Fractured_Archive_(miniquest)"),
 
 	// Fake miniquests
 	KNIGHT_WAVES_TRAINING_GROUNDS("https://oldschool.runescape.wiki/w/Camelot_training_room"),

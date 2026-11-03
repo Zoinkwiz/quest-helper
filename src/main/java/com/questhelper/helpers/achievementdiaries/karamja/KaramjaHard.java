@@ -177,10 +177,7 @@ public class KaramjaHard extends ComplexStateQuestHelper
 		machete.addAlternates(ItemID.MACHETTE_OPAL, ItemID.MACHETTE_JADE, ItemID.MACHETTE_REDTOPAZ);
 		lockpick = new ItemRequirement("Lockpick, more in case it breaks", ItemID.LOCKPICK)
 			.showConditioned(notKilledDeathwing).isNotConsumed();
-		crossbow = new ItemRequirement("Any crossbow", ItemID.CROSSBOW).showConditioned(notUsedShortcut).isNotConsumed();
-		crossbow.addAlternates(ItemID.XBOWS_CROSSBOW_BRONZE, ItemID.XBOWS_CROSSBOW_IRON, ItemID.XBOWS_CROSSBOW_STEEL,
-			ItemID.XBOWS_CROSSBOW_MITHRIL, ItemID.XBOWS_CROSSBOW_ADAMANTITE, ItemID.XBOWS_CROSSBOW_RUNITE, ItemID.XBOWS_CROSSBOW_DRAGON,
-			ItemID.XBOWS_CROSSBOW_BLURITE, ItemID.DTTD_BONE_CROSSBOW, ItemID.ACB, ItemID.ZARYTE_XBOW);
+		crossbow = new ItemRequirement("Any crossbow", ItemCollections.CROSSBOWS).showConditioned(notUsedShortcut).isNotConsumed();
 		mithGrapple = new ItemRequirement("Mith grapple", ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE).showConditioned(notUsedShortcut).isNotConsumed();
 		antidragonShield =
 			new ItemRequirement("Anti-dragon shield or DFS", ItemCollections.ANTIFIRE_SHIELDS)

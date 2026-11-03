@@ -336,7 +336,7 @@ public class MurderMystery extends BasicQuestHelper
 		);
 		talkedToBob = new Conditions(
 			true,
-			new DialogRequirement("Bob", "What's it to you anyway? If you absolutely", false)
+			new DialogRequirement("Bob", "If you absolutely must know, we had a problem with the beehive", false)
 		);
 		talkedToCarol = new Conditions(
 			true,

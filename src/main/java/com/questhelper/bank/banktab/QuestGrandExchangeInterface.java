@@ -271,7 +271,7 @@ public class QuestGrandExchangeInterface
 		widget.setXTextAlignment(WidgetTextAlignment.CENTER);
 		widget.setYTextAlignment(WidgetTextAlignment.CENTER);
 
-		widget.setText("<col=b40000>" + questHelper.getSelectedQuest().getQuest().getName() + "</col> required items");
+		widget.setText("<col=b40000>" + questHelper.getSelectedQuest().getDisplayedQuestName() + "</col> required items");
 		widget.setFontId(FontID.BOLD_12);
 		widget.setTextColor(JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND.getRGB());
 

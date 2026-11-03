@@ -91,28 +91,28 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 
 	void setupSteps()
 	{
-		talkToHarlan = new NpcStep(this, NpcID.CAPTAIN_HARLAN, new WorldPoint(3216, 3240, 0), "Speak to Captain Harlan north of Lumbridge Castle");
+		talkToHarlan = new NpcStep(this, NpcID.CAPTAIN_HARLAN, new WorldPoint(3216, 3240, 0), "Speak to Captain Harlan north of Lumbridge Castle.");
 		talkToHarlan.addDialogStep("Do you need help with anything?");
 		talkToHarlan.addDialogStep("Yes.");
 
-		talkToMudfoot = new NpcStep(this, NpcID.MBA_MUDFOOT_VIS, new WorldPoint(3247, 3250, 0), "Speak to Mudfoot across the river");
+		talkToMudfoot = new NpcStep(this, NpcID.MBA_MUDFOOT_VIS, new WorldPoint(3247, 3250, 0), "Speak to Mudfoot across the river.");
 
-		confrontRangerOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_RANGED_VIS, new WorldPoint(3219, 3247, 0), "Confront the ranger outlaw near the Lumbridge General Store");
+		confrontRangerOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_RANGED_VIS, new WorldPoint(3219, 3247, 0), "Confront the ranger outlaw near the Lumbridge General Store.");
 
 		fightRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
-			"Speak to Mudfoot by the windmill North of Lumbridge to fight the ranger outlaw");
+			"Speak to Mudfoot by the windmill North of Lumbridge to fight the ranger outlaw.");
 		speakAfterRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
-			"Speak to Mudfoot after defeating the ranger outlaw");
+			"Speak to Mudfoot after defeating the ranger outlaw.");
 
 		fightMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
-			"Speak to Mudfoot by the H.A.M hideout west of Lumbridge Castle to fight the mage outlaw");
+			"Speak to Mudfoot by the H.A.M hideout west of Lumbridge Castle to fight the mage outlaw.");
 		speakAfterMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
-			"Speak to Mudfoot after defeating the mage outlaw");
+			"Speak to Mudfoot after defeating the mage outlaw.");
 
 		fightMeleeOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MELEE_VIS, new WorldPoint(3244, 3195, 0),
-			"Confront the melee outlaw in the Lumbridge graveyard");
+			"Confront the melee outlaw in the Lumbridge graveyard.");
 		speakAfterMeleeOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3244, 3195, 0),
-			"Speak to Mudfoot after defeating the melee outlaw");
+			"Speak to Mudfoot after defeating the melee outlaw.");
 
 		finishQuest = new NpcStep(this, NpcID.CAPTAIN_HARLAN, new WorldPoint(3216, 3240, 0),
 			"Speak to Captain Harlan after defeating the melee outlaw to finish the quest!");
@@ -160,7 +160,6 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		return List.of(
 			stabWeapon,
 			rangedWeapon,
-			magicWeapon,
 			food
 		);
 	}

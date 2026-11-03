@@ -255,7 +255,7 @@ public class LumbridgeMedium extends ComplexStateQuestHelper
 		wizardFairy = new ObjectStep(this, ObjectID.FAIRYRING_HOMEHUB, new WorldPoint(2412, 4434, 0),
 			"Take the nearest fairy ring and travel to the Wizards' Tower (DIS).", fairyAccess.equipped());
 
-		claimReward = new NpcStep(this, NpcID.HATIUS_LUMBRIDGE_DIARY, new WorldPoint(3235, 3213, 0),
+		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
 			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}

@@ -271,7 +271,7 @@ public class LumbridgeEasy extends ComplexStateQuestHelper
 		fishAnchovies = new NpcStep(this, NpcID._0_51_49_SALTFISH, new WorldPoint(3267, 3148, 0),
 			"Fish for anchovies in Al-Kharid.", smallFishingNet);
 
-		claimReward = new NpcStep(this, NpcID.HATIUS_LUMBRIDGE_DIARY, new WorldPoint(3235, 3213, 0),
+		claimReward = new NpcStep(this, NpcID.HATIUS_COSAINTUS, new WorldPoint(3235, 3213, 0),
 			"Talk to Hatius Cosaintus in Lumbridge to claim your reward!");
 		claimReward.addDialogStep("I have a question about my Achievement Diary.");
 	}

@@ -230,22 +230,22 @@ public class CrabQuest extends BasicQuestHelper
 			bigFishingNet, fourSlots);
 
 		fishSeaSoakedBowstring = new NpcStep(this,
-			NpcID.CRAB_FLOATSAM_1,
+			NpcID.CRAB_FLOTSAM_1,
 			"Fish a Sea-soaked bowstring from the nearby Floatsam.",
 			bigFishingNet, threeSlots);
-		fishSeaSoakedBowstring.addAlternateNpcs(NpcID.CRAB_FLOATSAM_2, NpcID.CRAB_FLOATSAM_3);
+		fishSeaSoakedBowstring.addAlternateNpcs(NpcID.CRAB_FLOTSAM_2, NpcID.CRAB_FLOTSAM_3);
 
 		fishBatteredBarrel = new NpcStep(this,
-			NpcID.CRAB_FLOATSAM_1,
+			NpcID.CRAB_FLOTSAM_1,
 			"Fish a Battered Barrel from the nearby Floatsam.",
 			seaSoakedBowstring, bigFishingNet, twoSlots);
-		fishBatteredBarrel.addAlternateNpcs(NpcID.CRAB_FLOATSAM_2, NpcID.CRAB_FLOATSAM_3);
+		fishBatteredBarrel.addAlternateNpcs(NpcID.CRAB_FLOTSAM_2, NpcID.CRAB_FLOTSAM_3);
 
 		fishWeatheredRosewoodPlank = new NpcStep(this,
-			NpcID.CRAB_FLOATSAM_1,
+			NpcID.CRAB_FLOTSAM_1,
 			"Fish a Weathered Rosewood Plank from the nearby Floatsam.",
 			seaSoakedBowstring, batteredBarrel, bigFishingNet, oneSlot);
-		fishWeatheredRosewoodPlank.addAlternateNpcs(NpcID.CRAB_FLOATSAM_2, NpcID.CRAB_FLOATSAM_3);
+		fishWeatheredRosewoodPlank.addAlternateNpcs(NpcID.CRAB_FLOTSAM_2, NpcID.CRAB_FLOTSAM_3);
 
 		resetFloatsam = new NpcStep(this,
 			NpcID.CRAB_MAINCRAB,

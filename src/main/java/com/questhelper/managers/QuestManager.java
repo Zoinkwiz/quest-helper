@@ -43,6 +43,7 @@ import net.runelite.api.QuestState;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.plugins.PluginManager;
 
 import javax.annotation.Nullable;
@@ -303,6 +304,7 @@ public class QuestManager
 			return;
 		}
 		questBankManager.startUpQuest();
+		broadcastSelectedQuest();
 		SwingUtilities.invokeLater(() ->
 		{
 			panel.removeQuest();
@@ -313,9 +315,34 @@ public class QuestManager
 		});
 	}
 
+	/**
+	 * Announces the currently selected helper to other plugins, via a
+	 * {@link PluginMessage} with namespace "questhelper" and name "selected".
+	 * <p>
+	 * The data map carries a "quest" entry holding the helper's display name,
+	 * or is empty when no helper is selected. A subscriber therefore reads
+	 * {@code event.getData().get("quest")} and treats a missing value as
+	 * "nothing selected", with no second message name to handle.
+	 * </p>
+	 * <p>
+	 * Posted whenever the selection settles.
+	 * </p>
+	 */
+	public void broadcastSelectedQuest()
+	{
+		Map<String, Object> data = new HashMap<>();
+		if (selectedQuest != null)
+		{
+			data.put("quest", selectedQuest.getQuest().getName());
+		}
+		eventBus.post(new PluginMessage("questhelper", "selected", data));
+	}
+
 	private void shutDownPreviousQuest()
 	{
-		shutDownQuest(true);
+		// Deliberately does not broadcast: the selection has not settled yet, and
+		// initializeNewQuest announces the helper that replaces this one.
+		doShutDownQuest(true);
 	}
 
 	/**
@@ -325,6 +352,16 @@ public class QuestManager
 	 * @param shouldUpdateList Flag to update the quest list.
 	 */
 	public void shutDownQuest(boolean shouldUpdateList)
+	{
+		boolean hadSelectedQuest = selectedQuest != null;
+		doShutDownQuest(shouldUpdateList);
+		if (hadSelectedQuest)
+		{
+			broadcastSelectedQuest();
+		}
+	}
+
+	private void doShutDownQuest(boolean shouldUpdateList)
 	{
 		if (selectedQuest != null)
 		{

@@ -290,6 +290,7 @@ public class HerbRun extends ComplexStateQuestHelper
 		hunterWhistle = new ItemRequirement("Quetzal whistle", ItemID.HG_QUETZALWHISTLE_PERFECTED).showConditioned(accessToVarlamore);
 		hunterWhistle.addAlternates(ItemID.HG_QUETZALWHISTLE_BASIC);
 		hunterWhistle.addAlternates(ItemID.HG_QUETZALWHISTLE_ENHANCED);
+		hunterWhistle.addAlternates(ItemID.HG_QUETZALWHISTLE_PERFECTED_INFINITE);
 
 		gracefulHood = new ItemRequirement(
 				"Graceful hood", ItemCollections.GRACEFUL_HOOD, 1, true).isNotConsumed();

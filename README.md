@@ -49,6 +49,8 @@ In addition, there's a [Discord](https://discord.gg/XCfwNnz6RB) you can use for 
 
 ## Contributing
 
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for review, testing, and AI assistance expectations before submitting a PR.
+
 Check out the [Contribution Guide](https://github.com/Zoinkwiz/quest-helper/wiki/Contribution-guide) for help with making changes and adding your own helpers.
 
 ## Donating

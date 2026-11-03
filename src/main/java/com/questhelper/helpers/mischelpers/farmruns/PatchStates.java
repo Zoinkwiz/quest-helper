@@ -63,6 +63,13 @@ public class PatchStates
 		this.requirement = requirement;
 	}
 
+	public PatchStates(String regionName, String patchName, Requirement requirement)
+	{
+		this.regionName = regionName;
+		this.patchName = patchName;
+		this.requirement = requirement;
+	}
+
 	public boolean canAccess(Client client)
 	{
 		if (requirement == null) return true;

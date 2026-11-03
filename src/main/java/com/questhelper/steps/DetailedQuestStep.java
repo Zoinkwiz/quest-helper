@@ -130,6 +130,21 @@ public class DetailedQuestStep extends QuestStep
 
 	@Setter
 	private boolean onlyHighlightItemsOnTile;
+	private boolean shortestPathEnabled = true;
+	private Map<String, Object> shortestPathConfig = Collections.emptyMap();
+
+	/** Per-step overrides, cleared by the existing Shortest Path clear message on shutdown. */
+	public void configureShortestPath(boolean enabled, Map<String, Object> overrides)
+	{
+		if (shortestPathEnabled == enabled && shortestPathConfig.equals(overrides)) return;
+		shortestPathEnabled = enabled;
+		shortestPathConfig = new HashMap<>(overrides);
+		if (started)
+		{
+			removeShortestPath();
+			if (enabled) setShortestPath();
+		}
+	}
 
 
 	public DetailedQuestStep(QuestHelper questHelper, String text, Requirement... requirements)
@@ -876,6 +891,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void setShortestPath()
 	{
+		if (!shortestPathEnabled) return;
 		if (definedPoint == null)
 		{
 			return;
@@ -901,6 +917,7 @@ public class DetailedQuestStep extends QuestStep
 			Map<String, Object> data = new HashMap<>();
 			data.put("start", playerWp);
 			data.put("target", definedPoint.getWorldPoint());
+			if (!shortestPathConfig.isEmpty()) data.put("config", new HashMap<>(shortestPathConfig));
 			eventBus.post(new PluginMessage("shortestpath", "path", data));
 		}
 	}

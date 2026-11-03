@@ -290,7 +290,7 @@ public class SwanSong extends BasicQuestHelper
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
-		return Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammerPanel);
+		return Arrays.asList(mist10, lava10, blood5, bones7, pot, potLid, ironBar5, log, tinderbox, hammerPanel, smallNet);
 	}
 
 	@Override
@@ -371,7 +371,7 @@ public class SwanSong extends BasicQuestHelper
 		helpingArnoldSteps.addAll(fishAndCookMonkfish.getSteps());
 		helpingArnoldSteps.add(talkToHermanAfterTasks);
 
-		allSteps.add(new PanelDetails("Helping Arnold", helpingArnoldSteps, Collections.singletonList(combatGear), Collections.singletonList(cookingGauntlets)));
+		allSteps.add(new PanelDetails("Helping Arnold", helpingArnoldSteps, Arrays.asList(combatGear, smallNet), Collections.singletonList(cookingGauntlets)));
 		allSteps.add(new PanelDetails("Making an army", Arrays.asList(talkToFruscone, talkToMalignius,
 			talkToCrafter, makeAirtightPot, talkToMaligniusWithPot), Arrays.asList(bones7, pot, potLid, combatGearRanged), Arrays.asList(yanilleTeleport, craftingGuildTeleport)));
 		allSteps.add(new PanelDetails("Defeating the trolls", Arrays.asList(talkToHermanForFinalFight, killQueen, talkToHermanToFinish), combatGearRanged));

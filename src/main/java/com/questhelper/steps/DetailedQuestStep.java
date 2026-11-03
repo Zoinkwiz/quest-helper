@@ -880,10 +880,6 @@ public class DetailedQuestStep extends QuestStep
 		{
 			return;
 		}
-		if (isLineDrawn())
-		{
-			return;
-		}
 
 		var localPlayer = client.getLocalPlayer();
 		if (localPlayer == null)
@@ -898,9 +894,10 @@ public class DetailedQuestStep extends QuestStep
 		}
 		if (getQuestHelper().getConfig().useShortestPath())
 		{
+			WorldPoint target = isLineDrawn() ? linePoints.get(0) : definedPoint.getWorldPoint();
 			Map<String, Object> data = new HashMap<>();
 			data.put("start", playerWp);
-			data.put("target", definedPoint.getWorldPoint());
+			data.put("target", target);
 			eventBus.post(new PluginMessage("shortestpath", "path", data));
 		}
 	}
@@ -908,7 +905,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void removeShortestPath()
 	{
-		if (getQuestHelper().getConfig().useShortestPath() && definedPoint != null && !isLineDrawn())
+		if (getQuestHelper().getConfig().useShortestPath() && definedPoint != null)
 		{
 			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}
@@ -917,7 +914,7 @@ public class DetailedQuestStep extends QuestStep
 	@Override
 	public void disableShortestPath()
 	{
-		if (definedPoint.getWorldPoint() != null && !isLineDrawn())
+		if (definedPoint.getWorldPoint() != null)
 		{
 			eventBus.post(new PluginMessage("shortestpath", "clear"));
 		}

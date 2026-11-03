@@ -24,6 +24,7 @@
  */
 package com.questhelper.helpers.quests.mudfootsbigadventure;
 
+import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
@@ -34,48 +35,88 @@ import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.NpcStep;
-import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
-import net.runelite.api.gameval.ObjectID;
 
 public class MudfootsBigAdventure extends BasicQuestHelper
 {
 	// Required items
+	ItemRequirement meleeWeapon;
 
 	// Recommended items
-
-	// Mid-quest item requirements
-
-	// Zones
-	Zone sampleZone;
-
-	// Miscellaneous requirements
+	ItemRequirement stabWeapon, rangedWeapon, magicWeapon, food;
 
 	// Steps
-	NpcStep talkToHarlan;
-	ObjectStep climbUpLadder;
+	NpcStep talkToHarlan, talkToMudfoot, confrontRangerOutlaw, fightRangerOutlaw, speakAfterRangerOutlaw, fightMageOutlaw, speakAfterMageOutlaw,
+		    fightMeleeOutlaw, speakAfterMeleeOutlaw, finishQuest;
 
 	@Override
 	protected void setupZones()
 	{
-		sampleZone = new Zone(new WorldPoint(10, 10, 0), new WorldPoint(20, 20, 0));
+
 	}
 
 	@Override
 	protected void setupRequirements()
 	{
+		stabWeapon = new ItemRequirement("A stab weapon", -1, 1 ).isNotConsumed();
+		stabWeapon.canBeObtainedDuringQuest();
+		stabWeapon.setTooltip("A bronze sword can be obtained from Captain Harlan during the quest");
+		stabWeapon.setDisplayItemId(ItemID.BRONZE_SWORD);
+
+		meleeWeapon = new ItemRequirement("Any melee weapon", -1, 1).isNotConsumed();
+		meleeWeapon.canBeObtainedDuringQuest();
+		meleeWeapon.setTooltip("A bronze sword can be obtained from Captain Harlan during the quest");
+		meleeWeapon.setDisplayItemId(ItemID.BRONZE_SWORD);
+
+		rangedWeapon = new ItemRequirement("Any ranged weapon with ammunition", -1, 1).isNotConsumed();
+		rangedWeapon.canBeObtainedDuringQuest();
+		rangedWeapon.setTooltip("A shortbow and arrows can be obtained from Captain Harlan during the quest");
+		rangedWeapon.setDisplayItemId(ItemID.SHORTBOW);
+
+		magicWeapon = new ItemRequirement("A staff with runes to cast magic spells", -1, 1).isNotConsumed();
+		magicWeapon.canBeObtainedDuringQuest();
+		magicWeapon.setTooltip("A staff and runes for magic can be obtained from Captain Harlan during the quest");
+		magicWeapon.setDisplayItemId(ItemID.MINDRUNE);
+
+		food = new ItemRequirement("Food", -1, -1);
+		food.setDisplayItemId(BankSlotIcons.getFood());
 	}
 
 	void setupSteps()
 	{
-		talkToHarlan = new NpcStep(this, NpcID.CAPTAIN_HARLAN, "Talk to Captain Harlan north of Lumbridge Castle");
-		climbUpLadder = new ObjectStep(this, ObjectID.LADDER, "Climb up the ladder");
+		talkToHarlan = new NpcStep(this, NpcID.CAPTAIN_HARLAN, new WorldPoint(3216, 3240, 0), "Speak to Captain Harlan north of Lumbridge Castle");
+		talkToHarlan.addDialogStep("Do you need help with anything?");
+		talkToHarlan.addDialogStep("Yes.");
+
+		talkToMudfoot = new NpcStep(this, NpcID.MBA_MUDFOOT_VIS, new WorldPoint(3247, 3250, 0), "Speak to Mudfoot across the river");
+
+		confrontRangerOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_RANGED_VIS, new WorldPoint(3219, 3247, 0), "Confront the ranger outlaw near the Lumbridge General Store");
+
+		fightRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
+			"Speak to Mudfoot by the windmill North of Lumbridge to fight the ranger outlaw");
+		speakAfterRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
+			"Speak to Mudfoot after defeating the ranger outlaw");
+
+		fightMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
+			"Speak to Mudfoot by the H.A.M hideout west of Lumbridge Castle to fight the mage outlaw");
+		speakAfterMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
+			"Speak to Mudfoot after defeating the mage outlaw");
+
+		fightMeleeOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MELEE_VIS, new WorldPoint(3244, 3195, 0),
+			"Confront the melee outlaw in the Lumbridge graveyard");
+		speakAfterMeleeOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3244, 3195, 0),
+			"Speak to Mudfoot after defeating the melee outlaw");
+
+		finishQuest = new NpcStep(this, NpcID.CAPTAIN_HARLAN, new WorldPoint(3216, 3240, 0),
+			"Speak to Captain Harlan after defeating the melee outlaw to finish the quest!");
+		finishQuest.addDialogStep("All of those thieves have been dealt with.");
 	}
 
 	@Override
@@ -87,32 +128,29 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		var steps = new HashMap<Integer, QuestStep>();
 
 		steps.put(0, talkToHarlan);
-		steps.put(2, climbUpLadder);
+		steps.put(2, talkToHarlan);
+		steps.put(4, talkToMudfoot);
+		steps.put(6, confrontRangerOutlaw);
+		steps.put(8, fightRangerOutlaw);
+		steps.put(10, fightRangerOutlaw);
+		steps.put(12, fightRangerOutlaw);
+		steps.put(16, fightMageOutlaw);
+		steps.put(18, fightMageOutlaw);
+		steps.put(20, speakAfterMageOutlaw);
+		steps.put(22, fightMeleeOutlaw);
+		steps.put(24, fightMeleeOutlaw);
+		steps.put(26, speakAfterMeleeOutlaw);
+		steps.put(28, finishQuest);
+		steps.put(30, finishQuest);
 
 		return steps;
-	}
-
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		return List.of(
-
-		);
-	}
-
-	@Override
-	public List<Requirement> getGeneralRecommended()
-	{
-		return List.of(
-
-		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
-
+			magicWeapon
 		);
 	}
 
@@ -120,21 +158,17 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
-
+			stabWeapon,
+			rangedWeapon,
+			magicWeapon,
+			food
 		);
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return null;
-	}
-
-	@Override
-	public List<String> getNotes()
-	{
-		return List.of(
-		);
+		return List.of("Three outlaws (Levels 6-10)");
 	}
 
 	@Override
@@ -144,23 +178,11 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 	}
 
 	@Override
-	public List<ExperienceReward> getExperienceRewards()
-	{
-		return List.of(
-		);
-	}
-
-	@Override
-	public List<ItemReward> getItemRewards()
-	{
-		return List.of(
-		);
-	}
-
-	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
+			new UnlockReward("Four antique lamps (500 combat experience each)"),
+			new UnlockReward("500 coins")
 		);
 	}
 
@@ -171,8 +193,27 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 
 		sections.add(new PanelDetails("Starting off", List.of(
 			talkToHarlan
-		), List.of(
-			//
+		)));
+
+		sections.add(new PanelDetails("Ranger Outlaw", List.of(
+			talkToMudfoot,
+			confrontRangerOutlaw,
+			fightRangerOutlaw,
+			speakAfterRangerOutlaw
+		), List.of(magicWeapon), List.of(meleeWeapon, food)));
+
+		sections.add(new PanelDetails("Mage Outlaw", List.of(
+			fightMageOutlaw,
+			speakAfterMageOutlaw
+		), List.of(magicWeapon), List.of(rangedWeapon, food)));
+
+		sections.add(new PanelDetails("Melee Outlaw", List.of(
+			fightMeleeOutlaw,
+			speakAfterMeleeOutlaw
+		), List.of(magicWeapon), List.of(food)));
+
+		sections.add(new PanelDetails("Finishing Up", List.of(
+			finishQuest
 		)));
 
 		return sections;

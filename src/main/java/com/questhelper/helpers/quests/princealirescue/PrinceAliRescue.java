@@ -258,6 +258,15 @@ public class PrinceAliRescue extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.SMITHING, 500),
+			new ExperienceReward(Skill.CRAFTING, 500)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Collections.singletonList(new ItemReward("Coins", ItemID.COINS, 700));

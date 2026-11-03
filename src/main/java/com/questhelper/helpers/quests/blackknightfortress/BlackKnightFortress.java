@@ -397,6 +397,7 @@ public class BlackKnightFortress extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(
+			new ItemReward("1,000 XP Combat Lamp", ItemID.THOSF_REWARD_LAMP, 2),
 			new ItemReward("Coins", ItemID.COINS, 2500)
 		);
 	}

@@ -354,6 +354,16 @@ public class FamilyCrest extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.MINING, 2000),
+			new ExperienceReward(Skill.SMITHING, 2000),
+			new ExperienceReward(Skill.CRAFTING, 2000)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Collections.singletonList(new ItemReward("A pair of Steel Gauntlets", ItemID.STEEL_GAUNTLETS, 1));

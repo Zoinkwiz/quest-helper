@@ -330,6 +330,14 @@ public class TaleOfTheRighteous extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.MINING, 1500)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Arrays.asList(

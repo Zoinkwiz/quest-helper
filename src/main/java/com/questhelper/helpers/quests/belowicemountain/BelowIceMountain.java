@@ -315,6 +315,14 @@ public class BelowIceMountain extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.MINING, 1200)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(

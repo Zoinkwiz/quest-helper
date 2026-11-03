@@ -211,6 +211,14 @@ public class RuneMysteries extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.RUNECRAFT, 500)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(

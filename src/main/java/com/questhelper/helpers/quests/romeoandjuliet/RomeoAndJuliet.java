@@ -171,6 +171,14 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return List.of(
+			new ItemReward("500 XP Lamp", ItemID.THOSF_REWARD_LAMP, 1)
+		);
+	}
+
+	@Override
 	public List<PanelDetails> getPanels()
 	{
 		var sections = new ArrayList<PanelDetails>();

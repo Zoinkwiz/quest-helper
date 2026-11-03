@@ -331,6 +331,7 @@ public class DemonSlayer extends BasicQuestHelper
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(
+			new ItemReward("1,000 XP Combat Lamp claimable from Aris", ItemID.THOSF_REWARD_LAMP, 2),
 			new ItemReward("Silverlight", ItemID.SILVERLIGHT, 1)
 		);
 	}

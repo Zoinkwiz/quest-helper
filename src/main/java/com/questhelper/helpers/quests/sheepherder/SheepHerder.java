@@ -279,6 +279,14 @@ public class SheepHerder extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.HUNTER, 1000)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(

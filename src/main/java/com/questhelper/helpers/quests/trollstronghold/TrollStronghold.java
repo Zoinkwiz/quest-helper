@@ -285,6 +285,14 @@ public class TrollStronghold extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.AGILITY, 2000)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return Collections.singletonList(new ItemReward("Law Talisman", ItemID.LAW_TALISMAN, 1));

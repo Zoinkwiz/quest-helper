@@ -191,6 +191,14 @@ public class PiratesTreasure extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.COOKING, 800)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(

@@ -261,6 +261,15 @@ public class LostCity extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.WOODCUTTING, 1500),
+			new ExperienceReward(Skill.CRAFTING, 1500)
+		);
+	}
+
+	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(

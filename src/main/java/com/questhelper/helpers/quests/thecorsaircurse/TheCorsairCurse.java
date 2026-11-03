@@ -359,6 +359,14 @@ public class TheCorsairCurse extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.FIREMAKING, 1200)
+		);
+	}
+
+	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Collections.singletonList(new UnlockReward("Access to Yusuf's Bank in the Corsair Cove."));

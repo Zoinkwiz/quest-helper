@@ -397,6 +397,14 @@ public class MerlinsCrystal extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.FIREMAKING, 1000)
+		);
+	}
+
+	@Override
 	public List<ItemReward> getItemRewards()
 	{
 		return List.of(

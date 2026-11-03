@@ -510,6 +510,17 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	}
 
 	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.WOODCUTTING, 1000),
+			new ExperienceReward(Skill.MINING, 1000),
+			new ExperienceReward(Skill.FISHING, 1000),
+			new ExperienceReward(Skill.FARMING, 1000)
+		);
+	}
+
+	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return Arrays.asList(

@@ -37,6 +37,7 @@ import static com.questhelper.requirements.util.LogicHelper.and;
 import static com.questhelper.requirements.util.LogicHelper.or;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -257,6 +258,15 @@ public class LostCity extends BasicQuestHelper
 	public QuestPointReward getQuestPointReward()
 	{
 		return new QuestPointReward(3);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.WOODCUTTING, 1500),
+			new ExperienceReward(Skill.CRAFTING, 1500)
+		);
 	}
 
 	@Override

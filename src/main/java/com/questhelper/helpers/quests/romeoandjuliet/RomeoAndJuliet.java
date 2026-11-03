@@ -30,6 +30,7 @@ import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
@@ -167,6 +168,14 @@ public class RomeoAndJuliet extends BasicQuestHelper
 	public QuestPointReward getQuestPointReward()
 	{
 		return new QuestPointReward(5);
+	}
+
+	@Override
+	public List<ItemReward> getItemRewards()
+	{
+		return List.of(
+			new ItemReward("500 XP Lamp", ItemID.THOSF_REWARD_LAMP, 1)
+		);
 	}
 
 	@Override

@@ -38,6 +38,7 @@ import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.requirements.zone.Zone;
 import com.questhelper.requirements.zone.ZoneRequirement;
+import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.*;
@@ -506,6 +507,17 @@ public class ThroneOfMiscellania extends BasicQuestHelper
 	public QuestPointReward getQuestPointReward()
 	{
 		return new QuestPointReward(1);
+	}
+
+	@Override
+	public List<ExperienceReward> getExperienceRewards()
+	{
+		return List.of(
+			new ExperienceReward(Skill.WOODCUTTING, 1000),
+			new ExperienceReward(Skill.MINING, 1000),
+			new ExperienceReward(Skill.FISHING, 1000),
+			new ExperienceReward(Skill.FARMING, 1000)
+		);
 	}
 
 	@Override

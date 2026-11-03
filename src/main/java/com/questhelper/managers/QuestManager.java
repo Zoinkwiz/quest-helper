@@ -35,6 +35,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.QuestStep;
+import com.questhelper.util.TranslationService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -88,6 +89,9 @@ public class QuestManager
 
 	@Inject
 	QuestHelperPlugin questHelperPlugin;
+
+	@Inject
+	TranslationService translationService;
 
 	@Getter
 	@Inject
@@ -351,6 +355,7 @@ public class QuestManager
 		}
 
 		this.lastStep = null;
+		translationService.clear();
 	}
 
 	public void activateShortestPath()

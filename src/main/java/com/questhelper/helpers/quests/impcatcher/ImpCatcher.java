@@ -91,16 +91,16 @@ public class ImpCatcher extends BasicQuestHelper
 
 	public void setupSteps()
 	{
-		collectBeads = new DetailedQuestStep(this, "Collect one of each bead. You can kill imps for these beads, or buy them on the Grand Exchange.",
+		collectBeads = new DetailedQuestStep(this, t("Collect one of each bead. You can kill imps for these beads, or buy them on the Grand Exchange."),
 			blackBead, whiteBead, redBead, yellowBead);
 		moveToTower = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS, new WorldPoint(3103, 3159, 0),
-			"Head to the Wizards' Tower and climb up the staircase with the required beads.", blackBead, whiteBead, redBead, yellowBead);
+			t("Head to the Wizards' Tower and climb up the staircase with the required beads."), blackBead, whiteBead, redBead, yellowBead);
 		climbUpF1 = new ObjectStep(this, ObjectID.FAI_WIZTOWER_SPIRALSTAIRS_MIDDLE, new WorldPoint(3103, 3159, 1),
-			"Head to the Wizards' Tower and climb up the staircase with the required beads.", blackBead, whiteBead, redBead, yellowBead);
+			t("Head to the Wizards' Tower and climb up the staircase with the required beads."), blackBead, whiteBead, redBead, yellowBead);
 		climbUpF1.addDialogStep("Up");
 		moveToTower.addSubSteps(climbUpF1);
 		turnInQuest = new NpcStep(this, NpcID.WIZARD_MIZGOG_QUEST, new WorldPoint(3103, 3163, 2),
-			"Talk to Wizard Mizgog with the required beads to finish the quest.",
+			t("Talk to Wizard Mizgog with the required beads to finish the quest."),
 			blackBead, whiteBead, redBead, yellowBead);
 		turnInQuest.addDialogSteps("Give me a quest please.", "Yes.");
 	}
@@ -162,7 +162,7 @@ public class ImpCatcher extends BasicQuestHelper
 	public List<String> getCombatRequirements()
 	{
 		return List.of(
-			"Imps (level 2) if you plan on collecting the beads yourself"
+			t("Imps (level 2) if you plan on collecting the beads yourself")
 		);
 	}
 
@@ -171,7 +171,7 @@ public class ImpCatcher extends BasicQuestHelper
 	{
 		var steps = new ArrayList<PanelDetails>();
 
-		steps.add(new PanelDetails("Bring Mizgog his beads", List.of(
+		steps.add(new PanelDetails(t("Bring Mizgog his beads"), List.of(
 			collectBeads,
 			moveToTower,
 			turnInQuest

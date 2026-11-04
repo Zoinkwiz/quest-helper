@@ -27,11 +27,7 @@ package com.questhelper.helpers.quests.mudfootsbigadventure;
 import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.zone.Zone;
-import com.questhelper.rewards.ExperienceReward;
-import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.NpcStep;
@@ -72,17 +68,17 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 
 		meleeWeapon = new ItemRequirement("Any melee weapon", -1, 1).isNotConsumed();
 		meleeWeapon.canBeObtainedDuringQuest();
-		meleeWeapon.setTooltip("A bronze sword can be obtained from Captain Harlan during the quest");
+		meleeWeapon.setTooltip("A bronze sword can be obtained from Captain Harlan after confronting the ranger outlaw");
 		meleeWeapon.setDisplayItemId(ItemID.BRONZE_SWORD);
 
 		rangedWeapon = new ItemRequirement("Any ranged weapon with ammunition", -1, 1).isNotConsumed();
 		rangedWeapon.canBeObtainedDuringQuest();
-		rangedWeapon.setTooltip("A shortbow and arrows can be obtained from Captain Harlan during the quest");
+		rangedWeapon.setTooltip("A shortbow and arrows can be obtained from Captain Harlan after beating the ranger outlaw");
 		rangedWeapon.setDisplayItemId(ItemID.SHORTBOW);
 
 		magicWeapon = new ItemRequirement("A staff with runes to cast magic spells", -1, 1).isNotConsumed();
 		magicWeapon.canBeObtainedDuringQuest();
-		magicWeapon.setTooltip("A staff and runes for magic can be obtained from Captain Harlan during the quest");
+		magicWeapon.setTooltip("A staff and runes for magic can be obtained from Captain Harlan after beating the mage outlaw");
 		magicWeapon.setDisplayItemId(ItemID.MINDRUNE);
 
 		food = new ItemRequirement("Food", -1, -1);
@@ -99,18 +95,18 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 
 		confrontRangerOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_RANGED_VIS, new WorldPoint(3219, 3247, 0), "Confront the ranger outlaw near the Lumbridge General Store.");
 
-		fightRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
-			"Speak to Mudfoot by the windmill North of Lumbridge to fight the ranger outlaw.");
+		fightRangerOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_RANGED_VIS, new WorldPoint(3170, 3287, 0),
+			"Confront the ranger outlaw by the windmill North of Lumbridge to fight the outlaw.");
 		speakAfterRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
 			"Speak to Mudfoot after defeating the ranger outlaw.");
 
-		fightMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
-			"Speak to Mudfoot by the H.A.M hideout west of Lumbridge Castle to fight the mage outlaw.");
+		fightMageOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MAGIC_VIS, new WorldPoint(3170, 3287, 0),
+			"Confront the mage outlaw by the H.A.M hideout west of Lumbridge Castle to fight the outlaw.");
 		speakAfterMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
 			"Speak to Mudfoot after defeating the mage outlaw.");
 
 		fightMeleeOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MELEE_VIS, new WorldPoint(3244, 3195, 0),
-			"Confront the melee outlaw in the Lumbridge graveyard.");
+			"Confront the melee outlaw in the Lumbridge graveyard to fight the outlaw.");
 		speakAfterMeleeOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3244, 3195, 0),
 			"Speak to Mudfoot after defeating the melee outlaw.");
 
@@ -134,6 +130,7 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		steps.put(8, fightRangerOutlaw);
 		steps.put(10, fightRangerOutlaw);
 		steps.put(12, fightRangerOutlaw);
+		steps.put(14, speakAfterRangerOutlaw);
 		steps.put(16, fightMageOutlaw);
 		steps.put(18, fightMageOutlaw);
 		steps.put(20, speakAfterMageOutlaw);

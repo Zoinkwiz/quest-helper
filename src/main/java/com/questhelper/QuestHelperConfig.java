@@ -27,6 +27,7 @@ package com.questhelper;
 import com.questhelper.panel.questorders.QuestOrders;
 import com.questhelper.questhelpers.QuestDetails;
 import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.util.Fonts;
 import lombok.Getter;
 import net.runelite.client.config.*;
 import net.runelite.client.util.Text;
@@ -237,6 +238,26 @@ public interface QuestHelperConfig extends Config
 		FILLED_OUTLINE
 	}
 
+	enum FontSize
+	{
+		DEFAULT(0),
+		LARGE(4),
+		LARGER(6),
+		LARGEST(10);
+
+		private final int offset;
+
+		FontSize(int offset)
+		{
+			this.offset = offset;
+		}
+
+		public int getSize()
+		{
+			return Math.round(Fonts.getDefaultSize()) + offset;
+		}
+	}
+
 	@ConfigItem(
 		keyName = "autostartQuests",
 		name = "Auto start helper",
@@ -348,6 +369,17 @@ public interface QuestHelperConfig extends Config
 		description = "Determines sidebar rendering"
 	)
 	String sidebarDetailsSection = "sidebarDetailsSection";
+
+	@ConfigItem(
+		keyName = "fontSize",
+		name = "Font size",
+		description = "Change the font size used in the sidebar panel",
+		section = sidebarDetailsSection
+	)
+	default FontSize fontSize()
+	{
+		return FontSize.DEFAULT;
+	}
 
 	@ConfigItem(
 		keyName = "showFullRequirements",

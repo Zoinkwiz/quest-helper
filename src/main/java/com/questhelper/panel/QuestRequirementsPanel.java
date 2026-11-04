@@ -42,6 +42,7 @@ import net.runelite.client.events.PluginMessage;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -68,6 +69,7 @@ public class QuestRequirementsPanel extends JPanel
 	private final QuestManager questManager;
 	private final boolean showEvenIfEmpty;
 	private final JPanel requirementsPanel = new JPanel();
+	private final JTextArea headerLabel;
 
 	public QuestRequirementsPanel(@NonNull String header, Collection<Requirement> requirements, @NonNull QuestManager questManager, boolean showEvenIfEmpty)
 	{
@@ -78,9 +80,10 @@ public class QuestRequirementsPanel extends JPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 0, 10, 0));
 
-		var headerPanel = createHeader(header);
+		var headerResult = createHeader(header);
+		headerLabel = headerResult.getRight();
 
-		add(headerPanel, BorderLayout.NORTH);
+		add(headerResult.getLeft(), BorderLayout.NORTH);
 
 		requirementsPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
 		requirementsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -90,7 +93,7 @@ public class QuestRequirementsPanel extends JPanel
 		setRequirements(requirements);
 	}
 
-	public static JPanel createHeader(@NonNull String header)
+	public static Pair<JPanel, JTextArea> createHeader(@NonNull String header)
 	{
 		var headerPanel = new JPanel();
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -98,34 +101,36 @@ public class QuestRequirementsPanel extends JPanel
 		headerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		var headerLabel = JGenerator.makeJTextArea(header);
+		headerLabel.setFont(Fonts.getOriginalFont());
 		headerLabel.setForeground(Color.WHITE);
 		headerLabel.setMinimumSize(new Dimension(1, headerPanel.getPreferredSize().height));
 		headerPanel.add(headerLabel, BorderLayout.NORTH);
 
-		return headerPanel;
+		return Pair.of(headerPanel, headerLabel);
 	}
 
-	public static Pair<JPanel, JPanel> createGenericGroup(@NonNull String header)
+	public static Triple<JPanel, JPanel, JTextArea> createGenericGroup(@NonNull String header)
 	{
 		var group = new JPanel();
 		group.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		group.setLayout(new BorderLayout());
 		group.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		var headerPanel = createHeader(header);
+		var headerResult = createHeader(header);
 
 		var listPanel = new JPanel();
 		listPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
 		listPanel.setBorder(new EmptyBorder(10, 5, 10, 5));
 
-		group.add(headerPanel, BorderLayout.NORTH);
+		group.add(headerResult.getLeft(), BorderLayout.NORTH);
 		group.add(listPanel, BorderLayout.CENTER);
 
-		return Pair.of(group, listPanel);
+		return Triple.of(group, listPanel, headerResult.getRight());
 	}
 
 	public void setRequirements(@Nullable Collection<? extends Requirement> requirements)
 	{
+		headerLabel.setFont(Fonts.getOriginalFont());
 		requirementList.clear();
 		requirementsPanel.removeAll();
 

@@ -38,6 +38,7 @@ import java.util.List;
 public class QuestRewardsPanel extends JPanel
 {
 	private final JTextArea rewardsText = new JTextArea();
+	private final JTextArea headerLabel;
 
 	public QuestRewardsPanel()
 	{
@@ -45,9 +46,10 @@ public class QuestRewardsPanel extends JPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(0, 0, 10, 0));
 
-		var headerPanel = QuestRequirementsPanel.createHeader("Rewards:");
+		var headerResult = QuestRequirementsPanel.createHeader("Rewards:");
+		headerLabel = headerResult.getRight();
 
-		add(headerPanel, BorderLayout.NORTH);
+		add(headerResult.getLeft(), BorderLayout.NORTH);
 
 		var rewardsPanel = new JPanel();
 		rewardsPanel.setLayout(new DynamicPaddedGridLayout(0, 1, 0, 1));
@@ -59,7 +61,6 @@ public class QuestRewardsPanel extends JPanel
 		rewardsText.setEditable(false);
 		rewardsText.setFocusable(false);
 		rewardsText.setBackground(javax.swing.UIManager.getColor("Label.background"));
-		rewardsText.setFont(Fonts.getOriginalFont());
 		rewardsText.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		add(rewardsPanel, BorderLayout.CENTER);
@@ -69,6 +70,8 @@ public class QuestRewardsPanel extends JPanel
 
 	public void setRewards(@Nullable List<Reward> rewards)
 	{
+		rewardsText.setFont(Fonts.getOriginalFont());
+		headerLabel.setFont(Fonts.getOriginalFont());
 		Reward lastReward = null;
 		if (rewards != null && !rewards.isEmpty())
 		{
@@ -104,6 +107,8 @@ public class QuestRewardsPanel extends JPanel
 
 	public void hideRewards()
 	{
+		rewardsText.setFont(Fonts.getOriginalFont());
+		headerLabel.setFont(Fonts.getOriginalFont());
 		rewardsText.setText("Hidden by the \"Hide quest rewards\" config");
 		rewardsText.setForeground(Color.GRAY);
 

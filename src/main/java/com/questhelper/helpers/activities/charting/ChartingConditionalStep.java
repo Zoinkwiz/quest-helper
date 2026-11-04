@@ -26,6 +26,7 @@ package com.questhelper.helpers.activities.charting;
 
 import com.google.inject.Inject;
 import com.questhelper.helpers.activities.charting.steps.ChartingWeatherStep;
+import com.questhelper.QuestHelperConfig;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.runelite.RuneliteRequirement;
@@ -44,11 +45,13 @@ public class ChartingConditionalStep extends ReorderableConditionalStep
 	protected Client client;
 
 	private final RuneliteRequirement proximityModeRequirement;
+	private final String oceanFilterConfigKey;
 
-	public ChartingConditionalStep(QuestHelper questHelper, QuestStep step, String selectionMethodConfigKey, Requirement... requirements)
+	public ChartingConditionalStep(QuestHelper questHelper, QuestStep step, String selectionMethodConfigKey, String oceanFilterConfigKey, Requirement... requirements)
 	{
 		super(questHelper, step, requirements);
 		this.proximityModeRequirement = new RuneliteRequirement(questHelper.getConfigManager(), selectionMethodConfigKey, "PROXIMITY");
+		this.oceanFilterConfigKey = oceanFilterConfigKey;
 	}
 
 	@Override
@@ -60,7 +63,60 @@ public class ChartingConditionalStep extends ReorderableConditionalStep
 		}
 		else
 		{
-			super.updateSteps();
+			updateStepsSortedWithFilter();
+		}
+	}
+
+	private void updateStepsSortedWithFilter()
+	{
+		Requirement lastPossibleCondition = null;
+
+		for (Map.Entry<Requirement, QuestStep> entry : steps.entrySet())
+		{
+			Requirement conditions = entry.getKey();
+			QuestStep step = entry.getValue();
+
+			// Skip null conditions (default step) - handle at end
+			if (conditions == null)
+			{
+				continue;
+			}
+
+			if (shouldSkipForOceanFilter(step))
+			{
+				continue;
+			}
+
+			boolean stepIsLocked = step.isLocked();
+
+			if (conditions.check(client) && !stepIsLocked)
+			{
+				startUpStep(step);
+				return;
+			}
+			else if (step.isBlocker() && stepIsLocked)
+			{
+				if (lastPossibleCondition != null)
+				{
+					startUpStep(steps.get(lastPossibleCondition));
+				}
+				return;
+			}
+			else if (!stepIsLocked)
+			{
+				lastPossibleCondition = conditions;
+			}
+		}
+
+		// Fallback to default step
+		QuestStep defaultStep = steps.get(null);
+		if (defaultStep != null && !defaultStep.isLocked())
+		{
+			startUpStep(defaultStep);
+		}
+		else if (lastPossibleCondition != null)
+		{
+			startUpStep(steps.get(lastPossibleCondition));
 		}
 	}
 
@@ -80,6 +136,12 @@ public class ChartingConditionalStep extends ReorderableConditionalStep
 		{
 			var condition = entry.getKey();
 			var step = entry.getValue();
+
+			if (shouldSkipForOceanFilter(step))
+			{
+				continue;
+			}
+
 			DetailedQuestStep detailedStep;
 			if (!(step instanceof DetailedQuestStep))
 			{
@@ -141,6 +203,65 @@ public class ChartingConditionalStep extends ReorderableConditionalStep
 				startUpStep(steps.get(null));
 			}
 		}
+	}
+
+	private boolean shouldSkipForOceanFilter(QuestStep step)
+	{
+		String filterValue = questHelper.getConfigManager().getRSProfileConfiguration(
+			QuestHelperConfig.QUEST_BACKGROUND_GROUP, oceanFilterConfigKey);
+
+		String stepOcean = null;
+		if (step instanceof ChartingTaskInterface)
+		{
+			stepOcean = ((ChartingTaskInterface) step).getOcean();
+		}
+
+		if (stepOcean == null)
+		{
+			return true;
+		}
+
+		if (filterValue == null || filterValue.equals("ALL"))
+		{
+			return false;
+		}
+
+		// Handle empty ocean tasks
+		if (stepOcean.isEmpty())
+		{
+			// Only show empty-ocean tasks when BONUS is selected
+			return !filterValue.equals("BONUS");
+		}
+
+		// Convert enum name to display format: ARDENT_OCEAN -> Ardent Ocean
+		String expectedOcean = filterValue.replace("_", " ");
+		expectedOcean = toTitleCase(expectedOcean);
+
+		return !stepOcean.equals(expectedOcean);
+	}
+
+	private String toTitleCase(String input)
+	{
+		StringBuilder result = new StringBuilder();
+		boolean capitalizeNext = true;
+		for (char c : input.toLowerCase().toCharArray())
+		{
+			if (Character.isWhitespace(c))
+			{
+				capitalizeNext = true;
+				result.append(c);
+			}
+			else if (capitalizeNext)
+			{
+				result.append(Character.toUpperCase(c));
+				capitalizeNext = false;
+			}
+			else
+			{
+				result.append(c);
+			}
+		}
+		return result.toString();
 	}
 
 	private WorldPoint getPlayerLocation()

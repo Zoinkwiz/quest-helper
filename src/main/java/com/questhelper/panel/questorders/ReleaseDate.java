@@ -230,6 +230,7 @@ public class ReleaseDate
 		QuestHelperQuest.THE_BLOOD_MOON_RISES,
 		QuestHelperQuest.FALLEN_FROM_GRACE,
 		QuestHelperQuest.A_RUFF_SITUATION,
+		QuestHelperQuest.THE_WRITINGS_ON_THE_WALL,
 		// Miniquests
 		QuestHelperQuest.ALFRED_GRIMHANDS_BARCRAWL,
 		QuestHelperQuest.THE_MAGE_ARENA,

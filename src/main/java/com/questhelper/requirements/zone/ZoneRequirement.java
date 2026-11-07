@@ -111,6 +111,11 @@ public class ZoneRequirement extends AbstractRequirement
 		this.checkInZone = checkInZone;
 	}
 
+	public static ZoneRequirement square(int x1, int y1, int plane1, int x2, int y2, int plane2)
+	{
+		return new ZoneRequirement(new Zone(new WorldPoint(x1, y1, plane1), new WorldPoint(x2, y2, plane2)));
+	}
+
 	@Override
 	public boolean check(Client client)
 	{

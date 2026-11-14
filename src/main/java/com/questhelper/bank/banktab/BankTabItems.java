@@ -45,6 +45,10 @@ public class BankTabItems
 	@Getter
 	private final List<BankTabItem> recommendedItems;
 
+	// Extra lines under the header, e.g. missing skill levels
+	@Getter
+	private final List<String> notes = new ArrayList<>();
+
 	public BankTabItems(String name, BankTabItem... items)
 	{
 		this.name = name;
@@ -74,5 +78,15 @@ public class BankTabItems
 	public void addRecommendedItems(BankTabItem... items)
 	{
 		this.recommendedItems.addAll(Arrays.asList(items));
+	}
+
+	public void addNotes(List<String> notes)
+	{
+		this.notes.addAll(notes);
+	}
+
+	public boolean isEmpty()
+	{
+		return items.isEmpty() && recommendedItems.isEmpty() && notes.isEmpty();
 	}
 }

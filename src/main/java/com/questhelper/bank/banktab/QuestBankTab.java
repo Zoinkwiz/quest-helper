@@ -649,13 +649,18 @@ public class QuestBankTab
 
 		// Contains list of items used, for easy identification for duplicate items
 
-		if (items == null || (items.getItems().isEmpty() && items.getRecommendedItems().isEmpty()))
+		if (items == null || items.isEmpty())
 		{
 			return newHeight;
 		}
 
 		// Presume there'll be some content as we have fake items now
 		newHeight = addSectionHeader(itemContainer, items.getName(), totalSectionsHeight);
+
+		for (String note : items.getNotes())
+		{
+			newHeight = addNoteLine(itemContainer, note, newHeight);
+		}
 
 		if (!items.getItems().isEmpty())
 		{
@@ -759,6 +764,16 @@ public class QuestBankTab
 			, TEXT_HEIGHT, ITEM_ROW_START, totalSectionsHeight + LINE_VERTICAL_SPACING));
 
 		return totalSectionsHeight + LINE_VERTICAL_SPACING + TEXT_HEIGHT;
+	}
+
+	private int addNoteLine(Widget itemContainer, String text, int totalSectionsHeight)
+	{
+		final int NOTE_SPACING = 2;
+		addedWidgets.add(createText(itemContainer, text, Color.WHITE.getRGB(),
+			(ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING) + ITEM_ROW_START, TEXT_HEIGHT,
+			ITEM_ROW_START, totalSectionsHeight + NOTE_SPACING));
+
+		return totalSectionsHeight + NOTE_SPACING + TEXT_HEIGHT;
 	}
 
 	private int addSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)

@@ -30,6 +30,7 @@ package com.questhelper.bank.banktab;
 
 import com.google.common.primitives.Shorts;
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestQueueManager;
 import com.questhelper.requirements.item.ItemRequirement;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
@@ -115,6 +116,9 @@ public class QuestBankTab
 	@Inject
 	private QuestHelperBankTagService questHelperBankTagService;
 
+	@Inject
+	private QuestQueueManager questQueueManager;
+
 	private final HashMap<Widget, BankTabItem> widgetItems = new HashMap<>();
 
 	private int originalContainerChildren = -1;
@@ -125,6 +129,11 @@ public class QuestBankTab
 		{
 			clientThread.invokeLater(questBankTabInterface::init);
 			clientThread.invokeLater(geButtonWidget::init);
+		}
+		else if (!questQueueManager.isEmpty())
+		{
+			// GE button relies on the selected quest, so just the bank tab here
+			clientThread.invokeLater(questBankTabInterface::init);
 		}
 	}
 
@@ -227,7 +236,11 @@ public class QuestBankTab
 				Widget bankTitle = client.getWidget(InterfaceID.Bankmain.TITLE);
 				if (bankTitle != null)
 				{
-					if (questHelper.getSelectedQuest() != null)
+					if (!questQueueManager.isEmpty())
+					{
+						bankTitle.setText("Tab <col=ff0000>Quest queue (" + questQueueManager.size() + ")</col>");
+					}
+					else if (questHelper.getSelectedQuest() != null)
 					{
 						bankTitle.setText("Tab <col=ff0000>" + questHelper.getSelectedQuest().getQuest().getName() + "</col>");
 					}
@@ -261,7 +274,8 @@ public class QuestBankTab
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.BANKMAIN && questHelper.getSelectedQuest() != null)
+		if (event.getGroupId() == InterfaceID.BANKMAIN
+			&& (questHelper.getSelectedQuest() != null || !questQueueManager.isEmpty()))
 		{
 			questBankTabInterface.init();
 		}

@@ -25,12 +25,19 @@
 package com.questhelper.bank.banktab;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestQueueManager;
 import com.questhelper.panel.PanelDetails;
+import com.questhelper.questhelpers.QuestHelper;
+import com.questhelper.questinfo.QuestHelperQuest;
+import com.questhelper.requirements.ComplexRequirement;
+import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.item.KeyringRequirement;
+import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 
@@ -38,7 +45,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -53,6 +63,9 @@ public class QuestHelperBankTagService
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private QuestQueueManager questQueueManager;
 
 	ArrayList<Integer> taggedItems;
 
@@ -98,7 +111,18 @@ public class QuestHelperBankTagService
 
 	public ArrayList<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems)
 	{
+		// Queued quests take priority over the selected quest
+		if (!questQueueManager.isEmpty())
+		{
+			return getQueueBankTagItems(onlyGetMissingItems);
+		}
+
 		ArrayList<BankTabItems> newList = new ArrayList<>();
+
+		if (plugin.getSelectedQuest() == null)
+		{
+			return newList;
+		}
 
 		List<PanelDetails> questSections = plugin.getSelectedQuest().getPanels();
 
@@ -188,6 +212,184 @@ public class QuestHelperBankTagService
 		}
 
 		return newList;
+	}
+
+	// One section with everything for the whole queue, then a section per quest
+	private ArrayList<BankTabItems> getQueueBankTagItems(boolean onlyGetMissingItems)
+	{
+		ArrayList<BankTabItems> newList = new ArrayList<>();
+
+		List<QuestHelper> quests = questQueueManager.getQueue().stream()
+			.map(QuestHelperQuest::getQuestHelper)
+			.filter(q -> !q.isCompleted())
+			.collect(Collectors.toList());
+
+		if (quests.isEmpty())
+		{
+			return newList;
+		}
+
+		Map<Integer, BankTabItem> combinedRequired = new LinkedHashMap<>();
+		Map<Integer, BankTabItem> combinedRecommended = new LinkedHashMap<>();
+		List<BankTabItems> questBlocks = new ArrayList<>();
+
+		int position = 1;
+		for (QuestHelper quest : quests)
+		{
+			List<BankTabItem> required = toBankTabItems(quest.getItemRequirements());
+			List<BankTabItem> recommended = toBankTabItems(quest.getItemRecommended());
+
+			required.forEach(item -> mergeInto(combinedRequired, item));
+			recommended.forEach(item -> mergeInto(combinedRecommended, item));
+
+			BankTabItems block = new BankTabItems(position + ". " + quest.getQuest().getName(),
+				filterMissing(required, onlyGetMissingItems),
+				filterMissing(recommended, onlyGetMissingItems));
+			block.addNotes(missingSkillNotes(List.of(quest)));
+			if (block.isEmpty())
+			{
+				// Still show it, otherwise the numbering skips this quest
+				block.addNotes(List.of("Nothing needed from the bank"));
+			}
+			questBlocks.add(block);
+			position++;
+		}
+
+		// The combined section would just be a copy of the only quest's section
+		if (quests.size() > 1)
+		{
+			// No point showing something as recommended if another quest already requires it
+			combinedRecommended.keySet().removeAll(combinedRequired.keySet());
+
+			BankTabItems combined = new BankTabItems("All " + quests.size() + " queued quests",
+				filterMissing(new ArrayList<>(combinedRequired.values()), onlyGetMissingItems),
+				filterMissing(new ArrayList<>(combinedRecommended.values()), onlyGetMissingItems));
+			combined.addNotes(missingSkillNotes(quests));
+			newList.add(combined);
+		}
+
+		newList.addAll(questBlocks);
+		return newList;
+	}
+
+	private List<BankTabItem> toBankTabItems(List<ItemRequirement> requirements)
+	{
+		List<BankTabItem> items = new ArrayList<>();
+		if (requirements == null)
+		{
+			return items;
+		}
+
+		requirements.stream()
+			.filter(Objects::nonNull)
+			.filter(i -> i.shouldDisplayText(client))
+			.forEach(i -> getItemsFromRequirement(items, i, i));
+		return items;
+	}
+
+	private List<BankTabItem> filterMissing(List<BankTabItem> items, boolean onlyGetMissingItems)
+	{
+		if (!onlyGetMissingItems)
+		{
+			return items;
+		}
+		return items.stream()
+			.filter(i -> !i.getItemRequirement().checkWithAllContainers())
+			.collect(Collectors.toList());
+	}
+
+	// Consumed items add up across quests, but you only need one of things like a hammer
+	private void mergeInto(Map<Integer, BankTabItem> combined, BankTabItem item)
+	{
+		Integer key = item.getDisplayID();
+		BankTabItem existing = combined.get(key);
+		if (existing == null)
+		{
+			combined.put(key, item);
+			return;
+		}
+
+		ItemRequirement existingReq = existing.getItemRequirement();
+		ItemRequirement newReq = item.getItemRequirement();
+		int existingQuantity = existingReq.getQuantity();
+		int newQuantity = newReq.getQuantity();
+
+		int mergedQuantity;
+		if (existingQuantity < 0 || newQuantity < 0)
+		{
+			// -1 is "some", can't add to that
+			mergedQuantity = Math.max(existingQuantity, newQuantity);
+		}
+		else if (existingReq.isConsumedItem() && newReq.isConsumedItem())
+		{
+			mergedQuantity = existingQuantity + newQuantity;
+		}
+		else
+		{
+			mergedQuantity = Math.max(existingQuantity, newQuantity);
+		}
+
+		if (mergedQuantity == existingQuantity)
+		{
+			return;
+		}
+
+		combined.put(key, new BankTabItem(existingReq.quantity(mergedQuantity), key));
+	}
+
+	// Only keeps the highest level needed per skill
+	private List<String> missingSkillNotes(List<QuestHelper> quests)
+	{
+		Map<Skill, SkillRequirement> highest = new EnumMap<>(Skill.class);
+		for (QuestHelper quest : quests)
+		{
+			List<Requirement> general = quest.getGeneralRequirements();
+			if (general == null)
+			{
+				continue;
+			}
+			for (Requirement requirement : general)
+			{
+				collectSkillRequirements(requirement, highest);
+			}
+		}
+
+		List<String> notes = new ArrayList<>();
+		for (SkillRequirement requirement : highest.values())
+		{
+			if (requirement.check(client))
+			{
+				continue;
+			}
+			int currentLevel = client.getRealSkillLevel(requirement.getSkill());
+			notes.add("<col=ff0000>Need " + requirement.getDisplayText() + "</col> - you have " + currentLevel);
+		}
+		return notes;
+	}
+
+	private void collectSkillRequirements(Requirement requirement, Map<Skill, SkillRequirement> highest)
+	{
+		if (requirement instanceof SkillRequirement)
+		{
+			SkillRequirement skillRequirement = (SkillRequirement) requirement;
+			SkillRequirement current = highest.get(skillRequirement.getSkill());
+			if (current == null || skillRequirement.getRequiredLevel() > current.getRequiredLevel())
+			{
+				highest.put(skillRequirement.getSkill(), skillRequirement);
+			}
+		}
+		else if (requirement instanceof ComplexRequirement)
+		{
+			ComplexRequirement complex = (ComplexRequirement) requirement;
+			// No way to know which side of an OR the player will go for, so skip those
+			if (complex.getLogicType() == LogicType.AND)
+			{
+				for (Requirement inner : complex.getRequirements())
+				{
+					collectSkillRequirements(inner, highest);
+				}
+			}
+		}
 	}
 
 	private void getItemsFromRequirement(List<BankTabItem> pluginItems, ItemRequirement itemRequirement, ItemRequirement realItem)

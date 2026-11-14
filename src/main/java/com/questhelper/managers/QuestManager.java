@@ -101,6 +101,17 @@ public class QuestManager
 	private QuestHelperPanel panel;
 	private QuestStep lastStep = null;
 
+	@Getter
+	@Inject
+	QuestQueueManager questQueueManager;
+
+	private final Runnable queueListener = this::onQuestQueueChanged;
+	// Set on the Swing thread, read on the client thread
+	private volatile boolean running = false;
+
+	// True when the bank tab is only up because of the queue (no quest selected)
+	private boolean queueBankTabShown = false;
+
 	public Map<String, QuestHelper> backgroundHelpers = new HashMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRequirements = new TreeMap<>();
 	public SortedMap<QuestHelperQuest, List<ItemRequirement>> itemRecommended = new TreeMap<>();
@@ -113,11 +124,16 @@ public class QuestManager
 	public void startUp(QuestHelperPanel panel)
 	{
 		this.panel = panel;
+		running = true;
+		questQueueManager.addListener(queueListener);
 	}
 
 	public void shutDown()
 	{
+		running = false;
+		questQueueManager.removeListener(queueListener);
 		shutDownQuest(false);
+		queueBankTabShown = false;
 		this.panel = null;
 	}
 
@@ -126,6 +142,58 @@ public class QuestManager
 		QuestHelperQuest.CHECK_ITEMS.getQuestHelper().init();
 		getAllItemRequirements();
 		loadQuestList = true;
+		questQueueManager.load();
+	}
+
+	private void onQuestQueueChanged()
+	{
+		clientThread.invokeLater(this::refreshQuestQueue);
+	}
+
+	// Needs to run on the client thread
+	private void refreshQuestQueue()
+	{
+		if (!running)
+		{
+			return;
+		}
+
+		boolean loggedIn = client.getGameState() == GameState.LOGGED_IN;
+		if (loggedIn)
+		{
+			// If this removes anything it'll trigger another refresh, which is fine
+			removeCompletedFromQueue();
+		}
+
+		List<QuestHelperQuest> queue = questQueueManager.getQueue();
+		SwingUtilities.invokeLater(() -> {
+			if (panel != null)
+			{
+				panel.updateQuestQueue(queue, loggedIn);
+			}
+		});
+
+		// With no quest selected, the queue decides if the bank tab should be there
+		if (selectedQuest == null)
+		{
+			boolean wantTab = !queue.isEmpty();
+			if (wantTab && !queueBankTabShown)
+			{
+				questBankManager.startUpQuest();
+			}
+			else if (!wantTab && queueBankTabShown)
+			{
+				questBankManager.shutDownQuest();
+			}
+			queueBankTabShown = wantTab;
+		}
+
+		questBankManager.refreshBankTab();
+	}
+
+	private void removeCompletedFromQueue()
+	{
+		questQueueManager.removeIf(quest -> quest.getQuestHelper().isCompleted());
 	}
 
 	/**
@@ -241,6 +309,9 @@ public class QuestManager
 					panel.refresh(filteredQuests, false, completedQuests, config.orderListBy().getSections());
 				}
 			});
+
+			// Something might've been completed, so clear it out of the queue
+			removeCompletedFromQueue();
 		}
 	}
 
@@ -283,6 +354,13 @@ public class QuestManager
 		if (backgroundHelpers.containsValue(questHelper))
 		{
 			shutDownBackgroundQuest(questHelper);
+		}
+
+		if (queueBankTabShown)
+		{
+			// The quest sets up its own bank tab, otherwise we'd end up with two buttons
+			questBankManager.shutDownQuest();
+			queueBankTabShown = false;
 		}
 
 		if (shouldOpenSidebarIfConfig && config.autoOpenSidebar())
@@ -348,6 +426,10 @@ public class QuestManager
 			{
 				selectedQuest = null;
 			}
+
+			// Brings the bank tab back if there's still stuff in the queue. This can be called from
+			// the Swing thread (closing the helper), so leave it to the client thread.
+			clientThread.invokeLater(this::refreshQuestQueue);
 		}
 
 		this.lastStep = null;

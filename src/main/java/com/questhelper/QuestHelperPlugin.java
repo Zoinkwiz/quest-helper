@@ -142,6 +142,9 @@ public class QuestHelperPlugin extends Plugin
 	private QuestManager questManager;
 
 	@Inject
+	private QuestQueueManager questQueueManager;
+
+	@Inject
 	private WorldMapAreaManager worldMapAreaManager;
 
 	@Inject
@@ -328,6 +331,8 @@ public class QuestHelperPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> panel.refresh(Collections.emptyList(), true, new HashMap<>()));
 			questBankManager.emptyState();
 			playerStateManager.emptyState();
+			// Next login could be a different account
+			questQueueManager.unload();
 			questManager.shutDownQuest(true);
 			profileChanged = true;
 		}

@@ -25,6 +25,7 @@
 package com.questhelper.panel;
 
 import com.questhelper.QuestHelperPlugin;
+import com.questhelper.managers.QuestQueueManager;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.tools.Icon;
 import lombok.Getter;
@@ -69,7 +70,20 @@ public class QuestSelectPanel extends JPanel
 			questHelperPanel.setSelectedQuest(questHelper);
 			questHelperPanel.emptyBar();
 		});
-		add(startButton, BorderLayout.LINE_END);
+
+		JPanel buttons = new JPanel(new BorderLayout(2, 0));
+		buttons.setOpaque(false);
+		if (questState != QuestState.FINISHED && QuestQueueManager.canQueue(questHelper.getQuest()))
+		{
+			JButton queueButton = new JButton("+");
+			queueButton.setToolTipText("Add to quest queue");
+			queueButton.setMargin(new Insets(0, 4, 0, 4));
+			queueButton.setFocusPainted(false);
+			queueButton.addActionListener(e -> questHelperPanel.addToQuestQueue(questHelper.getQuest()));
+			buttons.add(queueButton, BorderLayout.WEST);
+		}
+		buttons.add(startButton, BorderLayout.EAST);
+		add(buttons, BorderLayout.LINE_END);
 	}
 
 	public QuestSelectPanel(String text)

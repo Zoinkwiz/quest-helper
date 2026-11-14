@@ -129,6 +129,8 @@ public class QuestHelperPanel extends PluginPanel
 
 	private int nextDesiredScrollValue = 0;
 
+	private final QuestQueuePanel questQueuePanel;
+
 	static
 	{
 		DISCORD_ICON = Icon.DISCORD.getIcon(img -> ImageUtil.resizeImage(img, 16, 16));
@@ -456,9 +458,16 @@ public class QuestHelperPanel extends PluginPanel
 
 		searchQuestsPanel.add(filterStackPanel, BorderLayout.NORTH);
 
+		// Quest queue sits above the quest list, so it scrolls with it
+		questQueuePanel = new QuestQueuePanel(questManager.getQuestQueueManager(), this::setSelectedQuest);
+		JPanel questListContent = new JPanel(new BorderLayout());
+		questListContent.setOpaque(false);
+		questListContent.add(questQueuePanel, BorderLayout.NORTH);
+		questListContent.add(questListPanel, BorderLayout.CENTER);
+
 		// Wrapper
 		questListWrapper.setLayout(new BorderLayout());
-		questListWrapper.add(questListPanel, BorderLayout.NORTH);
+		questListWrapper.add(questListContent, BorderLayout.NORTH);
 
 		scrollableContainer = new JScrollPane(viewportContent);
 		scrollableContainer.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -910,6 +919,16 @@ public class QuestHelperPanel extends PluginPanel
 	public void emptyBar()
 	{
 		searchBar.setText("");
+	}
+
+	public void addToQuestQueue(QuestHelperQuest quest)
+	{
+		questManager.getQuestQueueManager().add(quest);
+	}
+
+	public void updateQuestQueue(List<QuestHelperQuest> queue, boolean loggedIn)
+	{
+		questQueuePanel.update(queue, loggedIn);
 	}
 
 	public void updateItemRequirements(Client client)

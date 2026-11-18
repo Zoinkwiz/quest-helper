@@ -33,6 +33,7 @@ import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,6 +148,8 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
+			stabWeapon,
+			rangedWeapon,
 			magicWeapon
 		);
 	}
@@ -155,16 +158,19 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 	public List<ItemRequirement> getItemRecommended()
 	{
 		return List.of(
-			stabWeapon,
-			rangedWeapon,
 			food
 		);
+	}
+
+	public List<String> getNotes()
+	{
+		return Collections.singletonList("Higher level players can defeat all three outlaws with only a ranged or magic weapon.");
 	}
 
 	@Override
 	public List<String> getCombatRequirements()
 	{
-		return List.of("Three outlaws (Levels 6-10)");
+		return List.of("Three outlaws (Levels 6-8)");
 	}
 
 	@Override
@@ -196,12 +202,12 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 			confrontRangerOutlaw,
 			fightRangerOutlaw,
 			speakAfterRangerOutlaw
-		), List.of(magicWeapon), List.of(meleeWeapon, food)));
+		), List.of(meleeWeapon), List.of(food)));
 
 		sections.add(new PanelDetails("Mage Outlaw", List.of(
 			fightMageOutlaw,
 			speakAfterMageOutlaw
-		), List.of(magicWeapon), List.of(rangedWeapon, food)));
+		), List.of(rangedWeapon), List.of(food)));
 
 		sections.add(new PanelDetails("Melee Outlaw", List.of(
 			fightMeleeOutlaw,

@@ -33,6 +33,7 @@ import com.questhelper.steps.QuestStep;
 import net.runelite.api.gameval.SpriteID;
 
 import java.util.*;
+import static com.questhelper.requirements.item.ItemRequirement.UNDEFINED_QUANTITY;
 
 public class AllNeededItems extends ComplexStateQuestHelper
 {
@@ -67,7 +68,7 @@ public class AllNeededItems extends ComplexStateQuestHelper
 				continue;
 			}
 
-			if (req.getQuantity() == -1) newReq = req.quantity(1);
+			if (req.getQuantity() < 0) newReq = req.quantity(1);
 
 			if (!compressedReqs.containsKey(newReq.getId()))
 			{

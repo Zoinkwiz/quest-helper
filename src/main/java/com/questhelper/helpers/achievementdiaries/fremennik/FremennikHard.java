@@ -153,7 +153,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		bronzeNail = new ItemRequirement("Bronze nails", ItemID.NAILS_BRONZE).showConditioned(notCraftShield);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notCraftShield).isNotConsumed();
 		lawRune = new ItemRequirement("Law rune", ItemID.LAWRUNE).showConditioned(notTPTroll);
-		lawRune2 = new ItemRequirement("Law runes", ItemID.LAWRUNE).showConditioned(notTPWaterbirth);
+		lawRune2 = new ItemRequirement("Law rune", ItemID.LAWRUNE).showConditioned(notTPWaterbirth);
 		astralRune = new ItemRequirement("Astral runes", ItemID.ASTRALRUNE).showConditioned(notTPWaterbirth);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATERRUNE).showConditioned(notTPWaterbirth);
 		fireRune = new ItemRequirement("Fire runes", ItemID.FIRERUNE).showConditioned(notTPTroll);
@@ -271,8 +271,8 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(rake, pickaxe, axe, arcticLog.quantity(2), hammer, rope, bronzeNail,
-			cadantineUnfPot, whiteBerries, teasingStick, log, knife, fireRune.quantity(2), lawRune.quantity(3),
-			astralRune.quantity(2), waterRune.quantity(1));
+			cadantineUnfPot, whiteBerries, teasingStick, log, knife, fireRune.quantity(2), lawRune.quantity(2),
+			lawRune2.quantity(1), astralRune.quantity(2), waterRune.quantity(1));
 	}
 
 	@Override

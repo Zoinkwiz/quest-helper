@@ -231,6 +231,7 @@ import com.questhelper.helpers.quests.tearsofguthix.TearsOfGuthix;
 import com.questhelper.helpers.quests.templeofikov.TempleOfIkov;
 import com.questhelper.helpers.quests.templeoftheeye.TempleOfTheEye;
 import com.questhelper.helpers.quests.theascentofarceuus.TheAscentOfArceuus;
+import com.questhelper.helpers.quests.thebirdsandthewasps.TheBirdsAndTheWasps;
 import com.questhelper.helpers.quests.thebloodmoonrises.TheBloodMoonRises;
 import com.questhelper.helpers.quests.thecorsaircurse.TheCorsairCurse;
 import com.questhelper.helpers.quests.thecurseofarrav.TheCurseOfArrav;
@@ -485,6 +486,7 @@ public enum QuestHelperQuest
 	THE_HEART_OF_DARKNESS(new TheHeartOfDarkness(), Quest.THE_HEART_OF_DARKNESS, QuestVarbits.QUEST_THE_HEART_OF_DARKNESS, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_CURSE_OF_ARRAV(new TheCurseOfArrav(), Quest.THE_CURSE_OF_ARRAV, QuestVarbits.QUEST_THE_CURSE_OF_ARRAV, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
 	THE_FINAL_DAWN(new TheFinalDawn(), Quest.THE_FINAL_DAWN, QuestVarbits.QUEST_THE_FINAL_DAWN, QuestDetails.Type.P2P, QuestDetails.Difficulty.MASTER),
+	THE_BIRDS_AND_THE_WASPS(new TheBirdsAndTheWasps(), "The Birds and the Wasps", QuestVarbits.QUEST_THE_BIRDS_AND_THE_WASPS, 55, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	SHADOWS_OF_CUSTODIA(new ShadowsOfCustodia(), Quest.SHADOWS_OF_CUSTODIA, QuestVarbits.QUEST_SHADOWS_OF_CUSTODIA, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	SCRAMBLED(new Scrambled(), Quest.SCRAMBLED, QuestVarbits.QUEST_SCRAMBLED, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	PANDEMONIUM(new Pandemonium(), Quest.PANDEMONIUM, QuestVarbits.QUEST_PANDEMONIUM, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),

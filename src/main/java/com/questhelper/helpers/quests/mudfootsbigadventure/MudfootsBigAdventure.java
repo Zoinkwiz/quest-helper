@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026, INSERT_YOUR_NAME_HERE
+ * Copyright (c) 2026, NJKimb <GitHub.com/NJKimb>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

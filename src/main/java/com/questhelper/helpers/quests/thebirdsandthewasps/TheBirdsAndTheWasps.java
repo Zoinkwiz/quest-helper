@@ -27,9 +27,12 @@ package com.questhelper.helpers.quests.thebirdsandthewasps;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
+import com.questhelper.requirements.MesBoxRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
@@ -44,16 +47,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 
 public class TheBirdsAndTheWasps extends BasicQuestHelper
 {
 	// Required items
-	ItemRequirement beeBox, beeHunterHat, insectRepellent, insectNet;
+	ItemRequirement beeBox, beeHunterHat, insectRepellent, insectNet, birdSnare;
 	ItemRequirement beeHunterHatEquipped, insectNetEquipped;
 	// Recommended items
 
 	// Mid-quest item requirements
+	ItemRequirement waspStings, brownFeathers, anyBrownFeathers, waspDarts;
 
 	// Zones
 
@@ -64,9 +70,10 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 	ChatMessageRequirement beesAngry;
 
 	// Steps
-	NpcStep speakToFarmerBea, speakToBeeDealer, returnBees, speakToBeaAfterCutscene;
+	NpcStep speakToFarmerBea, speakToBeeDealer, returnBees, speakToBeaAfterCutscene, returnStingsToBea, speakToBeaAfterCutsceneAgain, catchBirds, returnFeathersToBea;
+	NpcStep speakToBeaAfterFinalCutscene, returnDartsToBea;
 	ObjectStep takeEquipmentFromBox;
-	DetailedQuestStep calmBees, equipGear, catchWasps;
+	DetailedQuestStep calmBees, equipGear, catchWasps, makeDarts;
 
 	@Override
 	protected void setupZones()
@@ -79,9 +86,25 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 		beeBox = new ItemRequirement("Bee box", 34775);
 
 		beeHunterHat = new ItemRequirement("Bee hunter's hat", 34777);
-		insectNet = new ItemRequirement("Insect net", 10010);
+		beeHunterHat.canBeObtainedDuringQuest();
 		beeHunterHatEquipped = beeHunterHat.equipped();
+
+		insectNet = new ItemRequirement("Insect net", ItemID.HUNTING_BUTTERFLY_NET);
+		insectNet.canBeObtainedDuringQuest();
 		insectNetEquipped = insectNet.equipped();
+
+		insectRepellent = new ItemRequirement("Insect repellent", ItemID.INSECT_REPELLENT);
+		insectRepellent.canBeObtainedDuringQuest();
+
+		waspStings = new ItemRequirement("Wasp sting", 34779, 50);
+
+		birdSnare = new ItemRequirement("Bird snare", ItemID.HUNTING_OJIBWAY_BIRD_SNARE, 2);
+		birdSnare.canBeObtainedDuringQuest();
+
+		brownFeathers = new ItemRequirement("Brown feather", 34783, 50);
+		anyBrownFeathers = new ItemRequirement("Brown feather", 34783);
+
+		waspDarts = new ItemRequirement("Wasp dart", 34787, 50);
 
 		spokenToBeaAfterCutscene = new VarbitRequirement(16849, 1);
 
@@ -112,7 +135,21 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 
 		equipGear = new DetailedQuestStep(this, "Equip the Bee hunter's hat and Insect net.", beeHunterHat.highlighted(), insectNet.highlighted());
 
-		catchWasps = new NpcStep(this, 3226, new WorldPoint(3316, 3363, 0), "Catch wasps with your insect net.", true, beeHunterHatEquipped, insectNetEquipped);
+		catchWasps = new NpcStep(this, 3226, new WorldPoint(3316, 3363, 0), "Obtain 50 Wasp Stings by catching wasps with your insect net, clicking on the wasps when they get enraged to calm them.", true, beeHunterHatEquipped, insectNetEquipped);
+
+		returnStingsToBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Return to Farmer Bea with the wasp stings.", waspStings);
+
+		speakToBeaAfterCutsceneAgain = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
+
+		catchBirds = new NpcStep(this, 16879, new WorldPoint(3324, 3361, 0), "Catch Honey Buzzards southeast of the beehives near Farmer Bea using the bird snares until you have 50 brown feathers.", true, birdSnare.highlighted());
+
+		returnFeathersToBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Return to Farmer Bea with the brown feathers.", brownFeathers);
+
+		speakToBeaAfterFinalCutscene = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
+
+		makeDarts = new DetailedQuestStep(this, "Use the wasp stings on the brown feathers to make 50 wasp darts.", waspStings.highlighted(), brownFeathers.highlighted());
+
+		returnDartsToBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Bring the 50 wasp darts to Farmer Bea to finish the quest.", waspDarts);
 	}
 
 	@Override
@@ -133,52 +170,43 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 		steps.put(20, returnBees);
 
 		var cAfterCutscene = new ConditionalStep(this, speakToBeaAfterCutscene);
+		cAfterCutscene.addStep(waspStings, returnStingsToBea);
 		cAfterCutscene.addStep(and(spokenToBeaAfterCutscene, beeHunterHatEquipped, insectNetEquipped), catchWasps);
 		cAfterCutscene.addStep(and(spokenToBeaAfterCutscene, beeHunterHat, insectNet), equipGear);
 		cAfterCutscene.addStep(spokenToBeaAfterCutscene, takeEquipmentFromBox);
 		steps.put(25, cAfterCutscene);
 
+		steps.put(30, speakToBeaAfterCutsceneAgain);
+
+		var receivedBirdSnares = new Conditions(true, LogicType.OR, birdSnare, anyBrownFeathers);
+		var cCatchBirds = new ConditionalStep(this, speakToBeaAfterCutsceneAgain);
+		cCatchBirds.addStep(brownFeathers, returnFeathersToBea);
+		cCatchBirds.addStep(receivedBirdSnares, catchBirds);
+		steps.put(35, cCatchBirds);
+
+		steps.put(40, speakToBeaAfterFinalCutscene);
+
+		var cMakeDarts = new ConditionalStep(this, makeDarts);
+		cMakeDarts.addStep(waspDarts, returnDartsToBea);
+		steps.put(45, cMakeDarts);
+		steps.put(50, cMakeDarts);
+
 		return steps;
-	}
-
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		return List.of(
-		);
-	}
-
-	@Override
-	public List<Requirement> getGeneralRecommended()
-	{
-		return List.of(
-			//
-		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(
+			beeHunterHat,
+			insectNet,
+			insectRepellent,
+			birdSnare
 		);
 	}
 
 	@Override
 	public List<ItemRequirement> getItemRecommended()
-	{
-		return List.of(
-		);
-	}
-
-	@Override
-	public List<String> getCombatRequirements()
-	{
-		return List.of(
-		);
-	}
-
-	@Override
-	public List<String> getNotes()
 	{
 		return List.of(
 		);
@@ -194,19 +222,18 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 	public List<ExperienceReward> getExperienceRewards()
 	{
 		return List.of(
+			new ExperienceReward(Skill.HUNTER, 1000),
+			new ExperienceReward(Skill.FLETCHING, 250)
 		);
-	}
-
-	@Override
-	public List<ItemReward> getItemRewards()
-	{
-		return List.of();
 	}
 
 	@Override
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
+			new UnlockReward("Ability to hunt wasps, killer wasps, honey buzzards and black honey buzzards"),
+			new UnlockReward("Ability to fletch wasp darts and killer wasp darts"),
+			new UnlockReward("Ability to trade wasp darts and killer wasp darts to Farmer Bea for supply bags")
 		);
 	}
 
@@ -231,8 +258,26 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 		sections.add(new PanelDetails("Catching wasps", List.of(
 			takeEquipmentFromBox,
 			equipGear,
-			catchWasps
+			catchWasps,
+			returnStingsToBea,
+			speakToBeaAfterCutsceneAgain
+		), List.of( beeHunterHat, insectRepellent, insectNet
+		)));
+
+		sections.add(new PanelDetails("Catching birds", List.of(
+			catchBirds,
+			returnFeathersToBea
 		), List.of(
+			birdSnare
+		)));
+
+		sections.add(new PanelDetails("Making darts", List.of(
+			speakToBeaAfterFinalCutscene,
+			makeDarts,
+			returnDartsToBea
+		), List.of(
+			waspStings,
+			brownFeathers
 		)));
 
 		return sections;

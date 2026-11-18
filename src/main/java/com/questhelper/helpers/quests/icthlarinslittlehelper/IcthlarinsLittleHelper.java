@@ -93,9 +93,10 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		setupSteps();
 		Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, talkToWanderer);
-		steps.put(1, talkToWandererAgain);
-		steps.put(2, enterRock);
+		steps.put(0, fillBucketWithWater);
+		steps.put(1, talkToWanderer);
+		steps.put(2, talkToWandererAgain);
+		steps.put(3, enterRock);
 
 		ConditionalStep firstMemory = new ConditionalStep(this, enterRock);
 		firstMemory.addStep(puzzleOpen, solveDoorPuzzle);
@@ -103,19 +104,19 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		firstMemory.addStep(inPyramid, jumpPit);
 		firstMemory.addStep(inSoph, touchPyramidDoor);
 
-		steps.put(3, firstMemory);
 		steps.put(4, firstMemory);
+		steps.put(5, firstMemory);
 
 		ConditionalStep talkToSphinxSteps = new ConditionalStep(this, enterRock);
 		talkToSphinxSteps.addStep(inSoph, talkToSphinx);
 
-		steps.put(5, talkToSphinxSteps);
+		steps.put(6, talkToSphinxSteps);
 
 		ConditionalStep talkToHighPriestSteps = new ConditionalStep(this, enterRock);
 		talkToHighPriestSteps.addStep(new Conditions(inSoph, givenToken), talkToHighPriestWithoutToken);
 		talkToHighPriestSteps.addStep(inSoph, talkToHighPriest);
 
-		steps.put(6, talkToHighPriestSteps);
+		steps.put(7, talkToHighPriestSteps);
 
 		ConditionalStep takeTheJar = new ConditionalStep(this, enterRock);
 		takeTheJar.addStep(new Conditions(inNorthPyramid, jar), returnOverPit);
@@ -128,11 +129,11 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		takeTheJar.addStep(inPyramid, jumpPitAgain);
 		takeTheJar.addStep(inSoph, openPyramidDoor);
 
-		steps.put(7, takeTheJar);
 		steps.put(8, takeTheJar);
 		steps.put(9, takeTheJar);
 		steps.put(10, takeTheJar);
 		steps.put(11, takeTheJar);
+		steps.put(12, takeTheJar);
 
 		ConditionalStep returnTheJar = new ConditionalStep(this, enterRock);
 		returnTheJar.addStep(puzzleOpen, solvePuzzleAgain);
@@ -142,14 +143,14 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		returnTheJar.addStep(inPyramid, jumpOverPitAgain);
 		returnTheJar.addStep(inSoph, openPyramidDoor);
 
-		steps.put(12, returnTheJar);
 		steps.put(13, returnTheJar);
+		steps.put(14, returnTheJar);
 
 		ConditionalStep afterPlacingJarSteps = new ConditionalStep(this, enterRock);
 		afterPlacingJarSteps.addStep(inSoph, returnToHighPriest);
 		afterPlacingJarSteps.addStep(inPyramid, leavePyramid);
 
-		steps.put(14, afterPlacingJarSteps);
+		steps.put(15, afterPlacingJarSteps);
 
 		ConditionalStep prepareItems = new ConditionalStep(this, enterRockWithItems);
 		prepareItems.addStep(new Conditions(inSoph, givenEmbalmerAllItems, givenCarpenterLogs), talkToCarpenterOnceMore);
@@ -158,12 +159,12 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		Requirement givenOrHaveLinen = new Conditions(LogicType.OR, linen, givenLinen);
 		Requirement givenOrHaveSalt = new Conditions(LogicType.OR, salt, givenSalt);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen, givenOrHaveSalt), talkToEmbalmerAgain);
-		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen, bucketOfSaltwater), makeSalt);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen), fillBucketWithWater);
+		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer, givenOrHaveLinen, bucketOfSaltwater), makeSalt);
 		prepareItems.addStep(new Conditions(inSoph, talkedToEmbalmer), buyLinen);
 		prepareItems.addStep(new Conditions(inSoph), talkToEmbalmer);
 
-		steps.put(15, prepareItems);
+		steps.put(16, prepareItems);
 
 		ConditionalStep goToRitual = new ConditionalStep(this, enterRock);
 		goToRitual.addStep(new Conditions(inEastRoom, possessedPriestNearby), killPriest);
@@ -172,32 +173,32 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 		goToRitual.addStep(inPyramid, jumpPitWithSymbol);
 		goToRitual.addStep(inSoph, openPyramidDoorWithSymbol);
 
-		steps.put(16, goToRitual);
+		steps.put(17, goToRitual);
 
 		ConditionalStep placeSymbol = new ConditionalStep(this, enterRock);
 		placeSymbol.addStep(inEastRoom, useSymbolOnSarcopagus);
 		placeSymbol.addStep(inPyramid, enterEastRoom);
 		placeSymbol.addStep(inSoph, openPyramidDoorWithSymbol);
 
-		steps.put(17, placeSymbol);
+		steps.put(18, placeSymbol);
 
-		steps.put(18, leaveEastRoom);
+		steps.put(19, leaveEastRoom);
 
-		steps.put(19, goToRitual);
 		steps.put(20, goToRitual);
 		steps.put(21, goToRitual);
-
 		steps.put(22, goToRitual);
+
 		steps.put(23, goToRitual);
+		steps.put(24, goToRitual);
 
 		ConditionalStep meetIcthlarin = new ConditionalStep(this, enterPyramidAtEnd);
 		meetIcthlarin.addStep(inPyramid, leavePyramidToFinish);
-		steps.put(24, meetIcthlarin);
+		steps.put(25, meetIcthlarin);
 
 		ConditionalStep finishTheQuest = new ConditionalStep(this, enterRock);
 		finishTheQuest.addStep(inPyramid, leavePyramidToFinish);
 		finishTheQuest.addStep(inSoph, talkToHighPriestToFinish);
-		steps.put(25, finishTheQuest);
+		steps.put(26, finishTheQuest);
 		return steps;
 	}
 
@@ -469,7 +470,7 @@ public class IcthlarinsLittleHelper extends BasicQuestHelper
 	{
 		List<PanelDetails> allSteps = new ArrayList<>();
 		allSteps.add(new PanelDetails("Starting off",
-			Arrays.asList(talkToWanderer, talkToWandererAgain), cat, waterskin4, tinderbox,
+			Arrays.asList(fillBucketWithWater, talkToWanderer, talkToWandererAgain), cat, waterskin4, tinderbox,
 			coins600, bagOfSaltOrBucket, willowLog, bucketOfSap));
 		allSteps.add(new PanelDetails("Remembering",
 			Arrays.asList(touchPyramidDoor, jumpPit, openWestDoor)));

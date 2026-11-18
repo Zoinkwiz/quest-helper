@@ -119,7 +119,7 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 
 	void setupSteps()
 	{
-		speakToFarmerBea = new NpcStep(this, 3217,new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea to start the quest.");
+		speakToFarmerBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea to start the quest.");
 		speakToFarmerBea.addDialogStep("Yes.");
 
 		speakToBeeDealer = new NpcStep(this, 3220, new WorldPoint(3188, 3494, 0), "Speak to the Bee Dealer in the Grand Exchange");
@@ -162,7 +162,7 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 
 		steps.put(0, speakToFarmerBea);
 		steps.put(5, speakToFarmerBea);
-		steps.put(10,speakToBeeDealer);
+		steps.put(10, speakToBeeDealer);
 
 		var cCalmBees = new ConditionalStep(this, returnBees);
 		cCalmBees.addStep(beesAngry, calmBees);
@@ -261,7 +261,7 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 			catchWasps,
 			returnStingsToBea,
 			speakToBeaAfterCutsceneAgain
-		), List.of( beeHunterHat, insectRepellent, insectNet
+		), List.of(beeHunterHat, insectRepellent, insectNet
 		)));
 
 		sections.add(new PanelDetails("Catching birds", List.of(

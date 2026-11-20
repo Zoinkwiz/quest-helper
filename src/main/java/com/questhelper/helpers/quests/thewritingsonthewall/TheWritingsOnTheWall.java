@@ -623,6 +623,7 @@ public class TheWritingsOnTheWall extends BasicQuestHelper
 	@Override
 	public Map<Integer, QuestStep> loadSteps()
 	{
+		initializeRequirements();
 		setupSteps();
 
 		var steps = new HashMap<Integer, QuestStep>();

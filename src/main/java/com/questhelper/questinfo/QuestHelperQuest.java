@@ -93,6 +93,7 @@ import com.questhelper.helpers.mischelpers.strongholdofsecurity.StrongholdOfSecu
 import com.questhelper.helpers.mischelpers.farmruns.HerbRun;
 import com.questhelper.helpers.mischelpers.farmruns.TreeRun;
 import com.questhelper.helpers.quests.akingdomdivided.AKingdomDivided;
+import com.questhelper.helpers.quests.anewleaf.ANewLeaf;
 import com.questhelper.helpers.quests.anightatthetheatre.ANightAtTheTheatre;
 import com.questhelper.helpers.quests.animalmagnetism.AnimalMagnetism;
 import com.questhelper.helpers.quests.anothersliceofham.AnotherSliceOfHam;
@@ -494,6 +495,7 @@ public enum QuestHelperQuest
 	THE_RED_REEF(new TheRedReef(), Quest.THE_RED_REEF, QuestVarbits.QUEST_THE_RED_REEF, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_BLOOD_MOON_RISES(new TheBloodMoonRises(), Quest.THE_BLOOD_MOON_RISES, QuestVarbits.QUEST_THE_BLOOD_MOON_RISES, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
 	FALLEN_FROM_GRACE(new FallenFromGrace(), Quest.FALLEN_FROM_GRACE, QuestVarbits.QUEST_FALLEN_FROM_GRACE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	A_NEW_LEAF(new ANewLeaf(), Quest.A_NEW_LEAF, QuestVarbits.QUEST_A_NEW_LEAF, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

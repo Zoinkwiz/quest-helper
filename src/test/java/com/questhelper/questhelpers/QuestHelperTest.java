@@ -392,6 +392,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.THE_BLOOD_MOON_RISES,
 			QuestHelperQuest.VAMPYRE_SLAYER,
 			QuestHelperQuest.HERB_RUN,
+			QuestHelperQuest.THE_WRITINGS_ON_THE_WALL,
 			QuestHelperQuest.THE_IDES_OF_MILK,
 			QuestHelperQuest.CRAB_QUEST,
 			QuestHelperQuest.A_RUFF_SITUATION

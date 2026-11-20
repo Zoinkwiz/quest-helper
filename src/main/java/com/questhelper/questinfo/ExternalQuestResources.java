@@ -196,6 +196,7 @@ public enum ExternalQuestResources
 	CURRENT_AFFAIRS("https://oldschool.runescape.wiki/w/Current_Affairs"),
 	TROUBLED_TORTUGANS("https://oldschool.runescape.wiki/w/Troubled_Tortugans"),
 	THE_RED_REEF("https://oldschool.runescape.wiki/w/The_Red_Reef"),
+	A_SHELL_OF_A_FRIEND("https://oldschool.runescape.wiki/w/A_Shell_of_a_Friend"),
 	THE_BLOOD_MOON_RISES("https://oldschool.runescape.wiki/w/The_Blood_Moon_Rises"),
 
 	//Miniquests

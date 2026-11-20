@@ -74,7 +74,6 @@ import com.questhelper.helpers.achievementdiaries.wilderness.WildernessMedium;
 import com.questhelper.helpers.miniquests.alfredgrimhandsbarcrawl.AlfredGrimhandsBarcrawl;
 import com.questhelper.helpers.miniquests.barbariantraining.BarbarianTraining;
 import com.questhelper.helpers.miniquests.curseoftheemptylord.CurseOfTheEmptyLord;
-import com.questhelper.helpers.miniquests.daddyshome.DaddysHome;
 import com.questhelper.helpers.miniquests.enchantedkey.EnchantedKey;
 import com.questhelper.helpers.miniquests.familypest.FamilyPest;
 import com.questhelper.helpers.miniquests.hisfaithfulservants.BarrowsHelper;
@@ -120,6 +119,7 @@ import com.questhelper.helpers.quests.cooksassistant.CooksAssistant;
 import com.questhelper.helpers.quests.crabquest.CrabQuest;
 import com.questhelper.helpers.quests.creatureoffenkenstrain.CreatureOfFenkenstrain;
 import com.questhelper.helpers.quests.currentaffairs.CurrentAffairs;
+import com.questhelper.helpers.quests.daddyshome.DaddysHome;
 import com.questhelper.helpers.quests.darknessofhallowvale.DarknessOfHallowvale;
 import com.questhelper.helpers.quests.deathontheisle.DeathOnTheIsle;
 import com.questhelper.helpers.quests.deathplateau.DeathPlateau;
@@ -494,6 +494,7 @@ public enum QuestHelperQuest
 	THE_RED_REEF(new TheRedReef(), Quest.THE_RED_REEF, QuestVarbits.QUEST_THE_RED_REEF, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_BLOOD_MOON_RISES(new TheBloodMoonRises(), Quest.THE_BLOOD_MOON_RISES, QuestVarbits.QUEST_THE_BLOOD_MOON_RISES, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
 	FALLEN_FROM_GRACE(new FallenFromGrace(), Quest.FALLEN_FROM_GRACE, QuestVarbits.QUEST_FALLEN_FROM_GRACE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	DADDYS_HOME(new DaddysHome(), Quest.DADDYS_HOME, QuestVarbits.QUEST_DADDYS_HOME, QuestDetails.Type.P2P, QuestDetails.Difficulty.NOVICE),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
@@ -507,7 +508,6 @@ public enum QuestHelperQuest
 	FAMILY_PEST(new FamilyPest(), Quest.FAMILY_PEST, QuestVarbits.QUEST_FAMILY_PEST, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	THE_MAGE_ARENA_II(new TheMageArenaII(), Quest.MAGE_ARENA_II, QuestVarbits.QUEST_THE_MAGE_ARENA_II, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	IN_SEARCH_OF_KNOWLEDGE(new InSearchOfKnowledge(), Quest.IN_SEARCH_OF_KNOWLEDGE, QuestVarbits.QUEST_IN_SEARCH_OF_KNOWLEDGE, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
-	DADDYS_HOME(new DaddysHome(), Quest.DADDYS_HOME, QuestVarbits.QUEST_DADDYS_HOME, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	HOPESPEARS_WILL(new HopespearsWill(), Quest.HOPESPEARS_WILL, QuestVarbits.QUEST_HOPESPEARS_WILL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	HIS_FAITHFUL_SERVANTS(new HisFaithfulServants(), Quest.HIS_FAITHFUL_SERVANTS, QuestVarbits.HIS_FAITHFUL_SERVANTS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BARBARIAN_TRAINING(new BarbarianTraining(), Quest.BARBARIAN_TRAINING, QuestVarbits.BARBARIAN_TRAINING, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

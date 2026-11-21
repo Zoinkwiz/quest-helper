@@ -122,8 +122,8 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		steps.put(2, talkToHarlan);
 		steps.put(4, talkToMudfoot);
 		steps.put(6, confrontRangerOutlaw);
-		steps.put(8, fightRangerOutlaw);
-		steps.put(10, fightRangerOutlaw);
+		steps.put(8, fightRangerOutlaw); // TODO: Can we actually fight the ranger outlaw already here? Finishing the same dialog takes you to 10
+		steps.put(10, fightRangerOutlaw); // TODO: Fighting ranger outlaw means you talk to Mudfoot actually, not clicking outlaw
 		steps.put(12, fightRangerOutlaw);
 		steps.put(14, speakAfterRangerOutlaw);
 		steps.put(16, fightMageOutlaw);

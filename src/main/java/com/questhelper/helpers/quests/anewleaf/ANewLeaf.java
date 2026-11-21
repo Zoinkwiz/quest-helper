@@ -30,6 +30,7 @@ import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.questinfo.QuestHelperQuest;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.SimpleRequirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.npc.NpcRequirement;
 import com.questhelper.requirements.player.CombatLevelRequirement;
@@ -51,9 +52,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.api.Client;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
@@ -114,6 +117,7 @@ public class ANewLeaf extends BasicQuestHelper
 	VarbitRequirement stewGivenToSergeant;
 	VarbitRequirement stewGivenToMary;
 	VarbitRequirement stewGivenToKonar;
+	Requirement needsMoreStew;
 	VarbitRequirement toldToGetBook;
 	VarbitRequirement faladorSpyPlaced;
 	VarbitRequirement hosidiusSpyPlaced;
@@ -197,6 +201,21 @@ public class ANewLeaf extends BasicQuestHelper
 		stewGivenToSergeant = new VarbitRequirement(VarbitID.ANL_STEW_GIVEN_SERGEANT, 1);
 		stewGivenToMary = new VarbitRequirement(VarbitID.ANL_STEW_GIVEN_MARY, 1);
 		stewGivenToKonar = new VarbitRequirement(VarbitID.ANL_STEW_GIVEN_KONAR, 1);
+		needsMoreStew = new SimpleRequirement()
+		{
+			@Override
+			public boolean check(Client client)
+			{
+				var stillToFeed = 4
+					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_JANE)
+					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_SERGEANT)
+					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_MARY)
+					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_KONAR);
+				var inventory = client.getItemContainer(InventoryID.INV);
+				var stewHeld = inventory == null ? 0 : inventory.count(ItemID.ANL_PERFECT_STEW);
+				return stewHeld < stillToFeed;
+			}
+		};
 		toldToGetBook = new VarbitRequirement(VarbitID.ANL_TOLD_TO_GET_BOOK, 1);
 
 		faladorSpyPlaced = new VarbitRequirement(VarbitID.ANL_SPY_1_PLACED, 1);
@@ -243,6 +262,7 @@ public class ANewLeaf extends BasicQuestHelper
 
 		var deliverStew = new ConditionalStep(this, reportStew);
 		deliverStew.addStep(not(toldWhoToDeliverTo), askWhoToDeliverTo);
+		deliverStew.addStep(and(needsMoreStew, bowls.quantity(1)), fillBowls);
 		deliverStew.addStep(and(not(stewGivenToJane), perfectStew), giveStewToJane);
 		deliverStew.addStep(and(not(stewGivenToSergeant), perfectStew), giveStewToSergeant);
 		deliverStew.addStep(and(not(stewGivenToMary), perfectStew), giveStewToMary);

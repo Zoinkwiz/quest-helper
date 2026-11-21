@@ -249,6 +249,7 @@ public class ReleaseDate
 		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.
 		QuestHelperQuest.HIS_FAITHFUL_SERVANTS,
-		QuestHelperQuest.VALE_TOTEMS
+		QuestHelperQuest.VALE_TOTEMS,
+		QuestHelperQuest.THE_FRACTURED_ARCHIVE
 	);
 }

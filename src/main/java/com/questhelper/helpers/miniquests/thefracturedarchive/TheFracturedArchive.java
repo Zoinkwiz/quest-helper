@@ -195,14 +195,6 @@ public class TheFracturedArchive extends BasicQuestHelper
 	}
 
 	@Override
-	public List<Requirement> getGeneralRecommended()
-	{
-		return List.of(
-			//
-		);
-	}
-
-	@Override
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return List.of(

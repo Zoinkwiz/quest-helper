@@ -65,8 +65,11 @@ import net.runelite.api.gameval.VarbitID;
  */
 public class ANewLeaf extends BasicQuestHelper
 {
-	// RuneLite has no ObjectID constant for the cooking pot yet
+	// RuneLite has no ObjectID constants for the cooking pot or the Farming Guild patches yet
 	private static final int COOKING_POT = 63342;
+	private static final int GUILD_SOUTH_ALLOTMENT = 33693;
+	private static final int GUILD_NORTH_ALLOTMENT = 33694;
+	private static final int GUILD_FLOWER_PATCH = 33649;
 
 	private static final String DISCUSS_TASKS = "Can we discuss the tasks you have given me?";
 	private static final String TOPIC_POTION = "Can we talk about communicating with Brassica Prime?";
@@ -125,7 +128,7 @@ public class ANewLeaf extends BasicQuestHelper
 	NpcStep talkToDennis;
 
 	NpcStep askAboutStew;
-	DetailedQuestStep growCrops;
+	ObjectStep growCrops;
 	ObjectStep cookStew;
 	NpcStep askWhoToDeliverTo;
 	ObjectStep fillBowls;
@@ -222,7 +225,8 @@ public class ANewLeaf extends BasicQuestHelper
 
 		askAboutStew = dennisStep("Ask Dishop Dennis about making and distributing stew.");
 		askAboutStew.addDialogSteps(DISCUSS_TASKS, TOPIC_STEW);
-		growCrops = new DetailedQuestStep(this, new WorldPoint(1267, 3730, 0), "Plant a cabbage seed, a potato seed and a rosemary seed with compost, e.g. in the Farming Guild. Read the Prayer to Brassica to grow them instantly, then harvest the perfect cabbage, perfect potato and perfect rosemary. Keep two normal cabbages.", spade, cabbageSeed, potatoSeed, rosemarySeed, prayerToBrassica);
+		growCrops = new ObjectStep(this, GUILD_SOUTH_ALLOTMENT, new WorldPoint(1267, 3727, 0), "Plant a cabbage seed and a potato seed in the Farming Guild allotments and a rosemary seed in the flower patch, with compost. Read the Prayer to Brassica to grow them instantly, then harvest the perfect cabbage, perfect potato and perfect rosemary. Keep two normal cabbages.", true, spade, cabbageSeed, potatoSeed, rosemarySeed, prayerToBrassica);
+		growCrops.addAlternateObjects(GUILD_NORTH_ALLOTMENT, GUILD_FLOWER_PATCH);
 		cookStew = new ObjectStep(this, COOKING_POT, new WorldPoint(1293, 3722, 0), "Use the perfect cabbage on the cooking pot in Dennis's farmhouse.", perfectCabbage.highlighted(), perfectPotato, perfectRosemary);
 		cookStew.addIcon(ItemID.ANL_PERFECT_CABBAGE);
 		askWhoToDeliverTo = dennisStep("Ask Dishop Dennis who to deliver the stew to.");

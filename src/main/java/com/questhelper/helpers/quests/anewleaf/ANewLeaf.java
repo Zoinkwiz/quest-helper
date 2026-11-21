@@ -279,6 +279,7 @@ public class ANewLeaf extends BasicQuestHelper
 		bringDennisCabbage = dennisStep("Bring Dishop Dennis a cabbage.", cabbage.quantity(1));
 		bringDennisCabbage.addDialogSteps(DISCUSS_TASKS, TOPIC_POTION);
 		getBookFromAllanna = new NpcStep(this, NpcID.KEBOS_FARMING_STORE, new WorldPoint(1250, 3733, 0), "Talk to Allanna in the Farming Guild to get her book. She only gives it to you if you have completed a farming contract.");
+		getBookFromAllanna.addDialogStep("I'm told you might have a book on brewing potions from cabbages?");
 		makeCabbageWater = new DetailedQuestStep(this, "Use a cabbage on a vial of water.", cabbage.quantity(1).highlighted(), vialOfWater.highlighted());
 		blessCompost = dennisStep("Ask Dishop Dennis to bless a bucket of compost.", compost);
 		blessCompost.addDialogSteps(DISCUSS_TASKS, TOPIC_POTION);

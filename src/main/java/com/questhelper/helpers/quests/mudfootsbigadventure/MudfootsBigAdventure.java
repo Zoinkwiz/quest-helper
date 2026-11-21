@@ -54,12 +54,6 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		fightMeleeOutlaw, speakAfterMeleeOutlaw, finishQuest;
 
 	@Override
-	protected void setupZones()
-	{
-
-	}
-
-	@Override
 	protected void setupRequirements()
 	{
 		stabWeapon = new ItemRequirement("A stab weapon", -1, 1).isNotConsumed();

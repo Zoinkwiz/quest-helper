@@ -390,6 +390,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.NATURE_SPIRIT,
 			QuestHelperQuest.PRINCE_ALI_RESCUE,
 			QuestHelperQuest.THE_BLOOD_MOON_RISES,
+			QuestHelperQuest.MUDFOOTS_BIG_ADVENTURE,
 			QuestHelperQuest.VAMPYRE_SLAYER,
 			QuestHelperQuest.HERB_RUN,
 			QuestHelperQuest.THE_IDES_OF_MILK,

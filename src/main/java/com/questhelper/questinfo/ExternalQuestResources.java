@@ -197,6 +197,7 @@ public enum ExternalQuestResources
 	TROUBLED_TORTUGANS("https://oldschool.runescape.wiki/w/Troubled_Tortugans"),
 	THE_RED_REEF("https://oldschool.runescape.wiki/w/The_Red_Reef"),
 	THE_BLOOD_MOON_RISES("https://oldschool.runescape.wiki/w/The_Blood_Moon_Rises"),
+	MUDFOOTS_BIG_ADVENTURE("https://oldschool.runescape.wiki/w/Mudfoot's_Big_Adventure"),
 
 	//Miniquests
 	ENTER_THE_ABYSS("https://oldschool.runescape.wiki/w/Enter_the_Abyss"),

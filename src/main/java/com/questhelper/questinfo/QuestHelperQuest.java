@@ -184,6 +184,7 @@ import com.questhelper.helpers.quests.monksfriend.MonksFriend;
 import com.questhelper.helpers.quests.mountaindaughter.MountainDaughter;
 import com.questhelper.helpers.quests.mourningsendparti.MourningsEndPartI;
 import com.questhelper.helpers.quests.mourningsendpartii.MourningsEndPartII;
+import com.questhelper.helpers.quests.mudfootsbigadventure.MudfootsBigAdventure;
 import com.questhelper.helpers.quests.murdermystery.MurderMystery;
 import com.questhelper.helpers.quests.myarmsbigadventure.MyArmsBigAdventure;
 import com.questhelper.helpers.quests.naturespirit.NatureSpirit;
@@ -323,6 +324,7 @@ public enum QuestHelperQuest
 	VAMPYRE_SLAYER(new VampyreSlayer(), Quest.VAMPYRE_SLAYER, QuestVarPlayer.QUEST_VAMPYRE_SLAYER, QuestDetails.Type.F2P, QuestDetails.Difficulty.INTERMEDIATE),
 	WITCHS_POTION(new WitchsPotion(), Quest.WITCHS_POTION, QuestVarPlayer.QUEST_WITCHS_POTION, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
 	X_MARKS_THE_SPOT(new XMarksTheSpot(), Quest.X_MARKS_THE_SPOT, QuestVarbits.QUEST_X_MARKS_THE_SPOT, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
+	MUDFOOTS_BIG_ADVENTURE( new MudfootsBigAdventure(), Quest.MUDFOOTS_BIG_ADVENTURE, QuestVarbits.QUEST_MUDFOOTS_BIG_ADVENTURE, QuestDetails.Type.F2P, QuestDetails.Difficulty.NOVICE),
 
 	//Members' Quests
 	ANIMAL_MAGNETISM(new AnimalMagnetism(), Quest.ANIMAL_MAGNETISM.getId(), "Animal Magnetism", QuestVarbits.QUEST_ANIMAL_MAGNETISM, QuestDetails.Type.P2P, QuestDetails.Difficulty.INTERMEDIATE),

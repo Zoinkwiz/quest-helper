@@ -54,6 +54,7 @@ import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 
+/// Thanks RobotClown and SiegeBla for the carry and the cabag
 public class TheFracturedArchive extends BasicQuestHelper
 {
 	// Required items

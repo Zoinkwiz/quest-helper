@@ -380,6 +380,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.ONE_SMALL_FAVOUR,
 			QuestHelperQuest.SCORPION_CATCHER,
 			QuestHelperQuest.DEATH_PLATEAU,
+			QuestHelperQuest.THE_FRACTURED_ARCHIVE,
 			QuestHelperQuest.CURRENT_AFFAIRS,
 			QuestHelperQuest.SEA_SLUG,
 			QuestHelperQuest.HOLY_GRAIL,

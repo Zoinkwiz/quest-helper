@@ -270,6 +270,7 @@ public class OptimalQuestGuide
 		QuestHelperQuest.THE_BLOOD_MOON_RISES,
 		QuestHelperQuest.CLOCK_TOWER,
 		QuestHelperQuest.THE_CORSAIR_CURSE,
+		QuestHelperQuest.THE_FRACTURED_ARCHIVE,
 		// Quests & mini quests that are not part of the OSRS Wiki's Optimal Quest Guide
 		QuestHelperQuest.VALE_TOTEMS,
 		QuestHelperQuest.BARBARIAN_TRAINING,

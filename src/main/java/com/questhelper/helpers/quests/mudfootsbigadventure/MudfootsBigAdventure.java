@@ -95,9 +95,9 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		speakAfterRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
 			"Speak to Mudfoot after defeating the ranger outlaw.");
 
-		fightMageOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MAGIC_VIS, new WorldPoint(3170, 3287, 0),
+		fightMageOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MAGIC_VIS, new WorldPoint(3171, 3241, 0),
 			"Confront the mage outlaw by the H.A.M hideout west of Lumbridge Castle to fight the outlaw.");
-		speakAfterMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
+		speakAfterMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3171, 3241, 0),
 			"Speak to Mudfoot after defeating the mage outlaw.");
 
 		fightMeleeOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MELEE_VIS, new WorldPoint(3244, 3195, 0),

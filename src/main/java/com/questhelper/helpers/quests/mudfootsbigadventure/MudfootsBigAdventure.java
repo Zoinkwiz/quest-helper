@@ -28,8 +28,10 @@ import com.questhelper.bank.banktab.BankSlotIcons;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
+import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.QuestStep;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarPlayerID;
 
 public class MudfootsBigAdventure extends BasicQuestHelper
 {
@@ -49,9 +52,25 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 	// Recommended items
 	ItemRequirement stabWeapon, rangedWeapon, magicWeapon, food;
 
+	// Miscellaneous requirements
+	VarplayerRequirement mudfootFollowingYou;
+	VarplayerRequirement mudfootFollowingYouWithSpear;
+
 	// Steps
-	NpcStep talkToHarlan, talkToMudfoot, confrontRangerOutlaw, fightRangerOutlaw, speakAfterRangerOutlaw, fightMageOutlaw, speakAfterMageOutlaw,
-		fightMeleeOutlaw, speakAfterMeleeOutlaw, finishQuest;
+	NpcStep talkToHarlan;
+	NpcStep talkToMudfoot;
+	NpcStep confrontRangerOutlaw;
+	NpcStep talkToHarlanAboutTheRangerOutlaw;
+	NpcStep fightRangerOutlaw;
+	NpcStep speakAfterRangerOutlaw;
+	NpcStep talkToMudfootByWindmill;
+	NpcStep fightMageOutlaw;
+	NpcStep speakAfterMageOutlaw;
+	NpcStep talkToMudfootByHideout;
+	NpcStep fightMeleeOutlaw;
+	NpcStep speakAfterMeleeOutlaw;
+	NpcStep talkToMudfootByGraveyard;
+	NpcStep finishQuest;
 
 	@Override
 	protected void setupRequirements()
@@ -78,6 +97,9 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 
 		food = new ItemRequirement("Food", -1, -1);
 		food.setDisplayItemId(BankSlotIcons.getFood());
+
+		mudfootFollowingYou = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, NpcID.MBA_MUDFOOT_FOLLOWER, 16);
+		mudfootFollowingYouWithSpear = new VarplayerRequirement(VarPlayerID.FOLLOWER_NPC, NpcID.MBA_MUDFOOT_FOLLOWER_SPEAR, 16);
 	}
 
 	void setupSteps()
@@ -90,24 +112,37 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 
 		confrontRangerOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_RANGED_VIS, new WorldPoint(3219, 3247, 0), "Confront the ranger outlaw near the Lumbridge General Store.");
 
-		fightRangerOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_RANGED_VIS, new WorldPoint(3170, 3287, 0),
-			"Confront the ranger outlaw by the windmill North of Lumbridge to fight the outlaw.");
+		talkToHarlanAboutTheRangerOutlaw = new NpcStep(this, NpcID.CAPTAIN_HARLAN, new WorldPoint(3216, 3240, 0), "Speak to Captain Harlan north of Lumbridge Castle about the outlaw.");
+		talkToHarlanAboutTheRangerOutlaw.addDialogStep("So, about those thieves...");
+
+		fightRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
+			"Talk to Mudfoot by the windmill North of Lumbridge to confront the ranger outlaw.");
+		fightRangerOutlaw.addAlternateNpcs(NpcID.MBA_OUTLAW_RANGED_COMBAT);
 		speakAfterRangerOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0),
 			"Speak to Mudfoot after defeating the ranger outlaw.");
 
+		talkToMudfootByWindmill = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3170, 3287, 0), "Talk to Mudfoot by the windmill North of Lumbridge.");
+
 		fightMageOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MAGIC_VIS, new WorldPoint(3171, 3241, 0),
 			"Confront the mage outlaw by the H.A.M hideout west of Lumbridge Castle to fight the outlaw.");
+		fightMageOutlaw.addAlternateNpcs(NpcID.MBA_OUTLAW_MAGIC_COMBAT);
 		speakAfterMageOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3171, 3241, 0),
 			"Speak to Mudfoot after defeating the mage outlaw.");
+		talkToMudfootByHideout = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3174, 3240, 0), "Talk to Mudfoot by the H.A.M. hideout.");
+		fightMageOutlaw.addSubSteps(talkToMudfootByWindmill);
 
 		fightMeleeOutlaw = new NpcStep(this, NpcID.MBA_OUTLAW_MELEE_VIS, new WorldPoint(3244, 3195, 0),
 			"Confront the melee outlaw in the Lumbridge graveyard to fight the outlaw.");
+		fightMeleeOutlaw.addAlternateNpcs(NpcID.MBA_OUTLAW_MELEE_COMBAT);
 		speakAfterMeleeOutlaw = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3244, 3195, 0),
 			"Speak to Mudfoot after defeating the melee outlaw.");
+		talkToMudfootByGraveyard = new NpcStep(this, NpcID.MBA_MUDFOOT_SPEAR_VIS, new WorldPoint(3243, 3198, 0), "Talk to Mudfoot by the Lumbridge graveyard.");
+		fightMeleeOutlaw.addSubSteps(talkToMudfootByHideout);
 
 		finishQuest = new NpcStep(this, NpcID.CAPTAIN_HARLAN, new WorldPoint(3216, 3240, 0),
 			"Speak to Captain Harlan after defeating the melee outlaw to finish the quest!");
 		finishQuest.addDialogStep("All of those thieves have been dealt with.");
+
 	}
 
 	@Override
@@ -121,19 +156,28 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		steps.put(0, talkToHarlan);
 		steps.put(2, talkToHarlan);
 		steps.put(4, talkToMudfoot);
-		steps.put(6, confrontRangerOutlaw);
-		steps.put(8, fightRangerOutlaw); // TODO: Can we actually fight the ranger outlaw already here? Finishing the same dialog takes you to 10
-		steps.put(10, fightRangerOutlaw); // TODO: Fighting ranger outlaw means you talk to Mudfoot actually, not clicking outlaw
+		var cConfrontRangerOutlaw = new ConditionalStep(this, talkToMudfoot);
+		cConfrontRangerOutlaw.addStep(mudfootFollowingYou, confrontRangerOutlaw);
+		steps.put(6, cConfrontRangerOutlaw);
+		steps.put(8, talkToHarlanAboutTheRangerOutlaw);
+		steps.put(10, fightRangerOutlaw);
 		steps.put(12, fightRangerOutlaw);
 		steps.put(14, speakAfterRangerOutlaw);
-		steps.put(16, fightMageOutlaw);
+		var cFightMageOutlaw = new ConditionalStep(this, talkToMudfootByWindmill);
+		cFightMageOutlaw.addStep(mudfootFollowingYouWithSpear, fightMageOutlaw);
+		steps.put(16, cFightMageOutlaw);
 		steps.put(18, fightMageOutlaw);
 		steps.put(20, speakAfterMageOutlaw);
-		steps.put(22, fightMeleeOutlaw);
+		var cFightMeleeOutlaw = new ConditionalStep(this, talkToMudfootByHideout);
+		cFightMeleeOutlaw.addStep(mudfootFollowingYouWithSpear, fightMeleeOutlaw);
+		steps.put(22, cFightMeleeOutlaw);
 		steps.put(24, fightMeleeOutlaw);
 		steps.put(26, speakAfterMeleeOutlaw);
-		steps.put(28, finishQuest);
+		var cFinishQuest = new ConditionalStep(this, talkToMudfootByGraveyard);
+		cFinishQuest.addStep(mudfootFollowingYouWithSpear, finishQuest);
+		steps.put(28, cFinishQuest);
 		steps.put(30, finishQuest);
+		finishQuest.addSubSteps(talkToMudfootByGraveyard);
 
 		return steps;
 	}
@@ -194,6 +238,7 @@ public class MudfootsBigAdventure extends BasicQuestHelper
 		sections.add(new PanelDetails("Ranger Outlaw", List.of(
 			talkToMudfoot,
 			confrontRangerOutlaw,
+			talkToHarlanAboutTheRangerOutlaw,
 			fightRangerOutlaw,
 			speakAfterRangerOutlaw
 		), List.of(meleeWeapon), List.of(food)));

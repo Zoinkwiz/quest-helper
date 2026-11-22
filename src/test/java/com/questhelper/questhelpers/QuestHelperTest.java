@@ -368,6 +368,7 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.IMP_CATCHER,
 			QuestHelperQuest.THE_KNIGHTS_SWORD,
 			QuestHelperQuest.CLIENT_OF_KOUREND,
+			QuestHelperQuest.THE_BIRDS_AND_THE_WASPS,
 			QuestHelperQuest.JUNGLE_POTION,
 			QuestHelperQuest.ARDOUGNE_EASY,
 			QuestHelperQuest.ENTER_THE_ABYSS,

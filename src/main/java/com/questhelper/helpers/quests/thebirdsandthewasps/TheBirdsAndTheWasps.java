@@ -119,7 +119,7 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 
 	void setupSteps()
 	{
-		speakToFarmerBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea to start the quest.");
+		speakToFarmerBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea south-east of Varrock to start the quest.");
 		speakToFarmerBea.addDialogStep("Yes.");
 
 		speakToBeeDealer = new NpcStep(this, 3220, new WorldPoint(3188, 3494, 0), "Speak to the Bee Dealer in the Grand Exchange");

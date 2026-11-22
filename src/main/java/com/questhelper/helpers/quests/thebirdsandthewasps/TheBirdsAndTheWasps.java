@@ -27,15 +27,14 @@ package com.questhelper.helpers.quests.thebirdsandthewasps;
 import com.questhelper.panel.PanelDetails;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.ChatMessageRequirement;
-import com.questhelper.requirements.MesBoxRequirement;
-import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import static com.questhelper.requirements.util.LogicHelper.and;
+import static com.questhelper.requirements.util.LogicHelper.not;
 import com.questhelper.requirements.util.LogicType;
+import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
-import com.questhelper.rewards.ItemReward;
 import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
@@ -50,42 +49,39 @@ import java.util.Map;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 public class TheBirdsAndTheWasps extends BasicQuestHelper
 {
 	// Required items
 	ItemRequirement beeBox, beeHunterHat, insectRepellent, insectNet, birdSnare;
 	ItemRequirement beeHunterHatEquipped, insectNetEquipped;
-	// Recommended items
 
 	// Mid-quest item requirements
 	ItemRequirement waspStings, brownFeathers, anyBrownFeathers, waspDarts;
 
-	// Zones
-
 	// Miscellaneous requirements
+	Conditions lostBees;
 	VarbitRequirement spokenToBeaAfterCutscene;
-
-	// Fields
 	ChatMessageRequirement beesAngry;
+	Conditions receivedBirdSnares;
+	VarbitRequirement caughtFiveBirds;
 
 	// Steps
 	NpcStep speakToFarmerBea, speakToBeeDealer, returnBees, speakToBeaAfterCutscene, returnStingsToBea, speakToBeaAfterCutsceneAgain, catchBirds, returnFeathersToBea;
 	NpcStep speakToBeaAfterFinalCutscene, returnDartsToBea;
 	ObjectStep takeEquipmentFromBox;
 	DetailedQuestStep calmBees, equipGear, catchWasps, makeDarts;
-
-	@Override
-	protected void setupZones()
-	{
-	}
+	NpcStep talkToBeaAfterReturningTheBees;
 
 	@Override
 	protected void setupRequirements()
 	{
-		beeBox = new ItemRequirement("Bee box", 34775);
+		beeBox = new ItemRequirement("Bee box", ItemID.BAW_BEE_BOX);
 
-		beeHunterHat = new ItemRequirement("Bee hunter's hat", 34777);
+		beeHunterHat = new ItemRequirement("Bee hunter's hat", ItemID.BAW_BEE_HUNTER_HAT);
 		beeHunterHat.canBeObtainedDuringQuest();
 		beeHunterHatEquipped = beeHunterHat.equipped();
 
@@ -96,17 +92,19 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 		insectRepellent = new ItemRequirement("Insect repellent", ItemID.INSECT_REPELLENT);
 		insectRepellent.canBeObtainedDuringQuest();
 
-		waspStings = new ItemRequirement("Wasp sting", 34779, 50);
+		waspStings = new ItemRequirement("Wasp sting", ItemID.BAW_WASP_STING, 50);
 
 		birdSnare = new ItemRequirement("Bird snare", ItemID.HUNTING_OJIBWAY_BIRD_SNARE, 2);
 		birdSnare.canBeObtainedDuringQuest();
 
-		brownFeathers = new ItemRequirement("Brown feather", 34783, 50);
-		anyBrownFeathers = new ItemRequirement("Brown feather", 34783);
+		anyBrownFeathers = new ItemRequirement("Brown feather", ItemID.BAW_BROWN_FEATHER);
+		brownFeathers = anyBrownFeathers.quantity(50);
 
-		waspDarts = new ItemRequirement("Wasp dart", 34787, 50);
+		waspDarts = new ItemRequirement("Wasp dart", ItemID.BAW_WASP_DART, 50);
 
-		spokenToBeaAfterCutscene = new VarbitRequirement(16849, 1);
+		lostBees = not(beeBox.alsoCheckBank());
+
+		spokenToBeaAfterCutscene = new VarbitRequirement(VarbitID.BAW_SPOKEN_ABOUT_WASPS, 1);
 
 		beesAngry = new ChatMessageRequirement("You can sense the insects in the box getting agitated. Best give them a shake.");
 		beesAngry.setInvalidateRequirement(
@@ -115,41 +113,46 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 				"You give the box a firm shake and the insects seem to calm down."
 			)
 		);
+
+		receivedBirdSnares = new Conditions(true, LogicType.OR, birdSnare, anyBrownFeathers);
+		caughtFiveBirds = new VarbitRequirement(VarbitID.BAW_BIRDS_CAUGHT, Operation.GREATER_EQUAL, 5, "Caught 5 Honey Buzzards");
 	}
 
 	void setupSteps()
 	{
-		speakToFarmerBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea south-east of Varrock to start the quest.");
+		speakToFarmerBea = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea south-east of Varrock to start the quest.");
 		speakToFarmerBea.addDialogStep("Yes.");
 
-		speakToBeeDealer = new NpcStep(this, 3220, new WorldPoint(3188, 3494, 0), "Speak to the Bee Dealer in the Grand Exchange");
+		speakToBeeDealer = new NpcStep(this, NpcID.BAW_BEE_DEALER, new WorldPoint(3188, 3494, 0), "Speak to the Bee Dealer in the Grand Exchange");
 
-		returnBees = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Return the bees to Farmer Bea, clicking on the bee box when the bees get agitated.");
+		returnBees = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Return the bees to Farmer Bea, clicking on the bee box when the bees get agitated.", beeBox);
+		talkToBeaAfterReturningTheBees = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Talk to Farmer Bea after returning the bees.");
+		returnBees.addSubSteps(talkToBeaAfterReturningTheBees);
 
 		calmBees = new DetailedQuestStep(this, "Click the bee box to calm the bees.", beeBox.highlighted());
 
-		speakToBeaAfterCutscene = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
+		speakToBeaAfterCutscene = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
 
-		takeEquipmentFromBox = new ObjectStep(this, 26249, new WorldPoint(3315, 3376, 0), "Take the equipment from the equipment box.");
+		takeEquipmentFromBox = new ObjectStep(this, ObjectID.BAW_EQUIPMENT_CRATE, new WorldPoint(3315, 3376, 0), "Take the equipment from the equipment box.");
 		takeEquipmentFromBox.addDialogStep("Take everything.");
 
 		equipGear = new DetailedQuestStep(this, "Equip the Bee hunter's hat and Insect net.", beeHunterHat.highlighted(), insectNet.highlighted());
 
-		catchWasps = new NpcStep(this, 3226, new WorldPoint(3316, 3363, 0), "Obtain 50 Wasp Stings by catching wasps with your insect net, clicking on the wasps when they get enraged to calm them.", true, beeHunterHatEquipped, insectNetEquipped);
+		catchWasps = new NpcStep(this, NpcID.BAW_WASP_SWARM, new WorldPoint(3316, 3363, 0), "Obtain 50 Wasp Stings by catching wasps with your insect net, clicking on the wasps when they get enraged to calm them.", true, beeHunterHatEquipped, insectNetEquipped);
 
-		returnStingsToBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Return to Farmer Bea with the wasp stings.", waspStings);
+		returnStingsToBea = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Return to Farmer Bea with the wasp stings.", waspStings);
 
-		speakToBeaAfterCutsceneAgain = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
+		speakToBeaAfterCutsceneAgain = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
 
-		catchBirds = new NpcStep(this, 16879, new WorldPoint(3324, 3361, 0), "Catch Honey Buzzards southeast of the beehives near Farmer Bea using the bird snares until you have 50 brown feathers.", true, birdSnare.highlighted());
+		catchBirds = new NpcStep(this, NpcID.BAW_HONEY_BUZZARD, new WorldPoint(3324, 3361, 0), "Catch Honey Buzzards southeast of the beehives near Farmer Bea using the bird snares until you have 50 brown feathers.", true, birdSnare.highlighted());
 
-		returnFeathersToBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Return to Farmer Bea with the brown feathers.", brownFeathers);
+		returnFeathersToBea = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Return to Farmer Bea with the brown feathers.", brownFeathers);
 
-		speakToBeaAfterFinalCutscene = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
+		speakToBeaAfterFinalCutscene = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Speak to Farmer Bea after watching the cutscene.");
 
 		makeDarts = new DetailedQuestStep(this, "Use the wasp stings on the brown feathers to make 50 wasp darts.", waspStings.highlighted(), brownFeathers.highlighted());
 
-		returnDartsToBea = new NpcStep(this, 3217, new WorldPoint(3313, 3376, 0), "Bring the 50 wasp darts to Farmer Bea to finish the quest.", waspDarts);
+		returnDartsToBea = new NpcStep(this, NpcID.BAW_BEA, new WorldPoint(3313, 3376, 0), "Bring the 50 wasp darts to Farmer Bea to finish the quest.", waspDarts);
 	}
 
 	@Override
@@ -165,9 +168,10 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 		steps.put(10, speakToBeeDealer);
 
 		var cCalmBees = new ConditionalStep(this, returnBees);
+		cCalmBees.addStep(lostBees, speakToBeeDealer);
 		cCalmBees.addStep(beesAngry, calmBees);
 		steps.put(15, cCalmBees);
-		steps.put(20, returnBees);
+		steps.put(20, talkToBeaAfterReturningTheBees);
 
 		var cAfterCutscene = new ConditionalStep(this, speakToBeaAfterCutscene);
 		cAfterCutscene.addStep(waspStings, returnStingsToBea);
@@ -178,9 +182,8 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 
 		steps.put(30, speakToBeaAfterCutsceneAgain);
 
-		var receivedBirdSnares = new Conditions(true, LogicType.OR, birdSnare, anyBrownFeathers);
 		var cCatchBirds = new ConditionalStep(this, speakToBeaAfterCutsceneAgain);
-		cCatchBirds.addStep(brownFeathers, returnFeathersToBea);
+		cCatchBirds.addStep(caughtFiveBirds, returnFeathersToBea);
 		cCatchBirds.addStep(receivedBirdSnares, catchBirds);
 		steps.put(35, cCatchBirds);
 
@@ -202,13 +205,6 @@ public class TheBirdsAndTheWasps extends BasicQuestHelper
 			insectNet,
 			insectRepellent,
 			birdSnare
-		);
-	}
-
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return List.of(
 		);
 	}
 

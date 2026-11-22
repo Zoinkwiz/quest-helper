@@ -74,6 +74,13 @@ public class ANewLeaf extends BasicQuestHelper
 	private static final int GUILD_NORTH_ALLOTMENT = 33694;
 	private static final int GUILD_FLOWER_PATCH = 33649;
 
+	private static final List<Integer> STEW_GIVEN_VARBITS = List.of(
+		VarbitID.ANL_STEW_GIVEN_JANE,
+		VarbitID.ANL_STEW_GIVEN_SERGEANT,
+		VarbitID.ANL_STEW_GIVEN_MARY,
+		VarbitID.ANL_STEW_GIVEN_KONAR
+	);
+
 	private static final String DISCUSS_TASKS = "Can we discuss the tasks you have given me?";
 	private static final String TOPIC_POTION = "Can we talk about communicating with Brassica Prime?";
 	private static final String TOPIC_STEW = "Can we talk about making and distributing stew?";
@@ -206,14 +213,10 @@ public class ANewLeaf extends BasicQuestHelper
 			@Override
 			public boolean check(Client client)
 			{
-				var stillToFeed = 4
-					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_JANE)
-					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_SERGEANT)
-					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_MARY)
-					- client.getVarbitValue(VarbitID.ANL_STEW_GIVEN_KONAR);
+				var stewGiven = STEW_GIVEN_VARBITS.stream().mapToInt(client::getVarbitValue).sum();
 				var inventory = client.getItemContainer(InventoryID.INV);
 				var stewHeld = inventory == null ? 0 : inventory.count(ItemID.ANL_PERFECT_STEW);
-				return stewHeld < stillToFeed;
+				return stewHeld + stewGiven < STEW_GIVEN_VARBITS.size();
 			}
 		};
 		toldToGetBook = new VarbitRequirement(VarbitID.ANL_TOLD_TO_GET_BOOK, 1);

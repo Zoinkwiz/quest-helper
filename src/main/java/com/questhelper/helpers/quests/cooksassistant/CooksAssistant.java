@@ -125,7 +125,7 @@ public class CooksAssistant extends BasicQuestHelper
 		bucket = new ItemRequirement("Bucket", ItemID.BUCKET_EMPTY);
 		pot = new ItemRequirement("Pot", ItemID.POT_EMPTY);
 		coins = new ItemRequirement("Coins", ItemCollections.COINS, 3);
-		coins.setTooltip("Necessary if you do not have a pot / bucket");
+		coins.setTooltip(t("Necessary if you do not have a pot / bucket"));
 		grain = new ItemRequirement("Grain", ItemID.GRAIN);
 
 		controlsUsed = new VarbitRequirement(VarbitID.MILL_FLOUR, 1);
@@ -142,43 +142,43 @@ public class CooksAssistant extends BasicQuestHelper
 		};
 
 		getBucket = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
-			"Purchase a bucket from the Lumbridge General Store.", coins.quantity(2));
+			t("Purchase a bucket from the Lumbridge General Store."), coins.quantity(2));
 		getBucket.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.BUCKET_EMPTY));
 
 		getPot = new NpcStep(this, lumbridgeShopkeepers, new WorldPoint(3212, 3246, 0),
-			"Purchase a pot from the Lumbridge General Store.", coins.quantity(1));
+			t("Purchase a pot from the Lumbridge General Store."), coins.quantity(1));
 		getPot.addWidgetHighlight(WidgetHighlight.createShopItemHighlight(ItemID.POT_EMPTY));
 
 		getEgg = new ItemStep(this, new WorldPoint(3177, 3296, 0),
-			"Grab an egg from the farm north of Lumbridge.", egg);
+			t("Grab an egg from the farm north of Lumbridge."), egg);
 		getWheat = new ObjectStep(this, ObjectID.FAI_VARROCK_WHEAT_CORNER, new WorldPoint(3161, 3292, 0),
-			"Pick some wheat north of Lumbridge.");
+			t("Pick some wheat north of Lumbridge."));
 		climbLadderOne = new ObjectStep(this, ObjectID.QIP_COOK_LADDER, new WorldPoint(3164, 3307, 0),
-			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
+			t("Climb up the ladder in the Mill north of Lumbridge to the top floor."), pot, grain);
 		climbLadderTwoUp = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
-			"Climb up the ladder in the Mill north of Lumbridge to the top floor.", pot, grain);
+			t("Climb up the ladder in the Mill north of Lumbridge to the top floor."), pot, grain);
 		climbLadderTwoUp.addDialogStep("Climb Up.");
 		climbLadderOne.addSubSteps(climbLadderTwoUp);
 		fillHopper = new ObjectStep(this, ObjectID.HOPPER1, new WorldPoint(3166, 3307, 2),
-			"Fill the hopper with your grain.", pot, grain.highlighted());
+			t("Fill the hopper with your grain."), pot, grain.highlighted());
 		fillHopper.addIcon(ItemID.GRAIN);
 		operateControls = new ObjectStep(this, ObjectID.HOPPERLEVERS1, new WorldPoint(3166, 3305, 2),
-			"Operate the hopper controls.", pot);
+			t("Operate the hopper controls."), pot);
 		climbLadderThree = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_TOP, new WorldPoint(3164, 3307, 2),
-			"Climb down the ladder in the Mill to the ground floor.", pot);
+			t("Climb down the ladder in the Mill to the ground floor."), pot);
 		climbLadderTwoDown = new ObjectStep(this, ObjectID.QIP_COOK_LADDER_MIDDLE, new WorldPoint(3164, 3307, 1),
-			"Climb down the ladder in the Mill to the ground floor.", pot);
+			t("Climb down the ladder in the Mill to the ground floor."), pot);
 		climbLadderTwoDown.addDialogStep("Climb Down.");
 		climbLadderThree.addSubSteps(climbLadderTwoDown);
 		collectFlour = new ObjectStep(this, ObjectID.MILLBASE_FLOUR, new WorldPoint(3166, 3306, 0),
-			"Collect the flour in the bin.", pot.highlighted());
+			t("Collect the flour in the bin."), pot.highlighted());
 		collectFlour.addIcon(ItemID.POT_EMPTY);
 
 		milkCow = new ObjectStep(this, ObjectID.FAT_COW, new WorldPoint(3172, 3317, 0),
-			"Milk the dairy cow north of Lumbridge.", bucket);
+			t("Milk the dairy cow north of Lumbridge."), bucket);
 
 		finishQuest = new NpcStep(this, NpcID.COOK, new WorldPoint(3206, 3214, 0),
-			"Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest.",
+			t("Give the Cook in Lumbridge Castle's kitchen the required items to finish the quest."),
 			egg, milk, flour);
 		finishQuest.addAlternateNpcs(NpcID.COOK);
 		finishQuest.addDialogSteps("What's wrong?", "Can I help?", "Yes.");
@@ -254,7 +254,7 @@ public class CooksAssistant extends BasicQuestHelper
 	public List<UnlockReward> getUnlockRewards()
 	{
 		return List.of(
-			new UnlockReward("Permission to use The Cook's range.")
+			new UnlockReward(t("Permission to use The Cook's range."))
 		);
 	}
 
@@ -263,18 +263,18 @@ public class CooksAssistant extends BasicQuestHelper
 	{
 		var steps = new ArrayList<PanelDetails>();
 
-		steps.add(new PanelDetails("Starting off", List.of(
+		steps.add(new PanelDetails(t("Starting off"), List.of(
 			getBucket,
 			getPot
 		), List.of(
 			coins
 		)));
 
-		steps.add(new PanelDetails("Getting the Egg", List.of(
+		steps.add(new PanelDetails(t("Getting the Egg"), List.of(
 			getEgg
 		)));
 
-		steps.add(new PanelDetails("Getting the Flour", List.of(
+		steps.add(new PanelDetails(t("Getting the Flour"), List.of(
 			getWheat,
 			climbLadderOne,
 			fillHopper,
@@ -285,13 +285,13 @@ public class CooksAssistant extends BasicQuestHelper
 			pot
 		)));
 
-		steps.add(new PanelDetails("Getting the Milk", List.of(
+		steps.add(new PanelDetails(t("Getting the Milk"), List.of(
 			milkCow
 		), List.of(
 			bucket
 		)));
 
-		steps.add(new PanelDetails("Finishing up", List.of(
+		steps.add(new PanelDetails(t("Finishing up"), List.of(
 			finishQuest
 		), List.of(
 			egg,

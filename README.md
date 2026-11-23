@@ -41,6 +41,25 @@ Next time you start a quest, the Shortest Path plugin will help you take the sho
 
 You can configure what teleportation methods, or the aesthetic of the path in the Shortest Path config.
 
+## Translations
+
+Quest Helper can display its steps in languages other than English. Choose the language in the
+`Language` section of the plugin config; English is the default and is used whenever a translation
+is missing.
+
+Translations live in `src/main/resources/translations/<language>/<quest>.properties`, one file per
+quest. The English string in the code is the key:
+
+```properties
+Get an egg from the farm north of Lumbridge.=Coge un Egg de la granja al norte de Lumbridge.
+```
+
+Escaping follows the same conventions as Java properties for the supported characters
+(`\=` for a literal equals sign, `\n` for a newline, `\\` for a backslash).
+
+Quest names, game entity names (items, NPCs, locations) and dialog choices are intentionally left
+in English, as they need to match the game client.
+
 ## Help and discussion
 
 If you've experienced an issue with a quest helper, or have a recommendation on how to improve it, please [create an issue](https://github.com/Zoinkwiz/quest-helper/issues/new) with the relevant details.

@@ -72,7 +72,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, pathDoorOpen, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
 		cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab;
 
-	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat;
+	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat, boardBoatAgain;
 
 	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug;
 
@@ -329,6 +329,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		pushBoat = new ObjectStep(this, ObjectID.SANG_BOAT_BROKEN_MULTILOC, new WorldPoint(3524, 3178, 0), "Push the boat.");
 		boardBoat = new ObjectStep(this, ObjectID.SANG_BOAT_WATER_MULTILOC, new WorldPoint(3523, 3170, 0), "Board the boat.");
+		boardBoatAgain = new ObjectStep(this, ObjectID.SANG_BOAT_WATER_MULTILOC, new WorldPoint(3523, 3170, 0), "Board the boat.");
 
 		kickBoard = new ObjectStep(this, ObjectID.MEIYERDITCH_WALL_FLOORBOARDS_MULTI_LOC, new WorldPoint(3589, 3173, 1), "Climb up the walls and search the marked floor.");
 		kickBoard.addDialogStep("Yes.");
@@ -666,7 +667,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToVeliafAfterDrezel = new ConditionalStep(this, goToBurghPubBasement, "Return to Veliaf in the Myreque base under Burgh de Rott.");
 		talkToVeliafAfterDrezel.addStep(inNewBase, talkToVeliaf);
 
-		ConditionalStep getToNorthMeiy = new ConditionalStep(this, boardBoat);
+		ConditionalStep getToNorthMeiy = new ConditionalStep(this, boardBoatAgain);
 		getToNorthMeiy.addStep(inTrapdoorRoom, climbOverBrokenWall);
 		getToNorthMeiy.addStep(inMine, mineDaeyaltThenLeave);
 		getToNorthMeiy.addStep(inMeiyditch, goToMines);
@@ -676,7 +677,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		returnToMeiyerditch.addStep(wallPressed, enterRug);
 		returnToMeiyerditch.addStep(inNorthMeiy, returnToMeiyBase);
 
-		ConditionalStep navigateWalls = new ConditionalStep(this, boardBoat);
+		ConditionalStep navigateWalls = new ConditionalStep(this, boardBoatAgain);
 		navigateWalls.addStep(onFourthWall, climbUpDrakanWalls);
 		navigateWalls.addStep(onThirdWall, climbDownFromThirdWall);
 		navigateWalls.addStep(onSecondWall, climbLadderSecondWall);

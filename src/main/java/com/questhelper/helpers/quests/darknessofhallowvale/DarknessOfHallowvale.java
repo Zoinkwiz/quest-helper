@@ -64,7 +64,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	//Items Required
 	ItemRequirement nails8, nails4, planks2, planks1, hammer, pickaxe, knife, doorKey, ladderPiece, message, charcoal, papyrus, sketch1, sketch2, sketch3,
-		largeOrnateKey, messageFromFireplace, haemBook, sealedMessage;
+		largeOrnateKey, haemBook, sealedMessage;
 
 	Requirement normalSpellbook;
 
@@ -72,11 +72,11 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, pathDoorOpen, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
 		cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab;
 
-	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat;
+	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat, boardBoatAgain, climbOverBrokenWallToBoat;
 
-	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug;
+	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug, enterRugAgain;
 
-	DetailedQuestStep talkToVertida;
+	DetailedQuestStep talkToVertida, talkToVertidaAgain;
 
 	DetailedQuestStep goDownToDrezel, talkToDrezel, leaveDrezelToBushes, searchBushes, returnFromBushesToDrezel, talkToRoald;
 
@@ -86,7 +86,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		climbUpDrakanWalls, talkToSafalaan, drawNorthWall, drawWestWall,
 		drawSouthWall, tankVanstrom, finishSouthSketch, talkToSarius, talkToSafalaanInBase;
 
-	DetailedQuestStep useKnifeOnFireplace, readMessage, inspectPortrait, useKnifeOnPortrait, leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab,
+	DetailedQuestStep useKnifeOnFireplace, inspectPortrait, useKnifeOnPortrait, leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab,
 		getRunes, telegrabBook, leaveLab;
 
 	ConditionalStep startQuest, goTravelToMyrequeBase, talkToVeliafAfterContact, talkToVeliafAfterLetter, talkToDrezelAfterVeliaf, talkToDrezelAfterBushes,
@@ -111,7 +111,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		ConditionalStep goRepairBoat = new ConditionalStep(this, usePlankOnBoat);
 		goRepairBoat.addStep(inNewBase, leavePubBasement);
-		goRepairBoat.addStep(inTrapdoorRoom, climbOverBrokenWall);
+		goRepairBoat.addStep(inTrapdoorRoom, climbOverBrokenWallToBoat);
 		steps.put(10, goRepairBoat);
 		steps.put(20, usePlankOnChute);
 
@@ -164,8 +164,10 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		steps.put(200, goSketchNorth);
 		steps.put(210, goSketchWest);
-		steps.put(220, goSketchSouth);
-		steps.put(230, goSketchSouth);
+		ConditionalStep goSketchSouthOrTankVanstrom = new ConditionalStep(this, goSketchSouth);
+		goSketchSouthOrTankVanstrom.addStep(inVanstromFight, tankVanstrom);
+		steps.put(220, goSketchSouthOrTankVanstrom);
+		steps.put(230, goSketchSouthOrTankVanstrom);
 
 		steps.put(240, goTalkToSarius);
 
@@ -216,8 +218,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		sketch3 = new ItemRequirement("Castle sketch 3", ItemID.MYQ3_CASTLE_SKETCH_3);
 
 		largeOrnateKey = new ItemRequirement("Large ornate key", ItemID.MYQ3_LAB_ORNATE_KEY);
-		messageFromFireplace = new ItemRequirement("Message", ItemID.MYQ3_SARIUS_MESSAGE);
-		messageFromFireplace.setHighlightInInventory(true);
 		haemBook = new ItemRequirement("Haemalchemy volume 1", ItemID.MYQ3_HAEMALCHEMY_VOL_1);
 		sealedMessage = new ItemRequirement("Sealed message", ItemID.MYQ3_SAFALAAN_MESSAGE);
 		sealedMessage.setTooltip("You can get another from Safalaan");
@@ -322,6 +322,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToVeliaf.addDialogSteps("Is there something I can do to help out?", "Yes.");
 
 		leavePubBasement = new ObjectStep(this, ObjectID.BURGH_INN_BASEMENT_LADDERUP, new WorldPoint(3490, 9632, 0), "Leave the Myreque base.");
+		climbOverBrokenWallToBoat = new ObjectStep(this, ObjectID.BURGH_INN_CLIMB_OVER, new WorldPoint(3491, 3230, 0), "Climb over the broken wall.");
+		leavePubBasement.addSubSteps(climbOverBrokenWallToBoat);
 		usePlankOnBoat = new ObjectStep(this, ObjectID.SANG_BOAT_BROKEN_MULTILOC, new WorldPoint(3524, 3178, 0), "Fix the boat in south Burgh de Rott.", hammer, planks2, nails8);
 		usePlankOnBoat.addDialogStep("Yes.");
 		usePlankOnChute = new ObjectStep(this, ObjectID.SANG_BOATHOUSE_CHUTE_BROKEN_MULTILOC, new WorldPoint(3523, 3175, 0), "Fix the boat chute.", hammer, planks1, nails4);
@@ -329,6 +331,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		pushBoat = new ObjectStep(this, ObjectID.SANG_BOAT_BROKEN_MULTILOC, new WorldPoint(3524, 3178, 0), "Push the boat.");
 		boardBoat = new ObjectStep(this, ObjectID.SANG_BOAT_WATER_MULTILOC, new WorldPoint(3523, 3170, 0), "Board the boat.");
+		boardBoatAgain = new ObjectStep(this, ObjectID.SANG_BOAT_WATER_MULTILOC, new WorldPoint(3523, 3170, 0), "Board the boat.");
 
 		kickBoard = new ObjectStep(this, ObjectID.MEIYERDITCH_WALL_FLOORBOARDS_MULTI_LOC, new WorldPoint(3589, 3173, 1), "Climb up the walls and search the marked floor.");
 		kickBoard.addDialogStep("Yes.");
@@ -495,7 +498,9 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		pressDecoratedWall = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_SYMBOL_MULTI, new WorldPoint(3638, 3251, 0), "Press the decorated wall.");
 		pressDecoratedWall.setLinePoints(pathToBase);
 		enterRug = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Open the rug and enter the trapdoor.");
+		enterRugAgain = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Open the rug and enter the trapdoor.");
 		talkToVertida = new NpcStep(this, NpcID.MYQ4_VERTIDA_VISIBLE, new WorldPoint(3627, 9644, 0), "Talk to Vertida in the north room.");
+		talkToVertidaAgain = new NpcStep(this, NpcID.MYQ4_VERTIDA_VISIBLE, new WorldPoint(3627, 9644, 0), "Talk to Vertida in the north room.");
 
 		goDownToDrezel = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR, new WorldPoint(3422, 3485, 0), "");
 		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR_OPEN);
@@ -594,7 +599,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		useKnifeOnFireplace = new ObjectStep(this, ObjectID.MYQ3_FIREPLACE_LOOSE_TILE, new WorldPoint(3627, 3253, 0), "");
 		useKnifeOnFireplace.setLinePoints(pathFromMineToFireplace);
 		useKnifeOnFireplace.addIcon(ItemID.KNIFE);
-		readMessage = new DetailedQuestStep(this, "Read the message.", messageFromFireplace);
 		useKnifeOnPortrait = new ObjectStep(this, ObjectID.MYQ3_STATUE_PAINTING_MULTI, new WorldPoint(3627, 3248, 0), "Use a knife on the portrait south of the fireplace.");
 		useKnifeOnPortrait.addIcon(ItemID.KNIFE);
 		inspectPortrait = new ObjectStep(this, ObjectID.MYQ3_STATUE_PAINTING_MULTI, new WorldPoint(3627, 3248, 0), "Inspect the portrait south of the fireplace.");
@@ -666,17 +670,17 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToVeliafAfterDrezel = new ConditionalStep(this, goToBurghPubBasement, "Return to Veliaf in the Myreque base under Burgh de Rott.");
 		talkToVeliafAfterDrezel.addStep(inNewBase, talkToVeliaf);
 
-		ConditionalStep getToNorthMeiy = new ConditionalStep(this, boardBoat);
+		ConditionalStep getToNorthMeiy = new ConditionalStep(this, boardBoatAgain);
 		getToNorthMeiy.addStep(inTrapdoorRoom, climbOverBrokenWall);
 		getToNorthMeiy.addStep(inMine, mineDaeyaltThenLeave);
 		getToNorthMeiy.addStep(inMeiyditch, goToMines);
 
 		returnToMeiyerditch = new ConditionalStep(this, getToNorthMeiy, "Return to the Meiyerditch Myreque base.");
-		returnToMeiyerditch.addStep(inMyrequeBase, talkToVertida);
-		returnToMeiyerditch.addStep(wallPressed, enterRug);
+		returnToMeiyerditch.addStep(inMyrequeBase, talkToVertidaAgain);
+		returnToMeiyerditch.addStep(wallPressed, enterRugAgain);
 		returnToMeiyerditch.addStep(inNorthMeiy, returnToMeiyBase);
 
-		ConditionalStep navigateWalls = new ConditionalStep(this, boardBoat);
+		ConditionalStep navigateWalls = new ConditionalStep(this, boardBoatAgain);
 		navigateWalls.addStep(onFourthWall, climbUpDrakanWalls);
 		navigateWalls.addStep(onThirdWall, climbDownFromThirdWall);
 		navigateWalls.addStep(onSecondWall, climbLadderSecondWall);
@@ -690,7 +694,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		goToSafalaan = new ConditionalStep(this, navigateWalls, "Climb along the western wall until you reach Safalaan.");
 		goToSafalaan.addStep(onDrakanWalls, talkToSafalaan);
-		goToSafalaan.addStep(inMyrequeBase, talkToVertida);
+		goToSafalaan.addStep(inMyrequeBase, talkToVertidaAgain);
 		goToSafalaan.addDialogStep("Okay, lead the way.");
 
 		goSketchNorth = new ConditionalStep(this, navigateWalls, "Sketch the north side of Castle Drakan by using the charcoal on some papyrus.", papyrus, charcoal);
@@ -700,7 +704,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		goSketchWest.addStep(onDrakanWalls, drawWestWall);
 
 		goSketchSouth = new ConditionalStep(this, navigateWalls, "Sketch the south side of Castle Drakan. Be prepared to tank some hits from Vanstrom Klause.", papyrus, charcoal);
-		goSketchSouth.addStep(inVanstromFight, tankVanstrom);
 		goSketchSouth.addStep(onDrakanWalls, drawSouthWall);
 
 		goTalkToSarius = new ConditionalStep(this, navigateWalls, "Talk to Sarius on the walls around Castle Drakan.");
@@ -714,7 +717,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		returnToSafalaanInBaseNoSketches = new ConditionalStep(this, getToNorthMeiy, "Return to Safalaan in the Meiyerditch Myreque base.", knife);
 		returnToSafalaanInBaseNoSketches.addStep(inMyrequeBase, talkToSafalaanInBase);
-		returnToSafalaanInBaseNoSketches.addStep(wallPressed, enterRug);
+		returnToSafalaanInBaseNoSketches.addStep(wallPressed, enterRugAgain);
 		returnToSafalaanInBaseNoSketches.addStep(new Conditions(inNorthMeiy, largeOrnateKey), returnToMeiyBase);
 		returnToSafalaanInBaseNoSketches.addStep(new Conditions(inNorthMeiy, cutPortrait), inspectPortrait);
 		returnToSafalaanInBaseNoSketches.addStep(inNorthMeiy, useKnifeOnPortrait);
@@ -733,7 +736,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		bringSafalaanBook = new ConditionalStep(this, returnToMeiyBase, "Return to Safalaan with the Haemalchemy book.", haemBook);
 		bringSafalaanBook.addStep(inMyrequeBase, talkToSafalaanInBase);
 		bringSafalaanBook.addStep(inLab, leaveLab);
-		bringSafalaanBook.addStep(wallPressed, enterRug);
+		bringSafalaanBook.addStep(wallPressed, enterRugAgain);
 
 		getHaemBook = new ConditionalStep(this, travelToLab);
 		getHaemBook.addStep(haemBook, bringSafalaanBook);
@@ -818,10 +821,10 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			talkToVeliafAfterDrezel)));
 
 		allSteps.add(new PanelDetails("Mapping Castle Drakan", Arrays.asList(returnToMeiyerditch, goToSafalaan, goSketchNorth, goSketchWest, goSketchSouth,
-			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage,
+			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait,
 			returnToSafalaanInBaseNoSketches), knife));
 
-		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(useKnifeOnTapestry, useKeyOnStatue, goDownToLab, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife, lawRune, airRune));
+		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab, getRunes, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife, lawRune, airRune));
 
 		return allSteps;
 	}

@@ -822,7 +822,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait,
 			returnToSafalaanInBaseNoSketches), knife));
 
-		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife, lawRune, airRune));
+		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab, getRunes, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife, lawRune, airRune));
 
 		return allSteps;
 	}

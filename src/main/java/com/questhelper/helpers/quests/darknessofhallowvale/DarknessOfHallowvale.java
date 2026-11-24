@@ -164,8 +164,10 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		steps.put(200, goSketchNorth);
 		steps.put(210, goSketchWest);
-		steps.put(220, goSketchSouth);
-		steps.put(230, goSketchSouth);
+		ConditionalStep goSketchSouthOrTankVanstrom = new ConditionalStep(this, goSketchSouth);
+		goSketchSouthOrTankVanstrom.addStep(inVanstromFight, tankVanstrom);
+		steps.put(220, goSketchSouthOrTankVanstrom);
+		steps.put(230, goSketchSouthOrTankVanstrom);
 
 		steps.put(240, goTalkToSarius);
 
@@ -703,7 +705,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		goSketchWest.addStep(onDrakanWalls, drawWestWall);
 
 		goSketchSouth = new ConditionalStep(this, navigateWalls, "Sketch the south side of Castle Drakan. Be prepared to tank some hits from Vanstrom Klause.", papyrus, charcoal);
-		goSketchSouth.addStep(inVanstromFight, tankVanstrom);
 		goSketchSouth.addStep(onDrakanWalls, drawSouthWall);
 
 		goTalkToSarius = new ConditionalStep(this, navigateWalls, "Talk to Sarius on the walls around Castle Drakan.");

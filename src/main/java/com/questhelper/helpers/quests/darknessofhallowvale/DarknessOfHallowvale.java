@@ -72,7 +72,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		onFourthWall, onDrakanWalls, inVanstromFight, knockedDownBoard, pathDoorOpen, fixedLadder, wallPressed, searchedRockySurface, hasSketches,
 		cutPortrait, handedInSketches, tapestryCut, keyPlaced, hasTeleGrabRunesOrSearchedCase, searchedRuneCase, inLab;
 
-	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat, boardBoatAgain;
+	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat, boardBoatAgain, climbOverBrokenWallToBoat;
 
 	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug, enterRugAgain;
 
@@ -111,7 +111,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		ConditionalStep goRepairBoat = new ConditionalStep(this, usePlankOnBoat);
 		goRepairBoat.addStep(inNewBase, leavePubBasement);
-		goRepairBoat.addStep(inTrapdoorRoom, climbOverBrokenWall);
+		goRepairBoat.addStep(inTrapdoorRoom, climbOverBrokenWallToBoat);
 		steps.put(10, goRepairBoat);
 		steps.put(20, usePlankOnChute);
 
@@ -322,6 +322,8 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		talkToVeliaf.addDialogSteps("Is there something I can do to help out?", "Yes.");
 
 		leavePubBasement = new ObjectStep(this, ObjectID.BURGH_INN_BASEMENT_LADDERUP, new WorldPoint(3490, 9632, 0), "Leave the Myreque base.");
+		climbOverBrokenWallToBoat = new ObjectStep(this, ObjectID.BURGH_INN_CLIMB_OVER, new WorldPoint(3491, 3230, 0), "Climb over the broken wall.");
+		leavePubBasement.addSubSteps(climbOverBrokenWallToBoat);
 		usePlankOnBoat = new ObjectStep(this, ObjectID.SANG_BOAT_BROKEN_MULTILOC, new WorldPoint(3524, 3178, 0), "Fix the boat in south Burgh de Rott.", hammer, planks2, nails8);
 		usePlankOnBoat.addDialogStep("Yes.");
 		usePlankOnChute = new ObjectStep(this, ObjectID.SANG_BOATHOUSE_CHUTE_BROKEN_MULTILOC, new WorldPoint(3523, 3175, 0), "Fix the boat chute.", hammer, planks1, nails4);

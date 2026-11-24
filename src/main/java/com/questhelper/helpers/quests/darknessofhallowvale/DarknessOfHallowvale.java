@@ -74,7 +74,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	DetailedQuestStep climbOverBrokenWall, enterBurghPubBasement, talkToVeliaf, leavePubBasement, usePlankOnBoat, usePlankOnChute, pushBoat, boardBoat, boardBoatAgain;
 
-	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug;
+	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug, enterRugAgain;
 
 	DetailedQuestStep talkToVertida;
 
@@ -496,6 +496,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		pressDecoratedWall = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_SYMBOL_MULTI, new WorldPoint(3638, 3251, 0), "Press the decorated wall.");
 		pressDecoratedWall.setLinePoints(pathToBase);
 		enterRug = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Open the rug and enter the trapdoor.");
+		enterRugAgain = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Open the rug and enter the trapdoor.");
 		talkToVertida = new NpcStep(this, NpcID.MYQ4_VERTIDA_VISIBLE, new WorldPoint(3627, 9644, 0), "Talk to Vertida in the north room.");
 
 		goDownToDrezel = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR, new WorldPoint(3422, 3485, 0), "");
@@ -674,7 +675,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		returnToMeiyerditch = new ConditionalStep(this, getToNorthMeiy, "Return to the Meiyerditch Myreque base.");
 		returnToMeiyerditch.addStep(inMyrequeBase, talkToVertida);
-		returnToMeiyerditch.addStep(wallPressed, enterRug);
+		returnToMeiyerditch.addStep(wallPressed, enterRugAgain);
 		returnToMeiyerditch.addStep(inNorthMeiy, returnToMeiyBase);
 
 		ConditionalStep navigateWalls = new ConditionalStep(this, boardBoatAgain);
@@ -715,7 +716,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		returnToSafalaanInBaseNoSketches = new ConditionalStep(this, getToNorthMeiy, "Return to Safalaan in the Meiyerditch Myreque base.", knife);
 		returnToSafalaanInBaseNoSketches.addStep(inMyrequeBase, talkToSafalaanInBase);
-		returnToSafalaanInBaseNoSketches.addStep(wallPressed, enterRug);
+		returnToSafalaanInBaseNoSketches.addStep(wallPressed, enterRugAgain);
 		returnToSafalaanInBaseNoSketches.addStep(new Conditions(inNorthMeiy, largeOrnateKey), returnToMeiyBase);
 		returnToSafalaanInBaseNoSketches.addStep(new Conditions(inNorthMeiy, cutPortrait), inspectPortrait);
 		returnToSafalaanInBaseNoSketches.addStep(inNorthMeiy, useKnifeOnPortrait);
@@ -734,7 +735,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		bringSafalaanBook = new ConditionalStep(this, returnToMeiyBase, "Return to Safalaan with the Haemalchemy book.", haemBook);
 		bringSafalaanBook.addStep(inMyrequeBase, talkToSafalaanInBase);
 		bringSafalaanBook.addStep(inLab, leaveLab);
-		bringSafalaanBook.addStep(wallPressed, enterRug);
+		bringSafalaanBook.addStep(wallPressed, enterRugAgain);
 
 		getHaemBook = new ConditionalStep(this, travelToLab);
 		getHaemBook.addStep(haemBook, bringSafalaanBook);

@@ -394,7 +394,8 @@ public class QuestHelperTest extends MockedTest
 			QuestHelperQuest.HERB_RUN,
 			QuestHelperQuest.THE_IDES_OF_MILK,
 			QuestHelperQuest.CRAB_QUEST,
-			QuestHelperQuest.A_RUFF_SITUATION
+			QuestHelperQuest.A_RUFF_SITUATION,
+			QuestHelperQuest.DARKNESS_OF_HALLOWVALE
 		);
 
 		// If you add a quest to this list, then this unit test will *only* test this quest

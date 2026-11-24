@@ -64,7 +64,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	//Items Required
 	ItemRequirement nails8, nails4, planks2, planks1, hammer, pickaxe, knife, doorKey, ladderPiece, message, charcoal, papyrus, sketch1, sketch2, sketch3,
-		largeOrnateKey, messageFromFireplace, haemBook, sealedMessage;
+		largeOrnateKey, haemBook, sealedMessage;
 
 	Requirement normalSpellbook;
 
@@ -86,7 +86,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		climbUpDrakanWalls, talkToSafalaan, drawNorthWall, drawWestWall,
 		drawSouthWall, tankVanstrom, finishSouthSketch, talkToSarius, talkToSafalaanInBase;
 
-	DetailedQuestStep useKnifeOnFireplace, readMessage, inspectPortrait, useKnifeOnPortrait, leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab,
+	DetailedQuestStep useKnifeOnFireplace, inspectPortrait, useKnifeOnPortrait, leaveMeiyerBase, useKnifeOnTapestry, useKeyOnStatue, goDownToLab,
 		getRunes, telegrabBook, leaveLab;
 
 	ConditionalStep startQuest, goTravelToMyrequeBase, talkToVeliafAfterContact, talkToVeliafAfterLetter, talkToDrezelAfterVeliaf, talkToDrezelAfterBushes,
@@ -218,8 +218,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		sketch3 = new ItemRequirement("Castle sketch 3", ItemID.MYQ3_CASTLE_SKETCH_3);
 
 		largeOrnateKey = new ItemRequirement("Large ornate key", ItemID.MYQ3_LAB_ORNATE_KEY);
-		messageFromFireplace = new ItemRequirement("Message", ItemID.MYQ3_SARIUS_MESSAGE);
-		messageFromFireplace.setHighlightInInventory(true);
 		haemBook = new ItemRequirement("Haemalchemy volume 1", ItemID.MYQ3_HAEMALCHEMY_VOL_1);
 		sealedMessage = new ItemRequirement("Sealed message", ItemID.MYQ3_SAFALAAN_MESSAGE);
 		sealedMessage.setTooltip("You can get another from Safalaan");
@@ -599,7 +597,6 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		useKnifeOnFireplace = new ObjectStep(this, ObjectID.MYQ3_FIREPLACE_LOOSE_TILE, new WorldPoint(3627, 3253, 0), "");
 		useKnifeOnFireplace.setLinePoints(pathFromMineToFireplace);
 		useKnifeOnFireplace.addIcon(ItemID.KNIFE);
-		readMessage = new DetailedQuestStep(this, "Read the message.", messageFromFireplace);
 		useKnifeOnPortrait = new ObjectStep(this, ObjectID.MYQ3_STATUE_PAINTING_MULTI, new WorldPoint(3627, 3248, 0), "Use a knife on the portrait south of the fireplace.");
 		useKnifeOnPortrait.addIcon(ItemID.KNIFE);
 		inspectPortrait = new ObjectStep(this, ObjectID.MYQ3_STATUE_PAINTING_MULTI, new WorldPoint(3627, 3248, 0), "Inspect the portrait south of the fireplace.");
@@ -822,7 +819,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 			talkToVeliafAfterDrezel)));
 
 		allSteps.add(new PanelDetails("Mapping Castle Drakan", Arrays.asList(returnToMeiyerditch, goToSafalaan, goSketchNorth, goSketchWest, goSketchSouth,
-			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait, readMessage,
+			tankVanstrom, goTalkToSarius, goFinishSouthSketch, goOpenFireplace, useKnifeOnPortrait,
 			returnToSafalaanInBaseNoSketches), knife));
 
 		allSteps.add(new PanelDetails("Investigate the lab", Arrays.asList(useKnifeOnTapestry, useKeyOnStatue, goDownToLab, telegrabBook, bringSafalaanBook, bringMessageToVeliafToFinish), knife, lawRune, airRune));

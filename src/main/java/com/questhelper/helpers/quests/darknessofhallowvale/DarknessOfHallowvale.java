@@ -76,7 +76,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 	DetailedQuestStep kickBoard, climbDownBoard, climbOverRubble, talkToCitizen, talkToRal, travelToPots, travelToLadderPart, travelToFixLadder, travelToMyrequeBase, pressDecoratedWall, enterRug, enterRugAgain;
 
-	DetailedQuestStep talkToVertida;
+	DetailedQuestStep talkToVertida, talkToVertidaAgain;
 
 	DetailedQuestStep goDownToDrezel, talkToDrezel, leaveDrezelToBushes, searchBushes, returnFromBushesToDrezel, talkToRoald;
 
@@ -498,6 +498,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		enterRug = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Open the rug and enter the trapdoor.");
 		enterRugAgain = new ObjectStep(this, ObjectID.SANG_MYREQUE_HIDEOUT_TRAPDOOR_MULTILOC, new WorldPoint(3639, 3249, 0), "Open the rug and enter the trapdoor.");
 		talkToVertida = new NpcStep(this, NpcID.MYQ4_VERTIDA_VISIBLE, new WorldPoint(3627, 9644, 0), "Talk to Vertida in the north room.");
+		talkToVertidaAgain = new NpcStep(this, NpcID.MYQ4_VERTIDA_VISIBLE, new WorldPoint(3627, 9644, 0), "Talk to Vertida in the north room.");
 
 		goDownToDrezel = new ObjectStep(this, ObjectID.PIPEASTSIDETRAPDOOR, new WorldPoint(3422, 3485, 0), "");
 		((ObjectStep) (goDownToDrezel)).addAlternateObjects(ObjectID.PIPEASTSIDETRAPDOOR_OPEN);
@@ -674,7 +675,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 		getToNorthMeiy.addStep(inMeiyditch, goToMines);
 
 		returnToMeiyerditch = new ConditionalStep(this, getToNorthMeiy, "Return to the Meiyerditch Myreque base.");
-		returnToMeiyerditch.addStep(inMyrequeBase, talkToVertida);
+		returnToMeiyerditch.addStep(inMyrequeBase, talkToVertidaAgain);
 		returnToMeiyerditch.addStep(wallPressed, enterRugAgain);
 		returnToMeiyerditch.addStep(inNorthMeiy, returnToMeiyBase);
 
@@ -692,7 +693,7 @@ public class DarknessOfHallowvale extends BasicQuestHelper
 
 		goToSafalaan = new ConditionalStep(this, navigateWalls, "Climb along the western wall until you reach Safalaan.");
 		goToSafalaan.addStep(onDrakanWalls, talkToSafalaan);
-		goToSafalaan.addStep(inMyrequeBase, talkToVertida);
+		goToSafalaan.addStep(inMyrequeBase, talkToVertidaAgain);
 		goToSafalaan.addDialogStep("Okay, lead the way.");
 
 		goSketchNorth = new ConditionalStep(this, navigateWalls, "Sketch the north side of Castle Drakan by using the charcoal on some papyrus.", papyrus, charcoal);

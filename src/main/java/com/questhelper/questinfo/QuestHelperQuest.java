@@ -199,6 +199,7 @@ import com.questhelper.helpers.quests.princealirescue.PrinceAliRescue;
 import com.questhelper.helpers.quests.pryingtimes.PryingTimes;
 import com.questhelper.helpers.quests.ragandboneman.RagAndBoneManI;
 import com.questhelper.helpers.quests.ragandboneman.RagAndBoneManII;
+import com.questhelper.helpers.quests.ragandbonemaniii.RagAndBoneManIII;
 import com.questhelper.helpers.quests.ratcatchers.RatCatchers;
 import com.questhelper.helpers.quests.recipefordisaster.*;
 import com.questhelper.helpers.quests.recruitmentdrive.RecruitmentDrive;
@@ -494,6 +495,7 @@ public enum QuestHelperQuest
 	THE_RED_REEF(new TheRedReef(), Quest.THE_RED_REEF, QuestVarbits.QUEST_THE_RED_REEF, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	THE_BLOOD_MOON_RISES(new TheBloodMoonRises(), Quest.THE_BLOOD_MOON_RISES, QuestVarbits.QUEST_THE_BLOOD_MOON_RISES, QuestDetails.Type.P2P, QuestDetails.Difficulty.GRANDMASTER),
 	FALLEN_FROM_GRACE(new FallenFromGrace(), Quest.FALLEN_FROM_GRACE, QuestVarbits.QUEST_FALLEN_FROM_GRACE, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
+	RAG_AND_BONE_MAN_III(new RagAndBoneManIII(), Quest.RAG_AND_BONE_MAN_III, QuestVarbits.QUEST_RAG_AND_BONE_MAN_III, QuestDetails.Type.P2P, QuestDetails.Difficulty.EXPERIENCED),
 	//Miniquests
 	ENTER_THE_ABYSS(new EnterTheAbyss(), Quest.ENTER_THE_ABYSS, QuestVarPlayer.QUEST_ENTER_THE_ABYSS, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),
 	BEAR_YOUR_SOUL(new BearYourSoul(), Quest.BEAR_YOUR_SOUL, QuestVarbits.QUEST_BEAR_YOUR_SOUL, QuestDetails.Type.MINIQUEST, QuestDetails.Difficulty.MINIQUEST),

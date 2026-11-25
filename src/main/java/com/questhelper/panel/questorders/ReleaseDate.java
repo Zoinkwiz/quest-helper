@@ -193,6 +193,7 @@ public class ReleaseDate
 		QuestHelperQuest.SONG_OF_THE_ELVES,
 		QuestHelperQuest.THE_FREMENNIK_EXILES,
 		QuestHelperQuest.SINS_OF_THE_FATHER,
+		QuestHelperQuest.DADDYS_HOME,
 		QuestHelperQuest.A_PORCINE_OF_INTEREST,
 		QuestHelperQuest.GETTING_AHEAD,
 		QuestHelperQuest.BELOW_ICE_MOUNTAIN,
@@ -244,7 +245,6 @@ public class ReleaseDate
 		QuestHelperQuest.FAMILY_PEST,
 		QuestHelperQuest.THE_MAGE_ARENA_II,
 		QuestHelperQuest.IN_SEARCH_OF_KNOWLEDGE,
-		QuestHelperQuest.DADDYS_HOME,
 		//QuestHelperQuest.THE_FROZEN_DOOR, - Placeholder for future addition.
 		QuestHelperQuest.HOPESPEARS_WILL,
 		//QuestHelperQuest.INTO_THE_TOMBS, - Placeholder for future addition.

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.questhelper.helpers.miniquests.daddyshome;
+package com.questhelper.helpers.quests.daddyshome;
 
 import com.questhelper.collections.ItemCollections;
 import com.questhelper.panel.PanelDetails;
@@ -35,6 +35,7 @@ import com.questhelper.requirements.util.Operation;
 import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.rewards.ExperienceReward;
 import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
@@ -287,6 +288,12 @@ public class DaddysHome extends BasicQuestHelper
 			lumberyardTeleport,
 			varrockTeleport3
 		);
+	}
+
+	@Override
+	public QuestPointReward getQuestPointReward()
+	{
+		return new QuestPointReward(1);
 	}
 
 	@Override
